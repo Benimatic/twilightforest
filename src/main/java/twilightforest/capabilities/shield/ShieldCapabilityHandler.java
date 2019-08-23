@@ -14,7 +14,7 @@ public class ShieldCapabilityHandler implements IShieldCapability {
 	private int temporaryShields;
 	private int permanentShields;
 	private EntityLivingBase host;
-	private int timer = 0;
+	private int timer;
 
 	@Override
 	public void setEntity(EntityLivingBase entity) {
@@ -47,7 +47,7 @@ public class ShieldCapabilityHandler implements IShieldCapability {
 		// Temp shields should break first before permanent ones. Reset time each time a temp shield is busted.
 		if (temporaryShields > 0) {
 			temporaryShields--;
-			timer = 240;
+			resetTimer();
 		} else if (permanentShields > 0) {
 			permanentShields--;
 		}
@@ -66,7 +66,7 @@ public class ShieldCapabilityHandler implements IShieldCapability {
 	public void setShields(int amount, boolean temp) {
 		if (temp) {
 			temporaryShields = Math.max(amount, 0);
-			timer = 240;
+			resetTimer();
 		} else {
 			permanentShields = Math.max(amount, 0);
 		}
@@ -78,7 +78,7 @@ public class ShieldCapabilityHandler implements IShieldCapability {
 	public void addShields(int amount, boolean temp) {
 		if (temp) {
 			if (temporaryShields <= 0)
-				timer = 240; // Since we add new shields to the stack instead of setting them, no timer reset is needed, unless they start from 0 shields.
+				resetTimer(); // Since we add new shields to the stack instead of setting them, no timer reset is needed, unless they start from 0 shields.
 			temporaryShields = Math.max(temporaryShields + amount, 0);
 		} else {
 			permanentShields = Math.max(permanentShields + amount, 0);
@@ -88,8 +88,13 @@ public class ShieldCapabilityHandler implements IShieldCapability {
 	}
 
 	void initShields(int temporary, int permanent) {
-		temporaryShields = temporary;
-		permanentShields = permanent;
+		temporaryShields = Math.max(temporary, 0);
+		permanentShields = Math.max(permanent, 0);
+		resetTimer();
+	}
+
+	private void resetTimer() {
+		timer = 240;
 	}
 
 	private void sendUpdatePacket() {
