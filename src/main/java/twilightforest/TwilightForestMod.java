@@ -198,6 +198,7 @@ public class TwilightForestMod {
 		GameRegistry.registerTileEntity(TileEntityTFCinderFurnace        .class, prefix("cinder_furnace"          ));
 		GameRegistry.registerTileEntity(TileEntityTFMinoshroomSpawner    .class, prefix("minoshroom_spawner"      ));
 		GameRegistry.registerTileEntity(TileEntityTFAlphaYetiSpawner     .class, prefix("alpha_yeti_spawner"      ));
+		GameRegistry.registerTileEntity(TileEntityTFFinalBossSpawner     .class, prefix("final_boss_spawner"      ));
 	}
 
 	public static ResourceLocation prefix(String name) {
