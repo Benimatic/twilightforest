@@ -15,7 +15,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -43,7 +42,6 @@ public class EntityTFTinyBird extends EntityTFBird {
 		this.setSize(0.3F, 0.3F);
 		setBirdType(rand.nextInt(4));
 		setIsBirdLanded(true);
-		this.setPathPriority(PathNodeType.WATER, -1.0F);
 	}
 
 	@Override
@@ -52,7 +50,7 @@ public class EntityTFTinyBird extends EntityTFBird {
 		this.tasks.addTask(1, new EntityAIPanic(this, 1.5F));
 		this.tasks.addTask(2, new EntityAITFBirdFly(this));
 		this.tasks.addTask(3, new EntityAITFTempt(this, 1.0F, true, SEEDS));
-		this.tasks.addTask(4, new EntityAIWanderAvoidWater(this, 1.0D, 0.0F));
+		this.tasks.addTask(4, new EntityAIWanderAvoidWater(this, 1.0D));
 		this.tasks.addTask(5, new EntityAIWatchClosest(this, EntityPlayer.class, 6F));
 		this.tasks.addTask(6, new EntityAILookIdle(this));
 	}
@@ -238,10 +236,8 @@ public class EntityTFTinyBird extends EntityTFBird {
 	}
 
 	@Override
-	protected void collideWithEntity(Entity entity) {
-	}
+	protected void collideWithEntity(Entity entity) {}
 
 	@Override
-	protected void collideWithNearbyEntities() {
-	}
+	protected void collideWithNearbyEntities() {}
 }
