@@ -10,12 +10,16 @@ import java.util.Random;
 
 public class TFGenWebs extends TFGenerator {
 
+	private static boolean isValidMaterial(Material material) {
+		return material == Material.LEAVES || material == Material.WOOD;
+	}
+
 	@Override
 	public boolean generate(World world, Random random, BlockPos pos) {
 		while (pos.getY() > TFWorld.SEALEVEL && world.isAirBlock(pos))
 			pos = pos.down();
 
-		if (world.getBlockState(pos).getMaterial() != Material.LEAVES)
+		if (!isValidMaterial(world.getBlockState(pos).getMaterial()))
 			return false;
 
 		do {
@@ -24,7 +28,7 @@ public class TFGenWebs extends TFGenerator {
 				return true;
 			}
 			pos = pos.down();
-		} while (pos.getY() > TFWorld.SEALEVEL && world.getBlockState(pos).getMaterial() == Material.LEAVES);
+		} while (pos.getY() > TFWorld.SEALEVEL && isValidMaterial(world.getBlockState(pos).getMaterial()));
 
 		return false;
 	}

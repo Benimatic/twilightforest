@@ -24,6 +24,7 @@ import net.minecraft.world.gen.structure.template.Template;
 import net.minecraft.world.gen.structure.template.TemplateManager;
 import org.apache.commons.lang3.tuple.Pair;
 import twilightforest.TwilightForestMod;
+import twilightforest.entity.EntityTFRisingZombie;
 import twilightforest.entity.EntityTFWraith;
 import twilightforest.loot.TFTreasure;
 import twilightforest.structures.RandomizedTemplateProcessor;
@@ -186,7 +187,7 @@ public class TFGenGraveyard extends TFGenerator {
 							if (world.setBlockState(p, Blocks.MOB_SPAWNER.getDefaultState(), flags)) {
 								TileEntityMobSpawner ms = (TileEntityMobSpawner) world.getTileEntity(p);
 								if (ms != null)
-									ms.getSpawnerBaseLogic().setEntityId(EntityList.getKey(EntityZombieVillager.class));
+									ms.getSpawnerBaseLogic().setEntityId(EntityList.getKey(EntityTFRisingZombie.class));
 							}
 						} else
 							world.setBlockToAir(p);

@@ -188,7 +188,7 @@ public class ItemTFMagicMap extends ItemMap implements ModelRegisterCallback {
 		putBiomeColor(TFBiomes.mushrooms, new MapColorBrightness(MapColor.ADOBE, 0));
 		putBiomeColor(TFBiomes.deepMushrooms, new MapColorBrightness(MapColor.PINK, 0));
 		putBiomeColor(TFBiomes.enchantedForest, new MapColorBrightness(MapColor.LIME, 2));
-		putBiomeColor(TFBiomes.spookyForest, new MapColorBrightness(MapColor.getBlockColor(EnumDyeColor.ORANGE), 3));
+		putBiomeColor(TFBiomes.spookyForest, new MapColorBrightness(MapColor.PURPLE, 0));
 	}
 
 	private static void putBiomeColor(Biome biome, MapColorBrightness color) {
