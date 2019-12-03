@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.ICriterionTrigger;
 import net.minecraft.advancements.PlayerAdvancements;
 import net.minecraft.advancements.critereon.AbstractCriterionInstance;
@@ -55,10 +56,10 @@ public class HasAdvancementTrigger implements ICriterionTrigger<HasAdvancementTr
 		return new HasAdvancementTrigger.Instance(advancementId);
 	}
 
-	public void trigger(EntityPlayerMP player) {
-		Listeners l = listeners.get(player.getAdvancements());
-		if (l != null) {
-			l.trigger(player);
+	public void trigger(EntityPlayerMP player, Advancement advancement) {
+		Listeners listeners = this.listeners.get(player.getAdvancements());
+		if (listeners != null) {
+			listeners.trigger(advancement);
 		}
 	}
 
@@ -71,8 +72,8 @@ public class HasAdvancementTrigger implements ICriterionTrigger<HasAdvancementTr
 			this.advancementLocation = advancementLocation;
 		}
 
-		boolean test(EntityPlayerMP player) {
-			return TwilightForestMod.proxy.doesPlayerHaveAdvancement(player, advancementLocation);
+		boolean test(Advancement advancement) {
+			return advancementLocation.equals(advancement.getId());
 		}
 	}
 
@@ -97,11 +98,11 @@ public class HasAdvancementTrigger implements ICriterionTrigger<HasAdvancementTr
 			this.listeners.remove(listener);
 		}
 
-		public void trigger(EntityPlayerMP player) {
+		public void trigger(Advancement advancement) {
 			List<Listener<HasAdvancementTrigger.Instance>> list = new ArrayList<>();
 
 			for (ICriterionTrigger.Listener<HasAdvancementTrigger.Instance> listener : this.listeners) {
-				if (listener.getCriterionInstance().test(player)) {
+				if (listener.getCriterionInstance().test(advancement)) {
 					list.add(listener);
 				}
 			}
