@@ -1,23 +1,23 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.EnumDifficulty;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFBossSpawner;
@@ -40,18 +40,18 @@ public class EntityTFMinoshroom extends EntityTFMinotaur {
 		super(world);
 		this.setSize(1.49F, 2.9F);
 		this.experienceValue = 100;
-		this.setDropChance(EntityEquipmentSlot.MAINHAND, 1.1F); // > 1 means it is not randomly damaged when dropped
+		this.setDropChance(EquipmentSlotType.MAINHAND, 1.1F); // > 1 means it is not randomly damaged when dropped
 	}
 
 	@Override
 	protected void registerGoals() {
 		super.registerGoals();
-		this.tasks.addTask(1, new EntityAITFGroundAttack(this));
+		this.goalSelector.addGoal(1, new EntityAITFGroundAttack(this));
 	}
 
 	@Override
-	protected void entityInit() {
-		super.entityInit();
+	protected void registerData() {
+		super.registerData();
 		dataManager.register(GROUND_ATTACK, false);
 		dataManager.register(GROUND_CHARGE, 0);
 	}
@@ -65,14 +65,14 @@ public class EntityTFMinoshroom extends EntityTFMinotaur {
 	}
 
 	@Override
-	protected void applyEntityAttributes() {
-		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(120.0D);
+	protected void registerAttributes() {
+		super.registerAttributes();
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(120.0D);
 	}
 
 	@Override
-	public void onUpdate() {
-		super.onUpdate();
+	public void tick() {
+		super.tick();
 		if (this.world.isRemote) {
 			this.prevClientSideChargeAnimation = this.clientSideChargeAnimation;
 			if (this.isGroundAttackCharge()) {
@@ -81,15 +81,15 @@ public class EntityTFMinoshroom extends EntityTFMinotaur {
 			} else {
 				this.clientSideChargeAnimation = MathHelper.clamp(this.clientSideChargeAnimation - 1.0F, 0.0F, 6.0F);
 				if (groundSmashState) {
-					IBlockState block = world.getBlockState(getPosition().down());
+					BlockState block = world.getBlockState(getPosition().down());
 					int stateId = Block.getStateId(block);
 
 					for (int i = 0; i < 80; i++) {
 						double cx = getPosition().getX() + world.rand.nextFloat() * 10F - 5F;
-						double cy = getEntityBoundingBox().minY + 0.1F + world.rand.nextFloat() * 0.3F;
+						double cy = getBoundingBox().minY + 0.1F + world.rand.nextFloat() * 0.3F;
 						double cz = getPosition().getZ() + world.rand.nextFloat() * 10F - 5F;
 
-						world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, cx, cy, cz, 0D, 0D, 0D, stateId);
+						world.addParticle(ParticleTypes.BLOCK_CRACK, cx, cy, cz, 0D, 0D, 0D, stateId);
 					}
 					groundSmashState = false;
 				}
@@ -97,7 +97,7 @@ public class EntityTFMinoshroom extends EntityTFMinotaur {
 		}
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public float getChargeAnimationScale(float p_189795_1_) {
 		return (this.prevClientSideChargeAnimation + (this.clientSideChargeAnimation - this.prevClientSideChargeAnimation) * p_189795_1_) / 6.0F;
 	}
@@ -109,7 +109,7 @@ public class EntityTFMinoshroom extends EntityTFMinotaur {
 	@Override
 	protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
 		super.setEquipmentBasedOnDifficulty(difficulty);
-		this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.minotaur_axe));
+		this.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(TFItems.minotaur_axe));
 	}
 
 	@Override
@@ -132,9 +132,9 @@ public class EntityTFMinoshroom extends EntityTFMinotaur {
 
 	@Override
 	protected void despawnEntity() {
-		if (world.getDifficulty() == EnumDifficulty.PEACEFUL) {
+		if (world.getDifficulty() == Difficulty.PEACEFUL) {
 			if (hasHome()) {
-				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.MINOSHROOM));
+				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.MINOSHROOM));
 			}
 			setDead();
 		} else {

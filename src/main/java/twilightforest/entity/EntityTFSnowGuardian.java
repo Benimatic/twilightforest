@@ -1,27 +1,26 @@
 package twilightforest.entity;
 
-import net.minecraft.entity.IEntityLivingData;
+import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.MeleeAttackGoal;
-import net.minecraft.entity.ai.HurtByTargetGoal;
-import net.minecraft.entity.ai.LookRandomlyGoal;
-import net.minecraft.entity.ai.NearestAttackableTargetGoal;
-import net.minecraft.entity.ai.SwimGoal;
-import net.minecraft.entity.ai.WaterAvoidingRandomWalkingGoal;
-import net.minecraft.entity.ai.LookAtGoal;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.item.TFItems;
+
+import javax.annotation.Nullable;
 
 public class EntityTFSnowGuardian extends EntityTFIceMob {
 
@@ -34,21 +33,21 @@ public class EntityTFSnowGuardian extends EntityTFIceMob {
 
 	@Override
 	protected void registerGoals() {
-		this.tasks.addTask(0, new SwimGoal(this));
-		this.tasks.addTask(1, new MeleeAttackGoal(this, 1.0D, false));
-		this.tasks.addTask(2, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
-		this.tasks.addTask(3, new LookAtGoal(this, EntityPlayer.class, 8.0F));
-		this.tasks.addTask(3, new LookRandomlyGoal(this));
-		this.targetTasks.addTask(1, new HurtByTargetGoal(this, true));
-		this.targetTasks.addTask(2, new NearestAttackableTargetGoal<>(this, EntityPlayer.class, true));
+		this.goalSelector.addGoal(0, new SwimGoal(this));
+		this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.0D, false));
+		this.goalSelector.addGoal(2, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
+		this.goalSelector.addGoal(3, new LookAtGoal(this, PlayerEntity.class, 8.0F));
+		this.goalSelector.addGoal(3, new LookRandomlyGoal(this));
+		this.targetSelector.addGoal(1, new HurtByTargetGoal(this, true));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
 	}
 
 	@Override
-	protected void applyEntityAttributes() {
-		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23000000417232513D);
-		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
+	protected void registerAttributes() {
+		super.registerAttributes();
+		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23000000417232513D);
+		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
 	}
 
 	@Override
@@ -74,12 +73,12 @@ public class EntityTFSnowGuardian extends EntityTFIceMob {
 	@Override
 	protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
 		int type = rand.nextInt(4);
-		this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(this.makeItemForSlot(EntityEquipmentSlot.MAINHAND, type)));
-		this.setItemStackToSlot(EntityEquipmentSlot.CHEST, new ItemStack(this.makeItemForSlot(EntityEquipmentSlot.CHEST, type)));
-		this.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(this.makeItemForSlot(EntityEquipmentSlot.HEAD, type)));
+		this.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(this.makeItemForSlot(EquipmentSlotType.MAINHAND, type)));
+		this.setItemStackToSlot(EquipmentSlotType.CHEST, new ItemStack(this.makeItemForSlot(EquipmentSlotType.CHEST, type)));
+		this.setItemStackToSlot(EquipmentSlotType.HEAD, new ItemStack(this.makeItemForSlot(EquipmentSlotType.HEAD, type)));
 	}
 
-	private Item makeItemForSlot(EntityEquipmentSlot slot, int type) {
+	private Item makeItemForSlot(EquipmentSlotType slot, int type) {
 		switch (slot) {
 			case MAINHAND:
 			default:
@@ -150,17 +149,18 @@ public class EntityTFSnowGuardian extends EntityTFIceMob {
 		return LOOT_TABLE;
 	}
 
+	@Nullable
 	@Override
-	public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingData) {
-		IEntityLivingData data = super.onInitialSpawn(difficulty, livingData);
+	public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficulty, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+		ILivingEntityData data = super.onInitialSpawn(worldIn, difficulty, reason, spawnDataIn, dataTag);
 		this.setEquipmentBasedOnDifficulty(difficulty);
 		this.setEnchantmentBasedOnDifficulty(difficulty);
 		return data;
 	}
 
 	@Override
-	public void onLivingUpdate() {
-		super.onLivingUpdate();
+	public void livingTick() {
+		super.livingTick();
 
 		if (this.world.isRemote) {
 			for (int i = 0; i < 3; i++) {

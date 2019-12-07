@@ -1,10 +1,10 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.goal.Goal;
 import twilightforest.entity.EntityTFGoblinKnightLower;
 import twilightforest.entity.EntityTFGoblinKnightUpper;
 
-public class EntityAITFRiderSpearAttack extends EntityAIBase {
+public class EntityAITFRiderSpearAttack extends Goal {
 
 	private EntityTFGoblinKnightLower entity;
 

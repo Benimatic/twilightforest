@@ -1,6 +1,6 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
@@ -12,7 +12,7 @@ public class EntityAITFFindLoose extends EntityAIBase {
 	/**
 	 * The entity using this AI that is tempted by the player.
 	 */
-	private final EntityCreature temptedEntity;
+	private final CreatureEntity temptedEntity;
 
 	private final Item item;
 	private final float pursueSpeed;
@@ -21,7 +21,7 @@ public class EntityAITFFindLoose extends EntityAIBase {
 
 	private EntityItem temptingItem;
 
-	public EntityAITFFindLoose(EntityCreature entityCreature, float speed, Item item) {
+	public EntityAITFFindLoose(CreatureEntity entityCreature, float speed, Item item) {
 		this.temptedEntity = entityCreature;
 		this.pursueSpeed = speed;
 		this.item = item;
@@ -39,7 +39,7 @@ public class EntityAITFFindLoose extends EntityAIBase {
 			List<EntityItem> nearbyItems = this.temptedEntity.world.getEntitiesWithinAABB(EntityItem.class, this.temptedEntity.getEntityBoundingBox().grow(16.0D, 4.0D, 16.0D));
 
 			for (EntityItem itemNearby : nearbyItems) {
-				if (itemNearby.getItem().getItem() == item && itemNearby.isEntityAlive()) {
+				if (itemNearby.getItem().getItem() == item && itemNearby.isAlive()) {
 					this.temptingItem = itemNearby;
 					break;
 				}
@@ -69,7 +69,7 @@ public class EntityAITFFindLoose extends EntityAIBase {
 	}
 
 	@Override
-	public void updateTask() {
+	public void tick() {
 		this.temptedEntity.getLookHelper().setLookPositionWithEntity(this.temptingItem, 30.0F, this.temptedEntity.getVerticalFaceSpeed());
 
 		if (this.temptedEntity.getDistanceSq(this.temptingItem) < 6.25D) {

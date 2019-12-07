@@ -42,7 +42,7 @@ public class EntityAITFHoverBeam extends EntityAITFHoverBase<EntityTFSnowQueen> 
 
 		if (target == null) {
 			return false;
-		} else if (!target.isEntityAlive()) {
+		} else if (!target.isAlive()) {
 			return false;
 		} else if (this.attacker.getCurrentPhase() != Phase.BEAM) {
 			return false;
@@ -55,7 +55,7 @@ public class EntityAITFHoverBeam extends EntityAITFHoverBase<EntityTFSnowQueen> 
 	public boolean shouldContinueExecuting() {
 		EntityLivingBase target = this.attacker.getAttackTarget();
 
-		if (target == null || !target.isEntityAlive()) {
+		if (target == null || !target.isAlive()) {
 			return false;
 		} else if (this.attacker.getCurrentPhase() != Phase.BEAM) {
 			return false;
@@ -79,7 +79,7 @@ public class EntityAITFHoverBeam extends EntityAITFHoverBase<EntityTFSnowQueen> 
 	}
 
 	@Override
-	public void updateTask() {
+	public void tick() {
 
 		// check if we're in position
 		if (this.attacker.getDistanceSq(hoverPosX, hoverPosY, hoverPosZ) <= 1.0F) {
@@ -137,7 +137,7 @@ public class EntityAITFHoverBeam extends EntityAITFHoverBase<EntityTFSnowQueen> 
 			float tracking = this.isInPosition ? 1F : 20.0F;
 
 			this.attacker.faceEntity(target, tracking, tracking);
-			this.attacker.getLookHelper().setLookPositionWithEntity(target, tracking, tracking);
+			this.attacker.getLookController().setLookPositionWithEntity(target, tracking, tracking);
 		}
 	}
 

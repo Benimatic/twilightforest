@@ -1,12 +1,9 @@
 package twilightforest.entity.passive;
 
+import net.minecraft.entity.Pose;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.LookRandomlyGoal;
-import net.minecraft.entity.ai.PanicGoal;
-import net.minecraft.entity.ai.SwimGoal;
-import net.minecraft.entity.ai.WaterAvoidingRandomWalkingGoal;
-import net.minecraft.entity.ai.LookAtGoal;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -29,19 +26,19 @@ public class EntityTFRaven extends EntityTFTinyBird {
 
 	@Override
 	protected void registerGoals() {
-		this.tasks.addTask(0, new SwimGoal(this));
-		this.tasks.addTask(1, new PanicGoal(this, 1.5F));
-		this.tasks.addTask(2, new EntityAITFTempt(this, 0.85F, true, SEEDS));
-		this.tasks.addTask(5, new WaterAvoidingRandomWalkingGoal(this, 1.0F));
-		this.tasks.addTask(6, new LookAtGoal(this, EntityPlayer.class, 6F));
-		this.tasks.addTask(7, new LookRandomlyGoal(this));
+		this.goalSelector.addGoal(0, new SwimGoal(this));
+		this.goalSelector.addGoal(1, new PanicGoal(this, 1.5F));
+		this.goalSelector.addGoal(2, new EntityAITFTempt(this, 0.85F, true, SEEDS));
+		this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 1.0F));
+		this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 6F));
+		this.goalSelector.addGoal(7, new LookRandomlyGoal(this));
 	}
 
 	@Override
-	protected void applyEntityAttributes() {
-		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.20000001192092896D);
+	protected void registerAttributes() {
+		super.registerAttributes();
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
+		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.20000001192092896D);
 	}
 
 	@Override
@@ -65,8 +62,8 @@ public class EntityTFRaven extends EntityTFTinyBird {
 	}
 
 	@Override
-	public float getEyeHeight() {
-		return this.height * 0.75F;
+	public float getEyeHeight(Pose pose) {
+		return this.getHeight() * 0.75F;
 	}
 
 	@Override

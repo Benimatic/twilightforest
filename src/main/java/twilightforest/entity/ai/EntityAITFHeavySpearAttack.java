@@ -1,9 +1,9 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.goal.Goal;
 import twilightforest.entity.EntityTFGoblinKnightUpper;
 
-public class EntityAITFHeavySpearAttack extends EntityAIBase {
+public class EntityAITFHeavySpearAttack extends Goal {
 
 	private EntityTFGoblinKnightUpper entity;
 
@@ -13,7 +13,7 @@ public class EntityAITFHeavySpearAttack extends EntityAIBase {
 	}
 
 	@Override
-	public void updateTask() {
+	public void tick() {
 		if (entity.heavySpearTimer == 25) {
 			entity.landHeavySpearAttack();
 		}

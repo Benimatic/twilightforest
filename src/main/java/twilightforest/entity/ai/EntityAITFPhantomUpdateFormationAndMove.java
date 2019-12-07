@@ -1,7 +1,7 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Vec3d;
 import twilightforest.entity.boss.EntityTFKnightPhantom;
@@ -9,7 +9,7 @@ import twilightforest.item.TFItems;
 
 import java.util.List;
 
-public class EntityAITFPhantomUpdateFormationAndMove extends EntityAIBase {
+public class EntityAITFPhantomUpdateFormationAndMove extends Goal {
 
 	private static final float CIRCLE_SMALL_RADIUS = 2.5F;
 	private static final float CIRCLE_LARGE_RADIUS = 8.5F;
@@ -26,7 +26,7 @@ public class EntityAITFPhantomUpdateFormationAndMove extends EntityAIBase {
 	}
 
 	@Override
-	public void updateTask() {
+	public void tick() {
 		boss.noClip = boss.getTicksProgress() % 20 != 0;
 		boss.setTicksProgress(boss.getTicksProgress() + 1);
 		if (boss.getTicksProgress() >= boss.getMaxTicksForFormation())
@@ -86,13 +86,13 @@ public class EntityAITFPhantomUpdateFormationAndMove extends EntityAIBase {
 				// random weapon switch!
 				switch (boss.getRNG().nextInt(3)) {
 					case 0:
-						boss.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.knightmetal_sword));
+						boss.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(TFItems.knightmetal_sword));
 						break;
 					case 1:
-						boss.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.knightmetal_axe));
+						boss.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(TFItems.knightmetal_axe));
 						break;
 					case 2:
-						boss.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.knightmetal_pickaxe));
+						boss.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(TFItems.knightmetal_pickaxe));
 						break;
 				}
 

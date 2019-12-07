@@ -1,18 +1,18 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.util.math.Vec3d;
 
 public class EntityAITFKidnapRider extends EntityAIBase {
-	private EntityCreature theEntityCreature;
+	private CreatureEntity theEntityCreature;
 	private float speed;
 	private double randPosX;
 	private double randPosY;
 	private double randPosZ;
 
-	public EntityAITFKidnapRider(EntityCreature creature, float speed) {
+	public EntityAITFKidnapRider(CreatureEntity creature, float speed) {
 		this.theEntityCreature = creature;
 		this.speed = speed;
 		this.setMutexBits(1);

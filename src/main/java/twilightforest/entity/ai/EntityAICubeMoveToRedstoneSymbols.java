@@ -1,12 +1,12 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.Blocks;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import twilightforest.entity.EntityTFRovingCube;
 
-public class EntityAICubeMoveToRedstoneSymbols extends EntityAIBase {
+public class EntityAICubeMoveToRedstoneSymbols extends Goal {
 
 	private final EntityTFRovingCube myCube;
 	private final double speed;
@@ -73,7 +73,7 @@ public class EntityAICubeMoveToRedstoneSymbols extends EntityAIBase {
 			return false;
 		} else {
 			// we found an air block, is it surrounded by redstone?
-			for (EnumFacing e : EnumFacing.VALUES) {
+			for (Direction e : Direction.values()) {
 				if (this.myCube.world.getBlockState(pos.offset(e)).getBlock() != Blocks.REDSTONE_WIRE) {
 					return false;
 				}

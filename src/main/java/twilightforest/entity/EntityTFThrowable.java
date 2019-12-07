@@ -22,7 +22,7 @@ public abstract class EntityTFThrowable extends ThrowableEntity implements ITFPr
 	@Override
 	public void setThrower(Entity entity) {
 		if (entity instanceof LivingEntity) {
-			this.thrower = (LivingEntity) entity;
+			this.owner = (LivingEntity) entity;
 		}
 	}
 }

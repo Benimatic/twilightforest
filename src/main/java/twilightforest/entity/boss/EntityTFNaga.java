@@ -1,32 +1,26 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IEntityMultiPart;
-import net.minecraft.entity.MultiPartEntityPart;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.ai.HurtByTargetGoal;
-import net.minecraft.entity.ai.NearestAttackableTargetGoal;
-import net.minecraft.entity.ai.SwimGoal;
-import net.minecraft.entity.ai.EntityAIWander;
-import net.minecraft.entity.ai.EntityMoveHelper;
+import net.minecraft.entity.ai.controller.MovementController;
+import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagIntArray;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.nbt.IntArrayNBT;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
@@ -34,9 +28,10 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.BossInfo;
-import net.minecraft.world.BossInfoServer;
-import net.minecraft.world.EnumDifficulty;
+import net.minecraft.world.ServerBossInfo;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.event.ForgeEventFactory;
@@ -51,7 +46,9 @@ import twilightforest.network.TFPacketHandler;
 import twilightforest.util.EntityUtil;
 import twilightforest.world.TFWorld;
 
-public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
+import javax.annotation.Nullable;
+
+public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/naga");
 
@@ -68,10 +65,10 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	private AIMovementPattern movementAI;
 	private int ticksSinceDamaged = 0;
 
-	private final BossInfoServer bossInfo = new BossInfoServer(getDisplayName(), BossInfo.Color.GREEN, BossInfo.Overlay.NOTCHED_10);
+	private final ServerBossInfo bossInfo = new ServerBossInfo(getDisplayName(), BossInfo.Color.GREEN, BossInfo.Overlay.NOTCHED_10);
 
-	private final AttributeModifier slowSpeed = new AttributeModifier("Naga Slow Speed", 0.25F, 0).setSaved(false);
-	private final AttributeModifier fastSpeed = new AttributeModifier("Naga Fast Speed", 0.50F, 0).setSaved(false);
+	private final AttributeModifier slowSpeed = new AttributeModifier("Naga Slow Speed", 0.25F, AttributeModifier.Operation.ADDITION).setSaved(false);
+	private final AttributeModifier fastSpeed = new AttributeModifier("Naga Fast Speed", 0.50F, AttributeModifier.Operation.ADDITION).setSaved(false);
 
 	private static final DataParameter<Boolean> DATA_DAZE = EntityDataManager.createKey(EntityTFNaga.class, DataSerializers.BOOLEAN);
 
@@ -91,8 +88,8 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	}
 
 	@Override
-	protected void entityInit() {
-		super.entityInit();
+	protected void registerData() {
+		super.registerData();
 		dataManager.register(DATA_DAZE, false);
 	}
 
@@ -117,8 +114,8 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	}
 
 	@Override
-	public void setCustomNameTag(String name) {
-		super.setCustomNameTag(name);
+	public void setCustomName(@Nullable ITextComponent name) {
+		super.setCustomName(name);
 		this.bossInfo.setName(this.getDisplayName());
 	}
 
@@ -129,11 +126,11 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 
 	@Override
 	protected void registerGoals() {
-		this.tasks.addTask(1, new SwimGoal(this));
-		this.tasks.addTask(2, new AIAttack(this));
-		this.tasks.addTask(3, new AISmash(this));
-		this.tasks.addTask(4, movementAI = new AIMovementPattern(this));
-		this.tasks.addTask(8, new EntityAIWander(this, 1, 1) {
+		this.goalSelector.addGoal(1, new SwimGoal(this));
+		this.goalSelector.addGoal(2, new AIAttack(this));
+		this.goalSelector.addGoal(3, new AISmash(this));
+		this.goalSelector.addGoal(4, movementAI = new AIMovementPattern(this));
+		this.goalSelector.addGoal(8, new RandomWalkingGoal(this, 1, 1) {
 			@Override
 			public void startExecuting() {
 				EntityTFNaga.this.goNormal();
@@ -142,17 +139,17 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 			@Override
 			protected Vec3d getPosition()
 			{
-				return RandomPositionGenerator.findRandomTarget(this.entity, 30, 7);
+				return RandomPositionGenerator.findRandomTarget(this.creature, 30, 7);
 			}
 		});
-		this.targetTasks.addTask(1, new HurtByTargetGoal(this, false));
-		this.targetTasks.addTask(2, new NearestAttackableTargetGoal<>(this, EntityPlayer.class, false));
+		this.targetSelector.addGoal(1, new HurtByTargetGoal(this, false));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, false));
 
-		this.moveHelper = new NagaMoveHelper(this);
+		this.moveController = new NagaMoveHelper(this);
 	}
 
 	// Similar to MeleeAttackGoal but simpler (no pathfinding)
-	static class AIAttack extends EntityAIBase {
+	static class AIAttack extends Goal {
 
 		private final EntityTFNaga taskOwner;
 		private int attackTick = 20;
@@ -163,18 +160,18 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 
 		@Override
 		public boolean shouldExecute() {
-			EntityLivingBase target = taskOwner.getAttackTarget();
+			LivingEntity target = taskOwner.getAttackTarget();
 
 			return target != null
-					&& target.getEntityBoundingBox().maxY > taskOwner.getEntityBoundingBox().minY - 2.5
-					&& target.getEntityBoundingBox().minY < taskOwner.getEntityBoundingBox().maxY + 2.5
+					&& target.getBoundingBox().maxY > taskOwner.getBoundingBox().minY - 2.5
+					&& target.getBoundingBox().minY < taskOwner.getBoundingBox().maxY + 2.5
 					&& taskOwner.getDistanceSq(target) <= 4.0D
 					&& taskOwner.getEntitySenses().canSee(target);
 
 		}
 
 		@Override
-		public void updateTask() {
+		public void tick() {
 			if (attackTick > 0) {
 				attackTick--;
 			}
@@ -192,7 +189,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 		}
 	}
 
-	static class AISmash extends EntityAIBase {
+	static class AISmash extends Goal {
 
 		private final EntityTFNaga taskOwner;
 
@@ -210,7 +207,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 			// NAGA SMASH!
 			if (taskOwner.world.isRemote) return;
 
-			AxisAlignedBB bb = taskOwner.getEntityBoundingBox();
+			AxisAlignedBB bb = taskOwner.getBoundingBox();
 
 			int minx = MathHelper.floor(bb.minX - 0.75D);
 			int miny = MathHelper.floor(bb.minY + 1.01D);
@@ -240,7 +237,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 		DAZE
 	}
 
-	static class AIMovementPattern extends EntityAIBase {
+	static class AIMovementPattern extends Goal {
 
 		private final EntityTFNaga taskOwner;
 		private MovementState movementState;
@@ -266,7 +263,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 		}
 
 		@Override
-		public void updateTask() {
+		public void tick() {
 			if (!taskOwner.getNavigator().noPath()) {
 				// If we still have an uncompleted path don't run yet
 				// This isn't in shouldExecute/shouldContinueExecuting because we don't want to reset the task
@@ -278,7 +275,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 			switch (movementState) {
 				case INTIMIDATE: {
 					taskOwner.getNavigator().clearPath();
-					taskOwner.getLookHelper().setLookPositionWithEntity(taskOwner.getAttackTarget(), 30F, 30F);
+					taskOwner.getLookController().setLookPositionWithEntity(taskOwner.getAttackTarget(), 30F, 30F);
 					taskOwner.faceEntity(taskOwner.getAttackTarget(), 30F, 30F);
 					taskOwner.moveForward = 0.1f;
 					break;
@@ -331,7 +328,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 				case INTIMIDATE: {
 					clockwise = !clockwise;
 
-					if (taskOwner.getAttackTarget().getEntityBoundingBox().minY > taskOwner.getEntityBoundingBox().maxY) {
+					if (taskOwner.getAttackTarget().getBoundingBox().minY > taskOwner.getBoundingBox().maxY) {
 						doCrumblePlayer();
 					} else {
 						doCharge();
@@ -391,13 +388,13 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	}
 
 	@Override
-	public void onLivingUpdate() {
+	public void livingTick() {
 
-		super.onLivingUpdate();
+		super.livingTick();
 
 		if (world.isRemote || !ForgeEventFactory.getMobGriefingEvent(world, this)) return;
 
-		AxisAlignedBB bb = this.getEntityBoundingBox();
+		AxisAlignedBB bb = this.getBoundingBox();
 
 		int minx = MathHelper.floor(bb.minX - 0.75D);
 		int miny = MathHelper.floor(bb.minY + 1.01D);
@@ -411,7 +408,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 
 		if (world.isAreaLoaded(min, max)) {
 			for (BlockPos pos : BlockPos.getAllInBox(min, max)) {
-				IBlockState state = world.getBlockState(pos);
+				BlockState state = world.getBlockState(pos);
 				if (state.getMaterial() == Material.LEAVES && EntityUtil.canDestroyBlock(world, pos, state, this)) {
 					world.destroyBlock(pos, true);
 				}
@@ -420,12 +417,12 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	}
 
 	@Override
-	protected void applyEntityAttributes() {
-		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(getMaxHealthPerDifficulty());
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(DEFAULT_SPEED);
-		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(80.0D);
+	protected void registerAttributes() {
+		super.registerAttributes();
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(getMaxHealthPerDifficulty());
+		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(DEFAULT_SPEED);
+		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D);
+		this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(80.0D);
 	}
 
 	/**
@@ -447,7 +444,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 			double newSpeed = DEFAULT_SPEED - newSegments * (-0.2F / 12F);
 			if (newSpeed < 0)
 				newSpeed = 0;
-			this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(newSpeed);
+			this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(newSpeed);
 		}
 	}
 
@@ -462,15 +459,15 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	}
 
 	@Override
-	public void onUpdate() {
+	public void tick() {
 		if (deathTime > 0) {
 			for (int k = 0; k < 5; k++) {
 				double d = rand.nextGaussian() * 0.02D;
 				double d1 = rand.nextGaussian() * 0.02D;
 				double d2 = rand.nextGaussian() * 0.02D;
-				EnumParticleTypes explosionType = rand.nextBoolean() ? EnumParticleTypes.EXPLOSION_HUGE : EnumParticleTypes.EXPLOSION_NORMAL;
+				ParticleTypes explosionType = rand.nextBoolean() ? ParticleTypes.EXPLOSION_HUGE : ParticleTypes.EXPLOSION_NORMAL;
 
-				world.spawnParticle(explosionType, (posX + rand.nextFloat() * width * 2.0F) - width, posY + rand.nextFloat() * height, (posZ + rand.nextFloat() * width * 2.0F) - width, d, d1, d2);
+				world.addParticle(explosionType, (posX + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), posY + rand.nextFloat() * getHeight(), (posZ + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), d, d1, d2);
 			}
 		}
 
@@ -483,7 +480,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 
 		setSegmentsPerHealth();
 
-		super.onUpdate();
+		super.tick();
 
 		// update bodySegments parts
 		for (EntityTFNagaSegment segment : bodySegments) {
@@ -503,7 +500,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 
 		// if we are very close to the path point, go to the next point, unless the path is finished
 		// TODO 1.10 this runs after the path navigator runs, is that okay?
-		double d = width * 4.0F;
+		double d = getWidth() * 4.0F;
 		Vec3d vec3d = hasPath() ? getNavigator().getPath().getPosition(this) : null;
 
 		while (vec3d != null && vec3d.squareDistanceTo(posX, vec3d.y, posZ) < d * d) {
@@ -525,9 +522,9 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 		this.bossInfo.setPercent(this.getHealth() / this.getMaxHealth());
 	}
 
-	static class NagaMoveHelper extends EntityMoveHelper {
+	static class NagaMoveHelper extends MovementController {
 
-		public NagaMoveHelper(EntityLiving naga) {
+		public NagaMoveHelper(LivingEntity naga) {
 			super(naga);
 		}
 
@@ -570,8 +567,8 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	private void crumbleBelowTarget(int range) {
 		if (!ForgeEventFactory.getMobGriefingEvent(world, this)) return;
 
-		int floor = (int) getEntityBoundingBox().minY;
-		int targetY = (int) getAttackTarget().getEntityBoundingBox().minY;
+		int floor = (int) getBoundingBox().minY;
+		int targetY = (int) getAttackTarget().getBoundingBox().minY;
 
 		if (targetY > floor) {
 			int dx = (int) getAttackTarget().posX + rand.nextInt(range) - rand.nextInt(range);
@@ -594,7 +591,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 					double d1 = rand.nextGaussian() * 0.02D;
 					double d2 = rand.nextGaussian() * 0.02D;
 
-					world.spawnParticle(EnumParticleTypes.CRIT, (posX + rand.nextFloat() * width * 2.0F) - width, posY + rand.nextFloat() * height, (posZ + rand.nextFloat() * width * 2.0F) - width, d, d1, d2);
+					world.addParticle(ParticleTypes.CRIT, (posX + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), posY + rand.nextFloat() * getHeight(), (posZ + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), d, d1, d2);
 				}
 			}
 		}
@@ -604,26 +601,26 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	 * Sets the naga to move slowly, such as when he is intimidating the player
 	 */
 	private void goSlow() {
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(slowSpeed); // if we apply this twice, we crash, but we can always remove it
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(fastSpeed);
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).applyModifier(slowSpeed);
+		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(slowSpeed); // if we apply this twice, we crash, but we can always remove it
+		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(fastSpeed);
+		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).applyModifier(slowSpeed);
 	}
 
 	/**
 	 * Normal speed, like when he is circling
 	 */
 	private void goNormal() {
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(slowSpeed);
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(fastSpeed);
+		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(slowSpeed);
+		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(fastSpeed);
 	}
 
 	/**
 	 * Fast, like when he is charging
 	 */
 	private void goFast() {
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(slowSpeed);
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(fastSpeed);
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).applyModifier(fastSpeed);
+		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(slowSpeed);
+		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(fastSpeed);
+		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).applyModifier(fastSpeed);
 	}
 
 	@Override
@@ -635,7 +632,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	 * Finds a point that allows us to circle the target clockwise.
 	 */
 	private BlockPos findCirclePoint(boolean clockwise, double radius, double rotation) {
-		EntityLivingBase toCircle = getAttackTarget();
+		LivingEntity toCircle = getAttackTarget();
 
 		// compute angle
 		double vecx = posX - toCircle.posX;
@@ -649,7 +646,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 		double dx = MathHelper.cos(rangle) * radius;
 		double dz = MathHelper.sin(rangle) * radius;
 
-		double dy = Math.min(getEntityBoundingBox().minY, toCircle.posY);
+		double dy = Math.min(getBoundingBox().minY, toCircle.posY);
 
 		// add that to the target entity's position, and we have our destination
 		return new BlockPos(toCircle.posX + dx, dy, toCircle.posZ + dz);
@@ -659,7 +656,7 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	public boolean isEntityInvulnerable(DamageSource src) {
 		return src.getTrueSource() != null && !this.isEntityWithinHomeArea(src.getTrueSource()) // reject damage from outside of our home radius
 				|| src.getImmediateSource() != null && !this.isEntityWithinHomeArea(src.getImmediateSource())
-				|| src.isFireDamage() || src.isExplosion() || super.isEntityInvulnerable(src);
+				|| src.isFireDamage() || src.isExplosion() || super.isInvulnerableTo(src);
 	}
 
 	@Override
@@ -674,13 +671,13 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 
 	@Override
 	public boolean attackEntityAsMob(Entity toAttack) {
-		if (movementAI.movementState == MovementState.CHARGE && toAttack instanceof EntityLivingBase && ((EntityLivingBase) toAttack).isActiveItemStackBlocking()) {
+		if (movementAI.movementState == MovementState.CHARGE && toAttack instanceof LivingEntity && ((LivingEntity) toAttack).isActiveItemStackBlocking()) {
 			toAttack.addVelocity(motionX * 1.25D, 0.5D, motionZ * 1.25D);
 			motionX *= -1.5D;
 			motionY += 0.5D;
 			motionZ *= -1.5D;
-			if (toAttack instanceof EntityPlayerMP)
-				TFPacketHandler.CHANNEL.sendTo(new PacketThrowPlayer((float) toAttack.motionX, (float) toAttack.motionY, (float) toAttack.motionZ), (EntityPlayerMP) toAttack);
+			if (toAttack instanceof ServerPlayerEntity)
+				TFPacketHandler.CHANNEL.sendTo(new PacketThrowPlayer((float) toAttack.motionX, (float) toAttack.motionY, (float) toAttack.motionZ), (ServerPlayerEntity) toAttack);
 			attackEntityFrom(DamageSource.GENERIC, 4F);
 			world.playSound(null, toAttack.getPosition(), SoundEvents.ITEM_SHIELD_BLOCK, SoundCategory.PLAYERS, 1.0F, 0.8F + this.world.rand.nextFloat() * 0.4F);
 			movementAI.doDaze();
@@ -707,9 +704,9 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 
 	@Override
 	protected void despawnEntity() {
-		if (world.getDifficulty() == EnumDifficulty.PEACEFUL) {
+		if (world.getDifficulty() == Difficulty.PEACEFUL) {
 			if (hasHome()) {
-				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.NAGA));
+				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.NAGA));
 			}
 			setDead();
 		} else {
@@ -753,10 +750,10 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 				double d0 = this.rand.nextGaussian() * 0.02D;
 				double d1 = this.rand.nextGaussian() * 0.02D;
 				double d2 = this.rand.nextGaussian() * 0.02D;
-				this.world.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL,
-						segment.posX + (double) (this.rand.nextFloat() * segment.width * 2.0F) - (double) segment.width - d0 * 10.0D,
-						segment.posY + (double) (this.rand.nextFloat() * segment.height) - d1 * 10.0D,
-						segment.posZ + (double) (this.rand.nextFloat() * segment.width * 2.0F) - (double) segment.width - d2 * 10.0D,
+				this.world.addParticle(ParticleTypes.EXPLOSION_NORMAL,
+						segment.posX + (double) (this.rand.nextFloat() * segment.getWidth() * 2.0F) - (double) segment.getWidth() - d0 * 10.0D,
+						segment.posY + (double) (this.rand.nextFloat() * segment.getHeight()) - d1 * 10.0D,
+						segment.posZ + (double) (this.rand.nextFloat() * segment.getWidth() * 2.0F) - (double) segment.getWidth() - d2 * 10.0D,
 						d0, d1, d2);
 			}
 		}
@@ -808,20 +805,20 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound compound) {
+	public void writeAdditional(CompoundNBT compound) {
 		if (hasHome()) {
 			BlockPos home = this.getHomePosition();
-			compound.setTag("Home", new NBTTagIntArray(new int[]{home.getX(), home.getY(), home.getZ()}));
+			compound.put("Home", new IntArrayNBT(new int[]{home.getX(), home.getY(), home.getZ()}));
 		}
 
-		super.writeEntityToNBT(compound);
+		super.writeAdditional(compound);
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound compound) {
-		super.readEntityFromNBT(compound);
+	public void readAdditional(CompoundNBT compound) {
+		super.readAdditional(compound);
 
-		if (compound.hasKey("Home", Constants.NBT.TAG_INT_ARRAY)) {
+		if (compound.contains("Home", Constants.NBT.TAG_INT_ARRAY)) {
 			int[] home = compound.getIntArray("Home");
 			this.setHomePosAndDistance(new BlockPos(home[0], home[1], home[2]), 20);
 		} else {
@@ -858,13 +855,13 @@ public class EntityTFNaga extends EntityMob implements IEntityMultiPart {
 	}
 
 	@Override
-	public void addTrackingPlayer(EntityPlayerMP player) {
+	public void addTrackingPlayer(ServerPlayerEntity player) {
 		super.addTrackingPlayer(player);
 		this.bossInfo.addPlayer(player);
 	}
 
 	@Override
-	public void removeTrackingPlayer(EntityPlayerMP player) {
+	public void removeTrackingPlayer(ServerPlayerEntity player) {
 		super.removeTrackingPlayer(player);
 		this.bossInfo.removePlayer(player);
 	}

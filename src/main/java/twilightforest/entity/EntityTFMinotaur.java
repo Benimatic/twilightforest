@@ -1,37 +1,33 @@
 package twilightforest.entity;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.IEntityLivingData;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.MeleeAttackGoal;
-import net.minecraft.entity.ai.HurtByTargetGoal;
-import net.minecraft.entity.ai.LookRandomlyGoal;
-import net.minecraft.entity.ai.NearestAttackableTargetGoal;
-import net.minecraft.entity.ai.SwimGoal;
-import net.minecraft.entity.ai.WaterAvoidingRandomWalkingGoal;
-import net.minecraft.entity.ai.LookAtGoal;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.*;
+import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFChargeAttack;
 import twilightforest.entity.boss.EntityTFMinoshroom;
 import twilightforest.item.TFItems;
 
-public class EntityTFMinotaur extends EntityMob implements ITFCharger {
+import javax.annotation.Nullable;
+
+public class EntityTFMinotaur extends MonsterEntity implements ITFCharger {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/minotaur");
 	private static final DataParameter<Boolean> CHARGING = EntityDataManager.createKey(EntityTFMinotaur.class, DataSerializers.BOOLEAN);
@@ -42,32 +38,33 @@ public class EntityTFMinotaur extends EntityMob implements ITFCharger {
 
 	@Override
 	protected void registerGoals() {
-		this.tasks.addTask(0, new SwimGoal(this));
-		this.tasks.addTask(2, new EntityAITFChargeAttack(this, 2.0F, this instanceof EntityTFMinoshroom));
-		this.tasks.addTask(3, new MeleeAttackGoal(this, 1.0D, false));
-		this.tasks.addTask(6, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
-		this.tasks.addTask(7, new LookAtGoal(this, EntityPlayer.class, 8.0F));
-		this.tasks.addTask(7, new LookRandomlyGoal(this));
-		this.targetTasks.addTask(1, new HurtByTargetGoal(this, false));
-		this.targetTasks.addTask(2, new NearestAttackableTargetGoal<>(this, EntityPlayer.class, false));
+		this.goalSelector.addGoal(0, new SwimGoal(this));
+		this.goalSelector.addGoal(2, new EntityAITFChargeAttack(this, 2.0F, this instanceof EntityTFMinoshroom));
+		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, false));
+		this.goalSelector.addGoal(6, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
+		this.goalSelector.addGoal(7, new LookAtGoal(this, PlayerEntity.class, 8.0F));
+		this.goalSelector.addGoal(7, new LookRandomlyGoal(this));
+		this.targetSelector.addGoal(1, new HurtByTargetGoal(this, false));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, false));
 	}
 
 	@Override
-	protected void applyEntityAttributes() {
-		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
+	protected void registerAttributes() {
+		super.registerAttributes();
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
+		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
 	}
 
 	@Override
-	protected void entityInit() {
-		super.entityInit();
+	protected void registerData() {
+		super.registerData();
 		dataManager.register(CHARGING, false);
 	}
 
+	@Nullable
 	@Override
-	public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata) {
-		IEntityLivingData data = super.onInitialSpawn(difficulty, livingdata);
+	public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficulty, SpawnReason reason, @Nullable ILivingEntityData livingdata, @Nullable CompoundNBT dataTag) {
+		ILivingEntityData data = super.onInitialSpawn(worldIn, difficulty, reason, livingdata, dataTag);
 		this.setEquipmentBasedOnDifficulty(difficulty);
 		this.setEnchantmentBasedOnDifficulty(difficulty);
 		return data;
@@ -82,9 +79,9 @@ public class EntityTFMinotaur extends EntityMob implements ITFCharger {
 		int result = (int) (random / additionalDiff);
 
 		if (result == 0)
-			this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.minotaur_axe_gold));
+			this.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(TFItems.minotaur_axe_gold));
 		else
-			this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.GOLDEN_AXE));
+			this.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(Items.GOLDEN_AXE));
 	}
 
 	@Override
@@ -103,15 +100,15 @@ public class EntityTFMinotaur extends EntityMob implements ITFCharger {
 
 		if (success && this.isCharging()) {
 			entity.motionY += 0.4;
-			playSound(SoundEvents.ENTITY_IRONGOLEM_ATTACK, 1.0F, 1.0F);
+			playSound(SoundEvents.ENTITY_IRON_GOLEM_ATTACK, 1.0F, 1.0F);
 		}
 
 		return success;
 	}
 
 	@Override
-	public void onLivingUpdate() {
-		super.onLivingUpdate();
+	public void livingTick() {
+		super.livingTick();
 
 		if (isCharging()) {
 			this.limbSwingAmount += 0.6;
@@ -134,7 +131,7 @@ public class EntityTFMinotaur extends EntityMob implements ITFCharger {
 	}
 
 	@Override
-	protected void playStepSound(BlockPos pos, Block block) {
+	protected void playStepSound(BlockPos pos, BlockState block) {
 		playSound(SoundEvents.ENTITY_COW_STEP, 0.15F, 0.8F);
 	}
 

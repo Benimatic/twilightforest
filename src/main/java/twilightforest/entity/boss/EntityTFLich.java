@@ -2,32 +2,33 @@ package twilightforest.entity.boss;
 
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.MeleeAttackGoal;
-import net.minecraft.entity.ai.HurtByTargetGoal;
-import net.minecraft.entity.ai.NearestAttackableTargetGoal;
-import net.minecraft.entity.ai.SwimGoal;
+import net.minecraft.entity.ai.goal.HurtByTargetGoal;
+import net.minecraft.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
+import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.monster.*;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.Items;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.BossInfo;
-import net.minecraft.world.BossInfoServer;
-import net.minecraft.world.EnumDifficulty;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.ServerBossInfo;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
@@ -43,10 +44,11 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Set;
 
-public class EntityTFLich extends EntityMob {
+public class EntityTFLich extends MonsterEntity {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/lich");
-	private static final Set<Class<? extends Entity>> POPPABLE = ImmutableSet.of(EntitySkeleton.class, EntityZombie.class, EntityEnderman.class, EntitySpider.class, EntityCreeper.class, EntityTFSwarmSpider.class);
+	//TODO: Think these could be EntityType?
+	private static final Set<Class<? extends Entity>> POPPABLE = ImmutableSet.of(SkeletonEntity.class, ZombieEntity.class, EndermanEntity.class, SpiderEntity.class, CreeperEntity.class, EntityTFSwarmSpider.class);
 
 	private static final DataParameter<Boolean> DATA_ISCLONE = EntityDataManager.createKey(EntityTFLich.class, DataSerializers.BOOLEAN);
 	private static final DataParameter<Byte> DATA_SHIELDSTRENGTH = EntityDataManager.createKey(EntityTFLich.class, DataSerializers.BYTE);
@@ -61,7 +63,7 @@ public class EntityTFLich extends EntityMob {
 
 	private EntityTFLich masterLich;
 	private int attackCooldown;
-	private final BossInfoServer bossInfo = new BossInfoServer(getDisplayName(), BossInfo.Color.YELLOW, BossInfo.Overlay.NOTCHED_6);
+	private final ServerBossInfo bossInfo = new ServerBossInfo(getDisplayName(), BossInfo.Color.YELLOW, BossInfo.Overlay.NOTCHED_6);
 
 	public EntityTFLich(World world) {
 		super(world);
@@ -69,7 +71,7 @@ public class EntityTFLich extends EntityMob {
 
 		setShadowClone(false);
 		this.masterLich = null;
-		this.isImmuneToFire = true;
+		this.isImmuneToFire();
 		this.experienceValue = 217;
 	}
 
@@ -93,17 +95,17 @@ public class EntityTFLich extends EntityMob {
 	}
 
 	@Override
-	public void setCustomNameTag(String name) {
-		super.setCustomNameTag(name);
+	public void setCustomName(@Nullable ITextComponent name) {
+		super.setCustomName(name);
 		this.bossInfo.setName(this.getDisplayName());
 	}
 
 	@Override
 	protected void registerGoals() {
-		this.tasks.addTask(0, new SwimGoal(this));
-		this.tasks.addTask(1, new EntityAITFLichShadows(this));
-		this.tasks.addTask(2, new EntityAITFLichMinions(this));
-		this.tasks.addTask(3, new MeleeAttackGoal(this, 1.0D, true) {
+		this.goalSelector.addGoal(0, new SwimGoal(this));
+		this.goalSelector.addGoal(1, new EntityAITFLichShadows(this));
+		this.goalSelector.addGoal(2, new EntityAITFLichMinions(this));
+		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, true) {
 			@Override
 			public boolean shouldExecute() {
 				return getPhase() == 3 && super.shouldExecute();
@@ -112,17 +114,17 @@ public class EntityTFLich extends EntityMob {
 			@Override
 			public void startExecuting() {
 				super.startExecuting();
-				setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.GOLDEN_SWORD));
+				setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(Items.GOLDEN_SWORD));
 			}
 		});
 
-		this.targetTasks.addTask(1, new HurtByTargetGoal(this, false));
-		this.targetTasks.addTask(2, new NearestAttackableTargetGoal<>(this, EntityPlayer.class, false));
+		this.targetSelector.addGoal(1, new HurtByTargetGoal(this, false));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, false));
 	}
 
 	@Override
-	protected void entityInit() {
-		super.entityInit();
+	protected void registerData() {
+		super.registerData();
 		dataManager.register(DATA_ISCLONE, false);
 		dataManager.register(DATA_SHIELDSTRENGTH, (byte) INITIAL_SHIELD_STRENGTH);
 		dataManager.register(DATA_MINIONSLEFT, (byte) INITIAL_MINIONS_TO_SUMMON);
@@ -130,21 +132,21 @@ public class EntityTFLich extends EntityMob {
 	}
 
 	@Override
-	protected void applyEntityAttributes() {
-		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(MAX_HEALTH);
-		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.45000001788139344D); // Same speed as an angry enderman
+	protected void registerAttributes() {
+		super.registerAttributes();
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(MAX_HEALTH);
+		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6.0D);
+		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.45000001788139344D); // Same speed as an angry enderman
 	}
 
 	@Override
-	public void addTrackingPlayer(EntityPlayerMP player) {
+	public void addTrackingPlayer(ServerPlayerEntity player) {
 		super.addTrackingPlayer(player);
 		this.bossInfo.addPlayer(player);
 	}
 
 	@Override
-	public void removeTrackingPlayer(EntityPlayerMP player) {
+	public void removeTrackingPlayer(ServerPlayerEntity player) {
 		super.removeTrackingPlayer(player);
 		this.bossInfo.removePlayer(player);
 	}
@@ -160,9 +162,9 @@ public class EntityTFLich extends EntityMob {
 
 	@Override
 	protected void despawnEntity() {
-		if (world.getDifficulty() == EnumDifficulty.PEACEFUL && !isShadowClone()) {
+		if (world.getDifficulty() == Difficulty.PEACEFUL && !isShadowClone()) {
 			if (hasHome()) {
-				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.LICH));
+				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.LICH));
 			}
 			setDead();
 		} else {
@@ -188,12 +190,12 @@ public class EntityTFLich extends EntityMob {
 	}
 
 	@Override
-	public void onLivingUpdate() {
+	public void livingTick() {
 		// determine the hand position
 		float angle = ((renderYawOffset * 3.141593F) / 180F);
 
 		double dx = posX + (MathHelper.cos(angle) * 0.65);
-		double dy = posY + (height * 0.94);
+		double dy = posY + (getHeight() * 0.94);
 		double dz = posZ + (MathHelper.sin(angle) * 0.65);
 
 
@@ -219,14 +221,14 @@ public class EntityTFLich extends EntityMob {
 				blu = 0.00F * sparkle;
 			}
 
-			world.spawnParticle(EnumParticleTypes.SPELL_MOB, dx + (rand.nextGaussian() * 0.025), dy + (rand.nextGaussian() * 0.025), dz + (rand.nextGaussian() * 0.025), red, grn, blu);
+			world.addParticle(ParticleTypes.SPELL_MOB, dx + (rand.nextGaussian() * 0.025), dy + (rand.nextGaussian() * 0.025), dz + (rand.nextGaussian() * 0.025), red, grn, blu);
 		}
 
 		if (this.getPhase() == 3)
-			world.spawnParticle(EnumParticleTypes.VILLAGER_ANGRY,
-				this.posX + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width,
-				this.posY + 1.0D + (double) (this.rand.nextFloat() * this.height),
-				this.posZ + (double) (this.rand.nextFloat() * this.width * 2.0F) - (double) this.width,
+			world.addParticle(ParticleTypes.ANGRY_VILLAGER,
+				this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(),
+				this.posY + 1.0D + (double) (this.rand.nextFloat() * this.getHeight()),
+				this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(),
 				this.rand.nextGaussian() * 0.02D, this.rand.nextGaussian() * 0.02D, this.rand.nextGaussian() * 0.02D);
 
 		if (!world.isRemote) {
@@ -242,7 +244,7 @@ public class EntityTFLich extends EntityMob {
 			}
 		}
 
-		super.onLivingUpdate();
+		super.livingTick();
 	}
 
 	@Override
@@ -272,8 +274,8 @@ public class EntityTFLich extends EntityMob {
 				}
 			} else {
 				playSound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-				if (src.getTrueSource() instanceof EntityLivingBase) {
-					setRevengeTarget((EntityLivingBase) src.getTrueSource());
+				if (src.getTrueSource() instanceof LivingEntity) {
+					setRevengeTarget((LivingEntity) src.getTrueSource());
 				}
 			}
 
@@ -315,17 +317,17 @@ public class EntityTFLich extends EntityMob {
 
 		// always watch our target
 		// TODO: make into AI task
-		this.getLookHelper().setLookPositionWithEntity(getAttackTarget(), 100F, 100F);
+		this.getLookController().setLookPositionWithEntity(getAttackTarget(), 100F, 100F);
 	}
 
 	public void launchBoltAt() {
 		float bodyFacingAngle = ((renderYawOffset * 3.141593F) / 180F);
 		double sx = posX + (MathHelper.cos(bodyFacingAngle) * 0.65);
-		double sy = posY + (height * 0.82);
+		double sy = posY + (getHeight() * 0.82);
 		double sz = posZ + (MathHelper.sin(bodyFacingAngle) * 0.65);
 
 		double tx = getAttackTarget().posX - sx;
-		double ty = (getAttackTarget().getEntityBoundingBox().minY + (double) (getAttackTarget().height / 2.0F)) - (posY + height / 2.0F);
+		double ty = (getAttackTarget().getBoundingBox().minY + (double) (getAttackTarget().getHeight() / 2.0F)) - (posY + getHeight() / 2.0F);
 		double tz = getAttackTarget().posZ - sz;
 
 		playSound(SoundEvents.ENTITY_GHAST_SHOOT, getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
@@ -334,17 +336,17 @@ public class EntityTFLich extends EntityMob {
 		projectile.setLocationAndAngles(sx, sy, sz, rotationYaw, rotationPitch);
 		projectile.shoot(tx, ty, tz, 0.5F, 1.0F);
 
-		world.spawnEntity(projectile);
+		world.addEntity(projectile);
 	}
 
 	public void launchBombAt() {
 		float bodyFacingAngle = ((renderYawOffset * 3.141593F) / 180F);
 		double sx = posX + (MathHelper.cos(bodyFacingAngle) * 0.65);
-		double sy = posY + (height * 0.82);
+		double sy = posY + (getHeight() * 0.82);
 		double sz = posZ + (MathHelper.sin(bodyFacingAngle) * 0.65);
 
 		double tx = getAttackTarget().posX - sx;
-		double ty = (getAttackTarget().getEntityBoundingBox().minY + (double) (getAttackTarget().height / 2.0F)) - (posY + height / 2.0F);
+		double ty = (getAttackTarget().getBoundingBox().minY + (double) (getAttackTarget().getHeight() / 2.0F)) - (posY + getHeight() / 2.0F);
 		double tz = getAttackTarget().posZ - sz;
 
 		playSound(SoundEvents.ENTITY_GHAST_SHOOT, getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
@@ -353,13 +355,13 @@ public class EntityTFLich extends EntityMob {
 		projectile.setLocationAndAngles(sx, sy, sz, rotationYaw, rotationPitch);
 		projectile.shoot(tx, ty, tz, 0.35F, 1.0F);
 
-		world.spawnEntity(projectile);
+		world.addEntity(projectile);
 	}
 
 	private void popNearbyMob() {
-		List<EntityLiving> nearbyMobs = world.getEntitiesWithinAABB(EntityLiving.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).grow(32.0D, 16.0D, 32.0D), e -> POPPABLE.contains(e.getClass()));
+		List<LivingEntity> nearbyMobs = world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).grow(32.0D, 16.0D, 32.0D), e -> POPPABLE.contains(e.getClass()));
 
-		for (EntityLiving mob : nearbyMobs) {
+		for (LivingEntity mob : nearbyMobs) {
 			if (getEntitySenses().canSee(mob)) {
 				mob.spawnExplosionParticle();
 				mob.setDead();
@@ -367,7 +369,7 @@ public class EntityTFLich extends EntityMob {
 //					world.playSoundAtEntity(mob, mob.getDeathSound(), mob.getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
 
 				// make trail so it's clear that we did it
-				makeRedMagicTrail(mob.posX, mob.posY + mob.height / 2.0, mob.posZ, this.posX, this.posY + this.height / 2.0, this.posZ);
+				makeRedMagicTrail(mob.posX, mob.posY + mob.getHeight() / 2.0, mob.posZ, this.posX, this.posY + this.getHeight() / 2.0, this.posZ);
 
 				break;
 			}
@@ -418,7 +420,7 @@ public class EntityTFLich extends EntityMob {
 
 		if (dest != null) {
 			teleportToNoChecks(dest.x, dest.y, dest.z);
-			this.getLookHelper().setLookPositionWithEntity(entity, 100F, 100F);
+			this.getLookController().setLookPositionWithEntity(entity, 100F, 100F);
 			this.renderYawOffset = this.rotationYaw;
 
 			if (!this.getEntitySenses().canSee(entity)) {
@@ -440,7 +442,7 @@ public class EntityTFLich extends EntityMob {
 
 		int tries = 100;
 		for (int i = 0; i < tries; i++) {
-			// we abuse EntityLivingBase.attemptTeleport, which does all the collision/ground checking for us, then teleport back to our original spot
+			// we abuse LivingEntity.attemptTeleport, which does all the collision/ground checking for us, then teleport back to our original spot
 			double tx = targetEntity.posX + rand.nextGaussian() * 16D;
 			double ty = targetEntity.posY;
 			double tz = targetEntity.posZ + rand.nextGaussian() * 16D;
@@ -470,8 +472,8 @@ public class EntityTFLich extends EntityMob {
 		setPositionAndUpdate(destX, destY, destZ);
 
 		makeTeleportTrail(srcX, srcY, srcZ, destX, destY, destZ);
-		this.world.playSound(null, srcX, srcY, srcZ, SoundEvents.ENTITY_ENDERMEN_TELEPORT, this.getSoundCategory(), 1.0F, 1.0F);
-		this.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1.0F, 1.0F);
+		this.world.playSound(null, srcX, srcY, srcZ, SoundEvents.ENTITY_ENDERMAN_TELEPORT, this.getSoundCategory(), 1.0F, 1.0F);
+		this.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, 1.0F, 1.0F);
 
 		// sometimes we need to do this
 		this.isJumping = false;
@@ -485,10 +487,10 @@ public class EntityTFLich extends EntityMob {
 			float f = (rand.nextFloat() - 0.5F) * 0.2F;
 			float f1 = (rand.nextFloat() - 0.5F) * 0.2F;
 			float f2 = (rand.nextFloat() - 0.5F) * 0.2F;
-			double tx = srcX + (destX - srcX) * trailFactor + (rand.nextDouble() - 0.5D) * width * 2D;
-			double ty = srcY + (destY - srcY) * trailFactor + rand.nextDouble() * height;
-			double tz = srcZ + (destZ - srcZ) * trailFactor + (rand.nextDouble() - 0.5D) * width * 2D;
-			world.spawnParticle(EnumParticleTypes.SPELL, tx, ty, tz, f, f1, f2);
+			double tx = srcX + (destX - srcX) * trailFactor + (rand.nextDouble() - 0.5D) * getWidth() * 2D;
+			double ty = srcY + (destY - srcY) * trailFactor + rand.nextDouble() * getHeight();
+			double tz = srcZ + (destZ - srcZ) * trailFactor + (rand.nextDouble() - 0.5D) * getWidth() * 2D;
+			world.addParticle(ParticleTypes.SPELL, tx, ty, tz, f, f1, f2);
 		}
 	}
 
@@ -502,7 +504,7 @@ public class EntityTFLich extends EntityMob {
 			double tx = srcX + (destX - srcX) * trailFactor + rand.nextGaussian() * 0.005;
 			double ty = srcY + (destY - srcY) * trailFactor + rand.nextGaussian() * 0.005;
 			double tz = srcZ + (destZ - srcZ) * trailFactor + rand.nextGaussian() * 0.005;
-			world.spawnParticle(EnumParticleTypes.SPELL_MOB, tx, ty, tz, f, f1, f2);
+			world.addParticle(ParticleTypes.SPELL_MOB, tx, ty, tz, f, f1, f2);
 		}
 	}
 
@@ -517,7 +519,7 @@ public class EntityTFLich extends EntityMob {
 			double tx = srcX + (destX - srcX) * trailFactor + rand.nextGaussian() * 0.005;
 			double ty = srcY + (destY - srcY) * trailFactor + rand.nextGaussian() * 0.005;
 			double tz = srcZ + (destZ - srcZ) * trailFactor + rand.nextGaussian() * 0.005;
-			world.spawnParticle(EnumParticleTypes.SPELL_MOB, tx, ty, tz, f, f1, f2);
+			world.addParticle(ParticleTypes.SPELL_MOB, tx, ty, tz, f, f1, f2);
 		}
 	}
 
@@ -575,16 +577,16 @@ public class EntityTFLich extends EntityMob {
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound compound) {
-		super.writeEntityToNBT(compound);
-		compound.setBoolean("ShadowClone", isShadowClone());
-		compound.setByte("ShieldStrength", getShieldStrength());
-		compound.setByte("MinionsToSummon", getMinionsToSummon());
+	public void writeAdditional(CompoundNBT compound) {
+		super.writeAdditional(compound);
+		compound.putBoolean("ShadowClone", isShadowClone());
+		compound.putByte("ShieldStrength", getShieldStrength());
+		compound.putByte("MinionsToSummon", getMinionsToSummon());
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound compound) {
-		super.readEntityFromNBT(compound);
+	public void readAdditional(CompoundNBT compound) {
+		super.readAdditional(compound);
 		setShadowClone(compound.getBoolean("ShadowClone"));
 		setShieldStrength(compound.getByte("ShieldStrength"));
 		setMinionsToSummon(compound.getByte("MinionsToSummon"));
@@ -603,8 +605,8 @@ public class EntityTFLich extends EntityMob {
 	}
 
 	@Override
-	public EnumCreatureAttribute getCreatureAttribute() {
-		return EnumCreatureAttribute.UNDEAD;
+	public CreatureAttribute getCreatureAttribute() {
+		return CreatureAttribute.UNDEAD;
 	}
 
 	@Override

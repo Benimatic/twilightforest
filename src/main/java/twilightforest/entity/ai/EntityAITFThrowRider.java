@@ -1,13 +1,12 @@
 package twilightforest.entity.ai;
 
+import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.MeleeAttackGoal;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.util.EnumHand;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.PacketThrowPlayer;
 
@@ -16,7 +15,7 @@ public class EntityAITFThrowRider extends MeleeAttackGoal {
 	private int throwTimer;
 	private int timeout;
 
-	public EntityAITFThrowRider(EntityCreature creature, double speedIn, boolean useLongMemory) {
+	public EntityAITFThrowRider(CreatureEntity creature, double speedIn, boolean useLongMemory) {
 		super(creature, speedIn, useLongMemory);
 	}
 
@@ -33,22 +32,22 @@ public class EntityAITFThrowRider extends MeleeAttackGoal {
 	}
 
 	@Override
-	public void updateTask() {
+	public void tick() {
 		timeout--;
 		if (!attacker.getPassengers().isEmpty())
 			throwTimer--;
 		else
-			super.updateTask();
+			super.tick();
 	}
 
 	// Vanilla Copy with edits
 	@Override
-	protected void checkAndPerformAttack(EntityLivingBase p_190102_1_, double p_190102_2_) {
+	protected void checkAndPerformAttack(LivingEntity p_190102_1_, double p_190102_2_) {
 		double d0 = this.getAttackReachSqr(p_190102_1_);
 
 		if (p_190102_2_ <= d0 && this.attackTick <= 0) {
 			this.attackTick = 20;
-			this.attacker.swingArm(EnumHand.MAIN_HAND);
+			this.attacker.swingArm(Hand.MAIN_HAND);
 			if (attacker.getPassengers().isEmpty() && p_190102_1_.getRidingEntity() == null) {
 				p_190102_1_.startRiding(attacker);
 			}
@@ -59,15 +58,15 @@ public class EntityAITFThrowRider extends MeleeAttackGoal {
 	public void resetTask() {
 		if (!attacker.getPassengers().isEmpty()) {
 			Entity rider = attacker.getPassengers().get(0);
-			rider.dismountRidingEntity();
+			rider.stopRiding();
 
 			Vec3d throwVec = attacker.getLookVec().scale(2);
 			throwVec = new Vec3d(throwVec.x, 0.9, throwVec.z);
 
 			rider.addVelocity(throwVec.x, throwVec.y, throwVec.z);
 
-			if (rider instanceof EntityPlayerMP) {
-				EntityPlayerMP player = (EntityPlayerMP) rider;
+			if (rider instanceof ServerPlayerEntity) {
+				ServerPlayerEntity player = (ServerPlayerEntity) rider;
 
 				IMessage message = new PacketThrowPlayer((float) throwVec.x, (float) throwVec.y, (float) throwVec.z);
 				TFPacketHandler.CHANNEL.sendTo(message, player);

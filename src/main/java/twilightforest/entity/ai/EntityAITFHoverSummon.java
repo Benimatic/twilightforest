@@ -1,6 +1,6 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.boss.EntityTFSnowQueen;
 import twilightforest.entity.boss.EntityTFSnowQueen.Phase;
@@ -22,11 +22,11 @@ public class EntityAITFHoverSummon extends EntityAITFHoverBase<EntityTFSnowQueen
 
 	@Override
 	public boolean shouldExecute() {
-		EntityLivingBase target = this.attacker.getAttackTarget();
+		LivingEntity target = this.attacker.getAttackTarget();
 
 		if (target == null) {
 			return false;
-		} else if (!target.isEntityAlive()) {
+		} else if (!target.isAlive()) {
 			return false;
 		} else if (this.attacker.getCurrentPhase() != Phase.SUMMON) {
 			return false;
@@ -37,9 +37,9 @@ public class EntityAITFHoverSummon extends EntityAITFHoverBase<EntityTFSnowQueen
 
 	@Override
 	public boolean shouldContinueExecuting() {
-		EntityLivingBase target = this.attacker.getAttackTarget();
+		LivingEntity target = this.attacker.getAttackTarget();
 
-		if (target == null || !target.isEntityAlive()) {
+		if (target == null || !target.isAlive()) {
 			return false;
 		} else if (this.attacker.getCurrentPhase() != Phase.SUMMON) {
 			return false;
@@ -55,10 +55,10 @@ public class EntityAITFHoverSummon extends EntityAITFHoverBase<EntityTFSnowQueen
 	}
 
 	@Override
-	public void updateTask() {
+	public void tick() {
 
 		this.seekTimer++;
-		EntityLivingBase target = this.attacker.getAttackTarget();
+		LivingEntity target = this.attacker.getAttackTarget();
 
 		// are we there yet?
 		if (this.attacker.getDistanceSq(hoverPosX, hoverPosY, hoverPosZ) <= 1.0F) {
@@ -89,12 +89,12 @@ public class EntityAITFHoverSummon extends EntityAITFHoverBase<EntityTFSnowQueen
 		// look at target
 		if (target != null) {
 			this.attacker.faceEntity(target, 30.0F, 30.0F);
-			this.attacker.getLookHelper().setLookPositionWithEntity(target, 30.0F, 30.0F);
+			this.attacker.getLookController().setLookPositionWithEntity(target, 30.0F, 30.0F);
 		}
 	}
 
 	@Override
-	protected void makeNewHoverSpot(EntityLivingBase target) {
+	protected void makeNewHoverSpot(LivingEntity target) {
 		super.makeNewHoverSpot(target);
 		this.seekTimer = 0;
 	}

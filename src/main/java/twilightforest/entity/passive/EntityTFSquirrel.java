@@ -1,17 +1,12 @@
 package twilightforest.entity.passive;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.CreatureEntity;
+import net.minecraft.entity.Pose;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.AvoidEntityGoal;
-import net.minecraft.entity.ai.LookRandomlyGoal;
-import net.minecraft.entity.ai.PanicGoal;
-import net.minecraft.entity.ai.SwimGoal;
-import net.minecraft.entity.ai.WaterAvoidingRandomWalkingGoal;
-import net.minecraft.entity.ai.LookAtGoal;
-import net.minecraft.entity.passive.IAnimals;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
+import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -19,7 +14,7 @@ import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFTempt;
 
-public class EntityTFSquirrel extends EntityCreature implements IAnimals {
+public class EntityTFSquirrel extends CreatureEntity implements IAnimals {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/squirrel");
 	protected static final Ingredient SEEDS = Ingredient.fromItems(Items.WHEAT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS, Items.BEETROOT_SEEDS);
@@ -34,21 +29,21 @@ public class EntityTFSquirrel extends EntityCreature implements IAnimals {
 
 	@Override
 	protected void registerGoals() {
-		this.tasks.addTask(0, new SwimGoal(this));
-		this.tasks.addTask(1, new PanicGoal(this, 1.38F));
-		this.tasks.addTask(2, new EntityAITFTempt(this, 1.0F, true, SEEDS));
-		this.tasks.addTask(3, new AvoidEntityGoal<>(this, EntityPlayer.class, 2.0F, 0.8F, 1.4F));
-		this.tasks.addTask(5, new WaterAvoidingRandomWalkingGoal(this, 1.0F));
-		this.tasks.addTask(6, new WaterAvoidingRandomWalkingGoal(this, 1.25F));
-		this.tasks.addTask(7, new LookAtGoal(this, EntityPlayer.class, 6F));
-		this.tasks.addTask(8, new LookRandomlyGoal(this));
+		this.goalSelector.addGoal(0, new SwimGoal(this));
+		this.goalSelector.addGoal(1, new PanicGoal(this, 1.38F));
+		this.goalSelector.addGoal(2, new EntityAITFTempt(this, 1.0F, true, SEEDS));
+		this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, PlayerEntity.class, 2.0F, 0.8F, 1.4F));
+		this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 1.0F));
+		this.goalSelector.addGoal(6, new WaterAvoidingRandomWalkingGoal(this, 1.25F));
+		this.goalSelector.addGoal(7, new LookAtGoal(this, PlayerEntity.class, 6F));
+		this.goalSelector.addGoal(8, new LookRandomlyGoal(this));
 	}
 
 	@Override
-	protected void applyEntityAttributes() {
-		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(1.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
+	protected void registerAttributes() {
+		super.registerAttributes();
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(1.0D);
+		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
 	}
 
 	/**
@@ -64,8 +59,8 @@ public class EntityTFSquirrel extends EntityCreature implements IAnimals {
 	}
 
 	@Override
-	public float getEyeHeight() {
-		return this.height * 0.7F;
+	public float getEyeHeight(Pose pose) {
+		return this.getHeight() * 0.7F;
 	}
 
 	@Override
@@ -83,11 +78,11 @@ public class EntityTFSquirrel extends EntityCreature implements IAnimals {
 		if (underMaterial == Material.WOOD) {
 			return 15.0F;
 		}
-		if (underMaterial == Material.GRASS) {
+		if (underMaterial == Material.ORGANIC) {
 			return 10.0F;
 		}
 		// default to just prefering lighter areas
-		return this.world.getLightBrightness(pos) - 0.5F;
+		return this.world.getLight(pos) - 0.5F;
 	}
 
 	@Override

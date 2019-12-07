@@ -1,11 +1,11 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.init.MobEffects;
-import net.minecraft.item.EnumDyeColor;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.item.DyeColor;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
@@ -16,14 +16,14 @@ public class EntityTFMistWolf extends EntityTFHostileWolf {
 	public EntityTFMistWolf(World world) {
 		super(world);
 		this.setSize(1.4F, 1.9F);
-		setCollarColor(EnumDyeColor.GRAY);
+		setCollarColor(DyeColor.GRAY);
 	}
 
 	@Override
 	protected void setAttributes() {
 		super.setAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6);
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
+		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6);
 	}
 
 	@Override
@@ -31,7 +31,7 @@ public class EntityTFMistWolf extends EntityTFHostileWolf {
 		if (super.attackEntityAsMob(entity)) {
 			float myBrightness = this.getBrightness();
 
-			if (entity instanceof EntityLivingBase && myBrightness < 0.10F) {
+			if (entity instanceof LivingEntity && myBrightness < 0.10F) {
 				int effectDuration;
 				switch (world.getDifficulty()) {
 					case EASY:
@@ -47,7 +47,7 @@ public class EntityTFMistWolf extends EntityTFHostileWolf {
 				}
 
 				if (effectDuration > 0) {
-					((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, effectDuration * 20, 0));
+					((LivingEntity) entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, effectDuration * 20, 0));
 				}
 			}
 

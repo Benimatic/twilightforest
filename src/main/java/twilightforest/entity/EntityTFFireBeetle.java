@@ -3,6 +3,7 @@ package twilightforest.entity;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -20,7 +21,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFBreathAttack;
 
-public class EntityTFFireBeetle extends MobEntity implements IBreathAttacker {
+public class EntityTFFireBeetle extends MonsterEntity implements IBreathAttacker {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/fire_beetle");
 	private static final DataParameter<Boolean> BREATHING = EntityDataManager.createKey(EntityTFFireBeetle.class, DataSerializers.BOOLEAN);
@@ -90,8 +91,8 @@ public class EntityTFFireBeetle extends MobEntity implements IBreathAttacker {
 	}
 
 	@Override
-	public void onLivingUpdate() {
-		super.onLivingUpdate();
+	public void livingTick() {
+		super.livingTick();
 
 		// when breathing fire, spew particles
 		if (isBreathing()) {

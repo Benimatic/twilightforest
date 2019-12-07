@@ -1,15 +1,20 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.IEntityLivingData;
+import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.monster.EntitySpider;
+import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.monster.SpiderEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 
-public class EntityTFKingSpider extends EntitySpider {
+import javax.annotation.Nullable;
+
+public class EntityTFKingSpider extends SpiderEntity {
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/king_spider");
 
 	public EntityTFKingSpider(World world) {
@@ -20,15 +25,15 @@ public class EntityTFKingSpider extends EntitySpider {
 	@Override
 	protected void registerGoals() {
 		super.registerGoals();
-		//this.tasks.addTask(1, new EntityAITFChargeAttack(this, 0.4F));
+		//this.goalSelector.addGoal(1, new EntityAITFChargeAttack(this, 0.4F));
 	}
 
 	@Override
-	protected void applyEntityAttributes() {
-		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.35D);
-		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6.0D);
+	protected void registerAttributes() {
+		super.registerAttributes();
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
+		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.35D);
+		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6.0D);
 	}
 
 	@Override
@@ -42,15 +47,16 @@ public class EntityTFKingSpider extends EntitySpider {
 		return false;
 	}
 
+	@Nullable
 	@Override
-	public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingData) {
-		livingData = super.onInitialSpawn(difficulty, livingData);
+	public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData livingData, @Nullable CompoundNBT dataTag) {
+		livingData = super.onInitialSpawn(worldIn, difficultyIn, reason, livingData, dataTag);
 
 		// will always have a dryad riding the spider or whatever is riding the spider
 		EntityTFSkeletonDruid druid = new EntityTFSkeletonDruid(this.world);
 		druid.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
 		druid.onInitialSpawn(difficulty, null);
-		this.world.spawnEntity(druid);
+		this.world.addEntity(druid);
 		Entity lastRider = this;
 		while (!lastRider.getPassengers().isEmpty())
 			lastRider = lastRider.getPassengers().get(0);
@@ -61,7 +67,7 @@ public class EntityTFKingSpider extends EntitySpider {
 
 	@Override
 	public double getMountedYOffset() {
-		return (double) this.height * 0.75D;
+		return (double) this.getHeight() * 0.75D;
 	}
 
 	@Override

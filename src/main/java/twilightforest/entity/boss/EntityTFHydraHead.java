@@ -31,8 +31,8 @@ public class EntityTFHydraHead extends EntityTFHydraPart {
 	}
 
 	@Override
-	protected void entityInit() {
-		super.entityInit();
+	protected void registerData() {
+		super.registerData();
 		dataManager.register(DATA_MOUTH_POSITION, 0F);
 		dataManager.register(DATA_STATE, (byte) 0);
 	}

@@ -2,21 +2,18 @@ package twilightforest.entity.passive;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.Pose;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.LookRandomlyGoal;
-import net.minecraft.entity.ai.PanicGoal;
-import net.minecraft.entity.ai.SwimGoal;
-import net.minecraft.entity.ai.WaterAvoidingRandomWalkingGoal;
-import net.minecraft.entity.ai.LookAtGoal;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -46,39 +43,39 @@ public class EntityTFTinyBird extends EntityTFBird {
 
 	@Override
 	protected void registerGoals() {
-		this.tasks.addTask(0, new SwimGoal(this));
-		this.tasks.addTask(1, new PanicGoal(this, 1.5F));
-		this.tasks.addTask(2, new EntityAITFBirdFly(this));
-		this.tasks.addTask(3, new EntityAITFTempt(this, 1.0F, true, SEEDS));
-		this.tasks.addTask(4, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
-		this.tasks.addTask(5, new LookAtGoal(this, EntityPlayer.class, 6F));
-		this.tasks.addTask(6, new LookRandomlyGoal(this));
+		this.goalSelector.addGoal(0, new SwimGoal(this));
+		this.goalSelector.addGoal(1, new PanicGoal(this, 1.5F));
+		this.goalSelector.addGoal(2, new EntityAITFBirdFly(this));
+		this.goalSelector.addGoal(3, new EntityAITFTempt(this, 1.0F, true, SEEDS));
+		this.goalSelector.addGoal(4, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
+		this.goalSelector.addGoal(5, new LookAtGoal(this, PlayerEntity.class, 6F));
+		this.goalSelector.addGoal(6, new LookRandomlyGoal(this));
 	}
 
 	@Override
-	protected void entityInit() {
-		super.entityInit();
+	protected void registerData() {
+		super.registerData();
 		dataManager.register(DATA_BIRDTYPE, (byte) 0);
 		dataManager.register(DATA_BIRDFLAGS, (byte) 0);
 	}
 
 	@Override
-	protected void applyEntityAttributes() {
-		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(1.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.20000001192092896D);
+	protected void registerAttributes() {
+		super.registerAttributes();
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(1.0D);
+		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.20000001192092896D);
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound compound) {
-		super.writeEntityToNBT(compound);
-		compound.setInteger("BirdType", this.getBirdType());
+	public void writeAdditional(CompoundNBT compound) {
+		super.writeAdditional(compound);
+		compound.putInt("BirdType", this.getBirdType());
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound compound) {
-		super.readEntityFromNBT(compound);
-		this.setBirdType(compound.getInteger("BirdType"));
+	public void readAdditional(CompoundNBT compound) {
+		super.readAdditional(compound);
+		this.setBirdType(compound.getInt("BirdType"));
 	}
 
 	public int getBirdType() {
@@ -110,8 +107,8 @@ public class EntityTFTinyBird extends EntityTFBird {
 	}
 
 	@Override
-	public float getEyeHeight() {
-		return this.height * 0.7F;
+	public float getEyeHeight(Pose pose) {
+		return this.getHeight() * 0.7F;
 	}
 
 	@Override
@@ -134,16 +131,16 @@ public class EntityTFTinyBird extends EntityTFBird {
 		if (underMaterial == Material.WOOD) {
 			return 15.0F;
 		}
-		if (underMaterial == Material.GRASS) {
+		if (underMaterial == Material.ORGANIC) {
 			return 9.0F;
 		}
 		// default to just preferring lighter areas
-		return this.world.getLightBrightness(pos) - 0.5F;
+		return this.world.getLight(pos) - 0.5F;
 	}
 
 	@Override
-	public void onUpdate() {
-		super.onUpdate();
+	public void tick() {
+		super.tick();
 		// while we are flying, try to level out somewhat
 		if (!this.isBirdLanded()) {
 			this.motionY *= 0.6000000238418579D;
@@ -157,7 +154,7 @@ public class EntityTFTinyBird extends EntityTFBird {
 		if (this.isBirdLanded()) {
 			this.currentFlightTime = 0;
 
-			if (isSpooked() || isInWater() || world.containsAnyLiquid(getEntityBoundingBox()) || (this.rand.nextInt(200) == 0 && !isLandableBlock(new BlockPos(posX, posY - 1, posZ)))) {
+			if (isSpooked() || isInWater() || world.containsAnyLiquid(getBoundingBox()) || (this.rand.nextInt(200) == 0 && !isLandableBlock(new BlockPos(posX, posY - 1, posZ)))) {
 				this.setIsBirdLanded(false);
 				this.world.playEvent(1025, new BlockPos(this), 0);
 				this.motionY = 0.4;
@@ -170,7 +167,7 @@ public class EntityTFTinyBird extends EntityTFBird {
 				this.spawnPosition = null;
 			}
 
-			if (isInWater() || world.containsAnyLiquid(getEntityBoundingBox())) {
+			if (isInWater() || world.containsAnyLiquid(getBoundingBox())) {
 				currentFlightTime = 0; // reset timer for MAX FLIGHT :v
 				motionY = 0.1F;
 			}
@@ -207,17 +204,17 @@ public class EntityTFTinyBird extends EntityTFBird {
 
 	public boolean isSpooked() {
 		if (this.hurtTime > 0) return true;
-		EntityPlayer closestPlayer = this.world.getClosestPlayerToEntity(this, 4.0D);
+		PlayerEntity closestPlayer = this.world.getClosestPlayerToEntity(this, 4.0D);
 		return closestPlayer != null
 				&& !SEEDS.apply(closestPlayer.getHeldItemMainhand())
 				&& !SEEDS.apply(closestPlayer.getHeldItemOffhand());
 	}
 
 	public boolean isLandableBlock(BlockPos pos) {
-		IBlockState state = world.getBlockState(pos);
+		BlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 		return !block.isAir(state, world, pos)
-				&& (block.isLeaves(state, world, pos) || state.isSideSolid(world, pos, EnumFacing.UP));
+				&& (block.isLeaves(state, world, pos) || state.isSideSolid(world, pos, Direction.UP));
 	}
 
 	@Override

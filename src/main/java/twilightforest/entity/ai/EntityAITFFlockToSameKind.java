@@ -1,23 +1,23 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.Vec3d;
 
 import java.util.List;
 
-public class EntityAITFFlockToSameKind extends EntityAIBase {
+public class EntityAITFFlockToSameKind extends Goal {
 	private static final double MAX_DIST = 256.0D;
 	private static final double MIN_DIST = 25.0D;
 	/**
 	 * The child that is following its parent.
 	 */
-	private EntityLiving flockCreature;
+	private LivingEntity flockCreature;
 	private Vec3d flockPosition;
 	double speed;
 	private int moveTimer;
 
-	public EntityAITFFlockToSameKind(EntityLiving living, double speed) {
+	public EntityAITFFlockToSameKind(LivingEntity living, double speed) {
 		this.flockCreature = living;
 		this.speed = speed;
 	}
@@ -31,14 +31,14 @@ public class EntityAITFFlockToSameKind extends EntityAIBase {
 			return false;
 		}
 
-		List<EntityLiving> flockList = this.flockCreature.world.getEntitiesWithinAABB(this.flockCreature.getClass(), this.flockCreature.getEntityBoundingBox().grow(16.0D, 4.0D, 16.0D));
+		List<LivingEntity> flockList = this.flockCreature.world.getEntitiesWithinAABB(this.flockCreature.getClass(), this.flockCreature.getBoundingBox().grow(16.0D, 4.0D, 16.0D));
 
 		int flocknum = 0;
 		double flockX = 0;
 		double flockY = 0;
 		double flockZ = 0;
 
-		for (EntityLiving flocker : flockList) {
+		for (LivingEntity flocker : flockList) {
 			flocknum++;
 			flockX += flocker.posX;
 			flockY += flocker.posY;
@@ -91,7 +91,7 @@ public class EntityAITFFlockToSameKind extends EntityAIBase {
 	 * Updates the task
 	 */
 	@Override
-	public void updateTask() {
+	public void tick() {
 		if (--this.moveTimer <= 0) {
 			this.moveTimer = 10;
 			this.flockCreature.getNavigator().tryMoveToXYZ(flockPosition.x, flockPosition.y, flockPosition.z, this.speed);

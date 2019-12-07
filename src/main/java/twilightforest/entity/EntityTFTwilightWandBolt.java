@@ -1,15 +1,15 @@
 package twilightforest.entity;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.init.Items;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class EntityTFTwilightWandBolt extends EntityTFThrowable {
 
@@ -23,14 +23,14 @@ public class EntityTFTwilightWandBolt extends EntityTFThrowable {
 		super(world, x, y, z);
 	}
 
-	public EntityTFTwilightWandBolt(World world, EntityLivingBase thrower) {
+	public EntityTFTwilightWandBolt(World world, LivingEntity thrower) {
 		super(world, thrower);
 		shoot(thrower, thrower.rotationPitch, thrower.rotationYaw, 0, 1.5F, 1.0F);
 	}
 
 	@Override
-	public void onUpdate() {
-		super.onUpdate();
+	public void tick() {
+		super.tick();
 		makeTrail();
 	}
 
@@ -44,7 +44,7 @@ public class EntityTFTwilightWandBolt extends EntityTFThrowable {
 			double s2 = ((rand.nextFloat() * 0.5F) + 0.5F) * 0.80F;  // color
 			double s3 = ((rand.nextFloat() * 0.5F) + 0.5F) * 0.69F;  // color
 
-			world.spawnParticle(EnumParticleTypes.SPELL_MOB, dx, dy, dz, s1, s2, s3);
+			world.addParticle(ParticleTypes.SPELL_MOB, dx, dy, dz, s1, s2, s3);
 		}
 	}
 
@@ -53,13 +53,13 @@ public class EntityTFTwilightWandBolt extends EntityTFThrowable {
 		return 0.003F;
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void handleStatusUpdate(byte id) {
 		if (id == 3) {
 			int itemId = Item.getIdFromItem(Items.ENDER_PEARL);
 			for (int i = 0; i < 8; ++i) {
-				this.world.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, itemId);
+				this.world.addParticle(ParticleTypes.ITEM_CRACK, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, itemId);
 			}
 		} else {
 			super.handleStatusUpdate(id);
@@ -69,7 +69,7 @@ public class EntityTFTwilightWandBolt extends EntityTFThrowable {
 	@Override
 	protected void onImpact(RayTraceResult result) {
 		if (!this.world.isRemote) {
-			if (result.entityHit instanceof EntityLivingBase) {
+			if (result.entityHit instanceof LivingEntity) {
 				result.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), 6);
 			}
 
@@ -87,8 +87,8 @@ public class EntityTFTwilightWandBolt extends EntityTFThrowable {
 			// reflect faster and more accurately
 			this.shoot(vec3d.x, vec3d.y, vec3d.z, 1.5F, 0.1F);  // reflect faster and more accurately
 
-			if (source.getImmediateSource() instanceof EntityLivingBase) {
-				this.thrower = (EntityLivingBase) source.getImmediateSource();
+			if (source.getImmediateSource() instanceof LivingEntity) {
+				this.owner = (LivingEntity) source.getImmediateSource();
 			}
 			return true;
 		}

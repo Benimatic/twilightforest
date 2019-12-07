@@ -3,34 +3,31 @@ package twilightforest.entity.boss;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityFlying;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IEntityLivingData;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Items;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemAxe;
+import net.minecraft.item.AxeItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntitySelectors;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.EnumDifficulty;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
@@ -51,29 +48,30 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
 
-public class EntityTFKnightPhantom extends EntityFlying implements IMob {
+public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 
 	private static final DataParameter<Boolean> FLAG_CHARGING = EntityDataManager.createKey(EntityTFKnightPhantom.class, DataSerializers.BOOLEAN);
-	private static final AttributeModifier CHARGING_MODIFIER = new AttributeModifier("Charging attack boost", 7, 0).setSaved(false);
+	private static final AttributeModifier CHARGING_MODIFIER = new AttributeModifier("Charging attack boost", 7, AttributeModifier.Operation.ADDITION).setSaved(false);
 
 	private int number;
 	private int ticksProgress;
 	private Formation currentFormation;
-	private BlockPos chargePos = BlockPos.ORIGIN;
+	private BlockPos chargePos = BlockPos.ZERO;
 
 	public EntityTFKnightPhantom(World world) {
 		super(world);
 		setSize(1.5F, 3.0F);
 		noClip = true;
-		isImmuneToFire = true;
+		isImmuneToFire();
 		currentFormation = Formation.HOVER;
 		experienceValue = 93;
-		moveHelper = new NoClipMoveHelper(this);
+		moveController = new NoClipMoveHelper(this);
 	}
 
+	@Nullable
 	@Override
-	public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata) {
-		IEntityLivingData data = super.onInitialSpawn(difficulty, livingdata);
+	public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficulty, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+		ILivingEntityData data = super.onInitialSpawn(worldIn, difficulty, reason, spawnDataIn, dataTag);
 		setEquipmentBasedOnDifficulty(difficulty);
 		setEnchantmentBasedOnDifficulty(difficulty);
 		return data;
@@ -81,33 +79,33 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 
 	@Override
 	protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
-		setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.knightmetal_sword));
-		setItemStackToSlot(EntityEquipmentSlot.CHEST, new ItemStack(TFItems.phantom_chestplate));
-		setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(TFItems.phantom_helmet));
+		setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(TFItems.knightmetal_sword));
+		setItemStackToSlot(EquipmentSlotType.CHEST, new ItemStack(TFItems.phantom_chestplate));
+		setItemStackToSlot(EquipmentSlotType.HEAD, new ItemStack(TFItems.phantom_helmet));
 	}
 
 	@Override
-	protected void entityInit() {
-		super.entityInit();
+	protected void registerData() {
+		super.registerData();
 		dataManager.register(FLAG_CHARGING, false);
 	}
 
 	@Override
 	protected void registerGoals() {
-		tasks.addTask(0, new EntityAITFPhantomWatchAndAttack(this));
-		tasks.addTask(1, new EntityAITFPhantomUpdateFormationAndMove(this));
-		tasks.addTask(2, new EntityAIPhantomAttackStart(this));
-		tasks.addTask(3, new EntityAIPhantomThrowWeapon(this));
+		goalSelector.addGoal(0, new EntityAITFPhantomWatchAndAttack(this));
+		goalSelector.addGoal(1, new EntityAITFPhantomUpdateFormationAndMove(this));
+		goalSelector.addGoal(2, new EntityAIPhantomAttackStart(this));
+		goalSelector.addGoal(3, new EntityAIPhantomThrowWeapon(this));
 
-		targetTasks.addTask(0, new EntityAITFFindEntityNearestPlayer(this));
+		targetSelector.addGoal(0, new EntityAITFFindEntityNearestPlayer(this));
 	}
 
 	@Override
-	protected void applyEntityAttributes() {
-		super.applyEntityAttributes();
-		getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(35.0D);
-		getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
-		getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
+	protected void registerAttributes() {
+		super.registerAttributes();
+		getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(35.0D);
+		getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
+		getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
 	}
 
 	public Formation getCurrentFormation() {
@@ -134,9 +132,9 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 
 	@Override
 	protected void despawnEntity() {
-		if (world.getDifficulty() == EnumDifficulty.PEACEFUL) {
+		if (world.getDifficulty() == Difficulty.PEACEFUL) {
 			if (hasHome() && getNumber() == 0) {
-				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.KNIGHT_PHANTOM));
+				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.KNIGHT_PHANTOM));
 			}
 			setDead();
 		} else {
@@ -145,16 +143,16 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 	}
 
 	@Override
-	public void onLivingUpdate() {
-		super.onLivingUpdate();
+	public void livingTick() {
+		super.livingTick();
 
 		if (isChargingAtPlayer()) {
 			// make particles
 			for (int i = 0; i < 4; ++i) {
 				Item particleID = rand.nextBoolean() ? TFItems.phantom_helmet : TFItems.knightmetal_sword;
 
-				world.spawnParticle(EnumParticleTypes.ITEM_CRACK, posX + (rand.nextFloat() - 0.5D) * width, posY + rand.nextFloat() * (height - 0.75D) + 0.5D, posZ + (rand.nextFloat() - 0.5D) * width, 0, -0.1, 0, Item.getIdFromItem(particleID));
-				world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, posX + (rand.nextFloat() - 0.5D) * width, posY + rand.nextFloat() * (height - 0.75D) + 0.5D, posZ + (rand.nextFloat() - 0.5D) * width, 0, 0.1, 0);
+				world.addParticle(ParticleTypes.ITEM_CRACK, posX + (rand.nextFloat() - 0.5D) * width, posY + rand.nextFloat() * (height - 0.75D) + 0.5D, posZ + (rand.nextFloat() - 0.5D) * width, 0, -0.1, 0, Item.getIdFromItem(particleID));
+				world.addParticle(ParticleTypes.SMOKE, posX + (rand.nextFloat() - 0.5D) * width, posY + rand.nextFloat() * (height - 0.75D) + 0.5D, posZ + (rand.nextFloat() - 0.5D) * width, 0, 0.1, 0);
 			}
 		}
 	}
@@ -167,7 +165,7 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 			double d0 = rand.nextGaussian() * 0.02D;
 			double d1 = rand.nextGaussian() * 0.02D;
 			double d2 = rand.nextGaussian() * 0.02D;
-			world.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, posX + (double) (rand.nextFloat() * width * 2.0F) - (double) width, posY + (double) (rand.nextFloat() * height), posZ + (double) (rand.nextFloat() * width * 2.0F) - (double) width, d0, d1, d2);
+			world.addParticle(ParticleTypes.EXPLOSION_NORMAL, posX + (double) (rand.nextFloat() * width * 2.0F) - (double) width, posY + (double) (rand.nextFloat() * height), posZ + (double) (rand.nextFloat() * width * 2.0F) - (double) width, d0, d1, d2);
 		}
 	}
 
@@ -200,19 +198,19 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 	// [VanillaCopy] Exact copy of EntityMob.attackEntityAsMob
 	@Override
 	public boolean attackEntityAsMob(Entity entityIn) {
-		float f = (float) this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
+		float f = (float) this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getValue();
 		int i = 0;
 
-		if (entityIn instanceof EntityLivingBase) {
-			f += EnchantmentHelper.getModifierForCreature(this.getHeldItemMainhand(), ((EntityLivingBase) entityIn).getCreatureAttribute());
+		if (entityIn instanceof LivingEntity) {
+			f += EnchantmentHelper.getModifierForCreature(this.getHeldItemMainhand(), ((LivingEntity) entityIn).getCreatureAttribute());
 			i += EnchantmentHelper.getKnockbackModifier(this);
 		}
 
 		boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), f);
 
 		if (flag) {
-			if (i > 0 && entityIn instanceof EntityLivingBase) {
-				((EntityLivingBase) entityIn).knockBack(this, (float) i * 0.5F, (double) MathHelper.sin(this.rotationYaw * 0.017453292F), (double) (-MathHelper.cos(this.rotationYaw * 0.017453292F)));
+			if (i > 0 && entityIn instanceof LivingEntity) {
+				((LivingEntity) entityIn).knockBack(this, (float) i * 0.5F, (double) MathHelper.sin(this.rotationYaw * 0.017453292F), (double) (-MathHelper.cos(this.rotationYaw * 0.017453292F)));
 				this.motionX *= 0.6D;
 				this.motionZ *= 0.6D;
 			}
@@ -223,12 +221,12 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 				entityIn.setFire(j * 4);
 			}
 
-			if (entityIn instanceof EntityPlayer) {
-				EntityPlayer entityplayer = (EntityPlayer) entityIn;
+			if (entityIn instanceof PlayerEntity) {
+				PlayerEntity entityplayer = (PlayerEntity) entityIn;
 				ItemStack itemstack = this.getHeldItemMainhand();
 				ItemStack itemstack1 = entityplayer.isHandActive() ? entityplayer.getActiveItemStack() : ItemStack.EMPTY;
 
-				if (!itemstack.isEmpty() && !itemstack1.isEmpty() && itemstack.getItem() instanceof ItemAxe && itemstack1.getItem() == Items.SHIELD) {
+				if (!itemstack.isEmpty() && !itemstack1.isEmpty() && itemstack.getItem() instanceof AxeItem && itemstack1.getItem() == Items.SHIELD) {
 					float f1 = 0.25F + (float) EnchantmentHelper.getEfficiencyModifier(this) * 0.05F;
 
 					if (this.rand.nextFloat() < f1) {
@@ -309,11 +307,11 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 		dataManager.set(FLAG_CHARGING, flag);
 		if (!world.isRemote) {
 			if (flag) {
-				if (!getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).hasModifier(CHARGING_MODIFIER)) {
-					getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).applyModifier(CHARGING_MODIFIER);
+				if (!getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).hasModifier(CHARGING_MODIFIER)) {
+					getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).applyModifier(CHARGING_MODIFIER);
 				}
 			} else {
-				getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).removeModifier(CHARGING_MODIFIER);
+				getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).removeModifier(CHARGING_MODIFIER);
 			}
 		}
 	}
@@ -384,45 +382,45 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 		// set weapon per number
 		switch (number % 3) {
 			case 0:
-				setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.knightmetal_sword));
+				setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(TFItems.knightmetal_sword));
 				break;
 			case 1:
-				setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.knightmetal_axe));
+				setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(TFItems.knightmetal_axe));
 				break;
 			case 2:
-				setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.knightmetal_pickaxe));
+				setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(TFItems.knightmetal_pickaxe));
 				break;
 		}
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound compound) {
-		super.writeEntityToNBT(compound);
+	public void writeAdditional(CompoundNBT compound) {
+		super.writeAdditional(compound);
 		if (hasHome()) {
 			BlockPos home = getHomePosition();
-			compound.setTag("Home", newDoubleNBTList(home.getX(), home.getY(), home.getZ()));
+			compound.put("Home", newDoubleNBTList(home.getX(), home.getY(), home.getZ()));
 		}
-		compound.setInteger("MyNumber", getNumber());
-		compound.setInteger("Formation", getFormationAsNumber());
-		compound.setInteger("TicksProgress", getTicksProgress());
+		compound.putInt("MyNumber", getNumber());
+		compound.putInt("Formation", getFormationAsNumber());
+		compound.putInt("TicksProgress", getTicksProgress());
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound compound) {
-		super.readEntityFromNBT(compound);
+	public void readAdditional(CompoundNBT compound) {
+		super.readAdditional(compound);
 
-		if (compound.hasKey("Home", 9)) {
-			NBTTagList nbttaglist = compound.getTagList("Home", 6);
-			int hx = (int) nbttaglist.getDoubleAt(0);
-			int hy = (int) nbttaglist.getDoubleAt(1);
-			int hz = (int) nbttaglist.getDoubleAt(2);
+		if (compound.contains("Home", 9)) {
+			ListNBT nbttaglist = compound.getList("Home", 6);
+			int hx = (int) nbttaglist.getDouble(0);
+			int hy = (int) nbttaglist.getDouble(1);
+			int hz = (int) nbttaglist.getDouble(2);
 			setHomePosAndDistance(new BlockPos(hx, hy, hz), 20);
 		} else {
 			detachHome();
 		}
-		setNumber(compound.getInteger("MyNumber"));
-		switchToFormationByNumber(compound.getInteger("Formation"));
-		setTicksProgress(compound.getInteger("TicksProgress"));
+		setNumber(compound.getInt("MyNumber"));
+		switchToFormationByNumber(compound.getInt("Formation"));
+		setTicksProgress(compound.getInt("TicksProgress"));
 	}
 
 	public enum Formation {
@@ -463,8 +461,8 @@ public class EntityTFKnightPhantom extends EntityFlying implements IMob {
 		return false;
 	}
 
-	// [VanillaCopy] Home fields and methods from EntityCreature, changes noted
-	private BlockPos homePosition = BlockPos.ORIGIN;
+	// [VanillaCopy] Home fields and methods from CreatureEntity, changes noted
+	private BlockPos homePosition = BlockPos.ZERO;
 	private float maximumHomeDistance = -1.0F;
 
 	public boolean isWithinHomeDistanceCurrentPosition() {

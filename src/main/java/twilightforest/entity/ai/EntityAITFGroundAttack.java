@@ -1,24 +1,24 @@
 package twilightforest.entity.ai;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.ai.EntityMoveHelper;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.ai.controller.MovementController;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import twilightforest.entity.boss.EntityTFMinoshroom;
 
 import java.util.List;
 
-public class EntityAITFGroundAttack extends EntityAIBase {
+public class EntityAITFGroundAttack extends Goal {
 	private static final double MIN_RANGE_SQ = 2.0D;
 	private static final double MAX_RANGE_SQ = 48.0D;
 	private static final int FREQ = 24;
 
 	private EntityTFMinoshroom attacker;
-	private EntityLivingBase attackTarget;
+	private LivingEntity attackTarget;
 
 	private int attackTick;
 
@@ -71,10 +71,10 @@ public class EntityAITFGroundAttack extends EntityAIBase {
 	}
 
 	@Override
-	public void updateTask() {
+	public void tick() {
 		// look where we're going
-		this.attacker.getLookHelper().setLookPositionWithEntity(attackTarget, 30.0F, 30.0F);
-		this.attacker.getMoveHelper().action = EntityMoveHelper.Action.WAIT;
+		this.attacker.getLookController().setLookPositionWithEntity(attackTarget, 30.0F, 30.0F);
+		this.attacker.getMoveHelper().action = MovementController.Action.WAIT;
 
 		if (this.attackTick-- <= 0) {
 			this.attacker.setGroundAttackCharge(false);
@@ -91,11 +91,11 @@ public class EntityAITFGroundAttack extends EntityAIBase {
 
 				}
 
-				if (entity instanceof EntityLivingBase) {
+				if (entity instanceof LivingEntity) {
 					if (entity.onGround) {
 						entity.motionY += 0.23;
 
-						entity.attackEntityFrom(DamageSource.causeMobDamage(this.attacker).setDamageBypassesArmor(), (float) (this.attacker.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue() * 0.5F));
+						entity.attackEntityFrom(DamageSource.causeMobDamage(this.attacker).setDamageBypassesArmor(), (float) (this.attacker.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue() * 0.5F));
 					}
 				}
 			}

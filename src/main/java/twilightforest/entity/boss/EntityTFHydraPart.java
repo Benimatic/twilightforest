@@ -1,9 +1,9 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -11,7 +11,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
-public class EntityTFHydraPart extends EntityLiving {
+public class EntityTFHydraPart extends LivingEntity {
 
 	private static final DataParameter<String> PART_NAME = EntityDataManager.createKey(EntityTFHydraPart.class, DataSerializers.STRING);
 
@@ -19,7 +19,7 @@ public class EntityTFHydraPart extends EntityLiving {
 
 	public EntityTFHydraPart(World world) {
 		super(world);
-		isImmuneToFire = true;
+		isImmuneToFire();
 	}
 
 	public EntityTFHydraPart(EntityTFHydra hydra, String name, float width, float height) {
@@ -28,12 +28,12 @@ public class EntityTFHydraPart extends EntityLiving {
 		this.hydra = hydra;
 		setPartName(name);
 		//texture = TwilightForestMod.MODEL_DIR + "hydra4.png";
-		isImmuneToFire = true;
+		isImmuneToFire();
 	}
 
 	@Override
-	protected void entityInit() {
-		super.entityInit();
+	protected void registerData() {
+		super.registerData();
 		dataManager.register(PART_NAME, "");
 	}
 
@@ -46,19 +46,19 @@ public class EntityTFHydraPart extends EntityLiving {
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound compound) {
-		super.writeEntityToNBT(compound);
-		compound.setString("PartName", getPartName());
+	public void writeAdditional(CompoundNBT compound) {
+		super.writeAdditional(compound);
+		compound.putString("PartName", getPartName());
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound compound) {
-		super.readEntityFromNBT(compound);
+	public void readAdditional(CompoundNBT compound) {
+		super.readAdditional(compound);
 		setPartName(compound.getString("PartName"));
 	}
 
 	@Override
-	public void onUpdate() {
+	public void tick() {
 		if (this.hydra != null && this.hydra.deathTime > 190) {
 			setDead();
 		}
@@ -68,7 +68,7 @@ public class EntityTFHydraPart extends EntityLiving {
 			setDead();
 		}
 
-		super.onEntityUpdate();
+		super.baseTick();
 
 		lastTickPosX = posX;
 		lastTickPosY = posY;
@@ -103,9 +103,9 @@ public class EntityTFHydraPart extends EntityLiving {
 	}
 
 	@Override
-	protected void applyEntityAttributes() {
-		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(1000D);
+	protected void registerAttributes() {
+		super.registerAttributes();
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(1000D);
 	}
 
 	@Override

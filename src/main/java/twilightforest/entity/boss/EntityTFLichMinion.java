@@ -1,19 +1,19 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.init.MobEffects;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.monster.ZombieEntity;
+import net.minecraft.potion.Effects;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 
 import java.util.List;
 
-public class EntityTFLichMinion extends EntityZombie {
+public class EntityTFLichMinion extends ZombieEntity {
 
 	private static final DataParameter<Boolean> STRONG = EntityDataManager.createKey(EntityTFLichMinion.class, DataSerializers.BOOLEAN);
 
@@ -30,21 +30,21 @@ public class EntityTFLichMinion extends EntityZombie {
 	}
 
 	@Override
-	protected void entityInit() {
-		super.entityInit();
+	protected void registerData() {
+		super.registerData();
 		dataManager.register(STRONG, false);
 	}
 
 	@Override
 	public boolean attackEntityFrom(DamageSource source, float amount) {
-		EntityLivingBase prevTarget = getAttackTarget();
+		LivingEntity prevTarget = getAttackTarget();
 
 		if (super.attackEntityFrom(source, amount)) {
 			if (source.getTrueSource() instanceof EntityTFLich) {
 				// return to previous target but speed up
 				setRevengeTarget(prevTarget);
-				addPotionEffect(new PotionEffect(MobEffects.SPEED, 200, 4));
-				addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 200, 1));
+				addPotionEffect(new EffectInstance(Effects.SPEED, 200, 4));
+				addPotionEffect(new EffectInstance(Effects.STRENGTH, 200, 1));
 			}
 			return true;
 		} else {
@@ -53,7 +53,7 @@ public class EntityTFLichMinion extends EntityZombie {
 	}
 
 	@Override
-	public void onLivingUpdate() {
+	public void livingTick() {
 		if (master == null) {
 			findNewMaster();
 		}
@@ -61,7 +61,7 @@ public class EntityTFLichMinion extends EntityZombie {
 		if (master == null || master.isDead) {
 			this.setHealth(0);
 		}
-		super.onLivingUpdate();
+		super.livingTick();
 	}
 
 	private void findNewMaster() {
@@ -84,17 +84,17 @@ public class EntityTFLichMinion extends EntityZombie {
 	}
 
 	@Override
-	protected void onNewPotionEffect(PotionEffect effect) {
+	protected void onNewPotionEffect(EffectInstance effect) {
 		super.onNewPotionEffect(effect);
-		if (!world.isRemote && effect.getPotion() == MobEffects.STRENGTH) {
+		if (!world.isRemote && effect.getPotion() == Effects.STRENGTH) {
 			dataManager.set(STRONG, true);
 		}
 	}
 
 	@Override
-	protected void onFinishedPotionEffect(PotionEffect effect) {
+	protected void onFinishedPotionEffect(EffectInstance effect) {
 		super.onFinishedPotionEffect(effect);
-		if (!world.isRemote && effect.getPotion() == MobEffects.STRENGTH) {
+		if (!world.isRemote && effect.getPotion() == Effects.STRENGTH) {
 			dataManager.set(STRONG, false);
 		}
 	}

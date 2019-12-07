@@ -6,6 +6,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.BoneMealItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
@@ -23,8 +24,8 @@ public class EntityTFNatureBolt extends EntityTFThrowable implements ITFProjecti
 		super(world);
 	}
 
-	public EntityTFNatureBolt(World world, LivingEntity thrower) {
-		super(world, thrower);
+	public EntityTFNatureBolt(World world, LivingEntity owner) {
+		super(world, owner);
 	}
 
 	@Override
@@ -53,7 +54,7 @@ public class EntityTFNatureBolt extends EntityTFThrowable implements ITFProjecti
 		if (id == 3) {
 			int stateId = Block.getStateId(Blocks.OAK_LEAVES.getDefaultState());
 			for (int i = 0; i < 8; ++i) {
-				this.world.addParticle(EnumParticleTypes.BLOCK_CRACK, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, stateId);
+				this.world.addParticle(ParticleTypes.BLOCK_CRACK, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, stateId);
 			}
 		} else {
 			super.handleStatusUpdate(id);
@@ -76,7 +77,7 @@ public class EntityTFNatureBolt extends EntityTFThrowable implements ITFProjecti
 				}
 			}
 
-			if (ray.hitInfo instanceof LivingEntity && (thrower == null || (ray.entityHit != thrower && ray.entityHit != thrower.getRidingEntity()))) {
+			if (ray.hitInfo instanceof LivingEntity && (owner == null || (ray.entityHit != owner && ray.entityHit != owner.getRidingEntity()))) {
 				if (ray.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), 2)
 						&& world.getDifficulty() != Difficulty.PEACEFUL) {
 					int poisonTime = world.getDifficulty() == Difficulty.HARD ? 7 : 3;

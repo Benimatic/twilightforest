@@ -1,7 +1,7 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.entity.MultiPartEntityPart;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.DamageSource;
 
 public class EntityTFSnowQueenIceShield extends MultiPartEntityPart {

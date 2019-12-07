@@ -1,6 +1,6 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.goal.Goal;
 import twilightforest.entity.EntityTFRovingCube;
 
 /**
@@ -10,7 +10,7 @@ import twilightforest.entity.EntityTFRovingCube;
  *
  * @author benma_000
  */
-public class EntityAICubeCenterOnSymbol extends EntityAIBase {
+public class EntityAICubeCenterOnSymbol extends Goal {
 	private final EntityTFRovingCube myCube;
 	private final double speed;
 

@@ -7,7 +7,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIFindEntityNearestPlayer;
 import net.minecraft.entity.ai.NearestAttackableTargetGoal;
 import net.minecraft.entity.ai.EntityAITarget;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -35,11 +35,11 @@ public class EntityAITFFindEntityNearestPlayer extends EntityAIFindEntityNearest
 			@Override
 			public boolean apply(@Nullable Entity entity)
 			{
-				if (!(entity instanceof EntityPlayer))
+				if (!(entity instanceof PlayerEntity))
 				{
 					return false;
 				}
-				else if (((EntityPlayer)entity).capabilities.disableDamage)
+				else if (((PlayerEntity)entity).capabilities.disableDamage)
 				{
 					return false;
 				}
@@ -62,7 +62,7 @@ public class EntityAITFFindEntityNearestPlayer extends EntityAIFindEntityNearest
 	public boolean shouldExecute()
 	{
 		double maxRange = this.maxTargetRange();
-		List<EntityPlayer> list = this.entityLiving.world.<EntityPlayer>getEntitiesWithinAABB(EntityPlayer.class, this.entityLiving.getEntityBoundingBox().grow(maxRange), this.predicate);
+		List<PlayerEntity> list = this.entityLiving.world.<PlayerEntity>getEntitiesWithinAABB(PlayerEntity.class, this.entityLiving.getEntityBoundingBox().grow(maxRange), this.predicate);
 		Collections.sort(list, this.sorter);
 
 		if (list.isEmpty())

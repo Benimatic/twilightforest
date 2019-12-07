@@ -1,20 +1,21 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.Pose;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.MeleeAttackGoal;
-import net.minecraft.entity.ai.NearestAttackableTargetGoal;
-import net.minecraft.entity.monster.EntitySpider;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
+import net.minecraft.entity.monster.SpiderEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 
-public class EntityTFSwarmSpider extends EntitySpider {
+public class EntityTFSwarmSpider extends SpiderEntity {
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/swarm_spider");
 
 	protected boolean shouldSpawn = false;
@@ -37,10 +38,10 @@ public class EntityTFSwarmSpider extends EntitySpider {
 	}
 
 	@Override
-	protected void applyEntityAttributes() {
-		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(3.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
+	protected void registerAttributes() {
+		super.registerAttributes();
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(3.0D);
+		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
 	}
 
 	@Override
@@ -48,21 +49,21 @@ public class EntityTFSwarmSpider extends EntitySpider {
 		super.registerGoals();
 
 		// Remove default spider melee task
-		this.tasks.taskEntries.removeIf(t -> t.action instanceof MeleeAttackGoal);
+		this.goalSelector.taskEntries.removeIf(t -> t.action instanceof MeleeAttackGoal);
 
 		// Replace with one that doesn't become docile in light
 		// [VanillaCopy] based on EntitySpider.AISpiderAttack
-		this.tasks.addTask(4, new MeleeAttackGoal(this, 1, true) {
+		this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1, true) {
 			@Override
-			protected double getAttackReachSqr(EntityLivingBase attackTarget) {
-				return 4.0F + attackTarget.width;
+			protected double getAttackReachSqr(LivingEntity attackTarget) {
+				return 4.0F + attackTarget.getWidth();
 			}
 		});
 
 		// Remove default spider target player task
-		this.targetTasks.taskEntries.removeIf(t -> t.priority == 2 && t.action instanceof NearestAttackableTargetGoal);
+		this.targetSelector.taskEntries.removeIf(t -> t.priority == 2 && t.action instanceof NearestAttackableTargetGoal);
 		// Replace with one that doesn't care about light
-		this.targetTasks.addTask(2, new NearestAttackableTargetGoal<>(this, EntityPlayer.class, true));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
 	}
 
 	@Override
@@ -71,12 +72,12 @@ public class EntityTFSwarmSpider extends EntitySpider {
 	}
 
 	@Override
-	public float getEyeHeight() {
+	public float getEyeHeight(Pose pose) {
 		return 0.3F;
 	}
 
 	@Override
-	public void onUpdate() {
+	public void tick() {
 		if (!world.isRemote && shouldSpawnMore()) {
 			int more = 1 + rand.nextInt(2);
 			for (int i = 0; i < more; i++) {
@@ -88,7 +89,7 @@ public class EntityTFSwarmSpider extends EntitySpider {
 			setSpawnMore(false);
 		}
 
-		super.onUpdate();
+		super.tick();
 	}
 
 	@Override
@@ -108,7 +109,7 @@ public class EntityTFSwarmSpider extends EntitySpider {
 			another.setDead();
 			return false;
 		}
-		world.spawnEntity(another);
+		world.addEntity(another);
 		another.spawnExplosionParticle();
 
 		return true;
@@ -131,14 +132,14 @@ public class EntityTFSwarmSpider extends EntitySpider {
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound compound) {
-		super.writeEntityToNBT(compound);
-		compound.setBoolean("SpawnMore", shouldSpawnMore());
+	public void writeAdditional(CompoundNBT compound) {
+		super.writeAdditional(compound);
+		compound.putBoolean("SpawnMore", shouldSpawnMore());
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound compound) {
-		super.readEntityFromNBT(compound);
+	public void readAdditional(CompoundNBT compound) {
+		super.readAdditional(compound);
 		setSpawnMore(compound.getBoolean("SpawnMore"));
 	}
 

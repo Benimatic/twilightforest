@@ -1,29 +1,27 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IEntityMultiPart;
-import net.minecraft.entity.MultiPartEntityPart;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.item.EntityXPOrb;
+import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.BossInfo;
-import net.minecraft.world.BossInfoServer;
-import net.minecraft.world.EnumDifficulty;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.ServerBossInfo;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.TFFeature;
@@ -42,7 +40,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMob {
+public class EntityTFHydra extends LivingEntity implements IEntityMultiPart, IMob {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/hydra");
 
@@ -67,7 +65,7 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 	private final MultiPartEntityPart leftLeg = new MultiPartEntityPart(this, "leg", 2F, 3F);
 	private final MultiPartEntityPart rightLeg = new MultiPartEntityPart(this, "leg", 2F, 3F);
 	private final MultiPartEntityPart tail = new MultiPartEntityPart(this, "tail", 4F, 4F);
-	private final BossInfoServer bossInfo = new BossInfoServer(getDisplayName(), BossInfo.Color.BLUE, BossInfo.Overlay.PROGRESS);
+	private final ServerBossInfo bossInfo = new ServerBossInfo(getDisplayName(), BossInfo.Color.BLUE, BossInfo.Overlay.PROGRESS);
 
 	private int ticksSinceDamaged = 0;
 
@@ -88,7 +86,7 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 		partArray = parts.toArray(new Entity[0]);
 
 		this.ignoreFrustumCheck = true;
-		this.isImmuneToFire = true;
+		this.isImmuneToFire();
 		this.experienceValue = 511;
 
 		setSize(16F, 12F);
@@ -96,34 +94,34 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 	}
 
 	@Override
-	public void setCustomNameTag(String name) {
-		super.setCustomNameTag(name);
+	public void setCustomName(@Nullable ITextComponent name) {
+		super.setCustomName(name);
 		this.bossInfo.setName(this.getDisplayName());
 	}
 
 	@Override
-	protected void applyEntityAttributes() {
-		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(MAX_HEALTH);
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
+	protected void registerAttributes() {
+		super.registerAttributes();
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(MAX_HEALTH);
+		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
 	}
 
 	@Override
-	public void addTrackingPlayer(EntityPlayerMP player) {
+	public void addTrackingPlayer(ServerPlayerEntity player) {
 		super.addTrackingPlayer(player);
 		this.bossInfo.addPlayer(player);
 	}
 
 	@Override
-	public void removeTrackingPlayer(EntityPlayerMP player) {
+	public void removeTrackingPlayer(ServerPlayerEntity player) {
 		super.removeTrackingPlayer(player);
 		this.bossInfo.removePlayer(player);
 	}
 
 	@Override
 	protected void despawnEntity() {
-		if (world.getDifficulty() == EnumDifficulty.PEACEFUL) {
-			world.setBlockState(getPosition().add(0, 2, 0), TFBlocks.boss_spawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.HYDRA));
+		if (world.getDifficulty() == Difficulty.PEACEFUL) {
+			world.setBlockState(getPosition().add(0, 2, 0), TFBlocks.boss_spawner.getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.HYDRA));
 			setDead();
 			for (HydraHeadContainer container : hc) {
 				if (container.headEntity != null) {
@@ -135,7 +133,7 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 		}
 	}
 
-	// [Vanilla Copy] from EntityLivingBase. Hydra doesn't like the one from EntityLiving for whatever reason
+	// [Vanilla Copy] from LivingEntity. Hydra doesn't like the one from EntityLiving for whatever reason
 	@Override
 	protected float updateDistance(float p_110146_1_, float p_110146_2_)
 	{
@@ -170,7 +168,7 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 	}
 
 	@Override
-	public void onLivingUpdate() {
+	public void livingTick() {
 		if (hc[0].headEntity == null || hc[1].headEntity == null || hc[2].headEntity == null) {
 			// don't spawn if we're connected in multiplayer 
 			if (!world.isRemote && shouldSpawnHeads()) {
@@ -178,14 +176,14 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 					hc[i].headEntity = new EntityTFHydraHead(this, "head" + i, 3F, 3F);
 					hc[i].headEntity.setPosition(this.posX, this.posY, this.posZ);
 					hc[i].setHeadPosition();
-					world.spawnEntity(hc[i].headEntity);
+					world.addEntity(hc[i].headEntity);
 				}
 
 				setSpawnHeads(false);
 			}
 		}
 
-		body.onUpdate();
+		body.tick();
 
 		// update all heads (maybe we should change to only active ones
 		for (int i = 0; i < numHeads; i++) {
@@ -207,7 +205,7 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 		// update fight variables for difficulty setting
 		setDifficultyVariables();
 
-		super.onLivingUpdate();
+		super.livingTick();
 
 		body.width = body.height = 6.0F;
 		tail.width = 6.0F;
@@ -233,23 +231,23 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 		// destroy blocks
 		if (!this.world.isRemote) {
 			if (hurtTime == 0) {
-				this.collideWithEntities(this.world.getEntitiesWithinAABBExcludingEntity(this, this.body.getEntityBoundingBox()), this.body);
-				this.collideWithEntities(this.world.getEntitiesWithinAABBExcludingEntity(this, this.tail.getEntityBoundingBox()), this.tail);
+				this.collideWithEntities(this.world.getEntitiesWithinAABBExcludingEntity(this, this.body.getBoundingBox()), this.body);
+				this.collideWithEntities(this.world.getEntitiesWithinAABBExcludingEntity(this, this.tail.getBoundingBox()), this.tail);
 			}
 
-			this.destroyBlocksInAABB(this.body.getEntityBoundingBox());
-			this.destroyBlocksInAABB(this.tail.getEntityBoundingBox());
+			this.destroyBlocksInAABB(this.body.getBoundingBox());
+			this.destroyBlocksInAABB(this.tail.getBoundingBox());
 
 			for (int i = 0; i < numHeads; i++) {
 				if (hc[i].headEntity != null && hc[i].isActive()) {
-					this.destroyBlocksInAABB(this.hc[i].headEntity.getEntityBoundingBox());
+					this.destroyBlocksInAABB(this.hc[i].headEntity.getBoundingBox());
 				}
 			}
 
 			// smash blocks beneath us too
 			if (this.ticksExisted % 20 == 0) {
 				if (isUnsteadySurfaceBeneath()) {
-					this.destroyBlocksInAABB(this.getEntityBoundingBox().offset(0, -1, 0));
+					this.destroyBlocksInAABB(this.getBoundingBox().offset(0, -1, 0));
 
 				}
 			}
@@ -259,8 +257,8 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 	}
 
 	@Override
-	protected void entityInit() {
-		super.entityInit();
+	protected void registerData() {
+		super.registerData();
 		dataManager.register(DATA_SPAWNHEADS, false);
 	}
 
@@ -273,15 +271,15 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound compound) {
-		super.writeEntityToNBT(compound);
-		compound.setBoolean("SpawnHeads", shouldSpawnHeads());
-		compound.setByte("NumHeads", (byte) countActiveHeads());
+	public void writeAdditional(CompoundNBT compound) {
+		super.writeAdditional(compound);
+		compound.putBoolean("SpawnHeads", shouldSpawnHeads());
+		compound.putByte("NumHeads", (byte) countActiveHeads());
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound compound) {
-		super.readEntityFromNBT(compound);
+	public void readAdditional(CompoundNBT compound) {
+		super.readAdditional(compound);
 		setSpawnHeads(compound.getBoolean("SpawnHeads"));
 		activateNumberOfHeads(compound.getByte("NumHeads"));
 		if (this.hasCustomName()) {
@@ -315,7 +313,7 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 		}
 
 		if (rand.nextFloat() < 0.7F) {
-			EntityPlayer entityplayer1 = world.getNearestAttackablePlayer(this, f, f);
+			PlayerEntity entityplayer1 = world.getNearestAttackablePlayer(this, f, f);
 
 			if (entityplayer1 != null) {
 				setAttackTarget(entityplayer1);
@@ -336,7 +334,7 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 			}
 
 			// let's pick an attack
-			if (this.getAttackTarget().isEntityAlive()) {
+			if (this.getAttackTarget().isAlive()) {
 				float distance = this.getAttackTarget().getDistance(this);
 
 				if (this.getEntitySenses().canSee(this.getAttackTarget())) {
@@ -370,7 +368,7 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 	}
 
 	private void setDifficultyVariables() {
-		if (world.getDifficulty() != EnumDifficulty.HARD) {
+		if (world.getDifficulty() != Difficulty.HARD) {
 			EntityTFHydra.HEADS_ACTIVITY_FACTOR = 0.3F;
 		} else {
 			EntityTFHydra.HEADS_ACTIVITY_FACTOR = 0.5F;  // higher is harder
@@ -412,7 +410,7 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 		int FLAME_CHANCE = 100;
 		int MORTAR_CHANCE = 160;
 
-		boolean targetAbove = target.getEntityBoundingBox().minY > this.getEntityBoundingBox().maxY;
+		boolean targetAbove = target.getBoundingBox().minY > this.getBoundingBox().maxY;
 
 		// three main heads can do these kinds of attacks
 		for (int i = 0; i < 3; i++) {
@@ -489,7 +487,7 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 			}
 		}
 
-		EntityLivingBase secondaryTarget = findSecondaryTarget(20);
+		LivingEntity secondaryTarget = findSecondaryTarget(20);
 
 		if (secondaryTarget != null) {
 			float distance = secondaryTarget.getDistance(this);
@@ -529,8 +527,8 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 	}
 
 	@Nullable
-	private EntityLivingBase findSecondaryTarget(double range) {
-		return this.world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(this.posX, this.posY, this.posZ, this.posX + 1, this.posY + 1, this.posZ + 1).grow(range, range, range))
+	private LivingEntity findSecondaryTarget(double range) {
+		return this.world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(this.posX, this.posY, this.posZ, this.posX + 1, this.posY + 1, this.posZ + 1).grow(range, range, range))
 				.stream()
 				.filter(e -> !(e instanceof EntityTFHydra || e instanceof EntityTFHydraPart))
 				.filter(e -> e != getAttackTarget() && !isAnyHeadTargeting(e) && getEntitySenses().canSee(e))
@@ -549,11 +547,11 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 
 	// [VanillaCopy] based on EntityDragon.collideWithEntities
 	private void collideWithEntities(List<Entity> entities, Entity part) {
-		double d0 = (part.getEntityBoundingBox().minX + part.getEntityBoundingBox().maxX) / 2.0D;
-		double d1 = (part.getEntityBoundingBox().minZ + part.getEntityBoundingBox().maxZ) / 2.0D;
+		double d0 = (part.getBoundingBox().minX + part.getBoundingBox().maxX) / 2.0D;
+		double d1 = (part.getBoundingBox().minZ + part.getBoundingBox().maxZ) / 2.0D;
 
 		for (Entity entity : entities) {
-			if (entity instanceof EntityLivingBase) {
+			if (entity instanceof LivingEntity) {
 				double d2 = entity.posX - d0;
 				double d3 = entity.posZ - d1;
 				double d4 = d2 * d2 + d3 * d3;
@@ -566,11 +564,11 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 	 * Check the surface immediately beneath us, if it is less than 80% solid
 	 */
 	private boolean isUnsteadySurfaceBeneath() {
-		int minX = MathHelper.floor(this.getEntityBoundingBox().minX);
-		int minZ = MathHelper.floor(this.getEntityBoundingBox().minZ);
-		int maxX = MathHelper.floor(this.getEntityBoundingBox().maxX);
-		int maxZ = MathHelper.floor(this.getEntityBoundingBox().maxZ);
-		int minY = MathHelper.floor(this.getEntityBoundingBox().minY);
+		int minX = MathHelper.floor(this.getBoundingBox().minX);
+		int minZ = MathHelper.floor(this.getBoundingBox().minZ);
+		int maxX = MathHelper.floor(this.getBoundingBox().maxX);
+		int maxZ = MathHelper.floor(this.getBoundingBox().maxZ);
+		int minY = MathHelper.floor(this.getBoundingBox().minY);
 
 		int solid = 0;
 		int total = 0;
@@ -612,7 +610,7 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 	public boolean attackEntityFromPart(EntityTFHydraPart part, DamageSource source, float damage) {
 		// if we're in a wall, kill that wall
 		if (!world.isRemote && source == DamageSource.IN_WALL) {
-			destroyBlocksInAABB(part.getEntityBoundingBox());
+			destroyBlocksInAABB(part.getBoundingBox());
 		}
 
 		HydraHeadContainer headCon = null;
@@ -722,6 +720,7 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 		}
 	}
 
+	//TODO: Move to loot table
 	@Override
 	public ResourceLocation getLootTable() {
 		return LOOT_TABLE;
@@ -768,9 +767,9 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 				int i = this.getExperiencePoints(this.attackingPlayer);
 				i = ForgeEventFactory.getExperienceDrop(this, this.attackingPlayer, i);
 				while (i > 0) {
-					int j = EntityXPOrb.getXPSplit(i);
+					int j = ExperienceOrbEntity.getXPSplit(i);
 					i -= j;
-					this.world.spawnEntity(new EntityXPOrb(this.world, this.posX, this.posY, this.posZ, j));
+					this.world.addEntity(new ExperienceOrbEntity(this.world, this.posX, this.posY, this.posZ, j));
 				}
 			}
 
@@ -781,8 +780,8 @@ public class EntityTFHydra extends EntityLiving implements IEntityMultiPart, IMo
 			double vx = this.rand.nextGaussian() * 0.02D;
 			double vy = this.rand.nextGaussian() * 0.02D;
 			double vz = this.rand.nextGaussian() * 0.02D;
-			EnumParticleTypes particle = rand.nextInt(2) == 0 ? EnumParticleTypes.EXPLOSION_LARGE : EnumParticleTypes.EXPLOSION_NORMAL;
-			this.world.spawnParticle(particle,
+			ParticleTypes particle = rand.nextInt(2) == 0 ? ParticleTypes.EXPLOSION_LARGE : ParticleTypes.EXPLOSION_NORMAL;
+			this.world.addParticle(particle,
 					this.posX + this.rand.nextFloat() * this.body.width * 2.0F - this.body.width,
 					this.posY + this.rand.nextFloat() * this.body.height,
 					this.posZ + this.rand.nextFloat() * this.body.width * 2.0F - this.body.width,

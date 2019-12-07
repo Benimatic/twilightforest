@@ -1,17 +1,14 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.MeleeAttackGoal;
-import net.minecraft.entity.ai.HurtByTargetGoal;
-import net.minecraft.entity.ai.NearestAttackableTargetGoal;
-import net.minecraft.entity.ai.SwimGoal;
-import net.minecraft.entity.ai.WaterAvoidingRandomWalkingGoal;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.MobEffects;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -20,7 +17,7 @@ import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomes;
 
-public class EntityTFMosquitoSwarm extends EntityMob {
+public class EntityTFMosquitoSwarm extends MonsterEntity {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/mosquito_swarm");
 
@@ -33,19 +30,19 @@ public class EntityTFMosquitoSwarm extends EntityMob {
 
 	@Override
 	protected void registerGoals() {
-		this.tasks.addTask(0, new SwimGoal(this));
-		this.tasks.addTask(3, new MeleeAttackGoal(this, 1.0D, false));
-		this.tasks.addTask(6, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
-		this.targetTasks.addTask(1, new HurtByTargetGoal(this, true));
-		this.targetTasks.addTask(2, new NearestAttackableTargetGoal<>(this, EntityPlayer.class, true));
+		this.goalSelector.addGoal(0, new SwimGoal(this));
+		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, false));
+		this.goalSelector.addGoal(6, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
+		this.targetSelector.addGoal(1, new HurtByTargetGoal(this, true));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
 	}
 
 	@Override
-	protected void applyEntityAttributes() {
-		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(12.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
-		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
+	protected void registerAttributes() {
+		super.registerAttributes();
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(12.0D);
+		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
+		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
 	}
 
 	@Override
@@ -56,7 +53,7 @@ public class EntityTFMosquitoSwarm extends EntityMob {
 	@Override
 	public boolean attackEntityAsMob(Entity entity) {
 		if (super.attackEntityAsMob(entity)) {
-			if (entity instanceof EntityLivingBase) {
+			if (entity instanceof LivingEntity) {
 				int duration;
 				switch (world.getDifficulty()) {
 					case EASY:
@@ -71,7 +68,7 @@ public class EntityTFMosquitoSwarm extends EntityMob {
 						break;
 				}
 
-				((EntityLivingBase) entity).addPotionEffect(new PotionEffect(MobEffects.HUNGER, duration * 20, 0));
+				((LivingEntity) entity).addPotionEffect(new EffectInstance(Effects.HUNGER, duration * 20, 0));
 			}
 
 			return true;
@@ -80,6 +77,7 @@ public class EntityTFMosquitoSwarm extends EntityMob {
 		}
 	}
 
+	//TODO: Move to factory
 	@Override
 	public boolean getCanSpawnHere() {
 		if (world.getBiome(new BlockPos(this)) == TFBiomes.tfSwamp) {
@@ -95,6 +93,7 @@ public class EntityTFMosquitoSwarm extends EntityMob {
 		return 1;
 	}
 
+	//TODO: Move to factory
 	@Override
 	protected ResourceLocation getLootTable() {
 		return LOOT_TABLE;

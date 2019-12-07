@@ -1,6 +1,6 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAITarget;
 
@@ -12,7 +12,7 @@ public class EntityAITFFlockTarget extends EntityAITarget {
 	private final EntityLivingBase flockCreature;
 	private EntityLivingBase flockTarget;
 
-	public EntityAITFFlockTarget(EntityCreature creature, boolean checkSight) {
+	public EntityAITFFlockTarget(CreatureEntity creature, boolean checkSight) {
 		super(creature, false);
 		this.flockCreature = creature;
 		this.setMutexBits(1);

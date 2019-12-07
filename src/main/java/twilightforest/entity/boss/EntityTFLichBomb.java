@@ -1,8 +1,8 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import twilightforest.entity.EntityTFThrowable;
@@ -13,13 +13,13 @@ public class EntityTFLichBomb extends EntityTFThrowable {
 		super(world);
 	}
 
-	public EntityTFLichBomb(World world, EntityLivingBase thrower) {
+	public EntityTFLichBomb(World world, LivingEntity thrower) {
 		super(world, thrower);
 	}
 
 	@Override
-	public void onUpdate() {
-		super.onUpdate();
+	public void tick() {
+		super.tick();
 		makeTrail();
 	}
 
@@ -34,7 +34,7 @@ public class EntityTFLichBomb extends EntityTFThrowable {
 			double dy = posY + sy;
 			double dz = posZ + sz;
 
-			world.spawnParticle(EnumParticleTypes.FLAME, dx, dy, dz, sx * -0.25, sy * -0.25, sz * -0.25);
+			world.addParticle(ParticleTypes.FLAME, dx, dy, dz, sx * -0.25, sy * -0.25, sz * -0.25);
 		}
 	}
 

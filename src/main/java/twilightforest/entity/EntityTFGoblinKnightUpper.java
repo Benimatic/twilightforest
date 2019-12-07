@@ -1,47 +1,41 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.MeleeAttackGoal;
-import net.minecraft.entity.ai.HurtByTargetGoal;
-import net.minecraft.entity.ai.LookRandomlyGoal;
-import net.minecraft.entity.ai.NearestAttackableTargetGoal;
-import net.minecraft.entity.ai.SwimGoal;
-import net.minecraft.entity.ai.WaterAvoidingRandomWalkingGoal;
-import net.minecraft.entity.ai.LookAtGoal;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFHeavySpearAttack;
 
 import java.util.List;
 
-public class EntityTFGoblinKnightUpper extends EntityMob {
+public class EntityTFGoblinKnightUpper extends MonsterEntity {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/goblin_knight");
 	private static final int SHIELD_DAMAGE_THRESHOLD = 10;
 	private static final DataParameter<Byte> DATA_EQUIP = EntityDataManager.createKey(EntityTFGoblinKnightUpper.class, DataSerializers.BYTE);
-	private static final AttributeModifier ARMOR_MODIFIER = new AttributeModifier("Armor boost", 20, 0).setSaved(false);
-	private static final AttributeModifier DAMAGE_MODIFIER = new AttributeModifier("Heavy spear attack boost", 12, 0).setSaved(false);
+	private static final AttributeModifier ARMOR_MODIFIER = new AttributeModifier("Armor boost", 20, AttributeModifier.Operation.ADDITION).setSaved(false);
+	private static final AttributeModifier DAMAGE_MODIFIER = new AttributeModifier("Heavy spear attack boost", 12, AttributeModifier.Operation.ADDITION).setSaved(false);
 	public static final int HEAVY_SPEAR_TIMER_START = 60;
 
 	private int shieldHits = 0;
@@ -58,27 +52,27 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 
 	@Override
 	protected void registerGoals() {
-		this.tasks.addTask(0, new EntityAITFHeavySpearAttack(this));
-		this.tasks.addTask(1, new SwimGoal(this));
-		this.tasks.addTask(3, new MeleeAttackGoal(this, 1.0D, false));
-		this.tasks.addTask(6, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
-		this.tasks.addTask(7, new LookAtGoal(this, EntityPlayer.class, 8.0F));
-		this.tasks.addTask(7, new LookRandomlyGoal(this));
-		this.targetTasks.addTask(1, new HurtByTargetGoal(this, false));
-		this.targetTasks.addTask(2, new NearestAttackableTargetGoal<>(this, EntityPlayer.class, false));
+		this.goalSelector.addGoal(0, new EntityAITFHeavySpearAttack(this));
+		this.goalSelector.addGoal(1, new SwimGoal(this));
+		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, false));
+		this.goalSelector.addGoal(6, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
+		this.goalSelector.addGoal(7, new LookAtGoal(this, PlayerEntity.class, 8.0F));
+		this.goalSelector.addGoal(7, new LookRandomlyGoal(this));
+		this.targetSelector.addGoal(1, new HurtByTargetGoal(this, false));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, false));
 	}
 
 	@Override
-	protected void applyEntityAttributes() {
-		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
-		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(8.0D);
+	protected void registerAttributes() {
+		super.registerAttributes();
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
+		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
+		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(8.0D);
 	}
 
 	@Override
-	protected void entityInit() {
-		super.entityInit();
+	protected void registerData() {
+		super.registerData();
 		dataManager.register(DATA_EQUIP, (byte) 0);
 	}
 
@@ -92,11 +86,11 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 
 		if (!world.isRemote) {
 			if (flag) {
-				if (!getEntityAttribute(SharedMonsterAttributes.ARMOR).hasModifier(ARMOR_MODIFIER)) {
-					getEntityAttribute(SharedMonsterAttributes.ARMOR).applyModifier(ARMOR_MODIFIER);
+				if (!getAttribute(SharedMonsterAttributes.ARMOR).hasModifier(ARMOR_MODIFIER)) {
+					getAttribute(SharedMonsterAttributes.ARMOR).applyModifier(ARMOR_MODIFIER);
 				}
 			} else {
-				getEntityAttribute(SharedMonsterAttributes.ARMOR).removeModifier(ARMOR_MODIFIER);
+				getAttribute(SharedMonsterAttributes.ARMOR).removeModifier(ARMOR_MODIFIER);
 			}
 		}
 	}
@@ -111,22 +105,22 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound compound) {
-		super.writeEntityToNBT(compound);
-		compound.setBoolean("hasArmor", this.hasArmor());
-		compound.setBoolean("hasShield", this.hasShield());
+	public void writeAdditional(CompoundNBT compound) {
+		super.writeAdditional(compound);
+		compound.putBoolean("hasArmor", this.hasArmor());
+		compound.putBoolean("hasShield", this.hasShield());
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound compound) {
-		super.readEntityFromNBT(compound);
+	public void readAdditional(CompoundNBT compound) {
+		super.readAdditional(compound);
 		this.setHasArmor(compound.getBoolean("hasArmor"));
 		this.setHasShield(compound.getBoolean("hasShield"));
 	}
 
 	@Override
-	public void onLivingUpdate() {
-		super.onLivingUpdate();
+	public void livingTick() {
+		super.livingTick();
 		// Must be decremented on client as well for rendering
 		if ((world.isRemote || !isAIDisabled()) && heavySpearTimer > 0) {
 			--heavySpearTimer;
@@ -137,22 +131,22 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 	public void updateAITasks() {
 		super.updateAITasks();
 
-		if (this.isEntityAlive()) {
+		if (this.isAlive()) {
 			// synch target with lower goblin
-			if (getRidingEntity() instanceof EntityLiving && this.getAttackTarget() == null) {
-				this.setAttackTarget(((EntityLiving) this.getRidingEntity()).getAttackTarget());
+			if (getRidingEntity() instanceof LivingEntity && this.getAttackTarget() == null) {
+				this.setAttackTarget(((LivingEntity) this.getRidingEntity()).getAttackTarget());
 			}
 
-			if (!isRiding() && this.hasShield()) {
+			if (!isPassenger() && this.hasShield()) {
 				this.breakShield();
 			}
 
 			if (heavySpearTimer > 0) {
-				if (!getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).hasModifier(DAMAGE_MODIFIER)) {
-					getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).applyModifier(DAMAGE_MODIFIER);
+				if (!getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).hasModifier(DAMAGE_MODIFIER)) {
+					getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).applyModifier(DAMAGE_MODIFIER);
 				}
 			} else {
-				getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).removeModifier(DAMAGE_MODIFIER.getID());
+				getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).removeModifier(DAMAGE_MODIFIER.getID());
 			}
 		}
 	}
@@ -163,12 +157,12 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 
 		double dist = 1.25;
 		double px = this.posX + vector.x * dist;
-		double py = this.getEntityBoundingBox().minY - 0.75;
+		double py = this.getBoundingBox().minY - 0.75;
 		double pz = this.posZ + vector.z * dist;
 
 
 		for (int i = 0; i < 50; i++) {
-			world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, px, py, pz, (rand.nextFloat() - rand.nextFloat()) * 0.25F, 0, (rand.nextFloat() - rand.nextFloat()) * 0.25F);
+			world.addParticle(ParticleTypes.LARGE_SMOKE, px, py, pz, (rand.nextFloat() - rand.nextFloat()) * 0.25F, 0, (rand.nextFloat() - rand.nextFloat()) * 0.25F);
 		}
 
 		// damage things in front that aren't us or our "mount"
@@ -190,12 +184,12 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 	@Override
 	public void updateRidden() {
 		super.updateRidden();
-		if (getRidingEntity() instanceof EntityLiving) {
-			this.renderYawOffset = ((EntityLiving) this.getRidingEntity()).renderYawOffset;
+		if (getRidingEntity() instanceof LivingEntity) {
+			this.renderYawOffset = ((LivingEntity) this.getRidingEntity()).renderYawOffset;
 		}
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void handleStatusUpdate(byte id) {
 		if (id == 4) {
@@ -223,7 +217,7 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 			return false;
 		}
 
-		this.swingArm(EnumHand.MAIN_HAND);
+		this.swingArm(Hand.MAIN_HAND);
 		return super.attackEntityAsMob(entity);
 	}
 
@@ -281,7 +275,7 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 
 
 		// knock back slightly
-		EntityLiving toKnockback = (getRidingEntity() instanceof EntityLiving) ? (EntityLiving) getRidingEntity() : this;
+		LivingEntity toKnockback = (getRidingEntity() instanceof LivingEntity) ? (LivingEntity) getRidingEntity() : this;
 
 		if (source.getTrueSource() != null) {
 			double d0 = source.getTrueSource().posX - this.posX;
@@ -294,8 +288,8 @@ public class EntityTFGoblinKnightUpper extends EntityMob {
 			toKnockback.knockBack(source.getTrueSource(), 0, d0 / 4D, d1 / 4D);
 
 			// also set revenge target
-			if (source.getTrueSource() instanceof EntityLiving) {
-				this.setRevengeTarget((EntityLiving) source.getTrueSource());
+			if (source.getTrueSource() instanceof LivingEntity) {
+				this.setRevengeTarget((LivingEntity) source.getTrueSource());
 			}
 		}
 

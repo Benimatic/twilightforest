@@ -1,21 +1,21 @@
 package twilightforest.entity;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.init.Items;
-import net.minecraft.init.MobEffects;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.item.Items;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.EnumDifficulty;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class EntityTFTomeBolt extends EntityTFThrowable {
 
-	public EntityTFTomeBolt(World world, EntityLivingBase thrower) {
+	public EntityTFTomeBolt(World world, LivingEntity thrower) {
 		super(world, thrower);
 	}
 
@@ -24,8 +24,8 @@ public class EntityTFTomeBolt extends EntityTFThrowable {
 	}
 
 	@Override
-	public void onUpdate() {
-		super.onUpdate();
+	public void tick() {
+		super.tick();
 		makeTrail();
 	}
 
@@ -39,17 +39,17 @@ public class EntityTFTomeBolt extends EntityTFThrowable {
 			double dx = posX + 0.5 * (rand.nextDouble() - rand.nextDouble());
 			double dy = posY + 0.5 * (rand.nextDouble() - rand.nextDouble());
 			double dz = posZ + 0.5 * (rand.nextDouble() - rand.nextDouble());
-			world.spawnParticle(EnumParticleTypes.CRIT, dx, dy, dz, 0.0D, 0.0D, 0.0D);
+			world.addParticle(ParticleTypes.CRIT, dx, dy, dz, 0.0D, 0.0D, 0.0D);
 		}
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void handleStatusUpdate(byte id) {
 		if (id == 3) {
 			int itemId = Item.getIdFromItem(Items.PAPER);
 			for (int i = 0; i < 8; ++i) {
-				this.world.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, itemId);
+				this.world.addParticle(ParticleTypes.ITEM_CRACK, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, itemId);
 			}
 		} else {
 			super.handleStatusUpdate(id);
@@ -59,11 +59,11 @@ public class EntityTFTomeBolt extends EntityTFThrowable {
 	@Override
 	protected void onImpact(RayTraceResult result) {
 		if (!this.world.isRemote) {
-			if (result.entityHit instanceof EntityLivingBase
+			if (result.entityHit instanceof LivingEntity
 					&& result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 6)) {
 				// inflict move slowdown
-				int duration = world.getDifficulty() == EnumDifficulty.PEACEFUL ? 3 : world.getDifficulty() == EnumDifficulty.NORMAL ? 7 : 9;
-				((EntityLivingBase) result.entityHit).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, duration * 20, 1));
+				int duration = world.getDifficulty() == Difficulty.PEACEFUL ? 3 : world.getDifficulty() == Difficulty.NORMAL ? 7 : 9;
+				((LivingEntity) result.entityHit).addPotionEffect(new EffectInstance(Effects.SLOWNESS, duration * 20, 1));
 			}
 
 			this.world.setEntityState(this, (byte) 3);

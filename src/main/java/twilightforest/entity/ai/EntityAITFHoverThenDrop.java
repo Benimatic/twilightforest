@@ -34,7 +34,7 @@ public class EntityAITFHoverThenDrop extends EntityAITFHoverBase<EntityTFSnowQue
 
 		if (target == null) {
 			return false;
-		} else if (!target.isEntityAlive()) {
+		} else if (!target.isAlive()) {
 			return false;
 		} else if (this.attacker.getCurrentPhase() != Phase.DROP) {
 			return false;
@@ -47,7 +47,7 @@ public class EntityAITFHoverThenDrop extends EntityAITFHoverBase<EntityTFSnowQue
 	public boolean shouldContinueExecuting() {
 		EntityLivingBase target = this.attacker.getAttackTarget();
 
-		if (target == null || !target.isEntityAlive()) {
+		if (target == null || !target.isAlive()) {
 			return false;
 		} else if (this.attacker.getCurrentPhase() != Phase.DROP) {
 			return false;
@@ -73,7 +73,7 @@ public class EntityAITFHoverThenDrop extends EntityAITFHoverBase<EntityTFSnowQue
 	}
 
 	@Override
-	public void updateTask() {
+	public void tick() {
 
 		// if we have hit the drop spot, start dropping
 		if (this.hoverTimer > 0) {
@@ -107,7 +107,7 @@ public class EntityAITFHoverThenDrop extends EntityAITFHoverBase<EntityTFSnowQue
 			EntityLivingBase target = this.attacker.getAttackTarget();
 			if (target != null) {
 				this.attacker.faceEntity(target, 30.0F, 30.0F);
-				this.attacker.getLookHelper().setLookPositionWithEntity(target, 30.0F, 30.0F);
+				this.attacker.getLookController().setLookPositionWithEntity(target, 30.0F, 30.0F);
 			}
 		} else {
 			// drop!

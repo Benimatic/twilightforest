@@ -1,9 +1,9 @@
 package twilightforest.entity.ai;
 
+import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -12,14 +12,14 @@ import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.entity.ITFCharger;
 import twilightforest.util.EntityUtil;
 
-public class EntityAITFChargeAttack extends EntityAIBase {
+public class EntityAITFChargeAttack extends Goal {
 
 	private static final double MIN_RANGE_SQ = 16.0D;
 	private static final double MAX_RANGE_SQ = 64.0D;
 	private static final int FREQ = 1;
 
-	private EntityCreature charger;
-	private EntityLivingBase chargeTarget;
+	private CreatureEntity charger;
+	private LivingEntity chargeTarget;
 	private double chargeX;
 	private double chargeY;
 	private double chargeZ;
@@ -32,7 +32,7 @@ public class EntityAITFChargeAttack extends EntityAIBase {
 
 	private boolean hasAttacked;
 
-	public EntityAITFChargeAttack(EntityCreature entityLiving, float f, boolean canBreak) {
+	public EntityAITFChargeAttack(CreatureEntity entityLiving, float f, boolean canBreak) {
 		this.charger = entityLiving;
 		this.speed = f;
 		this.canBreak = canBreak;
@@ -81,9 +81,9 @@ public class EntityAITFChargeAttack extends EntityAIBase {
 	}
 
 	@Override
-	public void updateTask() {
+	public void tick() {
 		// look where we're going
-		this.charger.getLookHelper().setLookPosition(chargeX, chargeY - 1, chargeZ, 10.0F, this.charger.getVerticalFaceSpeed());
+		this.charger.getLookController().setLookPosition(chargeX, chargeY - 1, chargeZ, 10.0F, this.charger.getVerticalFaceSpeed());
 
 		if (windup > 0) {
 			if (--windup == 0) {
@@ -100,7 +100,7 @@ public class EntityAITFChargeAttack extends EntityAIBase {
 		} else if (canBreak) {
 			if (!charger.world.isRemote && ForgeEventFactory.getMobGriefingEvent(charger.world, charger)) {
 
-				AxisAlignedBB bb = charger.getEntityBoundingBox();
+				AxisAlignedBB bb = charger.getBoundingBox();
 				int minx = MathHelper.floor(bb.minX - 0.75D);
 				int miny = MathHelper.floor(bb.minY + 0.0D);
 				int minz = MathHelper.floor(bb.minZ - 0.75D);
@@ -122,9 +122,9 @@ public class EntityAITFChargeAttack extends EntityAIBase {
 		}
 
 		// attack the target when we get in range
-		double rangeSq = this.charger.width * 2.1F * this.charger.width * 2.1F;
+		double rangeSq = this.charger.getWidth() * 2.1F * this.charger.getWidth() * 2.1F;
 
-		if (this.charger.getDistanceSq(this.chargeTarget.posX, this.chargeTarget.getEntityBoundingBox().minY, this.chargeTarget.posZ) <= rangeSq) {
+		if (this.charger.getDistanceSq(this.chargeTarget.posX, this.chargeTarget.getBoundingBox().minY, this.chargeTarget.posZ) <= rangeSq) {
 			if (!this.hasAttacked) {
 				this.hasAttacked = true;
 				this.charger.attackEntityAsMob(this.chargeTarget);

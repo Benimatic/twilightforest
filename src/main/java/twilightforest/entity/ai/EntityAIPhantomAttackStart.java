@@ -1,11 +1,11 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.BlockPos;
 import twilightforest.entity.boss.EntityTFKnightPhantom;
 
-public class EntityAIPhantomAttackStart extends EntityAIBase {
+public class EntityAIPhantomAttackStart extends Goal {
 
 	private final EntityTFKnightPhantom boss;
 
@@ -20,8 +20,8 @@ public class EntityAIPhantomAttackStart extends EntityAIBase {
 	}
 
 	@Override
-	public void updateTask() {
-		EntityLivingBase target = boss.getAttackTarget();
+	public void tick() {
+		LivingEntity target = boss.getAttackTarget();
 		if (target != null) {
 			BlockPos targetPos = new BlockPos(target.lastTickPosX, target.lastTickPosY, target.lastTickPosZ);
 

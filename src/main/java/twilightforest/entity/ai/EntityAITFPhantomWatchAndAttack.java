@@ -1,12 +1,12 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.item.ItemShield;
-import net.minecraft.util.EnumHand;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.item.ShieldItem;
+import net.minecraft.util.Hand;
 import twilightforest.entity.boss.EntityTFKnightPhantom;
 
-public class EntityAITFPhantomWatchAndAttack extends EntityAIBase {
+public class EntityAITFPhantomWatchAndAttack extends Goal {
 
 	private final EntityTFKnightPhantom boss;
 	private int attackTime;
@@ -23,23 +23,23 @@ public class EntityAITFPhantomWatchAndAttack extends EntityAIBase {
 	}
 
 	@Override
-	public void updateTask() {
-		EntityLivingBase target = boss.getAttackTarget();
+	public void tick() {
+		LivingEntity target = boss.getAttackTarget();
 		if (target != null) {
 			boss.faceEntity(target, 10.0F, 500.0F);
 
-			if (target.isEntityAlive()) {
+			if (target.isAlive()) {
 				float f1 = target.getDistance(boss);
 
 				if (boss.getEntitySenses().canSee(target)) {
-					if (attackTime-- <= 0 && f1 < 2.0F && target.getEntityBoundingBox().maxY > boss.getEntityBoundingBox().minY && boss.getAttackTarget().getEntityBoundingBox().minY < boss.getEntityBoundingBox().maxY) {
+					if (attackTime-- <= 0 && f1 < 2.0F && target.getBoundingBox().maxY > boss.getBoundingBox().minY && boss.getAttackTarget().getBoundingBox().minY < boss.getBoundingBox().maxY) {
 						attackTime = 20;
 						boss.attackEntityAsMob(target);
 					}
 				}
 
-				if (this.boss.getHeldItemOffhand().getItem() instanceof ItemShield && boss.getCurrentFormation() != EntityTFKnightPhantom.Formation.ATTACK_PLAYER_ATTACK && this.isGuard) {
-					this.boss.setActiveHand(EnumHand.OFF_HAND);
+				if (this.boss.getHeldItemOffhand().getItem() instanceof ShieldItem && boss.getCurrentFormation() != EntityTFKnightPhantom.Formation.ATTACK_PLAYER_ATTACK && this.isGuard) {
+					this.boss.setActiveHand(Hand.OFF_HAND);
 				} else {
 					this.boss.resetActiveHand();
 				}

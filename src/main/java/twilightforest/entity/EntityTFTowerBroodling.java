@@ -18,10 +18,10 @@ public class EntityTFTowerBroodling extends EntityTFSwarmSpider {
 	}
 
 	@Override
-	protected void applyEntityAttributes() {
-		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(7.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
+	protected void registerAttributes() {
+		super.registerAttributes();
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(7.0D);
+		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
 	}
 
 	@Override
@@ -36,7 +36,7 @@ public class EntityTFTowerBroodling extends EntityTFSwarmSpider {
 			another.setDead();
 			return false;
 		}
-		world.spawnEntity(another);
+		world.addEntity(another);
 		another.spawnExplosionParticle();
 
 		return true;

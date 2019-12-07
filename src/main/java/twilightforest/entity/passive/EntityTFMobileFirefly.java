@@ -1,21 +1,22 @@
 package twilightforest.entity.passive;
 
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.passive.AmbientEntity;
 import net.minecraft.entity.passive.EntityAmbientCreature;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
 
-public class EntityTFMobileFirefly extends EntityAmbientCreature {
+public class EntityTFMobileFirefly extends AmbientEntity {
 	private BlockPos spawnPosition;
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/mobile_firefly");
@@ -55,14 +56,14 @@ public class EntityTFMobileFirefly extends EntityAmbientCreature {
 	}
 
 	@Override
-	protected void applyEntityAttributes() {
-		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(6.0D);
+	protected void registerAttributes() {
+		super.registerAttributes();
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(6.0D);
 	}
 
 	@Override
-	public void onUpdate() {
-		super.onUpdate();
+	public void tick() {
+		super.tick();
 
 		this.motionY *= 0.6000000238418579D;
 	}
@@ -103,7 +104,7 @@ public class EntityTFMobileFirefly extends EntityAmbientCreature {
 	}
 
 	@Override
-	protected void updateFallState(double y, boolean onGround, IBlockState state, BlockPos pos) {
+	protected void updateFallState(double y, boolean onGround, BlockState state, BlockPos pos) {
 	}
 
 	@Override
@@ -123,7 +124,7 @@ public class EntityTFMobileFirefly extends EntityAmbientCreature {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public int getBrightnessForRender() {
 		return 15728880;
 	}

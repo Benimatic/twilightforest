@@ -1,9 +1,9 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.goal.Goal;
 import twilightforest.entity.passive.EntityTFTinyBird;
 
-public class EntityAITFBirdFly extends EntityAIBase {
+public class EntityAITFBirdFly extends Goal {
 
 	private EntityTFTinyBird entity;
 

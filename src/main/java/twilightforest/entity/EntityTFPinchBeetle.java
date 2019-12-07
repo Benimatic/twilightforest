@@ -1,28 +1,24 @@
 package twilightforest.entity;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.Pose;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.MeleeAttackGoal;
-import net.minecraft.entity.ai.HurtByTargetGoal;
-import net.minecraft.entity.ai.LookRandomlyGoal;
-import net.minecraft.entity.ai.NearestAttackableTargetGoal;
-import net.minecraft.entity.ai.SwimGoal;
-import net.minecraft.entity.ai.WaterAvoidingRandomWalkingGoal;
-import net.minecraft.entity.ai.LookAtGoal;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFChargeAttack;
 
-public class EntityTFPinchBeetle extends EntityMob implements IHostileMount {
+public class EntityTFPinchBeetle extends MonsterEntity implements IHostileMount {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/pinch_beetle");
 
@@ -33,23 +29,23 @@ public class EntityTFPinchBeetle extends EntityMob implements IHostileMount {
 
 	@Override
 	protected void registerGoals() {
-		this.tasks.addTask(0, new SwimGoal(this));
-		this.tasks.addTask(2, new EntityAITFChargeAttack(this, 2.0F, false));
-		this.tasks.addTask(4, new MeleeAttackGoal(this, 1.0D, false));
-		this.tasks.addTask(6, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
-		this.tasks.addTask(7, new LookAtGoal(this, EntityPlayer.class, 8.0F));
-		this.tasks.addTask(8, new LookRandomlyGoal(this));
-		this.targetTasks.addTask(1, new HurtByTargetGoal(this, false));
-		this.targetTasks.addTask(2, new NearestAttackableTargetGoal<>(this, EntityPlayer.class, true));
+		this.goalSelector.addGoal(0, new SwimGoal(this));
+		this.goalSelector.addGoal(2, new EntityAITFChargeAttack(this, 2.0F, false));
+		this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, false));
+		this.goalSelector.addGoal(6, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
+		this.goalSelector.addGoal(7, new LookAtGoal(this, PlayerEntity.class, 8.0F));
+		this.goalSelector.addGoal(8, new LookRandomlyGoal(this));
+		this.targetSelector.addGoal(1, new HurtByTargetGoal(this, false));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
 	}
 
 	@Override
-	protected void applyEntityAttributes() {
-		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(40.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
-		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(2.0D);
+	protected void registerAttributes() {
+		super.registerAttributes();
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(40.0D);
+		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
+		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
+		this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(2.0D);
 	}
 
 	@Override
@@ -63,12 +59,12 @@ public class EntityTFPinchBeetle extends EntityMob implements IHostileMount {
 	}
 
 	@Override
-	protected void playStepSound(BlockPos pos, Block block) {
+	protected void playStepSound(BlockPos pos, BlockState block) {
 		playSound(SoundEvents.ENTITY_SPIDER_STEP, 0.15F, 1.0F);
 	}
 
 	@Override
-	public void onLivingUpdate() {
+	public void livingTick() {
 		if (!this.getPassengers().isEmpty()) {
 			this.setSize(1.9F, 2.0F);
 
@@ -80,10 +76,10 @@ public class EntityTFPinchBeetle extends EntityMob implements IHostileMount {
 
 		}
 
-		super.onLivingUpdate();
+		super.livingTick();
 
 		if (!this.getPassengers().isEmpty()) {
-			this.getLookHelper().setLookPositionWithEntity(getPassengers().get(0), 100F, 100F);
+			this.getLookController().setLookPositionWithEntity(getPassengers().get(0), 100F, 100F);
 
 			// push out of user in wall
 			Vec3d riderPos = this.getRiderPosition();
@@ -93,7 +89,7 @@ public class EntityTFPinchBeetle extends EntityMob implements IHostileMount {
 
 	@Override
 	public boolean attackEntityAsMob(Entity entity) {
-		if (this.getPassengers().isEmpty() && !entity.isRiding()) {
+		if (this.getPassengers().isEmpty() && !entity.isPassenger()) {
 			entity.startRiding(this);
 		}
 
@@ -101,7 +97,7 @@ public class EntityTFPinchBeetle extends EntityMob implements IHostileMount {
 	}
 
 	@Override
-	public float getEyeHeight() {
+	public float getEyeHeight(Pose pose) {
 		return 0.25F;
 	}
 
@@ -137,6 +133,7 @@ public class EntityTFPinchBeetle extends EntityMob implements IHostileMount {
 		return true;
 	}
 
+	//TODO: Move to loot table
 	@Override
 	protected ResourceLocation getLootTable() {
 		return LOOT_TABLE;

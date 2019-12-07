@@ -1,12 +1,13 @@
 package twilightforest.entity.finalcastle;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.CreatureEntity;
+import net.minecraft.entity.Pose;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
-public class EntityTFCastleGuardian extends EntityCreature { // Not exactly living but requires the logic >.>
+public class EntityTFCastleGuardian extends CreatureEntity { // Not exactly living but requires the logic >.>
     public EntityTFCastleGuardian(World worldIn) {
         super(worldIn);
 
@@ -15,9 +16,9 @@ public class EntityTFCastleGuardian extends EntityCreature { // Not exactly livi
 
     @Override
     protected void registerGoals() {
-        //this.tasks.addTask(0, new AvoidEntityGoal<>(this, EntityPlayer.class, 10.0F, 0.5F, 0.5F));
-        //this.tasks.addTask(1, new WaterAvoidingRandomWalkingGoal(this, 0.5, 0.5f));
-        //this.tasks.addTask(2, new LookRandomlyGoal(this));
+        //this.goalSelector.addGoal(0, new AvoidEntityGoal<>(this, EntityPlayer.class, 10.0F, 0.5F, 0.5F));
+        //this.goalSelector.addGoal(1, new WaterAvoidingRandomWalkingGoal(this, 0.5, 0.5f));
+        //this.goalSelector.addGoal(2, new LookRandomlyGoal(this));
     }
 
     @Override
@@ -46,7 +47,7 @@ public class EntityTFCastleGuardian extends EntityCreature { // Not exactly livi
 
     @Override
     public AxisAlignedBB getCollisionBoundingBox() {
-        return this.getEntityBoundingBox();
+        return this.getBoundingBox();
     }
 
     @Override
@@ -70,7 +71,7 @@ public class EntityTFCastleGuardian extends EntityCreature { // Not exactly livi
     }
 
     @Override
-    public float getEyeHeight() {
+    public float getEyeHeight(Pose pose) {
         return 1.865f;
     }
 

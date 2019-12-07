@@ -1,13 +1,13 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.Vec3d;
 import twilightforest.TFSounds;
 import twilightforest.entity.boss.EntityTFIceBomb;
 import twilightforest.entity.boss.EntityTFYetiAlpha;
 
-public class EntityAITFYetiRampage extends EntityAIBase {
+public class EntityAITFYetiRampage extends Goal {
 
 	private EntityTFYetiAlpha yeti;
 	private int currentTimeOut;
@@ -58,7 +58,7 @@ public class EntityAITFYetiRampage extends EntityAIBase {
 	 * Updates the task
 	 */
 	@Override
-	public void updateTask() {
+	public void tick() {
 		this.currentDuration--;
 
 //    	int rx = MathHelper.floor(this.yeti.posX);
@@ -68,7 +68,7 @@ public class EntityAITFYetiRampage extends EntityAIBase {
 //		this.yeti.world.playAuxSFX(2004, rx, ry, rz, 0);
 
 		if (this.yeti.getAttackTarget() != null) {
-			this.yeti.getLookHelper().setLookPositionWithEntity(this.yeti.getAttackTarget(), 10.0F, (float) this.yeti.getVerticalFaceSpeed());
+			this.yeti.getLookController().setLookPositionWithEntity(this.yeti.getAttackTarget(), 10.0F, (float) this.yeti.getVerticalFaceSpeed());
 		}
 
 		if (this.yeti.onGround) {
@@ -77,7 +77,7 @@ public class EntityAITFYetiRampage extends EntityAIBase {
 			this.yeti.motionY = 0.4F;
 		}
 
-		this.yeti.destroyBlocksInAABB(this.yeti.getEntityBoundingBox().grow(1, 2, 1).offset(0, 2, 0));
+		this.yeti.destroyBlocksInAABB(this.yeti.getBoundingBox().grow(1, 2, 1).offset(0, 2, 0));
 
 		// regular falling blocks
 		if (this.currentDuration % 20 == 0) {
@@ -99,7 +99,7 @@ public class EntityAITFYetiRampage extends EntityAIBase {
 			Vec3d vec = new Vec3d(0.5F + yeti.getRNG().nextFloat() * 0.5F, 0.5F + yeti.getRNG().nextFloat() * 0.3F, 0).rotateYaw(yeti.getRNG().nextFloat() * 360F);
 			ice.shoot(vec.x, vec.y, vec.z, 0.4F + yeti.getRNG().nextFloat() * 0.3F, 0);
 			yeti.playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (yeti.getRNG().nextFloat() * 0.4F + 0.8F));
-			yeti.world.spawnEntity(ice);
+			yeti.world.addEntity(ice);
 		}
 	}
 

@@ -1,7 +1,7 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.DifficultyInstance;
@@ -23,20 +23,20 @@ public class EntityTFRedcapSapper extends EntityTFRedcap {
 	@Override
 	protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
 		super.setEquipmentBasedOnDifficulty(difficulty);
-		this.setItemStackToSlot(EntityEquipmentSlot.FEET, new ItemStack(TFItems.ironwood_boots));
+		this.setItemStackToSlot(EquipmentSlotType.FEET, new ItemStack(TFItems.ironwood_boots));
 	}
 
 	@Override
 	protected void registerGoals() {
 		super.registerGoals();
-		this.tasks.addTask(4, new EntityAITFRedcapPlantTNT(this));
+		this.goalSelector.addGoal(4, new EntityAITFRedcapPlantTNT(this));
 	}
 
 	@Override
-	protected void applyEntityAttributes() {
-		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(2.0D);
+	protected void registerAttributes() {
+		super.registerAttributes();
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
+		this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(2.0D);
 	}
 
 	@Override

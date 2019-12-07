@@ -1,9 +1,9 @@
 package twilightforest.entity.ai;
 
 import net.minecraft.block.BlockTNT;
-import net.minecraft.init.Blocks;
-import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.util.EnumHand;
+import net.minecraft.block.Blocks;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.entity.EntityTFRedcap;
@@ -47,26 +47,26 @@ public class EntityAITFRedcapLightTNT extends EntityAITFRedcapBase {
 
 	@Override
 	public void startExecuting() {
-		this.redcap.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, redcap.heldFlint);
+		this.redcap.setItemStackToSlot(EquipmentSlotType.MAINHAND, redcap.heldFlint);
 	}
 
 	@Override
 	public void resetTask() {
 		this.redcap.getNavigator().clearPath();
-		this.redcap.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, redcap.heldPick);
+		this.redcap.setItemStackToSlot(EquipmentSlotType.MAINHAND, redcap.heldPick);
 		this.delay = 20;
 		this.tntPos = null;
 	}
 
 	@Override
-	public void updateTask() {
-		this.redcap.getLookHelper().setLookPosition(tntPos.getX(), tntPos.getY(), tntPos.getZ(), 30.0F, this.redcap.getVerticalFaceSpeed());
+	public void tick() {
+		this.redcap.getLookController().setLookPosition(tntPos.getX(), tntPos.getY(), tntPos.getZ(), 30.0F, this.redcap.getVerticalFaceSpeed());
 
 		if (this.redcap.getDistanceSq(tntPos) < 2.4D * 2.4D) {
 			redcap.playLivingSound();
 
 			Blocks.TNT.onPlayerDestroy(redcap.world, tntPos, Blocks.TNT.getDefaultState().withProperty(BlockTNT.EXPLODE, true));
-			redcap.swingArm(EnumHand.MAIN_HAND);
+			redcap.swingArm(Hand.MAIN_HAND);
 			redcap.world.setBlockState(tntPos, Blocks.AIR.getDefaultState(), 2);
 			this.redcap.getNavigator().clearPath();
 		} else {

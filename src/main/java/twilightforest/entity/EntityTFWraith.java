@@ -2,23 +2,23 @@ package twilightforest.entity;
 
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityFlying;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.FlyingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.ai.EntityMoveHelper;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemAxe;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Items;
+import net.minecraft.item.AxeItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.EnumDifficulty;
-import net.minecraft.world.EnumSkyBlock;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.LightType;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
@@ -26,26 +26,26 @@ import twilightforest.entity.ai.EntityAITFFindEntityNearestPlayer;
 
 import java.util.Random;
 
-public class EntityTFWraith extends EntityFlying implements IMob {
+public class EntityTFWraith extends FlyingEntity implements IMob {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/wraith");
 
 	public EntityTFWraith(World world) {
 		super(world);
-		moveHelper = new NoClipMoveHelper(this);
+		moveController = new NoClipMoveHelper(this);
 		noClip = true;
 	}
 
 	@Override
 	protected void registerGoals() {
-		this.tasks.addTask(4, new AIAttack(this));
-		this.tasks.addTask(5, new AIFlyTowardsTarget(this));
-		this.tasks.addTask(6, new AIRandomFly(this));
-		this.tasks.addTask(7, new AILookAround(this));
-		this.targetTasks.addTask(1, new EntityAITFFindEntityNearestPlayer(this));
+		this.goalSelector.addGoal(4, new AIAttack(this));
+		this.goalSelector.addGoal(5, new AIFlyTowardsTarget(this));
+		this.goalSelector.addGoal(6, new AIRandomFly(this));
+		this.goalSelector.addGoal(7, new AILookAround(this));
+		this.targetSelector.addGoal(1, new EntityAITFFindEntityNearestPlayer(this));
 	}
 
-	static class AIFlyTowardsTarget extends EntityAIBase {
+	static class AIFlyTowardsTarget extends Goal {
 		private final EntityTFWraith taskOwner;
 
 		AIFlyTowardsTarget(EntityTFWraith wraith) {
@@ -65,14 +65,14 @@ public class EntityTFWraith extends EntityFlying implements IMob {
 
 		@Override
 		public void startExecuting() {
-			EntityLivingBase target = taskOwner.getAttackTarget();
+			LivingEntity target = taskOwner.getAttackTarget();
 			if (target != null)
 				taskOwner.getMoveHelper().setMoveTo(target.posX, target.posY, target.posZ, 0.5F);
 		}
 	}
 
 	// Similar to MeleeAttackGoal but simpler (no pathfinding)
-	static class AIAttack extends EntityAIBase {
+	static class AIAttack extends Goal {
 		private final EntityTFWraith taskOwner;
 		private int attackTick = 20;
 
@@ -82,16 +82,16 @@ public class EntityTFWraith extends EntityFlying implements IMob {
 
 		@Override
 		public boolean shouldExecute() {
-			EntityLivingBase target = taskOwner.getAttackTarget();
+			LivingEntity target = taskOwner.getAttackTarget();
 
 			return target != null
-					&& target.getEntityBoundingBox().maxY > taskOwner.getEntityBoundingBox().minY
-					&& target.getEntityBoundingBox().minY < taskOwner.getEntityBoundingBox().maxY
+					&& target.getBoundingBox().maxY > taskOwner.getBoundingBox().minY
+					&& target.getBoundingBox().minY < taskOwner.getBoundingBox().maxY
 					&& taskOwner.getDistanceSq(target) <= 4.0D;
 		}
 
 		@Override
-		public void updateTask() {
+		public void tick() {
 			if (attackTick > 0) {
 				attackTick--;
 			}
@@ -111,7 +111,7 @@ public class EntityTFWraith extends EntityFlying implements IMob {
 	}
 
 	// [VanillaCopy] EntityGhast.AIRandomFly
-	static class AIRandomFly extends EntityAIBase {
+	static class AIRandomFly extends Goal {
 		private final EntityTFWraith parentEntity;
 
 		public AIRandomFly(EntityTFWraith wraith) {
@@ -123,7 +123,7 @@ public class EntityTFWraith extends EntityFlying implements IMob {
 		public boolean shouldExecute() {
 			if (parentEntity.getAttackTarget() != null)
 				return false;
-			EntityMoveHelper entitymovehelper = this.parentEntity.getMoveHelper();
+			MovementController entitymovehelper = this.parentEntity.getMoveHelper();
 			double d0 = entitymovehelper.getX() - this.parentEntity.posX;
 			double d1 = entitymovehelper.getY() - this.parentEntity.posY;
 			double d2 = entitymovehelper.getZ() - this.parentEntity.posZ;
@@ -147,7 +147,7 @@ public class EntityTFWraith extends EntityFlying implements IMob {
 	}
 
 	// [VanillaCopy] EntityGhast.AILookAround
-	public static class AILookAround extends EntityAIBase {
+	public static class AILookAround extends Goal {
 		private final EntityTFWraith parentEntity;
 
 		public AILookAround(EntityTFWraith wraith) {
@@ -161,12 +161,12 @@ public class EntityTFWraith extends EntityFlying implements IMob {
 		}
 
 		@Override
-		public void updateTask() {
+		public void tick() {
 			if (this.parentEntity.getAttackTarget() == null) {
 				this.parentEntity.rotationYaw = -((float) MathHelper.atan2(this.parentEntity.motionX, this.parentEntity.motionZ)) * (180F / (float) Math.PI);
 				this.parentEntity.renderYawOffset = this.parentEntity.rotationYaw;
 			} else {
-				EntityLivingBase entitylivingbase = this.parentEntity.getAttackTarget();
+				LivingEntity entitylivingbase = this.parentEntity.getAttackTarget();
 
 				if (entitylivingbase.getDistanceSq(this.parentEntity) < 4096.0D) {
 					double d1 = entitylivingbase.posX - this.parentEntity.posX;
@@ -179,14 +179,14 @@ public class EntityTFWraith extends EntityFlying implements IMob {
 	}
 
 	@Override
-	protected void applyEntityAttributes() {
-		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.5D);
+	protected void registerAttributes() {
+		super.registerAttributes();
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
+		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.5D);
 
 		// need to initialize damage since we're not an EntityMob
-		this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
-		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D);
+		this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
+		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D);
 	}
 
 	@Override
@@ -197,19 +197,19 @@ public class EntityTFWraith extends EntityFlying implements IMob {
 	// [VanillaCopy] EntityMob.attackEntityAsMob. This whole inheritance hierarchy makes me sad.
 	@Override
 	public boolean attackEntityAsMob(Entity entityIn) {
-		float f = (float) this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
+		float f = (float) this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getValue();
 		int i = 0;
 
-		if (entityIn instanceof EntityLivingBase) {
-			f += EnchantmentHelper.getModifierForCreature(this.getHeldItemMainhand(), ((EntityLivingBase) entityIn).getCreatureAttribute());
+		if (entityIn instanceof LivingEntity) {
+			f += EnchantmentHelper.getModifierForCreature(this.getHeldItemMainhand(), ((LivingEntity) entityIn).getCreatureAttribute());
 			i += EnchantmentHelper.getKnockbackModifier(this);
 		}
 
 		boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), f);
 
 		if (flag) {
-			if (i > 0 && entityIn instanceof EntityLivingBase) {
-				((EntityLivingBase) entityIn).knockBack(this, (float) i * 0.5F, (double) MathHelper.sin(this.rotationYaw * 0.017453292F), (double) (-MathHelper.cos(this.rotationYaw * 0.017453292F)));
+			if (i > 0 && entityIn instanceof LivingEntity) {
+				((LivingEntity) entityIn).knockBack(this, (float) i * 0.5F, (double) MathHelper.sin(this.rotationYaw * 0.017453292F), (double) (-MathHelper.cos(this.rotationYaw * 0.017453292F)));
 				this.motionX *= 0.6D;
 				this.motionZ *= 0.6D;
 			}
@@ -220,12 +220,12 @@ public class EntityTFWraith extends EntityFlying implements IMob {
 				entityIn.setFire(j * 4);
 			}
 
-			if (entityIn instanceof EntityPlayer) {
-				EntityPlayer entityplayer = (EntityPlayer) entityIn;
+			if (entityIn instanceof PlayerEntity) {
+				PlayerEntity entityplayer = (PlayerEntity) entityIn;
 				ItemStack itemstack = this.getHeldItemMainhand();
 				ItemStack itemstack1 = entityplayer.isHandActive() ? entityplayer.getActiveItemStack() : ItemStack.EMPTY;
 
-				if (!itemstack.isEmpty() && !itemstack1.isEmpty() && itemstack.getItem() instanceof ItemAxe && itemstack1.getItem() == Items.SHIELD) {
+				if (!itemstack.isEmpty() && !itemstack1.isEmpty() && itemstack.getItem() instanceof AxeItem && itemstack1.getItem() == Items.SHIELD) {
 					float f1 = 0.25F + (float) EnchantmentHelper.getEfficiencyModifier(this) * 0.05F;
 
 					if (this.rand.nextFloat() < f1) {
@@ -242,13 +242,13 @@ public class EntityTFWraith extends EntityFlying implements IMob {
 	}
 
 	private void despawnIfPeaceful() {
-		if (!world.isRemote && world.getDifficulty() == EnumDifficulty.PEACEFUL)
+		if (!world.isRemote && world.getDifficulty() == Difficulty.PEACEFUL)
 			setDead();
 	}
 
 	@Override
-	public void onLivingUpdate() {
-		super.onLivingUpdate();
+	public void livingTick() {
+		super.livingTick();
 		despawnIfPeaceful();
 	}
 
@@ -259,8 +259,8 @@ public class EntityTFWraith extends EntityFlying implements IMob {
 			if (getRidingEntity() == entity || getPassengers().contains(entity)) {
 				return true;
 			}
-			if (entity != this && entity instanceof EntityLivingBase) {
-				setAttackTarget((EntityLivingBase) entity);
+			if (entity != this && entity instanceof LivingEntity) {
+				setAttackTarget((LivingEntity) entity);
 			}
 			return true;
 		} else {
@@ -290,9 +290,9 @@ public class EntityTFWraith extends EntityFlying implements IMob {
 
 	// [VanillaCopy] Direct copy of EntityMob.isValidLightLevel
 	protected boolean isValidLightLevel() {
-		BlockPos blockpos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
+		BlockPos blockpos = new BlockPos(this.posX, this.getBoundingBox().minY, this.posZ);
 
-		if (this.world.getLightFor(EnumSkyBlock.SKY, blockpos) > this.rand.nextInt(32)) {
+		if (this.world.getLightFor(LightType.SKY, blockpos) > this.rand.nextInt(32)) {
 			return false;
 		} else {
 			int i = this.world.getLightFromNeighbors(blockpos);
@@ -310,6 +310,6 @@ public class EntityTFWraith extends EntityFlying implements IMob {
 
 	@Override
 	public boolean getCanSpawnHere() {
-		return this.world.getDifficulty() != EnumDifficulty.PEACEFUL && this.isValidLightLevel() && super.getCanSpawnHere();
+		return this.world.getDifficulty() != Difficulty.PEACEFUL && this.isValidLightLevel() && super.getCanSpawnHere();
 	}
 }

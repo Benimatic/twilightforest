@@ -1,12 +1,12 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.projectile.EntityThrowable;
-import net.minecraft.init.Blocks;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.block.Blocks;
+import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityDamageSourceIndirect;
+import net.minecraft.util.IndirectEntityDamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.TwilightForestMod;
 
-public class EntityTFHydraMortar extends EntityThrowable {
+public class EntityTFHydraMortar extends ThrowableEntity {
 
 	private static final int BURN_FACTOR = 5;
 	private static final int DIRECT_DAMAGE = 18;
@@ -50,10 +50,10 @@ public class EntityTFHydraMortar extends EntityThrowable {
 	}
 
 	@Override
-	public void onUpdate() {
-		super.onUpdate();
+	public void tick() {
+		super.tick();
 
-		this.pushOutOfBlocks(this.posX, (this.getEntityBoundingBox().minY + this.getEntityBoundingBox().maxY) / 2.0D, this.posZ);
+		this.pushOutOfBlocks(this.posX, (this.getBoundingBox().minY + this.getBoundingBox().maxY) / 2.0D, this.posZ);
 
 		if (this.onGround) {
 			this.motionX *= 0.9D;
@@ -76,14 +76,14 @@ public class EntityTFHydraMortar extends EntityThrowable {
 			// we hit the ground
 			this.motionY = 0;
 			this.onGround = true;
-		} else if (!world.isRemote && ray.entityHit != thrower && !isPartOfHydra(ray.entityHit)) {
+		} else if (!world.isRemote && ray.entityHit != owner && !isPartOfHydra(ray.entityHit)) {
 			detonate();
 		}
 	}
 
 	private boolean isPartOfHydra(Entity entity) {
-		if (thrower instanceof EntityTFHydraPart) {
-			EntityTFHydra hydra = ((EntityTFHydraPart) thrower).hydra;
+		if (owner instanceof EntityTFHydraPart) {
+			EntityTFHydra hydra = ((EntityTFHydraPart) owner).hydra;
 			if (hydra == null || hydra.getParts() == null)
 				return false;
 			if (entity == hydra)
@@ -99,7 +99,7 @@ public class EntityTFHydraMortar extends EntityThrowable {
 	}
 
 	@Override
-	public float getExplosionResistance(Explosion explosion, World world, BlockPos pos, IBlockState state) {
+	public float getExplosionResistance(Explosion explosion, World world, BlockPos pos, BlockState state) {
 		float resistance = super.getExplosionResistance(explosion, world, pos, state);
 
 		if (this.megaBlast && state.getBlock() != Blocks.BEDROCK && state.getBlock() != Blocks.END_PORTAL && state.getBlock() != Blocks.END_PORTAL_FRAME) {
@@ -114,9 +114,9 @@ public class EntityTFHydraMortar extends EntityThrowable {
 		boolean flag = ForgeEventFactory.getMobGriefingEvent(world, this);
 		this.world.newExplosion(this, this.posX, this.posY, this.posZ, explosionPower, flag, flag);
 
-		DamageSource src = new EntityDamageSourceIndirect("onFire", this, getThrower()).setFireDamage().setProjectile();
+		DamageSource src = new IndirectEntityDamageSource("onFire", this, getThrower()).setFireDamage().setProjectile();
 
-		for (Entity nearby : this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().grow(1.0D, 1.0D, 1.0D))) {
+		for (Entity nearby : this.world.getEntitiesWithinAABBExcludingEntity(this, this.getBoundingBox().grow(1.0D, 1.0D, 1.0D))) {
 			if (nearby.attackEntityFrom(src, DIRECT_DAMAGE) && !nearby.isImmuneToFire()) {
 				nearby.setFire(BURN_FACTOR);
 			}
@@ -138,8 +138,8 @@ public class EntityTFHydraMortar extends EntityThrowable {
 				this.fuse += 20;
 			}
 
-			if (source.getTrueSource() instanceof EntityLivingBase) {
-				this.thrower = (EntityLivingBase) source.getTrueSource();
+			if (source.getTrueSource() instanceof LivingEntity) {
+				this.owner = (LivingEntity) source.getTrueSource();
 			}
 			return true;
 		} else {

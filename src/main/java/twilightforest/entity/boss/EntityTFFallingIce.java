@@ -1,11 +1,11 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityFallingBlock;
-import net.minecraft.init.Blocks;
+import net.minecraft.entity.item.FallingBlockEntity;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -15,7 +15,7 @@ import twilightforest.client.particle.TFParticleType;
 
 import java.util.List;
 
-public class EntityTFFallingIce extends EntityFallingBlock {
+public class EntityTFFallingIce extends FallingBlockEntity {
 
 	private static final int HANG_TIME = 100;
 
@@ -33,16 +33,16 @@ public class EntityTFFallingIce extends EntityFallingBlock {
 	}
 
 	@Override
-	public void onUpdate() {
+	public void tick() {
 		if (fallTime > HANG_TIME) {
 			setNoGravity(true);
 		}
 
-		super.onUpdate();
+		super.tick();
 
 		// kill other nearby blocks if they are not as old as this one
 		if (!this.world.isRemote) {
-			List<EntityTFFallingIce> nearby = this.world.getEntitiesWithinAABB(EntityTFFallingIce.class, this.getEntityBoundingBox());
+			List<EntityTFFallingIce> nearby = this.world.getEntitiesWithinAABB(EntityTFFallingIce.class, this.getBoundingBox());
 
 			for (EntityTFFallingIce entity : nearby) {
 				if (entity != this) {
@@ -52,7 +52,7 @@ public class EntityTFFallingIce extends EntityFallingBlock {
 				}
 			}
 
-			destroyIceInAABB(this.getEntityBoundingBox().grow(0.5, 0, 0.5));
+			destroyIceInAABB(this.getBoundingBox().grow(0.5, 0, 0.5));
 		} else {
 			makeTrail();
 		}
@@ -75,7 +75,7 @@ public class EntityTFFallingIce extends EntityFallingBlock {
 			int i = MathHelper.ceil(distance - 1.0F);
 
 			if (i > 0) {
-				List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox());
+				List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getBoundingBox());
 				DamageSource damagesource = DamageSource.FALLING_BLOCK;
 
 				for (Entity entity : list) {
@@ -92,7 +92,7 @@ public class EntityTFFallingIce extends EntityFallingBlock {
 			double dy = this.posY + 2 + 3F * (rand.nextFloat() - rand.nextFloat());
 			double dz = this.posZ + 3F * (rand.nextFloat() - rand.nextFloat());
 
-			this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, dx, dy, dz, 0, 0, 0, stateId);
+			this.world.addParticle(ParticleTypes.BLOCK_CRACK, dx, dy, dz, 0, 0, 0, stateId);
 		}
 
 		this.playSound(Blocks.PACKED_ICE.getSoundType(Blocks.PACKED_ICE.getDefaultState(), world, getPosition(), null).getBreakSound(), 3F, 0.5F);

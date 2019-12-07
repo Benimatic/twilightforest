@@ -1,12 +1,12 @@
 package twilightforest.entity;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class EntityTFIceSnowball extends EntityTFThrowable {
 
@@ -16,13 +16,13 @@ public class EntityTFIceSnowball extends EntityTFThrowable {
 		super(world);
 	}
 
-	public EntityTFIceSnowball(World world, EntityLivingBase thrower) {
+	public EntityTFIceSnowball(World world, LivingEntity thrower) {
 		super(world, thrower);
 	}
 
 	@Override
-	public void onUpdate() {
-		super.onUpdate();
+	public void tick() {
+		super.tick();
 		makeTrail();
 	}
 
@@ -36,7 +36,7 @@ public class EntityTFIceSnowball extends EntityTFThrowable {
 			double dx = posX + 0.5 * (rand.nextDouble() - rand.nextDouble());
 			double dy = posY + 0.5 * (rand.nextDouble() - rand.nextDouble());
 			double dz = posZ + 0.5 * (rand.nextDouble() - rand.nextDouble());
-			world.spawnParticle(EnumParticleTypes.SNOWBALL, dx, dy, dz, 0.0D, 0.0D, 0.0D);
+			world.addParticle(ParticleTypes.ITEM_SNOWBALL, dx, dy, dz, 0.0D, 0.0D, 0.0D);
 		}
 	}
 
@@ -47,12 +47,12 @@ public class EntityTFIceSnowball extends EntityTFThrowable {
 		return true;
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void handleStatusUpdate(byte id) {
 		if (id == 3) {
 			for (int j = 0; j < 8; ++j) {
-				this.world.spawnParticle(EnumParticleTypes.SNOWBALL, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
+				this.world.addParticle(ParticleTypes.ITEM_SNOWBALL, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
 			}
 		} else {
 			super.handleStatusUpdate(id);
@@ -61,7 +61,7 @@ public class EntityTFIceSnowball extends EntityTFThrowable {
 
 	@Override
 	protected void onImpact(RayTraceResult result) {
-		if (!world.isRemote && result.entityHit instanceof EntityLivingBase) {
+		if (!world.isRemote && result.entityHit instanceof LivingEntity) {
 			result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), DAMAGE);
 			// TODO: damage armor?
 		}

@@ -2,12 +2,12 @@ package twilightforest.entity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.Pose;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.item.TNTEntity;
+import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -23,9 +23,9 @@ import twilightforest.entity.ai.EntityAIThrowSpikeBlock;
 import java.util.List;
 import java.util.UUID;
 
-public class EntityTFBlockGoblin extends MobEntity implements IEntityMultiPart {
+public class EntityTFBlockGoblin extends MonsterEntity implements IEntityMultiPart {
 	private static final UUID MODIFIER_UUID = UUID.fromString("5CD17E52-A79A-43D3-A529-90FDE04B181E");
-	private static final AttributeModifier MODIFIER = (new AttributeModifier(MODIFIER_UUID, "speedPenalty", -0.25D, 0)).setSaved(false);
+	private static final AttributeModifier MODIFIER = (new AttributeModifier(MODIFIER_UUID, "speedPenalty", -0.25D, AttributeModifier.Operation.ADDITION)).setSaved(false);
 
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/block_goblin");
@@ -143,7 +143,7 @@ public class EntityTFBlockGoblin extends MobEntity implements IEntityMultiPart {
 	@Override
 	public void tick() {
 		super.tick();
-		block.onUpdate();
+		block.tick();
 		chain1.onUpdate();
 		chain2.onUpdate();
 		chain3.onUpdate();

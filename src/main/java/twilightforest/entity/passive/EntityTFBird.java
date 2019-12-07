@@ -1,9 +1,11 @@
 package twilightforest.entity.passive;
 
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.EntityAgeable;
+import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.init.Items;
+import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -12,7 +14,7 @@ import twilightforest.TwilightForestMod;
 
 import javax.annotation.Nonnull;
 
-public abstract class EntityTFBird extends EntityAnimal {
+public abstract class EntityTFBird extends AnimalEntity {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/bird");
 
@@ -30,8 +32,8 @@ public abstract class EntityTFBird extends EntityAnimal {
 	}
 
 	@Override
-	public void onLivingUpdate() {
-		super.onLivingUpdate();
+	public void livingTick() {
+		super.livingTick();
 		this.lastFlapLength = this.flapLength;
 		this.lastFlapIntensity = this.flapIntensity;
 		this.flapIntensity = (float) (this.flapIntensity + (this.onGround ? -1 : 4) * 0.3D);
@@ -66,7 +68,7 @@ public abstract class EntityTFBird extends EntityAnimal {
 	}
 
 	@Override
-	protected void updateFallState(double y, boolean onGroundIn, @Nonnull IBlockState state, @Nonnull BlockPos pos) {
+	protected void updateFallState(double y, boolean onGroundIn, @Nonnull BlockState state, @Nonnull BlockPos pos) {
 	}
 
 	@Override
@@ -84,7 +86,7 @@ public abstract class EntityTFBird extends EntityAnimal {
 	}
 
 	@Override
-	public EntityAnimal createChild(EntityAgeable entityanimal) {
+	public AnimalEntity createChild(AgeableEntity entityanimal) {
 		return null;
 	}
 

@@ -1,7 +1,8 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.ai.TemptGoal;
+import net.minecraft.entity.ai.goal.TemptGoal;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 
@@ -14,7 +15,7 @@ public class EntityAITFTempt extends TemptGoal {
 
 	protected final Ingredient ingredient;
 
-	public EntityAITFTempt(EntityCreature temptedEntity, double speed, boolean scaredByPlayerMovement, Ingredient ingredient) {
+	public EntityAITFTempt(CreatureEntity temptedEntity, double speed, boolean scaredByPlayerMovement, Ingredient ingredient) {
 		super(temptedEntity, speed, scaredByPlayerMovement, Collections.emptySet());
 		this.ingredient = ingredient;
 	}

@@ -1,15 +1,15 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.item.EntityTNTPrimed;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Blocks;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.EntityTFRedcap;
 
-public abstract class EntityAITFRedcapBase extends EntityAIBase {
+public abstract class EntityAITFRedcapBase extends Goal {
 
 	protected final EntityTFRedcap redcap;
 
@@ -20,7 +20,7 @@ public abstract class EntityAITFRedcapBase extends EntityAIBase {
 	/**
 	 * Fairly straightforward.  Returns true in a 120 degree arc in front of the target's view.
 	 */
-	public boolean isTargetLookingAtMe(EntityLivingBase attackTarget) {
+	public boolean isTargetLookingAtMe(LivingEntity attackTarget) {
 		// find angle of approach
 		double dx = redcap.posX - attackTarget.posX;
 		double dz = redcap.posZ - attackTarget.posZ;
@@ -48,7 +48,7 @@ public abstract class EntityAITFRedcapBase extends EntityAIBase {
 	}
 
 	public boolean isLitTNTNearby(int range) {
-		AxisAlignedBB expandedBox = redcap.getEntityBoundingBox().grow(range, range, range);
-		return !redcap.world.getEntitiesWithinAABB(EntityTNTPrimed.class, expandedBox).isEmpty();
+		AxisAlignedBB expandedBox = redcap.getBoundingBox().grow(range, range, range);
+		return !redcap.world.getEntitiesWithinAABB(TNTEntity.class, expandedBox).isEmpty();
 	}
 }

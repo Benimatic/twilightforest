@@ -1,16 +1,17 @@
 package twilightforest.entity;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.block.Blocks;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.Pose;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.init.Blocks;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.EnumSkyBlock;
+import net.minecraft.world.LightType;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 
@@ -31,28 +32,28 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast {
 	}
 
 	@Override
-	protected void applyEntityAttributes() {
-		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.isMinion ? 6 : 10);
-		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(16.0D);
+	protected void registerAttributes() {
+		super.registerAttributes();
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.isMinion ? 6 : 10);
+		this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(16.0D);
 	}
 
 	@Override
-	public float getEyeHeight() {
+	public float getEyeHeight(Pose pose) {
 		return 1.2F;
 	}
 
 	// Loosely based on EntityEnderman.shouldAttackPlayer
 	@Override
-	protected boolean shouldAttack(EntityLivingBase living) {
-		ItemStack helmet = living.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
+	protected boolean shouldAttack(LivingEntity living) {
+		ItemStack helmet = living.getItemStackFromSlot(EquipmentSlotType.HEAD);
 		if (!helmet.isEmpty() && helmet.getItem() == Item.getItemFromBlock(Blocks.PUMPKIN)) {
 			return false;
 		} else if (living.getDistance(this) <= 3.5F) {
 			return living.canEntityBeSeen(this);
 		} else {
 			Vec3d vec3d = living.getLook(1.0F).normalize();
-			Vec3d vec3d1 = new Vec3d(this.posX - living.posX, this.getEntityBoundingBox().minY + (double) this.getEyeHeight() - (living.posY + (double) living.getEyeHeight()), this.posZ - living.posZ);
+			Vec3d vec3d1 = new Vec3d(this.posX - living.posX, this.getBoundingBox().minY + (double) this.getEyeHeight() - (living.posY + (double) living.getEyeHeight()), this.posZ - living.posZ);
 			double d0 = vec3d1.length();
 			vec3d1 = vec3d1.normalize();
 			double d1 = vec3d.dotProduct(vec3d1);
@@ -67,9 +68,9 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast {
 		}
 
 		// [VanillaCopy] EntityMob.isValidLightLevel
-		BlockPos blockpos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
+		BlockPos blockpos = new BlockPos(this.posX, this.getBoundingBox().minY, this.posZ);
 
-		if (this.world.getLightFor(EnumSkyBlock.SKY, blockpos) > this.rand.nextInt(32)) {
+		if (this.world.getLightFor(LightType.SKY.SKY, blockpos) > this.rand.nextInt(32)) {
 			return false;
 		} else {
 			int i = this.world.getLightFromNeighbors(blockpos);
@@ -89,7 +90,7 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast {
 		this.wanderFactor = 0.005F;
 		this.isMinion = true;
 
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(6);
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(6);
 		this.setHealth(6);
 	}
 
@@ -103,14 +104,14 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast {
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound compound) {
-		compound.setBoolean("isMinion", this.isMinion);
-		super.writeEntityToNBT(compound);
+	public void writeAdditional(CompoundNBT compound) {
+		compound.putBoolean("isMinion", this.isMinion);
+		super.writeAdditional(compound);
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound compound) {
-		super.readEntityFromNBT(compound);
+	public void readAdditional(CompoundNBT compound) {
+		super.readAdditional(compound);
 		if (compound.getBoolean("isMinion")) {
 			makeBossMinion();
 		}

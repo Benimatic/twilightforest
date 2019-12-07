@@ -1,9 +1,9 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -11,7 +11,7 @@ import twilightforest.entity.boss.EntityTFLich;
 import twilightforest.entity.boss.EntityTFLichMinion;
 import twilightforest.item.TFItems;
 
-public class EntityAITFLichMinions extends EntityAIBase {
+public class EntityAITFLichMinions extends Goal {
 
 	private final EntityTFLich lich;
 
@@ -27,12 +27,12 @@ public class EntityAITFLichMinions extends EntityAIBase {
 
 	@Override
 	public void startExecuting() {
-		lich.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.zombie_scepter));
+		lich.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(TFItems.zombie_scepter));
 	}
 
 	@Override
-	public void updateTask() {
-		EntityLivingBase targetedEntity = lich.getAttackTarget();
+	public void tick() {
+		LivingEntity targetedEntity = lich.getAttackTarget();
 		if (targetedEntity == null)
 			return;
 		float dist = lich.getDistance(targetedEntity);
@@ -83,7 +83,7 @@ public class EntityAITFLichMinions extends EntityAIBase {
 
 	private void spawnMinionAt() {
 		// find a good spot
-		EntityLivingBase targetedEntity = lich.getAttackTarget();
+		LivingEntity targetedEntity = lich.getAttackTarget();
 		Vec3d minionSpot = lich.findVecInLOSOf(targetedEntity);
 
 		if (minionSpot != null) {
@@ -91,7 +91,7 @@ public class EntityAITFLichMinions extends EntityAIBase {
 			EntityTFLichMinion minion = new EntityTFLichMinion(lich.world, lich);
 			minion.setPosition(minionSpot.x, minionSpot.y, minionSpot.z);
 			minion.onInitialSpawn(lich.world.getDifficultyForLocation(new BlockPos(minionSpot)), null);
-			lich.world.spawnEntity(minion);
+			lich.world.addEntity(minion);
 
 			minion.setAttackTarget(targetedEntity);
 
@@ -99,7 +99,7 @@ public class EntityAITFLichMinions extends EntityAIBase {
 			minion.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1.0F, ((lich.getRNG().nextFloat() - lich.getRNG().nextFloat()) * 0.7F + 1.0F) * 2.0F);
 
 			// make sparkles leading to it
-			lich.makeBlackMagicTrail(lich.posX, lich.posY + lich.getEyeHeight(), lich.posZ, minionSpot.x, minionSpot.y + minion.height / 2.0, minionSpot.z);
+			lich.makeBlackMagicTrail(lich.posX, lich.posY + lich.getEyeHeight(), lich.posZ, minionSpot.x, minionSpot.y + minion.getHeight() / 2.0, minionSpot.z);
 		}
 	}
 

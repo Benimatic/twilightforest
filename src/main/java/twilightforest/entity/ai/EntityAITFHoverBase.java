@@ -1,14 +1,13 @@
 package twilightforest.entity.ai;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
 import twilightforest.TwilightForestMod;
 
-public abstract class EntityAITFHoverBase<T extends EntityLiving> extends EntityAIBase {
+public abstract class EntityAITFHoverBase<T extends LivingEntity> extends Goal {
 
 	protected final T attacker;
 
@@ -27,7 +26,7 @@ public abstract class EntityAITFHoverBase<T extends EntityLiving> extends Entity
 
 	@Override
 	public void startExecuting() {
-		EntityLivingBase target = this.attacker.getAttackTarget();
+		LivingEntity target = this.attacker.getAttackTarget();
 		if (target != null) {
 			// find a spot above the player
 			makeNewHoverSpot(target);
@@ -37,7 +36,7 @@ public abstract class EntityAITFHoverBase<T extends EntityLiving> extends Entity
 	/**
 	 * Make a new spot to hover at!
 	 */
-	protected void makeNewHoverSpot(EntityLivingBase target) {
+	protected void makeNewHoverSpot(LivingEntity target) {
 		double hx = 0, hy = 0, hz = 0;
 
 		boolean found = false;
@@ -63,8 +62,8 @@ public abstract class EntityAITFHoverBase<T extends EntityLiving> extends Entity
 	}
 
 	protected boolean isPositionOccupied(double hx, double hy, double hz) {
-		float radius = this.attacker.width / 2F;
-		AxisAlignedBB aabb = new AxisAlignedBB(hx - radius, hy, hz - radius, hx + radius, hy + this.attacker.height, hz + radius);
+		float radius = this.attacker.getWidth() / 2F;
+		AxisAlignedBB aabb = new AxisAlignedBB(hx - radius, hy, hz - radius, hx + radius, hy + this.attacker.getHeight(), hz + radius);
 		return !this.attacker.world.checkNoEntityCollision(aabb, attacker) || !this.attacker.world.getCollisionBoxes(attacker, aabb).isEmpty();
 	}
 

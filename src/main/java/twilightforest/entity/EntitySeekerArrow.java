@@ -1,12 +1,12 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -26,18 +26,18 @@ public class EntitySeekerArrow extends EntityTFArrow {
 		super(world);
 	}
 
-	public EntitySeekerArrow(World world, EntityLivingBase shooter) {
+	public EntitySeekerArrow(World world, LivingEntity shooter) {
 		super(world, shooter);
 	}
 
 	@Override
-	protected void entityInit() {
-		super.entityInit();
+	protected void registerData() {
+		super.registerData();
 		dataManager.register(TARGET, -1);
 	}
 
 	@Override
-	public void onUpdate() {
+	public void tick() {
 		if (isThisArrowFlying()) {
 			if (!world.isRemote) {
 				updateTarget();
@@ -45,7 +45,7 @@ public class EntitySeekerArrow extends EntityTFArrow {
 
 			if (world.isRemote && !inGround) {
 				for (int i = 0; i < 4; ++i) {
-					this.world.spawnParticle(EnumParticleTypes.SPELL_WITCH, this.posX + this.motionX * (double) i / 4.0D, this.posY + this.motionY * (double) i / 4.0D, this.posZ + this.motionZ * (double) i / 4.0D, -this.motionX, -this.motionY + 0.2D, -this.motionZ);
+					this.world.addParticle(ParticleTypes.SPELL_WITCH, this.posX + this.motionX * (double) i / 4.0D, this.posY + this.motionY * (double) i / 4.0D, this.posZ + this.motionZ * (double) i / 4.0D, -this.motionX, -this.motionY + 0.2D, -this.motionZ);
 				}
 			}
 
@@ -81,7 +81,7 @@ public class EntitySeekerArrow extends EntityTFArrow {
 			}
 		}
 
-		super.onUpdate();
+		super.tick();
 	}
 
 	private void updateTarget() {
@@ -108,9 +108,9 @@ public class EntitySeekerArrow extends EntityTFArrow {
 			double closestDot = -1.0;
 			Entity closestTarget = null;
 
-			for (EntityLivingBase living : this.world.getEntitiesWithinAABB(EntityLivingBase.class, targetBB)) {
+			for (LivingEntity living : this.world.getEntitiesWithinAABB(LivingEntity.class, targetBB)) {
 
-				if (living instanceof EntityPlayer) continue;
+				if (living instanceof PlayerEntity) continue;
 
 				Vec3d motionVec = getMotionVec().normalize();
 				Vec3d targetVec = getVectorToTarget(living).normalize();

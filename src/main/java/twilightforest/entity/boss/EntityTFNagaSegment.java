@@ -6,7 +6,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.MultiPartEntityPart;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import java.util.List;
 
@@ -48,7 +48,7 @@ public class EntityTFNagaSegment extends MultiPartEntityPart {
 					double d = rand.nextGaussian() * 0.02D;
 					double d1 = rand.nextGaussian() * 0.02D;
 					double d2 = rand.nextGaussian() * 0.02D;
-					EnumParticleTypes explosionType = rand.nextBoolean() ? EnumParticleTypes.EXPLOSION_LARGE : EnumParticleTypes.EXPLOSION_NORMAL;
+					ParticleTypes explosionType = rand.nextBoolean() ? ParticleTypes.EXPLOSION_LARGE : ParticleTypes.EXPLOSION_NORMAL;
 
 					this.world.spawnParticle(explosionType, (posX + rand.nextFloat() * width * 2.0F) - width, posY + rand.nextFloat() * height, (posZ + rand.nextFloat() * width * 2.0F) - width, d, d1, d2);
 				}

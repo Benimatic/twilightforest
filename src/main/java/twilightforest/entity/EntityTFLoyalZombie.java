@@ -1,36 +1,27 @@
 package twilightforest.entity;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityAgeable;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.MeleeAttackGoal;
-import net.minecraft.entity.ai.EntityAIFollowOwner;
-import net.minecraft.entity.ai.HurtByTargetGoal;
-import net.minecraft.entity.ai.LookRandomlyGoal;
-import net.minecraft.entity.ai.NearestAttackableTargetGoal;
-import net.minecraft.entity.ai.EntityAIOwnerHurtByTarget;
-import net.minecraft.entity.ai.EntityAIOwnerHurtTarget;
-import net.minecraft.entity.ai.SwimGoal;
-import net.minecraft.entity.ai.WaterAvoidingRandomWalkingGoal;
-import net.minecraft.entity.ai.LookAtGoal;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.monster.EntityGhast;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.passive.AbstractHorse;
-import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.passive.EntityTameable;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.MobEffects;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.monster.CreeperEntity;
+import net.minecraft.entity.monster.GhastEntity;
+import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.passive.TameableEntity;
+import net.minecraft.entity.passive.horse.AbstractHorseEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class EntityTFLoyalZombie extends EntityTameable {
+public class EntityTFLoyalZombie extends TameableEntity {
 
 	public EntityTFLoyalZombie(World world) {
 		super(world);
@@ -39,29 +30,29 @@ public class EntityTFLoyalZombie extends EntityTameable {
 
 	@Override
 	protected void registerGoals() {
-		this.tasks.addTask(1, new SwimGoal(this));
-		this.tasks.addTask(4, new MeleeAttackGoal(this, 1.0D, true));
-		this.tasks.addTask(5, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
-		this.tasks.addTask(7, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
-		this.tasks.addTask(9, new LookAtGoal(this, EntityPlayer.class, 8.0F));
-		this.tasks.addTask(9, new LookRandomlyGoal(this));
-		this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
-		this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
-		this.targetTasks.addTask(3, new HurtByTargetGoal(this, true));
-		this.targetTasks.addTask(4, new NearestAttackableTargetGoal<>(this, EntityMob.class, true));
+		this.goalSelector.addGoal(1, new SwimGoal(this));
+		this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, true));
+		this.goalSelector.addGoal(5, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F));
+		this.goalSelector.addGoal(7, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
+		this.goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, 8.0F));
+		this.goalSelector.addGoal(9, new LookRandomlyGoal(this));
+		this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
+		this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
+		this.targetSelector.addGoal(3, new HurtByTargetGoal(this, true));
+		this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, MonsterEntity.class, true));
 	}
 
 	@Override
-	public EntityAnimal createChild(EntityAgeable entityanimal) {
+	public AnimalEntity createChild(AgeableEntity entityanimal) {
 		return null;
 	}
 
 	@Override
-	protected void applyEntityAttributes() {
-		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(40.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
-		this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(3.0D);
+	protected void registerAttributes() {
+		super.registerAttributes();
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(40.0D);
+		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
+		this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(3.0D);
 	}
 
 	@Override
@@ -76,20 +67,20 @@ public class EntityTFLoyalZombie extends EntityTameable {
 	}
 
 	@Override
-	public void onLivingUpdate() {
+	public void livingTick() {
 		// once our damage boost effect wears out, start to burn
 		// the effect here is that we die shortly after our 60 second lifespan
-		if (!this.world.isRemote && this.getActivePotionEffect(MobEffects.STRENGTH) == null) {
+		if (!this.world.isRemote && this.getActivePotionEffect(Effects.STRENGTH) == null) {
 			this.setFire(100);
 		}
 
-		super.onLivingUpdate();
+		super.livingTick();
 	}
 
 	// [VanillaCopy] EntityWolf.shouldAttackEntity, substituting with our class
 	@Override
-	public boolean shouldAttackEntity(EntityLivingBase target, EntityLivingBase owner) {
-		if (!(target instanceof EntityCreeper) && !(target instanceof EntityGhast)) {
+	public boolean shouldAttackEntity(LivingEntity target, LivingEntity owner) {
+		if (!(target instanceof CreeperEntity) && !(target instanceof GhastEntity)) {
 			if (target instanceof EntityTFLoyalZombie) {
 				EntityTFLoyalZombie zombie = (EntityTFLoyalZombie) target;
 
@@ -98,14 +89,14 @@ public class EntityTFLoyalZombie extends EntityTameable {
 				}
 			}
 
-			return target instanceof EntityPlayer && owner instanceof EntityPlayer && !((EntityPlayer) owner).canAttackPlayer((EntityPlayer) target) ? false : !(target instanceof AbstractHorse) || !((AbstractHorse) target).isTame();
+			return target instanceof PlayerEntity && owner instanceof PlayerEntity && !((PlayerEntity) owner).canAttackPlayer((PlayerEntity) target) ? false : !(target instanceof AbstractHorseEntity) || !((AbstractHorseEntity) target).isTame();
 		} else {
 			return false;
 		}
 	}
 
 	@Override
-	protected boolean canDespawn() {
+	public boolean canDespawn(double distanceToClosestPlayer) {
 		return !this.isTamed();
 	}
 
@@ -125,12 +116,12 @@ public class EntityTFLoyalZombie extends EntityTameable {
 	}
 
 	@Override
-	protected void playStepSound(BlockPos pos, Block block) {
+	protected void playStepSound(BlockPos pos, BlockState block) {
 		playSound(SoundEvents.ENTITY_ZOMBIE_STEP, 0.15F, 1.0F);
 	}
 
 	@Override
-	public EnumCreatureAttribute getCreatureAttribute() {
-		return EnumCreatureAttribute.UNDEAD;
+	public CreatureAttribute getCreatureAttribute() {
+		return CreatureAttribute.UNDEAD;
 	}
 }

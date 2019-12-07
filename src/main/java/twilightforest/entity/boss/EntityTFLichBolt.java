@@ -1,15 +1,15 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.init.Items;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.entity.EntityTFThrowable;
 
 public class EntityTFLichBolt extends EntityTFThrowable {
@@ -19,13 +19,13 @@ public class EntityTFLichBolt extends EntityTFThrowable {
 		super(world);
 	}
 
-	public EntityTFLichBolt(World world, EntityLivingBase thrower) {
-		super(world, thrower);
+	public EntityTFLichBolt(World world, LivingEntity owner) {
+		super(world, owner);
 	}
 
 	@Override
-	public void onUpdate() {
-		super.onUpdate();
+	public void tick() {
+		super.tick();
 		makeTrail();
 	}
 
@@ -39,7 +39,7 @@ public class EntityTFLichBolt extends EntityTFThrowable {
 			double s2 = ((rand.nextFloat() * 0.5F) + 0.5F) * 0.80F;
 			double s3 = ((rand.nextFloat() * 0.5F) + 0.5F) * 0.69F;
 
-			world.spawnParticle(EnumParticleTypes.SPELL_MOB, dx, dy, dz, s1, s2, s3);
+			world.addParticle(ParticleTypes.SPELL_MOB, dx, dy, dz, s1, s2, s3);
 		}
 	}
 
@@ -62,8 +62,8 @@ public class EntityTFLichBolt extends EntityTFThrowable {
 			// reflect faster and more accurately
 			this.shoot(vec3d.x, vec3d.y, vec3d.z, 1.5F, 0.1F);  // reflect faster and more accurately
 
-			if (damagesource.getImmediateSource() instanceof EntityLivingBase)
-				this.thrower = (EntityLivingBase) damagesource.getImmediateSource();
+			if (damagesource.getImmediateSource() instanceof LivingEntity)
+				this.owner = (LivingEntity) damagesource.getImmediateSource();
 
 			return true;
 		}
@@ -76,13 +76,13 @@ public class EntityTFLichBolt extends EntityTFThrowable {
 		return 0.001F;
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void handleStatusUpdate(byte id) {
 		if (id == 3) {
 			int itemId = Item.getIdFromItem(Items.ENDER_PEARL);
 			for (int i = 0; i < 8; ++i) {
-				this.world.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, itemId);
+				this.world.addParticle(ParticleTypes.ITEM_CRACK, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, itemId);
 			}
 		} else {
 			super.handleStatusUpdate(id);
@@ -98,7 +98,7 @@ public class EntityTFLichBolt extends EntityTFThrowable {
 		}
 
 		if (!this.world.isRemote) {
-			if (result.entityHit instanceof EntityLivingBase) {
+			if (result.entityHit instanceof LivingEntity) {
 				result.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), 6);
 			}
 			this.world.setEntityState(this, (byte) 3);

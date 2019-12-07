@@ -1,7 +1,7 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
@@ -25,8 +25,8 @@ public class EntityTFSpikeBlock extends Entity {
 	}
 
 	@Override
-	public void onUpdate() {
-		super.onUpdate();
+	public void tick() {
+		super.tick();
 
 		this.ticksExisted++;
 
@@ -60,14 +60,14 @@ public class EntityTFSpikeBlock extends Entity {
 	}
 
 	@Override
-	protected void entityInit() {
+	protected void registerData() {
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound compound) {
+	protected void readAdditional(CompoundNBT compound) {
 	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound compound) {
+	protected void writeAdditional(CompoundNBT compound) {
 	}
 }

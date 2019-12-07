@@ -1,23 +1,23 @@
 package twilightforest.entity;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.RangedAttackGoal;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.ItemHoe;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.goal.RangedAttackGoal;
+import net.minecraft.entity.monster.SkeletonEntity;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.HoeItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHand;
+import net.minecraft.item.Items;
+import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 
-public class EntityTFSkeletonDruid extends EntitySkeleton {
+//TODO: Extend AbstractSkeletonEntity?
+public class EntityTFSkeletonDruid extends SkeletonEntity {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/skeleton_druid");
 
@@ -28,7 +28,7 @@ public class EntityTFSkeletonDruid extends EntitySkeleton {
 	@Override
 	protected void registerGoals() {
 		super.registerGoals();
-		this.tasks.addTask(4, new RangedAttackGoal(this, 1.25D, 20, 10.0F) {
+		this.goalSelector.addGoal(4, new RangedAttackGoal(this, 1.25D, 20, 10.0F) {
 			@Override
 			public void startExecuting() {
 				super.startExecuting();
@@ -45,14 +45,14 @@ public class EntityTFSkeletonDruid extends EntitySkeleton {
 
 	@Override
 	public void setCombatTask() {
-		if (!(this.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemHoe)) {
+		if (!(this.getHeldItem(Hand.MAIN_HAND).getItem() instanceof HoeItem)) {
 			super.setCombatTask();
 		}
 	}
 
 	@Override
 	protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
-		this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.GOLDEN_HOE));
+		this.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(Items.GOLDEN_HOE));
 	}
 
 	@Override
@@ -61,8 +61,8 @@ public class EntityTFSkeletonDruid extends EntitySkeleton {
 	}
 
 	@Override
-	public void attackEntityWithRangedAttack(EntityLivingBase attackTarget, float extraDamage) {
-		if (this.getHeldItem(EnumHand.MAIN_HAND).getItem() instanceof ItemHoe) {
+	public void attackEntityWithRangedAttack(LivingEntity attackTarget, float extraDamage) {
+		if (this.getHeldItem(Hand.MAIN_HAND).getItem() instanceof HoeItem) {
 			EntityTFNatureBolt natureBolt = new EntityTFNatureBolt(this.world, this);
 			playSound(SoundEvents.ENTITY_GHAST_SHOOT, 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
 
@@ -71,7 +71,7 @@ public class EntityTFSkeletonDruid extends EntitySkeleton {
 			double tz = attackTarget.posZ - this.posZ;
 			float heightOffset = MathHelper.sqrt(tx * tx + tz * tz) * 0.2F;
 			natureBolt.shoot(tx, ty + heightOffset, tz, 0.6F, 6.0F);
-			this.world.spawnEntity(natureBolt);
+			this.world.addEntity(natureBolt);
 		} else {
 			super.attackEntityWithRangedAttack(attackTarget, extraDamage);
 		}
@@ -82,7 +82,7 @@ public class EntityTFSkeletonDruid extends EntitySkeleton {
 	protected boolean isValidLightLevel() {
 		BlockPos blockpos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
 
-		if (this.world.getLightFor(EnumSkyBlock.SKY, blockpos) > this.rand.nextInt(32)) {
+		if (this.world.getLightFor(LightType.SKY, blockpos) > this.rand.nextInt(32)) {
 			return false;
 		} else {
 			int i = this.world.getLightFromNeighbors(blockpos);

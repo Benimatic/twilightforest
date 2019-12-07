@@ -1,27 +1,28 @@
 package twilightforest.entity;
 
-import io.netty.buffer.ByteBuf;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRotatedPillar;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TFSounds;
 
 import javax.annotation.Nonnull;
@@ -30,9 +31,9 @@ import java.util.List;
 public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawnData {
 
 	private static final int WARMUP_TIME = 20;
-	private static final DataParameter<EnumFacing> MOVE_DIRECTION = EntityDataManager.createKey(EntityTFSlideBlock.class, DataSerializers.FACING);
+	private static final DataParameter<Direction> MOVE_DIRECTION = EntityDataManager.createKey(EntityTFSlideBlock.class, DataSerializers.DIRECTION);
 
-	private IBlockState myState;
+	private BlockState myState;
 	private int slideTime;
 
 	public EntityTFSlideBlock(World world) {
@@ -43,7 +44,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 		//this.yOffset = this.height / 2.0F;
 	}
 
-	public EntityTFSlideBlock(World world, double x, double y, double z, IBlockState state) {
+	public EntityTFSlideBlock(World world, double x, double y, double z, BlockState state) {
 		super(world);
 
 		this.myState = state;
@@ -65,22 +66,22 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 	private void determineMoveDirection() {
 		BlockPos pos = new BlockPos(this);
 
-		EnumFacing[] toCheck;
+		Direction[] toCheck;
 
-		switch (myState.getValue(BlockRotatedPillar.AXIS)) {
+		switch (myState.get(RotatedPillarBlock.AXIS)) {
 			case X: // horizontal blocks will go up or down if there is a block on one side and air on the other
-				toCheck = new EnumFacing[]{EnumFacing.DOWN, EnumFacing.UP, EnumFacing.NORTH, EnumFacing.SOUTH};
+				toCheck = new Direction[]{Direction.DOWN, Direction.UP, Direction.NORTH, Direction.SOUTH};
 				break;
 			case Z: // horizontal blocks will go up or down if there is a block on one side and air on the other
-				toCheck = new EnumFacing[]{EnumFacing.DOWN, EnumFacing.UP, EnumFacing.WEST, EnumFacing.EAST};
+				toCheck = new Direction[]{Direction.DOWN, Direction.UP, Direction.WEST, Direction.EAST};
 				break;
 			default:
 			case Y: // vertical blocks priority is -x, +x, -z, +z
-				toCheck = new EnumFacing[]{EnumFacing.WEST, EnumFacing.EAST, EnumFacing.NORTH, EnumFacing.SOUTH};
+				toCheck = new Direction[]{Direction.WEST, Direction.EAST, Direction.NORTH, Direction.SOUTH};
 				break;
 		}
 
-		for (EnumFacing e : toCheck) {
+		for (Direction e : toCheck) {
 			if (world.isAirBlock(pos.offset(e)) && !world.isAirBlock(pos.offset(e.getOpposite()))) {
 				dataManager.set(MOVE_DIRECTION, e);
 				return;
@@ -88,7 +89,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 		}
 
 		// if no wall, travel towards open air
-		for (EnumFacing e : toCheck) {
+		for (Direction e : toCheck) {
 			if (world.isAirBlock(pos.offset(e))) {
 				dataManager.set(MOVE_DIRECTION, e);
 				return;
@@ -97,8 +98,8 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 	}
 
 	@Override
-	protected void entityInit() {
-		dataManager.register(MOVE_DIRECTION, EnumFacing.DOWN);
+	protected void registerData() {
+		dataManager.register(MOVE_DIRECTION, Direction.DOWN);
 	}
 
 	@Override
@@ -123,7 +124,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 			// start moving after warmup
 			if (this.slideTime > WARMUP_TIME) {
 				final double moveAcceleration = 0.04;
-				EnumFacing moveDirection = dataManager.get(MOVE_DIRECTION);
+				Direction moveDirection = dataManager.get(MOVE_DIRECTION);
 				this.motionX += moveDirection.getXOffset() * moveAcceleration;
 				this.motionY += moveDirection.getYOffset() * moveAcceleration;
 				this.motionZ += moveDirection.getZOffset() * moveAcceleration;
@@ -164,7 +165,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 
 					this.setDead();
 
-					if (this.world.mayPlace(myState.getBlock(), pos, true, EnumFacing.UP, null)) {
+					if (this.world.mayPlace(myState.getBlock(), pos, true, Direction.UP, null)) {
 						world.setBlockState(pos, myState);
 					} else {
 						this.entityDropItem(new ItemStack(myState.getBlock(), 1, myState.getBlock().damageDropped(myState)), 0.0F);
@@ -175,20 +176,20 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 				}
 
 				// push things out and damage them
-				this.damageKnockbackEntities(this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox()));
+				this.damageKnockbackEntities(this.world.getEntitiesWithinAABBExcludingEntity(this, this.getBoundingBox()));
 			}
 		}
 	}
 
 	private void damageKnockbackEntities(List<Entity> entities) {
 		for (Entity entity : entities) {
-			if (entity instanceof EntityLivingBase) {
+			if (entity instanceof LivingEntity) {
 				entity.attackEntityFrom(DamageSource.GENERIC, 5);
 
 				double kx = (this.posX - entity.posX) * 2.0;
 				double kz = (this.posZ - entity.posZ) * 2.0;
 
-				((EntityLivingBase) entity).knockBack(this, 2, kx, kz);
+				((LivingEntity) entity).knockBack(this, 2, kx, kz);
 			}
 		}
 	}
@@ -199,38 +200,39 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public boolean canRenderOnFire() {
 		return false;
 	}
 
 	//Atomic: Suppressed deprecation, Ideally I'd use a state string here, but that is more work than I'm willing to put in right now.
 	// TODO: use NBTUtil functions
+	// TODO: Flattening happened. Meta does not exist
 	@SuppressWarnings("deprecation")
 	@Override
-	protected void readEntityFromNBT(@Nonnull NBTTagCompound compound) {
-		Block b = Block.REGISTRY.getObject(new ResourceLocation(compound.getString("TileID")));
+	protected void readAdditional(@Nonnull CompoundNBT compound) {
+		Block b = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(compound.getString("TileID")));
 		int meta = compound.getByte("Meta");
 		this.myState = b.getStateFromMeta(meta);
 		this.slideTime = compound.getInteger("Time");
-		dataManager.set(MOVE_DIRECTION, EnumFacing.byIndex(compound.getByte("Direction")));
+		dataManager.set(MOVE_DIRECTION, Direction.byIndex(compound.getByte("Direction")));
 	}
 
 	@Override
-	protected void writeEntityToNBT(@Nonnull NBTTagCompound compound) {
-		compound.setString("TileID", myState.getBlock().getRegistryName().toString());
-		compound.setByte("Meta", (byte) this.myState.getBlock().getMetaFromState(myState));
-		compound.setInteger("Time", this.slideTime);
-		compound.setByte("Direction", (byte) dataManager.get(MOVE_DIRECTION).getIndex());
+	protected void writeAdditional(@Nonnull CompoundNBT compound) {
+		compound.putString("TileID", myState.getBlock().getRegistryName().toString());
+		compound.putByte("Meta", (byte) this.myState.getBlock().getMetaFromState(myState));
+		compound.putInt("Time", this.slideTime);
+		compound.putByte("Direction", (byte) dataManager.get(MOVE_DIRECTION).getIndex());
 	}
 
 	@Override
-	public void writeSpawnData(ByteBuf buffer) {
+	public void writeSpawnData(PacketBuffer buffer) {
 		buffer.writeInt(Block.getStateId(myState));
 	}
 
 	@Override
-	public void readSpawnData(ByteBuf additionalData) {
+	public void readSpawnData(PacketBuffer additionalData) {
 		myState = Block.getStateById(additionalData.readInt());
 	}
 
@@ -244,7 +246,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 		return false;
 	}
 
-	public IBlockState getBlockState() {
+	public BlockState getBlockState() {
 		return myState;
 	}
 }

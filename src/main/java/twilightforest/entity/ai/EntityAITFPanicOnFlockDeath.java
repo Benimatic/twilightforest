@@ -1,16 +1,16 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.CreatureEntity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.RandomPositionGenerator;
+import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.Vec3d;
 import twilightforest.entity.EntityTFKobold;
 
 import java.util.List;
 
-public class EntityAITFPanicOnFlockDeath extends EntityAIBase {
-	private EntityCreature flockCreature;
+public class EntityAITFPanicOnFlockDeath extends Goal {
+	private CreatureEntity flockCreature;
 	private float speed;
 	private double fleeX;
 	private double fleeY;
@@ -18,7 +18,7 @@ public class EntityAITFPanicOnFlockDeath extends EntityAIBase {
 
 	private int fleeTimer;
 
-	public EntityAITFPanicOnFlockDeath(EntityCreature creature, float speed) {
+	public EntityAITFPanicOnFlockDeath(CreatureEntity creature, float speed) {
 		this.flockCreature = creature;
 		this.speed = speed;
 		this.setMutexBits(1);
@@ -30,8 +30,8 @@ public class EntityAITFPanicOnFlockDeath extends EntityAIBase {
 		boolean yikes = fleeTimer > 0;
 
 		// check if any of us is dead within 4 squares
-		List<EntityCreature> flockList = this.flockCreature.world.getEntitiesWithinAABB(this.flockCreature.getClass(), this.flockCreature.getEntityBoundingBox().grow(4.0D, 2.0D, 4.0D));
-		for (EntityLiving flocker : flockList) {
+		List<CreatureEntity> flockList = this.flockCreature.world.getEntitiesWithinAABB(this.flockCreature.getClass(), this.flockCreature.getBoundingBox().grow(4.0D, 2.0D, 4.0D));
+		for (LivingEntity flocker : flockList) {
 			if (flocker.deathTime > 0) {
 				yikes = true;
 				break;
@@ -80,7 +80,7 @@ public class EntityAITFPanicOnFlockDeath extends EntityAIBase {
 	 * Updates the task
 	 */
 	@Override
-	public void updateTask() {
+	public void tick() {
 		fleeTimer--;
 	}
 

@@ -1,9 +1,8 @@
 package twilightforest.entity.ai;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
@@ -12,10 +11,10 @@ import twilightforest.entity.IBreathAttacker;
 
 import java.util.List;
 
-public class EntityAITFBreathAttack<T extends EntityLiving & IBreathAttacker> extends EntityAIBase {
+public class EntityAITFBreathAttack<T extends LivingEntity & IBreathAttacker> extends Goal {
 
 	private final T entityHost;
-	private EntityLivingBase attackTarget;
+	private LivingEntity attackTarget;
 
 	private double breathX;
 	private double breathY;
@@ -74,11 +73,11 @@ public class EntityAITFBreathAttack<T extends EntityLiving & IBreathAttacker> ex
 	 * Update timers, deal damage
 	 */
 	@Override
-	public void updateTask() {
+	public void tick() {
 		this.durationLeft--;
 
 		// why do we need both of these?
-		this.entityHost.getLookHelper().setLookPosition(breathX, breathY, breathZ, 100.0F, 100.0F);
+		this.entityHost.getLookController().setLookPosition(breathX, breathY, breathZ, 100.0F, 100.0F);
 		faceVec(breathX, breathY, breathZ, 100.0F, 100.0F);
 
 		if ((this.maxDuration - this.durationLeft) > 5) {

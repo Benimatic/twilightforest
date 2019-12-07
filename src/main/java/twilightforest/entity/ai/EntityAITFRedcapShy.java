@@ -1,14 +1,14 @@
 package twilightforest.entity.ai;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import twilightforest.entity.EntityTFRedcap;
 
 public class EntityAITFRedcapShy extends EntityAITFRedcapBase {
 
-	private EntityLivingBase entityTarget;
+	private LivingEntity entityTarget;
 	private final float speed;
 	private final boolean lefty = Math.random() < 0.5;
 	private double targetX;
@@ -26,7 +26,7 @@ public class EntityAITFRedcapShy extends EntityAITFRedcapBase {
 
 	@Override
 	public boolean shouldExecute() {
-		EntityLivingBase attackTarget = this.redcap.getAttackTarget();
+		LivingEntity attackTarget = this.redcap.getAttackTarget();
 
 		if (attackTarget == null
 				|| !this.redcap.isShy()
@@ -56,11 +56,11 @@ public class EntityAITFRedcapShy extends EntityAITFRedcapBase {
 
 	@Override
 	public boolean shouldContinueExecuting() {
-		EntityLivingBase attackTarget = this.redcap.getAttackTarget();
+		LivingEntity attackTarget = this.redcap.getAttackTarget();
 
 		if (attackTarget == null) {
 			return false;
-		} else if (!this.entityTarget.isEntityAlive()) {
+		} else if (!this.entityTarget.isAlive()) {
 			return false;
 		} else if (this.redcap.getNavigator().noPath()) {
 			return false;
@@ -70,8 +70,8 @@ public class EntityAITFRedcapShy extends EntityAITFRedcapBase {
 	}
 
 	@Override
-	public void updateTask() {
-		this.redcap.getLookHelper().setLookPositionWithEntity(this.entityTarget, 30.0F, 30.0F);
+	public void tick() {
+		this.redcap.getLookController().setLookPositionWithEntity(this.entityTarget, 30.0F, 30.0F);
 	}
 
 	@Override
@@ -94,7 +94,7 @@ public class EntityAITFRedcapShy extends EntityAITFRedcapBase {
 		double dz = MathHelper.sin(rangle) * radius;
 
 		// add that to the target entity's position, and we have our destination
-		return new Vec3d(toCircle.posX + dx, circler.getEntityBoundingBox().minY, toCircle.posZ + dz);
+		return new Vec3d(toCircle.posX + dx, circler.getBoundingBox().minY, toCircle.posZ + dz);
 	}
 
 }

@@ -1,17 +1,15 @@
 package twilightforest.entity;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockDirectional;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.block.TFBlocks;
 
 public class EntityTFMoonwormShot extends EntityTFThrowable {
@@ -20,14 +18,14 @@ public class EntityTFMoonwormShot extends EntityTFThrowable {
 		super(world);
 	}
 
-	public EntityTFMoonwormShot(World world, EntityLivingBase thrower) {
+	public EntityTFMoonwormShot(World world, LivingEntity thrower) {
 		super(world, thrower);
 		shoot(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 1.5F, 1.0F);
 	}
 
 	@Override
-	public void onUpdate() {
-		super.onUpdate();
+	public void tick() {
+		super.tick();
 		makeTrail();
 	}
 
@@ -37,7 +35,7 @@ public class EntityTFMoonwormShot extends EntityTFThrowable {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public int getBrightnessForRender() {
 		return 15728880;
 	}
@@ -72,13 +70,13 @@ public class EntityTFMoonwormShot extends EntityTFThrowable {
 		return 0.03F;
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void handleStatusUpdate(byte id) {
 		if (id == 3) {
 			int stateId = Block.getStateId(TFBlocks.moonworm.getDefaultState());
 			for (int i = 0; i < 8; ++i) {
-				this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D, stateId);
+				this.world.addParticle(ParticleTypes.BLOCK_CRACK, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D, stateId);
 			}
 		} else {
 			super.handleStatusUpdate(id);
@@ -91,10 +89,10 @@ public class EntityTFMoonwormShot extends EntityTFThrowable {
 			if (ray.typeOfHit == Type.BLOCK) {
 
 				BlockPos pos = ray.getBlockPos().offset(ray.sideHit);
-				IBlockState currentState = world.getBlockState(pos);
+				BlockState currentState = world.getBlockState(pos);
 
 				if (currentState.getBlock().isReplaceable(world, pos)) {
-					world.setBlockState(pos, TFBlocks.moonworm.getDefaultState().withProperty(BlockDirectional.FACING, ray.sideHit));
+					world.setBlockState(pos, TFBlocks.moonworm.getDefaultState().with(BlockDirectional.FACING, ray.sideHit));
 					// todo sound
 				}
 			}

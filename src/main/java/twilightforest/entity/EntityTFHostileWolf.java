@@ -1,21 +1,21 @@
 package twilightforest.entity;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.NearestAttackableTargetGoal;
+import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.passive.EntityWolf;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumDyeColor;
+import net.minecraft.entity.passive.WolfEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.EnumDifficulty;
-import net.minecraft.world.EnumSkyBlock;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.LightType;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
@@ -23,37 +23,37 @@ import twilightforest.TwilightForestMod;
 
 import javax.annotation.Nullable;
 
-public class EntityTFHostileWolf extends EntityWolf implements IMob {
+public class EntityTFHostileWolf extends WolfEntity implements IMob {
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/hostile_wolf");
 
 	public EntityTFHostileWolf(World world) {
 		super(world);
 		setAngry(true);
-		setCollarColor(EnumDyeColor.BLACK);
+		setCollarColor(DyeColor.BLACK);
 		setAttributes(); // Must call this again because EntityWolf calls setTamed(false) which messes with our changes
 	}
 
-	// Split out from applyEntityAttributes because of above comment
+	// Split out from registerAttributes because of above comment
 	protected void setAttributes() {
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
 	}
 
 	@Override
-	protected final void applyEntityAttributes() {
-		super.applyEntityAttributes();
+	protected final void registerAttributes() {
+		super.registerAttributes();
 		setAttributes();
 	}
 
 	@Override
 	protected void registerGoals() {
 		super.registerGoals();
-		this.targetTasks.addTask(4, new NearestAttackableTargetGoal<>(this, EntityPlayer.class, true));
+		this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
 	}
 
 	@Override
-	public void onUpdate() {
-		super.onUpdate();
-		if (!world.isRemote && world.getDifficulty() == EnumDifficulty.PEACEFUL) {
+	public void tick() {
+		super.tick();
+		if (!world.isRemote && world.getDifficulty() == Difficulty.PEACEFUL) {
 			setDead();
 		}
 	}
@@ -64,16 +64,16 @@ public class EntityTFHostileWolf extends EntityWolf implements IMob {
 		int chunkX = MathHelper.floor(posX) >> 4;
 		int chunkZ = MathHelper.floor(posZ) >> 4;
 		return (TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.HEDGE_MAZE || isValidLightLevel())
-				&& world.checkNoEntityCollision(getEntityBoundingBox())
-				&& world.getCollisionBoxes(this, getEntityBoundingBox()).size() == 0
-				&& !world.containsAnyLiquid(getEntityBoundingBox());
+				&& world.checkNoEntityCollision(this)
+				&& world.getCollisionBoxes(this, getBoundingBox()).size() == 0
+				&& !world.containsAnyLiquid(getBoundingBox());
 	}
 
 	// [VanillaCopy] Direct copy of EntityMob.isValidLightLevel
 	protected boolean isValidLightLevel() {
-		BlockPos blockpos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
+		BlockPos blockpos = new BlockPos(this.posX, this.getBoundingBox().minY, this.posZ);
 
-		if (this.world.getLightFor(EnumSkyBlock.SKY, blockpos) > this.rand.nextInt(32)) {
+		if (this.world.getLightFor(LightType.SKY, blockpos) > this.rand.nextInt(32)) {
 			return false;
 		} else {
 			int i = this.world.getLightFromNeighbors(blockpos);
@@ -90,7 +90,7 @@ public class EntityTFHostileWolf extends EntityWolf implements IMob {
 	}
 
 	@Override
-	public void setAttackTarget(@Nullable EntityLivingBase entity) {
+	public void setAttackTarget(@Nullable LivingEntity entity) {
 		if (entity != null && entity != getAttackTarget())
 			playSound(TFSounds.MISTWOLF_TARGET, 4F, getSoundPitch());
 		super.setAttackTarget(entity);
@@ -112,7 +112,7 @@ public class EntityTFHostileWolf extends EntityWolf implements IMob {
 	}
 
 	@Override
-	public boolean processInteract(EntityPlayer player, EnumHand hand) {
+	public boolean processInteract(PlayerEntity player, Hand hand) {
 		return false;
 	}
 

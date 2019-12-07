@@ -1,18 +1,14 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.HurtByTargetGoal;
-import net.minecraft.entity.ai.LookRandomlyGoal;
-import net.minecraft.entity.ai.NearestAttackableTargetGoal;
-import net.minecraft.entity.ai.SwimGoal;
-import net.minecraft.entity.ai.WaterAvoidingRandomWalkingGoal;
-import net.minecraft.entity.ai.LookAtGoal;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -29,11 +25,11 @@ import twilightforest.entity.ai.EntityAITFThrowRider;
 
 import javax.annotation.Nullable;
 
-public class EntityTFYeti extends EntityMob implements IHostileMount {
+public class EntityTFYeti extends MonsterEntity implements IHostileMount {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/yeti");
 	private static final DataParameter<Boolean> ANGER_FLAG = EntityDataManager.createKey(EntityTFYeti.class, DataSerializers.BOOLEAN);
-	private static final AttributeModifier ANGRY_MODIFIER = new AttributeModifier("Angry follow range boost", 24, 0).setSaved(false);
+	private static final AttributeModifier ANGRY_MODIFIER = new AttributeModifier("Angry follow range boost", 24, AttributeModifier.Operation.ADDITION).setSaved(false);
 
 	public EntityTFYeti(World world) {
 		super(world);
@@ -42,10 +38,10 @@ public class EntityTFYeti extends EntityMob implements IHostileMount {
 
 	@Override
 	protected void registerGoals() {
-		this.tasks.addTask(0, new SwimGoal(this));
-		this.tasks.addTask(1, new EntityAITFThrowRider(this, 1.0D, false) {
+		this.goalSelector.addGoal(0, new SwimGoal(this));
+		this.goalSelector.addGoal(1, new EntityAITFThrowRider(this, 1.0D, false) {
 			@Override
-			protected void checkAndPerformAttack(EntityLivingBase p_190102_1_, double p_190102_2_) {
+			protected void checkAndPerformAttack(LivingEntity p_190102_1_, double p_190102_2_) {
 				super.checkAndPerformAttack(p_190102_1_, p_190102_2_);
 				if (!getPassengers().isEmpty())
 					playSound(TFSounds.ALPHAYETI_GRAB, 1F, 1.25F + getRNG().nextFloat() * 0.5F);
@@ -58,30 +54,30 @@ public class EntityTFYeti extends EntityMob implements IHostileMount {
 				super.resetTask();
 			}
 		});
-		this.tasks.addTask(2, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
-		this.tasks.addTask(3, new LookAtGoal(this, EntityPlayer.class, 8.0F));
-		this.tasks.addTask(3, new LookRandomlyGoal(this));
-		this.targetTasks.addTask(1, new HurtByTargetGoal(this, false));
-		this.targetTasks.addTask(2, new NearestAttackableTargetGoal<>(this, EntityPlayer.class, true));
+		this.goalSelector.addGoal(2, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
+		this.goalSelector.addGoal(3, new LookAtGoal(this, PlayerEntity.class, 8.0F));
+		this.goalSelector.addGoal(3, new LookRandomlyGoal(this));
+		this.targetSelector.addGoal(1, new HurtByTargetGoal(this, false));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
 	}
 
 	@Override
-	protected void applyEntityAttributes() {
-		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.38D);
-		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(0.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(4.0D);
+	protected void registerAttributes() {
+		super.registerAttributes();
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
+		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.38D);
+		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(0.0D);
+		this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(4.0D);
 	}
 
 	@Override
-	protected void entityInit() {
-		super.entityInit();
+	protected void registerData() {
+		super.registerData();
 		dataManager.register(ANGER_FLAG, false);
 	}
 
 	@Override
-	public void onLivingUpdate() {
+	public void livingTick() {
 		if (!this.getPassengers().isEmpty()) {
 			// stop player sneaking so that they can't dismount!
 			if (this.getPassengers().get(0).isSneaking()) {
@@ -89,11 +85,11 @@ public class EntityTFYeti extends EntityMob implements IHostileMount {
 			}
 		}
 
-		super.onLivingUpdate();
+		super.livingTick();
 
 		// look at things in our jaws
 		if (!this.getPassengers().isEmpty()) {
-			this.getLookHelper().setLookPositionWithEntity(getPassengers().get(0), 100F, 100F);
+			this.getLookController().setLookPositionWithEntity(getPassengers().get(0), 100F, 100F);
 
 			// push out of user in wall
 			Vec3d riderPos = this.getRiderPosition(getPassengers().get(0));
@@ -120,24 +116,24 @@ public class EntityTFYeti extends EntityMob implements IHostileMount {
 
 		if (!world.isRemote) {
 			if (anger) {
-				if (!getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).hasModifier(ANGRY_MODIFIER)) {
-					this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).applyModifier(ANGRY_MODIFIER);
+				if (!getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).hasModifier(ANGRY_MODIFIER)) {
+					this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).applyModifier(ANGRY_MODIFIER);
 				}
 			} else {
-				this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).removeModifier(ANGRY_MODIFIER);
+				this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).removeModifier(ANGRY_MODIFIER);
 			}
 		}
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound compound) {
-		super.writeEntityToNBT(compound);
-		compound.setBoolean("Angry", this.isAngry());
+	public void writeAdditional(CompoundNBT compound) {
+		super.writeAdditional(compound);
+		compound.putBoolean("Angry", this.isAngry());
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound compound) {
-		super.readEntityFromNBT(compound);
+	public void readAdditional(CompoundNBT compound) {
+		super.readAdditional(compound);
 		this.setAngry(compound.getBoolean("Angry"));
 	}
 
@@ -183,7 +179,7 @@ public class EntityTFYeti extends EntityMob implements IHostileMount {
 	public boolean getCanSpawnHere() {
 		// don't check light level in the snow
 		if (world.getBiome(new BlockPos(this)) == TFBiomes.snowy_forest) {
-			return world.checkNoEntityCollision(getEntityBoundingBox()) && world.getCollisionBoxes(this, getEntityBoundingBox()).size() == 0;
+			return world.checkNoEntityCollision(this) && world.getCollisionBoxes(this, getBoundingBox()).size() == 0;
 		} else {
 			// normal EntityMob spawn check, checks light level
 			return super.getCanSpawnHere();

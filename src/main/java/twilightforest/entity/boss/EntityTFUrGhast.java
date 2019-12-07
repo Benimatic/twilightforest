@@ -1,26 +1,26 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.ai.EntityMoveHelper;
-import net.minecraft.entity.effect.EntityLightningBolt;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.ai.controller.MovementController;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.BossInfo;
-import net.minecraft.world.BossInfoServer;
-import net.minecraft.world.EnumDifficulty;
+import net.minecraft.world.ServerBossInfo;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldInfo;
 import twilightforest.TFFeature;
@@ -37,6 +37,7 @@ import twilightforest.enums.TowerDeviceVariant;
 import twilightforest.loot.TFTreasure;
 import twilightforest.world.TFWorld;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -53,7 +54,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 
 	private float damageUntilNextPhase = 10; // how much damage can we take before we toggle tantrum mode
 	private boolean noTrapMode; // are there no traps nearby?  just float around
-	private final BossInfoServer bossInfo = new BossInfoServer(getDisplayName(), BossInfo.Color.RED, BossInfo.Overlay.PROGRESS);
+	private final ServerBossInfo bossInfo = new ServerBossInfo(getDisplayName(), BossInfo.Color.RED, BossInfo.Overlay.PROGRESS);
 
 	public EntityTFUrGhast(World world) {
 		super(world);
@@ -62,25 +63,25 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		this.noClip = true;
 		this.setInTantrum(false);
 		this.experienceValue = 317;
-		this.moveHelper = new NoClipMoveHelper(this);
+		this.moveController = new NoClipMoveHelper(this);
 	}
 
 	@Override
-	public void setCustomNameTag(String name) {
-		super.setCustomNameTag(name);
+	public void setCustomName(@Nullable ITextComponent name) {
+		super.setCustomName(name);
 		this.bossInfo.setName(this.getDisplayName());
 	}
 
 	@Override
-	protected void applyEntityAttributes() {
-		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(250);
-		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(128.0D);
+	protected void registerAttributes() {
+		super.registerAttributes();
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(250);
+		this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(128.0D);
 	}
 
 	@Override
-	protected void entityInit() {
-		super.entityInit();
+	protected void registerData() {
+		super.registerData();
 		dataManager.register(DATA_TANTRUM, false);
 	}
 
@@ -88,11 +89,11 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 	protected void registerGoals() {
 		super.registerGoals();
 		trapLocations = new ArrayList<BlockPos>();
-		this.tasks.taskEntries.removeIf(e -> e.action instanceof EntityTFTowerGhast.AIHomedFly);
-		this.tasks.addTask(5, new AIWaypointFly(this));
+		this.goalSelector.taskEntries.removeIf(e -> e.action instanceof EntityTFTowerGhast.AIHomedFly);
+		this.goalSelector.addGoal(5, new AIWaypointFly(this));
 	}
 
-	static class AIWaypointFly extends EntityAIBase {
+	static class AIWaypointFly extends Goal {
 		private final EntityTFUrGhast taskOwner;
 
 		private final List<BlockPos> pointsToVisit;
@@ -107,7 +108,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		// [VanillaCopy] EntityGhast.AIRandomFly
 		@Override
 		public boolean shouldExecute() {
-			EntityMoveHelper entitymovehelper = this.taskOwner.getMoveHelper();
+			MovementController entitymovehelper = this.taskOwner.getMoveHelper();
 
 			if (!entitymovehelper.isUpdating()) {
 				return true;
@@ -184,9 +185,9 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 
 	@Override
 	protected void despawnEntity() {
-		if (world.getDifficulty() == EnumDifficulty.PEACEFUL) {
+		if (world.getDifficulty() == Difficulty.PEACEFUL) {
 			if (hasHome()) {
-				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.UR_GHAST));
+				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.UR_GHAST));
 			}
 			setDead();
 		} else {
@@ -195,17 +196,17 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 	}
 
 	@Override
-	public void onLivingUpdate() {
-		super.onLivingUpdate();
+	public void livingTick() {
+		super.livingTick();
 
 		if (!world.isRemote) {
 			bossInfo.setPercent(getHealth() / getMaxHealth());
 		} else {
 			if (this.isInTantrum()) {
-				TwilightForestMod.proxy.spawnParticle(TFParticleType.BOSS_TEAR,
-						this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width,
-						this.posY + this.rand.nextDouble() * (double) this.height - 0.25D,
-						this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.width,
+				TwilightForestMod.proxy.addParticle(TFParticleType.BOSS_TEAR,
+						this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(),
+						this.posY + this.rand.nextDouble() * (double) this.getHeight() - 0.25D,
+						this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(),
 						0, 0, 0
 				);
 			}
@@ -218,10 +219,10 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 					double d1 = rand.nextGaussian() * 0.02D;
 					double d2 = rand.nextGaussian() * 0.02D;
 
-					world.spawnParticle(rand.nextBoolean() ? EnumParticleTypes.EXPLOSION_HUGE : EnumParticleTypes.EXPLOSION_NORMAL,
-							(posX + rand.nextFloat() * width * 2.0F) - width,
-							posY + rand.nextFloat() * height,
-							(posZ + rand.nextFloat() * width * 2.0F) - width,
+					world.addParticle(rand.nextBoolean() ? ParticleTypes.EXPLOSION_HUGE : ParticleTypes.EXPLOSION_NORMAL,
+							(posX + rand.nextFloat() * getWidth() * 2.0F) - getWidth(),
+							posY + rand.nextFloat() * getHeight(),
+							(posZ + rand.nextFloat() * getWidth() * 2.0F) - getWidth(),
 							d, d1, d2
 					);
 				}
@@ -230,8 +231,8 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 	}
 
 	@Override
-	public boolean isEntityInvulnerable(DamageSource src) {
-		return src == DamageSource.IN_WALL || super.isEntityInvulnerable(src);
+	public boolean isInvulnerableTo(DamageSource src) {
+		return src == DamageSource.IN_WALL || super.isInvulnerableTo(src);
 	}
 
 	@Override
@@ -249,7 +250,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		float oldHealth = getHealth();
 		boolean attackSuccessful;
 
-		if ("fireball".equals(source.getDamageType()) && source.getTrueSource() instanceof EntityPlayer) {
+		if ("fireball".equals(source.getDamageType()) && source.getTrueSource() instanceof PlayerEntity) {
 			// 'hide' fireball attacks so that we don't take 1000 damage.
 			attackSuccessful = super.attackEntityFrom(DamageSource.causeThrownDamage(source.getTrueSource(), source.getImmediateSource()), damage);
 		} else {
@@ -297,7 +298,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 
 		WorldInfo worldInfo = world.getMinecraftServer().worlds[0].getWorldInfo(); // grab the overworld to set weather properly
 
-		worldInfo.setCleanWeatherTime(0);
+		worldInfo.setClearWeatherTime(0);
 		worldInfo.setRainTime(rainTime);
 		worldInfo.setThunderTime(rainTime);
 		worldInfo.setRaining(true);
@@ -348,7 +349,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 			minion.makeBossMinion();
 
 			if (minion.getCanSpawnHere()) {
-				this.world.spawnEntity(minion);
+				this.world.addEntity(minion);
 				minion.spawnExplosionParticle();
 			}
 
@@ -364,7 +365,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		this.detachHome();
 
 		// despawn mini ghasts that are in our AABB
-		for (EntityTFMiniGhast ghast : world.getEntitiesWithinAABB(EntityTFMiniGhast.class, this.getEntityBoundingBox().grow(1, 1, 1))) {
+		for (EntityTFMiniGhast ghast : world.getEntitiesWithinAABB(EntityTFMiniGhast.class, this.getBoundingBox().grow(1, 1, 1))) {
 			ghast.spawnExplosionParticle();
 			ghast.setDead();
 			this.heal(2);
@@ -396,10 +397,10 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 
 	private void doTantrumDamageEffects() {
 		// harm player below
-		AxisAlignedBB below = this.getEntityBoundingBox().offset(0, -16, 0).grow(0, 16, 0);
+		AxisAlignedBB below = this.getBoundingBox().offset(0, -16, 0).grow(0, 16, 0);
 
-		for (EntityPlayer player : world.getEntitiesWithinAABB(EntityPlayer.class, below)) {
-			if (world.canSeeSky(new BlockPos(player))) {
+		for (PlayerEntity player : world.getEntitiesWithinAABB(PlayerEntity.class, below)) {
+			if (world.canBlockSeeSky(new BlockPos(player))) {
 				player.attackEntityFrom(DamageSource.ANVIL, 3);
 			}
 		}
@@ -432,7 +433,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 	@Override
 	protected void spitFireball() {
 		double offsetX = this.getAttackTarget().posX - this.posX;
-		double offsetY = this.getAttackTarget().getEntityBoundingBox().minY + (double) (this.getAttackTarget().height / 2.0F) - (this.posY + (double) (this.height / 2.0F));
+		double offsetY = this.getAttackTarget().getBoundingBox().minY + (double) (this.getAttackTarget().getHeight() / 2.0F) - (this.posY + (double) (this.getHeight() / 2.0F));
 		double offsetZ = this.getAttackTarget().posZ - this.posZ;
 
 		EntityTFUrGhastFireball entityFireball = new EntityTFUrGhastFireball(this.world, this, offsetX, offsetY, offsetZ);
@@ -440,17 +441,17 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		double shotSpawnDistance = 8.5D;
 		Vec3d lookVec = this.getLook(1.0F);
 		entityFireball.posX = this.posX + lookVec.x * shotSpawnDistance;
-		entityFireball.posY = this.posY + (double) (this.height / 2.0F) + lookVec.y * shotSpawnDistance;
+		entityFireball.posY = this.posY + (double) (this.getHeight() / 2.0F) + lookVec.y * shotSpawnDistance;
 		entityFireball.posZ = this.posZ + lookVec.z * shotSpawnDistance;
-		this.world.spawnEntity(entityFireball);
+		this.world.addEntity(entityFireball);
 
 		for (int i = 0; i < 2; i++) {
 			entityFireball = new EntityTFUrGhastFireball(this.world, this, offsetX + (rand.nextFloat() - rand.nextFloat()) * 8, offsetY, offsetZ + (rand.nextFloat() - rand.nextFloat()) * 8);
 			entityFireball.explosionPower = 1;
 			entityFireball.posX = this.posX + lookVec.x * shotSpawnDistance;
-			entityFireball.posY = this.posY + (double) (this.height / 2.0F) + lookVec.y * shotSpawnDistance;
+			entityFireball.posY = this.posY + (double) (this.getHeight() / 2.0F) + lookVec.y * shotSpawnDistance;
 			entityFireball.posZ = this.posZ + lookVec.z * shotSpawnDistance;
-			this.world.spawnEntity(entityFireball);
+			this.world.addEntity(entityFireball);
 		}
 
 	}
@@ -496,20 +497,20 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 	}
 
 	private boolean isTrapAt(BlockPos pos) {
-		IBlockState inactive = TFBlocks.tower_device.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.GHASTTRAP_INACTIVE);
-		IBlockState active = TFBlocks.tower_device.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.GHASTTRAP_ACTIVE);
+		BlockState inactive = TFBlocks.tower_device.getDefaultState().with(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.GHASTTRAP_INACTIVE);
+		BlockState active = TFBlocks.tower_device.getDefaultState().with(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.GHASTTRAP_ACTIVE);
 		return world.isBlockLoaded(pos)
 				&& (world.getBlockState(pos) == inactive || world.getBlockState(pos) == active);
 	}
 
 	@Override
-	public void addTrackingPlayer(EntityPlayerMP player) {
+	public void addTrackingPlayer(ServerPlayerEntity player) {
 		super.addTrackingPlayer(player);
 		this.bossInfo.addPlayer(player);
 	}
 
 	@Override
-	public void removeTrackingPlayer(EntityPlayerMP player) {
+	public void removeTrackingPlayer(ServerPlayerEntity player) {
 		super.removeTrackingPlayer(player);
 		this.bossInfo.removePlayer(player);
 	}
@@ -544,14 +545,14 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound compound) {
-		compound.setBoolean("inTantrum", this.isInTantrum());
-		super.writeEntityToNBT(compound);
+	public void writeAdditional(CompoundNBT compound) {
+		compound.putBoolean("inTantrum", this.isInTantrum());
+		super.writeAdditional(compound);
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound compound) {
-		super.readEntityFromNBT(compound);
+	public void readAdditional(CompoundNBT compound) {
+		super.readAdditional(compound);
 		this.setInTantrum(compound.getBoolean("inTantrum"));
 		if (this.hasCustomName()) {
 			this.bossInfo.setName(this.getDisplayName());
@@ -599,7 +600,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 
 	// Don't attack (or even think about attacking) things while we're throwing a tantrum
 	@Override
-	protected boolean shouldAttack(EntityLivingBase living) {
+	protected boolean shouldAttack(LivingEntity living) {
 		return !this.isInTantrum();
 	}
 

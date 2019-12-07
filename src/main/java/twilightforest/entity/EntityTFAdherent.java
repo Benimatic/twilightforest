@@ -2,9 +2,9 @@ package twilightforest.entity;
 
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -15,7 +15,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 
-public class EntityTFAdherent extends MobEntity implements IRangedAttackMob, ITFCharger {
+public class EntityTFAdherent extends MonsterEntity implements IRangedAttackMob, ITFCharger {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/adherent");
 

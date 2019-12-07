@@ -2,11 +2,11 @@ package twilightforest.entity;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldEntitySpawner;
@@ -30,7 +30,7 @@ public class TFEntities {
 
 	public static final EntityLiving.SpawnPlacementType ON_ICE = EnumHelper.addSpawnPlacementType("TF_ON_ICE", (world, pos) -> {
 
-		IBlockState state = world.getBlockState(pos.down());
+		BlockState state = world.getBlockState(pos.down());
 		Block block = state.getBlock();
 		Material material = state.getMaterial();
 

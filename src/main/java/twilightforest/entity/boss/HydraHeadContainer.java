@@ -5,15 +5,15 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.MultiPartEntityPart;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.EnumDifficulty;
+import net.minecraft.world.Difficulty;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.particle.TFParticleType;
@@ -399,7 +399,7 @@ public class HydraHeadContainer {
 
 		} else {
 			this.headEntity.deathTime = 0;
-			this.headEntity.setHealth((float) this.headEntity.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getBaseValue());
+			this.headEntity.setHealth((float) this.headEntity.getAttribute(SharedMonsterAttributes.MAX_HEALTH).getBaseValue());
 		}
 	}
 
@@ -408,7 +408,7 @@ public class HydraHeadContainer {
 			double vx = part.getRNG().nextGaussian() * 0.02D;
 			double vy = part.getRNG().nextGaussian() * 0.02D;
 			double vz = part.getRNG().nextGaussian() * 0.02D;
-			EnumParticleTypes particle = large && part.getRNG().nextInt(5) == 0 ? EnumParticleTypes.EXPLOSION_LARGE : EnumParticleTypes.EXPLOSION_NORMAL;
+			ParticleTypes particle = large && part.getRNG().nextInt(5) == 0 ? ParticleTypes.EXPLOSION_LARGE : ParticleTypes.EXPLOSION_NORMAL;
 			part.world.spawnParticle(particle, part.posX + part.getRNG().nextFloat() * part.width * 2.0F - part.width, part.posY + part.getRNG().nextFloat() * part.height, part.posZ + part.getRNG().nextFloat() * part.width * 2.0F - part.width, vx, vy, vz);
 		}
 	}
@@ -524,8 +524,8 @@ public class HydraHeadContainer {
 		double pz = headEntity.posZ + vector.z * dist;
 
 		if (headEntity.getState() == State.FLAME_BEGINNING) {
-			headEntity.world.spawnParticle(EnumParticleTypes.FLAME, px + headEntity.getRNG().nextDouble() - 0.5, py + headEntity.getRNG().nextDouble() - 0.5, pz + headEntity.getRNG().nextDouble() - 0.5, 0, 0, 0);
-			headEntity.world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, px + headEntity.getRNG().nextDouble() - 0.5, py + headEntity.getRNG().nextDouble() - 0.5, pz + headEntity.getRNG().nextDouble() - 0.5, 0, 0, 0);
+			headEntity.world.spawnParticle(ParticleTypes.FLAME, px + headEntity.getRNG().nextDouble() - 0.5, py + headEntity.getRNG().nextDouble() - 0.5, pz + headEntity.getRNG().nextDouble() - 0.5, 0, 0, 0);
+			headEntity.world.spawnParticle(ParticleTypes.SMOKE_NORMAL, px + headEntity.getRNG().nextDouble() - 0.5, py + headEntity.getRNG().nextDouble() - 0.5, pz + headEntity.getRNG().nextDouble() - 0.5, 0, 0, 0);
 		}
 
 		if (headEntity.getState() == State.FLAMING) {
@@ -551,11 +551,11 @@ public class HydraHeadContainer {
 		}
 
 		if (headEntity.getState() == State.BITE_BEGINNING || headEntity.getState() == State.BITE_READY) {
-			headEntity.world.spawnParticle(EnumParticleTypes.WATER_SPLASH, px + headEntity.getRNG().nextDouble() - 0.5, py + headEntity.getRNG().nextDouble() - 0.5, pz + headEntity.getRNG().nextDouble() - 0.5, 0, 0, 0);
+			headEntity.world.spawnParticle(ParticleTypes.WATER_SPLASH, px + headEntity.getRNG().nextDouble() - 0.5, py + headEntity.getRNG().nextDouble() - 0.5, pz + headEntity.getRNG().nextDouble() - 0.5, 0, 0, 0);
 		}
 
 		if (headEntity.getState() == State.MORTAR_BEGINNING) {
-			headEntity.world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, px + headEntity.getRNG().nextDouble() - 0.5, py + headEntity.getRNG().nextDouble() - 0.5, pz + headEntity.getRNG().nextDouble() - 0.5, 0, 0, 0);
+			headEntity.world.spawnParticle(ParticleTypes.SMOKE_LARGE, px + headEntity.getRNG().nextDouble() - 0.5, py + headEntity.getRNG().nextDouble() - 0.5, pz + headEntity.getRNG().nextDouble() - 0.5, 0, 0, 0);
 		}
 	}
 
@@ -695,7 +695,7 @@ public class HydraHeadContainer {
 	}
 
 	private void setDifficultyVariables() {
-		if (this.hydra.world.getDifficulty() != EnumDifficulty.HARD) {
+		if (this.hydra.world.getDifficulty() != Difficulty.HARD) {
 			HydraHeadContainer.FLAME_BREATH_TRACKING_SPEED = 0.04D;
 		} else {
 			// hard mode!

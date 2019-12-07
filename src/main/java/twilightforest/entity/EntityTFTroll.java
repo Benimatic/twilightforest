@@ -2,28 +2,19 @@ package twilightforest.entity;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.MeleeAttackGoal;
-import net.minecraft.entity.ai.RangedAttackGoal;
-import net.minecraft.entity.ai.FleeSunGoal;
-import net.minecraft.entity.ai.HurtByTargetGoal;
-import net.minecraft.entity.ai.LookRandomlyGoal;
-import net.minecraft.entity.ai.NearestAttackableTargetGoal;
-import net.minecraft.entity.ai.RestrictSunGoal;
-import net.minecraft.entity.ai.SwimGoal;
-import net.minecraft.entity.ai.WaterAvoidingRandomWalkingGoal;
-import net.minecraft.entity.ai.LookAtGoal;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -34,11 +25,11 @@ import twilightforest.block.TFBlocks;
 import twilightforest.entity.boss.EntityTFIceBomb;
 import twilightforest.util.WorldUtil;
 
-public class EntityTFTroll extends EntityMob implements IRangedAttackMob {
+public class EntityTFTroll extends MonsterEntity implements IRangedAttackMob {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/troll");
 	private static final DataParameter<Boolean> ROCK_FLAG = EntityDataManager.createKey(EntityTFTroll.class, DataSerializers.BOOLEAN);
-	private static final AttributeModifier ROCK_MODIFIER = new AttributeModifier("Rock follow boost", 24, 0).setSaved(false);
+	private static final AttributeModifier ROCK_MODIFIER = new AttributeModifier("Rock follow boost", 24, AttributeModifier.Operation.ADDITION).setSaved(false);
 
 	private RangedAttackGoal aiArrowAttack;
 	private MeleeAttackGoal aiAttackOnCollide;
@@ -53,14 +44,14 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob {
 		aiArrowAttack = new RangedAttackGoal(this, 1.0D, 20, 60, 15.0F);
 		aiAttackOnCollide = new MeleeAttackGoal(this, 1.2D, false);
 
-		this.tasks.addTask(1, new SwimGoal(this));
-		this.tasks.addTask(2, new RestrictSunGoal(this));
-		this.tasks.addTask(3, new FleeSunGoal(this, 1.0D));
-		this.tasks.addTask(5, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
-		this.tasks.addTask(6, new LookAtGoal(this, EntityPlayer.class, 8.0F));
-		this.tasks.addTask(6, new LookRandomlyGoal(this));
-		this.targetTasks.addTask(1, new HurtByTargetGoal(this, false));
-		this.targetTasks.addTask(2, new NearestAttackableTargetGoal<>(this, EntityPlayer.class, true));
+		this.goalSelector.addGoal(1, new SwimGoal(this));
+		this.goalSelector.addGoal(2, new RestrictSunGoal(this));
+		this.goalSelector.addGoal(3, new FleeSunGoal(this, 1.0D));
+		this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
+		this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 8.0F));
+		this.goalSelector.addGoal(6, new LookRandomlyGoal(this));
+		this.targetSelector.addGoal(1, new HurtByTargetGoal(this, false));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
 
 		if (world != null && !world.isRemote) {
 			this.setCombatTask();
@@ -68,16 +59,16 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob {
 	}
 
 	@Override
-	protected void applyEntityAttributes() {
-		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
-		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(7.0D);
+	protected void registerAttributes() {
+		super.registerAttributes();
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
+		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
+		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(7.0D);
 	}
 
 	@Override
-	protected void entityInit() {
-		super.entityInit();
+	protected void registerData() {
+		super.registerData();
 		dataManager.register(ROCK_FLAG, false);
 	}
 
@@ -90,11 +81,11 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob {
 
 		if (!world.isRemote) {
 			if (rock) {
-				if (!getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).hasModifier(ROCK_MODIFIER)) {
-					this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).applyModifier(ROCK_MODIFIER);
+				if (!getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).hasModifier(ROCK_MODIFIER)) {
+					this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).applyModifier(ROCK_MODIFIER);
 				}
 			} else {
-				this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).removeModifier(ROCK_MODIFIER);
+				this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).removeModifier(ROCK_MODIFIER);
 			}
 			this.setCombatTask();
 		}
@@ -102,30 +93,30 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob {
 
 	@Override
 	public boolean attackEntityAsMob(Entity entity) {
-		swingArm(EnumHand.MAIN_HAND);
+		swingArm(Hand.MAIN_HAND);
 		return super.attackEntityAsMob(entity);
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound compound) {
-		super.writeEntityToNBT(compound);
-		compound.setBoolean("HasRock", this.hasRock());
+	public void writeAdditional(CompoundNBT compound) {
+		super.writeAdditional(compound);
+		compound.putBoolean("HasRock", this.hasRock());
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound compound) {
-		super.readEntityFromNBT(compound);
+	public void readAdditional(CompoundNBT compound) {
+		super.readAdditional(compound);
 		this.setHasRock(compound.getBoolean("HasRock"));
 	}
 
 	private void setCombatTask() {
-		this.tasks.removeTask(this.aiAttackOnCollide);
-		this.tasks.removeTask(this.aiArrowAttack);
+		this.goalSelector.removeGoal(this.aiAttackOnCollide);
+		this.goalSelector.removeGoal(this.aiArrowAttack);
 
 		if (this.hasRock()) {
-			this.tasks.addTask(4, this.aiArrowAttack);
+			this.goalSelector.addGoal(4, this.aiArrowAttack);
 		} else {
-			this.tasks.addTask(4, this.aiAttackOnCollide);
+			this.goalSelector.addGoal(4, this.aiAttackOnCollide);
 		}
 	}
 
@@ -178,19 +169,19 @@ public class EntityTFTroll extends EntityMob implements IRangedAttackMob {
 	}
 
 	@Override
-	public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
+	public void attackEntityWithRangedAttack(LivingEntity target, float distanceFactor) {
 		if (this.hasRock()) {
 			EntityTFIceBomb ice = new EntityTFIceBomb(this.world, this);
 
 			// [VanillaCopy] Part of EntitySkeleton.attackEntityWithRangedAttack
 			double d0 = target.posX - this.posX;
-			double d1 = target.getEntityBoundingBox().minY + (double) (target.height / 3.0F) - ice.posY;
+			double d1 = target.getBoundingBox().minY + (double) (target.getHeight() / 3.0F) - ice.posY;
 			double d2 = target.posZ - this.posZ;
 			double d3 = (double) MathHelper.sqrt(d0 * d0 + d2 * d2);
 			ice.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float) (14 - this.world.getDifficulty().getId() * 4));
 
 			this.playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-			this.world.spawnEntity(ice);
+			this.world.addEntity(ice);
 		}
 	}
 

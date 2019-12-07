@@ -1,14 +1,14 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Vec3d;
 import twilightforest.entity.boss.EntityTFLich;
 import twilightforest.item.TFItems;
 
-public class EntityAITFLichShadows extends EntityAIBase {
+public class EntityAITFLichShadows extends Goal {
 
 	private final EntityTFLich lich;
 
@@ -24,7 +24,7 @@ public class EntityAITFLichShadows extends EntityAIBase {
 
 	@Override
 	public void startExecuting() {
-		lich.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(TFItems.twilight_scepter));
+		lich.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(TFItems.twilight_scepter));
 	}
 
 	@Override
@@ -33,10 +33,10 @@ public class EntityAITFLichShadows extends EntityAIBase {
 	}
 
 	@Override
-	public void updateTask() {
+	public void tick() {
 		if (lich.isShadowClone())
 			checkForMaster();
-		EntityLivingBase targetedEntity = lich.getAttackTarget();
+		LivingEntity targetedEntity = lich.getAttackTarget();
 		if (targetedEntity == null)
 			return;
 		float dist = lich.getDistance(targetedEntity);
@@ -81,7 +81,7 @@ public class EntityAITFLichShadows extends EntityAIBase {
 	}
 
 	private void spawnShadowClone() {
-		EntityLivingBase targetedEntity = lich.getAttackTarget();
+		LivingEntity targetedEntity = lich.getAttackTarget();
 
 		// find a good spot
 		Vec3d cloneSpot = lich.findVecInLOSOf(targetedEntity);
@@ -90,7 +90,7 @@ public class EntityAITFLichShadows extends EntityAIBase {
 			// put a clone there
 			EntityTFLich newClone = new EntityTFLich(lich.world, lich);
 			newClone.setPosition(cloneSpot.x, cloneSpot.y, cloneSpot.z);
-			lich.world.spawnEntity(newClone);
+			lich.world.addEntity(newClone);
 
 			newClone.setAttackTarget(targetedEntity);
 			newClone.setAttackCooldown(60 + lich.getRNG().nextInt(3) - lich.getRNG().nextInt(3));

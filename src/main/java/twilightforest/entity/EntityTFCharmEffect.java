@@ -86,7 +86,7 @@ public class EntityTFCharmEffect extends Entity {
 				double dy = posY + 0.5 * (rand.nextDouble() - rand.nextDouble());
 				double dz = posZ + 0.5 * (rand.nextDouble() - rand.nextDouble());
 
-				world.addParticle(EnumParticleTypes.ITEM_CRACK, dx, dy, dz, 0, 0.2, 0, getItemID());
+				world.addParticle(ParticleTypes.ITEM_CRACK, dx, dy, dz, 0, 0.2, 0, getItemID());
 			}
 		}
 

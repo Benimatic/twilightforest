@@ -1,11 +1,11 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class EntityTFProtectionBox extends Entity {
 
@@ -15,12 +15,12 @@ public class EntityTFProtectionBox extends Entity {
 	public final int sizeY;
 	public final int sizeZ;
 
-	private final StructureBoundingBox sbb;
+	private final MutableBoundingBox sbb;
 
-	public EntityTFProtectionBox(World world, StructureBoundingBox sbb) {
+	public EntityTFProtectionBox(World world, MutableBoundingBox sbb) {
 		super(world);
 
-		this.sbb = new StructureBoundingBox(sbb);
+		this.sbb = new MutableBoundingBox(sbb);
 
 		this.setLocationAndAngles(sbb.minX, sbb.minY, sbb.minZ, 0.0F, 0.0F);
 
@@ -32,8 +32,8 @@ public class EntityTFProtectionBox extends Entity {
 	}
 
 	@Override
-	public void onUpdate() {
-		super.onUpdate();
+	public void tick() {
+		super.tick();
 
 		if (lifeTime <= 1) {
 			setDead();
@@ -42,7 +42,7 @@ public class EntityTFProtectionBox extends Entity {
 		}
 	}
 
-	public boolean matches(StructureBoundingBox sbb) {
+	public boolean matches(MutableBoundingBox sbb) {
 		return this.sbb.minX == sbb.minX && this.sbb.minY == sbb.minY && this.sbb.minZ == sbb.minZ
 				&& this.sbb.maxX == sbb.maxX && this.sbb.maxY == sbb.maxY && this.sbb.maxZ == sbb.maxZ;
 	}
@@ -56,22 +56,22 @@ public class EntityTFProtectionBox extends Entity {
 		return 1.0F;
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public int getBrightnessForRender() {
 		return 15728880;
 	}
 
 	@Override
-	protected void entityInit() {}
+	protected void registerData() {}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound compound) {}
+	protected void readAdditional(CompoundNBT compound) {}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound compound) {}
+	protected void writeAdditional(CompoundNBT compound) {}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public boolean canRenderOnFire() {
 		return false;

@@ -1,8 +1,8 @@
 package twilightforest.entity.ai;
 
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.init.Blocks;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.block.Blocks;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.entity.EntityTFRedcap;
@@ -29,7 +29,7 @@ public class EntityAITFRedcapPlantTNT extends EntityAITFRedcapBase {
 	public void startExecuting() {
 		BlockPos entityPos = new BlockPos(redcap);
 
-		this.redcap.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, redcap.heldTNT);
+		this.redcap.setItemStackToSlot(EquipmentSlotType.MAINHAND, redcap.heldTNT);
 
 		if (this.redcap.world.isAirBlock(entityPos)) {
 			redcap.heldTNT.shrink(1);
@@ -40,6 +40,6 @@ public class EntityAITFRedcapPlantTNT extends EntityAITFRedcapBase {
 
 	@Override
 	public void resetTask() {
-		this.redcap.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, redcap.heldPick);
+		this.redcap.setItemStackToSlot(EquipmentSlotType.MAINHAND, redcap.heldPick);
 	}
 }

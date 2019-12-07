@@ -1,26 +1,26 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.entity.EntityTFThrowable;
 
 public class EntityTFThrownWep extends EntityTFThrowable {
 
-	private static final DataParameter<ItemStack> DATA_ITEMSTACK = EntityDataManager.createKey(EntityTFThrownWep.class, DataSerializers.ITEM_STACK);
+	private static final DataParameter<ItemStack> DATA_ITEMSTACK = EntityDataManager.createKey(EntityTFThrownWep.class, DataSerializers.ITEMSTACK);
 	private static final DataParameter<Float> DATA_VELOCITY = EntityDataManager.createKey(EntityTFThrownWep.class, DataSerializers.FLOAT);
 
 	private float projectileDamage = 6;
 
-	public EntityTFThrownWep(World world, EntityLivingBase thrower) {
+	public EntityTFThrownWep(World world, LivingEntity thrower) {
 		super(world, thrower);
 		this.setSize(0.5F, 0.5F);
 	}
@@ -36,7 +36,7 @@ public class EntityTFThrownWep extends EntityTFThrowable {
 	}
 
 	@Override
-	protected void entityInit() {
+	protected void registerData() {
 		dataManager.register(DATA_ITEMSTACK, ItemStack.EMPTY);
 		dataManager.register(DATA_VELOCITY, 0.001F);
 	}
@@ -55,12 +55,12 @@ public class EntityTFThrownWep extends EntityTFThrowable {
 		return this;
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void handleStatusUpdate(byte id) {
 		if (id == 3) {
 			for (int i = 0; i < 8; ++i) {
-				this.world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
+				this.world.addParticle(ParticleTypes.LARGE_SMOKE, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
 			}
 		} else {
 			super.handleStatusUpdate(id);

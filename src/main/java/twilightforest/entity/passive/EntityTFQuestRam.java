@@ -1,18 +1,21 @@
 package twilightforest.entity.passive;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.EntityAgeable;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.item.EnumDyeColor;
+import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.block.Blocks;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -20,7 +23,6 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.loot.LootContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
@@ -28,7 +30,7 @@ import twilightforest.TFFeature;
 import twilightforest.entity.ai.EntityAITFEatLoose;
 import twilightforest.entity.ai.EntityAITFFindLoose;
 
-public class EntityTFQuestRam extends EntityAnimal {
+public class EntityTFQuestRam extends AnimalEntity {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/quest_ram");
 	public static final ResourceLocation REWARD_LOOT_TABLE = TwilightForestMod.prefix("entities/questing_ram_rewards");
@@ -45,30 +47,30 @@ public class EntityTFQuestRam extends EntityAnimal {
 
 	@Override
 	protected void registerGoals() {
-		this.tasks.addTask(0, new SwimGoal(this));
-		this.tasks.addTask(1, new PanicGoal(this, 1.38F));
-		this.tasks.addTask(2, new TemptGoal(this, 1.0F, Item.getItemFromBlock(Blocks.WOOL), false));
-		this.tasks.addTask(3, new EntityAITFEatLoose(this, Item.getItemFromBlock(Blocks.WOOL)));
-		this.tasks.addTask(4, new EntityAITFFindLoose(this, 1.0F, Item.getItemFromBlock(Blocks.WOOL)));
-		this.tasks.addTask(5, new WaterAvoidingRandomWalkingGoal(this, 1.0F));
-		this.tasks.addTask(6, new LookRandomlyGoal(this));
+		this.goalSelector.addGoal(0, new SwimGoal(this));
+		this.goalSelector.addGoal(1, new PanicGoal(this, 1.38F));
+		this.goalSelector.addGoal(2, new TemptGoal(this, 1.0F, Ingredient.fromTag(ItemTags.WOOL), false));
+		this.goalSelector.addGoal(3, new EntityAITFEatLoose(this, Item.getItemFromBlock(Blocks.WOOL)));
+		this.goalSelector.addGoal(4, new EntityAITFFindLoose(this, 1.0F, Item.getItemFromBlock(Blocks.WOOL)));
+		this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 1.0F));
+		this.goalSelector.addGoal(6, new LookRandomlyGoal(this));
 	}
 
 	@Override
-	public EntityAnimal createChild(EntityAgeable entityanimal) {
+	public AnimalEntity createChild(AgeableEntity entityanimal) {
 		return null;
 	}
 
 	@Override
-	protected void applyEntityAttributes() {
-		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(70.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23000000417232513D);
+	protected void registerAttributes() {
+		super.registerAttributes();
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(70.0D);
+		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23000000417232513D);
 	}
 
 	@Override
-	protected void entityInit() {
-		super.entityInit();
+	protected void registerData() {
+		super.registerData();
 		dataManager.register(DATA_COLOR, 0);
 		dataManager.register(DATA_REWARDED, false);
 	}
@@ -121,18 +123,18 @@ public class EntityTFQuestRam extends EntityAnimal {
 			entityDropItem(s, 1.0F);
 		}
 
-		for (EntityPlayerMP player : this.world.getEntitiesWithinAABB(EntityPlayerMP.class, getEntityBoundingBox().grow(16.0D, 16.0D, 16.0D))) {
+		for (ServerPlayerEntity player : this.world.getEntitiesWithinAABB(ServerPlayerEntity.class, getBoundingBox().grow(16.0D, 16.0D, 16.0D))) {
 			TFAdvancements.QUEST_RAM_COMPLETED.trigger(player);
 		}
 	}
 
 	@Override
-	public boolean processInteract(EntityPlayer player, EnumHand hand) {
+	public boolean processInteract(PlayerEntity player, Hand hand) {
 		ItemStack currentItem = player.getHeldItem(hand);
 
-		if (!currentItem.isEmpty() && currentItem.getItem() == Item.getItemFromBlock(Blocks.WOOL) && !isColorPresent(EnumDyeColor.byMetadata(currentItem.getItemDamage()))) {
-			this.setColorPresent(EnumDyeColor.byMetadata(currentItem.getItemDamage()));
-			this.animateAddColor(EnumDyeColor.byMetadata(currentItem.getItemDamage()), 50);
+		if (!currentItem.isEmpty() && currentItem.getItem() == Item.getItemFromBlock(Blocks.WOOL) && !isColorPresent(DyeColor.byMetadata(currentItem.getItemDamage()))) {
+			this.setColorPresent(DyeColor.byMetadata(currentItem.getItemDamage()));
+			this.animateAddColor(DyeColor.byMetadata(currentItem.getItemDamage()), 50);
 
 			if (!player.capabilities.isCreativeMode) {
 				currentItem.shrink(1);
@@ -145,25 +147,25 @@ public class EntityTFQuestRam extends EntityAnimal {
 	}
 
 	@Override
-	public void onLivingUpdate() {
-		super.onLivingUpdate();
+	public void livingTick() {
+		super.livingTick();
 
 		if (world.isRemote && countColorsSet() > 15 && !getRewarded()) {
-			animateAddColor(EnumDyeColor.byMetadata(this.rand.nextInt(16)), 5);
+			animateAddColor(DyeColor.byId(this.rand.nextInt(16)), 5);
 		}
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound compound) {
-		super.writeEntityToNBT(compound);
-		compound.setInteger("ColorFlags", this.getColorFlags());
-		compound.setBoolean("Rewarded", this.getRewarded());
+	public void writeAdditional(CompoundNBT compound) {
+		super.writeAdditional(compound);
+		compound.putInt("ColorFlags", this.getColorFlags());
+		compound.putBoolean("Rewarded", this.getRewarded());
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound compound) {
-		super.readEntityFromNBT(compound);
-		this.setColorFlags(compound.getInteger("ColorFlags"));
+	public void readAdditional(CompoundNBT compound) {
+		super.readAdditional(compound);
+		this.setColorFlags(compound.getInt("ColorFlags"));
 		this.setRewarded(compound.getBoolean("Rewarded"));
 	}
 
@@ -175,11 +177,11 @@ public class EntityTFQuestRam extends EntityAnimal {
 		dataManager.set(DATA_COLOR, flags);
 	}
 
-	public boolean isColorPresent(EnumDyeColor color) {
+	public boolean isColorPresent(DyeColor color) {
 		return (getColorFlags() & (1 << color.getMetadata())) > 0;
 	}
 
-	public void setColorPresent(EnumDyeColor color) {
+	public void setColorPresent(DyeColor color) {
 		setColorFlags(getColorFlags() | (1 << color.getMetadata()));
 	}
 
@@ -191,14 +193,14 @@ public class EntityTFQuestRam extends EntityAnimal {
 		dataManager.set(DATA_REWARDED, rewarded);
 	}
 
-	public void animateAddColor(EnumDyeColor color, int iterations) {
+	public void animateAddColor(DyeColor color, int iterations) {
 		float[] colorVal = color.getColorComponentValues();
 		int red = (int) (colorVal[0] * 255F);
 		int green = (int) (colorVal[1] * 255F);
 		int blue = (int) (colorVal[2] * 255F);
 
 		for (int i = 0; i < iterations; i++) {
-			this.world.spawnParticle(EnumParticleTypes.SPELL_MOB, this.posX + (this.rand.nextDouble() - 0.5D) * this.width * 1.5, this.posY + this.rand.nextDouble() * this.height * 1.5, this.posZ + (this.rand.nextDouble() - 0.5D) * this.width * 1.5, red, green, blue);
+			this.world.addParticle(ParticleTypes.SPELL_MOB, this.posX + (this.rand.nextDouble() - 0.5D) * this.width * 1.5, this.posY + this.rand.nextDouble() * this.height * 1.5, this.posZ + (this.rand.nextDouble() - 0.5D) * this.width * 1.5, red, green, blue);
 		}
 
 		//TODO: it would be nice to play a custom sound
@@ -235,7 +237,7 @@ public class EntityTFQuestRam extends EntityAnimal {
 	}
 
 	@Override
-	protected void playStepSound(BlockPos pos, Block block) {
+	protected void playStepSound(BlockPos pos, BlockState block) {
 		this.playSound(SoundEvents.ENTITY_SHEEP_STEP, 0.15F, 1.0F);
 	}
 }

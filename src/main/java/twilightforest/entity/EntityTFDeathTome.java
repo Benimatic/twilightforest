@@ -1,33 +1,27 @@
 package twilightforest.entity;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.RangedAttackGoal;
-import net.minecraft.entity.ai.HurtByTargetGoal;
-import net.minecraft.entity.ai.LookRandomlyGoal;
-import net.minecraft.entity.ai.NearestAttackableTargetGoal;
-import net.minecraft.entity.ai.SwimGoal;
-import net.minecraft.entity.ai.WaterAvoidingRandomWalkingGoal;
-import net.minecraft.entity.ai.LookAtGoal;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityThrowable;
+import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.loot.LootContext;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 
 import javax.annotation.Nullable;
 
-public class EntityTFDeathTome extends EntityMob implements IRangedAttackMob {
+public class EntityTFDeathTome extends MonsterEntity implements IRangedAttackMob {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/death_tome");
 	public static final ResourceLocation HURT_LOOT_TABLE = TwilightForestMod.prefix("entities/death_tome_hurt");
@@ -38,29 +32,29 @@ public class EntityTFDeathTome extends EntityMob implements IRangedAttackMob {
 
 	@Override
 	protected void registerGoals() {
-		this.tasks.addTask(0, new SwimGoal(this));
-		this.tasks.addTask(4, new RangedAttackGoal(this, 1, 60, 10));
-		this.tasks.addTask(5, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
-		this.tasks.addTask(6, new LookAtGoal(this, EntityPlayer.class, 8.0F));
-		this.tasks.addTask(6, new LookRandomlyGoal(this));
-		this.targetTasks.addTask(1, new HurtByTargetGoal(this, false));
-		this.targetTasks.addTask(2, new NearestAttackableTargetGoal<>(this, EntityPlayer.class, true));
+		this.goalSelector.addGoal(0, new SwimGoal(this));
+		this.goalSelector.addGoal(4, new RangedAttackGoal(this, 1, 60, 10));
+		this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
+		this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 8.0F));
+		this.goalSelector.addGoal(6, new LookRandomlyGoal(this));
+		this.targetSelector.addGoal(1, new HurtByTargetGoal(this, false));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
 	}
 
 	@Override
-	protected void applyEntityAttributes() {
-		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
-		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4);
+	protected void registerAttributes() {
+		super.registerAttributes();
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
+		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
+		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4);
 	}
 
 	@Override
-	public void onLivingUpdate() {
-		super.onLivingUpdate();
+	public void livingTick() {
+		super.livingTick();
 
 		for (int i = 0; i < 1; ++i) {
-			this.world.spawnParticle(EnumParticleTypes.ENCHANTMENT_TABLE, this.posX + (this.rand.nextDouble() - 0.5D) * this.width, this.posY + this.rand.nextDouble() * (this.height - 0.75D) + 0.5D, this.posZ + (this.rand.nextDouble() - 0.5D) * this.width,
+			this.world.addParticle(ParticleTypes.ENCHANTMENT_TABLE, this.posX + (this.rand.nextDouble() - 0.5D) * this.getWidth(), this.posY + this.rand.nextDouble() * (this.getHeight() - 0.75D) + 0.5D, this.posZ + (this.rand.nextDouble() - 0.5D) * this.getWidth(),
 					0, 0.5, 0);
 		}
 	}
@@ -73,7 +67,7 @@ public class EntityTFDeathTome extends EntityMob implements IRangedAttackMob {
 
 		if (super.attackEntityFrom(src, damage)) {
 			if (!world.isRemote) {
-				LootContext ctx = new LootContext.Builder((WorldServer) world)
+				LootContext ctx = new LootContext.Builder((ServerWorld) world)
 						.withDamageSource(src)
 						.withLootedEntity(this)
 						.build();
@@ -88,6 +82,7 @@ public class EntityTFDeathTome extends EntityMob implements IRangedAttackMob {
 		}
 	}
 
+	//TODO: Move to loot table
 	@Override
 	public ResourceLocation getLootTable() {
 		return LOOT_TABLE;
@@ -110,14 +105,14 @@ public class EntityTFDeathTome extends EntityMob implements IRangedAttackMob {
 	}
 
 	@Override
-	public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
-		EntityThrowable projectile = new EntityTFTomeBolt(this.world, this);
+	public void attackEntityWithRangedAttack(LivingEntity target, float distanceFactor) {
+		ThrowableEntity projectile = new EntityTFTomeBolt(this.world, this);
 		double tx = target.posX - this.posX;
 		double ty = target.posY + target.getEyeHeight() - 1.100000023841858D - projectile.posY;
 		double tz = target.posZ - this.posZ;
 		float heightOffset = MathHelper.sqrt(tx * tx + tz * tz) * 0.2F;
 		projectile.shoot(tx, ty + heightOffset, tz, 0.6F, 6.0F);
-		this.world.spawnEntity(projectile);
+		this.world.addEntity(projectile);
 	}
 
 	@Override

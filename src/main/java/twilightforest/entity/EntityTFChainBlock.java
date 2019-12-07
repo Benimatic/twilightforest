@@ -1,17 +1,15 @@
 package twilightforest.entity;
 
-import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IEntityMultiPart;
-import net.minecraft.entity.MultiPartEntityPart;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityThrowable;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.ThrowableEntity;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -21,12 +19,12 @@ import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import twilightforest.item.TFItems;
 import twilightforest.util.WorldUtil;
 
-public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiPart, IEntityAdditionalSpawnData {
+public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiPart, IEntityAdditionalSpawnData {
 
 	private static final int MAX_SMASH = 12;
 	private static final int MAX_CHAIN = 16;
 
-	private EnumHand hand = EnumHand.MAIN_HAND;
+	private Hand hand = Hand.MAIN_HAND;
 	private boolean isReturning = false;
 	private int blocksSmashed = 0;
 	private double velX;
@@ -45,7 +43,7 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 		this.setSize(0.6F, 0.6F);
 	}
 
-	public EntityTFChainBlock(World world, EntityLivingBase thrower, EnumHand hand) {
+	public EntityTFChainBlock(World world, LivingEntity thrower, Hand hand) {
 		super(world, thrower);
 		this.setSize(0.6F, 0.6F);
 		this.isReturning = false;
@@ -75,7 +73,7 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 		}
 
 		// only hit living things
-		if (ray.entityHit instanceof EntityLivingBase && ray.entityHit != this.getThrower()) {
+		if (ray.entityHit instanceof LivingEntity && ray.entityHit != this.getThrower()) {
 			if (ray.entityHit.attackEntityFrom(this.getDamageSource(), 10)) {
 				// age when we hit a monster so that we go back to the player faster
 				this.ticksExisted += 60;
@@ -131,7 +129,7 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 				}
 
 				// demolish some blocks
-				this.affectBlocksInAABB(this.getEntityBoundingBox());
+				this.affectBlocksInAABB(this.getBoundingBox());
 			}
 
 			this.isReturning = true;
@@ -144,9 +142,9 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 	}
 
 	private DamageSource getDamageSource() {
-		EntityLivingBase thrower = this.getThrower();
-		if (thrower instanceof EntityPlayer) {
-			return DamageSource.causePlayerDamage((EntityPlayer) thrower);
+		LivingEntity thrower = this.getThrower();
+		if (thrower instanceof PlayerEntity) {
+			return DamageSource.causePlayerDamage((PlayerEntity) thrower);
 		} else if (thrower != null) {
 			return DamageSource.causeMobDamage(thrower);
 		} else {
@@ -157,14 +155,14 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 	private void affectBlocksInAABB(AxisAlignedBB box) {
 		for (BlockPos pos : WorldUtil.getAllInBB(box)) {
 
-			IBlockState state = world.getBlockState(pos);
+			BlockState state = world.getBlockState(pos);
 			Block block = state.getBlock();
 
 			if (!block.isAir(state, world, pos) && block.getExplosionResistance(this) < 7F
 					&& state.getBlockHardness(world, pos) >= 0 && block.canEntityDestroy(state, world, pos, this)) {
 
-				if (getThrower() instanceof EntityPlayer) {
-					EntityPlayer player = (EntityPlayer) getThrower();
+				if (getThrower() instanceof PlayerEntity) {
+					PlayerEntity player = (PlayerEntity) getThrower();
 
 					if (block.canHarvestBlock(world, pos, player)) {
 						block.harvestBlock(world, player, pos, state, world.getTileEntity(pos), player.getHeldItem(hand));
@@ -178,8 +176,8 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 	}
 
 	@Override
-	public void onUpdate() {
-		super.onUpdate();
+	public void tick() {
+		super.tick();
 
 		if (world.isRemote) {
 			chain1.onUpdate();
@@ -191,7 +189,7 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 			// set chain positions
 			if (this.getThrower() != null) {
 				// interpolate chain position
-				Vec3d handVec = this.getThrower().getLookVec().rotateYaw(hand == EnumHand.MAIN_HAND ? -0.4F : 0.4F);
+				Vec3d handVec = this.getThrower().getLookVec().rotateYaw(hand == Hand.MAIN_HAND ? -0.4F : 0.4F);
 
 				double sx = this.getThrower().posX + handVec.x;
 				double sy = this.getThrower().posY + handVec.y - 0.4F + this.getThrower().getEyeHeight();
@@ -223,7 +221,7 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 						this.setDead();
 					}
 
-					EntityLivingBase returnTo = this.getThrower();
+					LivingEntity returnTo = this.getThrower();
 
 					Vec3d back = new Vec3d(returnTo.posX, returnTo.posY + returnTo.getEyeHeight(), returnTo.posZ).subtract(this.getPositionVector()).normalize();
 					float age = Math.min(this.ticksExisted * 0.03F, 1.0F);
@@ -240,7 +238,7 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 	@Override
 	public void setDead() {
 		super.setDead();
-		EntityLivingBase thrower = this.getThrower();
+		LivingEntity thrower = this.getThrower();
 		if (thrower != null && thrower.getActiveItemStack().getItem() == TFItems.block_and_chain) {
 			thrower.resetActiveHand();
 		}
@@ -262,17 +260,17 @@ public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiP
 	}
 
 	@Override
-	public void writeSpawnData(ByteBuf buffer) {
+	public void writeSpawnData(PacketBuffer buffer) {
 		buffer.writeInt(getThrower() != null ? getThrower().getEntityId() : -1);
-		buffer.writeBoolean(hand == EnumHand.MAIN_HAND);
+		buffer.writeBoolean(hand == Hand.MAIN_HAND);
 	}
 
 	@Override
-	public void readSpawnData(ByteBuf additionalData) {
+	public void readSpawnData(PacketBuffer additionalData) {
 		Entity e = world.getEntityByID(additionalData.readInt());
-		if (e instanceof EntityLivingBase) {
-			thrower = (EntityLivingBase) e;
+		if (e instanceof LivingEntity) {
+			thrower = (LivingEntity) e;
 		}
-		hand = additionalData.readBoolean() ? EnumHand.MAIN_HAND : EnumHand.OFF_HAND;
+		hand = additionalData.readBoolean() ? Hand.MAIN_HAND : Hand.OFF_HAND;
 	}
 }

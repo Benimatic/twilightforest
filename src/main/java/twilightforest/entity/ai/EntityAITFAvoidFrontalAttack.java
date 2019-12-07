@@ -62,7 +62,7 @@ public class EntityAITFAvoidFrontalAttack extends EntityAIBase {
 
 		if (attackTarget == null) {
 			return false;
-		} else if (!this.entityTarget.isEntityAlive()) {
+		} else if (!this.entityTarget.isAlive()) {
 			return false;
 		} else if (this.me.getNavigator().noPath()) {
 			return false;
@@ -72,8 +72,8 @@ public class EntityAITFAvoidFrontalAttack extends EntityAIBase {
 	}
 
 	@Override
-	public void updateTask() {
-		this.me.getLookHelper().setLookPositionWithEntity(this.entityTarget, 30.0F, 30.0F);
+	public void tick() {
+		this.me.getLookController().setLookPositionWithEntity(this.entityTarget, 30.0F, 30.0F);
 	}
 
 	@Override

@@ -1,15 +1,15 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.ai.RandomPositionGenerator;
+import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.Vec3d;
 
-public class EntityAIStayNearHome extends EntityAIBase {
-	private final EntityCreature entity;
+public class EntityAIStayNearHome extends Goal {
+	private final CreatureEntity entity;
 	private final float speed;
 
-	public EntityAIStayNearHome(EntityCreature entityTFYetiAlpha, float sp) {
+	public EntityAIStayNearHome(CreatureEntity entityTFYetiAlpha, float sp) {
 		this.entity = entityTFYetiAlpha;
 		this.speed = sp;
 		this.setMutexBits(1);
