@@ -4,18 +4,18 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 
@@ -34,25 +34,25 @@ public class BlockTFThornRose extends Block implements ModelRegisterCallback {
 
 	@Override
 	@Deprecated
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess world, BlockPos pos) {
 		return AABB;
 	}
 
 	@Override
 	@Deprecated
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(BlockState state) {
 		return false;
 	}
 
 	@Override
 	@Deprecated
-	public boolean isFullCube(IBlockState state) {
+	public boolean isFullCube(BlockState state) {
 		return false;
 	}
 
 	@Override
 	@Deprecated
-	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face) {
 		return BlockFaceShape.UNDEFINED;
 	}
 
@@ -63,22 +63,22 @@ public class BlockTFThornRose extends Block implements ModelRegisterCallback {
 
 	@Override
 	@Deprecated
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public AxisAlignedBB getCollisionBoundingBox(BlockState state, IBlockAccess world, BlockPos pos) {
 		return NULL_AABB;
 	}
 
 	@Override
 	@Deprecated
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
+	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
 		if (!canBlockStay(world, pos)) {
 			world.destroyBlock(pos, true);
 		}
 	}
 
 	private boolean canBlockStay(World world, BlockPos pos) {
-		for (EnumFacing dir : EnumFacing.VALUES) {
+		for (Direction dir : Direction.VALUES) {
 			BlockPos pos_ = pos.offset(dir);
-			IBlockState state = world.getBlockState(pos_);
+			BlockState state = world.getBlockState(pos_);
 
 			if (state.getBlock().canSustainLeaves(state, world, pos_)) {
 				return true;
@@ -87,13 +87,13 @@ public class BlockTFThornRose extends Block implements ModelRegisterCallback {
 		return false;
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT;
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void registerModel() {
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));

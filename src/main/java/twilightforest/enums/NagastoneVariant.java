@@ -1,6 +1,6 @@
 package twilightforest.enums;
 
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
@@ -110,7 +110,7 @@ public enum NagastoneVariant implements IStringSerializable {
 		}
 	}
 
-	public static NagastoneVariant getHeadFromFacing(EnumFacing facing) {
+	public static NagastoneVariant getHeadFromFacing(Direction facing) {
 		switch (facing) {
 			case NORTH:
 				return NORTH_HEAD;
@@ -125,7 +125,7 @@ public enum NagastoneVariant implements IStringSerializable {
 		}
 	}
 
-	public static NagastoneVariant getVariantFromAxis(EnumFacing.Axis axis) {
+	public static NagastoneVariant getVariantFromAxis(Direction.Axis axis) {
 		switch (axis) {
 			case X:
 				return AXIS_X;
@@ -138,16 +138,16 @@ public enum NagastoneVariant implements IStringSerializable {
 		}
 	}
 
-	public static NagastoneVariant getVariantFromDoubleFacing(EnumFacing facing1, EnumFacing facing2) {
+	public static NagastoneVariant getVariantFromDoubleFacing(Direction facing1, Direction facing2) {
 		if (facing1.getAxis() == facing2.getAxis()) // Pairs of 6 dirs and axes
 			return getVariantFromAxis(facing1.getAxis()); // Both faces are on same axis
-		else if (facing1.getAxis() != EnumFacing.Axis.Y && facing2.getAxis() != EnumFacing.Axis.Y)
+		else if (facing1.getAxis() != Direction.Axis.Y && facing2.getAxis() != Direction.Axis.Y)
 			return SOLID; // Elbow connection doesn't have Y
 
-		EnumFacing facingYAxis = facing1.getAxis() == EnumFacing.Axis.Y ? facing1 : facing2;
-		EnumFacing otherFace = facing1.getAxis() != EnumFacing.Axis.Y ? facing1 : facing2;
+		Direction facingYAxis = facing1.getAxis() == Direction.Axis.Y ? facing1 : facing2;
+		Direction otherFace = facing1.getAxis() != Direction.Axis.Y ? facing1 : facing2;
 
-		if (facingYAxis == EnumFacing.UP) {
+		if (facingYAxis == Direction.UP) {
 			switch (otherFace) {
 				case NORTH:
 					return NORTH_UP;

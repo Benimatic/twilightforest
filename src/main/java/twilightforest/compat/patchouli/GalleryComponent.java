@@ -25,7 +25,7 @@ public class GalleryComponent implements ICustomComponent {
     public String items;
 
     private transient List<ItemStack> stacks;
-    private static final transient Minecraft mc = Minecraft.getMinecraft();
+    private static final transient Minecraft mc = Minecraft.getInstance();
 
     @Override
     public void build(int x, int y, int pageNum) {

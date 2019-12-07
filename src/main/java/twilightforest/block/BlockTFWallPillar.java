@@ -3,8 +3,8 @@ package twilightforest.block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -29,34 +29,34 @@ public class BlockTFWallPillar extends BlockTFConnectableRotatedPillar implement
     }
 
     @Override
-    protected boolean canConnectTo(IBlockState state, IBlockState otherState, IBlockAccess world, BlockPos pos, EnumFacing connectTo) {
+    protected boolean canConnectTo(BlockState state, BlockState otherState, IBlockAccess world, BlockPos pos, Direction connectTo) {
         return otherState.getBlock() == this && state.getValue(AXIS) == otherState.getValue(AXIS);
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+    public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess world, BlockPos pos) {
         return /*(!state.getValue(UP)) || (!state.getValue(DOWN)) ? FULL_BLOCK_AABB :*/ super.getBoundingBox(state, world, pos);
     }
 
     @Override
-    public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
-        EnumFacing.Axis axis = state.getValue(AXIS);
-        return super.getActualState(state.withProperty(UP, canConnectTo(state, world.getBlockState(pos.offset(getFacingFromPropertyWithAxis(UP, axis))), world, pos, EnumFacing.UP)).withProperty(DOWN, canConnectTo(state, world.getBlockState(pos.offset(getFacingFromPropertyWithAxis(DOWN, axis))), world, pos, EnumFacing.DOWN)), world, pos);
+    public BlockState getActualState(BlockState state, IBlockAccess world, BlockPos pos) {
+        Direction.Axis axis = state.getValue(AXIS);
+        return super.getActualState(state.withProperty(UP, canConnectTo(state, world.getBlockState(pos.offset(getFacingFromPropertyWithAxis(UP, axis))), world, pos, Direction.UP)).withProperty(DOWN, canConnectTo(state, world.getBlockState(pos.offset(getFacingFromPropertyWithAxis(DOWN, axis))), world, pos, Direction.DOWN)), world, pos);
     }
 
-    private static EnumFacing getFacingFromPropertyWithAxis(PropertyBool property, EnumFacing.Axis axis) {
+    private static Direction getFacingFromPropertyWithAxis(PropertyBool property, Direction.Axis axis) {
         switch (axis) {
             case X:
-                if (property == DOWN) return EnumFacing.WEST;
-                if (property == UP  ) return EnumFacing.EAST;
+                if (property == DOWN) return Direction.WEST;
+                if (property == UP  ) return Direction.EAST;
                 break;
             case Y:
-                if (property == DOWN) return EnumFacing.DOWN;
-                if (property == UP  ) return EnumFacing.UP;
+                if (property == DOWN) return Direction.DOWN;
+                if (property == UP  ) return Direction.UP;
                 break;
             case Z:
-                if (property == DOWN) return EnumFacing.SOUTH;
-                if (property == UP  ) return EnumFacing.NORTH;
+                if (property == DOWN) return Direction.SOUTH;
+                if (property == UP  ) return Direction.NORTH;
                 break;
         }
 

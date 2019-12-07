@@ -1,9 +1,9 @@
 package twilightforest.structures.stronghold;
 
 import net.minecraft.block.BlockStoneBrick;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -20,12 +20,12 @@ public class ComponentTFStrongholdAccessChamber extends StructureTFStrongholdCom
 	public ComponentTFStrongholdAccessChamber() {
 	}
 
-	public ComponentTFStrongholdAccessChamber(TFFeature feature, int i, EnumFacing facing, int x, int y, int z) {
+	public ComponentTFStrongholdAccessChamber(TFFeature feature, int i, Direction facing, int x, int y, int z) {
 		super(feature, i, facing, x, y, z);
 	}
 
 	@Override
-	public StructureBoundingBox generateBoundingBox(EnumFacing facing, int x, int y, int z) {
+	public StructureBoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
 		return StructureBoundingBox.getComponentToAddBoundingBox(x, y, z, -4, 1, 0, 9, 5, 9, facing);
 	}
 
@@ -55,7 +55,7 @@ public class ComponentTFStrongholdAccessChamber extends StructureTFStrongholdCom
 		placeSmallDoorwayAt(world, rand, 3, 8, 1, 4, sbb);
 
 		// shaft down
-		final IBlockState defaultState = Blocks.STONEBRICK
+		final BlockState defaultState = Blocks.STONEBRICK
 				.getDefaultState()
 				.withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.MOSSY);
 		this.fillWithBlocks(world, sbb, 2, -2, 2, 6, 0, 6, defaultState, AIR, false);
@@ -63,20 +63,20 @@ public class ComponentTFStrongholdAccessChamber extends StructureTFStrongholdCom
 		this.fillWithAir(world, sbb, 3, -2, 3, 5, 2, 5);
 
 		// stairs surrounding shaft
-		this.fillWithBlocks(world, sbb, 2, 0, 3, 2, 0, 6, getStairState(deco.stairState, Rotation.CLOCKWISE_180.rotate(EnumFacing.WEST), rotation, false), AIR, false);
-		this.fillWithBlocks(world, sbb, 6, 0, 2, 6, 0, 6, getStairState(deco.stairState, Rotation.NONE.rotate(EnumFacing.WEST), rotation, false), AIR, false);
-		this.fillWithBlocks(world, sbb, 3, 0, 2, 5, 0, 2, getStairState(deco.stairState, Rotation.COUNTERCLOCKWISE_90.rotate(EnumFacing.WEST), rotation, false), AIR, false);
-		this.fillWithBlocks(world, sbb, 3, 0, 6, 5, 0, 6, getStairState(deco.stairState, Rotation.CLOCKWISE_90.rotate(EnumFacing.WEST), rotation, false), AIR, false);
+		this.fillWithBlocks(world, sbb, 2, 0, 3, 2, 0, 6, getStairState(deco.stairState, Rotation.CLOCKWISE_180.rotate(Direction.WEST), rotation, false), AIR, false);
+		this.fillWithBlocks(world, sbb, 6, 0, 2, 6, 0, 6, getStairState(deco.stairState, Rotation.NONE.rotate(Direction.WEST), rotation, false), AIR, false);
+		this.fillWithBlocks(world, sbb, 3, 0, 2, 5, 0, 2, getStairState(deco.stairState, Rotation.COUNTERCLOCKWISE_90.rotate(Direction.WEST), rotation, false), AIR, false);
+		this.fillWithBlocks(world, sbb, 3, 0, 6, 5, 0, 6, getStairState(deco.stairState, Rotation.CLOCKWISE_90.rotate(Direction.WEST), rotation, false), AIR, false);
 
 		// pillar
 		this.setBlockState(world, deco.pillarState, 2, 0, 2, sbb);
 
 		// pedestal
-		final IBlockState blockstateIn = TFBlocks.trophy_pedestal
+		final BlockState blockstateIn = TFBlocks.trophy_pedestal
 				.getDefaultState()
 				.withProperty(BlockTFTrophyPedestal.LATENT, true)
 				//TODO: Atomic: Verify this facing.
-				.withProperty(BlockTFTrophyPedestal.FACING, EnumFacing.EAST);
+				.withProperty(BlockTFTrophyPedestal.FACING, Direction.EAST);
 		this.setBlockState(world, blockstateIn, 2, 1, 2, sbb);
 
 		// block point

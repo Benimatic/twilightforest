@@ -2,7 +2,7 @@ package twilightforest.world.feature;
 
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.material.Material;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.block.BlockTFLog;
@@ -55,7 +55,7 @@ public class TFGenDarkCanopyTree extends TFTreeGenerator {
 		}
 
 		// do not grow next to another tree
-		for (EnumFacing e : EnumFacing.HORIZONTALS) {
+		for (Direction e : Direction.HORIZONTALS) {
 			if (world.getBlockState(pos.offset(e)).getMaterial() == Material.WOOD)
 				return false;
 		}

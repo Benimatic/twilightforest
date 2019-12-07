@@ -5,23 +5,23 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.init.Items;
-import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.Items;
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 
@@ -30,8 +30,8 @@ import java.util.Random;
 
 public class BlockTFForceField extends BlockTFConnectableRotatedPillar implements ModelRegisterCallback {
 
-	public static final List<EnumDyeColor> VALID_COLORS = ImmutableList.of(EnumDyeColor.PURPLE, EnumDyeColor.PINK, EnumDyeColor.ORANGE, EnumDyeColor.GREEN, EnumDyeColor.BLUE);
-	public static final IProperty<EnumDyeColor> COLOR = PropertyEnum.create("color", EnumDyeColor.class, VALID_COLORS);
+	public static final List<DyeColor> VALID_COLORS = ImmutableList.of(DyeColor.PURPLE, DyeColor.PINK, DyeColor.ORANGE, DyeColor.GREEN, DyeColor.BLUE);
+	public static final IProperty<DyeColor> COLOR = PropertyEnum.create("color", DyeColor.class, VALID_COLORS);
 
 	BlockTFForceField() {
 		super(Material.BARRIER, 2);
@@ -39,17 +39,17 @@ public class BlockTFForceField extends BlockTFConnectableRotatedPillar implement
 		this.setResistance(Float.MAX_VALUE);
 		this.setLightLevel(2F / 15F);
 		this.setCreativeTab(TFItems.creativeTab);
-		this.setDefaultState(this.getDefaultState().withProperty(COLOR, EnumDyeColor.PURPLE));
+		this.setDefaultState(this.getDefaultState().withProperty(COLOR, DyeColor.PURPLE));
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(BlockState state) {
 		return VALID_COLORS.indexOf(state.getValue(COLOR)) + (((state.getValue(AXIS).ordinal() + 1) % 3) * 5);
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(COLOR, VALID_COLORS.get(meta % 5)).withProperty(AXIS, EnumFacing.Axis.values()[((meta / 5) + 1) % 3]);
+	public BlockState getStateFromMeta(int meta) {
+		return getDefaultState().withProperty(COLOR, VALID_COLORS.get(meta % 5)).withProperty(AXIS, Direction.Axis.values()[((meta / 5) + 1) % 3]);
 	}
 
 	@Override
@@ -58,18 +58,18 @@ public class BlockTFForceField extends BlockTFConnectableRotatedPillar implement
 	}
 
 	@Override
-	protected AxisAlignedBB getSidedAABBStraight(EnumFacing facing, EnumFacing.Axis axis) {
+	protected AxisAlignedBB getSidedAABBStraight(Direction facing, Direction.Axis axis) {
 		return makeQuickAABB(
-				facing == EnumFacing.EAST  || axis == EnumFacing.Axis.X ? 16 : this.boundingBoxWidthLower,
-				facing == EnumFacing.UP    || axis == EnumFacing.Axis.Y ? 16 : this.boundingBoxWidthLower,
-				facing == EnumFacing.SOUTH || axis == EnumFacing.Axis.Z ? 16 : this.boundingBoxWidthLower,
-				facing == EnumFacing.WEST  || axis == EnumFacing.Axis.X ?  0 : this.boundingBoxWidthUpper,
-				facing == EnumFacing.DOWN  || axis == EnumFacing.Axis.Y ?  0 : this.boundingBoxWidthUpper,
-				facing == EnumFacing.NORTH || axis == EnumFacing.Axis.Z ?  0 : this.boundingBoxWidthUpper);
+				facing == Direction.EAST  || axis == Direction.Axis.X ? 16 : this.boundingBoxWidthLower,
+				facing == Direction.UP    || axis == Direction.Axis.Y ? 16 : this.boundingBoxWidthLower,
+				facing == Direction.SOUTH || axis == Direction.Axis.Z ? 16 : this.boundingBoxWidthLower,
+				facing == Direction.WEST  || axis == Direction.Axis.X ?  0 : this.boundingBoxWidthUpper,
+				facing == Direction.DOWN  || axis == Direction.Axis.Y ?  0 : this.boundingBoxWidthUpper,
+				facing == Direction.NORTH || axis == Direction.Axis.Z ?  0 : this.boundingBoxWidthUpper);
 	}
 
 	@Override
-	protected boolean canConnectTo(IBlockState state, IBlockState otherState, IBlockAccess world, BlockPos pos, EnumFacing connectTo) {
+	protected boolean canConnectTo(BlockState state, BlockState otherState, IBlockAccess world, BlockPos pos, Direction connectTo) {
 		BlockFaceShape blockFaceShape = otherState.getBlockFaceShape(world, pos, connectTo);
 
 		return blockFaceShape == BlockFaceShape.SOLID
@@ -78,7 +78,7 @@ public class BlockTFForceField extends BlockTFConnectableRotatedPillar implement
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	public Item getItemDropped(BlockState state, Random rand, int fortune) {
 		return Items.AIR;
 	}
 
@@ -90,45 +90,45 @@ public class BlockTFForceField extends BlockTFConnectableRotatedPillar implement
 	}
 
 	@Override
-	public boolean isOpaqueCube(IBlockState state)
+	public boolean isOpaqueCube(BlockState state)
 	{
 		return false;
 	}
 
 	@Override
-	public boolean isFullCube(IBlockState state)
+	public boolean isFullCube(BlockState state)
 	{
 		return false;
 	}
 
 	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing face) {
+	public BlockFaceShape getBlockFaceShape(IBlockAccess world, BlockState state, BlockPos pos, Direction face) {
 		return face.getAxis() != state.getValue(AXIS) ? BlockFaceShape.MIDDLE_POLE_THIN : BlockFaceShape.CENTER_SMALL;
 	}
 
 	@Override
-	public int damageDropped(IBlockState state) {
+	public int damageDropped(BlockState state) {
 		return VALID_COLORS.indexOf(state.getValue(COLOR));
 	}
 
 	@Override
-	public boolean canEntityDestroy(IBlockState state, IBlockAccess world, BlockPos pos, Entity entity) {
+	public boolean canEntityDestroy(BlockState state, IBlockAccess world, BlockPos pos, Entity entity) {
 		return false; // TODO: ???
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.TRANSLUCENT;
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+	@OnlyIn(Dist.CLIENT)
+	public boolean shouldSideBeRendered(BlockState blockState, IBlockAccess blockAccess, BlockPos pos, Direction side) {
 		return blockAccess.getBlockState(pos.offset(side)).getBlock() != this && super.shouldSideBeRendered(blockState, blockAccess, pos, side);
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void registerModel() {
 		ModelResourceLocation mrl = new ModelResourceLocation(getRegistryName(), "inventory");

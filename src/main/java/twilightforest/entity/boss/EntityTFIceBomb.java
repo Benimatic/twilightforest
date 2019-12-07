@@ -124,7 +124,7 @@ public class EntityTFIceBomb extends EntityTFThrowable {
 	}
 
 	private void hitNearbyEntities() {
-		List<LivingEntity> nearby = this.world.getEntitiesWithinAABB(LivingEntity.class, this.getEntityBoundingBox().grow(3, 2, 3));
+		List<LivingEntity> nearby = this.world.getEntitiesWithinAABB(LivingEntity.class, this.getBoundingBox().grow(3, 2, 3));
 
 		for (LivingEntity entity : nearby) {
 			if (entity != this.getThrower()) {

@@ -1,12 +1,12 @@
 package twilightforest.block;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TFConfig;
 import twilightforest.item.TFItems;
 
@@ -20,20 +20,20 @@ public class BlockTFGiantLeaves extends BlockTFGiantBlock {
 	}
 
 	@Override
-	public int getLightOpacity(IBlockState state) {
+	public int getLightOpacity(BlockState state) {
 		return TFConfig.performance.leavesLightOpacity;
 	}
 
 	@Override
 	@Deprecated
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(BlockState state) {
 		return false;
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	@Deprecated
-	public boolean shouldSideBeRendered(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+	public boolean shouldSideBeRendered(BlockState state, IBlockAccess world, BlockPos pos, Direction side) {
 		switch (side) {
 			case DOWN:
 				return (pos.getY() & 3) == 0;

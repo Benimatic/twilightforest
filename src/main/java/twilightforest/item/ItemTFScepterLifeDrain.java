@@ -6,10 +6,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Items;
 import net.minecraft.init.MobEffects;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -18,14 +18,14 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.Hand;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -40,7 +40,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
 		player.setActiveHand(hand);
 		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 	}
@@ -60,7 +60,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 			double gaussY = itemRand.nextGaussian() * 0.02D;
 			double gaussZ = itemRand.nextGaussian() * 0.02D;
 			double gaussFactor = 10.0D;
-			world.spawnParticle(EnumParticleTypes.ITEM_CRACK, target.posX + itemRand.nextFloat() * target.width * 2.0F - target.width - gaussX * gaussFactor, target.posY + itemRand.nextFloat() * target.height - gaussY * gaussFactor, target.posZ + itemRand.nextFloat() * target.width * 2.0F - target.width - gaussZ * gaussFactor, gaussX, gaussY, gaussZ, itemId);
+			world.spawnParticle(ParticleTypes.ITEM_CRACK, target.posX + itemRand.nextFloat() * target.width * 2.0F - target.width - gaussX * gaussFactor, target.posY + itemRand.nextFloat() * target.height - gaussY * gaussFactor, target.posZ + itemRand.nextFloat() * target.width * 2.0F - target.width - gaussZ * gaussFactor, gaussX, gaussY, gaussZ, itemId);
 		}
 	}
 
@@ -80,7 +80,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 		Vec3d lookVec = living.getLook(1.0F);
 		Vec3d destVec = srcVec.add(lookVec.x * range, lookVec.y * range, lookVec.z * range);
 		float var9 = 1.0F;
-		List<Entity> possibleList = world.getEntitiesWithinAABBExcludingEntity(living, living.getEntityBoundingBox().expand(lookVec.x * range, lookVec.y * range, lookVec.z * range).grow(var9, var9, var9));
+		List<Entity> possibleList = world.getEntitiesWithinAABBExcludingEntity(living, living.getBoundingBox().expand(lookVec.x * range, lookVec.y * range, lookVec.z * range).grow(var9, var9, var9));
 		double hitDist = 0;
 
 		for (Entity possibleEntity : possibleList) {
@@ -88,7 +88,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 
 			if (possibleEntity.canBeCollidedWith()) {
 				float borderSize = possibleEntity.getCollisionBorderSize();
-				AxisAlignedBB collisionBB = possibleEntity.getEntityBoundingBox().grow((double) borderSize, (double) borderSize, (double) borderSize);
+				AxisAlignedBB collisionBB = possibleEntity.getBoundingBox().grow((double) borderSize, (double) borderSize, (double) borderSize);
 				RayTraceResult interceptPos = collisionBB.calculateIntercept(srcVec, destVec);
 
 				if (collisionBB.contains(srcVec)) {
@@ -162,8 +162,8 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 								// heal the player
 								living.heal(1);
 								// and give foods
-								if (living instanceof EntityPlayer)
-									((EntityPlayer) living).getFoodStats().addStats(1, 0.1F);
+								if (living instanceof PlayerEntity)
+									((PlayerEntity) living).getFoodStats().addStats(1, 0.1F);
 							}
 						}
 					}
@@ -197,7 +197,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 	}
 
 	private float getMaxHealth(EntityLivingBase target) {
-		return (float) target.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getBaseValue();
+		return (float) target.getAttribute(SharedMonsterAttributes.MAX_HEALTH).getBaseValue();
 	}
 
 	private void makeRedMagicTrail(World world, double srcX, double srcY, double srcZ, double destX, double destY, double destZ) {
@@ -211,7 +211,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 			double tx = srcX + (destX - srcX) * trailFactor + world.rand.nextGaussian() * 0.005;
 			double ty = srcY + (destY - srcY) * trailFactor + world.rand.nextGaussian() * 0.005;
 			double tz = srcZ + (destZ - srcZ) * trailFactor + world.rand.nextGaussian() * 0.005;
-			world.spawnParticle(EnumParticleTypes.SPELL_MOB, tx, ty, tz, f, f1, f2);
+			world.spawnParticle(ParticleTypes.SPELL_MOB, tx, ty, tz, f, f1, f2);
 		}
 	}
 
@@ -236,7 +236,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flags) {
 		super.addInformation(stack, world, tooltip, flags);
 		tooltip.add(I18n.format("twilightforest.scepter_charges", stack.getMaxDamage() - stack.getItemDamage()));

@@ -2,8 +2,8 @@ package twilightforest.world.feature;
 
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLog;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.block.BlockTFLog;
@@ -15,12 +15,12 @@ import java.util.Random;
 
 public class TFGenFallenHollowLog extends TFGenerator {
 
-	final IBlockState mossPatch = TFBlocks.twilight_plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MOSSPATCH);
-	final IBlockState oakLeaves = TFBlocks.twilight_leaves.getDefaultState().withProperty(BlockLeaves.CHECK_DECAY, false);
-	final IBlockState oakLogWithZAxis = TFBlocks.twilight_log.getDefaultState().withProperty(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.Z);
-	final IBlockState oakLogWithXAxis = TFBlocks.twilight_log.getDefaultState().withProperty(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.X);
-	final IBlockState dirt = Blocks.DIRT.getDefaultState();
-	final IBlockState firefly = TFBlocks.firefly.getDefaultState();
+	final BlockState mossPatch = TFBlocks.twilight_plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MOSSPATCH);
+	final BlockState oakLeaves = TFBlocks.twilight_leaves.getDefaultState().withProperty(BlockLeaves.CHECK_DECAY, false);
+	final BlockState oakLogWithZAxis = TFBlocks.twilight_log.getDefaultState().withProperty(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.Z);
+	final BlockState oakLogWithXAxis = TFBlocks.twilight_log.getDefaultState().withProperty(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.X);
+	final BlockState dirt = Blocks.DIRT.getDefaultState();
+	final BlockState firefly = TFBlocks.firefly.getDefaultState();
 
 	@Override
 	public boolean generate(World world, Random rand, BlockPos pos) {

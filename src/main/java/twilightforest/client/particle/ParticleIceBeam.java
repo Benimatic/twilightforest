@@ -3,11 +3,11 @@ package twilightforest.client.particle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class ParticleIceBeam extends Particle {
 
 	float initialParticleScale;
@@ -33,7 +33,7 @@ public class ParticleIceBeam extends Particle {
 		this.particleMaxAge = 50;
 		this.canCollide = true;
 
-		this.setParticleTexture(Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(TwilightForestMod.ID + ":particles/snow_" + rand.nextInt(4)));
+		this.setParticleTexture(Minecraft.getInstance().getTextureMapBlocks().getAtlasSprite(TwilightForestMod.ID + ":particles/snow_" + rand.nextInt(4)));
 
 		this.onUpdate();
 	}

@@ -5,9 +5,9 @@ import net.minecraft.block.BlockLog;
 import net.minecraft.block.BlockOldLeaf;
 import net.minecraft.block.BlockOldLog;
 import net.minecraft.block.BlockPlanks;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
@@ -48,8 +48,8 @@ public class TFGenLargeWinter extends TFTreeGenerator {
 		}
 
 		// check if we're on dirt or grass
-		IBlockState state = world.getBlockState(pos.down());
-		if (!state.getBlock().canSustainPlant(state, world, pos.down(), EnumFacing.UP, source)) {
+		BlockState state = world.getBlockState(pos.down());
+		if (!state.getBlock().canSustainPlant(state, world, pos.down(), Direction.UP, source)) {
 			return false;
 		}
 

@@ -1,9 +1,9 @@
 package twilightforest.tileentity;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -25,11 +25,11 @@ public class TileEntityTFTowerBuilder extends TileEntity implements ITickable {
 	private int blocksMade = 0;
 
 	private BlockPos lastBlockCoords;
-	private EnumFacing nextFacing;
+	private Direction nextFacing;
 
-	private EntityPlayer trackedPlayer;
+	private PlayerEntity trackedPlayer;
 
-	private IBlockState blockBuiltState = TFBlocks.tower_translucent.getDefaultState().withProperty(BlockTFTowerTranslucent.VARIANT, TowerTranslucentVariant.BUILT_INACTIVE);
+	private BlockState blockBuiltState = TFBlocks.tower_translucent.getDefaultState().withProperty(BlockTFTowerTranslucent.VARIANT, TowerTranslucentVariant.BUILT_INACTIVE);
 
 	/**
 	 * Start building stuffs
@@ -88,15 +88,15 @@ public class TileEntityTFTowerBuilder extends TileEntity implements ITickable {
 		}
 	}
 
-	private EnumFacing findNextFacing() {
+	private Direction findNextFacing() {
 		if (this.trackedPlayer != null) {
 			// check up and down
 			int pitch = MathHelper.floor((double) (trackedPlayer.rotationPitch * 4.0F / 360.0F) + 1.5D) & 3;
 
 			if (pitch == 0) {
-				return EnumFacing.UP; // todo 1.9 recheck this and down
+				return Direction.UP; // todo 1.9 recheck this and down
 			} else if (pitch == 2) {
-				return EnumFacing.DOWN;
+				return Direction.DOWN;
 			} else {
 				return trackedPlayer.getHorizontalFacing();
 			}
@@ -108,7 +108,7 @@ public class TileEntityTFTowerBuilder extends TileEntity implements ITickable {
 	/**
 	 * Who is the closest player?  Used to find which player we should track when building
 	 */
-	private EntityPlayer findClosestValidPlayer() {
+	private PlayerEntity findClosestValidPlayer() {
 		return world.getClosestPlayer(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 16, false);
 	}
 

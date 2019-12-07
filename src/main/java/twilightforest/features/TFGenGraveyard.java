@@ -4,13 +4,13 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.math.StatsAccumulator;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.monster.EntityZombieVillager;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Blocks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntityMobSpawner;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
@@ -18,7 +18,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.world.gen.structure.MutableBoundingBox;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
 import net.minecraft.world.gen.structure.template.TemplateManager;
@@ -53,7 +53,7 @@ public class TFGenGraveyard extends TFGenerator {
 				int y = world.getHeight(x, z);
 
 				while (y >= 0) {
-					IBlockState state = world.getBlockState(new BlockPos(x, y, z));
+					BlockState state = world.getBlockState(new BlockPos(x, y, z));
 					if (isBlockNotOk(state))
 						return false;
 					if (isBlockOk(state))
@@ -90,12 +90,12 @@ public class TFGenGraveyard extends TFGenerator {
 		return true;
 	}
 
-	private static boolean isBlockOk(IBlockState state) {
+	private static boolean isBlockOk(BlockState state) {
 		Material material = state.getMaterial();
 		return material == Material.ROCK || material == Material.GROUND || material == Material.GRASS || material == Material.SAND;
 	}
 
-	private static boolean isBlockNotOk(IBlockState state) {
+	private static boolean isBlockNotOk(BlockState state) {
 		Material material = state.getMaterial();
 		return material == Material.WATER || material == Material.LAVA || state.getBlock() == Blocks.BEDROCK;
 	}
@@ -124,7 +124,7 @@ public class TFGenGraveyard extends TFGenerator {
 
 		ChunkPos chunkpos = new ChunkPos(pos.add(-8, 0, -8));
 		ChunkPos chunkendpos = new ChunkPos(pos.add(-8, 0, -8).add(transformedSize));
-		StructureBoundingBox structureboundingbox = new StructureBoundingBox(chunkpos.getXStart() + 8, 0, chunkpos.getZStart() + 8, chunkendpos.getXEnd() + 8, 255, chunkendpos.getZEnd() + 8);
+		MutableBoundingBox structureboundingbox = new MutableBoundingBox(chunkpos.getXStart() + 8, 0, chunkpos.getZStart() + 8, chunkendpos.getXEnd() + 8, 255, chunkendpos.getZEnd() + 8);
 		PlacementSettings placementsettings = (new PlacementSettings()).setMirror(mirror).setRotation(rotation).setBoundingBox(structureboundingbox).setRandom(random);
 
 		BlockPos posSnap = chunkpos.getBlock(8, pos.getY() - 1, 8);
@@ -174,7 +174,7 @@ public class TFGenGraveyard extends TFGenerator {
 					if (random.nextBoolean()) {
 						if (random.nextInt(3) == 0)
 							trap.addBlocksToWorld(world, placement.add(new BlockPos(mirror == Mirror.FRONT_BACK ? 1 : -1, 0, mirror == Mirror.LEFT_RIGHT ? 1 : -1).rotate(rotation)), placementsettings, flags);
-						if (world.setBlockState(placement.add(chestloc), Blocks.TRAPPED_CHEST.getDefaultState().withProperty(BlockChest.FACING, EnumFacing.WEST).withRotation(rotation).withMirror(mirror), flags))
+						if (world.setBlockState(placement.add(chestloc), Blocks.TRAPPED_CHEST.getDefaultState().withProperty(BlockChest.FACING, Direction.WEST).withRotation(rotation).withMirror(mirror), flags))
 							TFTreasure.graveyard.generateChestContents(world, placement.add(chestloc));
 						EntityTFWraith wraith = new EntityTFWraith(world);
 						wraith.setPositionAndUpdate(placement.getX(), placement.getY(), placement.getZ());

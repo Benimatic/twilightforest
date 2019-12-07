@@ -5,8 +5,8 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.client.ModelRegisterCallback;
 
 public class BlockTFFluid extends BlockFluidClassic implements ModelRegisterCallback {
@@ -15,7 +15,7 @@ public class BlockTFFluid extends BlockFluidClassic implements ModelRegisterCall
         super(fluid, material);
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void registerModel() {
         ModelLoader.setCustomStateMapper(this, new SingleStateMapper(new ModelResourceLocation(getRegistryName(), "fluid")));

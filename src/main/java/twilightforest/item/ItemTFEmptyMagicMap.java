@@ -1,12 +1,12 @@
 package twilightforest.item;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemMapBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import twilightforest.client.ModelRegisterCallback;
 
@@ -17,7 +17,7 @@ public class ItemTFEmptyMagicMap extends ItemMapBase implements ModelRegisterCal
 
 	// [VanillaCopy] ItemEmptyMap.onItemRightClick, edits noted
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
 		// TF - scale at 4
 		ItemStack itemstack = ItemTFMagicMap.setupNewMap(worldIn, playerIn.posX, playerIn.posZ, (byte) 4, true, false);
 		ItemStack itemstack1 = playerIn.getHeldItem(handIn);

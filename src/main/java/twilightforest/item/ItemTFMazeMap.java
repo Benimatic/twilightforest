@@ -7,11 +7,11 @@ import com.google.common.collect.Multisets;
 import net.minecraft.block.BlockDirt;
 import net.minecraft.block.BlockStone;
 import net.minecraft.block.material.MapColor;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.block.Blocks;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemMap;
 import net.minecraft.item.ItemStack;
@@ -24,8 +24,8 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.storage.MapData;
 import net.minecraft.world.storage.MapDecoration;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TFMazeMapData;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.client.ModelRegisterCallback;
@@ -61,7 +61,7 @@ public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
 
 	// [VanillaCopy] super, with own string ID and class, narrowed types
 	@Nullable
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public static TFMazeMapData loadMapData(int mapId, World world) {
 		String s = STR_ID + "_" + mapId;
 		return (TFMazeMapData) world.loadData(TFMazeMapData.class, s);
@@ -91,7 +91,7 @@ public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
 	@SuppressWarnings("unused")
 	@Override
 	public void updateMapData(World world, Entity viewer, MapData data) {
-		if (world.provider.getDimension() == data.dimension && viewer instanceof EntityPlayer) {
+		if (world.provider.getDimension() == data.dimension && viewer instanceof PlayerEntity) {
 			int blocksPerPixel = 1 << data.scale;
 			int centerX = data.xCenter;
 			int centerZ = data.zCenter;
@@ -103,7 +103,7 @@ public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
 				viewRadiusPixels /= 2;
 			}
 
-			MapData.MapInfo mapdata$mapinfo = data.getMapInfo((EntityPlayer) viewer);
+			MapData.MapInfo mapdata$mapinfo = data.getMapInfo((PlayerEntity) viewer);
 			++mapdata$mapinfo.step;
 			boolean flag = false;
 
@@ -145,14 +145,14 @@ public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
 									// maze maps are always 0 scale, which is 1 pixel = 1 block, so the loops are unneeded
 									int yCenter = ((TFMazeMapData) data).yCenter;
 									BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos(worldXRounded, yCenter, worldZRounded);
-									IBlockState state = chunk.getBlockState(blockpos$mutableblockpos);
+									BlockState state = chunk.getBlockState(blockpos$mutableblockpos);
 
 									multiset.add(state.getMapColor(world, blockpos$mutableblockpos));
 
 									if (state.getBlock() == Blocks.STONE || state.getBlock() == Blocks.AIR) {
 										for (int i = -YSEARCH; i <= YSEARCH; i++) {
 											blockpos$mutableblockpos.setY(yCenter + i);
-											IBlockState searchID = chunk.getBlockState(blockpos$mutableblockpos);
+											BlockState searchID = chunk.getBlockState(blockpos$mutableblockpos);
 											if (searchID.getBlock() != Blocks.STONE && searchID.getBlock() != Blocks.AIR) {
 												state = searchID;
 												if (i > 0) {
@@ -248,8 +248,8 @@ public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
 		if (!worldIn.isRemote) {
 			TFMazeMapData mapdata = this.getMapData(stack, worldIn);
 
-			if (entityIn instanceof EntityPlayer) {
-				EntityPlayer entityplayer = (EntityPlayer) entityIn;
+			if (entityIn instanceof PlayerEntity) {
+				PlayerEntity PlayerEntity = (PlayerEntity) entityIn;
 				mapdata.updateVisiblePlayers(entityplayer, stack);
 
 				// TF - if player is far away vertically, show a dot
@@ -262,14 +262,14 @@ public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
 				}
 			}
 
-			if (isSelected || entityIn instanceof EntityPlayer && ((EntityPlayer) entityIn).getHeldItemOffhand() == stack) {
+			if (isSelected || entityIn instanceof PlayerEntity && ((PlayerEntity) entityIn).getHeldItemOffhand() == stack) {
 				this.updateMapData(worldIn, entityIn, mapdata);
 			}
 		}
 	}
 
 	@Override
-	public void onCreated(ItemStack stack, World world, EntityPlayer player) {
+	public void onCreated(ItemStack stack, World world, PlayerEntity player) {
 		// disable zooming
 	}
 
@@ -280,7 +280,7 @@ public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
 
 	@Override
 	@Nullable
-	public Packet<?> createMapDataPacket(ItemStack stack, World worldIn, EntityPlayer player) {
+	public Packet<?> createMapDataPacket(ItemStack stack, World worldIn, PlayerEntity player) {
 		Packet<?> p = super.createMapDataPacket(stack, worldIn, player);
 		if (p instanceof SPacketMaps) {
 			return TFPacketHandler.CHANNEL.getPacketFrom(new PacketMazeMap((SPacketMaps) p));
@@ -289,7 +289,7 @@ public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
 		}
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void registerModel() {
 		ModelLoader.setCustomMeshDefinition(this, stack -> new ModelResourceLocation(getRegistryName(), "inventory"));

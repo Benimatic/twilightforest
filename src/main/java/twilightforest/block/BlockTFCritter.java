@@ -6,11 +6,11 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -35,7 +35,7 @@ public abstract class BlockTFCritter extends Block {
 		this.setHardness(0.0F);
 		this.setCreativeTab(TFItems.creativeTab);
 		this.setSoundType(SoundType.SLIME);
-		this.setDefaultState(blockState.getBaseState().withProperty(BlockDirectional.FACING, EnumFacing.UP));
+		this.setDefaultState(blockState.getBaseState().withProperty(BlockDirectional.FACING, Direction.UP));
 	}
 
 	public float getWidth() {
@@ -48,19 +48,19 @@ public abstract class BlockTFCritter extends Block {
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(BlockState state) {
 		return state.getValue(BlockDirectional.FACING).getIndex();
 	}
 
 	@Override
 	@Deprecated
-	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.byIndex(meta));
+	public BlockState getStateFromMeta(int meta) {
+		return getDefaultState().withProperty(BlockDirectional.FACING, Direction.byIndex(meta));
 	}
 
 	@Override
 	@Deprecated
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess world, BlockPos pos) {
 		switch (state.getValue(BlockDirectional.FACING)) {
 			case DOWN:
 				return DOWN_BB;
@@ -80,36 +80,36 @@ public abstract class BlockTFCritter extends Block {
 
 	@Override
 	@Deprecated
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public AxisAlignedBB getCollisionBoundingBox(BlockState state, IBlockAccess world, BlockPos pos) {
 		return NULL_AABB;
 	}
 
 	@Override
 	@Deprecated
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(BlockState state) {
 		return false;
 	}
 
 	@Override
 	@Deprecated
-	public boolean isFullCube(IBlockState state) {
+	public boolean isFullCube(BlockState state) {
 		return false;
 	}
 
 	@Override
 	@Deprecated
-	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face) {
 		return BlockFaceShape.UNDEFINED;
 	}
 
 	@Override
-	public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side) {
+	public boolean canPlaceBlockOnSide(World world, BlockPos pos, Direction side) {
 		return canPlaceAt(world, pos.offset(side.getOpposite()), side);
 	}
 
 	@Override
 	public boolean canPlaceBlockAt(World world, BlockPos pos) {
-		for (EnumFacing side : EnumFacing.values()) {
+		for (Direction side : Direction.values()) {
 			if (canPlaceAt(world, pos.offset(side.getOpposite()), side)) {
 				return true;
 			}
@@ -119,8 +119,8 @@ public abstract class BlockTFCritter extends Block {
 
 	@Override
 	@Deprecated
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing sideHit, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-		IBlockState state = getDefaultState();
+	public BlockState getStateForPlacement(World world, BlockPos pos, Direction sideHit, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+		BlockState state = getDefaultState();
 
 		if (canPlaceAt(world, pos.offset(sideHit.getOpposite()), sideHit)) {
 			state = state.withProperty(BlockDirectional.FACING, sideHit);
@@ -130,17 +130,17 @@ public abstract class BlockTFCritter extends Block {
 	}
 
 	@Override
-	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
+	public void onBlockAdded(World world, BlockPos pos, BlockState state) {
 		world.scheduleUpdate(pos, this, 1);
 	}
 
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
+	public void updateTick(World world, BlockPos pos, BlockState state, Random rand) {
 		checkAndDrop(world, pos, state);
 	}
 
-	protected boolean checkAndDrop(World world, BlockPos pos, IBlockState state) {
-		EnumFacing facing = state.getValue(BlockDirectional.FACING);
+	protected boolean checkAndDrop(World world, BlockPos pos, BlockState state) {
+		Direction facing = state.getValue(BlockDirectional.FACING);
 		if (!canPlaceAt(world, pos.offset(facing.getOpposite()), facing)) {
 			world.destroyBlock(pos, true);
 			return false;
@@ -150,24 +150,24 @@ public abstract class BlockTFCritter extends Block {
 
 	@Override
 	@Deprecated
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
+	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
 		checkAndDrop(world, pos, state);
 	}
 
-	protected boolean canPlaceAt(IBlockAccess world, BlockPos pos, EnumFacing facing) {
-		IBlockState state = world.getBlockState(pos);
+	protected boolean canPlaceAt(IBlockAccess world, BlockPos pos, Direction facing) {
+		BlockState state = world.getBlockState(pos);
 		return state.getBlockFaceShape(world, pos, facing) == BlockFaceShape.SOLID
 				&& (!isExceptBlockForAttachWithPiston(state.getBlock())
 				|| state.getMaterial() == Material.LEAVES || state.getMaterial() == Material.CACTUS);
 	}
 
 	@Override
-	public boolean hasTileEntity(IBlockState state) {
+	public boolean hasTileEntity(BlockState state) {
 		return true;
 	}
 
 	@Override
-	public abstract TileEntity createTileEntity(World world, IBlockState state);
+	public abstract TileEntity createTileEntity(World world, BlockState state);
 
 	public abstract ItemStack getSquishResult(); // oh no!
 }

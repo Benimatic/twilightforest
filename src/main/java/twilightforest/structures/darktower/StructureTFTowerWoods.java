@@ -1,6 +1,6 @@
 package twilightforest.structures.darktower;
 
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Blocks;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.block.BlockTFTowerWood;
 import twilightforest.block.TFBlocks;

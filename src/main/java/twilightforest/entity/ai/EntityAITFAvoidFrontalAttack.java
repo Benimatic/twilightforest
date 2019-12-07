@@ -100,7 +100,7 @@ public class EntityAITFAvoidFrontalAttack extends EntityAIBase {
 		double dz = MathHelper.sin(rangle) * radius;
 
 		// add that to the target entity's position, and we have our destination
-		return new Vec3d(toCircle.posX + dx, circler.getEntityBoundingBox().minY, toCircle.posZ + dz);
+		return new Vec3d(toCircle.posX + dx, circler.getBoundingBox().minY, toCircle.posZ + dz);
 	}
 
 

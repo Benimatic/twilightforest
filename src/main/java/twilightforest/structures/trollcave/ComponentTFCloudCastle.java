@@ -1,7 +1,7 @@
 package twilightforest.structures.trollcave;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -26,7 +26,7 @@ public class ComponentTFCloudCastle extends StructureTFComponentOld {
 
 	public ComponentTFCloudCastle(TFFeature feature, int index, int x, int y, int z) {
 		super(feature, index);
-		this.setCoordBaseMode(EnumFacing.SOUTH);
+		this.setCoordBaseMode(Direction.SOUTH);
 
 		// round to nearest mult of 4
 		x &= ~0b11;
@@ -36,11 +36,11 @@ public class ComponentTFCloudCastle extends StructureTFComponentOld {
 		// spawn list!
 		this.spawnListIndex = 1;
 
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -8, 0, -8, 16, 16, 16, EnumFacing.SOUTH);
+		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -8, 0, -8, 16, 16, 16, Direction.SOUTH);
 	}
 
 	@Override
-	protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 		super.writeStructureToNBT(tagCompound);
 
 		tagCompound.setBoolean("minerPlaced", this.minerPlaced);
@@ -48,7 +48,7 @@ public class ComponentTFCloudCastle extends StructureTFComponentOld {
 	}
 
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager templateManager) {
+	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
 		super.readStructureFromNBT(tagCompound, templateManager);
 		this.minerPlaced = tagCompound.getBoolean("minerPlaced");
 		this.warriorPlaced = tagCompound.getBoolean("warriorPlaced");

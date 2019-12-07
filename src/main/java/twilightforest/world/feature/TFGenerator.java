@@ -1,9 +1,9 @@
 package twilightforest.world.feature;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -23,7 +23,7 @@ public abstract class TFGenerator extends WorldGenerator implements IBlockSettab
 	}
 
 	@Override
-	public final void setBlockAndNotify(World worldIn, BlockPos pos, IBlockState state) {
+	public final void setBlockAndNotify(World worldIn, BlockPos pos, BlockState state) {
 		setBlockAndNotifyAdequately(worldIn, pos, state);
 	}
 
@@ -47,7 +47,7 @@ public abstract class TFGenerator extends WorldGenerator implements IBlockSettab
 	/**
 	 * Draws a line from {x1, y1, z1} to {x2, y2, z2}
 	 */
-	protected static void drawBresehnam(IBlockSettable generator, World world, BlockPos from, BlockPos to, IBlockState state) {
+	protected static void drawBresehnam(IBlockSettable generator, World world, BlockPos from, BlockPos to, BlockState state) {
 		for (BlockPos pixel : getBresehnamArrays(from, to)) {
 			generator.setBlockAndNotify(world, pixel, state);
 		}
@@ -146,7 +146,7 @@ public abstract class TFGenerator extends WorldGenerator implements IBlockSettab
 	/**
 	 * Draw a flat blob (circle) of leaves
 	 */
-	public static void makeLeafCircle(IBlockSettable generator, World world, BlockPos pos, int rad, IBlockState state, boolean useHack) {
+	public static void makeLeafCircle(IBlockSettable generator, World world, BlockPos pos, int rad, BlockState state, boolean useHack) {
 		// trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++) {
 			for (byte dz = 0; dz <= rad; dz++) {
@@ -172,7 +172,7 @@ public abstract class TFGenerator extends WorldGenerator implements IBlockSettab
 	/**
 	 * Draw a flat blob (circle) of leaves.  This one makes it offset to surround a 2x2 area instead of a 1 block area
 	 */
-	public static void makeLeafCircle2(IBlockSettable generator, World world, BlockPos pos, int rad, IBlockState state, boolean useHack) {
+	public static void makeLeafCircle2(IBlockSettable generator, World world, BlockPos pos, int rad, BlockState state, boolean useHack) {
 		// trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++) {
 			for (byte dz = 0; dz <= rad; dz++) {
@@ -198,8 +198,8 @@ public abstract class TFGenerator extends WorldGenerator implements IBlockSettab
 	/**
 	 * Put a leaf only in spots where leaves can go!
 	 */
-	public static void putLeafBlock(IBlockSettable generator, World world, BlockPos pos, IBlockState state) {
-		IBlockState whatsThere = world.getBlockState(pos);
+	public static void putLeafBlock(IBlockSettable generator, World world, BlockPos pos, BlockState state) {
+		BlockState whatsThere = world.getBlockState(pos);
 
 		if (whatsThere.getBlock().canBeReplacedByLeaves(whatsThere, world, pos) && whatsThere.getBlock() != state.getBlock()) {
 			generator.setBlockAndNotify(world, pos, state);
@@ -209,7 +209,7 @@ public abstract class TFGenerator extends WorldGenerator implements IBlockSettab
 	/**
 	 * Gets either cobblestone or mossy cobblestone, randomly.  Used for ruins.
 	 */
-	protected static IBlockState randStone(Random rand, int howMuch) {
+	protected static BlockState randStone(Random rand, int howMuch) {
 		return rand.nextInt(howMuch) >= 1 ? Blocks.COBBLESTONE.getDefaultState() : Blocks.MOSSY_COBBLESTONE.getDefaultState();
 	}
 
@@ -252,7 +252,7 @@ public abstract class TFGenerator extends WorldGenerator implements IBlockSettab
 	/**
 	 * Draw a giant blob of whatevs.
 	 */
-	public static void drawBlob(IBlockSettable generator, World world, BlockPos pos, int rad, IBlockState state) {
+	public static void drawBlob(IBlockSettable generator, World world, BlockPos pos, int rad, BlockState state) {
 		// then trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++) {
 			for (byte dy = 0; dy <= rad; dy++) {
@@ -288,7 +288,7 @@ public abstract class TFGenerator extends WorldGenerator implements IBlockSettab
 	/**
 	 * Draw a giant blob of leaves.
 	 */
-	public static void drawLeafBlob(IBlockSettable generator, World world, BlockPos pos, int rad, IBlockState state) {
+	public static void drawLeafBlob(IBlockSettable generator, World world, BlockPos pos, int rad, BlockState state) {
 		// then trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++) {
 			for (byte dy = 0; dy <= rad; dy++) {
@@ -325,7 +325,7 @@ public abstract class TFGenerator extends WorldGenerator implements IBlockSettab
 	 * Does the block have only air blocks adjacent
 	 */
 	protected static boolean surroundedByAir(IBlockAccess world, BlockPos pos) {
-		for (EnumFacing e : EnumFacing.VALUES) {
+		for (Direction e : Direction.VALUES) {
 			if (!world.isAirBlock(pos.offset(e))) {
 				return false;
 			}
@@ -338,8 +338,8 @@ public abstract class TFGenerator extends WorldGenerator implements IBlockSettab
 	 * Does the block have at least 1 air block adjacent
 	 */
 	protected static boolean hasAirAround(World world, BlockPos pos) {
-		for (EnumFacing e : EnumFacing.VALUES) {
-			if (e == EnumFacing.DOWN)
+		for (Direction e : Direction.VALUES) {
+			if (e == Direction.DOWN)
 				continue; // todo 1.9 was in old logic
 			if (world.isBlockLoaded(pos.offset(e))
 					&& world.isAirBlock(pos.offset(e))) {
@@ -351,7 +351,7 @@ public abstract class TFGenerator extends WorldGenerator implements IBlockSettab
 	}
 
 	protected static boolean isNearSolid(World world, BlockPos pos) {
-		for (EnumFacing e : EnumFacing.HORIZONTALS) {
+		for (Direction e : Direction.HORIZONTALS) {
 			if (world.isBlockLoaded(pos.offset(e))
 					&& world.getBlockState(pos.offset(e)).getMaterial().isSolid()) {
 				return true;

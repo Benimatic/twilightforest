@@ -1,21 +1,21 @@
 package twilightforest.item;
 
 import net.minecraft.block.BlockFlower;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.block.Blocks;
 import net.minecraft.init.MobEffects;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.Hand;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -33,7 +33,7 @@ public class ItemTFPeacockFan extends ItemTF {
 
 	@Nonnull
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, @Nonnull Hand hand) {
 
 		if (!world.isRemote) {
 			if (!player.onGround) {
@@ -59,7 +59,7 @@ public class ItemTFPeacockFan extends ItemTF {
 
 				// particle effect
 				for (int i = 0; i < 30; i++) {
-					world.spawnParticle(EnumParticleTypes.CLOUD, fanBox.minX + world.rand.nextFloat() * (fanBox.maxX - fanBox.minX),
+					world.spawnParticle(ParticleTypes.CLOUD, fanBox.minX + world.rand.nextFloat() * (fanBox.maxX - fanBox.minX),
 							fanBox.minY + world.rand.nextFloat() * (fanBox.maxY - fanBox.minY),
 							fanBox.minZ + world.rand.nextFloat() * (fanBox.maxZ - fanBox.minZ),
 							lookVec.x, lookVec.y, lookVec.z);
@@ -86,7 +86,7 @@ public class ItemTFPeacockFan extends ItemTF {
 		return 20;
 	}
 
-	private int doFan(World world, EntityPlayer player) {
+	private int doFan(World world, PlayerEntity player) {
 		AxisAlignedBB fanBox = getEffectAABB(player);
 
 		fanBlocksInAABB(world, player, fanBox);
@@ -96,7 +96,7 @@ public class ItemTFPeacockFan extends ItemTF {
 		return 1;
 	}
 
-	private void fanEntitiesInAABB(World world, EntityPlayer player, AxisAlignedBB fanBox) {
+	private void fanEntitiesInAABB(World world, PlayerEntity player, AxisAlignedBB fanBox) {
 		Vec3d moveVec = player.getLookVec().scale(2);
 
 		for (Entity entity : world.getEntitiesWithinAABB(Entity.class, fanBox)) {
@@ -109,7 +109,7 @@ public class ItemTFPeacockFan extends ItemTF {
 
 	}
 
-	private AxisAlignedBB getEffectAABB(EntityPlayer player) {
+	private AxisAlignedBB getEffectAABB(PlayerEntity player) {
 		double range = 3.0D;
 		double radius = 2.0D;
 		Vec3d srcVec = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
@@ -119,7 +119,7 @@ public class ItemTFPeacockFan extends ItemTF {
 		return new AxisAlignedBB(destVec.x - radius, destVec.y - radius, destVec.z - radius, destVec.x + radius, destVec.y + radius, destVec.z + radius);
 	}
 
-	private int fanBlocksInAABB(World world, EntityPlayer player, AxisAlignedBB box) {
+	private int fanBlocksInAABB(World world, PlayerEntity player, AxisAlignedBB box) {
 		int fan = 0;
 		for (BlockPos pos : WorldUtil.getAllInBB(box)) {
 			fan += fanBlock(world, player, pos);
@@ -127,10 +127,10 @@ public class ItemTFPeacockFan extends ItemTF {
 		return fan;
 	}
 
-	private int fanBlock(World world, EntityPlayer player, BlockPos pos) {
+	private int fanBlock(World world, PlayerEntity player, BlockPos pos) {
 		int cost = 0;
 
-		IBlockState state = world.getBlockState(pos);
+		BlockState state = world.getBlockState(pos);
 
 		if (state.getBlock() != Blocks.AIR) {
 			if (state.getBlock() instanceof BlockFlower) {

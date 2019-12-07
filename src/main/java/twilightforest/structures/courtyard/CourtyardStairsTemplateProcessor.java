@@ -1,7 +1,7 @@
 package twilightforest.structures.courtyard;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
@@ -21,7 +21,7 @@ public class CourtyardStairsTemplateProcessor extends RandomizedTemplateProcesso
     @Override
     public Template.BlockInfo processBlock(World worldIn, BlockPos pos, Template.BlockInfo blockInfo) {
         if (shouldPlaceBlock()) {
-            IBlockState state = blockInfo.blockState;
+            BlockState state = blockInfo.blockState;
             Block block = state.getBlock();
 
             if (block == TFBlocks.nagastone_stairs)

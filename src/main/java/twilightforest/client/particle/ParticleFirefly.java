@@ -31,7 +31,7 @@ public class ParticleFirefly extends Particle {
 		halfLife = lifeTime / 2;
 		canCollide = true;
 
-		setParticleTexture(Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(TwilightForestMod.ID + ":particles/firefly"));
+		setParticleTexture(Minecraft.getInstance().getTextureMapBlocks().getAtlasSprite(TwilightForestMod.ID + ":particles/firefly"));
 	}
 
 	@Override

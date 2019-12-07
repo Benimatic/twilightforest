@@ -1,7 +1,7 @@
 package twilightforest.structures.hollowtree;
 
 import net.minecraft.block.BlockLog;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -38,7 +38,7 @@ public class ComponentTFHollowTreeSmallBranch extends
 
 		if (!drawLeaves)
 		{
-			IBlockState log = TFBlocks.twilight_log.getDefaultState().withProperty(LOG_AXIS, BlockLog.EnumAxis.NONE);
+			BlockState log = TFBlocks.twilight_log.getDefaultState().withProperty(LOG_AXIS, BlockLog.EnumAxis.NONE);
 			drawBresehnam(world, sbb, rSrc.getX(), rSrc.getY(), rSrc.getZ(), rDest.getX(), rDest.getY(), rDest.getZ(), log);
 		} else {
 			int leafRad = random.nextInt(2) + 1;

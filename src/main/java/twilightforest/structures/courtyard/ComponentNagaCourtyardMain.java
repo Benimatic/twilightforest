@@ -1,6 +1,6 @@
 package twilightforest.structures.courtyard;
 
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.TFFeature;
@@ -27,7 +27,7 @@ public class ComponentNagaCourtyardMain extends StructureMazeGenerator {
 	public ComponentNagaCourtyardMain(TFFeature feature, World world, Random rand, int i, int x, int y, int z) {
 		super(feature, rand, i, ROW_OF_CELLS, ROW_OF_CELLS);
 
-		this.setCoordBaseMode(EnumFacing.NORTH);
+		this.setCoordBaseMode(Direction.NORTH);
 
 		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -RADIUS, -1, -RADIUS, RADIUS * 2, 10, RADIUS * 2, this.getCoordBaseMode());
 	}

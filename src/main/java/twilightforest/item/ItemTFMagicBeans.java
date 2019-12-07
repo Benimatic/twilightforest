@@ -2,13 +2,13 @@ package twilightforest.item;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -23,7 +23,7 @@ import javax.annotation.Nonnull;
 public class ItemTFMagicBeans extends ItemTF {
 	@Nonnull
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public EnumActionResult onItemUse(PlayerEntity player, World world, BlockPos pos, Hand hand, Direction side, float hitX, float hitY, float hitZ) {
 		Block blockAt = world.getBlockState(pos).getBlock();
 
 		int minY = pos.getY() + 1;
@@ -144,7 +144,7 @@ public class ItemTFMagicBeans extends ItemTF {
 	 * Place the stalk block only if the destination is clear.  Return false if blocked.
 	 */
 	private boolean tryToPlaceStalk(World world, BlockPos pos) {
-		IBlockState state = world.getBlockState(pos);
+		BlockState state = world.getBlockState(pos);
 		if (state.getBlock().isAir(state, world, pos) || state.getBlock().isReplaceable(world, pos) || state.getBlock().canBeReplacedByLeaves(state, world, pos) || state.getBlock().isLeaves(state, world, pos) || state.getBlock().canSustainLeaves(state, world, pos)) {
 			world.setBlockState(pos, TFBlocks.huge_stalk.getDefaultState());
 			return true;
@@ -154,7 +154,7 @@ public class ItemTFMagicBeans extends ItemTF {
 	}
 
 	private void tryToPlaceLeaves(World world, BlockPos pos) {
-		IBlockState state = world.getBlockState(pos);
+		BlockState state = world.getBlockState(pos);
 		if (state.getBlock().isAir(state, world, pos) || state.getBlock().canBeReplacedByLeaves(state, world, pos)) {
 			world.setBlockState(pos, TFBlocks.twilight_leaves_3.getDefaultState().withProperty(BlockTFLeaves3.VARIANT, Leaves3Variant.BEANSTALK).withProperty(BlockLeaves.CHECK_DECAY, false), 2);
 		}

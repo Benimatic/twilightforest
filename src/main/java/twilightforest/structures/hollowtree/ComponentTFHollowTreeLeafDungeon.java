@@ -2,10 +2,10 @@ package twilightforest.structures.hollowtree;
 
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLog;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityList;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.template.TemplateManager;
@@ -41,7 +41,7 @@ public class ComponentTFHollowTreeLeafDungeon extends StructureTFTreeComponent
 	 */
 	protected ComponentTFHollowTreeLeafDungeon(TFFeature feature, int index, int x, int y, int z, int radius) {
 		super(feature, index);
-		this.setCoordBaseMode(EnumFacing.SOUTH);
+		this.setCoordBaseMode(Direction.SOUTH);
 		boundingBox = new StructureBoundingBox(x - radius, y - radius, z - radius, x + radius, y + radius, z + radius);
 		this.radius = radius;
 	}
@@ -51,7 +51,7 @@ public class ComponentTFHollowTreeLeafDungeon extends StructureTFTreeComponent
 	 * Save to NBT
 	 */
 	@Override
-	protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 		super.writeStructureToNBT(tagCompound);
 
 		tagCompound.setInteger("leafRadius", this.radius);
@@ -62,7 +62,7 @@ public class ComponentTFHollowTreeLeafDungeon extends StructureTFTreeComponent
 	 * Load from NBT
 	 */
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager templateManager) {
+	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
 		super.readStructureFromNBT(tagCompound, templateManager);
 
 		this.radius = tagCompound.getInteger("leafRadius");
@@ -92,7 +92,7 @@ public class ComponentTFHollowTreeLeafDungeon extends StructureTFTreeComponent
 		return true;
 	}
 
-	private void drawHollowBlob(World world, StructureBoundingBox sbb, int sx, int sy, int sz, int blobRadius, int hollowRadius, IBlockState blockState, boolean isLeaves) {
+	private void drawHollowBlob(World world, StructureBoundingBox sbb, int sx, int sy, int sz, int blobRadius, int hollowRadius, BlockState blockState, boolean isLeaves) {
 		// then trace out a quadrant
 		for (byte dx = 0; dx <= blobRadius; dx++) {
 			for (byte dy = 0; dy <= blobRadius; dy++) {

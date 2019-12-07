@@ -1,16 +1,16 @@
 package twilightforest.block;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.item.TFItems;
 
 import javax.annotation.Nullable;
@@ -23,12 +23,12 @@ public class BlockTFRipeTorchCluster extends BlockTFTrollRoot {
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	public Item getItemDropped(BlockState state, Random rand, int fortune) {
 		return TFItems.torchberries;
 	}
 
 	@Override
-	public int quantityDropped(IBlockState state, int fortune, Random random) {
+	public int quantityDropped(BlockState state, int fortune, Random random) {
 		return quantityDroppedWithBonus(fortune, random);
 	}
 
@@ -53,7 +53,7 @@ public class BlockTFRipeTorchCluster extends BlockTFTrollRoot {
 	}
 
 	@Override
-	public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack) {
+	public void harvestBlock(World world, PlayerEntity player, BlockPos pos, BlockState state, @Nullable TileEntity te, ItemStack stack) {
 		// do not call normal harvest if the player is shearing
 		if (world.isRemote || stack.getItem() != Items.SHEARS) {
 			super.harvestBlock(world, player, pos, state, te, stack);
@@ -61,7 +61,7 @@ public class BlockTFRipeTorchCluster extends BlockTFTrollRoot {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT;
 	}

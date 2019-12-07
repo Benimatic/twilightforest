@@ -4,14 +4,14 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.Hand;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -57,7 +57,7 @@ public class ItemTFTransformPowder extends ItemTF {
 	}
 
 	@Override
-	public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer player, EntityLivingBase target, EnumHand hand) {
+	public boolean itemInteractionForEntity(ItemStack stack, PlayerEntity player, EntityLivingBase target, Hand hand) {
 
 		if (target.isDead) return false;
 
@@ -78,7 +78,7 @@ public class ItemTFTransformPowder extends ItemTF {
 
 		try { // try copying what can be copied
 			UUID uuid = newEntity.getUniqueID();
-			newEntity.readFromNBT(target.writeToNBT(newEntity.writeToNBT(new NBTTagCompound())));
+			newEntity.readFromNBT(target.writeToNBT(newEntity.writeToNBT(new CompoundNBT())));
 			newEntity.setUniqueId(uuid);
 		} catch (Exception e) {
 			TwilightForestMod.LOGGER.warn("Couldn't transform entity NBT data: {}", e);
@@ -99,13 +99,13 @@ public class ItemTFTransformPowder extends ItemTF {
 
 	@Nonnull
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, @Nonnull Hand hand) {
 		if (world.isRemote) {
 			AxisAlignedBB fanBox = getEffectAABB(player);
 
 			// particle effect
 			for (int i = 0; i < 30; i++) {
-				world.spawnParticle(EnumParticleTypes.CRIT_MAGIC, fanBox.minX + world.rand.nextFloat() * (fanBox.maxX - fanBox.minX),
+				world.spawnParticle(ParticleTypes.CRIT_MAGIC, fanBox.minX + world.rand.nextFloat() * (fanBox.maxX - fanBox.minX),
 						fanBox.minY + world.rand.nextFloat() * (fanBox.maxY - fanBox.minY),
 						fanBox.minZ + world.rand.nextFloat() * (fanBox.maxZ - fanBox.minZ),
 						0, 0, 0);
@@ -116,7 +116,7 @@ public class ItemTFTransformPowder extends ItemTF {
 		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 	}
 
-	private AxisAlignedBB getEffectAABB(EntityPlayer player) {
+	private AxisAlignedBB getEffectAABB(PlayerEntity player) {
 		double range = 2.0D;
 		double radius = 1.0D;
 		Vec3d srcVec = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);

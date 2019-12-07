@@ -1,6 +1,6 @@
 package twilightforest.structures.finalcastle;
 
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -36,13 +36,13 @@ public class ComponentTFFinalCastleRoof13Conical extends StructureTFComponentOld
 	}
 
 	@Override
-	protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 		super.writeStructureToNBT(tagCompound);
 		tagCompound.setInteger("slope", this.slope);
 	}
 
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager templateManager) {
+	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
 		super.readStructureFromNBT(tagCompound, templateManager);
 		this.slope = tagCompound.getInteger("slope");
 	}

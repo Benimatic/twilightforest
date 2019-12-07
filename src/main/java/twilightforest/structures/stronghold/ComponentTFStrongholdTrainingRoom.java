@@ -2,8 +2,8 @@ package twilightforest.structures.stronghold;
 
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.BlockPumpkin;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.Blocks;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -18,12 +18,12 @@ public class ComponentTFStrongholdTrainingRoom extends StructureTFStrongholdComp
 	public ComponentTFStrongholdTrainingRoom() {
 	}
 
-	public ComponentTFStrongholdTrainingRoom(TFFeature feature, int i, EnumFacing facing, int x, int y, int z) {
+	public ComponentTFStrongholdTrainingRoom(TFFeature feature, int i, Direction facing, int x, int y, int z) {
 		super(feature, i, facing, x, y, z);
 	}
 
 	@Override
-	public StructureBoundingBox generateBoundingBox(EnumFacing facing, int x, int y, int z) {
+	public StructureBoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
 		return StructureTFStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -13, -1, 0, 18, 7, 18, facing);
 	}
 
@@ -59,11 +59,11 @@ public class ComponentTFStrongholdTrainingRoom extends StructureTFStrongholdComp
 		this.setBlockState(world, deco.pillarState, 5, 1, 12, sbb);
 		this.setBlockState(world, deco.pillarState, 5, 2, 12, sbb);
 		this.setBlockState(world, deco.pillarState, 6, 1, 12, sbb);
-		this.setBlockState(world, deco.stairState.withProperty(BlockPumpkin.FACING, EnumFacing.EAST), 6, 2, 12, sbb);
-		this.setBlockState(world, deco.stairState.withProperty(BlockPumpkin.FACING, EnumFacing.EAST), 7, 1, 12, sbb);
+		this.setBlockState(world, deco.stairState.withProperty(BlockPumpkin.FACING, Direction.EAST), 6, 2, 12, sbb);
+		this.setBlockState(world, deco.stairState.withProperty(BlockPumpkin.FACING, Direction.EAST), 7, 1, 12, sbb);
 		this.setBlockState(world, deco.pillarState, 5, 1, 11, sbb);
-		this.setBlockState(world, deco.stairState.withProperty(BlockPumpkin.FACING, EnumFacing.NORTH), 5, 2, 11, sbb);
-		this.setBlockState(world, deco.stairState.withProperty(BlockPumpkin.FACING, EnumFacing.NORTH), 5, 1, 10, sbb);
+		this.setBlockState(world, deco.stairState.withProperty(BlockPumpkin.FACING, Direction.NORTH), 5, 2, 11, sbb);
+		this.setBlockState(world, deco.stairState.withProperty(BlockPumpkin.FACING, Direction.NORTH), 5, 1, 10, sbb);
 
 		this.setBlockState(world, Blocks.ANVIL.getDefaultState(), 6, 1, 11, sbb);
 

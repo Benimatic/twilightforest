@@ -1,7 +1,7 @@
 package twilightforest.structures.minotaurmaze;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.Blocks;
+import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.TFFeature;
@@ -15,7 +15,7 @@ public class ComponentTFMazeCorridor extends StructureTFComponentOld {
 		super();
 	}
 
-	public ComponentTFMazeCorridor(TFFeature feature, int i, int x, int y, int z, EnumFacing rotation) {
+	public ComponentTFMazeCorridor(TFFeature feature, int i, int x, int y, int z, Direction rotation) {
 		super(feature, i);
 		this.setCoordBaseMode(rotation);
 		this.boundingBox = new StructureBoundingBox(x, y, z, x + 5, y + 5, z + 5);

@@ -3,22 +3,22 @@ package twilightforest.compat.ie;
 import blusunrize.immersiveengineering.api.shader.ShaderRegistry;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.model.item.ShaderGrabbagStackRenderer;
@@ -43,7 +43,7 @@ public class ItemTFShaderGrabbag extends Item implements ModelRegisterCallback {
             for(int i = ShaderRegistry.sortedRarityMap.size() - 1; i >= 0; i--) {
                 ItemStack stack = new ItemStack(this, 1, 0);
 
-                NBTTagCompound compound = new NBTTagCompound();
+                CompoundNBT compound = new CompoundNBT();
                 compound.setString(TAG_SHADER, ShaderRegistry.sortedRarityMap.get(i).toString());
 
                 stack.setTagCompound(compound);
@@ -55,10 +55,10 @@ public class ItemTFShaderGrabbag extends Item implements ModelRegisterCallback {
 
     @Override
     public EnumRarity getRarity(ItemStack stack) {
-        NBTTagCompound compound = stack.getTagCompound();
+        CompoundNBT compound = stack.getTagCompound();
 
         if (compound == null) {
-            stack.setTagCompound(new NBTTagCompound());
+            stack.setTagCompound(new CompoundNBT());
             compound = stack.getTagCompound();
         }
 
@@ -79,7 +79,7 @@ public class ItemTFShaderGrabbag extends Item implements ModelRegisterCallback {
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         ItemStack stack = playerIn.getHeldItem(handIn);
 
         if (!worldIn.isRemote) {
@@ -97,15 +97,15 @@ public class ItemTFShaderGrabbag extends Item implements ModelRegisterCallback {
         return new ActionResult<>(EnumActionResult.PASS, stack);
     }
 
-    private static ActionResult<ItemStack> randomShader(@Nullable String shader, ItemStack stack, EntityPlayer playerIn) {
+    private static ActionResult<ItemStack> randomShader(@Nullable String shader, ItemStack stack, PlayerEntity playerIn) {
         if ( shader == null || shader.isEmpty() )
             return new ActionResult<>(EnumActionResult.FAIL, stack);
 
         ItemStack shaderItem = new ItemStack(ItemTFShader.shader);
-        NBTTagCompound compound = shaderItem.getTagCompound();
+        CompoundNBT compound = shaderItem.getTagCompound();
 
         if (compound == null) {
-            shaderItem.setTagCompound(new NBTTagCompound());
+            shaderItem.setTagCompound(new CompoundNBT());
             compound = shaderItem.getTagCompound();
         }
 
@@ -122,7 +122,7 @@ public class ItemTFShaderGrabbag extends Item implements ModelRegisterCallback {
         return new ActionResult<>(EnumActionResult.PASS, stack);
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void registerModel() {
         ModelResourceLocation mrl = new ModelResourceLocation(TwilightForestMod.ID + ":grabbag_tesr", "inventory");

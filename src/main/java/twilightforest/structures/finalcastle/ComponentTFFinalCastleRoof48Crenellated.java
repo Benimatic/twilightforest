@@ -1,6 +1,6 @@
 package twilightforest.structures.finalcastle;
 
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -38,7 +38,7 @@ public class ComponentTFFinalCastleRoof48Crenellated extends StructureTFComponen
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 		// add second layer of floor
-		final IBlockState castleMagic = TFBlocks.castle_rune_brick.getDefaultState()
+		final BlockState castleMagic = TFBlocks.castle_rune_brick.getDefaultState()
 				.withProperty(BlockTFCastleMagic.COLOR, BlockTFCastleMagic.VALID_COLORS.get(3));
 		this.fillWithBlocks(world, sbb, 2, 2, 2, 50, 2, 50, castleMagic, castleMagic, false);
 

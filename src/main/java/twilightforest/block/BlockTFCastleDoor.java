@@ -8,10 +8,10 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
@@ -21,8 +21,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
@@ -64,7 +64,7 @@ public class BlockTFCastleDoor extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(BlockState state) {
 		int meta = state.getValue(LOCK_INDEX);
 		meta |= state.getValue(ACTIVE) ? 8 : 0;
 		return meta;
@@ -72,7 +72,7 @@ public class BlockTFCastleDoor extends Block implements ModelRegisterCallback {
 
 	@Override
 	@Deprecated
-	public IBlockState getStateFromMeta(int meta) {
+	public BlockState getStateFromMeta(int meta) {
 		return getDefaultState()
 				.withProperty(ACTIVE, (meta & 8) != 0)
 				.withProperty(LOCK_INDEX, meta & 3);
@@ -80,31 +80,31 @@ public class BlockTFCastleDoor extends Block implements ModelRegisterCallback {
 
 	@Override
 	@Deprecated
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(BlockState state) {
 		return !this.isVanished;
 	}
 
 	@Override
 	@Deprecated
-	public boolean isFullCube(IBlockState state) {
+	public boolean isFullCube(BlockState state) {
 		return !this.isVanished;
 	}
 
 	@Override
 	@Deprecated
-	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face) {
 		return isVanished ? BlockFaceShape.UNDEFINED : super.getBlockFaceShape(worldIn, state, pos, face);
 	}
 
 	@Override
 	@Deprecated
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public AxisAlignedBB getCollisionBoundingBox(BlockState state, IBlockAccess world, BlockPos pos) {
 		return isVanished ? NULL_AABB : super.getCollisionBoundingBox(state, world, pos);
 	}
 
 	@Override
 	@Deprecated
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess world, BlockPos pos) {
 		return isVanished ? REAPPEARING_BB : super.getBoundingBox(state, world, pos);
 	}
 
@@ -114,19 +114,19 @@ public class BlockTFCastleDoor extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, Direction side, float hitX, float hitY, float hitZ) {
 		return onActivation(world, pos, state);
 	}
 
 	@Override
 	@Deprecated
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
+	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
 		if (!(block instanceof BlockTFCastleDoor) && world.isBlockPowered(pos)) {
 			onActivation(world, pos, state);
 		}
 	}
 
-	private boolean onActivation(World world, BlockPos pos, IBlockState state) {
+	private boolean onActivation(World world, BlockPos pos, BlockState state) {
 
 		if (isVanished || state.getValue(ACTIVE)) return false;
 
@@ -138,14 +138,14 @@ public class BlockTFCastleDoor extends Block implements ModelRegisterCallback {
 		return true;
 	}
 
-	private static void changeToActiveBlock(World world, BlockPos pos, IBlockState originState) {
+	private static void changeToActiveBlock(World world, BlockPos pos, BlockState originState) {
 		changeActiveState(world, pos, true, originState);
 		playVanishSound(world, pos);
 
 		world.scheduleUpdate(pos, originState.getBlock(), 2 + world.rand.nextInt(5));
 	}
 
-	private static void changeActiveState(World world, BlockPos pos, boolean active, IBlockState originState) {
+	private static void changeActiveState(World world, BlockPos pos, boolean active, BlockState originState) {
 		if (originState.getBlock() instanceof BlockTFCastleDoor) {
 			world.setBlockState(pos, originState.withProperty(ACTIVE, active), 3);
 			world.markBlockRangeForRenderUpdate(pos, pos);
@@ -168,7 +168,7 @@ public class BlockTFCastleDoor extends Block implements ModelRegisterCallback {
 	}
 
 	@Override // todo 1.10 recheck all of this
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
+	public void updateTick(World world, BlockPos pos, BlockState state, Random rand) {
 
 		if (world.isRemote) return;
 
@@ -190,7 +190,7 @@ public class BlockTFCastleDoor extends Block implements ModelRegisterCallback {
 				this.sendAnnihilateBlockPacket(world, pos);
 
 				// activate all adjacent inactive doors
-				for (EnumFacing e : EnumFacing.VALUES) {
+				for (Direction e : Direction.VALUES) {
 					checkAndActivateCastleDoor(world, pos.offset(e));
 				}
 			}
@@ -199,12 +199,12 @@ public class BlockTFCastleDoor extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	public Item getItemDropped(BlockState state, Random rand, int fortune) {
 		return TFItems.castle_door;
 	}
 
 	@Override
-	public int damageDropped(IBlockState state) {
+	public int damageDropped(BlockState state) {
 		return state.getValue(LOCK_INDEX);
 	}
 
@@ -230,7 +230,7 @@ public class BlockTFCastleDoor extends Block implements ModelRegisterCallback {
 	 * If the targeted block is a vanishing block, activate it
 	 */
 	public static void checkAndActivateCastleDoor(World world, BlockPos pos) {
-		IBlockState state = world.getBlockState(pos);
+		BlockState state = world.getBlockState(pos);
 
 		if (state.getBlock() == TFBlocks.castle_door && !state.getValue(ACTIVE) && !isBlockLocked(world, pos)) {
 			changeToActiveBlock(world, pos, state);
@@ -241,8 +241,8 @@ public class BlockTFCastleDoor extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random random) {
+	@OnlyIn(Dist.CLIENT)
+	public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
 		if (state.getValue(ACTIVE)) ;
 		{
 			for (int i = 0; i < 1; ++i) {
@@ -287,21 +287,21 @@ public class BlockTFCastleDoor extends Block implements ModelRegisterCallback {
 			}
 
 			if (d1 < (double) pos.getX() || d1 > (double) (pos.getX() + 1) || d2 < 0.0D || d2 > (double) (pos.getY() + 1) || d3 < (double) pos.getZ() || d3 > (double) (pos.getZ() + 1)) {
-				worldIn.spawnParticle(EnumParticleTypes.REDSTONE, d1, d2, d3, 0.0D, 0.0D, 0.0D, new int[0]);
+				worldIn.spawnParticle(ParticleTypes.REDSTONE, d1, d2, d3, 0.0D, 0.0D, 0.0D, new int[0]);
 			}
 		}
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public BlockRenderLayer getRenderLayer() {
 		return isVanished ? BlockRenderLayer.TRANSLUCENT : BlockRenderLayer.CUTOUT;
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	@Deprecated
-	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+	public boolean shouldSideBeRendered(BlockState blockState, IBlockAccess blockAccess, BlockPos pos, Direction side) {
 		return !(blockAccess.getBlockState(pos.offset(side)).getBlock() instanceof BlockTFCastleDoor) && super.shouldSideBeRendered(blockState, blockAccess, pos, side);
 	}
 
@@ -314,7 +314,7 @@ public class BlockTFCastleDoor extends Block implements ModelRegisterCallback {
 		}
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void registerModel() {
 		if (!isVanished) {
@@ -323,12 +323,12 @@ public class BlockTFCastleDoor extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
+	public ItemStack getItem(World world, BlockPos pos, BlockState state) {
 		return new ItemStack(TFItems.castle_door, 1, damageDropped(state));
 	}
 
 	@Override
-	protected ItemStack getSilkTouchDrop(IBlockState state) {
+	protected ItemStack getSilkTouchDrop(BlockState state) {
 		return new ItemStack(TFItems.castle_door, 1, damageDropped(state));
 	}
 }

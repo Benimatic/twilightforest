@@ -2,8 +2,8 @@ package twilightforest.structures.hollowtree;
 
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -58,17 +58,17 @@ public class ComponentTFHollowTreeRoot extends ComponentTFHollowTreeMedBranch {
 	/**
 	 * Draws a line
 	 */
-	protected void drawRootLine(World world, StructureBoundingBox sbb, int x1, int y1, int z1, int x2, int y2, int z2, IBlockState blockValue) {
+	protected void drawRootLine(World world, StructureBoundingBox sbb, int x1, int y1, int z1, int x2, int y2, int z2, BlockState blockValue) {
 		BlockPos lineCoords[] = TFGenerator.getBresehnamArrays(x1, y1, z1, x2, y2, z2);
 
 		for (BlockPos coords : lineCoords) {
-			IBlockState block = this.getBlockStateFromPos(world, coords.getX(), coords.getY(), coords.getZ(), sbb);
+			BlockState block = this.getBlockStateFromPos(world, coords.getX(), coords.getY(), coords.getZ(), sbb);
 
 			// three choices here
 			if (!block.isNormalCube() || block.getBlock() != Blocks.AIR && block.getMaterial() == Material.GRASS) {
 
 				// air, other non-solid, or grass, make wood block
-				IBlockState log = TFBlocks.twilight_log.getDefaultState().withProperty(LOG_AXIS, BlockLog.EnumAxis.NONE);
+				BlockState log = TFBlocks.twilight_log.getDefaultState().withProperty(LOG_AXIS, BlockLog.EnumAxis.NONE);
 				this.setBlockState(world, log, coords.getX(), coords.getY(), coords.getZ(), sbb);
 			} else if (block.getBlock() != Blocks.AIR && block.getMaterial() == Material.WOOD) {
 				// wood, do nothing
@@ -79,7 +79,7 @@ public class ComponentTFHollowTreeRoot extends ComponentTFHollowTreeMedBranch {
 		}
 	}
 
-	protected static final Predicate<IBlockState> isGround = state -> {
+	protected static final Predicate<BlockState> isGround = state -> {
 		Material material = state.getMaterial();
 		return material == Material.GROUND || material == Material.ROCK || material == Material.GRASS;
 	};

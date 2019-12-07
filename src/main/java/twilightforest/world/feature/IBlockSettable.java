@@ -1,6 +1,6 @@
 package twilightforest.world.feature;
 
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -11,5 +11,5 @@ import net.minecraft.world.World;
 public interface IBlockSettable {
 	// [VanillaCopy] pin to signature of WorldGenerator.setBlockAndNotifyAdequately
 	// But cannot have exact same name as the subclass methods will get reobf-ed but the interface one won't
-	void setBlockAndNotify(World world, BlockPos pos, IBlockState state);
+	void setBlockAndNotify(World world, BlockPos pos, BlockState state);
 }

@@ -1,8 +1,8 @@
 package twilightforest.structures.lichtower;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -19,7 +19,7 @@ public class ComponentTFTowerOutbuilding extends ComponentTFTowerWing {
 		super();
 	}
 
-	protected ComponentTFTowerOutbuilding(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
+	protected ComponentTFTowerOutbuilding(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
 		super(feature, i, x, y, z, pSize, pHeight, direction);
 	}
 
@@ -45,7 +45,7 @@ public class ComponentTFTowerOutbuilding extends ComponentTFTowerWing {
 
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		final IBlockState cobblestone = Blocks.COBBLESTONE.getDefaultState();
+		final BlockState cobblestone = Blocks.COBBLESTONE.getDefaultState();
 		for (int x = 0; x < this.size; x++) {
 			for (int z = 0; z < this.size; z++) {
 				this.replaceAirAndLiquidDownwards(world, cobblestone, x, -1, z, sbb);

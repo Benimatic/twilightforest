@@ -1,9 +1,9 @@
 package twilightforest.structures.minotaurmaze;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -31,9 +31,9 @@ public class ComponentTFMinotaurMaze extends StructureTFComponentOld {
 
 	public ComponentTFMinotaurMaze(TFFeature feature, int index, int x, int y, int z, int entranceX, int entranceZ, int level) {
 		super(feature, index);
-		this.setCoordBaseMode(EnumFacing.SOUTH);
+		this.setCoordBaseMode(Direction.SOUTH);
 		this.level = level;
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -getRadius(), 0, -getRadius(), getRadius() * 2, 5, getRadius() * 2, EnumFacing.SOUTH);
+		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -getRadius(), 0, -getRadius(), getRadius() * 2, 5, getRadius() * 2, Direction.SOUTH);
 
 		// make maze object
 		maze = new TFMaze(getMazeSize(), getMazeSize());
@@ -84,7 +84,7 @@ public class ComponentTFMinotaurMaze extends StructureTFComponentOld {
 	 * Save to NBT
 	 */
 	@Override
-	protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 		super.writeStructureToNBT(tagCompound);
 
 		tagCompound.setInteger("mazeLevel", this.level);
@@ -95,7 +95,7 @@ public class ComponentTFMinotaurMaze extends StructureTFComponentOld {
 	 * Load from NBT
 	 */
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager templateManager) {
+	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
 		super.readStructureFromNBT(tagCompound, templateManager);
 		this.level = tagCompound.getInteger("mazeLevel");
 		this.rcoords = tagCompound.getIntArray("roomCoords");
@@ -172,26 +172,26 @@ public class ComponentTFMinotaurMaze extends StructureTFComponentOld {
 
 				// dead ends
 				if (!maze.isWall(x, z, x - 1, z) && maze.isWall(x, z, x + 1, z) && maze.isWall(x, z, x, z - 1) && maze.isWall(x, z, x, z + 1)) {
-					component = makeDeadEnd(random, x, z, EnumFacing.EAST);
+					component = makeDeadEnd(random, x, z, Direction.EAST);
 				}
 				if (maze.isWall(x, z, x - 1, z) && !maze.isWall(x, z, x + 1, z) && maze.isWall(x, z, x, z - 1) && maze.isWall(x, z, x, z + 1)) {
-					component = makeDeadEnd(random, x, z, EnumFacing.WEST);
+					component = makeDeadEnd(random, x, z, Direction.WEST);
 				}
 				if (maze.isWall(x, z, x - 1, z) && maze.isWall(x, z, x + 1, z) && !maze.isWall(x, z, x, z - 1) && maze.isWall(x, z, x, z + 1)) {
-					component = makeDeadEnd(random, x, z, EnumFacing.SOUTH);
+					component = makeDeadEnd(random, x, z, Direction.SOUTH);
 				}
 				if (maze.isWall(x, z, x - 1, z) && maze.isWall(x, z, x + 1, z) && maze.isWall(x, z, x, z - 1) && !maze.isWall(x, z, x, z + 1)) {
-					component = makeDeadEnd(random, x, z, EnumFacing.NORTH);
+					component = makeDeadEnd(random, x, z, Direction.NORTH);
 				}
 
 				// corridors
 				if (!maze.isWall(x, z, x - 1, z) && !maze.isWall(x, z, x + 1, z) && maze.isWall(x, z, x, z - 1) && maze.isWall(x, z, x, z + 1)
 						&& maze.isWall(x - 1, z, x - 1, z - 1) && maze.isWall(x - 1, z, x - 1, z + 1) && maze.isWall(x + 1, z, x + 1, z - 1) && maze.isWall(x + 1, z, x + 1, z + 1)) {
-					component = makeCorridor(random, x, z, EnumFacing.WEST);
+					component = makeCorridor(random, x, z, Direction.WEST);
 				}
 				if (!maze.isWall(x, z, x, z - 1) && !maze.isWall(x, z, x, z + 1) && maze.isWall(x, z, x - 1, z) && maze.isWall(x, z, x + 1, z)
 						&& maze.isWall(x, z - 1, x - 1, z - 1) && maze.isWall(x, z - 1, x + 1, z - 1) && maze.isWall(x, z + 1, x - 1, z + 1) && maze.isWall(x, z + 1, x + 1, z + 1)) {
-					component = makeCorridor(random, x, z, EnumFacing.SOUTH);
+					component = makeCorridor(random, x, z, Direction.SOUTH);
 				}
 
 				if (component != null) {
@@ -205,7 +205,7 @@ public class ComponentTFMinotaurMaze extends StructureTFComponentOld {
 	/**
 	 * Add a dead end structure at the specified coords
 	 */
-	protected ComponentTFMazeDeadEnd makeDeadEnd(Random random, int dx, int dz, EnumFacing rotation) {
+	protected ComponentTFMazeDeadEnd makeDeadEnd(Random random, int dx, int dz, Direction rotation) {
 		int worldX = boundingBox.minX + dx * 5 + 1;
 		int worldY = boundingBox.minY;
 		int worldZ = boundingBox.minZ + dz * 5 + 1;
@@ -236,7 +236,7 @@ public class ComponentTFMinotaurMaze extends StructureTFComponentOld {
 
 	}
 
-	protected ComponentTFMazeCorridor makeCorridor(Random random, int dx, int dz, EnumFacing rotation) {
+	protected ComponentTFMazeCorridor makeCorridor(Random random, int dx, int dz, Direction rotation) {
 		int worldX = boundingBox.minX + dx * 5 + 1;
 		int worldY = boundingBox.minY;
 		int worldZ = boundingBox.minZ + dz * 5 + 1;
@@ -295,9 +295,9 @@ public class ComponentTFMinotaurMaze extends StructureTFComponentOld {
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 
-		IBlockState bedrock = Blocks.BEDROCK.getDefaultState();
-		IBlockState stone = Blocks.STONE.getDefaultState();
-		IBlockState mazestone = TFBlocks.maze_stone.getDefaultState();
+		BlockState bedrock = Blocks.BEDROCK.getDefaultState();
+		BlockState stone = Blocks.STONE.getDefaultState();
+		BlockState mazestone = TFBlocks.maze_stone.getDefaultState();
 
 		// level 2 maze surrounded by bedrock
 		if (level == 2) {

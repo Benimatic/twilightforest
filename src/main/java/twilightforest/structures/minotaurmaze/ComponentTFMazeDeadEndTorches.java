@@ -1,8 +1,8 @@
 package twilightforest.structures.minotaurmaze;
 
 import net.minecraft.block.BlockTorch;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.Blocks;
+import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.TFFeature;
@@ -15,7 +15,7 @@ public class ComponentTFMazeDeadEndTorches extends ComponentTFMazeDeadEnd {
 		super();
 	}
 
-	public ComponentTFMazeDeadEndTorches(TFFeature feature, int i, int x, int y, int z, EnumFacing rotation) {
+	public ComponentTFMazeDeadEndTorches(TFFeature feature, int i, int x, int y, int z, Direction rotation) {
 		super(feature, i, x, y, z, rotation);
 	}
 
@@ -25,9 +25,9 @@ public class ComponentTFMazeDeadEndTorches extends ComponentTFMazeDeadEnd {
 		super.addComponentParts(world, rand, sbb);
 
 		// torches!
-		this.fillWithBlocks(world, sbb, 2, 1, 4, 3, 4, 4, Blocks.TORCH.getDefaultState().withProperty(BlockTorch.FACING, EnumFacing.SOUTH), AIR, false);
-		this.fillWithBlocks(world, sbb, 1, 1, 1, 1, 4, 4, Blocks.TORCH.getDefaultState().withProperty(BlockTorch.FACING, EnumFacing.WEST), AIR, false);
-		this.fillWithBlocks(world, sbb, 4, 1, 1, 4, 4, 4, Blocks.TORCH.getDefaultState().withProperty(BlockTorch.FACING, EnumFacing.EAST), AIR, false);
+		this.fillWithBlocks(world, sbb, 2, 1, 4, 3, 4, 4, Blocks.TORCH.getDefaultState().withProperty(BlockTorch.FACING, Direction.SOUTH), AIR, false);
+		this.fillWithBlocks(world, sbb, 1, 1, 1, 1, 4, 4, Blocks.TORCH.getDefaultState().withProperty(BlockTorch.FACING, Direction.WEST), AIR, false);
+		this.fillWithBlocks(world, sbb, 4, 1, 1, 4, 4, 4, Blocks.TORCH.getDefaultState().withProperty(BlockTorch.FACING, Direction.EAST), AIR, false);
 
 
 		return true;

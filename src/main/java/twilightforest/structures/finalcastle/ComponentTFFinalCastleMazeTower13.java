@@ -1,8 +1,8 @@
 package twilightforest.structures.finalcastle;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.EnumDyeColor;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.item.DyeColor;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -25,12 +25,12 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 	public static final int LOWEST_DOOR = 144;
 	public static final int HIGHEST_DOOR = 222;
 
-	public EnumDyeColor color;
+	public DyeColor color;
 
 	public ComponentTFFinalCastleMazeTower13() {
 	}
 
-	public ComponentTFFinalCastleMazeTower13(TFFeature feature, Random rand, int i, int x, int y, int z, EnumDyeColor color, EnumFacing direction) {
+	public ComponentTFFinalCastleMazeTower13(TFFeature feature, Random rand, int i, int x, int y, int z, DyeColor color, Direction direction) {
 		super(feature, i);
 		this.setCoordBaseMode(direction);
 		this.color = color;
@@ -54,20 +54,20 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 			entranceFloor = floors - 1;
 		}
 
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -6, 0 - (entranceFloor * 8), -6, this.size - 1, this.height, this.size - 1, EnumFacing.SOUTH);
+		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -6, 0 - (entranceFloor * 8), -6, this.size - 1, this.height, this.size - 1, Direction.SOUTH);
 
 		// we should have a door where we started
 		addOpening(0, entranceFloor * 8 + 1, size / 2, Rotation.CLOCKWISE_180);
 
 	}
 
-	public ComponentTFFinalCastleMazeTower13(TFFeature feature, Random rand, int i, int x, int y, int z, int floors, int entranceFloor, EnumDyeColor color, EnumFacing direction) {
+	public ComponentTFFinalCastleMazeTower13(TFFeature feature, Random rand, int i, int x, int y, int z, int floors, int entranceFloor, DyeColor color, Direction direction) {
 		super(feature, i);
 		this.setCoordBaseMode(direction);
 		this.color = color;
 		this.size = 13;
 		this.height = floors * 8 + 1;
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -6, 0 - (entranceFloor * 8), -6, this.size - 1, this.height, this.size - 1, EnumFacing.SOUTH);
+		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -6, 0 - (entranceFloor * 8), -6, this.size - 1, this.height, this.size - 1, Direction.SOUTH);
 		addOpening(0, entranceFloor * 8 + 1, size / 2, Rotation.CLOCKWISE_180);
 	}
 
@@ -111,7 +111,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 			} else {
 
 				int howFar = 14 + rand.nextInt(24);
-				EnumFacing facing = this.findBestDirectionTowards(dest);
+				Direction facing = this.findBestDirectionTowards(dest);
 
 				// build left or right, not straight if we can help it
 				if (facing == this.getCoordBaseMode() || !buildContinueTowerTowards(list, rand, dest, facing, howFar)) {
@@ -138,7 +138,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 
 	protected void buildNonCriticalTowers(StructureComponent parent, List<StructureComponent> list, Random rand) {
 		// pick a random direction
-		EnumFacing dir = RotationUtil.getRandomFacing(rand);
+		Direction dir = RotationUtil.getRandomFacing(rand);
 		Rotation relativeRotation = RotationUtil.getRelativeRotation(this.getCoordBaseMode(), dir);
 
 		// if there isn't something in that direction, check if we can add a wrecked tower
@@ -155,7 +155,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 
 	}
 
-	private EnumFacing findBestDirectionTowards(BlockPos dest) {
+	private Direction findBestDirectionTowards(BlockPos dest) {
 
 		// center of tower
 		int cx = this.boundingBox.minX + 6;
@@ -165,11 +165,11 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 		int dx = cx - dest.getX();
 		int dz = cz - dest.getZ();
 
-		EnumFacing absoluteDir;
+		Direction absoluteDir;
 		if (Math.abs(dx) > Math.abs(dz)) {
-			absoluteDir = (dx >= 0) ? EnumFacing.EAST : EnumFacing.WEST;
+			absoluteDir = (dx >= 0) ? Direction.EAST : Direction.WEST;
 		} else {
-			absoluteDir = (dz >= 0) ? EnumFacing.SOUTH : EnumFacing.NORTH;
+			absoluteDir = (dz >= 0) ? Direction.SOUTH : Direction.NORTH;
 		}
 
 		TwilightForestMod.LOGGER.debug("Determining best direction!  center is at {}, {} and dest is at {}. offset is {}, {} so the best absolute direction is {}", cx, cz, dest, dx, dz, absoluteDir);
@@ -177,7 +177,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 		return absoluteDir;
 	}
 
-	private EnumFacing findSecondDirectionTowards(BlockPos dest) {
+	private Direction findSecondDirectionTowards(BlockPos dest) {
 
 		// center of tower
 		int cx = this.boundingBox.minX + 6;
@@ -187,11 +187,11 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 		int dx = cx - dest.getX();
 		int dz = cz - dest.getZ();
 
-		EnumFacing absoluteDir;
+		Direction absoluteDir;
 		if (Math.abs(dx) < Math.abs(dz)) {  // reversed from findBestDirectionTowards
-			absoluteDir = (dx >= 0) ? EnumFacing.EAST : EnumFacing.WEST;
+			absoluteDir = (dx >= 0) ? Direction.EAST : Direction.WEST;
 		} else {
-			absoluteDir = (dz >= 0) ? EnumFacing.SOUTH : EnumFacing.NORTH;
+			absoluteDir = (dz >= 0) ? Direction.SOUTH : Direction.NORTH;
 		}
 
 		TwilightForestMod.LOGGER.debug("Determining second direction!  center is at {}, {} and dest is at {}. offset is {}, {} so the best absolute direction is {}", cx, cz, dest, dx, dz, absoluteDir);
@@ -199,15 +199,15 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 		return absoluteDir;
 	}
 
-	private EnumFacing findThirdDirectionTowards(BlockPos dest) {
-		EnumFacing first = this.findBestDirectionTowards(dest);
-		EnumFacing second = this.findSecondDirectionTowards(dest);
+	private Direction findThirdDirectionTowards(BlockPos dest) {
+		Direction first = this.findBestDirectionTowards(dest);
+		Direction second = this.findSecondDirectionTowards(dest);
 
-		EnumFacing[] cardinals = {EnumFacing.NORTH, EnumFacing.SOUTH, EnumFacing.EAST, EnumFacing.WEST};
+		Direction[] cardinals = {Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST};
 
 		TwilightForestMod.LOGGER.debug("Determining third direction!  first is {}, and second is {}", first, second);
 
-		for (EnumFacing f : cardinals) {
+		for (Direction f : cardinals) {
 			if (f != first && f != second && f != Rotation.CLOCKWISE_180.rotate(this.getCoordBaseMode())) {
 				return f;
 			}
@@ -217,7 +217,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 		return this.getCoordBaseMode();
 	}
 
-	private boolean buildContinueTowerTowards(List<StructureComponent> list, Random rand, BlockPos dest, EnumFacing facing, int howFar) {
+	private boolean buildContinueTowerTowards(List<StructureComponent> list, Random rand, BlockPos dest, Direction facing, int howFar) {
 		BlockPos opening = this.getValidOpeningCC(rand, facing);
 
 		// adjust opening towards dest.getY() if we are getting close to dest
@@ -285,7 +285,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 	}
 
 
-	protected boolean buildDamagedTower(List<StructureComponent> list, Random rand, EnumFacing facing) {
+	protected boolean buildDamagedTower(List<StructureComponent> list, Random rand, Direction facing) {
 		BlockPos opening = this.getValidOpeningCC(rand, facing);
 
 		int howFar = 14 + rand.nextInt(24);
@@ -324,7 +324,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 		}
 	}
 
-	protected ComponentTFFinalCastleMazeTower13 makeNewDamagedTower(Random rand, EnumFacing facing, BlockPos tc) {
+	protected ComponentTFFinalCastleMazeTower13 makeNewDamagedTower(Random rand, Direction facing, BlockPos tc) {
 		return new ComponentTFFinalCastleDamagedTower(getFeatureType(), rand, this.getComponentType() + 1, tc.getX(), tc.getY(), tc.getZ(), facing);
 	}
 
@@ -343,7 +343,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 		return openY;
 	}
 
-	private boolean buildEndTowerTowards(List<StructureComponent> list, Random rand, BlockPos dest, EnumFacing facing, int howFar) {
+	private boolean buildEndTowerTowards(List<StructureComponent> list, Random rand, BlockPos dest, Direction facing, int howFar) {
 		BlockPos opening = this.getValidOpeningCC(rand, facing);
 		opening = new BlockPos(
 				opening.getX(),
@@ -408,7 +408,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 	/**
 	 * Gets a random position in the specified direction that connects to a floor currently in the tower.
 	 */
-	public BlockPos getValidOpeningCC(Random rand, EnumFacing facing) {
+	public BlockPos getValidOpeningCC(Random rand, Direction facing) {
 		Rotation relative = RotationUtil.getRelativeRotation(this.getCoordBaseMode(), facing);
 		int floors = (this.height / 8);
 
@@ -438,7 +438,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 	 * Provides coordinates to make a tower such that it will open into the parent tower at the provided coordinates.
 	 */
 	@Override
-	protected BlockPos offsetTowerCCoords(int x, int y, int z, int howFar, EnumFacing direction) {
+	protected BlockPos offsetTowerCCoords(int x, int y, int z, int howFar, Direction direction) {
 
 		int dx = getXWithOffset(x, z);
 		int dy = getYWithOffset(y);
@@ -496,10 +496,10 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 		return true;
 	}
 
-	public EnumDyeColor getGlyphColour() {
+	public DyeColor getGlyphColour() {
 		if (color == null) {
 			TwilightForestMod.LOGGER.warn("Final Castle tower has null for glyph color, this is a bug.");
-			return EnumDyeColor.BLUE;
+			return DyeColor.BLUE;
 		} else {
 			return color;
 		}
@@ -536,9 +536,9 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 			int sz = 9;
 
 
-			this.setBlockStateRotated(world, getStairState(deco.stairState, EnumFacing.WEST, rotation, false), sx, sy, sz, rotation, sbb);
+			this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.WEST, rotation, false), sx, sy, sz, rotation, sbb);
 			this.setBlockStateRotated(world, deco.blockState, sx, sy - 1, sz, rotation, sbb);
-			this.setBlockStateRotated(world, getStairState(deco.stairState, EnumFacing.WEST, rotation, false), sx, sy, sz - 1, rotation, sbb);
+			this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.WEST, rotation, false), sx, sy, sz - 1, rotation, sbb);
 			this.setBlockStateRotated(world, deco.blockState, sx, sy - 1, sz - 1, rotation, sbb);
 			this.fillAirRotated(world, sbb, sx, sy + 1, sz - 1, sx, sy + 3, sz, rotation);
 		}
@@ -552,9 +552,9 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 			int sy = y - i - 4;
 			int sz = 7 - i;
 
-			this.setBlockStateRotated(world, getStairState(deco.stairState, EnumFacing.NORTH, rotation, false), sx, sy, sz, rotation, sbb);
+			this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.NORTH, rotation, false), sx, sy, sz, rotation, sbb);
 			this.setBlockStateRotated(world, deco.blockState, sx, sy - 1, sz, rotation, sbb);
-			this.setBlockStateRotated(world, getStairState(deco.stairState, EnumFacing.NORTH, rotation, false), sx - 1, sy, sz, rotation, sbb);
+			this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.NORTH, rotation, false), sx - 1, sy, sz, rotation, sbb);
 			this.setBlockStateRotated(world, deco.blockState, sx - 1, sy - 1, sz, rotation, sbb);
 			this.fillAirRotated(world, sbb, sx, sy + 1, sz, sx - 1, sy + 3, sz, rotation);
 		}
@@ -569,7 +569,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 		// nullify sky light
 		//nullifySkyLightAtCurrentPosition(world, dx - 3, dy - 1, dz - 3, dx + 3, dy + 3, dz + 3);
 
-		final IBlockState doorState = TFBlocks.castle_door.getDefaultState().withProperty(BlockTFCastleDoor.LOCK_INDEX, this.getGlyphColour().getMetadata() % 4);
+		final BlockState doorState = TFBlocks.castle_door.getDefaultState().withProperty(BlockTFCastleDoor.LOCK_INDEX, this.getGlyphColour().getMetadata() % 4);
 
 		// clear the door
 		if (dx == 0 || dx == size - 1) {

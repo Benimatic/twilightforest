@@ -1,6 +1,6 @@
 package twilightforest.item;
 
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Enchantments;
 import net.minecraft.item.EnumRarity;
@@ -31,7 +31,7 @@ public class ItemTFMazebreakerPick extends ItemPickaxe implements ModelRegisterC
 	}
 
 	@Override
-	public float getDestroySpeed(@Nonnull ItemStack stack, IBlockState state) {
+	public float getDestroySpeed(@Nonnull ItemStack stack, BlockState state) {
 		float destroySpeed = super.getDestroySpeed(stack, state);
 		return state.getBlock() == TFBlocks.maze_stone ? destroySpeed * 16F : destroySpeed;
 	}

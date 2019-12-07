@@ -2,7 +2,7 @@ package twilightforest.structures;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.gen.structure.template.ITemplateProcessor;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
@@ -27,17 +27,17 @@ public abstract class RandomizedTemplateProcessor implements ITemplateProcessor 
         return blocks[random.nextInt(blocks.length)];
     }
 
-    protected static <T extends Comparable<T>> IBlockState translateState(IBlockState stateIn, Block blockOut, IProperty<T> property) {
+    protected static <T extends Comparable<T>> BlockState translateState(BlockState stateIn, Block blockOut, IProperty<T> property) {
         return blockOut.getDefaultState().withProperty(property, stateIn.getValue(property));
     }
 
-    protected static IBlockState translateState(IBlockState stateIn, Block blockOut, IProperty<?>... properties) {
-        IBlockState stateOut = blockOut.getDefaultState();
+    protected static BlockState translateState(BlockState stateIn, Block blockOut, IProperty<?>... properties) {
+        BlockState stateOut = blockOut.getDefaultState();
         for (IProperty<?> property : properties) stateOut = copyValue(stateIn, stateOut, property);
         return stateOut;
     }
 
-    private static <T extends Comparable<T>> IBlockState copyValue(IBlockState from, IBlockState to, IProperty<T> property) {
+    private static <T extends Comparable<T>> BlockState copyValue(BlockState from, BlockState to, IProperty<T> property) {
         return to.withProperty(property, from.getValue(property));
     }
 }

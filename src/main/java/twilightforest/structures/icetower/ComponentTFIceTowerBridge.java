@@ -1,7 +1,7 @@
 package twilightforest.structures.icetower;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -22,7 +22,7 @@ public class ComponentTFIceTowerBridge extends StructureTFComponentOld {
 	}
 
 
-	public ComponentTFIceTowerBridge(TFFeature feature, int index, int x, int y, int z, int length, EnumFacing direction) {
+	public ComponentTFIceTowerBridge(TFFeature feature, int index, int x, int y, int z, int length, Direction direction) {
 		super(feature, index);
 		this.length = length;
 		this.setCoordBaseMode(direction);
@@ -32,14 +32,14 @@ public class ComponentTFIceTowerBridge extends StructureTFComponentOld {
 	}
 
 	@Override
-	protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 		super.writeStructureToNBT(tagCompound);
 
 		tagCompound.setInteger("bridgeLength", this.length);
 	}
 
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager templateManager) {
+	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
 		super.readStructureFromNBT(tagCompound, templateManager);
 		this.length = tagCompound.getInteger("bridgeLength");
 	}

@@ -1,7 +1,7 @@
 package twilightforest.structures.trollcave;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.Blocks;
+import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.TFFeature;
@@ -18,7 +18,7 @@ public class ComponentTFTrollVault extends StructureTFComponentOld {
 
 	public ComponentTFTrollVault(TFFeature feature, int index, int x, int y, int z) {
 		super(feature, index);
-		this.setCoordBaseMode(EnumFacing.SOUTH);
+		this.setCoordBaseMode(Direction.SOUTH);
 
 
 		// adjust x, y, z
@@ -29,7 +29,7 @@ public class ComponentTFTrollVault extends StructureTFComponentOld {
 		// spawn list!
 		this.spawnListIndex = -1;
 
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -8, 0, -8, 12, 12, 12, EnumFacing.SOUTH);
+		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -8, 0, -8, 12, 12, 12, Direction.SOUTH);
 	}
 
 	@Override

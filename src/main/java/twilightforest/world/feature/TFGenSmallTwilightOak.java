@@ -1,7 +1,7 @@
 package twilightforest.world.feature;
 
 import net.minecraft.block.BlockLeaves;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenTrees;
@@ -20,12 +20,12 @@ public class TFGenSmallTwilightOak extends WorldGenTrees implements IBlockSettab
 		);
 	}
 
-	protected TFGenSmallTwilightOak(boolean notify, int minHeight, IBlockState trunk, IBlockState leaves) {
+	protected TFGenSmallTwilightOak(boolean notify, int minHeight, BlockState trunk, BlockState leaves) {
 		super(notify, minHeight, trunk, leaves, false);
 	}
 
 	@Override
-	public final void setBlockAndNotify(World world, BlockPos pos, IBlockState state) {
+	public final void setBlockAndNotify(World world, BlockPos pos, BlockState state) {
 		setBlockAndNotifyAdequately(world, pos, state);
 	}
 }

@@ -11,14 +11,14 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Optional;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 
@@ -65,7 +65,7 @@ public class ItemTFShader extends Item implements IShaderItem, ModelRegisterCall
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World world, List<String> list, ITooltipFlag flag) {
         list.add(I18n.translateToLocalFormatted("Level: " + this.getRarity(stack).color + this.getRarity(stack).rarityName));
 
@@ -87,7 +87,7 @@ public class ItemTFShader extends Item implements IShaderItem, ModelRegisterCall
 
     @Nonnull
     private static String getShaderType(ItemStack stack) {
-        NBTTagCompound compound = stack.getTagCompound();
+        CompoundNBT compound = stack.getTagCompound();
 
         if (compound != null) {
             String string = stack.getTagCompound().getString(TAG_SHADER);
@@ -119,7 +119,7 @@ public class ItemTFShader extends Item implements IShaderItem, ModelRegisterCall
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
         if (tab == TFItems.creativeTab) {
             for (ShaderRegistry.ShaderRegistryEntry entry : IEShaderRegister.getAllTwilightShaders()) {
-                NBTTagCompound compound = new NBTTagCompound();
+                CompoundNBT compound = new CompoundNBT();
 
                 ItemStack stack = new ItemStack(this, 1, 0);
                 compound.setString(TAG_SHADER, entry.getName());

@@ -2,10 +2,10 @@ package twilightforest.tileentity;
 
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import twilightforest.TFConfig;
@@ -29,7 +29,7 @@ public class TileEntityTFAntibuilder extends TileEntity implements ITickable {
 	private boolean slowScan;
 	private int ticksSinceChange;
 
-	private IBlockState[] blockData;
+	private BlockState[] blockData;
 
 	@Override
 	public void update() {
@@ -41,7 +41,7 @@ public class TileEntityTFAntibuilder extends TileEntity implements ITickable {
 				double y = this.pos.getY() + this.world.rand.nextFloat();
 				double z = this.pos.getZ() + this.world.rand.nextFloat();
 //				this.world.spawnParticle("smoke", x, y, z, 0.0D, 0.0D, 0.0D);
-				this.world.spawnParticle(EnumParticleTypes.REDSTONE, x, y, z, 0.0D, 0.0D, 0.0D);
+				this.world.spawnParticle(ParticleTypes.REDSTONE, x, y, z, 0.0D, 0.0D, 0.0D);
 
 				// occasionally make a little red dust line to outline our radius
 				if (this.rand.nextInt(10) == 0) {
@@ -194,7 +194,7 @@ public class TileEntityTFAntibuilder extends TileEntity implements ITickable {
 			double tx = srcX + (destX - srcX) * trailFactor + rand.nextFloat() * 0.005;
 			double ty = srcY + (destY - srcY) * trailFactor + rand.nextFloat() * 0.005;
 			double tz = srcZ + (destZ - srcZ) * trailFactor + rand.nextFloat() * 0.005;
-			world.spawnParticle(EnumParticleTypes.REDSTONE, tx, ty, tz, 0, 0, 0);
+			world.spawnParticle(ParticleTypes.REDSTONE, tx, ty, tz, 0, 0, 0);
 		}
 	}
 
@@ -205,7 +205,7 @@ public class TileEntityTFAntibuilder extends TileEntity implements ITickable {
 		for (int x = -radius; x <= radius; x++) {
 			for (int y = -radius; y <= radius; y++) {
 				for (int z = -radius; z <= radius; z++) {
-					IBlockState stateThere = world.getBlockState(pos.add(x, y, z));
+					BlockState stateThere = world.getBlockState(pos.add(x, y, z));
 
 					if (blockData[index].getBlock() != stateThere.getBlock()) {
 						if (revertBlock(pos.add(x, y, z), stateThere, blockData[index])) {
@@ -223,7 +223,7 @@ public class TileEntityTFAntibuilder extends TileEntity implements ITickable {
 		return reverted;
 	}
 
-	private boolean revertBlock(BlockPos pos, IBlockState stateThere, IBlockState replaceWith) {
+	private boolean revertBlock(BlockPos pos, BlockState stateThere, BlockState replaceWith) {
 		if (stateThere.getBlock() == Blocks.AIR && !replaceWith.getMaterial().blocksMovement()) {
 			return false;
 		}
@@ -249,7 +249,7 @@ public class TileEntityTFAntibuilder extends TileEntity implements ITickable {
 		return true;
 	}
 
-	private boolean isUnrevertable(IBlockState stateThere, IBlockState replaceWith) {
+	private boolean isUnrevertable(BlockState stateThere, BlockState replaceWith) {
 		if (stateThere.getBlock() == TFBlocks.tower_device || replaceWith.getBlock() == TFBlocks.tower_device) {
 			return true;
 		}
@@ -273,12 +273,12 @@ public class TileEntityTFAntibuilder extends TileEntity implements ITickable {
 			return true;
 		}
 
-		ImmutableSet<IBlockState> blacklist = TFConfig.getDisallowedBlocks();
+		ImmutableSet<BlockState> blacklist = TFConfig.getDisallowedBlocks();
 		return blacklist.contains(stateThere) || blacklist.contains(replaceWith);
 	}
 
 	private void captureBlockData() {
-		blockData = new IBlockState[diameter * diameter * diameter];
+		blockData = new BlockState[diameter * diameter * diameter];
 
 		int index = 0;
 

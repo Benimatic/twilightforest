@@ -5,7 +5,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.item.Item;
@@ -14,8 +14,8 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
@@ -38,7 +38,7 @@ public class BlockTFAuroraSlab extends BlockSlab implements ModelRegisterCallbac
 		this.setLightOpacity(isDouble ? 255 : 0);
 		this.useNeighborBrightness = !isDouble;
 
-		IBlockState state = this.blockState.getBaseState().withProperty(VARIANT, AuroraSlabVariant.AURORA);
+		BlockState state = this.blockState.getBaseState().withProperty(VARIANT, AuroraSlabVariant.AURORA);
 
 		if (!this.isDouble()) state = state.withProperty(HALF, EnumBlockHalf.BOTTOM);
 
@@ -71,32 +71,32 @@ public class BlockTFAuroraSlab extends BlockSlab implements ModelRegisterCallbac
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	public Item getItemDropped(BlockState state, Random rand, int fortune) {
 		return Item.getItemFromBlock(TFBlocks.aurora_slab);
 	}
 
 	@Override
-	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
+	public ItemStack getItem(World worldIn, BlockPos pos, BlockState state) {
 		return new ItemStack(Item.getItemFromBlock(TFBlocks.aurora_slab));
 	}
 
 	@Override
-	protected ItemStack getSilkTouchDrop(IBlockState state) {
+	protected ItemStack getSilkTouchDrop(BlockState state) {
 		return new ItemStack(Item.getItemFromBlock(TFBlocks.aurora_slab), isDouble() ? 2 : 1, 0);
 	}
 
 	@Override
 	@Deprecated
-	public IBlockState getStateFromMeta(int meta) {
+	public BlockState getStateFromMeta(int meta) {
 		return this.isDouble() ? this.getDefaultState() : this.getDefaultState().withProperty(HALF, EnumBlockHalf.values()[meta % EnumBlockHalf.values().length]);
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(BlockState state) {
 		return state.getValue(HALF).ordinal();
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void registerModel() {
 		if (this.isDouble())

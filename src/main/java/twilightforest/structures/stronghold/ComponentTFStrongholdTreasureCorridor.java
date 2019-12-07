@@ -1,7 +1,7 @@
 package twilightforest.structures.stronghold;
 
 import net.minecraft.block.BlockStairs;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -18,12 +18,12 @@ public class ComponentTFStrongholdTreasureCorridor extends StructureTFStronghold
 	public ComponentTFStrongholdTreasureCorridor() {
 	}
 
-	public ComponentTFStrongholdTreasureCorridor(TFFeature feature, int i, EnumFacing facing, int x, int y, int z) {
+	public ComponentTFStrongholdTreasureCorridor(TFFeature feature, int i, Direction facing, int x, int y, int z) {
 		super(feature, i, facing, x, y, z);
 	}
 
 	@Override
-	public StructureBoundingBox generateBoundingBox(EnumFacing facing, int x, int y, int z) {
+	public StructureBoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
 		return StructureTFStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -4, -1, 0, 9, 7, 27, facing);
 	}
 
@@ -56,14 +56,14 @@ public class ComponentTFStrongholdTreasureCorridor extends StructureTFStronghold
 
 		// niche!
 
-		this.setBlockStateRotated(world, getStairState(deco.stairState, EnumFacing.SOUTH, rotation, true), 8, 3, 12, rotation, sbb);
-		this.setBlockStateRotated(world, getStairState(deco.stairState, EnumFacing.WEST, rotation, true), 8, 3, 13, rotation, sbb);
-		this.setBlockStateRotated(world, getStairState(deco.stairState, EnumFacing.NORTH, rotation, true), 8, 3, 14, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.SOUTH, rotation, true), 8, 3, 12, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.WEST, rotation, true), 8, 3, 13, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.NORTH, rotation, true), 8, 3, 14, rotation, sbb);
 		this.setBlockStateRotated(world, deco.fenceState, 8, 2, 12, rotation, sbb);
 		this.setBlockStateRotated(world, deco.fenceState, 8, 2, 14, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, EnumFacing.SOUTH), 7, 1, 12, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, EnumFacing.WEST), 7, 1, 13, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, EnumFacing.NORTH), 7, 1, 14, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, Direction.SOUTH), 7, 1, 12, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, Direction.WEST), 7, 1, 13, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, Direction.NORTH), 7, 1, 14, rotation, sbb);
 
 		// doors
 		placeDoors(world, rand, sbb);

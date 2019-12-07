@@ -5,8 +5,8 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.GuiUtils;
 
@@ -23,16 +23,16 @@ public class PotionFrosted extends Potion {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void renderHUDEffect(PotionEffect effect, Gui gui, int x, int y, float z, float alpha) {
-		Minecraft.getMinecraft().renderEngine.bindTexture(sprite);
+		Minecraft.getInstance().renderEngine.bindTexture(sprite);
 		GuiUtils.drawModalRectWithCustomSizedTexture(x + 3, y + 3, z, 0, 0, 18, 18, 18, 18);
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void renderInventoryEffect(PotionEffect effect, Gui gui, int x, int y, float z) {
-		Minecraft.getMinecraft().renderEngine.bindTexture(sprite);
+		Minecraft.getInstance().renderEngine.bindTexture(sprite);
 		GuiUtils.drawModalRectWithCustomSizedTexture(x + 6, y + 7, z, 0, 0, 18, 18, 18, 18);
 	}
 }

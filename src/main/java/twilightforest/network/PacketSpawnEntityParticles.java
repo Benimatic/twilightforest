@@ -58,7 +58,7 @@ public class PacketSpawnEntityParticles implements IMessage {
 
 		@Override
 		public IMessage onMessage(PacketSpawnEntityParticles message, MessageContext ctx) {
-			Minecraft.getMinecraft().addScheduledTask(() -> {
+			Minecraft.getInstance().addScheduledTask(() -> {
 				for (int i = 0; i < message.count; i++) {
 					double x = message.x + random.nextFloat() * message.width * 2.0 - message.width;
 					double y = message.y + random.nextFloat() * message.height;

@@ -5,15 +5,15 @@ import net.minecraft.block.material.MapColor;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.enums.WoodVariant;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
@@ -35,8 +35,8 @@ public class BlockTFLog extends BlockLog implements ModelRegisterCallback {
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
-		IBlockState iblockstate = this.getDefaultState().withProperty(VARIANT, WoodVariant.values()[meta & 3]);
+	public BlockState getStateFromMeta(int meta) {
+		BlockState iblockstate = this.getDefaultState().withProperty(VARIANT, WoodVariant.values()[meta & 3]);
 
 		switch (meta & 0b1100) {
 			case 0:
@@ -56,7 +56,7 @@ public class BlockTFLog extends BlockLog implements ModelRegisterCallback {
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(BlockState state) {
 		int i = state.getValue(VARIANT).ordinal();
 
 		switch (state.getValue(LOG_AXIS)) {
@@ -77,7 +77,7 @@ public class BlockTFLog extends BlockLog implements ModelRegisterCallback {
 	}
 
 	@Override
-	public MapColor getMapColor(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public MapColor getMapColor(BlockState state, IBlockAccess world, BlockPos pos) {
 		return state.getValue(VARIANT).supplyMapColor();
 	}
 
@@ -87,7 +87,7 @@ public class BlockTFLog extends BlockLog implements ModelRegisterCallback {
 	}
 
 	@Override
-	public int damageDropped(IBlockState state) {
+	public int damageDropped(BlockState state) {
 		return state.getValue(VARIANT).ordinal();
 	}
 
@@ -99,19 +99,19 @@ public class BlockTFLog extends BlockLog implements ModelRegisterCallback {
 		list.add(new ItemStack(this, 1, 3));
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void registerModel() {
 		ModelUtils.registerToStateSingleVariant(this, VARIANT);
 	}
 
 	@Override
-	public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face) {
+	public int getFlammability(IBlockAccess world, BlockPos pos, Direction face) {
 		return 5;
 	}
 
 	@Override
-	public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing face) {
+	public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, Direction face) {
 		return 5;
 	}
 

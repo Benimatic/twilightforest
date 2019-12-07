@@ -1,12 +1,12 @@
 package twilightforest.item;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemMapBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import twilightforest.client.ModelRegisterCallback;
 
@@ -20,7 +20,7 @@ public class ItemTFEmptyMazeMap extends ItemMapBase implements ModelRegisterCall
 
 	// [VanillaCopy] ItemEmptyMap.onItemRightClick calling own setup method
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
 		ItemStack itemstack = ItemTFMazeMap.setupNewMap(worldIn, playerIn.posX, playerIn.posZ, (byte) 0, true, false, playerIn.posY, this.mapOres);
 		ItemStack itemstack1 = playerIn.getHeldItem(handIn);
 		itemstack1.shrink(1);

@@ -3,7 +3,7 @@ package twilightforest.item;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Enchantments;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
@@ -13,14 +13,14 @@ import twilightforest.client.ModelRegisterCallback;
 
 public class ItemTFSteeleafArmor extends ItemTFArmor implements ModelRegisterCallback {
 
-	public ItemTFSteeleafArmor(ItemArmor.ArmorMaterial material, EntityEquipmentSlot slot, EnumRarity rarity) {
+	public ItemTFSteeleafArmor(ItemArmor.ArmorMaterial material, EquipmentSlotType slot, EnumRarity rarity) {
 		super(material, slot, rarity);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
 	@Override
-	public String getArmorTexture(ItemStack itemstack, Entity entity, EntityEquipmentSlot slot, String layer) {
-		if (slot == EntityEquipmentSlot.LEGS) {
+	public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlotType slot, String layer) {
+		if (slot == EquipmentSlotType.LEGS) {
 			return TwilightForestMod.ARMOR_DIR + "steeleaf_2.png";
 		} else {
 			return TwilightForestMod.ARMOR_DIR + "steeleaf_1.png";

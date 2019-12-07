@@ -1,8 +1,8 @@
 package twilightforest.structures.finalcastle;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.EnumDyeColor;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.item.DyeColor;
+import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -21,12 +21,12 @@ public class ComponentTFFinalCastleLargeTower extends ComponentTFTowerWing {
 	public ComponentTFFinalCastleLargeTower() {
 	}
 
-	public ComponentTFFinalCastleLargeTower(TFFeature feature, Random rand, int i, int x, int y, int z, EnumFacing rotation) {
+	public ComponentTFFinalCastleLargeTower(TFFeature feature, Random rand, int i, int x, int y, int z, Direction rotation) {
 		super(feature, i);
 		this.setCoordBaseMode(rotation);
 		this.size = 13;
 		this.height = 61;
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -6, 0, -6, 12, 60, 12, EnumFacing.SOUTH);
+		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -6, 0, -6, 12, 60, 12, Direction.SOUTH);
 
 	}
 
@@ -60,7 +60,7 @@ public class ComponentTFFinalCastleLargeTower extends ComponentTFTowerWing {
 		this.setBlockState(world, deco.blockState, 4, -7, 4, sbb);
 
 		// door, first floor
-		final IBlockState castleDoor = TFBlocks.castle_door.getDefaultState()
+		final BlockState castleDoor = TFBlocks.castle_door.getDefaultState()
 				.withProperty(BlockTFCastleDoor.LOCK_INDEX, 0); //this.getGlyphMeta()?
 		this.fillWithBlocks(world, sbb, 0, 1, 1, 0, 4, 3, castleDoor, AIR, false);
 
@@ -70,7 +70,7 @@ public class ComponentTFFinalCastleLargeTower extends ComponentTFTowerWing {
 	}
 
 
-	public EnumDyeColor getGlyphMeta() {
+	public DyeColor getGlyphMeta() {
 		return BlockTFCastleMagic.VALID_COLORS.get(0);
 	}
 

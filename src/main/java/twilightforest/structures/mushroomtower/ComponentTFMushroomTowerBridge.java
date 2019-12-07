@@ -1,8 +1,8 @@
 package twilightforest.structures.mushroomtower;
 
 import net.minecraft.block.BlockPlanks;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -24,7 +24,7 @@ public class ComponentTFMushroomTowerBridge extends ComponentTFMushroomTowerWing
 		super();
 	}
 
-	protected ComponentTFMushroomTowerBridge(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
+	protected ComponentTFMushroomTowerBridge(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
 		super(feature, i, x, y, z, pSize, pHeight, direction);
 
 		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, 3, direction);
@@ -37,7 +37,7 @@ public class ComponentTFMushroomTowerBridge extends ComponentTFMushroomTowerWing
 	 * Save to NBT
 	 */
 	@Override
-	protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 		super.writeStructureToNBT(tagCompound);
 
 		tagCompound.setInteger("destSize", this.dSize);
@@ -48,7 +48,7 @@ public class ComponentTFMushroomTowerBridge extends ComponentTFMushroomTowerWing
 	 * Load from NBT
 	 */
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager templateManager) {
+	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
 		super.readStructureFromNBT(tagCompound, templateManager);
 		this.dSize = tagCompound.getInteger("destSize");
 		this.dHeight = tagCompound.getInteger("destHeight");
@@ -64,7 +64,7 @@ public class ComponentTFMushroomTowerBridge extends ComponentTFMushroomTowerWing
 		boolean madeWing = makeTowerWing(list, rand, this.getComponentType(), dest[0], dest[1], dest[2], dSize, dHeight, Rotation.NONE);
 
 		if (!madeWing) {
-			int[] dx = offsetTowerCoords(dest[0], dest[1], dest[2], dSize, EnumFacing.SOUTH);
+			int[] dx = offsetTowerCoords(dest[0], dest[1], dest[2], dSize, Direction.SOUTH);
 			TwilightForestMod.LOGGER.info("Making tower wing failed when bridge was already made.  Size = {}, x = {}, z = {}", dSize, dx[0], dx[2]);
 		}
 	}

@@ -2,8 +2,8 @@ package twilightforest.world.feature;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHugeMushroom;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.block.BlockTFHugeGloomBlock;
@@ -40,7 +40,7 @@ public class TFGenBigMushgloom extends TFGenerator {
 	}
 
 	private void makeMushroomCap(World world, BlockPos pos) {
-		IBlockState defState = TFBlocks.huge_mushgloom.getDefaultState();
+		BlockState defState = TFBlocks.huge_mushgloom.getDefaultState();
 		this.setBlockAndNotifyAdequately(world, pos.add(-1, 0, -1), defState.withProperty(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.NORTH_WEST));
 		this.setBlockAndNotifyAdequately(world, pos.add(0, 0, -1), defState.withProperty(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.NORTH));
 		this.setBlockAndNotifyAdequately(world, pos.add(1, 0, -1), defState.withProperty(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.NORTH_EAST));

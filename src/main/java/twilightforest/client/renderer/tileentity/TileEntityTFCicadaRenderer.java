@@ -1,6 +1,6 @@
 package twilightforest.client.renderer.tileentity;
 
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
@@ -39,14 +39,14 @@ public class TileEntityTFCicadaRenderer extends TileEntitySpecialRenderer<TileEn
 		} else if (facing == Direction.DOWN) {
 			rotX = 180F;
 		}
-		GlStateManager.translate((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
-		GlStateManager.rotate(rotX, 1F, 0F, 0F);
-		GlStateManager.rotate(rotZ, 0F, 0F, 1F);
-		GlStateManager.rotate(yaw, 0F, 1F, 0F);
+		GlStateManager.translatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
+		GlStateManager.rotatef(rotX, 1F, 0F, 0F);
+		GlStateManager.rotatef(rotZ, 0F, 0F, 1F);
+		GlStateManager.rotatef(yaw, 0F, 1F, 0F);
 
 		this.bindTexture(textureLoc);
 		GlStateManager.pushMatrix();
-		GlStateManager.scale(1f, -1f, -1f);
+		GlStateManager.scalef(1f, -1f, -1f);
 		cicadaModel.render(0.0625f);
 		GlStateManager.popMatrix();
 		GlStateManager.color(1, 1, 1, 1);

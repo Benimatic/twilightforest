@@ -1,8 +1,8 @@
 package twilightforest.structures.minotaurmaze;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.TFFeature;
@@ -15,7 +15,7 @@ public class ComponentTFMazeDeadEndTripwireChest extends ComponentTFMazeDeadEndC
 		super();
 	}
 
-	public ComponentTFMazeDeadEndTripwireChest(TFFeature feature, int i, int x, int y, int z, EnumFacing rotation) {
+	public ComponentTFMazeDeadEndTripwireChest(TFFeature feature, int i, int x, int y, int z, Direction rotation) {
 		super(feature, i, x, y, z, rotation);
 	}
 
@@ -25,10 +25,10 @@ public class ComponentTFMazeDeadEndTripwireChest extends ComponentTFMazeDeadEndC
 		super.addComponentParts(world, rand, sbb);
 
 		// add tripwire
-		this.placeTripwire(world, 1, 1, 2, 3, EnumFacing.EAST, sbb);
+		this.placeTripwire(world, 1, 1, 2, 3, Direction.EAST, sbb);
 
 		// TNT!
-		IBlockState tnt = Blocks.TNT.getDefaultState();
+		BlockState tnt = Blocks.TNT.getDefaultState();
 		this.setBlockState(world, tnt, 0,  0, 2, sbb);
 
 		// Air blocks are required underneath to maximize TNT destruction of chest

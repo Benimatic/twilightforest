@@ -1,8 +1,8 @@
 package twilightforest.structures.minotaurmaze;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.TFFeature;
@@ -19,7 +19,7 @@ public class ComponentTFMazeDeadEndTrappedChest extends ComponentTFMazeDeadEnd {
 		super();
 	}
 
-	public ComponentTFMazeDeadEndTrappedChest(TFFeature feature, int i, int x, int y, int z, EnumFacing rotation) {
+	public ComponentTFMazeDeadEndTrappedChest(TFFeature feature, int i, int x, int y, int z, Direction rotation) {
 		super(feature, i, x, y, z, rotation);
 
 		// specify a non-existant high spawn list value to stop actual monster spawns
@@ -33,8 +33,8 @@ public class ComponentTFMazeDeadEndTrappedChest extends ComponentTFMazeDeadEnd {
 		// dais
 		this.setBlockState(world, Blocks.PLANKS.getDefaultState(), 2, 1, 4, sbb);
 		this.setBlockState(world, Blocks.PLANKS.getDefaultState(), 3, 1, 4, sbb);
-		this.setBlockState(world, getStairState(Blocks.OAK_STAIRS.getDefaultState(), EnumFacing.NORTH, rotation, false), 2, 1, 3, sbb);
-		this.setBlockState(world, getStairState(Blocks.OAK_STAIRS.getDefaultState(), EnumFacing.NORTH, rotation, false), 3, 1, 3, sbb);
+		this.setBlockState(world, getStairState(Blocks.OAK_STAIRS.getDefaultState(), Direction.NORTH, rotation, false), 2, 1, 3, sbb);
+		this.setBlockState(world, getStairState(Blocks.OAK_STAIRS.getDefaultState(), Direction.NORTH, rotation, false), 3, 1, 3, sbb);
 
 		// chest
 		this.setBlockState(world, Blocks.TRAPPED_CHEST.getDefaultState(), 2, 2, 4, sbb);
@@ -50,7 +50,7 @@ public class ComponentTFMazeDeadEndTrappedChest extends ComponentTFMazeDeadEnd {
 		this.fillWithBlocks(world, sbb, 2, 1, 0, 3, 3, 1, Blocks.IRON_BARS.getDefaultState(), AIR, false);
 
 		// TNT!
-		IBlockState tnt = Blocks.TNT.getDefaultState();
+		BlockState tnt = Blocks.TNT.getDefaultState();
 		this.setBlockState(world, tnt, 2,  0, 3, sbb);
 		this.setBlockState(world, tnt, 3,  0, 3, sbb);
 		this.setBlockState(world, tnt, 2,  0, 4, sbb);

@@ -2,7 +2,7 @@ package twilightforest.compat;
 
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.api.distmarker.Dist;
 import slimeknights.tconstruct.library.MaterialIntegration;
 import slimeknights.tconstruct.library.TinkerRegistry;
 import slimeknights.tconstruct.library.client.material.MaterialRenderInfoLoader;
@@ -69,7 +69,7 @@ public class TConstruct {
         );
         TinkerRegistry.integrate(TConstruct.ravenFeather).preInit();
 
-        if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
+        if (FMLCommonHandler.instance().getSide() == Dist.CLIENT) {
             MaterialRenderInfoLoader.addRenderInfo("gradient_map_colors", GradientMapInfoDeserializer.class);
             MaterialRenderInfoLoader.addRenderInfo("fierymetal", FieryInfoDeserializer.class);
         }

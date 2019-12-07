@@ -5,7 +5,7 @@ import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
@@ -13,8 +13,8 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.IForgeRegistry;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
@@ -89,7 +89,7 @@ public final class RegisterBlockEvent {
 		blocks.register("huge_waterlily", "HugeWaterLily", new BlockTFHugeWaterLily());
 		blocks.register("slider", "Slider", new BlockTFSlider());
 		Block castleBrick = new BlockTFCastleBlock();
-		IBlockState castleState = castleBrick.getDefaultState();
+		BlockState castleState = castleBrick.getDefaultState();
 		blocks.register("castle_brick", "CastleBrick", castleBrick);
 		blocks.register("castle_stairs_brick", "CastleStairsBrick", new BlockTFStairs(castleState));
 		blocks.register("castle_stairs_worn", "CastleStairsWorn", new BlockTFStairs(castleState.withProperty(BlockTFCastleBlock.VARIANT, CastleBrickVariant.WORN)));
@@ -158,16 +158,16 @@ public final class RegisterBlockEvent {
 			// Make special property key that allows ONLY one value because slabs are special level of stupid
 			final PropertyEnum<T> restrictedKey = PropertyEnum.create("variant", key.getValueClass(), input -> input == woodType);
 
-			Block planks = blocks.register(woodName + "_planks", woodNameCapitalized + "Planks", new BlockTF(Material.WOOD, woodType.supplyMapColor()) { @SideOnly(Side.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }}).setSoundType(SoundType.WOOD).setHardness(2.0F).setResistance(5.0F);
-			blocks.register(woodName + "_stairs"    , woodNameCapitalized + "Stairs"  , new BlockTFStairs(planks.getDefaultState()) { @SideOnly(Side.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }}); // No hardness/soundType, that's derived from IBlockState in
-			Block singleSlab = blocks.register(woodName + "_slab", woodNameCapitalized + "Slab", new BlockTFSlab<T>(Material.WOOD, woodType.supplyMapColor(), woodType) { @Override public boolean isDouble() { return false; } @Override protected Block getSingle() { return this; } @Override public IProperty<T> getVariantProperty() { return restrictedKey; } @SideOnly(Side.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, restrictedKey); }}).setSoundType(SoundType.WOOD).setHardness(2.0F).setResistance(5.0F);
-			blocks.register(woodName + "_doubleslab", woodNameCapitalized + "Slab"    , new BlockTFSlab<T>(Material.WOOD, woodType.supplyMapColor(), woodType) { @Override public boolean isDouble() { return true; } @Override protected Block getSingle() { return singleSlab; } @Override public IProperty<T> getVariantProperty() { return restrictedKey; } @SideOnly(Side.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, restrictedKey); }}).setSoundType(SoundType.WOOD).setHardness(2.0F).setResistance(5.0F);
-			blocks.register(woodName + "_button"    , woodNameCapitalized + "Button"  , new BlockTFButtonWood() { @SideOnly(Side.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }}).setSoundType(SoundType.WOOD).setHardness(0.5F);
-			blocks.register(woodName + "_door"      , woodNameCapitalized + "Door"    , new BlockTFDoor(Material.WOOD, woodType.supplyMapColor(), new ResourceLocation(TwilightForestMod.ID, woodName + "_door")) { @SideOnly(Side.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, BlockTFDoor.POWERED); } { setSoundType(SoundType.WOOD); }}).setHardness(3.0F);
-			blocks.register(woodName + "_trapdoor"  , woodNameCapitalized + "TrapDoor", new BlockTFTrapDoor(Material.WOOD, woodType.supplyMapColor()) { @SideOnly(Side.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }}).setSoundType(SoundType.WOOD).setHardness(3.0F);
-			blocks.register(woodName + "_fence"     , woodNameCapitalized + "Fence"   , new BlockTFFence(Material.WOOD, woodType.supplyMapColor()) { @SideOnly(Side.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }}).setSoundType(SoundType.WOOD).setHardness(2.0F).setResistance(5.0F);
-			blocks.register(woodName + "_gate"      , woodNameCapitalized + "Gate"    , new BlockTFFenceGate(woodType.supplyPlankColor()) { @SideOnly(Side.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, BlockFenceGate.POWERED); }}).setSoundType(SoundType.WOOD).setHardness(2.0F).setResistance(5.0F);
-			blocks.register(woodName + "_plate"     , woodNameCapitalized + "Plate"   , new BlockTFPressurePlate(Material.WOOD, woodType.supplyMapColor(), BlockPressurePlate.Sensitivity.EVERYTHING) { @SideOnly(Side.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }}).setSoundType(SoundType.WOOD).setHardness(0.5F);
+			Block planks = blocks.register(woodName + "_planks", woodNameCapitalized + "Planks", new BlockTF(Material.WOOD, woodType.supplyMapColor()) { @OnlyIn(Dist.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }}).setSoundType(SoundType.WOOD).setHardness(2.0F).setResistance(5.0F);
+			blocks.register(woodName + "_stairs"    , woodNameCapitalized + "Stairs"  , new BlockTFStairs(planks.getDefaultState()) { @OnlyIn(Dist.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }}); // No hardness/soundType, that's derived from BlockState in
+			Block singleSlab = blocks.register(woodName + "_slab", woodNameCapitalized + "Slab", new BlockTFSlab<T>(Material.WOOD, woodType.supplyMapColor(), woodType) { @Override public boolean isDouble() { return false; } @Override protected Block getSingle() { return this; } @Override public IProperty<T> getVariantProperty() { return restrictedKey; } @OnlyIn(Dist.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, restrictedKey); }}).setSoundType(SoundType.WOOD).setHardness(2.0F).setResistance(5.0F);
+			blocks.register(woodName + "_doubleslab", woodNameCapitalized + "Slab"    , new BlockTFSlab<T>(Material.WOOD, woodType.supplyMapColor(), woodType) { @Override public boolean isDouble() { return true; } @Override protected Block getSingle() { return singleSlab; } @Override public IProperty<T> getVariantProperty() { return restrictedKey; } @OnlyIn(Dist.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, restrictedKey); }}).setSoundType(SoundType.WOOD).setHardness(2.0F).setResistance(5.0F);
+			blocks.register(woodName + "_button"    , woodNameCapitalized + "Button"  , new BlockTFButtonWood() { @OnlyIn(Dist.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }}).setSoundType(SoundType.WOOD).setHardness(0.5F);
+			blocks.register(woodName + "_door"      , woodNameCapitalized + "Door"    , new BlockTFDoor(Material.WOOD, woodType.supplyMapColor(), new ResourceLocation(TwilightForestMod.ID, woodName + "_door")) { @OnlyIn(Dist.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, BlockTFDoor.POWERED); } { setSoundType(SoundType.WOOD); }}).setHardness(3.0F);
+			blocks.register(woodName + "_trapdoor"  , woodNameCapitalized + "TrapDoor", new BlockTFTrapDoor(Material.WOOD, woodType.supplyMapColor()) { @OnlyIn(Dist.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }}).setSoundType(SoundType.WOOD).setHardness(3.0F);
+			blocks.register(woodName + "_fence"     , woodNameCapitalized + "Fence"   , new BlockTFFence(Material.WOOD, woodType.supplyMapColor()) { @OnlyIn(Dist.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }}).setSoundType(SoundType.WOOD).setHardness(2.0F).setResistance(5.0F);
+			blocks.register(woodName + "_gate"      , woodNameCapitalized + "Gate"    , new BlockTFFenceGate(woodType.supplyPlankColor()) { @OnlyIn(Dist.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, BlockFenceGate.POWERED); }}).setSoundType(SoundType.WOOD).setHardness(2.0F).setResistance(5.0F);
+			blocks.register(woodName + "_plate"     , woodNameCapitalized + "Plate"   , new BlockTFPressurePlate(Material.WOOD, woodType.supplyMapColor(), BlockPressurePlate.Sensitivity.EVERYTHING) { @OnlyIn(Dist.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }}).setSoundType(SoundType.WOOD).setHardness(0.5F);
 
 			// TODO chests? boats?
 		}

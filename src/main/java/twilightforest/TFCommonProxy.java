@@ -45,23 +45,23 @@ public class TFCommonProxy implements IGuiHandler {
 		}
 	}
 
-	public ModelBiped getKnightlyArmorModel(EntityEquipmentSlot armorSlot) {
+	public ModelBiped getKnightlyArmorModel(EquipmentSlotType armorSlot) {
 		return null;
 	}
 
-	public ModelBiped getPhantomArmorModel(EntityEquipmentSlot armorSlot) {
+	public ModelBiped getPhantomArmorModel(EquipmentSlotType armorSlot) {
 		return null;
 	}
 
-	public ModelBiped getYetiArmorModel(EntityEquipmentSlot armorSlot) {
+	public ModelBiped getYetiArmorModel(EquipmentSlotType armorSlot) {
 		return null;
 	}
 
-	public ModelBiped getArcticArmorModel(EntityEquipmentSlot armorSlot) {
+	public ModelBiped getArcticArmorModel(EquipmentSlotType armorSlot) {
 		return null;
 	}
 
-	public ModelBiped getFieryArmorModel(EntityEquipmentSlot armorSlot) {
+	public ModelBiped getFieryArmorModel(EquipmentSlotType armorSlot) {
 		return null;
 	}
 

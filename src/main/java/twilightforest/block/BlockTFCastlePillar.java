@@ -8,17 +8,17 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.enums.CastlePillarVariant;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
@@ -40,7 +40,7 @@ public class BlockTFCastlePillar extends Block implements ModelRegisterCallback 
     }
 
     @Override
-    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+    public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, Hand hand) {
         ItemStack stack = placer.getHeldItem(hand);
         return this.getDefaultState()
                 .withProperty(LOG_AXIS, (stack.getMetadata() & 1) == 1 ? BlockLog.EnumAxis.NONE : BlockLog.EnumAxis.fromFacingAxis(facing.getAxis()))
@@ -53,13 +53,13 @@ public class BlockTFCastlePillar extends Block implements ModelRegisterCallback 
     }
 
     @Override
-    public int getMetaFromState(IBlockState state) {
+    public int getMetaFromState(BlockState state) {
         return state.getValue(VARIANT).ordinal() << 2 | state.getValue(LOG_AXIS).ordinal();
     }
 
     @Override
     @Deprecated
-    public IBlockState getStateFromMeta(int meta) {
+    public BlockState getStateFromMeta(int meta) {
         return this.getDefaultState().withProperty(VARIANT, CastlePillarVariant.values()[(meta & 0b1100) >> 2 & 1]).withProperty(LOG_AXIS, BlockLog.EnumAxis.values()[meta & 0b11]);
     }
 
@@ -71,7 +71,7 @@ public class BlockTFCastlePillar extends Block implements ModelRegisterCallback 
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void registerModel() {
         CastlePillarVariant[] variantsList = CastlePillarVariant.values();
@@ -88,12 +88,12 @@ public class BlockTFCastlePillar extends Block implements ModelRegisterCallback 
     }
 
     @Override
-    public int damageDropped(IBlockState state) {
+    public int damageDropped(BlockState state) {
         return state.getValue(VARIANT).ordinal() << 1 | (state.getValue(LOG_AXIS) == BlockLog.EnumAxis.NONE ? 1 : 0);
     }
 
     @Override
-    protected ItemStack getSilkTouchDrop(IBlockState state) {
+    protected ItemStack getSilkTouchDrop(BlockState state) {
         return new ItemStack(this, 1, damageDropped(state));
     }
 }

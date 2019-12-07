@@ -36,7 +36,7 @@ public class EntityAITFEatLoose extends Goal {
 		} else {
 			this.temptingItem = null;
 
-			List<EntityItem> nearbyItems = this.temptedQuestRam.world.getEntitiesWithinAABB(EntityItem.class, this.temptedQuestRam.getEntityBoundingBox().grow(2.0D, 2.0D, 2.0D));
+			List<EntityItem> nearbyItems = this.temptedQuestRam.world.getEntitiesWithinAABB(EntityItem.class, this.temptedQuestRam.getBoundingBox().grow(2.0D, 2.0D, 2.0D));
 
 			for (EntityItem itemNearby : nearbyItems) {
 				DyeColor color = DyeColor.byMetadata(itemNearby.getItem().getItemDamage());

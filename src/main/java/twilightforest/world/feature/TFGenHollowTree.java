@@ -2,11 +2,11 @@ package twilightforest.world.feature;
 
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityList;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Blocks;
 import net.minecraft.tileentity.TileEntityMobSpawner;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
@@ -22,10 +22,10 @@ public class TFGenHollowTree extends TFGenerator {
 
 	private static final int LEAF_DUNGEON_CHANCE = 8;
 
-	protected IBlockState treeState = TFBlocks.twilight_log.getDefaultState();
-	protected IBlockState branchState = treeState.withProperty(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
-	protected IBlockState leafState = TFBlocks.twilight_leaves.getDefaultState().withProperty(BlockLeaves.CHECK_DECAY, false);
-	protected IBlockState rootState = TFBlocks.root.getDefaultState();
+	protected BlockState treeState = TFBlocks.twilight_log.getDefaultState();
+	protected BlockState branchState = treeState.withProperty(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
+	protected BlockState leafState = TFBlocks.twilight_leaves.getDefaultState().withProperty(BlockLeaves.CHECK_DECAY, false);
+	protected BlockState rootState = TFBlocks.root.getDefaultState();
 
 	protected IPlantable source = TFBlocks.twilight_sapling;
 
@@ -43,7 +43,7 @@ public class TFGenHollowTree extends TFGenerator {
 	}
 
 	@Override
-	protected void setBlockAndNotifyAdequately(World worldIn, BlockPos pos, IBlockState state) {
+	protected void setBlockAndNotifyAdequately(World worldIn, BlockPos pos, BlockState state) {
 		if (canGrowInto(worldIn.getBlockState(pos).getBlock()))
 			super.setBlockAndNotifyAdequately(worldIn, pos, state);
 	}
@@ -89,8 +89,8 @@ public class TFGenHollowTree extends TFGenerator {
 		}
 
 		// check if we're on dirt or grass
-		IBlockState state = world.getBlockState(pos.down());
-		if (!state.getBlock().canSustainPlant(state, world, pos.down(), EnumFacing.UP, source)) {
+		BlockState state = world.getBlockState(pos.down());
+		if (!state.getBlock().canSustainPlant(state, world, pos.down(), Direction.UP, source)) {
 			return false;
 		}
 
@@ -458,7 +458,7 @@ public class TFGenHollowTree extends TFGenerator {
 	}
 
 	private void makeLeafDungeonChest(World world, Random random, BlockPos pos) {
-		pos = pos.offset(EnumFacing.HORIZONTALS[random.nextInt(4)]);
+		pos = pos.offset(Direction.HORIZONTALS[random.nextInt(4)]);
 		TFTreasure.tree_cache.generateChest(world, pos.down(), false);
 	}
 
@@ -477,16 +477,16 @@ public class TFGenHollowTree extends TFGenerator {
 		BlockPos src = translate(pos.up(fHeight), diameter + 1, fAngle, 0.5);
 
 		fAngle = fAngle % 1.0;
-		EnumFacing facing = EnumFacing.EAST;
+		Direction facing = Direction.EAST;
 
 		if (fAngle > 0.875 || fAngle <= 0.125) {
-			facing = EnumFacing.SOUTH;
+			facing = Direction.SOUTH;
 		} else if (fAngle > 0.125 && fAngle <= 0.375) {
-			facing = EnumFacing.EAST;
+			facing = Direction.EAST;
 		} else if (fAngle > 0.375 && fAngle <= 0.625) {
-			facing = EnumFacing.NORTH;
+			facing = Direction.NORTH;
 		} else if (fAngle > 0.625 && fAngle <= 0.875) {
-			facing = EnumFacing.WEST;
+			facing = Direction.WEST;
 		}
 
 		if (TFBlocks.firefly.canPlaceBlockAt(world, src)) {
@@ -498,16 +498,16 @@ public class TFGenHollowTree extends TFGenerator {
 		BlockPos src = translate(pos.up(fHeight), diameter + 1, fAngle, 0.5);
 
 		fAngle = fAngle % 1.0;
-		EnumFacing facing = EnumFacing.EAST;
+		Direction facing = Direction.EAST;
 
 		if (fAngle > 0.875 || fAngle <= 0.125) {
-			facing = EnumFacing.SOUTH;
+			facing = Direction.SOUTH;
 		} else if (fAngle > 0.125 && fAngle <= 0.375) {
-			facing = EnumFacing.EAST;
+			facing = Direction.EAST;
 		} else if (fAngle > 0.375 && fAngle <= 0.625) {
-			facing = EnumFacing.NORTH;
+			facing = Direction.NORTH;
 		} else if (fAngle > 0.625 && fAngle <= 0.875) {
-			facing = EnumFacing.WEST;
+			facing = Direction.WEST;
 		}
 
 		if (TFBlocks.cicada.canPlaceBlockAt(world, src)) {

@@ -5,7 +5,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
@@ -46,7 +46,7 @@ public class BlockTFAuroraBrick extends Block implements ModelRegisterCallback {
 
 	@Override
 	@Deprecated
-	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public BlockState getActualState(BlockState state, IBlockAccess world, BlockPos pos) {
 		return getDefaultState().withProperty(VARIANT, ((int) ((fractalNoise(3, 48.0f, pos) * 120.0f) % 16.0f)) % 16);
 	}
 
@@ -56,13 +56,13 @@ public class BlockTFAuroraBrick extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(BlockState state) {
 		return state.getValue(VARIANT);
 	}
 
 	@Override
 	@Deprecated
-	public IBlockState getStateFromMeta(int meta) {
+	public BlockState getStateFromMeta(int meta) {
 		return getDefaultState();
 	}
 
@@ -72,7 +72,7 @@ public class BlockTFAuroraBrick extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public int damageDropped(IBlockState state) {
+	public int damageDropped(BlockState state) {
 		return 0;
 	}
 

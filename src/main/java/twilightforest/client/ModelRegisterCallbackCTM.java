@@ -2,14 +2,14 @@ package twilightforest.client;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.HashMap;
 
@@ -18,25 +18,25 @@ public interface ModelRegisterCallbackCTM extends ModelRegisterCallback {
 	 * Should ONLY be implemented on Block or its children.
 	 */
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	default void registerModel() {
 		ModelLoader.setCustomStateMapper((Block) this, new CTMOptionalStateMapper(this.getIgnoredProperties()));
 
 		this.registerItemModel();
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	default void registerItemModel() {
 		Block block = (Block) this;
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), "inventory"));
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	default IProperty<?>[] getIgnoredProperties() {
 		return new IProperty<?>[0];
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	class CTMOptionalStateMapper extends StateMapperBase {
 		private final IProperty<?>[] IGNORED_PROPERTIES;
 
@@ -45,7 +45,7 @@ public interface ModelRegisterCallbackCTM extends ModelRegisterCallback {
 		}
 
 		@Override
-		protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+		protected ModelResourceLocation getModelResourceLocation(BlockState state) {
 			HashMap<IProperty<?>, Comparable<?>> properties = new HashMap<>(state.getProperties());
 
 			for (IProperty<?> ignored : IGNORED_PROPERTIES)

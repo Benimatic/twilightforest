@@ -7,23 +7,23 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Items;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.enums.TowerDeviceVariant;
 import twilightforest.enums.TowerTranslucentVariant;
 import twilightforest.client.ModelRegisterCallback;
@@ -52,25 +52,25 @@ public class BlockTFTowerTranslucent extends Block implements ModelRegisterCallb
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(BlockState state) {
 		return state.getValue(VARIANT).ordinal();
 	}
 
 	@Override
 	@Deprecated
-	public IBlockState getStateFromMeta(int meta) {
+	public BlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(VARIANT, TowerTranslucentVariant.values()[meta]);
 	}
 
 	@Override
 	@Deprecated
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(BlockState state) {
 		return false;
 	}
 
 	@Override
 	@Deprecated
-	public boolean isFullCube(IBlockState state) {
+	public boolean isFullCube(BlockState state) {
 		return false;
 	}
 
@@ -80,18 +80,18 @@ public class BlockTFTowerTranslucent extends Block implements ModelRegisterCallb
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random random, int fortune) {
+	public Item getItemDropped(BlockState state, Random random, int fortune) {
 		return Items.AIR;
 	}
 
 	@Override
-	public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
+	public boolean canSilkHarvest(World world, BlockPos pos, BlockState state, PlayerEntity player) {
 		return false;
 	}
 
 	@Override
 	@Deprecated
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public AxisAlignedBB getCollisionBoundingBox(BlockState state, IBlockAccess world, BlockPos pos) {
 		switch (state.getValue(VARIANT)) {
 			case REAPPEARING_INACTIVE:
 			case REAPPEARING_ACTIVE:
@@ -103,7 +103,7 @@ public class BlockTFTowerTranslucent extends Block implements ModelRegisterCallb
 
 	@Override
 	@Deprecated
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess world, BlockPos pos) {
 		switch (state.getValue(VARIANT)) {
 			case REAPPEARING_INACTIVE:
 			case REAPPEARING_ACTIVE:
@@ -115,7 +115,7 @@ public class BlockTFTowerTranslucent extends Block implements ModelRegisterCallb
 
 	@Override
 	@Deprecated
-	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face) {
 		switch (state.getValue(VARIANT)) {
 			case REAPPEARING_INACTIVE:
 			case REAPPEARING_ACTIVE:
@@ -127,7 +127,7 @@ public class BlockTFTowerTranslucent extends Block implements ModelRegisterCallb
 
 	@Override
 	@Deprecated
-	public float getBlockHardness(IBlockState state, World world, BlockPos pos) {
+	public float getBlockHardness(BlockState state, World world, BlockPos pos) {
 		// reverter replacement is like glass
 		switch (state.getValue(VARIANT)) {
 			case REVERTER_REPLACEMENT:
@@ -152,7 +152,7 @@ public class BlockTFTowerTranslucent extends Block implements ModelRegisterCallb
 	// todo 1.10 smart model for REACTOR_DEBRIS that randomly chooses sides from portal/netherrack/bedrock/obsidian
 
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random random) {
+	public void updateTick(World world, BlockPos pos, BlockState state, Random random) {
 
 		if (world.isRemote) return;
 
@@ -165,7 +165,7 @@ public class BlockTFTowerTranslucent extends Block implements ModelRegisterCallb
 			//world.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
 
 			// activate all adjacent inactive vanish blocks
-			for (EnumFacing e : EnumFacing.VALUES) {
+			for (Direction e : Direction.VALUES) {
 				BlockTFTowerDevice.checkAndActivateVanishBlock(world, pos.offset(e));
 			}
 
@@ -183,13 +183,13 @@ public class BlockTFTowerTranslucent extends Block implements ModelRegisterCallb
 	@Override
 	public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> list) {}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT;
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void registerModel() {
 		ModelUtils.registerToStateSingleVariant(this, VARIANT);

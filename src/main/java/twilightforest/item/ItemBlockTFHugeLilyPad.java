@@ -4,16 +4,16 @@ import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemColored;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -36,7 +36,7 @@ public class ItemBlockTFHugeLilyPad extends ItemColored {
 
 	// [VanillaCopy] ItemLilyPad.onItemRightClick, with special logic
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand hand) {
 		ItemStack itemstack = playerIn.getHeldItem(hand);
 		RayTraceResult raytraceresult = this.rayTrace(worldIn, playerIn, true);
 
@@ -57,10 +57,10 @@ public class ItemBlockTFHugeLilyPad extends ItemColored {
 
 
 				// TF check 4 blocks here
-				IBlockState iblockstate = worldIn.getBlockState(blockpos);
-				IBlockState iblockstatee = worldIn.getBlockState(blockpos.east());
-				IBlockState iblockstatese = worldIn.getBlockState(blockpos.east().south());
-				IBlockState iblockstates = worldIn.getBlockState(blockpos.south());
+				BlockState iblockstate = worldIn.getBlockState(blockpos);
+				BlockState iblockstatee = worldIn.getBlockState(blockpos.east());
+				BlockState iblockstatese = worldIn.getBlockState(blockpos.east().south());
+				BlockState iblockstates = worldIn.getBlockState(blockpos.south());
 				if (iblockstate.getMaterial() == Material.WATER && iblockstate.getValue(BlockLiquid.LEVEL) == 0
 						&& iblockstatee.getMaterial() == Material.WATER && iblockstatee.getValue(BlockLiquid.LEVEL) == 0
 						&& iblockstatee.getMaterial() == Material.WATER && iblockstatee.getValue(BlockLiquid.LEVEL) == 0
@@ -68,9 +68,9 @@ public class ItemBlockTFHugeLilyPad extends ItemColored {
 						&& iblockstates.getMaterial() == Material.WATER && iblockstatee.getValue(BlockLiquid.LEVEL) == 0
 						&& worldIn.isAirBlock(blockpos1) && worldIn.isAirBlock(blockpos1.east()) && worldIn.isAirBlock(blockpos1.east().south()) && worldIn.isAirBlock(blockpos1.south())) {
 					// TF - set 4 of them
-					EnumFacing direction = playerIn.getHorizontalFacing();
+					Direction direction = playerIn.getHorizontalFacing();
 
-					final IBlockState lilypad = TFBlocks.huge_lilypad.getDefaultState().withProperty(FACING, direction);
+					final BlockState lilypad = TFBlocks.huge_lilypad.getDefaultState().withProperty(FACING, direction);
 					worldIn.setBlockState(blockpos1, lilypad.withProperty(PIECE, NW), 10);
 					worldIn.setBlockState(blockpos1.east(), lilypad.withProperty(PIECE, NE), 10);
 					worldIn.setBlockState(blockpos1.east().south(), lilypad.withProperty(PIECE, SE), 10);

@@ -2,8 +2,8 @@ package twilightforest.world;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -158,7 +158,7 @@ public class TFGenCaves extends MapGenCaves {
 										double dy = ((double) caveY + 0.5D - randY) / scaledSize;
 
 										if (dy > -0.7D && dx * dx + dy * dy + dz * dz < 20.0D) {
-											final IBlockState blockStateAt = blockStorage.getBlockState(genX, caveY, genZ);
+											final BlockState blockStateAt = blockStorage.getBlockState(genX, caveY, genZ);
 											Block blockAt = blockStateAt.getBlock();
 
 											if (blockAt == Blocks.GRASS) {
@@ -167,7 +167,7 @@ public class TFGenCaves extends MapGenCaves {
 
 											if (blockAt == Blocks.STONE || blockAt == TFBlocks.trollsteinn || canReplace(blockStateAt.getMaterial())) {
 												if (dx * dx + dy * dy + dz * dz < 0.85D) {
-													final IBlockState state = (caveY < 10 ? Blocks.WATER : Blocks.AIR).getDefaultState();
+													final BlockState state = (caveY < 10 ? Blocks.WATER : Blocks.AIR).getDefaultState();
 													blockStorage.setBlockState(genX, caveY, genZ, state);
 												} else {
 													Block localBlock = mossRNG.nextInt(6) == 0 ? TFBlocks.trollsteinn : Blocks.STONE;
@@ -178,7 +178,7 @@ public class TFGenCaves extends MapGenCaves {
 												}
 
 												if (hitGrass && blockStorage.getBlockState(genX, caveY - 1, genZ).getBlock() == Blocks.DIRT) {
-													IBlockState blockState = getBiome(genX, genZ).topBlock;
+													BlockState blockState = getBiome(genX, genZ).topBlock;
 													blockStorage.setBlockState(genX, caveY - 1, genZ, blockState);
 												}
 											}

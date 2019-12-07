@@ -1,8 +1,8 @@
 package twilightforest.structures.lichtower;
 
 import net.minecraft.block.BlockPlanks;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.TFFeature;
@@ -41,8 +41,8 @@ public class ComponentTFTowerRoofSlab extends ComponentTFTowerRoof {
 	}
 
 	protected boolean makePyramidCap(World world, BlockPlanks.EnumType woodType, StructureBoundingBox sbb) {
-		IBlockState woodenSlab = Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockPlanks.VARIANT, woodType);
-		IBlockState woodenPlanks = Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, woodType);
+		BlockState woodenSlab = Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockPlanks.VARIANT, woodType);
+		BlockState woodenPlanks = Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, woodType);
 		for (int y = 0; y <= height; y++) {
 			int min = 2 * y;
 			int max = size - (2 * y) - 1;
@@ -61,8 +61,8 @@ public class ComponentTFTowerRoofSlab extends ComponentTFTowerRoof {
 	}
 
 	protected boolean makeConnectedCap(World world, BlockPlanks.EnumType woodType, StructureBoundingBox sbb) {
-		IBlockState woodenSlab = Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockPlanks.VARIANT, woodType);
-		IBlockState woodenPlanks = Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, woodType);
+		BlockState woodenSlab = Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockPlanks.VARIANT, woodType);
+		BlockState woodenPlanks = Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, woodType);
 
 		for (int y = 0; y < height; y++) {
 			int min = 2 * y;

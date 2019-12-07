@@ -1,9 +1,9 @@
 package twilightforest.structures.finalcastle;
 
 import net.minecraft.block.BlockStairs;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.EnumDyeColor;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.item.DyeColor;
+import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -22,7 +22,7 @@ public class ComponentTFFinalCastleDungeonEntrance extends ComponentTFFinalCastl
 
 	public ComponentTFFinalCastleDungeonEntrance() {}
 
-	public ComponentTFFinalCastleDungeonEntrance(TFFeature feature, Random rand, int i, int x, int y, int z, EnumFacing direction, int level) {
+	public ComponentTFFinalCastleDungeonEntrance(TFFeature feature, Random rand, int i, int x, int y, int z, Direction direction, int level) {
 		super(feature, rand, i, x, y, z, direction, level);
 	}
 
@@ -48,8 +48,8 @@ public class ComponentTFFinalCastleDungeonEntrance extends ComponentTFFinalCastl
 			return false;
 		}
 
-		final IBlockState stairs = deco.stairState.withProperty(BlockStairs.FACING, EnumFacing.SOUTH);
-		final IBlockState deadRock = TFBlocks.deadrock.getDefaultState();
+		final BlockState stairs = deco.stairState.withProperty(BlockStairs.FACING, Direction.SOUTH);
+		final BlockState deadRock = TFBlocks.deadrock.getDefaultState();
 		// stairs
 		for (int y = 0; y <= this.height; y++) {
 			int x = (this.size / 2) - 2;
@@ -61,7 +61,7 @@ public class ComponentTFFinalCastleDungeonEntrance extends ComponentTFFinalCastl
 		}
 
 		// door
-		final IBlockState castleDoor = TFBlocks.castle_door.getDefaultState()
+		final BlockState castleDoor = TFBlocks.castle_door.getDefaultState()
 				.withProperty(BlockTFCastleDoor.LOCK_INDEX, 2);
 		this.fillWithBlocks(world, sbb, 23, 0, 12, 23, 3, 14, castleDoor, AIR, false);
 		this.fillWithBlocks(world, sbb, 23, 4, 12, 23, 4, 14, deco.blockState, deco.blockState, false);
@@ -70,12 +70,12 @@ public class ComponentTFFinalCastleDungeonEntrance extends ComponentTFFinalCastl
 	}
 
 	@Override
-	protected EnumDyeColor getForceFieldColor(Random decoRNG) {
+	protected DyeColor getForceFieldColor(Random decoRNG) {
 		return BlockTFForceField.VALID_COLORS.get(1);
 	}
 
 	@Override
-	protected EnumDyeColor getRuneColor(EnumDyeColor fieldColor) {
+	protected DyeColor getRuneColor(DyeColor fieldColor) {
 		return BlockTFCastleMagic.VALID_COLORS.get(0);
 	}
 }

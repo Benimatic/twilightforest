@@ -6,10 +6,10 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
@@ -19,8 +19,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.enums.SaplingVariant;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
@@ -56,7 +56,7 @@ public class BlockTFSapling extends BlockBush implements IGrowable, ModelRegiste
 	}
 
 	@Override
-	public void grow(World world, Random rand, BlockPos pos, IBlockState state) {
+	public void grow(World world, Random rand, BlockPos pos, BlockState state) {
 		WorldGenerator treeGenerator;
 
 		switch (state.getValue(TF_TYPE)) {
@@ -101,7 +101,7 @@ public class BlockTFSapling extends BlockBush implements IGrowable, ModelRegiste
 	}
 
 	@Override
-	public int damageDropped(IBlockState state) {
+	public int damageDropped(BlockState state) {
 		return getMetaFromState(state);
 	}
 
@@ -120,12 +120,12 @@ public class BlockTFSapling extends BlockBush implements IGrowable, ModelRegiste
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+	public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos) {
 		return SAPLING_AABB;
 	}
 
 	@Override
-	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+	public void updateTick(World worldIn, BlockPos pos, BlockState state, Random rand) {
 		if (!worldIn.isRemote) {
 			super.updateTick(worldIn, pos, state, rand);
 
@@ -136,27 +136,27 @@ public class BlockTFSapling extends BlockBush implements IGrowable, ModelRegiste
 	}
 
 	@Override
-	public boolean canGrow(World worldIn, BlockPos pos, IBlockState state, boolean isClient) {
+	public boolean canGrow(World worldIn, BlockPos pos, BlockState state, boolean isClient) {
 		return true;
 	}
 
 	@Override
-	public boolean canUseBonemeal(World worldIn, Random rand, BlockPos pos, IBlockState state) {
+	public boolean canUseBonemeal(World worldIn, Random rand, BlockPos pos, BlockState state) {
 		return (double) worldIn.rand.nextFloat() < 0.45D;
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(BlockState state) {
 		return state.getValue(TF_TYPE).ordinal();
 	}
 
 	@Override
 	@Deprecated
-	public IBlockState getStateFromMeta(int meta) {
+	public BlockState getStateFromMeta(int meta) {
 		return this.getDefaultState().withProperty(TF_TYPE, SaplingVariant.values()[meta % SaplingVariant.values().length]);
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void registerModel() {
 		for (int i = 0; i < SaplingVariant.values().length; i++) {

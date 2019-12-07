@@ -2,8 +2,8 @@ package twilightforest.world;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
@@ -72,8 +72,8 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 	@Override
 	protected void initPrimer(ChunkPrimer primer, ChunkBitArray data) {
 
-		IBlockState water = Blocks.WATER.getDefaultState();
-		IBlockState stone = Blocks.STONE.getDefaultState();
+		BlockState water = Blocks.WATER.getDefaultState();
+		BlockState stone = Blocks.STONE.getDefaultState();
 
 		for (int x = 0; x < 16; x++) {
 			for (int z = 0; z < 16; z++) {
@@ -91,9 +91,9 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 
 	private void addGlaciers(int chunkX, int chunkZ, ChunkPrimer primer, Biome[] biomes) {
 
-		IBlockState glacierBase = Blocks.GRAVEL.getDefaultState();
-		IBlockState glacierMain = TFConfig.performance.glacierPackedIce ? Blocks.PACKED_ICE.getDefaultState() : Blocks.ICE.getDefaultState();
-		IBlockState glacierTop = Blocks.ICE.getDefaultState();
+		BlockState glacierBase = Blocks.GRAVEL.getDefaultState();
+		BlockState glacierMain = TFConfig.performance.glacierPackedIce ? Blocks.PACKED_ICE.getDefaultState() : Blocks.ICE.getDefaultState();
+		BlockState glacierTop = Blocks.ICE.getDefaultState();
 
 		for (int z = 0; z < 16; z++) {
 			for (int x = 0; x < 16; x++) {
@@ -216,7 +216,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 
 						treeBottom -= noise;
 
-						IBlockState darkLeaves = TFBlocks.dark_leaves.getDefaultState();
+						BlockState darkLeaves = TFBlocks.dark_leaves.getDefaultState();
 						for (int y = treeBottom; y < treeTop; y++) {
 							primer.setBlockState(x, y, z, darkLeaves);
 						}

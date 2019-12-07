@@ -5,7 +5,7 @@ import blusunrize.immersiveengineering.api.shader.*;
 import blusunrize.immersiveengineering.client.ClientUtils;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.EnumRarity;
@@ -48,15 +48,15 @@ public class IEShaderRegister {
             ShaderManager.useShader(ShaderManager.twilightSkyShader, shaderCallback);
 
             OpenGlHelper.setActiveTexture(OpenGlHelper.GL_TEXTURE2);
-            Minecraft.getMinecraft().getTextureManager().bindTexture(TEXTURE_STARS);
+            Minecraft.getInstance().getTextureManager().bindTexture(TEXTURE_STARS);
 
             OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
-            Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+            Minecraft.getInstance().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         } else {
             ShaderManager.releaseShader();
 
             OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
-            Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+            Minecraft.getInstance().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         }
     };
 
@@ -103,7 +103,7 @@ public class IEShaderRegister {
     //    }
     //    //if (pre) {
     //    //    //GlStateManager.pushMatrix();
-    //    //    //GlStateManager.scale(1.05f, 1.05f, 1.05f);
+    //    //    //GlStateManager.scalef(1.05f, 1.05f, 1.05f);
     //    //    GlStateManager.enableCull();
     //    //    //GL11.glFrontFace(GL11.GL_CW);
     //    //    GlStateManager.cullFace(GlStateManager.CullFace.FRONT);
@@ -113,7 +113,7 @@ public class IEShaderRegister {
     //    //    GlStateManager.cullFace(GlStateManager.CullFace.BACK);
     //    //    //GL11.glFrontFace(GL11.GL_CCW);
     //    //    GlStateManager.disableCull();
-    //    //    //GlStateManager.scale(0.8333f, 0.8333f, 0.8333f);
+    //    //    //GlStateManager.scalef(0.8333f, 0.8333f, 0.8333f);
     //    //    //GlStateManager.popMatrix();
     //    //}
     //};

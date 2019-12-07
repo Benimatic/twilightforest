@@ -1,13 +1,13 @@
 package twilightforest.structures;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.world.gen.structure.MutableBoundingBox;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
 import net.minecraft.world.gen.structure.template.TemplateManager;
@@ -37,7 +37,7 @@ public abstract class StructureTFComponentTemplate extends StructureTFComponent 
         this.mirror = Mirror.NONE;
         this.placeSettings.setRotation(rotation);
         this.templatePosition = new BlockPos(x, y, z);
-        this.boundingBox = new StructureBoundingBox(x, y, z, x, y, z);
+        this.boundingBox = new MutableBoundingBox(x, y, z, x, y, z);
     }
 
     public StructureTFComponentTemplate(TFFeature feature, int i, int x, int y, int z, Rotation rotation, Mirror mirror) {
@@ -47,7 +47,7 @@ public abstract class StructureTFComponentTemplate extends StructureTFComponent 
         this.mirror = mirror;
         this.placeSettings.setRotation(rotation);
         this.templatePosition = new BlockPos(x, y, z);
-        this.boundingBox = new StructureBoundingBox(x, y, z, x, y, z);
+        this.boundingBox = new MutableBoundingBox(x, y, z, x, y, z);
     }
 
     public final void setup(TemplateManager templateManager, MinecraftServer server) {
@@ -59,7 +59,7 @@ public abstract class StructureTFComponentTemplate extends StructureTFComponent 
     protected abstract void loadTemplates(TemplateManager templateManager, MinecraftServer server);
 
     @Override
-    protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+    protected void writeStructureToNBT(CompoundNBT tagCompound) {
         super.writeStructureToNBT(tagCompound);
         tagCompound.setInteger("TPX", this.templatePosition.getX());
         tagCompound.setInteger("TPY", this.templatePosition.getY());
@@ -67,7 +67,7 @@ public abstract class StructureTFComponentTemplate extends StructureTFComponent 
     }
 
     @Override
-    protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager manager) {
+    protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager manager) {
         super.readStructureFromNBT(tagCompound, manager);
         this.templatePosition = new BlockPos(tagCompound.getInteger("TPX"), tagCompound.getInteger("TPY"), tagCompound.getInteger("TPZ"));
         this.placeSettings.setRotation(this.rotation);
@@ -94,7 +94,7 @@ public abstract class StructureTFComponentTemplate extends StructureTFComponent 
         Rotation rotation = this.placeSettings.getRotation();
         BlockPos size = this.TEMPLATE.transformedSize(rotation);
         Mirror mirror = this.placeSettings.getMirror();
-        this.boundingBox = new StructureBoundingBox(0, 0, 0, size.getX(), size.getY() - 1, size.getZ());
+        this.boundingBox = new MutableBoundingBox(0, 0, 0, size.getX(), size.getY() - 1, size.getZ());
 
         switch (rotation)
         {
@@ -123,16 +123,16 @@ public abstract class StructureTFComponentTemplate extends StructureTFComponent 
                 {
                     if (rotation == Rotation.CLOCKWISE_180)
                     {
-                        blockpos2 = blockpos2.offset(EnumFacing.EAST, size.getX());
+                        blockpos2 = blockpos2.offset(Direction.EAST, size.getX());
                     }
                     else
                     {
-                        blockpos2 = blockpos2.offset(EnumFacing.WEST, size.getX());
+                        blockpos2 = blockpos2.offset(Direction.WEST, size.getX());
                     }
                 }
                 else
                 {
-                    blockpos2 = blockpos2.offset(rotation.rotate(EnumFacing.WEST), size.getZ());
+                    blockpos2 = blockpos2.offset(rotation.rotate(Direction.WEST), size.getZ());
                 }
 
                 this.boundingBox.offset(blockpos2.getX(), 0, blockpos2.getZ());
@@ -144,16 +144,16 @@ public abstract class StructureTFComponentTemplate extends StructureTFComponent 
                 {
                     if (rotation == Rotation.CLOCKWISE_180)
                     {
-                        blockpos1 = blockpos1.offset(EnumFacing.SOUTH, size.getZ());
+                        blockpos1 = blockpos1.offset(Direction.SOUTH, size.getZ());
                     }
                     else
                     {
-                        blockpos1 = blockpos1.offset(EnumFacing.NORTH, size.getZ());
+                        blockpos1 = blockpos1.offset(Direction.NORTH, size.getZ());
                     }
                 }
                 else
                 {
-                    blockpos1 = blockpos1.offset(rotation.rotate(EnumFacing.NORTH), size.getX());
+                    blockpos1 = blockpos1.offset(rotation.rotate(Direction.NORTH), size.getX());
                 }
 
                 this.boundingBox.offset(blockpos1.getX(), 0, blockpos1.getZ());
@@ -179,7 +179,7 @@ public abstract class StructureTFComponentTemplate extends StructureTFComponent 
         Rotation rotation = this.placeSettings.getRotation();
         BlockPos size = this.TEMPLATE.transformedSize(rotation);
         Mirror mirror = this.placeSettings.getMirror();
-        this.boundingBox = new StructureBoundingBox(0, 0, 0, size.getX(), size.getY() - 1, size.getZ());
+        this.boundingBox = new MutableBoundingBox(0, 0, 0, size.getX(), size.getY() - 1, size.getZ());
 
         switch (rotation)
         {
@@ -208,16 +208,16 @@ public abstract class StructureTFComponentTemplate extends StructureTFComponent 
                 {
                     if (rotation == Rotation.CLOCKWISE_180)
                     {
-                        blockpos2 = blockpos2.offset(EnumFacing.EAST, size.getX());
+                        blockpos2 = blockpos2.offset(Direction.EAST, size.getX());
                     }
                     else
                     {
-                        blockpos2 = blockpos2.offset(EnumFacing.WEST, size.getX());
+                        blockpos2 = blockpos2.offset(Direction.WEST, size.getX());
                     }
                 }
                 else
                 {
-                    blockpos2 = blockpos2.offset(rotation.rotate(EnumFacing.WEST), size.getZ());
+                    blockpos2 = blockpos2.offset(rotation.rotate(Direction.WEST), size.getZ());
                 }
 
                 this.boundingBox.offset(blockpos2.getX(), 0, blockpos2.getZ());
@@ -229,16 +229,16 @@ public abstract class StructureTFComponentTemplate extends StructureTFComponent 
                 {
                     if (rotation == Rotation.CLOCKWISE_180)
                     {
-                        blockpos1 = blockpos1.offset(EnumFacing.SOUTH, size.getZ());
+                        blockpos1 = blockpos1.offset(Direction.SOUTH, size.getZ());
                     }
                     else
                     {
-                        blockpos1 = blockpos1.offset(EnumFacing.NORTH, size.getZ());
+                        blockpos1 = blockpos1.offset(Direction.NORTH, size.getZ());
                     }
                 }
                 else
                 {
-                    blockpos1 = blockpos1.offset(rotation.rotate(EnumFacing.NORTH), size.getX());
+                    blockpos1 = blockpos1.offset(rotation.rotate(Direction.NORTH), size.getX());
                 }
 
                 this.boundingBox.offset(blockpos1.getX(), 0, blockpos1.getZ());

@@ -3,13 +3,13 @@ package twilightforest.item;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -22,15 +22,15 @@ public class ItemTFExperiment115 extends ItemTFFood {
 	}
 
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		IBlockState state = world.getBlockState(pos);
+	public EnumActionResult onItemUse(PlayerEntity player, World world, BlockPos pos, Hand hand, Direction facing, float hitX, float hitY, float hitZ) {
+		BlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 
 		// Let eating take priority over block placement
 		if (player.canEat(false))
 			return EnumActionResult.PASS;
 
-		IBlockState e115 = TFBlocks.experiment_115.getDefaultState();
+		BlockState e115 = TFBlocks.experiment_115.getDefaultState();
 
 		if (!block.isReplaceable(world, pos)) pos = pos.offset(facing);
 		ItemStack itemstack = player.getHeldItem(hand);

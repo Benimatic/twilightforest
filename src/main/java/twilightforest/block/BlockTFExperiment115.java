@@ -10,24 +10,24 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Items;
+import net.minecraft.item.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
@@ -53,12 +53,12 @@ public class BlockTFExperiment115 extends Block implements ModelRegisterCallback
     }
 
     @Override
-    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+    public ItemStack getPickBlock(BlockState state, RayTraceResult target, World world, BlockPos pos, PlayerEntity player) {
         return new ItemStack(TFItems.experiment_115);
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+    public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos) {
         switch (state.getValue(NOMS)) {
             default:
                 return AABB[0];
@@ -72,24 +72,24 @@ public class BlockTFExperiment115 extends Block implements ModelRegisterCallback
     }
 
     @Override
-    public boolean isFullCube(IBlockState state)
+    public boolean isFullCube(BlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isOpaqueCube(IBlockState state)
+    public boolean isOpaqueCube(BlockState state)
     {
         return false;
     }
 
     @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face) {
         return BlockFaceShape.UNDEFINED;
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity player, Hand hand, Direction facing, float hitX, float hitY, float hitZ) {
         int bitesTaken = state.getValue(NOMS);
         ItemStack stack = player.getHeldItem(hand);
 
@@ -110,7 +110,7 @@ public class BlockTFExperiment115 extends Block implements ModelRegisterCallback
         return this.eatCake(worldIn, pos, state, player) || stack.isEmpty();
     }
 
-    private boolean eatCake(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
+    private boolean eatCake(World world, BlockPos pos, BlockState state, PlayerEntity player) {
         if (!player.canEat(false)) return false;
         else {
             player.addStat(StatList.CAKE_SLICES_EATEN);
@@ -128,14 +128,14 @@ public class BlockTFExperiment115 extends Block implements ModelRegisterCallback
     }
 
     @Override
-    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+    public void updateTick(World worldIn, BlockPos pos, BlockState state, Random rand) {
         if (state.getValue(REGENERATE) && state.getValue(NOMS) != 0) {
             worldIn.setBlockState(pos, state.withProperty(NOMS, state.getValue(NOMS) - 1));
         }
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
         if (!this.canBlockStay(worldIn, pos)) {
             worldIn.setBlockToAir(pos);
         }
@@ -157,12 +157,12 @@ public class BlockTFExperiment115 extends Block implements ModelRegisterCallback
     }
 
     @Override
-    public IBlockState getStateFromMeta(int meta) {
+    public BlockState getStateFromMeta(int meta) {
         return this.getDefaultState().withProperty(NOMS, meta & 7).withProperty(REGENERATE, (meta & 8) == 8);
     }
 
     @Override
-    public int getMetaFromState(IBlockState state) {
+    public int getMetaFromState(BlockState state) {
         return state.getValue(NOMS) | (state.getValue(REGENERATE) ? 8 : 0);
     }
 
@@ -172,34 +172,34 @@ public class BlockTFExperiment115 extends Block implements ModelRegisterCallback
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public BlockRenderLayer getRenderLayer() {
         return BlockRenderLayer.CUTOUT;
     }
 
     @Override
-    public int getComparatorInputOverride(IBlockState state, World world, BlockPos pos) {
+    public int getComparatorInputOverride(BlockState state, World world, BlockPos pos) {
         return 15-(state.getValue(NOMS)*2);
     }
 
     @Override
-    public boolean hasComparatorInputOverride(IBlockState state)
+    public boolean hasComparatorInputOverride(BlockState state)
     {
         return true;
     }
 
     @Override
-    public boolean canProvidePower(IBlockState state) {
+    public boolean canProvidePower(BlockState state) {
         return state.getValue(REGENERATE);
     }
 
     @Override
-    public int getWeakPower(IBlockState state, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+    public int getWeakPower(BlockState state, IBlockAccess blockAccess, BlockPos pos, Direction side) {
         return state.getValue(REGENERATE) ? 15-(state.getValue(NOMS)*2) : 0;
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void registerModel() {
         ModelLoader.setCustomModelResourceLocation(TFItems.experiment_115, 0, new ModelResourceLocation(TwilightForestMod.ID + ":experiment_115", "inventory"));
         ModelLoader.setCustomModelResourceLocation(TFItems.experiment_115, 1, new ModelResourceLocation(TwilightForestMod.ID + ":experiment_115", "inventory_full"));

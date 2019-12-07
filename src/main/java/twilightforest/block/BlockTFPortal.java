@@ -2,23 +2,25 @@ package twilightforest.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBreakable;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.block.Blocks;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.Direction;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -26,8 +28,8 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.apache.commons.lang3.mutable.MutableInt;
 import twilightforest.TFConfig;
 import twilightforest.TFTeleporter;
@@ -64,49 +66,49 @@ public class BlockTFPortal extends BlockBreakable {
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(BlockState state) {
 		return state.getValue(DISALLOW_RETURN) ? 1 : 0;
 	}
 
 	@Override
 	@Deprecated
-	public IBlockState getStateFromMeta(int meta) {
+	public BlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(DISALLOW_RETURN, meta == 1);
 	}
 
 	@Override
 	@Deprecated
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess world, BlockPos pos) {
 		return AABB;
 	}
 
 	@Override
 	@Deprecated
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public AxisAlignedBB getCollisionBoundingBox(BlockState state, IBlockAccess world, BlockPos pos) {
 		return state.getValue(DISALLOW_RETURN) ? AABB : NULL_AABB;
 	}
 
 	@Override
 	@Deprecated
-	public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBB, List<AxisAlignedBB> blockBBs, @Nullable Entity entity, boolean isActualState) {
+	public void addCollisionBoxToList(BlockState state, World world, BlockPos pos, AxisAlignedBB entityBB, List<AxisAlignedBB> blockBBs, @Nullable Entity entity, boolean isActualState) {
 		addCollisionBoxToList(pos, entityBB, blockBBs, entity instanceof EntityItem ? AABB_ITEM : state.getCollisionBoundingBox(world, pos));
 	}
 
 	@Override
 	@Deprecated
-	public boolean isFullCube(IBlockState state) {
+	public boolean isFullCube(BlockState state) {
 		return false;
 	}
 
 	@Override
 	@Deprecated
-	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face) {
 		return BlockFaceShape.UNDEFINED;
 	}
 
-	public boolean tryToCreatePortal(World world, BlockPos pos, EntityItem catalyst, @Nullable EntityPlayer player) {
+	public boolean tryToCreatePortal(World world, BlockPos pos, ItemEntity catalyst, @Nullable PlayerEntity player) {
 
-		IBlockState state = world.getBlockState(pos);
+		BlockState state = world.getBlockState(pos);
 
 		if (canFormPortal(state) && world.getBlockState(pos.down()).isFullCube()) {
 			Map<BlockPos, Boolean> blocksChecked = new HashMap<>();
@@ -144,7 +146,7 @@ public class BlockTFPortal extends BlockBreakable {
 		return false;
 	}
 
-	public boolean canFormPortal(IBlockState state) {
+	public boolean canFormPortal(BlockState state) {
 		return state == Blocks.WATER.getDefaultState() || state.getBlock() == this && state.getValue(DISALLOW_RETURN);
 	}
 
@@ -164,17 +166,17 @@ public class BlockTFPortal extends BlockBreakable {
 		}
 	}
 
-	private static boolean recursivelyValidatePortal(World world, BlockPos pos, Map<BlockPos, Boolean> blocksChecked, MutableInt portalSize, IBlockState requiredState) {
+	private static boolean recursivelyValidatePortal(World world, BlockPos pos, Map<BlockPos, Boolean> blocksChecked, MutableInt portalSize, BlockState requiredState) {
 
 		if (portalSize.incrementAndGet() > MAX_PORTAL_SIZE) return false;
 
 		boolean isPoolProbablyEnclosed = true;
 
-		for (int i = 0; i < EnumFacing.HORIZONTALS.length && portalSize.intValue() <= MAX_PORTAL_SIZE; i++) {
-			BlockPos positionCheck = pos.offset(EnumFacing.HORIZONTALS[i]);
+		for (int i = 0; i < Direction.HORIZONTALS.length && portalSize.intValue() <= MAX_PORTAL_SIZE; i++) {
+			BlockPos positionCheck = pos.offset(Direction.HORIZONTALS[i]);
 
 			if (!blocksChecked.containsKey(positionCheck)) {
-				IBlockState state = world.getBlockState(positionCheck);
+				BlockState state = world.getBlockState(positionCheck);
 
 				if (state == requiredState && world.getBlockState(positionCheck.down()).isFullCube()) {
 					blocksChecked.put(positionCheck, true);
@@ -192,25 +194,25 @@ public class BlockTFPortal extends BlockBreakable {
 		return isPoolProbablyEnclosed;
 	}
 
-	private static boolean isNatureBlock(IBlockState state) {
+	private static boolean isNatureBlock(BlockState state) {
 		Material mat = state.getMaterial();
 		return mat == Material.PLANTS || mat == Material.VINE || mat == Material.LEAVES;
 	}
 
-	private static boolean isGrassOrDirt(IBlockState state) {
+	private static boolean isGrassOrDirt(BlockState state) {
 		Material mat = state.getMaterial();
 		return state.isFullCube() && (mat == Material.GRASS || mat == Material.GROUND);
 	}
 
 	@Override
 	@Deprecated
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block notUsed, BlockPos fromPos) {
+	public void neighborChanged(BlockState state, World world, BlockPos pos, Block notUsed, BlockPos fromPos) {
 		boolean good = world.getBlockState(pos.down()).isFullCube();
 
-		for (EnumFacing facing : EnumFacing.HORIZONTALS) {
+		for (Direction facing : Direction.HORIZONTALS) {
 			if (!good) break;
 
-			IBlockState neighboringState = world.getBlockState(pos.offset(facing));
+			BlockState neighboringState = world.getBlockState(pos.offset(facing));
 
 			good = isGrassOrDirt(neighboringState) || neighboringState == state;
 		}
@@ -227,13 +229,13 @@ public class BlockTFPortal extends BlockBreakable {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.TRANSLUCENT;
 	}
 
 	@Override
-	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
+	public void onEntityCollision(World world, BlockPos pos, BlockState state, Entity entity) {
 		if (state == this.getDefaultState()) {
 			attemptSendPlayer(entity, false);
 		}
@@ -250,7 +252,7 @@ public class BlockTFPortal extends BlockBreakable {
 			return;
 		}
 
-		if (entity.isRiding() || entity.isBeingRidden() || !entity.isNonBoss()) {
+		if (entity.isPassenger() || entity.isBeingRidden() || !entity.isNonBoss()) {
 			return;
 		}
 
@@ -275,8 +277,8 @@ public class BlockTFPortal extends BlockBreakable {
 	// Full [VanillaCopy] of BlockPortal.randomDisplayTick
 	// TODO Eeeh... Let's look at changing this too alongside a new model.
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand) {
+	@OnlyIn(Dist.CLIENT)
+	public void randomDisplayTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
 		int random = rand.nextInt(100);
 		if (stateIn.getValue(DISALLOW_RETURN) && random < 80) return;
 
@@ -301,7 +303,7 @@ public class BlockTFPortal extends BlockBreakable {
 			//	zSpeed = (double) (rand.nextFloat() * 2.0F * (float) j);
 			//}
 
-			worldIn.spawnParticle(EnumParticleTypes.PORTAL, xPos, yPos, zPos, xSpeed, ySpeed, zSpeed);
+			worldIn.spawnParticle(ParticleTypes.PORTAL, xPos, yPos, zPos, xSpeed, ySpeed, zSpeed);
 		}
 	}
 }

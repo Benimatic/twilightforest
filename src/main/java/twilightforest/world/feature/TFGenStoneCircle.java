@@ -1,7 +1,7 @@
 package twilightforest.world.feature;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -16,7 +16,7 @@ public class TFGenStoneCircle extends TFGenerator {
 			return false;
 		}
 
-		IBlockState mossyCobble = Blocks.MOSSY_COBBLESTONE.getDefaultState();
+		BlockState mossyCobble = Blocks.MOSSY_COBBLESTONE.getDefaultState();
 
 		// okay!  circle!
 		for (int cy = 0; cy <= 2; cy++) {

@@ -8,14 +8,14 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
@@ -29,8 +29,8 @@ import java.util.List;
  */
 public class BlockTFCastleMagic extends Block implements ModelRegisterCallback {
 
-	public static final List<EnumDyeColor> VALID_COLORS = ImmutableList.of(EnumDyeColor.PINK, EnumDyeColor.BLUE, EnumDyeColor.YELLOW, EnumDyeColor.PURPLE);
-	public static final IProperty<EnumDyeColor> COLOR = PropertyEnum.create("color", EnumDyeColor.class, VALID_COLORS);
+	public static final List<DyeColor> VALID_COLORS = ImmutableList.of(DyeColor.PINK, DyeColor.BLUE, DyeColor.YELLOW, DyeColor.PURPLE);
+	public static final IProperty<DyeColor> COLOR = PropertyEnum.create("color", DyeColor.class, VALID_COLORS);
 
 	public BlockTFCastleMagic() {
 		super(Material.ROCK, MapColor.QUARTZ);
@@ -38,7 +38,7 @@ public class BlockTFCastleMagic extends Block implements ModelRegisterCallback {
 		this.setResistance(15F);
 		this.setSoundType(SoundType.STONE);
 		this.setCreativeTab(TFItems.creativeTab);
-		this.setDefaultState(blockState.getBaseState().withProperty(COLOR, EnumDyeColor.PINK));
+		this.setDefaultState(blockState.getBaseState().withProperty(COLOR, DyeColor.PINK));
 	}
 
 	@Override
@@ -47,13 +47,13 @@ public class BlockTFCastleMagic extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(BlockState state) {
 		return VALID_COLORS.indexOf(state.getValue(COLOR));
 	}
 
 	@Override
 	@Deprecated
-	public IBlockState getStateFromMeta(int meta) {
+	public BlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(COLOR, VALID_COLORS.get(meta));
 	}
 
@@ -66,18 +66,18 @@ public class BlockTFCastleMagic extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public int damageDropped(IBlockState state) {
+	public int damageDropped(BlockState state) {
 		return getMetaFromState(state);
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void registerModel() {
 		ModelUtils.registerToStateSingleVariant(this, COLOR);
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT;
 	}

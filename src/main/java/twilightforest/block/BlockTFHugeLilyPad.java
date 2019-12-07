@@ -10,21 +10,21 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityBoat;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.enums.HugeLilypadPiece;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
@@ -34,7 +34,7 @@ import java.util.List;
 
 public class BlockTFHugeLilyPad extends BlockBush implements ModelRegisterCallback {
 
-	public static final IProperty<EnumFacing> FACING = BlockHorizontal.FACING;
+	public static final IProperty<Direction> FACING = BlockHorizontal.FACING;
 	public static final IProperty<HugeLilypadPiece> PIECE = PropertyEnum.create("piece", HugeLilypadPiece.class);
 	private static final AxisAlignedBB AABB = new AxisAlignedBB(0, 0, 0, 1, 0.015625, 1);
 
@@ -44,7 +44,7 @@ public class BlockTFHugeLilyPad extends BlockBush implements ModelRegisterCallba
 		super(Material.PLANTS);
 		this.setSoundType(SoundType.PLANT);
 		this.setCreativeTab(TFItems.creativeTab);
-		this.setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(PIECE, HugeLilypadPiece.NW));
+		this.setDefaultState(blockState.getBaseState().withProperty(FACING, Direction.NORTH).withProperty(PIECE, HugeLilypadPiece.NW));
 	}
 
 	@Override
@@ -53,19 +53,19 @@ public class BlockTFHugeLilyPad extends BlockBush implements ModelRegisterCallba
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(BlockState state) {
 		return (state.getValue(FACING).getHorizontalIndex() | (state.getValue(PIECE).ordinal() << 2)) & 0b1111;
 	}
 
 	@Override
 	@Deprecated
-	public IBlockState getStateFromMeta(int meta) {
+	public BlockState getStateFromMeta(int meta) {
 		meta = meta & 0b1111;
-		return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta & 0b0011)).withProperty(PIECE, HugeLilypadPiece.values()[(meta & 0b1100) >> 2]);
+		return getDefaultState().withProperty(FACING, Direction.byHorizontalIndex(meta & 0b0011)).withProperty(PIECE, HugeLilypadPiece.values()[(meta & 0b1100) >> 2]);
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+	public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos) {
 		return AABB;
 	}
 
@@ -75,7 +75,7 @@ public class BlockTFHugeLilyPad extends BlockBush implements ModelRegisterCallba
 	}
 
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+	public void breakBlock(World world, BlockPos pos, BlockState state) {
 		//TwilightForestMod.LOGGER.info("Destroying giant lilypad at {}, state {}", pos, state);
 
 		if (!this.isSelfDestructing) {
@@ -83,12 +83,12 @@ public class BlockTFHugeLilyPad extends BlockBush implements ModelRegisterCallba
 		}
 	}
 
-	private void setGiantBlockToAir(World world, BlockPos pos, IBlockState state) {
+	private void setGiantBlockToAir(World world, BlockPos pos, BlockState state) {
 		// this flag is not threadsafe
 		this.isSelfDestructing = true;
 
 		for (BlockPos check : this.getAllMyBlocks(pos, state)) {
-			IBlockState stateThere = world.getBlockState(check);
+			BlockState stateThere = world.getBlockState(check);
 			if (stateThere.getBlock() == this) {
 				world.destroyBlock(check, false);
 			}
@@ -98,9 +98,9 @@ public class BlockTFHugeLilyPad extends BlockBush implements ModelRegisterCallba
 	}
 
 	@Override
-	public boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
+	public boolean canBlockStay(World world, BlockPos pos, BlockState state) {
 		for (BlockPos check : this.getAllMyBlocks(pos, state)) {
-			IBlockState dStateBelow = world.getBlockState(check.down());
+			BlockState dStateBelow = world.getBlockState(check.down());
 
 			if (!(dStateBelow.getBlock() == Blocks.WATER || dStateBelow.getBlock() == Blocks.FLOWING_WATER)
 					|| dStateBelow.getValue(BlockLiquid.LEVEL) != 0) {
@@ -119,7 +119,7 @@ public class BlockTFHugeLilyPad extends BlockBush implements ModelRegisterCallba
 	/**
 	 * Get all 4 coordinates for all parts of this lily pad.
 	 */
-	public List<BlockPos> getAllMyBlocks(BlockPos pos, IBlockState state) {
+	public List<BlockPos> getAllMyBlocks(BlockPos pos, BlockState state) {
 		List<BlockPos> pieces = Lists.newArrayListWithCapacity(4);
 		if (state.getBlock() == this) {
 			// find NW corner
@@ -149,7 +149,7 @@ public class BlockTFHugeLilyPad extends BlockBush implements ModelRegisterCallba
 
 	// [VanillaCopy] of super without dropping
 	@Override
-	protected void checkAndDropBlock(World worldIn, BlockPos pos, IBlockState state) {
+	protected void checkAndDropBlock(World worldIn, BlockPos pos, BlockState state) {
 		if (!this.canBlockStay(worldIn, pos, state)) {
 			// this.dropBlockAsItem(worldIn, pos, state, 0); TF - nodrop
 			worldIn.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
@@ -158,20 +158,20 @@ public class BlockTFHugeLilyPad extends BlockBush implements ModelRegisterCallba
 
 	@Override
 	@Deprecated
-	public EnumPushReaction getPushReaction(IBlockState state) {
+	public EnumPushReaction getPushReaction(BlockState state) {
 		return EnumPushReaction.BLOCK;
 	}
 
 	@Override
 	@Deprecated
-	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean p_185477_7_) {
+	public void addCollisionBoxToList(BlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean p_185477_7_) {
 		if (!(entityIn instanceof EntityBoat)) {
 			addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB);
 		}
 	}
 
 	@Override
-	public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
+	public void onEntityCollision(World worldIn, BlockPos pos, BlockState state, Entity entityIn) {
 		super.onEntityCollision(worldIn, pos, state, entityIn);
 
 		if (entityIn instanceof EntityBoat) {
@@ -180,12 +180,12 @@ public class BlockTFHugeLilyPad extends BlockBush implements ModelRegisterCallba
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT;
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void registerModel() {
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));

@@ -1,12 +1,12 @@
 package twilightforest.client.model.item;
 
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -34,11 +34,11 @@ public abstract class BuiltInItemModel implements IBakedModel {
 	private final ItemOverrideList overrides = new Overrides();
 
 	protected BuiltInItemModel(String particleTextureName) {
-		this.particleTexture = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(particleTextureName);
+		this.particleTexture = Minecraft.getInstance().getTextureMapBlocks().getAtlasSprite(particleTextureName);
 	}
 
 	@Override
-	public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
+	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, long rand) {
 		return Collections.emptyList();
 	}
 

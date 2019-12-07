@@ -2,19 +2,19 @@ package twilightforest.item;
 
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.BlockRotatedPillar;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -34,14 +34,14 @@ public class ItemTFLampOfCinders extends ItemTF {
 
 	@Nonnull
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, @Nonnull Hand hand) {
 		player.setActiveHand(hand);
 		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 	}
 
 	@Nonnull
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public EnumActionResult onItemUse(PlayerEntity player, World world, BlockPos pos, Hand hand, Direction side, float hitX, float hitY, float hitZ) {
 		if (burnBlock(world, pos)) {
 			if (player instanceof EntityPlayerMP)
 				CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP) player, pos, player.getHeldItem(hand));
@@ -54,8 +54,8 @@ public class ItemTFLampOfCinders extends ItemTF {
 				float dy = pos.getY() + 0.5F + (itemRand.nextFloat() - itemRand.nextFloat()) * 0.75F;
 				float dz = pos.getZ() + 0.5F + (itemRand.nextFloat() - itemRand.nextFloat()) * 0.75F;
 
-				world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, dx, dy, dz, 0.0D, 0.0D, 0.0D);
-				world.spawnParticle(EnumParticleTypes.FLAME, dx, dy, dz, 0.0D, 0.0D, 0.0D);
+				world.spawnParticle(ParticleTypes.SMOKE_NORMAL, dx, dy, dz, 0.0D, 0.0D, 0.0D);
+				world.spawnParticle(ParticleTypes.FLAME, dx, dy, dz, 0.0D, 0.0D, 0.0D);
 			}
 
 			return EnumActionResult.SUCCESS;
@@ -65,7 +65,7 @@ public class ItemTFLampOfCinders extends ItemTF {
 	}
 
 	private boolean burnBlock(World world, BlockPos pos) {
-		IBlockState state = world.getBlockState(pos);
+		BlockState state = world.getBlockState(pos);
 		if (state.getBlock() == TFBlocks.thorns) {
 			world.setBlockState(pos, TFBlocks.burnt_thorns.getDefaultState().withProperty(BlockRotatedPillar.AXIS, state.getValue(BlockRotatedPillar.AXIS)));
 			return true;
@@ -105,7 +105,7 @@ public class ItemTFLampOfCinders extends ItemTF {
 			}
 		}
 
-		if (living instanceof EntityPlayer) {
+		if (living instanceof PlayerEntity) {
 			for (int i = 0; i < 6; i++) {
 				BlockPos rPos = pos.add(
 						itemRand.nextInt(range) - itemRand.nextInt(range),
@@ -113,7 +113,7 @@ public class ItemTFLampOfCinders extends ItemTF {
 						itemRand.nextInt(range) - itemRand.nextInt(range)
 				);
 
-				world.playEvent((EntityPlayer) living, 2004, rPos, 0);
+				world.playEvent((PlayerEntity) living, 2004, rPos, 0);
 			}
 		}
 	}

@@ -2,8 +2,8 @@ package twilightforest.world.feature;
 
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLog;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.block.BlockTFMagicLog;
@@ -35,8 +35,8 @@ public class TFGenMinersTree extends TFTreeGenerator {
 		}
 
 		// check soil
-		IBlockState state = world.getBlockState(pos.down());
-		if (!state.getBlock().canSustainPlant(state, world, pos.down(), EnumFacing.UP, source)) {
+		BlockState state = world.getBlockState(pos.down());
+		if (!state.getBlock().canSustainPlant(state, world, pos.down(), Direction.UP, source)) {
 			return false;
 		}
 

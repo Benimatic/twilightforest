@@ -6,18 +6,18 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
 import twilightforest.enums.StructureVariant;
 import twilightforest.client.ModelRegisterCallback;
@@ -33,19 +33,19 @@ public class BlockTFMiniatureStructure extends Block implements ModelRegisterCal
     }
 
     @Override
-    public boolean isOpaqueCube(IBlockState state)
+    public boolean isOpaqueCube(BlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isFullCube(IBlockState state)
+    public boolean isFullCube(BlockState state)
     {
         return false;
     }
 
     @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing face) {
+    public BlockFaceShape getBlockFaceShape(IBlockAccess world, BlockState state, BlockPos pos, Direction face) {
         return BlockFaceShape.UNDEFINED;
     }
 
@@ -55,13 +55,13 @@ public class BlockTFMiniatureStructure extends Block implements ModelRegisterCal
     }
 
     @Override
-    public int getMetaFromState(IBlockState state) {
+    public int getMetaFromState(BlockState state) {
         return state.getValue(VARIANT).ordinal();
     }
 
     @Override
     @Deprecated
-    public IBlockState getStateFromMeta(int meta) {
+    public BlockState getStateFromMeta(int meta) {
         return getDefaultState().withProperty(VARIANT, StructureVariant.values()[meta]);
     }
 
@@ -72,13 +72,13 @@ public class BlockTFMiniatureStructure extends Block implements ModelRegisterCal
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
     public BlockRenderLayer getRenderLayer() {
         return BlockRenderLayer.CUTOUT;
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void registerModel() {
         for (StructureVariant variation : StructureVariant.values()) {

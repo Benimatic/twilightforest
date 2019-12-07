@@ -63,12 +63,12 @@ public class PacketMagicMap implements IMessage {
 	public static class Handler implements IMessageHandler<PacketMagicMap, IMessage> {
 		@Override
 		public IMessage onMessage(PacketMagicMap message, MessageContext ctx) {
-			Minecraft.getMinecraft().addScheduledTask(new Runnable() {
+			Minecraft.getInstance().addScheduledTask(new Runnable() {
 				@Override
 				public void run() {
 
-					MapItemRenderer mapItemRenderer = Minecraft.getMinecraft().entityRenderer.getMapItemRenderer();
-					TFMagicMapData mapData = ItemTFMagicMap.loadMapData(message.mapID, Minecraft.getMinecraft().world);
+					MapItemRenderer mapItemRenderer = Minecraft.getInstance().entityRenderer.getMapItemRenderer();
+					TFMagicMapData mapData = ItemTFMagicMap.loadMapData(message.mapID, Minecraft.getInstance().world);
 
 					// Adapted from NetHandlerPlayClient#handleMaps
 					if (mapData == null)
@@ -86,7 +86,7 @@ public class PacketMagicMap implements IMessage {
 							}
 						}
 
-						Minecraft.getMinecraft().world.setData(s, mapData);
+						Minecraft.getInstance().world.setData(s, mapData);
 					}
 
 					message.inner.setMapdataTo(mapData);

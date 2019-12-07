@@ -2,11 +2,11 @@ package twilightforest.tileentity.spawner;
 
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.EnumDifficulty;
+import net.minecraft.world.Difficulty;
 import twilightforest.entity.boss.EntityTFKnightPhantom;
 import twilightforest.item.TFItems;
 
@@ -22,7 +22,7 @@ public class TileEntityTFKnightPhantomsSpawner extends TileEntityTFBossSpawner {
 
 	@Override
 	public boolean anyPlayerInRange() {
-		EntityPlayer closestPlayer = world.getClosestPlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, getRange(), false);
+		PlayerEntity closestPlayer = world.getClosestPlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, getRange(), false);
 		return closestPlayer != null && closestPlayer.posY > pos.getY() - 2;
 	}
 
@@ -42,8 +42,8 @@ public class TileEntityTFKnightPhantomsSpawner extends TileEntityTFBossSpawner {
 			myCreature.setLocationAndAngles(rx, ry, rz, world.rand.nextFloat() * 360F, 0.0F);
 			myCreature.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(myCreature)), null);
 
-			if(i == 5 && world.getDifficulty() == EnumDifficulty.HARD){
-				myCreature.setItemStackToSlot(EntityEquipmentSlot.OFFHAND,new ItemStack(TFItems.knightmetal_shield));
+			if(i == 5 && world.getDifficulty() == Difficulty.HARD){
+				myCreature.setItemStackToSlot(EquipmentSlotType.OFFHAND,new ItemStack(TFItems.knightmetal_shield));
 			}
 
 			// set creature's home to this

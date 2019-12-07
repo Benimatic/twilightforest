@@ -40,10 +40,10 @@ public class PacketChangeBiome implements IMessage {
 
 		@Override
 		public IMessage onMessage(PacketChangeBiome message, MessageContext ctx) {
-			Minecraft.getMinecraft().addScheduledTask(new Runnable() {
+			Minecraft.getInstance().addScheduledTask(new Runnable() {
 				@Override
 				public void run() {
-					World world = Minecraft.getMinecraft().world;
+					World world = Minecraft.getInstance().world;
 					Chunk chunkAt = world.getChunk(message.pos);
 
 					chunkAt.getBiomeArray()[(message.pos.getZ() & 15) << 4 | (message.pos.getX() & 15)] = message.biomeId;

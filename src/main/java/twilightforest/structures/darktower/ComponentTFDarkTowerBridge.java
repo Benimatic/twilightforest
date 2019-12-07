@@ -1,6 +1,6 @@
 package twilightforest.structures.darktower;
 
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -20,7 +20,7 @@ public class ComponentTFDarkTowerBridge extends ComponentTFTowerWing {
 	private int dSize;
 	private int dHeight;
 
-	protected ComponentTFDarkTowerBridge(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
+	protected ComponentTFDarkTowerBridge(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
 		super(feature, i, x, y, z, 5, 5, direction);
 
 		this.dSize = pSize;
@@ -43,7 +43,7 @@ public class ComponentTFDarkTowerBridge extends ComponentTFTowerWing {
 			return false;
 		}
 
-		EnumFacing direction = getStructureRelativeRotation(rotation);
+		Direction direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 
 		if (dx[1] + wingHeight > 255) {

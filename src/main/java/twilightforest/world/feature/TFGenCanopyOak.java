@@ -3,8 +3,8 @@ package twilightforest.world.feature;
 import com.google.common.collect.Lists;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLog;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.block.BlockTFLog;
@@ -49,8 +49,8 @@ public class TFGenCanopyOak extends TFGenCanopyTree {
 		}
 
 		// check if we're on dirt or grass
-		IBlockState state = world.getBlockState(pos.down());
-		if (!state.getBlock().canSustainPlant(state, world, pos.down(), EnumFacing.UP, source)) {
+		BlockState state = world.getBlockState(pos.down());
+		if (!state.getBlock().canSustainPlant(state, world, pos.down(), Direction.UP, source)) {
 			return false;
 		}
 

@@ -7,11 +7,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class ParticleLeaf extends Particle {
 
 	private final Vec3d target;
@@ -38,7 +38,7 @@ public class ParticleLeaf extends Particle {
 		this.particleMaxAge = (int) ((float) this.particleMaxAge * scale);
 		this.canCollide = true;
 
-		this.setParticleTexture(Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(TwilightForestMod.ID + ":particles/fallen_leaf"));
+		this.setParticleTexture(Minecraft.getInstance().getTextureMapBlocks().getAtlasSprite(TwilightForestMod.ID + ":particles/fallen_leaf"));
 
 		this.onUpdate();
 	}

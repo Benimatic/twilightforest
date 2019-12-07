@@ -1,9 +1,9 @@
 package twilightforest.world;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -17,7 +17,7 @@ import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.world.gen.structure.MutableBoundingBox;
 import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.TFFeature;
 import twilightforest.biomes.TFBiomeBase;
@@ -136,7 +136,7 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 			for (int k = 0; k < 16; ++k) {
 				for (int l = 0; l < 256; ++l) {
 
-					IBlockState iblockstate = primer.getBlockState(j, l, k);
+					BlockState iblockstate = primer.getBlockState(j, l, k);
 
 					if (iblockstate.getBlock() != Blocks.AIR) {
 
@@ -738,7 +738,7 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 	}
 
 	@Nullable
-	public StructureBoundingBox getSBBAt(BlockPos pos) {
+	public MutableBoundingBox getSBBAt(BlockPos pos) {
 		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world)).getSBBAt(pos);
 	}
 
@@ -763,7 +763,7 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 	//}
 
 	@Nullable
-	public StructureBoundingBox getFullSBBNear(int mapX, int mapZ, int range) {
+	public MutableBoundingBox getFullSBBNear(int mapX, int mapZ, int range) {
 		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(mapX, mapZ, world)).getFullSBBNear(mapX, mapZ, range);
 	}
 

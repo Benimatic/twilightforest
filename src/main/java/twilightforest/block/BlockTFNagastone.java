@@ -6,19 +6,19 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.enums.NagastoneVariant;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
@@ -48,25 +48,25 @@ public class BlockTFNagastone extends Block  implements ModelRegisterCallback {
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(BlockState state) {
 		return state.getValue(VARIANT).ordinal();
 	}
 
 	@Nonnull
 	@Override
 	@Deprecated
-	public IBlockState getStateFromMeta(int meta) {
+	public BlockState getStateFromMeta(int meta) {
 		return this.getDefaultState().withProperty(VARIANT, NagastoneVariant.values()[(meta & 15)]);
 	}
 
 	@Override
 	@Deprecated
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
+	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
 		world.scheduleUpdate(pos, this, this.tickRate(world));
 	}
 
 	@Override
-	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
+	public void onBlockAdded(World world, BlockPos pos, BlockState state) {
 		world.scheduleUpdate(pos, this, this.tickRate(world));
 	}
 
@@ -77,7 +77,7 @@ public class BlockTFNagastone extends Block  implements ModelRegisterCallback {
 	//      Item meta 1 will be body
 	// todo fix getStateForPlacement to respect this
 	@Override
-	public int damageDropped(IBlockState state) {
+	public int damageDropped(BlockState state) {
 		return NagastoneVariant.isHead(state.getValue(VARIANT)) ? 0 : 1;
 	}
 
@@ -86,24 +86,24 @@ public class BlockTFNagastone extends Block  implements ModelRegisterCallback {
 	@Nonnull
 	@Override
 	@Deprecated
-	public IBlockState getStateForPlacement(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing facing, float hitX, float hitY, float hitZ, int meta, @Nonnull EntityLivingBase placer) {
+	public BlockState getStateForPlacement(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Direction facing, float hitX, float hitY, float hitZ, int meta, @Nonnull EntityLivingBase placer) {
 		return meta == 0
 				? this.getDefaultState().withProperty(VARIANT, NagastoneVariant.getHeadFromFacing(facing.getAxis().isHorizontal() ? facing : placer.getHorizontalFacing().getOpposite()))
 				: this.getDefaultState();
 	}
 
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState stateIn, Random rand) {
+	public void updateTick(World world, BlockPos pos, BlockState stateIn, Random rand) {
 		if (NagastoneVariant.isHead(stateIn.getValue(VARIANT)))
 			return;
 
 		// If state is not a head then you may go ahead and update
 		int connectionCount = 0;
-		IBlockState stateOut;
-		EnumFacing[] facings = new EnumFacing[2];
+		BlockState stateOut;
+		Direction[] facings = new Direction[2];
 
 		// get sides
-		for (EnumFacing side : EnumFacing.VALUES)
+		for (Direction side : Direction.VALUES)
 			if (world.getBlockState(pos.offset(side)).getBlock() == TFBlocks.naga_stone)
 				if (++connectionCount > 2) break;
 				else facings[connectionCount - 1] = side;
@@ -134,7 +134,7 @@ public class BlockTFNagastone extends Block  implements ModelRegisterCallback {
 		return new BlockStateContainer(this, VARIANT);
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void registerModel() {
 		ModelUtils.registerToState(this, 0, this.getDefaultState().withProperty(VARIANT, NagastoneVariant.EAST_HEAD));
@@ -142,12 +142,12 @@ public class BlockTFNagastone extends Block  implements ModelRegisterCallback {
 	}
 
 	@Override
-	public IBlockState withRotation(IBlockState state, Rotation rotation) {
+	public BlockState withRotation(BlockState state, Rotation rotation) {
 		return state.withProperty(VARIANT, NagastoneVariant.rotate(state.getValue(VARIANT), rotation));
 	}
 
 	@Override
-	public IBlockState withMirror(IBlockState state, Mirror mirror) {
+	public BlockState withMirror(BlockState state, Mirror mirror) {
 		return state.withProperty(VARIANT, NagastoneVariant.mirror(state.getValue(VARIANT), mirror));
 	}
 
@@ -157,7 +157,7 @@ public class BlockTFNagastone extends Block  implements ModelRegisterCallback {
 	}
 
 	@Override
-	public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
+	public boolean canSilkHarvest(World world, BlockPos pos, BlockState state, PlayerEntity player) {
 		return false;
 	}
 }

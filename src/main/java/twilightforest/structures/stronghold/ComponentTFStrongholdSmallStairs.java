@@ -1,9 +1,9 @@
 package twilightforest.structures.stronghold;
 
 import net.minecraft.block.BlockStairs;
-import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -24,12 +24,12 @@ public class ComponentTFStrongholdSmallStairs extends StructureTFStrongholdCompo
 	public ComponentTFStrongholdSmallStairs() {
 	}
 
-	public ComponentTFStrongholdSmallStairs(TFFeature feature, int i, EnumFacing facing, int x, int y, int z) {
+	public ComponentTFStrongholdSmallStairs(TFFeature feature, int i, Direction facing, int x, int y, int z) {
 		super(feature, i, facing, x, y, z);
 	}
 
 	@Override
-	protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 		super.writeStructureToNBT(tagCompound);
 
 		tagCompound.setBoolean("enterBottom", this.enterBottom);
@@ -38,7 +38,7 @@ public class ComponentTFStrongholdSmallStairs extends StructureTFStrongholdCompo
 	}
 
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager templateManager) {
+	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
 		super.readStructureFromNBT(tagCompound, templateManager);
 		this.enterBottom = tagCompound.getBoolean("enterBottom");
 		this.hasTreasure = tagCompound.getBoolean("hasTreasure");
@@ -46,7 +46,7 @@ public class ComponentTFStrongholdSmallStairs extends StructureTFStrongholdCompo
 	}
 
 	@Override
-	public StructureBoundingBox generateBoundingBox(EnumFacing facing, int x, int y, int z) {
+	public StructureBoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
 
 		if (y > 17) {
 			this.enterBottom = false;
@@ -94,7 +94,7 @@ public class ComponentTFStrongholdSmallStairs extends StructureTFStrongholdCompo
 		for (int y = 1; y < 8; y++) {
 			for (int x = 3; x < 6; x++) {
 				this.setBlockStateRotated(world, Blocks.AIR.getDefaultState(), x, y + 1, y, rotation, sbb);
-				this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, EnumFacing.NORTH), x, y, y, rotation, sbb);
+				this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, Direction.NORTH), x, y, y, rotation, sbb);
 				this.setBlockStateRotated(world, deco.blockState, x, y - 1, y, rotation, sbb);
 			}
 		}
@@ -108,13 +108,13 @@ public class ComponentTFStrongholdSmallStairs extends StructureTFStrongholdCompo
 			}
 
 			for (int z = 5; z < 8; z++) {
-				this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, EnumFacing.WEST), 3, 1, z, rotation, sbb);
-				this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, EnumFacing.EAST), 5, 1, z, rotation, sbb);
+				this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, Direction.WEST), 3, 1, z, rotation, sbb);
+				this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, Direction.EAST), 5, 1, z, rotation, sbb);
 			}
 
-			this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, EnumFacing.NORTH), 4, 1, 5, rotation, sbb);
-			this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, EnumFacing.SOUTH), 4, 1, 7, rotation, sbb);
-			this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, EnumFacing.NORTH), 4, 2, 6, rotation, sbb);
+			this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, Direction.NORTH), 4, 1, 5, rotation, sbb);
+			this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, Direction.SOUTH), 4, 1, 7, rotation, sbb);
+			this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, Direction.NORTH), 4, 2, 6, rotation, sbb);
 		}
 
 		if (enterBottom) {

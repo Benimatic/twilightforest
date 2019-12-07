@@ -1,7 +1,7 @@
 package twilightforest.client.particle;
 
 import net.minecraft.client.particle.Particle;
-import net.minecraft.init.Items;
+import net.minecraft.item.Items;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;

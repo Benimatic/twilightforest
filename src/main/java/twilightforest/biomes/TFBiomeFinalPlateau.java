@@ -37,7 +37,7 @@ public class TFBiomeFinalPlateau extends TFBiomeBase {
 
 	//TODO: Move to SurfaceBuilder
 	@Override
-	public IBlockState getStoneReplacementState() {
+	public BlockState getStoneReplacementState() {
 		return TFBlocks.deadrock.getDefaultState().withProperty(BlockTFDeadrock.VARIANT, DeadrockVariant.SOLID);
 	}
 

@@ -1,14 +1,14 @@
 package twilightforest.client.model.baked;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.Direction;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import org.lwjgl.util.vector.Vector3f;
 import twilightforest.TwilightForestMod;
 
@@ -38,7 +38,7 @@ public class BakedMossModel implements IBakedModel {
         int zMax  = (int) (rand >>  6 & 0b11L) + 1;
 
         //UnpackedBakedQuad.Builder mainTop = new UnpackedBakedQuad.Builder(DefaultVertexFormats.ITEM);
-        //mainTop.setQuadOrientation(EnumFacing.UP);
+        //mainTop.setQuadOrientation(Direction.UP);
         //mainTop.setTexture(mossTex);
 
         // Main piece

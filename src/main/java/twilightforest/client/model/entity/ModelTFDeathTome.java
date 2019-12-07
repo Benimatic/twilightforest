@@ -3,7 +3,7 @@ package twilightforest.client.model.entity;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.model.ModelBook;
 import net.minecraft.client.renderer.entity.model.RendererModel;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.entity.model.BookModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

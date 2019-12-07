@@ -9,14 +9,14 @@ import net.minecraft.enchantment.EnchantmentBindingCurse;
 import net.minecraft.enchantment.EnchantmentVanishingCurse;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
 
@@ -25,13 +25,13 @@ import java.util.List;
 
 public class ItemTFPhantomArmor extends ItemTFArmor implements ModelRegisterCallback {
 
-	public ItemTFPhantomArmor(ItemArmor.ArmorMaterial armorMaterial, EntityEquipmentSlot armorType, EnumRarity rarity) {
+	public ItemTFPhantomArmor(ItemArmor.ArmorMaterial armorMaterial, EquipmentSlotType armorType, EnumRarity rarity) {
 		super(armorMaterial, armorType, rarity);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
 	@Override
-	public String getArmorTexture(ItemStack itemstack, Entity entity, EntityEquipmentSlot slot, String layer) {
+	public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlotType slot, String layer) {
 		// there's no legs, so let's not worry about them
 		return TwilightForestMod.ARMOR_DIR + "phantom_1.png";
 	}
@@ -46,8 +46,8 @@ public class ItemTFPhantomArmor extends ItemTFArmor implements ModelRegisterCall
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped original) {
+	@OnlyIn(Dist.CLIENT)
+	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, ModelBiped original) {
 		return TwilightForestMod.proxy.getPhantomArmorModel(armorSlot);
 	}
 
@@ -57,7 +57,7 @@ public class ItemTFPhantomArmor extends ItemTFArmor implements ModelRegisterCall
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flag) {
 		tooltip.add(I18n.format(getTranslationKey() + ".tooltip"));
 	}

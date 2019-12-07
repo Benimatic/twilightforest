@@ -14,6 +14,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.BlockStateContainer;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 import java.util.HashSet;
@@ -39,7 +40,7 @@ public class BlockPredicate {
 
         JsonObject json = element.getAsJsonObject();
 
-        Block block = Block.REGISTRY.getObject(new ResourceLocation(JSONUtils.getString(json, "block")));
+        Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(JSONUtils.getString(json, "block")));
         BlockStateContainer container = block.getBlockState();
         HashSet<PropertyPredicate<?>> properties = new HashSet<>();
 

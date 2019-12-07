@@ -2,8 +2,8 @@ package twilightforest.structures;
 
 import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.entity.passive.EntitySheep;
-import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -98,14 +98,14 @@ public abstract class StructureTFComponent extends StructureComponent {
 	}
 
 	@Override
-	protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 		tagCompound.setInteger("si", this.spawnListIndex);
 		tagCompound.setString("deco", StructureTFDecorator.getDecoString(this.deco));
 		tagCompound.setInteger("rot", this.rotation.ordinal());
 	}
 
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager templateManager) {
+	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
 		this.spawnListIndex = tagCompound.getInteger("si");
 		this.deco = StructureTFDecorator.getDecoFor(tagCompound.getString("deco"));
 		this.rotation = Rotation.values()[tagCompound.getInteger("rot") % Rotation.values().length];

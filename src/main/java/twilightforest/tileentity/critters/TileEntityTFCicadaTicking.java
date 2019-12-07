@@ -1,6 +1,6 @@
 package twilightforest.tileentity.critters;
 
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import twilightforest.TFConfig;
@@ -66,7 +66,7 @@ public class TileEntityTFCicadaTicking extends TileEntityTFCicada implements ITi
 			double rx = pos.getX() + world.rand.nextFloat();
 			double ry = pos.getY() + world.rand.nextFloat();
 			double rz = pos.getZ() + world.rand.nextFloat();
-			world.spawnParticle(EnumParticleTypes.NOTE, rx, ry, rz, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle(ParticleTypes.NOTE, rx, ry, rz, 0.0D, 0.0D, 0.0D);
 		}
 	}
 

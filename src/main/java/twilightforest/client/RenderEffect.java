@@ -47,11 +47,11 @@ public enum RenderEffect {
 				float dx = (float) (x + random.nextGaussian() * 0.2F * entity.getWidth());
 				float dy = (float) (y + random.nextGaussian() * 0.2F * entity.getHeight()) + entity.getHeight() / 2F;
 				float dz = (float) (z + random.nextGaussian() * 0.2F * entity.getWidth());
-				GlStateManager.translate(dx, dy, dz);
-				GlStateManager.scale(0.5F, 0.5F, 0.5F);
-				GlStateManager.rotate(random.nextFloat() * 360F, 1.0F, 0.0F, 0.0F);
-				GlStateManager.rotate(random.nextFloat() * 360F, 0.0F, 1.0F, 0.0F);
-				GlStateManager.rotate(random.nextFloat() * 360F, 0.0F, 0.0F, 1.0F);
+				GlStateManager.translatef(dx, dy, dz);
+				GlStateManager.scalef(0.5F, 0.5F, 0.5F);
+				GlStateManager.rotatef(random.nextFloat() * 360F, 1.0F, 0.0F, 0.0F);
+				GlStateManager.rotatef(random.nextFloat() * 360F, 0.0F, 1.0F, 0.0F);
+				GlStateManager.rotatef(random.nextFloat() * 360F, 0.0F, 0.0F, 1.0F);
 
 				Minecraft.getInstance().getBlockRendererDispatcher().renderBlockBrightness(Blocks.ICE.getDefaultState(), 1);
 				GlStateManager.popMatrix();
@@ -75,9 +75,9 @@ public enum RenderEffect {
 		                   double x, double y, double z, float partialTicks, boolean firstPerson) {
 
 			GlStateManager.pushMatrix();
-			GlStateManager.translate(x, y, z);
-			GlStateManager.rotate(180, 1, 0, 0);
-			GlStateManager.translate(0, 0.5F - entity.getEyeHeight(), 0);
+			GlStateManager.translated(x, y, z);
+			GlStateManager.rotatef(180, 1, 0, 0);
+			GlStateManager.translatef(0, 0.5F - entity.getEyeHeight(), 0);
 			GlStateManager.enableBlend();
 			GlStateManager.disableCull();
 			GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);

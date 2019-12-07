@@ -3,8 +3,8 @@ package twilightforest.world.feature;
 import com.google.common.collect.Lists;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLog;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.block.BlockTFLeaves;
@@ -37,7 +37,7 @@ public class TFGenMangroveTree extends TFTreeGenerator {
 	}
 
 	@Override
-	protected void setBlockAndNotifyAdequately(World worldIn, BlockPos pos, IBlockState state) {
+	protected void setBlockAndNotifyAdequately(World worldIn, BlockPos pos, BlockState state) {
 		if (canGrowInto(worldIn.getBlockState(pos).getBlock()))
 			super.setBlockAndNotifyAdequately(worldIn, pos, state);
 	}

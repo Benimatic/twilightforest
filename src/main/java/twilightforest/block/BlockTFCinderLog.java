@@ -3,7 +3,7 @@ package twilightforest.block;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import twilightforest.client.ModelRegisterCallback;
@@ -23,7 +23,7 @@ public class BlockTFCinderLog extends BlockLog implements ModelRegisterCallback 
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(BlockState state) {
 		switch (state.getValue(LOG_AXIS)) {
 			case X:
 				return 4;
@@ -38,7 +38,7 @@ public class BlockTFCinderLog extends BlockLog implements ModelRegisterCallback 
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
+	public BlockState getStateFromMeta(int meta) {
 		switch (meta) {
 			case 0:
 				return getDefaultState().withProperty(LOG_AXIS, EnumAxis.Y);
@@ -53,7 +53,7 @@ public class BlockTFCinderLog extends BlockLog implements ModelRegisterCallback 
 	}
 
 	@Override
-	public MapColor getMapColor(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public MapColor getMapColor(BlockState state, IBlockAccess world, BlockPos pos) {
 		return MapColor.GRAY;
 	}
 }

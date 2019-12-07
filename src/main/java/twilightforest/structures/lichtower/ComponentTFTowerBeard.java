@@ -1,6 +1,6 @@
 package twilightforest.structures.lichtower;
 
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.template.TemplateManager;
@@ -35,7 +35,7 @@ public class ComponentTFTowerBeard extends StructureTFComponentOld {
 	 * Save to NBT
 	 */
 	@Override
-	protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 		super.writeStructureToNBT(tagCompound);
 
 		tagCompound.setInteger("beardSize", this.size);
@@ -46,7 +46,7 @@ public class ComponentTFTowerBeard extends StructureTFComponentOld {
 	 * Load from NBT
 	 */
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager templateManager) {
+	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
 		super.readStructureFromNBT(tagCompound, templateManager);
 		this.size = tagCompound.getInteger("beardSize");
 		this.height = tagCompound.getInteger("beardHeight");

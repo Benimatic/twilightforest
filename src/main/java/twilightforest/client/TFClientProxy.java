@@ -14,9 +14,9 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Items;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentString;
@@ -51,11 +51,11 @@ import java.util.Map;
 
 public class TFClientProxy extends TFCommonProxy {
 
-	private final Map<EntityEquipmentSlot, ModelBiped> knightlyArmorModel = new EnumMap<>(EntityEquipmentSlot.class);
-	private final Map<EntityEquipmentSlot, ModelBiped> phantomArmorModel = new EnumMap<>(EntityEquipmentSlot.class);
-	private final Map<EntityEquipmentSlot, ModelBiped> yetiArmorModel = new EnumMap<>(EntityEquipmentSlot.class);
-	private final Map<EntityEquipmentSlot, ModelBiped> arcticArmorModel = new EnumMap<>(EntityEquipmentSlot.class);
-	private final Map<EntityEquipmentSlot, ModelBiped> fieryArmorModel = new EnumMap<>(EntityEquipmentSlot.class);
+	private final Map<EquipmentSlotType, ModelBiped> knightlyArmorModel = new EnumMap<>(EquipmentSlotType.class);
+	private final Map<EquipmentSlotType, ModelBiped> phantomArmorModel = new EnumMap<>(EquipmentSlotType.class);
+	private final Map<EquipmentSlotType, ModelBiped> yetiArmorModel = new EnumMap<>(EquipmentSlotType.class);
+	private final Map<EquipmentSlotType, ModelBiped> arcticArmorModel = new EnumMap<>(EquipmentSlotType.class);
+	private final Map<EquipmentSlotType, ModelBiped> fieryArmorModel = new EnumMap<>(EquipmentSlotType.class);
 
 	private boolean isDangerOverlayShown;
 
@@ -133,19 +133,19 @@ public class TFClientProxy extends TFCommonProxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFCastleGuardian.class, m -> new RenderTFCastleGuardian(m, new ModelTFCastleGuardian(), 2.0F, "finalcastle/castle_guardian.png"));
 
 		// projectiles
-		RenderingRegistry.registerEntityRenderingHandler(EntityTFNatureBolt.class, m -> new RenderSnowball<>(m, Items.WHEAT_SEEDS, Minecraft.getMinecraft().getRenderItem()));
-		RenderingRegistry.registerEntityRenderingHandler(EntityTFLichBolt.class, m -> new RenderSnowball<>(m, Items.ENDER_PEARL, Minecraft.getMinecraft().getRenderItem()));
-		RenderingRegistry.registerEntityRenderingHandler(EntityTFTwilightWandBolt.class, m -> new RenderSnowball<>(m, Items.ENDER_PEARL, Minecraft.getMinecraft().getRenderItem()));
-		RenderingRegistry.registerEntityRenderingHandler(EntityTFTomeBolt.class, m -> new RenderSnowball<>(m, Items.PAPER, Minecraft.getMinecraft().getRenderItem()));
+		RenderingRegistry.registerEntityRenderingHandler(EntityTFNatureBolt.class, m -> new RenderSnowball<>(m, Items.WHEAT_SEEDS, Minecraft.getInstance().getRenderItem()));
+		RenderingRegistry.registerEntityRenderingHandler(EntityTFLichBolt.class, m -> new RenderSnowball<>(m, Items.ENDER_PEARL, Minecraft.getInstance().getRenderItem()));
+		RenderingRegistry.registerEntityRenderingHandler(EntityTFTwilightWandBolt.class, m -> new RenderSnowball<>(m, Items.ENDER_PEARL, Minecraft.getInstance().getRenderItem()));
+		RenderingRegistry.registerEntityRenderingHandler(EntityTFTomeBolt.class, m -> new RenderSnowball<>(m, Items.PAPER, Minecraft.getInstance().getRenderItem()));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFHydraMortar.class, RenderTFHydraMortar::new);
-		RenderingRegistry.registerEntityRenderingHandler(EntityTFSlimeProjectile.class, m -> new RenderSnowball<>(m, Items.SLIME_BALL, Minecraft.getMinecraft().getRenderItem()));
+		RenderingRegistry.registerEntityRenderingHandler(EntityTFSlimeProjectile.class, m -> new RenderSnowball<>(m, Items.SLIME_BALL, Minecraft.getInstance().getRenderItem()));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFMoonwormShot.class, RenderTFMoonwormShot::new);
-		RenderingRegistry.registerEntityRenderingHandler(EntityTFCharmEffect.class, m -> new RenderTFCharm(m, Minecraft.getMinecraft().getRenderItem()));
-		RenderingRegistry.registerEntityRenderingHandler(EntityTFLichBomb.class, m -> new RenderSnowball<>(m, Items.MAGMA_CREAM, Minecraft.getMinecraft().getRenderItem()));
+		RenderingRegistry.registerEntityRenderingHandler(EntityTFCharmEffect.class, m -> new RenderTFCharm(m, Minecraft.getInstance().getRenderItem()));
+		RenderingRegistry.registerEntityRenderingHandler(EntityTFLichBomb.class, m -> new RenderSnowball<>(m, Items.MAGMA_CREAM, Minecraft.getInstance().getRenderItem()));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFThrownWep.class, RenderTFThrownWep::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFFallingIce.class, RenderTFFallingIce::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFIceBomb.class, RenderTFThrownIce::new);
-		RenderingRegistry.registerEntityRenderingHandler(EntityTFIceSnowball.class, m -> new RenderSnowball<>(m, Items.SNOWBALL, Minecraft.getMinecraft().getRenderItem()));
+		RenderingRegistry.registerEntityRenderingHandler(EntityTFIceSnowball.class, m -> new RenderSnowball<>(m, Items.SNOWBALL, Minecraft.getInstance().getRenderItem()));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFSlideBlock.class, RenderTFSlideBlock::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntitySeekerArrow.class, RenderDefaultArrow::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityIceArrow.class, RenderDefaultArrow::new);
@@ -169,28 +169,28 @@ public class TFClientProxy extends TFCommonProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTFMoonwormTicking.class, new TileEntityTFMoonwormRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTFTrophy.class, new TileEntityTFTrophyRenderer());
 
-		knightlyArmorModel.put(EntityEquipmentSlot.HEAD, new ModelTFKnightlyArmor(0.5F));
-		knightlyArmorModel.put(EntityEquipmentSlot.CHEST, new ModelTFKnightlyArmor(1.0F));
-		knightlyArmorModel.put(EntityEquipmentSlot.LEGS, new ModelTFKnightlyArmor(0.5F));
-		knightlyArmorModel.put(EntityEquipmentSlot.FEET, new ModelTFKnightlyArmor(0.5F));
+		knightlyArmorModel.put(EquipmentSlotType.HEAD, new ModelTFKnightlyArmor(0.5F));
+		knightlyArmorModel.put(EquipmentSlotType.CHEST, new ModelTFKnightlyArmor(1.0F));
+		knightlyArmorModel.put(EquipmentSlotType.LEGS, new ModelTFKnightlyArmor(0.5F));
+		knightlyArmorModel.put(EquipmentSlotType.FEET, new ModelTFKnightlyArmor(0.5F));
 
-		phantomArmorModel.put(EntityEquipmentSlot.HEAD, new ModelTFPhantomArmor(EntityEquipmentSlot.HEAD, 0.5F));
-		phantomArmorModel.put(EntityEquipmentSlot.CHEST, new ModelTFPhantomArmor(EntityEquipmentSlot.CHEST, 0.5F));
+		phantomArmorModel.put(EquipmentSlotType.HEAD, new ModelTFPhantomArmor(EquipmentSlotType.HEAD, 0.5F));
+		phantomArmorModel.put(EquipmentSlotType.CHEST, new ModelTFPhantomArmor(EquipmentSlotType.CHEST, 0.5F));
 
-		yetiArmorModel.put(EntityEquipmentSlot.HEAD, new ModelTFYetiArmor(EntityEquipmentSlot.HEAD, 0.6F));
-		yetiArmorModel.put(EntityEquipmentSlot.CHEST, new ModelTFYetiArmor(EntityEquipmentSlot.CHEST, 1.0F));
-		yetiArmorModel.put(EntityEquipmentSlot.LEGS, new ModelTFYetiArmor(EntityEquipmentSlot.LEGS, 0.4F));
-		yetiArmorModel.put(EntityEquipmentSlot.FEET, new ModelTFYetiArmor(EntityEquipmentSlot.FEET, 0.55F));
+		yetiArmorModel.put(EquipmentSlotType.HEAD, new ModelTFYetiArmor(EquipmentSlotType.HEAD, 0.6F));
+		yetiArmorModel.put(EquipmentSlotType.CHEST, new ModelTFYetiArmor(EquipmentSlotType.CHEST, 1.0F));
+		yetiArmorModel.put(EquipmentSlotType.LEGS, new ModelTFYetiArmor(EquipmentSlotType.LEGS, 0.4F));
+		yetiArmorModel.put(EquipmentSlotType.FEET, new ModelTFYetiArmor(EquipmentSlotType.FEET, 0.55F));
 
-		arcticArmorModel.put(EntityEquipmentSlot.HEAD, new ModelTFArcticArmor(0.6F));
-		arcticArmorModel.put(EntityEquipmentSlot.CHEST, new ModelTFArcticArmor(1.0F));
-		arcticArmorModel.put(EntityEquipmentSlot.LEGS, new ModelTFArcticArmor(0.4F));
-		arcticArmorModel.put(EntityEquipmentSlot.FEET, new ModelTFArcticArmor(0.55F));
+		arcticArmorModel.put(EquipmentSlotType.HEAD, new ModelTFArcticArmor(0.6F));
+		arcticArmorModel.put(EquipmentSlotType.CHEST, new ModelTFArcticArmor(1.0F));
+		arcticArmorModel.put(EquipmentSlotType.LEGS, new ModelTFArcticArmor(0.4F));
+		arcticArmorModel.put(EquipmentSlotType.FEET, new ModelTFArcticArmor(0.55F));
 
-		fieryArmorModel.put(EntityEquipmentSlot.HEAD, new ModelTFFieryArmor(0.5F));
-		fieryArmorModel.put(EntityEquipmentSlot.CHEST, new ModelTFFieryArmor(1.0F));
-		fieryArmorModel.put(EntityEquipmentSlot.LEGS, new ModelTFFieryArmor(0.5F));
-		fieryArmorModel.put(EntityEquipmentSlot.FEET, new ModelTFFieryArmor(0.5F));
+		fieryArmorModel.put(EquipmentSlotType.HEAD, new ModelTFFieryArmor(0.5F));
+		fieryArmorModel.put(EquipmentSlotType.CHEST, new ModelTFFieryArmor(1.0F));
+		fieryArmorModel.put(EquipmentSlotType.LEGS, new ModelTFFieryArmor(0.5F));
+		fieryArmorModel.put(EquipmentSlotType.FEET, new ModelTFFieryArmor(0.5F));
 
 		TFMUSICTYPE = EnumHelperClient.addMusicType("TFMUSIC", TFSounds.MUSIC, 1200, 12000);
 
@@ -210,8 +210,8 @@ public class TFClientProxy extends TFCommonProxy {
 			@Override
 			public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 				if(FMLCommonHandler.instance().getEffectiveSide().isClient()) {
-					Minecraft.getMinecraft().player.sendMessage(new TextComponentString("Reloading Twilight Forest Shaders!"));
-					twilightforest.client.shader.ShaderManager.getShaderReloadListener().onResourceManagerReload(net.minecraft.client.Minecraft.getMinecraft().getResourceManager());
+					Minecraft.getInstance().player.sendMessage(new TextComponentString("Reloading Twilight Forest Shaders!"));
+					twilightforest.client.shader.ShaderManager.getShaderReloadListener().onResourceManagerReload(net.minecraft.client.Minecraft.getInstance().getResourceManager());
 					if (TFCompat.IMMERSIVEENGINEERING.isActivated())
 						twilightforest.compat.ie.IEShaderRegister.initShaders();
 				}
@@ -223,7 +223,7 @@ public class TFClientProxy extends TFCommonProxy {
 	@Override
 	public void spawnParticle(TFParticleType particleType, double x, double y, double z, double vx, double vy, double vz) {
 
-		Minecraft mc = Minecraft.getMinecraft();
+		Minecraft mc = Minecraft.getInstance();
 		Entity entity = mc.getRenderViewEntity();
 		World world = mc.world;
 
@@ -251,27 +251,27 @@ public class TFClientProxy extends TFCommonProxy {
 	}
 
 	@Override
-	public ModelBiped getKnightlyArmorModel(EntityEquipmentSlot armorSlot) {
+	public ModelBiped getKnightlyArmorModel(EquipmentSlotType armorSlot) {
 		return knightlyArmorModel.get(armorSlot);
 	}
 
 	@Override
-	public ModelBiped getPhantomArmorModel(EntityEquipmentSlot armorSlot) {
+	public ModelBiped getPhantomArmorModel(EquipmentSlotType armorSlot) {
 		return phantomArmorModel.get(armorSlot);
 	}
 
 	@Override
-	public ModelBiped getYetiArmorModel(EntityEquipmentSlot armorSlot) {
+	public ModelBiped getYetiArmorModel(EquipmentSlotType armorSlot) {
 		return yetiArmorModel.get(armorSlot);
 	}
 
 	@Override
-	public ModelBiped getArcticArmorModel(EntityEquipmentSlot armorSlot) {
+	public ModelBiped getArcticArmorModel(EquipmentSlotType armorSlot) {
 		return arcticArmorModel.get(armorSlot);
 	}
 
 	@Override
-	public ModelBiped getFieryArmorModel(EntityEquipmentSlot armorSlot) {
+	public ModelBiped getFieryArmorModel(EquipmentSlotType armorSlot) {
 		return this.fieryArmorModel.get(armorSlot);
 	}
 
@@ -284,7 +284,7 @@ public class TFClientProxy extends TFCommonProxy {
 	}
 
 	@Override
-	public boolean doesPlayerHaveAdvancement(EntityPlayer player, ResourceLocation advId) {
+	public boolean doesPlayerHaveAdvancement(PlayerEntity player, ResourceLocation advId) {
 		if (player instanceof EntityPlayerSP) {
 			ClientAdvancementManager manager = ((EntityPlayerSP) player).connection.getAdvancementManager();
 			Advancement adv = manager.getAdvancementList().getAdvancement(advId);

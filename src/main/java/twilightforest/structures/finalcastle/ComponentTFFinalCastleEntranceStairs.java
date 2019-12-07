@@ -1,7 +1,7 @@
 package twilightforest.structures.finalcastle;
 
 import net.minecraft.block.BlockStairs;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -19,7 +19,7 @@ public class ComponentTFFinalCastleEntranceStairs extends StructureTFComponentOl
 	public ComponentTFFinalCastleEntranceStairs() {
 	}
 
-	public ComponentTFFinalCastleEntranceStairs(TFFeature feature, int index, int x, int y, int z, EnumFacing direction) {
+	public ComponentTFFinalCastleEntranceStairs(TFFeature feature, int index, int x, int y, int z, Direction direction) {
 		super(feature, index);
 		this.setCoordBaseMode(direction);
 		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox2(x, y, z, 0, -1, -5, 12, 0, 12, direction);
@@ -39,18 +39,18 @@ public class ComponentTFFinalCastleEntranceStairs extends StructureTFComponentOl
 
 		for (int x = 1; x < size; x++) {
 
-			this.placeStairs(world, sbb, x, 1 - x, 5, EnumFacing.EAST);
+			this.placeStairs(world, sbb, x, 1 - x, 5, Direction.EAST);
 
 			for (int z = 0; z <= x; z++) {
 
 				if (z > 0 && z <= size / 2) {
-					this.placeStairs(world, sbb, x, 1 - x, 5 - z, EnumFacing.EAST);
-					this.placeStairs(world, sbb, x, 1 - x, 5 + z, EnumFacing.EAST);
+					this.placeStairs(world, sbb, x, 1 - x, 5 - z, Direction.EAST);
+					this.placeStairs(world, sbb, x, 1 - x, 5 + z, Direction.EAST);
 				}
 
 				if (x <= size / 2) {
-					this.placeStairs(world, sbb, z, 1 - x, 5 - x, EnumFacing.NORTH);
-					this.placeStairs(world, sbb, z, 1 - x, 5 + x, EnumFacing.SOUTH);
+					this.placeStairs(world, sbb, z, 1 - x, 5 - x, Direction.NORTH);
+					this.placeStairs(world, sbb, z, 1 - x, 5 + x, Direction.SOUTH);
 				}
 			}
 		}
@@ -61,7 +61,7 @@ public class ComponentTFFinalCastleEntranceStairs extends StructureTFComponentOl
 		return true;
 	}
 
-	private void placeStairs(World world, StructureBoundingBox sbb, int x, int y, int z, EnumFacing facing) {
+	private void placeStairs(World world, StructureBoundingBox sbb, int x, int y, int z, Direction facing) {
 		if (this.getBlockStateFromPos(world, x, y, z, sbb).getBlock().isReplaceable(world, this.getBlockPosWithOffset(x, y, z))) {
 			//this.setBlockState(world, deco.blockState, x, y, z, sbb);
 			this.setBlockState(world, deco.stairState.withProperty(BlockStairs.FACING, facing), x, y, z, sbb);

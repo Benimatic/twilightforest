@@ -148,13 +148,13 @@ public class EntityAITFHoverBeam extends EntityAITFHoverBase<EntityTFSnowQueen> 
 		Vec3d srcVec = new Vec3d(this.attacker.posX, this.attacker.posY + 0.25, this.attacker.posZ);
 		Vec3d lookVec = this.attacker.getLook(1.0F);
 		Vec3d destVec = srcVec.add(lookVec.x * range, lookVec.y * range, lookVec.z * range);
-		List<Entity> possibleList = this.attacker.world.getEntitiesWithinAABBExcludingEntity(this.attacker, this.attacker.getEntityBoundingBox().offset(lookVec.x * offset, lookVec.y * offset, lookVec.z * offset).grow(range, range, range));
+		List<Entity> possibleList = this.attacker.world.getEntitiesWithinAABBExcludingEntity(this.attacker, this.attacker.getBoundingBox().offset(lookVec.x * offset, lookVec.y * offset, lookVec.z * offset).grow(range, range, range));
 		double hitDist = 0;
 
 		for (Entity possibleEntity : possibleList) {
 			if (possibleEntity.canBeCollidedWith() && possibleEntity != this.attacker) {
 				float borderSize = possibleEntity.getCollisionBorderSize();
-				AxisAlignedBB collisionBB = possibleEntity.getEntityBoundingBox().grow((double) borderSize, (double) borderSize, (double) borderSize);
+				AxisAlignedBB collisionBB = possibleEntity.getBoundingBox().grow((double) borderSize, (double) borderSize, (double) borderSize);
 				RayTraceResult interceptPos = collisionBB.calculateIntercept(srcVec, destVec);
 
 				if (collisionBB.contains(srcVec)) {

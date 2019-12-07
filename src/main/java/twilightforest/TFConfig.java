@@ -3,9 +3,9 @@ package twilightforest;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.item.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+//TODO: Yeah, all this work? Move it again.
 @SuppressWarnings("WeakerAccess")
 @Config(modid = TwilightForestMod.ID)
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
@@ -35,6 +36,7 @@ public class TFConfig {
 	public static Dimension dimension = new Dimension();
 
 	public static class Dimension {
+		//TODO: Dimension IDs are now dynamic. Delete
 		@Config.LangKey(config + "dimension_id")
 		@Config.RequiresMcRestart
 		@Config.Comment("What ID number to assign to the Twilight Forest dimension. Change if you are having conflicts with another mod.")
@@ -167,7 +169,7 @@ public class TFConfig {
 				String[] split = definition.split(" ");
 				if (split.length != 5) return false;
 
-				Optional<IBlockState> state = parseBlockState(split[0]);
+				Optional<BlockState> state = parseBlockState(split[0]);
 				if (!state.isPresent()) return false;
 
 				try {
@@ -418,7 +420,7 @@ public class TFConfig {
 	}
 
 	private static void loadAntiBuilderBlacklist() {
-		ImmutableSet.Builder<IBlockState> builder = ImmutableSet.builder();
+		ImmutableSet.Builder<BlockState> builder = ImmutableSet.builder();
 
 		builder.addAll(IMCHandler.getBlacklistedBlocks());
 
@@ -430,9 +432,9 @@ public class TFConfig {
 	}
 
 	@Config.Ignore
-	private static ImmutableSet<IBlockState> disallowBreakingBlockList;
+	private static ImmutableSet<BlockState> disallowBreakingBlockList;
 
-	public static ImmutableSet<IBlockState> getDisallowedBlocks() {
+	public static ImmutableSet<BlockState> getDisallowedBlocks() {
 		return disallowBreakingBlockList;
 	}
 
@@ -475,7 +477,7 @@ public class TFConfig {
 		return Optional.of(new ItemStack(item, 1, meta));
 	}
 
-	private static Optional<IBlockState> parseBlockState(String string) {
+	private static Optional<BlockState> parseBlockState(String string) {
 
 		String[] split = string.split(":");
 		if (split.length < 2) return Optional.empty();

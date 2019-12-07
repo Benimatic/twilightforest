@@ -2,8 +2,8 @@ package twilightforest.enums;
 
 import net.minecraft.block.*;
 import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
@@ -65,7 +65,7 @@ public enum StructureWoodVariant implements IStringSerializable {
     private final Block plate     ;
 
     @Nullable
-    public static BlockPlanks.EnumType getTypeFromBlockState(IBlockState stateIn) {
+    public static BlockPlanks.EnumType getTypeFromBlockState(BlockState stateIn) {
         Block block = stateIn.getBlock();
 
         if (!"minecraft".equals(block.getRegistryName().getNamespace())) return null;
@@ -135,7 +135,7 @@ public enum StructureWoodVariant implements IStringSerializable {
         }
     }
 
-    public static IBlockState modifyBlockWithType(IBlockState stateIn, StructureWoodVariant target) {
+    public static BlockState modifyBlockWithType(BlockState stateIn, StructureWoodVariant target) {
         // get all data from stateIn
         Block block = stateIn.getBlock();
         WoodShapes shape = getWoodShapeFromBlock(block);
@@ -219,14 +219,14 @@ public enum StructureWoodVariant implements IStringSerializable {
         }
     }
 
-    public static IBlockState transferStateKeys(IBlockState stateIn, IBlockState stateOut, IProperty<?>... properties) {
+    public static BlockState transferStateKeys(BlockState stateIn, BlockState stateOut, IProperty<?>... properties) {
         for (IProperty<?> property : properties) {
             stateOut = transferStateKey(stateIn, stateOut, property);
         }
         return stateOut;
     }
 
-    public static <T extends Comparable<T>> IBlockState transferStateKey(IBlockState stateIn, IBlockState stateOut, IProperty<T> property) {
+    public static <T extends Comparable<T>> BlockState transferStateKey(BlockState stateIn, BlockState stateOut, IProperty<T> property) {
         return stateOut.withProperty(property, stateIn.getValue(property));
     }
 

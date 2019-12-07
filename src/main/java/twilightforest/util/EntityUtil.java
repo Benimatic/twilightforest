@@ -1,9 +1,9 @@
 package twilightforest.util;
 
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -19,7 +19,7 @@ public class EntityUtil {
 		return canDestroyBlock(world, pos, world.getBlockState(pos), entity);
 	}
 
-	public static boolean canDestroyBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
+	public static boolean canDestroyBlock(World world, BlockPos pos, BlockState state, Entity entity) {
 		float hardness = state.getBlockHardness(world, pos);
 		return hardness >= 0f && hardness < 50f && !state.getBlock().isAir(state, world, pos)
 				&& state.getBlock().canEntityDestroy(state, world, pos, entity)
@@ -40,13 +40,13 @@ public class EntityUtil {
 	}
 
 	@Nullable
-	public static RayTraceResult rayTrace(EntityPlayer player) {
+	public static RayTraceResult rayTrace(PlayerEntity player) {
 		return rayTrace(player, null);
 	}
 
 	@Nullable
-	public static RayTraceResult rayTrace(EntityPlayer player, @Nullable DoubleUnaryOperator modifier) {
-		double range = player.getEntityAttribute(EntityPlayer.REACH_DISTANCE).getAttributeValue();
+	public static RayTraceResult rayTrace(PlayerEntity player, @Nullable DoubleUnaryOperator modifier) {
+		double range = player.getAttribute(PlayerEntity.REACH_DISTANCE).getAttributeValue();
 		return rayTrace(player, modifier == null ? range : modifier.applyAsDouble(range));
 	}
 }

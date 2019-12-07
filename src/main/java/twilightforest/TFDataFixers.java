@@ -1,7 +1,7 @@
 package twilightforest;
 
 import com.google.common.collect.ImmutableMap;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.datafix.FixTypes;
 import net.minecraft.util.datafix.IFixableData;
 import net.minecraftforge.common.util.ModFixs;
@@ -79,7 +79,7 @@ public class TFDataFixers {
         }
 
         @Override
-        public NBTTagCompound fixTagCompound(NBTTagCompound compound) {
+        public CompoundNBT fixTagCompound(CompoundNBT compound) {
             String tileEntityLocation = compound.getString("id");
 
             compound.setString("id", tileEntityNames.getOrDefault(tileEntityLocation, tileEntityLocation));
@@ -120,7 +120,7 @@ public class TFDataFixers {
 
         // Basically we just need to shove the structure ID from the `FeatureID` key to the regular `id`.
         @Override
-        public NBTTagCompound fixTagCompound(NBTTagCompound compound) {
+        public CompoundNBT fixTagCompound(CompoundNBT compound) {
             int featureID = compound.getInteger("FeatureID");
 
             compound.setString("id", featureID < startIDs.length ? startIDs[featureID] : "TFNothing");

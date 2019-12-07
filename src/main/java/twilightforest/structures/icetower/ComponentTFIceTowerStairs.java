@@ -1,6 +1,6 @@
 package twilightforest.structures.icetower;
 
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -18,7 +18,7 @@ public class ComponentTFIceTowerStairs extends ComponentTFTowerWing {
 	}
 
 
-	public ComponentTFIceTowerStairs(TFFeature feature, int index, int x, int y, int z, int size, int height, EnumFacing direction) {
+	public ComponentTFIceTowerStairs(TFFeature feature, int index, int x, int y, int z, int size, int height, Direction direction) {
 		super(feature, index, x, y, z, size, height, direction);
 	}
 

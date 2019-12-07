@@ -7,14 +7,14 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.item.Item;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -34,7 +34,7 @@ import twilightforest.world.TFWorld;
 @Optional.Interface(modid = "thaumcraft", iface = "thaumcraft.api.crafting.IInfusionStabiliser")
 public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbackCTM, IInfusionStabiliser {
 
-	public static final IProperty<EnumFacing> FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+	public static final IProperty<Direction> FACING = PropertyDirection.create("facing", Direction.Plane.HORIZONTAL);
 	public static final IProperty<Boolean> LATENT = PropertyBool.create("latent");
 
 	private static final AxisAlignedBB AABB = new AxisAlignedBB(0.0625F, 0.0F, 0.0625F, 0.9375F, 1.0F, 0.9375F);
@@ -45,7 +45,7 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
 		this.setResistance(2000.0F);
 		this.setSoundType(SoundType.STONE);
 		this.setCreativeTab(TFItems.creativeTab);
-		this.setDefaultState(getDefaultState().withProperty(LATENT, true).withProperty(FACING, EnumFacing.NORTH));
+		this.setDefaultState(getDefaultState().withProperty(LATENT, true).withProperty(FACING, Direction.NORTH));
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(BlockState state) {
 		int meta = state.getValue(FACING).getHorizontalIndex();
 		if (state.getValue(LATENT)) {
 			meta |= 1 << 2;
@@ -64,9 +64,9 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
 
 	@Override
 	@Deprecated
-	public IBlockState getStateFromMeta(int meta) {
-		IBlockState ret = getDefaultState();
-		ret = ret.withProperty(FACING, EnumFacing.byHorizontalIndex(meta & 0b11));
+	public BlockState getStateFromMeta(int meta) {
+		BlockState ret = getDefaultState();
+		ret = ret.withProperty(FACING, Direction.byHorizontalIndex(meta & 0b11));
 		if ((meta & 0b100) > 0) {
 			ret = ret.withProperty(LATENT, true);
 		}
@@ -75,25 +75,25 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
 
 	@Override
 	@Deprecated
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess world, BlockPos pos) {
 		return AABB;
 	}
 
 	@Override
 	@Deprecated
-	public boolean isFullCube(IBlockState state) {
+	public boolean isFullCube(BlockState state) {
 		return false;
 	}
 
 	@Override
 	@Deprecated
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(BlockState state) {
 		return false;
 	}
 
 	@Override
 	@Deprecated
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
+	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
 
 		if (world.isRemote || !state.getValue(LATENT) || !isTrophyOnTop(world, pos)) return;
 
@@ -114,7 +114,7 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
 	}
 
 	private void warnIneligiblePlayers(World world, BlockPos pos) {
-		for (EntityPlayer player : world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos).grow(16.0D))) {
+		for (PlayerEntity player : world.getEntitiesWithinAABB(PlayerEntity.class, new AxisAlignedBB(pos).grow(16.0D))) {
 			if (!isPlayerEligible(player)) {
 				player.sendStatusMessage(new TextComponentTranslation(TwilightForestMod.ID + ".trophy_pedestal.ineligible"), true);
 			}
@@ -122,17 +122,17 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
 	}
 
 	private boolean areNearbyPlayersEligible(World world, BlockPos pos) {
-		for (EntityPlayer player : world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos).grow(16.0D))) {
+		for (PlayerEntity player : world.getEntitiesWithinAABB(PlayerEntity.class, new AxisAlignedBB(pos).grow(16.0D))) {
 			if (isPlayerEligible(player)) return true;
 		}
 		return false;
 	}
 
-	private boolean isPlayerEligible(EntityPlayer player) {
+	private boolean isPlayerEligible(PlayerEntity player) {
 		return TwilightForestMod.proxy.doesPlayerHaveAdvancement(player, TwilightForestMod.prefix("progress_lich"));
 	}
 
-	private void doPedestalEffect(World world, BlockPos pos, IBlockState state) {
+	private void doPedestalEffect(World world, BlockPos pos, BlockState state) {
 		world.setBlockState(pos, state.withProperty(LATENT, false));
 		removeNearbyShields(world, pos);
 		world.playSound(null, pos, SoundEvents.ENTITY_ZOMBIE_INFECT, SoundCategory.BLOCKS, 4.0F, 0.1F);
@@ -155,14 +155,14 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
 
 	@Override
 	@Deprecated
-	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+	public BlockState getStateForPlacement(World worldIn, BlockPos pos, Direction facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 		return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
 	}
 
 	// todo ambiguous in 1.7, what was this supposed to be?
 	@Override
 	@Deprecated
-	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World world, BlockPos pos) {
+	public float getPlayerRelativeBlockHardness(BlockState state, PlayerEntity player, World world, BlockPos pos) {
 		return state.getValue(LATENT) ? -1 : super.getPlayerRelativeBlockHardness(state, player, world, pos);
 	}
 
@@ -172,12 +172,12 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
 	}
 
 	@Override
-	public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
+	public boolean canSilkHarvest(World world, BlockPos pos, BlockState state, PlayerEntity player) {
 		return false;
 	}
 
 	@Override
-	public int damageDropped(IBlockState state) {
+	public int damageDropped(BlockState state) {
 		return 0;
 	}
 

@@ -7,8 +7,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 
@@ -16,7 +16,7 @@ public class ItemTFMoonDial extends ItemTF {
     public ItemTFMoonDial() {
         this.addPropertyOverride(new ResourceLocation("phase"), new IItemPropertyGetter() {
             @Override
-            @SideOnly(Side.CLIENT)
+            @OnlyIn(Dist.CLIENT)
             public float apply(ItemStack stack, @Nullable World world, @Nullable EntityLivingBase entityBase) {
                 boolean flag = entityBase != null;
                 Entity entity = flag ? entityBase : stack.getItemFrame();
@@ -26,14 +26,14 @@ public class ItemTFMoonDial extends ItemTF {
                 return world == null ? 0.0F : (float) (world.provider.isSurfaceWorld() ? MathHelper.frac(world.getMoonPhase() / 8.0f) : this.wobble(world, Math.random()));
             }
 
-            @SideOnly(Side.CLIENT)
+            @OnlyIn(Dist.CLIENT)
             double rotation;
-            @SideOnly(Side.CLIENT)
+            @OnlyIn(Dist.CLIENT)
             double rota;
-            @SideOnly(Side.CLIENT)
+            @OnlyIn(Dist.CLIENT)
             long lastUpdateTick;
 
-            @SideOnly(Side.CLIENT)
+            @OnlyIn(Dist.CLIENT)
             private double wobble(World world, double rotation) {
                 if (world.getTotalWorldTime() != this.lastUpdateTick) {
                     this.lastUpdateTick = world.getTotalWorldTime();

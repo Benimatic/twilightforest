@@ -7,21 +7,21 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.block.Blocks;
+import net.minecraft.item.Items;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -29,8 +29,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.enums.TowerDeviceVariant;
 import twilightforest.enums.TowerTranslucentVariant;
@@ -64,13 +64,13 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(BlockState state) {
 		return state.getValue(VARIANT).ordinal();
 	}
 
 	@Override
 	@Deprecated
-	public IBlockState getStateFromMeta(int meta) {
+	public BlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(VARIANT, TowerDeviceVariant.values()[meta]);
 	}
 
@@ -92,7 +92,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, BlockState state, PlayerEntity player, Hand hand, Direction side, float hitX, float hitY, float hitZ) {
 
 		TowerDeviceVariant variant = state.getValue(VARIANT);
 
@@ -129,7 +129,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 
 	@Override
 	@Deprecated
-	public float getBlockHardness(IBlockState state, World world, BlockPos pos) {
+	public float getBlockHardness(BlockState state, World world, BlockPos pos) {
 		// most vanish blocks can't be broken
 		switch (state.getValue(VARIANT)) {
 			case REAPPEARING_ACTIVE:
@@ -144,7 +144,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public boolean canEntityDestroy(IBlockState state, IBlockAccess world, BlockPos pos, Entity entity) {
+	public boolean canEntityDestroy(BlockState state, IBlockAccess world, BlockPos pos, Entity entity) {
 		switch (state.getValue(VARIANT)) {
 			case VANISH_INACTIVE:
 				return !areBlocksLocked(world, pos);
@@ -165,10 +165,10 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 	}
 
 	private static boolean areBlocksLocked(IBlockAccess world, BlockPos pos, Set<BlockPos> checked) {
-		for (EnumFacing facing : EnumFacing.values()) {
+		for (Direction facing : Direction.values()) {
 			BlockPos offset = pos.offset(facing);
 			if (!checked.add(offset)) continue;
-			IBlockState state = world.getBlockState(offset);
+			BlockState state = world.getBlockState(offset);
 			if (state.getBlock() == TFBlocks.tower_device) {
 				if (state.getValue(VARIANT) == TowerDeviceVariant.VANISH_LOCKED) {
 					return true;
@@ -185,7 +185,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 	 * Change this block into an different device block
 	 */
 	public static void unlockBlock(World world, BlockPos pos) {
-		IBlockState thereState = world.getBlockState(pos);
+		BlockState thereState = world.getBlockState(pos);
 
 		if (thereState.getBlock() == TFBlocks.tower_device || thereState.getValue(BlockTFTowerDevice.VARIANT) == TowerDeviceVariant.VANISH_LOCKED) {
 			changeToBlockState(world, pos, thereState.withProperty(VARIANT, TowerDeviceVariant.VANISH_UNLOCKED));
@@ -196,7 +196,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 	/**
 	 * Change this block into an different device block
 	 */
-	private static void changeToBlockState(World world, BlockPos pos, IBlockState state) {
+	private static void changeToBlockState(World world, BlockPos pos, BlockState state) {
 		Block thereBlock = world.getBlockState(pos).getBlock();
 
 		if (thereBlock == TFBlocks.tower_device || thereBlock == TFBlocks.tower_translucent) {
@@ -207,7 +207,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
+	public void onBlockAdded(World world, BlockPos pos, BlockState state) {
 
 		if (world.isRemote) return;
 
@@ -219,7 +219,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 
 	@Override
 	@Deprecated
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
+	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
 
 		if (world.isRemote) return;
 
@@ -266,7 +266,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random random) {
+	public void updateTick(World world, BlockPos pos, BlockState state, Random random) {
 
 		if (world.isRemote) return;
 
@@ -284,7 +284,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 			//world.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
 
 			// activate all adjacent inactive vanish blocks
-			for (EnumFacing e : EnumFacing.VALUES) {
+			for (Direction e : Direction.VALUES) {
 				checkAndActivateVanishBlock(world, pos.offset(e));
 			}
 		}
@@ -295,7 +295,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 
 		if (variant == TowerDeviceVariant.BUILDER_INACTIVE || variant == TowerDeviceVariant.BUILDER_TIMEOUT) {
 			// activate all adjacent inactive vanish blocks
-			for (EnumFacing e : EnumFacing.VALUES) {
+			for (Direction e : Direction.VALUES) {
 				checkAndActivateVanishBlock(world, pos.offset(e));
 			}
 		}
@@ -324,13 +324,13 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 	 * Check if the reactor has all the specified things around it
 	 */
 	private boolean isReactorReady(World world, BlockPos pos) {
-		return Arrays.stream(EnumFacing.VALUES)
+		return Arrays.stream(Direction.VALUES)
 				.allMatch(e -> world.getBlockState(pos.offset(e)).getBlock() == Blocks.REDSTONE_BLOCK);
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random random) {
+	@OnlyIn(Dist.CLIENT)
+	public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
 		TowerDeviceVariant variant = state.getValue(VARIANT);
 
 		if (variant == TowerDeviceVariant.VANISH_ACTIVE || variant == TowerDeviceVariant.REAPPEARING_ACTIVE || variant == TowerDeviceVariant.BUILDER_ACTIVE) {
@@ -373,7 +373,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 			}
 
 			if (d1 < (double) pos.getX() || d1 > (double) (pos.getX() + 1) || d2 < 0.0D || d2 > (double) (pos.getY() + 1) || d3 < (double) pos.getZ() || d3 > (double) (pos.getZ() + 1)) {
-				worldIn.spawnParticle(EnumParticleTypes.REDSTONE, d1, d2, d3, 0.0D, 0.0D, 0.0D);
+				worldIn.spawnParticle(ParticleTypes.REDSTONE, d1, d2, d3, 0.0D, 0.0D, 0.0D);
 			}
 		}
 	}
@@ -382,7 +382,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 	 * If the targeted block is a vanishing block, activate it
 	 */
 	public static void checkAndActivateVanishBlock(World world, BlockPos pos) {
-		IBlockState state = world.getBlockState(pos);
+		BlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 
 		if (block == TFBlocks.tower_device && (state.getValue(VARIANT) == TowerDeviceVariant.VANISH_INACTIVE || state.getValue(VARIANT) == TowerDeviceVariant.VANISH_UNLOCKED) && !areBlocksLocked(world, pos)) {
@@ -405,7 +405,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 	/**
 	 * Change this block into an active vanishing block
 	 */
-	private static void changeToActiveVanishBlock(World world, BlockPos pos, IBlockState state) {
+	private static void changeToActiveVanishBlock(World world, BlockPos pos, BlockState state) {
 		changeToBlockState(world, pos, state);
 		world.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 0.3F, 0.6F);
 		world.scheduleUpdate(pos, state.getBlock(), getTickRateFor(state, world.rand));
@@ -414,7 +414,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 	/**
 	 * We need variable, metadata-based tick rates
 	 */
-	private static int getTickRateFor(IBlockState state, Random rand) {
+	private static int getTickRateFor(BlockState state, Random rand) {
 		if (state.getBlock() == TFBlocks.tower_device && (state.getValue(VARIANT) == TowerDeviceVariant.VANISH_ACTIVE || state.getValue(VARIANT) == TowerDeviceVariant.REAPPEARING_ACTIVE)) {
 			return 2 + rand.nextInt(5);
 		} else if (state.getBlock() == TFBlocks.tower_translucent && state.getValue(BlockTFTowerTranslucent.VARIANT) == TowerTranslucentVariant.BUILT_ACTIVE) {
@@ -425,7 +425,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public int getLightValue(IBlockState state) {
+	public int getLightValue(BlockState state) {
 		switch (state.getValue(VARIANT)) {
 			case BUILDER_ACTIVE:
 			case VANISH_ACTIVE:
@@ -442,7 +442,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public boolean hasTileEntity(IBlockState state) {
+	public boolean hasTileEntity(BlockState state) {
 		switch (state.getValue(VARIANT)) {
 			case BUILDER_ACTIVE:
 			case ANTIBUILDER:
@@ -456,7 +456,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public TileEntity createTileEntity(World world, IBlockState state) {
+	public TileEntity createTileEntity(World world, BlockState state) {
 		switch (state.getValue(VARIANT)) {
 			case BUILDER_ACTIVE:
 				return new TileEntityTFTowerBuilder();
@@ -474,7 +474,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random random, int fortune) {
+	public Item getItemDropped(BlockState state, Random random, int fortune) {
 		switch (state.getValue(VARIANT)) {
 			case ANTIBUILDER:
 				return Items.AIR;
@@ -490,12 +490,12 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
+	public boolean canSilkHarvest(World world, BlockPos pos, BlockState state, PlayerEntity player) {
 		return false;
 	}
 
 	@Override
-	public int damageDropped(IBlockState state) {
+	public int damageDropped(BlockState state) {
 		switch (state.getValue(VARIANT)) {
 			case REAPPEARING_ACTIVE:
 				state = state.withProperty(VARIANT, TowerDeviceVariant.REAPPEARING_INACTIVE);
@@ -520,14 +520,14 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 		return getMetaFromState(state);
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void registerModel() {
 		ModelUtils.registerToStateSingleVariant(this, VARIANT);
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT;
 	}

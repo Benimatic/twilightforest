@@ -6,14 +6,14 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
 
-import static net.minecraft.util.EnumFacing.*;
+import static net.minecraft.util.Direction.*;
 
 public class BlockTFLadderBars extends BlockLadder implements ModelRegisterCallback {
     public static final PropertyBool LEFT  = PropertyBool.create("left");
@@ -34,18 +34,18 @@ public class BlockTFLadderBars extends BlockLadder implements ModelRegisterCallb
     }
 
     @Override
-    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
-        EnumFacing facing = state.getValue(BlockLadder.FACING);
+    public BlockState getActualState(BlockState state, IBlockAccess worldIn, BlockPos pos) {
+        Direction facing = state.getValue(BlockLadder.FACING);
 
-        IBlockState leftState  = worldIn.getBlockState(pos.offset(rotateCW (facing)));
-        IBlockState rightState = worldIn.getBlockState(pos.offset(rotateCCW(facing)));
+        BlockState leftState  = worldIn.getBlockState(pos.offset(rotateCW (facing)));
+        BlockState rightState = worldIn.getBlockState(pos.offset(rotateCCW(facing)));
 
         return super.getActualState(state, worldIn, pos)
                 .withProperty(LEFT , leftState .getBlock() instanceof BlockTFLadderBars && leftState .getValue(BlockLadder.FACING) == facing)
                 .withProperty(RIGHT, rightState.getBlock() instanceof BlockTFLadderBars && rightState.getValue(BlockLadder.FACING) == facing);
     }
 
-    private static EnumFacing rotateCW(EnumFacing facing) {
+    private static Direction rotateCW(Direction facing) {
         switch (facing) {
             case NORTH:
                 return WEST;
@@ -60,7 +60,7 @@ public class BlockTFLadderBars extends BlockLadder implements ModelRegisterCallb
         }
     }
 
-    private static EnumFacing rotateCCW(EnumFacing facing) {
+    private static Direction rotateCCW(Direction facing) {
         switch (facing) {
             case NORTH:
                 return EAST;

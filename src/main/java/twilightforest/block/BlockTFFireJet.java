@@ -8,10 +8,10 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.block.Blocks;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.tileentity.TileEntity;
@@ -21,8 +21,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidBase;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.enums.FireJetVariant;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
@@ -56,7 +56,7 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 
 	@Override
 	@Deprecated
-	public IBlockState getStateFromMeta(int meta) {
+	public BlockState getStateFromMeta(int meta) {
 		final FireJetVariant[] values = FireJetVariant.values();
 		final FireJetVariant variant = values[meta % values.length];
 
@@ -64,12 +64,12 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(BlockState state) {
 		return state.getValue(VARIANT).ordinal();
 	}
 
 	@Override
-	public int damageDropped(IBlockState state) {
+	public int damageDropped(BlockState state) {
 		switch (state.getValue(VARIANT)) {
 			case ENCASED_SMOKER_ON:
 				state = state.withProperty(VARIANT, FireJetVariant.ENCASED_SMOKER_OFF);
@@ -94,17 +94,17 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public Material getMaterial(IBlockState state) {
+	public Material getMaterial(BlockState state) {
 		return ENCASED.contains(state.getValue(VARIANT)) ? Material.WOOD : Material.ROCK;
 	}
 
 	@Override
-	public MapColor getMapColor(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public MapColor getMapColor(BlockState state, IBlockAccess world, BlockPos pos) {
 		return ENCASED.contains(state.getValue(VARIANT)) ? MapColor.SAND : MapColor.GRASS;
 	}
 
 	@Override
-	public int getLightValue(IBlockState state) {
+	public int getLightValue(BlockState state) {
 		switch (state.getValue(VARIANT)) {
 			case JET_FLAME:
 			case ENCASED_JET_FLAME:
@@ -117,7 +117,7 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 
 	@Nullable
 	@Override
-	public PathNodeType getAiPathNodeType(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public PathNodeType getAiPathNodeType(BlockState state, IBlockAccess world, BlockPos pos) {
 		switch (state.getValue(VARIANT)) {
 			case JET_POPPING:
 			case ENCASED_JET_POPPING:
@@ -131,7 +131,7 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random random) {
+	public void updateTick(World world, BlockPos pos, BlockState state, Random random) {
 		if (!world.isRemote && state.getValue(VARIANT) == FireJetVariant.JET_IDLE) {
 			BlockPos lavaPos = findLavaAround(world, pos.down());
 
@@ -144,7 +144,7 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 
 	@Override
 	@Deprecated
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block myBlockID, BlockPos fromPos) {
+	public void neighborChanged(BlockState state, World world, BlockPos pos, Block myBlockID, BlockPos fromPos) {
 
 		if (world.isRemote) return;
 
@@ -186,7 +186,7 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 	}
 
 	private boolean isLava(World world, BlockPos pos) {
-		IBlockState state = world.getBlockState(pos);
+		BlockState state = world.getBlockState(pos);
 		Block b = state.getBlock();
 		IProperty<Integer> levelProp = b instanceof BlockLiquid || b instanceof BlockFluidBase
 				? BlockLiquid.LEVEL
@@ -196,7 +196,7 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public boolean hasTileEntity(IBlockState state) {
+	public boolean hasTileEntity(BlockState state) {
 		switch (state.getValue(VARIANT)) {
 			case SMOKER:
 			case JET_POPPING:
@@ -212,7 +212,7 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 
 	@Nullable
 	@Override
-	public TileEntity createTileEntity(World world, IBlockState state) {
+	public TileEntity createTileEntity(World world, BlockState state) {
 		switch (state.getValue(VARIANT)) {
 			case SMOKER:
 			case ENCASED_SMOKER_ON:
@@ -238,7 +238,7 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 		list.add(new ItemStack(this, 1, FireJetVariant.ENCASED_JET_IDLE.ordinal()));
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void registerModel() {
 		FireJetVariant[] variants = {FireJetVariant.SMOKER, FireJetVariant.JET_IDLE, FireJetVariant.ENCASED_SMOKER_OFF, FireJetVariant.ENCASED_JET_IDLE};

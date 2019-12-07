@@ -1,26 +1,26 @@
 package twilightforest.item;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.state.pattern.BlockMatcher;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.block.Blocks;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.block.BlockTFRoots;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.RootVariant;
@@ -41,7 +41,7 @@ public class ItemTFOreMagnet extends ItemTF {
 		// [VanillaCopy] ItemBow with our item
 		this.addPropertyOverride(new ResourceLocation("pull"), new IItemPropertyGetter() {
 			@Override
-			@SideOnly(Side.CLIENT)
+			@OnlyIn(Dist.CLIENT)
 			public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn) {
 				if (entityIn == null) {
 					return 0.0F;
@@ -53,7 +53,7 @@ public class ItemTFOreMagnet extends ItemTF {
 		});
 		this.addPropertyOverride(new ResourceLocation("pulling"), new IItemPropertyGetter() {
 			@Override
-			@SideOnly(Side.CLIENT)
+			@OnlyIn(Dist.CLIENT)
 			public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn) {
 				return entityIn != null && entityIn.isHandActive() && entityIn.getActiveItemStack() == stack ? 1.0F : 0.0F;
 			}
@@ -62,7 +62,7 @@ public class ItemTFOreMagnet extends ItemTF {
 
 	@Nonnull
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, @Nonnull Hand hand) {
 		player.setActiveHand(hand);
 		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 	}
@@ -142,14 +142,14 @@ public class ItemTFOreMagnet extends ItemTF {
 		BlockPos[] lineArray = TFGenerator.getBresehnamArrays(usePos, destPos);
 
 		// find some ore?
-		IBlockState foundState = Blocks.AIR.getDefaultState();
+		BlockState foundState = Blocks.AIR.getDefaultState();
 		BlockPos foundPos = null;
         BlockPos basePos = null;
 
         boolean isNetherrack = false;
 
 		for (BlockPos coord : lineArray) {
-			IBlockState searchState = world.getBlockState(coord);
+			BlockState searchState = world.getBlockState(coord);
 
 			// keep track of where the dirt/stone we first find is.s
 			if (basePos == null) {
@@ -178,7 +178,7 @@ public class ItemTFOreMagnet extends ItemTF {
 
 			for (BlockPos coord : veinBlocks) {
 				BlockPos replacePos = coord.add(offX, offY, offZ);
-				IBlockState replaceState = world.getBlockState(replacePos);
+				BlockState replaceState = world.getBlockState(replacePos);
 
 				if ((isNetherrack ? isNetherReplaceable(world, replaceState, replacePos) : isReplaceable(world, replaceState, replacePos)) || replaceState.getBlock() == Blocks.AIR) {
 					// set vein to stone / netherrack
@@ -206,7 +206,7 @@ public class ItemTFOreMagnet extends ItemTF {
 		return new Vec3d(var3 * var4, var5, var2 * var4);
 	}
 
-	private static boolean isReplaceable(World world, IBlockState state, BlockPos pos) {
+	private static boolean isReplaceable(World world, BlockState state, BlockPos pos) {
         Block block = state.getBlock();
 
 	    if (block == Blocks.DIRT
@@ -219,7 +219,7 @@ public class ItemTFOreMagnet extends ItemTF {
 		return false;
 	}
 
-	private static boolean isNetherReplaceable(World world, IBlockState state, BlockPos pos) {
+	private static boolean isNetherReplaceable(World world, BlockState state, BlockPos pos) {
 		if (state.getBlock() == Blocks.NETHERRACK) {
 			return true;
 		}
@@ -230,7 +230,7 @@ public class ItemTFOreMagnet extends ItemTF {
 		return false;
 	}
 
-	private static boolean findVein(World world, BlockPos here, IBlockState oreState, Set<BlockPos> veinBlocks) {
+	private static boolean findVein(World world, BlockPos here, BlockState oreState, Set<BlockPos> veinBlocks) {
 		// is this already on the list?
 		if (veinBlocks.contains(here)) {
 			return false;
@@ -246,7 +246,7 @@ public class ItemTFOreMagnet extends ItemTF {
 			veinBlocks.add(here);
 
 			// recurse in 6 directions
-			for (EnumFacing e : EnumFacing.VALUES) {
+			for (Direction e : Direction.VALUES) {
 				findVein(world, here.offset(e), oreState, veinBlocks);
 			}
 
@@ -256,7 +256,7 @@ public class ItemTFOreMagnet extends ItemTF {
 		}
 	}
 
-	private static boolean isOre(IBlockState state) {
+	private static boolean isOre(BlockState state) {
         Block block = state.getBlock();
 
 		if (block == Blocks.COAL_ORE) return false;

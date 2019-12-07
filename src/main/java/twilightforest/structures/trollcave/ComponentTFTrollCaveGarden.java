@@ -1,7 +1,7 @@
 package twilightforest.structures.trollcave;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.Blocks;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenBigMushroom;
@@ -25,7 +25,7 @@ public class ComponentTFTrollCaveGarden extends ComponentTFTrollCaveMain {
 
 	public ComponentTFTrollCaveGarden() {}
 
-	public ComponentTFTrollCaveGarden(TFFeature feature, int index, int x, int y, int z, int caveSize, int caveHeight, EnumFacing direction) {
+	public ComponentTFTrollCaveGarden(TFFeature feature, int index, int x, int y, int z, int caveSize, int caveHeight, Direction direction) {
 		super(feature, index);
 		this.size = caveSize;
 		this.height = caveHeight;

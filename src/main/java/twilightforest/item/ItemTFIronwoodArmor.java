@@ -3,7 +3,7 @@ package twilightforest.item;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Enchantments;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
@@ -12,14 +12,14 @@ import twilightforest.client.ModelRegisterCallback;
 
 public class ItemTFIronwoodArmor extends ItemTFArmor implements ModelRegisterCallback {
 
-	public ItemTFIronwoodArmor(ArmorMaterial armorMaterial, EntityEquipmentSlot armorType, EnumRarity rarity) {
+	public ItemTFIronwoodArmor(ArmorMaterial armorMaterial, EquipmentSlotType armorType, EnumRarity rarity) {
 		super(armorMaterial, armorType, rarity);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
 	@Override
-	public String getArmorTexture(ItemStack itemstack, Entity entity, EntityEquipmentSlot slot, String layer) {
-		if (slot == EntityEquipmentSlot.LEGS) {
+	public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlotType slot, String layer) {
+		if (slot == EquipmentSlotType.LEGS) {
 			return TwilightForestMod.ARMOR_DIR + "ironwood_2.png";
 		} else {
 			return TwilightForestMod.ARMOR_DIR + "ironwood_1.png";

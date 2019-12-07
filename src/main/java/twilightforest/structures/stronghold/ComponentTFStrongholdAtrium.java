@@ -4,10 +4,10 @@ import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockOldLeaf;
 import net.minecraft.block.BlockOldLog;
 import net.minecraft.block.BlockPlanks;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -30,7 +30,7 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 	public ComponentTFStrongholdAtrium() {
 	}
 
-	public ComponentTFStrongholdAtrium(TFFeature feature, int i, EnumFacing facing, int x, int y, int z) {
+	public ComponentTFStrongholdAtrium(TFFeature feature, int i, Direction facing, int x, int y, int z) {
 		super(feature, i, facing, x, y, z);
 	}
 
@@ -38,7 +38,7 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 	 * Save to NBT
 	 */
 	@Override
-	protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 		super.writeStructureToNBT(tagCompound);
 
 		tagCompound.setBoolean("enterBottom", this.enterBottom);
@@ -48,13 +48,13 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 	 * Load from NBT
 	 */
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager templateManager) {
+	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
 		super.readStructureFromNBT(tagCompound, templateManager);
 		this.enterBottom = tagCompound.getBoolean("enterBottom");
 	}
 
 	@Override
-	public StructureBoundingBox generateBoundingBox(EnumFacing facing, int x, int y, int z) {
+	public StructureBoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
 
 		if (y > 17) {
 			this.enterBottom = false;
@@ -125,7 +125,7 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 		this.fillWithRandomizedBlocks(world, sbb, 15, 1, 16, 15, 12, 16, false, rand, deco.randomBlocks);
 
 		// grass
-		IBlockState grass = Blocks.GRASS.getDefaultState();
+		BlockState grass = Blocks.GRASS.getDefaultState();
 		this.generateMaybeBox(world, sbb, rand, 0.5F, 6, 0, 6, 11, 0, 11, grass, grass, false, 0);
 		this.fillWithBlocks(world, sbb, 7, 0, 7, 10, 0, 10, grass, AIR, false);
 
@@ -156,20 +156,20 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 				case 0:
 				default:
 					// oak tree
-					IBlockState oakWood = Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.OAK);
-					IBlockState oakLeaves = Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.OAK).withProperty(BlockLeaves.CHECK_DECAY, false);
+					BlockState oakWood = Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.OAK);
+					BlockState oakLeaves = Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.OAK).withProperty(BlockLeaves.CHECK_DECAY, false);
 					treeGen = new WorldGenTrees(true, minHeight, oakWood, oakLeaves, false);
 					break;
 				case 1:
 					// jungle tree
-					IBlockState jungleWood = Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE);
-					IBlockState jungleLeaves = Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.JUNGLE).withProperty(BlockLeaves.CHECK_DECAY, false);
+					BlockState jungleWood = Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE);
+					BlockState jungleLeaves = Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.JUNGLE).withProperty(BlockLeaves.CHECK_DECAY, false);
 					treeGen = new WorldGenTrees(true, minHeight, jungleWood, jungleLeaves, false);
 					break;
 				case 2:
 					// birch
-					IBlockState birchWood = Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.BIRCH);
-					IBlockState birchLeaves = Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.BIRCH).withProperty(BlockLeaves.CHECK_DECAY, false);
+					BlockState birchWood = Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.BIRCH);
+					BlockState birchLeaves = Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.BIRCH).withProperty(BlockLeaves.CHECK_DECAY, false);
 					treeGen = new WorldGenTrees(true, minHeight, birchWood, birchLeaves, false);
 					break;
 				case 3:
@@ -191,11 +191,11 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 
 	private void placeBalconyPillar(World world, StructureBoundingBox sbb, Rotation rotation) {
 		this.fillBlocksRotated(world, sbb, 5, 1, 5, 5, 12, 5, deco.pillarState, rotation);
-		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.COUNTERCLOCKWISE_90.rotate(EnumFacing.WEST), rotation, false), 5, 1, 6, rotation, sbb);
-		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.CLOCKWISE_180.rotate(EnumFacing.WEST), rotation, false), 6, 1, 5, rotation, sbb);
-		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.COUNTERCLOCKWISE_90.rotate(EnumFacing.WEST), rotation, true), 5, 5, 6, rotation, sbb);
-		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.CLOCKWISE_180.rotate(EnumFacing.WEST), rotation, true), 6, 5, 5, rotation, sbb);
-		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.COUNTERCLOCKWISE_90.rotate(EnumFacing.WEST), rotation, true), 5, 12, 6, rotation, sbb);
-		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.CLOCKWISE_180.rotate(EnumFacing.WEST), rotation, true), 6, 12, 5, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.COUNTERCLOCKWISE_90.rotate(Direction.WEST), rotation, false), 5, 1, 6, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.CLOCKWISE_180.rotate(Direction.WEST), rotation, false), 6, 1, 5, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.COUNTERCLOCKWISE_90.rotate(Direction.WEST), rotation, true), 5, 5, 6, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.CLOCKWISE_180.rotate(Direction.WEST), rotation, true), 6, 5, 5, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.COUNTERCLOCKWISE_90.rotate(Direction.WEST), rotation, true), 5, 12, 6, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.CLOCKWISE_180.rotate(Direction.WEST), rotation, true), 6, 12, 5, rotation, sbb);
 	}
 }

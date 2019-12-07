@@ -1,17 +1,17 @@
 package twilightforest.block;
 
 import net.minecraft.block.BlockSkull;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.block.statemap.StateMap;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntitySkull;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.BlockRenderType;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -20,8 +20,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.Optional;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import thaumcraft.api.crafting.IInfusionStabiliser;
 import twilightforest.TFSounds;
 import twilightforest.enums.BossVariant;
@@ -43,16 +43,16 @@ public class BlockTFTrophy extends BlockSkull implements ModelRegisterCallback, 
 	private static final AxisAlignedBB URGHAST_BB = new AxisAlignedBB(0.25F, 0.5F, 0.25F, 0.75F, 1F, 0.75F);
 
 	public BlockTFTrophy() {
-		setDefaultState(blockState.getBaseState().withProperty(BlockSkull.NODROP, false).withProperty(BlockSkull.FACING, EnumFacing.UP));
+		setDefaultState(blockState.getBaseState().withProperty(BlockSkull.NODROP, false).withProperty(BlockSkull.FACING, Direction.UP));
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
-		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
+	public BlockRenderType getRenderType(BlockState state) {
+		return BlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess access, BlockPos pos) {
+	public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess access, BlockPos pos) {
 		TileEntity te = access.getTileEntity(pos);
 		if (te instanceof TileEntityTFTrophy) {
 			switch (BossVariant.getVariant(((TileEntityTFTrophy) te).getSkullType())) {
@@ -80,7 +80,7 @@ public class BlockTFTrophy extends BlockSkull implements ModelRegisterCallback, 
 	}
 
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, Direction facing, float hitX, float hitY, float hitZ) {
 		TileEntity te = worldIn.getTileEntity(pos);
 		if (te instanceof TileEntityTFTrophy) {
 			SoundEvent sound = null;
@@ -121,12 +121,12 @@ public class BlockTFTrophy extends BlockSkull implements ModelRegisterCallback, 
 	}
 
 	@Override
-	public TileEntity createTileEntity(World world, IBlockState state) {
+	public TileEntity createTileEntity(World world, BlockState state) {
 		return new TileEntityTFTrophy();
 	}
 
 	@Override
-	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
+	public ItemStack getItem(World world, BlockPos pos, BlockState state) {
 		TileEntity te = world.getTileEntity(pos);
 		if (te instanceof TileEntityTFTrophy) {
 			return new ItemStack(TFItems.trophy, 1, ((TileEntityTFTrophy) te).getSkullType());
@@ -135,13 +135,13 @@ public class BlockTFTrophy extends BlockSkull implements ModelRegisterCallback, 
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	public Item getItemDropped(BlockState state, Random rand, int fortune) {
 		return TFItems.trophy;
 	}
 
 	// [VanillaCopy] of superclass, relevant edits indicated
 	@Override
-	public List<ItemStack> getDrops(IBlockAccess worldIn, BlockPos pos, IBlockState state, int fortune) {
+	public List<ItemStack> getDrops(IBlockAccess worldIn, BlockPos pos, BlockState state, int fortune) {
 		java.util.List<ItemStack> ret = new java.util.ArrayList<ItemStack>();
 		{
 			if (!((Boolean) state.getValue(NODROP)).booleanValue()) {
@@ -153,10 +153,10 @@ public class BlockTFTrophy extends BlockSkull implements ModelRegisterCallback, 
 
                     /*if (tileentityskull.getSkullType() == 3 && tileentityskull.getPlayerProfile() != null)
 					{
-                        itemstack.setTagCompound(new NBTTagCompound());
-                        NBTTagCompound nbttagcompound = new NBTTagCompound();
-                        NBTUtil.writeGameProfile(nbttagcompound, tileentityskull.getPlayerProfile());
-                        itemstack.getTagCompound().setTag("SkullOwner", nbttagcompound);
+                        itemstack.setTagCompound(new CompoundNBT());
+                        CompoundNBT CompoundNBT = new CompoundNBT();
+                        NBTUtil.writeGameProfile(CompoundNBT, tileentityskull.getPlayerProfile());
+                        itemstack.getTagCompound().setTag("SkullOwner", CompoundNBT);
                     }*/// TF - don't set player skins
 
 					ret.add(itemstack);
@@ -166,7 +166,7 @@ public class BlockTFTrophy extends BlockSkull implements ModelRegisterCallback, 
 		return ret;
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void registerModel() {
 		ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(NODROP).ignore(FACING).build());

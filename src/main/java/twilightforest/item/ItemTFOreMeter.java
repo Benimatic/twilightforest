@@ -1,13 +1,13 @@
 package twilightforest.item;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -29,7 +29,7 @@ public class ItemTFOreMeter extends ItemTF {
 
 	@Nonnull
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, @Nonnull Hand hand) {
 		int useX = MathHelper.floor(player.posX);
 		int useZ = MathHelper.floor(player.posZ);
 
@@ -40,7 +40,7 @@ public class ItemTFOreMeter extends ItemTF {
 		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 	}
 
-	private void countOreInArea(EntityPlayer player, World world, int useX, int useZ, int radius) {
+	private void countOreInArea(PlayerEntity player, World world, int useX, int useZ, int radius) {
 		int chunkX = useX >> 4;
 		int chunkZ = useZ >> 4;
 
@@ -64,7 +64,7 @@ public class ItemTFOreMeter extends ItemTF {
 		ScanResult dummy = new ScanResult();
 		for (int cx = chunkX - radius; cx <= chunkX + radius; cx++) {
 			for (int cz = chunkZ - radius; cz <= chunkZ + radius; cz++) {
-				Map<IBlockState, ScanResult> results = countBlocksInChunk(world, chunkX, chunkZ);
+				Map<BlockState, ScanResult> results = countBlocksInChunk(world, chunkX, chunkZ);
 
 				countStone += results.entrySet().stream().filter(e -> e.getKey().getBlock() == Blocks.STONE).mapToInt(e -> e.getValue().count).sum();
 				countDirt += results.entrySet().stream().filter(e -> e.getKey().getBlock() == Blocks.DIRT).mapToInt(e -> e.getValue().count).sum();
@@ -101,17 +101,17 @@ public class ItemTFOreMeter extends ItemTF {
 		return Float.toString((float) count / (float) total * 100F) + "%";
 	}
 
-	private Map<IBlockState, ScanResult> countBlocksInChunk(World world, int cx, int cz) {
-		Map<IBlockState, ScanResult> ret = new IdentityHashMap<>();
+	private Map<BlockState, ScanResult> countBlocksInChunk(World world, int cx, int cz) {
+		Map<BlockState, ScanResult> ret = new IdentityHashMap<>();
 		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
 		for (int x = cx << 4; x < (cx << 4) + 16; x++) {
 			for (int z = cz << 4; z < (cz << 4) + 16; z++) {
 				for (int y = 0; y < 256; y++) {
-					IBlockState state = world.getBlockState(pos.setPos(x, y, z));
+					BlockState state = world.getBlockState(pos.setPos(x, y, z));
 					ScanResult res = ret.computeIfAbsent(state, s -> new ScanResult());
 					res.count++;
 
-					for (EnumFacing e : EnumFacing.VALUES) {
+					for (Direction e : Direction.VALUES) {
 						if (world.isAirBlock(pos.setPos(x, y, z).move(e))) {
 							res.exposedCount++;
 							break;

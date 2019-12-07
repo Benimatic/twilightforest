@@ -1,6 +1,6 @@
 package twilightforest.structures.finalcastle;
 
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -71,5 +71,5 @@ public class ComponentTFFinalCastleFoundation13 extends StructureTFComponentOld 
 		return true;
 	}
 
-	protected static final Predicate<IBlockState> isDeadrock = state -> state.getBlock() == TFBlocks.deadrock;
+	protected static final Predicate<BlockState> isDeadrock = state -> state.getBlock() == TFBlocks.deadrock;
 }

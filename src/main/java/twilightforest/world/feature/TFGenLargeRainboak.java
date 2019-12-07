@@ -3,8 +3,8 @@ package twilightforest.world.feature;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLog;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -143,7 +143,7 @@ public class TFGenLargeRainboak extends TFTreeGenerator {
 		System.arraycopy(var2, 0, this.leafNodes, 0, var4);
 	}
 
-	void genTreeLayer(int par1, int par2, int par3, float par4, byte par5, IBlockState leaves) {
+	void genTreeLayer(int par1, int par2, int par3, float par4, byte par5, BlockState leaves) {
 		int var7 = (int) ((double) par4 + 0.618D);
 		byte var8 = otherCoordPairs[par5];
 		byte var9 = otherCoordPairs[par5 + 3];
@@ -164,7 +164,7 @@ public class TFGenLargeRainboak extends TFTreeGenerator {
 				} else {
 					var11[var9] = var10[var9] + var13;
 					final BlockPos pos = new BlockPos(var11[0], var11[1], var11[2]);
-					IBlockState var14 = this.world.getBlockState(pos);
+					BlockState var14 = this.world.getBlockState(pos);
 
 					final Block block = var14.getBlock();
 					if (block != Blocks.AIR && !block.canBeReplacedByLeaves(var14, this.world, pos)) {
@@ -255,7 +255,7 @@ public class TFGenLargeRainboak extends TFTreeGenerator {
 				var14[var7] = MathHelper.floor((double) par1ArrayOfInteger[var7] + (double) var15 * var10 + 0.5D);
 				var14[var8] = MathHelper.floor((double) par1ArrayOfInteger[var8] + (double) var15 * var12 + 0.5D);
 
-				IBlockState var17 = log.getDefaultState();
+				BlockState var17 = log.getDefaultState();
 				int var18 = Math.abs(var14[0] - par1ArrayOfInteger[0]);
 				int var19 = Math.abs(var14[2] - par1ArrayOfInteger[2]);
 				int var20 = Math.max(var18, var19);
@@ -379,7 +379,7 @@ public class TFGenLargeRainboak extends TFTreeGenerator {
 				var13[var5] = par1ArrayOfInteger[var5] + var14;
 				var13[var6] = MathHelper.floor((double) par1ArrayOfInteger[var6] + (double) var14 * var9);
 				var13[var7] = MathHelper.floor((double) par1ArrayOfInteger[var7] + (double) var14 * var11);
-				IBlockState var16 = this.world.getBlockState(new BlockPos(var13[0], var13[1], var13[2]));
+				BlockState var16 = this.world.getBlockState(new BlockPos(var13[0], var13[1], var13[2]));
 				final Block block = var16.getBlock();
 
 				if (block != Blocks.AIR && block != Blocks.LEAVES) {
@@ -398,7 +398,7 @@ public class TFGenLargeRainboak extends TFTreeGenerator {
 	boolean validTreeLocation() {
 		int[] var1 = new int[]{this.basePos[0], this.basePos[1], this.basePos[2]};
 		int[] var2 = new int[]{this.basePos[0], this.basePos[1] + this.heightLimit - 1, this.basePos[2]};
-		IBlockState var3 = this.world.getBlockState(new BlockPos(this.basePos[0], this.basePos[1] - 1, this.basePos[2]));
+		BlockState var3 = this.world.getBlockState(new BlockPos(this.basePos[0], this.basePos[1] - 1, this.basePos[2]));
 
 		final Block block = var3.getBlock();
 		if (block != Blocks.DIRT && block != Blocks.GRASS) {

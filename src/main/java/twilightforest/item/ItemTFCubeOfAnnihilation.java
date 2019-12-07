@@ -2,19 +2,19 @@ package twilightforest.item;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFCubeOfAnnihilation;
 
@@ -29,7 +29,7 @@ public class ItemTFCubeOfAnnihilation extends ItemTF {
 		super(rarity);
 		this.maxStackSize = 1;
 		this.addPropertyOverride(TwilightForestMod.prefix("thrown"), new IItemPropertyGetter() {
-			@SideOnly(Side.CLIENT)
+			@OnlyIn(Dist.CLIENT)
 			@Override
 			public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn) {
 				return getThrownUuid(stack) != null ? 1 : 0;
@@ -46,7 +46,7 @@ public class ItemTFCubeOfAnnihilation extends ItemTF {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
 		ItemStack stack = player.getHeldItem(hand);
 
 		if (getThrownUuid(stack) != null)
@@ -88,7 +88,7 @@ public class ItemTFCubeOfAnnihilation extends ItemTF {
 
 	private static void setThrownEntity(ItemStack stack, EntityTFCubeOfAnnihilation cube) {
 		if (!stack.hasTagCompound()) {
-			stack.setTagCompound(new NBTTagCompound());
+			stack.setTagCompound(new CompoundNBT());
 		}
 		stack.getTagCompound().setUniqueId(THROWN_UUID_KEY, cube.getUniqueID());
 	}

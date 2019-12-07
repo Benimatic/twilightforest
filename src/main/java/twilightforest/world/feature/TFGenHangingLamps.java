@@ -1,8 +1,8 @@
 package twilightforest.world.feature;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.Blocks;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.block.TFBlocks;
@@ -52,7 +52,7 @@ public class TFGenHangingLamps extends TFGenerator {
 
 	private boolean isClearBelow(World world, BlockPos pos) {
 		for (int cy = 1; cy < 4; cy++) {
-			if (world.getBlockState(pos.down(cy)).isSideSolid(world, pos, EnumFacing.UP)) {
+			if (world.getBlockState(pos.down(cy)).isSideSolid(world, pos, Direction.UP)) {
 				return false;
 			}
 		}

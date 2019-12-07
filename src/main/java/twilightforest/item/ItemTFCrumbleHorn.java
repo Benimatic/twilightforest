@@ -3,18 +3,18 @@ package twilightforest.item;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSand;
 import net.minecraft.block.BlockStoneBrick;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.block.Blocks;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -42,8 +42,8 @@ public class ItemTFCrumbleHorn extends ItemTF {
 	private static final int CHANCE_HARVEST = 20;
 	private static final int CHANCE_CRUMBLE = 5;
 
-	private final List<Pair<Predicate<IBlockState>, UnaryOperator<IBlockState>>> crumbleTransforms = new ArrayList<>();
-	private final List<Predicate<IBlockState>> harvestedStates = new ArrayList<>();
+	private final List<Pair<Predicate<BlockState>, UnaryOperator<BlockState>>> crumbleTransforms = new ArrayList<>();
+	private final List<Predicate<BlockState>> harvestedStates = new ArrayList<>();
 
 	ItemTFCrumbleHorn(EnumRarity rarity) {
 		super(rarity);
@@ -84,11 +84,11 @@ public class ItemTFCrumbleHorn extends ItemTF {
 		addHarvest(() -> Blocks.CLAY);
 	}
 
-	private void addCrumble(Supplier<Block> block, Supplier<IBlockState> result) {
+	private void addCrumble(Supplier<Block> block, Supplier<BlockState> result) {
 		addCrumble(state -> state.getBlock() == block.get(), state -> result.get());
 	}
 
-	private void addCrumble(Predicate<IBlockState> test, UnaryOperator<IBlockState> transform) {
+	private void addCrumble(Predicate<BlockState> test, UnaryOperator<BlockState> transform) {
 		crumbleTransforms.add(Pair.of(test, transform));
 	}
 
@@ -96,12 +96,12 @@ public class ItemTFCrumbleHorn extends ItemTF {
 		addHarvest(state -> state.getBlock() == block.get());
 	}
 
-	private void addHarvest(Predicate<IBlockState> test) {
+	private void addHarvest(Predicate<BlockState> test) {
 		harvestedStates.add(test);
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
 		player.setActiveHand(hand);
 		player.playSound(SoundEvents.ENTITY_SHEEP_AMBIENT, 1.0F, 0.8F);
 		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
@@ -164,12 +164,12 @@ public class ItemTFCrumbleHorn extends ItemTF {
 
 	private boolean crumbleBlock(ItemStack stack, World world, EntityLivingBase living, BlockPos pos) {
 
-		IBlockState state = world.getBlockState(pos);
+		BlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 
 		if (block.isAir(state, world, pos)) return false;
 
-		for (Pair<Predicate<IBlockState>, UnaryOperator<IBlockState>> transform : crumbleTransforms) {
+		for (Pair<Predicate<BlockState>, UnaryOperator<BlockState>> transform : crumbleTransforms) {
 			if (transform.getLeft().test(state) && world.rand.nextInt(CHANCE_CRUMBLE) == 0) {
 				world.setBlockState(pos, transform.getRight().apply(state), 3);
 				world.playEvent(2001, pos, Block.getStateId(state));
@@ -180,12 +180,12 @@ public class ItemTFCrumbleHorn extends ItemTF {
 			}
 		}
 
-		for (Predicate<IBlockState> predicate : harvestedStates) {
+		for (Predicate<BlockState> predicate : harvestedStates) {
 			if (predicate.test(state) && world.rand.nextInt(CHANCE_HARVEST) == 0) {
-				if (living instanceof EntityPlayer) {
-					if (block.canHarvestBlock(world, pos, (EntityPlayer) living)) {
+				if (living instanceof PlayerEntity) {
+					if (block.canHarvestBlock(world, pos, (PlayerEntity) living)) {
 						world.setBlockToAir(pos);
-						block.harvestBlock(world, (EntityPlayer) living, pos, state, world.getTileEntity(pos), ItemStack.EMPTY);
+						block.harvestBlock(world, (PlayerEntity) living, pos, state, world.getTileEntity(pos), ItemStack.EMPTY);
 						world.playEvent(2001, pos, Block.getStateId(state));
 
 						postTrigger(living, stack, world, pos);

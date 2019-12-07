@@ -1,7 +1,7 @@
 package twilightforest.structures.icetower;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -21,10 +21,10 @@ public class ComponentTFIceTowerMain extends ComponentTFIceTowerWing {
 	}
 
 	public ComponentTFIceTowerMain(TFFeature feature, World world, Random rand, int index, int x, int y, int z) {
-		this(feature, world, rand, index, x + SIZE, y + 40, z + SIZE, EnumFacing.NORTH);
+		this(feature, world, rand, index, x + SIZE, y + 40, z + SIZE, Direction.NORTH);
 	}
 
-	public ComponentTFIceTowerMain(TFFeature feature, World world, Random rand, int index, int x, int y, int z, EnumFacing rotation) {
+	public ComponentTFIceTowerMain(TFFeature feature, World world, Random rand, int index, int x, int y, int z, Direction rotation) {
 		super(feature, index, x, y, z, SIZE, 31 + (rand.nextInt(3) * 10), rotation);
 
 		// decorator
@@ -34,7 +34,7 @@ public class ComponentTFIceTowerMain extends ComponentTFIceTowerWing {
 	}
 
 
-	protected ComponentTFIceTowerMain(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
+	protected ComponentTFIceTowerMain(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
 		super(feature, i, x, y, z, pSize, pHeight, direction);
 	}
 
@@ -42,7 +42,7 @@ public class ComponentTFIceTowerMain extends ComponentTFIceTowerWing {
 	 * Save to NBT
 	 */
 	@Override
-	protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 		super.writeStructureToNBT(tagCompound);
 
 		tagCompound.setBoolean("hasBossWing", this.hasBossWing);
@@ -52,7 +52,7 @@ public class ComponentTFIceTowerMain extends ComponentTFIceTowerWing {
 	 * Load from NBT
 	 */
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager templateManager) {
+	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
 		super.readStructureFromNBT(tagCompound, templateManager);
 		this.hasBossWing = tagCompound.getBoolean("hasBossWing");
 	}
@@ -95,7 +95,7 @@ public class ComponentTFIceTowerMain extends ComponentTFIceTowerWing {
 	}
 
 	private void makeEntranceBridge(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int length, Rotation rotation) {
-		EnumFacing direction = getStructureRelativeRotation(rotation);
+		Direction direction = getStructureRelativeRotation(rotation);
 		BlockPos dest = offsetTowerCCoords(x, y, z, 5, direction);
 
 		ComponentTFIceTowerBridge bridge = new ComponentTFIceTowerBridge(getFeatureType(), index, dest.getX(), dest.getY(), dest.getZ(), length, direction);
@@ -105,7 +105,7 @@ public class ComponentTFIceTowerMain extends ComponentTFIceTowerWing {
 	}
 
 	public boolean makeEntranceTower(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
-		EnumFacing direction = getStructureRelativeRotation(rotation);
+		Direction direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 
 		ComponentTFIceTowerWing entrance = new ComponentTFIceTowerEntrance(getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);

@@ -1,8 +1,8 @@
 package twilightforest.structures.icetower;
 
 import net.minecraft.block.BlockRotatedPillar;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -19,7 +19,7 @@ public class ComponentTFIceTowerEntrance extends ComponentTFIceTowerWing {
 	public ComponentTFIceTowerEntrance() {
 	}
 
-	public ComponentTFIceTowerEntrance(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
+	public ComponentTFIceTowerEntrance(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
 		super(feature, i, x, y, z, pSize, pHeight, direction);
 	}
 
@@ -58,7 +58,7 @@ public class ComponentTFIceTowerEntrance extends ComponentTFIceTowerWing {
 		// add door
 		this.addOpening(x, y, z, rotation);
 
-		EnumFacing direction = getStructureRelativeRotation(rotation);
+		Direction direction = getStructureRelativeRotation(rotation);
 		BlockPos dx = offsetTowerCCoords(x, y, z, this.size, direction);
 
 		ComponentTFIceTowerStairs entrance = new ComponentTFIceTowerStairs(getFeatureType(), index, dx.getX(), dx.getY(), dx.getZ(), this.size, this.height, direction);
@@ -88,8 +88,8 @@ public class ComponentTFIceTowerEntrance extends ComponentTFIceTowerWing {
 
 
 	protected void decoratePillarsCornersHigh(World world, Random rand, int bottom, int top, Rotation rotation, StructureBoundingBox sbb) {
-		final IBlockState pillarXAxis = deco.pillarState.withProperty(BlockRotatedPillar.AXIS, EnumFacing.Axis.X);
-		final IBlockState pillarZAxis = deco.pillarState.withProperty(BlockRotatedPillar.AXIS, EnumFacing.Axis.Z);
+		final BlockState pillarXAxis = deco.pillarState.withProperty(BlockRotatedPillar.AXIS, Direction.Axis.X);
+		final BlockState pillarZAxis = deco.pillarState.withProperty(BlockRotatedPillar.AXIS, Direction.Axis.Z);
 		this.fillBlocksRotated(world, sbb, 3, bottom + 5, 1, 3, bottom + 5, 9, pillarZAxis, rotation);
 		this.fillBlocksRotated(world, sbb, 7, bottom + 5, 1, 7, bottom + 5, 9, pillarZAxis, rotation);
 		this.fillBlocksRotated(world, sbb, 1, bottom + 5, 3, 9, bottom + 5, 3, pillarXAxis, rotation);

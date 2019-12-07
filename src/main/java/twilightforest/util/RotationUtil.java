@@ -1,6 +1,6 @@
 package twilightforest.util;
 
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 
 import java.util.Random;
@@ -12,7 +12,7 @@ import static net.minecraft.util.Rotation.NONE;
 
 public final class RotationUtil {
 	public static final Rotation[] ROTATIONS = Rotation.values();
-	public static final EnumFacing[] CARDINALS = { EnumFacing.NORTH, EnumFacing.SOUTH, EnumFacing.EAST, EnumFacing.WEST };
+	public static final Direction[] CARDINALS = { Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST };
 
 	private RotationUtil() {
 	}
@@ -71,7 +71,7 @@ public final class RotationUtil {
 		}
 	}
 
-	public static Rotation getRelativeRotation(EnumFacing original, EnumFacing destination) {
+	public static Rotation getRelativeRotation(Direction original, Direction destination) {
 		switch (original) {
 			case NORTH:
 			default:
@@ -125,7 +125,7 @@ public final class RotationUtil {
 		}
 	}
 
-	public static EnumFacing getRandomFacing(Random random) {
+	public static Direction getRandomFacing(Random random) {
 		return CARDINALS[random.nextInt(CARDINALS.length)];
 	}
 }

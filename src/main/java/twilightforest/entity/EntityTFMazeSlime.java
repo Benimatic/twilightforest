@@ -39,9 +39,9 @@ public class EntityTFMazeSlime extends SlimeEntity {
 	//TODO: This goes into a factory
 	@Override
 	public boolean getCanSpawnHere() {
-		return this.world.getDifficulty() != Difficulty.PEACEFUL && this.world.checkNoEntityCollision(getEntityBoundingBox())
-				&& this.world.getCollisionBoxes(this, getEntityBoundingBox()).isEmpty()
-				&& !this.world.containsAnyLiquid(getEntityBoundingBox()) && this.isValidLightLevel();
+		return this.world.getDifficulty() != Difficulty.PEACEFUL && this.world.checkNoEntityCollision(getBoundingBox())
+				&& this.world.getCollisionBoxes(this, getBoundingBox()).isEmpty()
+				&& !this.world.containsAnyLiquid(getBoundingBox()) && this.isValidLightLevel();
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class EntityTFMazeSlime extends SlimeEntity {
 			double d0 = this.posX + (double) f2;
 			double d1 = this.posZ + (double) f3;
 			BlockState state = TFBlocks.maze_stone.getDefaultState().with(BlockTFMazestone.VARIANT, MazestoneVariant.BRICK);
-			world.addParticle(ParticleTypes.BLOCK_CRACK, d0, this.getEntityBoundingBox().minY, d1, 0.0D, 0.0D, 0.0D, Block.getStateId(state));
+			world.addParticle(ParticleTypes.BLOCK_CRACK, d0, this.getBoundingBox().minY, d1, 0.0D, 0.0D, 0.0D, Block.getStateId(state));
 		}
 		return true;
 	}

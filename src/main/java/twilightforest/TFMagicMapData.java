@@ -2,16 +2,16 @@ package twilightforest;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapData;
 import net.minecraft.world.storage.MapDecoration;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -27,7 +27,7 @@ public class TFMagicMapData extends MapData {
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound cmp) {
+	public void readFromNBT(CompoundNBT cmp) {
 		super.readFromNBT(cmp);
 
 		byte[] featureStorage = cmp.getByteArray("features");
@@ -37,7 +37,7 @@ public class TFMagicMapData extends MapData {
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound cmp) {
+	public CompoundNBT writeToNBT(CompoundNBT cmp) {
 		cmp = super.writeToNBT(cmp);
 
 		if (this.tfDecorations.size() > 0) {
@@ -118,15 +118,15 @@ public class TFMagicMapData extends MapData {
 		}
 
 		@Override
-		@SideOnly(Side.CLIENT)
+		@OnlyIn(Dist.CLIENT)
 		public boolean render(int idx) {
 			if (TFFeature.getFeatureByID(featureId).isStructureEnabled) {
-				Minecraft.getMinecraft().renderEngine.bindTexture(MAP_ICONS);
+				Minecraft.getInstance().renderEngine.bindTexture(MAP_ICONS);
 				GlStateManager.pushMatrix();
-				GlStateManager.translate(0.0F + getX() / 2.0F + 64.0F, 0.0F + getY() / 2.0F + 64.0F, -0.02F);
-				GlStateManager.rotate((float) (getRotation() * 360) / 16.0F, 0.0F, 0.0F, 1.0F);
-				GlStateManager.scale(4.0F, 4.0F, 3.0F);
-				GlStateManager.translate(-0.125F, 0.125F, 0.0F);
+				GlStateManager.translatef(0.0F + getX() / 2.0F + 64.0F, 0.0F + getY() / 2.0F + 64.0F, -0.02F);
+				GlStateManager.rotatef((float) (getRotation() * 360) / 16.0F, 0.0F, 0.0F, 1.0F);
+				GlStateManager.scalef(4.0F, 4.0F, 3.0F);
+				GlStateManager.translatef(-0.125F, 0.125F, 0.0F);
 				float f1 = (float) (featureId % 8) / 8.0F;
 				float f2 = (float) (featureId / 8) / 8.0F;
 				float f3 = (float) (featureId % 8 + 1) / 8.0F;

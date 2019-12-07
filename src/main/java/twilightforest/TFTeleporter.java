@@ -2,12 +2,12 @@ package twilightforest;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Blocks;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
@@ -108,7 +108,7 @@ public class TFTeleporter extends Teleporter {
 			return false;
 		}
 
-		for (EnumFacing facing : EnumFacing.Plane.HORIZONTAL) {
+		for (Direction facing : Direction.Plane.HORIZONTAL) {
 			if (!isSafe(pos.offset(facing, 16), entity, checkProgression)) {
 				return false;
 			}
@@ -249,7 +249,7 @@ public class TFTeleporter extends Teleporter {
 		return Math.min(worldHeight, chunkHeight);
 	}
 
-	private static boolean isPortal(IBlockState state) {
+	private static boolean isPortal(BlockState state) {
 		return state.getBlock() == TFBlocks.twilight_portal;
 	}
 
@@ -262,7 +262,7 @@ public class TFTeleporter extends Teleporter {
 	}
 
 	private void checkAdjacent(BlockPos pos, Set<BlockPos> checked, Set<BlockPos> result) {
-		for (EnumFacing facing : EnumFacing.Plane.HORIZONTAL) {
+		for (Direction facing : Direction.Plane.HORIZONTAL) {
 			BlockPos offset = pos.offset(facing);
 			if (!checked.add(offset)) continue;
 			if (isPortalAt(offset)) {
@@ -428,7 +428,7 @@ public class TFTeleporter extends Teleporter {
 		}
 
 		// grass all around it
-		IBlockState grass = Blocks.GRASS.getDefaultState();
+		BlockState grass = Blocks.GRASS.getDefaultState();
 
 		world.setBlockState(pos.west().north(), grass);
 		world.setBlockState(pos.north(), grass);
@@ -447,7 +447,7 @@ public class TFTeleporter extends Teleporter {
 		world.setBlockState(pos.east(2).south(2), grass);
 
 		// dirt under it
-		IBlockState dirt = Blocks.DIRT.getDefaultState();
+		BlockState dirt = Blocks.DIRT.getDefaultState();
 
 		world.setBlockState(pos.down(), dirt);
 		world.setBlockState(pos.east().down(), dirt);
@@ -455,7 +455,7 @@ public class TFTeleporter extends Teleporter {
 		world.setBlockState(pos.east().south().down(), dirt);
 
 		// portal in it
-		IBlockState portal = TFBlocks.twilight_portal.getDefaultState().withProperty(BlockTFPortal.DISALLOW_RETURN, !TFConfig.shouldReturnPortalBeUsable);
+		BlockState portal = TFBlocks.twilight_portal.getDefaultState().withProperty(BlockTFPortal.DISALLOW_RETURN, !TFConfig.shouldReturnPortalBeUsable);
 
 		world.setBlockState(pos, portal, 2);
 		world.setBlockState(pos.east(), portal, 2);
@@ -491,7 +491,7 @@ public class TFTeleporter extends Teleporter {
 		return pos;
 	}
 
-	private IBlockState randNatureBlock(Random random) {
+	private BlockState randNatureBlock(Random random) {
 		Block[] blocks = {Blocks.BROWN_MUSHROOM, Blocks.RED_MUSHROOM, Blocks.TALLGRASS, Blocks.RED_FLOWER, Blocks.YELLOW_FLOWER};
 		return blocks[random.nextInt(blocks.length)].getDefaultState();
 	}

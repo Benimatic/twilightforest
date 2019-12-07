@@ -7,7 +7,7 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.creativetab.CreativeTabs;
@@ -15,15 +15,15 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
 import twilightforest.entity.EntityTFSlideBlock;
@@ -48,7 +48,7 @@ public class BlockTFSlider extends BlockRotatedPillar implements ModelRegisterCa
 		this.setCreativeTab(TFItems.creativeTab);
 		this.setHardness(2.0F);
 		this.setResistance(10.0F);
-		this.setDefaultState(blockState.getBaseState().withProperty(AXIS, EnumFacing.Axis.Y).withProperty(DELAY, 0));
+		this.setDefaultState(blockState.getBaseState().withProperty(AXIS, Direction.Axis.Y).withProperty(DELAY, 0));
 	}
 
 	@Override
@@ -57,18 +57,18 @@ public class BlockTFSlider extends BlockRotatedPillar implements ModelRegisterCa
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(BlockState state) {
 		return super.getMetaFromState(state) | state.getValue(DELAY);
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
+	public BlockState getStateFromMeta(int meta) {
 		return super.getStateFromMeta(meta).withProperty(DELAY, meta & 0b11);
 	}
 
 	@Override
 	@Deprecated
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess world, BlockPos pos) {
 		switch (state.getValue(AXIS)) {
 			case Y:
 			default:
@@ -82,24 +82,24 @@ public class BlockTFSlider extends BlockRotatedPillar implements ModelRegisterCa
 
 	@Override
 	@Deprecated
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(BlockState state) {
 		return false;
 	}
 
 	@Override
 	@Deprecated
-	public boolean isFullCube(IBlockState state) {
+	public boolean isFullCube(BlockState state) {
 		return false;
 	}
 
 	@Override
 	@Deprecated
-	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face) {
 		return BlockFaceShape.UNDEFINED;
 	}
 
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random random) {
+	public void updateTick(World world, BlockPos pos, BlockState state, Random random) {
 		if (!world.isRemote && this.isConnectedInRange(world, pos)) {
 			//world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, TwilightForestMod.ID + ":random.creakstart", 0.75F, 1.5F);
 
@@ -114,21 +114,21 @@ public class BlockTFSlider extends BlockRotatedPillar implements ModelRegisterCa
 	 * Check if there is any players in range, and also recursively check connected blocks
 	 */
 	public boolean isConnectedInRange(World world, BlockPos pos) {
-		EnumFacing.Axis axis = world.getBlockState(pos).getValue(AXIS);
+		Direction.Axis axis = world.getBlockState(pos).getValue(AXIS);
 
 		switch (axis) {
 			case Y:
-				return this.anyPlayerInRange(world, pos) || this.isConnectedInRangeRecursive(world, pos, EnumFacing.UP) || this.isConnectedInRangeRecursive(world, pos, EnumFacing.DOWN);
+				return this.anyPlayerInRange(world, pos) || this.isConnectedInRangeRecursive(world, pos, Direction.UP) || this.isConnectedInRangeRecursive(world, pos, Direction.DOWN);
 			case X:
-				return this.anyPlayerInRange(world, pos) || this.isConnectedInRangeRecursive(world, pos, EnumFacing.WEST) || this.isConnectedInRangeRecursive(world, pos, EnumFacing.EAST);
+				return this.anyPlayerInRange(world, pos) || this.isConnectedInRangeRecursive(world, pos, Direction.WEST) || this.isConnectedInRangeRecursive(world, pos, Direction.EAST);
 			case Z:
-				return this.anyPlayerInRange(world, pos) || this.isConnectedInRangeRecursive(world, pos, EnumFacing.NORTH) || this.isConnectedInRangeRecursive(world, pos, EnumFacing.SOUTH);
+				return this.anyPlayerInRange(world, pos) || this.isConnectedInRangeRecursive(world, pos, Direction.NORTH) || this.isConnectedInRangeRecursive(world, pos, Direction.SOUTH);
 			default:
 				return this.anyPlayerInRange(world, pos);
 		}
 	}
 
-	private boolean isConnectedInRangeRecursive(World world, BlockPos pos, EnumFacing dir) {
+	private boolean isConnectedInRangeRecursive(World world, BlockPos pos, Direction dir) {
 		BlockPos dPos = pos.offset(dir);
 
 		if (world.getBlockState(pos) == world.getBlockState(dPos)) {
@@ -149,7 +149,7 @@ public class BlockTFSlider extends BlockRotatedPillar implements ModelRegisterCa
 	}
 
 	@Override
-	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
+	public void onBlockAdded(World world, BlockPos pos, BlockState state) {
 		scheduleBlockUpdate(world, pos);
 	}
 
@@ -162,7 +162,7 @@ public class BlockTFSlider extends BlockRotatedPillar implements ModelRegisterCa
 	}
 
 	@Override
-	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
+	public void onEntityCollision(World world, BlockPos pos, BlockState state, Entity entity) {
 		entity.attackEntityFrom(DamageSource.GENERIC, BLOCK_DAMAGE);
 		if (entity instanceof EntityLivingBase) {
 			double kx = (pos.getX() + 0.5 - entity.posX) * 2.0;
@@ -172,7 +172,7 @@ public class BlockTFSlider extends BlockRotatedPillar implements ModelRegisterCa
 		}
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void registerModel() {
 		IStateMapper stateMapper = new StateMap.Builder().ignore(DELAY).build();

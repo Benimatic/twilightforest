@@ -21,8 +21,8 @@ public class PacketStructureProtectionClear implements IMessage {
 	public static class Handler implements IMessageHandler<PacketStructureProtectionClear, IMessage> {
 		@Override
 		public IMessage onMessage(PacketStructureProtectionClear message, MessageContext ctx) {
-			Minecraft.getMinecraft().addScheduledTask(() -> {
-				WorldProvider provider = Minecraft.getMinecraft().world.provider;
+			Minecraft.getInstance().addScheduledTask(() -> {
+				WorldProvider provider = Minecraft.getInstance().world.provider;
 
 				// add weather box if needed
 				if (provider instanceof WorldProviderTwilightForest) {

@@ -29,7 +29,7 @@ import java.util.List;
 
 import static java.util.Arrays.stream;
 import static net.minecraft.init.MobEffects.REGENERATION;
-import static net.minecraft.inventory.EntityEquipmentSlot.*;
+import static net.minecraft.inventory.EquipmentSlotType.*;
 import static net.minecraft.item.Item.ToolMaterial.DIAMOND;
 import static net.minecraft.item.Item.ToolMaterial.GOLD;
 import static twilightforest.item.TFItems.*;

@@ -2,9 +2,9 @@ package twilightforest.structures.hollowtree;
 
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLog;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -44,7 +44,7 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 		this.tilt = tilt;
 		this.leafy = leafy;
 
-		this.setCoordBaseMode(EnumFacing.SOUTH);
+		this.setCoordBaseMode(Direction.SOUTH);
 
 		this.boundingBox = new StructureBoundingBox(src, dest);
 
@@ -65,7 +65,7 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 	 * Save to NBT
 	 */
 	@Override
-	protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 		super.writeStructureToNBT(tagCompound);
 
 		tagCompound.setInteger("srcPosX", this.src.getX());
@@ -85,7 +85,7 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 	 * Load from NBT
 	 */
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager templateManager) {
+	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
 		super.readStructureFromNBT(tagCompound, templateManager);
 
 
@@ -118,7 +118,7 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 
 		if (!drawLeaves)
 		{
-			IBlockState log = TFBlocks.twilight_log.getDefaultState().withProperty(LOG_AXIS, BlockLog.EnumAxis.NONE);
+			BlockState log = TFBlocks.twilight_log.getDefaultState().withProperty(LOG_AXIS, BlockLog.EnumAxis.NONE);
 			drawBresehnam(world, sbb, rSrc.getX(), rSrc.getY(), rSrc.getZ(), rDest.getX(), rDest.getY(), rDest.getZ(), log);
 			drawBresehnam(world, sbb, rSrc.getX(), rSrc.getY() + 1, rSrc.getZ(), rDest.getX(), rDest.getY(), rDest.getZ(), log);
 		}
@@ -162,7 +162,7 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 	/**
 	 * Draws a line
 	 */
-	protected void drawBresehnam(World world, StructureBoundingBox sbb, int x1, int y1, int z1, int x2, int y2, int z2, IBlockState blockState) {
+	protected void drawBresehnam(World world, StructureBoundingBox sbb, int x1, int y1, int z1, int x2, int y2, int z2, BlockState blockState) {
 		BlockPos lineCoords[] = TFGenerator.getBresehnamArrays(x1, y1, z1, x2, y2, z2);
 
 		for (BlockPos coords : lineCoords) {
@@ -193,7 +193,7 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 					// if we're inside the blob, fill it
 					if (dist <= radius) {
 						// do eight at a time for easiness!
-						final IBlockState leaves = TFBlocks.twilight_leaves.getDefaultState().withProperty(BlockLeaves.CHECK_DECAY, false);
+						final BlockState leaves = TFBlocks.twilight_leaves.getDefaultState().withProperty(BlockLeaves.CHECK_DECAY, false);
 						placeLeafBlock(world, leaves, sx + dx, sy + dy, sz + dz, sbb);
 						placeLeafBlock(world, leaves, sx + dx, sy + dy, sz - dz, sbb);
 						placeLeafBlock(world, leaves, sx - dx, sy + dy, sz + dz, sbb);
@@ -218,7 +218,7 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 
 		if (!drawLeaves)
 		{
-			IBlockState log = TFBlocks.twilight_log.getDefaultState().withProperty(LOG_AXIS, BlockLog.EnumAxis.NONE);
+			BlockState log = TFBlocks.twilight_log.getDefaultState().withProperty(LOG_AXIS, BlockLog.EnumAxis.NONE);
 			drawBresehnam(world, sbb, sx, sy, sz, branchDest.getX(), branchDest.getY(), branchDest.getZ(), log);
 		}
 		else

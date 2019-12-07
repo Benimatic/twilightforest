@@ -5,12 +5,12 @@ import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.block.Blocks;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
@@ -29,7 +29,7 @@ public class BlockTFShield extends Block implements ModelRegisterCallback {
 		this.setResistance(6000000.0F);
 		this.setSoundType(SoundType.METAL);
 		this.setCreativeTab(TFItems.creativeTab);
-		this.setDefaultState(blockState.getBaseState().withProperty(BlockDirectional.FACING, EnumFacing.DOWN));
+		this.setDefaultState(blockState.getBaseState().withProperty(BlockDirectional.FACING, Direction.DOWN));
 	}
 
 	@Override
@@ -38,14 +38,14 @@ public class BlockTFShield extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(BlockState state) {
 		return state.getValue(BlockDirectional.FACING).getIndex();
 	}
 
 	@Override
 	@Deprecated
-	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.byIndex(meta));
+	public BlockState getStateFromMeta(int meta) {
+		return getDefaultState().withProperty(BlockDirectional.FACING, Direction.byIndex(meta));
 	}
 
 	@Override
@@ -55,18 +55,18 @@ public class BlockTFShield extends Block implements ModelRegisterCallback {
 
 	@Override
 	@Deprecated
-	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-		return getDefaultState().withProperty(BlockDirectional.FACING, EnumFacing.getDirectionFromEntityLiving(pos, placer));
+	public BlockState getStateForPlacement(World worldIn, BlockPos pos, Direction facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+		return getDefaultState().withProperty(BlockDirectional.FACING, Direction.getDirectionFromEntityLiving(pos, placer));
 	}
 
 	@Override
 	@Deprecated
-	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World world, BlockPos pos) {
+	public float getPlayerRelativeBlockHardness(BlockState state, PlayerEntity player, World world, BlockPos pos) {
 		// why can't we just pass the side to this method?  This is annoying and failure-prone
 		RayTraceResult ray = EntityUtil.rayTrace(player, range -> range + 1.0);
 
-		EnumFacing hitFace = ray != null ? ray.sideHit : null;
-		EnumFacing blockFace = state.getValue(BlockDirectional.FACING);
+		Direction hitFace = ray != null ? ray.sideHit : null;
+		Direction blockFace = state.getValue(BlockDirectional.FACING);
 
 		if (hitFace == blockFace) {
 			return player.getDigSpeed(Blocks.STONE.getDefaultState(), pos) / 1.5F / 100F;
@@ -81,17 +81,17 @@ public class BlockTFShield extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
+	public boolean canSilkHarvest(World world, BlockPos pos, BlockState state, PlayerEntity player) {
 		return false;
 	}
 
 	@Override
-	public int damageDropped(IBlockState state) {
+	public int damageDropped(BlockState state) {
 		return 0;
 	}
 
 	@Override
-	public boolean canEntityDestroy(IBlockState state, IBlockAccess world, BlockPos pos, Entity entity) {
+	public boolean canEntityDestroy(BlockState state, IBlockAccess world, BlockPos pos, Entity entity) {
 		return false;
 	}
 }

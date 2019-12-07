@@ -1,7 +1,7 @@
 package twilightforest.world.feature;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.block.BlockTFRoots;
@@ -12,8 +12,8 @@ import java.util.Random;
 
 public class TFGenWoodRoots extends TFGenerator {
 
-	private IBlockState rootBlock = TFBlocks.root.getDefaultState();
-	private IBlockState oreBlock = TFBlocks.root.getDefaultState().withProperty(BlockTFRoots.VARIANT, RootVariant.LIVEROOT);
+	private BlockState rootBlock = TFBlocks.root.getDefaultState();
+	private BlockState oreBlock = TFBlocks.root.getDefaultState().withProperty(BlockTFRoots.VARIANT, RootVariant.LIVEROOT);
 
 	@Override
 	public boolean generate(World world, Random rand, BlockPos pos) {
@@ -106,7 +106,7 @@ public class TFGenWoodRoots extends TFGenerator {
 	/**
 	 * Function used to actually place root blocks if they're not going to break anything important
 	 */
-	protected void placeRootBlock(World world, BlockPos pos, IBlockState state) {
+	protected void placeRootBlock(World world, BlockPos pos, BlockState state) {
 		if (TFTreeGenerator.canRootGrowIn(world, pos)) {
 			this.setBlockAndNotifyAdequately(world, pos, state);
 		}

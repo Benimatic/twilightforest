@@ -7,9 +7,9 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -58,7 +58,7 @@ public abstract class BlockTFConnectableRotatedPillar extends BlockRotatedPillar
             this.boundingBoxHeightUpper = 16d-this.boundingBoxHeightLower;
         }
 
-        this.setDefaultState(blockState.getBaseState().withProperty(AXIS, EnumFacing.Axis.Y)
+        this.setDefaultState(blockState.getBaseState().withProperty(AXIS, Direction.Axis.Y)
                 .withProperty(BlockFence.NORTH, false).withProperty(BlockFence.WEST, false)
                 .withProperty(BlockFence.SOUTH, false).withProperty(BlockFence.EAST, false));
     }
@@ -74,42 +74,42 @@ public abstract class BlockTFConnectableRotatedPillar extends BlockRotatedPillar
     }
 
     @Override
-    public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
+    public BlockState getActualState(BlockState state, IBlockAccess world, BlockPos pos) {
         // If our axis is rotated (i.e. not upright), then adjust the actual sides tested
         // This allows the entire model to be rotated in the assets in a cleaner way
 
-        EnumFacing.Axis axis = state.getValue(AXIS);
+        Direction.Axis axis = state.getValue(AXIS);
 
         for (PairHelper pair : PairHelper.values()) {
-            EnumFacing connectTo = PairHelper.getFacingFromPropertyWithAxis(pair.property, axis);
+            Direction connectTo = PairHelper.getFacingFromPropertyWithAxis(pair.property, axis);
             state = state.withProperty(pair.property, canConnectTo(state, world.getBlockState(pos.offset(connectTo)), world, pos, connectTo));
         }
 
         return state;
     }
 
-    protected boolean canConnectTo(IBlockState state, IBlockState otherState, IBlockAccess world, BlockPos pos, EnumFacing connectTo) {
+    protected boolean canConnectTo(BlockState state, BlockState otherState, IBlockAccess world, BlockPos pos, Direction connectTo) {
         return state.getBlock() == otherState.getBlock() && state.getValue(AXIS) != connectTo.getAxis();
     }
 
     @Override
-    public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB aabb, List<AxisAlignedBB> list, @Nullable Entity entity, boolean useActualState) {
+    public void addCollisionBoxToList(BlockState state, World world, BlockPos pos, AxisAlignedBB aabb, List<AxisAlignedBB> list, @Nullable Entity entity, boolean useActualState) {
         if (!useActualState) state = this.getActualState(state, world, pos);
 
-        EnumFacing.Axis axis = state.getValue(AXIS);
+        Direction.Axis axis = state.getValue(AXIS);
 
         // Add main pillar
         addCollisionBoxToList(pos, aabb, list, makeQuickAABB(
-                axis == EnumFacing.Axis.X ? 16d : this.boundingBoxWidthLower,
-                axis == EnumFacing.Axis.Y ? 16d : this.boundingBoxWidthLower,
-                axis == EnumFacing.Axis.Z ? 16d : this.boundingBoxWidthLower,
-                axis == EnumFacing.Axis.X ?  0d : this.boundingBoxWidthUpper,
-                axis == EnumFacing.Axis.Y ?  0d : this.boundingBoxWidthUpper,
-                axis == EnumFacing.Axis.Z ?  0d : this.boundingBoxWidthUpper));
+                axis == Direction.Axis.X ? 16d : this.boundingBoxWidthLower,
+                axis == Direction.Axis.Y ? 16d : this.boundingBoxWidthLower,
+                axis == Direction.Axis.Z ? 16d : this.boundingBoxWidthLower,
+                axis == Direction.Axis.X ?  0d : this.boundingBoxWidthUpper,
+                axis == Direction.Axis.Y ?  0d : this.boundingBoxWidthUpper,
+                axis == Direction.Axis.Z ?  0d : this.boundingBoxWidthUpper));
 
         // Add axillary pillar connections
         // Cycle through all possible faces
-        for (EnumFacing facing : EnumFacing.VALUES) {
+        for (Direction facing : Direction.VALUES) {
             // If the facing in loop doesn't cover the axis of the block and if that side's state is true, then add to list
             if (facing.getAxis() != axis && state.getValue(PairHelper.getPropertyFromFacingWithAxis(facing, axis))) {
                 // Create AABB piece and add to list
@@ -119,18 +119,18 @@ public abstract class BlockTFConnectableRotatedPillar extends BlockRotatedPillar
     }
 
     // Utility to make a bounding-box piece
-    protected AxisAlignedBB getSidedAABBStraight(EnumFacing facing, EnumFacing.Axis axis) {
+    protected AxisAlignedBB getSidedAABBStraight(Direction facing, Direction.Axis axis) {
         return makeQuickAABB(
-                facing == EnumFacing.EAST  ? 16d : axis == EnumFacing.Axis.X ? this.boundingBoxHeightLower : this.boundingBoxWidthLower,
-                facing == EnumFacing.UP    ? 16d : axis == EnumFacing.Axis.Y ? this.boundingBoxHeightLower : this.boundingBoxWidthLower,
-                facing == EnumFacing.SOUTH ? 16d : axis == EnumFacing.Axis.Z ? this.boundingBoxHeightLower : this.boundingBoxWidthLower,
-                facing == EnumFacing.WEST  ?  0d : axis == EnumFacing.Axis.X ? this.boundingBoxHeightUpper : this.boundingBoxWidthUpper,
-                facing == EnumFacing.DOWN  ?  0d : axis == EnumFacing.Axis.Y ? this.boundingBoxHeightUpper : this.boundingBoxWidthUpper,
-                facing == EnumFacing.NORTH ?  0d : axis == EnumFacing.Axis.Z ? this.boundingBoxHeightUpper : this.boundingBoxWidthUpper);
+                facing == Direction.EAST  ? 16d : axis == Direction.Axis.X ? this.boundingBoxHeightLower : this.boundingBoxWidthLower,
+                facing == Direction.UP    ? 16d : axis == Direction.Axis.Y ? this.boundingBoxHeightLower : this.boundingBoxWidthLower,
+                facing == Direction.SOUTH ? 16d : axis == Direction.Axis.Z ? this.boundingBoxHeightLower : this.boundingBoxWidthLower,
+                facing == Direction.WEST  ?  0d : axis == Direction.Axis.X ? this.boundingBoxHeightUpper : this.boundingBoxWidthUpper,
+                facing == Direction.DOWN  ?  0d : axis == Direction.Axis.Y ? this.boundingBoxHeightUpper : this.boundingBoxWidthUpper,
+                facing == Direction.NORTH ?  0d : axis == Direction.Axis.Z ? this.boundingBoxHeightUpper : this.boundingBoxWidthUpper);
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+    public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess world, BlockPos pos) {
         state = this.getActualState(state, world, pos);
 
         switch (state.getValue(AXIS)) {
@@ -173,57 +173,57 @@ public abstract class BlockTFConnectableRotatedPillar extends BlockRotatedPillar
 
     @Override
     @Deprecated
-    public boolean isOpaqueCube(IBlockState state) {
+    public boolean isOpaqueCube(BlockState state) {
         return false;
     }
 
     @Override
     @Deprecated
-    public boolean isFullCube(IBlockState state) {
+    public boolean isFullCube(BlockState state) {
         return false;
     }
 
     enum PairHelper {
-        NORTH(EnumFacing.NORTH, BlockFence.NORTH),
-        EAST (EnumFacing.EAST , BlockFence.EAST ),
-        SOUTH(EnumFacing.SOUTH, BlockFence.SOUTH),
-        WEST (EnumFacing.WEST , BlockFence.WEST );
+        NORTH(Direction.NORTH, BlockFence.NORTH),
+        EAST (Direction.EAST , BlockFence.EAST ),
+        SOUTH(Direction.SOUTH, BlockFence.SOUTH),
+        WEST (Direction.WEST , BlockFence.WEST );
 
-        final EnumFacing facing;
+        final Direction facing;
         final PropertyBool property;
 
-        PairHelper(EnumFacing facing, PropertyBool property) {
+        PairHelper(Direction facing, PropertyBool property) {
             this.facing = facing;
             this.property = property;
         }
 
-        static EnumFacing getFacingFromPropertyWithAxis(PropertyBool property, EnumFacing.Axis axis) {
+        static Direction getFacingFromPropertyWithAxis(PropertyBool property, Direction.Axis axis) {
             switch (axis) {
                 case X:
-                    if (property == BlockFence.NORTH) return EnumFacing.DOWN;
-                    if (property == BlockFence.SOUTH) return EnumFacing.UP;
-                    if (property == BlockFence.WEST ) return EnumFacing.NORTH;
-                    if (property == BlockFence.EAST ) return EnumFacing.SOUTH;
+                    if (property == BlockFence.NORTH) return Direction.DOWN;
+                    if (property == BlockFence.SOUTH) return Direction.UP;
+                    if (property == BlockFence.WEST ) return Direction.NORTH;
+                    if (property == BlockFence.EAST ) return Direction.SOUTH;
                     break;
                 case Y:
-                    if (property == BlockFence.NORTH) return EnumFacing.NORTH;
-                    if (property == BlockFence.SOUTH) return EnumFacing.SOUTH;
-                    if (property == BlockFence.WEST ) return EnumFacing.WEST;
-                    if (property == BlockFence.EAST ) return EnumFacing.EAST;
+                    if (property == BlockFence.NORTH) return Direction.NORTH;
+                    if (property == BlockFence.SOUTH) return Direction.SOUTH;
+                    if (property == BlockFence.WEST ) return Direction.WEST;
+                    if (property == BlockFence.EAST ) return Direction.EAST;
                     break;
                 case Z:
-                    if (property == BlockFence.NORTH) return EnumFacing.UP;
-                    if (property == BlockFence.SOUTH) return EnumFacing.DOWN;
-                    if (property == BlockFence.WEST ) return EnumFacing.EAST;
-                    if (property == BlockFence.EAST ) return EnumFacing.WEST;
+                    if (property == BlockFence.NORTH) return Direction.UP;
+                    if (property == BlockFence.SOUTH) return Direction.DOWN;
+                    if (property == BlockFence.WEST ) return Direction.EAST;
+                    if (property == BlockFence.EAST ) return Direction.WEST;
                     break;
             }
 
             TwilightForestMod.LOGGER.warn("ConnectableRotatedPillar helper (getFacingFromPropertyWithAxis) had a problem? (property '{}' with axis '{}')", property.getName(), axis.getName());
-            return EnumFacing.UP;
+            return Direction.UP;
         }
 
-        static PropertyBool getPropertyFromFacingWithAxis(EnumFacing facing, EnumFacing.Axis axis) {
+        static PropertyBool getPropertyFromFacingWithAxis(Direction facing, Direction.Axis axis) {
             switch (axis) {
                 case X:
                     switch (facing) {

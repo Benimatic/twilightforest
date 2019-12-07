@@ -7,26 +7,26 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
 import twilightforest.enums.CompressedVariant;
@@ -55,12 +55,12 @@ public class BlockTFCompressed extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(BlockState state) {
 		return state.getValue(VARIANT).ordinal();
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
+	public BlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(VARIANT, CompressedVariant.values()[meta]);
 	}
 
@@ -72,39 +72,39 @@ public class BlockTFCompressed extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public int getPackedLightmapCoords(IBlockState state, IBlockAccess source, BlockPos pos) {
+	@OnlyIn(Dist.CLIENT)
+	public int getPackedLightmapCoords(BlockState state, IBlockAccess source, BlockPos pos) {
 		return state.getValue(VARIANT) == CompressedVariant.FIERY ? 15728880 : super.getPackedLightmapCoords(state, source, pos);
 	}
 
 	@Override
-	public boolean getUseNeighborBrightness(IBlockState state) {
+	public boolean getUseNeighborBrightness(BlockState state) {
 		return state.getValue(VARIANT) == CompressedVariant.FIERY || super.getUseNeighborBrightness(state);
 	}
 
 	@Override
-	public SoundType getSoundType(IBlockState state, World world, BlockPos pos, @Nullable Entity entity) {
+	public SoundType getSoundType(BlockState state, World world, BlockPos pos, @Nullable Entity entity) {
 		return state.getValue(VARIANT).soundType;
 	}
 
 	@Override
-	public Material getMaterial(IBlockState state) {
+	public Material getMaterial(BlockState state) {
 		return state.getValue(VARIANT).material;
 	}
 
 	@Override
-	public MapColor getMapColor(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public MapColor getMapColor(BlockState state, IBlockAccess world, BlockPos pos) {
 		return state.getValue(VARIANT).mapColor;
 	}
 
 	@Override
-	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World worldIn, BlockPos pos) {
+	public float getPlayerRelativeBlockHardness(BlockState state, PlayerEntity player, World worldIn, BlockPos pos) {
 		// ItemShears#getDestroySpeed is really dumb and doesn't check IShearable so we have to do it this way to try to match the wool break speed with shears
 		return state.getValue(VARIANT) == CompressedVariant.ARCTIC_FUR && player.getHeldItemMainhand().getItem() instanceof ItemShears ? 0.2F : super.getPlayerRelativeBlockHardness(state, player, worldIn, pos);
 	}
 
 	@Override
-	public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
+	public float getBlockHardness(BlockState blockState, World worldIn, BlockPos pos) {
 		switch (blockState.getValue(VARIANT)) {
 			default:
 			case FIERY:
@@ -124,11 +124,11 @@ public class BlockTFCompressed extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public int damageDropped(IBlockState state) {
+	public int damageDropped(BlockState state) {
 		return getMetaFromState(state);
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void registerModel() {
 		List<CompressedVariant> variants = new ArrayList<>(VARIANT.getAllowedValues());
@@ -165,28 +165,28 @@ public class BlockTFCompressed extends Block implements ModelRegisterCallback {
 		}
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT;
 	}
 
 	@Override
-	public boolean isFireSource(World world, BlockPos pos, EnumFacing face) {
+	public boolean isFireSource(World world, BlockPos pos, Direction face) {
 		return CompressedVariant.FIERY == world.getBlockState(pos).getValue(VARIANT);
 	}
 
 	@Override
-	public boolean isStickyBlock(IBlockState state) {
+	public boolean isStickyBlock(BlockState state) {
 		return state.getValue(VARIANT) == CompressedVariant.CARMINITE;
 	}
 
 	@Override
 	@Deprecated
-	@SideOnly(Side.CLIENT)
-	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+	@OnlyIn(Dist.CLIENT)
+	public boolean shouldSideBeRendered(BlockState blockState, IBlockAccess blockAccess, BlockPos pos, Direction side) {
 		if (blockState.getValue(VARIANT) == CompressedVariant.FIERY) {
-			IBlockState state = blockAccess.getBlockState(pos.offset(side));
+			BlockState state = blockAccess.getBlockState(pos.offset(side));
 			return state.getBlock() != this || state.getValue(VARIANT) != CompressedVariant.FIERY;
 		} else return super.shouldSideBeRendered(blockState, blockAccess, pos, side);
 	}

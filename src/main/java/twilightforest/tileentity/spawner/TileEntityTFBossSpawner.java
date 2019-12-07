@@ -1,14 +1,14 @@
 package twilightforest.tileentity.spawner;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.EnumDifficulty;
+import net.minecraft.world.Difficulty;
 
 public abstract class TileEntityTFBossSpawner extends TileEntity implements ITickable {
 
@@ -36,10 +36,10 @@ public abstract class TileEntityTFBossSpawner extends TileEntity implements ITic
 			double rx = pos.getX() + world.rand.nextFloat();
 			double ry = pos.getY() + world.rand.nextFloat();
 			double rz = pos.getZ() + world.rand.nextFloat();
-			world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, rx, ry, rz, 0.0D, 0.0D, 0.0D);
-			world.spawnParticle(EnumParticleTypes.FLAME, rx, ry, rz, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle(ParticleTypes.SMOKE_NORMAL, rx, ry, rz, 0.0D, 0.0D, 0.0D);
+			world.spawnParticle(ParticleTypes.FLAME, rx, ry, rz, 0.0D, 0.0D, 0.0D);
 		} else {
-			if (world.getDifficulty() != EnumDifficulty.PEACEFUL) {
+			if (world.getDifficulty() != Difficulty.PEACEFUL) {
 				if (spawnMyBoss()) {
 					world.destroyBlock(pos, false);
 					spawnedBoss = true;
@@ -79,8 +79,8 @@ public abstract class TileEntityTFBossSpawner extends TileEntity implements ITic
 	 * Any post-creation initialization goes here
 	 */
 	protected void initializeCreature(EntityLiving myCreature) {
-		if (myCreature instanceof EntityCreature) {
-			((EntityCreature) myCreature).setHomePosAndDistance(pos, 46);
+		if (myCreature instanceof CreatureEntity) {
+			((CreatureEntity) myCreature).setHomePosAndDistance(pos, 46);
 		}
 	}
 

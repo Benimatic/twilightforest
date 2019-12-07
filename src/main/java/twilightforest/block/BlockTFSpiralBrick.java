@@ -8,21 +8,21 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
 import twilightforest.enums.Diagonals;
@@ -33,7 +33,7 @@ import javax.annotation.Nullable;
 public class BlockTFSpiralBrick extends Block implements ModelRegisterCallback {
 
     public static final IProperty<Diagonals> DIAGONAL = PropertyEnum.create("diagonal", Diagonals.class);
-    public static final IProperty<EnumFacing.Axis> AXIS_FACING = PropertyEnum.create("axis", EnumFacing.Axis.class);
+    public static final IProperty<Direction.Axis> AXIS_FACING = PropertyEnum.create("axis", Direction.Axis.class);
 
     public BlockTFSpiralBrick() {
         super(Material.ROCK, MapColor.STONE);
@@ -43,7 +43,7 @@ public class BlockTFSpiralBrick extends Block implements ModelRegisterCallback {
         this.setLightOpacity(255);
         this.useNeighborBrightness = true;
         this.setCreativeTab(TFItems.creativeTab);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(DIAGONAL, Diagonals.TOP_RIGHT).withProperty(AXIS_FACING, EnumFacing.Axis.X));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(DIAGONAL, Diagonals.TOP_RIGHT).withProperty(AXIS_FACING, Direction.Axis.X));
     }
 
     @Override
@@ -52,35 +52,35 @@ public class BlockTFSpiralBrick extends Block implements ModelRegisterCallback {
     }
 
     @Override
-    public int getMetaFromState(IBlockState state) {
+    public int getMetaFromState(BlockState state) {
         return (state.getValue(AXIS_FACING).ordinal() << 2) | (state.getValue(DIAGONAL).ordinal());
     }
 
     @Override
-    public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(DIAGONAL, Diagonals.values()[meta & 0b0011]).withProperty(AXIS_FACING, EnumFacing.Axis.values()[(meta & 0b1100) >> 2]);
+    public BlockState getStateFromMeta(int meta) {
+        return this.getDefaultState().withProperty(DIAGONAL, Diagonals.values()[meta & 0b0011]).withProperty(AXIS_FACING, Direction.Axis.values()[(meta & 0b1100) >> 2]);
     }
 
     @Override
-    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-        IBlockState state = worldIn.getBlockState(pos.offset(facing.getOpposite()));
+    public BlockState getStateForPlacement(World worldIn, BlockPos pos, Direction facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+        BlockState state = worldIn.getBlockState(pos.offset(facing.getOpposite()));
 
         if (!placer.isSneaking() && worldIn.getBlockState(pos.offset(facing.getOpposite())).getBlock() instanceof BlockTFSpiralBrick) {
-            EnumFacing.Axis axis = state.getValue(AXIS_FACING);
+            Direction.Axis axis = state.getValue(AXIS_FACING);
 
             return super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer)
                     .withProperty(AXIS_FACING, axis)
-                    .withProperty(DIAGONAL, Diagonals.mirror(state.getValue(DIAGONAL), facing.getAxis() == EnumFacing.Axis.X ? Mirror.LEFT_RIGHT : Mirror.FRONT_BACK));
+                    .withProperty(DIAGONAL, Diagonals.mirror(state.getValue(DIAGONAL), facing.getAxis() == Direction.Axis.X ? Mirror.LEFT_RIGHT : Mirror.FRONT_BACK));
         }
 
-        EnumFacing playerFacing = EnumFacing.getDirectionFromEntityLiving(pos, placer);
+        Direction playerFacing = Direction.getDirectionFromEntityLiving(pos, placer);
 
         return super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer)
                 .withProperty(AXIS_FACING, playerFacing.getAxis())
                 .withProperty(DIAGONAL, getDiagonalFromPlayerPlacement(placer, facing));
     }
 
-    private static Diagonals getDiagonalFromPlayerPlacement(EntityLivingBase placer, EnumFacing facing) {
+    private static Diagonals getDiagonalFromPlayerPlacement(EntityLivingBase placer, Direction facing) {
         int angleX = (int) ((placer.rotationPitch + 180f) / 180f) & 1;
         int angleY = (int) ((placer.rotationYaw + 180f) / 90f) & 3;
 
@@ -122,7 +122,7 @@ public class BlockTFSpiralBrick extends Block implements ModelRegisterCallback {
         return intIn == 0 || intIn == 1;
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void registerModel() {
         IStateMapper stateMapper = new StateMap.Builder().withName(AXIS_FACING).withSuffix("_spiral_bricks").build();
@@ -131,42 +131,42 @@ public class BlockTFSpiralBrick extends Block implements ModelRegisterCallback {
     }
 
     @Override
-    public IBlockState withRotation(IBlockState state, Rotation rot) {
+    public BlockState withRotation(BlockState state, Rotation rot) {
         if (rot == Rotation.NONE) return state;
 
-        EnumFacing.Axis axis = state.getValue(AXIS_FACING);
+        Direction.Axis axis = state.getValue(AXIS_FACING);
 
-        if (axis == EnumFacing.Axis.Y) {
+        if (axis == Direction.Axis.Y) {
             return state.withProperty(DIAGONAL, Diagonals.rotate(state.getValue(DIAGONAL), rot));
         } else {
-            if (rot == Rotation.CLOCKWISE_180 || (axis == EnumFacing.Axis.X && rot == Rotation.COUNTERCLOCKWISE_90) || (axis == EnumFacing.Axis.Z && rot == Rotation.CLOCKWISE_90))
+            if (rot == Rotation.CLOCKWISE_180 || (axis == Direction.Axis.X && rot == Rotation.COUNTERCLOCKWISE_90) || (axis == Direction.Axis.Z && rot == Rotation.CLOCKWISE_90))
                 state = state.withProperty(DIAGONAL, Diagonals.mirror(state.getValue(DIAGONAL), Mirror.LEFT_RIGHT));
 
-            return rot.ordinal() % 2 == 0 ? state : state.withProperty(AXIS_FACING, axis == EnumFacing.Axis.X ? EnumFacing.Axis.Z : EnumFacing.Axis.X);
+            return rot.ordinal() % 2 == 0 ? state : state.withProperty(AXIS_FACING, axis == Direction.Axis.X ? Direction.Axis.Z : Direction.Axis.X);
         }
     }
 
     @Override
-    public IBlockState withMirror(IBlockState state, Mirror mirrorIn) {
+    public BlockState withMirror(BlockState state, Mirror mirrorIn) {
         return state.withProperty(DIAGONAL, Diagonals.mirrorOn(state.getValue(AXIS_FACING), state.getValue(DIAGONAL), mirrorIn));
     }
 
     @Override
-    public boolean rotateBlock(World world, BlockPos pos, EnumFacing facing) {
-        IBlockState state = world.getBlockState(pos);
+    public boolean rotateBlock(World world, BlockPos pos, Direction facing) {
+        BlockState state = world.getBlockState(pos);
 
         if (facing.getAxis() == state.getValue(AXIS_FACING)) {
             state = state.cycleProperty(DIAGONAL);
         } else {
             switch (facing.getAxis()) {
                 case X:
-                    state = state.withProperty(AXIS_FACING, state.getValue(AXIS_FACING) == EnumFacing.Axis.Y ? EnumFacing.Axis.Z : EnumFacing.Axis.Y);
+                    state = state.withProperty(AXIS_FACING, state.getValue(AXIS_FACING) == Direction.Axis.Y ? Direction.Axis.Z : Direction.Axis.Y);
                     break;
                 case Y:
-                    state = state.withProperty(AXIS_FACING, state.getValue(AXIS_FACING) == EnumFacing.Axis.X ? EnumFacing.Axis.Z : EnumFacing.Axis.X);
+                    state = state.withProperty(AXIS_FACING, state.getValue(AXIS_FACING) == Direction.Axis.X ? Direction.Axis.Z : Direction.Axis.X);
                     break;
                 case Z:
-                    state = state.withProperty(AXIS_FACING, state.getValue(AXIS_FACING) == EnumFacing.Axis.Y ? EnumFacing.Axis.X : EnumFacing.Axis.Y);
+                    state = state.withProperty(AXIS_FACING, state.getValue(AXIS_FACING) == Direction.Axis.Y ? Direction.Axis.X : Direction.Axis.Y);
                     break;
             }
         }
@@ -177,30 +177,30 @@ public class BlockTFSpiralBrick extends Block implements ModelRegisterCallback {
 
     @Override
     @Nullable
-    public EnumFacing[] getValidRotations(World world, BlockPos pos) {
-        return EnumFacing.values();
+    public Direction[] getValidRotations(World world, BlockPos pos) {
+        return Direction.values();
     }
 
     @Override
-    public boolean isFullCube(IBlockState state) {
+    public boolean isFullCube(BlockState state) {
         return false;
     }
 
     @Override
-    public boolean isOpaqueCube(IBlockState state) {
+    public boolean isOpaqueCube(BlockState state) {
         return false;
     }
 
     @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face) {
 
-        EnumFacing.Axis axis = state.getValue(AXIS_FACING);
+        Direction.Axis axis = state.getValue(AXIS_FACING);
         if (face.getAxis() == axis) {
             return BlockFaceShape.UNDEFINED;
         }
 
-        EnumFacing top  = axis == EnumFacing.Axis.Y ? EnumFacing.NORTH : EnumFacing.UP;
-        EnumFacing left = axis == EnumFacing.Axis.X ? EnumFacing.SOUTH : EnumFacing.WEST;
+        Direction top  = axis == Direction.Axis.Y ? Direction.NORTH : Direction.UP;
+        Direction left = axis == Direction.Axis.X ? Direction.SOUTH : Direction.WEST;
 
         Diagonals diagonal = state.getValue(DIAGONAL);
         if (face == (diagonal.isLeft() ? left : left.getOpposite()) || face == (diagonal.isTop() ? top : top.getOpposite())) {
@@ -211,12 +211,12 @@ public class BlockTFSpiralBrick extends Block implements ModelRegisterCallback {
     }
 
     @Override
-    public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face) {
+    public boolean doesSideBlockRendering(BlockState state, IBlockAccess world, BlockPos pos, Direction face) {
         return getBlockFaceShape(world, state, pos, face) == BlockFaceShape.SOLID;
     }
 
     @Override
-    protected ItemStack getSilkTouchDrop(IBlockState state) {
+    protected ItemStack getSilkTouchDrop(BlockState state) {
         return new ItemStack(Item.getItemFromBlock(this));
     }
 }

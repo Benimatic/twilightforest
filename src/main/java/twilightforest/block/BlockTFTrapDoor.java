@@ -5,7 +5,7 @@ import net.minecraft.block.BlockTrapDoor;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -26,12 +26,12 @@ public class BlockTFTrapDoor extends BlockTrapDoor implements ModelRegisterCallb
     }
 
     @Override
-    public MapColor getMapColor(IBlockState state, IBlockAccess world, BlockPos pos) {
+    public MapColor getMapColor(BlockState state, IBlockAccess world, BlockPos pos) {
         return mapColor;
     }
 
     @Override
-    public PathNodeType getAiPathNodeType(IBlockState state, IBlockAccess world, BlockPos pos) {
+    public PathNodeType getAiPathNodeType(BlockState state, IBlockAccess world, BlockPos pos) {
         return PathNodeType.TRAPDOOR;
     }
 }

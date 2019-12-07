@@ -1,9 +1,9 @@
 package twilightforest.structures.trollcave;
 
 import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -40,7 +40,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 
 	public ComponentTFTrollCaveMain(TFFeature feature, World world, Random rand, int i, int x, int y, int z) {
 		super(feature, i);
-		this.setCoordBaseMode(EnumFacing.SOUTH);
+		this.setCoordBaseMode(Direction.SOUTH);
 
 		// adjust y
 		y += 10;
@@ -49,11 +49,11 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 		this.height = 20;
 
 		int radius = this.size / 2;
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -radius, -this.height, -radius, this.size, this.height, this.size, EnumFacing.SOUTH);
+		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -radius, -this.height, -radius, this.size, this.height, this.size, Direction.SOUTH);
 	}
 
 	@Override
-	protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 		super.writeStructureToNBT(tagCompound);
 
 		tagCompound.setInteger("size", this.size);
@@ -61,7 +61,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 	}
 
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager templateManager) {
+	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
 		super.readStructureFromNBT(tagCompound, templateManager);
 
 		this.size = tagCompound.getInteger("size");
@@ -88,7 +88,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 	}
 
 	protected boolean makeSmallerCave(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int caveSize, int caveHeight, Rotation rotation) {
-		EnumFacing direction = getStructureRelativeRotation(rotation);
+		Direction direction = getStructureRelativeRotation(rotation);
 		BlockPos dest = offsetTowerCCoords(x, y, z, caveSize, direction);
 
 		ComponentTFTrollCaveConnect cave = new ComponentTFTrollCaveConnect(getFeatureType(), index, dest.getX(), dest.getY(), dest.getZ(), caveSize, caveHeight, direction);
@@ -190,19 +190,19 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 	 * Provides coordinates to make a tower such that it will open into the parent tower at the provided coordinates.
 	 */
 	@Override
-	protected BlockPos offsetTowerCCoords(int x, int y, int z, int towerSize, EnumFacing direction) {
+	protected BlockPos offsetTowerCCoords(int x, int y, int z, int towerSize, Direction direction) {
 
 		int dx = getXWithOffset(x, z);
 		int dy = getYWithOffset(y);
 		int dz = getZWithOffset(x, z);
 
-		if (direction == EnumFacing.SOUTH) {
+		if (direction == Direction.SOUTH) {
 			return new BlockPos(dx - 1, dy - 1, dz - towerSize / 2);
-		} else if (direction == EnumFacing.WEST) {
+		} else if (direction == Direction.WEST) {
 			return new BlockPos(dx + towerSize / 2, dy - 1, dz - 1);
-		} else if (direction == EnumFacing.NORTH) {
+		} else if (direction == Direction.NORTH) {
 			return new BlockPos(dx + 1, dy - 1, dz + towerSize / 2);
-		} else if (direction == EnumFacing.EAST) {
+		} else if (direction == Direction.EAST) {
 			return new BlockPos(dx - towerSize / 2, dy - 1, dz + 1);
 		}
 

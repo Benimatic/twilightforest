@@ -2,8 +2,8 @@ package twilightforest.world.feature;
 
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockRotatedPillar;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.block.TFBlocks;
@@ -24,13 +24,13 @@ public class TFGenThorns extends TFGenerator {
 		int nextLength = 2 + rand.nextInt(4);
 		int maxLength = 2 + rand.nextInt(4) + rand.nextInt(4) + rand.nextInt(4);
 
-		placeThorns(world, rand, pos, nextLength, EnumFacing.UP, maxLength, pos);
+		placeThorns(world, rand, pos, nextLength, Direction.UP, maxLength, pos);
 
 
 		return true;
 	}
 
-	private void placeThorns(World world, Random rand, BlockPos pos, int length, EnumFacing dir, int maxLength, BlockPos oPos) {
+	private void placeThorns(World world, Random rand, BlockPos pos, int length, Direction dir, int maxLength, BlockPos oPos) {
 		boolean complete = false;
 		for (int i = 0; i < length; i++) {
 			BlockPos dPos = pos.offset(dir, i);
@@ -60,7 +60,7 @@ public class TFGenThorns extends TFGenerator {
 		// add another off the end
 		if (complete && maxLength > 1) {
 
-			EnumFacing nextDir = EnumFacing.random(rand);
+			Direction nextDir = Direction.random(rand);
 
 			BlockPos nextPos = pos.offset(dir, length - 1).offset(nextDir);
 			int nextLength = 1 + rand.nextInt(maxLength);
@@ -73,7 +73,7 @@ public class TFGenThorns extends TFGenerator {
 
 			int middle = rand.nextInt(length);
 
-			EnumFacing nextDir = EnumFacing.random(rand);
+			Direction nextDir = Direction.random(rand);
 
 			BlockPos nextPos = pos.offset(dir, middle).offset(nextDir);
 			int nextLength = 1 + rand.nextInt(maxLength);
@@ -86,7 +86,7 @@ public class TFGenThorns extends TFGenerator {
 
 			int middle = rand.nextInt(length);
 
-			EnumFacing nextDir = EnumFacing.random(rand);
+			Direction nextDir = Direction.random(rand);
 
 			BlockPos nextPos = pos.offset(dir, middle).offset(nextDir);
 
@@ -97,7 +97,7 @@ public class TFGenThorns extends TFGenerator {
 	}
 
 	private boolean canPlaceThorns(World world, BlockPos pos) {
-		IBlockState state = world.getBlockState(pos);
+		BlockState state = world.getBlockState(pos);
 		return state.getBlock().isAir(state, world, pos)
 				|| state.getBlock().isLeaves(state, world, pos);
 	}

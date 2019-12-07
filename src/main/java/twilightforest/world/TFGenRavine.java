@@ -1,8 +1,8 @@
 package twilightforest.world;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -16,7 +16,7 @@ import java.util.Random;
 //FIXME: AtomicBlom - Deobfuscate this crap
 public class TFGenRavine extends MapGenBase {
 
-	protected static final IBlockState AIR = Blocks.AIR.getDefaultState();
+	protected static final BlockState AIR = Blocks.AIR.getDefaultState();
 	private final float[] rs = new float[1024];
 
 	private Biome[] biomes;
@@ -199,7 +199,7 @@ public class TFGenRavine extends MapGenBase {
 	//Determine if the block at the specified location is the top block for the biome, we take into account
 	//Vanilla bugs to make sure that we generate the map the same way vanilla does.
 	private boolean isTopBlock(ChunkPrimer data, int x, int y, int z, int chunkX, int chunkZ) {
-		IBlockState state = data.getBlockState(x, y, z);
+		BlockState state = data.getBlockState(x, y, z);
 		return state.getBlock() == Blocks.GRASS;
 	}
 
@@ -219,7 +219,7 @@ public class TFGenRavine extends MapGenBase {
 	 */
 	protected void digBlock(ChunkPrimer data, int x, int y, int z, int chunkX, int chunkZ, boolean foundTop) {
 
-		IBlockState state = data.getBlockState(x, y, z);
+		BlockState state = data.getBlockState(x, y, z);
 		Block block = state.getBlock();
 
 		if (block == Blocks.STONE || block == TFBlocks.trollsteinn || block == Blocks.DIRT || block == Blocks.GRASS) {

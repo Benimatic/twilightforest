@@ -2,8 +2,8 @@ package twilightforest.world.feature;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.WeightedRandom;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -22,7 +22,7 @@ public class TFGenCaveStalactite extends TFGenerator {
 	private static final List<StalactiteEntry> mediumHillStalactites = new ArrayList<>();
 	private static final List<StalactiteEntry> smallHillStalactites = new ArrayList<>();
 
-	public IBlockState blockState;
+	public BlockState blockState;
 	public boolean hang;
 	public float sizeFactor;
 	public int maxLength;
@@ -35,7 +35,7 @@ public class TFGenCaveStalactite extends TFGenerator {
 		this(block.getDefaultState(), size, down);
 	}
 
-	public TFGenCaveStalactite(IBlockState blockState, float size, boolean down) {
+	public TFGenCaveStalactite(BlockState blockState, float size, boolean down) {
 		this.blockState = blockState;
 		this.sizeFactor = size;
 		this.maxLength = -1;
@@ -46,7 +46,7 @@ public class TFGenCaveStalactite extends TFGenerator {
 	/**
 	 * Initializes a stalactite builder
 	 */
-	public TFGenCaveStalactite(IBlockState blockState, float size, int maxLength, int minHeight) {
+	public TFGenCaveStalactite(BlockState blockState, float size, int maxLength, int minHeight) {
 		this.blockState = blockState;
 		this.sizeFactor = size;
 		this.maxLength = maxLength;
@@ -184,12 +184,12 @@ public class TFGenCaveStalactite extends TFGenerator {
 			this.stalactite = stalactite;
 		}
 
-		public StalactiteEntry(IBlockState blockState, float size, int maxLength, int minHeight, int itemWeight) {
+		public StalactiteEntry(BlockState blockState, float size, int maxLength, int minHeight, int itemWeight) {
 			this(new TFGenCaveStalactite(blockState, size, maxLength, minHeight), itemWeight);
 		}
 	}
 
-	public static void addStalactite(int hillSize, IBlockState blockState, float size, int maxLength, int minHeight, int itemWeight) {
+	public static void addStalactite(int hillSize, BlockState blockState, float size, int maxLength, int minHeight, int itemWeight) {
 		if (itemWeight > 0) {
 			addStalactite(hillSize, new StalactiteEntry(blockState, size, maxLength, minHeight, itemWeight));
 		}

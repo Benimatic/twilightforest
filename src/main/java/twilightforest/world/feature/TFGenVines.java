@@ -1,9 +1,9 @@
 package twilightforest.world.feature;
 
 import net.minecraft.block.BlockVine;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
@@ -27,9 +27,9 @@ public class TFGenVines extends WorldGenerator {
 
 			if (world.isAirBlock(position)) {
 
-				Set<EnumFacing> facings = EnumSet.noneOf(EnumFacing.class);
+				Set<Direction> facings = EnumSet.noneOf(Direction.class);
 
-				for (EnumFacing facing : EnumFacing.Plane.HORIZONTAL.facings()) {
+				for (Direction facing : Direction.Plane.HORIZONTAL.facings()) {
 					if (Blocks.VINE.canPlaceBlockOnSide(world, position, facing.getOpposite())) {
 						facings.add(facing);
 					}
@@ -37,8 +37,8 @@ public class TFGenVines extends WorldGenerator {
 
 				if (!facings.isEmpty()) {
 
-					IBlockState vine = Blocks.VINE.getDefaultState();
-					for (EnumFacing facing : facings) {
+					BlockState vine = Blocks.VINE.getDefaultState();
+					for (Direction facing : facings) {
 						vine = vine.withProperty(BlockVine.getPropertyFor(facing), true);
 					}
 

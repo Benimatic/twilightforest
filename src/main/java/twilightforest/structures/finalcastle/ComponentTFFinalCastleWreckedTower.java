@@ -1,7 +1,7 @@
 package twilightforest.structures.finalcastle;
 
-import net.minecraft.item.EnumDyeColor;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.item.DyeColor;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -17,7 +17,7 @@ public class ComponentTFFinalCastleWreckedTower extends ComponentTFFinalCastleDa
 	public ComponentTFFinalCastleWreckedTower() {
 	}
 
-	public ComponentTFFinalCastleWreckedTower(TFFeature feature, Random rand, int i, int x, int y, int z, EnumFacing direction) {
+	public ComponentTFFinalCastleWreckedTower(TFFeature feature, Random rand, int i, int x, int y, int z, Direction direction) {
 		super(feature, rand, i, x, y, z, direction);
 	}
 
@@ -50,7 +50,7 @@ public class ComponentTFFinalCastleWreckedTower extends ComponentTFFinalCastleDa
 	}
 
 	@Override
-	public EnumDyeColor getGlyphColour() {
+	public DyeColor getGlyphColour() {
 		return BlockTFCastleMagic.VALID_COLORS.get(1);
 	}
 

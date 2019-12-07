@@ -62,7 +62,7 @@ public class EntityAITFFindEntityNearestPlayer extends EntityAIFindEntityNearest
 	public boolean shouldExecute()
 	{
 		double maxRange = this.maxTargetRange();
-		List<PlayerEntity> list = this.entityLiving.world.<PlayerEntity>getEntitiesWithinAABB(PlayerEntity.class, this.entityLiving.getEntityBoundingBox().grow(maxRange), this.predicate);
+		List<PlayerEntity> list = this.entityLiving.world.<PlayerEntity>getEntitiesWithinAABB(PlayerEntity.class, this.entityLiving.getBoundingBox().grow(maxRange), this.predicate);
 		Collections.sort(list, this.sorter);
 
 		if (list.isEmpty())

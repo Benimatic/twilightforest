@@ -2,7 +2,7 @@ package twilightforest.compat.tcon.trait;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
@@ -24,13 +24,13 @@ public class TraitSynergy extends AbstractTrait {
 
     @Override
     public void onUpdate(ItemStack tool, World world, Entity entity, int itemSlot, boolean isSelected) {
-        if (!world.isRemote && entity instanceof EntityPlayer && !(entity instanceof FakePlayer)) {
-            if (!InventoryPlayer.isHotbar(itemSlot) && ((EntityPlayer) entity).getHeldItemOffhand() != tool) return;
+        if (!world.isRemote && entity instanceof PlayerEntity && !(entity instanceof FakePlayer)) {
+            if (!InventoryPlayer.isHotbar(itemSlot) && ((PlayerEntity) entity).getHeldItemOffhand() != tool) return;
             if (!needsRepair(tool)) return;
 
             int healPower = 0;
 
-            NonNullList<ItemStack> playerInv = ((EntityPlayer) entity).inventory.mainInventory;
+            NonNullList<ItemStack> playerInv = ((PlayerEntity) entity).inventory.mainInventory;
 
             for (int i = 0; i < 9; i++) {
                 if (i != itemSlot) {

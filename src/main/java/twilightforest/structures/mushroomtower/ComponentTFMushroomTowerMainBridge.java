@@ -1,6 +1,6 @@
 package twilightforest.structures.mushroomtower;
 
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.TFFeature;
@@ -14,7 +14,7 @@ public class ComponentTFMushroomTowerMainBridge extends ComponentTFMushroomTower
 		super();
 	}
 
-	protected ComponentTFMushroomTowerMainBridge(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
+	protected ComponentTFMushroomTowerMainBridge(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
 		// bridge only 11 long
 		super(feature, i, x, y, z, 11, pHeight, direction);
 	}
@@ -23,7 +23,7 @@ public class ComponentTFMushroomTowerMainBridge extends ComponentTFMushroomTower
 	public boolean makeTowerWing(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 
 		// make a new size 15 main tower
-		EnumFacing direction = getStructureRelativeRotation(rotation);
+		Direction direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, 15, direction);
 
 		// adjust coordinates to fit an existing tower

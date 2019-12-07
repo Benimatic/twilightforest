@@ -4,12 +4,12 @@ import com.google.common.math.StatsAccumulator;
 
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityList;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Blocks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntityMobSpawner;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
@@ -17,7 +17,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.world.gen.structure.MutableBoundingBox;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
 import net.minecraft.world.gen.structure.template.TemplateManager;
@@ -50,7 +50,7 @@ public class GenDruidHut extends TFGenerator {
         Mirror mirror = mirrors[random.nextInt(mirrors.length+1) % mirrors.length];
 
         ChunkPos chunkpos = new ChunkPos(pos.add(-8, 0, -8));
-        StructureBoundingBox structureboundingbox = new StructureBoundingBox(chunkpos.getXStart() + 8, 0, chunkpos.getZStart() + 8, chunkpos.getXEnd() + 8, 255, chunkpos.getZEnd() + 8);
+        MutableBoundingBox structureboundingbox = new MutableBoundingBox(chunkpos.getXStart() + 8, 0, chunkpos.getZStart() + 8, chunkpos.getXEnd() + 8, 255, chunkpos.getZEnd() + 8);
         PlacementSettings placementsettings = (new PlacementSettings()).setMirror(mirror).setRotation(rotation).setBoundingBox(structureboundingbox).setRandom(random);
 
         BlockPos posSnap = chunkpos.getBlock(8, pos.getY() - 1, 8);
@@ -72,7 +72,7 @@ public class GenDruidHut extends TFGenerator {
 
         if (random.nextBoolean()) {
             template = templatemanager.getTemplate(minecraftserver, BasementType.values()[random.nextInt(BasementType.size)].getBasement(random.nextBoolean()));
-            placementPos = placementPos.down(12).offset(rotation.rotate(mirror.mirror(EnumFacing.NORTH)), 1).offset(rotation.rotate(mirror.mirror(EnumFacing.EAST)), 1);
+            placementPos = placementPos.down(12).offset(rotation.rotate(mirror.mirror(Direction.NORTH)), 1).offset(rotation.rotate(mirror.mirror(Direction.EAST)), 1);
 
             template.addBlocksToWorld(world, placementPos, new HutTemplateProcessor(placementPos, placementsettings, random.nextInt(), random.nextInt(), random.nextInt()), placementsettings, 20);
 
@@ -102,20 +102,20 @@ public class GenDruidHut extends TFGenerator {
                     }
                 }
             } else if (s.startsWith("loot")) {
-                IBlockState chest = s.endsWith("T") ? Blocks.TRAPPED_CHEST.getDefaultState() : Blocks.CHEST.getDefaultState();
+                BlockState chest = s.endsWith("T") ? Blocks.TRAPPED_CHEST.getDefaultState() : Blocks.CHEST.getDefaultState();
 
                 switch (s.substring(4, 5)) {
                     case "W":
-                        chest = chest.withProperty(BlockHorizontal.FACING, rotation.rotate(mirror.mirror(EnumFacing.WEST)));
+                        chest = chest.withProperty(BlockHorizontal.FACING, rotation.rotate(mirror.mirror(Direction.WEST)));
                         break;
                     case "E":
-                        chest = chest.withProperty(BlockHorizontal.FACING, rotation.rotate(mirror.mirror(EnumFacing.EAST)));
+                        chest = chest.withProperty(BlockHorizontal.FACING, rotation.rotate(mirror.mirror(Direction.EAST)));
                         break;
                     case "S":
-                        chest = chest.withProperty(BlockHorizontal.FACING, rotation.rotate(mirror.mirror(EnumFacing.SOUTH)));
+                        chest = chest.withProperty(BlockHorizontal.FACING, rotation.rotate(mirror.mirror(Direction.SOUTH)));
                         break;
                     default:
-                        chest = chest.withProperty(BlockHorizontal.FACING, rotation.rotate(mirror.mirror(EnumFacing.NORTH)));
+                        chest = chest.withProperty(BlockHorizontal.FACING, rotation.rotate(mirror.mirror(Direction.NORTH)));
                         break;
                 }
 
@@ -140,7 +140,7 @@ public class GenDruidHut extends TFGenerator {
                 int y = world.getHeight(x, z);
 
                 while (y >= 0) {
-                    IBlockState state = world.getBlockState(new BlockPos(x, y, z));
+                    BlockState state = world.getBlockState(new BlockPos(x, y, z));
                     if (isBlockNotOk(state)) return false;
                     if (isBlockOk(state)) break;
                     y--;
@@ -173,12 +173,12 @@ public class GenDruidHut extends TFGenerator {
         return true;
     }
 
-    private static boolean isBlockOk(IBlockState state) {
+    private static boolean isBlockOk(BlockState state) {
         Material material = state.getMaterial();
         return material == Material.ROCK || material == Material.GROUND || material == Material.GRASS || material == Material.SAND;
     }
 
-    private static boolean isBlockNotOk(IBlockState state) {
+    private static boolean isBlockNotOk(BlockState state) {
         Material material = state.getMaterial();
         return material == Material.WATER || material == Material.LAVA || state.getBlock() == Blocks.BEDROCK;
     }
@@ -248,7 +248,7 @@ public class GenDruidHut extends TFGenerator {
         public Template.BlockInfo processBlock(World worldIn, BlockPos pos, Template.BlockInfo blockInfo) {
             //if (!shouldPlaceBlock()) return null;
 
-            IBlockState state = blockInfo.blockState;
+            BlockState state = blockInfo.blockState;
             Block block = state.getBlock();
 
             if (block == Blocks.COBBLESTONE)

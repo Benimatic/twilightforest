@@ -1,7 +1,7 @@
 package twilightforest.world;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.world.chunk.ChunkPrimer;
 
 /**
@@ -9,18 +9,18 @@ import net.minecraft.world.chunk.ChunkPrimer;
  */
 public class DirectChunkPrimer extends ChunkPrimer {
 
-	private static final IBlockState DEFAULT_STATE = Blocks.AIR.getDefaultState();
+	private static final BlockState DEFAULT_STATE = Blocks.AIR.getDefaultState();
 
-	private final IBlockState[] states = new IBlockState[65536];
+	private final BlockState[] states = new BlockState[65536];
 
 	@Override
-	public IBlockState getBlockState(int x, int y, int z) {
-		IBlockState state = states[getBlockIndex(x, y, z)];
+	public BlockState getBlockState(int x, int y, int z) {
+		BlockState state = states[getBlockIndex(x, y, z)];
 		return state == null ? DEFAULT_STATE : state;
 	}
 
 	@Override
-	public void setBlockState(int x, int y, int z, IBlockState state) {
+	public void setBlockState(int x, int y, int z, BlockState state) {
 		states[getBlockIndex(x, y, z)] = state;
 	}
 

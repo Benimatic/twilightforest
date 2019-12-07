@@ -2,7 +2,7 @@ package twilightforest.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.EnumPushReaction;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
@@ -10,8 +10,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.client.ModelRegisterCallback;
 
 public abstract class BlockTFGiantBlock extends Block implements ModelRegisterCallback {
@@ -20,7 +20,7 @@ public abstract class BlockTFGiantBlock extends Block implements ModelRegisterCa
 
 	//Atomic: Suppressing deprecation because this seems like a reasonable use for it.
 	@SuppressWarnings("deprecation")
-	public BlockTFGiantBlock(IBlockState state) {
+	public BlockTFGiantBlock(BlockState state) {
 		super(state.getMaterial());
 		this.setSoundType(state.getBlock().getSoundType());
 	}
@@ -28,7 +28,7 @@ public abstract class BlockTFGiantBlock extends Block implements ModelRegisterCa
 	@Override
 	public boolean canPlaceBlockAt(World world, BlockPos pos) {
 		for (BlockPos dPos : getVolume(pos)) {
-			IBlockState state = world.getBlockState(dPos);
+			BlockState state = world.getBlockState(dPos);
 			if (!state.getBlock().isReplaceable(world, dPos)) {
 				return false;
 			}
@@ -37,7 +37,7 @@ public abstract class BlockTFGiantBlock extends Block implements ModelRegisterCa
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase player, ItemStack itemStack) {
+	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, EntityLivingBase player, ItemStack itemStack) {
 		if (!world.isRemote) {
 			for (BlockPos dPos : getVolume(pos)) {
 				world.setBlockState(dPos, getDefaultState(), 2);
@@ -46,7 +46,7 @@ public abstract class BlockTFGiantBlock extends Block implements ModelRegisterCa
 	}
 
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+	public void breakBlock(World world, BlockPos pos, BlockState state) {
 		super.breakBlock(world, pos, state);
 		if (!this.isSelfDestructing && !canBlockStay(world, pos)) {
 			this.setGiantBlockToAir(world, pos);
@@ -79,7 +79,7 @@ public abstract class BlockTFGiantBlock extends Block implements ModelRegisterCa
 
 	@Override
 	@Deprecated
-	public EnumPushReaction getPushReaction(IBlockState state) {
+	public EnumPushReaction getPushReaction(BlockState state) {
 		return EnumPushReaction.BLOCK;
 	}
 
@@ -94,7 +94,7 @@ public abstract class BlockTFGiantBlock extends Block implements ModelRegisterCa
 		);
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void registerModel() {
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));

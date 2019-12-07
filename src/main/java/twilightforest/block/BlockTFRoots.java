@@ -6,14 +6,14 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Items;
+import net.minecraft.item.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.enums.RootVariant;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
@@ -38,18 +38,18 @@ public class BlockTFRoots extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(BlockState state) {
 		return state.getValue(VARIANT).ordinal();
 	}
 
 	@Override
 	@Deprecated
-	public IBlockState getStateFromMeta(int meta) {
+	public BlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(VARIANT, RootVariant.values()[meta]);
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random random, int j) {
+	public Item getItemDropped(BlockState state, Random random, int j) {
 		switch (state.getValue(VARIANT)) {
 			default:
 			case ROOT:
@@ -60,7 +60,7 @@ public class BlockTFRoots extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public int quantityDropped(IBlockState state, int fortune, Random random) {
+	public int quantityDropped(BlockState state, int fortune, Random random) {
 		if (state.getValue(VARIANT) == RootVariant.ROOT) {
 			return 3 + random.nextInt(2);
 		} else {
@@ -74,7 +74,7 @@ public class BlockTFRoots extends Block implements ModelRegisterCallback {
 		list.add(new ItemStack(this, 1, 1));
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void registerModel() {
 		ModelUtils.registerToStateSingleVariant(this, VARIANT);

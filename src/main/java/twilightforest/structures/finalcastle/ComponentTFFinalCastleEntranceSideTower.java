@@ -1,6 +1,6 @@
 package twilightforest.structures.finalcastle;
 
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.TFFeature;
@@ -14,7 +14,7 @@ public class ComponentTFFinalCastleEntranceSideTower extends ComponentTFFinalCas
 	public ComponentTFFinalCastleEntranceSideTower() {
 	}
 
-	public ComponentTFFinalCastleEntranceSideTower(TFFeature feature, Random rand, int i, int x, int y, int z, int floors, int entranceFloor, EnumFacing direction) {
+	public ComponentTFFinalCastleEntranceSideTower(TFFeature feature, Random rand, int i, int x, int y, int z, int floors, int entranceFloor, Direction direction) {
 		super(feature, rand, i, x, y, z, floors, entranceFloor, BlockTFCastleMagic.VALID_COLORS.get(0), direction);
 
 		addOpening(0, 1, size / 2, Rotation.CLOCKWISE_180);

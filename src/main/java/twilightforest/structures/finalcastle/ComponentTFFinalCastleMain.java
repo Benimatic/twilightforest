@@ -1,8 +1,8 @@
 package twilightforest.structures.finalcastle;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.EnumDyeColor;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.item.DyeColor;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -28,13 +28,13 @@ public class ComponentTFFinalCastleMain extends StructureTFComponentOld {
 
 	public ComponentTFFinalCastleMain(TFFeature feature, World world, Random rand, int i, int x, int y, int z) {
 		super(feature, i);
-		this.setCoordBaseMode(EnumFacing.SOUTH);
+		this.setCoordBaseMode(Direction.SOUTH);
 		this.spawnListIndex = 1; // main monsters
 
 		x = ((x + 127) >> 8) << 8;
 		z = ((z + 127) >> 8) << 8;
 
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -24, 120, -24, 48, 40, 48, EnumFacing.SOUTH);
+		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -24, 120, -24, 48, 40, 48, Direction.SOUTH);
 
 		BlockPos cc = TFFeature.getNearestCenterXYZ(x >> 4, z >> 4, world);
 
@@ -69,34 +69,34 @@ public class ComponentTFFinalCastleMain extends StructureTFComponentOld {
 
 
 		// build 4 towers on sides
-		ComponentTFFinalCastleStairTower tower0 = new ComponentTFFinalCastleStairTower(getFeatureType(), rand, 3, boundingBox.minX, boundingBox.minY + 3, boundingBox.minZ, EnumFacing.NORTH);
+		ComponentTFFinalCastleStairTower tower0 = new ComponentTFFinalCastleStairTower(getFeatureType(), rand, 3, boundingBox.minX, boundingBox.minY + 3, boundingBox.minZ, Direction.NORTH);
 		list.add(tower0);
 		tower0.buildComponent(this, list, rand);
 
-		ComponentTFFinalCastleLargeTower tower1 = new ComponentTFFinalCastleLargeTower(getFeatureType(), rand, 3, boundingBox.maxX, boundingBox.minY + 3, boundingBox.minZ, EnumFacing.EAST);
+		ComponentTFFinalCastleLargeTower tower1 = new ComponentTFFinalCastleLargeTower(getFeatureType(), rand, 3, boundingBox.maxX, boundingBox.minY + 3, boundingBox.minZ, Direction.EAST);
 		list.add(tower1);
 		tower1.buildComponent(this, list, rand);
 
-		ComponentTFFinalCastleStairTower tower2 = new ComponentTFFinalCastleStairTower(getFeatureType(), rand, 3, boundingBox.minX, boundingBox.minY + 3, boundingBox.maxZ, EnumFacing.WEST);
+		ComponentTFFinalCastleStairTower tower2 = new ComponentTFFinalCastleStairTower(getFeatureType(), rand, 3, boundingBox.minX, boundingBox.minY + 3, boundingBox.maxZ, Direction.WEST);
 		list.add(tower2);
 		tower2.buildComponent(this, list, rand);
 
-		ComponentTFFinalCastleStairTower tower3 = new ComponentTFFinalCastleStairTower(getFeatureType(), rand, 3, boundingBox.maxX, boundingBox.minY + 3, boundingBox.maxZ, EnumFacing.SOUTH);
+		ComponentTFFinalCastleStairTower tower3 = new ComponentTFFinalCastleStairTower(getFeatureType(), rand, 3, boundingBox.maxX, boundingBox.minY + 3, boundingBox.maxZ, Direction.SOUTH);
 		list.add(tower3);
 		tower3.buildComponent(this, list, rand);
 
 		// tower maze towards entrance
 		BlockPos dest = new BlockPos(boundingBox.minX - 4, boundingBox.maxY, boundingBox.minZ - 24);
-		buildTowerMaze(list, rand, 48, 0, 24, 60, EnumFacing.SOUTH, BlockTFCastleMagic.VALID_COLORS.get(0), dest);
+		buildTowerMaze(list, rand, 48, 0, 24, 60, Direction.SOUTH, BlockTFCastleMagic.VALID_COLORS.get(0), dest);
 
 
 		// another tower/bridge maze towards the clock tower
 		dest = new BlockPos(boundingBox.maxX + 4, boundingBox.minY, boundingBox.maxZ + 24);
-		buildTowerMaze(list, rand, 0, 30, 24, 60, EnumFacing.NORTH, BlockTFCastleMagic.VALID_COLORS.get(1), dest);
+		buildTowerMaze(list, rand, 0, 30, 24, 60, Direction.NORTH, BlockTFCastleMagic.VALID_COLORS.get(1), dest);
 
 
 		// initial stairs down towards dungeon
-		ComponentTFFinalCastleDungeonSteps steps0 = new ComponentTFFinalCastleDungeonSteps(rand, 5, boundingBox.minX + 18, boundingBox.minY + 1, boundingBox.minZ + 18, EnumFacing.SOUTH);
+		ComponentTFFinalCastleDungeonSteps steps0 = new ComponentTFFinalCastleDungeonSteps(rand, 5, boundingBox.minX + 18, boundingBox.minY + 1, boundingBox.minZ + 18, Direction.SOUTH);
 		list.add(steps0);
 		steps0.buildComponent(this, list, rand);
 
@@ -109,14 +109,14 @@ public class ComponentTFFinalCastleMain extends StructureTFComponentOld {
 		steps3.buildLevelUnder(parent, list, rand, 1);
 
 		// mural on front
-		BlockPos mc = this.offsetTowerCCoords(48, 23, 25, 1, EnumFacing.SOUTH);
-		ComponentTFFinalCastleMural mural0 = new ComponentTFFinalCastleMural(getFeatureType(), rand, 7, mc.getX(), mc.getY(), mc.getZ(), 35, 30, EnumFacing.SOUTH);
+		BlockPos mc = this.offsetTowerCCoords(48, 23, 25, 1, Direction.SOUTH);
+		ComponentTFFinalCastleMural mural0 = new ComponentTFFinalCastleMural(getFeatureType(), rand, 7, mc.getX(), mc.getY(), mc.getZ(), 35, 30, Direction.SOUTH);
 		list.add(mural0);
 		mural0.buildComponent(this, list, rand);
 
 		// mural inside
-		BlockPos mc1 = this.offsetTowerCCoords(48, 33, 24, -1, EnumFacing.SOUTH);
-		ComponentTFFinalCastleMural mural1 = new ComponentTFFinalCastleMural(getFeatureType(), rand, 7, mc1.getX(), mc1.getY(), mc.getZ(), 19, 12, EnumFacing.NORTH);
+		BlockPos mc1 = this.offsetTowerCCoords(48, 33, 24, -1, Direction.SOUTH);
+		ComponentTFFinalCastleMural mural1 = new ComponentTFFinalCastleMural(getFeatureType(), rand, 7, mc1.getX(), mc1.getY(), mc.getZ(), 19, 12, Direction.NORTH);
 		list.add(mural1);
 		mural1.buildComponent(this, list, rand);
 
@@ -125,7 +125,7 @@ public class ComponentTFFinalCastleMain extends StructureTFComponentOld {
 	/**
 	 * Build a side tower, then tell it to start building towards the destination
 	 */
-	private void buildTowerMaze(List<StructureComponent> list, Random rand, int x, int y, int z, int howFar, EnumFacing direction, EnumDyeColor type, BlockPos dest) {
+	private void buildTowerMaze(List<StructureComponent> list, Random rand, int x, int y, int z, int howFar, Direction direction, DyeColor type, BlockPos dest) {
 		boolean complete = false;
 		int iterations = 0;
 		while (!complete && iterations < 15) {
@@ -163,7 +163,7 @@ public class ComponentTFFinalCastleMain extends StructureTFComponentOld {
 		}
 	}
 
-	private boolean isMazeComplete(List<StructureComponent> list, EnumDyeColor type) {
+	private boolean isMazeComplete(List<StructureComponent> list, DyeColor type) {
 		if (list.size() > 60) {
 			TwilightForestMod.LOGGER.warn("Maze of color {} is getting a bit excessive.", type);
 		}
@@ -187,7 +187,7 @@ public class ComponentTFFinalCastleMain extends StructureTFComponentOld {
 	 * Provides coordinates to make a tower such that it will open into the parent tower at the provided coordinates.
 	 */
 	@Override
-	protected BlockPos offsetTowerCCoords(int x, int y, int z, int howFar, EnumFacing direction) {
+	protected BlockPos offsetTowerCCoords(int x, int y, int z, int howFar, Direction direction) {
 
 		int dx = getXWithOffset(x, z);
 		int dy = getYWithOffset(y);
@@ -233,12 +233,12 @@ public class ComponentTFFinalCastleMain extends StructureTFComponentOld {
 		for (int i = 0; i < 5; i++) {
 			int y = 30 - i;
 
-			makeMezzTopStairs(world, sbb, y, 10 + i, EnumFacing.SOUTH);
-			makeMezzTopStairs(world, sbb, y, 38 - i, EnumFacing.NORTH);
+			makeMezzTopStairs(world, sbb, y, 10 + i, Direction.SOUTH);
+			makeMezzTopStairs(world, sbb, y, 38 - i, Direction.NORTH);
 
 			y = 25 - i;
 			int x = 37 - i;
-			final IBlockState stairState = getStairState(deco.stairState, EnumFacing.WEST, rotation, false);
+			final BlockState stairState = getStairState(deco.stairState, Direction.WEST, rotation, false);
 			this.fillWithBlocks(world, sbb, x, y, 14, x, y, 22, stairState, stairState, false);
 			this.fillWithBlocks(world, sbb, x, y - 1, 14, x, y - 1, 22, deco.blockState, deco.blockState, false);
 			this.fillWithBlocks(world, sbb, x, y, 26, x, y, 34, stairState, stairState, false);
@@ -281,7 +281,7 @@ public class ComponentTFFinalCastleMain extends StructureTFComponentOld {
 		fillWithRandomizedBlocks(world, sbb, 1, 20, 1, 47, 20, 47, false, rand, deco.randomBlocks);
 
 		// force field around dungeon stairs
-		IBlockState fieldBlock = TFBlocks.force_field.getDefaultState().withProperty(BlockTFForceField.COLOR, EnumDyeColor.PINK);
+		BlockState fieldBlock = TFBlocks.force_field.getDefaultState().withProperty(BlockTFForceField.COLOR, DyeColor.PINK);
 		this.fillWithBlocks(world, sbb, 12, 1, 12, 24, 10, 12, fieldBlock, fieldBlock, false);
 		this.fillWithBlocks(world, sbb, 12, 1, 12, 12, 10, 24, fieldBlock, fieldBlock, false);
 		this.fillWithBlocks(world, sbb, 24, 1, 12, 24, 10, 24, fieldBlock, fieldBlock, false);
@@ -290,7 +290,7 @@ public class ComponentTFFinalCastleMain extends StructureTFComponentOld {
 		this.fillWithBlocks(world, sbb, 12, 10, 12, 24, 10, 24, fieldBlock, fieldBlock, false);
 
 		// doors in dungeon force field
-		final IBlockState castleDoor = TFBlocks.castle_door.getDefaultState();
+		final BlockState castleDoor = TFBlocks.castle_door.getDefaultState();
 		this.fillWithBlocks(world, sbb, 17, 1, 12, 19, 4, 12, castleDoor.withProperty(LOCK_INDEX, 2), AIR, false);
 		this.fillWithBlocks(world, sbb, 17, 1, 24, 19, 4, 24, castleDoor.withProperty(LOCK_INDEX, 2), AIR, false);
 
@@ -314,12 +314,12 @@ public class ComponentTFFinalCastleMain extends StructureTFComponentOld {
 			int z = 40 + y;
 			this.fillBlocksRotated(world, sbb, 1, 1, z, 4, y, z, deco.blockState, rotation);
 
-			this.fillBlocksRotated(world, sbb, 2, y, z, 3, y, z, getStairState(deco.stairState, EnumFacing.NORTH, rotation, false), rotation);
+			this.fillBlocksRotated(world, sbb, 2, y, z, 3, y, z, getStairState(deco.stairState, Direction.NORTH, rotation, false), rotation);
 		}
 	}
 
 	private void makeLargeTowerStairs(World world, StructureBoundingBox sbb, Rotation rotation) {
-		final IBlockState stairState = getStairState(deco.stairState, EnumFacing.NORTH, rotation, false);
+		final BlockState stairState = getStairState(deco.stairState, Direction.NORTH, rotation, false);
 		for (int y = 1; y < 4; y++) {
 			int z = 38 + y;
 			this.fillBlocksRotated(world, sbb, 2, 1, z, 6, y, z, deco.blockState, rotation);
@@ -327,25 +327,25 @@ public class ComponentTFFinalCastleMain extends StructureTFComponentOld {
 		}
 	}
 
-	private void makeMezzTopStairs(World world, StructureBoundingBox sbb, int y, int z, EnumFacing stairMeta) {
-		final IBlockState stairState = getStairState(deco.stairState, stairMeta, rotation, false);
+	private void makeMezzTopStairs(World world, StructureBoundingBox sbb, int y, int z, Direction stairMeta) {
+		final BlockState stairState = getStairState(deco.stairState, stairMeta, rotation, false);
 		this.fillWithBlocks(world, sbb, 38, y, z, 46, y, z, stairState, stairState, false);
 		this.fillWithBlocks(world, sbb, 38, y - 1, z, 46, y - 1, z, deco.blockState, deco.blockState, false);
 		this.fillWithAir(world, sbb, 38, y + 1, z, 46, y + 3, z);
 	}
 
 	private void makeHalfPillarBase(World world, StructureBoundingBox sbb, Rotation rotation, int y, int z, boolean isFlipped) {
-		this.fillBlocksRotated(world, sbb, 2, y, z - 1, 2, y, z + 3, getStairState(deco.stairState, EnumFacing.EAST, rotation, isFlipped), rotation);
-		this.setBlockStateRotated(world, getStairState(deco.stairState, EnumFacing.NORTH, rotation, isFlipped), 1, y, z - 1, rotation, sbb);
-		this.setBlockStateRotated(world, getStairState(deco.stairState, EnumFacing.SOUTH, rotation, isFlipped), 1, y, z + 3, rotation, sbb);
+		this.fillBlocksRotated(world, sbb, 2, y, z - 1, 2, y, z + 3, getStairState(deco.stairState, Direction.EAST, rotation, isFlipped), rotation);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.NORTH, rotation, isFlipped), 1, y, z - 1, rotation, sbb);
+		this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.SOUTH, rotation, isFlipped), 1, y, z + 3, rotation, sbb);
 	}
 
 	private void makePillarBase(World world, StructureBoundingBox sbb, int x, int z, int y, boolean isFlipped) {
-		this.fillWithBlocks(world, sbb, x + 0, y, z + 3, x + 3, y, z + 3, getStairState(deco.stairState, EnumFacing.SOUTH, rotation, isFlipped), AIR, false);
-		this.fillWithBlocks(world, sbb, x - 1, y, z - 1, x + 2, y, z - 1, getStairState(deco.stairState, EnumFacing.NORTH, rotation, isFlipped), AIR, false);
+		this.fillWithBlocks(world, sbb, x + 0, y, z + 3, x + 3, y, z + 3, getStairState(deco.stairState, Direction.SOUTH, rotation, isFlipped), AIR, false);
+		this.fillWithBlocks(world, sbb, x - 1, y, z - 1, x + 2, y, z - 1, getStairState(deco.stairState, Direction.NORTH, rotation, isFlipped), AIR, false);
 
-		this.fillWithBlocks(world, sbb, x + 3, y, z - 1, x + 3, y, z + 2, getStairState(deco.stairState, EnumFacing.EAST, rotation, isFlipped), AIR, false);
-		this.fillWithBlocks(world, sbb, x - 1, y, z + 0, x - 1, y, z + 3, getStairState(deco.stairState, EnumFacing.WEST, rotation, isFlipped), AIR, false);
+		this.fillWithBlocks(world, sbb, x + 3, y, z - 1, x + 3, y, z + 2, getStairState(deco.stairState, Direction.EAST, rotation, isFlipped), AIR, false);
+		this.fillWithBlocks(world, sbb, x - 1, y, z + 0, x - 1, y, z + 3, getStairState(deco.stairState, Direction.WEST, rotation, isFlipped), AIR, false);
 	}
 
 }

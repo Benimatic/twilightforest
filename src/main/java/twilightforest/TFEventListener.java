@@ -581,7 +581,7 @@ public class TFEventListener {
 		return false;
 	}
 
-	private static void sendAreaProtectionPacket(World world, BlockPos pos, StructureBoundingBox sbb) {
+	private static void sendAreaProtectionPacket(World world, BlockPos pos, MutableBoundingBox sbb) {
 		NetworkRegistry.TargetPoint targetPoint = new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 64);
 		TFPacketHandler.CHANNEL.sendToAllAround(new PacketAreaProtection(sbb, pos), targetPoint);
 	}

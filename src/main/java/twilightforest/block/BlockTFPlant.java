@@ -7,22 +7,22 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.block.Blocks;
+import net.minecraft.item.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.Direction;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -32,8 +32,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IShearable;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.particle.TFParticleFactory;
 import twilightforest.client.particle.TFParticleType;
@@ -62,30 +62,30 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 
 	@Override
 	@Deprecated
-	public IBlockState getStateFromMeta(int meta) {
+	public BlockState getStateFromMeta(int meta) {
 		PlantVariant variant = PlantVariant.values()[MathHelper.clamp(meta, 0, PlantVariant.values().length)];
 		return getDefaultState().withProperty(VARIANT, variant);
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(BlockState state) {
 		return state.getValue(VARIANT).ordinal();
 	}
 
 	@Override
-	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
+	public void onBlockAdded(World world, BlockPos pos, BlockState state) {
 		world.scheduleUpdate(pos, this, world.rand.nextInt(50) + 20);
 	}
 
 	@Override
 	public boolean canPlaceBlockAt(World world, BlockPos pos) {
-		IBlockState state = world.getBlockState(pos);
+		BlockState state = world.getBlockState(pos);
 		return (state.getBlock().isAir(state, world, pos) || state.getMaterial().isReplaceable()) && canBlockStay(world, pos, state);
 	}
 
 	@Override
-	public boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
-		IBlockState soil = world.getBlockState(pos.down());
+	public boolean canBlockStay(World world, BlockPos pos, BlockState state) {
+		BlockState soil = world.getBlockState(pos.down());
 
 		/*
 			Comment from superclass:
@@ -94,9 +94,9 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 		*/
 		if (state.getBlock() != this) {
 			return BlockTFPlant.canPlaceRootAt(world, pos)
-					|| soil.getBlock().canSustainPlant(soil, world, pos.down(), EnumFacing.UP, this)
-					|| soil.isSideSolid(world, pos, EnumFacing.UP)
-					|| ((world.getLight(pos) >= 3 || world.canSeeSky(pos)) && soil.getBlock().canSustainPlant(soil, world, pos.down(), EnumFacing.UP, this));
+					|| soil.getBlock().canSustainPlant(soil, world, pos.down(), Direction.UP, this)
+					|| soil.isSideSolid(world, pos, Direction.UP)
+					|| ((world.getLight(pos) >= 3 || world.canSeeSky(pos)) && soil.getBlock().canSustainPlant(soil, world, pos.down(), Direction.UP, this));
 		} else {
 			switch (state.getValue(VARIANT)) {
 				case TORCHBERRY:
@@ -104,19 +104,19 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 					return BlockTFPlant.canPlaceRootAt(world, pos);
 				case FORESTGRASS:
 				case DEADBUSH:
-					return soil.getBlock().canSustainPlant(soil, world, pos.down(), EnumFacing.UP, this);
+					return soil.getBlock().canSustainPlant(soil, world, pos.down(), Direction.UP, this);
 				case FALLEN_LEAVES:
 				case MUSHGLOOM:
 				case MOSSPATCH:
-					return soil.isSideSolid(world, pos, EnumFacing.UP);
+					return soil.isSideSolid(world, pos, Direction.UP);
 				default:
-					return (world.getLight(pos) >= 3 || world.canSeeSky(pos)) && soil.getBlock().canSustainPlant(soil, world, pos.down(), EnumFacing.UP, this);
+					return (world.getLight(pos) >= 3 || world.canSeeSky(pos)) && soil.getBlock().canSustainPlant(soil, world, pos.down(), Direction.UP, this);
 			}
 		}
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess access, BlockPos pos) {
+	public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess access, BlockPos pos) {
 		PlantVariant variant = state.getValue(VARIANT);
 
 		long seed = pos.getX() * 3129871 ^ pos.getY() * 116129781L ^ pos.getZ();
@@ -162,17 +162,17 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 	}
 
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public AxisAlignedBB getCollisionBoundingBox(BlockState state, IBlockAccess world, BlockPos pos) {
 		return NULL_AABB;
 	}
 
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(BlockState state) {
 		return false;
 	}
 
 	@Override
-	public int getLightValue(IBlockState state) {
+	public int getLightValue(BlockState state) {
 		switch (state.getValue(VARIANT)) {
 			case MUSHGLOOM:
 				return 3;
@@ -184,7 +184,7 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 	}
 
 	public static boolean canPlaceRootAt(World world, BlockPos pos) {
-		IBlockState state = world.getBlockState(pos.up());
+		BlockState state = world.getBlockState(pos.up());
 		if (state.getMaterial() == Material.GROUND || state.getMaterial() == Material.GRASS) {
 			// can always hang below dirt blocks
 			return true;
@@ -225,7 +225,7 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 //    
 
 	@Override
-	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, BlockState state, int fortune) {
 		List<ItemStack> ret = NonNullList.create();
 
 		switch (state.getValue(VARIANT)) {
@@ -250,7 +250,7 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 	}
 
 	@Override
-	public int damageDropped(IBlockState state) {
+	public int damageDropped(BlockState state) {
 		return getMetaFromState(state);
 	}
 
@@ -267,7 +267,7 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 	}
 
 	@Override
-	public void harvestBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack) {
+	public void harvestBlock(World world, PlayerEntity player, BlockPos pos, BlockState state, @Nullable TileEntity te, ItemStack stack) {
 		// do not call normal harvest if the player is shearing
 		if (world.isRemote || stack.getItem() != Items.SHEARS) {
 			super.harvestBlock(world, player, pos, state, te, stack);
@@ -284,7 +284,7 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 
 	@Override
 	public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos) {
-		IBlockState blockState = world.getBlockState(pos);
+		BlockState blockState = world.getBlockState(pos);
 		if (blockState.getBlock() == this) {
 			switch (blockState.getValue(VARIANT)) {
 				case MOSSPATCH:
@@ -298,12 +298,12 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random random) {
+	@OnlyIn(Dist.CLIENT)
+	public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
 		super.randomDisplayTick(state, world, pos, random);
 
 		if (state.getValue(VARIANT) == PlantVariant.MOSSPATCH && random.nextInt(10) == 0) {
-			world.spawnParticle(EnumParticleTypes.TOWN_AURA, pos.getX() + random.nextFloat(), pos.getY() + 0.1F, pos.getZ() + random.nextFloat(), 0.0D, 0.0D, 0.0D);
+			world.spawnParticle(ParticleTypes.TOWN_AURA, pos.getX() + random.nextFloat(), pos.getY() + 0.1F, pos.getZ() + random.nextFloat(), 0.0D, 0.0D, 0.0D);
 		} else if (state.getValue(VARIANT) == PlantVariant.FALLEN_LEAVES && random.nextInt(50) == 0) {
 			float dist = 10F;
 			if (!world.canSeeSky(pos)) {
@@ -316,7 +316,7 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 					return;
 			}
 			Particle leaf = TFParticleFactory.createParticle(TFParticleType.FALLEN_LEAF, world, pos.getX() + random.nextFloat(), pos.getY() + dist - 0.25F, pos.getZ() + random.nextFloat(), 0.0D, 0.0D, 0.0D);
-			int color = Minecraft.getMinecraft().getBlockColors().colorMultiplier(Blocks.LEAVES.getDefaultState(), world, pos, 0);
+			int color = Minecraft.getInstance().getBlockColors().colorMultiplier(Blocks.LEAVES.getDefaultState(), world, pos, 0);
 			leaf.setRBGColorF(
 
 					MathHelper.clamp(((color >> 16) & 0xFF) + RANDOM.nextInt(0x22) - 0x11, 0x00, 0xFF) / 255F,
@@ -326,16 +326,16 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 					MathHelper.clamp((color & 0xFF) + RANDOM.nextInt(0x22) - 0x11, 0x00, 0xFF) / 255F
 
 			);
-			Minecraft.getMinecraft().effectRenderer.addEffect(leaf);
+			Minecraft.getInstance().effectRenderer.addEffect(leaf);
 		}
 
 	}
 
 	@Override
-	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entityIn) {
+	public void onEntityCollision(World world, BlockPos pos, BlockState state, Entity entityIn) {
 		super.onEntityCollision(world, pos, state, entityIn);
 		if (world.isRemote && state.getValue(VARIANT) == PlantVariant.FALLEN_LEAVES && entityIn instanceof EntityLivingBase && (entityIn.motionX != 0 || entityIn.motionZ != 0) && RANDOM.nextBoolean()) {
-			int color = Minecraft.getMinecraft().getBlockColors().colorMultiplier(Blocks.LEAVES.getDefaultState(), world, pos, 0);
+			int color = Minecraft.getInstance().getBlockColors().colorMultiplier(Blocks.LEAVES.getDefaultState(), world, pos, 0);
 			Particle leaf = TFParticleFactory.createParticle(TFParticleType.FALLEN_LEAF,
 
 					world,
@@ -362,17 +362,17 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 					MathHelper.clamp((color & 0xFF) + RANDOM.nextInt(0x22) - 0x11, 0x00, 0xFF) / 255F
 
 			);
-			Minecraft.getMinecraft().effectRenderer.addEffect(leaf);
+			Minecraft.getInstance().effectRenderer.addEffect(leaf);
 		}
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT;
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void registerModel() {
 		for (int i = 0; i < PlantVariant.values().length; i++) {
@@ -383,7 +383,7 @@ public class BlockTFPlant extends BlockBush implements IShearable, ModelRegister
 	}
 
 	@Override
-	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public BlockState getExtendedState(BlockState state, IBlockAccess world, BlockPos pos) {
 		return super.getExtendedState(state, world, pos);
 	}
 }

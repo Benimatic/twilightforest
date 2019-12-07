@@ -1,7 +1,7 @@
 package twilightforest.structures.lichtower;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.Blocks;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -24,7 +24,7 @@ public class ComponentTFTowerBridge extends ComponentTFTowerWing {
 	}
 
 
-	protected ComponentTFTowerBridge(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
+	protected ComponentTFTowerBridge(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
 		super(feature, i, x, y, z, 3, 3, direction);
 
 		this.dSize = pSize;

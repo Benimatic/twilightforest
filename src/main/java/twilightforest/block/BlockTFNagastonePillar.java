@@ -2,9 +2,9 @@ package twilightforest.block;
 
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.util.Direction;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
@@ -18,10 +18,10 @@ public class BlockTFNagastonePillar extends BlockTFDirectionalRotatedPillar impl
         super(Material.ROCK);
         this.setSoundType(SoundType.STONE);
         this.setCreativeTab(TFItems.creativeTab);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(AXIS, EnumFacing.Axis.Y).withProperty(REVERSED, false));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(AXIS, Direction.Axis.Y).withProperty(REVERSED, false));
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void registerModel() {
         ModelUtils.registerToState(this, 0, this.getDefaultState());

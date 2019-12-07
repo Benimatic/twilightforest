@@ -1,9 +1,9 @@
 package twilightforest.structures.minotaurmaze;
 
 import net.minecraft.block.BlockHugeMushroom;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.TFFeature;
@@ -16,7 +16,7 @@ public class ComponentTFMazeCorridorShrooms extends ComponentTFMazeCorridor {
 		super();
 	}
 
-	public ComponentTFMazeCorridorShrooms(TFFeature feature, int i, int x, int y, int z, EnumFacing rotation) {
+	public ComponentTFMazeCorridorShrooms(TFFeature feature, int i, int x, int y, int z, Direction rotation) {
 		super(feature, i, x, y, z, rotation);
 	}
 
@@ -37,7 +37,7 @@ public class ComponentTFMazeCorridorShrooms extends ComponentTFMazeCorridor {
 
 		// brackets?
 		boolean mushFlag = rand.nextBoolean();
-		IBlockState mushType = (mushFlag ? Blocks.RED_MUSHROOM_BLOCK : Blocks.BROWN_MUSHROOM_BLOCK).getDefaultState();
+		BlockState mushType = (mushFlag ? Blocks.RED_MUSHROOM_BLOCK : Blocks.BROWN_MUSHROOM_BLOCK).getDefaultState();
 		int mushY = rand.nextInt(4) + 1;
 		int mushZ = rand.nextInt(4) + 1;
 		this.setBlockState(world, mushType.withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.ALL_STEM), 1, mushY - 1, mushZ, sbb);

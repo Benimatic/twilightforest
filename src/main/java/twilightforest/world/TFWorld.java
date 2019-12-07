@@ -2,9 +2,9 @@ package twilightforest.world;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -38,11 +38,11 @@ public class TFWorld {
 		return world.provider instanceof WorldProviderTwilightForest;
 	}
 
-	public static NBTTagCompound getDimensionData(World world) {
+	public static CompoundNBT getDimensionData(World world) {
 		return world.getWorldInfo().getDimensionData(TFConfig.dimension.dimensionID);
 	}
 
-	public static void setDimensionData(World world, NBTTagCompound data) {
+	public static void setDimensionData(World world, CompoundNBT data) {
 		world.getWorldInfo().setDimensionData(TFConfig.dimension.dimensionID, data);
 	}
 
@@ -51,8 +51,8 @@ public class TFWorld {
 	}
 
 	public static boolean isBiomeSafeFor(Biome biome, Entity entity) {
-		if (biome instanceof TFBiomeBase && entity instanceof EntityPlayer) {
-			return ((TFBiomeBase) biome).doesPlayerHaveRequiredAdvancements((EntityPlayer) entity);
+		if (biome instanceof TFBiomeBase && entity instanceof PlayerEntity) {
+			return ((TFBiomeBase) biome).doesPlayerHaveRequiredAdvancements((PlayerEntity) entity);
 		}
 		return true;
 	}

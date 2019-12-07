@@ -1,6 +1,6 @@
 package twilightforest.structures.start;
 
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
@@ -26,7 +26,7 @@ public abstract class StructureStartTFFeatureAbstract extends StructureStartTFAb
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound compound) {
+    public void writeToNBT(CompoundNBT compound) {
         super.writeToNBT(compound);
 
         compound.setBoolean("Conquered", this.isConquered);
@@ -36,7 +36,7 @@ public abstract class StructureStartTFFeatureAbstract extends StructureStartTFAb
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound compound) {
+    public void readFromNBT(CompoundNBT compound) {
         super.readFromNBT(compound);
 
         this.isConquered = compound.getBoolean("Conquered");

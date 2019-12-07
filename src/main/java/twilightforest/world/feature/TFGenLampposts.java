@@ -1,7 +1,7 @@
 package twilightforest.world.feature;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -11,9 +11,9 @@ import java.util.Random;
 public class TFGenLampposts extends TFGenerator {
 
 	private static final Rotation[] ROTATIONS = Rotation.values();
-	private final IBlockState lamp;
+	private final BlockState lamp;
 
-	public TFGenLampposts(IBlockState state) {
+	public TFGenLampposts(BlockState state) {
 		lamp = state;
 	}
 
@@ -29,7 +29,7 @@ public class TFGenLampposts extends TFGenerator {
 
 		// is it air or replaceable above our grass block
 		for (int dy = 0; dy <= height; dy++) {
-			IBlockState state = world.getBlockState(pos.up(dy));
+			BlockState state = world.getBlockState(pos.up(dy));
 			if (!state.getBlock().isAir(state, world, pos.up(dy)) && !state.getBlock().isReplaceable(world, pos.up(dy))) {
 				return false;
 			}

@@ -1,7 +1,7 @@
 package twilightforest;
 
 import net.minecraft.entity.passive.EntityParrot;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.event.RegistryEvent;

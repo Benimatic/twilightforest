@@ -1,6 +1,6 @@
 package twilightforest.structures.finalcastle;
 
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -18,7 +18,7 @@ public class ComponentTFFinalCastleDamagedTower extends ComponentTFFinalCastleMa
 	public ComponentTFFinalCastleDamagedTower() {
 	}
 
-	public ComponentTFFinalCastleDamagedTower(TFFeature feature, Random rand, int i, int x, int y, int z, EnumFacing direction) {
+	public ComponentTFFinalCastleDamagedTower(TFFeature feature, Random rand, int i, int x, int y, int z, Direction direction) {
 		super(feature, rand, i, x, y, z, BlockTFCastleMagic.VALID_COLORS.get(2), direction);  //TODO: change rune color
 	}
 
@@ -50,7 +50,7 @@ public class ComponentTFFinalCastleDamagedTower extends ComponentTFFinalCastleMa
 
 
 	@Override
-	protected ComponentTFFinalCastleMazeTower13 makeNewDamagedTower(Random rand, EnumFacing facing, BlockPos tc) {
+	protected ComponentTFFinalCastleMazeTower13 makeNewDamagedTower(Random rand, Direction facing, BlockPos tc) {
 		return new ComponentTFFinalCastleWreckedTower(getFeatureType(), rand, this.getComponentType() + 1, tc.getX(), tc.getY(), tc.getZ(), facing);
 	}
 

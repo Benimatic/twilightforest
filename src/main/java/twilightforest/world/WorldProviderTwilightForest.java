@@ -2,7 +2,7 @@ package twilightforest.world;
 
 import net.minecraft.client.audio.MusicTicker;
 import net.minecraft.entity.Entity;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -12,8 +12,8 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomes;
@@ -43,7 +43,7 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 		skylightEnabled = enabled;
 	}
 
-	public static boolean isSkylightEnabled(NBTTagCompound data) {
+	public static boolean isSkylightEnabled(CompoundNBT data) {
 		return data.hasKey(SKYLIGHT_KEY, Constants.NBT.TAG_BYTE) ? data.getBoolean(SKYLIGHT_KEY) : skylightEnabled;
 	}
 
@@ -61,7 +61,7 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 
 	@Nullable
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public MusicTicker.MusicType getMusicType() {
 		return TFClientProxy.TFMUSICTYPE;
 	}
@@ -97,7 +97,7 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 
 	@Override
 	public void init() {
-		NBTTagCompound data = TFWorld.getDimensionData(world);
+		CompoundNBT data = TFWorld.getDimensionData(world);
 		seed = data.hasKey(SEED_KEY, Constants.NBT.TAG_LONG) ? data.getLong(SEED_KEY) : loadSeed();
 		hasSkyLight = isSkylightEnabled(data);
 		biomeProvider = new TFBiomeProvider(world);
@@ -122,7 +122,7 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 	/**
 	 * This seems to be a function checking whether we have an ocean.
 	 */
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public boolean isSkyColored() {
 		return false;
@@ -162,7 +162,7 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public Vec3d getSkyColor(Entity cameraEntity, float partialTicks) {
 		// TODO Maybe in the future we can get the return of sky color by biome?
 		return new Vec3d(32 / 256.0, 34 / 256.0, 74 / 256.0);
@@ -179,7 +179,7 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public float getStarBrightness(float partialTicks) {
 		return 1.0F;
 	}
@@ -220,7 +220,7 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 
 	@Override
 	public void onWorldSave() {
-		NBTTagCompound data = new NBTTagCompound();
+		CompoundNBT data = new CompoundNBT();
 		data.setLong(SEED_KEY, seed);
 		// TODO: decide on persisting this
 		//data.setBoolean(SKYLIGHT_KEY, hasSkyLight);
@@ -228,7 +228,7 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public IRenderHandler getSkyRenderer() {
 		if (super.getSkyRenderer() == null) {
 			this.setSkyRenderer(new TFSkyRenderer());
@@ -237,7 +237,7 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public IRenderHandler getWeatherRenderer() {
 		if (super.getWeatherRenderer() == null) {
 			this.setWeatherRenderer(new TFWeatherRenderer());
@@ -245,7 +245,7 @@ public class WorldProviderTwilightForest extends WorldProviderSurface {
 		return super.getWeatherRenderer();
 	}
 
-	// no sideonly
+	// no OnlyIn
 	@Override
 	public float getCloudHeight() {
 		return TFConfig.dimension.skylightForest ? -1F : 161F;

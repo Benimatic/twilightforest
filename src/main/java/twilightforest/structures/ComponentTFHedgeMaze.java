@@ -1,13 +1,13 @@
 package twilightforest.structures;
 
 import net.minecraft.block.BlockPumpkin;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityList;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.Blocks;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.world.gen.structure.MutableBoundingBox;
 import twilightforest.TFFeature;
 import twilightforest.loot.TFTreasure;
 import twilightforest.block.TFBlocks;
@@ -32,15 +32,15 @@ public class ComponentTFHedgeMaze extends StructureTFComponentOld {
 	public ComponentTFHedgeMaze(TFFeature feature, World world, Random rand, int i, int x, int y, int z) {
 		super(feature, i);
 
-		this.setCoordBaseMode(EnumFacing.SOUTH);
+		this.setCoordBaseMode(Direction.SOUTH);
 
 		// the maze is 50 x 50 for now
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -RADIUS, -3, -RADIUS, RADIUS * 2, 10, RADIUS * 2, EnumFacing.SOUTH);
+		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -RADIUS, -3, -RADIUS, RADIUS * 2, 10, RADIUS * 2, Direction.SOUTH);
 
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(World world, Random rand, MutableBoundingBox sbb) {
 
 		TFMaze maze = new TFMaze(MSIZE, MSIZE);
 
@@ -62,10 +62,10 @@ public class ComponentTFHedgeMaze extends StructureTFComponentOld {
 			}
 		}
 
-		IBlockState northJacko = Blocks.LIT_PUMPKIN.getDefaultState().withProperty(BlockPumpkin.FACING, EnumFacing.NORTH);
-		IBlockState southJacko = Blocks.LIT_PUMPKIN.getDefaultState().withProperty(BlockPumpkin.FACING, EnumFacing.SOUTH);
-		IBlockState westJacko = Blocks.LIT_PUMPKIN.getDefaultState().withProperty(BlockPumpkin.FACING, EnumFacing.WEST);
-		IBlockState eastJacko = Blocks.LIT_PUMPKIN.getDefaultState().withProperty(BlockPumpkin.FACING, EnumFacing.EAST);
+		BlockState northJacko = Blocks.LIT_PUMPKIN.getDefaultState().withProperty(BlockPumpkin.FACING, Direction.NORTH);
+		BlockState southJacko = Blocks.LIT_PUMPKIN.getDefaultState().withProperty(BlockPumpkin.FACING, Direction.SOUTH);
+		BlockState westJacko = Blocks.LIT_PUMPKIN.getDefaultState().withProperty(BlockPumpkin.FACING, Direction.WEST);
+		BlockState eastJacko = Blocks.LIT_PUMPKIN.getDefaultState().withProperty(BlockPumpkin.FACING, Direction.EAST);
 
 		// plunk down some jack-o-lanterns outside for decoration
 		setBlockState(world, westJacko, 0, FLOOR_LEVEL, 24, sbb);
@@ -131,7 +131,7 @@ public class ComponentTFHedgeMaze extends StructureTFComponentOld {
 		return false;
 	}
 
-	private void decorate3x3Rooms(World world, int[] rcoords, StructureBoundingBox sbb) {
+	private void decorate3x3Rooms(World world, int[] rcoords, MutableBoundingBox sbb) {
 		for (int i = 0; i < rcoords.length / 2; i++) {
 			int dx = rcoords[i * 2];
 			int dz = rcoords[i * 2 + 1];
@@ -147,7 +147,7 @@ public class ComponentTFHedgeMaze extends StructureTFComponentOld {
 	/**
 	 * Decorates a room in the maze.  Makes assumptions that the room is 3x3 cells and thus 11x11 blocks large.
 	 */
-	private void decorate3x3Room(World world, int x, int z, StructureBoundingBox sbb) {
+	private void decorate3x3Room(World world, int x, int z, MutableBoundingBox sbb) {
 		// make a new RNG for this room!
 		Random roomRNG = new Random(world.getSeed() ^ x + z);
 
@@ -170,7 +170,7 @@ public class ComponentTFHedgeMaze extends StructureTFComponentOld {
 	/**
 	 * Place a spawner within diameter / 2 squares of the specified x and z coordinates
 	 */
-	private void roomSpawner(World world, Random rand, int x, int z, int diameter, StructureBoundingBox sbb) {
+	private void roomSpawner(World world, Random rand, int x, int z, int diameter, MutableBoundingBox sbb) {
 		int rx = x + rand.nextInt(diameter) - (diameter / 2);
 		int rz = z + rand.nextInt(diameter) - (diameter / 2);
 
@@ -194,7 +194,7 @@ public class ComponentTFHedgeMaze extends StructureTFComponentOld {
 	/**
 	 * Place a treasure chest within diameter / 2 squares of the specified x and z coordinates
 	 */
-	private void roomTreasure(World world, Random rand, int x, int z, int diameter, StructureBoundingBox sbb) {
+	private void roomTreasure(World world, Random rand, int x, int z, int diameter, MutableBoundingBox sbb) {
 		int rx = x + rand.nextInt(diameter) - (diameter / 2);
 		int rz = z + rand.nextInt(diameter) - (diameter / 2);
 
@@ -205,11 +205,11 @@ public class ComponentTFHedgeMaze extends StructureTFComponentOld {
 	/**
 	 * Place a lit pumpkin lantern within diameter / 2 squares of the specified x and z coordinates
 	 */
-	private void roomJackO(World world, Random rand, int x, int z, int diameter, StructureBoundingBox sbb) {
+	private void roomJackO(World world, Random rand, int x, int z, int diameter, MutableBoundingBox sbb) {
 		int rx = x + rand.nextInt(diameter) - (diameter / 2);
 		int rz = z + rand.nextInt(diameter) - (diameter / 2);
 
-		setBlockState(world, Blocks.LIT_PUMPKIN.getDefaultState().withProperty(BlockPumpkin.FACING, EnumFacing.byHorizontalIndex(rand.nextInt(4))),
+		setBlockState(world, Blocks.LIT_PUMPKIN.getDefaultState().withProperty(BlockPumpkin.FACING, Direction.byHorizontalIndex(rand.nextInt(4))),
 				rx, FLOOR_LEVEL, rz, sbb);
 	}
 

@@ -1,6 +1,6 @@
 package twilightforest.structures.stronghold;
 
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -19,7 +19,7 @@ public class ComponentTFStrongholdEntrance extends StructureTFStrongholdComponen
 	}
 
 	public ComponentTFStrongholdEntrance(TFFeature feature, World world, Random rand, int i, int x, int y, int z) {
-		super(feature, i, EnumFacing.SOUTH, x, y - 10, z);
+		super(feature, i, Direction.SOUTH, x, y - 10, z);
 
 		this.deco = new StructureTFDecoratorStronghold();
 
@@ -106,7 +106,7 @@ public class ComponentTFStrongholdEntrance extends StructureTFStrongholdComponen
 	}
 
 	@Override
-	public StructureBoundingBox generateBoundingBox(EnumFacing facing, int x, int y, int z) {
+	public StructureBoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
 		return StructureBoundingBox.getComponentToAddBoundingBox(x, y, z, -1, -1, 0, 18, 7, 18, facing);
 	}
 

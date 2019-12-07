@@ -59,7 +59,7 @@ public class EntityTFNagaSegment extends MultiPartEntityPart {
 	}
 
 	private void collideWithOthers() {
-		List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().grow(0.2D, 0.0D, 0.2D));
+		List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getBoundingBox().grow(0.2D, 0.0D, 0.2D));
 
 		for (Entity entity : list) {
 			if (entity.canBePushed()) {

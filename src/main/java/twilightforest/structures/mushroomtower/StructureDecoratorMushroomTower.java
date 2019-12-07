@@ -1,7 +1,7 @@
 package twilightforest.structures.mushroomtower;
 
 import net.minecraft.block.BlockHugeMushroom;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Blocks;
 import twilightforest.structures.StructureTFDecorator;
 
 public class StructureDecoratorMushroomTower extends StructureTFDecorator {

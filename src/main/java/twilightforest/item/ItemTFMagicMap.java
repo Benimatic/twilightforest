@@ -3,8 +3,8 @@ package twilightforest.item;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumDyeColor;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.Packet;
@@ -16,8 +16,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.storage.MapData;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TFFeature;
 import twilightforest.TFMagicMapData;
 import twilightforest.network.TFPacketHandler;
@@ -66,7 +66,7 @@ public class ItemTFMagicMap extends ItemMap implements ModelRegisterCallback {
 
 	// [VanillaCopy] super, with own string ID and class, narrowed types
 	@Nullable
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public static TFMagicMapData loadMapData(int mapId, World worldIn) {
 		String s = STR_ID + "_" + mapId;
 		return (TFMagicMapData) worldIn.loadData(TFMagicMapData.class, s);
@@ -94,7 +94,7 @@ public class ItemTFMagicMap extends ItemMap implements ModelRegisterCallback {
 
 	@Override
 	public void updateMapData(World world, Entity viewer, MapData data) {
-		if (world.provider.getDimension() == data.dimension && viewer instanceof EntityPlayer) {
+		if (world.provider.getDimension() == data.dimension && viewer instanceof PlayerEntity) {
 			int biomesPerPixel = 4;
 			int blocksPerPixel = 16; // don't even bother with the scale, just hardcode it
 			int centerX = data.xCenter;
@@ -196,13 +196,13 @@ public class ItemTFMagicMap extends ItemMap implements ModelRegisterCallback {
 	}
 
 	@Override
-	public void onCreated(ItemStack stack, World world, EntityPlayer player) {
+	public void onCreated(ItemStack stack, World world, PlayerEntity player) {
 		// disable zooming
 	}
 
 	@Override
 	@Nullable
-	public Packet<?> createMapDataPacket(ItemStack stack, World world, EntityPlayer player) {
+	public Packet<?> createMapDataPacket(ItemStack stack, World world, PlayerEntity player) {
 		Packet<?> p = super.createMapDataPacket(stack, world, player);
 		if (p instanceof SPacketMaps) {
 			TFMagicMapData mapdata = getMapData(stack, world);
@@ -212,7 +212,7 @@ public class ItemTFMagicMap extends ItemMap implements ModelRegisterCallback {
 		}
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void registerModel() {
 		ModelLoader.setCustomMeshDefinition(this, stack -> new ModelResourceLocation(getRegistryName(), "inventory"));

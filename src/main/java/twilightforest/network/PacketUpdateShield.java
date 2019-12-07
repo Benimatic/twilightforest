@@ -46,10 +46,10 @@ public class PacketUpdateShield implements IMessage {
 
 		@Override
 		public IMessage onMessage(PacketUpdateShield message, MessageContext ctx) {
-			Minecraft.getMinecraft().addScheduledTask(new Runnable() {
+			Minecraft.getInstance().addScheduledTask(new Runnable() {
 				@Override
 				public void run() {
-					Entity entity = Minecraft.getMinecraft().world.getEntityByID(message.entityID);
+					Entity entity = Minecraft.getInstance().world.getEntityByID(message.entityID);
 					if (entity instanceof EntityLivingBase) {
 						IShieldCapability cap = entity.getCapability(CapabilityList.SHIELDS, null);
 						if (cap != null) {

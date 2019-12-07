@@ -2,8 +2,8 @@ package twilightforest.client.particle;
 
 import net.minecraft.client.particle.ParticleSuspendedTown;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ParticleProtection extends ParticleSuspendedTown {
 
@@ -13,7 +13,7 @@ public class ParticleProtection extends ParticleSuspendedTown {
 		this.setRBGColorF(1.0F, 1.0F, 1.0F);
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public int getBrightnessForRender(float partialTicks) {
 		return 0xF000F0;

@@ -1,6 +1,6 @@
 package twilightforest.structures.finalcastle;
 
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -15,7 +15,7 @@ public class ComponentTFFinalCastleEntranceBottomTower extends ComponentTFFinalC
 	public ComponentTFFinalCastleEntranceBottomTower() {
 	}
 
-	public ComponentTFFinalCastleEntranceBottomTower(TFFeature feature, Random rand, int i, int x, int y, int z, int floors, int entranceFloor, EnumFacing direction) {
+	public ComponentTFFinalCastleEntranceBottomTower(TFFeature feature, Random rand, int i, int x, int y, int z, int floors, int entranceFloor, Direction direction) {
 		super(feature, rand, i, x, y, z, floors, entranceFloor, BlockTFCastleMagic.VALID_COLORS.get(0), direction);
 
 //    		addOpening(12, 1, size / 2, 0);
@@ -46,7 +46,7 @@ public class ComponentTFFinalCastleEntranceBottomTower extends ComponentTFFinalC
 		// add door
 		this.addOpening(x, y, z, rotation);
 
-		EnumFacing direction = getStructureRelativeRotation(rotation);
+		Direction direction = getStructureRelativeRotation(rotation);
 		BlockPos dx = offsetTowerCCoords(x, y, z, 0, direction);
 
 		ComponentTFFinalCastleEntranceStairs stairs = new ComponentTFFinalCastleEntranceStairs(getFeatureType(), index, dx.getX(), dx.getY(), dx.getZ(), direction);

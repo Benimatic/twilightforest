@@ -1,8 +1,8 @@
 package twilightforest.structures.finalcastle;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.EnumDyeColor;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.item.DyeColor;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -22,12 +22,12 @@ public class ComponentTFFinalCastleStairTower extends ComponentTFTowerWing {
 	public ComponentTFFinalCastleStairTower() {
 	}
 
-	public ComponentTFFinalCastleStairTower(TFFeature feature, Random rand, int i, int x, int y, int z, EnumFacing rotation) {
+	public ComponentTFFinalCastleStairTower(TFFeature feature, Random rand, int i, int x, int y, int z, Direction rotation) {
 		super(feature, i);
 		this.setCoordBaseMode(rotation);
 		this.size = 9;
 		this.height = 51;
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -4, 0, -4, 8, 50, 8, EnumFacing.SOUTH);
+		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -4, 0, -4, 8, 50, 8, Direction.SOUTH);
 
 	}
 
@@ -62,7 +62,7 @@ public class ComponentTFFinalCastleStairTower extends ComponentTFTowerWing {
 
 
 		// door, first floor
-		final IBlockState castleDoor = TFBlocks.castle_door.getDefaultState()
+		final BlockState castleDoor = TFBlocks.castle_door.getDefaultState()
 				.withProperty(BlockTFCastleDoor.LOCK_INDEX, BlockTFCastleMagic.VALID_COLORS.indexOf(getGlyphMeta())); //TODO: WTF do I do here...?
 		this.fillWithBlocks(world, sbb, 0, 1, 1, 0, 3, 2, castleDoor, AIR, false);
 
@@ -77,9 +77,9 @@ public class ComponentTFFinalCastleStairTower extends ComponentTFTowerWing {
 				int sy = y + i;
 				int sz = 1;
 
-				this.setBlockStateRotated(world, getStairState(deco.stairState, EnumFacing.WEST, rotation, false), sx, sy, sz, rotation, sbb);
+				this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.WEST, rotation, false), sx, sy, sz, rotation, sbb);
 				this.setBlockStateRotated(world, deco.blockState, sx, sy - 1, sz, rotation, sbb);
-				this.setBlockStateRotated(world, getStairState(deco.stairState, EnumFacing.WEST, rotation, false), sx, sy, sz + 1, rotation, sbb);
+				this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.WEST, rotation, false), sx, sy, sz + 1, rotation, sbb);
 				this.setBlockStateRotated(world, deco.blockState, sx, sy - 1, sz + 1, rotation, sbb);
 			}
 			// landing
@@ -89,7 +89,7 @@ public class ComponentTFFinalCastleStairTower extends ComponentTFTowerWing {
 		// door, second floor
 		this.fillWithBlocks(world, sbb, 1, 18, 0, 2, 20, 0, castleDoor, AIR, false);
 
-		IBlockState stairState = getStairState(deco.stairState, EnumFacing.SOUTH, rotation, false);
+		BlockState stairState = getStairState(deco.stairState, Direction.SOUTH, rotation, false);
 
 		// second floor landing
 		this.fillWithBlocks(world, sbb, 1, 17, 1, 3, 17, 3, deco.blockState, deco.blockState, false);
@@ -113,9 +113,9 @@ public class ComponentTFFinalCastleStairTower extends ComponentTFTowerWing {
 				int sz = 1;
 
 
-				this.setBlockStateRotated(world, getStairState(deco.stairState, EnumFacing.WEST, rotation, false), sx, sy, sz, rotation, sbb);
+				this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.WEST, rotation, false), sx, sy, sz, rotation, sbb);
 				this.setBlockStateRotated(world, deco.blockState, sx, sy - 1, sz, rotation, sbb);
-				this.setBlockStateRotated(world, getStairState(deco.stairState, EnumFacing.WEST, rotation, false), sx, sy, sz + 1, rotation, sbb);
+				this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.WEST, rotation, false), sx, sy, sz + 1, rotation, sbb);
 				this.setBlockStateRotated(world, deco.blockState, sx, sy - 1, sz + 1, rotation, sbb);
 			}
 			// landing
@@ -131,7 +131,7 @@ public class ComponentTFFinalCastleStairTower extends ComponentTFTowerWing {
 	}
 
 
-	public EnumDyeColor getGlyphMeta() {
+	public DyeColor getGlyphMeta() {
 		return BlockTFCastleMagic.VALID_COLORS.get(1);
 	}
 

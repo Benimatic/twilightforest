@@ -1,9 +1,9 @@
 package twilightforest.structures.stronghold;
 
 import net.minecraft.block.BlockStairs;
-import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -21,25 +21,25 @@ public class ComponentTFStrongholdUpperAscender extends StructureTFStrongholdCom
 	public ComponentTFStrongholdUpperAscender() {
 	}
 
-	public ComponentTFStrongholdUpperAscender(TFFeature feature, int i, EnumFacing facing, int x, int y, int z) {
+	public ComponentTFStrongholdUpperAscender(TFFeature feature, int i, Direction facing, int x, int y, int z) {
 		super(feature, i, facing, x, y, z);
 	}
 
 	@Override
-	protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 		super.writeStructureToNBT(tagCompound);
 
 		tagCompound.setBoolean("exitTop", this.exitTop);
 	}
 
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager templateManager) {
+	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
 		super.readStructureFromNBT(tagCompound, templateManager);
 		this.exitTop = tagCompound.getBoolean("exitTop");
 	}
 
 	@Override
-	public StructureBoundingBox generateBoundingBox(EnumFacing facing, int x, int y, int z) {
+	public StructureBoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
 		if (y < 36) {
 			this.exitTop = true;
 			return StructureBoundingBox.getComponentToAddBoundingBox(x, y, z, -2, -1, 0, 5, 10, 10, facing);
@@ -72,18 +72,18 @@ public class ComponentTFStrongholdUpperAscender extends StructureTFStrongholdCom
 
 			// steps!
 			if (exitTop) {
-				makeStairsAt(world, 1, 3, EnumFacing.NORTH, sbb);
-				makeStairsAt(world, 2, 4, EnumFacing.NORTH, sbb);
-				makeStairsAt(world, 3, 5, EnumFacing.NORTH, sbb);
-				makeStairsAt(world, 4, 6, EnumFacing.NORTH, sbb);
-				makeStairsAt(world, 5, 7, EnumFacing.NORTH, sbb);
+				makeStairsAt(world, 1, 3, Direction.NORTH, sbb);
+				makeStairsAt(world, 2, 4, Direction.NORTH, sbb);
+				makeStairsAt(world, 3, 5, Direction.NORTH, sbb);
+				makeStairsAt(world, 4, 6, Direction.NORTH, sbb);
+				makeStairsAt(world, 5, 7, Direction.NORTH, sbb);
 				makePlatformAt(world, 5, 8, sbb);
 			} else {
-				makeStairsAt(world, 1, 6, EnumFacing.NORTH, sbb);
-				makeStairsAt(world, 2, 5, EnumFacing.NORTH, sbb);
-				makeStairsAt(world, 3, 4, EnumFacing.NORTH, sbb);
-				makeStairsAt(world, 4, 3, EnumFacing.NORTH, sbb);
-				makeStairsAt(world, 5, 2, EnumFacing.NORTH, sbb);
+				makeStairsAt(world, 1, 6, Direction.NORTH, sbb);
+				makeStairsAt(world, 2, 5, Direction.NORTH, sbb);
+				makeStairsAt(world, 3, 4, Direction.NORTH, sbb);
+				makeStairsAt(world, 4, 3, Direction.NORTH, sbb);
+				makeStairsAt(world, 5, 2, Direction.NORTH, sbb);
 				makePlatformAt(world, 5, 1, sbb);
 			}
 			return true;
@@ -93,7 +93,7 @@ public class ComponentTFStrongholdUpperAscender extends StructureTFStrongholdCom
 	/**
 	 * Check if we can find at least one wall, and if so, generate stairs
 	 */
-	private void makeStairsAt(World world, int y, int z, EnumFacing facing, StructureBoundingBox sbb) {
+	private void makeStairsAt(World world, int y, int z, Direction facing, StructureBoundingBox sbb) {
 		// check walls
 		if (this.getBlockStateFromPos(world, 0, y, z, sbb).getBlock() != Blocks.AIR || this.getBlockStateFromPos(world, 4, y, z, sbb).getBlock() != Blocks.AIR) {
 			for (int x = 1; x < 4; x++) {

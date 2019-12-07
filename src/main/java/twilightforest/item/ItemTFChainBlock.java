@@ -1,24 +1,24 @@
 package twilightforest.item;
 
 import com.google.common.collect.Sets;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.block.Blocks;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.entity.EntityTFChainBlock;
@@ -37,7 +37,7 @@ public class ItemTFChainBlock extends ItemTool implements ModelRegisterCallback 
 		this.setCreativeTab(TFItems.creativeTab);
 
 		this.addPropertyOverride(TwilightForestMod.prefix("thrown"), new IItemPropertyGetter() {
-			@SideOnly(Side.CLIENT)
+			@OnlyIn(Dist.CLIENT)
 			@Override
 			public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn) {
 				return getThrownUuid(stack) != null ? 1 : 0;
@@ -54,7 +54,7 @@ public class ItemTFChainBlock extends ItemTool implements ModelRegisterCallback 
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
 		ItemStack stack = player.getHeldItem(hand);
 
 		if (getThrownUuid(stack) != null)
@@ -100,7 +100,7 @@ public class ItemTFChainBlock extends ItemTool implements ModelRegisterCallback 
 
 	private static void setThrownEntity(ItemStack stack, EntityTFChainBlock cube) {
 		if (!stack.hasTagCompound()) {
-			stack.setTagCompound(new NBTTagCompound());
+			stack.setTagCompound(new CompoundNBT());
 		}
 		stack.getTagCompound().setUniqueId(THROWN_UUID_KEY, cube.getUniqueID());
 	}
@@ -121,7 +121,7 @@ public class ItemTFChainBlock extends ItemTool implements ModelRegisterCallback 
 	}
 
 	@Override
-	public int getHarvestLevel(ItemStack stack, String toolClass, @Nullable EntityPlayer player, @Nullable IBlockState state) {
+	public int getHarvestLevel(ItemStack stack, String toolClass, @Nullable PlayerEntity player, @Nullable BlockState state) {
 		if ("pickaxe".equals(toolClass)) {
 			return 2;
 		} else {

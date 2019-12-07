@@ -1,7 +1,7 @@
 package twilightforest.structures.finalcastle;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -23,7 +23,7 @@ public class ComponentTFFinalCastleBellTower21 extends ComponentTFFinalCastleMaz
 	public ComponentTFFinalCastleBellTower21() {
 	}
 
-	public ComponentTFFinalCastleBellTower21(TFFeature feature, Random rand, int i, int x, int y, int z, EnumFacing direction) {
+	public ComponentTFFinalCastleBellTower21(TFFeature feature, Random rand, int i, int x, int y, int z, Direction direction) {
 		super(feature, rand, i, x, y, z, FLOORS, 1, BlockTFCastleMagic.VALID_COLORS.get(1), direction);
 		this.size = 21;
 		int floors = FLOORS;
@@ -55,7 +55,7 @@ public class ComponentTFFinalCastleBellTower21 extends ComponentTFFinalCastleMaz
 		super.addComponentParts(world, rand, sbb);
 
 		// openings!
-		IBlockState fieldBlock = TFBlocks.force_field
+		BlockState fieldBlock = TFBlocks.force_field
 				.getDefaultState()
 				.withProperty(BlockTFForceField.COLOR, BlockTFForceField.VALID_COLORS.get(4));
 		for (Rotation rotation : RotationUtil.ROTATIONS) {

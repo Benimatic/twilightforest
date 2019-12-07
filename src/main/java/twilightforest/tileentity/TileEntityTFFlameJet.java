@@ -1,11 +1,11 @@
 package twilightforest.tileentity;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -45,7 +45,7 @@ public class TileEntityTFFlameJet extends TileEntity implements ITickable {
 
 		if (world.isRemote) {
 			if (counter % 2 == 0) {
-				world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, x + 0.5, y + 1.0, z + 0.5, 0.0D, 0.0D, 0.0D);
+				world.spawnParticle(ParticleTypes.SMOKE_LARGE, x + 0.5, y + 1.0, z + 0.5, 0.0D, 0.0D, 0.0D);
 				TwilightForestMod.proxy.spawnParticle(TFParticleType.LARGE_FLAME, x + 0.5, y + 1.0, z + 0.5, 0.0D, 0.5D, 0.0D);
 //			    TwilightForestMod.proxy.spawnParticle(TFParticleType.LARGE_FLAME, x + 0.5, y + 1.0, z + 0.5,
 //    				Math.cos(counter / 4.0) * 0.2, 0.35D, Math.sin(counter / 4.0) * 0.2);			
@@ -89,13 +89,13 @@ public class TileEntityTFFlameJet extends TileEntity implements ITickable {
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(CompoundNBT compound) {
 		super.readFromNBT(compound);
 		this.nextVariant = FireJetVariant.values()[compound.getInteger("NextMeta")];
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public CompoundNBT writeToNBT(CompoundNBT compound) {
 		super.writeToNBT(compound);
 		compound.setInteger("NextMeta", this.nextVariant.ordinal());
 		return compound;

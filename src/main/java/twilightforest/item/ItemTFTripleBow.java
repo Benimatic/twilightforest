@@ -2,12 +2,12 @@ package twilightforest.item;
 
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntityTippedArrow;
 import net.minecraft.init.Enchantments;
-import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Items;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
@@ -25,8 +25,8 @@ public class ItemTFTripleBow extends ItemTFBowBase {
 	@SuppressWarnings("unused")
 	@Override
 	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
-		if (entityLiving instanceof EntityPlayer) {
-			EntityPlayer entityplayer = (EntityPlayer) entityLiving;
+		if (entityLiving instanceof PlayerEntity) {
+			PlayerEntity entityplayer = (PlayerEntity) entityLiving;
 			boolean flag = entityplayer.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
 			ItemStack itemstack = this.findAmmo(entityplayer);
 
@@ -101,7 +101,7 @@ public class ItemTFTripleBow extends ItemTFBowBase {
 						worldIn.spawnEntity(entityarrow2);
 					}
 
-					worldIn.playSound((EntityPlayer) null, entityplayer.posX, entityplayer.posY, entityplayer.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
+					worldIn.playSound((PlayerEntity) null, entityplayer.posX, entityplayer.posY, entityplayer.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
 
 					if (!flag1 && !entityplayer.capabilities.isCreativeMode) {
 						itemstack.shrink(1);

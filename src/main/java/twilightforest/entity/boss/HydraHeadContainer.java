@@ -670,7 +670,7 @@ public class HydraHeadContainer {
 		}
 		if (headEntity.getState() == State.BITING) {
 			// damage nearby things
-			List<Entity> nearbyList = headEntity.world.getEntitiesWithinAABBExcludingEntity(headEntity, headEntity.getEntityBoundingBox().grow(0.0, 1.0, 0.0));
+			List<Entity> nearbyList = headEntity.world.getEntitiesWithinAABBExcludingEntity(headEntity, headEntity.getBoundingBox().grow(0.0, 1.0, 0.0));
 
 			for (Entity nearby : nearbyList) {
 				if (nearby instanceof EntityLivingBase && !(nearby instanceof EntityTFHydraPart) && !(nearby instanceof EntityTFHydra) && !(nearby instanceof MultiPartEntityPart)) {
@@ -717,13 +717,13 @@ public class HydraHeadContainer {
 		double rz = hitpos == null ? range : Math.min(range, Math.abs(headEntity.posZ - hitpos.getZ()));
 		Vec3d destVec = srcVec.add(lookVec.x * range, lookVec.y * range, lookVec.z * range);
 		float var9 = 3.0F;
-		List<Entity> possibleList = headEntity.world.getEntitiesWithinAABBExcludingEntity(headEntity, headEntity.getEntityBoundingBox().offset(lookVec.x * rx, lookVec.y * ry, lookVec.z * rz).grow(var9, var9, var9));
+		List<Entity> possibleList = headEntity.world.getEntitiesWithinAABBExcludingEntity(headEntity, headEntity.getBoundingBox().offset(lookVec.x * rx, lookVec.y * ry, lookVec.z * rz).grow(var9, var9, var9));
 		double hitDist = 0;
 
 		for (Entity possibleEntity : possibleList) {
 			if (possibleEntity.canBeCollidedWith() && possibleEntity != headEntity && possibleEntity != necka && possibleEntity != neckb && possibleEntity != neckc) {
 				float borderSize = possibleEntity.getCollisionBorderSize();
-				AxisAlignedBB collisionBB = possibleEntity.getEntityBoundingBox().grow((double) borderSize, (double) borderSize, (double) borderSize);
+				AxisAlignedBB collisionBB = possibleEntity.getBoundingBox().grow((double) borderSize, (double) borderSize, (double) borderSize);
 				RayTraceResult interceptPos = collisionBB.calculateIntercept(srcVec, destVec);
 
 				if (collisionBB.contains(srcVec)) {
@@ -884,7 +884,7 @@ public class HydraHeadContainer {
 			EntityLivingBase entityliving = (EntityLivingBase) entity;
 			yTarget = entityliving.posY + entityliving.getEyeHeight();
 		} else {
-			yTarget = (entity.getEntityBoundingBox().minY + entity.getEntityBoundingBox().maxY) / 2D;
+			yTarget = (entity.getBoundingBox().minY + entity.getBoundingBox().maxY) / 2D;
 		}
 
 		faceVec(entity.posX, yTarget, entity.posZ, yawConstraint, pitchConstraint);

@@ -1,8 +1,8 @@
 package twilightforest.world;
 
 import net.minecraft.block.BlockFalling;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
@@ -52,7 +52,7 @@ public class ChunkGeneratorTwilightVoid extends ChunkGeneratorTFBase {
 	@Override
 	protected void initPrimer(ChunkPrimer primer, ChunkBitArray data) {
 
-		IBlockState stone = Blocks.STONE.getDefaultState();
+		BlockState stone = Blocks.STONE.getDefaultState();
 
 		for (int x = 0; x < 16; x++) {
 			for (int z = 0; z < 16; z++) {

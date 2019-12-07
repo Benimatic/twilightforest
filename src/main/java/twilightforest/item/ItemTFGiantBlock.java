@@ -2,13 +2,13 @@ package twilightforest.item;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -23,9 +23,9 @@ public class ItemTFGiantBlock extends ItemBlock {
 
 	// [VanillaCopy] super, but check every block in the box for permissions
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public EnumActionResult onItemUse(PlayerEntity player, World worldIn, BlockPos pos, Hand hand, Direction facing, float hitX, float hitY, float hitZ) {
 
-		IBlockState iblockstate = worldIn.getBlockState(pos);
+		BlockState iblockstate = worldIn.getBlockState(pos);
 		Block block = iblockstate.getBlock();
 
 		if (!block.isReplaceable(worldIn, pos)) {
@@ -47,7 +47,7 @@ public class ItemTFGiantBlock extends ItemBlock {
 		pos = BlockTFGiantBlock.roundCoords(pos);
 
 		int i = this.getMetadata(itemstack.getMetadata());
-		IBlockState iblockstate1 = this.block.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, i, player, hand);
+		BlockState iblockstate1 = this.block.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, i, player, hand);
 
 		if (placeBlockAt(itemstack, player, worldIn, pos, facing, hitX, hitY, hitZ, iblockstate1)) {
 			iblockstate1 = worldIn.getBlockState(pos);

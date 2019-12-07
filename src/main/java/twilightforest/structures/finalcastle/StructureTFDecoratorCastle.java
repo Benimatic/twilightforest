@@ -1,7 +1,7 @@
 package twilightforest.structures.finalcastle;
 
 import net.minecraft.block.BlockQuartz;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Blocks;
 import twilightforest.block.BlockTFCastleBlock;
 import twilightforest.block.BlockTFCastlePillar;
 import twilightforest.block.TFBlocks;

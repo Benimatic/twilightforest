@@ -9,11 +9,11 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.util.ParticleHelper;
 
@@ -41,7 +41,7 @@ public class ItemTFFierySword extends ItemSword implements ModelRegisterCallback
 		boolean result = super.hitEntity(stack, target, attacker);
 
 		if (result && !target.world.isRemote && !target.isImmuneToFire()) {
-			ParticleHelper.spawnParticles(target, EnumParticleTypes.FLAME, 20, 0.02);
+			ParticleHelper.spawnParticles(target, ParticleTypes.FLAME, 20, 0.02);
 		}
 
 		return result;
@@ -57,7 +57,7 @@ public class ItemTFFierySword extends ItemSword implements ModelRegisterCallback
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flags) {
 		super.addInformation(stack, world, tooltip, flags);
 		tooltip.add(I18n.format(getTranslationKey() + ".tooltip"));

@@ -2,9 +2,9 @@ package twilightforest.structures.lichtower;
 
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.BlockStairs;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.TFFeature;
@@ -22,7 +22,7 @@ public class ComponentTFTowerRoofStairsOverhang extends ComponentTFTowerRoof {
 		super(feature, i, wing);
 
 		// always facing = 0.  This roof cannot rotate, due to stair facing issues.
-		this.setCoordBaseMode(EnumFacing.SOUTH);
+		this.setCoordBaseMode(Direction.SOUTH);
 
 		this.size = wing.size + 2; // assuming only square towers and roofs right now.
 		this.height = size / 2;
@@ -37,13 +37,13 @@ public class ComponentTFTowerRoofStairsOverhang extends ComponentTFTowerRoof {
 	 */
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		IBlockState woodenSlab = Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
-		IBlockState woodenPlanks = Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
+		BlockState woodenSlab = Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
+		BlockState woodenPlanks = Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
 
-		IBlockState birchStairsNorth = Blocks.BIRCH_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.NORTH);
-		IBlockState birchStairsSouth = Blocks.BIRCH_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.SOUTH);
-		IBlockState birchStairsEast = Blocks.BIRCH_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.EAST);
-		IBlockState birchStairsWest = Blocks.BIRCH_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, EnumFacing.WEST);
+		BlockState birchStairsNorth = Blocks.BIRCH_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, Direction.NORTH);
+		BlockState birchStairsSouth = Blocks.BIRCH_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, Direction.SOUTH);
+		BlockState birchStairsEast = Blocks.BIRCH_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, Direction.EAST);
+		BlockState birchStairsWest = Blocks.BIRCH_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, Direction.WEST);
 
 		for (int y = 0; y <= height; y++) {
 			int min = y;

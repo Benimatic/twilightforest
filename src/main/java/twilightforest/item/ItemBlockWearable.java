@@ -2,7 +2,7 @@ package twilightforest.item;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
@@ -14,13 +14,13 @@ public class ItemBlockWearable extends ItemBlock {
     }
 
     @Override
-    public boolean isValidArmor(ItemStack stack, EntityEquipmentSlot armorType, Entity entity) {
-        return armorType == EntityEquipmentSlot.HEAD;
+    public boolean isValidArmor(ItemStack stack, EquipmentSlotType armorType, Entity entity) {
+        return armorType == EquipmentSlotType.HEAD;
     }
 
     @Override
     @Nullable
-    public EntityEquipmentSlot getEquipmentSlot(ItemStack stack) {
-        return EntityEquipmentSlot.HEAD;
+    public EquipmentSlotType getEquipmentSlot(ItemStack stack) {
+        return EquipmentSlotType.HEAD;
     }
 }

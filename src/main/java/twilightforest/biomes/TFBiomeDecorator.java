@@ -1,7 +1,7 @@
 package twilightforest.biomes;
 
 import net.minecraft.block.BlockStone;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.WeightedRandom;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;

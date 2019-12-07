@@ -1,10 +1,10 @@
 package twilightforest.structures.courtyard;
 
 import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.template.TemplateManager;
@@ -571,20 +571,20 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
     }
 
     protected enum WallFacing {
-        EAST (0b0001, 0b0100, 0b1110, 0b1011, EnumFacing.EAST ,  1,  0),
-        SOUTH(0b0010, 0b1000, 0b1101, 0b0111, EnumFacing.SOUTH,  0,  1),
-        WEST (0b0100, 0b0001, 0b1011, 0b1110, EnumFacing.WEST , -1,  0),
-        NORTH(0b1000, 0b0010, 0b0111, 0b1101, EnumFacing.NORTH,  0, -1);
+        EAST (0b0001, 0b0100, 0b1110, 0b1011, Direction.EAST ,  1,  0),
+        SOUTH(0b0010, 0b1000, 0b1101, 0b0111, Direction.SOUTH,  0,  1),
+        WEST (0b0100, 0b0001, 0b1011, 0b1110, Direction.WEST , -1,  0),
+        NORTH(0b1000, 0b0010, 0b0111, 0b1101, Direction.NORTH,  0, -1);
 
         private final int BYTE;
         private final int OPPOSITE;
         private final int INVERTED;
         private final int INVERTED_OPPOSITE;
-        private final EnumFacing enumFacing;
+        private final Direction enumFacing;
         private final int xOffset;
         private final int zOffset;
 
-        WallFacing(int bite, int oppositeBite, int inverted, int invertedOpposite, EnumFacing enumFacing, int xOffset, int zOffset) {
+        WallFacing(int bite, int oppositeBite, int inverted, int invertedOpposite, Direction enumFacing, int xOffset, int zOffset) {
             this.BYTE = bite;
             this.OPPOSITE = oppositeBite;
             this.INVERTED = inverted;
@@ -602,13 +602,13 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
             return (this.OPPOSITE & directions) == this.OPPOSITE;
         }
 
-        public EnumFacing getEnumFacing() {
+        public Direction getEnumFacing() {
             return enumFacing;
         }
     }
 
     @Override
-    protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+    protected void writeStructureToNBT(CompoundNBT tagCompound) {
         super.writeStructureToNBT(tagCompound);
 
         NBTTagList mazeX = new NBTTagList();
@@ -627,7 +627,7 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
     }
 
     @Override
-    protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager templateManager) {
+    protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
         super.readStructureFromNBT(tagCompound, templateManager);
 
         this.widthInCellCount = tagCompound.getInteger("mazeWidth");

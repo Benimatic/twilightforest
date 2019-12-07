@@ -1,10 +1,10 @@
 package twilightforest.structures;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.world.gen.structure.MutableBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFMazestone;
@@ -42,18 +42,18 @@ public class TFMaze {
 
 	public StructureComponent.BlockSelector wallBlocks;
 
-	public IBlockState wallBlockState;
+	public BlockState wallBlockState;
 
-	public IBlockState headBlockState;
+	public BlockState headBlockState;
 
-	public IBlockState rootBlockState;
+	public BlockState rootBlockState;
 
-	public IBlockState pillarBlockState;
+	public BlockState pillarBlockState;
 
-	public IBlockState doorBlockState;
+	public BlockState doorBlockState;
 	public float doorRarity;
 
-	public IBlockState torchBlockState;
+	public BlockState torchBlockState;
 	public float torchRarity;
 
 	protected int rawWidth;
@@ -309,7 +309,7 @@ public class TFMaze {
 	/**
 	 * Copy the maze into a StructureTFComponentOld
 	 */
-	public void copyToStructure(World world, int dx, int dy, int dz, StructureTFComponentOld component, StructureBoundingBox sbb) {
+	public void copyToStructure(World world, int dx, int dy, int dz, StructureTFComponentOld component, MutableBoundingBox sbb) {
 		for (int x = 0; x < rawWidth; x++) {
 			for (int z = 0; z < rawDepth; z++) {
 				// only draw walls.  if the data is 0 the there's a wall

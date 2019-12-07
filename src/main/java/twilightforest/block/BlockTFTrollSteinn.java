@@ -6,14 +6,14 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.block.BlockState;
+import net.minecraft.util.Direction;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 
@@ -49,13 +49,13 @@ public class BlockTFTrollSteinn extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(BlockState state) {
 		return 0;
 	}
 
 	@Override
 	@Deprecated
-	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public BlockState getActualState(BlockState state, IBlockAccess world, BlockPos pos) {
 		if (!(world instanceof World)) return this.getDefaultState();
 
 		for (SideProps side : SideProps.values())
@@ -64,9 +64,9 @@ public class BlockTFTrollSteinn extends Block implements ModelRegisterCallback {
 		return state;
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
+	public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random rand) {
 		if (rand.nextInt(2) == 0) this.sparkle(world, pos);
 	}
 
@@ -75,53 +75,53 @@ public class BlockTFTrollSteinn extends Block implements ModelRegisterCallback {
 		Random random = world.rand;
 		int threshhold = LIGHT_THRESHHOLD;
 
-		for (EnumFacing side : EnumFacing.VALUES) {
+		for (Direction side : Direction.VALUES) {
 			double rx = (double) ((float) pos.getX() + random.nextFloat());
 			double ry = (double) ((float) pos.getY() + random.nextFloat());
 			double rz = (double) ((float) pos.getZ() + random.nextFloat());
 
-			if (side == EnumFacing.DOWN && !world.getBlockState(pos.down()).isOpaqueCube() && world.getLight(pos.down()) <= threshhold) {
+			if (side == Direction.DOWN && !world.getBlockState(pos.down()).isOpaqueCube() && world.getLight(pos.down()) <= threshhold) {
 				ry = (double)pos.getY() - 0.0625D;
 			}
 
-			if (side == EnumFacing.UP && !world.getBlockState(pos.up()).isOpaqueCube() && world.getLight(pos.up()) <= threshhold) {
+			if (side == Direction.UP && !world.getBlockState(pos.up()).isOpaqueCube() && world.getLight(pos.up()) <= threshhold) {
 				ry = (double)pos.getY() + 0.0625D + 1.0D;
 			}
 
-			if (side == EnumFacing.NORTH && !world.getBlockState(pos.north()).isOpaqueCube() && world.getLight(pos.north()) <= threshhold) {
+			if (side == Direction.NORTH && !world.getBlockState(pos.north()).isOpaqueCube() && world.getLight(pos.north()) <= threshhold) {
 				rz = (double)pos.getZ() - 0.0625D;
 			}
 
-			if (side == EnumFacing.SOUTH && !world.getBlockState(pos.south()).isOpaqueCube() && world.getLight(pos.south()) <= threshhold) {
+			if (side == Direction.SOUTH && !world.getBlockState(pos.south()).isOpaqueCube() && world.getLight(pos.south()) <= threshhold) {
 				rz = (double)pos.getZ() + 0.0625D + 1.0D;
 			}
 
-			if (side == EnumFacing.WEST && !world.getBlockState(pos.west()).isOpaqueCube() && world.getLight(pos.west()) <= threshhold) {
+			if (side == Direction.WEST && !world.getBlockState(pos.west()).isOpaqueCube() && world.getLight(pos.west()) <= threshhold) {
 				rx = (double)pos.getX() - 0.0625D;
 			}
 
-			if (side == EnumFacing.EAST && !world.getBlockState(pos.east()).isOpaqueCube() && world.getLight(pos.east()) <= threshhold) {
+			if (side == Direction.EAST && !world.getBlockState(pos.east()).isOpaqueCube() && world.getLight(pos.east()) <= threshhold) {
 				rx = (double)pos.getX() + 0.0625D + 1.0D;
 			}
 
 			if (rx < (double) pos.getX() || rx > (double) (pos.getX() + 1) || ry < 0.0D || ry > (double) (pos.getY() + 1) || rz < (double) pos.getZ() || rz > (double) (pos.getZ() + 1)) {
-				world.spawnParticle(EnumParticleTypes.REDSTONE, rx, ry, rz, 0.25D, -1.0D, 0.5D);
+				world.spawnParticle(ParticleTypes.REDSTONE, rx, ry, rz, 0.25D, -1.0D, 0.5D);
 			}
 		}
 	}
 
 	private enum SideProps {
-		UP(UP_LIT, EnumFacing.UP),
-		DOWN(DOWN_LIT, EnumFacing.DOWN),
-		NORTH(NORTH_LIT, EnumFacing.NORTH),
-		SOUTH(SOUTH_LIT, EnumFacing.SOUTH),
-		WEST(WEST_LIT, EnumFacing.WEST),
-		EAST(EAST_LIT, EnumFacing.EAST);
+		UP(UP_LIT, Direction.UP),
+		DOWN(DOWN_LIT, Direction.DOWN),
+		NORTH(NORTH_LIT, Direction.NORTH),
+		SOUTH(SOUTH_LIT, Direction.SOUTH),
+		WEST(WEST_LIT, Direction.WEST),
+		EAST(EAST_LIT, Direction.EAST);
 
 		private final IProperty<Boolean> prop;
-		private final EnumFacing facing;
+		private final Direction facing;
 
-		SideProps(IProperty<Boolean> prop, EnumFacing faceing) {
+		SideProps(IProperty<Boolean> prop, Direction faceing) {
 			this.prop = prop;
 			this.facing = faceing;
 		}

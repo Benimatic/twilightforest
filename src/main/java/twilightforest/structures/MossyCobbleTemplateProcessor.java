@@ -2,8 +2,8 @@ package twilightforest.structures;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockWall;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
@@ -21,7 +21,7 @@ public class MossyCobbleTemplateProcessor extends RandomizedTemplateProcessor {
     @Override
     public Template.BlockInfo processBlock(World worldIn, BlockPos pos, Template.BlockInfo blockInfo) {
         if (shouldPlaceBlock()) {
-            IBlockState state = blockInfo.blockState;
+            BlockState state = blockInfo.blockState;
             Block block = state.getBlock();
 
             if (block == Blocks.COBBLESTONE)

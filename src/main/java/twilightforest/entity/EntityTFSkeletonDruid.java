@@ -80,7 +80,7 @@ public class EntityTFSkeletonDruid extends SkeletonEntity {
 	// [VanillaCopy] of super. Edits noted.
 	@Override
 	protected boolean isValidLightLevel() {
-		BlockPos blockpos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
+		BlockPos blockpos = new BlockPos(this.posX, this.getBoundingBox().minY, this.posZ);
 
 		if (this.world.getLightFor(LightType.SKY, blockpos) > this.rand.nextInt(32)) {
 			return false;

@@ -1,8 +1,8 @@
 package twilightforest.structures.courtyard;
 
 import net.minecraft.block.*;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
@@ -23,7 +23,7 @@ public class CourtyardWallTemplateProcessor extends RandomizedTemplateProcessor 
     @Override
     public Template.BlockInfo processBlock(World worldIn, BlockPos pos, Template.BlockInfo blockInfo) {
         if (shouldPlaceBlock()) {
-            IBlockState state = blockInfo.blockState;
+            BlockState state = blockInfo.blockState;
             Block block = state.getBlock();
 
             if (block == Blocks.STONEBRICK && state != Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED))

@@ -2,22 +2,22 @@ package twilightforest.client.particle;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.block.Blocks;
+import net.minecraft.item.Items;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.item.Item;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class ParticleGhastTear extends Particle {
 
 	public ParticleGhastTear(World world, double x, double y, double z, Item item) {
 		super(world, x, y, z, 0.0D, 0.0D, 0.0D);
-		this.setParticleTexture(Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getParticleIcon(item));
+		this.setParticleTexture(Minecraft.getInstance().getRenderItem().getItemModelMesher().getParticleIcon(item));
 		this.particleRed = this.particleGreen = this.particleBlue = 1.0F;
 		this.particleGravity = Blocks.SNOW.blockParticleGravity * 2F;
 		this.particleScale = 16.0F;
@@ -56,8 +56,8 @@ public class ParticleGhastTear extends Particle {
 
 				//TwilightForestMod.LOGGER.info("tear impact {}, isremote {}", this, world.isRemote);
 
-				world.spawnParticle(EnumParticleTypes.ITEM_CRACK, this.posX + rand.nextFloat() - rand.nextFloat(), this.posY + 0.5F, this.posZ + rand.nextFloat(), gaussX, gaussY, gaussZ, itemID);
-				world.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
+				world.spawnParticle(ParticleTypes.ITEM_CRACK, this.posX + rand.nextFloat() - rand.nextFloat(), this.posY + 0.5F, this.posZ + rand.nextFloat(), gaussX, gaussY, gaussZ, itemID);
+				world.spawnParticle(ParticleTypes.EXPLOSION_NORMAL, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
 
 			}
 			this.setExpired();

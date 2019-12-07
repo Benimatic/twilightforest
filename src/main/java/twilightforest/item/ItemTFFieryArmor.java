@@ -6,14 +6,14 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
 
@@ -22,14 +22,14 @@ import java.util.List;
 
 public class ItemTFFieryArmor extends ItemTFArmor implements ModelRegisterCallback {
 
-	public ItemTFFieryArmor(ItemArmor.ArmorMaterial armorMaterial, EntityEquipmentSlot armorType, EnumRarity rarity) {
+	public ItemTFFieryArmor(ItemArmor.ArmorMaterial armorMaterial, EquipmentSlotType armorType, EnumRarity rarity) {
 		super(armorMaterial, armorType, rarity);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
 	@Override
-	public String getArmorTexture(ItemStack itemstack, Entity entity, EntityEquipmentSlot slot, String layer) {
-		if (slot == EntityEquipmentSlot.LEGS) {
+	public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlotType slot, String layer) {
+		if (slot == EquipmentSlotType.LEGS) {
 			return TwilightForestMod.ARMOR_DIR + "fiery_2.png";
 		} else {
 			return TwilightForestMod.ARMOR_DIR + "fiery_1.png";
@@ -46,15 +46,15 @@ public class ItemTFFieryArmor extends ItemTFArmor implements ModelRegisterCallba
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flags) {
 		super.addInformation(stack, world, tooltip, flags);
 		tooltip.add(I18n.format(getTranslationKey() + ".tooltip"));
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped oldModel) {
+	@OnlyIn(Dist.CLIENT)
+	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, ModelBiped oldModel) {
 		return TwilightForestMod.proxy.getFieryArmorModel(armorSlot);
 	}
 }

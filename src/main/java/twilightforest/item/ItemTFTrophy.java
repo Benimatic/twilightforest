@@ -2,14 +2,14 @@ package twilightforest.item;
 
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -22,8 +22,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFTrophy;
 import twilightforest.block.TFBlocks;
@@ -67,15 +67,15 @@ public class ItemTFTrophy extends ItemTF {
 	// [VanillaCopy] ItemSkull, with own block and no player heads
 	@Nonnull
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if (facing == EnumFacing.DOWN) {
+	public EnumActionResult onItemUse(PlayerEntity playerIn, World worldIn, BlockPos pos, Hand hand, Direction facing, float hitX, float hitY, float hitZ) {
+		if (facing == Direction.DOWN) {
 			return EnumActionResult.FAIL;
 		} else {
 			if (worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos)) {
-				facing = EnumFacing.UP;
+				facing = Direction.UP;
 				pos = pos.down();
 			}
-			IBlockState iblockstate = worldIn.getBlockState(pos);
+			BlockState iblockstate = worldIn.getBlockState(pos);
 			Block block = iblockstate.getBlock();
 			boolean flag = block.isReplaceable(worldIn, pos);
 
@@ -96,7 +96,7 @@ public class ItemTFTrophy extends ItemTF {
 					worldIn.setBlockState(pos, TFBlocks.trophy.getDefaultState().withProperty(BlockTFTrophy.FACING, facing), 11);
 					int i = 0;
 
-					if (facing == EnumFacing.UP) {
+					if (facing == Direction.UP) {
 						i = MathHelper.floor((double) (playerIn.rotationYaw * 16.0F / 360.0F) + 0.5D) & 15;
 					}
 
@@ -131,17 +131,17 @@ public class ItemTFTrophy extends ItemTF {
 	}
 
 	@Override
-	public boolean isValidArmor(ItemStack stack, EntityEquipmentSlot armorType, Entity entity) {
-		return armorType == EntityEquipmentSlot.HEAD;
+	public boolean isValidArmor(ItemStack stack, EquipmentSlotType armorType, Entity entity) {
+		return armorType == EquipmentSlotType.HEAD;
 	}
 
 	@Override
 	@Nullable
-	public EntityEquipmentSlot getEquipmentSlot(ItemStack stack) {
-		return EntityEquipmentSlot.HEAD;
+	public EquipmentSlotType getEquipmentSlot(ItemStack stack) {
+		return EquipmentSlotType.HEAD;
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void registerModel() {
 

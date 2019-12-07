@@ -1,6 +1,6 @@
 package twilightforest.structures.icetower;
 
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Blocks;
 import net.minecraft.world.gen.structure.StructureComponent;
 import twilightforest.block.BlockTFAuroraBrick;
 import twilightforest.block.TFBlocks;

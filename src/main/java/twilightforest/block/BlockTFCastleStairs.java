@@ -5,13 +5,13 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.enums.CastlePillarVariant;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
@@ -21,7 +21,7 @@ public class BlockTFCastleStairs extends BlockStairs implements ModelRegisterCal
 
 	public static final IProperty<CastlePillarVariant> VARIANT = PropertyEnum.create("variant", CastlePillarVariant.class);
 
-	BlockTFCastleStairs(IBlockState state) {
+	BlockTFCastleStairs(BlockState state) {
 		super(state);
 		this.setHardness(100F);
 		this.setResistance(35F);
@@ -37,13 +37,13 @@ public class BlockTFCastleStairs extends BlockStairs implements ModelRegisterCal
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(BlockState state) {
 		return super.getMetaFromState(state) + (state.getValue(VARIANT) == CastlePillarVariant.BOLD ? 8 : 0);
 	}
 
 	@Override
 	@Deprecated
-	public IBlockState getStateFromMeta(int meta) {
+	public BlockState getStateFromMeta(int meta) {
 		return super.getStateFromMeta(meta & 0b0111).withProperty(VARIANT, (meta & 0b1000) == 8 ? CastlePillarVariant.BOLD : CastlePillarVariant.ENCASED);
 	}
 
@@ -54,15 +54,15 @@ public class BlockTFCastleStairs extends BlockStairs implements ModelRegisterCal
 	}
 
 	@Override
-	public int damageDropped(IBlockState state) {
+	public int damageDropped(BlockState state) {
 		return state.getValue(VARIANT) == CastlePillarVariant.BOLD ? 8 : 0;
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void registerModel() {
-		ModelUtils.registerToState(this, 0, getDefaultState().withProperty(FACING, EnumFacing.EAST));
-		ModelUtils.registerToState(this, 8, getDefaultState().withProperty(FACING, EnumFacing.EAST).withProperty(VARIANT, CastlePillarVariant.BOLD));
+		ModelUtils.registerToState(this, 0, getDefaultState().withProperty(FACING, Direction.EAST));
+		ModelUtils.registerToState(this, 8, getDefaultState().withProperty(FACING, Direction.EAST).withProperty(VARIANT, CastlePillarVariant.BOLD));
 	}
 
 }

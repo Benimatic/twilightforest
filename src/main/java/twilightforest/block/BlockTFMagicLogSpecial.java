@@ -2,11 +2,11 @@ package twilightforest.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.block.Blocks;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.item.Item;
@@ -43,22 +43,22 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 	}
 
 	@Override
-	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
+	public void onBlockAdded(World world, BlockPos pos, BlockState state) {
 		world.scheduleUpdate(pos, this, this.tickRate(world));
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random random, int fortune) {
+	public Item getItemDropped(BlockState state, Random random, int fortune) {
 		return Item.getItemFromBlock(TFBlocks.magic_log);
 	}
 
 	@Override
-	public int damageDropped(IBlockState state) {
+	public int damageDropped(BlockState state) {
 		return state.getValue(VARIANT).ordinal();
 	}
 
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
+	public void updateTick(World world, BlockPos pos, BlockState state, Random rand) {
 
 		if (world.isRemote || state.getValue(LOG_AXIS) != EnumAxis.NONE) return;
 
@@ -83,7 +83,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, BlockState state, PlayerEntity player, Hand hand, Direction side, float hitX, float hitY, float hitZ) {
 		if (state.getValue(LOG_AXIS) != EnumAxis.NONE) {
 			world.setBlockState(pos, state.withProperty(LOG_AXIS, EnumAxis.NONE));
 			world.scheduleUpdate(pos, this, this.tickRate(world));
@@ -107,7 +107,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 
 			BlockPos dPos = WorldUtil.randomOffset(rand, pos, 16);
 
-			IBlockState state = world.getBlockState(dPos);
+			BlockState state = world.getBlockState(dPos);
 			Block block = state.getBlock();
 
 			if (block != Blocks.AIR && block.getTickRandomly()) {
@@ -340,7 +340,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 
 	@Override
 	@Deprecated
-	public int getLightValue(IBlockState state) {
+	public int getLightValue(BlockState state) {
 		return 15;
 	}
 
@@ -358,7 +358,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 	}
 
 	@Override
-	public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
+	public boolean canSilkHarvest(World world, BlockPos pos, BlockState state, PlayerEntity player) {
 		return false;
 	}
 }

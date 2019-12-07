@@ -9,14 +9,14 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.util.ParticleHelper;
@@ -74,7 +74,7 @@ public class ItemTFFieryPick extends ItemPickaxe implements ModelRegisterCallbac
 						event.getHarvester().world.spawnEntity(new EntityXPOrb(event.getWorld(), event.getHarvester().posX, event.getHarvester().posY + 0.5D, event.getHarvester().posZ, k));
 					}
 
-					ParticleHelper.spawnParticles(event.getWorld(), event.getPos(), EnumParticleTypes.FLAME, 5, 0.02);
+					ParticleHelper.spawnParticles(event.getWorld(), event.getPos(), ParticleTypes.FLAME, 5, 0.02);
 				}
 			}
 
@@ -88,7 +88,7 @@ public class ItemTFFieryPick extends ItemPickaxe implements ModelRegisterCallbac
 		boolean result = super.hitEntity(stack, target, attacker);
 
 		if (result && !target.world.isRemote && !target.isImmuneToFire()) {
-			ParticleHelper.spawnParticles(target, EnumParticleTypes.FLAME, 20, 0.02);
+			ParticleHelper.spawnParticles(target, ParticleTypes.FLAME, 20, 0.02);
 			target.setFire(15);
 		}
 
@@ -104,7 +104,7 @@ public class ItemTFFieryPick extends ItemPickaxe implements ModelRegisterCallbac
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flags) {
 		super.addInformation(stack, world, tooltip, flags);
 		tooltip.add(I18n.format(getTranslationKey() + ".tooltip"));

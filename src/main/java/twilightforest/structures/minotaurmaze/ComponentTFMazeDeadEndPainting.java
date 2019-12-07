@@ -1,8 +1,8 @@
 package twilightforest.structures.minotaurmaze;
 
 import net.minecraft.block.BlockTorch;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.Blocks;
+import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.TFFeature;
@@ -15,7 +15,7 @@ public class ComponentTFMazeDeadEndPainting extends ComponentTFMazeDeadEnd {
 		super();
 	}
 
-	public ComponentTFMazeDeadEndPainting(TFFeature feature, int i, int x, int y, int z, EnumFacing rotation) {
+	public ComponentTFMazeDeadEndPainting(TFFeature feature, int i, int x, int y, int z, Direction rotation) {
 		super(feature, i, x, y, z, rotation);
 	}
 
@@ -25,8 +25,8 @@ public class ComponentTFMazeDeadEndPainting extends ComponentTFMazeDeadEnd {
 		super.addComponentParts(world, rand, sbb);
 
 		// torches
-		this.setBlockState(world, Blocks.TORCH.getDefaultState().withProperty(BlockTorch.FACING, EnumFacing.WEST), 1, 3, 3, sbb);
-		this.setBlockState(world, Blocks.TORCH.getDefaultState().withProperty(BlockTorch.FACING, EnumFacing.EAST), 4, 3, 3, sbb);
+		this.setBlockState(world, Blocks.TORCH.getDefaultState().withProperty(BlockTorch.FACING, Direction.WEST), 1, 3, 3, sbb);
+		this.setBlockState(world, Blocks.TORCH.getDefaultState().withProperty(BlockTorch.FACING, Direction.EAST), 4, 3, 3, sbb);
 
 //		// painting
 //		EntityPainting painting = new EntityPainting(world, pCoords.posX, pCoords.posY, pCoords.posZ, this.get); 

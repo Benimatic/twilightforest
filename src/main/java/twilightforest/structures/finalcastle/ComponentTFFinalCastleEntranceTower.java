@@ -1,6 +1,6 @@
 package twilightforest.structures.finalcastle;
 
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -18,7 +18,7 @@ public class ComponentTFFinalCastleEntranceTower extends ComponentTFFinalCastleM
 	public ComponentTFFinalCastleEntranceTower() {
 	}
 
-	public ComponentTFFinalCastleEntranceTower(TFFeature feature, Random rand, int i, int x, int y, int z, EnumFacing direction) {
+	public ComponentTFFinalCastleEntranceTower(TFFeature feature, Random rand, int i, int x, int y, int z, Direction direction) {
 		super(feature, rand, i, x, y, z, 3, 2, BlockTFCastleMagic.VALID_COLORS.get(0), direction);
 	}
 
@@ -47,7 +47,7 @@ public class ComponentTFFinalCastleEntranceTower extends ComponentTFFinalCastleM
 		int middleFloors = missingFloors - bottomFloors;
 
 		// what direction can we put the side tower in, if any?
-		EnumFacing facing = Rotation.CLOCKWISE_90.rotate(this.getCoordBaseMode());
+		Direction facing = Rotation.CLOCKWISE_90.rotate(this.getCoordBaseMode());
 		int howFar = 20;
 		if (!this.buildSideTower(list, rand, middleFloors + 1, facing, howFar)) {
 			facing = Rotation.COUNTERCLOCKWISE_90.rotate(this.getCoordBaseMode());
@@ -74,7 +74,7 @@ public class ComponentTFFinalCastleEntranceTower extends ComponentTFFinalCastleM
 		bridge.buildComponent(this, list, rand);
 	}
 
-	private boolean buildSideTower(List<StructureComponent> list, Random rand, int middleFloors, EnumFacing facing, int howFar) {
+	private boolean buildSideTower(List<StructureComponent> list, Random rand, int middleFloors, Direction facing, int howFar) {
 		BlockPos opening = this.getValidOpeningCC(rand, facing);
 
 		// build towards
@@ -115,7 +115,7 @@ public class ComponentTFFinalCastleEntranceTower extends ComponentTFFinalCastleM
 	 * Gets a random position in the specified direction that connects to a floor currently in the tower.
 	 */
 	@Override
-	public BlockPos getValidOpeningCC(Random rand, EnumFacing facing) {
+	public BlockPos getValidOpeningCC(Random rand, Direction facing) {
 		BlockPos opening = super.getValidOpeningCC(rand, facing);
 		return new BlockPos(opening.getX(), 0, opening.getZ());
 	}

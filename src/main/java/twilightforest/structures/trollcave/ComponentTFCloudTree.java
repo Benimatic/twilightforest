@@ -1,6 +1,6 @@
 package twilightforest.structures.trollcave;
 
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.block.TFBlocks;
@@ -15,14 +15,14 @@ public class ComponentTFCloudTree extends StructureTFComponentOld {
 	}
 
 	public ComponentTFCloudTree(int index, int x, int y, int z) {
-		this.setCoordBaseMode(EnumFacing.SOUTH);
+		this.setCoordBaseMode(Direction.SOUTH);
 
 		// adjust x, y, z
 		x = (x >> 2) << 2;
 		y = (y >> 2) << 2;
 		z = (z >> 2) << 2;
 
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -8, 0, -8, 20, 28, 20, EnumFacing.SOUTH);
+		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -8, 0, -8, 20, 28, 20, Direction.SOUTH);
 
 		// spawn list!
 		this.spawnListIndex = 1;

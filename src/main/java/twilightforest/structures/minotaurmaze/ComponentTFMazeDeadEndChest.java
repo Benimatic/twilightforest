@@ -1,7 +1,7 @@
 package twilightforest.structures.minotaurmaze;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.Blocks;
+import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.TFFeature;
@@ -18,7 +18,7 @@ public class ComponentTFMazeDeadEndChest extends ComponentTFMazeDeadEnd {
 		super();
 	}
 
-	public ComponentTFMazeDeadEndChest(TFFeature feature, int i, int x, int y, int z, EnumFacing rotation) {
+	public ComponentTFMazeDeadEndChest(TFFeature feature, int i, int x, int y, int z, Direction rotation) {
 		super(feature, i, x, y, z, rotation);
 
 		// specify a non-existant high spawn list value to stop actual monster spawns
@@ -32,8 +32,8 @@ public class ComponentTFMazeDeadEndChest extends ComponentTFMazeDeadEnd {
 		// dais
 		this.setBlockState(world, Blocks.PLANKS.getDefaultState(), 2, 1, 4, sbb);
 		this.setBlockState(world, Blocks.PLANKS.getDefaultState(), 3, 1, 4, sbb);
-		this.setBlockState(world, getStairState(Blocks.OAK_STAIRS.getDefaultState(), EnumFacing.NORTH, rotation, false), 2, 1, 3, sbb);
-		this.setBlockState(world, getStairState(Blocks.OAK_STAIRS.getDefaultState(), EnumFacing.NORTH, rotation, false), 3, 1, 3, sbb);
+		this.setBlockState(world, getStairState(Blocks.OAK_STAIRS.getDefaultState(), Direction.NORTH, rotation, false), 2, 1, 3, sbb);
+		this.setBlockState(world, getStairState(Blocks.OAK_STAIRS.getDefaultState(), Direction.NORTH, rotation, false), 3, 1, 3, sbb);
 
 		// chest
 		this.setBlockState(world, Blocks.CHEST.getDefaultState(), 2, 2, 4, sbb);

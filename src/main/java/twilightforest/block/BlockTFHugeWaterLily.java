@@ -1,17 +1,17 @@
 package twilightforest.block;
 
 import net.minecraft.block.*;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 
@@ -25,13 +25,13 @@ public class BlockTFHugeWaterLily extends BlockLilyPad implements ModelRegisterC
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess world, BlockPos pos) {
 		return AABB;
 	}
 
 	/*@Override
-	public boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
-		IBlockState down = world.getBlockState(pos.down());
+	public boolean canBlockStay(World world, BlockPos pos, BlockState state) {
+		BlockState down = world.getBlockState(pos.down());
 		Block b = down.getBlock();
 		IProperty<Integer> levelProp = b instanceof BlockLiquid || b instanceof BlockFluidBase
 				? BlockLiquid.LEVEL
@@ -42,17 +42,17 @@ public class BlockTFHugeWaterLily extends BlockLilyPad implements ModelRegisterC
 	}*/
 
 	@Override
-	protected boolean canSustainBush(IBlockState state) {
+	protected boolean canSustainBush(BlockState state) {
 		return state.getBlock() == Blocks.WATER;
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT;
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void registerModel() {
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));

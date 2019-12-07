@@ -7,16 +7,16 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.enums.TowerWoodVariant;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
@@ -49,18 +49,18 @@ public class BlockTFTowerWood extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(BlockState state) {
 		return state.getValue(VARIANT).ordinal();
 	}
 
 	@Override
 	@Deprecated
-	public IBlockState getStateFromMeta(int meta) {
+	public BlockState getStateFromMeta(int meta) {
 		return getDefaultState().withProperty(VARIANT, TowerWoodVariant.values()[meta]);
 	}
 
 	@Override
-	public MapColor getMapColor(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public MapColor getMapColor(BlockState state, IBlockAccess world, BlockPos pos) {
 		return state.getValue(VARIANT) == TowerWoodVariant.ENCASED ? MapColor.SAND : super.getMapColor(state, world, pos);
 	}
 
@@ -72,12 +72,12 @@ public class BlockTFTowerWood extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public int damageDropped(IBlockState state) {
+	public int damageDropped(BlockState state) {
 		return getMetaFromState(state);
 	}
 
 	@Override
-	public int quantityDropped(IBlockState state, int fortune, Random random) {
+	public int quantityDropped(BlockState state, int fortune, Random random) {
 		if (state.getValue(VARIANT) == TowerWoodVariant.INFESTED) {
 			return 0;
 		} else {
@@ -87,7 +87,7 @@ public class BlockTFTowerWood extends Block implements ModelRegisterCallback {
 
 	@Override
 	@Deprecated
-	public float getBlockHardness(IBlockState state, World world, BlockPos pos) {
+	public float getBlockHardness(BlockState state, World world, BlockPos pos) {
 		if (state.getValue(VARIANT) == TowerWoodVariant.INFESTED) {
 			return 0.75F;
 		} else {
@@ -96,7 +96,7 @@ public class BlockTFTowerWood extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public void dropBlockAsItemWithChance(World world, BlockPos pos, IBlockState state, float chance, int fortune) {
+	public void dropBlockAsItemWithChance(World world, BlockPos pos, BlockState state, float chance, int fortune) {
 		if (!world.isRemote && state.getValue(VARIANT) == TowerWoodVariant.INFESTED) {
 			EntityTFTowerTermite termite = new EntityTFTowerTermite(world);
 			termite.setLocationAndAngles(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, 0.0F, 0.0F);
@@ -108,16 +108,16 @@ public class BlockTFTowerWood extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing side) {
+	public int getFlammability(IBlockAccess world, BlockPos pos, Direction side) {
 		return 1;
 	}
 
 	@Override
-	public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing side) {
+	public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, Direction side) {
 		return 0;
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void registerModel() {
 		ModelUtils.registerToStateSingleVariant(this, VARIANT);

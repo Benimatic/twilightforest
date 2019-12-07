@@ -3,21 +3,21 @@ package twilightforest.block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Items;
+import net.minecraft.item.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.enums.MagicWoodVariant;
@@ -40,7 +40,7 @@ public class BlockTFMagicLeaves extends BlockLeaves implements ModelRegisterCall
 	}
 
 	@Override
-	public int getLightOpacity(IBlockState state) {
+	public int getLightOpacity(BlockState state) {
 		return TFConfig.performance.leavesLightOpacity;
 	}
 
@@ -50,7 +50,7 @@ public class BlockTFMagicLeaves extends BlockLeaves implements ModelRegisterCall
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(BlockState state) {
 		int i = 0;
 		i |= state.getValue(BlockTFMagicLog.VARIANT).ordinal();
 
@@ -67,7 +67,7 @@ public class BlockTFMagicLeaves extends BlockLeaves implements ModelRegisterCall
 
 	@Override
 	@Deprecated
-	public IBlockState getStateFromMeta(int meta) {
+	public BlockState getStateFromMeta(int meta) {
 		int variant = meta & 3;
 		final MagicWoodVariant[] values = MagicWoodVariant.values();
 
@@ -86,7 +86,7 @@ public class BlockTFMagicLeaves extends BlockLeaves implements ModelRegisterCall
 	}
 
 	@Override
-	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random random) {
+	public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
 		if (state.getValue(BlockTFMagicLog.VARIANT) == MagicWoodVariant.TRANS) {
 			for (int i = 0; i < 1; ++i) {
 				this.sparkleRunes(world, pos, random);
@@ -102,32 +102,32 @@ public class BlockTFMagicLeaves extends BlockLeaves implements ModelRegisterCall
 	private void sparkleRunes(World world, BlockPos pos, Random rand) {
 		double offset = 0.0625D;
 
-		EnumFacing side = EnumFacing.random(rand);
+		Direction side = Direction.random(rand);
 		double rx = pos.getX() + rand.nextFloat();
 		double ry = pos.getY() + rand.nextFloat();
 		double rz = pos.getZ() + rand.nextFloat();
 
-		if (side == EnumFacing.DOWN && world.isAirBlock(pos.up())) {
+		if (side == Direction.DOWN && world.isAirBlock(pos.up())) {
 			ry = pos.getY() + 1 + offset;
 		}
 
-		if (side == EnumFacing.UP && world.isAirBlock(pos.down())) {
+		if (side == Direction.UP && world.isAirBlock(pos.down())) {
 			ry = pos.getY() + 0 - offset;
 		}
 
-		if (side == EnumFacing.NORTH && world.isAirBlock(pos.south())) {
+		if (side == Direction.NORTH && world.isAirBlock(pos.south())) {
 			rz = pos.getZ() + 1 + offset;
 		}
 
-		if (side == EnumFacing.SOUTH && world.isAirBlock(pos.north())) {
+		if (side == Direction.SOUTH && world.isAirBlock(pos.north())) {
 			rz = pos.getZ() + 0 - offset;
 		}
 
-		if (side == EnumFacing.WEST && world.isAirBlock(pos.east())) {
+		if (side == Direction.WEST && world.isAirBlock(pos.east())) {
 			rx = pos.getX() + 1 + offset;
 		}
 
-		if (side == EnumFacing.EAST && world.isAirBlock(pos.west())) {
+		if (side == Direction.EAST && world.isAirBlock(pos.west())) {
 			rx = pos.getX() + 0 - offset;
 		}
 
@@ -141,7 +141,7 @@ public class BlockTFMagicLeaves extends BlockLeaves implements ModelRegisterCall
 		return NonNullList.withSize(1, new ItemStack(this, 1, world.getBlockState(pos).getValue(BlockTFMagicLog.VARIANT).ordinal()));
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void registerModel() {
 		IStateMapper stateMapper = new StateMap.Builder().ignore(CHECK_DECAY, DECAYABLE).build();
@@ -155,7 +155,7 @@ public class BlockTFMagicLeaves extends BlockLeaves implements ModelRegisterCall
 	}
 
 	@Override
-	public int damageDropped(IBlockState state) {
+	public int damageDropped(BlockState state) {
 		return state.getValue(BlockTFMagicLog.VARIANT).ordinal();
 	}
 
@@ -165,10 +165,10 @@ public class BlockTFMagicLeaves extends BlockLeaves implements ModelRegisterCall
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	public Item getItemDropped(BlockState state, Random rand, int fortune) {
 		return Items.AIR;
 	}
 
 	@Override
-	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {}
+	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, BlockState state, int fortune) {}
 }

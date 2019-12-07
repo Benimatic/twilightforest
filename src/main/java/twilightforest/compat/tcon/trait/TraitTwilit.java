@@ -3,7 +3,7 @@ package twilightforest.compat.tcon.trait;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -47,7 +47,7 @@ public class TraitTwilit extends AbstractProjectileTrait {
     }
 
     @Override
-    public List<String> getExtraInfo(ItemStack tool, NBTTagCompound modifierTag) {
+    public List<String> getExtraInfo(ItemStack tool, CompoundNBT modifierTag) {
         String speed  = String.format(LOC_Extra + ".speed", getModifierIdentifier());
         String damage = String.format(LOC_Extra + ".damage", getModifierIdentifier());
 

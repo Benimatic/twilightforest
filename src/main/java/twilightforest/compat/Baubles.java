@@ -5,9 +5,9 @@ import baubles.api.BaublesApi;
 import baubles.api.IBauble;
 import baubles.api.cap.BaublesCapabilities;
 import baubles.api.cap.IBaublesItemHandler;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -20,7 +20,7 @@ import java.util.function.Predicate;
 
 public class Baubles {
 
-    public static boolean consumeInventoryItem(EntityPlayer player, Predicate<ItemStack> matcher, int count) {
+    public static boolean consumeInventoryItem(PlayerEntity player, Predicate<ItemStack> matcher, int count) {
 
         IBaublesItemHandler baubles = BaublesApi.getBaublesHandler(player);
         boolean consumedSome = false;
@@ -38,7 +38,7 @@ public class Baubles {
         return consumedSome;
     }
 
-    public static NonNullList<ItemStack> keepBaubles(EntityPlayer player) {
+    public static NonNullList<ItemStack> keepBaubles(PlayerEntity player) {
 
         IBaublesItemHandler baubles = BaublesApi.getBaublesHandler(player);
         NonNullList<ItemStack> kept = NonNullList.withSize(baubles.getSlots(), ItemStack.EMPTY);
@@ -51,7 +51,7 @@ public class Baubles {
         return kept;
     }
 
-    public static void returnBaubles(EntityPlayer player, NonNullList<ItemStack> items) {
+    public static void returnBaubles(PlayerEntity player, NonNullList<ItemStack> items) {
 
         IBaublesItemHandler baubles = BaublesApi.getBaublesHandler(player);
 
@@ -77,7 +77,7 @@ public class Baubles {
         giveItems(player, displaced);
     }
 
-    private static void giveItems(EntityPlayer player, NonNullList<ItemStack> items) {
+    private static void giveItems(PlayerEntity player, NonNullList<ItemStack> items) {
         for (ItemStack stack : items) {
             ItemHandlerHelper.giveItemToPlayer(player, stack);
         }
@@ -86,13 +86,13 @@ public class Baubles {
     @SuppressWarnings("unchecked")
     public static final class BasicBaubleProvider implements ICapabilityProvider {
         @Override
-        public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
+        public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable Direction facing) {
             return capability == BaublesCapabilities.CAPABILITY_ITEM_BAUBLE;
         }
 
         @Nullable
         @Override
-        public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+        public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
             return capability == BaublesCapabilities.CAPABILITY_ITEM_BAUBLE ? (T) (IBauble) itemStack -> BaubleType.TRINKET : null;
         }
     }

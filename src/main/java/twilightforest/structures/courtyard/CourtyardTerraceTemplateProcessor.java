@@ -2,8 +2,8 @@ package twilightforest.structures.courtyard;
 
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
@@ -27,16 +27,16 @@ public class CourtyardTerraceTemplateProcessor extends RandomizedTemplateProcess
         if (!shouldPlaceBlock()) return null;
 
         boolean shouldMakeNewBlockInfo = false;
-        IBlockState state = blockInfo.blockState;
+        BlockState state = blockInfo.blockState;
 
-        final IBlockState SMOOTHBRICK_SLAB_STATE = Blocks.STONE_SLAB.getDefaultState().withProperty(BlockStoneSlab.VARIANT, BlockStoneSlab.EnumType.SMOOTHBRICK);
-        final IBlockState SMOOTHBRICK_STATE = Blocks.STONEBRICK.getDefaultState(); //Blocks.DOUBLE_STONE_SLAB.getDefaultState().withProperty(BlockDoubleStoneSlab.VARIANT, BlockStoneSlab.EnumType.SMOOTHBRICK).withProperty(BlockDoubleStoneSlab.SEAMLESS, false);
+        final BlockState SMOOTHBRICK_SLAB_STATE = Blocks.STONE_SLAB.getDefaultState().withProperty(BlockStoneSlab.VARIANT, BlockStoneSlab.EnumType.SMOOTHBRICK);
+        final BlockState SMOOTHBRICK_STATE = Blocks.STONEBRICK.getDefaultState(); //Blocks.DOUBLE_STONE_SLAB.getDefaultState().withProperty(BlockDoubleStoneSlab.VARIANT, BlockStoneSlab.EnumType.SMOOTHBRICK).withProperty(BlockDoubleStoneSlab.SEAMLESS, false);
 
-        //final IBlockState SANDSTONE_SLAB_STATE = Blocks.STONE_SLAB.getDefaultState().withProperty(BlockStoneSlab.VARIANT, BlockStoneSlab.EnumType.SAND);
-        //final IBlockState SANDSTONE_STATE = Blocks.DOUBLE_STONE_SLAB.getDefaultState().withProperty(BlockDoubleStoneSlab.VARIANT, BlockStoneSlab.EnumType.SAND).withProperty(BlockDoubleStoneSlab.SEAMLESS, false);
+        //final BlockState SANDSTONE_SLAB_STATE = Blocks.STONE_SLAB.getDefaultState().withProperty(BlockStoneSlab.VARIANT, BlockStoneSlab.EnumType.SAND);
+        //final BlockState SANDSTONE_STATE = Blocks.DOUBLE_STONE_SLAB.getDefaultState().withProperty(BlockDoubleStoneSlab.VARIANT, BlockStoneSlab.EnumType.SAND).withProperty(BlockDoubleStoneSlab.SEAMLESS, false);
 
         if (state.getBlock() == Blocks.DOUBLE_STONE_SLAB && state.getValue(BlockDoubleStoneSlab.VARIANT) == BlockStoneSlab.EnumType.SAND) {
-            IBlockState stateCheck = world.getBlockState(pos);
+            BlockState stateCheck = world.getBlockState(pos);
             if (stateCheck == SMOOTHBRICK_SLAB_STATE)
                 return new Template.BlockInfo(pos, SMOOTHBRICK_SLAB_STATE, null);
             else if (stateCheck.getMaterial() == Material.AIR)
@@ -48,7 +48,7 @@ public class CourtyardTerraceTemplateProcessor extends RandomizedTemplateProcess
         }
 
         if (state.getBlock() == Blocks.STONE_SLAB && state.getValue(BlockStoneSlab.VARIANT) == BlockStoneSlab.EnumType.SAND) {
-            IBlockState stateCheck = world.getBlockState(pos);
+            BlockState stateCheck = world.getBlockState(pos);
 
             if (stateCheck.getMaterial() == Material.AIR)
                 return null;

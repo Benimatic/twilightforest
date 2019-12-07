@@ -4,7 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -24,20 +24,20 @@ public class BlockTFHugeStalk extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public boolean canSustainLeaves(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public boolean canSustainLeaves(BlockState state, IBlockAccess world, BlockPos pos) {
 		return true;
 	}
 
 	// [VanillaCopy] BlockLog
 	@SuppressWarnings("unused")
 	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+	public void breakBlock(World worldIn, BlockPos pos, BlockState state) {
 		int i = 4;
 		int j = 5;
 
 		if (worldIn.isAreaLoaded(pos.add(-5, -5, -5), pos.add(5, 5, 5))) {
 			for (BlockPos blockpos : BlockPos.getAllInBox(pos.add(-4, -4, -4), pos.add(4, 4, 4))) {
-				IBlockState iblockstate = worldIn.getBlockState(blockpos);
+				BlockState iblockstate = worldIn.getBlockState(blockpos);
 
 				if (iblockstate.getBlock().isLeaves(iblockstate, worldIn, blockpos)) {
 					iblockstate.getBlock().beginLeavesDecay(iblockstate, worldIn, blockpos);

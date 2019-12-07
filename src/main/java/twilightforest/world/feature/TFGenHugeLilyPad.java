@@ -1,8 +1,8 @@
 package twilightforest.world.feature;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
@@ -34,8 +34,8 @@ public class TFGenHugeLilyPad extends WorldGenerator {
 			);
 
 			if (shouldPlacePadAt(world, dPos) && world.isAreaLoaded(dPos, 1)) {
-				final EnumFacing horizontal = EnumFacing.byHorizontalIndex(random.nextInt(4));
-				final IBlockState lilypad = TFBlocks.huge_lilypad.getDefaultState().withProperty(FACING, horizontal);
+				final Direction horizontal = Direction.byHorizontalIndex(random.nextInt(4));
+				final BlockState lilypad = TFBlocks.huge_lilypad.getDefaultState().withProperty(FACING, horizontal);
 
 				world.setBlockState(dPos, lilypad.withProperty(PIECE, NW), 16 | 2);
 				world.setBlockState(dPos.east(), lilypad.withProperty(PIECE, NE), 16 | 2);

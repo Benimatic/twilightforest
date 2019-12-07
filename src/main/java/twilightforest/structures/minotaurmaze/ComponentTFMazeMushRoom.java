@@ -1,9 +1,9 @@
 package twilightforest.structures.minotaurmaze;
 
 import net.minecraft.block.BlockHugeMushroom;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.TFFeature;
@@ -20,7 +20,7 @@ public class ComponentTFMazeMushRoom extends ComponentTFMazeRoom {
 	public ComponentTFMazeMushRoom(TFFeature feature, int i, Random rand, int x, int y, int z) {
 		super(feature, i, rand, x, y, z);
 
-		this.setCoordBaseMode(EnumFacing.SOUTH); // let's just make this easy on us?
+		this.setCoordBaseMode(Direction.SOUTH); // let's just make this easy on us?
 	}
 
 
@@ -44,8 +44,8 @@ public class ComponentTFMazeMushRoom extends ComponentTFMazeRoom {
 			}
 		}
 
-		final IBlockState redMushroomBlock = Blocks.RED_MUSHROOM_BLOCK.getDefaultState();
-		final IBlockState brownMushroomBlock = Blocks.BROWN_MUSHROOM_BLOCK.getDefaultState();
+		final BlockState redMushroomBlock = Blocks.RED_MUSHROOM_BLOCK.getDefaultState();
+		final BlockState brownMushroomBlock = Blocks.BROWN_MUSHROOM_BLOCK.getDefaultState();
 
 		// add our medium mushrooms
 
@@ -83,7 +83,7 @@ public class ComponentTFMazeMushRoom extends ComponentTFMazeRoom {
 	/**
 	 * Make a 3x3 square mushroom centered on the specified coords.
 	 */
-	private void makeMediumMushroom(World world, StructureBoundingBox sbb, int mx, int my, int mz, IBlockState redMushroomBlock) {
+	private void makeMediumMushroom(World world, StructureBoundingBox sbb, int mx, int my, int mz, BlockState redMushroomBlock) {
 		// cap
 		this.setBlockState(world, redMushroomBlock.withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.CENTER), mx + 0, my, mz + 0, sbb);
 		this.setBlockState(world, redMushroomBlock.withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.WEST), mx + 1, my, mz + 0, sbb);

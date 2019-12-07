@@ -1,9 +1,9 @@
 package twilightforest.structures.stronghold;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -21,25 +21,25 @@ public class ComponentTFStrongholdFoundry extends StructureTFStrongholdComponent
 	public ComponentTFStrongholdFoundry() {
 	}
 
-	public ComponentTFStrongholdFoundry(TFFeature feature, int i, EnumFacing facing, int x, int y, int z) {
+	public ComponentTFStrongholdFoundry(TFFeature feature, int i, Direction facing, int x, int y, int z) {
 		super(feature, i, facing, x, y, z);
 	}
 
 	@Override
-	protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 		super.writeStructureToNBT(tagCompound);
 
 		tagCompound.setInteger("entranceLevel", this.entranceLevel);
 	}
 
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager templateManager) {
+	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
 		super.readStructureFromNBT(tagCompound, templateManager);
 		this.entranceLevel = tagCompound.getInteger("entranceLevel");
 	}
 
 	@Override
-	public StructureBoundingBox generateBoundingBox(EnumFacing facing, int x, int y, int z) {
+	public StructureBoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
 		if (y > 17) {
 			this.entranceLevel = 3;
 			return StructureTFStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -4, -20, 0, 18, 25, 18, facing);
@@ -180,7 +180,7 @@ public class ComponentTFStrongholdFoundry extends StructureTFStrongholdComponent
 	/**
 	 * Add a block of ore to the mass
 	 */
-	private void addOreToMass(World world, StructureBoundingBox sbb, Random massRandom, IBlockState state) {
+	private void addOreToMass(World world, StructureBoundingBox sbb, Random massRandom, BlockState state) {
 		for (int i = 0; i < 10; i++) {
 			int dx = massRandom.nextInt(9) + 5;
 			int dz = massRandom.nextInt(9) + 5;

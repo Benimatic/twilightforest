@@ -3,7 +3,7 @@ package twilightforest.structures.stronghold;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.BlockStoneBrick;
 import net.minecraft.block.BlockStoneSlab;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Blocks;
 import twilightforest.block.BlockTFUnderBrick;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.UnderBrickVariant;

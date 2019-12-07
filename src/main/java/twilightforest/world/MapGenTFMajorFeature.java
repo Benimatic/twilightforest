@@ -8,7 +8,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.structure.MapGenStructure;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.world.gen.structure.MutableBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
 import net.minecraft.world.gen.structure.StructureStart;
 import twilightforest.TFFeature;
@@ -127,8 +127,8 @@ public class MapGenTFMajorFeature extends MapGenStructure {
      * Get the structure bounding box, if any, at the specified position
      */
     @Nullable
-    public StructureBoundingBox getSBBAt(BlockPos pos) {
-        StructureBoundingBox boxFound = null;
+    public MutableBoundingBox getSBBAt(BlockPos pos) {
+        MutableBoundingBox boxFound = null;
 
         for (StructureStart start : this.structureMap.values()) {
             if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(pos.getX(), pos.getZ(), pos.getX(), pos.getZ())) {
@@ -204,7 +204,7 @@ public class MapGenTFMajorFeature extends MapGenStructure {
 
     private List<EntityPlayerMP> getPlayersInsideStructure(StructureStart start) {
         return world.getPlayers(EntityPlayerMP.class, Predicates.and(EntitySelectors.IS_ALIVE,
-                p -> p.getEntityBoundingBox().intersects(StructureBoundingBoxUtils.toAABB(start.getBoundingBox()))));
+                p -> p.getBoundingBox().intersects(StructureBoundingBoxUtils.toAABB(start.getBoundingBox()))));
     }
 
     public boolean isStructureConquered(BlockPos pos) {
@@ -248,7 +248,7 @@ public class MapGenTFMajorFeature extends MapGenStructure {
      * Are the specified x & z coordinates close to a full structure?
      */
     public boolean isBlockNearFullStructure(int mapX, int mapZ, int range) {
-        StructureBoundingBox rangeBB = new StructureBoundingBox(mapX - range, mapZ - range, mapX + range, mapZ + range);
+        MutableBoundingBox rangeBB = new MutableBoundingBox(mapX - range, mapZ - range, mapX + range, mapZ + range);
         for (StructureStart start : this.structureMap.values()) {
             if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(rangeBB)) {
                 return true;
@@ -261,7 +261,7 @@ public class MapGenTFMajorFeature extends MapGenStructure {
      * Get full structure bounding box at the specified x, z coordinates.
      */
     @Nullable
-    public StructureBoundingBox getFullSBBAt(int mapX, int mapZ) {
+    public MutableBoundingBox getFullSBBAt(int mapX, int mapZ) {
         for (StructureStart start : this.structureMap.values()) {
             if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(mapX, mapZ, mapX, mapZ)) {
                 return start.getBoundingBox();
@@ -271,8 +271,8 @@ public class MapGenTFMajorFeature extends MapGenStructure {
     }
 
     @Nullable
-    public StructureBoundingBox getFullSBBNear(int mapX, int mapZ, int range) {
-        StructureBoundingBox rangeBB = new StructureBoundingBox(mapX - range, mapZ - range, mapX + range, mapZ + range);
+    public MutableBoundingBox getFullSBBNear(int mapX, int mapZ, int range) {
+        MutableBoundingBox rangeBB = new MutableBoundingBox(mapX - range, mapZ - range, mapX + range, mapZ + range);
         for (StructureStart start : this.structureMap.values()) {
             if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(rangeBB)) {
                 return start.getBoundingBox();

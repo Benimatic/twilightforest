@@ -31,10 +31,10 @@ public class PacketEnforceProgressionStatus implements IMessage {
 
 		@Override
 		public IMessage onMessage(PacketEnforceProgressionStatus message, MessageContext ctx) {
-			Minecraft.getMinecraft().addScheduledTask(new Runnable() {
+			Minecraft.getInstance().addScheduledTask(new Runnable() {
 				@Override
 				public void run() {
-					Minecraft.getMinecraft().world.getGameRules().setOrCreateGameRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE, String.valueOf(message.enforce));
+					Minecraft.getInstance().world.getGameRules().setOrCreateGameRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE, String.valueOf(message.enforce));
 				}
 			});
 			return null;

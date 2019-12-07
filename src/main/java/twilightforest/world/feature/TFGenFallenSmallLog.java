@@ -3,8 +3,8 @@ package twilightforest.world.feature;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.BlockOldLog;
 import net.minecraft.block.BlockPlanks;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.block.BlockTFLog;
@@ -38,8 +38,8 @@ public class TFGenFallenSmallLog extends TFGenerator {
 		}
 
 		// determine wood type
-		IBlockState logState;
-		IBlockState branchState;
+		BlockState logState;
+		BlockState branchState;
 
 		switch (rand.nextInt(7)) {
 			case 0:

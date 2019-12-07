@@ -5,7 +5,7 @@ import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.GLAllocation;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.RenderHelper;
@@ -95,8 +95,8 @@ public class TFSkyRenderer extends IRenderHandler {
 		GlStateManager.pushMatrix();
 		float f16 = 1.0F - world.getRainStrength(partialTicks);
 		GlStateManager.color(1.0F, 1.0F, 1.0F, f16);
-		GlStateManager.rotate(-90.0F, 0.0F, 1.0F, 0.0F);
-		GlStateManager.rotate(world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
+		GlStateManager.rotatef(-90.0F, 0.0F, 1.0F, 0.0F);
+		GlStateManager.rotatef(world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
         /* TF - snip out sun/moon
          * float f17 = 30.0F;
          * ...
@@ -131,7 +131,7 @@ public class TFSkyRenderer extends IRenderHandler {
 
 		if (d0 < 0.0D) {
 			GlStateManager.pushMatrix();
-			GlStateManager.translate(0.0F, 12.0F, 0.0F);
+			GlStateManager.translatef(0.0F, 12.0F, 0.0F);
 
 			if (this.vboEnabled) {
 				rg.sky2VBO.bindBuffer();
@@ -179,7 +179,7 @@ public class TFSkyRenderer extends IRenderHandler {
 		}
 
 		GlStateManager.pushMatrix();
-		GlStateManager.translate(0.0F, -((float) (d0 - 16.0D)), 0.0F);
+		GlStateManager.translatef(0.0F, -((float) (d0 - 16.0D)), 0.0F);
 		GlStateManager.callList(rg.glSkyList2);
 		GlStateManager.popMatrix();
 		GlStateManager.enableTexture2D();

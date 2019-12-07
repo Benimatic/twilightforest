@@ -2,10 +2,10 @@ package twilightforest.structures.trollcave;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHugeMushroom;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -26,7 +26,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 
 	public ComponentTFTrollCaveConnect() {}
 
-	public ComponentTFTrollCaveConnect(TFFeature feature, int index, int x, int y, int z, int caveSize, int caveHeight, EnumFacing direction) {
+	public ComponentTFTrollCaveConnect(TFFeature feature, int index, int x, int y, int z, int caveSize, int caveHeight, Direction direction) {
 		super(feature, index);
 		this.size = caveSize;
 		this.height = caveHeight;
@@ -35,7 +35,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 	}
 
 	@Override
-	protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 		super.writeStructureToNBT(tagCompound);
 
 		tagCompound.setBoolean("openingTowards0", this.openingTowards[0]);
@@ -45,7 +45,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 	}
 
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager templateManager) {
+	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
 		super.readStructureFromNBT(tagCompound, templateManager);
 
 		// too lazy to do this as a loop
@@ -216,28 +216,28 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 	/**
 	 * Make one mushroom with the specified parameters
 	 */
-	private void makeSingleBracketMushroom(World world, StructureBoundingBox sbb, Rotation rotation, int z, int y, int width, int depth, IBlockState mushBlock) {
+	private void makeSingleBracketMushroom(World world, StructureBoundingBox sbb, Rotation rotation, int z, int y, int width, int depth, BlockState mushBlock) {
 
 		this.fillBlocksRotated(world, sbb, size - depth, y, z - (width - 1), size - 2, y, z + (width - 1), mushBlock.withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.CENTER), rotation);
 
 		this.fillBlocksRotated(world, sbb, size - (depth + 1), y, z - (width - 1), size - (depth + 1), y, z + (width - 1), getMushroomState(mushBlock, BlockHugeMushroom.EnumType.EAST), rotation);
 
-		final IBlockState northMushroom = getMushroomState(mushBlock, BlockHugeMushroom.EnumType.SOUTH);
+		final BlockState northMushroom = getMushroomState(mushBlock, BlockHugeMushroom.EnumType.SOUTH);
 		for (int d = 0; d < (depth - 1); d++) {
 			this.setBlockStateRotated(world, northMushroom, size - (2 + d), y, z - width, rotation, sbb);
 		}
-		final IBlockState northWestMushroom = getMushroomState(mushBlock, BlockHugeMushroom.EnumType.SOUTH_EAST);
+		final BlockState northWestMushroom = getMushroomState(mushBlock, BlockHugeMushroom.EnumType.SOUTH_EAST);
 		this.setBlockStateRotated(world, northWestMushroom, size - (depth + 1), y, z - width, rotation, sbb);
 
-		final IBlockState southMushroom = getMushroomState(mushBlock, BlockHugeMushroom.EnumType.NORTH);
+		final BlockState southMushroom = getMushroomState(mushBlock, BlockHugeMushroom.EnumType.NORTH);
 		for (int d = 0; d < (depth - 1); d++) {
 			this.setBlockStateRotated(world, southMushroom, size - (2 + d), y, z + width, rotation, sbb);
 		}
-		final IBlockState southWestMushroom = getMushroomState(mushBlock, BlockHugeMushroom.EnumType.NORTH_EAST);
+		final BlockState southWestMushroom = getMushroomState(mushBlock, BlockHugeMushroom.EnumType.NORTH_EAST);
 		this.setBlockStateRotated(world, southWestMushroom, size - (depth + 1), y, z + width, rotation, sbb);
 	}
 
-	private IBlockState getMushroomState(IBlockState mushroomBlockState, BlockHugeMushroom.EnumType defaultRotation) {
+	private BlockState getMushroomState(BlockState mushroomBlockState, BlockHugeMushroom.EnumType defaultRotation) {
 		if (mushroomBlockState.getPropertyKeys().contains(BlockHugeMushroom.VARIANT)) {
 			return mushroomBlockState.withProperty(BlockHugeMushroom.VARIANT, defaultRotation);
 		}
@@ -245,7 +245,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 	}
 
 	protected boolean makeGardenCave(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int caveSize, int caveHeight, Rotation rotation) {
-		EnumFacing direction = getStructureRelativeRotation(rotation);
+		Direction direction = getStructureRelativeRotation(rotation);
 		BlockPos dest = offsetTowerCCoords(x, y, z, caveSize, direction);
 
 		ComponentTFTrollCaveMain cave = new ComponentTFTrollCaveGarden(getFeatureType(), index, dest.getX(), dest.getY(), dest.getZ(), caveSize, caveHeight, direction);

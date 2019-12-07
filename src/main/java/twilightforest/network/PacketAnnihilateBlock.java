@@ -33,10 +33,10 @@ public class PacketAnnihilateBlock implements IMessage {
 	public static class Handler implements IMessageHandler<PacketAnnihilateBlock, IMessage> {
 		@Override
 		public IMessage onMessage(PacketAnnihilateBlock message, MessageContext ctx) {
-			Minecraft.getMinecraft().addScheduledTask(new Runnable() {
+			Minecraft.getInstance().addScheduledTask(new Runnable() {
 				@Override
 				public void run() {
-					World world = Minecraft.getMinecraft().world;
+					World world = Minecraft.getInstance().world;
 					for (int dx = 0; dx < 4; ++dx) {
 						for (int dy = 0; dy < 4; ++dy) {
 							for (int dz = 0; dz < 4; ++dz) {

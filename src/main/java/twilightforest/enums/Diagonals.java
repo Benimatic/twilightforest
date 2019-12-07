@@ -1,6 +1,6 @@
 package twilightforest.enums;
 
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
@@ -36,7 +36,7 @@ public enum Diagonals implements IStringSerializable {
         return Diagonals.values()[(diagonal.ordinal() + rotation.ordinal()) % 4];
     }
 
-    public static Diagonals mirrorOn(EnumFacing.Axis axis, Diagonals diagonal, Mirror mirror) {
+    public static Diagonals mirrorOn(Direction.Axis axis, Diagonals diagonal, Mirror mirror) {
         switch (axis) {
             case X:
                 return mirrorOnX(diagonal, mirror);

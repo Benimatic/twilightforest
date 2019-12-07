@@ -2,8 +2,8 @@ package twilightforest.world.feature;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHugeMushroom;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.world.TFWorld;
@@ -51,7 +51,7 @@ public class TFGenCanopyMushroom extends TFTreeGenerator {
 			return false;
 		}
 
-		IBlockState baseState = (random.nextInt(3) == 0 ? Blocks.RED_MUSHROOM_BLOCK : Blocks.BROWN_MUSHROOM_BLOCK).getDefaultState();
+		BlockState baseState = (random.nextInt(3) == 0 ? Blocks.RED_MUSHROOM_BLOCK : Blocks.BROWN_MUSHROOM_BLOCK).getDefaultState();
 
 		this.treeState   = baseState.withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.STEM);
 		this.branchState = baseState.withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.ALL_STEM);
@@ -107,7 +107,7 @@ public class TFGenCanopyMushroom extends TFTreeGenerator {
 	 * <p>
 	 * This assumes that the baseState you've passed in is the center variant
 	 */
-	private void drawMushroomCircle(World world, BlockPos pos, int rad, IBlockState baseState) {
+	private void drawMushroomCircle(World world, BlockPos pos, int rad, BlockState baseState) {
 		// trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++) {
 			for (byte dz = 0; dz <= rad; dz++) {

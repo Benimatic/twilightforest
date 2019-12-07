@@ -1,9 +1,9 @@
 package twilightforest.structures.mushroomtower;
 
 import net.minecraft.block.BlockPlanks;
-import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -32,7 +32,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 		super();
 	}
 
-	protected ComponentTFMushroomTowerWing(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, EnumFacing direction) {
+	protected ComponentTFMushroomTowerWing(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
 		super(feature, i, x, y, z, pSize, pHeight, direction);
 	}
 
@@ -40,7 +40,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 	 * Save to NBT
 	 */
 	@Override
-	protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 		super.writeStructureToNBT(tagCompound);
 
 		tagCompound.setBoolean("hasBase", this.hasBase);
@@ -51,7 +51,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 	 * Load from NBT
 	 */
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager templateManager) {
+	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
 		super.readStructureFromNBT(tagCompound, templateManager);
 		this.hasBase = tagCompound.getBoolean("hasBase");
 		this.isAscender = tagCompound.getBoolean("isAscender");
@@ -126,7 +126,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 	@Override
 	public boolean makeTowerWing(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 
-		EnumFacing direction = getStructureRelativeRotation(rotation);
+		Direction direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 
 		// stop if out of range
@@ -163,7 +163,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 	/**
 	 * Adjust the coordinates for this tower to link up with any others within 3
 	 */
-	protected int[] adjustCoordinates(int x, int y, int z, int wingSize, EnumFacing direction, List<StructureComponent> list) {
+	protected int[] adjustCoordinates(int x, int y, int z, int wingSize, Direction direction, List<StructureComponent> list) {
 
 		// go through list.  if there are any same size towers within wingSize, return their xyz instead
 
@@ -247,7 +247,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 
 	protected boolean makeBridge(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation, boolean ascender) {
 		// bridges are size  always
-		EnumFacing direction = getStructureRelativeRotation(rotation);
+		Direction direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, 3, direction);
 
 		// adjust height for those stupid little things
@@ -277,7 +277,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 
 	private boolean makeMainBridge(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 
-		EnumFacing direction = getStructureRelativeRotation(rotation);
+		Direction direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, 3, direction);
 
 		ComponentTFMushroomTowerMainBridge bridge = new ComponentTFMushroomTowerMainBridge(getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);

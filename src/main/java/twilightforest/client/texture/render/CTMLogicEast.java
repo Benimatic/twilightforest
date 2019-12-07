@@ -5,8 +5,8 @@
 
 package twilightforest.client.texture.render;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import team.chisel.ctm.client.util.CTMLogic;
@@ -20,7 +20,7 @@ public class CTMLogicEast extends CTMLogic {
 	}
 
 	@Override
-	public boolean isConnected(IBlockAccess world, BlockPos current, BlockPos connection, EnumFacing dir, IBlockState state) {
+	public boolean isConnected(IBlockAccess world, BlockPos current, BlockPos connection, Direction dir, BlockState state) {
 		BlockPos difference = current.subtract(connection);
 
 		return super.isConnected(world, current, current.add(new BlockPos(difference.getZ(), -difference.getX(), difference.getY())), dir, state);

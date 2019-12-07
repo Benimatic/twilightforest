@@ -1,6 +1,6 @@
 package twilightforest.block;
 
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Blocks;
 import twilightforest.item.TFItems;
 
 public class BlockTFGiantLog extends BlockTFGiantBlock {

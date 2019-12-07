@@ -5,7 +5,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityFallingBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
@@ -13,7 +13,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.api.distmarker.Dist;
 import org.apache.commons.lang3.tuple.Pair;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
@@ -85,7 +85,7 @@ public enum TFCompat {
         }
 
         private void addToCarvingGroup(String group, ItemStack stack) {
-            NBTTagCompound nbt = new NBTTagCompound();
+            CompoundNBT nbt = new CompoundNBT();
             nbt.setString("group", group);
             nbt.setTag("stack", stack.serializeNBT());
             FMLInterModComms.sendMessage(team.chisel.api.ChiselAPIProps.MOD_ID, team.chisel.api.IMC.ADD_VARIATION_V2.toString(), nbt);

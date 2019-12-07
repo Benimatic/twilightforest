@@ -1,7 +1,7 @@
 package twilightforest.structures.finalcastle;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import twilightforest.TFFeature;
@@ -22,7 +22,7 @@ public class ComponentTFFinalCastleMural extends StructureTFComponentOld {
 	public ComponentTFFinalCastleMural() {
 	}
 
-	public ComponentTFFinalCastleMural(TFFeature feature, Random rand, int i, int x, int y, int z, int width, int height, EnumFacing direction) {
+	public ComponentTFFinalCastleMural(TFFeature feature, Random rand, int i, int x, int y, int z, int width, int height, Direction direction) {
 		super(feature, i);
 		this.setCoordBaseMode(direction);
 		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox2(x, y, z, 0, -height / 2, -width / 2, 1, height - 1, width - 1, direction);
@@ -31,7 +31,7 @@ public class ComponentTFFinalCastleMural extends StructureTFComponentOld {
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 		this.height = this.boundingBox.getYSize();
-		this.width = (this.coordBaseMode == EnumFacing.SOUTH || this.coordBaseMode == EnumFacing.NORTH) ? this.boundingBox.getZSize() : this.boundingBox.getXSize();
+		this.width = (this.coordBaseMode == Direction.SOUTH || this.coordBaseMode == Direction.NORTH) ? this.boundingBox.getZSize() : this.boundingBox.getXSize();
 
 		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
 
@@ -60,7 +60,7 @@ public class ComponentTFFinalCastleMural extends StructureTFComponentOld {
 			makeStripes(decoRNG, mural);
 		}
 
-		final IBlockState castleMagic = TFBlocks.castle_rune_brick.getDefaultState()
+		final BlockState castleMagic = TFBlocks.castle_rune_brick.getDefaultState()
 				.withProperty(BlockTFCastleMagic.COLOR, BlockTFCastleMagic.VALID_COLORS.get(1));
 
 		// copy mural to world

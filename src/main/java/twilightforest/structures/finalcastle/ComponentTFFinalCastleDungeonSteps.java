@@ -1,8 +1,8 @@
 package twilightforest.structures.finalcastle;
 
 import net.minecraft.block.BlockStairs;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -16,7 +16,7 @@ public class ComponentTFFinalCastleDungeonSteps extends StructureTFComponentOld 
 	public ComponentTFFinalCastleDungeonSteps() {
 	}
 
-	public ComponentTFFinalCastleDungeonSteps(Random rand, int i, int x, int y, int z, EnumFacing rotation) {
+	public ComponentTFFinalCastleDungeonSteps(Random rand, int i, int x, int y, int z, Direction rotation) {
 		this.spawnListIndex = 2; // dungeon monsters
 
 		this.setCoordBaseMode(rotation);
@@ -35,7 +35,7 @@ public class ComponentTFFinalCastleDungeonSteps extends StructureTFComponentOld 
 	 */
 	public ComponentTFFinalCastleDungeonSteps buildMoreStepsTowards(StructureComponent parent, List<StructureComponent> list, Random rand, Rotation rotation) {
 
-		EnumFacing direction = getStructureRelativeRotation(rotation);
+		Direction direction = getStructureRelativeRotation(rotation);
 
 		int sx = 2;
 		int sy = 0;
@@ -107,7 +107,7 @@ public class ComponentTFFinalCastleDungeonSteps extends StructureTFComponentOld 
 
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		final IBlockState stairState = deco.stairState.withProperty(BlockStairs.FACING, EnumFacing.SOUTH);
+		final BlockState stairState = deco.stairState.withProperty(BlockStairs.FACING, Direction.SOUTH);
 		for (int z = 0; z < 15; z++) {
 			int y = 14 - z;
 

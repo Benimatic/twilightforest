@@ -6,14 +6,14 @@ import net.minecraft.block.IGrowable;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.item.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -41,26 +41,26 @@ public class BlockTFUberousSoil extends Block implements IGrowable, ModelRegiste
 
 	@Override
 	@Deprecated
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+	public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess world, BlockPos pos) {
 		return AABB;
 	}
 
 	@Override
 	@Deprecated
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isOpaqueCube(BlockState state) {
 		return false;
 	}
 
 	@Override
 	@Deprecated
-	public boolean isFullCube(IBlockState state) {
+	public boolean isFullCube(BlockState state) {
 		return false;
 	}
 
 	@Override
 	@Deprecated
-	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
-		return face == EnumFacing.DOWN ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face) {
+		return face == Direction.DOWN ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
 	}
 
 	@Override
@@ -69,12 +69,12 @@ public class BlockTFUberousSoil extends Block implements IGrowable, ModelRegiste
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+	public Item getItemDropped(BlockState state, Random rand, int fortune) {
 		return Item.getItemFromBlock(Blocks.DIRT);
 	}
 
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
+	public void updateTick(World world, BlockPos pos, BlockState state, Random rand) {
 		Material aboveMaterial = world.getBlockState(pos.up()).getMaterial();
 		if (aboveMaterial.isSolid()) {
 			world.setBlockState(pos, Blocks.DIRT.getDefaultState());
@@ -82,8 +82,8 @@ public class BlockTFUberousSoil extends Block implements IGrowable, ModelRegiste
 	}
 
 	@Override
-	public boolean canSustainPlant(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing direction, IPlantable plantable) {
-		if (direction != EnumFacing.UP)
+	public boolean canSustainPlant(BlockState state, IBlockAccess world, BlockPos pos, Direction direction, IPlantable plantable) {
+		if (direction != Direction.UP)
 			return false;
 		EnumPlantType plantType = plantable.getPlantType(world, pos.offset(direction));
 		return plantType == EnumPlantType.Crop || plantType == EnumPlantType.Plains || plantType == EnumPlantType.Cave;
@@ -91,8 +91,8 @@ public class BlockTFUberousSoil extends Block implements IGrowable, ModelRegiste
 
 	@Override
 	@Deprecated
-	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighbor, BlockPos fromPos) {
-		IBlockState above = world.getBlockState(pos.up());
+	public void neighborChanged(BlockState state, World world, BlockPos pos, Block neighbor, BlockPos fromPos) {
+		BlockState above = world.getBlockState(pos.up());
 		Material aboveMaterial = above.getMaterial();
 
 		if (aboveMaterial.isSolid()) {
@@ -121,18 +121,18 @@ public class BlockTFUberousSoil extends Block implements IGrowable, ModelRegiste
 	}
 
 	@Override
-	public boolean canGrow(World world, BlockPos pos, IBlockState state, boolean isClient) {
+	public boolean canGrow(World world, BlockPos pos, BlockState state, boolean isClient) {
 		return true;
 	}
 
 	@Override
-	public boolean canUseBonemeal(World world, Random rand, BlockPos pos, IBlockState state) {
+	public boolean canUseBonemeal(World world, Random rand, BlockPos pos, BlockState state) {
 		return true;
 	}
 
 	@Override
-	public void grow(World world, Random rand, BlockPos pos, IBlockState state) {
-		pos = pos.offset(EnumFacing.HORIZONTALS[rand.nextInt(EnumFacing.HORIZONTALS.length)]);
+	public void grow(World world, Random rand, BlockPos pos, BlockState state) {
+		pos = pos.offset(Direction.HORIZONTALS[rand.nextInt(Direction.HORIZONTALS.length)]);
 
 		Block blockAt = world.getBlockState(pos).getBlock();
 		if (world.isAirBlock(pos.up()) && (blockAt == Blocks.DIRT || blockAt == Blocks.GRASS || blockAt == Blocks.FARMLAND)) {

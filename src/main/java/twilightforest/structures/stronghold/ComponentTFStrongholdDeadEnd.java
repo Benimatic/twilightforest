@@ -1,9 +1,9 @@
 package twilightforest.structures.stronghold;
 
 import net.minecraft.block.BlockStairs;
-import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -23,26 +23,26 @@ public class ComponentTFStrongholdDeadEnd extends StructureTFStrongholdComponent
 	public ComponentTFStrongholdDeadEnd() {
 	}
 
-	public ComponentTFStrongholdDeadEnd(TFFeature feature, int i, EnumFacing facing, int x, int y, int z) {
+	public ComponentTFStrongholdDeadEnd(TFFeature feature, int i, Direction facing, int x, int y, int z) {
 		super(feature, i, facing, x, y, z);
 	}
 
 	@Override
-	protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 		super.writeStructureToNBT(tagCompound);
 
 		tagCompound.setBoolean("chestTrapped", this.chestTrapped);
 	}
 
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager templateManager) {
+	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
 		super.readStructureFromNBT(tagCompound, templateManager);
 
 		this.chestTrapped = tagCompound.getBoolean("chestTrapped");
 	}
 
 	@Override
-	public StructureBoundingBox generateBoundingBox(EnumFacing facing, int x, int y, int z) {
+	public StructureBoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
 		return StructureTFStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -4, -1, 0, 9, 6, 9, facing);
 	}
 
@@ -75,13 +75,13 @@ public class ComponentTFStrongholdDeadEnd extends StructureTFStrongholdComponent
 		}
 
 		for (int z = 2; z < 5; z++) {
-			this.setBlockState(world, deco.stairState.withProperty(BlockStairs.FACING, EnumFacing.WEST), 3, 1, z, sbb);
-			this.setBlockState(world, deco.stairState.withProperty(BlockStairs.FACING, EnumFacing.EAST), 5, 1, z, sbb);
+			this.setBlockState(world, deco.stairState.withProperty(BlockStairs.FACING, Direction.WEST), 3, 1, z, sbb);
+			this.setBlockState(world, deco.stairState.withProperty(BlockStairs.FACING, Direction.EAST), 5, 1, z, sbb);
 		}
 
-		this.setBlockState(world, deco.stairState.withProperty(BlockStairs.FACING, EnumFacing.NORTH), 4, 1, 2, sbb);
-		this.setBlockState(world, deco.stairState.withProperty(BlockStairs.FACING, EnumFacing.SOUTH), 4, 1, 4, sbb);
-		this.setBlockState(world, deco.stairState.withProperty(BlockStairs.FACING, EnumFacing.NORTH), 4, 2, 3, sbb);
+		this.setBlockState(world, deco.stairState.withProperty(BlockStairs.FACING, Direction.NORTH), 4, 1, 2, sbb);
+		this.setBlockState(world, deco.stairState.withProperty(BlockStairs.FACING, Direction.SOUTH), 4, 1, 4, sbb);
+		this.setBlockState(world, deco.stairState.withProperty(BlockStairs.FACING, Direction.NORTH), 4, 2, 3, sbb);
 
 		return true;
 	}

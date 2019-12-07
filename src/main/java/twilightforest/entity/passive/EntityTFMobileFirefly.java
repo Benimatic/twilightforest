@@ -115,7 +115,7 @@ public class EntityTFMobileFirefly extends AmbientEntity {
 	// [VanillaCopy] EntityBat.getCanSpawnHere. Edits noted.
 	@Override
 	public boolean getCanSpawnHere() {
-		BlockPos blockpos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
+		BlockPos blockpos = new BlockPos(this.posX, this.getBoundingBox().minY, this.posZ);
 
 		return blockpos.getY() < this.world.getSeaLevel()
 				&& !this.rand.nextBoolean()

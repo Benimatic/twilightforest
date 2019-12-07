@@ -1,6 +1,6 @@
 package twilightforest.structures.hollowtree;
 
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -38,11 +38,11 @@ public abstract class StructureTFTreeComponent extends StructureTFComponentOld
 	/**
 	 * Puts a block only if leaves can go there.
 	 */
-	protected void placeLeafBlock(World world, IBlockState blockState, int x, int y, int z, StructureBoundingBox sbb) {
+	protected void placeLeafBlock(World world, BlockState blockState, int x, int y, int z, StructureBoundingBox sbb) {
 		final BlockPos pos = getBlockPosWithOffset(x, y, z);
 
 		if (sbb.isVecInside(pos)) {
-			IBlockState whatsThere = world.getBlockState(pos);
+			BlockState whatsThere = world.getBlockState(pos);
 
 			if (whatsThere.getBlock().canBeReplacedByLeaves(whatsThere, world, pos) && whatsThere.getBlock() != blockState.getBlock()) {
 				world.setBlockState(pos, blockState, 2);

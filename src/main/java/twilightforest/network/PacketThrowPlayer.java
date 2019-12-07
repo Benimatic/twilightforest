@@ -38,10 +38,10 @@ public class PacketThrowPlayer implements IMessage {
 
 		@Override
 		public IMessage onMessage(PacketThrowPlayer message, MessageContext ctx) {
-			Minecraft.getMinecraft().addScheduledTask(new Runnable() {
+			Minecraft.getInstance().addScheduledTask(new Runnable() {
 				@Override
 				public void run() {
-					Minecraft.getMinecraft().player.addVelocity(message.motionX, message.motionY, message.motionZ);
+					Minecraft.getInstance().player.addVelocity(message.motionX, message.motionY, message.motionZ);
 				}
 			});
 

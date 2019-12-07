@@ -2,10 +2,10 @@ package twilightforest.structures.hollowtree;
 
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.BlockVine;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -37,7 +37,7 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 		height = rand.nextInt(64) + 32;
 		radius = rand.nextInt(4) + 1;
 
-		this.setCoordBaseMode(EnumFacing.SOUTH);
+		this.setCoordBaseMode(Direction.SOUTH);
 
 		boundingBox = new StructureBoundingBox(x, y, z, (x + radius * 2) + 2, y + height, (z + radius * 2) + 2);
 	}
@@ -46,7 +46,7 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 	 * Save to NBT
 	 */
 	@Override
-	protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 		super.writeStructureToNBT(tagCompound);
 
 		tagCompound.setInteger("trunkRadius", this.radius);
@@ -59,7 +59,7 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 	 * Load from NBT
 	 */
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager templateManager) {
+	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
 		super.readStructureFromNBT(tagCompound, templateManager);
 
 		this.radius = tagCompound.getInteger("trunkRadius");
@@ -249,28 +249,28 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 		BlockPos bugSpot = TFGenerator.translate(new BlockPos(this.radius + 1, fHeight, this.radius + 1), this.radius + 1, fAngle, 0.5);
 
 		fAngle = fAngle % 1.0;
-		EnumFacing insectDirection = EnumFacing.DOWN;
+		Direction insectDirection = Direction.DOWN;
 
 		if (fAngle > 0.875 || fAngle <= 0.125) {
-			insectDirection = EnumFacing.SOUTH;
+			insectDirection = Direction.SOUTH;
 		} else if (fAngle > 0.125 && fAngle <= 0.375) {
-			insectDirection = EnumFacing.EAST;
+			insectDirection = Direction.EAST;
 		} else if (fAngle > 0.375 && fAngle <= 0.625) {
-			insectDirection = EnumFacing.NORTH;
+			insectDirection = Direction.NORTH;
 		} else if (fAngle > 0.625 && fAngle <= 0.875) {
-			insectDirection = EnumFacing.WEST;
+			insectDirection = Direction.WEST;
 		}
 
-		final IBlockState block = (random.nextBoolean() ? TFBlocks.firefly : TFBlocks.cicada).getDefaultState();
+		final BlockState block = (random.nextBoolean() ? TFBlocks.firefly : TFBlocks.cicada).getDefaultState();
 		addInsect(world, block.withProperty(BlockDirectional.FACING, insectDirection), bugSpot.getX(), bugSpot.getY(), bugSpot.getZ(), sbb);
 	}
 
 	/**
 	 * Add an insect if we can at the position specified
 	 */
-	private void addInsect(World world, IBlockState blockState, int posX, int posY, int posZ, StructureBoundingBox sbb) {
+	private void addInsect(World world, BlockState blockState, int posX, int posY, int posZ, StructureBoundingBox sbb) {
 		final BlockPos pos = getBlockPosWithOffset(posX, posY, posZ);
-		IBlockState whatsThere = world.getBlockState(pos);
+		BlockState whatsThere = world.getBlockState(pos);
 
 		// don't overwrite wood or leaves
 		if (sbb.isVecInside(pos) && whatsThere == AIR && blockState.getBlock().canPlaceBlockAt(world, pos)) {

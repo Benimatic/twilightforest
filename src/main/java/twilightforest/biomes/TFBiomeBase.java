@@ -116,9 +116,9 @@ public class TFBiomeBase extends Biome {
 	// Copy of super's generateBiomeTerrain, relevant edits noted.
 	protected void genTwilightBiomeTerrain(World world, Random rand, ChunkPrimer primer, int x, int z, double noiseVal) {
 		int i = TFWorld.SEALEVEL; // TF - set sea level to 31
-		IBlockState iblockstate = this.topBlock;
-		IBlockState iblockstate1 = this.fillerBlock;
-		IBlockState stoneReplacement = getStoneReplacementState(); // TF - Replace stone
+		BlockState iblockstate = this.topBlock;
+		BlockState iblockstate1 = this.fillerBlock;
+		BlockState stoneReplacement = getStoneReplacementState(); // TF - Replace stone
 		int j = -1;
 		int k = (int) (noiseVal / 3.0D + 3.0D + rand.nextDouble() * 0.25D);
 		int l = x & 15;
@@ -131,7 +131,7 @@ public class TFBiomeBase extends Biome {
 			if (generateBedrock && j1 <= rand.nextInt(5)) {
 				primer.setBlockState(i1, j1, l, BEDROCK);
 			} else {
-				IBlockState iblockstate2 = primer.getBlockState(i1, j1, l);
+				BlockState iblockstate2 = primer.getBlockState(i1, j1, l);
 
 				// TF - use block check for air
 				if (iblockstate2.getBlock() == Blocks.AIR) {
@@ -194,7 +194,7 @@ public class TFBiomeBase extends Biome {
 	 */
 	//TODO: Move to SurfaceBuilder
 	@Nullable
-	public IBlockState getStoneReplacementState() {
+	public BlockState getStoneReplacementState() {
 		return null;
 	}
 

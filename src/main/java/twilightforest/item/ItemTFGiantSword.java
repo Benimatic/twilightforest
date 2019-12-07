@@ -3,8 +3,8 @@ package twilightforest.item;
 import com.google.common.collect.Multimap;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
@@ -26,10 +26,10 @@ public class ItemTFGiantSword extends ItemSword implements ModelRegisterCallback
 
 	@Override
 	@Nonnull
-	public Multimap<String, AttributeModifier> getItemAttributeModifiers(EntityEquipmentSlot equipmentSlot) {
+	public Multimap<String, AttributeModifier> getItemAttributeModifiers(EquipmentSlotType equipmentSlot) {
 		Multimap<String, AttributeModifier> multimap = super.getItemAttributeModifiers(equipmentSlot);
 
-		if (equipmentSlot == EntityEquipmentSlot.MAINHAND) {
+		if (equipmentSlot == EquipmentSlotType.MAINHAND) {
 			AttributeModifier damageModifier = new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", 10 + getAttackDamage(), 0);
 			AttributeModifier speedModifier = new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", -3.5, 0);
 
@@ -39,7 +39,7 @@ public class ItemTFGiantSword extends ItemSword implements ModelRegisterCallback
 
 			multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), damageModifier);
 			multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), speedModifier);
-			multimap.put(EntityPlayer.REACH_DISTANCE.getName(), new AttributeModifier(TFItems.GIANT_REACH_MODIFIER, "Weapon modifier", 2.5, 0));
+			multimap.put(PlayerEntity.REACH_DISTANCE.getName(), new AttributeModifier(TFItems.GIANT_REACH_MODIFIER, "Weapon modifier", 2.5, 0));
 		}
 
 		return multimap;

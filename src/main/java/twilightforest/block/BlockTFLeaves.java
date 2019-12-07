@@ -5,22 +5,22 @@ import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TFConfig;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
@@ -42,7 +42,7 @@ public class BlockTFLeaves extends BlockLeaves implements ModelRegisterCallback 
 	}
 
 	@Override
-	public int getLightOpacity(IBlockState state) {
+	public int getLightOpacity(BlockState state) {
 		return TFConfig.performance.leavesLightOpacity;
 	}
 
@@ -53,13 +53,13 @@ public class BlockTFLeaves extends BlockLeaves implements ModelRegisterCallback 
 
 	@Override
 	@Deprecated
-	public IBlockState getStateFromMeta(int meta) {
+	public BlockState getStateFromMeta(int meta) {
 		LeavesVariant variant = LeavesVariant.values()[meta & 0b11];
 		return this.getDefaultState().withProperty(VARIANT, variant).withProperty(DECAYABLE, (meta & 4) == 0).withProperty(CHECK_DECAY, (meta & 8) > 0);
 	}
 
 	@Override
-	public int getMetaFromState(IBlockState state) {
+	public int getMetaFromState(BlockState state) {
 		int i = state.getValue(VARIANT).ordinal();
 
 		if (!state.getValue(DECAYABLE)) {
@@ -87,28 +87,28 @@ public class BlockTFLeaves extends BlockLeaves implements ModelRegisterCallback 
 	}
 
 	@Override
-	public Item getItemDropped(IBlockState state, Random random, int fortune) {
+	public Item getItemDropped(BlockState state, Random random, int fortune) {
 		return Item.getItemFromBlock(TFBlocks.twilight_sapling);
 	}
 
 	@Override
-	public int damageDropped(IBlockState state) {
+	public int damageDropped(BlockState state) {
 		LeavesVariant leafType = state.getValue(VARIANT);
 		return leafType == LeavesVariant.RAINBOAK ? 9 : leafType.ordinal();
 	}
 
 	@Override
-	public ItemStack getSilkTouchDrop(IBlockState state) {
+	public ItemStack getSilkTouchDrop(BlockState state) {
 		return new ItemStack(this, 1, state.getValue(VARIANT).ordinal());
 	}
 
 	@Override
-	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+	public ItemStack getPickBlock(BlockState state, RayTraceResult target, World world, BlockPos pos, PlayerEntity player) {
 		return new ItemStack(this, 1, state.getValue(VARIANT).ordinal());
 	}
 
 	@Override
-	public int getSaplingDropChance(IBlockState state) {
+	public int getSaplingDropChance(BlockState state) {
 		return state.getValue(VARIANT) == LeavesVariant.MANGROVE ? 20 : 40;
 	}
 
@@ -117,7 +117,7 @@ public class BlockTFLeaves extends BlockLeaves implements ModelRegisterCallback 
 		return NonNullList.withSize(1, new ItemStack(this, 1, world.getBlockState(pos).getValue(VARIANT).ordinal()));
 	}
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void registerModel() {
 		IStateMapper stateMapper = new StateMap.Builder().ignore(CHECK_DECAY, DECAYABLE).build();
@@ -126,12 +126,12 @@ public class BlockTFLeaves extends BlockLeaves implements ModelRegisterCallback 
 	}
 
 	@Override
-	public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face) {
+	public int getFlammability(IBlockAccess world, BlockPos pos, Direction face) {
 		return 60;
 	}
 
 	@Override
-	public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing face) {
+	public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, Direction face) {
 		return 30;
 	}
 }

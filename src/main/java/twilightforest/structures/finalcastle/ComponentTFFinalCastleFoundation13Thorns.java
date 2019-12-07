@@ -1,7 +1,7 @@
 package twilightforest.structures.finalcastle;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -52,7 +52,7 @@ public class ComponentTFFinalCastleFoundation13Thorns extends ComponentTFFinalCa
 		int twist = decoRNG.nextInt(4);
 		int twistMod = 3 + decoRNG.nextInt(3);
 
-		final IBlockState thorns = TFBlocks.thorns.getDefaultState();
+		final BlockState thorns = TFBlocks.thorns.getDefaultState();
 
 		while (this.getBlockStateFromPosRotated(world, x, y, z, sbb, rotation).getBlock() != TFBlocks.deadrock && this.getYWithOffset(y) > 60) {
 			this.setBlockStateRotated(world, thorns, x, y, z, rotation, sbb);
@@ -131,17 +131,17 @@ public class ComponentTFFinalCastleFoundation13Thorns extends ComponentTFFinalCa
 			for (int i = 0; i < dist; i++) {
 				// go out that far
 				final Rotation add = dir.add(rotation).add(this.rotation);
-				IBlockState thorns = TFBlocks.thorns.getDefaultState()
+				BlockState thorns = TFBlocks.thorns.getDefaultState()
 						.withProperty(BlockTFThorns.VARIANT, ThornVariant.GREEN)
 						.withProperty(
 								BlockTFThorns.AXIS,
-								add == Rotation.NONE || add == Rotation.CLOCKWISE_180 ? EnumFacing.Axis.X : EnumFacing.Axis.Z
+								add == Rotation.NONE || add == Rotation.CLOCKWISE_180 ? Direction.Axis.X : Direction.Axis.Z
 						);
 				if (i > 0) {
 					this.setBlockStateRotated(world, thorns, x + (dx * i), y, z + (dz * i), rotation, sbb);
 				}
 				// go up that far
-				this.setBlockStateRotated(world, thorns.withProperty(BlockTFThorns.AXIS, EnumFacing.Axis.Y), destX, y + i, destZ, rotation, sbb);
+				this.setBlockStateRotated(world, thorns.withProperty(BlockTFThorns.AXIS, Direction.Axis.Y), destX, y + i, destZ, rotation, sbb);
 				// go back half that far
 				if (i > (dist / 2)) {
 					this.setBlockStateRotated(world, thorns, x + (dx * i), y + dist - 1, z + (dz * i), rotation, sbb);

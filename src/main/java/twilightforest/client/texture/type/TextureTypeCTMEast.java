@@ -1,6 +1,6 @@
 package twilightforest.client.texture.type;
 
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.util.math.BlockPos;
@@ -26,11 +26,11 @@ public class TextureTypeCTMEast extends TextureTypeCTM {
 	}
 
 	@Override
-	public TextureContextCTM getBlockRenderContext(IBlockState state, IBlockAccess world, BlockPos pos, ICTMTexture<?> tex) {
+	public TextureContextCTM getBlockRenderContext(BlockState state, IBlockAccess world, BlockPos pos, ICTMTexture<?> tex) {
 		return new TextureContextCTM(state, world, pos, (TextureCTM<?>) tex) {
 			@Override
-			protected CTMLogic createCTM(@Nonnull IBlockState state) {
-				IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(state);
+			protected CTMLogic createCTM(@Nonnull BlockState state) {
+				IBakedModel model = Minecraft.getInstance().getBlockRendererDispatcher().getModelForState(state);
 				if (model instanceof AbstractCTMBakedModel) {
 					return CTMLogicEast.getInstance().ignoreStates(((AbstractCTMBakedModel) model).getModel().ignoreStates());
 				}

@@ -1,7 +1,7 @@
 package twilightforest.world.feature;
 
 import net.minecraft.entity.EntityList;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Blocks;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;

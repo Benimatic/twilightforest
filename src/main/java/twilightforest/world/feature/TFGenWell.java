@@ -1,8 +1,8 @@
 package twilightforest.world.feature;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.loot.TFTreasure;
@@ -157,7 +157,7 @@ public class TFGenWell extends TFGenerator {
 			for (int dz = 1; dz <= 2; dz++) {
 				for (int dy = -1; dy >= -20; dy--) {
 					BlockPos dPos = pos.add(dx, dy, dz);
-					IBlockState dState = world.getBlockState(dPos);
+					BlockState dState = world.getBlockState(dPos);
 					Block dblock = dState.getBlock();
 
 					// we only drill through dirt, grass, gravel and stone

@@ -1,9 +1,9 @@
 package twilightforest.structures.finalcastle;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.EnumDyeColor;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.item.DyeColor;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -31,14 +31,14 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 
 	public ComponentTFFinalCastleDungeonRoom31() {}
 
-	public ComponentTFFinalCastleDungeonRoom31(TFFeature feature, Random rand, int i, int x, int y, int z, EnumFacing direction, int level) {
+	public ComponentTFFinalCastleDungeonRoom31(TFFeature feature, Random rand, int i, int x, int y, int z, Direction direction, int level) {
 		super(feature, i);
 		this.setCoordBaseMode(direction);
 		this.spawnListIndex = 2; // dungeon monsters
 		this.size = 31;
 		this.height = 7;
 		this.level = level;
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -15, 0, -15, this.size - 1, this.height - 1, this.size - 1, EnumFacing.SOUTH);
+		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -15, 0, -15, this.size - 1, this.height - 1, this.size - 1, Direction.SOUTH);
 	}
 
 	@Override
@@ -89,7 +89,7 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 
 		BlockPos rc = this.getNewRoomCoords(rand, rotation);
 
-		ComponentTFFinalCastleDungeonRoom31 dRoom = new ComponentTFFinalCastleDungeonRoom31(getFeatureType(), rand, this.componentType + 1, rc.getX(), rc.getY(), rc.getZ(), rotation.rotate(EnumFacing.SOUTH), level);
+		ComponentTFFinalCastleDungeonRoom31 dRoom = new ComponentTFFinalCastleDungeonRoom31(getFeatureType(), rand, this.componentType + 1, rc.getX(), rc.getY(), rc.getZ(), rotation.rotate(Direction.SOUTH), level);
 
 		StructureBoundingBox largerBB = new StructureBoundingBox(dRoom.getBoundingBox());
 
@@ -114,7 +114,7 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 
 		rotation = rotation.add(this.rotation);
 		BlockPos rc = this.getNewRoomCoords(rand, rotation);
-		ComponentTFFinalCastleDungeonExit dRoom = new ComponentTFFinalCastleDungeonExit(getFeatureType(), rand, this.componentType + 1, rc.getX(), rc.getY(), rc.getZ(), rotation.rotate(EnumFacing.SOUTH), this.level);
+		ComponentTFFinalCastleDungeonExit dRoom = new ComponentTFFinalCastleDungeonExit(getFeatureType(), rand, this.componentType + 1, rc.getX(), rc.getY(), rc.getZ(), rotation.rotate(Direction.SOUTH), this.level);
 		StructureComponent intersect = StructureTFComponentOld.findIntersectingExcluding(list, dRoom.getBoundingBox(), this);
 		if (intersect == null) {
 			list.add(dRoom);
@@ -155,10 +155,10 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 
 		this.fillWithAir(world, sbb, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1, state -> state.getMaterial() == Material.ROCK);
 
-		IBlockState floor = TFBlocks.castle_brick.getDefaultState();
-		IBlockState border = floor.withProperty(BlockTFCastleBlock.VARIANT, CastleBrickVariant.FRAME);
+		BlockState floor = TFBlocks.castle_brick.getDefaultState();
+		BlockState border = floor.withProperty(BlockTFCastleBlock.VARIANT, CastleBrickVariant.FRAME);
 
-		Predicate<IBlockState> replacing = state -> {
+		Predicate<BlockState> replacing = state -> {
 			Material material = state.getMaterial();
 			return material == Material.ROCK || material == Material.AIR;
 		};
@@ -168,12 +168,12 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 		this.fillWithBlocks(world, sbb, cs , -1, cs, this.size - 1 - cs, -1, this.size - 1 - cs, border, floor, replacing);
 		this.fillWithBlocks(world, sbb, cs , this.height, cs, this.size - 1 - cs, this.height, this.size - 1 - cs, border, floor, replacing);
 
-		EnumDyeColor forceFieldColor = this.getForceFieldColor(decoRNG);
-		EnumDyeColor runeColor = getRuneColor(forceFieldColor);
+		DyeColor forceFieldColor = this.getForceFieldColor(decoRNG);
+		DyeColor runeColor = getRuneColor(forceFieldColor);
 
-		IBlockState forceField = TFBlocks.force_field.getDefaultState()
+		BlockState forceField = TFBlocks.force_field.getDefaultState()
 				.withProperty(BlockTFForceField.COLOR, forceFieldColor);
-		IBlockState castleMagic = TFBlocks.castle_rune_brick.getDefaultState()
+		BlockState castleMagic = TFBlocks.castle_rune_brick.getDefaultState()
 				.withProperty(BlockTFCastleMagic.COLOR, runeColor);
 
 		for (Rotation rotation : RotationUtil.ROTATIONS) {
@@ -195,11 +195,11 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 	protected static final Predicate<Biome> plateauBiomes = biome ->
 			biome == TFBiomes.highlandsCenter || biome == TFBiomes.thornlands;
 
-	protected EnumDyeColor getRuneColor(EnumDyeColor forceFieldColor) {
+	protected DyeColor getRuneColor(DyeColor forceFieldColor) {
 		return BlockTFCastleMagic.VALID_COLORS.get(forceFieldColor == BlockTFForceField.VALID_COLORS.get(4) ? 1 : 2);
 	}
 
-	protected EnumDyeColor getForceFieldColor(Random decoRNG) {
+	protected DyeColor getForceFieldColor(Random decoRNG) {
 		return BlockTFForceField.VALID_COLORS.get(decoRNG.nextInt(2) + 3);
 	}
 }

@@ -1,7 +1,7 @@
 package twilightforest.structures.darktower;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.Blocks;
+import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -17,7 +17,7 @@ public class ComponentTFDarkTowerBalcony extends ComponentTFTowerWing {
 	public ComponentTFDarkTowerBalcony() {
 	}
 
-	protected ComponentTFDarkTowerBalcony(TFFeature feature, int i, int x, int y, int z, EnumFacing direction) {
+	protected ComponentTFDarkTowerBalcony(TFFeature feature, int i, int x, int y, int z, Direction direction) {
 		super(feature, i, x, y, z, 5, 5, direction);
 	}
 

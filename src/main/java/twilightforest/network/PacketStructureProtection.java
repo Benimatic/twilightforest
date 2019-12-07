@@ -3,7 +3,7 @@ package twilightforest.network;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.WorldProvider;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.world.gen.structure.MutableBoundingBox;
 import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -13,18 +13,18 @@ import twilightforest.world.WorldProviderTwilightForest;
 
 public class PacketStructureProtection implements IMessage {
 
-	private StructureBoundingBox sbb;
+	private MutableBoundingBox sbb;
 
 	@SuppressWarnings("unused")
 	public PacketStructureProtection() {}
 
-	public PacketStructureProtection(StructureBoundingBox sbb) {
+	public PacketStructureProtection(MutableBoundingBox sbb) {
 		this.sbb = sbb;
 	}
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
-		sbb = new StructureBoundingBox(
+		sbb = new MutableBoundingBox(
 				buf.readInt(), buf.readInt(), buf.readInt(),
 				buf.readInt(), buf.readInt(), buf.readInt()
 		);
@@ -44,8 +44,8 @@ public class PacketStructureProtection implements IMessage {
 
 		@Override
 		public IMessage onMessage(PacketStructureProtection message, MessageContext ctx) {
-			Minecraft.getMinecraft().addScheduledTask(() -> {
-				WorldProvider provider = Minecraft.getMinecraft().world.provider;
+			Minecraft.getInstance().addScheduledTask(() -> {
+				WorldProvider provider = Minecraft.getInstance().world.provider;
 
                 // add weather box if needed
                 if (provider instanceof WorldProviderTwilightForest) {

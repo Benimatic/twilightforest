@@ -1,9 +1,9 @@
 package twilightforest.tileentity;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
@@ -53,8 +53,8 @@ public class TileEntityTFCReactorActive extends TileEntity implements ITickable 
 
 			if (counter % 5 == 0) {
 				if (counter == 5) {
-					IBlockState fakeGold = TFBlocks.tower_translucent.getDefaultState().withProperty(BlockTFTowerTranslucent.VARIANT, TowerTranslucentVariant.FAKE_GOLD);
-					IBlockState fakeDiamond = TFBlocks.tower_translucent.getDefaultState().withProperty(BlockTFTowerTranslucent.VARIANT, TowerTranslucentVariant.FAKE_DIAMOND);
+					BlockState fakeGold = TFBlocks.tower_translucent.getDefaultState().withProperty(BlockTFTowerTranslucent.VARIANT, TowerTranslucentVariant.FAKE_GOLD);
+					BlockState fakeDiamond = TFBlocks.tower_translucent.getDefaultState().withProperty(BlockTFTowerTranslucent.VARIANT, TowerTranslucentVariant.FAKE_DIAMOND);
 
 					// transformation!
 					world.setBlockState(pos.add(1, 1, 1), fakeDiamond, 2);
@@ -152,7 +152,7 @@ public class TileEntityTFCReactorActive extends TileEntity implements ITickable 
 		world.spawnEntity(ghast);
 	}
 
-	private void drawBlob(BlockPos pos, int rad, IBlockState state, int fuzz, boolean netherTransform) {
+	private void drawBlob(BlockPos pos, int rad, BlockState state, int fuzz, boolean netherTransform) {
 		// then trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++) {
 			// transform fuzz
@@ -207,8 +207,8 @@ public class TileEntityTFCReactorActive extends TileEntity implements ITickable 
 		}
 	}
 
-	private void transformBlock(BlockPos pos, IBlockState state, int fuzz, boolean netherTransform) {
-		IBlockState stateThere = world.getBlockState(pos);
+	private void transformBlock(BlockPos pos, BlockState state, int fuzz, boolean netherTransform) {
+		BlockState stateThere = world.getBlockState(pos);
 
 		if (stateThere.getBlock() != Blocks.AIR && stateThere.getBlockHardness(world, pos) == -1) {
 			// don't destroy unbreakable stuff

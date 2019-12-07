@@ -1,6 +1,6 @@
 package twilightforest;
 
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -16,14 +16,14 @@ public class TFMazeMapData extends MapData {
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readFromNBT(CompoundNBT nbt) {
 		super.readFromNBT(nbt);
 		this.yCenter = nbt.getInteger("yCenter");
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
-		NBTTagCompound ret = super.writeToNBT(nbt);
+	public CompoundNBT writeToNBT(CompoundNBT nbt) {
+		CompoundNBT ret = super.writeToNBT(nbt);
 		ret.setInteger("yCenter", this.yCenter);
 		return ret;
 	}

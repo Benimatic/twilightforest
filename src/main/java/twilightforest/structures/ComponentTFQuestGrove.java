@@ -3,11 +3,11 @@ package twilightforest.structures;
 import net.minecraft.block.BlockButton;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.BlockStoneBrick;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityDispenser;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -20,8 +20,8 @@ import java.util.Random;
 public class ComponentTFQuestGrove extends StructureTFComponentOld {
 
 	private static final int RADIUS = 13;
-	private static final IBlockState MOSSY_STONEBRICK = Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.MOSSY);
-	private static final IBlockState CHISELED_STONEBRICK = Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED);
+	private static final BlockState MOSSY_STONEBRICK = Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.MOSSY);
+	private static final BlockState CHISELED_STONEBRICK = Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED);
 
 	protected boolean beastPlaced = false;
 	protected boolean dispenserPlaced = false;
@@ -33,15 +33,15 @@ public class ComponentTFQuestGrove extends StructureTFComponentOld {
 	public ComponentTFQuestGrove(TFFeature feature, World world, Random rand, int i, int x, int y, int z) {
 		super(feature, i);
 
-		this.setCoordBaseMode(EnumFacing.SOUTH);
+		this.setCoordBaseMode(Direction.SOUTH);
 
 		// the maze is 25 x 25 for now
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -RADIUS, 0, -RADIUS, RADIUS * 2, 10, RADIUS * 2, EnumFacing.SOUTH);
+		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -RADIUS, 0, -RADIUS, RADIUS * 2, 10, RADIUS * 2, Direction.SOUTH);
 	}
 
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		for (EnumFacing e : EnumFacing.HORIZONTALS) {
+		for (Direction e : Direction.HORIZONTALS) {
 			// make the rings
 			makeWallSide(world, rand, e, sbb);
 		}
@@ -64,7 +64,7 @@ public class ComponentTFQuestGrove extends StructureTFComponentOld {
 		}
 
 		// dispenser frame and button
-		setBlockState(world, Blocks.STONE_BUTTON.getDefaultState().withProperty(BlockButton.FACING, EnumFacing.SOUTH), 13, 5, 19, sbb);
+		setBlockState(world, Blocks.STONE_BUTTON.getDefaultState().withProperty(BlockButton.FACING, Direction.SOUTH), 13, 5, 19, sbb);
 
 		setBlockState(world, MOSSY_STONEBRICK, 12, 7, 20, sbb);
 		setBlockState(world, MOSSY_STONEBRICK, 13, 7, 20, sbb);
@@ -84,7 +84,7 @@ public class ComponentTFQuestGrove extends StructureTFComponentOld {
 			if (sbb.isVecInside(pos)) {
 				dispenserPlaced = true;
 
-				world.setBlockState(pos, Blocks.DISPENSER.getDefaultState().withProperty(BlockDispenser.FACING, EnumFacing.NORTH), 4);
+				world.setBlockState(pos, Blocks.DISPENSER.getDefaultState().withProperty(BlockDispenser.FACING, Direction.NORTH), 4);
 				TileEntityDispenser ted = (TileEntityDispenser) world.getTileEntity(pos);
 
 				// add 4 random wool blocks
@@ -117,8 +117,8 @@ public class ComponentTFQuestGrove extends StructureTFComponentOld {
 		return true;
 	}
 
-	private void makeWallSide(World world, Random rand, EnumFacing direction, StructureBoundingBox sbb) {
-		EnumFacing temp = this.getCoordBaseMode();
+	private void makeWallSide(World world, Random rand, Direction direction, StructureBoundingBox sbb) {
+		Direction temp = this.getCoordBaseMode();
 		this.setCoordBaseMode(direction);
 
 		// arches

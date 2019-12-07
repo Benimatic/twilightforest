@@ -1,7 +1,7 @@
 package twilightforest.structures.hollowtree;
 
 import net.minecraft.block.BlockLog;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -90,7 +90,7 @@ public class ComponentTFHollowTreeLargeBranch extends ComponentTFHollowTreeMedBr
 		if (!drawLeaves)
 		{
 			// main branch
-			final IBlockState defaultState = TFBlocks.twilight_log.getDefaultState();
+			final BlockState defaultState = TFBlocks.twilight_log.getDefaultState();
 			drawBresehnam(world, sbb, rsrc.getX(), rsrc.getY(), rsrc.getZ(), rdest.getX(), rdest.getY(), rdest.getZ(), defaultState.withProperty(LOG_AXIS, BlockLog.EnumAxis.NONE));
 
 			// reinforce it

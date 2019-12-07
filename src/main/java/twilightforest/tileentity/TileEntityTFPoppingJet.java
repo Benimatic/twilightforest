@@ -1,9 +1,9 @@
 package twilightforest.tileentity;
 
-import net.minecraft.init.SoundEvents;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import twilightforest.block.BlockTFFireJet;
@@ -33,7 +33,7 @@ public class TileEntityTFPoppingJet extends TileEntity implements ITickable {
 			if (counter % 20 == 0) {
 				for (int i = 0; i < 8; i++)
 				{
-					world.spawnParticle(EnumParticleTypes.LAVA, this.pos.getX() + 0.5, this.pos.getY() + 1.5, this.pos.getZ() + 0.5, 0.0D, 0.0D, 0.0D);
+					world.spawnParticle(ParticleTypes.LAVA, this.pos.getX() + 0.5, this.pos.getY() + 1.5, this.pos.getZ() + 0.5, 0.0D, 0.0D, 0.0D);
 				}
 				world.playSound(null, pos, SoundEvents.BLOCK_LAVA_POP, SoundCategory.BLOCKS, 0.2F + world.rand.nextFloat() * 0.2F, 0.9F + world.rand.nextFloat() * 0.15F);
 			}
@@ -43,14 +43,14 @@ public class TileEntityTFPoppingJet extends TileEntity implements ITickable {
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(CompoundNBT compound) {
 		super.readFromNBT(compound);
 		this.nextVariant = FireJetVariant.values()[compound.getInteger("NextMeta")];
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		NBTTagCompound ret = super.writeToNBT(compound);
+	public CompoundNBT writeToNBT(CompoundNBT compound) {
+		CompoundNBT ret = super.writeToNBT(compound);
 		ret.setInteger("NextMeta", nextVariant.ordinal());
 		return ret;
 	}

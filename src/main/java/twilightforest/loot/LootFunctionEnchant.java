@@ -8,10 +8,10 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
-import net.minecraft.init.Items;
+import net.minecraft.item.Items;
 import net.minecraft.item.ItemEnchantedBook;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
@@ -51,7 +51,7 @@ public class LootFunctionEnchant extends LootFunction {
 	// Not using stack.addEnchantment because it doesn't handle duplicates like enchanted book does
 	private void addEnchantment(ItemStack stack, Enchantment e, short level) {
 		if (stack.getTagCompound() == null) {
-			stack.setTagCompound(new NBTTagCompound());
+			stack.setTagCompound(new CompoundNBT());
 		}
 
 		final String enchantedCompoundKey = stack.getItem() == Items.ENCHANTED_BOOK ? "StoredEnchantments" : "ench";
@@ -63,14 +63,14 @@ public class LootFunctionEnchant extends LootFunction {
 		NBTTagList list = stack.getTagCompound().getTagList(enchantedCompoundKey, Constants.NBT.TAG_COMPOUND);
 
 		for (int i = 0; i < list.tagCount(); i++) {
-			NBTTagCompound existing = list.getCompoundTagAt(i);
+			CompoundNBT existing = list.getCompoundTagAt(i);
 			if (existing.getShort("id") == Enchantment.getEnchantmentID(e)) {
 				existing.setShort("lvl", level);
 				return;
 			}
 		}
 
-		NBTTagCompound newCmp = new NBTTagCompound();
+		CompoundNBT newCmp = new CompoundNBT();
 		newCmp.setShort("id", (short) Enchantment.getEnchantmentID(e));
 		newCmp.setShort("lvl", level);
 		list.appendTag(newCmp);

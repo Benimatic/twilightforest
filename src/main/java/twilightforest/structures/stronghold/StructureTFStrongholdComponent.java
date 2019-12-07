@@ -2,10 +2,10 @@ package twilightforest.structures.stronghold;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -28,14 +28,14 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	public StructureTFStrongholdComponent() {
 	}
 
-	public StructureTFStrongholdComponent(TFFeature feature, int i, EnumFacing facing, int x, int y, int z) {
+	public StructureTFStrongholdComponent(TFFeature feature, int i, Direction facing, int x, int y, int z) {
 		super(feature, i);
 		this.boundingBox = generateBoundingBox(facing, x, y, z);
 		this.setCoordBaseMode(facing);
 	}
 
 	@Override
-	protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 		super.writeStructureToNBT(tagCompound);
 
 		tagCompound.setIntArray("doorInts", this.getDoorsAsIntArray());
@@ -57,7 +57,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	}
 
 	@Override
-	protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager templateManager) {
+	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
 		super.readStructureFromNBT(tagCompound, templateManager);
 
 		// init doors
@@ -75,12 +75,12 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 		}
 	}
 
-	public abstract StructureBoundingBox generateBoundingBox(EnumFacing facing, int x, int y, int z);
+	public abstract StructureBoundingBox generateBoundingBox(Direction facing, int x, int y, int z);
 
 	/**
 	 * used to project a possible new component Bounding Box - to check if it would cut anything already spawned
 	 */
-	public static StructureBoundingBox getComponentToAddBoundingBox(int x, int y, int z, int xOff, int yOff, int zOff, int xSize, int ySize, int zSize, EnumFacing facing) {
+	public static StructureBoundingBox getComponentToAddBoundingBox(int x, int y, int z, int xOff, int yOff, int zOff, int xSize, int ySize, int zSize, Direction facing) {
 		switch (facing) {
 			case SOUTH:
 				return new StructureBoundingBox(x + xOff, y + yOff, z + zOff, x + xSize - 1 + xOff, y + ySize - 1 + yOff, z + zSize - 1 + zOff);
@@ -107,7 +107,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	 */
 	protected void addNewComponent(StructureComponent entrance, List<StructureComponent> list, Random random, Rotation facing, int x, int y, int z) {
 		int index = this.componentType + 1;
-		EnumFacing nFacing = getStructureRelativeRotation(facing);
+		Direction nFacing = getStructureRelativeRotation(facing);
 		int nx = this.getXWithOffset(x, z);
 		int ny = this.getYWithOffset(y);
 		int nz = this.getZWithOffset(x, z);
@@ -157,7 +157,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 		StructureTFStrongholdComponent attempted = null;
 
 		int index = this.componentType + 1;
-		EnumFacing nFacing = getStructureRelativeRotation(facing);
+		Direction nFacing = getStructureRelativeRotation(facing);
 		int nx = this.getXWithOffset(x, z);
 		int ny = this.getYWithOffset(y);
 		int nz = this.getZWithOffset(x, z);
@@ -258,8 +258,8 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 		// set offsets and stair metas
 		int ox = 1;
 		int oz = 1;
-		EnumFacing smx = EnumFacing.EAST;
-		EnumFacing smz = EnumFacing.SOUTH;
+		Direction smx = Direction.EAST;
+		Direction smz = Direction.SOUTH;
 
 
 		switch (facing) {
@@ -268,17 +268,17 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 				break;
 			case 1:
 				oz = -1;
-				smz = EnumFacing.SOUTH;
+				smz = Direction.SOUTH;
 				break;
 			case 2:
 				ox = -1;
-				smx = EnumFacing.WEST;
+				smx = Direction.WEST;
 				break;
 			case 3:
 				ox = -1;
 				oz = -1;
-				smx = EnumFacing.WEST;
-				smz = EnumFacing.NORTH;
+				smx = Direction.WEST;
+				smz = Direction.NORTH;
 				break;
 		}
 
@@ -333,24 +333,24 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 
 			// arms
 
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(EnumFacing.WEST), rotation, false), x - ox, y + 3, z, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(EnumFacing.WEST), rotation, false), x + ox, y + 3, z, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(EnumFacing.WEST), rotation, false), x - ox, y + 3, z - oz, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(EnumFacing.WEST), rotation, false), x + ox, y + 3, z - oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(Direction.WEST), rotation, false), x - ox, y + 3, z, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(Direction.WEST), rotation, false), x + ox, y + 3, z, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(Direction.WEST), rotation, false), x - ox, y + 3, z - oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(Direction.WEST), rotation, false), x + ox, y + 3, z - oz, sbb);
 
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(EnumFacing.WEST), rotation, true), x - ox, y + 2, z, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(EnumFacing.WEST), rotation, true), x + ox, y + 2, z, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(EnumFacing.WEST), rotation, true), x + 0, y + 2, z - oz, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(EnumFacing.WEST), rotation, true), x - ox, y + 2, z - oz, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(EnumFacing.WEST), rotation, true), x + ox, y + 2, z - oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(Direction.WEST), rotation, true), x - ox, y + 2, z, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(Direction.WEST), rotation, true), x + ox, y + 2, z, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(Direction.WEST), rotation, true), x + 0, y + 2, z - oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(Direction.WEST), rotation, true), x - ox, y + 2, z - oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(Direction.WEST), rotation, true), x + ox, y + 2, z - oz, sbb);
 
 			// sword
 			this.setBlockState(world, Blocks.COBBLESTONE_WALL.getDefaultState(), x, y + 0, z - oz, sbb);
 			this.setBlockState(world, Blocks.COBBLESTONE_WALL.getDefaultState(), x, y + 1, z - oz, sbb);
 
 			// feet
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(EnumFacing.WEST), rotation, false), x - ox, y + 0, z + 0, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(EnumFacing.WEST), rotation, false), x + ox, y + 0, z + 0, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(Direction.WEST), rotation, false), x - ox, y + 0, z + 0, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(Direction.WEST), rotation, false), x + ox, y + 0, z + 0, sbb);
 		} else {
 			if (facing == Rotation.COUNTERCLOCKWISE_90) {
 				oz = -oz;
@@ -362,24 +362,24 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 			this.setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), x, y + 4, z + oz, sbb);
 
 			// arms
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(EnumFacing.WEST), rotation, false), x, y + 3, z - oz, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(EnumFacing.WEST), rotation, false), x, y + 3, z + oz, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(EnumFacing.WEST), rotation, false), x + ox, y + 3, z - oz, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(EnumFacing.WEST), rotation, false), x + ox, y + 3, z + oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(Direction.WEST), rotation, false), x, y + 3, z - oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(Direction.WEST), rotation, false), x, y + 3, z + oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(Direction.WEST), rotation, false), x + ox, y + 3, z - oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(Direction.WEST), rotation, false), x + ox, y + 3, z + oz, sbb);
 
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(EnumFacing.WEST), rotation, true), x, y + 2, z - oz, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(EnumFacing.WEST), rotation, true), x, y + 2, z + oz, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(EnumFacing.WEST), rotation, true), x + oz, y + 2, z + 0, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(EnumFacing.WEST), rotation, true), x + ox, y + 2, z - oz, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(EnumFacing.WEST), rotation, true), x + ox, y + 2, z + oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(Direction.WEST), rotation, true), x, y + 2, z - oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(Direction.WEST), rotation, true), x, y + 2, z + oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(Direction.WEST), rotation, true), x + oz, y + 2, z + 0, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(Direction.WEST), rotation, true), x + ox, y + 2, z - oz, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_90).rotate(Direction.WEST), rotation, true), x + ox, y + 2, z + oz, sbb);
 
 			// sword
 			this.setBlockState(world, Blocks.COBBLESTONE_WALL.getDefaultState(), x + ox, y + 0, z, sbb);
 			this.setBlockState(world, Blocks.COBBLESTONE_WALL.getDefaultState(), x + ox, y + 1, z, sbb);
 
 			// feet
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(EnumFacing.WEST), rotation, false), x, y + 0, z - ox, sbb);
-			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(EnumFacing.WEST), rotation, false), x, y + 0, z + ox, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(Direction.WEST), rotation, false), x, y + 0, z - ox, sbb);
+			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(Direction.WEST), rotation, false), x, y + 0, z + ox, sbb);
 		}
 
 	}
@@ -532,7 +532,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 			for (int x = sx; x <= dx; ++x) {
 				for (int z = sz; z <= dz; ++z) {
 					boolean wall = y == sy || y == dy || x == sx || x == dx || z == sz || z == dz;
-					IBlockState state = this.getBlockStateFromPos(world, x, y, z, sbb);
+					BlockState state = this.getBlockStateFromPos(world, x, y, z, sbb);
 					Block blockID = state.getBlock();
 
 					if ((blockID != Blocks.AIR && (state.getMaterial() == Material.ROCK || state.getMaterial() == Material.GRASS || state.getMaterial() == Material.GROUND))
@@ -556,6 +556,6 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 
 	public interface Factory<T extends StructureTFStrongholdComponent> {
 
-		T newInstance(TFFeature feature, int i, EnumFacing facing, int x, int y, int z);
+		T newInstance(TFFeature feature, int i, Direction facing, int x, int y, int z);
 	}
 }

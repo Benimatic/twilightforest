@@ -3,7 +3,7 @@ package twilightforest.world.feature;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.block.BlockTFMagicLog;
@@ -15,10 +15,10 @@ import java.util.Random;
 
 public class TFGenSortingTree extends TFGenerator {
 
-	protected IBlockState treeState = TFBlocks.magic_log.getDefaultState().withProperty(BlockTFMagicLog.VARIANT, MagicWoodVariant.SORT);
-	protected IBlockState branchState = treeState.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
-	protected IBlockState leafState = TFBlocks.magic_leaves.getDefaultState().withProperty(BlockTFMagicLog.VARIANT, MagicWoodVariant.SORT).withProperty(BlockLeaves.CHECK_DECAY, false);
-	protected IBlockState rootState = TFBlocks.root.getDefaultState();
+	protected BlockState treeState = TFBlocks.magic_log.getDefaultState().withProperty(BlockTFMagicLog.VARIANT, MagicWoodVariant.SORT);
+	protected BlockState branchState = treeState.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
+	protected BlockState leafState = TFBlocks.magic_leaves.getDefaultState().withProperty(BlockTFMagicLog.VARIANT, MagicWoodVariant.SORT).withProperty(BlockLeaves.CHECK_DECAY, false);
+	protected BlockState rootState = TFBlocks.root.getDefaultState();
 
 	public TFGenSortingTree() {
 		this(false);
