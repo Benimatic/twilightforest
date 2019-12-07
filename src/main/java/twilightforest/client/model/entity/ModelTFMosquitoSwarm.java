@@ -1,57 +1,56 @@
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import twilightforest.entity.EntityTFMosquitoSwarm;
 
 import java.util.Random;
 
-public class ModelTFMosquitoSwarm extends ModelBase {
+public class ModelTFMosquitoSwarm<T extends EntityTFMosquitoSwarm> extends EntityModel<T> {
 
-	ModelRenderer core;
-	ModelRenderer node1;
-	ModelRenderer node2;
-	ModelRenderer node3;
-	ModelRenderer node4;
-	ModelRenderer node5;
-	ModelRenderer node6;
+	RendererModel core;
+	RendererModel node1;
+	RendererModel node2;
+	RendererModel node3;
+	RendererModel node4;
+	RendererModel node5;
+	RendererModel node6;
 
 	Random rand = new Random();
 
 	public ModelTFMosquitoSwarm() {
-		core = new ModelRenderer(this, rand.nextInt(28), rand.nextInt(28));
+		core = new RendererModel(this, rand.nextInt(28), rand.nextInt(28));
 		core.addBox(-4F, 0.0F, -2F, 1, 1, 1);
 		core.setRotationPoint(0.0F, -4.0F, 0.0F);
 
-		node1 = new ModelRenderer(this, rand.nextInt(28), rand.nextInt(28));
+		node1 = new RendererModel(this, rand.nextInt(28), rand.nextInt(28));
 		node1.addBox(-5.5F, -5F, -13F, 1, 1, 1);
 		node1.setRotationPoint(2F, -1F, -6F);
 		core.addChild(node1);
 
-		node2 = new ModelRenderer(this, rand.nextInt(28), rand.nextInt(28));
+		node2 = new RendererModel(this, rand.nextInt(28), rand.nextInt(28));
 		node2.addBox(-5.5F, -13F, -5F, 1, 1, 1);
 		node2.setRotationPoint(0F, -7F, -1F);
 		core.addChild(node2);
 
-		node3 = new ModelRenderer(this, rand.nextInt(28), rand.nextInt(28));
+		node3 = new RendererModel(this, rand.nextInt(28), rand.nextInt(28));
 		node3.addBox(-13F, -5F, -5F, 1, 1, 1);
 		node3.setRotationPoint(5F, -2F, -1F);
 		core.addChild(node3);
 
-		node4 = new ModelRenderer(this, rand.nextInt(28), rand.nextInt(28));
+		node4 = new RendererModel(this, rand.nextInt(28), rand.nextInt(28));
 		node4.addBox(-5.5F, -5F, -13F, 1, 1, 1);
 		node4.setRotationPoint(2F, -1F, -6F);
 		core.addChild(node4);
 
-		node5 = new ModelRenderer(this, rand.nextInt(28), rand.nextInt(28));
+		node5 = new RendererModel(this, rand.nextInt(28), rand.nextInt(28));
 		node5.addBox(-5.5F, -13F, -5F, 1, 1, 1);
 		node5.setRotationPoint(0F, -7F, -1F);
 		core.addChild(node5);
 
-		node6 = new ModelRenderer(this, rand.nextInt(28), rand.nextInt(28));
+		node6 = new RendererModel(this, rand.nextInt(28), rand.nextInt(28));
 		node6.addBox(-13F, -5F, -5F, 1, 1, 1);
 		node6.setRotationPoint(5F, -2F, -1F);
 		core.addChild(node6);
@@ -65,7 +64,7 @@ public class ModelTFMosquitoSwarm extends ModelBase {
 	}
 
 	@Override
-	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 		core.render(scale / 2.0F);
 //		node1.render(scale);
 //		node2.render(scale);
@@ -75,14 +74,14 @@ public class ModelTFMosquitoSwarm extends ModelBase {
 	/**
 	 * Add the proper number of mosquitoes to the nodes
 	 */
-	public void addBugsToNodes(ModelRenderer node) {
+	public void addBugsToNodes(RendererModel node) {
 		int bugs = 16;
 
 		for (int i = 0; i < bugs; i++) {
 			Vec3d vec = new Vec3d(11, 0, 0);
 			float rotateY = ((i * (360F / bugs)) * 3.141593F) / 180F;
 			vec.rotateYaw(rotateY);
-			ModelRenderer bug = new ModelRenderer(this, rand.nextInt(28), rand.nextInt(28));
+			RendererModel bug = new RendererModel(this, rand.nextInt(28), rand.nextInt(28));
 
 			float bugX = (rand.nextFloat() - rand.nextFloat()) * 4.0f;
 			float bugY = (rand.nextFloat() - rand.nextFloat()) * 4.0f;
@@ -97,7 +96,7 @@ public class ModelTFMosquitoSwarm extends ModelBase {
 	}
 
 	@Override
-	public void setLivingAnimations(EntityLivingBase entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+	public void setLivingAnimations(T entity, float limbSwing, float limbSwingAmount, float partialTicks) {
 		core.rotateAngleY = (entity.ticksExisted + partialTicks) / 5.0F;
 		core.rotateAngleX = MathHelper.sin((entity.ticksExisted + partialTicks) / 5.0F) / 4.0F;
 		core.rotateAngleZ = MathHelper.cos((entity.ticksExisted + partialTicks) / 5.0F) / 4.0F;

@@ -1,20 +1,20 @@
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.util.math.MathHelper;
+import twilightforest.entity.boss.EntityTFUrGhast;
 
 import java.util.Random;
 
-public class ModelTFTowerBoss extends ModelTFGhast {
+public class ModelTFTowerBoss<T extends EntityTFUrGhast> extends ModelTFGhast<T> {
 
-	protected ModelRenderer[][] subTentacles;
-	protected ModelRenderer[][] smallTentacles;
+	protected RendererModel[][] subTentacles;
+	protected RendererModel[][] smallTentacles;
 
 	public ModelTFTowerBoss() {
 		super();
 
-		this.smallTentacles = new ModelRenderer[2][3];
+		this.smallTentacles = new RendererModel[2][3];
 		for (int i = 0; i < this.smallTentacles.length; ++i) {
 			makeSmallTentacle(i);
 		}
@@ -22,7 +22,7 @@ public class ModelTFTowerBoss extends ModelTFGhast {
 
 	@Override
 	protected void makeTentacle(byte yOffset, Random random, int num) {
-		this.tentacles[num] = new ModelRenderer(this, num % 3, 0);
+		this.tentacles[num] = new RendererModel(this, num % 3, 0);
 
 		int length = 5;
 
@@ -81,13 +81,13 @@ public class ModelTFTowerBoss extends ModelTFGhast {
 
 		// goofy mid-method initializer
 		if (this.subTentacles == null) {
-			this.subTentacles = new ModelRenderer[tentacles.length][3];
+			this.subTentacles = new RendererModel[tentacles.length][3];
 		}
 
 		for (int i = 0; i < 3; i++) {
 			length = 4;
 
-			this.subTentacles[num][i] = new ModelRenderer(this, num % 4, (i * 5) - 1);
+			this.subTentacles[num][i] = new RendererModel(this, num % 4, (i * 5) - 1);
 
 			this.subTentacles[num][i].addBox(-1.5F, -0.5F, -1.5F, 3, length, 3);
 			this.subTentacles[num][i].rotationPointX = 0;
@@ -119,8 +119,8 @@ public class ModelTFTowerBoss extends ModelTFGhast {
 	 * "far" arms and legs can swing at most.
 	 */
 	@Override
-	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity) {
-		super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entity);
+	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+		super.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
 
 		// wave tentacles
 		for (int i = 0; i < this.subTentacles.length; ++i) {

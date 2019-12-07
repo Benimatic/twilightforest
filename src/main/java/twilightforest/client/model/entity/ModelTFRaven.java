@@ -6,91 +6,89 @@
 
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.util.math.MathHelper;
-import twilightforest.entity.passive.EntityTFBird;
+import twilightforest.entity.passive.EntityTFRaven;
 
-
-public class ModelTFRaven extends ModelBase {
+public class ModelTFRaven<T extends EntityTFRaven> extends EntityModel<T> {
 	//fields
-	ModelRenderer head;
-	ModelRenderer beak1;
-	ModelRenderer beak2;
-	ModelRenderer body;
-	ModelRenderer rightarm;
-	ModelRenderer leftarm;
-	ModelRenderer rightleg;
-	ModelRenderer leftleg;
-	ModelRenderer rightfoot;
-	ModelRenderer leftfoot;
-	ModelRenderer tail;
+	RendererModel head;
+	RendererModel beak1;
+	RendererModel beak2;
+	RendererModel body;
+	RendererModel rightarm;
+	RendererModel leftarm;
+	RendererModel rightleg;
+	RendererModel leftleg;
+	RendererModel rightfoot;
+	RendererModel leftfoot;
+	RendererModel tail;
 
 	public ModelTFRaven() {
 		textureWidth = 32;
 		textureHeight = 32;
 
-		head = new ModelRenderer(this, 0, 0);
+		head = new RendererModel(this, 0, 0);
 		head.addBox(-1.5F, -1.5F, -3F, 3, 3, 3);
 		head.setRotationPoint(0F, 18F, 0F);
 		head.setTextureSize(32, 32);
 		head.mirror = true;
 		setRotation(head, 0F, 0F, 0F);
 
-		beak1 = new ModelRenderer(this, 12, 0);
+		beak1 = new RendererModel(this, 12, 0);
 		beak1.addBox(-0.5F, -1F, -2F, 1, 1, 2);
 		beak1.setRotationPoint(0F, 0F, -2.5F);
 		beak1.rotateAngleX = 0.2617994F;
 		head.addChild(beak1);
 
-		beak2 = new ModelRenderer(this, 12, 0);
+		beak2 = new RendererModel(this, 12, 0);
 		beak2.addBox(-0.5F, 0F, -2F, 1, 1, 2);
 		beak2.setRotationPoint(0F, 0F, -2.5F);
 		beak2.rotateAngleX = -0.2617994F;
 		head.addChild(beak2);
 
-		body = new ModelRenderer(this, 0, 6);
+		body = new RendererModel(this, 0, 6);
 		body.addBox(-1.5F, 0F, -1F, 3, 4, 6);
 		body.setRotationPoint(0F, 17F, 1F);
 		body.setTextureSize(32, 32);
 		setRotation(body, -0.5235988F, 0F, 0F);
 
-		rightarm = new ModelRenderer(this, 0, 16);
+		rightarm = new RendererModel(this, 0, 16);
 		rightarm.addBox(-1F, 0F, -1.5F, 1, 3, 6);
 		rightarm.setRotationPoint(-1.5F, 18F, 1F);
 		rightarm.setTextureSize(32, 32);
 
-		leftarm = new ModelRenderer(this, 0, 16);
+		leftarm = new RendererModel(this, 0, 16);
 		leftarm.addBox(0F, 0F, -1.5F, 1, 3, 6);
 		leftarm.setRotationPoint(1.5F, 18F, 1F);
 		leftarm.setTextureSize(32, 32);
 
-		rightleg = new ModelRenderer(this, 14, 16);
+		rightleg = new RendererModel(this, 14, 16);
 		rightleg.addBox(0F, 0F, 0F, 1, 2, 1);
 		rightleg.setRotationPoint(-1.5F, 21F, 1F);
 		rightleg.setTextureSize(32, 32);
 
-		rightfoot = new ModelRenderer(this, 14, 20);
+		rightfoot = new RendererModel(this, 14, 20);
 		rightfoot.addBox(0F, -1F, -2F, 1, 1, 2);
 		rightfoot.setRotationPoint(0F, 2F, 1F);
 		rightfoot.setTextureSize(32, 32);
 		setRotation(rightfoot, 0.5235988F, 0F, 0F);
 		rightleg.addChild(rightfoot);
 
-		leftleg = new ModelRenderer(this, 14, 16);
+		leftleg = new RendererModel(this, 14, 16);
 		leftleg.addBox(0F, 0F, 0F, 1, 2, 1);
 		leftleg.setRotationPoint(0.5F, 21F, 1F);
 		leftleg.setTextureSize(32, 32);
 
-		leftfoot = new ModelRenderer(this, 14, 20);
+		leftfoot = new RendererModel(this, 14, 20);
 		leftfoot.addBox(0F, -1F, -2F, 1, 1, 2);
 		leftfoot.setRotationPoint(0F, 2F, 1F);
 		leftfoot.setTextureSize(32, 32);
 		setRotation(leftfoot, 0.5235988F, 0F, 0F);
 		leftleg.addChild(leftfoot);
 
-		tail = new ModelRenderer(this, 0, 25);
+		tail = new RendererModel(this, 0, 25);
 		tail.addBox(-1.5F, -0.5F, 0F, 3, 1, 3);
 		tail.setRotationPoint(0F, 21F, 4F);
 		tail.setTextureSize(32, 32);
@@ -98,9 +96,9 @@ public class ModelTFRaven extends ModelBase {
 	}
 
 	@Override
-	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-		setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entity);
+		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 		head.render(scale);
 		body.render(scale);
 		rightarm.render(scale);
@@ -111,7 +109,7 @@ public class ModelTFRaven extends ModelBase {
 		tail.render(scale);
 	}
 
-	private void setRotation(ModelRenderer model, float x, float y, float z) {
+	private void setRotation(RendererModel model, float x, float y, float z) {
 		model.rotateAngleX = x;
 		model.rotateAngleY = y;
 		model.rotateAngleZ = z;
@@ -122,7 +120,7 @@ public class ModelTFRaven extends ModelBase {
 	 * Sets the models various rotation angles.
 	 */
 	@Override
-	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity) {
+	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
 		head.rotateAngleX = headPitch / (180F / (float) Math.PI);
 		head.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 		head.rotateAngleZ = netHeadYaw > 5 ? -0.2617994F : 0;
@@ -133,7 +131,7 @@ public class ModelTFRaven extends ModelBase {
 		rightarm.rotateAngleZ = ageInTicks;
 		leftarm.rotateAngleZ = -ageInTicks;
 
-		if (((EntityTFBird) entity).isBirdLanded()) {
+		if (entity.isBirdLanded()) {
 			rightleg.rotationPointY = 21;
 			leftleg.rotationPointY = 21;
 		} else {
@@ -141,6 +139,4 @@ public class ModelTFRaven extends ModelBase {
 			leftleg.rotationPointY = 20F;
 		}
 	}
-
-
 }

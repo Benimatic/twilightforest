@@ -1,84 +1,82 @@
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.EnumHandSide;
+import net.minecraft.client.renderer.entity.model.BipedModel;
+import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.util.HandSide;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.boss.EntityTFMinoshroom;
 
-public class ModelTFMinoshroom extends ModelBiped {
+public class ModelTFMinoshroom<T extends EntityTFMinoshroom> extends BipedModel<T> {
 
-	ModelRenderer body;
-	ModelRenderer leg1;
-	ModelRenderer leg2;
-	ModelRenderer leg3;
-	ModelRenderer leg4;
-	ModelRenderer udders;
+	RendererModel body;
+	RendererModel leg1;
+	RendererModel leg2;
+	RendererModel leg3;
+	RendererModel leg4;
+	RendererModel udders;
 
-	ModelRenderer snout;
+	RendererModel snout;
 
-	public ModelRenderer righthorn1;
-	public ModelRenderer righthorn2;
-	public ModelRenderer lefthorn1;
-	public ModelRenderer lefthorn2;
+	public RendererModel righthorn1;
+	public RendererModel righthorn2;
+	public RendererModel lefthorn1;
+	public RendererModel lefthorn2;
 
 	public ModelTFMinoshroom() {
 		textureWidth = 128;
 		textureHeight = 32;
 
-		bipedHead = new ModelRenderer(this, 96, 16);
+		bipedHead = new RendererModel(this, 96, 16);
 		bipedHead.addBox(-4F, -8F, -4F, 8, 8, 8);
 		bipedHead.setRotationPoint(0F, -6F, -9F);
 
-		body = new ModelRenderer(this, 18, 4);
+		body = new RendererModel(this, 18, 4);
 		body.addBox(-6F, -10F, -7F, 12, 18, 10);
 		body.setRotationPoint(0F, 5F, 2F);
 		setRotation(body, 1.570796F, 0F, 0F);
 
-		leg1 = new ModelRenderer(this, 0, 16);
+		leg1 = new RendererModel(this, 0, 16);
 		leg1.addBox(-3F, 0F, -2F, 4, 12, 4);
 		leg1.setRotationPoint(-3F, 12F, 7F);
 
-		leg2 = new ModelRenderer(this, 0, 16);
+		leg2 = new RendererModel(this, 0, 16);
 		leg2.addBox(-1F, 0F, -2F, 4, 12, 4);
 		leg2.setRotationPoint(3F, 12F, 7F);
 
-		leg3 = new ModelRenderer(this, 0, 16);
+		leg3 = new RendererModel(this, 0, 16);
 		leg3.addBox(-3F, 0F, -3F, 4, 12, 4);
 		leg3.setRotationPoint(-3F, 12F, -5F);
 
-		leg4 = new ModelRenderer(this, 0, 16);
+		leg4 = new RendererModel(this, 0, 16);
 		leg4.addBox(-1F, 0F, -3F, 4, 12, 4);
 		leg4.setRotationPoint(3F, 12F, -5F);
 
-		udders = new ModelRenderer(this, 52, 0);
+		udders = new RendererModel(this, 52, 0);
 		udders.addBox(-2F, -3F, 0F, 4, 6, 2);
 		udders.setRotationPoint(0F, 14F, 6F);
 		setRotation(udders, 1.570796F, 0F, 0F);
 
-		bipedBody = new ModelRenderer(this, 64, 0);
+		bipedBody = new RendererModel(this, 64, 0);
 		bipedBody.addBox(-4F, 0F, -2.5F, 8, 12, 5);
 		bipedBody.setRotationPoint(0F, -6F, -9F);
 
-		this.bipedLeftArm = new ModelRenderer(this, 90, 0);
+		this.bipedLeftArm = new RendererModel(this, 90, 0);
 		this.bipedLeftArm.addBox(-1.0F, -2.0F, -2.0F, 4, 12, 4);
 		this.bipedLeftArm.setRotationPoint(5F, -4F, -9F);
 		this.bipedLeftArm.mirror = true;
 
-		this.bipedRightArm = new ModelRenderer(this, 90, 0);
+		this.bipedRightArm = new RendererModel(this, 90, 0);
 		this.bipedRightArm.addBox(-3.0F, -2.0F, -2.0F, 4, 12, 4);
 		this.bipedRightArm.setRotationPoint(-5F, -4F, -9F);
 
 		// horns
-		this.righthorn1 = new ModelRenderer(this, 0, 0);
+		this.righthorn1 = new RendererModel(this, 0, 0);
 		this.righthorn1.addBox(-5.5F, -1.5F, -1.5F, 5, 3, 3);
 		this.righthorn1.setRotationPoint(-2.5F, -6.5F, 0.0F);
 		this.righthorn1.rotateAngleY = -25F / (180F / (float) Math.PI);
 		this.righthorn1.rotateAngleZ = 10F / (180F / (float) Math.PI);
 
-		this.righthorn2 = new ModelRenderer(this, 16, 0);
+		this.righthorn2 = new RendererModel(this, 16, 0);
 		this.righthorn2.addBox(-3.5F, -1.0F, -1.0F, 3, 2, 2);
 		this.righthorn2.setRotationPoint(-4.5F, 0.0F, 0.0F);
 		this.righthorn2.rotateAngleY = -15F / (180F / (float) Math.PI);
@@ -86,14 +84,14 @@ public class ModelTFMinoshroom extends ModelBiped {
 
 		this.righthorn1.addChild(righthorn2);
 
-		this.lefthorn1 = new ModelRenderer(this, 0, 0);
+		this.lefthorn1 = new RendererModel(this, 0, 0);
 		this.lefthorn1.mirror = true;
 		this.lefthorn1.addBox(0.5F, -1.5F, -1.5F, 5, 3, 3);
 		this.lefthorn1.setRotationPoint(2.5F, -6.5F, 0.0F);
 		this.lefthorn1.rotateAngleY = 25F / (180F / (float) Math.PI);
 		this.lefthorn1.rotateAngleZ = -10F / (180F / (float) Math.PI);
 
-		this.lefthorn2 = new ModelRenderer(this, 16, 0);
+		this.lefthorn2 = new RendererModel(this, 16, 0);
 		this.lefthorn2.addBox(0.5F, -1.0F, -1.0F, 3, 2, 2);
 		this.lefthorn2.setRotationPoint(4.5F, 0.0F, 0.0F);
 		this.lefthorn2.rotateAngleY = 15F / (180F / (float) Math.PI);
@@ -104,21 +102,21 @@ public class ModelTFMinoshroom extends ModelBiped {
 		this.bipedHead.addChild(righthorn1);
 		this.bipedHead.addChild(lefthorn1);
 
-		snout = new ModelRenderer(this, 105, 28);
+		snout = new RendererModel(this, 105, 28);
 		snout.addBox(-2, -1, -1, 4, 3, 1);
 		snout.setRotationPoint(0F, -2.0F, -4F);
 
 		this.bipedHead.addChild(snout);
 
 		// kill off headwear box
-		this.bipedHeadwear = new ModelRenderer(this, 0, 0);
+		this.bipedHeadwear = new RendererModel(this, 0, 0);
 
 	}
 
 	@Override
-	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 		//super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-		setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entity);
+		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 		bipedHead.render(scale);
 		body.render(scale);
 		leg1.render(scale);
@@ -132,7 +130,7 @@ public class ModelTFMinoshroom extends ModelBiped {
 		bipedRightArm.render(scale);
 	}
 
-	private void setRotation(ModelRenderer model, float x, float y, float z) {
+	private void setRotation(RendererModel model, float x, float y, float z) {
 		model.rotateAngleX = x;
 		model.rotateAngleY = y;
 		model.rotateAngleZ = z;
@@ -144,7 +142,7 @@ public class ModelTFMinoshroom extends ModelBiped {
 	 * "far" arms and legs can swing at most.
 	 */
 	@Override
-	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity) {
+	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
 		// copied from ModelBiped
 
 		this.bipedHead.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
@@ -205,13 +203,12 @@ public class ModelTFMinoshroom extends ModelBiped {
 		this.leg4.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
 
 		float f = ageInTicks - (float) entity.ticksExisted;
-		float f1 = ((EntityTFMinoshroom) entity).getChargeAnimationScale(f);
+		float f1 = entity.getChargeAnimationScale(f);
 		f1 = f1 * f1;
 		float f2 = 1.0F - f1;
 		if (f1 > 0) {
 
-			if (((EntityLivingBase)entity).getPrimaryHand() == EnumHandSide.RIGHT)
-			{
+			if (entity.getPrimaryHand() == HandSide.RIGHT) {
 				this.bipedRightArm.rotateAngleX = f1 * -1.8F;
 				this.bipedLeftArm.rotateAngleX = 0.0F;
 				this.bipedRightArm.rotateAngleZ = -0.2F;

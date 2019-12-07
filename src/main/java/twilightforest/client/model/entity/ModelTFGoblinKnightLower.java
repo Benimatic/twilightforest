@@ -1,14 +1,13 @@
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.entity.model.BipedModel;
+import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.EntityTFGoblinKnightLower;
 
-public class ModelTFGoblinKnightLower extends ModelBiped {
+public class ModelTFGoblinKnightLower<T extends EntityTFGoblinKnightLower> extends BipedModel<T> {
 
-	public ModelRenderer tunic;
+	public RendererModel tunic;
 
 	public ModelTFGoblinKnightLower() {
 		this.isSneak = false;
@@ -17,45 +16,45 @@ public class ModelTFGoblinKnightLower extends ModelBiped {
 
 //FIXME: AtomicBlom: Replace with something like LayerCape
 /*
-		this.bipedCloak = new ModelRenderer(this, 0, 0);
+		this.bipedCloak = new RendererModel(this, 0, 0);
         this.bipedCloak.addBox(-5.0F, 0.0F, -1.0F, 10, 16, 1);
 */
 //FIXME: AtomicBlom replace with some variant of LayerDeadmau5Head
 /*
-        this.bipedEars = new ModelRenderer(this, 24, 0);
+        this.bipedEars = new RendererModel(this, 24, 0);
         this.bipedEars.addBox(-3.0F, -6.0F, -1.0F, 6, 6, 1);
 */
 
-		this.bipedHead = new ModelRenderer(this, 0, 32);
+		this.bipedHead = new RendererModel(this, 0, 32);
 		this.bipedHead.addBox(-2.5F, -5.0F, -3.5F, 5, 5, 5);
 		this.bipedHead.setRotationPoint(0.0F, 10.0F, 1.0F);
 
-		this.bipedHeadwear = new ModelRenderer(this, 0, 0);
+		this.bipedHeadwear = new RendererModel(this, 0, 0);
 		this.bipedHeadwear.addBox(0, 0, 0, 0, 0, 0);
 
-		this.bipedBody = new ModelRenderer(this, 16, 48);
+		this.bipedBody = new RendererModel(this, 16, 48);
 		this.bipedBody.addBox(-3.5F, 0.0F, -2.0F, 7, 8, 4);
 		this.bipedBody.setRotationPoint(0.0F, 8.0F, 0.0F);
 
-		this.bipedRightArm = new ModelRenderer(this, 40, 48);
+		this.bipedRightArm = new RendererModel(this, 40, 48);
 		this.bipedRightArm.addBox(-2.0F, -2.0F, -1.5F, 2, 8, 3);
 		this.bipedRightArm.setRotationPoint(-3.5F, 10.0F, 0.0F);
 
-		this.bipedLeftArm = new ModelRenderer(this, 40, 48);
+		this.bipedLeftArm = new RendererModel(this, 40, 48);
 		this.bipedLeftArm.mirror = true;
 		this.bipedLeftArm.addBox(0.0F, -2.0F, -1.5F, 2, 8, 3);
 		this.bipedLeftArm.setRotationPoint(3.5F, 10.0F, 0.0F);
 
-		this.bipedRightLeg = new ModelRenderer(this, 0, 48);
+		this.bipedRightLeg = new RendererModel(this, 0, 48);
 		this.bipedRightLeg.addBox(-3.0F, 0.0F, -2.0F, 4, 8, 4);
 		this.bipedRightLeg.setRotationPoint(-2.5F, 16.0F, 0.0F);
 
-		this.bipedLeftLeg = new ModelRenderer(this, 0, 48);
+		this.bipedLeftLeg = new RendererModel(this, 0, 48);
 		this.bipedLeftLeg.mirror = true;
 		this.bipedLeftLeg.addBox(-1.0F, 0.0F, -2.0F, 4, 8, 4);
 		this.bipedLeftLeg.setRotationPoint(2.5F, 16.0F, 0.0F);
 
-		this.tunic = new ModelRenderer(this, 64, 19);
+		this.tunic = new RendererModel(this, 64, 19);
 		this.tunic.addBox(-6.0F, 0.0F, -3.0F, 12, 9, 6);
 		this.tunic.setRotationPoint(0F, 7.5F, 0.0F);
 	}
@@ -64,10 +63,10 @@ public class ModelTFGoblinKnightLower extends ModelBiped {
 	 * Sets the models various rotation angles then renders the model.
 	 */
 	@Override
-	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 
-		if (((EntityTFGoblinKnightLower) entity).hasArmor()) {
+		if (entity.hasArmor()) {
 			this.renderTunic(scale);
 		}
 	}
@@ -85,7 +84,7 @@ public class ModelTFGoblinKnightLower extends ModelBiped {
 	 * "far" arms and legs can swing at most.
 	 */
 	@Override
-	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity) {
+	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
 		this.bipedHead.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 		this.bipedHead.rotateAngleX = headPitch / (180F / (float) Math.PI);
 		this.bipedHeadwear.rotateAngleY = this.bipedHead.rotateAngleY;

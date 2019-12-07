@@ -1,26 +1,25 @@
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.entity.model.BipedModel;
+import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.util.math.MathHelper;
+import twilightforest.entity.EntityTFWraith;
 
+public class ModelTFWraith<T extends EntityTFWraith> extends BipedModel<T> {
 
-public class ModelTFWraith extends ModelBiped {
-
-	public ModelRenderer dress;
+	public RendererModel dress;
 
 	public ModelTFWraith() {
 		float f = 0.0F;
-		dress = new ModelRenderer(this, 40, 16);
+		dress = new RendererModel(this, 40, 16);
 		dress.addBox(-4F, 12.0F, -2F, 8, 12, 4, f);
 		dress.setRotationPoint(0.0F, 0.0F, 0.0F);
 
 	}
 
 	@Override
-	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-		setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entity);
+	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 		bipedHead.render(scale);
 		bipedBody.render(scale);
 		bipedRightArm.render(scale);
@@ -39,8 +38,8 @@ public class ModelTFWraith extends ModelBiped {
 	 * "far" arms and legs can swing at most.
 	 */
 	@Override
-	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity) {
-		super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entity);
+	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+		super.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
 		float var8 = MathHelper.sin(this.swingProgress * (float) Math.PI);
 		float var9 = MathHelper.sin((1.0F - (1.0F - this.swingProgress) * (1.0F - this.swingProgress)) * (float) Math.PI);
 		this.bipedRightArm.rotateAngleZ = 0.0F;

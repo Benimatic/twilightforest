@@ -1,23 +1,23 @@
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import twilightforest.entity.EntityTFTowerGhast;
 
 import java.util.Random;
 
-@SideOnly(Side.CLIENT)
-public class ModelTFGhast extends ModelBase {
-	ModelRenderer body;
-	protected ModelRenderer[] tentacles = new ModelRenderer[9];
+@OnlyIn(Dist.CLIENT)
+public class ModelTFGhast<T extends EntityTFTowerGhast> extends EntityModel<T> {
+	RendererModel body;
+	protected RendererModel[] tentacles = new RendererModel[9];
 
 
 	public ModelTFGhast() {
 		byte yOffset = -16;
-		this.body = new ModelRenderer(this, 0, 0);
+		this.body = new RendererModel(this, 0, 0);
 		this.body.addBox(-8.0F, -8.0F, -8.0F, 16, 16, 16);
 		this.body.rotationPointY += (float) (24 + yOffset);
 		Random rand = new Random(1660L);
@@ -28,7 +28,7 @@ public class ModelTFGhast extends ModelBase {
 	}
 
 	protected void makeTentacle(byte yOffset, Random random, int i) {
-		this.tentacles[i] = new ModelRenderer(this, 0, 0);
+		this.tentacles[i] = new RendererModel(this, 0, 0);
 		float xPoint = (((float) (i % 3) - (float) (i / 3 % 2) * 0.5F + 0.25F) / 2.0F * 2.0F - 1.0F) * 5.0F;
 		float zPoint = ((float) (i / 3) / 2.0F * 2.0F - 1.0F) * 5.0F;
 		int length = random.nextInt(7) + 8;
@@ -46,7 +46,7 @@ public class ModelTFGhast extends ModelBase {
 	 * "far" arms and legs can swing at most.
 	 */
 	@Override
-	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity) {
+	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
 		// wave tentacles
 		for (int i = 0; i < this.tentacles.length; ++i) {
 			this.tentacles[i].rotateAngleX = 0.2F * MathHelper.sin(ageInTicks * 0.3F + (float) i) + 0.4F;
@@ -61,8 +61,8 @@ public class ModelTFGhast extends ModelBase {
 	 * Sets the models various rotation angles then renders the model.
 	 */
 	@Override
-	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-		this.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entity);
+	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+		this.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 
 		this.body.render(scale);
 	}

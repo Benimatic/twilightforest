@@ -1,22 +1,21 @@
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.entity.model.RendererModel;
+import twilightforest.entity.EntityTFSpikeBlock;
 
-
-public class ModelTFSpikeBlock extends ModelBase {
-	ModelRenderer block;
-	ModelRenderer[] spikes = new ModelRenderer[27];
+public class ModelTFSpikeBlock<T extends EntityTFSpikeBlock> extends EntityModel<T> {
+	RendererModel block;
+	RendererModel[] spikes = new RendererModel[27];
 
 	public ModelTFSpikeBlock() {
 
-		block = new ModelRenderer(this, 32, 16);
+		block = new RendererModel(this, 32, 16);
 		block.addBox(-4F, -8F, -4F, 8, 8, 8, 0F);
 		block.setRotationPoint(0F, 0F, 0F);
 
 		for (int i = 0; i < spikes.length; i++) {
-			spikes[i] = new ModelRenderer(this, 56, 16);
+			spikes[i] = new RendererModel(this, 56, 16);
 			spikes[i].addBox(-1F, -1F, -1F, 2, 2, 2, 0F);
 			block.addChild(spikes[i]);
 		}
@@ -127,7 +126,7 @@ public class ModelTFSpikeBlock extends ModelBase {
 	}
 
 	@Override
-	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 		block.render(scale);
 	}
 

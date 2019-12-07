@@ -1,18 +1,15 @@
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.entity.model.RendererModel;
 import twilightforest.entity.boss.EntityTFHydraHead;
 import twilightforest.entity.boss.EntityTFHydraPart;
 
+public class ModelTFHydraHead<T extends EntityTFHydraHead> extends EntityModel<T> {
 
-public class ModelTFHydraHead extends ModelBase {
-
-	ModelRenderer head;
-	ModelRenderer jaw;
-	ModelRenderer frill;
+	RendererModel head;
+	RendererModel jaw;
+	RendererModel frill;
 
 	public ModelTFHydraHead() {
 		textureWidth = 512;
@@ -36,7 +33,7 @@ public class ModelTFHydraHead extends ModelBase {
 		setTextureOffset("frill.frill", 272, 200);
 
 
-		head = new ModelRenderer(this, "head");
+		head = new RendererModel(this, "head");
 		head.addBox("box", -16F, -14F, -32F, 32, 24, 32);
 		head.addBox("upperlip", -15F, -2F, -56F, 30, 12, 24);
 		head.addBox("rearjaw", -15F, 10F, -20F, 30, 8, 16);
@@ -48,7 +45,7 @@ public class ModelTFHydraHead extends ModelBase {
 		head.addBox("teeth3", 8F, 9, -45F, 2, 2, 16);
 		head.setRotationPoint(0F, 0F, 0F);
 
-		jaw = new ModelRenderer(this, "jaw");
+		jaw = new RendererModel(this, "jaw");
 		jaw.setRotationPoint(0F, 10F, -20F);
 		jaw.addBox("jaw", -15F, 0F, -32F, 30, 8, 32);
 		jaw.addBox("fang1", -10F, -5, -29F, 2, 5, 2);
@@ -59,23 +56,23 @@ public class ModelTFHydraHead extends ModelBase {
 		setRotation(jaw, 0F, 0F, 0F);
 		head.addChild(jaw);
 
-		frill = new ModelRenderer(this, "frill");
+		frill = new RendererModel(this, "frill");
 		frill.setRotationPoint(0F, 0F, -14F);
 		frill.addBox("frill", -24F, -40.0F, 0F, 48, 48, 4);
 		setRotation(frill, -0.5235988F, 0F, 0F);
 		head.addChild(frill);
 	}
 
-	private void setRotation(ModelRenderer model, float x, float y, float z) {
+	private void setRotation(RendererModel model, float x, float y, float z) {
 		model.rotateAngleX = x;
 		model.rotateAngleY = y;
 		model.rotateAngleZ = z;
 	}
 
 	@Override
-	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-		setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entity);
+		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 		head.render(scale);
 	}
 
@@ -84,19 +81,18 @@ public class ModelTFHydraHead extends ModelBase {
 	}
 
 	@Override
-	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity) {
+	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
 //		head.rotateAngleY = netHeadYaw / (180F / (float)Math.PI);
 //		head.rotateAngleX = headPitch / (180F / (float)Math.PI);
 	}
 
 	@Override
-	public void setLivingAnimations(EntityLivingBase entity, float limbSwing, float limbSwingAmount, float partialTicks) {
-		EntityTFHydraHead whichHead = (EntityTFHydraHead) entity;
+	public void setLivingAnimations(T entity, float limbSwing, float limbSwingAmount, float partialTicks) {
 
-		head.rotateAngleY = getRotationY(whichHead, partialTicks);
-		head.rotateAngleX = getRotationX(whichHead, partialTicks);
+		head.rotateAngleY = getRotationY(entity, partialTicks);
+		head.rotateAngleX = getRotationX(entity, partialTicks);
 
-		float mouthOpen = whichHead.getMouthOpen();
+		float mouthOpen = entity.getMouthOpen();
 		head.rotateAngleX -= (float) (mouthOpen * (Math.PI / 12.0));
 		jaw.rotateAngleX = (float) (mouthOpen * (Math.PI / 3.0));
 	}

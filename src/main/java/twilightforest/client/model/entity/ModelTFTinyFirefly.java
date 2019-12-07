@@ -1,19 +1,18 @@
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.entity.model.RendererModel;
+import twilightforest.entity.passive.EntityTFMobileFirefly;
 
-
-public class ModelTFTinyFirefly extends ModelBase {
+public class ModelTFTinyFirefly<T extends EntityTFMobileFirefly> extends EntityModel<T> {
 	public ModelTFTinyFirefly() {
-		glow1 = new ModelRenderer(this, 20, 0);
+		glow1 = new RendererModel(this, 20, 0);
 		glow1.addBox(-5F, -5F, 0F, 10, 10, 0, 0F);
 
 	}
 
 	@Override
-	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 		glow1.render(scale);
 	}
 
@@ -22,6 +21,6 @@ public class ModelTFTinyFirefly extends ModelBase {
 	}
 
 	//fields
-	public ModelRenderer glow1;
+	public RendererModel glow1;
 
 }

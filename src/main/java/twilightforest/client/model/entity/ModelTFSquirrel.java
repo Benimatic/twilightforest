@@ -4,28 +4,25 @@
 // Keep in mind that you still need to fill in some blanks
 // - ZeuX
 
-
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.util.math.MathHelper;
+import twilightforest.entity.passive.EntityTFSquirrel;
 
-
-public class ModelTFSquirrel extends ModelBase {
+public class ModelTFSquirrel<T extends EntityTFSquirrel> extends EntityModel<T> {
 	//fields
-	ModelRenderer body;
-	ModelRenderer leg1;
-	ModelRenderer leg2;
-	ModelRenderer leg3;
-	ModelRenderer leg4;
-	ModelRenderer head;
-	ModelRenderer tail;
-	ModelRenderer fluff1;
-	ModelRenderer fluff2;
-	ModelRenderer fluff3;
+	RendererModel body;
+	RendererModel leg1;
+	RendererModel leg2;
+	RendererModel leg3;
+	RendererModel leg4;
+	RendererModel head;
+	RendererModel tail;
+	RendererModel fluff1;
+	RendererModel fluff2;
+	RendererModel fluff3;
 
 	public ModelTFSquirrel() {
 		textureWidth = 32;
@@ -38,37 +35,37 @@ public class ModelTFSquirrel extends ModelBase {
 		setTextureOffset("tail.fluff2", 0, 20);
 		setTextureOffset("tail.fluff3", 0, 26);
 
-		body = new ModelRenderer(this, 0, 8);
+		body = new RendererModel(this, 0, 8);
 		body.addBox(-2F, -1F, -2F, 4, 3, 5);
 		body.setRotationPoint(0F, 21F, 0F);
 		body.setTextureSize(32, 32);
 		body.mirror = true;
 		setRotation(body, 0F, 0F, 0F);
-		leg1 = new ModelRenderer(this, 0, 16);
+		leg1 = new RendererModel(this, 0, 16);
 		leg1.addBox(0F, 0F, 0F, 1, 1, 1);
 		leg1.setRotationPoint(-2F, 23F, 2F);
 		leg1.setTextureSize(32, 32);
 		leg1.mirror = true;
 		setRotation(leg1, 0F, 0F, 0F);
-		leg2 = new ModelRenderer(this, 0, 16);
+		leg2 = new RendererModel(this, 0, 16);
 		leg2.addBox(0F, 0F, 0F, 1, 1, 1);
 		leg2.setRotationPoint(1F, 23F, 2F);
 		leg2.setTextureSize(32, 32);
 		leg2.mirror = true;
 		setRotation(leg2, 0F, 0F, 0F);
-		leg3 = new ModelRenderer(this, 0, 16);
+		leg3 = new RendererModel(this, 0, 16);
 		leg3.addBox(0F, 0F, 0F, 1, 1, 1);
 		leg3.setRotationPoint(-2F, 23F, -2F);
 		leg3.setTextureSize(32, 32);
 
 		setRotation(leg3, 0F, 0F, 0F);
-		leg4 = new ModelRenderer(this, 0, 16);
+		leg4 = new RendererModel(this, 0, 16);
 		leg4.addBox(0F, 0F, 0F, 1, 1, 1);
 		leg4.setRotationPoint(1F, 23F, -2F);
 		leg4.setTextureSize(32, 32);
 
 		setRotation(leg4, 0F, 0F, 0F);
-		head = new ModelRenderer(this, "head");
+		head = new RendererModel(this, "head");
 		head.setRotationPoint(0F, 22F, -2F);
 		setRotation(head, 0F, 0F, 0F);
 
@@ -76,30 +73,30 @@ public class ModelTFSquirrel extends ModelBase {
 		head.addBox("ear2", -2F, -6F, -0.5F, 1, 1, 1);
 		head.addBox("ear1", 1F, -6F, -0.5F, 1, 1, 1);
 
-		tail = new ModelRenderer(this, "tail");
+		tail = new RendererModel(this, "tail");
 		tail.setRotationPoint(0F, 21F, 2F);
 
 		tail.addBox("base", -0.5F, -1.5F, 0.5F, 1, 1, 1);
 
-		fluff1 = new ModelRenderer(this, 0, 20);
+		fluff1 = new RendererModel(this, 0, 20);
 		fluff1.addBox(-1.5F, -4F, 1F, 3, 3, 3);
 		tail.addChild(fluff1);
 
-		fluff2 = new ModelRenderer(this, 0, 20);
+		fluff2 = new RendererModel(this, 0, 20);
 		fluff2.addBox(0F, -3F, -1.5F, 3, 3, 3);
 		fluff2.setRotationPoint(-1.5F, -4F, 2.5F);
 		fluff1.addChild(fluff2);
 
-		fluff3 = new ModelRenderer(this, 0, 26);
+		fluff3 = new RendererModel(this, 0, 26);
 		fluff3.addBox(1.5F, -3F, -1.5F, 3, 3, 3);
 		fluff3.setRotationPoint(-1.5F, -3F, 0F);
 		fluff2.addChild(fluff3);
 	}
 
 	@Override
-	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-		setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entity);
+		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 		body.render(scale);
 		leg1.render(scale);
 		leg2.render(scale);
@@ -109,7 +106,7 @@ public class ModelTFSquirrel extends ModelBase {
 		tail.render(scale);
 	}
 
-	private void setRotation(ModelRenderer model, float x, float y, float z) {
+	private void setRotation(RendererModel model, float x, float y, float z) {
 		model.rotateAngleX = x;
 		model.rotateAngleY = y;
 		model.rotateAngleZ = z;
@@ -121,7 +118,7 @@ public class ModelTFSquirrel extends ModelBase {
 	 * and third as in the setRotationAngles method.
 	 */
 	@Override
-	public void setLivingAnimations(EntityLivingBase entity, float limbSwing, float limbSwingAmount, float partialTickTime) {
+	public void setLivingAnimations(T entity, float limbSwing, float limbSwingAmount, float partialTickTime) {
 		//EntityTFSquirrel squirrel = (EntityTFSquirrel)entity;
 
 
@@ -131,7 +128,7 @@ public class ModelTFSquirrel extends ModelBase {
 	 * Sets the models various rotation angles.
 	 */
 	@Override
-	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity) {
+	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
 		this.head.rotateAngleX = headPitch / (180F / (float) Math.PI);
 		this.head.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 		this.leg1.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;

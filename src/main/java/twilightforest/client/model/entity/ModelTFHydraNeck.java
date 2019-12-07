@@ -1,13 +1,12 @@
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.entity.model.RendererModel;
+import twilightforest.entity.boss.EntityTFHydraNeck;
 
+public class ModelTFHydraNeck<T extends EntityTFHydraNeck> extends EntityModel<T> {
 
-public class ModelTFHydraNeck extends ModelBase {
-
-	ModelRenderer neck;
+	RendererModel neck;
 
 	public ModelTFHydraNeck() {
 		textureWidth = 512;
@@ -15,7 +14,7 @@ public class ModelTFHydraNeck extends ModelBase {
 
 		setTextureOffset("neck.box", 128, 136);
 		setTextureOffset("neck.fin", 128, 200);
-		neck = new ModelRenderer(this, "neck");
+		neck = new RendererModel(this, "neck");
 		neck.addBox("box", -16F, -16F, -16F, 32, 32, 32);
 		neck.addBox("fin", -2F, -23F, 0F, 4, 24, 24);
 		neck.setRotationPoint(0F, 0F, 0F);
@@ -23,14 +22,14 @@ public class ModelTFHydraNeck extends ModelBase {
 	}
 
 	@Override
-	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-		setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entity);
+		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 		neck.render(scale);
 	}
 
 	@Override
-	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity) {
+	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
 		neck.rotateAngleY = netHeadYaw / 57.29578F;
 		neck.rotateAngleX = headPitch / 57.29578F;
 	}

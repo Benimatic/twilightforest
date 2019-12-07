@@ -69,9 +69,12 @@ public class ModelTFBunny<T extends EntityTFBunny> extends EntityModel<T> {
 		head.setRotationPoint(0F, 22F, -1F);
 		setRotation(head, 0F, 0F, 0F);
 		head.mirror = true;
-		head.addBox("head", -2F, -4F, -3F, 4, 4, 4);
-		head.addBox("ear2", -2.5F, -8F, -0.5F, 2, 4, 1);
-		head.addBox("ear1", 0.5F, -8F, -0.5F, 2, 4, 1);
+		//head.addBox("head", -2F, -4F, -3F, 4, 4, 4);
+		//head.addBox("ear2", -2.5F, -8F, -0.5F, 2, 4, 1);
+		//head.addBox("ear1", 0.5F, -8F, -0.5F, 2, 4, 1);
+		head.addBox(-2F, -4F, -3F, 4, 4, 4);
+		head.addBox(-2.5F, -8F, -0.5F, 2, 4, 1);
+		head.addBox(0.5F, -8F, -0.5F, 2, 4, 1);
 	}
 
 	@Override

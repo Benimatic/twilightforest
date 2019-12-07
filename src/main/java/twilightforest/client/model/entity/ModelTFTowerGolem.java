@@ -1,9 +1,7 @@
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.EntityTFTowerGolem;
 
@@ -13,40 +11,39 @@ import twilightforest.entity.EntityTFTowerGolem;
 //Keep in mind that you still need to fill in some blanks
 //- ZeuX
 
-
-public class ModelTFTowerGolem extends ModelBase {
+public class ModelTFTowerGolem<T extends EntityTFTowerGolem> extends EntityModel<T> {
 	//fields
-	ModelRenderer head;
-	ModelRenderer jaw;
-	ModelRenderer body;
-	ModelRenderer rightarm;
-	ModelRenderer leftarm;
-	ModelRenderer leftleg;
-	ModelRenderer leftfoot;
-	ModelRenderer ribs;
-	ModelRenderer hips;
-	ModelRenderer rightfoot;
-	ModelRenderer rightleg;
-	ModelRenderer spine;
+	RendererModel head;
+	RendererModel jaw;
+	RendererModel body;
+	RendererModel rightarm;
+	RendererModel leftarm;
+	RendererModel leftleg;
+	RendererModel leftfoot;
+	RendererModel ribs;
+	RendererModel hips;
+	RendererModel rightfoot;
+	RendererModel rightleg;
+	RendererModel spine;
 
 	public ModelTFTowerGolem() {
 		textureWidth = 128;
 		textureHeight = 64;
 
-		head = new ModelRenderer(this, 0, 0);
+		head = new RendererModel(this, 0, 0);
 		head.setRotationPoint(0F, -11F, -2F);
 		head.setTextureOffset(0, 0).addBox(-3.5F, -10F, -3F, 7, 8, 6); // head
 		head.setTextureOffset(0, 14).addBox(-4F, -6F, -3.5F, 8, 4, 6); // jaw
 
-		body = new ModelRenderer(this, 0, 26);
+		body = new RendererModel(this, 0, 26);
 		body.addBox(-8F, 0F, -5F, 16, 10, 10);
 		body.setRotationPoint(0F, -13F, 0F);
 
-		ribs = new ModelRenderer(this, 0, 46);
+		ribs = new RendererModel(this, 0, 46);
 		ribs.addBox(-5F, 0F, -3F, 10, 6, 6);
 		ribs.setRotationPoint(0F, -3F, 0F);
 
-		rightarm = new ModelRenderer(this, 52, 0);
+		rightarm = new RendererModel(this, 52, 0);
 		rightarm.setRotationPoint(-8F, -12F, 0F);
 		rightarm.setTextureOffset(52, 0).addBox(-5F, -2F, -1.5F, 3, 14, 3); // arm
 		rightarm.setTextureOffset(52, 17).addBox(-7F, 12F, -3F, 6, 12, 6); // fist
@@ -55,7 +52,7 @@ public class ModelTFTowerGolem extends ModelBase {
 		rightarm.setTextureOffset(52, 45).addBox(-7F, -1F, 1.5F, 7, 5, 2); // shoulder back
 		rightarm.setTextureOffset(52, 54).addBox(-2F, -1F, -2F, 2, 5, 3); // shoulder inner
 
-		leftarm = new ModelRenderer(this, 52, 0);
+		leftarm = new RendererModel(this, 52, 0);
 		leftarm.mirror = true;
 		leftarm.setRotationPoint(8F, -12F, 0F);
 		leftarm.setTextureOffset(52, 0).addBox(2F, -2F, -1.5F, 3, 14, 3); // arm
@@ -65,21 +62,21 @@ public class ModelTFTowerGolem extends ModelBase {
 		leftarm.setTextureOffset(52, 45).addBox(0F, -1F, 1.5F, 7, 5, 2); // shoulder back
 		leftarm.setTextureOffset(52, 54).addBox(0F, -1F, -2F, 2, 5, 3); // shoulder inner
 
-		hips = new ModelRenderer(this, 84, 25);
+		hips = new RendererModel(this, 84, 25);
 		hips.addBox(-5F, 0F, -2F, 10, 3, 4);
 		hips.setRotationPoint(0F, 1F, 0F);
 
-		spine = new ModelRenderer(this, 84, 18);
+		spine = new RendererModel(this, 84, 18);
 		spine.addBox(-1.5F, 0F, -1.5F, 3, 4, 3);
 		spine.setRotationPoint(0F, -3F, 0F);
 
-		leftleg = new ModelRenderer(this, 84, 32);
+		leftleg = new RendererModel(this, 84, 32);
 		leftleg.mirror = true;
 		leftleg.setRotationPoint(1F, 2F, 0F);
 		leftleg.setTextureOffset(84, 32).addBox(0F, 0F, -1.5F, 3, 8, 3);
 		leftleg.setTextureOffset(84, 43).addBox(-0.5F, 8F, -4F, 6, 14, 7);
 
-		rightleg = new ModelRenderer(this, 84, 32);
+		rightleg = new RendererModel(this, 84, 32);
 		rightleg.setRotationPoint(-1F, 2F, 0F);
 		rightleg.setTextureOffset(84, 32).addBox(-3F, 0F, -1.5F, 3, 8, 3);
 		rightleg.setTextureOffset(84, 43).addBox(-5.5F, 8F, -4F, 6, 14, 7);
@@ -88,9 +85,9 @@ public class ModelTFTowerGolem extends ModelBase {
 
 
 	@Override
-	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 		//super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-		setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entity);
+		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 		head.render(scale);
 		body.render(scale);
 		rightarm.render(scale);
@@ -108,7 +105,7 @@ public class ModelTFTowerGolem extends ModelBase {
 	 * "far" arms and legs can swing at most.
 	 */
 	@Override
-	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entity) {
+	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
 		this.head.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 		this.head.rotateAngleX = headPitch / (180F / (float) Math.PI);
 		this.leftleg.rotateAngleX = -1.5F * this.func_78172_a(limbSwing, 13.0F) * limbSwingAmount;
@@ -131,9 +128,8 @@ public class ModelTFTowerGolem extends ModelBase {
 	 * and third as in the setRotationAngles method.
 	 */
 	@Override
-	public void setLivingAnimations(EntityLivingBase entity, float limbSwing, float limbSwingAmount, float partialTicks) {
-		EntityTFTowerGolem golem = (EntityTFTowerGolem) entity;
-		int var6 = golem.getAttackTimer();
+	public void setLivingAnimations(T entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+		int var6 = entity.getAttackTimer();
 
 		if (var6 > 0) {
 			this.rightarm.rotateAngleX = -2.0F + 1.5F * this.func_78172_a((float) var6 - partialTicks, 10.0F);

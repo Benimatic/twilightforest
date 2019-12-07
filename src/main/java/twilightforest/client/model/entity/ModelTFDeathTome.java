@@ -9,6 +9,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.MathHelper;
 
+//TODO: Who's up for ATs?
 public class ModelTFDeathTome extends BookModel {
 	private RendererModel everything;
 

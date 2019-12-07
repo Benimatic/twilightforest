@@ -1,18 +1,17 @@
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.model.ModelBiped;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.client.renderer.entity.model.BipedModel;
+import twilightforest.entity.EntityTFSnowGuardian;
 
-public class ModelTFSnowGuardian extends ModelBiped {
+public class ModelTFSnowGuardian<T extends EntityTFSnowGuardian> extends BipedModel<T> {
 
 
 	/**
 	 * Sets the models various rotation angles then renders the model.
 	 */
 	@Override
-	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-		this.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entity);
+	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+		this.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 
 	}
 
@@ -21,7 +20,7 @@ public class ModelTFSnowGuardian extends ModelBiped {
 	 * and third as in the setRotationAngles method.
 	 */
 	@Override
-	public void setLivingAnimations(EntityLivingBase entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+	public void setLivingAnimations(T entity, float limbSwing, float limbSwingAmount, float partialTicks) {
 		//float bounce = entity.ticksExisted + partialTicks;
 		//entity.yOffset = 0.5F + MathHelper.sin((bounce) * 0.3F) * 0.5F;
 	}
