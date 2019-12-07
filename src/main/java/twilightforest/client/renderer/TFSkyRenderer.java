@@ -14,12 +14,12 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.vertex.VertexBuffer;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.IRenderHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.Random;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class TFSkyRenderer extends IRenderHandler {
 
 	private boolean vboEnabled;
@@ -34,7 +34,7 @@ public class TFSkyRenderer extends IRenderHandler {
 	// [VanillaCopy] RenderGlobal.renderSky's overworld branch, without sun/moon/sunrise/sunset, and using our own stars at full brightness
 	@SuppressWarnings("unused")
 	@Override
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
 	public void render(float partialTicks, WorldClient world, Minecraft mc) {
 
 		// [VanillaCopy] Excerpt from RenderGlobal.loadRenderers as we don't get a callback

@@ -1,20 +1,20 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.renderer.entity.RenderBiped;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.client.renderer.entity.BipedRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.layers.BipedArmorLayer;
+import net.minecraft.client.renderer.entity.model.BipedModel;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 
-public class RenderTFBiped<T extends EntityLiving> extends RenderBiped<T> {
+public class RenderTFBiped<T extends MobEntity, M extends BipedModel<T>> extends BipedRenderer<T, M> {
 
 	private final ResourceLocation textureLoc;
 
-	public RenderTFBiped(RenderManager manager, ModelBiped modelBiped, float shadowSize, String textureName) {
+	public RenderTFBiped(EntityRendererManager manager, M modelBiped, float shadowSize, String textureName) {
 		super(manager, modelBiped, shadowSize);
-		this.addLayer(new LayerBipedArmor(this));
+		this.addLayer(new BipedArmorLayer<>(this)); //TODO: help me. Probably has to be moved to each renderer
 
 		if (textureName.startsWith("textures")) {
 			textureLoc = new ResourceLocation(textureName);

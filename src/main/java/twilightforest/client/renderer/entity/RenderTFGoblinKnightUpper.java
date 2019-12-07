@@ -1,21 +1,21 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.RenderManager;
+import com.mojang.blaze3d.platform.GlStateManager;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import twilightforest.client.model.entity.ModelTFGoblinKnightUpper;
 import twilightforest.entity.EntityTFGoblinKnightUpper;
 
-public class RenderTFGoblinKnightUpper extends RenderTFBiped<EntityTFGoblinKnightUpper> {
-	public RenderTFGoblinKnightUpper(RenderManager manager, ModelBiped model, float shadowSize) {
+public class RenderTFGoblinKnightUpper<T extends EntityTFGoblinKnightUpper, M extends ModelTFGoblinKnightUpper<T>> extends RenderTFBiped<T, M> {
+	public RenderTFGoblinKnightUpper(EntityRendererManager manager, M model, float shadowSize) {
 		super(manager, model, shadowSize, "doublegoblin.png");
 	}
 
 	@Override
-	protected void applyRotations(EntityTFGoblinKnightUpper upperKnight, float ageInTicks, float rotationYaw, float partialTicks) {
+	protected void applyRotations(T upperKnight, float ageInTicks, float rotationYaw, float partialTicks) {
 		super.applyRotations(upperKnight, ageInTicks, rotationYaw, partialTicks);
 
 		if (upperKnight.heavySpearTimer > 0) {
-			GlStateManager.rotate(getPitchForAttack((60 - upperKnight.heavySpearTimer) + partialTicks), 1.0F, 0.0F, 0.0F);
+			GlStateManager.rotatef(getPitchForAttack((60 - upperKnight.heavySpearTimer) + partialTicks), 1.0F, 0.0F, 0.0F);
 		}
 	}
 

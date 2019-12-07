@@ -1,23 +1,23 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.RenderBiped;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
-import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
+import com.mojang.blaze3d.platform.GlStateManager;
+import net.minecraft.client.renderer.entity.BipedRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.layers.BipedArmorLayer;
+import net.minecraft.client.renderer.entity.layers.HeldItemLayer;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ModelTFKnightPhantom2;
 import twilightforest.entity.boss.EntityTFKnightPhantom;
 
-public class RenderTFKnightPhantom extends RenderBiped<EntityTFKnightPhantom> {
+public class RenderTFKnightPhantom<T extends EntityTFKnightPhantom, M extends ModelTFKnightPhantom2<T>> extends BipedRenderer<T, M> {
 
 	private static final ResourceLocation PHANTOM_TEXTURE = TwilightForestMod.getModelTexture("phantomskeleton.png");
 
-	public RenderTFKnightPhantom(RenderManager manager, ModelTFKnightPhantom2 model, float shadowSize) {
+	public RenderTFKnightPhantom(EntityRendererManager manager, M model, float shadowSize) {
 		super(manager, model, shadowSize);
-		this.addLayer(new LayerHeldItem(this));
-		this.addLayer(new LayerBipedArmor(this));
+		this.addLayer(new HeldItemLayer<>(this));
+		this.addLayer(new BipedArmorLayer<>(this));
 	}
 
 	@Override
@@ -28,7 +28,6 @@ public class RenderTFKnightPhantom extends RenderBiped<EntityTFKnightPhantom> {
 	@Override
 	protected void preRenderCallback(EntityTFKnightPhantom entity, float partialTicks) {
 		float scale = entity.isChargingAtPlayer() ? 1.8F : 1.2F;
-		GlStateManager.scale(scale, scale, scale);
+		GlStateManager.scalef(scale, scale, scale);
 	}
-
 }

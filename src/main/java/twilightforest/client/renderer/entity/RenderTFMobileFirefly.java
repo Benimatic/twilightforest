@@ -1,8 +1,8 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
+import com.mojang.blaze3d.platform.GlStateManager;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -12,19 +12,19 @@ import twilightforest.entity.passive.EntityTFMobileFirefly;
 
 import java.nio.FloatBuffer;
 
-public class RenderTFMobileFirefly extends Render<EntityTFMobileFirefly> {
+public class RenderTFMobileFirefly<T extends EntityTFMobileFirefly> extends EntityRenderer<T> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("firefly-tiny.png");
 	private final ModelTFTinyFirefly fireflyModel = new ModelTFTinyFirefly();
 
-	public RenderTFMobileFirefly(RenderManager manager) {
+	public RenderTFMobileFirefly(EntityRendererManager manager) {
 		super(manager);
 	}
 
-	private void doRenderTinyFirefly(EntityTFMobileFirefly firefly, double x, double y, double z, float brightness, float size) {
+	private void doRenderTinyFirefly(T firefly, double x, double y, double z, float brightness, float size) {
 		GlStateManager.pushMatrix();
 
-		GlStateManager.translate((float) x, (float) y + 0.5F, (float) z);
+		GlStateManager.translatef((float) x, (float) y + 0.5F, (float) z);
 
 		// undo rotations so we can draw a billboarded firefly
 		FloatBuffer modelview = BufferUtils.createFloatBuffer(16);
@@ -56,23 +56,23 @@ public class RenderTFMobileFirefly extends Render<EntityTFMobileFirefly> {
 
 
 //		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-		GlStateManager.color(1.0F, 1.0F, 1.0F, brightness);
+		GlStateManager.color4f(1.0F, 1.0F, 1.0F, brightness);
 		fireflyModel.glow1.render(0.0625f * size);
 		GlStateManager.disableBlend();
 		GlStateManager.enableLighting();
 
-		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GlStateManager.popMatrix();
 	}
 
 
 	@Override
-	public void doRender(EntityTFMobileFirefly firefly, double x, double y, double z, float yaw, float partialTicks) {
+	public void doRender(T firefly, double x, double y, double z, float yaw, float partialTicks) {
 		doRenderTinyFirefly(firefly, x, y, z, firefly.getGlowBrightness(), 1.0F);
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFMobileFirefly entity) {
+	protected ResourceLocation getEntityTexture(T entity) {
 		return textureLoc;
 	}
 

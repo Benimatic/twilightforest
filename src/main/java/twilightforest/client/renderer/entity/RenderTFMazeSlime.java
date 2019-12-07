@@ -1,22 +1,22 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.entity.RenderSlime;
-import net.minecraft.entity.monster.EntitySlime;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.SlimeRenderer;
+import net.minecraft.entity.monster.SlimeEntity;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 
-public class RenderTFMazeSlime extends RenderSlime {
+public class RenderTFMazeSlime extends SlimeRenderer {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("mazeslime.png");
 
-	public RenderTFMazeSlime(RenderManager manager, float shadowSize) {
+	public RenderTFMazeSlime(EntityRendererManager manager, float shadowSize) {
 		super(manager);
 		this.shadowSize = shadowSize;
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntitySlime entity) {
+	protected ResourceLocation getEntityTexture(SlimeEntity entity) {
 		return textureLoc;
 	}
 }

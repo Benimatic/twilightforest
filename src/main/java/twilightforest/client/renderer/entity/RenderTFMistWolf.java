@@ -1,27 +1,26 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.entity.RenderWolf;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.passive.EntityWolf;
+import com.mojang.blaze3d.platform.GlStateManager;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.WolfRenderer;
+import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import twilightforest.TwilightForestMod;
 
-public class RenderTFMistWolf extends RenderWolf {
+public class RenderTFMistWolf extends WolfRenderer {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("mistwolf.png");
 
-	public RenderTFMistWolf(RenderManager manager) {
+	public RenderTFMistWolf(EntityRendererManager manager) {
 		super(manager);
 		this.shadowSize = 1.0F;
 	}
 
 	@Override
-	protected void preRenderCallback(EntityWolf entity, float partialTicks) {
+	protected void preRenderCallback(WolfEntity entity, float partialTicks) {
 		float wolfScale = 1.9F;
-		GlStateManager.scale(wolfScale, wolfScale, wolfScale);
+		GlStateManager.scalef(wolfScale, wolfScale, wolfScale);
 
 		GlStateManager.enableBlend();
 		GlStateManager.disableAlpha();
@@ -34,7 +33,7 @@ public class RenderTFMistWolf extends RenderWolf {
 
 		float smoky = entity.getBrightness() * 2F + 0.6F;
 
-		GlStateManager.color(misty, misty, misty, smoky);
+		GlStateManager.color4f(misty, misty, misty, smoky);
 	}
 
 	/**
@@ -49,7 +48,7 @@ public class RenderTFMistWolf extends RenderWolf {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityWolf entity) {
+	protected ResourceLocation getEntityTexture(WolfEntity entity) {
 		return textureLoc;
 	}
 

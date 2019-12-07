@@ -1,18 +1,16 @@
 package twilightforest.client.renderer.entity;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.texture.TextureMap;
+import com.mojang.blaze3d.platform.GlStateManager;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.entity.boss.EntityTFThrownWep;
 
-public class RenderTFThrownWep extends Render<EntityTFThrownWep> {
+public class RenderTFThrownWep<T extends EntityTFThrownWep> extends EntityRenderer<T> {
 
-	public RenderTFThrownWep(RenderManager manager) {
+	public RenderTFThrownWep(EntityRendererManager manager) {
 		super(manager);
 	}
 
@@ -24,11 +22,11 @@ public class RenderTFThrownWep extends Render<EntityTFThrownWep> {
 		float spin = (entity.ticksExisted + partialTicks) * -10F + 90F;
 
 
-		GlStateManager.translate((float) x, (float) y, (float) z);
+		GlStateManager.translatef((float) x, (float) y, (float) z);
 		GlStateManager.enableRescaleNormal();
 
 		// size up
-		GlStateManager.scale(1.25F, 1.25F, 1.25F);
+		GlStateManager.scalef(1.25F, 1.25F, 1.25F);
 
 		this.renderDroppedItem(entity.getItem(), yaw, spin);
 
@@ -43,22 +41,22 @@ public class RenderTFThrownWep extends Render<EntityTFThrownWep> {
 		float f9 = 0.5F;
 		float f10 = 0.25F;
 
-		GlStateManager.rotate(rotation + 270f, 0.0F, 1.0F, 0.0F);
-		GlStateManager.rotate(spin, 0.0F, 0.0F, 1.0F);
+		GlStateManager.rotatef(rotation + 270f, 0.0F, 1.0F, 0.0F);
+		GlStateManager.rotatef(spin, 0.0F, 0.0F, 1.0F);
 
 		float f12 = 0.0625F;
 		float f11 = 0.021875F;
 
-		GlStateManager.translate(-f9, -f10, -(f12 + f11));
-		GlStateManager.translate(0f, 0f, f12 + f11);
+		GlStateManager.translatef(-f9, -f10, -(f12 + f11));
+		GlStateManager.translatef(0f, 0f, f12 + f11);
 
-		Minecraft.getMinecraft().getRenderItem().renderItem(stack, ItemCameraTransforms.TransformType.GROUND);
+		Minecraft.getInstance().getItemRenderer().renderItem(stack, ItemCameraTransforms.TransformType.GROUND);
 
 		GlStateManager.popMatrix();
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFThrownWep entity) {
+	protected ResourceLocation getEntityTexture(T entity) {
 		return TextureMap.LOCATION_BLOCKS_TEXTURE;
 	}
 }

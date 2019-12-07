@@ -1,26 +1,24 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.entity.RenderLiving;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.entity.LivingRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.model.entity.ModelTFHydraHead;
 import twilightforest.entity.boss.EntityTFHydra;
 import twilightforest.entity.boss.EntityTFHydraHead;
-import twilightforest.entity.boss.EntityTFHydraPart;
 import twilightforest.entity.boss.HydraHeadContainer;
 
-public class RenderTFHydraHead extends RenderLiving<EntityTFHydraHead> {
+public class RenderTFHydraHead<T extends EntityTFHydraHead, M extends ModelTFHydraHead<T>> extends LivingRenderer<T, M> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("hydra4.png");
 
-	public RenderTFHydraHead(RenderManager manager, ModelBase modelbase, float shadowSize) {
+	public RenderTFHydraHead(EntityRendererManager manager, M modelbase, float shadowSize) {
 		super(manager, modelbase, shadowSize);
 	}
 
 	@Override
-	public void doRender(EntityTFHydraHead entity, double x, double y, double z, float yaw, float partialTicks) {
+	public void doRender(T entity, double x, double y, double z, float yaw, float partialTicks) {
 		// get the HydraHeadContainer that we're taking about
 		HydraHeadContainer headCon = getHeadObject(entity);
 
@@ -51,8 +49,8 @@ public class RenderTFHydraHead extends RenderLiving<EntityTFHydraHead> {
 		}
 	}
 
-	private HydraHeadContainer getHeadObject(Entity entity) {
-		EntityTFHydra hydra = ((EntityTFHydraPart) entity).hydra;
+	private HydraHeadContainer getHeadObject(T entity) {
+		EntityTFHydra hydra = entity.hydra;
 
 		if (hydra != null) {
 			for (int i = 0; i < hydra.numHeads; i++) {
@@ -66,7 +64,7 @@ public class RenderTFHydraHead extends RenderLiving<EntityTFHydraHead> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFHydraHead entity) {
+	protected ResourceLocation getEntityTexture(T entity) {
 		return textureLoc;
 	}
 

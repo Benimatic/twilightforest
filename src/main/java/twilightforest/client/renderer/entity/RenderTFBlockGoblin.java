@@ -1,22 +1,22 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.renderer.entity.RenderBiped;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.BipedRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.model.entity.ModelTFBlockGoblin;
 import twilightforest.entity.EntityTFBlockGoblin;
 
-public class RenderTFBlockGoblin extends RenderBiped<EntityTFBlockGoblin> {
+public class RenderTFBlockGoblin<T extends EntityTFBlockGoblin, M extends ModelTFBlockGoblin<T>> extends BipedRenderer<T, M> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("blockgoblin.png");
 
-	public RenderTFBlockGoblin(RenderManager manager, ModelBiped model, float shadowSize) {
+	public RenderTFBlockGoblin(EntityRendererManager manager, M model, float shadowSize) {
 		super(manager, model, shadowSize);
 	}
 
 	@Override
-	public void doRender(EntityTFBlockGoblin goblin, double x, double y, double z, float yaw, float partialTicks) {
+	public void doRender(T goblin, double x, double y, double z, float yaw, float partialTicks) {
 		super.doRender(goblin, x, y, z, yaw, partialTicks);
 		renderManager.renderEntityStatic(goblin.block, partialTicks, false);
 		renderManager.renderEntityStatic(goblin.chain1, partialTicks, false);
@@ -25,7 +25,7 @@ public class RenderTFBlockGoblin extends RenderBiped<EntityTFBlockGoblin> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFBlockGoblin entity) {
+	protected ResourceLocation getEntityTexture(T entity) {
 		return textureLoc;
 	}
 }

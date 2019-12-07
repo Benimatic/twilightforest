@@ -1,20 +1,20 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
+import com.mojang.blaze3d.platform.GlStateManager;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ModelTFProtectionBox;
 import twilightforest.entity.EntityTFProtectionBox;
 
-public class RenderTFProtectionBox extends Render<EntityTFProtectionBox> {
+public class RenderTFProtectionBox<T extends EntityTFProtectionBox> extends EntityRenderer<T> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("protectionbox.png");
 	private final ModelTFProtectionBox boxModel = new ModelTFProtectionBox();
 
-	public RenderTFProtectionBox(RenderManager manager) {
+	public RenderTFProtectionBox(EntityRendererManager manager) {
 		super(manager);
 		this.shadowSize = 0.5F;
 	}
@@ -23,8 +23,7 @@ public class RenderTFProtectionBox extends Render<EntityTFProtectionBox> {
 	public void doRender(EntityTFProtectionBox entity, double x, double y, double z, float yaw, float partialTicks) {
 		GlStateManager.pushMatrix();
 
-
-		GlStateManager.translate((float) x, (float) y, (float) z);
+		GlStateManager.translatef((float) x, (float) y, (float) z);
 
 		this.bindTexture(textureLoc);
 
@@ -34,8 +33,8 @@ public class RenderTFProtectionBox extends Render<EntityTFProtectionBox> {
 		GlStateManager.loadIdentity();
 		float f2 = f1 * 0.05F;
 		float f3 = f1 * 0.05F;
-		GlStateManager.translate(f2, f3, 0.0F);
-		GlStateManager.scale(1.0f, 1.0f, 1.0f);
+		GlStateManager.translatef(f2, f3, 0.0F);
+		GlStateManager.scalef(1.0f, 1.0f, 1.0f);
 
 		GlStateManager.matrixMode(GL11.GL_MODELVIEW);
 
@@ -52,7 +51,7 @@ public class RenderTFProtectionBox extends Render<EntityTFProtectionBox> {
 			alpha = entity.lifeTime / 20F;
 		}
 
-		GlStateManager.color(1.0F, 1.0F, 1.0F, alpha);
+		GlStateManager.color4f(1.0F, 1.0F, 1.0F, alpha);
 
 		boxModel.render(entity, 0F, 0F, 0F, 0F, 0F, 1F / 16F);
 
@@ -69,7 +68,7 @@ public class RenderTFProtectionBox extends Render<EntityTFProtectionBox> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFProtectionBox entity) {
+	protected ResourceLocation getEntityTexture(T entity) {
 		return textureLoc;
 	}
 

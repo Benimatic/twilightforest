@@ -1,17 +1,16 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.block.state.IBlockState;
+import com.mojang.blaze3d.platform.GlStateManager;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.BlockRenderType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -19,21 +18,21 @@ import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 import twilightforest.entity.boss.EntityTFSnowQueenIceShield;
 
-public class RenderTFSnowQueenIceShield extends Render<EntityTFSnowQueenIceShield> {
+public class RenderTFSnowQueenIceShield<T extends EntityTFSnowQueenIceShield> extends EntityRenderer<T> {
 
-	public RenderTFSnowQueenIceShield(RenderManager manager) {
+	public RenderTFSnowQueenIceShield(EntityRendererManager manager) {
 		super(manager);
 	}
 
 	// [VanillaCopy] RenderFallingBlock.doRender with hardcoded state
 	@Override
-	public void doRender(EntityTFSnowQueenIceShield entity, double x, double y, double z, float entityYaw, float partialTicks) {
-		IBlockState iblockstate = Blocks.PACKED_ICE.getDefaultState();
+	public void doRender(T entity, double x, double y, double z, float entityYaw, float partialTicks) {
+		BlockState iblockstate = Blocks.PACKED_ICE.getDefaultState();
 
-		if (iblockstate.getRenderType() == EnumBlockRenderType.MODEL) {
+		if (iblockstate.getRenderType() == BlockRenderType.MODEL) {
 			World world = entity.world;
 
-			if (iblockstate != world.getBlockState(new BlockPos(entity)) && iblockstate.getRenderType() != EnumBlockRenderType.INVISIBLE) {
+			if (iblockstate != world.getBlockState(new BlockPos(entity)) && iblockstate.getRenderType() != BlockRenderType.INVISIBLE) {
 				this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 				GlStateManager.pushMatrix();
 				GlStateManager.disableLighting();
@@ -46,9 +45,9 @@ public class RenderTFSnowQueenIceShield extends Render<EntityTFSnowQueenIceShiel
 				}
 
 				bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
-				BlockPos blockpos = new BlockPos(entity.posX, entity.getEntityBoundingBox().maxY, entity.posZ);
-				GlStateManager.translate((float) (x - (double) blockpos.getX() - 0.5D), (float) (y - (double) blockpos.getY()), (float) (z - (double) blockpos.getZ() - 0.5D));
-				BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
+				BlockPos blockpos = new BlockPos(entity.posX, entity.getBoundingBox().maxY, entity.posZ);
+				GlStateManager.translatef((float) (x - (double) blockpos.getX() - 0.5D), (float) (y - (double) blockpos.getY()), (float) (z - (double) blockpos.getZ() - 0.5D));
+				BlockRendererDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
 				blockrendererdispatcher.getBlockModelRenderer().renderModel(world, blockrendererdispatcher.getModelForState(iblockstate), iblockstate, blockpos, bufferbuilder, false, MathHelper.getPositionRandom(BlockPos.ORIGIN));
 				tessellator.draw();
 
@@ -65,7 +64,7 @@ public class RenderTFSnowQueenIceShield extends Render<EntityTFSnowQueenIceShiel
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFSnowQueenIceShield entity) {
+	protected ResourceLocation getEntityTexture(T entity) {
 		return TextureMap.LOCATION_BLOCKS_TEXTURE;
 	}
 

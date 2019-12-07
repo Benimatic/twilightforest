@@ -1,20 +1,20 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.RenderManager;
+import com.mojang.blaze3d.platform.GlStateManager;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.client.model.entity.ModelTFIceShooter;
 import twilightforest.entity.EntityTFIceShooter;
 
-public class RenderTFIceShooter extends RenderTFBiped<EntityTFIceShooter> {
+public class RenderTFIceShooter<T extends EntityTFIceShooter, M extends ModelTFIceShooter<T>> extends RenderTFBiped<T, M> {
 
-	public RenderTFIceShooter(RenderManager manager) {
+	public RenderTFIceShooter(EntityRendererManager manager) {
 		super(manager, new ModelTFIceShooter(), 0.4F, "iceshooter.png");
 	}
 
 	@Override
-	protected void preRenderCallback(EntityTFIceShooter entity, float partialTicks) {
+	protected void preRenderCallback(T entity, float partialTicks) {
 		float bounce = entity.ticksExisted + partialTicks;
-		GlStateManager.translate(0F, MathHelper.sin((bounce) * 0.2F) * 0.15F, 0F);
+		GlStateManager.translatef(0F, MathHelper.sin((bounce) * 0.2F) * 0.15F, 0F);
 	}
 }

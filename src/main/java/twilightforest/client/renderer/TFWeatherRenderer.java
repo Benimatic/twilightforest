@@ -12,7 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.world.gen.structure.MutableBoundingBox;
 import net.minecraftforge.client.IRenderHandler;
 import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomeDarkForest;
@@ -43,7 +43,7 @@ public class TFWeatherRenderer extends IRenderHandler {
 	private final Random random = new Random();
 
 	private int rendererUpdateCount;
-	private StructureBoundingBox protectedBox;
+	private MutableBoundingBox protectedBox;
 
 	public TFWeatherRenderer() {
 		for (int i = 0; i < 32; ++i) {
@@ -539,7 +539,7 @@ public class TFWeatherRenderer extends IRenderHandler {
 		return false;
 	}
 
-	public void setProtectedBox(StructureBoundingBox protectedBox) {
+	public void setProtectedBox(MutableBoundingBox protectedBox) {
 		this.protectedBox = protectedBox;
 	}
 

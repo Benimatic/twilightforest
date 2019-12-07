@@ -1,24 +1,24 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.entity.RenderLiving;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.LivingRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.model.entity.ModelTFGhast;
 import twilightforest.entity.EntityTFTowerGhast;
 
-public class RenderTFGhast<T extends EntityTFTowerGhast> extends RenderLiving<T> {
+public class RenderTFGhast<T extends EntityTFTowerGhast, M extends ModelTFGhast<T>> extends LivingRenderer<T, M> {
 
 	private static final ResourceLocation textureLocClosed = TwilightForestMod.getModelTexture("towerghast.png");
 	private static final ResourceLocation textureLocOpen   = TwilightForestMod.getModelTexture("towerghast_openeyes.png");
 	private static final ResourceLocation textureLocAttack = TwilightForestMod.getModelTexture("towerghast_fire.png");
 
-	public RenderTFGhast(RenderManager manager, ModelBase model, float shadowSize) {
+	public RenderTFGhast(EntityRendererManager manager, M model, float shadowSize) {
 		super(manager, model, shadowSize);
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFTowerGhast entity) {
+	protected ResourceLocation getEntityTexture(T entity) {
 		switch (entity.isAttacking() ? 2 : entity.getAttackStatus()) {
 			default:
 			case 0:

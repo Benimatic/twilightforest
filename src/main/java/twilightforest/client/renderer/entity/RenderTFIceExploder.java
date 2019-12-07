@@ -1,14 +1,14 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.RenderManager;
+import com.mojang.blaze3d.platform.GlStateManager;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.client.model.entity.ModelTFIceExploder;
 import twilightforest.entity.EntityTFIceExploder;
 
-public class RenderTFIceExploder extends RenderTFBiped<EntityTFIceExploder> {
+public class RenderTFIceExploder<T extends EntityTFIceExploder, M extends ModelTFIceExploder> extends RenderTFBiped<T, M> {
 
-	public RenderTFIceExploder(RenderManager manager) {
+	public RenderTFIceExploder(EntityRendererManager manager) {
 		super(manager, new ModelTFIceExploder(), 0.4F, "iceexploder.png");
 	}
 
@@ -16,7 +16,7 @@ public class RenderTFIceExploder extends RenderTFBiped<EntityTFIceExploder> {
 	protected void preRenderCallback(EntityTFIceExploder entity, float partialTicks) {
 		float bounce = entity.ticksExisted + partialTicks;
 
-		GlStateManager.translate(0F, MathHelper.sin((bounce) * 0.2F) * 0.15F, 0F);
+		GlStateManager.translatef(0F, MathHelper.sin((bounce) * 0.2F) * 0.15F, 0F);
 
 		// flash
 
@@ -36,13 +36,13 @@ public class RenderTFIceExploder extends RenderTFBiped<EntityTFIceExploder> {
 			f1 *= f1;
 			float f3 = (1.0F + f1 * 0.4F) * f2;
 			float f4 = (1.0F + f1 * 0.1F) / f2;
-			GlStateManager.scale(f3, f4, f3);
+			GlStateManager.scalef(f3, f4, f3);
 		}
 	}
 
 	@Override
 	protected void applyRotations(EntityTFIceExploder entity, float ageInTicks, float rotationYaw, float partialTicks) {
-		GlStateManager.rotate(180.0F - rotationYaw, 0.0F, 1.0F, 0.0F);
+		GlStateManager.rotatef(180.0F - rotationYaw, 0.0F, 1.0F, 0.0F);
 	}
 
 	@Override

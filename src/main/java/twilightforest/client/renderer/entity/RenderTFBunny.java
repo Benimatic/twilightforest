@@ -1,24 +1,24 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.entity.RenderLiving;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.LivingRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.model.entity.ModelTFBunny;
 import twilightforest.entity.passive.EntityTFBunny;
 
-public class RenderTFBunny extends RenderLiving<EntityTFBunny> {
+public class RenderTFBunny<T extends EntityTFBunny, M extends ModelTFBunny<T>> extends LivingRenderer<T, M> {
 
 	private final ResourceLocation textureLocDutch = TwilightForestMod.getModelTexture("bunnydutch.png");
 	private final ResourceLocation textureLocWhite = TwilightForestMod.getModelTexture("bunnywhite.png");
 	private final ResourceLocation textureLocBrown = TwilightForestMod.getModelTexture("bunnybrown.png");
 
-	public RenderTFBunny(RenderManager manager, ModelBase model, float shadowSize) {
+	public RenderTFBunny(EntityRendererManager manager, M model, float shadowSize) {
 		super(manager, model, shadowSize);
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFBunny entity) {
+	protected ResourceLocation getEntityTexture(T entity) {
 		switch (entity.getBunnyType()) {
 			default:
 			case 0:

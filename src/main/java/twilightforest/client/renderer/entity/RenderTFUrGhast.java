@@ -1,6 +1,6 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ModelTFGhast;
@@ -12,7 +12,7 @@ public class RenderTFUrGhast extends RenderTFTowerGhast {
 	private final ResourceLocation textureLocOpen   = TwilightForestMod.getModelTexture("towerboss_openeyes.png");
 	private final ResourceLocation textureLocAttack = TwilightForestMod.getModelTexture("towerboss_fire.png");
 
-	public RenderTFUrGhast(RenderManager manager, ModelTFGhast modelTFGhast, float shadowSize, float scale) {
+	public RenderTFUrGhast(EntityRendererManager manager, ModelTFGhast modelTFGhast, float shadowSize, float scale) {
 		super(manager, modelTFGhast, shadowSize, scale);
 	}
 

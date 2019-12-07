@@ -1,26 +1,26 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.entity.RenderWolf;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.passive.EntityWolf;
+import com.mojang.blaze3d.platform.GlStateManager;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.WolfRenderer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 
-public class RenderTFWinterWolf extends RenderWolf {
+public class RenderTFWinterWolf extends WolfRenderer {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("winterwolf.png");
 
-	public RenderTFWinterWolf(RenderManager manager) {
+	public RenderTFWinterWolf(EntityRendererManager manager) {
 		super(manager);
 		this.shadowSize = 1.0F;
 	}
 
 	@Override
-	protected void preRenderCallback(EntityWolf entity, float partialTicks) {
+	protected void preRenderCallback(WolfEntity entity, float partialTicks) {
 		float wolfScale = 1.9F;
-		GlStateManager.scale(wolfScale, wolfScale, wolfScale);
+		GlStateManager.scalef(wolfScale, wolfScale, wolfScale);
 
 //        GlStateManager.enableBlend();
 //        GlStateManager.disableAlpha();
@@ -40,7 +40,7 @@ public class RenderTFWinterWolf extends RenderWolf {
 	/**
 	 * Queries whether should render the specified pass or not.
 	 */
-	protected int shouldRenderPass(EntityLivingBase par1EntityLiving, int par2, float par3) {
+	protected int shouldRenderPass(LivingEntity par1EntityLiving, int par2, float par3) {
 //        GL11.glFogf(GL11.GL_FOG_START, 1.0f);	
 //        GL11.glFogf(GL11.GL_FOG_END, 5.0f);
 
@@ -49,7 +49,7 @@ public class RenderTFWinterWolf extends RenderWolf {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityWolf entity) {
+	protected ResourceLocation getEntityTexture(WolfEntity entity) {
 		return textureLoc;
 	}
 

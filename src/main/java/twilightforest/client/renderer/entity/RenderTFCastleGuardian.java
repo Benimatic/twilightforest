@@ -1,19 +1,19 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.entity.RenderLivingBase;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.LivingRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.model.entity.finalcastle.ModelTFCastleGuardian;
 import twilightforest.entity.finalcastle.EntityTFCastleGuardian;
 
 import javax.annotation.Nonnull;
 
-public class RenderTFCastleGuardian extends RenderLivingBase<EntityTFCastleGuardian> {
+public class RenderTFCastleGuardian<T extends EntityTFCastleGuardian, M extends ModelTFCastleGuardian<T>> extends LivingRenderer<T, M> {
 
 	private final ResourceLocation textureLoc;
 
-	public RenderTFCastleGuardian(RenderManager manager, ModelBase model, float shadowSize, String textureName) {
+	public RenderTFCastleGuardian(EntityRendererManager manager, M model, float shadowSize, String textureName) {
 		super(manager, model, shadowSize);
 
 		if (textureName.startsWith("textures"))
@@ -23,7 +23,7 @@ public class RenderTFCastleGuardian extends RenderLivingBase<EntityTFCastleGuard
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(@Nonnull EntityTFCastleGuardian entity) {
+	protected ResourceLocation getEntityTexture(@Nonnull T entity) {
 		return textureLoc;
 	}
 }
