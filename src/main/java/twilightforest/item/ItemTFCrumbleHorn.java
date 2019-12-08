@@ -1,19 +1,17 @@
 package twilightforest.item;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockSand;
-import net.minecraft.block.BlockStoneBrick;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.item.EnumAction;
-import net.minecraft.item.EnumRarity;
+import net.minecraft.item.UseAction;
+import net.minecraft.item.Rarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -45,35 +43,32 @@ public class ItemTFCrumbleHorn extends ItemTF {
 	private final List<Pair<Predicate<BlockState>, UnaryOperator<BlockState>>> crumbleTransforms = new ArrayList<>();
 	private final List<Predicate<BlockState>> harvestedStates = new ArrayList<>();
 
-	ItemTFCrumbleHorn(EnumRarity rarity) {
-		super(rarity);
-		this.maxStackSize = 1;
-		this.setMaxDamage(1024);
+	ItemTFCrumbleHorn(Rarity rarity, Properties props) {
+		super(rarity, props.maxDamage(1024));
 		this.addCrumbleTransforms();
 	}
 
 	private void addCrumbleTransforms() {
 		addCrumble(() -> Blocks.STONE, () -> Blocks.COBBLESTONE.getDefaultState());
-		addCrumble(state -> state.getBlock() == Blocks.STONEBRICK
-						&& state.getValue(BlockStoneBrick.VARIANT) == BlockStoneBrick.EnumType.DEFAULT,
-				state -> state.withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CRACKED)
-		);
+		addCrumble(() -> Blocks.STONE_BRICKS, () -> Blocks.CRACKED_STONE_BRICKS.getDefaultState());
+		//TODO 1.14
 		addCrumble(state -> state.getBlock() == TFBlocks.maze_stone
-						&& state.getValue(BlockTFMazestone.VARIANT) == MazestoneVariant.BRICK,
-				state -> state.withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.CRACKED)
+						&& state.get(BlockTFMazestone.VARIANT) == MazestoneVariant.BRICK,
+				state -> state.with(BlockTFMazestone.VARIANT, MazestoneVariant.CRACKED)
 		);
+		//TODO 1.14
 		addCrumble(state -> state.getBlock() == TFBlocks.underbrick
-						&& state.getValue(BlockTFUnderBrick.VARIANT) == UnderBrickVariant.NORMAL,
-				state -> state.withProperty(BlockTFUnderBrick.VARIANT, UnderBrickVariant.CRACKED)
+						&& state.get(BlockTFUnderBrick.VARIANT) == UnderBrickVariant.NORMAL,
+				state -> state.with(BlockTFUnderBrick.VARIANT, UnderBrickVariant.CRACKED)
 		);
+		//TODO 1.14
 		addCrumble(state -> state.getBlock() == TFBlocks.tower_wood
-						&& state.getValue(BlockTFTowerWood.VARIANT) == TowerWoodVariant.PLAIN,
-				state -> state.withProperty(BlockTFTowerWood.VARIANT, TowerWoodVariant.CRACKED)
+						&& state.get(BlockTFTowerWood.VARIANT) == TowerWoodVariant.PLAIN,
+				state -> state.with(BlockTFTowerWood.VARIANT, TowerWoodVariant.CRACKED)
 		);
 		addCrumble(() -> Blocks.COBBLESTONE, () -> Blocks.GRAVEL.getDefaultState());
 		addCrumble(() -> Blocks.SANDSTONE, () -> Blocks.SAND.getDefaultState());
-		addCrumble(() -> Blocks.RED_SANDSTONE,
-				() -> Blocks.SAND.getDefaultState().withProperty(BlockSand.VARIANT, BlockSand.EnumType.RED_SAND)
+		addCrumble(() -> Blocks.RED_SANDSTONE, () -> Blocks.RED_SAND.getDefaultState()
 		);
 		addCrumble(() -> Blocks.GRASS, () -> Blocks.DIRT.getDefaultState());
 		addCrumble(() -> Blocks.MYCELIUM, () -> Blocks.DIRT.getDefaultState());
@@ -104,16 +99,16 @@ public class ItemTFCrumbleHorn extends ItemTF {
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
 		player.setActiveHand(hand);
 		player.playSound(SoundEvents.ENTITY_SHEEP_AMBIENT, 1.0F, 0.8F);
-		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
+		return ActionResult.newResult(ActionResultType.SUCCESS, player.getHeldItem(hand));
 	}
 
 	@Override
-	public void onUsingTick(ItemStack stack, EntityLivingBase living, int count) {
+	public void onUsingTick(ItemStack stack, LivingEntity living, int count) {
 		if (count > 10 && count % 5 == 0 && !living.world.isRemote) {
 			int crumbled = doCrumble(stack, living.world, living);
 
 			if (crumbled > 0) {
-				stack.damageItem(crumbled, living);
+				stack.damageItem(crumbled, living, (user) -> user.sendBreakAnimation(living.getActiveHand()));
 			}
 
 			living.world.playSound(null, living.posX, living.posY, living.posZ, SoundEvents.ENTITY_SHEEP_AMBIENT, living.getSoundCategory(), 1.0F, 0.8F);
@@ -121,12 +116,12 @@ public class ItemTFCrumbleHorn extends ItemTF {
 	}
 
 	@Override
-	public EnumAction getItemUseAction(ItemStack stack) {
-		return EnumAction.BOW;
+	public UseAction getUseAction(ItemStack stack) {
+		return UseAction.BOW;
 	}
 
 	@Override
-	public int getMaxItemUseDuration(ItemStack stack) {
+	public int getUseDuration(ItemStack stack) {
 		return 72000;
 	}
 
@@ -140,7 +135,7 @@ public class ItemTFCrumbleHorn extends ItemTF {
 		return slotChanged || newStack.getItem() != oldStack.getItem();
 	}
 
-	private int doCrumble(ItemStack stack, World world, EntityLivingBase living) {
+	private int doCrumble(ItemStack stack, World world, LivingEntity living) {
 
 		final double range = 3.0D;
 		final double radius = 2.0D;
@@ -154,7 +149,7 @@ public class ItemTFCrumbleHorn extends ItemTF {
 		return crumbleBlocksInAABB(stack, world, living, crumbleBox);
 	}
 
-	private int crumbleBlocksInAABB(ItemStack stack, World world, EntityLivingBase living, AxisAlignedBB box) {
+	private int crumbleBlocksInAABB(ItemStack stack, World world, LivingEntity living, AxisAlignedBB box) {
 		int crumbled = 0;
 		for (BlockPos pos : WorldUtil.getAllInBB(box)) {
 			if (crumbleBlock(stack, world, living, pos)) crumbled++;
@@ -162,7 +157,7 @@ public class ItemTFCrumbleHorn extends ItemTF {
 		return crumbled;
 	}
 
-	private boolean crumbleBlock(ItemStack stack, World world, EntityLivingBase living, BlockPos pos) {
+	private boolean crumbleBlock(ItemStack stack, World world, LivingEntity living, BlockPos pos) {
 
 		BlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
@@ -183,7 +178,7 @@ public class ItemTFCrumbleHorn extends ItemTF {
 		for (Predicate<BlockState> predicate : harvestedStates) {
 			if (predicate.test(state) && world.rand.nextInt(CHANCE_HARVEST) == 0) {
 				if (living instanceof PlayerEntity) {
-					if (block.canHarvestBlock(world, pos, (PlayerEntity) living)) {
+					if (block.canHarvestBlock(state, world, pos, (PlayerEntity) living)) {
 						world.setBlockToAir(pos);
 						block.harvestBlock(world, (PlayerEntity) living, pos, state, world.getTileEntity(pos), ItemStack.EMPTY);
 						world.playEvent(2001, pos, Block.getStateId(state));
@@ -205,8 +200,8 @@ public class ItemTFCrumbleHorn extends ItemTF {
 		return false;
 	}
 
-	private void postTrigger(EntityLivingBase living, ItemStack stack, World world, BlockPos pos) {
-		if (living instanceof EntityPlayerMP)
-			TFAdvancements.ITEM_USE_TRIGGER.trigger((EntityPlayerMP) living, stack, world, pos);
+	private void postTrigger(LivingEntity living, ItemStack stack, World world, BlockPos pos) {
+		if (living instanceof ServerPlayerEntity)
+			TFAdvancements.ITEM_USE_TRIGGER.trigger((ServerPlayerEntity) living, stack, world, pos);
 	}
 }

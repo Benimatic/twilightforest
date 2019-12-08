@@ -5,16 +5,13 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.*;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.item.EnumAction;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.IItemPropertyGetter;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
@@ -33,16 +30,14 @@ public class ItemTFMoonwormQueen extends ItemTF {
 
 	private static final int FIRING_TIME = 12;
 
-	protected ItemTFMoonwormQueen(EnumRarity rarity) {
-		super(rarity);
-		this.maxStackSize = 1;
-		this.setMaxDamage(256);
+	protected ItemTFMoonwormQueen(Rarity rarity, Properties props) {
+		super(rarity, props.maxDamage(256));
 		addPropertyOverride(TwilightForestMod.prefix("alt"), new IItemPropertyGetter() {
 			@OnlyIn(Dist.CLIENT)
 			@Override
-			public float apply(@Nonnull ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn) {
+			public float call(@Nonnull ItemStack stack, @Nullable World worldIn, @Nullable LivingEntity entityIn) {
 				if (entityIn != null && entityIn.getActiveItemStack() == stack) {
-					int useTime = stack.getMaxItemUseDuration() - entityIn.getItemInUseCount();
+					int useTime = stack.getUseDuration() - entityIn.getItemInUseCount();
 					if (useTime >= FIRING_TIME && (useTime >>> 1) % 2 == 0) {
 						return 1;
 					}
@@ -56,27 +51,30 @@ public class ItemTFMoonwormQueen extends ItemTF {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
 		ItemStack stack = player.getHeldItem(hand);
-		if (stack.getItemDamage() >= stack.getMaxDamage() - 1) {
-			return ActionResult.newResult(EnumActionResult.FAIL, stack);
+		if (stack.getDamage() >= stack.getMaxDamage() - 1) {
+			return ActionResult.newResult(ActionResultType.FAIL, stack);
 		} else {
 			player.setActiveHand(hand);
-			return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
+			return ActionResult.newResult(ActionResultType.SUCCESS, player.getHeldItem(hand));
 		}
 	}
 
 	//	[VanillaCopy] ItemBlock.onItemUse, harcoding the block
 	@Override
-	public EnumActionResult onItemUse(PlayerEntity player, World worldIn, BlockPos pos, Hand hand, Direction facing, float hitX, float hitY, float hitZ) {
+	public ActionResultType onItemUse(ItemUseContext context) {
+		World worldIn = context.getWorld();
+		BlockPos pos = context.getPos();
 		BlockState iblockstate = worldIn.getBlockState(pos);
 		Block block = iblockstate.getBlock();
+		PlayerEntity player = context.getPlayer();
 
 		if (!block.isReplaceable(worldIn, pos)) {
-			pos = pos.offset(facing);
+			pos = pos.offset(context.getFace());
 		}
 
 		ItemStack itemstack = player.getHeldItem(hand);
 
-		if (itemstack.getItemDamage() < itemstack.getMaxDamage() && player.canPlayerEdit(pos, facing, itemstack) && worldIn.mayPlace(TFBlocks.moonworm, pos, false, facing, (Entity) null)) {
+		if (itemstack.getDamage() < itemstack.getMaxDamage() && player.canPlayerEdit(pos, context.getFace(), itemstack) && worldIn.mayPlace(TFBlocks.moonworm, pos, false, context.getFace(), (Entity) null)) {
 			int i = this.getMetadata(itemstack.getMetadata());
 			BlockState iblockstate1 = TFBlocks.moonworm.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, i, player, hand);
 
@@ -84,13 +82,13 @@ public class ItemTFMoonwormQueen extends ItemTF {
 				SoundType soundtype = worldIn.getBlockState(pos).getBlock().getSoundType(worldIn.getBlockState(pos), worldIn, pos, player);
 				worldIn.playSound(player, pos, soundtype.getPlaceSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
 				// TF - damage stack instead of shrinking
-				itemstack.damageItem(1, player);
+				itemstack.damageItem(1, player, (user) -> user.sendBreakAnimation(context.getHand()));
 				player.resetActiveHand();
 			}
 
-			return EnumActionResult.SUCCESS;
+			return ActionResultType.SUCCESS;
 		} else {
-			return EnumActionResult.FAIL;
+			return ActionResultType.FAIL;
 		}
 	}
 
@@ -101,8 +99,8 @@ public class ItemTFMoonwormQueen extends ItemTF {
 		BlockState real = world.getBlockState(pos);
 		if (real.getBlock() == TFBlocks.moonworm) {
 			TFBlocks.moonworm.onBlockPlacedBy(world, pos, state, player, stack);
-			if (player instanceof EntityPlayerMP) {
-				CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP) player, pos, stack);
+			if (player instanceof ServerPlayerEntity) {
+				CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity) player, pos, stack);
 			}
 		}
 
@@ -110,16 +108,16 @@ public class ItemTFMoonwormQueen extends ItemTF {
 	}
 
 	@Override
-	public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase living, int useRemaining) {
-		int useTime = this.getMaxItemUseDuration(stack) - useRemaining;
+	public void onPlayerStoppedUsing(ItemStack stack, World world, LivingEntity living, int useRemaining) {
+		int useTime = this.getUseDuration(stack) - useRemaining;
 
-		if (!world.isRemote && useTime > FIRING_TIME && (stack.getItemDamage() + 1) < stack.getMaxDamage()) {
-			boolean fired = world.spawnEntity(new EntityTFMoonwormShot(world, living));
+		if (!world.isRemote && useTime > FIRING_TIME && (stack.getDamage() + 1) < stack.getMaxDamage()) {
+			boolean fired = world.addEntity(new EntityTFMoonwormShot(world, living));
 
 			if (fired) {
-				stack.damageItem(2, living);
+				stack.damageItem(2, living, (user) -> user.sendBreakAnimation(living.getActiveHand()));
 
-				world.playSound(null, living.posX, living.posY, living.posZ, SoundEvents.BLOCK_SLIME_HIT, living instanceof PlayerEntity ? SoundCategory.PLAYERS : SoundCategory.NEUTRAL, 1, 1);
+				world.playSound(null, living.posX, living.posY, living.posZ, SoundEvents.BLOCK_SLIME_BLOCK_HIT, living instanceof PlayerEntity ? SoundCategory.PLAYERS : SoundCategory.NEUTRAL, 1, 1);
 			}
 		}
 
@@ -127,12 +125,12 @@ public class ItemTFMoonwormQueen extends ItemTF {
 
 	@Nonnull
 	@Override
-	public EnumAction getItemUseAction(ItemStack stack) {
-		return EnumAction.BOW;
+	public UseAction getUseAction(ItemStack stack) {
+		return UseAction.BOW;
 	}
 
 	@Override
-	public int getMaxItemUseDuration(ItemStack stack) {
+	public int getUseDuration(ItemStack stack) {
 		return 72000;
 	}
 }

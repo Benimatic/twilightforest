@@ -1,16 +1,19 @@
 package twilightforest.item;
 
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.ItemBow;
+import net.minecraft.item.BowItem;
+import net.minecraft.item.Rarity;
 import net.minecraft.item.ItemStack;
-import twilightforest.client.ModelRegisterCallback;
 
-public abstract class ItemTFBowBase extends ItemBow implements ModelRegisterCallback {
+public abstract class ItemTFBowBase extends BowItem {
 
-	private static final EnumRarity RARITY = EnumRarity.UNCOMMON;
+	private static final Rarity RARITY = Rarity.UNCOMMON;
+
+	protected ItemTFBowBase(Properties props) {
+		super(props.group(TFItems.creativeTab));
+	}
 
 	@Override
-	public EnumRarity getRarity(ItemStack stack) {
-		return stack.isItemEnchanted() ? EnumRarity.RARE.compareTo(RARITY) > 0 ? EnumRarity.RARE : RARITY : RARITY;
+	public Rarity getRarity(ItemStack stack) {
+		return stack.isEnchanted() ? Rarity.RARE.compareTo(RARITY) > 0 ? Rarity.RARE : RARITY : RARITY;
 	}
 }

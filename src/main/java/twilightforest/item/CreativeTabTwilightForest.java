@@ -1,10 +1,10 @@
 package twilightforest.item;
 
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import twilightforest.block.TFBlocks;
 
-public class CreativeTabTwilightForest extends CreativeTabs {
+public class CreativeTabTwilightForest extends ItemGroup {
 
 	public CreativeTabTwilightForest(String label) {
 		super(label);

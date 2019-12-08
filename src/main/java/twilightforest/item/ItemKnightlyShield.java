@@ -1,43 +1,42 @@
 package twilightforest.item;
 
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.block.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemShield;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.translation.I18n;
+import net.minecraft.item.ShieldItem;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.client.ModelRegisterCallback;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemKnightlyShield extends ItemShield implements ModelRegisterCallback {
+public class ItemKnightlyShield extends ShieldItem {
 
-    public ItemKnightlyShield() {
-        this.setMaxDamage(1024);
-        this.setCreativeTab(TFItems.creativeTab);
+    public ItemKnightlyShield(Properties props) {
+    	super(props.maxDamage(1024).group(TFItems.creativeTab));
     }
 
     @Override
-    public String getItemStackDisplayName(ItemStack stack) {
-        return I18n.translateToLocal(this.getTranslationKey(stack) + ".name").trim();
+    public ITextComponent getDisplayName(ItemStack stack) {
+        //return I18n.translateToLocal(this.getTranslationKey(stack) + ".name").trim();
+		return new TranslationTextComponent(this.getTranslationKey(stack));
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {}
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {}
 
     @Override
     public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
-        return repair.getItem() == TFItems.knightmetal_ingot || repair.getItem() != Item.getItemFromBlock(Blocks.PLANKS) && super.getIsRepairable(toRepair, repair);
+        return repair.getItem() == TFItems.knightmetal_ingot || !ItemTags.PLANKS.contains(repair.getItem()) && super.getIsRepairable(toRepair, repair);
     }
 
     @Override
-    public boolean isShield(ItemStack stack, @Nullable EntityLivingBase entity) {
+    public boolean isShield(ItemStack stack, @Nullable LivingEntity entity) {
         return true;
     }
 }

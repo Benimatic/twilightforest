@@ -1,6 +1,9 @@
 package twilightforest.item;
 
 import net.minecraft.block.Blocks;
+import net.minecraft.item.Food;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
@@ -11,25 +14,38 @@ import twilightforest.TwilightForestMod;
 
 import java.util.UUID;
 
+/* TODO 1.14: There's a list of things to change...
+	1. Move to DeferredRegister.
+	2. Move Armor and Item materials into a separate class?
+	3. Since all items are put in the Twilight Forest Item Group, make a method for registering into this group rather than set per class?
+		3.1 Either that, or move them into static classes here.
+	4. Repair materials are now set per Armor and Item material.
+	5. Make the Item Group an anonymous class, rather than a new, separate one.
+	6. Food is a thing. Make Food fields for all food items
+ */
 @GameRegistry.ObjectHolder(TwilightForestMod.ID)
 public class TFItems {
-	public static ItemArmor.ArmorMaterial ARMOR_NAGA = EnumHelper.addArmorMaterial("NAGA_SCALE", "naga_scale", 21, new int[]{3, 6, 7, 2}, 15, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0.5F);
-	public static ItemArmor.ArmorMaterial ARMOR_IRONWOOD = EnumHelper.addArmorMaterial("IRONWOOD", "ironwood", 20, new int[]{2, 5, 7, 2}, 15, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0F);
-	public static ItemArmor.ArmorMaterial ARMOR_FIERY = EnumHelper.addArmorMaterial("FIERY", "fiery", 25, new int[]{4, 7, 9, 4}, 10, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 1.5F);
-	public static ItemArmor.ArmorMaterial ARMOR_STEELEAF = EnumHelper.addArmorMaterial("STEELEAF", "steeleaf", 10, new int[]{3, 6, 8, 3}, 9, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0F);
-	public static ItemArmor.ArmorMaterial ARMOR_KNIGHTLY = EnumHelper.addArmorMaterial("KNIGHTMETAL", "knightly", 20, new int[]{3, 6, 8, 3}, 8, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 1.0F);
-	public static ItemArmor.ArmorMaterial ARMOR_PHANTOM = EnumHelper.addArmorMaterial("KNIGHTPHANTOM", "phantom", 30, new int[]{3, 6, 8, 3}, 8, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 2.5F);
-	public static ItemArmor.ArmorMaterial ARMOR_YETI = EnumHelper.addArmorMaterial("YETI", "yetiarmor", 20, new int[]{3, 6, 7, 4}, 15, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 3F);
-	public static ItemArmor.ArmorMaterial ARMOR_ARCTIC = EnumHelper.addArmorMaterial("ARCTIC", "arcticarmor", 10, new int[]{2, 5, 7, 2}, 8, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 2F);
+	public static IArmorMaterial ARMOR_NAGA = EnumHelper.addArmorMaterial("NAGA_SCALE", "naga_scale", 21, new int[]{3, 6, 7, 2}, 15, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0.5F);
+	public static IArmorMaterial ARMOR_IRONWOOD = EnumHelper.addArmorMaterial("IRONWOOD", "ironwood", 20, new int[]{2, 5, 7, 2}, 15, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0F);
+	public static IArmorMaterial ARMOR_FIERY = EnumHelper.addArmorMaterial("FIERY", "fiery", 25, new int[]{4, 7, 9, 4}, 10, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 1.5F);
+	public static IArmorMaterial ARMOR_STEELEAF = EnumHelper.addArmorMaterial("STEELEAF", "steeleaf", 10, new int[]{3, 6, 8, 3}, 9, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 0F);
+	public static IArmorMaterial ARMOR_KNIGHTLY = EnumHelper.addArmorMaterial("KNIGHTMETAL", "knightly", 20, new int[]{3, 6, 8, 3}, 8, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 1.0F);
+	public static IArmorMaterial ARMOR_PHANTOM = EnumHelper.addArmorMaterial("KNIGHTPHANTOM", "phantom", 30, new int[]{3, 6, 8, 3}, 8, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 2.5F);
+	public static IArmorMaterial ARMOR_YETI = EnumHelper.addArmorMaterial("YETI", "yetiarmor", 20, new int[]{3, 6, 7, 4}, 15, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 3F);
+	public static IArmorMaterial ARMOR_ARCTIC = EnumHelper.addArmorMaterial("ARCTIC", "arcticarmor", 10, new int[]{2, 5, 7, 2}, 8, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 2F);
 
 	// harvestLevel, maxUses, efficiency, damage, enchantability
-	public static Item.ToolMaterial TOOL_IRONWOOD = EnumHelper.addToolMaterial("IRONWOOD", 2, 512, 6.5F, 2, 25);
-	public static Item.ToolMaterial TOOL_FIERY = EnumHelper.addToolMaterial("FIERY", 4, 1024, 9F, 4, 10);
-	public static Item.ToolMaterial TOOL_STEELEAF = EnumHelper.addToolMaterial("STEELEAF", 3, 131, 8.0F, 3, 9);
-	public static Item.ToolMaterial TOOL_KNIGHTLY = EnumHelper.addToolMaterial("KNIGHTMETAL", 3, 512, 8.0F, 3, 8);
-	public static Item.ToolMaterial TOOL_GIANT = EnumHelper.addToolMaterial("GIANTSTONE", 1, 1024, 4.0F, 1.0F, 5);
-	public static Item.ToolMaterial TOOL_ICE = EnumHelper.addToolMaterial("TFICE", 0, 32, 1.0F, 3.5F, 5);
-	public static Item.ToolMaterial TOOL_GLASS = EnumHelper.addToolMaterial("TFGLASS", 0, 1, 1.0F, 36.0F, 30);
+	public static IItemTier TOOL_IRONWOOD = EnumHelper.addToolMaterial("IRONWOOD", 2, 512, 6.5F, 2, 25);
+	public static IItemTier TOOL_FIERY = EnumHelper.addToolMaterial("FIERY", 4, 1024, 9F, 4, 10);
+	public static IItemTier TOOL_STEELEAF = EnumHelper.addToolMaterial("STEELEAF", 3, 131, 8.0F, 3, 9);
+	public static IItemTier TOOL_KNIGHTLY = EnumHelper.addToolMaterial("KNIGHTMETAL", 3, 512, 8.0F, 3, 8);
+	public static IItemTier TOOL_GIANT = EnumHelper.addToolMaterial("GIANTSTONE", 1, 1024, 4.0F, 1.0F, 5);
+	public static IItemTier TOOL_ICE = EnumHelper.addToolMaterial("TFICE", 0, 32, 1.0F, 3.5F, 5);
+	public static IItemTier TOOL_GLASS = EnumHelper.addToolMaterial("TFGLASS", 0, 1, 1.0F, 36.0F, 30);
+
+	public static final Food FOOD_EXPERIMENT_115 = new Food.Builder().hunger(4).saturation(0.3F).build();
+	public static final Food FOOD_HYDRA_CHOP = new Food.Builder().hunger(18).saturation(2.0F).effect(new EffectInstance(Effects.REGENERATION, 100, 0), 1.0F).build();
+	public static final Food FOOD_MEEF_STROGANOFF = new Food.Builder().hunger(8).saturation(0.6F).build();
 
 	static final UUID GIANT_REACH_MODIFIER = UUID.fromString("7f10172d-de69-49d7-81bd-9594286a6827");
 

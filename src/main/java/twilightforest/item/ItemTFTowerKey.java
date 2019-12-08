@@ -1,13 +1,9 @@
 package twilightforest.item;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.item.ItemUseContext;
+import net.minecraft.item.Rarity;
+import net.minecraft.util.ActionResultType;
 import twilightforest.block.BlockTFTowerDevice;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.TowerDeviceVariant;
@@ -15,23 +11,23 @@ import twilightforest.enums.TowerDeviceVariant;
 import javax.annotation.Nonnull;
 
 public class ItemTFTowerKey extends ItemTF {
-	ItemTFTowerKey(EnumRarity rarity) {
-		super(rarity);
+	ItemTFTowerKey(Rarity rarity, Properties props) {
+		super(rarity, props);
 	}
 
 	@Nonnull
 	@Override
-	public EnumActionResult onItemUse(PlayerEntity player, World world, BlockPos pos, Hand hand, Direction side, float fx, float fy, float fz) {
-		BlockState state = world.getBlockState(pos);
-		if (state.getBlock() == TFBlocks.tower_device && state.getValue(BlockTFTowerDevice.VARIANT) == TowerDeviceVariant.VANISH_LOCKED) {
-			if (!world.isRemote) {
-				BlockTFTowerDevice.unlockBlock(world, pos);
-				player.getHeldItem(hand).shrink(1);
+	public ActionResultType onItemUse(ItemUseContext context) {
+		BlockState state = context.getWorld().getBlockState(context.getPos());
+		if (state.getBlock() == TFBlocks.tower_device && state.get(BlockTFTowerDevice.VARIANT) == TowerDeviceVariant.VANISH_LOCKED) {
+			if (!context.getWorld().isRemote) {
+				BlockTFTowerDevice.unlockBlock(context.getWorld(), context.getPos());
+				context.getPlayer().getHeldItem(context.getHand()).shrink(1);
 			}
 
-			return EnumActionResult.SUCCESS;
+			return ActionResultType.SUCCESS;
 		}
 
-		return EnumActionResult.PASS;
+		return ActionResultType.PASS;
 	}
 }

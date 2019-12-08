@@ -1,36 +1,35 @@
 package twilightforest.item;
 
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.entity.projectile.EntityTippedArrow;
-import net.minecraft.init.Enchantments;
+import net.minecraft.entity.projectile.ArrowEntity;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.Items;
+import net.minecraft.stats.Stats;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.item.ItemArrow;
+import net.minecraft.item.ArrowItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.stats.StatList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 
 public class ItemTFTripleBow extends ItemTFBowBase {
 
-	public ItemTFTripleBow() {
-		this.setCreativeTab(TFItems.creativeTab);
+	public ItemTFTripleBow(Properties props) {
+		super(props);
 	}
 
 	// Half [VanillaCopy]: copy of modified super to fire three arrows
 	// TODO: make it less dirty
 	@SuppressWarnings("unused")
 	@Override
-	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
+	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, LivingEntity entityLiving, int timeLeft) {
 		if (entityLiving instanceof PlayerEntity) {
 			PlayerEntity entityplayer = (PlayerEntity) entityLiving;
-			boolean flag = entityplayer.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
+			boolean flag = entityplayer.abilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
 			ItemStack itemstack = this.findAmmo(entityplayer);
 
-			int i = this.getMaxItemUseDuration(stack) - timeLeft;
+			int i = this.getUseDuration(stack) - timeLeft;
 			i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(stack, worldIn, entityplayer, i, !itemstack.isEmpty() || flag);
 			if (i < 0) return;
 
@@ -42,25 +41,25 @@ public class ItemTFTripleBow extends ItemTFBowBase {
 				float f = getArrowVelocity(i);
 
 				if ((double) f >= 0.1D) {
-					boolean flag1 = entityplayer.capabilities.isCreativeMode || (itemstack.getItem() instanceof ItemArrow && ((ItemArrow) itemstack.getItem()).isInfinite(itemstack, stack, entityplayer));
+					boolean flag1 = entityplayer.abilities.isCreativeMode || (itemstack.getItem() instanceof ArrowItem && ((ArrowItem) itemstack.getItem()).isInfinite(itemstack, stack, entityplayer));
 
 					if (!worldIn.isRemote) {
-						ItemArrow itemarrow = (ItemArrow) (itemstack.getItem() instanceof ItemArrow ? itemstack.getItem() : Items.ARROW);
-						EntityArrow entityarrow = itemarrow.createArrow(worldIn, itemstack, entityplayer);
+						ArrowItem itemarrow = (ArrowItem) (itemstack.getItem() instanceof ArrowItem ? itemstack.getItem() : Items.ARROW);
+						ArrowEntity entityarrow = itemarrow.createArrow(worldIn, itemstack, entityplayer);
 						entityarrow.shoot(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, f * 3.0F, 1.0F);
 
 						// other arrows with slight deviation
-						EntityArrow entityarrow1 = new EntityTippedArrow(worldIn, entityLiving);
+						ArrowEntity entityarrow1 = new EntityTippedArrow(worldIn, entityLiving);
 						entityarrow1.shoot(entityLiving, entityLiving.rotationPitch, entityLiving.rotationYaw, 0, f * 2, 1);
 						entityarrow1.motionY += 0.007499999832361937D * 20F;
 						entityarrow1.posY += 0.025F;
-						entityarrow1.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
+						entityarrow1.pickupStatus = ArrowEntity.PickupStatus.CREATIVE_ONLY;
 
-						EntityArrow entityarrow2 = new EntityTippedArrow(worldIn, entityLiving);
+						ArrowEntity entityarrow2 = new EntityTippedArrow(worldIn, entityLiving);
 						entityarrow2.shoot(entityLiving, entityLiving.rotationPitch, entityLiving.rotationYaw, 0, f * 2, 1);
 						entityarrow2.motionY -= 0.007499999832361937D * 20F;
 						entityarrow2.posY -= 0.025F;
-						entityarrow2.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
+						entityarrow2.pickupStatus = ArrowEntity.PickupStatus.CREATIVE_ONLY;
 
 						if (f == 1.0F) {
 							entityarrow.setIsCritical(true);
@@ -90,20 +89,20 @@ public class ItemTFTripleBow extends ItemTFBowBase {
 							entityarrow2.setFire(100);
 						}
 
-						stack.damageItem(1, entityplayer);
+						stack.damageItem(1, entityplayer, (user) -> user.sendBreakAnimation(entityLiving.getActiveHand()));
 
-						if (flag1 || entityplayer.capabilities.isCreativeMode && (itemstack.getItem() == Items.SPECTRAL_ARROW || itemstack.getItem() == Items.TIPPED_ARROW)) {
-							entityarrow.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
+						if (flag1 || entityplayer.abilities.isCreativeMode && (itemstack.getItem() == Items.SPECTRAL_ARROW || itemstack.getItem() == Items.TIPPED_ARROW)) {
+							entityarrow.pickupStatus = ArrowEntity.PickupStatus.CREATIVE_ONLY;
 						}
 
-						worldIn.spawnEntity(entityarrow);
-						worldIn.spawnEntity(entityarrow1);
-						worldIn.spawnEntity(entityarrow2);
+						worldIn.addEntity(entityarrow);
+						worldIn.addEntity(entityarrow1);
+						worldIn.addEntity(entityarrow2);
 					}
 
-					worldIn.playSound((PlayerEntity) null, entityplayer.posX, entityplayer.posY, entityplayer.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
+					worldIn.playSound((PlayerEntity) null, entityplayer.posX, entityplayer.posY, entityplayer.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (random.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
 
-					if (!flag1 && !entityplayer.capabilities.isCreativeMode) {
+					if (!flag1 && !entityplayer.abilities.isCreativeMode) {
 						itemstack.shrink(1);
 
 						if (itemstack.isEmpty()) {
@@ -111,7 +110,7 @@ public class ItemTFTripleBow extends ItemTFBowBase {
 						}
 					}
 
-					entityplayer.addStat(StatList.getObjectUseStats(this));
+					entityplayer.addStat(Stats.ITEM_USED.get(this));
 				}
 			}
 		}

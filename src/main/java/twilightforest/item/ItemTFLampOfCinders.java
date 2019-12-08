@@ -1,18 +1,18 @@
 package twilightforest.item;
 
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.block.BlockRotatedPillar;
+import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.ItemUseContext;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.item.EnumAction;
-import net.minecraft.item.EnumRarity;
+import net.minecraft.item.UseAction;
+import net.minecraft.item.Rarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.Direction;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
@@ -25,49 +25,50 @@ import javax.annotation.Nonnull;
 public class ItemTFLampOfCinders extends ItemTF {
 	private static final int FIRING_TIME = 12;
 
-	ItemTFLampOfCinders(EnumRarity rarity) {
-		super(rarity);
-		this.setCreativeTab(TFItems.creativeTab);
-		this.maxStackSize = 1;
-		this.setMaxDamage(1024);
+	ItemTFLampOfCinders(Rarity rarity, Properties props) {
+		super(rarity, props.maxDamage(1024).group(TFItems.creativeTab));
 	}
 
 	@Nonnull
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, @Nonnull Hand hand) {
 		player.setActiveHand(hand);
-		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
+		return ActionResult.newResult(ActionResultType.SUCCESS, player.getHeldItem(hand));
 	}
 
 	@Nonnull
 	@Override
-	public EnumActionResult onItemUse(PlayerEntity player, World world, BlockPos pos, Hand hand, Direction side, float hitX, float hitY, float hitZ) {
+	public ActionResultType onItemUse(ItemUseContext context) {
+		World world = context.getWorld();
+		BlockPos pos = context.getPos();
+		PlayerEntity player = context.getPlayer();
+
 		if (burnBlock(world, pos)) {
-			if (player instanceof EntityPlayerMP)
-				CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP) player, pos, player.getHeldItem(hand));
+			if (player instanceof ServerPlayerEntity)
+				CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity) player, pos, player.getHeldItem(context.getHand()));
 
 			player.playSound(SoundEvents.ENTITY_GHAST_SHOOT, 0.5F, 1.5F);
 
 			// spawn flame particles
 			for (int i = 0; i < 10; i++) {
-				float dx = pos.getX() + 0.5F + (itemRand.nextFloat() - itemRand.nextFloat()) * 0.75F;
-				float dy = pos.getY() + 0.5F + (itemRand.nextFloat() - itemRand.nextFloat()) * 0.75F;
-				float dz = pos.getZ() + 0.5F + (itemRand.nextFloat() - itemRand.nextFloat()) * 0.75F;
+				float dx = pos.getX() + 0.5F + (random.nextFloat() - random.nextFloat()) * 0.75F;
+				float dy = pos.getY() + 0.5F + (random.nextFloat() - random.nextFloat()) * 0.75F;
+				float dz = pos.getZ() + 0.5F + (random.nextFloat() - random.nextFloat()) * 0.75F;
 
-				world.spawnParticle(ParticleTypes.SMOKE_NORMAL, dx, dy, dz, 0.0D, 0.0D, 0.0D);
-				world.spawnParticle(ParticleTypes.FLAME, dx, dy, dz, 0.0D, 0.0D, 0.0D);
+				world.addParticle(ParticleTypes.SMOKE, dx, dy, dz, 0.0D, 0.0D, 0.0D);
+				world.addParticle(ParticleTypes.FLAME, dx, dy, dz, 0.0D, 0.0D, 0.0D);
 			}
 
-			return EnumActionResult.SUCCESS;
+			return ActionResultType.SUCCESS;
 		} else {
-			return EnumActionResult.PASS;
+			return ActionResultType.PASS;
 		}
 	}
 
 	private boolean burnBlock(World world, BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
 		if (state.getBlock() == TFBlocks.thorns) {
-			world.setBlockState(pos, TFBlocks.burnt_thorns.getDefaultState().withProperty(BlockRotatedPillar.AXIS, state.getValue(BlockRotatedPillar.AXIS)));
+			world.setBlockState(pos, TFBlocks.burnt_thorns.getDefaultState().with(RotatedPillarBlock.AXIS, state.get(RotatedPillarBlock.AXIS)));
 			return true;
 		} else {
 			return false;
@@ -75,15 +76,15 @@ public class ItemTFLampOfCinders extends ItemTF {
 	}
 
 	@Override
-	public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase living, int useRemaining) {
-		int useTime = this.getMaxItemUseDuration(stack) - useRemaining;
+	public void onPlayerStoppedUsing(ItemStack stack, World world, LivingEntity living, int useRemaining) {
+		int useTime = this.getUseDuration(stack) - useRemaining;
 
-		if (useTime > FIRING_TIME && (stack.getItemDamage() + 1) < this.getMaxDamage(stack)) {
+		if (useTime > FIRING_TIME && (stack.getDamage() + 1) < this.getMaxDamage(stack)) {
 			doBurnEffect(world, living);
 		}
 	}
 
-	private void doBurnEffect(World world, EntityLivingBase living) {
+	private void doBurnEffect(World world, LivingEntity living) {
 		BlockPos pos = new BlockPos(
 				MathHelper.floor(living.lastTickPosX),
 				MathHelper.floor(living.lastTickPosY + living.getEyeHeight()),
@@ -108,9 +109,9 @@ public class ItemTFLampOfCinders extends ItemTF {
 		if (living instanceof PlayerEntity) {
 			for (int i = 0; i < 6; i++) {
 				BlockPos rPos = pos.add(
-						itemRand.nextInt(range) - itemRand.nextInt(range),
-						itemRand.nextInt(2),
-						itemRand.nextInt(range) - itemRand.nextInt(range)
+						random.nextInt(range) - random.nextInt(range),
+						random.nextInt(2),
+						random.nextInt(range) - random.nextInt(range)
 				);
 
 				world.playEvent((PlayerEntity) living, 2004, rPos, 0);
@@ -119,12 +120,12 @@ public class ItemTFLampOfCinders extends ItemTF {
 	}
 
 	@Override
-	public EnumAction getItemUseAction(ItemStack stack) {
-		return EnumAction.BOW;
+	public UseAction getUseAction(ItemStack stack) {
+		return UseAction.BOW;
 	}
 
 	@Override
-	public int getMaxItemUseDuration(ItemStack stack) {
+	public int getUseDuration(ItemStack stack) {
 		return 72000;
 	}
 }

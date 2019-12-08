@@ -1,30 +1,30 @@
 package twilightforest.item;
 
-import net.minecraft.client.resources.I18n;
+import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.init.Enchantments;
+import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.ItemArmor;
+import net.minecraft.item.IArmorMaterial;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.Rarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.ModelRegisterCallback;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemTFYetiArmor extends ItemTFArmor implements ModelRegisterCallback {
+public class ItemTFYetiArmor extends ItemTFArmor {
 
-	public ItemTFYetiArmor(ItemArmor.ArmorMaterial material, EquipmentSlotType slot, EnumRarity rarity) {
-		super(material, slot, rarity);
-		this.setCreativeTab(TFItems.creativeTab);
+	public ItemTFYetiArmor(Properties props, IArmorMaterial material, EquipmentSlotType slot, Rarity rarity) {
+		super(material, slot, rarity, props);
 	}
 
 	@Override
@@ -37,10 +37,10 @@ public class ItemTFYetiArmor extends ItemTFArmor implements ModelRegisterCallbac
 	}
 
 	@Override
-	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
-		if (isInCreativeTab(tab)) {
+	public void fillItemGroup(ItemGroup tab, NonNullList<ItemStack> list) {
+		if (isInGroup(tab)) {
 			ItemStack istack = new ItemStack(this);
-			switch (this.armorType) {
+			switch (this.slot) {
 				case HEAD:
 				case CHEST:
 				case LEGS:
@@ -59,14 +59,14 @@ public class ItemTFYetiArmor extends ItemTFArmor implements ModelRegisterCallbac
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public net.minecraft.client.model.ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, net.minecraft.client.model.ModelBiped _default) {
+	public BipedModel getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, BipedModel _default) {
 		return TwilightForestMod.proxy.getYetiArmorModel(armorSlot);
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltips, ITooltipFlag flags) {
+	public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> tooltips, ITooltipFlag flags) {
 		super.addInformation(stack, world, tooltips, flags);
-		tooltips.add(I18n.format(getTranslationKey() + ".tooltip"));
+		tooltips.add(new TranslationTextComponent(getTranslationKey() + ".tooltip"));
 	}
 }

@@ -77,8 +77,8 @@ public class TFMapCloningRecipe extends RecipesMapCloning {
 				itemstack2.setStackDisplayName(itemstack.getDisplayName());
 			}
 
-			if (itemstack.hasTagCompound()) {
-				itemstack2.setTagCompound(itemstack.getTagCompound());
+			if (itemstack.hasTag()) {
+				itemstack2.setTag(itemstack.getTag());
 			}
 
 			return itemstack2;

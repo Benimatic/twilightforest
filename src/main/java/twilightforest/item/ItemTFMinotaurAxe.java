@@ -1,86 +1,69 @@
 package twilightforest.item;
 
-import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
-import net.minecraft.item.AxeItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.server.SPacketAnimation;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.*;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.ModelRegisterCallback;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
-public class ItemTFMinotaurAxe extends AxeItem implements ModelRegisterCallback {
+public class ItemTFMinotaurAxe extends AxeItem {
 
 	private static final int BONUS_CHARGING_DAMAGE = 7;
-	private final EnumRarity RARITY;
+	private final Rarity RARITY;
 
-	protected ItemTFMinotaurAxe(Item.ToolMaterial material, EnumRarity rarity) {
-		super(material, 6F + material.getAttackDamage(), material.getEfficiency() * 0.05f - 3.4f);
-		this.setCreativeTab(TFItems.creativeTab);
-
+	protected ItemTFMinotaurAxe(IItemTier material, Rarity rarity, Properties props) {
+		super(material, 6F + material.getAttackDamage(), material.getEfficiency() * 0.05f - 3.4f, props.group(TFItems.creativeTab));
 		this.RARITY = rarity;
-	}
-
-	@Override
-	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
-		if (isInCreativeTab(tab)) {
-			ItemStack istack = new ItemStack(this);
-			//istack.addEnchantment(Enchantments.EFFICIENCY, 2);
-			list.add(istack);
-		}
 	}
 
 	@SubscribeEvent
 	public static void onAttack(LivingAttackEvent evt) {
-		EntityLivingBase target = evt.getEntityLiving();
+		LivingEntity target = evt.getEntityLiving();
 		Entity source = evt.getSource().getImmediateSource();
 
-		if (!target.world.isRemote && source instanceof EntityLivingBase && source.isSprinting()) {
-			ItemStack weapon = ((EntityLivingBase) evt.getSource().getImmediateSource()).getHeldItemMainhand();
+		if (!target.world.isRemote && source instanceof LivingEntity && source.isSprinting()) {
+			ItemStack weapon = ((LivingEntity) evt.getSource().getImmediateSource()).getHeldItemMainhand();
 
 			if (!weapon.isEmpty() && weapon.getItem() == TFItems.minotaur_axe) {
 				target.attackEntityFrom(DamageSource.MAGIC, BONUS_CHARGING_DAMAGE);
 				// don't prevent main damage from applying
 				target.hurtResistantTime = 0;
 				// enchantment attack sparkles
-				((WorldServer) target.world).getEntityTracker().sendToTrackingAndSelf(target, new SPacketAnimation(target, 5));
+				((ServerWorld) target.world).getEntityTracker().sendToTrackingAndSelf(target, new SPacketAnimation(target, 5));
 			}
 		}
 	}
 
 	@Override
 	public int getItemEnchantability() {
-		return Item.ToolMaterial.GOLD.getEnchantability();
+		return ItemTier.GOLD.getEnchantability();
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flags) {
+	public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag flags) {
 		super.addInformation(stack, world, tooltip, flags);
-		tooltip.add(I18n.format(getTranslationKey() + ".tooltip"));
+		tooltip.add(new TranslationTextComponent(getTranslationKey() + ".tooltip"));
 	}
 
 	@Nonnull
 	@Override
-	public EnumRarity getRarity(ItemStack stack) {
-		return stack.isItemEnchanted() ? EnumRarity.RARE.compareTo(RARITY) > 0 ? EnumRarity.RARE : RARITY : RARITY;
+	public Rarity getRarity(ItemStack stack) {
+		return stack.isEnchanted() ? Rarity.RARE.compareTo(RARITY) > 0 ? Rarity.RARE : RARITY : RARITY;
 	}
 }

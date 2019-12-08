@@ -2,16 +2,16 @@ package twilightforest.item;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.state.pattern.BlockMatcher;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.block.pattern.BlockMatcher;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.item.EnumAction;
+import net.minecraft.item.UseAction;
 import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
@@ -35,26 +35,25 @@ public class ItemTFOreMagnet extends ItemTF {
 
 	private static final float WIGGLE = 10F;
 
-	protected ItemTFOreMagnet() {
-		this.maxStackSize = 1;
-		this.setMaxDamage(12);
+	protected ItemTFOreMagnet(Properties props) {
+		super(props.maxDamage(12));
 		// [VanillaCopy] ItemBow with our item
 		this.addPropertyOverride(new ResourceLocation("pull"), new IItemPropertyGetter() {
 			@Override
 			@OnlyIn(Dist.CLIENT)
-			public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn) {
+			public float call(ItemStack stack, @Nullable World worldIn, @Nullable LivingEntity entityIn) {
 				if (entityIn == null) {
 					return 0.0F;
 				} else {
 					ItemStack itemstack = entityIn.getActiveItemStack();
-					return !itemstack.isEmpty() && itemstack.getItem() == TFItems.ore_magnet ? (float) (stack.getMaxItemUseDuration() - entityIn.getItemInUseCount()) / 20.0F : 0.0F;
+					return !itemstack.isEmpty() && itemstack.getItem() == TFItems.ore_magnet ? (float) (stack.getUseDuration() - entityIn.getItemInUseCount()) / 20.0F : 0.0F;
 				}
 			}
 		});
 		this.addPropertyOverride(new ResourceLocation("pulling"), new IItemPropertyGetter() {
 			@Override
 			@OnlyIn(Dist.CLIENT)
-			public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn) {
+			public float call(ItemStack stack, @Nullable World worldIn, @Nullable LivingEntity entityIn) {
 				return entityIn != null && entityIn.isHandActive() && entityIn.getActiveItemStack() == stack ? 1.0F : 0.0F;
 			}
 		});
@@ -64,12 +63,12 @@ public class ItemTFOreMagnet extends ItemTF {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, @Nonnull Hand hand) {
 		player.setActiveHand(hand);
-		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
+		return ActionResult.newResult(ActionResultType.SUCCESS, player.getHeldItem(hand));
 	}
 
 	@Override
-	public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase living, int useRemaining) {
-		int useTime = this.getMaxItemUseDuration(stack) - useRemaining;
+	public void onPlayerStoppedUsing(ItemStack stack, World world, LivingEntity living, int useRemaining) {
+		int useTime = this.getUseDuration(stack) - useRemaining;
 
 		if (!world.isRemote && useTime > 10) {
 			int moved = doMagnet(world, living, 0, 0);
@@ -100,8 +99,8 @@ public class ItemTFOreMagnet extends ItemTF {
 			}
 
 			if (moved > 0) {
-				stack.damageItem(moved, living);
-				world.playSound(null, living.posX, living.posY, living.posZ, SoundEvents.ENTITY_ENDERMEN_TELEPORT, living.getSoundCategory(), 1.0F, 1.0F);
+				stack.damageItem(moved, living, (user) -> user.sendBreakAnimation(living.getActiveHand()));
+				world.playSound(null, living.posX, living.posY, living.posZ, SoundEvents.ENTITY_ENDERMAN_TELEPORT, living.getSoundCategory(), 1.0F, 1.0F);
 			}
 		}
 	}
@@ -113,19 +112,19 @@ public class ItemTFOreMagnet extends ItemTF {
 
 	@Nonnull
 	@Override
-	public EnumAction getItemUseAction(ItemStack stack) {
-		return EnumAction.BOW;
+	public UseAction getUseAction(ItemStack stack) {
+		return UseAction.BOW;
 	}
 
 	@Override
-	public int getMaxItemUseDuration(ItemStack stack) {
+	public int getUseDuration(ItemStack stack) {
 		return 72000;
 	}
 
 	/**
 	 * Magnet from the player's position and facing to the specified offset
 	 */
-	private int doMagnet(World world, EntityLivingBase living, float yawOffset, float pitchOffset) {
+	private int doMagnet(World world, LivingEntity living, float yawOffset, float pitchOffset) {
 
 		// find vector 32 blocks from look
 		double range = 32.0D;
@@ -198,7 +197,7 @@ public class ItemTFOreMagnet extends ItemTF {
 	 * Get the player look vector, but offset by the specified parameters.  We use to scan the area around where the player is looking
 	 * in the likely case there's no ore in the exact look direction.
 	 */
-	private Vec3d getOffsetLook(EntityLivingBase living, float yawOffset, float pitchOffset) {
+	private Vec3d getOffsetLook(LivingEntity living, float yawOffset, float pitchOffset) {
 		float var2 = MathHelper.cos(-(living.rotationYaw + yawOffset) * 0.017453292F - (float) Math.PI);
 		float var3 = MathHelper.sin(-(living.rotationYaw + yawOffset) * 0.017453292F - (float) Math.PI);
 		float var4 = -MathHelper.cos(-(living.rotationPitch + pitchOffset) * 0.017453292F);
@@ -246,7 +245,7 @@ public class ItemTFOreMagnet extends ItemTF {
 			veinBlocks.add(here);
 
 			// recurse in 6 directions
-			for (Direction e : Direction.VALUES) {
+			for (Direction e : Direction.values()) {
 				findVein(world, here.offset(e), oreState, veinBlocks);
 			}
 
@@ -267,9 +266,8 @@ public class ItemTFOreMagnet extends ItemTF {
                 || block == Blocks.GOLD_ORE
                 || block == Blocks.LAPIS_ORE
                 || block == Blocks.REDSTONE_ORE
-                || block == Blocks.LIT_REDSTONE_ORE
-                || block == Blocks.QUARTZ_ORE
-                || state == TFBlocks.root.getDefaultState().withProperty(BlockTFRoots.VARIANT, RootVariant.LIVEROOT)
+                || block == Blocks.NETHER_QUARTZ_ORE
+                || state == TFBlocks.root.getDefaultState().with(BlockTFRoots.VARIANT, RootVariant.LIVEROOT)
                 // todo 1.9 oh god
 				// National treasure -Drullkus
                 || state.getBlock().getRegistryName().getPath().contains("ore"))

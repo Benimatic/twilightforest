@@ -1,13 +1,11 @@
 package twilightforest.item;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemHoe;
-import twilightforest.client.ModelRegisterCallback;
+import net.minecraft.item.IItemTier;
+import net.minecraft.item.HoeItem;
 
-public class ItemTFIronwoodHoe extends ItemHoe implements ModelRegisterCallback {
+public class ItemTFIronwoodHoe extends HoeItem {
 
-	public ItemTFIronwoodHoe(Item.ToolMaterial material) {
-		super(material);
-		this.setCreativeTab(TFItems.creativeTab);
+	public ItemTFIronwoodHoe(IItemTier material, Properties props) {
+		super(material, props.group(TFItems.creativeTab));
 	}
 }

@@ -56,16 +56,16 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 		super.writeStructureToNBT(tagCompound);
 
-		tagCompound.setInteger("size", this.size);
-		tagCompound.setInteger("height", this.height);
+		tagCompound.putInt("size", this.size);
+		tagCompound.putInt("height", this.height);
 	}
 
 	@Override
 	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
 		super.readStructureFromNBT(tagCompound, templateManager);
 
-		this.size = tagCompound.getInteger("size");
-		this.height = tagCompound.getInteger("height");
+		this.size = tagCompound.getInt("size");
+		this.height = tagCompound.getInt("height");
 	}
 
 	@Override

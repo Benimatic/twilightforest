@@ -3,21 +3,20 @@ package twilightforest.item;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.renderer.block.model.ModelBakery;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.EnumRarity;
+import net.minecraft.item.ItemUseContext;
+import net.minecraft.item.Rarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntitySkull;
+import net.minecraft.tileentity.SkullTileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.translation.I18n;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.model.ModelLoader;
@@ -27,6 +26,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFTrophy;
 import twilightforest.block.TFBlocks;
+import twilightforest.client.ModelRegisterCallback;
 import twilightforest.enums.BossVariant;
 import twilightforest.client.renderer.tileentity.TileEntityTFTrophyRenderer;
 
@@ -34,42 +34,35 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Locale;
 
-public class ItemTFTrophy extends ItemTF {
+//TODO 1.14: Rework this class out of metadata
+public class ItemTFTrophy extends ItemTF implements ModelRegisterCallback {
 
-	public ItemTFTrophy() {
-		this.setCreativeTab(TFItems.creativeTab);
-		this.setMaxDamage(0);
-		this.setHasSubtypes(true);
+	public ItemTFTrophy(Properties props) {
+		super(props);
 	}
 
 	@Override
-	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
-		if (isInCreativeTab(tab)) {
-			for (BossVariant v : BossVariant.values()) {
-				if (v != BossVariant.ALPHA_YETI && v != BossVariant.FINAL_BOSS) {
-					list.add(new ItemStack(this, 1, v.ordinal()));
-				}
-			}
-		}
-	}
-
-	@Override
-	public String getItemStackDisplayName(ItemStack stack) {
-		return I18n.translateToLocalFormatted(this.getTranslationKey(stack), I18n.translateToLocal("entity.twilightforest." + BossVariant.values()[stack.getMetadata() % BossVariant.values().length].getName().toLowerCase(Locale.ROOT) + ".name"));
+	public ITextComponent getDisplayName(ItemStack stack) {
+		return new TranslationTextComponent(this.getTranslationKey(stack), I18n.translateToLocal("entity.twilightforest." + BossVariant.values()[stack.getMetadata() % BossVariant.values().length].getName().toLowerCase(Locale.ROOT) + ".name"));
 	}
 
 	@Nonnull
 	@Override
-	public EnumRarity getRarity(ItemStack stack) {
+	public Rarity getRarity(ItemStack stack) {
 		return TwilightForestMod.getRarity();
 	}
 
 	// [VanillaCopy] ItemSkull, with own block and no player heads
 	@Nonnull
 	@Override
-	public EnumActionResult onItemUse(PlayerEntity playerIn, World worldIn, BlockPos pos, Hand hand, Direction facing, float hitX, float hitY, float hitZ) {
+	public ActionResultType onItemUse(ItemUseContext context) {
+		Direction facing = context.getFace();
+		World worldIn = context.getWorld();
+		BlockPos pos = context.getPos();
+		PlayerEntity playerIn = context.getPlayer();
+
 		if (facing == Direction.DOWN) {
-			return EnumActionResult.FAIL;
+			return ActionResultType.FAIL;
 		} else {
 			if (worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos)) {
 				facing = Direction.UP;
@@ -81,19 +74,19 @@ public class ItemTFTrophy extends ItemTF {
 
 			if (!flag) {
 				if (!worldIn.getBlockState(pos).getMaterial().isSolid() && !worldIn.isSideSolid(pos, facing, true)) {
-					return EnumActionResult.FAIL;
+					return ActionResultType.FAIL;
 				}
 
 				pos = pos.offset(facing);
 			}
 
-			ItemStack itemstack = playerIn.getHeldItem(hand);
+			ItemStack itemstack = playerIn.getHeldItem(context.getHand());
 
 			if (playerIn.canPlayerEdit(pos, facing, itemstack) && TFBlocks.trophy.canPlaceBlockAt(worldIn, pos)) {
 				if (worldIn.isRemote) {
-					return EnumActionResult.SUCCESS;
+					return ActionResultType.SUCCESS;
 				} else {
-					worldIn.setBlockState(pos, TFBlocks.trophy.getDefaultState().withProperty(BlockTFTrophy.FACING, facing), 11);
+					worldIn.setBlockState(pos, TFBlocks.trophy.getDefaultState().with(BlockTFTrophy.FACING, facing), 11);
 					int i = 0;
 
 					if (facing == Direction.UP) {
@@ -102,23 +95,23 @@ public class ItemTFTrophy extends ItemTF {
 
 					TileEntity tileentity = worldIn.getTileEntity(pos);
 
-					if (tileentity instanceof TileEntitySkull) {
-						TileEntitySkull tileentityskull = (TileEntitySkull) tileentity;
+					if (tileentity instanceof SkullTileEntity) {
+						SkullTileEntity tileentityskull = (SkullTileEntity) tileentity;
 
 						tileentityskull.setType(itemstack.getMetadata());
 
 						tileentityskull.setSkullRotation(i);
 					}
 
-					if (playerIn instanceof EntityPlayerMP) {
-						CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP)playerIn, pos, itemstack);
+					if (playerIn instanceof ServerPlayerEntity) {
+						CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity) playerIn, pos, itemstack);
 					}
 
 					itemstack.shrink(1);
-					return EnumActionResult.SUCCESS;
+					return ActionResultType.SUCCESS;
 				}
 			} else {
-				return EnumActionResult.FAIL;
+				return ActionResultType.FAIL;
 			}
 		}
 	}
@@ -141,6 +134,7 @@ public class ItemTFTrophy extends ItemTF {
 		return EquipmentSlotType.HEAD;
 	}
 
+	//TODO 1.14: Somehow get this working...
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void registerModel() {

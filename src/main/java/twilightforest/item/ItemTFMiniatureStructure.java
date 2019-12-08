@@ -7,6 +7,7 @@ import twilightforest.enums.StructureVariant;
 
 import java.util.Locale;
 
+//TODO 1.14: Redundant due to flattening
 public class ItemTFMiniatureStructure extends ItemBlockTFMeta {
     public ItemTFMiniatureStructure(Block block) {
         super(block);

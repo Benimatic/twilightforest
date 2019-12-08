@@ -1,20 +1,20 @@
 package twilightforest.item;
 
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemMapBase;
+import net.minecraft.item.AbstractMapItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.stats.StatList;
+import net.minecraft.stats.Stats;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import twilightforest.client.ModelRegisterCallback;
 
-public class ItemTFEmptyMazeMap extends ItemMapBase implements ModelRegisterCallback {
+public class ItemTFEmptyMazeMap extends AbstractMapItem implements ModelRegisterCallback {
 	boolean mapOres;
 
-	protected ItemTFEmptyMazeMap(boolean mapOres) {
-		this.setCreativeTab(TFItems.creativeTab);
+	protected ItemTFEmptyMazeMap(boolean mapOres, Properties props) {
+		super(props.group(TFItems.creativeTab));
 		this.mapOres = mapOres;
 	}
 
@@ -26,14 +26,14 @@ public class ItemTFEmptyMazeMap extends ItemMapBase implements ModelRegisterCall
 		itemstack1.shrink(1);
 
 		if (itemstack1.isEmpty()) {
-			return new ActionResult<>(EnumActionResult.SUCCESS, itemstack);
+			return new ActionResult<>(ActionResultType.SUCCESS, itemstack);
 		} else {
 			if (!playerIn.inventory.addItemStackToInventory(itemstack.copy())) {
 				playerIn.dropItem(itemstack, false);
 			}
 
-			playerIn.addStat(StatList.getObjectUseStats(this));
-			return new ActionResult<>(EnumActionResult.SUCCESS, itemstack1);
+			playerIn.addStat(Stats.ITEM_USED.get(this));
+			return new ActionResult<>(ActionResultType.SUCCESS, itemstack1);
 		}
 	}
 }

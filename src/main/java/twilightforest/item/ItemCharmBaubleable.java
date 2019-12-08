@@ -1,6 +1,6 @@
 package twilightforest.item;
 
-import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Rarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -9,8 +9,9 @@ import twilightforest.compat.TFCompat;
 
 import javax.annotation.Nullable;
 
+//TODO 1.14: Baubles is dead
 public class ItemCharmBaubleable extends ItemTF {
-    ItemCharmBaubleable(EnumRarity rarity) {
+    ItemCharmBaubleable(Rarity rarity) {
         super(rarity);
     }
 

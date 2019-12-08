@@ -1,24 +1,21 @@
 package twilightforest.item;
 
-import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityXPOrb;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemPickaxe;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.ExperienceOrbEntity;
+import net.minecraft.item.*;
+import net.minecraft.item.crafting.FurnaceRecipe;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.ModelRegisterCallback;
 import twilightforest.util.ParticleHelper;
 import twilightforest.util.TFItemStackUtils;
 
@@ -28,11 +25,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
-public class ItemTFFieryPick extends ItemPickaxe implements ModelRegisterCallback {
+public class ItemTFFieryPick extends PickaxeItem {
 
-	protected ItemTFFieryPick(Item.ToolMaterial toolMaterial) {
-		super(toolMaterial);
-		this.setCreativeTab(TFItems.creativeTab);
+	protected ItemTFFieryPick(IItemTier toolMaterial, Properties props) {
+		super(toolMaterial, 1, -2.8F, props.group(TFItems.creativeTab));
 	}
 
 	@SubscribeEvent
@@ -44,7 +40,7 @@ public class ItemTFFieryPick extends ItemPickaxe implements ModelRegisterCallbac
 			List<ItemStack> addThese = new ArrayList<>();
 
 			for (ItemStack input : event.getDrops()) {
-				ItemStack result = FurnaceRecipes.instance().getSmeltingResult(input);
+				ItemStack result = FurnaceRecipe.instance().getSmeltingResult(input);
 				if (!result.isEmpty()) {
 
 					int combinedCount = input.getCount() * result.getCount();
@@ -69,9 +65,9 @@ public class ItemTFFieryPick extends ItemPickaxe implements ModelRegisterCallbac
 					}
 
 					while (i > 0) {
-						int k = EntityXPOrb.getXPSplit(i);
+						int k = ExperienceOrbEntity.getXPSplit(i);
 						i -= k;
-						event.getHarvester().world.spawnEntity(new EntityXPOrb(event.getWorld(), event.getHarvester().posX, event.getHarvester().posY + 0.5D, event.getHarvester().posZ, k));
+						event.getHarvester().world.addEntity(new ExperienceOrbEntity(event.getWorld(), event.getHarvester().posX, event.getHarvester().posY + 0.5D, event.getHarvester().posZ, k));
 					}
 
 					ParticleHelper.spawnParticles(event.getWorld(), event.getPos(), ParticleTypes.FLAME, 5, 0.02);
@@ -84,7 +80,7 @@ public class ItemTFFieryPick extends ItemPickaxe implements ModelRegisterCallbac
 	}
 
 	@Override
-	public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
+	public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 		boolean result = super.hitEntity(stack, target, attacker);
 
 		if (result && !target.world.isRemote && !target.isImmuneToFire()) {
@@ -95,18 +91,18 @@ public class ItemTFFieryPick extends ItemPickaxe implements ModelRegisterCallbac
 		return result;
 	}
 
-	private static final EnumRarity RARITY = EnumRarity.UNCOMMON;
+	private static final Rarity RARITY = Rarity.UNCOMMON;
 
 	@Nonnull
 	@Override
-	public EnumRarity getRarity(ItemStack stack) {
-		return stack.isItemEnchanted() ? EnumRarity.RARE.compareTo(RARITY) > 0 ? EnumRarity.RARE : RARITY : RARITY;
+	public Rarity getRarity(ItemStack stack) {
+		return stack.isEnchanted() ? Rarity.RARE.compareTo(RARITY) > 0 ? Rarity.RARE : RARITY : RARITY;
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flags) {
+	public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag flags) {
 		super.addInformation(stack, world, tooltip, flags);
-		tooltip.add(I18n.format(getTranslationKey() + ".tooltip"));
+		tooltip.add(new TranslationTextComponent(getTranslationKey() + ".tooltip"));
 	}
 }

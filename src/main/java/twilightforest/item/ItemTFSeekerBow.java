@@ -1,19 +1,19 @@
 package twilightforest.item;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.projectile.AbstractArrowEntity;
 import twilightforest.entity.EntitySeekerArrow;
 
 public class ItemTFSeekerBow extends ItemTFBowBase {
 
-	public ItemTFSeekerBow() {
-		this.setCreativeTab(TFItems.creativeTab);
+	public ItemTFSeekerBow(Properties props) {
+		super(props);
 	}
 
 	@Override
-	public EntityArrow customizeArrow(EntityArrow arrow) {
-		if (arrow.shootingEntity instanceof EntityLivingBase) {
-			return new EntitySeekerArrow(arrow.world, (EntityLivingBase) arrow.shootingEntity);
+	public AbstractArrowEntity customeArrow(AbstractArrowEntity arrow) {
+		if (arrow.shootingEntity instanceof LivingEntity) {
+			return new EntitySeekerArrow(arrow.world, (LivingEntity) arrow.shootingEntity);
 		}
 		return arrow;
 	}

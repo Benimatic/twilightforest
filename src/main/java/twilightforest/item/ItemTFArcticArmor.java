@@ -1,38 +1,29 @@
 package twilightforest.item;
 
-import net.minecraft.block.BlockCauldron;
+import net.minecraft.block.CauldronBlock;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.resources.I18n;
+import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.stats.StatList;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.stats.Stats;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.ModelRegisterCallback;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemTFArcticArmor extends ItemTFArmor implements ModelRegisterCallback {
-	public ItemTFArcticArmor(ItemArmor.ArmorMaterial armorMaterial, EquipmentSlotType armorType, EnumRarity rarity) {
-		super(armorMaterial, armorType, rarity);
-		this.setCreativeTab(TFItems.creativeTab);
+public class ItemTFArcticArmor extends ItemTFArmor implements IDyeableArmorItem {
+	public ItemTFArcticArmor(IArmorMaterial armorMaterial, EquipmentSlotType armorType, Rarity rarity, Properties props) {
+		super(armorMaterial, armorType, rarity, props);
 	}
 
 	@Override
@@ -44,21 +35,13 @@ public class ItemTFArcticArmor extends ItemTFArmor implements ModelRegisterCallb
 		}
 	}
 
-	@Override
-	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
-		if (isInCreativeTab(tab)) {
-			ItemStack istack = new ItemStack(this);
-			//istack.addEnchantment(TFEnchantment.reactFire, 2);
-			list.add(istack);
-		}
-	}
-
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, ModelBiped oldM) {
+	public BipedModel getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, BipedModel oldM) {
 		return TwilightForestMod.proxy.getArcticArmorModel(armorSlot);
 	}
 
+	//TODO 1.14: No substitute?
 	@Override
 	public boolean hasOverlay(ItemStack stack) {
 		return getColor(stack) != 0xFFFFFF;
@@ -66,8 +49,8 @@ public class ItemTFArcticArmor extends ItemTFArmor implements ModelRegisterCallb
 
 	@Override
 	public boolean hasColor(ItemStack stack) {
-		CompoundNBT CompoundNBT = stack.getTagCompound();
-		return (CompoundNBT != null && CompoundNBT.hasKey("display", 10)) && CompoundNBT.getCompoundTag("display").hasKey("color", 3);
+		CompoundNBT CompoundNBT = stack.getTag();
+		return (CompoundNBT != null && CompoundNBT.contains("display", 10)) && CompoundNBT.getCompound("display").contains("color", 3);
 	}
 
 	@Override
@@ -87,15 +70,15 @@ public class ItemTFArcticArmor extends ItemTFArmor implements ModelRegisterCallb
 
 	public int getColor(ItemStack stack, int type) {
 		String string = "";//type == 0 ? "" : ("" + type);
-		CompoundNBT stackTagCompound = stack.getTagCompound();
+		CompoundNBT stackTagCompound = stack.getTag();
 
 		int color = 0xBDCFD9;
 
 		if (stackTagCompound != null) {
-			CompoundNBT displayCompound = stackTagCompound.getCompoundTag("display");
+			CompoundNBT displayCompound = stackTagCompound.getCompound("display");
 
-			if (displayCompound.hasKey("color" + string, 3))
-				color = displayCompound.getInteger("color" + string);
+			if (displayCompound.contains("color" + string, 3))
+				color = displayCompound.getInt("color" + string);
 		}
 
 		switch (type) {
@@ -110,60 +93,60 @@ public class ItemTFArcticArmor extends ItemTFArmor implements ModelRegisterCallb
 
 	public void removeColor(ItemStack stack, int type) {
 		String string = "";//type == 0 ? "" : ("" + type);
-		CompoundNBT stackTagCompound = stack.getTagCompound();
+		CompoundNBT stackTagCompound = stack.getTag();
 
 		if (stackTagCompound != null) {
-			CompoundNBT displayCompound = stackTagCompound.getCompoundTag("display");
+			CompoundNBT displayCompound = stackTagCompound.getCompound("display");
 
-			if (displayCompound.hasKey("color" + string))
-				displayCompound.removeTag("color" + string);
+			if (displayCompound.contains("color" + string))
+				displayCompound.remove("color" + string);
 
-			if (displayCompound.hasKey("hasColor"))
-				displayCompound.setBoolean("hasColor", false);
+			if (displayCompound.contains("hasColor"))
+				displayCompound.putBoolean("hasColor", false);
 		}
 	}
 
 	public void setColor(ItemStack stack, int color, int type) {
 		String string = "";//type == 0 ? "" : ("" + type);
-		CompoundNBT stackTagCompound = stack.getTagCompound();
+		CompoundNBT stackTagCompound = stack.getTag();
 
 		if (stackTagCompound == null) {
 			stackTagCompound = new CompoundNBT();
-			stack.setTagCompound(stackTagCompound);
+			stack.setTag(stackTagCompound);
 		}
 
-		CompoundNBT displayCompound = stackTagCompound.getCompoundTag("display");
+		CompoundNBT displayCompound = stackTagCompound.getCompound("display");
 
-		if (!stackTagCompound.hasKey("display", 10))
-			stackTagCompound.setTag("display", displayCompound);
+		if (!stackTagCompound.contains("display", 10))
+			stackTagCompound.put("display", displayCompound);
 
-		displayCompound.setInteger("color" + string, color);
-		displayCompound.setBoolean("hasColor", true);
+		displayCompound.putInt("color" + string, color);
+		displayCompound.putBoolean("hasColor", true);
 	}
 
 	@Override
-	public EnumActionResult onItemUseFirst(PlayerEntity player, World world, BlockPos pos, Direction side, float hitX, float hitY, float hitZ, Hand hand) {
-		ItemStack stack = player.getHeldItem(hand);
+	public ActionResultType onItemUseFirst(ItemStack itemstack, ItemUseContext context) {
+		//ItemStack stack = player.getHeldItem(hand);
 
-		if (this.hasColor(stack)) {
-			BlockState blockAt = world.getBlockState(pos);
+		if (this.hasColor(itemstack)) {
+			BlockState blockAt = context.getWorld().getBlockState(context.getPos());
 
-			if (blockAt.getBlock() instanceof BlockCauldron && blockAt.getValue(BlockCauldron.LEVEL) > 0) {
-				removeColor(stack);
-				player.addStat(StatList.ARMOR_CLEANED);
+			if (blockAt.getBlock() instanceof CauldronBlock && blockAt.get(CauldronBlock.LEVEL) > 0) {
+				removeColor(itemstack);
+				context.getPlayer().addStat(Stats.CLEAN_ARMOR);
 
-				((BlockCauldron) blockAt.getBlock()).setWaterLevel(world, pos, blockAt, blockAt.getValue(BlockCauldron.LEVEL) - 1);
-				return EnumActionResult.SUCCESS;
+				((CauldronBlock) blockAt.getBlock()).setWaterLevel(context.getWorld(), context.getPos(), blockAt, blockAt.get(CauldronBlock.LEVEL) - 1);
+				return ActionResultType.SUCCESS;
 			}
 		}
 
-		return EnumActionResult.PASS;
+		return ActionResultType.PASS;
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
-		tooltip.add(I18n.format("item.twilightforest.arctic_armor.tooltip"));
+		tooltip.add(new TranslationTextComponent("item.twilightforest.arctic_armor.tooltip"));
 	}
 }

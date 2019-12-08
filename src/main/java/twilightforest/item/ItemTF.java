@@ -1,28 +1,26 @@
 package twilightforest.item;
 
-import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Rarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import twilightforest.client.ModelRegisterCallback;
 
 import javax.annotation.Nonnull;
 
-public class ItemTF extends Item implements ModelRegisterCallback {
-	private final EnumRarity RARITY;
+public class ItemTF extends Item {
+	private final Rarity RARITY;
 
-	protected ItemTF() {
-		this.setCreativeTab(TFItems.creativeTab);
-		this.RARITY = EnumRarity.COMMON;
+	protected ItemTF(Properties props) {
+		this(Rarity.COMMON, props);
 	}
 
-	protected ItemTF(EnumRarity rarity) {
-		this.setCreativeTab(TFItems.creativeTab);
+	protected ItemTF(Rarity rarity, Properties props) {
+		super(props.group(TFItems.creativeTab));
 		this.RARITY = rarity;
 	}
 
 	@Nonnull
 	@Override
-	public EnumRarity getRarity(ItemStack stack) {
-		return stack.isItemEnchanted() ? EnumRarity.RARE.compareTo(RARITY) > 0 ? EnumRarity.RARE : RARITY : RARITY;
+	public Rarity getRarity(ItemStack stack) {
+		return stack.isEnchanted() ? Rarity.RARE.compareTo(RARITY) > 0 ? Rarity.RARE : RARITY : RARITY;
 	}
 }

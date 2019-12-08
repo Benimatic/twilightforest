@@ -1,23 +1,18 @@
 package twilightforest.item;
 
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Enchantments;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemSpade;
-import net.minecraft.item.ItemStack;
+import net.minecraft.enchantment.Enchantments;
+import net.minecraft.item.*;
 import net.minecraft.util.NonNullList;
-import twilightforest.client.ModelRegisterCallback;
 
-public class ItemTFSteeleafShovel extends ItemSpade implements ModelRegisterCallback {
+public class ItemTFSteeleafShovel extends ShovelItem {
 
-	public ItemTFSteeleafShovel(Item.ToolMaterial toolMaterial) {
-		super(toolMaterial);
-		this.setCreativeTab(TFItems.creativeTab);
+	public ItemTFSteeleafShovel(IItemTier toolMaterial, Properties props) {
+		super(toolMaterial, 1.5F, -3.0F, props.group(TFItems.creativeTab));
 	}
 
 	@Override
-	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
-		if (isInCreativeTab(tab)) {
+	public void fillItemGroup(ItemGroup tab, NonNullList<ItemStack> list) {
+		if (isInGroup(tab)) {
 			ItemStack istack = new ItemStack(this);
 			istack.addEnchantment(Enchantments.EFFICIENCY, 2);
 			list.add(istack);

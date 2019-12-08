@@ -1,14 +1,15 @@
 package twilightforest.item;
 
-import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Rarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -19,28 +20,25 @@ import java.util.List;
 
 public class ItemTFTwilightWand extends ItemTF {
 
-	protected ItemTFTwilightWand(EnumRarity rarity) {
-		super(rarity);
-		this.maxStackSize = 1;
-		this.setMaxDamage(99);
-		this.setCreativeTab(TFItems.creativeTab);
+	protected ItemTFTwilightWand(Rarity rarity, Properties props) {
+		super(rarity, props.maxDamage(99).group(TFItems.creativeTab));
 	}
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
 		ItemStack stack = player.getHeldItem(hand);
 
-		if (stack.getItemDamage() == stack.getMaxDamage()) {
-			return ActionResult.newResult(EnumActionResult.FAIL, player.getHeldItem(hand));
+		if (stack.getDamage() == stack.getMaxDamage()) {
+			return ActionResult.newResult(ActionResultType.FAIL, player.getHeldItem(hand));
 		} else {
 			player.playSound(SoundEvents.ENTITY_GHAST_SHOOT, 1.0F, (world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F + 1.0F);
 
 			if (!world.isRemote) {
-				world.spawnEntity(new EntityTFTwilightWandBolt(world, player));
-				stack.damageItem(1, player);
+				world.addEntity(new EntityTFTwilightWandBolt(world, player));
+				stack.damageItem(1, player, (user) -> user.sendBreakAnimation(hand));
 			}
 
-			return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
+			return ActionResult.newResult(ActionResultType.SUCCESS, player.getHeldItem(hand));
 		}
 	}
 
@@ -51,8 +49,8 @@ public class ItemTFTwilightWand extends ItemTF {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flags) {
+	public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag flags) {
 		super.addInformation(stack, world, tooltip, flags);
-		tooltip.add(I18n.format("twilightforest.scepter_charges", stack.getMaxDamage() - stack.getItemDamage()));
+		tooltip.add(new TranslationTextComponent("twilightforest.scepter_charges", stack.getMaxDamage() - stack.getDamage()));
 	}
 }

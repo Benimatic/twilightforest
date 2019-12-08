@@ -4,43 +4,38 @@ import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multisets;
-import net.minecraft.block.BlockDirt;
-import net.minecraft.block.BlockStone;
-import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.block.Blocks;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.ItemMap;
+import net.minecraft.item.MapItem;
+import net.minecraft.item.Rarity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.SPacketMaps;
+import net.minecraft.network.IPacket;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.storage.MapData;
 import net.minecraft.world.storage.MapDecoration;
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TFMazeMapData;
 import twilightforest.network.TFPacketHandler;
-import twilightforest.client.ModelRegisterCallback;
 import twilightforest.network.PacketMazeMap;
 
 import javax.annotation.Nullable;
 
-public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
+public class ItemTFMazeMap extends MapItem {
 
 	public static final String STR_ID = "mazemap";
 	private static final int YSEARCH = 3;
 
 	protected final boolean mapOres;
 
-	protected ItemTFMazeMap(boolean mapOres) {
+	protected ItemTFMazeMap(boolean mapOres, Properties props) {
+		super(props);
 		this.mapOres = mapOres;
 	}
 
@@ -52,7 +47,7 @@ public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
 		world.setData(s, mapdata);
 		mapdata.scale = scale;
 		mapdata.calculateMapCenter(world, worldX, worldY, worldZ, scale); // TF custom method here
-		mapdata.dimension = world.provider.getDimension();
+		mapdata.dimension = world.dimension.getType();
 		mapdata.trackingPosition = trackingPosition;
 		mapdata.unlimitedTracking = unlimitedTracking;
 		mapdata.markDirty();
@@ -74,12 +69,12 @@ public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
 		TFMazeMapData mapdata = (TFMazeMapData) worldIn.loadData(TFMazeMapData.class, s);
 
 		if (mapdata == null && !worldIn.isRemote) {
-			stack.setItemDamage(worldIn.getUniqueDataId(STR_ID));
+			stack.setDamage(worldIn.getUniqueDataId(STR_ID));
 			s = STR_ID + "_" + stack.getMetadata();
 			mapdata = new TFMazeMapData(s);
 			mapdata.scale = 0; // TF - fix scale at 0
 			mapdata.calculateMapCenter((double) worldIn.getWorldInfo().getSpawnX(), (double) worldIn.getWorldInfo().getSpawnZ(), mapdata.scale);
-			mapdata.dimension = worldIn.provider.getDimension();
+			mapdata.dimension = worldIn.dimension.getType();
 			mapdata.markDirty();
 			worldIn.setData(s, mapdata);
 		}
@@ -91,7 +86,7 @@ public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
 	@SuppressWarnings("unused")
 	@Override
 	public void updateMapData(World world, Entity viewer, MapData data) {
-		if (world.provider.getDimension() == data.dimension && viewer instanceof PlayerEntity) {
+		if (world.dimension.getType() == data.dimension && viewer instanceof PlayerEntity) {
 			int blocksPerPixel = 1 << data.scale;
 			int centerX = data.xCenter;
 			int centerZ = data.zCenter;
@@ -99,7 +94,7 @@ public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
 			int viewerZ = MathHelper.floor(viewer.posZ - (double) centerZ) / blocksPerPixel + 64;
 			int viewRadiusPixels = 16; // TF this is smaller on the maze map
 
-			if (world.provider.isNether()) {
+			if (world.dimension.isNether()) {
 				viewRadiusPixels /= 2;
 			}
 
@@ -119,7 +114,7 @@ public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
 							boolean shouldFuzz = xPixelDist * xPixelDist + zPixelDist * zPixelDist > (viewRadiusPixels - 2) * (viewRadiusPixels - 2);
 							int worldX = (centerX / blocksPerPixel + xPixel - 64) * blocksPerPixel;
 							int worldZ = (centerZ / blocksPerPixel + zPixel - 64) * blocksPerPixel;
-							Multiset<MapColor> multiset = HashMultiset.<MapColor>create();
+							Multiset<MaterialColor> multiset = HashMultiset.<MaterialColor>create();
 							Chunk chunk = world.getChunk(new BlockPos(worldX, 0, worldZ));
 
 							int brightness = 1;
@@ -129,14 +124,14 @@ public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
 								int numLiquid = 0;
 								double d1 = 0.0D;
 
-								if (world.provider.isNether()) {
+								if (world.dimension.isNether()) {
 									int l3 = worldX + worldZ * 231871;
 									l3 = l3 * l3 * 31287121 + l3 * 11;
 
 									if ((l3 >> 20 & 1) == 0) {
-										multiset.add(Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.DIRT).getMapColor(world, BlockPos.ORIGIN), 10);
+										multiset.add(Blocks.DIRT.getDefaultState().getMaterialColor(world, BlockPos.ZERO), 10);
 									} else {
-										multiset.add(Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.STONE).getMapColor(world, BlockPos.ORIGIN), 100);
+										multiset.add(Blocks.STONE.getDefaultState().getMaterialColor(world, BlockPos.ZERO), 100);
 									}
 
 									d1 = 100.0D;
@@ -147,7 +142,7 @@ public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
 									BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos(worldXRounded, yCenter, worldZRounded);
 									BlockState state = chunk.getBlockState(blockpos$mutableblockpos);
 
-									multiset.add(state.getMapColor(world, blockpos$mutableblockpos));
+									multiset.add(state.getMaterialColor(world, blockpos$mutableblockpos));
 
 									if (state.getBlock() == Blocks.STONE || state.getBlock() == Blocks.AIR) {
 										for (int i = -YSEARCH; i <= YSEARCH; i++) {
@@ -170,22 +165,22 @@ public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
 									if (mapOres) {
 										// recolor ores
 										if (state.getBlock() == Blocks.COAL_ORE) {
-											multiset.add(MapColor.BLACK, 1000);
+											multiset.add(MaterialColor.BLACK, 1000);
 										} else if (state.getBlock() == Blocks.GOLD_ORE) {
-											multiset.add(MapColor.GOLD, 1000);
+											multiset.add(MaterialColor.GOLD, 1000);
 										} else if (state.getBlock() == Blocks.IRON_ORE) {
-											multiset.add(MapColor.IRON, 1000);
+											multiset.add(MaterialColor.IRON, 1000);
 										} else if (state.getBlock() == Blocks.LAPIS_ORE) {
-											multiset.add(MapColor.LAPIS, 1000);
-										} else if (state.getBlock() == Blocks.REDSTONE_ORE || state.getBlock() == Blocks.LIT_REDSTONE_ORE) {
-											multiset.add(MapColor.RED, 1000);
+											multiset.add(MaterialColor.LAPIS, 1000);
+										} else if (state.getBlock() == Blocks.REDSTONE_ORE) {
+											multiset.add(MaterialColor.RED, 1000);
 										} else if (state.getBlock() == Blocks.DIAMOND_ORE) {
-											multiset.add(MapColor.DIAMOND, 1000);
+											multiset.add(MaterialColor.DIAMOND, 1000);
 										} else if (state.getBlock() == Blocks.EMERALD_ORE) {
-											multiset.add(MapColor.EMERALD, 1000);
+											multiset.add(MaterialColor.EMERALD, 1000);
 										} else if (state.getBlock() != Blocks.AIR && state.getBlock().getRegistryName().getPath().contains("ore")) { // TODO: improve this 0.o
 											// any other ore, catchall
-											multiset.add(MapColor.PINK, 1000);
+											multiset.add(MaterialColor.PINK, 1000);
 										}
 									}
 								}
@@ -204,9 +199,9 @@ public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
                                     brightness = 0;
                                 }*/
 
-								MapColor mapcolor = (MapColor) Iterables.getFirst(Multisets.<MapColor>copyHighestCountFirst(multiset), MapColor.AIR);
+								MaterialColor mapcolor = (MaterialColor) Iterables.getFirst(Multisets.<MaterialColor>copyHighestCountFirst(multiset), MaterialColor.AIR);
 
-                                /*if (mapcolor == MapColor.WATER)
+                                /*if (mapcolor == MaterialColor.WATER)
                                 {
                                     d2 = (double)numLiquid * 0.1D + (double)(xPixel + zPixel & 1) * 0.2D;
                                     brightness = 1;
@@ -244,12 +239,12 @@ public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
 
 	// [VanillaCopy] super but shows a dot if player is too far in the vertical direction as well
 	@Override
-	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int slot, boolean isSelected) {
+	public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int slot, boolean isSelected) {
 		if (!worldIn.isRemote) {
 			TFMazeMapData mapdata = this.getMapData(stack, worldIn);
 
 			if (entityIn instanceof PlayerEntity) {
-				PlayerEntity PlayerEntity = (PlayerEntity) entityIn;
+				PlayerEntity entityplayer = (PlayerEntity) entityIn;
 				mapdata.updateVisiblePlayers(entityplayer, stack);
 
 				// TF - if player is far away vertically, show a dot
@@ -274,24 +269,18 @@ public class ItemTFMazeMap extends ItemMap implements ModelRegisterCallback {
 	}
 
 	@Override
-	public EnumRarity getRarity(ItemStack stack) {
-		return mapOres ? EnumRarity.UNCOMMON : EnumRarity.COMMON;
+	public Rarity getRarity(ItemStack stack) {
+		return mapOres ? Rarity.UNCOMMON : Rarity.COMMON;
 	}
 
 	@Override
 	@Nullable
-	public Packet<?> createMapDataPacket(ItemStack stack, World worldIn, PlayerEntity player) {
-		Packet<?> p = super.createMapDataPacket(stack, worldIn, player);
+	public IPacket<?> getUpdatePacket(ItemStack stack, World worldIn, PlayerEntity player) {
+		IPacket<?> p = super.getUpdatePacket(stack, worldIn, player);
 		if (p instanceof SPacketMaps) {
 			return TFPacketHandler.CHANNEL.getPacketFrom(new PacketMazeMap((SPacketMaps) p));
 		} else {
 			return p;
 		}
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	public void registerModel() {
-		ModelLoader.setCustomMeshDefinition(this, stack -> new ModelResourceLocation(getRegistryName(), "inventory"));
 	}
 }

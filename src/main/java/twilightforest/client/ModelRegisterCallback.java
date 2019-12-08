@@ -9,6 +9,8 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+//TODO 1.14: Delete all this
+@Deprecated
 public interface ModelRegisterCallback {
 
 	/**

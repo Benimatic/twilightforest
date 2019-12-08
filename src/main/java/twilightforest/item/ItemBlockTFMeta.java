@@ -12,6 +12,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.util.List;
 
+//TODO 1.14: Flattening makes this redundant
 public class ItemBlockTFMeta extends ItemBlock {
 
 	private boolean appendNumber = true;

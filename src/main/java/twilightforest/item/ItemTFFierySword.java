@@ -1,43 +1,36 @@
 package twilightforest.item;
 
-import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.init.Enchantments;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.*;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.client.ModelRegisterCallback;
 import twilightforest.util.ParticleHelper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemTFFierySword extends ItemSword implements ModelRegisterCallback {
+public class ItemTFFierySword extends SwordItem {
 
-	public ItemTFFierySword(Item.ToolMaterial toolMaterial) {
-		super(toolMaterial);
-		this.setCreativeTab(TFItems.creativeTab);
+	public ItemTFFierySword(IItemTier toolMaterial, Properties props) {
+		super(toolMaterial, 3, -2.4F, props.group(TFItems.creativeTab));
 	}
 
-	private static final EnumRarity RARITY = EnumRarity.UNCOMMON;
+	private static final Rarity RARITY = Rarity.UNCOMMON;
 
 	@Nonnull
 	@Override
-	public EnumRarity getRarity(ItemStack stack) {
-		return stack.isItemEnchanted() ? EnumRarity.RARE.compareTo(RARITY) > 0 ? EnumRarity.RARE : RARITY : RARITY;
+	public Rarity getRarity(ItemStack stack) {
+		return stack.isEnchanted() ? Rarity.RARE.compareTo(RARITY) > 0 ? Rarity.RARE : RARITY : RARITY;
 	}
 
 	@Override
-	public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
+	public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 		boolean result = super.hitEntity(stack, target, attacker);
 
 		if (result && !target.world.isRemote && !target.isImmuneToFire()) {
@@ -48,18 +41,9 @@ public class ItemTFFierySword extends ItemSword implements ModelRegisterCallback
 	}
 
 	@Override
-	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
-		if (isInCreativeTab(tab)) {
-			ItemStack stack = new ItemStack(this);
-			stack.addEnchantment(Enchantments.FIRE_ASPECT, 2);
-			list.add(stack);
-		}
-	}
-
-	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flags) {
+	public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag flags) {
 		super.addInformation(stack, world, tooltip, flags);
-		tooltip.add(I18n.format(getTranslationKey() + ".tooltip"));
+		tooltip.add(new TranslationTextComponent(getTranslationKey() + ".tooltip"));
 	}
 }

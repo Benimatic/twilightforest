@@ -1,7 +1,7 @@
 package twilightforest.item;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -9,14 +9,14 @@ import twilightforest.entity.EntityIceArrow;
 
 public class ItemTFIceBow extends ItemTFBowBase {
 
-	public ItemTFIceBow() {
-		this.setCreativeTab(TFItems.creativeTab);
+	public ItemTFIceBow(Properties props) {
+		super(props);
 	}
 
 	@Override
-	public EntityArrow customizeArrow(EntityArrow arrow) {
-		if (arrow.shootingEntity instanceof EntityLivingBase) {
-			return new EntityIceArrow(arrow.world, (EntityLivingBase) arrow.shootingEntity);
+	public AbstractArrowEntity customeArrow(AbstractArrowEntity arrow) {
+		if (arrow.shootingEntity instanceof LivingEntity) {
+			return new EntityIceArrow(arrow.world, (LivingEntity) arrow.shootingEntity);
 		}
 		return arrow;
 	}

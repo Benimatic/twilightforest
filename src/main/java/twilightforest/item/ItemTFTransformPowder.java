@@ -1,15 +1,13 @@
 package twilightforest.item;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ResourceLocation;
@@ -31,9 +29,9 @@ public class ItemTFTransformPowder extends ItemTF {
 
 	private final Map<ResourceLocation, ResourceLocation> transformMap = new HashMap<>();
 
-	protected ItemTFTransformPowder() {
-		this.maxStackSize = 64;
-		this.setCreativeTab(TFItems.creativeTab);
+	protected ItemTFTransformPowder(Properties props) {
+		super(props);
+		//this.maxStackSize = 64; TODO: Is this needed?
 
 		addTwoWayTransformation(TFEntityNames.MINOTAUR,       VanillaEntityNames.ZOMBIE_PIGMAN);
 		addTwoWayTransformation(TFEntityNames.DEER,           VanillaEntityNames.COW);
@@ -57,7 +55,7 @@ public class ItemTFTransformPowder extends ItemTF {
 	}
 
 	@Override
-	public boolean itemInteractionForEntity(ItemStack stack, PlayerEntity player, EntityLivingBase target, Hand hand) {
+	public boolean itemInteractionForEntity(ItemStack stack, PlayerEntity player, LivingEntity target, Hand hand) {
 
 		if (target.isDead) return false;
 
@@ -72,27 +70,27 @@ public class ItemTFTransformPowder extends ItemTF {
 		if (newEntity == null) return false;
 
 		newEntity.setLocationAndAngles(target.posX, target.posY, target.posZ, target.rotationYaw, target.rotationPitch);
-		if (newEntity instanceof EntityLiving) {
-			((EntityLiving) newEntity).onInitialSpawn(target.world.getDifficultyForLocation(new BlockPos(target)), null);
+		if (newEntity instanceof LivingEntity) {
+			((LivingEntity) newEntity).onInitialSpawn(target.world.getDifficultyForLocation(new BlockPos(target)), null);
 		}
 
 		try { // try copying what can be copied
 			UUID uuid = newEntity.getUniqueID();
-			newEntity.readFromNBT(target.writeToNBT(newEntity.writeToNBT(new CompoundNBT())));
+			newEntity.read(target.writeToNBT(newEntity.writeToNBT(new CompoundNBT())));
 			newEntity.setUniqueId(uuid);
 		} catch (Exception e) {
 			TwilightForestMod.LOGGER.warn("Couldn't transform entity NBT data: {}", e);
 		}
 
-		target.world.spawnEntity(newEntity);
+		target.world.addEntity(newEntity);
 		target.setDead();
 		stack.shrink(1);
 
-		if (target instanceof EntityLiving) {
-			((EntityLiving) target).spawnExplosionParticle();
-			((EntityLiving) target).spawnExplosionParticle();
+		if (target instanceof LivingEntity) {
+			((LivingEntity) target).spawnExplosionParticle();
+			((LivingEntity) target).spawnExplosionParticle();
 		}
-		target.playSound(SoundEvents.ENTITY_ZOMBIE_VILLAGER_CURE, 1.0F + itemRand.nextFloat(), itemRand.nextFloat() * 0.7F + 0.3F);
+		target.playSound(SoundEvents.ENTITY_ZOMBIE_VILLAGER_CURE, 1.0F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F);
 
 		return true;
 	}
@@ -105,7 +103,7 @@ public class ItemTFTransformPowder extends ItemTF {
 
 			// particle effect
 			for (int i = 0; i < 30; i++) {
-				world.spawnParticle(ParticleTypes.CRIT_MAGIC, fanBox.minX + world.rand.nextFloat() * (fanBox.maxX - fanBox.minX),
+				world.addParticle(ParticleTypes.CRIT_MAGIC, fanBox.minX + world.rand.nextFloat() * (fanBox.maxX - fanBox.minX),
 						fanBox.minY + world.rand.nextFloat() * (fanBox.maxY - fanBox.minY),
 						fanBox.minZ + world.rand.nextFloat() * (fanBox.maxZ - fanBox.minZ),
 						0, 0, 0);
@@ -113,7 +111,7 @@ public class ItemTFTransformPowder extends ItemTF {
 
 		}
 
-		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
+		return ActionResult.newResult(ActionResultType.SUCCESS, player.getHeldItem(hand));
 	}
 
 	private AxisAlignedBB getEffectAABB(PlayerEntity player) {

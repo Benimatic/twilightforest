@@ -1,7 +1,7 @@
 package twilightforest.item;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -13,17 +13,18 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 
 public class ItemTFMoonDial extends ItemTF {
-    public ItemTFMoonDial() {
+    public ItemTFMoonDial(Properties props) {
+        super(props);
         this.addPropertyOverride(new ResourceLocation("phase"), new IItemPropertyGetter() {
             @Override
             @OnlyIn(Dist.CLIENT)
-            public float apply(ItemStack stack, @Nullable World world, @Nullable EntityLivingBase entityBase) {
+            public float call(ItemStack stack, @Nullable World world, @Nullable LivingEntity entityBase) {
                 boolean flag = entityBase != null;
                 Entity entity = flag ? entityBase : stack.getItemFrame();
 
                 if (world == null && entity != null) world = entity.world;
 
-                return world == null ? 0.0F : (float) (world.provider.isSurfaceWorld() ? MathHelper.frac(world.getMoonPhase() / 8.0f) : this.wobble(world, Math.random()));
+                return world == null ? 0.0F : (float) (world.dimension.isSurfaceWorld() ? MathHelper.frac(world.getMoonPhase() / 8.0f) : this.wobble(world, Math.random()));
             }
 
             @OnlyIn(Dist.CLIENT)
@@ -35,8 +36,8 @@ public class ItemTFMoonDial extends ItemTF {
 
             @OnlyIn(Dist.CLIENT)
             private double wobble(World world, double rotation) {
-                if (world.getTotalWorldTime() != this.lastUpdateTick) {
-                    this.lastUpdateTick = world.getTotalWorldTime();
+                if (world.getGameTime() != this.lastUpdateTick) {
+                    this.lastUpdateTick = world.getGameTime();
                     double delta = rotation - this.rotation;
                     delta = MathHelper.positiveModulo(delta + 0.5D, 1.0D) - 0.5D;
                     this.rota += delta * 0.1D;

@@ -1,16 +1,17 @@
 package twilightforest.item;
 
-import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.init.MobEffects;
-import net.minecraft.item.EnumRarity;
+import net.minecraft.potion.Effects;
+import net.minecraft.item.Rarity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -23,11 +24,8 @@ import java.util.List;
 
 public class ItemTFZombieWand extends ItemTF {
 
-	protected ItemTFZombieWand(EnumRarity rarity) {
-		super(rarity);
-		this.maxStackSize = 1;
-		this.setMaxDamage(9);
-		this.setCreativeTab(TFItems.creativeTab);
+	protected ItemTFZombieWand(Rarity rarity, Properties props) {
+		super(rarity, props.maxDamage(9));
 	}
 
 	@Nonnull
@@ -36,8 +34,8 @@ public class ItemTFZombieWand extends ItemTF {
 
 		ItemStack stack = player.getHeldItem(hand);
 
-		if (stack.getItemDamage() == stack.getMaxDamage()) {
-			return ActionResult.newResult(EnumActionResult.FAIL, stack);
+		if (stack.getDamage() == stack.getMaxDamage()) {
+			return ActionResult.newResult(ActionResultType.FAIL, stack);
 		}
 
 		if (!world.isRemote) {
@@ -49,14 +47,14 @@ public class ItemTFZombieWand extends ItemTF {
 				zombie.setPositionAndRotation(ray.hitVec.x, ray.hitVec.y, ray.hitVec.z, 1.0F, 1.0F);
 				zombie.setTamed(true);
 				zombie.setOwnerId(player.getUniqueID());
-				zombie.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 1200, 1));
-				world.spawnEntity(zombie);
+				zombie.addPotionEffect(new EffectInstance(Effects.STRENGTH, 1200, 1));
+				world.addEntity(zombie);
 
-				stack.damageItem(1, player);
+				stack.damageItem(1, player, (user) -> user.sendBreakAnimation(hand));
 			}
 		}
 
-		return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
+		return ActionResult.newResult(ActionResultType.SUCCESS, stack);
 	}
 
 	@Override
@@ -66,8 +64,8 @@ public class ItemTFZombieWand extends ItemTF {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flags) {
+	public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag flags) {
 		super.addInformation(stack, world, tooltip, flags);
-		tooltip.add(I18n.format("twilightforest.scepter_charges", stack.getMaxDamage() - stack.getItemDamage()));
+		tooltip.add(new TranslationTextComponent("twilightforest.scepter_charges", stack.getMaxDamage() - stack.getDamage()));
 	}
 }

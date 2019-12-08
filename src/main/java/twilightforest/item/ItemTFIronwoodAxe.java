@@ -1,23 +1,18 @@
 package twilightforest.item;
 
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Enchantments;
-import net.minecraft.item.Item;
-import net.minecraft.item.AxeItem;
-import net.minecraft.item.ItemStack;
+import net.minecraft.enchantment.Enchantments;
+import net.minecraft.item.*;
 import net.minecraft.util.NonNullList;
-import twilightforest.client.ModelRegisterCallback;
 
-public class ItemTFIronwoodAxe extends AxeItem implements ModelRegisterCallback {
+public class ItemTFIronwoodAxe extends AxeItem {
 
-	protected ItemTFIronwoodAxe(Item.ToolMaterial material) {
-		super(material, 6F + material.getAttackDamage(), material.getEfficiency() * 0.05f - 3.4f);
-		this.setCreativeTab(TFItems.creativeTab);
+	protected ItemTFIronwoodAxe(IItemTier material, Properties props) {
+		super(material, 6F + material.getAttackDamage(), material.getEfficiency() * 0.05f - 3.4f, props.group(TFItems.creativeTab));
 	}
 
 	@Override
-	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
-		if (isInCreativeTab(tab)) {
+	public void fillItemGroup(ItemGroup tab, NonNullList<ItemStack> list) {
+		if (isInGroup(tab)) {
 			ItemStack istack = new ItemStack(this);
 			istack.addEnchantment(Enchantments.FORTUNE, 1);
 			list.add(istack);

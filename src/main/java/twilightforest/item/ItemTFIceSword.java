@@ -1,28 +1,26 @@
 package twilightforest.item;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.Item;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.IItemTier;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
-import net.minecraft.potion.PotionEffect;
-import twilightforest.client.ModelRegisterCallback;
+import net.minecraft.item.SwordItem;
+import net.minecraft.potion.EffectInstance;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.potions.TFPotions;
 import twilightforest.util.ParticleHelper;
 
-public class ItemTFIceSword extends ItemSword implements ModelRegisterCallback {
+public class ItemTFIceSword extends SwordItem {
 
-	public ItemTFIceSword(Item.ToolMaterial toolMaterial) {
-		super(toolMaterial);
-		this.setCreativeTab(TFItems.creativeTab);
+	public ItemTFIceSword(IItemTier toolMaterial, Properties props) {
+		super(toolMaterial, 3, -2.4F, props.group(TFItems.creativeTab));
 	}
 
 	@Override
-	public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
+	public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 		boolean result = super.hitEntity(stack, target, attacker);
 
 		if (result && !target.world.isRemote) {
-			target.addPotionEffect(new PotionEffect(TFPotions.frosty, 20 * 10, 2));
+			target.addPotionEffect(new EffectInstance(TFPotions.frosty, 20 * 10, 2));
 			ParticleHelper.spawnParticles(target, TFParticleType.SNOW, 20);
 		}
 

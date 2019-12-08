@@ -4,7 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.item.*;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
@@ -28,10 +28,10 @@ import java.util.Collections;
 import java.util.List;
 
 import static java.util.Arrays.stream;
-import static net.minecraft.init.MobEffects.REGENERATION;
+import static net.minecraft.init.Effects.REGENERATION;
 import static net.minecraft.inventory.EquipmentSlotType.*;
-import static net.minecraft.item.Item.ToolMaterial.DIAMOND;
-import static net.minecraft.item.Item.ToolMaterial.GOLD;
+import static net.minecraft.item.IItemTier.DIAMOND;
+import static net.minecraft.item.IItemTier.GOLD;
 import static twilightforest.item.TFItems.*;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
@@ -40,13 +40,13 @@ public class RegisterItemEvent {
 	public static void onRegisterItems(RegistryEvent.Register<Item> event) {
 		ItemRegistryHelper items = new ItemRegistryHelper(event.getRegistry());
 
-		items.register("naga_scale", "nagaScale", new ItemTF(EnumRarity.UNCOMMON));
-		items.register("naga_chestplate", "plateNaga", new ItemTFNagaArmor(ARMOR_NAGA, CHEST, EnumRarity.UNCOMMON).setMaxStackSize(1));
-		items.register("naga_leggings", "legsNaga", new ItemTFNagaArmor(ARMOR_NAGA, LEGS, EnumRarity.UNCOMMON).setMaxStackSize(1));
-		items.register("twilight_scepter", "scepterTwilight", new ItemTFTwilightWand(EnumRarity.UNCOMMON).setMaxStackSize(1));
-		items.register("lifedrain_scepter", "scepterLifeDrain", new ItemTFScepterLifeDrain(EnumRarity.UNCOMMON).setMaxStackSize(1));
-		items.register("zombie_scepter", "scepterZombie", new ItemTFZombieWand(EnumRarity.UNCOMMON).setMaxStackSize(1));
-		items.register("shield_scepter", "scepterShield", new ItemTFShieldWand(EnumRarity.UNCOMMON).setMaxStackSize(1));
+		items.register("naga_scale", "nagaScale", new ItemTF(Rarity.UNCOMMON));
+		items.register("naga_chestplate", "plateNaga", new ItemTFNagaArmor(ARMOR_NAGA, CHEST, Rarity.UNCOMMON).setMaxStackSize(1));
+		items.register("naga_leggings", "legsNaga", new ItemTFNagaArmor(ARMOR_NAGA, LEGS, Rarity.UNCOMMON).setMaxStackSize(1));
+		items.register("twilight_scepter", "scepterTwilight", new ItemTFTwilightWand(Rarity.UNCOMMON).setMaxStackSize(1));
+		items.register("lifedrain_scepter", "scepterLifeDrain", new ItemTFScepterLifeDrain(Rarity.UNCOMMON).setMaxStackSize(1));
+		items.register("zombie_scepter", "scepterZombie", new ItemTFZombieWand(Rarity.UNCOMMON).setMaxStackSize(1));
+		items.register("shield_scepter", "scepterShield", new ItemTFShieldWand(Rarity.UNCOMMON).setMaxStackSize(1));
 		//items.register("Wand of Pacification [NYI]", new ItemTF().setIconIndex(6).setTranslationKey("wandPacification").setMaxStackSize(1));
 		items.register("ore_meter", "oreMeter", new ItemTFOreMeter().setMaxStackSize(1));
 		items.register("magic_map", "magicMap", new ItemTFMagicMap().setMaxStackSize(1));
@@ -58,10 +58,10 @@ public class RegisterItemEvent {
 		items.register("liveroot", "liveRoot", new ItemTF());
 		items.register("ironwood_raw", "ironwoodRaw", new ItemTF());
 		items.register("ironwood_ingot", "ironwoodIngot", new ItemTF());
-		items.register("ironwood_helmet", "ironwoodHelm", new ItemTFIronwoodArmor(ARMOR_IRONWOOD, HEAD, EnumRarity.COMMON).setMaxStackSize(1));
-		items.register("ironwood_chestplate", "ironwoodPlate", new ItemTFIronwoodArmor(ARMOR_IRONWOOD, CHEST, EnumRarity.COMMON).setMaxStackSize(1));
-		items.register("ironwood_leggings", "ironwoodLegs", new ItemTFIronwoodArmor(ARMOR_IRONWOOD, LEGS, EnumRarity.COMMON).setMaxStackSize(1));
-		items.register("ironwood_boots", "ironwoodBoots", new ItemTFIronwoodArmor(ARMOR_IRONWOOD, FEET, EnumRarity.COMMON).setMaxStackSize(1));
+		items.register("ironwood_helmet", "ironwoodHelm", new ItemTFIronwoodArmor(ARMOR_IRONWOOD, HEAD, Rarity.COMMON).setMaxStackSize(1));
+		items.register("ironwood_chestplate", "ironwoodPlate", new ItemTFIronwoodArmor(ARMOR_IRONWOOD, CHEST, Rarity.COMMON).setMaxStackSize(1));
+		items.register("ironwood_leggings", "ironwoodLegs", new ItemTFIronwoodArmor(ARMOR_IRONWOOD, LEGS, Rarity.COMMON).setMaxStackSize(1));
+		items.register("ironwood_boots", "ironwoodBoots", new ItemTFIronwoodArmor(ARMOR_IRONWOOD, FEET, Rarity.COMMON).setMaxStackSize(1));
 		items.register("ironwood_sword", "ironwoodSword", new ItemTFIronwoodSword(TOOL_IRONWOOD).setMaxStackSize(1));
 		items.register("ironwood_shovel", "ironwoodShovel", new ItemTFIronwoodShovel(TOOL_IRONWOOD).setMaxStackSize(1));
 		items.register("ironwood_pickaxe", "ironwoodPick", new ItemTFIronwoodPick(TOOL_IRONWOOD).setMaxStackSize(1));
@@ -70,29 +70,29 @@ public class RegisterItemEvent {
 		items.register("torchberries", "torchberries", new ItemTF());
 		items.register("raw_venison", "venisonRaw", new ItemTFFood(3, 0.3F, true));
 		items.register("cooked_venison", "venisonCooked", new ItemTFFood(8, 0.8F, true));
-		items.register("hydra_chop", "hydraChop", new ItemTFHydraChops(18, 2.0F).setPotionEffect(new PotionEffect(REGENERATION, 100, 0), 1.0F));
-		items.register("fiery_blood", "fieryBlood", new ItemTF(EnumRarity.UNCOMMON));
-		items.register("fiery_tears", "fieryTears", new ItemTF(EnumRarity.UNCOMMON));
+		items.register("hydra_chop", "hydraChop", new ItemTFHydraChops(18, 2.0F).setPotionEffect(new EffectInstance(REGENERATION, 100, 0), 1.0F));
+		items.register("fiery_blood", "fieryBlood", new ItemTF(Rarity.UNCOMMON));
+		items.register("fiery_tears", "fieryTears", new ItemTF(Rarity.UNCOMMON));
 		items.register("trophy", "trophy", new ItemTFTrophy());
-		items.register("fiery_ingot", "fieryIngot", new ItemTF(EnumRarity.UNCOMMON));
-		items.register("fiery_helmet", "fieryHelm", new ItemTFFieryArmor(ARMOR_FIERY, HEAD, EnumRarity.UNCOMMON).setMaxStackSize(1));
-		items.register("fiery_chestplate", "fieryPlate", new ItemTFFieryArmor(ARMOR_FIERY, CHEST, EnumRarity.UNCOMMON).setMaxStackSize(1));
-		items.register("fiery_leggings", "fieryLegs", new ItemTFFieryArmor(ARMOR_FIERY, LEGS, EnumRarity.UNCOMMON).setMaxStackSize(1));
-		items.register("fiery_boots", "fieryBoots", new ItemTFFieryArmor(ARMOR_FIERY, FEET, EnumRarity.UNCOMMON).setMaxStackSize(1));
+		items.register("fiery_ingot", "fieryIngot", new ItemTF(Rarity.UNCOMMON));
+		items.register("fiery_helmet", "fieryHelm", new ItemTFFieryArmor(ARMOR_FIERY, HEAD, Rarity.UNCOMMON).setMaxStackSize(1));
+		items.register("fiery_chestplate", "fieryPlate", new ItemTFFieryArmor(ARMOR_FIERY, CHEST, Rarity.UNCOMMON).setMaxStackSize(1));
+		items.register("fiery_leggings", "fieryLegs", new ItemTFFieryArmor(ARMOR_FIERY, LEGS, Rarity.UNCOMMON).setMaxStackSize(1));
+		items.register("fiery_boots", "fieryBoots", new ItemTFFieryArmor(ARMOR_FIERY, FEET, Rarity.UNCOMMON).setMaxStackSize(1));
 		items.register("fiery_sword", "fierySword", new ItemTFFierySword(TOOL_FIERY).setMaxStackSize(1));
 		items.register("fiery_pickaxe", "fieryPick", new ItemTFFieryPick(TOOL_FIERY).setMaxStackSize(1));
 		items.register("steeleaf_ingot", "steeleafIngot", new ItemTF());
-		items.register("steeleaf_helmet", "steeleafHelm", new ItemTFSteeleafArmor(ARMOR_STEELEAF, HEAD, EnumRarity.COMMON).setMaxStackSize(1));
-		items.register("steeleaf_chestplate", "steeleafPlate", new ItemTFSteeleafArmor(ARMOR_STEELEAF, CHEST, EnumRarity.COMMON).setMaxStackSize(1));
-		items.register("steeleaf_leggings", "steeleafLegs", new ItemTFSteeleafArmor(ARMOR_STEELEAF, LEGS, EnumRarity.COMMON).setMaxStackSize(1));
-		items.register("steeleaf_boots", "steeleafBoots", new ItemTFSteeleafArmor(ARMOR_STEELEAF, FEET, EnumRarity.COMMON).setMaxStackSize(1));
+		items.register("steeleaf_helmet", "steeleafHelm", new ItemTFSteeleafArmor(ARMOR_STEELEAF, HEAD, Rarity.COMMON).setMaxStackSize(1));
+		items.register("steeleaf_chestplate", "steeleafPlate", new ItemTFSteeleafArmor(ARMOR_STEELEAF, CHEST, Rarity.COMMON).setMaxStackSize(1));
+		items.register("steeleaf_leggings", "steeleafLegs", new ItemTFSteeleafArmor(ARMOR_STEELEAF, LEGS, Rarity.COMMON).setMaxStackSize(1));
+		items.register("steeleaf_boots", "steeleafBoots", new ItemTFSteeleafArmor(ARMOR_STEELEAF, FEET, Rarity.COMMON).setMaxStackSize(1));
 		items.register("steeleaf_sword", "steeleafSword", new ItemTFSteeleafSword(TOOL_STEELEAF).setMaxStackSize(1));
 		items.register("steeleaf_shovel", "steeleafShovel", new ItemTFSteeleafShovel(TOOL_STEELEAF).setMaxStackSize(1));
 		items.register("steeleaf_pickaxe", "steeleafPick", new ItemTFSteeleafPick(TOOL_STEELEAF).setMaxStackSize(1));
 		items.register("steeleaf_axe", "steeleafAxe", new ItemTFSteeleafAxe(TOOL_STEELEAF).setMaxStackSize(1));
 		items.register("steeleaf_hoe", "steeleafHoe", new ItemTFSteeleafHoe(TOOL_STEELEAF).setMaxStackSize(1));
-		items.register("minotaur_axe_gold", "minotaurAxeGold", new ItemTFMinotaurAxe(GOLD, EnumRarity.COMMON).setMaxStackSize(1));
-		items.register("minotaur_axe", "minotaurAxe", new ItemTFMinotaurAxe(DIAMOND, EnumRarity.UNCOMMON).setMaxStackSize(1));
+		items.register("minotaur_axe_gold", "minotaurAxeGold", new ItemTFMinotaurAxe(GOLD, Rarity.COMMON).setMaxStackSize(1));
+		items.register("minotaur_axe", "minotaurAxe", new ItemTFMinotaurAxe(DIAMOND, Rarity.UNCOMMON).setMaxStackSize(1));
 		items.register("mazebreaker_pickaxe", "mazebreakerPick", new ItemTFMazebreakerPick(DIAMOND).setMaxStackSize(1));
 		items.register("transformation_powder", "transformPowder", new ItemTFTransformPowder());
 		items.register("raw_meef", "meefRaw", new ItemTFFood(2, 0.3F, true));
@@ -103,43 +103,43 @@ public class RegisterItemEvent {
 		items.register("maze_map_empty", "emptyMazeMap", new ItemTFEmptyMazeMap(false));
 		items.register("ore_map_empty", "emptyOreMap", new ItemTFEmptyMazeMap(true));
 		items.register("ore_magnet", "oreMagnet", new ItemTFOreMagnet());
-		items.register("crumble_horn", "crumbleHorn", new ItemTFCrumbleHorn(EnumRarity.RARE));
-		items.register("peacock_fan", "peacockFan", new ItemTFPeacockFan(EnumRarity.RARE));
-		items.register("moonworm_queen", "moonwormQueen", new ItemTFMoonwormQueen(EnumRarity.RARE));
-		items.register("charm_of_life_1", "charmOfLife1", new ItemCharmBaubleable(EnumRarity.UNCOMMON));
-		items.register("charm_of_life_2", "charmOfLife2", new ItemCharmBaubleable(EnumRarity.UNCOMMON));
-		items.register("charm_of_keeping_1", "charmOfKeeping1", new ItemCharmBaubleable(EnumRarity.UNCOMMON));
-		items.register("charm_of_keeping_2", "charmOfKeeping2", new ItemCharmBaubleable(EnumRarity.UNCOMMON));
-		items.register("charm_of_keeping_3", "charmOfKeeping3", new ItemCharmBaubleable(EnumRarity.UNCOMMON));
-		items.register("tower_key", "towerKey", new ItemTFTowerKey(EnumRarity.UNCOMMON));
+		items.register("crumble_horn", "crumbleHorn", new ItemTFCrumbleHorn(Rarity.RARE));
+		items.register("peacock_fan", "peacockFan", new ItemTFPeacockFan(Rarity.RARE));
+		items.register("moonworm_queen", "moonwormQueen", new ItemTFMoonwormQueen(Rarity.RARE));
+		items.register("charm_of_life_1", "charmOfLife1", new ItemCharmBaubleable(Rarity.UNCOMMON));
+		items.register("charm_of_life_2", "charmOfLife2", new ItemCharmBaubleable(Rarity.UNCOMMON));
+		items.register("charm_of_keeping_1", "charmOfKeeping1", new ItemCharmBaubleable(Rarity.UNCOMMON));
+		items.register("charm_of_keeping_2", "charmOfKeeping2", new ItemCharmBaubleable(Rarity.UNCOMMON));
+		items.register("charm_of_keeping_3", "charmOfKeeping3", new ItemCharmBaubleable(Rarity.UNCOMMON));
+		items.register("tower_key", "towerKey", new ItemTFTowerKey(Rarity.UNCOMMON));
 		items.register("borer_essence", "borerEssence", new ItemTF());
 		items.register("carminite", "carminite", new ItemTF());
 		items.register("experiment_115", "experiment115", new ItemTFExperiment115());
 		items.register("armor_shard", "armorShards", new ItemTF());
 		items.register("knightmetal_ingot", "knightMetal", new ItemTF());
 		items.register("armor_shard_cluster", "shardCluster", new ItemTF());
-		items.register("knightmetal_helmet", "knightlyHelm", new ItemTFKnightlyArmor(ARMOR_KNIGHTLY, HEAD, EnumRarity.COMMON).setMaxStackSize(1));
-		items.register("knightmetal_chestplate", "knightlyPlate", new ItemTFKnightlyArmor(ARMOR_KNIGHTLY, CHEST, EnumRarity.COMMON).setMaxStackSize(1));
-		items.register("knightmetal_leggings", "knightlyLegs", new ItemTFKnightlyArmor(ARMOR_KNIGHTLY, LEGS, EnumRarity.COMMON).setMaxStackSize(1));
-		items.register("knightmetal_boots", "knightlyBoots", new ItemTFKnightlyArmor(ARMOR_KNIGHTLY, FEET, EnumRarity.COMMON).setMaxStackSize(1));
+		items.register("knightmetal_helmet", "knightlyHelm", new ItemTFKnightlyArmor(ARMOR_KNIGHTLY, HEAD, Rarity.COMMON).setMaxStackSize(1));
+		items.register("knightmetal_chestplate", "knightlyPlate", new ItemTFKnightlyArmor(ARMOR_KNIGHTLY, CHEST, Rarity.COMMON).setMaxStackSize(1));
+		items.register("knightmetal_leggings", "knightlyLegs", new ItemTFKnightlyArmor(ARMOR_KNIGHTLY, LEGS, Rarity.COMMON).setMaxStackSize(1));
+		items.register("knightmetal_boots", "knightlyBoots", new ItemTFKnightlyArmor(ARMOR_KNIGHTLY, FEET, Rarity.COMMON).setMaxStackSize(1));
 		items.register("knightmetal_sword", "knightlySword", new ItemTFKnightlySword(TOOL_KNIGHTLY).setMaxStackSize(1));
 		items.register("knightmetal_pickaxe", "knightlyPick", new ItemTFKnightlyPick(TOOL_KNIGHTLY).setMaxStackSize(1));
 		items.register("knightmetal_axe", "knightlyAxe", new ItemTFKnightlyAxe(TOOL_KNIGHTLY).setMaxStackSize(1));
 		items.register("knightmetal_shield", "knightlyShield", new ItemKnightlyShield().setMaxStackSize(1));
-		items.register("phantom_helmet", "phantomHelm", new ItemTFPhantomArmor(ARMOR_PHANTOM, HEAD, EnumRarity.UNCOMMON).setMaxStackSize(1));
-		items.register("phantom_chestplate", "phantomPlate", new ItemTFPhantomArmor(ARMOR_PHANTOM, CHEST, EnumRarity.UNCOMMON).setMaxStackSize(1));
-		items.register("lamp_of_cinders", "lampOfCinders", new ItemTFLampOfCinders(EnumRarity.UNCOMMON));
-		items.register("alpha_fur", "alphaFur", new ItemTF(EnumRarity.UNCOMMON));
-		items.register("yeti_helmet", "yetiHelm", new ItemTFYetiArmor(ARMOR_YETI, HEAD, EnumRarity.UNCOMMON).setMaxStackSize(1));
-		items.register("yeti_chestplate", "yetiPlate", new ItemTFYetiArmor(ARMOR_YETI, CHEST, EnumRarity.UNCOMMON).setMaxStackSize(1));
-		items.register("yeti_leggings", "yetiLegs", new ItemTFYetiArmor(ARMOR_YETI, LEGS, EnumRarity.UNCOMMON).setMaxStackSize(1));
-		items.register("yeti_boots", "yetiBoots", new ItemTFYetiArmor(ARMOR_YETI, FEET, EnumRarity.UNCOMMON).setMaxStackSize(1));
+		items.register("phantom_helmet", "phantomHelm", new ItemTFPhantomArmor(ARMOR_PHANTOM, HEAD, Rarity.UNCOMMON).setMaxStackSize(1));
+		items.register("phantom_chestplate", "phantomPlate", new ItemTFPhantomArmor(ARMOR_PHANTOM, CHEST, Rarity.UNCOMMON).setMaxStackSize(1));
+		items.register("lamp_of_cinders", "lampOfCinders", new ItemTFLampOfCinders(Rarity.UNCOMMON));
+		items.register("alpha_fur", "alphaFur", new ItemTF(Rarity.UNCOMMON));
+		items.register("yeti_helmet", "yetiHelm", new ItemTFYetiArmor(ARMOR_YETI, HEAD, Rarity.UNCOMMON).setMaxStackSize(1));
+		items.register("yeti_chestplate", "yetiPlate", new ItemTFYetiArmor(ARMOR_YETI, CHEST, Rarity.UNCOMMON).setMaxStackSize(1));
+		items.register("yeti_leggings", "yetiLegs", new ItemTFYetiArmor(ARMOR_YETI, LEGS, Rarity.UNCOMMON).setMaxStackSize(1));
+		items.register("yeti_boots", "yetiBoots", new ItemTFYetiArmor(ARMOR_YETI, FEET, Rarity.UNCOMMON).setMaxStackSize(1));
 		items.register("ice_bomb", "iceBomb", new ItemTFIceBomb().setMaxStackSize(16));
 		items.register("arctic_fur", "arcticFur", new ItemTF());
-		items.register("arctic_helmet", "arcticHelm", new ItemTFArcticArmor(ARMOR_ARCTIC, HEAD, EnumRarity.COMMON).setMaxStackSize(1));
-		items.register("arctic_chestplate", "arcticPlate", new ItemTFArcticArmor(ARMOR_ARCTIC, CHEST, EnumRarity.COMMON).setMaxStackSize(1));
-		items.register("arctic_leggings", "arcticLegs", new ItemTFArcticArmor(ARMOR_ARCTIC, LEGS, EnumRarity.COMMON).setMaxStackSize(1));
-		items.register("arctic_boots", "arcticBoots", new ItemTFArcticArmor(ARMOR_ARCTIC, FEET, EnumRarity.COMMON).setMaxStackSize(1));
+		items.register("arctic_helmet", "arcticHelm", new ItemTFArcticArmor(ARMOR_ARCTIC, HEAD, Rarity.COMMON).setMaxStackSize(1));
+		items.register("arctic_chestplate", "arcticPlate", new ItemTFArcticArmor(ARMOR_ARCTIC, CHEST, Rarity.COMMON).setMaxStackSize(1));
+		items.register("arctic_leggings", "arcticLegs", new ItemTFArcticArmor(ARMOR_ARCTIC, LEGS, Rarity.COMMON).setMaxStackSize(1));
+		items.register("arctic_boots", "arcticBoots", new ItemTFArcticArmor(ARMOR_ARCTIC, FEET, Rarity.COMMON).setMaxStackSize(1));
 		items.register("magic_beans", "magicBeans", new ItemTFMagicBeans());
 		items.register("giant_pickaxe", "giantPick", new ItemTFGiantPick(TOOL_GIANT).setMaxStackSize(1));
 		items.register("giant_sword", "giantSword", new ItemTFGiantSword(TOOL_GIANT).setMaxStackSize(1));
@@ -151,8 +151,8 @@ public class RegisterItemEvent {
 		items.register("glass_sword", "glassSword", new ItemTFGlassSword(TOOL_GLASS).setMaxStackSize(1));
 		items.register("knightmetal_ring", "knightmetalRing", new ItemTF());
 		items.register("block_and_chain", "chainBlock", new ItemTFChainBlock().setMaxStackSize(1));
-		items.register("cube_talisman", "cubeTalisman", new ItemTF(EnumRarity.UNCOMMON));
-		items.register("cube_of_annihilation", "cubeOfAnnihilation", new ItemTFCubeOfAnnihilation(EnumRarity.UNCOMMON).setMaxStackSize(1));
+		items.register("cube_talisman", "cubeTalisman", new ItemTF(Rarity.UNCOMMON));
+		items.register("cube_of_annihilation", "cubeOfAnnihilation", new ItemTFCubeOfAnnihilation(Rarity.UNCOMMON).setMaxStackSize(1));
 		items.register("moon_dial", "moonDial", new ItemTFMoonDial());
 
 		String[] thornNames = stream(ThornVariant.values()).map(IStringSerializable::getName).toArray(String[]::new);
@@ -178,15 +178,15 @@ public class RegisterItemEvent {
 			}
 
 			@Override
-			public EnumRarity getRarity(ItemStack stack) {
+			public Rarity getRarity(ItemStack stack) {
 				switch (stack.getMetadata()) {
 					case 5:
 					case 6:
 					case 7:
 					case 8:
-						return EnumRarity.RARE;
+						return Rarity.RARE;
 					default:
-						return EnumRarity.COMMON;
+						return Rarity.COMMON;
 				}
 			}
 		}.setAppend(true));

@@ -1,19 +1,19 @@
 package twilightforest.item;
 
-import net.minecraft.block.BlockFlower;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.FlowerBlock;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.block.Blocks;
-import net.minecraft.init.MobEffects;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.item.EnumAction;
-import net.minecraft.item.EnumRarity;
+import net.minecraft.item.UseAction;
+import net.minecraft.item.Rarity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -25,10 +25,8 @@ import twilightforest.util.WorldUtil;
 import javax.annotation.Nonnull;
 
 public class ItemTFPeacockFan extends ItemTF {
-	ItemTFPeacockFan(EnumRarity rarity) {
-		super(rarity);
-		this.maxStackSize = 1;
-		this.setMaxDamage(1024);
+	ItemTFPeacockFan(Rarity rarity, Properties props) {
+		super(rarity, props.maxDamage(1024));
 	}
 
 	@Nonnull
@@ -37,7 +35,7 @@ public class ItemTFPeacockFan extends ItemTF {
 
 		if (!world.isRemote) {
 			if (!player.onGround) {
-				player.addPotionEffect(new PotionEffect(MobEffects.JUMP_BOOST, 45, 0));
+				player.addPotionEffect(new EffectInstance(Effects.JUMP_BOOST, 45, 0));
 			} else {
 				int fanned = doFan(world, player);
 
@@ -48,7 +46,7 @@ public class ItemTFPeacockFan extends ItemTF {
 		} else {
 			// jump if the player is in the air
 			//TODO: only one extra jump per jump
-			if (!player.onGround && !player.isPotionActive(MobEffects.JUMP_BOOST)) {
+			if (!player.onGround && !player.isPotionActive(Effects.JUMP_BOOST)) {
 				player.motionX *= 3F;
 				player.motionY = 1.5F;
 				player.motionZ *= 3F;
@@ -59,7 +57,7 @@ public class ItemTFPeacockFan extends ItemTF {
 
 				// particle effect
 				for (int i = 0; i < 30; i++) {
-					world.spawnParticle(ParticleTypes.CLOUD, fanBox.minX + world.rand.nextFloat() * (fanBox.maxX - fanBox.minX),
+					world.addParticle(ParticleTypes.CLOUD, fanBox.minX + world.rand.nextFloat() * (fanBox.maxX - fanBox.minX),
 							fanBox.minY + world.rand.nextFloat() * (fanBox.maxY - fanBox.minY),
 							fanBox.minZ + world.rand.nextFloat() * (fanBox.maxZ - fanBox.minZ),
 							lookVec.x, lookVec.y, lookVec.z);
@@ -67,22 +65,22 @@ public class ItemTFPeacockFan extends ItemTF {
 
 			}
 
-			player.playSound(SoundEvents.ENTITY_PLAYER_BREATH, 1.0F + itemRand.nextFloat(), itemRand.nextFloat() * 0.7F + 0.3F);
+			player.playSound(SoundEvents.ENTITY_PLAYER_BREATH, 1.0F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F);
 		}
 
 		player.setActiveHand(hand);
 
-		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
+		return ActionResult.newResult(ActionResultType.SUCCESS, player.getHeldItem(hand));
 	}
 
 	@Nonnull
 	@Override
-	public EnumAction getItemUseAction(ItemStack stack) {
-		return EnumAction.BLOCK;
+	public UseAction getUseAction(ItemStack stack) {
+		return UseAction.BLOCK;
 	}
 
 	@Override
-	public int getMaxItemUseDuration(ItemStack stack) {
+	public int getUseDuration(ItemStack stack) {
 		return 20;
 	}
 
@@ -100,7 +98,7 @@ public class ItemTFPeacockFan extends ItemTF {
 		Vec3d moveVec = player.getLookVec().scale(2);
 
 		for (Entity entity : world.getEntitiesWithinAABB(Entity.class, fanBox)) {
-			if (entity.canBePushed() || entity instanceof EntityItem) {
+			if (entity.canBePushed() || entity instanceof ItemEntity) {
 				entity.motionX = moveVec.x;
 				entity.motionY = moveVec.y;
 				entity.motionZ = moveVec.z;
@@ -133,8 +131,8 @@ public class ItemTFPeacockFan extends ItemTF {
 		BlockState state = world.getBlockState(pos);
 
 		if (state.getBlock() != Blocks.AIR) {
-			if (state.getBlock() instanceof BlockFlower) {
-				if (state.getBlock().canHarvestBlock(world, pos, player) && itemRand.nextInt(3) == 0) {
+			if (state.getBlock() instanceof FlowerBlock) {
+				if (state.getBlock().canHarvestBlock(state, world, pos, player) && random.nextInt(3) == 0) {
 					state.getBlock().harvestBlock(world, player, pos, state, world.getTileEntity(pos), ItemStack.EMPTY);
 					world.destroyBlock(pos, false);
 				}

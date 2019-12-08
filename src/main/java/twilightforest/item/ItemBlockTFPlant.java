@@ -10,6 +10,7 @@ import net.minecraft.world.World;
 import twilightforest.block.BlockTFPlant;
 import twilightforest.enums.PlantVariant;
 
+//TODO 1.14: It doesn't appear redundant, but it extends the redundant class
 public class ItemBlockTFPlant extends ItemBlockTFMeta {
 
 	public ItemBlockTFPlant(Block block) {

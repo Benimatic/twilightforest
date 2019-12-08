@@ -1,14 +1,13 @@
 package twilightforest.item;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
+import net.minecraft.item.ItemUseContext;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -21,36 +20,44 @@ import twilightforest.world.WorldProviderTwilightForest;
 import javax.annotation.Nonnull;
 
 public class ItemTFMagicBeans extends ItemTF {
+
+	protected ItemTFMagicBeans(Properties props) {
+		super(props);
+	}
+
 	@Nonnull
 	@Override
-	public EnumActionResult onItemUse(PlayerEntity player, World world, BlockPos pos, Hand hand, Direction side, float hitX, float hitY, float hitZ) {
+	public ActionResultType onItemUse(ItemUseContext context) {
+		World world = context.getWorld();
+		BlockPos pos = context.getPos();
+		PlayerEntity player = context.getPlayer();
 		Block blockAt = world.getBlockState(pos).getBlock();
 
 		int minY = pos.getY() + 1;
 		int maxY = Math.max(pos.getY() + 100, (int) (getCloudHeight(world) + 25));
 		if (pos.getY() < maxY && blockAt == TFBlocks.uberous_soil) {
 			if (!world.isRemote) {
-				ItemStack is = player.getHeldItem(hand);
+				ItemStack is = player.getHeldItem(context.getHand());
 				is.shrink(1);
 				makeHugeStalk(world, pos, minY, maxY);
 
-				if (player instanceof EntityPlayerMP)
-					TFAdvancements.ITEM_USE_TRIGGER.trigger((EntityPlayerMP) player, is, world, pos);
+				if (player instanceof ServerPlayerEntity)
+					TFAdvancements.ITEM_USE_TRIGGER.trigger((ServerPlayerEntity) player, is, world, pos);
 			}
 
-			return EnumActionResult.SUCCESS;
+			return ActionResultType.SUCCESS;
 		} else {
-			return EnumActionResult.PASS;
+			return ActionResultType.PASS;
 		}
 	}
 
 	@SuppressWarnings("RedundantCast")
 	private float getCloudHeight(World world) {
-		if (world.provider instanceof WorldProviderTwilightForest) {
+		if (world.dimension instanceof WorldProviderTwilightForest) {
 			// WorldProviderTwilightForest has this method on both server and client
-			return ((WorldProviderTwilightForest) world.provider).getCloudHeight(); // This cast is actually needed for some reason, else this will toss a Method Not Found on dedicated servers.
+			return ((WorldProviderTwilightForest) world.dimension).getCloudHeight(); // This cast is actually needed for some reason, else this will toss a Method Not Found on dedicated servers.
 		} else {
-			// otherwise, world.provider.getCloudHeight() is client only. guess 128
+			// otherwise, world.dimension.getCloudHeight() is client only. guess 128
 			return 128;
 		}
 	}
@@ -145,7 +152,7 @@ public class ItemTFMagicBeans extends ItemTF {
 	 */
 	private boolean tryToPlaceStalk(World world, BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
-		if (state.getBlock().isAir(state, world, pos) || state.getBlock().isReplaceable(world, pos) || state.getBlock().canBeReplacedByLeaves(state, world, pos) || state.getBlock().isLeaves(state, world, pos) || state.getBlock().canSustainLeaves(state, world, pos)) {
+		if (state.getBlock().isAir(state, world, pos) || state.getBlock().isReplaceable(world, pos) || state.getBlock().canBeReplacedByLeaves(state, world, pos) || BlockTags.LEAVES.contains(state.getBlock()) || state.getBlock().canSustainLeaves(state, world, pos)) {
 			world.setBlockState(pos, TFBlocks.huge_stalk.getDefaultState());
 			return true;
 		} else {

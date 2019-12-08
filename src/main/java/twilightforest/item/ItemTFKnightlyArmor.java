@@ -1,24 +1,22 @@
 package twilightforest.item;
 
-import net.minecraft.client.model.ModelBiped;
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.ItemArmor;
+import net.minecraft.item.IArmorMaterial;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.Rarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.ModelRegisterCallback;
 
-public class ItemTFKnightlyArmor extends ItemTFArmor implements ModelRegisterCallback {
+public class ItemTFKnightlyArmor extends ItemTFArmor {
 
-	public ItemTFKnightlyArmor(ItemArmor.ArmorMaterial material, EquipmentSlotType slot, EnumRarity rarity) {
-		super(material, slot, rarity);
-		this.setCreativeTab(TFItems.creativeTab);
+	public ItemTFKnightlyArmor(Properties props, IArmorMaterial material, EquipmentSlotType slot, Rarity rarity) {
+		super(material, slot, rarity, props.group(TFItems.creativeTab));
 	}
 
 	@Override
@@ -30,9 +28,10 @@ public class ItemTFKnightlyArmor extends ItemTFArmor implements ModelRegisterCal
 		}
 	}
 
+	//TODO: Is this even needed?
 	@Override
-	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
-		if (isInCreativeTab(tab)) {
+	public void fillItemGroup(ItemGroup tab, NonNullList<ItemStack> list) {
+		if (isInGroup(tab)) {
 			ItemStack istack = new ItemStack(this);
 			//istack.addEnchantment(TFEnchantment.reactFire, 2);
 			list.add(istack);
@@ -41,7 +40,7 @@ public class ItemTFKnightlyArmor extends ItemTFArmor implements ModelRegisterCal
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, ModelBiped original) {
+	public BipedModel getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, BipedModel original) {
 		return TwilightForestMod.proxy.getKnightlyArmorModel(armorSlot);
 	}
 }

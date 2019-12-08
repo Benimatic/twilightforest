@@ -1,21 +1,19 @@
 package twilightforest.item;
 
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.init.Enchantments;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.ItemArmor;
+import net.minecraft.item.IArmorMaterial;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.Rarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.ModelRegisterCallback;
 
-public class ItemTFSteeleafArmor extends ItemTFArmor implements ModelRegisterCallback {
+public class ItemTFSteeleafArmor extends ItemTFArmor {
 
-	public ItemTFSteeleafArmor(ItemArmor.ArmorMaterial material, EquipmentSlotType slot, EnumRarity rarity) {
-		super(material, slot, rarity);
-		this.setCreativeTab(TFItems.creativeTab);
+	public ItemTFSteeleafArmor(Properties props, IArmorMaterial material, EquipmentSlotType slot, Rarity rarity) {
+		super(material, slot, rarity, props);
 	}
 
 	@Override
@@ -28,10 +26,10 @@ public class ItemTFSteeleafArmor extends ItemTFArmor implements ModelRegisterCal
 	}
 
 	@Override
-	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list) {
-		if (isInCreativeTab(tab)) {
+	public void fillItemGroup(ItemGroup tab, NonNullList<ItemStack> list) {
+		if (isInGroup(tab)) {
 			ItemStack istack = new ItemStack(this);
-			switch (this.armorType) {
+			switch (this.slot) {
 				case HEAD:
 					istack.addEnchantment(Enchantments.PROJECTILE_PROTECTION, 2);
 					break;
