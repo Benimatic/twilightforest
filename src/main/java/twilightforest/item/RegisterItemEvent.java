@@ -4,7 +4,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.item.*;
-import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
@@ -28,7 +27,6 @@ import static java.util.Arrays.stream;
 import static net.minecraft.init.Effects.REGENERATION;
 import static net.minecraft.inventory.EquipmentSlotType.*;
 import static net.minecraft.item.ItemTier.*;
-import static twilightforest.item.TFItems.*;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class RegisterItemEvent {
@@ -64,9 +62,9 @@ public class RegisterItemEvent {
 		items.register("ironwood_axe", "ironwoodAxe", new ItemTFIronwoodAxe(TwilightItemTier.TOOL_IRONWOOD).setMaxStackSize(1));
 		items.register("ironwood_hoe", "ironwoodHoe", new ItemTFIronwoodHoe(TwilightItemTier.TOOL_IRONWOOD).setMaxStackSize(1));
 		items.register("torchberries", "torchberries", new ItemTF());
-		items.register("raw_venison", "venisonRaw", new ItemTFFood(TFItems.FOOD_VENISON_RAW));
-		items.register("cooked_venison", "venisonCooked", new ItemTFFood(TFItems.FOOD_VENISON_COOKED));
-		items.register("hydra_chop", "hydraChop", new ItemTFHydraChops(TFItems.FOOD_HYDRA_CHOP);
+		items.register("raw_venison", "venisonRaw", new ItemTFFood(TFItems.VENISON_RAW));
+		items.register("cooked_venison", "venisonCooked", new ItemTFFood(TFItems.VENISON_COOKED));
+		items.register("hydra_chop", "hydraChop", new ItemTFHydraChops(TFItems.HYDRA_CHOP);
 		items.register("fiery_blood", "fieryBlood", new ItemTF(Rarity.UNCOMMON));
 		items.register("fiery_tears", "fieryTears", new ItemTF(Rarity.UNCOMMON));
 		items.register("trophy", "trophy", new ItemTFTrophy());
@@ -91,10 +89,10 @@ public class RegisterItemEvent {
 		items.register("minotaur_axe", "minotaurAxe", new ItemTFMinotaurAxe(DIAMOND, Rarity.UNCOMMON).setMaxStackSize(1));
 		items.register("mazebreaker_pickaxe", "mazebreakerPick", new ItemTFMazebreakerPick(DIAMOND).setMaxStackSize(1));
 		items.register("transformation_powder", "transformPowder", new ItemTFTransformPowder());
-		items.register("raw_meef", "meefRaw", new ItemTFFood(TFItems.FOOD_MEEF_RAW));
-		items.register("cooked_meef", "meefSteak", new ItemTFFood(TFItems.FOOD_MEEF_COOKED));
-		items.register("meef_stroganoff", "meefStroganoff", new ItemTFSoup(TFItems.FOOD_MEEF_STROGANOFF));
-		items.register("maze_wafer", "mazeWafer", new ItemTFFood(TFItems.FOOD_MAZE_WAFER));
+		items.register("raw_meef", "meefRaw", new ItemTFFood(TFItems.MEEF_RAW));
+		items.register("cooked_meef", "meefSteak", new ItemTFFood(TFItems.MEEF_COOKED));
+		items.register("meef_stroganoff", "meefStroganoff", new ItemTFSoup(TFItems.MEEF_STROGANOFF));
+		items.register("maze_wafer", "mazeWafer", new ItemTFFood(TFItems.MAZE_WAFER));
 		items.register("magic_map_empty", "emptyMagicMap", new ItemTFEmptyMagicMap());
 		items.register("maze_map_empty", "emptyMazeMap", new ItemTFEmptyMazeMap(false));
 		items.register("ore_map_empty", "emptyOreMap", new ItemTFEmptyMazeMap(true));
@@ -110,7 +108,7 @@ public class RegisterItemEvent {
 		items.register("tower_key", "towerKey", new ItemTFTowerKey(Rarity.UNCOMMON));
 		items.register("borer_essence", "borerEssence", new ItemTF());
 		items.register("carminite", "carminite", new ItemTF());
-		items.register("experiment_115", "experiment115", new ItemTFExperiment115(TFItems.FOOD_EXPERIMENT_115));
+		items.register("experiment_115", "experiment115", new ItemTFExperiment115(TFItems.EXPERIMENT_115));
 		items.register("armor_shard", "armorShards", new ItemTF());
 		items.register("knightmetal_ingot", "knightMetal", new ItemTF());
 		items.register("armor_shard_cluster", "shardCluster", new ItemTF());
