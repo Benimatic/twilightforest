@@ -23,7 +23,7 @@ public class TFGenPenguins extends TFGenerator {
 				EntityTFPenguin penguin = new EntityTFPenguin(world);
 				penguin.moveToBlockPosAndAngles(dPos, rand.nextFloat() * 360.0F, 0.0F);
 
-				world.spawnEntity(penguin);
+				world.addEntity(penguin);
 			}
 		}
 

@@ -32,9 +32,9 @@ public class ComponentTFStrongholdSmallStairs extends StructureTFStrongholdCompo
 	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 		super.writeStructureToNBT(tagCompound);
 
-		tagCompound.setBoolean("enterBottom", this.enterBottom);
-		tagCompound.setBoolean("hasTreasure", this.hasTreasure);
-		tagCompound.setBoolean("chestTrapped", this.chestTrapped);
+		tagCompound.putBoolean("enterBottom", this.enterBottom);
+		tagCompound.putBoolean("hasTreasure", this.hasTreasure);
+		tagCompound.putBoolean("chestTrapped", this.chestTrapped);
 	}
 
 	@Override

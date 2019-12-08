@@ -4,7 +4,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
+import net.minecraft.world.ServerWorld;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.network.PacketSpawnEntityParticles;
@@ -13,14 +14,14 @@ import twilightforest.network.TFPacketHandler;
 public class ParticleHelper {
 
 	public static void spawnParticles(World world, BlockPos pos, ParticleTypes type, int count, double speed, int... particleArgs) {
-		if (world instanceof WorldServer) {
-			((WorldServer) world).spawnParticle(type, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, count, 0.5, 0.5, 0.5, speed, particleArgs);
+		if (world instanceof ServerWorld) {
+			((ServerWorld) world).spawnParticle(type, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, count, 0.5, 0.5, 0.5, speed, particleArgs);
 		}
 	}
 
 	public static void spawnParticles(Entity entity, ParticleTypes type, int count, double speed, int... particleArgs) {
-		if (entity.world instanceof WorldServer) {
-			((WorldServer) entity.world).spawnParticle(type, entity.posX, entity.posY + entity.height * 0.5, entity.posZ, count, entity.width * 0.5, entity.height * 0.5, entity.width * 0.5, speed, particleArgs);
+		if (entity.world instanceof ServerWorld) {
+			((ServerWorld) entity.world).spawnParticle(type, entity.posX, entity.posY + entity.height * 0.5, entity.posZ, count, entity.width * 0.5, entity.height * 0.5, entity.width * 0.5, speed, particleArgs);
 		}
 	}
 

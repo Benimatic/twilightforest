@@ -76,7 +76,7 @@ public abstract class StructureTFComponent extends StructureComponent {
 				armorStand.setNoGravity(true);
 				// set marker flag
 				armorStand.getDataManager().set(EntityArmorStand.STATUS, (byte) (armorStand.getDataManager().get(EntityArmorStand.STATUS) | 16));
-				world.spawnEntity(armorStand);
+				world.addEntity(armorStand);
 			}
 		}
 	}
@@ -93,22 +93,22 @@ public abstract class StructureTFComponent extends StructureComponent {
 			sheep.setAlwaysRenderNameTag(true);
 			sheep.setSilent(true);
 			sheep.setNoGravity(true);
-			world.spawnEntity(sheep);
+			world.addEntity(sheep);
 		}
 	}
 
 	@Override
 	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-		tagCompound.setInteger("si", this.spawnListIndex);
+		tagCompound.putInt("si", this.spawnListIndex);
 		tagCompound.setString("deco", StructureTFDecorator.getDecoString(this.deco));
-		tagCompound.setInteger("rot", this.rotation.ordinal());
+		tagCompound.putInt("rot", this.rotation.ordinal());
 	}
 
 	@Override
 	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
-		this.spawnListIndex = tagCompound.getInteger("si");
+		this.spawnListIndex = tagCompound.getInt("si");
 		this.deco = StructureTFDecorator.getDecoFor(tagCompound.getString("deco"));
-		this.rotation = Rotation.values()[tagCompound.getInteger("rot") % Rotation.values().length];
+		this.rotation = Rotation.values()[tagCompound.getInt("rot") % Rotation.values().length];
 	}
 
 	/**

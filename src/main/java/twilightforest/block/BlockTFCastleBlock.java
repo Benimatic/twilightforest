@@ -2,7 +2,7 @@ package twilightforest.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -11,7 +11,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemTool;
+import net.minecraft.item.ToolItem;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.NonNullList;
@@ -38,7 +38,7 @@ public class BlockTFCastleBlock extends Block implements ModelRegisterCallback {
 	public static final IProperty<CastleBrickVariant> VARIANT = PropertyEnum.create("variant", CastleBrickVariant.class);
 
 	public BlockTFCastleBlock() {
-		super(Material.ROCK, MapColor.QUARTZ);
+		super(Material.ROCK, MaterialColor.QUARTZ);
 		this.setHardness(100F);
 		this.setResistance(35F);
 		this.setSoundType(SoundType.STONE);
@@ -63,14 +63,14 @@ public class BlockTFCastleBlock extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public MapColor getMapColor(BlockState state, IBlockAccess world, BlockPos pos) {
-		return state.getValue(VARIANT) == CastleBrickVariant.ROOF ? MapColor.GRAY : super.getMapColor(state, world, pos);
+	public MaterialColor getMaterialColor(BlockState state, IBlockAccess world, BlockPos pos) {
+		return state.getValue(VARIANT) == CastleBrickVariant.ROOF ? MaterialColor.GRAY : super.getMaterialColor(state, world, pos);
 	}
 
 	@Override
 	public void harvestBlock(World world, PlayerEntity player, BlockPos pos, BlockState state, @Nullable TileEntity te, ItemStack stack) {
 		ItemStack cei = player.getHeldItemMainhand();
-		if (cei.getItem() instanceof ItemTool && !(cei.getItem() instanceof ItemTFMazebreakerPick)) {
+		if (cei.getItem() instanceof ToolItem && !(cei.getItem() instanceof ItemTFMazebreakerPick)) {
 			cei.damageItem(16, player);
 		}
 

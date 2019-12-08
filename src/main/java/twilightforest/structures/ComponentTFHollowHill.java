@@ -54,13 +54,13 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 	@Override
 	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 		super.writeStructureToNBT(tagCompound);
-		tagCompound.setInteger("hillSize", this.hillSize);
+		tagCompound.putInt("hillSize", this.hillSize);
 	}
 
 	@Override
 	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
 		super.readStructureFromNBT(tagCompound, templateManager);
-		this.hillSize = tagCompound.getInteger("hillSize");
+		this.hillSize = tagCompound.getInt("hillSize");
 		this.radius = ((hillSize * 2 + 1) * 8) - 6;
 
 	}

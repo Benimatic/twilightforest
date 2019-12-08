@@ -79,7 +79,7 @@ public class TFGenMonolith extends TFGenerator {
 				EntityTFRaven raven = new EntityTFRaven(world);
 				raven.moveToBlockPosAndAngles(dPos, rand.nextFloat() * 360.0F, 0.0F);
 
-				world.spawnEntity(raven);
+				world.addEntity(raven);
 			}
 		}
 

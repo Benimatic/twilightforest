@@ -2,7 +2,7 @@ package twilightforest.block;
 
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockRotatedPillar;
-import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -35,11 +35,11 @@ public abstract class BlockTFConnectableRotatedPillar extends BlockRotatedPillar
         this(material, material.getMaterialMapColor(), width, height);
     }
 
-    BlockTFConnectableRotatedPillar(Material material, MapColor mapColor, double size) {
+    BlockTFConnectableRotatedPillar(Material material, MaterialColor mapColor, double size) {
         this(material, mapColor, size, size);
     }
 
-    BlockTFConnectableRotatedPillar(Material material, MapColor mapColor, double width, double height) {
+    BlockTFConnectableRotatedPillar(Material material, MaterialColor mapColor, double width, double height) {
         super(material, mapColor);
 
         if (width >= 16d) {

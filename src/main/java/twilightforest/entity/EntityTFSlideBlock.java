@@ -214,7 +214,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 		Block b = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(compound.getString("TileID")));
 		int meta = compound.getByte("Meta");
 		this.myState = b.getStateFromMeta(meta);
-		this.slideTime = compound.getInteger("Time");
+		this.slideTime = compound.getInt("Time");
 		dataManager.set(MOVE_DIRECTION, Direction.byIndex(compound.getByte("Direction")));
 	}
 

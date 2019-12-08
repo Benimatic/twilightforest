@@ -8,7 +8,7 @@ import blusunrize.immersiveengineering.api.shader.ShaderRegistry;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Rarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -81,16 +81,16 @@ public class ItemTFShader extends Item implements IShaderItem, ModelRegisterCall
     }
 
     @Override
-    public EnumRarity getRarity(ItemStack stack) {
+    public Rarity getRarity(ItemStack stack) {
         return ShaderRegistry.shaderRegistry.get(getShaderType(stack)).getRarity();
     }
 
     @Nonnull
     private static String getShaderType(ItemStack stack) {
-        CompoundNBT compound = stack.getTagCompound();
+        CompoundNBT compound = stack.getTag();
 
         if (compound != null) {
-            String string = stack.getTagCompound().getString(TAG_SHADER);
+            String string = stack.getTag().getString(TAG_SHADER);
 
             if (!string.isEmpty() && ShaderRegistry.shaderRegistry.containsKey(string))
                 return string;
@@ -123,7 +123,7 @@ public class ItemTFShader extends Item implements IShaderItem, ModelRegisterCall
 
                 ItemStack stack = new ItemStack(this, 1, 0);
                 compound.setString(TAG_SHADER, entry.getName());
-                stack.setTagCompound(compound);
+                stack.setTag(compound);
 
                 items.add(stack);
             }

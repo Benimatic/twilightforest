@@ -62,7 +62,7 @@ public abstract class TileEntityTFBossSpawner extends TileEntity implements ITic
 		initializeCreature(myCreature);
 
 		// spawn it
-		return world.spawnEntity(myCreature);
+		return world.addEntity(myCreature);
 	}
 
 	/**

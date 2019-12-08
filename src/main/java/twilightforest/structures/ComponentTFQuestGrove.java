@@ -110,7 +110,7 @@ public class ComponentTFQuestGrove extends StructureTFComponentOld {
 				ram.setHomePosAndDistance(pos, 13);
 				ram.onInitialSpawn(world.getDifficultyForLocation(pos), null);
 
-				world.spawnEntity(ram);
+				world.addEntity(ram);
 			}
 		}
 

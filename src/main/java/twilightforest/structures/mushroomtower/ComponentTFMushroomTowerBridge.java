@@ -40,8 +40,8 @@ public class ComponentTFMushroomTowerBridge extends ComponentTFMushroomTowerWing
 	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 		super.writeStructureToNBT(tagCompound);
 
-		tagCompound.setInteger("destSize", this.dSize);
-		tagCompound.setInteger("destHeight", this.dHeight);
+		tagCompound.putInt("destSize", this.dSize);
+		tagCompound.putInt("destHeight", this.dHeight);
 	}
 
 	/**
@@ -50,8 +50,8 @@ public class ComponentTFMushroomTowerBridge extends ComponentTFMushroomTowerWing
 	@Override
 	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
 		super.readStructureFromNBT(tagCompound, templateManager);
-		this.dSize = tagCompound.getInteger("destSize");
-		this.dHeight = tagCompound.getInteger("destHeight");
+		this.dSize = tagCompound.getInt("destSize");
+		this.dHeight = tagCompound.getInt("destHeight");
 	}
 
 	@Override

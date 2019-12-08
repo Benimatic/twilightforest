@@ -3,7 +3,7 @@ package twilightforest.block;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -33,7 +33,7 @@ public class BlockTFCastleMagic extends Block implements ModelRegisterCallback {
 	public static final IProperty<DyeColor> COLOR = PropertyEnum.create("color", DyeColor.class, VALID_COLORS);
 
 	public BlockTFCastleMagic() {
-		super(Material.ROCK, MapColor.QUARTZ);
+		super(Material.ROCK, MaterialColor.QUARTZ);
 		this.setHardness(100F);
 		this.setResistance(15F);
 		this.setSoundType(SoundType.STONE);

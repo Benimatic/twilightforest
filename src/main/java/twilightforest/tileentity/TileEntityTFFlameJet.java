@@ -91,13 +91,13 @@ public class TileEntityTFFlameJet extends TileEntity implements ITickable {
 	@Override
 	public void readFromNBT(CompoundNBT compound) {
 		super.readFromNBT(compound);
-		this.nextVariant = FireJetVariant.values()[compound.getInteger("NextMeta")];
+		this.nextVariant = FireJetVariant.values()[compound.getInt("NextMeta")];
 	}
 
 	@Override
 	public CompoundNBT writeToNBT(CompoundNBT compound) {
 		super.writeToNBT(compound);
-		compound.setInteger("NextMeta", this.nextVariant.ordinal());
+		compound.putInt("NextMeta", this.nextVariant.ordinal());
 		return compound;
 	}
 }

@@ -178,7 +178,7 @@ public class TFGenGraveyard extends TFGenerator {
 							TFTreasure.graveyard.generateChestContents(world, placement.add(chestloc));
 						EntityTFWraith wraith = new EntityTFWraith(world);
 						wraith.setPositionAndUpdate(placement.getX(), placement.getY(), placement.getZ());
-						world.spawnEntity(wraith);
+						world.addEntity(wraith);
 					}
 				}
 				grave.getValue().getDataBlocks(placement, placementsettings).forEach((p, s) -> {

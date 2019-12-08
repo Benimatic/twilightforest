@@ -49,9 +49,9 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 		super.writeStructureToNBT(tagCompound);
 
-		tagCompound.setInteger("trunkRadius", this.radius);
-		tagCompound.setInteger("trunkHeight", this.height);
-		tagCompound.setInteger("trunkGroundLevel", this.groundLevel);
+		tagCompound.putInt("trunkRadius", this.radius);
+		tagCompound.putInt("trunkHeight", this.height);
+		tagCompound.putInt("trunkGroundLevel", this.groundLevel);
 
 	}
 
@@ -62,9 +62,9 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
 		super.readStructureFromNBT(tagCompound, templateManager);
 
-		this.radius = tagCompound.getInteger("trunkRadius");
-		this.height = tagCompound.getInteger("trunkHeight");
-		this.groundLevel = tagCompound.getInteger("trunkGroundLevel");
+		this.radius = tagCompound.getInt("trunkRadius");
+		this.height = tagCompound.getInt("trunkHeight");
+		this.groundLevel = tagCompound.getInt("trunkGroundLevel");
 	}
 
 	/**

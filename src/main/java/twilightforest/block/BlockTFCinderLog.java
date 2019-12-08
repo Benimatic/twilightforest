@@ -1,7 +1,7 @@
 package twilightforest.block;
 
 import net.minecraft.block.BlockLog;
-import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
@@ -53,7 +53,7 @@ public class BlockTFCinderLog extends BlockLog implements ModelRegisterCallback 
 	}
 
 	@Override
-	public MapColor getMapColor(BlockState state, IBlockAccess world, BlockPos pos) {
-		return MapColor.GRAY;
+	public MaterialColor getMaterialColor(BlockState state, IBlockAccess world, BlockPos pos) {
+		return MaterialColor.GRAY;
 	}
 }

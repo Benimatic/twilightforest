@@ -153,10 +153,10 @@ public class BlockTFTrophy extends BlockSkull implements ModelRegisterCallback, 
 
                     /*if (tileentityskull.getSkullType() == 3 && tileentityskull.getPlayerProfile() != null)
 					{
-                        itemstack.setTagCompound(new CompoundNBT());
+                        itemstack.setTag(new CompoundNBT());
                         CompoundNBT CompoundNBT = new CompoundNBT();
                         NBTUtil.writeGameProfile(CompoundNBT, tileentityskull.getPlayerProfile());
-                        itemstack.getTagCompound().setTag("SkullOwner", CompoundNBT);
+                        itemstack.getTag().setTag("SkullOwner", CompoundNBT);
                     }*/// TF - don't set player skins
 
 					ret.add(itemstack);

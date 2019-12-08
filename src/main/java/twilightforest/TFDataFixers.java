@@ -121,7 +121,7 @@ public class TFDataFixers {
         // Basically we just need to shove the structure ID from the `FeatureID` key to the regular `id`.
         @Override
         public CompoundNBT fixTagCompound(CompoundNBT compound) {
-            int featureID = compound.getInteger("FeatureID");
+            int featureID = compound.getInt("FeatureID");
 
             compound.setString("id", featureID < startIDs.length ? startIDs[featureID] : "TFNothing");
 

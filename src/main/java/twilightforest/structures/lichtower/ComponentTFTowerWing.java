@@ -73,16 +73,16 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 		super.writeStructureToNBT(tagCompound);
 
-		tagCompound.setInteger("towerSize", this.size);
-		tagCompound.setInteger("towerHeight", this.height);
+		tagCompound.putInt("towerSize", this.size);
+		tagCompound.putInt("towerHeight", this.height);
 
 		tagCompound.setIntArray("doorInts", this.getDoorsAsIntArray());
 
-		tagCompound.setInteger("highestOpening", this.highestOpening);
-		tagCompound.setBoolean("openingTowards0", this.openingTowards[0]);
-		tagCompound.setBoolean("openingTowards1", this.openingTowards[1]);
-		tagCompound.setBoolean("openingTowards2", this.openingTowards[2]);
-		tagCompound.setBoolean("openingTowards3", this.openingTowards[3]);
+		tagCompound.putInt("highestOpening", this.highestOpening);
+		tagCompound.putBoolean("openingTowards0", this.openingTowards[0]);
+		tagCompound.putBoolean("openingTowards1", this.openingTowards[1]);
+		tagCompound.putBoolean("openingTowards2", this.openingTowards[2]);
+		tagCompound.putBoolean("openingTowards3", this.openingTowards[3]);
 
 	}
 
@@ -104,12 +104,12 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 	@Override
 	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
 		super.readStructureFromNBT(tagCompound, templateManager);
-		this.size = tagCompound.getInteger("towerSize");
-		this.height = tagCompound.getInteger("towerHeight");
+		this.size = tagCompound.getInt("towerSize");
+		this.height = tagCompound.getInt("towerHeight");
 
 		this.readOpeningsFromArray(tagCompound.getIntArray("doorInts"));
 
-		this.highestOpening = tagCompound.getInteger("highestOpening");
+		this.highestOpening = tagCompound.getInt("highestOpening");
 		// too lazy to do this as a loop
 		this.openingTowards[0] = tagCompound.getBoolean("openingTowards0");
 		this.openingTowards[1] = tagCompound.getBoolean("openingTowards1");
@@ -1993,7 +1993,7 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 			// check if we can fit a painting there
 			if (checkPainting(world, painting, sbb)) {
 				// place the painting
-				world.spawnEntity(painting);
+				world.addEntity(painting);
 			}
 		}
 	}

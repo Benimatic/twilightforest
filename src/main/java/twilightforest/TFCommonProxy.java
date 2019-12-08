@@ -1,8 +1,10 @@
 package twilightforest;
 
 import net.minecraft.advancements.Advancement;
+import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -13,12 +15,14 @@ import twilightforest.inventory.ContainerTFUncrafting;
 import twilightforest.tileentity.TileEntityTFCinderFurnace;
 import twilightforest.tileentity.critters.*;
 
+//TODO 1.14: Splinter this from Proxies. We're not using them anymore. Meantime, here's what to keep and toss:
 public class TFCommonProxy implements IGuiHandler {
 
 	public void preInit() {}
 
 	public void init() {}
 
+	//TODO: YEET
 	public void spawnParticle(TFParticleType particleType, double x, double y, double z, double vx, double vy, double vz) {}
 
 	//TODO: YEET
@@ -45,23 +49,28 @@ public class TFCommonProxy implements IGuiHandler {
 		}
 	}
 
-	public ModelBiped getKnightlyArmorModel(EquipmentSlotType armorSlot) {
+	//TODO: Move
+	public BipedModel getKnightlyArmorModel(EquipmentSlotType armorSlot) {
 		return null;
 	}
 
-	public ModelBiped getPhantomArmorModel(EquipmentSlotType armorSlot) {
+	//TODO: Move
+	public BipedModel getPhantomArmorModel(EquipmentSlotType armorSlot) {
 		return null;
 	}
 
-	public ModelBiped getYetiArmorModel(EquipmentSlotType armorSlot) {
+	//TODO: Move
+	public BipedModel<?> getYetiArmorModel(EquipmentSlotType armorSlot) {
 		return null;
 	}
 
-	public ModelBiped getArcticArmorModel(EquipmentSlotType armorSlot) {
+	//TODO: Move
+	public BipedModel<?> getArcticArmorModel(EquipmentSlotType armorSlot) {
 		return null;
 	}
 
-	public ModelBiped getFieryArmorModel(EquipmentSlotType armorSlot) {
+	//TODO: Move
+	public BipedModel<?> getFieryArmorModel(EquipmentSlotType armorSlot) {
 		return null;
 	}
 
@@ -73,18 +82,22 @@ public class TFCommonProxy implements IGuiHandler {
 		return false;
 	}
 
+	//TODO: Move to TileEntityType?
 	public TileEntityTFCicada getNewCicadaTE() {
 		return new TileEntityTFCicada();
 	}
 
+	//TODO: Move to TileEntityType?
 	public TileEntityTFFirefly getNewFireflyTE() {
 		return new TileEntityTFFirefly();
 	}
 
+	//TODO: Move to TileEntityType?
 	public TileEntityTFMoonworm getNewMoonwormTE() {
 		return new TileEntityTFMoonworm();
 	}
 
+	//TODO: Move to TileEntityType
 	public void registerCritterTileEntities() {
 		GameRegistry.registerTileEntity(TileEntityTFFirefly.class,  prefix("firefly" ));
 		GameRegistry.registerTileEntity(TileEntityTFCicada.class,   prefix("cicada"  ));

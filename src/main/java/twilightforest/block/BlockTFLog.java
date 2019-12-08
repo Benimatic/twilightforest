@@ -1,7 +1,7 @@
 package twilightforest.block;
 
 import net.minecraft.block.BlockLog;
-import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -77,7 +77,7 @@ public class BlockTFLog extends BlockLog implements ModelRegisterCallback {
 	}
 
 	@Override
-	public MapColor getMapColor(BlockState state, IBlockAccess world, BlockPos pos) {
+	public MaterialColor getMaterialColor(BlockState state, IBlockAccess world, BlockPos pos) {
 		return state.getValue(VARIANT).supplyMapColor();
 	}
 

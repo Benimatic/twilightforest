@@ -61,15 +61,15 @@ public abstract class StructureTFComponentTemplate extends StructureTFComponent 
     @Override
     protected void writeStructureToNBT(CompoundNBT tagCompound) {
         super.writeStructureToNBT(tagCompound);
-        tagCompound.setInteger("TPX", this.templatePosition.getX());
-        tagCompound.setInteger("TPY", this.templatePosition.getY());
-        tagCompound.setInteger("TPZ", this.templatePosition.getZ());
+        tagCompound.putInt("TPX", this.templatePosition.getX());
+        tagCompound.putInt("TPY", this.templatePosition.getY());
+        tagCompound.putInt("TPZ", this.templatePosition.getZ());
     }
 
     @Override
     protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager manager) {
         super.readStructureFromNBT(tagCompound, manager);
-        this.templatePosition = new BlockPos(tagCompound.getInteger("TPX"), tagCompound.getInteger("TPY"), tagCompound.getInteger("TPZ"));
+        this.templatePosition = new BlockPos(tagCompound.getInt("TPX"), tagCompound.getInt("TPY"), tagCompound.getInt("TPZ"));
         this.placeSettings.setRotation(this.rotation);
         setup(manager, FMLCommonHandler.instance().getMinecraftServerInstance());
     }

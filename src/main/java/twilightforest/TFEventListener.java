@@ -694,7 +694,7 @@ public class TFEventListener {
 
 	private static void banishNewbieToTwilightZone(PlayerEntity player) {
 		CompoundNBT tagCompound = player.getEntityData();
-		CompoundNBT playerData = tagCompound.getCompoundTag(PlayerEntity.PERSISTED_NBT_TAG);
+		CompoundNBT playerData = tagCompound.getCompound(PlayerEntity.PERSISTED_NBT_TAG);
 
 		// getBoolean returns false, if false or didn't exist
 		boolean shouldBanishPlayer = TFConfig.dimension.newPlayersSpawnInTF && !playerData.getBoolean(NBT_TAG_TWILIGHT);
@@ -742,7 +742,7 @@ public class TFEventListener {
 				if (entityBlocking.canBlockDamageSource(new DamageSource("parry_this") {
 					@Override
 					public Vec3d getDamageLocation() { return projectile.getPositionVector(); }
-				}) && (entityBlocking.getActiveItemStack().getItem().getMaxItemUseDuration(entityBlocking.getActiveItemStack()) - entityBlocking.getItemInUseCount()) <= TFConfig.shieldInteractions.shieldParryTicksArrow) {
+				}) && (entityBlocking.getActiveItemStack().getItem().getUseDuration(entityBlocking.getActiveItemStack()) - entityBlocking.getItemInUseCount()) <= TFConfig.shieldInteractions.shieldParryTicksArrow) {
 					Vec3d playerVec3 = entityBlocking.getLookVec();
 
 					projectile.shoot(playerVec3.x, playerVec3.y, playerVec3.z, 1.1F, 0.1F);  // reflect faster and more accurately
@@ -771,7 +771,7 @@ public class TFEventListener {
 				if (entityBlocking.canBlockDamageSource(new DamageSource("parry_this") {
 					@Override
 					public Vec3d getDamageLocation() { return projectile.getPositionVector(); }
-				}) && (entityBlocking.getActiveItemStack().getItem().getMaxItemUseDuration(entityBlocking.getActiveItemStack()) - entityBlocking.getItemInUseCount()) <= TFConfig.shieldInteractions.shieldParryTicksFireball) {
+				}) && (entityBlocking.getActiveItemStack().getItem().getUseDuration(entityBlocking.getActiveItemStack()) - entityBlocking.getItemInUseCount()) <= TFConfig.shieldInteractions.shieldParryTicksFireball) {
 					Vec3d playerVec3 = entityBlocking.getLookVec();
 
 					projectile.motionX = playerVec3.x;
@@ -805,7 +805,7 @@ public class TFEventListener {
 				if (entityBlocking.canBlockDamageSource(new DamageSource("parry_this") {
 					@Override
 					public Vec3d getDamageLocation() { return projectile.getPositionVector(); }
-				}) && (entityBlocking.getActiveItemStack().getItem().getMaxItemUseDuration(entityBlocking.getActiveItemStack()) - entityBlocking.getItemInUseCount()) <= TFConfig.shieldInteractions.shieldParryTicksThrowable) {
+				}) && (entityBlocking.getActiveItemStack().getItem().getUseDuration(entityBlocking.getActiveItemStack()) - entityBlocking.getItemInUseCount()) <= TFConfig.shieldInteractions.shieldParryTicksThrowable) {
 					Vec3d playerVec3 = entityBlocking.getLookVec();
 
 					projectile.shoot(playerVec3.x, playerVec3.y, playerVec3.z, 1.1F, 0.1F);  // reflect faster and more accurately

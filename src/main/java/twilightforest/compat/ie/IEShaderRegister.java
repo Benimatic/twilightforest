@@ -8,7 +8,7 @@ import net.minecraft.client.Minecraft;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Rarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import org.apache.logging.log4j.util.TriConsumer;
@@ -130,10 +130,10 @@ public class IEShaderRegister {
     private static List<ShaderRegistry.ShaderRegistryEntry> SHADERS;
     private static List<ShaderRegistry.ShaderRegistryEntry> NONBOSSES;
 
-    private static final EnumRarity RARITY = TwilightForestMod.getRarity();
+    private static final Rarity RARITY = TwilightForestMod.getRarity();
 
     static {
-        if (RARITY != EnumRarity.EPIC)
+        if (RARITY != Rarity.EPIC)
             ShaderRegistry.rarityWeightMap.put(RARITY, 1);
 
         initShaders();
@@ -218,7 +218,7 @@ public class IEShaderRegister {
     }
 
     @SafeVarargs
-    private static ShaderRegistry.ShaderRegistryEntry registerShaderCasesTopped(String name, ModType mod, String overlayType, EnumRarity rarity, int bodyColor, int colorSecondary, int gripColor, int colorBlade, ShaderLayerProvider<? extends ShaderCase.ShaderLayer>[] providers, ShaderLayerProvider<? extends ShaderCase.ShaderLayer>... extraProviders) {
+    private static ShaderRegistry.ShaderRegistryEntry registerShaderCasesTopped(String name, ModType mod, String overlayType, Rarity rarity, int bodyColor, int colorSecondary, int gripColor, int colorBlade, ShaderLayerProvider<? extends ShaderCase.ShaderLayer>[] providers, ShaderLayerProvider<? extends ShaderCase.ShaderLayer>... extraProviders) {
         ShaderRegistry.registerShader_Item(name, rarity, gripColor, bodyColor, colorSecondary);
 
         registerShaderCaseRevolver   ( name, gripColor, bodyColor, colorBlade, rarity, provideFromProviders( mod, CaseType.REVOLVER        , overlayType, colorSecondary, providers ), provideFromProviders( mod, CaseType.REVOLVER        , overlayType          , colorSecondary, extraProviders ));
@@ -238,7 +238,7 @@ public class IEShaderRegister {
     }
 
     @SafeVarargs
-    private static ShaderRegistry.ShaderRegistryEntry registerShaderCases(String name, ModType type, String overlayType, EnumRarity rarity, int bodyColor, int colorSecondary, int gripColor, int colorBlade, ShaderLayerProvider<? extends ShaderCase.ShaderLayer>... providers) {
+    private static ShaderRegistry.ShaderRegistryEntry registerShaderCases(String name, ModType type, String overlayType, Rarity rarity, int bodyColor, int colorSecondary, int gripColor, int colorBlade, ShaderLayerProvider<? extends ShaderCase.ShaderLayer>... providers) {
         return registerShaderCasesTopped(name, type, overlayType, rarity, bodyColor, colorSecondary, gripColor, colorBlade, providers);
     }
 
@@ -258,7 +258,7 @@ public class IEShaderRegister {
     }
 
     @SuppressWarnings("UnusedReturnValue")
-    private static ShaderCaseRevolver registerShaderCaseRevolver(String name, int gripColor, int bodyColor, int bladeColor, EnumRarity rarity, ShaderCase.ShaderLayer[] additionalLayers, ShaderCase.ShaderLayer... topLayers) {
+    private static ShaderCaseRevolver registerShaderCaseRevolver(String name, int gripColor, int bodyColor, int bladeColor, Rarity rarity, ShaderCase.ShaderLayer[] additionalLayers, ShaderCase.ShaderLayer... topLayers) {
         ImmutableList.Builder<ShaderCase.ShaderLayer> shaderLayerBuilder = ImmutableList.builder();
 
         return ShaderRegistry.registerShaderCase(name, new ShaderCaseRevolver(
@@ -270,7 +270,7 @@ public class IEShaderRegister {
     }
 
     @SuppressWarnings("UnusedReturnValue")
-    private static ShaderCaseChemthrower registerShaderCaseChemthrower(String name, int gripColor, int bodyColor, EnumRarity rarity, ShaderCase.ShaderLayer[] additionalLayers, ShaderCase.ShaderLayer... topLayers) {
+    private static ShaderCaseChemthrower registerShaderCaseChemthrower(String name, int gripColor, int bodyColor, Rarity rarity, ShaderCase.ShaderLayer[] additionalLayers, ShaderCase.ShaderLayer... topLayers) {
         ImmutableList.Builder<ShaderCase.ShaderLayer> shaderLayerBuilder = ImmutableList.builder();
 
         return ShaderRegistry.registerShaderCase(name, new TFShaderCaseChemthrower( 3 + additionalLayers.length,
@@ -281,7 +281,7 @@ public class IEShaderRegister {
     }
 
     @SuppressWarnings("UnusedReturnValue")
-    private static ShaderCaseDrill registerShaderCaseDrill(String name, int gripColor, int bodyColor, int bladeColor, EnumRarity rarity, ShaderCase.ShaderLayer[] additionalLayers, ShaderCase.ShaderLayer... topLayers) {
+    private static ShaderCaseDrill registerShaderCaseDrill(String name, int gripColor, int bodyColor, int bladeColor, Rarity rarity, ShaderCase.ShaderLayer[] additionalLayers, ShaderCase.ShaderLayer... topLayers) {
         ImmutableList.Builder<ShaderCase.ShaderLayer> shaderLayerBuilder = ImmutableList.builder();
 
         return ShaderRegistry.registerShaderCase(name, new TFShaderCaseDrill( 5 + additionalLayers.length,
@@ -292,7 +292,7 @@ public class IEShaderRegister {
     }
 
     @SuppressWarnings("UnusedReturnValue")
-    private static ShaderCaseRailgun registerShaderCaseRailgun(String name, int gripColor, int bodyColor, EnumRarity rarity, ShaderCase.ShaderLayer[] additionalLayers, ShaderCase.ShaderLayer... topLayers) {
+    private static ShaderCaseRailgun registerShaderCaseRailgun(String name, int gripColor, int bodyColor, Rarity rarity, ShaderCase.ShaderLayer[] additionalLayers, ShaderCase.ShaderLayer... topLayers) {
         ImmutableList.Builder<ShaderCase.ShaderLayer> shaderLayerBuilder = ImmutableList.builder();
 
         return ShaderRegistry.registerShaderCase(name, new TFShaderCaseRailgun( 3 + additionalLayers.length,
@@ -303,7 +303,7 @@ public class IEShaderRegister {
     }
 
     @SuppressWarnings("UnusedReturnValue")
-    private static ShaderCaseShield registerShaderCaseShield(String name, int gripColor, int bodyColor, EnumRarity rarity, ShaderCase.ShaderLayer[] additionalLayers, ShaderCase.ShaderLayer... topLayers) {
+    private static ShaderCaseShield registerShaderCaseShield(String name, int gripColor, int bodyColor, Rarity rarity, ShaderCase.ShaderLayer[] additionalLayers, ShaderCase.ShaderLayer... topLayers) {
         ImmutableList.Builder<ShaderCase.ShaderLayer> shaderLayerBuilder = ImmutableList.builder();
 
         return ShaderRegistry.registerShaderCase(name, new TFShaderCaseShield( 3 + additionalLayers.length,
@@ -314,7 +314,7 @@ public class IEShaderRegister {
     }
 
     @SuppressWarnings("UnusedReturnValue")
-    private static ShaderCaseMinecart registerShaderCaseMinecart(String name, int bodyColor, int secondaryColor, EnumRarity rarity, ShaderCase.ShaderLayer[] additionalLayers, ShaderCase.ShaderLayer... topLayers) {
+    private static ShaderCaseMinecart registerShaderCaseMinecart(String name, int bodyColor, int secondaryColor, Rarity rarity, ShaderCase.ShaderLayer[] additionalLayers, ShaderCase.ShaderLayer... topLayers) {
         ImmutableList.Builder<ShaderCase.ShaderLayer> shaderLayerBuilder = ImmutableList.builder();
 
         return ShaderRegistry.registerShaderCase(name, new ShaderCaseMinecart(
@@ -325,7 +325,7 @@ public class IEShaderRegister {
     }
 
     @SuppressWarnings("UnusedReturnValue")
-    private static ShaderCaseBalloon registerShaderCaseBalloon(String name, int gripColor, int bodyColor, EnumRarity rarity, ShaderCase.ShaderLayer[] additionalLayers, ShaderCase.ShaderLayer... topLayers) {
+    private static ShaderCaseBalloon registerShaderCaseBalloon(String name, int gripColor, int bodyColor, Rarity rarity, ShaderCase.ShaderLayer[] additionalLayers, ShaderCase.ShaderLayer... topLayers) {
         ImmutableList.Builder<ShaderCase.ShaderLayer> shaderLayerBuilder = ImmutableList.builder();
 
         return ShaderRegistry.registerShaderCase(name, new ShaderCaseBalloon(

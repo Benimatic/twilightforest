@@ -38,10 +38,10 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 		super.writeStructureToNBT(tagCompound);
 
-		tagCompound.setBoolean("openingTowards0", this.openingTowards[0]);
-		tagCompound.setBoolean("openingTowards1", this.openingTowards[1]);
-		tagCompound.setBoolean("openingTowards2", this.openingTowards[2]);
-		tagCompound.setBoolean("openingTowards3", this.openingTowards[3]);
+		tagCompound.putBoolean("openingTowards0", this.openingTowards[0]);
+		tagCompound.putBoolean("openingTowards1", this.openingTowards[1]);
+		tagCompound.putBoolean("openingTowards2", this.openingTowards[2]);
+		tagCompound.putBoolean("openingTowards3", this.openingTowards[3]);
 	}
 
 	@Override

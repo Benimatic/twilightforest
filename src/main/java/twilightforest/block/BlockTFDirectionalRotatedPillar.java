@@ -1,7 +1,7 @@
 package twilightforest.block;
 
 import net.minecraft.block.BlockRotatedPillar;
-import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -21,7 +21,7 @@ public abstract class BlockTFDirectionalRotatedPillar extends BlockRotatedPillar
 		super(materialIn);
 	}
 
-	public BlockTFDirectionalRotatedPillar(Material materialIn, MapColor color) {
+	public BlockTFDirectionalRotatedPillar(Material materialIn, MaterialColor color) {
 		super(materialIn, color);
 	}
 

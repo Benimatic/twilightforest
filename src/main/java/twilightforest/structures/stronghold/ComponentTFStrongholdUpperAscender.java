@@ -29,7 +29,7 @@ public class ComponentTFStrongholdUpperAscender extends StructureTFStrongholdCom
 	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 		super.writeStructureToNBT(tagCompound);
 
-		tagCompound.setBoolean("exitTop", this.exitTop);
+		tagCompound.putBoolean("exitTop", this.exitTop);
 	}
 
 	@Override

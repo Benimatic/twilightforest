@@ -206,7 +206,7 @@ public class TwilightForestMod {
 		return new ResourceLocation(ID, ENVIRO_DIR + name);
 	}
 
-	public static EnumRarity getRarity() {
-		return rarity != null ? rarity : EnumRarity.EPIC;
+	public static Rarity getRarity() {
+		return rarity != null ? rarity : Rarity.EPIC;
 	}
 }

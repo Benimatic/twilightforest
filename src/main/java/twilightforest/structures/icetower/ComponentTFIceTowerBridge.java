@@ -35,13 +35,13 @@ public class ComponentTFIceTowerBridge extends StructureTFComponentOld {
 	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 		super.writeStructureToNBT(tagCompound);
 
-		tagCompound.setInteger("bridgeLength", this.length);
+		tagCompound.putInt("bridgeLength", this.length);
 	}
 
 	@Override
 	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
 		super.readStructureFromNBT(tagCompound, templateManager);
-		this.length = tagCompound.getInteger("bridgeLength");
+		this.length = tagCompound.getInt("bridgeLength");
 	}
 
 	@Override

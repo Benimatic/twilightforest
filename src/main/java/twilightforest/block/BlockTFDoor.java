@@ -3,7 +3,7 @@ package twilightforest.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.Items;
@@ -19,12 +19,12 @@ import java.util.Random;
 
 public class BlockTFDoor extends BlockDoor implements ModelRegisterCallback {
 
-    private final MapColor mapColor;
+    private final MaterialColor mapColor;
     private final ResourceLocation itemLocation;
 
     private Item item;
 
-    protected BlockTFDoor(Material material, MapColor mapColor, ResourceLocation itemLocation) {
+    protected BlockTFDoor(Material material, MaterialColor mapColor, ResourceLocation itemLocation) {
         super(material);
         this.mapColor = mapColor;
         this.itemLocation = itemLocation;
@@ -36,7 +36,7 @@ public class BlockTFDoor extends BlockDoor implements ModelRegisterCallback {
     }
 
     @Override
-    public MapColor getMapColor(BlockState state, IBlockAccess world, BlockPos pos) {
+    public MaterialColor getMaterialColor(BlockState state, IBlockAccess world, BlockPos pos) {
         return mapColor;
     }
 

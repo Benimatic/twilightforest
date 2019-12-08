@@ -40,15 +40,15 @@ public class ComponentTFDarkTowerBeard extends StructureTFComponentOld {
 	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 		super.writeStructureToNBT(tagCompound);
 
-		tagCompound.setInteger("beardSize", this.size);
-		tagCompound.setInteger("beardHeight", this.height);
+		tagCompound.putInt("beardSize", this.size);
+		tagCompound.putInt("beardHeight", this.height);
 	}
 
 	@Override
 	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
 		super.readStructureFromNBT(tagCompound, templateManager);
-		this.size = tagCompound.getInteger("beardSize");
-		this.height = tagCompound.getInteger("beardHeight");
+		this.size = tagCompound.getInt("beardSize");
+		this.height = tagCompound.getInt("beardHeight");
 	}
 
 

@@ -3,7 +3,7 @@ package twilightforest.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPressurePlate;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
@@ -12,9 +12,9 @@ import twilightforest.client.ModelRegisterCallback;
 
 public class BlockTFPressurePlate extends BlockPressurePlate implements ModelRegisterCallback {
 
-    private final MapColor mapColor;
+    private final MaterialColor mapColor;
 
-    public BlockTFPressurePlate(Material material, MapColor mapColor, BlockPressurePlate.Sensitivity sensitivity) {
+    public BlockTFPressurePlate(Material material, MaterialColor mapColor, BlockPressurePlate.Sensitivity sensitivity) {
         super(material, sensitivity);
         this.mapColor = mapColor;
     }
@@ -25,7 +25,7 @@ public class BlockTFPressurePlate extends BlockPressurePlate implements ModelReg
     }
 
     @Override
-    public MapColor getMapColor(BlockState state, IBlockAccess world, BlockPos pos) {
+    public MaterialColor getMaterialColor(BlockState state, IBlockAccess world, BlockPos pos) {
         return mapColor;
     }
 }

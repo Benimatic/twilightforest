@@ -2,7 +2,7 @@ package twilightforest.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
@@ -24,7 +24,7 @@ public class BlockTFDiagonal extends Block implements ModelRegisterCallback {
         super(material);
     }
 
-    public BlockTFDiagonal(Material material, MapColor mapColor) {
+    public BlockTFDiagonal(Material material, MaterialColor mapColor) {
         super(material, mapColor);
     }
 

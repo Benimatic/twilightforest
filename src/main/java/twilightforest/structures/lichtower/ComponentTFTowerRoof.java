@@ -36,8 +36,8 @@ public abstract class ComponentTFTowerRoof extends StructureTFComponentOld {
 	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 		super.writeStructureToNBT(tagCompound);
 
-		tagCompound.setInteger("roofSize", this.size);
-		tagCompound.setInteger("roofHeight", this.height);
+		tagCompound.putInt("roofSize", this.size);
+		tagCompound.putInt("roofHeight", this.height);
 	}
 
 	/**
@@ -46,8 +46,8 @@ public abstract class ComponentTFTowerRoof extends StructureTFComponentOld {
 	@Override
 	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
 		super.readStructureFromNBT(tagCompound, templateManager);
-		this.size = tagCompound.getInteger("roofSize");
-		this.height = tagCompound.getInteger("roofHeight");
+		this.size = tagCompound.getInt("roofSize");
+		this.height = tagCompound.getInt("roofHeight");
 	}
 
 	/**

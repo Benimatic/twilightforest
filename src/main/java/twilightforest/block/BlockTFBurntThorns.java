@@ -1,7 +1,7 @@
 package twilightforest.block;
 
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -39,8 +39,8 @@ public class BlockTFBurntThorns extends BlockTFThorns {
 	}
 
 	@Override
-	public MapColor getMapColor(BlockState state, IBlockAccess world, BlockPos pos) {
-		return MapColor.STONE;
+	public MaterialColor getMaterialColor(BlockState state, IBlockAccess world, BlockPos pos) {
+		return MaterialColor.STONE;
 	}
 
 	@Override

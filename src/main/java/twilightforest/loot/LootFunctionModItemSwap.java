@@ -30,7 +30,7 @@ public class LootFunctionModItemSwap extends LootFunction {
     public ItemStack apply(ItemStack stack, Random rand, LootContext context) {
         ItemStack newStack = new ItemStack(item, stack.getCount(), stack.getItemDamage());
 
-        newStack.setTagCompound(stack.getTagCompound());
+        newStack.setTag(stack.getTag());
 
         return newStack;
     }

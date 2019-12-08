@@ -50,17 +50,17 @@ public class LootFunctionEnchant extends LootFunction {
 
 	// Not using stack.addEnchantment because it doesn't handle duplicates like enchanted book does
 	private void addEnchantment(ItemStack stack, Enchantment e, short level) {
-		if (stack.getTagCompound() == null) {
-			stack.setTagCompound(new CompoundNBT());
+		if (stack.getTag() == null) {
+			stack.setTag(new CompoundNBT());
 		}
 
 		final String enchantedCompoundKey = stack.getItem() == Items.ENCHANTED_BOOK ? "StoredEnchantments" : "ench";
 
-		if (!stack.getTagCompound().hasKey(enchantedCompoundKey, Constants.NBT.TAG_LIST)) {
-			stack.getTagCompound().setTag(enchantedCompoundKey, new NBTTagList());
+		if (!stack.getTag().contains(enchantedCompoundKey, Constants.NBT.TAG_LIST)) {
+			stack.getTag().setTag(enchantedCompoundKey, new NBTTagList());
 		}
 
-		NBTTagList list = stack.getTagCompound().getTagList(enchantedCompoundKey, Constants.NBT.TAG_COMPOUND);
+		NBTTagList list = stack.getTag().getTagList(enchantedCompoundKey, Constants.NBT.TAG_COMPOUND);
 
 		for (int i = 0; i < list.tagCount(); i++) {
 			CompoundNBT existing = list.getCompoundTagAt(i);

@@ -43,8 +43,8 @@ public class ComponentTFCloudCastle extends StructureTFComponentOld {
 	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 		super.writeStructureToNBT(tagCompound);
 
-		tagCompound.setBoolean("minerPlaced", this.minerPlaced);
-		tagCompound.setBoolean("warriorPlaced", this.warriorPlaced);
+		tagCompound.putBoolean("minerPlaced", this.minerPlaced);
+		tagCompound.putBoolean("warriorPlaced", this.warriorPlaced);
 	}
 
 	@Override
@@ -103,7 +103,7 @@ public class ComponentTFCloudCastle extends StructureTFComponentOld {
 				miner.enablePersistence();
 				miner.onInitialSpawn(world.getDifficultyForLocation(pos), null);
 
-				world.spawnEntity(miner);
+				world.addEntity(miner);
 			}
 		}
 		if (!this.warriorPlaced) {
@@ -120,7 +120,7 @@ public class ComponentTFCloudCastle extends StructureTFComponentOld {
 				warrior.enablePersistence();
 				warrior.onInitialSpawn(world.getDifficultyForLocation(pos), null);
 
-				world.spawnEntity(warrior);
+				world.addEntity(warrior);
 			}
 		}
 

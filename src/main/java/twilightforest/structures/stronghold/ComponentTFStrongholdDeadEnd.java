@@ -31,7 +31,7 @@ public class ComponentTFStrongholdDeadEnd extends StructureTFStrongholdComponent
 	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 		super.writeStructureToNBT(tagCompound);
 
-		tagCompound.setBoolean("chestTrapped", this.chestTrapped);
+		tagCompound.putBoolean("chestTrapped", this.chestTrapped);
 	}
 
 	@Override

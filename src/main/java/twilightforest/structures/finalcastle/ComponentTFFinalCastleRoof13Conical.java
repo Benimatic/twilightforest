@@ -38,13 +38,13 @@ public class ComponentTFFinalCastleRoof13Conical extends StructureTFComponentOld
 	@Override
 	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 		super.writeStructureToNBT(tagCompound);
-		tagCompound.setInteger("slope", this.slope);
+		tagCompound.putInt("slope", this.slope);
 	}
 
 	@Override
 	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
 		super.readStructureFromNBT(tagCompound, templateManager);
-		this.slope = tagCompound.getInteger("slope");
+		this.slope = tagCompound.getInt("slope");
 	}
 
 	@Override

@@ -863,7 +863,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 
 		// cauldron and brewing stand
 		this.setBlockStateRotated(world, Blocks.BREWING_STAND.getDefaultState(), 13, y + 2, 5, rotation, sbb);
-		this.setBlockStateRotated(world, Blocks.CAULDRON.getDefaultState().withProperty(BlockCauldron.LEVEL, 3), 15, y + 2, 3, rotation, sbb);
+		this.setBlockStateRotated(world, Blocks.CAULDRON.getDefaultState().withProperty(CauldronBlock.LEVEL, 3), 15, y + 2, 3, rotation, sbb);
 
 		// bookshelves in corner
 		this.fillBlocksRotated(world, sbb, 10, y + 1, 17, 17, y + 4, 17, deco.blockState, rotation);
@@ -1048,7 +1048,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 			}
 
 			// check if the frame is on a valid surface or not?  The wall may not have been generated yet, on a chunk boundry
-			world.spawnEntity(frame);
+			world.addEntity(frame);
 		}
 	}
 

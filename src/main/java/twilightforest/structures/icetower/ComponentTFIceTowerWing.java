@@ -44,8 +44,8 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 		super.writeStructureToNBT(tagCompound);
 
-		tagCompound.setBoolean("hasBase", this.hasBase);
-		tagCompound.setInteger("treasureFloor", this.treasureFloor);
+		tagCompound.putBoolean("hasBase", this.hasBase);
+		tagCompound.putInt("treasureFloor", this.treasureFloor);
 	}
 
 	/**
@@ -55,7 +55,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
 		super.readStructureFromNBT(tagCompound, templateManager);
 		this.hasBase = tagCompound.getBoolean("hasBase");
-		this.treasureFloor = tagCompound.getInteger("treasureFloor");
+		this.treasureFloor = tagCompound.getInt("treasureFloor");
 	}
 
 	@Override

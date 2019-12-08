@@ -27,8 +27,8 @@ public class TFMagicMapData extends MapData {
 	}
 
 	@Override
-	public void readFromNBT(CompoundNBT cmp) {
-		super.readFromNBT(cmp);
+	public void read(CompoundNBT cmp) {
+		super.read(cmp);
 
 		byte[] featureStorage = cmp.getByteArray("features");
 		if (featureStorage.length > 0) {
@@ -37,11 +37,11 @@ public class TFMagicMapData extends MapData {
 	}
 
 	@Override
-	public CompoundNBT writeToNBT(CompoundNBT cmp) {
-		cmp = super.writeToNBT(cmp);
+	public CompoundNBT write(CompoundNBT cmp) {
+		cmp = super.write(cmp);
 
 		if (this.tfDecorations.size() > 0) {
-			cmp.setByteArray("features", serializeFeatures());
+			cmp.putByteArray("features", serializeFeatures());
 		}
 
 		return cmp;
@@ -121,7 +121,7 @@ public class TFMagicMapData extends MapData {
 		@OnlyIn(Dist.CLIENT)
 		public boolean render(int idx) {
 			if (TFFeature.getFeatureByID(featureId).isStructureEnabled) {
-				Minecraft.getInstance().renderEngine.bindTexture(MAP_ICONS);
+				Minecraft.getInstance().textureManager.bindTexture(MAP_ICONS);
 				GlStateManager.pushMatrix();
 				GlStateManager.translatef(0.0F + getX() / 2.0F + 64.0F, 0.0F + getY() / 2.0F + 64.0F, -0.02F);
 				GlStateManager.rotatef((float) (getRotation() * 360) / 16.0F, 0.0F, 0.0F, 1.0F);

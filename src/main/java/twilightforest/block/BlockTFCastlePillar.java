@@ -3,7 +3,7 @@ package twilightforest.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -31,7 +31,7 @@ public class BlockTFCastlePillar extends Block implements ModelRegisterCallback 
     public static final IProperty<CastlePillarVariant> VARIANT = PropertyEnum.create("variant", CastlePillarVariant.class);
 
     BlockTFCastlePillar() {
-        super(Material.ROCK, MapColor.QUARTZ);
+        super(Material.ROCK, MaterialColor.QUARTZ);
         this.setHardness(100F);
         this.setResistance(35F);
         this.setSoundType(SoundType.STONE);

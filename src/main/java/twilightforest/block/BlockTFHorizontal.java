@@ -3,7 +3,7 @@ package twilightforest.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.BlockState;
@@ -21,7 +21,7 @@ public class BlockTFHorizontal extends BlockHorizontal implements ModelRegisterC
         super(material);
     }
 
-    protected BlockTFHorizontal(Material material, MapColor mapColor) {
+    protected BlockTFHorizontal(Material material, MaterialColor mapColor) {
         super(material, mapColor);
     }
 

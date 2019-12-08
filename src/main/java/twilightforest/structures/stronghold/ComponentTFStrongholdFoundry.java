@@ -29,13 +29,13 @@ public class ComponentTFStrongholdFoundry extends StructureTFStrongholdComponent
 	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 		super.writeStructureToNBT(tagCompound);
 
-		tagCompound.setInteger("entranceLevel", this.entranceLevel);
+		tagCompound.putInt("entranceLevel", this.entranceLevel);
 	}
 
 	@Override
 	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
 		super.readStructureFromNBT(tagCompound, templateManager);
-		this.entranceLevel = tagCompound.getInteger("entranceLevel");
+		this.entranceLevel = tagCompound.getInt("entranceLevel");
 	}
 
 	@Override

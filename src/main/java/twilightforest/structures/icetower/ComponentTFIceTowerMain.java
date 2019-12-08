@@ -45,7 +45,7 @@ public class ComponentTFIceTowerMain extends ComponentTFIceTowerWing {
 	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 		super.writeStructureToNBT(tagCompound);
 
-		tagCompound.setBoolean("hasBossWing", this.hasBossWing);
+		tagCompound.putBoolean("hasBossWing", this.hasBossWing);
 	}
 
 	/**

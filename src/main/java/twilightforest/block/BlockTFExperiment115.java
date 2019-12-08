@@ -3,7 +3,7 @@ package twilightforest.block;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -46,7 +46,7 @@ public class BlockTFExperiment115 extends Block implements ModelRegisterCallback
     };
 
     public BlockTFExperiment115() {
-        super(Material.CAKE, MapColor.IRON);
+        super(Material.CAKE, MaterialColor.IRON);
         this.setTickRandomly(true);
         this.setDefaultState(this.blockState.getBaseState().withProperty(NOMS, 7).withProperty(REGENERATE, false));
         this.setSoundType(SoundType.CLOTH);

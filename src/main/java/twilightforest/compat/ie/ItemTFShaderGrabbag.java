@@ -4,12 +4,12 @@ import blusunrize.immersiveengineering.api.shader.ShaderRegistry;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Rarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.translation.I18n;
@@ -46,7 +46,7 @@ public class ItemTFShaderGrabbag extends Item implements ModelRegisterCallback {
                 CompoundNBT compound = new CompoundNBT();
                 compound.setString(TAG_SHADER, ShaderRegistry.sortedRarityMap.get(i).toString());
 
-                stack.setTagCompound(compound);
+                stack.putCompound(compound);
 
                 items.add(stack);
             }
@@ -54,21 +54,21 @@ public class ItemTFShaderGrabbag extends Item implements ModelRegisterCallback {
     }
 
     @Override
-    public EnumRarity getRarity(ItemStack stack) {
-        CompoundNBT compound = stack.getTagCompound();
+    public Rarity getRarity(ItemStack stack) {
+        CompoundNBT compound = stack.getTag();
 
         if (compound == null) {
-            stack.setTagCompound(new CompoundNBT());
-            compound = stack.getTagCompound();
+            stack.putCompound(new CompoundNBT());
+            compound = stack.getTag();
         }
 
         String rarityString = compound.getString(TAG_SHADER);
 
-        for(EnumRarity rarity : EnumRarity.values())
+        for(Rarity rarity : Rarity.values())
             if(rarity.toString().equalsIgnoreCase(rarityString))
                 return rarity;
 
-        return EnumRarity.COMMON;
+        return Rarity.COMMON;
     }
 
     @Override
@@ -83,7 +83,7 @@ public class ItemTFShaderGrabbag extends Item implements ModelRegisterCallback {
         ItemStack stack = playerIn.getHeldItem(handIn);
 
         if (!worldIn.isRemote) {
-            EnumRarity rarity = stack.getRarity();
+            Rarity rarity = stack.getRarity();
 
             if (rarity == TwilightForestMod.getRarity()) {
                 List<ShaderRegistry.ShaderRegistryEntry> list = IEShaderRegister.getAllNonbossShaders();
@@ -94,19 +94,19 @@ public class ItemTFShaderGrabbag extends Item implements ModelRegisterCallback {
             }
         }
 
-        return new ActionResult<>(EnumActionResult.PASS, stack);
+        return new ActionResult<>(ActionResultType.PASS, stack);
     }
 
     private static ActionResult<ItemStack> randomShader(@Nullable String shader, ItemStack stack, PlayerEntity playerIn) {
         if ( shader == null || shader.isEmpty() )
-            return new ActionResult<>(EnumActionResult.FAIL, stack);
+            return new ActionResult<>(ActionResultType.FAIL, stack);
 
         ItemStack shaderItem = new ItemStack(ItemTFShader.shader);
-        CompoundNBT compound = shaderItem.getTagCompound();
+        CompoundNBT compound = shaderItem.getTag();
 
         if (compound == null) {
-            shaderItem.setTagCompound(new CompoundNBT());
-            compound = shaderItem.getTagCompound();
+            shaderItem.setTag(new CompoundNBT());
+            compound = shaderItem.getTag();
         }
 
         compound.setString(ItemTFShader.TAG_SHADER, shader);
@@ -114,12 +114,12 @@ public class ItemTFShaderGrabbag extends Item implements ModelRegisterCallback {
         stack.shrink(1);
 
         if (stack.getCount() <= 0)
-            return new ActionResult<>(EnumActionResult.SUCCESS, shaderItem);
+            return new ActionResult<>(ActionResultType.SUCCESS, shaderItem);
 
         if (!playerIn.inventory.addItemStackToInventory(shaderItem))
             playerIn.dropItem(shaderItem, false, true);
 
-        return new ActionResult<>(EnumActionResult.PASS, stack);
+        return new ActionResult<>(ActionResultType.PASS, stack);
     }
 
     @OnlyIn(Dist.CLIENT)

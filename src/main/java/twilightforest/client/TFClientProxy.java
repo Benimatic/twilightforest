@@ -220,6 +220,7 @@ public class TFClientProxy extends TFCommonProxy {
 	}
 
 	// [VanillaCopy] adapted from RenderGlobal.spawnParticle
+	// TODO: 1.14 no longer needs this. Use Particle registry
 	@Override
 	public void spawnParticle(TFParticleType particleType, double x, double y, double z, double vx, double vy, double vz) {
 

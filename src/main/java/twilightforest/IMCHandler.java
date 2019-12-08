@@ -101,8 +101,8 @@ public class IMCHandler {
 		if (nbtState.getBlock() != Blocks.AIR) {
 			ORE_BLOCKS_BUILDER.add(nbtState);
 
-			if (nbt.hasKey("Stalactite_Settings", Constants.NBT.TAG_COMPOUND)) {
-				CompoundNBT settings = nbt.getCompoundTag("Stalactite_Settings");
+			if (nbt.contains("Stalactite_Settings", Constants.NBT.TAG_COMPOUND)) {
+				CompoundNBT settings = nbt.getCompound("Stalactite_Settings");
 				int weight    = readInt(settings, "Weight", 15);
 				int hillSize  = readInt(settings, "Hill_Size", 3);
 				float size    = readFloat(settings, "Size", 0.7f);
@@ -114,11 +114,11 @@ public class IMCHandler {
 	}
 
 	private static int readInt(CompoundNBT tag, String key, int defaultValue) {
-		return tag.hasKey(key, Constants.NBT.TAG_ANY_NUMERIC) ? tag.getInteger(key) : defaultValue;
+		return tag.contains(key, Constants.NBT.TAG_ANY_NUMERIC) ? tag.getInt(key) : defaultValue;
 	}
 
 	private static float readFloat(CompoundNBT tag, String key, float defaultValue) {
-		return tag.hasKey(key, Constants.NBT.TAG_ANY_NUMERIC) ? tag.getFloat(key) : defaultValue;
+		return tag.contains(key, Constants.NBT.TAG_ANY_NUMERIC) ? tag.getFloat(key) : defaultValue;
 	}
 
 	public static ImmutableSet<BlockState> getBlacklistedBlocks() {

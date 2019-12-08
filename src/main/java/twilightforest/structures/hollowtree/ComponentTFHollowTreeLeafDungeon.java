@@ -54,7 +54,7 @@ public class ComponentTFHollowTreeLeafDungeon extends StructureTFTreeComponent
 	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 		super.writeStructureToNBT(tagCompound);
 
-		tagCompound.setInteger("leafRadius", this.radius);
+		tagCompound.putInt("leafRadius", this.radius);
 
 	}
 
@@ -65,7 +65,7 @@ public class ComponentTFHollowTreeLeafDungeon extends StructureTFTreeComponent
 	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
 		super.readStructureFromNBT(tagCompound, templateManager);
 
-		this.radius = tagCompound.getInteger("leafRadius");
+		this.radius = tagCompound.getInt("leafRadius");
 	}
 
 	@Override

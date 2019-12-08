@@ -2,7 +2,7 @@ package twilightforest.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -36,7 +36,7 @@ public class BlockTFSpiralBrick extends Block implements ModelRegisterCallback {
     public static final IProperty<Direction.Axis> AXIS_FACING = PropertyEnum.create("axis", Direction.Axis.class);
 
     public BlockTFSpiralBrick() {
-        super(Material.ROCK, MapColor.STONE);
+        super(Material.ROCK, MaterialColor.STONE);
         this.setHardness(1.5F);
         this.setResistance(10.0F);
         this.setSoundType(SoundType.STONE);

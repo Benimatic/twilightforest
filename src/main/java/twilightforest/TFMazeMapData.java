@@ -16,15 +16,15 @@ public class TFMazeMapData extends MapData {
 	}
 
 	@Override
-	public void readFromNBT(CompoundNBT nbt) {
-		super.readFromNBT(nbt);
-		this.yCenter = nbt.getInteger("yCenter");
+	public void read(CompoundNBT nbt) {
+		super.read(nbt);
+		this.yCenter = nbt.getInt("yCenter");
 	}
 
 	@Override
-	public CompoundNBT writeToNBT(CompoundNBT nbt) {
-		CompoundNBT ret = super.writeToNBT(nbt);
-		ret.setInteger("yCenter", this.yCenter);
+	public CompoundNBT write(CompoundNBT nbt) {
+		CompoundNBT ret = super.write(nbt);
+		ret.putInt("yCenter", this.yCenter);
 		return ret;
 	}
 

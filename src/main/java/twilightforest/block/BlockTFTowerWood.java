@@ -2,7 +2,7 @@ package twilightforest.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -35,7 +35,7 @@ public class BlockTFTowerWood extends Block implements ModelRegisterCallback {
 	public static final IProperty<TowerWoodVariant> VARIANT = PropertyEnum.create("variant", TowerWoodVariant.class);
 
 	public BlockTFTowerWood() {
-		super(Material.WOOD, MapColor.ADOBE);
+		super(Material.WOOD, MaterialColor.ADOBE);
 		this.setHardness(40F);
 		this.setResistance(10F);
 		this.setSoundType(SoundType.WOOD);
@@ -60,8 +60,8 @@ public class BlockTFTowerWood extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public MapColor getMapColor(BlockState state, IBlockAccess world, BlockPos pos) {
-		return state.getValue(VARIANT) == TowerWoodVariant.ENCASED ? MapColor.SAND : super.getMapColor(state, world, pos);
+	public MaterialColor getMaterialColor(BlockState state, IBlockAccess world, BlockPos pos) {
+		return state.getValue(VARIANT) == TowerWoodVariant.ENCASED ? MaterialColor.SAND : super.getMaterialColor(state, world, pos);
 	}
 
 	@Override
@@ -100,7 +100,7 @@ public class BlockTFTowerWood extends Block implements ModelRegisterCallback {
 		if (!world.isRemote && state.getValue(VARIANT) == TowerWoodVariant.INFESTED) {
 			EntityTFTowerTermite termite = new EntityTFTowerTermite(world);
 			termite.setLocationAndAngles(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, 0.0F, 0.0F);
-			world.spawnEntity(termite);
+			world.addEntity(termite);
 			termite.spawnExplosionParticle();
 		}
 

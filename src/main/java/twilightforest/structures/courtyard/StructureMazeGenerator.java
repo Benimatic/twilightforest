@@ -621,8 +621,8 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
             mazeX.appendTag(mazeY);
         }
 
-        tagCompound.setInteger("mazeWidth", widthInCellCount);
-        tagCompound.setInteger("mazeHeight", heightInCellCount);
+        tagCompound.putInt("mazeWidth", widthInCellCount);
+        tagCompound.putInt("mazeHeight", heightInCellCount);
         tagCompound.setTag("maze", mazeX);
     }
 
@@ -630,8 +630,8 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
     protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
         super.readStructureFromNBT(tagCompound, templateManager);
 
-        this.widthInCellCount = tagCompound.getInteger("mazeWidth");
-        this.heightInCellCount = tagCompound.getInteger("mazeHeight");
+        this.widthInCellCount = tagCompound.getInt("mazeWidth");
+        this.heightInCellCount = tagCompound.getInt("mazeHeight");
 
         maze = new int[this.widthInCellCount-1][this.heightInCellCount-1];
 

@@ -665,7 +665,7 @@ public class HydraHeadContainer {
 
 				headEntity.world.playEvent(1016, new BlockPos(headEntity), 0);
 
-				headEntity.world.spawnEntity(mortar);
+				headEntity.world.addEntity(mortar);
 			}
 		}
 		if (headEntity.getState() == State.BITING) {

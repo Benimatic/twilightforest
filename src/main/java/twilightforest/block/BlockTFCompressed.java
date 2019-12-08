@@ -2,7 +2,7 @@ package twilightforest.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -41,7 +41,7 @@ public class BlockTFCompressed extends Block implements ModelRegisterCallback {
 	public static final IProperty<CompressedVariant> VARIANT = PropertyEnum.create("variant", CompressedVariant.class);
 
 	public BlockTFCompressed() {
-		super(Material.IRON, MapColor.IRON);
+		super(Material.IRON, MaterialColor.IRON);
 		this.setHardness(5.0F);
 		this.setResistance(10.0F);
 		this.setSoundType(SoundType.METAL);
@@ -93,7 +93,7 @@ public class BlockTFCompressed extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public MapColor getMapColor(BlockState state, IBlockAccess world, BlockPos pos) {
+	public MaterialColor getMaterialColor(BlockState state, IBlockAccess world, BlockPos pos) {
 		return state.getValue(VARIANT).mapColor;
 	}
 

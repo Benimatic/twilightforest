@@ -57,7 +57,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 		super.writeStructureToNBT(tagCompound);
 
-		tagCompound.setBoolean("keyTower", this.keyTower);
+		tagCompound.putBoolean("keyTower", this.keyTower);
 
 		tagCompound.setIntArray("doorTypeInts", this.getDoorsTypesAsIntArray());
 	}

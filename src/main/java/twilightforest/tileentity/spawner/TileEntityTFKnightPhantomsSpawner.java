@@ -52,7 +52,7 @@ public class TileEntityTFKnightPhantomsSpawner extends TileEntityTFBossSpawner {
 			((EntityTFKnightPhantom) myCreature).setNumber(i);
 
 			// spawn it
-			if (world.spawnEntity(myCreature)) {
+			if (world.addEntity(myCreature)) {
 				spawned++;
 			}
 		}

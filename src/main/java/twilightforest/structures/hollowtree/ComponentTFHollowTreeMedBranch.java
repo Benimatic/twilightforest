@@ -68,16 +68,16 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 		super.writeStructureToNBT(tagCompound);
 
-		tagCompound.setInteger("srcPosX", this.src.getX());
-		tagCompound.setInteger("srcPosY", this.src.getY());
-		tagCompound.setInteger("srcPosZ", this.src.getZ());
-		tagCompound.setInteger("destPosX", this.dest.getX());
-		tagCompound.setInteger("destPosY", this.dest.getY());
-		tagCompound.setInteger("destPosZ", this.dest.getZ());
+		tagCompound.putInt("srcPosX", this.src.getX());
+		tagCompound.putInt("srcPosY", this.src.getY());
+		tagCompound.putInt("srcPosZ", this.src.getZ());
+		tagCompound.putInt("destPosX", this.dest.getX());
+		tagCompound.putInt("destPosY", this.dest.getY());
+		tagCompound.putInt("destPosZ", this.dest.getZ());
 		tagCompound.setDouble("branchLength", this.length);
 		tagCompound.setDouble("branchAngle", this.angle);
 		tagCompound.setDouble("branchTilt", this.tilt);
-		tagCompound.setBoolean("branchLeafy", this.leafy);
+		tagCompound.putBoolean("branchLeafy", this.leafy);
 
 	}
 
@@ -89,8 +89,8 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 		super.readStructureFromNBT(tagCompound, templateManager);
 
 
-		this.src = new BlockPos(tagCompound.getInteger("srcPosX"), tagCompound.getInteger("srcPosY"), tagCompound.getInteger("srcPosZ"));
-		this.dest = new BlockPos(tagCompound.getInteger("destPosX"), tagCompound.getInteger("destPosY"), tagCompound.getInteger("destPosZ"));
+		this.src = new BlockPos(tagCompound.getInt("srcPosX"), tagCompound.getInt("srcPosY"), tagCompound.getInt("srcPosZ"));
+		this.dest = new BlockPos(tagCompound.getInt("destPosX"), tagCompound.getInt("destPosY"), tagCompound.getInt("destPosZ"));
 
 		this.length = tagCompound.getDouble("branchLength");
 		this.angle = tagCompound.getDouble("branchAngle");

@@ -87,7 +87,7 @@ public class ComponentTFMinotaurMaze extends StructureTFComponentOld {
 	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 		super.writeStructureToNBT(tagCompound);
 
-		tagCompound.setInteger("mazeLevel", this.level);
+		tagCompound.putInt("mazeLevel", this.level);
 		tagCompound.setIntArray("roomCoords", this.rcoords);
 	}
 
@@ -97,7 +97,7 @@ public class ComponentTFMinotaurMaze extends StructureTFComponentOld {
 	@Override
 	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
 		super.readStructureFromNBT(tagCompound, templateManager);
-		this.level = tagCompound.getInteger("mazeLevel");
+		this.level = tagCompound.getInt("mazeLevel");
 		this.rcoords = tagCompound.getIntArray("roomCoords");
 
 		// recreate maze object

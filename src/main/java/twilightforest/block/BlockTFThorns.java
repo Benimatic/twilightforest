@@ -2,7 +2,7 @@ package twilightforest.block;
 
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.EnumPushReaction;
-import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -38,7 +38,7 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar implements Mo
 	private static final float THORN_DAMAGE = 4.0F;
 
 	BlockTFThorns() {
-		super(Material.WOOD, MapColor.OBSIDIAN, 10);
+		super(Material.WOOD, MaterialColor.OBSIDIAN, 10);
 		this.setHardness(50.0F);
 		this.setResistance(2000.0F);
 		this.setSoundType(SoundType.WOOD);
@@ -69,8 +69,8 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar implements Mo
 	}
 
 	@Override
-	public MapColor getMapColor(BlockState state, IBlockAccess world, BlockPos pos) {
-		return state.getValue(VARIANT) == ThornVariant.GREEN ? MapColor.FOLIAGE : super.getMapColor(state, world, pos);
+	public MaterialColor getMaterialColor(BlockState state, IBlockAccess world, BlockPos pos) {
+		return state.getValue(VARIANT) == ThornVariant.GREEN ? MaterialColor.FOLIAGE : super.getMaterialColor(state, world, pos);
 	}
 
 	@Override

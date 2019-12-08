@@ -45,13 +45,13 @@ public class TileEntityTFPoppingJet extends TileEntity implements ITickable {
 	@Override
 	public void readFromNBT(CompoundNBT compound) {
 		super.readFromNBT(compound);
-		this.nextVariant = FireJetVariant.values()[compound.getInteger("NextMeta")];
+		this.nextVariant = FireJetVariant.values()[compound.getInt("NextMeta")];
 	}
 
 	@Override
 	public CompoundNBT writeToNBT(CompoundNBT compound) {
 		CompoundNBT ret = super.writeToNBT(compound);
-		ret.setInteger("NextMeta", nextVariant.ordinal());
+		ret.putInt("NextMeta", nextVariant.ordinal());
 		return ret;
 	}
 }
