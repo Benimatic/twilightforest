@@ -99,7 +99,6 @@ public class TwilightForestMod {
 
 	@EventHandler
 	public void init(FMLInitializationEvent evt) {
-		TFItems.initRepairMaterials();
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, proxy);
 		TFPacketHandler.init();
 		proxy.init();
