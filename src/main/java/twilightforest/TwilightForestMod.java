@@ -8,6 +8,7 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import twilightforest.advancements.TFAdvancements;
@@ -57,6 +58,10 @@ public class TwilightForestMod {
 
 	@SidedProxy(clientSide = "twilightforest.client.TFClientProxy", serverSide = "twilightforest.TFCommonProxy")
 	public static TFCommonProxy proxy;
+
+	public TwilightForestMod() {
+		TFItems.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
+	}
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {

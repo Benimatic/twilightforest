@@ -35,7 +35,7 @@ public class ItemTFMazeMap extends MapItem {
 	protected final boolean mapOres;
 
 	protected ItemTFMazeMap(boolean mapOres, Properties props) {
-		super(props);
+		super(props.maxStackSize(1));
 		this.mapOres = mapOres;
 	}
 

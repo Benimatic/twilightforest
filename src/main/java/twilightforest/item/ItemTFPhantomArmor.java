@@ -25,7 +25,7 @@ import java.util.List;
 
 public class ItemTFPhantomArmor extends ItemTFArmor {
 
-	public ItemTFPhantomArmor(Properties props, IArmorMaterial armorMaterial, EquipmentSlotType armorType, Rarity rarity) {
+	public ItemTFPhantomArmor(IArmorMaterial armorMaterial, EquipmentSlotType armorType, Rarity rarity, Properties props) {
 		super(armorMaterial, armorType, rarity, props);
 	}
 

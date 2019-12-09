@@ -15,7 +15,7 @@ import twilightforest.TwilightForestMod;
 
 public class ItemTFKnightlyArmor extends ItemTFArmor {
 
-	public ItemTFKnightlyArmor(Properties props, IArmorMaterial material, EquipmentSlotType slot, Rarity rarity) {
+	public ItemTFKnightlyArmor(IArmorMaterial material, EquipmentSlotType slot, Rarity rarity, Properties props) {
 		super(material, slot, rarity, props.group(TFItems.creativeTab));
 	}
 

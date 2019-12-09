@@ -29,7 +29,7 @@ public class ItemTFMagicMap extends MapItem {
 	private static final Map<ResourceLocation, MapColorBrightness> BIOME_COLORS = new HashMap<>();
 
 	protected ItemTFMagicMap(Properties props) {
-		super(props);
+		super(props.maxStackSize(1));
 	}
 
 	private static class MapColorBrightness {

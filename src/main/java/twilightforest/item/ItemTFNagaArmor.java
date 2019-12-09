@@ -3,15 +3,12 @@ package twilightforest.item;
 import net.minecraft.entity.Entity;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ArmorMaterial;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.Rarity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.util.NonNullList;
 import twilightforest.TwilightForestMod;
 
 public class ItemTFNagaArmor extends ItemTFArmor {
-	protected ItemTFNagaArmor(ArmorMaterial materialIn, EquipmentSlotType equipmentSlotIn, Rarity rarity, Properties props) {
+	protected ItemTFNagaArmor(IArmorMaterial materialIn, EquipmentSlotType equipmentSlotIn, Rarity rarity, Properties props) {
 		super(materialIn, equipmentSlotIn, rarity, props);
 	}
 

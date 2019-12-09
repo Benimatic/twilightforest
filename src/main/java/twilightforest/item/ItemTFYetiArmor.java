@@ -23,7 +23,7 @@ import java.util.List;
 
 public class ItemTFYetiArmor extends ItemTFArmor {
 
-	public ItemTFYetiArmor(Properties props, IArmorMaterial material, EquipmentSlotType slot, Rarity rarity) {
+	public ItemTFYetiArmor(IArmorMaterial material, EquipmentSlotType slot, Rarity rarity, Properties props) {
 		super(material, slot, rarity, props);
 	}
 

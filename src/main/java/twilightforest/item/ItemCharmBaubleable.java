@@ -11,8 +11,8 @@ import javax.annotation.Nullable;
 
 //TODO 1.14: Baubles is dead
 public class ItemCharmBaubleable extends ItemTF {
-    ItemCharmBaubleable(Rarity rarity) {
-        super(rarity);
+    ItemCharmBaubleable(Rarity rarity, Properties props) {
+        super(rarity, props);
     }
 
     @Nullable
