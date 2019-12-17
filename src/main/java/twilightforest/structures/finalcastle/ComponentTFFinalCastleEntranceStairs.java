@@ -64,7 +64,7 @@ public class ComponentTFFinalCastleEntranceStairs extends StructureTFComponentOl
 	private void placeStairs(World world, StructureBoundingBox sbb, int x, int y, int z, Direction facing) {
 		if (this.getBlockStateFromPos(world, x, y, z, sbb).getBlock().isReplaceable(world, this.getBlockPosWithOffset(x, y, z))) {
 			//this.setBlockState(world, deco.blockState, x, y, z, sbb);
-			this.setBlockState(world, deco.stairState.withProperty(BlockStairs.FACING, facing), x, y, z, sbb);
+			this.setBlockState(world, deco.stairState.with(BlockStairs.FACING, facing), x, y, z, sbb);
 			this.replaceAirAndLiquidDownwards(world, deco.blockState, x, y - 1, z, sbb);
 		}
 	}

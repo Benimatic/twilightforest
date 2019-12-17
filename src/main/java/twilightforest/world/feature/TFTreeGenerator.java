@@ -19,8 +19,8 @@ import twilightforest.enums.WoodVariant;
 public abstract class TFTreeGenerator extends WorldGenAbstractTree implements IBlockSettable {
 
 	protected BlockState treeState = TFBlocks.twilight_log.getDefaultState();
-	protected BlockState branchState = TFBlocks.twilight_log.getDefaultState().withProperty(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE).withProperty(BlockTFLog.VARIANT, WoodVariant.DARK);
-	protected BlockState leafState = TFBlocks.hedge.getDefaultState().withProperty(BlockTFHedge.VARIANT, HedgeVariant.DARKWOOD_LEAVES);
+	protected BlockState branchState = TFBlocks.twilight_log.getDefaultState().with(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE).with(BlockTFLog.VARIANT, WoodVariant.DARK);
+	protected BlockState leafState = TFBlocks.hedge.getDefaultState().with(BlockTFHedge.VARIANT, HedgeVariant.DARKWOOD_LEAVES);
 	protected BlockState rootState = TFBlocks.root.getDefaultState();
 
 	protected IPlantable source = TFBlocks.twilight_sapling;
@@ -90,13 +90,13 @@ public abstract class TFTreeGenerator extends WorldGenAbstractTree implements IB
 	protected void addFirefly(World world, BlockPos pos, int height, double angle) {
 		int iAngle = (int) (angle * 4.0);
 		if (iAngle == 0) {
-			setIfEmpty(world, pos.add( 1, height,  0), TFBlocks.firefly.getDefaultState().withProperty(BlockDirectional.FACING, Direction.EAST));
+			setIfEmpty(world, pos.add( 1, height,  0), TFBlocks.firefly.getDefaultState().with(BlockDirectional.FACING, Direction.EAST));
 		} else if (iAngle == 1) {
-			setIfEmpty(world, pos.add(-1, height,  0), TFBlocks.firefly.getDefaultState().withProperty(BlockDirectional.FACING, Direction.WEST));
+			setIfEmpty(world, pos.add(-1, height,  0), TFBlocks.firefly.getDefaultState().with(BlockDirectional.FACING, Direction.WEST));
 		} else if (iAngle == 2) {
-			setIfEmpty(world, pos.add( 0, height,  1), TFBlocks.firefly.getDefaultState().withProperty(BlockDirectional.FACING, Direction.SOUTH));
+			setIfEmpty(world, pos.add( 0, height,  1), TFBlocks.firefly.getDefaultState().with(BlockDirectional.FACING, Direction.SOUTH));
 		} else if (iAngle == 3) {
-			setIfEmpty(world, pos.add( 0, height, -1), TFBlocks.firefly.getDefaultState().withProperty(BlockDirectional.FACING, Direction.NORTH));
+			setIfEmpty(world, pos.add( 0, height, -1), TFBlocks.firefly.getDefaultState().with(BlockDirectional.FACING, Direction.NORTH));
 		}
 	}
 

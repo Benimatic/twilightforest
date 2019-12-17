@@ -37,13 +37,13 @@ public class ComponentTFTowerRoofStairsOverhang extends ComponentTFTowerRoof {
 	 */
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		BlockState woodenSlab = Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
-		BlockState woodenPlanks = Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
+		BlockState woodenSlab = Blocks.WOODEN_SLAB.getDefaultState().with(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
+		BlockState woodenPlanks = Blocks.PLANKS.getDefaultState().with(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
 
-		BlockState birchStairsNorth = Blocks.BIRCH_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, Direction.NORTH);
-		BlockState birchStairsSouth = Blocks.BIRCH_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, Direction.SOUTH);
-		BlockState birchStairsEast = Blocks.BIRCH_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, Direction.EAST);
-		BlockState birchStairsWest = Blocks.BIRCH_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, Direction.WEST);
+		BlockState birchStairsNorth = Blocks.BIRCH_STAIRS.getDefaultState().with(BlockStairs.FACING, Direction.NORTH);
+		BlockState birchStairsSouth = Blocks.BIRCH_STAIRS.getDefaultState().with(BlockStairs.FACING, Direction.SOUTH);
+		BlockState birchStairsEast = Blocks.BIRCH_STAIRS.getDefaultState().with(BlockStairs.FACING, Direction.EAST);
+		BlockState birchStairsWest = Blocks.BIRCH_STAIRS.getDefaultState().with(BlockStairs.FACING, Direction.WEST);
 
 		for (int y = 0; y <= height; y++) {
 			int min = y;

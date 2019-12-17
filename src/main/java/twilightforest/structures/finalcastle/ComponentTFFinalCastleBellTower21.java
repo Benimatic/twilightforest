@@ -57,7 +57,7 @@ public class ComponentTFFinalCastleBellTower21 extends ComponentTFFinalCastleMaz
 		// openings!
 		BlockState fieldBlock = TFBlocks.force_field
 				.getDefaultState()
-				.withProperty(BlockTFForceField.COLOR, BlockTFForceField.VALID_COLORS.get(4));
+				.with(BlockTFForceField.COLOR, BlockTFForceField.VALID_COLORS.get(4));
 		for (Rotation rotation : RotationUtil.ROTATIONS) {
 			int y = 48;
 			for (int x = 5; x < this.size - 4; x += 2) {

@@ -67,8 +67,8 @@ public class ComponentTFMazeRoomBoss extends ComponentTFMazeRoom {
 		}
 
 		// mushroom chest shelves in corner
-		final BlockState redMushroom = Blocks.RED_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.ALL_OUTSIDE);
-		final BlockState brownMushroom = Blocks.BROWN_MUSHROOM_BLOCK.getDefaultState().withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.ALL_OUTSIDE);
+		final BlockState redMushroom = Blocks.RED_MUSHROOM_BLOCK.getDefaultState().with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.ALL_OUTSIDE);
+		final BlockState brownMushroom = Blocks.BROWN_MUSHROOM_BLOCK.getDefaultState().with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.ALL_OUTSIDE);
 
 		fillWithBlocks(world, sbb, 1, 1, 1, 3, 1, 3, redMushroom, AIR, false);
 		fillWithBlocks(world, sbb, 1, 2, 1, 1, 3, 4, redMushroom, AIR, false);
@@ -99,7 +99,7 @@ public class ComponentTFMazeRoomBoss extends ComponentTFMazeRoom {
 		fillWithBlocks(world, sbb, 8, 4, 8, 10, 5, 10, redMushroom, AIR, false);
 
 		// the moo-cen-mino-shrom-taur!
-		final BlockState taurSpawner = TFBlocks.boss_spawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.MINOSHROOM);
+		final BlockState taurSpawner = TFBlocks.boss_spawner.getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.MINOSHROOM);
 		setBlockStateRotated(world, taurSpawner, 7, 1, 7, Rotation.NONE, sbb);
 
 		return true;

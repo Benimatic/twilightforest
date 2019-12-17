@@ -60,8 +60,8 @@ public class TFBiomeSwamp extends TFBiomeBase {
 	public WorldGenAbstractTree getRandomTreeFeature(Random random) {
 		if (random.nextInt(3) == 0) {
 			return new WorldGenShrub(
-					Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE),
-					Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.OAK).withProperty(BlockLeaves.CHECK_DECAY, false)
+					Blocks.LOG.getDefaultState().with(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE),
+					Blocks.LEAVES.getDefaultState().with(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.OAK).with(BlockLeaves.CHECK_DECAY, false)
 			);
 		} else {
 			return SWAMP_FEATURE;
@@ -74,7 +74,7 @@ public class TFBiomeSwamp extends TFBiomeBase {
 		if (random.nextInt(4) == 0) {
 			return new WorldGenTallGrass(BlockTallGrass.EnumType.FERN);
 		} else if (random.nextInt(4) == 0) {
-			return new TFGenTallGrass(TFBlocks.twilight_plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MAYAPPLE));
+			return new TFGenTallGrass(TFBlocks.twilight_plant.getDefaultState().with(BlockTFPlant.VARIANT, PlantVariant.MAYAPPLE));
 		} else {
 			return new WorldGenTallGrass(BlockTallGrass.EnumType.GRASS);
 		}

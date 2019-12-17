@@ -218,7 +218,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 	 */
 	private void makeSingleBracketMushroom(World world, StructureBoundingBox sbb, Rotation rotation, int z, int y, int width, int depth, BlockState mushBlock) {
 
-		this.fillBlocksRotated(world, sbb, size - depth, y, z - (width - 1), size - 2, y, z + (width - 1), mushBlock.withProperty(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.CENTER), rotation);
+		this.fillBlocksRotated(world, sbb, size - depth, y, z - (width - 1), size - 2, y, z + (width - 1), mushBlock.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.CENTER), rotation);
 
 		this.fillBlocksRotated(world, sbb, size - (depth + 1), y, z - (width - 1), size - (depth + 1), y, z + (width - 1), getMushroomState(mushBlock, BlockHugeMushroom.EnumType.EAST), rotation);
 
@@ -239,7 +239,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 
 	private BlockState getMushroomState(BlockState mushroomBlockState, BlockHugeMushroom.EnumType defaultRotation) {
 		if (mushroomBlockState.getPropertyKeys().contains(BlockHugeMushroom.VARIANT)) {
-			return mushroomBlockState.withProperty(BlockHugeMushroom.VARIANT, defaultRotation);
+			return mushroomBlockState.with(BlockHugeMushroom.VARIANT, defaultRotation);
 		}
 		return mushroomBlockState;
 	}

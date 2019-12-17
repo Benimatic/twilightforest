@@ -230,7 +230,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 
 		// place platform
 		int floorLevel = 0 + flight * 5;
-		BlockState crossingfloor = rand.nextBoolean() ? Blocks.DOUBLE_STONE_SLAB.getDefaultState() : Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
+		BlockState crossingfloor = rand.nextBoolean() ? Blocks.DOUBLE_STONE_SLAB.getDefaultState() : Blocks.PLANKS.getDefaultState().with(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
 		for (int dx = 6; dx <= 8; dx++) {
 			for (int dz = 4; dz <= 10; dz++) {
 				setBlockState(world, crossingfloor, dx, floorLevel, dz, sbb);
@@ -305,7 +305,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		decoratePaintings(world, rand, floorLevel, sbb);
 
 		// seems like we should have a spawner
-		setBlockState(world, TFBlocks.boss_spawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.LICH), size / 2, floorLevel + 2, size / 2, sbb);
+		setBlockState(world, TFBlocks.boss_spawner.getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.LICH), size / 2, floorLevel + 2, size / 2, sbb);
 	}
 
 
@@ -340,9 +340,9 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 
 		BlockPlanks.EnumType birch = BlockPlanks.EnumType.BIRCH;
 		BlockState birchSlab = Blocks.WOODEN_SLAB.getDefaultState()
-				.withProperty(BlockPlanks.VARIANT, birch)
-				.withProperty(BlockSlab.HALF, BlockSlab.EnumBlockHalf.TOP);
-		BlockState birchPlank = Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, birch);
+				.with(BlockPlanks.VARIANT, birch)
+				.with(BlockSlab.HALF, BlockSlab.EnumBlockHalf.TOP);
+		BlockState birchPlank = Blocks.PLANKS.getDefaultState().with(BlockPlanks.VARIANT, birch);
 
 		// place a platform there
 		for (int fx = 1; fx < 14; fx++) {
@@ -482,7 +482,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 					world.getEntitiesWithinAABBExcludingEntity(null, torchBox).size() == 0) {
 				// if not, place a torch
 				world.setBlockState(tCoords, Blocks.OAK_FENCE.getDefaultState(), 2);
-				world.setBlockState(tCoords.up(), Blocks.TORCH.getDefaultState().withProperty(BlockTorch.FACING, Direction.UP), 2);
+				world.setBlockState(tCoords.up(), Blocks.TORCH.getDefaultState().with(BlockTorch.FACING, Direction.UP), 2);
 			}
 		}
 	}

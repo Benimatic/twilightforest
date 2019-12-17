@@ -36,7 +36,7 @@ public class TFGenThorns extends TFGenerator {
 			BlockPos dPos = pos.offset(dir, i);
 
 			if (Math.abs(dPos.getX() - oPos.getX()) < MAX_SPREAD && Math.abs(dPos.getZ() - oPos.getZ()) < MAX_SPREAD && canPlaceThorns(world, dPos)) {
-				this.setBlockAndNotifyAdequately(world, dPos, TFBlocks.thorns.getDefaultState().withProperty(BlockRotatedPillar.AXIS, dir.getAxis()));
+				this.setBlockAndNotifyAdequately(world, dPos, TFBlocks.thorns.getDefaultState().with(BlockRotatedPillar.AXIS, dir.getAxis()));
 
 				// did we make it to the end?
 				if (i == length - 1) {
@@ -45,7 +45,7 @@ public class TFGenThorns extends TFGenerator {
 					if (rand.nextInt(CHANCE_OF_LEAF) == 0 && world.isAirBlock(dPos.offset(dir))) {
 						if (rand.nextInt(CHANCE_LEAF_IS_ROSE) > 0) {
 							// leaf
-							this.setBlockAndNotifyAdequately(world, dPos.offset(dir), TFBlocks.twilight_leaves_3.getDefaultState().withProperty(BlockLeaves.CHECK_DECAY, false));
+							this.setBlockAndNotifyAdequately(world, dPos.offset(dir), TFBlocks.twilight_leaves_3.getDefaultState().with(BlockLeaves.CHECK_DECAY, false));
 						} else {
 							// rose
 							this.setBlockAndNotifyAdequately(world, dPos.offset(dir), TFBlocks.thorn_rose.getDefaultState());
@@ -91,7 +91,7 @@ public class TFGenThorns extends TFGenerator {
 			BlockPos nextPos = pos.offset(dir, middle).offset(nextDir);
 
 			if (world.isAirBlock(nextPos)) {
-				this.setBlockAndNotifyAdequately(world, nextPos, TFBlocks.twilight_leaves_3.getDefaultState().withProperty(BlockLeaves.CHECK_DECAY, false));
+				this.setBlockAndNotifyAdequately(world, nextPos, TFBlocks.twilight_leaves_3.getDefaultState().with(BlockLeaves.CHECK_DECAY, false));
 			}
 		}
 	}

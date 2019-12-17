@@ -156,7 +156,7 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 		this.fillWithAir(world, sbb, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1, state -> state.getMaterial() == Material.ROCK);
 
 		BlockState floor = TFBlocks.castle_brick.getDefaultState();
-		BlockState border = floor.withProperty(BlockTFCastleBlock.VARIANT, CastleBrickVariant.FRAME);
+		BlockState border = floor.with(BlockTFCastleBlock.VARIANT, CastleBrickVariant.FRAME);
 
 		Predicate<BlockState> replacing = state -> {
 			Material material = state.getMaterial();
@@ -172,9 +172,9 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 		DyeColor runeColor = getRuneColor(forceFieldColor);
 
 		BlockState forceField = TFBlocks.force_field.getDefaultState()
-				.withProperty(BlockTFForceField.COLOR, forceFieldColor);
+				.with(BlockTFForceField.COLOR, forceFieldColor);
 		BlockState castleMagic = TFBlocks.castle_rune_brick.getDefaultState()
-				.withProperty(BlockTFCastleMagic.COLOR, runeColor);
+				.with(BlockTFCastleMagic.COLOR, runeColor);
 
 		for (Rotation rotation : RotationUtil.ROTATIONS) {
 

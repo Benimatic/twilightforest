@@ -156,17 +156,17 @@ public enum StructureWoodVariant implements IStringSerializable {
             case BLOCK:
                 switch (target) {
                     case OAK:
-                        return target.planks.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.OAK);
+                        return target.planks.getDefaultState().with(BlockPlanks.VARIANT, BlockPlanks.EnumType.OAK);
                     case SPRUCE:
-                        return target.planks.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.SPRUCE);
+                        return target.planks.getDefaultState().with(BlockPlanks.VARIANT, BlockPlanks.EnumType.SPRUCE);
                     case BIRCH:
-                        return target.planks.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
+                        return target.planks.getDefaultState().with(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
                     case JUNGLE:
-                        return target.planks.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.JUNGLE);
+                        return target.planks.getDefaultState().with(BlockPlanks.VARIANT, BlockPlanks.EnumType.JUNGLE);
                     case ACACIA:
-                        return target.planks.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.ACACIA);
+                        return target.planks.getDefaultState().with(BlockPlanks.VARIANT, BlockPlanks.EnumType.ACACIA);
                     case DARK_OAK:
-                        return target.planks.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.DARK_OAK);
+                        return target.planks.getDefaultState().with(BlockPlanks.VARIANT, BlockPlanks.EnumType.DARK_OAK);
                     default:
                         return target.planks.getDefaultState();
                 }
@@ -175,34 +175,34 @@ public enum StructureWoodVariant implements IStringSerializable {
             case SLAB:
                 switch (target) {
                     case OAK:
-                        return transferStateKey(stateIn, target.slab.getDefaultState(), BlockSlab.HALF).withProperty(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.OAK);
+                        return transferStateKey(stateIn, target.slab.getDefaultState(), BlockSlab.HALF).with(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.OAK);
                     case SPRUCE:
-                        return transferStateKey(stateIn, target.slab.getDefaultState(), BlockSlab.HALF).withProperty(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.SPRUCE);
+                        return transferStateKey(stateIn, target.slab.getDefaultState(), BlockSlab.HALF).with(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.SPRUCE);
                     case BIRCH:
-                        return transferStateKey(stateIn, target.slab.getDefaultState(), BlockSlab.HALF).withProperty(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.BIRCH);
+                        return transferStateKey(stateIn, target.slab.getDefaultState(), BlockSlab.HALF).with(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.BIRCH);
                     case JUNGLE:
-                        return transferStateKey(stateIn, target.slab.getDefaultState(), BlockSlab.HALF).withProperty(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.JUNGLE);
+                        return transferStateKey(stateIn, target.slab.getDefaultState(), BlockSlab.HALF).with(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.JUNGLE);
                     case ACACIA:
-                        return transferStateKey(stateIn, target.slab.getDefaultState(), BlockSlab.HALF).withProperty(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.ACACIA);
+                        return transferStateKey(stateIn, target.slab.getDefaultState(), BlockSlab.HALF).with(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.ACACIA);
                     case DARK_OAK:
-                        return transferStateKey(stateIn, target.slab.getDefaultState(), BlockSlab.HALF).withProperty(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.DARK_OAK);
+                        return transferStateKey(stateIn, target.slab.getDefaultState(), BlockSlab.HALF).with(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.DARK_OAK);
                     default:
                         return transferStateKey(stateIn, target.slab.getDefaultState(), BlockSlab.HALF);
                 }
             case DOUBLESLAB:
                 switch (target) {
                     case OAK:
-                        return target.doubleSlab.getDefaultState().withProperty(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.OAK);
+                        return target.doubleSlab.getDefaultState().with(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.OAK);
                     case SPRUCE:
-                        return target.doubleSlab.getDefaultState().withProperty(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.SPRUCE);
+                        return target.doubleSlab.getDefaultState().with(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.SPRUCE);
                     case BIRCH:
-                        return target.doubleSlab.getDefaultState().withProperty(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.BIRCH);
+                        return target.doubleSlab.getDefaultState().with(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.BIRCH);
                     case JUNGLE:
-                        return target.doubleSlab.getDefaultState().withProperty(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.JUNGLE);
+                        return target.doubleSlab.getDefaultState().with(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.JUNGLE);
                     case ACACIA:
-                        return target.doubleSlab.getDefaultState().withProperty(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.ACACIA);
+                        return target.doubleSlab.getDefaultState().with(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.ACACIA);
                     case DARK_OAK:
-                        return target.doubleSlab.getDefaultState().withProperty(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.DARK_OAK);
+                        return target.doubleSlab.getDefaultState().with(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.DARK_OAK);
                     default:
                         return target.doubleSlab.getDefaultState();
                 }
@@ -227,7 +227,7 @@ public enum StructureWoodVariant implements IStringSerializable {
     }
 
     public static <T extends Comparable<T>> BlockState transferStateKey(BlockState stateIn, BlockState stateOut, IProperty<T> property) {
-        return stateOut.withProperty(property, stateIn.getValue(property));
+        return stateOut.with(property, stateIn.getValue(property));
     }
 
     public static WoodShapes getWoodShapeFromBlock(Block b) {

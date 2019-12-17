@@ -39,7 +39,7 @@ public class TileEntityTFFlameJet extends TileEntity implements ITickable {
 			counter = 0;
 			// idle again
 			if (!world.isRemote && world.getBlockState(pos).getBlock() == TFBlocks.fire_jet) {
-				world.setBlockState(pos, TFBlocks.fire_jet.getDefaultState().withProperty(BlockTFFireJet.VARIANT, this.nextVariant));
+				world.setBlockState(pos, TFBlocks.fire_jet.getDefaultState().with(BlockTFFireJet.VARIANT, this.nextVariant));
 			}
 		}
 

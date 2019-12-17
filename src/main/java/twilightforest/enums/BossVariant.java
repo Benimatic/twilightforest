@@ -1,5 +1,6 @@
 package twilightforest.enums;
 
+import net.minecraft.block.SkullBlock;
 import net.minecraft.util.IStringSerializable;
 import twilightforest.tileentity.spawner.TileEntityTFAlphaYetiSpawner;
 import twilightforest.tileentity.spawner.TileEntityTFBossSpawner;
@@ -16,7 +17,7 @@ import javax.annotation.Nullable;
 import java.util.Locale;
 import java.util.function.Supplier;
 
-public enum BossVariant implements IStringSerializable {
+public enum BossVariant implements IStringSerializable, SkullBlock.ISkullType {
 
 	NAGA          (TrophyType.GOLD    , TileEntityTFNagaSpawner::new),
 	LICH          (TrophyType.GOLD    , TileEntityTFLichSpawner::new),

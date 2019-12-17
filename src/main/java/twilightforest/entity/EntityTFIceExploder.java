@@ -125,9 +125,9 @@ public class EntityTFIceExploder extends EntityTFIceMob {
 			// do appropriate transformation
 			//TODO: 1.13 squished all this. Find out best method of approach
 			if (this.shouldTransformGlass(state, pos)) {
-				this.world.setBlockState(pos, Blocks.STAINED_GLASS.getDefaultState().withProperty(BlockStainedGlass.COLOR, getClosestDyeColor(blockColor)));
+				this.world.setBlockState(pos, Blocks.STAINED_GLASS.getDefaultState().with(BlockStainedGlass.COLOR, getClosestDyeColor(blockColor)));
 			} else if (this.shouldTransformClay(state, pos)) {
-				this.world.setBlockState(pos, Blocks.STAINED_HARDENED_CLAY.getDefaultState().withProperty(BlockColored.COLOR, getClosestDyeColor(blockColor)));
+				this.world.setBlockState(pos, Blocks.STAINED_HARDENED_CLAY.getDefaultState().with(BlockColored.COLOR, getClosestDyeColor(blockColor)));
 			}
 		}
 	}

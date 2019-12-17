@@ -25,8 +25,8 @@ public class ComponentTFMazeDeadEndPainting extends ComponentTFMazeDeadEnd {
 		super.addComponentParts(world, rand, sbb);
 
 		// torches
-		this.setBlockState(world, Blocks.TORCH.getDefaultState().withProperty(BlockTorch.FACING, Direction.WEST), 1, 3, 3, sbb);
-		this.setBlockState(world, Blocks.TORCH.getDefaultState().withProperty(BlockTorch.FACING, Direction.EAST), 4, 3, 3, sbb);
+		this.setBlockState(world, Blocks.TORCH.getDefaultState().with(BlockTorch.FACING, Direction.WEST), 1, 3, 3, sbb);
+		this.setBlockState(world, Blocks.TORCH.getDefaultState().with(BlockTorch.FACING, Direction.EAST), 4, 3, 3, sbb);
 
 //		// painting
 //		EntityPainting painting = new EntityPainting(world, pCoords.posX, pCoords.posY, pCoords.posZ, this.get); 

@@ -156,20 +156,20 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 				case 0:
 				default:
 					// oak tree
-					BlockState oakWood = Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.OAK);
-					BlockState oakLeaves = Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.OAK).withProperty(BlockLeaves.CHECK_DECAY, false);
+					BlockState oakWood = Blocks.LOG.getDefaultState().with(BlockOldLog.VARIANT, BlockPlanks.EnumType.OAK);
+					BlockState oakLeaves = Blocks.LEAVES.getDefaultState().with(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.OAK).with(BlockLeaves.CHECK_DECAY, false);
 					treeGen = new WorldGenTrees(true, minHeight, oakWood, oakLeaves, false);
 					break;
 				case 1:
 					// jungle tree
-					BlockState jungleWood = Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE);
-					BlockState jungleLeaves = Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.JUNGLE).withProperty(BlockLeaves.CHECK_DECAY, false);
+					BlockState jungleWood = Blocks.LOG.getDefaultState().with(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE);
+					BlockState jungleLeaves = Blocks.LEAVES.getDefaultState().with(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.JUNGLE).with(BlockLeaves.CHECK_DECAY, false);
 					treeGen = new WorldGenTrees(true, minHeight, jungleWood, jungleLeaves, false);
 					break;
 				case 2:
 					// birch
-					BlockState birchWood = Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.BIRCH);
-					BlockState birchLeaves = Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.BIRCH).withProperty(BlockLeaves.CHECK_DECAY, false);
+					BlockState birchWood = Blocks.LOG.getDefaultState().with(BlockOldLog.VARIANT, BlockPlanks.EnumType.BIRCH);
+					BlockState birchLeaves = Blocks.LEAVES.getDefaultState().with(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.BIRCH).with(BlockLeaves.CHECK_DECAY, false);
 					treeGen = new WorldGenTrees(true, minHeight, birchWood, birchLeaves, false);
 					break;
 				case 3:

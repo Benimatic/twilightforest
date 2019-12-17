@@ -19,9 +19,9 @@ public class TFGenTreeOfTransformation extends TFGenCanopyTree {
 	public TFGenTreeOfTransformation(boolean notify) {
 		super(notify);
 
-		this.treeState = TFBlocks.magic_log.getDefaultState().withProperty(BlockTFMagicLog.VARIANT, MagicWoodVariant.TRANS);
-		this.branchState = treeState.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
-		this.leafState = TFBlocks.magic_leaves.getDefaultState().withProperty(BlockTFMagicLog.VARIANT, MagicWoodVariant.TRANS).withProperty(BlockLeaves.CHECK_DECAY, false);
+		this.treeState = TFBlocks.magic_log.getDefaultState().with(BlockTFMagicLog.VARIANT, MagicWoodVariant.TRANS);
+		this.branchState = treeState.with(BlockLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
+		this.leafState = TFBlocks.magic_leaves.getDefaultState().with(BlockTFMagicLog.VARIANT, MagicWoodVariant.TRANS).with(BlockLeaves.CHECK_DECAY, false);
 
 		this.minHeight = 11;
 		this.chanceAddFirstFive = Integer.MAX_VALUE;
@@ -32,7 +32,7 @@ public class TFGenTreeOfTransformation extends TFGenCanopyTree {
 	public boolean generate(World world, Random random, BlockPos pos) {
 		if (super.generate(world, random, pos)) {
 			// heart of transformation
-			setBlockAndNotifyAdequately(world, pos.up(3), TFBlocks.magic_log_core.getDefaultState().withProperty(BlockTFMagicLog.VARIANT, MagicWoodVariant.TRANS));
+			setBlockAndNotifyAdequately(world, pos.up(3), TFBlocks.magic_log_core.getDefaultState().with(BlockTFMagicLog.VARIANT, MagicWoodVariant.TRANS));
 			return true;
 		} else {
 			return false;

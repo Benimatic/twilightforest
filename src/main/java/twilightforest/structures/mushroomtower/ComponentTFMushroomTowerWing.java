@@ -441,7 +441,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 				// make a floor!
 				if (dist <= hollow) {
 					{
-						setBlockState(world, this.isAscender ? deco.floorState.withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.JUNGLE) : deco.floorState, dx + cx, dy, dz + cz, sbb);
+						setBlockState(world, this.isAscender ? deco.floorState.with(BlockPlanks.VARIANT, BlockPlanks.EnumType.JUNGLE) : deco.floorState, dx + cx, dy, dz + cz, sbb);
 					}
 				}
 			}

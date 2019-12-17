@@ -27,7 +27,7 @@ public class TileEntityTFPoppingJet extends TileEntity implements ITickable {
 			counter = 0;
 			// turn to flame
 			if (!world.isRemote && world.getBlockState(pos).getBlock() == TFBlocks.fire_jet) {
-				world.setBlockState(pos, TFBlocks.fire_jet.getDefaultState().withProperty(BlockTFFireJet.VARIANT, nextVariant), 3);
+				world.setBlockState(pos, TFBlocks.fire_jet.getDefaultState().with(BlockTFFireJet.VARIANT, nextVariant), 3);
 			}
 		} else {
 			if (counter % 20 == 0) {

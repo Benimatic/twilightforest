@@ -28,7 +28,7 @@ public class TFGenBigMushgloom extends TFGenerator {
 
 		// generate!
 		for (int dy = 0; dy < height - 2; dy++) {
-			this.setBlockAndNotifyAdequately(world, pos.up(dy), TFBlocks.huge_mushgloom.getDefaultState().withProperty(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.STEM));
+			this.setBlockAndNotifyAdequately(world, pos.up(dy), TFBlocks.huge_mushgloom.getDefaultState().with(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.STEM));
 		}
 
 		makeMushroomCap(world, pos.up(height - 2));
@@ -41,15 +41,15 @@ public class TFGenBigMushgloom extends TFGenerator {
 
 	private void makeMushroomCap(World world, BlockPos pos) {
 		BlockState defState = TFBlocks.huge_mushgloom.getDefaultState();
-		this.setBlockAndNotifyAdequately(world, pos.add(-1, 0, -1), defState.withProperty(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.NORTH_WEST));
-		this.setBlockAndNotifyAdequately(world, pos.add(0, 0, -1), defState.withProperty(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.NORTH));
-		this.setBlockAndNotifyAdequately(world, pos.add(1, 0, -1), defState.withProperty(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.NORTH_EAST));
-		this.setBlockAndNotifyAdequately(world, pos.add(-1, 0, 0), defState.withProperty(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.WEST));
-		this.setBlockAndNotifyAdequately(world, pos, defState.withProperty(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.CENTER));
-		this.setBlockAndNotifyAdequately(world, pos.add(1, 0, 0), defState.withProperty(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.EAST));
-		this.setBlockAndNotifyAdequately(world, pos.add(-1, 0, 1), defState.withProperty(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.SOUTH_WEST));
-		this.setBlockAndNotifyAdequately(world, pos.add(0, 0, 1), defState.withProperty(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.SOUTH));
-		this.setBlockAndNotifyAdequately(world, pos.add(1, 0, 1), defState.withProperty(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.SOUTH_EAST));
+		this.setBlockAndNotifyAdequately(world, pos.add(-1, 0, -1), defState.with(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.NORTH_WEST));
+		this.setBlockAndNotifyAdequately(world, pos.add(0, 0, -1), defState.with(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.NORTH));
+		this.setBlockAndNotifyAdequately(world, pos.add(1, 0, -1), defState.with(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.NORTH_EAST));
+		this.setBlockAndNotifyAdequately(world, pos.add(-1, 0, 0), defState.with(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.WEST));
+		this.setBlockAndNotifyAdequately(world, pos, defState.with(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.CENTER));
+		this.setBlockAndNotifyAdequately(world, pos.add(1, 0, 0), defState.with(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.EAST));
+		this.setBlockAndNotifyAdequately(world, pos.add(-1, 0, 1), defState.with(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.SOUTH_WEST));
+		this.setBlockAndNotifyAdequately(world, pos.add(0, 0, 1), defState.with(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.SOUTH));
+		this.setBlockAndNotifyAdequately(world, pos.add(1, 0, 1), defState.with(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.SOUTH_EAST));
 	}
 
 }

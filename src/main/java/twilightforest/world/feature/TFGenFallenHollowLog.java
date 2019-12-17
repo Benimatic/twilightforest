@@ -15,10 +15,10 @@ import java.util.Random;
 
 public class TFGenFallenHollowLog extends TFGenerator {
 
-	final BlockState mossPatch = TFBlocks.twilight_plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MOSSPATCH);
-	final BlockState oakLeaves = TFBlocks.twilight_leaves.getDefaultState().withProperty(BlockLeaves.CHECK_DECAY, false);
-	final BlockState oakLogWithZAxis = TFBlocks.twilight_log.getDefaultState().withProperty(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.Z);
-	final BlockState oakLogWithXAxis = TFBlocks.twilight_log.getDefaultState().withProperty(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.X);
+	final BlockState mossPatch = TFBlocks.twilight_plant.getDefaultState().with(BlockTFPlant.VARIANT, PlantVariant.MOSSPATCH);
+	final BlockState oakLeaves = TFBlocks.twilight_leaves.getDefaultState().with(BlockLeaves.CHECK_DECAY, false);
+	final BlockState oakLogWithZAxis = TFBlocks.twilight_log.getDefaultState().with(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.Z);
+	final BlockState oakLogWithXAxis = TFBlocks.twilight_log.getDefaultState().with(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.X);
 	final BlockState dirt = Blocks.DIRT.getDefaultState();
 	final BlockState firefly = TFBlocks.firefly.getDefaultState();
 

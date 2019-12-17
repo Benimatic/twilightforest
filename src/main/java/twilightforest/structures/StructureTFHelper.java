@@ -16,13 +16,13 @@ public class StructureTFHelper {
     public static final BlockState stoneSlabTop = getSlabTop(Blocks.STONE_SLAB);
     public static final BlockState stoneSlabDouble = Blocks.DOUBLE_STONE_SLAB.getDefaultState();
 
-    public static final BlockState birchSlab = getSlab(Blocks.WOODEN_SLAB).withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
-    public static final BlockState birchSlabTop = getSlabTop(Blocks.WOODEN_SLAB).withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
-    public static final BlockState birchPlanks = Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
+    public static final BlockState birchSlab = getSlab(Blocks.WOODEN_SLAB).with(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
+    public static final BlockState birchSlabTop = getSlabTop(Blocks.WOODEN_SLAB).with(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
+    public static final BlockState birchPlanks = Blocks.PLANKS.getDefaultState().with(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
 
 
     private static BlockState getSlabType(Block type, BlockSlab.EnumBlockHalf side) {
-        return type.getDefaultState().withProperty(BlockSlab.HALF, side);
+        return type.getDefaultState().with(BlockSlab.HALF, side);
     }
 
 
@@ -40,7 +40,7 @@ public class StructureTFHelper {
     }
 
     public static BlockState randomSapling(int i) {
-        return Blocks.SAPLING.getDefaultState().withProperty(BlockSapling.TYPE, BlockPlanks.EnumType.values()[i]);
+        return Blocks.SAPLING.getDefaultState().with(BlockSapling.TYPE, BlockPlanks.EnumType.values()[i]);
     }
 
     public static BlockState randomMushroom(int i) {

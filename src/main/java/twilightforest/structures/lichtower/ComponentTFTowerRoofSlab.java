@@ -41,8 +41,8 @@ public class ComponentTFTowerRoofSlab extends ComponentTFTowerRoof {
 	}
 
 	protected boolean makePyramidCap(World world, BlockPlanks.EnumType woodType, StructureBoundingBox sbb) {
-		BlockState woodenSlab = Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockPlanks.VARIANT, woodType);
-		BlockState woodenPlanks = Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, woodType);
+		BlockState woodenSlab = Blocks.WOODEN_SLAB.getDefaultState().with(BlockPlanks.VARIANT, woodType);
+		BlockState woodenPlanks = Blocks.PLANKS.getDefaultState().with(BlockPlanks.VARIANT, woodType);
 		for (int y = 0; y <= height; y++) {
 			int min = 2 * y;
 			int max = size - (2 * y) - 1;
@@ -61,8 +61,8 @@ public class ComponentTFTowerRoofSlab extends ComponentTFTowerRoof {
 	}
 
 	protected boolean makeConnectedCap(World world, BlockPlanks.EnumType woodType, StructureBoundingBox sbb) {
-		BlockState woodenSlab = Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockPlanks.VARIANT, woodType);
-		BlockState woodenPlanks = Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, woodType);
+		BlockState woodenSlab = Blocks.WOODEN_SLAB.getDefaultState().with(BlockPlanks.VARIANT, woodType);
+		BlockState woodenPlanks = Blocks.PLANKS.getDefaultState().with(BlockPlanks.VARIANT, woodType);
 
 		for (int y = 0; y < height; y++) {
 			int min = 2 * y;

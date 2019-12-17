@@ -455,7 +455,7 @@ public class TFTeleporter extends Teleporter {
 		world.setBlockState(pos.east().south().down(), dirt);
 
 		// portal in it
-		BlockState portal = TFBlocks.twilight_portal.getDefaultState().withProperty(BlockTFPortal.DISALLOW_RETURN, !TFConfig.shouldReturnPortalBeUsable);
+		BlockState portal = TFBlocks.twilight_portal.getDefaultState().with(BlockTFPortal.DISALLOW_RETURN, !TFConfig.shouldReturnPortalBeUsable);
 
 		world.setBlockState(pos, portal, 2);
 		world.setBlockState(pos.east(), portal, 2);

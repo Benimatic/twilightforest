@@ -18,11 +18,11 @@ public class StructureTFKnightStones extends StructureComponent.BlockSelector {
 			float f = random.nextFloat();
 
 			if (f < 0.2F) {
-				this.blockstate = TFBlocks.underbrick.getDefaultState().withProperty(BlockTFUnderBrick.VARIANT, UnderBrickVariant.CRACKED);
+				this.blockstate = TFBlocks.underbrick.getDefaultState().with(BlockTFUnderBrick.VARIANT, UnderBrickVariant.CRACKED);
 			} else if (f < 0.5F) {
-				this.blockstate = TFBlocks.underbrick.getDefaultState().withProperty(BlockTFUnderBrick.VARIANT, UnderBrickVariant.MOSSY);
+				this.blockstate = TFBlocks.underbrick.getDefaultState().with(BlockTFUnderBrick.VARIANT, UnderBrickVariant.MOSSY);
 			} else {
-				this.blockstate = TFBlocks.underbrick.getDefaultState().withProperty(BlockTFUnderBrick.VARIANT, UnderBrickVariant.NORMAL);
+				this.blockstate = TFBlocks.underbrick.getDefaultState().with(BlockTFUnderBrick.VARIANT, UnderBrickVariant.NORMAL);
 			}
 		}
 	}

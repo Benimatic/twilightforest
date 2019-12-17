@@ -25,9 +25,9 @@ public class ComponentTFMazeDeadEndTorches extends ComponentTFMazeDeadEnd {
 		super.addComponentParts(world, rand, sbb);
 
 		// torches!
-		this.fillWithBlocks(world, sbb, 2, 1, 4, 3, 4, 4, Blocks.TORCH.getDefaultState().withProperty(BlockTorch.FACING, Direction.SOUTH), AIR, false);
-		this.fillWithBlocks(world, sbb, 1, 1, 1, 1, 4, 4, Blocks.TORCH.getDefaultState().withProperty(BlockTorch.FACING, Direction.WEST), AIR, false);
-		this.fillWithBlocks(world, sbb, 4, 1, 1, 4, 4, 4, Blocks.TORCH.getDefaultState().withProperty(BlockTorch.FACING, Direction.EAST), AIR, false);
+		this.fillWithBlocks(world, sbb, 2, 1, 4, 3, 4, 4, Blocks.TORCH.getDefaultState().with(BlockTorch.FACING, Direction.SOUTH), AIR, false);
+		this.fillWithBlocks(world, sbb, 1, 1, 1, 1, 4, 4, Blocks.TORCH.getDefaultState().with(BlockTorch.FACING, Direction.WEST), AIR, false);
+		this.fillWithBlocks(world, sbb, 4, 1, 1, 4, 4, 4, Blocks.TORCH.getDefaultState().with(BlockTorch.FACING, Direction.EAST), AIR, false);
 
 
 		return true;

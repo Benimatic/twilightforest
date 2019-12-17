@@ -34,7 +34,7 @@ public class ModelUtils {
 	public static <T extends Comparable<T>> void registerToStateSingleVariant(Block b, IProperty<T> variant, IStateMapper stateMapper) {
 		List<T> variants = new ArrayList<>(variant.getAllowedValues());
 		for (int i = 0; i < variants.size(); i++) {
-			registerToState(b, i, b.getDefaultState().withProperty(variant, variants.get(i)), stateMapper);
+			registerToState(b, i, b.getDefaultState().with(variant, variants.get(i)), stateMapper);
 		}
 	}
 
@@ -84,6 +84,6 @@ public class ModelUtils {
 
 		for (T value : values)
 			for (BlockState state : statesIn)
-				target.add(state.withProperty(property, value));
+				target.add(state.with(property, value));
 	}
 }

@@ -35,9 +35,9 @@ public class ComponentTFFinalCastleBossGazebo extends StructureTFComponentOld {
 	@Override
 	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
 		this.deco = new StructureTFDecoratorCastle();
-		this.deco.blockState = TFBlocks.castle_rune_brick.getDefaultState().withProperty(BlockTFCastleMagic.COLOR, DyeColor.BLUE);
+		this.deco.blockState = TFBlocks.castle_rune_brick.getDefaultState().with(BlockTFCastleMagic.COLOR, DyeColor.BLUE);
 
-		this.deco.fenceState = TFBlocks.force_field.getDefaultState().withProperty(BlockTFForceField.COLOR, DyeColor.PURPLE);
+		this.deco.fenceState = TFBlocks.force_field.getDefaultState().with(BlockTFForceField.COLOR, DyeColor.PURPLE);
 	}
 
 	@Override
@@ -58,7 +58,7 @@ public class ComponentTFFinalCastleBossGazebo extends StructureTFComponentOld {
 		setInvisibleTextEntity(world, 10, 0, 10, sbb, "the latest updates on this castle and other content at:",true, 0.7f);
 		setInvisibleTextEntity(world, 10, 0, 10, sbb, "discord.experiment115.com", true, 0.4f);
 
-		setBlockState(world, TFBlocks.boss_spawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.FINAL_BOSS), 10, 1, 10, sbb);
+		setBlockState(world, TFBlocks.boss_spawner.getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.FINAL_BOSS), 10, 1, 10, sbb);
 
 		return true;
 	}

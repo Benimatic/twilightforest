@@ -107,7 +107,7 @@ public class ComponentTFFinalCastleDungeonSteps extends StructureTFComponentOld 
 
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		final BlockState stairState = deco.stairState.withProperty(BlockStairs.FACING, Direction.SOUTH);
+		final BlockState stairState = deco.stairState.with(BlockStairs.FACING, Direction.SOUTH);
 		for (int z = 0; z < 15; z++) {
 			int y = 14 - z;
 

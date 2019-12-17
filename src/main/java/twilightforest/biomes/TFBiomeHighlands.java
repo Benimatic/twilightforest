@@ -29,7 +29,7 @@ public class TFBiomeHighlands extends TFBiomeBase {
 
 	private final WorldGenerator genBoulder = new WorldGenBlockBlob(Blocks.MOSSY_COBBLESTONE, 0);
 	private final WorldGenerator genTrollRoots = new TFGenTrollRoots();
-	private final WorldGenerator worldGenMushgloom = new TFGenTallGrass(TFBlocks.twilight_plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MUSHGLOOM));
+	private final WorldGenerator worldGenMushgloom = new TFGenTallGrass(TFBlocks.twilight_plant.getDefaultState().with(BlockTFPlant.VARIANT, PlantVariant.MUSHGLOOM));
 
 	public TFBiomeHighlands(Builder props) {
 		super(props);
@@ -78,9 +78,9 @@ public class TFBiomeHighlands extends TFBiomeBase {
 		this.fillerBlock = Blocks.DIRT.getDefaultState();
 
 		if (noiseVal > 1.75D) {
-			this.topBlock = Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.COARSE_DIRT);
+			this.topBlock = Blocks.DIRT.getDefaultState().with(BlockDirt.VARIANT, BlockDirt.DirtType.COARSE_DIRT);
 		} else if (noiseVal > -0.95D) {
-			this.topBlock = Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.PODZOL);
+			this.topBlock = Blocks.DIRT.getDefaultState().with(BlockDirt.VARIANT, BlockDirt.DirtType.PODZOL);
 		}
 
 		this.genTwilightBiomeTerrain(world, rand, primer, x, z, noiseVal);

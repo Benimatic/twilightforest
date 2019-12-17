@@ -57,7 +57,7 @@ public class ComponentTFStrongholdAccessChamber extends StructureTFStrongholdCom
 		// shaft down
 		final BlockState defaultState = Blocks.STONEBRICK
 				.getDefaultState()
-				.withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.MOSSY);
+				.with(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.MOSSY);
 		this.fillWithBlocks(world, sbb, 2, -2, 2, 6, 0, 6, defaultState, AIR, false);
 
 		this.fillWithAir(world, sbb, 3, -2, 3, 5, 2, 5);
@@ -74,9 +74,9 @@ public class ComponentTFStrongholdAccessChamber extends StructureTFStrongholdCom
 		// pedestal
 		final BlockState blockstateIn = TFBlocks.trophy_pedestal
 				.getDefaultState()
-				.withProperty(BlockTFTrophyPedestal.LATENT, true)
+				.with(BlockTFTrophyPedestal.LATENT, true)
 				//TODO: Atomic: Verify this facing.
-				.withProperty(BlockTFTrophyPedestal.FACING, Direction.EAST);
+				.with(BlockTFTrophyPedestal.FACING, Direction.EAST);
 		this.setBlockState(world, blockstateIn, 2, 1, 2, sbb);
 
 		// block point

@@ -16,7 +16,7 @@ public class TFGenSmallTwilightOak extends WorldGenTrees implements IBlockSettab
 	public TFGenSmallTwilightOak(boolean notify, int minHeight) {
 		this(notify, minHeight,
 				TFBlocks.twilight_log.getDefaultState(),
-				TFBlocks.twilight_leaves.getDefaultState().withProperty(BlockLeaves.CHECK_DECAY, false)
+				TFBlocks.twilight_leaves.getDefaultState().with(BlockLeaves.CHECK_DECAY, false)
 		);
 	}
 

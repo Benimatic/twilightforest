@@ -31,11 +31,11 @@ public class ComponentTFFinalCastleDungeonEntrance extends ComponentTFFinalCastl
 		this.deco = new StructureTFDecoratorCastle();
 		this.deco.blockState = TFBlocks.castle_rune_brick
 				.getDefaultState()
-				.withProperty(BlockTFCastleMagic.COLOR, BlockTFCastleMagic.VALID_COLORS.get(2));
+				.with(BlockTFCastleMagic.COLOR, BlockTFCastleMagic.VALID_COLORS.get(2));
 
 		this.deco.fenceState = TFBlocks.force_field
 				.getDefaultState()
-				.withProperty(BlockTFForceField.COLOR, BlockTFForceField.VALID_COLORS.get(1));
+				.with(BlockTFForceField.COLOR, BlockTFForceField.VALID_COLORS.get(1));
 
 		// this is going to be the parent for all rooms on this level
 		super.buildComponent(this, list, rand);
@@ -48,7 +48,7 @@ public class ComponentTFFinalCastleDungeonEntrance extends ComponentTFFinalCastl
 			return false;
 		}
 
-		final BlockState stairs = deco.stairState.withProperty(BlockStairs.FACING, Direction.SOUTH);
+		final BlockState stairs = deco.stairState.with(BlockStairs.FACING, Direction.SOUTH);
 		final BlockState deadRock = TFBlocks.deadrock.getDefaultState();
 		// stairs
 		for (int y = 0; y <= this.height; y++) {
@@ -62,7 +62,7 @@ public class ComponentTFFinalCastleDungeonEntrance extends ComponentTFFinalCastl
 
 		// door
 		final BlockState castleDoor = TFBlocks.castle_door.getDefaultState()
-				.withProperty(BlockTFCastleDoor.LOCK_INDEX, 2);
+				.with(BlockTFCastleDoor.LOCK_INDEX, 2);
 		this.fillWithBlocks(world, sbb, 23, 0, 12, 23, 3, 14, castleDoor, AIR, false);
 		this.fillWithBlocks(world, sbb, 23, 4, 12, 23, 4, 14, deco.blockState, deco.blockState, false);
 

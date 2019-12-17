@@ -13,7 +13,7 @@ import java.util.Random;
 public class TFGenWoodRoots extends TFGenerator {
 
 	private BlockState rootBlock = TFBlocks.root.getDefaultState();
-	private BlockState oreBlock = TFBlocks.root.getDefaultState().withProperty(BlockTFRoots.VARIANT, RootVariant.LIVEROOT);
+	private BlockState oreBlock = TFBlocks.root.getDefaultState().with(BlockTFRoots.VARIANT, RootVariant.LIVEROOT);
 
 	@Override
 	public boolean generate(World world, Random rand, BlockPos pos) {

@@ -35,8 +35,8 @@ public class ComponentTFTowerRoofPointy extends ComponentTFTowerRoof {
 	 */
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		BlockState birchSlab = Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
-		BlockState birchPlanks = Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
+		BlockState birchSlab = Blocks.WOODEN_SLAB.getDefaultState().with(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
+		BlockState birchPlanks = Blocks.PLANKS.getDefaultState().with(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
 
 		for (int y = 0; y <= height; y++) {
 			int min, mid, max;

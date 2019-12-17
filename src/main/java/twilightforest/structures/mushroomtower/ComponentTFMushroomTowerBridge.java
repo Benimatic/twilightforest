@@ -83,7 +83,7 @@ public class ComponentTFMushroomTowerBridge extends ComponentTFMushroomTowerWing
 			setBlockState(world, deco.fenceState, x, 1, 0, sbb);
 			setBlockState(world, deco.fenceState, x, 1, 2, sbb);
 
-			setBlockState(world, this.isAscender ? deco.floorState.withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.JUNGLE) : deco.floorState, x, 0, 1, sbb);
+			setBlockState(world, this.isAscender ? deco.floorState.with(BlockPlanks.VARIANT, BlockPlanks.EnumType.JUNGLE) : deco.floorState, x, 0, 1, sbb);
 		}
 
 		// clear bridge walkway

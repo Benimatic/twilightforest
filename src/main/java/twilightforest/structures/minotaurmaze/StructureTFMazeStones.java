@@ -22,11 +22,11 @@ public class StructureTFMazeStones extends StructureComponent.BlockSelector {
 			float rf = random.nextFloat();
 
 			if (rf < 0.2F) {
-				this.blockstate = blockstate.withProperty(BlockTFMazestone.VARIANT, MOSSY);
+				this.blockstate = blockstate.with(BlockTFMazestone.VARIANT, MOSSY);
 			} else if (rf < 0.5F) {
-				this.blockstate = blockstate.withProperty(BlockTFMazestone.VARIANT, CRACKED);
+				this.blockstate = blockstate.with(BlockTFMazestone.VARIANT, CRACKED);
 			} else {
-				this.blockstate = blockstate.withProperty(BlockTFMazestone.VARIANT, BRICK);
+				this.blockstate = blockstate.with(BlockTFMazestone.VARIANT, BRICK);
 			}
 		}
 	}

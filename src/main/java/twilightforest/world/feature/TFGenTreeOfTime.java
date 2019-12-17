@@ -17,8 +17,8 @@ public class TFGenTreeOfTime extends TFGenHollowTree {
 		super(notify);
 
 		this.treeState = TFBlocks.magic_log.getDefaultState();
-		this.branchState = treeState.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
-		this.leafState = TFBlocks.magic_leaves.getDefaultState().withProperty(BlockLeaves.CHECK_DECAY, false);
+		this.branchState = treeState.with(BlockLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
+		this.leafState = TFBlocks.magic_leaves.getDefaultState().with(BlockLeaves.CHECK_DECAY, false);
 	}
 
 	@Override

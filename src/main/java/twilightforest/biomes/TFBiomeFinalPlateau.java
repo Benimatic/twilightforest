@@ -22,8 +22,8 @@ public class TFBiomeFinalPlateau extends TFBiomeBase {
 		super(props);
 
 		//TODO: Move to SurfaceBuilderConfig
-		this.topBlock = TFBlocks.deadrock.getDefaultState().withProperty(BlockTFDeadrock.VARIANT, DeadrockVariant.SURFACE);
-		this.fillerBlock = TFBlocks.deadrock.getDefaultState().withProperty(BlockTFDeadrock.VARIANT, DeadrockVariant.CRACKED);
+		this.topBlock = TFBlocks.deadrock.getDefaultState().with(BlockTFDeadrock.VARIANT, DeadrockVariant.SURFACE);
+		this.fillerBlock = TFBlocks.deadrock.getDefaultState().with(BlockTFDeadrock.VARIANT, DeadrockVariant.CRACKED);
 
 		getTFBiomeDecorator().hasCanopy = false;
 		getTFBiomeDecorator().setTreesPerChunk(-999);
@@ -38,7 +38,7 @@ public class TFBiomeFinalPlateau extends TFBiomeBase {
 	//TODO: Move to SurfaceBuilder
 	@Override
 	public BlockState getStoneReplacementState() {
-		return TFBlocks.deadrock.getDefaultState().withProperty(BlockTFDeadrock.VARIANT, DeadrockVariant.SOLID);
+		return TFBlocks.deadrock.getDefaultState().with(BlockTFDeadrock.VARIANT, DeadrockVariant.SOLID);
 	}
 
 	@Override

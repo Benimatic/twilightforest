@@ -24,8 +24,8 @@ public class TFBiomeSpookyForest extends TFBiomeBase {
 	private final WorldGenerator tfGenWebs = new TFGenWebs();
 	private final WorldGenerator tfGenLeaf = new TFGenFallenLeaves();
 	private final WorldGenerator tfGenLampposts = new TFGenLampposts(Blocks.LIT_PUMPKIN.getDefaultState());
-	private final WorldGenerator worldGenMushgloom = new TFGenTallGrass(TFBlocks.twilight_plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MUSHGLOOM));
-	private final WorldGenerator worldGenDeadBush = new TFGenTallGrass(TFBlocks.twilight_plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.DEADBUSH), 8);
+	private final WorldGenerator worldGenMushgloom = new TFGenTallGrass(TFBlocks.twilight_plant.getDefaultState().with(BlockTFPlant.VARIANT, PlantVariant.MUSHGLOOM));
+	private final WorldGenerator worldGenDeadBush = new TFGenTallGrass(TFBlocks.twilight_plant.getDefaultState().with(BlockTFPlant.VARIANT, PlantVariant.DEADBUSH), 8);
 	private final WorldGenerator graveyardGen = new TFGenGraveyard();
 	private final WorldGenerator worldGenPumpkin = new WorldGenPumpkin();
 

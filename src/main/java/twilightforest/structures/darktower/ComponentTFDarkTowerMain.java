@@ -711,7 +711,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 		maze.wallBlockState = deco.blockState;
 		maze.headBlockState = deco.accentState;
 		maze.pillarBlockState = deco.accentState;
-		maze.doorBlockState = TFBlocks.tower_device.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.REAPPEARING_INACTIVE);
+		maze.doorBlockState = TFBlocks.tower_device.getDefaultState().with(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.REAPPEARING_INACTIVE);
 
 		maze.torchRarity = 0;
 		maze.tall = 3;
@@ -773,19 +773,19 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 			case 1:
 				setBlockState(world, deco.accentState, x + 0, y + 1, z + 0, sbb);
 				setBlockState(world, deco.accentState, x + 0, y + 1, z + 1, sbb);
-				setBlockState(world, Blocks.CHEST.getDefaultState().withProperty(BlockChest.FACING, Direction.SOUTH), x + 0, y + 2, z + 0, sbb);
+				setBlockState(world, Blocks.CHEST.getDefaultState().with(BlockChest.FACING, Direction.SOUTH), x + 0, y + 2, z + 0, sbb);
 				this.placeTreasureAtCurrentPosition(world, decoRNG, x + 0, y + 2, z + 1, TFTreasure.darktower_cache, sbb);
 				break;
 			case 2:
 				setBlockState(world, deco.accentState, x + 0, y + 1, z + 0, sbb);
 				setBlockState(world, deco.accentState, x + 1, y + 1, z + 0, sbb);
-				setBlockState(world, Blocks.CHEST.getDefaultState().withProperty(BlockChest.FACING, Direction.SOUTH), x + 0, y + 2, z + 0, sbb);
+				setBlockState(world, Blocks.CHEST.getDefaultState().with(BlockChest.FACING, Direction.SOUTH), x + 0, y + 2, z + 0, sbb);
 				this.placeTreasureAtCurrentPosition(world, decoRNG, x + 1, y + 2, z + 0, TFTreasure.darktower_cache, sbb);
 				break;
 			case 3:
 				setBlockState(world, deco.accentState, x + 1, y + 1, z + 0, sbb);
 				setBlockState(world, deco.accentState, x + 1, y + 1, z + 1, sbb);
-				setBlockState(world, Blocks.CHEST.getDefaultState().withProperty(BlockChest.FACING, Direction.SOUTH), x + 1, y + 2, z + 0, sbb);
+				setBlockState(world, Blocks.CHEST.getDefaultState().with(BlockChest.FACING, Direction.SOUTH), x + 1, y + 2, z + 0, sbb);
 				this.placeTreasureAtCurrentPosition(world, decoRNG, x + 1, y + 2, z + 1, TFTreasure.darktower_cache, sbb);
 				break;
 		}
@@ -830,7 +830,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 			}
 		}
 
-		final BlockState antiBuilderBlockState = TFBlocks.tower_device.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.ANTIBUILDER);
+		final BlockState antiBuilderBlockState = TFBlocks.tower_device.getDefaultState().with(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.ANTIBUILDER);
 
 		// place unbuilders
 		setBlockStateRotated(world, antiBuilderBlockState, 15, y + 2, 7, rotation, sbb);
@@ -863,7 +863,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 
 		// cauldron and brewing stand
 		this.setBlockStateRotated(world, Blocks.BREWING_STAND.getDefaultState(), 13, y + 2, 5, rotation, sbb);
-		this.setBlockStateRotated(world, Blocks.CAULDRON.getDefaultState().withProperty(CauldronBlock.LEVEL, 3), 15, y + 2, 3, rotation, sbb);
+		this.setBlockStateRotated(world, Blocks.CAULDRON.getDefaultState().with(CauldronBlock.LEVEL, 3), 15, y + 2, 3, rotation, sbb);
 
 		// bookshelves in corner
 		this.fillBlocksRotated(world, sbb, 10, y + 1, 17, 17, y + 4, 17, deco.blockState, rotation);
@@ -898,14 +898,14 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 	private void makeDispenserPillar(World world, StructureTFDecorator forgeDeco, int x, int y, int z, Direction stairMeta, Rotation rotation, StructureBoundingBox sbb)
 	{
 		this.setBlockStateRotated(world, getStairState(forgeDeco.stairState, stairMeta, rotation, true), x, y + 2, z, rotation, sbb);
-		this.setBlockStateRotated(world, Blocks.DISPENSER.getDefaultState().withProperty(BlockDispenser.FACING, stairMeta), x, y + 3, z, rotation, sbb);
+		this.setBlockStateRotated(world, Blocks.DISPENSER.getDefaultState().with(BlockDispenser.FACING, stairMeta), x, y + 3, z, rotation, sbb);
 		this.setBlockStateRotated(world, getStairState(forgeDeco.stairState, stairMeta, rotation, false), x, y + 4, z, rotation, sbb);
 	}
 
 
 	private void decorateBossSpawner(World world, Random rand, StructureBoundingBox sbb, Rotation rotation, int y)
 	{
-		this.setBlockStateRotated(world, TFBlocks.boss_spawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.UR_GHAST), 9, y + 4, 9, rotation, sbb);
+		this.setBlockStateRotated(world, TFBlocks.boss_spawner.getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.UR_GHAST), 9, y + 4, 9, rotation, sbb);
 	}
 
 
@@ -914,7 +914,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 		final BlockState obsidian = Blocks.OBSIDIAN.getDefaultState();
 		final BlockState netherrack = Blocks.NETHERRACK.getDefaultState();
 		final BlockState redstone = Blocks.REDSTONE_BLOCK.getDefaultState();
-		final BlockState inactiveReactor = TFBlocks.tower_device.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.REACTOR_INACTIVE);
+		final BlockState inactiveReactor = TFBlocks.tower_device.getDefaultState().with(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.REACTOR_INACTIVE);
 
 		//  crafting area in corner - walls
 		this.fillBlocksRotated(world, sbb, 17, y + 1, 1, 17, y + 4, 6, deco.pillarState, rotation);
@@ -994,38 +994,38 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 		// short piston plunger 1
 		setBlockStateRotated(world, deco.accentState, 14, y + 1, 17, rotation, sbb);
 		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), BlockLever.EnumOrientation.EAST, rotation, false), 13, y + 1, 17, rotation, sbb);
-		setBlockStateRotated(world, Blocks.PISTON.getDefaultState().withProperty(BlockPistonBase.FACING, Direction.SOUTH), 14, y + 2, 17, rotation, sbb);
+		setBlockStateRotated(world, Blocks.PISTON.getDefaultState().with(BlockPistonBase.FACING, Direction.SOUTH), 14, y + 2, 17, rotation, sbb);
 		setBlockStateRotated(world, redstone, 14, y + 2, 16, rotation, sbb);
 
 
 		// short piston plunger 2
 		setBlockStateRotated(world, deco.accentState, 17, y + 1, 14, rotation, sbb);
 		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), BlockLever.EnumOrientation.SOUTH, rotation, false), 17, y + 1, 13, rotation, sbb);
-		setBlockStateRotated(world, Blocks.PISTON.getDefaultState().withProperty(BlockPistonBase.FACING, Direction.EAST), 17, y + 2, 14, rotation, sbb);
+		setBlockStateRotated(world, Blocks.PISTON.getDefaultState().with(BlockPistonBase.FACING, Direction.EAST), 17, y + 2, 14, rotation, sbb);
 		setBlockStateRotated(world, redstone, 16, y + 2, 14, rotation, sbb);
 
 		// long piston plunger 1
 		setBlockStateRotated(world, redstone, 14, y + 2, 11, rotation, sbb);
 		setBlockStateRotated(world, deco.accentState, 14, y + 1, 11, rotation, sbb);
 		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), BlockLever.EnumOrientation.EAST, rotation, true), 13, y + 1, 11, rotation, sbb);
-		setBlockStateRotated(world, Blocks.PISTON.getDefaultState().withProperty(BlockPistonBase.FACING, Direction.NORTH), 14, y + 2, 10, rotation, sbb);
+		setBlockStateRotated(world, Blocks.PISTON.getDefaultState().with(BlockPistonBase.FACING, Direction.NORTH), 14, y + 2, 10, rotation, sbb);
 		setBlockStateRotated(world, deco.accentState, 14, y + 1, 9, rotation, sbb);
 		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), BlockLever.EnumOrientation.EAST, rotation, false), 13, y + 1, 9, rotation, sbb);
-		setBlockStateRotated(world, Blocks.STICKY_PISTON.getDefaultState().withProperty(BlockPistonBase.FACING, Direction.NORTH), 14, y + 2, 9, rotation, sbb);
+		setBlockStateRotated(world, Blocks.STICKY_PISTON.getDefaultState().with(BlockPistonBase.FACING, Direction.NORTH), 14, y + 2, 9, rotation, sbb);
 
 		// long piston plunger 2
 		setBlockStateRotated(world, redstone, 11, y + 2, 14, rotation, sbb);
 		setBlockStateRotated(world, deco.accentState, 11, y + 1, 14, rotation, sbb);
 		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), BlockLever.EnumOrientation.SOUTH, rotation, true), 11, y + 1, 13, rotation, sbb);
-		setBlockStateRotated(world, Blocks.PISTON.getDefaultState().withProperty(BlockPistonBase.FACING, Direction.WEST), 10, y + 2, 14, rotation, sbb);
+		setBlockStateRotated(world, Blocks.PISTON.getDefaultState().with(BlockPistonBase.FACING, Direction.WEST), 10, y + 2, 14, rotation, sbb);
 		setBlockStateRotated(world, deco.accentState, 9, y + 1, 14, rotation, sbb);
 		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), BlockLever.EnumOrientation.SOUTH, rotation, false), 9, y + 1, 13, rotation, sbb);
-		setBlockStateRotated(world, Blocks.STICKY_PISTON.getDefaultState().withProperty(BlockPistonBase.FACING, Direction.WEST), 9, y + 2, 14, rotation, sbb);
+		setBlockStateRotated(world, Blocks.STICKY_PISTON.getDefaultState().with(BlockPistonBase.FACING, Direction.WEST), 9, y + 2, 14, rotation, sbb);
 	}
 
 	private void makeWoodPillar(World world, StructureTFDecorator forgeDeco, int x, int y, int z, Rotation rotation, StructureBoundingBox sbb)
 	{
-		final BlockState log = TFBlocks.twilight_log.getDefaultState().withProperty(BlockTFLog.VARIANT, WoodVariant.DARK);
+		final BlockState log = TFBlocks.twilight_log.getDefaultState().with(BlockTFLog.VARIANT, WoodVariant.DARK);
 		this.setBlockStateRotated(world, log, x, y + 2, z, rotation, sbb);
 		this.setBlockStateRotated(world, log, x, y + 3, z, rotation, sbb);
 		this.setBlockStateRotated(world, log, x, y + 4, z, rotation, sbb);
@@ -1114,12 +1114,12 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 
 		// anvils
 		BlockState anvil = Blocks.ANVIL.getDefaultState()
-				.withProperty(BlockAnvil.DAMAGE, decoRNG.nextInt(2))
-				.withProperty(BlockAnvil.FACING, Direction.HORIZONTALS[decoRNG.nextInt(4)]);
+				.with(BlockAnvil.DAMAGE, decoRNG.nextInt(2))
+				.with(BlockAnvil.FACING, Direction.HORIZONTALS[decoRNG.nextInt(4)]);
 		this.setBlockStateRotated(world, anvil, 13, y + 2, 5, rotation, sbb);
 		anvil = Blocks.ANVIL.getDefaultState()
-				.withProperty(BlockAnvil.DAMAGE, decoRNG.nextInt(2))
-				.withProperty(BlockAnvil.FACING, Direction.HORIZONTALS[decoRNG.nextInt(4)]);
+				.with(BlockAnvil.DAMAGE, decoRNG.nextInt(2))
+				.with(BlockAnvil.FACING, Direction.HORIZONTALS[decoRNG.nextInt(4)]);
 		this.setBlockStateRotated(world, anvil, 13, y + 2, 13, rotation, sbb);
 
 		// fire pit
@@ -1130,7 +1130,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 	{
 
 		this.setBlockStateRotated(world, getStairState(deco.stairState, direction, rotation, true), x, y + 2, z, rotation, sbb);
-		this.setBlockStateRotated(world, Blocks.FURNACE.getDefaultState().withProperty(BlockFurnace.FACING, direction), x, y + 3, z, rotation, sbb);
+		this.setBlockStateRotated(world, Blocks.FURNACE.getDefaultState().with(BlockFurnace.FACING, direction), x, y + 3, z, rotation, sbb);
 
 		// randomly put some charcoal in the furnace burn slot
 		int amount = rand.nextBoolean() ? rand.nextInt(5) + 4 : 0;
@@ -1241,8 +1241,8 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 		setBlockStateRotated(world, Blocks.CRAFTING_TABLE.getDefaultState(), 14, y + 2, 4, rotation, sbb);
 
 		BlockState slab = Blocks.WOODEN_SLAB.getDefaultState()
-				.withProperty(BlockSlab.HALF, BlockSlab.EnumBlockHalf.TOP)
-				.withProperty(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.SPRUCE);
+				.with(BlockSlab.HALF, BlockSlab.EnumBlockHalf.TOP)
+				.with(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.SPRUCE);
 
 		// bench 2
 		setBlockStateRotated(world, getStairState(deco.stairState, Direction.EAST, rotation, true), 12, y + 1, 7, rotation, sbb);
@@ -1297,8 +1297,8 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 					treeGen = new WorldGenTrees(false);
 					break;
 				case 1:
-					final BlockState leaves = Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.JUNGLE).withProperty(BlockLeaves.CHECK_DECAY, false);
-					final BlockState wood = Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE);
+					final BlockState leaves = Blocks.LEAVES.getDefaultState().with(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.JUNGLE).with(BlockLeaves.CHECK_DECAY, false);
+					final BlockState wood = Blocks.LOG.getDefaultState().with(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE);
 
 					// jungle tree
 					treeGen = new WorldGenTrees(true, 3, wood, leaves, false);
@@ -1330,7 +1330,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 	private void placeRandomPlant(World world, Random decoRNG, int x, int y, int z, Rotation rotation, StructureBoundingBox sbb)
 	{
 		int potMeta = decoRNG.nextInt(15); // this seems to be the only way to set the flower pre-placement
-		final BlockState flowerPotState = Blocks.FLOWER_POT.getDefaultState().withProperty(BlockFlowerPot.LEGACY_DATA, potMeta);
+		final BlockState flowerPotState = Blocks.FLOWER_POT.getDefaultState().with(BlockFlowerPot.LEGACY_DATA, potMeta);
 		setBlockStateRotated(world, flowerPotState, x, y, z, rotation, sbb);
 	}
 
@@ -1376,9 +1376,9 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 	protected void makeTimberBeams(World world, Random rand, StructureBoundingBox sbb, Rotation rotation, int y, boolean isBottom, boolean isTop, int top)
 	{
 		BlockState beamID = TFBlocks.twilight_log.getDefaultState();
-		BlockState beamStateNS = beamID.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.Z);
-		BlockState beamStateUD = beamID.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.Y);
-		BlockState beamStateEW = beamID.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.X);
+		BlockState beamStateNS = beamID.with(BlockLog.LOG_AXIS, BlockLog.EnumAxis.Z);
+		BlockState beamStateUD = beamID.with(BlockLog.LOG_AXIS, BlockLog.EnumAxis.Y);
+		BlockState beamStateEW = beamID.with(BlockLog.LOG_AXIS, BlockLog.EnumAxis.X);
 
 		// three beams going n/s
 		for (int z = 1; z < size - 1; z++)
@@ -1415,7 +1415,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 			if (!isBottom || checkPost(world, x1, y - 5, z1, rotation, sbb))
 			{
 				setBlockStateRotated(world, beamStateUD, x1, y - by, z1, rotation, sbb);
-				setBlockStateRotated(world, Blocks.LADDER.getDefaultState().withProperty(BlockLadder.FACING, Direction.WEST), x1 + 1, y - by, z1, rotation, sbb);
+				setBlockStateRotated(world, Blocks.LADDER.getDefaultState().with(BlockLadder.FACING, Direction.WEST), x1 + 1, y - by, z1, rotation, sbb);
 			}
 			if (!isBottom || checkPost(world, x2, y - 5, z2, rotation, sbb))
 			{
@@ -1424,7 +1424,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 			if (!isBottom || checkPost(world, x3, y - 5, z3, rotation, sbb))
 			{
 				setBlockStateRotated(world, beamStateUD, x3, y - by, z3, rotation, sbb);
-				setBlockStateRotated(world, Blocks.LADDER.getDefaultState().withProperty(BlockLadder.FACING, EAST), x3 - 1, y - by, z3, rotation, sbb);
+				setBlockStateRotated(world, Blocks.LADDER.getDefaultState().with(BlockLadder.FACING, EAST), x3 - 1, y - by, z3, rotation, sbb);
 			}
 		}
 
@@ -1438,7 +1438,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 			for (int by = 1; by < 5; by++)
 			{
 				setBlockStateRotated(world, beamStateUD, ladderX, y + by, 9, topFloorRotation, sbb);
-				setBlockStateRotated(world, Blocks.LADDER.getDefaultState().withProperty(BlockLadder.FACING, Direction.NORTH), ladderX, y + by, ladderZ, topFloorRotation, sbb);
+				setBlockStateRotated(world, Blocks.LADDER.getDefaultState().with(BlockLadder.FACING, Direction.NORTH), ladderX, y + by, ladderZ, topFloorRotation, sbb);
 			}
 
 			// fence thing
@@ -1518,8 +1518,8 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 
 		for (int y = bottom - 4; y < bottom; y++)
 		{
-			setBlockStateRotated(world, Blocks.LADDER.getDefaultState().withProperty(BlockLadder.FACING, WEST), 1, y, 5, Rotation.CLOCKWISE_90, sbb);
-			setBlockStateRotated(world, Blocks.LADDER.getDefaultState().withProperty(BlockLadder.FACING, WEST), 1, y, 5, Rotation.COUNTERCLOCKWISE_90, sbb);
+			setBlockStateRotated(world, Blocks.LADDER.getDefaultState().with(BlockLadder.FACING, WEST), 1, y, 5, Rotation.CLOCKWISE_90, sbb);
+			setBlockStateRotated(world, Blocks.LADDER.getDefaultState().with(BlockLadder.FACING, WEST), 1, y, 5, Rotation.COUNTERCLOCKWISE_90, sbb);
 		}
 
 
@@ -1540,10 +1540,10 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 		makeBuilderPlatform(world, rand, rotation, y, z, false, sbb);
 
 		// ladder
-		setBlockStateRotated(world, Blocks.LADDER.getDefaultState().withProperty(BlockLadder.FACING, Direction.WEST), 1, y + 1, z, rotation, sbb);
-		setBlockStateRotated(world, Blocks.LADDER.getDefaultState().withProperty(BlockLadder.FACING, Direction.WEST), 1, y + 2, z, rotation, sbb);
-		setBlockStateRotated(world, Blocks.LADDER.getDefaultState().withProperty(BlockLadder.FACING, Direction.WEST), 1, y + 3, z, rotation, sbb);
-		setBlockStateRotated(world, Blocks.LADDER.getDefaultState().withProperty(BlockLadder.FACING, Direction.WEST), 1, y + 4, z, rotation, sbb);
+		setBlockStateRotated(world, Blocks.LADDER.getDefaultState().with(BlockLadder.FACING, Direction.WEST), 1, y + 1, z, rotation, sbb);
+		setBlockStateRotated(world, Blocks.LADDER.getDefaultState().with(BlockLadder.FACING, Direction.WEST), 1, y + 2, z, rotation, sbb);
+		setBlockStateRotated(world, Blocks.LADDER.getDefaultState().with(BlockLadder.FACING, Direction.WEST), 1, y + 3, z, rotation, sbb);
+		setBlockStateRotated(world, Blocks.LADDER.getDefaultState().with(BlockLadder.FACING, Direction.WEST), 1, y + 4, z, rotation, sbb);
 
 		makeBuilderPlatform(world, rand, rotation, y + 5, z, true, sbb);
 
@@ -1553,7 +1553,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 			int sx = pickFrom(rand, 5, 9, 13);
 			int sz = (sx == 9) ? (rand.nextBoolean() ? 5 : 13) : 9;
 
-			final BlockState antibuilder = TFBlocks.tower_device.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.ANTIBUILDER);
+			final BlockState antibuilder = TFBlocks.tower_device.getDefaultState().with(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.ANTIBUILDER);
 			setBlockStateRotated(world, antibuilder, sx, y + 2, sz, rotation, sbb);
 		}
 		else
@@ -1578,14 +1578,14 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 		this.fillBlocksRotated(world, sbb, 5, top - spacing, 9, 7, top - spacing, 11, deco.accentState, rotation);
 		// ladder ascender
 		this.fillBlocksRotated(world, sbb, 6, top - spacing, 9, 6, top, 9, deco.accentState, rotation);
-		this.fillBlocksRotated(world, sbb, 6, top - spacing + 1, 10, 6, top - 1, 10, Blocks.LADDER.getDefaultState().withProperty(BlockLadder.FACING, Direction.NORTH), rotation);
+		this.fillBlocksRotated(world, sbb, 6, top - spacing + 1, 10, 6, top - 1, 10, Blocks.LADDER.getDefaultState().with(BlockLadder.FACING, Direction.NORTH), rotation);
 		setBlockStateRotated(world, AIR, 6, top + 1, 9, rotation, sbb);
 		setBlockStateRotated(world, deco.fenceState, 5, top + 0, 10, rotation, sbb);
 		setBlockStateRotated(world, deco.fenceState, 7, top + 0, 10, rotation, sbb);
 		setBlockStateRotated(world, deco.fenceState, 5, top + 1, 10, rotation, sbb);
 		setBlockStateRotated(world, deco.fenceState, 7, top + 1, 10, rotation, sbb);
 		// builder & lever
-		final BlockState inactiveBuilder = TFBlocks.tower_device.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.BUILDER_INACTIVE);
+		final BlockState inactiveBuilder = TFBlocks.tower_device.getDefaultState().with(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.BUILDER_INACTIVE);
 		setBlockStateRotated(world, inactiveBuilder, 7, top - spacing, 10, rotation, sbb);
 		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), rand.nextBoolean() ? BlockLever.EnumOrientation.UP_Z : BlockLever.EnumOrientation.UP_X, rotation, false), 7, top - spacing + 1, 11, rotation, sbb);
 
@@ -1606,7 +1606,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing
 		setBlockStateRotated(world, deco.accentState, 2, y, z + 1, rotation, sbb);
 
 		// builder & lever
-		final BlockState inactiveBuilder = TFBlocks.tower_device.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.BUILDER_INACTIVE);
+		final BlockState inactiveBuilder = TFBlocks.tower_device.getDefaultState().with(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.BUILDER_INACTIVE);
 		setBlockStateRotated(world, inactiveBuilder, 2, y, hole ? z + 1 : z - 1, rotation, sbb);
 		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), rand.nextBoolean() ? BlockLever.EnumOrientation.UP_Z : BlockLever.EnumOrientation.UP_X, rotation, false), 2, y + 1, z + 0, rotation, sbb);
 	}

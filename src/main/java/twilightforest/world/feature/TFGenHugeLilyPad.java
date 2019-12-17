@@ -35,12 +35,12 @@ public class TFGenHugeLilyPad extends WorldGenerator {
 
 			if (shouldPlacePadAt(world, dPos) && world.isAreaLoaded(dPos, 1)) {
 				final Direction horizontal = Direction.byHorizontalIndex(random.nextInt(4));
-				final BlockState lilypad = TFBlocks.huge_lilypad.getDefaultState().withProperty(FACING, horizontal);
+				final BlockState lilypad = TFBlocks.huge_lilypad.getDefaultState().with(FACING, horizontal);
 
-				world.setBlockState(dPos, lilypad.withProperty(PIECE, NW), 16 | 2);
-				world.setBlockState(dPos.east(), lilypad.withProperty(PIECE, NE), 16 | 2);
-				world.setBlockState(dPos.east().south(), lilypad.withProperty(PIECE, SE), 16 | 2);
-				world.setBlockState(dPos.south(), lilypad.withProperty(PIECE, SW), 16 | 2);
+				world.setBlockState(dPos, lilypad.with(PIECE, NW), 16 | 2);
+				world.setBlockState(dPos.east(), lilypad.with(PIECE, NE), 16 | 2);
+				world.setBlockState(dPos.east().south(), lilypad.with(PIECE, SE), 16 | 2);
+				world.setBlockState(dPos.south(), lilypad.with(PIECE, SW), 16 | 2);
 			}
 		}
 

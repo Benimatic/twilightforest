@@ -309,14 +309,14 @@ public class ComponentTFMinotaurMaze extends StructureTFComponentOld {
 //		fillWithBlocks(world, sbb, 0, 0, 0, getDiameter(), 0, getDiameter(), TFBlocks.mazestone, Blocks.STONE, false);
 //		fillWithBlocks(world, sbb, 0, 5, 0, getDiameter(), 5, getDiameter(), TFBlocks.mazestone, Blocks.STONE, true);
 		boolean onlyReplaceCeiling = this.level == 1 && !TFConfig.dimension.skylightForest;
-		fillWithBlocks(world, sbb, 1, 5, 1, getDiameter(), 5, getDiameter(), mazestone.withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.PLAIN), stone, onlyReplaceCeiling);
-		fillWithBlocks(world, sbb, 1, 0, 1, getDiameter(), 0, getDiameter(), mazestone.withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.MOSAIC), stone, false);
+		fillWithBlocks(world, sbb, 1, 5, 1, getDiameter(), 5, getDiameter(), mazestone.with(BlockTFMazestone.VARIANT, MazestoneVariant.PLAIN), stone, onlyReplaceCeiling);
+		fillWithBlocks(world, sbb, 1, 0, 1, getDiameter(), 0, getDiameter(), mazestone.with(BlockTFMazestone.VARIANT, MazestoneVariant.MOSAIC), stone, false);
 
 		//
-		maze.headBlockState = mazestone.withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.DECORATIVE);
-		maze.wallBlockState = mazestone.withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.BRICK);
-		maze.rootBlockState = mazestone.withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.DECORATIVE);
-		maze.pillarBlockState = mazestone.withProperty(BlockTFMazestone.VARIANT, MazestoneVariant.CHISELED);
+		maze.headBlockState = mazestone.with(BlockTFMazestone.VARIANT, MazestoneVariant.DECORATIVE);
+		maze.wallBlockState = mazestone.with(BlockTFMazestone.VARIANT, MazestoneVariant.BRICK);
+		maze.rootBlockState = mazestone.with(BlockTFMazestone.VARIANT, MazestoneVariant.DECORATIVE);
+		maze.pillarBlockState = mazestone.with(BlockTFMazestone.VARIANT, MazestoneVariant.CHISELED);
 		maze.wallBlocks = new StructureTFMazeStones();
 		maze.torchRarity = 0.05F;
 		maze.tall = 2;

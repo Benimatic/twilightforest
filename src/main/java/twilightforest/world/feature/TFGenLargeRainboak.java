@@ -214,7 +214,7 @@ public class TFGenLargeRainboak extends TFTreeGenerator {
 
 		for (int var5 = par2 + this.leafDistanceLimit; var4 < var5; ++var4) {
 			float var6 = this.leafSize(var4 - par2);
-			this.genTreeLayer(par1, var4, par3, var6, (byte) 1, TFBlocks.twilight_leaves.getDefaultState().withProperty(BlockTFLeaves.VARIANT, LeavesVariant.RAINBOAK).withProperty(BlockLeaves.CHECK_DECAY, false));
+			this.genTreeLayer(par1, var4, par3, var6, (byte) 1, TFBlocks.twilight_leaves.getDefaultState().with(BlockTFLeaves.VARIANT, LeavesVariant.RAINBOAK).with(BlockLeaves.CHECK_DECAY, false));
 		}
 	}
 
@@ -262,9 +262,9 @@ public class TFGenLargeRainboak extends TFTreeGenerator {
 
 				if (var20 > 0) {
 					if (var18 == var20) {
-						var17 = var17.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.X);
+						var17 = var17.with(BlockLog.LOG_AXIS, BlockLog.EnumAxis.X);
 					} else if (var19 == var20) {
-						var17 = var17.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.Z);
+						var17 = var17.with(BlockLog.LOG_AXIS, BlockLog.EnumAxis.Z);
 					}
 				}
 

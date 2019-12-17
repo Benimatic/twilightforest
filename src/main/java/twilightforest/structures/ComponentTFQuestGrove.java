@@ -20,8 +20,8 @@ import java.util.Random;
 public class ComponentTFQuestGrove extends StructureTFComponentOld {
 
 	private static final int RADIUS = 13;
-	private static final BlockState MOSSY_STONEBRICK = Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.MOSSY);
-	private static final BlockState CHISELED_STONEBRICK = Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED);
+	private static final BlockState MOSSY_STONEBRICK = Blocks.STONEBRICK.getDefaultState().with(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.MOSSY);
+	private static final BlockState CHISELED_STONEBRICK = Blocks.STONEBRICK.getDefaultState().with(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED);
 
 	protected boolean beastPlaced = false;
 	protected boolean dispenserPlaced = false;
@@ -64,7 +64,7 @@ public class ComponentTFQuestGrove extends StructureTFComponentOld {
 		}
 
 		// dispenser frame and button
-		setBlockState(world, Blocks.STONE_BUTTON.getDefaultState().withProperty(BlockButton.FACING, Direction.SOUTH), 13, 5, 19, sbb);
+		setBlockState(world, Blocks.STONE_BUTTON.getDefaultState().with(BlockButton.FACING, Direction.SOUTH), 13, 5, 19, sbb);
 
 		setBlockState(world, MOSSY_STONEBRICK, 12, 7, 20, sbb);
 		setBlockState(world, MOSSY_STONEBRICK, 13, 7, 20, sbb);
@@ -84,7 +84,7 @@ public class ComponentTFQuestGrove extends StructureTFComponentOld {
 			if (sbb.isVecInside(pos)) {
 				dispenserPlaced = true;
 
-				world.setBlockState(pos, Blocks.DISPENSER.getDefaultState().withProperty(BlockDispenser.FACING, Direction.NORTH), 4);
+				world.setBlockState(pos, Blocks.DISPENSER.getDefaultState().with(BlockDispenser.FACING, Direction.NORTH), 4);
 				TileEntityDispenser ted = (TileEntityDispenser) world.getTileEntity(pos);
 
 				// add 4 random wool blocks

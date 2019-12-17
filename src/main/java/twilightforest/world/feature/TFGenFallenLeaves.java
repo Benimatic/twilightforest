@@ -15,7 +15,7 @@ import java.util.Random;
 
 public class TFGenFallenLeaves extends WorldGenerator {
 
-	private final BlockState state = TFBlocks.twilight_plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.FALLEN_LEAVES);
+	private final BlockState state = TFBlocks.twilight_plant.getDefaultState().with(BlockTFPlant.VARIANT, PlantVariant.FALLEN_LEAVES);
 
 	@Override
 	public boolean generate(World worldIn, Random rand, BlockPos position) {

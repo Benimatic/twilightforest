@@ -28,7 +28,7 @@ public abstract class RandomizedTemplateProcessor implements ITemplateProcessor 
     }
 
     protected static <T extends Comparable<T>> BlockState translateState(BlockState stateIn, Block blockOut, IProperty<T> property) {
-        return blockOut.getDefaultState().withProperty(property, stateIn.getValue(property));
+        return blockOut.getDefaultState().with(property, stateIn.getValue(property));
     }
 
     protected static BlockState translateState(BlockState stateIn, Block blockOut, IProperty<?>... properties) {
@@ -38,6 +38,6 @@ public abstract class RandomizedTemplateProcessor implements ITemplateProcessor 
     }
 
     private static <T extends Comparable<T>> BlockState copyValue(BlockState from, BlockState to, IProperty<T> property) {
-        return to.withProperty(property, from.getValue(property));
+        return to.with(property, from.getValue(property));
     }
 }

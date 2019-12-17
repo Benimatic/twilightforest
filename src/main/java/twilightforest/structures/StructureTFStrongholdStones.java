@@ -17,11 +17,11 @@ public class StructureTFStrongholdStones extends StructureComponent.BlockSelecto
 			float f = random.nextFloat();
 
 			if (f < 0.2F) {
-				blockstate = Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CRACKED);
+				blockstate = Blocks.STONEBRICK.getDefaultState().with(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CRACKED);
 			} else if (f < 0.5F) {
-				blockstate = Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.MOSSY);
+				blockstate = Blocks.STONEBRICK.getDefaultState().with(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.MOSSY);
 			} else if (f < 0.55F) {
-				blockstate = Blocks.MONSTER_EGG.getDefaultState().withProperty(BlockSilverfish.VARIANT, BlockSilverfish.EnumType.STONEBRICK);
+				blockstate = Blocks.MONSTER_EGG.getDefaultState().with(BlockSilverfish.VARIANT, BlockSilverfish.EnumType.STONEBRICK);
 			} else {
 				blockstate = Blocks.STONEBRICK.getDefaultState();
 			}

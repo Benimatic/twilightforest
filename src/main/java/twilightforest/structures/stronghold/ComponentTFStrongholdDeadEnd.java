@@ -75,13 +75,13 @@ public class ComponentTFStrongholdDeadEnd extends StructureTFStrongholdComponent
 		}
 
 		for (int z = 2; z < 5; z++) {
-			this.setBlockState(world, deco.stairState.withProperty(BlockStairs.FACING, Direction.WEST), 3, 1, z, sbb);
-			this.setBlockState(world, deco.stairState.withProperty(BlockStairs.FACING, Direction.EAST), 5, 1, z, sbb);
+			this.setBlockState(world, deco.stairState.with(BlockStairs.FACING, Direction.WEST), 3, 1, z, sbb);
+			this.setBlockState(world, deco.stairState.with(BlockStairs.FACING, Direction.EAST), 5, 1, z, sbb);
 		}
 
-		this.setBlockState(world, deco.stairState.withProperty(BlockStairs.FACING, Direction.NORTH), 4, 1, 2, sbb);
-		this.setBlockState(world, deco.stairState.withProperty(BlockStairs.FACING, Direction.SOUTH), 4, 1, 4, sbb);
-		this.setBlockState(world, deco.stairState.withProperty(BlockStairs.FACING, Direction.NORTH), 4, 2, 3, sbb);
+		this.setBlockState(world, deco.stairState.with(BlockStairs.FACING, Direction.NORTH), 4, 1, 2, sbb);
+		this.setBlockState(world, deco.stairState.with(BlockStairs.FACING, Direction.SOUTH), 4, 1, 4, sbb);
+		this.setBlockState(world, deco.stairState.with(BlockStairs.FACING, Direction.NORTH), 4, 2, 3, sbb);
 
 		return true;
 	}

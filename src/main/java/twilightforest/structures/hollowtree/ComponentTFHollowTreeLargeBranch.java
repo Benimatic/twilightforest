@@ -91,7 +91,7 @@ public class ComponentTFHollowTreeLargeBranch extends ComponentTFHollowTreeMedBr
 		{
 			// main branch
 			final BlockState defaultState = TFBlocks.twilight_log.getDefaultState();
-			drawBresehnam(world, sbb, rsrc.getX(), rsrc.getY(), rsrc.getZ(), rdest.getX(), rdest.getY(), rdest.getZ(), defaultState.withProperty(LOG_AXIS, BlockLog.EnumAxis.NONE));
+			drawBresehnam(world, sbb, rsrc.getX(), rsrc.getY(), rsrc.getZ(), rdest.getX(), rdest.getY(), rdest.getZ(), defaultState.with(LOG_AXIS, BlockLog.EnumAxis.NONE));
 
 			// reinforce it
 			int reinforcements = 4;
@@ -100,7 +100,7 @@ public class ComponentTFHollowTreeLargeBranch extends ComponentTFHollowTreeMedBr
 				int vx = (i & 2) == 0 ? 1 : 0;
 				int vy = (i & 1) == 0 ? 1 : -1;
 				int vz = (i & 2) == 0 ? 0 : 1;
-				drawBresehnam(world, sbb, rsrc.getX() + vx, rsrc.getY() + vy, rsrc.getZ() + vz, rdest.getX(), rdest.getY(), rdest.getZ(), defaultState.withProperty(LOG_AXIS, BlockLog.EnumAxis.NONE));
+				drawBresehnam(world, sbb, rsrc.getX() + vx, rsrc.getY() + vy, rsrc.getZ() + vz, rdest.getX(), rdest.getY(), rdest.getZ(), defaultState.with(LOG_AXIS, BlockLog.EnumAxis.NONE));
 			}
 		}
 

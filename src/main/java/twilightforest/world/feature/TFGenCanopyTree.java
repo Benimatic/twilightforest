@@ -36,9 +36,9 @@ public class TFGenCanopyTree extends TFTreeGenerator {
 
 	public TFGenCanopyTree(boolean notify) {
 		super(notify);
-		treeState = TFBlocks.twilight_log.getDefaultState().withProperty(BlockTFLog.VARIANT, WoodVariant.CANOPY);
-		branchState = treeState.withProperty(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
-		leafState = TFBlocks.twilight_leaves.getDefaultState().withProperty(BlockTFLeaves.VARIANT, LeavesVariant.CANOPY).withProperty(BlockLeaves.CHECK_DECAY, false);
+		treeState = TFBlocks.twilight_log.getDefaultState().with(BlockTFLog.VARIANT, WoodVariant.CANOPY);
+		branchState = treeState.with(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
+		leafState = TFBlocks.twilight_leaves.getDefaultState().with(BlockTFLeaves.VARIANT, LeavesVariant.CANOPY).with(BlockLeaves.CHECK_DECAY, false);
 		rootState = TFBlocks.root.getDefaultState();
 	}
 

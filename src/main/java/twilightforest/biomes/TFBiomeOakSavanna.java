@@ -41,7 +41,7 @@ public class TFBiomeOakSavanna extends TFBiomeBase {
 		if (random.nextInt(10) == 0) {
 			return new WorldGenTallGrass(BlockTallGrass.EnumType.FERN);
 		} else if (random.nextInt(10) == 0) {
-			return new TFGenTallGrass(TFBlocks.twilight_plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MAYAPPLE));
+			return new TFGenTallGrass(TFBlocks.twilight_plant.getDefaultState().with(BlockTFPlant.VARIANT, PlantVariant.MAYAPPLE));
 		} else {
 			return new WorldGenTallGrass(BlockTallGrass.EnumType.GRASS);
 		}

@@ -62,10 +62,10 @@ public class ComponentTFHedgeMaze extends StructureTFComponentOld {
 			}
 		}
 
-		BlockState northJacko = Blocks.LIT_PUMPKIN.getDefaultState().withProperty(BlockPumpkin.FACING, Direction.NORTH);
-		BlockState southJacko = Blocks.LIT_PUMPKIN.getDefaultState().withProperty(BlockPumpkin.FACING, Direction.SOUTH);
-		BlockState westJacko = Blocks.LIT_PUMPKIN.getDefaultState().withProperty(BlockPumpkin.FACING, Direction.WEST);
-		BlockState eastJacko = Blocks.LIT_PUMPKIN.getDefaultState().withProperty(BlockPumpkin.FACING, Direction.EAST);
+		BlockState northJacko = Blocks.LIT_PUMPKIN.getDefaultState().with(BlockPumpkin.FACING, Direction.NORTH);
+		BlockState southJacko = Blocks.LIT_PUMPKIN.getDefaultState().with(BlockPumpkin.FACING, Direction.SOUTH);
+		BlockState westJacko = Blocks.LIT_PUMPKIN.getDefaultState().with(BlockPumpkin.FACING, Direction.WEST);
+		BlockState eastJacko = Blocks.LIT_PUMPKIN.getDefaultState().with(BlockPumpkin.FACING, Direction.EAST);
 
 		// plunk down some jack-o-lanterns outside for decoration
 		setBlockState(world, westJacko, 0, FLOOR_LEVEL, 24, sbb);
@@ -209,7 +209,7 @@ public class ComponentTFHedgeMaze extends StructureTFComponentOld {
 		int rx = x + rand.nextInt(diameter) - (diameter / 2);
 		int rz = z + rand.nextInt(diameter) - (diameter / 2);
 
-		setBlockState(world, Blocks.LIT_PUMPKIN.getDefaultState().withProperty(BlockPumpkin.FACING, Direction.byHorizontalIndex(rand.nextInt(4))),
+		setBlockState(world, Blocks.LIT_PUMPKIN.getDefaultState().with(BlockPumpkin.FACING, Direction.byHorizontalIndex(rand.nextInt(4))),
 				rx, FLOOR_LEVEL, rz, sbb);
 	}
 

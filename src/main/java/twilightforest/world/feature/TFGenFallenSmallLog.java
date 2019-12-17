@@ -47,22 +47,22 @@ public class TFGenFallenSmallLog extends TFGenerator {
 				logState = TFBlocks.twilight_log.getDefaultState();
 				break;
 			case 1:
-				logState = TFBlocks.twilight_log.getDefaultState().withProperty(BlockTFLog.VARIANT, WoodVariant.CANOPY);
+				logState = TFBlocks.twilight_log.getDefaultState().with(BlockTFLog.VARIANT, WoodVariant.CANOPY);
 				break;
 			case 2:
-				logState = TFBlocks.twilight_log.getDefaultState().withProperty(BlockTFLog.VARIANT, WoodVariant.MANGROVE);
+				logState = TFBlocks.twilight_log.getDefaultState().with(BlockTFLog.VARIANT, WoodVariant.MANGROVE);
 				break;
 			case 3:
 				logState = Blocks.LOG.getDefaultState();
 				break;
 			case 4:
-				logState = Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.SPRUCE);
+				logState = Blocks.LOG.getDefaultState().with(BlockOldLog.VARIANT, BlockPlanks.EnumType.SPRUCE);
 				break;
 			case 5:
-				logState = Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.BIRCH);
+				logState = Blocks.LOG.getDefaultState().with(BlockOldLog.VARIANT, BlockPlanks.EnumType.BIRCH);
 				break;
 			case 6:
-				logState = Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE);
+				logState = Blocks.LOG.getDefaultState().with(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE);
 				break;
 		}
 		branchState = logState;
@@ -72,23 +72,23 @@ public class TFGenFallenSmallLog extends TFGenerator {
 
 		// make log
 		if (goingX) {
-			logState = logState.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.X);
-			branchState = logState.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.Z);
+			logState = logState.with(BlockLog.LOG_AXIS, BlockLog.EnumAxis.X);
+			branchState = logState.with(BlockLog.LOG_AXIS, BlockLog.EnumAxis.Z);
 
 			for (int lx = 0; lx < length; lx++) {
 				this.setBlockAndNotifyAdequately(world, pos.add(lx, 0, 1), logState);
 				if (rand.nextInt(3) > 0) {
-					this.setBlockAndNotifyAdequately(world, pos.add(lx, 1, 1), TFBlocks.twilight_plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MOSSPATCH));
+					this.setBlockAndNotifyAdequately(world, pos.add(lx, 1, 1), TFBlocks.twilight_plant.getDefaultState().with(BlockTFPlant.VARIANT, PlantVariant.MOSSPATCH));
 				}
 			}
 		} else {
-			logState = logState.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.Z);
-			branchState = logState.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.X);
+			logState = logState.with(BlockLog.LOG_AXIS, BlockLog.EnumAxis.Z);
+			branchState = logState.with(BlockLog.LOG_AXIS, BlockLog.EnumAxis.X);
 
 			for (int lz = 0; lz < length; lz++) {
 				this.setBlockAndNotifyAdequately(world, pos.add(1, 0, lz), logState);
 				if (rand.nextInt(3) > 0) {
-					this.setBlockAndNotifyAdequately(world, pos.add(1, 1, lz), TFBlocks.twilight_plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MOSSPATCH));
+					this.setBlockAndNotifyAdequately(world, pos.add(1, 1, lz), TFBlocks.twilight_plant.getDefaultState().with(BlockTFPlant.VARIANT, PlantVariant.MOSSPATCH));
 				}
 			}
 		}
@@ -101,7 +101,7 @@ public class TFGenFallenSmallLog extends TFGenerator {
 
 				this.setBlockAndNotifyAdequately(world, pos.add(bx, 0, bz), branchState);
 				if (rand.nextBoolean()) {
-					this.setBlockAndNotifyAdequately(world, pos.add(bx, 1, bz), TFBlocks.twilight_plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MOSSPATCH));
+					this.setBlockAndNotifyAdequately(world, pos.add(bx, 1, bz), TFBlocks.twilight_plant.getDefaultState().with(BlockTFPlant.VARIANT, PlantVariant.MOSSPATCH));
 				}
 			} else {
 				int bx = rand.nextBoolean() ? 2 : 0;
@@ -109,7 +109,7 @@ public class TFGenFallenSmallLog extends TFGenerator {
 
 				this.setBlockAndNotifyAdequately(world, pos.add(bx, 0, bz), branchState);
 				if (rand.nextBoolean()) {
-					this.setBlockAndNotifyAdequately(world, pos.add(bx, 1, bz), TFBlocks.twilight_plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MOSSPATCH));
+					this.setBlockAndNotifyAdequately(world, pos.add(bx, 1, bz), TFBlocks.twilight_plant.getDefaultState().with(BlockTFPlant.VARIANT, PlantVariant.MOSSPATCH));
 				}
 			}
 		}

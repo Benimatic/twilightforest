@@ -15,9 +15,9 @@ import java.util.Random;
 
 public class TFGenSortingTree extends TFGenerator {
 
-	protected BlockState treeState = TFBlocks.magic_log.getDefaultState().withProperty(BlockTFMagicLog.VARIANT, MagicWoodVariant.SORT);
-	protected BlockState branchState = treeState.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
-	protected BlockState leafState = TFBlocks.magic_leaves.getDefaultState().withProperty(BlockTFMagicLog.VARIANT, MagicWoodVariant.SORT).withProperty(BlockLeaves.CHECK_DECAY, false);
+	protected BlockState treeState = TFBlocks.magic_log.getDefaultState().with(BlockTFMagicLog.VARIANT, MagicWoodVariant.SORT);
+	protected BlockState branchState = treeState.with(BlockLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
+	protected BlockState leafState = TFBlocks.magic_leaves.getDefaultState().with(BlockTFMagicLog.VARIANT, MagicWoodVariant.SORT).with(BlockLeaves.CHECK_DECAY, false);
 	protected BlockState rootState = TFBlocks.root.getDefaultState();
 
 	public TFGenSortingTree() {
@@ -46,7 +46,7 @@ public class TFGenSortingTree extends TFGenerator {
 		putLeaves(world, pos.up(3), false);
 
 		// sorting engine
-		setBlockAndNotifyAdequately(world, pos.up(), TFBlocks.magic_log_core.getDefaultState().withProperty(BlockTFMagicLog.VARIANT, MagicWoodVariant.SORT));
+		setBlockAndNotifyAdequately(world, pos.up(), TFBlocks.magic_log_core.getDefaultState().with(BlockTFMagicLog.VARIANT, MagicWoodVariant.SORT));
 
 		return true;
 	}

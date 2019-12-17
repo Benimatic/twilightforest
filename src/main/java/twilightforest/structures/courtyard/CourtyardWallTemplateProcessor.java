@@ -26,11 +26,11 @@ public class CourtyardWallTemplateProcessor extends RandomizedTemplateProcessor 
             BlockState state = blockInfo.blockState;
             Block block = state.getBlock();
 
-            if (block == Blocks.STONEBRICK && state != Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED))
-                return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, state.withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.values()[random.nextInt(3)]), null);
+            if (block == Blocks.STONEBRICK && state != Blocks.STONEBRICK.getDefaultState().with(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED))
+                return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, state.with(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.values()[random.nextInt(3)]), null);
 
-            if (state == Blocks.STONE_SLAB.getDefaultState().withProperty(BlockStoneSlab.VARIANT, BlockStoneSlab.EnumType.STONE))
-                return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, state.withProperty(BlockStoneSlab.VARIANT, BlockStoneSlab.EnumType.COBBLESTONE), null);
+            if (state == Blocks.STONE_SLAB.getDefaultState().with(BlockStoneSlab.VARIANT, BlockStoneSlab.EnumType.STONE))
+                return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, state.with(BlockStoneSlab.VARIANT, BlockStoneSlab.EnumType.COBBLESTONE), null);
 
             if (block == TFBlocks.etched_nagastone)
                 return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, translateState(state, randomBlock(TFBlocks.etched_nagastone_mossy, TFBlocks.etched_nagastone_weathered), BlockDirectional.FACING), null);

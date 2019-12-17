@@ -241,7 +241,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 	protected void despawnEntity() {
 		if (world.getDifficulty() == Difficulty.PEACEFUL) {
 			if (hasHome()) {
-				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.SNOW_QUEEN));
+				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.SNOW_QUEEN));
 			}
 			setDead();
 		} else {

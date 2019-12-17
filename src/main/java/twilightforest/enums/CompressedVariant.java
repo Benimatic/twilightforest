@@ -10,9 +10,9 @@ import java.util.Locale;
 public enum CompressedVariant implements IStringSerializable {
 
     IRONWOOD(Material.WOOD, SoundType.WOOD),
-    FIERY(Material.IRON, SoundType.METAL, MaterialColor.BLACK_STAINED_HARDENED_CLAY),
+    FIERY(Material.IRON, SoundType.METAL, MaterialColor.BLACK_TERRACOTTA),
     STEELLEAF(Material.LEAVES, SoundType.PLANT),
-    ARCTIC_FUR(Material.CLOTH, SoundType.CLOTH),
+    ARCTIC_FUR(Material.WOOL, SoundType.CLOTH),
     CARMINITE(Material.CLAY, SoundType.SLIME, MaterialColor.RED);
 
     public final Material material;
@@ -20,7 +20,7 @@ public enum CompressedVariant implements IStringSerializable {
     public final MaterialColor mapColor;
 
     CompressedVariant(Material material, SoundType soundType) {
-        this(material, soundType, material.getMaterialMapColor());
+        this(material, soundType, material.getColor());
     }
 
     CompressedVariant(Material material, SoundType soundType, MaterialColor mapColor) {

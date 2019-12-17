@@ -61,7 +61,7 @@ public class ComponentTFFinalCastleLargeTower extends ComponentTFTowerWing {
 
 		// door, first floor
 		final BlockState castleDoor = TFBlocks.castle_door.getDefaultState()
-				.withProperty(BlockTFCastleDoor.LOCK_INDEX, 0); //this.getGlyphMeta()?
+				.with(BlockTFCastleDoor.LOCK_INDEX, 0); //this.getGlyphMeta()?
 		this.fillWithBlocks(world, sbb, 0, 1, 1, 0, 4, 3, castleDoor, AIR, false);
 
 		this.placeSignAtCurrentPosition(world, 6, 1, 6, "Parkour area 1", "Unique monster?", sbb);

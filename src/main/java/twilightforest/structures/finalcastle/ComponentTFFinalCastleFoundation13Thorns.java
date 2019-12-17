@@ -132,8 +132,8 @@ public class ComponentTFFinalCastleFoundation13Thorns extends ComponentTFFinalCa
 				// go out that far
 				final Rotation add = dir.add(rotation).add(this.rotation);
 				BlockState thorns = TFBlocks.thorns.getDefaultState()
-						.withProperty(BlockTFThorns.VARIANT, ThornVariant.GREEN)
-						.withProperty(
+						.with(BlockTFThorns.VARIANT, ThornVariant.GREEN)
+						.with(
 								BlockTFThorns.AXIS,
 								add == Rotation.NONE || add == Rotation.CLOCKWISE_180 ? Direction.Axis.X : Direction.Axis.Z
 						);
@@ -141,7 +141,7 @@ public class ComponentTFFinalCastleFoundation13Thorns extends ComponentTFFinalCa
 					this.setBlockStateRotated(world, thorns, x + (dx * i), y, z + (dz * i), rotation, sbb);
 				}
 				// go up that far
-				this.setBlockStateRotated(world, thorns.withProperty(BlockTFThorns.AXIS, Direction.Axis.Y), destX, y + i, destZ, rotation, sbb);
+				this.setBlockStateRotated(world, thorns.with(BlockTFThorns.AXIS, Direction.Axis.Y), destX, y + i, destZ, rotation, sbb);
 				// go back half that far
 				if (i > (dist / 2)) {
 					this.setBlockStateRotated(world, thorns, x + (dx * i), y + dist - 1, z + (dz * i), rotation, sbb);

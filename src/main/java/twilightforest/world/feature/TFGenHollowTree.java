@@ -23,8 +23,8 @@ public class TFGenHollowTree extends TFGenerator {
 	private static final int LEAF_DUNGEON_CHANCE = 8;
 
 	protected BlockState treeState = TFBlocks.twilight_log.getDefaultState();
-	protected BlockState branchState = treeState.withProperty(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
-	protected BlockState leafState = TFBlocks.twilight_leaves.getDefaultState().withProperty(BlockLeaves.CHECK_DECAY, false);
+	protected BlockState branchState = treeState.with(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
+	protected BlockState leafState = TFBlocks.twilight_leaves.getDefaultState().with(BlockLeaves.CHECK_DECAY, false);
 	protected BlockState rootState = TFBlocks.root.getDefaultState();
 
 	protected IPlantable source = TFBlocks.twilight_sapling;
@@ -273,7 +273,7 @@ public class TFGenHollowTree extends TFGenerator {
 					// how about a ladder?  is that okay?
 					if (dist == hollow && dx == hollow) {
 //						putBlockAndMetadata(dx + x, dy + y, dz + z, Blocks.LADDER,  4, true);
-						setBlockAndNotifyAdequately(world, dPos, Blocks.VINE.getDefaultState().withProperty(BlockVine.EAST, true));
+						setBlockAndNotifyAdequately(world, dPos, Blocks.VINE.getDefaultState().with(BlockVine.EAST, true));
 					}
 				}
 			}
@@ -490,7 +490,7 @@ public class TFGenHollowTree extends TFGenerator {
 		}
 
 		if (TFBlocks.firefly.canPlaceBlockAt(world, src)) {
-			setBlockAndNotifyAdequately(world, src, TFBlocks.firefly.getDefaultState().withProperty(BlockDirectional.FACING, facing));
+			setBlockAndNotifyAdequately(world, src, TFBlocks.firefly.getDefaultState().with(BlockDirectional.FACING, facing));
 		}
 	}
 
@@ -511,7 +511,7 @@ public class TFGenHollowTree extends TFGenerator {
 		}
 
 		if (TFBlocks.cicada.canPlaceBlockAt(world, src)) {
-			setBlockAndNotifyAdequately(world, src, TFBlocks.cicada.getDefaultState().withProperty(BlockDirectional.FACING, facing));
+			setBlockAndNotifyAdequately(world, src, TFBlocks.cicada.getDefaultState().with(BlockDirectional.FACING, facing));
 		}
 	}
 

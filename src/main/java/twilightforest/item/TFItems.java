@@ -17,11 +17,9 @@ import twilightforest.enums.TwilightItemTier;
 import java.util.UUID;
 
 /* TODO 1.14: There's a list of things to change...
-	1. Move to DeferredRegister.
-	2. Since all items are put in the Twilight Forest Item Group, make a method for registering into this group rather than set per class?
-		2.1 Either that, or move them into classes.
-	3. Make the Item Group an anonymous class, rather than a new, separate one.
-	4. Food is a thing. Make Food fields for all food items
+	1. Since all items are put in the Twilight Forest Item Group, make a method for registering into this group rather than set per class?
+		1.1 Either that, or move them into classes.
+	2. Make the Item Group an anonymous class, rather than a new, separate one.
  */
 public class TFItems {
 	public static final Food EXPERIMENT_115 = new Food.Builder().hunger(4).saturation(0.3F).build();

@@ -28,12 +28,12 @@ public class StructureTFStrongholdShield extends StructureTFStrongholdComponent 
 
 	@Override
 	public boolean addComponentParts(World world, Random random, StructureBoundingBox sbb) {
-		BlockState down  = TFBlocks.stronghold_shield.getDefaultState().withProperty(BlockDirectional.FACING, Direction.DOWN);
-		BlockState up    = TFBlocks.stronghold_shield.getDefaultState().withProperty(BlockDirectional.FACING, Direction.UP);
-		BlockState north = TFBlocks.stronghold_shield.getDefaultState().withProperty(BlockDirectional.FACING, Direction.NORTH);
-		BlockState south = TFBlocks.stronghold_shield.getDefaultState().withProperty(BlockDirectional.FACING, Direction.SOUTH);
-		BlockState west  = TFBlocks.stronghold_shield.getDefaultState().withProperty(BlockDirectional.FACING, Direction.WEST);
-		BlockState east  = TFBlocks.stronghold_shield.getDefaultState().withProperty(BlockDirectional.FACING, Direction.EAST);
+		BlockState down  = TFBlocks.stronghold_shield.getDefaultState().with(BlockDirectional.FACING, Direction.DOWN);
+		BlockState up    = TFBlocks.stronghold_shield.getDefaultState().with(BlockDirectional.FACING, Direction.UP);
+		BlockState north = TFBlocks.stronghold_shield.getDefaultState().with(BlockDirectional.FACING, Direction.NORTH);
+		BlockState south = TFBlocks.stronghold_shield.getDefaultState().with(BlockDirectional.FACING, Direction.SOUTH);
+		BlockState west  = TFBlocks.stronghold_shield.getDefaultState().with(BlockDirectional.FACING, Direction.WEST);
+		BlockState east  = TFBlocks.stronghold_shield.getDefaultState().with(BlockDirectional.FACING, Direction.EAST);
 
 		// +x
 		this.fillWithBlocks(world, sbb, this.boundingBox.getXSize(), 0, 0, this.boundingBox.getXSize(), this.boundingBox.getYSize(), this.boundingBox.getZSize(), west, west, false);

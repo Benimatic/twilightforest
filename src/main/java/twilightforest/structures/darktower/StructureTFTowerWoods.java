@@ -18,11 +18,11 @@ public class StructureTFTowerWoods extends StructureComponent.BlockSelector {
 			float randFloat = random.nextFloat();
 
 			if (randFloat < 0.1F) {
-				this.blockstate = TFBlocks.tower_wood.getDefaultState().withProperty(BlockTFTowerWood.VARIANT, TowerWoodVariant.CRACKED);
+				this.blockstate = TFBlocks.tower_wood.getDefaultState().with(BlockTFTowerWood.VARIANT, TowerWoodVariant.CRACKED);
 			} else if (randFloat < 0.2F) {
-				this.blockstate = TFBlocks.tower_wood.getDefaultState().withProperty(BlockTFTowerWood.VARIANT, TowerWoodVariant.MOSSY);
+				this.blockstate = TFBlocks.tower_wood.getDefaultState().with(BlockTFTowerWood.VARIANT, TowerWoodVariant.MOSSY);
 			} else if (randFloat < 0.225F) {
-				this.blockstate = TFBlocks.tower_wood.getDefaultState().withProperty(BlockTFTowerWood.VARIANT, TowerWoodVariant.INFESTED);
+				this.blockstate = TFBlocks.tower_wood.getDefaultState().with(BlockTFTowerWood.VARIANT, TowerWoodVariant.INFESTED);
 			} else {
 				this.blockstate = TFBlocks.tower_wood.getDefaultState();
 			}

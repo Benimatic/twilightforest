@@ -40,8 +40,8 @@ public class ComponentTFTowerRoofSlabForwards extends ComponentTFTowerRoofSlab {
 	 */
 	@Override
 	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		BlockState birchSlab = Blocks.WOODEN_SLAB.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
-		BlockState birchDoubleSlab = Blocks.DOUBLE_WOODEN_SLAB.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
+		BlockState birchSlab = Blocks.WOODEN_SLAB.getDefaultState().with(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
+		BlockState birchDoubleSlab = Blocks.DOUBLE_WOODEN_SLAB.getDefaultState().with(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
 
 		for (int y = 0; y <= height; y++) {
 			int min = 2 * y;

@@ -106,16 +106,16 @@ public class GenDruidHut extends TFGenerator {
 
                 switch (s.substring(4, 5)) {
                     case "W":
-                        chest = chest.withProperty(BlockHorizontal.FACING, rotation.rotate(mirror.mirror(Direction.WEST)));
+                        chest = chest.with(BlockHorizontal.FACING, rotation.rotate(mirror.mirror(Direction.WEST)));
                         break;
                     case "E":
-                        chest = chest.withProperty(BlockHorizontal.FACING, rotation.rotate(mirror.mirror(Direction.EAST)));
+                        chest = chest.with(BlockHorizontal.FACING, rotation.rotate(mirror.mirror(Direction.EAST)));
                         break;
                     case "S":
-                        chest = chest.withProperty(BlockHorizontal.FACING, rotation.rotate(mirror.mirror(Direction.SOUTH)));
+                        chest = chest.with(BlockHorizontal.FACING, rotation.rotate(mirror.mirror(Direction.SOUTH)));
                         break;
                     default:
-                        chest = chest.withProperty(BlockHorizontal.FACING, rotation.rotate(mirror.mirror(Direction.NORTH)));
+                        chest = chest.with(BlockHorizontal.FACING, rotation.rotate(mirror.mirror(Direction.NORTH)));
                         break;
                 }
 
@@ -255,10 +255,10 @@ public class GenDruidHut extends TFGenerator {
                 return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, Blocks.MOSSY_COBBLESTONE.getDefaultState(), null);
 
             if (block == Blocks.COBBLESTONE_WALL)
-                return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, state.withProperty(BlockWall.VARIANT, BlockWall.EnumType.MOSSY), null);
+                return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, state.with(BlockWall.VARIANT, BlockWall.EnumType.MOSSY), null);
 
-            if (block == Blocks.STONEBRICK && state != Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED))
-                return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, state.withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.values()[random.nextInt(3)]), null);
+            if (block == Blocks.STONEBRICK && state != Blocks.STONEBRICK.getDefaultState().with(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED))
+                return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, state.with(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.values()[random.nextInt(3)]), null);
 
             BlockPlanks.EnumType type = StructureWoodVariant.getTypeFromBlockState(state);
             if (type != null) {

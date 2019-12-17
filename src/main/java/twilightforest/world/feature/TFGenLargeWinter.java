@@ -24,9 +24,9 @@ public class TFGenLargeWinter extends TFTreeGenerator {
 
 	public TFGenLargeWinter(boolean notify) {
 		super(notify);
-		treeState = Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.SPRUCE);
-		branchState = Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.SPRUCE).withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
-		leafState = Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.SPRUCE).withProperty(BlockLeaves.CHECK_DECAY, false);
+		treeState = Blocks.LOG.getDefaultState().with(BlockOldLog.VARIANT, BlockPlanks.EnumType.SPRUCE);
+		branchState = Blocks.LOG.getDefaultState().with(BlockOldLog.VARIANT, BlockPlanks.EnumType.SPRUCE).with(BlockLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
+		leafState = Blocks.LEAVES.getDefaultState().with(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.SPRUCE).with(BlockLeaves.CHECK_DECAY, false);
 		rootState = TFBlocks.root.getDefaultState();
 		source = (IPlantable) Blocks.SAPLING;
 	}
@@ -89,18 +89,18 @@ public class TFGenLargeWinter extends TFTreeGenerator {
 			case 0:
 				// branches
 				for (int i = 1; i <= branchLength; i++) {
-					this.setBlockAndNotifyAdequately(world, pos.add(-i, 0, 0), branchState.withProperty(BlockOldLog.LOG_AXIS, BlockLog.EnumAxis.X));
-					this.setBlockAndNotifyAdequately(world, pos.add(0, 0, i + 1), branchState.withProperty(BlockOldLog.LOG_AXIS, BlockLog.EnumAxis.Z));
-					this.setBlockAndNotifyAdequately(world, pos.add(i + 1, 0, 1), branchState.withProperty(BlockOldLog.LOG_AXIS, BlockLog.EnumAxis.X));
-					this.setBlockAndNotifyAdequately(world, pos.add(1, 0, -i), branchState.withProperty(BlockOldLog.LOG_AXIS, BlockLog.EnumAxis.Z));
+					this.setBlockAndNotifyAdequately(world, pos.add(-i, 0, 0), branchState.with(BlockOldLog.LOG_AXIS, BlockLog.EnumAxis.X));
+					this.setBlockAndNotifyAdequately(world, pos.add(0, 0, i + 1), branchState.with(BlockOldLog.LOG_AXIS, BlockLog.EnumAxis.Z));
+					this.setBlockAndNotifyAdequately(world, pos.add(i + 1, 0, 1), branchState.with(BlockOldLog.LOG_AXIS, BlockLog.EnumAxis.X));
+					this.setBlockAndNotifyAdequately(world, pos.add(1, 0, -i), branchState.with(BlockOldLog.LOG_AXIS, BlockLog.EnumAxis.Z));
 				}
 				break;
 			case 1:
 				for (int i = 1; i <= branchLength; i++) {
-					this.setBlockAndNotifyAdequately(world, pos.add(-1, 0, 1), branchState.withProperty(BlockOldLog.LOG_AXIS, BlockLog.EnumAxis.X));
-					this.setBlockAndNotifyAdequately(world, pos.add(1, 0, i + 1), branchState.withProperty(BlockOldLog.LOG_AXIS, BlockLog.EnumAxis.Z));
-					this.setBlockAndNotifyAdequately(world, pos.add(i + 1, 0, 0), branchState.withProperty(BlockOldLog.LOG_AXIS, BlockLog.EnumAxis.X));
-					this.setBlockAndNotifyAdequately(world, pos.add(0, 0, -i), branchState.withProperty(BlockOldLog.LOG_AXIS, BlockLog.EnumAxis.Z));
+					this.setBlockAndNotifyAdequately(world, pos.add(-1, 0, 1), branchState.with(BlockOldLog.LOG_AXIS, BlockLog.EnumAxis.X));
+					this.setBlockAndNotifyAdequately(world, pos.add(1, 0, i + 1), branchState.with(BlockOldLog.LOG_AXIS, BlockLog.EnumAxis.Z));
+					this.setBlockAndNotifyAdequately(world, pos.add(i + 1, 0, 0), branchState.with(BlockOldLog.LOG_AXIS, BlockLog.EnumAxis.X));
+					this.setBlockAndNotifyAdequately(world, pos.add(0, 0, -i), branchState.with(BlockOldLog.LOG_AXIS, BlockLog.EnumAxis.Z));
 				}
 				break;
 		}

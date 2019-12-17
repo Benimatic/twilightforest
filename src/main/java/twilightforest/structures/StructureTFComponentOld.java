@@ -139,10 +139,10 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	}
 
 	protected void surroundBlockCardinalRotated(World world, BlockState block, int x, int y, int z, MutableBoundingBox sbb) {
-		setBlockState(world, block.withProperty(BlockStairs.FACING, Direction.NORTH), x + 0, y, z - 1, sbb);
-		setBlockState(world, block.withProperty(BlockStairs.FACING, Direction.SOUTH), x + 0, y, z + 1, sbb);
-		setBlockState(world, block.withProperty(BlockStairs.FACING, Direction.WEST), x - 1, y, z + 0, sbb);
-		setBlockState(world, block.withProperty(BlockStairs.FACING, Direction.EAST), x + 1, y, z + 0, sbb);
+		setBlockState(world, block.with(BlockStairs.FACING, Direction.NORTH), x + 0, y, z - 1, sbb);
+		setBlockState(world, block.with(BlockStairs.FACING, Direction.SOUTH), x + 0, y, z + 1, sbb);
+		setBlockState(world, block.with(BlockStairs.FACING, Direction.WEST), x - 1, y, z + 0, sbb);
+		setBlockState(world, block.with(BlockStairs.FACING, Direction.EAST), x + 1, y, z + 0, sbb);
 	}
 
 	protected void surroundBlockCorners(World world, BlockState block, int x, int y, int z, MutableBoundingBox sbb) {
@@ -225,8 +225,8 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 
 		// add tripwire hooks
 		BlockState tripwireHook = Blocks.TRIPWIRE_HOOK.getDefaultState();
-		setBlockState(world, tripwireHook.withProperty(BlockTripWireHook.FACING, facing.getOpposite()), x, y, z, sbb);
-		setBlockState(world, tripwireHook.withProperty(BlockTripWireHook.FACING, facing), x + dx * size, y, z + dz * size, sbb);
+		setBlockState(world, tripwireHook.with(BlockTripWireHook.FACING, facing.getOpposite()), x, y, z, sbb);
+		setBlockState(world, tripwireHook.with(BlockTripWireHook.FACING, facing), x + dx * size, y, z + dz * size, sbb);
 
 		// add string
 		BlockState tripwire = Blocks.TRIPWIRE.getDefaultState();
@@ -257,7 +257,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 		int dz = getZWithOffset(x, z);
 		BlockPos pos = new BlockPos(dx, dy, dz);
 		if (sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != Blocks.STANDING_SIGN) {
-			world.setBlockState(pos, Blocks.STANDING_SIGN.getDefaultState().withProperty(BlockStandingSign.ROTATION, this.getCoordBaseMode().getHorizontalIndex() * 4), 2);
+			world.setBlockState(pos, Blocks.STANDING_SIGN.getDefaultState().with(BlockStandingSign.ROTATION, this.getCoordBaseMode().getHorizontalIndex() * 4), 2);
 
 			TileEntitySign teSign = (TileEntitySign) world.getTileEntity(pos);
 			if (teSign != null) {
@@ -273,7 +273,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 		int dz = getZWithOffset(x, z);
 		BlockPos pos = new BlockPos(dx, dy, dz);
 		if (sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != Blocks.STANDING_SIGN) {
-			world.setBlockState(pos, Blocks.STANDING_SIGN.getDefaultState().withProperty(BlockStandingSign.ROTATION, this.getCoordBaseMode().getHorizontalIndex() * 4), 2);
+			world.setBlockState(pos, Blocks.STANDING_SIGN.getDefaultState().with(BlockStandingSign.ROTATION, this.getCoordBaseMode().getHorizontalIndex() * 4), 2);
 
 			TileEntitySign teSign = (TileEntitySign) world.getTileEntity(pos);
 			if (teSign != null) {
@@ -640,13 +640,13 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	/* BlockState Helpers */
 	protected static BlockState getStairState(BlockState stairState, Direction direction, Rotation rotation, boolean isTopHalf) {
 		return stairState
-				.withProperty(BlockStairs.FACING, direction)
-				.withProperty(BlockStairs.HALF, isTopHalf ? BlockStairs.EnumHalf.TOP : BlockStairs.EnumHalf.BOTTOM);
+				.with(BlockStairs.FACING, direction)
+				.with(BlockStairs.HALF, isTopHalf ? BlockStairs.EnumHalf.TOP : BlockStairs.EnumHalf.BOTTOM);
 	}
 
 	protected static BlockState getSlabState(BlockState inputBlockState, BlockPlanks.EnumType type, BlockSlab.EnumBlockHalf half) {
 		return inputBlockState
-				.withProperty(BlockPlanks.VARIANT, type)
-				.withProperty(BlockSlab.HALF, half);
+				.with(BlockPlanks.VARIANT, type)
+				.with(BlockSlab.HALF, half);
 	}
 }

@@ -86,7 +86,7 @@ public class TFBiomeEnchantedForest extends TFBiomeBase {
 		if (random.nextInt(3) > 0) {
 			return new WorldGenTallGrass(BlockTallGrass.EnumType.FERN);
 		} else if (random.nextInt(3) == 0) {
-			return new TFGenTallGrass(TFBlocks.twilight_plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.FIDDLEHEAD));
+			return new TFGenTallGrass(TFBlocks.twilight_plant.getDefaultState().with(BlockTFPlant.VARIANT, PlantVariant.FIDDLEHEAD));
 		} else {
 			return new WorldGenTallGrass(BlockTallGrass.EnumType.GRASS);
 		}
@@ -131,10 +131,10 @@ public class TFBiomeEnchantedForest extends TFBiomeBase {
 	@Override
 	public void addDefaultFlowers() {
 		for (BlockFlower.EnumFlowerType flowerType : Blocks.YELLOW_FLOWER.getTypeProperty().getAllowedValues()) {
-			addFlower(Blocks.YELLOW_FLOWER.getDefaultState().withProperty(Blocks.YELLOW_FLOWER.getTypeProperty(), flowerType), 10);
+			addFlower(Blocks.YELLOW_FLOWER.getDefaultState().with(Blocks.YELLOW_FLOWER.getTypeProperty(), flowerType), 10);
 		}
 		for (BlockFlower.EnumFlowerType flowerType : Blocks.RED_FLOWER.getTypeProperty().getAllowedValues()) {
-			addFlower(Blocks.RED_FLOWER.getDefaultState().withProperty(Blocks.RED_FLOWER.getTypeProperty(), flowerType), 10);
+			addFlower(Blocks.RED_FLOWER.getDefaultState().with(Blocks.RED_FLOWER.getTypeProperty(), flowerType), 10);
 		}
 	}
 

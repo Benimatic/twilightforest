@@ -163,7 +163,7 @@ public class ItemTFMagicBeans extends ItemTF {
 	private void tryToPlaceLeaves(World world, BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
 		if (state.getBlock().isAir(state, world, pos) || state.getBlock().canBeReplacedByLeaves(state, world, pos)) {
-			world.setBlockState(pos, TFBlocks.twilight_leaves_3.getDefaultState().withProperty(BlockTFLeaves3.VARIANT, Leaves3Variant.BEANSTALK).withProperty(BlockLeaves.CHECK_DECAY, false), 2);
+			world.setBlockState(pos, TFBlocks.twilight_leaves_3.getDefaultState().with(BlockTFLeaves3.VARIANT, Leaves3Variant.BEANSTALK).with(BlockLeaves.CHECK_DECAY, false), 2);
 		}
 	}
 }

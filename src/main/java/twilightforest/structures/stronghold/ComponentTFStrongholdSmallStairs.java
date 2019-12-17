@@ -94,7 +94,7 @@ public class ComponentTFStrongholdSmallStairs extends StructureTFStrongholdCompo
 		for (int y = 1; y < 8; y++) {
 			for (int x = 3; x < 6; x++) {
 				this.setBlockStateRotated(world, Blocks.AIR.getDefaultState(), x, y + 1, y, rotation, sbb);
-				this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, Direction.NORTH), x, y, y, rotation, sbb);
+				this.setBlockStateRotated(world, deco.stairState.with(BlockStairs.FACING, Direction.NORTH), x, y, y, rotation, sbb);
 				this.setBlockStateRotated(world, deco.blockState, x, y - 1, y, rotation, sbb);
 			}
 		}
@@ -108,13 +108,13 @@ public class ComponentTFStrongholdSmallStairs extends StructureTFStrongholdCompo
 			}
 
 			for (int z = 5; z < 8; z++) {
-				this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, Direction.WEST), 3, 1, z, rotation, sbb);
-				this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, Direction.EAST), 5, 1, z, rotation, sbb);
+				this.setBlockStateRotated(world, deco.stairState.with(BlockStairs.FACING, Direction.WEST), 3, 1, z, rotation, sbb);
+				this.setBlockStateRotated(world, deco.stairState.with(BlockStairs.FACING, Direction.EAST), 5, 1, z, rotation, sbb);
 			}
 
-			this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, Direction.NORTH), 4, 1, 5, rotation, sbb);
-			this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, Direction.SOUTH), 4, 1, 7, rotation, sbb);
-			this.setBlockStateRotated(world, deco.stairState.withProperty(BlockStairs.FACING, Direction.NORTH), 4, 2, 6, rotation, sbb);
+			this.setBlockStateRotated(world, deco.stairState.with(BlockStairs.FACING, Direction.NORTH), 4, 1, 5, rotation, sbb);
+			this.setBlockStateRotated(world, deco.stairState.with(BlockStairs.FACING, Direction.SOUTH), 4, 1, 7, rotation, sbb);
+			this.setBlockStateRotated(world, deco.stairState.with(BlockStairs.FACING, Direction.NORTH), 4, 2, 6, rotation, sbb);
 		}
 
 		if (enterBottom) {

@@ -29,11 +29,11 @@ public class CourtyardTerraceTemplateProcessor extends RandomizedTemplateProcess
         boolean shouldMakeNewBlockInfo = false;
         BlockState state = blockInfo.blockState;
 
-        final BlockState SMOOTHBRICK_SLAB_STATE = Blocks.STONE_SLAB.getDefaultState().withProperty(BlockStoneSlab.VARIANT, BlockStoneSlab.EnumType.SMOOTHBRICK);
-        final BlockState SMOOTHBRICK_STATE = Blocks.STONEBRICK.getDefaultState(); //Blocks.DOUBLE_STONE_SLAB.getDefaultState().withProperty(BlockDoubleStoneSlab.VARIANT, BlockStoneSlab.EnumType.SMOOTHBRICK).withProperty(BlockDoubleStoneSlab.SEAMLESS, false);
+        final BlockState SMOOTHBRICK_SLAB_STATE = Blocks.STONE_SLAB.getDefaultState().with(BlockStoneSlab.VARIANT, BlockStoneSlab.EnumType.SMOOTHBRICK);
+        final BlockState SMOOTHBRICK_STATE = Blocks.STONEBRICK.getDefaultState(); //Blocks.DOUBLE_STONE_SLAB.getDefaultState().with(BlockDoubleStoneSlab.VARIANT, BlockStoneSlab.EnumType.SMOOTHBRICK).with(BlockDoubleStoneSlab.SEAMLESS, false);
 
-        //final BlockState SANDSTONE_SLAB_STATE = Blocks.STONE_SLAB.getDefaultState().withProperty(BlockStoneSlab.VARIANT, BlockStoneSlab.EnumType.SAND);
-        //final BlockState SANDSTONE_STATE = Blocks.DOUBLE_STONE_SLAB.getDefaultState().withProperty(BlockDoubleStoneSlab.VARIANT, BlockStoneSlab.EnumType.SAND).withProperty(BlockDoubleStoneSlab.SEAMLESS, false);
+        //final BlockState SANDSTONE_SLAB_STATE = Blocks.STONE_SLAB.getDefaultState().with(BlockStoneSlab.VARIANT, BlockStoneSlab.EnumType.SAND);
+        //final BlockState SANDSTONE_STATE = Blocks.DOUBLE_STONE_SLAB.getDefaultState().with(BlockDoubleStoneSlab.VARIANT, BlockStoneSlab.EnumType.SAND).with(BlockDoubleStoneSlab.SEAMLESS, false);
 
         if (state.getBlock() == Blocks.DOUBLE_STONE_SLAB && state.getValue(BlockDoubleStoneSlab.VARIANT) == BlockStoneSlab.EnumType.SAND) {
             BlockState stateCheck = world.getBlockState(pos);
@@ -58,11 +58,11 @@ public class CourtyardTerraceTemplateProcessor extends RandomizedTemplateProcess
 
         Block block = state.getBlock();
 
-        if (block == Blocks.STONEBRICK && state != Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED))
-            return random.nextBoolean() ? (shouldMakeNewBlockInfo ? new Template.BlockInfo(blockInfo.pos, state, blockInfo.tileentityData) : blockInfo) : new Template.BlockInfo(pos, state.withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.values()[random.nextInt(3)]), null);
+        if (block == Blocks.STONEBRICK && state != Blocks.STONEBRICK.getDefaultState().with(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED))
+            return random.nextBoolean() ? (shouldMakeNewBlockInfo ? new Template.BlockInfo(blockInfo.pos, state, blockInfo.tileentityData) : blockInfo) : new Template.BlockInfo(pos, state.with(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.values()[random.nextInt(3)]), null);
 
-        if (state == Blocks.STONE_SLAB.getDefaultState().withProperty(BlockStoneSlab.VARIANT, BlockStoneSlab.EnumType.STONE))
-            return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, state.withProperty(BlockStoneSlab.VARIANT, BlockStoneSlab.EnumType.COBBLESTONE), null);
+        if (state == Blocks.STONE_SLAB.getDefaultState().with(BlockStoneSlab.VARIANT, BlockStoneSlab.EnumType.STONE))
+            return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, state.with(BlockStoneSlab.VARIANT, BlockStoneSlab.EnumType.COBBLESTONE), null);
 
         if (block == TFBlocks.etched_nagastone)
             return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, translateState(state, randomBlock(TFBlocks.etched_nagastone_mossy, TFBlocks.etched_nagastone_weathered), BlockDirectional.FACING), null);

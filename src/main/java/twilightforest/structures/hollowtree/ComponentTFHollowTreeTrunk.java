@@ -226,7 +226,7 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 
 				// add vines
 				if (dist == hollow && dx == hollow + radius) {
-					this.replaceAirAndLiquidDownwards(world, Blocks.VINE.getDefaultState().withProperty(BlockVine.EAST, true), dx + 1, height, dz + 1, sbb);
+					this.replaceAirAndLiquidDownwards(world, Blocks.VINE.getDefaultState().with(BlockVine.EAST, true), dx + 1, height, dz + 1, sbb);
 				}
 			}
 		}
@@ -262,7 +262,7 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 		}
 
 		final BlockState block = (random.nextBoolean() ? TFBlocks.firefly : TFBlocks.cicada).getDefaultState();
-		addInsect(world, block.withProperty(BlockDirectional.FACING, insectDirection), bugSpot.getX(), bugSpot.getY(), bugSpot.getZ(), sbb);
+		addInsect(world, block.with(BlockDirectional.FACING, insectDirection), bugSpot.getX(), bugSpot.getY(), bugSpot.getZ(), sbb);
 	}
 
 	/**

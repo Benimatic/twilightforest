@@ -76,10 +76,10 @@ public class ComponentTFStrongholdCrossing extends StructureTFStrongholdComponen
 		this.setBlockStateRotated(world, getStairState(oakStairs, Rotation.CLOCKWISE_90.rotate(Direction.WEST), rotation, true), 6, 1, 3, rotation, sbb);
 		this.setBlockStateRotated(world, getStairState(oakStairs, Rotation.CLOCKWISE_180.rotate(Direction.WEST), rotation, true), 6, 1, 4, rotation, sbb);
 		// chairs
-		this.setBlockStateRotated(world, Blocks.SPRUCE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, Rotation.COUNTERCLOCKWISE_90.rotate(Direction.WEST)), 5, 1, 2, rotation, sbb);
-		this.setBlockStateRotated(world, Blocks.SPRUCE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, Rotation.NONE.rotate(Direction.WEST)), 7, 1, 3, rotation, sbb);
-		this.setBlockStateRotated(world, Blocks.SPRUCE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, Rotation.CLOCKWISE_90.rotate(Direction.WEST)), 6, 1, 5, rotation, sbb);
-		this.setBlockStateRotated(world, Blocks.SPRUCE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, Rotation.CLOCKWISE_180.rotate(Direction.WEST)), 4, 1, 4, rotation, sbb);
+		this.setBlockStateRotated(world, Blocks.SPRUCE_STAIRS.getDefaultState().with(BlockStairs.FACING, Rotation.COUNTERCLOCKWISE_90.rotate(Direction.WEST)), 5, 1, 2, rotation, sbb);
+		this.setBlockStateRotated(world, Blocks.SPRUCE_STAIRS.getDefaultState().with(BlockStairs.FACING, Rotation.NONE.rotate(Direction.WEST)), 7, 1, 3, rotation, sbb);
+		this.setBlockStateRotated(world, Blocks.SPRUCE_STAIRS.getDefaultState().with(BlockStairs.FACING, Rotation.CLOCKWISE_90.rotate(Direction.WEST)), 6, 1, 5, rotation, sbb);
+		this.setBlockStateRotated(world, Blocks.SPRUCE_STAIRS.getDefaultState().with(BlockStairs.FACING, Rotation.CLOCKWISE_180.rotate(Direction.WEST)), 4, 1, 4, rotation, sbb);
 	}
 
 

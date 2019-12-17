@@ -232,7 +232,7 @@ public class TileEntityTFAntibuilder extends TileEntity implements ITickable {
 		} else if (this.rand.nextInt(REVERT_CHANCE) == 0) {
 			// don't revert everything instantly
 			if (replaceWith.getBlock() != Blocks.AIR) {
-				replaceWith = TFBlocks.tower_translucent.getDefaultState().withProperty(BlockTFTowerTranslucent.VARIANT, TowerTranslucentVariant.REVERTER_REPLACEMENT);
+				replaceWith = TFBlocks.tower_translucent.getDefaultState().with(BlockTFTowerTranslucent.VARIANT, TowerTranslucentVariant.REVERTER_REPLACEMENT);
 			}
 
 			world.setBlockState(pos, replaceWith, 2);

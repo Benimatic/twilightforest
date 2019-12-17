@@ -28,7 +28,7 @@ public class MossyCobbleTemplateProcessor extends RandomizedTemplateProcessor {
                 return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, Blocks.MOSSY_COBBLESTONE.getDefaultState(), null);
 
             if (block == Blocks.COBBLESTONE_WALL)
-                return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, state.withProperty(BlockWall.VARIANT, BlockWall.EnumType.MOSSY), null);
+                return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, state.with(BlockWall.VARIANT, BlockWall.EnumType.MOSSY), null);
 
             return blockInfo;
         }

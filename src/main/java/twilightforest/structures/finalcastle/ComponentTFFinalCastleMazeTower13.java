@@ -569,7 +569,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 		// nullify sky light
 		//nullifySkyLightAtCurrentPosition(world, dx - 3, dy - 1, dz - 3, dx + 3, dy + 3, dz + 3);
 
-		final BlockState doorState = TFBlocks.castle_door.getDefaultState().withProperty(BlockTFCastleDoor.LOCK_INDEX, this.getGlyphColour().getMetadata() % 4);
+		final BlockState doorState = TFBlocks.castle_door.getDefaultState().with(BlockTFCastleDoor.LOCK_INDEX, this.getGlyphColour().getMetadata() % 4);
 
 		// clear the door
 		if (dx == 0 || dx == size - 1) {

@@ -174,7 +174,7 @@ public class TFGenGraveyard extends TFGenerator {
 					if (random.nextBoolean()) {
 						if (random.nextInt(3) == 0)
 							trap.addBlocksToWorld(world, placement.add(new BlockPos(mirror == Mirror.FRONT_BACK ? 1 : -1, 0, mirror == Mirror.LEFT_RIGHT ? 1 : -1).rotate(rotation)), placementsettings, flags);
-						if (world.setBlockState(placement.add(chestloc), Blocks.TRAPPED_CHEST.getDefaultState().withProperty(BlockChest.FACING, Direction.WEST).withRotation(rotation).withMirror(mirror), flags))
+						if (world.setBlockState(placement.add(chestloc), Blocks.TRAPPED_CHEST.getDefaultState().with(BlockChest.FACING, Direction.WEST).withRotation(rotation).withMirror(mirror), flags))
 							TFTreasure.graveyard.generateChestContents(world, placement.add(chestloc));
 						EntityTFWraith wraith = new EntityTFWraith(world);
 						wraith.setPositionAndUpdate(placement.getX(), placement.getY(), placement.getZ());

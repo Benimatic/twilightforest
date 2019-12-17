@@ -97,7 +97,7 @@ public class ComponentTFStrongholdUpperAscender extends StructureTFStrongholdCom
 		// check walls
 		if (this.getBlockStateFromPos(world, 0, y, z, sbb).getBlock() != Blocks.AIR || this.getBlockStateFromPos(world, 4, y, z, sbb).getBlock() != Blocks.AIR) {
 			for (int x = 1; x < 4; x++) {
-				this.setBlockState(world, Blocks.STONE_BRICK_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, facing), x, y, z, sbb);
+				this.setBlockState(world, Blocks.STONE_BRICK_STAIRS.getDefaultState().with(BlockStairs.FACING, facing), x, y, z, sbb);
 			}
 		}
 	}

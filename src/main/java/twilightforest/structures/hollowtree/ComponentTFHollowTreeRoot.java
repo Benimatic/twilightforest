@@ -68,7 +68,7 @@ public class ComponentTFHollowTreeRoot extends ComponentTFHollowTreeMedBranch {
 			if (!block.isNormalCube() || block.getBlock() != Blocks.AIR && block.getMaterial() == Material.GRASS) {
 
 				// air, other non-solid, or grass, make wood block
-				BlockState log = TFBlocks.twilight_log.getDefaultState().withProperty(LOG_AXIS, BlockLog.EnumAxis.NONE);
+				BlockState log = TFBlocks.twilight_log.getDefaultState().with(LOG_AXIS, BlockLog.EnumAxis.NONE);
 				this.setBlockState(world, log, coords.getX(), coords.getY(), coords.getZ(), sbb);
 			} else if (block.getBlock() != Blocks.AIR && block.getMaterial() == Material.WOOD) {
 				// wood, do nothing

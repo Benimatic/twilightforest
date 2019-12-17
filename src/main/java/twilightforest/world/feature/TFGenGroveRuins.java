@@ -16,8 +16,8 @@ import java.util.Random;
  */
 public class TFGenGroveRuins extends TFGenerator {
 
-	private static final BlockState MOSSY_STONEBRICK = Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.MOSSY);
-	private static final BlockState CHISELED_STONEBRICK = Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED);
+	private static final BlockState MOSSY_STONEBRICK = Blocks.STONEBRICK.getDefaultState().with(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.MOSSY);
+	private static final BlockState CHISELED_STONEBRICK = Blocks.STONEBRICK.getDefaultState().with(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED);
 
 	@Override
 	public boolean generate(World world, Random rand, BlockPos pos) {

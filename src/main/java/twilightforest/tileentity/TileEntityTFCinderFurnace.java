@@ -101,7 +101,7 @@ public class TileEntityTFCinderFurnace extends TileEntityFurnace {
 			Block nearbyBlock = this.getWorld().getBlockState(pos).getBlock();
 
 			if (nearbyBlock != TFBlocks.cinder_log && this.isLog(nearbyBlock)) {
-				this.getWorld().setBlockState(pos, TFBlocks.cinder_log.getDefaultState().withProperty(BlockTFCinderLog.LOG_AXIS, getCinderFacing(dx, dy, dz)), 2);
+				this.getWorld().setBlockState(pos, TFBlocks.cinder_log.getDefaultState().with(BlockTFCinderLog.LOG_AXIS, getCinderFacing(dx, dy, dz)), 2);
 				this.getWorld().playEvent(2004, pos, 0);
 				this.getWorld().playEvent(2004, pos, 0);
 				this.getWorld().playSound(null, pos, SoundEvents.BLOCK_FIRE_AMBIENT, SoundCategory.BLOCKS, 1.0F, 1.0F);

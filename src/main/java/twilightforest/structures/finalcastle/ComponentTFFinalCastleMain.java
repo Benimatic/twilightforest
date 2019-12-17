@@ -281,7 +281,7 @@ public class ComponentTFFinalCastleMain extends StructureTFComponentOld {
 		fillWithRandomizedBlocks(world, sbb, 1, 20, 1, 47, 20, 47, false, rand, deco.randomBlocks);
 
 		// force field around dungeon stairs
-		BlockState fieldBlock = TFBlocks.force_field.getDefaultState().withProperty(BlockTFForceField.COLOR, DyeColor.PINK);
+		BlockState fieldBlock = TFBlocks.force_field.getDefaultState().with(BlockTFForceField.COLOR, DyeColor.PINK);
 		this.fillWithBlocks(world, sbb, 12, 1, 12, 24, 10, 12, fieldBlock, fieldBlock, false);
 		this.fillWithBlocks(world, sbb, 12, 1, 12, 12, 10, 24, fieldBlock, fieldBlock, false);
 		this.fillWithBlocks(world, sbb, 24, 1, 12, 24, 10, 24, fieldBlock, fieldBlock, false);
@@ -291,8 +291,8 @@ public class ComponentTFFinalCastleMain extends StructureTFComponentOld {
 
 		// doors in dungeon force field
 		final BlockState castleDoor = TFBlocks.castle_door.getDefaultState();
-		this.fillWithBlocks(world, sbb, 17, 1, 12, 19, 4, 12, castleDoor.withProperty(LOCK_INDEX, 2), AIR, false);
-		this.fillWithBlocks(world, sbb, 17, 1, 24, 19, 4, 24, castleDoor.withProperty(LOCK_INDEX, 2), AIR, false);
+		this.fillWithBlocks(world, sbb, 17, 1, 12, 19, 4, 12, castleDoor.with(LOCK_INDEX, 2), AIR, false);
+		this.fillWithBlocks(world, sbb, 17, 1, 24, 19, 4, 24, castleDoor.with(LOCK_INDEX, 2), AIR, false);
 
 		// stairs to stair towers
 		makeSmallTowerStairs(world, sbb, Rotation.NONE);
@@ -301,10 +301,10 @@ public class ComponentTFFinalCastleMain extends StructureTFComponentOld {
 		makeLargeTowerStairs(world, sbb, Rotation.CLOCKWISE_180);
 
 		// door, first floor
-		this.fillWithBlocks(world, sbb, 48, 1, 23, 48, 4, 25, castleDoor.withProperty(LOCK_INDEX, 0), AIR, false);
+		this.fillWithBlocks(world, sbb, 48, 1, 23, 48, 4, 25, castleDoor.with(LOCK_INDEX, 0), AIR, false);
 
 		// door, second floor
-		this.fillWithBlocks(world, sbb, 0, 31, 23, 0, 34, 25, castleDoor.withProperty(LOCK_INDEX, 1), AIR, false);
+		this.fillWithBlocks(world, sbb, 0, 31, 23, 0, 34, 25, castleDoor.with(LOCK_INDEX, 1), AIR, false);
 
 		return true;
 	}

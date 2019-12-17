@@ -18,9 +18,9 @@ import java.util.Random;
 public class TFDarkForestBiomeDecorator extends TFBiomeDecorator {
 
 	private final WorldGenerator darkCanopyTreeGen = new TFGenDarkCanopyTree();
-	private final WorldGenerator worldGenDeadBush = new TFGenTallGrass(TFBlocks.twilight_plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.DEADBUSH), 8);
-	private final WorldGenerator worldGenForestGrass = new TFGenTallGrass(TFBlocks.twilight_plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.FORESTGRASS));
-	private final WorldGenerator worldGenMushgloom = new TFGenTallGrass(TFBlocks.twilight_plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MUSHGLOOM));
+	private final WorldGenerator worldGenDeadBush = new TFGenTallGrass(TFBlocks.twilight_plant.getDefaultState().with(BlockTFPlant.VARIANT, PlantVariant.DEADBUSH), 8);
+	private final WorldGenerator worldGenForestGrass = new TFGenTallGrass(TFBlocks.twilight_plant.getDefaultState().with(BlockTFPlant.VARIANT, PlantVariant.FORESTGRASS));
+	private final WorldGenerator worldGenMushgloom = new TFGenTallGrass(TFBlocks.twilight_plant.getDefaultState().with(BlockTFPlant.VARIANT, PlantVariant.MUSHGLOOM));
 
 	@Override
 	public void decorate(World world, Random rand, Biome biome, BlockPos pos) {

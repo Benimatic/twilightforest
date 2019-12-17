@@ -14,7 +14,7 @@ public class StructureTFAuroraBricks extends StructureComponent.BlockSelector {
 		if (!wall) {
 			this.blockstate = Blocks.AIR.getDefaultState();
 		} else {
-			this.blockstate = TFBlocks.aurora_block.getDefaultState().withProperty(
+			this.blockstate = TFBlocks.aurora_block.getDefaultState().with(
 					BlockTFAuroraBrick.VARIANT,
 					Math.abs(x + z) % 16
 			);

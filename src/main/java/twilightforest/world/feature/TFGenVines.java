@@ -39,7 +39,7 @@ public class TFGenVines extends WorldGenerator {
 
 					BlockState vine = Blocks.VINE.getDefaultState();
 					for (Direction facing : facings) {
-						vine = vine.withProperty(BlockVine.getPropertyFor(facing), true);
+						vine = vine.with(BlockVine.getPropertyFor(facing), true);
 					}
 
 					BlockPos down = position;
