@@ -3,51 +3,15 @@ package twilightforest.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.BlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.enums.RootVariant;
-import twilightforest.client.ModelRegisterCallback;
-import twilightforest.client.ModelUtils;
-import twilightforest.item.TFItems;
 
-import java.util.Random;
-
-public class BlockTFRoots extends Block implements ModelRegisterCallback {
-
-	public static final IProperty<RootVariant> VARIANT = PropertyEnum.create("variant", RootVariant.class);
+public class BlockTFRoots extends Block {
 
 	public BlockTFRoots() {
-		super(Material.WOOD);
-		this.setCreativeTab(TFItems.creativeTab);
-		this.setHardness(2.0F);
-		this.setSoundType(SoundType.WOOD);
+		super(Properties.create(Material.WOOD).hardnessAndResistance(2.0F).sound(SoundType.WOOD));
+		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
 	}
 
-	@Override
-	public BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, VARIANT);
-	}
-
-	@Override
-	public int getMetaFromState(BlockState state) {
-		return state.getValue(VARIANT).ordinal();
-	}
-
-	@Override
-	@Deprecated
-	public BlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(VARIANT, RootVariant.values()[meta]);
-	}
-
+	/* TODO 1.14: Move to block loot table
 	@Override
 	public Item getItemDropped(BlockState state, Random random, int j) {
 		switch (state.getValue(VARIANT)) {
@@ -67,17 +31,5 @@ public class BlockTFRoots extends Block implements ModelRegisterCallback {
 			return super.quantityDropped(state, fortune, random);
 		}
 	}
-
-	@Override
-	public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> list) {
-		list.add(new ItemStack(this, 1, 0));
-		list.add(new ItemStack(this, 1, 1));
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	public void registerModel() {
-		ModelUtils.registerToStateSingleVariant(this, VARIANT);
-	}
-
+	*/
 }

@@ -22,6 +22,7 @@ public class BlockTFRipeTorchCluster extends BlockTFTrollRoot {
 		this.setLightLevel(1.0F);
 	}
 
+	/* TODO 1.14: Move to block loot table
 	@Override
 	public Item getItemDropped(BlockState state, Random rand, int fortune) {
 		return TFItems.torchberries;
@@ -51,6 +52,7 @@ public class BlockTFRipeTorchCluster extends BlockTFTrollRoot {
 			return this.quantityDropped(rand);
 		}
 	}
+	*/
 
 	@Override
 	public void harvestBlock(World world, PlayerEntity player, BlockPos pos, BlockState state, @Nullable TileEntity te, ItemStack stack) {

@@ -11,16 +11,12 @@ import net.minecraft.world.World;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 
-public class BlockTFHugeStalk extends Block implements ModelRegisterCallback {
+public class BlockTFHugeStalk extends Block {
 
 	protected BlockTFHugeStalk() {
-		super(Material.WOOD, MaterialColor.FOLIAGE);
+		super(Properties.create(Material.WOOD, MaterialColor.FOLIAGE).hardnessAndResistance(1.25F, 7.0F).sound(SoundType.PLANT));
 
-		this.setHardness(1.25F);
-		this.setResistance(7.0F);
-
-		this.setSoundType(SoundType.PLANT);
-		this.setCreativeTab(TFItems.creativeTab);
+		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
 	}
 
 	@Override

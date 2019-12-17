@@ -1,6 +1,7 @@
 package twilightforest.block;
 
 import net.minecraft.block.BlockRotatedPillar;
+import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -8,14 +9,15 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.state.BooleanProperty;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public abstract class BlockTFDirectionalRotatedPillar extends BlockRotatedPillar {
+public abstract class BlockTFDirectionalRotatedPillar extends RotatedPillarBlock {
 
-	public static final IProperty<Boolean> REVERSED = PropertyBool.create("reversed");
+	public static final BooleanProperty REVERSED = BooleanProperty.create("reversed");
 
 	public BlockTFDirectionalRotatedPillar(Material materialIn) {
 		super(materialIn);
@@ -28,7 +30,7 @@ public abstract class BlockTFDirectionalRotatedPillar extends BlockRotatedPillar
 	@Override
 	public BlockState getStateFromMeta(int meta) {
 		BlockState state = super.getStateFromMeta(meta);
-		return state.withProperty(REVERSED, (meta & 1) != 0);
+		return state.with(REVERSED, (meta & 1) != 0);
 	}
 
 	@Override
@@ -45,7 +47,7 @@ public abstract class BlockTFDirectionalRotatedPillar extends BlockRotatedPillar
 	@Override
 	public BlockState getStateForPlacement(World worldIn, BlockPos pos, Direction facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 		return super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer)
-		            .withProperty(REVERSED, facing.getAxisDirection() == Direction.AxisDirection.NEGATIVE);
+		            .with(REVERSED, facing.getAxisDirection() == Direction.AxisDirection.NEGATIVE);
 	}
 
 	@Override

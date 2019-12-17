@@ -2,11 +2,13 @@ package twilightforest.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLadder;
+import net.minecraft.block.LadderBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.BlockState;
+import net.minecraft.state.BooleanProperty;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -15,12 +17,12 @@ import twilightforest.client.ModelUtils;
 
 import static net.minecraft.util.Direction.*;
 
-public class BlockTFLadderBars extends BlockLadder implements ModelRegisterCallback {
-    public static final PropertyBool LEFT  = PropertyBool.create("left");
-    public static final PropertyBool RIGHT = PropertyBool.create("right");
+public class BlockTFLadderBars extends LadderBlock {
+    public static final BooleanProperty LEFT = BooleanProperty.create("left");
+	public static final BooleanProperty RIGHT = BooleanProperty.create("right");
 
     BlockTFLadderBars() {
-        this.setDefaultState(this.getDefaultState().withProperty(LEFT, false).withProperty(RIGHT, false));
+        this.setDefaultState(this.getDefaultState().with(LEFT, false).with(RIGHT, false));
     }
 
     @Override
@@ -41,8 +43,8 @@ public class BlockTFLadderBars extends BlockLadder implements ModelRegisterCallb
         BlockState rightState = worldIn.getBlockState(pos.offset(rotateCCW(facing)));
 
         return super.getActualState(state, worldIn, pos)
-                .withProperty(LEFT , leftState .getBlock() instanceof BlockTFLadderBars && leftState .getValue(BlockLadder.FACING) == facing)
-                .withProperty(RIGHT, rightState.getBlock() instanceof BlockTFLadderBars && rightState.getValue(BlockLadder.FACING) == facing);
+                .with(LEFT , leftState .getBlock() instanceof BlockTFLadderBars && leftState .getValue(BlockLadder.FACING) == facing)
+                .with(RIGHT, rightState.getBlock() instanceof BlockTFLadderBars && rightState.getValue(BlockLadder.FACING) == facing);
     }
 
     private static Direction rotateCW(Direction facing) {
@@ -73,10 +75,5 @@ public class BlockTFLadderBars extends BlockLadder implements ModelRegisterCallb
             default:
                 return facing;
         }
-    }
-
-    @Override
-    public void registerModel() {
-        ModelUtils.registerIncludingItemModels(this, "inventory", new IProperty[0]);
     }
 }

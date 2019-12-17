@@ -2,12 +2,14 @@ package twilightforest.block;
 
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.item.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.model.ModelLoader;
@@ -17,14 +19,17 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.tileentity.critters.TileEntityTFFireflyTicking;
 
-public class BlockTFFirefly extends BlockTFCritter implements ModelRegisterCallback {
+import javax.annotation.Nullable;
+
+public class BlockTFFirefly extends BlockTFCritter {
 
 	protected BlockTFFirefly() {
-		this.setLightLevel(1.0F);
+		super(Properties.create(Material.MISCELLANEOUS).lightValue(15));
 	}
 
+	@Nullable
 	@Override
-	public TileEntity createTileEntity(World world, BlockState state) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return TwilightForestMod.proxy.getNewFireflyTE();
 	}
 

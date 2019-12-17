@@ -3,16 +3,11 @@ package twilightforest.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import twilightforest.client.ModelRegisterCallback;
-import twilightforest.item.TFItems;
 
-public class BlockTFFluffyCloud extends Block implements ModelRegisterCallback {
+public class BlockTFFluffyCloud extends Block {
 
 	protected BlockTFFluffyCloud() {
-		super(Material.PACKED_ICE);
-		this.setSoundType(SoundType.CLOTH);
-		this.setCreativeTab(TFItems.creativeTab);
-		this.setHardness(0.8F);
+		super(Properties.create(Material.PACKED_ICE).hardnessAndResistance(0.8F, 0.0F).sound(SoundType.CLOTH));
+		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
 	}
-
 }

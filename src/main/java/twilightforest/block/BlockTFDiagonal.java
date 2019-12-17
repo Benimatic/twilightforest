@@ -8,6 +8,7 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.state.BooleanProperty;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
@@ -16,9 +17,9 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.client.ModelRegisterCallback;
 
-public class BlockTFDiagonal extends Block implements ModelRegisterCallback {
+public class BlockTFDiagonal extends Block {
 
-    public static final PropertyBool IS_ROTATED = PropertyBool.create("is_rotated");
+    public static final BooleanProperty IS_ROTATED = BooleanProperty.create("is_rotated");
 
     public BlockTFDiagonal(Material material) {
         super(material);
@@ -40,7 +41,7 @@ public class BlockTFDiagonal extends Block implements ModelRegisterCallback {
 
     @Override
     public BlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(IS_ROTATED, meta != 0);
+        return this.getDefaultState().with(IS_ROTATED, meta != 0);
     }
 
     @Override
@@ -50,16 +51,16 @@ public class BlockTFDiagonal extends Block implements ModelRegisterCallback {
 
     @Override
     public BlockState withRotation(BlockState state, Rotation rot) {
-        return rot == Rotation.NONE || rot == Rotation.CLOCKWISE_180 ? state : state.withProperty(IS_ROTATED, !state.getValue(IS_ROTATED));
+        return rot == Rotation.NONE || rot == Rotation.CLOCKWISE_180 ? state : state.with(IS_ROTATED, !state.getValue(IS_ROTATED));
     }
 
     @Override
     public BlockState withMirror(BlockState state, Mirror mirrorIn) {
-        return mirrorIn == Mirror.NONE ? state : state.withProperty(IS_ROTATED, !state.getValue(IS_ROTATED));
+        return mirrorIn == Mirror.NONE ? state : state.with(IS_ROTATED, !state.getValue(IS_ROTATED));
     }
 
     @Override
     public BlockState getStateForPlacement(World worldIn, BlockPos pos, Direction facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-        return this.getDefaultState().withProperty(IS_ROTATED, Direction.byHorizontalIndex(MathHelper.floor(placer.rotationYaw * 4.0F / 360.0F) & 1) == Direction.WEST);
+        return this.getDefaultState().with(IS_ROTATED, Direction.byHorizontalIndex(MathHelper.floor(placer.rotationYaw * 4.0F / 360.0F) & 1) == Direction.WEST);
     }
 }

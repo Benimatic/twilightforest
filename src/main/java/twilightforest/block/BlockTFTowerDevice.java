@@ -45,17 +45,16 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
+//TODO: Breaking and entering, but without the entering and more the breaking
+public class BlockTFTowerDevice extends Block {
 
+	//TODO 1.14: Flatten, keeping some of the states
 	public static final IProperty<TowerDeviceVariant> VARIANT = PropertyEnum.create("variant", TowerDeviceVariant.class);
 
 	public BlockTFTowerDevice() {
-		super(Material.WOOD, MaterialColor.SAND);
-		this.setHardness(10F);
-		this.setResistance(35F);
-		this.setSoundType(SoundType.WOOD);
-		this.setCreativeTab(TFItems.creativeTab);
-		this.setDefaultState(blockState.getBaseState().withProperty(VARIANT, TowerDeviceVariant.REAPPEARING_INACTIVE));
+		super(Properties.create(Material.WOOD, MaterialColor.SAND).hardnessAndResistance(10.0F, 35.0F).sound(SoundType.WOOD));
+		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
+		this.setDefaultState(blockState.getBaseState().with(VARIANT, TowerDeviceVariant.REAPPEARING_INACTIVE));
 	}
 
 	@Override
@@ -71,7 +70,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 	@Override
 	@Deprecated
 	public BlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(VARIANT, TowerDeviceVariant.values()[meta]);
+		return getDefaultState().with(VARIANT, TowerDeviceVariant.values()[meta]);
 	}
 
 	@Override
@@ -188,7 +187,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 		BlockState thereState = world.getBlockState(pos);
 
 		if (thereState.getBlock() == TFBlocks.tower_device || thereState.getValue(BlockTFTowerDevice.VARIANT) == TowerDeviceVariant.VANISH_LOCKED) {
-			changeToBlockState(world, pos, thereState.withProperty(VARIANT, TowerDeviceVariant.VANISH_UNLOCKED));
+			changeToBlockState(world, pos, thereState.with(VARIANT, TowerDeviceVariant.VANISH_UNLOCKED));
 			world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.6F);
 		}
 	}
@@ -212,7 +211,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 		if (world.isRemote) return;
 
 		if (state.getValue(VARIANT) == TowerDeviceVariant.BUILDER_INACTIVE && world.isBlockPowered(pos)) {
-			changeToBlockState(world, pos, state.withProperty(VARIANT, TowerDeviceVariant.BUILDER_ACTIVE));
+			changeToBlockState(world, pos, state.with(VARIANT, TowerDeviceVariant.BUILDER_ACTIVE));
 			world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.6F);
 		}
 	}
@@ -234,19 +233,19 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 		}
 
 		if (variant == TowerDeviceVariant.BUILDER_INACTIVE && world.isBlockPowered(pos)) {
-			changeToBlockState(world, pos, state.withProperty(VARIANT, TowerDeviceVariant.BUILDER_ACTIVE));
+			changeToBlockState(world, pos, state.with(VARIANT, TowerDeviceVariant.BUILDER_ACTIVE));
 			world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.6F);
 			world.scheduleUpdate(pos, this, 4);
 		}
 
 		if (variant == TowerDeviceVariant.BUILDER_ACTIVE && !world.isBlockPowered(pos)) {
-			changeToBlockState(world, pos, state.withProperty(VARIANT, TowerDeviceVariant.BUILDER_INACTIVE));
+			changeToBlockState(world, pos, state.with(VARIANT, TowerDeviceVariant.BUILDER_INACTIVE));
 			world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_OFF, SoundCategory.BLOCKS, 0.3F, 0.6F);
 			world.scheduleUpdate(pos, this, 4);
 		}
 
 		if (variant == TowerDeviceVariant.BUILDER_TIMEOUT && !world.isBlockPowered(pos)) {
-			changeToBlockState(world, pos, state.withProperty(VARIANT, TowerDeviceVariant.BUILDER_INACTIVE));
+			changeToBlockState(world, pos, state.with(VARIANT, TowerDeviceVariant.BUILDER_INACTIVE));
 		}
 
 		if (variant == TowerDeviceVariant.GHASTTRAP_INACTIVE && isInactiveTrapCharged(world, pos) && world.isBlockPowered(pos)) {
@@ -254,14 +253,14 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 				TFAdvancements.ACTIVATED_GHAST_TRAP.trigger(player);
 			}
 
-			changeToBlockState(world, pos, state.withProperty(VARIANT, TowerDeviceVariant.GHASTTRAP_ACTIVE));
+			changeToBlockState(world, pos, state.with(VARIANT, TowerDeviceVariant.GHASTTRAP_ACTIVE));
 			world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.6F);
 			world.scheduleUpdate(pos, this, 4);
 		}
 
 		if (variant == TowerDeviceVariant.REACTOR_INACTIVE && isReactorReady(world, pos)) {
 			// check if we should fire up the reactor
-			changeToBlockState(world, pos, state.withProperty(VARIANT, TowerDeviceVariant.REACTOR_ACTIVE));
+			changeToBlockState(world, pos, state.with(VARIANT, TowerDeviceVariant.REACTOR_ACTIVE));
 		}
 	}
 
@@ -276,7 +275,7 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 			if (variant == TowerDeviceVariant.VANISH_ACTIVE) {
 				world.setBlockToAir(pos);
 			} else {
-				world.setBlockState(pos, TFBlocks.tower_translucent.getDefaultState().withProperty(BlockTFTowerTranslucent.VARIANT, TowerTranslucentVariant.REAPPEARING_INACTIVE));
+				world.setBlockState(pos, TFBlocks.tower_translucent.getDefaultState().with(BlockTFTowerTranslucent.VARIANT, TowerTranslucentVariant.REAPPEARING_INACTIVE));
 				world.scheduleUpdate(pos, TFBlocks.tower_translucent, 80);
 			}
 			world.notifyNeighborsRespectDebug(pos, this, false);
@@ -395,11 +394,11 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 	}
 
 	public static void changeToActiveVanishBlock(World world, BlockPos pos, TowerDeviceVariant variant) {
-		changeToActiveVanishBlock(world, pos, TFBlocks.tower_device.getDefaultState().withProperty(VARIANT, variant));
+		changeToActiveVanishBlock(world, pos, TFBlocks.tower_device.getDefaultState().with(VARIANT, variant));
 	}
 
 	public static void changeToActiveVanishBlock(World world, BlockPos pos, TowerTranslucentVariant variant) {
-		changeToActiveVanishBlock(world, pos, TFBlocks.tower_translucent.getDefaultState().withProperty(BlockTFTowerTranslucent.VARIANT, variant));
+		changeToActiveVanishBlock(world, pos, TFBlocks.tower_translucent.getDefaultState().with(BlockTFTowerTranslucent.VARIANT, variant));
 	}
 
 	/**
@@ -498,32 +497,26 @@ public class BlockTFTowerDevice extends Block implements ModelRegisterCallback {
 	public int damageDropped(BlockState state) {
 		switch (state.getValue(VARIANT)) {
 			case REAPPEARING_ACTIVE:
-				state = state.withProperty(VARIANT, TowerDeviceVariant.REAPPEARING_INACTIVE);
+				state = state.with(VARIANT, TowerDeviceVariant.REAPPEARING_INACTIVE);
 				break;
 			case BUILDER_ACTIVE:
 			case BUILDER_TIMEOUT:
-				state = state.withProperty(VARIANT, TowerDeviceVariant.BUILDER_INACTIVE);
+				state = state.with(VARIANT, TowerDeviceVariant.BUILDER_INACTIVE);
 				break;
 			case VANISH_ACTIVE:
-				state = state.withProperty(VARIANT, TowerDeviceVariant.VANISH_INACTIVE);
+				state = state.with(VARIANT, TowerDeviceVariant.VANISH_INACTIVE);
 				break;
 			case GHASTTRAP_ACTIVE:
-				state = state.withProperty(VARIANT, TowerDeviceVariant.GHASTTRAP_INACTIVE);
+				state = state.with(VARIANT, TowerDeviceVariant.GHASTTRAP_INACTIVE);
 				break;
 			case REACTOR_ACTIVE:
-				state = state.withProperty(VARIANT, TowerDeviceVariant.REACTOR_INACTIVE);
+				state = state.with(VARIANT, TowerDeviceVariant.REACTOR_INACTIVE);
 				break;
 			default:
 				break;
 		}
 
 		return getMetaFromState(state);
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	public void registerModel() {
-		ModelUtils.registerToStateSingleVariant(this, VARIANT);
 	}
 
 	@Override

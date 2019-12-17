@@ -4,9 +4,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.state.BooleanProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.BlockState;
+import net.minecraft.state.BooleanProperty;
 import net.minecraft.util.Direction;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
@@ -19,14 +20,14 @@ import twilightforest.item.TFItems;
 
 import java.util.Random;
 
-public class BlockTFTrollSteinn extends Block implements ModelRegisterCallback {
+public class BlockTFTrollSteinn extends Block {
 
-	static final IProperty<Boolean> DOWN_LIT  = PropertyBool.create("down");
-	static final IProperty<Boolean> UP_LIT    = PropertyBool.create("up");
-	static final IProperty<Boolean> NORTH_LIT = PropertyBool.create("north");
-	static final IProperty<Boolean> SOUTH_LIT = PropertyBool.create("south");
-	static final IProperty<Boolean> WEST_LIT  = PropertyBool.create("west");
-	static final IProperty<Boolean> EAST_LIT  = PropertyBool.create("east");
+	static final BooleanProperty DOWN_LIT  = BooleanProperty.create("down");
+	static final BooleanProperty UP_LIT    = BooleanProperty.create("up");
+	static final BooleanProperty NORTH_LIT = BooleanProperty.create("north");
+	static final BooleanProperty SOUTH_LIT = BooleanProperty.create("south");
+	static final BooleanProperty WEST_LIT  = BooleanProperty.create("west");
+	static final BooleanProperty EAST_LIT  = BooleanProperty.create("east");
 
 	private static final int LIGHT_THRESHHOLD = 7;
 
@@ -38,9 +39,9 @@ public class BlockTFTrollSteinn extends Block implements ModelRegisterCallback {
 		this.setSoundType(SoundType.STONE);
 		this.setCreativeTab(TFItems.creativeTab);
 		this.setDefaultState(blockState.getBaseState()
-				.withProperty(DOWN_LIT, false).withProperty(UP_LIT, false)
-				.withProperty(NORTH_LIT, false).withProperty(SOUTH_LIT, false)
-				.withProperty(WEST_LIT, false).withProperty(EAST_LIT, false));
+				.with(DOWN_LIT, false).with(UP_LIT, false)
+				.with(NORTH_LIT, false).with(SOUTH_LIT, false)
+				.with(WEST_LIT, false).with(EAST_LIT, false));
 	}
 
 	@Override
@@ -59,14 +60,14 @@ public class BlockTFTrollSteinn extends Block implements ModelRegisterCallback {
 		if (!(world instanceof World)) return this.getDefaultState();
 
 		for (SideProps side : SideProps.values())
-			state = state.withProperty(side.prop, ((World) world).getLight(pos.offset(side.facing)) > LIGHT_THRESHHOLD);
+			state = state.with(side.prop, ((World) world).getLight(pos.offset(side.facing)) > LIGHT_THRESHHOLD);
 
 		return state;
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random rand) {
+	public void animateTick(BlockState state, World world, BlockPos pos, Random rand) {
 		if (rand.nextInt(2) == 0) this.sparkle(world, pos);
 	}
 
@@ -75,7 +76,7 @@ public class BlockTFTrollSteinn extends Block implements ModelRegisterCallback {
 		Random random = world.rand;
 		int threshhold = LIGHT_THRESHHOLD;
 
-		for (Direction side : Direction.VALUES) {
+		for (Direction side : Direction.values()) {
 			double rx = (double) ((float) pos.getX() + random.nextFloat());
 			double ry = (double) ((float) pos.getY() + random.nextFloat());
 			double rz = (double) ((float) pos.getZ() + random.nextFloat());
@@ -105,7 +106,7 @@ public class BlockTFTrollSteinn extends Block implements ModelRegisterCallback {
 			}
 
 			if (rx < (double) pos.getX() || rx > (double) (pos.getX() + 1) || ry < 0.0D || ry > (double) (pos.getY() + 1) || rz < (double) pos.getZ() || rz > (double) (pos.getZ() + 1)) {
-				world.spawnParticle(ParticleTypes.REDSTONE, rx, ry, rz, 0.25D, -1.0D, 0.5D);
+				world.addParticle(ParticleTypes.REDSTONE, rx, ry, rz, 0.25D, -1.0D, 0.5D);
 			}
 		}
 	}
@@ -118,10 +119,10 @@ public class BlockTFTrollSteinn extends Block implements ModelRegisterCallback {
 		WEST(WEST_LIT, Direction.WEST),
 		EAST(EAST_LIT, Direction.EAST);
 
-		private final IProperty<Boolean> prop;
+		private final BooleanProperty prop;
 		private final Direction facing;
 
-		SideProps(IProperty<Boolean> prop, Direction faceing) {
+		SideProps(BooleanProperty prop, Direction faceing) {
 			this.prop = prop;
 			this.facing = faceing;
 		}

@@ -12,18 +12,11 @@ import twilightforest.item.TFItems;
 /**
  * Created by Drullkus on 12/12/17.
  */
-public class BlockTFNagastonePillar extends BlockTFDirectionalRotatedPillar implements ModelRegisterCallback {
+public class BlockTFNagastonePillar extends BlockTFDirectionalRotatedPillar {
 
     protected BlockTFNagastonePillar() {
-        super(Material.ROCK);
-        this.setSoundType(SoundType.STONE);
-        this.setCreativeTab(TFItems.creativeTab);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(AXIS, Direction.Axis.Y).withProperty(REVERSED, false));
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public void registerModel() {
-        ModelUtils.registerToState(this, 0, this.getDefaultState());
+        super(Properties.create(Material.ROCK).hardnessAndResistance(1.5F, 10.0F).sound(SoundType.STONE));
+        //this.setCreativeTab(TFItems.creativeTab); TODO 1.14
+        this.setDefaultState(this.stateContainer.getBaseState().with(AXIS, Direction.Axis.Y).with(REVERSED, false));
     }
 }

@@ -1,7 +1,7 @@
 package twilightforest.block;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.EnumPushReaction;
+import net.minecraft.block.material.PushReaction;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.EntityLivingBase;
@@ -14,15 +14,14 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.client.ModelRegisterCallback;
 
-public abstract class BlockTFGiantBlock extends Block implements ModelRegisterCallback {
+public abstract class BlockTFGiantBlock extends Block {
 
 	private boolean isSelfDestructing;
 
 	//Atomic: Suppressing deprecation because this seems like a reasonable use for it.
 	@SuppressWarnings("deprecation")
 	public BlockTFGiantBlock(BlockState state) {
-		super(state.getMaterial());
-		this.setSoundType(state.getBlock().getSoundType());
+		super(Properties.create(state.getMaterial()).sound(state.getBlock().getSoundType(state)));
 	}
 
 	@Override
@@ -79,8 +78,8 @@ public abstract class BlockTFGiantBlock extends Block implements ModelRegisterCa
 
 	@Override
 	@Deprecated
-	public EnumPushReaction getPushReaction(BlockState state) {
-		return EnumPushReaction.BLOCK;
+	public PushReaction getPushReaction(BlockState state) {
+		return PushReaction.BLOCK;
 	}
 
 	public static BlockPos roundCoords(BlockPos pos) {
@@ -92,11 +91,5 @@ public abstract class BlockTFGiantBlock extends Block implements ModelRegisterCa
 				pos.getX() & ~0b11, pos.getY() & ~0b11, pos.getZ() & ~0b11,
 				pos.getX() |  0b11, pos.getY() |  0b11, pos.getZ() |  0b11
 		);
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	public void registerModel() {
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
 	}
 }

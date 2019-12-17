@@ -22,7 +22,7 @@ import twilightforest.tileentity.critters.TileEntityTFMoonwormTicking;
 
 import java.util.Random;
 
-public class BlockTFMoonworm extends BlockTFCritter implements ModelRegisterCallback {
+public class BlockTFMoonworm extends BlockTFCritter {
 
 	protected BlockTFMoonworm() {
 		this.setLightLevel(0.9375F);

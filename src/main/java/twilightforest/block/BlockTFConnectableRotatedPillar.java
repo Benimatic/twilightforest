@@ -1,14 +1,17 @@
 package twilightforest.block;
 
-import net.minecraft.block.BlockFence;
+import net.minecraft.block.FenceBlock;
 import net.minecraft.block.BlockRotatedPillar;
+import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.properties.BooleanProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.IProperty;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -19,7 +22,7 @@ import twilightforest.TwilightForestMod;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public abstract class BlockTFConnectableRotatedPillar extends BlockRotatedPillar {
+public abstract class BlockTFConnectableRotatedPillar extends RotatedPillarBlock {
 
     final double boundingBoxWidthLower;
     final double boundingBoxWidthUpper;
@@ -28,11 +31,11 @@ public abstract class BlockTFConnectableRotatedPillar extends BlockRotatedPillar
     private final double boundingBoxHeightUpper;
 
     BlockTFConnectableRotatedPillar(Material material, double size) {
-        this(material, material.getMaterialMapColor(), size, size);
+        this(material, material.getColor(), size, size);
     }
 
     BlockTFConnectableRotatedPillar(Material material, double width, double height) {
-        this(material, material.getMaterialMapColor(), width, height);
+        this(material, material.getColor(), width, height);
     }
 
     BlockTFConnectableRotatedPillar(Material material, MaterialColor mapColor, double size) {
@@ -40,7 +43,7 @@ public abstract class BlockTFConnectableRotatedPillar extends BlockRotatedPillar
     }
 
     BlockTFConnectableRotatedPillar(Material material, MaterialColor mapColor, double width, double height) {
-        super(material, mapColor);
+        super(Properties.create(material, mapColor));
 
         if (width >= 16d) {
             this.boundingBoxWidthLower = 0d;
@@ -58,9 +61,9 @@ public abstract class BlockTFConnectableRotatedPillar extends BlockRotatedPillar
             this.boundingBoxHeightUpper = 16d-this.boundingBoxHeightLower;
         }
 
-        this.setDefaultState(blockState.getBaseState().withProperty(AXIS, Direction.Axis.Y)
-                .withProperty(BlockFence.NORTH, false).withProperty(BlockFence.WEST, false)
-                .withProperty(BlockFence.SOUTH, false).withProperty(BlockFence.EAST, false));
+        this.setDefaultState(stateContainer.getBaseState().with(AXIS, Direction.Axis.Y)
+                .with(FenceBlock.NORTH, false).with(FenceBlock.WEST, false)
+                .with(FenceBlock.SOUTH, false).with(FenceBlock.EAST, false));
     }
 
     protected abstract IProperty[] getAdditionalProperties();
@@ -68,7 +71,7 @@ public abstract class BlockTFConnectableRotatedPillar extends BlockRotatedPillar
     @Override
     public BlockStateContainer createBlockState() {
         return new BlockStateContainer.Builder(this)
-                .add(AXIS, BlockFence.NORTH, BlockFence.EAST, BlockFence.SOUTH, BlockFence.WEST)
+                .add(AXIS, FenceBlock.NORTH, FenceBlock.EAST, FenceBlock.SOUTH, FenceBlock.WEST)
                 .add(getAdditionalProperties())
                 .build();
     }
@@ -82,7 +85,7 @@ public abstract class BlockTFConnectableRotatedPillar extends BlockRotatedPillar
 
         for (PairHelper pair : PairHelper.values()) {
             Direction connectTo = PairHelper.getFacingFromPropertyWithAxis(pair.property, axis);
-            state = state.withProperty(pair.property, canConnectTo(state, world.getBlockState(pos.offset(connectTo)), world, pos, connectTo));
+            state = state.with(pair.property, canConnectTo(state, world.getBlockState(pos.offset(connectTo)), world, pos, connectTo));
         }
 
         return state;
@@ -109,7 +112,7 @@ public abstract class BlockTFConnectableRotatedPillar extends BlockRotatedPillar
 
         // Add axillary pillar connections
         // Cycle through all possible faces
-        for (Direction facing : Direction.VALUES) {
+        for (Direction facing : Direction.values()) {
             // If the facing in loop doesn't cover the axis of the block and if that side's state is true, then add to list
             if (facing.getAxis() != axis && state.getValue(PairHelper.getPropertyFromFacingWithAxis(facing, axis))) {
                 // Create AABB piece and add to list
@@ -137,29 +140,29 @@ public abstract class BlockTFConnectableRotatedPillar extends BlockRotatedPillar
             case X:
                 return makeQuickAABB(
                         0d,
-                        state.getValue(BlockFence.NORTH) ?  0d : this.boundingBoxWidthLower,
-                        state.getValue(BlockFence.WEST ) ?  0d : this.boundingBoxWidthLower,
+                        state.getValue(FenceBlock.NORTH) ?  0d : this.boundingBoxWidthLower,
+                        state.getValue(FenceBlock.WEST ) ?  0d : this.boundingBoxWidthLower,
                         16d,
-                        state.getValue(BlockFence.SOUTH) ? 16d : this.boundingBoxWidthUpper,
-                        state.getValue(BlockFence.EAST ) ? 16d : this.boundingBoxWidthUpper
+                        state.getValue(FenceBlock.SOUTH) ? 16d : this.boundingBoxWidthUpper,
+                        state.getValue(FenceBlock.EAST ) ? 16d : this.boundingBoxWidthUpper
                 );
             case Z:
                 return makeQuickAABB(
-                        state.getValue(BlockFence.EAST ) ?  0d : this.boundingBoxWidthLower,
-                        state.getValue(BlockFence.SOUTH) ?  0d : this.boundingBoxWidthLower,
+                        state.getValue(FenceBlock.EAST ) ?  0d : this.boundingBoxWidthLower,
+                        state.getValue(FenceBlock.SOUTH) ?  0d : this.boundingBoxWidthLower,
                         0d,
-                        state.getValue(BlockFence.WEST ) ? 16d : this.boundingBoxWidthUpper,
-                        state.getValue(BlockFence.NORTH) ? 16d : this.boundingBoxWidthUpper,
+                        state.getValue(FenceBlock.WEST ) ? 16d : this.boundingBoxWidthUpper,
+                        state.getValue(FenceBlock.NORTH) ? 16d : this.boundingBoxWidthUpper,
                         16d
                 );
             default:
                 return makeQuickAABB(
-                        state.getValue(BlockFence.WEST)  ?  0d : this.boundingBoxWidthLower,
+                        state.getValue(FenceBlock.WEST)  ?  0d : this.boundingBoxWidthLower,
                         0d,
-                        state.getValue(BlockFence.NORTH) ?  0d : this.boundingBoxWidthLower,
-                        state.getValue(BlockFence.EAST)  ? 16d : this.boundingBoxWidthUpper,
+                        state.getValue(FenceBlock.NORTH) ?  0d : this.boundingBoxWidthLower,
+                        state.getValue(FenceBlock.EAST)  ? 16d : this.boundingBoxWidthUpper,
                         16d,
-                        state.getValue(BlockFence.SOUTH) ? 16d : this.boundingBoxWidthUpper
+                        state.getValue(FenceBlock.SOUTH) ? 16d : this.boundingBoxWidthUpper
                 );
         }
     }
@@ -184,38 +187,38 @@ public abstract class BlockTFConnectableRotatedPillar extends BlockRotatedPillar
     }
 
     enum PairHelper {
-        NORTH(Direction.NORTH, BlockFence.NORTH),
-        EAST (Direction.EAST , BlockFence.EAST ),
-        SOUTH(Direction.SOUTH, BlockFence.SOUTH),
-        WEST (Direction.WEST , BlockFence.WEST );
+        NORTH(Direction.NORTH, FenceBlock.NORTH),
+        EAST (Direction.EAST , FenceBlock.EAST ),
+        SOUTH(Direction.SOUTH, FenceBlock.SOUTH),
+        WEST (Direction.WEST , FenceBlock.WEST );
 
         final Direction facing;
-        final PropertyBool property;
+        final BooleanProperty property;
 
-        PairHelper(Direction facing, PropertyBool property) {
+        PairHelper(Direction facing, BooleanProperty property) {
             this.facing = facing;
             this.property = property;
         }
 
-        static Direction getFacingFromPropertyWithAxis(PropertyBool property, Direction.Axis axis) {
+        static Direction getFacingFromPropertyWithAxis(BooleanProperty property, Direction.Axis axis) {
             switch (axis) {
                 case X:
-                    if (property == BlockFence.NORTH) return Direction.DOWN;
-                    if (property == BlockFence.SOUTH) return Direction.UP;
-                    if (property == BlockFence.WEST ) return Direction.NORTH;
-                    if (property == BlockFence.EAST ) return Direction.SOUTH;
+                    if (property == FenceBlock.NORTH) return Direction.DOWN;
+                    if (property == FenceBlock.SOUTH) return Direction.UP;
+                    if (property == FenceBlock.WEST ) return Direction.NORTH;
+                    if (property == FenceBlock.EAST ) return Direction.SOUTH;
                     break;
                 case Y:
-                    if (property == BlockFence.NORTH) return Direction.NORTH;
-                    if (property == BlockFence.SOUTH) return Direction.SOUTH;
-                    if (property == BlockFence.WEST ) return Direction.WEST;
-                    if (property == BlockFence.EAST ) return Direction.EAST;
+                    if (property == FenceBlock.NORTH) return Direction.NORTH;
+                    if (property == FenceBlock.SOUTH) return Direction.SOUTH;
+                    if (property == FenceBlock.WEST ) return Direction.WEST;
+                    if (property == FenceBlock.EAST ) return Direction.EAST;
                     break;
                 case Z:
-                    if (property == BlockFence.NORTH) return Direction.UP;
-                    if (property == BlockFence.SOUTH) return Direction.DOWN;
-                    if (property == BlockFence.WEST ) return Direction.EAST;
-                    if (property == BlockFence.EAST ) return Direction.WEST;
+                    if (property == FenceBlock.NORTH) return Direction.UP;
+                    if (property == FenceBlock.SOUTH) return Direction.DOWN;
+                    if (property == FenceBlock.WEST ) return Direction.EAST;
+                    if (property == FenceBlock.EAST ) return Direction.WEST;
                     break;
             }
 
@@ -223,48 +226,48 @@ public abstract class BlockTFConnectableRotatedPillar extends BlockRotatedPillar
             return Direction.UP;
         }
 
-        static PropertyBool getPropertyFromFacingWithAxis(Direction facing, Direction.Axis axis) {
+        static BooleanProperty getPropertyFromFacingWithAxis(Direction facing, Direction.Axis axis) {
             switch (axis) {
                 case X:
                     switch (facing) {
                         case DOWN:
-                            return BlockFence.NORTH;
+                            return FenceBlock.NORTH;
                         case UP:
-                            return BlockFence.SOUTH;
+                            return FenceBlock.SOUTH;
                         case NORTH:
-                            return BlockFence.WEST;
+                            return FenceBlock.WEST;
                         case SOUTH:
-                            return BlockFence.EAST;
+                            return FenceBlock.EAST;
                     }
                     break;
                 case Y:
                     switch (facing) {
                         case NORTH:
-                            return BlockFence.NORTH;
+                            return FenceBlock.NORTH;
                         case SOUTH:
-                            return BlockFence.SOUTH;
+                            return FenceBlock.SOUTH;
                         case WEST:
-                            return BlockFence.WEST;
+                            return FenceBlock.WEST;
                         case EAST:
-                            return BlockFence.EAST;
+                            return FenceBlock.EAST;
                     }
                     break;
                 case Z:
                     switch (facing) {
                         case DOWN:
-                            return BlockFence.SOUTH;
+                            return FenceBlock.SOUTH;
                         case UP:
-                            return BlockFence.NORTH;
+                            return FenceBlock.NORTH;
                         case WEST:
-                            return BlockFence.EAST;
+                            return FenceBlock.EAST;
                         case EAST:
-                            return BlockFence.WEST;
+                            return FenceBlock.WEST;
                     }
                     break;
             }
 
             TwilightForestMod.LOGGER.warn("ConnectableRotatedPillar helper (getPropertyFromFacingWithAxis) had a problem? (facing '{}' with axis '{}')", facing.getName(), axis.getName());
-            return BlockFence.NORTH;
+            return FenceBlock.NORTH;
         }
     }
 }

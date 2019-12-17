@@ -13,17 +13,21 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.IntegerProperty;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.api.distmarker.Dist;
@@ -34,10 +38,10 @@ import twilightforest.item.TFItems;
 
 import java.util.Random;
 
-public class BlockTFExperiment115 extends Block implements ModelRegisterCallback {
+public class BlockTFExperiment115 extends Block {
 
-    public static final IProperty<Integer> NOMS = PropertyInteger.create("omnomnom", 0, 7);
-    public static final IProperty<Boolean> REGENERATE = PropertyBool.create("regenerate");
+    public static final IntegerProperty NOMS = IntegerProperty.create("omnomnom", 0, 7);
+    public static final BooleanProperty REGENERATE = BooleanProperty.create("regenerate");
 
     private static final AxisAlignedBB[] AABB = new AxisAlignedBB[] {
             new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.5D, 0.9375D),
@@ -46,10 +50,8 @@ public class BlockTFExperiment115 extends Block implements ModelRegisterCallback
     };
 
     public BlockTFExperiment115() {
-        super(Material.CAKE, MaterialColor.IRON);
-        this.setTickRandomly(true);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(NOMS, 7).withProperty(REGENERATE, false));
-        this.setSoundType(SoundType.CLOTH);
+        super(Properties.create(Material.CAKE, MaterialColor.IRON).sound(SoundType.CLOTH).tickRandomly());
+        this.setDefaultState(this.stateContainer.getBaseState().with(NOMS, 7).with(REGENERATE, false));
     }
 
     @Override
@@ -59,7 +61,7 @@ public class BlockTFExperiment115 extends Block implements ModelRegisterCallback
 
     @Override
     public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos) {
-        switch (state.getValue(NOMS)) {
+        switch (state.get(NOMS)) {
             default:
                 return AABB[0];
             case 4:
@@ -88,40 +90,40 @@ public class BlockTFExperiment115 extends Block implements ModelRegisterCallback
         return BlockFaceShape.UNDEFINED;
     }
 
-    @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity player, Hand hand, Direction facing, float hitX, float hitY, float hitZ) {
-        int bitesTaken = state.getValue(NOMS);
-        ItemStack stack = player.getHeldItem(hand);
+	@Override
+	public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		int bitesTaken = state.get(NOMS);
+		ItemStack stack = player.getHeldItem(hand);
 
-        if (!player.isSneaking()) {
-            if (bitesTaken > 0 && stack.getItem() == TFItems.experiment_115) {
-                worldIn.setBlockState(pos, state.withProperty(NOMS, bitesTaken - 1));
-                if (!player.isCreative()) stack.shrink(1);
-                if (player instanceof EntityPlayerMP) CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP) player, pos, stack);
-                return true;
-            } else if (((!state.getValue(REGENERATE)) && stack.getItem() == Items.REDSTONE) && (player.isCreative() || bitesTaken == 0)) {
-                worldIn.setBlockState(pos, state.withProperty(REGENERATE,true));
-                if (!player.isCreative()) stack.shrink(1);
-                if (player instanceof EntityPlayerMP) CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP) player, pos, stack);
-                return true;
-            }
-        }
+		if (!player.isSneaking()) {
+			if (bitesTaken > 0 && stack.getItem() == TFItems.experiment_115.get()) {
+				worldIn.setBlockState(pos, state.with(NOMS, bitesTaken - 1));
+				if (!player.isCreative()) stack.shrink(1);
+				if (player instanceof ServerPlayerEntity) CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity) player, pos, stack);
+				return true;
+			} else if (((!state.get(REGENERATE)) && stack.getItem() == Items.REDSTONE) && (player.isCreative() || bitesTaken == 0)) {
+				worldIn.setBlockState(pos, state.with(REGENERATE,true));
+				if (!player.isCreative()) stack.shrink(1);
+				if (player instanceof ServerPlayerEntity) CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity) player, pos, stack);
+				return true;
+			}
+		}
 
-        return this.eatCake(worldIn, pos, state, player) || stack.isEmpty();
-    }
+		return this.eatCake(worldIn, pos, state, player) || stack.isEmpty();
+	}
 
-    private boolean eatCake(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+	private boolean eatCake(World world, BlockPos pos, BlockState state, PlayerEntity player) {
         if (!player.canEat(false)) return false;
         else {
             player.addStat(StatList.CAKE_SLICES_EATEN);
             player.getFoodStats().addStats(4, 0.3F);
-            int i = state.getValue(NOMS);
+            int i = state.get(NOMS);
 
-            if (i < 7) world.setBlockState(pos, state.withProperty(NOMS, i + 1), 3);
+            if (i < 7) world.setBlockState(pos, state.with(NOMS, i + 1), 3);
             else       world.setBlockToAir(pos);
 
-            if (player instanceof EntityPlayerMP)
-                CriteriaTriggers.CONSUME_ITEM.trigger((EntityPlayerMP) player, new ItemStack(TFItems.experiment_115, 8 - i));
+            if (player instanceof ServerPlayerEntity)
+                CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayerEntity) player, new ItemStack(TFItems.experiment_115, 8 - i));
 
             return true;
         }
@@ -129,8 +131,8 @@ public class BlockTFExperiment115 extends Block implements ModelRegisterCallback
 
     @Override
     public void updateTick(World worldIn, BlockPos pos, BlockState state, Random rand) {
-        if (state.getValue(REGENERATE) && state.getValue(NOMS) != 0) {
-            worldIn.setBlockState(pos, state.withProperty(NOMS, state.getValue(NOMS) - 1));
+        if (state.get(REGENERATE) && state.get(NOMS) != 0) {
+            worldIn.setBlockState(pos, state.with(NOMS, state.get(NOMS) - 1));
         }
     }
 
@@ -158,12 +160,12 @@ public class BlockTFExperiment115 extends Block implements ModelRegisterCallback
 
     @Override
     public BlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(NOMS, meta & 7).withProperty(REGENERATE, (meta & 8) == 8);
+        return this.getDefaultState().with(NOMS, meta & 7).with(REGENERATE, (meta & 8) == 8);
     }
 
     @Override
     public int getMetaFromState(BlockState state) {
-        return state.getValue(NOMS) | (state.getValue(REGENERATE) ? 8 : 0);
+        return state.get(NOMS) | (state.get(REGENERATE) ? 8 : 0);
     }
 
     @Override
@@ -179,7 +181,7 @@ public class BlockTFExperiment115 extends Block implements ModelRegisterCallback
 
     @Override
     public int getComparatorInputOverride(BlockState state, World world, BlockPos pos) {
-        return 15-(state.getValue(NOMS)*2);
+        return 15-(state.get(NOMS)*2);
     }
 
     @Override
@@ -190,15 +192,15 @@ public class BlockTFExperiment115 extends Block implements ModelRegisterCallback
 
     @Override
     public boolean canProvidePower(BlockState state) {
-        return state.getValue(REGENERATE);
+        return state.get(REGENERATE);
     }
 
-    @Override
-    public int getWeakPower(BlockState state, IBlockAccess blockAccess, BlockPos pos, Direction side) {
-        return state.getValue(REGENERATE) ? 15-(state.getValue(NOMS)*2) : 0;
-    }
+	@Override
+	public int getWeakPower(BlockState state, IBlockReader blockAccess, BlockPos pos, Direction side) {
+		return state.get(REGENERATE) ? 15-(state.get(NOMS)*2) : 0;
+	}
 
-    @Override
+	@Override
     @OnlyIn(Dist.CLIENT)
     public void registerModel() {
         ModelLoader.setCustomModelResourceLocation(TFItems.experiment_115, 0, new ModelResourceLocation(TwilightForestMod.ID + ":experiment_115", "inventory"));
@@ -206,6 +208,7 @@ public class BlockTFExperiment115 extends Block implements ModelRegisterCallback
         ModelLoader.setCustomModelResourceLocation(TFItems.experiment_115, 2, new ModelResourceLocation(TwilightForestMod.ID + ":experiment_115", "inventory_think"));
 
         // Sorry, just gonna tack this here for now. The Shielding Scepter doesn't allow me to tack on another model like I would here. I'd like to not make a placeholder item either >.>
+        // TODO 1.14: Well...we may need a placeholder item
         ModelLoader.setCustomModelResourceLocation(TFItems.experiment_115, 3, new ModelResourceLocation(TwilightForestMod.ID + ":shield", "inventory"));
     }
 }

@@ -15,7 +15,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 
-public class BlockTFHugeWaterLily extends BlockLilyPad implements ModelRegisterCallback {
+public class BlockTFHugeWaterLily extends LilyPadBlock {
 
 	private static final AxisAlignedBB AABB = new AxisAlignedBB(0.1, 0.1, 0.1, 0.9, 0.9, 0.9);
 
@@ -50,11 +50,5 @@ public class BlockTFHugeWaterLily extends BlockLilyPad implements ModelRegisterC
 	@Override
 	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT;
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	public void registerModel() {
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
 	}
 }

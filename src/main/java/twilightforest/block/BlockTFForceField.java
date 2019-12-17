@@ -13,6 +13,8 @@ import net.minecraft.item.Items;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.EnumProperty;
+import net.minecraft.state.IProperty;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
@@ -28,10 +30,10 @@ import twilightforest.item.TFItems;
 import java.util.List;
 import java.util.Random;
 
-public class BlockTFForceField extends BlockTFConnectableRotatedPillar implements ModelRegisterCallback {
+public class BlockTFForceField extends BlockTFConnectableRotatedPillar {
 
 	public static final List<DyeColor> VALID_COLORS = ImmutableList.of(DyeColor.PURPLE, DyeColor.PINK, DyeColor.ORANGE, DyeColor.GREEN, DyeColor.BLUE);
-	public static final IProperty<DyeColor> COLOR = PropertyEnum.create("color", DyeColor.class, VALID_COLORS);
+	public static final EnumProperty<DyeColor> COLOR = EnumProperty.create("color", DyeColor.class, VALID_COLORS);
 
 	BlockTFForceField() {
 		super(Material.BARRIER, 2);
@@ -39,17 +41,7 @@ public class BlockTFForceField extends BlockTFConnectableRotatedPillar implement
 		this.setResistance(Float.MAX_VALUE);
 		this.setLightLevel(2F / 15F);
 		this.setCreativeTab(TFItems.creativeTab);
-		this.setDefaultState(this.getDefaultState().withProperty(COLOR, DyeColor.PURPLE));
-	}
-
-	@Override
-	public int getMetaFromState(BlockState state) {
-		return VALID_COLORS.indexOf(state.getValue(COLOR)) + (((state.getValue(AXIS).ordinal() + 1) % 3) * 5);
-	}
-
-	@Override
-	public BlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(COLOR, VALID_COLORS.get(meta % 5)).withProperty(AXIS, Direction.Axis.values()[((meta / 5) + 1) % 3]);
+		this.setDefaultState(this.getDefaultState().with(COLOR, DyeColor.PURPLE));
 	}
 
 	@Override

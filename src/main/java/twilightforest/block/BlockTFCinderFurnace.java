@@ -17,6 +17,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -25,9 +26,10 @@ import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 import twilightforest.tileentity.TileEntityTFCinderFurnace;
 
+import javax.annotation.Nullable;
 import java.util.Random;
 
-public class BlockTFCinderFurnace extends Block implements ModelRegisterCallback {
+public class BlockTFCinderFurnace extends Block {
 
 	private static boolean keepInventory;
 	private final boolean isBurning;
@@ -45,7 +47,7 @@ public class BlockTFCinderFurnace extends Block implements ModelRegisterCallback
 			this.setCreativeTab(TFItems.creativeTab);
 		}
 
-		this.setDefaultState(blockState.getBaseState().withProperty(BlockFurnace.FACING, Direction.NORTH));
+		this.setDefaultState(stateContainer.getBaseState().with(BlockFurnace.FACING, Direction.NORTH));
 	}
 
 	@Override
@@ -61,11 +63,12 @@ public class BlockTFCinderFurnace extends Block implements ModelRegisterCallback
 	@Override
 	@Deprecated
 	public BlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(BlockFurnace.FACING, Direction.byHorizontalIndex(meta));
+		return getDefaultState().with(BlockFurnace.FACING, Direction.byHorizontalIndex(meta));
 	}
 
+	@Nullable
 	@Override
-	public TileEntity createTileEntity(World world, BlockState state) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new TileEntityTFCinderFurnace();
 	}
 
@@ -91,9 +94,9 @@ public class BlockTFCinderFurnace extends Block implements ModelRegisterCallback
 		keepInventory = true;
 
 		if (active) {
-			worldIn.setBlockState(pos, TFBlocks.cinder_furnace_lit.getDefaultState().withProperty(BlockFurnace.FACING, iblockstate.getValue(BlockFurnace.FACING)), 3);
+			worldIn.setBlockState(pos, TFBlocks.cinder_furnace_lit.getDefaultState().with(BlockFurnace.FACING, iblockstate.getValue(BlockFurnace.FACING)), 3);
 		} else {
-			worldIn.setBlockState(pos, TFBlocks.cinder_furnace.getDefaultState().withProperty(BlockFurnace.FACING, iblockstate.getValue(BlockFurnace.FACING)), 3);
+			worldIn.setBlockState(pos, TFBlocks.cinder_furnace.getDefaultState().with(BlockFurnace.FACING, iblockstate.getValue(BlockFurnace.FACING)), 3);
 		}
 
 		keepInventory = false;
@@ -126,21 +129,13 @@ public class BlockTFCinderFurnace extends Block implements ModelRegisterCallback
 		super.breakBlock(world, pos, state);
 	}
 
-	@Override
-	public Item getItemDropped(BlockState state, Random rand, int fortune) {
-		return Item.getItemFromBlock(TFBlocks.cinder_furnace);
-	}
-
-	@Override
-	public ItemStack getPickBlock(BlockState state, RayTraceResult target, World world, BlockPos pos, PlayerEntity player) {
-		return new ItemStack(Item.getItemFromBlock(TFBlocks.cinder_furnace));
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	public void registerModel() {
-		if (!isBurning) {
-			ModelRegisterCallback.super.registerModel();
-		}
-	}
+//	@Override
+//	public Item getItemDropped(BlockState state, Random rand, int fortune) {
+//		return Item.getItemFromBlock(TFBlocks.cinder_furnace);
+//	}
+//
+//	@Override
+//	public ItemStack getPickBlock(BlockState state, RayTraceResult target, World world, BlockPos pos, PlayerEntity player) {
+//		return new ItemStack(Item.getItemFromBlock(TFBlocks.cinder_furnace));
+//	}
 }

@@ -23,13 +23,14 @@ import twilightforest.enums.StructureVariant;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 
-public class BlockTFMiniatureStructure extends Block implements ModelRegisterCallback {
+public class BlockTFMiniatureStructure extends Block {
 
+	//TODO 1.14: Flatten
     public static final IProperty<StructureVariant> VARIANT = PropertyEnum.create("variant", StructureVariant.class);
 
     public BlockTFMiniatureStructure() {
         super(Material.BARRIER);
-        this.setDefaultState(blockState.getBaseState().withProperty(VARIANT, StructureVariant.TWILIGHT_PORTAL));
+        this.setDefaultState(blockState.getBaseState().with(VARIANT, StructureVariant.TWILIGHT_PORTAL));
     }
 
     @Override
@@ -62,27 +63,12 @@ public class BlockTFMiniatureStructure extends Block implements ModelRegisterCal
     @Override
     @Deprecated
     public BlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(VARIANT, StructureVariant.values()[meta]);
-    }
-
-    @Override
-    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
-        for (StructureVariant variation : StructureVariant.values() ) {
-            list.add(new ItemStack(this, 1, variation.ordinal()));
-        }
+        return getDefaultState().with(VARIANT, StructureVariant.values()[meta]);
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
     public BlockRenderLayer getRenderLayer() {
         return BlockRenderLayer.CUTOUT;
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public void registerModel() {
-        for (StructureVariant variation : StructureVariant.values()) {
-            ModelLoader.setCustomModelResourceLocation( TFItems.miniature_structure, variation.ordinal(), new ModelResourceLocation(TwilightForestMod.ID + ":miniature_structure", "inventory_"+variation.getName()));
-        }
     }
 }

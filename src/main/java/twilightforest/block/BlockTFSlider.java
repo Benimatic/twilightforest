@@ -1,6 +1,7 @@
 package twilightforest.block;
 
 import net.minecraft.block.BlockRotatedPillar;
+import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -14,6 +15,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.IntegerProperty;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
@@ -31,9 +33,9 @@ import twilightforest.item.TFItems;
 
 import java.util.Random;
 
-public class BlockTFSlider extends BlockRotatedPillar implements ModelRegisterCallback {
+public class BlockTFSlider extends RotatedPillarBlock {
 
-	public static final IProperty<Integer> DELAY = PropertyInteger.create("delay", 0, 3);
+	public static final IntegerProperty DELAY = IntegerProperty.create("delay", 0, 3);
 
 	private static final int TICK_TIME = 80;
 	private static final int OFFSET_TIME = 20;
@@ -44,11 +46,9 @@ public class BlockTFSlider extends BlockRotatedPillar implements ModelRegisterCa
 	private static final AxisAlignedBB X_BB = new AxisAlignedBB(0, 0.3125, 0.3125, 1F, 0.6875, 0.6875);
 
 	protected BlockTFSlider() {
-		super(Material.IRON, MaterialColor.DIRT);
-		this.setCreativeTab(TFItems.creativeTab);
-		this.setHardness(2.0F);
-		this.setResistance(10.0F);
-		this.setDefaultState(blockState.getBaseState().withProperty(AXIS, Direction.Axis.Y).withProperty(DELAY, 0));
+		super(Properties.create(Material.IRON, MaterialColor.DIRT).hardnessAndResistance(2.0F, 10.0F));
+		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
+		this.setDefaultState(stateContainer.getBaseState().with(AXIS, Direction.Axis.Y).with(DELAY, 0));
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class BlockTFSlider extends BlockRotatedPillar implements ModelRegisterCa
 
 	@Override
 	public BlockState getStateFromMeta(int meta) {
-		return super.getStateFromMeta(meta).withProperty(DELAY, meta & 0b11);
+		return super.getStateFromMeta(meta).with(DELAY, meta & 0b11);
 	}
 
 	@Override
@@ -154,14 +154,6 @@ public class BlockTFSlider extends BlockRotatedPillar implements ModelRegisterCa
 	}
 
 	@Override
-	public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> list) {
-		list.add(new ItemStack(this, 1, 0));
-		list.add(new ItemStack(this, 1, 1));
-		list.add(new ItemStack(this, 1, 2));
-		list.add(new ItemStack(this, 1, 3));
-	}
-
-	@Override
 	public void onEntityCollision(World world, BlockPos pos, BlockState state, Entity entity) {
 		entity.attackEntityFrom(DamageSource.GENERIC, BLOCK_DAMAGE);
 		if (entity instanceof EntityLivingBase) {
@@ -169,16 +161,6 @@ public class BlockTFSlider extends BlockRotatedPillar implements ModelRegisterCa
 			double kz = (pos.getZ() + 0.5 - entity.posZ) * 2.0;
 
 			((EntityLivingBase) entity).knockBack(null, 2, kx, kz);
-		}
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	public void registerModel() {
-		IStateMapper stateMapper = new StateMap.Builder().ignore(DELAY).build();
-		ModelLoader.setCustomStateMapper(this, stateMapper);
-		for (int i = 0; i < 4; i++) {
-			ModelUtils.registerToState(this, i, getDefaultState(), stateMapper);
 		}
 	}
 }

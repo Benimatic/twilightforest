@@ -1,8 +1,9 @@
 package twilightforest.block;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockChest;
+import net.minecraft.block.ChestBlock;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.LogBlock;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.block.Blocks;
@@ -14,12 +15,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.IChunk;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import twilightforest.enums.MagicWoodVariant;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.item.ItemTFOreMagnet;
@@ -31,31 +36,35 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
+public class BlockTFMagicLogSpecial extends LogBlock {
 
-	protected BlockTFMagicLogSpecial() {
+	private final MagicWoodVariant magicWoodVariant;
+
+	protected BlockTFMagicLogSpecial(MagicWoodVariant variant) {
 		this.setCreativeTab(TFItems.creativeTab);
+
+		magicWoodVariant = variant;
 	}
 
 	@Override
-	public int tickRate(World world) {
+	public int tickRate(IWorldReader world) {
 		return 20;
 	}
 
-	@Override
-	public void onBlockAdded(World world, BlockPos pos, BlockState state) {
-		world.scheduleUpdate(pos, this, this.tickRate(world));
-	}
+//	@Override
+//	public void onBlockAdded(World world, BlockPos pos, BlockState state) {
+//		world.scheduleUpdate(pos, this, this.tickRate(world));
+//	}
 
-	@Override
-	public Item getItemDropped(BlockState state, Random random, int fortune) {
-		return Item.getItemFromBlock(TFBlocks.magic_log);
-	}
-
-	@Override
-	public int damageDropped(BlockState state) {
-		return state.getValue(VARIANT).ordinal();
-	}
+//	@Override
+//	public Item getItemDropped(BlockState state, Random random, int fortune) {
+//		return Item.getItemFromBlock(TFBlocks.magic_log);
+//	}
+//
+//	@Override
+//	public int damageDropped(BlockState state) {
+//		return state.getValue(VARIANT).ordinal();
+//	}
 
 	@Override
 	public void updateTick(World world, BlockPos pos, BlockState state, Random rand) {
@@ -85,11 +94,11 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, BlockState state, PlayerEntity player, Hand hand, Direction side, float hitX, float hitY, float hitZ) {
 		if (state.getValue(LOG_AXIS) != EnumAxis.NONE) {
-			world.setBlockState(pos, state.withProperty(LOG_AXIS, EnumAxis.NONE));
+			world.setBlockState(pos, state.with(LOG_AXIS, EnumAxis.NONE));
 			world.scheduleUpdate(pos, this, this.tickRate(world));
 			return true;
 		} else if (state.getValue(LOG_AXIS) == EnumAxis.NONE) {
-			world.setBlockState(pos, state.withProperty(LOG_AXIS, EnumAxis.Y));
+			world.setBlockState(pos, state.with(LOG_AXIS, EnumAxis.Y));
 			return true;
 		}
 
@@ -138,10 +147,10 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 			Biome biomeAt = world.getBiome(dPos);
 			if (biomeAt == targetBiome) continue;
 
-			Chunk chunkAt = world.getChunk(dPos);
-			chunkAt.getBiomeArray()[(dPos.getZ() & 15) << 4 | (dPos.getX() & 15)] = (byte) Biome.getIdForBiome(targetBiome);
+			IChunk chunkAt = world.getChunk(dPos);
+			chunkAt.getBiomes()[(dPos.getZ() & 15) << 4 | (dPos.getX() & 15)] = (byte) Biome.getIdForBiome(targetBiome);
 
-			if (world instanceof WorldServer) {
+			if (world instanceof ServerWorld) {
 				sendChangedBiome(world, dPos, targetBiome);
 			}
 			break;
@@ -169,7 +178,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 		int moved = ItemTFOreMagnet.doMagnet(world, pos, dPos);
 
 		if (moved > 0) {
-			world.playSound(null, pos, SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundCategory.BLOCKS, 0.1F, 1.0F);
+			world.playSound(null, pos, SoundEvents.ENTITY_ENDERMAN_TELEPORT, SoundCategory.BLOCKS, 0.1F, 1.0F);
 		}
 	}
 
@@ -187,8 +196,8 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 			IInventory chestInventory = null, teInventory = null;
 
 			Block block = world.getBlockState(iterPos).getBlock();
-			if (block instanceof BlockChest) {
-				chestInventory = ((BlockChest) block).getContainer(world, iterPos, true);
+			if (block instanceof ChestBlock) {
+				chestInventory = ((ChestBlock) block).getContainer(world, iterPos, true);
 			}
 
 			TileEntity te = world.getTileEntity(iterPos);
@@ -306,7 +315,7 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 	}
 
 	private boolean isSortingMatch(ItemStack beingSorted, ItemStack currentItem) {
-		return beingSorted.getItem().getCreativeTab() == currentItem.getItem().getCreativeTab();
+		return beingSorted.getItem().getGroup() == currentItem.getItem().getGroup();
 	}
 
 	/**
@@ -342,14 +351,6 @@ public class BlockTFMagicLogSpecial extends BlockTFMagicLog {
 	@Deprecated
 	public int getLightValue(BlockState state) {
 		return 15;
-	}
-
-	@Override
-	public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> list) {
-		list.add(new ItemStack(this, 1, 0));
-		list.add(new ItemStack(this, 1, 1));
-		list.add(new ItemStack(this, 1, 2));
-		list.add(new ItemStack(this, 1, 3));
 	}
 
 	@Override

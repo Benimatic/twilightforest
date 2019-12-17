@@ -35,42 +35,27 @@ public final class RegisterBlockEvent {
 	public static void onRegisterBlocks(RegistryEvent.Register<Block> event) {
 		BlockRegistryHelper blocks = new BlockRegistryHelper(event.getRegistry());
 
-		blocks.register("twilight_log", "Log", new BlockTFLog());
-		blocks.register("root", "Roots", new BlockTFRoots());
-		blocks.register("twilight_leaves", "Leaves", new BlockTFLeaves());
 		blocks.register("firefly", "Firefly", new BlockTFFirefly());
 		blocks.register("cicada", "Cicada", new BlockTFCicada());
 		blocks.register("twilight_portal", "Portal", new BlockTFPortal());
-		blocks.register("maze_stone", "Mazestone", new BlockTFMazestone());
 		blocks.register("hedge", "Hedge", new BlockTFHedge());
-		blocks.register("boss_spawner", "BossSpawner", new BlockTFBossSpawner().setBlockUnbreakable());
 		blocks.register("firefly_jar", "FireflyJar", new BlockTFFireflyJar());
-		blocks.register("twilight_plant", "Plant", new BlockTFPlant());
 		blocks.register("uncrafting_table", "UncraftingTable", new BlockTFUncraftingTable());
 		blocks.register("fire_jet", "FireJet", new BlockTFFireJet());
 		blocks.register("naga_stone", "Nagastone", new BlockTFNagastone());
-		blocks.register("twilight_sapling", "Sapling", new BlockTFSapling());
 		blocks.register("moonworm", "Moonworm", new BlockTFMoonworm());
-		blocks.register("magic_log", "MagicLog", new BlockTFMagicLog());
-		blocks.register("magic_leaves", "MagicLeaves", new BlockTFMagicLeaves());
 		blocks.register("magic_log_core", "MagicLogSpecial", new BlockTFMagicLogSpecial());
-		blocks.register("tower_wood", "TowerStone", new BlockTFTowerWood());
 		blocks.register("tower_device", "TowerDevice", new BlockTFTowerDevice());
 		blocks.register("tower_translucent", "TowerTranslucent", new BlockTFTowerTranslucent());
 		blocks.register("trophy", "Trophy", new BlockTFTrophy());
 		blocks.register("stronghold_shield", "Shield", new BlockTFShield());
 		blocks.register("trophy_pedestal", "TrophyPedestal", new BlockTFTrophyPedestal());
 		blocks.register("aurora_block", "AuroraBrick", new BlockTFAuroraBrick());
-		blocks.register("underbrick", "UnderBrick", new BlockTFUnderBrick());
 		blocks.register("thorns", "Thorns", new BlockTFThorns());
 		blocks.register("burnt_thorns", "BurntThorns", new BlockTFBurntThorns());
 		blocks.register("thorn_rose", "ThornRose", new BlockTFThornRose());
-		blocks.register("twilight_leaves_3", "Leaves3", new BlockTFLeaves3());
-		blocks.register("deadrock", "Deadrock", new BlockTFDeadrock());
 		blocks.register("dark_leaves", "DarkLeaves", new BlockTFDarkLeaves());
 		blocks.register("aurora_pillar", "AuroraPillar", new BlockTFPillar(Material.PACKED_ICE).setHardness(2.0F).setResistance(10.0F));
-		blocks.register("aurora_slab", "AuroraSlab", new BlockTFAuroraSlab(false));
-		blocks.register("double_aurora_slab", "AuroraDoubleSlab", new BlockTFAuroraSlab(true));
 		blocks.register("trollsteinn", "TrollSteinn", new BlockTFTrollSteinn());
 		blocks.register("wispy_cloud", "WispyCloud", new BlockTFWispyCloud());
 		blocks.register("fluffy_cloud", "FluffyCloud", new BlockTFFluffyCloud());
@@ -90,14 +75,10 @@ public final class RegisterBlockEvent {
 		blocks.register("slider", "Slider", new BlockTFSlider());
 		Block castleBrick = new BlockTFCastleBlock();
 		BlockState castleState = castleBrick.getDefaultState();
-		blocks.register("castle_brick", "CastleBrick", castleBrick);
 		blocks.register("castle_stairs_brick", "CastleStairsBrick", new BlockTFStairs(castleState));
-		blocks.register("castle_stairs_worn", "CastleStairsWorn", new BlockTFStairs(castleState.withProperty(BlockTFCastleBlock.VARIANT, CastleBrickVariant.WORN)));
-		blocks.register("castle_stairs_cracked", "CastleStairsCracked", new BlockTFStairs(castleState.withProperty(BlockTFCastleBlock.VARIANT, CastleBrickVariant.CRACKED)));
-		blocks.register("castle_stairs_mossy", "CastleStairsMossy", new BlockTFStairs(castleState.withProperty(BlockTFCastleBlock.VARIANT, CastleBrickVariant.MOSSY)));
-		Block castlePillar = new BlockTFCastlePillar();
-		blocks.register("castle_pillar", "CastlePillar", castlePillar);
-		blocks.register("castle_stairs", "CastleStairs", new BlockTFCastleStairs(castlePillar.getDefaultState()));
+		blocks.register("castle_stairs_worn", "CastleStairsWorn", new BlockTFStairs(castleState.with(BlockTFCastleBlock.VARIANT, CastleBrickVariant.WORN)));
+		blocks.register("castle_stairs_cracked", "CastleStairsCracked", new BlockTFStairs(castleState.with(BlockTFCastleBlock.VARIANT, CastleBrickVariant.CRACKED)));
+		blocks.register("castle_stairs_mossy", "CastleStairsMossy", new BlockTFStairs(castleState.with(BlockTFCastleBlock.VARIANT, CastleBrickVariant.MOSSY)));
 		blocks.register("castle_rune_brick", "CastleMagic", new BlockTFCastleMagic());
 		blocks.register("force_field", "ForceField", new BlockTFForceField());
 		blocks.register("cinder_furnace", "CinderFurnaceIdle", new BlockTFCinderFurnace(false));
@@ -108,7 +89,6 @@ public final class RegisterBlockEvent {
 		blocks.register("castle_unlock", "CastleUnlock", new BlockTFCastleUnlock());
 		blocks.register("experiment_115", "experiment115", new BlockTFExperiment115().setHardness(0.5F));
 		blocks.register("miniature_structure", "MiniatureStructure", new BlockTFMiniatureStructure().setHardness(0.75F));
-		blocks.register("block_storage", "BlockOfStorage", new BlockTFCompressed());
 		blocks.register("lapis_block", "BlockOfLapisTF", new BlockTFLapisBlock());
 		blocks.register("spiral_bricks", "SpiralBricks", new BlockTFSpiralBrick());
 		Block etchedNagastone = new BlockTFNagastoneEtched().setHardness(1.5F).setResistance(10.0F);
@@ -126,51 +106,14 @@ public final class RegisterBlockEvent {
 		blocks.register("auroralized_glass", "AuroralizedGlass", new BlockTFAuroralizedGlass());
 		blocks.register("iron_ladder", "IronLadder", new BlockTFLadderBars().setSoundType(SoundType.METAL).setHardness(5.0F).setResistance(10.0F));
 
-		registerWoodVariants(blocks, BlockTFLog.VARIANT, WoodVariant.values());
-		registerWoodVariants(blocks, BlockTFMagicLog.VARIANT, MagicWoodVariant.values());
-
 		blocks.register("terrorcotta_circle", "TerrorCottaCircle", new BlockTFHorizontal(Material.ROCK, MaterialColor.SAND).setSoundType(SoundType.STONE).setHardness(1.7F));
 		blocks.register("terrorcotta_diagonal", "TerrorCottaDiagonal", new BlockTFDiagonal(Material.ROCK, MaterialColor.SAND).setSoundType(SoundType.STONE).setHardness(1.7F));
 		blocks.register("stone_twist", "StonePillar", new BlockTFPillar(Material.ROCK).setHardness(1.5F).setResistance(10.0F));
 		blocks.register("stone_twist_thin", "StonePillarThin", new BlockTFWallPillar(Material.ROCK, 12, 16).setHardness(1.5F).setResistance(10.0F));
 
-		registerFluidBlock(blocks, moltenFiery);
-		registerFluidBlock(blocks, moltenKnightmetal);
-		registerFluidBlock("fiery_essence", blocks, essenceFiery);
-	}
-
-	private static <T extends Enum<T> & IStringSerializable & IMapColorSupplier> void registerWoodVariants(BlockRegistryHelper blocks, final IProperty<T> key, final T[] types) {
-		for (T woodType : types) {
-			String woodName = woodType.getName();
-			String woodNameCapitalized;
-
-			if ("oak".equals(woodName)) { // Not really going to rename that enum entry just yet
-				woodName = "twilight_oak";
-				woodNameCapitalized = "TwilightOak";
-			} else {
-				woodNameCapitalized = woodName.substring(0, 1).toUpperCase() + woodName.substring(1);
-			}
-
-			// Not going to initialize these two over 60 times
-			final String inventory = "inventory";
-			final IProperty[] noProperty = new IProperty[0];
-
-			// Make special property key that allows ONLY one value because slabs are special level of stupid
-			final PropertyEnum<T> restrictedKey = PropertyEnum.create("variant", key.getValueClass(), input -> input == woodType);
-
-			Block planks = blocks.register(woodName + "_planks", woodNameCapitalized + "Planks", new BlockTF(Material.WOOD, woodType.supplyMapColor()) { @OnlyIn(Dist.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }}).setSoundType(SoundType.WOOD).setHardness(2.0F).setResistance(5.0F);
-			blocks.register(woodName + "_stairs"    , woodNameCapitalized + "Stairs"  , new BlockTFStairs(planks.getDefaultState()) { @OnlyIn(Dist.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }}); // No hardness/soundType, that's derived from BlockState in
-			Block singleSlab = blocks.register(woodName + "_slab", woodNameCapitalized + "Slab", new BlockTFSlab<T>(Material.WOOD, woodType.supplyMapColor(), woodType) { @Override public boolean isDouble() { return false; } @Override protected Block getSingle() { return this; } @Override public IProperty<T> getVariantProperty() { return restrictedKey; } @OnlyIn(Dist.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, restrictedKey); }}).setSoundType(SoundType.WOOD).setHardness(2.0F).setResistance(5.0F);
-			blocks.register(woodName + "_doubleslab", woodNameCapitalized + "Slab"    , new BlockTFSlab<T>(Material.WOOD, woodType.supplyMapColor(), woodType) { @Override public boolean isDouble() { return true; } @Override protected Block getSingle() { return singleSlab; } @Override public IProperty<T> getVariantProperty() { return restrictedKey; } @OnlyIn(Dist.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, restrictedKey); }}).setSoundType(SoundType.WOOD).setHardness(2.0F).setResistance(5.0F);
-			blocks.register(woodName + "_button"    , woodNameCapitalized + "Button"  , new BlockTFButtonWood() { @OnlyIn(Dist.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }}).setSoundType(SoundType.WOOD).setHardness(0.5F);
-			blocks.register(woodName + "_door"      , woodNameCapitalized + "Door"    , new BlockTFDoor(Material.WOOD, woodType.supplyMapColor(), new ResourceLocation(TwilightForestMod.ID, woodName + "_door")) { @OnlyIn(Dist.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, BlockTFDoor.POWERED); } { setSoundType(SoundType.WOOD); }}).setHardness(3.0F);
-			blocks.register(woodName + "_trapdoor"  , woodNameCapitalized + "TrapDoor", new BlockTFTrapDoor(Material.WOOD, woodType.supplyMapColor()) { @OnlyIn(Dist.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }}).setSoundType(SoundType.WOOD).setHardness(3.0F);
-			blocks.register(woodName + "_fence"     , woodNameCapitalized + "Fence"   , new BlockTFFence(Material.WOOD, woodType.supplyMapColor()) { @OnlyIn(Dist.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }}).setSoundType(SoundType.WOOD).setHardness(2.0F).setResistance(5.0F);
-			blocks.register(woodName + "_gate"      , woodNameCapitalized + "Gate"    , new BlockTFFenceGate(woodType.supplyPlankColor()) { @OnlyIn(Dist.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, BlockFenceGate.POWERED); }}).setSoundType(SoundType.WOOD).setHardness(2.0F).setResistance(5.0F);
-			blocks.register(woodName + "_plate"     , woodNameCapitalized + "Plate"   , new BlockTFPressurePlate(Material.WOOD, woodType.supplyMapColor(), BlockPressurePlate.Sensitivity.EVERYTHING) { @OnlyIn(Dist.CLIENT) @Override public void registerModel() { ModelUtils.registerIncludingItemModels(this, inventory, noProperty); }}).setSoundType(SoundType.WOOD).setHardness(0.5F);
-
-			// TODO chests? boats?
-		}
+//		registerFluidBlock(blocks, moltenFiery);
+//		registerFluidBlock(blocks, moltenKnightmetal);
+//		registerFluidBlock("fiery_essence", blocks, essenceFiery);
 	}
 
 	public static List<ModelRegisterCallback> getBlockModels() {
@@ -205,38 +148,39 @@ public final class RegisterBlockEvent {
 	}
 
 	// our internal fluid instances
-	public static final Fluid moltenFiery;
-	public static final Fluid moltenKnightmetal;
-	public static final Fluid essenceFiery;
-
-	public static final ResourceLocation moltenFieryStill = TwilightForestMod.prefix("blocks/molten_fiery_still");
-	public static final ResourceLocation moltenFieryFlow  = TwilightForestMod.prefix("blocks/molten_fiery_flow");
-
-	public static final ResourceLocation moltenKnightmetalStill = TwilightForestMod.prefix("blocks/molten_knightmetal_still");
-	public static final ResourceLocation moltenKnightmetalFlow  = TwilightForestMod.prefix("blocks/molten_knightmetal_flow");
-
-	public static final ResourceLocation essenceFieryStill = TwilightForestMod.prefix("blocks/fluid_fiery_still");
-	public static final ResourceLocation essenceFieryFlow  = TwilightForestMod.prefix("blocks/fluid_fiery_flow");
-
-	static {
-		moltenFiery       = registerFluid(new Fluid("fierymetal" , moltenFieryStill, moltenFieryFlow).setTemperature(1000).setLuminosity(15));
-		moltenKnightmetal = registerFluid(new Fluid("knightmetal", moltenKnightmetalStill, moltenKnightmetalFlow).setTemperature(1000).setLuminosity(15));
-		essenceFiery      = registerFluid(new Fluid("fiery_essence", essenceFieryStill, essenceFieryFlow).setTemperature(1000));
-	}
-
-	private static Fluid registerFluid(Fluid fluid) {
-		fluid.setUnlocalizedName(fluid.getName());
-		FluidRegistry.registerFluid(fluid);
-		FluidRegistry.addBucketForFluid(fluid);
-		return fluid;
-	}
-
-	private static void registerFluidBlock(BlockRegistryHelper blocks, Fluid fluid) {
-		registerFluidBlock("molten_" + fluid.getName(), blocks, fluid);
-	}
-
-	private static void registerFluidBlock(String registryName, BlockRegistryHelper blocks, Fluid fluid) {
-		Block block = new BlockTFFluid(fluid, Material.LAVA).setTranslationKey(TwilightForestMod.ID + "." + fluid.getName()).setLightLevel(1.0F);
-		blocks.register(registryName, block);
-	}
+	// TODO: Not necessary as TiCon2 does not exist on 1.14 yet
+//	public static final Fluid moltenFiery;
+//	public static final Fluid moltenKnightmetal;
+//	public static final Fluid essenceFiery;
+//
+//	public static final ResourceLocation moltenFieryStill = TwilightForestMod.prefix("blocks/molten_fiery_still");
+//	public static final ResourceLocation moltenFieryFlow  = TwilightForestMod.prefix("blocks/molten_fiery_flow");
+//
+//	public static final ResourceLocation moltenKnightmetalStill = TwilightForestMod.prefix("blocks/molten_knightmetal_still");
+//	public static final ResourceLocation moltenKnightmetalFlow  = TwilightForestMod.prefix("blocks/molten_knightmetal_flow");
+//
+//	public static final ResourceLocation essenceFieryStill = TwilightForestMod.prefix("blocks/fluid_fiery_still");
+//	public static final ResourceLocation essenceFieryFlow  = TwilightForestMod.prefix("blocks/fluid_fiery_flow");
+//
+//	static {
+//		moltenFiery       = registerFluid(new Fluid("fierymetal" , moltenFieryStill, moltenFieryFlow).setTemperature(1000).setLuminosity(15));
+//		moltenKnightmetal = registerFluid(new Fluid("knightmetal", moltenKnightmetalStill, moltenKnightmetalFlow).setTemperature(1000).setLuminosity(15));
+//		essenceFiery      = registerFluid(new Fluid("fiery_essence", essenceFieryStill, essenceFieryFlow).setTemperature(1000));
+//	}
+//
+//	private static Fluid registerFluid(Fluid fluid) {
+//		fluid.setUnlocalizedName(fluid.getName());
+//		FluidRegistry.registerFluid(fluid);
+//		FluidRegistry.addBucketForFluid(fluid);
+//		return fluid;
+//	}
+//
+//	private static void registerFluidBlock(BlockRegistryHelper blocks, Fluid fluid) {
+//		registerFluidBlock("molten_" + fluid.getName(), blocks, fluid);
+//	}
+//
+//	private static void registerFluidBlock(String registryName, BlockRegistryHelper blocks, Fluid fluid) {
+//		Block block = new BlockTFFluid(fluid, Material.LAVA).setTranslationKey(TwilightForestMod.ID + "." + fluid.getName()).setLightLevel(1.0F);
+//		blocks.register(registryName, block);
+//	}
 }

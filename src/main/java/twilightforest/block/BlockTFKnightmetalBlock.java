@@ -17,17 +17,14 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 
-public class BlockTFKnightmetalBlock extends Block implements ModelRegisterCallback {
+public class BlockTFKnightmetalBlock extends Block {
 
 	private static final AxisAlignedBB AABB = new AxisAlignedBB(1 / 16F, 1 / 16F, 1 / 16F, 15 / 16F, 15 / 16F, 15 / 16F);
 	private static final float BLOCK_DAMAGE = 4;
 
 	public BlockTFKnightmetalBlock() {
-		super(Material.IRON);
-		this.setHardness(5.0F);
-		this.setResistance(41.0F);
-		this.setSoundType(SoundType.METAL);
-		this.setCreativeTab(TFItems.creativeTab);
+		super(Properties.create(Material.IRON).hardnessAndResistance(5.0F, 41.0F).sound(SoundType.METAL));
+		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
 	}
 
 	@Override

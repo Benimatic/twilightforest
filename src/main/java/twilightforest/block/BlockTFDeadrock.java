@@ -17,18 +17,15 @@ import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
 
-public class BlockTFDeadrock extends Block implements ModelRegisterCallback {
+public class BlockTFDeadrock extends Block {
 
+	//TODO 1.14: Flatten
 	public static final IProperty<DeadrockVariant> VARIANT = PropertyEnum.create("variant", DeadrockVariant.class);
 
 	protected BlockTFDeadrock() {
-		super(Material.ROCK);
-		this.setHardness(100F);
-		this.setResistance(6000000.0F);
-		this.setSoundType(SoundType.STONE);
-		this.disableStats();
-		this.setCreativeTab(TFItems.creativeTab);
-		this.setDefaultState(blockState.getBaseState().withProperty(VARIANT, DeadrockVariant.SURFACE));
+		super(Properties.create(Material.ROCK).hardnessAndResistance(100.0F, 6000000.0F).sound(SoundType.STONE));
+		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
+		this.setDefaultState(blockState.getBaseState().with(VARIANT, DeadrockVariant.SURFACE));
 	}
 
 	@Override
@@ -44,24 +41,11 @@ public class BlockTFDeadrock extends Block implements ModelRegisterCallback {
 	@Override
 	@Deprecated
 	public BlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(VARIANT, DeadrockVariant.values()[meta]);
-	}
-
-	@Override
-	public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> list) {
-		for (DeadrockVariant variant : DeadrockVariant.values()) {
-			list.add(new ItemStack(this, 1, variant.ordinal()));
-		}
+		return getDefaultState().with(VARIANT, DeadrockVariant.values()[meta]);
 	}
 
 	@Override
 	public int damageDropped(BlockState state) {
 		return getMetaFromState(state);
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	public void registerModel() {
-		ModelUtils.registerToStateSingleVariant(this, VARIANT);
 	}
 }

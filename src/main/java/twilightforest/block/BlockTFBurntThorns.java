@@ -5,11 +5,13 @@ import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -43,16 +45,16 @@ public class BlockTFBurntThorns extends BlockTFThorns {
 		return MaterialColor.STONE;
 	}
 
-	@Override
 	@Nullable
-	public PathNodeType getAiPathNodeType(BlockState state, IBlockAccess world, BlockPos pos) {
+	@Override
+	public PathNodeType getAiPathNodeType(BlockState state, IBlockReader world, BlockPos pos, @Nullable MobEntity entity) {
 		return null;
 	}
 
 	@Override
-	public void onEntityCollision(World world, BlockPos pos, BlockState state, Entity entity) {
+	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
 		// dissolve
-		if (!world.isRemote && entity instanceof EntityLivingBase) {
+		if (!world.isRemote && entity instanceof LivingEntity) {
 			world.destroyBlock(pos, false);
 		}
 	}
@@ -70,10 +72,4 @@ public class BlockTFBurntThorns extends BlockTFThorns {
 
 	@Override
 	public void breakBlock(World world, BlockPos pos, BlockState state) {}
-
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	public void registerModel() {
-		ModelUtils.registerToState(this, 0, this.getDefaultState());
-	}
 }

@@ -2,12 +2,14 @@ package twilightforest.block;
 
 import net.minecraft.block.BlockStairs;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.StairsBlock;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.BlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.EnumProperty;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.Mirror;
@@ -20,15 +22,15 @@ import twilightforest.item.TFItems;
 
 import java.util.Locale;
 
-public class BlockTFNagastoneStairs extends BlockStairs implements ModelRegisterCallback {
+public class BlockTFNagastoneStairs extends StairsBlock {
 
-	public static final IProperty<LeftRight> DIRECTION = PropertyEnum.create("direction", LeftRight.class);
+	public static final EnumProperty<LeftRight> DIRECTION = EnumProperty.create("direction", LeftRight.class);
 
 	BlockTFNagastoneStairs(BlockState state) {
 		super(state);
 		this.setSoundType(SoundType.STONE);
 		this.setCreativeTab(TFItems.creativeTab);
-		this.setDefaultState(this.getDefaultState().withProperty(DIRECTION, LeftRight.LEFT));
+		this.setDefaultState(this.getDefaultState().with(DIRECTION, LeftRight.LEFT));
 		this.useNeighborBrightness = true;
 	}
 
@@ -45,13 +47,7 @@ public class BlockTFNagastoneStairs extends BlockStairs implements ModelRegister
 	@Override
 	@Deprecated
 	public BlockState getStateFromMeta(int meta) {
-		return super.getStateFromMeta(meta & 0b0111).withProperty(DIRECTION, (meta & 0b1000) == 8 ? LeftRight.RIGHT : LeftRight.LEFT);
-	}
-
-	@Override
-	public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> list) {
-		list.add(new ItemStack(this, 1, 0));
-		list.add(new ItemStack(this, 1, 8));
+		return super.getStateFromMeta(meta & 0b0111).with(DIRECTION, (meta & 0b1000) == 8 ? LeftRight.RIGHT : LeftRight.LEFT);
 	}
 
 	@Override
@@ -61,14 +57,7 @@ public class BlockTFNagastoneStairs extends BlockStairs implements ModelRegister
 
 	@Override
 	public BlockState withMirror(BlockState state, Mirror mirrorIn) {
-		return super.withMirror(state, mirrorIn).withProperty(DIRECTION, state.getValue(DIRECTION) == LeftRight.LEFT ? LeftRight.RIGHT : LeftRight.LEFT);
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	public void registerModel() {
-		ModelUtils.registerToState(this, 0, getDefaultState().withProperty(FACING, Direction.EAST));
-		ModelUtils.registerToState(this, 8, getDefaultState().withProperty(FACING, Direction.EAST).withProperty(DIRECTION, LeftRight.RIGHT));
+		return super.withMirror(state, mirrorIn).with(DIRECTION, state.getValue(DIRECTION) == LeftRight.LEFT ? LeftRight.RIGHT : LeftRight.LEFT);
 	}
 
 	private enum LeftRight implements IStringSerializable {

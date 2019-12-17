@@ -36,17 +36,15 @@ import java.util.EnumSet;
 import java.util.Random;
 import java.util.Set;
 
-public class BlockTFFireJet extends Block implements ModelRegisterCallback {
+public class BlockTFFireJet extends Block {
 
+	//TODO 1.14: Flatten, but keep the Idle/Active states
 	public static final IProperty<FireJetVariant> VARIANT = PropertyEnum.create("variant", FireJetVariant.class);
 	private static final Set<FireJetVariant> ENCASED = EnumSet.of(FireJetVariant.ENCASED_JET_IDLE, FireJetVariant.ENCASED_JET_FLAME, FireJetVariant.ENCASED_SMOKER_OFF, FireJetVariant.ENCASED_SMOKER_ON, FireJetVariant.ENCASED_JET_POPPING);
 
 	protected BlockTFFireJet() {
-		super(Material.ROCK);
-		this.setHardness(1.5F);
-		this.setSoundType(SoundType.WOOD);
-		this.setCreativeTab(TFItems.creativeTab);
-		this.setTickRandomly(true);
+		super(Properties.create(Material.ROCK).hardnessAndResistance(1.5F, 0.0F).sound(SoundType.WOOD).tickRandomly());
+		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
 	}
 
 	@Override
@@ -60,31 +58,31 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 		final FireJetVariant[] values = FireJetVariant.values();
 		final FireJetVariant variant = values[meta % values.length];
 
-		return getDefaultState().withProperty(VARIANT, variant);
+		return getDefaultState().with(VARIANT, variant);
 	}
 
 	@Override
 	public int getMetaFromState(BlockState state) {
-		return state.getValue(VARIANT).ordinal();
+		return state.get(VARIANT).ordinal();
 	}
 
 	@Override
 	public int damageDropped(BlockState state) {
-		switch (state.getValue(VARIANT)) {
+		switch (state.get(VARIANT)) {
 			case ENCASED_SMOKER_ON:
-				state = state.withProperty(VARIANT, FireJetVariant.ENCASED_SMOKER_OFF);
+				state = state.with(VARIANT, FireJetVariant.ENCASED_SMOKER_OFF);
 				break;
 			case ENCASED_JET_POPPING:
-				state = state.withProperty(VARIANT, FireJetVariant.ENCASED_JET_IDLE);
+				state = state.with(VARIANT, FireJetVariant.ENCASED_JET_IDLE);
 				break;
 			case ENCASED_JET_FLAME:
-				state = state.withProperty(VARIANT, FireJetVariant.ENCASED_JET_IDLE);
+				state = state.with(VARIANT, FireJetVariant.ENCASED_JET_IDLE);
 				break;
 			case JET_POPPING:
-				state = state.withProperty(VARIANT, FireJetVariant.JET_IDLE);
+				state = state.with(VARIANT, FireJetVariant.JET_IDLE);
 				break;
 			case JET_FLAME:
-				state = state.withProperty(VARIANT, FireJetVariant.JET_IDLE);
+				state = state.with(VARIANT, FireJetVariant.JET_IDLE);
 				break;
 			default:
 				break;
@@ -95,17 +93,17 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 
 	@Override
 	public Material getMaterial(BlockState state) {
-		return ENCASED.contains(state.getValue(VARIANT)) ? Material.WOOD : Material.ROCK;
+		return ENCASED.contains(state.get(VARIANT)) ? Material.WOOD : Material.ROCK;
 	}
 
 	@Override
 	public MaterialColor getMaterialColor(BlockState state, IBlockAccess world, BlockPos pos) {
-		return ENCASED.contains(state.getValue(VARIANT)) ? MaterialColor.SAND : MaterialColor.GRASS;
+		return ENCASED.contains(state.get(VARIANT)) ? MaterialColor.SAND : MaterialColor.GRASS;
 	}
 
 	@Override
 	public int getLightValue(BlockState state) {
-		switch (state.getValue(VARIANT)) {
+		switch (state.get(VARIANT)) {
 			case JET_FLAME:
 			case ENCASED_JET_FLAME:
 				return 15;
@@ -118,7 +116,7 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 	@Nullable
 	@Override
 	public PathNodeType getAiPathNodeType(BlockState state, IBlockAccess world, BlockPos pos) {
-		switch (state.getValue(VARIANT)) {
+		switch (state.get(VARIANT)) {
 			case JET_POPPING:
 			case ENCASED_JET_POPPING:
 				return PathNodeType.DANGER_FIRE;
@@ -132,12 +130,12 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 
 	@Override
 	public void updateTick(World world, BlockPos pos, BlockState state, Random random) {
-		if (!world.isRemote && state.getValue(VARIANT) == FireJetVariant.JET_IDLE) {
+		if (!world.isRemote && state.get(VARIANT) == FireJetVariant.JET_IDLE) {
 			BlockPos lavaPos = findLavaAround(world, pos.down());
 
 			if (isLava(world, lavaPos)) {
 				world.setBlockState(lavaPos, Blocks.AIR.getDefaultState());
-				world.setBlockState(pos, state.withProperty(VARIANT, FireJetVariant.JET_POPPING), 2);
+				world.setBlockState(pos, state.with(VARIANT, FireJetVariant.JET_POPPING), 2);
 			}
 		}
 	}
@@ -148,21 +146,21 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 
 		if (world.isRemote) return;
 
-		FireJetVariant variant = state.getValue(VARIANT);
+		FireJetVariant variant = state.get(VARIANT);
 		boolean powered = world.isBlockPowered(pos);
 
 		if (variant == FireJetVariant.ENCASED_SMOKER_OFF && powered) {
-			world.setBlockState(pos, state.withProperty(VARIANT, FireJetVariant.ENCASED_SMOKER_ON), 3);
+			world.setBlockState(pos, state.with(VARIANT, FireJetVariant.ENCASED_SMOKER_ON), 3);
 			world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
 		}
 
 		if (variant == FireJetVariant.ENCASED_SMOKER_ON && !powered) {
-			world.setBlockState(pos, state.withProperty(VARIANT, FireJetVariant.ENCASED_SMOKER_OFF), 3);
+			world.setBlockState(pos, state.with(VARIANT, FireJetVariant.ENCASED_SMOKER_OFF), 3);
 			world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
 		}
 
 		if (variant == FireJetVariant.ENCASED_JET_IDLE && powered) {
-			world.setBlockState(pos, state.withProperty(VARIANT, FireJetVariant.ENCASED_JET_POPPING), 3);
+			world.setBlockState(pos, state.with(VARIANT, FireJetVariant.ENCASED_JET_POPPING), 3);
 			world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
 		}
 	}
@@ -192,12 +190,12 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 				? BlockLiquid.LEVEL
 				: null;
 		return state.getMaterial() == Material.LAVA
-				&& (levelProp == null || state.getValue(levelProp) == 0);
+				&& (levelProp == null || state.get(levelProp) == 0);
 	}
 
 	@Override
 	public boolean hasTileEntity(BlockState state) {
-		switch (state.getValue(VARIANT)) {
+		switch (state.get(VARIANT)) {
 			case SMOKER:
 			case JET_POPPING:
 			case JET_FLAME:
@@ -213,7 +211,7 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 	@Nullable
 	@Override
 	public TileEntity createTileEntity(World world, BlockState state) {
-		switch (state.getValue(VARIANT)) {
+		switch (state.get(VARIANT)) {
 			case SMOKER:
 			case ENCASED_SMOKER_ON:
 				return new TileEntityTFSmoker();
@@ -227,23 +225,6 @@ public class BlockTFFireJet extends Block implements ModelRegisterCallback {
 				return new TileEntityTFFlameJet(FireJetVariant.ENCASED_JET_IDLE);
 			default:
 				return null;
-		}
-	}
-
-	@Override
-	public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> list) {
-		list.add(new ItemStack(this, 1, FireJetVariant.SMOKER.ordinal()));
-		list.add(new ItemStack(this, 1, FireJetVariant.JET_IDLE.ordinal()));
-		list.add(new ItemStack(this, 1, FireJetVariant.ENCASED_SMOKER_OFF.ordinal()));
-		list.add(new ItemStack(this, 1, FireJetVariant.ENCASED_JET_IDLE.ordinal()));
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	public void registerModel() {
-		FireJetVariant[] variants = {FireJetVariant.SMOKER, FireJetVariant.JET_IDLE, FireJetVariant.ENCASED_SMOKER_OFF, FireJetVariant.ENCASED_JET_IDLE};
-		for (FireJetVariant variant : variants) {
-			ModelUtils.registerToState(this, variant.ordinal(), getDefaultState().withProperty(VARIANT, variant));
 		}
 	}
 }

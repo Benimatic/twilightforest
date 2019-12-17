@@ -17,6 +17,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
@@ -25,7 +26,7 @@ import twilightforest.item.TFItems;
 
 import java.util.Random;
 
-public class BlockTFUberousSoil extends Block implements IGrowable, ModelRegisterCallback {
+public class BlockTFUberousSoil extends Block implements IGrowable {
 	private static final AxisAlignedBB AABB = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 0.9375F, 1.0F);
 
 	protected BlockTFUberousSoil() {
@@ -68,10 +69,10 @@ public class BlockTFUberousSoil extends Block implements IGrowable, ModelRegiste
 		return BlockRenderLayer.TRANSLUCENT;
 	}
 
-	@Override
-	public Item getItemDropped(BlockState state, Random rand, int fortune) {
-		return Item.getItemFromBlock(Blocks.DIRT);
-	}
+//	@Override
+//	public Item getItemDropped(BlockState state, Random rand, int fortune) {
+//		return Item.getItemFromBlock(Blocks.DIRT);
+//	}
 
 	@Override
 	public void updateTick(World world, BlockPos pos, BlockState state, Random rand) {
@@ -104,7 +105,7 @@ public class BlockTFUberousSoil extends Block implements IGrowable, ModelRegiste
 			IPlantable plant = (IPlantable) above.getBlock();
 			// revert to farmland or grass
 			if (plant.getPlantType(world, pos.up()) == EnumPlantType.Crop) {
-				world.setBlockState(pos, Blocks.FARMLAND.getDefaultState().withProperty(BlockFarmland.MOISTURE, 2));
+				world.setBlockState(pos, Blocks.FARMLAND.getDefaultState().with(BlockFarmland.MOISTURE, 2));
 			} else if (plant.getPlantType(world, pos.up()) == EnumPlantType.Plains) {
 				world.setBlockState(pos, Blocks.GRASS.getDefaultState());
 			} else {
@@ -121,7 +122,7 @@ public class BlockTFUberousSoil extends Block implements IGrowable, ModelRegiste
 	}
 
 	@Override
-	public boolean canGrow(World world, BlockPos pos, BlockState state, boolean isClient) {
+	public boolean canGrow(IBlockReader world, BlockPos pos, BlockState state, boolean isClient) {
 		return true;
 	}
 

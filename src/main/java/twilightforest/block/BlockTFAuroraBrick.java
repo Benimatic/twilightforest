@@ -8,23 +8,23 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.BlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.IntegerProperty;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IWorld;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 
-public class BlockTFAuroraBrick extends Block implements ModelRegisterCallback {
+public class BlockTFAuroraBrick extends Block {
 
-	public static final IProperty<Integer> VARIANT = PropertyInteger.create("variant", 0, 15);
+	public static final IntegerProperty VARIANT = IntegerProperty.create("variant", 0, 15);
 
 	public BlockTFAuroraBrick() {
-		super(Material.PACKED_ICE);
+		super(Properties.create(Material.PACKED_ICE).hardnessAndResistance(2.0F, 10.0F));
 
-		this.setCreativeTab(TFItems.creativeTab);
-		this.setHardness(2.0F);
-		this.setResistance(10.0F);
-
+		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
 	}
 
 	private static float getFractalNoise(int iteration, float size, BlockPos pos) {
@@ -46,29 +46,13 @@ public class BlockTFAuroraBrick extends Block implements ModelRegisterCallback {
 
 	@Override
 	@Deprecated
-	public BlockState getActualState(BlockState state, IBlockAccess world, BlockPos pos) {
-		return getDefaultState().withProperty(VARIANT, ((int) ((fractalNoise(3, 48.0f, pos) * 120.0f) % 16.0f)) % 16);
+	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+		return getDefaultState().with(VARIANT, ((int) ((fractalNoise(3, 48.0f, currentPos) * 120.0f) % 16.0f)) % 16);
 	}
 
 	@Override
 	public BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, VARIANT);
-	}
-
-	@Override
-	public int getMetaFromState(BlockState state) {
-		return state.getValue(VARIANT);
-	}
-
-	@Override
-	@Deprecated
-	public BlockState getStateFromMeta(int meta) {
-		return getDefaultState();
-	}
-
-	@Override
-	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
-		items.add(new ItemStack(this, 1, 0));
 	}
 
 	@Override

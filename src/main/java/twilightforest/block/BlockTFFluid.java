@@ -8,7 +8,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.client.ModelRegisterCallback;
-
+//TODO 1.14: This class appears to only be used for TiCon2, which is currently unavailable
 public class BlockTFFluid extends BlockFluidClassic implements ModelRegisterCallback {
 
     public BlockTFFluid(Fluid fluid, Material material) {

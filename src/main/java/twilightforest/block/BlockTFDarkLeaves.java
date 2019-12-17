@@ -4,64 +4,53 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import twilightforest.client.ModelRegisterCallback;
-import twilightforest.item.TFItems;
+import net.minecraft.world.IBlockReader;
 
-import java.util.Random;
-
-public class BlockTFDarkLeaves extends Block implements ModelRegisterCallback {
+public class BlockTFDarkLeaves extends Block {
 
 	protected BlockTFDarkLeaves() {
-		super(Material.LEAVES);
-		this.setHardness(2F);
-		this.setResistance(10F);
-		this.setSoundType(SoundType.PLANT);
-		this.setCreativeTab(TFItems.creativeTab);
+		super(Properties.create(Material.LEAVES).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.PLANT));
+		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
 	}
 
-	@Override
-	public int damageDropped(BlockState state) {
-		return 3;
-	}
+//	@Override
+//	public int damageDropped(BlockState state) {
+//		return 3;
+//	}
 
 	@Override
-	public int getFlammability(IBlockAccess world, BlockPos pos, Direction side) {
+	public int getFlammability(BlockState state, IBlockReader world, BlockPos pos, Direction face) {
 		return 1;
 	}
 
 	@Override
-	public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, Direction side) {
+	public int getFireSpreadSpeed(BlockState state, IBlockReader world, BlockPos pos, Direction face) {
 		return 0;
 	}
 
-	@Override
-	public int quantityDropped(Random random) {
-		return random.nextInt(40) == 0 ? 1 : 0;
-	}
-
-	@Override
-	public Item getItemDropped(BlockState state, Random random, int fortune) {
-		return Item.getItemFromBlock(TFBlocks.twilight_sapling);
-	}
-
-	@Override
-	public ItemStack getItem(World world, BlockPos pos, BlockState state) {
-		return new ItemStack(this);
-	}
-
-	@Override
-	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, BlockState state, int fortune) {
-		Random rand = world instanceof World ? ((World)world).rand : RANDOM;
-		if (rand.nextInt(40) == 0) {
-			Item item = this.getItemDropped(state, rand, fortune);
-			drops.add(new ItemStack(item, 1, this.damageDropped(state)));
-		}
-	}
+//	@Override
+//	public int quantityDropped(Random random) {
+//		return random.nextInt(40) == 0 ? 1 : 0;
+//	}
+//
+//	@Override
+//	public Item getItemDropped(BlockState state, Random random, int fortune) {
+//		return Item.getItemFromBlock(TFBlocks.twilight_sapling);
+//	}
+//
+//	@Override
+//	public ItemStack getItem(World world, BlockPos pos, BlockState state) {
+//		return new ItemStack(this);
+//	}
+//
+//	@Override
+//	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, BlockState state, int fortune) {
+//		Random rand = world instanceof World ? ((World)world).rand : RANDOM;
+//		if (rand.nextInt(40) == 0) {
+//			Item item = this.getItemDropped(state, rand, fortune);
+//			drops.add(new ItemStack(item, 1, this.damageDropped(state)));
+//		}
+//	}
 }

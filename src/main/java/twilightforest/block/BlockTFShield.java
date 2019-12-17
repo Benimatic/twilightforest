@@ -1,15 +1,12 @@
 package twilightforest.block;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.*;
 import net.minecraft.block.BlockDirectional;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.block.Blocks;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -21,15 +18,12 @@ import twilightforest.util.EntityUtil;
 
 import java.util.Random;
 
-public class BlockTFShield extends Block implements ModelRegisterCallback {
+public class BlockTFShield extends Block {
 
 	public BlockTFShield() {
-		super(Material.ROCK);
-		this.setBlockUnbreakable();
-		this.setResistance(6000000.0F);
-		this.setSoundType(SoundType.METAL);
+		super(Properties.create(Material.ROCK).hardnessAndResistance(-1.0F, 6000000.0F).sound(SoundType.METAL));
 		this.setCreativeTab(TFItems.creativeTab);
-		this.setDefaultState(blockState.getBaseState().withProperty(BlockDirectional.FACING, Direction.DOWN));
+		this.setDefaultState(stateContainer.getBaseState().with(DirectionalBlock.FACING, Direction.DOWN));
 	}
 
 	@Override
@@ -45,7 +39,7 @@ public class BlockTFShield extends Block implements ModelRegisterCallback {
 	@Override
 	@Deprecated
 	public BlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(BlockDirectional.FACING, Direction.byIndex(meta));
+		return getDefaultState().with(BlockDirectional.FACING, Direction.byIndex(meta));
 	}
 
 	@Override
@@ -56,7 +50,7 @@ public class BlockTFShield extends Block implements ModelRegisterCallback {
 	@Override
 	@Deprecated
 	public BlockState getStateForPlacement(World worldIn, BlockPos pos, Direction facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-		return getDefaultState().withProperty(BlockDirectional.FACING, Direction.getDirectionFromEntityLiving(pos, placer));
+		return getDefaultState().with(BlockDirectional.FACING, Direction.getDirectionFromEntityLiving(pos, placer));
 	}
 
 	@Override

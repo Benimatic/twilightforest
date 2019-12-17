@@ -11,6 +11,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.BlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.state.BooleanProperty;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -33,9 +34,10 @@ import twilightforest.world.TFWorld;
 
 import java.util.Random;
 
-public class BlockTFCastleDoor extends Block implements ModelRegisterCallback {
+public class BlockTFCastleDoor extends Block {
 
-	public static final IProperty<Boolean> ACTIVE = PropertyBool.create("active");
+	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
+	//TODO 1.14: Flatten
 	public static final IProperty<Integer> LOCK_INDEX = PropertyInteger.create("lock_index", 0, 3);
 
 	private final boolean isVanished;
@@ -54,8 +56,8 @@ public class BlockTFCastleDoor extends Block implements ModelRegisterCallback {
 		this.isVanished = isVanished;
 		this.lightOpacity = isVanished ? 0 : 255;
 
-		this.setCreativeTab(TFItems.creativeTab);
-		this.setDefaultState(blockState.getBaseState().withProperty(ACTIVE, false));
+		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
+		this.setDefaultState(stateContainer.getBaseState().with(ACTIVE, false));
 	}
 
 	@Override
@@ -74,8 +76,8 @@ public class BlockTFCastleDoor extends Block implements ModelRegisterCallback {
 	@Deprecated
 	public BlockState getStateFromMeta(int meta) {
 		return getDefaultState()
-				.withProperty(ACTIVE, (meta & 8) != 0)
-				.withProperty(LOCK_INDEX, meta & 3);
+				.with(ACTIVE, (meta & 8) != 0)
+				.with(LOCK_INDEX, meta & 3);
 	}
 
 	@Override
@@ -147,7 +149,7 @@ public class BlockTFCastleDoor extends Block implements ModelRegisterCallback {
 
 	private static void changeActiveState(World world, BlockPos pos, boolean active, BlockState originState) {
 		if (originState.getBlock() instanceof BlockTFCastleDoor) {
-			world.setBlockState(pos, originState.withProperty(ACTIVE, active), 3);
+			world.setBlockState(pos, originState.with(ACTIVE, active), 3);
 			world.markBlockRangeForRenderUpdate(pos, pos);
 			world.notifyNeighborsRespectDebug(pos, originState.getBlock(), false);
 		}
@@ -174,7 +176,7 @@ public class BlockTFCastleDoor extends Block implements ModelRegisterCallback {
 
 		if (this.isVanished) {
 			if (state.getValue(ACTIVE)) {
-				world.setBlockState(pos, TFBlocks.castle_door.getDefaultState().withProperty(LOCK_INDEX, state.getValue(LOCK_INDEX)));
+				world.setBlockState(pos, TFBlocks.castle_door.getDefaultState().with(LOCK_INDEX, state.getValue(LOCK_INDEX)));
 				playVanishSound(world, pos);
 			} else {
 				changeToActiveBlock(world, pos, state);
@@ -182,7 +184,7 @@ public class BlockTFCastleDoor extends Block implements ModelRegisterCallback {
 		} else {
 			// if we have an active castle door, turn it into a vanished door block
 			if (state.getValue(ACTIVE)) {
-				world.setBlockState(pos, getOtherBlock(this).getDefaultState().withProperty(LOCK_INDEX, state.getValue(LOCK_INDEX)));
+				world.setBlockState(pos, getOtherBlock(this).getDefaultState().with(LOCK_INDEX, state.getValue(LOCK_INDEX)));
 				world.scheduleUpdate(pos, getOtherBlock(this), 80);
 
 				playReappearSound(world, pos);

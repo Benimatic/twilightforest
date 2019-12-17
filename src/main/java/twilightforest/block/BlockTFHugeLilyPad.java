@@ -1,21 +1,22 @@
 package twilightforest.block;
 
 import com.google.common.collect.Lists;
+import net.minecraft.block.*;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.BlockLiquid;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.EnumPushReaction;
+import net.minecraft.block.material.PushReaction;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityBoat;
-import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.state.DirectionProperty;
+import net.minecraft.state.EnumProperty;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -32,19 +33,18 @@ import twilightforest.item.TFItems;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockTFHugeLilyPad extends BlockBush implements ModelRegisterCallback {
+public class BlockTFHugeLilyPad extends BushBlock {
 
-	public static final IProperty<Direction> FACING = BlockHorizontal.FACING;
-	public static final IProperty<HugeLilypadPiece> PIECE = PropertyEnum.create("piece", HugeLilypadPiece.class);
+	public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
+	public static final EnumProperty<HugeLilypadPiece> PIECE = EnumProperty.create("piece", HugeLilypadPiece.class);
 	private static final AxisAlignedBB AABB = new AxisAlignedBB(0, 0, 0, 1, 0.015625, 1);
 
 	private boolean isSelfDestructing = false;
 
 	protected BlockTFHugeLilyPad() {
-		super(Material.PLANTS);
-		this.setSoundType(SoundType.PLANT);
-		this.setCreativeTab(TFItems.creativeTab);
-		this.setDefaultState(blockState.getBaseState().withProperty(FACING, Direction.NORTH).withProperty(PIECE, HugeLilypadPiece.NW));
+		super(Properties.create(Material.PLANTS).sound(SoundType.PLANT));
+		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
+		this.setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH).with(PIECE, HugeLilypadPiece.NW));
 	}
 
 	@Override
@@ -54,14 +54,14 @@ public class BlockTFHugeLilyPad extends BlockBush implements ModelRegisterCallba
 
 	@Override
 	public int getMetaFromState(BlockState state) {
-		return (state.getValue(FACING).getHorizontalIndex() | (state.getValue(PIECE).ordinal() << 2)) & 0b1111;
+		return (state.get(FACING).getHorizontalIndex() | (state.get(PIECE).ordinal() << 2)) & 0b1111;
 	}
 
 	@Override
 	@Deprecated
 	public BlockState getStateFromMeta(int meta) {
 		meta = meta & 0b1111;
-		return getDefaultState().withProperty(FACING, Direction.byHorizontalIndex(meta & 0b0011)).withProperty(PIECE, HugeLilypadPiece.values()[(meta & 0b1100) >> 2]);
+		return getDefaultState().with(FACING, Direction.byHorizontalIndex(meta & 0b0011)).with(PIECE, HugeLilypadPiece.values()[(meta & 0b1100) >> 2]);
 	}
 
 	@Override
@@ -103,7 +103,7 @@ public class BlockTFHugeLilyPad extends BlockBush implements ModelRegisterCallba
 			BlockState dStateBelow = world.getBlockState(check.down());
 
 			if (!(dStateBelow.getBlock() == Blocks.WATER || dStateBelow.getBlock() == Blocks.FLOWING_WATER)
-					|| dStateBelow.getValue(BlockLiquid.LEVEL) != 0) {
+					|| dStateBelow.get(BlockLiquid.LEVEL) != 0) {
 				return false;
 			}
 
@@ -124,7 +124,7 @@ public class BlockTFHugeLilyPad extends BlockBush implements ModelRegisterCallba
 		if (state.getBlock() == this) {
 			// find NW corner
 			BlockPos nwPos = pos;
-			switch (state.getValue(PIECE)) {
+			switch (state.get(PIECE)) {
 				case NE:
 					nwPos = nwPos.west();
 					break;
@@ -158,8 +158,8 @@ public class BlockTFHugeLilyPad extends BlockBush implements ModelRegisterCallba
 
 	@Override
 	@Deprecated
-	public EnumPushReaction getPushReaction(BlockState state) {
-		return EnumPushReaction.BLOCK;
+	public PushReaction getPushReaction(BlockState state) {
+		return PushReaction.BLOCK;
 	}
 
 	@Override
@@ -183,11 +183,5 @@ public class BlockTFHugeLilyPad extends BlockBush implements ModelRegisterCallba
 	@OnlyIn(Dist.CLIENT)
 	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT;
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	public void registerModel() {
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
 	}
 }

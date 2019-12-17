@@ -1,9 +1,7 @@
 package twilightforest.block;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.*;
 import net.minecraft.block.BlockBreakable;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
@@ -12,11 +10,13 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.EntityLightningBolt;
+import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.block.Blocks;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
@@ -25,6 +25,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
@@ -42,9 +43,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class BlockTFPortal extends BlockBreakable {
+public class BlockTFPortal extends BreakableBlock {
 
-	public static final IProperty<Boolean> DISALLOW_RETURN = PropertyBool.create("is_one_way");
+	public static final BooleanProperty DISALLOW_RETURN = BooleanProperty.create("is_one_way");
 
 	private static final AxisAlignedBB AABB = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 0.8125F, 1.0F);
 	private static final AxisAlignedBB AABB_ITEM = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 0.4F, 1.0F);
@@ -53,27 +54,13 @@ public class BlockTFPortal extends BlockBreakable {
 	private static final int MAX_PORTAL_SIZE = 64;
 
 	public BlockTFPortal() {
-		super(Material.PORTAL, false);
-		this.setHardness(-1F);
-		this.setSoundType(SoundType.GLASS);
-		this.setLightLevel(0.75F);
-		this.setDefaultState(this.blockState.getBaseState().withProperty(DISALLOW_RETURN, false));
+		super(Properties.create(Material.PORTAL).hardnessAndResistance(-1.0F).sound(SoundType.GLASS).lightValue(11).doesNotBlockMovement().noDrops());
+		this.setDefaultState(this.stateContainer.getBaseState().with(DISALLOW_RETURN, false));
 	}
 
 	@Override
-	public BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, DISALLOW_RETURN);
-	}
-
-	@Override
-	public int getMetaFromState(BlockState state) {
-		return state.getValue(DISALLOW_RETURN) ? 1 : 0;
-	}
-
-	@Override
-	@Deprecated
-	public BlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(DISALLOW_RETURN, meta == 1);
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+		builder.add(DISALLOW_RETURN);
 	}
 
 	@Override
@@ -124,7 +111,7 @@ public class BlockTFPortal extends BlockBreakable {
 					if (!teleporter.isSafeAround(pos, catalyst, checkProgression)) {
 						// TODO: "failure" effect - particles?
 						if (player != null) {
-							player.sendStatusMessage(new TextComponentTranslation(TwilightForestMod.ID + ".twilight_portal.unsafe"), true);
+							player.sendStatusMessage(new TranslationTextComponent(TwilightForestMod.ID + ".twilight_portal.unsafe"), true);
 						}
 						return false;
 					}
@@ -147,11 +134,11 @@ public class BlockTFPortal extends BlockBreakable {
 	}
 
 	public boolean canFormPortal(BlockState state) {
-		return state == Blocks.WATER.getDefaultState() || state.getBlock() == this && state.getValue(DISALLOW_RETURN);
+		return state == Blocks.WATER.getDefaultState() || state.getBlock() == this && state.get(DISALLOW_RETURN);
 	}
 
 	private static void causeLightning(World world, BlockPos pos, boolean fake) {
-		EntityLightningBolt bolt = new EntityLightningBolt(world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, fake);
+		LightningBoltEntity bolt = new LightningBoltEntity(world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, fake);
 		world.addWeatherEffect(bolt);
 
 		if (fake) {
@@ -201,7 +188,7 @@ public class BlockTFPortal extends BlockBreakable {
 
 	private static boolean isGrassOrDirt(BlockState state) {
 		Material mat = state.getMaterial();
-		return state.isFullCube() && (mat == Material.GRASS || mat == Material.GROUND);
+		return state.isFullCube() && (mat == Material.ORGANIC || mat == Material.EARTH);
 	}
 
 	@Override
@@ -265,12 +252,13 @@ public class BlockTFPortal extends BlockBreakable {
 
 		int destination = getDestination(entity);
 
+		//TODO 1.14: changeDimension patch does not exist. Create helper?
 		entity.changeDimension(destination, TFTeleporter.getTeleporterForDim(entity.getServer(), destination));
 
-		if (destination == TFConfig.dimension.dimensionID && entity instanceof EntityPlayerMP) {
-			EntityPlayerMP playerMP = (EntityPlayerMP) entity;
+		if (destination == TFConfig.dimension.dimensionID && entity instanceof ServerPlayerEntity) {
+			ServerPlayerEntity playerMP = (ServerPlayerEntity) entity;
 			// set respawn point for TF dimension to near the arrival portal
-			playerMP.setSpawnChunk(new BlockPos(playerMP), true, TFConfig.dimension.dimensionID);
+			playerMP.setSpawnPoint(new BlockPos(playerMP), true, TFConfig.dimension.dimensionID);
 		}
 	}
 
@@ -278,9 +266,9 @@ public class BlockTFPortal extends BlockBreakable {
 	// TODO Eeeh... Let's look at changing this too alongside a new model.
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void randomDisplayTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
+	public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
 		int random = rand.nextInt(100);
-		if (stateIn.getValue(DISALLOW_RETURN) && random < 80) return;
+		if (stateIn.get(DISALLOW_RETURN) && random < 80) return;
 
 		if (random == 0) {
 			worldIn.playSound((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D, SoundEvents.BLOCK_PORTAL_AMBIENT, SoundCategory.BLOCKS, 0.5F, rand.nextFloat() * 0.4F + 0.8F, false);
@@ -303,7 +291,7 @@ public class BlockTFPortal extends BlockBreakable {
 			//	zSpeed = (double) (rand.nextFloat() * 2.0F * (float) j);
 			//}
 
-			worldIn.spawnParticle(ParticleTypes.PORTAL, xPos, yPos, zPos, xSpeed, ySpeed, zSpeed);
+			worldIn.addParticle(ParticleTypes.PORTAL, xPos, yPos, zPos, xSpeed, ySpeed, zSpeed);
 		}
 	}
 }

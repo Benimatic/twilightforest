@@ -1,13 +1,12 @@
 package twilightforest.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockButtonWood;
 import net.minecraft.block.SoundType;
-import twilightforest.client.ModelRegisterCallback;
+import net.minecraft.block.WoodButtonBlock;
+import net.minecraft.block.material.Material;
 
-public class BlockTFButtonWood extends BlockButtonWood implements ModelRegisterCallback {
-    @Override
-    public Block setSoundType(SoundType sound) {
-        return super.setSoundType(sound);
-    }
+public class BlockTFButtonWood extends WoodButtonBlock {
+
+	public BlockTFButtonWood() {
+		super(Properties.create(Material.MISCELLANEOUS).hardnessAndResistance(0.5F).sound(SoundType.WOOD));
+	}
 }

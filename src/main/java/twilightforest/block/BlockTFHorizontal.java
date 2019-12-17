@@ -2,6 +2,7 @@ package twilightforest.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
+import net.minecraft.block.HorizontalBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.material.Material;
@@ -15,14 +16,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.client.ModelRegisterCallback;
 
-public class BlockTFHorizontal extends BlockHorizontal implements ModelRegisterCallback {
+public class BlockTFHorizontal extends HorizontalBlock {
 
     protected BlockTFHorizontal(Material material) {
-        super(material);
+        super(Properties.create(material));
     }
 
     protected BlockTFHorizontal(Material material, MaterialColor mapColor) {
-        super(material, mapColor);
+        super(Properties.create(material, mapColor));
     }
 
     @Override
@@ -37,7 +38,7 @@ public class BlockTFHorizontal extends BlockHorizontal implements ModelRegisterC
 
     @Override
     public BlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(FACING, Direction.byHorizontalIndex(meta));
+        return this.getDefaultState().with(FACING, Direction.byHorizontalIndex(meta));
     }
 
     @Override
@@ -47,7 +48,7 @@ public class BlockTFHorizontal extends BlockHorizontal implements ModelRegisterC
 
     @Override
     public BlockState withRotation(BlockState state, Rotation rot) {
-        return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
+        return state.with(FACING, rot.rotate(state.getValue(FACING)));
     }
 
     @Override
@@ -57,6 +58,6 @@ public class BlockTFHorizontal extends BlockHorizontal implements ModelRegisterC
 
     @Override
     public BlockState getStateForPlacement(World worldIn, BlockPos pos, Direction facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-        return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
+        return this.getDefaultState().with(FACING, placer.getHorizontalFacing().getOpposite());
     }
 }

@@ -25,15 +25,13 @@ import twilightforest.item.TFItems;
 import java.util.List;
 import java.util.Random;
 
-public class BlockTFTrollRoot extends Block implements IShearable, ModelRegisterCallback {
+public class BlockTFTrollRoot extends Block implements IShearable {
 
 	protected static final AxisAlignedBB AABB = new AxisAlignedBB(0.1, 0.0, 0.1, 0.9, 1.0, 0.9);
 
 	protected BlockTFTrollRoot() {
-		super(Material.PLANTS);
-		this.setTickRandomly(true);
-		this.setCreativeTab(TFItems.creativeTab);
-		this.setSoundType(SoundType.PLANT);
+		super(Properties.create(Material.PLANTS).sound(SoundType.PLANT).tickRandomly().doesNotBlockMovement());
+		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
 	}
 
 	@Override
@@ -120,11 +118,5 @@ public class BlockTFTrollRoot extends Block implements IShearable, ModelRegister
 	@Override
 	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT;
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	public void registerModel() {
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
 	}
 }

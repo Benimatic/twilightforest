@@ -25,7 +25,7 @@ import twilightforest.tileentity.critters.TileEntityTFCicadaTicking;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockTFCicada extends BlockTFCritter implements ModelRegisterCallback {
+public class BlockTFCicada extends BlockTFCritter {
 
 	@Override
 	public TileEntity createTileEntity(World world, BlockState state) {
@@ -34,7 +34,7 @@ public class BlockTFCicada extends BlockTFCritter implements ModelRegisterCallba
 
 	@Override
 	public ItemStack getSquishResult() {
-		return new ItemStack(Items.DYE, 1, DyeColor.GRAY.getDyeDamage());
+		return new ItemStack(Items.GRAY_DYE, 1);
 	}
 
 	//Atomic: Forge would like to get rid of registerTESRItemStack, but there's no alternative yet (as at 1.11)
@@ -47,7 +47,8 @@ public class BlockTFCicada extends BlockTFCritter implements ModelRegisterCallba
 		ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(this), 0, TileEntityTFCicadaTicking.class);
 	}
 
-	@Override
+	//TODO: Immersive Engineering is unavailable
+	/*@Override
 	@OnlyIn(Dist.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flag) {
 		super.addInformation(stack, world, tooltip, flag);
@@ -55,5 +56,5 @@ public class BlockTFCicada extends BlockTFCritter implements ModelRegisterCallba
 		if (TFCompat.IMMERSIVEENGINEERING.isActivated()) {
 			tooltip.add(TextFormatting.ITALIC.toString() + TwilightForestMod.getRarity().color.toString() + I18n.translateToLocalFormatted("tile.twilightforest.Cicada.desc"));
 		}
-	}
+	}*/
 }

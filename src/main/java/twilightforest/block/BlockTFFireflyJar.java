@@ -22,17 +22,14 @@ import twilightforest.item.TFItems;
 
 import java.util.Random;
 
-@Optional.Interface(modid = "thaumcraft", iface = "thaumcraft.api.crafting.IInfusionStabiliser")
-public class BlockTFFireflyJar extends Block implements ModelRegisterCallback, IInfusionStabiliser {
+//@Optional.Interface(modid = "thaumcraft", iface = "thaumcraft.api.crafting.IInfusionStabiliser")
+public class BlockTFFireflyJar extends Block /*implements IInfusionStabiliser*/ {
 
 	private static final AxisAlignedBB AABB = new AxisAlignedBB(0.1875F, 0.0F, 0.1875F, 0.8125F, 1.0F, 0.8125F);
 
 	protected BlockTFFireflyJar() {
-		super(Material.GLASS);
-		this.setHardness(0.3F);
-		this.setSoundType(SoundType.WOOD);
-		this.setCreativeTab(TFItems.creativeTab);
-		this.setLightLevel(1.0F);
+		super(Properties.create(Material.GLASS).hardnessAndResistance(0.3F, 0.0F).sound(SoundType.WOOD).lightValue(15));
+		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
 	}
 
 	@Override
@@ -72,18 +69,18 @@ public class BlockTFFireflyJar extends Block implements ModelRegisterCallback, I
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random rand) {
+	public void animateTick(BlockState state, World world, BlockPos pos, Random rand) {
 		for (int i = 0; i < 2; i++) {
 			double dx = pos.getX() + ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.5F);
 			double dy = pos.getY() + 0.4F + ((rand.nextFloat() - rand.nextFloat()) * 0.3F);
 			double dz = pos.getZ() + ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.5F);
 
-			TwilightForestMod.proxy.spawnParticle(TFParticleType.FIREFLY, dx, dy, dz, 0, 0, 0);
+			world.addParticle(TFParticleType.FIREFLY, dx, dy, dz, 0, 0, 0);
 		}
 	}
 
-	@Override
+	/*@Override
 	public boolean canStabaliseInfusion(World world, BlockPos blockPos) {
 		return true;
-	}
+	}*/
 }

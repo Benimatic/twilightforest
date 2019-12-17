@@ -19,17 +19,14 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 
-public class BlockTFThornRose extends Block implements ModelRegisterCallback {
+public class BlockTFThornRose extends Block {
 
 	private static final float RADIUS = 0.4F;
 	private static final AxisAlignedBB AABB = new AxisAlignedBB(0.5F - RADIUS, 0.5F - RADIUS, 0.5F - RADIUS, 0.5F + RADIUS, .5F + RADIUS, 0.5F + RADIUS);
 
 	protected BlockTFThornRose() {
-		super(Material.PLANTS);
-
-		this.setHardness(10.0F);
-		this.setSoundType(SoundType.PLANT);
-		this.setCreativeTab(TFItems.creativeTab);
+		super(Properties.create(Material.PLANTS).hardnessAndResistance(10.0F, 0.0F).sound(SoundType.PLANT));
+		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
 	}
 
 	@Override
@@ -91,11 +88,5 @@ public class BlockTFThornRose extends Block implements ModelRegisterCallback {
 	@Override
 	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT;
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	public void registerModel() {
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
 	}
 }

@@ -1,12 +1,13 @@
 package twilightforest.block;
 
 import net.minecraft.block.BlockHugeMushroom;
+import net.minecraft.block.HugeMushroomBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.material.Material;
 import twilightforest.client.ModelRegisterCallback;
 
-public class BlockTFHugeGloomBlock extends BlockHugeMushroom implements ModelRegisterCallback {
+public class BlockTFHugeGloomBlock extends HugeMushroomBlock {
 
 	public BlockTFHugeGloomBlock() {
 		super(Material.WOOD, MaterialColor.ADOBE, TFBlocks.twilight_plant);

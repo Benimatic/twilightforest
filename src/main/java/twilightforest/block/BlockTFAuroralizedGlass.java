@@ -1,16 +1,14 @@
 package twilightforest.block;
 
-import net.minecraft.block.BlockGlass;
+import net.minecraft.block.AbstractGlassBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.BlockRenderLayer;
-import twilightforest.client.ModelRegisterCallback;
-import twilightforest.item.TFItems;
 
-public class BlockTFAuroralizedGlass extends BlockGlass implements ModelRegisterCallback {
+public class BlockTFAuroralizedGlass extends AbstractGlassBlock {
 
     public BlockTFAuroralizedGlass() {
-        super(Material.ICE, false);
-        this.setCreativeTab(TFItems.creativeTab);
+        super(Properties.create(Material.ICE));
+        //this.setCreativeTab(TFItems.creativeTab); TODO 1.14
     }
 
     @Override

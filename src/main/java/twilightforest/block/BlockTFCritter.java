@@ -2,6 +2,7 @@ package twilightforest.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
+import net.minecraft.block.DirectionalBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
@@ -14,9 +15,11 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import twilightforest.item.TFItems;
 
+import javax.annotation.Nullable;
 import java.util.Random;
 
 public abstract class BlockTFCritter extends Block {
@@ -30,12 +33,10 @@ public abstract class BlockTFCritter extends Block {
 	private final AxisAlignedBB WEST_BB  = new AxisAlignedBB(1.0F - WIDTH * 2.0F, 0.2F, 0.5F - WIDTH, 1.0F, 0.8F, 0.5F + WIDTH);
 	private final AxisAlignedBB EAST_BB  = new AxisAlignedBB(0.0F, 0.2F, 0.5F - WIDTH, WIDTH * 2.0F, 0.8F, 0.5F + WIDTH);
 
-	protected BlockTFCritter() {
-		super(Material.CIRCUITS);
-		this.setHardness(0.0F);
-		this.setCreativeTab(TFItems.creativeTab);
-		this.setSoundType(SoundType.SLIME);
-		this.setDefaultState(blockState.getBaseState().withProperty(BlockDirectional.FACING, Direction.UP));
+	protected BlockTFCritter(Properties props) {
+		super(props.create(Material.MISCELLANEOUS).sound(SoundType.SLIME).hardnessAndResistance(0.0F));
+		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
+		this.setDefaultState(stateContainer.getBaseState().with(DirectionalBlock.FACING, Direction.UP));
 	}
 
 	public float getWidth() {
@@ -55,13 +56,13 @@ public abstract class BlockTFCritter extends Block {
 	@Override
 	@Deprecated
 	public BlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(BlockDirectional.FACING, Direction.byIndex(meta));
+		return getDefaultState().with(BlockDirectional.FACING, Direction.byIndex(meta));
 	}
 
 	@Override
 	@Deprecated
 	public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess world, BlockPos pos) {
-		switch (state.getValue(BlockDirectional.FACING)) {
+		switch (state.get(DirectionalBlock.FACING)) {
 			case DOWN:
 				return DOWN_BB;
 			case UP:
@@ -123,7 +124,7 @@ public abstract class BlockTFCritter extends Block {
 		BlockState state = getDefaultState();
 
 		if (canPlaceAt(world, pos.offset(sideHit.getOpposite()), sideHit)) {
-			state = state.withProperty(BlockDirectional.FACING, sideHit);
+			state = state.with(DirectionalBlock.FACING, sideHit);
 		}
 
 		return state;
@@ -140,7 +141,7 @@ public abstract class BlockTFCritter extends Block {
 	}
 
 	protected boolean checkAndDrop(World world, BlockPos pos, BlockState state) {
-		Direction facing = state.getValue(BlockDirectional.FACING);
+		Direction facing = state.get(DirectionalBlock.FACING);
 		if (!canPlaceAt(world, pos.offset(facing.getOpposite()), facing)) {
 			world.destroyBlock(pos, true);
 			return false;
@@ -149,8 +150,7 @@ public abstract class BlockTFCritter extends Block {
 	}
 
 	@Override
-	@Deprecated
-	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
+	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
 		checkAndDrop(world, pos, state);
 	}
 
@@ -166,8 +166,9 @@ public abstract class BlockTFCritter extends Block {
 		return true;
 	}
 
+	@Nullable
 	@Override
-	public abstract TileEntity createTileEntity(World world, BlockState state);
+	public abstract TileEntity createTileEntity(BlockState state, IBlockReader world);
 
 	public abstract ItemStack getSquishResult(); // oh no!
 }

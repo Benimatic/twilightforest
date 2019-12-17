@@ -27,8 +27,9 @@ import twilightforest.item.TFItems;
 import javax.annotation.Nonnull;
 import java.util.Random;
 
-public class BlockTFNagastone extends Block  implements ModelRegisterCallback {
+public class BlockTFNagastone extends Block {
 
+	//TODO 1.14: Flatten
 	public static final IProperty<NagastoneVariant> VARIANT = PropertyEnum.create("variant", NagastoneVariant.class);
 
 	public BlockTFNagastone() {
@@ -38,13 +39,7 @@ public class BlockTFNagastone extends Block  implements ModelRegisterCallback {
 		this.setSoundType(SoundType.STONE);
 		this.setCreativeTab(TFItems.creativeTab);
 
-		this.setDefaultState(blockState.getBaseState().withProperty(VARIANT, NagastoneVariant.SOLID));
-	}
-
-	@Override
-	public void getSubBlocks(CreativeTabs creativeTabs, NonNullList<ItemStack> stackList) {
-		stackList.add(new ItemStack(this, 1, 0));
-		stackList.add(new ItemStack(this, 1, 1));
+		this.setDefaultState(blockState.getBaseState().with(VARIANT, NagastoneVariant.SOLID));
 	}
 
 	@Override
@@ -56,7 +51,7 @@ public class BlockTFNagastone extends Block  implements ModelRegisterCallback {
 	@Override
 	@Deprecated
 	public BlockState getStateFromMeta(int meta) {
-		return this.getDefaultState().withProperty(VARIANT, NagastoneVariant.values()[(meta & 15)]);
+		return this.getDefaultState().with(VARIANT, NagastoneVariant.values()[(meta & 15)]);
 	}
 
 	@Override
@@ -88,7 +83,7 @@ public class BlockTFNagastone extends Block  implements ModelRegisterCallback {
 	@Deprecated
 	public BlockState getStateForPlacement(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Direction facing, float hitX, float hitY, float hitZ, int meta, @Nonnull EntityLivingBase placer) {
 		return meta == 0
-				? this.getDefaultState().withProperty(VARIANT, NagastoneVariant.getHeadFromFacing(facing.getAxis().isHorizontal() ? facing : placer.getHorizontalFacing().getOpposite()))
+				? this.getDefaultState().with(VARIANT, NagastoneVariant.getHeadFromFacing(facing.getAxis().isHorizontal() ? facing : placer.getHorizontalFacing().getOpposite()))
 				: this.getDefaultState();
 	}
 
@@ -117,7 +112,7 @@ public class BlockTFNagastone extends Block  implements ModelRegisterCallback {
 			case 1:
 				facings[1] = facings[0]; // No null, for next statement
 			case 2:
-				stateOut = stateIn.withProperty(VARIANT, NagastoneVariant.getVariantFromDoubleFacing(facings[0], facings[1]));
+				stateOut = stateIn.with(VARIANT, NagastoneVariant.getVariantFromDoubleFacing(facings[0], facings[1]));
 				break;
 			default:
 				stateOut = this.getDefaultState();
@@ -134,21 +129,14 @@ public class BlockTFNagastone extends Block  implements ModelRegisterCallback {
 		return new BlockStateContainer(this, VARIANT);
 	}
 
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	public void registerModel() {
-		ModelUtils.registerToState(this, 0, this.getDefaultState().withProperty(VARIANT, NagastoneVariant.EAST_HEAD));
-		ModelUtils.registerToState(this, 1, this.getDefaultState().withProperty(VARIANT, NagastoneVariant.AXIS_X));
-	}
-
 	@Override
 	public BlockState withRotation(BlockState state, Rotation rotation) {
-		return state.withProperty(VARIANT, NagastoneVariant.rotate(state.getValue(VARIANT), rotation));
+		return state.with(VARIANT, NagastoneVariant.rotate(state.getValue(VARIANT), rotation));
 	}
 
 	@Override
 	public BlockState withMirror(BlockState state, Mirror mirror) {
-		return state.withProperty(VARIANT, NagastoneVariant.mirror(state.getValue(VARIANT), mirror));
+		return state.with(VARIANT, NagastoneVariant.mirror(state.getValue(VARIANT), mirror));
 	}
 
 	@Override

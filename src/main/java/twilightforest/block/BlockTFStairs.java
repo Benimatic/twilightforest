@@ -1,25 +1,12 @@
 package twilightforest.block;
 
-import net.minecraft.block.BlockStairs;
 import net.minecraft.block.BlockState;
-import net.minecraft.util.Direction;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.client.ModelRegisterCallback;
-import twilightforest.client.ModelUtils;
-import twilightforest.item.TFItems;
+import net.minecraft.block.StairsBlock;
 
-public class BlockTFStairs extends BlockStairs implements ModelRegisterCallback {
+public class BlockTFStairs extends StairsBlock {
 
     protected BlockTFStairs(BlockState modelState) {
-        super(modelState);
-        this.setCreativeTab(TFItems.creativeTab);
-        this.useNeighborBrightness = true;
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public void registerModel() {
-        ModelUtils.registerToState(this, 0, getDefaultState().withProperty(FACING, Direction.EAST));
+        super(() -> modelState, Properties.from(modelState.getBlock()));
+        //this.setCreativeTab(TFItems.creativeTab); TODO 1.14
     }
 }

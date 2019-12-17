@@ -1,6 +1,7 @@
 package twilightforest.block;
 
 import net.minecraft.block.BlockDirectional;
+import net.minecraft.block.DirectionalBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
@@ -19,22 +20,21 @@ import twilightforest.client.ModelRegisterCallback;
 import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
 
-public class BlockTFNagastoneEtched extends BlockDirectional implements ModelRegisterCallback {
+public class BlockTFNagastoneEtched extends DirectionalBlock {
     protected BlockTFNagastoneEtched() {
-        super(Material.ROCK);
-        this.setSoundType(SoundType.STONE);
-        this.setCreativeTab(TFItems.creativeTab);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, Direction.DOWN));
+        super(Properties.create(Material.ROCK).hardnessAndResistance(1.5F, 10.0F).sound(SoundType.STONE));
+        //this.setCreativeTab(TFItems.creativeTab); TODO 1.14
+        this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.DOWN));
     }
 
     @Override
     public BlockState getStateForPlacement(World worldIn, BlockPos pos, Direction facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-        return this.getDefaultState().withProperty(FACING, placer.isSneaking() ? facing.getOpposite() : facing);
+        return this.getDefaultState().with(FACING, placer.isSneaking() ? facing.getOpposite() : facing);
     }
 
     @Override
     public BlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(FACING, Direction.values()[meta % Direction.values().length]);
+        return this.getDefaultState().with(FACING, Direction.values()[meta % Direction.values().length]);
     }
 
     @Override
@@ -49,18 +49,12 @@ public class BlockTFNagastoneEtched extends BlockDirectional implements ModelReg
 
     @Override
     public BlockState withRotation(BlockState state, Rotation rot) {
-        return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
+        return state.with(FACING, rot.rotate(state.getValue(FACING)));
     }
 
     @Override
     public BlockState withMirror(BlockState state, Mirror mirrorIn) {
-        return state.withProperty(FACING, mirrorIn.mirror(state.getValue(FACING)));
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public void registerModel() {
-        ModelUtils.registerToState(this, 0, this.getDefaultState());
+        return state.with(FACING, mirrorIn.mirror(state.getValue(FACING)));
     }
 
     @Override

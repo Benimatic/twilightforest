@@ -9,6 +9,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.player.PlayerEntity;
@@ -24,6 +25,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -37,25 +40,22 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-public class BlockTFHedge extends Block implements ModelRegisterCallback {
+public class BlockTFHedge extends Block {
 
+	//TODO 1.14: Flatten
 	public static final IProperty<HedgeVariant> VARIANT = PropertyEnum.create("variant", HedgeVariant.class);
 	private static final AxisAlignedBB HEDGE_BB = new AxisAlignedBB(0, 0, 0, 1, 0.9375, 1);
 
 	private final int damageDone;
 
 	protected BlockTFHedge() {
-		super(Material.CACTUS);
+		super(Properties.create(Material.CACTUS).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.PLANT));
 		this.damageDone = 3;
-		this.setSoundType(SoundType.PLANT);
-		this.setHardness(2F);
-		this.setResistance(10F);
-		this.setCreativeTab(TFItems.creativeTab);
+		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
 	}
 
 	@Override
-	@Deprecated
-	public boolean shouldSideBeRendered(BlockState blockState, IBlockAccess blockAccess, BlockPos pos, Direction side) {
+	public boolean doesSideBlockRendering(BlockState state, IEnviromentBlockReader world, BlockPos pos, Direction face) {
 		return blockAccess.getBlockState(pos.offset(side)).getBlock() != this && super.shouldSideBeRendered(blockState, blockAccess, pos, side);
 	}
 
@@ -146,8 +146,7 @@ public class BlockTFHedge extends Block implements ModelRegisterCallback {
 	}
 
 	@Override
-	public int getFlammability(IBlockAccess world, BlockPos pos, Direction side) {
-		BlockState state = world.getBlockState(pos);
+	public int getFlammability(BlockState state, IBlockReader world, BlockPos pos, Direction face) {
 		return state.getValue(VARIANT) == HedgeVariant.DARKWOOD_LEAVES ? 1 : 0;
 	}
 
@@ -194,17 +193,11 @@ public class BlockTFHedge extends Block implements ModelRegisterCallback {
 	@Override
 	@Deprecated
 	public BlockState getStateFromMeta(int meta) {
-		return this.getDefaultState().withProperty(VARIANT, HedgeVariant.values()[meta % HedgeVariant.values().length]);
+		return this.getDefaultState().with(VARIANT, HedgeVariant.values()[meta % HedgeVariant.values().length]);
 	}
 
 	@Override
 	public int getMetaFromState(BlockState state) {
 		return state.getValue(VARIANT).ordinal();
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	public void registerModel() {
-		ModelUtils.registerToStateSingleVariant(this, VARIANT);
 	}
 }

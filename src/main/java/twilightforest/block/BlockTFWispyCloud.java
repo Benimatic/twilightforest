@@ -1,6 +1,7 @@
 package twilightforest.block;
 
 import net.minecraft.block.BlockBreakable;
+import net.minecraft.block.BreakableBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.material.Material;
@@ -14,7 +15,7 @@ import twilightforest.item.TFItems;
 
 import java.util.Random;
 
-public class BlockTFWispyCloud extends BlockBreakable implements ModelRegisterCallback {
+public class BlockTFWispyCloud extends BreakableBlock {
 
 	protected BlockTFWispyCloud() {
 		super(new Material(MaterialColor.SNOW), false);

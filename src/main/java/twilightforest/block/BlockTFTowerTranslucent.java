@@ -32,8 +32,9 @@ import twilightforest.item.TFItems;
 
 import java.util.Random;
 
-public class BlockTFTowerTranslucent extends Block implements ModelRegisterCallback {
+public class BlockTFTowerTranslucent extends Block {
 
+	//TODO 1.14: Flatten
 	public static final IProperty<TowerTranslucentVariant> VARIANT = PropertyEnum.create("variant", TowerTranslucentVariant.class);
 	private static final AxisAlignedBB REAPPEARING_BB = new AxisAlignedBB(0.375F, 0.375F, 0.375F, 0.625F, 0.625F, 0.625F);
 
@@ -43,7 +44,7 @@ public class BlockTFTowerTranslucent extends Block implements ModelRegisterCallb
 		this.setResistance(2000.0F);
 		this.setSoundType(SoundType.METAL);
 		this.setCreativeTab(TFItems.creativeTab);
-		this.setDefaultState(blockState.getBaseState().withProperty(VARIANT, TowerTranslucentVariant.REAPPEARING_INACTIVE));
+		this.setDefaultState(blockState.getBaseState().with(VARIANT, TowerTranslucentVariant.REAPPEARING_INACTIVE));
 	}
 
 	@Override
@@ -59,7 +60,7 @@ public class BlockTFTowerTranslucent extends Block implements ModelRegisterCallb
 	@Override
 	@Deprecated
 	public BlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(VARIANT, TowerTranslucentVariant.values()[meta]);
+		return getDefaultState().with(VARIANT, TowerTranslucentVariant.values()[meta]);
 	}
 
 	@Override
@@ -170,7 +171,7 @@ public class BlockTFTowerTranslucent extends Block implements ModelRegisterCallb
 			}
 
 		} else if (variant == TowerTranslucentVariant.REAPPEARING_ACTIVE) {
-			world.setBlockState(pos, TFBlocks.tower_device.getDefaultState().withProperty(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.REAPPEARING_INACTIVE));
+			world.setBlockState(pos, TFBlocks.tower_device.getDefaultState().with(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.REAPPEARING_INACTIVE));
 			world.notifyNeighborsRespectDebug(pos, this, false);
 			world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_OFF, SoundCategory.BLOCKS, 0.3F, 0.5F);
 			//world.markBlockRangeForRenderUpdate(x, y, z, x, y, z);

@@ -20,7 +20,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 
-public class BlockTFUncraftingTable extends Block implements ModelRegisterCallback {
+public class BlockTFUncraftingTable extends Block {
 
 	protected BlockTFUncraftingTable() {
 		super(Material.WOOD);

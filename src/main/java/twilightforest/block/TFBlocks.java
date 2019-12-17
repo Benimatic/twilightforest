@@ -4,7 +4,21 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockSlab;
+import net.minecraft.block.RotatedPillarBlock;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.material.MaterialColor;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.DyeColor;
+import net.minecraft.item.Item;
+import net.minecraft.util.Direction;
+import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
+import twilightforest.enums.PlantVariant;
+import twilightforest.item.TFItems;
+import twilightforest.world.feature.*;
 
 import javax.annotation.Nonnull;
 
@@ -14,43 +28,92 @@ import static net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 @ObjectHolder(TwilightForestMod.ID)
 @Nonnull
 public class TFBlocks {
-	public static final Block twilight_log               = iCantBelieveItsNotNull();
-	public static final BlockLeaves twilight_leaves      = iCantBelieveItsNotNull();
+	public static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, TwilightForestMod.ID);
+
+	public static final RegistryObject<Block> oak_log                    = BLOCKS.register("oak_log", () -> new BlockTFLog(MaterialColor.WOOD, MaterialColor.OBSIDIAN));
+	public static final RegistryObject<Block> canopy_log                 = BLOCKS.register("canopy_log", () -> new BlockTFLog(MaterialColor.OBSIDIAN, MaterialColor.BROWN));
+	public static final RegistryObject<Block> mangrove_log               = BLOCKS.register("mangrove_log", () -> new BlockTFLog(MaterialColor.DIRT, MaterialColor.OBSIDIAN));
+	public static final RegistryObject<Block> dark_log                   = BLOCKS.register("dark_log", () -> new BlockTFLog(MaterialColor.ADOBE, MaterialColor.STONE));
+	public static final RegistryObject<Block> oak_leaves                 = BLOCKS.register("oak_leaves", () -> new BlockTFLeaves());
+	public static final RegistryObject<Block> canopy_leaves              = BLOCKS.register("canopy_leaves", () -> new BlockTFLeaves());
+	public static final RegistryObject<Block> mangrove_leaves            = BLOCKS.register("mangrove_leaves", () -> new BlockTFLeaves());
+	public static final RegistryObject<Block> rainboak_leaves            = BLOCKS.register("rainboak_leaves", () -> new BlockTFLeaves());
 	public static final Block firefly                    = iCantBelieveItsNotNull();
 	public static final BlockTFPortal twilight_portal    = iCantBelieveItsNotNull();
-	public static final Block maze_stone                 = iCantBelieveItsNotNull();
-	public static final Block hedge                      = iCantBelieveItsNotNull();
-	public static final Block boss_spawner               = iCantBelieveItsNotNull();
+	public static final RegistryObject<Block> maze_stone                 = BLOCKS.register("maze_stone", () -> new BlockTFMazestone());
+	public static final RegistryObject<Block> maze_stone_brick           = BLOCKS.register("maze_stone_brick", () -> new BlockTFMazestone());
+	public static final RegistryObject<Block> maze_stone_chiseled        = BLOCKS.register("maze_stone_chiseled", () -> new BlockTFMazestone());
+	public static final RegistryObject<Block> maze_stone_decorative      = BLOCKS.register("maze_stone_decorative", () -> new BlockTFMazestone());
+	public static final RegistryObject<Block> maze_stone_cracked         = BLOCKS.register("maze_stone_cracked", () -> new BlockTFMazestone());
+	public static final RegistryObject<Block> maze_stone_mossy           = BLOCKS.register("maze_stone_mossy", () -> new BlockTFMazestone());
+	public static final RegistryObject<Block> maze_stone_mosaic          = BLOCKS.register("maze_stone_mosaic", () -> new BlockTFMazestone());
+	public static final RegistryObject<Block> maze_stone_border          = BLOCKS.register("maze_stone_border", () -> new BlockTFMazestone());
+	public static final Block hedge                      = iCantBelieveItsNotNull(); //TODO Flatten?
+	public static final RegistryObject<Block> boss_spawner               = BLOCKS.register("boss_spawner", () -> new BlockTFBossSpawner());
 	public static final Block firefly_jar                = iCantBelieveItsNotNull();
-	public static final Block twilight_plant             = iCantBelieveItsNotNull();
+	public static final RegistryObject<Block> moss_patch                 = BLOCKS.register("moss_patch", () -> new BlockTFPlant(PlantVariant.MOSSPATCH));
+	public static final RegistryObject<Block> mayapple                   = BLOCKS.register("mayapple", () -> new BlockTFPlant(PlantVariant.MAYAPPLE));
+	public static final RegistryObject<Block> clover_patch               = BLOCKS.register("clover_patch", () -> new BlockTFPlant(PlantVariant.CLOVERPATCH));
+	public static final RegistryObject<Block> fiddlehead                 = BLOCKS.register("fiddlehead", () -> new BlockTFPlant(PlantVariant.FIDDLEHEAD));
+	public static final RegistryObject<Block> mushgloom                  = BLOCKS.register("mushgloom", () -> new BlockTFPlant(PlantVariant.MUSHGLOOM));
+	public static final RegistryObject<Block> forest_grass               = BLOCKS.register("forest_grass", () -> new BlockTFPlant(PlantVariant.FORESTGRASS));
+	public static final RegistryObject<Block> dead_bush                  = BLOCKS.register("dead_bush", () -> new BlockTFPlant(PlantVariant.DEADBUSH));
+	public static final RegistryObject<Block> torchberry                 = BLOCKS.register("torchberry", () -> new BlockTFPlant(PlantVariant.TORCHBERRY));
+	public static final RegistryObject<Block> root_strand                = BLOCKS.register("root_strand", () -> new BlockTFPlant(PlantVariant.ROOT_STRAND));
+	public static final RegistryObject<Block> fallen_leaves              = BLOCKS.register("fallen_leaves", () -> new BlockTFPlant(PlantVariant.FALLEN_LEAVES));
 	public static final Block cicada                     = iCantBelieveItsNotNull();
-	public static final Block root                       = iCantBelieveItsNotNull();
+	public static final RegistryObject<Block> root                       = BLOCKS.register("root", () -> new BlockTFRoots());
+	public static final RegistryObject<Block> liveroot                   = BLOCKS.register("liveroot", () -> new BlockTFRoots());
 	public static final Block uncrafting_table           = iCantBelieveItsNotNull();
-	public static final Block fire_jet                   = iCantBelieveItsNotNull();
-	public static final Block naga_stone                 = iCantBelieveItsNotNull();
-	public static final BlockBush twilight_sapling       = iCantBelieveItsNotNull();
-	public static final Block magic_log                  = iCantBelieveItsNotNull();
-	public static final Block magic_log_core             = iCantBelieveItsNotNull();
-	public static final BlockLeaves magic_leaves         = iCantBelieveItsNotNull();
-	public static final Block moonworm                   = iCantBelieveItsNotNull();
-	public static final Block tower_wood                 = iCantBelieveItsNotNull();
-	public static final BlockTFTowerDevice tower_device  = iCantBelieveItsNotNull();
-	//public static Block towerAntenna                   = null; // Not you
-	public static final Block tower_translucent          = iCantBelieveItsNotNull();
-	public static final Block trophy                     = iCantBelieveItsNotNull();
+	public static final Block fire_jet                   = iCantBelieveItsNotNull(); //TODO Flatten
+	public static final Block naga_stone                 = iCantBelieveItsNotNull(); //TODO Flatten
+	public static final RegistryObject<Block> oak_sapling                = BLOCKS.register("oak_sapling", () -> new BlockTFSapling(new TFGenSmallTwilightOak(true))); //TODO Tree
+	public static final RegistryObject<Block> canopy_sapling             = BLOCKS.register("canopy_sapling", () -> new BlockTFSapling(new TFGenCanopyOak(true))); //TODO Tree
+	public static final RegistryObject<Block> mangrove_sapling           = BLOCKS.register("mangrove_sapling", () -> new BlockTFSapling(new TFGenMangroveTree(true))); //TODO Tree
+	public static final RegistryObject<Block> darkwood_sapling           = BLOCKS.register("darkwood_sapling", () -> new BlockTFSapling(new TFGenDarkCanopyTree(true))); //TODO Tree
+	public static final RegistryObject<Block> hollow_oak_sapling         = BLOCKS.register("hollow_oak_sapling", () -> new BlockTFSapling(new TFGenHollowTree(true))); //TODO Tree
+	public static final RegistryObject<Block> time_sapling               = BLOCKS.register("time_sapling", () -> new BlockTFSapling(new TFGenTreeOfTime(true))); //TODO Tree
+	public static final RegistryObject<Block> transformation_sapling     = BLOCKS.register("transformation_sapling", () -> new BlockTFSapling(new TFGenTreeOfTransformation(true))); //TODO Tree
+	public static final RegistryObject<Block> mining_sapling             = BLOCKS.register("mining_sapling", () -> new BlockTFSapling(new TFGenMinersTree(true))); //TODO Tree
+	public static final RegistryObject<Block> sorting_sapling            = BLOCKS.register("sorting_sapling", () -> new BlockTFSapling(new TFGenSortingTree(true))); //TODO Tree
+	public static final RegistryObject<Block> rainboak_sapling           = BLOCKS.register("rainboak_sapling", () -> new BlockTFSapling(new TFGenSmallRainboak())); //TODO Tree
+	public static final RegistryObject<Block> time_log                   = BLOCKS.register("time_log", () -> new BlockTFMagicLog(MaterialColor.DIRT, MaterialColor.OBSIDIAN));
+	public static final RegistryObject<Block> transformation_log         = BLOCKS.register("transformation_log", () -> new BlockTFMagicLog(MaterialColor.WOOD, MaterialColor.OBSIDIAN));
+	public static final RegistryObject<Block> mining_log                 = BLOCKS.register("mining_log", () -> new BlockTFMagicLog(MaterialColor.SAND, MaterialColor.QUARTZ));
+	public static final RegistryObject<Block> sorting_log                = BLOCKS.register("sorting_log", () -> new BlockTFMagicLog(MaterialColor.OBSIDIAN, MaterialColor.BROWN));
+	public static final Block magic_log_core                             = iCantBelieveItsNotNull(); //TODO Flatten
+	public static final RegistryObject<Block> time_leaves                = BLOCKS.register("time_leaves", () -> new BlockTFMagicLeaves());
+	public static final RegistryObject<Block> transformation_leaves      = BLOCKS.register("transformation_leaves", () -> new BlockTFMagicLeaves());
+	public static final RegistryObject<Block> mining_leaves              = BLOCKS.register("mining_leaves", () -> new BlockTFMagicLeaves());
+	public static final RegistryObject<Block> sorting_leaves             = BLOCKS.register("sorting_leaves", () -> new BlockTFMagicLeaves());
+	public static final Block moonworm                                   = iCantBelieveItsNotNull();
+	public static final RegistryObject<Block> tower_wood                 = BLOCKS.register("tower_wood", () -> new BlockTFTowerWood(MaterialColor.ADOBE, 40.0F)); //TODO Flatten
+	public static final RegistryObject<Block> tower_wood_encased         = BLOCKS.register("tower_wood_encased", () -> new BlockTFTowerWood(MaterialColor.SAND, 40.0F)); //TODO Flatten
+	public static final RegistryObject<Block> tower_wood_cracked         = BLOCKS.register("tower_wood_cracked", () -> new BlockTFTowerWood(MaterialColor.ADOBE, 40.0F)); //TODO Flatten
+	public static final RegistryObject<Block> tower_wood_mossy           = BLOCKS.register("tower_wood_mossy", () -> new BlockTFTowerWood(MaterialColor.ADOBE, 40.0F)); //TODO Flatten
+	public static final RegistryObject<Block> tower_wood_infested        = BLOCKS.register("tower_wood_infested", () -> new BlockTFTowerWood(MaterialColor.ADOBE, 0.75F)); //TODO Flatten
+	public static final BlockTFTowerDevice tower_device                  = iCantBelieveItsNotNull(); //TODO Flatten
+	//public static Block towerAntenna                                   = null; // Not you
+	public static final Block tower_translucent          = iCantBelieveItsNotNull(); //TODO Flatten?
+	public static final Block trophy                     = iCantBelieveItsNotNull(); //TODO Flatten
 	public static final Block stronghold_shield          = iCantBelieveItsNotNull();
 	public static final Block trophy_pedestal            = iCantBelieveItsNotNull();
 	public static final Block aurora_block               = iCantBelieveItsNotNull();
-	public static final Block underbrick                 = iCantBelieveItsNotNull();
-	public static final Block thorns                     = iCantBelieveItsNotNull();
+	public static final RegistryObject<Block> underbrick                 = BLOCKS.register("underbrick", () -> new BlockTFUnderBrick());
+	public static final RegistryObject<Block> underbrick_mossy           = BLOCKS.register("underbrick_mossy", () -> new BlockTFUnderBrick());
+	public static final RegistryObject<Block> underbrick_cracked         = BLOCKS.register("underbrick_cracked", () -> new BlockTFUnderBrick());
+	public static final RegistryObject<Block> underbrick_floor           = BLOCKS.register("underbrick_floor", () -> new BlockTFUnderBrick());
+	public static final Block thorns                     = iCantBelieveItsNotNull(); //TODO Flatten
 	public static final Block burnt_thorns               = iCantBelieveItsNotNull();
 	public static final Block thorn_rose                 = iCantBelieveItsNotNull();
-	public static final BlockLeaves twilight_leaves_3    = iCantBelieveItsNotNull();
-	public static final Block deadrock                   = iCantBelieveItsNotNull();
-	public static final Block dark_leaves                = iCantBelieveItsNotNull();
+	public static final RegistryObject<Block> thorn_leaves              = BLOCKS.register("thorn_leaves", () -> new BlockTFLeaves3());
+	public static final RegistryObject<Block> beanstalk_leaves          = BLOCKS.register("beanstalk_leaves", () -> new BlockTFLeaves3());
+	public static final RegistryObject<Block> deadrock                  = BLOCKS.register("deadrock", () -> new BlockTFDeadrock());
+	public static final RegistryObject<Block> deadrock_cracked          = BLOCKS.register("deadrock_cracked", () -> new BlockTFDeadrock());
+	public static final RegistryObject<Block> deadrock_weathered        = BLOCKS.register("deadrock_weathered", () -> new BlockTFDeadrock());
+	public static final RegistryObject<Block> dark_leaves               = BLOCKS.register("dark_leaves", () -> new BlockTFDarkLeaves());
 	public static final Block aurora_pillar              = iCantBelieveItsNotNull();
-	public static final BlockSlab aurora_slab            = iCantBelieveItsNotNull();
-	public static final BlockSlab double_aurora_slab     = iCantBelieveItsNotNull();
+	public static final RegistryObject<Block> aurora_slab               = BLOCKS.register("aurora_slab", () -> new BlockTFAuroraSlab());
 	public static final Block trollsteinn                = iCantBelieveItsNotNull();
 	public static final Block wispy_cloud                = iCantBelieveItsNotNull();
 	public static final Block fluffy_cloud               = iCantBelieveItsNotNull();
@@ -68,19 +131,33 @@ public class TFBlocks {
 	public static final Block huge_lilypad               = iCantBelieveItsNotNull();
 	public static final Block huge_waterlily             = iCantBelieveItsNotNull();
 	public static final Block slider                     = iCantBelieveItsNotNull();
-	public static final Block castle_brick               = iCantBelieveItsNotNull();
-	public static final Block castle_stairs              = iCantBelieveItsNotNull();
-	public static final Block castle_pillar              = iCantBelieveItsNotNull();
-	public static final Block castle_rune_brick          = iCantBelieveItsNotNull();
-	public static final Block force_field                = iCantBelieveItsNotNull();
-	public static final Block cinder_furnace             = iCantBelieveItsNotNull();
-	public static final Block cinder_furnace_lit         = iCantBelieveItsNotNull();
+	public static final RegistryObject<Block> castle_brick               = BLOCKS.register("castle_brick", () -> new BlockTFCastleBlock(MaterialColor.QUARTZ));
+	public static final RegistryObject<Block> castle_brick_worn          = BLOCKS.register("castle_brick_worn", () -> new BlockTFCastleBlock(MaterialColor.QUARTZ));
+	public static final RegistryObject<Block> castle_brick_cracked       = BLOCKS.register("castle_brick_cracked", () -> new BlockTFCastleBlock(MaterialColor.QUARTZ));
+	public static final RegistryObject<Block> castle_brick_roof          = BLOCKS.register("castle_brick_roof", () -> new BlockTFCastleBlock(MaterialColor.GRAY));
+	public static final RegistryObject<Block> castle_brick_mossy         = BLOCKS.register("castle_brick_mossy", () -> new BlockTFCastleBlock(MaterialColor.QUARTZ));
+	public static final RegistryObject<Block> castle_brick_frame         = BLOCKS.register("castle_brick_frame", () -> new BlockTFCastleBlock(MaterialColor.QUARTZ));
+	public static final RegistryObject<Block> castle_pillar_encased      = BLOCKS.register("castle_pillar_encased", () -> new BlockTFCastlePillar());
+	public static final RegistryObject<Block> castle_pillar_bold         = BLOCKS.register("castle_pillar_bold", () -> new BlockTFCastlePillar());
+	public static final RegistryObject<Block> castle_stairs_encased      = BLOCKS.register("castle_stairs_encased", () -> new BlockTFCastleStairs(castle_pillar_encased.get().getDefaultState()));
+	public static final RegistryObject<Block> castle_stairs_bold         = BLOCKS.register("castle_stairs_bold", () -> new BlockTFCastleStairs(castle_pillar_bold.get().getDefaultState()));
+	public static final RegistryObject<Block> castle_rune_brick_pink     = BLOCKS.register("castle_rune_brick_pink", () -> new BlockTFCastleMagic());
+	public static final RegistryObject<Block> castle_rune_brick_blue     = BLOCKS.register("castle_rune_brick_blue", () -> new BlockTFCastleMagic());
+	public static final RegistryObject<Block> castle_rune_brick_yellow   = BLOCKS.register("castle_rune_brick_yellow", () -> new BlockTFCastleMagic());
+	public static final RegistryObject<Block> castle_rune_brick_purple   = BLOCKS.register("castle_rune_brick_purple", () -> new BlockTFCastleMagic());
+	public static final Block force_field                = iCantBelieveItsNotNull(); //TODO Flatten
+	public static final Block cinder_furnace             = iCantBelieveItsNotNull(); //TODO: Merge with cinder_furnace_lit
+	public static final Block cinder_furnace_lit         = iCantBelieveItsNotNull(); //TODO: Merge with cinder_furnace
 	public static final Block cinder_log                 = iCantBelieveItsNotNull();
-	public static final Block castle_door                = iCantBelieveItsNotNull();
-	public static final Block castle_door_vanished       = iCantBelieveItsNotNull();
+	public static final Block castle_door                = iCantBelieveItsNotNull(); //TODO Flatten
+	public static final Block castle_door_vanished       = iCantBelieveItsNotNull(); //TODO Flatten
 	public static final Block experiment_115             = iCantBelieveItsNotNull();
-	public static final Block miniature_structure        = iCantBelieveItsNotNull();
-	public static final Block block_storage              = iCantBelieveItsNotNull();
+	public static final Block miniature_structure        = iCantBelieveItsNotNull(); //TODO Flatten
+	public static final RegistryObject<Block> block_storage_ironwood     = BLOCKS.register("block_storage_ironwood", () -> new BlockTFCompressed(Material.WOOD, MaterialColor.WOOD, 5.0F, SoundType.WOOD));
+	public static final RegistryObject<Block> block_storage_fiery        = BLOCKS.register("block_storage_fiery", () -> new BlockTFCompressed(Material.IRON, MaterialColor.BLACK_TERRACOTTA, 5.0F, SoundType.METAL));
+	public static final RegistryObject<Block> block_storage_steeleaf     = BLOCKS.register("block_storage_steeleaf", () -> new BlockTFCompressed(Material.LEAVES, MaterialColor.FOLIAGE, 5.0F, SoundType.PLANT));
+	public static final RegistryObject<Block> block_storage_arctic_fur   = BLOCKS.register("block_storage_arctic_fur", () -> new BlockTFCompressed(Material.WOOL, MaterialColor.WOOL, 0.8F, SoundType.CLOTH));
+	public static final RegistryObject<Block> block_storage_carminite    = BLOCKS.register("block_storage_carminite", () -> new BlockTFCompressed(Material.CLAY, MaterialColor.RED, 0.0F, SoundType.SLIME));
 	public static final Block spiral_bricks              = iCantBelieveItsNotNull();
 	public static final Block etched_nagastone           = iCantBelieveItsNotNull();
 	public static final Block nagastone_pillar           = iCantBelieveItsNotNull();
@@ -102,72 +179,82 @@ public class TFBlocks {
 	public static final Block stone_twist                = iCantBelieveItsNotNull();
 	public static final Block stone_twist_thin           = iCantBelieveItsNotNull();
 
-	public static final BlockTF              twilight_oak_planks     = iCantBelieveItsNotNull();
-	public static final BlockTFStairs        twilight_oak_stairs     = iCantBelieveItsNotNull();
-	public static final BlockTFSlab          twilight_oak_doubleslab = iCantBelieveItsNotNull();
-	public static final BlockTFSlab          twilight_oak_slab       = iCantBelieveItsNotNull();
-	public static final BlockTFButtonWood    twilight_oak_button     = iCantBelieveItsNotNull();
-	public static final BlockTFFence         twilight_oak_fence      = iCantBelieveItsNotNull();
-	public static final BlockTFFenceGate     twilight_oak_gate       = iCantBelieveItsNotNull();
-	public static final BlockTFPressurePlate twilight_oak_plate      = iCantBelieveItsNotNull();
-	public static final BlockTF              canopy_planks           = iCantBelieveItsNotNull();
-	public static final BlockTFStairs        canopy_stairs           = iCantBelieveItsNotNull();
-	public static final BlockTFSlab          canopy_doubleslab       = iCantBelieveItsNotNull();
-	public static final BlockTFSlab          canopy_slab             = iCantBelieveItsNotNull();
-	public static final BlockTFButtonWood    canopy_button           = iCantBelieveItsNotNull();
-	public static final BlockTFFence         canopy_fence            = iCantBelieveItsNotNull();
-	public static final BlockTFFenceGate     canopy_gate             = iCantBelieveItsNotNull();
-	public static final BlockTFPressurePlate canopy_plate            = iCantBelieveItsNotNull();
-	public static final BlockTF              mangrove_planks         = iCantBelieveItsNotNull();
-	public static final BlockTFStairs        mangrove_stairs         = iCantBelieveItsNotNull();
-	public static final BlockTFSlab          mangrove_doubleslab     = iCantBelieveItsNotNull();
-	public static final BlockTFSlab          mangrove_slab           = iCantBelieveItsNotNull();
-	public static final BlockTFButtonWood    mangrove_button         = iCantBelieveItsNotNull();
-	public static final BlockTFFence         mangrove_fence          = iCantBelieveItsNotNull();
-	public static final BlockTFFenceGate     mangrove_gate           = iCantBelieveItsNotNull();
-	public static final BlockTFPressurePlate mangrove_plate          = iCantBelieveItsNotNull();
-	public static final BlockTF              dark_planks             = iCantBelieveItsNotNull();
-	public static final BlockTFStairs        dark_stairs             = iCantBelieveItsNotNull();
-	public static final BlockTFSlab          dark_doubleslab         = iCantBelieveItsNotNull();
-	public static final BlockTFSlab          dark_slab               = iCantBelieveItsNotNull();
-	public static final BlockTFButtonWood    dark_button             = iCantBelieveItsNotNull();
-	public static final BlockTFFence         dark_fence              = iCantBelieveItsNotNull();
-	public static final BlockTFFenceGate     dark_gate               = iCantBelieveItsNotNull();
-	public static final BlockTFPressurePlate dark_plate              = iCantBelieveItsNotNull();
-	public static final BlockTF              time_planks             = iCantBelieveItsNotNull();
-	public static final BlockTFStairs        time_stairs             = iCantBelieveItsNotNull();
-	public static final BlockTFSlab          time_doubleslab         = iCantBelieveItsNotNull();
-	public static final BlockTFSlab          time_slab               = iCantBelieveItsNotNull();
-	public static final BlockTFButtonWood    time_button             = iCantBelieveItsNotNull();
-	public static final BlockTFFence         time_fence              = iCantBelieveItsNotNull();
-	public static final BlockTFFenceGate     time_gate               = iCantBelieveItsNotNull();
-	public static final BlockTFPressurePlate time_plate              = iCantBelieveItsNotNull();
-	public static final BlockTF              trans_planks            = iCantBelieveItsNotNull();
-	public static final BlockTFStairs        trans_stairs            = iCantBelieveItsNotNull();
-	public static final BlockTFSlab          trans_doubleslab        = iCantBelieveItsNotNull();
-	public static final BlockTFSlab          trans_slab              = iCantBelieveItsNotNull();
-	public static final BlockTFButtonWood    trans_button            = iCantBelieveItsNotNull();
-	public static final BlockTFFence         trans_fence             = iCantBelieveItsNotNull();
-	public static final BlockTFFenceGate     trans_gate              = iCantBelieveItsNotNull();
-	public static final BlockTFPressurePlate trans_plate             = iCantBelieveItsNotNull();
-	public static final BlockTF              mine_planks             = iCantBelieveItsNotNull();
-	public static final BlockTFStairs        mine_stairs             = iCantBelieveItsNotNull();
-	public static final BlockTFSlab          mine_doubleslab         = iCantBelieveItsNotNull();
-	public static final BlockTFSlab          mine_slab               = iCantBelieveItsNotNull();
-	public static final BlockTFButtonWood    mine_button             = iCantBelieveItsNotNull();
-	public static final BlockTFFence         mine_fence              = iCantBelieveItsNotNull();
-	public static final BlockTFFenceGate     mine_gate               = iCantBelieveItsNotNull();
-	public static final BlockTFPressurePlate mine_plate              = iCantBelieveItsNotNull();
-	public static final BlockTF              sort_planks             = iCantBelieveItsNotNull();
-	public static final BlockTFStairs        sort_stairs             = iCantBelieveItsNotNull();
-	public static final BlockTFSlab          sort_doubleslab         = iCantBelieveItsNotNull();
-	public static final BlockTFSlab          sort_slab               = iCantBelieveItsNotNull();
-	public static final BlockTFButtonWood    sort_button             = iCantBelieveItsNotNull();
-	public static final BlockTFFence         sort_fence              = iCantBelieveItsNotNull();
-	public static final BlockTFFenceGate     sort_gate               = iCantBelieveItsNotNull();
-	public static final BlockTFPressurePlate sort_plate              = iCantBelieveItsNotNull();
+	// TODO chests? boats?
+	public static final RegistryObject<Block> twilight_oak_planks   = BLOCKS.register("twilight_oak_planks", () -> new BlockTF(MaterialColor.WOOD));
+	public static final RegistryObject<Block> twilight_oak_stairs   = BLOCKS.register("twilight_oak_stairs", () -> new BlockTFStairs(twilight_oak_planks.get().getDefaultState()));
+	public static final RegistryObject<Block> twilight_oak_slab     = BLOCKS.register("twilight_oak_slab", () -> new BlockTFSlab(MaterialColor.WOOD));
+	public static final RegistryObject<Block> twilight_oak_button   = BLOCKS.register("twilight_oak_button", () -> new BlockTFButtonWood());
+	public static final RegistryObject<Block> twilight_oak_fence    = BLOCKS.register("twilight_oak_fence", () -> new BlockTFFence(MaterialColor.WOOD));
+	public static final RegistryObject<Block> twilight_oak_gate     = BLOCKS.register("twilight_oak_gate", () -> new BlockTFFenceGate(MaterialColor.WOOD));
+	public static final RegistryObject<Block> twilight_oak_plate    = BLOCKS.register("twilight_oak_plate", () -> new BlockTFPressurePlate(MaterialColor.WOOD));
+	public static final RegistryObject<Block> twilight_oak_door     = BLOCKS.register("twilight_oak_door", () -> new BlockTFDoor(MaterialColor.WOOD));
+	public static final RegistryObject<Block> twilight_oak_trapdoor = BLOCKS.register("twilight_oak_trapdoor", () -> new BlockTFTrapDoor(MaterialColor.WOOD));
+	public static final RegistryObject<Block> canopy_planks         = BLOCKS.register("canopy_planks", () -> new BlockTF(MaterialColor.OBSIDIAN));
+	public static final RegistryObject<Block> canopy_stairs         = BLOCKS.register("canopy_stairs", () -> new BlockTFStairs(canopy_planks.get().getDefaultState()));
+	public static final RegistryObject<Block> canopy_slab           = BLOCKS.register("canopy_slab", () -> new BlockTFSlab(MaterialColor.OBSIDIAN));
+	public static final RegistryObject<Block> canopy_button         = BLOCKS.register("canopy_button", () -> new BlockTFButtonWood());
+	public static final RegistryObject<Block> canopy_fence          = BLOCKS.register("canopy_fence", () -> new BlockTFFence(MaterialColor.OBSIDIAN));
+	public static final RegistryObject<Block> canopy_gate           = BLOCKS.register("canopy_gate", () -> new BlockTFFenceGate(MaterialColor.OBSIDIAN));
+	public static final RegistryObject<Block> canopy_plate          = BLOCKS.register("canopy_plate", () -> new BlockTFPressurePlate(MaterialColor.OBSIDIAN));
+	public static final RegistryObject<Block> canopy_door           = BLOCKS.register("canopy_door", () -> new BlockTFDoor(MaterialColor.OBSIDIAN));
+	public static final RegistryObject<Block> canopy_trapdoor       = BLOCKS.register("canopy_trapdoor", () -> new BlockTFTrapDoor(MaterialColor.OBSIDIAN));
+	public static final RegistryObject<Block> mangrove_planks       = BLOCKS.register("mangrove_planks", () -> new BlockTF(MaterialColor.DIRT));
+	public static final RegistryObject<Block> mangrove_stairs       = BLOCKS.register("mangrove_stairs", () -> new BlockTFStairs(mangrove_planks.get().getDefaultState()));
+	public static final RegistryObject<Block> mangrove_slab         = BLOCKS.register("mangrove_slab", () -> new BlockTFSlab(MaterialColor.DIRT));
+	public static final RegistryObject<Block> mangrove_button       = BLOCKS.register("mangrove_button", () -> new BlockTFButtonWood());
+	public static final RegistryObject<Block> mangrove_fence        = BLOCKS.register("mangrove_fence", () -> new BlockTFFence(MaterialColor.DIRT));
+	public static final RegistryObject<Block> mangrove_gate         = BLOCKS.register("mangrove_gate", () -> new BlockTFFenceGate(MaterialColor.DIRT));
+	public static final RegistryObject<Block> mangrove_plate        = BLOCKS.register("mangrove_plate", () -> new BlockTFPressurePlate(MaterialColor.DIRT));
+	public static final RegistryObject<Block> mangrove_door         = BLOCKS.register("mangrove_door", () -> new BlockTFDoor(MaterialColor.DIRT));
+	public static final RegistryObject<Block> mangrove_trapdoor     = BLOCKS.register("mangrove_trapdoor", () -> new BlockTFTrapDoor(MaterialColor.DIRT));
+	public static final RegistryObject<Block> dark_planks           = BLOCKS.register("dark_planks", () -> new BlockTF(MaterialColor.ADOBE));
+	public static final RegistryObject<Block> dark_stairs           = BLOCKS.register("dark_stairs", () -> new BlockTFStairs(dark_planks.get().getDefaultState()));
+	public static final RegistryObject<Block> dark_slab             = BLOCKS.register("dark_slab", () -> new BlockTFSlab(MaterialColor.ADOBE));
+	public static final RegistryObject<Block> dark_button           = BLOCKS.register("dark_button", () -> new BlockTFButtonWood());
+	public static final RegistryObject<Block> dark_fence            = BLOCKS.register("dark_fence", () -> new BlockTFFence(MaterialColor.ADOBE));
+	public static final RegistryObject<Block> dark_gate             = BLOCKS.register("dark_gate", () -> new BlockTFFenceGate(MaterialColor.ADOBE));
+	public static final RegistryObject<Block> dark_plate            = BLOCKS.register("dark_plate", () -> new BlockTFPressurePlate(MaterialColor.ADOBE));
+	public static final RegistryObject<Block> dark_door             = BLOCKS.register("dark_door", () -> new BlockTFDoor(MaterialColor.ADOBE));
+	public static final RegistryObject<Block> dark_trapdoor         = BLOCKS.register("dark_trapdoor", () -> new BlockTFTrapDoor(MaterialColor.ADOBE));
+	public static final RegistryObject<Block> time_planks           = BLOCKS.register("time_planks", () -> new BlockTF(MaterialColor.DIRT));
+	public static final RegistryObject<Block> time_stairs           = BLOCKS.register("time_stairs", () -> new BlockTFStairs(time_planks.get().getDefaultState()));
+	public static final RegistryObject<Block> time_slab             = BLOCKS.register("time_slab", () -> new BlockTFSlab(MaterialColor.DIRT));
+	public static final RegistryObject<Block> time_button           = BLOCKS.register("time_button", () -> new BlockTFButtonWood());
+	public static final RegistryObject<Block> time_fence            = BLOCKS.register("time_fence", () -> new BlockTFFence(MaterialColor.DIRT));
+	public static final RegistryObject<Block> time_gate             = BLOCKS.register("time_gate", () -> new BlockTFFenceGate(MaterialColor.DIRT));
+	public static final RegistryObject<Block> time_plate            = BLOCKS.register("time_plate", () -> new BlockTFPressurePlate(MaterialColor.DIRT));
+	public static final RegistryObject<Block> time_door             = BLOCKS.register("time_door", () -> new BlockTFDoor(MaterialColor.DIRT));
+	public static final RegistryObject<Block> time_trapdoor         = BLOCKS.register("time_trapdoor", () -> new BlockTFTrapDoor(MaterialColor.DIRT));
+	public static final RegistryObject<Block> trans_planks          = BLOCKS.register("trans_planks", () -> new BlockTF(MaterialColor.WOOD));
+	public static final RegistryObject<Block> trans_stairs          = BLOCKS.register("trans_stairs", () -> new BlockTFStairs(trans_planks.get().getDefaultState()));
+	public static final RegistryObject<Block> trans_slab            = BLOCKS.register("trans_slab", () -> new BlockTFSlab(MaterialColor.WOOD));
+	public static final RegistryObject<Block> trans_button          = BLOCKS.register("trans_button", () -> new BlockTFButtonWood());
+	public static final RegistryObject<Block> trans_fence           = BLOCKS.register("trans_fence", () -> new BlockTFFence(MaterialColor.WOOD));
+	public static final RegistryObject<Block> trans_gate            = BLOCKS.register("trans_gate", () -> new BlockTFFenceGate(MaterialColor.WOOD));
+	public static final RegistryObject<Block> trans_plate           = BLOCKS.register("trans_plate", () -> new BlockTFPressurePlate(MaterialColor.WOOD));
+	public static final RegistryObject<Block> trans_door            = BLOCKS.register("trans_door", () -> new BlockTFDoor(MaterialColor.WOOD));
+	public static final RegistryObject<Block> trans_trapdoor        = BLOCKS.register("trans_trapdoor", () -> new BlockTFTrapDoor(MaterialColor.WOOD));
+	public static final RegistryObject<Block> mine_planks           = BLOCKS.register("mine_planks", () -> new BlockTF(MaterialColor.SAND));
+	public static final RegistryObject<Block> mine_stairs           = BLOCKS.register("mine_stairs", () -> new BlockTFStairs(mine_planks.get().getDefaultState()));
+	public static final RegistryObject<Block> mine_slab             = BLOCKS.register("mine_slab", () -> new BlockTFSlab(MaterialColor.SAND));
+	public static final RegistryObject<Block> mine_button           = BLOCKS.register("mine_button", () -> new BlockTFButtonWood());
+	public static final RegistryObject<Block> mine_fence            = BLOCKS.register("mine_fence", () -> new BlockTFFence(MaterialColor.SAND));
+	public static final RegistryObject<Block> mine_gate             = BLOCKS.register("mine_gate", () -> new BlockTFFenceGate(MaterialColor.SAND));
+	public static final RegistryObject<Block> mine_plate            = BLOCKS.register("mine_plate", () -> new BlockTFPressurePlate(MaterialColor.SAND));
+	public static final RegistryObject<Block> mine_door             = BLOCKS.register("mine_door", () -> new BlockTFDoor(MaterialColor.SAND));
+	public static final RegistryObject<Block> mine_trapdoor         = BLOCKS.register("mine_trapdoor", () -> new BlockTFTrapDoor(MaterialColor.SAND));
+	public static final RegistryObject<Block> sort_planks           = BLOCKS.register("sort_planks", () -> new BlockTF(MaterialColor.OBSIDIAN));
+	public static final RegistryObject<Block> sort_stairs           = BLOCKS.register("sort_stairs", () -> new BlockTFStairs(sort_planks.get().getDefaultState()));
+	public static final RegistryObject<Block> sort_slab             = BLOCKS.register("sort_slab", () -> new BlockTFSlab(MaterialColor.OBSIDIAN));
+	public static final RegistryObject<Block> sort_button           = BLOCKS.register("sort_button", () -> new BlockTFButtonWood());
+	public static final RegistryObject<Block> sort_fence            = BLOCKS.register("sort_fence", () -> new BlockTFFence(MaterialColor.OBSIDIAN));
+	public static final RegistryObject<Block> sort_gate             = BLOCKS.register("sort_gate", () -> new BlockTFFenceGate(MaterialColor.OBSIDIAN));
+	public static final RegistryObject<Block> sort_plate            = BLOCKS.register("sort_plate", () -> new BlockTFPressurePlate(MaterialColor.OBSIDIAN));
+	public static final RegistryObject<Block> sort_door             = BLOCKS.register("sort_door", () -> new BlockTFDoor(MaterialColor.OBSIDIAN));
+	public static final RegistryObject<Block> sort_trapdoor         = BLOCKS.register("sort_trapdoor", () -> new BlockTFTrapDoor(MaterialColor.OBSIDIAN));
 
-	private static <T> T iCantBelieveItsNotNull() {
+	private static <T> T iCantBelieveItsNotNull()
+	{
 		return null;
 	}
 }

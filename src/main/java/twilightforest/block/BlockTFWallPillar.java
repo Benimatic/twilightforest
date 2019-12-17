@@ -20,7 +20,7 @@ public class BlockTFWallPillar extends BlockTFConnectableRotatedPillar implement
     BlockTFWallPillar(Material material, double width, double height) {
         super(material, width, height);
 
-        this.setDefaultState(this.getDefaultState().withProperty(UP, false).withProperty(DOWN, false));
+        this.setDefaultState(this.getDefaultState().with(UP, false).with(DOWN, false));
     }
 
     @Override
@@ -41,7 +41,7 @@ public class BlockTFWallPillar extends BlockTFConnectableRotatedPillar implement
     @Override
     public BlockState getActualState(BlockState state, IBlockAccess world, BlockPos pos) {
         Direction.Axis axis = state.getValue(AXIS);
-        return super.getActualState(state.withProperty(UP, canConnectTo(state, world.getBlockState(pos.offset(getFacingFromPropertyWithAxis(UP, axis))), world, pos, Direction.UP)).withProperty(DOWN, canConnectTo(state, world.getBlockState(pos.offset(getFacingFromPropertyWithAxis(DOWN, axis))), world, pos, Direction.DOWN)), world, pos);
+        return super.getActualState(state.with(UP, canConnectTo(state, world.getBlockState(pos.offset(getFacingFromPropertyWithAxis(UP, axis))), world, pos, Direction.UP)).with(DOWN, canConnectTo(state, world.getBlockState(pos.offset(getFacingFromPropertyWithAxis(DOWN, axis))), world, pos, Direction.DOWN)), world, pos);
     }
 
     private static Direction getFacingFromPropertyWithAxis(PropertyBool property, Direction.Axis axis) {

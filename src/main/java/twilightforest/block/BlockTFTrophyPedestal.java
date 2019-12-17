@@ -11,7 +11,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.util.Direction;
@@ -31,7 +31,7 @@ import twilightforest.client.ModelRegisterCallbackCTM;
 import twilightforest.item.TFItems;
 import twilightforest.world.TFWorld;
 
-@Optional.Interface(modid = "thaumcraft", iface = "thaumcraft.api.crafting.IInfusionStabiliser")
+//@Optional.Interface(modid = "thaumcraft", iface = "thaumcraft.api.crafting.IInfusionStabiliser")
 public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbackCTM, IInfusionStabiliser {
 
 	public static final IProperty<Direction> FACING = PropertyDirection.create("facing", Direction.Plane.HORIZONTAL);
@@ -45,7 +45,7 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
 		this.setResistance(2000.0F);
 		this.setSoundType(SoundType.STONE);
 		this.setCreativeTab(TFItems.creativeTab);
-		this.setDefaultState(getDefaultState().withProperty(LATENT, true).withProperty(FACING, Direction.NORTH));
+		this.setDefaultState(getDefaultState().with(LATENT, true).with(FACING, Direction.NORTH));
 	}
 
 	@Override
@@ -66,9 +66,9 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
 	@Deprecated
 	public BlockState getStateFromMeta(int meta) {
 		BlockState ret = getDefaultState();
-		ret = ret.withProperty(FACING, Direction.byHorizontalIndex(meta & 0b11));
+		ret = ret.with(FACING, Direction.byHorizontalIndex(meta & 0b11));
 		if ((meta & 0b100) > 0) {
-			ret = ret.withProperty(LATENT, true);
+			ret = ret.with(LATENT, true);
 		}
 		return ret;
 	}
@@ -133,13 +133,13 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
 	}
 
 	private void doPedestalEffect(World world, BlockPos pos, BlockState state) {
-		world.setBlockState(pos, state.withProperty(LATENT, false));
+		world.setBlockState(pos, state.with(LATENT, false));
 		removeNearbyShields(world, pos);
 		world.playSound(null, pos, SoundEvents.ENTITY_ZOMBIE_INFECT, SoundCategory.BLOCKS, 4.0F, 0.1F);
 	}
 
 	private void rewardNearbyPlayers(World world, BlockPos pos) {
-		for (EntityPlayerMP player : world.getEntitiesWithinAABB(EntityPlayerMP.class, new AxisAlignedBB(pos).grow(16.0D))) {
+		for (ServerPlayerEntity player : world.getEntitiesWithinAABB(ServerPlayerEntity.class, new AxisAlignedBB(pos).grow(16.0D))) {
 			TFAdvancements.PLACED_TROPHY_ON_PEDESTAL.trigger(player);
 		}
 	}
@@ -156,7 +156,7 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
 	@Override
 	@Deprecated
 	public BlockState getStateForPlacement(World worldIn, BlockPos pos, Direction facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-		return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
+		return this.getDefaultState().with(FACING, placer.getHorizontalFacing().getOpposite());
 	}
 
 	// todo ambiguous in 1.7, what was this supposed to be?

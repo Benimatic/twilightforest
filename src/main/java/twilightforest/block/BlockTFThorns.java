@@ -1,7 +1,7 @@
 package twilightforest.block;
 
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.EnumPushReaction;
+import net.minecraft.block.material.PushReaction;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -10,7 +10,9 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.BlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.BlockRenderLayer;
@@ -19,6 +21,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -29,10 +32,12 @@ import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
 import twilightforest.util.WorldUtil;
 
+import javax.annotation.Nullable;
 import java.util.Random;
 
-public class BlockTFThorns extends BlockTFConnectableRotatedPillar implements ModelRegisterCallback {
+public class BlockTFThorns extends BlockTFConnectableRotatedPillar {
 
+	//TODO: Flatten
 	public static final IProperty<ThornVariant> VARIANT = PropertyEnum.create("variant", ThornVariant.class);
 
 	private static final float THORN_DAMAGE = 4.0F;
@@ -45,7 +50,7 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar implements Mo
 		this.setCreativeTab(TFItems.creativeTab);
 
 		if (hasVariant()) {
-			this.setDefaultState(this.getDefaultState().withProperty(VARIANT, ThornVariant.BROWN));
+			this.setDefaultState(this.getDefaultState().with(VARIANT, ThornVariant.BROWN));
 		}
 	}
 
@@ -65,7 +70,7 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar implements Mo
 
 	@Override
 	public BlockState getStateFromMeta(int meta) {
-		return hasVariant() ? super.getStateFromMeta(meta).withProperty(VARIANT, ThornVariant.values()[meta & 0b11]) : super.getStateFromMeta(meta);
+		return hasVariant() ? super.getStateFromMeta(meta).with(VARIANT, ThornVariant.values()[meta & 0b11]) : super.getStateFromMeta(meta);
 	}
 
 	@Override
@@ -88,13 +93,15 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar implements Mo
 		return hasVariant() ? state.getValue(VARIANT).ordinal() : 0;
 	}
 
+	@Nullable
 	@Override
-	public PathNodeType getAiPathNodeType(BlockState state, IBlockAccess world, BlockPos pos) {
+	public PathNodeType getAiPathNodeType(BlockState state, IBlockReader world, BlockPos pos, @Nullable MobEntity entity) {
 		return PathNodeType.DAMAGE_CACTUS;
 	}
 
 	@Override
-	public void onEntityCollision(World world, BlockPos pos, BlockState state, Entity entity) {
+	@Deprecated
+	public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entity) {
 		entity.attackEntityFrom(DamageSource.CACTUS, THORN_DAMAGE);
 	}
 
@@ -102,15 +109,15 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar implements Mo
 	public void onEntityWalk(World world, BlockPos pos, Entity entity) {
 		BlockState state = world.getBlockState(pos);
 
-		if (state.getBlock() instanceof BlockTFThorns && state.getValue(AXIS) == Direction.Axis.Y)
-			onEntityCollision(world, pos, state, entity);
+		if (state.getBlock() instanceof BlockTFThorns && state.get(AXIS) == Direction.Axis.Y)
+			onEntityCollision(state, world, pos, entity);
 
 		super.onEntityWalk(world, pos, entity);
 	}
 
 	@Override
-	public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean harvest) {
-		if (!player.capabilities.isCreativeMode) {
+	public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, IFluidState fluid) {
+		if (!player.abilities.isCreativeMode) {
 			if (!world.isRemote) {
 				// grow back
 				world.setBlockState(pos, state, 2);
@@ -126,15 +133,15 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar implements Mo
 
 	@Override
 	@Deprecated
-	public EnumPushReaction getPushReaction(BlockState state) {
-		return EnumPushReaction.BLOCK;
+	public PushReaction getPushReaction(BlockState state) {
+		return PushReaction.BLOCK;
 	}
 
 	/**
 	 * Grow thorns out of both the ends, then maybe in another direction too
 	 */
 	private void doThornBurst(World world, BlockPos pos, BlockState state) {
-		switch (state.getValue(AXIS)) {
+		switch (state.get(AXIS)) {
 			case Y:
 				growThorns(world, pos, Direction.UP);
 				growThorns(world, pos, Direction.DOWN);
@@ -165,7 +172,7 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar implements Mo
 			BlockPos dPos = pos.offset(dir, i);
 
 			if (world.isAirBlock(dPos)) {
-				world.setBlockState(dPos, getDefaultState().withProperty(AXIS, dir.getAxis()).withProperty(VARIANT, ThornVariant.GREEN), 2);
+				world.setBlockState(dPos, getDefaultState().with(AXIS, dir.getAxis()).with(VARIANT, ThornVariant.GREEN), 2);
 			} else {
 				break;
 			}
@@ -198,14 +205,6 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar implements Mo
 	}
 
 	@Override
-	public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> list) {
-		int n = hasVariant() ? ThornVariant.values().length : 1;
-		for (int i = 0; i < n; i++) {
-			list.add(new ItemStack(this, 1, i));
-		}
-	}
-
-	@Override
 	public BlockFaceShape getBlockFaceShape(IBlockAccess world, BlockState state, BlockPos pos, Direction face) {
 		return face.getAxis() != state.getValue(AXIS) ? BlockFaceShape.MIDDLE_POLE_THICK : BlockFaceShape.CENTER_BIG;
 	}
@@ -214,13 +213,6 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar implements Mo
 	@Override
 	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT;
-	}
-
-
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	public void registerModel() {
-		ModelUtils.registerToStateSingleVariant(this, VARIANT);
 	}
 
 	@OnlyIn(Dist.CLIENT)

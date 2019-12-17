@@ -8,10 +8,7 @@ import twilightforest.item.TFItems;
 public class BlockTFLapisBlock extends Block {
 
     protected BlockTFLapisBlock() {
-        super(Material.IRON);
-        this.setSoundType(SoundType.STONE);
-        this.setCreativeTab(TFItems.creativeTab);
-        this.setHardness(3.0F);
-        this.setResistance(5.0F);
+        super(Properties.create(Material.IRON).hardnessAndResistance(3.0F, 5.0F).sound(SoundType.STONE));
+        //this.setCreativeTab(TFItems.creativeTab); TODO 1.14
     }
 }

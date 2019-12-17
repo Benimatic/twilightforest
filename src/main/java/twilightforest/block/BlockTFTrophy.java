@@ -1,6 +1,7 @@
 package twilightforest.block;
 
-import net.minecraft.block.BlockSkull;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.SkullBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.entity.player.PlayerEntity;
@@ -17,6 +18,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.Optional;
@@ -29,11 +31,12 @@ import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 import twilightforest.tileentity.TileEntityTFTrophy;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-@Optional.Interface(modid = "thaumcraft", iface = "thaumcraft.api.crafting.IInfusionStabiliser")
-public class BlockTFTrophy extends BlockSkull implements ModelRegisterCallback, IInfusionStabiliser {
+//@Optional.Interface(modid = "thaumcraft", iface = "thaumcraft.api.crafting.IInfusionStabiliser")
+public class BlockTFTrophy extends SkullBlock /*implements IInfusionStabiliser*/ {
 
 	private static final AxisAlignedBB HYDRA_Y_BB = new AxisAlignedBB(0.25F, 0.0F, 0.25F, 0.75F, 0.5F, 0.75F);
 	private static final AxisAlignedBB HYDRA_EAST_BB = new AxisAlignedBB(0.0F, 0.25F, 0.25F, 0.5F, 0.75F, 0.75F);
@@ -43,7 +46,7 @@ public class BlockTFTrophy extends BlockSkull implements ModelRegisterCallback, 
 	private static final AxisAlignedBB URGHAST_BB = new AxisAlignedBB(0.25F, 0.5F, 0.25F, 0.75F, 1F, 0.75F);
 
 	public BlockTFTrophy() {
-		setDefaultState(blockState.getBaseState().withProperty(BlockSkull.NODROP, false).withProperty(BlockSkull.FACING, Direction.UP));
+		setDefaultState(stateContainer.getBaseState().with(SkullBlock.NODROP, false).with(SkullBlock.ROTATION, Direction.UP));
 	}
 
 	@Override
@@ -55,10 +58,11 @@ public class BlockTFTrophy extends BlockSkull implements ModelRegisterCallback, 
 	public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess access, BlockPos pos) {
 		TileEntity te = access.getTileEntity(pos);
 		if (te instanceof TileEntityTFTrophy) {
+			//TODO 1.14: Flatten
 			switch (BossVariant.getVariant(((TileEntityTFTrophy) te).getSkullType())) {
 				case HYDRA:
 					// hydra bounds TODO: actually use non-default bounds here
-					switch (state.getValue(BlockSkull.FACING)) {
+					switch (state.getValue(SkullBlock.ROTATION)) {
 						case UP:
 						default:
 							return HYDRA_Y_BB;
@@ -120,60 +124,55 @@ public class BlockTFTrophy extends BlockSkull implements ModelRegisterCallback, 
 		return true;
 	}
 
+	@Nullable
 	@Override
-	public TileEntity createTileEntity(World world, BlockState state) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new TileEntityTFTrophy();
 	}
 
-	@Override
-	public ItemStack getItem(World world, BlockPos pos, BlockState state) {
-		TileEntity te = world.getTileEntity(pos);
-		if (te instanceof TileEntityTFTrophy) {
-			return new ItemStack(TFItems.trophy, 1, ((TileEntityTFTrophy) te).getSkullType());
-		}
-		return ItemStack.EMPTY;
-	}
-
-	@Override
-	public Item getItemDropped(BlockState state, Random rand, int fortune) {
-		return TFItems.trophy;
-	}
-
-	// [VanillaCopy] of superclass, relevant edits indicated
-	@Override
-	public List<ItemStack> getDrops(IBlockAccess worldIn, BlockPos pos, BlockState state, int fortune) {
-		java.util.List<ItemStack> ret = new java.util.ArrayList<ItemStack>();
-		{
-			if (!((Boolean) state.getValue(NODROP)).booleanValue()) {
-				TileEntity tileentity = worldIn.getTileEntity(pos);
-
-				if (tileentity instanceof TileEntitySkull) {
-					TileEntitySkull tileentityskull = (TileEntitySkull) tileentity;
-					ItemStack itemstack = new ItemStack(TFItems.trophy, 1, tileentityskull.getSkullType()); // TF - use our item
-
-                    /*if (tileentityskull.getSkullType() == 3 && tileentityskull.getPlayerProfile() != null)
-					{
-                        itemstack.setTag(new CompoundNBT());
-                        CompoundNBT CompoundNBT = new CompoundNBT();
-                        NBTUtil.writeGameProfile(CompoundNBT, tileentityskull.getPlayerProfile());
-                        itemstack.getTag().setTag("SkullOwner", CompoundNBT);
-                    }*/// TF - don't set player skins
-
-					ret.add(itemstack);
-				}
-			}
-		}
-		return ret;
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	public void registerModel() {
-		ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(NODROP).ignore(FACING).build());
-	}
-
-	@Override
-	public boolean canStabaliseInfusion(World world, BlockPos blockPos) {
-		return true;
-	}
+//	@Override
+//	public ItemStack getItem(World world, BlockPos pos, BlockState state) {
+//		TileEntity te = world.getTileEntity(pos);
+//		if (te instanceof TileEntityTFTrophy) {
+//			return new ItemStack(TFItems.trophy, 1, ((TileEntityTFTrophy) te).getSkullType());
+//		}
+//		return ItemStack.EMPTY;
+//	}
+//
+//	@Override
+//	public Item getItemDropped(BlockState state, Random rand, int fortune) {
+//		return TFItems.trophy;
+//	}
+//
+//	// [VanillaCopy] of superclass, relevant edits indicated
+//	@Override
+//	public List<ItemStack> getDrops(IBlockAccess worldIn, BlockPos pos, BlockState state, int fortune) {
+//		java.util.List<ItemStack> ret = new java.util.ArrayList<ItemStack>();
+//		{
+//			if (!((Boolean) state.getValue(NODROP)).booleanValue()) {
+//				TileEntity tileentity = worldIn.getTileEntity(pos);
+//
+//				if (tileentity instanceof TileEntitySkull) {
+//					TileEntitySkull tileentityskull = (TileEntitySkull) tileentity;
+//					ItemStack itemstack = new ItemStack(TFItems.trophy, 1, tileentityskull.getSkullType()); // TF - use our item
+//
+//                    /*if (tileentityskull.getSkullType() == 3 && tileentityskull.getPlayerProfile() != null)
+//					{
+//                        itemstack.setTag(new CompoundNBT());
+//                        CompoundNBT CompoundNBT = new CompoundNBT();
+//                        NBTUtil.writeGameProfile(CompoundNBT, tileentityskull.getPlayerProfile());
+//                        itemstack.getTag().setTag("SkullOwner", CompoundNBT);
+//                    }*/// TF - don't set player skins
+//
+//					ret.add(itemstack);
+//				}
+//			}
+//		}
+//		return ret;
+//	}
+//
+//	@Override
+//	public boolean canStabaliseInfusion(World world, BlockPos blockPos) {
+//		return true;
+//	}
 }
