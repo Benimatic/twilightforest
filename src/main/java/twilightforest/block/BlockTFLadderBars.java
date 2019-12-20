@@ -4,11 +4,13 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockLadder;
 import net.minecraft.block.LadderBlock;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.BlockState;
 import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -22,17 +24,13 @@ public class BlockTFLadderBars extends LadderBlock {
 	public static final BooleanProperty RIGHT = BooleanProperty.create("right");
 
     BlockTFLadderBars() {
+    	super(Properties.create(Material.MISCELLANEOUS).hardnessAndResistance(5.0F, 10.0F).sound(SoundType.METAL));
         this.setDefaultState(this.getDefaultState().with(LEFT, false).with(RIGHT, false));
     }
 
     @Override
-    public Block setSoundType(SoundType sound) {
-        return super.setSoundType(sound);
-    }
-
-    @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, BlockLadder.FACING, LEFT, RIGHT);
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+        builder.add(LEFT, RIGHT);
     }
 
     @Override

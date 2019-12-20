@@ -54,23 +54,8 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar {
 		}
 	}
 
-	@Override
-	protected IProperty[] getAdditionalProperties() {
-		return new IProperty[]{VARIANT};
-	}
-
 	protected boolean hasVariant() {
 		return true;
-	}
-
-	@Override
-	public int getMetaFromState(BlockState state) {
-		return hasVariant() ? super.getMetaFromState(state) | state.getValue(VARIANT).ordinal() : super.getMetaFromState(state);
-	}
-
-	@Override
-	public BlockState getStateFromMeta(int meta) {
-		return hasVariant() ? super.getStateFromMeta(meta).with(VARIANT, ThornVariant.values()[meta & 0b11]) : super.getStateFromMeta(meta);
 	}
 
 	@Override
@@ -86,11 +71,6 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar {
 				|| otherState.getMaterial() == Material.GRASS
 				|| otherState.getMaterial() == Material.GROUND)
 				|| super.canConnectTo(state, otherState, world, pos, connectTo);
-	}
-
-	@Override
-	public int damageDropped(BlockState state) {
-		return hasVariant() ? state.getValue(VARIANT).ordinal() : 0;
 	}
 
 	@Nullable
@@ -125,7 +105,7 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar {
 				this.doThornBurst(world, pos, state);
 			}
 		} else {
-			world.setBlockToAir(pos);
+			world.removeBlock(pos, false);
 		}
 
 		return true;
@@ -194,10 +174,10 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar {
 		}
 	}
 
-	@Override
-	public int quantityDropped(Random random) {
-		return 0;
-	}
+//	@Override
+//	public int quantityDropped(Random random) {
+//		return 0;
+//	}
 
 	@Override
 	public boolean canSustainLeaves(BlockState state, IBlockAccess world, BlockPos pos) {

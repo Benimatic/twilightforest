@@ -5,21 +5,24 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.client.ModelRegisterCallback;
-import twilightforest.item.TFItems;
+
+import javax.annotation.Nullable;
 
 public class BlockTFKnightmetalBlock extends Block {
 
-	private static final AxisAlignedBB AABB = new AxisAlignedBB(1 / 16F, 1 / 16F, 1 / 16F, 15 / 16F, 15 / 16F, 15 / 16F);
+	private static final VoxelShape AABB = VoxelShapes.create(new AxisAlignedBB(1 / 16F, 1 / 16F, 1 / 16F, 15 / 16F, 15 / 16F, 15 / 16F));
 	private static final float BLOCK_DAMAGE = 4;
 
 	public BlockTFKnightmetalBlock() {
@@ -29,36 +32,30 @@ public class BlockTFKnightmetalBlock extends Block {
 
 	@Override
 	@Deprecated
-	public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos) {
+	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
 		return AABB;
 	}
 
+	@Nullable
 	@Override
-	public PathNodeType getAiPathNodeType(BlockState state, IBlockAccess world, BlockPos pos) {
+	public PathNodeType getAiPathNodeType(BlockState state, IBlockReader world, BlockPos pos, @Nullable MobEntity entity) {
 		return PathNodeType.DAMAGE_CACTUS;
 	}
 
 	@Override
-	public void onEntityCollision(World world, BlockPos pos, BlockState state, Entity entity) {
+	@Deprecated
+	public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entity) {
 		entity.attackEntityFrom(DamageSource.CACTUS, BLOCK_DAMAGE);
 	}
 
 	@Override
-	@Deprecated
-	public boolean isOpaqueCube(BlockState state) {
+	public boolean isSolid(BlockState state) {
 		return false;
 	}
 
 	@Override
 	@Deprecated
-	public boolean isFullCube(BlockState state) {
-		return false;
-	}
-
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	@Deprecated
-	public boolean shouldSideBeRendered(BlockState state, IBlockAccess access, BlockPos pos, Direction side) {
-		return !access.getBlockState(pos.offset(side)).doesSideBlockRendering(access, pos.offset(side), side.getOpposite());
+	public boolean doesSideBlockRendering(BlockState state, IEnviromentBlockReader world, BlockPos pos, Direction face) {
+		return !world.getBlockState(pos.offset(face)).doesSideBlockRendering(world, pos.offset(face), face.getOpposite());
 	}
 }

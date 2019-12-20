@@ -1,18 +1,14 @@
 package twilightforest.block;
 
-import net.minecraft.block.BlockHugeMushroom;
 import net.minecraft.block.HugeMushroomBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.material.Material;
-import twilightforest.client.ModelRegisterCallback;
 
 public class BlockTFHugeGloomBlock extends HugeMushroomBlock {
 
 	public BlockTFHugeGloomBlock() {
-		super(Material.WOOD, MaterialColor.ADOBE, TFBlocks.twilight_plant);
-		this.setHardness(0.2F);
-		this.setSoundType(SoundType.WOOD);
-		this.setLightLevel(5F / 16F);
+		super(Properties.create(Material.WOOD, MaterialColor.ADOBE).hardnessAndResistance(0.2F).sound(SoundType.WOOD).lightValue(5));
+		//TODO: Add to item group (item)
 	}
 }

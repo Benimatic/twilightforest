@@ -3,99 +3,64 @@ package twilightforest.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.DirectionProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.item.Item;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.Optional;
-import thaumcraft.api.crafting.IInfusionStabiliser;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.client.ModelRegisterCallbackCTM;
-import twilightforest.item.TFItems;
 import twilightforest.world.TFWorld;
 
+import javax.annotation.Nullable;
+
+//TODO 1.14: Thaumcraft is dead
 //@Optional.Interface(modid = "thaumcraft", iface = "thaumcraft.api.crafting.IInfusionStabiliser")
-public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbackCTM, IInfusionStabiliser {
+public class BlockTFTrophyPedestal extends Block /*implements IInfusionStabiliser*/ {
 
-	public static final IProperty<Direction> FACING = PropertyDirection.create("facing", Direction.Plane.HORIZONTAL);
-	public static final IProperty<Boolean> LATENT = PropertyBool.create("latent");
+	public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
+	public static final BooleanProperty LATENT = BooleanProperty.create("latent");
 
-	private static final AxisAlignedBB AABB = new AxisAlignedBB(0.0625F, 0.0F, 0.0625F, 0.9375F, 1.0F, 0.9375F);
+	private static final VoxelShape AABB = VoxelShapes.create(new AxisAlignedBB(0.0625F, 0.0F, 0.0625F, 0.9375F, 1.0F, 0.9375F));
 
 	public BlockTFTrophyPedestal() {
-		super(Material.ROCK);
-		this.setHardness(2.0F);
-		this.setResistance(2000.0F);
-		this.setSoundType(SoundType.STONE);
-		this.setCreativeTab(TFItems.creativeTab);
+		super(Properties.create(Material.ROCK).hardnessAndResistance(2.0F, 2000.0F).sound(SoundType.STONE));
+		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
 		this.setDefaultState(getDefaultState().with(LATENT, true).with(FACING, Direction.NORTH));
 	}
 
 	@Override
-	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, FACING, LATENT);
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+		builder.add(FACING, LATENT);
 	}
 
 	@Override
-	public int getMetaFromState(BlockState state) {
-		int meta = state.getValue(FACING).getHorizontalIndex();
-		if (state.getValue(LATENT)) {
-			meta |= 1 << 2;
-		}
-		return meta;
-	}
-
-	@Override
-	@Deprecated
-	public BlockState getStateFromMeta(int meta) {
-		BlockState ret = getDefaultState();
-		ret = ret.with(FACING, Direction.byHorizontalIndex(meta & 0b11));
-		if ((meta & 0b100) > 0) {
-			ret = ret.with(LATENT, true);
-		}
-		return ret;
-	}
-
-	@Override
-	@Deprecated
-	public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess world, BlockPos pos) {
+	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
 		return AABB;
 	}
 
 	@Override
 	@Deprecated
-	public boolean isFullCube(BlockState state) {
+	public boolean isSolid(BlockState state) {
 		return false;
 	}
 
 	@Override
-	@Deprecated
-	public boolean isOpaqueCube(BlockState state) {
-		return false;
-	}
-
-	@Override
-	@Deprecated
-	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
-
-		if (world.isRemote || !state.getValue(LATENT) || !isTrophyOnTop(world, pos)) return;
+	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
+		if (world.isRemote || !state.get(LATENT) || !isTrophyOnTop(world, pos)) return;
 
 		if (TFWorld.isProgressionEnforced(world)) {
 			if (areNearbyPlayersEligible(world, pos)) {
@@ -116,7 +81,7 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
 	private void warnIneligiblePlayers(World world, BlockPos pos) {
 		for (PlayerEntity player : world.getEntitiesWithinAABB(PlayerEntity.class, new AxisAlignedBB(pos).grow(16.0D))) {
 			if (!isPlayerEligible(player)) {
-				player.sendStatusMessage(new TextComponentTranslation(TwilightForestMod.ID + ".trophy_pedestal.ineligible"), true);
+				player.sendStatusMessage(new TranslationTextComponent(TwilightForestMod.ID + ".trophy_pedestal.ineligible"), true);
 			}
 		}
 	}
@@ -153,46 +118,36 @@ public class BlockTFTrophyPedestal extends Block implements ModelRegisterCallbac
 					}
 	}
 
+	@Nullable
 	@Override
-	@Deprecated
-	public BlockState getStateForPlacement(World worldIn, BlockPos pos, Direction facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-		return this.getDefaultState().with(FACING, placer.getHorizontalFacing().getOpposite());
+	public BlockState getStateForPlacement(BlockItemUseContext context) {
+		return this.getDefaultState().with(FACING, context.getPlayer().getHorizontalFacing().getOpposite());
 	}
 
 	// todo ambiguous in 1.7, what was this supposed to be?
 	@Override
 	@Deprecated
-	public float getPlayerRelativeBlockHardness(BlockState state, PlayerEntity player, World world, BlockPos pos) {
-		return state.getValue(LATENT) ? -1 : super.getPlayerRelativeBlockHardness(state, player, world, pos);
+	public float getPlayerRelativeBlockHardness(BlockState state, PlayerEntity player, IBlockReader world, BlockPos pos) {
+		return state.get(LATENT) ? -1 : super.getPlayerRelativeBlockHardness(state, player, world, pos);
 	}
 
-	@Override
-	protected boolean canSilkHarvest() {
-		return false;
-	}
+	//	@Override
+//	protected boolean canSilkHarvest() {
+//		return false;
+//	}
+//
+//	@Override
+//	public boolean canSilkHarvest(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+//		return false;
+//	}
+//
+//	@Override
+//	public int damageDropped(BlockState state) {
+//		return 0;
+//	}
 
-	@Override
-	public boolean canSilkHarvest(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-		return false;
-	}
-
-	@Override
-	public int damageDropped(BlockState state) {
-		return 0;
-	}
-
-	@Override
-	public boolean canStabaliseInfusion(World world, BlockPos blockPos) {
-		return true;
-	}
-
-	@Override
-	public void registerItemModel() {
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, Loader.isModLoaded("ctm") ? new ModelResourceLocation(this.getRegistryName() + "_ctm", "latent=false") : new ModelResourceLocation(this.getRegistryName(), "latent=false"));
-	}
-
-	@Override
-	public IProperty<?>[] getIgnoredProperties() {
-		return new IProperty[] { FACING };
-	}
+//	@Override
+//	public boolean canStabaliseInfusion(World world, BlockPos blockPos) {
+//		return true;
+//	}
 }

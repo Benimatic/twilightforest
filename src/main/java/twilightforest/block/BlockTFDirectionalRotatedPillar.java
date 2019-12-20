@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockRotatedPillar;
 import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.block.material.MaterialColor;
@@ -10,6 +11,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.math.BlockPos;
@@ -28,20 +30,8 @@ public abstract class BlockTFDirectionalRotatedPillar extends RotatedPillarBlock
 	}
 
 	@Override
-	public BlockState getStateFromMeta(int meta) {
-		BlockState state = super.getStateFromMeta(meta);
-		return state.with(REVERSED, (meta & 1) != 0);
-	}
-
-	@Override
-	public int getMetaFromState(BlockState state) {
-		int meta = super.getMetaFromState(state);
-		return meta | (state.getValue(REVERSED) ? 1 : 0);
-	}
-
-	@Override
-	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, AXIS, REVERSED);
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+		builder.add(REVERSED);
 	}
 
 	@Override
@@ -51,16 +41,17 @@ public abstract class BlockTFDirectionalRotatedPillar extends RotatedPillarBlock
 	}
 
 	@Override
-	public BlockState withMirror(BlockState state, Mirror mirror) {
+	@Deprecated
+	public BlockState mirror(BlockState state, Mirror mirror) {
 		if (mirror != Mirror.NONE) {
-			Direction.Axis axis = state.getValue(AXIS);
+			Direction.Axis axis = state.get(AXIS);
 			if (axis == Direction.Axis.Y
 					|| mirror == Mirror.LEFT_RIGHT && axis == Direction.Axis.Z
 					|| mirror == Mirror.FRONT_BACK && axis == Direction.Axis.X) {
 
-				return state.cycleProperty(REVERSED);
+				return state.cycle(REVERSED);
 			}
 		}
-		return super.withMirror(state, mirror);
+		return super.mirror(state, mirror);
 	}
 }

@@ -1,31 +1,23 @@
 package twilightforest.block;
 
-import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.block.statemap.StateMap;
+import net.minecraft.block.DirectionalBlock;
+import net.minecraft.block.material.Material;
 import net.minecraft.item.Items;
-import net.minecraft.item.DyeColor;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.client.ForgeHooksClient;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.ModelRegisterCallback;
-import twilightforest.tileentity.critters.TileEntityTFMoonwormTicking;
 
-import java.util.Random;
+import javax.annotation.Nullable;
 
 public class BlockTFMoonworm extends BlockTFCritter {
 
 	protected BlockTFMoonworm() {
-		this.setLightLevel(0.9375F);
+		super(Properties.create(Material.MISCELLANEOUS).lightValue(14));
 	}
 
 	@Override
@@ -33,14 +25,15 @@ public class BlockTFMoonworm extends BlockTFCritter {
 		return 0.25F;
 	}
 
+	@Nullable
 	@Override
-	public TileEntity createTileEntity(World world, BlockState state) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return TwilightForestMod.proxy.getNewMoonwormTE();
 	}
 
 	@Override
 	protected boolean checkAndDrop(World world, BlockPos pos, BlockState state) {
-		Direction facing = state.getValue(BlockDirectional.FACING);
+		Direction facing = state.get(DirectionalBlock.FACING);
 		if (!canPlaceAt(world, pos.offset(facing.getOpposite()), facing)) {
 			world.destroyBlock(pos, false);
 			return false;
@@ -48,23 +41,24 @@ public class BlockTFMoonworm extends BlockTFCritter {
 		return true;
 	}
 
-	@Override
-	public int quantityDropped(BlockState state, int fortune, Random random) {
-		return 0;
-	}
+//	@Override
+//	public int quantityDropped(BlockState state, int fortune, Random random) {
+//		return 0;
+//	}
 
 	@Override
 	public ItemStack getSquishResult() {
-		return new ItemStack(Items.DYE, 1, DyeColor.LIME.getDyeDamage());
+		return new ItemStack(Items.LIME_DYE, 1);
 	}
 
 	//Atomic: Forge would like to get rid of registerTESRItemStack, but there's no alternative yet (as at 1.11)
-	@SuppressWarnings("deprecation")
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	public void registerModel() {
-		ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(BlockDirectional.FACING).build());
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
-		ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(this), 0, TileEntityTFMoonwormTicking.class);
-	}
+	//TODO 1.14: Something may have changed, look into this when we compile
+//	@SuppressWarnings("deprecation")
+//	@OnlyIn(Dist.CLIENT)
+//	@Override
+//	public void registerModel() {
+//		ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(BlockDirectional.FACING).build());
+//		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
+//		ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(this), 0, TileEntityTFMoonwormTicking.class);
+//	}
 }

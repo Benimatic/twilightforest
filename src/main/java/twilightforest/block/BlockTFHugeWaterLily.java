@@ -2,30 +2,31 @@ package twilightforest.block;
 
 import net.minecraft.block.*;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.client.model.ModelLoader;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.world.IBlockReader;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.client.ModelRegisterCallback;
-import twilightforest.item.TFItems;
+import net.minecraftforge.common.IPlantable;
 
 public class BlockTFHugeWaterLily extends LilyPadBlock {
 
-	private static final AxisAlignedBB AABB = new AxisAlignedBB(0.1, 0.1, 0.1, 0.9, 0.9, 0.9);
+	private static final VoxelShape AABB = VoxelShapes.create(new AxisAlignedBB(0.1, 0.1, 0.1, 0.9, 0.9, 0.9));
 
 	protected BlockTFHugeWaterLily() {
-		this.setSoundType(SoundType.PLANT);
-		this.setCreativeTab(TFItems.creativeTab);
+		super(Properties.create(Material.PLANTS).sound(SoundType.PLANT));
+		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess world, BlockPos pos) {
+	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
 		return AABB;
 	}
 
@@ -42,7 +43,7 @@ public class BlockTFHugeWaterLily extends LilyPadBlock {
 	}*/
 
 	@Override
-	protected boolean canSustainBush(BlockState state) {
+	public boolean canSustainPlant(BlockState state, IBlockReader world, BlockPos pos, Direction facing, IPlantable plantable) {
 		return state.getBlock() == Blocks.WATER;
 	}
 

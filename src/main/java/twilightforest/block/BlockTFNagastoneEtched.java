@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.DirectionalBlock;
 import net.minecraft.block.SoundType;
@@ -9,10 +10,12 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -33,32 +36,22 @@ public class BlockTFNagastoneEtched extends DirectionalBlock {
     }
 
     @Override
-    public BlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().with(FACING, Direction.values()[meta % Direction.values().length]);
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+        builder.add(FACING);
     }
 
-    @Override
-    public int getMetaFromState(BlockState state) {
-        return state.getValue(FACING).ordinal();
-    }
+	@Override
+	public BlockState rotate(BlockState state, IWorld world, BlockPos pos, Rotation rot) {
+		return state.with(FACING, rot.rotate(state.get(FACING)));
+	}
 
-    @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, FACING);
-    }
+	@Override
+	public BlockState mirror(BlockState state, Mirror mirrorIn) {
+		return state.with(FACING, mirrorIn.mirror(state.get(FACING)));
+	}
 
-    @Override
-    public BlockState withRotation(BlockState state, Rotation rot) {
-        return state.with(FACING, rot.rotate(state.getValue(FACING)));
-    }
-
-    @Override
-    public BlockState withMirror(BlockState state, Mirror mirrorIn) {
-        return state.with(FACING, mirrorIn.mirror(state.getValue(FACING)));
-    }
-
-    @Override
-    protected ItemStack getSilkTouchDrop(BlockState state) {
-        return new ItemStack(Item.getItemFromBlock(this));
-    }
+//    @Override
+//    protected ItemStack getSilkTouchDrop(BlockState state) {
+//        return new ItemStack(Item.getItemFromBlock(this));
+//    }
 }

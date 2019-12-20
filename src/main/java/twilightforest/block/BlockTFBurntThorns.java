@@ -31,15 +31,11 @@ public class BlockTFBurntThorns extends BlockTFThorns {
 	}
 
 	@Override
-	protected IProperty[] getAdditionalProperties() {
-		return new IProperty[0];
-	}
-
-	@Override
 	protected boolean hasVariant() {
 		return false;
 	}
 
+	//TODO Properties
 	@Override
 	public MaterialColor getMaterialColor(BlockState state, IBlockAccess world, BlockPos pos) {
 		return MaterialColor.STONE;

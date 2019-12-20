@@ -1,28 +1,29 @@
 package twilightforest.block;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.*;
 import net.minecraft.block.BlockFurnace;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.block.Blocks;
 import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.DirectionProperty;
+import net.minecraft.state.StateContainer;
+import net.minecraft.tileentity.FurnaceTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 import twilightforest.tileentity.TileEntityTFCinderFurnace;
 
@@ -32,12 +33,13 @@ import java.util.Random;
 public class BlockTFCinderFurnace extends Block {
 
 	private static boolean keepInventory;
-	private final boolean isBurning;
+	private static final BooleanProperty LIT = BooleanProperty.create("lit");
+	private static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
 
 	BlockTFCinderFurnace(boolean isLit) {
 		super(Material.WOOD);
 
-		this.isBurning = isLit;
+		this.LIT = isLit;
 
 		this.setHardness(7.0F);
 
@@ -47,23 +49,17 @@ public class BlockTFCinderFurnace extends Block {
 			this.setCreativeTab(TFItems.creativeTab);
 		}
 
-		this.setDefaultState(stateContainer.getBaseState().with(BlockFurnace.FACING, Direction.NORTH));
+		this.setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH).with(LIT, false));
 	}
 
 	@Override
-	public BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, BlockFurnace.FACING);
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+		builder.add(LIT, FACING);
 	}
 
 	@Override
-	public int getMetaFromState(BlockState state) {
-		return state.getValue(BlockFurnace.FACING).getHorizontalIndex();
-	}
-
-	@Override
-	@Deprecated
-	public BlockState getStateFromMeta(int meta) {
-		return getDefaultState().with(BlockFurnace.FACING, Direction.byHorizontalIndex(meta));
+	public boolean hasTileEntity(BlockState state) {
+		return true;
 	}
 
 	@Nullable
@@ -73,7 +69,15 @@ public class BlockTFCinderFurnace extends Block {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, BlockState state, PlayerEntity player, Hand hand, Direction side, float hitX, float hitY, float hitZ) {
+	@Deprecated
+	public boolean eventReceived(BlockState state, World worldIn, BlockPos pos, int id, int param) {
+		super.eventReceived(state, worldIn, pos, id, param);
+		TileEntity tileentity = worldIn.getTileEntity(pos);
+		return tileentity != null && tileentity.receiveClientEvent(id, param);
+	}
+
+	@Override
+	public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
 		if (!world.isRemote && world.getTileEntity(pos) instanceof TileEntityTFCinderFurnace) {
 			player.openGui(TwilightForestMod.instance, TwilightForestMod.GUI_ID_FURNACE, world, pos.getX(), pos.getY(), pos.getZ());
 		}
@@ -82,9 +86,9 @@ public class BlockTFCinderFurnace extends Block {
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, EntityLivingBase placer, ItemStack itemStack) {
-		if (itemStack.hasDisplayName()) {
-			((TileEntityFurnace) world.getTileEntity(pos)).setCustomInventoryName(itemStack.getDisplayName());
+	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+		if (stack.hasDisplayName()) {
+			((FurnaceTileEntity) world.getTileEntity(pos)).setCustomName(stack.getDisplayName());
 		}
 	}
 
@@ -109,9 +113,9 @@ public class BlockTFCinderFurnace extends Block {
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
-		if (this.isBurning) {
-			Blocks.LIT_FURNACE.randomDisplayTick(state, world, pos, random);
+	public void animateTick(BlockState state, World world, BlockPos pos, Random random) {
+		if (state.get(LIT)) {
+			Blocks.FURNACE.animateTick(state, world, pos, random);
 		}
 	}
 

@@ -10,8 +10,8 @@ public class BlockTFUnripeTorchCluster extends BlockTFTrollRoot {
 	private static final int RIPEN_THRESHHOLD = 6;
 
 	@Override
-	public void updateTick(World world, BlockPos pos, BlockState state, Random rand) {
-		super.updateTick(world, pos, state, rand);
+	public void tick(BlockState state, World world, BlockPos pos, Random rand) {
+		super.tick(state, world, pos, rand);
 
 		if (world.getLight(pos) >= RIPEN_THRESHHOLD) {
 			// ripen!

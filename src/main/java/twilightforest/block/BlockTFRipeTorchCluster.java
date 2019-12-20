@@ -3,23 +3,22 @@ package twilightforest.block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.item.TFItems;
 
 import javax.annotation.Nullable;
-import java.util.Random;
 
 public class BlockTFRipeTorchCluster extends BlockTFTrollRoot {
 
-	protected BlockTFRipeTorchCluster() {
-		this.setLightLevel(1.0F);
+	@Override
+	public int getLightValue(BlockState state, IEnviromentBlockReader world, BlockPos pos) {
+		return 15;
 	}
 
 	/* TODO 1.14: Move to block loot table

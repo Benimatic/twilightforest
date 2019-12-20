@@ -37,16 +37,6 @@ public class BlockTFHorizontal extends HorizontalBlock {
     }
 
     @Override
-    public BlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().with(FACING, Direction.byHorizontalIndex(meta));
-    }
-
-    @Override
-    public int getMetaFromState(BlockState state) {
-        return state.getValue(FACING).getHorizontalIndex();
-    }
-
-    @Override
     public BlockState withRotation(BlockState state, Rotation rot) {
         return state.with(FACING, rot.rotate(state.getValue(FACING)));
     }

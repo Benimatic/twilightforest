@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.FenceBlock;
 import net.minecraft.block.BlockRotatedPillar;
 import net.minecraft.block.RotatedPillarBlock;
@@ -12,10 +13,15 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.IProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 
@@ -69,11 +75,8 @@ public abstract class BlockTFConnectableRotatedPillar extends RotatedPillarBlock
     protected abstract IProperty[] getAdditionalProperties();
 
     @Override
-    public BlockStateContainer createBlockState() {
-        return new BlockStateContainer.Builder(this)
-                .add(AXIS, FenceBlock.NORTH, FenceBlock.EAST, FenceBlock.SOUTH, FenceBlock.WEST)
-                .add(getAdditionalProperties())
-                .build();
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+        builder.add(AXIS, FenceBlock.NORTH, FenceBlock.EAST, FenceBlock.SOUTH, FenceBlock.WEST).add(getAdditionalProperties());
     }
 
     @Override
@@ -92,7 +95,7 @@ public abstract class BlockTFConnectableRotatedPillar extends RotatedPillarBlock
     }
 
     protected boolean canConnectTo(BlockState state, BlockState otherState, IBlockAccess world, BlockPos pos, Direction connectTo) {
-        return state.getBlock() == otherState.getBlock() && state.getValue(AXIS) != connectTo.getAxis();
+        return state.getBlock() == otherState.getBlock() && state.get(AXIS) != connectTo.getAxis();
     }
 
     @Override
@@ -132,40 +135,40 @@ public abstract class BlockTFConnectableRotatedPillar extends RotatedPillarBlock
                 facing == Direction.NORTH ?  0d : axis == Direction.Axis.Z ? this.boundingBoxHeightUpper : this.boundingBoxWidthUpper);
     }
 
-    @Override
-    public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess world, BlockPos pos) {
-        state = this.getActualState(state, world, pos);
+	@Override
+	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
+		state = this.getActualState(state, world, pos);
 
-        switch (state.getValue(AXIS)) {
-            case X:
-                return makeQuickAABB(
-                        0d,
-                        state.getValue(FenceBlock.NORTH) ?  0d : this.boundingBoxWidthLower,
-                        state.getValue(FenceBlock.WEST ) ?  0d : this.boundingBoxWidthLower,
-                        16d,
-                        state.getValue(FenceBlock.SOUTH) ? 16d : this.boundingBoxWidthUpper,
-                        state.getValue(FenceBlock.EAST ) ? 16d : this.boundingBoxWidthUpper
-                );
-            case Z:
-                return makeQuickAABB(
-                        state.getValue(FenceBlock.EAST ) ?  0d : this.boundingBoxWidthLower,
-                        state.getValue(FenceBlock.SOUTH) ?  0d : this.boundingBoxWidthLower,
-                        0d,
-                        state.getValue(FenceBlock.WEST ) ? 16d : this.boundingBoxWidthUpper,
-                        state.getValue(FenceBlock.NORTH) ? 16d : this.boundingBoxWidthUpper,
-                        16d
-                );
-            default:
-                return makeQuickAABB(
-                        state.getValue(FenceBlock.WEST)  ?  0d : this.boundingBoxWidthLower,
-                        0d,
-                        state.getValue(FenceBlock.NORTH) ?  0d : this.boundingBoxWidthLower,
-                        state.getValue(FenceBlock.EAST)  ? 16d : this.boundingBoxWidthUpper,
-                        16d,
-                        state.getValue(FenceBlock.SOUTH) ? 16d : this.boundingBoxWidthUpper
-                );
-        }
-    }
+		switch (state.get(AXIS)) {
+			case X:
+				return VoxelShapes.create(makeQuickAABB(
+						0d,
+						state.get(FenceBlock.NORTH) ?  0d : this.boundingBoxWidthLower,
+						state.get(FenceBlock.WEST ) ?  0d : this.boundingBoxWidthLower,
+						16d,
+						state.get(FenceBlock.SOUTH) ? 16d : this.boundingBoxWidthUpper,
+						state.get(FenceBlock.EAST ) ? 16d : this.boundingBoxWidthUpper
+				));
+			case Z:
+				return VoxelShapes.create(makeQuickAABB(
+						state.get(FenceBlock.EAST ) ?  0d : this.boundingBoxWidthLower,
+						state.get(FenceBlock.SOUTH) ?  0d : this.boundingBoxWidthLower,
+						0d,
+						state.get(FenceBlock.WEST ) ? 16d : this.boundingBoxWidthUpper,
+						state.get(FenceBlock.NORTH) ? 16d : this.boundingBoxWidthUpper,
+						16d
+				));
+			default:
+				return VoxelShapes.create(makeQuickAABB(
+						state.get(FenceBlock.WEST)  ?  0d : this.boundingBoxWidthLower,
+						0d,
+						state.get(FenceBlock.NORTH) ?  0d : this.boundingBoxWidthLower,
+						state.get(FenceBlock.EAST)  ? 16d : this.boundingBoxWidthUpper,
+						16d,
+						state.get(FenceBlock.SOUTH) ? 16d : this.boundingBoxWidthUpper
+				));
+		}
+	}
 
     protected AxisAlignedBB makeQuickAABB(double x1, double y1, double z1, double x2, double y2, double z2) {
         return new AxisAlignedBB(
@@ -174,17 +177,10 @@ public abstract class BlockTFConnectableRotatedPillar extends RotatedPillarBlock
                 y2/16.0d, z2/16.0d);
     }
 
-    @Override
-    @Deprecated
-    public boolean isOpaqueCube(BlockState state) {
-        return false;
-    }
-
-    @Override
-    @Deprecated
-    public boolean isFullCube(BlockState state) {
-        return false;
-    }
+	@Override
+	public boolean isSolid(BlockState state) {
+		return false;
+	}
 
     enum PairHelper {
         NORTH(Direction.NORTH, FenceBlock.NORTH),

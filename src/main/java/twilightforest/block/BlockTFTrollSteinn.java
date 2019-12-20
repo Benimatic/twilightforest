@@ -8,6 +8,7 @@ import net.minecraft.state.BooleanProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.BlockState;
 import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
@@ -32,26 +33,18 @@ public class BlockTFTrollSteinn extends Block {
 	private static final int LIGHT_THRESHHOLD = 7;
 
 	BlockTFTrollSteinn() {
-		super(Material.ROCK);
+		super(Properties.create(Material.ROCK).hardnessAndResistance(2.0F, 15.0F).sound(SoundType.STONE));
 
-		this.setHardness(2F);
-		this.setResistance(15F);
-		this.setSoundType(SoundType.STONE);
-		this.setCreativeTab(TFItems.creativeTab);
-		this.setDefaultState(blockState.getBaseState()
+		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
+		this.setDefaultState(stateContainer.getBaseState()
 				.with(DOWN_LIT, false).with(UP_LIT, false)
 				.with(NORTH_LIT, false).with(SOUTH_LIT, false)
 				.with(WEST_LIT, false).with(EAST_LIT, false));
 	}
 
 	@Override
-	public BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, DOWN_LIT, UP_LIT, NORTH_LIT, SOUTH_LIT, WEST_LIT, EAST_LIT);
-	}
-
-	@Override
-	public int getMetaFromState(BlockState state) {
-		return 0;
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+		builder.add(DOWN_LIT, UP_LIT, NORTH_LIT, SOUTH_LIT, WEST_LIT, EAST_LIT);
 	}
 
 	@Override

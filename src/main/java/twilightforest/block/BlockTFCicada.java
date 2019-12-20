@@ -1,34 +1,24 @@
 package twilightforest.block;
 
-import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.block.statemap.StateMap;
-import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.block.material.Material;
 import net.minecraft.item.Items;
-import net.minecraft.item.DyeColor;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
-import net.minecraft.world.World;
-import net.minecraftforge.client.ForgeHooksClient;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.world.IBlockReader;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.ModelRegisterCallback;
-import twilightforest.compat.TFCompat;
-import twilightforest.tileentity.critters.TileEntityTFCicadaTicking;
 
 import javax.annotation.Nullable;
-import java.util.List;
 
 public class BlockTFCicada extends BlockTFCritter {
 
+	protected BlockTFCicada() {
+		super(Properties.create(Material.MISCELLANEOUS));
+	}
+
+	@Nullable
 	@Override
-	public TileEntity createTileEntity(World world, BlockState state) {
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return TwilightForestMod.proxy.getNewCicadaTE();
 	}
 
@@ -38,14 +28,15 @@ public class BlockTFCicada extends BlockTFCritter {
 	}
 
 	//Atomic: Forge would like to get rid of registerTESRItemStack, but there's no alternative yet (as at 1.11)
-	@SuppressWarnings("deprecation")
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	public void registerModel() {
-		ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(BlockDirectional.FACING).build());
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
-		ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(this), 0, TileEntityTFCicadaTicking.class);
-	}
+	//TODO 1.14: Something may have changed, look into this when we compile
+//	@SuppressWarnings("deprecation")
+//	@OnlyIn(Dist.CLIENT)
+//	@Override
+//	public void registerModel() {
+//		ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(BlockDirectional.FACING).build());
+//		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
+//		ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(this), 0, TileEntityTFCicadaTicking.class);
+//	}
 
 	//TODO: Immersive Engineering is unavailable
 	/*@Override

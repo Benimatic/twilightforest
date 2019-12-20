@@ -12,16 +12,24 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.entity.item.EntityBoat;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.Item;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.EnumProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.api.distmarker.Dist;
@@ -37,7 +45,7 @@ public class BlockTFHugeLilyPad extends BushBlock {
 
 	public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
 	public static final EnumProperty<HugeLilypadPiece> PIECE = EnumProperty.create("piece", HugeLilypadPiece.class);
-	private static final AxisAlignedBB AABB = new AxisAlignedBB(0, 0, 0, 1, 0.015625, 1);
+	private static final VoxelShape AABB = VoxelShapes.create(new AxisAlignedBB(0, 0, 0, 1, 0.015625, 1));
 
 	private boolean isSelfDestructing = false;
 
@@ -48,30 +56,19 @@ public class BlockTFHugeLilyPad extends BushBlock {
 	}
 
 	@Override
-	public BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, FACING, PIECE);
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+		builder.add(FACING, PIECE);
 	}
 
 	@Override
-	public int getMetaFromState(BlockState state) {
-		return (state.get(FACING).getHorizontalIndex() | (state.get(PIECE).ordinal() << 2)) & 0b1111;
-	}
-
-	@Override
-	@Deprecated
-	public BlockState getStateFromMeta(int meta) {
-		meta = meta & 0b1111;
-		return getDefaultState().with(FACING, Direction.byHorizontalIndex(meta & 0b0011)).with(PIECE, HugeLilypadPiece.values()[(meta & 0b1100) >> 2]);
-	}
-
-	@Override
-	public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos) {
+	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
 		return AABB;
 	}
 
 	@Override
-	public boolean canPlaceBlockAt(World world, BlockPos pos) {
-		return world.getBlockState(pos.down()).getBlock() == Blocks.WATER;
+	protected boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		IFluidState ifluidstate = worldIn.getFluidState(pos);
+		return ifluidstate.getFluid() == Fluids.WATER;
 	}
 
 	@Override
@@ -171,10 +168,10 @@ public class BlockTFHugeLilyPad extends BushBlock {
 	}
 
 	@Override
-	public void onEntityCollision(World worldIn, BlockPos pos, BlockState state, Entity entityIn) {
-		super.onEntityCollision(worldIn, pos, state, entityIn);
+	public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
+		super.onEntityCollision(state, worldIn, pos, entityIn);
 
-		if (entityIn instanceof EntityBoat) {
+		if (entityIn instanceof BoatEntity) {
 			worldIn.destroyBlock(new BlockPos(pos), true);
 		}
 	}

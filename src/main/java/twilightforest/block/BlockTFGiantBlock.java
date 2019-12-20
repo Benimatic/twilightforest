@@ -5,6 +5,7 @@ import net.minecraft.block.material.PushReaction;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
@@ -13,6 +14,8 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.client.ModelRegisterCallback;
+
+import javax.annotation.Nullable;
 
 public abstract class BlockTFGiantBlock extends Block {
 
@@ -36,7 +39,7 @@ public abstract class BlockTFGiantBlock extends Block {
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, EntityLivingBase player, ItemStack itemStack) {
+	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
 		if (!world.isRemote) {
 			for (BlockPos dPos : getVolume(pos)) {
 				world.setBlockState(dPos, getDefaultState(), 2);

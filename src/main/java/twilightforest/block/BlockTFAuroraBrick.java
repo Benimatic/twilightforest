@@ -2,20 +2,12 @@ package twilightforest.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyInteger;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.BlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemStack;
 import net.minecraft.state.IntegerProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.IWorld;
-import twilightforest.client.ModelRegisterCallback;
-import twilightforest.item.TFItems;
 
 public class BlockTFAuroraBrick extends Block {
 
@@ -51,13 +43,8 @@ public class BlockTFAuroraBrick extends Block {
 	}
 
 	@Override
-	public BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, VARIANT);
-	}
-
-	@Override
-	public int damageDropped(BlockState state) {
-		return 0;
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+		builder.add(VARIANT);
 	}
 
 	/*

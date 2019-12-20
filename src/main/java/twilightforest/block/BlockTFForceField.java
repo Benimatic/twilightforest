@@ -1,6 +1,7 @@
 package twilightforest.block;
 
 import com.google.common.collect.ImmutableList;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -21,6 +22,8 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -32,6 +35,7 @@ import java.util.Random;
 
 public class BlockTFForceField extends BlockTFConnectableRotatedPillar {
 
+	//TODO 1.14: Not needed
 	public static final List<DyeColor> VALID_COLORS = ImmutableList.of(DyeColor.PURPLE, DyeColor.PINK, DyeColor.ORANGE, DyeColor.GREEN, DyeColor.BLUE);
 	public static final EnumProperty<DyeColor> COLOR = EnumProperty.create("color", DyeColor.class, VALID_COLORS);
 
@@ -42,11 +46,6 @@ public class BlockTFForceField extends BlockTFConnectableRotatedPillar {
 		this.setLightLevel(2F / 15F);
 		this.setCreativeTab(TFItems.creativeTab);
 		this.setDefaultState(this.getDefaultState().with(COLOR, DyeColor.PURPLE));
-	}
-
-	@Override
-	protected IProperty[] getAdditionalProperties() {
-		return new IProperty[]{ COLOR };
 	}
 
 	@Override
@@ -69,27 +68,13 @@ public class BlockTFForceField extends BlockTFConnectableRotatedPillar {
 				|| super.canConnectTo(state, otherState, world, pos, connectTo);
 	}
 
-	@Override
-	public Item getItemDropped(BlockState state, Random rand, int fortune) {
-		return Items.AIR;
-	}
+//	@Override
+//	public Item getItemDropped(BlockState state, Random rand, int fortune) {
+//		return Items.AIR;
+//	}
 
 	@Override
-	public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> list) {
-		for (int i = 0; i < COLOR.getAllowedValues().size(); i++) {
-			list.add(new ItemStack(this, 1, i));
-		}
-	}
-
-	@Override
-	public boolean isOpaqueCube(BlockState state)
-	{
-		return false;
-	}
-
-	@Override
-	public boolean isFullCube(BlockState state)
-	{
+	public boolean isSolid(BlockState state) {
 		return false;
 	}
 
@@ -98,13 +83,13 @@ public class BlockTFForceField extends BlockTFConnectableRotatedPillar {
 		return face.getAxis() != state.getValue(AXIS) ? BlockFaceShape.MIDDLE_POLE_THIN : BlockFaceShape.CENTER_SMALL;
 	}
 
-	@Override
-	public int damageDropped(BlockState state) {
-		return VALID_COLORS.indexOf(state.getValue(COLOR));
-	}
+//	@Override
+//	public int damageDropped(BlockState state) {
+//		return VALID_COLORS.indexOf(state.getValue(COLOR));
+//	}
 
 	@Override
-	public boolean canEntityDestroy(BlockState state, IBlockAccess world, BlockPos pos, Entity entity) {
+	public boolean canEntityDestroy(BlockState state, IBlockReader world, BlockPos pos, Entity entity) {
 		return false; // TODO: ???
 	}
 
@@ -115,19 +100,8 @@ public class BlockTFForceField extends BlockTFConnectableRotatedPillar {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
-	public boolean shouldSideBeRendered(BlockState blockState, IBlockAccess blockAccess, BlockPos pos, Direction side) {
-		return blockAccess.getBlockState(pos.offset(side)).getBlock() != this && super.shouldSideBeRendered(blockState, blockAccess, pos, side);
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	public void registerModel() {
-		ModelResourceLocation mrl = new ModelResourceLocation(getRegistryName(), "inventory");
-		for (int i = 0; i < VALID_COLORS.size(); i++) {
-			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), i, mrl);
-		}
-
-		//ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(blockState.getProperties().toArray(new IProperty[blockState.getProperties().size()])).build());
+	@Deprecated
+	public boolean doesSideBlockRendering(BlockState state, IEnviromentBlockReader world, BlockPos pos, Direction face) {
+		return world.getBlockState(pos.offset(face)).getBlock() != this && Block.shouldSideBeRendered(state, world, pos, face);
 	}
 }

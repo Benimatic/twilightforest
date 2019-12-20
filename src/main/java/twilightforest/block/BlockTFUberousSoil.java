@@ -1,68 +1,48 @@
 package twilightforest.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockFarmland;
-import net.minecraft.block.IGrowable;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.item.BoneMealItem;
 import net.minecraft.item.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.common.EnumPlantType;
+import net.minecraftforge.common.PlantType;
 import net.minecraftforge.common.IPlantable;
-import twilightforest.client.ModelRegisterCallback;
-import twilightforest.item.TFItems;
 
 import java.util.Random;
 
 public class BlockTFUberousSoil extends Block implements IGrowable {
-	private static final AxisAlignedBB AABB = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 0.9375F, 1.0F);
+	private static final VoxelShape AABB = VoxelShapes.create(new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 0.9375F, 1.0F));
 
 	protected BlockTFUberousSoil() {
-		super(Material.GROUND);
-		this.setLightOpacity(255);
-		this.setHardness(0.6F);
-		this.setSoundType(SoundType.GROUND);
-		this.setTickRandomly(true);
-		this.useNeighborBrightness = true;
-
-		this.setCreativeTab(TFItems.creativeTab);
+		super(Properties.create(Material.EARTH).hardnessAndResistance(0.6F).sound(SoundType.GROUND).tickRandomly());
+		//this.setLightOpacity(255); Is this needed?
+		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
 	}
 
 	@Override
-	@Deprecated
-	public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess world, BlockPos pos) {
+	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
 		return AABB;
 	}
 
 	@Override
-	@Deprecated
-	public boolean isOpaqueCube(BlockState state) {
+	public boolean isSolid(BlockState state) {
 		return false;
 	}
 
-	@Override
-	@Deprecated
-	public boolean isFullCube(BlockState state) {
-		return false;
-	}
-
-	@Override
-	@Deprecated
-	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face) {
-		return face == Direction.DOWN ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
-	}
+//	@Override
+//	@Deprecated
+//	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face) {
+//		return face == Direction.DOWN ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
+//	}
 
 	@Override
 	public BlockRenderLayer getRenderLayer() {
@@ -75,7 +55,7 @@ public class BlockTFUberousSoil extends Block implements IGrowable {
 //	}
 
 	@Override
-	public void updateTick(World world, BlockPos pos, BlockState state, Random rand) {
+	public void tick(BlockState state, World world, BlockPos pos, Random random) {
 		Material aboveMaterial = world.getBlockState(pos.up()).getMaterial();
 		if (aboveMaterial.isSolid()) {
 			world.setBlockState(pos, Blocks.DIRT.getDefaultState());
@@ -83,16 +63,15 @@ public class BlockTFUberousSoil extends Block implements IGrowable {
 	}
 
 	@Override
-	public boolean canSustainPlant(BlockState state, IBlockAccess world, BlockPos pos, Direction direction, IPlantable plantable) {
+	public boolean canSustainPlant(BlockState state, IBlockReader world, BlockPos pos, Direction direction, IPlantable plantable) {
 		if (direction != Direction.UP)
 			return false;
-		EnumPlantType plantType = plantable.getPlantType(world, pos.offset(direction));
-		return plantType == EnumPlantType.Crop || plantType == EnumPlantType.Plains || plantType == EnumPlantType.Cave;
+		PlantType plantType = plantable.getPlantType(world, pos.offset(direction));
+		return plantType == PlantType.Crop || plantType == PlantType.Plains || plantType == PlantType.Cave;
 	}
 
 	@Override
-	@Deprecated
-	public void neighborChanged(BlockState state, World world, BlockPos pos, Block neighbor, BlockPos fromPos) {
+	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
 		BlockState above = world.getBlockState(pos.up());
 		Material aboveMaterial = above.getMaterial();
 
@@ -104,18 +83,18 @@ public class BlockTFUberousSoil extends Block implements IGrowable {
 		if (above.getBlock() instanceof IPlantable) {
 			IPlantable plant = (IPlantable) above.getBlock();
 			// revert to farmland or grass
-			if (plant.getPlantType(world, pos.up()) == EnumPlantType.Crop) {
-				world.setBlockState(pos, Blocks.FARMLAND.getDefaultState().with(BlockFarmland.MOISTURE, 2));
-			} else if (plant.getPlantType(world, pos.up()) == EnumPlantType.Plains) {
+			if (plant.getPlantType(world, pos.up()) == PlantType.Crop) {
+				world.setBlockState(pos, Blocks.FARMLAND.getDefaultState().with(FarmlandBlock.MOISTURE, 2));
+			} else if (plant.getPlantType(world, pos.up()) == PlantType.Plains) {
 				world.setBlockState(pos, Blocks.GRASS.getDefaultState());
 			} else {
 				world.setBlockState(pos, Blocks.DIRT.getDefaultState());
 			}
 			// apply bonemeal
-			ItemDye.applyBonemeal(new ItemStack(Items.DYE), world, pos.up());
-			ItemDye.applyBonemeal(new ItemStack(Items.DYE), world, pos.up());
-			ItemDye.applyBonemeal(new ItemStack(Items.DYE), world, pos.up());
-			ItemDye.applyBonemeal(new ItemStack(Items.DYE), world, pos.up());
+			BoneMealItem.applyBonemeal(new ItemStack(Items.BONE_MEAL), world, pos.up());
+			BoneMealItem.applyBonemeal(new ItemStack(Items.BONE_MEAL), world, pos.up());
+			BoneMealItem.applyBonemeal(new ItemStack(Items.BONE_MEAL), world, pos.up());
+			BoneMealItem.applyBonemeal(new ItemStack(Items.BONE_MEAL), world, pos.up());
 			// green sparkles
 			world.playEvent(2005, pos.up(), 0);
 		}
@@ -133,7 +112,7 @@ public class BlockTFUberousSoil extends Block implements IGrowable {
 
 	@Override
 	public void grow(World world, Random rand, BlockPos pos, BlockState state) {
-		pos = pos.offset(Direction.HORIZONTALS[rand.nextInt(Direction.HORIZONTALS.length)]);
+		pos = pos.offset(Direction.Plane.HORIZONTAL.random(rand));
 
 		Block blockAt = world.getBlockState(pos).getBlock();
 		if (world.isAirBlock(pos.up()) && (blockAt == Blocks.DIRT || blockAt == Blocks.GRASS || blockAt == Blocks.FARMLAND)) {

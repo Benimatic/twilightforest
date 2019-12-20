@@ -18,7 +18,9 @@ import net.minecraft.item.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.IntegerProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.stats.StatList;
+import net.minecraft.stats.Stats;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
@@ -26,6 +28,9 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
@@ -43,10 +48,10 @@ public class BlockTFExperiment115 extends Block {
     public static final IntegerProperty NOMS = IntegerProperty.create("omnomnom", 0, 7);
     public static final BooleanProperty REGENERATE = BooleanProperty.create("regenerate");
 
-    private static final AxisAlignedBB[] AABB = new AxisAlignedBB[] {
-            new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.5D, 0.9375D),
-            new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.5D, 0.5D, 0.9375D),
-            new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.5D, 0.5D, 0.5D)
+    private static final VoxelShape[] AABB = new VoxelShape[] {
+			VoxelShapes.create(new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.5D, 0.9375D)),
+            VoxelShapes.create(new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.5D, 0.5D, 0.9375D)),
+            VoxelShapes.create(new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.5D, 0.5D, 0.5D))
     };
 
     public BlockTFExperiment115() {
@@ -55,35 +60,28 @@ public class BlockTFExperiment115 extends Block {
     }
 
     @Override
-    public ItemStack getPickBlock(BlockState state, RayTraceResult target, World world, BlockPos pos, PlayerEntity player) {
-        return new ItemStack(TFItems.experiment_115);
+    public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
+		return new ItemStack(TFItems.experiment_115.get());
     }
 
-    @Override
-    public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos) {
-        switch (state.get(NOMS)) {
-            default:
-                return AABB[0];
-            case 4:
-            case 5:
-                return AABB[1];
-            case 6:
-            case 7:
-                return AABB[2];
-        }
-    }
+	@Override
+	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+		switch (state.get(NOMS)) {
+			default:
+				return AABB[0];
+			case 4:
+			case 5:
+				return AABB[1];
+			case 6:
+			case 7:
+				return AABB[2];
+		}
+	}
 
-    @Override
-    public boolean isFullCube(BlockState state)
-    {
-        return false;
-    }
-
-    @Override
-    public boolean isOpaqueCube(BlockState state)
-    {
-        return false;
-    }
+	@Override
+	public boolean isSolid(BlockState state) {
+		return false;
+	}
 
     @Override
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face) {
@@ -115,35 +113,35 @@ public class BlockTFExperiment115 extends Block {
 	private boolean eatCake(World world, BlockPos pos, BlockState state, PlayerEntity player) {
         if (!player.canEat(false)) return false;
         else {
-            player.addStat(StatList.CAKE_SLICES_EATEN);
+            player.addStat(Stats.EAT_CAKE_SLICE);
             player.getFoodStats().addStats(4, 0.3F);
             int i = state.get(NOMS);
 
             if (i < 7) world.setBlockState(pos, state.with(NOMS, i + 1), 3);
-            else       world.setBlockToAir(pos);
+            else       world.removeBlock(pos, false);
 
             if (player instanceof ServerPlayerEntity)
-                CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayerEntity) player, new ItemStack(TFItems.experiment_115, 8 - i));
+                CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayerEntity) player, new ItemStack(TFItems.experiment_115.get(), 8 - i));
 
             return true;
         }
     }
 
-    @Override
-    public void updateTick(World worldIn, BlockPos pos, BlockState state, Random rand) {
-        if (state.get(REGENERATE) && state.get(NOMS) != 0) {
-            worldIn.setBlockState(pos, state.with(NOMS, state.get(NOMS) - 1));
-        }
-    }
+	@Override
+	public void tick(BlockState state, World worldIn, BlockPos pos, Random random) {
+		if (state.get(REGENERATE) && state.get(NOMS) != 0) {
+			worldIn.setBlockState(pos, state.with(NOMS, state.get(NOMS) - 1));
+		}
+	}
 
-    @Override
-    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
-        if (!this.canBlockStay(worldIn, pos)) {
-            worldIn.setBlockToAir(pos);
-        }
-    }
+	@Override
+	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
+		if (!this.canBlockStay(worldIn, pos)) {
+			worldIn.removeBlock(pos, false);
+		}
+	}
 
-    private boolean canBlockStay(World world, BlockPos pos) {
+	private boolean canBlockStay(World world, BlockPos pos) {
         return world.getBlockState(pos.down()).getMaterial().isSolid();
     }
 
@@ -152,50 +150,44 @@ public class BlockTFExperiment115 extends Block {
         return super.canPlaceBlockAt(world, pos) && canBlockStay(world, pos);
     }
 
-    @Override
-    public int quantityDropped(Random random)
-    {
-        return 0;
-    }
+//    @Override
+//    public int quantityDropped(Random random)
+//    {
+//        return 0;
+//    }
 
-    @Override
-    public BlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().with(NOMS, meta & 7).with(REGENERATE, (meta & 8) == 8);
-    }
+	@Override
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+		builder.add(NOMS, REGENERATE);
+	}
 
-    @Override
-    public int getMetaFromState(BlockState state) {
-        return state.get(NOMS) | (state.get(REGENERATE) ? 8 : 0);
-    }
-
-    @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, NOMS, REGENERATE);
-    }
-
-    @Override
+	@Override
     @OnlyIn(Dist.CLIENT)
     public BlockRenderLayer getRenderLayer() {
         return BlockRenderLayer.CUTOUT;
     }
 
     @Override
+	@Deprecated
     public int getComparatorInputOverride(BlockState state, World world, BlockPos pos) {
         return 15-(state.get(NOMS)*2);
     }
 
     @Override
+	@Deprecated
     public boolean hasComparatorInputOverride(BlockState state)
     {
         return true;
     }
 
     @Override
+	@Deprecated
     public boolean canProvidePower(BlockState state) {
         return state.get(REGENERATE);
     }
 
 	@Override
+	@Deprecated
 	public int getWeakPower(BlockState state, IBlockReader blockAccess, BlockPos pos, Direction side) {
 		return state.get(REGENERATE) ? 15-(state.get(NOMS)*2) : 0;
 	}
