@@ -3,10 +3,11 @@ package twilightforest;
 import net.minecraft.item.Rarity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.dimension.DimensionType;
-import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
@@ -17,11 +18,6 @@ import twilightforest.compat.TFCompat;
 import twilightforest.item.TFItems;
 import twilightforest.loot.TFTreasure;
 import twilightforest.network.TFPacketHandler;
-import twilightforest.structures.hollowtree.TFHollowTreePieces;
-import twilightforest.structures.start.StructureStartNothing;
-import twilightforest.tileentity.*;
-import twilightforest.tileentity.spawner.*;
-import twilightforest.world.WorldProviderTwilightForest;
 import twilightforest.world.feature.TFGenCaveStalactite;
 
 /*@Mod( name = TwilightForestMod.NAME,
@@ -31,8 +27,10 @@ import twilightforest.world.feature.TFGenCaveStalactite;
 		updateJSON = "https://raw.githubusercontent.com/TeamTwilight/twilightforest/1.12.x/update.json"
 )*/
 @Mod(TwilightForestMod.ID)
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TwilightForestMod {
 
+	// TODO: might be a good idea to find proper spots for all of these? also remove redundants
 	public static final String ID = "twilightforest";
 	public static final String NAME = "The Twilight Forest";
 	public static final String VERSION = "@VERSION@";
@@ -48,7 +46,7 @@ public class TwilightForestMod {
 	public static final int GUI_ID_UNCRAFTING = 1;
 	public static final int GUI_ID_FURNACE = 2;
 
-	public static DimensionType dimType;
+	// public static DimensionType dimType; // TODO: move this
 
 	public static final Logger LOGGER = LogManager.getLogger(ID);
 
@@ -56,36 +54,35 @@ public class TwilightForestMod {
 
 	private static boolean compat = true;
 
-	@SidedProxy(clientSide = "twilightforest.client.TFClientProxy", serverSide = "twilightforest.TFCommonProxy")
-	public static TFCommonProxy proxy;
+	// TODO: PROXIES ARE DEAD!
+	// @SidedProxy(clientSide = "twilightforest.client.TFClientProxy", serverSide = "twilightforest.TFCommonProxy")
+	// public static TFCommonProxy proxy;
 
 	public TwilightForestMod() {
+		MinecraftForge.EVENT_BUS.addListener(this::startServer);
 		TFItems.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
-	}
 
-	@EventHandler
-	public void preInit(FMLPreInitializationEvent event) {
-		if (Loader.isModLoaded("sponge")) {
+		if (ModList.get().isLoaded("sponge")) {
 			LOGGER.info("It looks like you have Sponge installed! You may notice Hydras spawning incorrectly with floating heads.\n" +
 					"If so, please update Sponge to resolve this issue. Have fun!"
 			);
 		}
 
-		registerTileEntities();
-		dimType = DimensionType.register("twilight_forest", "_twilightforest", TFConfig.dimension.dimensionID, WorldProviderTwilightForest.class, false);
-		WorldProviderTwilightForest.syncFromConfig();
+		// TODO: move these to proper spots
+		// registerTileEntities();
+		// dimType = DimensionType.register("twilight_forest", "_twilightforest", TFConfig.dimension.dimensionID, WorldProviderTwilightForest.class, false);
+		// WorldProviderTwilightForest.syncFromConfig();
 
 		// sounds on client, and whatever else needs to be registered pre-load
-		proxy.preInit();
 
 		CapabilityList.registerCapabilities();
 
 		// just call this so that we register structure IDs correctly
-		TFFeature.init();
+		TFFeature.init(); // TODO: move?
 		LOGGER.debug("There are {} entries in TFFeature enum. Maximum structure size is {}", TFFeature.getCount(), TFFeature.getMaxSize());
 
-		MapGenStructureIO.registerStructure(StructureStartNothing.class,                  				 "TFNothing");
-		TFHollowTreePieces.registerPieces();
+		// MapGenStructureIO.registerStructure(StructureStartNothing.class,                  				 "TFNothing"); // TODO: move, (also wtf is the giant whitespace)
+		// TFHollowTreePieces.registerPieces(); TODO: structures are now a real registry
 
 		compat = TFConfig.doCompat;
 
@@ -102,11 +99,10 @@ public class TwilightForestMod {
 		}
 	}
 
-	@EventHandler
-	public void init(FMLInitializationEvent evt) {
-		NetworkRegistry.INSTANCE.registerGuiHandler(instance, proxy);
+	@SubscribeEvent
+	public void init(FMLCommonSetupEvent evt) {
+		// NetworkRegistry.INSTANCE.registerGuiHandler(instance, proxy); // TODO: IGuiHandler is fugly and dead
 		TFPacketHandler.init();
-		proxy.init();
 		TFAdvancements.init();
 		TFTreasure.init();
 
@@ -121,12 +117,9 @@ public class TwilightForestMod {
 		}
 
 		TFDataFixers.init();
-	}
 
-	@EventHandler
-	public void postInit(FMLPostInitializationEvent evt) {
-		registerDimension();
-		checkOriginDimension();
+		// registerDimension(); // TODO: deferred registry
+		// checkOriginDimension(); // TODO: move
 
 		if (compat) {
 			try {
@@ -142,17 +135,16 @@ public class TwilightForestMod {
 		TFGenCaveStalactite.loadStalactites();
 	}
 
-	@EventHandler
+	/*@EventHandler // TODO: look into
 	public void onIMC(FMLInterModComms.IMCEvent event) {
 		IMCHandler.onIMC(event);
-	}
+	}*/
 
-	@EventHandler
 	public void startServer(FMLServerStartingEvent event) {
-		event.registerServerCommand(new CommandTF());
+		// event.registerServerCommand(new CommandTF()); // TODO: Brigadier
 	}
 
-	private static void registerDimension() {
+	/*private static void registerDimension() { TODO: move all this to a deferred registry
 		if (DimensionManager.isDimensionRegistered(TFConfig.dimension.dimensionID)) {
 			LOGGER.warn("Detected that the configured dimension ID '{}' is being used. Using backup ID ({}). It is recommended that you configure this mod to use a unique dimension ID.", TFConfig.dimension.dimensionID, backupDimensionID);
 			TFConfig.dimension.dimensionID = backupDimensionID;
@@ -168,9 +160,9 @@ public class TwilightForestMod {
 			LOGGER.warn("Detected that the configured origin dimension ID ({}) is already used for the Twilight Forest. Defaulting to the overworld.", TFConfig.originDimension);
 			TFConfig.originDimension = 0;
 		}
-	}
+	}*/
 
-	private static void registerTileEntities() {
+	/*private static void registerTileEntities() { // TODO: TileEntityType deferred registry
 		proxy.registerCritterTileEntities();
 
 		GameRegistry.registerTileEntity(TileEntityTFNagaSpawner          .class, prefix("naga_spawner"            ));
@@ -192,7 +184,7 @@ public class TwilightForestMod {
 		GameRegistry.registerTileEntity(TileEntityTFMinoshroomSpawner    .class, prefix("minoshroom_spawner"      ));
 		GameRegistry.registerTileEntity(TileEntityTFAlphaYetiSpawner     .class, prefix("alpha_yeti_spawner"      ));
 		GameRegistry.registerTileEntity(TileEntityTFFinalBossSpawner     .class, prefix("final_boss_spawner"      ));
-	}
+	}*/
 
 	public static ResourceLocation prefix(String name) {
 		return new ResourceLocation(ID, name);

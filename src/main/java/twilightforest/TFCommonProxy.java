@@ -16,7 +16,7 @@ import twilightforest.tileentity.TileEntityTFCinderFurnace;
 import twilightforest.tileentity.critters.*;
 
 //TODO 1.14: Splinter this from Proxies. We're not using them anymore. Meantime, here's what to keep and toss:
-public class TFCommonProxy implements IGuiHandler {
+public class TFCommonProxy implements IGuiHandler /* TODO: JESUS CHRIST WHAT THE FUCK WHY WAS THIS A IGUIHANDLER?! */ {
 
 	public void preInit() {}
 
