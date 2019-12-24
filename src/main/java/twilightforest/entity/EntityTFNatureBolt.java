@@ -3,6 +3,7 @@ package twilightforest.entity;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.BoneMealItem;
 import net.minecraft.item.ItemStack;
@@ -20,12 +21,12 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class EntityTFNatureBolt extends EntityTFThrowable implements ITFProjectile {
 
-	public EntityTFNatureBolt(World world) {
-		super(world);
+	public EntityTFNatureBolt(EntityType<? extends EntityTFNatureBolt> type, World world) {
+		super(type, world);
 	}
 
-	public EntityTFNatureBolt(World world, LivingEntity owner) {
-		super(world, owner);
+	public EntityTFNatureBolt(EntityType<? extends EntityTFNatureBolt> type, World world, LivingEntity owner) {
+		super(type, world, owner);
 	}
 
 	@Override

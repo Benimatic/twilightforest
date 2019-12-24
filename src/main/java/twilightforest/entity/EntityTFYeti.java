@@ -1,6 +1,7 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -31,9 +32,8 @@ public class EntityTFYeti extends MonsterEntity implements IHostileMount {
 	private static final DataParameter<Boolean> ANGER_FLAG = EntityDataManager.createKey(EntityTFYeti.class, DataSerializers.BOOLEAN);
 	private static final AttributeModifier ANGRY_MODIFIER = new AttributeModifier("Angry follow range boost", 24, AttributeModifier.Operation.ADDITION).setSaved(false);
 
-	public EntityTFYeti(World world) {
-		super(world);
-		this.setSize(1.4F, 2.4F);
+	public EntityTFYeti(EntityType<? extends EntityTFYeti> type, World world) {
+		super(type, world);
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package twilightforest.entity;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -36,21 +37,19 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 	private BlockState myState;
 	private int slideTime;
 
-	public EntityTFSlideBlock(World world) {
-		super(world);
+	public EntityTFSlideBlock(EntityType<? extends EntityTFSlideBlock> type, World world) {
+		super(type, world);
 		this.preventEntitySpawning = true;
 		this.entityCollisionReduction = 1F;
-		this.setSize(0.98F, 0.98F);
 		//this.yOffset = this.height / 2.0F;
 	}
 
-	public EntityTFSlideBlock(World world, double x, double y, double z, BlockState state) {
-		super(world);
+	public EntityTFSlideBlock(EntityType<? extends EntityTFSlideBlock> type, World world, double x, double y, double z, BlockState state) {
+		super(type, world);
 
 		this.myState = state;
 		this.preventEntitySpawning = true;
 		this.entityCollisionReduction = 1F;
-		this.setSize(0.98F, 0.98F);
 		//this.yOffset = this.height / 2.0F;
 		this.setPosition(x, y, z);
 		this.motionX = 0.0D;

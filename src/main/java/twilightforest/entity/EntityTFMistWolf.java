@@ -1,6 +1,7 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.item.DyeColor;
@@ -13,9 +14,8 @@ import twilightforest.TwilightForestMod;
 public class EntityTFMistWolf extends EntityTFHostileWolf {
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/mist_wolf");
 
-	public EntityTFMistWolf(World world) {
-		super(world);
-		this.setSize(1.4F, 1.9F);
+	public EntityTFMistWolf(EntityType<? extends EntityTFMistWolf> type, World world) {
+		super(type, world);
 		setCollarColor(DyeColor.GRAY);
 	}
 

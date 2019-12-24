@@ -1,5 +1,6 @@
 package twilightforest.entity;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -8,12 +9,12 @@ import twilightforest.TwilightForestMod;
 public class EntityTFTowerBroodling extends EntityTFSwarmSpider {
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/tower_broodling");
 
-	public EntityTFTowerBroodling(World world) {
-		this(world, true);
+	public EntityTFTowerBroodling(EntityType<? extends EntityTFTowerBroodling> type, World world) {
+		this(type, world, true);
 	}
 
-	public EntityTFTowerBroodling(World world, boolean spawnMore) {
-		super(world, spawnMore);
+	public EntityTFTowerBroodling(EntityType<? extends EntityTFTowerBroodling> type, World world, boolean spawnMore) {
+		super(type, world, spawnMore);
 		experienceValue = 3;
 	}
 

@@ -1,6 +1,7 @@
 package twilightforest.entity.passive;
 
 import net.minecraft.entity.AgeableEntity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.passive.AnimalEntity;
@@ -16,9 +17,8 @@ public class EntityTFPenguin extends EntityTFBird {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/penguin");
 
-	public EntityTFPenguin(World world) {
-		super(world);
-		this.setSize(0.5F, 0.9F);
+	public EntityTFPenguin(EntityType<? extends EntityTFPenguin> type, World world) {
+		super(type, world);
 	}
 
 	@Override

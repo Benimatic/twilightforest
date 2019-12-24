@@ -3,6 +3,7 @@ package twilightforest.entity;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.SpawnReason;
@@ -17,8 +18,8 @@ import javax.annotation.Nullable;
 
 public class EntityTFRisingZombie extends ZombieEntity {
 
-	public EntityTFRisingZombie(World worldIn) {
-		super(worldIn);
+	public EntityTFRisingZombie(EntityType<? extends EntityTFRisingZombie> type, World worldIn) {
+		super(type, worldIn);
 	}
 
 	@Override

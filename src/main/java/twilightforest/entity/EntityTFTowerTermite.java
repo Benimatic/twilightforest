@@ -2,6 +2,7 @@ package twilightforest.entity;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.CreatureAttribute;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.goal.*;
@@ -28,9 +29,8 @@ public class EntityTFTowerTermite extends MonsterEntity {
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/tower_termite");
 	private AISummonSilverfish summonSilverfish;
 
-	public EntityTFTowerTermite(World world) {
-		super(world);
-		this.setSize(0.3F, 0.7F);
+	public EntityTFTowerTermite(EntityType<? extends EntityTFTowerTermite> type, World world) {
+		super(type, world);
 	}
 
 	@Override

@@ -1,171 +1,270 @@
 package twilightforest.entity;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.material.Material;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityClassification;
+import net.minecraft.entity.EntitySpawnPlacementRegistry;
+import net.minecraft.entity.EntityType;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldEntitySpawner;
-import net.minecraftforge.common.util.EnumHelper;
-import net.minecraftforge.event.RegistryEvent;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.spawner.WorldEntitySpawner;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.EntityEntry;
-import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
-import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
-import twilightforest.entity.boss.*;
+import twilightforest.entity.boss.EntityTFFallingIce;
+import twilightforest.entity.boss.EntityTFHydra;
+import twilightforest.entity.boss.EntityTFHydraHead;
+import twilightforest.entity.boss.EntityTFHydraMortar;
+import twilightforest.entity.boss.EntityTFIceBomb;
+import twilightforest.entity.boss.EntityTFIceCrystal;
+import twilightforest.entity.boss.EntityTFKnightPhantom;
+import twilightforest.entity.boss.EntityTFLich;
+import twilightforest.entity.boss.EntityTFLichBolt;
+import twilightforest.entity.boss.EntityTFLichBomb;
+import twilightforest.entity.boss.EntityTFLichMinion;
+import twilightforest.entity.boss.EntityTFMinoshroom;
+import twilightforest.entity.boss.EntityTFNaga;
+import twilightforest.entity.boss.EntityTFSnowQueen;
+import twilightforest.entity.boss.EntityTFThrownWep;
+import twilightforest.entity.boss.EntityTFUrGhast;
+import twilightforest.entity.boss.EntityTFYetiAlpha;
 import twilightforest.entity.finalcastle.EntityTFCastleGuardian;
-import twilightforest.entity.passive.*;
+import twilightforest.entity.passive.EntityTFBighorn;
+import twilightforest.entity.passive.EntityTFBoar;
+import twilightforest.entity.passive.EntityTFBunny;
+import twilightforest.entity.passive.EntityTFDeer;
+import twilightforest.entity.passive.EntityTFMobileFirefly;
+import twilightforest.entity.passive.EntityTFPenguin;
+import twilightforest.entity.passive.EntityTFQuestRam;
+import twilightforest.entity.passive.EntityTFRaven;
+import twilightforest.entity.passive.EntityTFSquirrel;
+import twilightforest.entity.passive.EntityTFTinyBird;
 import twilightforest.util.TFEntityNames;
-
-import java.util.function.Function;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class TFEntities {
 
-	public static final EntityLiving.SpawnPlacementType ON_ICE = EnumHelper.addSpawnPlacementType("TF_ON_ICE", (world, pos) -> {
+	public static final EntitySpawnPlacementRegistry.PlacementType ON_ICE = EntitySpawnPlacementRegistry.PlacementType.create("TF_ON_ICE", (world, pos, entityType) -> {
 
 		BlockState state = world.getBlockState(pos.down());
 		Block block = state.getBlock();
 		Material material = state.getMaterial();
+		BlockPos up = pos.up();
 
-		return (material == Material.ICE || material == Material.PACKED_ICE)
-				&& block != Blocks.BEDROCK && block != Blocks.BARRIER
-				&& WorldEntitySpawner.isValidEmptySpawnBlock(world.getBlockState(pos))
-				&& WorldEntitySpawner.isValidEmptySpawnBlock(world.getBlockState(pos.up()));
+		return (material == Material.ICE || material == Material.PACKED_ICE) && block != Blocks.BEDROCK && block != Blocks.BARRIER && WorldEntitySpawner.isSpawnableSpace(world, pos, world.getBlockState(pos), world.getFluidState(pos)) && WorldEntitySpawner.isSpawnableSpace(world, up, world.getBlockState(up), world.getFluidState(up));
 	});
 
+	public static final DeferredRegister<EntityType<?>> ENTITIES = new DeferredRegister<>(ForgeRegistries.ENTITIES, TwilightForestMod.ID);
+
+	public static final RegistryObject<EntityType<EntityTFBoar>> wild_boar = make(TFEntityNames.WILD_BOAR, EntityTFBoar::new, EntityClassification.CREATURE, 0.9F, 0.9F);
+	public static final RegistryObject<EntityType<EntityTFBighorn>> bighorn_sheep = make(TFEntityNames.BIGHORN_SHEEP, EntityTFBighorn::new, EntityClassification.CREATURE, 0.9F, 1.3F);
+	public static final RegistryObject<EntityType<EntityTFDeer>> deer = make(TFEntityNames.DEER, EntityTFDeer::new, EntityClassification.CREATURE, 0.7F, 2.3F);
+
+	public static final RegistryObject<EntityType<EntityTFRedcap>> redcap = make(TFEntityNames.REDCAP, EntityTFRedcap::new, EntityClassification.MONSTER, 0.9F, 1.4F);
+	public static final RegistryObject<EntityType<EntityTFSwarmSpider>> swarm_spider = make(TFEntityNames.SWARM_SPIDER, EntityTFSwarmSpider::new, EntityClassification.MONSTER, 0.8F, 0.4F);
+	public static final RegistryObject<EntityType<EntityTFNaga>> naga = make(TFEntityNames.NAGA, EntityTFNaga::new, EntityClassification.MONSTER, 1.75f, 3.0f);
+	public static final RegistryObject<EntityType<EntityTFSkeletonDruid>> skeleton_druid = make(TFEntityNames.SKELETON_DRUID, EntityTFSkeletonDruid::new, EntityClassification.MONSTER, 0.6F, 1.99F);
+	public static final RegistryObject<EntityType<EntityTFHostileWolf>> hostile_wolf = make(TFEntityNames.HOSTILE_WOLF, EntityTFHostileWolf::new, EntityClassification.MONSTER, 0.6F, 0.85F);
+	public static final RegistryObject<EntityType<EntityTFWraith>> wraith = make(TFEntityNames.WRAITH, EntityTFWraith::new, EntityClassification.MONSTER);
+	public static final RegistryObject<EntityType<EntityTFHedgeSpider>> hedge_spider = make(TFEntityNames.HEDGE_SPIDER, EntityTFHedgeSpider::new, EntityClassification.MONSTER, 1.4F, 0.9F);
+	public static final RegistryObject<EntityType<EntityTFHydra>> hydra = make(TFEntityNames.HYDRA, EntityTFHydra::new, EntityClassification.MONSTER, 16F, 12F);
+	public static final RegistryObject<EntityType<EntityTFLich>> lich = make(TFEntityNames.LICH, EntityTFLich::new, EntityClassification.MONSTER, 1.1F, 2.5F);
+	public static final RegistryObject<EntityType<EntityTFPenguin>> penguin = make(TFEntityNames.PENGUIN, EntityTFPenguin::new, EntityClassification.CREATURE, 0.5F, 0.9F);
+	public static final RegistryObject<EntityType<EntityTFLichMinion>> lich_minion = make(TFEntityNames.LICH_MINION, EntityTFLichMinion::new, EntityClassification.MONSTER, 0.6F, 1.95F);
+	public static final RegistryObject<EntityType<EntityTFLoyalZombie>> loyal_zombie = make(TFEntityNames.LOYAL_ZOMBIE, EntityTFLoyalZombie::new, EntityClassification.MONSTER);
+	public static final RegistryObject<EntityType<EntityTFTinyBird>> tiny_bird = make(TFEntityNames.TINY_BIRD, EntityTFTinyBird::new, EntityClassification.CREATURE, 0.3F, 0.3F);
+	public static final RegistryObject<EntityType<EntityTFSquirrel>> squirrel = make(TFEntityNames.SQUIRREL, EntityTFSquirrel::new, EntityClassification.CREATURE, 0.3F, 0.5F);
+	public static final RegistryObject<EntityType<EntityTFBunny>> bunny = make(TFEntityNames.BUNNY, EntityTFBunny::new, EntityClassification.CREATURE, 0.3F, 0.6F);
+	public static final RegistryObject<EntityType<EntityTFRaven>> raven = make(TFEntityNames.RAVEN, EntityTFRaven::new, EntityClassification.CREATURE, 0.3F, 0.5F);
+	public static final RegistryObject<EntityType<EntityTFQuestRam>> quest_ram = make(TFEntityNames.QUEST_RAM, EntityTFQuestRam::new, EntityClassification.CREATURE, 1.25F, 2.9F);
+	public static final RegistryObject<EntityType<EntityTFKobold>> kobold = make(TFEntityNames.KOBOLD, EntityTFKobold::new, EntityClassification.MONSTER, 0.8F, 1.1F);
+	public static final RegistryObject<EntityType<EntityTFMosquitoSwarm>> mosquito_swarm = make(TFEntityNames.MOSQUITO_SWARM, EntityTFMosquitoSwarm::new, EntityClassification.MONSTER, 0.7F, 1.9F);
+	public static final RegistryObject<EntityType<EntityTFDeathTome>> death_tome = make(TFEntityNames.DEATH_TOME, EntityTFDeathTome::new, EntityClassification.MONSTER);
+	public static final RegistryObject<EntityType<EntityTFMinotaur>> minotaur = make(TFEntityNames.MINOTAUR, EntityTFMinotaur::new, EntityClassification.MONSTER);
+	public static final RegistryObject<EntityType<EntityTFMinoshroom>> minoshroom = make(TFEntityNames.MINOSHROOM, EntityTFMinoshroom::new, EntityClassification.MONSTER, 1.49F, 2.9F);
+	public static final RegistryObject<EntityType<EntityTFFireBeetle>> fire_beetle = make(TFEntityNames.FIRE_BEETLE, EntityTFFireBeetle::new, EntityClassification.MONSTER, 1.1F, 1.75F);
+	public static final RegistryObject<EntityType<EntityTFSlimeBeetle>> slime_beetle = make(TFEntityNames.SLIME_BEETLE, EntityTFSlimeBeetle::new, EntityClassification.MONSTER, 0.9F, 1.75F);
+	public static final RegistryObject<EntityType<EntityTFPinchBeetle>> pinch_beetle = make(TFEntityNames.PINCH_BEETLE, EntityTFPinchBeetle::new, EntityClassification.MONSTER, 1.2F, 1.1F);
+	public static final RegistryObject<EntityType<EntityTFMazeSlime>> maze_slime = make(TFEntityNames.MAZE_SLIME, EntityTFMazeSlime::new, EntityClassification.MONSTER, 2.04F, 2.04F);
+	public static final RegistryObject<EntityType<EntityTFRedcapSapper>> redcap_sapper = make(TFEntityNames.REDCAP_SAPPER, EntityTFRedcapSapper::new, EntityClassification.MONSTER, 0.9F, 1.4F);
+	public static final RegistryObject<EntityType<EntityTFMistWolf>> mist_wolf = make(TFEntityNames.MIST_WOLF, EntityTFMistWolf::new, EntityClassification.MONSTER, 1.4F, 1.9F);
+	public static final RegistryObject<EntityType<EntityTFKingSpider>> king_spider = make(TFEntityNames.KING_SPIDER, EntityTFKingSpider::new, EntityClassification.MONSTER, 1.6F, 1.6F);
+	public static final RegistryObject<EntityType<EntityTFMobileFirefly>> firefly = make(TFEntityNames.FIREFLY, EntityTFMobileFirefly::new, EntityClassification.CREATURE, 0.5F, 0.5F);
+	public static final RegistryObject<EntityType<EntityTFMiniGhast>> mini_ghast = make(TFEntityNames.MINI_GHAST, EntityTFMiniGhast::new, EntityClassification.MONSTER, 1.1F, 1.5F);
+	public static final RegistryObject<EntityType<EntityTFTowerGhast>> tower_ghast = make(TFEntityNames.TOWER_GHAST, EntityTFTowerGhast::new, EntityClassification.MONSTER, 4.0F, 6.0F);
+	public static final RegistryObject<EntityType<EntityTFTowerGolem>> tower_golem = make(TFEntityNames.TOWER_GOLEM, EntityTFTowerGolem::new, EntityClassification.MONSTER, 1.4F, 2.9F);
+	public static final RegistryObject<EntityType<EntityTFTowerTermite>> tower_termite = make(TFEntityNames.TOWER_TERMITE, EntityTFTowerTermite::new, EntityClassification.MONSTER, 0.3F, 0.7F);
+	public static final RegistryObject<EntityType<EntityTFTowerBroodling>> tower_broodling = make(TFEntityNames.TOWER_BROODLING, EntityTFTowerBroodling::new, EntityClassification.MONSTER, 0.3F, 0.7F);
+	public static final RegistryObject<EntityType<EntityTFUrGhast>> ur_ghast = make(TFEntityNames.UR_GHAST, EntityTFUrGhast::new, EntityClassification.MONSTER, 14.0F, 18.0F);
+	public static final RegistryObject<EntityType<EntityTFBlockGoblin>> blockchain_goblin = make(TFEntityNames.BLOCKCHAIN_GOBLIN, EntityTFBlockGoblin::new, EntityClassification.MONSTER, 0.9F, 1.4F);
+	public static final RegistryObject<EntityType<EntityTFGoblinKnightUpper>> goblin_knight_upper = make(TFEntityNames.GOBLIN_KNIGHT_UPPER, EntityTFGoblinKnightUpper::new, EntityClassification.MONSTER, 1.1F, 1.3F);
+	public static final RegistryObject<EntityType<EntityTFGoblinKnightLower>> goblin_knight_lower = make(TFEntityNames.GOBLIN_KNIGHT_LOWER, EntityTFGoblinKnightLower::new, EntityClassification.MONSTER, 0.7F, 1.1F);
+	public static final RegistryObject<EntityType<EntityTFHelmetCrab>> helmet_crab = make(TFEntityNames.HELMET_CRAB, EntityTFHelmetCrab::new, EntityClassification.MONSTER, 0.8F, 1.1F);
+	public static final RegistryObject<EntityType<EntityTFKnightPhantom>> knight_phantom = make(TFEntityNames.KNIGHT_PHANTOM, EntityTFKnightPhantom::new, EntityClassification.MONSTER, 1.5F, 3.0F);
+	public static final RegistryObject<EntityType<EntityTFYeti>> yeti = make(TFEntityNames.YETI, EntityTFYeti::new, EntityClassification.MONSTER, 1.4F, 2.4F);
+	public static final RegistryObject<EntityType<EntityTFYetiAlpha>> yeti_alpha = make(TFEntityNames.YETI_ALPHA, EntityTFYetiAlpha::new, EntityClassification.MONSTER, 3.8F, 5.0F);
+	public static final RegistryObject<EntityType<EntityTFWinterWolf>> winter_wolf = make(TFEntityNames.WINTER_WOLF, EntityTFWinterWolf::new, EntityClassification.MONSTER, 1.4F, 1.9F);
+	public static final RegistryObject<EntityType<EntityTFSnowGuardian>> snow_guardian = make(TFEntityNames.SNOW_GUARDIAN, EntityTFSnowGuardian::new, EntityClassification.MONSTER, 0.6F, 1.8F);
+	public static final RegistryObject<EntityType<EntityTFIceShooter>> stable_ice_core = make(TFEntityNames.STABLE_ICE_CORE, EntityTFIceShooter::new, EntityClassification.MONSTER, 0.8F, 1.8F);
+	public static final RegistryObject<EntityType<EntityTFIceExploder>> unstable_ice_core = make(TFEntityNames.UNSTABLE_ICE_CORE, EntityTFIceExploder::new, EntityClassification.MONSTER, 0.8F, 1.8F);
+	public static final RegistryObject<EntityType<EntityTFSnowQueen>> snow_queen = make(TFEntityNames.SNOW_QUEEN, EntityTFSnowQueen::new, EntityClassification.MONSTER, 0.7F, 2.2F);
+	public static final RegistryObject<EntityType<EntityTFTroll>> troll = make(TFEntityNames.TROLL, EntityTFTroll::new, EntityClassification.MONSTER, 1.4F, 2.4F);
+	public static final RegistryObject<EntityType<EntityTFGiantMiner>> giant_miner = make(TFEntityNames.GIANT_MINER, EntityTFGiantMiner::new, EntityClassification.MONSTER, 2.4F, 7.2F);
+	public static final RegistryObject<EntityType<EntityTFArmoredGiant>> armored_giant = make(TFEntityNames.ARMORED_GIANT, EntityTFArmoredGiant::new, EntityClassification.MONSTER, 2.4F, 7.2F);
+	public static final RegistryObject<EntityType<EntityTFIceCrystal>> ice_crystal = make(TFEntityNames.ICE_CRYSTAL, EntityTFIceCrystal::new, EntityClassification.MONSTER, 0.6F, 1.8F);
+	public static final RegistryObject<EntityType<EntityTFHarbingerCube>> harbinger_cube = make(TFEntityNames.HARBINGER_CUBE, EntityTFHarbingerCube::new, EntityClassification.MONSTER, 1.9F, 2.4F);
+	public static final RegistryObject<EntityType<EntityTFAdherent>> adherent = make(TFEntityNames.ADHERENT, EntityTFAdherent::new, EntityClassification.MONSTER, 0.8F, 2.2F);
+	public static final RegistryObject<EntityType<EntityTFRovingCube>> roving_cube = make(TFEntityNames.ROVING_CUBE, EntityTFRovingCube::new, EntityClassification.MONSTER, 1.2F, 2.1F);
+	public static final RegistryObject<EntityType<EntityTFCastleGuardian>> castle_guardian = make(TFEntityNames.CASTLE_GUARDIAN, EntityTFCastleGuardian::new, EntityClassification.MONSTER, 1.8F, 2.4F);
+
+	public static final RegistryObject<EntityType<EntityTFHydraHead>> hydra_head = make(TFEntityNames.HYDRA_HEAD, makeCastedBuilder(EntityTFHydraHead.class, EntityTFHydraHead::new, EntityClassification.MONSTER).size(3F, 3F).setTrackingRange(150).setShouldReceiveVelocityUpdates(false));
+
+	public static final RegistryObject<EntityType<EntityTFNatureBolt>> nature_bolt = make(TFEntityNames.NATURE_BOLT, makeCastedBuilder(EntityTFNatureBolt.class, EntityTFNatureBolt::new, EntityClassification.MISC).size(0.25F, 0.25F).setTrackingRange(150).setUpdateInterval(5));
+	public static final RegistryObject<EntityType<EntityTFLichBolt>> lich_bolt = make(TFEntityNames.LICH_BOLT, makeCastedBuilder(EntityTFLichBolt.class, EntityTFLichBolt::new, EntityClassification.MISC).size(0.25F, 0.25F).setTrackingRange(150).setUpdateInterval(2));
+	public static final RegistryObject<EntityType<EntityTFTwilightWandBolt>> wand_bolt = make(TFEntityNames.WAND_BOLT, makeCastedBuilder(EntityTFTwilightWandBolt.class, EntityTFTwilightWandBolt::new, EntityClassification.MISC).size(0.25F, 0.25F).setTrackingRange(150).setUpdateInterval(5));
+	public static final RegistryObject<EntityType<EntityTFTomeBolt>> tome_bolt = make(TFEntityNames.TOME_BOLT, makeCastedBuilder(EntityTFTomeBolt.class, EntityTFTomeBolt::new, EntityClassification.MISC).size(0.25F, 0.25F).setTrackingRange(150).setUpdateInterval(5));
+	public static final RegistryObject<EntityType<EntityTFHydraMortar>> hydra_mortar = make(TFEntityNames.HYDRA_MORTAR, makeCastedBuilder(EntityTFHydraMortar.class, EntityTFHydraMortar::new, EntityClassification.MISC).size(0.75F, 0.75F).setTrackingRange(150));
+	public static final RegistryObject<EntityType<EntityTFLichBomb>> lich_bomb = make(TFEntityNames.LICH_BOMB, makeCastedBuilder(EntityTFLichBomb.class, EntityTFLichBomb::new, EntityClassification.MISC).size(0.25F, 0.25F).setTrackingRange(150));
+	public static final RegistryObject<EntityType<EntityTFMoonwormShot>> moonworm_shot = make(TFEntityNames.MOONWORM_SHOT, makeCastedBuilder(EntityTFMoonwormShot.class, EntityTFMoonwormShot::new, EntityClassification.MISC).size(0.25F, 0.25F).setTrackingRange(150));
+	public static final RegistryObject<EntityType<EntityTFSlimeProjectile>> slime_blob = make(TFEntityNames.SLIME_BLOB, makeCastedBuilder(EntityTFSlimeProjectile.class, EntityTFSlimeProjectile::new, EntityClassification.MISC).size(0.25F, 0.25F).setTrackingRange(150));
+	public static final RegistryObject<EntityType<EntityTFCharmEffect>> charm_effect = make(TFEntityNames.CHARM_EFFECT, EntityTFCharmEffect::new, EntityClassification.MISC, 0.25F, 0.25F);
+	public static final RegistryObject<EntityType<EntityTFThrownWep>> thrown_wep = make(TFEntityNames.THROWN_WEP, EntityTFThrownWep::new, EntityClassification.MISC, 0.5F, 0.5F);
+	public static final RegistryObject<EntityType<EntityTFFallingIce>> falling_ice = make(TFEntityNames.FALLING_ICE, EntityTFFallingIce::new, EntityClassification.MISC, 2.98F, 2.98F);
+	public static final RegistryObject<EntityType<EntityTFIceBomb>> thrown_ice = make(TFEntityNames.THROWN_ICE, makeCastedBuilder(EntityTFIceBomb.class, EntityTFIceBomb::new, EntityClassification.MISC).size(1.0F, 1.0F).setUpdateInterval(2));
+	public static final RegistryObject<EntityType<EntitySeekerArrow>> seeker_arrow = make(TFEntityNames.SEEKER_ARROW, makeCastedBuilder(EntitySeekerArrow.class, EntitySeekerArrow::new, EntityClassification.MISC).size(0.5F, 0.5F).setTrackingRange(150).setUpdateInterval(1));
+	public static final RegistryObject<EntityType<EntityIceArrow>> ice_arrow = make(TFEntityNames.ICE_ARROW, makeCastedBuilder(EntityIceArrow.class, EntityIceArrow::new, EntityClassification.MISC).size(0.5F, 0.5F).setTrackingRange(150).setUpdateInterval(1));
+	public static final RegistryObject<EntityType<EntityTFIceSnowball>> ice_snowball = make(TFEntityNames.ICE_SNOWBALL, makeCastedBuilder(EntityTFIceSnowball.class, EntityTFIceSnowball::new, EntityClassification.MISC).size(0.25F, 0.25F).setTrackingRange(150));
+	public static final RegistryObject<EntityType<EntityTFChainBlock>> chain_block = make(TFEntityNames.CHAIN_BLOCK, makeCastedBuilder(EntityTFChainBlock.class, EntityTFChainBlock::new, EntityClassification.MISC).size(0.6F, 0.6F).setUpdateInterval(1));
+	public static final RegistryObject<EntityType<EntityTFCubeOfAnnihilation>> cube_of_annihilation = make(TFEntityNames.CUBE_OF_ANNIHILATION, makeCastedBuilder(EntityTFCubeOfAnnihilation.class, EntityTFCubeOfAnnihilation::new, EntityClassification.MISC).size(1F, 1F).setUpdateInterval(1));
+	public static final RegistryObject<EntityType<EntityTFSlideBlock>> slider = make(TFEntityNames.SLIDER, makeCastedBuilder(EntityTFSlideBlock.class, EntityTFSlideBlock::new, EntityClassification.MISC).size(0.98F, 0.98F).setUpdateInterval(1));
+	public static final RegistryObject<EntityType<EntityTFBoggard>> boggard = make(TFEntityNames.BOGGARD, EntityTFBoggard::new, EntityClassification.MONSTER, 0.8F, 1.1F);
+	public static final RegistryObject<EntityType<EntityTFRisingZombie>> rising_zombie = make(TFEntityNames.RISING_ZOMBIE, EntityTFRisingZombie::new, EntityClassification.MONSTER, 0.6F, 1.95F);
+
 	static {
-		EntitySpawnPlacementRegistry.setPlacementType(EntityTFPenguin.class, ON_ICE);
+		//EntitySpawnPlacementRegistry.register(EntityTFPenguin.class, ON_ICE); //TODO: find a proper time to register
 	}
 
-	private static class EntityRegistryHelper {
-
-		private final IForgeRegistry<EntityEntry> registry;
-
-		private int id = 0;
-
-		EntityRegistryHelper(IForgeRegistry<EntityEntry> registry) {
-			this.registry = registry;
-		}
-
-		private static String toString(ResourceLocation registryName) {
-			return registryName.getNamespace() + "." + registryName.getPath();
-		}
-
-		final <T extends Entity> EntityEntryBuilder<T> builder(ResourceLocation registryName, Class<T> entity, Function<World, T> factory) {
-			return EntityEntryBuilder.<T>create().id(registryName, id++).name(toString(registryName)).entity(entity).factory(factory);
-		}
-
-		final <T extends Entity> void registerEntity(ResourceLocation registryName, Class<T> entity, Function<World, T> factory, int backgroundEggColour, int foregroundEggColour) {
-			registerEntity(registryName, entity, factory, backgroundEggColour, foregroundEggColour, 80, 3, true);
-		}
-
-		final <T extends Entity> void registerEntity(ResourceLocation registryName, Class<T> entity, Function<World, T> factory, int backgroundEggColour, int foregroundEggColour, int trackingRange, int updateInterval, boolean sendVelocityUpdates) {
-			registry.register(builder(registryName, entity, factory).tracker(trackingRange, updateInterval, sendVelocityUpdates).egg(backgroundEggColour, foregroundEggColour).build());
-		}
-
-		final <T extends Entity> void registerEntity(ResourceLocation registryName, Class<T> entity, Function<World, T> factory) {
-			registerEntity(registryName, entity, factory, 80, 3, true);
-		}
-
-		final <T extends Entity> void registerEntity(ResourceLocation registryName, Class<T> entity, Function<World, T> factory, int trackingRange, int updateInterval, boolean sendVelocityUpdates) {
-			registry.register(builder(registryName, entity, factory).tracker(trackingRange, updateInterval, sendVelocityUpdates).build());
-		}
+	private static <E extends Entity> RegistryObject<EntityType<E>> make(ResourceLocation id, EntityType.IFactory<E> factory, EntityClassification classification, float width, float height) {
+		return make(id, makeBuilder(factory, classification).size(width, height));
 	}
 
-	@SubscribeEvent
-	public static void registerEntities(RegistryEvent.Register<EntityEntry> event) {
+	private static <E extends Entity> RegistryObject<EntityType<E>> make(ResourceLocation id, EntityType.IFactory<E> factory, EntityClassification classification) {
+		return ENTITIES.register(id.getPath(), () -> makeBuilderAndBuild(id, factory, classification));
+	}
 
-		EntityRegistryHelper helper = new EntityRegistryHelper(event.getRegistry());
+	private static <E extends Entity> RegistryObject<EntityType<E>> make(ResourceLocation id, EntityType.Builder<E> builder) {
+		return ENTITIES.register(id.getPath(), () -> builder.build(id.toString()));
+	}
 
-		helper.registerEntity(TFEntityNames.WILD_BOAR, EntityTFBoar.class, EntityTFBoar::new, 0x83653b, 0xffefca);
-		helper.registerEntity(TFEntityNames.BIGHORN_SHEEP, EntityTFBighorn.class, EntityTFBighorn::new, 0xdbceaf, 0xd7c771);
-		helper.registerEntity(TFEntityNames.DEER, EntityTFDeer.class, EntityTFDeer::new, 0x7b4d2e, 0x4b241d);
+	private static <E extends Entity> EntityType<E> makeBuilderAndBuild(ResourceLocation id, EntityType.IFactory<E> factory, EntityClassification classification) {
+		return makeBuilderAndBuild(id.toString(), factory, classification);
+	}
 
-		helper.registerEntity(TFEntityNames.REDCAP, EntityTFRedcap.class, EntityTFRedcap::new, 0x3b3a6c, 0xab1e14);
-		helper.registerEntity(TFEntityNames.SWARM_SPIDER, EntityTFSwarmSpider.class, EntityTFSwarmSpider::new, 0x32022e, 0x17251e);
-		helper.registerEntity(TFEntityNames.NAGA, EntityTFNaga.class, EntityTFNaga::new, 0xa4d316, 0x1b380b, 150, 1, true);
-		helper.registerEntity(TFEntityNames.SKELETON_DRUID, EntityTFSkeletonDruid.class, EntityTFSkeletonDruid::new, 0xa3a3a3, 0x2a3b17);
-		helper.registerEntity(TFEntityNames.HOSTILE_WOLF, EntityTFHostileWolf.class, EntityTFHostileWolf::new, 0xd7d3d3, 0xab1e14);
-		helper.registerEntity(TFEntityNames.WRAITH, EntityTFWraith.class, EntityTFWraith::new, 0x505050, 0x838383);
-		helper.registerEntity(TFEntityNames.HEDGE_SPIDER, EntityTFHedgeSpider.class, EntityTFHedgeSpider::new, 0x235f13, 0x562653);
-		helper.registerEntity(TFEntityNames.HYDRA, EntityTFHydra.class, EntityTFHydra::new, 0x142940, 0x29806b);
-		helper.registerEntity(TFEntityNames.LICH, EntityTFLich.class, EntityTFLich::new, 0xaca489, 0x360472);
-		helper.registerEntity(TFEntityNames.PENGUIN, EntityTFPenguin.class, EntityTFPenguin::new, 0x12151b, 0xf9edd2);
-		helper.registerEntity(TFEntityNames.LICH_MINION, EntityTFLichMinion.class, EntityTFLichMinion::new);
-		helper.registerEntity(TFEntityNames.LOYAL_ZOMBIE, EntityTFLoyalZombie.class, EntityTFLoyalZombie::new);
-		helper.registerEntity(TFEntityNames.TINY_BIRD, EntityTFTinyBird.class, EntityTFTinyBird::new, 0x33aadd, 0x1188ee);
-		helper.registerEntity(TFEntityNames.SQUIRREL, EntityTFSquirrel.class, EntityTFSquirrel::new, 0x904f12, 0xeeeeee);
-		helper.registerEntity(TFEntityNames.BUNNY, EntityTFBunny.class, EntityTFBunny::new, 0xfefeee, 0xccaa99);
-		helper.registerEntity(TFEntityNames.RAVEN, EntityTFRaven.class, EntityTFRaven::new, 0x000011, 0x222233);
-		helper.registerEntity(TFEntityNames.QUEST_RAM, EntityTFQuestRam.class, EntityTFQuestRam::new, 0xfefeee, 0x33aadd);
-		helper.registerEntity(TFEntityNames.KOBOLD, EntityTFKobold.class, EntityTFKobold::new, 0x372096, 0x895d1b);
-		helper.registerEntity(TFEntityNames.MOSQUITO_SWARM, EntityTFMosquitoSwarm.class, EntityTFMosquitoSwarm::new, 0x080904, 0x2d2f21);
-		helper.registerEntity(TFEntityNames.DEATH_TOME, EntityTFDeathTome.class, EntityTFDeathTome::new, 0x774e22, 0xdbcdbe);
-		helper.registerEntity(TFEntityNames.MINOTAUR, EntityTFMinotaur.class, EntityTFMinotaur::new, 0x3f3024, 0xaa7d66);
-		helper.registerEntity(TFEntityNames.MINOSHROOM, EntityTFMinoshroom.class, EntityTFMinoshroom::new, 0xa81012, 0xaa7d66);
-		helper.registerEntity(TFEntityNames.FIRE_BEETLE, EntityTFFireBeetle.class, EntityTFFireBeetle::new, 0x1d0b00, 0xcb6f25);
-		helper.registerEntity(TFEntityNames.SLIME_BEETLE, EntityTFSlimeBeetle.class, EntityTFSlimeBeetle::new, 0x0c1606, 0x60a74c);
-		helper.registerEntity(TFEntityNames.PINCH_BEETLE, EntityTFPinchBeetle.class, EntityTFPinchBeetle::new, 0xbc9327, 0x241609);
-		helper.registerEntity(TFEntityNames.MAZE_SLIME, EntityTFMazeSlime.class, EntityTFMazeSlime::new, 0xa3a3a3, 0x2a3b17);
-		helper.registerEntity(TFEntityNames.REDCAP_SAPPER, EntityTFRedcapSapper.class, EntityTFRedcapSapper::new, 0x575d21, 0xab1e14);
-		helper.registerEntity(TFEntityNames.MIST_WOLF, EntityTFMistWolf.class, EntityTFMistWolf::new, 0x3a1411, 0xe2c88a);
-		helper.registerEntity(TFEntityNames.KING_SPIDER, EntityTFKingSpider.class, EntityTFKingSpider::new, 0x2c1a0e, 0xffc017);
-		helper.registerEntity(TFEntityNames.FIREFLY, EntityTFMobileFirefly.class, EntityTFMobileFirefly::new, 0xa4d316, 0xbaee02);
-		helper.registerEntity(TFEntityNames.MINI_GHAST, EntityTFMiniGhast.class, EntityTFMiniGhast::new, 0xbcbcbc, 0xa74343);
-		helper.registerEntity(TFEntityNames.TOWER_GHAST, EntityTFTowerGhast.class, EntityTFTowerGhast::new, 0xbcbcbc, 0xb77878);
-		helper.registerEntity(TFEntityNames.TOWER_GOLEM, EntityTFTowerGolem.class, EntityTFTowerGolem::new, 0x6b3d20, 0xe2ddda);
-		helper.registerEntity(TFEntityNames.TOWER_TERMITE, EntityTFTowerTermite.class, EntityTFTowerTermite::new, 0x5d2b21, 0xaca03a);
-		helper.registerEntity(TFEntityNames.TOWER_BROODLING, EntityTFTowerBroodling.class, EntityTFTowerBroodling::new, 0x343c14, 0xbaee02);
-		helper.registerEntity(TFEntityNames.UR_GHAST, EntityTFUrGhast.class, EntityTFUrGhast::new, 0xbcbcbc, 0xb77878);
-		helper.registerEntity(TFEntityNames.BLOCKCHAIN_GOBLIN, EntityTFBlockGoblin.class, EntityTFBlockGoblin::new, 0xd3e7bc, 0x1f3fff);
-		helper.registerEntity(TFEntityNames.GOBLIN_KNIGHT_UPPER, EntityTFGoblinKnightUpper.class, EntityTFGoblinKnightUpper::new);
-		helper.registerEntity(TFEntityNames.GOBLIN_KNIGHT_LOWER, EntityTFGoblinKnightLower.class, EntityTFGoblinKnightLower::new, 0x566055, 0xd3e7bc);
-		helper.registerEntity(TFEntityNames.HELMET_CRAB, EntityTFHelmetCrab.class, EntityTFHelmetCrab::new, 0xfb904b, 0xd3e7bc);
-		helper.registerEntity(TFEntityNames.KNIGHT_PHANTOM, EntityTFKnightPhantom.class, EntityTFKnightPhantom::new, 0xa6673b, 0xd3e7bc);
-		helper.registerEntity(TFEntityNames.YETI, EntityTFYeti.class, EntityTFYeti::new, 0xdedede, 0x4675bb);
-		helper.registerEntity(TFEntityNames.YETI_ALPHA, EntityTFYetiAlpha.class, EntityTFYetiAlpha::new, 0xcdcdcd, 0x29486e);
-		helper.registerEntity(TFEntityNames.WINTER_WOLF, EntityTFWinterWolf.class, EntityTFWinterWolf::new, 0xdfe3e5, 0xb2bcca);
-		helper.registerEntity(TFEntityNames.SNOW_GUARDIAN, EntityTFSnowGuardian.class, EntityTFSnowGuardian::new, 0xd3e7bc, 0xfefefe);
-		helper.registerEntity(TFEntityNames.STABLE_ICE_CORE, EntityTFIceShooter.class, EntityTFIceShooter::new, 0xa1bff3, 0x7000f8);
-		helper.registerEntity(TFEntityNames.UNSTABLE_ICE_CORE, EntityTFIceExploder.class, EntityTFIceExploder::new, 0x9aacf5, 0x9b0fa5);
-		helper.registerEntity(TFEntityNames.SNOW_QUEEN, EntityTFSnowQueen.class, EntityTFSnowQueen::new, 0xb1b2d4, 0x87006e);
-		helper.registerEntity(TFEntityNames.TROLL, EntityTFTroll.class, EntityTFTroll::new, 0x9ea98f, 0xb0948e);
-		helper.registerEntity(TFEntityNames.GIANT_MINER, EntityTFGiantMiner.class, EntityTFGiantMiner::new, 0x211b52, 0x9a9a9a);
-		helper.registerEntity(TFEntityNames.ARMORED_GIANT, EntityTFArmoredGiant.class, EntityTFArmoredGiant::new, 0x239391, 0x9a9a9a);
-		helper.registerEntity(TFEntityNames.ICE_CRYSTAL, EntityTFIceCrystal.class, EntityTFIceCrystal::new, 0xdce9fe, 0xadcafb);
-		helper.registerEntity(TFEntityNames.HARBINGER_CUBE, EntityTFHarbingerCube.class, EntityTFHarbingerCube::new, 0x00000a, 0x8b0000);
-		helper.registerEntity(TFEntityNames.ADHERENT, EntityTFAdherent.class, EntityTFAdherent::new, 0x0a0000, 0x00008b);
-		helper.registerEntity(TFEntityNames.ROVING_CUBE, EntityTFRovingCube.class, EntityTFRovingCube::new, 0x0a0000, 0x00009b);
-		helper.registerEntity(TFEntityNames.CASTLE_GUARDIAN, EntityTFCastleGuardian.class, EntityTFCastleGuardian::new, 80, 3, true);
+	private static <E extends Entity> EntityType<E> makeBuilderAndBuild(String id, EntityType.IFactory<E> factory, EntityClassification classification) {
+		return makeBuilder(factory, classification).build(id);
+	}
 
-		helper.registerEntity(TFEntityNames.HYDRA_HEAD, EntityTFHydraHead.class, EntityTFHydraHead::new, 150, 3, false);
+	private static <E extends Entity> EntityType.Builder<E> makeCastedBuilder(@SuppressWarnings("unused") Class<E> cast, EntityType.IFactory<E> factory, EntityClassification classification) {
+		return makeBuilder(factory, classification);
+	}
 
-		helper.registerEntity(TFEntityNames.NATURE_BOLT, EntityTFNatureBolt.class, EntityTFNatureBolt::new, 150, 5, true);
-		helper.registerEntity(TFEntityNames.LICH_BOLT, EntityTFLichBolt.class, EntityTFLichBolt::new, 150, 2, true);
-		helper.registerEntity(TFEntityNames.WAND_BOLT, EntityTFTwilightWandBolt.class, EntityTFTwilightWandBolt::new, 150, 5, true);
-		helper.registerEntity(TFEntityNames.TOME_BOLT, EntityTFTomeBolt.class, EntityTFTomeBolt::new, 150, 5, true);
-		helper.registerEntity(TFEntityNames.HYDRA_MORTAR, EntityTFHydraMortar.class, EntityTFHydraMortar::new, 150, 3, true);
-		helper.registerEntity(TFEntityNames.LICH_BOMB, EntityTFLichBomb.class, EntityTFLichBomb::new, 150, 3, true);
-		helper.registerEntity(TFEntityNames.MOONWORM_SHOT, EntityTFMoonwormShot.class, EntityTFMoonwormShot::new, 150, 3, true);
-		helper.registerEntity(TFEntityNames.SLIME_BLOB, EntityTFSlimeProjectile.class, EntityTFSlimeProjectile::new, 150, 3, true);
-		helper.registerEntity(TFEntityNames.CHARM_EFFECT, EntityTFCharmEffect.class, EntityTFCharmEffect::new, 80, 3, true);
-		helper.registerEntity(TFEntityNames.THROWN_WEP, EntityTFThrownWep.class, EntityTFThrownWep::new, 80, 3, true);
-		helper.registerEntity(TFEntityNames.FALLING_ICE, EntityTFFallingIce.class, EntityTFFallingIce::new, 80, 3, true);
-		helper.registerEntity(TFEntityNames.THROWN_ICE, EntityTFIceBomb.class, EntityTFIceBomb::new, 80, 2, true);
-		helper.registerEntity(TFEntityNames.SEEKER_ARROW, EntitySeekerArrow.class, EntitySeekerArrow::new, 150, 1, true);
-		helper.registerEntity(TFEntityNames.ICE_ARROW, EntityIceArrow.class, EntityIceArrow::new, 150, 1, true);
-		helper.registerEntity(TFEntityNames.ICE_SNOWBALL, EntityTFIceSnowball.class, EntityTFIceSnowball::new, 150, 3, true);
-		helper.registerEntity(TFEntityNames.CHAIN_BLOCK, EntityTFChainBlock.class, EntityTFChainBlock::new, 80, 1, true);
-		helper.registerEntity(TFEntityNames.CUBE_OF_ANNIHILATION, EntityTFCubeOfAnnihilation.class, EntityTFCubeOfAnnihilation::new, 80, 1, true);
-		helper.registerEntity(TFEntityNames.SLIDER, EntityTFSlideBlock.class, EntityTFSlideBlock::new, 80, 1, true);
-		helper.registerEntity(TFEntityNames.BOGGARD, EntityTFBoggard.class, EntityTFBoggard::new);
-		helper.registerEntity(TFEntityNames.RISING_ZOMBIE, EntityTFRisingZombie.class, EntityTFRisingZombie::new);
+	private static <E extends Entity> EntityType.Builder<E> makeBuilder(EntityType.IFactory<E> factory, EntityClassification classification) {
+		return EntityType.Builder.create(factory, classification).
+				size(0.6F, 1.8F).
+				setTrackingRange(80).
+				setUpdateInterval(3).
+				setShouldReceiveVelocityUpdates(true);
+	}
+
+	@Deprecated
+	public static void registerEntities() { // TODO: this is only here still for the spawnegg colors
+		/*		helper.registerEntity(TFEntityNames.WILD_BOAR, EntityTFBoar.class, EntityTFBoar::new, 0x83653b, 0xffefca);
+				helper.registerEntity(TFEntityNames.BIGHORN_SHEEP, EntityTFBighorn.class, EntityTFBighorn::new, 0xdbceaf, 0xd7c771);
+				helper.registerEntity(TFEntityNames.DEER, EntityTFDeer.class, EntityTFDeer::new, 0x7b4d2e, 0x4b241d);
+
+				helper.registerEntity(TFEntityNames.REDCAP, EntityTFRedcap.class, EntityTFRedcap::new, 0x3b3a6c, 0xab1e14);
+				helper.registerEntity(TFEntityNames.SWARM_SPIDER, EntityTFSwarmSpider.class, EntityTFSwarmSpider::new, 0x32022e, 0x17251e);
+				helper.registerEntity(TFEntityNames.NAGA, EntityTFNaga.class, EntityTFNaga::new, 0xa4d316, 0x1b380b, 150, 1, true);
+				helper.registerEntity(TFEntityNames.SKELETON_DRUID, EntityTFSkeletonDruid.class, EntityTFSkeletonDruid::new, 0xa3a3a3, 0x2a3b17);
+				helper.registerEntity(TFEntityNames.HOSTILE_WOLF, EntityTFHostileWolf.class, EntityTFHostileWolf::new, 0xd7d3d3, 0xab1e14);
+				helper.registerEntity(TFEntityNames.WRAITH, EntityTFWraith.class, EntityTFWraith::new, 0x505050, 0x838383);
+				helper.registerEntity(TFEntityNames.HEDGE_SPIDER, EntityTFHedgeSpider.class, EntityTFHedgeSpider::new, 0x235f13, 0x562653);
+				helper.registerEntity(TFEntityNames.HYDRA, EntityTFHydra.class, EntityTFHydra::new, 0x142940, 0x29806b);
+				helper.registerEntity(TFEntityNames.LICH, EntityTFLich.class, EntityTFLich::new, 0xaca489, 0x360472);
+				helper.registerEntity(TFEntityNames.PENGUIN, EntityTFPenguin.class, EntityTFPenguin::new, 0x12151b, 0xf9edd2);
+				helper.registerEntity(TFEntityNames.LICH_MINION, EntityTFLichMinion.class, EntityTFLichMinion::new);
+				helper.registerEntity(TFEntityNames.LOYAL_ZOMBIE, EntityTFLoyalZombie.class, EntityTFLoyalZombie::new);
+				helper.registerEntity(TFEntityNames.TINY_BIRD, EntityTFTinyBird.class, EntityTFTinyBird::new, 0x33aadd, 0x1188ee);
+				helper.registerEntity(TFEntityNames.SQUIRREL, EntityTFSquirrel.class, EntityTFSquirrel::new, 0x904f12, 0xeeeeee);
+				helper.registerEntity(TFEntityNames.BUNNY, EntityTFBunny.class, EntityTFBunny::new, 0xfefeee, 0xccaa99);
+				helper.registerEntity(TFEntityNames.RAVEN, EntityTFRaven.class, EntityTFRaven::new, 0x000011, 0x222233);
+				helper.registerEntity(TFEntityNames.QUEST_RAM, EntityTFQuestRam.class, EntityTFQuestRam::new, 0xfefeee, 0x33aadd);
+				helper.registerEntity(TFEntityNames.KOBOLD, EntityTFKobold.class, EntityTFKobold::new, 0x372096, 0x895d1b);
+				helper.registerEntity(TFEntityNames.MOSQUITO_SWARM, EntityTFMosquitoSwarm.class, EntityTFMosquitoSwarm::new, 0x080904, 0x2d2f21);
+				helper.registerEntity(TFEntityNames.DEATH_TOME, EntityTFDeathTome.class, EntityTFDeathTome::new, 0x774e22, 0xdbcdbe);
+				helper.registerEntity(TFEntityNames.MINOTAUR, EntityTFMinotaur.class, EntityTFMinotaur::new, 0x3f3024, 0xaa7d66);
+				helper.registerEntity(TFEntityNames.MINOSHROOM, EntityTFMinoshroom.class, EntityTFMinoshroom::new, 0xa81012, 0xaa7d66);
+				helper.registerEntity(TFEntityNames.FIRE_BEETLE, EntityTFFireBeetle.class, EntityTFFireBeetle::new, 0x1d0b00, 0xcb6f25);
+				helper.registerEntity(TFEntityNames.SLIME_BEETLE, EntityTFSlimeBeetle.class, EntityTFSlimeBeetle::new, 0x0c1606, 0x60a74c);
+				helper.registerEntity(TFEntityNames.PINCH_BEETLE, EntityTFPinchBeetle.class, EntityTFPinchBeetle::new, 0xbc9327, 0x241609);
+				helper.registerEntity(TFEntityNames.MAZE_SLIME, EntityTFMazeSlime.class, EntityTFMazeSlime::new, 0xa3a3a3, 0x2a3b17);
+				helper.registerEntity(TFEntityNames.REDCAP_SAPPER, EntityTFRedcapSapper.class, EntityTFRedcapSapper::new, 0x575d21, 0xab1e14);
+				helper.registerEntity(TFEntityNames.MIST_WOLF, EntityTFMistWolf.class, EntityTFMistWolf::new, 0x3a1411, 0xe2c88a);
+				helper.registerEntity(TFEntityNames.KING_SPIDER, EntityTFKingSpider.class, EntityTFKingSpider::new, 0x2c1a0e, 0xffc017);
+				helper.registerEntity(TFEntityNames.FIREFLY, EntityTFMobileFirefly.class, EntityTFMobileFirefly::new, 0xa4d316, 0xbaee02);
+				helper.registerEntity(TFEntityNames.MINI_GHAST, EntityTFMiniGhast.class, EntityTFMiniGhast::new, 0xbcbcbc, 0xa74343);
+				helper.registerEntity(TFEntityNames.TOWER_GHAST, EntityTFTowerGhast.class, EntityTFTowerGhast::new, 0xbcbcbc, 0xb77878);
+				helper.registerEntity(TFEntityNames.TOWER_GOLEM, EntityTFTowerGolem.class, EntityTFTowerGolem::new, 0x6b3d20, 0xe2ddda);
+				helper.registerEntity(TFEntityNames.TOWER_TERMITE, EntityTFTowerTermite.class, EntityTFTowerTermite::new, 0x5d2b21, 0xaca03a);
+				helper.registerEntity(TFEntityNames.TOWER_BROODLING, EntityTFTowerBroodling.class, EntityTFTowerBroodling::new, 0x343c14, 0xbaee02);
+				helper.registerEntity(TFEntityNames.UR_GHAST, EntityTFUrGhast.class, EntityTFUrGhast::new, 0xbcbcbc, 0xb77878);
+				helper.registerEntity(TFEntityNames.BLOCKCHAIN_GOBLIN, EntityTFBlockGoblin.class, EntityTFBlockGoblin::new, 0xd3e7bc, 0x1f3fff);
+				helper.registerEntity(TFEntityNames.GOBLIN_KNIGHT_UPPER, EntityTFGoblinKnightUpper.class, EntityTFGoblinKnightUpper::new);
+				helper.registerEntity(TFEntityNames.GOBLIN_KNIGHT_LOWER, EntityTFGoblinKnightLower.class, EntityTFGoblinKnightLower::new, 0x566055, 0xd3e7bc);
+				helper.registerEntity(TFEntityNames.HELMET_CRAB, EntityTFHelmetCrab.class, EntityTFHelmetCrab::new, 0xfb904b, 0xd3e7bc);
+				helper.registerEntity(TFEntityNames.KNIGHT_PHANTOM, EntityTFKnightPhantom.class, EntityTFKnightPhantom::new, 0xa6673b, 0xd3e7bc);
+				helper.registerEntity(TFEntityNames.YETI, EntityTFYeti.class, EntityTFYeti::new, 0xdedede, 0x4675bb);
+				helper.registerEntity(TFEntityNames.YETI_ALPHA, EntityTFYetiAlpha.class, EntityTFYetiAlpha::new, 0xcdcdcd, 0x29486e);
+				helper.registerEntity(TFEntityNames.WINTER_WOLF, EntityTFWinterWolf.class, EntityTFWinterWolf::new, 0xdfe3e5, 0xb2bcca);
+				helper.registerEntity(TFEntityNames.SNOW_GUARDIAN, EntityTFSnowGuardian.class, EntityTFSnowGuardian::new, 0xd3e7bc, 0xfefefe);
+				helper.registerEntity(TFEntityNames.STABLE_ICE_CORE, EntityTFIceShooter.class, EntityTFIceShooter::new, 0xa1bff3, 0x7000f8);
+				helper.registerEntity(TFEntityNames.UNSTABLE_ICE_CORE, EntityTFIceExploder.class, EntityTFIceExploder::new, 0x9aacf5, 0x9b0fa5);
+				helper.registerEntity(TFEntityNames.SNOW_QUEEN, EntityTFSnowQueen.class, EntityTFSnowQueen::new, 0xb1b2d4, 0x87006e);
+				helper.registerEntity(TFEntityNames.TROLL, EntityTFTroll.class, EntityTFTroll::new, 0x9ea98f, 0xb0948e);
+				helper.registerEntity(TFEntityNames.GIANT_MINER, EntityTFGiantMiner.class, EntityTFGiantMiner::new, 0x211b52, 0x9a9a9a);
+				helper.registerEntity(TFEntityNames.ARMORED_GIANT, EntityTFArmoredGiant.class, EntityTFArmoredGiant::new, 0x239391, 0x9a9a9a);
+				helper.registerEntity(TFEntityNames.ICE_CRYSTAL, EntityTFIceCrystal.class, EntityTFIceCrystal::new, 0xdce9fe, 0xadcafb);
+				helper.registerEntity(TFEntityNames.HARBINGER_CUBE, EntityTFHarbingerCube.class, EntityTFHarbingerCube::new, 0x00000a, 0x8b0000);
+				helper.registerEntity(TFEntityNames.ADHERENT, EntityTFAdherent.class, EntityTFAdherent::new, 0x0a0000, 0x00008b);
+				helper.registerEntity(TFEntityNames.ROVING_CUBE, EntityTFRovingCube.class, EntityTFRovingCube::new, 0x0a0000, 0x00009b);
+				helper.registerEntity(TFEntityNames.CASTLE_GUARDIAN, EntityTFCastleGuardian.class, EntityTFCastleGuardian::new, 80, 3, true);
+
+				helper.registerEntity(TFEntityNames.HYDRA_HEAD, EntityTFHydraHead.class, EntityTFHydraHead::new, 150, 3, false);
+
+				helper.registerEntity(TFEntityNames.NATURE_BOLT, EntityTFNatureBolt.class, EntityTFNatureBolt::new, 150, 5, true);
+				helper.registerEntity(TFEntityNames.LICH_BOLT, EntityTFLichBolt.class, EntityTFLichBolt::new, 150, 2, true);
+				helper.registerEntity(TFEntityNames.WAND_BOLT, EntityTFTwilightWandBolt.class, EntityTFTwilightWandBolt::new, 150, 5, true);
+				helper.registerEntity(TFEntityNames.TOME_BOLT, EntityTFTomeBolt.class, EntityTFTomeBolt::new, 150, 5, true);
+				helper.registerEntity(TFEntityNames.HYDRA_MORTAR, EntityTFHydraMortar.class, EntityTFHydraMortar::new, 150, 3, true);
+				helper.registerEntity(TFEntityNames.LICH_BOMB, EntityTFLichBomb.class, EntityTFLichBomb::new, 150, 3, true);
+				helper.registerEntity(TFEntityNames.MOONWORM_SHOT, EntityTFMoonwormShot.class, EntityTFMoonwormShot::new, 150, 3, true);
+				helper.registerEntity(TFEntityNames.SLIME_BLOB, EntityTFSlimeProjectile.class, EntityTFSlimeProjectile::new, 150, 3, true);
+				helper.registerEntity(TFEntityNames.CHARM_EFFECT, EntityTFCharmEffect.class, EntityTFCharmEffect::new, 80, 3, true);
+				helper.registerEntity(TFEntityNames.THROWN_WEP, EntityTFThrownWep.class, EntityTFThrownWep::new, 80, 3, true);
+				helper.registerEntity(TFEntityNames.FALLING_ICE, EntityTFFallingIce.class, EntityTFFallingIce::new, 80, 3, true);
+				helper.registerEntity(TFEntityNames.THROWN_ICE, EntityTFIceBomb.class, EntityTFIceBomb::new, 80, 2, true);
+				helper.registerEntity(TFEntityNames.SEEKER_ARROW, EntitySeekerArrow.class, EntitySeekerArrow::new, 150, 1, true);
+				helper.registerEntity(TFEntityNames.ICE_ARROW, EntityIceArrow.class, EntityIceArrow::new, 150, 1, true);
+				helper.registerEntity(TFEntityNames.ICE_SNOWBALL, EntityTFIceSnowball.class, EntityTFIceSnowball::new, 150, 3, true);
+				helper.registerEntity(TFEntityNames.CHAIN_BLOCK, EntityTFChainBlock.class, EntityTFChainBlock::new, 80, 1, true);
+				helper.registerEntity(TFEntityNames.CUBE_OF_ANNIHILATION, EntityTFCubeOfAnnihilation.class, EntityTFCubeOfAnnihilation::new, 80, 1, true);
+				helper.registerEntity(TFEntityNames.SLIDER, EntityTFSlideBlock.class, EntityTFSlideBlock::new, 80, 1, true);
+				helper.registerEntity(TFEntityNames.BOGGARD, EntityTFBoggard.class, EntityTFBoggard::new);
+				helper.registerEntity(TFEntityNames.RISING_ZOMBIE, EntityTFRisingZombie.class, EntityTFRisingZombie::new);*/
 	}
 }

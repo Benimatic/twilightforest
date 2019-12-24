@@ -1,5 +1,6 @@
 package twilightforest.entity;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -21,9 +22,8 @@ public class EntityTFAdherent extends MonsterEntity implements IRangedAttackMob,
 
 	private static final DataParameter<Boolean> CHARGE_FLAG = EntityDataManager.createKey(EntityTFAdherent.class, DataSerializers.BOOLEAN);
 
-	public EntityTFAdherent(World world) {
-		super(world);
-		this.setSize(0.8F, 2.2F);
+	public EntityTFAdherent(EntityType<? extends EntityTFAdherent> type, World world) {
+		super(type, world);
 	}
 
 	@Override

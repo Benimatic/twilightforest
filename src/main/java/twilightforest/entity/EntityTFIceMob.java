@@ -1,6 +1,7 @@
 package twilightforest.entity;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
@@ -10,8 +11,8 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.particle.TFParticleType;
 
 public abstract class EntityTFIceMob extends MonsterEntity {
-	public EntityTFIceMob(World worldIn) {
-		super(worldIn);
+	public EntityTFIceMob(EntityType<? extends EntityTFIceMob> type, World worldIn) {
+		super(type, worldIn);
 	}
 
 	@Override

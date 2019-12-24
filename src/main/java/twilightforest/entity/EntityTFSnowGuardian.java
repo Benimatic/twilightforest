@@ -1,5 +1,6 @@
 package twilightforest.entity;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.SpawnReason;
@@ -26,9 +27,8 @@ public class EntityTFSnowGuardian extends EntityTFIceMob {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/snow_guardian");
 
-	public EntityTFSnowGuardian(World world) {
-		super(world);
-		this.setSize(0.6F, 1.8F);
+	public EntityTFSnowGuardian(EntityType<? extends EntityTFSnowGuardian> type, World world) {
+		super(type, world);
 	}
 
 	@Override

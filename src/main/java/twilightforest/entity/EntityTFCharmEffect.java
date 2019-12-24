@@ -1,12 +1,14 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -26,13 +28,12 @@ public class EntityTFCharmEffect extends Entity {
 
 	public float offset;
 
-	public EntityTFCharmEffect(World world) {
-		super(world);
-		this.setSize(0.25F, 0.25F);
+	public EntityTFCharmEffect(EntityType<? extends EntityTFCharmEffect> type, World world) {
+		super(type, world);
 	}
 
-	public EntityTFCharmEffect(World world, LivingEntity owner, Item item) {
-		this(world);
+	public EntityTFCharmEffect(EntityType<? extends EntityTFCharmEffect> type, World world, LivingEntity owner, Item item) {
+		this(type, world);
 
 		this.setOwner(owner);
 		this.setItemID(item);

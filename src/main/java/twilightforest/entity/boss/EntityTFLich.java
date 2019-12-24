@@ -65,9 +65,8 @@ public class EntityTFLich extends MonsterEntity {
 	private int attackCooldown;
 	private final ServerBossInfo bossInfo = new ServerBossInfo(getDisplayName(), BossInfo.Color.YELLOW, BossInfo.Overlay.NOTCHED_6);
 
-	public EntityTFLich(World world) {
-		super(world);
-		setSize(1.1F, 2.5F);
+	public EntityTFLich(EntityType<? extends EntityTFLich> type, World world) {
+		super(type, world);
 
 		setShadowClone(false);
 		this.masterLich = null;

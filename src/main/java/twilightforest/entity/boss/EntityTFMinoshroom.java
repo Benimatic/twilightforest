@@ -2,6 +2,7 @@ package twilightforest.entity.boss;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
@@ -36,9 +37,8 @@ public class EntityTFMinoshroom extends EntityTFMinotaur {
 	private float clientSideChargeAnimation;
 	private boolean groundSmashState = false;
 
-	public EntityTFMinoshroom(World world) {
-		super(world);
-		this.setSize(1.49F, 2.9F);
+	public EntityTFMinoshroom(EntityType<? extends EntityTFMinoshroom> type, World world) {
+		super(type, world);
 		this.experienceValue = 100;
 		this.setDropChance(EquipmentSlotType.MAINHAND, 1.1F); // > 1 means it is not randomly damaged when dropped
 	}

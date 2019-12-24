@@ -1,5 +1,6 @@
 package twilightforest.entity;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
@@ -19,8 +20,8 @@ import twilightforest.TwilightForestMod;
 public class EntityTFHedgeSpider extends SpiderEntity {
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/hedge_spider");
 
-	public EntityTFHedgeSpider(World world) {
-		super(world);
+	public EntityTFHedgeSpider(EntityType<? extends EntityTFHedgeSpider> type, World world) {
+		super(type, world);
 	}
 
 	@Override

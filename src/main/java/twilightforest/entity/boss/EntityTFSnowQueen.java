@@ -2,6 +2,7 @@ package twilightforest.entity.boss;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.goal.*;
@@ -63,9 +64,8 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 	private int maxDrops;
 	private int damageWhileBeaming;
 
-	public EntityTFSnowQueen(World world) {
-		super(world);
-		this.setSize(0.7F, 2.2F);
+	public EntityTFSnowQueen(EntityType<? extends EntityTFSnowQueen> type, World world) {
+		super(type, world);
 
 		for (int i = 0; i < this.iceArray.length; i++) {
 			this.iceArray[i] = new EntityTFSnowQueenIceShield(this);

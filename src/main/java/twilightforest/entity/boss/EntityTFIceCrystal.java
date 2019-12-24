@@ -1,5 +1,6 @@
 package twilightforest.entity.boss;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.player.PlayerEntity;
@@ -18,9 +19,8 @@ public class EntityTFIceCrystal extends EntityTFIceMob {
 	private int crystalAge;
 	private int maxCrystalAge = -1;
 
-	public EntityTFIceCrystal(World world) {
-		super(world);
-		this.setSize(0.6F, 1.8F);
+	public EntityTFIceCrystal(EntityType<? extends EntityTFIceCrystal> type, World world) {
+		super(type, world);
 
 		//this.setCurrentItemOrArmor(0, new ItemStack(TFItems.iceSword));
 	}

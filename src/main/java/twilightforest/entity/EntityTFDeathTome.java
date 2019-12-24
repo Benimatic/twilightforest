@@ -1,5 +1,6 @@
 package twilightforest.entity;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -26,8 +27,8 @@ public class EntityTFDeathTome extends MonsterEntity implements IRangedAttackMob
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/death_tome");
 	public static final ResourceLocation HURT_LOOT_TABLE = TwilightForestMod.prefix("entities/death_tome_hurt");
 
-	public EntityTFDeathTome(World world) {
-		super(world);
+	public EntityTFDeathTome(EntityType<? extends EntityTFDeathTome> type, World world) {
+		super(type, world);
 	}
 
 	@Override

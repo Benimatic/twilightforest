@@ -1,6 +1,7 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.Pose;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -20,20 +21,19 @@ public class EntityTFSwarmSpider extends SpiderEntity {
 
 	protected boolean shouldSpawn = false;
 
-	public EntityTFSwarmSpider(World world) {
-		this(world, true);
+	public EntityTFSwarmSpider(EntityType<? extends EntityTFSwarmSpider> type, World world) {
+		this(type, world, true);
 	}
 
-	public EntityTFSwarmSpider(World world, boolean spawnMore) {
-		super(world);
+	public EntityTFSwarmSpider(EntityType<? extends EntityTFSwarmSpider> type, World world, boolean spawnMore) {
+		super(type, world);
 
-		setSize(0.8F, 0.4F);
 		setSpawnMore(spawnMore);
 		experienceValue = 2;
 	}
 
-	public EntityTFSwarmSpider(World world, double x, double y, double z) {
-		this(world);
+	public EntityTFSwarmSpider(EntityType<? extends EntityTFSwarmSpider> type, World world, double x, double y, double z) {
+		this(type, world);
 		this.setPosition(x, y, z);
 	}
 

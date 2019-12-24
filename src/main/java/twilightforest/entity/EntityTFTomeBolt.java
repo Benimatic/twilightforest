@@ -1,5 +1,6 @@
 package twilightforest.entity;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
@@ -15,12 +16,12 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class EntityTFTomeBolt extends EntityTFThrowable {
 
-	public EntityTFTomeBolt(World world, LivingEntity thrower) {
-		super(world, thrower);
+	public EntityTFTomeBolt(EntityType<? extends EntityTFTomeBolt> type, World world, LivingEntity thrower) {
+		super(type, world, thrower);
 	}
 
-	public EntityTFTomeBolt(World world) {
-		super(world);
+	public EntityTFTomeBolt(EntityType<? extends EntityTFTomeBolt> type, World world) {
+		super(type, world);
 	}
 
 	@Override

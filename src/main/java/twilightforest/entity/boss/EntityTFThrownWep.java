@@ -1,5 +1,6 @@
 package twilightforest.entity.boss;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
@@ -20,14 +21,12 @@ public class EntityTFThrownWep extends EntityTFThrowable {
 
 	private float projectileDamage = 6;
 
-	public EntityTFThrownWep(World world, LivingEntity thrower) {
-		super(world, thrower);
-		this.setSize(0.5F, 0.5F);
+	public EntityTFThrownWep(EntityType<? extends EntityTFThrownWep> type, World world, LivingEntity thrower) {
+		super(type, world, thrower);
 	}
 
-	public EntityTFThrownWep(World world) {
-		super(world);
-		this.setSize(0.5F, 0.5F);
+	public EntityTFThrownWep(EntityType<? extends EntityTFThrownWep> type, World world) {
+		super(type, world);
 	}
 
 	public EntityTFThrownWep setDamage(float damage) {

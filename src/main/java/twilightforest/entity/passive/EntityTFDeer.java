@@ -2,6 +2,7 @@ package twilightforest.entity.passive;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.AgeableEntity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.Pose;
 import net.minecraft.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.entity.passive.CowEntity;
@@ -28,9 +29,8 @@ public class EntityTFDeer extends CowEntity {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/deer");
 
-	public EntityTFDeer(World world) {
-		super(world);
-		setSize(0.7F, 2.3F);
+	public EntityTFDeer(EntityType<? extends EntityTFDeer> type, World world) {
+		super(type, world);
 	}
 
 	public EntityTFDeer(World world, double x, double y, double z) {

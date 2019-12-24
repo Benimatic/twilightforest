@@ -3,12 +3,14 @@ package twilightforest.entity.boss;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.FallingBlockEntity;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.particle.TFParticleType;
@@ -19,17 +21,23 @@ public class EntityTFFallingIce extends FallingBlockEntity {
 
 	private static final int HANG_TIME = 100;
 
-	public EntityTFFallingIce(World world) {
-		super(world, 0, 0, 0, Blocks.PACKED_ICE.getDefaultState()); // set falling tile on client to prevent crash
-		this.setSize(2.98F, 2.98F);
+	public EntityTFFallingIce(EntityType<? extends EntityTFFallingIce> type, World world) {
+		this(type, world, 0, 0, 0); // set falling tile on client to prevent crash
 	}
 
-	public EntityTFFallingIce(World world, int x, int y, int z) {
-		super(world, x, y, z, Blocks.PACKED_ICE.getDefaultState());
-		this.setSize(2.98F, 2.98F);
-		this.fallHurtAmount = 10.0F;
-		this.fallHurtMax = 30;
+	public EntityTFFallingIce(EntityType<? extends EntityTFFallingIce> type, World world, int x, int y, int z) {
+		super(type, world);
+		this.fallHurtAmount = 10.0F; // TODO: AT
+		this.fallHurtMax = 30; // TODO: AT
 		this.setHurtEntities(true);
+		this.fallTile = Blocks.PACKED_ICE.getDefaultState(); // TODO: AT
+		this.preventEntitySpawning = true;
+		this.setPosition(x, y + (double)((1.0F - this.getHeight()) / 2.0F), z);
+		this.setMotion(Vec3d.ZERO);
+		this.prevPosX = x;
+		this.prevPosY = y;
+		this.prevPosZ = z;
+		this.setOrigin(new BlockPos(this));
 	}
 
 	@Override

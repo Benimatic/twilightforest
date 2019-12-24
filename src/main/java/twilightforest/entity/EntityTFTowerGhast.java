@@ -1,5 +1,6 @@
 package twilightforest.entity;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.controller.MovementController;
@@ -36,9 +37,8 @@ public class EntityTFTowerGhast extends GhastEntity {
 	protected float wanderFactor;
 	private int inTrapCounter;
 
-	public EntityTFTowerGhast(World world) {
-		super(world);
-		this.setSize(4.0F, 6.0F);
+	public EntityTFTowerGhast(EntityType<? extends EntityTFTowerGhast> type, World world) {
+		super(type, world);
 
 		this.wanderFactor = 16.0F;
 		this.inTrapCounter = 0;

@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.Pose;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.goal.*;
@@ -34,9 +35,8 @@ public class EntityTFTinyBird extends EntityTFBird {
 	private BlockPos spawnPosition;
 	private int currentFlightTime;
 
-	public EntityTFTinyBird(World world) {
-		super(world);
-		this.setSize(0.3F, 0.3F);
+	public EntityTFTinyBird(EntityType<? extends EntityTFTinyBird> type, World world) {
+		super(type, world);
 		setBirdType(rand.nextInt(4));
 		setIsBirdLanded(true);
 	}

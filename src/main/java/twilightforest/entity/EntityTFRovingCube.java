@@ -1,5 +1,6 @@
 package twilightforest.entity;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.util.ResourceLocation;
@@ -24,9 +25,8 @@ public class EntityTFRovingCube extends MonsterEntity {
 
 	// blocks traveled
 
-	public EntityTFRovingCube(World world) {
-		super(world);
-		setSize(1.2F, 2.1F);
+	public EntityTFRovingCube(EntityType<? extends EntityTFRovingCube> type, World world) {
+		super(type, world);
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.goal.*;
@@ -27,9 +28,8 @@ public class EntityTFTowerGolem extends MonsterEntity {
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/tower_golem");
 	private int attackTimer;
 
-	public EntityTFTowerGolem(World world) {
-		super(world);
-		this.setSize(1.4F, 2.9F);
+	public EntityTFTowerGolem(EntityType<? extends EntityTFTowerGolem> type, World world) {
+		super(type, world);
 		this.setPathPriority(PathNodeType.WATER, -1.0F);
 	}
 

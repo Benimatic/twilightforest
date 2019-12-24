@@ -2,16 +2,15 @@ package twilightforest.entity.finalcastle;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.CreatureEntity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.Pose;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 public class EntityTFCastleGuardian extends CreatureEntity { // Not exactly living but requires the logic >.>
-    public EntityTFCastleGuardian(World worldIn) {
-        super(worldIn);
-
-        this.setSize(1.8f, 2.4f);
+    public EntityTFCastleGuardian(EntityType<? extends EntityTFCastleGuardian> type, World worldIn) {
+        super(type, worldIn);
     }
 
     @Override

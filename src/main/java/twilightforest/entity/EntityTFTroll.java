@@ -2,6 +2,7 @@ package twilightforest.entity;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -34,9 +35,8 @@ public class EntityTFTroll extends MonsterEntity implements IRangedAttackMob {
 	private RangedAttackGoal aiArrowAttack;
 	private MeleeAttackGoal aiAttackOnCollide;
 
-	public EntityTFTroll(World world) {
-		super(world);
-		this.setSize(1.4F, 2.4F);
+	public EntityTFTroll(EntityType<? extends EntityTFTroll> type, World world) {
+		super(type, world);
 	}
 
 	@Override

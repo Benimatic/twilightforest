@@ -1,5 +1,6 @@
 package twilightforest.entity.boss;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.potion.Effects;
@@ -19,8 +20,8 @@ public class EntityTFLichMinion extends ZombieEntity {
 
 	EntityTFLich master;
 
-	public EntityTFLichMinion(World world) {
-		super(world);
+	public EntityTFLichMinion(EntityType<? extends EntityTFLichMinion> type, World world) {
+		super(type, world);
 		this.master = null;
 	}
 

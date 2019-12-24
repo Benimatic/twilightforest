@@ -1,6 +1,7 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.nbt.CompoundNBT;
@@ -17,14 +18,13 @@ public class EntityTFHydraPart extends LivingEntity {
 
 	public EntityTFHydra hydra;
 
-	public EntityTFHydraPart(World world) {
-		super(world);
+	public EntityTFHydraPart(EntityType<? extends EntityTFHydraPart> type, World world) {
+		super(type, world);
 		isImmuneToFire();
 	}
 
-	public EntityTFHydraPart(EntityTFHydra hydra, String name, float width, float height) {
-		super(hydra.world);
-		setSize(width, height);
+	public EntityTFHydraPart(EntityType<? extends EntityTFHydraPart> type, EntityTFHydra hydra, String name) {
+		super(type, hydra.world);
 		this.hydra = hydra;
 		setPartName(name);
 		//texture = TwilightForestMod.MODEL_DIR + "hydra4.png";

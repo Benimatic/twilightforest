@@ -1,5 +1,6 @@
 package twilightforest.entity.boss;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Items;
 import net.minecraft.item.Item;
@@ -15,12 +16,12 @@ import twilightforest.entity.EntityTFThrowable;
 public class EntityTFLichBolt extends EntityTFThrowable {
 
 	@SuppressWarnings("unused")
-	public EntityTFLichBolt(World world) {
-		super(world);
+	public EntityTFLichBolt(EntityType<? extends EntityTFLichBolt> type, World world) {
+		super(type, world);
 	}
 
-	public EntityTFLichBolt(World world, LivingEntity owner) {
-		super(world, owner);
+	public EntityTFLichBolt(EntityType<? extends EntityTFLichBolt> type, World world, LivingEntity owner) {
+		super(type, world, owner);
 	}
 
 	@Override

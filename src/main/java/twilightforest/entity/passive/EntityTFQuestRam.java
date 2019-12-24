@@ -2,6 +2,7 @@ package twilightforest.entity.passive;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.AgeableEntity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.passive.AnimalEntity;
@@ -39,9 +40,8 @@ public class EntityTFQuestRam extends AnimalEntity {
 
 	private int randomTickDivider;
 
-	public EntityTFQuestRam(World world) {
-		super(world);
-		this.setSize(1.25F, 2.9F);
+	public EntityTFQuestRam(EntityType<? extends EntityTFQuestRam> type, World world) {
+		super(type, world);
 		this.randomTickDivider = 0;
 	}
 

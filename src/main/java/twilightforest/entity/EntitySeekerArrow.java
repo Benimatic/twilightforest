@@ -1,6 +1,7 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.datasync.DataParameter;
@@ -22,12 +23,12 @@ public class EntitySeekerArrow extends EntityTFArrow {
 	private static final double seekAngle = Math.PI / 6.0;
 	private static final double seekThreshold = 0.5;
 
-	public EntitySeekerArrow(World world) {
-		super(world);
+	public EntitySeekerArrow(EntityType<? extends EntitySeekerArrow> type, World world) {
+		super(type, world);
 	}
 
-	public EntitySeekerArrow(World world, LivingEntity shooter) {
-		super(world, shooter);
+	public EntitySeekerArrow(EntityType<? extends EntitySeekerArrow> type, World world, LivingEntity shooter) {
+		super(type, world, shooter);
 	}
 
 	@Override

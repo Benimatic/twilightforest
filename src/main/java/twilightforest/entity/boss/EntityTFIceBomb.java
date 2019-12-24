@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.DamageSource;
@@ -23,12 +24,12 @@ public class EntityTFIceBomb extends EntityTFThrowable {
 	private int zoneTimer = 80;
 	private boolean hasHit;
 
-	public EntityTFIceBomb(World world) {
-		super(world);
+	public EntityTFIceBomb(EntityType<? extends EntityTFIceBomb> type, World world) {
+		super(type, world);
 	}
 
-	public EntityTFIceBomb(World world, LivingEntity thrower) {
-		super(world, thrower);
+	public EntityTFIceBomb(EntityType<? extends EntityTFIceBomb> type, World world, LivingEntity thrower) {
+		super(type, world, thrower);
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package twilightforest.entity.boss;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -57,9 +58,8 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 	private int collisionCounter;
 	private boolean canRampage;
 
-	public EntityTFYetiAlpha(World world) {
-		super(world);
-		this.setSize(3.8F, 5.0F);
+	public EntityTFYetiAlpha(EntityType<? extends EntityTFYetiAlpha> type, World world) {
+		super(type, world);
 		this.experienceValue = 317;
 	}
 

@@ -58,9 +58,8 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 	private Formation currentFormation;
 	private BlockPos chargePos = BlockPos.ZERO;
 
-	public EntityTFKnightPhantom(World world) {
-		super(world);
-		setSize(1.5F, 3.0F);
+	public EntityTFKnightPhantom(EntityType<? extends EntityTFKnightPhantom> type, World world) {
+		super(type, world);
 		noClip = true;
 		isImmuneToFire();
 		currentFormation = Formation.HOVER;

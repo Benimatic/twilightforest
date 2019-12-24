@@ -1,5 +1,6 @@
 package twilightforest.entity;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -12,8 +13,8 @@ public class EntityTFArmoredGiant extends EntityTFGiantMiner {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/armored_giant");
 
-	public EntityTFArmoredGiant(World world) {
-		super(world);
+	public EntityTFArmoredGiant(EntityType<? extends EntityTFArmoredGiant> type, World world) {
+		super(type, world);
 	}
 
 	@Override

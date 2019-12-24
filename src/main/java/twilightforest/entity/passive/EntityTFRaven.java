@@ -1,5 +1,6 @@
 package twilightforest.entity.passive;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.Pose;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.goal.*;
@@ -16,9 +17,8 @@ public class EntityTFRaven extends EntityTFTinyBird {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/raven");
 
-	public EntityTFRaven(World world) {
-		super(world);
-		this.setSize(0.3F, 0.5F);
+	public EntityTFRaven(EntityType<? extends EntityTFRaven> type, World world) {
+		super(type, world);
 
 		// maybe this will help them move cuter?
 		this.stepHeight = 1;

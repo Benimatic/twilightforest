@@ -3,6 +3,7 @@ package twilightforest.entity.passive;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.CreatureEntity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.Pose;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.goal.*;
@@ -23,9 +24,8 @@ public class EntityTFBunny extends CreatureEntity implements IAnimals {
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/bunny");
 	private static final DataParameter<Byte> DATA_TYPE = EntityDataManager.createKey(EntityTFBunny.class, DataSerializers.BYTE);
 
-	public EntityTFBunny(World world) {
-		super(world);
-		this.setSize(0.3F, 0.6F);
+	public EntityTFBunny(EntityType<? extends EntityTFBunny> type, World world) {
+		super(type, world);
 
 		// maybe this will help them move cuter?
 		this.stepHeight = 1;

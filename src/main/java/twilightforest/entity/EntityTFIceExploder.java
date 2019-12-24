@@ -3,6 +3,7 @@ package twilightforest.entity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.Pose;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.goal.*;
@@ -23,9 +24,8 @@ public class EntityTFIceExploder extends EntityTFIceMob {
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/ice_exploder");
 	private static final float EXPLOSION_RADIUS = 1;
 
-	public EntityTFIceExploder(World world) {
-		super(world);
-		this.setSize(0.8F, 1.8F);
+	public EntityTFIceExploder(EntityType<? extends EntityTFIceExploder> type, World world) {
+		super(type, world);
 	}
 
 	@Override

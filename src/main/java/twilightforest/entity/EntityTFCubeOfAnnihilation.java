@@ -2,6 +2,7 @@ package twilightforest.entity;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ThrowableEntity;
@@ -14,6 +15,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkRegistry;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.block.TFBlocks;
@@ -28,15 +30,13 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 
 	private boolean hasHitObstacle = false;
 
-	public EntityTFCubeOfAnnihilation(World world) {
-		super(world);
-		this.setSize(1F, 1F);
+	public EntityTFCubeOfAnnihilation(EntityType<? extends EntityTFCubeOfAnnihilation> type, World world) {
+		super(type, world);
 		this.isImmuneToFire();
 	}
 
-	public EntityTFCubeOfAnnihilation(World world, LivingEntity thrower) {
-		super(world, thrower);
-		this.setSize(1F, 1F);
+	public EntityTFCubeOfAnnihilation(EntityType<? extends EntityTFCubeOfAnnihilation> type, World world, LivingEntity thrower) {
+		super(type, thrower, world);
 		this.isImmuneToFire();
 		this.shoot(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 1.5F, 1F);
 	}

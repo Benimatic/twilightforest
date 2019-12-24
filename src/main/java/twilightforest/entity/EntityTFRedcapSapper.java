@@ -1,5 +1,6 @@
 package twilightforest.entity;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
@@ -14,8 +15,8 @@ public class EntityTFRedcapSapper extends EntityTFRedcap {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/redcap_sapper");
 
-	public EntityTFRedcapSapper(World world) {
-		super(world);
+	public EntityTFRedcapSapper(EntityType<? extends EntityTFRedcapSapper> type, World world) {
+		super(type, world);
 		this.heldPick = new ItemStack(TFItems.ironwood_pickaxe);
 		this.heldTNT.setCount(3);
 	}

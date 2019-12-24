@@ -1,5 +1,6 @@
 package twilightforest.entity;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
@@ -12,9 +13,8 @@ public class EntityTFHarbingerCube extends MonsterEntity {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/harbinger_cube");
 
-	public EntityTFHarbingerCube(World world) {
-		super(world);
-		this.setSize(1.9F, 2.4F);
+	public EntityTFHarbingerCube(EntityType<? extends EntityTFHarbingerCube> type, World world) {
+		super(type, world);
 	}
 
 	@Override

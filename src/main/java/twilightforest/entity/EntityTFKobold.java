@@ -1,5 +1,6 @@
 package twilightforest.entity;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
@@ -22,9 +23,8 @@ public class EntityTFKobold extends MonsterEntity {
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/kobold");
 	private static final DataParameter<Boolean> PANICKED = EntityDataManager.createKey(EntityTFKobold.class, DataSerializers.BOOLEAN);
 
-	public EntityTFKobold(World world) {
-		super(world);
-		setSize(0.8F, 1.1F);
+	public EntityTFKobold(EntityType<? extends EntityTFKobold> type, World world) {
+		super(type, world);
 	}
 
 	@Override

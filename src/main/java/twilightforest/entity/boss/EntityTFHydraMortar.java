@@ -2,6 +2,7 @@ package twilightforest.entity.boss;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.projectile.ThrowableEntity;
@@ -23,14 +24,12 @@ public class EntityTFHydraMortar extends ThrowableEntity {
 	public int fuse = 80;
 	private boolean megaBlast = false;
 
-	public EntityTFHydraMortar(World world) {
-		super(world);
-		this.setSize(0.75F, 0.75F);
+	public EntityTFHydraMortar(EntityType<? extends EntityTFHydraMortar> type, World world) {
+		super(type, world);
 	}
 
-	public EntityTFHydraMortar(World world, EntityTFHydraHead head) {
-		super(world, head);
-		this.setSize(0.75F, 0.75F);
+	public EntityTFHydraMortar(EntityType<? extends EntityTFHydraMortar> type, World world, EntityTFHydraHead head) {
+		super(type, head, world);
 
 		Vec3d vector = head.getLookVec();
 

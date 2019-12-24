@@ -1,5 +1,6 @@
 package twilightforest.entity;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Items;
 import net.minecraft.item.Item;
@@ -14,17 +15,17 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class EntityTFTwilightWandBolt extends EntityTFThrowable {
 
 	@SuppressWarnings("unused")
-	public EntityTFTwilightWandBolt(World world) {
-		super(world);
+	public EntityTFTwilightWandBolt(EntityType<? extends EntityTFTwilightWandBolt> type, World world) {
+		super(type, world);
 	}
 
 	@SuppressWarnings("unused")
-	public EntityTFTwilightWandBolt(World world, double x, double y, double z) {
-		super(world, x, y, z);
+	public EntityTFTwilightWandBolt(EntityType<? extends EntityTFTwilightWandBolt> type, World world, double x, double y, double z) {
+		super(type, world, x, y, z);
 	}
 
-	public EntityTFTwilightWandBolt(World world, LivingEntity thrower) {
-		super(world, thrower);
+	public EntityTFTwilightWandBolt(EntityType<? extends EntityTFTwilightWandBolt> type, World world, LivingEntity thrower) {
+		super(type, world, thrower);
 		shoot(thrower, thrower.rotationPitch, thrower.rotationYaw, 0, 1.5F, 1.0F);
 	}
 

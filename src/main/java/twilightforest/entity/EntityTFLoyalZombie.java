@@ -3,6 +3,7 @@ package twilightforest.entity;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -23,9 +24,8 @@ import net.minecraft.world.World;
 
 public class EntityTFLoyalZombie extends TameableEntity {
 
-	public EntityTFLoyalZombie(World world) {
-		super(world);
-		this.setSize(0.6F, 1.8F);
+	public EntityTFLoyalZombie(EntityType<? extends EntityTFLoyalZombie> type, World world) {
+		super(type, world);
 	}
 
 	@Override

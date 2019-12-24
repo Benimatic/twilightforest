@@ -2,6 +2,7 @@ package twilightforest.entity.passive;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.passive.AmbientEntity;
 import net.minecraft.entity.passive.EntityAmbientCreature;
@@ -21,9 +22,8 @@ public class EntityTFMobileFirefly extends AmbientEntity {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/mobile_firefly");
 
-	public EntityTFMobileFirefly(World world) {
-		super(world);
-		this.setSize(0.5F, 0.5F);
+	public EntityTFMobileFirefly(EntityType<? extends EntityTFMobileFirefly> type, World world) {
+		super(type, world);
 	}
 
 	@Override

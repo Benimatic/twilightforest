@@ -1,6 +1,7 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.player.PlayerEntity;
@@ -25,9 +26,8 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf implements IBreathAt
 	private static final DataParameter<Boolean> BREATH_FLAG = EntityDataManager.createKey(EntityTFWinterWolf.class, DataSerializers.BOOLEAN);
 	private static final float BREATH_DAMAGE = 2.0F;
 
-	public EntityTFWinterWolf(World world) {
-		super(world);
-		this.setSize(1.4F, 1.9F);
+	public EntityTFWinterWolf(EntityType<? extends EntityTFWinterWolf> type, World world) {
+		super(type, world);
 		setCollarColor(DyeColor.LIGHT_BLUE);
 	}
 

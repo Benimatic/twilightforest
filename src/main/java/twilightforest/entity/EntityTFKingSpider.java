@@ -1,6 +1,7 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.SpawnReason;
@@ -17,9 +18,8 @@ import javax.annotation.Nullable;
 public class EntityTFKingSpider extends SpiderEntity {
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/king_spider");
 
-	public EntityTFKingSpider(World world) {
-		super(world);
-		this.setSize(1.6F, 1.6F);
+	public EntityTFKingSpider(EntityType<? extends EntityTFKingSpider> type, World world) {
+		super(type, world);
 	}
 
 	@Override

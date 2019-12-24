@@ -1,5 +1,6 @@
 package twilightforest.entity;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.particles.ParticleTypes;
@@ -12,12 +13,12 @@ public class EntityTFIceSnowball extends EntityTFThrowable {
 
 	private static final int DAMAGE = 8;
 
-	public EntityTFIceSnowball(World world) {
-		super(world);
+	public EntityTFIceSnowball(EntityType<? extends EntityTFIceSnowball> type, World world) {
+		super(type, world);
 	}
 
-	public EntityTFIceSnowball(World world, LivingEntity thrower) {
-		super(world, thrower);
+	public EntityTFIceSnowball(EntityType<? extends EntityTFIceSnowball> type, World world, LivingEntity thrower) {
+		super(type, world, thrower);
 	}
 
 	@Override

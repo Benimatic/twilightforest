@@ -1,5 +1,6 @@
 package twilightforest.entity.boss;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.particles.ParticleTypes;
@@ -9,12 +10,12 @@ import twilightforest.entity.EntityTFThrowable;
 
 public class EntityTFLichBomb extends EntityTFThrowable {
 
-	public EntityTFLichBomb(World world) {
-		super(world);
+	public EntityTFLichBomb(EntityType<? extends EntityTFLichBomb> type, World world) {
+		super(type, world);
 	}
 
-	public EntityTFLichBomb(World world, LivingEntity thrower) {
-		super(world, thrower);
+	public EntityTFLichBomb(EntityType<? extends EntityTFLichBomb> type, World world, LivingEntity thrower) {
+		super(type, world, thrower);
 	}
 
 	@Override

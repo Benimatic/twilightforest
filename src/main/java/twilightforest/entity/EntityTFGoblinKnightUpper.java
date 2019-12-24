@@ -1,6 +1,7 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -42,9 +43,8 @@ public class EntityTFGoblinKnightUpper extends MonsterEntity {
 	public int heavySpearTimer;
 
 
-	public EntityTFGoblinKnightUpper(World world) {
-		super(world);
-		setSize(1.1F, 1.3F);
+	public EntityTFGoblinKnightUpper(EntityType<? extends EntityTFGoblinKnightUpper> type, World world) {
+		super(type, world);
 
 		this.setHasArmor(true);
 		this.setHasShield(true);

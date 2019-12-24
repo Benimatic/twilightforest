@@ -4,6 +4,7 @@ import net.minecraft.item.Rarity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
@@ -15,6 +16,7 @@ import org.apache.logging.log4j.Logger;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.compat.TFCompat;
+import twilightforest.entity.TFEntities;
 import twilightforest.item.TFItems;
 import twilightforest.loot.TFTreasure;
 import twilightforest.network.TFPacketHandler;
@@ -60,7 +62,10 @@ public class TwilightForestMod {
 
 	public TwilightForestMod() {
 		MinecraftForge.EVENT_BUS.addListener(this::startServer);
-		TFItems.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
+
+		IEventBus modbus = FMLJavaModLoadingContext.get().getModEventBus();
+		TFItems.ITEMS.register(modbus);
+		TFEntities.ENTITIES.register(modbus);
 
 		if (ModList.get().isLoaded("sponge")) {
 			LOGGER.info("It looks like you have Sponge installed! You may notice Hydras spawning incorrectly with floating heads.\n" +

@@ -20,9 +20,8 @@ public class EntityTFGiantMiner extends MonsterEntity {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/giant_miner");
 
-	public EntityTFGiantMiner(World world) {
-		super(world);
-		this.setSize(this.width * 4.0F, this.height * 4.0F);
+	public EntityTFGiantMiner(EntityType<? extends EntityTFGiantMiner> type, World world) {
+		super(type, world);
 
 		for (EquipmentSlotType slot : EquipmentSlotType.values()) {
 			setDropChance(slot, 0);

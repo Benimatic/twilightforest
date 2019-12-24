@@ -32,8 +32,8 @@ public class EntityTFMinotaur extends MonsterEntity implements ITFCharger {
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/minotaur");
 	private static final DataParameter<Boolean> CHARGING = EntityDataManager.createKey(EntityTFMinotaur.class, DataSerializers.BOOLEAN);
 
-	public EntityTFMinotaur(World world) {
-		super(world);
+	public EntityTFMinotaur(EntityType<? extends EntityTFMinotaur> type, World world) {
+		super(type, world);
 	}
 
 	@Override

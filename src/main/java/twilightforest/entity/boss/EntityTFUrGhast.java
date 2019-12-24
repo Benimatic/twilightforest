@@ -2,6 +2,7 @@ package twilightforest.entity.boss;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.controller.MovementController;
@@ -56,9 +57,8 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 	private boolean noTrapMode; // are there no traps nearby?  just float around
 	private final ServerBossInfo bossInfo = new ServerBossInfo(getDisplayName(), BossInfo.Color.RED, BossInfo.Overlay.PROGRESS);
 
-	public EntityTFUrGhast(World world) {
-		super(world);
-		this.setSize(14.0F, 18.0F);
+	public EntityTFUrGhast(EntityType<? extends EntityTFUrGhast> type, World world) {
+		super(type, world);
 		this.wanderFactor = 32.0F;
 		this.noClip = true;
 		this.setInTantrum(false);

@@ -1,6 +1,7 @@
 package twilightforest.entity.passive;
 
 import net.minecraft.entity.AgeableEntity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.passive.SheepEntity;
@@ -31,9 +32,8 @@ public class EntityTFBighorn extends SheepEntity {
 		COLORED_LOOT_TABLES = Collections.unmodifiableMap(map);
 	}
 
-	public EntityTFBighorn(World world) {
-		super(world);
-		setSize(0.9F, 1.3F);
+	public EntityTFBighorn(EntityType<? extends EntityTFBighorn> type, World world) {
+		super(type, world);
 	}
 
 	public EntityTFBighorn(World world, double x, double y, double z) {

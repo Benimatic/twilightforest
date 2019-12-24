@@ -1,5 +1,6 @@
 package twilightforest.entity;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
@@ -26,8 +27,8 @@ import javax.annotation.Nullable;
 public class EntityTFHostileWolf extends WolfEntity implements IMob {
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/hostile_wolf");
 
-	public EntityTFHostileWolf(World world) {
-		super(world);
+	public EntityTFHostileWolf(EntityType<? extends EntityTFHostileWolf> type, World world) {
+		super(type, world);
 		setAngry(true);
 		setCollarColor(DyeColor.BLACK);
 		setAttributes(); // Must call this again because EntityWolf calls setTamed(false) which messes with our changes

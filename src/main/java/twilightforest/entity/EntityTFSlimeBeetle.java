@@ -1,6 +1,7 @@
 package twilightforest.entity;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.IRangedAttackMob;
@@ -23,9 +24,8 @@ public class EntityTFSlimeBeetle extends MonsterEntity implements IRangedAttackM
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/slime_beetle");
 
-	public EntityTFSlimeBeetle(World world) {
-		super(world);
-		setSize(0.9F, 1.75F);
+	public EntityTFSlimeBeetle(EntityType<? extends EntityTFSlimeBeetle> type, World world) {
+		super(type, world);
 	}
 
 	@Override

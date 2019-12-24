@@ -26,9 +26,8 @@ public class EntityTFGoblinKnightLower extends MonsterEntity {
 	private static final DataParameter<Boolean> ARMOR = EntityDataManager.createKey(EntityTFGoblinKnightLower.class, DataSerializers.BOOLEAN);
 	private static final AttributeModifier ARMOR_MODIFIER = new AttributeModifier("Armor boost", 17, AttributeModifier.Operation.ADDITION).setSaved(false);
 
-	public EntityTFGoblinKnightLower(World world) {
-		super(world);
-		setSize(0.7F, 1.1F);
+	public EntityTFGoblinKnightLower(EntityType<? extends EntityTFGoblinKnightLower> type, World world) {
+		super(type, world);
 		this.setHasArmor(true);
 	}
 

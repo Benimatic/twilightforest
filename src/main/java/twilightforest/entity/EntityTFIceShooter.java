@@ -1,5 +1,6 @@
 package twilightforest.entity;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.Pose;
@@ -19,9 +20,8 @@ public class EntityTFIceShooter extends EntityTFIceMob implements IRangedAttackM
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/ice_shooter");
 
-	public EntityTFIceShooter(World world) {
-		super(world);
-		this.setSize(0.8F, 1.8F);
+	public EntityTFIceShooter(EntityType<? extends EntityTFIceShooter> type, World world) {
+		super(type, world);
 	}
 
 	@Override

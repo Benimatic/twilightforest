@@ -2,6 +2,7 @@ package twilightforest.entity;
 
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.FlyingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -30,8 +31,8 @@ public class EntityTFWraith extends FlyingEntity implements IMob {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/wraith");
 
-	public EntityTFWraith(World world) {
-		super(world);
+	public EntityTFWraith(EntityType<? extends EntityTFWraith> type, World world) {
+		super(type, world);
 		moveController = new NoClipMoveHelper(this);
 		noClip = true;
 	}

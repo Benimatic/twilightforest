@@ -2,6 +2,7 @@ package twilightforest.entity;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.Pose;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -22,9 +23,8 @@ public class EntityTFPinchBeetle extends MonsterEntity implements IHostileMount 
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/pinch_beetle");
 
-	public EntityTFPinchBeetle(World world) {
-		super(world);
-		setSize(1.2F, 1.1F);
+	public EntityTFPinchBeetle(EntityType<? extends EntityTFPinchBeetle> type, World world) {
+		super(type, world);
 	}
 
 	@Override

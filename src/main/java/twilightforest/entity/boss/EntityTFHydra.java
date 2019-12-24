@@ -1,6 +1,7 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.item.ExperienceOrbEntity;
@@ -69,8 +70,8 @@ public class EntityTFHydra extends LivingEntity implements IEntityMultiPart, IMo
 
 	private int ticksSinceDamaged = 0;
 
-	public EntityTFHydra(World world) {
-		super(world);
+	public EntityTFHydra(EntityType<? extends EntityTFHydra> type, World world) {
+		super(type, world);
 
 		List<Entity> parts = new ArrayList<>();
 		parts.add(body);
@@ -89,7 +90,6 @@ public class EntityTFHydra extends LivingEntity implements IEntityMultiPart, IMo
 		this.isImmuneToFire();
 		this.experienceValue = 511;
 
-		setSize(16F, 12F);
 		setSpawnHeads(true);
 	}
 

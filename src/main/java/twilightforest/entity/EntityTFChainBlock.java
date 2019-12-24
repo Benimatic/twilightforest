@@ -3,6 +3,7 @@ package twilightforest.entity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ThrowableEntity;
@@ -38,14 +39,12 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 	public final EntityTFGoblinChain chain5 = new EntityTFGoblinChain(this);
 	private final Entity[] partsArray = { chain1, chain2, chain3, chain4, chain5 };
 
-	public EntityTFChainBlock(World world) {
-		super(world);
-		this.setSize(0.6F, 0.6F);
+	public EntityTFChainBlock(EntityType<? extends EntityTFChainBlock> type, World world) {
+		super(type, world);
 	}
 
-	public EntityTFChainBlock(World world, LivingEntity thrower, Hand hand) {
-		super(world, thrower);
-		this.setSize(0.6F, 0.6F);
+	public EntityTFChainBlock(EntityType<? extends EntityTFChainBlock> type, World world, LivingEntity thrower, Hand hand) {
+		super(type, thrower, world);
 		this.isReturning = false;
 		this.hand = hand;
 		this.shoot(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 1.5F, 1F);

@@ -2,6 +2,7 @@ package twilightforest.entity;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.CreatureAttribute;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.Pose;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.goal.*;
@@ -19,9 +20,8 @@ public class EntityTFHelmetCrab extends MonsterEntity {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/helmet_crab");
 
-	public EntityTFHelmetCrab(World world) {
-		super(world);
-		setSize(0.8F, 1.1F);
+	public EntityTFHelmetCrab(EntityType<? extends EntityTFHelmetCrab> type, World world) {
+		super(type, world);
 	}
 
 	@Override

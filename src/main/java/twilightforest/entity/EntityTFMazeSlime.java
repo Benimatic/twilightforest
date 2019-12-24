@@ -2,6 +2,7 @@ package twilightforest.entity;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.monster.SlimeEntity;
@@ -9,6 +10,7 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.LightType;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
@@ -21,8 +23,8 @@ public class EntityTFMazeSlime extends SlimeEntity {
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/maze_slime");
 	private static final AttributeModifier DOUBLE_HEALTH = new AttributeModifier("Maze slime double health", 1, AttributeModifier.Operation.MULTIPLY_BASE).setSaved(false);
 
-	public EntityTFMazeSlime(World world) {
-		super(world);
+	public EntityTFMazeSlime(EntityType<? extends EntityTFMazeSlime> type, World world) {
+		super(type, world);
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package twilightforest.entity;
 
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.Pose;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -20,9 +21,8 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast {
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/mini_ghast");
 	private boolean isMinion = false;
 
-	public EntityTFMiniGhast(World world) {
-		super(world);
-		this.setSize(1.1F, 1.5F);
+	public EntityTFMiniGhast(EntityType<? extends EntityTFMiniGhast> type, World world) {
+		super(type, world);
 		this.wanderFactor = 4.0F;
 	}
 

@@ -2,6 +2,7 @@ package twilightforest.entity;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
@@ -11,12 +12,12 @@ import twilightforest.potions.TFPotions;
 
 public class EntityIceArrow extends EntityTFArrow {
 
-	public EntityIceArrow(World world) {
-		super(world);
+	public EntityIceArrow(EntityType<? extends EntityIceArrow> type, World world) {
+		super(type, world);
 	}
 
-	public EntityIceArrow(World world, LivingEntity shooter) {
-		super(world, shooter);
+	public EntityIceArrow(EntityType<? extends EntityIceArrow> type, World world, LivingEntity shooter) {
+		super(type, world, shooter);
 	}
 
 	@Override

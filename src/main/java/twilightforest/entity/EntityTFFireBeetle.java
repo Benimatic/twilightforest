@@ -28,10 +28,9 @@ public class EntityTFFireBeetle extends MonsterEntity implements IBreathAttacker
 	private static final int BREATH_DURATION = 10;
 	private static final int BREATH_DAMAGE = 2;
 
-	public EntityTFFireBeetle(World world) {
-		super(world);
+	public EntityTFFireBeetle(EntityType<? extends EntityTFFireBeetle> type, World world) {
+		super(type, world);
 		this.isImmuneToFire();
-		setSize(1.1F, .75F);
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package twilightforest.entity;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.RangedAttackGoal;
 import net.minecraft.entity.monster.SkeletonEntity;
@@ -13,6 +14,7 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.LightType;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 
@@ -21,8 +23,8 @@ public class EntityTFSkeletonDruid extends SkeletonEntity {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/skeleton_druid");
 
-	public EntityTFSkeletonDruid(World world) {
-		super(world);
+	public EntityTFSkeletonDruid(EntityType<? extends EntityTFSkeletonDruid> type, World world) {
+		super(type, world);
 	}
 
 	@Override

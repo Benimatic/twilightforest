@@ -1,6 +1,7 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -21,10 +22,9 @@ public class EntityTFMosquitoSwarm extends MonsterEntity {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/mosquito_swarm");
 
-	public EntityTFMosquitoSwarm(World world) {
-		super(world);
+	public EntityTFMosquitoSwarm(EntityType<? extends EntityTFMosquitoSwarm> type, World world) {
+		super(type, world);
 
-		setSize(.7F, 1.9F);
 		this.stepHeight = 2.1f;
 	}
 

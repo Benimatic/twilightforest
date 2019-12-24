@@ -1,6 +1,7 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.Pose;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -46,9 +47,8 @@ public class EntityTFBlockGoblin extends MonsterEntity implements IEntityMultiPa
 
 	private final Entity[] partsArray = new Entity[]{block, chain1, chain2, chain3};
 
-	public EntityTFBlockGoblin(World world) {
-		super(world);
-		setSize(0.9F, 1.4F);
+	public EntityTFBlockGoblin(EntityType<? extends EntityTFBlockGoblin> type, World world) {
+		super(type, world);
 	}
 
 	@Override

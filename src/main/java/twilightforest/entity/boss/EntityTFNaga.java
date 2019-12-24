@@ -3,6 +3,7 @@ package twilightforest.entity.boss;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.controller.MovementController;
@@ -72,9 +73,8 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 
 	private static final DataParameter<Boolean> DATA_DAZE = EntityDataManager.createKey(EntityTFNaga.class, DataSerializers.BOOLEAN);
 
-	public EntityTFNaga(World world) {
-		super(world);
-		this.setSize(1.75f, 3.0f);
+	public EntityTFNaga(EntityType<? extends EntityTFNaga> type, World world) {
+		super(type, world);
 		this.stepHeight = 2;
 		this.healthPerSegment = getMaxHealth() / 10;
 		this.experienceValue = 217;

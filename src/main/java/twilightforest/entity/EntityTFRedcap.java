@@ -1,6 +1,7 @@
 package twilightforest.entity;
 
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -34,9 +35,8 @@ public class EntityTFRedcap extends MonsterEntity {
 	public ItemStack heldTNT = new ItemStack(Blocks.TNT, 1);
 	public ItemStack heldFlint = new ItemStack(Items.FLINT_AND_STEEL, 1);
 
-	public EntityTFRedcap(World world) {
-		super(world);
-		setSize(0.9F, 1.4F);
+	public EntityTFRedcap(EntityType<? extends ? extends EntityTFRedcap> type, World world) {
+		super(type, world);
 	}
 
 	public EntityTFRedcap(World world, double x, double y, double z) {

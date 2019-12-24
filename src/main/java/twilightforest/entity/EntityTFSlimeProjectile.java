@@ -1,5 +1,6 @@
 package twilightforest.entity;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.particles.ParticleTypes;
@@ -11,12 +12,12 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class EntityTFSlimeProjectile extends EntityTFThrowable {
 
-	public EntityTFSlimeProjectile(World world) {
-		super(world);
+	public EntityTFSlimeProjectile(EntityType<? extends EntityTFSlimeProjectile> type, World world) {
+		super(type, world);
 	}
 
-	public EntityTFSlimeProjectile(World world, LivingEntity thrower) {
-		super(world, thrower);
+	public EntityTFSlimeProjectile(EntityType<? extends EntityTFSlimeProjectile> type, World world, LivingEntity thrower) {
+		super(type, world, thrower);
 	}
 
 	@Override
