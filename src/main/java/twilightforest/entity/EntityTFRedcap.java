@@ -35,12 +35,12 @@ public class EntityTFRedcap extends MonsterEntity {
 	public ItemStack heldTNT = new ItemStack(Blocks.TNT, 1);
 	public ItemStack heldFlint = new ItemStack(Items.FLINT_AND_STEEL, 1);
 
-	public EntityTFRedcap(EntityType<? extends ? extends EntityTFRedcap> type, World world) {
+	public EntityTFRedcap(EntityType<? extends EntityTFRedcap> type, World world) {
 		super(type, world);
 	}
 
-	public EntityTFRedcap(World world, double x, double y, double z) {
-		this(world);
+	public EntityTFRedcap(EntityType<? extends EntityTFRedcap> type, World world, double x, double y, double z) {
+		this(type, world);
 		this.setPosition(x, y, z);
 	}
 
