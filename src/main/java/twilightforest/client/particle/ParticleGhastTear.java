@@ -1,9 +1,11 @@
 package twilightforest.client.particle;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.Particle;
-import net.minecraft.block.Blocks;
+import net.minecraft.client.particle.*;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.particles.BasicParticleType;
+import net.minecraft.particles.ItemParticleData;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.particles.ParticleTypes;
@@ -13,17 +15,22 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class ParticleGhastTear extends Particle {
+public class ParticleGhastTear extends SpriteTexturedParticle {
 
 	public ParticleGhastTear(World world, double x, double y, double z, Item item) {
 		super(world, x, y, z, 0.0D, 0.0D, 0.0D);
-		this.setParticleTexture(Minecraft.getInstance().getRenderItem().getItemModelMesher().getParticleIcon(item));
+		this.sprite = Minecraft.getInstance().getItemRenderer().getItemModelMesher().getParticleIcon(item);
 		this.particleRed = this.particleGreen = this.particleBlue = 1.0F;
-		this.particleGravity = Blocks.SNOW.blockParticleGravity * 2F;
+		//this.particleGravity = Blocks.SNOW.blockParticleGravity * 2F; TODO: Find what this is supposed to be
 		this.particleScale = 16.0F;
 
-		this.particleMaxAge = 20 + rand.nextInt(40);
+		this.maxAge = 20 + rand.nextInt(40);
 		this.canCollide = true;
+	}
+
+	@Override
+	public IParticleRenderType getRenderType() {
+		return IParticleRenderType.PARTICLE_SHEET_OPAQUE;
 	}
 
 	public ParticleGhastTear(World world, double x, double y, double z, double vx, double vy, double vz, Item item) {
@@ -39,16 +46,11 @@ public class ParticleGhastTear extends Particle {
 	}
 
 	@Override
-	public int getFXLayer() {
-		return 1;
-	}
-
-	@Override
-	public void onUpdate() {
+	public void tick() {
 		if (this.onGround && rand.nextBoolean()) {
 			world.playSound(null, this.posX, this.posY + 1D, this.posZ, SoundEvents.BLOCK_GLASS_BREAK, SoundCategory.HOSTILE, 0.5F, 1.0F);
 
-			int itemID = Item.getIdFromItem(Items.GHAST_TEAR);
+			ItemStack itemID = new ItemStack(Items.GHAST_TEAR);
 			for (int i = 0; i < 20; ++i) {
 				double gaussX = rand.nextGaussian() * 0.1D;
 				double gaussY = rand.nextGaussian() * 0.2D;
@@ -56,12 +58,28 @@ public class ParticleGhastTear extends Particle {
 
 				//TwilightForestMod.LOGGER.info("tear impact {}, isremote {}", this, world.isRemote);
 
-				world.spawnParticle(ParticleTypes.ITEM_CRACK, this.posX + rand.nextFloat() - rand.nextFloat(), this.posY + 0.5F, this.posZ + rand.nextFloat(), gaussX, gaussY, gaussZ, itemID);
-				world.spawnParticle(ParticleTypes.EXPLOSION_NORMAL, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
+				world.addParticle(new ItemParticleData(ParticleTypes.ITEM, itemID), this.posX + rand.nextFloat() - rand.nextFloat(), this.posY + 0.5F, this.posZ + rand.nextFloat(), gaussX, gaussY, gaussZ);
+				world.addParticle(ParticleTypes.EXPLOSION, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
 
 			}
 			this.setExpired();
 		}
-		super.onUpdate();
+		super.tick();
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	public static class Factory implements IParticleFactory<BasicParticleType> {
+		private final IAnimatedSprite spriteSet;
+
+		public Factory(IAnimatedSprite sprite) {
+			this.spriteSet = sprite;
+		}
+
+		@Override
+		public Particle makeParticle(BasicParticleType typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+			ParticleGhastTear particle = new ParticleGhastTear(worldIn, x, y, z, Items.GHAST_TEAR);
+			particle.selectSpriteRandomly(this.spriteSet);
+			return particle;
+		}
 	}
 }

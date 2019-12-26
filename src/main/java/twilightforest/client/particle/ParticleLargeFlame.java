@@ -1,14 +1,16 @@
 package twilightforest.client.particle;
 
-import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.*;
+import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.entity.Entity;
+import net.minecraft.particles.BasicParticleType;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class ParticleLargeFlame extends Particle {
+public class ParticleLargeFlame extends SpriteTexturedParticle {
 
 	private float flameScale;
 
@@ -20,23 +22,28 @@ public class ParticleLargeFlame extends Particle {
 		this.particleScale *= 5.0D;
 		this.flameScale = this.particleScale;
 		this.particleRed = this.particleGreen = this.particleBlue = 1.0F;
-		this.particleMaxAge = (int) (8.0D / (Math.random() * 0.8D + 0.2D)) + 4;
+		this.maxAge = (int) (8.0D / (Math.random() * 0.8D + 0.2D)) + 4;
 		//this.noClip = true;
-		this.setParticleTextureIndex(48);
+		//this.setParticleTextureIndex(48); TODO: basically copy the flame particle json?
 	}
 
 	@Override
-	public void renderParticle(BufferBuilder buffer, Entity entity, float partialTicks,
-	                           float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
+	public IParticleRenderType getRenderType() {
+		return IParticleRenderType.PARTICLE_SHEET_OPAQUE;
+	}
 
-		float var8 = ((float) this.particleAge + partialTicks) / (float) this.particleMaxAge;
+	@Override
+	public void renderParticle(BufferBuilder buffer, ActiveRenderInfo entity, float partialTicks,
+							   float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
+
+		float var8 = ((float) this.age + partialTicks) / (float) this.maxAge;
 		this.particleScale = this.flameScale * (1.0F - var8 * var8 * 0.5F);
 		super.renderParticle(buffer, entity, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
 	}
 
 	@Override
 	public int getBrightnessForRender(float partialTicks) {
-		float var2 = ((float) this.particleAge + partialTicks) / (float) this.particleMaxAge;
+		float var2 = ((float) this.age + partialTicks) / (float) this.maxAge;
 
 		if (var2 < 0.0F) {
 			var2 = 0.0F;
@@ -59,12 +66,12 @@ public class ParticleLargeFlame extends Particle {
 	}
 
 	@Override
-	public void onUpdate() {
+	public void tick() {
 		this.prevPosX = this.posX;
 		this.prevPosY = this.posY;
 		this.prevPosZ = this.posZ;
 
-		if (this.particleAge++ >= this.particleMaxAge) {
+		if (this.age++ >= this.maxAge) {
 			this.setExpired();
 		}
 
@@ -78,6 +85,22 @@ public class ParticleLargeFlame extends Particle {
 		if (this.onGround) {
 			this.motionX *= 0.699999988079071D;
 			this.motionZ *= 0.699999988079071D;
+		}
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	public static class Factory implements IParticleFactory<BasicParticleType> {
+		private final IAnimatedSprite spriteSet;
+
+		public Factory(IAnimatedSprite sprite) {
+			this.spriteSet = sprite;
+		}
+
+		@Override
+		public Particle makeParticle(BasicParticleType typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+			ParticleLargeFlame particle = new ParticleLargeFlame(worldIn, x, y, z, xSpeed, ySpeed, zSpeed);
+			particle.selectSpriteRandomly(this.spriteSet);
+			return particle;
 		}
 	}
 }

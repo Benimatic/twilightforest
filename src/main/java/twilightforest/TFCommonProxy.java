@@ -23,9 +23,6 @@ public class TFCommonProxy implements IGuiHandler /* TODO: JESUS CHRIST WHAT THE
 	public void init() {}
 
 	//TODO: YEET
-	public void spawnParticle(TFParticleType particleType, double x, double y, double z, double vx, double vy, double vz) {}
-
-	//TODO: YEET
 	@Override
 	public Object getServerGuiElement(int id, PlayerEntity player, World world, int x, int y, int z) {
 		if (id == TwilightForestMod.GUI_ID_UNCRAFTING) {

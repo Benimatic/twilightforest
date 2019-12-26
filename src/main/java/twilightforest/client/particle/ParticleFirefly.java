@@ -1,13 +1,16 @@
 package twilightforest.client.particle;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.*;
+import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.entity.Entity;
+import net.minecraft.particles.BasicParticleType;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
 
-public class ParticleFirefly extends Particle {
+public class ParticleFirefly extends SpriteTexturedParticle {
 
 	private int lifeTime;
 	private int halfLife;
@@ -26,24 +29,29 @@ public class ParticleFirefly extends Particle {
 		particleBlue = 0.0F;
 		particleScale = 1.0f + (rand.nextFloat() * 0.6f);
 		particleScale *= f;
-		lifeTime = particleMaxAge = 10 + rand.nextInt(21);
-		particleMaxAge *= f;
+		lifeTime = maxAge = 10 + rand.nextInt(21);
+		maxAge *= f;
 		halfLife = lifeTime / 2;
 		canCollide = true;
 
-		setParticleTexture(Minecraft.getInstance().getTextureMapBlocks().getAtlasSprite(TwilightForestMod.ID + ":particles/firefly"));
+		sprite = Minecraft.getInstance().getTextureMap().getAtlasSprite(TwilightForestMod.ID + ":particles/firefly");
 	}
 
 	@Override
-	public void renderParticle(BufferBuilder buffer, Entity entity, float partialTicks,
-	                           float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
+	public IParticleRenderType getRenderType() {
+		return IParticleRenderType.PARTICLE_SHEET_OPAQUE; //TODO: There's a LIT and TRANSLUCENT option, too
+	}
+
+	@Override
+	public void renderParticle(BufferBuilder buffer, ActiveRenderInfo entity, float partialTicks,
+							   float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
 
 		particleAlpha = getGlowBrightness();
 		super.renderParticle(buffer, entity, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
 	}
 
 	@Override
-	public void onUpdate() {
+	public void tick() {
 		if (lifeTime <= 1) {
 			setExpired();
 		} else {
@@ -64,8 +72,19 @@ public class ParticleFirefly extends Particle {
 		return 0xF000F0;
 	}
 
-	@Override
-	public int getFXLayer() {
-		return 1;
+	@OnlyIn(Dist.CLIENT)
+	public static class Factory implements IParticleFactory<BasicParticleType> {
+		private final IAnimatedSprite spriteSet;
+
+		public Factory(IAnimatedSprite sprite) {
+			this.spriteSet = sprite;
+		}
+
+		@Override
+		public Particle makeParticle(BasicParticleType typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+			ParticleFirefly particle = new ParticleFirefly(worldIn, x, y, z, 1.0F, xSpeed, ySpeed, zSpeed);
+			particle.selectSpriteRandomly(this.spriteSet);
+			return particle;
+		}
 	}
 }

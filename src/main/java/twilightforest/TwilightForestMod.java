@@ -15,6 +15,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.capabilities.CapabilityList;
+import twilightforest.client.particle.TFParticleType;
 import twilightforest.compat.TFCompat;
 import twilightforest.entity.TFEntities;
 import twilightforest.item.TFItems;
@@ -66,6 +67,7 @@ public class TwilightForestMod {
 		IEventBus modbus = FMLJavaModLoadingContext.get().getModEventBus();
 		TFItems.ITEMS.register(modbus);
 		TFEntities.ENTITIES.register(modbus);
+		TFParticleType.PARTICLE_TYPES.register(modbus);
 
 		if (ModList.get().isLoaded("sponge")) {
 			LOGGER.info("It looks like you have Sponge installed! You may notice Hydras spawning incorrectly with floating heads.\n" +

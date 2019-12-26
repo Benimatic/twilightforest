@@ -1,9 +1,10 @@
 package twilightforest.client.particle;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.*;
+import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.entity.Entity;
+import net.minecraft.particles.BasicParticleType;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -12,7 +13,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
 
 @OnlyIn(Dist.CLIENT)
-public class ParticleLeaf extends Particle {
+public class ParticleLeaf extends SpriteTexturedParticle {
 
 	private final Vec3d target;
 	private float rot;
@@ -34,22 +35,27 @@ public class ParticleLeaf extends Particle {
 		this.particleAlpha = 0F;
 		this.particleScale *= 0.75F * (rand.nextBoolean() ? -1F : 1F);
 		this.particleScale *= scale;
-		this.particleMaxAge = 160 + ((int) (rand.nextFloat() * 30F));
-		this.particleMaxAge = (int) ((float) this.particleMaxAge * scale);
+		this.maxAge = 160 + ((int) (rand.nextFloat() * 30F));
+		this.maxAge = (int) ((float) this.maxAge * scale);
 		this.canCollide = true;
 
-		this.setParticleTexture(Minecraft.getInstance().getTextureMapBlocks().getAtlasSprite(TwilightForestMod.ID + ":particles/fallen_leaf"));
+		this.sprite = Minecraft.getInstance().getTextureMap().getAtlasSprite(TwilightForestMod.ID + ":particles/fallen_leaf");
 
-		this.onUpdate();
+		//this.onUpdate(); TODO: ???
 	}
 
 	@Override
-	public void onUpdate() {
+	public IParticleRenderType getRenderType() {
+		return IParticleRenderType.PARTICLE_SHEET_OPAQUE;
+	}
+
+	@Override
+	public void tick() {
 		this.prevPosX = this.posX;
 		this.prevPosY = this.posY;
 		this.prevPosZ = this.posZ;
 
-		if (this.particleAge++ >= this.particleMaxAge) {
+		if (this.age++ >= this.maxAge) {
 			this.setExpired();
 		}
 
@@ -75,8 +81,8 @@ public class ParticleLeaf extends Particle {
 	}
 
 	@Override
-	public void renderParticle(BufferBuilder buffer, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
-		particleAlpha = Math.min(MathHelper.clamp(particleAge, 0, 20) / 20F, MathHelper.clamp(particleMaxAge - particleAge, 0, 20) / 20F);
+	public void renderParticle(BufferBuilder buffer, ActiveRenderInfo entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
+		particleAlpha = Math.min(MathHelper.clamp(age, 0, 20) / 20F, MathHelper.clamp(maxAge - age, 0, 20) / 20F);
 		super.renderParticle(buffer, entityIn, partialTicks, rotationX, rotationZ + MathHelper.cos((float) Math.toRadians((rot + partialTicks) % 360F)), rotationYZ, rotationXY, rotationXZ);
 	}
 
@@ -85,8 +91,19 @@ public class ParticleLeaf extends Particle {
 		return 240 | 240 << 16;
 	}
 
-	@Override
-	public int getFXLayer() {
-		return 1;
+	@OnlyIn(Dist.CLIENT)
+	public static class Factory implements IParticleFactory<BasicParticleType> {
+		private final IAnimatedSprite spriteSet;
+
+		public Factory(IAnimatedSprite sprite) {
+			this.spriteSet = sprite;
+		}
+
+		@Override
+		public Particle makeParticle(BasicParticleType typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+			ParticleLeaf particle = new ParticleLeaf(worldIn, x, y, z, xSpeed, ySpeed, zSpeed);
+			particle.selectSpriteRandomly(this.spriteSet);
+			return particle;
+		}
 	}
 }

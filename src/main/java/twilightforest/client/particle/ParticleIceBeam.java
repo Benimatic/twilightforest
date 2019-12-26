@@ -1,14 +1,15 @@
 package twilightforest.client.particle;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.*;
+import net.minecraft.particles.BasicParticleType;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
 
 @OnlyIn(Dist.CLIENT)
-public class ParticleIceBeam extends Particle {
+public class ParticleIceBeam extends SpriteTexturedParticle {
 
 	float initialParticleScale;
 
@@ -28,23 +29,28 @@ public class ParticleIceBeam extends Particle {
 		this.particleScale *= 0.75F;
 		this.particleScale *= scale;
 		this.initialParticleScale = this.particleScale;
-//        this.particleMaxAge = (int)(6.0D / (Math.random() * 0.8D + 0.6D));
-//        this.particleMaxAge = (int)((float)this.particleMaxAge * scale);
-		this.particleMaxAge = 50;
+//        this.maxAge = (int)(6.0D / (Math.random() * 0.8D + 0.6D));
+//        this.maxAge = (int)((float)this.maxAge * scale);
+		this.maxAge = 50;
 		this.canCollide = true;
 
-		this.setParticleTexture(Minecraft.getInstance().getTextureMapBlocks().getAtlasSprite(TwilightForestMod.ID + ":particles/snow_" + rand.nextInt(4)));
+		this.sprite = Minecraft.getInstance().getTextureMap().getAtlasSprite(TwilightForestMod.ID + ":particles/snow_" + rand.nextInt(4));
 
-		this.onUpdate();
+		//this.onUpdate(); TODO: ???
 	}
 
 	@Override
-	public void onUpdate() {
+	public IParticleRenderType getRenderType() {
+		return IParticleRenderType.PARTICLE_SHEET_OPAQUE;
+	}
+
+	@Override
+	public void tick() {
 		this.prevPosX = this.posX;
 		this.prevPosY = this.posY;
 		this.prevPosZ = this.posZ;
 
-		if (this.particleAge++ >= this.particleMaxAge) {
+		if (this.age++ >= this.maxAge) {
 			this.setExpired();
 		}
 
@@ -66,8 +72,19 @@ public class ParticleIceBeam extends Particle {
 		return 240 | 240 << 16;
 	}
 
-	@Override
-	public int getFXLayer() {
-		return 1;
+	@OnlyIn(Dist.CLIENT)
+	public static class Factory implements IParticleFactory<BasicParticleType> {
+		private final IAnimatedSprite spriteSet;
+
+		public Factory(IAnimatedSprite sprite) {
+			this.spriteSet = sprite;
+		}
+
+		@Override
+		public Particle makeParticle(BasicParticleType typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+			ParticleIceBeam particle = new ParticleIceBeam(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, 0.75F);
+			particle.selectSpriteRandomly(this.spriteSet);
+			return particle;
+		}
 	}
 }

@@ -219,38 +219,6 @@ public class TFClientProxy extends TFCommonProxy {
 		});
 	}
 
-	// [VanillaCopy] adapted from RenderGlobal.spawnParticle
-	// TODO: 1.14 no longer needs this. Use Particle registry
-	@Override
-	public void spawnParticle(TFParticleType particleType, double x, double y, double z, double vx, double vy, double vz) {
-
-		Minecraft mc = Minecraft.getInstance();
-		Entity entity = mc.getRenderViewEntity();
-		World world = mc.world;
-
-		if (entity != null && mc.effectRenderer != null) {
-
-			int i = mc.gameSettings.particleSetting;
-
-			if (i == 1 && world.rand.nextInt(3) == 0) {
-				i = 2;
-			}
-
-			if (i > 1) return;
-
-			double dx = entity.posX - x;
-			double dy = entity.posY - y;
-			double dz = entity.posZ - z;
-
-			if (dx * dx + dy * dy + dz * dz > 1024.0D) return;
-
-			Particle particle = TFParticleFactory.createParticle(particleType, world, x, y, z, vx, vy, vz);
-			if (particle != null) {
-				mc.effectRenderer.addEffect(particle);
-			}
-		}
-	}
-
 	@Override
 	public ModelBiped getKnightlyArmorModel(EquipmentSlotType armorSlot) {
 		return knightlyArmorModel.get(armorSlot);
