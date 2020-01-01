@@ -41,6 +41,7 @@ public class BlockTFFireflyJar extends Block /*implements IInfusionStabiliser*/ 
 	}
 
 	@Override
+	@Deprecated
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
 		return AABB;
 	}
@@ -53,7 +54,7 @@ public class BlockTFFireflyJar extends Block /*implements IInfusionStabiliser*/ 
 			double dy = pos.getY() + 0.4F + ((rand.nextFloat() - rand.nextFloat()) * 0.3F);
 			double dz = pos.getZ() + ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 0.5F);
 
-			world.addParticle(TFParticleType.FIREFLY, dx, dy, dz, 0, 0, 0);
+			world.addParticle(TFParticleType.FIREFLY.get(), dx, dy, dz, 0, 0, 0);
 		}
 	}
 

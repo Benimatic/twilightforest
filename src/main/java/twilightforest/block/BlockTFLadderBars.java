@@ -1,21 +1,15 @@
 package twilightforest.block;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockLadder;
 import net.minecraft.block.LadderBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.BlockState;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
-import twilightforest.client.ModelRegisterCallback;
-import twilightforest.client.ModelUtils;
+import net.minecraft.world.IWorld;
 
 import static net.minecraft.util.Direction.*;
 
@@ -34,15 +28,15 @@ public class BlockTFLadderBars extends LadderBlock {
     }
 
     @Override
-    public BlockState getActualState(BlockState state, IBlockAccess worldIn, BlockPos pos) {
-        Direction facing = state.getValue(BlockLadder.FACING);
+    public BlockState updatePostPlacement(BlockState state, Direction direction, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+		Direction facing = state.get(LadderBlock.FACING);
 
-        BlockState leftState  = worldIn.getBlockState(pos.offset(rotateCW (facing)));
-        BlockState rightState = worldIn.getBlockState(pos.offset(rotateCCW(facing)));
+		BlockState leftState  = worldIn.getBlockState(currentPos.offset(rotateCW (facing)));
+		BlockState rightState = worldIn.getBlockState(currentPos.offset(rotateCCW(facing)));
 
-        return super.getActualState(state, worldIn, pos)
-                .with(LEFT , leftState .getBlock() instanceof BlockTFLadderBars && leftState .getValue(BlockLadder.FACING) == facing)
-                .with(RIGHT, rightState.getBlock() instanceof BlockTFLadderBars && rightState.getValue(BlockLadder.FACING) == facing);
+		return super.updatePostPlacement(state, direction, facingState, worldIn, currentPos,facingPos)
+				.with(LEFT , leftState .getBlock() instanceof BlockTFLadderBars && leftState .get(LadderBlock.FACING) == facing)
+				.with(RIGHT, rightState.getBlock() instanceof BlockTFLadderBars && rightState.get(LadderBlock.FACING) == facing);
     }
 
     private static Direction rotateCW(Direction facing) {

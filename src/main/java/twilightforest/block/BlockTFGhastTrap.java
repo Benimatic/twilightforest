@@ -1,0 +1,151 @@
+package twilightforest.block;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.material.MaterialColor;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.StateContainer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.*;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorldReader;
+import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import twilightforest.advancements.TFAdvancements;
+import twilightforest.tileentity.*;
+
+import javax.annotation.Nullable;
+
+public class BlockTFGhastTrap extends Block {
+
+	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
+
+	public BlockTFGhastTrap() {
+		super(Properties.create(Material.WOOD, MaterialColor.SAND).hardnessAndResistance(10.0F, 35.0F).sound(SoundType.WOOD));
+		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
+		this.setDefaultState(stateContainer.getBaseState().with(ACTIVE, false));
+	}
+
+	@Override
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+		builder.add(ACTIVE);
+	}
+
+	@Override
+	public int tickRate(IWorldReader world) {
+		return 15;
+	}
+
+	/**
+	 * Change this block into an different device block
+	 */
+	private static void changeToBlockState(World world, BlockPos pos, BlockState state) {
+		//Block thereBlock = world.getBlockState(pos).getBlock();
+
+		//if (thereBlock == TFBlocks.tower_device || thereBlock == TFBlocks.tower_translucent) {
+			world.setBlockState(pos, state, 3);
+			//world.markBlockRangeForRenderUpdate(pos, pos);
+			//.notifyNeighborsRespectDebug(pos, thereBlock, false);
+		//}
+	}
+
+	@Override
+	@Deprecated
+	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
+		if (world.isRemote) return;
+
+		if (!state.get(ACTIVE) && isInactiveTrapCharged(world, pos) && world.isBlockPowered(pos)) {
+			for (ServerPlayerEntity player : world.getEntitiesWithinAABB(ServerPlayerEntity.class, new AxisAlignedBB(pos).grow(6.0D))) {
+				TFAdvancements.ACTIVATED_GHAST_TRAP.trigger(player);
+			}
+
+			changeToBlockState(world, pos, state.with(ACTIVE, true));
+			world.playSound(null, pos, SoundEvents.BLOCK_WOODEN_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.6F);
+			//world.scheduleUpdate(pos, this, 4);
+		}
+	}
+
+	/**
+	 * Check if the inactive trap block is fully charged
+	 */
+	private boolean isInactiveTrapCharged(World world, BlockPos pos) {
+		TileEntityTFGhastTrapInactive tileEntity = (TileEntityTFGhastTrapInactive) world.getTileEntity(pos);
+		return tileEntity != null && tileEntity.isCharged();
+	}
+
+	@Override
+	@Deprecated
+	public int getLightValue(BlockState state) {
+		return state.get(ACTIVE) ? 15 : 0;
+	}
+
+	@Override
+	public boolean hasTileEntity(BlockState state) {
+		return true;
+	}
+
+	@Nullable
+	@Override
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+		return state.get(ACTIVE) ? new TileEntityTFGhastTrapActive() : new TileEntityTFGhastTrapInactive();
+	}
+
+//	@Override
+//	public Item getItemDropped(BlockState state, Random random, int fortune) {
+//		switch (state.getValue(VARIANT)) {
+//			case ANTIBUILDER:
+//				return Items.AIR;
+//			default:
+//				return Item.getItemFromBlock(this);
+//		}
+//	}
+//
+//	@Override
+//	@Deprecated
+//	protected boolean canSilkHarvest() {
+//		return false;
+//	}
+//
+//	@Override
+//	public boolean canSilkHarvest(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+//		return false;
+//	}
+//
+//	@Override
+//	public int damageDropped(BlockState state) {
+//		switch (state.getValue(VARIANT)) {
+//			case REAPPEARING_ACTIVE:
+//				state = state.with(VARIANT, TowerDeviceVariant.REAPPEARING_INACTIVE);
+//				break;
+//			case BUILDER_ACTIVE:
+//			case BUILDER_TIMEOUT:
+//				state = state.with(VARIANT, TowerDeviceVariant.BUILDER_INACTIVE);
+//				break;
+//			case VANISH_ACTIVE:
+//				state = state.with(VARIANT, TowerDeviceVariant.VANISH_INACTIVE);
+//				break;
+//			case GHASTTRAP_ACTIVE:
+//				state = state.with(VARIANT, TowerDeviceVariant.GHASTTRAP_INACTIVE);
+//				break;
+//			case REACTOR_ACTIVE:
+//				state = state.with(VARIANT, TowerDeviceVariant.REACTOR_INACTIVE);
+//				break;
+//			default:
+//				break;
+//		}
+//
+//		return getMetaFromState(state);
+//	}
+
+	@Override
+	@OnlyIn(Dist.CLIENT)
+	public BlockRenderLayer getRenderLayer() {
+		return BlockRenderLayer.CUTOUT;
+	}
+}

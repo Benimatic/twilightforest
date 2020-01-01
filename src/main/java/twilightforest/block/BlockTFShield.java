@@ -1,43 +1,31 @@
 package twilightforest.block;
 
 import net.minecraft.block.*;
-import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
-import twilightforest.client.ModelRegisterCallback;
-import twilightforest.item.TFItems;
 import twilightforest.util.EntityUtil;
 
 import javax.annotation.Nullable;
-import java.util.Random;
 
-public class BlockTFShield extends Block {
+public class BlockTFShield extends DirectionalBlock {
 
 	public BlockTFShield() {
 		super(Properties.create(Material.ROCK).hardnessAndResistance(-1.0F, 6000000.0F).sound(SoundType.METAL));
 		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
-		this.setDefaultState(stateContainer.getBaseState().with(DirectionalBlock.FACING, Direction.DOWN));
-	}
-
-	@Override
-	public BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, BlockDirectional.FACING);
+		this.setDefaultState(stateContainer.getBaseState().with(FACING, Direction.DOWN));
 	}
 
 	@Override
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		builder.add(DirectionalBlock.FACING);
+		builder.add(FACING);
 	}
 
 //	@Override
@@ -48,7 +36,8 @@ public class BlockTFShield extends Block {
 	@Nullable
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		return getDefaultState().with(DirectionalBlock.FACING, Direction.getDirectionFromEntityLiving(pos, placer));
+		//return getDefaultState().with(FACING, Direction.getDirectionFromEntityLiving(pos, placer));
+		return getDefaultState().with(FACING, context.getNearestLookingDirection().getOpposite());
 	}
 
 	@Override
@@ -57,7 +46,7 @@ public class BlockTFShield extends Block {
 		// why can't we just pass the side to this method?  This is annoying and failure-prone
 		RayTraceResult ray = EntityUtil.rayTrace(player, range -> range + 1.0);
 
-		Direction hitFace = ray != null ? ray.sideHit : null;
+		Direction hitFace = ray != null ? ((BlockRayTraceResult) ray).getFace() : null;
 		Direction blockFace = state.get(DirectionalBlock.FACING);
 
 		if (hitFace == blockFace) {

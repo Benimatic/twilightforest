@@ -1,14 +1,15 @@
 package twilightforest.block;
 
 import net.minecraft.block.*;
-import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.material.MaterialColor;
 import net.minecraft.entity.MobEntity;
-import net.minecraft.state.EnumProperty;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.StateContainer;
 import net.minecraft.pathfinding.PathNodeType;
+import net.minecraft.state.EnumProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
@@ -17,15 +18,15 @@ import twilightforest.tileentity.TileEntityTFFlameJet;
 import twilightforest.tileentity.TileEntityTFPoppingJet;
 
 import javax.annotation.Nullable;
-import java.util.Random;
 
-public class BlockTFFireJet extends Block {
+public class BlockTFEncasedFireJet extends Block {
 
 	public static final EnumProperty<FireJetVariant> STATE = EnumProperty.create("state", FireJetVariant.class);
 
-	protected BlockTFFireJet() {
-		super(Properties.create(Material.ROCK, MaterialColor.GRASS).hardnessAndResistance(1.5F, 0.0F).sound(SoundType.WOOD).tickRandomly());
+	protected BlockTFEncasedFireJet() {
+		super(Properties.create(Material.WOOD, MaterialColor.SAND).hardnessAndResistance(1.5F, 0.0F).sound(SoundType.WOOD));
 		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
+		this.setDefaultState(stateContainer.getBaseState().with(STATE, FireJetVariant.IDLE));
 	}
 
 	@Override
@@ -33,7 +34,7 @@ public class BlockTFFireJet extends Block {
 		builder.add(STATE);
 	}
 
-	//TODO: We drop just Fire Jet now
+	//TODO: We drop Encased Fire Jet, aight?
 //	@Override
 //	public int damageDropped(BlockState state) {
 //		switch (state.get(VARIANT)) {
@@ -73,43 +74,16 @@ public class BlockTFFireJet extends Block {
 
 	@Override
 	@Deprecated
-	public void tick(BlockState state, World world, BlockPos pos, Random random) {
-		if (!world.isRemote && state.get(STATE) == FireJetVariant.IDLE) {
-			BlockPos lavaPos = findLavaAround(world, pos.down());
+	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
+		if (world.isRemote) return;
 
-			if (isLava(world, lavaPos)) {
-				world.setBlockState(lavaPos, Blocks.AIR.getDefaultState());
-				world.setBlockState(pos, state.with(STATE, FireJetVariant.POPPING), 2);
-			}
+		FireJetVariant variant = state.get(STATE);
+		boolean powered = world.isBlockPowered(pos);
+
+		if (variant == FireJetVariant.IDLE && powered) {
+			world.setBlockState(pos, state.with(STATE, FireJetVariant.POPPING), 3);
+			world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
 		}
-	}
-
-	/**
-	 * Find a full block of lava near the designated block.  This is intentionally not really that reliable.
-	 */
-	private BlockPos findLavaAround(World world, BlockPos pos) {
-		if (isLava(world, pos)) {
-			return pos;
-		}
-
-		for (int i = 0; i < 3; i++) {
-			BlockPos randPos = pos.add(world.rand.nextInt(3) - 1, 0, world.rand.nextInt(3) - 1);
-			if (isLava(world, randPos)) {
-				return randPos;
-			}
-		}
-
-		return pos;
-	}
-
-	private boolean isLava(World world, BlockPos pos) {
-		BlockState state = world.getBlockState(pos);
-		Block b = state.getBlock();
-		IntegerProperty levelProp = b instanceof FlowingFluidBlock
-				? FlowingFluidBlock.LEVEL
-				: null;
-		return state.getMaterial() == Material.LAVA
-				&& (levelProp == null || state.get(levelProp) == 0);
 	}
 
 	@Override

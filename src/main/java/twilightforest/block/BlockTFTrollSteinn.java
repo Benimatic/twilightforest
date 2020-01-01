@@ -3,21 +3,15 @@ package twilightforest.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
+import net.minecraft.particles.RedstoneParticleData;
 import net.minecraft.state.BooleanProperty;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.BlockState;
-import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
-import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.client.ModelRegisterCallback;
-import twilightforest.item.TFItems;
 
 import java.util.Random;
 
@@ -47,16 +41,16 @@ public class BlockTFTrollSteinn extends Block {
 		builder.add(DOWN_LIT, UP_LIT, NORTH_LIT, SOUTH_LIT, WEST_LIT, EAST_LIT);
 	}
 
-	@Override
-	@Deprecated
-	public BlockState getActualState(BlockState state, IBlockAccess world, BlockPos pos) {
-		if (!(world instanceof World)) return this.getDefaultState();
-
-		for (SideProps side : SideProps.values())
-			state = state.with(side.prop, ((World) world).getLight(pos.offset(side.facing)) > LIGHT_THRESHHOLD);
-
-		return state;
-	}
+//	@Override
+//	@Deprecated
+//	public BlockState getActualState(BlockState state, IBlockAccess world, BlockPos pos) {
+//		if (!(world instanceof World)) return this.getDefaultState();
+//
+//		for (SideProps side : SideProps.values())
+//			state = state.with(side.prop, ((World) world).getLight(pos.offset(side.facing)) > LIGHT_THRESHHOLD);
+//
+//		return state;
+//	}
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
@@ -74,32 +68,32 @@ public class BlockTFTrollSteinn extends Block {
 			double ry = (double) ((float) pos.getY() + random.nextFloat());
 			double rz = (double) ((float) pos.getZ() + random.nextFloat());
 
-			if (side == Direction.DOWN && !world.getBlockState(pos.down()).isOpaqueCube() && world.getLight(pos.down()) <= threshhold) {
+			if (side == Direction.DOWN && !world.getBlockState(pos.down()).isOpaqueCube(world, pos) && world.getLight(pos.down()) <= threshhold) {
 				ry = (double)pos.getY() - 0.0625D;
 			}
 
-			if (side == Direction.UP && !world.getBlockState(pos.up()).isOpaqueCube() && world.getLight(pos.up()) <= threshhold) {
+			if (side == Direction.UP && !world.getBlockState(pos.up()).isOpaqueCube(world, pos) && world.getLight(pos.up()) <= threshhold) {
 				ry = (double)pos.getY() + 0.0625D + 1.0D;
 			}
 
-			if (side == Direction.NORTH && !world.getBlockState(pos.north()).isOpaqueCube() && world.getLight(pos.north()) <= threshhold) {
+			if (side == Direction.NORTH && !world.getBlockState(pos.north()).isOpaqueCube(world, pos) && world.getLight(pos.north()) <= threshhold) {
 				rz = (double)pos.getZ() - 0.0625D;
 			}
 
-			if (side == Direction.SOUTH && !world.getBlockState(pos.south()).isOpaqueCube() && world.getLight(pos.south()) <= threshhold) {
+			if (side == Direction.SOUTH && !world.getBlockState(pos.south()).isOpaqueCube(world, pos) && world.getLight(pos.south()) <= threshhold) {
 				rz = (double)pos.getZ() + 0.0625D + 1.0D;
 			}
 
-			if (side == Direction.WEST && !world.getBlockState(pos.west()).isOpaqueCube() && world.getLight(pos.west()) <= threshhold) {
+			if (side == Direction.WEST && !world.getBlockState(pos.west()).isOpaqueCube(world, pos) && world.getLight(pos.west()) <= threshhold) {
 				rx = (double)pos.getX() - 0.0625D;
 			}
 
-			if (side == Direction.EAST && !world.getBlockState(pos.east()).isOpaqueCube() && world.getLight(pos.east()) <= threshhold) {
+			if (side == Direction.EAST && !world.getBlockState(pos.east()).isOpaqueCube(world, pos) && world.getLight(pos.east()) <= threshhold) {
 				rx = (double)pos.getX() + 0.0625D + 1.0D;
 			}
 
 			if (rx < (double) pos.getX() || rx > (double) (pos.getX() + 1) || ry < 0.0D || ry > (double) (pos.getY() + 1) || rz < (double) pos.getZ() || rz > (double) (pos.getZ() + 1)) {
-				world.addParticle(ParticleTypes.REDSTONE, rx, ry, rz, 0.25D, -1.0D, 0.5D);
+				world.addParticle(RedstoneParticleData.REDSTONE_DUST, rx, ry, rz, 0.25D, -1.0D, 0.5D);
 			}
 		}
 	}

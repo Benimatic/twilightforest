@@ -75,7 +75,7 @@ public class BlockTFTrophyPedestal extends Block /*implements IInfusionStabilise
 	}
 
 	private boolean isTrophyOnTop(World world, BlockPos pos) {
-		return world.getBlockState(pos.up()).getBlock() == TFBlocks.trophy;
+		return world.getBlockState(pos.up()).getBlock() instanceof BlockTFTrophy;
 	}
 
 	private void warnIneligiblePlayers(World world, BlockPos pos) {
@@ -94,7 +94,8 @@ public class BlockTFTrophyPedestal extends Block /*implements IInfusionStabilise
 	}
 
 	private boolean isPlayerEligible(PlayerEntity player) {
-		return TwilightForestMod.proxy.doesPlayerHaveAdvancement(player, TwilightForestMod.prefix("progress_lich"));
+		//return TwilightForestMod.proxy.doesPlayerHaveAdvancement(player, TwilightForestMod.prefix("progress_lich"));
+		return false; //TODO PLACEHOLDER
 	}
 
 	private void doPedestalEffect(World world, BlockPos pos, BlockState state) {
@@ -113,7 +114,7 @@ public class BlockTFTrophyPedestal extends Block /*implements IInfusionStabilise
 		for (int sx = -5; sx <= 5; sx++)
 			for (int sy = -5; sy <= 5; sy++)
 				for (int sz = -5; sz <= 5; sz++)
-					if (world.getBlockState(pos.add(sx, sy, sz)).getBlock() == TFBlocks.stronghold_shield) {
+					if (world.getBlockState(pos.add(sx, sy, sz)).getBlock() == TFBlocks.stronghold_shield.get()) {
 						world.destroyBlock(pos.add(sx, sy, sz), false);
 					}
 	}

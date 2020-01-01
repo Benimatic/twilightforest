@@ -3,37 +3,26 @@ package twilightforest.block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.SkullBlock;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.renderer.block.statemap.StateMap;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntitySkull;
-import net.minecraft.util.BlockRenderType;
-import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.common.Optional;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import thaumcraft.api.crafting.IInfusionStabiliser;
 import twilightforest.TFSounds;
 import twilightforest.enums.BossVariant;
-import twilightforest.client.ModelRegisterCallback;
-import twilightforest.item.TFItems;
 import twilightforest.tileentity.TileEntityTFTrophy;
 
 import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Random;
 
 //@Optional.Interface(modid = "thaumcraft", iface = "thaumcraft.api.crafting.IInfusionStabiliser")
 public class BlockTFTrophy extends SkullBlock /*implements IInfusionStabiliser*/ {
@@ -43,53 +32,59 @@ public class BlockTFTrophy extends SkullBlock /*implements IInfusionStabiliser*/
 	private static final AxisAlignedBB HYDRA_WEST_BB = new AxisAlignedBB(0.5F, 0.25F, 0.25F, 1.0F, 0.75F, 0.75F);
 	private static final AxisAlignedBB HYDRA_SOUTH_BB = new AxisAlignedBB(0.25F, 0.25F, 0.0F, 0.75F, 0.75F, 0.5F);
 	private static final AxisAlignedBB HYDRA_NORTH_BB = new AxisAlignedBB(0.25F, 0.25F, 0.5F, 0.75F, 0.75F, 1.0F);
-	private static final AxisAlignedBB URGHAST_BB = new AxisAlignedBB(0.25F, 0.5F, 0.25F, 0.75F, 1F, 0.75F);
+	private static final VoxelShape URGHAST_BB = VoxelShapes.create(new AxisAlignedBB(0.25F, 0.5F, 0.25F, 0.75F, 1F, 0.75F));
 
-	public BlockTFTrophy() {
-		setDefaultState(stateContainer.getBaseState().with(SkullBlock.NODROP, false).with(SkullBlock.ROTATION, Direction.UP));
+	private final BossVariant variant;
+
+	public BlockTFTrophy(BossVariant variant) {
+		super(Types.PLAYER, Properties.create(Material.MISCELLANEOUS).hardnessAndResistance(1.0F)); //TODO: Placeholder variable
+		this.variant = variant;
+		setDefaultState(stateContainer.getBaseState().with(SkullBlock.ROTATION, 0));
 	}
 
 	@Override
+	@Deprecated
 	public BlockRenderType getRenderType(BlockState state) {
 		return BlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess access, BlockPos pos) {
+	public VoxelShape getShape(BlockState state, IBlockReader access, BlockPos pos, ISelectionContext context) {
 		TileEntity te = access.getTileEntity(pos);
 		if (te instanceof TileEntityTFTrophy) {
 			//TODO 1.14: Flatten
-			switch (BossVariant.getVariant(((TileEntityTFTrophy) te).getSkullType())) {
-				case HYDRA:
-					// hydra bounds TODO: actually use non-default bounds here
-					switch (state.getValue(SkullBlock.ROTATION)) {
-						case UP:
-						default:
-							return HYDRA_Y_BB;
-						case NORTH:
-							return HYDRA_NORTH_BB;
-						case SOUTH:
-							return HYDRA_SOUTH_BB;
-						case WEST:
-							return HYDRA_WEST_BB;
-						case EAST:
-							return HYDRA_EAST_BB;
-					}
+			switch (variant) {
+				//TODO: Rotations have changed. Verify
+//				case HYDRA:
+//					// hydra bounds TODO: actually use non-default bounds here
+//					switch (state.get(SkullBlock.ROTATION)) {
+//						case UP:
+//						default:
+//							return HYDRA_Y_BB;
+//						case NORTH:
+//							return HYDRA_NORTH_BB;
+//						case SOUTH:
+//							return HYDRA_SOUTH_BB;
+//						case WEST:
+//							return HYDRA_WEST_BB;
+//						case EAST:
+//							return HYDRA_EAST_BB;
+//					}
 				case UR_GHAST:
 					return URGHAST_BB;
 				// TODO: also add case for Questing Ram?
 			}
 		}
-		return super.getBoundingBox(state, access, pos);
+		return super.getShape(state, access, pos, context);
 	}
 
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, Direction facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand handIn, BlockRayTraceResult hit) {
 		TileEntity te = worldIn.getTileEntity(pos);
 		if (te instanceof TileEntityTFTrophy) {
 			SoundEvent sound = null;
 			float volume = 1.0F;
-			switch (BossVariant.getVariant(((TileEntityTFTrophy) te).getSkullType())) {
+			switch (variant) {
 				case NAGA:
 					sound = TFSounds.NAGA_RATTLE;
 					volume = 1.25F;

@@ -9,7 +9,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import twilightforest.TFConfig;
-import twilightforest.TwilightForestMod;
 import twilightforest.client.particle.TFParticleType;
 
 import java.util.Random;
@@ -68,7 +67,7 @@ public class BlockTFMagicLeaves extends LeavesBlock {
 		}
 
 		if (rx < pos.getX() || rx > pos.getX() + 1 || ry < pos.getY() || ry > pos.getY() + 1 || rz < pos.getZ() || rz > pos.getZ() + 1) {
-			TwilightForestMod.proxy.spawnParticle(TFParticleType.LEAF_RUNE, rx, ry, rz, 0.0D, 0.0D, 0.0D);
+			world.addParticle(TFParticleType.LEAF_RUNE.get(), rx, ry, rz, 0.0D, 0.0D, 0.0D);
 		}
 	}
 }

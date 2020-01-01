@@ -3,67 +3,40 @@ package twilightforest.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.BlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.state.EnumProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.enums.NagastoneVariant;
-import twilightforest.client.ModelRegisterCallback;
-import twilightforest.client.ModelUtils;
-import twilightforest.item.TFItems;
 
-import javax.annotation.Nonnull;
 import java.util.Random;
 
 public class BlockTFNagastone extends Block {
 
-	//TODO 1.14: Flatten
-	public static final IProperty<NagastoneVariant> VARIANT = PropertyEnum.create("variant", NagastoneVariant.class);
+	public static final EnumProperty<NagastoneVariant> VARIANT = EnumProperty.create("variant", NagastoneVariant.class);
 
 	public BlockTFNagastone() {
-		super(Material.ROCK);
-		this.setHardness(1.5F);
-		this.setResistance(10.0F);
-		this.setSoundType(SoundType.STONE);
-		this.setCreativeTab(TFItems.creativeTab);
+		super(Properties.create(Material.ROCK).hardnessAndResistance(1.5F, 10.0F).sound(SoundType.STONE).tickRandomly());
+		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
 
-		this.setDefaultState(blockState.getBaseState().with(VARIANT, NagastoneVariant.SOLID));
+		this.setDefaultState(stateContainer.getBaseState().with(VARIANT, NagastoneVariant.SOLID));
 	}
 
-	@Override
-	public int getMetaFromState(BlockState state) {
-		return state.getValue(VARIANT).ordinal();
-	}
-
-	@Nonnull
-	@Override
-	@Deprecated
-	public BlockState getStateFromMeta(int meta) {
-		return this.getDefaultState().with(VARIANT, NagastoneVariant.values()[(meta & 15)]);
-	}
-
-	@Override
-	@Deprecated
-	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
-		world.scheduleUpdate(pos, this, this.tickRate(world));
-	}
-
-	@Override
-	public void onBlockAdded(World world, BlockPos pos, BlockState state) {
-		world.scheduleUpdate(pos, this, this.tickRate(world));
-	}
+//	@Override
+//	@Deprecated
+//	public void neighborChanged(BlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
+//		world.scheduleUpdate(pos, this, this.tickRate(world));
+//	}
+//
+//	@Override
+//	public void onBlockAdded(World world, BlockPos pos, BlockState state) {
+//		world.scheduleUpdate(pos, this, this.tickRate(world));
+//	}
 
 	//      Blockstate to meta 0-3  will be heads
 	//      Blockstate to meta 4-15 will be body components
@@ -71,25 +44,27 @@ public class BlockTFNagastone extends Block {
 	//      Item meta 0 will be head
 	//      Item meta 1 will be body
 	// todo fix getStateForPlacement to respect this
-	@Override
-	public int damageDropped(BlockState state) {
-		return NagastoneVariant.isHead(state.getValue(VARIANT)) ? 0 : 1;
-	}
+	// TODO: Actually, move this to loot table
+//	@Override
+//	public int damageDropped(BlockState state) {
+//		return NagastoneVariant.isHead(state.getValue(VARIANT)) ? 0 : 1;
+//	}
 
 	// Heads are manually placed, bodys are automatically connected
 	// If player places head on horz side of block, use that block face. Else, defer to player rotation.
-	@Nonnull
-	@Override
-	@Deprecated
-	public BlockState getStateForPlacement(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Direction facing, float hitX, float hitY, float hitZ, int meta, @Nonnull EntityLivingBase placer) {
-		return meta == 0
-				? this.getDefaultState().with(VARIANT, NagastoneVariant.getHeadFromFacing(facing.getAxis().isHorizontal() ? facing : placer.getHorizontalFacing().getOpposite()))
-				: this.getDefaultState();
-	}
+//	@Nonnull
+//	@Override
+//	@Deprecated
+//	public BlockState getStateForPlacement(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull Direction facing, float hitX, float hitY, float hitZ, int meta, @Nonnull EntityLivingBase placer) {
+//		return meta == 0
+//				? this.getDefaultState().with(VARIANT, NagastoneVariant.getHeadFromFacing(facing.getAxis().isHorizontal() ? facing : placer.getHorizontalFacing().getOpposite()))
+//				: this.getDefaultState();
+//	}
 
 	@Override
-	public void updateTick(World world, BlockPos pos, BlockState stateIn, Random rand) {
-		if (NagastoneVariant.isHead(stateIn.getValue(VARIANT)))
+	@Deprecated
+	public void tick(BlockState stateIn, World world, BlockPos pos, Random random) {
+		if (NagastoneVariant.isHead(stateIn.get(VARIANT))) //TODO: Remove Head states
 			return;
 
 		// If state is not a head then you may go ahead and update
@@ -98,8 +73,8 @@ public class BlockTFNagastone extends Block {
 		Direction[] facings = new Direction[2];
 
 		// get sides
-		for (Direction side : Direction.VALUES)
-			if (world.getBlockState(pos.offset(side)).getBlock() == TFBlocks.naga_stone)
+		for (Direction side : Direction.values())
+			if (world.getBlockState(pos.offset(side)).getBlock() == TFBlocks.naga_stone.get())
 				if (++connectionCount > 2) break;
 				else facings[connectionCount - 1] = side;
 
@@ -123,29 +98,29 @@ public class BlockTFNagastone extends Block {
 		if (stateIn != stateOut) world.setBlockState(pos, stateOut);
 	}
 
-	@Nonnull
 	@Override
-	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, VARIANT);
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+		builder.add(VARIANT);
+	}
+
+
+	@Override
+	public BlockState rotate(BlockState state, IWorld world, BlockPos pos, Rotation rotation) {
+		return state.with(VARIANT, NagastoneVariant.rotate(state.get(VARIANT), rotation));
 	}
 
 	@Override
-	public BlockState withRotation(BlockState state, Rotation rotation) {
-		return state.with(VARIANT, NagastoneVariant.rotate(state.getValue(VARIANT), rotation));
+	public BlockState mirror(BlockState state, Mirror mirror) {
+		return state.with(VARIANT, NagastoneVariant.mirror(state.get(VARIANT), mirror));
 	}
 
-	@Override
-	public BlockState withMirror(BlockState state, Mirror mirror) {
-		return state.with(VARIANT, NagastoneVariant.mirror(state.getValue(VARIANT), mirror));
-	}
-
-	@Override
-	protected boolean canSilkHarvest() {
-		return false;
-	}
-
-	@Override
-	public boolean canSilkHarvest(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-		return false;
-	}
+//	@Override
+//	protected boolean canSilkHarvest() {
+//		return false;
+//	}
+//
+//	@Override
+//	public boolean canSilkHarvest(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+//		return false;
+//	}
 }

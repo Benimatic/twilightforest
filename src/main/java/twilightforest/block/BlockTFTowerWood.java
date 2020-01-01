@@ -11,6 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import twilightforest.entity.EntityTFTowerTermite;
+import twilightforest.entity.TFEntities;
 
 /**
  * Tower wood is a type of plank block that forms the walls of Dark Towers
@@ -37,7 +38,7 @@ public class BlockTFTowerWood extends Block {
 	@Deprecated
 	public void spawnAdditionalDrops(BlockState state, World world, BlockPos pos, ItemStack stack) {
 		if (!world.isRemote && state.getBlock() == TFBlocks.tower_wood_infested.get()) {
-			EntityTFTowerTermite termite = new EntityTFTowerTermite(world);
+			EntityTFTowerTermite termite = new EntityTFTowerTermite(TFEntities.tower_termite.get(), world);
 			termite.setLocationAndAngles(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, 0.0F, 0.0F);
 			world.addEntity(termite);
 			termite.spawnExplosionParticle();

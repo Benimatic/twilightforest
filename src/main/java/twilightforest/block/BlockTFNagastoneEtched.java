@@ -1,27 +1,19 @@
 package twilightforest.block;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.DirectionalBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.client.ModelRegisterCallback;
-import twilightforest.client.ModelUtils;
-import twilightforest.item.TFItems;
+
+import javax.annotation.Nullable;
 
 public class BlockTFNagastoneEtched extends DirectionalBlock {
     protected BlockTFNagastoneEtched() {
@@ -30,12 +22,13 @@ public class BlockTFNagastoneEtched extends DirectionalBlock {
         this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.DOWN));
     }
 
-    @Override
-    public BlockState getStateForPlacement(World worldIn, BlockPos pos, Direction facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-        return this.getDefaultState().with(FACING, placer.isSneaking() ? facing.getOpposite() : facing);
-    }
+	@Nullable
+	@Override
+	public BlockState getStateForPlacement(BlockItemUseContext context) {
+		return this.getDefaultState().with(FACING, context.isPlacerSneaking() ? context.getNearestLookingDirection().getOpposite() : context.getNearestLookingDirection());
+	}
 
-    @Override
+	@Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(FACING);
     }

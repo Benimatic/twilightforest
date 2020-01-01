@@ -2,22 +2,12 @@ package twilightforest.block;
 
 import com.google.common.collect.Lists;
 import net.minecraft.block.*;
-import net.minecraft.block.BlockBush;
-import net.minecraft.block.BlockHorizontal;
-import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.PushReaction;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.BoatEntity;
-import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.fluid.IFluidState;
-import net.minecraft.item.Item;
-import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
@@ -28,17 +18,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.enums.HugeLilypadPiece;
-import twilightforest.client.ModelRegisterCallback;
-import twilightforest.item.TFItems;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class BlockTFHugeLilyPad extends BushBlock {
@@ -72,7 +57,7 @@ public class BlockTFHugeLilyPad extends BushBlock {
 	}
 
 	@Override
-	public void breakBlock(World world, BlockPos pos, BlockState state) {
+	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
 		//TwilightForestMod.LOGGER.info("Destroying giant lilypad at {}, state {}", pos, state);
 
 		if (!this.isSelfDestructing) {
@@ -94,24 +79,24 @@ public class BlockTFHugeLilyPad extends BushBlock {
 		this.isSelfDestructing = false;
 	}
 
-	@Override
-	public boolean canBlockStay(World world, BlockPos pos, BlockState state) {
-		for (BlockPos check : this.getAllMyBlocks(pos, state)) {
-			BlockState dStateBelow = world.getBlockState(check.down());
-
-			if (!(dStateBelow.getBlock() == Blocks.WATER || dStateBelow.getBlock() == Blocks.FLOWING_WATER)
-					|| dStateBelow.get(BlockLiquid.LEVEL) != 0) {
-				return false;
-			}
-
-			if (world.getBlockState(check).getBlock() != this) {
-				//TwilightForestMod.LOGGER.info("giant lilypad cannot stay because we can't find all 4 pieces");
-				return false;
-			}
-		}
-
-		return true;
-	}
+//	@Override
+//	public boolean canBlockStay(World world, BlockPos pos, BlockState state) {
+//		for (BlockPos check : this.getAllMyBlocks(pos, state)) {
+//			BlockState dStateBelow = world.getBlockState(check.down());
+//
+//			if (!(dStateBelow.getBlock() == Blocks.WATER || dStateBelow.getBlock() == Blocks.FLOWING_WATER)
+//					|| dStateBelow.get(BlockLiquid.LEVEL) != 0) {
+//				return false;
+//			}
+//
+//			if (world.getBlockState(check).getBlock() != this) {
+//				//TwilightForestMod.LOGGER.info("giant lilypad cannot stay because we can't find all 4 pieces");
+//				return false;
+//			}
+//		}
+//
+//		return true;
+//	}
 
 	/**
 	 * Get all 4 coordinates for all parts of this lily pad.
@@ -145,13 +130,14 @@ public class BlockTFHugeLilyPad extends BushBlock {
 	}
 
 	// [VanillaCopy] of super without dropping
-	@Override
-	protected void checkAndDropBlock(World worldIn, BlockPos pos, BlockState state) {
-		if (!this.canBlockStay(worldIn, pos, state)) {
-			// this.dropBlockAsItem(worldIn, pos, state, 0); TF - nodrop
-			worldIn.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
-		}
-	}
+	//TODO: We did move to loot tables, but evaluate on testing
+//	@Override
+//	protected void checkAndDropBlock(World worldIn, BlockPos pos, BlockState state) {
+//		if (!this.canBlockStay(worldIn, pos, state)) {
+//			// this.dropBlockAsItem(worldIn, pos, state, 0); TF - nodrop
+//			worldIn.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
+//		}
+//	}
 
 	@Override
 	@Deprecated
@@ -159,13 +145,13 @@ public class BlockTFHugeLilyPad extends BushBlock {
 		return PushReaction.BLOCK;
 	}
 
-	@Override
-	@Deprecated
-	public void addCollisionBoxToList(BlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean p_185477_7_) {
-		if (!(entityIn instanceof EntityBoat)) {
-			addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB);
-		}
-	}
+//	@Override
+//	@Deprecated
+//	public void addCollisionBoxToList(BlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn, boolean p_185477_7_) {
+//		if (!(entityIn instanceof EntityBoat)) {
+//			addCollisionBoxToList(pos, entityBox, collidingBoxes, AABB);
+//		}
+//	}
 
 	@Override
 	public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {

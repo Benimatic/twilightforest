@@ -19,6 +19,7 @@ public class BlockTFFirefly extends BlockTFCritter {
 	@Nullable
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+		//TODO: Get TileEntity from registry
 		return TwilightForestMod.proxy.getNewFireflyTE();
 	}
 

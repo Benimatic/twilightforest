@@ -1,14 +1,9 @@
 package twilightforest.block;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.DirectionalBlock;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.StateContainer;
@@ -19,11 +14,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
-import twilightforest.item.TFItems;
 
 import javax.annotation.Nullable;
 import java.util.Random;
@@ -81,26 +74,26 @@ public abstract class BlockTFCritter extends Block {
 		return false;
 	}
 
-	@Override
-	@Deprecated
-	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face) {
-		return BlockFaceShape.UNDEFINED;
-	}
+//	@Override
+//	@Deprecated
+//	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face) {
+//		return BlockFaceShape.UNDEFINED;
+//	}
 
-	@Override
-	public boolean canPlaceBlockOnSide(World world, BlockPos pos, Direction side) {
-		return canPlaceAt(world, pos.offset(side.getOpposite()), side);
-	}
-
-	@Override
-	public boolean canPlaceBlockAt(World world, BlockPos pos) {
-		for (Direction side : Direction.values()) {
-			if (canPlaceAt(world, pos.offset(side.getOpposite()), side)) {
-				return true;
-			}
-		}
-		return false;
-	}
+//	@Override
+//	public boolean canPlaceBlockOnSide(World world, BlockPos pos, Direction side) {
+//		return canPlaceAt(world, pos.offset(side.getOpposite()), side);
+//	}
+//
+//	@Override
+//	public boolean canPlaceBlockAt(World world, BlockPos pos) {
+//		for (Direction side : Direction.values()) {
+//			if (canPlaceAt(world, pos.offset(side.getOpposite()), side)) {
+//				return true;
+//			}
+//		}
+//		return false;
+//	}
 
 	@Nullable
 	@Override
@@ -115,13 +108,14 @@ public abstract class BlockTFCritter extends Block {
 		return state;
 	}
 
-	@Override
-	public void onBlockAdded(World world, BlockPos pos, BlockState state) {
-		world.scheduleUpdate(pos, this, 1);
-	}
+//	@Override
+//	public void onBlockAdded(World world, BlockPos pos, BlockState state) {
+//		world.scheduleUpdate(pos, this, 1);
+//	}
 
 	@Override
-	public void updateTick(World world, BlockPos pos, BlockState state, Random rand) {
+	@Deprecated
+	public void tick(BlockState state, World world, BlockPos pos, Random random) {
 		checkAndDrop(world, pos, state);
 	}
 

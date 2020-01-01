@@ -3,17 +3,10 @@ package twilightforest.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.PushReaction;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.client.ModelRegisterCallback;
 
 import javax.annotation.Nullable;
 
@@ -23,20 +16,20 @@ public abstract class BlockTFGiantBlock extends Block {
 
 	//Atomic: Suppressing deprecation because this seems like a reasonable use for it.
 	@SuppressWarnings("deprecation")
-	public BlockTFGiantBlock(BlockState state) {
-		super(Properties.create(state.getMaterial()).sound(state.getBlock().getSoundType(state)));
+	public BlockTFGiantBlock(BlockState state, float hardness, float resistance) {
+		super(Properties.create(state.getMaterial()).hardnessAndResistance(hardness, resistance).sound(state.getBlock().getSoundType(state)));
 	}
 
-	@Override
-	public boolean canPlaceBlockAt(World world, BlockPos pos) {
-		for (BlockPos dPos : getVolume(pos)) {
-			BlockState state = world.getBlockState(dPos);
-			if (!state.getBlock().isReplaceable(world, dPos)) {
-				return false;
-			}
-		}
-		return super.canPlaceBlockAt(world, pos);
-	}
+//	@Override
+//	public boolean canPlaceBlockAt(World world, BlockPos pos) {
+//		for (BlockPos dPos : getVolume(pos)) {
+//			BlockState state = world.getBlockState(dPos);
+//			if (!state.getBlock().isReplaceable(world, dPos)) {
+//				return false;
+//			}
+//		}
+//		return super.canPlaceBlockAt(world, pos);
+//	}
 
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
@@ -48,8 +41,9 @@ public abstract class BlockTFGiantBlock extends Block {
 	}
 
 	@Override
-	public void breakBlock(World world, BlockPos pos, BlockState state) {
-		super.breakBlock(world, pos, state);
+	@Deprecated
+	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
+		super.onReplaced(state, world, pos, newState, isMoving);
 		if (!this.isSelfDestructing && !canBlockStay(world, pos)) {
 			this.setGiantBlockToAir(world, pos);
 		}
@@ -90,7 +84,7 @@ public abstract class BlockTFGiantBlock extends Block {
 	}
 
 	public static Iterable<BlockPos> getVolume(BlockPos pos) {
-		return BlockPos.getAllInBox(
+		return BlockPos.getAllInBoxMutable(
 				pos.getX() & ~0b11, pos.getY() & ~0b11, pos.getZ() & ~0b11,
 				pos.getX() |  0b11, pos.getY() |  0b11, pos.getZ() |  0b11
 		);

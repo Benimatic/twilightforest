@@ -1,10 +1,7 @@
 package twilightforest.block;
 
 import net.minecraft.block.*;
-import net.minecraft.block.BlockFurnace;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.InventoryHelper;
@@ -14,17 +11,15 @@ import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.FurnaceTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.TwilightForestMod;
-import twilightforest.item.TFItems;
 import twilightforest.tileentity.TileEntityTFCinderFurnace;
 
 import javax.annotation.Nullable;
@@ -32,24 +27,18 @@ import java.util.Random;
 
 public class BlockTFCinderFurnace extends Block {
 
-	private static boolean keepInventory;
 	private static final BooleanProperty LIT = BooleanProperty.create("lit");
 	private static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
 
-	BlockTFCinderFurnace(boolean isLit) {
-		super(Material.WOOD);
-
-		this.LIT = isLit;
-
-		this.setHardness(7.0F);
-
-		this.setLightLevel(isLit ? 1F : 0);
-
-		if (!isLit) {
-			this.setCreativeTab(TFItems.creativeTab);
-		}
-
+	BlockTFCinderFurnace() {
+		super(Properties.create(Material.WOOD).hardnessAndResistance(7.0F).lightValue(15));
+		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
 		this.setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH).with(LIT, false));
+	}
+
+	@Override
+	public int getLightValue(BlockState state, IEnviromentBlockReader world, BlockPos pos) {
+		return 0;
 	}
 
 	@Override
@@ -79,7 +68,7 @@ public class BlockTFCinderFurnace extends Block {
 	@Override
 	public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
 		if (!world.isRemote && world.getTileEntity(pos) instanceof TileEntityTFCinderFurnace) {
-			player.openGui(TwilightForestMod.instance, TwilightForestMod.GUI_ID_FURNACE, world, pos.getX(), pos.getY(), pos.getZ());
+			player.openContainer((TileEntityTFCinderFurnace) world.getTileEntity(pos));
 		}
 
 		return true;
@@ -92,24 +81,22 @@ public class BlockTFCinderFurnace extends Block {
 		}
 	}
 
-	public static void setState(boolean active, World worldIn, BlockPos pos) {
-		BlockState iblockstate = worldIn.getBlockState(pos);
-		TileEntity tileentity = worldIn.getTileEntity(pos);
-		keepInventory = true;
-
-		if (active) {
-			worldIn.setBlockState(pos, TFBlocks.cinder_furnace_lit.getDefaultState().with(BlockFurnace.FACING, iblockstate.getValue(BlockFurnace.FACING)), 3);
-		} else {
-			worldIn.setBlockState(pos, TFBlocks.cinder_furnace.getDefaultState().with(BlockFurnace.FACING, iblockstate.getValue(BlockFurnace.FACING)), 3);
-		}
-
-		keepInventory = false;
-
-		if (tileentity != null) {
-			tileentity.validate();
-			worldIn.setTileEntity(pos, tileentity);
-		}
-	}
+	//TODO: Likely not needed?
+//	public static void setState(boolean active, World worldIn, BlockPos pos) {
+//		BlockState iblockstate = worldIn.getBlockState(pos);
+//		TileEntity tileentity = worldIn.getTileEntity(pos);
+//
+//		if (active) {
+//			worldIn.setBlockState(pos, TFBlocks.cinder_furnace_lit.getDefaultState().with(FACING, iblockstate.get(FACING)), 3);
+//		} else {
+//			worldIn.setBlockState(pos, TFBlocks.cinder_furnace.getDefaultState().with(FACING, iblockstate.get(FACING)), 3);
+//		}
+//
+//		if (tileentity != null) {
+//			tileentity.validate();
+//			worldIn.setTileEntity(pos, tileentity);
+//		}
+//	}
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
@@ -120,20 +107,20 @@ public class BlockTFCinderFurnace extends Block {
 	}
 
 	@Override
-	public void breakBlock(World world, BlockPos pos, BlockState state) {
-		if (!keepInventory) {
-			TileEntity tileentity = world.getTileEntity(pos);
-
-			if (tileentity instanceof TileEntityFurnace) {
-				InventoryHelper.dropInventoryItems(world, pos, (TileEntityFurnace) tileentity);
-				world.updateComparatorOutputLevel(pos, this);
+	@Deprecated
+	public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (state.getBlock() != newState.getBlock()) {
+			TileEntity tileentity = worldIn.getTileEntity(pos);
+			if (tileentity instanceof TileEntityTFCinderFurnace) {
+				InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityTFCinderFurnace)tileentity);
+				worldIn.updateComparatorOutputLevel(pos, this);
 			}
-		}
 
-		super.breakBlock(world, pos, state);
+			super.onReplaced(state, worldIn, pos, newState, isMoving);
+		}
 	}
 
-//	@Override
+	//	@Override
 //	public Item getItemDropped(BlockState state, Random rand, int fortune) {
 //		return Item.getItemFromBlock(TFBlocks.cinder_furnace);
 //	}

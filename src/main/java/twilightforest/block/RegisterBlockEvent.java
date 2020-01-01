@@ -35,54 +35,6 @@ public final class RegisterBlockEvent {
 	public static void onRegisterBlocks(RegistryEvent.Register<Block> event) {
 		BlockRegistryHelper blocks = new BlockRegistryHelper(event.getRegistry());
 
-		blocks.register("twilight_portal", "Portal", new BlockTFPortal());
-		blocks.register("hedge", "Hedge", new BlockTFHedge());
-		blocks.register("fire_jet", "FireJet", new BlockTFFireJet());
-		blocks.register("naga_stone", "Nagastone", new BlockTFNagastone());
-		blocks.register("magic_log_core", "MagicLogSpecial", new BlockTFMagicLogSpecial());
-		blocks.register("tower_device", "TowerDevice", new BlockTFTowerDevice());
-		blocks.register("tower_translucent", "TowerTranslucent", new BlockTFTowerTranslucent());
-		blocks.register("trophy", "Trophy", new BlockTFTrophy());
-		blocks.register("stronghold_shield", "Shield", new BlockTFShield());
-		blocks.register("thorns", "Thorns", new BlockTFThorns());
-		blocks.register("burnt_thorns", "BurntThorns", new BlockTFBurntThorns());
-		blocks.register("thorn_rose", "ThornRose", new BlockTFThornRose());
-		blocks.register("dark_leaves", "DarkLeaves", new BlockTFDarkLeaves());
-		blocks.register("trollsteinn", "TrollSteinn", new BlockTFTrollSteinn());
-		blocks.register("wispy_cloud", "WispyCloud", new BlockTFWispyCloud());
-		blocks.register("giant_cobblestone", "GiantCobble", new BlockTFGiantCobble());
-		blocks.register("giant_log", "GiantLog", new BlockTFGiantLog());
-		blocks.register("giant_leaves", "GiantLeaves", new BlockTFGiantLeaves());
-		blocks.register("giant_obsidian", "GiantObsidian", new BlockTFGiantObsidian());
-		blocks.register("huge_stalk", "HugeStalk", new BlockTFHugeStalk());
-		blocks.register("huge_lilypad", "HugeLilyPad", new BlockTFHugeLilyPad());
-		blocks.register("huge_waterlily", "HugeWaterLily", new BlockTFHugeWaterLily());
-		blocks.register("slider", "Slider", new BlockTFSlider());
-		blocks.register("force_field", "ForceField", new BlockTFForceField());
-		blocks.register("cinder_furnace", "CinderFurnaceIdle", new BlockTFCinderFurnace(false));
-		blocks.register("cinder_furnace_lit", "CinderFurnaceLit", new BlockTFCinderFurnace(true));
-		blocks.register("castle_door", "CastleDoor", new BlockTFCastleDoor(false));
-		blocks.register("castle_door_vanished", "CastleDoorVanished", new BlockTFCastleDoor(true));
-		blocks.register("castle_unlock", "CastleUnlock", new BlockTFCastleUnlock());
-		blocks.register("experiment_115", "experiment115", new BlockTFExperiment115().setHardness(0.5F));
-		blocks.register("lapis_block", "BlockOfLapisTF", new BlockTFLapisBlock());
-		blocks.register("spiral_bricks", "SpiralBricks", new BlockTFSpiralBrick());
-		Block etchedNagastone = new BlockTFNagastoneEtched().setHardness(1.5F).setResistance(10.0F);
-		blocks.register("etched_nagastone", "EtchedNagastone", etchedNagastone);
-		blocks.register("nagastone_pillar", "NagastonePillar", new BlockTFNagastonePillar().setHardness(1.5F).setResistance(10.0F));
-		Block etchedNagastoneMossy = new BlockTFNagastoneEtched().setHardness(1.5F).setResistance(10.0F);
-		blocks.register("etched_nagastone_mossy", "EtchedNagastoneMossy", etchedNagastoneMossy);
-		blocks.register("nagastone_pillar_mossy", "NagastonePillarMossy", new BlockTFNagastonePillar().setHardness(1.5F).setResistance(10.0F));
-		Block etchedNagastoneWeathered = new BlockTFNagastoneEtched().setHardness(1.5F).setResistance(10.0F);
-		blocks.register("etched_nagastone_weathered", "EtchedNagastoneWeathered", etchedNagastoneWeathered);
-		blocks.register("nagastone_pillar_weathered", "NagastonePillarWeathered", new BlockTFNagastonePillar().setHardness(1.5F).setResistance(10.0F));
-		blocks.register("iron_ladder", "IronLadder", new BlockTFLadderBars().setSoundType(SoundType.METAL).setHardness(5.0F).setResistance(10.0F));
-
-		blocks.register("terrorcotta_circle", "TerrorCottaCircle", new BlockTFHorizontal(Material.ROCK, MaterialColor.SAND).setSoundType(SoundType.STONE).setHardness(1.7F));
-		blocks.register("terrorcotta_diagonal", "TerrorCottaDiagonal", new BlockTFDiagonal(Material.ROCK, MaterialColor.SAND).setSoundType(SoundType.STONE).setHardness(1.7F));
-		blocks.register("stone_twist", "StonePillar", new BlockTFPillar(Material.ROCK).setHardness(1.5F).setResistance(10.0F));
-		blocks.register("stone_twist_thin", "StonePillarThin", new BlockTFWallPillar(Material.ROCK, 12, 16).setHardness(1.5F).setResistance(10.0F));
-
 //		registerFluidBlock(blocks, moltenFiery);
 //		registerFluidBlock(blocks, moltenKnightmetal);
 //		registerFluidBlock("fiery_essence", blocks, essenceFiery);

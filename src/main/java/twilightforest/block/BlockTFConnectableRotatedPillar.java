@@ -2,15 +2,8 @@ package twilightforest.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.FenceBlock;
-import net.minecraft.block.BlockRotatedPillar;
 import net.minecraft.block.RotatedPillarBlock;
-import net.minecraft.block.material.MaterialColor;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.BooleanProperty;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.IProperty;
 import net.minecraft.state.StateContainer;
@@ -20,13 +13,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
-
-import javax.annotation.Nullable;
-import java.util.List;
 
 public abstract class BlockTFConnectableRotatedPillar extends RotatedPillarBlock {
 
@@ -36,20 +24,12 @@ public abstract class BlockTFConnectableRotatedPillar extends RotatedPillarBlock
     private final double boundingBoxHeightLower;
     private final double boundingBoxHeightUpper;
 
-    BlockTFConnectableRotatedPillar(Material material, double size) {
-        this(material, material.getColor(), size, size);
+    BlockTFConnectableRotatedPillar(Properties props, double size) {
+        this(props, size, size);
     }
 
-    BlockTFConnectableRotatedPillar(Material material, double width, double height) {
-        this(material, material.getColor(), width, height);
-    }
-
-    BlockTFConnectableRotatedPillar(Material material, MaterialColor mapColor, double size) {
-        this(material, mapColor, size, size);
-    }
-
-    BlockTFConnectableRotatedPillar(Material material, MaterialColor mapColor, double width, double height) {
-        super(Properties.create(material, mapColor));
+    BlockTFConnectableRotatedPillar(Properties props, double width, double height) {
+        super(props);
 
         if (width >= 16d) {
             this.boundingBoxWidthLower = 0d;
@@ -79,50 +59,50 @@ public abstract class BlockTFConnectableRotatedPillar extends RotatedPillarBlock
         builder.add(AXIS, FenceBlock.NORTH, FenceBlock.EAST, FenceBlock.SOUTH, FenceBlock.WEST).add(getAdditionalProperties());
     }
 
-    @Override
-    public BlockState getActualState(BlockState state, IBlockAccess world, BlockPos pos) {
-        // If our axis is rotated (i.e. not upright), then adjust the actual sides tested
-        // This allows the entire model to be rotated in the assets in a cleaner way
+//	@Override
+//    public BlockState getActualState(BlockState state, IBlockAccess world, BlockPos pos) {
+//        // If our axis is rotated (i.e. not upright), then adjust the actual sides tested
+//        // This allows the entire model to be rotated in the assets in a cleaner way
+//
+//        Direction.Axis axis = state.getValue(AXIS);
+//
+//        for (PairHelper pair : PairHelper.values()) {
+//            Direction connectTo = PairHelper.getFacingFromPropertyWithAxis(pair.property, axis);
+//            state = state.with(pair.property, canConnectTo(state, world.getBlockState(pos.offset(connectTo)), world, pos, connectTo));
+//        }
+//
+//        return state;
+//    }
 
-        Direction.Axis axis = state.getValue(AXIS);
+//    protected boolean canConnectTo(BlockState state, BlockState otherState, IBlockAccess world, BlockPos pos, Direction connectTo) {
+//        return state.getBlock() == otherState.getBlock() && state.get(AXIS) != connectTo.getAxis();
+//    }
 
-        for (PairHelper pair : PairHelper.values()) {
-            Direction connectTo = PairHelper.getFacingFromPropertyWithAxis(pair.property, axis);
-            state = state.with(pair.property, canConnectTo(state, world.getBlockState(pos.offset(connectTo)), world, pos, connectTo));
-        }
-
-        return state;
-    }
-
-    protected boolean canConnectTo(BlockState state, BlockState otherState, IBlockAccess world, BlockPos pos, Direction connectTo) {
-        return state.getBlock() == otherState.getBlock() && state.get(AXIS) != connectTo.getAxis();
-    }
-
-    @Override
-    public void addCollisionBoxToList(BlockState state, World world, BlockPos pos, AxisAlignedBB aabb, List<AxisAlignedBB> list, @Nullable Entity entity, boolean useActualState) {
-        if (!useActualState) state = this.getActualState(state, world, pos);
-
-        Direction.Axis axis = state.getValue(AXIS);
-
-        // Add main pillar
-        addCollisionBoxToList(pos, aabb, list, makeQuickAABB(
-                axis == Direction.Axis.X ? 16d : this.boundingBoxWidthLower,
-                axis == Direction.Axis.Y ? 16d : this.boundingBoxWidthLower,
-                axis == Direction.Axis.Z ? 16d : this.boundingBoxWidthLower,
-                axis == Direction.Axis.X ?  0d : this.boundingBoxWidthUpper,
-                axis == Direction.Axis.Y ?  0d : this.boundingBoxWidthUpper,
-                axis == Direction.Axis.Z ?  0d : this.boundingBoxWidthUpper));
-
-        // Add axillary pillar connections
-        // Cycle through all possible faces
-        for (Direction facing : Direction.values()) {
-            // If the facing in loop doesn't cover the axis of the block and if that side's state is true, then add to list
-            if (facing.getAxis() != axis && state.getValue(PairHelper.getPropertyFromFacingWithAxis(facing, axis))) {
-                // Create AABB piece and add to list
-                addCollisionBoxToList(pos, aabb, list, getSidedAABBStraight(facing, axis));
-            }
-        }
-    }
+//    @Override
+//    public void addCollisionBoxToList(BlockState state, World world, BlockPos pos, AxisAlignedBB aabb, List<AxisAlignedBB> list, @Nullable Entity entity, boolean useActualState) {
+//        if (!useActualState) state = this.getActualState(state, world, pos);
+//
+//        Direction.Axis axis = state.getValue(AXIS);
+//
+//        // Add main pillar
+//        addCollisionBoxToList(pos, aabb, list, makeQuickAABB(
+//                axis == Direction.Axis.X ? 16d : this.boundingBoxWidthLower,
+//                axis == Direction.Axis.Y ? 16d : this.boundingBoxWidthLower,
+//                axis == Direction.Axis.Z ? 16d : this.boundingBoxWidthLower,
+//                axis == Direction.Axis.X ?  0d : this.boundingBoxWidthUpper,
+//                axis == Direction.Axis.Y ?  0d : this.boundingBoxWidthUpper,
+//                axis == Direction.Axis.Z ?  0d : this.boundingBoxWidthUpper));
+//
+//        // Add axillary pillar connections
+//        // Cycle through all possible faces
+//        for (Direction facing : Direction.values()) {
+//            // If the facing in loop doesn't cover the axis of the block and if that side's state is true, then add to list
+//            if (facing.getAxis() != axis && state.getValue(PairHelper.getPropertyFromFacingWithAxis(facing, axis))) {
+//                // Create AABB piece and add to list
+//                addCollisionBoxToList(pos, aabb, list, getSidedAABBStraight(facing, axis));
+//            }
+//        }
+//    }
 
     // Utility to make a bounding-box piece
     protected AxisAlignedBB getSidedAABBStraight(Direction facing, Direction.Axis axis) {
@@ -137,7 +117,9 @@ public abstract class BlockTFConnectableRotatedPillar extends RotatedPillarBlock
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
-		state = this.getActualState(state, world, pos);
+		//state = this.getActualState(state, world, pos);
+
+		state = this.getDefaultState(); //Look, this probably isn't going to work
 
 		switch (state.get(AXIS)) {
 			case X:
@@ -178,6 +160,7 @@ public abstract class BlockTFConnectableRotatedPillar extends RotatedPillarBlock
     }
 
 	@Override
+	@Deprecated
 	public boolean isSolid(BlockState state) {
 		return false;
 	}

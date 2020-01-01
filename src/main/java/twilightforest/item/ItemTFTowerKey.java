@@ -4,6 +4,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.item.Rarity;
 import net.minecraft.util.ActionResultType;
+import twilightforest.block.BlockTFLockedVanishing;
 import twilightforest.block.BlockTFTowerDevice;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.TowerDeviceVariant;
@@ -21,7 +22,7 @@ public class ItemTFTowerKey extends ItemTF {
 		BlockState state = context.getWorld().getBlockState(context.getPos());
 		if (state.getBlock() == TFBlocks.tower_device && state.get(BlockTFTowerDevice.VARIANT) == TowerDeviceVariant.VANISH_LOCKED) {
 			if (!context.getWorld().isRemote) {
-				BlockTFTowerDevice.unlockBlock(context.getWorld(), context.getPos());
+				BlockTFLockedVanishing.unlockBlock(context.getWorld(), context.getPos());
 				context.getPlayer().getHeldItem(context.getHand()).shrink(1);
 			}
 

@@ -1,17 +1,10 @@
 package twilightforest.block;
 
 import net.minecraft.block.*;
-import net.minecraft.block.BlockBreakable;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.effect.LightningBoltEntity;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -27,11 +20,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -78,29 +70,28 @@ public class BlockTFPortal extends BreakableBlock {
 		return state.get(DISALLOW_RETURN) ? AABB : VoxelShapes.empty();
 	}
 
-	@Override
-	@Deprecated
-	public void addCollisionBoxToList(BlockState state, World world, BlockPos pos, AxisAlignedBB entityBB, List<AxisAlignedBB> blockBBs, @Nullable Entity entity, boolean isActualState) {
-		addCollisionBoxToList(pos, entityBB, blockBBs, entity instanceof EntityItem ? AABB_ITEM : state.getCollisionBoundingBox(world, pos));
-	}
+//	@Override
+//	@Deprecated
+//	public void addCollisionBoxToList(BlockState state, World world, BlockPos pos, AxisAlignedBB entityBB, List<AxisAlignedBB> blockBBs, @Nullable Entity entity, boolean isActualState) {
+//		addCollisionBoxToList(pos, entityBB, blockBBs, entity instanceof EntityItem ? AABB_ITEM : state.getCollisionBoundingBox(world, pos));
+//	}
 
 	@Override
-	@Deprecated
-	public boolean isFullCube(BlockState state) {
+	public boolean isSolid(BlockState state) {
 		return false;
 	}
 
-	@Override
-	@Deprecated
-	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face) {
-		return BlockFaceShape.UNDEFINED;
-	}
+	//	@Override
+//	@Deprecated
+//	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face) {
+//		return BlockFaceShape.UNDEFINED;
+//	}
 
 	public boolean tryToCreatePortal(World world, BlockPos pos, ItemEntity catalyst, @Nullable PlayerEntity player) {
 
 		BlockState state = world.getBlockState(pos);
 
-		if (canFormPortal(state) && world.getBlockState(pos.down()).isFullCube()) {
+		if (canFormPortal(state) && world.getBlockState(pos.down()).isSolid()) {
 			Map<BlockPos, Boolean> blocksChecked = new HashMap<>();
 			blocksChecked.put(pos, true);
 
@@ -125,7 +116,7 @@ public class BlockTFPortal extends BreakableBlock {
 
 				for (Map.Entry<BlockPos, Boolean> checkedPos : blocksChecked.entrySet()) {
 					if (checkedPos.getValue()) {
-						world.setBlockState(checkedPos.getKey(), TFBlocks.twilight_portal.getDefaultState(), 2);
+						world.setBlockState(checkedPos.getKey(), TFBlocks.twilight_portal.get().getDefaultState(), 2);
 					}
 				}
 
@@ -142,7 +133,7 @@ public class BlockTFPortal extends BreakableBlock {
 
 	private static void causeLightning(World world, BlockPos pos, boolean fake) {
 		LightningBoltEntity bolt = new LightningBoltEntity(world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, fake);
-		world.addWeatherEffect(bolt);
+		((ServerWorld) world).addLightningBolt(bolt);
 
 		if (fake) {
 			double range = 3.0D;
@@ -162,44 +153,43 @@ public class BlockTFPortal extends BreakableBlock {
 
 		boolean isPoolProbablyEnclosed = true;
 
-		for (int i = 0; i < Direction.HORIZONTALS.length && portalSize.intValue() <= MAX_PORTAL_SIZE; i++) {
-			BlockPos positionCheck = pos.offset(Direction.HORIZONTALS[i]);
-
-			if (!blocksChecked.containsKey(positionCheck)) {
-				BlockState state = world.getBlockState(positionCheck);
-
-				if (state == requiredState && world.getBlockState(positionCheck.down()).isFullCube()) {
-					blocksChecked.put(positionCheck, true);
-					if (isPoolProbablyEnclosed) {
-						isPoolProbablyEnclosed = recursivelyValidatePortal(world, positionCheck, blocksChecked, portalSize, requiredState);
-					}
-
-				} else if (isGrassOrDirt(state) && isNatureBlock(world.getBlockState(positionCheck.up())) || state.getBlock() == TFBlocks.uberous_soil) {
-					blocksChecked.put(positionCheck, false);
-
-				} else return false;
-			}
-		}
+//		for (int i = 0; i < Direction.Plane.HORIZONTAL.ordinal() && portalSize.intValue() <= MAX_PORTAL_SIZE; i++) {
+//			BlockPos positionCheck = pos.offset(Direction.HORIZONTALS[i]);
+//
+//			if (!blocksChecked.containsKey(positionCheck)) {
+//				BlockState state = world.getBlockState(positionCheck);
+//
+//				if (state == requiredState && world.getBlockState(positionCheck.down()).isSolid()) {
+//					blocksChecked.put(positionCheck, true);
+//					if (isPoolProbablyEnclosed) {
+//						isPoolProbablyEnclosed = recursivelyValidatePortal(world, positionCheck, blocksChecked, portalSize, requiredState);
+//					}
+//
+//				} else if (isGrassOrDirt(state) && isNatureBlock(world.getBlockState(positionCheck.up())) || state.getBlock() == TFBlocks.uberous_soil.get()) {
+//					blocksChecked.put(positionCheck, false);
+//
+//				} else return false;
+//			}
+//		}
 
 		return isPoolProbablyEnclosed;
 	}
 
 	private static boolean isNatureBlock(BlockState state) {
 		Material mat = state.getMaterial();
-		return mat == Material.PLANTS || mat == Material.VINE || mat == Material.LEAVES;
+		return mat == Material.PLANTS || mat == Material.TALL_PLANTS || mat == Material.LEAVES;
 	}
 
 	private static boolean isGrassOrDirt(BlockState state) {
 		Material mat = state.getMaterial();
-		return state.isFullCube() && (mat == Material.ORGANIC || mat == Material.EARTH);
+		return state.isSolid() && (mat == Material.ORGANIC || mat == Material.EARTH);
 	}
 
 	@Override
-	@Deprecated
-	public void neighborChanged(BlockState state, World world, BlockPos pos, Block notUsed, BlockPos fromPos) {
-		boolean good = world.getBlockState(pos.down()).isFullCube();
+	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
+		boolean good = world.getBlockState(pos.down()).isSolid();
 
-		for (Direction facing : Direction.HORIZONTALS) {
+		for (Direction facing : Direction.Plane.HORIZONTAL) {
 			if (!good) break;
 
 			BlockState neighboringState = world.getBlockState(pos.offset(facing));
@@ -213,10 +203,10 @@ public class BlockTFPortal extends BreakableBlock {
 		}
 	}
 
-	@Override
-	public int quantityDropped(Random random) {
-		return 0;
-	}
+	//	@Override
+//	public int quantityDropped(Random random) {
+//		return 0;
+//	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
@@ -225,20 +215,21 @@ public class BlockTFPortal extends BreakableBlock {
 	}
 
 	@Override
-	public void onEntityCollision(World world, BlockPos pos, BlockState state, Entity entity) {
+	public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entity) {
 		if (state == this.getDefaultState()) {
 			attemptSendPlayer(entity, false);
 		}
 	}
 
 	private static int getDestination(Entity entity) {
-		return entity.dimension != TFConfig.dimension.dimensionID
-				? TFConfig.dimension.dimensionID : TFConfig.originDimension;
+//		return entity.dimension != TFConfig.dimension.dimensionID
+//				? TFConfig.dimension.dimensionID : TFConfig.originDimension; //TODO: ID to DimensionType
+		return 0; //PLACEHOLDER
 	}
 
 	public static void attemptSendPlayer(Entity entity, boolean forcedEntry) {
 
-		if (entity.isDead || entity.world.isRemote) {
+		if (!entity.isAlive() || entity.world.isRemote) {
 			return;
 		}
 
@@ -256,12 +247,12 @@ public class BlockTFPortal extends BreakableBlock {
 		int destination = getDestination(entity);
 
 		//TODO 1.14: changeDimension patch does not exist. Create helper?
-		entity.changeDimension(destination, TFTeleporter.getTeleporterForDim(entity.getServer(), destination));
+		//entity.changeDimension(destination, TFTeleporter.getTeleporterForDim(entity.getServer(), destination));
 
 		if (destination == TFConfig.dimension.dimensionID && entity instanceof ServerPlayerEntity) {
 			ServerPlayerEntity playerMP = (ServerPlayerEntity) entity;
 			// set respawn point for TF dimension to near the arrival portal
-			playerMP.setSpawnPoint(new BlockPos(playerMP), true, TFConfig.dimension.dimensionID);
+			//playerMP.setSpawnPoint(new BlockPos(playerMP), true, TFConfig.dimension.dimensionID); TODO: ID to DimensionType
 		}
 	}
 

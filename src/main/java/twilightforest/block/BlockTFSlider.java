@@ -1,35 +1,25 @@
 package twilightforest.block;
 
-import net.minecraft.block.BlockRotatedPillar;
+import net.minecraft.block.Block;
 import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyInteger;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.renderer.block.statemap.IStateMapper;
-import net.minecraft.client.renderer.block.statemap.StateMap;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.state.IntegerProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.client.ModelRegisterCallback;
-import twilightforest.client.ModelUtils;
 import twilightforest.entity.EntityTFSlideBlock;
-import twilightforest.item.TFItems;
+import twilightforest.entity.TFEntities;
 
 import java.util.Random;
 
@@ -41,35 +31,25 @@ public class BlockTFSlider extends RotatedPillarBlock {
 	private static final int OFFSET_TIME = 20;
 	private static final int PLAYER_RANGE = 32;
 	private static final float BLOCK_DAMAGE = 5;
-	private static final AxisAlignedBB Y_BB = new AxisAlignedBB(0.3125, 0, 0.3125, 0.6875, 1F, 0.6875);
-	private static final AxisAlignedBB Z_BB = new AxisAlignedBB(0.3125, 0.3125, 0, 0.6875, 0.6875, 1F);
-	private static final AxisAlignedBB X_BB = new AxisAlignedBB(0, 0.3125, 0.3125, 1F, 0.6875, 0.6875);
+	private static final VoxelShape Y_BB = VoxelShapes.create(new AxisAlignedBB(0.3125, 0, 0.3125, 0.6875, 1F, 0.6875));
+	private static final VoxelShape Z_BB = VoxelShapes.create(new AxisAlignedBB(0.3125, 0.3125, 0, 0.6875, 0.6875, 1F));
+	private static final VoxelShape X_BB = VoxelShapes.create(new AxisAlignedBB(0, 0.3125, 0.3125, 1F, 0.6875, 0.6875));
 
 	protected BlockTFSlider() {
-		super(Properties.create(Material.IRON, MaterialColor.DIRT).hardnessAndResistance(2.0F, 10.0F));
+		super(Properties.create(Material.IRON, MaterialColor.DIRT).hardnessAndResistance(2.0F, 10.0F).tickRandomly());
 		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
 		this.setDefaultState(stateContainer.getBaseState().with(AXIS, Direction.Axis.Y).with(DELAY, 0));
 	}
 
 	@Override
-	public BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, AXIS, DELAY);
-	}
-
-	@Override
-	public int getMetaFromState(BlockState state) {
-		return super.getMetaFromState(state) | state.getValue(DELAY);
-	}
-
-	@Override
-	public BlockState getStateFromMeta(int meta) {
-		return super.getStateFromMeta(meta).with(DELAY, meta & 0b11);
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+		builder.add(DELAY);
 	}
 
 	@Override
 	@Deprecated
-	public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess world, BlockPos pos) {
-		switch (state.getValue(AXIS)) {
+	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+		switch (state.get(AXIS)) {
 			case Y:
 			default:
 				return Y_BB;
@@ -78,32 +58,26 @@ public class BlockTFSlider extends RotatedPillarBlock {
 			case Z:
 				return Z_BB;
 		}
+
 	}
 
 	@Override
-	@Deprecated
-	public boolean isOpaqueCube(BlockState state) {
+	public boolean isSolid(BlockState state) {
 		return false;
 	}
 
-	@Override
-	@Deprecated
-	public boolean isFullCube(BlockState state) {
-		return false;
-	}
+//	@Override
+//	@Deprecated
+//	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face) {
+//		return BlockFaceShape.UNDEFINED;
+//	}
 
 	@Override
-	@Deprecated
-	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face) {
-		return BlockFaceShape.UNDEFINED;
-	}
-
-	@Override
-	public void updateTick(World world, BlockPos pos, BlockState state, Random random) {
+	public void tick(BlockState state, World world, BlockPos pos, Random random) {
 		if (!world.isRemote && this.isConnectedInRange(world, pos)) {
 			//world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, TwilightForestMod.ID + ":random.creakstart", 0.75F, 1.5F);
 
-			EntityTFSlideBlock slideBlock = new EntityTFSlideBlock(world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, state);
+			EntityTFSlideBlock slideBlock = new EntityTFSlideBlock(TFEntities.slider.get(), world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, state);
 			world.addEntity(slideBlock);
 		}
 
@@ -114,7 +88,7 @@ public class BlockTFSlider extends RotatedPillarBlock {
 	 * Check if there is any players in range, and also recursively check connected blocks
 	 */
 	public boolean isConnectedInRange(World world, BlockPos pos) {
-		Direction.Axis axis = world.getBlockState(pos).getValue(AXIS);
+		Direction.Axis axis = world.getBlockState(pos).get(AXIS);
 
 		switch (axis) {
 			case Y:
@@ -143,24 +117,26 @@ public class BlockTFSlider extends RotatedPillarBlock {
 	}
 
 	public void scheduleBlockUpdate(World world, BlockPos pos) {
-		int offset = world.getBlockState(pos).getValue(DELAY);
-		int update = TICK_TIME - ((int) (world.getWorldTime() - (offset * OFFSET_TIME)) % TICK_TIME);
-		world.scheduleUpdate(pos, this, update);
+		int offset = world.getBlockState(pos).get(DELAY);
+		int update = TICK_TIME - ((int) (world.getDayTime() - (offset * OFFSET_TIME)) % TICK_TIME);
+		//world.scheduleUpdate(pos, this, update); TODO: ?
 	}
 
 	@Override
-	public void onBlockAdded(World world, BlockPos pos, BlockState state) {
+	@Deprecated
+	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean isMoving) {
 		scheduleBlockUpdate(world, pos);
 	}
 
 	@Override
-	public void onEntityCollision(World world, BlockPos pos, BlockState state, Entity entity) {
+	@Deprecated
+	public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entity) {
 		entity.attackEntityFrom(DamageSource.GENERIC, BLOCK_DAMAGE);
-		if (entity instanceof EntityLivingBase) {
+		if (entity instanceof LivingEntity) {
 			double kx = (pos.getX() + 0.5 - entity.posX) * 2.0;
 			double kz = (pos.getZ() + 0.5 - entity.posZ) * 2.0;
 
-			((EntityLivingBase) entity).knockBack(null, 2, kx, kz);
+			((LivingEntity) entity).knockBack(null, 2, kx, kz); //TODO: Can't be null
 		}
 	}
 }

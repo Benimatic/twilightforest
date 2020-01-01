@@ -2,16 +2,11 @@ package twilightforest.block;
 
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyInteger;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Items;
@@ -19,7 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.stats.StatList;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
@@ -31,14 +25,12 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.TwilightForestMod;
-import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 
 import java.util.Random;
@@ -55,7 +47,7 @@ public class BlockTFExperiment115 extends Block {
     };
 
     public BlockTFExperiment115() {
-        super(Properties.create(Material.CAKE, MaterialColor.IRON).sound(SoundType.CLOTH).tickRandomly());
+        super(Properties.create(Material.CAKE, MaterialColor.IRON).hardnessAndResistance(0.5F).sound(SoundType.CLOTH).tickRandomly());
         this.setDefaultState(this.stateContainer.getBaseState().with(NOMS, 7).with(REGENERATE, false));
     }
 
@@ -65,6 +57,7 @@ public class BlockTFExperiment115 extends Block {
     }
 
 	@Override
+	@Deprecated
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
 		switch (state.get(NOMS)) {
 			default:
@@ -79,16 +72,18 @@ public class BlockTFExperiment115 extends Block {
 	}
 
 	@Override
+	@Deprecated
 	public boolean isSolid(BlockState state) {
 		return false;
 	}
 
-    @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face) {
-        return BlockFaceShape.UNDEFINED;
-    }
+//    @Override
+//    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face) {
+//        return BlockFaceShape.UNDEFINED;
+//    }
 
 	@Override
+	@Deprecated
 	public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		int bitesTaken = state.get(NOMS);
 		ItemStack stack = player.getHeldItem(hand);
@@ -128,27 +123,32 @@ public class BlockTFExperiment115 extends Block {
     }
 
 	@Override
+	@Deprecated
 	public void tick(BlockState state, World worldIn, BlockPos pos, Random random) {
 		if (state.get(REGENERATE) && state.get(NOMS) != 0) {
 			worldIn.setBlockState(pos, state.with(NOMS, state.get(NOMS) - 1));
 		}
 	}
 
+//	@Override
+//	@Deprecated
+//	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
+//		if (!this.canBlockStay(worldIn, pos)) {
+//			worldIn.removeBlock(pos, false);
+//		}
+//	}
+
 	@Override
-	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-		if (!this.canBlockStay(worldIn, pos)) {
-			worldIn.removeBlock(pos, false);
-		}
+	@Deprecated
+	public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
+		return worldIn.getBlockState(pos.down()).getMaterial().isSolid();
 	}
 
-	private boolean canBlockStay(World world, BlockPos pos) {
-        return world.getBlockState(pos.down()).getMaterial().isSolid();
-    }
-
-    @Override
-    public boolean canPlaceBlockAt(World world, BlockPos pos) {
-        return super.canPlaceBlockAt(world, pos) && canBlockStay(world, pos);
-    }
+	@Override
+	@Deprecated
+	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+		return facing == Direction.DOWN && !stateIn.isValidPosition(worldIn, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+	}
 
 //    @Override
 //    public int quantityDropped(Random random)
@@ -192,15 +192,15 @@ public class BlockTFExperiment115 extends Block {
 		return state.get(REGENERATE) ? 15-(state.get(NOMS)*2) : 0;
 	}
 
-	@Override
-    @OnlyIn(Dist.CLIENT)
-    public void registerModel() {
-        ModelLoader.setCustomModelResourceLocation(TFItems.experiment_115, 0, new ModelResourceLocation(TwilightForestMod.ID + ":experiment_115", "inventory"));
-        ModelLoader.setCustomModelResourceLocation(TFItems.experiment_115, 1, new ModelResourceLocation(TwilightForestMod.ID + ":experiment_115", "inventory_full"));
-        ModelLoader.setCustomModelResourceLocation(TFItems.experiment_115, 2, new ModelResourceLocation(TwilightForestMod.ID + ":experiment_115", "inventory_think"));
-
-        // Sorry, just gonna tack this here for now. The Shielding Scepter doesn't allow me to tack on another model like I would here. I'd like to not make a placeholder item either >.>
-        // TODO 1.14: Well...we may need a placeholder item
-        ModelLoader.setCustomModelResourceLocation(TFItems.experiment_115, 3, new ModelResourceLocation(TwilightForestMod.ID + ":shield", "inventory"));
-    }
+//	@Override
+//    @OnlyIn(Dist.CLIENT)
+//    public void registerModel() {
+//        ModelLoader.setCustomModelResourceLocation(TFItems.experiment_115, 0, new ModelResourceLocation(TwilightForestMod.ID + ":experiment_115", "inventory"));
+//        ModelLoader.setCustomModelResourceLocation(TFItems.experiment_115, 1, new ModelResourceLocation(TwilightForestMod.ID + ":experiment_115", "inventory_full"));
+//        ModelLoader.setCustomModelResourceLocation(TFItems.experiment_115, 2, new ModelResourceLocation(TwilightForestMod.ID + ":experiment_115", "inventory_think"));
+//
+//        // Sorry, just gonna tack this here for now. The Shielding Scepter doesn't allow me to tack on another model like I would here. I'd like to not make a placeholder item either >.>
+//        // TODO 1.14: Well...we may need a placeholder item
+//        ModelLoader.setCustomModelResourceLocation(TFItems.experiment_115, 3, new ModelResourceLocation(TwilightForestMod.ID + ":shield", "inventory"));
+//    }
 }

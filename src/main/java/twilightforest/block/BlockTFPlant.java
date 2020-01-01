@@ -26,8 +26,7 @@ import net.minecraftforge.common.IShearable;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.PlantType;
-import twilightforest.client.particle.TFParticleFactory;
-import twilightforest.client.particle.TFParticleType;
+import twilightforest.client.particle.ParticleLeaf;
 import twilightforest.enums.PlantVariant;
 
 import javax.annotation.Nullable;
@@ -95,10 +94,10 @@ public class BlockTFPlant extends BushBlock implements IShearable {
 			int zOff0 = (int) (seed >> 18 & 3L);
 			int zOff1 = (int) (seed >> 21 & 3L);
 
-			boolean xConnect0 = access.getBlockState(pos.east()).getBlock() == this && access.getBlockState(pos.east()).getBlock() == TFBlocks.moss_patch;
-			boolean xConnect1 = access.getBlockState(pos.west()).getBlock() == this && access.getBlockState(pos.west()).getBlock() == TFBlocks.moss_patch;
-			boolean zConnect0 = access.getBlockState(pos.south()).getBlock() == this && access.getBlockState(pos.north()).getBlock() == TFBlocks.moss_patch;
-			boolean zConnect1 = access.getBlockState(pos.north()).getBlock() == this && access.getBlockState(pos.south()).getBlock() == TFBlocks.moss_patch;
+			boolean xConnect0 = access.getBlockState(pos.east()).getBlock() == this && access.getBlockState(pos.east()).getBlock() == TFBlocks.moss_patch.get();
+			boolean xConnect1 = access.getBlockState(pos.west()).getBlock() == this && access.getBlockState(pos.west()).getBlock() == TFBlocks.moss_patch.get();
+			boolean zConnect0 = access.getBlockState(pos.south()).getBlock() == this && access.getBlockState(pos.north()).getBlock() == TFBlocks.moss_patch.get();
+			boolean zConnect1 = access.getBlockState(pos.north()).getBlock() == this && access.getBlockState(pos.south()).getBlock() == TFBlocks.moss_patch.get();
 
 			return VoxelShapes.create(new AxisAlignedBB(xConnect1 ? 0F : (1F + xOff1) / 16F, 0.0F, zConnect1 ? 0F : (1F + zOff1) / 16F,
 					xConnect0 ? 1F : (15F - xOff0) / 16F, 1F / 16F, zConnect0 ? 1F : (15F - zOff0) / 16F));
@@ -112,10 +111,10 @@ public class BlockTFPlant extends BushBlock implements IShearable {
 			int yOff0 = (int) (seed >> 24 & 1L);
 			int yOff1 = (int) (seed >> 27 & 1L);
 
-			boolean xConnect0 = access.getBlockState(pos.east()).getBlock() == this && access.getBlockState(pos.east()).getBlock() == TFBlocks.clover_patch;
-			boolean xConnect1 = access.getBlockState(pos.west()).getBlock() == this && access.getBlockState(pos.west()).getBlock() == TFBlocks.clover_patch;
-			boolean zConnect0 = access.getBlockState(pos.south()).getBlock() == this && access.getBlockState(pos.north()).getBlock() == TFBlocks.clover_patch;
-			boolean zConnect1 = access.getBlockState(pos.north()).getBlock() == this && access.getBlockState(pos.south()).getBlock() == TFBlocks.clover_patch;
+			boolean xConnect0 = access.getBlockState(pos.east()).getBlock() == this && access.getBlockState(pos.east()).getBlock() == TFBlocks.clover_patch.get();
+			boolean xConnect1 = access.getBlockState(pos.west()).getBlock() == this && access.getBlockState(pos.west()).getBlock() == TFBlocks.clover_patch.get();
+			boolean zConnect0 = access.getBlockState(pos.south()).getBlock() == this && access.getBlockState(pos.north()).getBlock() == TFBlocks.clover_patch.get();
+			boolean zConnect1 = access.getBlockState(pos.north()).getBlock() == this && access.getBlockState(pos.south()).getBlock() == TFBlocks.clover_patch.get();
 
 			return VoxelShapes.create(new AxisAlignedBB(xConnect1 ? 0F : (1F + xOff1) / 16F, 0.0F, zConnect1 ? 0F : (1F + zOff1) / 16F,
 					xConnect0 ? 1F : (15F - xOff0) / 16F, (1F + yOff0 + yOff1) / 16F, zConnect0 ? 1F : (15F - zOff0) / 16F));
@@ -156,7 +155,7 @@ public class BlockTFPlant extends BushBlock implements IShearable {
 			// can always hang below dirt blocks
 			return true;
 		} else {
-			return (state.getBlock() == TFBlocks.root_strand
+			return (state.getBlock() == TFBlocks.root_strand.get()
 					|| state == TFBlocks.root.get().getDefaultState());
 		}
 	}
@@ -245,9 +244,9 @@ public class BlockTFPlant extends BushBlock implements IShearable {
 	public void animateTick(BlockState state, World world, BlockPos pos, Random random) {
 		super.animateTick(state, world, pos, random);
 
-		if (state.getBlock() == TFBlocks.moss_patch && random.nextInt(10) == 0) {
+		if (state.getBlock() == TFBlocks.moss_patch.get() && random.nextInt(10) == 0) {
 			world.addParticle(ParticleTypes.MYCELIUM, pos.getX() + random.nextFloat(), pos.getY() + 0.1F, pos.getZ() + random.nextFloat(), 0.0D, 0.0D, 0.0D);
-		} else if (state.getBlock() == TFBlocks.fallen_leaves && random.nextInt(50) == 0) {
+		} else if (state.getBlock() == TFBlocks.fallen_leaves.get() && random.nextInt(50) == 0) {
 			float dist = 10F;
 			if (!world.canBlockSeeSky(pos)) {
 				for (int y = 0; y <= dist; y++)
@@ -258,7 +257,8 @@ public class BlockTFPlant extends BushBlock implements IShearable {
 				if (dist > 10F)
 					return;
 			}
-			Particle leaf = TFParticleFactory.createParticle(TFParticleType.FALLEN_LEAF, world, pos.getX() + random.nextFloat(), pos.getY() + dist - 0.25F, pos.getZ() + random.nextFloat(), 0.0D, 0.0D, 0.0D);
+			//Particle leaf = TFParticleFactory.createParticle(TFParticleType.FALLEN_LEAF, world, pos.getX() + random.nextFloat(), pos.getY() + dist - 0.25F, pos.getZ() + random.nextFloat(), 0.0D, 0.0D, 0.0D);
+			Particle leaf = new ParticleLeaf(world, pos.getX() + random.nextFloat(), pos.getY() + dist - 0.25F, pos.getZ() + random.nextFloat(), 0.0D, 0.0D, 0.0D);
 			int color = Minecraft.getInstance().getBlockColors().getColor(Blocks.OAK_LEAVES.getDefaultState(), world, pos, 0);
 			leaf.setColor(
 
@@ -278,11 +278,9 @@ public class BlockTFPlant extends BushBlock implements IShearable {
 	@Deprecated
 	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entityIn) {
 		super.onEntityCollision(state, world, pos, entityIn);
-		if (world.isRemote && state.getBlock() == TFBlocks.fallen_leaves && entityIn instanceof LivingEntity && (entityIn.getMotion().getX() != 0 || entityIn.getMotion().getZ() != 0) && RANDOM.nextBoolean()) {
+		if (world.isRemote && state.getBlock() == TFBlocks.fallen_leaves.get() && entityIn instanceof LivingEntity && (entityIn.getMotion().getX() != 0 || entityIn.getMotion().getZ() != 0) && RANDOM.nextBoolean()) {
 			int color = Minecraft.getInstance().getBlockColors().getColor(Blocks.OAK_LEAVES.getDefaultState(), world, pos, 0);
-			Particle leaf = TFParticleFactory.createParticle(TFParticleType.FALLEN_LEAF,
-
-					world,
+			Particle leaf = new ParticleLeaf(world,
 
 					pos.getX() + world.rand.nextFloat(),
 

@@ -4,36 +4,32 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IEnviromentBlockReader;
 import twilightforest.TFConfig;
-import twilightforest.item.TFItems;
 
 public class BlockTFGiantLeaves extends BlockTFGiantBlock {
 
 	public BlockTFGiantLeaves() {
-		super(Blocks.LEAVES.getDefaultState());
-		this.setHardness(0.2F * 64F);
-		this.setLightOpacity(1);
-		this.setCreativeTab(TFItems.creativeTab);
+		super(Blocks.OAK_LEAVES.getDefaultState(), 0.2F * 64F, 0.0F);
+		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
 	}
 
 	@Override
-	public int getLightOpacity(BlockState state) {
+	public int getOpacity(BlockState state, IBlockReader worldIn, BlockPos pos) {
 		return TFConfig.performance.leavesLightOpacity;
 	}
 
-	@Override
-	@Deprecated
-	public boolean isOpaqueCube(BlockState state) {
-		return false;
-	}
+//	@Override
+//	@Deprecated
+//	public boolean isOpaqueCube(BlockState state) {
+//		return false;
+//	}
 
-	@OnlyIn(Dist.CLIENT)
+
 	@Override
 	@Deprecated
-	public boolean shouldSideBeRendered(BlockState state, IBlockAccess world, BlockPos pos, Direction side) {
+	public boolean doesSideBlockRendering(BlockState state, IEnviromentBlockReader world, BlockPos pos, Direction side) {
 		switch (side) {
 			case DOWN:
 				return (pos.getY() & 3) == 0;
@@ -49,6 +45,6 @@ public class BlockTFGiantLeaves extends BlockTFGiantBlock {
 				return (pos.getX() & 3) == 3;
 		}
 
-		return super.shouldSideBeRendered(state, world, pos, side);
+		return shouldSideBeRendered(state, world, pos, side);
 	}
 }

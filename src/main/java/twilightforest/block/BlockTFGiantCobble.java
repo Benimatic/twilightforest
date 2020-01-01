@@ -1,14 +1,11 @@
 package twilightforest.block;
 
 import net.minecraft.block.Blocks;
-import twilightforest.item.TFItems;
 
 public class BlockTFGiantCobble extends BlockTFGiantBlock {
 
 	protected BlockTFGiantCobble() {
-		super(Blocks.COBBLESTONE.getDefaultState());
-		this.setHardness(2.0F * 64F);
-		this.setResistance(10.0F);
-		this.setCreativeTab(TFItems.creativeTab);
+		super(Blocks.COBBLESTONE.getDefaultState(), 2.0F * 64F, 10.0F);
+		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
 	}
 }
