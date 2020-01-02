@@ -7,6 +7,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
+import twilightforest.entity.TFEntities;
 import twilightforest.entity.boss.EntityTFIceBomb;
 
 public class ItemTFIceBomb extends ItemTF {
@@ -23,7 +24,7 @@ public class ItemTFIceBomb extends ItemTF {
 			if (!player.abilities.isCreativeMode) {
 				player.getHeldItem(hand).shrink(1);
 			}
-			EntityTFIceBomb ice = new EntityTFIceBomb(world, player);
+			EntityTFIceBomb ice = new EntityTFIceBomb(TFEntities.thrown_ice.get(), world, player);
 			ice.shoot(player, player.rotationPitch, player.rotationYaw, -20.0F, 0.75F, 1.0F);
 			world.addEntity(ice);
 		}

@@ -4,7 +4,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.*;
 import net.minecraft.util.NonNullList;
-import twilightforest.block.TFBlocks;
+import twilightforest.block.BlockTFMazestone;
 
 import javax.annotation.Nonnull;
 
@@ -27,7 +27,7 @@ public class ItemTFMazebreakerPick extends PickaxeItem {
 	@Override
 	public float getDestroySpeed(@Nonnull ItemStack stack, BlockState state) {
 		float destroySpeed = super.getDestroySpeed(stack, state);
-		return state.getBlock() == TFBlocks.maze_stone ? destroySpeed * 16F : destroySpeed;
+		return state.getBlock() instanceof BlockTFMazestone ? destroySpeed * 16F : destroySpeed;
 	}
 
 	@Nonnull

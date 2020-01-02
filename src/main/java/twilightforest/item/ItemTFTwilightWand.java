@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.entity.EntityTFTwilightWandBolt;
+import twilightforest.entity.TFEntities;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -34,7 +35,7 @@ public class ItemTFTwilightWand extends ItemTF {
 			player.playSound(SoundEvents.ENTITY_GHAST_SHOOT, 1.0F, (world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F + 1.0F);
 
 			if (!world.isRemote) {
-				world.addEntity(new EntityTFTwilightWandBolt(world, player));
+				world.addEntity(new EntityTFTwilightWandBolt(TFEntities.wand_bolt.get(), world, player));
 				stack.damageItem(1, player, (user) -> user.sendBreakAnimation(hand));
 			}
 

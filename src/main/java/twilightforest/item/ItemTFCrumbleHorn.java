@@ -20,13 +20,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
 import org.apache.commons.lang3.tuple.Pair;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.block.BlockTFMazestone;
-import twilightforest.block.BlockTFTowerWood;
-import twilightforest.block.BlockTFUnderBrick;
 import twilightforest.block.TFBlocks;
-import twilightforest.enums.MazestoneVariant;
-import twilightforest.enums.TowerWoodVariant;
-import twilightforest.enums.UnderBrickVariant;
 import twilightforest.util.WorldUtil;
 
 import java.util.ArrayList;
@@ -51,28 +45,14 @@ public class ItemTFCrumbleHorn extends ItemTF {
 	private void addCrumbleTransforms() {
 		addCrumble(() -> Blocks.STONE, () -> Blocks.COBBLESTONE.getDefaultState());
 		addCrumble(() -> Blocks.STONE_BRICKS, () -> Blocks.CRACKED_STONE_BRICKS.getDefaultState());
-		//TODO 1.14
-		addCrumble(state -> state.getBlock() == TFBlocks.maze_stone
-						&& state.get(BlockTFMazestone.VARIANT) == MazestoneVariant.BRICK,
-				state -> state.with(BlockTFMazestone.VARIANT, MazestoneVariant.CRACKED)
-		);
-		//TODO 1.14
-		addCrumble(state -> state.getBlock() == TFBlocks.underbrick
-						&& state.get(BlockTFUnderBrick.VARIANT) == UnderBrickVariant.NORMAL,
-				state -> state.with(BlockTFUnderBrick.VARIANT, UnderBrickVariant.CRACKED)
-		);
-		//TODO 1.14
-		addCrumble(state -> state.getBlock() == TFBlocks.tower_wood
-						&& state.get(BlockTFTowerWood.VARIANT) == TowerWoodVariant.PLAIN,
-				state -> state.with(BlockTFTowerWood.VARIANT, TowerWoodVariant.CRACKED)
-		);
+		addCrumble(() -> TFBlocks.maze_stone_brick.get(), () -> TFBlocks.maze_stone_cracked.get().getDefaultState());
+		addCrumble(() -> TFBlocks.underbrick.get(), () -> TFBlocks.underbrick_cracked.get().getDefaultState());
+		addCrumble(() -> TFBlocks.tower_wood.get(), () -> TFBlocks.tower_wood_cracked.get().getDefaultState());
 		addCrumble(() -> Blocks.COBBLESTONE, () -> Blocks.GRAVEL.getDefaultState());
 		addCrumble(() -> Blocks.SANDSTONE, () -> Blocks.SAND.getDefaultState());
-		addCrumble(() -> Blocks.RED_SANDSTONE, () -> Blocks.RED_SAND.getDefaultState()
-		);
+		addCrumble(() -> Blocks.RED_SANDSTONE, () -> Blocks.RED_SAND.getDefaultState());
 		addCrumble(() -> Blocks.GRASS, () -> Blocks.DIRT.getDefaultState());
 		addCrumble(() -> Blocks.MYCELIUM, () -> Blocks.DIRT.getDefaultState());
-
 		addHarvest(() -> Blocks.GRAVEL);
 		addHarvest(() -> Blocks.DIRT);
 		addHarvest(() -> Blocks.SAND);
@@ -179,7 +159,7 @@ public class ItemTFCrumbleHorn extends ItemTF {
 			if (predicate.test(state) && world.rand.nextInt(CHANCE_HARVEST) == 0) {
 				if (living instanceof PlayerEntity) {
 					if (block.canHarvestBlock(state, world, pos, (PlayerEntity) living)) {
-						world.setBlockToAir(pos);
+						world.removeBlock(pos, false);
 						block.harvestBlock(world, (PlayerEntity) living, pos, state, world.getTileEntity(pos), ItemStack.EMPTY);
 						world.playEvent(2001, pos, Block.getStateId(state));
 

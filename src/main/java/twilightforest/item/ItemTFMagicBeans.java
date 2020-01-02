@@ -2,6 +2,7 @@ package twilightforest.item;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.LeavesBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -35,7 +36,7 @@ public class ItemTFMagicBeans extends ItemTF {
 
 		int minY = pos.getY() + 1;
 		int maxY = Math.max(pos.getY() + 100, (int) (getCloudHeight(world) + 25));
-		if (pos.getY() < maxY && blockAt == TFBlocks.uberous_soil) {
+		if (pos.getY() < maxY && blockAt == TFBlocks.uberous_soil.get()) {
 			if (!world.isRemote) {
 				ItemStack is = player.getHeldItem(context.getHand());
 				is.shrink(1);
@@ -128,7 +129,7 @@ public class ItemTFMagicBeans extends ItemTF {
 
 	private void placeLeaves(World world, BlockPos pos) {
 		// stalk at center
-		world.setBlockState(pos, TFBlocks.huge_stalk.getDefaultState());
+		world.setBlockState(pos, TFBlocks.huge_stalk.get().getDefaultState());
 
 		// small squares
 		for (int dx = -1; dx <= 1; dx++) {
@@ -153,7 +154,7 @@ public class ItemTFMagicBeans extends ItemTF {
 	private boolean tryToPlaceStalk(World world, BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
 		if (state.getBlock().isAir(state, world, pos) || state.getBlock().isReplaceable(world, pos) || state.getBlock().canBeReplacedByLeaves(state, world, pos) || BlockTags.LEAVES.contains(state.getBlock()) || state.getBlock().canSustainLeaves(state, world, pos)) {
-			world.setBlockState(pos, TFBlocks.huge_stalk.getDefaultState());
+			world.setBlockState(pos, TFBlocks.huge_stalk.get().getDefaultState());
 			return true;
 		} else {
 			return false;
@@ -163,7 +164,7 @@ public class ItemTFMagicBeans extends ItemTF {
 	private void tryToPlaceLeaves(World world, BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
 		if (state.getBlock().isAir(state, world, pos) || state.getBlock().canBeReplacedByLeaves(state, world, pos)) {
-			world.setBlockState(pos, TFBlocks.twilight_leaves_3.getDefaultState().with(BlockTFLeaves3.VARIANT, Leaves3Variant.BEANSTALK).with(BlockLeaves.CHECK_DECAY, false), 2);
+			world.setBlockState(pos, TFBlocks.beanstalk_leaves.get().getDefaultState(), 2);
 		}
 	}
 }

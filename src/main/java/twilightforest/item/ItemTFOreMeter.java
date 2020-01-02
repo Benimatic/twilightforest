@@ -13,9 +13,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.BlockTFRoots;
 import twilightforest.block.TFBlocks;
-import twilightforest.enums.RootVariant;
 
 import javax.annotation.Nonnull;
 import java.util.IdentityHashMap;
@@ -78,8 +76,8 @@ public class ItemTFOreMeter extends ItemTF {
 				countRedstone += results.getOrDefault(Blocks.REDSTONE_ORE.getDefaultState(), dummy).count;
 				countExposedDiamond += results.getOrDefault(Blocks.DIAMOND_ORE.getDefaultState(), dummy).exposedCount;
 
-				countRoots += results.getOrDefault(TFBlocks.root.getDefaultState().with(BlockTFRoots.VARIANT, RootVariant.ROOT), dummy).count;
-				countOreRoots += results.getOrDefault(TFBlocks.root.getDefaultState().with(BlockTFRoots.VARIANT, RootVariant.LIVEROOT), dummy).count;
+				countRoots += results.getOrDefault(TFBlocks.root.get().getDefaultState(), dummy).count;
+				countOreRoots += results.getOrDefault(TFBlocks.liveroot.get().getDefaultState(), dummy).count;
 			}
 		}
 
@@ -93,8 +91,8 @@ public class ItemTFOreMeter extends ItemTF {
 		player.sendMessage(new TranslationTextComponent(Blocks.DIAMOND_ORE.getTranslationKey() + ".name").appendText(" - " + countDiamond + " " + percent(countDiamond, total) + ", ").appendSibling(new TranslationTextComponent(TwilightForestMod.ID + ".ore_meter.exposed", countExposedDiamond)));
 		player.sendMessage(new TranslationTextComponent(Blocks.LAPIS_ORE.getTranslationKey() + ".name").appendText(" - " + countLapis + " " + percent(countLapis, total)));
 		player.sendMessage(new TranslationTextComponent(Blocks.REDSTONE_ORE.getTranslationKey() + ".name").appendText(" - " + countRedstone + " " + percent(countRedstone, total)));
-		player.sendMessage(new TranslationTextComponent(new ItemStack(TFBlocks.root).getTranslationKey() + ".name").appendText(" - " + countRoots + " " + percent(countRoots, total)));
-		player.sendMessage(new TranslationTextComponent(new ItemStack(TFBlocks.root, 1, 1).getTranslationKey() + ".name").appendText(" - " + countOreRoots + " " + percent(countOreRoots, total))); //TODO 1.14: Flattened
+		player.sendMessage(new TranslationTextComponent(TFBlocks.root.get().getTranslationKey() + ".name").appendText(" - " + countRoots + " " + percent(countRoots, total)));
+		player.sendMessage(new TranslationTextComponent(TFBlocks.liveroot.get().getTranslationKey() + ".name").appendText(" - " + countOreRoots + " " + percent(countOreRoots, total)));
 	}
 
 	private String percent(int count, int total) {

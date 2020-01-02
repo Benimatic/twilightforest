@@ -57,7 +57,7 @@ public class ItemTFTransformPowder extends ItemTF {
 	@Override
 	public boolean itemInteractionForEntity(ItemStack stack, PlayerEntity player, LivingEntity target, Hand hand) {
 
-		if (target.isDead) return false;
+		if (!target.isAlive()) return false;
 
 		ResourceLocation location = transformMap.get(EntityList.getKey(target));
 		if (location == null) return false;

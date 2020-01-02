@@ -10,7 +10,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import twilightforest.client.ModelRegisterCallback;
 
-public class ItemTFEmptyMazeMap extends AbstractMapItem implements ModelRegisterCallback {
+public class ItemTFEmptyMazeMap extends AbstractMapItem {
 	boolean mapOres;
 
 	protected ItemTFEmptyMazeMap(boolean mapOres, Properties props) {

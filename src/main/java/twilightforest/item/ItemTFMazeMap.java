@@ -179,6 +179,7 @@ public class ItemTFMazeMap extends MapItem {
 										} else if (state.getBlock() == Blocks.EMERALD_ORE) {
 											multiset.add(MaterialColor.EMERALD, 1000);
 										} else if (state.getBlock() != Blocks.AIR && state.getBlock().getRegistryName().getPath().contains("ore")) { // TODO: improve this 0.o
+											//TODO: Well, we could use a tag for Ores
 											// any other ore, catchall
 											multiset.add(MaterialColor.PINK, 1000);
 										}

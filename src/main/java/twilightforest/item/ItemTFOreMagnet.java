@@ -21,9 +21,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.block.BlockTFRoots;
 import twilightforest.block.TFBlocks;
-import twilightforest.enums.RootVariant;
 import twilightforest.world.feature.TFGenerator;
 
 import javax.annotation.Nonnull;
@@ -46,7 +44,7 @@ public class ItemTFOreMagnet extends ItemTF {
 					return 0.0F;
 				} else {
 					ItemStack itemstack = entityIn.getActiveItemStack();
-					return !itemstack.isEmpty() && itemstack.getItem() == TFItems.ore_magnet ? (float) (stack.getUseDuration() - entityIn.getItemInUseCount()) / 20.0F : 0.0F;
+					return !itemstack.isEmpty() && itemstack.getItem() == TFItems.ore_magnet.get() ? (float) (stack.getUseDuration() - entityIn.getItemInUseCount()) / 20.0F : 0.0F;
 				}
 			}
 		});
@@ -267,9 +265,10 @@ public class ItemTFOreMagnet extends ItemTF {
                 || block == Blocks.LAPIS_ORE
                 || block == Blocks.REDSTONE_ORE
                 || block == Blocks.NETHER_QUARTZ_ORE
-                || state == TFBlocks.root.getDefaultState().with(BlockTFRoots.VARIANT, RootVariant.LIVEROOT)
+                || block == TFBlocks.liveroot.get()
                 // todo 1.9 oh god
 				// National treasure -Drullkus
+				// TODO 1.14: noh, we are use tag instead
                 || state.getBlock().getRegistryName().getPath().contains("ore"))
 		    return true;
 

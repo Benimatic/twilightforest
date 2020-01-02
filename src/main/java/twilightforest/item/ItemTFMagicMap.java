@@ -178,7 +178,7 @@ public class ItemTFMagicMap extends MapItem {
 		putBiomeColor(TFBiomes.oakSavanna, new MapColorBrightness(MaterialColor.GRASS, 0));
 		putBiomeColor(TFBiomes.highlands, new MapColorBrightness(MaterialColor.DIRT, 0));
 		putBiomeColor(TFBiomes.thornlands, new MapColorBrightness(MaterialColor.WOOD, 3));
-		putBiomeColor(TFBiomes.highlandsCenter, new MapColorBrightness(MaterialColor.SILVER, 2));
+		putBiomeColor(TFBiomes.highlandsCenter, new MapColorBrightness(MaterialColor.LIGHT_GRAY, 2));
 		putBiomeColor(TFBiomes.fireflyForest, new MapColorBrightness(MaterialColor.EMERALD, 1));
 		putBiomeColor(TFBiomes.darkForest, new MapColorBrightness(MaterialColor.GREEN, 3));
 		putBiomeColor(TFBiomes.darkForestCenter, new MapColorBrightness(MaterialColor.ADOBE, 3));

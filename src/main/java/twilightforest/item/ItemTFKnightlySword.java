@@ -36,7 +36,7 @@ public class ItemTFKnightlySword extends SwordItem {
 		if (!target.world.isRemote && evt.getSource().getImmediateSource() instanceof LivingEntity) {
 			ItemStack weapon = ((LivingEntity) evt.getSource().getImmediateSource()).getHeldItemMainhand();
 
-			if (!weapon.isEmpty() && ((target.getTotalArmorValue() > 0 && (weapon.getItem() == TFItems.knightmetal_pickaxe || weapon.getItem() == TFItems.knightmetal_sword)) || (target.getTotalArmorValue() == 0 && weapon.getItem() == TFItems.knightmetal_axe))) {
+			if (!weapon.isEmpty() && ((target.getTotalArmorValue() > 0 && (weapon.getItem() == TFItems.knightmetal_pickaxe.get() || weapon.getItem() == TFItems.knightmetal_sword.get())) || (target.getTotalArmorValue() == 0 && weapon.getItem() == TFItems.knightmetal_axe.get()))) {
 				// TODO scale bonus dmg with the amount of armor?
 				target.attackEntityFrom(DamageSource.MAGIC, BONUS_DAMAGE);
 				// don't prevent main damage from applying

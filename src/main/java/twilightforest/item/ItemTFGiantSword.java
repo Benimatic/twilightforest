@@ -13,12 +13,12 @@ import javax.annotation.Nonnull;
 public class ItemTFGiantSword extends SwordItem {
 
 	public ItemTFGiantSword(IItemTier material, Properties props) {
-		super(material, 10 + material.getAttackDamage(), -3.5F, props.group(TFItems.creativeTab));
+		super(material, 10 + (int)material.getAttackDamage(), -3.5F, props.group(TFItems.creativeTab));
 	}
 
 	@Override
 	public boolean getIsRepairable(ItemStack stack, ItemStack material) {
-		return material.getItem() == TFItems.ironwood_ingot || super.getIsRepairable(stack, material);
+		return material.getItem() == TFItems.ironwood_ingot.get() || super.getIsRepairable(stack, material);
 	}
 
 	@Override

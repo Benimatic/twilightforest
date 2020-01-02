@@ -22,6 +22,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolType;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFChainBlock;
+import twilightforest.entity.TFEntities;
+import twilightforest.enums.TwilightItemTier;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
@@ -31,7 +33,7 @@ public class ItemTFChainBlock extends ToolItem {
 	private static final String THROWN_UUID_KEY = "chainEntity";
 
 	protected ItemTFChainBlock(Properties props) {
-		super(6, -3.0F, TFItems.TOOL_KNIGHTLY, Sets.newHashSet(Blocks.STONE), props.maxDamage(99).group(TFItems.creativeTab));
+		super(6, -3.0F, TwilightItemTier.TOOL_KNIGHTLY, Sets.newHashSet(Blocks.STONE), props.maxDamage(99).group(TFItems.creativeTab));
 
 		this.addPropertyOverride(TwilightForestMod.prefix("thrown"), new IItemPropertyGetter() {
 			@OnlyIn(Dist.CLIENT)
@@ -60,7 +62,7 @@ public class ItemTFChainBlock extends ToolItem {
 		player.playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (random.nextFloat() * 0.4F + 1.2F));
 
 		if (!world.isRemote) {
-			EntityTFChainBlock launchedBlock = new EntityTFChainBlock(world, player, hand);
+			EntityTFChainBlock launchedBlock = new EntityTFChainBlock(TFEntities.chain_block.get(), world, player, hand);
 			world.addEntity(launchedBlock);
 			setThrownEntity(stack, launchedBlock);
 

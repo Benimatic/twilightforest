@@ -40,7 +40,7 @@ public class ItemTFPeacockFan extends ItemTF {
 				int fanned = doFan(world, player);
 
 				if (fanned > 0) {
-					player.getHeldItem(hand).damageItem(fanned, player);
+					player.getHeldItem(hand).damageItem(fanned, player, (user) -> user.sendBreakAnimation(hand));
 				}
 			}
 		} else {

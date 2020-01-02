@@ -73,7 +73,7 @@ public class ItemBlockTFHugeLilyPad extends BlockItem {
 					// TF - set 4 of them
 					Direction direction = playerIn.getHorizontalFacing();
 
-					final BlockState lilypad = TFBlocks.huge_lilypad.getDefaultState().with(FACING, direction);
+					final BlockState lilypad = TFBlocks.huge_lilypad.get().getDefaultState().with(FACING, direction);
 					worldIn.setBlockState(blockpos1, lilypad.with(PIECE, NW), 10);
 					worldIn.setBlockState(blockpos1.east(), lilypad.with(PIECE, NE), 10);
 					worldIn.setBlockState(blockpos1.east().south(), lilypad.with(PIECE, SE), 10);
@@ -91,7 +91,7 @@ public class ItemBlockTFHugeLilyPad extends BlockItem {
 					}
 
 					playerIn.addStat(Stats.ITEM_USED.get(this));
-					worldIn.playSound(playerIn, blockpos, TFBlocks.huge_lilypad.getSoundType(iblockstate, worldIn, blockpos, playerIn).getPlaceSound(), SoundCategory.BLOCKS, 1.0F, 1.0F);
+					worldIn.playSound(playerIn, blockpos, TFBlocks.huge_lilypad.get().getSoundType(iblockstate, worldIn, blockpos, playerIn).getPlaceSound(), SoundCategory.BLOCKS, 1.0F, 1.0F);
 					return new ActionResult<>(ActionResultType.SUCCESS, itemstack);
 				}
 			}

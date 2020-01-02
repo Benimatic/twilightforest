@@ -17,6 +17,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFCubeOfAnnihilation;
+import twilightforest.entity.TFEntities;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
@@ -52,7 +53,7 @@ public class ItemTFCubeOfAnnihilation extends ItemTF {
 			return ActionResult.newResult(ActionResultType.PASS, stack);
 
 		if (!world.isRemote) {
-			EntityTFCubeOfAnnihilation launchedCube = new EntityTFCubeOfAnnihilation(world, player);
+			EntityTFCubeOfAnnihilation launchedCube = new EntityTFCubeOfAnnihilation(TFEntities.cube_of_annihilation.get(), world, player);
 			world.addEntity(launchedCube);
 			setThrownEntity(stack, launchedCube);
 		}

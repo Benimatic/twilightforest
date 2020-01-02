@@ -32,7 +32,7 @@ public class ItemKnightlyShield extends ShieldItem {
 
     @Override
     public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
-        return repair.getItem() == TFItems.knightmetal_ingot || !ItemTags.PLANKS.contains(repair.getItem()) && super.getIsRepairable(toRepair, repair);
+        return repair.getItem() == TFItems.knightmetal_ingot.get() || !ItemTags.PLANKS.contains(repair.getItem()) && super.getIsRepairable(toRepair, repair);
     }
 
     @Override

@@ -22,6 +22,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.EntityTFMoonwormShot;
+import twilightforest.entity.TFEntities;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -72,7 +73,7 @@ public class ItemTFMoonwormQueen extends ItemTF {
 			pos = pos.offset(context.getFace());
 		}
 
-		ItemStack itemstack = player.getHeldItem(hand);
+		ItemStack itemstack = player.getHeldItem(context.getHand());
 
 		if (itemstack.getDamage() < itemstack.getMaxDamage() && player.canPlayerEdit(pos, context.getFace(), itemstack) && worldIn.mayPlace(TFBlocks.moonworm, pos, false, context.getFace(), (Entity) null)) {
 			int i = this.getMetadata(itemstack.getMetadata());
@@ -97,7 +98,7 @@ public class ItemTFMoonwormQueen extends ItemTF {
 		if (!world.setBlockState(pos, state, 11)) return false;
 
 		BlockState real = world.getBlockState(pos);
-		if (real.getBlock() == TFBlocks.moonworm) {
+		if (real.getBlock() == TFBlocks.moonworm.get()) {
 			TFBlocks.moonworm.onBlockPlacedBy(world, pos, state, player, stack);
 			if (player instanceof ServerPlayerEntity) {
 				CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity) player, pos, stack);
@@ -112,7 +113,7 @@ public class ItemTFMoonwormQueen extends ItemTF {
 		int useTime = this.getUseDuration(stack) - useRemaining;
 
 		if (!world.isRemote && useTime > FIRING_TIME && (stack.getDamage() + 1) < stack.getMaxDamage()) {
-			boolean fired = world.addEntity(new EntityTFMoonwormShot(world, living));
+			boolean fired = world.addEntity(new EntityTFMoonwormShot(TFEntities.moonworm_shot.get(), world, living));
 
 			if (fired) {
 				stack.damageItem(2, living, (user) -> user.sendBreakAnimation(living.getActiveHand()));

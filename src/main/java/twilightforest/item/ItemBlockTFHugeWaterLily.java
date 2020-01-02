@@ -48,14 +48,14 @@ public class ItemBlockTFHugeWaterLily extends BlockItem {
 				if (iblockstate.getMaterial() == Material.WATER && iblockstate.get(FlowingFluidBlock.LEVEL) == 0 && worldIn.isAirBlock(blockpos1)) {
 					// special case for handling block placement with water lilies
 					net.minecraftforge.common.util.BlockSnapshot blocksnapshot = net.minecraftforge.common.util.BlockSnapshot.getBlockSnapshot(worldIn, blockpos1);
-					worldIn.setBlockState(blockpos1, TFBlocks.huge_waterlily.getDefaultState()); // TF - our block
+					worldIn.setBlockState(blockpos1, TFBlocks.huge_waterlily.get().getDefaultState()); // TF - our block
 					if (net.minecraftforge.event.ForgeEventFactory.onBlockPlace(playerIn, blocksnapshot, net.minecraft.util.Direction.UP)) {
 						blocksnapshot.restore(true, false);
 						return new ActionResult<ItemStack>(ActionResultType.FAIL, itemstack);
 					}
 
 					// TF - our block
-					worldIn.setBlockState(blockpos1, TFBlocks.huge_waterlily.getDefaultState(), 11);
+					worldIn.setBlockState(blockpos1, TFBlocks.huge_waterlily.get().getDefaultState(), 11);
 
 					if (playerIn instanceof ServerPlayerEntity) {
 						CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity) playerIn, blockpos1, itemstack);

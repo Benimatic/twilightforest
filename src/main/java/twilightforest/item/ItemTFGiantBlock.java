@@ -52,7 +52,7 @@ public class ItemTFGiantBlock extends BlockItem {
 
 		if (placeBlockAt(itemstack, player, worldIn, pos, facing, hitX, hitY, hitZ, iblockstate1)) {
 			iblockstate1 = worldIn.getBlockState(pos);
-			SoundType soundtype = iblockstate1.getBlock().getSoundType(iblockstate1, worldIn, pos, player);
+			SoundType soundtype = iblockstate1.getBlock().getSoundType(iblockstate1, worldIn, pos, context.getPlayer());
 			worldIn.playSound(context.getPlayer(), pos, soundtype.getPlaceSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
 			itemstack.shrink(1);
 		}
@@ -62,7 +62,7 @@ public class ItemTFGiantBlock extends BlockItem {
 
 	@Override
 	public int getBurnTime(ItemStack itemStack) {
-		if (this.getBlock() == TFBlocks.giant_log) {
+		if (this.getBlock() == TFBlocks.giant_log.get()) {
 			return 300 * 64;
 		}
 		return super.getBurnTime(itemStack);
