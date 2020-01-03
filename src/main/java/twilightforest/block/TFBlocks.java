@@ -94,7 +94,7 @@ public class TFBlocks {
 	public static final RegistryObject<Block> locked_vanishing_block     = BLOCKS.register("locked_vanishing_block", () -> new BlockTFLockedVanishing());
 	public static final RegistryObject<Block> carminite_builder          = BLOCKS.register("carminite_builder", () -> new BlockTFBuilder());
 	public static final RegistryObject<Block> antibuilder                = BLOCKS.register("antibuilder", () -> new BlockTFAntibuilder());
-	public static final RegistryObject<Block> ghast_trap                 = BLOCKS.register("ghast_trap", () -> new BlockTFGhastTrap());
+	public static final RegistryObject<BlockTFGhastTrap> ghast_trap      = BLOCKS.register("ghast_trap", () -> new BlockTFGhastTrap());
 	public static final RegistryObject<Block> carminite_reactor          = BLOCKS.register("carminite_reactor", () -> new BlockTFReactor());
 	//public static Block towerAntenna                                   = null; // Not you
 	public static final RegistryObject<Block> reappearing_translucent    = BLOCKS.register("reappearing_translucent", () -> new BlockTFReappearTranslucent());
