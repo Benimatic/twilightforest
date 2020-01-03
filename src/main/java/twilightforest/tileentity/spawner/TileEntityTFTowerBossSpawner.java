@@ -1,13 +1,14 @@
 package twilightforest.tileentity.spawner;
 
-import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
-import twilightforest.entity.boss.EntityTFUrGhast;
+import twilightforest.entity.TFEntities;
+import twilightforest.tileentity.TFTileEntities;
 
 public class TileEntityTFTowerBossSpawner extends TileEntityTFBossSpawner {
 
 	public TileEntityTFTowerBossSpawner() {
-		super(EntityList.getKey(EntityTFUrGhast.class));
+		super(TFTileEntities.TOWER_BOSS_SPAWNER.get(), EntityType.getKey(TFEntities.ur_ghast.get()));
 	}
 
 	@Override

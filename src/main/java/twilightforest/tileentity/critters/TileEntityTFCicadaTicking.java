@@ -1,13 +1,12 @@
 package twilightforest.tileentity.critters;
 
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.ITickable;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.SoundCategory;
 import twilightforest.TFConfig;
 import twilightforest.TFSounds;
 
-
-public class TileEntityTFCicadaTicking extends TileEntityTFCicada implements ITickable {
+public class TileEntityTFCicadaTicking extends TileEntityTFCicada implements ITickableTileEntity {
 	private int yawDelay;
 	public int currentYaw;
 	private int desiredYaw;
@@ -17,7 +16,7 @@ public class TileEntityTFCicadaTicking extends TileEntityTFCicada implements ITi
 	private int singDelay;
 
 	@Override
-	public void update() {
+	public void tick() {
 		if (world.isRemote) {
 			if (yawDelay > 0) {
 				yawDelay--;
@@ -66,7 +65,7 @@ public class TileEntityTFCicadaTicking extends TileEntityTFCicada implements ITi
 			double rx = pos.getX() + world.rand.nextFloat();
 			double ry = pos.getY() + world.rand.nextFloat();
 			double rz = pos.getZ() + world.rand.nextFloat();
-			world.spawnParticle(ParticleTypes.NOTE, rx, ry, rz, 0.0D, 0.0D, 0.0D);
+			world.addParticle(ParticleTypes.NOTE, rx, ry, rz, 0.0D, 0.0D, 0.0D);
 		}
 	}
 

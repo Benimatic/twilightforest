@@ -4,9 +4,9 @@ import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.particles.RedstoneParticleData;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import twilightforest.TFConfig;
 import twilightforest.block.BlockTFTowerTranslucent;
@@ -15,7 +15,7 @@ import twilightforest.enums.TowerTranslucentVariant;
 
 import java.util.Random;
 
-public class TileEntityTFAntibuilder extends TileEntity implements ITickable {
+public class TileEntityTFAntibuilder extends TileEntity implements ITickableTileEntity {
 
 	private static final int REVERT_CHANCE = 10;
 
@@ -31,8 +31,12 @@ public class TileEntityTFAntibuilder extends TileEntity implements ITickable {
 
 	private BlockState[] blockData;
 
+	public TileEntityTFAntibuilder() {
+		super(TFTileEntities.ANTIBUILDER.get());
+	}
+
 	@Override
-	public void update() {
+	public void tick() {
 		if (this.anyPlayerInRange()) {
 			this.tickCount++;
 
@@ -41,7 +45,7 @@ public class TileEntityTFAntibuilder extends TileEntity implements ITickable {
 				double y = this.pos.getY() + this.world.rand.nextFloat();
 				double z = this.pos.getZ() + this.world.rand.nextFloat();
 //				this.world.spawnParticle("smoke", x, y, z, 0.0D, 0.0D, 0.0D);
-				this.world.spawnParticle(ParticleTypes.REDSTONE, x, y, z, 0.0D, 0.0D, 0.0D);
+				this.world.addParticle(RedstoneParticleData.REDSTONE_DUST, x, y, z, 0.0D, 0.0D, 0.0D);
 
 				// occasionally make a little red dust line to outline our radius
 				if (this.rand.nextInt(10) == 0) {
@@ -194,7 +198,7 @@ public class TileEntityTFAntibuilder extends TileEntity implements ITickable {
 			double tx = srcX + (destX - srcX) * trailFactor + rand.nextFloat() * 0.005;
 			double ty = srcY + (destY - srcY) * trailFactor + rand.nextFloat() * 0.005;
 			double tz = srcZ + (destZ - srcZ) * trailFactor + rand.nextFloat() * 0.005;
-			world.spawnParticle(ParticleTypes.REDSTONE, tx, ty, tz, 0, 0, 0);
+			world.addParticle(RedstoneParticleData.REDSTONE_DUST, tx, ty, tz, 0, 0, 0);
 		}
 	}
 
@@ -232,7 +236,7 @@ public class TileEntityTFAntibuilder extends TileEntity implements ITickable {
 		} else if (this.rand.nextInt(REVERT_CHANCE) == 0) {
 			// don't revert everything instantly
 			if (replaceWith.getBlock() != Blocks.AIR) {
-				replaceWith = TFBlocks.tower_translucent.getDefaultState().with(BlockTFTowerTranslucent.VARIANT, TowerTranslucentVariant.REVERTER_REPLACEMENT);
+				replaceWith = TFBlocks.reverter_replacement.get().getDefaultState();
 			}
 
 			world.setBlockState(pos, replaceWith, 2);
@@ -242,15 +246,16 @@ public class TileEntityTFAntibuilder extends TileEntity implements ITickable {
 				world.playEvent(2001, pos, Block.getStateId(replaceWith));
 			} else if (replaceWith.getBlock() == Blocks.AIR) {
 				world.playEvent(2001, pos, Block.getStateId(stateThere));
-				stateThere.getBlock().dropBlockAsItem(world, pos, stateThere, 0);
+				//stateThere.getBlock().dropBlockAsItem(world, pos, stateThere, 0);
 			}
 		}
 
 		return true;
 	}
 
+	//TODO 1.14: CAN WE PLEASE PUT THIS IN SOMETHING LIKE A TAG?
 	private boolean isUnrevertable(BlockState stateThere, BlockState replaceWith) {
-		if (stateThere.getBlock() == TFBlocks.tower_device || replaceWith.getBlock() == TFBlocks.tower_device) {
+		if (stateThere.getBlock() instanceof BlockTFTowerTranslucent || replaceWith.getBlock() instanceof BlockTFTowerTranslucent) {
 			return true;
 		}
 		if ((stateThere.getBlock() == TFBlocks.tower_translucent && stateThere.getValue(BlockTFTowerTranslucent.VARIANT) != TowerTranslucentVariant.REVERTER_REPLACEMENT)

@@ -1,16 +1,14 @@
 package twilightforest.tileentity;
 
-import net.minecraft.entity.monster.EntityGhast;
+import net.minecraft.entity.monster.GhastEntity;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import twilightforest.TFSounds;
-import twilightforest.TwilightForestMod;
-import twilightforest.block.BlockTFTowerDevice;
+import twilightforest.block.BlockTFGhastTrap;
 import twilightforest.block.TFBlocks;
-import twilightforest.enums.TowerDeviceVariant;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.EntityTFTowerGhast;
 import twilightforest.entity.boss.EntityTFUrGhast;
@@ -18,21 +16,25 @@ import twilightforest.entity.boss.EntityTFUrGhast;
 import java.util.List;
 import java.util.Random;
 
-public class TileEntityTFGhastTrapActive extends TileEntity implements ITickable {
+public class TileEntityTFGhastTrapActive extends TileEntity implements ITickableTileEntity {
 
 	private int counter = 0;
 
 	private final Random rand = new Random();
 
+	public TileEntityTFGhastTrapActive() {
+		super(TFTileEntities.GHAST_TRAP_ACTIVE.get());
+	}
+
 	@Override
-	public void update() {
+	public void tick() {
 
 		++counter;
 
 		if (world.isRemote) {
 			// smoke when done
 			if (counter > 100 && counter % 4 == 0) {
-				TwilightForestMod.proxy.spawnParticle(TFParticleType.HUGE_SMOKE, this.pos.getX() + 0.5, this.pos.getY() + 0.95, this.pos.getZ() + 0.5, Math.cos(counter / 10.0) * 0.05, 0.25D, Math.sin(counter / 10.0) * 0.05);
+				world.addParticle(TFParticleType.HUGE_SMOKE.get(), this.pos.getX() + 0.5, this.pos.getY() + 0.95, this.pos.getZ() + 0.5, Math.cos(counter / 10.0) * 0.05, 0.25D, Math.sin(counter / 10.0) * 0.05);
 
 			} else if (counter < 100) {
 
@@ -44,12 +46,12 @@ public class TileEntityTFGhastTrapActive extends TileEntity implements ITickable
 				double dy = 20D;
 				double dz = Math.sin(counter / 10.0) * 2.5;
 
-				TwilightForestMod.proxy.spawnParticle(TFParticleType.GHAST_TRAP, x, y, z, dx, dy, dz);
-				TwilightForestMod.proxy.spawnParticle(TFParticleType.GHAST_TRAP, x, y, z, -dx, dy, -dz);
-				TwilightForestMod.proxy.spawnParticle(TFParticleType.GHAST_TRAP, x, y, z, -dx, dy / 2, dz);
-				TwilightForestMod.proxy.spawnParticle(TFParticleType.GHAST_TRAP, x, y, z, dx, dy / 2, -dz);
-				TwilightForestMod.proxy.spawnParticle(TFParticleType.GHAST_TRAP, x, y, z, dx / 2, dy / 4, dz / 2);
-				TwilightForestMod.proxy.spawnParticle(TFParticleType.GHAST_TRAP, x, y, z, -dx / 2, dy / 4, -dz / 2);
+				world.addParticle(TFParticleType.GHAST_TRAP.get(), x, y, z, dx, dy, dz);
+				world.addParticle(TFParticleType.GHAST_TRAP.get(), x, y, z, -dx, dy, -dz);
+				world.addParticle(TFParticleType.GHAST_TRAP.get(), x, y, z, -dx, dy / 2, dz);
+				world.addParticle(TFParticleType.GHAST_TRAP.get(), x, y, z, dx, dy / 2, -dz);
+				world.addParticle(TFParticleType.GHAST_TRAP.get(), x, y, z, dx / 2, dy / 4, dz / 2);
+				world.addParticle(TFParticleType.GHAST_TRAP.get(), x, y, z, -dx / 2, dy / 4, -dz / 2);
 			}
 
 			// appropriate sound
@@ -66,9 +68,9 @@ public class TileEntityTFGhastTrapActive extends TileEntity implements ITickable
 			// trap nearby ghasts
 			AxisAlignedBB aabb = new AxisAlignedBB(pos.up(16), pos.up(16).add(1, 1, 1)).grow(6D, 16D, 6D);
 
-			List<EntityGhast> nearbyGhasts = world.getEntitiesWithinAABB(EntityGhast.class, aabb);
+			List<GhastEntity> nearbyGhasts = world.getEntitiesWithinAABB(GhastEntity.class, aabb);
 
-			for (EntityGhast ghast : nearbyGhasts) {
+			for (GhastEntity ghast : nearbyGhasts) {
 				//stop boss tantrum
 				if (ghast instanceof EntityTFUrGhast) {
 					((EntityTFUrGhast) ghast).setInTantrum(false);
@@ -102,7 +104,7 @@ public class TileEntityTFGhastTrapActive extends TileEntity implements ITickable
 			}
 
 			if (counter >= 120) {
-				world.setBlockState(pos, TFBlocks.tower_device.getDefaultState().with(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.GHASTTRAP_INACTIVE), 3);
+				world.setBlockState(pos, TFBlocks.ghast_trap.get().getDefaultState().with(BlockTFGhastTrap.ACTIVE, false), 3);
 			}
 		}
 	}

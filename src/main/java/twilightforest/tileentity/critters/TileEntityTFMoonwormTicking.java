@@ -1,9 +1,9 @@
 package twilightforest.tileentity.critters;
 
 
-import net.minecraft.util.ITickable;
+import net.minecraft.tileentity.ITickableTileEntity;
 
-public class TileEntityTFMoonwormTicking extends TileEntityTFMoonworm implements ITickable {
+public class TileEntityTFMoonwormTicking extends TileEntityTFMoonworm implements ITickableTileEntity {
 	public int yawDelay;
 	public int currentYaw;
 	public int desiredYaw;
@@ -15,7 +15,7 @@ public class TileEntityTFMoonwormTicking extends TileEntityTFMoonworm implements
 	}
 
 	@Override
-	public void update() {
+	public void tick() {
 		if (world.isRemote) {
 			if (currentYaw == -1) {
 				currentYaw = world.rand.nextInt(4) * 90;

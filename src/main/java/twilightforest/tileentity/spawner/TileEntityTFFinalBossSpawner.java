@@ -1,22 +1,21 @@
 package twilightforest.tileentity.spawner;
 
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.player.PlayerEntity;
-import twilightforest.entity.EntityTFKobold;
-import twilightforest.entity.boss.EntityTFYetiAlpha;
+import twilightforest.entity.TFEntities;
+import twilightforest.tileentity.TFTileEntities;
 
 public class TileEntityTFFinalBossSpawner extends TileEntityTFBossSpawner {
 
 	public TileEntityTFFinalBossSpawner() {
-		super(EntityList.getKey(EntityTFKobold.class));
+		super(TFTileEntities.FINAL_BOSS_SPAWNER.get(), EntityType.getKey(TFEntities.kobold.get()));
 	}
 
 	@Override
-	protected void initializeCreature(EntityLiving myCreature) {
+	protected void initializeCreature(LivingEntity myCreature) {
 		super.initializeCreature(myCreature);
-		myCreature.setCustomNameTag("Final Boss");
+		myCreature.setCustomName("Final Boss");
 		myCreature.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(1024);
 		myCreature.setHealth(myCreature.getMaxHealth());
 	}

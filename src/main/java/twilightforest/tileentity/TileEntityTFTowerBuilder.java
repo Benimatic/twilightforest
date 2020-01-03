@@ -2,18 +2,17 @@ package twilightforest.tileentity;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import twilightforest.block.BlockTFBuiltTranslucent;
 import twilightforest.block.BlockTFTowerDevice;
-import twilightforest.block.BlockTFTowerTranslucent;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.TowerDeviceVariant;
-import twilightforest.enums.TowerTranslucentVariant;
 
-public class TileEntityTFTowerBuilder extends TileEntity implements ITickable {
+public class TileEntityTFTowerBuilder extends TileEntity implements ITickableTileEntity {
 	private static final int RANGE = 16;
 
 	private int ticksRunning = 0;
@@ -29,7 +28,11 @@ public class TileEntityTFTowerBuilder extends TileEntity implements ITickable {
 
 	private PlayerEntity trackedPlayer;
 
-	private BlockState blockBuiltState = TFBlocks.tower_translucent.getDefaultState().with(BlockTFTowerTranslucent.VARIANT, TowerTranslucentVariant.BUILT_INACTIVE);
+	private BlockState blockBuiltState = TFBlocks.builder_translucent.get().getDefaultState().with(BlockTFBuiltTranslucent.ACTIVE, false);
+
+	public TileEntityTFTowerBuilder() {
+		super(TFTileEntities.TOWER_BUILDER.get());
+	}
 
 	/**
 	 * Start building stuffs
@@ -41,7 +44,7 @@ public class TileEntityTFTowerBuilder extends TileEntity implements ITickable {
 	}
 
 	@Override
-	public void update() {
+	public void tick() {
 		if (!world.isRemote && this.makingBlocks) {
 			// if we are not tracking the nearest player, start tracking them
 			if (trackedPlayer == null) {
@@ -82,8 +85,8 @@ public class TileEntityTFTowerBuilder extends TileEntity implements ITickable {
 			this.trackedPlayer = null;
 			if (++ticksStopped == 60) {
 				// force the builder back into an inactive state
-				world.setBlockState(getPos(), TFBlocks.tower_device.getDefaultState().with(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.BUILDER_TIMEOUT), 3);
-				world.scheduleUpdate(getPos(), TFBlocks.tower_device, 4);
+				world.setBlockState(getPos(), TFBlocks.carminite_builder.get().getDefaultState().with(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.BUILDER_TIMEOUT), 3);
+				//world.scheduleUpdate(getPos(), TFBlocks.tower_device, 4);
 			}
 		}
 	}

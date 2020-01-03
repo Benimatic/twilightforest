@@ -2,15 +2,15 @@ package twilightforest.tileentity.spawner;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.ITickable;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.Difficulty;
 
-public abstract class TileEntityTFBossSpawner extends TileEntity implements ITickable {
+public abstract class TileEntityTFBossSpawner extends TileEntity implements ITickableTileEntity {
 
 	protected static final int SHORT_RANGE = 9, LONG_RANGE = 50;
 
@@ -18,7 +18,8 @@ public abstract class TileEntityTFBossSpawner extends TileEntity implements ITic
 	protected Entity displayCreature = null;
 	protected boolean spawnedBoss = false;
 
-	protected TileEntityTFBossSpawner(ResourceLocation mobID) {
+	protected TileEntityTFBossSpawner(TileEntityType<?> type, ResourceLocation mobID) {
+		super(type);
 		this.mobID = mobID;
 	}
 
@@ -27,7 +28,7 @@ public abstract class TileEntityTFBossSpawner extends TileEntity implements ITic
 	}
 
 	@Override
-	public void update() {
+	public void tick() {
 		if (spawnedBoss || !anyPlayerInRange()) {
 			return;
 		}
@@ -36,8 +37,8 @@ public abstract class TileEntityTFBossSpawner extends TileEntity implements ITic
 			double rx = pos.getX() + world.rand.nextFloat();
 			double ry = pos.getY() + world.rand.nextFloat();
 			double rz = pos.getZ() + world.rand.nextFloat();
-			world.spawnParticle(ParticleTypes.SMOKE_NORMAL, rx, ry, rz, 0.0D, 0.0D, 0.0D);
-			world.spawnParticle(ParticleTypes.FLAME, rx, ry, rz, 0.0D, 0.0D, 0.0D);
+			world.addParticle(ParticleTypes.SMOKE, rx, ry, rz, 0.0D, 0.0D, 0.0D);
+			world.addParticle(ParticleTypes.FLAME, rx, ry, rz, 0.0D, 0.0D, 0.0D);
 		} else {
 			if (world.getDifficulty() != Difficulty.PEACEFUL) {
 				if (spawnMyBoss()) {
@@ -53,7 +54,7 @@ public abstract class TileEntityTFBossSpawner extends TileEntity implements ITic
 	 */
 	protected boolean spawnMyBoss() {
 		// create creature
-		EntityLiving myCreature = makeMyCreature();
+		LivingEntity myCreature = makeMyCreature();
 
 		myCreature.moveToBlockPosAndAngles(pos, world.rand.nextFloat() * 360F, 0.0F);
 		myCreature.onInitialSpawn(world.getDifficultyForLocation(pos), null);
@@ -78,7 +79,7 @@ public abstract class TileEntityTFBossSpawner extends TileEntity implements ITic
 	/**
 	 * Any post-creation initialization goes here
 	 */
-	protected void initializeCreature(EntityLiving myCreature) {
+	protected void initializeCreature(LivingEntity myCreature) {
 		if (myCreature instanceof CreatureEntity) {
 			((CreatureEntity) myCreature).setHomePosAndDistance(pos, 46);
 		}
@@ -88,7 +89,7 @@ public abstract class TileEntityTFBossSpawner extends TileEntity implements ITic
 		return SHORT_RANGE;
 	}
 
-	protected EntityLiving makeMyCreature() {
-		return (EntityLiving) EntityList.createEntityByIDFromName(mobID, world);
+	protected LivingEntity makeMyCreature() {
+		return (LivingEntity) EntityList.createEntityByIDFromName(mobID, world);
 	}
 }

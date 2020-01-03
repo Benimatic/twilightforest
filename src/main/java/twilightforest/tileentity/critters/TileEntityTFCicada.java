@@ -3,4 +3,10 @@ package twilightforest.tileentity.critters;
 import net.minecraft.tileentity.TileEntity;
 
 public class TileEntityTFCicada extends TileEntity {
+
+	public TileEntityTFCicada() {
+		super();
+	}
+
+	//TODO: Figure out what this does now
 }

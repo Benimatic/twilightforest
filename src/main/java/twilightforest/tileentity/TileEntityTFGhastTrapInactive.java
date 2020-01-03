@@ -1,13 +1,12 @@
 package twilightforest.tileentity;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
-import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.EntityTFMiniGhast;
@@ -16,14 +15,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class TileEntityTFGhastTrapInactive extends TileEntity implements ITickable {
+public class TileEntityTFGhastTrapInactive extends TileEntity implements ITickableTileEntity {
 
 	private int counter;
 	private final Random rand = new Random();
 	private final List<EntityTFMiniGhast> dyingGhasts = new ArrayList<EntityTFMiniGhast>();
 
+	public TileEntityTFGhastTrapInactive() {
+		super(TFTileEntities.GHAST_TRAP_INACTIVE.get());
+	}
+
 	@Override
-	public void update() {
+	public void tick() {
 		// check to see if there are any dying mini ghasts within our scan range
 		AxisAlignedBB aabb = new AxisAlignedBB(pos).grow(10D, 16D, 10D);
 
@@ -52,20 +55,20 @@ public class TileEntityTFGhastTrapInactive extends TileEntity implements ITickab
 			}
 
 			if (chargeLevel >= 1 && counter % 10 == 0) {
-				TFBlocks.tower_device.sparkle(world, this.pos);
-				world.playSound(this.pos.getX() + 0.5D, this.pos.getY() + 1.5D, this.pos.getZ() + 0.5D, SoundEvents.BLOCK_NOTE_HARP, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+				TFBlocks.ghast_trap.get().sparkle(world, this.pos);
+				world.playSound(this.pos.getX() + 0.5D, this.pos.getY() + 1.5D, this.pos.getZ() + 0.5D, SoundEvents.BLOCK_NOTE_BLOCK_HARP, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
 			}
 			if (chargeLevel >= 2) {
-				world.spawnParticle(ParticleTypes.SMOKE_NORMAL, pos.getX() + 0.1 + rand.nextFloat() * 0.8, pos.getY() + 1.05, pos.getZ() + 0.1 + rand.nextFloat() * 0.8, (rand.nextFloat() - rand.nextFloat()) * 0.05, 0.00, (rand.nextFloat() - rand.nextFloat()) * 0.05);
+				world.addParticle(ParticleTypes.SMOKE, pos.getX() + 0.1 + rand.nextFloat() * 0.8, pos.getY() + 1.05, pos.getZ() + 0.1 + rand.nextFloat() * 0.8, (rand.nextFloat() - rand.nextFloat()) * 0.05, 0.00, (rand.nextFloat() - rand.nextFloat()) * 0.05);
 				if (counter % 10 == 0) {
-					world.playSound(this.pos.getX() + 0.5D, this.pos.getY() + 1.5D, this.pos.getZ() + 0.5D, SoundEvents.BLOCK_NOTE_HARP, SoundCategory.BLOCKS, 1.2F, 0.8F, false);
+					world.playSound(this.pos.getX() + 0.5D, this.pos.getY() + 1.5D, this.pos.getZ() + 0.5D, SoundEvents.BLOCK_NOTE_BLOCK_HARP, SoundCategory.BLOCKS, 1.2F, 0.8F, false);
 				}
 			}
 			if (chargeLevel >= 3) {
-				world.spawnParticle(ParticleTypes.SMOKE_LARGE, this.pos.getX() + 0.1 + rand.nextFloat() * 0.8, this.pos.getY() + 1.05, this.pos.getZ() + 0.1 + rand.nextFloat() * 0.8, (rand.nextFloat() - rand.nextFloat()) * 0.05, 0.05, (rand.nextFloat() - rand.nextFloat()) * 0.05);
-				TFBlocks.tower_device.sparkle(world, this.pos);
+				world.addParticle(ParticleTypes.LARGE_SMOKE, this.pos.getX() + 0.1 + rand.nextFloat() * 0.8, this.pos.getY() + 1.05, this.pos.getZ() + 0.1 + rand.nextFloat() * 0.8, (rand.nextFloat() - rand.nextFloat()) * 0.05, 0.05, (rand.nextFloat() - rand.nextFloat()) * 0.05);
+				TFBlocks.ghast_trap.get().sparkle(world, this.pos);
 				if (counter % 5 == 0) {
-					world.playSound(this.pos.getX() + 0.5D, this.pos.getY() + 1.5D, this.pos.getZ() + 0.5D, SoundEvents.BLOCK_NOTE_HARP, SoundCategory.BLOCKS, 1.5F, 2F, false);
+					world.playSound(this.pos.getX() + 0.5D, this.pos.getY() + 1.5D, this.pos.getZ() + 0.5D, SoundEvents.BLOCK_NOTE_BLOCK_HARP, SoundCategory.BLOCKS, 1.5F, 2F, false);
 				}
 			}
 		}
@@ -82,7 +85,7 @@ public class TileEntityTFGhastTrapInactive extends TileEntity implements ITickab
 		double dz = sz - highlight.posZ;
 
 		for (int i = 0; i < 5; i++) {
-			TwilightForestMod.proxy.spawnParticle(TFParticleType.GHAST_TRAP, sx, sy, sz, -dx, -dy, -dz);
+			world.addParticle(TFParticleType.GHAST_TRAP.get(), sx, sy, sz, -dx, -dy, -dz);
 		}
 	}
 

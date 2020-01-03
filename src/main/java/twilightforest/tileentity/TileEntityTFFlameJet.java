@@ -1,15 +1,14 @@
 package twilightforest.tileentity;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
-import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFFireJet;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.FireJetVariant;
@@ -17,19 +16,22 @@ import twilightforest.client.particle.TFParticleType;
 
 import java.util.List;
 
-public class TileEntityTFFlameJet extends TileEntity implements ITickable {
+public class TileEntityTFFlameJet extends TileEntity implements ITickableTileEntity {
 
 	private int counter = 0;
 	private FireJetVariant nextVariant;
 
 	public TileEntityTFFlameJet(FireJetVariant variant) {
+		super(TFTileEntities.FLAME_JET.get());
 		this.nextVariant = variant;
 	}
 
-	public TileEntityTFFlameJet() {}
+	public TileEntityTFFlameJet() {
+		super(TFTileEntities.FLAME_JET.get());
+	}
 
 	@Override
-	public void update() {
+	public void tick() {
 
 		double x = this.pos.getX();
 		double y = this.pos.getY();
@@ -38,28 +40,32 @@ public class TileEntityTFFlameJet extends TileEntity implements ITickable {
 		if (++counter > 60) {
 			counter = 0;
 			// idle again
-			if (!world.isRemote && world.getBlockState(pos).getBlock() == TFBlocks.fire_jet) {
-				world.setBlockState(pos, TFBlocks.fire_jet.getDefaultState().with(BlockTFFireJet.VARIANT, this.nextVariant));
+			if (!world.isRemote) {
+				if (world.getBlockState(pos).getBlock() == TFBlocks.fire_jet.get()) {
+					world.setBlockState(pos, TFBlocks.fire_jet.get().getDefaultState().with(BlockTFFireJet.STATE, this.nextVariant));
+				} else if (world.getBlockState(pos).getBlock() == TFBlocks.encased_fire_jet.get()) {
+					world.setBlockState(pos, TFBlocks.encased_fire_jet.get().getDefaultState().with(BlockTFFireJet.STATE, this.nextVariant));
+				}
 			}
 		}
 
 		if (world.isRemote) {
 			if (counter % 2 == 0) {
-				world.spawnParticle(ParticleTypes.SMOKE_LARGE, x + 0.5, y + 1.0, z + 0.5, 0.0D, 0.0D, 0.0D);
-				TwilightForestMod.proxy.spawnParticle(TFParticleType.LARGE_FLAME, x + 0.5, y + 1.0, z + 0.5, 0.0D, 0.5D, 0.0D);
-//			    TwilightForestMod.proxy.spawnParticle(TFParticleType.LARGE_FLAME, x + 0.5, y + 1.0, z + 0.5,
+				world.addParticle(ParticleTypes.LARGE_SMOKE, x + 0.5, y + 1.0, z + 0.5, 0.0D, 0.0D, 0.0D);
+				world.addParticle(TFParticleType.LARGE_FLAME.get(), x + 0.5, y + 1.0, z + 0.5, 0.0D, 0.5D, 0.0D);
+//			    world.addParticle();(TFParticleType.LARGE_FLAME, x + 0.5, y + 1.0, z + 0.5,
 //    				Math.cos(counter / 4.0) * 0.2, 0.35D, Math.sin(counter / 4.0) * 0.2);			
-//			    TwilightForestMod.proxy.spawnParticle(TFParticleType.LARGE_FLAME, x + 0.5, y + 1.0, this.pos.getZ() + 0.5,
+//			    world.addParticle();(TFParticleType.LARGE_FLAME, x + 0.5, y + 1.0, this.pos.getZ() + 0.5,
 //    				Math.cos(counter / 4.0 + Math.PI) * 0.2, 0.35D, Math.sin(counter / 4.0 + Math.PI) * 0.2);			
-//		    	TwilightForestMod.proxy.spawnParticle(TFParticleType.LARGE_FLAME, x + 0.5 + Math.cos(counter / 4.0), y + 1.0, z + 0.5 + Math.sin(counter / 4.0),
+//		    	world.addParticle();(TFParticleType.LARGE_FLAME, x + 0.5 + Math.cos(counter / 4.0), y + 1.0, z + 0.5 + Math.sin(counter / 4.0),
 //    				Math.sin(counter / 4.0) * 0.05, 0.35D, Math.cos(counter / 4.0) * 0.05);			
-//			    TwilightForestMod.proxy.spawnParticle(TFParticleType.LARGE_FLAME, x + 0.5 + Math.cos(counter / 4.0 + Math.PI), y + 1.0, z + 0.5 + Math.sin(counter / 4.0 + Math.PI),
+//			    world.addParticle();(TFParticleType.LARGE_FLAME, x + 0.5 + Math.cos(counter / 4.0 + Math.PI), y + 1.0, z + 0.5 + Math.sin(counter / 4.0 + Math.PI),
 //    				Math.sin(counter / 4.0 + Math.PI) * 0.05, 0.35D, Math.cos(counter / 4.0 + Math.PI) * 0.05);			
 
-				TwilightForestMod.proxy.spawnParticle(TFParticleType.LARGE_FLAME, x - 0.5, y + 1.0, z + 0.5, 0.05D, 0.5D, 0.0D);
-				TwilightForestMod.proxy.spawnParticle(TFParticleType.LARGE_FLAME, x + 0.5, y + 1.0, z - 0.5, 0.0D, 0.5D, 0.05D);
-				TwilightForestMod.proxy.spawnParticle(TFParticleType.LARGE_FLAME, x + 1.5, y + 1.0, z + 0.5, -0.05D, 0.5D, 0.0D);
-				TwilightForestMod.proxy.spawnParticle(TFParticleType.LARGE_FLAME, x + 0.5, y + 1.0, z + 1.5, 0.0D, 0.5D, -0.05D);
+				world.addParticle(TFParticleType.LARGE_FLAME.get(), x - 0.5, y + 1.0, z + 0.5, 0.05D, 0.5D, 0.0D);
+				world.addParticle(TFParticleType.LARGE_FLAME.get(), x + 0.5, y + 1.0, z - 0.5, 0.0D, 0.5D, 0.05D);
+				world.addParticle(TFParticleType.LARGE_FLAME.get(), x + 1.5, y + 1.0, z + 0.5, -0.05D, 0.5D, 0.0D);
+				world.addParticle(TFParticleType.LARGE_FLAME.get(), x + 0.5, y + 1.0, z + 1.5, 0.0D, 0.5D, -0.05D);
 			}
 
 			// sounds
@@ -89,14 +95,14 @@ public class TileEntityTFFlameJet extends TileEntity implements ITickable {
 	}
 
 	@Override
-	public void readFromNBT(CompoundNBT compound) {
-		super.readFromNBT(compound);
+	public void read(CompoundNBT compound) {
+		super.read(compound);
 		this.nextVariant = FireJetVariant.values()[compound.getInt("NextMeta")];
 	}
 
 	@Override
-	public CompoundNBT writeToNBT(CompoundNBT compound) {
-		super.writeToNBT(compound);
+	public CompoundNBT write(CompoundNBT compound) {
+		super.write(compound);
 		compound.putInt("NextMeta", this.nextVariant.ordinal());
 		return compound;
 	}

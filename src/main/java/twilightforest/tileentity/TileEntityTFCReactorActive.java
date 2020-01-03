@@ -3,19 +3,19 @@ package twilightforest.tileentity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import twilightforest.block.BlockTFTowerTranslucent;
+import net.minecraft.world.Explosion;
 import twilightforest.block.TFBlocks;
-import twilightforest.enums.TowerTranslucentVariant;
+import twilightforest.entity.TFEntities;
 import twilightforest.entity.EntityTFMiniGhast;
 
 import java.util.Random;
 
-public class TileEntityTFCReactorActive extends TileEntity implements ITickable {
+public class TileEntityTFCReactorActive extends TileEntity implements ITickableTileEntity {
 
 	private int counter = 0;
 
@@ -24,6 +24,7 @@ public class TileEntityTFCReactorActive extends TileEntity implements ITickable 
 
 
 	public TileEntityTFCReactorActive() {
+		super(TFTileEntities.CARMINITE_REACTOR.get());
 		Random rand = new Random();
 
 		// determine the two smaller bursts
@@ -43,7 +44,7 @@ public class TileEntityTFCReactorActive extends TileEntity implements ITickable 
 	}
 
 	@Override
-	public void update() {
+	public void tick() {
 		counter++;
 
 		if (!world.isRemote) {
@@ -53,8 +54,8 @@ public class TileEntityTFCReactorActive extends TileEntity implements ITickable 
 
 			if (counter % 5 == 0) {
 				if (counter == 5) {
-					BlockState fakeGold = TFBlocks.tower_translucent.getDefaultState().with(BlockTFTowerTranslucent.VARIANT, TowerTranslucentVariant.FAKE_GOLD);
-					BlockState fakeDiamond = TFBlocks.tower_translucent.getDefaultState().with(BlockTFTowerTranslucent.VARIANT, TowerTranslucentVariant.FAKE_DIAMOND);
+					BlockState fakeGold = TFBlocks.fake_gold.get().getDefaultState();
+					BlockState fakeDiamond = TFBlocks.fake_diamond.get().getDefaultState();
 
 					// transformation!
 					world.setBlockState(pos.add(1, 1, 1), fakeDiamond, 2);
@@ -99,7 +100,7 @@ public class TileEntityTFCReactorActive extends TileEntity implements ITickable 
 					drawBlob(this.pos, (primary - offset) / 40, Blocks.AIR.getDefaultState(), primary - offset, false);
 				}
 				if (primary <= 200) {
-					drawBlob(this.pos, primary / 40, TFBlocks.tower_translucent.getDefaultState().with(BlockTFTowerTranslucent.VARIANT, TowerTranslucentVariant.REACTOR_DEBRIS), counter, false);
+					drawBlob(this.pos, primary / 40, TFBlocks.reactor_debris.get().getDefaultState(), counter, false);
 				}
 
 				// secondary burst
@@ -133,8 +134,8 @@ public class TileEntityTFCReactorActive extends TileEntity implements ITickable 
 				}
 
 				// deactivate & explode
-				world.createExplosion(null, this.pos.getX(), this.pos.getY(), this.pos.getZ(), 2.0F, true);
-				world.setBlockToAir(pos);
+				world.createExplosion(null, this.pos.getX(), this.pos.getY(), this.pos.getZ(), 2.0F, Explosion.Mode.BREAK);
+				world.removeBlock(pos, false);
 			}
 
 		} else {
@@ -147,7 +148,7 @@ public class TileEntityTFCReactorActive extends TileEntity implements ITickable 
 
 
 	private void spawnGhastNear(int x, int y, int z) {
-		EntityTFMiniGhast ghast = new EntityTFMiniGhast(world);
+		EntityTFMiniGhast ghast = new EntityTFMiniGhast(TFEntities.mini_ghast.get(), world);
 		ghast.setLocationAndAngles(x - 1.5 + world.rand.nextFloat() * 3.0, y - 1.5 + world.rand.nextFloat() * 3.0, z - 1.5 + world.rand.nextFloat() * 3.0, world.rand.nextFloat() * 360F, 0.0F);
 		world.addEntity(ghast);
 	}

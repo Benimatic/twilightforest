@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Items;
+import net.minecraft.tileentity.FurnaceTileEntity;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -19,26 +20,26 @@ import twilightforest.block.TFBlocks;
 
 import java.util.Random;
 
-public class TileEntityTFCinderFurnace extends TileEntityFurnace {
+public class TileEntityTFCinderFurnace extends FurnaceTileEntity {
 	private static final int SMELT_LOG_FACTOR = 10;
 
 	// [VanillaCopy] of superclass, edits noted
 	@Override
-	public void update() {
+	public void tick() {
 		boolean flag = this.isBurning();
 		boolean flag1 = false;
 
 		if (this.isBurning()) {
-			--this.furnaceBurnTime;
+			--this.burnTime;
 		}
 
 		if (!this.world.isRemote) {
-			ItemStack itemstack = (ItemStack) this.furnaceItemStacks.get(1);
+			ItemStack itemstack = (ItemStack) this.items.get(1);
 
-			if (this.isBurning() || !itemstack.isEmpty() && !((ItemStack) this.furnaceItemStacks.get(0)).isEmpty()) {
+			if (this.isBurning() || !itemstack.isEmpty() && !((ItemStack) this.items.get(0)).isEmpty()) {
 				if (!this.isBurning() && this.canSmelt()) {
-					this.furnaceBurnTime = getItemBurnTime(itemstack);
-					this.currentItemBurnTime = this.furnaceBurnTime;
+					this.burnTime = getItemBurnTime(itemstack);
+					this.currentItemBurnTime = this.burnTime;
 
 					if (this.isBurning()) {
 						flag1 = true;
@@ -49,7 +50,7 @@ public class TileEntityTFCinderFurnace extends TileEntityFurnace {
 
 							if (itemstack.isEmpty()) {
 								ItemStack item1 = item.getContainerItem(itemstack);
-								this.furnaceItemStacks.set(1, item1);
+								this.items.set(1, item1);
 							}
 						}
 					}
@@ -62,7 +63,7 @@ public class TileEntityTFCinderFurnace extends TileEntityFurnace {
 					if (this.cookTime >= this.totalCookTime) // TF - change to geq since we can increment by >1
 					{
 						this.cookTime = 0;
-						this.totalCookTime = this.getCookTime((ItemStack) this.furnaceItemStacks.get(0));
+						this.totalCookTime = this.getCookTime((ItemStack) this.items.get(0));
 						this.smeltItem();
 						flag1 = true;
 					}
@@ -79,7 +80,7 @@ public class TileEntityTFCinderFurnace extends TileEntityFurnace {
 			}
 
 			// TF - occasionally cinderize nearby logs
-			if (this.isBurning() && this.furnaceBurnTime % 5 == 0) {
+			if (this.isBurning() && this.burnTime % 5 == 0) {
 				this.cinderizeNearbyLog();
 			}
 		}
@@ -100,8 +101,8 @@ public class TileEntityTFCinderFurnace extends TileEntityFurnace {
 		if (this.world.isBlockLoaded(pos)) {
 			Block nearbyBlock = this.getWorld().getBlockState(pos).getBlock();
 
-			if (nearbyBlock != TFBlocks.cinder_log && this.isLog(nearbyBlock)) {
-				this.getWorld().setBlockState(pos, TFBlocks.cinder_log.getDefaultState().with(BlockTFCinderLog.LOG_AXIS, getCinderFacing(dx, dy, dz)), 2);
+			if (nearbyBlock != TFBlocks.cinder_log.get() && this.isLog(nearbyBlock)) {
+				this.getWorld().setBlockState(pos, TFBlocks.cinder_log.get().getDefaultState().with(BlockTFCinderLog.AXIS, getCinderFacing(dx, dy, dz)), 2);
 				this.getWorld().playEvent(2004, pos, 0);
 				this.getWorld().playEvent(2004, pos, 0);
 				this.getWorld().playSound(null, pos, SoundEvents.BLOCK_FIRE_AMBIENT, SoundCategory.BLOCKS, 1.0F, 1.0F);
@@ -125,6 +126,7 @@ public class TileEntityTFCinderFurnace extends TileEntityFurnace {
 
 	}
 
+	//TODO: OreDict is dead. Use Tag
 	private boolean isLog(Block nearbyBlock) {
 		int[] oreIDs = OreDictionary.getOreIDs(new ItemStack(nearbyBlock));
 		for (int id : oreIDs) {
@@ -163,7 +165,7 @@ public class TileEntityTFCinderFurnace extends TileEntityFurnace {
 			for (int dy = -1; dy <= 1; dy++) {
 				for (int dz = -1; dz <= 1; dz++) {
 					BlockPos pos = getPos().add(dx, dy, dz);
-					if (this.world.isBlockLoaded(pos) && this.getWorld().getBlockState(pos).getBlock() == TFBlocks.cinder_log) {
+					if (this.world.isBlockLoaded(pos) && this.getWorld().getBlockState(pos).getBlock() == TFBlocks.cinder_log.get()) {
 						count++;
 					}
 				}
@@ -175,18 +177,18 @@ public class TileEntityTFCinderFurnace extends TileEntityFurnace {
 
 	// [VanillaCopy] of superclass ver, changes noted
 	private boolean canSmelt() {
-		if (((ItemStack) this.furnaceItemStacks.get(0)).isEmpty()) {
+		if (((ItemStack) this.items.get(0)).isEmpty()) {
 			return false;
 		} else {
-			ItemStack itemstack = FurnaceRecipes.instance().getSmeltingResult((ItemStack) this.furnaceItemStacks.get(0));
+			ItemStack itemstack = FurnaceRecipes.instance().getSmeltingResult((ItemStack) this.items.get(0));
 
 			if (itemstack.isEmpty()) {
 				return false;
 			} else {
-				ItemStack itemstack1 = (ItemStack) this.furnaceItemStacks.get(2);
+				ItemStack itemstack1 = (ItemStack) this.items.get(2);
 				if (itemstack1.isEmpty()) return true;
 				if (!itemstack1.isItemEqual(itemstack)) return false;
-				int result = itemstack1.getCount() + getMaxOutputStacks(furnaceItemStacks.get(0), itemstack); // TF - account for multiplying
+				int result = itemstack1.getCount() + getMaxOutputStacks(items.get(0), itemstack); // TF - account for multiplying
 				return result <= getInventoryStackLimit() && result <= itemstack1.getMaxStackSize(); // Forge fix: make furnace respect stack sizes in furnace recipes
 			}
 		}
@@ -207,25 +209,26 @@ public class TileEntityTFCinderFurnace extends TileEntityFurnace {
 	@Override
 	public void smeltItem() {
 		if (this.canSmelt()) {
-			ItemStack itemstack = (ItemStack) this.furnaceItemStacks.get(0);
+			ItemStack itemstack = (ItemStack) this.items.get(0);
 			ItemStack itemstack1 = FurnaceRecipes.instance().getSmeltingResult(itemstack);
 			itemstack1.setCount(itemstack1.getCount() * getCurrentSmeltMultiplier());
-			ItemStack itemstack2 = (ItemStack) this.furnaceItemStacks.get(2);
+			ItemStack itemstack2 = (ItemStack) this.items.get(2);
 
 			if (itemstack2.isEmpty()) {
-				this.furnaceItemStacks.set(2, itemstack1.copy());
+				this.items.set(2, itemstack1.copy());
 			} else if (itemstack2.getItem() == itemstack1.getItem()) {
 				itemstack2.grow(itemstack1.getCount());
 			}
 
-			if (itemstack.getItem() == Item.getItemFromBlock(Blocks.SPONGE) && itemstack.getMetadata() == 1 && !((ItemStack) this.furnaceItemStacks.get(1)).isEmpty() && ((ItemStack) this.furnaceItemStacks.get(1)).getItem() == Items.BUCKET) {
-				this.furnaceItemStacks.set(1, new ItemStack(Items.WATER_BUCKET));
+			if (itemstack.getItem() == Item.getItemFromBlock(Blocks.SPONGE) && itemstack.getMetadata() == 1 && !((ItemStack) this.items.get(1)).isEmpty() && ((ItemStack) this.items.get(1)).getItem() == Items.BUCKET) {
+				this.items.set(1, new ItemStack(Items.WATER_BUCKET));
 			}
 
 			itemstack.shrink(1);
 		}
 	}
 
+	//TODO: OreDict dead, Tag pls
 	private boolean canMultiply(ItemStack input, ItemStack output) {
 		int[] oreIDs = OreDictionary.getOreIDs(input);
 		for (int id : oreIDs) {

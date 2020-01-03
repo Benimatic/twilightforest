@@ -6,4 +6,6 @@ import net.minecraft.tileentity.TileEntity;
  * Created by Drullkus on 1/19/18.
  */
 public class TileEntityTFMoonworm extends TileEntity {
+
+	//TODO: Figure out what this does now
 }

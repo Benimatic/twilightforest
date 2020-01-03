@@ -1,17 +1,17 @@
 package twilightforest.tileentity;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.tileentity.TileEntitySkull;
+import net.minecraft.tileentity.SkullTileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class TileEntityTFTrophy extends TileEntitySkull {
+public class TileEntityTFTrophy extends SkullTileEntity {
 
 	public int ticksExisted;
 
 	@Override
-	public void update() {
-		super.update();
+	public void tick() {
+		super.tick();
 		this.ticksExisted++;
 	}
 
