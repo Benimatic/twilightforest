@@ -1,17 +1,15 @@
 package twilightforest.potions;
 
-import net.minecraft.potion.Potion;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraft.potion.Effect;
+import net.minecraft.potion.EffectType;
+import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 
-@GameRegistry.ObjectHolder(TwilightForestMod.ID)
 public class TFPotions {
 
-	@GameRegistry.ObjectHolder("frosted")
-	public static final Potion frosty;
+	public static final DeferredRegister<Effect> POTIONS = new DeferredRegister<>(ForgeRegistries.POTIONS, TwilightForestMod.ID);
 
-	static {
-		frosty = null;
-	}
-
+	public static final RegistryObject<Effect> frosty = POTIONS.register("frosted", () -> new PotionFrosted(EffectType.HARMFUL, 0x56CBFD));
 }

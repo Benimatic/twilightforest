@@ -21,6 +21,7 @@ import twilightforest.entity.TFEntities;
 import twilightforest.item.TFItems;
 import twilightforest.loot.TFTreasure;
 import twilightforest.network.TFPacketHandler;
+import twilightforest.potions.TFPotions;
 import twilightforest.world.feature.TFGenCaveStalactite;
 
 /*@Mod( name = TwilightForestMod.NAME,
@@ -66,6 +67,7 @@ public class TwilightForestMod {
 
 		IEventBus modbus = FMLJavaModLoadingContext.get().getModEventBus();
 		TFItems.ITEMS.register(modbus);
+		TFPotions.POTIONS.register(modbus);
 		TFEntities.ENTITIES.register(modbus);
 		TFParticleType.PARTICLE_TYPES.register(modbus);
 
