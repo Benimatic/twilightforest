@@ -1,12 +1,14 @@
 package twilightforest.biomes;
 
+import net.minecraft.entity.EntityClassification;
+import net.minecraft.entity.EntityType;
 import twilightforest.TFFeature;
 
 public class TFBiomeTwilightLake extends TFBiomeBase {
 
 	public TFBiomeTwilightLake(Builder props) {
 		super(props);
-		this.spawnableWaterCreatureList.add(new SpawnListEntry(EntitySquid.class, 10, 4, 4));
+		addSpawn(EntityClassification.WATER_CREATURE, new SpawnListEntry(EntityType.SQUID, 10, 4, 4));
 	}
 
 	@Override

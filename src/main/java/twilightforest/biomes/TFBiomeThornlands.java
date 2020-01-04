@@ -34,6 +34,7 @@ public class TFBiomeThornlands extends TFBiomeBase {
 		getTFBiomeDecorator().setTreesPerChunk(-999);
 		this.decorator.deadBushPerChunk = 2;
 		this.decorator.cactiPerChunk = -9999; // gotta be sure
+		//TODO: Find out how to clear lists
 		this.spawnableCreatureList.clear();
 
 		this.decorator.generateFalls = false;

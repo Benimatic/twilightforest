@@ -1,5 +1,6 @@
 package twilightforest.biomes;
 
+import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
@@ -10,12 +11,10 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.FoliageColors;
 import net.minecraft.world.GrassColors;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
-import twilightforest.entity.EntityTFKingSpider;
-import twilightforest.entity.EntityTFKobold;
-import twilightforest.entity.EntityTFMistWolf;
-import twilightforest.entity.EntityTFSkeletonDruid;
+import twilightforest.entity.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,14 +37,14 @@ public class TFBiomeDarkForest extends TFBiomeBase {
 		getTFBiomeDecorator().setMushroomsPerChunk(2);
 		getTFBiomeDecorator().setDeadBushPerChunk(10);
 
-		this.spawnableMonsterList.add(new SpawnListEntry(EntityType.ENDERMAN, 1, 1, 4));
-		this.spawnableMonsterList.add(new SpawnListEntry(EntityType.ZOMBIE, 5, 1, 4));
-		this.spawnableMonsterList.add(new SpawnListEntry(EntityType.SKELETON, 5, 1, 4));
-		this.spawnableMonsterList.add(new SpawnListEntry(EntityTFMistWolf.class, 10, 1, 4));
-		this.spawnableMonsterList.add(new SpawnListEntry(EntityTFSkeletonDruid.class, 10, 1, 4));
-		this.spawnableMonsterList.add(new SpawnListEntry(EntityTFKingSpider.class, 10, 1, 4));
-		this.spawnableMonsterList.add(new SpawnListEntry(EntityTFKobold.class, 10, 4, 8));
-		this.spawnableMonsterList.add(new SpawnListEntry(EntityType.WITCH, 1, 1, 1));
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(EntityType.ENDERMAN, 1, 1, 4));
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(EntityType.ZOMBIE, 5, 1, 4));
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(EntityType.SKELETON, 5, 1, 4));
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.mist_wolf.get(), 10, 1, 4));
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.skeleton_druid.get(), 10, 1, 4));
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.king_spider.get(), 10, 1, 4));
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.kobold.get(), 10, 4, 8));
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(EntityType.WITCH, 1, 1, 1));
 
 		this.decorator.generateFalls = false;
 	}
@@ -87,12 +86,12 @@ public class TFBiomeDarkForest extends TFBiomeBase {
 
 	//TODO: idk, remove?
 	@Override
-	public List<SpawnListEntry> getSpawnableList(EnumCreatureType creatureType) {
+	public List<SpawnListEntry> getSpawns(EntityClassification creatureType) {
 		// if it is monster, then only give it the real list 1/MONSTER_SPAWN_RATE of the time
-		if (creatureType == EnumCreatureType.MONSTER) {
+		if (creatureType == EntityClassification.MONSTER) {
 			return monsterRNG.nextInt(MONSTER_SPAWN_RATE) == 0 ? this.spawnableMonsterList : new ArrayList<>();
 		}
-		return super.getSpawnableList(creatureType);
+		return super.getSpawns(creatureType);
 	}
 
 	@Override

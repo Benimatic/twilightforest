@@ -1,5 +1,6 @@
 package twilightforest.biomes;
 
+import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
@@ -14,6 +15,7 @@ import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
+import twilightforest.entity.TFEntities;
 import twilightforest.enums.PlantVariant;
 import twilightforest.entity.EntityTFMosquitoSwarm;
 import twilightforest.world.feature.TFGenHugeLilyPad;
@@ -50,9 +52,9 @@ public class TFBiomeSwamp extends TFBiomeBase {
 		getTFBiomeDecorator().lakesPerChunk = 2;
 		getTFBiomeDecorator().mangrovesPerChunk = 3;
 
-		this.spawnableMonsterList.add(new SpawnListEntry(EntityTFMosquitoSwarm.class, 10, 1, 1));
-		this.spawnableMonsterList.add(new SpawnListEntry(EntityType.CREEPER, 10, 4, 4));
-		this.spawnableMonsterList.add(new SpawnListEntry(EntityType.ZOMBIE, 10, 4, 4));
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.mosquito_swarm.get(), 10, 1, 1));
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(EntityType.CREEPER, 10, 4, 4));
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(EntityType.ZOMBIE, 10, 4, 4));
 	}
 
     //TODO: Move to feature decorator

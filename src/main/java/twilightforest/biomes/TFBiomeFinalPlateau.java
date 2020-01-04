@@ -1,5 +1,8 @@
 package twilightforest.biomes;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
@@ -11,9 +14,13 @@ import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFDeadrock;
 import twilightforest.block.TFBlocks;
+import twilightforest.entity.TFEntities;
+import twilightforest.entity.passive.EntityTFBighorn;
 import twilightforest.entity.passive.EntityTFRaven;
 import twilightforest.enums.DeadrockVariant;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 public class TFBiomeFinalPlateau extends TFBiomeBase {
@@ -31,8 +38,9 @@ public class TFBiomeFinalPlateau extends TFBiomeBase {
 		this.decorator.generateFalls = false;
 
 		// custom creature list.
-		spawnableCreatureList.clear();
-		spawnableCreatureList.add(new SpawnListEntry(EntityTFRaven.class, 10, 4, 4));
+		//TODO: Due to the new way of adding spawns, look into how to clear lists
+		//spawnableCreatureList.clear();
+		addSpawn(EntityClassification.CREATURE, new SpawnListEntry(TFEntities.raven.get(), 10, 4, 4));
 	}
 
 	//TODO: Move to SurfaceBuilder

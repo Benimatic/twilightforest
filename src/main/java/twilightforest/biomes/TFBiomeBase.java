@@ -10,6 +10,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.ChunkPrimer;
 import twilightforest.TFFeature;
 import twilightforest.entity.EntityTFKobold;
+import twilightforest.entity.TFEntities;
 import twilightforest.entity.passive.*;
 import twilightforest.util.PlayerHelper;
 import twilightforest.world.ChunkGeneratorTFBase;
@@ -34,34 +35,28 @@ public class TFBiomeBase extends Biome {
 	public TFBiomeBase(Builder props) {
 		super(props);
 
-		// remove normal monster spawns
-		spawnableMonsterList.clear();
-		// remove squids
-		spawnableWaterCreatureList.clear();
-		// custom creature list.
-		spawnableCreatureList.clear();
-		spawnableCreatureList.add(new SpawnListEntry(EntityTFBighorn.class, 12, 4, 4));
-		spawnableCreatureList.add(new SpawnListEntry(EntityTFBoar.class, 10, 4, 4));
-		spawnableCreatureList.add(new SpawnListEntry(EntityType.CHICKEN, 10, 4, 4));
-		spawnableCreatureList.add(new SpawnListEntry(EntityTFDeer.class, 15, 4, 5));
-		spawnableCreatureList.add(new SpawnListEntry(EntityType.WOLF, 5, 4, 4));
+		addSpawn(EntityClassification.CREATURE, new SpawnListEntry(TFEntities.bighorn_sheep.get(), 12, 4, 4));
+		addSpawn(EntityClassification.CREATURE, new SpawnListEntry(TFEntities.wild_boar.get(), 10, 4, 4));
+		addSpawn(EntityClassification.CREATURE, new SpawnListEntry(EntityType.CHICKEN, 10, 4, 4));
+		addSpawn(EntityClassification.CREATURE, new SpawnListEntry(TFEntities.deer.get(), 15, 4, 5));
+		addSpawn(EntityClassification.CREATURE, new SpawnListEntry(EntityType.WOLF, 5, 4, 4));
 
-		spawnableCreatureList.add(new SpawnListEntry(EntityTFTinyBird.class, 15, 4, 8));
-		spawnableCreatureList.add(new SpawnListEntry(EntityTFSquirrel.class, 10, 2, 4));
-		spawnableCreatureList.add(new SpawnListEntry(EntityTFBunny.class, 10, 4, 5));
-		spawnableCreatureList.add(new SpawnListEntry(EntityTFRaven.class, 10, 1, 2));
+		addSpawn(EntityClassification.CREATURE, new SpawnListEntry(TFEntities.tiny_bird.get(), 15, 4, 8));
+		addSpawn(EntityClassification.CREATURE, new SpawnListEntry(TFEntities.squirrel.get(), 10, 2, 4));
+		addSpawn(EntityClassification.CREATURE, new SpawnListEntry(TFEntities.bunny.get(), 10, 4, 5));
+		addSpawn(EntityClassification.CREATURE, new SpawnListEntry(TFEntities.raven.get(), 10, 1, 2));
 
+		//TODO: Lists like these aren't used anymore. Create EntityClassification
 		undergroundMonsterList.add(new SpawnListEntry(EntityType.SPIDER, 10, 4, 4));
 		undergroundMonsterList.add(new SpawnListEntry(EntityType.ZOMBIE, 10, 4, 4));
 		undergroundMonsterList.add(new SpawnListEntry(EntityType.SKELETON, 10, 4, 4));
 		undergroundMonsterList.add(new SpawnListEntry(EntityType.CREEPER, 1, 4, 4));
 		undergroundMonsterList.add(new SpawnListEntry(EntityType.SLIME, 10, 4, 4));
 		undergroundMonsterList.add(new SpawnListEntry(EntityType.ENDERMAN, 1, 1, 4));
-		undergroundMonsterList.add(new SpawnListEntry(EntityTFKobold.class, 10, 4, 8));
+		undergroundMonsterList.add(new SpawnListEntry(TFEntities.kobold.get(), 10, 4, 8));
 
-		spawnableCaveCreatureList.clear();
-		spawnableCaveCreatureList.add(new SpawnListEntry(EntityType.BAT, 10, 8, 8));
-		spawnableCaveCreatureList.add(new SpawnListEntry(EntityTFMobileFirefly.class, 10, 8, 8));
+		addSpawn(EntityClassification.AMBIENT, new SpawnListEntry(EntityType.BAT, 10, 8, 8));
+		addSpawn(EntityClassification.AMBIENT, new SpawnListEntry(TFEntities.firefly.get(), 10, 8, 8));
 
 		getTFBiomeDecorator().setTreesPerChunk(10);
 		getTFBiomeDecorator().setGrassPerChunk(2);

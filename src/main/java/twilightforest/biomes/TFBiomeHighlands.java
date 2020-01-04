@@ -13,6 +13,7 @@ import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
+import twilightforest.entity.TFEntities;
 import twilightforest.enums.PlantVariant;
 import twilightforest.entity.EntityTFTroll;
 import twilightforest.world.feature.TFGenTallGrass;
@@ -44,7 +45,7 @@ public class TFBiomeHighlands extends TFBiomeBase {
 		undergroundMonsterList.add(new SpawnListEntry(EntityType.SKELETON, 10, 4, 4));
 		undergroundMonsterList.add(new SpawnListEntry(EntityType.CREEPER, 1, 4, 4));
 		undergroundMonsterList.add(new SpawnListEntry(EntityType.SLIME, 10, 4, 4));
-		undergroundMonsterList.add(new SpawnListEntry(EntityTFTroll.class, 10, 4, 4));
+		undergroundMonsterList.add(new SpawnListEntry(TFEntities.troll.get(), 10, 4, 4));
 	}
 
     //TODO: Move to feature decorator

@@ -1,5 +1,6 @@
 package twilightforest.biomes;
 
+import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.ResourceLocation;
@@ -7,6 +8,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
+import twilightforest.entity.TFEntities;
 import twilightforest.entity.passive.EntityTFPenguin;
 import twilightforest.potions.TFPotions;
 import twilightforest.world.feature.TFGenPenguins;
@@ -26,8 +28,9 @@ public class TFBiomeGlacier extends TFBiomeBase {
 		getTFBiomeDecorator().setGrassPerChunk(0);
 		getTFBiomeDecorator().hasCanopy = false;
 
-		spawnableCreatureList.clear();
-		spawnableCreatureList.add(new SpawnListEntry(EntityTFPenguin.class, 10, 4, 4));
+		//TODO: Due to the new way of adding spawns, look into how to clear lists
+		//spawnableCreatureList.clear();
+		addSpawn(EntityClassification.CREATURE, new SpawnListEntry(TFEntities.penguin.get(), 10, 4, 4));
 	}
 
     //TODO: Move to feature decorator

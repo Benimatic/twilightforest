@@ -1,5 +1,6 @@
 package twilightforest.biomes;
 
+import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.ResourceLocation;
@@ -8,6 +9,7 @@ import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFWinterWolf;
 import twilightforest.entity.EntityTFYeti;
+import twilightforest.entity.TFEntities;
 import twilightforest.potions.TFPotions;
 import twilightforest.world.feature.TFGenLargeWinter;
 
@@ -33,8 +35,8 @@ public class TFBiomeSnow extends TFBiomeBase {
 		getTFBiomeDecorator().hasCanopy = false;
 		getTFBiomeDecorator().generateFalls = false;
 
-		this.spawnableMonsterList.add(new SpawnListEntry(EntityTFYeti.class, 20, 4, 4));
-		this.spawnableMonsterList.add(new SpawnListEntry(EntityTFWinterWolf.class, 5, 1, 4));
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.yeti.get(), 20, 4, 4));
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.winter_wolf.get(), 5, 1, 4));
 	}
 
     //TODO: Move to feature decorator

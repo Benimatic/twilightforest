@@ -1,5 +1,6 @@
 package twilightforest.biomes;
 
+import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -8,6 +9,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.EntityTFSkeletonDruid;
+import twilightforest.entity.TFEntities;
 import twilightforest.enums.PlantVariant;
 import twilightforest.features.TFGenGraveyard;
 import twilightforest.world.TFWorld;
@@ -37,11 +39,11 @@ public class TFBiomeSpookyForest extends TFBiomeBase {
 		getTFBiomeDecorator().setTreesPerChunk(2);
 		getTFBiomeDecorator().hasCanopy = false;
 
-		spawnableCreatureList.add(new SpawnListEntry(EntityType.BAT, 20, 8, 8));
+		addSpawn(EntityClassification.CREATURE, new SpawnListEntry(EntityType.BAT, 20, 8, 8));
 
-		spawnableMonsterList.add(new SpawnListEntry(EntityType.SPIDER, 50, 1, 4));
-		spawnableMonsterList.add(new SpawnListEntry(EntityType.SKELETON, 20, 1, 4));
-		spawnableMonsterList.add(new SpawnListEntry(EntityTFSkeletonDruid.class, 5, 1, 1));
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(EntityType.SPIDER, 50, 1, 4));
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(EntityType.SKELETON, 20, 1, 4));
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.skeleton_druid.get(), 5, 1, 1));
 	}
 
     //TODO: Move to feature decorator
