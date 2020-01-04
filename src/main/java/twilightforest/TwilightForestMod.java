@@ -14,6 +14,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import twilightforest.advancements.TFAdvancements;
+import twilightforest.block.TFBlocks;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.compat.TFCompat;
@@ -22,6 +23,7 @@ import twilightforest.item.TFItems;
 import twilightforest.loot.TFTreasure;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.potions.TFPotions;
+import twilightforest.tileentity.TFTileEntities;
 import twilightforest.world.feature.TFGenCaveStalactite;
 
 /*@Mod( name = TwilightForestMod.NAME,
@@ -66,9 +68,11 @@ public class TwilightForestMod {
 		MinecraftForge.EVENT_BUS.addListener(this::startServer);
 
 		IEventBus modbus = FMLJavaModLoadingContext.get().getModEventBus();
+		TFBlocks.BLOCKS.register(modbus);
 		TFItems.ITEMS.register(modbus);
 		TFPotions.POTIONS.register(modbus);
 		TFEntities.ENTITIES.register(modbus);
+		TFTileEntities.TILE_ENTITIES.register(modbus);
 		TFParticleType.PARTICLE_TYPES.register(modbus);
 
 		if (ModList.get().isLoaded("sponge")) {
