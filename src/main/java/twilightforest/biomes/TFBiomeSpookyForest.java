@@ -8,7 +8,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
-import twilightforest.entity.EntityTFSkeletonDruid;
 import twilightforest.entity.TFEntities;
 import twilightforest.enums.PlantVariant;
 import twilightforest.features.TFGenGraveyard;

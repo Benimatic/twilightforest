@@ -2,18 +2,17 @@ package twilightforest.client.renderer.tileentity;
 
 import net.minecraft.client.Minecraft;
 import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.block.model.IBakedModel;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.model.ModelResourceLocation;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
@@ -33,7 +32,7 @@ import twilightforest.tileentity.TileEntityTFTrophy;
 
 import javax.annotation.Nullable;
 
-public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEntityTFTrophy> {
+public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFTrophy> {
 
 	public static class DummyTile extends TileEntityTFTrophy {}
 
@@ -77,7 +76,7 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 
 	@SubscribeEvent
 	public void onModelBake(ModelBakeEvent event) {
-		event.getModelRegistry().putObject(itemModelLocation, new BakedModel());
+		event.getModelRegistry().put(itemModelLocation, new BakedModel());
 	}
 
 	private class BakedModel extends BuiltInItemModel {
@@ -101,7 +100,7 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 	private ItemCameraTransforms.TransformType transform = ItemCameraTransforms.TransformType.NONE;
 
 	@Override
-	public void render(@Nullable TileEntityTFTrophy trophy, double x, double y, double z, float partialTime, int destroyStage, float alpha) {
+	public void render(TileEntityTFTrophy trophy, double x, double y, double z, float partialTime, int destroyStage) {
 		GlStateManager.pushMatrix();
 		GlStateManager.disableCull();
 
@@ -109,11 +108,11 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 			if (transform == ItemCameraTransforms.TransformType.GUI) {
 				String modelName = BossVariant.getVariant(stack.getMetadata()).getTrophyType().getModelName();
 				ModelResourceLocation trophyModelLocation = new ModelResourceLocation(TwilightForestMod.ID + ":" + modelName, "inventory");
-				IBakedModel trophyModel = Minecraft.getInstance().getRenderItem().getItemModelMesher().getModelManager().getModel(trophyModelLocation);
+				IBakedModel trophyModel = Minecraft.getInstance().getItemRenderer().getItemModelMesher().getModelManager().getModel(trophyModelLocation);
 
 				GlStateManager.disableLighting();
 				GlStateManager.translatef(0.5F, 0.5F, -1.5F);
-				Minecraft.getInstance().getRenderItem().renderItem(stack, ForgeHooksClient.handleCameraTransforms(trophyModel, transform, false));
+				Minecraft.getInstance().getItemRenderer().renderItem(stack, ForgeHooksClient.handleCameraTransforms(trophyModel, transform, false));
 				GlStateManager.enableLighting();
 				GlStateManager.translatef(-0.5F, 0.0F, 1.5F);
 
@@ -350,7 +349,7 @@ public class TileEntityTFTrophyRenderer extends TileEntitySpecialRenderer<TileEn
 		this.bindTexture(textureLocKnightPhantomArmor);
 		knightPhantomArmorModel.bipedHead.render(0.0625F);
 
-		GlStateManager.color(1.0F, 1.0F, 1.0F, 0.75F);
+		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 0.75F);
 
 		this.bindTexture(textureLocKnightPhantom);
 		knightPhantomModel.bipedHead.render(0.0625F);

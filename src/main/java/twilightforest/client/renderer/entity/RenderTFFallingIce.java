@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -33,7 +34,7 @@ public class RenderTFFallingIce<T extends EntityTFFallingIce> extends EntityRend
 				World world = entity.getWorldObj();
 
 				if (iblockstate != world.getBlockState(new BlockPos(entity)) && iblockstate.getRenderType() != BlockRenderType.INVISIBLE) {
-					this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+					this.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
 					GlStateManager.pushMatrix();
 					GlStateManager.disableLighting();
 					Tessellator tessellator = Tessellator.getInstance();
@@ -68,6 +69,6 @@ public class RenderTFFallingIce<T extends EntityTFFallingIce> extends EntityRend
 
 	@Override
 	protected ResourceLocation getEntityTexture(EntityTFFallingIce entity) {
-		return TextureMap.LOCATION_BLOCKS_TEXTURE;
+		return AtlasTexture.LOCATION_BLOCKS_TEXTURE;
 	}
 }

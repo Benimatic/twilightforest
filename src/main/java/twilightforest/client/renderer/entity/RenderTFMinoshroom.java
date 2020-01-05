@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.entity.BipedRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.block.Blocks;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ModelTFMinoshroom;
@@ -27,7 +28,7 @@ public class RenderTFMinoshroom<T extends EntityTFMinoshroom, M extends ModelTFM
 		public void render(T minoshroom, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 			if (!minoshroom.isChild() && !minoshroom.isInvisible()) {
 				BlockRendererDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
-				RenderTFMinoshroom.this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+				RenderTFMinoshroom.this.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
 				GlStateManager.enableCull();
 				GlStateManager.cullFace(GlStateManager.CullFace.FRONT);
 				GlStateManager.pushMatrix();

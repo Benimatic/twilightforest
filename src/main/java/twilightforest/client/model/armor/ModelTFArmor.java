@@ -12,7 +12,7 @@ public class ModelTFArmor extends BipedModel {
 	}
 
 	@Override
-	public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn) {
+	public void setRotationAngles(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
 		// [VanillaCopy] ModelArmorStandArmor
 		// this prevents helmets from always facing south, and the armor "breathing" on the stand
 		if (entityIn instanceof ArmorStandEntity) {

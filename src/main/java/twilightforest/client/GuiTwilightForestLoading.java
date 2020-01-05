@@ -61,10 +61,10 @@ public class GuiTwilightForestLoading extends Screen {
 			this.contentNeedsAssignment = false;
 		}
 
-		if (mc.world != null && TFConfig.loadingScreen.cycleLoadingScreenFrequency != 0) {
-			if (lastWorldUpdateTick != mc.world.getTotalWorldTime() % 240000) {
+		if (minecraft.world != null && TFConfig.loadingScreen.cycleLoadingScreenFrequency != 0) {
+			if (lastWorldUpdateTick != minecraft.world.getGameTime() % 240000) {
 
-				lastWorldUpdateTick = mc.world.getTotalWorldTime() % 240000;
+				lastWorldUpdateTick = minecraft.world.getGameTime() % 240000;
 
 				if (lastWorldUpdateTick % TFConfig.loadingScreen.cycleLoadingScreenFrequency == 0) {
 					assignContent();
@@ -72,8 +72,8 @@ public class GuiTwilightForestLoading extends Screen {
 			}
 		}
 
-		FontRenderer fontRenderer = mc.fontRenderer;
-		ScaledResolution resolution = new ScaledResolution(mc);
+		FontRenderer fontRenderer = minecraft.fontRenderer;
+		ScaledResolution resolution = new ScaledResolution(minecraft);
 
 		drawBackground(resolution.getScaledWidth(), resolution.getScaledHeight());
 

@@ -33,7 +33,7 @@ public class RenderTFSlimeBeetle<T extends EntityTFSlimeBeetle, M extends ModelT
 				GlStateManager.enableNormalize();
 				GlStateManager.enableBlend();
 				GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-				this.innerModel.setModelAttributes(RenderTFSlimeBeetle.this.getMainModel());
+				this.innerModel.setModelAttributes(RenderTFSlimeBeetle.this.getEntityModel());
 				this.innerModel.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 				GlStateManager.disableBlend();
 				GlStateManager.disableNormalize();

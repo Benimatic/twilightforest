@@ -2,9 +2,12 @@ package twilightforest.client.model.item;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.model.*;
+import net.minecraft.client.renderer.model.BakedQuad;
+import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.world.World;
@@ -14,17 +17,18 @@ import javax.annotation.Nullable;
 import javax.vecmath.Matrix4f;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public abstract class BuiltInItemModel implements IBakedModel {
 
 	private class Overrides extends ItemOverrideList {
 
 		Overrides() {
-			super(Collections.emptyList());
+			super(/*Collections.emptyList()*/);
 		}
 
 		@Override
-		public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, @Nullable World world, @Nullable EntityLivingBase entity) {
+		public IBakedModel getModelWithOverrides(IBakedModel originalModel, ItemStack stack, @Nullable World world, @Nullable LivingEntity entity) {
 			setItemStack(stack);
 			return BuiltInItemModel.this;
 		}
@@ -34,11 +38,11 @@ public abstract class BuiltInItemModel implements IBakedModel {
 	private final ItemOverrideList overrides = new Overrides();
 
 	protected BuiltInItemModel(String particleTextureName) {
-		this.particleTexture = Minecraft.getInstance().getTextureMapBlocks().getAtlasSprite(particleTextureName);
+		this.particleTexture = Minecraft.getInstance().getTextureMap().getAtlasSprite(particleTextureName);
 	}
 
 	@Override
-	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, long rand) {
+	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, Random rand) {
 		return Collections.emptyList();
 	}
 

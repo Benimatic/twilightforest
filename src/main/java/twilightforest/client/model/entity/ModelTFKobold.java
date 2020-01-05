@@ -119,7 +119,7 @@ public class ModelTFKobold<T extends EntityTFKobold> extends BipedModel<T> {
 	@Override
 	public void setLivingAnimations(T entity, float limbSwing, float limbSwingAmount, float partialTicks) {
 		// check if entity is jumping
-		this.isJumping = entity.motionY > 0;
+		this.isJumping = entity.getMotion().getY() > 0;
 	}
 
 

@@ -2,7 +2,7 @@ package twilightforest.client.renderer.tileentity;
 
 import net.minecraft.client.Minecraft;
 import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
@@ -10,16 +10,13 @@ import twilightforest.client.BugModelAnimationHelper;
 import twilightforest.client.model.entity.ModelTFMoonworm;
 import twilightforest.tileentity.critters.TileEntityTFMoonwormTicking;
 
-import javax.annotation.Nullable;
-
-public class TileEntityTFMoonwormRenderer extends TileEntitySpecialRenderer<TileEntityTFMoonwormTicking> {
+public class TileEntityTFMoonwormRenderer extends TileEntityRenderer<TileEntityTFMoonwormTicking> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("moonworm.png");
 	private final ModelTFMoonworm moonwormModel = new ModelTFMoonworm();
 
 	@Override
-	public void render(@Nullable TileEntityTFMoonwormTicking te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
-
+	public void render(TileEntityTFMoonwormTicking te, double x, double y, double z, float partialTicks, int destroyStage) {
 		int yaw = te != null ? te.currentYaw : BugModelAnimationHelper.currentRotation;
 		if (te == null) partialTicks = Minecraft.getInstance().getRenderPartialTicks();
 
@@ -41,7 +38,7 @@ public class TileEntityTFMoonwormRenderer extends TileEntitySpecialRenderer<Tile
 		} else if (facing == Direction.DOWN) {
 			rotX = 180F;
 		}
-		GlStateManager.translatef(x + 0.5F, y + 0.5F, z + 0.5F);
+		GlStateManager.translated(x + 0.5F, y + 0.5F, z + 0.5F);
 		GlStateManager.rotatef(rotX, 1F, 0F, 0F);
 		GlStateManager.rotatef(rotZ, 0F, 0F, 1F);
 		GlStateManager.rotatef(yaw, 0F, 1F, 0F);

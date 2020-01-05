@@ -1,10 +1,8 @@
 package twilightforest.client.renderer.entity;
 
 import net.minecraft.client.renderer.entity.ArrowRenderer;
-import net.minecraft.client.renderer.entity.RenderArrow;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.entity.projectile.ArrowEntity;
-import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.util.ResourceLocation;
 
 public class RenderDefaultArrow<T extends ArrowEntity> extends ArrowRenderer<T> {

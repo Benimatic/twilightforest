@@ -3,12 +3,14 @@ package twilightforest.client.renderer.entity;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DirectionalBlock;
+import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.util.Direction;
@@ -36,7 +38,7 @@ public class RenderTFSlideBlock<T extends EntityTFSlideBlock> extends EntityRend
 				World world = entity.world;
 
 				if (iblockstate != world.getBlockState(new BlockPos(entity)) && iblockstate.getRenderType() != BlockRenderType.INVISIBLE) {
-					this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+					this.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
 					GlStateManager.pushMatrix();
 					GlStateManager.disableLighting();
 					Tessellator tessellator = Tessellator.getInstance();
@@ -51,8 +53,8 @@ public class RenderTFSlideBlock<T extends EntityTFSlideBlock> extends EntityRend
 					BlockPos blockpos = new BlockPos(entity.posX, entity.getBoundingBox().maxY, entity.posZ);
 
 					// spin
-					if (iblockstate.getProperties().contains(DirectionalBlock.FACING)) {
-						Direction.Axis axis = iblockstate.get(DirectionalBlock.FACING);
+					if (iblockstate.getProperties().contains(RotatedPillarBlock.AXIS)) {
+						Direction.Axis axis = iblockstate.get(RotatedPillarBlock.AXIS);
 						float angle = (entity.ticksExisted + partialTicks) * 60F;
 						double dy = y + 0.5;
 						GlStateManager.translatef((float) x, (float) dy, (float) z);
@@ -119,7 +121,7 @@ public class RenderTFSlideBlock<T extends EntityTFSlideBlock> extends EntityRend
 
 	@Override
 	protected ResourceLocation getEntityTexture(T entity) {
-		return TextureMap.LOCATION_BLOCKS_TEXTURE;
+		return AtlasTexture.LOCATION_BLOCKS_TEXTURE;
 	}
 
 }

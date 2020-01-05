@@ -10,6 +10,8 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.LivingEntity;
@@ -49,7 +51,7 @@ public class LayerShields<T extends LivingEntity, M extends EntityModel<T>> exte
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240f, 240f);
         GL11.glMaterial(GL11.GL_FRONT_AND_BACK, GL11.GL_EMISSION, RenderHelper.setColorBuffer(1f, 1f, 1f, 1f));
 
-        Minecraft.getInstance().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+        Minecraft.getInstance().getTextureManager().bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
         int count = getShieldCount(entity);
         for (int c = 0; c < count; c++) {
             GlStateManager.pushMatrix();
@@ -64,7 +66,7 @@ public class LayerShields<T extends LivingEntity, M extends EntityModel<T>> exte
             // Move the draw away from the entity being drawn around
             GlStateManager.translatef(0F, 0F, 1F);
 
-            Minecraft.getInstance().getRenderItem().renderItem(shieldStack, ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.NONE, false));
+            Minecraft.getInstance().getItemRenderer().renderItem(shieldStack, ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.NONE, false));
 
             GlStateManager.popMatrix();
         }

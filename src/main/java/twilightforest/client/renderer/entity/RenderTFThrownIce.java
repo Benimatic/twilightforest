@@ -9,6 +9,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -34,7 +35,7 @@ public class RenderTFThrownIce<T extends EntityTFIceBomb> extends EntityRenderer
 				World world = entity.world;
 
 				if (iblockstate != world.getBlockState(new BlockPos(entity)) && iblockstate.getRenderType() != BlockRenderType.INVISIBLE) {
-					this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+					this.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
 					GlStateManager.pushMatrix();
 					GlStateManager.disableLighting();
 					Tessellator tessellator = Tessellator.getInstance();
@@ -67,7 +68,7 @@ public class RenderTFThrownIce<T extends EntityTFIceBomb> extends EntityRenderer
 
 	@Override
 	protected ResourceLocation getEntityTexture(T entity) {
-		return TextureMap.LOCATION_BLOCKS_TEXTURE;
+		return AtlasTexture.LOCATION_BLOCKS_TEXTURE;
 	}
 
 }

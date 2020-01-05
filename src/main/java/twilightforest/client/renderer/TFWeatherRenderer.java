@@ -1,18 +1,18 @@
 package twilightforest.client.renderer;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.BufferBuilder;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.structure.MutableBoundingBox;
 import net.minecraftforge.client.IRenderHandler;
 import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomeDarkForest;
@@ -23,7 +23,6 @@ import twilightforest.biomes.TFBiomeHighlands;
 import twilightforest.biomes.TFBiomeSnow;
 import twilightforest.biomes.TFBiomeSwamp;
 import twilightforest.biomes.TFBiomeThornlands;
-import twilightforest.world.TFWorld;
 
 import java.util.Random;
 
@@ -62,7 +61,7 @@ public class TFWeatherRenderer extends IRenderHandler {
 	}
 
 	@Override
-	public void render(float partialTicks, WorldClient world, Minecraft mc) {
+	public void render(float partialTicks, ClientWorld world, Minecraft mc) {
 		// do normal weather rendering
 		renderNormalWeather(partialTicks, mc);
 
@@ -80,7 +79,7 @@ public class TFWeatherRenderer extends IRenderHandler {
 		float f = mc.world.getRainStrength(partialTicks);
 
 		if (f > 0.0F) {
-			mc.entityRenderer.enableLightmap();
+			mc.gameRenderer.enableLightmap();
 			Entity entity = mc.getRenderViewEntity();
 			World world = mc.world;
 			int i = MathHelper.floor(entity.posX);
@@ -106,7 +105,7 @@ public class TFWeatherRenderer extends IRenderHandler {
 			int j1 = -1;
 			float f1 = (float) this.rendererUpdateCount + partialTicks;
 			bufferbuilder.setTranslation(-d0, -d1, -d2);
-			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+			GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 			BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
 
 			for (int k1 = k - i1; k1 <= k + i1; ++k1) {
@@ -205,16 +204,16 @@ public class TFWeatherRenderer extends IRenderHandler {
 			GlStateManager.enableCull();
 			GlStateManager.disableBlend();
 			GlStateManager.alphaFunc(516, 0.1F);
-			mc.entityRenderer.disableLightmap();
+			mc.gameRenderer.disableLightmap();
 		}
 	}
 
 	// [VanillaCopy] inside of EntityRenderer.renderRainSnow, edits noted
-	private void renderLockedBiome(float partialTicks, WorldClient wc, Minecraft mc) {
+	private void renderLockedBiome(float partialTicks, ClientWorld wc, Minecraft mc) {
 		// check nearby for locked biome
 		if (isNearLockedBiome(wc, mc.getRenderViewEntity())) {
 
-			mc.entityRenderer.enableLightmap();
+			mc.gameRenderer.enableLightmap();
 			Entity entity = mc.getRenderViewEntity();
 			World world = mc.world;
 
@@ -245,7 +244,7 @@ public class TFWeatherRenderer extends IRenderHandler {
 			RenderType currentType = null;
 			float combinedTicks = (float) this.rendererUpdateCount + partialTicks;
 			bufferbuilder.setTranslation(-dx, -dy, -dz);
-			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+			GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 			BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
 
 			for (int z = z0 - range; z <= z0 + range; ++z) {
@@ -397,15 +396,15 @@ public class TFWeatherRenderer extends IRenderHandler {
 			GlStateManager.enableCull();
 			GlStateManager.disableBlend();
 			GlStateManager.alphaFunc(516, 0.1F);
-			mc.entityRenderer.disableLightmap();
+			mc.gameRenderer.disableLightmap();
 		}
 	}
 
 	// [VanillaCopy] inside of EntityRenderer.renderRainSnow, edits noted
-	private void renderLockedStructure(float partialTicks, WorldClient wc, Minecraft mc) {
+	private void renderLockedStructure(float partialTicks, ClientWorld wc, Minecraft mc) {
 		// draw locked structure thing
 		if (isNearLockedStructure(wc, mc.getRenderViewEntity())) {
-			mc.entityRenderer.enableLightmap();
+			mc.gameRenderer.enableLightmap();
 			Entity entity = mc.getRenderViewEntity();
 			World world = mc.world;
 			int i = MathHelper.floor(entity.posX);
@@ -431,7 +430,7 @@ public class TFWeatherRenderer extends IRenderHandler {
 			int j1 = -1;
 			float f1 = (float) this.rendererUpdateCount + partialTicks;
 			bufferbuilder.setTranslation(-d0, -d1, -d2);
-			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+			GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 			BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
 
 			for (int k1 = k - i1; k1 <= k + i1; ++k1) {
@@ -505,7 +504,7 @@ public class TFWeatherRenderer extends IRenderHandler {
 			GlStateManager.enableCull();
 			GlStateManager.disableBlend();
 			GlStateManager.alphaFunc(516, 0.1F);
-			mc.entityRenderer.disableLightmap();
+			mc.gameRenderer.disableLightmap();
 		}
 	}
 

@@ -1,7 +1,7 @@
 package twilightforest.client.renderer.tileentity;
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
@@ -9,16 +9,13 @@ import twilightforest.client.BugModelAnimationHelper;
 import twilightforest.client.model.entity.ModelTFCicada;
 import twilightforest.tileentity.critters.TileEntityTFCicadaTicking;
 
-import javax.annotation.Nullable;
-
-public class TileEntityTFCicadaRenderer extends TileEntitySpecialRenderer<TileEntityTFCicadaTicking> {
+public class TileEntityTFCicadaRenderer extends TileEntityRenderer<TileEntityTFCicadaTicking> {
 
 	private final ModelTFCicada cicadaModel = new ModelTFCicada();
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("cicada-model.png");
 
 	@Override
-	public void render(@Nullable TileEntityTFCicadaTicking te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
-
+	public void render(TileEntityTFCicadaTicking te, double x, double y, double z, float partialTicks, int destroyStage) {
 		int yaw = te != null ? te.currentYaw : BugModelAnimationHelper.currentYaw;
 
 		GlStateManager.pushMatrix();
@@ -49,7 +46,7 @@ public class TileEntityTFCicadaRenderer extends TileEntitySpecialRenderer<TileEn
 		GlStateManager.scalef(1f, -1f, -1f);
 		cicadaModel.render(0.0625f);
 		GlStateManager.popMatrix();
-		GlStateManager.color(1, 1, 1, 1);
+		GlStateManager.color4f(1, 1, 1, 1);
 		GlStateManager.popMatrix();
 	}
 }

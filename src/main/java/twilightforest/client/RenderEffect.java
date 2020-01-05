@@ -5,6 +5,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import org.lwjgl.opengl.GL11;
@@ -34,7 +35,7 @@ public enum RenderEffect {
 			GlStateManager.enableBlend();
 			GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-			Minecraft.getInstance().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+			Minecraft.getInstance().textureManager.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
 
 			random.setSeed(entity.getEntityId() * entity.getEntityId() * 3121 + entity.getEntityId() * 45238971);
 
@@ -61,7 +62,7 @@ public enum RenderEffect {
 		}
 
 	}, SHIELDS {
-		private final LayerRenderer<LivingEntity> layer = new LayerShields();
+		private final LayerRenderer<LivingEntity, EntityModel<LivingEntity>> layer = new LayerShields<>();
 
 		@Override
 		public boolean shouldRender(LivingEntity entity, boolean firstPerson) {
@@ -81,7 +82,7 @@ public enum RenderEffect {
 			GlStateManager.enableBlend();
 			GlStateManager.disableCull();
 			GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-			layer.doRenderLayer(entity, 0, 0, partialTicks, 0, 0, 0, 0.0625F);
+			layer.render(entity, 0, 0, partialTicks, 0, 0, 0, 0.0625F);
 			GlStateManager.enableCull();
 			GlStateManager.disableBlend();
 			GlStateManager.popMatrix();

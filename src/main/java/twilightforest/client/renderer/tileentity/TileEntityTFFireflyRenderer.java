@@ -1,7 +1,7 @@
 package twilightforest.client.renderer.tileentity;
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
@@ -10,16 +10,13 @@ import twilightforest.client.BugModelAnimationHelper;
 import twilightforest.client.model.entity.ModelTFFirefly;
 import twilightforest.tileentity.critters.TileEntityTFFireflyTicking;
 
-import javax.annotation.Nullable;
-
-public class TileEntityTFFireflyRenderer extends TileEntitySpecialRenderer<TileEntityTFFireflyTicking> {
+public class TileEntityTFFireflyRenderer extends TileEntityRenderer<TileEntityTFFireflyTicking> {
 
 	private final ModelTFFirefly fireflyModel = new ModelTFFirefly();
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("firefly-tiny.png");
 
 	@Override
-	public void render(@Nullable TileEntityTFFireflyTicking te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
-
+	public void render(TileEntityTFFireflyTicking te, double x, double y, double z, float partialTicks, int destroyStage) {
 		int yaw = te != null ? te.currentYaw : BugModelAnimationHelper.currentYaw;
 		float glow = te != null ? te.glowIntensity : BugModelAnimationHelper.glowIntensity;
 
@@ -56,7 +53,7 @@ public class TileEntityTFFireflyRenderer extends TileEntitySpecialRenderer<TileE
 		GlStateManager.disableBlend();
 		fireflyModel.render(0.0625f);
 
-//        
+//
 //        GL11.glEnable(3042 /*GL_BLEND*/);
 //        GL11.glDisable(3008 /*GL_ALPHA_TEST*/);
 //        GL11.glBlendFunc(770, 771);
@@ -66,7 +63,7 @@ public class TileEntityTFFireflyRenderer extends TileEntitySpecialRenderer<TileE
 		GlStateManager.enableBlend();
 		GlStateManager.disableAlpha();
 		GlStateManager.disableLighting();
-		GlStateManager.color(1.0F, 1.0F, 1.0F, glow);
+		GlStateManager.color4f(1.0F, 1.0F, 1.0F, glow);
 		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 		fireflyModel.glow.render(0.0625f);
 		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -75,7 +72,7 @@ public class TileEntityTFFireflyRenderer extends TileEntitySpecialRenderer<TileE
 		GlStateManager.enableLighting();
 
 		GlStateManager.popMatrix();
-		GlStateManager.color(1, 1, 1, 1);
+		GlStateManager.color4f(1, 1, 1, 1);
 		GlStateManager.popMatrix();
 	}
 }

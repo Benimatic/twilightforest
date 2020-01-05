@@ -20,7 +20,7 @@ public class NagaEyelidsLayer<T extends EntityTFNaga> extends LayerRenderer<T> {
 	public void render(T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 		if(entitylivingbaseIn.isDazed()) {
 			this.nagaRenderer.bindTexture(textureLocDazed);
-			this.nagaRenderer.getMainModel().render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+			this.nagaRenderer.getEntityModel().render(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 		}
 	}
 

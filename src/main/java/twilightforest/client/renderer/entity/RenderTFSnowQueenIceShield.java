@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.BlockRenderType;
@@ -33,7 +34,7 @@ public class RenderTFSnowQueenIceShield<T extends EntityTFSnowQueenIceShield> ex
 			World world = entity.world;
 
 			if (iblockstate != world.getBlockState(new BlockPos(entity)) && iblockstate.getRenderType() != BlockRenderType.INVISIBLE) {
-				this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+				this.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
 				GlStateManager.pushMatrix();
 				GlStateManager.disableLighting();
 				Tessellator tessellator = Tessellator.getInstance();
@@ -65,7 +66,7 @@ public class RenderTFSnowQueenIceShield<T extends EntityTFSnowQueenIceShield> ex
 
 	@Override
 	protected ResourceLocation getEntityTexture(T entity) {
-		return TextureMap.LOCATION_BLOCKS_TEXTURE;
+		return AtlasTexture.LOCATION_BLOCKS_TEXTURE;
 	}
 
 }

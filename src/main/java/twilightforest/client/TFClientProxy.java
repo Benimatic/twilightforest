@@ -8,19 +8,15 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelSilverfish;
 import net.minecraft.client.multiplayer.ClientAdvancementManager;
-import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
-import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraft.world.World;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.client.EnumHelperClient;
 import net.minecraftforge.common.MinecraftForge;
@@ -30,11 +26,8 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import twilightforest.TFCommonProxy;
 import twilightforest.TFSounds;
-import twilightforest.client.model.armor.*;
 import twilightforest.client.model.entity.*;
 import twilightforest.client.model.entity.finalcastle.ModelTFCastleGuardian;
-import twilightforest.client.particle.TFParticleFactory;
-import twilightforest.client.particle.TFParticleType;
 import twilightforest.client.renderer.entity.*;
 import twilightforest.client.renderer.tileentity.*;
 import twilightforest.client.shader.ShaderManager;
@@ -45,9 +38,6 @@ import twilightforest.entity.finalcastle.EntityTFCastleGuardian;
 import twilightforest.entity.passive.*;
 import twilightforest.tileentity.TileEntityTFTrophy;
 import twilightforest.tileentity.critters.*;
-
-import java.util.EnumMap;
-import java.util.Map;
 
 public class TFClientProxy extends TFCommonProxy {
 
