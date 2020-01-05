@@ -2,8 +2,8 @@ package twilightforest.util;
 
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.util.math.Vec3i;
-import net.minecraft.world.gen.structure.MutableBoundingBox;
 
 import javax.annotation.Nullable;
 

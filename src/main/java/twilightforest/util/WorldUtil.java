@@ -13,7 +13,7 @@ public final class WorldUtil {
 	 * Inclusive of edges
 	 */
 	public static Iterable<BlockPos> getAllAround(BlockPos center, int range) {
-		return BlockPos.getAllInBox(center.add(-range, -range, -range), center.add(range, range, range));
+		return BlockPos.getAllInBoxMutable(center.add(-range, -range, -range), center.add(range, range, range));
 	}
 
 	/**
@@ -21,7 +21,7 @@ public final class WorldUtil {
 	 * Inclusive of edges
 	 */
 	public static Iterable<BlockPos> getAllInBB(AxisAlignedBB bb) {
-		return BlockPos.getAllInBox(new BlockPos(bb.minX, bb.minY, bb.minZ), new BlockPos(bb.maxX, bb.maxY, bb.maxZ));
+		return BlockPos.getAllInBoxMutable(new BlockPos(bb.minX, bb.minY, bb.minZ), new BlockPos(bb.maxX, bb.maxY, bb.maxZ));
 	}
 
 	public static BlockPos randomOffset(Random random, BlockPos pos, int range) {

@@ -220,7 +220,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 			BlockPos max = new BlockPos(maxx, maxy, maxz);
 
 			if (taskOwner.world.isAreaLoaded(min, max)) {
-				for (BlockPos pos : BlockPos.getAllInBox(min, max)) {
+				for (BlockPos pos : BlockPos.getAllInBoxMutable(min, max)) {
 					if (EntityUtil.canDestroyBlock(taskOwner.world, pos, taskOwner)) {
 						taskOwner.world.destroyBlock(pos, true);
 					}
@@ -407,7 +407,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 		BlockPos max = new BlockPos(maxx, maxy, maxz);
 
 		if (world.isAreaLoaded(min, max)) {
-			for (BlockPos pos : BlockPos.getAllInBox(min, max)) {
+			for (BlockPos pos : BlockPos.getAllInBoxMutable(min, max)) {
 				BlockState state = world.getBlockState(pos);
 				if (state.getMaterial() == Material.LEAVES && EntityUtil.canDestroyBlock(world, pos, state, this)) {
 					world.destroyBlock(pos, true);

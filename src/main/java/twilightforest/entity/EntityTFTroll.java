@@ -155,7 +155,7 @@ public class EntityTFTroll extends MonsterEntity implements IRangedAttackMob {
 		int maxY = MathHelper.floor(aabb.maxY);
 		int maxZ = MathHelper.floor(aabb.maxZ);
 
-		for (BlockPos pos : BlockPos.getAllInBox(new BlockPos(minX, minY, minZ), new BlockPos(maxX, maxY, maxZ))) {
+		for (BlockPos pos : BlockPos.getAllInBoxMutable(new BlockPos(minX, minY, minZ), new BlockPos(maxX, maxY, maxZ))) {
 			if (world.isAirBlock(pos)) {
 				world.setBlockState(pos, TFBlocks.trollsteinn.getDefaultState());
 				world.playEvent(2001, pos, Block.getStateId(TFBlocks.trollsteinn.getDefaultState()));

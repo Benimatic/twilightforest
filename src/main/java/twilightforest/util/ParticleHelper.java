@@ -11,6 +11,7 @@ import twilightforest.client.particle.TFParticleType;
 import twilightforest.network.PacketSpawnEntityParticles;
 import twilightforest.network.TFPacketHandler;
 
+//TODO: Look into getting rid of this class
 public class ParticleHelper {
 
 	public static void spawnParticles(World world, BlockPos pos, ParticleTypes type, int count, double speed, int... particleArgs) {

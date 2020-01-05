@@ -48,23 +48,24 @@ public class TFItemStackUtils {
 		return result;
 	}
 
-	public static boolean hasToolMaterial(ItemStack stack, IItemTier material) {
-
-		Item item = stack.getItem();
-
-		// see TileEntityFurnace.getItemBurnTime
-		if (item instanceof ToolItem && material.toString().equals(((ToolItem)item).getToolMaterialName())) {
-			return true;
-		}
-		if (item instanceof SwordItem && material.toString().equals(((SwordItem)item).getToolMaterialName())) {
-			return true;
-		}
-		if (item instanceof HoeItem && material.toString().equals(((HoeItem)item).getMaterialName())) {
-			return true;
-		}
-
-		return false;
-	}
+	//TODO: IE Compat
+//	public static boolean hasToolMaterial(ItemStack stack, IItemTier material) {
+//
+//		Item item = stack.getItem();
+//
+//		// see TileEntityFurnace.getItemBurnTime
+//		if (item instanceof ToolItem && material.toString().equals(((ToolItem)item).getToolMaterialName())) {
+//			return true;
+//		}
+//		if (item instanceof SwordItem && material.toString().equals(((SwordItem)item).getToolMaterialName())) {
+//			return true;
+//		}
+//		if (item instanceof HoeItem && material.toString().equals(((HoeItem)item).getMaterialName())) {
+//			return true;
+//		}
+//
+//		return false;
+//	}
 
 	public static void clearInfoTag(ItemStack stack, String key) {
 		CompoundNBT nbt = stack.getTag();

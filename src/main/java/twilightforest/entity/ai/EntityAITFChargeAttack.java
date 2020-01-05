@@ -112,7 +112,7 @@ public class EntityAITFChargeAttack extends Goal {
 				BlockPos max = new BlockPos(maxx, maxy, maxz);
 
 				if (charger.world.isAreaLoaded(min, max)) {
-					for (BlockPos pos : BlockPos.getAllInBox(min, max)) {
+					for (BlockPos pos : BlockPos.getAllInBoxMutable(min, max)) {
 						if (EntityUtil.canDestroyBlock(charger.world, pos, charger) && charger.world.getTileEntity(pos) == null) {
 							charger.world.destroyBlock(pos, true);
 						}
