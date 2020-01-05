@@ -51,12 +51,6 @@ import java.util.Map;
 
 public class TFClientProxy extends TFCommonProxy {
 
-	private final Map<EquipmentSlotType, ModelBiped> knightlyArmorModel = new EnumMap<>(EquipmentSlotType.class);
-	private final Map<EquipmentSlotType, ModelBiped> phantomArmorModel = new EnumMap<>(EquipmentSlotType.class);
-	private final Map<EquipmentSlotType, ModelBiped> yetiArmorModel = new EnumMap<>(EquipmentSlotType.class);
-	private final Map<EquipmentSlotType, ModelBiped> arcticArmorModel = new EnumMap<>(EquipmentSlotType.class);
-	private final Map<EquipmentSlotType, ModelBiped> fieryArmorModel = new EnumMap<>(EquipmentSlotType.class);
-
 	private boolean isDangerOverlayShown;
 
 	public static MusicTicker.MusicType TFMUSICTYPE;
@@ -169,29 +163,6 @@ public class TFClientProxy extends TFCommonProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTFMoonwormTicking.class, new TileEntityTFMoonwormRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTFTrophy.class, new TileEntityTFTrophyRenderer());
 
-		knightlyArmorModel.put(EquipmentSlotType.HEAD, new ModelTFKnightlyArmor(0.5F));
-		knightlyArmorModel.put(EquipmentSlotType.CHEST, new ModelTFKnightlyArmor(1.0F));
-		knightlyArmorModel.put(EquipmentSlotType.LEGS, new ModelTFKnightlyArmor(0.5F));
-		knightlyArmorModel.put(EquipmentSlotType.FEET, new ModelTFKnightlyArmor(0.5F));
-
-		phantomArmorModel.put(EquipmentSlotType.HEAD, new ModelTFPhantomArmor(EquipmentSlotType.HEAD, 0.5F));
-		phantomArmorModel.put(EquipmentSlotType.CHEST, new ModelTFPhantomArmor(EquipmentSlotType.CHEST, 0.5F));
-
-		yetiArmorModel.put(EquipmentSlotType.HEAD, new ModelTFYetiArmor(EquipmentSlotType.HEAD, 0.6F));
-		yetiArmorModel.put(EquipmentSlotType.CHEST, new ModelTFYetiArmor(EquipmentSlotType.CHEST, 1.0F));
-		yetiArmorModel.put(EquipmentSlotType.LEGS, new ModelTFYetiArmor(EquipmentSlotType.LEGS, 0.4F));
-		yetiArmorModel.put(EquipmentSlotType.FEET, new ModelTFYetiArmor(EquipmentSlotType.FEET, 0.55F));
-
-		arcticArmorModel.put(EquipmentSlotType.HEAD, new ModelTFArcticArmor(0.6F));
-		arcticArmorModel.put(EquipmentSlotType.CHEST, new ModelTFArcticArmor(1.0F));
-		arcticArmorModel.put(EquipmentSlotType.LEGS, new ModelTFArcticArmor(0.4F));
-		arcticArmorModel.put(EquipmentSlotType.FEET, new ModelTFArcticArmor(0.55F));
-
-		fieryArmorModel.put(EquipmentSlotType.HEAD, new ModelTFFieryArmor(0.5F));
-		fieryArmorModel.put(EquipmentSlotType.CHEST, new ModelTFFieryArmor(1.0F));
-		fieryArmorModel.put(EquipmentSlotType.LEGS, new ModelTFFieryArmor(0.5F));
-		fieryArmorModel.put(EquipmentSlotType.FEET, new ModelTFFieryArmor(0.5F));
-
 		TFMUSICTYPE = EnumHelperClient.addMusicType("TFMUSIC", TFSounds.MUSIC, 1200, 12000);
 
 		ShaderManager.initShaders();
@@ -217,31 +188,6 @@ public class TFClientProxy extends TFCommonProxy {
 				}
 			}
 		});
-	}
-
-	@Override
-	public ModelBiped getKnightlyArmorModel(EquipmentSlotType armorSlot) {
-		return knightlyArmorModel.get(armorSlot);
-	}
-
-	@Override
-	public ModelBiped getPhantomArmorModel(EquipmentSlotType armorSlot) {
-		return phantomArmorModel.get(armorSlot);
-	}
-
-	@Override
-	public ModelBiped getYetiArmorModel(EquipmentSlotType armorSlot) {
-		return yetiArmorModel.get(armorSlot);
-	}
-
-	@Override
-	public ModelBiped getArcticArmorModel(EquipmentSlotType armorSlot) {
-		return arcticArmorModel.get(armorSlot);
-	}
-
-	@Override
-	public ModelBiped getFieryArmorModel(EquipmentSlotType armorSlot) {
-		return this.fieryArmorModel.get(armorSlot);
 	}
 
 	public boolean isDangerOverlayShown() {

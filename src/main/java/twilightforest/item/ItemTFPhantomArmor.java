@@ -19,11 +19,16 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.model.armor.ModelTFPhantomArmor;
 
 import javax.annotation.Nullable;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 
 public class ItemTFPhantomArmor extends ItemTFArmor {
+
+	private static final Map<EquipmentSlotType, BipedModel> phantomArmorModel = new EnumMap<>(EquipmentSlotType.class);
 
 	public ItemTFPhantomArmor(IArmorMaterial armorMaterial, EquipmentSlotType armorType, Rarity rarity, Properties props) {
 		super(armorMaterial, armorType, rarity, props);
@@ -47,7 +52,13 @@ public class ItemTFPhantomArmor extends ItemTFArmor {
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public BipedModel getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, BipedModel original) {
-		return TwilightForestMod.proxy.getPhantomArmorModel(armorSlot);
+		return phantomArmorModel.get(armorSlot);
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	public static void initArmorModel() {
+		phantomArmorModel.put(EquipmentSlotType.HEAD, new ModelTFPhantomArmor(EquipmentSlotType.HEAD, 0.5F));
+		phantomArmorModel.put(EquipmentSlotType.CHEST, new ModelTFPhantomArmor(EquipmentSlotType.CHEST, 0.5F));
 	}
 
 	@Override

@@ -14,11 +14,16 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.model.armor.ModelTFFieryArmor;
 
 import javax.annotation.Nullable;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 
 public class ItemTFFieryArmor extends ItemTFArmor {
+
+	private static final Map<EquipmentSlotType, BipedModel> fieryArmorModel = new EnumMap<>(EquipmentSlotType.class);
 
 	public ItemTFFieryArmor(IArmorMaterial armorMaterial, EquipmentSlotType armorType, Rarity rarity, Properties props) {
 		super(armorMaterial, armorType, rarity, props.group(TFItems.creativeTab));
@@ -43,6 +48,14 @@ public class ItemTFFieryArmor extends ItemTFArmor {
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public BipedModel getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, BipedModel oldModel) {
-		return TwilightForestMod.proxy.getFieryArmorModel(armorSlot);
+		return fieryArmorModel.get(armorSlot);
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	public static void initArmorModel() {
+		fieryArmorModel.put(EquipmentSlotType.HEAD, new ModelTFFieryArmor(0.5F));
+		fieryArmorModel.put(EquipmentSlotType.CHEST, new ModelTFFieryArmor(1.0F));
+		fieryArmorModel.put(EquipmentSlotType.LEGS, new ModelTFFieryArmor(0.5F));
+		fieryArmorModel.put(EquipmentSlotType.FEET, new ModelTFFieryArmor(0.5F));
 	}
 }

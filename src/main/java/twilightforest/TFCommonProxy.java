@@ -46,31 +46,6 @@ public class TFCommonProxy implements IGuiHandler /* TODO: JESUS CHRIST WHAT THE
 		}
 	}
 
-	//TODO: Move
-	public BipedModel getKnightlyArmorModel(EquipmentSlotType armorSlot) {
-		return null;
-	}
-
-	//TODO: Move
-	public BipedModel getPhantomArmorModel(EquipmentSlotType armorSlot) {
-		return null;
-	}
-
-	//TODO: Move
-	public BipedModel<?> getYetiArmorModel(EquipmentSlotType armorSlot) {
-		return null;
-	}
-
-	//TODO: Move
-	public BipedModel<?> getArcticArmorModel(EquipmentSlotType armorSlot) {
-		return null;
-	}
-
-	//TODO: Move
-	public BipedModel<?> getFieryArmorModel(EquipmentSlotType armorSlot) {
-		return null;
-	}
-
 	public boolean doesPlayerHaveAdvancement(PlayerEntity player, ResourceLocation advId) {
 		if (player instanceof ServerPlayerEntity) {
 			Advancement adv = ((ServerPlayerEntity) player).getServerWorld().getAdvancementManager().getAdvancement(advId);

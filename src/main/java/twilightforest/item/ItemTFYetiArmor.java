@@ -17,11 +17,16 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.model.armor.ModelTFYetiArmor;
 
 import javax.annotation.Nullable;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 
 public class ItemTFYetiArmor extends ItemTFArmor {
+
+	private static final Map<EquipmentSlotType, BipedModel> yetiArmorModel = new EnumMap<>(EquipmentSlotType.class);
 
 	public ItemTFYetiArmor(IArmorMaterial material, EquipmentSlotType slot, Rarity rarity, Properties props) {
 		super(material, slot, rarity, props);
@@ -60,7 +65,15 @@ public class ItemTFYetiArmor extends ItemTFArmor {
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public BipedModel getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, BipedModel _default) {
-		return TwilightForestMod.proxy.getYetiArmorModel(armorSlot);
+		return yetiArmorModel.get(armorSlot);
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	public static void initArmorModel() {
+		yetiArmorModel.put(EquipmentSlotType.HEAD, new ModelTFYetiArmor(EquipmentSlotType.HEAD, 0.6F));
+		yetiArmorModel.put(EquipmentSlotType.CHEST, new ModelTFYetiArmor(EquipmentSlotType.CHEST, 1.0F));
+		yetiArmorModel.put(EquipmentSlotType.LEGS, new ModelTFYetiArmor(EquipmentSlotType.LEGS, 0.4F));
+		yetiArmorModel.put(EquipmentSlotType.FEET, new ModelTFYetiArmor(EquipmentSlotType.FEET, 0.55F));
 	}
 
 	@Override

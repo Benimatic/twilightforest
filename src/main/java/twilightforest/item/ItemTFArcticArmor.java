@@ -17,11 +17,17 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.model.armor.ModelTFArcticArmor;
 
 import javax.annotation.Nullable;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 
 public class ItemTFArcticArmor extends ItemTFArmor implements IDyeableArmorItem {
+
+	private static final Map<EquipmentSlotType, BipedModel> arcticArmorModel = new EnumMap<>(EquipmentSlotType.class);
+
 	public ItemTFArcticArmor(IArmorMaterial armorMaterial, EquipmentSlotType armorType, Rarity rarity, Properties props) {
 		super(armorMaterial, armorType, rarity, props);
 	}
@@ -38,14 +44,22 @@ public class ItemTFArcticArmor extends ItemTFArmor implements IDyeableArmorItem 
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public BipedModel getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, BipedModel oldM) {
-		return TwilightForestMod.proxy.getArcticArmorModel(armorSlot);
+		return arcticArmorModel.get(armorSlot);
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	public static void initArmorModel() {
+		arcticArmorModel.put(EquipmentSlotType.HEAD, new ModelTFArcticArmor(0.6F));
+		arcticArmorModel.put(EquipmentSlotType.CHEST, new ModelTFArcticArmor(1.0F));
+		arcticArmorModel.put(EquipmentSlotType.LEGS, new ModelTFArcticArmor(0.4F));
+		arcticArmorModel.put(EquipmentSlotType.FEET, new ModelTFArcticArmor(0.55F));
 	}
 
 	//TODO 1.14: No substitute?
-	@Override
-	public boolean hasOverlay(ItemStack stack) {
-		return getColor(stack) != 0xFFFFFF;
-	}
+//	@Override
+//	public boolean hasOverlay(ItemStack stack) {
+//		return getColor(stack) != 0xFFFFFF;
+//	}
 
 	@Override
 	public boolean hasColor(ItemStack stack) {

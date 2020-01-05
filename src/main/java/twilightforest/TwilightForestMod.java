@@ -8,6 +8,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -19,7 +20,7 @@ import twilightforest.capabilities.CapabilityList;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.compat.TFCompat;
 import twilightforest.entity.TFEntities;
-import twilightforest.item.TFItems;
+import twilightforest.item.*;
 import twilightforest.loot.TFTreasure;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.potions.TFPotions;
@@ -146,6 +147,15 @@ public class TwilightForestMod {
 
 		TFConfig.build();
 		TFGenCaveStalactite.loadStalactites();
+	}
+
+	@SubscribeEvent
+	public void clientSetup(FMLClientSetupEvent evt) {
+		ItemTFKnightlyArmor.initArmorModel();
+		ItemTFPhantomArmor.initArmorModel();
+		ItemTFYetiArmor.initArmorModel();
+		ItemTFArcticArmor.initArmorModel();
+		ItemTFFieryArmor.initArmorModel();
 	}
 
 	/*@EventHandler // TODO: look into
