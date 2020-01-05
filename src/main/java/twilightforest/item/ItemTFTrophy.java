@@ -18,24 +18,17 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.client.ForgeHooksClient;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFTrophy;
 import twilightforest.block.TFBlocks;
-import twilightforest.client.ModelRegisterCallback;
 import twilightforest.enums.BossVariant;
-import twilightforest.client.renderer.tileentity.TileEntityTFTrophyRenderer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Locale;
 
 //TODO 1.14: Rework this class out of metadata
-public class ItemTFTrophy extends ItemTF implements ModelRegisterCallback {
+public class ItemTFTrophy extends ItemTF {
 
 	public ItemTFTrophy(Properties props) {
 		super(props);
@@ -135,28 +128,28 @@ public class ItemTFTrophy extends ItemTF implements ModelRegisterCallback {
 	}
 
 	//TODO 1.14: Somehow get this working...
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	public void registerModel() {
-
-		ModelResourceLocation itemModelLocation = new ModelResourceLocation(TwilightForestMod.ID + ":trophy_tesr", "inventory");
-
-		TileEntityTFTrophyRenderer tesr = new TileEntityTFTrophyRenderer(itemModelLocation);
-		//TileEntityTFTrophyRenderer tesrMinor = new TileEntityTFTrophyRenderer() { @Override protected String getModelRSL() { return TwilightForestMod.ID + ":trophy_minor"; } };
-
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTFTrophyRenderer.DummyTile.class, tesr);
-
-		for (BossVariant variant : BossVariant.values()) {
-			if (variant != BossVariant.ALPHA_YETI) {
-				ModelLoader.setCustomModelResourceLocation(this, variant.ordinal(), itemModelLocation);
-				ForgeHooksClient.registerTESRItemStack(this, variant.ordinal(), TileEntityTFTrophyRenderer.DummyTile.class);
-			}
-		}
-
-		ModelBakery.registerItemVariants(this,
-				new ModelResourceLocation(new ResourceLocation(TwilightForestMod.ID, "trophy"), "inventory"),
-				new ModelResourceLocation(new ResourceLocation(TwilightForestMod.ID, "trophy_minor"), "inventory"),
-				new ModelResourceLocation(new ResourceLocation(TwilightForestMod.ID, "trophy_quest"), "inventory")
-		);
-	}
+//	@OnlyIn(Dist.CLIENT)
+//	@Override
+//	public void registerModel() {
+//
+//		ModelResourceLocation itemModelLocation = new ModelResourceLocation(TwilightForestMod.ID + ":trophy_tesr", "inventory");
+//
+//		TileEntityTFTrophyRenderer tesr = new TileEntityTFTrophyRenderer(itemModelLocation);
+//		//TileEntityTFTrophyRenderer tesrMinor = new TileEntityTFTrophyRenderer() { @Override protected String getModelRSL() { return TwilightForestMod.ID + ":trophy_minor"; } };
+//
+//		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTFTrophyRenderer.DummyTile.class, tesr);
+//
+//		for (BossVariant variant : BossVariant.values()) {
+//			if (variant != BossVariant.ALPHA_YETI) {
+//				ModelLoader.setCustomModelResourceLocation(this, variant.ordinal(), itemModelLocation);
+//				ForgeHooksClient.registerTESRItemStack(this, variant.ordinal(), TileEntityTFTrophyRenderer.DummyTile.class);
+//			}
+//		}
+//
+//		ModelBakery.registerItemVariants(this,
+//				new ModelResourceLocation(new ResourceLocation(TwilightForestMod.ID, "trophy"), "inventory"),
+//				new ModelResourceLocation(new ResourceLocation(TwilightForestMod.ID, "trophy_minor"), "inventory"),
+//				new ModelResourceLocation(new ResourceLocation(TwilightForestMod.ID, "trophy_quest"), "inventory")
+//		);
+//	}
 }

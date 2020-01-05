@@ -8,7 +8,6 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
-import twilightforest.client.ModelRegisterCallback;
 
 public class ItemTFEmptyMazeMap extends AbstractMapItem {
 	boolean mapOres;
