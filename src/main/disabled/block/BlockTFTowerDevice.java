@@ -45,7 +45,7 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-//TODO: Breaking and entering, but without the entering and more the breaking
+//TODO: This class is reference-only. Use it if the blocks broke function and require checking
 public class BlockTFTowerDevice extends Block {
 
 	//TODO 1.14: Flatten, keeping some of the states

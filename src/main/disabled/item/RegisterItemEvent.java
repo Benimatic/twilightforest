@@ -25,6 +25,7 @@ import java.util.List;
 
 import static java.util.Arrays.stream;
 
+//TODO: Currently retained for BlockItem registration reference
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class RegisterItemEvent {
 	@SubscribeEvent
@@ -164,13 +165,8 @@ public class RegisterItemEvent {
 		}
 	}
 
-	public static List<ModelRegisterCallback> getItemModels() {
-		return Collections.unmodifiableList(ItemRegistryHelper.itemModels);
-	}
-
 	public static class ItemRegistryHelper {
 
-		static final List<ModelRegisterCallback> itemModels = new ArrayList<>();
 
 		private final IForgeRegistry<Item> registry;
 
@@ -185,9 +181,7 @@ public class RegisterItemEvent {
 
 		public <T extends Item> Item register(String registryName, T item) {
 			item.setRegistryName(TwilightForestMod.ID, registryName);
-			if (item instanceof ModelRegisterCallback) {
-				itemModels.add((ModelRegisterCallback) item);
-			}
+
 			registry.register(item);
 			return item;
 		}

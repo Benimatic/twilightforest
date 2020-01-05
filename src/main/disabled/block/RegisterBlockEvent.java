@@ -31,44 +31,12 @@ import java.util.List;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public final class RegisterBlockEvent {
-	@SubscribeEvent
+
 	public static void onRegisterBlocks(RegistryEvent.Register<Block> event) {
-		BlockRegistryHelper blocks = new BlockRegistryHelper(event.getRegistry());
 
 //		registerFluidBlock(blocks, moltenFiery);
 //		registerFluidBlock(blocks, moltenKnightmetal);
 //		registerFluidBlock("fiery_essence", blocks, essenceFiery);
-	}
-
-	public static List<ModelRegisterCallback> getBlockModels() {
-		return Collections.unmodifiableList(BlockRegistryHelper.blockModels);
-	}
-
-	private static class BlockRegistryHelper {
-
-		static final List<ModelRegisterCallback> blockModels = new ArrayList<>();
-
-		private final IForgeRegistry<Block> registry;
-
-		BlockRegistryHelper(IForgeRegistry<Block> registry) {
-			this.registry = registry;
-		}
-
-		<T extends Block> T register(String registryName, String translationKey, T block) {
-			block.setTranslationKey(TwilightForestMod.ID + "." + translationKey);
-			register(registryName, block);
-			return block;
-		}
-
-		<T extends Block> T register(String registryName, T block) {
-			block.setRegistryName(TwilightForestMod.ID, registryName);
-			if (block instanceof ModelRegisterCallback) {
-				blockModels.add((ModelRegisterCallback) block);
-			}
-			block.setCreativeTab(TFItems.creativeTab);
-			registry.register(block);
-			return block;
-		}
 	}
 
 	// our internal fluid instances
