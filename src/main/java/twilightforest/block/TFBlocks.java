@@ -29,7 +29,7 @@ public class TFBlocks {
 	public static final RegistryObject<Block> mangrove_leaves            = BLOCKS.register("mangrove_leaves", () -> new BlockTFLeaves());
 	public static final RegistryObject<Block> rainboak_leaves            = BLOCKS.register("rainboak_leaves", () -> new BlockTFLeaves());
 	public static final RegistryObject<Block> firefly                    = BLOCKS.register("firefly", () -> new BlockTFFirefly());
-	public static final RegistryObject<Block> twilight_portal            = BLOCKS.register("twilight_portal", () -> new BlockTFPortal());
+	public static final RegistryObject<BlockTFPortal> twilight_portal    = BLOCKS.register("twilight_portal", () -> new BlockTFPortal());
 	public static final RegistryObject<Block> maze_stone                 = BLOCKS.register("maze_stone", () -> new BlockTFMazestone());
 	public static final RegistryObject<Block> maze_stone_brick           = BLOCKS.register("maze_stone_brick", () -> new BlockTFMazestone());
 	public static final RegistryObject<Block> maze_stone_chiseled        = BLOCKS.register("maze_stone_chiseled", () -> new BlockTFMazestone());

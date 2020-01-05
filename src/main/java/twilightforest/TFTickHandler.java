@@ -7,6 +7,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -120,7 +121,7 @@ public class TFTickHandler {
 				if (TFConfig.portalIngredient.apply(entityItem.getItem())) {
 					BlockPos pos = entityItem.getPosition();
 					BlockState state = world.getBlockState(pos);
-					if (TFBlocks.twilight_portal.canFormPortal(state)) {
+					if (TFBlocks.twilight_portal.get().canFormPortal(state)) {
 						Random rand = new Random();
 						for (int i = 0; i < 2; i++) {
 							double vx = rand.nextGaussian() * 0.02D;
@@ -130,7 +131,7 @@ public class TFTickHandler {
 							world.addParticle(ParticleTypes.SPELL, entityItem.posX, entityItem.posY + 0.2, entityItem.posZ, vx, vy, vz);
 						}
 
-						if (TFBlocks.twilight_portal.tryToCreatePortal(world, pos, entityItem, player)) {
+						if (TFBlocks.twilight_portal.get().tryToCreatePortal(world, pos, entityItem, player)) {
 							TFAdvancements.MADE_TF_PORTAL.trigger((ServerPlayerEntity) player);
 							return;
 						}

@@ -47,7 +47,7 @@ public class InventoryTFGoblinUncrafting implements IInventory {
 			//this.eventHandler.onCraftMatrixChanged(this);
 			return stack;
 		} else {
-			return stack.splitStack(amount);
+			return stack.split(amount);
 		}
 	}
 

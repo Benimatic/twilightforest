@@ -16,6 +16,7 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.ByteNBT;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraftforge.common.crafting.IShapedRecipe;
 import twilightforest.TFConfig;
@@ -53,6 +54,7 @@ public class ContainerTFUncrafting extends Container {
 	public int recipeInCycle = 0;
 
 	public ContainerTFUncrafting(PlayerInventory inventory, World world, int x, int y, int z) {
+		super(/*TODO*/);
 
 		this.world = world;
 		this.pos = new BlockPos(x, y, z);
@@ -329,7 +331,7 @@ public class ContainerTFUncrafting extends Container {
 
 		IRecipe recipe = recipes[Math.floorMod(this.recipeInCycle, recipes.length)];
 
-		if (recipe != null && (recipe.isDynamic() || !this.world.getGameRules().getBoolean("doLimitedCrafting") || ((ServerPlayerEntity) this.player).getRecipeBook().isUnlocked(recipe))) {
+		if (recipe != null && (recipe.isDynamic() || !this.world.getGameRules().getBoolean(GameRules.DO_LIMITED_CRAFTING) || ((ServerPlayerEntity) this.player).getRecipeBook().isUnlocked(recipe))) {
 			this.tinkerResult.setRecipeUsed(recipe);
 			this.tinkerResult.setInventorySlotContents(0, recipe.getCraftingResult(inventory));
 		} else {
@@ -365,7 +367,7 @@ public class ContainerTFUncrafting extends Container {
 			ArmorItem inputArmor = (ArmorItem) inputStack.getItem();
 			ArmorItem resultArmor = (ArmorItem) resultStack.getItem();
 
-			return inputArmor.armorType == resultArmor.armorType;
+			return inputArmor.getEquipmentSlot() == resultArmor.getEquipmentSlot();
 		}
 
 		return false;
@@ -665,6 +667,6 @@ public class ContainerTFUncrafting extends Container {
 
 	@Override
 	public boolean canInteractWith(PlayerEntity player) {
-		return player.getDistanceSqToCenter(this.pos) <= 64.0D && this.world.getBlockState(this.pos).getBlock() == TFBlocks.uncrafting_table;
+		return player.getDistanceSqToCenter(this.pos) <= 64.0D && this.world.getBlockState(this.pos).getBlock() == TFBlocks.uncrafting_table.get();
 	}
 }

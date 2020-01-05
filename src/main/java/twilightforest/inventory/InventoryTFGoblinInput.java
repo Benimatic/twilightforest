@@ -4,6 +4,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextComponentString;
 
 public class InventoryTFGoblinInput implements IInventory {
@@ -46,7 +47,7 @@ public class InventoryTFGoblinInput implements IInventory {
 				this.craftingContainer.onCraftMatrixChanged(this);
 				return takenStack;
 			} else {
-				takenStack = this.stackInput.splitStack(amount);
+				takenStack = this.stackInput.split(amount);
 				this.craftingContainer.onCraftMatrixChanged(this);
 				return takenStack;
 			}
@@ -129,6 +130,6 @@ public class InventoryTFGoblinInput implements IInventory {
 
 	@Override
 	public ITextComponent getDisplayName() {
-		return new TextComponentString(getName());
+		return new StringTextComponent(getName());
 	}
 }
