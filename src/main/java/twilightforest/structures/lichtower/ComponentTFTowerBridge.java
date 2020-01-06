@@ -3,18 +3,17 @@ package twilightforest.structures.lichtower;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentOld;
 
 import java.util.List;
 import java.util.Random;
 
-
 public class ComponentTFTowerBridge extends ComponentTFTowerWing {
-
 
 	int dSize;
 	int dHeight;
@@ -22,7 +21,6 @@ public class ComponentTFTowerBridge extends ComponentTFTowerWing {
 	public ComponentTFTowerBridge() {
 		super();
 	}
-
 
 	protected ComponentTFTowerBridge(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
 		super(feature, i, x, y, z, 3, 3, direction);
@@ -32,7 +30,7 @@ public class ComponentTFTowerBridge extends ComponentTFTowerWing {
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
+	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		int[] dest = new int[]{2, 1, 1};//getValidOpening(rand, 0);
 		makeTowerWing(list, rand, 1, dest[0], dest[1], dest[2], dSize, dHeight, Rotation.NONE);
 	}
@@ -42,34 +40,31 @@ public class ComponentTFTowerBridge extends ComponentTFTowerWing {
 	 *
 	 * @return
 	 */
-	public StructureBoundingBox getWingBB() {
+	public MutableBoundingBox getWingBB() {
 		int[] dest = offsetTowerCoords(2, 1, 1, dSize, this.getCoordBaseMode());
 		return StructureTFComponentOld.getComponentToAddBoundingBox(dest[0], dest[1], dest[2], 0, 0, 0, dSize - 1, dHeight - 1, dSize - 1, this.getCoordBaseMode());
 	}
 
-
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 		// make walls
 		for (int x = 0; x < 3; x++) {
 			setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), x, 2, 0, sbb);
 			setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), x, 2, 2, sbb);
-			setBlockState(world, Blocks.STONEBRICK.getDefaultState(), x, 1, 0, sbb);
-			setBlockState(world, Blocks.STONEBRICK.getDefaultState(), x, 1, 2, sbb);
-			setBlockState(world, Blocks.STONEBRICK.getDefaultState(), x, 0, 0, sbb);
-			setBlockState(world, Blocks.STONEBRICK.getDefaultState(), x, 0, 1, sbb);
-			setBlockState(world, Blocks.STONEBRICK.getDefaultState(), x, 0, 2, sbb);
-			setBlockState(world, Blocks.STONEBRICK.getDefaultState(), x, -1, 1, sbb);
+			setBlockState(world, Blocks.STONE_BRICKS.getDefaultState(), x, 1, 0, sbb);
+			setBlockState(world, Blocks.STONE_BRICKS.getDefaultState(), x, 1, 2, sbb);
+			setBlockState(world, Blocks.STONE_BRICKS.getDefaultState(), x, 0, 0, sbb);
+			setBlockState(world, Blocks.STONE_BRICKS.getDefaultState(), x, 0, 1, sbb);
+			setBlockState(world, Blocks.STONE_BRICKS.getDefaultState(), x, 0, 2, sbb);
+			setBlockState(world, Blocks.STONE_BRICKS.getDefaultState(), x, -1, 1, sbb);
 		}
 
 		// try two blocks outside the boundries
-		setBlockState(world, Blocks.STONEBRICK.getDefaultState(), -1, -1, 1, sbb);
-		setBlockState(world, Blocks.STONEBRICK.getDefaultState(), 3, -1, 1, sbb);
+		setBlockState(world, Blocks.STONE_BRICKS.getDefaultState(), -1, -1, 1, sbb);
+		setBlockState(world, Blocks.STONE_BRICKS.getDefaultState(), 3, -1, 1, sbb);
 
 		// clear bridge walkway
 		this.fillWithAir(world, sbb, 0, 1, 1, 2, 2, 1);
-
 
 		// marker blocks
 //        setBlockState(world, Blocks.WOOL, this.coordBaseMode, size / 2, 2, size / 2, sbb);
@@ -77,7 +72,6 @@ public class ComponentTFTowerBridge extends ComponentTFTowerWing {
 
 		// door opening?
 //        makeDoorOpening(world, sbb);
-
 
 		return true;
 	}

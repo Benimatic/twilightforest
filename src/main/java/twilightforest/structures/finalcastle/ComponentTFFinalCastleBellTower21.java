@@ -3,12 +3,12 @@ package twilightforest.structures.finalcastle;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
-import twilightforest.block.BlockTFCastleMagic;
-import twilightforest.block.BlockTFForceField;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.util.RotationUtil;
@@ -24,7 +24,7 @@ public class ComponentTFFinalCastleBellTower21 extends ComponentTFFinalCastleMaz
 	}
 
 	public ComponentTFFinalCastleBellTower21(TFFeature feature, Random rand, int i, int x, int y, int z, Direction direction) {
-		super(feature, rand, i, x, y, z, FLOORS, 1, BlockTFCastleMagic.VALID_COLORS.get(1), direction);
+		super(feature, rand, i, x, y, z, FLOORS, 1, TFBlocks.castle_rune_brick_blue.get().getDefaultState(), direction);
 		this.size = 21;
 		int floors = FLOORS;
 		this.height = floors * 8 + 1;
@@ -34,7 +34,7 @@ public class ComponentTFFinalCastleBellTower21 extends ComponentTFFinalCastleMaz
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
+	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		if (parent != null && parent instanceof StructureTFComponentOld) {
 			this.deco = ((StructureTFComponentOld) parent).deco;
 		}
@@ -51,13 +51,12 @@ public class ComponentTFFinalCastleBellTower21 extends ComponentTFFinalCastleMaz
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		super.addComponentParts(world, rand, sbb);
+	public boolean addComponentParts(IWorld worldIn, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		World world = worldIn.getWorld();
+		super.addComponentParts(worldIn, rand, sbb, chunkPosIn);
 
 		// openings!
-		BlockState fieldBlock = TFBlocks.force_field
-				.getDefaultState()
-				.with(BlockTFForceField.COLOR, BlockTFForceField.VALID_COLORS.get(4));
+		BlockState fieldBlock = TFBlocks.force_field_blue.get().getDefaultState();
 		for (Rotation rotation : RotationUtil.ROTATIONS) {
 			int y = 48;
 			for (int x = 5; x < this.size - 4; x += 2) {

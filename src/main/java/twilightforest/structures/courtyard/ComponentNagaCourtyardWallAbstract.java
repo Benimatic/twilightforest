@@ -3,10 +3,12 @@ package twilightforest.structures.courtyard;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.template.Template;
-import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.template.IntegrityProcessor;
+import net.minecraft.world.gen.feature.template.Template;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.structures.MossyCobbleTemplateProcessor;
 import twilightforest.structures.StructureTFComponentTemplate;
@@ -36,15 +38,15 @@ public class ComponentNagaCourtyardWallAbstract extends StructureTFComponentTemp
 
     @Override
     protected void loadTemplates(TemplateManager templateManager, MinecraftServer server) {
-        TEMPLATE = templateManager.getTemplate(server, WALL);
-        decayTemplate = templateManager.getTemplate(server, WALL_DECAYED);
+        TEMPLATE = templateManager.getTemplate(WALL);
+        decayTemplate = templateManager.getTemplate(WALL_DECAYED);
     }
 
-    @Override
-    public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBoundingBox) {
-        placeSettings.setBoundingBox(structureBoundingBox);
-        TEMPLATE.addBlocksToWorld(world, rotatedPosition, new CourtyardWallTemplateProcessor(rotatedPosition, placeSettings), placeSettings.setIntegrity(ComponentNagaCourtyardMain.WALL_INTEGRITY), 18);
-        decayTemplate.addBlocksToWorld(world, rotatedPosition, new MossyCobbleTemplateProcessor(rotatedPosition, placeSettings), placeSettings.setIntegrity(ComponentNagaCourtyardMain.WALL_DECAY), 18);
-        return true;
-    }
+	@Override
+	public boolean addComponentParts(IWorld world, Random random, MutableBoundingBox structureBoundingBox, ChunkPos chunkPosIn) {
+		placeSettings.setBoundingBox(structureBoundingBox);
+		TEMPLATE.addBlocksToWorld(world, rotatedPosition, placeSettings.addProcessor(new CourtyardWallTemplateProcessor(rotatedPosition, placeSettings)).addProcessor(new IntegrityProcessor(ComponentNagaCourtyardMain.WALL_INTEGRITY)), 18);
+		decayTemplate.addBlocksToWorld(world, rotatedPosition, placeSettings.addProcessor(new MossyCobbleTemplateProcessor(rotatedPosition, placeSettings)).addProcessor(new IntegrityProcessor(ComponentNagaCourtyardMain.WALL_DECAY)), 18);
+		return true;
+	}
 }

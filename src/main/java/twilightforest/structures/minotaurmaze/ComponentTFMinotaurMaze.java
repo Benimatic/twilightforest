@@ -4,15 +4,13 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
-import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFConfig;
 import twilightforest.TFFeature;
-import twilightforest.block.BlockTFMazestone;
 import twilightforest.block.TFBlocks;
-import twilightforest.enums.MazestoneVariant;
 import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.structures.TFMaze;
 
@@ -88,15 +86,16 @@ public class ComponentTFMinotaurMaze extends StructureTFComponentOld {
 		super.writeStructureToNBT(tagCompound);
 
 		tagCompound.putInt("mazeLevel", this.level);
-		tagCompound.setIntArray("roomCoords", this.rcoords);
+		tagCompound.putIntArray("roomCoords", this.rcoords);
 	}
 
 	/**
 	 * Load from NBT
 	 */
 	@Override
-	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
-		super.readStructureFromNBT(tagCompound, templateManager);
+	protected void readAdditional(CompoundNBT tagCompound) {
+		super.readAdditional(tagCompound);
+
 		this.level = tagCompound.getInt("mazeLevel");
 		this.rcoords = tagCompound.getIntArray("roomCoords");
 
@@ -165,7 +164,7 @@ public class ComponentTFMinotaurMaze extends StructureTFComponentOld {
 	 * @param random
 	 * @param list
 	 */
-	protected void decorateDeadEndsCorridors(Random random, List<StructureComponent> list) {
+	protected void decorateDeadEndsCorridors(Random random, List<StructurePiece> list) {
 		for (int x = 0; x < maze.width; x++) {
 			for (int z = 0; z < maze.depth; z++) {
 				StructureTFComponentOld component = null;
@@ -263,7 +262,7 @@ public class ComponentTFMinotaurMaze extends StructureTFComponentOld {
 	 * Initiates construction of the Structure Component picked, at the current Location of StructGen
 	 */
 	@Override
-	public void buildComponent(StructureComponent structurecomponent, List<StructureComponent> list, Random random) {
+	public void buildComponent(StructurePiece structurecomponent, List<StructurePiece> list, Random random) {
 		super.buildComponent(structurecomponent, list, random);
 
 		// add a second story
@@ -293,11 +292,10 @@ public class ComponentTFMinotaurMaze extends StructureTFComponentOld {
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 
 		BlockState bedrock = Blocks.BEDROCK.getDefaultState();
 		BlockState stone = Blocks.STONE.getDefaultState();
-		BlockState mazestone = TFBlocks.maze_stone.getDefaultState();
 
 		// level 2 maze surrounded by bedrock
 		if (level == 2) {
@@ -309,14 +307,14 @@ public class ComponentTFMinotaurMaze extends StructureTFComponentOld {
 //		fillWithBlocks(world, sbb, 0, 0, 0, getDiameter(), 0, getDiameter(), TFBlocks.mazestone, Blocks.STONE, false);
 //		fillWithBlocks(world, sbb, 0, 5, 0, getDiameter(), 5, getDiameter(), TFBlocks.mazestone, Blocks.STONE, true);
 		boolean onlyReplaceCeiling = this.level == 1 && !TFConfig.dimension.skylightForest;
-		fillWithBlocks(world, sbb, 1, 5, 1, getDiameter(), 5, getDiameter(), mazestone.with(BlockTFMazestone.VARIANT, MazestoneVariant.PLAIN), stone, onlyReplaceCeiling);
-		fillWithBlocks(world, sbb, 1, 0, 1, getDiameter(), 0, getDiameter(), mazestone.with(BlockTFMazestone.VARIANT, MazestoneVariant.MOSAIC), stone, false);
+		fillWithBlocks(world, sbb, 1, 5, 1, getDiameter(), 5, getDiameter(), TFBlocks.maze_stone.get().getDefaultState(), stone, onlyReplaceCeiling);
+		fillWithBlocks(world, sbb, 1, 0, 1, getDiameter(), 0, getDiameter(), TFBlocks.maze_stone_mosaic.get().getDefaultState(), stone, false);
 
 		//
-		maze.headBlockState = mazestone.with(BlockTFMazestone.VARIANT, MazestoneVariant.DECORATIVE);
-		maze.wallBlockState = mazestone.with(BlockTFMazestone.VARIANT, MazestoneVariant.BRICK);
-		maze.rootBlockState = mazestone.with(BlockTFMazestone.VARIANT, MazestoneVariant.DECORATIVE);
-		maze.pillarBlockState = mazestone.with(BlockTFMazestone.VARIANT, MazestoneVariant.CHISELED);
+		maze.headBlockState = TFBlocks.maze_stone_decorative.get().getDefaultState();
+		maze.wallBlockState = TFBlocks.maze_stone_brick.get().getDefaultState();
+		maze.rootBlockState = TFBlocks.maze_stone_decorative.get().getDefaultState();
+		maze.pillarBlockState = TFBlocks.maze_stone_chiseled.get().getDefaultState();
 		maze.wallBlocks = new StructureTFMazeStones();
 		maze.torchRarity = 0.05F;
 		maze.tall = 2;
@@ -324,7 +322,7 @@ public class ComponentTFMinotaurMaze extends StructureTFComponentOld {
 		maze.roots = 1;
 		maze.oddBias = 4;
 
-		maze.copyToStructure(world, 1, 2, 1, this, sbb);
+		maze.copyToStructure(world.getWorld(), 1, 2, 1, this, sbb);
 
 		return true;
 	}

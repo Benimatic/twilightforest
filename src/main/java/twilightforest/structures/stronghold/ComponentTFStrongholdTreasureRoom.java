@@ -4,10 +4,11 @@ import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
-import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.loot.TFTreasure;
 import twilightforest.util.TFEntityNames;
@@ -34,18 +35,18 @@ public class ComponentTFStrongholdTreasureRoom extends StructureTFStrongholdComp
 	}
 
 	@Override
-	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
-		super.readStructureFromNBT(tagCompound, templateManager);
+	protected void readAdditional(CompoundNBT tagCompound) {
+		super.readAdditional(tagCompound);
 		this.enterBottom = tagCompound.getBoolean("enterBottom");
 	}
 
 	@Override
-	public StructureBoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
-		return StructureBoundingBox.getComponentToAddBoundingBox(x, y, z, -4, -1, 0, 9, 7, 18, facing);
+	public MutableBoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
+		return MutableBoundingBox.getComponentToAddBoundingBox(x, y, z, -4, -1, 0, 9, 7, 18, facing);
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random random) {
+	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random random) {
 		super.buildComponent(parent, list, random);
 
 		this.addDoor(4, 1, 0);
@@ -55,7 +56,8 @@ public class ComponentTFStrongholdTreasureRoom extends StructureTFStrongholdComp
 	 * Generate the blocks that go here
 	 */
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld worldIn, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		World world = worldIn.getWorld();
 		placeStrongholdWalls(world, sbb, 0, 0, 0, 8, 6, 17, rand, deco.randomBlocks);
 
 		// statues
@@ -87,7 +89,7 @@ public class ComponentTFStrongholdTreasureRoom extends StructureTFStrongholdComp
 	 * Make a doorway
 	 */
 	@Override
-	protected void placeDoorwayAt(World world, Random rand, int x, int y, int z, StructureBoundingBox sbb) {
+	protected void placeDoorwayAt(World world, Random rand, int x, int y, int z, MutableBoundingBox sbb) {
 		if (x == 0 || x == getXSize()) {
 			this.fillWithBlocks(world, sbb, x, y, z - 1, x, y + 3, z + 1, Blocks.IRON_BARS.getDefaultState(), Blocks.AIR.getDefaultState(), false);
 		} else {

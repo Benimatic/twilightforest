@@ -3,9 +3,12 @@ package twilightforest.structures.minotaurmaze;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentOld;
 
@@ -18,7 +21,6 @@ public class ComponentTFMazeMound extends StructureTFComponentOld {
 		super();
 	}
 
-
 	public static final int DIAMETER = 35;
 	private int averageGroundLevel = -1;
 
@@ -26,16 +28,16 @@ public class ComponentTFMazeMound extends StructureTFComponentOld {
 
 	public ComponentTFMazeMound(TFFeature feature, int i, Random rand, int x, int y, int z) {
 		super(feature, i);
-		this.setCoordBaseMode(Direction.HORIZONTALS[rand.nextInt(4)]);
+		this.setCoordBaseMode(Direction.Plane.HORIZONTAL.random(rand));
 
-		this.boundingBox = new StructureBoundingBox(x, y, z, x + DIAMETER, y + 8, z + DIAMETER);
+		this.boundingBox = new MutableBoundingBox(x, y, z, x + DIAMETER, y + 8, z + DIAMETER);
 	}
 
 	/**
 	 * Initiates construction of the Structure Component picked, at the current Location of StructGen
 	 */
 	@Override
-	public void buildComponent(StructureComponent structurecomponent, List<StructureComponent> list, Random random) {
+	public void buildComponent(StructurePiece structurecomponent, List<StructurePiece> list, Random random) {
 		super.buildComponent(structurecomponent, list, random);
 
 		// add aboveground maze entrance building
@@ -45,10 +47,10 @@ public class ComponentTFMazeMound extends StructureTFComponentOld {
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 
 		if (this.averageGroundLevel < 0) {
-			this.averageGroundLevel = this.getAverageGroundLevel(world, sbb);
+			this.averageGroundLevel = this.getAverageGroundLevel(world.getWorld(), sbb);
 
 			if (this.averageGroundLevel < 0) {
 				return true;
@@ -62,7 +64,6 @@ public class ComponentTFMazeMound extends StructureTFComponentOld {
 				mazeAbove.getBoundingBox().offset(0, offset, 0);
 			}
 		}
-
 
 		//this.fillWithBlocks(world, sbb, 0, 0, 0, 25, 8, 25, Blocks.DIRT, 0, false);
 
@@ -91,13 +92,12 @@ public class ComponentTFMazeMound extends StructureTFComponentOld {
 		return true;
 	}
 
-
 	/**
 	 * Discover the y coordinate that will serve as the ground level of the supplied BoundingBox. (A median of all the
 	 * levels in the BB's horizontal rectangle).
 	 */
 	@Override
-	protected int getAverageGroundLevel(World world, StructureBoundingBox boundingBox) {
+	protected int getAverageGroundLevel(World world, MutableBoundingBox boundingBox) {
 		int totalHeight = 0;
 		int totalMeasures = 0;
 
@@ -107,7 +107,7 @@ public class ComponentTFMazeMound extends StructureTFComponentOld {
 
 				if (boundingBox.isVecInside(pos)) {
 					final BlockPos topPos = world.getTopSolidOrLiquidBlock(pos);
-					totalHeight += Math.max(topPos.getY(), world.provider.getAverageGroundLevel());
+					totalHeight += Math.max(topPos.getY(), world.dimension.getAverageGroundLevel());
 					++totalMeasures;
 				}
 			}
@@ -119,5 +119,4 @@ public class ComponentTFMazeMound extends StructureTFComponentOld {
 			return totalHeight / totalMeasures;
 		}
 	}
-
 }

@@ -4,16 +4,12 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.MutableBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.BlockTFMazestone;
 import twilightforest.block.TFBlocks;
-import twilightforest.enums.MazestoneVariant;
-import twilightforest.world.feature.TFGenCanopyTree;
 
 import java.util.Random;
-
 
 /**
  * This is a maze of cells and walls.
@@ -40,7 +36,7 @@ public class TFMaze {
 
 	public int type; // 1-3 = various sizes hollow hills
 
-	public StructureComponent.BlockSelector wallBlocks;
+	public StructurePiece.BlockSelector wallBlocks;
 
 	public BlockState wallBlockState;
 
@@ -74,8 +70,8 @@ public class TFMaze {
 		tall = 3;
 		head = 0;
 		roots = 0;
-		wallBlockState = TFBlocks.maze_stone.getDefaultState().with(BlockTFMazestone.VARIANT, MazestoneVariant.CHISELED);
-		rootBlockState = TFBlocks.maze_stone.getDefaultState();
+		wallBlockState = TFBlocks.maze_stone_chiseled.get().getDefaultState();
+		rootBlockState = TFBlocks.maze_stone.get().getDefaultState();
 		torchBlockState = Blocks.TORCH.getDefaultState();
 		pillarBlockState = null;
 
@@ -428,7 +424,7 @@ public class TFMaze {
 
 	}
 
-	private void makeWallThing(World world, int dy, StructureTFComponentOld component, StructureBoundingBox sbb, int mdx, int mdz, int even, int odd) {
+	private void makeWallThing(World world, int dy, StructureTFComponentOld component, MutableBoundingBox sbb, int mdx, int mdz, int even, int odd) {
 		for (int y = 0; y < head; y++) {
 			putHeadBlock(world, mdx + even, dy + tall + y, mdz + odd, component, sbb);
 		}
@@ -443,7 +439,7 @@ public class TFMaze {
 	/**
 	 * Puts a wall block in the structure, if pillar blocks are properly specified
 	 */
-	private void putPillarBlock(World world, int x, int y, int z, StructureTFComponentOld component, StructureBoundingBox sbb) {
+	private void putPillarBlock(World world, int x, int y, int z, StructureTFComponentOld component, MutableBoundingBox sbb) {
 		component.setBlockState(world, pillarBlockState, x, y, z, sbb);
 	}
 
@@ -457,7 +453,7 @@ public class TFMaze {
 	/**
 	 * Puts a wall block in the structure, at the specified structure coordinates.
 	 */
-	private void putWallBlock(World world, int x, int y, int z, StructureTFComponentOld component, StructureBoundingBox sbb) {
+	private void putWallBlock(World world, int x, int y, int z, StructureTFComponentOld component, MutableBoundingBox sbb) {
 		if (wallBlocks != null) {
 			wallBlocks.selectBlocks(rand, x, y, z, true);
 			component.setBlockState(world, wallBlocks.getBlockState(), x, y, z, sbb);
@@ -469,7 +465,7 @@ public class TFMaze {
 	/**
 	 * Puts a wall block in the structure, at the specified structure coordinates.
 	 */
-	private void putDoorBlock(World world, int x, int y, int z, StructureTFComponentOld component, StructureBoundingBox sbb) {
+	private void putDoorBlock(World world, int x, int y, int z, StructureTFComponentOld component, MutableBoundingBox sbb) {
 		component.setBlockState(world, doorBlockState, x, y, z, sbb);
 	}
 
@@ -485,7 +481,7 @@ public class TFMaze {
 		world.setBlockState(new BlockPos(x, y, z), headBlockState, 2);
 	}
 
-	private void putHeadBlock(World world, int x, int y, int z, StructureTFComponentOld component, StructureBoundingBox sbb) {
+	private void putHeadBlock(World world, int x, int y, int z, StructureTFComponentOld component, MutableBoundingBox sbb) {
 		component.setBlockState(world, headBlockState, x, y, z, sbb);
 	}
 
@@ -500,14 +496,14 @@ public class TFMaze {
 	/**
 	 * Puts a root block in the structure, at the specified structure coordinates.
 	 */
-	private void putRootBlock(World world, int x, int y, int z, StructureTFComponentOld component, StructureBoundingBox sbb) {
+	private void putRootBlock(World world, int x, int y, int z, StructureTFComponentOld component, MutableBoundingBox sbb) {
 		component.setBlockState(world, rootBlockState, x, y, z, sbb);
 	}
 
 	/**
 	 * Puts a canopy tree in the world at the specified structure coordinates.
 	 */
-	private void putCanopyTree(World world, int x, int y, int z, StructureTFComponentOld component, StructureBoundingBox sbb) {
+	private void putCanopyTree(World world, int x, int y, int z, StructureTFComponentOld component, MutableBoundingBox sbb) {
 		BlockPos pos = component.getBlockPosWithOffset(x, y, z);
 
 		// only place it if we're actually generating the chunk the tree is in (or at least the middle of the tree)

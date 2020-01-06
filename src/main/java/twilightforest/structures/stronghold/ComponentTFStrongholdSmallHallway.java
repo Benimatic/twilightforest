@@ -2,16 +2,17 @@ package twilightforest.structures.stronghold;
 
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 
 import java.util.List;
 import java.util.Random;
 
 public class ComponentTFStrongholdSmallHallway extends StructureTFStrongholdComponent {
-
 
 	public ComponentTFStrongholdSmallHallway() {
 	}
@@ -21,12 +22,12 @@ public class ComponentTFStrongholdSmallHallway extends StructureTFStrongholdComp
 	}
 
 	@Override
-	public StructureBoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
+	public MutableBoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
 		return StructureTFStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -4, -1, 0, 9, 7, 18, facing);
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random random) {
+	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random random) {
 		super.buildComponent(parent, list, random);
 
 		// entrance
@@ -38,7 +39,8 @@ public class ComponentTFStrongholdSmallHallway extends StructureTFStrongholdComp
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld worldIn, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		World world = worldIn.getWorld();
 		placeStrongholdWalls(world, sbb, 0, 0, 0, 8, 6, 17, rand, deco.randomBlocks);
 
 		// statues

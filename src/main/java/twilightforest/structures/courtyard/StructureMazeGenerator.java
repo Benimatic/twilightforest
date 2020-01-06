@@ -1,13 +1,12 @@
 package twilightforest.structures.courtyard;
 
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.NBTTagInt;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.INBT;
+import net.minecraft.nbt.IntNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
-import net.minecraft.world.gen.structure.StructureComponent;
-import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.enums.Diagonals;
 import twilightforest.structures.StructureTFComponent;
@@ -33,17 +32,17 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
         generateMaze(this.maze, this.cornerClipping, rand, this.widthInCellCount, this.heightInCellCount, 2);
     }
 
-    // Actually assemble maze
+	// Actually assemble maze
     @Override
-    public void buildComponent(StructureComponent structureComponent, List<StructureComponent> list, Random random) {
-        super.buildComponent(structureComponent, list, random);
-        final int offset = 6;
+    public void buildComponent(StructurePiece structureComponent, List<StructurePiece> list, Random random) {
+		super.buildComponent(structureComponent, list, random);
+		final int offset = 6;
 
-        final Rotation[] rotations = Rotation.values();
+		final Rotation[] rotations = Rotation.values();
 
-        this.processInnerWallsAndFloor(structureComponent, list, random, offset, rotations);
+		this.processInnerWallsAndFloor(structureComponent, list, random, offset, rotations);
 
-        this.processOuterWalls(structureComponent, list, random, offset, rotations);
+		this.processOuterWalls(structureComponent, list, random, offset, rotations);
     }
 
     @SuppressWarnings("SameParameterValue")
@@ -144,7 +143,7 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
     }
 
     @SuppressWarnings("ConstantConditions")
-    private void processInnerWallsAndFloor(StructureComponent structureComponent, List<StructureComponent> list, Random random, final int offset, final Rotation[] rotations) {
+    private void processInnerWallsAndFloor(StructurePiece structureComponent, List<StructurePiece> list, Random random, final int offset, final Rotation[] rotations) {
         for (int x = 0; x < widthInCellCount - 1; x++) {
             for (int y = 0; y < heightInCellCount - 1; y++) {
                 final boolean xCenter = x == (widthInCellCount  / 2) - 1;
@@ -365,7 +364,7 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
         }
     }
 
-    private void processOuterWalls(StructureComponent structureComponent, List<StructureComponent> list, Random random, final int offset, final Rotation[] rotations) {
+    private void processOuterWalls(StructurePiece structureComponent, List<StructurePiece> list, Random random, final int offset, final Rotation[] rotations) {
         // -------- WALLS
         for (Diagonals diagonal : Diagonals.values()) {
             // Walls at corner notches going with X Axis, crossing Z Axis. Sideways.
@@ -611,37 +610,37 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
     protected void writeStructureToNBT(CompoundNBT tagCompound) {
         super.writeStructureToNBT(tagCompound);
 
-        NBTTagList mazeX = new NBTTagList();
+        ListNBT mazeX = new ListNBT();
 
         for (int x = 0; x < widthInCellCount-1; x++) {
-            NBTTagList mazeY = new NBTTagList();
+            ListNBT mazeY = new ListNBT();
 
-            for (int y = 0; y < heightInCellCount-1; y++) mazeY.appendTag(new NBTTagInt(maze[x][y]));
+            for (int y = 0; y < heightInCellCount-1; y++) mazeY.appendTag(new IntNBT(maze[x][y]));
 
             mazeX.appendTag(mazeY);
         }
 
         tagCompound.putInt("mazeWidth", widthInCellCount);
         tagCompound.putInt("mazeHeight", heightInCellCount);
-        tagCompound.setTag("maze", mazeX);
+        tagCompound.put("maze", mazeX);
     }
 
-    @Override
-    protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
-        super.readStructureFromNBT(tagCompound, templateManager);
+	@Override
+	protected void readAdditional(CompoundNBT tagCompound) {
+		super.readAdditional(tagCompound);
 
-        this.widthInCellCount = tagCompound.getInt("mazeWidth");
-        this.heightInCellCount = tagCompound.getInt("mazeHeight");
+		this.widthInCellCount = tagCompound.getInt("mazeWidth");
+		this.heightInCellCount = tagCompound.getInt("mazeHeight");
 
-        maze = new int[this.widthInCellCount-1][this.heightInCellCount-1];
+		maze = new int[this.widthInCellCount-1][this.heightInCellCount-1];
 
-        NBTTagList mazeX = tagCompound.getTagList("maze", 9);
+		ListNBT mazeX = tagCompound.getList("maze", 9);
 
-        for (int x = 0; x < widthInCellCount-1; x++) {
-            NBTBase mazeY = mazeX.get(x);
+		for (int x = 0; x < widthInCellCount-1; x++) {
+			INBT mazeY = mazeX.get(x);
 
-            if (mazeY instanceof NBTTagList)
-                for (int y = 0; y < heightInCellCount - 1; y++) maze[x][y] = ((NBTTagList) mazeY).getIntAt(y);
-        }
-    }
+			if (mazeY instanceof ListNBT)
+				for (int y = 0; y < heightInCellCount - 1; y++) maze[x][y] = ((ListNBT) mazeY).getInt(y);
+		}
+	}
 }

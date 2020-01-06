@@ -3,13 +3,13 @@ package twilightforest.structures.minotaurmaze;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
-import twilightforest.block.BlockTFMazestone;
 import twilightforest.block.TFBlocks;
-import twilightforest.enums.MazestoneVariant;
 import twilightforest.structures.StructureTFComponentOld;
 
 import java.util.List;
@@ -21,32 +21,31 @@ public class ComponentTFMazeUpperEntrance extends StructureTFComponentOld {
 		super();
 	}
 
-
 	public ComponentTFMazeUpperEntrance(TFFeature feature, int i, Random rand, int x, int y, int z) {
 		super(feature, i);
-		this.setCoordBaseMode(Direction.HORIZONTALS[rand.nextInt(4)]);
+		this.setCoordBaseMode(Direction.Plane.HORIZONTAL.random(rand));
 
-		this.boundingBox = new StructureBoundingBox(x, y, z, x + 15, y + 4, z + 15);
+		this.boundingBox = new MutableBoundingBox(x, y, z, x + 15, y + 4, z + 15);
 	}
 
 	/**
 	 * Initiates construction of the Structure Component picked, at the current Location of StructGen
 	 */
 	@Override
-	public void buildComponent(StructureComponent structurecomponent, List<StructureComponent> list, Random random) {
+	public void buildComponent(StructurePiece structurecomponent, List<StructurePiece> list, Random random) {
 		;
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 
 		// ceiling
-		this.generateMaybeBox(world, sbb, rand, 0.7F, 0, 5, 0, 15, 5, 15, TFBlocks.maze_stone.getDefaultState(), AIR, true, 0);
+		this.generateMaybeBox(world, sbb, rand, 0.7F, 0, 5, 0, 15, 5, 15, TFBlocks.maze_stone.get().getDefaultState(), AIR, true, 0);
 
-		this.fillWithBlocks(world, sbb, 0, 0, 0, 15, 0, 15, TFBlocks.maze_stone.getDefaultState().with(BlockTFMazestone.VARIANT, MazestoneVariant.MOSAIC), AIR, false);
-		this.fillWithBlocks(world, sbb, 0, 1, 0, 15, 1, 15, TFBlocks.maze_stone.getDefaultState().with(BlockTFMazestone.VARIANT, MazestoneVariant.DECORATIVE), AIR, true);
-		this.fillWithBlocks(world, sbb, 0, 2, 0, 15, 3, 15, TFBlocks.maze_stone.getDefaultState().with(BlockTFMazestone.VARIANT, MazestoneVariant.BRICK), AIR, true);
-		this.fillWithBlocks(world, sbb, 0, 4, 0, 15, 4, 15, TFBlocks.maze_stone.getDefaultState().with(BlockTFMazestone.VARIANT, MazestoneVariant.DECORATIVE), AIR, true);
+		this.fillWithBlocks(world, sbb, 0, 0, 0, 15, 0, 15, TFBlocks.maze_stone_mosaic.get().getDefaultState(), AIR, false);
+		this.fillWithBlocks(world, sbb, 0, 1, 0, 15, 1, 15, TFBlocks.maze_stone_decorative.get().getDefaultState(), AIR, true);
+		this.fillWithBlocks(world, sbb, 0, 2, 0, 15, 3, 15, TFBlocks.maze_stone_brick.get().getDefaultState(), AIR, true);
+		this.fillWithBlocks(world, sbb, 0, 4, 0, 15, 4, 15, TFBlocks.maze_stone_decorative.get().getDefaultState(), AIR, true);
 		this.generateMaybeBox(world, sbb, rand, 0.2F, 0, 0, 0, 15, 5, 15, Blocks.GRAVEL.getDefaultState(), AIR, true, 0);
 
 
@@ -67,24 +66,22 @@ public class ComponentTFMazeUpperEntrance extends StructureTFComponentOld {
 		this.fillWithAir(world, sbb, 1, 1, 1, 14, 4, 14);
 
 		// entrance pit
-		this.fillWithBlocks(world, sbb, 5, 1, 5, 10, 1, 10, TFBlocks.maze_stone.getDefaultState().with(BlockTFMazestone.VARIANT, MazestoneVariant.DECORATIVE), AIR, false);
-		this.fillWithBlocks(world, sbb, 5, 4, 5, 10, 4, 10, TFBlocks.maze_stone.getDefaultState().with(BlockTFMazestone.VARIANT, MazestoneVariant.DECORATIVE), AIR, false);
+		this.fillWithBlocks(world, sbb, 5, 1, 5, 10, 1, 10, TFBlocks.maze_stone_decorative.get().getDefaultState(), AIR, false);
+		this.fillWithBlocks(world, sbb, 5, 4, 5, 10, 4, 10, TFBlocks.maze_stone_decorative.get().getDefaultState(), AIR, false);
 		this.generateMaybeBox(world, sbb, rand, 0.7F, 5, 2, 5, 10, 3, 10, Blocks.IRON_BARS.getDefaultState(), AIR, false, 0);
 //		this.fillWithBlocks(world, sbb, 5, 2, 5, 10, 3, 10, Blocks.IRON_BARS, 0, AIR, false);
-
 
 		this.fillWithAir(world, sbb, 6, 0, 6, 9, 4, 9);
 
 		return true;
 	}
 
-
 	/**
 	 * Discover the y coordinate that will serve as the ground level of the supplied BoundingBox. (A median of all the
 	 * levels in the BB's horizontal rectangle).
 	 */
 	@Override
-	protected int getAverageGroundLevel(World world, StructureBoundingBox boundingBox) {
+	protected int getAverageGroundLevel(World world, MutableBoundingBox boundingBox) {
 		int yTotal = 0;
 		int count = 0;
 
@@ -94,7 +91,7 @@ public class ComponentTFMazeUpperEntrance extends StructureTFComponentOld {
 
 				if (boundingBox.isVecInside(pos)) {
 					final BlockPos topPos = world.getTopSolidOrLiquidBlock(pos);
-					yTotal += Math.max(topPos.getY(), world.provider.getAverageGroundLevel());
+					yTotal += Math.max(topPos.getY(), world.dimension.getAverageGroundLevel());
 					++count;
 				}
 			}
@@ -106,5 +103,4 @@ public class ComponentTFMazeUpperEntrance extends StructureTFComponentOld {
 			return yTotal / count;
 		}
 	}
-
 }

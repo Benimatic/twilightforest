@@ -3,14 +3,15 @@ package twilightforest.structures.trollcave;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
-import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.EntityTFArmoredGiant;
 import twilightforest.entity.EntityTFGiantMiner;
+import twilightforest.entity.TFEntities;
 import twilightforest.structures.StructureTFComponentOld;
 
 import java.util.List;
@@ -48,14 +49,14 @@ public class ComponentTFCloudCastle extends StructureTFComponentOld {
 	}
 
 	@Override
-	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
-		super.readStructureFromNBT(tagCompound, templateManager);
+	protected void readAdditional(CompoundNBT tagCompound) {
+		super.readAdditional(tagCompound);
 		this.minerPlaced = tagCompound.getBoolean("minerPlaced");
 		this.warriorPlaced = tagCompound.getBoolean("warriorPlaced");
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
+	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		// up to two trees
 		// tree in x direction
 		boolean plus = rand.nextBoolean();
@@ -74,19 +75,17 @@ public class ComponentTFCloudCastle extends StructureTFComponentOld {
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 		// make haus
-		this.fillWithBlocks(world, sbb, 0, -4, 0, 15, -1, 15, TFBlocks.fluffy_cloud.getDefaultState(), TFBlocks.fluffy_cloud.getDefaultState(), false);
-		this.fillWithBlocks(world, sbb, 0, 0, 0, 15, 11, 15, TFBlocks.giant_cobblestone.getDefaultState(), TFBlocks.giant_cobblestone.getDefaultState(), false);
-		this.fillWithBlocks(world, sbb, 0, 12, 0, 15, 15, 15, TFBlocks.giant_log.getDefaultState(), TFBlocks.giant_log.getDefaultState(), false);
-
+		this.fillWithBlocks(world, sbb, 0, -4, 0, 15, -1, 15, TFBlocks.fluffy_cloud.get().getDefaultState(), TFBlocks.fluffy_cloud.get().getDefaultState(), false);
+		this.fillWithBlocks(world, sbb, 0, 0, 0, 15, 11, 15, TFBlocks.giant_cobblestone.get().getDefaultState(), TFBlocks.giant_cobblestone.get().getDefaultState(), false);
+		this.fillWithBlocks(world, sbb, 0, 12, 0, 15, 15, 15, TFBlocks.giant_log.get().getDefaultState(), TFBlocks.giant_log.get().getDefaultState(), false);
 
 		// clear inside
 		this.fillWithAir(world, sbb, 4, 0, 4, 11, 11, 11);
 
 		// clear door
 		this.fillWithAir(world, sbb, 0, 0, 4, 4, 7, 7);
-
 
 		// add giants
 		if (!this.minerPlaced) {
@@ -98,7 +97,7 @@ public class ComponentTFCloudCastle extends StructureTFComponentOld {
 			if (sbb.isVecInside(pos)) {
 				this.minerPlaced = true;
 
-				EntityTFGiantMiner miner = new EntityTFGiantMiner(world);
+				EntityTFGiantMiner miner = new EntityTFGiantMiner(TFEntities.giant_miner.get(), world.getWorld());
 				miner.setPosition(bx, by, bz);
 				miner.enablePersistence();
 				miner.onInitialSpawn(world.getDifficultyForLocation(pos), null);
@@ -115,7 +114,7 @@ public class ComponentTFCloudCastle extends StructureTFComponentOld {
 			if (sbb.isVecInside(pos)) {
 				this.warriorPlaced = true;
 
-				EntityTFArmoredGiant warrior = new EntityTFArmoredGiant(world);
+				EntityTFArmoredGiant warrior = new EntityTFArmoredGiant(TFEntities.armored_giant.get(), world.getWorld());
 				warrior.setPosition(bx, by, bz);
 				warrior.enablePersistence();
 				warrior.onInitialSpawn(world.getDifficultyForLocation(pos), null);

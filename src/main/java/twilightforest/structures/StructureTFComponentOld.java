@@ -2,20 +2,23 @@ package twilightforest.structures;
 
 import net.minecraft.block.*;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntityMobSpawner;
-import net.minecraft.tileentity.TileEntitySign;
+import net.minecraft.state.properties.Half;
+import net.minecraft.state.properties.SlabType;
+import net.minecraft.tileentity.MobSpawnerTileEntity;
+import net.minecraft.tileentity.SignTileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.LightType;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.structure.MutableBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraftforge.common.util.BlockSnapshot;
 import twilightforest.TFFeature;
 import twilightforest.loot.TFTreasure;
@@ -49,7 +52,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	//Let's not use vanilla's weird rotation+mirror thing...
 	@Override
 	public void setCoordBaseMode(@Nullable Direction facing) {
-		this.coordBaseMode = facing;
+		this.getCoordBaseMode() = facing;
 		this.mirror = Mirror.NONE;
 
 		if (facing == null) {
@@ -113,16 +116,16 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	}
 
 	// [VanillaCopy] Keep pinned to signature of setBlockState (no state arg)
-	protected TileEntityMobSpawner setSpawner(World world, int x, int y, int z, MutableBoundingBox sbb, ResourceLocation monsterID) {
-		TileEntityMobSpawner tileEntitySpawner = null;
+	protected MobSpawnerTileEntity setSpawner(World world, int x, int y, int z, MutableBoundingBox sbb, ResourceLocation monsterID) {
+		MobSpawnerTileEntity tileEntitySpawner = null;
 
 		int dx = getXWithOffset(x, z);
 		int dy = getYWithOffset(y);
 		int dz = getZWithOffset(x, z);
 		BlockPos pos = new BlockPos(dx, dy, dz);
-		if (sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != Blocks.MOB_SPAWNER) {
-			world.setBlockState(pos, Blocks.MOB_SPAWNER.getDefaultState(), 2);
-			tileEntitySpawner = (TileEntityMobSpawner) world.getTileEntity(pos);
+		if (sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != Blocks.SPAWNER) {
+			world.setBlockState(pos, Blocks.SPAWNER.getDefaultState(), 2);
+			tileEntitySpawner = (MobSpawnerTileEntity) world.getTileEntity(pos);
 			if (tileEntitySpawner != null) {
 				tileEntitySpawner.getSpawnerBaseLogic().setEntityId(monsterID);
 			}
@@ -139,10 +142,10 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	}
 
 	protected void surroundBlockCardinalRotated(World world, BlockState block, int x, int y, int z, MutableBoundingBox sbb) {
-		setBlockState(world, block.with(BlockStairs.FACING, Direction.NORTH), x + 0, y, z - 1, sbb);
-		setBlockState(world, block.with(BlockStairs.FACING, Direction.SOUTH), x + 0, y, z + 1, sbb);
-		setBlockState(world, block.with(BlockStairs.FACING, Direction.WEST), x - 1, y, z + 0, sbb);
-		setBlockState(world, block.with(BlockStairs.FACING, Direction.EAST), x + 1, y, z + 0, sbb);
+		setBlockState(world, block.with(StairsBlock.FACING, Direction.NORTH), x + 0, y, z - 1, sbb);
+		setBlockState(world, block.with(StairsBlock.FACING, Direction.SOUTH), x + 0, y, z + 1, sbb);
+		setBlockState(world, block.with(StairsBlock.FACING, Direction.WEST), x - 1, y, z + 0, sbb);
+		setBlockState(world, block.with(StairsBlock.FACING, Direction.EAST), x + 1, y, z + 0, sbb);
 	}
 
 	protected void surroundBlockCorners(World world, BlockState block, int x, int y, int z, MutableBoundingBox sbb) {
@@ -152,9 +155,9 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 		setBlockState(world, block, x + 1, y, z + 1, sbb);
 	}
 
-	protected TileEntityMobSpawner setSpawnerRotated(World world, int x, int y, int z, Rotation rotation, ResourceLocation monsterID, MutableBoundingBox sbb) {
+	protected MobSpawnerTileEntity setSpawnerRotated(World world, int x, int y, int z, Rotation rotation, ResourceLocation monsterID, MutableBoundingBox sbb) {
 		Direction oldBase = fakeBaseMode(rotation);
-		TileEntityMobSpawner ret = setSpawner(world, x, y, z, sbb, monsterID);
+		MobSpawnerTileEntity ret = setSpawner(world, x, y, z, sbb, monsterID);
 		setCoordBaseMode(oldBase);
 		return ret;
 	}
@@ -225,8 +228,8 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 
 		// add tripwire hooks
 		BlockState tripwireHook = Blocks.TRIPWIRE_HOOK.getDefaultState();
-		setBlockState(world, tripwireHook.with(BlockTripWireHook.FACING, facing.getOpposite()), x, y, z, sbb);
-		setBlockState(world, tripwireHook.with(BlockTripWireHook.FACING, facing), x + dx * size, y, z + dz * size, sbb);
+		setBlockState(world, tripwireHook.with(TripWireHookBlock.FACING, facing.getOpposite()), x, y, z, sbb);
+		setBlockState(world, tripwireHook.with(TripWireHookBlock.FACING, facing), x + dx * size, y, z + dz * size, sbb);
 
 		// add string
 		BlockState tripwire = Blocks.TRIPWIRE.getDefaultState();
@@ -256,13 +259,13 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 		int dy = getYWithOffset(y);
 		int dz = getZWithOffset(x, z);
 		BlockPos pos = new BlockPos(dx, dy, dz);
-		if (sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != Blocks.STANDING_SIGN) {
-			world.setBlockState(pos, Blocks.STANDING_SIGN.getDefaultState().with(BlockStandingSign.ROTATION, this.getCoordBaseMode().getHorizontalIndex() * 4), 2);
+		if (sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != Blocks.OAK_SIGN) {
+			world.setBlockState(pos, Blocks.OAK_SIGN.getDefaultState().with(StandingSignBlock.ROTATION, this.getCoordBaseMode().getHorizontalIndex() * 4), 2);
 
-			TileEntitySign teSign = (TileEntitySign) world.getTileEntity(pos);
+			SignTileEntity teSign = (SignTileEntity) world.getTileEntity(pos);
 			if (teSign != null) {
-				teSign.signText[1] = new TextComponentString(string0);
-				teSign.signText[2] = new TextComponentString(string1);
+				teSign.signText[1] = new StringTextComponent(string0);
+				teSign.signText[2] = new StringTextComponent(string1);
 			}
 		}
 	}
@@ -272,15 +275,15 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 		int dy = getYWithOffset(y);
 		int dz = getZWithOffset(x, z);
 		BlockPos pos = new BlockPos(dx, dy, dz);
-		if (sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != Blocks.STANDING_SIGN) {
-			world.setBlockState(pos, Blocks.STANDING_SIGN.getDefaultState().with(BlockStandingSign.ROTATION, this.getCoordBaseMode().getHorizontalIndex() * 4), 2);
+		if (sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != Blocks.OAK_SIGN) {
+			world.setBlockState(pos, Blocks.OAK_SIGN.getDefaultState().with(StandingSignBlock.ROTATION, this.getCoordBaseMode().getHorizontalIndex() * 4), 2);
 
-			TileEntitySign teSign = (TileEntitySign) world.getTileEntity(pos);
+			SignTileEntity teSign = (SignTileEntity) world.getTileEntity(pos);
 			if (teSign != null) {
 				int min = Math.min(text.length, teSign.signText.length);
 
 				for (int i = 0; i < min; i++) {
-					teSign.signText[i] = new TextComponentString(text[i]);
+					teSign.signText[i] = new StringTextComponent(text[i]);
 				}
 			}
 		}
@@ -292,7 +295,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 //		
 //		ComponentTFTowerWing wing = new ComponentTFTowerWing(index, x, y, z, size, height, direction);
 //		// check to see if it intersects something already there
-//		StructureComponent intersect = StructureComponent.getIntersectingStructureComponent(list, wing.boundingBox);
+//		StructurePiece intersect = StructurePiece.getIntersectingStructurePiece(list, wing.boundingBox);
 //		if (intersect == null || intersect == this) {
 //			list.add(wing);
 //			wing.buildComponent(this, list, rand);
@@ -436,13 +439,13 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	}
 
 	@Override
-	public BlockState getBlockStateFromPos(World world, int x, int y, int z, MutableBoundingBox sbb) {
+	protected BlockState getBlockStateFromPos(IBlockReader world, int x, int y, int z, MutableBoundingBox sbb) {
 		// Making public
 		return super.getBlockStateFromPos(world, x, y, z, sbb);
 	}
 
 	@Override
-	protected void setBlockState(World worldIn, BlockState blockstateIn, int x, int y, int z, MutableBoundingBox sbb) {
+	protected void setBlockState(IWorld worldIn, BlockState blockstateIn, int x, int y, int z, MutableBoundingBox sbb) {
 		// Making public
 		super.setBlockState(worldIn, blockstateIn, x, y, z, sbb);
 	}
@@ -508,7 +511,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 		}
 	}
 
-	protected static StructureComponent.BlockSelector getStrongholdStones() {
+	protected static StructurePiece.BlockSelector getStrongholdStones() {
 		return strongholdStones;
 	}
 
@@ -534,7 +537,8 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	/**
 	 * Nullify all the sky light at the specified positions, using world coordinates
 	 */
-	protected void nullifySkyLight(World world, int sx, int sy, int sz, int dx, int dy, int dz) {
+	//TODO: Probably can't set light anymore
+	protected void nullifySkyLight(IWorld world, int sx, int sy, int sz, int dx, int dy, int dz) {
 		for (int x = sx; x <= dx; x++) {
 			for (int z = sz; z <= dz; z++) {
 				for (int y = sy; y <= dy; y++) {
@@ -558,7 +562,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 			for (int by = this.boundingBox.minX; by <= this.boundingBox.maxX; ++by) {
 				BlockPos pos = new BlockPos(by, 64, bz);
 				if (sbb.isVecInside(pos)) {
-					totalHeight += Math.max(world.getTopSolidOrLiquidBlock(pos).getY(), world.provider.getAverageGroundLevel());
+					totalHeight += Math.max(world.getTopSolidOrLiquidBlock(pos).getY(), world.dimension.getAverageGroundLevel());
 					++heightCount;
 				}
 			}
@@ -613,16 +617,16 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	 * Discover if bounding box can fit within the current bounding box object.
 	 */
 	@Nullable
-	public static StructureComponent findIntersectingExcluding(List<StructureComponent> list, MutableBoundingBox toCheck, StructureComponent exclude) {
-		Iterator<StructureComponent> iterator = list.iterator();
-		StructureComponent structurecomponent;
+	public static StructurePiece findIntersectingExcluding(List<StructurePiece> list, MutableBoundingBox toCheck, StructurePiece exclude) {
+		Iterator<StructurePiece> iterator = list.iterator();
+		StructurePiece structurecomponent;
 
 		do {
 			if (!iterator.hasNext()) {
 				return null;
 			}
 
-			structurecomponent = (StructureComponent) iterator.next();
+			structurecomponent = (StructurePiece) iterator.next();
 		}
 		while (structurecomponent == exclude || structurecomponent.getBoundingBox() == null || !structurecomponent.getBoundingBox().intersectsWith(toCheck));
 
@@ -640,13 +644,12 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	/* BlockState Helpers */
 	protected static BlockState getStairState(BlockState stairState, Direction direction, Rotation rotation, boolean isTopHalf) {
 		return stairState
-				.with(BlockStairs.FACING, direction)
-				.with(BlockStairs.HALF, isTopHalf ? BlockStairs.EnumHalf.TOP : BlockStairs.EnumHalf.BOTTOM);
+				.with(StairsBlock.FACING, direction)
+				.with(StairsBlock.HALF, isTopHalf ? Half.TOP : Half.BOTTOM);
 	}
 
-	protected static BlockState getSlabState(BlockState inputBlockState, BlockPlanks.EnumType type, BlockSlab.EnumBlockHalf half) {
+	protected static BlockState getSlabState(BlockState inputBlockState, SlabType half) {
 		return inputBlockState
-				.with(BlockPlanks.VARIANT, type)
-				.with(BlockSlab.HALF, half);
+				.with(SlabBlock.TYPE, half);
 	}
 }

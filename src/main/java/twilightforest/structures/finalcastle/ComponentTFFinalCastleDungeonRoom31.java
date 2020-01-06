@@ -6,17 +6,17 @@ import net.minecraft.item.DyeColor;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.biomes.TFBiomes;
-import twilightforest.block.BlockTFCastleBlock;
 import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.block.BlockTFForceField;
 import twilightforest.block.TFBlocks;
-import twilightforest.enums.CastleBrickVariant;
 import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
 import twilightforest.util.RotationUtil;
@@ -42,7 +42,7 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
+	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		if (parent instanceof StructureTFComponentOld) {
 			this.deco = ((StructureTFComponentOld) parent).deco;
 		}
@@ -71,27 +71,27 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 		}
 	}
 
-	private boolean isExitBuildForLevel(StructureComponent parent) {
+	private boolean isExitBuildForLevel(StructurePiece parent) {
 		if (parent instanceof ComponentTFFinalCastleDungeonEntrance) {
 			return ((ComponentTFFinalCastleDungeonEntrance) parent).hasExit;
 		}
 		return false;
 	}
 
-	private void setExitBuiltForLevel(StructureComponent parent, boolean exit) {
+	private void setExitBuiltForLevel(StructurePiece parent, boolean exit) {
 		if (parent instanceof ComponentTFFinalCastleDungeonEntrance) {
 			((ComponentTFFinalCastleDungeonEntrance) parent).hasExit = exit;
 		}
 	}
 
-	protected boolean addDungeonRoom(StructureComponent parent, List<StructureComponent> list, Random rand, Rotation rotation, int level) {
+	protected boolean addDungeonRoom(StructurePiece parent, List<StructurePiece> list, Random rand, Rotation rotation, int level) {
 		rotation = rotation.add(this.rotation);
 
 		BlockPos rc = this.getNewRoomCoords(rand, rotation);
 
 		ComponentTFFinalCastleDungeonRoom31 dRoom = new ComponentTFFinalCastleDungeonRoom31(getFeatureType(), rand, this.componentType + 1, rc.getX(), rc.getY(), rc.getZ(), rotation.rotate(Direction.SOUTH), level);
 
-		StructureBoundingBox largerBB = new StructureBoundingBox(dRoom.getBoundingBox());
+		MutableBoundingBox largerBB = new MutableBoundingBox(dRoom.getBoundingBox());
 
 		int expand = 0;
 		largerBB.minX -= expand;
@@ -99,7 +99,7 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 		largerBB.maxX += expand;
 		largerBB.maxZ += expand;
 
-		StructureComponent intersect = StructureTFComponentOld.findIntersectingExcluding(list, largerBB, this);
+		StructurePiece intersect = StructureTFComponentOld.findIntersectingExcluding(list, largerBB, this);
 		if (intersect == null) {
 			list.add(dRoom);
 			dRoom.buildComponent(parent, list, rand);
@@ -108,14 +108,14 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 		return false;
 	}
 
-	protected boolean addDungeonExit(StructureComponent parent, List<StructureComponent> list, Random rand, Rotation rotation) {
+	protected boolean addDungeonExit(StructurePiece parent, List<StructurePiece> list, Random rand, Rotation rotation) {
 
 		//TODO: check if we are sufficiently near the castle center
 
 		rotation = rotation.add(this.rotation);
 		BlockPos rc = this.getNewRoomCoords(rand, rotation);
 		ComponentTFFinalCastleDungeonExit dRoom = new ComponentTFFinalCastleDungeonExit(getFeatureType(), rand, this.componentType + 1, rc.getX(), rc.getY(), rc.getZ(), rotation.rotate(Direction.SOUTH), this.level);
-		StructureComponent intersect = StructureTFComponentOld.findIntersectingExcluding(list, dRoom.getBoundingBox(), this);
+		StructurePiece intersect = StructureTFComponentOld.findIntersectingExcluding(list, dRoom.getBoundingBox(), this);
 		if (intersect == null) {
 			list.add(dRoom);
 			dRoom.buildComponent(this, list, rand);
@@ -145,7 +145,8 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld worldIn, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		World world = worldIn.getWorld();
 
 		if (this.isBoundingBoxOutsideBiomes(world, sbb, plateauBiomes)) {
 			return false;
@@ -155,8 +156,8 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 
 		this.fillWithAir(world, sbb, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1, state -> state.getMaterial() == Material.ROCK);
 
-		BlockState floor = TFBlocks.castle_brick.getDefaultState();
-		BlockState border = floor.with(BlockTFCastleBlock.VARIANT, CastleBrickVariant.FRAME);
+		BlockState floor = TFBlocks.castle_brick.get().getDefaultState();
+		BlockState border = TFBlocks.castle_brick_frame.get().getDefaultState();
 
 		Predicate<BlockState> replacing = state -> {
 			Material material = state.getMaterial();
@@ -195,10 +196,12 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 	protected static final Predicate<Biome> plateauBiomes = biome ->
 			biome == TFBiomes.highlandsCenter || biome == TFBiomes.thornlands;
 
+	//TODO: Flatten
 	protected DyeColor getRuneColor(DyeColor forceFieldColor) {
 		return BlockTFCastleMagic.VALID_COLORS.get(forceFieldColor == BlockTFForceField.VALID_COLORS.get(4) ? 1 : 2);
 	}
 
+	//TODO: Flatten
 	protected DyeColor getForceFieldColor(Random decoRNG) {
 		return BlockTFForceField.VALID_COLORS.get(decoRNG.nextInt(2) + 3);
 	}

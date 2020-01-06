@@ -1,13 +1,13 @@
 package twilightforest.structures.icetower;
 
-import net.minecraft.block.BlockRotatedPillar;
+import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentOld;
 
@@ -23,15 +23,13 @@ public class ComponentTFIceTowerEntrance extends ComponentTFIceTowerWing {
 		super(feature, i, x, y, z, pSize, pHeight, direction);
 	}
 
-
 	@Override
 	protected boolean shouldHaveBase(Random rand) {
 		return true;
 	}
 
-
 	@Override
-	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
+	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		if (parent != null && parent instanceof StructureTFComponentOld) {
 			this.deco = ((StructureTFComponentOld) parent).deco;
 		}
@@ -54,7 +52,7 @@ public class ComponentTFIceTowerEntrance extends ComponentTFIceTowerWing {
 	/**
 	 * Add some stairs leading to this tower
 	 */
-	private boolean addStairs(List<StructureComponent> list, Random rand, int index, int x, int y, int z, Rotation rotation) {
+	private boolean addStairs(List<StructurePiece> list, Random rand, int index, int x, int y, int z, Rotation rotation) {
 		// add door
 		this.addOpening(x, y, z, rotation);
 
@@ -72,7 +70,7 @@ public class ComponentTFIceTowerEntrance extends ComponentTFIceTowerWing {
 	 * Make a new wing
 	 */
 	@Override
-	public boolean makeTowerWing(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
+	public boolean makeTowerWing(List<StructurePiece> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 		return false;
 	}
 
@@ -80,16 +78,13 @@ public class ComponentTFIceTowerEntrance extends ComponentTFIceTowerWing {
 	 * No floors
 	 */
 	@Override
-	protected void makeFloorsForTower(World world, Random rand, StructureBoundingBox sbb) {
-
+	protected void makeFloorsForTower(World world, Random rand, MutableBoundingBox sbb) {
 		decoratePillarsCornersHigh(world, rand, 0, 11, Rotation.NONE, sbb);
-
 	}
 
-
-	protected void decoratePillarsCornersHigh(World world, Random rand, int bottom, int top, Rotation rotation, StructureBoundingBox sbb) {
-		final BlockState pillarXAxis = deco.pillarState.with(BlockRotatedPillar.AXIS, Direction.Axis.X);
-		final BlockState pillarZAxis = deco.pillarState.with(BlockRotatedPillar.AXIS, Direction.Axis.Z);
+	protected void decoratePillarsCornersHigh(World world, Random rand, int bottom, int top, Rotation rotation, MutableBoundingBox sbb) {
+		final BlockState pillarXAxis = deco.pillarState.with(RotatedPillarBlock.AXIS, Direction.Axis.X);
+		final BlockState pillarZAxis = deco.pillarState.with(RotatedPillarBlock.AXIS, Direction.Axis.Z);
 		this.fillBlocksRotated(world, sbb, 3, bottom + 5, 1, 3, bottom + 5, 9, pillarZAxis, rotation);
 		this.fillBlocksRotated(world, sbb, 7, bottom + 5, 1, 7, bottom + 5, 9, pillarZAxis, rotation);
 		this.fillBlocksRotated(world, sbb, 1, bottom + 5, 3, 9, bottom + 5, 3, pillarXAxis, rotation);

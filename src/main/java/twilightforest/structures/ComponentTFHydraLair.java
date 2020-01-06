@@ -1,9 +1,12 @@
 package twilightforest.structures;
 
 import net.minecraft.block.Blocks;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
@@ -23,12 +26,12 @@ public class ComponentTFHydraLair extends ComponentTFHollowHill {
 	}
 
 	@Override
-	public void buildComponent(StructureComponent structurecomponent, List<StructureComponent> list, Random random) {
+	public void buildComponent(StructurePiece structurecomponent, List<StructurePiece> list, Random random) {
 		;
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 		int stalacts = 64;
 		int stalags = 8;
 
@@ -36,21 +39,21 @@ public class ComponentTFHydraLair extends ComponentTFHollowHill {
 		// ore or glowing stalactites! (smaller, less plentiful)
 		for (int i = 0; i < stalacts; i++) {
 			int[] dest = getCoordsInHill2D(rand);
-			generateOreStalactite(world, dest[0], 1, dest[1], sbb);
+			generateOreStalactite(world.getWorld(), dest[0], 1, dest[1], sbb);
 		}
 		// stone stalactites!
 		for (int i = 0; i < stalacts; i++) {
 			int[] dest = getCoordsInHill2D(rand);
-			generateBlockStalactite(world, Blocks.STONE, 1.0F, true, dest[0], 1, dest[1], sbb);
+			generateBlockStalactite(world.getWorld(), Blocks.STONE, 1.0F, true, dest[0], 1, dest[1], sbb);
 		}
 		// stone stalagmites!
 		for (int i = 0; i < stalags; i++) {
 			int[] dest = getCoordsInHill2D(rand);
-			generateBlockStalactite(world, Blocks.STONE, 0.9F, false, dest[0], 1, dest[1], sbb);
+			generateBlockStalactite(world.getWorld(), Blocks.STONE, 0.9F, false, dest[0], 1, dest[1], sbb);
 		}
 
 		// boss spawner seems important
-		setBlockState(world, TFBlocks.boss_spawner.getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.HYDRA), 27, 3, 27, sbb);
+		setBlockState(world, TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.HYDRA), 27, 3, 27, sbb);
 
 		return true;
 	}

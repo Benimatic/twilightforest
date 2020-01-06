@@ -2,7 +2,7 @@ package twilightforest.structures.darktower;
 
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 
 import java.util.List;
@@ -19,7 +19,7 @@ public class ComponentTFDarkTowerMainBridge extends ComponentTFDarkTowerBridge {
 
 
 	@Override
-	public boolean makeTowerWing(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
+	public boolean makeTowerWing(List<StructurePiece> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 		// make another size 15 main tower
 		Direction direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, 19, direction);

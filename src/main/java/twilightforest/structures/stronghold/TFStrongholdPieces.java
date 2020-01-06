@@ -1,8 +1,7 @@
 package twilightforest.structures.stronghold;
 
 import net.minecraft.util.Direction;
-import net.minecraft.world.gen.structure.MapGenStructureIO;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.structures.start.StructureStartKnightStronghold;
@@ -91,7 +90,7 @@ public class TFStrongholdPieces {
 		return flag;
 	}
 
-	public StructureTFStrongholdComponent getNextComponent(StructureComponent parent, List<StructureComponent> list, Random random, TFFeature feature, int index, Direction facing, int x, int y, int z) {
+	public StructureTFStrongholdComponent getNextComponent(StructurePiece parent, List<StructurePiece> list, Random random, TFFeature feature, int index, Direction facing, int x, int y, int z) {
 		if (!hasMoreLimitedPieces()) {
 			return null;
 		} else {
@@ -111,7 +110,7 @@ public class TFStrongholdPieces {
 						// we're here!
 						StructureTFStrongholdComponent component = piece.factory.newInstance(feature, index, facing, x, y, z);
 
-						if (StructureComponent.findIntersecting(list, component.getBoundingBox()) == null) {
+						if (StructurePiece.findIntersecting(list, component.getBoundingBox()) == null) {
 							++piece.instancesSpawned;
 
 							if (!piece.canSpawnMoreStructures()) {
@@ -130,7 +129,7 @@ public class TFStrongholdPieces {
 		// dead end?
 		StructureTFStrongholdComponent deadEnd = new ComponentTFStrongholdDeadEnd(parent instanceof StructureTFComponentOld ? ((StructureTFComponentOld)parent).getFeatureType() : TFFeature.NOTHING, index, facing, x, y, z);
 
-		if (StructureComponent.findIntersecting(list, deadEnd.getBoundingBox()) == null) {
+		if (StructurePiece.findIntersecting(list, deadEnd.getBoundingBox()) == null) {
 			return deadEnd;
 		} else {
 			return null;

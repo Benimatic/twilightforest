@@ -2,18 +2,15 @@ package twilightforest.structures.darktower;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
+import net.minecraft.util.math.MutableBoundingBox;
 import twilightforest.TFFeature;
-import twilightforest.block.BlockTFTowerWood;
 import twilightforest.block.TFBlocks;
-import twilightforest.enums.TowerWoodVariant;
 import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
 
 import java.util.Random;
-
 
 public class ComponentTFDarkTowerBeard extends StructureTFComponentOld {
 
@@ -32,8 +29,7 @@ public class ComponentTFDarkTowerBeard extends StructureTFComponentOld {
 		this.height = size / 2;
 
 		// just hang out at the very bottom of the tower
-		this.boundingBox = new StructureBoundingBox(wing.getBoundingBox().minX, wing.getBoundingBox().minY - this.height, wing.getBoundingBox().minZ, wing.getBoundingBox().maxX, wing.getBoundingBox().minY, wing.getBoundingBox().maxZ);
-
+		this.boundingBox = new MutableBoundingBox(wing.getBoundingBox().minX, wing.getBoundingBox().minY - this.height, wing.getBoundingBox().minZ, wing.getBoundingBox().maxX, wing.getBoundingBox().minY, wing.getBoundingBox().maxZ);
 	}
 
 	@Override
@@ -45,26 +41,24 @@ public class ComponentTFDarkTowerBeard extends StructureTFComponentOld {
 	}
 
 	@Override
-	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
-		super.readStructureFromNBT(tagCompound, templateManager);
+	protected void readAdditional(CompoundNBT tagCompound) {
+		super.readAdditional(tagCompound);
 		this.size = tagCompound.getInt("beardSize");
 		this.height = tagCompound.getInt("beardHeight");
 	}
-
 
 	/**
 	 * Makes a dark tower type beard
 	 */
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 		makeDarkBeard(world, sbb, 0, 0, 0, size - 1, height - 1, size - 1);
 
 		return true;
 	}
 
-
-	protected void makeDarkBeard(World world, StructureBoundingBox sbb, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
-		BlockState frameState = TFBlocks.tower_wood.getDefaultState().with(BlockTFTowerWood.VARIANT, TowerWoodVariant.ENCASED);
+	protected void makeDarkBeard(IWorld world, MutableBoundingBox sbb, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
+		BlockState frameState = TFBlocks.tower_wood_encased.get().getDefaultState();
 
 		for (int x = minX; x <= maxX; x++) {
 			for (int z = minZ; z <= maxZ; z++) {

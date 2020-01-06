@@ -1,13 +1,14 @@
 package twilightforest.structures.stronghold;
 
-import net.minecraft.block.BlockPlanks;
-import net.minecraft.block.BlockPumpkin;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.CarvedPumpkinBlock;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 
 import java.util.List;
@@ -23,12 +24,12 @@ public class ComponentTFStrongholdTrainingRoom extends StructureTFStrongholdComp
 	}
 
 	@Override
-	public StructureBoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
+	public MutableBoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
 		return StructureTFStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -13, -1, 0, 18, 7, 18, facing);
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random random) {
+	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random random) {
 		super.buildComponent(parent, list, random);
 
 		this.addDoor(13, 1, 0);
@@ -36,7 +37,8 @@ public class ComponentTFStrongholdTrainingRoom extends StructureTFStrongholdComp
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld worldIn, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		World world = worldIn.getWorld();
 		placeStrongholdWalls(world, sbb, 0, 0, 0, 17, 6, 17, rand, deco.randomBlocks);
 
 		// statues
@@ -44,9 +46,9 @@ public class ComponentTFStrongholdTrainingRoom extends StructureTFStrongholdComp
 		placeCornerStatue(world, 15, 1, 15, 3, sbb);
 
 		// sand floor
-		this.generateMaybeBox(world, sbb, rand, 0.7F, 4, 0, 4, 8, 0, 8, Blocks.SAND.getDefaultState(), Blocks.SAND.getDefaultState(), false, 0);
-		this.generateMaybeBox(world, sbb, rand, 0.7F, 9, 0, 4, 13, 0, 8, Blocks.SAND.getDefaultState(), Blocks.SAND.getDefaultState(), false, 0);
-		this.generateMaybeBox(world, sbb, rand, 0.7F, 9, 0, 9, 13, 0, 13, Blocks.SAND.getDefaultState(), Blocks.SAND.getDefaultState(), false, 0);
+		this.generateMaybeBox(world, sbb, rand, 0.7F, 4, 0, 4, 8, 0, 8, Blocks.SAND.getDefaultState(), Blocks.SAND.getDefaultState(), false, false);
+		this.generateMaybeBox(world, sbb, rand, 0.7F, 9, 0, 4, 13, 0, 8, Blocks.SAND.getDefaultState(), Blocks.SAND.getDefaultState(), false, false);
+		this.generateMaybeBox(world, sbb, rand, 0.7F, 9, 0, 9, 13, 0, 13, Blocks.SAND.getDefaultState(), Blocks.SAND.getDefaultState(), false, false);
 
 		// training dummies
 		placeTrainingDummy(world, sbb, Rotation.NONE);
@@ -59,11 +61,11 @@ public class ComponentTFStrongholdTrainingRoom extends StructureTFStrongholdComp
 		this.setBlockState(world, deco.pillarState, 5, 1, 12, sbb);
 		this.setBlockState(world, deco.pillarState, 5, 2, 12, sbb);
 		this.setBlockState(world, deco.pillarState, 6, 1, 12, sbb);
-		this.setBlockState(world, deco.stairState.with(BlockPumpkin.FACING, Direction.EAST), 6, 2, 12, sbb);
-		this.setBlockState(world, deco.stairState.with(BlockPumpkin.FACING, Direction.EAST), 7, 1, 12, sbb);
+		this.setBlockState(world, deco.stairState.with(CarvedPumpkinBlock.FACING, Direction.EAST), 6, 2, 12, sbb);
+		this.setBlockState(world, deco.stairState.with(CarvedPumpkinBlock.FACING, Direction.EAST), 7, 1, 12, sbb);
 		this.setBlockState(world, deco.pillarState, 5, 1, 11, sbb);
-		this.setBlockState(world, deco.stairState.with(BlockPumpkin.FACING, Direction.NORTH), 5, 2, 11, sbb);
-		this.setBlockState(world, deco.stairState.with(BlockPumpkin.FACING, Direction.NORTH), 5, 1, 10, sbb);
+		this.setBlockState(world, deco.stairState.with(CarvedPumpkinBlock.FACING, Direction.NORTH), 5, 2, 11, sbb);
+		this.setBlockState(world, deco.stairState.with(CarvedPumpkinBlock.FACING, Direction.NORTH), 5, 1, 10, sbb);
 
 		this.setBlockState(world, Blocks.ANVIL.getDefaultState(), 6, 1, 11, sbb);
 
@@ -73,13 +75,13 @@ public class ComponentTFStrongholdTrainingRoom extends StructureTFStrongholdComp
 		return true;
 	}
 
-	private void placeTrainingDummy(World world, StructureBoundingBox sbb, Rotation rotation) {
+	private void placeTrainingDummy(World world, MutableBoundingBox sbb, Rotation rotation) {
 		this.fillBlocksRotated(world, sbb, 5, 0, 5, 7, 0, 7, Blocks.SAND.getDefaultState(), rotation);
 		this.setBlockStateRotated(world, deco.fenceState, 6, 1, 6, rotation, sbb);
-		this.setBlockStateRotated(world, Blocks.PLANKS.getDefaultState().with(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH), 6, 2, 6, rotation, sbb);
+		this.setBlockStateRotated(world, Blocks.BIRCH_PLANKS.getDefaultState(), 6, 2, 6, rotation, sbb);
 		this.setBlockStateRotated(world, Blocks.OAK_FENCE.getDefaultState(), 5, 2, 6, rotation, sbb);
 		this.setBlockStateRotated(world, Blocks.OAK_FENCE.getDefaultState(), 7, 2, 6, rotation, sbb);
-		this.setBlockStateRotated(world, Blocks.PUMPKIN.getDefaultState().with(BlockPumpkin.FACING, getStructureRelativeRotation(rotation)), 6, 3, 6, rotation, sbb);
+		this.setBlockStateRotated(world, Blocks.PUMPKIN.getDefaultState().with(CarvedPumpkinBlock.FACING, getStructureRelativeRotation(rotation)), 6, 3, 6, rotation, sbb);
 	}
 
 }

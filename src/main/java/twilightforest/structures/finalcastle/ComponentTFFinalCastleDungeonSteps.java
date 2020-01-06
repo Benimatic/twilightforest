@@ -1,12 +1,13 @@
 package twilightforest.structures.finalcastle;
 
-import net.minecraft.block.BlockStairs;
+import net.minecraft.block.StairsBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.structures.StructureTFComponentOld;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class ComponentTFFinalCastleDungeonSteps extends StructureTFComponentOld 
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
+	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		if (parent != null && parent instanceof StructureTFComponentOld) {
 			this.deco = ((StructureTFComponentOld) parent).deco;
 		}
@@ -33,7 +34,7 @@ public class ComponentTFFinalCastleDungeonSteps extends StructureTFComponentOld 
 	/**
 	 * build more steps towards the specified direction
 	 */
-	public ComponentTFFinalCastleDungeonSteps buildMoreStepsTowards(StructureComponent parent, List<StructureComponent> list, Random rand, Rotation rotation) {
+	public ComponentTFFinalCastleDungeonSteps buildMoreStepsTowards(StructurePiece parent, List<StructurePiece> list, Random rand, Rotation rotation) {
 
 		Direction direction = getStructureRelativeRotation(rotation);
 
@@ -73,7 +74,7 @@ public class ComponentTFFinalCastleDungeonSteps extends StructureTFComponentOld 
 	/**
 	 * build a new level under the exit
 	 */
-	public ComponentTFFinalCastleDungeonEntrance buildLevelUnder(StructureComponent parent, List<StructureComponent> list, Random rand, int level) {
+	public ComponentTFFinalCastleDungeonEntrance buildLevelUnder(StructurePiece parent, List<StructurePiece> list, Random rand, int level) {
 		// find center of landing
 		int dx = this.getXWithOffset(2, 19);
 		int dy = this.getYWithOffset(-7);
@@ -90,24 +91,23 @@ public class ComponentTFFinalCastleDungeonSteps extends StructureTFComponentOld 
 	/**
 	 * build the boss room
 	 */
-	public ComponentTFFinalCastleDungeonForgeRoom buildBossRoomUnder(StructureComponent parent, List<StructureComponent> list, Random rand) {
+	public ComponentTFFinalCastleDungeonForgeRoom buildBossRoomUnder(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		// find center of landing
 		int dx = this.getXWithOffset(2, 19);
 		int dy = this.getYWithOffset(-31);
 		int dz = this.getZWithOffset(2, 19);
 
 		// build a new dungeon level under there
-		ComponentTFFinalCastleDungeonForgeRoom room = new ComponentTFFinalCastleDungeonForgeRoom(getFeatureType(), rand, 8, dx, dy, dz, this.coordBaseMode);
+		ComponentTFFinalCastleDungeonForgeRoom room = new ComponentTFFinalCastleDungeonForgeRoom(getFeatureType(), rand, 8, dx, dy, dz, this.getCoordBaseMode());
 		list.add(room);
 		room.buildComponent(this, list, rand);
 
 		return room;
 	}
 
-
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		final BlockState stairState = deco.stairState.with(BlockStairs.FACING, Direction.SOUTH);
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		final BlockState stairState = deco.stairState.with(StairsBlock.FACING, Direction.SOUTH);
 		for (int z = 0; z < 15; z++) {
 			int y = 14 - z;
 
@@ -118,5 +118,4 @@ public class ComponentTFFinalCastleDungeonSteps extends StructureTFComponentOld 
 
 		return true;
 	}
-
 }

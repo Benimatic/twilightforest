@@ -1,20 +1,16 @@
 package twilightforest.structures.hollowtree;
 
-import net.minecraft.block.BlockLog;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.util.math.MutableBoundingBox;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
-import twilightforest.world.feature.TFGenerator;
 
 import java.util.Random;
 import java.util.function.Predicate;
-
-import static net.minecraft.block.BlockLog.LOG_AXIS;
 
 public class ComponentTFHollowTreeRoot extends ComponentTFHollowTreeMedBranch {
 
@@ -26,11 +22,11 @@ public class ComponentTFHollowTreeRoot extends ComponentTFHollowTreeMedBranch {
 
 	public ComponentTFHollowTreeRoot(TFFeature feature, int i, int sx, int sy, int sz, double length, double angle, double tilt, boolean leafy) {
 		super(feature, i, sx, sy, sz, length, angle, tilt, leafy);
-		this.boundingBox = new StructureBoundingBox(src, dest);
+		this.boundingBox = new MutableBoundingBox(src, dest);
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random random, StructureBoundingBox sbb, boolean drawLeaves) {
+	public boolean addComponentParts(World world, Random random, MutableBoundingBox sbb, boolean drawLeaves) {
 		if (!drawLeaves) {
 			// offset bounding box to average ground level
 			if (this.groundLevel < 0) {
@@ -48,8 +44,8 @@ public class ComponentTFHollowTreeRoot extends ComponentTFHollowTreeMedBranch {
 			BlockPos rSrc = src.add(-boundingBox.minX, -boundingBox.minY, -boundingBox.minZ);
 			BlockPos rDest = dest.add(-boundingBox.minX, -boundingBox.minY, -boundingBox.minZ);
 
-			drawRootLine(world, sbb, rSrc.getX(), rSrc.getY(), rSrc.getZ(), rDest.getX(), rDest.getY(), rDest.getZ(), TFBlocks.root.getDefaultState());
-			drawRootLine(world, sbb, rSrc.getX(), rSrc.getY() - 1, rSrc.getZ(), rDest.getX(), rDest.getY() - 1, rDest.getZ(), TFBlocks.root.getDefaultState());
+			drawRootLine(world, sbb, rSrc.getX(), rSrc.getY(), rSrc.getZ(), rDest.getX(), rDest.getY(), rDest.getZ(), TFBlocks.root.get().getDefaultState());
+			drawRootLine(world, sbb, rSrc.getX(), rSrc.getY() - 1, rSrc.getZ(), rDest.getX(), rDest.getY() - 1, rDest.getZ(), TFBlocks.root.get().getDefaultState());
 		}
 
 		return true;
@@ -58,17 +54,17 @@ public class ComponentTFHollowTreeRoot extends ComponentTFHollowTreeMedBranch {
 	/**
 	 * Draws a line
 	 */
-	protected void drawRootLine(World world, StructureBoundingBox sbb, int x1, int y1, int z1, int x2, int y2, int z2, BlockState blockValue) {
+	protected void drawRootLine(World world, MutableBoundingBox sbb, int x1, int y1, int z1, int x2, int y2, int z2, BlockState blockValue) {
 		BlockPos lineCoords[] = TFGenerator.getBresehnamArrays(x1, y1, z1, x2, y2, z2);
 
 		for (BlockPos coords : lineCoords) {
 			BlockState block = this.getBlockStateFromPos(world, coords.getX(), coords.getY(), coords.getZ(), sbb);
 
 			// three choices here
-			if (!block.isNormalCube() || block.getBlock() != Blocks.AIR && block.getMaterial() == Material.GRASS) {
+			if (!block.isNormalCube() || block.getBlock() != Blocks.AIR && block.getMaterial() == Material.ORGANIC) {
 
 				// air, other non-solid, or grass, make wood block
-				BlockState log = TFBlocks.twilight_log.getDefaultState().with(LOG_AXIS, BlockLog.EnumAxis.NONE);
+				BlockState log = TFBlocks.oak_log.get().getDefaultState().with(LOG_AXIS, BlockLog.EnumAxis.NONE);
 				this.setBlockState(world, log, coords.getX(), coords.getY(), coords.getZ(), sbb);
 			} else if (block.getBlock() != Blocks.AIR && block.getMaterial() == Material.WOOD) {
 				// wood, do nothing
@@ -81,6 +77,6 @@ public class ComponentTFHollowTreeRoot extends ComponentTFHollowTreeMedBranch {
 
 	protected static final Predicate<BlockState> isGround = state -> {
 		Material material = state.getMaterial();
-		return material == Material.GROUND || material == Material.ROCK || material == Material.GRASS;
+		return material == Material.EARTH || material == Material.ROCK || material == Material.ORGANIC;
 	};
 }

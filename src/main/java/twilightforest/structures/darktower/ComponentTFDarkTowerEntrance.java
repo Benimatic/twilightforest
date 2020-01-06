@@ -2,9 +2,11 @@ package twilightforest.structures.darktower;
 
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 
 import java.util.List;
@@ -20,7 +22,7 @@ public class ComponentTFDarkTowerEntrance extends ComponentTFDarkTowerWing {
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
+	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		super.buildComponent(parent, list, rand);
 
 		// a few more openings
@@ -29,15 +31,16 @@ public class ComponentTFDarkTowerEntrance extends ComponentTFDarkTowerWing {
 	}
 
 	@Override
-	public void makeABeard(StructureComponent parent, List<StructureComponent> list, Random rand) {
+	public void makeABeard(StructurePiece parent, List<StructurePiece> list, Random rand) {
 	}
 
 	@Override
-	public void makeARoof(StructureComponent parent, List<StructureComponent> list, Random rand) {
+	public void makeARoof(StructurePiece parent, List<StructurePiece> list, Random rand) {
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld worldIn, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		World world = worldIn.getWorld();
 		// make walls
 		makeEncasedWalls(world, rand, sbb, 0, 0, 0, size - 1, height - 1, size - 1);
 
@@ -59,5 +62,4 @@ public class ComponentTFDarkTowerEntrance extends ComponentTFDarkTowerWing {
 
 		return true;
 	}
-
 }

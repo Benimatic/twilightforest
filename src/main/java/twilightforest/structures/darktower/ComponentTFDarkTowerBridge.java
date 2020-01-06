@@ -2,9 +2,10 @@ package twilightforest.structures.darktower;
 
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
@@ -28,16 +29,15 @@ public class ComponentTFDarkTowerBridge extends ComponentTFTowerWing {
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
+	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		if (parent != null && parent instanceof StructureTFComponentOld) {
 			this.deco = ((StructureTFComponentOld) parent).deco;
 		}
 		makeTowerWing(list, rand, this.getComponentType(), 4, 1, 2, dSize, dHeight, Rotation.NONE);
 	}
 
-
 	@Override
-	public boolean makeTowerWing(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
+	public boolean makeTowerWing(List<StructurePiece> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 		// kill too-small towers
 		if (wingHeight < 6) {
 			return false;
@@ -53,7 +53,7 @@ public class ComponentTFDarkTowerBridge extends ComponentTFTowerWing {
 
 		ComponentTFTowerWing wing = new ComponentTFDarkTowerWing(getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// check to see if it intersects something already there
-		StructureComponent intersect = StructureComponent.findIntersecting(list, wing.getBoundingBox());
+		StructurePiece intersect = StructurePiece.findIntersecting(list, wing.getBoundingBox());
 		if (intersect == null || intersect == this) {
 			list.add(wing);
 			wing.buildComponent(this, list, rand);
@@ -65,8 +65,7 @@ public class ComponentTFDarkTowerBridge extends ComponentTFTowerWing {
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 		// make walls
 		fillWithBlocks(world, sbb, 0, 0, 0, size - 1, height - 1, size - 1, deco.blockState, deco.blockState, false);
 
@@ -79,7 +78,7 @@ public class ComponentTFDarkTowerBridge extends ComponentTFTowerWing {
 		}
 
 		// nullify sky light
-		nullifySkyLightForBoundingBox(world);
+		nullifySkyLightForBoundingBox(world.getWorld());
 
 		// clear inside
 		fillWithAir(world, sbb, 0, 1, 1, size - 1, height - 2, size - 2);
@@ -93,7 +92,7 @@ public class ComponentTFDarkTowerBridge extends ComponentTFTowerWing {
 	 *
 	 * @return
 	 */
-	public StructureBoundingBox getWingBB() {
+	public MutableBoundingBox getWingBB() {
 		int[] dest = offsetTowerCoords(4, 1, 2, dSize, this.getCoordBaseMode());
 		return StructureTFComponentOld.getComponentToAddBoundingBox(dest[0], dest[1], dest[2], 0, 0, 0, dSize - 1, dHeight - 1, dSize - 1, this.getCoordBaseMode());
 	}

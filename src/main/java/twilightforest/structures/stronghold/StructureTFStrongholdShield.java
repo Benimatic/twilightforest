@@ -1,10 +1,11 @@
 package twilightforest.structures.stronghold;
 
-import net.minecraft.block.BlockDirectional;
+import net.minecraft.block.DirectionalBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.Direction;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
+import net.minecraft.util.math.MutableBoundingBox;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 
@@ -17,23 +18,23 @@ public class StructureTFStrongholdShield extends StructureTFStrongholdComponent 
 
 	public StructureTFStrongholdShield(TFFeature feature, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
 		super(feature, 0, Direction.SOUTH, minX, minY, minZ);
-		this.boundingBox = new StructureBoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
+		this.boundingBox = new MutableBoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
 		this.spawnListIndex = -1;
 	}
 
 	@Override
-	public StructureBoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
+	public MutableBoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
 		return null;
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random random, StructureBoundingBox sbb) {
-		BlockState down  = TFBlocks.stronghold_shield.getDefaultState().with(BlockDirectional.FACING, Direction.DOWN);
-		BlockState up    = TFBlocks.stronghold_shield.getDefaultState().with(BlockDirectional.FACING, Direction.UP);
-		BlockState north = TFBlocks.stronghold_shield.getDefaultState().with(BlockDirectional.FACING, Direction.NORTH);
-		BlockState south = TFBlocks.stronghold_shield.getDefaultState().with(BlockDirectional.FACING, Direction.SOUTH);
-		BlockState west  = TFBlocks.stronghold_shield.getDefaultState().with(BlockDirectional.FACING, Direction.WEST);
-		BlockState east  = TFBlocks.stronghold_shield.getDefaultState().with(BlockDirectional.FACING, Direction.EAST);
+	public boolean addComponentParts(IWorld world, Random randomIn, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		BlockState down  = TFBlocks.stronghold_shield.get().getDefaultState().with(DirectionalBlock.FACING, Direction.DOWN);
+		BlockState up    = TFBlocks.stronghold_shield.get().getDefaultState().with(DirectionalBlock.FACING, Direction.UP);
+		BlockState north = TFBlocks.stronghold_shield.get().getDefaultState().with(DirectionalBlock.FACING, Direction.NORTH);
+		BlockState south = TFBlocks.stronghold_shield.get().getDefaultState().with(DirectionalBlock.FACING, Direction.SOUTH);
+		BlockState west  = TFBlocks.stronghold_shield.get().getDefaultState().with(DirectionalBlock.FACING, Direction.WEST);
+		BlockState east  = TFBlocks.stronghold_shield.get().getDefaultState().with(DirectionalBlock.FACING, Direction.EAST);
 
 		// +x
 		this.fillWithBlocks(world, sbb, this.boundingBox.getXSize(), 0, 0, this.boundingBox.getXSize(), this.boundingBox.getYSize(), this.boundingBox.getZSize(), west, west, false);
@@ -50,5 +51,4 @@ public class StructureTFStrongholdShield extends StructureTFStrongholdComponent 
 
 		return true;
 	}
-
 }

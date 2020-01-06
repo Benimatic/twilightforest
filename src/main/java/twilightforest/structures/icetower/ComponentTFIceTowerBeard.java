@@ -1,10 +1,10 @@
 package twilightforest.structures.icetower;
 
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraft.world.IWorld;
+import net.minecraft.util.math.MutableBoundingBox;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
@@ -31,7 +31,7 @@ public class ComponentTFIceTowerBeard extends StructureTFComponentOld {
 		this.deco = wing.deco;
 
 		// just hang out at the very bottom of the tower
-		this.boundingBox = new StructureBoundingBox(wing.getBoundingBox().minX, wing.getBoundingBox().minY - this.height, wing.getBoundingBox().minZ, wing.getBoundingBox().maxX, wing.getBoundingBox().minY, wing.getBoundingBox().maxZ);
+		this.boundingBox = new MutableBoundingBox(wing.getBoundingBox().minX, wing.getBoundingBox().minY - this.height, wing.getBoundingBox().minZ, wing.getBoundingBox().maxX, wing.getBoundingBox().minY, wing.getBoundingBox().maxZ);
 	}
 
 	/**
@@ -49,18 +49,17 @@ public class ComponentTFIceTowerBeard extends StructureTFComponentOld {
 	 * Load from NBT
 	 */
 	@Override
-	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
-		super.readStructureFromNBT(tagCompound, templateManager);
+	protected void readAdditional(CompoundNBT tagCompound) {
+		super.readAdditional(tagCompound);
 		this.size = tagCompound.getInt("beardSize");
 		this.height = tagCompound.getInt("beardHeight");
 	}
-
 
 	/**
 	 * Makes a dark tower type beard
 	 */
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 		for (int x = 0; x < this.size; x++) {
 			for (int z = 0; z < this.size; z++) {
 				//int rHeight = this.size - (int) MathHelper.sqrt_float(x * z); // interesting office building pattern
@@ -75,5 +74,4 @@ public class ComponentTFIceTowerBeard extends StructureTFComponentOld {
 		}
 		return true;
 	}
-
 }

@@ -1,13 +1,15 @@
 package twilightforest.structures.stronghold;
 
-import net.minecraft.block.BlockStairs;
+import net.minecraft.block.StairsBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 
 import java.util.List;
@@ -23,12 +25,12 @@ public class ComponentTFStrongholdCrossing extends StructureTFStrongholdComponen
 	}
 
 	@Override
-	public StructureBoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
+	public MutableBoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
 		return StructureTFStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -13, -1, 0, 18, 7, 18, facing);
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random random) {
+	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random random) {
 		super.buildComponent(parent, list, random);
 
 		this.addDoor(13, 1, 0);
@@ -38,7 +40,8 @@ public class ComponentTFStrongholdCrossing extends StructureTFStrongholdComponen
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld worldIn, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		World world = worldIn.getWorld();
 		placeStrongholdWalls(world, sbb, 0, 0, 0, 17, 6, 17, rand, deco.randomBlocks);
 
 		// statues
@@ -67,7 +70,7 @@ public class ComponentTFStrongholdCrossing extends StructureTFStrongholdComponen
 		return true;
 	}
 
-	private void placeTableAndChairs(World world, StructureBoundingBox sbb, Rotation rotation) {
+	private void placeTableAndChairs(World world, MutableBoundingBox sbb, Rotation rotation) {
 		// table
 		BlockState oakStairs = Blocks.OAK_STAIRS.getDefaultState();
 		;
@@ -76,10 +79,10 @@ public class ComponentTFStrongholdCrossing extends StructureTFStrongholdComponen
 		this.setBlockStateRotated(world, getStairState(oakStairs, Rotation.CLOCKWISE_90.rotate(Direction.WEST), rotation, true), 6, 1, 3, rotation, sbb);
 		this.setBlockStateRotated(world, getStairState(oakStairs, Rotation.CLOCKWISE_180.rotate(Direction.WEST), rotation, true), 6, 1, 4, rotation, sbb);
 		// chairs
-		this.setBlockStateRotated(world, Blocks.SPRUCE_STAIRS.getDefaultState().with(BlockStairs.FACING, Rotation.COUNTERCLOCKWISE_90.rotate(Direction.WEST)), 5, 1, 2, rotation, sbb);
-		this.setBlockStateRotated(world, Blocks.SPRUCE_STAIRS.getDefaultState().with(BlockStairs.FACING, Rotation.NONE.rotate(Direction.WEST)), 7, 1, 3, rotation, sbb);
-		this.setBlockStateRotated(world, Blocks.SPRUCE_STAIRS.getDefaultState().with(BlockStairs.FACING, Rotation.CLOCKWISE_90.rotate(Direction.WEST)), 6, 1, 5, rotation, sbb);
-		this.setBlockStateRotated(world, Blocks.SPRUCE_STAIRS.getDefaultState().with(BlockStairs.FACING, Rotation.CLOCKWISE_180.rotate(Direction.WEST)), 4, 1, 4, rotation, sbb);
+		this.setBlockStateRotated(world, Blocks.SPRUCE_STAIRS.getDefaultState().with(StairsBlock.FACING, Rotation.COUNTERCLOCKWISE_90.rotate(Direction.WEST)), 5, 1, 2, rotation, sbb);
+		this.setBlockStateRotated(world, Blocks.SPRUCE_STAIRS.getDefaultState().with(StairsBlock.FACING, Rotation.NONE.rotate(Direction.WEST)), 7, 1, 3, rotation, sbb);
+		this.setBlockStateRotated(world, Blocks.SPRUCE_STAIRS.getDefaultState().with(StairsBlock.FACING, Rotation.CLOCKWISE_90.rotate(Direction.WEST)), 6, 1, 5, rotation, sbb);
+		this.setBlockStateRotated(world, Blocks.SPRUCE_STAIRS.getDefaultState().with(StairsBlock.FACING, Rotation.CLOCKWISE_180.rotate(Direction.WEST)), 4, 1, 4, rotation, sbb);
 	}
 
 

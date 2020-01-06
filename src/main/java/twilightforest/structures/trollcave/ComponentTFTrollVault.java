@@ -2,8 +2,9 @@ package twilightforest.structures.trollcave;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Direction;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
+import net.minecraft.util.math.MutableBoundingBox;
 import twilightforest.TFFeature;
 import twilightforest.loot.TFTreasure;
 import twilightforest.block.TFBlocks;
@@ -20,7 +21,6 @@ public class ComponentTFTrollVault extends StructureTFComponentOld {
 		super(feature, index);
 		this.setCoordBaseMode(Direction.SOUTH);
 
-
 		// adjust x, y, z
 		x = (x >> 2) << 2;
 		y = (y / 4) * 4;
@@ -33,9 +33,9 @@ public class ComponentTFTrollVault extends StructureTFComponentOld {
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 		// make walls
-		this.fillWithBlocks(world, sbb, 0, 0, 0, 11, 11, 11, TFBlocks.giant_obsidian.getDefaultState(), TFBlocks.giant_obsidian.getDefaultState(), false);
+		this.fillWithBlocks(world, sbb, 0, 0, 0, 11, 11, 11, TFBlocks.giant_obsidian.get().getDefaultState(), TFBlocks.giant_obsidian.get().getDefaultState(), false);
 
 		// clear inside
 		this.fillWithAir(world, sbb, 4, 4, 4, 7, 7, 7);
@@ -45,9 +45,9 @@ public class ComponentTFTrollVault extends StructureTFComponentOld {
 
 		// chests
 		this.setBlockState(world, Blocks.CHEST.getDefaultState(), 5, 6, 5, sbb);
-		this.placeTreasureAtCurrentPosition(world, rand, 5, 6, 6, TFTreasure.troll_vault, false, sbb);
+		this.placeTreasureAtCurrentPosition(world.getWorld(), rand, 5, 6, 6, TFTreasure.troll_vault, false, sbb);
 
-		this.placeTreasureAtCurrentPosition(world, rand, 6, 6, 5, TFTreasure.troll_garden, true, sbb);
+		this.placeTreasureAtCurrentPosition(world.getWorld(), rand, 6, 6, 5, TFTreasure.troll_garden, true, sbb);
 		this.setBlockState(world, Blocks.TRAPPED_CHEST.getDefaultState(), 6, 6, 6, sbb);
 
 		return true;

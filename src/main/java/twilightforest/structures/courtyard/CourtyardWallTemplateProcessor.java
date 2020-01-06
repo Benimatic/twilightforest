@@ -4,9 +4,9 @@ import net.minecraft.block.*;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.template.PlacementSettings;
-import net.minecraft.world.gen.structure.template.Template;
+import net.minecraft.world.IWorldReader;
+import net.minecraft.world.gen.feature.template.PlacementSettings;
+import net.minecraft.world.gen.feature.template.Template;
 import twilightforest.block.BlockTFNagastoneStairs;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.RandomizedTemplateProcessor;
@@ -21,29 +21,30 @@ public class CourtyardWallTemplateProcessor extends RandomizedTemplateProcessor 
 
     @Nullable
     @Override
-    public Template.BlockInfo processBlock(World worldIn, BlockPos pos, Template.BlockInfo blockInfo) {
-        if (shouldPlaceBlock()) {
-            BlockState state = blockInfo.blockState;
-            Block block = state.getBlock();
+    public Template.BlockInfo process(IWorldReader worldIn, BlockPos pos, Template.BlockInfo p_215194_3_, Template.BlockInfo blockInfo, PlacementSettings placementSettingsIn, @Nullable Template template) {
+		if (shouldPlaceBlock()) {
+			BlockState state = blockInfo.state;
+			Block block = state.getBlock();
 
-            if (block == Blocks.STONEBRICK && state != Blocks.STONEBRICK.getDefaultState().with(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED))
-                return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, state.with(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.values()[random.nextInt(3)]), null);
+			if (state == Blocks.STONE_BRICKS.getDefaultState())
+				//TODO: Flattened
+				return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, state.with(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.values()[random.nextInt(3)]), null);
 
-            if (state == Blocks.STONE_SLAB.getDefaultState().with(BlockStoneSlab.VARIANT, BlockStoneSlab.EnumType.STONE))
-                return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, state.with(BlockStoneSlab.VARIANT, BlockStoneSlab.EnumType.COBBLESTONE), null);
+			if (state == Blocks.SMOOTH_STONE_SLAB.getDefaultState())
+				return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, Blocks.COBBLESTONE_SLAB.getDefaultState(), null);
 
-            if (block == TFBlocks.etched_nagastone)
-                return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, translateState(state, randomBlock(TFBlocks.etched_nagastone_mossy, TFBlocks.etched_nagastone_weathered), BlockDirectional.FACING), null);
+			if (block == TFBlocks.etched_nagastone.get())
+				return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, translateState(state, randomBlock(TFBlocks.etched_nagastone_mossy.get(), TFBlocks.etched_nagastone_weathered.get()), DirectionalBlock.FACING), null);
 
-            if (block == TFBlocks.nagastone_pillar)
-                return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, translateState(state, randomBlock(TFBlocks.nagastone_pillar_mossy, TFBlocks.nagastone_pillar_weathered), BlockRotatedPillar.AXIS), null);
+			if (block == TFBlocks.nagastone_pillar.get())
+				return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, translateState(state, randomBlock(TFBlocks.nagastone_pillar_mossy.get(), TFBlocks.nagastone_pillar_weathered.get()), RotatedPillarBlock.AXIS), null);
 
-            if (block == TFBlocks.nagastone_stairs)
-                return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, translateState(state, randomBlock(TFBlocks.nagastone_stairs, TFBlocks.nagastone_stairs), BlockTFNagastoneStairs.DIRECTION, BlockTFNagastoneStairs.FACING, BlockTFNagastoneStairs.HALF, BlockTFNagastoneStairs.SHAPE), null);
+			if (block == TFBlocks.nagastone_stairs.get())
+				return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, translateState(state, randomBlock(TFBlocks.nagastone_stairs.get(), TFBlocks.nagastone_stairs.get()), BlockTFNagastoneStairs.DIRECTION, BlockTFNagastoneStairs.FACING, BlockTFNagastoneStairs.HALF, BlockTFNagastoneStairs.SHAPE), null);
 
-            return blockInfo;
-        }
+			return blockInfo;
+		}
 
-        return null;
+		return null;
     }
 }

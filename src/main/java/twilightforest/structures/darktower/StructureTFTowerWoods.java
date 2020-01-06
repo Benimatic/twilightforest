@@ -1,14 +1,12 @@
 package twilightforest.structures.darktower;
 
 import net.minecraft.block.Blocks;
-import net.minecraft.world.gen.structure.StructureComponent;
-import twilightforest.block.BlockTFTowerWood;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.block.TFBlocks;
-import twilightforest.enums.TowerWoodVariant;
 
 import java.util.Random;
 
-public class StructureTFTowerWoods extends StructureComponent.BlockSelector {
+public class StructureTFTowerWoods extends StructurePiece.BlockSelector {
 
 	@Override
 	public void selectBlocks(Random random, int x, int y, int z, boolean isWall) {
@@ -18,13 +16,13 @@ public class StructureTFTowerWoods extends StructureComponent.BlockSelector {
 			float randFloat = random.nextFloat();
 
 			if (randFloat < 0.1F) {
-				this.blockstate = TFBlocks.tower_wood.getDefaultState().with(BlockTFTowerWood.VARIANT, TowerWoodVariant.CRACKED);
+				this.blockstate = TFBlocks.tower_wood_cracked.get().getDefaultState();
 			} else if (randFloat < 0.2F) {
-				this.blockstate = TFBlocks.tower_wood.getDefaultState().with(BlockTFTowerWood.VARIANT, TowerWoodVariant.MOSSY);
+				this.blockstate = TFBlocks.tower_wood_mossy.get().getDefaultState();
 			} else if (randFloat < 0.225F) {
-				this.blockstate = TFBlocks.tower_wood.getDefaultState().with(BlockTFTowerWood.VARIANT, TowerWoodVariant.INFESTED);
+				this.blockstate = TFBlocks.tower_wood_infested.get().getDefaultState();
 			} else {
-				this.blockstate = TFBlocks.tower_wood.getDefaultState();
+				this.blockstate = TFBlocks.tower_wood.get().getDefaultState();
 			}
 		}
 	}

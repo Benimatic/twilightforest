@@ -1,9 +1,11 @@
 package twilightforest.structures.finalcastle;
 
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.util.RotationUtil;
@@ -21,20 +23,20 @@ public class ComponentTFFinalCastleRoof13Peaked extends StructureTFComponentOld 
 		int height = 18;
 
 		this.setCoordBaseMode(sideTower.getCoordBaseMode());
-		this.boundingBox = new StructureBoundingBox(sideTower.getBoundingBox().minX - 2, sideTower.getBoundingBox().maxY - 1, sideTower.getBoundingBox().minZ - 2, sideTower.getBoundingBox().maxX + 2, sideTower.getBoundingBox().maxY + height - 1, sideTower.getBoundingBox().maxZ + 2);
+		this.boundingBox = new MutableBoundingBox(sideTower.getBoundingBox().minX - 2, sideTower.getBoundingBox().maxY - 1, sideTower.getBoundingBox().minZ - 2, sideTower.getBoundingBox().maxX + 2, sideTower.getBoundingBox().maxY + height - 1, sideTower.getBoundingBox().maxZ + 2);
 
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
+	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		if (parent != null && parent instanceof StructureTFComponentOld) {
 			this.deco = ((StructureTFComponentOld) parent).deco;
 		}
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-
+	public boolean addComponentParts(IWorld worldIn, Random randomIn, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		World world = worldIn.getWorld();
 // peaky roof, loop unrolled as it was getting dumb
 		for (int i = 0; i < 3; i++) {
 			this.fillWithBlocks(world, sbb, 1, i, i, 15, i, i, deco.roofState, deco.roofState, false);
@@ -99,5 +101,4 @@ public class ComponentTFFinalCastleRoof13Peaked extends StructureTFComponentOld 
 
 		return true;
 	}
-
 }

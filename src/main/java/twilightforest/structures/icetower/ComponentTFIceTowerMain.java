@@ -5,9 +5,8 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
-import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 
 import java.util.List;
@@ -52,19 +51,19 @@ public class ComponentTFIceTowerMain extends ComponentTFIceTowerWing {
 	 * Load from NBT
 	 */
 	@Override
-	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
-		super.readStructureFromNBT(tagCompound, templateManager);
+	protected void readAdditional(CompoundNBT tagCompound) {
+		super.readAdditional(tagCompound);
 		this.hasBossWing = tagCompound.getBoolean("hasBossWing");
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
+	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		super.buildComponent(parent, list, rand);
 
 		// add entrance tower
-		StructureBoundingBox towerBB = StructureBoundingBox.getNewBoundingBox();
+		MutableBoundingBox towerBB = MutableBoundingBox.getNewBoundingBox();
 
-		for (StructureComponent structurecomponent : list) {
+		for (StructurePiece structurecomponent : list) {
 			towerBB.expandTo(structurecomponent.getBoundingBox());
 		}
 
@@ -94,7 +93,7 @@ public class ComponentTFIceTowerMain extends ComponentTFIceTowerWing {
 		makeEntranceTower(list, rand, this.getComponentType() + 1, entranceDoor.getX(), entranceDoor.getY(), entranceDoor.getZ(), SIZE, 11, this.rotation);
 	}
 
-	private void makeEntranceBridge(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int length, Rotation rotation) {
+	private void makeEntranceBridge(List<StructurePiece> list, Random rand, int index, int x, int y, int z, int length, Rotation rotation) {
 		Direction direction = getStructureRelativeRotation(rotation);
 		BlockPos dest = offsetTowerCCoords(x, y, z, 5, direction);
 
@@ -104,7 +103,7 @@ public class ComponentTFIceTowerMain extends ComponentTFIceTowerWing {
 		bridge.buildComponent(list.get(0), list, rand);
 	}
 
-	public boolean makeEntranceTower(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
+	public boolean makeEntranceTower(List<StructurePiece> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 		Direction direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 

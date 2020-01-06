@@ -3,12 +3,13 @@ package twilightforest.structures.finalcastle;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.util.math.MutableBoundingBox;
 import twilightforest.TFFeature;
 import twilightforest.block.BlockTFThorns;
 import twilightforest.block.TFBlocks;
-import twilightforest.enums.ThornVariant;
 import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.util.RotationUtil;
 
@@ -26,23 +27,22 @@ public class ComponentTFFinalCastleFoundation13Thorns extends ComponentTFFinalCa
 	public ComponentTFFinalCastleFoundation13Thorns(TFFeature feature, Random rand, int i, StructureTFComponentOld sideTower) {
 		super(feature, rand, i, sideTower);
 
-		this.boundingBox = new StructureBoundingBox(sideTower.getBoundingBox().minX - 5, sideTower.getBoundingBox().maxY - 1, sideTower.getBoundingBox().minZ - 5, sideTower.getBoundingBox().maxX + 5, sideTower.getBoundingBox().maxY, sideTower.getBoundingBox().maxZ + 5);
-
+		this.boundingBox = new MutableBoundingBox(sideTower.getBoundingBox().minX - 5, sideTower.getBoundingBox().maxY - 1, sideTower.getBoundingBox().minZ - 5, sideTower.getBoundingBox().maxX + 5, sideTower.getBoundingBox().maxY, sideTower.getBoundingBox().maxZ + 5);
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 		// thorns
 		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
 
 		for (Rotation i : RotationUtil.ROTATIONS) {
-			this.makeThornVine(world, decoRNG, i, sbb);
+			this.makeThornVine(world.getWorld(), decoRNG, i, sbb);
 		}
 
 		return true;
 	}
 
-	private void makeThornVine(World world, Random decoRNG, Rotation rotation, StructureBoundingBox sbb) {
+	private void makeThornVine(World world, Random decoRNG, Rotation rotation, MutableBoundingBox sbb) {
 
 		int x = 3 + decoRNG.nextInt(13);
 		int z = 3 + decoRNG.nextInt(13);
@@ -52,9 +52,9 @@ public class ComponentTFFinalCastleFoundation13Thorns extends ComponentTFFinalCa
 		int twist = decoRNG.nextInt(4);
 		int twistMod = 3 + decoRNG.nextInt(3);
 
-		final BlockState thorns = TFBlocks.thorns.getDefaultState();
+		final BlockState thorns = TFBlocks.brown_thorns.get().getDefaultState();
 
-		while (this.getBlockStateFromPosRotated(world, x, y, z, sbb, rotation).getBlock() != TFBlocks.deadrock && this.getYWithOffset(y) > 60) {
+		while (this.getBlockStateFromPosRotated(world, x, y, z, sbb, rotation).getBlock() != TFBlocks.deadrock.get() && this.getYWithOffset(y) > 60) {
 			this.setBlockStateRotated(world, thorns, x, y, z, rotation, sbb);
 			// twist vines around the center block
 			switch (twist) {
@@ -90,12 +90,11 @@ public class ComponentTFFinalCastleFoundation13Thorns extends ComponentTFFinalCa
 				twist++;
 				twist = twist % 4;
 			}
-
 			y--;
 		}
 	}
 
-	private void makeThornBranch(World world, int x, int y, int z, Rotation rotation, StructureBoundingBox sbb) {
+	private void makeThornBranch(World world, int x, int y, int z, Rotation rotation, MutableBoundingBox sbb) {
 		Random rand = new Random(world.getSeed() + (x * 321534781) ^ (y * 756839) + z);
 
 		// pick a direction
@@ -131,8 +130,7 @@ public class ComponentTFFinalCastleFoundation13Thorns extends ComponentTFFinalCa
 			for (int i = 0; i < dist; i++) {
 				// go out that far
 				final Rotation add = dir.add(rotation).add(this.rotation);
-				BlockState thorns = TFBlocks.thorns.getDefaultState()
-						.with(BlockTFThorns.VARIANT, ThornVariant.GREEN)
+				BlockState thorns = TFBlocks.green_thorns.get().getDefaultState()
 						.with(
 								BlockTFThorns.AXIS,
 								add == Rotation.NONE || add == Rotation.CLOCKWISE_180 ? Direction.Axis.X : Direction.Axis.Z
@@ -146,14 +144,7 @@ public class ComponentTFFinalCastleFoundation13Thorns extends ComponentTFFinalCa
 				if (i > (dist / 2)) {
 					this.setBlockStateRotated(world, thorns, x + (dx * i), y + dist - 1, z + (dz * i), rotation, sbb);
 				}
-
-
 			}
-
-
 		}
-
 	}
-
-
 }

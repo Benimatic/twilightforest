@@ -3,11 +3,11 @@ package twilightforest.structures.finalcastle;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.BlockTFCastleMagic;
+import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponentOld;
 
 import java.util.List;
@@ -19,11 +19,11 @@ public class ComponentTFFinalCastleEntranceTower extends ComponentTFFinalCastleM
 	}
 
 	public ComponentTFFinalCastleEntranceTower(TFFeature feature, Random rand, int i, int x, int y, int z, Direction direction) {
-		super(feature, rand, i, x, y, z, 3, 2, BlockTFCastleMagic.VALID_COLORS.get(0), direction);
+		super(feature, rand, i, x, y, z, 3, 2, TFBlocks.castle_rune_brick_pink.get().getDefaultState(), direction);
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
+	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		if (parent != null && parent instanceof StructureTFComponentOld) {
 			this.deco = ((StructureTFComponentOld) parent).deco;
 		}
@@ -74,7 +74,7 @@ public class ComponentTFFinalCastleEntranceTower extends ComponentTFFinalCastleM
 		bridge.buildComponent(this, list, rand);
 	}
 
-	private boolean buildSideTower(List<StructureComponent> list, Random rand, int middleFloors, Direction facing, int howFar) {
+	private boolean buildSideTower(List<StructurePiece> list, Random rand, int middleFloors, Direction facing, int howFar) {
 		BlockPos opening = this.getValidOpeningCC(rand, facing);
 
 		// build towards
@@ -82,14 +82,14 @@ public class ComponentTFFinalCastleEntranceTower extends ComponentTFFinalCastleM
 
 		ComponentTFFinalCastleEntranceSideTower eTower = new ComponentTFFinalCastleEntranceSideTower(getFeatureType(), rand, this.getComponentType() + 1, tc.getX(), tc.getY(), tc.getZ(), middleFloors, middleFloors - 1, facing);
 
-		StructureBoundingBox largerBB = new StructureBoundingBox(eTower.getBoundingBox());
+		MutableBoundingBox largerBB = new MutableBoundingBox(eTower.getBoundingBox());
 
 		largerBB.minX -= 6;
 		largerBB.minZ -= 6;
 		largerBB.maxX += 6;
 		largerBB.maxZ += 6;
 
-		StructureComponent intersect = StructureComponent.findIntersecting(list, largerBB);
+		StructurePiece intersect = StructurePiece.findIntersecting(list, largerBB);
 
 		if (intersect == null) {
 			list.add(eTower);

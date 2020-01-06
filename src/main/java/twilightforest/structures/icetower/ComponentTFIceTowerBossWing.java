@@ -5,7 +5,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.util.math.MutableBoundingBox;
 import twilightforest.TFFeature;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
@@ -37,7 +37,7 @@ public class ComponentTFIceTowerBossWing extends ComponentTFIceTowerWing {
 	 * Put down planks or whatevs for a floor
 	 */
 	@Override
-	protected void placeFloor(World world, Random rand, StructureBoundingBox sbb, int floorHeight, int floor) {
+	protected void placeFloor(World world, Random rand, MutableBoundingBox sbb, int floorHeight, int floor) {
 		for (int x = 1; x < size - 1; x++) {
 			for (int z = 1; z < size - 1; z++) {
 
@@ -61,7 +61,7 @@ public class ComponentTFIceTowerBossWing extends ComponentTFIceTowerWing {
 	 * @param ladderDownDir
 	 */
 	@Override
-	protected void decorateFloor(World world, Random rand, int floor, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, StructureBoundingBox sbb) {
+	protected void decorateFloor(World world, Random rand, int floor, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, MutableBoundingBox sbb) {
 
 		Rotation r = ladderDownDir;
 		for (int y = 0; y < 3; y++) {
@@ -72,7 +72,7 @@ public class ComponentTFIceTowerBossWing extends ComponentTFIceTowerWing {
 
 	}
 
-	private void placeIceStairs(World world, StructureBoundingBox sbb, Random rand, int y, Rotation rotation) {
+	private void placeIceStairs(World world, MutableBoundingBox sbb, Random rand, int y, Rotation rotation) {
 		final BlockState packedIce = Blocks.PACKED_ICE.getDefaultState();
 		this.fillBlocksRotated(world, sbb, 8, y + 1, 1, 10, y + 1, 3, packedIce, rotation);
 		if (y > 1) {
@@ -85,7 +85,7 @@ public class ComponentTFIceTowerBossWing extends ComponentTFIceTowerWing {
 	}
 
 	@Override
-	protected void decorateTopFloor(World world, Random rand, int floor, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, StructureBoundingBox sbb) {
+	protected void decorateTopFloor(World world, Random rand, int floor, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, MutableBoundingBox sbb) {
 		for (int x = 1; x < size - 1; x++) {
 			for (int z = 1; z < size - 1; z++) {
 
@@ -98,7 +98,7 @@ public class ComponentTFIceTowerBossWing extends ComponentTFIceTowerWing {
 			}
 		}
 
-		final BlockState snowQueenSpawner = TFBlocks.boss_spawner.getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.SNOW_QUEEN);
+		final BlockState snowQueenSpawner = TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.SNOW_QUEEN);
 
 		this.setBlockStateRotated(world, snowQueenSpawner, 7, top - 6, 7, Rotation.NONE, sbb);
 

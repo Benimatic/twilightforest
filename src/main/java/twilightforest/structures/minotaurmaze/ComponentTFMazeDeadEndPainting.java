@@ -1,10 +1,11 @@
 package twilightforest.structures.minotaurmaze;
 
-import net.minecraft.block.BlockTorch;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.WallTorchBlock;
 import net.minecraft.util.Direction;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
+import net.minecraft.util.math.MutableBoundingBox;
 import twilightforest.TFFeature;
 
 import java.util.Random;
@@ -20,13 +21,13 @@ public class ComponentTFMazeDeadEndPainting extends ComponentTFMazeDeadEnd {
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 		// normal doorway
-		super.addComponentParts(world, rand, sbb);
+		super.addComponentParts(world, rand, sbb, chunkPosIn);
 
 		// torches
-		this.setBlockState(world, Blocks.TORCH.getDefaultState().with(BlockTorch.FACING, Direction.WEST), 1, 3, 3, sbb);
-		this.setBlockState(world, Blocks.TORCH.getDefaultState().with(BlockTorch.FACING, Direction.EAST), 4, 3, 3, sbb);
+		this.setBlockState(world, Blocks.WALL_TORCH.getDefaultState().with(WallTorchBlock.HORIZONTAL_FACING, Direction.WEST), 1, 3, 3, sbb);
+		this.setBlockState(world, Blocks.WALL_TORCH.getDefaultState().with(WallTorchBlock.HORIZONTAL_FACING, Direction.EAST), 4, 3, 3, sbb);
 
 //		// painting
 //		EntityPainting painting = new EntityPainting(world, pCoords.posX, pCoords.posY, pCoords.posZ, this.get); 

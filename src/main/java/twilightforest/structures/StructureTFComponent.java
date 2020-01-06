@@ -1,19 +1,20 @@
 package twilightforest.structures;
 
-import net.minecraft.entity.item.EntityArmorStand;
-import net.minecraft.entity.passive.EntitySheep;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.item.ArmorStandEntity;
+import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
-import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 
-
-public abstract class StructureTFComponent extends StructureComponent {
+//TODO: "rotation" is private
+public abstract class StructureTFComponent extends StructurePiece {
 
 	public StructureTFDecorator deco = null;
 	public int spawnListIndex = 0;
@@ -47,6 +48,7 @@ public abstract class StructureTFComponent extends StructureComponent {
 		if (rotation == null) rotation = Rotation.NONE;
 
 		if (shouldDebug() ) { // && rotation!= Rotation.NONE) {
+			//TODO: Flattening doesn't allow for this anymore
 			int i = rotation.ordinal() * 4;
 			world.setBlockState(new BlockPos(this.getBoundingBox().minX, this.getBoundingBox().maxY + i    , this.getBoundingBox().minZ), Blocks.WOOL.getStateFromMeta(i));
 			world.setBlockState(new BlockPos(this.getBoundingBox().maxX, this.getBoundingBox().maxY + i + 1, this.getBoundingBox().minZ), Blocks.WOOL.getStateFromMeta(1 + i));
@@ -56,26 +58,26 @@ public abstract class StructureTFComponent extends StructureComponent {
 	}
 
 	@SuppressWarnings({"SameParameterValue", "unused"})
-	protected void setDebugEntity(World world, int x, int y, int z, StructureBoundingBox sbb, String s) {
+	protected void setDebugEntity(World world, int x, int y, int z, MutableBoundingBox sbb, String s) {
 		setInvisibleTextEntity(world, x, y, z, sbb, s, shouldDebug(), 0f);
 	}
 
 	@SuppressWarnings({"SameParameterValue", "unused"})
-	protected void setInvisibleTextEntity(World world, int x, int y, int z, StructureBoundingBox sbb, String s, boolean forcePlace, float additionalYOffset) {
+	protected void setInvisibleTextEntity(World world, int x, int y, int z, MutableBoundingBox sbb, String s, boolean forcePlace, float additionalYOffset) {
 		if (forcePlace) {
 			final BlockPos pos = new BlockPos(this.getXWithOffset(x, z), this.getYWithOffset(y), this.getZWithOffset(x, z));
 
 			if (sbb.isVecInside(pos)) {
-				final EntityArmorStand armorStand = new EntityArmorStand(world);
-				armorStand.setCustomNameTag(s);
+				final ArmorStandEntity armorStand = new ArmorStandEntity(EntityType.ARMOR_STAND, world);
+				armorStand.setCustomName(new StringTextComponent(s));
 				armorStand.setLocationAndAngles(pos.getX() + 0.5, pos.getY() + additionalYOffset, pos.getZ() + 0.5, 0, 0);
-				armorStand.setEntityInvulnerable(true);
+				armorStand.setInvulnerable(true);
 				armorStand.setInvisible(true);
-				armorStand.setAlwaysRenderNameTag(true);
+				armorStand.getAlwaysRenderNameTagForRender();
 				armorStand.setSilent(true);
 				armorStand.setNoGravity(true);
 				// set marker flag
-				armorStand.getDataManager().set(EntityArmorStand.STATUS, (byte) (armorStand.getDataManager().get(EntityArmorStand.STATUS) | 16));
+				armorStand.getDataManager().set(ArmorStandEntity.STATUS, (byte) (armorStand.getDataManager().get(ArmorStandEntity.STATUS) | 16));
 				world.addEntity(armorStand);
 			}
 		}
@@ -84,28 +86,29 @@ public abstract class StructureTFComponent extends StructureComponent {
 	@SuppressWarnings({"SameParameterValue", "unused"})
 	protected void setDebugEntity(World world, BlockPos blockpos, String s) {
 		if (shouldDebug()) {
-			final EntitySheep sheep = new EntitySheep(world);
-			sheep.setCustomNameTag(s);
+			final SheepEntity sheep = new SheepEntity(EntityType.SHEEP, world);
+			sheep.setCustomName(new StringTextComponent(s));
 			sheep.setNoAI(true);
 			sheep.setLocationAndAngles(blockpos.getX() + 0.5, blockpos.getY() + 10, blockpos.getZ() + 0.5, 0, 0);
-			sheep.setEntityInvulnerable(true);
+			sheep.setInvulnerable(true);
 			sheep.setInvisible(true);
-			sheep.setAlwaysRenderNameTag(true);
+			sheep.getAlwaysRenderNameTagForRender();
 			sheep.setSilent(true);
 			sheep.setNoGravity(true);
 			world.addEntity(sheep);
 		}
 	}
 
+	//TODO: write is final
 	@Override
 	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 		tagCompound.putInt("si", this.spawnListIndex);
-		tagCompound.setString("deco", StructureTFDecorator.getDecoString(this.deco));
+		tagCompound.putString("deco", StructureTFDecorator.getDecoString(this.deco));
 		tagCompound.putInt("rot", this.rotation.ordinal());
 	}
 
 	@Override
-	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
+	protected void readAdditional(CompoundNBT tagCompound) {
 		this.spawnListIndex = tagCompound.getInt("si");
 		this.deco = StructureTFDecorator.getDecoFor(tagCompound.getString("deco"));
 		this.rotation = Rotation.values()[tagCompound.getInt("rot") % Rotation.values().length];

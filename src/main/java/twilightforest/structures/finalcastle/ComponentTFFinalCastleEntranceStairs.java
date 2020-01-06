@@ -1,10 +1,12 @@
 package twilightforest.structures.finalcastle;
 
-import net.minecraft.block.BlockStairs;
+import net.minecraft.block.StairsBlock;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentOld;
 
@@ -26,15 +28,15 @@ public class ComponentTFFinalCastleEntranceStairs extends StructureTFComponentOl
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
+	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		if (parent != null && parent instanceof StructureTFComponentOld) {
 			this.deco = ((StructureTFComponentOld) parent).deco;
 		}
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-
+	public boolean addComponentParts(IWorld worldIn, Random randomIn, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		World world = worldIn.getWorld();
 		int size = 13;
 
 		for (int x = 1; x < size; x++) {
@@ -61,10 +63,10 @@ public class ComponentTFFinalCastleEntranceStairs extends StructureTFComponentOl
 		return true;
 	}
 
-	private void placeStairs(World world, StructureBoundingBox sbb, int x, int y, int z, Direction facing) {
+	private void placeStairs(World world, MutableBoundingBox sbb, int x, int y, int z, Direction facing) {
 		if (this.getBlockStateFromPos(world, x, y, z, sbb).getBlock().isReplaceable(world, this.getBlockPosWithOffset(x, y, z))) {
 			//this.setBlockState(world, deco.blockState, x, y, z, sbb);
-			this.setBlockState(world, deco.stairState.with(BlockStairs.FACING, facing), x, y, z, sbb);
+			this.setBlockState(world, deco.stairState.with(StairsBlock.FACING, facing), x, y, z, sbb);
 			this.replaceAirAndLiquidDownwards(world, deco.blockState, x, y - 1, z, sbb);
 		}
 	}

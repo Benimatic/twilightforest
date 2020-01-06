@@ -2,8 +2,10 @@ package twilightforest.structures.minotaurmaze;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.util.math.MutableBoundingBox;
 import twilightforest.TFFeature;
 import twilightforest.block.BlockTFMazestone;
 import twilightforest.block.TFBlocks;
@@ -22,16 +24,16 @@ public class ComponentTFMazeDeadEndFountain extends ComponentTFMazeDeadEnd {
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 		// normal doorway
-		super.addComponentParts(world, rand, sbb);
+		super.addComponentParts(world, rand, sbb, chunkPosIn);
 
 		// back wall brick
-		this.fillWithBlocks(world, sbb, 1, 1, 4, 4, 4, 4, TFBlocks.maze_stone.getDefaultState().with(BlockTFMazestone.VARIANT, MazestoneVariant.BRICK), AIR, false);
+		this.fillWithBlocks(world, sbb, 1, 1, 4, 4, 4, 4, TFBlocks.maze_stone_brick.get().getDefaultState(), AIR, false);
 
 		// water
-		this.setBlockState(world, Blocks.FLOWING_WATER.getDefaultState(), 2, 3, 4, sbb);
-		this.setBlockState(world, Blocks.FLOWING_WATER.getDefaultState(), 3, 3, 4, sbb);
+		this.setBlockState(world, Blocks.WATER.getDefaultState(), 2, 3, 4, sbb);
+		this.setBlockState(world, Blocks.WATER.getDefaultState(), 3, 3, 4, sbb);
 
 		// receptacle
 		this.setBlockState(world, AIR, 2, 0, 3, sbb);

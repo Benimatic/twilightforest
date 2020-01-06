@@ -2,9 +2,10 @@ package twilightforest.structures.darktower;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Direction;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
@@ -22,15 +23,14 @@ public class ComponentTFDarkTowerBalcony extends ComponentTFTowerWing {
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
+	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		if (parent != null && parent instanceof StructureTFComponentOld) {
 			this.deco = ((StructureTFComponentOld) parent).deco;
 		}
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 		// make floor
 		fillWithBlocks(world, sbb, 0, 0, 0, 2, 0, 4, deco.accentState, Blocks.AIR.getDefaultState(), false);
 		fillWithBlocks(world, sbb, 0, 0, 1, 1, 0, 3, deco.blockState, Blocks.AIR.getDefaultState(), false);
@@ -45,6 +45,4 @@ public class ComponentTFDarkTowerBalcony extends ComponentTFTowerWing {
 
 		return true;
 	}
-
-
 }

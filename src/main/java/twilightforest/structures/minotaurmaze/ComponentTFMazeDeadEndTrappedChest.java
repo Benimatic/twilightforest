@@ -3,12 +3,11 @@ package twilightforest.structures.minotaurmaze;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Direction;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
+import net.minecraft.util.math.MutableBoundingBox;
 import twilightforest.TFFeature;
-import twilightforest.block.BlockTFMazestone;
 import twilightforest.block.TFBlocks;
-import twilightforest.enums.MazestoneVariant;
 import twilightforest.loot.TFTreasure;
 
 import java.util.Random;
@@ -27,12 +26,12 @@ public class ComponentTFMazeDeadEndTrappedChest extends ComponentTFMazeDeadEnd {
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		//super.addComponentParts(world, rand, sbb);
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		//super.addComponentParts(world, rand, sbb, chunkPosIn);
 
 		// dais
-		this.setBlockState(world, Blocks.PLANKS.getDefaultState(), 2, 1, 4, sbb);
-		this.setBlockState(world, Blocks.PLANKS.getDefaultState(), 3, 1, 4, sbb);
+		this.setBlockState(world, Blocks.OAK_PLANKS.getDefaultState(), 2, 1, 4, sbb);
+		this.setBlockState(world, Blocks.OAK_PLANKS.getDefaultState(), 3, 1, 4, sbb);
 		this.setBlockState(world, getStairState(Blocks.OAK_STAIRS.getDefaultState(), Direction.NORTH, rotation, false), 2, 1, 3, sbb);
 		this.setBlockState(world, getStairState(Blocks.OAK_STAIRS.getDefaultState(), Direction.NORTH, rotation, false), 3, 1, 3, sbb);
 
@@ -45,8 +44,8 @@ public class ComponentTFMazeDeadEndTrappedChest extends ComponentTFMazeDeadEnd {
 //		this.setBlockState(world, Blocks.TORCH, 0, 4, 3, 4, sbb);
 
 		// doorway w/ bars
-		this.fillWithBlocks(world, sbb, 1, 1, 0, 4, 3, 1, TFBlocks.maze_stone.getDefaultState().with(BlockTFMazestone.VARIANT, MazestoneVariant.CHISELED), AIR, false);
-		this.fillWithBlocks(world, sbb, 1, 4, 0, 4, 4, 1, TFBlocks.maze_stone.getDefaultState().with(BlockTFMazestone.VARIANT, MazestoneVariant.DECORATIVE), AIR, false);
+		this.fillWithBlocks(world, sbb, 1, 1, 0, 4, 3, 1, TFBlocks.maze_stone_chiseled.get().getDefaultState(), AIR, false);
+		this.fillWithBlocks(world, sbb, 1, 4, 0, 4, 4, 1, TFBlocks.maze_stone_decorative.get().getDefaultState(), AIR, false);
 		this.fillWithBlocks(world, sbb, 2, 1, 0, 3, 3, 1, Blocks.IRON_BARS.getDefaultState(), AIR, false);
 
 		// TNT!

@@ -2,9 +2,11 @@ package twilightforest.structures.finalcastle;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponentOld;
@@ -24,19 +26,20 @@ public class ComponentTFFinalCastleFoundation13 extends StructureTFComponentOld 
 		super(feature, i);
 
 		this.setCoordBaseMode(sideTower.getCoordBaseMode());
-		this.boundingBox = new StructureBoundingBox(sideTower.getBoundingBox().minX - 2, sideTower.getBoundingBox().minY - 1, sideTower.getBoundingBox().minZ - 2, sideTower.getBoundingBox().maxX + 2, sideTower.getBoundingBox().minY, sideTower.getBoundingBox().maxZ + 2);
+		this.boundingBox = new MutableBoundingBox(sideTower.getBoundingBox().minX - 2, sideTower.getBoundingBox().minY - 1, sideTower.getBoundingBox().minZ - 2, sideTower.getBoundingBox().maxX + 2, sideTower.getBoundingBox().minY, sideTower.getBoundingBox().maxZ + 2);
 
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
+	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		if (parent instanceof StructureTFComponentOld) {
 			this.deco = ((StructureTFComponentOld) parent).deco;
 		}
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld worldIn, Random randomIn, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		World world = worldIn.getWorld();
 		// offset bounding box to average ground level
 		if (this.groundLevel < 0) {
 			this.groundLevel = this.findGroundLevel(world, sbb, 150, isDeadrock); // is 150 a good place to start? :)
@@ -71,5 +74,5 @@ public class ComponentTFFinalCastleFoundation13 extends StructureTFComponentOld 
 		return true;
 	}
 
-	protected static final Predicate<BlockState> isDeadrock = state -> state.getBlock() == TFBlocks.deadrock;
+	protected static final Predicate<BlockState> isDeadrock = state -> state.getBlock() == TFBlocks.deadrock.get();
 }

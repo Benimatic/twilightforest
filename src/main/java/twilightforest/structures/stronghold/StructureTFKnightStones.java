@@ -1,14 +1,12 @@
 package twilightforest.structures.stronghold;
 
 import net.minecraft.block.Blocks;
-import net.minecraft.world.gen.structure.StructureComponent;
-import twilightforest.block.BlockTFUnderBrick;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.block.TFBlocks;
-import twilightforest.enums.UnderBrickVariant;
 
 import java.util.Random;
 
-public class StructureTFKnightStones extends StructureComponent.BlockSelector {
+public class StructureTFKnightStones extends StructurePiece.BlockSelector {
 
 	@Override
 	public void selectBlocks(Random random, int x, int y, int z, boolean edge) {
@@ -18,11 +16,11 @@ public class StructureTFKnightStones extends StructureComponent.BlockSelector {
 			float f = random.nextFloat();
 
 			if (f < 0.2F) {
-				this.blockstate = TFBlocks.underbrick.getDefaultState().with(BlockTFUnderBrick.VARIANT, UnderBrickVariant.CRACKED);
+				this.blockstate = TFBlocks.underbrick_cracked.get().getDefaultState();
 			} else if (f < 0.5F) {
-				this.blockstate = TFBlocks.underbrick.getDefaultState().with(BlockTFUnderBrick.VARIANT, UnderBrickVariant.MOSSY);
+				this.blockstate = TFBlocks.underbrick_mossy.get().getDefaultState();
 			} else {
-				this.blockstate = TFBlocks.underbrick.getDefaultState().with(BlockTFUnderBrick.VARIANT, UnderBrickVariant.NORMAL);
+				this.blockstate = TFBlocks.underbrick.get().getDefaultState();
 			}
 		}
 	}

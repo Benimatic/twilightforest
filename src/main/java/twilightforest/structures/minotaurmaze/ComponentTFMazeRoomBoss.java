@@ -1,11 +1,13 @@
 package twilightforest.structures.minotaurmaze;
 
-import net.minecraft.block.BlockHugeMushroom;
+import net.minecraft.block.HugeMushroomBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.util.math.MutableBoundingBox;
 import twilightforest.TFFeature;
 import twilightforest.loot.TFTreasure;
 import twilightforest.block.BlockTFBossSpawner;
@@ -16,19 +18,17 @@ import java.util.Random;
 
 public class ComponentTFMazeRoomBoss extends ComponentTFMazeRoom {
 
-
 	public ComponentTFMazeRoomBoss() {
 		super();
 	}
-
 
 	public ComponentTFMazeRoomBoss(TFFeature feature, int i, Random rand, int x, int y, int z) {
 		super(feature, i, rand, x, y, z);
 	}
 
-
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		World worldIn = world.getWorld();
 		// doorways
 		if (this.getBlockStateFromPos(world, 7, 1, 0, sbb).getBlock() == Blocks.AIR) {
 			fillWithBlocks(world, sbb, 6, 1, 0, 9, 4, 0, Blocks.OAK_FENCE.getDefaultState(), AIR, false);
@@ -67,40 +67,40 @@ public class ComponentTFMazeRoomBoss extends ComponentTFMazeRoom {
 		}
 
 		// mushroom chest shelves in corner
-		final BlockState redMushroom = Blocks.RED_MUSHROOM_BLOCK.getDefaultState().with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.ALL_OUTSIDE);
-		final BlockState brownMushroom = Blocks.BROWN_MUSHROOM_BLOCK.getDefaultState().with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.ALL_OUTSIDE);
+		final BlockState redMushroom = Blocks.RED_MUSHROOM_BLOCK.getDefaultState().with(HugeMushroomBlock.VARIANT, HugeMushroomBlock.EnumType.ALL_OUTSIDE);
+		final BlockState brownMushroom = Blocks.BROWN_MUSHROOM_BLOCK.getDefaultState().with(HugeMushroomBlock.VARIANT, HugeMushroomBlock.EnumType.ALL_OUTSIDE);
 
 		fillWithBlocks(world, sbb, 1, 1, 1, 3, 1, 3, redMushroom, AIR, false);
 		fillWithBlocks(world, sbb, 1, 2, 1, 1, 3, 4, redMushroom, AIR, false);
 		fillWithBlocks(world, sbb, 2, 2, 1, 4, 3, 1, redMushroom, AIR, false);
 		fillWithBlocks(world, sbb, 1, 4, 1, 3, 4, 3, redMushroom, AIR, false);
-		placeTreasureAtCurrentPosition(world, rand, 3, 2, 3, TFTreasure.labyrinth_room, sbb);
+		placeTreasureAtCurrentPosition(worldIn, rand, 3, 2, 3, TFTreasure.labyrinth_room, sbb);
 
 		fillWithBlocks(world, sbb, 12, 1, 12, 14, 1, 14, redMushroom, AIR, false);
 		fillWithBlocks(world, sbb, 14, 2, 11, 14, 3, 14, redMushroom, AIR, false);
 		fillWithBlocks(world, sbb, 11, 2, 14, 14, 3, 14, redMushroom, AIR, false);
 		fillWithBlocks(world, sbb, 12, 4, 12, 14, 4, 14, redMushroom, AIR, false);
-		placeTreasureAtCurrentPosition(world, rand, 12, 2, 12, TFTreasure.labyrinth_room, sbb);
+		placeTreasureAtCurrentPosition(worldIn, rand, 12, 2, 12, TFTreasure.labyrinth_room, sbb);
 
 		fillWithBlocks(world, sbb, 1, 1, 12, 3, 1, 14, redMushroom, AIR, false);
 		fillWithBlocks(world, sbb, 1, 2, 11, 1, 3, 14, redMushroom, AIR, false);
 		fillWithBlocks(world, sbb, 2, 2, 14, 4, 3, 14, redMushroom, AIR, false);
 		fillWithBlocks(world, sbb, 1, 4, 12, 3, 4, 14, redMushroom, AIR, false);
-		placeTreasureAtCurrentPosition(world, rand, 3, 2, 12, TFTreasure.labyrinth_room, sbb);
+		placeTreasureAtCurrentPosition(worldIn, rand, 3, 2, 12, TFTreasure.labyrinth_room, sbb);
 
 		fillWithBlocks(world, sbb, 12, 1, 1, 14, 1, 3, brownMushroom, AIR, false);
 		fillWithBlocks(world, sbb, 11, 2, 1, 14, 3, 1, brownMushroom, AIR, false);
 		fillWithBlocks(world, sbb, 14, 2, 2, 14, 3, 4, brownMushroom, AIR, false);
 		fillWithBlocks(world, sbb, 12, 4, 1, 14, 4, 3, brownMushroom, AIR, false);
-		placeTreasureAtCurrentPosition(world, rand, 12, 2, 3, TFTreasure.labyrinth_room, sbb);
+		placeTreasureAtCurrentPosition(worldIn, rand, 12, 2, 3, TFTreasure.labyrinth_room, sbb);
 
 		// a few more ceilingshrooms
 		fillWithBlocks(world, sbb, 5, 4, 5, 7, 5, 7, brownMushroom, AIR, false);
 		fillWithBlocks(world, sbb, 8, 4, 8, 10, 5, 10, redMushroom, AIR, false);
 
 		// the moo-cen-mino-shrom-taur!
-		final BlockState taurSpawner = TFBlocks.boss_spawner.getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.MINOSHROOM);
-		setBlockStateRotated(world, taurSpawner, 7, 1, 7, Rotation.NONE, sbb);
+		final BlockState taurSpawner = TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.MINOSHROOM);
+		setBlockStateRotated(worldIn, taurSpawner, 7, 1, 7, Rotation.NONE, sbb);
 
 		return true;
 	}

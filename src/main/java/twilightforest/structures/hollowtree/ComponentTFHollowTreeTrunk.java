@@ -1,23 +1,22 @@
 package twilightforest.structures.hollowtree;
 
-import net.minecraft.block.BlockDirectional;
-import net.minecraft.block.BlockVine;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.DirectionalBlock;
+import net.minecraft.block.VineBlock;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
-import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
-import twilightforest.world.feature.TFGenerator;
 
 import java.util.List;
 import java.util.Random;
-
 
 public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 
@@ -25,7 +24,7 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 	int height;
 	int groundLevel = -1;
 
-	enum BranchSize {SMALL, MEDIUM, LARGE, ROOT};
+	enum BranchSize {SMALL, MEDIUM, LARGE, ROOT}
 
 	public ComponentTFHollowTreeTrunk() {
 		super();
@@ -39,7 +38,7 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 
 		this.setCoordBaseMode(Direction.SOUTH);
 
-		boundingBox = new StructureBoundingBox(x, y, z, (x + radius * 2) + 2, y + height, (z + radius * 2) + 2);
+		boundingBox = new MutableBoundingBox(x, y, z, (x + radius * 2) + 2, y + height, (z + radius * 2) + 2);
 	}
 
 	/**
@@ -52,15 +51,14 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 		tagCompound.putInt("trunkRadius", this.radius);
 		tagCompound.putInt("trunkHeight", this.height);
 		tagCompound.putInt("trunkGroundLevel", this.groundLevel);
-
 	}
 
 	/**
 	 * Load from NBT
 	 */
 	@Override
-	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
-		super.readStructureFromNBT(tagCompound, templateManager);
+	protected void readAdditional(CompoundNBT tagCompound) {
+		super.readAdditional(tagCompound);
 
 		this.radius = tagCompound.getInt("trunkRadius");
 		this.height = tagCompound.getInt("trunkHeight");
@@ -71,7 +69,7 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 	 * Add on the various bits and doo-dads we need to succeed
 	 */
 	@Override
-	public void buildComponent(StructureComponent structurecomponent, List<StructureComponent> list, Random rand) {
+	public void buildComponent(StructurePiece structurecomponent, List<StructurePiece> list, Random rand) {
 		int index = getComponentType();
 
 		// 3-5 couple branches on the way up...
@@ -99,7 +97,7 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 	/**
 	 * Build the crown of the tree
 	 */
-	protected void buildFullCrown(List<StructureComponent> list, Random rand, int index) {
+	protected void buildFullCrown(List<StructurePiece> list, Random rand, int index) {
 		int crownRadius = radius * 4 + 4;
 		int minBranches = radius + 3;
 
@@ -116,7 +114,7 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 	/**
 	 * Build a ring of branches around the tree
 	 */
-	protected int buildBranchRing(List<StructureComponent> list, Random rand, int index, int branchHeight, int heightVar, int length, double tilt, double tiltVar, int minBranches, int maxBranches, BranchSize size, boolean leafy) {
+	protected int buildBranchRing(List<StructurePiece> list, Random rand, int index, int branchHeight, int heightVar, int length, double tilt, double tiltVar, int minBranches, int maxBranches, BranchSize size, boolean leafy) {
 		//let's do this!
 		int numBranches = rand.nextInt(maxBranches - minBranches + 1) + minBranches;
 		double rotationPerBranch = 1.0 / numBranches;
@@ -161,7 +159,7 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 		}
 	}
 
-	public void makeSmallBranch(List<StructureComponent> list, Random rand, int index, int branchHeight, int branchLength, double branchRotation, double branchAngle, boolean leafy) {
+	public void makeSmallBranch(List<StructurePiece> list, Random rand, int index, int branchHeight, int branchLength, double branchRotation, double branchAngle, boolean leafy) {
 		BlockPos bSrc = getBranchSrc(branchHeight, branchRotation);
 		ComponentTFHollowTreeSmallBranch branch = new ComponentTFHollowTreeSmallBranch(getFeatureType(), index, bSrc.getX(), bSrc.getY(), bSrc.getZ(), branchLength, branchRotation, branchAngle, leafy);
 		if (!branchIntersectsDungeon(branch, list))
@@ -178,18 +176,16 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 		return TFGenerator.translate(new BlockPos(boundingBox.minX + radius + 1, boundingBox.minY + branchHeight, boundingBox.minZ + radius + 1), radius, branchRotation, 0.5);
 	}
 
-
 	@Override
-	public boolean addComponentParts(World world, Random random, StructureBoundingBox sbb)
-	{
-		return this.addComponentParts(world, random, sbb, false);
+	public boolean addComponentParts(IWorld world, Random random, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		return this.addComponentParts(world.getWorld(), random, sbb, false);
 	}
 
 	/**
 	 * Generate the tree trunk
 	 */
 	@Override
-	public boolean addComponentParts(World world, Random random, StructureBoundingBox sbb, boolean drawLeaves) {
+	public boolean addComponentParts(World world, Random random, MutableBoundingBox sbb, boolean drawLeaves) {
 
 		// offset bounding box to average ground level
 		if (this.groundLevel < 0) {
@@ -215,18 +211,18 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 				for (int dy = 0; dy <= height; dy++) {
 					// fill the body of the trunk
 					if (dist <= radius && dist > hollow) {
-						this.setBlockState(world, TFBlocks.twilight_log.getDefaultState(), dx + 1, dy, dz + 1, sbb); // offset, since our BB is slightly larger than the trunk
+						this.setBlockState(world, TFBlocks.oak_log.get().getDefaultState(), dx + 1, dy, dz + 1, sbb); // offset, since our BB is slightly larger than the trunk
 					}
 				}
 
 				// fill to ground
 				if (dist <= radius) {
-					this.replaceAirAndLiquidDownwards(world, TFBlocks.twilight_log.getDefaultState(), dx + 1, -1, dz + 1, sbb);
+					this.replaceAirAndLiquidDownwards(world, TFBlocks.oak_log.get().getDefaultState(), dx + 1, -1, dz + 1, sbb);
 				}
 
 				// add vines
 				if (dist == hollow && dx == hollow + radius) {
-					this.replaceAirAndLiquidDownwards(world, Blocks.VINE.getDefaultState().with(BlockVine.EAST, true), dx + 1, height, dz + 1, sbb);
+					this.replaceAirAndLiquidDownwards(world, Blocks.VINE.getDefaultState().with(VineBlock.EAST, true), dx + 1, height, dz + 1, sbb);
 				}
 			}
 		}
@@ -245,7 +241,7 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 	/**
 	 * Add a random insect
 	 */
-	protected void addInsect(World world, int fHeight, double fAngle, Random random, StructureBoundingBox sbb) {
+	protected void addInsect(World world, int fHeight, double fAngle, Random random, MutableBoundingBox sbb) {
 		BlockPos bugSpot = TFGenerator.translate(new BlockPos(this.radius + 1, fHeight, this.radius + 1), this.radius + 1, fAngle, 0.5);
 
 		fAngle = fAngle % 1.0;
@@ -261,14 +257,14 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 			insectDirection = Direction.WEST;
 		}
 
-		final BlockState block = (random.nextBoolean() ? TFBlocks.firefly : TFBlocks.cicada).getDefaultState();
-		addInsect(world, block.with(BlockDirectional.FACING, insectDirection), bugSpot.getX(), bugSpot.getY(), bugSpot.getZ(), sbb);
+		final BlockState block = (random.nextBoolean() ? TFBlocks.firefly : TFBlocks.cicada).get().getDefaultState();
+		addInsect(world, block.with(DirectionalBlock.FACING, insectDirection), bugSpot.getX(), bugSpot.getY(), bugSpot.getZ(), sbb);
 	}
 
 	/**
 	 * Add an insect if we can at the position specified
 	 */
-	private void addInsect(World world, BlockState blockState, int posX, int posY, int posZ, StructureBoundingBox sbb) {
+	private void addInsect(World world, BlockState blockState, int posX, int posY, int posZ, MutableBoundingBox sbb) {
 		final BlockPos pos = getBlockPosWithOffset(posX, posY, posZ);
 		BlockState whatsThere = world.getBlockState(pos);
 
@@ -277,5 +273,4 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 			world.setBlockState(pos, blockState, 2);
 		}
 	}
-
 }

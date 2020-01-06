@@ -1,13 +1,11 @@
 package twilightforest.structures;
 
-import net.minecraft.block.BlockSilverfish;
-import net.minecraft.block.BlockStoneBrick;
 import net.minecraft.block.Blocks;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 
 import java.util.Random;
 
-public class StructureTFStrongholdStones extends StructureComponent.BlockSelector {
+public class StructureTFStrongholdStones extends StructurePiece.BlockSelector {
 
 	@Override
 	public void selectBlocks(Random random, int x, int y, int z, boolean wall) {
@@ -17,13 +15,13 @@ public class StructureTFStrongholdStones extends StructureComponent.BlockSelecto
 			float f = random.nextFloat();
 
 			if (f < 0.2F) {
-				blockstate = Blocks.STONEBRICK.getDefaultState().with(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CRACKED);
+				blockstate = Blocks.CRACKED_STONE_BRICKS.getDefaultState();
 			} else if (f < 0.5F) {
-				blockstate = Blocks.STONEBRICK.getDefaultState().with(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.MOSSY);
+				blockstate = Blocks.MOSSY_STONE_BRICKS.getDefaultState();
 			} else if (f < 0.55F) {
-				blockstate = Blocks.MONSTER_EGG.getDefaultState().with(BlockSilverfish.VARIANT, BlockSilverfish.EnumType.STONEBRICK);
+				blockstate = Blocks.INFESTED_STONE_BRICKS.getDefaultState();
 			} else {
-				blockstate = Blocks.STONEBRICK.getDefaultState();
+				blockstate = Blocks.STONE_BRICKS.getDefaultState();
 			}
 		}
 	}

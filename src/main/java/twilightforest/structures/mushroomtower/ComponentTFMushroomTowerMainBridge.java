@@ -2,7 +2,7 @@ package twilightforest.structures.mushroomtower;
 
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 
 import java.util.List;
@@ -20,7 +20,7 @@ public class ComponentTFMushroomTowerMainBridge extends ComponentTFMushroomTower
 	}
 
 	@Override
-	public boolean makeTowerWing(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
+	public boolean makeTowerWing(List<StructurePiece> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 
 		// make a new size 15 main tower
 		Direction direction = getStructureRelativeRotation(rotation);
@@ -32,11 +32,9 @@ public class ComponentTFMushroomTowerMainBridge extends ComponentTFMushroomTower
 		ComponentTFMushroomTowerMain wing = new ComponentTFMushroomTowerMain(getFeatureType(), index, dx[0], dx[1], dx[2], 15, wingHeight, direction);
 
 		list.add(wing);
-		wing.buildComponent((StructureComponent) list.get(0), list, rand);
+		wing.buildComponent((StructurePiece) list.get(0), list, rand);
 		addOpening(x, y, z, rotation);
 
 		return true;
 	}
-
-
 }

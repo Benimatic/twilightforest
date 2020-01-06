@@ -5,9 +5,12 @@ import net.minecraft.item.DyeColor;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFCastleDoor;
@@ -25,12 +28,12 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 	public static final int LOWEST_DOOR = 144;
 	public static final int HIGHEST_DOOR = 222;
 
-	public DyeColor color;
+	public BlockState color;
 
 	public ComponentTFFinalCastleMazeTower13() {
 	}
 
-	public ComponentTFFinalCastleMazeTower13(TFFeature feature, Random rand, int i, int x, int y, int z, DyeColor color, Direction direction) {
+	public ComponentTFFinalCastleMazeTower13(TFFeature feature, Random rand, int i, int x, int y, int z, BlockState color, Direction direction) {
 		super(feature, i);
 		this.setCoordBaseMode(direction);
 		this.color = color;
@@ -61,7 +64,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 
 	}
 
-	public ComponentTFFinalCastleMazeTower13(TFFeature feature, Random rand, int i, int x, int y, int z, int floors, int entranceFloor, DyeColor color, Direction direction) {
+	public ComponentTFFinalCastleMazeTower13(TFFeature feature, Random rand, int i, int x, int y, int z, int floors, int entranceFloor, BlockState color, Direction direction) {
 		super(feature, i);
 		this.setCoordBaseMode(direction);
 		this.color = color;
@@ -72,7 +75,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
+	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		if (parent != null && parent instanceof StructureTFComponentOld) {
 			this.deco = ((StructureTFComponentOld) parent).deco;
 		}
@@ -91,7 +94,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 	/**
 	 * Build more components towards the destination
 	 */
-	public void buildTowards(StructureComponent parent, List<StructureComponent> list, Random rand, BlockPos dest) {
+	public void buildTowards(StructurePiece parent, List<StructurePiece> list, Random rand, BlockPos dest) {
 		// regular building first, adds roof/foundation
 		this.buildComponent(parent, list, rand);
 
@@ -136,7 +139,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 
 	}
 
-	protected void buildNonCriticalTowers(StructureComponent parent, List<StructureComponent> list, Random rand) {
+	protected void buildNonCriticalTowers(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		// pick a random direction
 		Direction dir = RotationUtil.getRandomFacing(rand);
 		Rotation relativeRotation = RotationUtil.getRelativeRotation(this.getCoordBaseMode(), dir);
@@ -217,7 +220,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 		return this.getCoordBaseMode();
 	}
 
-	private boolean buildContinueTowerTowards(List<StructureComponent> list, Random rand, BlockPos dest, Direction facing, int howFar) {
+	private boolean buildContinueTowerTowards(List<StructurePiece> list, Random rand, BlockPos dest, Direction facing, int howFar) {
 		BlockPos opening = this.getValidOpeningCC(rand, facing);
 
 		// adjust opening towards dest.getY() if we are getting close to dest
@@ -237,7 +240,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 		TwilightForestMod.LOGGER.debug("Our coord mode is {}, and direction is {}, so our door is going to be at {} and the new tower will appear at {}", this.getCoordBaseMode(), facing, opening, tc);
 
 		// find start
-		StructureComponent start = (StructureComponent) list.get(0);
+		StructurePiece start = (StructurePiece) list.get(0);
 
 		int centerX = ((start.getBoundingBox().minX + 128) >> 8) << 8;
 		int centerZ = ((start.getBoundingBox().minZ + 128) >> 8) << 8;
@@ -248,7 +251,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 
 			ComponentTFFinalCastleMazeTower13 sTower = new ComponentTFFinalCastleMazeTower13(getFeatureType(), rand, this.getComponentType() + 1, tc.getX(), tc.getY(), tc.getZ(), this.color, facing);
 
-			StructureBoundingBox largerBB = new StructureBoundingBox(sTower.getBoundingBox());
+			MutableBoundingBox largerBB = new MutableBoundingBox(sTower.getBoundingBox());
 
 			largerBB.minX -= 6;
 			largerBB.minZ -= 6;
@@ -257,7 +260,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 			largerBB.minY = 0;
 			largerBB.maxY = 255;
 
-			StructureComponent intersect = StructureComponent.findIntersecting(list, largerBB);
+			StructurePiece intersect = StructurePiece.findIntersecting(list, largerBB);
 
 			if (intersect == null) {
 				TwilightForestMod.LOGGER.debug("tower success!");
@@ -285,7 +288,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 	}
 
 
-	protected boolean buildDamagedTower(List<StructureComponent> list, Random rand, Direction facing) {
+	protected boolean buildDamagedTower(List<StructurePiece> list, Random rand, Direction facing) {
 		BlockPos opening = this.getValidOpeningCC(rand, facing);
 
 		int howFar = 14 + rand.nextInt(24);
@@ -295,14 +298,14 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 		// what color of tower?
 		ComponentTFFinalCastleMazeTower13 eTower = makeNewDamagedTower(rand, facing, tc);
 
-		StructureBoundingBox largerBB = new StructureBoundingBox(eTower.getBoundingBox());
+		MutableBoundingBox largerBB = new MutableBoundingBox(eTower.getBoundingBox());
 
 		largerBB.minX -= 6;
 		largerBB.minZ -= 6;
 		largerBB.maxX += 6;
 		largerBB.maxZ += 6;
 
-		StructureComponent intersect = StructureComponent.findIntersecting(list, largerBB);
+		StructurePiece intersect = StructurePiece.findIntersecting(list, largerBB);
 
 		if (intersect == null) {
 			//TwilightForestMod.LOGGER.info("wreck tower success!  tower is at " + tc.getX() + ", " + tc.getY() + ", " + tc.getZ());
@@ -343,7 +346,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 		return openY;
 	}
 
-	private boolean buildEndTowerTowards(List<StructureComponent> list, Random rand, BlockPos dest, Direction facing, int howFar) {
+	private boolean buildEndTowerTowards(List<StructurePiece> list, Random rand, BlockPos dest, Direction facing, int howFar) {
 		BlockPos opening = this.getValidOpeningCC(rand, facing);
 		opening = new BlockPos(
 				opening.getX(),
@@ -359,20 +362,20 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 
 		// what color of tower?
 		ComponentTFFinalCastleMazeTower13 eTower;
-		if (this.color == BlockTFCastleMagic.VALID_COLORS.get(0)) {
+		if (this.color == TFBlocks.castle_rune_brick_pink.get().getDefaultState()) {
 			eTower = new ComponentTFFinalCastleEntranceTower(getFeatureType(), rand, this.getComponentType() + 1, tc.getX(), tc.getY(), tc.getZ(), facing);
 		} else {
 			eTower = new ComponentTFFinalCastleBellTower21(getFeatureType(), rand, this.getComponentType() + 1, tc.getX(), tc.getY(), tc.getZ(), facing);
 		}
 
-		StructureBoundingBox largerBB = new StructureBoundingBox(eTower.getBoundingBox());
+		MutableBoundingBox largerBB = new MutableBoundingBox(eTower.getBoundingBox());
 
 		largerBB.minX -= 6;
 		largerBB.minZ -= 6;
 		largerBB.maxX += 6;
 		largerBB.maxZ += 6;
 
-		StructureComponent intersect = StructureComponent.findIntersecting(list, largerBB);
+		StructurePiece intersect = StructurePiece.findIntersecting(list, largerBB);
 
 		if (intersect == null) {
 			//TwilightForestMod.LOGGER.info("entrance tower success!  tower is at " + tc.getX() + ", " + tc.getY() + ", " + tc.getZ() + " and dest is " + dest.getX() + ", " + dest.getY() + ", " + dest.getZ());
@@ -466,7 +469,8 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld worldIn, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		World world = worldIn.getWorld();
 		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
 
 		// walls
@@ -492,20 +496,19 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 		// openings
 		makeOpenings(world, sbb);
 
-
 		return true;
 	}
 
-	public DyeColor getGlyphColour() {
+	public BlockState getGlyphColour() {
 		if (color == null) {
 			TwilightForestMod.LOGGER.warn("Final Castle tower has null for glyph color, this is a bug.");
-			return DyeColor.BLUE;
+			return TFBlocks.castle_rune_brick_blue.get().getDefaultState();
 		} else {
 			return color;
 		}
 	}
 
-	private void addFloors(World world, Random rand, StructureBoundingBox sbb) {
+	private void addFloors(World world, Random rand, MutableBoundingBox sbb) {
 		// only add floors up to highest opening
 		int floors = (this.highestOpening / 8) + 1;
 
@@ -528,7 +531,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 		return this.height - this.highestOpening < 9;
 	}
 
-	private void addStairsDown(World world, StructureBoundingBox sbb, Rotation rotation, int y) {
+	private void addStairsDown(World world, MutableBoundingBox sbb, Rotation rotation, int y) {
 		// top flight
 		for (int i = 0; i < 4; i++) {
 			int sx = 8 - i;
@@ -565,11 +568,11 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 	 * Make an opening in this tower for a door.
 	 */
 	@Override
-	protected void makeDoorOpening(World world, int dx, int dy, int dz, StructureBoundingBox sbb) {
+	protected void makeDoorOpening(World world, int dx, int dy, int dz, MutableBoundingBox sbb) {
 		// nullify sky light
 		//nullifySkyLightAtCurrentPosition(world, dx - 3, dy - 1, dz - 3, dx + 3, dy + 3, dz + 3);
 
-		final BlockState doorState = TFBlocks.castle_door.getDefaultState().with(BlockTFCastleDoor.LOCK_INDEX, this.getGlyphColour().getMetadata() % 4);
+		final BlockState doorState = color;
 
 		// clear the door
 		if (dx == 0 || dx == size - 1) {

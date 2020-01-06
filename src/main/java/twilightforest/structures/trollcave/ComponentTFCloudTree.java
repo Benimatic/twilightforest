@@ -1,13 +1,13 @@
 package twilightforest.structures.trollcave;
 
 import net.minecraft.util.Direction;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
+import net.minecraft.util.math.MutableBoundingBox;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponentOld;
 
 import java.util.Random;
-
 
 public class ComponentTFCloudTree extends StructureTFComponentOld {
 
@@ -29,19 +29,19 @@ public class ComponentTFCloudTree extends StructureTFComponentOld {
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 
 		// leaves
-		this.fillWithBlocks(world, sbb, 0, 12, 0, 19, 19, 19, TFBlocks.giant_leaves.getDefaultState(), TFBlocks.giant_leaves.getDefaultState(), false);
-		this.fillWithBlocks(world, sbb, 4, 20, 4, 15, 23, 15, TFBlocks.giant_leaves.getDefaultState(), TFBlocks.giant_leaves.getDefaultState(), false);
-		this.fillWithBlocks(world, sbb, 8, 24, 4, 11, 27, 15, TFBlocks.giant_leaves.getDefaultState(), TFBlocks.giant_leaves.getDefaultState(), false);
-		this.fillWithBlocks(world, sbb, 4, 24, 8, 15, 27, 11, TFBlocks.giant_leaves.getDefaultState(), TFBlocks.giant_leaves.getDefaultState(), false);
+		this.fillWithBlocks(world, sbb, 0, 12, 0, 19, 19, 19, TFBlocks.giant_leaves.get().getDefaultState(), TFBlocks.giant_leaves.get().getDefaultState(), false);
+		this.fillWithBlocks(world, sbb, 4, 20, 4, 15, 23, 15, TFBlocks.giant_leaves.get().getDefaultState(), TFBlocks.giant_leaves.get().getDefaultState(), false);
+		this.fillWithBlocks(world, sbb, 8, 24, 4, 11, 27, 15, TFBlocks.giant_leaves.get().getDefaultState(), TFBlocks.giant_leaves.get().getDefaultState(), false);
+		this.fillWithBlocks(world, sbb, 4, 24, 8, 15, 27, 11, TFBlocks.giant_leaves.get().getDefaultState(), TFBlocks.giant_leaves.get().getDefaultState(), false);
 
 		// trunk
-		this.fillWithBlocks(world, sbb, 8, 0, 8, 11, 23, 11, TFBlocks.giant_log.getDefaultState(), TFBlocks.giant_log.getDefaultState(), false);
+		this.fillWithBlocks(world, sbb, 8, 0, 8, 11, 23, 11, TFBlocks.giant_log.get().getDefaultState(), TFBlocks.giant_log.get().getDefaultState(), false);
 
 		// cloud base
-		this.fillWithBlocks(world, sbb, 8, -4, 8, 11, -1, 11, TFBlocks.fluffy_cloud.getDefaultState(), TFBlocks.fluffy_cloud.getDefaultState(), false);
+		this.fillWithBlocks(world, sbb, 8, -4, 8, 11, -1, 11, TFBlocks.fluffy_cloud.get().getDefaultState(), TFBlocks.fluffy_cloud.get().getDefaultState(), false);
 
 		return true;
 	}

@@ -1,11 +1,12 @@
 package twilightforest.structures.hollowtree;
 
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
-import net.minecraft.world.gen.structure.StructureStart;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.structure.StructureStart;
 import twilightforest.structures.StructureTFComponent;
-import twilightforest.world.TFWorld;
 
 import java.util.Random;
 
@@ -29,19 +30,18 @@ public class StructureTFHollowTreeStart extends StructureStart {
 	 * Do everything except leaves before we do leaves.
 	 */
 	@Override
-	public void generateStructure(World worldIn, Random rand, StructureBoundingBox sbb)
-	{
+	public void generateStructure(IWorld worldIn, Random rand, MutableBoundingBox sbb, ChunkPos pos) {
 		// first wood
-		for (StructureComponent sc : components) {
+		for (StructurePiece sc : components) {
 			if (sc.getBoundingBox().intersectsWith(sbb) && sc instanceof StructureTFTreeComponent) {
-				((StructureTFTreeComponent)sc).addComponentParts(worldIn, rand, sbb, false);
+				((StructureTFTreeComponent)sc).addComponentParts(worldIn.getWorld(), rand, sbb, false);
 			}
 		}
 
 		// now leaves
-		for (StructureComponent sc : components) {
+		for (StructurePiece sc : components) {
 			if (sc.getBoundingBox().intersectsWith(sbb) && sc instanceof StructureTFTreeComponent) {
-				((StructureTFTreeComponent)sc).addComponentParts(worldIn, rand, sbb, true);
+				((StructureTFTreeComponent)sc).addComponentParts(worldIn.getWorld(), rand, sbb, true);
 			}
 		}
 	}

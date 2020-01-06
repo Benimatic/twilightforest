@@ -3,11 +3,14 @@ package twilightforest.structures.trollcave;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenBigMushroom;
 import net.minecraft.world.gen.feature.WorldGenerator;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.world.feature.TFGenBigMushgloom;
@@ -34,7 +37,7 @@ public class ComponentTFTrollCaveGarden extends ComponentTFTrollCaveMain {
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
+	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		// add a cloud
 //		ComponentTFTrollCloud cloud = new ComponentTFTrollCloud(1, boundingBox.minX + ((boundingBox.maxX - boundingBox.minX) / 2), rand.nextInt(64) + 160, boundingBox.minZ + ((boundingBox.maxZ - boundingBox.minZ) / 2));
 //		list.add(cloud);
@@ -42,7 +45,8 @@ public class ComponentTFTrollCaveGarden extends ComponentTFTrollCaveMain {
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld worldIn, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		World world = worldIn.getWorld();
 
 		if (this.isBoundingBoxOutsideBiomes(world, sbb, highlands)) {
 			return false;
@@ -96,7 +100,7 @@ public class ComponentTFTrollCaveGarden extends ComponentTFTrollCaveMain {
 		return true;
 	}
 
-	protected void generate(World world, WorldGenerator generator, Random rand, int x, int y, int z, StructureBoundingBox sbb) {
+	protected void generate(World world, WorldGenerator generator, Random rand, int x, int y, int z, MutableBoundingBox sbb) {
 		// are the coordinates in our bounding box?
 		int dx = getXWithOffset(x, z);
 		int dy = getYWithOffset(y);

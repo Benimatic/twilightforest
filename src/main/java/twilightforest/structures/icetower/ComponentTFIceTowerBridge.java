@@ -2,10 +2,10 @@ package twilightforest.structures.icetower;
 
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
-import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentOld;
 
@@ -16,11 +16,9 @@ public class ComponentTFIceTowerBridge extends StructureTFComponentOld {
 
 	private int length;
 
-
 	public ComponentTFIceTowerBridge() {
 		super();
 	}
-
 
 	public ComponentTFIceTowerBridge(TFFeature feature, int index, int x, int y, int z, int length, Direction direction) {
 		super(feature, index);
@@ -28,7 +26,6 @@ public class ComponentTFIceTowerBridge extends StructureTFComponentOld {
 		this.setCoordBaseMode(direction);
 
 		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, length, 6, 5, direction);
-
 	}
 
 	@Override
@@ -39,20 +36,20 @@ public class ComponentTFIceTowerBridge extends StructureTFComponentOld {
 	}
 
 	@Override
-	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
-		super.readStructureFromNBT(tagCompound, templateManager);
+	protected void readAdditional(CompoundNBT tagCompound) {
+		super.readAdditional(tagCompound);
 		this.length = tagCompound.getInt("bridgeLength");
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
+	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		if (parent != null && parent instanceof StructureTFComponentOld) {
 			this.deco = ((StructureTFComponentOld) parent).deco;
 		}
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 		fillWithAir(world, sbb, 0, 1, 0, length, 5, 4);
 
 		// make floor/ceiling

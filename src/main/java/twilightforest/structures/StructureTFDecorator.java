@@ -2,7 +2,8 @@ package twilightforest.structures;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.structures.darktower.StructureDecoratorDarkTower;
 import twilightforest.structures.finalcastle.StructureTFDecoratorCastle;
 import twilightforest.structures.icetower.StructureDecoratorIceTower;
@@ -19,12 +20,12 @@ public class StructureTFDecorator {
 	public BlockState accentState = Blocks.COBBLESTONE.getDefaultState();
 	public BlockState stairState = Blocks.STONE_STAIRS.getDefaultState();
 	public BlockState fenceState = Blocks.OAK_FENCE.getDefaultState();
-	public BlockState pillarState = Blocks.STONEBRICK.getDefaultState();
+	public BlockState pillarState = Blocks.STONE_BRICKS.getDefaultState();
 	public BlockState platformState = Blocks.STONE_SLAB.getDefaultState();
-	public BlockState floorState = Blocks.STONEBRICK.getDefaultState();
-	public BlockState roofState = Blocks.STONEBRICK.getDefaultState();
+	public BlockState floorState = Blocks.STONE_BRICKS.getDefaultState();
+	public BlockState roofState = Blocks.STONE_BRICKS.getDefaultState();
 
-	public StructureComponent.BlockSelector randomBlocks = new StructureTFStrongholdStones();
+	public StructurePiece.BlockSelector randomBlocks = new StructureTFStrongholdStones();
 
 	public static String getDecoString(StructureTFDecorator deco) {
 //TODO: Structure Disabled

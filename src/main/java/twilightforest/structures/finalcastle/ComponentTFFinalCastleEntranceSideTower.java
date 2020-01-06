@@ -2,9 +2,9 @@ package twilightforest.structures.finalcastle;
 
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
-import twilightforest.block.BlockTFCastleMagic;
+import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponentOld;
 
 import java.util.List;
@@ -15,13 +15,13 @@ public class ComponentTFFinalCastleEntranceSideTower extends ComponentTFFinalCas
 	}
 
 	public ComponentTFFinalCastleEntranceSideTower(TFFeature feature, Random rand, int i, int x, int y, int z, int floors, int entranceFloor, Direction direction) {
-		super(feature, rand, i, x, y, z, floors, entranceFloor, BlockTFCastleMagic.VALID_COLORS.get(0), direction);
+		super(feature, rand, i, x, y, z, floors, entranceFloor, TFBlocks.castle_rune_brick_pink.get().getDefaultState(), direction);
 
 		addOpening(0, 1, size / 2, Rotation.CLOCKWISE_180);
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
+	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		if (parent != null && parent instanceof StructureTFComponentOld) {
 			this.deco = ((StructureTFComponentOld) parent).deco;
 		}

@@ -3,10 +3,12 @@ package twilightforest.structures.courtyard;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.template.Template;
-import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.template.IntegrityProcessor;
+import net.minecraft.world.gen.feature.template.Template;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentTemplate;
 
@@ -35,15 +37,15 @@ public abstract class ComponentNagaCourtyardHedgeAbstract extends StructureTFCom
 
     @Override
     protected void loadTemplates(TemplateManager templateManager, MinecraftServer server) {
-        TEMPLATE = templateManager.getTemplate(server, HEDGE);
-        templateBig = templateManager.getTemplate(server, HEDGE_BIG);
+        TEMPLATE = templateManager.getTemplate(HEDGE);
+        templateBig = templateManager.getTemplate(HEDGE_BIG);
     }
 
-    @Override
-    public boolean addComponentParts(World world, Random random, StructureBoundingBox structureBoundingBox) {
-        placeSettings.setBoundingBox(structureBoundingBox);
-        TEMPLATE.addBlocksToWorld(world, rotatedPosition, new CourtyardStairsTemplateProcessor(rotatedPosition, placeSettings), placeSettings, 18);
-        templateBig.addBlocksToWorld(world, rotatedPosition, placeSettings.copy().setIntegrity(ComponentNagaCourtyardMain.HEDGE_FLOOF), 18);
-        return true;
-    }
+	@Override
+	public boolean addComponentParts(IWorld world, Random randomIn, MutableBoundingBox structureBoundingBox, ChunkPos chunkPosIn) {
+		placeSettings.setBoundingBox(structureBoundingBox);
+		TEMPLATE.addBlocksToWorld(world, rotatedPosition, placeSettings.addProcessor(new CourtyardStairsTemplateProcessor(rotatedPosition, placeSettings)), 18);
+		templateBig.addBlocksToWorld(world, rotatedPosition, placeSettings.copy().addProcessor(new IntegrityProcessor(ComponentNagaCourtyardMain.HEDGE_FLOOF)), 18);
+		return true;
+	}
 }

@@ -30,7 +30,7 @@ public abstract class StructureStartTFFeatureAbstract extends StructureStartTFAb
         super.writeToNBT(compound);
 
         compound.putBoolean("Conquered", this.isConquered);
-        compound.setByteArray("Locks", this.lockBytes);
+        compound.putByteArray("Locks", this.lockBytes);
 
         compound.putInt("FeatureID", this.feature.ordinal());
     }

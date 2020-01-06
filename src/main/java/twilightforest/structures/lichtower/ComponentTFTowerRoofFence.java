@@ -1,12 +1,12 @@
 package twilightforest.structures.lichtower;
 
 import net.minecraft.block.Blocks;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
+import net.minecraft.util.math.MutableBoundingBox;
 import twilightforest.TFFeature;
 
 import java.util.Random;
-
 
 public class ComponentTFTowerRoofFence extends ComponentTFTowerRoof {
 
@@ -31,7 +31,7 @@ public class ComponentTFTowerRoofFence extends ComponentTFTowerRoof {
 	 * A fence around the roof!
 	 */
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 		int y = height + 1;
 		for (int x = 0; x <= size - 1; x++) {
 			for (int z = 0; z <= size - 1; z++) {
@@ -42,5 +42,4 @@ public class ComponentTFTowerRoofFence extends ComponentTFTowerRoof {
 		}
 		return true;
 	}
-
 }

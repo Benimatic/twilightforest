@@ -7,11 +7,10 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.gen.structure.MutableBoundingBox;
-import net.minecraft.world.gen.structure.template.PlacementSettings;
-import net.minecraft.world.gen.structure.template.Template;
-import net.minecraft.world.gen.structure.template.TemplateManager;
-import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraft.world.gen.feature.template.PlacementSettings;
+import net.minecraft.world.gen.feature.template.Template;
+import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.util.math.MutableBoundingBox;
 import twilightforest.TFFeature;
 
 /**
@@ -20,7 +19,7 @@ import twilightforest.TFFeature;
 public abstract class StructureTFComponentTemplate extends StructureTFComponent {
 
     protected PlacementSettings placeSettings = new PlacementSettings().setReplacedBlock(Blocks.STRUCTURE_VOID);
-    protected BlockPos templatePosition = BlockPos.ORIGIN;
+    protected BlockPos templatePosition = BlockPos.ZERO;
     protected BlockPos rotatedPosition;
     protected Template TEMPLATE;
 
@@ -67,12 +66,12 @@ public abstract class StructureTFComponentTemplate extends StructureTFComponent 
     }
 
     @Override
-    protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager manager) {
-        super.readStructureFromNBT(tagCompound, manager);
-        this.templatePosition = new BlockPos(tagCompound.getInt("TPX"), tagCompound.getInt("TPY"), tagCompound.getInt("TPZ"));
-        this.placeSettings.setRotation(this.rotation);
-        setup(manager, FMLCommonHandler.instance().getMinecraftServerInstance());
-    }
+    protected void readAdditional(CompoundNBT tagCompound) {
+        super.readAdditional(tagCompound);
+		this.templatePosition = new BlockPos(tagCompound.getInt("TPX"), tagCompound.getInt("TPY"), tagCompound.getInt("TPZ"));
+		this.placeSettings.setRotation(this.rotation);
+		setup(manager, FMLCommonHandler.instance().getMinecraftServerInstance());
+	}
 
     protected final void setModifiedTemplatePositionFromRotation() {
 
@@ -117,7 +116,7 @@ public abstract class StructureTFComponentTemplate extends StructureTFComponent 
             default:
                 break;
             case FRONT_BACK:
-                BlockPos blockpos2 = BlockPos.ORIGIN;
+                BlockPos blockpos2 = BlockPos.ZERO;
 
                 if (rotation != Rotation.CLOCKWISE_90 && rotation != Rotation.COUNTERCLOCKWISE_90)
                 {
@@ -138,7 +137,7 @@ public abstract class StructureTFComponentTemplate extends StructureTFComponent 
                 this.boundingBox.offset(blockpos2.getX(), 0, blockpos2.getZ());
                 break;
             case LEFT_RIGHT:
-                BlockPos blockpos1 = BlockPos.ORIGIN;
+                BlockPos blockpos1 = BlockPos.ZERO;
 
                 if (rotation != Rotation.CLOCKWISE_90 && rotation != Rotation.COUNTERCLOCKWISE_90)
                 {
@@ -202,7 +201,7 @@ public abstract class StructureTFComponentTemplate extends StructureTFComponent 
             default:
                 break;
             case FRONT_BACK:
-                BlockPos blockpos2 = BlockPos.ORIGIN;
+                BlockPos blockpos2 = BlockPos.ZERO;
 
                 if (rotation != Rotation.CLOCKWISE_90 && rotation != Rotation.COUNTERCLOCKWISE_90)
                 {
@@ -223,7 +222,7 @@ public abstract class StructureTFComponentTemplate extends StructureTFComponent 
                 this.boundingBox.offset(blockpos2.getX(), 0, blockpos2.getZ());
                 break;
             case LEFT_RIGHT:
-                BlockPos blockpos1 = BlockPos.ORIGIN;
+                BlockPos blockpos1 = BlockPos.ZERO;
 
                 if (rotation != Rotation.CLOCKWISE_90 && rotation != Rotation.COUNTERCLOCKWISE_90)
                 {

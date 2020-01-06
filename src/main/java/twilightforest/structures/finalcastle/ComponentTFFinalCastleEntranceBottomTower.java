@@ -3,9 +3,9 @@ package twilightforest.structures.finalcastle;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
-import twilightforest.block.BlockTFCastleMagic;
+import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponentOld;
 
 import java.util.List;
@@ -16,7 +16,7 @@ public class ComponentTFFinalCastleEntranceBottomTower extends ComponentTFFinalC
 	}
 
 	public ComponentTFFinalCastleEntranceBottomTower(TFFeature feature, Random rand, int i, int x, int y, int z, int floors, int entranceFloor, Direction direction) {
-		super(feature, rand, i, x, y, z, floors, entranceFloor, BlockTFCastleMagic.VALID_COLORS.get(0), direction);
+		super(feature, rand, i, x, y, z, floors, entranceFloor, TFBlocks.castle_rune_brick_pink.get().getDefaultState(), direction);
 
 //    		addOpening(12, 1, size / 2, 0);
 //    		addOpening(size / 2, 1, 0, 1);
@@ -25,7 +25,7 @@ public class ComponentTFFinalCastleEntranceBottomTower extends ComponentTFFinalC
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
+	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		if (parent != null && parent instanceof StructureTFComponentOld) {
 			this.deco = ((StructureTFComponentOld) parent).deco;
 		}
@@ -42,7 +42,7 @@ public class ComponentTFFinalCastleEntranceBottomTower extends ComponentTFFinalC
 	/**
 	 * Add some stairs leading to this tower
 	 */
-	private boolean addStairs(List<StructureComponent> list, Random rand, int index, int x, int y, int z, Rotation rotation) {
+	private boolean addStairs(List<StructurePiece> list, Random rand, int index, int x, int y, int z, Rotation rotation) {
 		// add door
 		this.addOpening(x, y, z, rotation);
 

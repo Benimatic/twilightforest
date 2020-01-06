@@ -1,11 +1,13 @@
 package twilightforest.structures.stronghold;
 
-import net.minecraft.block.BlockStairs;
+import net.minecraft.block.StairsBlock;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.loot.TFTreasure;
 
@@ -13,7 +15,6 @@ import java.util.List;
 import java.util.Random;
 
 public class ComponentTFStrongholdTreasureCorridor extends StructureTFStrongholdComponent {
-
 
 	public ComponentTFStrongholdTreasureCorridor() {
 	}
@@ -23,12 +24,12 @@ public class ComponentTFStrongholdTreasureCorridor extends StructureTFStronghold
 	}
 
 	@Override
-	public StructureBoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
+	public MutableBoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
 		return StructureTFStrongholdComponent.getComponentToAddBoundingBox(x, y, z, -4, -1, 0, 9, 7, 27, facing);
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random random) {
+	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random random) {
 		super.buildComponent(parent, list, random);
 
 		// entrance
@@ -36,11 +37,11 @@ public class ComponentTFStrongholdTreasureCorridor extends StructureTFStronghold
 
 		// make a random component at the end
 		addNewComponent(parent, list, random, Rotation.NONE, 4, 1, 27);
-
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld worldIn, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		World world = worldIn.getWorld();
 		placeStrongholdWalls(world, sbb, 0, 0, 0, 8, 6, 26, rand, deco.randomBlocks);
 
 		// statues
@@ -61,9 +62,9 @@ public class ComponentTFStrongholdTreasureCorridor extends StructureTFStronghold
 		this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.NORTH, rotation, true), 8, 3, 14, rotation, sbb);
 		this.setBlockStateRotated(world, deco.fenceState, 8, 2, 12, rotation, sbb);
 		this.setBlockStateRotated(world, deco.fenceState, 8, 2, 14, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairState.with(BlockStairs.FACING, Direction.SOUTH), 7, 1, 12, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairState.with(BlockStairs.FACING, Direction.WEST), 7, 1, 13, rotation, sbb);
-		this.setBlockStateRotated(world, deco.stairState.with(BlockStairs.FACING, Direction.NORTH), 7, 1, 14, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState.with(StairsBlock.FACING, Direction.SOUTH), 7, 1, 12, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState.with(StairsBlock.FACING, Direction.WEST), 7, 1, 13, rotation, sbb);
+		this.setBlockStateRotated(world, deco.stairState.with(StairsBlock.FACING, Direction.NORTH), 7, 1, 14, rotation, sbb);
 
 		// doors
 		placeDoors(world, rand, sbb);

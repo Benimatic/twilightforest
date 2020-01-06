@@ -1,11 +1,13 @@
 package twilightforest.structures.minotaurmaze;
 
-import net.minecraft.block.BlockHugeMushroom;
+import net.minecraft.block.HugeMushroomBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.util.math.MutableBoundingBox;
 import twilightforest.TFFeature;
 
 import java.util.Random;
@@ -23,10 +25,10 @@ public class ComponentTFMazeMushRoom extends ComponentTFMazeRoom {
 		this.setCoordBaseMode(Direction.SOUTH); // let's just make this easy on us?
 	}
 
-
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		super.addComponentParts(world, rand, sbb);
+	public boolean addComponentParts(IWorld worldIn, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		World world = worldIn.getWorld();
+		super.addComponentParts(world, rand, sbb, chunkPosIn);
 
 		for (int x = 1; x < 14; x++) {
 			for (int z = 1; z < 14; z++) {
@@ -56,24 +58,24 @@ public class ComponentTFMazeMushRoom extends ComponentTFMazeRoom {
 		makeMediumMushroom(world, sbb, 10, 1, 9, brownMushroomBlock);
 
 		// bracket mushrooms on the wall
-		this.setBlockState(world, redMushroomBlock.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.ALL_STEM), 1, 2, 1, sbb);
-		this.setBlockState(world, redMushroomBlock.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.CENTER), 1, 3, 1, sbb);
-		this.setBlockState(world, redMushroomBlock.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.NORTH_WEST), 2, 3, 1, sbb);
-		this.setBlockState(world, redMushroomBlock.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.NORTH_WEST), 1, 3, 2, sbb);
+		this.setBlockState(world, redMushroomBlock.with(HugeMushroomBlock.VARIANT, HugeMushroomBlock.EnumType.ALL_STEM), 1, 2, 1, sbb);
+		this.setBlockState(world, redMushroomBlock.with(HugeMushroomBlock.VARIANT, HugeMushroomBlock.EnumType.CENTER), 1, 3, 1, sbb);
+		this.setBlockState(world, redMushroomBlock.with(HugeMushroomBlock.VARIANT, HugeMushroomBlock.EnumType.NORTH_WEST), 2, 3, 1, sbb);
+		this.setBlockState(world, redMushroomBlock.with(HugeMushroomBlock.VARIANT, HugeMushroomBlock.EnumType.NORTH_WEST), 1, 3, 2, sbb);
 
-		this.setBlockState(world, brownMushroomBlock.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.ALL_STEM), 14, 3, 1, sbb);
-		this.setBlockState(world, brownMushroomBlock.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.CENTER), 14, 4, 1, sbb);
-		this.setBlockState(world, brownMushroomBlock.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.NORTH_EAST), 13, 4, 1, sbb);
-		this.setBlockState(world, brownMushroomBlock.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.NORTH_EAST), 14, 4, 2, sbb);
+		this.setBlockState(world, brownMushroomBlock.with(HugeMushroomBlock.VARIANT, HugeMushroomBlock.EnumType.ALL_STEM), 14, 3, 1, sbb);
+		this.setBlockState(world, brownMushroomBlock.with(HugeMushroomBlock.VARIANT, HugeMushroomBlock.EnumType.CENTER), 14, 4, 1, sbb);
+		this.setBlockState(world, brownMushroomBlock.with(HugeMushroomBlock.VARIANT, HugeMushroomBlock.EnumType.NORTH_EAST), 13, 4, 1, sbb);
+		this.setBlockState(world, brownMushroomBlock.with(HugeMushroomBlock.VARIANT, HugeMushroomBlock.EnumType.NORTH_EAST), 14, 4, 2, sbb);
 
-		this.setBlockState(world, brownMushroomBlock.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.ALL_STEM), 1, 1, 14, sbb);
-		this.setBlockState(world, brownMushroomBlock.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.CENTER), 1, 2, 14, sbb);
-		this.setBlockState(world, brownMushroomBlock.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.SOUTH_WEST), 2, 2, 14, sbb);
-		this.setBlockState(world, brownMushroomBlock.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.SOUTH_WEST), 1, 2, 13, sbb);
+		this.setBlockState(world, brownMushroomBlock.with(HugeMushroomBlock.VARIANT, HugeMushroomBlock.EnumType.ALL_STEM), 1, 1, 14, sbb);
+		this.setBlockState(world, brownMushroomBlock.with(HugeMushroomBlock.VARIANT, HugeMushroomBlock.EnumType.CENTER), 1, 2, 14, sbb);
+		this.setBlockState(world, brownMushroomBlock.with(HugeMushroomBlock.VARIANT, HugeMushroomBlock.EnumType.SOUTH_WEST), 2, 2, 14, sbb);
+		this.setBlockState(world, brownMushroomBlock.with(HugeMushroomBlock.VARIANT, HugeMushroomBlock.EnumType.SOUTH_WEST), 1, 2, 13, sbb);
 
-		this.setBlockState(world, brownMushroomBlock.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.CENTER), 14, 1, 14, sbb);
-		this.setBlockState(world, brownMushroomBlock.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.SOUTH_EAST), 13, 1, 14, sbb);
-		this.setBlockState(world, brownMushroomBlock.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.SOUTH_EAST), 14, 1, 13, sbb);
+		this.setBlockState(world, brownMushroomBlock.with(HugeMushroomBlock.VARIANT, HugeMushroomBlock.EnumType.CENTER), 14, 1, 14, sbb);
+		this.setBlockState(world, brownMushroomBlock.with(HugeMushroomBlock.VARIANT, HugeMushroomBlock.EnumType.SOUTH_EAST), 13, 1, 14, sbb);
+		this.setBlockState(world, brownMushroomBlock.with(HugeMushroomBlock.VARIANT, HugeMushroomBlock.EnumType.SOUTH_EAST), 14, 1, 13, sbb);
 
 		// mushroom ceiling spots?
 
@@ -83,21 +85,21 @@ public class ComponentTFMazeMushRoom extends ComponentTFMazeRoom {
 	/**
 	 * Make a 3x3 square mushroom centered on the specified coords.
 	 */
-	private void makeMediumMushroom(World world, StructureBoundingBox sbb, int mx, int my, int mz, BlockState redMushroomBlock) {
+	private void makeMediumMushroom(World world, MutableBoundingBox sbb, int mx, int my, int mz, BlockState redMushroomBlock) {
 		// cap
-		this.setBlockState(world, redMushroomBlock.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.CENTER), mx + 0, my, mz + 0, sbb);
-		this.setBlockState(world, redMushroomBlock.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.WEST), mx + 1, my, mz + 0, sbb);
-		this.setBlockState(world, redMushroomBlock.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.NORTH_WEST), mx + 1, my, mz + 1, sbb);
-		this.setBlockState(world, redMushroomBlock.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.NORTH), mx + 0, my, mz + 1, sbb);
-		this.setBlockState(world, redMushroomBlock.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.NORTH_EAST), mx - 1, my, mz + 1, sbb);
-		this.setBlockState(world, redMushroomBlock.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.EAST), mx - 1, my, mz + 0, sbb);
-		this.setBlockState(world, redMushroomBlock.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.SOUTH_EAST), mx - 1, my, mz - 1, sbb);
-		this.setBlockState(world, redMushroomBlock.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.SOUTH), mx + 0, my, mz - 1, sbb);
-		this.setBlockState(world, redMushroomBlock.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.SOUTH_WEST), mx + 1, my, mz - 1, sbb);
+		this.setBlockState(world, redMushroomBlock.with(HugeMushroomBlock.VARIANT, HugeMushroomBlock.EnumType.CENTER), mx + 0, my, mz + 0, sbb);
+		this.setBlockState(world, redMushroomBlock.with(HugeMushroomBlock.VARIANT, HugeMushroomBlock.EnumType.WEST), mx + 1, my, mz + 0, sbb);
+		this.setBlockState(world, redMushroomBlock.with(HugeMushroomBlock.VARIANT, HugeMushroomBlock.EnumType.NORTH_WEST), mx + 1, my, mz + 1, sbb);
+		this.setBlockState(world, redMushroomBlock.with(HugeMushroomBlock.VARIANT, HugeMushroomBlock.EnumType.NORTH), mx + 0, my, mz + 1, sbb);
+		this.setBlockState(world, redMushroomBlock.with(HugeMushroomBlock.VARIANT, HugeMushroomBlock.EnumType.NORTH_EAST), mx - 1, my, mz + 1, sbb);
+		this.setBlockState(world, redMushroomBlock.with(HugeMushroomBlock.VARIANT, HugeMushroomBlock.EnumType.EAST), mx - 1, my, mz + 0, sbb);
+		this.setBlockState(world, redMushroomBlock.with(HugeMushroomBlock.VARIANT, HugeMushroomBlock.EnumType.SOUTH_EAST), mx - 1, my, mz - 1, sbb);
+		this.setBlockState(world, redMushroomBlock.with(HugeMushroomBlock.VARIANT, HugeMushroomBlock.EnumType.SOUTH), mx + 0, my, mz - 1, sbb);
+		this.setBlockState(world, redMushroomBlock.with(HugeMushroomBlock.VARIANT, HugeMushroomBlock.EnumType.SOUTH_WEST), mx + 1, my, mz - 1, sbb);
 
 		// stem
 		for (int y = 1; y < my; y++) {
-			this.setBlockState(world, redMushroomBlock.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.STEM), mx + 0, y, mz + 0, sbb);
+			this.setBlockState(world, redMushroomBlock.with(HugeMushroomBlock.VARIANT, HugeMushroomBlock.EnumType.STEM), mx + 0, y, mz + 0, sbb);
 		}
 	}
 }

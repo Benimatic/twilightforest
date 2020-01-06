@@ -1,14 +1,13 @@
 package twilightforest.structures.lichtower;
 
-import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
+import net.minecraft.util.math.MutableBoundingBox;
 import twilightforest.TFFeature;
 
 import java.util.Random;
-
 
 public class ComponentTFTowerRoofPointy extends ComponentTFTowerRoof {
 
@@ -27,16 +26,15 @@ public class ComponentTFTowerRoofPointy extends ComponentTFTowerRoof {
 
 		// just hang out at the very top of the tower
 		makeCapBB(wing);
-
 	}
 
 	/**
 	 * Makes a pointy roof out of stuff
 	 */
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		BlockState birchSlab = Blocks.WOODEN_SLAB.getDefaultState().with(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
-		BlockState birchPlanks = Blocks.PLANKS.getDefaultState().with(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		BlockState birchSlab = Blocks.BIRCH_SLAB.getDefaultState();
+		BlockState birchPlanks = Blocks.BIRCH_PLANKS.getDefaultState();
 
 		for (int y = 0; y <= height; y++) {
 			int min, mid, max;
@@ -65,7 +63,6 @@ public class ComponentTFTowerRoofPointy extends ComponentTFTowerRoof {
 		}
 		return true;
 	}
-
 
 	public int slopeChangeForSize(int pSize) {
 		if (size > 10) {

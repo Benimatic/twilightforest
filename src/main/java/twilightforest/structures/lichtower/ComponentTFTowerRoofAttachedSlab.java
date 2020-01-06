@@ -1,12 +1,12 @@
 package twilightforest.structures.lichtower;
 
-import net.minecraft.block.BlockPlanks;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.block.Blocks;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
+import net.minecraft.util.math.MutableBoundingBox;
 import twilightforest.TFFeature;
 
 import java.util.Random;
-
 
 public class ComponentTFTowerRoofAttachedSlab extends ComponentTFTowerRoofSlab {
 
@@ -22,7 +22,7 @@ public class ComponentTFTowerRoofAttachedSlab extends ComponentTFTowerRoofSlab {
 	 * Makes a flat, pyramid-shaped roof that is connected to the parent tower
 	 */
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		return makeConnectedCap(world, BlockPlanks.EnumType.BIRCH, sbb);
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		return makeConnectedCap(world.getWorld(), Blocks.BIRCH_SLAB.getDefaultState(), Blocks.BIRCH_PLANKS.getDefaultState(), sbb);
 	}
 }

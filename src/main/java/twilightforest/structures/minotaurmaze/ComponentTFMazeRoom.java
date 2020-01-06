@@ -2,13 +2,12 @@ package twilightforest.structures.minotaurmaze;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Direction;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
-import twilightforest.block.BlockTFMazestone;
 import twilightforest.block.TFBlocks;
-import twilightforest.enums.MazestoneVariant;
 import twilightforest.structures.StructureTFComponentOld;
 
 import java.util.List;
@@ -22,24 +21,24 @@ public class ComponentTFMazeRoom extends StructureTFComponentOld {
 
 	public ComponentTFMazeRoom(TFFeature feature, int i, Random rand, int x, int y, int z) {
 		super(feature, i);
-		this.setCoordBaseMode(Direction.HORIZONTALS[rand.nextInt(4)]);
+		this.setCoordBaseMode(Direction.Plane.HORIZONTAL.random(rand));
 
-		this.boundingBox = new StructureBoundingBox(x, y, z, x + 15, y + 4, z + 15);
+		this.boundingBox = new MutableBoundingBox(x, y, z, x + 15, y + 4, z + 15);
 	}
 
 	/**
 	 * Initiates construction of the Structure Component picked, at the current Location of StructGen
 	 */
 	@Override
-	public void buildComponent(StructureComponent structurecomponent, List<StructureComponent> list, Random random) {
+	public void buildComponent(StructurePiece structurecomponent, List<StructurePiece> list, Random random) {
 		;
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 		// floor border
-		fillWithBlocks(world, sbb, 1, 0, 1, 14, 0, 14, TFBlocks.maze_stone.getDefaultState().with(BlockTFMazestone.VARIANT, MazestoneVariant.BORDER), AIR, true);
-		fillWithBlocks(world, sbb, 2, 0, 2, 13, 0, 13, TFBlocks.maze_stone.getDefaultState().with(BlockTFMazestone.VARIANT, MazestoneVariant.MOSAIC), AIR, true);
+		fillWithBlocks(world, sbb, 1, 0, 1, 14, 0, 14, TFBlocks.maze_stone_border.get().getDefaultState(), AIR, true);
+		fillWithBlocks(world, sbb, 2, 0, 2, 13, 0, 13, TFBlocks.maze_stone_mosaic.get().getDefaultState(), AIR, true);
 
 		// doorways
 		if (this.getBlockStateFromPos(world, 7, 1, 0, sbb).getBlock() == Blocks.AIR) {

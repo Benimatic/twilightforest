@@ -3,8 +3,8 @@ package twilightforest.structures.hollowtree;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentOld;
 
@@ -19,14 +19,13 @@ public abstract class StructureTFTreeComponent extends StructureTFComponentOld
 		super(feature, i);
 	}
 
-	public abstract boolean addComponentParts(World world, Random random, StructureBoundingBox sbb, boolean drawLeaves);
+	public abstract boolean addComponentParts(World world, Random random, MutableBoundingBox sbb, boolean drawLeaves);
 
 	/**
 	 * Checks a potential branch bounding box to see if it intersects a leaf dungeon
 	 */
-	protected boolean branchIntersectsDungeon(StructureTFTreeComponent branch, List<StructureComponent> list)
-	{
-		for (StructureComponent component : list) {
+	protected boolean branchIntersectsDungeon(StructureTFTreeComponent branch, List<StructurePiece> list) {
+		for (StructurePiece component : list) {
 			if (component instanceof ComponentTFHollowTreeLeafDungeon && component.getBoundingBox().intersectsWith(branch.getBoundingBox())) {
 				return true;
 			}
@@ -38,7 +37,7 @@ public abstract class StructureTFTreeComponent extends StructureTFComponentOld
 	/**
 	 * Puts a block only if leaves can go there.
 	 */
-	protected void placeLeafBlock(World world, BlockState blockState, int x, int y, int z, StructureBoundingBox sbb) {
+	protected void placeLeafBlock(World world, BlockState blockState, int x, int y, int z, MutableBoundingBox sbb) {
 		final BlockPos pos = getBlockPosWithOffset(x, y, z);
 
 		if (sbb.isVecInside(pos)) {

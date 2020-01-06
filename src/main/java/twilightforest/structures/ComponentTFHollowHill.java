@@ -1,33 +1,21 @@
 package twilightforest.structures;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.monster.EntityCaveSpider;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.monster.EntitySilverfish;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntitySpider;
-import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.EntityType;
 import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraft.util.math.MutableBoundingBox;
 import twilightforest.TFFeature;
+import twilightforest.entity.*;
 import twilightforest.loot.TFTreasure;
-import twilightforest.entity.EntityTFFireBeetle;
-import twilightforest.entity.EntityTFPinchBeetle;
-import twilightforest.entity.EntityTFRedcap;
-import twilightforest.entity.EntityTFSlimeBeetle;
-import twilightforest.entity.EntityTFSwarmSpider;
-import twilightforest.entity.EntityTFWraith;
-import twilightforest.world.feature.TFGenCaveStalactite;
 
 import java.util.Random;
-
 
 public class ComponentTFHollowHill extends StructureTFComponentOld {
 
@@ -58,18 +46,18 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 	}
 
 	@Override
-	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
-		super.readStructureFromNBT(tagCompound, templateManager);
+	protected void readAdditional(CompoundNBT tagCompound) {
+		super.readAdditional(tagCompound);
 		this.hillSize = tagCompound.getInt("hillSize");
 		this.radius = ((hillSize * 2 + 1) * 8) - 6;
-
 	}
 
 	/**
 	 * Add in all the blocks we're adding.
 	 */
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld worldIn, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		World world = worldIn.getWorld();
 //		int area = (int)(Math.PI * radius * radius);
 //		int sn = area / 16; // number of stalactites (there will actually be around twice this number)
 		int[] sna = {0, 128, 256, 512};
@@ -119,14 +107,13 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 //			placeWraithSpawner(dest[0], hy + 10, dest[1]);
 		}
 
-
 		return true;
 	}
 
 	/**
 	 * Make an RNG and attempt to use it to place a treasure chest
 	 */
-	protected void generateTreasureChest(World world, int x, int y, int z, StructureBoundingBox sbb) {
+	protected void generateTreasureChest(World world, int x, int y, int z, MutableBoundingBox sbb) {
 		// generate an RNG for this chest
 		//TODO: MOAR RANDOM!
 		Random chestRNG = new Random(world.getSeed() + x * z);
@@ -136,19 +123,18 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 
 		// make something for it to stand on, if necessary
 		setBlockState(world, Blocks.COBBLESTONE.getDefaultState(), x, y - 1, z, sbb);
-
 	}
 
 	/**
 	 * Generate a random ore stalactite
 	 */
-	protected void generateOreStalactite(World world, int x, int y, int z, StructureBoundingBox sbb) {
+	protected void generateOreStalactite(World world, int x, int y, int z, MutableBoundingBox sbb) {
 		// are the coordinates in our bounding box?
 		int dx = getXWithOffset(x, z);
 		int dy = getYWithOffset(y);
 		int dz = getZWithOffset(x, z);
 		BlockPos pos = new BlockPos(dx, dy, dz);
-		if (sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != Blocks.MOB_SPAWNER) {
+		if (sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != Blocks.SPAWNER) {
 			// generate an RNG for this stalactite
 			//TODO: MOAR RANDOM!
 			Random stalRNG = new Random(world.getSeed() + dx * dz);
@@ -162,13 +148,13 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 	/**
 	 * Make a random stone stalactite
 	 */
-	protected void generateBlockStalactite(World world, Block blockToGenerate, float length, boolean up, int x, int y, int z, StructureBoundingBox sbb) {
+	protected void generateBlockStalactite(World world, Block blockToGenerate, float length, boolean up, int x, int y, int z, MutableBoundingBox sbb) {
 		// are the coordinates in our bounding box?
 		int dx = getXWithOffset(x, z);
 		int dy = getYWithOffset(y);
 		int dz = getZWithOffset(x, z);
 		BlockPos pos = new BlockPos(dx, dy, dz);
-		if (sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != Blocks.MOB_SPAWNER) {
+		if (sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != Blocks.SPAWNER) {
 			// generate an RNG for this stalactite
 			//TODO: MOAR RANDOM!
 			Random stalRNG = new Random(world.getSeed() + dx * dz);
@@ -181,7 +167,6 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 			(new TFGenCaveStalactite(blockToGenerate, length, up)).generate(world, stalRNG, pos);
 		}
 	}
-
 
 	/**
 	 * @param cx
@@ -232,7 +217,6 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 		return getMobID(rand, this.hillSize);
 	}
 
-
 	/**
 	 * Gets the id of a mob appropriate to the specified hill size.
 	 *
@@ -250,7 +234,7 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 			return getLevel3Mob(rand);
 		}
 
-		return EntityList.getKey(EntitySpider.class);
+		return EntityType.getKey(EntityType.SPIDER);
 	}
 
 	/**
@@ -261,20 +245,20 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 			case 0:
 			case 1:
 			case 2:
-				return EntityList.getKey(EntityTFSwarmSpider.class);
+				return EntityType.getKey(TFEntities.swarm_spider.get());
 			case 3:
 			case 4:
 			case 5:
-				return EntityList.getKey(EntitySpider.class);
+				return EntityType.getKey(EntityType.SPIDER);
 			case 6:
 			case 7:
-				return EntityList.getKey(EntityZombie.class);
+				return EntityType.getKey(EntityType.ZOMBIE);
 			case 8:
-				return EntityList.getKey(EntitySilverfish.class);
+				return EntityType.getKey(EntityType.SILVERFISH);
 			case 9:
-				return EntityList.getKey(EntityTFRedcap.class);
+				return EntityType.getKey(TFEntities.redcap.get());
 			default:
-				return EntityList.getKey(EntityTFSwarmSpider.class);
+				return EntityType.getKey(TFEntities.swarm_spider.get());
 		}
 	}
 
@@ -286,20 +270,20 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 			case 0:
 			case 1:
 			case 2:
-				return EntityList.getKey(EntityTFRedcap.class);
+				return EntityType.getKey(TFEntities.redcap.get());
 			case 3:
 			case 4:
 			case 5:
-				return EntityList.getKey(EntityZombie.class);
+				return EntityType.getKey(EntityType.ZOMBIE);
 			case 6:
 			case 7:
-				return EntityList.getKey(EntitySkeleton.class);
+				return EntityType.getKey(EntityType.SKELETON);
 			case 8:
-				return EntityList.getKey(EntityTFSwarmSpider.class);
+				return EntityType.getKey(TFEntities.swarm_spider.get());
 			case 9:
-				return EntityList.getKey(EntityCaveSpider.class);
+				return EntityType.getKey(EntityType.CAVE_SPIDER);
 			default:
-				return EntityList.getKey(EntityTFRedcap.class);
+				return EntityType.getKey(TFEntities.redcap.get());
 		}
 	}
 
@@ -309,24 +293,24 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 	public ResourceLocation getLevel3Mob(Random rand) {
 		switch (rand.nextInt(11)) {
 			case 0:
-				return EntityList.getKey(EntityTFSlimeBeetle.class);
+				return EntityType.getKey(TFEntities.slime_beetle.get());
 			case 1:
-				return EntityList.getKey(EntityTFFireBeetle.class);
+				return EntityType.getKey(TFEntities.fire_beetle.get());
 			case 2:
-				return EntityList.getKey(EntityTFPinchBeetle.class);
+				return EntityType.getKey(TFEntities.pinch_beetle.get());
 			case 3:
 			case 4:
 			case 5:
-				return EntityList.getKey(EntitySkeleton.class);
+				return EntityType.getKey(EntityType.SKELETON);
 			case 6:
 			case 7:
 			case 8:
-				return EntityList.getKey(EntityCaveSpider.class);
+				return EntityType.getKey(EntityType.CAVE_SPIDER);
 			case 9:
-				return EntityList.getKey(EntityCreeper.class);
+				return EntityType.getKey(EntityType.CREEPER);
 			case 10:
 			default:
-				return EntityList.getKey(EntityTFWraith.class);
+				return EntityType.getKey(TFEntities.wraith.get());
 		}
 	}
 

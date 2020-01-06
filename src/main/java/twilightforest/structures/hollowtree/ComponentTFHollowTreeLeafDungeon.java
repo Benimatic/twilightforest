@@ -1,29 +1,26 @@
 package twilightforest.structures.hollowtree;
 
-import net.minecraft.block.BlockLeaves;
-import net.minecraft.block.BlockLog;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraft.util.math.MutableBoundingBox;
 import twilightforest.TFFeature;
+import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
 import twilightforest.block.BlockTFLog;
 import twilightforest.block.TFBlocks;
-import twilightforest.entity.EntityTFSwarmSpider;
 import java.util.Random;
-
 
 /**
  * A blob of leaves used to make trees
  *
  * @author Ben
  */
-public class ComponentTFHollowTreeLeafDungeon extends StructureTFTreeComponent
-{
+public class ComponentTFHollowTreeLeafDungeon extends StructureTFTreeComponent {
 	int radius;
 
 	public ComponentTFHollowTreeLeafDungeon() {
@@ -42,10 +39,9 @@ public class ComponentTFHollowTreeLeafDungeon extends StructureTFTreeComponent
 	protected ComponentTFHollowTreeLeafDungeon(TFFeature feature, int index, int x, int y, int z, int radius) {
 		super(feature, index);
 		this.setCoordBaseMode(Direction.SOUTH);
-		boundingBox = new StructureBoundingBox(x - radius, y - radius, z - radius, x + radius, y + radius, z + radius);
+		boundingBox = new MutableBoundingBox(x - radius, y - radius, z - radius, x + radius, y + radius, z + radius);
 		this.radius = radius;
 	}
-
 
 	/**
 	 * Save to NBT
@@ -55,44 +51,41 @@ public class ComponentTFHollowTreeLeafDungeon extends StructureTFTreeComponent
 		super.writeStructureToNBT(tagCompound);
 
 		tagCompound.putInt("leafRadius", this.radius);
-
 	}
 
 	/**
 	 * Load from NBT
 	 */
 	@Override
-	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
-		super.readStructureFromNBT(tagCompound, templateManager);
-
+	protected void readAdditional(CompoundNBT tagCompound) {
+		super.readAdditional(tagCompound);
 		this.radius = tagCompound.getInt("leafRadius");
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random random, StructureBoundingBox sbb)
-	{
-		return this.addComponentParts(world, random, sbb, false);
+	public boolean addComponentParts(IWorld world, Random random, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		return this.addComponentParts(world.getWorld(), random, sbb, false);
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random random, StructureBoundingBox sbb, boolean drawLeaves) {
+	public boolean addComponentParts(World world, Random random, MutableBoundingBox sbb, boolean drawLeaves) {
 		if (!drawLeaves) {
 			// wood
-			drawHollowBlob(world, sbb, radius, radius, radius, 3, 2, TFBlocks.twilight_log.getDefaultState().with(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE), false);
+			drawHollowBlob(world, sbb, radius, radius, radius, 3, 2, TFBlocks.oak_log.get().getDefaultState().with(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE), false);
 			// then treasure chest
 			// which direction is this chest in?
 			this.placeTreasureAtCurrentPosition(world, random, radius + 2, radius - 1, radius, TFTreasure.tree_cache, sbb);
 
 			// then spawner
-			setSpawner(world, radius, radius, radius, sbb, EntityList.getKey(EntityTFSwarmSpider.class));
+			setSpawner(world, radius, radius, radius, sbb, EntityType.getKey(TFEntities.swarm_spider.get()));
 		} else {
 			// hollow sphere of leaves on the outside
-			drawHollowBlob(world, sbb, radius, radius, radius, 4, 2, TFBlocks.twilight_leaves.getDefaultState().with(BlockLeaves.CHECK_DECAY, false), true);
+			drawHollowBlob(world, sbb, radius, radius, radius, 4, 2, TFBlocks.oak_leaves.get().getDefaultState().with(BlockLeaves.CHECK_DECAY, false), true);
 		}
 		return true;
 	}
 
-	private void drawHollowBlob(World world, StructureBoundingBox sbb, int sx, int sy, int sz, int blobRadius, int hollowRadius, BlockState blockState, boolean isLeaves) {
+	private void drawHollowBlob(World world, MutableBoundingBox sbb, int sx, int sy, int sz, int blobRadius, int hollowRadius, BlockState blockState, boolean isLeaves) {
 		// then trace out a quadrant
 		for (byte dx = 0; dx <= blobRadius; dx++) {
 			for (byte dy = 0; dy <= blobRadius; dy++) {
@@ -130,9 +123,7 @@ public class ComponentTFHollowTreeLeafDungeon extends StructureTFTreeComponent
 							this.setBlockState(world, blockState, sx + dx, sy - dy, sz - dz, sbb);
 							this.setBlockState(world, blockState, sx - dx, sy - dy, sz + dz, sbb);
 							this.setBlockState(world, blockState, sx - dx, sy - dy, sz - dz, sbb);
-
 						}
-
 					}
 				}
 			}

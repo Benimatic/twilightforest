@@ -1,14 +1,13 @@
 package twilightforest.structures.finalcastle;
 
-import net.minecraft.item.DyeColor;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.block.BlockTFBossSpawner;
-import twilightforest.block.BlockTFCastleMagic;
-import twilightforest.block.BlockTFForceField;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.BossVariant;
 import twilightforest.structures.StructureTFComponentOld;
@@ -28,20 +27,21 @@ public class ComponentTFFinalCastleBossGazebo extends StructureTFComponentOld {
 		this.spawnListIndex = -1; // no monsters
 
 		this.setCoordBaseMode(keep.getCoordBaseMode());
-		this.boundingBox = new StructureBoundingBox(keep.getBoundingBox().minX + 14, keep.getBoundingBox().maxY + 2, keep.getBoundingBox().minZ + 14, keep.getBoundingBox().maxX - 14, keep.getBoundingBox().maxY + 13, keep.getBoundingBox().maxZ - 14);
+		this.boundingBox = new MutableBoundingBox(keep.getBoundingBox().minX + 14, keep.getBoundingBox().maxY + 2, keep.getBoundingBox().minZ + 14, keep.getBoundingBox().maxX - 14, keep.getBoundingBox().maxY + 13, keep.getBoundingBox().maxZ - 14);
 
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
+	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		this.deco = new StructureTFDecoratorCastle();
-		this.deco.blockState = TFBlocks.castle_rune_brick.getDefaultState().with(BlockTFCastleMagic.COLOR, DyeColor.BLUE);
+		this.deco.blockState = TFBlocks.castle_rune_brick_blue.get().getDefaultState();
 
-		this.deco.fenceState = TFBlocks.force_field.getDefaultState().with(BlockTFForceField.COLOR, DyeColor.PURPLE);
+		this.deco.fenceState = TFBlocks.force_field_purple.get().getDefaultState();
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld worldIn, Random randomIn, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		World world = worldIn.getWorld();
 		// walls
 		for (Rotation rotation : RotationUtil.ROTATIONS) {
 			this.fillBlocksRotated(world, sbb, 0, 0, 0, 0, 10, 20, deco.fenceState, rotation);
@@ -58,10 +58,8 @@ public class ComponentTFFinalCastleBossGazebo extends StructureTFComponentOld {
 		setInvisibleTextEntity(world, 10, 0, 10, sbb, "the latest updates on this castle and other content at:",true, 0.7f);
 		setInvisibleTextEntity(world, 10, 0, 10, sbb, "discord.experiment115.com", true, 0.4f);
 
-		setBlockState(world, TFBlocks.boss_spawner.getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.FINAL_BOSS), 10, 1, 10, sbb);
+		setBlockState(world, TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.FINAL_BOSS), 10, 1, 10, sbb);
 
 		return true;
 	}
-
-
 }

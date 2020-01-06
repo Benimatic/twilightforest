@@ -1,14 +1,12 @@
 package twilightforest.structures.finalcastle;
 
 import net.minecraft.block.Blocks;
-import net.minecraft.world.gen.structure.StructureComponent;
-import twilightforest.block.BlockTFCastleBlock;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.block.TFBlocks;
-import twilightforest.enums.CastleBrickVariant;
 
 import java.util.Random;
 
-public class StructureTFCastleBlocks extends StructureComponent.BlockSelector {
+public class StructureTFCastleBlocks extends StructurePiece.BlockSelector {
 
 	@Override
 	public void selectBlocks(Random random, int x, int y, int z, boolean isWall) {
@@ -16,17 +14,14 @@ public class StructureTFCastleBlocks extends StructureComponent.BlockSelector {
 			blockstate = Blocks.AIR.getDefaultState();
 		} else {
 			float randFloat = random.nextFloat();
-			CastleBrickVariant variant = null;
 
 			if (randFloat < 0.1F) {
-				variant = CastleBrickVariant.WORN;
+				blockstate = TFBlocks.castle_brick_worn.get().getDefaultState();
 			} else if (randFloat < 0.2F) {
-				variant = CastleBrickVariant.CRACKED;
+				blockstate = TFBlocks.castle_brick_cracked.get().getDefaultState();
 			} else {
-				variant = CastleBrickVariant.NORMAL;
+				blockstate = TFBlocks.castle_brick.get().getDefaultState();
 			}
-
-			blockstate = TFBlocks.castle_brick.getDefaultState().with(BlockTFCastleBlock.VARIANT, variant);
 		}
 	}
 

@@ -4,10 +4,11 @@ import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
-import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 
 import java.util.List;
@@ -32,13 +33,13 @@ public class ComponentTFStrongholdBalconyRoom extends StructureTFStrongholdCompo
 	}
 
 	@Override
-	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
-		super.readStructureFromNBT(tagCompound, templateManager);
+	protected void readAdditional(CompoundNBT tagCompound) {
+		super.readAdditional(tagCompound);
 		this.enterBottom = tagCompound.getBoolean("enterBottom");
 	}
 
 	@Override
-	public StructureBoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
+	public MutableBoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
 
 		if (y > 17) {
 			this.enterBottom = false;
@@ -57,7 +58,7 @@ public class ComponentTFStrongholdBalconyRoom extends StructureTFStrongholdCompo
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random random) {
+	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random random) {
 		super.buildComponent(parent, list, random);
 
 		// lower left exit
@@ -95,8 +96,8 @@ public class ComponentTFStrongholdBalconyRoom extends StructureTFStrongholdCompo
 	 * Generate the blocks that go here
 	 */
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		placeStrongholdWalls(world, sbb, 0, 0, 0, 17, 13, 26, rand, deco.randomBlocks);
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		placeStrongholdWalls(world.getWorld(), sbb, 0, 0, 0, 17, 13, 26, rand, deco.randomBlocks);
 
 		// balcony
 		this.fillWithRandomizedBlocks(world, sbb, 1, 6, 1, 16, 7, 25, false, rand, deco.randomBlocks);
@@ -104,16 +105,16 @@ public class ComponentTFStrongholdBalconyRoom extends StructureTFStrongholdCompo
 		this.fillWithAir(world, sbb, 5, 6, 5, 12, 8, 21);
 
 		// stairs & pillars
-		placeStairsAndPillars(world, sbb, Rotation.NONE);
-		placeStairsAndPillars(world, sbb, Rotation.CLOCKWISE_180);
+		placeStairsAndPillars(world.getWorld(), sbb, Rotation.NONE);
+		placeStairsAndPillars(world.getWorld(), sbb, Rotation.CLOCKWISE_180);
 
 		// doors
-		placeDoors(world, rand, sbb);
+		placeDoors(world.getWorld(), rand, sbb);
 
 		return true;
 	}
 
-	private void placeStairsAndPillars(World world, StructureBoundingBox sbb, Rotation rotation) {
+	private void placeStairsAndPillars(World world, MutableBoundingBox sbb, Rotation rotation) {
 		this.fillBlocksRotated(world, sbb, 4, 1, 4, 4, 12, 4, deco.pillarState, rotation);
 		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.COUNTERCLOCKWISE_90.rotate(Direction.WEST), rotation, false), 4, 1, 5, rotation, sbb);
 		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.CLOCKWISE_180.rotate(Direction.WEST), rotation, false), 5, 1, 4, rotation, sbb);

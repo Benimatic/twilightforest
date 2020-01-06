@@ -1,12 +1,12 @@
 package twilightforest.structures.finalcastle;
 
-import net.minecraft.item.DyeColor;
+import net.minecraft.block.BlockState;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
-import twilightforest.block.BlockTFCastleMagic;
+import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponentOld;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class ComponentTFFinalCastleWreckedTower extends ComponentTFFinalCastleDa
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
+	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		if (parent != null && parent instanceof StructureTFComponentOld) {
 			this.deco = ((StructureTFComponentOld) parent).deco;
 		}
@@ -50,10 +50,9 @@ public class ComponentTFFinalCastleWreckedTower extends ComponentTFFinalCastleDa
 	}
 
 	@Override
-	public DyeColor getGlyphColour() {
-		return BlockTFCastleMagic.VALID_COLORS.get(1);
+	public BlockState getGlyphColour() {
+		return TFBlocks.castle_rune_brick_blue.get().getDefaultState();
 	}
-
 
 	@Override
 	protected void determineBlockDestroyed(World world, ArrayList<DestroyArea> areas, int y, int x, int z) {
@@ -68,7 +67,7 @@ public class ComponentTFFinalCastleWreckedTower extends ComponentTFFinalCastleDa
 		}
 
 		if (!isInside) {
-			world.setBlockToAir(pos);
+			world.removeBlock(pos, false);
 		}
 
 	}

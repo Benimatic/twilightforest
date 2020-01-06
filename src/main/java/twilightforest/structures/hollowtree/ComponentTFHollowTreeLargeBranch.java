@@ -1,20 +1,15 @@
 package twilightforest.structures.hollowtree;
 
-import net.minecraft.block.BlockLog;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
-import twilightforest.world.feature.TFGenerator;
 
 import java.util.List;
 import java.util.Random;
-
-import static net.minecraft.block.BlockLog.LOG_AXIS;
-
 
 public class ComponentTFHollowTreeLargeBranch extends ComponentTFHollowTreeMedBranch {
 
@@ -33,7 +28,7 @@ public class ComponentTFHollowTreeLargeBranch extends ComponentTFHollowTreeMedBr
 	 * Add other structure components to this one if needed
 	 */
 	@Override
-	public void buildComponent(StructureComponent structurecomponent, List<StructureComponent> list, Random rand) {
+	public void buildComponent(StructurePiece structurecomponent, List<StructurePiece> list, Random rand) {
 		int index = getComponentType();
 
 		this.hasLeafDungeon = (rand.nextInt(LEAF_DUNGEON_CHANCE) == 0);
@@ -59,13 +54,13 @@ public class ComponentTFHollowTreeLargeBranch extends ComponentTFHollowTreeMedBr
 		}
 	}
 
-	public void makeLeafDungeon(List<StructureComponent> list, Random rand, int index, BlockPos pos) {
+	public void makeLeafDungeon(List<StructurePiece> list, Random rand, int index, BlockPos pos) {
 		ComponentTFHollowTreeLeafDungeon dungeon = new ComponentTFHollowTreeLeafDungeon(getFeatureType(), index, pos.getX(), pos.getY(), pos.getZ(), 4);
 		list.add(dungeon);
 		dungeon.buildComponent(this, list, rand);
 	}
 
-	public void makeMedBranch(List<StructureComponent> list, Random rand, int index, int x, int y, int z, double branchLength, double branchRotation, double branchAngle, boolean leafy) {
+	public void makeMedBranch(List<StructurePiece> list, Random rand, int index, int x, int y, int z, double branchLength, double branchRotation, double branchAngle, boolean leafy) {
 		ComponentTFHollowTreeMedBranch branch = new ComponentTFHollowTreeMedBranch(getFeatureType(), index, x, y, z, branchLength, branchRotation, branchAngle, leafy);
 		if (!branchIntersectsDungeon(branch, list))
 		{
@@ -76,13 +71,13 @@ public class ComponentTFHollowTreeLargeBranch extends ComponentTFHollowTreeMedBr
 
 
 	@Override
-	public boolean addComponentParts(World world, Random random, StructureBoundingBox sbb)
+	public boolean addComponentParts(World world, Random random, MutableBoundingBox sbb)
 	{
 		return this.addComponentParts(world, random, sbb, false);
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb, boolean drawLeaves) {
+	public boolean addComponentParts(World world, Random rand, MutableBoundingBox sbb, boolean drawLeaves) {
 
 		BlockPos rsrc = src.add(-boundingBox.minX, -boundingBox.minY, -boundingBox.minZ);
 		BlockPos rdest = dest.add(-boundingBox.minX, -boundingBox.minY, -boundingBox.minZ);
@@ -90,7 +85,7 @@ public class ComponentTFHollowTreeLargeBranch extends ComponentTFHollowTreeMedBr
 		if (!drawLeaves)
 		{
 			// main branch
-			final BlockState defaultState = TFBlocks.twilight_log.getDefaultState();
+			final BlockState defaultState = TFBlocks.oak_log.get().getDefaultState();
 			drawBresehnam(world, sbb, rsrc.getX(), rsrc.getY(), rsrc.getZ(), rdest.getX(), rdest.getY(), rdest.getZ(), defaultState.with(LOG_AXIS, BlockLog.EnumAxis.NONE));
 
 			// reinforce it

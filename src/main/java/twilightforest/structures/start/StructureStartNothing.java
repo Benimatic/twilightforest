@@ -1,7 +1,7 @@
 package twilightforest.structures.start;
 
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 
@@ -13,7 +13,7 @@ public class StructureStartNothing extends StructureStartTFAbstract {
     }
 
     @Override
-    protected StructureComponent makeFirstComponent(World world, TFFeature feature, Random rand, int x, int y, int z) {
+    protected StructurePiece makeFirstComponent(World world, TFFeature feature, Random rand, int x, int y, int z) {
         //TwilightForestMod.LOGGER.warn("Generating nothing at pos " + x + ", " + y + ", " + z + "!");
 
         return null;

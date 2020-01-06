@@ -9,9 +9,8 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
-import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFConfig;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentOld;
@@ -38,7 +37,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 		super.writeStructureToNBT(tagCompound);
 
-		tagCompound.setIntArray("doorInts", this.getDoorsAsIntArray());
+		tagCompound.putIntArray("doorInts", this.getDoorsAsIntArray());
 	}
 
 	/**
@@ -57,9 +56,8 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	}
 
 	@Override
-	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
-		super.readStructureFromNBT(tagCompound, templateManager);
-
+	protected void readAdditional(CompoundNBT tagCompound) {
+		super.readAdditional(tagCompound);
 		// init doors
 		this.readOpeningsFromArray(tagCompound.getIntArray("doorInts"));
 	}
@@ -75,28 +73,28 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 		}
 	}
 
-	public abstract StructureBoundingBox generateBoundingBox(Direction facing, int x, int y, int z);
+	public abstract MutableBoundingBox generateBoundingBox(Direction facing, int x, int y, int z);
 
 	/**
 	 * used to project a possible new component Bounding Box - to check if it would cut anything already spawned
 	 */
-	public static StructureBoundingBox getComponentToAddBoundingBox(int x, int y, int z, int xOff, int yOff, int zOff, int xSize, int ySize, int zSize, Direction facing) {
+	public static MutableBoundingBox getComponentToAddBoundingBox(int x, int y, int z, int xOff, int yOff, int zOff, int xSize, int ySize, int zSize, Direction facing) {
 		switch (facing) {
 			case SOUTH:
-				return new StructureBoundingBox(x + xOff, y + yOff, z + zOff, x + xSize - 1 + xOff, y + ySize - 1 + yOff, z + zSize - 1 + zOff);
+				return new MutableBoundingBox(x + xOff, y + yOff, z + zOff, x + xSize - 1 + xOff, y + ySize - 1 + yOff, z + zSize - 1 + zOff);
 			case WEST:
-				return new StructureBoundingBox(x - zSize + 1 + zOff, y + yOff, z + xOff, x + zOff, y + ySize - 1 + yOff, z + xSize - 1 + xOff);
+				return new MutableBoundingBox(x - zSize + 1 + zOff, y + yOff, z + xOff, x + zOff, y + ySize - 1 + yOff, z + xSize - 1 + xOff);
 			case NORTH:
-				return new StructureBoundingBox(x - xSize + 1 - xOff, y + yOff, z - zSize + 1 + zOff, x - xOff, y + ySize - 1 + yOff, z + zOff);
+				return new MutableBoundingBox(x - xSize + 1 - xOff, y + yOff, z - zSize + 1 + zOff, x - xOff, y + ySize - 1 + yOff, z + zOff);
 			case EAST:
-				return new StructureBoundingBox(x + zOff, y + yOff, z - xSize + 1 - xOff, x + zSize - 1 + zOff, y + ySize - 1 + yOff, z - xOff);
+				return new MutableBoundingBox(x + zOff, y + yOff, z - xSize + 1 - xOff, x + zSize - 1 + zOff, y + ySize - 1 + yOff, z - xOff);
 			default:
-				return new StructureBoundingBox(x + xOff, y + yOff, z + zOff, x + xSize - 1 + xOff, y + ySize - 1 + yOff, z + zSize - 1 + zOff);
+				return new MutableBoundingBox(x + xOff, y + yOff, z + zOff, x + xSize - 1 + xOff, y + ySize - 1 + yOff, z + zSize - 1 + zOff);
 		}
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
+	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		if (parent != null && parent instanceof StructureTFComponentOld) {
 			this.deco = ((StructureTFComponentOld) parent).deco;
 		}
@@ -105,7 +103,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	/**
 	 * Add a new component in the specified direction
 	 */
-	protected void addNewComponent(StructureComponent entrance, List<StructureComponent> list, Random random, Rotation facing, int x, int y, int z) {
+	protected void addNewComponent(StructurePiece entrance, List<StructurePiece> list, Random random, Rotation facing, int x, int y, int z) {
 		int index = this.componentType + 1;
 		Direction nFacing = getStructureRelativeRotation(facing);
 		int nx = this.getXWithOffset(x, z);
@@ -127,7 +125,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 
 		TFStrongholdPieces pieceList = ((ComponentTFStrongholdEntrance) entrance).lowerPieces;
 
-		StructureComponent nextComponent = pieceList.getNextComponent(entrance, list, random, getFeatureType(), index, nFacing, nx, ny, nz);
+		StructurePiece nextComponent = pieceList.getNextComponent(entrance, list, random, getFeatureType(), index, nFacing, nx, ny, nz);
 
 		// is it clear?
 		if (nextComponent != null) {
@@ -141,9 +139,9 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	/**
 	 * Check the list for components we can break in to at the specified point
 	 */
-	protected StructureComponent findBreakInComponent(List<StructureComponent> list, int x, int y, int z) {
+	protected StructurePiece findBreakInComponent(List<StructurePiece> list, int x, int y, int z) {
 		BlockPos pos = new BlockPos(x, y, z);
-		for (StructureComponent component : list) {
+		for (StructurePiece component : list) {
 			if (component.getBoundingBox() != null && component.getBoundingBox().isVecInside(pos)) {
 				return component;
 			}
@@ -153,7 +151,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	}
 
 
-	protected void addNewUpperComponent(StructureComponent parent, List<StructureComponent> list, Random random, Rotation facing, int x, int y, int z) {
+	protected void addNewUpperComponent(StructurePiece parent, List<StructurePiece> list, Random random, Rotation facing, int x, int y, int z) {
 		StructureTFStrongholdComponent attempted = null;
 
 		int index = this.componentType + 1;
@@ -189,7 +187,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 
 
 		// is it clear?
-		if (attempted != null && StructureComponent.findIntersecting(list, attempted.getBoundingBox()) == null) {
+		if (attempted != null && StructurePiece.findIntersecting(list, attempted.getBoundingBox()) == null) {
 			// if so, add it
 			list.add(attempted);
 			attempted.buildComponent(parent, list, random);
@@ -202,7 +200,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	/**
 	 * Have we strayed more than range blocks away from the center?
 	 */
-	private boolean isOutOfRange(StructureComponent parent, int nx, int ny, int nz, int range) {
+	private boolean isOutOfRange(StructurePiece parent, int nx, int ny, int nz, int range) {
 
 		return Math.abs(nx - parent.getBoundingBox().minX) > range
 				|| Math.abs(nz - parent.getBoundingBox().minZ) > range;
@@ -211,7 +209,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	/**
 	 * Make a doorway
 	 */
-	protected void placeDoorwayAt(World world, Random rand, int x, int y, int z, StructureBoundingBox sbb) {
+	protected void placeDoorwayAt(World world, Random rand, int x, int y, int z, MutableBoundingBox sbb) {
 		if (x == 0 || x == this.getXSize()) {
 			this.fillWithBlocks(world, sbb, x, y, z - 2, x, y + 3, z + 2, deco.fenceState, Blocks.AIR.getDefaultState(), false);
 			this.fillWithAir(world, sbb, x, y, z - 1, x, y + 3, z + 1);
@@ -238,7 +236,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	/**
 	 * Make a smaller doorway
 	 */
-	protected void placeSmallDoorwayAt(World world, Random rand, int facing, int x, int y, int z, StructureBoundingBox sbb) {
+	protected void placeSmallDoorwayAt(World world, Random rand, int facing, int x, int y, int z, MutableBoundingBox sbb) {
 		if (facing == 0 || facing == 2) {
 			this.fillWithBlocks(world, sbb, x - 1, y, z, x + 1, y + 1, z, Blocks.COBBLESTONE_WALL.getDefaultState(), Blocks.AIR.getDefaultState(), true);
 			this.fillWithAir(world, sbb, x, y, z, x, y + 1, z);
@@ -253,7 +251,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	/**
 	 * Generate a statue in the corner
 	 */
-	public void placeCornerStatue(World world, int x, int y, int z, int facing, StructureBoundingBox sbb) {
+	public void placeCornerStatue(World world, int x, int y, int z, int facing, MutableBoundingBox sbb) {
 
 		// set offsets and stair metas
 		int ox = 1;
@@ -312,7 +310,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	/**
 	 * Make a statue that faces out from a wall
 	 */
-	public void placeWallStatue(World world, int x, int y, int z, Rotation facing, StructureBoundingBox sbb) {
+	public void placeWallStatue(World world, int x, int y, int z, Rotation facing, MutableBoundingBox sbb) {
 		int ox = 1;
 		int oz = 1;
 
@@ -482,7 +480,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	/**
 	 * Place any doors on our list
 	 */
-	public void placeDoors(World world, Random rand, StructureBoundingBox sbb) {
+	public void placeDoors(World world, Random rand, MutableBoundingBox sbb) {
 		if (this.doors != null) {
 			for (BlockPos doorCoords : doors) {
 				this.placeDoorwayAt(world, rand, doorCoords.getX(), doorCoords.getY(), doorCoords.getZ(), sbb);
@@ -495,7 +493,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	/**
 	 * Place stronghold walls in every position except those filled with dirt.
 	 */
-	protected void placeStrongholdWalls(World world, StructureBoundingBox sbb, int sx, int sy, int sz, int dx, int dy, int dz, Random rand, StructureComponent.BlockSelector randomBlocks) {
+	protected void placeStrongholdWalls(World world, MutableBoundingBox sbb, int sx, int sy, int sz, int dx, int dy, int dz, Random rand, StructurePiece.BlockSelector randomBlocks) {
 		for (int y = sy; y <= dy; ++y) {
 			for (int x = sx; x <= dx; ++x) {
 				for (int z = sz; z <= dz; ++z) {
@@ -509,7 +507,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 						}
 					} else if (y == sy || y == dy) {
 						// do stronghold bricks for floor/ceiling
-						StructureComponent.BlockSelector strongBlocks = StructureTFComponentOld.getStrongholdStones();
+						StructurePiece.BlockSelector strongBlocks = StructureTFComponentOld.getStrongholdStones();
 						strongBlocks.selectBlocks(rand, x, y, z, wall);
 						this.setBlockState(world, strongBlocks.getBlockState(), x, y, z, sbb);
 
@@ -527,7 +525,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	/**
 	 * Place stronghold walls on dirt/grass/stone
 	 */
-	protected void placeUpperStrongholdWalls(World world, StructureBoundingBox sbb, int sx, int sy, int sz, int dx, int dy, int dz, Random rand, StructureComponent.BlockSelector randomBlocks) {
+	protected void placeUpperStrongholdWalls(World world, MutableBoundingBox sbb, int sx, int sy, int sz, int dx, int dy, int dz, Random rand, StructurePiece.BlockSelector randomBlocks) {
 		for (int y = sy; y <= dy; ++y) {
 			for (int x = sx; x <= dx; ++x) {
 				for (int z = sz; z <= dz; ++z) {
@@ -535,11 +533,11 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 					BlockState state = this.getBlockStateFromPos(world, x, y, z, sbb);
 					Block blockID = state.getBlock();
 
-					if ((blockID != Blocks.AIR && (state.getMaterial() == Material.ROCK || state.getMaterial() == Material.GRASS || state.getMaterial() == Material.GROUND))
-							|| (blockID == Blocks.AIR && rand.nextInt(3) == 0) && this.getBlockStateFromPos(world, x, y - 1, z, sbb).getBlock() == Blocks.STONEBRICK) {
+					if ((blockID != Blocks.AIR && (state.getMaterial() == Material.ROCK || state.getMaterial() == Material.ORGANIC || state.getMaterial() == Material.EARTH))
+							|| (blockID == Blocks.AIR && rand.nextInt(3) == 0) && this.getBlockStateFromPos(world, x, y - 1, z, sbb).getBlock() == Blocks.STONE_BRICKS) {
 						if (y == sy || y == dy) {
 							// do stronghold bricks for floor/ceiling
-							StructureComponent.BlockSelector strongBlocks = StructureTFComponentOld.getStrongholdStones();
+							StructurePiece.BlockSelector strongBlocks = StructureTFComponentOld.getStrongholdStones();
 							strongBlocks.selectBlocks(rand, x, y, z, wall);
 							this.setBlockState(world, strongBlocks.getBlockState(), x, y, z, sbb);
 

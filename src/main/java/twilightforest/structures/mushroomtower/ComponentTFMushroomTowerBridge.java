@@ -1,13 +1,13 @@
 package twilightforest.structures.mushroomtower;
 
-import net.minecraft.block.BlockPlanks;
+import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
-import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.structures.StructureTFComponentOld;
@@ -48,14 +48,14 @@ public class ComponentTFMushroomTowerBridge extends ComponentTFMushroomTowerWing
 	 * Load from NBT
 	 */
 	@Override
-	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
-		super.readStructureFromNBT(tagCompound, templateManager);
+	protected void readAdditional(CompoundNBT tagCompound) {
+		super.readAdditional(tagCompound);
 		this.dSize = tagCompound.getInt("destSize");
 		this.dHeight = tagCompound.getInt("destHeight");
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
+	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		if (parent != null && parent instanceof StructureTFComponentOld) {
 			this.deco = ((StructureTFComponentOld) parent).deco;
 		}
@@ -69,21 +69,21 @@ public class ComponentTFMushroomTowerBridge extends ComponentTFMushroomTowerWing
 		}
 	}
 
-	public StructureBoundingBox getWingBB() {
+	public MutableBoundingBox getWingBB() {
 		int[] dest = offsetTowerCoords(dSize - 1, 1, 1, dSize, this.getCoordBaseMode());
 		return StructureTFComponentOld.getComponentToAddBoundingBox(dest[0], dest[1], dest[2], 0, 0, 0, dSize - 1, dHeight - 1, dSize - 1, this.getCoordBaseMode());
 
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 
 		// make walls
 		for (int x = 0; x < dSize; x++) {
 			setBlockState(world, deco.fenceState, x, 1, 0, sbb);
 			setBlockState(world, deco.fenceState, x, 1, 2, sbb);
 
-			setBlockState(world, this.isAscender ? deco.floorState.with(BlockPlanks.VARIANT, BlockPlanks.EnumType.JUNGLE) : deco.floorState, x, 0, 1, sbb);
+			setBlockState(world, this.isAscender ? Blocks.JUNGLE_PLANKS.getDefaultState() : deco.floorState, x, 0, 1, sbb);
 		}
 
 		// clear bridge walkway

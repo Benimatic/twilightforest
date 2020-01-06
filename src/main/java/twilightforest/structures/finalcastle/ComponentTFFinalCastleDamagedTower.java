@@ -2,11 +2,12 @@ package twilightforest.structures.finalcastle;
 
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
-import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponentOld;
 
@@ -19,11 +20,11 @@ public class ComponentTFFinalCastleDamagedTower extends ComponentTFFinalCastleMa
 	}
 
 	public ComponentTFFinalCastleDamagedTower(TFFeature feature, Random rand, int i, int x, int y, int z, Direction direction) {
-		super(feature, rand, i, x, y, z, BlockTFCastleMagic.VALID_COLORS.get(2), direction);  //TODO: change rune color
+		super(feature, rand, i, x, y, z, TFBlocks.castle_rune_brick_yellow.get().getDefaultState(), direction);  //TODO: change rune color
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
+	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		if (parent != null && parent instanceof StructureTFComponentOld) {
 			this.deco = ((StructureTFComponentOld) parent).deco;
 		}
@@ -48,16 +49,15 @@ public class ComponentTFFinalCastleDamagedTower extends ComponentTFFinalCastleMa
 		this.buildNonCriticalTowers(parent, list, rand);
 	}
 
-
 	@Override
 	protected ComponentTFFinalCastleMazeTower13 makeNewDamagedTower(Random rand, Direction facing, BlockPos tc) {
 		return new ComponentTFFinalCastleWreckedTower(getFeatureType(), rand, this.getComponentType() + 1, tc.getX(), tc.getY(), tc.getZ(), facing);
 	}
 
-
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		super.addComponentParts(world, rand, sbb);
+	public boolean addComponentParts(IWorld worldIn, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		super.addComponentParts(worldIn, rand, sbb, chunkPosIn);
+		World world = worldIn.getWorld();
 		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
 
 		this.destroyTower(world, decoRNG, sbb);
@@ -65,7 +65,7 @@ public class ComponentTFFinalCastleDamagedTower extends ComponentTFFinalCastleMa
 		return true;
 	}
 
-	public void destroyTower(World world, Random rand, StructureBoundingBox sbb) {
+	public void destroyTower(World world, Random rand, MutableBoundingBox sbb) {
 
 		// make list of destroyed areas
 		ArrayList<DestroyArea> areas = makeInitialDestroyList(rand);
@@ -80,7 +80,7 @@ public class ComponentTFFinalCastleDamagedTower extends ComponentTFFinalCastleMa
 				for (int z = this.boundingBox.minZ - 2; z <= this.boundingBox.maxZ + 2; z++) {
 					pos.setPos(x, y, z);
 					if (sbb.isVecInside(pos)) {
-						if (world.getBlockState(pos).getBlock() == TFBlocks.deadrock) {
+						if (world.getBlockState(pos).getBlock() == TFBlocks.deadrock.get()) {
 							hitDeadRock = true;
 						}
 						determineBlockDestroyed(world, areas, y, x, z);
@@ -118,7 +118,7 @@ public class ComponentTFFinalCastleDamagedTower extends ComponentTFFinalCastleMa
 		BlockPos pos = new BlockPos(x, y, z);
 		for (DestroyArea dArea : areas) {
 			if (dArea != null && dArea.isVecInside(pos)) {
-				world.setBlockToAir(pos);
+				world.removeBlock(pos, false);
 			}
 		}
 	}

@@ -1,8 +1,9 @@
 package twilightforest.structures.finalcastle;
 
 import net.minecraft.util.Direction;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
+import net.minecraft.util.math.MutableBoundingBox;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentOld;
 
@@ -19,15 +20,13 @@ public class ComponentTFFinalCastleDungeonForgeRoom extends StructureTFComponent
 		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox2(x, y, z, -15, 0, -15, 50, 30, 50, direction);
 	}
 
-
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 		this.fillWithAir(world, sbb, 0, 0, 0, 50, 30, 50);
 
 		// sign
-		this.placeSignAtCurrentPosition(world, 25, 0, 25, "Mini-boss 2", "Gives talisman", sbb);
+		this.placeSignAtCurrentPosition(world.getWorld(), 25, 0, 25, "Mini-boss 2", "Gives talisman", sbb);
 
 		return true;
 	}
-
 }

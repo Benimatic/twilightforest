@@ -3,13 +3,14 @@ package twilightforest.structures;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.util.math.MutableBoundingBox;
 import twilightforest.TFFeature;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.BossVariant;
-import twilightforest.world.TFWorld;
 
 import java.util.Random;
 
@@ -47,7 +48,7 @@ public class ComponentTFYetiCave extends ComponentTFHollowHill {
 	 * Add in all the blocks we're adding.
 	 */
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 
 		int sn = 128;
 
@@ -62,22 +63,22 @@ public class ComponentTFYetiCave extends ComponentTFHollowHill {
 		// stone stalactites!
 		for (int i = 0; i < sn; i++) {
 			int[] dest = getCoordsInHill2D(rand);
-			generateBlockStalactite(world, Blocks.STONE, 1.0F, true, dest[0], 1, dest[1], sbb);
+			generateBlockStalactite(world.getWorld(), Blocks.STONE, 1.0F, true, dest[0], 1, dest[1], sbb);
 		}
 		// ice stalactites!
 		for (int i = 0; i < sn; i++) {
 			int[] dest = getCoordsInHill2D(rand);
-			generateBlockStalactite(world, Blocks.ICE, 1.0F, true, dest[0], 1, dest[1], sbb);
+			generateBlockStalactite(world.getWorld(), Blocks.ICE, 1.0F, true, dest[0], 1, dest[1], sbb);
 		}
 		// packed ice stalactites!
 		for (int i = 0; i < sn; i++) {
 			int[] dest = getCoordsInHill2D(rand);
-			generateBlockStalactite(world, Blocks.PACKED_ICE, 0.9F, true, dest[0], 1, dest[1], sbb);
+			generateBlockStalactite(world.getWorld(), Blocks.PACKED_ICE, 0.9F, true, dest[0], 1, dest[1], sbb);
 		}
 
 		// spawn alpha yeti
-		final BlockState yetiSpawner = TFBlocks.boss_spawner.getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.ALPHA_YETI);
-		setBlockStateRotated(world, yetiSpawner, radius, 1, radius, Rotation.NONE, sbb);
+		final BlockState yetiSpawner = TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.ALPHA_YETI);
+		setBlockStateRotated(world.getWorld(), yetiSpawner, radius, 1, radius, Rotation.NONE, sbb);
 
 		return true;
 	}

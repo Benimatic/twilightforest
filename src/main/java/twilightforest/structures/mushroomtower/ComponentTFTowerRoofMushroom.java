@@ -1,10 +1,12 @@
 package twilightforest.structures.mushroomtower;
 
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.structures.lichtower.ComponentTFTowerRoof;
@@ -26,12 +28,12 @@ public class ComponentTFTowerRoofMushroom extends ComponentTFTowerRoof {
 
 		this.setCoordBaseMode(Direction.SOUTH);
 
-		this.boundingBox = new StructureBoundingBox(wing.getBoundingBox().minX - overhang, wing.getBoundingBox().maxY + 2, wing.getBoundingBox().minZ - overhang, wing.getBoundingBox().maxX + overhang, wing.getBoundingBox().maxY + this.height + 1, wing.getBoundingBox().maxZ + overhang);
+		this.boundingBox = new MutableBoundingBox(wing.getBoundingBox().minX - overhang, wing.getBoundingBox().maxY + 2, wing.getBoundingBox().minZ - overhang, wing.getBoundingBox().maxX + overhang, wing.getBoundingBox().maxY + this.height + 1, wing.getBoundingBox().maxZ + overhang);
 
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
+	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		if (parent != null && parent instanceof StructureTFComponentOld) {
 			this.deco = ((StructureTFComponentOld) parent).deco;
 		}
@@ -46,7 +48,7 @@ public class ComponentTFTowerRoofMushroom extends ComponentTFTowerRoof {
 	 * Makes a pointy roof out of stuff
 	 */
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 
 		for (int y = 0; y <= height; y++) {
 
@@ -57,13 +59,13 @@ public class ComponentTFTowerRoofMushroom extends ComponentTFTowerRoof {
 				hollow = -1;
 			}
 
-			makeCircle(world, y, radius, hollow, sbb);
+			makeCircle(world.getWorld(), y, radius, hollow, sbb);
 		}
 
 		return true;
 	}
 
-	private void makeCircle(World world, int y, int radius, int hollow, StructureBoundingBox sbb) {
+	private void makeCircle(World world, int y, int radius, int hollow, MutableBoundingBox sbb) {
 
 		int cx = size / 2;
 		int cz = size / 2;

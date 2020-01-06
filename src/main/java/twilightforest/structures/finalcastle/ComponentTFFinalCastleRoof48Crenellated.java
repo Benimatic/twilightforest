@@ -2,11 +2,12 @@ package twilightforest.structures.finalcastle;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
-import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.util.RotationUtil;
@@ -24,22 +25,22 @@ public class ComponentTFFinalCastleRoof48Crenellated extends StructureTFComponen
 		int height = 5;
 
 		this.setCoordBaseMode(keep.getCoordBaseMode());
-		this.boundingBox = new StructureBoundingBox(keep.getBoundingBox().minX - 2, keep.getBoundingBox().maxY - 1, keep.getBoundingBox().minZ - 2, keep.getBoundingBox().maxX + 2, keep.getBoundingBox().maxY + height - 1, keep.getBoundingBox().maxZ + 2);
+		this.boundingBox = new MutableBoundingBox(keep.getBoundingBox().minX - 2, keep.getBoundingBox().maxY - 1, keep.getBoundingBox().minZ - 2, keep.getBoundingBox().maxX + 2, keep.getBoundingBox().maxY + height - 1, keep.getBoundingBox().maxZ + 2);
 
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
+	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		if (parent != null && parent instanceof StructureTFComponentOld) {
 			this.deco = ((StructureTFComponentOld) parent).deco;
 		}
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld worldIn, Random randomIn, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		World world = worldIn.getWorld();
 		// add second layer of floor
-		final BlockState castleMagic = TFBlocks.castle_rune_brick.getDefaultState()
-				.with(BlockTFCastleMagic.COLOR, BlockTFCastleMagic.VALID_COLORS.get(3));
+		final BlockState castleMagic = TFBlocks.castle_rune_brick_purple.get().getDefaultState();
 		this.fillWithBlocks(world, sbb, 2, 2, 2, 50, 2, 50, castleMagic, castleMagic, false);
 
 		// crenellations
@@ -54,5 +55,4 @@ public class ComponentTFFinalCastleRoof48Crenellated extends StructureTFComponen
 
 		return true;
 	}
-
 }

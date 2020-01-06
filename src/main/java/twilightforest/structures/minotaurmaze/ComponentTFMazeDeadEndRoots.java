@@ -2,12 +2,11 @@ package twilightforest.structures.minotaurmaze;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Direction;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
+import net.minecraft.util.math.MutableBoundingBox;
 import twilightforest.TFFeature;
-import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
-import twilightforest.enums.PlantVariant;
 
 import java.util.Random;
 
@@ -22,7 +21,7 @@ public class ComponentTFMazeDeadEndRoots extends ComponentTFMazeDeadEnd {
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 		// no door
 		for (int x = 1; x < 5; x++) {
 			for (int z = 0; z < 5; z++) {
@@ -35,7 +34,7 @@ public class ComponentTFMazeDeadEndRoots extends ComponentTFMazeDeadEnd {
 
 					// roots
 					for (int y = 6 - length; y < 6; y++) {
-						this.setBlockState(world, TFBlocks.twilight_plant.getDefaultState().with(BlockTFPlant.VARIANT, PlantVariant.ROOT_STRAND), x, y, z, sbb);
+						this.setBlockState(world, TFBlocks.root_strand.get().getDefaultState(), x, y, z, sbb);
 					}
 
 					// occasional gravel

@@ -1,9 +1,11 @@
 package twilightforest.structures.minotaurmaze;
 
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentOld;
 
@@ -27,14 +29,13 @@ public class ComponentTFMazeRuins extends StructureTFComponentOld {
 
 		// I have no bounding box
 		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, 0, 0, 0, Direction.SOUTH);
-
 	}
 
 	/**
 	 * Initiates construction of the Structure Component picked, at the current Location of StructGen
 	 */
 	@Override
-	public void buildComponent(StructureComponent structurecomponent, List<StructureComponent> list, Random random) {
+	public void buildComponent(StructurePiece structurecomponent, List<StructurePiece> list, Random random) {
 		super.buildComponent(structurecomponent, list, random);
 
 		// add a maze
@@ -51,16 +52,14 @@ public class ComponentTFMazeRuins extends StructureTFComponentOld {
 		ComponentTFMazeMound mazeAbove = new ComponentTFMazeMound(getFeatureType(), 2, random, boundingBox.minX - 14, boundingBox.minY, boundingBox.minZ - 14);
 		list.add(mazeAbove);
 		mazeAbove.buildComponent(this, list, random);
-
 	}
-
 
 	/**
 	 * second Part of Structure generating, this for example places Spiderwebs, Mob Spawners, it closes Mineshafts at
 	 * the end, it adds Fences...
 	 */
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 		// I have no components
 		return true;
 	}

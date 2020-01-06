@@ -1,20 +1,17 @@
 package twilightforest.structures.hollowtree;
 
-import net.minecraft.block.BlockLog;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.util.math.MutableBoundingBox;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 
 import java.util.Random;
 
-import static net.minecraft.block.BlockLog.LOG_AXIS;
-
-
-public class ComponentTFHollowTreeSmallBranch extends
-		ComponentTFHollowTreeMedBranch {
+public class ComponentTFHollowTreeSmallBranch extends ComponentTFHollowTreeMedBranch {
 
 	public ComponentTFHollowTreeSmallBranch() {
 		super();
@@ -25,20 +22,19 @@ public class ComponentTFHollowTreeSmallBranch extends
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random random, StructureBoundingBox sbb)
-	{
-		return this.addComponentParts(world, random, sbb, false);
+	public boolean addComponentParts(IWorld world, Random random, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		return this.addComponentParts(world.getWorld(), random, sbb, false);
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random random, StructureBoundingBox sbb, boolean drawLeaves) {
+	public boolean addComponentParts(World world, Random random, MutableBoundingBox sbb, boolean drawLeaves) {
 
 		BlockPos rSrc = src.add(-boundingBox.minX, -boundingBox.minY, -boundingBox.minZ);
 		BlockPos rDest = dest.add(-boundingBox.minX, -boundingBox.minY, -boundingBox.minZ);
 
 		if (!drawLeaves)
 		{
-			BlockState log = TFBlocks.twilight_log.getDefaultState().with(LOG_AXIS, BlockLog.EnumAxis.NONE);
+			BlockState log = TFBlocks.oak_log.get().getDefaultState().with(LOG_AXIS, BlockLog.EnumAxis.NONE);
 			drawBresehnam(world, sbb, rSrc.getX(), rSrc.getY(), rSrc.getZ(), rDest.getX(), rDest.getY(), rDest.getZ(), log);
 		} else {
 			int leafRad = random.nextInt(2) + 1;

@@ -2,16 +2,16 @@ package twilightforest.structures.stronghold;
 
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 
 import java.util.List;
 import java.util.Random;
 
 public class ComponentTFStrongholdUpperCorridor extends StructureTFStrongholdComponent {
-
 
 	public ComponentTFStrongholdUpperCorridor() {
 	}
@@ -21,12 +21,12 @@ public class ComponentTFStrongholdUpperCorridor extends StructureTFStrongholdCom
 	}
 
 	@Override
-	public StructureBoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
-		return StructureBoundingBox.getComponentToAddBoundingBox(x, y, z, -2, -1, 0, 5, 5, 9, facing);
+	public MutableBoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
+		return MutableBoundingBox.getComponentToAddBoundingBox(x, y, z, -2, -1, 0, 5, 5, 9, facing);
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random random) {
+	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random random) {
 		super.buildComponent(parent, list, random);
 
 		// make a random component at the end
@@ -35,17 +35,17 @@ public class ComponentTFStrongholdUpperCorridor extends StructureTFStrongholdCom
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 		if (this.isLiquidInStructureBoundingBox(world, sbb)) {
 			return false;
 		} else {
-			placeUpperStrongholdWalls(world, sbb, 0, 0, 0, 4, 4, 8, rand, deco.randomBlocks);
+			placeUpperStrongholdWalls(world.getWorld(), sbb, 0, 0, 0, 4, 4, 8, rand, deco.randomBlocks);
 
 			// entrance doorway
-			placeSmallDoorwayAt(world, rand, 2, 2, 1, 0, sbb);
+			placeSmallDoorwayAt(world.getWorld(), rand, 2, 2, 1, 0, sbb);
 
 			// end
-			placeSmallDoorwayAt(world, rand, 2, 2, 1, 8, sbb);
+			placeSmallDoorwayAt(world.getWorld(), rand, 2, 2, 1, 8, sbb);
 
 			return true;
 		}

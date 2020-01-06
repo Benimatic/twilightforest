@@ -1,17 +1,19 @@
 package twilightforest.structures.icetower;
 
-import net.minecraft.block.BlockRotatedPillar;
-import net.minecraft.block.BlockSlab;
+import net.minecraft.block.RotatedPillarBlock;
+import net.minecraft.block.SlabBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.state.properties.SlabType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
-import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.loot.TFTreasure;
 import twilightforest.structures.StructureTFComponentOld;
@@ -52,14 +54,14 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 	 * Load from NBT
 	 */
 	@Override
-	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
-		super.readStructureFromNBT(tagCompound, templateManager);
+	protected void readAdditional(CompoundNBT tagCompound) {
+		super.readAdditional(tagCompound);
 		this.hasBase = tagCompound.getBoolean("hasBase");
 		this.treasureFloor = tagCompound.getInt("treasureFloor");
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
+	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		if (parent != null && parent instanceof StructureTFComponentOld) {
 			this.deco = ((StructureTFComponentOld) parent).deco;
 		}
@@ -122,8 +124,8 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 	/**
 	 * Have we strayed more than range blocks away from the center?
 	 */
-	private boolean isOutOfRange(StructureComponent parent, int nx, int ny, int nz, int range) {
-		final StructureBoundingBox sbb = parent.getBoundingBox();
+	private boolean isOutOfRange(StructurePiece parent, int nx, int ny, int nz, int range) {
+		final MutableBoundingBox sbb = parent.getBoundingBox();
 		final int centerX = sbb.minX + (sbb.maxX - sbb.minX + 1) / 2;
 		final int centerZ = sbb.minZ + (sbb.maxZ - sbb.minZ + 1) / 2;
 
@@ -135,18 +137,18 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 	 * Make a new wing
 	 */
 	@Override
-	public boolean makeTowerWing(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
+	public boolean makeTowerWing(List<StructurePiece> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 		Direction direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 
 		// stop if out of range
-		if (isOutOfRange((StructureComponent) list.get(0), dx[0], dx[1], dx[2], RANGE)) {
+		if (isOutOfRange((StructurePiece) list.get(0), dx[0], dx[1], dx[2], RANGE)) {
 			return false;
 		}
 
 		ComponentTFIceTowerWing wing = new ComponentTFIceTowerWing(getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// check to see if it intersects something already there
-		StructureComponent intersect = StructureComponent.findIntersecting(list, wing.getBoundingBox());
+		StructurePiece intersect = StructurePiece.findIntersecting(list, wing.getBoundingBox());
 		if (intersect == null || intersect == this) {
 			list.add(wing);
 			wing.buildComponent(list.get(0), list, rand);
@@ -161,14 +163,14 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 	/**
 	 * Make a new wing
 	 */
-	public boolean makeBossTowerWing(List<StructureComponent> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
+	public boolean makeBossTowerWing(List<StructurePiece> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
 
 		Direction direction = getStructureRelativeRotation(rotation);
 		int[] dx = offsetTowerCoords(x, y, z, wingSize, direction);
 
 		ComponentTFIceTowerWing wing = new ComponentTFIceTowerBossWing(getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// check to see if it intersects something already there
-		StructureComponent intersect = StructureComponent.findIntersecting(list, wing.getBoundingBox());
+		StructurePiece intersect = StructurePiece.findIntersecting(list, wing.getBoundingBox());
 		if (intersect == null || intersect == this) {
 			list.add(wing);
 			wing.buildComponent(list.get(0), list, rand);
@@ -179,7 +181,6 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 		}
 
 	}
-
 
 	/**
 	 * Gets a Y value where the stairs meet the specified X coordinate.
@@ -194,7 +195,8 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld worldIn, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		World world = worldIn.getWorld();
 		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
 
 		// make walls
@@ -222,7 +224,6 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 		// openings
 		makeOpenings(world, sbb);
 
-
 		return true;
 	}
 
@@ -234,7 +235,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 		this.nullifySkyLight(world, boundingBox.minX + 1, boundingBox.minY + 1, boundingBox.minZ + 1, boundingBox.maxX - 1, boundingBox.maxY - 1, boundingBox.maxZ - 1);
 	}
 
-	protected void makeFloorsForTower(World world, Random decoRNG, StructureBoundingBox sbb) {
+	protected void makeFloorsForTower(World world, Random decoRNG, MutableBoundingBox sbb) {
 		int floors = this.height / 10;
 
 		Rotation ladderDir = Rotation.COUNTERCLOCKWISE_90;
@@ -259,7 +260,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 	/**
 	 * Put down planks or whatevs for a floor
 	 */
-	protected void placeFloor(World world, Random rand, StructureBoundingBox sbb, int floorHeight, int floor) {
+	protected void placeFloor(World world, Random rand, MutableBoundingBox sbb, int floorHeight, int floor) {
 		for (int x = 1; x < size - 1; x++) {
 			for (int z = 1; z < size - 1; z++) {
 				setBlockState(world, deco.floorState, x, (floor * floorHeight) + floorHeight, z, sbb);
@@ -271,7 +272,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 	 * Make an opening in this tower for a door.  This now only makes one opening, so you need two
 	 */
 	@Override
-	protected void makeDoorOpening(World world, int dx, int dy, int dz, StructureBoundingBox sbb) {
+	protected void makeDoorOpening(World world, int dx, int dy, int dz, MutableBoundingBox sbb) {
 		super.makeDoorOpening(world, dx, dy, dz, sbb);
 
 		if (getBlockStateFromPos(world, dx, dy + 2, dz, sbb).getBlock() != Blocks.AIR) {
@@ -289,7 +290,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 	 * @param ladderDownDir
 	 */
 	@Override
-	protected void decorateFloor(World world, Random rand, int floor, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, StructureBoundingBox sbb) {
+	protected void decorateFloor(World world, Random rand, int floor, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, MutableBoundingBox sbb) {
 		boolean hasTreasure = (this.treasureFloor == floor);
 
 		switch (rand.nextInt(8)) {
@@ -333,20 +334,20 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 	private boolean isNoDoorAreaRotated(int minX, int minY, int minZ, int maxX, int maxY, int maxZ, Rotation rotation) {
 		boolean isClear = true;
 		// make a bounding box of the area
-		StructureBoundingBox exclusionBox;
+		MutableBoundingBox exclusionBox;
 		switch (rotation) {
 			case NONE:
 			default:
-				exclusionBox = new StructureBoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
+				exclusionBox = new MutableBoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
 				break;
 			case CLOCKWISE_90:
-				exclusionBox = new StructureBoundingBox(this.size - 1 - maxZ, minY, minX, this.size - 1 - minZ, maxY, maxX);
+				exclusionBox = new MutableBoundingBox(this.size - 1 - maxZ, minY, minX, this.size - 1 - minZ, maxY, maxX);
 				break;
 			case CLOCKWISE_180:
-				exclusionBox = new StructureBoundingBox(this.size - 1 - maxX, minY, this.size - 1 - maxZ, this.size - 1 - minX, maxY, this.size - 1 - minZ);
+				exclusionBox = new MutableBoundingBox(this.size - 1 - maxX, minY, this.size - 1 - maxZ, this.size - 1 - minX, maxY, this.size - 1 - minZ);
 				break;
 			case COUNTERCLOCKWISE_90:
-				exclusionBox = new StructureBoundingBox(minZ, minY, this.size - 1 - maxX, maxZ, maxY, this.size - 1 - minX);
+				exclusionBox = new MutableBoundingBox(minZ, minY, this.size - 1 - maxX, maxZ, maxY, this.size - 1 - minX);
 				break;
 		}
 
@@ -359,7 +360,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 		return isClear;
 	}
 
-	protected void decorateTopFloor(World world, Random rand, int floor, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, StructureBoundingBox sbb) {
+	protected void decorateTopFloor(World world, Random rand, int floor, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, MutableBoundingBox sbb) {
 		if (rand.nextBoolean()) {
 			decoratePillarsCorners(world, rand, bottom, top, ladderDownDir, sbb);
 		} else {
@@ -373,24 +374,24 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 
 	}
 
-	private void decorateTopFloorTreasure(World world, Random rand, int bottom, int top, Rotation rotation, StructureBoundingBox sbb) {
+	private void decorateTopFloorTreasure(World world, Random rand, int bottom, int top, Rotation rotation, MutableBoundingBox sbb) {
 		this.fillBlocksRotated(world, sbb, 5, bottom + 1, 5, 5, bottom + 4, 5, deco.pillarState, rotation);
 
 		this.placeTreasureAtCurrentPosition(world, null, 5, bottom + 5, 5, TFTreasure.aurora_room, sbb);
 	}
 
-	private void decoratePillars(World world, Random rand, int bottom, int top, Rotation rotation, StructureBoundingBox sbb) {
+	private void decoratePillars(World world, Random rand, int bottom, int top, Rotation rotation, MutableBoundingBox sbb) {
 		this.fillBlocksRotated(world, sbb, 3, bottom + 1, 3, 3, top - 1, 3, deco.pillarState, rotation);
 		this.fillBlocksRotated(world, sbb, 7, bottom + 1, 3, 7, top - 1, 3, deco.pillarState, rotation);
 		this.fillBlocksRotated(world, sbb, 3, bottom + 1, 7, 3, top - 1, 7, deco.pillarState, rotation);
 		this.fillBlocksRotated(world, sbb, 7, bottom + 1, 7, 7, top - 1, 7, deco.pillarState, rotation);
 	}
 
-	private void decoratePillarsGrid(World world, Random rand, int bottom, int top, Rotation rotation, StructureBoundingBox sbb) {
+	private void decoratePillarsGrid(World world, Random rand, int bottom, int top, Rotation rotation, MutableBoundingBox sbb) {
 		//int beamMetaNS = ((this.coordBaseMode + rotation) % 2 == 0) ? 4 : 8;
 		//int beamMetaEW = (beamMetaNS == 4) ? 8 : 4;
-		final BlockState pillarEW = deco.pillarState.with(BlockRotatedPillar.AXIS, Direction.Axis.Z);
-		final BlockState pillarNS = deco.pillarState.with(BlockRotatedPillar.AXIS, Direction.Axis.X);
+		final BlockState pillarEW = deco.pillarState.with(RotatedPillarBlock.AXIS, Direction.Axis.Z);
+		final BlockState pillarNS = deco.pillarState.with(RotatedPillarBlock.AXIS, Direction.Axis.X);
 
 		this.fillBlocksRotated(world, sbb, 3, bottom + 5, 1, 3, bottom + 5, 9, pillarEW, rotation);
 		this.fillBlocksRotated(world, sbb, 7, bottom + 5, 1, 7, bottom + 5, 9, pillarEW, rotation);
@@ -400,11 +401,11 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 		this.decoratePillars(world, rand, bottom, top, rotation, sbb);
 	}
 
-	private void decoratePillarsCorners(World world, Random rand, int bottom, int top, Rotation rotation, StructureBoundingBox sbb) {
+	private void decoratePillarsCorners(World world, Random rand, int bottom, int top, Rotation rotation, MutableBoundingBox sbb) {
 		//int beamMetaNS = ((this.coordBaseMode + rotation) % 2 == 0) ? 4 : 8;
 		//int beamMetaEW = (beamMetaNS == 4) ? 8 : 4;
-		final BlockState pillarEW = deco.pillarState.with(BlockRotatedPillar.AXIS, Direction.Axis.Z);
-		final BlockState pillarNS = deco.pillarState.with(BlockRotatedPillar.AXIS, Direction.Axis.X);
+		final BlockState pillarEW = deco.pillarState.with(RotatedPillarBlock.AXIS, Direction.Axis.Z);
+		final BlockState pillarNS = deco.pillarState.with(RotatedPillarBlock.AXIS, Direction.Axis.X);
 
 		this.fillBlocksRotated(world, sbb, 3, bottom + 5, 1, 3, bottom + 5, 9, pillarEW, rotation);
 		this.fillBlocksRotated(world, sbb, 7, bottom + 5, 1, 7, bottom + 5, 9, pillarEW, rotation);
@@ -416,7 +417,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 		this.decoratePillars(world, rand, bottom, top, rotation, sbb);
 	}
 
-	private void decorateFarWallSteps(World world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, boolean hasTreasure, StructureBoundingBox sbb) {
+	private void decorateFarWallSteps(World world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, boolean hasTreasure, MutableBoundingBox sbb) {
 
 		// far set of stairs
 		for (int z = 1; z < 10; z++) {
@@ -445,7 +446,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 			this.setBlockStateRotated(world, AIR, 9, top, z, ladderUpDir, sbb);
 		}
 
-		final BlockState pillarNS = deco.pillarState.with(BlockRotatedPillar.AXIS, Direction.Axis.X);
+		final BlockState pillarNS = deco.pillarState.with(RotatedPillarBlock.AXIS, Direction.Axis.X);
 		// treasure!
 		if (hasTreasure) {
 			this.placeTreasureRotated(world, 1, bottom + 8, 5, ladderUpDir, TFTreasure.aurora_cache, false, sbb);
@@ -454,9 +455,9 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 		}
 	}
 
-	private void decorateWraparoundWallSteps(World world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, boolean hasTreasure, StructureBoundingBox sbb) {
-		BlockState topPlatform = deco.platformState.with(BlockSlab.HALF, BlockSlab.EnumBlockHalf.TOP);
-		BlockState bottomPlatform = deco.platformState.with(BlockSlab.HALF, BlockSlab.EnumBlockHalf.BOTTOM);
+	private void decorateWraparoundWallSteps(World world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, boolean hasTreasure, MutableBoundingBox sbb) {
+		BlockState topPlatform = deco.platformState.with(SlabBlock.TYPE, SlabType.TOP);
+		BlockState bottomPlatform = deco.platformState.with(SlabBlock.TYPE, SlabType.BOTTOM);
 
 		// far set of stairs
 		for (int z = 1; z < 10; z++) {
@@ -484,17 +485,17 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 		if (hasTreasure) {
 			this.placeTreasureRotated(world, 1, bottom + 5, 5, ladderUpDir, TFTreasure.aurora_cache, false, sbb);
 			//int beamMetaNS = ((this.coordBaseMode + ladderUpDir) % 2 == 0) ? 4 : 8;
-			final BlockState pillarNS = deco.pillarState.with(BlockRotatedPillar.AXIS, Direction.Axis.X);
+			final BlockState pillarNS = deco.pillarState.with(RotatedPillarBlock.AXIS, Direction.Axis.X);
 			this.setBlockStateRotated(world, pillarNS, 1, bottom + 4, 5, ladderUpDir, sbb);
 		}
 	}
 
-	private void decorateWraparoundWallStepsPillars(World world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, boolean hasTreasure, StructureBoundingBox sbb) {
+	private void decorateWraparoundWallStepsPillars(World world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, boolean hasTreasure, MutableBoundingBox sbb) {
 		Rotation rotation = ladderDownDir;
 		//int beamMetaNS = ((this.coordBaseMode + rotation) % 2 == 0) ? 4 : 8;
 		//int beamMetaEW = (beamMetaNS == 4) ? 8 : 4;
-		final BlockState pillarEW = deco.pillarState.with(BlockRotatedPillar.AXIS, Direction.Axis.Z);
-		final BlockState pillarNS = deco.pillarState.with(BlockRotatedPillar.AXIS, Direction.Axis.X);
+		final BlockState pillarEW = deco.pillarState.with(RotatedPillarBlock.AXIS, Direction.Axis.Z);
+		final BlockState pillarNS = deco.pillarState.with(RotatedPillarBlock.AXIS, Direction.Axis.X);
 
 		this.decorateWraparoundWallSteps(world, rand, bottom, top, ladderUpDir, ladderDownDir, false, sbb);
 		this.decoratePillars(world, rand, bottom, top, rotation, sbb);
@@ -517,9 +518,9 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 		}
 	}
 
-	private void decoratePlatform(World world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, boolean hasTreasure, StructureBoundingBox sbb) {
-		BlockState topPlatform = deco.platformState.with(BlockSlab.HALF, BlockSlab.EnumBlockHalf.TOP);
-		BlockState bottomPlatform = deco.platformState.with(BlockSlab.HALF, BlockSlab.EnumBlockHalf.BOTTOM);
+	private void decoratePlatform(World world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, boolean hasTreasure, MutableBoundingBox sbb) {
+		BlockState topPlatform = deco.platformState.with(SlabBlock.TYPE, SlabType.TOP);
+		BlockState bottomPlatform = deco.platformState.with(SlabBlock.TYPE, SlabType.BOTTOM);
 
 		this.decoratePillars(world, rand, bottom, top, ladderDownDir, sbb);
 		this.fillBlocksRotated(world, sbb, 3, bottom + 5, 3, 7, bottom + 5, 7, deco.floorState, ladderDownDir);
@@ -560,11 +561,11 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 		}
 	}
 
-	private void decorateQuadPillarStairs(World world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, boolean hasTreasure, StructureBoundingBox sbb) {
+	private void decorateQuadPillarStairs(World world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, boolean hasTreasure, MutableBoundingBox sbb) {
 		this.decoratePillars(world, rand, bottom, top, ladderDownDir, sbb);
 
-		BlockState topPlatform = deco.platformState.with(BlockSlab.HALF, BlockSlab.EnumBlockHalf.TOP);
-		BlockState bottomPlatform = deco.platformState.with(BlockSlab.HALF, BlockSlab.EnumBlockHalf.BOTTOM);
+		BlockState topPlatform = deco.platformState.with(SlabBlock.TYPE, SlabType.TOP);
+		BlockState bottomPlatform = deco.platformState.with(SlabBlock.TYPE, SlabType.BOTTOM);
 
 		// one flight
 		for (int z = 6; z < 9; z++) {
@@ -597,7 +598,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 		}
 	}
 
-	private void decoratePillarPlatforms(World world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, boolean hasTreasure, StructureBoundingBox sbb) {
+	private void decoratePillarPlatforms(World world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, boolean hasTreasure, MutableBoundingBox sbb) {
 		// platforms
 		Rotation r = ladderUpDir;
 		for (int i = 1; i < 10; i++) {
@@ -621,7 +622,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 		}
 	}
 
-	private void decoratePillarPlatformsOutside(World world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, boolean hasTreasure, StructureBoundingBox sbb) {
+	private void decoratePillarPlatformsOutside(World world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, boolean hasTreasure, MutableBoundingBox sbb) {
 		// platforms
 		for (int i = 0; i < 2; i++) {
 			for (Rotation r : RotationUtil.ROTATIONS) {
@@ -641,7 +642,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 		this.fillBlocksRotated(world, sbb, 8, top - 2, 7, 9, top - 2, 7, deco.platformState, rotation);
 		this.fillBlocksRotated(world, sbb, 8, top - 2, 8, 9, top - 2, 9, deco.floorState, rotation);
 		this.fillBlocksRotated(world, sbb, 7, top - 1, 8, 7, top - 1, 9, deco.platformState, rotation);
-		this.fillBlocksRotated(world, sbb, 6, top - 1, 8, 6, top - 1, 9, deco.platformState.with(BlockSlab.HALF, BlockSlab.EnumBlockHalf.TOP), rotation);
+		this.fillBlocksRotated(world, sbb, 6, top - 1, 8, 6, top - 1, 9, deco.platformState.with(SlabBlock.TYPE, SlabType.TOP), rotation);
 		this.fillBlocksRotated(world, sbb, 5, top - 0, 8, 5, top - 0, 9, deco.platformState, rotation);
 
 		this.decoratePillars(world, rand, bottom, top, ladderUpDir, sbb);
@@ -653,13 +654,13 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 	}
 
 
-	private void decoratePillarParkour(World world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, boolean hasTreasure, StructureBoundingBox sbb) {
+	private void decoratePillarParkour(World world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, boolean hasTreasure, MutableBoundingBox sbb) {
 		Rotation rotation = ladderDownDir;
 		//int beamMetaNS = ((this.coordBaseMode + rotation) % 2 == 0) ? 4 : 8;
 		//int beamMetaEW = (beamMetaNS == 4) ? 8 : 4;
 
-		final BlockState pillarEW = deco.pillarState.with(BlockRotatedPillar.AXIS, Direction.Axis.Z);
-		final BlockState pillarNS = deco.pillarState.with(BlockRotatedPillar.AXIS, Direction.Axis.X);
+		final BlockState pillarEW = deco.pillarState.with(RotatedPillarBlock.AXIS, Direction.Axis.Z);
+		final BlockState pillarNS = deco.pillarState.with(RotatedPillarBlock.AXIS, Direction.Axis.X);
 
 		// 4 pillars
 		this.decoratePillars(world, rand, bottom, top, rotation, sbb);
@@ -717,7 +718,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 	 * This function keeps trying roofs starting with the largest and fanciest, and then keeps trying smaller and plainer ones
 	 */
 	@Override
-	public void makeARoof(StructureComponent parent, List<StructureComponent> list, Random rand) {
+	public void makeARoof(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		int index = this.getComponentType();
 		tryToFitRoof(list, rand, new ComponentTFIceTowerRoof(getFeatureType(), index + 1, this));
 	}
@@ -726,7 +727,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 	 * Add a beard to this structure.  There is only one type of beard.
 	 */
 	@Override
-	public void makeABeard(StructureComponent parent, List<StructureComponent> list, Random rand) {
+	public void makeABeard(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		int index = this.getComponentType();
 		ComponentTFIceTowerBeard beard;
 		beard = new ComponentTFIceTowerBeard(getFeatureType(), index + 1, this);

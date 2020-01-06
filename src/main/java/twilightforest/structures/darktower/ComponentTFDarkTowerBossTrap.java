@@ -3,19 +3,18 @@ package twilightforest.structures.darktower;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
-import twilightforest.block.BlockTFTowerDevice;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.util.RotationUtil;
 
 import java.util.List;
 import java.util.Random;
-
-import static twilightforest.enums.TowerDeviceVariant.GHASTTRAP_INACTIVE;
 
 public class ComponentTFDarkTowerBossTrap extends ComponentTFDarkTowerWing {
 
@@ -30,7 +29,7 @@ public class ComponentTFDarkTowerBossTrap extends ComponentTFDarkTowerWing {
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
+	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		if (parent != null && parent instanceof StructureTFComponentOld) {
 			this.deco = ((StructureTFComponentOld) parent).deco;
 		}
@@ -57,12 +56,13 @@ public class ComponentTFDarkTowerBossTrap extends ComponentTFDarkTowerWing {
 	 * Attach a roof to this tower.
 	 */
 	@Override
-	public void makeARoof(StructureComponent parent, List<StructureComponent> list, Random rand) {
+	public void makeARoof(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		//nope;
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld worldIn, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		World world = worldIn.getWorld();
 		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
 
 		// make walls
@@ -90,13 +90,13 @@ public class ComponentTFDarkTowerBossTrap extends ComponentTFDarkTowerWing {
 		this.fillWithBlocks(world, sbb, 1, 1, 1, size / 2, 1, size - 2, Blocks.AIR.getDefaultState(), Blocks.AIR.getDefaultState(), false);
 
 		// add boss trap
-		this.setBlockState(world, TFBlocks.tower_device.getDefaultState().with(BlockTFTowerDevice.VARIANT, GHASTTRAP_INACTIVE), 5, 1, 5, sbb);
+		this.setBlockState(world, TFBlocks.ghast_trap.get().getDefaultState(), 5, 1, 5, sbb);
 		this.setBlockState(world, Blocks.REDSTONE_WIRE.getDefaultState(), 5, 1, 6, sbb);
 		this.setBlockState(world, Blocks.REDSTONE_WIRE.getDefaultState(), 5, 1, 7, sbb);
 		this.setBlockState(world, Blocks.REDSTONE_WIRE.getDefaultState(), 5, 1, 8, sbb);
 		this.setBlockState(world, Blocks.REDSTONE_WIRE.getDefaultState(), 4, 1, 8, sbb);
 		this.setBlockState(world, Blocks.REDSTONE_WIRE.getDefaultState(), 3, 1, 8, sbb);
-		this.setBlockState(world, Blocks.WOODEN_PRESSURE_PLATE.getDefaultState(), 2, 1, 8, sbb);
+		this.setBlockState(world, Blocks.OAK_PRESSURE_PLATE.getDefaultState(), 2, 1, 8, sbb);
 
 
 		return true;
@@ -105,7 +105,7 @@ public class ComponentTFDarkTowerBossTrap extends ComponentTFDarkTowerWing {
 	/**
 	 * Add specific boss trap floors
 	 */
-	protected void addBossTrapFloors(World world, Random rand, StructureBoundingBox sbb, int bottom, int top) {
+	protected void addBossTrapFloors(World world, Random rand, MutableBoundingBox sbb, int bottom, int top) {
 
 		makeFullFloor(world, sbb, Rotation.COUNTERCLOCKWISE_90, 4, 4);
 

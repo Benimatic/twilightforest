@@ -1,14 +1,14 @@
 package twilightforest.structures.lichtower;
 
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraft.util.math.MutableBoundingBox;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentOld;
 
 import java.util.Random;
-
 
 public class ComponentTFTowerBeard extends StructureTFComponentOld {
 
@@ -27,8 +27,7 @@ public class ComponentTFTowerBeard extends StructureTFComponentOld {
 		this.height = size / 2;
 
 		// just hang out at the very bottom of the tower
-		this.boundingBox = new StructureBoundingBox(wing.getBoundingBox().minX + 1, wing.getBoundingBox().minY - this.height - 1, wing.getBoundingBox().minZ + 1, wing.getBoundingBox().maxX - 1, wing.getBoundingBox().minY - 1, wing.getBoundingBox().maxZ - 1);
-
+		this.boundingBox = new MutableBoundingBox(wing.getBoundingBox().minX + 1, wing.getBoundingBox().minY - this.height - 1, wing.getBoundingBox().minZ + 1, wing.getBoundingBox().maxX - 1, wing.getBoundingBox().minY - 1, wing.getBoundingBox().maxZ - 1);
 	}
 
 	/**
@@ -46,8 +45,8 @@ public class ComponentTFTowerBeard extends StructureTFComponentOld {
 	 * Load from NBT
 	 */
 	@Override
-	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
-		super.readStructureFromNBT(tagCompound, templateManager);
+	protected void readAdditional(CompoundNBT tagCompound) {
+		super.readAdditional(tagCompound);
 		this.size = tagCompound.getInt("beardSize");
 		this.height = tagCompound.getInt("beardHeight");
 	}
@@ -56,11 +55,11 @@ public class ComponentTFTowerBeard extends StructureTFComponentOld {
 	 * Makes a pyramid-shaped beard
 	 */
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		return makePyramidBeard(world, rand, sbb);
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		return makePyramidBeard(world.getWorld(), rand, sbb);
 	}
 
-	private boolean makePyramidBeard(World world, Random rand, StructureBoundingBox sbb) {
+	private boolean makePyramidBeard(World world, Random rand, MutableBoundingBox sbb) {
 		for (int y = 0; y <= height; y++) {
 			int min = y;
 			int max = size - y - 1;
@@ -69,6 +68,4 @@ public class ComponentTFTowerBeard extends StructureTFComponentOld {
 		}
 		return true;
 	}
-
-
 }

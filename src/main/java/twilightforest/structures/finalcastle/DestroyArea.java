@@ -1,25 +1,25 @@
 package twilightforest.structures.finalcastle;
 
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.util.math.MutableBoundingBox;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * An area that we're going to destroy.  Default is just a StructureBoundingBox
+ * An area that we're going to destroy.  Default is just a MutableBoundingBox
  */
 public class DestroyArea {
 
-	StructureBoundingBox destroyBox;
+	MutableBoundingBox destroyBox;
 
-	public DestroyArea(StructureBoundingBox tower, Random rand, int y) {
+	public DestroyArea(MutableBoundingBox tower, Random rand, int y) {
 		// make a 4x4 area that's entirely within the tower bounding box
 
 		int bx = tower.minX - 2 + rand.nextInt(tower.getXSize());
 		int bz = tower.minZ - 2 + rand.nextInt(tower.getZSize());
 
-		this.destroyBox = new StructureBoundingBox(bx, y - 10, bz, bx + 4, y, bz + 4);
+		this.destroyBox = new MutableBoundingBox(bx, y - 10, bz, bx + 4, y, bz + 4);
 	}
 
 	public boolean isEntirelyAbove(int y) {
@@ -33,7 +33,7 @@ public class DestroyArea {
 	/**
 	 * construct a new area that does not intersect any other areas in the list
 	 */
-	public static DestroyArea createNonIntersecting(StructureBoundingBox tower, Random rand, int y, ArrayList<DestroyArea> otherAreas) {
+	public static DestroyArea createNonIntersecting(MutableBoundingBox tower, Random rand, int y, ArrayList<DestroyArea> otherAreas) {
 		int attempts = 100;
 
 		DestroyArea area = null;

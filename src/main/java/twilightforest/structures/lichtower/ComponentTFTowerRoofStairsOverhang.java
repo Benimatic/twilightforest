@@ -1,12 +1,12 @@
 package twilightforest.structures.lichtower;
 
-import net.minecraft.block.BlockPlanks;
-import net.minecraft.block.BlockStairs;
+import net.minecraft.block.StairsBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Direction;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
+import net.minecraft.util.math.MutableBoundingBox;
 import twilightforest.TFFeature;
 
 import java.util.Random;
@@ -28,7 +28,7 @@ public class ComponentTFTowerRoofStairsOverhang extends ComponentTFTowerRoof {
 		this.height = size / 2;
 
 		// just hang out at the very top of the tower
-		this.boundingBox = new StructureBoundingBox(wing.getBoundingBox().minX - 1, wing.getBoundingBox().maxY, wing.getBoundingBox().minZ - 1, wing.getBoundingBox().maxX + 1, wing.getBoundingBox().maxY + this.height - 1, wing.getBoundingBox().maxZ + 1);
+		this.boundingBox = new MutableBoundingBox(wing.getBoundingBox().minX - 1, wing.getBoundingBox().maxY, wing.getBoundingBox().minZ - 1, wing.getBoundingBox().maxX + 1, wing.getBoundingBox().maxY + this.height - 1, wing.getBoundingBox().maxZ + 1);
 
 	}
 
@@ -36,14 +36,14 @@ public class ComponentTFTowerRoofStairsOverhang extends ComponentTFTowerRoof {
 	 * Makes a pyramid-shaped roof out of stairs
 	 */
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		BlockState woodenSlab = Blocks.WOODEN_SLAB.getDefaultState().with(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
-		BlockState woodenPlanks = Blocks.PLANKS.getDefaultState().with(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		BlockState woodenSlab = Blocks.BIRCH_SLAB.getDefaultState();
+		BlockState woodenPlanks = Blocks.BIRCH_PLANKS.getDefaultState();
 
-		BlockState birchStairsNorth = Blocks.BIRCH_STAIRS.getDefaultState().with(BlockStairs.FACING, Direction.NORTH);
-		BlockState birchStairsSouth = Blocks.BIRCH_STAIRS.getDefaultState().with(BlockStairs.FACING, Direction.SOUTH);
-		BlockState birchStairsEast = Blocks.BIRCH_STAIRS.getDefaultState().with(BlockStairs.FACING, Direction.EAST);
-		BlockState birchStairsWest = Blocks.BIRCH_STAIRS.getDefaultState().with(BlockStairs.FACING, Direction.WEST);
+		BlockState birchStairsNorth = Blocks.BIRCH_STAIRS.getDefaultState().with(StairsBlock.FACING, Direction.NORTH);
+		BlockState birchStairsSouth = Blocks.BIRCH_STAIRS.getDefaultState().with(StairsBlock.FACING, Direction.SOUTH);
+		BlockState birchStairsEast = Blocks.BIRCH_STAIRS.getDefaultState().with(StairsBlock.FACING, Direction.EAST);
+		BlockState birchStairsWest = Blocks.BIRCH_STAIRS.getDefaultState().with(StairsBlock.FACING, Direction.WEST);
 
 		for (int y = 0; y <= height; y++) {
 			int min = y;
@@ -74,5 +74,4 @@ public class ComponentTFTowerRoofStairsOverhang extends ComponentTFTowerRoof {
 		}
 		return true;
 	}
-
 }

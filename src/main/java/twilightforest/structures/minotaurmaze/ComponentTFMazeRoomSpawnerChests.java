@@ -3,13 +3,13 @@ package twilightforest.structures.minotaurmaze;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.util.math.MutableBoundingBox;
 import twilightforest.TFFeature;
 import twilightforest.loot.TFTreasure;
-import twilightforest.block.BlockTFMazestone;
 import twilightforest.block.TFBlocks;
-import twilightforest.enums.MazestoneVariant;
 import twilightforest.util.TFEntityNames;
 
 import java.util.Random;
@@ -25,26 +25,27 @@ public class ComponentTFMazeRoomSpawnerChests extends ComponentTFMazeRoom {
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		super.addComponentParts(world, rand, sbb);
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		World worldIn = world.getWorld();
+		super.addComponentParts(world, rand, sbb, chunkPosIn);
 
 		// 4 pillar enclosures
-		placePillarEnclosure(world, sbb, 3, 3);
-		placePillarEnclosure(world, sbb, 10, 3);
-		placePillarEnclosure(world, sbb, 3, 10);
-		placePillarEnclosure(world, sbb, 10, 10);
+		placePillarEnclosure(worldIn, sbb, 3, 3);
+		placePillarEnclosure(worldIn, sbb, 10, 3);
+		placePillarEnclosure(worldIn, sbb, 3, 10);
+		placePillarEnclosure(worldIn, sbb, 10, 10);
 
 		// spawner
-		setSpawner(world, 4, 2, 4, sbb, TFEntityNames.MINOTAUR);
+		setSpawner(worldIn, 4, 2, 4, sbb, TFEntityNames.MINOTAUR);
 
 		// treasure
-		this.placeTreasureAtCurrentPosition(world, rand, 4, 2, 11, TFTreasure.labyrinth_room, sbb);
+		this.placeTreasureAtCurrentPosition(worldIn, rand, 4, 2, 11, TFTreasure.labyrinth_room, sbb);
 
 		// treasure
-		this.placeTreasureAtCurrentPosition(world, rand, 11, 2, 4, TFTreasure.labyrinth_room, sbb);
+		this.placeTreasureAtCurrentPosition(worldIn, rand, 11, 2, 4, TFTreasure.labyrinth_room, sbb);
 
 		// trap
-		setBlockState(world, Blocks.WOODEN_PRESSURE_PLATE.getDefaultState(), 11, 1, 11, sbb);
+		setBlockState(world, Blocks.OAK_PRESSURE_PLATE.getDefaultState(), 11, 1, 11, sbb);
 		setBlockState(world, Blocks.TNT.getDefaultState(), 10, 0, 11, sbb);
 		setBlockState(world, Blocks.TNT.getDefaultState(), 11, 0, 10, sbb);
 		setBlockState(world, Blocks.TNT.getDefaultState(), 11, 0, 12, sbb);
@@ -53,17 +54,17 @@ public class ComponentTFMazeRoomSpawnerChests extends ComponentTFMazeRoom {
 		return true;
 	}
 
-	private void placePillarEnclosure(World world, StructureBoundingBox sbb,
+	private void placePillarEnclosure(World world, MutableBoundingBox sbb,
 									  int dx, int dz) {
 		for (int y = 1; y < 5; y++) {
-			final BlockState chiselledMazeBlock = TFBlocks.maze_stone.getDefaultState().with(BlockTFMazestone.VARIANT, MazestoneVariant.CHISELED);
+			final BlockState chiselledMazeBlock = TFBlocks.maze_stone_chiseled.get().getDefaultState();
 			setBlockState(world, chiselledMazeBlock, dx + 0, y, dz + 0, sbb);
 			setBlockState(world, chiselledMazeBlock, dx + 2, y, dz + 0, sbb);
 			setBlockState(world, chiselledMazeBlock, dx + 0, y, dz + 2, sbb);
 			setBlockState(world, chiselledMazeBlock, dx + 2, y, dz + 2, sbb);
 		}
-		setBlockState(world, Blocks.PLANKS.getDefaultState(), dx + 1, 1, dz + 1, sbb);
-		setBlockState(world, Blocks.PLANKS.getDefaultState(), dx + 1, 4, dz + 1, sbb);
+		setBlockState(world, Blocks.OAK_PLANKS.getDefaultState(), dx + 1, 1, dz + 1, sbb);
+		setBlockState(world, Blocks.OAK_PLANKS.getDefaultState(), dx + 1, 4, dz + 1, sbb);
 
 		final BlockState defaultState = Blocks.OAK_STAIRS.getDefaultState();
 

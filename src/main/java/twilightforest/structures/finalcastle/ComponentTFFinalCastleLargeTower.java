@@ -1,14 +1,13 @@
 package twilightforest.structures.finalcastle;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.item.DyeColor;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
-import twilightforest.block.BlockTFCastleDoor;
-import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
@@ -31,7 +30,7 @@ public class ComponentTFFinalCastleLargeTower extends ComponentTFTowerWing {
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
+	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		if (parent != null && parent instanceof StructureTFComponentOld) {
 			this.deco = ((StructureTFComponentOld) parent).deco;
 		}
@@ -42,7 +41,8 @@ public class ComponentTFFinalCastleLargeTower extends ComponentTFTowerWing {
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld worldIn, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		World world = worldIn.getWorld();
 		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
 
 		fillWithRandomizedBlocks(world, sbb, 0, 0, 0, 12, 59, 12, false, rand, deco.randomBlocks);
@@ -60,8 +60,7 @@ public class ComponentTFFinalCastleLargeTower extends ComponentTFTowerWing {
 		this.setBlockState(world, deco.blockState, 4, -7, 4, sbb);
 
 		// door, first floor
-		final BlockState castleDoor = TFBlocks.castle_door.getDefaultState()
-				.with(BlockTFCastleDoor.LOCK_INDEX, 0); //this.getGlyphMeta()?
+		final BlockState castleDoor = TFBlocks.castle_door_pink.get().getDefaultState(); //this.getGlyphMeta()?
 		this.fillWithBlocks(world, sbb, 0, 1, 1, 0, 4, 3, castleDoor, AIR, false);
 
 		this.placeSignAtCurrentPosition(world, 6, 1, 6, "Parkour area 1", "Unique monster?", sbb);
@@ -69,9 +68,8 @@ public class ComponentTFFinalCastleLargeTower extends ComponentTFTowerWing {
 		return true;
 	}
 
-
-	public DyeColor getGlyphMeta() {
-		return BlockTFCastleMagic.VALID_COLORS.get(0);
+	public BlockState getGlyphMeta() {
+		return TFBlocks.castle_rune_brick_pink.get().getDefaultState();
 	}
 
 

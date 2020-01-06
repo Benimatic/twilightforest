@@ -1,7 +1,7 @@
 package twilightforest.structures.start;
 
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.structures.darktower.ComponentTFDarkTowerMain;
 
@@ -19,7 +19,7 @@ public class StructureStartDarkTower extends StructureStartTFFeatureAbstract {
     }
 
     @Override
-    protected StructureComponent makeFirstComponent(World world, TFFeature feature, Random rand, int x, int y, int z) {
+    protected StructurePiece makeFirstComponent(World world, TFFeature feature, Random rand, int x, int y, int z) {
         return new ComponentTFDarkTowerMain(DARK_TOWER, world, rand, 0, x, y - 1, z);
     }
 }

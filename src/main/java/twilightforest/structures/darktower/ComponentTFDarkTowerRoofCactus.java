@@ -1,7 +1,8 @@
 package twilightforest.structures.darktower;
 
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
+import net.minecraft.util.math.MutableBoundingBox;
 import twilightforest.TFFeature;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
 
@@ -17,8 +18,8 @@ public class ComponentTFDarkTowerRoofCactus extends ComponentTFDarkTowerRoof {
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		super.addComponentParts(world, rand, sbb);
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		super.addComponentParts(world, rand, sbb, chunkPosIn);
 
 		// antenna
 		for (int y = 1; y < 10; y++) {

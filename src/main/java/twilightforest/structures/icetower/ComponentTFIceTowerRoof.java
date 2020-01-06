@@ -1,8 +1,9 @@
 package twilightforest.structures.icetower;
 
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.world.IWorld;
+import net.minecraft.util.math.MutableBoundingBox;
 import twilightforest.TFFeature;
 import twilightforest.structures.lichtower.ComponentTFTowerRoof;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
@@ -29,14 +30,12 @@ public class ComponentTFIceTowerRoof extends ComponentTFTowerRoof {
 		makeCapBB(wing);
 	}
 
-
 	/**
 	 * Swoopy ice roof
 	 */
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		super.addComponentParts(world, rand, sbb);
-
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		super.addComponentParts(world, rand, sbb, chunkPosIn);
 		for (int x = 0; x < this.size; x++) {
 			for (int z = 0; z < this.size; z++) {
 				//int rHeight = this.size - (int) MathHelper.sqrt_float(x * z); // interesting office building pattern
@@ -52,5 +51,4 @@ public class ComponentTFIceTowerRoof extends ComponentTFTowerRoof {
 
 		return true;
 	}
-
 }

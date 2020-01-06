@@ -3,8 +3,8 @@ package twilightforest.structures.mushroomtower;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.structures.StructureTFComponentOld;
@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Random;
 
 public class ComponentTFMushroomTowerMain extends ComponentTFMushroomTowerWing {
-
 
 	public ComponentTFMushroomTowerMain() {
 		super();
@@ -51,7 +50,7 @@ public class ComponentTFMushroomTowerMain extends ComponentTFMushroomTowerWing {
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
+	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		if (parent != null && parent instanceof StructureTFComponentOld) {
 			this.deco = ((StructureTFComponentOld) parent).deco;
 		}
@@ -100,7 +99,7 @@ public class ComponentTFMushroomTowerMain extends ComponentTFMushroomTowerWing {
 	/**
 	 * Make a new ascender tower.  Returns direction if successful, null if not.
 	 */
-	private Rotation makeAscenderTower(List<StructureComponent> list, Random rand) {
+	private Rotation makeAscenderTower(List<StructurePiece> list, Random rand) {
 
 		Rotation mainDir = RotationUtil.ROTATIONS[rand.nextInt(4)];
 		int[] dest = getValidOpening(rand, mainDir);
@@ -121,7 +120,7 @@ public class ComponentTFMushroomTowerMain extends ComponentTFMushroomTowerWing {
 	 * Make a mushroom roof!
 	 */
 	@Override
-	public void makeARoof(StructureComponent parent, List<StructureComponent> list, Random rand) {
+	public void makeARoof(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		ComponentTFTowerRoof roof = new ComponentTFTowerRoofMushroom(getFeatureType(), this.getComponentType() + 1, this, 1.6F);
 		list.add(roof);
 		roof.buildComponent(this, list, rand);
@@ -132,7 +131,7 @@ public class ComponentTFMushroomTowerMain extends ComponentTFMushroomTowerWing {
 	 * Make an opening in this tower for a door.  This now only makes one opening, so you need two
 	 */
 	@Override
-	protected void makeDoorOpening(World world, int dx, int dy, int dz, StructureBoundingBox sbb) {
+	protected void makeDoorOpening(World world, int dx, int dy, int dz, MutableBoundingBox sbb) {
 		super.makeDoorOpening(world, dx, dy, dz, sbb);
 
 		// try to remove blocks inside this door

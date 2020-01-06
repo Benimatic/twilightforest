@@ -2,9 +2,11 @@ package twilightforest.structures.stronghold;
 
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 
@@ -27,7 +29,7 @@ public class ComponentTFStrongholdEntrance extends StructureTFStrongholdComponen
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random random) {
+	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random random) {
 		super.buildComponent(parent, list, random);
 
 		// make a random component in each direction
@@ -51,7 +53,7 @@ public class ComponentTFStrongholdEntrance extends StructureTFStrongholdComponen
 		if (!listContainsBossRoom(list)) {
 			TwilightForestMod.LOGGER.warn("Did not find boss room from exit 3 - EPIC FAIL");
 		}
-		StructureBoundingBox shieldBox = new StructureBoundingBox(this.boundingBox);
+		MutableBoundingBox shieldBox = new MutableBoundingBox(this.boundingBox);
 
 		int tStairs = 0;
 		int tCorridors = 0;
@@ -60,7 +62,7 @@ public class ComponentTFStrongholdEntrance extends StructureTFStrongholdComponen
 		int bossRooms = 0;
 
 		// compute and generate MEGASHIELD
-		for (StructureComponent component : list) {
+		for (StructurePiece component : list) {
 			shieldBox.expandTo(component.getBoundingBox());
 
 
@@ -95,8 +97,8 @@ public class ComponentTFStrongholdEntrance extends StructureTFStrongholdComponen
 
 	}
 
-	private boolean listContainsBossRoom(List<StructureComponent> list) {
-		for (StructureComponent component : list) {
+	private boolean listContainsBossRoom(List<StructurePiece> list) {
+		for (StructurePiece component : list) {
 			if (component instanceof ComponentTFStrongholdBossRoom) {
 				return true;
 			}
@@ -106,12 +108,13 @@ public class ComponentTFStrongholdEntrance extends StructureTFStrongholdComponen
 	}
 
 	@Override
-	public StructureBoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
-		return StructureBoundingBox.getComponentToAddBoundingBox(x, y, z, -1, -1, 0, 18, 7, 18, facing);
+	public MutableBoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
+		return MutableBoundingBox.getComponentToAddBoundingBox(x, y, z, -1, -1, 0, 18, 7, 18, facing);
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld worldIn, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		World world = worldIn.getWorld();
 		placeStrongholdWalls(world, sbb, 0, 0, 0, 17, 6, 17, rand, deco.randomBlocks);
 
 		// statues

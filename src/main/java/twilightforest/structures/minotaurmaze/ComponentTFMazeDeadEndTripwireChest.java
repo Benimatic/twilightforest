@@ -3,8 +3,9 @@ package twilightforest.structures.minotaurmaze;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Direction;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
+import net.minecraft.util.math.MutableBoundingBox;
 import twilightforest.TFFeature;
 
 import java.util.Random;
@@ -20,12 +21,12 @@ public class ComponentTFMazeDeadEndTripwireChest extends ComponentTFMazeDeadEndC
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 		// normal chest room
-		super.addComponentParts(world, rand, sbb);
+		super.addComponentParts(world, rand, sbb, chunkPosIn);
 
 		// add tripwire
-		this.placeTripwire(world, 1, 1, 2, 3, Direction.EAST, sbb);
+		this.placeTripwire(world.getWorld(), 1, 1, 2, 3, Direction.EAST, sbb);
 
 		// TNT!
 		BlockState tnt = Blocks.TNT.getDefaultState();

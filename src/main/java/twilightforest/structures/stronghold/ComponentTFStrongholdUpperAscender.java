@@ -1,14 +1,15 @@
 package twilightforest.structures.stronghold;
 
-import net.minecraft.block.BlockStairs;
+import net.minecraft.block.StairsBlock;
 import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
-import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 
 import java.util.List;
@@ -33,24 +34,24 @@ public class ComponentTFStrongholdUpperAscender extends StructureTFStrongholdCom
 	}
 
 	@Override
-	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
-		super.readStructureFromNBT(tagCompound, templateManager);
+	protected void readAdditional(CompoundNBT tagCompound) {
+		super.readAdditional(tagCompound);
 		this.exitTop = tagCompound.getBoolean("exitTop");
 	}
 
 	@Override
-	public StructureBoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
+	public MutableBoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
 		if (y < 36) {
 			this.exitTop = true;
-			return StructureBoundingBox.getComponentToAddBoundingBox(x, y, z, -2, -1, 0, 5, 10, 10, facing);
+			return MutableBoundingBox.getComponentToAddBoundingBox(x, y, z, -2, -1, 0, 5, 10, 10, facing);
 		} else {
 			this.exitTop = false;
-			return StructureBoundingBox.getComponentToAddBoundingBox(x, y, z, -2, -6, 0, 5, 10, 10, facing);
+			return MutableBoundingBox.getComponentToAddBoundingBox(x, y, z, -2, -6, 0, 5, 10, 10, facing);
 		}
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random random) {
+	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random random) {
 		super.buildComponent(parent, list, random);
 
 		// make a random component on the other side
@@ -58,7 +59,8 @@ public class ComponentTFStrongholdUpperAscender extends StructureTFStrongholdCom
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld worldIn, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		World world = worldIn.getWorld();
 		if (this.isLiquidInStructureBoundingBox(world, sbb)) {
 			return false;
 		} else {
@@ -93,11 +95,11 @@ public class ComponentTFStrongholdUpperAscender extends StructureTFStrongholdCom
 	/**
 	 * Check if we can find at least one wall, and if so, generate stairs
 	 */
-	private void makeStairsAt(World world, int y, int z, Direction facing, StructureBoundingBox sbb) {
+	private void makeStairsAt(World world, int y, int z, Direction facing, MutableBoundingBox sbb) {
 		// check walls
 		if (this.getBlockStateFromPos(world, 0, y, z, sbb).getBlock() != Blocks.AIR || this.getBlockStateFromPos(world, 4, y, z, sbb).getBlock() != Blocks.AIR) {
 			for (int x = 1; x < 4; x++) {
-				this.setBlockState(world, Blocks.STONE_BRICK_STAIRS.getDefaultState().with(BlockStairs.FACING, facing), x, y, z, sbb);
+				this.setBlockState(world, Blocks.STONE_BRICK_STAIRS.getDefaultState().with(StairsBlock.FACING, facing), x, y, z, sbb);
 			}
 		}
 	}
@@ -105,11 +107,11 @@ public class ComponentTFStrongholdUpperAscender extends StructureTFStrongholdCom
 	/**
 	 * Check if we can find at least one wall, and if so, generate blocks
 	 */
-	private void makePlatformAt(World world, int y, int z, StructureBoundingBox sbb) {
+	private void makePlatformAt(World world, int y, int z, MutableBoundingBox sbb) {
 		// check walls
 		if (this.getBlockStateFromPos(world, 0, y, z, sbb).getBlock() != Blocks.AIR || this.getBlockStateFromPos(world, 4, y, z, sbb).getBlock() != Blocks.AIR) {
 			for (int x = 1; x < 4; x++) {
-				this.setBlockState(world, Blocks.STONEBRICK.getDefaultState(), x, y, z, sbb);
+				this.setBlockState(world, Blocks.STONE_BRICKS.getDefaultState(), x, y, z, sbb);
 			}
 		}
 	}
@@ -118,5 +120,4 @@ public class ComponentTFStrongholdUpperAscender extends StructureTFStrongholdCom
 	public boolean isComponentProtected() {
 		return false;
 	}
-
 }

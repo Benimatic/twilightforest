@@ -1,16 +1,15 @@
 package twilightforest.structures.lichtower;
 
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
-import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentOld;
 
 import java.util.List;
 import java.util.Random;
-
 
 public abstract class ComponentTFTowerRoof extends StructureTFComponentOld {
 
@@ -44,8 +43,8 @@ public abstract class ComponentTFTowerRoof extends StructureTFComponentOld {
 	 * Load from NBT
 	 */
 	@Override
-	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
-		super.readStructureFromNBT(tagCompound, templateManager);
+	protected void readAdditional(CompoundNBT tagCompound) {
+		super.readAdditional(tagCompound);
 		this.size = tagCompound.getInt("roofSize");
 		this.height = tagCompound.getInt("roofHeight");
 	}
@@ -59,16 +58,16 @@ public abstract class ComponentTFTowerRoof extends StructureTFComponentOld {
 		// just hang out at the very top of the tower
 		switch (getCoordBaseMode()) {
 			case SOUTH:
-				this.boundingBox = new StructureBoundingBox(wing.getBoundingBox().minX, wing.getBoundingBox().maxY, wing.getBoundingBox().minZ - 1, wing.getBoundingBox().maxX + 1, wing.getBoundingBox().maxY + this.height - 1, wing.getBoundingBox().maxZ + 1);
+				this.boundingBox = new MutableBoundingBox(wing.getBoundingBox().minX, wing.getBoundingBox().maxY, wing.getBoundingBox().minZ - 1, wing.getBoundingBox().maxX + 1, wing.getBoundingBox().maxY + this.height - 1, wing.getBoundingBox().maxZ + 1);
 				break;
 			case WEST:
-				this.boundingBox = new StructureBoundingBox(wing.getBoundingBox().minX - 1, wing.getBoundingBox().maxY, wing.getBoundingBox().minZ, wing.getBoundingBox().maxX + 1, wing.getBoundingBox().maxY + this.height - 1, wing.getBoundingBox().maxZ + 1);
+				this.boundingBox = new MutableBoundingBox(wing.getBoundingBox().minX - 1, wing.getBoundingBox().maxY, wing.getBoundingBox().minZ, wing.getBoundingBox().maxX + 1, wing.getBoundingBox().maxY + this.height - 1, wing.getBoundingBox().maxZ + 1);
 				break;
 			case EAST:
-				this.boundingBox = new StructureBoundingBox(wing.getBoundingBox().minX - 1, wing.getBoundingBox().maxY, wing.getBoundingBox().minZ - 1, wing.getBoundingBox().maxX, wing.getBoundingBox().maxY + this.height - 1, wing.getBoundingBox().maxZ + 1);
+				this.boundingBox = new MutableBoundingBox(wing.getBoundingBox().minX - 1, wing.getBoundingBox().maxY, wing.getBoundingBox().minZ - 1, wing.getBoundingBox().maxX, wing.getBoundingBox().maxY + this.height - 1, wing.getBoundingBox().maxZ + 1);
 				break;
 			case NORTH:
-				this.boundingBox = new StructureBoundingBox(wing.getBoundingBox().minX - 1, wing.getBoundingBox().maxY, wing.getBoundingBox().minZ - 1, wing.getBoundingBox().maxX + 1, wing.getBoundingBox().maxY + this.height - 1, wing.getBoundingBox().maxZ);
+				this.boundingBox = new MutableBoundingBox(wing.getBoundingBox().minX - 1, wing.getBoundingBox().maxY, wing.getBoundingBox().minZ - 1, wing.getBoundingBox().maxX + 1, wing.getBoundingBox().maxY + this.height - 1, wing.getBoundingBox().maxZ);
 				break;
 			default:
 				break;
@@ -82,7 +81,7 @@ public abstract class ComponentTFTowerRoof extends StructureTFComponentOld {
 	 * @param wing
 	 */
 	protected void makeCapBB(ComponentTFTowerWing wing) {
-		this.boundingBox = new StructureBoundingBox(wing.getBoundingBox().minX, wing.getBoundingBox().maxY, wing.getBoundingBox().minZ, wing.getBoundingBox().maxX, wing.getBoundingBox().maxY + this.height, wing.getBoundingBox().maxZ);
+		this.boundingBox = new MutableBoundingBox(wing.getBoundingBox().minX, wing.getBoundingBox().maxY, wing.getBoundingBox().minZ, wing.getBoundingBox().maxX, wing.getBoundingBox().maxY + this.height, wing.getBoundingBox().maxZ);
 	}
 
 
@@ -92,20 +91,19 @@ public abstract class ComponentTFTowerRoof extends StructureTFComponentOld {
 	 * @param wing
 	 */
 	protected void makeOverhangBB(ComponentTFTowerWing wing) {
-		this.boundingBox = new StructureBoundingBox(wing.getBoundingBox().minX - 1, wing.getBoundingBox().maxY, wing.getBoundingBox().minZ - 1, wing.getBoundingBox().maxX + 1, wing.getBoundingBox().maxY + this.height - 1, wing.getBoundingBox().maxZ + 1);
+		this.boundingBox = new MutableBoundingBox(wing.getBoundingBox().minX - 1, wing.getBoundingBox().maxY, wing.getBoundingBox().minZ - 1, wing.getBoundingBox().maxX + 1, wing.getBoundingBox().maxY + this.height - 1, wing.getBoundingBox().maxZ + 1);
 	}
 
-
 	@Override
-	public boolean addComponentParts(World world, Random random, StructureBoundingBox structureboundingbox) {
+	public boolean addComponentParts(IWorld worldIn, Random randomIn, MutableBoundingBox structureBoundingBoxIn, ChunkPos chunkPosIn) {
 		return false;
 	}
 
 	/**
 	 * Does this roof intersect anything except the parent tower?
 	 */
-	public boolean fits(ComponentTFTowerWing parent, List<StructureComponent> list, Random rand) {
-		return StructureComponent.findIntersecting(list, this.boundingBox) == parent;
+	public boolean fits(ComponentTFTowerWing parent, List<StructurePiece> list, Random rand) {
+		return StructurePiece.findIntersecting(list, this.boundingBox) == parent;
 	}
 
 }

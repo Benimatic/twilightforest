@@ -1,24 +1,19 @@
 package twilightforest.structures.hollowtree;
 
-import net.minecraft.block.BlockLeaves;
-import net.minecraft.block.BlockLog;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
-import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
-import twilightforest.world.feature.TFGenerator;
 
 import java.util.List;
 import java.util.Random;
-
-import static net.minecraft.block.BlockLog.LOG_AXIS;
-
 
 public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 
@@ -27,7 +22,6 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 	double angle;
 	double tilt;
 	boolean leafy;
-
 
 	public ComponentTFHollowTreeMedBranch() {
 		super();
@@ -46,20 +40,19 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 
 		this.setCoordBaseMode(Direction.SOUTH);
 
-		this.boundingBox = new StructureBoundingBox(src, dest);
+		this.boundingBox = new MutableBoundingBox(src, dest);
 
 		this.boundingBox.expandTo(makeExpandedBB(0.5F, length, angle, tilt));
 		this.boundingBox.expandTo(makeExpandedBB(0.1F, length, 0.225, tilt));
 		this.boundingBox.expandTo(makeExpandedBB(0.1F, length, -0.225, tilt));
 	}
 
-	private StructureBoundingBox makeExpandedBB(double outVar, double branchLength, double branchAngle, double branchTilt) {
+	private MutableBoundingBox makeExpandedBB(double outVar, double branchLength, double branchAngle, double branchTilt) {
 		BlockPos branchSrc = TFGenerator.translate(src, this.length * outVar, this.angle, this.tilt);
 		BlockPos branchDest = TFGenerator.translate(branchSrc, branchLength, branchAngle, branchTilt);
 
-		return new StructureBoundingBox(branchSrc, branchDest);
+		return new MutableBoundingBox(branchSrc, branchDest);
 	}
-
 
 	/**
 	 * Save to NBT
@@ -74,20 +67,18 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 		tagCompound.putInt("destPosX", this.dest.getX());
 		tagCompound.putInt("destPosY", this.dest.getY());
 		tagCompound.putInt("destPosZ", this.dest.getZ());
-		tagCompound.setDouble("branchLength", this.length);
-		tagCompound.setDouble("branchAngle", this.angle);
-		tagCompound.setDouble("branchTilt", this.tilt);
+		tagCompound.putDouble("branchLength", this.length);
+		tagCompound.putDouble("branchAngle", this.angle);
+		tagCompound.putDouble("branchTilt", this.tilt);
 		tagCompound.putBoolean("branchLeafy", this.leafy);
-
 	}
 
 	/**
 	 * Load from NBT
 	 */
 	@Override
-	protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager templateManager) {
-		super.readStructureFromNBT(tagCompound, templateManager);
-
+	protected void readAdditional(CompoundNBT tagCompound) {
+		super.readAdditional(tagCompound);
 
 		this.src = new BlockPos(tagCompound.getInt("srcPosX"), tagCompound.getInt("srcPosY"), tagCompound.getInt("srcPosZ"));
 		this.dest = new BlockPos(tagCompound.getInt("destPosX"), tagCompound.getInt("destPosY"), tagCompound.getInt("destPosZ"));
@@ -98,27 +89,25 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 		this.leafy = tagCompound.getBoolean("branchLeafy");
 	}
 
-	public void makeSmallBranch(List<StructureComponent> list, Random rand, int index, int x, int y, int z, double branchLength, double branchRotation, double branchAngle, boolean leafy) {
+	public void makeSmallBranch(List<StructurePiece> list, Random rand, int index, int x, int y, int z, double branchLength, double branchRotation, double branchAngle, boolean leafy) {
 		ComponentTFHollowTreeSmallBranch branch = new ComponentTFHollowTreeSmallBranch(getFeatureType(), index, x, y, z, branchLength, branchRotation, branchAngle, leafy);
 		list.add(branch);
 		branch.buildComponent(this, list, rand);
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random random, StructureBoundingBox sbb)
-	{
-		return this.addComponentParts(world, random, sbb, false);
+	public boolean addComponentParts(IWorld world, Random random, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		return this.addComponentParts(world.getWorld(), random, sbb, false);
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random random, StructureBoundingBox sbb, boolean drawLeaves) {
+	public boolean addComponentParts(World world, Random random, MutableBoundingBox sbb, boolean drawLeaves) {
 
 		BlockPos rSrc = src.add(-boundingBox.minX, -boundingBox.minY, -boundingBox.minZ);
 		BlockPos rDest = dest.add(-boundingBox.minX, -boundingBox.minY, -boundingBox.minZ);
 
-		if (!drawLeaves)
-		{
-			BlockState log = TFBlocks.twilight_log.getDefaultState().with(LOG_AXIS, BlockLog.EnumAxis.NONE);
+		if (!drawLeaves) {
+			BlockState log = TFBlocks.oak_log.get().getDefaultState().with(LOG_AXIS, BlockLog.EnumAxis.NONE);
 			drawBresehnam(world, sbb, rSrc.getX(), rSrc.getY(), rSrc.getZ(), rDest.getX(), rDest.getY(), rDest.getZ(), log);
 			drawBresehnam(world, sbb, rSrc.getX(), rSrc.getY() + 1, rSrc.getZ(), rDest.getX(), rDest.getY(), rDest.getZ(), log);
 		}
@@ -158,11 +147,10 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 		return true;
 	}
 
-
 	/**
 	 * Draws a line
 	 */
-	protected void drawBresehnam(World world, StructureBoundingBox sbb, int x1, int y1, int z1, int x2, int y2, int z2, BlockState blockState) {
+	protected void drawBresehnam(World world, MutableBoundingBox sbb, int x1, int y1, int z1, int x2, int y2, int z2, BlockState blockState) {
 		BlockPos lineCoords[] = TFGenerator.getBresehnamArrays(x1, y1, z1, x2, y2, z2);
 
 		for (BlockPos coords : lineCoords) {
@@ -173,7 +161,7 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 	/**
 	 * Make a leaf blob
 	 */
-	protected void makeLeafBlob(World world, StructureBoundingBox sbb, int sx, int sy, int sz, int radius) {
+	protected void makeLeafBlob(World world, MutableBoundingBox sbb, int sx, int sy, int sz, int radius) {
 		// then trace out a quadrant
 		for (int dx = 0; dx <= radius; dx++) {
 			for (int dy = 0; dy <= radius; dy++) {
@@ -193,7 +181,7 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 					// if we're inside the blob, fill it
 					if (dist <= radius) {
 						// do eight at a time for easiness!
-						final BlockState leaves = TFBlocks.twilight_leaves.getDefaultState().with(BlockLeaves.CHECK_DECAY, false);
+						final BlockState leaves = TFBlocks.oak_leaves.get().getDefaultState().with(BlockLeaves.CHECK_DECAY, false);
 						placeLeafBlock(world, leaves, sx + dx, sy + dy, sz + dz, sbb);
 						placeLeafBlock(world, leaves, sx + dx, sy + dy, sz - dz, sbb);
 						placeLeafBlock(world, leaves, sx - dx, sy + dy, sz + dz, sbb);
@@ -212,20 +200,15 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 	/**
 	 * This is like the small branch component, but we're just drawing it directly into the world
 	 */
-	protected void drawSmallBranch(World world, StructureBoundingBox sbb, int sx, int sy, int sz, double branchLength, double branchAngle, double branchTilt, boolean drawLeaves) {
+	protected void drawSmallBranch(World world, MutableBoundingBox sbb, int sx, int sy, int sz, double branchLength, double branchAngle, double branchTilt, boolean drawLeaves) {
 		// draw a line
 		BlockPos branchDest = TFGenerator.translate(new BlockPos(sx, sy, sz), branchLength, branchAngle, branchTilt);
 
-		if (!drawLeaves)
-		{
-			BlockState log = TFBlocks.twilight_log.getDefaultState().with(LOG_AXIS, BlockLog.EnumAxis.NONE);
+		if (!drawLeaves) {
+			BlockState log = TFBlocks.oak_log.get().getDefaultState().with(LOG_AXIS, BlockLog.EnumAxis.NONE);
 			drawBresehnam(world, sbb, sx, sy, sz, branchDest.getX(), branchDest.getY(), branchDest.getZ(), log);
-		}
-		else
-		{
+		} else {
 			makeLeafBlob(world, sbb, branchDest.getX(), branchDest.getY(), branchDest.getZ(), 2);
 		}
 	}
-
-
 }

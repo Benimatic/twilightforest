@@ -1,19 +1,19 @@
 package twilightforest.structures;
 
-import net.minecraft.block.BlockPumpkin;
+import net.minecraft.block.CarvedPumpkinBlock;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityType;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.MutableBoundingBox;
+import net.minecraft.util.math.MutableBoundingBox;
 import twilightforest.TFFeature;
+import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
 import twilightforest.block.TFBlocks;
-import twilightforest.entity.EntityTFHedgeSpider;
-import twilightforest.entity.EntityTFHostileWolf;
-import twilightforest.entity.EntityTFSwarmSpider;
 
 import java.util.Random;
 
@@ -36,17 +36,16 @@ public class ComponentTFHedgeMaze extends StructureTFComponentOld {
 
 		// the maze is 50 x 50 for now
 		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -RADIUS, -3, -RADIUS, RADIUS * 2, 10, RADIUS * 2, Direction.SOUTH);
-
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, MutableBoundingBox sbb) {
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 
 		TFMaze maze = new TFMaze(MSIZE, MSIZE);
 
 		maze.oddBias = 2;
-		maze.torchBlockState = TFBlocks.firefly.getDefaultState();
-		maze.wallBlockState = TFBlocks.hedge.getDefaultState();
+		maze.torchBlockState = TFBlocks.firefly.get().getDefaultState();
+		maze.wallBlockState = TFBlocks.hedge.get().getDefaultState();
 		maze.type = 4;
 		maze.tall = 3;
 		maze.roots = 3;
@@ -62,10 +61,10 @@ public class ComponentTFHedgeMaze extends StructureTFComponentOld {
 			}
 		}
 
-		BlockState northJacko = Blocks.LIT_PUMPKIN.getDefaultState().with(BlockPumpkin.FACING, Direction.NORTH);
-		BlockState southJacko = Blocks.LIT_PUMPKIN.getDefaultState().with(BlockPumpkin.FACING, Direction.SOUTH);
-		BlockState westJacko = Blocks.LIT_PUMPKIN.getDefaultState().with(BlockPumpkin.FACING, Direction.WEST);
-		BlockState eastJacko = Blocks.LIT_PUMPKIN.getDefaultState().with(BlockPumpkin.FACING, Direction.EAST);
+		BlockState northJacko = Blocks.JACK_O_LANTERN.getDefaultState().with(CarvedPumpkinBlock.FACING, Direction.NORTH);
+		BlockState southJacko = Blocks.JACK_O_LANTERN.getDefaultState().with(CarvedPumpkinBlock.FACING, Direction.SOUTH);
+		BlockState westJacko = Blocks.JACK_O_LANTERN.getDefaultState().with(CarvedPumpkinBlock.FACING, Direction.WEST);
+		BlockState eastJacko = Blocks.JACK_O_LANTERN.getDefaultState().with(CarvedPumpkinBlock.FACING, Direction.EAST);
 
 		// plunk down some jack-o-lanterns outside for decoration
 		setBlockState(world, westJacko, 0, FLOOR_LEVEL, 24, sbb);
@@ -99,10 +98,9 @@ public class ComponentTFHedgeMaze extends StructureTFComponentOld {
 
 		maze.add4Exits();
 
-		maze.copyToStructure(world, 1, FLOOR_LEVEL, 1, this, sbb);
+		maze.copyToStructure(world.getWorld(), 1, FLOOR_LEVEL, 1, this, sbb);
 
-		decorate3x3Rooms(world, rcoords, sbb);
-
+		decorate3x3Rooms(world.getWorld(), rcoords, sbb);
 
 		return true;
 	}
@@ -178,14 +176,14 @@ public class ComponentTFHedgeMaze extends StructureTFComponentOld {
 
 		switch (rand.nextInt(3)) {
 			case 1:
-				mobID = EntityList.getKey(EntityTFSwarmSpider.class);
+				mobID = EntityType.getKey(TFEntities.swarm_spider.get());
 				break;
 			case 2:
-				mobID = EntityList.getKey(EntityTFHostileWolf.class);
+				mobID = EntityType.getKey(TFEntities.hostile_wolf.get());
 				break;
 			case 0:
 			default:
-				mobID = EntityList.getKey(EntityTFHedgeSpider.class);
+				mobID = EntityType.getKey(TFEntities.hedge_spider.get());
 		}
 
 		setSpawner(world, rx, FLOOR_LEVEL, rz, sbb, mobID);
@@ -209,7 +207,7 @@ public class ComponentTFHedgeMaze extends StructureTFComponentOld {
 		int rx = x + rand.nextInt(diameter) - (diameter / 2);
 		int rz = z + rand.nextInt(diameter) - (diameter / 2);
 
-		setBlockState(world, Blocks.LIT_PUMPKIN.getDefaultState().with(BlockPumpkin.FACING, Direction.byHorizontalIndex(rand.nextInt(4))),
+		setBlockState(world, Blocks.JACK_O_LANTERN.getDefaultState().with(CarvedPumpkinBlock.FACING, Direction.byHorizontalIndex(rand.nextInt(4))),
 				rx, FLOOR_LEVEL, rz, sbb);
 	}
 

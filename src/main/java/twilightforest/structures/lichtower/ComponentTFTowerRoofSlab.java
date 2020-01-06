@@ -1,14 +1,14 @@
 package twilightforest.structures.lichtower;
 
-import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.util.math.MutableBoundingBox;
 import twilightforest.TFFeature;
 
 import java.util.Random;
-
 
 public class ComponentTFTowerRoofSlab extends ComponentTFTowerRoof {
 
@@ -34,15 +34,11 @@ public class ComponentTFTowerRoofSlab extends ComponentTFTowerRoof {
 	 * Makes a flat, pyramid-shaped roof
 	 */
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		BlockPlanks.EnumType woodType = BlockPlanks.EnumType.BIRCH;
-
-		return makePyramidCap(world, woodType, sbb);
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		return makePyramidCap(world.getWorld(), Blocks.BIRCH_SLAB.getDefaultState(), Blocks.BIRCH_PLANKS.getDefaultState(), sbb);
 	}
 
-	protected boolean makePyramidCap(World world, BlockPlanks.EnumType woodType, StructureBoundingBox sbb) {
-		BlockState woodenSlab = Blocks.WOODEN_SLAB.getDefaultState().with(BlockPlanks.VARIANT, woodType);
-		BlockState woodenPlanks = Blocks.PLANKS.getDefaultState().with(BlockPlanks.VARIANT, woodType);
+	protected boolean makePyramidCap(World world, BlockState slabType, BlockState woodType, MutableBoundingBox sbb) {
 		for (int y = 0; y <= height; y++) {
 			int min = 2 * y;
 			int max = size - (2 * y) - 1;
@@ -50,9 +46,9 @@ public class ComponentTFTowerRoofSlab extends ComponentTFTowerRoof {
 				for (int z = min; z <= max; z++) {
 					if (x == min || x == max || z == min || z == max) {
 
-						setBlockState(world, woodenSlab, x, y, z, sbb);
+						setBlockState(world, slabType, x, y, z, sbb);
 					} else {
-						setBlockState(world, woodenPlanks, x, y, z, sbb);
+						setBlockState(world, woodType, x, y, z, sbb);
 					}
 				}
 			}
@@ -60,24 +56,20 @@ public class ComponentTFTowerRoofSlab extends ComponentTFTowerRoof {
 		return true;
 	}
 
-	protected boolean makeConnectedCap(World world, BlockPlanks.EnumType woodType, StructureBoundingBox sbb) {
-		BlockState woodenSlab = Blocks.WOODEN_SLAB.getDefaultState().with(BlockPlanks.VARIANT, woodType);
-		BlockState woodenPlanks = Blocks.PLANKS.getDefaultState().with(BlockPlanks.VARIANT, woodType);
-
+	protected boolean makeConnectedCap(World world, BlockState slabType, BlockState woodType, MutableBoundingBox sbb) {
 		for (int y = 0; y < height; y++) {
 			int min = 2 * y;
 			int max = size - (2 * y) - 1;
 			for (int x = 0; x <= max; x++) {
 				for (int z = min; z <= max; z++) {
 					if (x == max || z == min || z == max) {
-						setBlockState(world, woodenSlab, x, y, z, sbb);
+						setBlockState(world, slabType, x, y, z, sbb);
 					} else {
-						setBlockState(world, woodenPlanks, x, y, z, sbb);
+						setBlockState(world, woodType, x, y, z, sbb);
 					}
 				}
 			}
 		}
 		return true;
 	}
-
 }

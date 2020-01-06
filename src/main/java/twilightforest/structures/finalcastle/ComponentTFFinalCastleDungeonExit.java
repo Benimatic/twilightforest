@@ -4,12 +4,12 @@ import net.minecraft.block.BlockState;
 import net.minecraft.item.DyeColor;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Vec3i;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.IWorld;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
-import twilightforest.block.BlockTFCastleDoor;
 import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.block.BlockTFForceField;
 import twilightforest.block.TFBlocks;
@@ -28,7 +28,7 @@ public class ComponentTFFinalCastleDungeonExit extends ComponentTFFinalCastleDun
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
+	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		if (parent instanceof StructureTFComponentOld) {
 			this.deco = ((StructureTFComponentOld) parent).deco;
 		}
@@ -51,15 +51,14 @@ public class ComponentTFFinalCastleDungeonExit extends ComponentTFFinalCastleDun
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 
-		if (!super.addComponentParts(world, rand, sbb)) {
+		if (!super.addComponentParts(world, rand, sbb, chunkPosIn)) {
 			return false;
 		}
 
 		// door
-		final BlockState castleDoor = TFBlocks.castle_door.getDefaultState()
-				.with(BlockTFCastleDoor.LOCK_INDEX, 2);
+		final BlockState castleDoor = TFBlocks.castle_door_pink.get().getDefaultState();
 
 		this.fillWithBlocks(world, sbb, 7, 0, 16, 7, 3, 18, castleDoor, AIR, false);
 		this.fillWithBlocks(world, sbb, 7, 4, 16, 7, 4, 18, deco.blockState, deco.blockState, false);
@@ -83,11 +82,13 @@ public class ComponentTFFinalCastleDungeonExit extends ComponentTFFinalCastleDun
 		return absoluteDir;
 	}
 
+	//TODO: Make this BlockState
 	@Override
 	protected DyeColor getForceFieldColor(Random decoRNG) {
 		return BlockTFForceField.VALID_COLORS.get(1);
 	}
 
+	//TODO: Make this BlockState
 	@Override
 	protected DyeColor getRuneColor(DyeColor fieldColor) {
 		return BlockTFCastleMagic.VALID_COLORS.get(0);

@@ -2,9 +2,11 @@ package twilightforest.structures.icetower;
 
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
@@ -23,15 +25,15 @@ public class ComponentTFIceTowerStairs extends ComponentTFTowerWing {
 	}
 
 	@Override
-	public void buildComponent(StructureComponent parent, List<StructureComponent> list, Random rand) {
+	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		if (parent != null && parent instanceof StructureTFComponentOld) {
 			this.deco = ((StructureTFComponentOld) parent).deco;
 		}
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-
+	public boolean addComponentParts(IWorld worldIn, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		World world = worldIn.getWorld();
 		for (int x = 1; x < this.size; x++) {
 
 			this.placeStairs(world, sbb, x, 1 - x, 5, 2);
@@ -47,18 +49,15 @@ public class ComponentTFIceTowerStairs extends ComponentTFTowerWing {
 					this.placeStairs(world, sbb, z, 1 - x, 5 - x, 1);
 					this.placeStairs(world, sbb, z, 1 - x, 5 + x, 3);
 				}
-
 			}
-
 		}
 
 		this.setBlockState(world, deco.blockState, 0, 0, 5, sbb);
 
-
 		return true;
 	}
 
-	private void placeStairs(World world, StructureBoundingBox sbb, int x, int y, int z, int stairMeta) {
+	private void placeStairs(World world, MutableBoundingBox sbb, int x, int y, int z, int stairMeta) {
 		BlockPos pos = new BlockPos(x, y, z);
 		if (this.getBlockStateFromPos(world, x, y, z, sbb).getBlock().isReplaceable(world, pos)) {
 			this.setBlockState(world, deco.blockState, x, y, z, sbb);

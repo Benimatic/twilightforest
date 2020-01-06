@@ -1,8 +1,10 @@
 package twilightforest.structures.courtyard;
 
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.util.math.MutableBoundingBox;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponentOld;
@@ -33,9 +35,9 @@ public class ComponentNagaCourtyardMain extends StructureMazeGenerator {
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 		// naga spawner seems important
-		setBlockState(world, TFBlocks.boss_spawner.getDefaultState(), RADIUS, 2, RADIUS, sbb);
+		setBlockState(world, TFBlocks.boss_spawner.get().getDefaultState(), RADIUS, 2, RADIUS, sbb);
 
 		return true;
 	}

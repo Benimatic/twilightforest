@@ -2,10 +2,10 @@ package twilightforest.structures.finalcastle;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.util.Direction;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
+import net.minecraft.util.math.MutableBoundingBox;
 import twilightforest.TFFeature;
-import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponentOld;
 
@@ -29,9 +29,9 @@ public class ComponentTFFinalCastleMural extends StructureTFComponentOld {
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 		this.height = this.boundingBox.getYSize();
-		this.width = (this.coordBaseMode == Direction.SOUTH || this.coordBaseMode == Direction.NORTH) ? this.boundingBox.getZSize() : this.boundingBox.getXSize();
+		this.width = (this.getCoordBaseMode() == Direction.SOUTH || this.getCoordBaseMode() == Direction.NORTH) ? this.boundingBox.getZSize() : this.boundingBox.getXSize();
 
 		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
 
@@ -60,8 +60,7 @@ public class ComponentTFFinalCastleMural extends StructureTFComponentOld {
 			makeStripes(decoRNG, mural);
 		}
 
-		final BlockState castleMagic = TFBlocks.castle_rune_brick.getDefaultState()
-				.with(BlockTFCastleMagic.COLOR, BlockTFCastleMagic.VALID_COLORS.get(1));
+		final BlockState castleMagic = TFBlocks.castle_rune_brick_blue.get().getDefaultState();
 
 		// copy mural to world
 		for (int x = 0; x < width; x++) {

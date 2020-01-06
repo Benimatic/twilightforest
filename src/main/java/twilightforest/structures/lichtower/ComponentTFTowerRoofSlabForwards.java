@@ -1,14 +1,15 @@
 package twilightforest.structures.lichtower;
 
-import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.block.SlabBlock;
+import net.minecraft.state.properties.SlabType;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
+import net.minecraft.util.math.MutableBoundingBox;
 import twilightforest.TFFeature;
 
 import java.util.Random;
-
 
 /**
  * A flat tower roof using slabs that is larger than the tower under it.
@@ -32,16 +33,15 @@ public class ComponentTFTowerRoofSlabForwards extends ComponentTFTowerRoofSlab {
 
 		// bounding box
 		makeAttachedOverhangBB(wing);
-
 	}
 
 	/**
 	 * Makes flat hip roof
 	 */
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		BlockState birchSlab = Blocks.WOODEN_SLAB.getDefaultState().with(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
-		BlockState birchDoubleSlab = Blocks.DOUBLE_WOODEN_SLAB.getDefaultState().with(BlockPlanks.VARIANT, BlockPlanks.EnumType.BIRCH);
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		BlockState birchSlab = Blocks.BIRCH_SLAB.getDefaultState();
+		BlockState birchDoubleSlab = Blocks.BIRCH_SLAB.getDefaultState().with(SlabBlock.TYPE, SlabType.DOUBLE);
 
 		for (int y = 0; y <= height; y++) {
 			int min = 2 * y;

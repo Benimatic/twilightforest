@@ -2,8 +2,9 @@ package twilightforest.structures.minotaurmaze;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Direction;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
+import net.minecraft.util.math.MutableBoundingBox;
 import twilightforest.TFFeature;
 
 import java.util.Random;
@@ -19,17 +20,17 @@ public class ComponentTFMazeDeadEndFountainLava extends ComponentTFMazeDeadEndFo
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 		// normal fountain
-		super.addComponentParts(world, rand, sbb);
+		super.addComponentParts(world, rand, sbb, chunkPosIn);
 
 		// remove water
 		this.setBlockState(world, AIR, 2, 3, 4, sbb);
 		this.setBlockState(world, AIR, 3, 3, 4, sbb);
 
 		// lava instead of water
-		this.setBlockState(world, Blocks.FLOWING_LAVA.getDefaultState(), 2, 3, 4, sbb);
-		this.setBlockState(world, Blocks.FLOWING_LAVA.getDefaultState(), 3, 3, 4, sbb);
+		this.setBlockState(world, Blocks.LAVA.getDefaultState(), 2, 3, 4, sbb);
+		this.setBlockState(world, Blocks.LAVA.getDefaultState(), 3, 3, 4, sbb);
 
 		return true;
 	}

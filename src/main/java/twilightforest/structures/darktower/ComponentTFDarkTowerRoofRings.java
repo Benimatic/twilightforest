@@ -1,7 +1,9 @@
 package twilightforest.structures.darktower;
 
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.util.math.MutableBoundingBox;
 import twilightforest.TFFeature;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
 
@@ -17,8 +19,8 @@ public class ComponentTFDarkTowerRoofRings extends ComponentTFDarkTowerRoof {
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		super.addComponentParts(world, rand, sbb);
+	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		super.addComponentParts(world, rand, sbb, chunkPosIn);
 
 		// antenna
 		for (int y = 1; y < 10; y++) {
@@ -33,15 +35,14 @@ public class ComponentTFDarkTowerRoofRings extends ComponentTFDarkTowerRoof {
 		setBlockState(world, deco.accentState, size / 2, 1, size / 2 - 1, sbb);
 		setBlockState(world, deco.accentState, size / 2, 1, size / 2 + 1, sbb);
 
-		makeARing(world, 6, sbb);
-		makeARing(world, 8, sbb);
-
+		makeARing(world.getWorld(), 6, sbb);
+		makeARing(world.getWorld(), 8, sbb);
 
 		return true;
 	}
 
 
-	protected void makeARing(World world, int y, StructureBoundingBox sbb) {
+	protected void makeARing(World world, int y, MutableBoundingBox sbb) {
 		setBlockState(world, deco.accentState, size / 2 - 2, y, size / 2 + 1, sbb);
 		setBlockState(world, deco.accentState, size / 2 - 2, y, size / 2 + 0, sbb);
 		setBlockState(world, deco.accentState, size / 2 - 2, y, size / 2 - 1, sbb);
