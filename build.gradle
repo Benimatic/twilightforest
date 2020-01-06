@@ -164,28 +164,6 @@ task createPom {
                         distribution 'repo'
                     }
                 }
-                repositories {
-                    repository {
-                        id 'progwml6'
-                        url 'https://dvs1.progwml6.com/files/maven'
-                    }
-                    repository {
-                        id 'tterrag'
-                        url 'https://maven.tterrag.com/'
-                    }
-                    repository {
-                        id 'blamejared'
-                        url 'https://blamejared.com/maven'
-                    }
-                    repository {
-                        id 'ic2'
-                        url 'http://maven.ic2.player.to/'
-                    }
-                    repository {
-                        id 'curseforge'
-                        url 'https://minecraft.curseforge.com/api/maven/'
-                    }
-                }
             }
         }.writeTo(libsDir.path + "/" + project.archivesBaseName + "-" + project.version + ".pom")
     }
