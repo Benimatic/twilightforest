@@ -3,7 +3,7 @@ package twilightforest.network;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.WorldProvider;
-import net.minecraft.world.gen.structure.MutableBoundingBox;
+import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;

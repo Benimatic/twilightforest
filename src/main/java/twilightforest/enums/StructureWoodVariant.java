@@ -171,7 +171,7 @@ public enum StructureWoodVariant implements IStringSerializable {
                         return target.planks.getDefaultState();
                 }
             case STAIRS:
-                return transferStateKeys(stateIn, target.stairs.getDefaultState(), BlockStairs.FACING, BlockStairs.HALF, BlockStairs.SHAPE);
+                return transferStateKeys(stateIn, target.stairs.getDefaultState(), StairsBlock.FACING, StairsBlock.HALF, StairsBlock.SHAPE);
             case SLAB:
                 switch (target) {
                     case OAK:
@@ -233,7 +233,7 @@ public enum StructureWoodVariant implements IStringSerializable {
     public static WoodShapes getWoodShapeFromBlock(Block b) {
         if (b instanceof BlockTF || b instanceof BlockPlanks)
             return WoodShapes.BLOCK;
-        if (b instanceof BlockStairs  ) return WoodShapes.STAIRS;
+        if (b instanceof StairsBlock  ) return WoodShapes.STAIRS;
         if (b instanceof BlockSlab    ) {
             if (((BlockSlab) b).isDouble()) return WoodShapes.DOUBLESLAB;
             else                            return WoodShapes.SLAB;
