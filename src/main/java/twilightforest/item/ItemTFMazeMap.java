@@ -9,10 +9,9 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.block.Blocks;
-import net.minecraft.item.MapItem;
+import net.minecraft.item.FilledMapItem;
 import net.minecraft.item.Rarity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.IPacket;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -22,12 +21,10 @@ import net.minecraft.world.storage.MapDecoration;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TFMazeMapData;
-import twilightforest.network.TFPacketHandler;
-import twilightforest.network.PacketMazeMap;
 
 import javax.annotation.Nullable;
 
-public class ItemTFMazeMap extends MapItem {
+public class ItemTFMazeMap extends FilledMapItem {
 
 	public static final String STR_ID = "mazemap";
 	private static final int YSEARCH = 3;
@@ -90,8 +87,8 @@ public class ItemTFMazeMap extends MapItem {
 			int blocksPerPixel = 1 << data.scale;
 			int centerX = data.xCenter;
 			int centerZ = data.zCenter;
-			int viewerX = MathHelper.floor(viewer.posX - (double) centerX) / blocksPerPixel + 64;
-			int viewerZ = MathHelper.floor(viewer.posZ - (double) centerZ) / blocksPerPixel + 64;
+			int viewerX = MathHelper.floor(viewer.getX() - (double) centerX) / blocksPerPixel + 64;
+			int viewerZ = MathHelper.floor(viewer.getZ() - (double) centerZ) / blocksPerPixel + 64;
 			int viewRadiusPixels = 16; // TF this is smaller on the maze map
 
 			if (world.dimension.isNether()) {
@@ -139,7 +136,7 @@ public class ItemTFMazeMap extends MapItem {
 									// TF - remove extra 2 levels of loops
 									// maze maps are always 0 scale, which is 1 pixel = 1 block, so the loops are unneeded
 									int yCenter = ((TFMazeMapData) data).yCenter;
-									BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos(worldXRounded, yCenter, worldZRounded);
+									BlockPos.Mutable blockpos$mutableblockpos = new BlockPos.Mutable(worldXRounded, yCenter, worldZRounded);
 									BlockState state = chunk.getBlockState(blockpos$mutableblockpos);
 
 									multiset.add(state.getMaterialColor(world, blockpos$mutableblockpos));
@@ -274,14 +271,15 @@ public class ItemTFMazeMap extends MapItem {
 		return mapOres ? Rarity.UNCOMMON : Rarity.COMMON;
 	}
 
-	@Override
-	@Nullable
-	public IPacket<?> getUpdatePacket(ItemStack stack, World worldIn, PlayerEntity player) {
-		IPacket<?> p = super.getUpdatePacket(stack, worldIn, player);
-		if (p instanceof SPacketMaps) {
-			return TFPacketHandler.CHANNEL.getPacketFrom(new PacketMazeMap((SPacketMaps) p));
-		} else {
-			return p;
-		}
-	}
+	//TODO: How to packet?
+//	@Override
+//	@Nullable
+//	public IPacket<?> getUpdatePacket(ItemStack stack, World worldIn, PlayerEntity player) {
+//		IPacket<?> p = super.getUpdatePacket(stack, worldIn, player);
+//		if (p instanceof SPacketMaps) {
+//			return TFPacketHandler.CHANNEL.getPacketFrom(new PacketMazeMap((SPacketMaps) p));
+//		} else {
+//			return p;
+//		}
+//	}
 }

@@ -12,6 +12,7 @@ public class ItemTFSeekerBow extends ItemTFBowBase {
 
 	@Override
 	public AbstractArrowEntity customeArrow(AbstractArrowEntity arrow) {
+		//TODO: Must be UUID
 		if (arrow.shootingEntity instanceof LivingEntity) {
 			return new EntitySeekerArrow(arrow.world, (LivingEntity) arrow.shootingEntity);
 		}

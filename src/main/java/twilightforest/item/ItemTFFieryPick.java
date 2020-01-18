@@ -33,12 +33,13 @@ public class ItemTFFieryPick extends PickaxeItem {
 
 	@SubscribeEvent
 	public static void onDrops(BlockEvent.HarvestDropsEvent event) {
-		if (event.getHarvester() != null && event.getHarvester().getHeldItemMainhand().getItem() == TFItems.fiery_pickaxe
-				&& event.getState().getBlock().canHarvestBlock(event.getWorld(), event.getPos(), event.getHarvester())) {
+		if (event.getHarvester() != null && event.getHarvester().getHeldItemMainhand().getItem() == TFItems.fiery_pickaxe.get()
+				&& event.getState().getBlock().canHarvestBlock(event.getState(), event.getWorld(), event.getPos(), event.getHarvester())) {
 
 			List<ItemStack> removeThese = new ArrayList<>();
 			List<ItemStack> addThese = new ArrayList<>();
 
+			//TODO 1.14: Furnace recipes are now handled differently. Verify
 			for (ItemStack input : event.getDrops()) {
 				ItemStack result = FurnaceRecipe.instance().getSmeltingResult(input);
 				if (!result.isEmpty()) {
@@ -67,9 +68,10 @@ public class ItemTFFieryPick extends PickaxeItem {
 					while (i > 0) {
 						int k = ExperienceOrbEntity.getXPSplit(i);
 						i -= k;
-						event.getHarvester().world.addEntity(new ExperienceOrbEntity(event.getWorld(), event.getHarvester().posX, event.getHarvester().posY + 0.5D, event.getHarvester().posZ, k));
+						event.getHarvester().world.addEntity(new ExperienceOrbEntity(event.getWorld().getWorld(), event.getHarvester().getX(), event.getHarvester().getY() + 0.5D, event.getHarvester().getZ(), k));
 					}
 
+					//TODO: Move to regular particle spawner?
 					ParticleHelper.spawnParticles(event.getWorld(), event.getPos(), ParticleTypes.FLAME, 5, 0.02);
 				}
 			}
@@ -84,6 +86,7 @@ public class ItemTFFieryPick extends PickaxeItem {
 		boolean result = super.hitEntity(stack, target, attacker);
 
 		if (result && !target.world.isRemote && !target.isImmuneToFire()) {
+			//TODO: Move to regular particle spawner?
 			ParticleHelper.spawnParticles(target, ParticleTypes.FLAME, 20, 0.02);
 			target.setFire(15);
 		}

@@ -83,7 +83,7 @@ public class TFGenCaveStalactite extends TFGenerator {
 		int ceiling = Integer.MAX_VALUE;
 		int floor = -1;
 
-		BlockPos.MutableBlockPos iterPos = new BlockPos.MutableBlockPos(pos);
+		BlockPos.Mutable iterPos = new BlockPos.Mutable(pos);
 		// find a ceiling
 		for (int ty = pos.getY(); ty < TFWorld.CHUNKHEIGHT; ty++) {
 			iterPos.setY(ty);

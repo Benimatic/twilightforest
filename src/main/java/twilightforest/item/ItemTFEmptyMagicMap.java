@@ -18,7 +18,7 @@ public class ItemTFEmptyMagicMap extends AbstractMapItem {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
 		// TF - scale at 4
-		ItemStack itemstack = ItemTFMagicMap.setupNewMap(worldIn, playerIn.posX, playerIn.posZ, (byte) 4, true, false);
+		ItemStack itemstack = ItemTFMagicMap.setupNewMap(worldIn, playerIn.getX(), playerIn.getZ(), (byte) 4, true, false);
 		ItemStack itemstack1 = playerIn.getHeldItem(handIn);
 		itemstack1.shrink(1);
 

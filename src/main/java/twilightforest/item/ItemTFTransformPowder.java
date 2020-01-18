@@ -69,7 +69,7 @@ public class ItemTFTransformPowder extends ItemTF {
 		Entity newEntity = EntityList.createEntityByIDFromName(location, target.world);
 		if (newEntity == null) return false;
 
-		newEntity.setLocationAndAngles(target.posX, target.posY, target.posZ, target.rotationYaw, target.rotationPitch);
+		newEntity.setLocationAndAngles(target.getX(), target.getY(), target.getZ(), target.rotationYaw, target.rotationPitch);
 		if (newEntity instanceof LivingEntity) {
 			((LivingEntity) newEntity).onInitialSpawn(target.world.getDifficultyForLocation(new BlockPos(target)), null);
 		}
@@ -111,13 +111,13 @@ public class ItemTFTransformPowder extends ItemTF {
 
 		}
 
-		return ActionResult.newResult(ActionResultType.SUCCESS, player.getHeldItem(hand));
+		return new ActionResult<>(ActionResultType.SUCCESS, player.getHeldItem(hand));
 	}
 
 	private AxisAlignedBB getEffectAABB(PlayerEntity player) {
 		double range = 2.0D;
 		double radius = 1.0D;
-		Vec3d srcVec = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
+		Vec3d srcVec = new Vec3d(player.getX(), player.getY() + player.getEyeHeight(), player.getZ());
 		Vec3d lookVec = player.getLookVec();
 		Vec3d destVec = srcVec.add(lookVec.x * range, lookVec.y * range, lookVec.z * range);
 

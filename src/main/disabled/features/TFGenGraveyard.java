@@ -41,7 +41,7 @@ public class TFGenGraveyard extends TFGenerator {
 	private static final ResourceLocation TRAP = TwilightForestMod.prefix("landscape/graveyard/grave_trap");
 	private static final ImmutableSet<Material> MATERIAL_WHITELIST = ImmutableSet.of(Material.GROUND, Material.GRASS, Material.LEAVES, Material.WOOD, Material.PLANTS, Material.ROCK);
 
-	private static boolean offsetToAverageGroundLevel(World world, BlockPos.MutableBlockPos startPos, BlockPos size) {
+	private static boolean offsetToAverageGroundLevel(World world, BlockPos.Mutable startPos, BlockPos size) {
 		StatsAccumulator heights = new StatsAccumulator();
 
 		for (int dx = 0; dx < size.getX(); dx++) {
@@ -128,7 +128,7 @@ public class TFGenGraveyard extends TFGenerator {
 		PlacementSettings placementsettings = (new PlacementSettings()).setMirror(mirror).setRotation(rotation).setBoundingBox(structureboundingbox).setRandom(random);
 
 		BlockPos posSnap = chunkpos.getBlock(8, pos.getY() - 1, 8);
-		BlockPos.MutableBlockPos startPos = new BlockPos.MutableBlockPos(posSnap);
+		BlockPos.Mutable startPos = new BlockPos.Mutable(posSnap);
 
 		if (!offsetToAverageGroundLevel(world, startPos, transformedSize)) {
 			return false;

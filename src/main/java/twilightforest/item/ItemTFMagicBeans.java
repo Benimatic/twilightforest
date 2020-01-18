@@ -2,7 +2,6 @@ package twilightforest.item;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.LeavesBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -13,10 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.block.BlockTFLeaves3;
 import twilightforest.block.TFBlocks;
-import twilightforest.enums.Leaves3Variant;
-import twilightforest.world.WorldProviderTwilightForest;
 
 import javax.annotation.Nonnull;
 
@@ -54,6 +50,7 @@ public class ItemTFMagicBeans extends ItemTF {
 
 	@SuppressWarnings("RedundantCast")
 	private float getCloudHeight(World world) {
+		//TODO: Can we just call Dimension.getCloudHeight?
 		if (world.dimension instanceof WorldProviderTwilightForest) {
 			// WorldProviderTwilightForest has this method on both server and client
 			return ((WorldProviderTwilightForest) world.dimension).getCloudHeight(); // This cast is actually needed for some reason, else this will toss a Method Not Found on dedicated servers.

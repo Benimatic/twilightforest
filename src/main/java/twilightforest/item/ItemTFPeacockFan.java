@@ -70,7 +70,7 @@ public class ItemTFPeacockFan extends ItemTF {
 
 		player.setActiveHand(hand);
 
-		return ActionResult.newResult(ActionResultType.SUCCESS, player.getHeldItem(hand));
+		return new ActionResult<>(ActionResultType.SUCCESS, player.getHeldItem(hand));
 	}
 
 	@Nonnull
@@ -110,7 +110,7 @@ public class ItemTFPeacockFan extends ItemTF {
 	private AxisAlignedBB getEffectAABB(PlayerEntity player) {
 		double range = 3.0D;
 		double radius = 2.0D;
-		Vec3d srcVec = new Vec3d(player.posX, player.posY + player.getEyeHeight(), player.posZ);
+		Vec3d srcVec = new Vec3d(player.getX(), player.getY() + player.getEyeHeight(), player.getZ());
 		Vec3d lookVec = player.getLookVec().scale(range);
 		Vec3d destVec = srcVec.add(lookVec.x, lookVec.y, lookVec.z);
 

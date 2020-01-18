@@ -33,7 +33,7 @@ public class ItemTFLampOfCinders extends ItemTF {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, @Nonnull Hand hand) {
 		player.setActiveHand(hand);
-		return ActionResult.newResult(ActionResultType.SUCCESS, player.getHeldItem(hand));
+		return new ActionResult<>(ActionResultType.SUCCESS, player.getHeldItem(hand));
 	}
 
 	@Nonnull
@@ -94,7 +94,7 @@ public class ItemTFLampOfCinders extends ItemTF {
 		int range = 4;
 
 		if (!world.isRemote) {
-			world.playSound(null, living.posX, living.posY, living.posZ, SoundEvents.ENTITY_GHAST_SHOOT, living.getSoundCategory(), 1.5F, 0.8F);
+			world.playSound(null, living.getX(), living.getY(), living.getZ(), SoundEvents.ENTITY_GHAST_SHOOT, living.getSoundCategory(), 1.5F, 0.8F);
 
 			// set nearby thorns to burnt
 			for (int dx = -range; dx <= range; dx++) {

@@ -16,6 +16,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.entity.EntityTFLoyalZombie;
+import twilightforest.entity.TFEntities;
 import twilightforest.util.EntityUtil;
 
 import javax.annotation.Nonnull;
@@ -35,7 +36,7 @@ public class ItemTFZombieWand extends ItemTF {
 		ItemStack stack = player.getHeldItem(hand);
 
 		if (stack.getDamage() == stack.getMaxDamage()) {
-			return ActionResult.newResult(ActionResultType.FAIL, stack);
+			return new ActionResult<>(ActionResultType.FAIL, stack);
 		}
 
 		if (!world.isRemote) {
@@ -43,7 +44,7 @@ public class ItemTFZombieWand extends ItemTF {
 			RayTraceResult ray = EntityUtil.rayTrace(player, 20.0);
 
 			if (ray != null && ray.hitVec != null) {
-				EntityTFLoyalZombie zombie = new EntityTFLoyalZombie(world);
+				EntityTFLoyalZombie zombie = new EntityTFLoyalZombie(TFEntities.loyal_zombie.get(), world);
 				zombie.setPositionAndRotation(ray.hitVec.x, ray.hitVec.y, ray.hitVec.z, 1.0F, 1.0F);
 				zombie.setTamed(true);
 				zombie.setOwnerId(player.getUniqueID());
@@ -54,7 +55,7 @@ public class ItemTFZombieWand extends ItemTF {
 			}
 		}
 
-		return ActionResult.newResult(ActionResultType.SUCCESS, stack);
+		return new ActionResult<>(ActionResultType.SUCCESS, stack);
 	}
 
 	@Override

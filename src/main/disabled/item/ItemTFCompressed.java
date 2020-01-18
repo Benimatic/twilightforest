@@ -3,7 +3,7 @@ package twilightforest.item;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
-//TODO 1.14: Redundant
+//TODO 1.14: Redundant?
 public class ItemTFCompressed extends ItemBlockTFMeta {
 	public ItemTFCompressed(Block block) {
 		super(block);

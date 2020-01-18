@@ -29,6 +29,6 @@ public class ItemTFIceBomb extends ItemTF {
 			world.addEntity(ice);
 		}
 
-		return ActionResult.newResult(ActionResultType.SUCCESS, player.getHeldItem(hand));
+		return new ActionResult<>(ActionResultType.SUCCESS, player.getHeldItem(hand));
 	}
 }

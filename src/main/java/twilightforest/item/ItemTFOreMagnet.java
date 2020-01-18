@@ -22,7 +22,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.block.TFBlocks;
-import twilightforest.world.feature.TFGenerator;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -61,7 +60,7 @@ public class ItemTFOreMagnet extends ItemTF {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, @Nonnull Hand hand) {
 		player.setActiveHand(hand);
-		return ActionResult.newResult(ActionResultType.SUCCESS, player.getHeldItem(hand));
+		return new ActionResult<>(ActionResultType.SUCCESS, player.getHeldItem(hand));
 	}
 
 	@Override
@@ -98,7 +97,7 @@ public class ItemTFOreMagnet extends ItemTF {
 
 			if (moved > 0) {
 				stack.damageItem(moved, living, (user) -> user.sendBreakAnimation(living.getActiveHand()));
-				world.playSound(null, living.posX, living.posY, living.posZ, SoundEvents.ENTITY_ENDERMAN_TELEPORT, living.getSoundCategory(), 1.0F, 1.0F);
+				world.playSound(null, living.getX(), living.getY(), living.getZ(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, living.getSoundCategory(), 1.0F, 1.0F);
 			}
 		}
 	}
@@ -126,7 +125,7 @@ public class ItemTFOreMagnet extends ItemTF {
 
 		// find vector 32 blocks from look
 		double range = 32.0D;
-		Vec3d srcVec = new Vec3d(living.posX, living.posY + living.getEyeHeight(), living.posZ);
+		Vec3d srcVec = new Vec3d(living.getX(), living.getY() + living.getEyeHeight(), living.getZ());
 		Vec3d lookVec = getOffsetLook(living, yawOffset, pitchOffset);
 		Vec3d destVec = srcVec.add(lookVec.x * range, lookVec.y * range, lookVec.z * range);
 

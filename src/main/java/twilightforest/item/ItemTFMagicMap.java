@@ -3,9 +3,8 @@ package twilightforest.item;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.FilledMapItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.MapItem;
-import net.minecraft.network.IPacket;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -16,15 +15,13 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TFFeature;
 import twilightforest.TFMagicMapData;
-import twilightforest.network.TFPacketHandler;
 import twilightforest.biomes.TFBiomes;
-import twilightforest.network.PacketMagicMap;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ItemTFMagicMap extends MapItem {
+public class ItemTFMagicMap extends FilledMapItem {
 	public static final String STR_ID = "magicmap";
 	private static final Map<ResourceLocation, MapColorBrightness> BIOME_COLORS = new HashMap<>();
 
@@ -98,8 +95,8 @@ public class ItemTFMagicMap extends MapItem {
 			int blocksPerPixel = 16; // don't even bother with the scale, just hardcode it
 			int centerX = data.xCenter;
 			int centerZ = data.zCenter;
-			int viewerX = MathHelper.floor(viewer.posX - (double) centerX) / blocksPerPixel + 64;
-			int viewerZ = MathHelper.floor(viewer.posZ - (double) centerZ) / blocksPerPixel + 64;
+			int viewerX = MathHelper.floor(viewer.getX() - (double) centerX) / blocksPerPixel + 64;
+			int viewerZ = MathHelper.floor(viewer.getZ() - (double) centerZ) / blocksPerPixel + 64;
 			int viewRadiusPixels = 512 / blocksPerPixel;
 
 			// use the generation map, which is larger scale than the other biome map
@@ -199,15 +196,16 @@ public class ItemTFMagicMap extends MapItem {
 		// disable zooming
 	}
 
-	@Override
-	@Nullable
-	public IPacket<?> getUpdatePacket(ItemStack stack, World world, PlayerEntity player) {
-		IPacket<?> p = super.getUpdatePacket(stack, world, player);
-		if (p instanceof SPacketMaps) {
-			TFMagicMapData mapdata = getMapData(stack, world);
-			return TFPacketHandler.CHANNEL.getPacketFrom(new PacketMagicMap(stack.getItemDamage(), mapdata, (SPacketMaps) p));
-		} else {
-			return p;
-		}
-	}
+	//TODO: How to packet?
+//	@Override
+//	@Nullable
+//	public IPacket<?> getUpdatePacket(ItemStack stack, World world, PlayerEntity player) {
+//		IPacket<?> p = super.getUpdatePacket(stack, world, player);
+//		if (p instanceof SPacketMaps) {
+//			TFMagicMapData mapdata = getMapData(stack, world);
+//			return TFPacketHandler.CHANNEL.getPacketFrom(new PacketMagicMap(stack.getItemDamage(), mapdata, (SPacketMaps) p));
+//		} else {
+//			return p;
+//		}
+//	}
 }

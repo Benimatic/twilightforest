@@ -9,7 +9,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -42,7 +41,7 @@ public class ItemTFKnightlySword extends SwordItem {
 				// don't prevent main damage from applying
 				target.hurtResistantTime = 0;
 				// enchantment attack sparkles
-				((ServerWorld) target.world).getEntityTracker().sendToTrackingAndSelf(target, new SPacketAnimation(target, 5));
+				//((ServerWorld) target.world).getEntityTracker().sendToTrackingAndSelf(target, new SPacketAnimation(target, 5));
 			}
 		}
 	}

@@ -28,14 +28,14 @@ public class ItemTFOreMeter extends ItemTF {
 	@Nonnull
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, @Nonnull Hand hand) {
-		int useX = MathHelper.floor(player.posX);
-		int useZ = MathHelper.floor(player.posZ);
+		int useX = MathHelper.floor(player.getX());
+		int useZ = MathHelper.floor(player.getZ());
 
 		if (!world.isRemote) {
 			countOreInArea(player, world, useX, useZ, 3);
 		}
 
-		return ActionResult.newResult(ActionResultType.SUCCESS, player.getHeldItem(hand));
+		return new ActionResult<>(ActionResultType.SUCCESS, player.getHeldItem(hand));
 	}
 
 	private void countOreInArea(PlayerEntity player, World world, int useX, int useZ, int radius) {
@@ -101,7 +101,7 @@ public class ItemTFOreMeter extends ItemTF {
 
 	private Map<BlockState, ScanResult> countBlocksInChunk(World world, int cx, int cz) {
 		Map<BlockState, ScanResult> ret = new IdentityHashMap<>();
-		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+		BlockPos.Mutable pos = new BlockPos.Mutable();
 		for (int x = cx << 4; x < (cx << 4) + 16; x++) {
 			for (int z = cz << 4; z < (cz << 4) + 16; z++) {
 				for (int y = 0; y < 256; y++) {

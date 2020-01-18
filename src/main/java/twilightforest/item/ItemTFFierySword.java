@@ -34,6 +34,7 @@ public class ItemTFFierySword extends SwordItem {
 		boolean result = super.hitEntity(stack, target, attacker);
 
 		if (result && !target.world.isRemote && !target.isImmuneToFire()) {
+			//TODO: Move to regular particle spawner?
 			ParticleHelper.spawnParticles(target, ParticleTypes.FLAME, 20, 0.02);
 		}
 

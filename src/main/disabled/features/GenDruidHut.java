@@ -59,7 +59,7 @@ public class GenDruidHut extends TFGenerator {
         int dx = random.nextInt(17 - transformedSize.getX());
         int dz = random.nextInt(17 - transformedSize.getZ());
 
-        BlockPos.MutableBlockPos startPos = new BlockPos.MutableBlockPos(posSnap.add(dx, 0, dz));
+        BlockPos.Mutable startPos = new BlockPos.Mutable(posSnap.add(dx, 0, dz));
 
         if (!offsetToAverageGroundLevel(world, startPos, transformedSize)) {
             return false;
@@ -128,7 +128,7 @@ public class GenDruidHut extends TFGenerator {
         return true;
     }
 
-    private static boolean offsetToAverageGroundLevel(World world, BlockPos.MutableBlockPos startPos, BlockPos size) {
+    private static boolean offsetToAverageGroundLevel(World world, BlockPos.Mutable startPos, BlockPos size) {
         StatsAccumulator heights = new StatsAccumulator();
 
         for (int dx = 0; dx < size.getX(); dx++) {

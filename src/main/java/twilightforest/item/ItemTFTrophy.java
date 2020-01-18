@@ -117,7 +117,7 @@ public class ItemTFTrophy extends ItemTF {
 	}
 
 	@Override
-	public boolean isValidArmor(ItemStack stack, EquipmentSlotType armorType, Entity entity) {
+	public boolean canEquip(ItemStack stack, EquipmentSlotType armorType, Entity entity) {
 		return armorType == EquipmentSlotType.HEAD;
 	}
 

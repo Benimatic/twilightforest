@@ -20,7 +20,8 @@ public class ItemTFIceSword extends SwordItem {
 		boolean result = super.hitEntity(stack, target, attacker);
 
 		if (result && !target.world.isRemote) {
-			target.addPotionEffect(new EffectInstance(TFPotions.frosty, 20 * 10, 2));
+			target.addPotionEffect(new EffectInstance(TFPotions.frosty.get(), 20 * 10, 2));
+			//TODO: Move to regular particle spawner?
 			ParticleHelper.spawnParticles(target, TFParticleType.SNOW, 20);
 		}
 

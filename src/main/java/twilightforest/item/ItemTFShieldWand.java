@@ -12,6 +12,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.util.LazyOptional;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.shield.IShieldCapability;
 
@@ -31,11 +32,11 @@ public class ItemTFShieldWand extends ItemTF {
 		ItemStack stack = player.getHeldItem(hand);
 
 		if (stack.getDamage() == stack.getMaxDamage()) {
-			return ActionResult.newResult(ActionResultType.FAIL, stack);
+			return new ActionResult<>(ActionResultType.FAIL, stack);
 		}
 
 		if (!world.isRemote && player.hasCapability(CapabilityList.SHIELDS, null)) {
-			IShieldCapability cap = player.getCapability(CapabilityList.SHIELDS, null);
+			LazyOptional<IShieldCapability> cap = player.getCapability(CapabilityList.SHIELDS, null);
 			if(cap != null)
 				cap.replenishShields();
 			stack.damageItem(1, player, (user) -> user.sendBreakAnimation(hand));
@@ -44,7 +45,7 @@ public class ItemTFShieldWand extends ItemTF {
 		if (!player.isCreative())
 			player.getCooldownTracker().setCooldown(this, 1200);
 
-		return ActionResult.newResult(ActionResultType.SUCCESS, stack);
+		return new ActionResult<>(ActionResultType.SUCCESS, stack);
 	}
 
 	@Override

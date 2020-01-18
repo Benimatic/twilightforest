@@ -39,7 +39,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
 		player.setActiveHand(hand);
-		return ActionResult.newResult(ActionResultType.SUCCESS, player.getHeldItem(hand));
+		return new ActionResult<>(ActionResultType.SUCCESS, player.getHeldItem(hand));
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 			double gaussY = random.nextGaussian() * 0.02D;
 			double gaussZ = random.nextGaussian() * 0.02D;
 			double gaussFactor = 10.0D;
-			world.addParticle(ParticleTypes.ITEM_CRACK, target.posX + random.nextFloat() * target.getWidth() * 2.0F - target.getWidth() - gaussX * gaussFactor, target.posY + random.nextFloat() * target.getHeight() - gaussY * gaussFactor, target.posZ + random.nextFloat() * target.getWidth() * 2.0F - target.getWidth() - gaussZ * gaussFactor, gaussX, gaussY, gaussZ, itemId);
+			world.addParticle(ParticleTypes.ITEM_CRACK, target.getX() + random.nextFloat() * target.getWidth() * 2.0F - target.getWidth() - gaussX * gaussFactor, target.getY() + random.nextFloat() * target.getHeight() - gaussY * gaussFactor, target.getZ() + random.nextFloat() * target.getWidth() * 2.0F - target.getWidth() - gaussZ * gaussFactor, gaussX, gaussY, gaussZ, itemId);
 		}
 	}
 
@@ -73,7 +73,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 	private Entity getPlayerLookTarget(World world, LivingEntity living) {
 		Entity pointedEntity = null;
 		double range = 20.0D;
-		Vec3d srcVec = new Vec3d(living.posX, living.posY + living.getEyeHeight(), living.posZ);
+		Vec3d srcVec = new Vec3d(living.getX(), living.getY() + living.getEyeHeight(), living.getZ());
 		Vec3d lookVec = living.getLook(1.0F);
 		Vec3d destVec = srcVec.add(lookVec.x * range, lookVec.y * range, lookVec.z * range);
 		float var9 = 1.0F;
@@ -130,7 +130,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 					if (target.getHealth() <= 3) {
 						// make it explode
 
-						makeRedMagicTrail(world, living.posX, living.posY + living.getEyeHeight(), living.posZ, target.posX, target.posY + target.getEyeHeight(), target.posZ);
+						makeRedMagicTrail(world, living.getX(), living.getY() + living.getEyeHeight(), living.getZ(), target.getX(), target.getY() + target.getEyeHeight(), target.getZ());
 						if (target instanceof LivingEntity) {
 							((LivingEntity) target).spawnExplosionParticle();
 						}
@@ -166,7 +166,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 					}
 				} else {
 					// this is a new creature to start draining
-					makeRedMagicTrail(world, living.posX, living.posY + living.getEyeHeight(), living.posZ, target.posX, target.posY + target.getEyeHeight(), target.posZ);
+					makeRedMagicTrail(world, living.getX(), living.getY() + living.getEyeHeight(), living.getZ(), target.getX(), target.getY() + target.getEyeHeight(), target.getZ());
 
 					living.playSound(SoundEvents.ITEM_FLINTANDSTEEL_USE, 1.0F, (world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F + 1.0F);
 

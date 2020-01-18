@@ -57,7 +57,7 @@ public class ItemTFChainBlock extends ToolItem {
 		ItemStack stack = player.getHeldItem(hand);
 
 		if (getThrownUuid(stack) != null)
-			return ActionResult.newResult(ActionResultType.PASS, stack);
+			return new ActionResult<>(ActionResultType.PASS, stack);
 
 		player.playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (random.nextFloat() * 0.4F + 1.2F));
 
@@ -70,7 +70,7 @@ public class ItemTFChainBlock extends ToolItem {
 		}
 
 		player.setActiveHand(hand);
-		return ActionResult.newResult(ActionResultType.SUCCESS, stack);
+		return new ActionResult<>(ActionResultType.SUCCESS, stack);
 	}
 
 	@Nullable

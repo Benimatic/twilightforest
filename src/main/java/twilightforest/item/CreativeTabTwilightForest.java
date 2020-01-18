@@ -12,6 +12,6 @@ public class CreativeTabTwilightForest extends ItemGroup {
 
 	@Override
 	public ItemStack createIcon() {
-		return new ItemStack(TFBlocks.miniature_structure);
+		return new ItemStack(TFBlocks.twilight_portal_miniature_structure.get());
 	}
 }

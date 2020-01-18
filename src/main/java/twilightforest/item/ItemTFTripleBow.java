@@ -52,13 +52,13 @@ public class ItemTFTripleBow extends ItemTFBowBase {
 						ArrowEntity entityarrow1 = new EntityTippedArrow(worldIn, entityLiving);
 						entityarrow1.shoot(entityLiving, entityLiving.rotationPitch, entityLiving.rotationYaw, 0, f * 2, 1);
 						entityarrow1.motionY += 0.007499999832361937D * 20F;
-						entityarrow1.posY += 0.025F;
+						entityarrow1.getY() += 0.025F;
 						entityarrow1.pickupStatus = ArrowEntity.PickupStatus.CREATIVE_ONLY;
 
 						ArrowEntity entityarrow2 = new EntityTippedArrow(worldIn, entityLiving);
 						entityarrow2.shoot(entityLiving, entityLiving.rotationPitch, entityLiving.rotationYaw, 0, f * 2, 1);
 						entityarrow2.motionY -= 0.007499999832361937D * 20F;
-						entityarrow2.posY -= 0.025F;
+						entityarrow2.getY() -= 0.025F;
 						entityarrow2.pickupStatus = ArrowEntity.PickupStatus.CREATIVE_ONLY;
 
 						if (f == 1.0F) {
@@ -100,7 +100,7 @@ public class ItemTFTripleBow extends ItemTFBowBase {
 						worldIn.addEntity(entityarrow2);
 					}
 
-					worldIn.playSound((PlayerEntity) null, entityplayer.posX, entityplayer.posY, entityplayer.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (random.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
+					worldIn.playSound((PlayerEntity) null, entityplayer.getX(), entityplayer.getY(), entityplayer.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (random.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
 
 					if (!flag1 && !entityplayer.abilities.isCreativeMode) {
 						itemstack.shrink(1);

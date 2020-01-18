@@ -15,6 +15,7 @@ public class ItemTFIceBow extends ItemTFBowBase {
 
 	@Override
 	public AbstractArrowEntity customeArrow(AbstractArrowEntity arrow) {
+		//TODO: Needs to be UUID
 		if (arrow.shootingEntity instanceof LivingEntity) {
 			return new EntityIceArrow(arrow.world, (LivingEntity) arrow.shootingEntity);
 		}

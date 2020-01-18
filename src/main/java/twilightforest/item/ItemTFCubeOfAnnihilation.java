@@ -50,7 +50,7 @@ public class ItemTFCubeOfAnnihilation extends ItemTF {
 		ItemStack stack = player.getHeldItem(hand);
 
 		if (getThrownUuid(stack) != null)
-			return ActionResult.newResult(ActionResultType.PASS, stack);
+			return new ActionResult<>(ActionResultType.PASS, stack);
 
 		if (!world.isRemote) {
 			EntityTFCubeOfAnnihilation launchedCube = new EntityTFCubeOfAnnihilation(TFEntities.cube_of_annihilation.get(), world, player);
@@ -59,7 +59,7 @@ public class ItemTFCubeOfAnnihilation extends ItemTF {
 		}
 
 		player.setActiveHand(hand);
-		return ActionResult.newResult(ActionResultType.SUCCESS, stack);
+		return new ActionResult<>(ActionResultType.SUCCESS, stack);
 	}
 
 	@Nullable

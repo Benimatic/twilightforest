@@ -20,7 +20,7 @@ public class ItemTFEmptyMazeMap extends AbstractMapItem {
 	// [VanillaCopy] ItemEmptyMap.onItemRightClick calling own setup method
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-		ItemStack itemstack = ItemTFMazeMap.setupNewMap(worldIn, playerIn.posX, playerIn.posZ, (byte) 0, true, false, playerIn.posY, this.mapOres);
+		ItemStack itemstack = ItemTFMazeMap.setupNewMap(worldIn, playerIn.getX(), playerIn.getZ(), (byte) 0, true, false, playerIn.getY(), this.mapOres);
 		ItemStack itemstack1 = playerIn.getHeldItem(handIn);
 		itemstack1.shrink(1);
 

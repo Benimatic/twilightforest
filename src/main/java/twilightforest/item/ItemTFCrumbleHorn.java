@@ -79,7 +79,7 @@ public class ItemTFCrumbleHorn extends ItemTF {
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
 		player.setActiveHand(hand);
 		player.playSound(SoundEvents.ENTITY_SHEEP_AMBIENT, 1.0F, 0.8F);
-		return ActionResult.newResult(ActionResultType.SUCCESS, player.getHeldItem(hand));
+		return new ActionResult<>(ActionResultType.SUCCESS, player.getHeldItem(hand));
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public class ItemTFCrumbleHorn extends ItemTF {
 				stack.damageItem(crumbled, living, (user) -> user.sendBreakAnimation(living.getActiveHand()));
 			}
 
-			living.world.playSound(null, living.posX, living.posY, living.posZ, SoundEvents.ENTITY_SHEEP_AMBIENT, living.getSoundCategory(), 1.0F, 0.8F);
+			living.world.playSound(null, living.getX(), living.getY(), living.getZ(), SoundEvents.ENTITY_SHEEP_AMBIENT, living.getSoundCategory(), 1.0F, 0.8F);
 		}
 	}
 
@@ -120,7 +120,7 @@ public class ItemTFCrumbleHorn extends ItemTF {
 		final double range = 3.0D;
 		final double radius = 2.0D;
 
-		Vec3d srcVec = new Vec3d(living.posX, living.posY + living.getEyeHeight(), living.posZ);
+		Vec3d srcVec = new Vec3d(living.getX(), living.getY() + living.getEyeHeight(), living.getZ());
 		Vec3d lookVec = living.getLookVec().scale(range);
 		Vec3d destVec = srcVec.add(lookVec);
 

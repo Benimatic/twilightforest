@@ -30,7 +30,7 @@ public class ItemTFTwilightWand extends ItemTF {
 		ItemStack stack = player.getHeldItem(hand);
 
 		if (stack.getDamage() == stack.getMaxDamage()) {
-			return ActionResult.newResult(ActionResultType.FAIL, player.getHeldItem(hand));
+			return new ActionResult<>(ActionResultType.FAIL, player.getHeldItem(hand));
 		} else {
 			player.playSound(SoundEvents.ENTITY_GHAST_SHOOT, 1.0F, (world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F + 1.0F);
 
@@ -39,7 +39,7 @@ public class ItemTFTwilightWand extends ItemTF {
 				stack.damageItem(1, player, (user) -> user.sendBreakAnimation(hand));
 			}
 
-			return ActionResult.newResult(ActionResultType.SUCCESS, player.getHeldItem(hand));
+			return new ActionResult<>(ActionResultType.SUCCESS, player.getHeldItem(hand));
 		}
 	}
 

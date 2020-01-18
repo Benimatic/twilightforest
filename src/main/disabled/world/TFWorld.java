@@ -71,7 +71,7 @@ public class TFWorld {
 	public static int getGroundLevel(World world, int x, int z, Predicate<Block> extraBlocks) {
 		// go from sea level up.  If we get grass, return that, otherwise return the last dirt, stone or gravel we got
 		Chunk chunk = world.getChunk(x >> 4, z >> 4);
-		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+		BlockPos.Mutable pos = new BlockPos.Mutable();
 		int lastDirt = SEALEVEL;
 		for (int y = SEALEVEL; y < CHUNKHEIGHT - 1; y++) {
 			Block block = chunk.getBlockState(pos.setPos(x, y, z)).getBlock();

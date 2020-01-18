@@ -53,10 +53,10 @@ public class ItemTFMoonwormQueen extends ItemTF {
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
 		ItemStack stack = player.getHeldItem(hand);
 		if (stack.getDamage() >= stack.getMaxDamage() - 1) {
-			return ActionResult.newResult(ActionResultType.FAIL, stack);
+			return new ActionResult<>(ActionResultType.FAIL, stack);
 		} else {
 			player.setActiveHand(hand);
-			return ActionResult.newResult(ActionResultType.SUCCESS, player.getHeldItem(hand));
+			return new ActionResult<>(ActionResultType.SUCCESS, player.getHeldItem(hand));
 		}
 	}
 
@@ -77,7 +77,7 @@ public class ItemTFMoonwormQueen extends ItemTF {
 
 		if (itemstack.getDamage() < itemstack.getMaxDamage() && player.canPlayerEdit(pos, context.getFace(), itemstack) && worldIn.mayPlace(TFBlocks.moonworm, pos, false, context.getFace(), (Entity) null)) {
 			int i = this.getMetadata(itemstack.getMetadata());
-			BlockState iblockstate1 = TFBlocks.moonworm.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, i, player, hand);
+			BlockState iblockstate1 = TFBlocks.moonworm.get().getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, i, player, hand);
 
 			if (placeMoonwormAt(itemstack, player, worldIn, pos, facing, hitX, hitY, hitZ, iblockstate1)) {
 				SoundType soundtype = worldIn.getBlockState(pos).getBlock().getSoundType(worldIn.getBlockState(pos), worldIn, pos, player);
@@ -99,7 +99,7 @@ public class ItemTFMoonwormQueen extends ItemTF {
 
 		BlockState real = world.getBlockState(pos);
 		if (real.getBlock() == TFBlocks.moonworm.get()) {
-			TFBlocks.moonworm.onBlockPlacedBy(world, pos, state, player, stack);
+			TFBlocks.moonworm.get().onBlockPlacedBy(world, pos, state, player, stack);
 			if (player instanceof ServerPlayerEntity) {
 				CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity) player, pos, stack);
 			}
@@ -118,7 +118,7 @@ public class ItemTFMoonwormQueen extends ItemTF {
 			if (fired) {
 				stack.damageItem(2, living, (user) -> user.sendBreakAnimation(living.getActiveHand()));
 
-				world.playSound(null, living.posX, living.posY, living.posZ, SoundEvents.BLOCK_SLIME_BLOCK_HIT, living instanceof PlayerEntity ? SoundCategory.PLAYERS : SoundCategory.NEUTRAL, 1, 1);
+				world.playSound(null, living.getX(), living.getY(), living.getZ(), SoundEvents.BLOCK_SLIME_BLOCK_HIT, living instanceof PlayerEntity ? SoundCategory.PLAYERS : SoundCategory.NEUTRAL, 1, 1);
 			}
 		}
 
