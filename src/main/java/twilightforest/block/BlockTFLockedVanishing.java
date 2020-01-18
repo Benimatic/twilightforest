@@ -88,6 +88,7 @@ public class BlockTFLockedVanishing extends Block {
 //		return 15;
 //	}
 
+	//TODO: Move to loot table
 //	@Override
 //	public Item getItemDropped(BlockState state, Random random, int fortune) {
 //		switch (state.getValue(VARIANT)) {
@@ -135,9 +136,10 @@ public class BlockTFLockedVanishing extends Block {
 //		return getMetaFromState(state);
 //	}
 
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public BlockRenderLayer getRenderLayer() {
-		return BlockRenderLayer.CUTOUT;
-	}
+	//TODO: Move to client
+//	@Override
+//	@OnlyIn(Dist.CLIENT)
+//	public BlockRenderLayer getRenderLayer() {
+//		return BlockRenderLayer.CUTOUT;
+//	}
 }

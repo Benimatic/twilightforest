@@ -18,7 +18,7 @@ import javax.annotation.Nullable;
 public class BlockTFShield extends DirectionalBlock {
 
 	public BlockTFShield() {
-		super(Properties.create(Material.ROCK).hardnessAndResistance(-1.0F, 6000000.0F).sound(SoundType.METAL));
+		super(Properties.create(Material.ROCK).hardnessAndResistance(-1.0F, 6000000.0F).sound(SoundType.METAL).noDrops());
 		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
 		this.setDefaultState(stateContainer.getBaseState().with(FACING, Direction.DOWN));
 	}
@@ -27,11 +27,6 @@ public class BlockTFShield extends DirectionalBlock {
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(FACING);
 	}
-
-//	@Override
-//	public int quantityDropped(Random random) {
-//		return 0;
-//	}
 
 	@Nullable
 	@Override
@@ -55,21 +50,6 @@ public class BlockTFShield extends DirectionalBlock {
 			return super.getPlayerRelativeBlockHardness(state, player, world, pos);
 		}
 	}
-
-//	@Override
-//	protected boolean canSilkHarvest() {
-//		return false;
-//	}
-//
-//	@Override
-//	public boolean canSilkHarvest(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-//		return false;
-//	}
-//
-//	@Override
-//	public int damageDropped(BlockState state) {
-//		return 0;
-//	}
 
 	@Override
 	public boolean canEntityDestroy(BlockState state, IBlockReader world, BlockPos pos, Entity entity) {

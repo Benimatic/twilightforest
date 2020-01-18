@@ -11,7 +11,6 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.SoundCategory;
@@ -31,7 +30,6 @@ import org.apache.commons.lang3.mutable.MutableInt;
 import twilightforest.TFConfig;
 import twilightforest.TFTeleporter;
 import twilightforest.TwilightForestMod;
-import twilightforest.world.TFWorld;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -76,10 +74,11 @@ public class BlockTFPortal extends BreakableBlock {
 //		addCollisionBoxToList(pos, entityBB, blockBBs, entity instanceof EntityItem ? AABB_ITEM : state.getCollisionBoundingBox(world, pos));
 //	}
 
-	@Override
-	public boolean isSolid(BlockState state) {
-		return false;
-	}
+	//TODO: Check this
+//	@Override
+//	public boolean isSolid(BlockState state) {
+//		return false;
+//	}
 
 	//	@Override
 //	@Deprecated
@@ -186,6 +185,7 @@ public class BlockTFPortal extends BreakableBlock {
 	}
 
 	@Override
+	@Deprecated
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
 		boolean good = world.getBlockState(pos.down()).isSolid();
 
@@ -203,16 +203,12 @@ public class BlockTFPortal extends BreakableBlock {
 		}
 	}
 
-	//	@Override
-//	public int quantityDropped(Random random) {
-//		return 0;
+	//TODO: Move to client
+//	@Override
+//	@OnlyIn(Dist.CLIENT)
+//	public BlockRenderLayer getRenderLayer() {
+//		return BlockRenderLayer.TRANSLUCENT;
 //	}
-
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public BlockRenderLayer getRenderLayer() {
-		return BlockRenderLayer.TRANSLUCENT;
-	}
 
 	@Override
 	public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entity) {

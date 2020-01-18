@@ -5,7 +5,6 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -16,9 +15,8 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.IShearable;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.List;
 import java.util.Random;
@@ -62,6 +60,7 @@ public class BlockTFTrollRoot extends Block implements IShearable {
 	}
 
 	@Override
+	@Deprecated
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
 		return AABB;
 	}
@@ -72,18 +71,20 @@ public class BlockTFTrollRoot extends Block implements IShearable {
 //		return BlockFaceShape.UNDEFINED;
 //	}
 
-	@Override
-	public boolean isSolid(BlockState state) {
-		return false;
-	}
+	//TODO: Check this
+//	@Override
+//	public boolean isSolid(BlockState state) {
+//		return false;
+//	}
 
 	@Override
 	@Deprecated
-	public void tick(BlockState state, World world, BlockPos pos, Random random) {
+	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		this.checkAndDropBlock(world, pos);
 	}
 
 	@Override
+	@Deprecated
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
 		this.checkAndDropBlock(world, pos);
 	}
@@ -99,9 +100,10 @@ public class BlockTFTrollRoot extends Block implements IShearable {
 //		return 0;
 //	}
 
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	public BlockRenderLayer getRenderLayer() {
-		return BlockRenderLayer.CUTOUT;
-	}
+	//TODO: Move to client
+//	@OnlyIn(Dist.CLIENT)
+//	@Override
+//	public BlockRenderLayer getRenderLayer() {
+//		return BlockRenderLayer.CUTOUT;
+//	}
 }

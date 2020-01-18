@@ -17,6 +17,7 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nullable;
 import java.util.Random;
@@ -68,11 +69,12 @@ public abstract class BlockTFCritter extends Block {
 		}
 	}
 
-	@Override
-	@Deprecated
-	public boolean isSolid(BlockState state) {
-		return false;
-	}
+	//TODO: Check this
+//	@Override
+//	@Deprecated
+//	public boolean isSolid(BlockState state) {
+//		return false;
+//	}
 
 //	@Override
 //	@Deprecated
@@ -115,7 +117,7 @@ public abstract class BlockTFCritter extends Block {
 
 	@Override
 	@Deprecated
-	public void tick(BlockState state, World world, BlockPos pos, Random random) {
+	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		checkAndDrop(world, pos, state);
 	}
 
@@ -143,7 +145,7 @@ public abstract class BlockTFCritter extends Block {
 
 	public static boolean canPlaceAt(IWorldReader world, BlockPos pos, Direction facing) {
 		BlockPos blockpos = pos.offset(facing);
-		return world.getBlockState(blockpos).func_224755_d(world, blockpos, facing.getOpposite());
+		return world.getBlockState(blockpos).isSideSolidFullSquare(world, blockpos, facing.getOpposite());
 	}
 
 	@Override

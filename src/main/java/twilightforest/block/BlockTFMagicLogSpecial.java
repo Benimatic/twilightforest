@@ -46,6 +46,7 @@ public class BlockTFMagicLogSpecial extends LogBlock {
 		return 20;
 	}
 
+	//TODO: Move to loot table
 //	@Override
 //	public void onBlockAdded(World world, BlockPos pos, BlockState state) {
 //		world.scheduleUpdate(pos, this, this.tickRate(world));
@@ -60,11 +61,20 @@ public class BlockTFMagicLogSpecial extends LogBlock {
 //	public int damageDropped(BlockState state) {
 //		return state.get(VARIANT).ordinal();
 //	}
-
+//
+//	@Override
+//	protected boolean canSilkHarvest() {
+//		return false;
+//	}
+//
+//	@Override
+//	public boolean canSilkHarvest(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+//		return false;
+//	}
 
 	@Override
 	@Deprecated
-	public void tick(BlockState state, World world, BlockPos pos, Random rand) {
+	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random rand) {
 		if (world.isRemote || !state.get(ACTIVE)) return;
 
 		switch (this.magicWoodVariant) {
@@ -89,17 +99,17 @@ public class BlockTFMagicLogSpecial extends LogBlock {
 
 	@Override
 	@Deprecated
-	public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+	public ActionResultType onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
 		if (!state.get(ACTIVE)) {
 			world.setBlockState(pos, state.with(ACTIVE, true));
 			//world.scheduleUpdate(pos, this, this.tickRate(world));
-			return true;
+			return ActionResultType.SUCCESS;
 		} else if (state.get(ACTIVE)) {
 			world.setBlockState(pos, state.with(ACTIVE, false));
-			return true;
+			return ActionResultType.SUCCESS;
 		}
 
-		return false;
+		return ActionResultType.PASS;
 	}
 
 	/**
@@ -195,7 +205,7 @@ public class BlockTFMagicLogSpecial extends LogBlock {
 			Block block = world.getBlockState(iterPos).getBlock();
 			if (block instanceof ChestBlock) {
 				//chestInventory = ((ChestBlock) block).getContainer(world, iterPos, true);
-				chestInventory = ChestBlock.getInventory(block.getDefaultState(), world, iterPos, true);
+				chestInventory = ChestBlock.getInventory((ChestBlock) block, block.getDefaultState(), world, iterPos, true);
 			}
 
 			TileEntity te = world.getTileEntity(iterPos);
@@ -350,14 +360,4 @@ public class BlockTFMagicLogSpecial extends LogBlock {
 	public int getLightValue(BlockState state) {
 		return 15;
 	}
-
-//	@Override
-//	protected boolean canSilkHarvest() {
-//		return false;
-//	}
-//
-//	@Override
-//	public boolean canSilkHarvest(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-//		return false;
-//	}
 }

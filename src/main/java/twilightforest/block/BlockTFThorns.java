@@ -8,15 +8,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.IFluidState;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.state.IProperty;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 
@@ -156,17 +152,19 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar {
 //		return face.getAxis() != state.getValue(AXIS) ? BlockFaceShape.MIDDLE_POLE_THICK : BlockFaceShape.CENTER_BIG;
 //	}
 
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	public BlockRenderLayer getRenderLayer() {
-		return BlockRenderLayer.CUTOUT;
-	}
+	//TODO: Move to client
+//	@OnlyIn(Dist.CLIENT)
+//	@Override
+//	public BlockRenderLayer getRenderLayer() {
+//		return BlockRenderLayer.CUTOUT;
+//	}
 
-	@Override
-	@Deprecated
-	public boolean doesSideBlockRendering(BlockState blockState, IEnviromentBlockReader blockAccess, BlockPos pos, Direction side) {
-		return (blockAccess.getBlockState(pos.offset(side)).getBlock() instanceof BlockTFThorns || shouldSideBeRendered(blockState, blockAccess, pos, side));
-	}
+	//TODO: Removed. Check client
+//	@Override
+//	@Deprecated
+//	public boolean doesSideBlockRendering(BlockState blockState, IEnviromentBlockReader blockAccess, BlockPos pos, Direction side) {
+//		return (blockAccess.getBlockState(pos.offset(side)).getBlock() instanceof BlockTFThorns || shouldSideBeRendered(blockState, blockAccess, pos, side));
+//	}
 
 	@Override
 	protected IProperty[] getAdditionalProperties() {

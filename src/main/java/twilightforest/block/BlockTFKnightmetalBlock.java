@@ -8,14 +8,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -48,14 +46,16 @@ public class BlockTFKnightmetalBlock extends Block {
 		entity.attackEntityFrom(DamageSource.CACTUS, BLOCK_DAMAGE);
 	}
 
-	@Override
-	public boolean isSolid(BlockState state) {
-		return false;
-	}
+	//TODO: Check this
+//	@Override
+//	public boolean isSolid(BlockState state) {
+//		return false;
+//	}
 
-	@Override
-	@Deprecated
-	public boolean doesSideBlockRendering(BlockState state, IEnviromentBlockReader world, BlockPos pos, Direction face) {
-		return !world.getBlockState(pos.offset(face)).doesSideBlockRendering(world, pos.offset(face), face.getOpposite());
-	}
+	//TODO: Removed. Check this
+//	@Override
+//	@Deprecated
+//	public boolean doesSideBlockRendering(BlockState state, IEnviromentBlockReader world, BlockPos pos, Direction face) {
+//		return !world.getBlockState(pos.offset(face)).doesSideBlockRendering(world, pos.offset(face), face.getOpposite());
+//	}
 }

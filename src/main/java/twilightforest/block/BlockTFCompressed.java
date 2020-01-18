@@ -10,16 +10,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ShearsItem;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BlockTFCompressed extends Block {
 
@@ -28,17 +24,26 @@ public class BlockTFCompressed extends Block {
 		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
 	}
 
+//	@Override
+//	@Deprecated
+//	@OnlyIn(Dist.CLIENT)
+//	public int getPackedLightmapCoords(BlockState state, IEnviromentBlockReader worldIn, BlockPos pos) {
+//		if (state.getBlock() == TFBlocks.block_storage_fiery.get()) {
+//			return 15728880;
+//		}
+//		return super.getPackedLightmapCoords(state, worldIn, pos);
+//	}
+
 	@Override
 	@Deprecated
-	@OnlyIn(Dist.CLIENT)
-	public int getPackedLightmapCoords(BlockState state, IEnviromentBlockReader worldIn, BlockPos pos) {
+	public float getAmbientOcclusionLightValue(BlockState state, IBlockReader worldIn, BlockPos pos) {
 		if (state.getBlock() == TFBlocks.block_storage_fiery.get()) {
-			return 15728880;
+			return 1.0F;
 		}
-		return super.getPackedLightmapCoords(state, worldIn, pos);
+		return super.getAmbientOcclusionLightValue(state, worldIn, pos);
 	}
 
-//	@Override
+	//	@Override
 //	public boolean getUseNeighborBrightness(BlockState state) {
 //		return state.getValue(VARIANT) == CompressedVariant.FIERY || super.getUseNeighborBrightness(state);
 //	}
@@ -70,17 +75,18 @@ public class BlockTFCompressed extends Block {
 	@Override
 	public void onFallenUpon(World worldIn, BlockPos pos, Entity entityIn, float fallDistance) {
 		if (worldIn.getBlockState(pos) == TFBlocks.block_storage_steeleaf.get().getDefaultState()) {
-			entityIn.fall(fallDistance, 0.75F);
+			entityIn.handleFallDamage(fallDistance, 0.75F);
 		} else if (worldIn.getBlockState(pos) == TFBlocks.block_storage_arctic_fur.get().getDefaultState()) {
-			entityIn.fall(fallDistance, 0.1F);
+			entityIn.handleFallDamage(fallDistance, 0.1F);
 		}
 	}
 
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	public BlockRenderLayer getRenderLayer() {
-		return BlockRenderLayer.CUTOUT;
-	}
+	//TODO: Move to client
+//	@OnlyIn(Dist.CLIENT)
+//	@Override
+//	public BlockRenderLayer getRenderLayer() {
+//		return BlockRenderLayer.CUTOUT;
+//	}
 
 	@Override
 	public boolean isFireSource(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
@@ -92,11 +98,12 @@ public class BlockTFCompressed extends Block {
 		return state == TFBlocks.block_storage_carminite.get().getDefaultState();
 	}
 
-	@Override
-	public boolean doesSideBlockRendering(BlockState state, IEnviromentBlockReader world, BlockPos pos, Direction face) {
-		if (state.getBlock() == TFBlocks.block_storage_fiery.get()) {
-			BlockState blockstate = world.getBlockState(pos.offset(face));
-			return blockstate.getBlock() != this || blockstate.getBlock() == TFBlocks.block_storage_fiery.get();
-		} else return super.shouldSideBeRendered(state, world, pos, face);
-	}
+	//TODO: Removed. Check this
+//	@Override
+//	public boolean doesSideBlockRendering(BlockState state, IEnviromentBlockReader world, BlockPos pos, Direction face) {
+//		if (state.getBlock() == TFBlocks.block_storage_fiery.get()) {
+//			BlockState blockstate = world.getBlockState(pos.offset(face));
+//			return blockstate.getBlock() != this || blockstate.getBlock() == TFBlocks.block_storage_fiery.get();
+//		} else return super.shouldSideBeRendered(state, world, pos, face);
+//	}
 }

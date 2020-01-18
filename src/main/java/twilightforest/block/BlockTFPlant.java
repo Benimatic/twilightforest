@@ -10,7 +10,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -62,7 +61,7 @@ public class BlockTFPlant extends BushBlock implements IShearable {
 		if (state.getBlock() != this) {
 			return BlockTFPlant.canPlaceRootAt(world, pos)
 					|| soil.getBlock().canSustainPlant(soil, world, pos.down(), Direction.UP, this)
-					|| soil.func_224755_d(world, pos, Direction.UP)
+					|| soil.isSideSolidFullSquare(world, pos, Direction.UP)
 					|| ((world.getLight(pos) >= 3 || world.canBlockSeeSky(pos)) && soil.getBlock().canSustainPlant(soil, world, pos.down(), Direction.UP, this));
 		} else {
 			switch (plantVariant) {
@@ -75,7 +74,7 @@ public class BlockTFPlant extends BushBlock implements IShearable {
 				case FALLEN_LEAVES:
 				case MUSHGLOOM:
 				case MOSSPATCH:
-					return soil.func_224755_d(world, pos, Direction.UP);
+					return soil.isSideSolidFullSquare(world, pos, Direction.UP);
 				default:
 					return (world.getLight(pos) >= 3 || world.canBlockSeeSky(pos)) && soil.getBlock().canSustainPlant(soil, world, pos.down(), Direction.UP, this);
 			}
@@ -127,15 +126,11 @@ public class BlockTFPlant extends BushBlock implements IShearable {
 		}
 	}
 
+	//TODO: Check this
 //	@Override
-//	public AxisAlignedBB getCollisionBoundingBox(BlockState state, IBlockAccess world, BlockPos pos) {
-//		return NULL_AABB;
+//	public boolean isSolid(BlockState state) {
+//		return false;
 //	}
-
-	@Override
-	public boolean isSolid(BlockState state) {
-		return false;
-	}
 
 	@Override
 	public int getLightValue(BlockState state) {
@@ -308,9 +303,10 @@ public class BlockTFPlant extends BushBlock implements IShearable {
 		}
 	}
 
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	public BlockRenderLayer getRenderLayer() {
-		return BlockRenderLayer.CUTOUT;
-	}
+	//TODO: Move to client
+//	@OnlyIn(Dist.CLIENT)
+//	@Override
+//	public BlockRenderLayer getRenderLayer() {
+//		return BlockRenderLayer.CUTOUT;
+//	}
 }

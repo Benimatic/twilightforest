@@ -6,7 +6,6 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.particles.ParticleTypes;
 import net.minecraft.particles.RedstoneParticleData;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
@@ -17,8 +16,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.tileentity.*;
 
@@ -139,6 +136,7 @@ public class BlockTFGhastTrap extends Block {
 		return state.get(ACTIVE) ? new TileEntityTFGhastTrapActive() : new TileEntityTFGhastTrapInactive();
 	}
 
+	//TODO: Move to loot table
 //	@Override
 //	public Item getItemDropped(BlockState state, Random random, int fortune) {
 //		switch (state.getValue(VARIANT)) {
@@ -186,9 +184,10 @@ public class BlockTFGhastTrap extends Block {
 //		return getMetaFromState(state);
 //	}
 
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public BlockRenderLayer getRenderLayer() {
-		return BlockRenderLayer.CUTOUT;
-	}
+	//TODO: Move to client
+//	@Override
+//	@OnlyIn(Dist.CLIENT)
+//	public BlockRenderLayer getRenderLayer() {
+//		return BlockRenderLayer.CUTOUT;
+//	}
 }

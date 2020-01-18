@@ -7,11 +7,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.enums.BossVariant;
 
 import javax.annotation.Nullable;
@@ -47,15 +44,17 @@ public class BlockTFBossSpawner extends Block {
 		return blockHardness >= 0f;
 	}
 
-	@Override
-	@Deprecated
-	public boolean isSolid(BlockState state) {
-		return false;
-	}
+	//TODO: Find out what this does now
+//	@Override
+//	@Deprecated
+//	public boolean isSolid(BlockState state) {
+//		return false;
+//	}
 
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	public BlockRenderLayer getRenderLayer() {
-		return BlockRenderLayer.CUTOUT;
-	}
+	//TODO: Move to client
+//	@OnlyIn(Dist.CLIENT)
+//	@Override
+//	public BlockRenderLayer getRenderLayer() {
+//		return BlockRenderLayer.CUTOUT;
+//	}
 }

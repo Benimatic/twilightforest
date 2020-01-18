@@ -42,7 +42,7 @@ public class BlockTFSpiralBrick extends Block {
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
 		BlockState state = context.getWorld().getBlockState(context.getPos().offset(context.getFace().getOpposite()));
 
-		if (!context.isPlacerSneaking() && context.getWorld().getBlockState(context.getPos().offset(context.getFace().getOpposite())).getBlock() instanceof BlockTFSpiralBrick) {
+		if (!context.getPlayer().isSneaking() && context.getWorld().getBlockState(context.getPos().offset(context.getFace().getOpposite())).getBlock() instanceof BlockTFSpiralBrick) {
 			Direction.Axis axis = state.get(AXIS_FACING);
 
 			return super.getStateForPlacement(context)
@@ -152,11 +152,12 @@ public class BlockTFSpiralBrick extends Block {
 		return Direction.values();
 	}
 
-	@Override
-	@Deprecated
-	public boolean isSolid(BlockState state) {
-		return false;
-	}
+	//TODO: Check this
+//	@Override
+//	@Deprecated
+//	public boolean isSolid(BlockState state) {
+//		return false;
+//	}
 
 //	@Override
 //    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face) {

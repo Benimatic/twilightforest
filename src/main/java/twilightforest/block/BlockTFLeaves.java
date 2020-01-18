@@ -20,6 +20,7 @@ public class BlockTFLeaves extends LeavesBlock {
 		return TFConfig.performance.leavesLightOpacity;
 	}
 
+	//TODO: Move to loot table
 //	@Override
 //	public Item getItemDropped(BlockState state, Random random, int fortune) {
 //		return Item.getItemFromBlock(TFBlocks.twilight_sapling);

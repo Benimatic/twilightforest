@@ -12,6 +12,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import twilightforest.enums.FireJetVariant;
 import twilightforest.tileentity.TileEntityTFFlameJet;
 import twilightforest.tileentity.TileEntityTFPoppingJet;
@@ -73,7 +74,7 @@ public class BlockTFFireJet extends Block {
 
 	@Override
 	@Deprecated
-	public void tick(BlockState state, World world, BlockPos pos, Random random) {
+	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		if (!world.isRemote && state.get(STATE) == FireJetVariant.IDLE) {
 			BlockPos lavaPos = findLavaAround(world, pos.down());
 

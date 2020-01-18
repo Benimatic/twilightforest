@@ -14,6 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.enums.TowerDeviceVariant;
@@ -95,6 +96,7 @@ public class BlockTFBuilder extends Block {
 	}
 
 	@Override
+	@Deprecated
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
 		if (world.isRemote) return;
 
@@ -118,7 +120,8 @@ public class BlockTFBuilder extends Block {
 	}
 
 	@Override
-	public void tick(BlockState state, World world, BlockPos pos, Random random) {
+	@Deprecated
+	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		if (world.isRemote) return;
 
 		TowerDeviceVariant variant = state.get(STATE);
@@ -251,6 +254,7 @@ public class BlockTFBuilder extends Block {
 		return state.get(STATE) == TowerDeviceVariant.BUILDER_ACTIVE ? new TileEntityTFTowerBuilder() : null;
 	}
 
+	//TODO: Move to loot table
 //	@Override
 //	public Item getItemDropped(BlockState state, Random random, int fortune) {
 //		switch (state.getValue(VARIANT)) {
@@ -298,9 +302,10 @@ public class BlockTFBuilder extends Block {
 //		return getMetaFromState(state);
 //	}
 
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public BlockRenderLayer getRenderLayer() {
-		return BlockRenderLayer.CUTOUT;
-	}
+	//TODO: Move to client
+//	@Override
+//	@OnlyIn(Dist.CLIENT)
+//	public BlockRenderLayer getRenderLayer() {
+//		return BlockRenderLayer.CUTOUT;
+//	}
 }

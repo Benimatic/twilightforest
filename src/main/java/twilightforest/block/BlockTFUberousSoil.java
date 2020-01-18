@@ -5,7 +5,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.item.BoneMealItem;
 import net.minecraft.item.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -14,6 +13,7 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.PlantType;
 import net.minecraftforge.common.IPlantable;
 
@@ -29,14 +29,16 @@ public class BlockTFUberousSoil extends Block implements IGrowable {
 	}
 
 	@Override
+	@Deprecated
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
 		return AABB;
 	}
 
-	@Override
-	public boolean isSolid(BlockState state) {
-		return false;
-	}
+	//TODO: Check this
+//	@Override
+//	public boolean isSolid(BlockState state) {
+//		return false;
+//	}
 
 //	@Override
 //	@Deprecated
@@ -44,10 +46,11 @@ public class BlockTFUberousSoil extends Block implements IGrowable {
 //		return face == Direction.DOWN ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
 //	}
 
-	@Override
-	public BlockRenderLayer getRenderLayer() {
-		return BlockRenderLayer.TRANSLUCENT;
-	}
+	//TODO: Move to client
+//	@Override
+//	public BlockRenderLayer getRenderLayer() {
+//		return BlockRenderLayer.TRANSLUCENT;
+//	}
 
 //	@Override
 //	public Item getItemDropped(BlockState state, Random rand, int fortune) {
@@ -55,7 +58,8 @@ public class BlockTFUberousSoil extends Block implements IGrowable {
 //	}
 
 	@Override
-	public void tick(BlockState state, World world, BlockPos pos, Random random) {
+	@Deprecated
+	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		Material aboveMaterial = world.getBlockState(pos.up()).getMaterial();
 		if (aboveMaterial.isSolid()) {
 			world.setBlockState(pos, Blocks.DIRT.getDefaultState());
@@ -111,7 +115,7 @@ public class BlockTFUberousSoil extends Block implements IGrowable {
 	}
 
 	@Override
-	public void grow(World world, Random rand, BlockPos pos, BlockState state) {
+	public void grow(ServerWorld world, Random rand, BlockPos pos, BlockState state) {
 		pos = pos.offset(Direction.Plane.HORIZONTAL.random(rand));
 
 		Block blockAt = world.getBlockState(pos).getBlock();

@@ -25,7 +25,7 @@ public class BlockTFNagastoneEtched extends DirectionalBlock {
 	@Nullable
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		return this.getDefaultState().with(FACING, context.isPlacerSneaking() ? context.getNearestLookingDirection().getOpposite() : context.getNearestLookingDirection());
+		return this.getDefaultState().with(FACING, context.getPlayer().isSneaking() ? context.getNearestLookingDirection().getOpposite() : context.getNearestLookingDirection());
 	}
 
 	@Override

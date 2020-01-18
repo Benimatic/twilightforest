@@ -4,14 +4,11 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.state.BooleanProperty;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.world.server.ServerWorld;
 
 import java.util.Random;
 
@@ -20,20 +17,11 @@ public class BlockTFBuiltTranslucent extends BlockTFTowerTranslucent {
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
 	public BlockTFBuiltTranslucent() {
-		super(Properties.create(Material.GLASS).hardnessAndResistance(50.0F, 2000.0F).sound(SoundType.METAL));
+		super(Properties.create(Material.GLASS).hardnessAndResistance(50.0F, 2000.0F).sound(SoundType.METAL).noDrops());
 		this.setDefaultState(stateContainer.getBaseState().with(ACTIVE, false));
 	}
 
-//	@Override
-//	public Item getItemDropped(BlockState state, Random random, int fortune) {
-//		return Items.AIR;
-//	}
-//
-//	@Override
-//	public boolean canSilkHarvest(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-//		return false;
-//	}
-
+	//TODO: Remove?
 //	@Override
 //	@Deprecated
 //	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face) {
@@ -48,7 +36,7 @@ public class BlockTFBuiltTranslucent extends BlockTFTowerTranslucent {
 
 	@Override
 	@Deprecated
-	public void tick(BlockState state, World world, BlockPos pos, Random random) {
+	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		if (world.isRemote) return;
 
 		if (state.get(ACTIVE)) {
@@ -64,9 +52,10 @@ public class BlockTFBuiltTranslucent extends BlockTFTowerTranslucent {
 		}
 	}
 
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	public BlockRenderLayer getRenderLayer() {
-		return BlockRenderLayer.CUTOUT;
-	}
+	//TODO: Move to client
+//	@OnlyIn(Dist.CLIENT)
+//	@Override
+//	public BlockRenderLayer getRenderLayer() {
+//		return BlockRenderLayer.CUTOUT;
+//	}
 }

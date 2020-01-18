@@ -23,7 +23,6 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.world.TFWorld;
 
 import javax.annotation.Nullable;
 
@@ -48,17 +47,20 @@ public class BlockTFTrophyPedestal extends Block /*implements IInfusionStabilise
 	}
 
 	@Override
+	@Deprecated
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
 		return AABB;
 	}
 
-	@Override
-	@Deprecated
-	public boolean isSolid(BlockState state) {
-		return false;
-	}
+	//TODO: Check this
+//	@Override
+//	@Deprecated
+//	public boolean isSolid(BlockState state) {
+//		return false;
+//	}
 
 	@Override
+	@Deprecated
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
 		if (world.isRemote || !state.get(LATENT) || !isTrophyOnTop(world, pos)) return;
 

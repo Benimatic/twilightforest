@@ -159,11 +159,12 @@ public abstract class BlockTFConnectableRotatedPillar extends RotatedPillarBlock
                 y2/16.0d, z2/16.0d);
     }
 
-	@Override
-	@Deprecated
-	public boolean isSolid(BlockState state) {
-		return false;
-	}
+    //TODO: Check this
+//	@Override
+//	@Deprecated
+//	public boolean isSolid(BlockState state) {
+//		return false;
+//	}
 
     enum PairHelper {
         NORTH(Direction.NORTH, FenceBlock.NORTH),

@@ -11,7 +11,6 @@ import twilightforest.TwilightForestMod;
 import twilightforest.enums.BossVariant;
 import twilightforest.enums.MagicWoodVariant;
 import twilightforest.enums.PlantVariant;
-import twilightforest.world.feature.*;
 
 import javax.annotation.Nonnull;
 

@@ -21,6 +21,7 @@ public class BlockTFLeaves3 extends LeavesBlock {
 		return TFConfig.performance.leavesLightOpacity;
 	}
 
+	//TODO: Move to loot table
 	//	@Override
 //	public ItemStack getItem(World world, BlockPos pos, BlockState state) {
 //		return new ItemStack(this, 1, state.getValue(VARIANT).ordinal());

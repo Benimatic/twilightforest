@@ -18,6 +18,7 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import twilightforest.entity.EntityTFSlideBlock;
 import twilightforest.entity.TFEntities;
 
@@ -61,10 +62,11 @@ public class BlockTFSlider extends RotatedPillarBlock {
 
 	}
 
-	@Override
-	public boolean isSolid(BlockState state) {
-		return false;
-	}
+	//TODO: Check this
+//	@Override
+//	public boolean isSolid(BlockState state) {
+//		return false;
+//	}
 
 //	@Override
 //	@Deprecated
@@ -73,7 +75,8 @@ public class BlockTFSlider extends RotatedPillarBlock {
 //	}
 
 	@Override
-	public void tick(BlockState state, World world, BlockPos pos, Random random) {
+	@Deprecated
+	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		if (!world.isRemote && this.isConnectedInRange(world, pos)) {
 			//world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, TwilightForestMod.ID + ":random.creakstart", 0.75F, 1.5F);
 
@@ -133,8 +136,8 @@ public class BlockTFSlider extends RotatedPillarBlock {
 	public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entity) {
 		entity.attackEntityFrom(DamageSource.GENERIC, BLOCK_DAMAGE);
 		if (entity instanceof LivingEntity) {
-			double kx = (pos.getX() + 0.5 - entity.posX) * 2.0;
-			double kz = (pos.getZ() + 0.5 - entity.posZ) * 2.0;
+			double kx = (pos.getX() + 0.5 - entity.getX()) * 2.0;
+			double kz = (pos.getZ() + 0.5 - entity.getZ()) * 2.0;
 
 			((LivingEntity) entity).knockBack(null, 2, kx, kz); //TODO: Can't be null
 		}

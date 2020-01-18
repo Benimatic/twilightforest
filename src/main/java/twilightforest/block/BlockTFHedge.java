@@ -22,8 +22,8 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import twilightforest.util.EntityUtil;
 
 import javax.annotation.Nullable;
@@ -42,11 +42,12 @@ public class BlockTFHedge extends Block {
 		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
 	}
 
-	@Override
-	@Deprecated
-	public boolean doesSideBlockRendering(BlockState state, IEnviromentBlockReader world, BlockPos pos, Direction side) {
-		return world.getBlockState(pos.offset(side)).getBlock() != this && shouldSideBeRendered(state, world, pos, side);
-	}
+	//TODO: Removed. Check this
+//	@Override
+//	@Deprecated
+//	public boolean doesSideBlockRendering(BlockState state, IEnviromentBlockReader world, BlockPos pos, Direction side) {
+//		return world.getBlockState(pos.offset(side)).getBlock() != this && shouldSideBeRendered(state, world, pos, side);
+//	}
 
 	@Override
 	@Deprecated
@@ -96,7 +97,7 @@ public class BlockTFHedge extends Block {
 
 	@Override
 	@Deprecated
-	public void tick(BlockState state, World world, BlockPos pos, Random random) {
+	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		// find players within range
 		List<PlayerEntity> nearbyPlayers = world.getEntitiesWithinAABB(PlayerEntity.class, new AxisAlignedBB(pos).grow(8.0));
 

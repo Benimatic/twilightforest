@@ -3,7 +3,6 @@ package twilightforest.block;
 import net.minecraft.block.BreakableBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.util.BlockRenderLayer;
 
 public class BlockTFWispyCloud extends BreakableBlock {
 
@@ -13,10 +12,11 @@ public class BlockTFWispyCloud extends BreakableBlock {
 		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
 	}
 
-	@Override
-	public BlockRenderLayer getRenderLayer() {
-		return BlockRenderLayer.TRANSLUCENT;
-	}
+	//TODO: Move to client
+//	@Override
+//	public BlockRenderLayer getRenderLayer() {
+//		return BlockRenderLayer.TRANSLUCENT;
+//	}
 
 //	@Override
 //	public boolean canSilkHarvest(World world, BlockPos pos, BlockState state, PlayerEntity player) {

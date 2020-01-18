@@ -2,10 +2,6 @@ package twilightforest.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class BlockTFMiniatureStructure extends Block {
 
@@ -14,19 +10,21 @@ public class BlockTFMiniatureStructure extends Block {
         //TODO Set the Item Group (item)
     }
 
-	@Override
-	public boolean isSolid(BlockState state) {
-		return false;
-	}
+    //TODO: Check this
+//	@Override
+//	public boolean isSolid(BlockState state) {
+//		return false;
+//	}
 
-//    @Override
-//    public BlockFaceShape getBlockFaceShape(IBlockAccess world, BlockState state, BlockPos pos, Direction face) {
-//        return BlockFaceShape.UNDEFINED;
-//    }
+//  @Override
+//  public BlockFaceShape getBlockFaceShape(IBlockAccess world, BlockState state, BlockPos pos, Direction face) {
+//      return BlockFaceShape.UNDEFINED;
+//  }
 
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public BlockRenderLayer getRenderLayer() {
-        return BlockRenderLayer.CUTOUT;
-    }
+	//TODO: Move to client
+//  @OnlyIn(Dist.CLIENT)
+//  @Override
+//  public BlockRenderLayer getRenderLayer() {
+//      return BlockRenderLayer.CUTOUT;
+//  }
 }

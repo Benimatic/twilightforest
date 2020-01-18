@@ -16,13 +16,11 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.world.ChunkGeneratorTFBase;
-import twilightforest.world.TFWorld;
 
 import java.util.Random;
 
@@ -48,11 +46,13 @@ public class BlockTFCastleDoor extends Block {
 	}
 
 	@Override
+	@Deprecated
 	public Material getMaterial(BlockState state) {
 		return state.get(VANISH) ? Material.GLASS : Material.ROCK;
 	}
 
 	@Override
+	@Deprecated
 	public MaterialColor getMaterialColor(BlockState state, IBlockReader worldIn, BlockPos pos) {
 		return state.get(VANISH) ? MaterialColor.AIR : MaterialColor.CYAN;
 	}
@@ -62,10 +62,11 @@ public class BlockTFCastleDoor extends Block {
 		builder.add(ACTIVE, VANISH);
 	}
 
-	@Override
-	public boolean isSolid(BlockState state) {
-		return !state.get(VANISH);
-	}
+	//TODO: Find out what this does now
+//	@Override
+//	public boolean isSolid(BlockState state) {
+//		return !state.get(VANISH);
+//	}
 
 //	@Override
 //	@Deprecated
@@ -88,7 +89,7 @@ public class BlockTFCastleDoor extends Block {
 
 	@Override
 	@Deprecated
-	public boolean onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+	public ActionResultType onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
 		return onActivation(world, pos, state);
 	}
 
@@ -100,16 +101,16 @@ public class BlockTFCastleDoor extends Block {
 		}
 	}
 
-	private boolean onActivation(World world, BlockPos pos, BlockState state) {
+	private ActionResultType onActivation(World world, BlockPos pos, BlockState state) {
 
-		if (state.get(VANISH) || state.get(ACTIVE)) return false;
+		if (state.get(VANISH) || state.get(ACTIVE)) return ActionResultType.FAIL;
 
 		if (isBlockLocked(world, pos)) {
 			world.playSound(null, pos, SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 1.0F, 0.3F);
 		} else {
 			changeToActiveBlock(world, pos, state);
 		}
-		return true;
+		return ActionResultType.PASS;
 	}
 
 	private static void changeToActiveBlock(World world, BlockPos pos, BlockState originState) {
@@ -142,7 +143,8 @@ public class BlockTFCastleDoor extends Block {
 	}
 
 	@Override // todo 1.10 recheck all of this
-	public void tick(BlockState state, World world, BlockPos pos, Random random) {
+	@Deprecated
+	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		if (world.isRemote) return;
 
 		if (state.get(VANISH)) {
@@ -171,6 +173,7 @@ public class BlockTFCastleDoor extends Block {
 		}
 	}
 
+	//TODO: Move to loot table
 	//	@Override
 //	public Item getItemDropped(BlockState state, Random rand, int fortune) {
 //		return TFItems.castle_door;
@@ -181,7 +184,7 @@ public class BlockTFCastleDoor extends Block {
 //		return state.getValue(LOCK_INDEX);
 //	}
 
-	//TODO
+	//TODO: How to packet
 //	private void sendAnnihilateBlockPacket(World world, BlockPos pos) {
 //		IMessage message = new PacketAnnihilateBlock(pos);
 //		NetworkRegistry.TargetPoint targetPoint = new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 64);
@@ -261,19 +264,22 @@ public class BlockTFCastleDoor extends Block {
 //		}
 //	}
 
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	public BlockRenderLayer getRenderLayer() {
-		//return isVanished ? BlockRenderLayer.TRANSLUCENT : BlockRenderLayer.CUTOUT;
-		return BlockRenderLayer.TRANSLUCENT;
-	}
+	//TODO: Move to client
+//	@OnlyIn(Dist.CLIENT)
+//	@Override
+//	public BlockRenderLayer getRenderLayer() {
+//		//return isVanished ? BlockRenderLayer.TRANSLUCENT : BlockRenderLayer.CUTOUT;
+//		return BlockRenderLayer.TRANSLUCENT;
+//	}
 
-	@Override
-	@Deprecated
-	public boolean doesSideBlockRendering(BlockState blockState, IEnviromentBlockReader blockAccess, BlockPos pos, Direction side) {
-		return !(blockAccess.getBlockState(pos.offset(side)).getBlock() instanceof BlockTFCastleDoor) && shouldSideBeRendered(blockState, blockAccess, pos, side);
-	}
+	//TODO: Removed. Check this
+//	@Override
+//	@Deprecated
+//	public boolean doesSideBlockRendering(BlockState blockState, IEnviromentBlockReader blockAccess, BlockPos pos, Direction side) {
+//		return !(blockAccess.getBlockState(pos.offset(side)).getBlock() instanceof BlockTFCastleDoor) && shouldSideBeRendered(blockState, blockAccess, pos, side);
+//	}
 
+	//TODO: Move to loot table
 	//	@Override
 //	public ItemStack getItem(World world, BlockPos pos, BlockState state) {
 //		return new ItemStack(TFItems.castle_door, 1, damageDropped(state));

@@ -15,7 +15,7 @@ import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.stats.Stats;
-import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -29,8 +29,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.world.server.ServerWorld;
 import twilightforest.item.TFItems;
 
 import java.util.Random;
@@ -71,11 +70,12 @@ public class BlockTFExperiment115 extends Block {
 		}
 	}
 
-	@Override
-	@Deprecated
-	public boolean isSolid(BlockState state) {
-		return false;
-	}
+	//TODO: Check this
+//	@Override
+//	@Deprecated
+//	public boolean isSolid(BlockState state) {
+//		return false;
+//	}
 
 //    @Override
 //    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face) {
@@ -84,7 +84,7 @@ public class BlockTFExperiment115 extends Block {
 
 	@Override
 	@Deprecated
-	public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onUse(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		int bitesTaken = state.get(NOMS);
 		ItemStack stack = player.getHeldItem(hand);
 
@@ -93,20 +93,21 @@ public class BlockTFExperiment115 extends Block {
 				worldIn.setBlockState(pos, state.with(NOMS, bitesTaken - 1));
 				if (!player.isCreative()) stack.shrink(1);
 				if (player instanceof ServerPlayerEntity) CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity) player, pos, stack);
-				return true;
+				return ActionResultType.SUCCESS;
 			} else if (((!state.get(REGENERATE)) && stack.getItem() == Items.REDSTONE) && (player.isCreative() || bitesTaken == 0)) {
 				worldIn.setBlockState(pos, state.with(REGENERATE,true));
 				if (!player.isCreative()) stack.shrink(1);
 				if (player instanceof ServerPlayerEntity) CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity) player, pos, stack);
-				return true;
+				return ActionResultType.SUCCESS;
 			}
 		}
 
+		//TODO: Result must be ActionResultType
 		return this.eatCake(worldIn, pos, state, player) || stack.isEmpty();
 	}
 
-	private boolean eatCake(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-        if (!player.canEat(false)) return false;
+	private ActionResultType eatCake(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+        if (!player.canEat(false)) return ActionResultType.PASS;
         else {
             player.addStat(Stats.EAT_CAKE_SLICE);
             player.getFoodStats().addStats(4, 0.3F);
@@ -118,13 +119,13 @@ public class BlockTFExperiment115 extends Block {
             if (player instanceof ServerPlayerEntity)
                 CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayerEntity) player, new ItemStack(TFItems.experiment_115.get(), 8 - i));
 
-            return true;
+            return ActionResultType.SUCCESS;
         }
     }
 
 	@Override
 	@Deprecated
-	public void tick(BlockState state, World worldIn, BlockPos pos, Random random) {
+	public void scheduledTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random) {
 		if (state.get(REGENERATE) && state.get(NOMS) != 0) {
 			worldIn.setBlockState(pos, state.with(NOMS, state.get(NOMS) - 1));
 		}
@@ -161,11 +162,12 @@ public class BlockTFExperiment115 extends Block {
 		builder.add(NOMS, REGENERATE);
 	}
 
-	@Override
-    @OnlyIn(Dist.CLIENT)
-    public BlockRenderLayer getRenderLayer() {
-        return BlockRenderLayer.CUTOUT;
-    }
+	//TODO: Move to client
+//	@Override
+//    @OnlyIn(Dist.CLIENT)
+//    public BlockRenderLayer getRenderLayer() {
+//        return BlockRenderLayer.CUTOUT;
+//    }
 
     @Override
 	@Deprecated

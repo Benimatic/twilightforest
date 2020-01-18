@@ -2,7 +2,7 @@ package twilightforest.block;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 import java.util.Random;
 
@@ -11,8 +11,8 @@ public class BlockTFUnripeTorchCluster extends BlockTFTrollRoot {
 
 	@Override
 	@Deprecated
-	public void tick(BlockState state, World world, BlockPos pos, Random rand) {
-		super.tick(state, world, pos, rand);
+	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random rand) {
+		super.scheduledTick(state, world, pos, rand);
 
 		if (world.getLight(pos) >= RIPEN_THRESHHOLD) {
 			// ripen!

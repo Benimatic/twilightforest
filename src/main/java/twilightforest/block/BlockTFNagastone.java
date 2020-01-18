@@ -11,7 +11,7 @@ import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import twilightforest.enums.NagastoneVariant;
 
 import java.util.Random;
@@ -63,7 +63,7 @@ public class BlockTFNagastone extends Block {
 
 	@Override
 	@Deprecated
-	public void tick(BlockState stateIn, World world, BlockPos pos, Random random) {
+	public void scheduledTick(BlockState stateIn, ServerWorld world, BlockPos pos, Random random) {
 		if (NagastoneVariant.isHead(stateIn.get(VARIANT))) //TODO: Remove Head states
 			return;
 
