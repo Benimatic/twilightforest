@@ -28,20 +28,12 @@ import twilightforest.potions.TFPotions;
 import twilightforest.tileentity.TFTileEntities;
 import twilightforest.world.feature.TFGenCaveStalactite;
 
-/*@Mod( name = TwilightForestMod.NAME,
-		version = TwilightForestMod.VERSION,
-		acceptedMinecraftVersions = "[1.12.2]",
-		dependencies = "after:ctm@[MC1.12.2-0.3.2.18,);before:immersiveengineering@[0.12-83,);before:tconstruct;required-after:forge@[14.23.5.2813,);after:thaumcraft@[6.1.BETA21,)",
-		updateJSON = "https://raw.githubusercontent.com/TeamTwilight/twilightforest/1.12.x/update.json"
-)*/
 @Mod(TwilightForestMod.ID)
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TwilightForestMod {
 
 	// TODO: might be a good idea to find proper spots for all of these? also remove redundants
 	public static final String ID = "twilightforest";
-	public static final String NAME = "The Twilight Forest";
-	public static final String VERSION = "@VERSION@";
 
 	private static final String MODEL_DIR  = "textures/model/";
 	private static final String GUI_DIR    = "textures/gui/";
