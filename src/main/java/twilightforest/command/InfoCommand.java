@@ -17,24 +17,24 @@ public class InfoCommand {
     }
 
     private static int run(CommandContext<CommandSource> ctx) throws CommandSyntaxException {
-        ServerPlayerEntity player = ctx.getSource().asPlayer();
+        CommandSource source = ctx.getSource();
 
-        if (!TFWorld.isTwilightForest(player.world)) {
+        if (!TFWorld.isTwilightForest(source.getWorld())) {
             throw TFCommand.NOT_IN_TF.create();
         }
 
-        BlockPos pos = new BlockPos(player);
+        BlockPos pos = new BlockPos(source.getPos());
 
         // nearest feature
-        TFFeature nearbyFeature = TFFeature.getFeatureAt(pos.getX(), pos.getZ(), player.world);
-        sender.sendMessage(new TranslationTextComponent("commands.tffeature.nearest", nearbyFeature.name));
+        TFFeature nearbyFeature = TFFeature.getFeatureAt(pos.getX(), pos.getZ(), source.getWorld());
+        source.sendFeedback(new TranslationTextComponent("commands.tffeature.nearest", nearbyFeature.name), false);
 
         // are you in a structure?
-        ChunkGeneratorTFBase chunkGenerator = TFWorld.getChunkGenerator(player.world);
+        ChunkGeneratorTFBase chunkGenerator = TFWorld.getChunkGenerator(source.getWorld());
         if (chunkGenerator != null && chunkGenerator.isBlockInStructureBB(pos)) {
-            player.sendMessage(new TranslationTextComponent("commands.tffeature.structure.inside"));
+            source.sendFeedback(new TranslationTextComponent("commands.tffeature.structure.inside"), false);
 
-            player.sendMessage(new TranslationTextComponent("commands.tffeature.structure.conquer.status", chunkGenerator.isStructureConquered(pos)));
+            source.sendFeedback(new TranslationTextComponent("commands.tffeature.structure.conquer.status", chunkGenerator.isStructureConquered(pos)), false);
             // are you in a room?
 
             // what is the spawn list
@@ -44,7 +44,7 @@ public class InfoCommand {
 //							sender.sendMessage(new TextComponentTranslation(entry.toString()));
 //						}
         } else {
-            player.sendMessage(new TranslationTextComponent("commands.tffeature.structure.outside"));
+            source.sendFeedback(new TranslationTextComponent("commands.tffeature.structure.outside"), false);
         }
 
         return Command.SINGLE_SUCCESS;

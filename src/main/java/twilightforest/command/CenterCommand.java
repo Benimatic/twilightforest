@@ -19,16 +19,16 @@ public class CenterCommand {
         return Commands.literal("center").executes(CenterCommand::run);
     }
 
-    private static int run(CommandContext<CommandSource> ctx) throws CommandSyntaxException {
-        ServerPlayerEntity player = ctx.getSource().asPlayer();
-        int dx = MathHelper.floor(player.getX());
-        int dz = MathHelper.floor(player.getZ());
+    private static int run(CommandContext<CommandSource> ctx) {
+        CommandSource source = ctx.getSource();
+        int dx = MathHelper.floor(source.getPos().getX());
+        int dz = MathHelper.floor(source.getPos().getZ());
 
-        BlockPos cc = TFFeature.getNearestCenterXYZ(dx >> 4, dz >> 4, player.world);
+        BlockPos cc = TFFeature.getNearestCenterXYZ(dx >> 4, dz >> 4, source.getWorld());
 
-        boolean fc = TFFeature.isInFeatureChunk(player.world, dx, dz);
-        player.sendMessage(new TranslationTextComponent("commands.tffeature.center", cc));
-        player.sendMessage(new TranslationTextComponent("commands.tffeature.chunk", fc));
+        boolean fc = TFFeature.isInFeatureChunk(source.getWorld(), dx, dz);
+        source.sendFeedback(new TranslationTextComponent("commands.tffeature.center", cc), false);
+        source.sendFeedback(new TranslationTextComponent("commands.tffeature.chunk", fc), false);
         return Command.SINGLE_SUCCESS;
     }
 }
