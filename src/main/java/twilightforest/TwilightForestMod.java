@@ -19,6 +19,7 @@ import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.TFBlocks;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.client.particle.TFParticleType;
+import twilightforest.command.TFCommand;
 import twilightforest.compat.TFCompat;
 import twilightforest.entity.TFEntities;
 import twilightforest.item.*;
@@ -150,7 +151,7 @@ public class TwilightForestMod {
 	}
 
 	public void startServer(FMLServerStartingEvent event) {
-		// event.registerServerCommand(new CommandTF()); // TODO: Brigadier
+		TFCommand.register(event.getCommandDispatcher());
 	}
 
 	/*private static void registerDimension() { TODO: move all this to a deferred registry
