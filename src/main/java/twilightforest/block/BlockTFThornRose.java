@@ -37,12 +37,6 @@ public class BlockTFThornRose extends Block {
 //	}
 
 //	@Override
-//	@Deprecated
-//	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face) {
-//		return BlockFaceShape.UNDEFINED;
-//	}
-
-//	@Override
 //	public boolean canPlaceBlockAt(World world, BlockPos pos) {
 //		return canBlockStay(world, pos);
 //	}

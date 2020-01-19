@@ -40,12 +40,6 @@ public class BlockTFUberousSoil extends Block implements IGrowable {
 //		return false;
 //	}
 
-//	@Override
-//	@Deprecated
-//	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face) {
-//		return face == Direction.DOWN ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
-//	}
-
 	//TODO: Move to client
 //	@Override
 //	public BlockRenderLayer getRenderLayer() {

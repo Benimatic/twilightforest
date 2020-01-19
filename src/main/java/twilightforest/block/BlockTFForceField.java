@@ -42,11 +42,6 @@ public class BlockTFForceField extends BlockTFConnectableRotatedPillar {
 //		return false;
 //	}
 
-//	@Override
-//	public BlockFaceShape getBlockFaceShape(IBlockAccess world, BlockState state, BlockPos pos, Direction face) {
-//		return face.getAxis() != state.getValue(AXIS) ? BlockFaceShape.MIDDLE_POLE_THIN : BlockFaceShape.CENTER_SMALL;
-//	}
-
 	@Override
 	public boolean canEntityDestroy(BlockState state, IBlockReader world, BlockPos pos, Entity entity) {
 		return false; // TODO: ???

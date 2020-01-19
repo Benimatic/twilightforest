@@ -68,12 +68,6 @@ public class BlockTFSlider extends RotatedPillarBlock {
 //		return false;
 //	}
 
-//	@Override
-//	@Deprecated
-//	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face) {
-//		return BlockFaceShape.UNDEFINED;
-//	}
-
 	@Override
 	@Deprecated
 	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {

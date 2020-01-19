@@ -1,12 +1,11 @@
 package twilightforest.biomes;
 
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.Biome.BiomeProperties;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.event.RegistryEvent.Register;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 import twilightforest.TwilightForestMod;
 
@@ -24,9 +23,9 @@ public final class RegistryBiomeEvent {
 		biomes.register(
 				"twilight_lake",
 				new TFBiomeTwilightLake(
-						new BiomeProperties("Twilight Lake")
-								.setTemperature(0.66F)
-								.setRainfall(1)
+						new Biome.Builder()
+								.temperature(0.66F)
+								.downfall(1)
 								.setBaseHeight(-1.8F)
 								.setHeightVariation(0.1F)
 				),
@@ -36,7 +35,7 @@ public final class RegistryBiomeEvent {
 		biomes.register(
 				"twilight_forest",
 				new TFBiomeBase(
-						new BiomeProperties("Twilight Forest")
+						new Biome.Builder()
 				),
 				TWILIGHT, Type.FOREST
 		);
@@ -44,10 +43,10 @@ public final class RegistryBiomeEvent {
 		biomes.register(
 				"dense_twilight_forest",
 				new TFBiomeTwilightForestVariant(
-						new BiomeProperties("Dense Twilight Forest")
-								.setWaterColor(0x005522)
-								.setTemperature(0.7F)
-								.setRainfall(0.8F)
+						new Biome.Builder()
+								.waterColor(0x005522)
+								.temperature(0.7F)
+								.downfall(0.8F)
 								.setBaseHeight(0.2F)
 								.setHeightVariation(0.2F)
 				),
@@ -57,9 +56,9 @@ public final class RegistryBiomeEvent {
 		biomes.register(
 				"twilight_highlands",
 				new TFBiomeHighlands(
-						new BiomeProperties("Twilight Highlands")
-								.setTemperature(0.4F)
-								.setRainfall(0.7F)
+						new Biome.Builder()
+								.temperature(0.4F)
+								.downfall(0.7F)
 								.setBaseHeight(3.5F)
 								.setHeightVariation(0.05F)
 				),
@@ -69,9 +68,9 @@ public final class RegistryBiomeEvent {
 		biomes.register(
 				"mushroom_forest",
 				new TFBiomeMushrooms(
-						new BiomeProperties("Mushroom Forest")
-								.setTemperature(0.8F)
-								.setRainfall(0.8F)
+						new Biome.Builder()
+								.temperature(0.8F)
+								.downfall(0.8F)
 				),
 				TWILIGHT, Type.FOREST, Type.MUSHROOM
 		);
@@ -79,12 +78,12 @@ public final class RegistryBiomeEvent {
 		biomes.register(
 				"twilight_swamp",
 				new TFBiomeSwamp(
-						new BiomeProperties("Twilight Swamp")
-								.setTemperature(0.8F)
-								.setRainfall(0.9F)
+						new Biome.Builder()
+								.temperature(0.8F)
+								.downfall(0.9F)
 								.setBaseHeight(-0.125F)
 								.setHeightVariation(0.125F)
-								.setWaterColor(0xE0FFAE)
+								.waterColor(0xE0FFAE)
 				),
 				TWILIGHT, Type.SWAMP, Type.WET
 		);
@@ -92,9 +91,9 @@ public final class RegistryBiomeEvent {
 		biomes.register(
 				"twilight_stream",
 				new TFBiomeStream(
-						new BiomeProperties("Twilight Stream")
-								.setTemperature(0.5F)
-								.setRainfall(0.1F)
+						new Biome.Builder()
+								.temperature(0.5F)
+								.downfall(0.1F)
 								.setBaseHeight(-0.5F)
 								.setHeightVariation(0)
 				),
@@ -104,9 +103,9 @@ public final class RegistryBiomeEvent {
 		biomes.register(
 				"snowy_forest",
 				new TFBiomeSnow(
-						new BiomeProperties("Snowy Forest")
-								.setTemperature(0.09F)
-								.setRainfall(0.9F)
+						new Biome.Builder()
+								.temperature(0.09F)
+								.downfall(0.9F)
 								.setBaseHeight(0.2F)
 								.setHeightVariation(0.2F)
 				),
@@ -116,9 +115,9 @@ public final class RegistryBiomeEvent {
 		biomes.register(
 				"twilight_glacier",
 				new TFBiomeGlacier(
-						new BiomeProperties("Twilight Glacier")
-								.setTemperature(0)
-								.setRainfall(0.1F)
+						new Biome.Builder()
+								.temperature(0)
+								.downfall(0.1F)
 				),
 				TWILIGHT, Type.COLD, Type.SNOWY, Type.WASTELAND
 		);
@@ -126,9 +125,9 @@ public final class RegistryBiomeEvent {
 		biomes.register(
 				"twilight_clearing",
 				new TFBiomeClearing(
-						new BiomeProperties("Twilight Clearing")
-								.setTemperature(0.8F)
-								.setRainfall(0.4F)
+						new Biome.Builder()
+								.temperature(0.8F)
+								.downfall(0.4F)
 								.setBaseHeight(0.125F)
 								.setHeightVariation(0.05F)
 				),
@@ -138,9 +137,9 @@ public final class RegistryBiomeEvent {
 		biomes.register(
 				"oak_savannah",
 				new TFBiomeOakSavanna(
-						new BiomeProperties("Oak Savanna")
-								.setTemperature(0.9F)
-								.setRainfall(0)
+						new Biome.Builder()
+								.temperature(0.9F)
+								.downfall(0)
 								.setBaseHeight(0.2F)
 								.setHeightVariation(0.2F)
 				),
@@ -150,9 +149,9 @@ public final class RegistryBiomeEvent {
 		biomes.register(
 				"firefly_forest",
 				new TFBiomeFireflyForest(
-						new BiomeProperties("Firefly Forest")
-								.setTemperature(0.5F)
-								.setRainfall(1)
+						new Biome.Builder()
+								.temperature(0.5F)
+								.downfall(1)
 								.setBaseHeight(0.125F)
 								.setHeightVariation(0.05F)
 				),
@@ -162,9 +161,9 @@ public final class RegistryBiomeEvent {
 		biomes.register(
 				"deep_mushroom_forest",
 				new TFBiomeDeepMushrooms(
-						new BiomeProperties("Deep Mushroom Forest")
-								.setTemperature(0.8F)
-								.setRainfall(1)
+						new Biome.Builder()
+								.temperature(0.8F)
+								.downfall(1)
 								.setBaseHeight(0.125F)
 								.setHeightVariation(0.05F)
 				),
@@ -174,9 +173,9 @@ public final class RegistryBiomeEvent {
 		biomes.register(
 				"dark_forest",
 				new TFBiomeDarkForest(
-						new BiomeProperties("Dark Forest")
-								.setTemperature(0.7F)
-								.setRainfall(0.8F)
+						new Biome.Builder()
+								.temperature(0.7F)
+								.downfall(0.8F)
 								.setBaseHeight(0.125F)
 								.setHeightVariation(0.05F)
 				),
@@ -186,7 +185,7 @@ public final class RegistryBiomeEvent {
 		biomes.register(
 				"enchanted_forest",
 				new TFBiomeEnchantedForest(
-						new BiomeProperties("Enchanted Forest")
+						new Biome.Builder()
 				),
 				TWILIGHT, Type.FOREST, Type.MAGICAL
 		);
@@ -194,10 +193,10 @@ public final class RegistryBiomeEvent {
 		biomes.register(
 				"fire_swamp",
 				new TFBiomeFireSwamp(
-						new BiomeProperties("Fire Swamp")
-								.setTemperature(1)
-								.setRainfall(0.4F)
-								.setWaterColor(0x6C2C2C)
+						new Biome.Builder()
+								.temperature(1)
+								.downfall(0.4F)
+								.waterColor(0x6C2C2C)
 								.setBaseHeight(0.1F)
 								.setHeightVariation(0.2F)
 				),
@@ -207,7 +206,7 @@ public final class RegistryBiomeEvent {
 		biomes.register(
 				"dark_forest_center",
 				new TFBiomeDarkForestCenter(
-						new BiomeProperties("Dark Forest Center")
+						new Biome.Builder()
 								.setBaseHeight(0.125F)
 								.setHeightVariation(0.05F)
 				),
@@ -217,9 +216,9 @@ public final class RegistryBiomeEvent {
 		biomes.register(
 				"highlands_center",
 				new TFBiomeFinalPlateau(
-						new BiomeProperties("Final Plateau")
-								.setTemperature(0.3F)
-								.setRainfall(0.2F)
+						new Biome.Builder()
+								.temperature(0.3F)
+								.downfall(0.2F)
 								.setBaseHeight(10.5F)
 								.setHeightVariation(0.025F)
 				),
@@ -229,9 +228,9 @@ public final class RegistryBiomeEvent {
 		biomes.register(
 				"thornlands",
 				new TFBiomeThornlands(
-						new BiomeProperties("Thornlands")
-								.setTemperature(0.3F)
-								.setRainfall(0.2F)
+						new Biome.Builder()
+								.temperature(0.3F)
+								.downfall(0.2F)
 								.setBaseHeight(6)
 								.setHeightVariation(0.1F)
 				),
@@ -241,12 +240,12 @@ public final class RegistryBiomeEvent {
 		biomes.register(
 				"spooky_forest",
 				new TFBiomeSpookyForest(
-						new BiomeProperties("Spooky Forest")
-								.setTemperature(0.5F)
-								.setRainfall(1)
+						new Biome.Builder()
+								.temperature(0.5F)
+								.downfall(1)
 								.setBaseHeight(0.125F)
 								.setHeightVariation(0.05F)
-								.setWaterColor(0XFA9111)
+								.waterColor(0XFA9111)
 				),
 				TWILIGHT, Type.FOREST, Type.DEAD, Type.DENSE, Type.SPOOKY
 		);

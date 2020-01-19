@@ -159,24 +159,7 @@ public class BlockTFSpiralBrick extends Block {
 //		return false;
 //	}
 
-//	@Override
-//    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face) {
-//
-//        Direction.Axis axis = state.get(AXIS_FACING);
-//        if (face.getAxis() == axis) {
-//            return BlockFaceShape.UNDEFINED;
-//        }
-//
-//        Direction top  = axis == Direction.Axis.Y ? Direction.NORTH : Direction.UP;
-//        Direction left = axis == Direction.Axis.X ? Direction.SOUTH : Direction.WEST;
-//
-//        Diagonals diagonal = state.get(DIAGONAL);
-//        if (face == (diagonal.isLeft() ? left : left.getOpposite()) || face == (diagonal.isTop() ? top : top.getOpposite())) {
-//            return BlockFaceShape.SOLID;
-//        } else {
-//            return BlockFaceShape.UNDEFINED;
-//        }
-//    }
+
 //
 //	@Override
 //	public boolean doesSideBlockRendering(BlockState state, IEnviromentBlockReader world, BlockPos pos, Direction face) {

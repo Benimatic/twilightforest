@@ -77,11 +77,6 @@ public class BlockTFExperiment115 extends Block {
 //		return false;
 //	}
 
-//    @Override
-//    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face) {
-//        return BlockFaceShape.UNDEFINED;
-//    }
-
 	@Override
 	@Deprecated
 	public ActionResultType onUse(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {

@@ -147,11 +147,6 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar {
 //		return true;
 //	}
 
-//	@Override
-//	public BlockFaceShape getBlockFaceShape(IBlockAccess world, BlockState state, BlockPos pos, Direction face) {
-//		return face.getAxis() != state.getValue(AXIS) ? BlockFaceShape.MIDDLE_POLE_THICK : BlockFaceShape.CENTER_BIG;
-//	}
-
 	//TODO: Move to client
 //	@OnlyIn(Dist.CLIENT)
 //	@Override

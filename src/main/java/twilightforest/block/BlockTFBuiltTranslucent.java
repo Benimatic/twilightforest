@@ -21,19 +21,6 @@ public class BlockTFBuiltTranslucent extends BlockTFTowerTranslucent {
 		this.setDefaultState(stateContainer.getBaseState().with(ACTIVE, false));
 	}
 
-	//TODO: Remove?
-//	@Override
-//	@Deprecated
-//	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face) {
-//		switch (state.getValue(VARIANT)) {
-//			case REAPPEARING_INACTIVE:
-//			case REAPPEARING_ACTIVE:
-//				return BlockFaceShape.UNDEFINED;
-//			default:
-//				return super.getBlockFaceShape(worldIn, state, pos, face);
-//		}
-//	}
-
 	@Override
 	@Deprecated
 	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {

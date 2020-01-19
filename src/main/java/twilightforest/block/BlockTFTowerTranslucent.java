@@ -31,18 +31,6 @@ public class BlockTFTowerTranslucent extends Block {
 //		return false;
 //	}
 
-//	@Override
-//	@Deprecated
-//	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face) {
-//		switch (state.getValue(VARIANT)) {
-//			case REAPPEARING_INACTIVE:
-//			case REAPPEARING_ACTIVE:
-//				return BlockFaceShape.UNDEFINED;
-//			default:
-//				return super.getBlockFaceShape(worldIn, state, pos, face);
-//		}
-//	}
-
 	// todo 1.10 smart model for REACTOR_DEBRIS that randomly chooses sides from portal/netherrack/bedrock/obsidian
 
 	//TODO: Move to client

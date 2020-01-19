@@ -65,12 +65,6 @@ public class BlockTFTrollRoot extends Block implements IShearable {
 		return AABB;
 	}
 
-	//	@Override
-//	@Deprecated
-//	public BlockFaceShape getBlockFaceShape(IBlockAccess world, BlockState state, BlockPos pos, Direction face) {
-//		return BlockFaceShape.UNDEFINED;
-//	}
-
 	//TODO: Check this
 //	@Override
 //	public boolean isSolid(BlockState state) {

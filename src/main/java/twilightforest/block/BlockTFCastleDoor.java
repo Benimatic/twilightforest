@@ -68,13 +68,6 @@ public class BlockTFCastleDoor extends Block {
 //		return !state.get(VANISH);
 //	}
 
-//	@Override
-//	@Deprecated
-//	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face) {
-//		return isVanished ? BlockFaceShape.UNDEFINED : super.getBlockFaceShape(worldIn, state, pos, face);
-//	}
-
-
 	@Override
 	@Deprecated
 	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {

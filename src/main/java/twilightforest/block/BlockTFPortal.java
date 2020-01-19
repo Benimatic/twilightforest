@@ -80,12 +80,6 @@ public class BlockTFPortal extends BreakableBlock {
 //		return false;
 //	}
 
-	//	@Override
-//	@Deprecated
-//	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face) {
-//		return BlockFaceShape.UNDEFINED;
-//	}
-
 	public boolean tryToCreatePortal(World world, BlockPos pos, ItemEntity catalyst, @Nullable PlayerEntity player) {
 
 		BlockState state = world.getBlockState(pos);

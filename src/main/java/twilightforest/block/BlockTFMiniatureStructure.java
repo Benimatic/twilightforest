@@ -16,11 +16,6 @@ public class BlockTFMiniatureStructure extends Block {
 //		return false;
 //	}
 
-//  @Override
-//  public BlockFaceShape getBlockFaceShape(IBlockAccess world, BlockState state, BlockPos pos, Direction face) {
-//      return BlockFaceShape.UNDEFINED;
-//  }
-
 	//TODO: Move to client
 //  @OnlyIn(Dist.CLIENT)
 //  @Override
