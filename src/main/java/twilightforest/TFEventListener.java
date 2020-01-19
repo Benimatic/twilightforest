@@ -451,8 +451,7 @@ public class TFEventListener {
 	public static void livingUpdate(LivingUpdateEvent event) {
 		LivingEntity living = event.getEntityLiving();
 
-		IShieldCapability cap = living.getCapability(CapabilityList.SHIELDS, null);
-		if (cap != null) cap.update();
+		living.getCapability(CapabilityList.SHIELDS).ifPresent(IShieldCapability::update);
 
 		// Stop the player from sneaking while riding an unfriendly creature
 		if (living instanceof PlayerEntity && living.isSneaking() && isRidingUnfriendly(living)) {
@@ -605,11 +604,12 @@ public class TFEventListener {
 		}
 		// shields
 		if (!living.world.isRemote && !SHIELD_DAMAGE_BLACKLIST.contains(event.getSource().damageType)) {
-			IShieldCapability cap = living.getCapability(CapabilityList.SHIELDS, null);
-			if (cap != null && cap.shieldsLeft() > 0) {
-				cap.breakShield();
-				event.setCanceled(true);
-			}
+			living.getCapability(CapabilityList.SHIELDS).ifPresent(cap -> {
+				if (cap.shieldsLeft() > 0) {
+					cap.breakShield();
+					event.setCanceled(true);
+				}
+			});
 		}
 	}
 
@@ -645,10 +645,11 @@ public class TFEventListener {
 
 	// send any capabilities that are needed client-side
 	private static void updateCapabilities(ServerPlayerEntity player, Entity entity) {
-		IShieldCapability cap = entity.getCapability(CapabilityList.SHIELDS, null);
-		if (cap != null && cap.shieldsLeft() > 0) {
-			TFPacketHandler.CHANNEL.sendTo(new PacketUpdateShield(entity, cap), player);
-		}
+		entity.getCapability(CapabilityList.SHIELDS).ifPresent(cap -> {
+			if (cap.shieldsLeft() > 0) {
+				TFPacketHandler.CHANNEL.sendTo(new PacketUpdateShield(entity, cap), player);
+			}
+		});
 	}
 
 	private static void sendEnforcedProgressionStatus(ServerPlayerEntity player, boolean isEnforced) {

@@ -35,11 +35,11 @@ public class ItemTFShieldWand extends ItemTF {
 			return new ActionResult<>(ActionResultType.FAIL, stack);
 		}
 
-		if (!world.isRemote && player.hasCapability(CapabilityList.SHIELDS, null)) {
-			LazyOptional<IShieldCapability> cap = player.getCapability(CapabilityList.SHIELDS, null);
-			if(cap != null)
+		if (!world.isRemote) {
+			player.getCapability(CapabilityList.SHIELDS).ifPresent(cap -> {
 				cap.replenishShields();
-			stack.damageItem(1, player, (user) -> user.sendBreakAnimation(hand));
+				stack.damageItem(1, player, (user) -> user.sendBreakAnimation(hand));
+			});
 		}
 
 		if (!player.isCreative())

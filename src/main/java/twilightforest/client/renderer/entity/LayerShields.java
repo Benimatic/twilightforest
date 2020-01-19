@@ -27,11 +27,9 @@ public class LayerShields<T extends LivingEntity, M extends EntityModel<T>> exte
         if (entity instanceof EntityTFLich)
             lich = (EntityTFLich) entity;
 
-        IShieldCapability cap = null;
-        if (entity.hasCapability(CapabilityList.SHIELDS, null))
-            cap = entity.getCapability(CapabilityList.SHIELDS, null);
+        int capShields = entity.getCapability(CapabilityList.SHIELDS).map(IShieldCapability::shieldsLeft).orElse(0);
 
-        return lich != null ? lich.getShieldStrength() : cap != null ? cap.shieldsLeft() : 0;
+        return lich != null ? lich.getShieldStrength() : capShields;
     }
 
     private void renderShields(float scale, T entity, float partialTicks) {

@@ -9,6 +9,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import twilightforest.capabilities.shield.IShieldCapability;
@@ -42,14 +43,10 @@ public class CapabilityList {
 					inst.setEntity((LivingEntity) e.getObject());
 				}
 
+				@Nonnull
 				@Override
-				public boolean hasCapability(@Nonnull Capability<?> capability, Direction facing) {
-					return capability == SHIELDS;
-				}
-
-				@Override
-				public <T> T getCapability(@Nonnull Capability<T> capability, Direction facing) {
-					return capability == SHIELDS ? SHIELDS.<T>cast(inst) : null;
+				public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, Direction facing) {
+					return SHIELDS.orEmpty(capability, LazyOptional.of(() -> inst));
 				}
 
 				@Override

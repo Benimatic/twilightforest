@@ -51,11 +51,10 @@ public class PacketUpdateShield implements IMessage {
 				public void run() {
 					Entity entity = Minecraft.getInstance().world.getEntityByID(message.entityID);
 					if (entity instanceof LivingEntity) {
-						IShieldCapability cap = entity.getCapability(CapabilityList.SHIELDS, null);
-						if (cap != null) {
+						entity.getCapability(CapabilityList.SHIELDS).ifPresent(cap -> {
 							cap.setShields(message.temporaryShields, true);
 							cap.setShields(message.permanentShields, false);
-						}
+						});
 					}
 				}
 			});
