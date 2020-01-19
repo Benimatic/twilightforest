@@ -14,9 +14,6 @@ public class TFTileEntities {
 
 	public static final DeferredRegister<TileEntityType<?>> TILE_ENTITIES = new DeferredRegister<>(ForgeRegistries.TILE_ENTITIES, TwilightForestMod.ID);
 
-	//TODO: Are we using DataFixers? If so, replace null with DataFixerType
-	//Actually, DataFixers might not even be used. Verify
-
 	public static final RegistryObject<TileEntityType<TileEntityTFAntibuilder>> ANTIBUILDER               = TILE_ENTITIES.register("antibuilder", () ->
 			new TileEntityType<>(TileEntityTFAntibuilder::new, Sets.newHashSet(TFBlocks.antibuilder.get()), null));
 	public static final RegistryObject<TileEntityType<TileEntityTFCinderFurnace>> CINDER_FURNACE          = TILE_ENTITIES.register("cinder_furnace", () ->

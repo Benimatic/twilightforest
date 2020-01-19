@@ -5,6 +5,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.particles.RedstoneParticleData;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.Tag;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -15,8 +17,10 @@ import twilightforest.enums.TowerTranslucentVariant;
 
 import java.util.Random;
 
-public class TileEntityTFAntibuilder extends TileEntity implements ITickableTileEntity {
+import static twilightforest.TwilightForestMod.prefix;
 
+public class TileEntityTFAntibuilder extends TileEntity implements ITickableTileEntity {
+	private static final Tag<Block> BLACKLIST = new BlockTags.Wrapper(prefix("antibuilder_blacklist"));
 	private static final int REVERT_CHANCE = 10;
 
 	private final int radius = 4;
@@ -253,7 +257,6 @@ public class TileEntityTFAntibuilder extends TileEntity implements ITickableTile
 		return true;
 	}
 
-	//TODO 1.14: CAN WE PLEASE PUT THIS IN SOMETHING LIKE A TAG?
 	private boolean isUnrevertable(BlockState stateThere, BlockState replaceWith) {
 		if (stateThere.getBlock() instanceof BlockTFTowerTranslucent || replaceWith.getBlock() instanceof BlockTFTowerTranslucent) {
 			return true;
@@ -262,24 +265,8 @@ public class TileEntityTFAntibuilder extends TileEntity implements ITickableTile
 				|| (replaceWith.getBlock() == TFBlocks.tower_translucent && replaceWith.getValue(BlockTFTowerTranslucent.VARIANT) != TowerTranslucentVariant.REVERTER_REPLACEMENT)) {
 			return true;
 		}
-		if (stateThere.getBlock() == Blocks.REDSTONE_LAMP && replaceWith.getBlock() == Blocks.LIT_REDSTONE_LAMP) {
-			return true;
-		}
-		if (stateThere.getBlock() == Blocks.LIT_REDSTONE_LAMP && replaceWith.getBlock() == Blocks.REDSTONE_LAMP) {
-			return true;
-		}
-		if (stateThere.getBlock() == Blocks.WATER || replaceWith.getBlock() == Blocks.FLOWING_WATER) {
-			return true;
-		}
-		if (stateThere.getBlock() == Blocks.FLOWING_WATER || replaceWith.getBlock() == Blocks.WATER) {
-			return true;
-		}
-		if (replaceWith.getBlock() == Blocks.TNT) {
-			return true;
-		}
 
-		ImmutableSet<BlockState> blacklist = TFConfig.getDisallowedBlocks();
-		return blacklist.contains(stateThere) || blacklist.contains(replaceWith);
+		return BLACKLIST.contains(stateThere.getBlock()) || BLACKLIST.contains(replaceWith.getBlock());
 	}
 
 	private void captureBlockData() {
@@ -298,6 +285,6 @@ public class TileEntityTFAntibuilder extends TileEntity implements ITickableTile
 	}
 
 	private boolean anyPlayerInRange() {
-		return this.world.isAnyPlayerWithinRangeAt(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D, this.requiredPlayerRange);
+		return this.world.isPlayerWithin(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D, this.requiredPlayerRange);
 	}
 }

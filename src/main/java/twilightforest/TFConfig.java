@@ -1,12 +1,10 @@
 package twilightforest;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
@@ -16,6 +14,7 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.world.WorldProviderTwilightForest;
 import twilightforest.world.feature.TFGenCaveStalactite;
 
@@ -121,7 +120,7 @@ public class TFConfig {
 
 		@Config.LangKey(config + "hollow_hill_stalactites")
 		@Config.Comment("Defines custom stalactites generated in hollow hills." +
-				"\nFormat is \"modid:block<:meta> size maxLength minHeight weight\", where the properties are:" +
+				"\nFormat is \"modid:block size maxLength minHeight weight\", where the properties are:" +
 				"\nSize - the maximum length of the stalactite relative to the space between hill floor and ceiling," +
 				"\nMax length - maximum length of a stalactite in blocks," +
 				"\nMin height - minimum space between the hill floor and the stalactite to let it generate," +
@@ -169,11 +168,11 @@ public class TFConfig {
 				String[] split = definition.split(" ");
 				if (split.length != 5) return false;
 
-				Optional<BlockState> state = parseBlockState(split[0]);
-				if (!state.isPresent()) return false;
+				Optional<Block> block = parseBlock(split[0]);
+				if (!block.isPresent()) return false;
 
 				try {
-					TFGenCaveStalactite.addStalactite(tier, state.get(),
+					TFGenCaveStalactite.addStalactite(tier, block.get(),
 							Float.parseFloat(split[1]),
 							Integer.parseInt(split[2]),
 							Integer.parseInt(split[3]),
@@ -251,7 +250,7 @@ public class TFConfig {
 	public static boolean disablePortalCreation = false;
 
 	@Config.LangKey(config + "portal_creator")
-	@Config.Comment("Registry String IDs of items used to create the Twilight Forest Portal. (domain:regname:meta) meta is optional.")
+	@Config.Comment("Registry String IDs of items used to create the Twilight Forest Portal. (domain:regname).")
 	public static String[] portalCreationItems = {"minecraft:diamond"};
 
 	@Config.LangKey(config + "check_portal_destination")
@@ -275,10 +274,6 @@ public class TFConfig {
 	@Config.LangKey(config + "uncrafting")
 	@Config.Comment("Disable the uncrafting function of the uncrafting table. Provided as an option when interaction with other mods produces exploitable recipes.")
 	public static boolean disableUncrafting = false;
-
-	@Config.LangKey(config + "antibuilder_blacklist")
-	@Config.Comment("Anti-Builder blacklist. (domain:block:meta) meta is optional.")
-	public static String[] antibuilderBlacklist = {"minecraft:bedrock", "tombmanygraves:grave_block"};
 
 	@Config.LangKey(config + "animate_trophyitem")
 	@Config.Comment("Rotate trophy heads on item model. Has no performance impact at all. For those who don't like fun.")
@@ -353,7 +348,7 @@ public class TFConfig {
 		public float tiltConstant = 22.5F;
 
 		@Config.LangKey(config + "loading_icon_stacks")
-		@Config.Comment("List of items to be used for the wobbling Loading Icon. (domain:item:meta) meta is optional.")
+		@Config.Comment("List of items to be used for the wobbling Loading Icon. (domain:item).")
 		public String[] loadingIconStacks = {
 				"twilightforest:experiment_115",
 				"twilightforest:magic_map",
@@ -394,7 +389,7 @@ public class TFConfig {
 			iconList.addAll(IMCHandler.getLoadingIconStacks());
 
 			for (String s : loadingIconStacks) {
-				parseItemStack(s, 0).ifPresent(iconList::add);
+				parseItemStack(s).ifPresent(iconList::add);
 			}
 
 			loadingScreenIcons = iconList.build();
@@ -414,28 +409,8 @@ public class TFConfig {
 	}
 
 	public static void build() {
-		loadAntiBuilderBlacklist();
 		buildPortalIngredient();
 		loadingScreen.loadLoadingScreenIcons();
-	}
-
-	private static void loadAntiBuilderBlacklist() {
-		ImmutableSet.Builder<BlockState> builder = ImmutableSet.builder();
-
-		builder.addAll(IMCHandler.getBlacklistedBlocks());
-
-		for (String s : antibuilderBlacklist) {
-			parseBlockState(s).ifPresent(builder::add);
-		}
-
-		disallowBreakingBlockList = builder.build();
-	}
-
-	@Config.Ignore
-	private static ImmutableSet<BlockState> disallowBreakingBlockList;
-
-	public static ImmutableSet<BlockState> getDisallowedBlocks() {
-		return disallowBreakingBlockList;
 	}
 
 	@Config.Ignore
@@ -446,7 +421,7 @@ public class TFConfig {
 		List<ItemStack> stacks = new ArrayList<>();
 
 		for (String s : portalCreationItems) {
-			parseItemStack(s, OreDictionary.WILDCARD_VALUE).ifPresent(stacks::add);
+			parseItemStack(s).ifPresent(stacks::add);
 		}
 
 		if (stacks.isEmpty()) {
@@ -456,47 +431,21 @@ public class TFConfig {
 		portalIngredient = Ingredient.fromStacks(stacks.toArray(new ItemStack[0]));
 	}
 
-	private static Optional<ItemStack> parseItemStack(String string, int defaultMeta) {
-
-		String[] split = string.split(":");
-		if (split.length < 2) return Optional.empty();
-
-		Item item = Item.REGISTRY.getObject(new ResourceLocation(split[0], split[1]));
-		if (item == null || item == Items.AIR) return Optional.empty();
-
-		int meta = defaultMeta;
-		if (split.length > 2) {
-			try {
-				meta = Integer.parseInt(split[2]);
-			} catch (NumberFormatException e) {
-				return Optional.empty();
-			}
+	private static Optional<ItemStack> parseItemStack(String string) {
+		ResourceLocation id = ResourceLocation.tryCreate(string);
+		if (id == null || !ForgeRegistries.ITEMS.containsKey(id)) {
+			return Optional.empty();
+		} else {
+			return Optional.of(new ItemStack(ForgeRegistries.ITEMS.getValue(id)));
 		}
-		if (meta < 0 || meta > Short.MAX_VALUE) return Optional.empty();
-
-		return Optional.of(new ItemStack(item, 1, meta));
 	}
 
-	private static Optional<BlockState> parseBlockState(String string) {
-
-		String[] split = string.split(":");
-		if (split.length < 2) return Optional.empty();
-
-		Block block = Block.REGISTRY.getObject(new ResourceLocation(split[0], split[1]));
-		if (block == Blocks.AIR) return Optional.empty();
-
-		if (split.length == 2) {
-			return Optional.of(block.getDefaultState());
-		}
-
-		int meta;
-		try {
-			meta = Integer.parseInt(split[2]);
-		} catch (NumberFormatException e) {
+	private static Optional<Block> parseBlock(String string) {
+		ResourceLocation id = ResourceLocation.tryCreate(string);
+		if (id == null || !ForgeRegistries.BLOCKS.containsKey(id)) {
 			return Optional.empty();
+		} else {
+			return Optional.of(ForgeRegistries.BLOCKS.getValue(id));
 		}
-		if (meta < 0 || meta > 15) return Optional.empty();
-
-		return Optional.of(block.getStateFromMeta(meta));
 	}
 }

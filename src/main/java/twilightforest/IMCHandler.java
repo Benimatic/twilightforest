@@ -10,14 +10,17 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fml.common.event.FMLInterModComms;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.InterModComms;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import twilightforest.world.feature.TFGenCaveStalactite;
 
 import java.util.function.Consumer;
 
+@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class IMCHandler {
 
-	private static final ImmutableSet.Builder<BlockState> BLACKLIST_BUILDER = ImmutableSet.builder();
 	private static final ImmutableList.Builder<BlockState> ORE_BLOCKS_BUILDER = ImmutableList.builder();
 	private static final ImmutableList.Builder<ItemStack> LOADING_ICONS_BUILDER = ImmutableList.builder();
 	private static final ImmutableMultimap.Builder<BlockState, BlockState> CRUMBLE_BLOCKS_BUILDER = ImmutableMultimap.builder();
@@ -27,12 +30,6 @@ public class IMCHandler {
 	 IMC NBT Format: You can send all of your requests as one big NBT list rather than needing to shotgun a ton of tiny NBT messages.
 	 <pre>
 	 root:
-		 • "Blacklist"                               - NBTTagList     : List of blockstates to blacklist from blockbreaking (antibuilders, naga, hydra, etc)
-			 • List Entry                            - CompoundNBT : An BlockState
-				 • "Name"                            - String         : Resource location of block. Is not allowed to be Air.
-				 • "Properties"                      - CompoundNBT : Blockstate Properties
-					 • [String Property Key]         - String         : Key is nameable to a property key, and the string value attached to it is value to property.
-
 		 • "Ore_Blocks"                              - NBTTagList     : List of blockstates to add to Hollow Hills and Ore Magnets - May change this to a function in the future
 			 • List Entry                            - CompoundNBT : An BlockState
 				 • "Name"                            - String         : Resource location of block. Is not allowed to be Air.
@@ -56,32 +53,32 @@ public class IMCHandler {
 							 • [String Property Key] - String         : Key is nameable to a property key, and the string value attached to it is value to property.
 	 </pre>
 	 */
+	@SubscribeEvent
+	public static void onIMC(InterModProcessEvent event) {
+		InterModComms.getMessages(TwilightForestMod.ID).forEach(message-> {
+			Object thing = message.getMessageSupplier().get();
+			if (thing instanceof CompoundNBT) {
+				CompoundNBT imcCompound = ((CompoundNBT) thing);
 
-	static void onIMC(FMLInterModComms.IMCEvent event) {
-		for (FMLInterModComms.IMCMessage message : event.getMessages()) {
-			if (message.isNBTMessage()) {
-				CompoundNBT imcCompound = message.getNBTValue();
-
-				readStatesFromTagList(imcCompound.getTagList("Blacklist", Constants.NBT.TAG_COMPOUND), BLACKLIST_BUILDER::add);
-				readFromTagList(imcCompound.getTagList("Ore_Blocks", Constants.NBT.TAG_COMPOUND), IMCHandler::handleOre);
-				readFromTagList(imcCompound.getTagList("Crumbling",  Constants.NBT.TAG_COMPOUND), IMCHandler::handleCrumble);
+				readFromTagList(imcCompound.getList("Ore_Blocks", Constants.NBT.TAG_COMPOUND), IMCHandler::handleOre);
+				readFromTagList(imcCompound.getList("Crumbling",  Constants.NBT.TAG_COMPOUND), IMCHandler::handleCrumble);
 			}
 
-			if (message.isItemStackMessage() && message.key.equals("Loading_Icon")) {
-				LOADING_ICONS_BUILDER.add(message.getItemStackValue());
+			if (thing instanceof ItemStack && message.getMethod().equals("Loading_Icon")) {
+				LOADING_ICONS_BUILDER.add((ItemStack) thing);
 			}
-		}
+		});
 	}
 
 	private static void readFromTagList(ListNBT list, Consumer<CompoundNBT> consumer) {
-		for (int i = 0; i < list.tagCount(); i++) {
-			consumer.accept(list.getCompoundTagAt(i));
+		for (int i = 0; i < list.size(); i++) {
+			consumer.accept(list.getCompound(i));
 		}
 	}
 
 	private static void readStatesFromTagList(ListNBT list, Consumer<BlockState> consumer) {
-		for (int i = 0; i < list.tagCount(); i++) {
-			BlockState state = NBTUtil.readBlockState(list.getCompoundTagAt(i));
+		for (int i = 0; i < list.size(); i++) {
+			BlockState state = NBTUtil.readBlockState(list.getCompound(i));
 			if (state.getBlock() != Blocks.AIR) {
 				consumer.accept(state);
 			}
@@ -91,7 +88,7 @@ public class IMCHandler {
 	private static void handleCrumble(CompoundNBT nbt) {
 		BlockState key = NBTUtil.readBlockState(nbt);
 		if (key.getBlock() != Blocks.AIR) {
-			readStatesFromTagList(nbt.getTagList("Crumbling", Constants.NBT.TAG_COMPOUND), value -> CRUMBLE_BLOCKS_BUILDER.put(key, value));
+			readStatesFromTagList(nbt.getList("Crumbling", Constants.NBT.TAG_COMPOUND), value -> CRUMBLE_BLOCKS_BUILDER.put(key, value));
 		}
 	}
 
@@ -119,10 +116,6 @@ public class IMCHandler {
 
 	private static float readFloat(CompoundNBT tag, String key, float defaultValue) {
 		return tag.contains(key, Constants.NBT.TAG_ANY_NUMERIC) ? tag.getFloat(key) : defaultValue;
-	}
-
-	public static ImmutableSet<BlockState> getBlacklistedBlocks() {
-		return BLACKLIST_BUILDER.build();
 	}
 
 	public static ImmutableList<BlockState> getOreBlocks() {

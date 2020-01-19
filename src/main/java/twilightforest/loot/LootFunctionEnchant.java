@@ -60,19 +60,19 @@ public class LootFunctionEnchant extends ILootFunction {
 			stack.getTag().setTag(enchantedCompoundKey, new ListNBT());
 		}
 
-		ListNBT list = stack.getTag().getTagList(enchantedCompoundKey, Constants.NBT.TAG_COMPOUND);
+		ListNBT list = stack.getTag().getList(enchantedCompoundKey, Constants.NBT.TAG_COMPOUND);
 
-		for (int i = 0; i < list.tagCount(); i++) {
-			CompoundNBT existing = list.getCompoundTagAt(i);
+		for (int i = 0; i < list.size(); i++) {
+			CompoundNBT existing = list.getCompound(i);
 			if (existing.getShort("id") == Enchantment.getEnchantmentID(e)) {
-				existing.setShort("lvl", level);
+				existing.putShort("lvl", level);
 				return;
 			}
 		}
 
 		CompoundNBT newCmp = new CompoundNBT();
-		newCmp.setShort("id", (short) Enchantment.getEnchantmentID(e));
-		newCmp.setShort("lvl", level);
+		newCmp.putShort("id", (short) Enchantment.getEnchantmentID(e));
+		newCmp.putShort("lvl", level);
 		list.appendTag(newCmp);
 	}
 

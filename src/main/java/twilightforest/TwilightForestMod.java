@@ -10,6 +10,7 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
@@ -157,11 +158,6 @@ public class TwilightForestMod {
 		ItemTFArcticArmor.initArmorModel();
 		ItemTFFieryArmor.initArmorModel();
 	}
-
-	/*@EventHandler // TODO: look into
-	public void onIMC(FMLInterModComms.IMCEvent event) {
-		IMCHandler.onIMC(event);
-	}*/
 
 	public void startServer(FMLServerStartingEvent event) {
 		// event.registerServerCommand(new CommandTF()); // TODO: Brigadier

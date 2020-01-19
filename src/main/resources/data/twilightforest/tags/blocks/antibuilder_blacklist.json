@@ -1,0 +1,14 @@
+{
+  "__comment": "Blocks added to this tag cannot be broken nor placed by the antibuilder",
+  "replace": false,
+  "values": [
+    "minecraft:bedrock",
+    "minecraft:flowing_water",
+    "minecraft:redstone_lamp",
+    "minecraft:tnt",
+    "minecraft:water"
+  ],
+  "optional": [
+    "tombmanygraves:grave_block"
+  ]
+}
