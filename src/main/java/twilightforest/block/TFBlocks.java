@@ -153,7 +153,9 @@ public class TFBlocks {
 	public static final RegistryObject<Block> castle_brick_mossy         = BLOCKS.register("castle_brick_mossy", () -> new BlockTFCastleBlock(MaterialColor.QUARTZ));
 	public static final RegistryObject<Block> castle_brick_frame         = BLOCKS.register("castle_brick_frame", () -> new BlockTFCastleBlock(MaterialColor.QUARTZ));
 	public static final RegistryObject<Block> castle_pillar_encased      = BLOCKS.register("castle_pillar_encased", () -> new BlockTFCastlePillar());
+	public static final RegistryObject<Block> castle_pillar_encased_tile = BLOCKS.register("castle_pillar_encased_tile", () -> new BlockTFCastlePillar());
 	public static final RegistryObject<Block> castle_pillar_bold         = BLOCKS.register("castle_pillar_bold", () -> new BlockTFCastlePillar());
+	public static final RegistryObject<Block> castle_pillar_bold_tile    = BLOCKS.register("castle_pillar_bold_tile", () -> new BlockTFCastlePillar());
 	public static final RegistryObject<Block> castle_stairs_encased      = BLOCKS.register("castle_stairs_encased", () -> new BlockTFCastleStairs(castle_pillar_encased.get().getDefaultState()));
 	public static final RegistryObject<Block> castle_stairs_bold         = BLOCKS.register("castle_stairs_bold", () -> new BlockTFCastleStairs(castle_pillar_bold.get().getDefaultState()));
 	public static final RegistryObject<Block> castle_rune_brick_pink     = BLOCKS.register("castle_rune_brick_pink", () -> new BlockTFCastleMagic());
