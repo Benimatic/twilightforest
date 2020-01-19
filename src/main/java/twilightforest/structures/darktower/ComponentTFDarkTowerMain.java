@@ -1161,7 +1161,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 					treeGen = new WorldGenTrees(false);
 					break;
 				case 1:
-					final BlockState leaves = Blocks.LEAVES.getDefaultState().with(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.JUNGLE).with(BlockLeaves.CHECK_DECAY, false);
+					final BlockState leaves = Blocks.LEAVES.getDefaultState().with(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.JUNGLE).with(LeavesBlock.CHECK_DECAY, false);
 					final BlockState wood = Blocks.LOG.getDefaultState().with(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE);
 
 					// jungle tree
@@ -1191,7 +1191,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 
 	private void placeRandomPlant(World world, Random decoRNG, int x, int y, int z, Rotation rotation, MutableBoundingBox sbb) {
 		int potMeta = decoRNG.nextInt(15); // this seems to be the only way to set the flower pre-placement
-		final BlockState flowerPotState = Blocks.FLOWER_POT.getDefaultState().with(BlockFlowerPot.LEGACY_DATA, potMeta);
+		final BlockState flowerPotState = Blocks.FLOWER_POT.getDefaultState().with(FlowerPotBlock.LEGACY_DATA, potMeta);
 		setBlockStateRotated(world, flowerPotState, x, y, z, rotation, sbb);
 	}
 
@@ -1230,9 +1230,9 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 	 */
 	protected void makeTimberBeams(World world, Random rand, MutableBoundingBox sbb, Rotation rotation, int y, boolean isBottom, boolean isTop, int top) {
 		BlockState beamID = TFBlocks.twilight_log.getDefaultState();
-		BlockState beamStateNS = beamID.with(BlockLog.LOG_AXIS, BlockLog.EnumAxis.Z);
-		BlockState beamStateUD = beamID.with(BlockLog.LOG_AXIS, BlockLog.EnumAxis.Y);
-		BlockState beamStateEW = beamID.with(BlockLog.LOG_AXIS, BlockLog.EnumAxis.X);
+		BlockState beamStateNS = beamID.with(LogBlock.LOG_AXIS, LogBlock.EnumAxis.Z);
+		BlockState beamStateUD = beamID.with(LogBlock.LOG_AXIS, LogBlock.EnumAxis.Y);
+		BlockState beamStateEW = beamID.with(LogBlock.LOG_AXIS, LogBlock.EnumAxis.X);
 
 		// three beams going n/s
 		for (int z = 1; z < size - 1; z++) {

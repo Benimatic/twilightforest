@@ -1,13 +1,13 @@
 package twilightforest.client.renderer;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.EntityRenderer;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.GLAllocation;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.RenderGlobal;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -35,7 +35,7 @@ public class TFSkyRenderer extends IRenderHandler {
 	@SuppressWarnings("unused")
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void render(float partialTicks, WorldClient world, Minecraft mc) {
+	public void render(float partialTicks, ClientWorld world, Minecraft mc) {
 
 		// [VanillaCopy] Excerpt from RenderGlobal.loadRenderers as we don't get a callback
 		boolean flag = this.vboEnabled;
@@ -44,8 +44,8 @@ public class TFSkyRenderer extends IRenderHandler {
 			generateStars();
 		}
 
-		RenderGlobal rg = mc.renderGlobal;
-		int pass = EntityRenderer.anaglyphEnable ? EntityRenderer.anaglyphField : 2;
+		WorldRenderer rg = mc.renderGlobal;
+		int pass = GameRenderer.anaglyphEnable ? GameRenderer.anaglyphField : 2;
 
 		GlStateManager.disableTexture2D();
 		Vec3d vec3d = world.getSkyColor(mc.getRenderViewEntity(), partialTicks);

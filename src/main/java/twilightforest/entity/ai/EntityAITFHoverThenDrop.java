@@ -1,6 +1,6 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.boss.EntityTFSnowQueen;
 import twilightforest.entity.boss.EntityTFSnowQueen.Phase;
@@ -30,7 +30,7 @@ public class EntityAITFHoverThenDrop extends EntityAITFHoverBase<EntityTFSnowQue
 
 	@Override
 	public boolean shouldExecute() {
-		EntityLivingBase target = this.attacker.getAttackTarget();
+		LivingEntity target = this.attacker.getAttackTarget();
 
 		if (target == null) {
 			return false;
@@ -45,7 +45,7 @@ public class EntityAITFHoverThenDrop extends EntityAITFHoverBase<EntityTFSnowQue
 
 	@Override
 	public boolean shouldContinueExecuting() {
-		EntityLivingBase target = this.attacker.getAttackTarget();
+		LivingEntity target = this.attacker.getAttackTarget();
 
 		if (target == null || !target.isAlive()) {
 			return false;
@@ -104,7 +104,7 @@ public class EntityAITFHoverThenDrop extends EntityAITFHoverBase<EntityTFSnowQue
 			this.attacker.addVelocity(velX, velY, velZ);
 
 			// look at target
-			EntityLivingBase target = this.attacker.getAttackTarget();
+			LivingEntity target = this.attacker.getAttackTarget();
 			if (target != null) {
 				this.attacker.faceEntity(target, 30.0F, 30.0F);
 				this.attacker.getLookController().setLookPositionWithEntity(target, 30.0F, 30.0F);
@@ -120,7 +120,7 @@ public class EntityAITFHoverThenDrop extends EntityAITFHoverBase<EntityTFSnowQue
 	}
 
 	@Override
-	protected void makeNewHoverSpot(EntityLivingBase target) {
+	protected void makeNewHoverSpot(LivingEntity target) {
 		super.makeNewHoverSpot(target);
 		this.dropY = target.posY - 1F;
 		this.seekTimer = 0;

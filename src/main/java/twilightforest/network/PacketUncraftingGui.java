@@ -1,8 +1,8 @@
 package twilightforest.network;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.Container;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.Container;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -36,7 +36,7 @@ public class PacketUncraftingGui implements IMessage {
         @SuppressWarnings("Convert2Lambda")
         @Override
         public IMessage onMessage(PacketUncraftingGui message, MessageContext ctx) {
-            EntityPlayerMP player = ctx.getServerHandler().player;
+            ServerPlayerEntity player = ctx.getServerHandler().player;
 
             player.getServerWorld().addScheduledTask(new Runnable() {
                 @Override

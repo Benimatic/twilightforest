@@ -5,12 +5,12 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TranslationTextComponent;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.shield.IShieldCapability;
 import twilightforest.world.ChunkGeneratorTFBase;
@@ -79,7 +79,7 @@ public class CommandTF extends CommandBase {
 
 	private static void changeStructureActivity(ICommandSender sender, boolean flag) throws CommandException {
 		// activate current feature
-		EntityPlayerMP player = getCommandSenderAsPlayer(sender);
+		ServerPlayerEntity player = getCommandSenderAsPlayer(sender);
 
 		if (!TFWorld.isTwilightForest(player.world)) {
 			throw new CommandException("commands.tffeature.not_in_twilight_forest");
@@ -90,7 +90,7 @@ public class CommandTF extends CommandBase {
 
 		BlockPos pos = new BlockPos(player);
 		if (chunkGenerator != null && chunkGenerator.isBlockInStructureBB(pos)) {
-			sender.sendMessage(new TextComponentTranslation("commands.tffeature.structure.conquer.update", chunkGenerator.isStructureConquered(pos), flag));
+			sender.sendMessage(new TranslationTextComponent("commands.tffeature.structure.conquer.update", chunkGenerator.isStructureConquered(pos), flag));
 			chunkGenerator.setStructureConquered(pos, flag);
 		} else {
 			throw new CommandException("commands.tffeature.structure.required");
@@ -112,7 +112,7 @@ public class CommandTF extends CommandBase {
 		CENTER {
 			@Override
 			protected void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-				EntityPlayerMP player = getCommandSenderAsPlayer(sender);
+				ServerPlayerEntity player = getCommandSenderAsPlayer(sender);
 
 				int dx = MathHelper.floor(player.posX);
 				//int dy = MathHelper.floor(player.posY);
@@ -121,8 +121,8 @@ public class CommandTF extends CommandBase {
 				BlockPos cc = TFFeature.getNearestCenterXYZ(dx >> 4, dz >> 4, player.world);
 
 				boolean fc = TFFeature.isInFeatureChunk(player.world, dx, dz);
-				sender.sendMessage(new TextComponentTranslation("commands.tffeature.center", cc));
-				sender.sendMessage(new TextComponentTranslation("commands.tffeature.chunk", fc));
+				sender.sendMessage(new TranslationTextComponent("commands.tffeature.center", cc));
+				sender.sendMessage(new TranslationTextComponent("commands.tffeature.chunk", fc));
 			}
 		},
 		CONQUER {
@@ -136,7 +136,7 @@ public class CommandTF extends CommandBase {
 
 			@Override
 			protected void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-				EntityPlayerMP player = getCommandSenderAsPlayer(sender);
+				ServerPlayerEntity player = getCommandSenderAsPlayer(sender);
 
 				if (!TFWorld.isTwilightForest(player.world)) {
 					throw new CommandException("commands.tffeature.not_in_twilight_forest");
@@ -146,14 +146,14 @@ public class CommandTF extends CommandBase {
 
 				// nearest feature
 				TFFeature nearbyFeature = TFFeature.getFeatureAt(pos.getX(), pos.getZ(), player.world);
-				sender.sendMessage(new TextComponentTranslation("commands.tffeature.nearest", nearbyFeature.name));
+				sender.sendMessage(new TranslationTextComponent("commands.tffeature.nearest", nearbyFeature.name));
 
 				// are you in a structure?
 				ChunkGeneratorTFBase chunkGenerator = TFWorld.getChunkGenerator(player.world);
 				if (chunkGenerator != null && chunkGenerator.isBlockInStructureBB(pos)) {
-					sender.sendMessage(new TextComponentTranslation("commands.tffeature.structure.inside"));
+					sender.sendMessage(new TranslationTextComponent("commands.tffeature.structure.inside"));
 
-					sender.sendMessage(new TextComponentTranslation("commands.tffeature.structure.conquer.status", chunkGenerator.isStructureConquered(pos)));
+					sender.sendMessage(new TranslationTextComponent("commands.tffeature.structure.conquer.status", chunkGenerator.isStructureConquered(pos)));
 					// are you in a room?
 
 					// what is the spawn list
@@ -163,7 +163,7 @@ public class CommandTF extends CommandBase {
 //							sender.sendMessage(new TextComponentTranslation(entry.toString()));
 //						}
 				} else {
-					sender.sendMessage(new TextComponentTranslation("commands.tffeature.structure.outside"));
+					sender.sendMessage(new TranslationTextComponent("commands.tffeature.structure.outside"));
 				}
 			}
 		},
@@ -199,12 +199,12 @@ public class CommandTF extends CommandBase {
 				BlockPos blockpos = sender.getEntityWorld().findNearestStructure(s, sender.getPosition(), false);
 
 				if (blockpos != null) {
-					sender.sendMessage(new TextComponentTranslation("commands.locate.success", s, blockpos.getX(), blockpos.getZ()));
+					sender.sendMessage(new TranslationTextComponent("commands.locate.success", s, blockpos.getX(), blockpos.getZ()));
 
 				} else {
 					blockpos = sender.getEntityWorld().findNearestStructure("twilightforest:" + s, sender.getPosition(), false);
 					if (blockpos != null) {
-						sender.sendMessage(new TextComponentTranslation("commands.locate.success", s, blockpos.getX(), blockpos.getZ()));
+						sender.sendMessage(new TranslationTextComponent("commands.locate.success", s, blockpos.getX(), blockpos.getZ()));
 					} else throw new CommandException("commands.locate.failure", s);
 				}
 			}
@@ -231,7 +231,7 @@ public class CommandTF extends CommandBase {
 
 				if (args.length < 4) return;
 
-				EntityLivingBase entity = getEntity(server, sender, args[1], EntityLivingBase.class);
+				LivingEntity entity = getEntity(server, sender, args[1], LivingEntity.class);
 				IShieldCapability cap = entity.getCapability(CapabilityList.SHIELDS, null);
 
 				if (cap != null) {

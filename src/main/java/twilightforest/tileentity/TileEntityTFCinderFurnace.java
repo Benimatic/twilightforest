@@ -1,7 +1,7 @@
 package twilightforest.tileentity;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockLog;
+import net.minecraft.block.LogBlock;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Items;
 import net.minecraft.tileentity.FurnaceTileEntity;
@@ -9,7 +9,6 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -113,15 +112,15 @@ public class TileEntityTFCinderFurnace extends FurnaceTileEntity {
 	/**
 	 * What meta should we set the log block with the specified offset to?
 	 */
-	private BlockLog.EnumAxis getCinderFacing(int dx, int dy, int dz) {
+	private LogBlock.EnumAxis getCinderFacing(int dx, int dy, int dz) {
 		if (dz == 0 && dx != 0) {
-			return dy == 0 ? BlockLog.EnumAxis.X : BlockLog.EnumAxis.Z;
+			return dy == 0 ? LogBlock.EnumAxis.X : LogBlock.EnumAxis.Z;
 		} else if (dx == 0 && dz != 0) {
-			return dy == 0 ? BlockLog.EnumAxis.Z : BlockLog.EnumAxis.X;
+			return dy == 0 ? LogBlock.EnumAxis.Z : LogBlock.EnumAxis.X;
 		} else if (dx == 0 && dz == 0) {
-			return BlockLog.EnumAxis.Y;
+			return LogBlock.EnumAxis.Y;
 		} else {
-			return dy == 0 ? BlockLog.EnumAxis.Y : BlockLog.EnumAxis.NONE;
+			return dy == 0 ? LogBlock.EnumAxis.Y : LogBlock.EnumAxis.NONE;
 		}
 
 	}

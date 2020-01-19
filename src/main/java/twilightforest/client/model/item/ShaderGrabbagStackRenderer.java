@@ -5,7 +5,10 @@ import net.minecraft.client.renderer.BufferBuilder;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.*;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.model.ModelResourceLocation;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -21,7 +24,7 @@ import twilightforest.client.TFClientEvents;
 import twilightforest.client.shader.ShaderManager;
 import twilightforest.compat.ie.ItemTFShaderGrabbag;
 
-public class ShaderGrabbagStackRenderer extends TileEntitySpecialRenderer<ShaderGrabbagStackRenderer.DummyTile> {
+public class ShaderGrabbagStackRenderer extends TileEntityRenderer<ShaderGrabbagStackRenderer.DummyTile> {
 
     public static class DummyTile extends TileEntity {}
 

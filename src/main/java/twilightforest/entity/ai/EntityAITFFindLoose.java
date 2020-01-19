@@ -1,13 +1,13 @@
 package twilightforest.entity.ai;
 
 import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.Item;
 
 import java.util.List;
 
-public class EntityAITFFindLoose extends EntityAIBase {
+public class EntityAITFFindLoose extends Goal {
 
 	/**
 	 * The entity using this AI that is tempted by the player.
@@ -19,7 +19,7 @@ public class EntityAITFFindLoose extends EntityAIBase {
 
 	private int delayTemptCounter;
 
-	private EntityItem temptingItem;
+	private ItemEntity temptingItem;
 
 	public EntityAITFFindLoose(CreatureEntity entityCreature, float speed, Item item) {
 		this.temptedEntity = entityCreature;
@@ -36,9 +36,9 @@ public class EntityAITFFindLoose extends EntityAIBase {
 		} else {
 			this.temptingItem = null;
 
-			List<EntityItem> nearbyItems = this.temptedEntity.world.getEntitiesWithinAABB(EntityItem.class, this.temptedEntity.getBoundingBox().grow(16.0D, 4.0D, 16.0D));
+			List<ItemEntity> nearbyItems = this.temptedEntity.world.getEntitiesWithinAABB(ItemEntity.class, this.temptedEntity.getBoundingBox().grow(16.0D, 4.0D, 16.0D));
 
-			for (EntityItem itemNearby : nearbyItems) {
+			for (ItemEntity itemNearby : nearbyItems) {
 				if (itemNearby.getItem().getItem() == item && itemNearby.isAlive()) {
 					this.temptingItem = itemNearby;
 					break;

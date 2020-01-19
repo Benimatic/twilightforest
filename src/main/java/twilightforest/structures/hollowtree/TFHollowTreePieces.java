@@ -1,18 +1,18 @@
 package twilightforest.structures.hollowtree;
 
-import net.minecraft.world.gen.structure.MapGenStructureIO;
+import net.minecraft.world.gen.feature.StructureIO;
 
 public class TFHollowTreePieces {
 
 	public static void registerPieces() {
-		MapGenStructureIO.registerStructure(StructureTFHollowTreeStart.class, "TFHTLSt");
+		StructureIO.registerStructure(StructureTFHollowTreeStart.class, "TFHTLSt");
 
-		MapGenStructureIO.registerStructureComponent(ComponentTFHollowTreeLargeBranch.class, "TFHTLB");
-		MapGenStructureIO.registerStructureComponent(ComponentTFHollowTreeMedBranch.class, "TFHTMB");
-		MapGenStructureIO.registerStructureComponent(ComponentTFHollowTreeSmallBranch.class, "TFHTSB");
-		MapGenStructureIO.registerStructureComponent(ComponentTFHollowTreeTrunk.class, "TFHTTr");
-		MapGenStructureIO.registerStructureComponent(ComponentTFHollowTreeRoot.class, "TFHTRo");
-		MapGenStructureIO.registerStructureComponent(ComponentTFHollowTreeLeafDungeon.class, "TFHTLD");
+		StructureIO.registerStructureComponent(ComponentTFHollowTreeLargeBranch.class, "TFHTLB");
+		StructureIO.registerStructureComponent(ComponentTFHollowTreeMedBranch.class, "TFHTMB");
+		StructureIO.registerStructureComponent(ComponentTFHollowTreeSmallBranch.class, "TFHTSB");
+		StructureIO.registerStructureComponent(ComponentTFHollowTreeTrunk.class, "TFHTTr");
+		StructureIO.registerStructureComponent(ComponentTFHollowTreeRoot.class, "TFHTRo");
+		StructureIO.registerStructureComponent(ComponentTFHollowTreeLeafDungeon.class, "TFHTLD");
 
 	}
 }

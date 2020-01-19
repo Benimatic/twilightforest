@@ -3,10 +3,9 @@ package twilightforest.client.model.entity;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.model.ModelBook;
 import net.minecraft.client.renderer.entity.model.RendererModel;
-import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.entity.model.BookModel;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.MathHelper;
 
 //TODO: Who's up for ATs?
@@ -61,7 +60,7 @@ public class ModelTFDeathTome extends BookModel {
 	}
 
 	@Override
-	public void setLivingAnimations(EntityLivingBase entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+	public void setLivingAnimations(LivingEntity entity, float limbSwing, float limbSwingAmount, float partialTicks) {
 		float bounce = entity.ticksExisted + partialTicks;
 		float open = 0.9f;
 		float flipRight = 0.4f;

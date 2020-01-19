@@ -2,7 +2,7 @@ package twilightforest.network;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
-import net.minecraft.world.WorldProvider;
+import net.minecraft.world.dimension.Dimension;
 import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -22,7 +22,7 @@ public class PacketStructureProtectionClear implements IMessage {
 		@Override
 		public IMessage onMessage(PacketStructureProtectionClear message, MessageContext ctx) {
 			Minecraft.getInstance().addScheduledTask(() -> {
-				WorldProvider provider = Minecraft.getInstance().world.provider;
+				Dimension provider = Minecraft.getInstance().world.provider;
 
 				// add weather box if needed
 				if (provider instanceof WorldProviderTwilightForest) {

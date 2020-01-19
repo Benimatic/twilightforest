@@ -1,18 +1,18 @@
 package twilightforest.item.recipe;
 
 import com.google.common.collect.Lists;
-import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.RecipesArmorDyes;
+import net.minecraft.item.crafting.ArmorDyeRecipe;
 import net.minecraft.world.World;
 import twilightforest.item.ItemTFArcticArmor;
 
 import java.util.List;
 
 /* Copied from net.minecraft.item.crafting.RecipesArmorDyes with a bit of modification */
-public class TFArmorDyeingRecipe extends RecipesArmorDyes {
+public class TFArmorDyeingRecipe extends ArmorDyeRecipe {
     @Override
-    public boolean matches(InventoryCrafting inv, World worldIn) {
+    public boolean matches(CraftingInventory inv, World worldIn) {
         ItemStack itemstack = ItemStack.EMPTY;
         List<ItemStack> list = Lists.<ItemStack>newArrayList();
 
@@ -36,7 +36,7 @@ public class TFArmorDyeingRecipe extends RecipesArmorDyes {
     }
 
     @Override
-    public ItemStack getCraftingResult(InventoryCrafting inv) {
+    public ItemStack getCraftingResult(CraftingInventory inv) {
         ItemStack stackAccumulator = ItemStack.EMPTY;
         int[] aint = new int[3];
         int i = 0;

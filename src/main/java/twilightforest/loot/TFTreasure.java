@@ -1,12 +1,12 @@
 package twilightforest.loot;
 
 import net.minecraft.block.Blocks;
+import net.minecraft.tileentity.ChestTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootTableList;
+import net.minecraft.world.storage.loot.LootTables;
 import net.minecraft.world.storage.loot.conditions.LootConditionManager;
 import net.minecraft.world.storage.loot.functions.LootFunctionManager;
 import twilightforest.TwilightForestMod;
@@ -50,49 +50,49 @@ public class TFTreasure {
 
 	public static void init() {
 		// Preload all entity tables
-		LootTableList.register(EntityTFArmoredGiant.LOOT_TABLE);
-		LootTableList.register(EntityTFBird.LOOT_TABLE);
-		LootTableList.register(EntityTFBighorn.SHEARED_LOOT_TABLE);
-		EntityTFBighorn.COLORED_LOOT_TABLES.values().forEach(LootTableList::register);
-		LootTableList.register(EntityTFBlockGoblin.LOOT_TABLE);
-		LootTableList.register(EntityTFBoar.LOOT_TABLE);
-		LootTableList.register(EntityTFBunny.LOOT_TABLE);
-		LootTableList.register(EntityTFDeathTome.LOOT_TABLE);
-		LootTableList.register(EntityTFDeathTome.HURT_LOOT_TABLE);
-		LootTableList.register(EntityTFDeer.LOOT_TABLE);
-		LootTableList.register(EntityTFFireBeetle.LOOT_TABLE);
-		LootTableList.register(EntityTFGiantMiner.LOOT_TABLE);
-		LootTableList.register(EntityTFGoblinKnightUpper.LOOT_TABLE);
-		LootTableList.register(EntityTFHelmetCrab.LOOT_TABLE);
-		LootTableList.register(EntityTFHydra.LOOT_TABLE);
-		LootTableList.register(EntityTFIceCrystal.LOOT_TABLE);
-		LootTableList.register(EntityTFIceExploder.LOOT_TABLE);
-		LootTableList.register(EntityTFIceShooter.LOOT_TABLE);
-		LootTableList.register(EntityTFKobold.LOOT_TABLE);
-		LootTableList.register(EntityTFLich.LOOT_TABLE);
-		LootTableList.register(EntityTFMazeSlime.LOOT_TABLE);
-		LootTableList.register(EntityTFMiniGhast.LOOT_TABLE);
-		LootTableList.register(EntityTFMinoshroom.LOOT_TABLE);
-		LootTableList.register(EntityTFMinotaur.LOOT_TABLE);
-		LootTableList.register(EntityTFNaga.LOOT_TABLE);
-		LootTableList.register(EntityTFPenguin.LOOT_TABLE);
-		LootTableList.register(EntityTFQuestRam.LOOT_TABLE);
-		LootTableList.register(EntityTFQuestRam.REWARD_LOOT_TABLE);
-		LootTableList.register(EntityTFRaven.LOOT_TABLE);
-		LootTableList.register(EntityTFRedcap.LOOT_TABLE);
-		LootTableList.register(EntityTFSkeletonDruid.LOOT_TABLE);
-		LootTableList.register(EntityTFSlimeBeetle.LOOT_TABLE);
-		LootTableList.register(EntityTFSnowGuardian.LOOT_TABLE);
-		LootTableList.register(EntityTFSnowQueen.LOOT_TABLE);
-		LootTableList.register(EntityTFSquirrel.LOOT_TABLE);
-		LootTableList.register(EntityTFTinyBird.LOOT_TABLE);
-		LootTableList.register(EntityTFTowerGolem.LOOT_TABLE);
-		LootTableList.register(EntityTFTowerTermite.LOOT_TABLE);
-		LootTableList.register(EntityTFTroll.LOOT_TABLE);
-		LootTableList.register(EntityTFWinterWolf.LOOT_TABLE);
-		LootTableList.register(EntityTFWraith.LOOT_TABLE);
-		LootTableList.register(EntityTFYeti.LOOT_TABLE);
-		LootTableList.register(EntityTFYetiAlpha.LOOT_TABLE);
+		LootTables.register(EntityTFArmoredGiant.LOOT_TABLE);
+		LootTables.register(EntityTFBird.LOOT_TABLE);
+		LootTables.register(EntityTFBighorn.SHEARED_LOOT_TABLE);
+		EntityTFBighorn.COLORED_LOOT_TABLES.values().forEach(LootTables::register);
+		LootTables.register(EntityTFBlockGoblin.LOOT_TABLE);
+		LootTables.register(EntityTFBoar.LOOT_TABLE);
+		LootTables.register(EntityTFBunny.LOOT_TABLE);
+		LootTables.register(EntityTFDeathTome.LOOT_TABLE);
+		LootTables.register(EntityTFDeathTome.HURT_LOOT_TABLE);
+		LootTables.register(EntityTFDeer.LOOT_TABLE);
+		LootTables.register(EntityTFFireBeetle.LOOT_TABLE);
+		LootTables.register(EntityTFGiantMiner.LOOT_TABLE);
+		LootTables.register(EntityTFGoblinKnightUpper.LOOT_TABLE);
+		LootTables.register(EntityTFHelmetCrab.LOOT_TABLE);
+		LootTables.register(EntityTFHydra.LOOT_TABLE);
+		LootTables.register(EntityTFIceCrystal.LOOT_TABLE);
+		LootTables.register(EntityTFIceExploder.LOOT_TABLE);
+		LootTables.register(EntityTFIceShooter.LOOT_TABLE);
+		LootTables.register(EntityTFKobold.LOOT_TABLE);
+		LootTables.register(EntityTFLich.LOOT_TABLE);
+		LootTables.register(EntityTFMazeSlime.LOOT_TABLE);
+		LootTables.register(EntityTFMiniGhast.LOOT_TABLE);
+		LootTables.register(EntityTFMinoshroom.LOOT_TABLE);
+		LootTables.register(EntityTFMinotaur.LOOT_TABLE);
+		LootTables.register(EntityTFNaga.LOOT_TABLE);
+		LootTables.register(EntityTFPenguin.LOOT_TABLE);
+		LootTables.register(EntityTFQuestRam.LOOT_TABLE);
+		LootTables.register(EntityTFQuestRam.REWARD_LOOT_TABLE);
+		LootTables.register(EntityTFRaven.LOOT_TABLE);
+		LootTables.register(EntityTFRedcap.LOOT_TABLE);
+		LootTables.register(EntityTFSkeletonDruid.LOOT_TABLE);
+		LootTables.register(EntityTFSlimeBeetle.LOOT_TABLE);
+		LootTables.register(EntityTFSnowGuardian.LOOT_TABLE);
+		LootTables.register(EntityTFSnowQueen.LOOT_TABLE);
+		LootTables.register(EntityTFSquirrel.LOOT_TABLE);
+		LootTables.register(EntityTFTinyBird.LOOT_TABLE);
+		LootTables.register(EntityTFTowerGolem.LOOT_TABLE);
+		LootTables.register(EntityTFTowerTermite.LOOT_TABLE);
+		LootTables.register(EntityTFTroll.LOOT_TABLE);
+		LootTables.register(EntityTFWinterWolf.LOOT_TABLE);
+		LootTables.register(EntityTFWraith.LOOT_TABLE);
+		LootTables.register(EntityTFYeti.LOOT_TABLE);
+		LootTables.register(EntityTFYetiAlpha.LOOT_TABLE);
 
 		LootFunctionManager.registerFunction(new LootFunctionEnchant.Serializer());
 		LootFunctionManager.registerFunction(new LootFunctionModItemSwap.Serializer());
@@ -107,20 +107,20 @@ public class TFTreasure {
 		lootTable = TwilightForestMod.prefix(String.format("structures/%s/%s", path, path));
 
 		// only preload the primary table, the subtables will be loaded on-demand the first time the primary table is used
-		LootTableList.register(lootTable);
+		LootTables.register(lootTable);
 	}
 
 	public void generateChest(World world, BlockPos pos, boolean trapped) {
 		world.setBlockState(pos, trapped ? Blocks.TRAPPED_CHEST.getDefaultState() : Blocks.CHEST.getDefaultState(), 2);
 		TileEntity te = world.getTileEntity(pos);
-		if (te instanceof TileEntityChest) {
-			((TileEntityChest) te).setLootTable(lootTable, world.getSeed() * pos.getX() + pos.getY() ^ pos.getZ());
+		if (te instanceof ChestTileEntity) {
+			((ChestTileEntity) te).setLootTable(lootTable, world.getSeed() * pos.getX() + pos.getY() ^ pos.getZ());
 		}
 	}
 
 	public void generateChestContents(World world, BlockPos pos) {
 		TileEntity te = world.getTileEntity(pos);
-		if (te instanceof TileEntityChest)
-			((TileEntityChest) te).setLootTable(lootTable, world.getSeed() * pos.getX() + pos.getY() ^ pos.getZ());
+		if (te instanceof ChestTileEntity)
+			((ChestTileEntity) te).setLootTable(lootTable, world.getSeed() * pos.getX() + pos.getY() ^ pos.getZ());
 	}
 }

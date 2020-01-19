@@ -1,8 +1,7 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
 import twilightforest.entity.passive.EntityTFQuestRam;
@@ -19,7 +18,7 @@ public class EntityAITFEatLoose extends Goal {
 	private final Item temptID;
 
 	private int delayTemptCounter;
-	private EntityItem temptingItem;
+	private ItemEntity temptingItem;
 
 	//TODO: Item to Ingredient
 	public EntityAITFEatLoose(EntityTFQuestRam entityTFQuestRam, Item blockID) {
@@ -36,9 +35,9 @@ public class EntityAITFEatLoose extends Goal {
 		} else {
 			this.temptingItem = null;
 
-			List<EntityItem> nearbyItems = this.temptedQuestRam.world.getEntitiesWithinAABB(EntityItem.class, this.temptedQuestRam.getBoundingBox().grow(2.0D, 2.0D, 2.0D));
+			List<ItemEntity> nearbyItems = this.temptedQuestRam.world.getEntitiesWithinAABB(ItemEntity.class, this.temptedQuestRam.getBoundingBox().grow(2.0D, 2.0D, 2.0D));
 
-			for (EntityItem itemNearby : nearbyItems) {
+			for (ItemEntity itemNearby : nearbyItems) {
 				DyeColor color = DyeColor.byMetadata(itemNearby.getItem().getItemDamage());
 				if (itemNearby.getItem().getItem() == temptID && !temptedQuestRam.isColorPresent(color) && itemNearby.isAlive()) {
 					this.temptingItem = itemNearby;

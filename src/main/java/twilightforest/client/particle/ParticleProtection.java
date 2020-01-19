@@ -1,6 +1,5 @@
 package twilightforest.client.particle;
 
-import net.minecraft.client.particle.ParticleSuspendedTown;
 import net.minecraft.client.particle.SuspendedTownParticle;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;

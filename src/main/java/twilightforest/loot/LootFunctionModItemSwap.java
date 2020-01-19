@@ -6,21 +6,21 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.JsonUtils;
+import net.minecraft.util.JSONUtils;
 import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.conditions.LootCondition;
-import net.minecraft.world.storage.loot.functions.LootFunction;
+import net.minecraft.world.storage.loot.conditions.ILootCondition;
+import net.minecraft.world.storage.loot.functions.ILootFunction;
 import twilightforest.TwilightForestMod;
 
 import java.util.Random;
 
 // Loot condition for checking that if a mod exists, then swap original item with its deserialized item.
-public class LootFunctionModItemSwap extends LootFunction {
+public class LootFunctionModItemSwap extends ILootFunction {
 
     private final Item item;
     private final boolean success;
 
-    protected LootFunctionModItemSwap(LootCondition[] conditionsIn, Item itemIn, boolean success) {
+    protected LootFunctionModItemSwap(ILootCondition[] conditionsIn, Item itemIn, boolean success) {
         super(conditionsIn);
         this.item = itemIn;
         this.success = success;
@@ -35,7 +35,7 @@ public class LootFunctionModItemSwap extends LootFunction {
         return newStack;
     }
 
-    public static class Serializer extends LootFunction.Serializer<LootFunctionModItemSwap> {
+    public static class Serializer extends ILootFunction.Serializer<LootFunctionModItemSwap> {
 
         protected Serializer() {
             super(TwilightForestMod.prefix("item_or_default"), LootFunctionModItemSwap.class);
@@ -51,15 +51,15 @@ public class LootFunctionModItemSwap extends LootFunction {
         }
 
         @Override
-        public LootFunctionModItemSwap deserialize(JsonObject object, JsonDeserializationContext deserializationContext, LootCondition[] conditionsIn) {
+        public LootFunctionModItemSwap deserialize(JsonObject object, JsonDeserializationContext deserializationContext, ILootCondition[] conditionsIn) {
             Item item;
             boolean success;
 
             try {
-                item = JsonUtils.getItem(object, "item");
+                item = JSONUtils.getItem(object, "item");
                 success = true;
             } catch (JsonSyntaxException e) {
-                item = JsonUtils.getItem(object, "default");
+                item = JSONUtils.getItem(object, "default");
                 success = false;
             }
 

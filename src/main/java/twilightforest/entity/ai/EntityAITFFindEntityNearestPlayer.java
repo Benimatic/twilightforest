@@ -2,11 +2,11 @@ package twilightforest.entity.ai;
 
 import com.google.common.base.Predicate;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.EntityAIFindEntityNearestPlayer;
 import net.minecraft.entity.ai.NearestAttackableTargetGoal;
-import net.minecraft.entity.ai.EntityAITarget;
+import net.minecraft.entity.ai.goal.TargetGoal;
 import net.minecraft.entity.player.PlayerEntity;
 
 import javax.annotation.Nullable;
@@ -18,15 +18,15 @@ import java.util.List;
  */
 public class EntityAITFFindEntityNearestPlayer extends EntityAIFindEntityNearestPlayer
 {
-	private final EntityLiving entityLiving;
+	private final MobEntity entityLiving;
 	private final Predicate<Entity> predicate;
 	private final NearestAttackableTargetGoal.Sorter sorter;
-	private EntityLivingBase entityTarget;
+	private LivingEntity entityTarget;
 
 	/**
 	 * VanillaCopy super, but change predicate to not check sight, or bother reducing range for sneaking/invisibility
 	 */
-	public EntityAITFFindEntityNearestPlayer(EntityLiving entityLivingIn)
+	public EntityAITFFindEntityNearestPlayer(MobEntity entityLivingIn)
 	{
 		super(entityLivingIn);
 		this.entityLiving = entityLivingIn;
@@ -47,7 +47,7 @@ public class EntityAITFFindEntityNearestPlayer extends EntityAIFindEntityNearest
 				{
 					double maxRange = EntityAITFFindEntityNearestPlayer.this.maxTargetRange();
 
-					return (double)entity.getDistance(EntityAITFFindEntityNearestPlayer.this.entityLiving) > maxRange ? false : EntityAITarget.isSuitableTarget(EntityAITFFindEntityNearestPlayer.this.entityLiving, (EntityLivingBase)entity, false, false);
+					return (double)entity.getDistance(EntityAITFFindEntityNearestPlayer.this.entityLiving) > maxRange ? false : TargetGoal.isSuitableTarget(EntityAITFFindEntityNearestPlayer.this.entityLiving, (LivingEntity)entity, false, false);
 				}
 			}
 		};

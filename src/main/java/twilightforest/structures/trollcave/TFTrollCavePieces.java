@@ -1,19 +1,19 @@
 package twilightforest.structures.trollcave;
 
-import net.minecraft.world.gen.structure.MapGenStructureIO;
+import net.minecraft.world.gen.feature.StructureIO;
 import twilightforest.structures.start.StructureStartTrollCave;
 
 public class TFTrollCavePieces {
 
 	public static void registerPieces() {
-		MapGenStructureIO.registerStructure(StructureStartTrollCave.class, "TFTC");
+		StructureIO.registerStructure(StructureStartTrollCave.class, "TFTC");
 
-		MapGenStructureIO.registerStructureComponent(ComponentTFTrollCaveMain.class, "TFTCMai");
-		MapGenStructureIO.registerStructureComponent(ComponentTFTrollCaveConnect.class, "TFTCCon");
-		MapGenStructureIO.registerStructureComponent(ComponentTFTrollCaveGarden.class, "TFTCGard");
-		MapGenStructureIO.registerStructureComponent(ComponentTFTrollCloud.class, "TFTCloud");
-		MapGenStructureIO.registerStructureComponent(ComponentTFCloudCastle.class, "TFClCa");
-		MapGenStructureIO.registerStructureComponent(ComponentTFCloudTree.class, "TFClTr");
-		MapGenStructureIO.registerStructureComponent(ComponentTFTrollVault.class, "TFTCVa");
+		StructureIO.registerStructureComponent(ComponentTFTrollCaveMain.class, "TFTCMai");
+		StructureIO.registerStructureComponent(ComponentTFTrollCaveConnect.class, "TFTCCon");
+		StructureIO.registerStructureComponent(ComponentTFTrollCaveGarden.class, "TFTCGard");
+		StructureIO.registerStructureComponent(ComponentTFTrollCloud.class, "TFTCloud");
+		StructureIO.registerStructureComponent(ComponentTFCloudCastle.class, "TFClCa");
+		StructureIO.registerStructureComponent(ComponentTFCloudTree.class, "TFClTr");
+		StructureIO.registerStructureComponent(ComponentTFTrollVault.class, "TFTCVa");
 	}
 }

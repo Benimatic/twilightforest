@@ -1,16 +1,16 @@
 package twilightforest.entity.ai;
 
 import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.EntityAITarget;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.goal.TargetGoal;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class EntityAITFFlockTarget extends EntityAITarget {
+public class EntityAITFFlockTarget extends TargetGoal {
 
-	private final EntityLivingBase flockCreature;
-	private EntityLivingBase flockTarget;
+	private final LivingEntity flockCreature;
+	private LivingEntity flockTarget;
 
 	public EntityAITFFlockTarget(CreatureEntity creature, boolean checkSight) {
 		super(creature, false);
@@ -20,10 +20,10 @@ public class EntityAITFFlockTarget extends EntityAITarget {
 
 	@Override
 	public boolean shouldExecute() {
-		List<EntityLivingBase> flockList = this.flockCreature.world.getEntitiesWithinAABB(this.flockCreature.getClass(), this.flockCreature.getBoundingBox().grow(16.0D, 4.0D, 16.0D));
-		List<EntityLivingBase> targetList = new ArrayList<EntityLivingBase>();
+		List<LivingEntity> flockList = this.flockCreature.world.getEntitiesWithinAABB(this.flockCreature.getClass(), this.flockCreature.getBoundingBox().grow(16.0D, 4.0D, 16.0D));
+		List<LivingEntity> targetList = new ArrayList<LivingEntity>();
 
-		for (EntityLivingBase flocker : flockList) {
+		for (LivingEntity flocker : flockList) {
 			if (flocker.getRevengeTarget() != null) {
 				targetList.add(flocker.getRevengeTarget());
 			}

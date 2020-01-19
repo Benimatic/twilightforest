@@ -10,11 +10,9 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.feature.WorldGenerator;
-import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.gen.structure.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.loot.TFTreasure;
 import twilightforest.biomes.TFBiomes;
@@ -232,7 +230,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 	/**
 	 * Use the generator at the surface above specified coords
 	 */
-	protected void generateAtSurface(World world, WorldGenerator generator, Random rand, int x, int y, int z, MutableBoundingBox sbb) {
+	protected void generateAtSurface(World world, Feature generator, Random rand, int x, int y, int z, MutableBoundingBox sbb) {
 		// are the coordinates in our bounding box?
 		int dx = getXWithOffset(x, z);
 		int dy = y;

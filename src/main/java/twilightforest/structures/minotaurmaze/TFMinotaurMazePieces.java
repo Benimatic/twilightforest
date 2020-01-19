@@ -1,6 +1,6 @@
 package twilightforest.structures.minotaurmaze;
 
-import net.minecraft.world.gen.structure.MapGenStructureIO;
+import net.minecraft.world.gen.feature.StructureIO;
 import twilightforest.structures.start.StructureStartLabyrinth;
 
 
@@ -8,35 +8,35 @@ public class TFMinotaurMazePieces {
 
 
 	public static void registerPieces() {
-		MapGenStructureIO.registerStructure(StructureStartLabyrinth.class, "TFLr");
+		StructureIO.registerStructure(StructureStartLabyrinth.class, "TFLr");
 
-		MapGenStructureIO.registerStructureComponent(ComponentTFMazeCorridor.class, "TFMMC");
-		MapGenStructureIO.registerStructureComponent(ComponentTFMazeCorridorIronFence.class, "TFMMCIF");
-		MapGenStructureIO.registerStructureComponent(ComponentTFMazeCorridorRoots.class, "TFMMCR");
-		MapGenStructureIO.registerStructureComponent(ComponentTFMazeCorridorShrooms.class, "TFMMCS");
-		MapGenStructureIO.registerStructureComponent(ComponentTFMazeDeadEnd.class, "TFMMDE");
-		MapGenStructureIO.registerStructureComponent(ComponentTFMazeDeadEndChest.class, "TFMMDEC");
-		MapGenStructureIO.registerStructureComponent(ComponentTFMazeDeadEndFountain.class, "TFMMDEF");
-		MapGenStructureIO.registerStructureComponent(ComponentTFMazeDeadEndFountainLava.class, "TFMMDEFL");
-		MapGenStructureIO.registerStructureComponent(ComponentTFMazeDeadEndPainting.class, "TFMMDEP");
-		MapGenStructureIO.registerStructureComponent(ComponentTFMazeDeadEndRoots.class, "TFMMDER");
-		MapGenStructureIO.registerStructureComponent(ComponentTFMazeDeadEndShrooms.class, "TFMMDES");
-		MapGenStructureIO.registerStructureComponent(ComponentTFMazeDeadEndTorches.class, "TFMMDET");
-		MapGenStructureIO.registerStructureComponent(ComponentTFMazeDeadEndTrappedChest.class, "TFMMDETrC");
-		MapGenStructureIO.registerStructureComponent(ComponentTFMazeDeadEndTripwireChest.class, "TFMMDETC");
-		MapGenStructureIO.registerStructureComponent(ComponentTFMazeEntranceShaft.class, "TFMMES");
-		MapGenStructureIO.registerStructureComponent(ComponentTFMazeMound.class, "TFMMMound");
-		MapGenStructureIO.registerStructureComponent(ComponentTFMazeMushRoom.class, "TFMMMR");
-		MapGenStructureIO.registerStructureComponent(ComponentTFMazeRoom.class, "TFMMR");
-		MapGenStructureIO.registerStructureComponent(ComponentTFMazeRoomBoss.class, "TFMMRB");
-		MapGenStructureIO.registerStructureComponent(ComponentTFMazeRoomCollapse.class, "TFMMRC");
-		MapGenStructureIO.registerStructureComponent(ComponentTFMazeRoomExit.class, "TFMMRE");
-		MapGenStructureIO.registerStructureComponent(ComponentTFMazeRoomFountain.class, "TFMMRF");
-		MapGenStructureIO.registerStructureComponent(ComponentTFMazeRoomSpawnerChests.class, "TFMMRSC");
-		MapGenStructureIO.registerStructureComponent(ComponentTFMazeRoomVault.class, "TFMMRV");
-		MapGenStructureIO.registerStructureComponent(ComponentTFMazeRuins.class, "TFMMRuins");
-		MapGenStructureIO.registerStructureComponent(ComponentTFMazeUpperEntrance.class, "TFMMUE");
-		MapGenStructureIO.registerStructureComponent(ComponentTFMinotaurMaze.class, "TFMMaze");
+		StructureIO.registerStructureComponent(ComponentTFMazeCorridor.class, "TFMMC");
+		StructureIO.registerStructureComponent(ComponentTFMazeCorridorIronFence.class, "TFMMCIF");
+		StructureIO.registerStructureComponent(ComponentTFMazeCorridorRoots.class, "TFMMCR");
+		StructureIO.registerStructureComponent(ComponentTFMazeCorridorShrooms.class, "TFMMCS");
+		StructureIO.registerStructureComponent(ComponentTFMazeDeadEnd.class, "TFMMDE");
+		StructureIO.registerStructureComponent(ComponentTFMazeDeadEndChest.class, "TFMMDEC");
+		StructureIO.registerStructureComponent(ComponentTFMazeDeadEndFountain.class, "TFMMDEF");
+		StructureIO.registerStructureComponent(ComponentTFMazeDeadEndFountainLava.class, "TFMMDEFL");
+		StructureIO.registerStructureComponent(ComponentTFMazeDeadEndPainting.class, "TFMMDEP");
+		StructureIO.registerStructureComponent(ComponentTFMazeDeadEndRoots.class, "TFMMDER");
+		StructureIO.registerStructureComponent(ComponentTFMazeDeadEndShrooms.class, "TFMMDES");
+		StructureIO.registerStructureComponent(ComponentTFMazeDeadEndTorches.class, "TFMMDET");
+		StructureIO.registerStructureComponent(ComponentTFMazeDeadEndTrappedChest.class, "TFMMDETrC");
+		StructureIO.registerStructureComponent(ComponentTFMazeDeadEndTripwireChest.class, "TFMMDETC");
+		StructureIO.registerStructureComponent(ComponentTFMazeEntranceShaft.class, "TFMMES");
+		StructureIO.registerStructureComponent(ComponentTFMazeMound.class, "TFMMMound");
+		StructureIO.registerStructureComponent(ComponentTFMazeMushRoom.class, "TFMMMR");
+		StructureIO.registerStructureComponent(ComponentTFMazeRoom.class, "TFMMR");
+		StructureIO.registerStructureComponent(ComponentTFMazeRoomBoss.class, "TFMMRB");
+		StructureIO.registerStructureComponent(ComponentTFMazeRoomCollapse.class, "TFMMRC");
+		StructureIO.registerStructureComponent(ComponentTFMazeRoomExit.class, "TFMMRE");
+		StructureIO.registerStructureComponent(ComponentTFMazeRoomFountain.class, "TFMMRF");
+		StructureIO.registerStructureComponent(ComponentTFMazeRoomSpawnerChests.class, "TFMMRSC");
+		StructureIO.registerStructureComponent(ComponentTFMazeRoomVault.class, "TFMMRV");
+		StructureIO.registerStructureComponent(ComponentTFMazeRuins.class, "TFMMRuins");
+		StructureIO.registerStructureComponent(ComponentTFMazeUpperEntrance.class, "TFMMUE");
+		StructureIO.registerStructureComponent(ComponentTFMinotaurMaze.class, "TFMMaze");
 	}
 
 }

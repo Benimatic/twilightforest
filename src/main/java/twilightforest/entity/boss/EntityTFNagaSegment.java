@@ -2,9 +2,9 @@ package twilightforest.entity.boss;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MultiPartEntityPart;
-import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
@@ -72,11 +72,11 @@ public class EntityTFNagaSegment extends MultiPartEntityPart {
 		entity.applyEntityCollision(this);
 
 		// attack anything that's not us
-		if ((entity instanceof EntityLivingBase) && !(entity instanceof EntityTFNaga) && !(entity instanceof EntityTFNagaSegment)) {
+		if ((entity instanceof LivingEntity) && !(entity instanceof EntityTFNaga) && !(entity instanceof EntityTFNagaSegment)) {
 			int attackStrength = 2;
 
 			// get rid of nearby deer & look impressive
-			if (entity instanceof EntityAnimal) {
+			if (entity instanceof AnimalEntity) {
 				attackStrength *= 3;
 			}
 

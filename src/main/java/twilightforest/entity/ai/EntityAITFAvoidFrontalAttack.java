@@ -1,20 +1,20 @@
 package twilightforest.entity.ai;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import twilightforest.entity.EntityTFRedcap;
 
-public class EntityAITFAvoidFrontalAttack extends EntityAIBase {
+public class EntityAITFAvoidFrontalAttack extends Goal {
 
-	private final EntityLiving me;
+	private final MobEntity me;
 	final float speed;
 	private final boolean lefty;
 
-	private EntityLivingBase entityTarget;
+	private LivingEntity entityTarget;
 	private double xPosition;
 	private double yPosition;
 	private double zPosition;
@@ -31,7 +31,7 @@ public class EntityAITFAvoidFrontalAttack extends EntityAIBase {
 
 	@Override
 	public boolean shouldExecute() {
-		EntityLivingBase attackTarget = this.me.getAttackTarget();
+		LivingEntity attackTarget = this.me.getAttackTarget();
 
 		if (attackTarget == null || attackTarget.getDistance(me) > maxDistance || attackTarget.getDistance(me) < minDistance || !isTargetLookingAtMe(attackTarget)) {
 			return false;
@@ -58,7 +58,7 @@ public class EntityAITFAvoidFrontalAttack extends EntityAIBase {
 
 	@Override
 	public boolean shouldContinueExecuting() {
-		EntityLivingBase attackTarget = this.me.getAttackTarget();
+		LivingEntity attackTarget = this.me.getAttackTarget();
 
 		if (attackTarget == null) {
 			return false;
@@ -109,7 +109,7 @@ public class EntityAITFAvoidFrontalAttack extends EntityAIBase {
 	 *
 	 * @return
 	 */
-	public boolean isTargetLookingAtMe(EntityLivingBase attackTarget) {
+	public boolean isTargetLookingAtMe(LivingEntity attackTarget) {
 		// find angle of approach
 		double dx = me.posX - attackTarget.posX;
 		double dz = me.posZ - attackTarget.posZ;

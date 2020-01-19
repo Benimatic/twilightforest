@@ -7,7 +7,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
+import net.minecraft.world.ServerWorld;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.IChunkGenerator;
@@ -27,8 +27,8 @@ public class TFWorld {
 
 	@Nullable
 	public static ChunkGeneratorTFBase getChunkGenerator(World world) {
-		if (world instanceof WorldServer) {
-			IChunkGenerator chunkGenerator = ((WorldServer) world).getChunkProvider().chunkGenerator;
+		if (world instanceof ServerWorld) {
+			IChunkGenerator chunkGenerator = ((ServerWorld) world).getChunkProvider().chunkGenerator;
 			return chunkGenerator instanceof ChunkGeneratorTFBase ? (ChunkGeneratorTFBase) chunkGenerator : null;
 		}
 		return null;

@@ -3,7 +3,7 @@ package twilightforest.network;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -50,7 +50,7 @@ public class PacketUpdateShield implements IMessage {
 				@Override
 				public void run() {
 					Entity entity = Minecraft.getInstance().world.getEntityByID(message.entityID);
-					if (entity instanceof EntityLivingBase) {
+					if (entity instanceof LivingEntity) {
 						IShieldCapability cap = entity.getCapability(CapabilityList.SHIELDS, null);
 						if (cap != null) {
 							cap.setShields(message.temporaryShields, true);

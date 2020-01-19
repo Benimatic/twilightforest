@@ -1,6 +1,6 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.block.Blocks;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.util.math.BlockPos;
@@ -15,7 +15,7 @@ public class EntityAITFRedcapPlantTNT extends EntityAITFRedcapBase {
 
 	@Override
 	public boolean shouldExecute() {
-		EntityLivingBase attackTarget = this.redcap.getAttackTarget();
+		LivingEntity attackTarget = this.redcap.getAttackTarget();
 		return attackTarget != null
 				&& !redcap.heldTNT.isEmpty()
 				&& redcap.getDistanceSq(attackTarget) < 25

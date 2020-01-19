@@ -2,9 +2,7 @@ package twilightforest.entity.passive;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.AgeableEntity;
-import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;

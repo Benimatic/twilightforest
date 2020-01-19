@@ -5,7 +5,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.GenLayerSmooth;
-import net.minecraft.world.gen.layer.GenLayerVoronoiZoom;
+import net.minecraft.world.gen.layer.VoroniZoomLayer;
 import net.minecraft.world.gen.layer.GenLayerZoom;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.world.layer.GenLayerTFBiomeStabilize;
@@ -56,7 +56,7 @@ public class TFBiomeProvider extends BiomeProvider {
 		biomes = new GenLayerTFRiverMix(100L, biomes, riverLayer);
 
 		// do "voronoi" zoom
-		GenLayer genlayervoronoizoom = new GenLayerVoronoiZoom(10L, biomes);
+		GenLayer genlayervoronoizoom = new VoroniZoomLayer(10L, biomes);
 
 		biomes.initWorldGenSeed(seed);
 		genlayervoronoizoom.initWorldGenSeed(seed);

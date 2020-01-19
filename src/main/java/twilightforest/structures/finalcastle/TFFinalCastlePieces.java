@@ -1,39 +1,39 @@
 package twilightforest.structures.finalcastle;
 
-import net.minecraft.world.gen.structure.MapGenStructureIO;
+import net.minecraft.world.gen.feature.StructureIO;
 import twilightforest.structures.start.StructureStartFinalCastle;
 
 public class TFFinalCastlePieces {
 	public static void registerFinalCastlePieces() {
-		MapGenStructureIO.registerStructure(StructureStartFinalCastle.class, "TFFC");
+		StructureIO.registerStructure(StructureStartFinalCastle.class, "TFFC");
 
-		MapGenStructureIO.registerStructureComponent(ComponentTFFinalCastleMain.class, "TFFCMain");
-		MapGenStructureIO.registerStructureComponent(ComponentTFFinalCastleStairTower.class, "TFFCStTo");
-		MapGenStructureIO.registerStructureComponent(ComponentTFFinalCastleLargeTower.class, "TFFCLaTo");
-		MapGenStructureIO.registerStructureComponent(ComponentTFFinalCastleMural.class, "TFFCMur");
-		MapGenStructureIO.registerStructureComponent(ComponentTFFinalCastleFoundation48.class, "TFFCToF48");
-		MapGenStructureIO.registerStructureComponent(ComponentTFFinalCastleRoof48Crenellated.class, "TFFCRo48Cr");
-		MapGenStructureIO.registerStructureComponent(ComponentTFFinalCastleBossGazebo.class, "TFFCBoGaz");
-		MapGenStructureIO.registerStructureComponent(ComponentTFFinalCastleMazeTower13.class, "TFFCSiTo");
-		MapGenStructureIO.registerStructureComponent(ComponentTFFinalCastleDungeonSteps.class, "TFFCDunSt");
-		MapGenStructureIO.registerStructureComponent(ComponentTFFinalCastleDungeonEntrance.class, "TFFCDunEn");
-		MapGenStructureIO.registerStructureComponent(ComponentTFFinalCastleDungeonRoom31.class, "TFFCDunR31");
-		MapGenStructureIO.registerStructureComponent(ComponentTFFinalCastleDungeonExit.class, "TFFCDunEx");
-		MapGenStructureIO.registerStructureComponent(ComponentTFFinalCastleDungeonForgeRoom.class, "TFFCDunBoR");
-		MapGenStructureIO.registerStructureComponent(ComponentTFFinalCastleRoof9Crenellated.class, "TFFCRo9Cr");
-		MapGenStructureIO.registerStructureComponent(ComponentTFFinalCastleRoof13Crenellated.class, "TFFCRo13Cr");
-		MapGenStructureIO.registerStructureComponent(ComponentTFFinalCastleRoof13Conical.class, "TFFCRo13Con");
-		MapGenStructureIO.registerStructureComponent(ComponentTFFinalCastleRoof13Peaked.class, "TFFCRo13Pk");
-		MapGenStructureIO.registerStructureComponent(ComponentTFFinalCastleEntranceTower.class, "TFFCEnTo");
-		MapGenStructureIO.registerStructureComponent(ComponentTFFinalCastleEntranceSideTower.class, "TFFCEnSiTo");
-		MapGenStructureIO.registerStructureComponent(ComponentTFFinalCastleEntranceBottomTower.class, "TFFCEnBoTo");
-		MapGenStructureIO.registerStructureComponent(ComponentTFFinalCastleEntranceStairs.class, "TFFCEnSt");
-		MapGenStructureIO.registerStructureComponent(ComponentTFFinalCastleBellTower21.class, "TFFCBelTo");
-		MapGenStructureIO.registerStructureComponent(ComponentTFFinalCastleBridge.class, "TFFCBri");
-		MapGenStructureIO.registerStructureComponent(ComponentTFFinalCastleFoundation13.class, "TFFCToF13");
-		MapGenStructureIO.registerStructureComponent(ComponentTFFinalCastleBellFoundation21.class, "TFFCBeF21");
-		MapGenStructureIO.registerStructureComponent(ComponentTFFinalCastleFoundation13Thorns.class, "TFFCFTh21");
-		MapGenStructureIO.registerStructureComponent(ComponentTFFinalCastleDamagedTower.class, "TFFCDamT");
-		MapGenStructureIO.registerStructureComponent(ComponentTFFinalCastleWreckedTower.class, "TFFCWrT");
+		StructureIO.registerStructureComponent(ComponentTFFinalCastleMain.class, "TFFCMain");
+		StructureIO.registerStructureComponent(ComponentTFFinalCastleStairTower.class, "TFFCStTo");
+		StructureIO.registerStructureComponent(ComponentTFFinalCastleLargeTower.class, "TFFCLaTo");
+		StructureIO.registerStructureComponent(ComponentTFFinalCastleMural.class, "TFFCMur");
+		StructureIO.registerStructureComponent(ComponentTFFinalCastleFoundation48.class, "TFFCToF48");
+		StructureIO.registerStructureComponent(ComponentTFFinalCastleRoof48Crenellated.class, "TFFCRo48Cr");
+		StructureIO.registerStructureComponent(ComponentTFFinalCastleBossGazebo.class, "TFFCBoGaz");
+		StructureIO.registerStructureComponent(ComponentTFFinalCastleMazeTower13.class, "TFFCSiTo");
+		StructureIO.registerStructureComponent(ComponentTFFinalCastleDungeonSteps.class, "TFFCDunSt");
+		StructureIO.registerStructureComponent(ComponentTFFinalCastleDungeonEntrance.class, "TFFCDunEn");
+		StructureIO.registerStructureComponent(ComponentTFFinalCastleDungeonRoom31.class, "TFFCDunR31");
+		StructureIO.registerStructureComponent(ComponentTFFinalCastleDungeonExit.class, "TFFCDunEx");
+		StructureIO.registerStructureComponent(ComponentTFFinalCastleDungeonForgeRoom.class, "TFFCDunBoR");
+		StructureIO.registerStructureComponent(ComponentTFFinalCastleRoof9Crenellated.class, "TFFCRo9Cr");
+		StructureIO.registerStructureComponent(ComponentTFFinalCastleRoof13Crenellated.class, "TFFCRo13Cr");
+		StructureIO.registerStructureComponent(ComponentTFFinalCastleRoof13Conical.class, "TFFCRo13Con");
+		StructureIO.registerStructureComponent(ComponentTFFinalCastleRoof13Peaked.class, "TFFCRo13Pk");
+		StructureIO.registerStructureComponent(ComponentTFFinalCastleEntranceTower.class, "TFFCEnTo");
+		StructureIO.registerStructureComponent(ComponentTFFinalCastleEntranceSideTower.class, "TFFCEnSiTo");
+		StructureIO.registerStructureComponent(ComponentTFFinalCastleEntranceBottomTower.class, "TFFCEnBoTo");
+		StructureIO.registerStructureComponent(ComponentTFFinalCastleEntranceStairs.class, "TFFCEnSt");
+		StructureIO.registerStructureComponent(ComponentTFFinalCastleBellTower21.class, "TFFCBelTo");
+		StructureIO.registerStructureComponent(ComponentTFFinalCastleBridge.class, "TFFCBri");
+		StructureIO.registerStructureComponent(ComponentTFFinalCastleFoundation13.class, "TFFCToF13");
+		StructureIO.registerStructureComponent(ComponentTFFinalCastleBellFoundation21.class, "TFFCBeF21");
+		StructureIO.registerStructureComponent(ComponentTFFinalCastleFoundation13Thorns.class, "TFFCFTh21");
+		StructureIO.registerStructureComponent(ComponentTFFinalCastleDamagedTower.class, "TFFCDamT");
+		StructureIO.registerStructureComponent(ComponentTFFinalCastleWreckedTower.class, "TFFCWrT");
 	}
 }

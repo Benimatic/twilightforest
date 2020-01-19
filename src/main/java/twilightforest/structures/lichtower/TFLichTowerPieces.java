@@ -1,29 +1,29 @@
 package twilightforest.structures.lichtower;
 
-import net.minecraft.world.gen.structure.MapGenStructureIO;
+import net.minecraft.world.gen.feature.StructureIO;
 import twilightforest.structures.start.StructureStartLichTower;
 
 public class TFLichTowerPieces {
 
 	public static void registerPieces() {
-		MapGenStructureIO.registerStructure(StructureStartLichTower.class, "TFLT");
+		StructureIO.registerStructure(StructureStartLichTower.class, "TFLT");
 
-		MapGenStructureIO.registerStructureComponent(ComponentTFTowerBeard.class, "TFLTBea");
-		MapGenStructureIO.registerStructureComponent(ComponentTFTowerBeardAttached.class, "TFLTBA");
-		MapGenStructureIO.registerStructureComponent(ComponentTFTowerBridge.class, "TFLTBri");
-		MapGenStructureIO.registerStructureComponent(ComponentTFTowerMain.class, "TFLTMai");
-		MapGenStructureIO.registerStructureComponent(ComponentTFTowerOutbuilding.class, "TFLTOut");
-		MapGenStructureIO.registerStructureComponent(ComponentTFTowerRoof.class, "TFLTRoo");
-		MapGenStructureIO.registerStructureComponent(ComponentTFTowerRoofAttachedSlab.class, "TFLTRAS");
-		MapGenStructureIO.registerStructureComponent(ComponentTFTowerRoofFence.class, "TFLTRF");
-		MapGenStructureIO.registerStructureComponent(ComponentTFTowerRoofGableForwards.class, "TFLTRGF");
-		MapGenStructureIO.registerStructureComponent(ComponentTFTowerRoofPointy.class, "TFLTRP");
-		MapGenStructureIO.registerStructureComponent(ComponentTFTowerRoofPointyOverhang.class, "TFLTRPO");
-		MapGenStructureIO.registerStructureComponent(ComponentTFTowerRoofSlab.class, "TFLTRS");
-		MapGenStructureIO.registerStructureComponent(ComponentTFTowerRoofSlabForwards.class, "TFLTRSF");
-		MapGenStructureIO.registerStructureComponent(ComponentTFTowerRoofStairs.class, "TFLTRSt");
-		MapGenStructureIO.registerStructureComponent(ComponentTFTowerRoofStairsOverhang.class, "TFLTRStO");
-		MapGenStructureIO.registerStructureComponent(ComponentTFTowerWing.class, "TFLTWin");
+		StructureIO.registerStructureComponent(ComponentTFTowerBeard.class, "TFLTBea");
+		StructureIO.registerStructureComponent(ComponentTFTowerBeardAttached.class, "TFLTBA");
+		StructureIO.registerStructureComponent(ComponentTFTowerBridge.class, "TFLTBri");
+		StructureIO.registerStructureComponent(ComponentTFTowerMain.class, "TFLTMai");
+		StructureIO.registerStructureComponent(ComponentTFTowerOutbuilding.class, "TFLTOut");
+		StructureIO.registerStructureComponent(ComponentTFTowerRoof.class, "TFLTRoo");
+		StructureIO.registerStructureComponent(ComponentTFTowerRoofAttachedSlab.class, "TFLTRAS");
+		StructureIO.registerStructureComponent(ComponentTFTowerRoofFence.class, "TFLTRF");
+		StructureIO.registerStructureComponent(ComponentTFTowerRoofGableForwards.class, "TFLTRGF");
+		StructureIO.registerStructureComponent(ComponentTFTowerRoofPointy.class, "TFLTRP");
+		StructureIO.registerStructureComponent(ComponentTFTowerRoofPointyOverhang.class, "TFLTRPO");
+		StructureIO.registerStructureComponent(ComponentTFTowerRoofSlab.class, "TFLTRS");
+		StructureIO.registerStructureComponent(ComponentTFTowerRoofSlabForwards.class, "TFLTRSF");
+		StructureIO.registerStructureComponent(ComponentTFTowerRoofStairs.class, "TFLTRSt");
+		StructureIO.registerStructureComponent(ComponentTFTowerRoofStairsOverhang.class, "TFLTRStO");
+		StructureIO.registerStructureComponent(ComponentTFTowerWing.class, "TFLTWin");
 
 	}
 }

@@ -8,10 +8,10 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeDecorator;
 import net.minecraft.world.gen.ChunkGeneratorSettings;
-import net.minecraft.world.gen.feature.WorldGenLakes;
-import net.minecraft.world.gen.feature.WorldGenLiquids;
-import net.minecraft.world.gen.feature.WorldGenMinable;
-import net.minecraft.world.gen.feature.WorldGenerator;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.LakesFeature;
+import net.minecraft.world.gen.feature.OreFeature;
+import net.minecraft.world.gen.feature.SpringFeature;
 import twilightforest.TFConfig;
 import twilightforest.TFFeature;
 import twilightforest.features.GenDruidHut;
@@ -26,18 +26,18 @@ import java.util.function.Supplier;
 //TODO: BiomeDecorator no longer exists. Turn into default decoration class akin to DefaultBiomeFeatures?
 public class TFBiomeDecorator extends BiomeDecorator {
 
-	WorldGenerator canopyTreeGen = new TFGenCanopyTree();
-	WorldGenerator alternateCanopyGen = new TFGenCanopyMushroom();
+	Feature canopyTreeGen = new TFGenCanopyTree();
+	Feature alternateCanopyGen = new TFGenCanopyMushroom();
 
 	//private final WorldGenerator hollowTreeGen = new TFGenHollowTree();
-	private final WorldGenerator myceliumBlobGen = new TFGenMyceliumBlob(5);
-	private final WorldGenerator extraLakeGen = new WorldGenLakes(Blocks.WATER);
-	private final WorldGenerator extraLavaPoolGen = new WorldGenLakes(Blocks.LAVA);
-	private final WorldGenerator mangroveTreeGen = new TFGenMangroveTree();
-	private final WorldGenerator plantRootGen = new TFGenPlantRoots();
-	private final WorldGenerator woodRootGen = new TFGenWoodRoots();
-	private final WorldGenerator caveWaterGen = new WorldGenLiquids(Blocks.FLOWING_WATER);
-	private final WorldGenerator torchBerryGen = new TFGenTorchBerries();
+	private final Feature myceliumBlobGen = new TFGenMyceliumBlob(5);
+	private final Feature extraLakeGen = new LakesFeature(Blocks.WATER);
+	private final Feature extraLavaPoolGen = new LakesFeature(Blocks.LAVA);
+	private final Feature mangroveTreeGen = new TFGenMangroveTree();
+	private final Feature plantRootGen = new TFGenPlantRoots();
+	private final Feature woodRootGen = new TFGenWoodRoots();
+	private final Feature caveWaterGen = new SpringFeature(Blocks.FLOWING_WATER);
+	private final Feature torchBerryGen = new TFGenTorchBerries();
 
 	public float canopyPerChunk = TFConfig.performance.canopyCoverage;
 	public boolean hasCanopy = true;
@@ -212,17 +212,17 @@ public class TFBiomeDecorator extends BiomeDecorator {
 		if (this.chunkProviderSettings == null) {
 			this.chunkProviderSettings = ChunkGeneratorSettings.Factory.jsonToFactory(world.getWorldInfo().getGeneratorOptions()).build();
 			this.chunkPos = pos;
-			this.dirtGen = new WorldGenMinable(Blocks.DIRT.getDefaultState(), this.chunkProviderSettings.dirtSize);
-			this.gravelOreGen = new WorldGenMinable(Blocks.GRAVEL.getDefaultState(), this.chunkProviderSettings.gravelSize);
-			this.graniteGen = new WorldGenMinable(Blocks.STONE.getDefaultState().with(BlockStone.VARIANT, BlockStone.EnumType.GRANITE), this.chunkProviderSettings.graniteSize);
-			this.dioriteGen = new WorldGenMinable(Blocks.STONE.getDefaultState().with(BlockStone.VARIANT, BlockStone.EnumType.DIORITE), this.chunkProviderSettings.dioriteSize);
-			this.andesiteGen = new WorldGenMinable(Blocks.STONE.getDefaultState().with(BlockStone.VARIANT, BlockStone.EnumType.ANDESITE), this.chunkProviderSettings.andesiteSize);
-			this.coalGen = new WorldGenMinable(Blocks.COAL_ORE.getDefaultState(), this.chunkProviderSettings.coalSize);
-			this.ironGen = new WorldGenMinable(Blocks.IRON_ORE.getDefaultState(), this.chunkProviderSettings.ironSize);
-			this.goldGen = new WorldGenMinable(Blocks.GOLD_ORE.getDefaultState(), this.chunkProviderSettings.goldSize);
-			this.redstoneGen = new WorldGenMinable(Blocks.REDSTONE_ORE.getDefaultState(), this.chunkProviderSettings.redstoneSize);
-			this.diamondGen = new WorldGenMinable(Blocks.DIAMOND_ORE.getDefaultState(), this.chunkProviderSettings.diamondSize);
-			this.lapisGen = new WorldGenMinable(Blocks.LAPIS_ORE.getDefaultState(), this.chunkProviderSettings.lapisSize);
+			this.dirtGen = new OreFeature(Blocks.DIRT.getDefaultState(), this.chunkProviderSettings.dirtSize);
+			this.gravelOreGen = new OreFeature(Blocks.GRAVEL.getDefaultState(), this.chunkProviderSettings.gravelSize);
+			this.graniteGen = new OreFeature(Blocks.STONE.getDefaultState().with(BlockStone.VARIANT, BlockStone.EnumType.GRANITE), this.chunkProviderSettings.graniteSize);
+			this.dioriteGen = new OreFeature(Blocks.STONE.getDefaultState().with(BlockStone.VARIANT, BlockStone.EnumType.DIORITE), this.chunkProviderSettings.dioriteSize);
+			this.andesiteGen = new OreFeature(Blocks.STONE.getDefaultState().with(BlockStone.VARIANT, BlockStone.EnumType.ANDESITE), this.chunkProviderSettings.andesiteSize);
+			this.coalGen = new OreFeature(Blocks.COAL_ORE.getDefaultState(), this.chunkProviderSettings.coalSize);
+			this.ironGen = new OreFeature(Blocks.IRON_ORE.getDefaultState(), this.chunkProviderSettings.ironSize);
+			this.goldGen = new OreFeature(Blocks.GOLD_ORE.getDefaultState(), this.chunkProviderSettings.goldSize);
+			this.redstoneGen = new OreFeature(Blocks.REDSTONE_ORE.getDefaultState(), this.chunkProviderSettings.redstoneSize);
+			this.diamondGen = new OreFeature(Blocks.DIAMOND_ORE.getDefaultState(), this.chunkProviderSettings.diamondSize);
+			this.lapisGen = new OreFeature(Blocks.LAPIS_ORE.getDefaultState(), this.chunkProviderSettings.lapisSize);
 		}
 		this.generateOres(world, rand);
 	}

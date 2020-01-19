@@ -4,16 +4,16 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.block.Blocks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.ServerWorld;
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
 import twilightforest.block.BlockTFPortal;
 import twilightforest.block.TFBlocks;
@@ -29,7 +29,7 @@ import java.util.function.Predicate;
 public class TFTeleporter extends Teleporter {
 
 	public static TFTeleporter getTeleporterForDim(MinecraftServer server, int dim) {
-		WorldServer ws = server.getWorld(dim);
+		ServerWorld ws = server.getWorld(dim);
 
 		for (Teleporter t : ws.customTeleporters) {
 			if (t instanceof TFTeleporter) {
@@ -42,7 +42,7 @@ public class TFTeleporter extends Teleporter {
 		return tp;
 	}
 
-	private TFTeleporter(WorldServer dest) {
+	private TFTeleporter(ServerWorld dest) {
 		super(dest);
 	}
 
@@ -227,8 +227,8 @@ public class TFTeleporter extends Teleporter {
 
 			entity.motionX = entity.motionY = entity.motionZ = 0.0D;
 
-			if (entity instanceof EntityPlayerMP) {
-				((EntityPlayerMP) entity).connection.setPlayerLocation(portalX, portalY, portalZ, entity.rotationYaw, entity.rotationPitch);
+			if (entity instanceof ServerPlayerEntity) {
+				((ServerPlayerEntity) entity).connection.setPlayerLocation(portalX, portalY, portalZ, entity.rotationYaw, entity.rotationPitch);
 			} else {
 				entity.setLocationAndAngles(portalX, portalY, portalZ, entity.rotationYaw, entity.rotationPitch);
 			}

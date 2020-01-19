@@ -7,10 +7,10 @@ import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.structure.MapGenStructure;
+import net.minecraft.world.gen.feature.Structure;
+import net.minecraft.world.gen.feature.StructurePiece;
 import net.minecraft.world.gen.structure.MutableBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
-import net.minecraft.world.gen.structure.StructureStart;
+import net.minecraft.world.gen.feature.StructureStart;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
@@ -25,7 +25,7 @@ import java.util.List;
 
 import static twilightforest.TFFeature.NOTHING;
 
-public class MapGenTFMajorFeature extends MapGenStructure {
+public class MapGenTFMajorFeature extends Structure {
 
     private final TFFeature FEATURE;
 
@@ -86,7 +86,7 @@ public class MapGenTFMajorFeature extends MapGenStructure {
         for (StructureStart start : this.structureMap.values()) {
             if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(pos.getX(), pos.getZ(), pos.getX(), pos.getZ())) {
 
-                for (StructureComponent component : start.getComponents()) {
+                for (StructurePiece component : start.getComponents()) {
                     if (component.getBoundingBox().isVecInside(pos)) {
                         if (component instanceof StructureTFComponent) {
                             StructureTFComponent tfComponent = (StructureTFComponent) component;
@@ -133,7 +133,7 @@ public class MapGenTFMajorFeature extends MapGenStructure {
         for (StructureStart start : this.structureMap.values()) {
             if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(pos.getX(), pos.getZ(), pos.getX(), pos.getZ())) {
 
-                for (StructureComponent component : start.getComponents()) {
+                for (StructurePiece component : start.getComponents()) {
                     if (component.getBoundingBox().isVecInside(pos)) {
                         boxFound = component.getBoundingBox();
                     }
@@ -147,7 +147,7 @@ public class MapGenTFMajorFeature extends MapGenStructure {
     public TFFeature getFeatureAt(BlockPos pos) {
         for (StructureStart start : this.structureMap.values())
             if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(pos.getX(), pos.getZ(), pos.getX(), pos.getZ()))
-                for (StructureComponent component : start.getComponents())
+                for (StructurePiece component : start.getComponents())
                     if (component.getBoundingBox().isVecInside(pos))
                         if (component instanceof StructureTFComponent)
                             return ((StructureTFComponent) component).getFeatureType();
@@ -163,7 +163,7 @@ public class MapGenTFMajorFeature extends MapGenStructure {
         for (StructureStart start : this.structureMap.values()) {
             if (start.isSizeableStructure() && start.getBoundingBox().intersectsWith(pos.getX(), pos.getZ(), pos.getX(), pos.getZ())) {
 
-                for (StructureComponent component : start.getComponents()) {
+                for (StructurePiece component : start.getComponents()) {
                     if (component.getBoundingBox().isVecInside(pos)) {
 
                         if (component instanceof StructureTFComponent) {

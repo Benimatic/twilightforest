@@ -1,7 +1,7 @@
 package twilightforest.entity.ai;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
@@ -38,7 +38,7 @@ public class EntityAITFHoverBeam extends EntityAITFHoverBase<EntityTFSnowQueen> 
 
 	@Override
 	public boolean shouldExecute() {
-		EntityLivingBase target = this.attacker.getAttackTarget();
+		LivingEntity target = this.attacker.getAttackTarget();
 
 		if (target == null) {
 			return false;
@@ -53,7 +53,7 @@ public class EntityAITFHoverBeam extends EntityAITFHoverBase<EntityTFSnowQueen> 
 
 	@Override
 	public boolean shouldContinueExecuting() {
-		EntityLivingBase target = this.attacker.getAttackTarget();
+		LivingEntity target = this.attacker.getAttackTarget();
 
 		if (target == null || !target.isAlive()) {
 			return false;
@@ -132,7 +132,7 @@ public class EntityAITFHoverBeam extends EntityAITFHoverBase<EntityTFSnowQueen> 
 		}
 
 		// look at target
-		EntityLivingBase target = this.attacker.getAttackTarget();
+		LivingEntity target = this.attacker.getAttackTarget();
 		if (target != null) {
 			float tracking = this.isInPosition ? 1F : 20.0F;
 
@@ -175,7 +175,7 @@ public class EntityAITFHoverBeam extends EntityAITFHoverBase<EntityTFSnowQueen> 
 	}
 
 	@Override
-	protected void makeNewHoverSpot(EntityLivingBase target) {
+	protected void makeNewHoverSpot(LivingEntity target) {
 		super.makeNewHoverSpot(target);
 		this.beamY = target.posY;
 		this.seekTimer = 0;

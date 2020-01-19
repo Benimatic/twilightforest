@@ -4,7 +4,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.MapItemRenderer;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.network.play.server.SPacketMaps;
+import net.minecraft.network.play.server.SMapDataPacket;
 import net.minecraft.world.storage.MapData;
 import net.minecraft.world.storage.MapDecoration;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -22,12 +22,12 @@ import java.util.Map;
 public class PacketMagicMap implements IMessage {
 	private int mapID;
 	private byte[] featureData;
-	private SPacketMaps inner;
+	private SMapDataPacket inner;
 
 	public PacketMagicMap() {
 	}
 
-	public PacketMagicMap(int mapID, TFMagicMapData mapData, SPacketMaps inner) {
+	public PacketMagicMap(int mapID, TFMagicMapData mapData, SMapDataPacket inner) {
 		this.mapID = mapID;
 		this.featureData = mapData.serializeFeatures();
 		this.inner = inner;
@@ -39,7 +39,7 @@ public class PacketMagicMap implements IMessage {
 		mapID = ByteBufUtils.readVarInt(buf, 5);
 		featureData = tmp.readByteArray();
 
-		inner = new SPacketMaps();
+		inner = new SMapDataPacket();
 		try {
 			inner.readPacketData(tmp);
 		} catch (IOException e) {

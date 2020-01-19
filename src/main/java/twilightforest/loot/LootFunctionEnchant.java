@@ -8,16 +8,16 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
+import net.minecraft.item.EnchantedBookItem;
 import net.minecraft.item.Items;
-import net.minecraft.item.ItemEnchantedBook;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.JsonUtils;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.conditions.LootCondition;
-import net.minecraft.world.storage.loot.functions.LootFunction;
+import net.minecraft.world.storage.loot.conditions.ILootCondition;
+import net.minecraft.world.storage.loot.functions.ILootFunction;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.registries.IRegistryDelegate;
 import twilightforest.TwilightForestMod;
@@ -27,11 +27,11 @@ import java.util.Map;
 import java.util.Random;
 
 // Similar to EnchantRandomly but applies everything and with exact levels
-public class LootFunctionEnchant extends LootFunction {
+public class LootFunctionEnchant extends ILootFunction {
 
 	private final Map<IRegistryDelegate<Enchantment>, Short> enchantments;
 
-	protected LootFunctionEnchant(LootCondition[] conditions, Map<IRegistryDelegate<Enchantment>, Short> enchantments) {
+	protected LootFunctionEnchant(ILootCondition[] conditions, Map<IRegistryDelegate<Enchantment>, Short> enchantments) {
 		super(conditions);
 		this.enchantments = enchantments;
 	}
@@ -40,7 +40,7 @@ public class LootFunctionEnchant extends LootFunction {
 	public ItemStack apply(ItemStack stack, Random rand, LootContext context) {
 		for (Map.Entry<IRegistryDelegate<Enchantment>, Short> e : enchantments.entrySet()) {
 			if (stack.getItem() == Items.ENCHANTED_BOOK) {
-				ItemEnchantedBook.addEnchantment(stack, new EnchantmentData(e.getKey().get(), e.getValue()));
+				EnchantedBookItem.addEnchantment(stack, new EnchantmentData(e.getKey().get(), e.getValue()));
 			} else {
 				addEnchantment(stack, e.getKey().get(), e.getValue());
 			}
@@ -57,10 +57,10 @@ public class LootFunctionEnchant extends LootFunction {
 		final String enchantedCompoundKey = stack.getItem() == Items.ENCHANTED_BOOK ? "StoredEnchantments" : "ench";
 
 		if (!stack.getTag().contains(enchantedCompoundKey, Constants.NBT.TAG_LIST)) {
-			stack.getTag().setTag(enchantedCompoundKey, new NBTTagList());
+			stack.getTag().setTag(enchantedCompoundKey, new ListNBT());
 		}
 
-		NBTTagList list = stack.getTag().getTagList(enchantedCompoundKey, Constants.NBT.TAG_COMPOUND);
+		ListNBT list = stack.getTag().getTagList(enchantedCompoundKey, Constants.NBT.TAG_COMPOUND);
 
 		for (int i = 0; i < list.tagCount(); i++) {
 			CompoundNBT existing = list.getCompoundTagAt(i);
@@ -76,7 +76,7 @@ public class LootFunctionEnchant extends LootFunction {
 		list.appendTag(newCmp);
 	}
 
-	public static class Serializer extends LootFunction.Serializer<LootFunctionEnchant> {
+	public static class Serializer extends ILootFunction.Serializer<LootFunctionEnchant> {
 
 		protected Serializer() {
 			super(TwilightForestMod.prefix("enchant"), LootFunctionEnchant.class);
@@ -96,11 +96,11 @@ public class LootFunctionEnchant extends LootFunction {
 		}
 
 		@Override
-		public LootFunctionEnchant deserialize(JsonObject object, JsonDeserializationContext ctx, LootCondition[] conditions) {
+		public LootFunctionEnchant deserialize(JsonObject object, JsonDeserializationContext ctx, ILootCondition[] conditions) {
 			Map<IRegistryDelegate<Enchantment>, Short> enchantments = new HashMap<>();
 
 			if (object.has("enchantments")) {
-				JsonObject enchantObj = JsonUtils.getJsonObject(object, "enchantments");
+				JsonObject enchantObj = JSONUtils.getJsonObject(object, "enchantments");
 
 				for (Map.Entry<String, JsonElement> e : enchantObj.entrySet()) {
 					Enchantment ench = Enchantment.REGISTRY.getObject(new ResourceLocation(e.getKey()));

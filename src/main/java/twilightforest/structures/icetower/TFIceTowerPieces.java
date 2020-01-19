@@ -1,21 +1,21 @@
 package twilightforest.structures.icetower;
 
-import net.minecraft.world.gen.structure.MapGenStructureIO;
+import net.minecraft.world.gen.feature.StructureIO;
 import twilightforest.structures.start.StructureStartAuroraPalace;
 
 
 public class TFIceTowerPieces {
 
 	public static void registerPieces() {
-		MapGenStructureIO.registerStructure(StructureStartAuroraPalace.class, "TFAP");
+		StructureIO.registerStructure(StructureStartAuroraPalace.class, "TFAP");
 
-		MapGenStructureIO.registerStructureComponent(ComponentTFIceTowerMain.class, "TFITMai");
-		MapGenStructureIO.registerStructureComponent(ComponentTFIceTowerWing.class, "TFITWin");
-		MapGenStructureIO.registerStructureComponent(ComponentTFIceTowerRoof.class, "TFITRoof");
-		MapGenStructureIO.registerStructureComponent(ComponentTFIceTowerBeard.class, "TFITBea");
-		MapGenStructureIO.registerStructureComponent(ComponentTFIceTowerBossWing.class, "TFITBoss");
-		MapGenStructureIO.registerStructureComponent(ComponentTFIceTowerEntrance.class, "TFITEnt");
-		MapGenStructureIO.registerStructureComponent(ComponentTFIceTowerBridge.class, "TFITBri");
-		MapGenStructureIO.registerStructureComponent(ComponentTFIceTowerStairs.class, "TFITSt");
+		StructureIO.registerStructureComponent(ComponentTFIceTowerMain.class, "TFITMai");
+		StructureIO.registerStructureComponent(ComponentTFIceTowerWing.class, "TFITWin");
+		StructureIO.registerStructureComponent(ComponentTFIceTowerRoof.class, "TFITRoof");
+		StructureIO.registerStructureComponent(ComponentTFIceTowerBeard.class, "TFITBea");
+		StructureIO.registerStructureComponent(ComponentTFIceTowerBossWing.class, "TFITBoss");
+		StructureIO.registerStructureComponent(ComponentTFIceTowerEntrance.class, "TFITEnt");
+		StructureIO.registerStructureComponent(ComponentTFIceTowerBridge.class, "TFITBri");
+		StructureIO.registerStructureComponent(ComponentTFIceTowerStairs.class, "TFITSt");
 	}
 }

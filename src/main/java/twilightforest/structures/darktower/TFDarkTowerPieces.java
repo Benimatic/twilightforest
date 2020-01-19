@@ -1,29 +1,29 @@
 package twilightforest.structures.darktower;
 
-import net.minecraft.world.gen.structure.MapGenStructureIO;
+import net.minecraft.world.gen.feature.StructureIO;
 import twilightforest.structures.start.StructureStartDarkTower;
 
 
 public class TFDarkTowerPieces {
 
 	public static void registerPieces() {
-		MapGenStructureIO.registerStructure(StructureStartDarkTower.class, "TFDT");
+		StructureIO.registerStructure(StructureStartDarkTower.class, "TFDT");
 
-		MapGenStructureIO.registerStructureComponent(ComponentTFDarkTowerBalcony.class, "TFDTBal");
-		MapGenStructureIO.registerStructureComponent(ComponentTFDarkTowerBeard.class, "TFDTBea");
-		MapGenStructureIO.registerStructureComponent(ComponentTFDarkTowerBossBridge.class, "TFDTBB");
-		MapGenStructureIO.registerStructureComponent(ComponentTFDarkTowerBossTrap.class, "TFDTBT");
-		MapGenStructureIO.registerStructureComponent(ComponentTFDarkTowerBridge.class, "TFDTBri");
-		MapGenStructureIO.registerStructureComponent(ComponentTFDarkTowerEntrance.class, "TFDTEnt");
-		MapGenStructureIO.registerStructureComponent(ComponentTFDarkTowerEntranceBridge.class, "TFDTEB");
-		MapGenStructureIO.registerStructureComponent(ComponentTFDarkTowerMain.class, "TFDTMai");
-		MapGenStructureIO.registerStructureComponent(ComponentTFDarkTowerMainBridge.class, "TFDTMB");
-		MapGenStructureIO.registerStructureComponent(ComponentTFDarkTowerRoof.class, "TFDTRooS");
-		MapGenStructureIO.registerStructureComponent(ComponentTFDarkTowerRoofAntenna.class, "TFDTRA");
-		MapGenStructureIO.registerStructureComponent(ComponentTFDarkTowerRoofCactus.class, "TFDTRC");
-		MapGenStructureIO.registerStructureComponent(ComponentTFDarkTowerRoofFourPost.class, "TFDTRFP");
-		MapGenStructureIO.registerStructureComponent(ComponentTFDarkTowerRoofRings.class, "TFDTRR");
-		MapGenStructureIO.registerStructureComponent(ComponentTFDarkTowerWing.class, "TFDTWin");
+		StructureIO.registerStructureComponent(ComponentTFDarkTowerBalcony.class, "TFDTBal");
+		StructureIO.registerStructureComponent(ComponentTFDarkTowerBeard.class, "TFDTBea");
+		StructureIO.registerStructureComponent(ComponentTFDarkTowerBossBridge.class, "TFDTBB");
+		StructureIO.registerStructureComponent(ComponentTFDarkTowerBossTrap.class, "TFDTBT");
+		StructureIO.registerStructureComponent(ComponentTFDarkTowerBridge.class, "TFDTBri");
+		StructureIO.registerStructureComponent(ComponentTFDarkTowerEntrance.class, "TFDTEnt");
+		StructureIO.registerStructureComponent(ComponentTFDarkTowerEntranceBridge.class, "TFDTEB");
+		StructureIO.registerStructureComponent(ComponentTFDarkTowerMain.class, "TFDTMai");
+		StructureIO.registerStructureComponent(ComponentTFDarkTowerMainBridge.class, "TFDTMB");
+		StructureIO.registerStructureComponent(ComponentTFDarkTowerRoof.class, "TFDTRooS");
+		StructureIO.registerStructureComponent(ComponentTFDarkTowerRoofAntenna.class, "TFDTRA");
+		StructureIO.registerStructureComponent(ComponentTFDarkTowerRoofCactus.class, "TFDTRC");
+		StructureIO.registerStructureComponent(ComponentTFDarkTowerRoofFourPost.class, "TFDTRFP");
+		StructureIO.registerStructureComponent(ComponentTFDarkTowerRoofRings.class, "TFDTRR");
+		StructureIO.registerStructureComponent(ComponentTFDarkTowerWing.class, "TFDTWin");
 
 	}
 

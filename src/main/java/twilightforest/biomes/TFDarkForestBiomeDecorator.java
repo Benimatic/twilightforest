@@ -3,8 +3,8 @@ package twilightforest.biomes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.feature.WorldGenPumpkin;
-import net.minecraft.world.gen.feature.WorldGenerator;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.PumpkinFeature;
 import twilightforest.TFFeature;
 import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
@@ -17,10 +17,10 @@ import java.util.Random;
 
 public class TFDarkForestBiomeDecorator extends TFBiomeDecorator {
 
-	private final WorldGenerator darkCanopyTreeGen = new TFGenDarkCanopyTree();
-	private final WorldGenerator worldGenDeadBush = new TFGenTallGrass(TFBlocks.twilight_plant.getDefaultState().with(BlockTFPlant.VARIANT, PlantVariant.DEADBUSH), 8);
-	private final WorldGenerator worldGenForestGrass = new TFGenTallGrass(TFBlocks.twilight_plant.getDefaultState().with(BlockTFPlant.VARIANT, PlantVariant.FORESTGRASS));
-	private final WorldGenerator worldGenMushgloom = new TFGenTallGrass(TFBlocks.twilight_plant.getDefaultState().with(BlockTFPlant.VARIANT, PlantVariant.MUSHGLOOM));
+	private final Feature darkCanopyTreeGen = new TFGenDarkCanopyTree();
+	private final Feature worldGenDeadBush = new TFGenTallGrass(TFBlocks.twilight_plant.getDefaultState().with(BlockTFPlant.VARIANT, PlantVariant.DEADBUSH), 8);
+	private final Feature worldGenForestGrass = new TFGenTallGrass(TFBlocks.twilight_plant.getDefaultState().with(BlockTFPlant.VARIANT, PlantVariant.FORESTGRASS));
+	private final Feature worldGenMushgloom = new TFGenTallGrass(TFBlocks.twilight_plant.getDefaultState().with(BlockTFPlant.VARIANT, PlantVariant.MUSHGLOOM));
 
 	@Override
 	public void decorate(World world, Random rand, Biome biome, BlockPos pos) {
@@ -40,7 +40,7 @@ public class TFDarkForestBiomeDecorator extends TFBiomeDecorator {
 				int rx = pos.getX() + rand.nextInt(16) + 8;
 				int rz = pos.getZ() + rand.nextInt(16) + 8;
 				int ry = TFWorld.getGroundLevel(world, rx, rz);
-				WorldGenerator treeFeature = biome.getRandomTreeFeature(rand);
+				Feature treeFeature = biome.getRandomTreeFeature(rand);
 				treeFeature.setDecorationDefaults();
 				treeFeature.generate(world, rand, new BlockPos(rx, ry, rz));
 			}
@@ -101,7 +101,7 @@ public class TFDarkForestBiomeDecorator extends TFBiomeDecorator {
 				int rx = pos.getX() + rand.nextInt(16) + 8;
 				int rz = pos.getZ() + rand.nextInt(16) + 8;
 				int ry = TFWorld.getGroundLevel(world, rx, rz);
-				new WorldGenPumpkin().generate(world, rand, new BlockPos(rx, ry, rz));
+				new PumpkinFeature().generate(world, rand, new BlockPos(rx, ry, rz));
 			}
 
 		}

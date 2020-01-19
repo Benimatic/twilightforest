@@ -4,7 +4,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.MapItemRenderer;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.network.play.server.SPacketMaps;
+import net.minecraft.network.play.server.SMapDataPacket;
 import net.minecraft.world.storage.MapData;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -20,17 +20,17 @@ import java.io.IOException;
  */
 public class PacketMazeMap implements IMessage {
 
-	private SPacketMaps inner;
+	private SMapDataPacket inner;
 
 	public PacketMazeMap() {}
 
-	public PacketMazeMap(SPacketMaps inner) {
+	public PacketMazeMap(SMapDataPacket inner) {
 		this.inner = inner;
 	}
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
-		inner = new SPacketMaps();
+		inner = new SMapDataPacket();
 		try {
 			inner.readPacketData(new PacketBuffer(buf));
 		} catch (IOException e) {

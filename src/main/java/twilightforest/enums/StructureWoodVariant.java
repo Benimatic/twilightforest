@@ -175,19 +175,19 @@ public enum StructureWoodVariant implements IStringSerializable {
             case SLAB:
                 switch (target) {
                     case OAK:
-                        return transferStateKey(stateIn, target.slab.getDefaultState(), BlockSlab.HALF).with(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.OAK);
+                        return transferStateKey(stateIn, target.slab.getDefaultState(), SlabBlock.HALF).with(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.OAK);
                     case SPRUCE:
-                        return transferStateKey(stateIn, target.slab.getDefaultState(), BlockSlab.HALF).with(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.SPRUCE);
+                        return transferStateKey(stateIn, target.slab.getDefaultState(), SlabBlock.HALF).with(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.SPRUCE);
                     case BIRCH:
-                        return transferStateKey(stateIn, target.slab.getDefaultState(), BlockSlab.HALF).with(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.BIRCH);
+                        return transferStateKey(stateIn, target.slab.getDefaultState(), SlabBlock.HALF).with(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.BIRCH);
                     case JUNGLE:
-                        return transferStateKey(stateIn, target.slab.getDefaultState(), BlockSlab.HALF).with(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.JUNGLE);
+                        return transferStateKey(stateIn, target.slab.getDefaultState(), SlabBlock.HALF).with(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.JUNGLE);
                     case ACACIA:
-                        return transferStateKey(stateIn, target.slab.getDefaultState(), BlockSlab.HALF).with(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.ACACIA);
+                        return transferStateKey(stateIn, target.slab.getDefaultState(), SlabBlock.HALF).with(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.ACACIA);
                     case DARK_OAK:
-                        return transferStateKey(stateIn, target.slab.getDefaultState(), BlockSlab.HALF).with(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.DARK_OAK);
+                        return transferStateKey(stateIn, target.slab.getDefaultState(), SlabBlock.HALF).with(BlockWoodSlab.VARIANT, BlockPlanks.EnumType.DARK_OAK);
                     default:
-                        return transferStateKey(stateIn, target.slab.getDefaultState(), BlockSlab.HALF);
+                        return transferStateKey(stateIn, target.slab.getDefaultState(), SlabBlock.HALF);
                 }
             case DOUBLESLAB:
                 switch (target) {
@@ -207,13 +207,13 @@ public enum StructureWoodVariant implements IStringSerializable {
                         return target.doubleSlab.getDefaultState();
                 }
             case FENCE:
-                return transferStateKeys(stateIn, target.fence .getDefaultState(), BlockFence.NORTH, BlockFence.EAST, BlockFence.WEST, BlockFence.SOUTH);
+                return transferStateKeys(stateIn, target.fence .getDefaultState(), FenceBlock.NORTH, FenceBlock.EAST, FenceBlock.WEST, FenceBlock.SOUTH);
             case GATE:
-                return transferStateKeys(stateIn, target.gate  .getDefaultState(), BlockFenceGate.FACING, BlockFenceGate.OPEN, BlockFenceGate.POWERED, BlockFenceGate.IN_WALL);
+                return transferStateKeys(stateIn, target.gate  .getDefaultState(), FenceGateBlock.FACING, FenceGateBlock.OPEN, FenceGateBlock.POWERED, FenceGateBlock.IN_WALL);
             case BUTTON:
-                return transferStateKeys(stateIn, target.button.getDefaultState(), BlockButton.FACING, BlockButton.POWERED);
+                return transferStateKeys(stateIn, target.button.getDefaultState(), AbstractButtonBlock.FACING, AbstractButtonBlock.POWERED);
             case PLATE:
-                return transferStateKey (stateIn, target.plate .getDefaultState(), BlockPressurePlate.POWERED);
+                return transferStateKey (stateIn, target.plate .getDefaultState(), PressurePlateBlock.POWERED);
             default:
                 return stateIn; // Can't deal with this.
         }
@@ -234,14 +234,14 @@ public enum StructureWoodVariant implements IStringSerializable {
         if (b instanceof BlockTF || b instanceof BlockPlanks)
             return WoodShapes.BLOCK;
         if (b instanceof StairsBlock  ) return WoodShapes.STAIRS;
-        if (b instanceof BlockSlab    ) {
-            if (((BlockSlab) b).isDouble()) return WoodShapes.DOUBLESLAB;
+        if (b instanceof SlabBlock) {
+            if (((SlabBlock) b).isDouble()) return WoodShapes.DOUBLESLAB;
             else                            return WoodShapes.SLAB;
         }
-        if (b instanceof BlockButton         ) return WoodShapes.BUTTON;
-        if (b instanceof BlockFence          ) return WoodShapes.FENCE;
-        if (b instanceof BlockFenceGate      ) return WoodShapes.GATE;
-        if (b instanceof BlockPressurePlate  ) return WoodShapes.PLATE;
+        if (b instanceof AbstractButtonBlock) return WoodShapes.BUTTON;
+        if (b instanceof FenceBlock) return WoodShapes.FENCE;
+        if (b instanceof FenceGateBlock) return WoodShapes.GATE;
+        if (b instanceof PressurePlateBlock) return WoodShapes.PLATE;
 
         return WoodShapes.INVALID;
     }

@@ -2,8 +2,7 @@ package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.model.ModelBase;
-import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
@@ -12,7 +11,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ModelTFCubeOfAnnihilation;
 import twilightforest.entity.EntityTFCubeOfAnnihilation;
 
-public class RenderTFCubeOfAnnihilation extends Render<EntityTFCubeOfAnnihilation> {
+public class RenderTFCubeOfAnnihilation extends EntityRenderer<EntityTFCubeOfAnnihilation> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("cubeofannihilation.png");
 	private final ModelBase model = new ModelTFCubeOfAnnihilation();

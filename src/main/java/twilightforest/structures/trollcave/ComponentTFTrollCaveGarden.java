@@ -6,9 +6,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.WorldGenBigMushroom;
-import net.minecraft.world.gen.feature.WorldGenerator;
-import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
@@ -100,7 +99,7 @@ public class ComponentTFTrollCaveGarden extends ComponentTFTrollCaveMain {
 		return true;
 	}
 
-	protected void generate(World world, WorldGenerator generator, Random rand, int x, int y, int z, MutableBoundingBox sbb) {
+	protected void generate(World world, Feature generator, Random rand, int x, int y, int z, MutableBoundingBox sbb) {
 		// are the coordinates in our bounding box?
 		int dx = getXWithOffset(x, z);
 		int dy = getYWithOffset(y);

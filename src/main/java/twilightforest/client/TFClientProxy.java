@@ -4,11 +4,11 @@ import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MusicTicker;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelSilverfish;
 import net.minecraft.client.multiplayer.ClientAdvancementManager;
-import net.minecraft.client.renderer.entity.RenderSnowball;
+import net.minecraft.client.renderer.entity.SpriteRenderer;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -16,7 +16,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.client.EnumHelperClient;
 import net.minecraftforge.common.MinecraftForge;
@@ -117,19 +117,19 @@ public class TFClientProxy extends TFCommonProxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFCastleGuardian.class, m -> new RenderTFCastleGuardian(m, new ModelTFCastleGuardian(), 2.0F, "finalcastle/castle_guardian.png"));
 
 		// projectiles
-		RenderingRegistry.registerEntityRenderingHandler(EntityTFNatureBolt.class, m -> new RenderSnowball<>(m, Items.WHEAT_SEEDS, Minecraft.getInstance().getRenderItem()));
-		RenderingRegistry.registerEntityRenderingHandler(EntityTFLichBolt.class, m -> new RenderSnowball<>(m, Items.ENDER_PEARL, Minecraft.getInstance().getRenderItem()));
-		RenderingRegistry.registerEntityRenderingHandler(EntityTFTwilightWandBolt.class, m -> new RenderSnowball<>(m, Items.ENDER_PEARL, Minecraft.getInstance().getRenderItem()));
-		RenderingRegistry.registerEntityRenderingHandler(EntityTFTomeBolt.class, m -> new RenderSnowball<>(m, Items.PAPER, Minecraft.getInstance().getRenderItem()));
+		RenderingRegistry.registerEntityRenderingHandler(EntityTFNatureBolt.class, m -> new SpriteRenderer<>(m, Items.WHEAT_SEEDS, Minecraft.getInstance().getRenderItem()));
+		RenderingRegistry.registerEntityRenderingHandler(EntityTFLichBolt.class, m -> new SpriteRenderer<>(m, Items.ENDER_PEARL, Minecraft.getInstance().getRenderItem()));
+		RenderingRegistry.registerEntityRenderingHandler(EntityTFTwilightWandBolt.class, m -> new SpriteRenderer<>(m, Items.ENDER_PEARL, Minecraft.getInstance().getRenderItem()));
+		RenderingRegistry.registerEntityRenderingHandler(EntityTFTomeBolt.class, m -> new SpriteRenderer<>(m, Items.PAPER, Minecraft.getInstance().getRenderItem()));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFHydraMortar.class, RenderTFHydraMortar::new);
-		RenderingRegistry.registerEntityRenderingHandler(EntityTFSlimeProjectile.class, m -> new RenderSnowball<>(m, Items.SLIME_BALL, Minecraft.getInstance().getRenderItem()));
+		RenderingRegistry.registerEntityRenderingHandler(EntityTFSlimeProjectile.class, m -> new SpriteRenderer<>(m, Items.SLIME_BALL, Minecraft.getInstance().getRenderItem()));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFMoonwormShot.class, RenderTFMoonwormShot::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFCharmEffect.class, m -> new RenderTFCharm(m, Minecraft.getInstance().getRenderItem()));
-		RenderingRegistry.registerEntityRenderingHandler(EntityTFLichBomb.class, m -> new RenderSnowball<>(m, Items.MAGMA_CREAM, Minecraft.getInstance().getRenderItem()));
+		RenderingRegistry.registerEntityRenderingHandler(EntityTFLichBomb.class, m -> new SpriteRenderer<>(m, Items.MAGMA_CREAM, Minecraft.getInstance().getRenderItem()));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFThrownWep.class, RenderTFThrownWep::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFFallingIce.class, RenderTFFallingIce::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFIceBomb.class, RenderTFThrownIce::new);
-		RenderingRegistry.registerEntityRenderingHandler(EntityTFIceSnowball.class, m -> new RenderSnowball<>(m, Items.SNOWBALL, Minecraft.getInstance().getRenderItem()));
+		RenderingRegistry.registerEntityRenderingHandler(EntityTFIceSnowball.class, m -> new SpriteRenderer<>(m, Items.SNOWBALL, Minecraft.getInstance().getRenderItem()));
 		RenderingRegistry.registerEntityRenderingHandler(EntityTFSlideBlock.class, RenderTFSlideBlock::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntitySeekerArrow.class, RenderDefaultArrow::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityIceArrow.class, RenderDefaultArrow::new);
@@ -171,7 +171,7 @@ public class TFClientProxy extends TFCommonProxy {
 			@Override
 			public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 				if(FMLCommonHandler.instance().getEffectiveSide().isClient()) {
-					Minecraft.getInstance().player.sendMessage(new TextComponentString("Reloading Twilight Forest Shaders!"));
+					Minecraft.getInstance().player.sendMessage(new StringTextComponent("Reloading Twilight Forest Shaders!"));
 					twilightforest.client.shader.ShaderManager.getShaderReloadListener().onResourceManagerReload(net.minecraft.client.Minecraft.getInstance().getResourceManager());
 					if (TFCompat.IMMERSIVEENGINEERING.isActivated())
 						twilightforest.compat.ie.IEShaderRegister.initShaders();
@@ -190,8 +190,8 @@ public class TFClientProxy extends TFCommonProxy {
 
 	@Override
 	public boolean doesPlayerHaveAdvancement(PlayerEntity player, ResourceLocation advId) {
-		if (player instanceof EntityPlayerSP) {
-			ClientAdvancementManager manager = ((EntityPlayerSP) player).connection.getAdvancementManager();
+		if (player instanceof ClientPlayerEntity) {
+			ClientAdvancementManager manager = ((ClientPlayerEntity) player).connection.getAdvancementManager();
 			Advancement adv = manager.getAdvancementList().getAdvancement(advId);
 			if (adv == null) return false;
 			AdvancementProgress progress = manager.advancementToProgress.get(adv);

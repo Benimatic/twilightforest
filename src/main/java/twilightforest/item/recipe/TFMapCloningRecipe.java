@@ -1,12 +1,12 @@
 package twilightforest.item.recipe;
 
-import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.RecipesMapCloning;
+import net.minecraft.item.crafting.MapCloningRecipe;
 import net.minecraft.world.World;
 
-public class TFMapCloningRecipe extends RecipesMapCloning {
+public class TFMapCloningRecipe extends MapCloningRecipe {
 	private final Item fullMapID;
 	private final Item blankMapID;
 
@@ -17,7 +17,7 @@ public class TFMapCloningRecipe extends RecipesMapCloning {
 
 	// [VanillaCopy] super with own items
 	@Override
-	public boolean matches(InventoryCrafting inv, World worldIn) {
+	public boolean matches(CraftingInventory inv, World worldIn) {
 		int i = 0;
 		ItemStack itemstack = ItemStack.EMPTY;
 
@@ -46,7 +46,7 @@ public class TFMapCloningRecipe extends RecipesMapCloning {
 
 	// [VanillaCopy] super with own items
 	@Override
-	public ItemStack getCraftingResult(InventoryCrafting inv) {
+	public ItemStack getCraftingResult(CraftingInventory inv) {
 		int i = 0;
 		ItemStack itemstack = ItemStack.EMPTY;
 

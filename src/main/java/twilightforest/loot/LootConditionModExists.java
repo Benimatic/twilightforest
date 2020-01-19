@@ -3,9 +3,9 @@ package twilightforest.loot;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
-import net.minecraft.util.JsonUtils;
+import net.minecraft.util.JSONUtils;
 import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.conditions.LootCondition;
+import net.minecraft.world.storage.loot.conditions.ILootCondition;
 import net.minecraftforge.fml.common.Loader;
 import twilightforest.TwilightForestMod;
 
@@ -13,7 +13,7 @@ import javax.annotation.Nonnull;
 import java.util.Random;
 
 // Loot condition for checking if a mod exists.
-public class LootConditionModExists implements LootCondition {
+public class LootConditionModExists implements ILootCondition {
 
     private final boolean exists;
     private final String modID;
@@ -28,7 +28,7 @@ public class LootConditionModExists implements LootCondition {
         return exists;
     }
 
-    public static class Serializer extends LootCondition.Serializer<LootConditionModExists> {
+    public static class Serializer extends ILootCondition.Serializer<LootConditionModExists> {
 
         protected Serializer() {
             super(TwilightForestMod.prefix("mod_exists"), LootConditionModExists.class);
@@ -42,7 +42,7 @@ public class LootConditionModExists implements LootCondition {
         @Nonnull
         @Override
         public LootConditionModExists deserialize(@Nonnull JsonObject json, @Nonnull JsonDeserializationContext context) {
-            return new LootConditionModExists(JsonUtils.getString(json, "mod_id"));
+            return new LootConditionModExists(JSONUtils.getString(json, "mod_id"));
         }
     }
 }

@@ -7,7 +7,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
@@ -73,13 +73,13 @@ public class IMCHandler {
 		}
 	}
 
-	private static void readFromTagList(NBTTagList list, Consumer<CompoundNBT> consumer) {
+	private static void readFromTagList(ListNBT list, Consumer<CompoundNBT> consumer) {
 		for (int i = 0; i < list.tagCount(); i++) {
 			consumer.accept(list.getCompoundTagAt(i));
 		}
 	}
 
-	private static void readStatesFromTagList(NBTTagList list, Consumer<BlockState> consumer) {
+	private static void readStatesFromTagList(ListNBT list, Consumer<BlockState> consumer) {
 		for (int i = 0; i < list.tagCount(); i++) {
 			BlockState state = NBTUtil.readBlockState(list.getCompoundTagAt(i));
 			if (state.getBlock() != Blocks.AIR) {

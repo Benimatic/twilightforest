@@ -3,8 +3,8 @@ package twilightforest.world;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.structure.MapGenStructure;
-import net.minecraft.world.gen.structure.StructureStart;
+import net.minecraft.world.gen.feature.Structure;
+import net.minecraft.world.gen.feature.StructureStart;
 import twilightforest.TFConfig;
 import twilightforest.TFFeature;
 import twilightforest.biomes.TFBiomes;
@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class MapGenTFHollowTree extends MapGenStructure {
+public class MapGenTFHollowTree extends Structure {
 
 	//public static final int SPAWN_CHANCE = 48;
 

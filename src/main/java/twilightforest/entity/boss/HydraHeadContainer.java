@@ -2,7 +2,7 @@ package twilightforest.entity.boss;
 
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.MultiPartEntityPart;
 import net.minecraft.util.SoundEvents;
@@ -673,7 +673,7 @@ public class HydraHeadContainer {
 			List<Entity> nearbyList = headEntity.world.getEntitiesWithinAABBExcludingEntity(headEntity, headEntity.getBoundingBox().grow(0.0, 1.0, 0.0));
 
 			for (Entity nearby : nearbyList) {
-				if (nearby instanceof EntityLivingBase && !(nearby instanceof EntityTFHydraPart) && !(nearby instanceof EntityTFHydra) && !(nearby instanceof MultiPartEntityPart)) {
+				if (nearby instanceof LivingEntity && !(nearby instanceof EntityTFHydraPart) && !(nearby instanceof EntityTFHydra) && !(nearby instanceof MultiPartEntityPart)) {
 					// bite it!
 					nearby.attackEntityFrom(DamageSource.causeMobDamage(hydra), BITE_DAMAGE);
 				}
@@ -880,8 +880,8 @@ public class HydraHeadContainer {
 
 	public void faceEntity(Entity entity, float yawConstraint, float pitchConstraint) {
 		double yTarget;
-		if (entity instanceof EntityLivingBase) {
-			EntityLivingBase entityliving = (EntityLivingBase) entity;
+		if (entity instanceof LivingEntity) {
+			LivingEntity entityliving = (LivingEntity) entity;
 			yTarget = entityliving.posY + entityliving.getEyeHeight();
 		} else {
 			yTarget = (entity.getBoundingBox().minY + entity.getBoundingBox().maxY) / 2D;
