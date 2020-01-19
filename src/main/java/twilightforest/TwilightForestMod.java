@@ -123,8 +123,6 @@ public class TwilightForestMod {
 			}
 		}
 
-		TFDataFixers.init();
-
 		// registerDimension(); // TODO: deferred registry
 		// checkOriginDimension(); // TODO: move
 
