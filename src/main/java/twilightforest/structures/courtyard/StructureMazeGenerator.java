@@ -615,9 +615,9 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
         for (int x = 0; x < widthInCellCount-1; x++) {
             ListNBT mazeY = new ListNBT();
 
-            for (int y = 0; y < heightInCellCount-1; y++) mazeY.appendTag(new IntNBT(maze[x][y]));
+            for (int y = 0; y < heightInCellCount-1; y++) mazeY.add(new IntNBT(maze[x][y]));
 
-            mazeX.appendTag(mazeY);
+            mazeX.add(mazeY);
         }
 
         tagCompound.putInt("mazeWidth", widthInCellCount);

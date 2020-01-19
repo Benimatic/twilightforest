@@ -123,9 +123,9 @@ public class TFBlocks {
 	public static final RegistryObject<Block> thorn_rose                 = BLOCKS.register("thorn_rose", () -> new BlockTFThornRose());
 	public static final RegistryObject<Block> thorn_leaves               = BLOCKS.register("thorn_leaves", () -> new BlockTFLeaves3());
 	public static final RegistryObject<Block> beanstalk_leaves           = BLOCKS.register("beanstalk_leaves", () -> new BlockTFLeaves3());
-	public static final RegistryObject<Block> deadrock                   = BLOCKS.register("deadrock", () -> new BlockTFDeadrock());
-	public static final RegistryObject<Block> deadrock_cracked           = BLOCKS.register("deadrock_cracked", () -> new BlockTFDeadrock());
-	public static final RegistryObject<Block> deadrock_weathered         = BLOCKS.register("deadrock_weathered", () -> new BlockTFDeadrock());
+	public static final RegistryObject<Block> deadrock                   = BLOCKS.register("deadrock", () -> new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(100.0F, 6000000.0F).sound(SoundType.STONE)));
+	public static final RegistryObject<Block> deadrock_cracked           = BLOCKS.register("deadrock_cracked", () -> new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(100.0F, 6000000.0F).sound(SoundType.STONE)));
+	public static final RegistryObject<Block> deadrock_weathered         = BLOCKS.register("deadrock_weathered", () -> new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(100.0F, 6000000.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> dark_leaves                = BLOCKS.register("dark_leaves", () -> new BlockTFDarkLeaves());
 	public static final RegistryObject<Block> aurora_pillar              = BLOCKS.register("aurora_pillar", () -> new BlockTFPillar(Material.PACKED_ICE, 2.0F, 10.0F));
 	public static final RegistryObject<Block> aurora_slab                = BLOCKS.register("aurora_slab", () -> new BlockTFAuroraSlab());

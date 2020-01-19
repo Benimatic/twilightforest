@@ -121,20 +121,20 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar {
 		}
 	}
 
-//	@Override
-//	public void breakBlock(World world, BlockPos pos, BlockState state) {
-//		int range = 4;
-//		int exRange = range + 1;
-//
-//		if (world.isAreaLoaded(pos, exRange)) {
-//			for (BlockPos pos_ : WorldUtil.getAllAround(pos, range)) {
-//				BlockState state_ = world.getBlockState(pos_);
-//				if (state_.getBlock().isLeaves(state_, world, pos_)) {
-//					state.getBlock().beginLeavesDecay(state_, world, pos_);
-//				}
-//			}
-//		}
-//	}
+	@Override
+	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moving) {
+		int range = 4;
+		int exRange = range + 1;
+
+		if (world.isAreaLoaded(pos, exRange)) {
+			for (BlockPos pos_ : WorldUtil.getAllAround(pos, range)) {
+				BlockState state_ = world.getBlockState(pos_);
+				if (state_.getBlock().isLeaves(state_, world, pos_)) {
+					state.getBlock().beginLeavesDecay(state_, world, pos_);
+				}
+			}
+		}
+	}
 
 //	@Override
 //	public int quantityDropped(Random random) {

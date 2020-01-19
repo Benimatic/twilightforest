@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.LootParameters;
 import net.minecraft.world.storage.loot.conditions.ILootCondition;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFMiniGhast;
@@ -21,11 +22,11 @@ public class LootConditionIsMinion implements ILootCondition {
 	}
 
 	@Override
-	public boolean testCondition(@Nonnull Random rand, @Nonnull LootContext context) {
-		return context.getLootedEntity() instanceof EntityTFMiniGhast && ((EntityTFMiniGhast) context.getLootedEntity()).isMinion() == !inverse;
+	public boolean test(@Nonnull LootContext context) {
+		return context.get(LootParameters.THIS_ENTITY) instanceof EntityTFMiniGhast && ((EntityTFMiniGhast) context.get(LootParameters.THIS_ENTITY)).isMinion() == !inverse;
 	}
 
-	public static class Serializer extends ILootCondition.Serializer<LootConditionIsMinion> {
+	public static class Serializer extends ILootCondition.AbstractSerializer<LootConditionIsMinion> {
 
 		protected Serializer() {
 			super(TwilightForestMod.prefix("is_minion"), LootConditionIsMinion.class);

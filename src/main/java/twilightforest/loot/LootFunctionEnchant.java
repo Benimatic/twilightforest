@@ -16,9 +16,11 @@ import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.LootFunction;
 import net.minecraft.world.storage.loot.conditions.ILootCondition;
 import net.minecraft.world.storage.loot.functions.ILootFunction;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IRegistryDelegate;
 import twilightforest.TwilightForestMod;
 
@@ -27,7 +29,7 @@ import java.util.Map;
 import java.util.Random;
 
 // Similar to EnchantRandomly but applies everything and with exact levels
-public class LootFunctionEnchant extends ILootFunction {
+public class LootFunctionEnchant extends LootFunction {
 
 	private final Map<IRegistryDelegate<Enchantment>, Short> enchantments;
 
@@ -37,7 +39,7 @@ public class LootFunctionEnchant extends ILootFunction {
 	}
 
 	@Override
-	public ItemStack apply(ItemStack stack, Random rand, LootContext context) {
+	public ItemStack doApply(ItemStack stack, LootContext context) {
 		for (Map.Entry<IRegistryDelegate<Enchantment>, Short> e : enchantments.entrySet()) {
 			if (stack.getItem() == Items.ENCHANTED_BOOK) {
 				EnchantedBookItem.addEnchantment(stack, new EnchantmentData(e.getKey().get(), e.getValue()));
@@ -57,26 +59,26 @@ public class LootFunctionEnchant extends ILootFunction {
 		final String enchantedCompoundKey = stack.getItem() == Items.ENCHANTED_BOOK ? "StoredEnchantments" : "ench";
 
 		if (!stack.getTag().contains(enchantedCompoundKey, Constants.NBT.TAG_LIST)) {
-			stack.getTag().setTag(enchantedCompoundKey, new ListNBT());
+			stack.getTag().put(enchantedCompoundKey, new ListNBT());
 		}
 
 		ListNBT list = stack.getTag().getList(enchantedCompoundKey, Constants.NBT.TAG_COMPOUND);
 
 		for (int i = 0; i < list.size(); i++) {
 			CompoundNBT existing = list.getCompound(i);
-			if (existing.getShort("id") == Enchantment.getEnchantmentID(e)) {
+			if (e.getRegistryName().equals(existing.getString("id"))) {
 				existing.putShort("lvl", level);
 				return;
 			}
 		}
 
 		CompoundNBT newCmp = new CompoundNBT();
-		newCmp.putShort("id", (short) Enchantment.getEnchantmentID(e));
+		newCmp.putString("id", e.getRegistryName().toString());
 		newCmp.putShort("lvl", level);
-		list.appendTag(newCmp);
+		list.add(newCmp);
 	}
 
-	public static class Serializer extends ILootFunction.Serializer<LootFunctionEnchant> {
+	public static class Serializer extends LootFunction.Serializer<LootFunctionEnchant> {
 
 		protected Serializer() {
 			super(TwilightForestMod.prefix("enchant"), LootFunctionEnchant.class);
@@ -103,11 +105,12 @@ public class LootFunctionEnchant extends ILootFunction {
 				JsonObject enchantObj = JSONUtils.getJsonObject(object, "enchantments");
 
 				for (Map.Entry<String, JsonElement> e : enchantObj.entrySet()) {
-					Enchantment ench = Enchantment.REGISTRY.getObject(new ResourceLocation(e.getKey()));
-					if (ench == null) {
+					ResourceLocation id = new ResourceLocation(e.getKey());
+					if (!ForgeRegistries.ENCHANTMENTS.containsKey(id)) {
 						throw new JsonSyntaxException("Can't find enchantment " + e.getKey());
 					}
 
+					Enchantment ench = ForgeRegistries.ENCHANTMENTS.getValue(id);
 					short lvl = e.getValue().getAsShort();
 
 					for (IRegistryDelegate<Enchantment> other : enchantments.keySet()) {

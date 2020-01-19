@@ -48,7 +48,7 @@ public class BlockTFBurntThorns extends BlockTFThorns {
 //	public boolean canSustainLeaves(BlockState state, IBlockAccess world, BlockPos pos) {
 //		return false;
 //	}
-//
-//	@Override
-//	public void breakBlock(World world, BlockPos pos, BlockState state) {}
+
+	@Override
+	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moving) {}
 }

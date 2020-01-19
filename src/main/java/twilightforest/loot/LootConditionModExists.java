@@ -6,7 +6,7 @@ import com.google.gson.JsonSerializationContext;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.conditions.ILootCondition;
-import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.ModList;
 import twilightforest.TwilightForestMod;
 
 import javax.annotation.Nonnull;
@@ -19,16 +19,16 @@ public class LootConditionModExists implements ILootCondition {
     private final String modID;
 
     public LootConditionModExists(String modID) {
-        this.exists = Loader.isModLoaded(modID);
+        this.exists = ModList.get().isLoaded(modID);
         this.modID = modID;
     }
 
     @Override
-    public boolean testCondition(Random rand, LootContext context) {
+    public boolean test(LootContext context) {
         return exists;
     }
 
-    public static class Serializer extends ILootCondition.Serializer<LootConditionModExists> {
+    public static class Serializer extends ILootCondition.AbstractSerializer<LootConditionModExists> {
 
         protected Serializer() {
             super(TwilightForestMod.prefix("mod_exists"), LootConditionModExists.class);
