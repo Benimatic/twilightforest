@@ -16,6 +16,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkRegistry;
+import net.minecraftforge.fml.network.PacketDistributor;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.block.TFBlocks;
@@ -99,12 +100,8 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 
 
 	private void sendAnnihilateBlockPacket(World world, BlockPos pos) {
-		// send packet
-		IMessage message = new PacketAnnihilateBlock(pos);
-
-		NetworkRegistry.TargetPoint targetPoint = new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 64);
-
-		TFPacketHandler.CHANNEL.sendToAllAround(message, targetPoint);
+		PacketDistributor.TargetPoint targetPoint = new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), 64, world.getDimension().getType());
+		TFPacketHandler.CHANNEL.send(PacketDistributor.NEAR.with(() -> targetPoint), new PacketAnnihilateBlock(pos));
 	}
 
 	@Override

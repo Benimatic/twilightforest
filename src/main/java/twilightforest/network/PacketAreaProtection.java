@@ -3,39 +3,36 @@ package twilightforest.network;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.network.NetworkEvent;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.EntityTFProtectionBox;
 
-public class PacketAreaProtection implements IMessage {
+import java.util.function.Supplier;
 
-	private MutableBoundingBox sbb;
-	private BlockPos pos;
+public class PacketAreaProtection {
 
-	public PacketAreaProtection() {}
+	private final MutableBoundingBox sbb;
+	private final BlockPos pos;
 
 	public PacketAreaProtection(MutableBoundingBox sbb, BlockPos pos) {
 		this.sbb = sbb;
 		this.pos = pos;
 	}
 
-	@Override
-	public void fromBytes(ByteBuf buf) {
+	public PacketAreaProtection(PacketBuffer buf) {
 		sbb = new MutableBoundingBox(
 				buf.readInt(), buf.readInt(), buf.readInt(),
 				buf.readInt(), buf.readInt(), buf.readInt()
 		);
-		pos = BlockPos.fromLong(buf.readLong());
+		pos = buf.readBlockPos();
 	}
 
-	@Override
-	public void toBytes(ByteBuf buf) {
+	public void encode(PacketBuffer buf) {
 		buf.writeInt(sbb.minX);
 		buf.writeInt(sbb.minY);
 		buf.writeInt(sbb.minZ);
@@ -45,11 +42,10 @@ public class PacketAreaProtection implements IMessage {
 		buf.writeLong(pos.toLong());
 	}
 
-	public static class Handler implements IMessageHandler<PacketAreaProtection, IMessage> {
+	public static class Handler {
 
-		@Override
-		public IMessage onMessage(PacketAreaProtection message, MessageContext ctx) {
-			Minecraft.getInstance().addScheduledTask(new Runnable() {
+		public static boolean onMessage(PacketAreaProtection message, Supplier<NetworkEvent.Context> ctx) {
+			ctx.get().enqueueWork(new Runnable() {
 				@Override
 				public void run() {
 
@@ -70,7 +66,7 @@ public class PacketAreaProtection implements IMessage {
 					}
 				}
 			});
-			return null;
+			return true;
 		}
 
 		static void addProtectionBox(World world, MutableBoundingBox sbb) {

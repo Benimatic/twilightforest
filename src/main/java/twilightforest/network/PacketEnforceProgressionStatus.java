@@ -1,43 +1,38 @@
 package twilightforest.network;
 
-import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.fml.network.NetworkEvent;
 import twilightforest.TwilightForestMod;
 
-public class PacketEnforceProgressionStatus implements IMessage {
+import java.util.function.Supplier;
 
-	private boolean enforce;
+public class PacketEnforceProgressionStatus {
 
-	public PacketEnforceProgressionStatus() {}
+	private final boolean enforce;
+
+	public PacketEnforceProgressionStatus(PacketBuffer buf) {
+		this.enforce = buf.readBoolean();
+	}
 
 	public PacketEnforceProgressionStatus(boolean enforce) {
 		this.enforce = enforce;
 	}
 
-	@Override
-	public void fromBytes(ByteBuf buf) {
-		enforce = buf.readBoolean();
-	}
-
-	@Override
-	public void toBytes(ByteBuf buf) {
+	public void encode(PacketBuffer buf) {
 		buf.writeBoolean(enforce);
 	}
 
-	public static class Handler implements IMessageHandler<PacketEnforceProgressionStatus, IMessage> {
+	public static class Handler {
 
-		@Override
-		public IMessage onMessage(PacketEnforceProgressionStatus message, MessageContext ctx) {
-			Minecraft.getInstance().addScheduledTask(new Runnable() {
+		public static boolean onMessage(PacketEnforceProgressionStatus message, Supplier<NetworkEvent.Context> ctx) {
+			ctx.get().enqueueWork(new Runnable() {
 				@Override
 				public void run() {
 					Minecraft.getInstance().world.getGameRules().setOrCreateGameRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE, String.valueOf(message.enforce));
 				}
 			});
-			return null;
+			return true;
 		}
 	}
 }

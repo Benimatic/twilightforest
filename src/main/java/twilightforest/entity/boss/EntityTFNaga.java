@@ -36,6 +36,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.fml.network.PacketDistributor;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
@@ -677,7 +678,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 			motionY += 0.5D;
 			motionZ *= -1.5D;
 			if (toAttack instanceof ServerPlayerEntity)
-				TFPacketHandler.CHANNEL.sendTo(new PacketThrowPlayer((float) toAttack.motionX, (float) toAttack.motionY, (float) toAttack.motionZ), (ServerPlayerEntity) toAttack);
+				TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) toAttack), new PacketThrowPlayer((float) toAttack.getMotion().getX(), (float) toAttack.getMotion().getY(), (float) toAttack.getMotion().getZ()));
 			attackEntityFrom(DamageSource.GENERIC, 4F);
 			world.playSound(null, toAttack.getPosition(), SoundEvents.ITEM_SHIELD_BLOCK, SoundCategory.PLAYERS, 1.0F, 0.8F + this.world.rand.nextFloat() * 0.4F);
 			movementAI.doDaze();

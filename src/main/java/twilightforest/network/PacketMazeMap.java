@@ -6,51 +6,45 @@ import net.minecraft.client.gui.MapItemRenderer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.SMapDataPacket;
 import net.minecraft.world.storage.MapData;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.network.NetworkEvent;
 import twilightforest.TFMazeMapData;
 import twilightforest.item.ItemTFMazeMap;
 
 import java.io.IOException;
+import java.util.function.Supplier;
 
 /**
  * Vanilla's SPacketMaps handler looks for and loads the vanilla MapData instances.
  * We rewrap the packet here in order to load our own MapData instances properly.
  */
-public class PacketMazeMap implements IMessage {
+public class PacketMazeMap {
 
-	private SMapDataPacket inner;
-
-	public PacketMazeMap() {}
+	private final SMapDataPacket inner;
 
 	public PacketMazeMap(SMapDataPacket inner) {
 		this.inner = inner;
 	}
 
-	@Override
-	public void fromBytes(ByteBuf buf) {
+	public PacketMazeMap(PacketBuffer buf) {
 		inner = new SMapDataPacket();
 		try {
-			inner.readPacketData(new PacketBuffer(buf));
+			inner.readPacketData(buf);
 		} catch (IOException e) {
 			throw new RuntimeException("Couldn't read inner SPacketMaps", e);
 		}
 	}
 
-	@Override
-	public void toBytes(ByteBuf buf) {
+	public void encode(PacketBuffer buf) {
 		try {
-			inner.writePacketData(new PacketBuffer(buf));
+			inner.writePacketData(buf);
 		} catch (IOException e) {
 			throw new RuntimeException("Couldn't write inner SPacketMaps", e);
 		}
 	}
 
-	public static class Handler implements IMessageHandler<PacketMazeMap, IMessage> {
-		@Override
-		public IMessage onMessage(PacketMazeMap message, MessageContext ctx) {
-			Minecraft.getInstance().addScheduledTask(new Runnable() {
+	public static class Handler {
+		public static boolean onMessage(PacketMazeMap message, Supplier<NetworkEvent.Context> ctx) {
+			ctx.get().enqueueWork(new Runnable() {
 				@Override
 				public void run() {
 
@@ -77,7 +71,7 @@ public class PacketMazeMap implements IMessage {
 					mapItemRenderer.updateMapTexture(mapData);
 				}
 			});
-			return null;
+			return true;
 		}
 	}
 }

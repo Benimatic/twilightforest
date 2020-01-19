@@ -2,36 +2,32 @@ package twilightforest.network;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.world.dimension.Dimension;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraftforge.client.IRenderHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.network.NetworkEvent;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.world.WorldProviderTwilightForest;
 
-public class PacketStructureProtection implements IMessage {
+import java.util.function.Supplier;
 
-	private MutableBoundingBox sbb;
+public class PacketStructureProtection {
 
-	@SuppressWarnings("unused")
-	public PacketStructureProtection() {}
+	private final MutableBoundingBox sbb;
 
 	public PacketStructureProtection(MutableBoundingBox sbb) {
 		this.sbb = sbb;
 	}
 
-	@Override
-	public void fromBytes(ByteBuf buf) {
+	public PacketStructureProtection(PacketBuffer buf) {
 		sbb = new MutableBoundingBox(
 				buf.readInt(), buf.readInt(), buf.readInt(),
 				buf.readInt(), buf.readInt(), buf.readInt()
 		);
 	}
 
-	@Override
-	public void toBytes(ByteBuf buf) {
+	public void encode(PacketBuffer buf) {
 		buf.writeInt(sbb.minX);
 		buf.writeInt(sbb.minY);
 		buf.writeInt(sbb.minZ);
@@ -40,11 +36,9 @@ public class PacketStructureProtection implements IMessage {
 		buf.writeInt(sbb.maxZ);
 	}
 
-	public static class Handler implements IMessageHandler<PacketStructureProtection, IMessage> {
-
-		@Override
-		public IMessage onMessage(PacketStructureProtection message, MessageContext ctx) {
-			Minecraft.getInstance().addScheduledTask(() -> {
+	public static class Handler {
+		public static boolean onMessage(PacketStructureProtection message, Supplier<NetworkEvent.Context> ctx) {
+			ctx.get().enqueueWork(() -> {
 				Dimension provider = Minecraft.getInstance().world.provider;
 
                 // add weather box if needed
@@ -57,7 +51,7 @@ public class PacketStructureProtection implements IMessage {
                 }
             });
 
-			return null;
+			return true;
 		}
 	}
 }

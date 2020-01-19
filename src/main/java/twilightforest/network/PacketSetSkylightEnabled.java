@@ -1,37 +1,32 @@
 package twilightforest.network;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.fml.network.NetworkEvent;
 import twilightforest.world.WorldProviderTwilightForest;
 
-public class PacketSetSkylightEnabled implements IMessage {
+import java.util.function.Supplier;
 
-    private boolean enabled;
+public class PacketSetSkylightEnabled {
 
-    public PacketSetSkylightEnabled() {}
+    private final boolean enabled;
 
     public PacketSetSkylightEnabled(boolean enabled) {
         this.enabled = enabled;
     }
 
-    @Override
-    public void fromBytes(ByteBuf buf) {
+    public PacketSetSkylightEnabled(PacketBuffer buf) {
         enabled = buf.readBoolean();
     }
 
-    @Override
-    public void toBytes(ByteBuf buf) {
+    public void encode(PacketBuffer buf) {
         buf.writeBoolean(enabled);
     }
 
-    public static class Handler implements IMessageHandler<PacketSetSkylightEnabled, IMessage> {
-
-        @Override
-        public IMessage onMessage(PacketSetSkylightEnabled message, MessageContext ctx) {
+    public static class Handler {
+        public static boolean onMessage(PacketSetSkylightEnabled message, Supplier<NetworkEvent.Context> ctx) {
             WorldProviderTwilightForest.setSkylightEnabled(message.enabled);
-            return null;
+            return true;
         }
     }
 }

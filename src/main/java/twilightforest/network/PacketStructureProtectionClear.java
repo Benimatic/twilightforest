@@ -2,26 +2,26 @@ package twilightforest.network;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.world.dimension.Dimension;
 import net.minecraftforge.client.IRenderHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.network.NetworkEvent;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.world.WorldProviderTwilightForest;
 
-public class PacketStructureProtectionClear implements IMessage {
+import java.util.function.Supplier;
 
-	@Override
-	public void fromBytes(ByteBuf buf) {}
+public class PacketStructureProtectionClear {
 
-	@Override
-	public void toBytes(ByteBuf buf) {}
+	public PacketStructureProtectionClear() {}
 
-	public static class Handler implements IMessageHandler<PacketStructureProtectionClear, IMessage> {
-		@Override
-		public IMessage onMessage(PacketStructureProtectionClear message, MessageContext ctx) {
-			Minecraft.getInstance().addScheduledTask(() -> {
+	public PacketStructureProtectionClear(PacketBuffer unused) {}
+
+	public void encode(PacketBuffer unused) {}
+
+	public static class Handler {
+		public static boolean onMessage(PacketStructureProtectionClear message, Supplier<NetworkEvent.Context> ctx) {
+			ctx.get().enqueueWork(() -> {
 				Dimension provider = Minecraft.getInstance().world.provider;
 
 				// add weather box if needed
@@ -34,7 +34,7 @@ public class PacketStructureProtectionClear implements IMessage {
 				}
 			});
 
-			return null;
+			return true;
 		}
 	}
 }

@@ -2,17 +2,15 @@ package twilightforest.network;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.fml.network.NetworkEvent;
 
-public class PacketThrowPlayer implements IMessage {
-	private float motionX;
-	private float motionY;
-	private float motionZ;
+import java.util.function.Supplier;
 
-	public PacketThrowPlayer() {
-	}
+public class PacketThrowPlayer {
+	private final float motionX;
+	private final float motionY;
+	private final float motionZ;
 
 	public PacketThrowPlayer(float motionX, float motionY, float motionZ) {
 		this.motionX = motionX;
@@ -20,32 +18,29 @@ public class PacketThrowPlayer implements IMessage {
 		this.motionZ = motionZ;
 	}
 
-	@Override
-	public void fromBytes(ByteBuf buf) {
+	public PacketThrowPlayer(PacketBuffer buf) {
 		motionX = buf.readFloat();
 		motionY = buf.readFloat();
 		motionZ = buf.readFloat();
 	}
 
-	@Override
-	public void toBytes(ByteBuf buf) {
+	public void encode(PacketBuffer buf) {
 		buf.writeFloat(motionX);
 		buf.writeFloat(motionY);
 		buf.writeFloat(motionZ);
 	}
 
-	public static class Handler implements IMessageHandler<PacketThrowPlayer, IMessage> {
+	public static class Handler {
 
-		@Override
-		public IMessage onMessage(PacketThrowPlayer message, MessageContext ctx) {
-			Minecraft.getInstance().addScheduledTask(new Runnable() {
+		public static boolean onMessage(PacketThrowPlayer message, Supplier<NetworkEvent.Context> ctx) {
+			ctx.get().enqueueWork(new Runnable() {
 				@Override
 				public void run() {
 					Minecraft.getInstance().player.addVelocity(message.motionX, message.motionY, message.motionZ);
 				}
 			});
 
-			return null;
+			return true;
 		}
 	}
 }

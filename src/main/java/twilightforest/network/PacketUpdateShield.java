@@ -4,19 +4,18 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.fml.network.NetworkEvent;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.shield.IShieldCapability;
 
-public class PacketUpdateShield implements IMessage {
+import java.util.function.Supplier;
 
-	private int entityID;
-	private int temporaryShields;
-	private int permanentShields;
+public class PacketUpdateShield {
 
-	public PacketUpdateShield() {}
+	private final int entityID;
+	private final int temporaryShields;
+	private final int permanentShields;
 
 	public PacketUpdateShield(int id, IShieldCapability cap) {
 		entityID = id;
@@ -28,25 +27,22 @@ public class PacketUpdateShield implements IMessage {
 		this(entity.getEntityId(), cap);
 	}
 
-	@Override
-	public void fromBytes(ByteBuf buf) {
+	public PacketUpdateShield(PacketBuffer buf) {
 		entityID = buf.readInt();
 		temporaryShields = buf.readInt();
 		permanentShields = buf.readInt();
 	}
 
-	@Override
-	public void toBytes(ByteBuf buf) {
+	public void encode(PacketBuffer buf) {
 		buf.writeInt(entityID);
 		buf.writeInt(temporaryShields);
 		buf.writeInt(permanentShields);
 	}
 
-	public static class Handler implements IMessageHandler<PacketUpdateShield, IMessage> {
+	public static class Handler {
 
-		@Override
-		public IMessage onMessage(PacketUpdateShield message, MessageContext ctx) {
-			Minecraft.getInstance().addScheduledTask(new Runnable() {
+		public static boolean onMessage(PacketUpdateShield message, Supplier<NetworkEvent.Context> ctx) {
+			ctx.get().enqueueWork(new Runnable() {
 				@Override
 				public void run() {
 					Entity entity = Minecraft.getInstance().world.getEntityByID(message.entityID);
@@ -59,7 +55,7 @@ public class PacketUpdateShield implements IMessage {
 				}
 			});
 
-			return null;
+			return true;
 		}
 	}
 }

@@ -2,45 +2,42 @@ package twilightforest.network;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.registries.ForgeRegistries;
 
-public class PacketChangeBiome implements IMessage {
+import java.util.function.Supplier;
 
-	private BlockPos pos;
-	private byte biomeId;
+public class PacketChangeBiome {
 
-	public PacketChangeBiome() {
-	}
+	private final BlockPos pos;
+	private final int biomeId;
 
 	public PacketChangeBiome(BlockPos pos, Biome biome) {
 		this.pos = pos;
-		this.biomeId = (byte) Biome.getIdForBiome(biome);
+		this.biomeId = Registry.BIOME.getId(biome);
 	}
 
-	@Override
-	public void fromBytes(ByteBuf buf) {
+	public PacketChangeBiome(PacketBuffer buf) {
 		pos = new BlockPos(buf.readInt(), 0, buf.readInt());
-		biomeId = buf.readByte();
+		biomeId = buf.readVarInt();
 	}
 
-	@Override
-	public void toBytes(ByteBuf buf) {
+	public void encode(PacketBuffer buf) {
 		buf.writeInt(pos.getX());
 		buf.writeInt(pos.getZ());
-		buf.writeByte(biomeId);
+		buf.writeVarInt(biomeId);
 	}
 
-	public static class Handler implements IMessageHandler<PacketChangeBiome, IMessage> {
+	public static class Handler {
 
-		@Override
-		public IMessage onMessage(PacketChangeBiome message, MessageContext ctx) {
-			Minecraft.getInstance().addScheduledTask(new Runnable() {
+		public static boolean onMessage(PacketChangeBiome message, Supplier<NetworkEvent.Context> ctx) {
+			ctx.get().enqueueWork(new Runnable() {
 				@Override
 				public void run() {
 					World world = Minecraft.getInstance().world;
@@ -52,7 +49,7 @@ public class PacketChangeBiome implements IMessage {
 				}
 			});
 
-			return null;
+			return true;
 		}
 	}
 }

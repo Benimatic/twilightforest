@@ -3,42 +3,34 @@ package twilightforest.network;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.Container;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.fml.network.NetworkEvent;
 import twilightforest.inventory.ContainerTFUncrafting;
 
-public class PacketUncraftingGui implements IMessage {
+import java.util.function.Supplier;
+
+public class PacketUncraftingGui {
     private int type;
 
     public PacketUncraftingGui(int type) {
         this.type = type;
     }
 
-    public PacketUncraftingGui() {
-    }
-
-    @Override
-    public void fromBytes(ByteBuf buf) {
+    public PacketUncraftingGui(PacketBuffer buf) {
         type = buf.readInt();
     }
 
-    @Override
-    public void toBytes(ByteBuf buf) {
+    public void encode(PacketBuffer buf) {
         buf.writeInt(type);
     }
 
-    public static class Handler implements IMessageHandler<PacketUncraftingGui, IMessage> {
-        public Handler () {
-
-        }
+    public static class Handler {
 
         @SuppressWarnings("Convert2Lambda")
-        @Override
-        public IMessage onMessage(PacketUncraftingGui message, MessageContext ctx) {
-            ServerPlayerEntity player = ctx.getServerHandler().player;
+        public static boolean onMessage(PacketUncraftingGui message, Supplier<NetworkEvent.Context> ctx) {
+            ServerPlayerEntity player = ctx.get().getSender();
 
-            player.getServerWorld().addScheduledTask(new Runnable() {
+            ctx.get().enqueueWork(new Runnable() {
                 @Override
                 public void run() {
                     Container container = player.openContainer;
@@ -76,7 +68,7 @@ public class PacketUncraftingGui implements IMessage {
                 }
             });
 
-            return null;
+            return true;
         }
     }
 }

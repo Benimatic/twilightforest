@@ -14,6 +14,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.network.PacketDistributor;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.biomes.TFBiomeBase;
 import twilightforest.block.TFBlocks;
@@ -73,13 +74,13 @@ public class TFTickHandler {
 
 	private static void sendStructureProtectionPacket(World world, PlayerEntity player, MutableBoundingBox sbb) {
 		if (player instanceof ServerPlayerEntity) {
-			TFPacketHandler.CHANNEL.sendTo(new PacketStructureProtection(sbb), (ServerPlayerEntity) player);
+			TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new PacketStructureProtection(sbb));
 		}
 	}
 
 	private static void sendAllClearPacket(World world, PlayerEntity player) {
 		if (player instanceof ServerPlayerEntity) {
-			TFPacketHandler.CHANNEL.sendTo(new PacketStructureProtectionClear(), (ServerPlayerEntity) player);
+			TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new PacketStructureProtectionClear());
 		}
 	}
 

@@ -1,30 +1,33 @@
 package twilightforest.network;
 
-import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.network.NetworkRegistry;
+import net.minecraftforge.fml.network.simple.SimpleChannel;
 import twilightforest.TwilightForestMod;
 
 public class TFPacketHandler {
-
-	public static final SimpleNetworkWrapper CHANNEL = NetworkRegistry.INSTANCE.newSimpleChannel(TwilightForestMod.ID);
+	private static final String PROTOCOL_VERSION = "1";
+	public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(
+			TwilightForestMod.prefix("channel"),
+			() -> PROTOCOL_VERSION,
+			PROTOCOL_VERSION::equals,
+			PROTOCOL_VERSION::equals
+	);
 
 	@SuppressWarnings("UnusedAssignment")
 	public static void init() {
 		int id = 0;
-		CHANNEL.registerMessage(PacketAnnihilateBlock.Handler.class, PacketAnnihilateBlock.class, id++, Dist.CLIENT);
-		CHANNEL.registerMessage(PacketAreaProtection.Handler.class, PacketAreaProtection.class, id++, Dist.CLIENT);
-		CHANNEL.registerMessage(PacketChangeBiome.Handler.class, PacketChangeBiome.class, id++, Dist.CLIENT);
-		CHANNEL.registerMessage(PacketEnforceProgressionStatus.Handler.class, PacketEnforceProgressionStatus.class, id++, Dist.CLIENT);
-		CHANNEL.registerMessage(PacketStructureProtection.Handler.class, PacketStructureProtection.class, id++, Dist.CLIENT);
-		CHANNEL.registerMessage(PacketStructureProtectionClear.Handler.class, PacketStructureProtectionClear.class, id++, Dist.CLIENT);
-		CHANNEL.registerMessage(PacketThrowPlayer.Handler.class, PacketThrowPlayer.class, id++, Dist.CLIENT);
-		CHANNEL.registerMessage(PacketMagicMap.Handler.class, PacketMagicMap.class, id++, Dist.CLIENT);
-		CHANNEL.registerMessage(PacketMazeMap.Handler.class, PacketMazeMap.class, id++, Dist.CLIENT);
-		CHANNEL.registerMessage(PacketUpdateShield.Handler.class, PacketUpdateShield.class, id++, Dist.CLIENT);
-		CHANNEL.registerMessage(PacketSetSkylightEnabled.Handler.class, PacketSetSkylightEnabled.class, id++, Dist.CLIENT);
-		CHANNEL.registerMessage(PacketSpawnEntityParticles.Handler.class, PacketSpawnEntityParticles.class, id++, Dist.CLIENT);
-
-		CHANNEL.registerMessage(PacketUncraftingGui.Handler.class, PacketUncraftingGui.class, id++, Side.SERVER);
+		CHANNEL.messageBuilder(PacketAnnihilateBlock.class, id++).encoder(PacketAnnihilateBlock::encode).decoder(PacketAnnihilateBlock::new).consumer(PacketAnnihilateBlock.Handler::onMessage).add();
+		CHANNEL.messageBuilder(PacketAreaProtection.class, id++).encoder(PacketAreaProtection::encode).decoder(PacketAreaProtection::new).consumer(PacketAreaProtection.Handler::onMessage).add();
+		CHANNEL.messageBuilder(PacketChangeBiome.class, id++).encoder(PacketChangeBiome::encode).decoder(PacketChangeBiome::new).consumer(PacketChangeBiome.Handler::onMessage).add();
+		CHANNEL.messageBuilder(PacketEnforceProgressionStatus.class, id++).encoder(PacketEnforceProgressionStatus::encode).decoder(PacketEnforceProgressionStatus::new).consumer(PacketEnforceProgressionStatus.Handler::onMessage).add();
+		CHANNEL.messageBuilder(PacketStructureProtection.class, id++).encoder(PacketStructureProtection::encode).decoder(PacketStructureProtection::new).consumer(PacketStructureProtection.Handler::onMessage).add();
+		CHANNEL.messageBuilder(PacketStructureProtectionClear.class, id++).encoder(PacketStructureProtectionClear::encode).decoder(PacketStructureProtectionClear::new).consumer(PacketStructureProtectionClear.Handler::onMessage).add();
+		CHANNEL.messageBuilder(PacketThrowPlayer.class, id++).encoder(PacketThrowPlayer::encode).decoder(PacketThrowPlayer::new).consumer(PacketThrowPlayer.Handler::onMessage).add();
+		CHANNEL.messageBuilder(PacketMagicMap.class, id++).encoder(PacketMagicMap::encode).decoder(PacketMagicMap::new).consumer(PacketMagicMap.Handler::onMessage).add();
+		CHANNEL.messageBuilder(PacketMazeMap.class, id++).encoder(PacketMazeMap::encode).decoder(PacketMazeMap::new).consumer(PacketMazeMap.Handler::onMessage).add();
+		CHANNEL.messageBuilder(PacketUpdateShield.class, id++).encoder(PacketUpdateShield::encode).decoder(PacketUpdateShield::new).consumer(PacketUpdateShield.Handler::onMessage).add();
+		CHANNEL.messageBuilder(PacketSetSkylightEnabled.class, id++).encoder(PacketSetSkylightEnabled::encode).decoder(PacketSetSkylightEnabled::new).consumer(PacketSetSkylightEnabled.Handler::onMessage).add();
+		CHANNEL.messageBuilder(PacketUncraftingGui.class, id++).encoder(PacketUncraftingGui::encode).decoder(PacketUncraftingGui::new).consumer(PacketUncraftingGui.Handler::onMessage).add();
 	}
 }

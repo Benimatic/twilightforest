@@ -7,6 +7,7 @@ import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.fml.network.PacketDistributor;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.PacketThrowPlayer;
 
@@ -68,8 +69,8 @@ public class EntityAITFThrowRider extends MeleeAttackGoal {
 			if (rider instanceof ServerPlayerEntity) {
 				ServerPlayerEntity player = (ServerPlayerEntity) rider;
 
-				IMessage message = new PacketThrowPlayer((float) throwVec.x, (float) throwVec.y, (float) throwVec.z);
-				TFPacketHandler.CHANNEL.sendTo(message, player);
+				PacketThrowPlayer message = new PacketThrowPlayer((float) throwVec.x, (float) throwVec.y, (float) throwVec.z);
+				TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), message);
 			}
 		}
 		super.resetTask();

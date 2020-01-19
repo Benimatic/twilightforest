@@ -45,6 +45,7 @@ import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.items.ItemHandlerHelper;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.BlockTFCritter;
@@ -588,8 +589,8 @@ public class TFEventListener {
 	}
 
 	private static void sendAreaProtectionPacket(World world, BlockPos pos, MutableBoundingBox sbb) {
-		NetworkRegistry.TargetPoint targetPoint = new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 64);
-		TFPacketHandler.CHANNEL.sendToAllAround(new PacketAreaProtection(sbb, pos), targetPoint);
+		PacketDistributor.TargetPoint targetPoint = new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), 64, world.getDimension().getType());
+		TFPacketHandler.CHANNEL.send(PacketDistributor.NEAR.with(() -> targetPoint), new PacketAreaProtection(sbb, pos));
 	}
 
 	@SubscribeEvent
@@ -647,17 +648,17 @@ public class TFEventListener {
 	private static void updateCapabilities(ServerPlayerEntity player, Entity entity) {
 		entity.getCapability(CapabilityList.SHIELDS).ifPresent(cap -> {
 			if (cap.shieldsLeft() > 0) {
-				TFPacketHandler.CHANNEL.sendTo(new PacketUpdateShield(entity, cap), player);
+				TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new PacketUpdateShield(entity, cap));
 			}
 		});
 	}
 
 	private static void sendEnforcedProgressionStatus(ServerPlayerEntity player, boolean isEnforced) {
-		TFPacketHandler.CHANNEL.sendTo(new PacketEnforceProgressionStatus(isEnforced), player);
+		TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new PacketEnforceProgressionStatus(isEnforced));
 	}
 
 	private static void sendSkylightEnabled(ServerPlayerEntity player, boolean skylightEnabled) {
-		TFPacketHandler.CHANNEL.sendTo(new PacketSetSkylightEnabled(skylightEnabled), player);
+		TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new PacketSetSkylightEnabled(skylightEnabled));
 	}
 
 	@SubscribeEvent
