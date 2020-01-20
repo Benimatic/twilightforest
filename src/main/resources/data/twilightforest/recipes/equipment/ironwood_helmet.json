@@ -12,7 +12,7 @@
   "type": "forge:ore_shaped",
   "key": {
     "#": {
-      "item": "#INGOTIRONWOOD"
+      "tag": "twilightforest:ironwood_ingots"
     }
   }
 }

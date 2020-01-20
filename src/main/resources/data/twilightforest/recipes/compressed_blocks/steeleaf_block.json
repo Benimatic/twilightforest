@@ -1,7 +1,6 @@
 {
   "result": {
-    "item": "twilightforest:block_storage",
-    "data": 2
+    "item": "twilightforest:block_storage_steeleaf"
   },
   "pattern": [
     "###",
@@ -11,7 +10,7 @@
   "type": "forge:ore_shaped",
   "key": {
     "#": {
-      "item": "#INGOTSTEELEAF"
+      "tag": "twilightforest:steeleaf_ingots"
     }
   }
 }

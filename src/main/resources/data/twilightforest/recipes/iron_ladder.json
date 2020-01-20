@@ -9,7 +9,7 @@
   ],
   "type": "forge:ore_shaped",
   "key": {
-    "•": { "item": "#NUGGETIRON" },
+    "•": { "tag": "forge:nuggets/iron" },
     "#": { "item": "minecraft:iron_bars" }
   }
 }

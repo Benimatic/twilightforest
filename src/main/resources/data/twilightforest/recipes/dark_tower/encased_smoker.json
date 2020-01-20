@@ -1,7 +1,6 @@
 {
   "result": {
-    "item": "twilightforest:fire_jet",
-    "data": 1
+    "item": "twilightforest:encased_smoker"
   },
   "pattern": [
     "ere",
@@ -11,15 +10,13 @@
   "type": "forge:ore_shaped",
   "key": {
     "r": {
-      "item": "#DUSTREDSTONE"
+      "tag": "forge:dusts/redstone"
     },
     "s": {
-      "item": "twilightforest:fire_jet",
-      "data": 0
+      "item": "twilightforest:smoker"
     },
     "e": {
-      "item": "twilightforest:tower_wood",
-      "data": 1
+      "item": "twilightforest:tower_wood_encased"
     }
   }
 }

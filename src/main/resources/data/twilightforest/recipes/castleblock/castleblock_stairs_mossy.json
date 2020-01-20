@@ -1,7 +1,6 @@
 {
   "result": {
     "item": "twilightforest:castle_stairs_mossy",
-    "data": 0,
     "count": 8
   },
   "pattern": [
@@ -12,8 +11,7 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "#": {
-      "item": "twilightforest:castle_brick",
-      "data": 4
+      "item": "twilightforest:castle_brick_mossy"
     }
   }
 }

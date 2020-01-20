@@ -1,7 +1,6 @@
 {
   "result": {
-    "item": "twilightforest:castle_pillar",
-    "data": 0,
+    "item": "twilightforest:castle_pillar_encased",
     "count": 6
   },
   "pattern": [
@@ -12,38 +11,30 @@
   "key": {
     "#": [
       {
-        "item": "twilightforest:castle_brick",
-        "data": 0
+        "item": "twilightforest:castle_brick"
       },
       {
-        "item": "twilightforest:castle_brick",
-        "data": 1
+        "item": "twilightforest:castle_brick_worn"
       },
       {
-        "item": "twilightforest:castle_brick",
-        "data": 2
+        "item": "twilightforest:castle_brick_cracked"
       },
       {
-        "item": "twilightforest:castle_brick",
-        "data": 4
+        "item": "twilightforest:castle_brick_mossy"
       },
       {
-        "item": "twilightforest:castle_brick",
-        "data": 5
+        "item": "twilightforest:castle_brick_frame"
       }
     ],
     "H": [
       {
-        "item": "twilightforest:castle_pillar",
-        "data": 0
+        "item": "twilightforest:castle_pillar_encased"
       },
       {
-        "item": "twilightforest:castle_pillar",
-        "data": 1
+        "item": "twilightforest:castle_pillar_encased_tile"
       },
       {
-        "item": "twilightforest:castle_brick",
-        "data": 3
+        "item": "twilightforest:castle_pillar_bold_tile"
       }
     ]
   }

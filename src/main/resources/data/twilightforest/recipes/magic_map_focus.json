@@ -10,7 +10,7 @@
       "item": "twilightforest:torchberries"
     },
     {
-      "item": "#DUSTGLOWSTONE"
+      "tag": "forge:dusts/glowstone"
     }
   ],
   "type": "forge:ore_shapeless"

@@ -8,7 +8,7 @@
       { "item": "twilightforest:fiery_tears" }
     ],
     {
-      "item": "#INGOTIRON"
+      "tag": "forge:ingots/iron"
     }
   ],
   "type": "forge:ore_shapeless"

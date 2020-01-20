@@ -1,7 +1,6 @@
 {
   "result": {
-    "item": "twilightforest:block_storage",
-    "data": 1
+    "item": "twilightforest:block_storage_fiery"
   },
   "pattern": [
     "###",
@@ -11,7 +10,7 @@
   "type": "forge:ore_shaped",
   "key": {
     "#": {
-      "item": "#INGOTFIERY"
+      "tag": "twilightforest:fiery_ingots"
     }
   }
 }

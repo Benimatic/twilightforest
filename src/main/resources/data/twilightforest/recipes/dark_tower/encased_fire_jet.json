@@ -1,7 +1,6 @@
 {
   "result": {
-    "item": "twilightforest:fire_jet",
-    "data": 6
+    "item": "twilightforest:fire_jet_encased"
   },
   "pattern": [
     "ere",
@@ -11,15 +10,13 @@
   "type": "forge:ore_shaped",
   "key": {
     "r": {
-      "item": "#DUSTREDSTONE"
+      "tag": "forge:dusts/redstone"
     },
     "e": {
-      "item": "twilightforest:tower_wood",
-      "data": 1
+      "item": "twilightforest:tower_wood_encased"
     },
     "j": {
-      "item": "twilightforest:fire_jet",
-      "data": 3
+      "item": "twilightforest:fire_jet"
     },
     "l": {
       "item": "minecraft:lava_bucket"

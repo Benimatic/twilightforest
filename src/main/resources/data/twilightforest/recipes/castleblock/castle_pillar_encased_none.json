@@ -1,7 +1,6 @@
 {
   "result": {
-    "item": "twilightforest:castle_pillar",
-    "data": 1,
+    "item": "twilightforest:castle_pillar_encased_tile",
     "count": 4
   },
   "pattern": [
@@ -12,12 +11,10 @@
   "key": {
     "#": [
       {
-        "item": "twilightforest:castle_pillar",
-        "data": 0
+        "item": "twilightforest:castle_pillar_encased"
       },
       {
-        "item": "twilightforest:castle_pillar",
-        "data": 1
+        "item": "twilightforest:castle_pillar_encased_tile"
       }
     ]
   }

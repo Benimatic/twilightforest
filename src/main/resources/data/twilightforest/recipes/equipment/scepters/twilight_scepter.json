@@ -8,7 +8,7 @@
       "data": 32767
     },
     {
-      "item": "#ENDERPEARL"
+      "item": "forge:ender_pearls"
     }
   ],
   "type": "forge:ore_shapeless"

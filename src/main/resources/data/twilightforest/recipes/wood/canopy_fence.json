@@ -1,7 +1,6 @@
 {
   "result": {
     "item": "twilightforest:canopy_fence",
-    "data": 0,
     "count": 3
   },
   "pattern": [
@@ -11,11 +10,10 @@
   "type": "forge:ore_shaped",
   "key": {
     "#": {
-      "item": "twilightforest:canopy_planks",
-      "data": 0
+      "item": "twilightforest:canopy_planks"
     },
     "S": {
-      "item": "#STICKWOOD"
+      "tag": "forge:rods/wooden"
     }
   }
 }

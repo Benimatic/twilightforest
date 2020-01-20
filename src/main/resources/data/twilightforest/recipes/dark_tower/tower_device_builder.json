@@ -1,7 +1,6 @@
 {
   "result": {
-    "item": "twilightforest:tower_device",
-    "data": 6
+    "item": "twilightforest:carminite_builder"
   },
   "pattern": [
     "ece",
@@ -17,8 +16,7 @@
       "item": "minecraft:dispenser"
     },
     "e": {
-      "item": "twilightforest:tower_wood",
-      "data": 1
+      "item": "twilightforest:tower_wood_encased"
     }
   }
 }

@@ -1,7 +1,6 @@
 {
   "result": {
-    "item": "twilightforest:block_storage",
-    "data": 0
+    "item": "twilightforest:block_storage_ironwood"
   },
   "pattern": [
     "###",
@@ -11,7 +10,7 @@
   "type": "forge:ore_shaped",
   "key": {
     "#": {
-      "item": "#INGOTIRONWOOD"
+      "tag": "twilightforest:ironwood_ingots"
     }
   }
 }

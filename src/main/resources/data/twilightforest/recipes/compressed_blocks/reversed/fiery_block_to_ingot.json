@@ -5,8 +5,7 @@
   },
   "ingredients": [
     {
-      "item": "twilightforest:block_storage",
-      "data": 1
+      "item": "twilightforest:block_storage_fiery"
     }
   ],
   "type": "minecraft:crafting_shapeless"

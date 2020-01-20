@@ -1,7 +1,6 @@
 {
   "result": {
     "item": "twilightforest:tower_wood",
-    "data": 0,
     "count": 4
   },
   "pattern": [
@@ -11,8 +10,7 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "#": {
-      "item": "twilightforest:twilight_log",
-      "data": 3
+      "item": "twilightforest:dark_log"
     }
   }
 }

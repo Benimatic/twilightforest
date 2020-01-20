@@ -1,7 +1,6 @@
 {
   "result": {
-    "item": "twilightforest:tower_device",
-    "data": 0,
+    "item": "twilightforest:reappearing_block",
     "count": 2
   },
   "pattern": [
@@ -12,14 +11,13 @@
   "type": "forge:ore_shaped",
   "key": {
     "r": {
-      "item": "#DUSTREDSTONE"
+      "tag": "forge:dusts/redstone"
     },
     "c": {
       "item": "twilightforest:carminite"
     },
     "e": {
-      "item": "twilightforest:tower_wood",
-      "data": 1
+      "item": "twilightforest:tower_wood_encased"
     }
   }
 }

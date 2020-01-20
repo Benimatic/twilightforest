@@ -1,7 +1,6 @@
 {
   "result": {
-    "item": "twilightforest:block_storage",
-    "data": 3
+    "item": "twilightforest:block_storage_arctic_fur"
   },
   "pattern": [
     "###",
@@ -11,7 +10,7 @@
   "type": "forge:ore_shaped",
   "key": {
     "#": {
-      "item": "#FURARCTIC"
+      "tag": "twilightforest:arctic_fur"
     }
   }
 }

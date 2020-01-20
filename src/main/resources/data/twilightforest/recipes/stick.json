@@ -4,8 +4,7 @@
   },
   "ingredients": [
     {
-      "item": "twilightforest:twilight_plant",
-      "data": 8
+      "item": "twilightforest:root_strand"
     }
   ],
   "type": "minecraft:crafting_shapeless"

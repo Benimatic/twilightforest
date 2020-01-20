@@ -1,7 +1,6 @@
 {
   "result": {
-    "item": "twilightforest:nagastone_stairs_mossy",
-    "data": 0,
+    "item": "minecraft:nagastone_stairs_mossy",
     "count": 8
   },
   "group": "nagastone_stairs_left",

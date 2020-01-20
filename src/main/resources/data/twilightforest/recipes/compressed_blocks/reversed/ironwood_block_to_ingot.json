@@ -5,8 +5,7 @@
   },
   "ingredients": [
     {
-      "item": "twilightforest:block_storage",
-      "data": 0
+      "item": "twilightforest:block_storage_ironwood"
     }
   ],
   "type": "minecraft:crafting_shapeless"

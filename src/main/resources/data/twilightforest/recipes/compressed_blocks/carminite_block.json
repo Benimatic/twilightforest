@@ -1,7 +1,6 @@
 {
   "result": {
-    "item": "twilightforest:block_storage",
-    "data": 4
+    "item": "twilightforest:block_storage_carminite"
   },
   "pattern": [
     "###",
@@ -11,7 +10,7 @@
   "type": "forge:ore_shaped",
   "key": {
     "#": {
-      "item": "#CARMINITE"
+      "tag": "twilightforest:carminite"
     }
   }
 }

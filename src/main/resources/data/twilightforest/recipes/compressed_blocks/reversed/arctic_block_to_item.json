@@ -5,8 +5,7 @@
   },
   "ingredients": [
     {
-      "item": "twilightforest:block_storage",
-      "data": 3
+      "item": "twilightforest:block_storage_arctic_fur"
     }
   ],
   "type": "minecraft:crafting_shapeless"

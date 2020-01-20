@@ -1,7 +1,6 @@
 {
   "result": {
     "item": "twilightforest:mangrove_trapdoor",
-    "data": 0,
     "count": 6
   },
   "pattern": [
@@ -11,8 +10,7 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "#": {
-      "item": "twilightforest:mangrove_planks",
-      "data": 0
+      "item": "twilightforest:mangrove_planks"
     }
   }
 }

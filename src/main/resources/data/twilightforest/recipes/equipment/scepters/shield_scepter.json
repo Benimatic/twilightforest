@@ -8,8 +8,7 @@
       "data": 32767
     },
     {
-      "item": "minecraft:golden_apple",
-	  "data": 0
+      "item": "minecraft:golden_apple"
     }
   ],
   "type": "minecraft:crafting_shapeless"

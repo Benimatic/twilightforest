@@ -1,7 +1,6 @@
 {
   "result": {
-    "item": "twilightforest:tower_device",
-    "data": 12
+    "item": "twilightforest:carminite_reactor"
   },
   "pattern": [
     "ece",
@@ -14,11 +13,10 @@
       "item": "twilightforest:carminite"
     },
     "e": {
-      "item": "twilightforest:tower_wood",
-      "data": 1
+      "item": "twilightforest:tower_wood_encased"
     },
     "o": {
-      "item": "#OREREDSTONE"
+      "tag": "forge:ores/redstone"
     }
   }
 }

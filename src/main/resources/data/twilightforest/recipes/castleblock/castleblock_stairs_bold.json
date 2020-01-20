@@ -1,7 +1,6 @@
 {
   "result": {
-    "item": "twilightforest:castle_stairs",
-    "data": 8,
+    "item": "twilightforest:castle_stairs_bold",
     "count": 8
   },
   "pattern": [
@@ -13,12 +12,10 @@
   "key": {
     "#": [
       {
-        "item": "twilightforest:castle_pillar",
-        "data": 2
+        "item": "twilightforest:castle_pillar_bold"
       },
       {
-        "item": "twilightforest:castle_pillar",
-        "data": 3
+        "item": "twilightforest:castle_pillar_bold_tile"
       }
     ]
   }

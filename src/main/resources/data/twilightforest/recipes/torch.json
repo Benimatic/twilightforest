@@ -13,7 +13,7 @@
       "item": "twilightforest:torchberries"
     },
     "S": {
-      "item": "#STICKWOOD"
+      "tag": "forge:rods/wooden"
     }
   }
 }

@@ -14,7 +14,7 @@
       "item": "twilightforest:borer_essence"
     },
     "r": {
-      "item": "#DUSTREDSTONE"
+      "tag": "forge:dusts/redstone"
     },
     "g": {
       "item": "minecraft:ghast_tear"

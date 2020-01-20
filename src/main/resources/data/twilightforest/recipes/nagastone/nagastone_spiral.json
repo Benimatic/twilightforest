@@ -1,7 +1,6 @@
 {
   "result": {
     "item": "twilightforest:spiral_bricks",
-    "data": 0,
     "count": 8
   },
   "pattern": [
@@ -13,36 +12,18 @@
   "key": {
     "B": [
       {
-        "item": "minecraft:stonebrick",
-        "data": 0
+        "tag": "forge:stone"
       },
       {
-        "item": "minecraft:stonebrick",
-        "data": 1
-      },
-      {
-        "item": "minecraft:stonebrick",
-        "data": 2
-      },
-      {
-        "item": "minecraft:stonebrick",
-        "data": 3
-      },
-      {
-        "item": "#STONE"
-      },
-      {
-        "item": "#STONEBRICK"
+        "tag": "minecraft:stone_bricks"
       }
     ],
     "S": [
       {
-        "item": "minecraft:stone_slab",
-        "data": 0
+        "item": "minecraft:smooth_stone_slab"
       },
       {
-        "item": "minecraft:stone_slab",
-        "data": 5
+        "item": "minecraft:stone_brick_slab"
       }
     ]
   }

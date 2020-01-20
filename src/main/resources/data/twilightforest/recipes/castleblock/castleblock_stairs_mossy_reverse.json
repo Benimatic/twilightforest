@@ -1,21 +1,16 @@
 {
   "result": {
-    "item": "twilightforest:castle_brick",
-    "data": 4,
+    "item": "twilightforest:castle_brick_mossy",
     "count": 3
   },
   "ingredients": [ {
-    "item": "twilightforest:castle_stairs_mossy",
-    "data": 0
+    "item": "twilightforest:castle_stairs_mossy"
   }, {
-    "item": "twilightforest:castle_stairs_mossy",
-    "data": 0
+    "item": "twilightforest:castle_stairs_mossy"
   }, {
-    "item": "twilightforest:castle_stairs_mossy",
-    "data": 0
+    "item": "twilightforest:castle_stairs_mossy"
   }, {
-    "item": "twilightforest:castle_stairs_mossy",
-    "data": 0
+    "item": "twilightforest:castle_stairs_mossy"
   } ],
   "type": "minecraft:crafting_shapeless"
 }

@@ -5,8 +5,7 @@
   },
   "ingredients": [
     {
-      "item": "twilightforest:block_storage",
-      "data": 2
+      "item": "twilightforest:block_storage_steeleaf"
     }
   ],
   "type": "minecraft:crafting_shapeless"

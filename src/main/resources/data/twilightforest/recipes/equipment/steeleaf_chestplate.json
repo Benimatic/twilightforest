@@ -13,7 +13,7 @@
   "type": "forge:ore_shaped",
   "key": {
     "#": {
-      "item": "#INGOTSTEELEAF"
+      "tag": "twilightforest:steeleaf_ingots"
     }
   }
 }

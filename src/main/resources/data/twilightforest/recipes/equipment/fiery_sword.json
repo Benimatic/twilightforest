@@ -12,7 +12,7 @@
   "type": "forge:ore_shaped",
   "key": {
     "#": {
-      "item": "#INGOTFIERY"
+      "tag": "twilightforest:fiery_ingots"
     },
     "X": {
       "item": "minecraft:blaze_rod"

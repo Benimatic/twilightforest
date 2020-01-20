@@ -7,42 +7,34 @@
   "ingredients": [
     [
       {
-        "item": "twilightforest:nagastone_stairs_weathered",
-        "data": 0
+        "item": "twilightforest:nagastone_stairs_weathered_left"
       },
       {
-        "item": "twilightforest:nagastone_stairs_weathered",
-        "data": 8
+        "item": "twilightforest:nagastone_stairs_weathered_right"
       }
     ],
     [
       {
-        "item": "twilightforest:nagastone_stairs_weathered",
-        "data": 0
+        "item": "twilightforest:nagastone_stairs_weathered_left"
       },
       {
-        "item": "twilightforest:nagastone_stairs_weathered",
-        "data": 8
+        "item": "twilightforest:nagastone_stairs_weathered_right"
       }
     ],
     [
       {
-        "item": "twilightforest:nagastone_stairs_weathered",
-        "data": 0
+        "item": "twilightforest:nagastone_stairs_weathered_left"
       },
       {
-        "item": "twilightforest:nagastone_stairs_weathered",
-        "data": 8
+        "item": "twilightforest:nagastone_stairs_weathered_right"
       }
     ],
     [
       {
-        "item": "twilightforest:nagastone_stairs_weathered",
-        "data": 0
+        "item": "twilightforest:nagastone_stairs_weathered_left"
       },
       {
-        "item": "twilightforest:nagastone_stairs_weathered",
-        "data": 8
+        "item": "twilightforest:nagastone_stairs_weathered_right"
       }
     ]
   ],

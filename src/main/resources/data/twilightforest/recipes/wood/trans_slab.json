@@ -1,7 +1,6 @@
 {
   "result": {
     "item": "twilightforest:trans_slab",
-    "data": 0,
     "count": 6
   },
   "pattern": [
@@ -10,8 +9,7 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "#": {
-      "item": "twilightforest:trans_planks",
-      "data": 0
+      "item": "twilightforest:trans_planks"
     }
   }
 }

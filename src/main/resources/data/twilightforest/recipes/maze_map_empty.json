@@ -10,7 +10,7 @@
   "type": "forge:ore_shaped",
   "key": {
     "#": {
-      "item": "#PAPER"
+      "tag": "forge:paper"
     },
     "X": {
       "item": "twilightforest:maze_map_focus"

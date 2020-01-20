@@ -1,7 +1,6 @@
 {
   "result": {
-    "item": "twilightforest:tower_wood",
-    "data": 1,
+    "item": "twilightforest:tower_wood_encased"
     "count": 3
   },
   "pattern": [
@@ -12,8 +11,7 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "#": {
-      "item": "twilightforest:tower_wood",
-      "data": 0
+      "item": "twilightforest:tower_wood"
     }
   }
 }

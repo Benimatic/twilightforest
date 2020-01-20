@@ -9,14 +9,11 @@
   },
   "ingredients": [
     [{
-      "item": "twilightforest:twilight_sapling",
-      "data": 0
+      "item": "twilightforest:oak_sapling"
     }, {
-      "item": "twilightforest:twilight_sapling",
-      "data": 1
+      "item": "twilightforest:canopy_sapling"
     }, {
-      "item": "twilightforest:twilight_sapling",
-      "data": 2
+      "item": "twilightforest:mangrove_sapling"
     }],
     { "item": "minecraft:writable_book" }
   ],

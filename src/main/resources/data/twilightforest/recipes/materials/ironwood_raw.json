@@ -7,10 +7,10 @@
       "item": "twilightforest:liveroot"
     },
     {
-      "item": "#INGOTIRON"
+      "tag": "forge:ingots/iron"
     },
     {
-      "item": "#NUGGETGOLD"
+      "tag": "forge:nuggets/gold"
     }
   ],
   "type": "forge:ore_shapeless"

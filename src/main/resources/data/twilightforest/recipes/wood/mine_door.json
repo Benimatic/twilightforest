@@ -1,7 +1,6 @@
 {
   "result": {
     "item": "twilightforest:mine_door",
-    "data": 0,
     "count": 3
   },
   "pattern": [
@@ -12,8 +11,7 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "#": {
-      "item": "twilightforest:mine_planks",
-      "data": 0
+      "item": "twilightforest:mine_planks"
     }
   }
 }

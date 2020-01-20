@@ -13,7 +13,7 @@
   "type": "forge:ore_shaped",
   "key": {
     "#": {
-      "item": "#WORKBENCH"
+      "item": "minecraft:crafting_table"
     },
     "X": {
       "item": "twilightforest:maze_map_focus"

@@ -29,21 +29,21 @@ public class TFRecipes {
 
 		OreDictionary.registerOre("feather", new ItemStack(TFItems.raven_feather));
 
-		OreDictionary.registerOre("ingotFiery", new ItemStack(TFItems.fiery_ingot));
+		//OreDictionary.registerOre("ingotFiery", new ItemStack(TFItems.fiery_ingot));
 		OreDictionary.registerOre("blockFiery", new ItemStack(TFBlocks.block_storage, 1, CompressedVariant.FIERY.ordinal()));
 
 		OreDictionary.registerOre("oreIronwood", new ItemStack(TFItems.ironwood_raw));
-		OreDictionary.registerOre("ingotIronwood", new ItemStack(TFItems.ironwood_ingot));
+		//OreDictionary.registerOre("ingotIronwood", new ItemStack(TFItems.ironwood_ingot));
 
-		OreDictionary.registerOre("ingotSteeleaf", new ItemStack(TFItems.steeleaf_ingot));
+		//OreDictionary.registerOre("ingotSteeleaf", new ItemStack(TFItems.steeleaf_ingot));
 		OreDictionary.registerOre("blockSteeleaf", new ItemStack(TFBlocks.block_storage, 1, CompressedVariant.STEELLEAF.ordinal()));
 
 		OreDictionary.registerOre("oreKnightmetal", new ItemStack(TFItems.armor_shard_cluster));
-		OreDictionary.registerOre("ingotKnightmetal", new ItemStack(TFItems.knightmetal_ingot));
+		//OreDictionary.registerOre("ingotKnightmetal", new ItemStack(TFItems.knightmetal_ingot));
 		OreDictionary.registerOre("blockKnightmetal", new ItemStack(TFBlocks.knightmetal_block));
 
-		OreDictionary.registerOre("carminite", new ItemStack(TFItems.carminite));
-		OreDictionary.registerOre("furArctic", new ItemStack(TFItems.arctic_fur));
+		//OreDictionary.registerOre("carminite", new ItemStack(TFItems.carminite));
+		//OreDictionary.registerOre("furArctic", new ItemStack(TFItems.arctic_fur));
 
 		OreDictionary.registerOre("plankWood"    , new ItemStack(TFBlocks.twilight_oak_planks ));
 		OreDictionary.registerOre("stairWood"    , new ItemStack(TFBlocks.twilight_oak_stairs ));

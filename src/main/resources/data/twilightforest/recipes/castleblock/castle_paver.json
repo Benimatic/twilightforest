@@ -1,7 +1,6 @@
 {
   "result": {
-    "item": "twilightforest:castle_brick",
-    "data": 5,
+    "item": "twilightforest:castle_brick_frame",
     "count": 4
   },
   "pattern": [
@@ -12,20 +11,16 @@
   "key": {
     "#": [
       {
-        "item": "twilightforest:castle_brick",
-        "data": 0
+        "item": "twilightforest:castle_brick"
       },
       {
-        "item": "twilightforest:castle_brick",
-        "data": 1
+        "item": "twilightforest:castle_brick_worn"
       },
       {
-        "item": "twilightforest:castle_brick",
-        "data": 2
+        "item": "twilightforest:castle_brick_cracked"
       },
       {
-        "item": "twilightforest:castle_brick",
-        "data": 4
+        "item": "twilightforest:castle_brick_mossy"
       }
     ]
   }
