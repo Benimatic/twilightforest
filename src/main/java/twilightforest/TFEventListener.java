@@ -88,7 +88,7 @@ public class TFEventListener {
 	);
 
 	private static final Map<UUID, PlayerInventory> playerKeepsMap = new HashMap<>();
-	private static final Map<UUID, NonNullList<ItemStack>> playerKeepsMapBaubles = new HashMap<>();
+	//private static final Map<UUID, NonNullList<ItemStack>> playerKeepsMapBaubles = new HashMap<>();
 
 	private static boolean isBreakingWithGiantPick = false;
 	private static boolean shouldMakeGiantCobble = false;
@@ -184,13 +184,13 @@ public class TFEventListener {
 
 			if (player.getHeldItemMainhand().getItem() == TFItems.ender_bow.get() || player.getHeldItemOffhand().getItem() == TFItems.ender_bow.get()) {
 
-				double sourceX = player.posX, sourceY = player.posY, sourceZ = player.posZ;
+				double sourceX = player.getX(), sourceY = player.getY(), sourceZ = player.getZ();
 				float sourceYaw = player.rotationYaw, sourcePitch = player.rotationPitch;
 
 				// this is the only method that will move the player properly
 				player.rotationYaw = living.rotationYaw;
 				player.rotationPitch = living.rotationPitch;
-				player.setPositionAndUpdate(living.posX, living.posY, living.posZ);
+				player.setPositionAndUpdate(living.getX(), living.getY(), living.getZ());
 				player.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, 1.0F, 1.0F);
 
 				// monsters are easy to move
@@ -205,7 +205,7 @@ public class TFEventListener {
 		if (block instanceof BlockTFCritter) {
 			BlockTFCritter poorBug = (BlockTFCritter) block;
 			living.setItemStackToSlot(EquipmentSlotType.HEAD, poorBug.getSquishResult());
-			living.world.playSound(null, living.posX, living.posY, living.posZ, poorBug.getSoundType(poorBug.getDefaultState()).getBreakSound(), living.getSoundCategory(), 1, 1);
+			living.world.playSound(null, living.getX(), living.getY(), living.getZ(), poorBug.getSoundType(poorBug.getDefaultState()).getBreakSound(), living.getSoundCategory(), 1, 1);
 		}
 	}
 
@@ -244,7 +244,7 @@ public class TFEventListener {
 			effect2.offset = (float) Math.PI;
 			living.world.addEntity(effect2);
 
-			living.world.playSound(null, living.posX, living.posY, living.posZ, SoundEvents.ITEM_TOTEM_USE, living.getSoundCategory(), 1, 1);
+			living.world.playSound(null, living.getX(), living.getY(), living.getZ(), SoundEvents.ITEM_TOTEM_USE, living.getSoundCategory(), 1, 1);
 
 			event.setCanceled(true);
 		}
@@ -406,7 +406,7 @@ public class TFEventListener {
 				effect2.offset = (float) Math.PI;
 				player.world.addEntity(effect2);
 
-				player.world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, player.getSoundCategory(), 1.5F, 1.0F);
+				player.world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, player.getSoundCategory(), 1.5F, 1.0F);
 			}
 		}
 
@@ -435,7 +435,8 @@ public class TFEventListener {
 			keepInventory.player = player;
 			keepInventory.dropAllItems();
 		}
-		if (TFCompat.BAUBLES.isActivated()) {
+		//TODO: Baubles is dead
+		/*if (TFCompat.BAUBLES.isActivated()) {
 			NonNullList<ItemStack> baubles = playerKeepsMapBaubles.remove(player.getUniqueID());
 			if (baubles != null) {
 				TwilightForestMod.LOGGER.warn("Dropping baubles previously held in reserve for player {}", player.getName());
@@ -445,7 +446,7 @@ public class TFEventListener {
 					}
 				}
 			}
-		}
+		}*/
 	}
 
 	@SubscribeEvent

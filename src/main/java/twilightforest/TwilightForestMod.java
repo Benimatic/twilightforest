@@ -77,7 +77,6 @@ public class TwilightForestMod {
 		}
 
 		// TODO: move these to proper spots
-		// registerTileEntities();
 		// dimType = DimensionType.register("twilight_forest", "_twilightforest", TFConfig.dimension.dimensionID, WorldProviderTwilightForest.class, false);
 		// WorldProviderTwilightForest.syncFromConfig();
 
@@ -170,30 +169,6 @@ public class TwilightForestMod {
 			LOGGER.warn("Detected that the configured origin dimension ID ({}) is already used for the Twilight Forest. Defaulting to the overworld.", TFConfig.originDimension);
 			TFConfig.originDimension = 0;
 		}
-	}*/
-
-	/*private static void registerTileEntities() { // TODO: TileEntityType deferred registry
-		proxy.registerCritterTileEntities();
-
-		GameRegistry.registerTileEntity(TileEntityTFNagaSpawner          .class, prefix("naga_spawner"            ));
-		GameRegistry.registerTileEntity(TileEntityTFLichSpawner          .class, prefix("lich_spawner"            ));
-		GameRegistry.registerTileEntity(TileEntityTFHydraSpawner         .class, prefix("hydra_spawner"           ));
-		GameRegistry.registerTileEntity(TileEntityTFSmoker               .class, prefix("smoker"                  ));
-		GameRegistry.registerTileEntity(TileEntityTFPoppingJet           .class, prefix("popping_jet"             ));
-		GameRegistry.registerTileEntity(TileEntityTFFlameJet             .class, prefix("flame_jet"               ));
-		GameRegistry.registerTileEntity(TileEntityTFTowerBuilder         .class, prefix("tower_builder"           ));
-		GameRegistry.registerTileEntity(TileEntityTFAntibuilder          .class, prefix("tower_reverter"          ));
-		GameRegistry.registerTileEntity(TileEntityTFTrophy               .class, prefix("trophy"                  ));
-		GameRegistry.registerTileEntity(TileEntityTFTowerBossSpawner     .class, prefix("tower_boss_spawner"      ));
-		GameRegistry.registerTileEntity(TileEntityTFGhastTrapInactive    .class, prefix("ghast_trap_inactive"     ));
-		GameRegistry.registerTileEntity(TileEntityTFGhastTrapActive      .class, prefix("ghast_trap_active"       ));
-		GameRegistry.registerTileEntity(TileEntityTFCReactorActive       .class, prefix("carminite_reactor_active"));
-		GameRegistry.registerTileEntity(TileEntityTFKnightPhantomsSpawner.class, prefix("knight_phantom_spawner"  ));
-		GameRegistry.registerTileEntity(TileEntityTFSnowQueenSpawner     .class, prefix("snow_queen_spawner"      ));
-		GameRegistry.registerTileEntity(TileEntityTFCinderFurnace        .class, prefix("cinder_furnace"          ));
-		GameRegistry.registerTileEntity(TileEntityTFMinoshroomSpawner    .class, prefix("minoshroom_spawner"      ));
-		GameRegistry.registerTileEntity(TileEntityTFAlphaYetiSpawner     .class, prefix("alpha_yeti_spawner"      ));
-		GameRegistry.registerTileEntity(TileEntityTFFinalBossSpawner     .class, prefix("final_boss_spawner"      ));
 	}*/
 
 	public static ResourceLocation prefix(String name) {
