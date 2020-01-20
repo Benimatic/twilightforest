@@ -8,12 +8,12 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.state.IProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.BlockStateContainer;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
@@ -41,7 +41,7 @@ public class BlockPredicate {
         JsonObject json = element.getAsJsonObject();
 
         Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(JSONUtils.getString(json, "block")));
-        BlockStateContainer container = block.getBlockState();
+        StateContainer container = block.getStateContainer();
         HashSet<PropertyPredicate<?>> properties = new HashSet<>();
 
         if (json.has("properties")) {
