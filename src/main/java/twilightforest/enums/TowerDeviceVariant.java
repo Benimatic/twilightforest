@@ -4,6 +4,7 @@ import net.minecraft.util.IStringSerializable;
 
 import java.util.Locale;
 
+//TODO: Slim this down, removing those that aren't in use
 public enum TowerDeviceVariant implements IStringSerializable {
 	REAPPEARING_INACTIVE,
 	REAPPEARING_ACTIVE,
