@@ -44,7 +44,7 @@ public class PacketAnnihilateBlock {
 								double vy = world.rand.nextGaussian() * 0.2D;
 								double vz = world.rand.nextGaussian() * 0.2D;
 
-								TwilightForestMod.proxy.spawnParticle(TFParticleType.ANNIHILATE, x, y, z, vx, vy, vz);
+								world.addParticle(TFParticleType.ANNIHILATE.get(), x, y, z, vx, vy, vz);
 							}
 						}
 					}

@@ -53,8 +53,7 @@ public class EntityTFRovingCube extends MonsterEntity {
 				float py = this.getEyeHeight() - 0.25F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.75F;
 				float pz = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.75F;
 
-				//TODO: Move to particle registry
-				TwilightForestMod.proxy.spawnParticle(TFParticleType.ANNIHILATE, this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
+				world.addParticle(TFParticleType.ANNIHILATE.get(), this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
 			}
 		}
 	}

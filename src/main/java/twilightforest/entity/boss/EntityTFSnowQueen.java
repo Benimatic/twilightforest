@@ -149,7 +149,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 			float py = this.getEyeHeight() + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.5F;
 			float pz = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F;
 
-			TwilightForestMod.proxy.addParticle(TFParticleType.SNOW_GUARDIAN, this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
+			world.addParticle(TFParticleType.SNOW_GUARDIAN.get(), this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
 		}
 
 		// during drop phase, all the ice blocks should make particles
@@ -159,7 +159,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 				float py = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.5F;
 				float pz = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.5F;
 
-				TwilightForestMod.proxy.addParticle(TFParticleType.SNOW_WARNING, ice.lastTickPosX + px, ice.lastTickPosY + py, ice.lastTickPosZ + pz, 0, 0, 0);
+				world.addParticle(TFParticleType.SNOW_WARNING.get(), ice.lastTickPosX + px, ice.lastTickPosY + py, ice.lastTickPosZ + pz, 0, 0, 0);
 			}
 		}
 
@@ -188,7 +188,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 				dy *= velocity;
 				dz *= velocity;
 
-				TwilightForestMod.proxy.addParticle(TFParticleType.ICE_BEAM, px, py, pz, dx, dy, dz);
+				world.addParticle(TFParticleType.ICE_BEAM.get(), px, py, pz, dx, dy, dz);
 			}
 		}
 	}

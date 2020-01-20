@@ -92,7 +92,7 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf implements IBreathAt
 			dy *= velocity;
 			dz *= velocity;
 
-			TwilightForestMod.proxy.spawnParticle(TFParticleType.SNOW, px, py, pz, dx, dy, dz);
+			world.addParticle(TFParticleType.SNOW.get(), px, py, pz, dx, dy, dz);
 		}
 	}
 

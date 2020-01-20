@@ -28,8 +28,7 @@ public abstract class EntityTFIceMob extends MonsterEntity {
 				float py = this.getEyeHeight() + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.5F;
 				float pz = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F;
 
-				//TODO: Use Particle registry now (yay)
-				TwilightForestMod.proxy.spawnParticle(TFParticleType.SNOW_GUARDIAN, this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
+				world.addParticle(TFParticleType.SNOW_GUARDIAN.get(), this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
 				if (this.world.getBiome(this.getPosition()).getTemperature(this.getPosition()) > 1.0F || this.isBurning()) {
 					this.world.addParticle(ParticleTypes.CLOUD, this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0.1F, 0);
 					this.world.addParticle(ParticleTypes.DRIPPING_WATER, this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);

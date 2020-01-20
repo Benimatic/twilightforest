@@ -168,7 +168,7 @@ public class EntityTFSnowGuardian extends EntityTFIceMob {
 				float py = this.getEyeHeight() + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.5F;
 				float pz = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F;
 
-				TwilightForestMod.proxy.spawnParticle(TFParticleType.SNOW_GUARDIAN, this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
+				world.addParticle(TFParticleType.SNOW_GUARDIAN.get(), this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
 			}
 		}
 	}

@@ -409,7 +409,7 @@ public class HydraHeadContainer {
 			double vy = part.getRNG().nextGaussian() * 0.02D;
 			double vz = part.getRNG().nextGaussian() * 0.02D;
 			ParticleTypes particle = large && part.getRNG().nextInt(5) == 0 ? ParticleTypes.EXPLOSION_LARGE : ParticleTypes.EXPLOSION_NORMAL;
-			part.world.spawnParticle(particle, part.posX + part.getRNG().nextFloat() * part.width * 2.0F - part.width, part.posY + part.getRNG().nextFloat() * part.height, part.posZ + part.getRNG().nextFloat() * part.width * 2.0F - part.width, vx, vy, vz);
+			part.world.addParticle(particle, part.getX() + part.getRNG().nextFloat() * part.getWidth() * 2.0F - part.getWidth(), part.getY() + part.getRNG().nextFloat() * part.getHeight(), part.getZ() + part.getRNG().nextFloat() * part.getWidth() * 2.0F - part.getWidth(), vx, vy, vz);
 		}
 	}
 
@@ -524,8 +524,8 @@ public class HydraHeadContainer {
 		double pz = headEntity.posZ + vector.z * dist;
 
 		if (headEntity.getState() == State.FLAME_BEGINNING) {
-			headEntity.world.spawnParticle(ParticleTypes.FLAME, px + headEntity.getRNG().nextDouble() - 0.5, py + headEntity.getRNG().nextDouble() - 0.5, pz + headEntity.getRNG().nextDouble() - 0.5, 0, 0, 0);
-			headEntity.world.spawnParticle(ParticleTypes.SMOKE_NORMAL, px + headEntity.getRNG().nextDouble() - 0.5, py + headEntity.getRNG().nextDouble() - 0.5, pz + headEntity.getRNG().nextDouble() - 0.5, 0, 0, 0);
+			headEntity.world.addParticle(ParticleTypes.FLAME, px + headEntity.getRNG().nextDouble() - 0.5, py + headEntity.getRNG().nextDouble() - 0.5, pz + headEntity.getRNG().nextDouble() - 0.5, 0, 0, 0);
+			headEntity.world.addParticle(ParticleTypes.SMOKE_NORMAL, px + headEntity.getRNG().nextDouble() - 0.5, py + headEntity.getRNG().nextDouble() - 0.5, pz + headEntity.getRNG().nextDouble() - 0.5, 0, 0, 0);
 		}
 
 		if (headEntity.getState() == State.FLAMING) {
@@ -546,16 +546,16 @@ public class HydraHeadContainer {
 				dy *= velocity;
 				dz *= velocity;
 
-				TwilightForestMod.proxy.spawnParticle(TFParticleType.LARGE_FLAME, px, py, pz, dx, dy, dz);
+				headEntity.world.addParticle(TFParticleType.LARGE_FLAME.get(), px, py, pz, dx, dy, dz);
 			}
 		}
 
 		if (headEntity.getState() == State.BITE_BEGINNING || headEntity.getState() == State.BITE_READY) {
-			headEntity.world.spawnParticle(ParticleTypes.WATER_SPLASH, px + headEntity.getRNG().nextDouble() - 0.5, py + headEntity.getRNG().nextDouble() - 0.5, pz + headEntity.getRNG().nextDouble() - 0.5, 0, 0, 0);
+			headEntity.world.addParticle(ParticleTypes.SPLASH, px + headEntity.getRNG().nextDouble() - 0.5, py + headEntity.getRNG().nextDouble() - 0.5, pz + headEntity.getRNG().nextDouble() - 0.5, 0, 0, 0);
 		}
 
 		if (headEntity.getState() == State.MORTAR_BEGINNING) {
-			headEntity.world.spawnParticle(ParticleTypes.SMOKE_LARGE, px + headEntity.getRNG().nextDouble() - 0.5, py + headEntity.getRNG().nextDouble() - 0.5, pz + headEntity.getRNG().nextDouble() - 0.5, 0, 0, 0);
+			headEntity.world.addParticle(ParticleTypes.SPLASH, px + headEntity.getRNG().nextDouble() - 0.5, py + headEntity.getRNG().nextDouble() - 0.5, pz + headEntity.getRNG().nextDouble() - 0.5, 0, 0, 0);
 		}
 	}
 

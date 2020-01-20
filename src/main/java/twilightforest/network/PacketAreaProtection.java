@@ -62,7 +62,7 @@ public class PacketAreaProtection {
 						double y = message.pos.getY() + 0.5D + world.rand.nextFloat() - world.rand.nextFloat();
 						double z = message.pos.getZ() + 0.5D + world.rand.nextFloat() - world.rand.nextFloat();
 
-						TwilightForestMod.proxy.spawnParticle(TFParticleType.PROTECTION, x, y, z, vx, vy, vz);
+						world.addParticle(TFParticleType.PROTECTION.get(), x, y, z, vx, vy, vz);
 					}
 				}
 			});
