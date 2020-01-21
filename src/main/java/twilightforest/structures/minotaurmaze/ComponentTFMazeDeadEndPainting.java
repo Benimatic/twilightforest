@@ -6,6 +6,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.ChunkGenerator;
 import twilightforest.TFFeature;
 
 import java.util.Random;
@@ -21,9 +22,9 @@ public class ComponentTFMazeDeadEndPainting extends ComponentTFMazeDeadEnd {
 	}
 
 	@Override
-	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 		// normal doorway
-		super.addComponentParts(world, rand, sbb, chunkPosIn);
+		super.generate(world, generator, rand, sbb, chunkPosIn);
 
 		// torches
 		this.setBlockState(world, Blocks.WALL_TORCH.getDefaultState().with(WallTorchBlock.HORIZONTAL_FACING, Direction.WEST), 1, 3, 3, sbb);

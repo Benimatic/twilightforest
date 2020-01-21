@@ -10,6 +10,7 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.ChunkGenerator;
 import twilightforest.TFFeature;
 import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
@@ -39,7 +40,7 @@ public class ComponentTFHedgeMaze extends StructureTFComponentOld {
 	}
 
 	@Override
-	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 
 		TFMaze maze = new TFMaze(MSIZE, MSIZE);
 

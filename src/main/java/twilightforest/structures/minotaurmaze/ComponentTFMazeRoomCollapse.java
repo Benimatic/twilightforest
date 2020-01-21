@@ -4,6 +4,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.ChunkGenerator;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 
@@ -20,8 +21,8 @@ public class ComponentTFMazeRoomCollapse extends ComponentTFMazeRoom {
 	}
 
 	@Override
-	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
-		super.addComponentParts(world, rand, sbb, chunkPosIn);
+	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		super.generate(world, generator, rand, sbb, chunkPosIn);
 
 		//
 		for (int x = 1; x < 14; x++) {

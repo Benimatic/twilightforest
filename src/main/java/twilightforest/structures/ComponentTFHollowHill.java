@@ -11,6 +11,7 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.ChunkGenerator;
 import twilightforest.TFFeature;
 import twilightforest.entity.*;
 import twilightforest.loot.TFTreasure;
@@ -56,7 +57,7 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 	 * Add in all the blocks we're adding.
 	 */
 	@Override
-	public boolean addComponentParts(IWorld worldIn, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+	public boolean generate(IWorld worldIn, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 		World world = worldIn.getWorld();
 //		int area = (int)(Math.PI * radius * radius);
 //		int sn = area / 16; // number of stalactites (there will actually be around twice this number)

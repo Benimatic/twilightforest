@@ -8,6 +8,7 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.ChunkGenerator;
 import twilightforest.TFFeature;
 import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
@@ -63,12 +64,12 @@ public class ComponentTFHollowTreeLeafDungeon extends StructureTFTreeComponent {
 	}
 
 	@Override
-	public boolean addComponentParts(IWorld world, Random random, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
-		return this.addComponentParts(world.getWorld(), random, sbb, false);
+	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random random, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		return this.addComponentParts(world.getWorld(), generator, random, sbb, false);
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random random, MutableBoundingBox sbb, boolean drawLeaves) {
+	public boolean addComponentParts(World world, ChunkGenerator<?> generator, Random random, MutableBoundingBox sbb, boolean drawLeaves) {
 		if (!drawLeaves) {
 			// wood
 			drawHollowBlob(world, sbb, radius, radius, radius, 3, 2, TFBlocks.oak_log.get().getDefaultState().with(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE), false);

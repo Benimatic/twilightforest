@@ -3,6 +3,7 @@ package twilightforest.structures.darktower;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.ChunkGenerator;
 import twilightforest.TFFeature;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
 
@@ -21,8 +22,8 @@ public class ComponentTFDarkTowerRoofAntenna extends ComponentTFDarkTowerRoof {
 	 * Stick with a ball on top antenna
 	 */
 	@Override
-	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
-		super.addComponentParts(world, rand, sbb, chunkPosIn);
+	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		super.generate(world, generator, rand, sbb, chunkPosIn);
 
 		// antenna
 		for (int y = 1; y < 10; y++) {

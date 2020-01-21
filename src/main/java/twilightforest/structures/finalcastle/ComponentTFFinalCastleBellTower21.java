@@ -7,6 +7,7 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
@@ -51,9 +52,9 @@ public class ComponentTFFinalCastleBellTower21 extends ComponentTFFinalCastleMaz
 	}
 
 	@Override
-	public boolean addComponentParts(IWorld worldIn, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+	public boolean generate(IWorld worldIn, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 		World world = worldIn.getWorld();
-		super.addComponentParts(worldIn, rand, sbb, chunkPosIn);
+		super.generate(worldIn, generator, rand, sbb, chunkPosIn);
 
 		// openings!
 		BlockState fieldBlock = TFBlocks.force_field_blue.get().getDefaultState();

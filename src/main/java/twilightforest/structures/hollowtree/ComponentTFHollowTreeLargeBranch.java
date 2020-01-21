@@ -4,6 +4,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
@@ -71,13 +72,12 @@ public class ComponentTFHollowTreeLargeBranch extends ComponentTFHollowTreeMedBr
 
 
 	@Override
-	public boolean addComponentParts(World world, Random random, MutableBoundingBox sbb)
-	{
+	public boolean addComponentParts(World world, Random random, MutableBoundingBox sbb) {
 		return this.addComponentParts(world, random, sbb, false);
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, MutableBoundingBox sbb, boolean drawLeaves) {
+	public boolean generate(World world, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, boolean drawLeaves) {
 
 		BlockPos rsrc = src.add(-boundingBox.minX, -boundingBox.minY, -boundingBox.minZ);
 		BlockPos rdest = dest.add(-boundingBox.minX, -boundingBox.minY, -boundingBox.minZ);

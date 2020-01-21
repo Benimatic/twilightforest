@@ -7,6 +7,7 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 
@@ -44,13 +45,13 @@ public class ComponentTFTowerOutbuilding extends ComponentTFTowerWing {
 	}
 
 	@Override
-	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 		final BlockState cobblestone = Blocks.COBBLESTONE.getDefaultState();
 		for (int x = 0; x < this.size; x++) {
 			for (int z = 0; z < this.size; z++) {
 				this.replaceAirAndLiquidDownwards(world, cobblestone, x, -1, z, sbb);
 			}
 		}
-		return super.addComponentParts(world, rand, sbb, chunkPosIn);
+		return super.generate(world, generator, rand, sbb, chunkPosIn);
 	}
 }

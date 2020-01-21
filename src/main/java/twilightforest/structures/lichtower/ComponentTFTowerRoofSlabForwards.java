@@ -7,6 +7,7 @@ import net.minecraft.state.properties.SlabType;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.ChunkGenerator;
 import twilightforest.TFFeature;
 
 import java.util.Random;
@@ -39,7 +40,7 @@ public class ComponentTFTowerRoofSlabForwards extends ComponentTFTowerRoofSlab {
 	 * Makes flat hip roof
 	 */
 	@Override
-	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 		BlockState birchSlab = Blocks.BIRCH_SLAB.getDefaultState();
 		BlockState birchDoubleSlab = Blocks.BIRCH_SLAB.getDefaultState().with(SlabBlock.TYPE, SlabType.DOUBLE);
 

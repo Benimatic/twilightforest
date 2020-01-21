@@ -5,6 +5,7 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 
@@ -38,7 +39,7 @@ public class ComponentTFStrongholdRightTurn extends StructureTFStrongholdCompone
 	}
 
 	@Override
-	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 		placeStrongholdWalls(world.getWorld(), sbb, 0, 0, 0, 8, 6, 8, rand, deco.randomBlocks);
 
 		// clear inside

@@ -6,6 +6,7 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentTemplate;
@@ -34,7 +35,7 @@ public abstract class ComponentNagaCourtyardTerraceAbstract extends StructureTFC
     }
 
 	@Override
-	public boolean addComponentParts(IWorld world, Random random, MutableBoundingBox structureBoundingBox, ChunkPos chunkPosIn) {
+	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random random, MutableBoundingBox structureBoundingBox, ChunkPos chunkPosIn) {
 		placeSettings.setBoundingBox(structureBoundingBox);
 		TEMPLATE.addBlocksToWorld(world, rotatedPosition, /*new CourtyardTerraceTemplateProcessor(rotatedPosition, placeSettings),*/ placeSettings, 18);
 		return true;

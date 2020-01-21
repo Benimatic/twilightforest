@@ -12,6 +12,7 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.ChunkGenerator;
 import twilightforest.TFFeature;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.passive.EntityTFQuestRam;
@@ -41,7 +42,7 @@ public class ComponentTFQuestGrove extends StructureTFComponentOld {
 	}
 
 	@Override
-	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 		for (Direction e : Direction.Plane.HORIZONTAL) {
 			// make the rings
 			makeWallSide(world.getWorld(), rand, e, sbb);

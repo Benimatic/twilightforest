@@ -8,6 +8,7 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.ChunkGenerator;
 import twilightforest.TFFeature;
 
 import java.util.Random;
@@ -26,9 +27,9 @@ public class ComponentTFMazeMushRoom extends ComponentTFMazeRoom {
 	}
 
 	@Override
-	public boolean addComponentParts(IWorld worldIn, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+	public boolean generate(IWorld worldIn, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 		World world = worldIn.getWorld();
-		super.addComponentParts(world, rand, sbb, chunkPosIn);
+		super.generate(world, generator, rand, sbb, chunkPosIn);
 
 		for (int x = 1; x < 14; x++) {
 			for (int z = 1; z < 14; z++) {

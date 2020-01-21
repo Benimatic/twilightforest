@@ -6,6 +6,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.ChunkGenerator;
 import twilightforest.TFFeature;
 
 import java.util.Random;
@@ -21,9 +22,9 @@ public class ComponentTFMazeDeadEndTripwireChest extends ComponentTFMazeDeadEndC
 	}
 
 	@Override
-	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 		// normal chest room
-		super.addComponentParts(world, rand, sbb, chunkPosIn);
+		super.generate(world, generator, rand, sbb, chunkPosIn);
 
 		// add tripwire
 		this.placeTripwire(world.getWorld(), 1, 1, 2, 3, Direction.EAST, sbb);

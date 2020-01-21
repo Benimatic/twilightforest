@@ -4,6 +4,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentOld;
@@ -19,7 +20,7 @@ public abstract class StructureTFTreeComponent extends StructureTFComponentOld
 		super(feature, i);
 	}
 
-	public abstract boolean addComponentParts(World world, Random random, MutableBoundingBox sbb, boolean drawLeaves);
+	public abstract boolean addComponentParts(World world, ChunkGenerator<?> generator, Random random, MutableBoundingBox sbb, boolean drawLeaves);
 
 	/**
 	 * Checks a potential branch bounding box to see if it intersects a leaf dungeon

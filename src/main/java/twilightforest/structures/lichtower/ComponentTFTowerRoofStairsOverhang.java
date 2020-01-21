@@ -7,6 +7,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.ChunkGenerator;
 import twilightforest.TFFeature;
 
 import java.util.Random;
@@ -36,7 +37,7 @@ public class ComponentTFTowerRoofStairsOverhang extends ComponentTFTowerRoof {
 	 * Makes a pyramid-shaped roof out of stairs
 	 */
 	@Override
-	public boolean addComponentParts(IWorld world, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 		BlockState woodenSlab = Blocks.BIRCH_SLAB.getDefaultState();
 		BlockState woodenPlanks = Blocks.BIRCH_PLANKS.getDefaultState();
 

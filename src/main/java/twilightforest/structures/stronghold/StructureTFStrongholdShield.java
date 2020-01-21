@@ -6,6 +6,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.ChunkGenerator;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 
@@ -28,7 +29,7 @@ public class StructureTFStrongholdShield extends StructureTFStrongholdComponent 
 	}
 
 	@Override
-	public boolean addComponentParts(IWorld world, Random randomIn, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random randomIn, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 		BlockState down  = TFBlocks.stronghold_shield.get().getDefaultState().with(DirectionalBlock.FACING, Direction.DOWN);
 		BlockState up    = TFBlocks.stronghold_shield.get().getDefaultState().with(DirectionalBlock.FACING, Direction.UP);
 		BlockState north = TFBlocks.stronghold_shield.get().getDefaultState().with(DirectionalBlock.FACING, Direction.NORTH);

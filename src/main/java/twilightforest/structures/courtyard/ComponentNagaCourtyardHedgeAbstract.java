@@ -6,6 +6,7 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.template.IntegrityProcessor;
 import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.gen.feature.template.TemplateManager;
@@ -42,7 +43,7 @@ public abstract class ComponentNagaCourtyardHedgeAbstract extends StructureTFCom
     }
 
 	@Override
-	public boolean addComponentParts(IWorld world, Random randomIn, MutableBoundingBox structureBoundingBox, ChunkPos chunkPosIn) {
+	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random randomIn, MutableBoundingBox structureBoundingBox, ChunkPos chunkPosIn) {
 		placeSettings.setBoundingBox(structureBoundingBox);
 		TEMPLATE.addBlocksToWorld(world, rotatedPosition, placeSettings.addProcessor(new CourtyardStairsTemplateProcessor(rotatedPosition, placeSettings)), 18);
 		templateBig.addBlocksToWorld(world, rotatedPosition, placeSettings.copy().addProcessor(new IntegrityProcessor(ComponentNagaCourtyardMain.HEDGE_FLOOF)), 18);
