@@ -2,10 +2,7 @@ package twilightforest.entity.boss;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.ai.RandomPositionGenerator;
@@ -31,9 +28,9 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.BossInfo;
-import net.minecraft.world.ServerBossInfo;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerBossInfo;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.network.PacketDistributor;
@@ -46,7 +43,6 @@ import twilightforest.enums.BossVariant;
 import twilightforest.network.PacketThrowPlayer;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.util.EntityUtil;
-import twilightforest.world.TFWorld;
 
 import javax.annotation.Nullable;
 
@@ -121,7 +117,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 	}
 
 	@Override
-	protected boolean canDespawn() {
+	public boolean canDespawn(double p_213397_1_) {
 		return false;
 	}
 
@@ -525,23 +521,23 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 
 	static class NagaMoveHelper extends MovementController {
 
-		public NagaMoveHelper(LivingEntity naga) {
+		public NagaMoveHelper(MobEntity naga) {
 			super(naga);
 		}
 
 		@Override
-		public void onUpdateMoveHelper() {
+		public void tick() {
 			// TF - slither!
-			MovementState currentState = ((EntityTFNaga) entity).movementAI.movementState;
+			MovementState currentState = ((EntityTFNaga) mob).movementAI.movementState;
 			if(currentState == MovementState.DAZE) {
-				this.entity.moveStrafing = 0F;
+				this.mob.moveStrafing = 0F;
 			} else if (currentState != MovementState.CHARGE && currentState != MovementState.INTIMIDATE) {
-				this.entity.moveStrafing = MathHelper.cos(this.entity.ticksExisted * 0.3F) * 0.6F;
+				this.mob.moveStrafing = MathHelper.cos(this.mob.ticksExisted * 0.3F) * 0.6F;
 			} else {
-				this.entity.moveStrafing *= 0.8F;
+				this.mob.moveStrafing *= 0.8F;
 			}
 
-			super.onUpdateMoveHelper();
+			super.tick();
 		}
 	}
 
@@ -654,7 +650,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 	}
 
 	@Override
-	public boolean isEntityInvulnerable(DamageSource src) {
+	public boolean isInvulnerableTo(DamageSource src) {
 		return src.getTrueSource() != null && !this.isEntityWithinHomeArea(src.getTrueSource()) // reject damage from outside of our home radius
 				|| src.getImmediateSource() != null && !this.isEntityWithinHomeArea(src.getImmediateSource())
 				|| src.isFireDamage() || src.isExplosion() || super.isInvulnerableTo(src);

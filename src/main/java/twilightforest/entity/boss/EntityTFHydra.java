@@ -22,8 +22,9 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.ServerBossInfo;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerBossInfo;
 import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
@@ -33,7 +34,6 @@ import twilightforest.block.TFBlocks;
 import twilightforest.enums.BossVariant;
 import twilightforest.util.EntityUtil;
 import twilightforest.util.WorldUtil;
-import twilightforest.world.TFWorld;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -763,7 +763,7 @@ public class EntityTFHydra extends LivingEntity implements IEntityMultiPart, IMo
 		}
 
 		if (this.deathTime == 200) {
-			if (!this.world.isRemote && (this.isPlayer() || this.recentlyHit > 0 && this.canDropLoot() && this.world.getGameRules().getBoolean("doMobLoot"))) {
+			if (!this.world.isRemote && (this.isPlayer() || this.recentlyHit > 0 && this.canDropLoot() && this.world.getGameRules().getBoolean(GameRules.DO_MOB_LOOT))) {
 				int i = this.getExperiencePoints(this.attackingPlayer);
 				i = ForgeEventFactory.getExperienceDrop(this, this.attackingPlayer, i);
 				while (i > 0) {

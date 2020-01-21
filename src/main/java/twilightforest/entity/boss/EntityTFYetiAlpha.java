@@ -28,8 +28,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.ServerBossInfo;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerBossInfo;
 import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
@@ -46,7 +46,6 @@ import twilightforest.entity.ai.EntityAITFYetiTired;
 import twilightforest.enums.BossVariant;
 import twilightforest.util.EntityUtil;
 import twilightforest.util.WorldUtil;
-import twilightforest.world.TFWorld;
 
 import javax.annotation.Nullable;
 

@@ -89,7 +89,7 @@ public class EntitySeekerArrow extends EntityTFArrow {
 
 		Entity target = getTarget();
 
-		if (target != null && target.isDead) {
+		if (target != null && !target.isAlive()) {
 			setTarget(target = null);
 		}
 
@@ -131,7 +131,7 @@ public class EntitySeekerArrow extends EntityTFArrow {
 	}
 
 	private Vec3d getMotionVec() {
-		return new Vec3d(this.motionX, this.motionY, this.motionZ);
+		return new Vec3d(this.getMotion().getX(), this.getMotion().getY(), this.getMotion().getZ());
 	}
 
 	private Vec3d getVectorToTarget(Entity target) {
@@ -148,6 +148,6 @@ public class EntitySeekerArrow extends EntityTFArrow {
 	}
 
 	private boolean isThisArrowFlying() {
-		return !inGround && motionX * motionX + motionY * motionY + motionZ * motionZ > 1.0;
+		return !inGround && getMotion().getX() * getMotion().getX() + getMotion().getY() * getMotion().getY() + getMotion().getZ() * getMotion().getZ() > 1.0;
 	}
 }

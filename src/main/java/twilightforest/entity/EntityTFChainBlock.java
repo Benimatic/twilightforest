@@ -11,10 +11,7 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import twilightforest.item.TFItems;
@@ -71,21 +68,25 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 			return;
 		}
 
+		EntityRayTraceResult entityRay = (EntityRayTraceResult) ray;
+
 		// only hit living things
-		if (ray.entityHit instanceof LivingEntity && ray.entityHit != this.getThrower()) {
-			if (ray.entityHit.attackEntityFrom(this.getDamageSource(), 10)) {
+		if (entityRay.getEntity() instanceof LivingEntity && entityRay.getEntity() != this.getThrower()) {
+			if (entityRay.getEntity().attackEntityFrom(this.getDamageSource(), 10)) {
 				// age when we hit a monster so that we go back to the player faster
 				this.ticksExisted += 60;
 			}
 		}
 
-		if (ray.getBlockPos() != null && !this.world.isAirBlock(ray.getBlockPos())) {
+		BlockRayTraceResult blockRay = (BlockRayTraceResult) ray;
+
+		if (blockRay.getPos() != null && !this.world.isAirBlock(blockRay.getPos())) {
 			if (!this.isReturning) {
 				playSound(SoundEvents.BLOCK_ANVIL_LAND, 0.125f, this.rand.nextFloat());
 			}
 
 			if (this.blocksSmashed < MAX_SMASH) {
-				if (this.world.getBlockState(ray.getBlockPos()).getBlockHardness(world, ray.getBlockPos()) > 0.3F) {
+				if (this.world.getBlockState(blockRay.getPos()).getBlockHardness(world, blockRay.getPos()) > 0.3F) {
 					// riccochet
 					double bounce = 0.6;
 					this.velX *= bounce;
@@ -93,7 +94,7 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 					this.velZ *= bounce;
 
 
-					switch (ray.sideHit) {
+					switch (blockRay.getFace()) {
 						case DOWN:
 							if (this.velY > 0) {
 								this.velY *= -bounce;
@@ -163,7 +164,7 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 				if (getThrower() instanceof PlayerEntity) {
 					PlayerEntity player = (PlayerEntity) getThrower();
 
-					if (block.canHarvestBlock(world, pos, player)) {
+					if (block.canHarvestBlock(state, world, pos, player)) {
 						block.harvestBlock(world, player, pos, state, world.getTileEntity(pos), player.getHeldItem(hand));
 					}
 				}
@@ -208,7 +209,7 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 			if (getThrower() == null) {
 				setDead();
 			} else {
-				double distToPlayer = this.getDistance(this.getThrower().posX, this.getThrower().posY + this.getThrower().getEyeHeight(), this.getThrower().posZ);
+				double distToPlayer = this.getDistance(this.getThrower());
 				// return if far enough away
 				if (!this.isReturning && distToPlayer > MAX_CHAIN) {
 					this.isReturning = true;

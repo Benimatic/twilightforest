@@ -19,6 +19,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.api.distmarker.Dist;
@@ -112,7 +113,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 	}
 
 	@Override
-	public void onUpdate() {
+	public void tick() {
 		if (this.myState == null || this.myState.getMaterial() == Material.AIR) {
 			this.setDead();
 		} else {
@@ -127,7 +128,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 				this.motionX += moveDirection.getXOffset() * moveAcceleration;
 				this.motionY += moveDirection.getYOffset() * moveAcceleration;
 				this.motionZ += moveDirection.getZOffset() * moveAcceleration;
-				this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
+				this.move(MoverType.SELF, new Vec3d(this.getMotion().getX(), this.getMotion().getY(), this.getMotion().getZ()));
 			}
 			this.motionX *= 0.98;
 			this.motionY *= 0.98;

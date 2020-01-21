@@ -9,11 +9,7 @@ import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.item.DyeColor;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.PacketDistributor;
 import twilightforest.network.TFPacketHandler;
@@ -52,11 +48,11 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 			return;
 
 		// only hit living things
-		if (ray.entityHit instanceof LivingEntity && ray.entityHit.attackEntityFrom(this.getDamageSource(), 10)) {
+		if (((EntityRayTraceResult) ray).getEntity() instanceof LivingEntity && ((EntityRayTraceResult) ray).getEntity().attackEntityFrom(this.getDamageSource(), 10)) {
 			this.ticksExisted += 60;
 		}
 
-		if (ray.getBlockPos() != null && !this.world.isAirBlock(ray.getBlockPos())) {
+		if (((BlockRayTraceResult)ray).getPos() != null && !this.world.isAirBlock(((BlockRayTraceResult)ray).getPos())) {
 			this.affectBlocksInAABB(this.getBoundingBox().grow(0.2F, 0.2F, 0.2F));
 		}
 	}
@@ -87,6 +83,7 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 		}
 	}
 
+	//TODO: Should this be put into a Tag?
 	private boolean canAnnihilate(BlockPos pos, BlockState state) {
 		// whitelist many castle blocks
 		Block block = state.getBlock();
@@ -130,9 +127,10 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 			// set motions
 			Vec3d velocity = new Vec3d(this.getX() - destPoint.x, (this.getY() + this.getHeight() / 2F) - destPoint.y, this.getZ() - destPoint.z);
 
-			this.motionX -= velocity.x;
-			this.motionY -= velocity.y;
-			this.motionZ -= velocity.z;
+//			this.motionX -= velocity.x;
+//			this.motionY -= velocity.y;
+//			this.motionZ -= velocity.z;
+			this.getMotion().subtract(velocity.x, velocity.y, velocity.z);
 
 			// normalize speed
 			float currentSpeed = MathHelper.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
@@ -146,9 +144,10 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 				this.motionZ /= currentSpeed / maxSpeed;
 			} else {
 				float slow = 0.5F;
-				this.motionX *= slow;
-				this.motionY *= slow;
-				this.motionZ *= slow;
+//				this.motionX *= slow;
+//				this.motionY *= slow;
+//				this.motionZ *= slow;
+				this.getMotion().mul(slow, slow, slow);
 			}
 
 			// demolish some blocks

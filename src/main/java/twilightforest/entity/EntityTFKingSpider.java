@@ -49,8 +49,8 @@ public class EntityTFKingSpider extends SpiderEntity {
 
 	@Nullable
 	@Override
-	public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData livingData, @Nullable CompoundNBT dataTag) {
-		livingData = super.onInitialSpawn(worldIn, difficultyIn, reason, livingData, dataTag);
+	public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficulty, SpawnReason reason, @Nullable ILivingEntityData livingData, @Nullable CompoundNBT dataTag) {
+		livingData = super.onInitialSpawn(worldIn, difficulty, reason, livingData, dataTag);
 
 		// will always have a dryad riding the spider or whatever is riding the spider
 		EntityTFSkeletonDruid druid = new EntityTFSkeletonDruid(TFEntities.skeleton_druid.get(), this.world);

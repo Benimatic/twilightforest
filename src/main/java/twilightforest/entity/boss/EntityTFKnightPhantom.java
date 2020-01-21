@@ -42,7 +42,6 @@ import twilightforest.entity.ai.EntityAITFFindEntityNearestPlayer;
 import twilightforest.entity.ai.EntityAITFPhantomUpdateFormationAndMove;
 import twilightforest.entity.ai.EntityAITFPhantomWatchAndAttack;
 import twilightforest.item.TFItems;
-import twilightforest.world.TFWorld;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
@@ -150,8 +149,8 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 			for (int i = 0; i < 4; ++i) {
 				Item particleID = rand.nextBoolean() ? TFItems.phantom_helmet.get() : TFItems.knightmetal_sword.get();
 
-				world.addParticle(ParticleTypes.ITEM_CRACK, getX() + (rand.nextFloat() - 0.5D) * width, getY() + rand.nextFloat() * (height - 0.75D) + 0.5D, getZ() + (rand.nextFloat() - 0.5D) * width, 0, -0.1, 0, Item.getIdFromItem(particleID));
-				world.addParticle(ParticleTypes.SMOKE, getX() + (rand.nextFloat() - 0.5D) * width, getY() + rand.nextFloat() * (height - 0.75D) + 0.5D, getZ() + (rand.nextFloat() - 0.5D) * width, 0, 0.1, 0);
+				world.addParticle(ParticleTypes.ITEM_CRACK, getX() + (rand.nextFloat() - 0.5D) * getWidth(), getY() + rand.nextFloat() * (getHeight() - 0.75D) + 0.5D, getZ() + (rand.nextFloat() - 0.5D) * getWidth(), 0, -0.1, 0, Item.getIdFromItem(particleID));
+				world.addParticle(ParticleTypes.SMOKE, getX() + (rand.nextFloat() - 0.5D) * getWidth(), getY() + rand.nextFloat() * (getHeight() - 0.75D) + 0.5D, getZ() + (rand.nextFloat() - 0.5D) * getWidth(), 0, 0.1, 0);
 			}
 		}
 	}
@@ -164,7 +163,7 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 			double d0 = rand.nextGaussian() * 0.02D;
 			double d1 = rand.nextGaussian() * 0.02D;
 			double d2 = rand.nextGaussian() * 0.02D;
-			world.addParticle(ParticleTypes.EXPLOSION_NORMAL, getX() + (double) (rand.nextFloat() * width * 2.0F) - (double) width, getY() + (double) (rand.nextFloat() * height), getZ() + (double) (rand.nextFloat() * width * 2.0F) - (double) width, d0, d1, d2);
+			world.addParticle(ParticleTypes.EXPLOSION_NORMAL, getX() + (double) (rand.nextFloat() * getWidth() * 2.0F) - (double) getWidth(), getY() + (double) (rand.nextFloat() * getHeight()), getZ() + (double) (rand.nextFloat() * getWidth() * 2.0F) - (double) getWidth(), d0, d1, d2);
 		}
 	}
 

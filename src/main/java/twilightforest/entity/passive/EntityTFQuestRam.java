@@ -24,6 +24,7 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.loot.LootContext;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
@@ -118,7 +119,7 @@ public class EntityTFQuestRam extends AnimalEntity {
 	 * Pay out!
 	 */
 	private void rewardQuest() {
-		LootContext ctx = new LootContext.Builder((WorldServer) world).withLootedEntity(this).build();
+		LootContext ctx = new LootContext.Builder((ServerWorld) world).withLootedEntity(this).build();
 		for (ItemStack s : world.getLootTableManager().getLootTableFromLocation(REWARD_LOOT_TABLE).generateLootForPools(world.rand, ctx)) {
 			entityDropItem(s, 1.0F);
 		}
@@ -136,7 +137,7 @@ public class EntityTFQuestRam extends AnimalEntity {
 			this.setColorPresent(DyeColor.byMetadata(currentItem.getItemDamage()));
 			this.animateAddColor(DyeColor.byMetadata(currentItem.getItemDamage()), 50);
 
-			if (!player.capabilities.isCreativeMode) {
+			if (!player.abilities.isCreativeMode) {
 				currentItem.shrink(1);
 			}
 

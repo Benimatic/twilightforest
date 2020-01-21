@@ -59,7 +59,7 @@ public class EntityTFLichMinion extends ZombieEntity {
 			findNewMaster();
 		}
 		// if we still don't have a master, or ours is dead, die.
-		if (master == null || master.isDead) {
+		if (master == null || !master.isAlive()) {
 			this.setHealth(0);
 		}
 		super.livingTick();

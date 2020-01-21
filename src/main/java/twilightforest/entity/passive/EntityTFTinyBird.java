@@ -117,7 +117,7 @@ public class EntityTFTinyBird extends EntityTFBird {
 	}
 
 	@Override
-	protected boolean canDespawn() {
+	public boolean canDespawn(double p_213397_1_) {
 		return false;
 	}
 

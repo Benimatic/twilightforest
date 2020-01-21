@@ -1,6 +1,7 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.util.math.MathHelper;
 
@@ -8,13 +9,13 @@ public class NoClipMoveHelper extends MovementController {
 	private final LivingEntity parentEntity;
 	private int courseChangeCooldown;
 
-	public NoClipMoveHelper(LivingEntity entity) {
+	public NoClipMoveHelper(MobEntity entity) {
 		super(entity);
 		this.parentEntity = entity;
 	}
 
 	@Override
-	public void onUpdateMoveHelper() {
+	public void tick() {
 		if (this.action == MovementController.Action.MOVE_TO) {
 			double d0 = this.getX() - this.parentEntity.getX();
 			double d1 = this.getY() - this.parentEntity.getY();

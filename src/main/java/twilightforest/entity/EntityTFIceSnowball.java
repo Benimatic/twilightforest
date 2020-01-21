@@ -4,6 +4,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -62,8 +63,8 @@ public class EntityTFIceSnowball extends EntityTFThrowable {
 
 	@Override
 	protected void onImpact(RayTraceResult result) {
-		if (!world.isRemote && result.entityHit instanceof LivingEntity) {
-			result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), DAMAGE);
+		if (!world.isRemote && ((EntityRayTraceResult)result).getEntity() instanceof LivingEntity) {
+			((EntityRayTraceResult)result).getEntity().attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), DAMAGE);
 			// TODO: damage armor?
 		}
 

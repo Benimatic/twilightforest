@@ -6,12 +6,14 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.projectile.ThrowableEntity;
+import net.minecraft.fluid.IFluidState;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.IndirectEntityDamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Explosion;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.TwilightForestMod;
@@ -98,8 +100,8 @@ public class EntityTFHydraMortar extends ThrowableEntity {
 	}
 
 	@Override
-	public float getExplosionResistance(Explosion explosion, World world, BlockPos pos, BlockState state) {
-		float resistance = super.getExplosionResistance(explosion, world, pos, state);
+	public float getExplosionResistance(Explosion explosion, IBlockReader world, BlockPos pos, BlockState state, IFluidState fluid, float p_180428_6_) {
+		float resistance = super.getExplosionResistance(explosion, world, pos, state, fluid, p_180428_6_);
 
 		if (this.megaBlast && state.getBlock() != Blocks.BEDROCK && state.getBlock() != Blocks.END_PORTAL && state.getBlock() != Blocks.END_PORTAL_FRAME) {
 			resistance = Math.min(0.8F, resistance);

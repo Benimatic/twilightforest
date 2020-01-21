@@ -70,7 +70,7 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast {
 		// [VanillaCopy] EntityMob.isValidLightLevel
 		BlockPos blockpos = new BlockPos(this.getX(), this.getBoundingBox().minY, this.getZ());
 
-		if (this.world.getLightFor(LightType.SKY.SKY, blockpos) > this.rand.nextInt(32)) {
+		if (this.world.getLightLevel(LightType.SKY, blockpos) > this.rand.nextInt(32)) {
 			return false;
 		} else {
 			int i = this.world.getLightFromNeighbors(blockpos);

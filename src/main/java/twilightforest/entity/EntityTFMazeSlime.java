@@ -14,9 +14,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.LightType;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.BlockTFMazestone;
 import twilightforest.block.TFBlocks;
-import twilightforest.enums.MazestoneVariant;
 
 public class EntityTFMazeSlime extends SlimeEntity {
 
@@ -85,7 +83,7 @@ public class EntityTFMazeSlime extends SlimeEntity {
 	private boolean isValidLightLevel() {
 		BlockPos blockpos = new BlockPos(this.getX(), this.getBoundingBox().minY, this.getZ());
 
-		if (this.world.getLightFor(LightType.SKY, blockpos) > this.rand.nextInt(32)) {
+		if (this.world.getLightLevel(LightType.SKY, blockpos) > this.rand.nextInt(32)) {
 			return false;
 		} else {
 			int i = this.world.getLightFromNeighbors(blockpos);

@@ -2,11 +2,13 @@ package twilightforest.entity;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.DirectionalBlock;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.world.World;
@@ -35,13 +37,6 @@ public class EntityTFMoonwormShot extends EntityTFThrowable {
 	public float getBrightness() {
 		return 1.0F;
 	}
-
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public int getBrightnessForRender() {
-		return 15728880;
-	}
-
 
 	private void makeTrail() {
 //		for (int i = 0; i < 5; i++) {
@@ -88,13 +83,13 @@ public class EntityTFMoonwormShot extends EntityTFThrowable {
 	@Override
 	protected void onImpact(RayTraceResult ray) {
 		if (!world.isRemote) {
-			if (ray.typeOfHit == Type.BLOCK) {
+			if (ray.getType() == Type.BLOCK) {
 
-				BlockPos pos = ray.getBlockPos().offset(ray.sideHit);
+				BlockPos pos = ((BlockRayTraceResult)ray).getPos().offset(((BlockRayTraceResult) ray).getFace());
 				BlockState currentState = world.getBlockState(pos);
 
 				if (currentState.getBlock().isReplaceable(world, pos)) {
-					world.setBlockState(pos, TFBlocks.moonworm.getDefaultState().with(BlockDirectional.FACING, ray.sideHit));
+					world.setBlockState(pos, TFBlocks.moonworm.get().getDefaultState().with(DirectionalBlock.FACING, ((BlockRayTraceResult) ray).getFace()));
 					// todo sound
 				}
 			}

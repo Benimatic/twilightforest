@@ -69,8 +69,8 @@ public class EntityTFAdherent extends MonsterEntity implements IRangedAttackMob,
 
 	}
 
-	@Override
-	public void setSwingingArms(boolean swingingArms) {} // todo 1.12
+//	@Override
+//	public void setSwingingArms(boolean swingingArms) {} // todo 1.12 (addendum 1.15: does not exist)
 
 	@Override
 	public boolean isCharging() {

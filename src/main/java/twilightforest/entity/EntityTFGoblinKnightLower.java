@@ -111,7 +111,7 @@ public class EntityTFGoblinKnightLower extends MonsterEntity {
 		super.updateAITasks();
 
 		if (isBeingRidden() && getPassengers().get(0) instanceof LivingEntity && this.getAttackTarget() == null) {
-			this.setAttackTarget(((LivingEntity) this.getPassengers().get(0)).getAttackTarget());
+			this.setAttackTarget(((LivingEntity) this.getPassengers().get(0).getAttackTarget()));
 		}
 	}
 

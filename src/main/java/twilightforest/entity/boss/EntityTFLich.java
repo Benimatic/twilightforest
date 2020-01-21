@@ -28,8 +28,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.ServerBossInfo;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerBossInfo;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFBossSpawner;
@@ -39,7 +39,6 @@ import twilightforest.entity.TFEntities;
 import twilightforest.entity.ai.EntityAITFLichMinions;
 import twilightforest.entity.ai.EntityAITFLichShadows;
 import twilightforest.enums.BossVariant;
-import twilightforest.world.TFWorld;
 
 import javax.annotation.Nullable;
 import java.util.List;

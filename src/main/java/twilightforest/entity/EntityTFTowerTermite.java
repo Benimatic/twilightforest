@@ -17,9 +17,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.BlockTFTowerWood;
 import twilightforest.block.TFBlocks;
-import twilightforest.enums.TowerWoodVariant;
 
 import java.util.Random;
 

@@ -6,6 +6,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.particles.BlockParticleData;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.DamageSource;
 import net.minecraft.particles.ParticleTypes;
@@ -109,13 +110,13 @@ public class EntityTFIceBomb extends EntityTFThrowable {
 	private void makeIceZone() {
 		if (this.world.isRemote) {
 			// sparkles
-			int stateId = Block.getStateId(Blocks.SNOW.getDefaultState());
+			BlockState stateId = Blocks.SNOW.getDefaultState();
 			for (int i = 0; i < 20; i++) {
 				double dx = this.getX() + (rand.nextFloat() - rand.nextFloat()) * 3.0F;
 				double dy = this.getY() + (rand.nextFloat() - rand.nextFloat()) * 3.0F;
 				double dz = this.getZ() + (rand.nextFloat() - rand.nextFloat()) * 3.0F;
 
-				world.addParticle(ParticleTypes.FALLING_DUST, dx, dy, dz, 0, 0, 0, stateId);
+				world.addParticle(new BlockParticleData(ParticleTypes.FALLING_DUST, stateId), dx, dy, dz, 0, 0, 0);
 			}
 		} else {
 			if (this.zoneTimer % 10 == 0) {

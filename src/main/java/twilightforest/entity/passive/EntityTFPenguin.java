@@ -12,6 +12,7 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
+import twilightforest.entity.TFEntities;
 
 public class EntityTFPenguin extends EntityTFBird {
 
@@ -36,7 +37,7 @@ public class EntityTFPenguin extends EntityTFBird {
 
 	@Override
 	public AnimalEntity createChild(AgeableEntity entityanimal) {
-		return new EntityTFPenguin(world);
+		return new EntityTFPenguin(TFEntities.penguin.get(), world);
 	}
 
 	@Override

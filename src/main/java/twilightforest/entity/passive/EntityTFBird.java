@@ -2,6 +2,7 @@ package twilightforest.entity.passive;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.AgeableEntity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
@@ -25,8 +26,8 @@ public abstract class EntityTFBird extends AnimalEntity {
 	public float lastFlapLength;
 	public float flapSpeed = 1.0F;
 
-	public EntityTFBird(World world) {
-		super(world);
+	public EntityTFBird(EntityType<? extends EntityTFBird> entity, World world) {
+		super(entity, world);
 	}
 
 	@Override

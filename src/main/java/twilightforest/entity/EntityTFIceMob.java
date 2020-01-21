@@ -7,7 +7,6 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
 import twilightforest.client.particle.TFParticleType;
 
 public abstract class EntityTFIceMob extends MonsterEntity {
@@ -42,7 +41,8 @@ public abstract class EntityTFIceMob extends MonsterEntity {
 	}
 
 	@Override
-	public void fall(float distance, float damageMultiplier) {
+	public boolean handleFallDamage(float distance, float damageMultiplier) {
+		return false;
 	}
 
 	@Override
