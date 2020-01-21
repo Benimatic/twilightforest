@@ -138,7 +138,7 @@ public class EntityTFIceBomb extends EntityTFThrowable {
 					entity.setDead();
 				} else {
 					entity.attackEntityFrom(DamageSource.MAGIC, 1);
-					entity.addPotionEffect(new EffectInstance(TFPotions.frosty, 20 * 5, 2));
+					entity.addPotionEffect(new EffectInstance(TFPotions.frosty.get(), 20 * 5, 2));
 				}
 			}
 		}

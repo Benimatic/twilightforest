@@ -85,61 +85,61 @@ public class EntityTFSnowGuardian extends EntityTFIceMob {
 				switch (type) {
 					case 0:
 					default:
-						return TFItems.ironwood_sword;
+						return TFItems.ironwood_sword.get();
 					case 1:
-						return TFItems.steeleaf_sword;
+						return TFItems.steeleaf_sword.get();
 					case 2:
-						return TFItems.knightmetal_sword;
+						return TFItems.knightmetal_sword.get();
 					case 3:
-						return TFItems.knightmetal_sword;
+						return TFItems.knightmetal_sword.get();
 				}
 			case FEET:
 				switch (type) {
 					case 0:
 					default:
-						return TFItems.ironwood_boots;
+						return TFItems.ironwood_boots.get();
 					case 1:
-						return TFItems.steeleaf_boots;
+						return TFItems.steeleaf_boots.get();
 					case 2:
-						return TFItems.knightmetal_boots;
+						return TFItems.knightmetal_boots.get();
 					case 3:
-						return TFItems.arctic_boots;
+						return TFItems.arctic_boots.get();
 				}
 			case LEGS:
 				switch (type) {
 					case 0:
 					default:
-						return TFItems.ironwood_leggings;
+						return TFItems.ironwood_leggings.get();
 					case 1:
-						return TFItems.steeleaf_leggings;
+						return TFItems.steeleaf_leggings.get();
 					case 2:
-						return TFItems.knightmetal_leggings;
+						return TFItems.knightmetal_leggings.get();
 					case 3:
-						return TFItems.arctic_leggings;
+						return TFItems.arctic_leggings.get();
 				}
 			case CHEST:
 				switch (type) {
 					case 0:
 					default:
-						return TFItems.ironwood_chestplate;
+						return TFItems.ironwood_chestplate.get();
 					case 1:
-						return TFItems.steeleaf_chestplate;
+						return TFItems.steeleaf_chestplate.get();
 					case 2:
-						return TFItems.knightmetal_chestplate;
+						return TFItems.knightmetal_chestplate.get();
 					case 3:
-						return TFItems.arctic_chestplate;
+						return TFItems.arctic_chestplate.get();
 				}
 			case HEAD:
 				switch (type) {
 					case 0:
 					default:
-						return TFItems.ironwood_helmet;
+						return TFItems.ironwood_helmet.get();
 					case 1:
-						return TFItems.steeleaf_helmet;
+						return TFItems.steeleaf_helmet.get();
 					case 2:
-						return TFItems.knightmetal_helmet;
+						return TFItems.knightmetal_helmet.get();
 					case 3:
-						return TFItems.arctic_helmet;
+						return TFItems.arctic_helmet.get();
 				}
 		}
 	}

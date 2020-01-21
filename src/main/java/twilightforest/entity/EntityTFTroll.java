@@ -141,8 +141,8 @@ public class EntityTFTroll extends MonsterEntity implements IRangedAttackMob {
 	}
 
 	private void ripenBer(int offset, BlockPos pos) {
-		if (this.world.getBlockState(pos).getBlock() == TFBlocks.unripe_trollber && this.rand.nextBoolean() && (Math.abs(pos.getX() + pos.getY() + pos.getZ()) % 5 == offset)) {
-			this.world.setBlockState(pos, TFBlocks.trollber.getDefaultState());
+		if (this.world.getBlockState(pos).getBlock() == TFBlocks.unripe_trollber.get() && this.rand.nextBoolean() && (Math.abs(pos.getX() + pos.getY() + pos.getZ()) % 5 == offset)) {
+			this.world.setBlockState(pos, TFBlocks.trollber.get().getDefaultState());
 			world.playEvent(2004, pos, 0);
 		}
 	}
@@ -157,8 +157,8 @@ public class EntityTFTroll extends MonsterEntity implements IRangedAttackMob {
 
 		for (BlockPos pos : BlockPos.getAllInBoxMutable(new BlockPos(minX, minY, minZ), new BlockPos(maxX, maxY, maxZ))) {
 			if (world.isAirBlock(pos)) {
-				world.setBlockState(pos, TFBlocks.trollsteinn.getDefaultState());
-				world.playEvent(2001, pos, Block.getStateId(TFBlocks.trollsteinn.getDefaultState()));
+				world.setBlockState(pos, TFBlocks.trollsteinn.get().getDefaultState());
+				world.playEvent(2001, pos, Block.getStateId(TFBlocks.trollsteinn.get().getDefaultState()));
 			}
 		}
 	}
@@ -171,7 +171,7 @@ public class EntityTFTroll extends MonsterEntity implements IRangedAttackMob {
 	@Override
 	public void attackEntityWithRangedAttack(LivingEntity target, float distanceFactor) {
 		if (this.hasRock()) {
-			EntityTFIceBomb ice = new EntityTFIceBomb(this.world, this);
+			EntityTFIceBomb ice = new EntityTFIceBomb(TFEntities.thrown_ice.get(), this.world, this);
 
 			// [VanillaCopy] Part of EntitySkeleton.attackEntityWithRangedAttack
 			double d0 = target.getX() - this.getX();

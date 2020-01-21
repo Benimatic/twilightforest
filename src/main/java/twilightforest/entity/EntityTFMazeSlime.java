@@ -73,9 +73,9 @@ public class EntityTFMazeSlime extends SlimeEntity {
 			float f3 = MathHelper.cos(f) * (float) i * 0.5F * f1;
 			World world = this.world;
 			// ParticleTypes ParticleTypes = this.getParticleType();
-			BlockState state = TFBlocks.maze_stone.getDefaultState().with(BlockTFMazestone.VARIANT, MazestoneVariant.BRICK);
 			double d0 = this.getX() + (double) f2;
 			double d1 = this.getZ() + (double) f3;
+			BlockState state = TFBlocks.maze_stone_brick.get().getDefaultState();
 			world.addParticle(ParticleTypes.BLOCK_CRACK, d0, this.getBoundingBox().minY, d1, 0.0D, 0.0D, 0.0D, Block.getStateId(state));
 		}
 		return true;

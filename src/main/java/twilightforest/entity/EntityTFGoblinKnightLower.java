@@ -92,7 +92,7 @@ public class EntityTFGoblinKnightLower extends MonsterEntity {
 	public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficulty, SpawnReason reason, @Nullable ILivingEntityData livingData, @Nullable CompoundNBT dataTag) {
 		livingData = super.onInitialSpawn(worldIn, difficulty, reason, livingData, dataTag);
 
-		EntityTFGoblinKnightUpper upper = new EntityTFGoblinKnightUpper(this.world);
+		EntityTFGoblinKnightUpper upper = new EntityTFGoblinKnightUpper(TFEntities.goblin_knight_upper.get(), this.world);
 		upper.setLocationAndAngles(this.getX(), this.getY(), this.getZ(), this.rotationYaw, 0.0F);
 		upper.onInitialSpawn(difficulty, null);
 		this.world.addEntity(upper);

@@ -38,6 +38,7 @@ import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.IHostileMount;
+import twilightforest.entity.TFEntities;
 import twilightforest.entity.ai.EntityAIStayNearHome;
 import twilightforest.entity.ai.EntityAITFThrowRider;
 import twilightforest.entity.ai.EntityAITFYetiRampage;
@@ -301,14 +302,14 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 		world.setBlockState(pos, Blocks.PACKED_ICE.getDefaultState());
 		world.playEvent(2001, pos, Block.getStateId(Blocks.PACKED_ICE.getDefaultState()));
 
-		EntityTFFallingIce ice = new EntityTFFallingIce(world, pos.getX(), pos.getY() - 3, pos.getZ());
+		EntityTFFallingIce ice = new EntityTFFallingIce(TFEntities.falling_ice.get(), world, pos.getX(), pos.getY() - 3, pos.getZ());
 		world.addEntity(ice);
 	}
 
 	@Override
 	public void attackEntityWithRangedAttack(LivingEntity target, float distanceFactor) {
 		if (!this.canRampage) {
-			EntityTFIceBomb ice = new EntityTFIceBomb(this.world, this);
+			EntityTFIceBomb ice = new EntityTFIceBomb(TFEntities.thrown_ice.get(), this.world, this);
 
 			// [VanillaCopy] Part of EntitySkeleton.attackEntityWithRangedAttack
 			double d0 = target.getX() - this.getX();
@@ -334,7 +335,7 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 	protected void despawnEntity() {
 		if (world.getDifficulty() == Difficulty.PEACEFUL) {
 			if (hasHome()) {
-				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.ALPHA_YETI));
+				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.ALPHA_YETI));
 			}
 			setDead();
 		} else {

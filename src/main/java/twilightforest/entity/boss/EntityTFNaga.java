@@ -707,7 +707,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 	protected void despawnEntity() {
 		if (world.getDifficulty() == Difficulty.PEACEFUL) {
 			if (hasHome()) {
-				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.NAGA));
+				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.NAGA));
 			}
 			setDead();
 		} else {

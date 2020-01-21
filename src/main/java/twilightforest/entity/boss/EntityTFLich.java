@@ -35,6 +35,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.EntityTFSwarmSpider;
+import twilightforest.entity.TFEntities;
 import twilightforest.entity.ai.EntityAITFLichMinions;
 import twilightforest.entity.ai.EntityAITFLichShadows;
 import twilightforest.enums.BossVariant;
@@ -163,7 +164,7 @@ public class EntityTFLich extends MonsterEntity {
 	protected void despawnEntity() {
 		if (world.getDifficulty() == Difficulty.PEACEFUL && !isShadowClone()) {
 			if (hasHome()) {
-				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.LICH));
+				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.LICH));
 			}
 			setDead();
 		} else {
@@ -331,7 +332,7 @@ public class EntityTFLich extends MonsterEntity {
 
 		playSound(SoundEvents.ENTITY_GHAST_SHOOT, getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
 
-		EntityTFLichBolt projectile = new EntityTFLichBolt(world, this);
+		EntityTFLichBolt projectile = new EntityTFLichBolt(TFEntities.lich_bolt.get(), world, this);
 		projectile.setLocationAndAngles(sx, sy, sz, rotationYaw, rotationPitch);
 		projectile.shoot(tx, ty, tz, 0.5F, 1.0F);
 

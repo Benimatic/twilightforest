@@ -160,7 +160,7 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 	public void setDead() {
 		super.setDead();
 		LivingEntity thrower = this.getThrower();
-		if (thrower != null && thrower.getActiveItemStack().getItem() == TFItems.cube_of_annihilation) {
+		if (thrower != null && thrower.getActiveItemStack().getItem() == TFItems.cube_of_annihilation.get()) {
 			thrower.resetActiveHand();
 		}
 	}

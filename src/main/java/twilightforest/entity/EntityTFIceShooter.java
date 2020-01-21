@@ -74,7 +74,7 @@ public class EntityTFIceShooter extends EntityTFIceMob implements IRangedAttackM
 
 	@Override
 	public void attackEntityWithRangedAttack(LivingEntity target, float distanceFactor) {
-		EntityTFIceSnowball snowball = new EntityTFIceSnowball(this.world, this);
+		EntityTFIceSnowball snowball = new EntityTFIceSnowball(TFEntities.ice_snowball.get(), this.world, this);
 
 		// [VanillaCopy] Adapted from EntitySnowman
 		double d0 = target.getY() + (double) target.getEyeHeight() - 1.4;

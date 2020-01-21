@@ -138,7 +138,7 @@ public class EntityTFTowerTermite extends MonsterEntity {
 					BlockState iblockstate = this.creature.world.getBlockState(blockpos);
 
 					// TF - Change block check
-					if (iblockstate == TFBlocks.tower_wood.getDefaultState()) {
+					if (iblockstate == TFBlocks.tower_wood.get().getDefaultState()) {
 						this.doMerge = true;
 						return true;
 					}
@@ -170,9 +170,9 @@ public class EntityTFTowerTermite extends MonsterEntity {
 				BlockState iblockstate = world.getBlockState(blockpos);
 
 				// TF - Change block check
-				if (iblockstate == TFBlocks.tower_wood.getDefaultState()) {
+				if (iblockstate == TFBlocks.tower_wood.get().getDefaultState()) {
 					// TF - Change block type
-					world.setBlockState(blockpos, TFBlocks.tower_wood.getDefaultState().with(BlockTFTowerWood.VARIANT, TowerWoodVariant.INFESTED), 3);
+					world.setBlockState(blockpos, TFBlocks.tower_wood_infested.get().getDefaultState(), 3);
 					this.creature.spawnExplosionParticle();
 					this.creature.setDead();
 				}
@@ -225,12 +225,12 @@ public class EntityTFTowerTermite extends MonsterEntity {
 							BlockState iblockstate = world.getBlockState(blockpos1);
 
 							// TF - Change block check
-							if (iblockstate == TFBlocks.tower_wood.getDefaultState().with(BlockTFTowerWood.VARIANT, TowerWoodVariant.INFESTED)) {
+							if (iblockstate == TFBlocks.tower_wood_infested.get().getDefaultState()) {
 								if (ForgeEventFactory.getMobGriefingEvent(world, this.silverfish)) {
 									world.destroyBlock(blockpos1, true);
 								} else {
 									// TF - reset to normal tower wood
-									world.setBlockState(blockpos1, TFBlocks.tower_wood.getDefaultState(), 3);
+									world.setBlockState(blockpos1, TFBlocks.tower_wood.get().getDefaultState(), 3);
 								}
 
 								if (random.nextBoolean()) {

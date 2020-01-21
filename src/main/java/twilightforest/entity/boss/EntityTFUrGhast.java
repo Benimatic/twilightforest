@@ -203,7 +203,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 			bossInfo.setPercent(getHealth() / getMaxHealth());
 		} else {
 			if (this.isInTantrum()) {
-				TwilightForestMod.proxy.addParticle(TFParticleType.BOSS_TEAR,
+				world.addParticle(TFParticleType.BOSS_TEAR.get(),
 						this.getX() + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(),
 						this.getY() + this.rand.nextDouble() * (double) this.getHeight() - 0.25D,
 						this.getZ() + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(),
@@ -497,8 +497,8 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 	}
 
 	private boolean isTrapAt(BlockPos pos) {
-		BlockState inactive = TFBlocks.tower_device.getDefaultState().with(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.GHASTTRAP_INACTIVE);
-		BlockState active = TFBlocks.tower_device.getDefaultState().with(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.GHASTTRAP_ACTIVE);
+		BlockState inactive = TFBlocks.ghast_trap.get().getDefaultState().with(BlockTFGhastTrap.ACTIVE, false);
+		BlockState active = TFBlocks.ghast_trap.get().getDefaultState().with(BlockTFGhastTrap.ACTIVE, true);
 		return world.isBlockLoaded(pos)
 				&& (world.getBlockState(pos) == inactive || world.getBlockState(pos) == active);
 	}

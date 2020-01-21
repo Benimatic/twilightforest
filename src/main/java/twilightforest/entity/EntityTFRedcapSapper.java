@@ -17,14 +17,14 @@ public class EntityTFRedcapSapper extends EntityTFRedcap {
 
 	public EntityTFRedcapSapper(EntityType<? extends EntityTFRedcapSapper> type, World world) {
 		super(type, world);
-		this.heldPick = new ItemStack(TFItems.ironwood_pickaxe);
+		this.heldPick = new ItemStack(TFItems.ironwood_pickaxe.get());
 		this.heldTNT.setCount(3);
 	}
 
 	@Override
 	protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
 		super.setEquipmentBasedOnDifficulty(difficulty);
-		this.setItemStackToSlot(EquipmentSlotType.FEET, new ItemStack(TFItems.ironwood_boots));
+		this.setItemStackToSlot(EquipmentSlotType.FEET, new ItemStack(TFItems.ironwood_boots.get()));
 	}
 
 	@Override

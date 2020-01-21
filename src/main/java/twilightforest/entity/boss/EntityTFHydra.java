@@ -121,7 +121,7 @@ public class EntityTFHydra extends LivingEntity implements IEntityMultiPart, IMo
 	@Override
 	protected void despawnEntity() {
 		if (world.getDifficulty() == Difficulty.PEACEFUL) {
-			world.setBlockState(getPosition().add(0, 2, 0), TFBlocks.boss_spawner.getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.HYDRA));
+			world.setBlockState(getPosition().add(0, 2, 0), TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.HYDRA));
 			setDead();
 			for (HydraHeadContainer container : hc) {
 				if (container.headEntity != null) {
