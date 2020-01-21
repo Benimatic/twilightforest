@@ -26,11 +26,11 @@ public class StructureTFHelper {
 
 
     public static BlockState getSlab(Block type) {
-        return getSlabType(type, BlockSlab.EnumBlockHalf.BOTTOM);
+        return getSlabType(type, SlabType.BOTTOM);
     }
 
     public static BlockState getSlabTop(Block type) {
-        return getSlabType(type, BlockSlab.EnumBlockHalf.TOP);
+        return getSlabType(type, SlabType.TOP);
     }
 
     public static BlockState randomPlant(int i) {

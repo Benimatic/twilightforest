@@ -193,8 +193,6 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 			attempted.buildComponent(parent, list, random);
 
 		}
-
-
 	}
 
 	/**

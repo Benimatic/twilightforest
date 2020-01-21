@@ -1381,7 +1381,7 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 
 		final BlockState waterOrLava = rand.nextInt(4) == 0 ? Blocks.LAVA.getDefaultState() : Blocks.WATER.getDefaultState();
 
-		final BlockState stoneSlab = Blocks.STONE_SLAB.getDefaultState().with(BlockStoneSlab.VARIANT, SMOOTHBRICK);
+		final BlockState stoneSlab = Blocks.SMOOTH_STONE_SLAB.getDefaultState();
 		final BlockState stoneBrick = Blocks.STONE_BRICKS.getDefaultState();
 
 		if (size > 7) {

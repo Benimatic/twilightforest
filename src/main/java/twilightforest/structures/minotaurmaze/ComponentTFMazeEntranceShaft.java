@@ -41,7 +41,7 @@ public class ComponentTFMazeEntranceShaft extends StructureTFComponentOld {
 	@Override
 	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 		if (this.averageGroundLevel < 0) {
-			this.averageGroundLevel = this.getAverageGroundLevel(world, sbb);
+			this.averageGroundLevel = this.getAverageGroundLevel(world.getWorld(), sbb);
 
 			if (this.averageGroundLevel < 0) {
 				return true;
