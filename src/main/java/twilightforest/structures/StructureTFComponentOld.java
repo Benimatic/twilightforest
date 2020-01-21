@@ -581,7 +581,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	protected int findGroundLevel(World world, MutableBoundingBox sbb, int start, Predicate<BlockState> predicate) {
 
 		Vec3i center = StructureBoundingBoxUtils.getCenter(sbb);
-		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(center.getX(), 0, center.getZ());
+		BlockPos.Mutable pos = new BlockPos.Mutable(center.getX(), 0, center.getZ());
 
 		for (int y = start; y > 0; y--) {
 			pos.setY(y);
@@ -600,7 +600,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 		int maxX = this.boundingBox.maxX + 1;
 		int maxZ = this.boundingBox.maxZ + 1;
 
-		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+		BlockPos.Mutable pos = new BlockPos.Mutable();
 
 		for (int x = minX; x <= maxX; x++) {
 			for (int z = minZ; z <= maxZ; z++) {

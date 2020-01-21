@@ -20,8 +20,6 @@ import twilightforest.biomes.TFBiomes;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.util.RotationUtil;
-import twilightforest.world.feature.TFGenCaveStalactite;
-import twilightforest.world.feature.TFGenMyceliumBlob;
 
 import java.util.List;
 import java.util.Random;
@@ -237,7 +235,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 		int dy = y;
 		int dz = getZWithOffset(x, z);
 
-		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(dx, dy, dz);
+		BlockPos.Mutable pos = new BlockPos.Mutable(dx, dy, dz);
 
 		if (sbb.isVecInside(pos)) {
 			// find surface above the listed coords

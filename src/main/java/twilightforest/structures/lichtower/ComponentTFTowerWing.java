@@ -965,7 +965,7 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 	protected boolean isOpeningPos(int x, int y, int z) {
 		for (BlockPos door : openings) {
 			// determine which wall we're at
-			BlockPos.MutableBlockPos inside = new BlockPos.MutableBlockPos(door);
+			BlockPos.Mutable inside = new BlockPos.Mutable(door);
 			if (inside.getX() == 0) {
 				inside.move(Direction.EAST);
 			} else if (inside.getX() == size - 1) {

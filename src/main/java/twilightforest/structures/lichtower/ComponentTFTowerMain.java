@@ -463,7 +463,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 			BlockPos wCoords = getRandomWallSpot(rand, floorLevel, direction, sbb);
 
 			// offset to see where the fence should be
-			BlockPos.MutableBlockPos tCoords = new BlockPos.MutableBlockPos(wCoords);
+			BlockPos.Mutable tCoords = new BlockPos.Mutable(wCoords);
 
 			// is there a painting or another torch there?
 			AxisAlignedBB torchBox = new AxisAlignedBB(tCoords.getX(), tCoords.getY(), tCoords.getZ(), tCoords.getX() + 1.0, tCoords.getY() + 2.0, tCoords.getZ() + 1.0);

@@ -75,7 +75,7 @@ public class ComponentTFFinalCastleDamagedTower extends ComponentTFFinalCastleMa
 
 		// go down from the top of the tower to the ground, taking out rectangular chunks
 		//for (int y = this.boundingBox.maxY; y > this.boundingBox.minY; y--) {
-		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+		BlockPos.Mutable pos = new BlockPos.Mutable();
 		for (int y = this.boundingBox.maxY; !hitDeadRock && y > 64; y--) {
 			for (int x = this.boundingBox.minX - 2; x <= this.boundingBox.maxX + 2; x++) {
 				for (int z = this.boundingBox.minZ - 2; z <= this.boundingBox.maxZ + 2; z++) {
