@@ -56,7 +56,7 @@ public class EntityTFTowerGhast extends GhastEntity {
 	protected void registerGoals() {
 		this.goalSelector.addGoal(5, new AIHomedFly(this));
 		if (!(this instanceof EntityTFUrGhast)) this.goalSelector.addGoal(5, new AIRandomFly(this));
-		this.goalSelector.addGoal(7, new EntityGhast.AILookAround(this));
+		this.goalSelector.addGoal(7, new GhastEntity.AILookAround(this));
 		this.goalSelector.addGoal(7, attackAI = new AIAttack(this));
 		this.targetSelector.addGoal(1, new EntityAITFFindEntityNearestPlayer(this));
 	}

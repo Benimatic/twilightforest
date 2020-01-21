@@ -38,7 +38,7 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf implements IBreathAt
 		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0F, false));
 		this.goalSelector.addGoal(6, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
 
-		this.targetSelector.addGoal(1, new HurtByTargetGoal(this, false));
+		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
 	}
 

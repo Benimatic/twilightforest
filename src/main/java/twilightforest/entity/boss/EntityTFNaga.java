@@ -143,7 +143,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 				return RandomPositionGenerator.findRandomTarget(this.creature, 30, 7);
 			}
 		});
-		this.targetSelector.addGoal(1, new HurtByTargetGoal(this, false));
+		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, false));
 
 		this.moveController = new NagaMoveHelper(this);

@@ -117,7 +117,7 @@ public class EntityTFLich extends MonsterEntity {
 			}
 		});
 
-		this.targetSelector.addGoal(1, new HurtByTargetGoal(this, false));
+		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, false));
 	}
 

@@ -54,13 +54,13 @@ public class EntityTFBlockGoblin extends MonsterEntity implements IEntityMultiPa
 	@Override
 	protected void registerGoals() {
 		this.goalSelector.addGoal(0, new SwimGoal(this));
-		this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, TNTEntity.class, 2.0F, 0.8F, 1.5F));
+		this.goalSelector.addGoal(1, new AvoidEntityGoal(this, TNTEntity.class, 2.0F, 0.8F, 1.5F));
 		this.goalSelector.addGoal(4, new EntityAIThrowSpikeBlock(this, this.block));
 		this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0F, false));
 		this.goalSelector.addGoal(6, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
 		this.goalSelector.addGoal(7, new LookAtGoal(this, PlayerEntity.class, 8.0F));
 		this.goalSelector.addGoal(7, new LookRandomlyGoal(this));
-		this.targetSelector.addGoal(1, new HurtByTargetGoal(this, false));
+		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
 	}
 

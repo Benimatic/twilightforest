@@ -33,7 +33,7 @@ public class EntityTFMosquitoSwarm extends MonsterEntity {
 		this.goalSelector.addGoal(0, new SwimGoal(this));
 		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, false));
 		this.goalSelector.addGoal(6, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
-		this.targetSelector.addGoal(1, new HurtByTargetGoal(this, true));
+		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
 	}
 

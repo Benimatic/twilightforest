@@ -35,7 +35,7 @@ public class EntityTFIceExploder extends EntityTFIceMob {
 		this.goalSelector.addGoal(2, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
 		this.goalSelector.addGoal(3, new LookAtGoal(this, PlayerEntity.class, 8.0F));
 		this.goalSelector.addGoal(3, new LookRandomlyGoal(this));
-		this.targetSelector.addGoal(1, new HurtByTargetGoal(this, true));
+		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
 	}
 

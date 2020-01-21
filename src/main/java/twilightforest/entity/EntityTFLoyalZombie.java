@@ -32,13 +32,13 @@ public class EntityTFLoyalZombie extends TameableEntity {
 	protected void registerGoals() {
 		this.goalSelector.addGoal(1, new SwimGoal(this));
 		this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, true));
-		this.goalSelector.addGoal(5, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F));
+		this.goalSelector.addGoal(5, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F, true));
 		this.goalSelector.addGoal(7, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
 		this.goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, 8.0F));
 		this.goalSelector.addGoal(9, new LookRandomlyGoal(this));
 		this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
 		this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
-		this.targetSelector.addGoal(3, new HurtByTargetGoal(this, true));
+		this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
 		this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, MonsterEntity.class, true));
 	}
 
