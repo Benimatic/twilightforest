@@ -80,9 +80,9 @@ public class TileEntityTFGhastTrapInactive extends TileEntity implements ITickab
 		double sy = this.pos.getY() + 1.0D;
 		double sz = this.pos.getZ() + 0.5D;
 
-		double dx = sx - highlight.posX;
-		double dy = sy - highlight.posY - highlight.getEyeHeight();
-		double dz = sz - highlight.posZ;
+		double dx = sx - highlight.getX();
+		double dy = sy - highlight.getY() - highlight.getEyeHeight();
+		double dz = sz - highlight.getZ();
 
 		for (int i = 0; i < 5; i++) {
 			world.addParticle(TFParticleType.GHAST_TRAP.get(), sx, sy, sz, -dx, -dy, -dz);

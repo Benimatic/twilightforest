@@ -7,8 +7,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import twilightforest.block.BlockTFBuilder;
 import twilightforest.block.BlockTFBuiltTranslucent;
-import twilightforest.block.BlockTFTowerDevice;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.TowerDeviceVariant;
 
@@ -85,7 +85,7 @@ public class TileEntityTFTowerBuilder extends TileEntity implements ITickableTil
 			this.trackedPlayer = null;
 			if (++ticksStopped == 60) {
 				// force the builder back into an inactive state
-				world.setBlockState(getPos(), TFBlocks.carminite_builder.get().getDefaultState().with(BlockTFTowerDevice.VARIANT, TowerDeviceVariant.BUILDER_TIMEOUT), 3);
+				world.setBlockState(getPos(), TFBlocks.carminite_builder.get().getDefaultState().with(BlockTFBuilder.STATE, TowerDeviceVariant.BUILDER_TIMEOUT), 3);
 				//world.scheduleUpdate(getPos(), TFBlocks.tower_device, 4);
 			}
 		}

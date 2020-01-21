@@ -25,7 +25,7 @@ public class TileEntityTFKnightPhantomsSpawner extends TileEntityTFBossSpawner {
 	@Override
 	public boolean anyPlayerInRange() {
 		PlayerEntity closestPlayer = world.getClosestPlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, getRange(), false);
-		return closestPlayer != null && closestPlayer.posY > pos.getY() - 2;
+		return closestPlayer != null && closestPlayer.getY() > pos.getY() - 2;
 	}
 
 	@Override

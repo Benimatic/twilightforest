@@ -1,6 +1,5 @@
 package twilightforest.tileentity;
 
-import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -10,10 +9,8 @@ import net.minecraft.tags.Tag;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
-import twilightforest.TFConfig;
 import twilightforest.block.BlockTFTowerTranslucent;
 import twilightforest.block.TFBlocks;
-import twilightforest.enums.TowerTranslucentVariant;
 
 import java.util.Random;
 
@@ -261,8 +258,8 @@ public class TileEntityTFAntibuilder extends TileEntity implements ITickableTile
 		if (stateThere.getBlock() instanceof BlockTFTowerTranslucent || replaceWith.getBlock() instanceof BlockTFTowerTranslucent) {
 			return true;
 		}
-		if ((stateThere.getBlock() == TFBlocks.tower_translucent && stateThere.getValue(BlockTFTowerTranslucent.VARIANT) != TowerTranslucentVariant.REVERTER_REPLACEMENT)
-				|| (replaceWith.getBlock() == TFBlocks.tower_translucent && replaceWith.getValue(BlockTFTowerTranslucent.VARIANT) != TowerTranslucentVariant.REVERTER_REPLACEMENT)) {
+		if (stateThere.getBlock() instanceof BlockTFTowerTranslucent && stateThere.getBlock() != TFBlocks.reverter_replacement.get()
+				|| (replaceWith.getBlock() instanceof BlockTFTowerTranslucent && stateThere.getBlock() != TFBlocks.reverter_replacement.get())) {
 			return true;
 		}
 

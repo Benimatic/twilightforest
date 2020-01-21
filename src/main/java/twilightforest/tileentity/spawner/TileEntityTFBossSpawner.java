@@ -24,7 +24,7 @@ public abstract class TileEntityTFBossSpawner extends TileEntity implements ITic
 	}
 
 	public boolean anyPlayerInRange() {
-		return world.isAnyPlayerWithinRangeAt(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, getRange());
+		return world.isPlayerWithin(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, getRange());
 	}
 
 	@Override

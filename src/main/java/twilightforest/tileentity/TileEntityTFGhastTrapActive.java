@@ -77,9 +77,9 @@ public class TileEntityTFGhastTrapActive extends TileEntity implements ITickable
 					((EntityTFUrGhast) ghast).noClip = true; // turn this on so we can pull it in close
 
 					// move boss to this point
-					ghast.motionX = (ghast.posX - this.pos.getX() - 0.5) * -0.1;
-					ghast.motionY = (ghast.posY - this.pos.getY() - 2.5) * -0.1;
-					ghast.motionZ = (ghast.posZ - this.pos.getZ() - 0.5) * -0.1;
+					ghast.motionX = (ghast.getX() - this.pos.getX() - 0.5) * -0.1;
+					ghast.motionY = (ghast.getY() - this.pos.getY() - 2.5) * -0.1;
+					ghast.motionZ = (ghast.getZ() - this.pos.getZ() - 0.5) * -0.1;
 
 					if (rand.nextInt(10) == 0) {
 						ghast.attackEntityFrom(DamageSource.GENERIC, 7);
@@ -88,9 +88,9 @@ public class TileEntityTFGhastTrapActive extends TileEntity implements ITickable
 
 				} else {
 					// move ghasts to this point
-					ghast.motionX = (ghast.posX - this.pos.getX() - 0.5) * -0.1;
-					ghast.motionY = (ghast.posY - this.pos.getY() - 1.5) * -0.1;
-					ghast.motionZ = (ghast.posZ - this.pos.getZ() - 0.5) * -0.1;
+					ghast.motionX = (ghast.getX() - this.pos.getX() - 0.5) * -0.1;
+					ghast.motionY = (ghast.getY() - this.pos.getY() - 1.5) * -0.1;
+					ghast.motionZ = (ghast.getZ() - this.pos.getZ() - 0.5) * -0.1;
 
 					if (rand.nextInt(10) == 0) {
 						ghast.attackEntityFrom(DamageSource.GENERIC, 10);
