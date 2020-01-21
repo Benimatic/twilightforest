@@ -34,9 +34,9 @@ public class EntityTFHydraMortar extends ThrowableEntity {
 		Vec3d vector = head.getLookVec();
 
 		double dist = 3.5;
-		double px = head.posX + vector.x * dist;
-		double py = head.posY + 1 + vector.y * dist;
-		double pz = head.posZ + vector.z * dist;
+		double px = head.getX() + vector.x * dist;
+		double py = head.getY() + 1 + vector.y * dist;
+		double pz = head.getZ() + vector.z * dist;
 
 		setLocationAndAngles(px, py, pz, 0, 0);
 		// these are being set to extreme numbers when we get here, why?
@@ -52,7 +52,7 @@ public class EntityTFHydraMortar extends ThrowableEntity {
 	public void tick() {
 		super.tick();
 
-		this.pushOutOfBlocks(this.posX, (this.getBoundingBox().minY + this.getBoundingBox().maxY) / 2.0D, this.posZ);
+		this.pushOutOfBlocks(this.getX(), (this.getBoundingBox().minY + this.getBoundingBox().maxY) / 2.0D, this.getZ());
 
 		if (this.onGround) {
 			this.motionX *= 0.9D;
@@ -111,7 +111,7 @@ public class EntityTFHydraMortar extends ThrowableEntity {
 	private void detonate() {
 		float explosionPower = megaBlast ? 4.0F : 0.1F;
 		boolean flag = ForgeEventFactory.getMobGriefingEvent(world, this);
-		this.world.newExplosion(this, this.posX, this.posY, this.posZ, explosionPower, flag, flag);
+		this.world.newExplosion(this, this.getX(), this.getY(), this.getZ(), explosionPower, flag, flag);
 
 		DamageSource src = new IndirectEntityDamageSource("onFire", this, getThrower()).setFireDamage().setProjectile();
 

@@ -174,9 +174,9 @@ public class EntityTFTroll extends MonsterEntity implements IRangedAttackMob {
 			EntityTFIceBomb ice = new EntityTFIceBomb(this.world, this);
 
 			// [VanillaCopy] Part of EntitySkeleton.attackEntityWithRangedAttack
-			double d0 = target.posX - this.posX;
-			double d1 = target.getBoundingBox().minY + (double) (target.getHeight() / 3.0F) - ice.posY;
-			double d2 = target.posZ - this.posZ;
+			double d0 = target.getX() - this.getX();
+			double d1 = target.getBoundingBox().minY + (double) (target.getHeight() / 3.0F) - ice.getY();
+			double d2 = target.getZ() - this.getZ();
 			double d3 = (double) MathHelper.sqrt(d0 * d0 + d2 * d2);
 			ice.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float) (14 - this.world.getDifficulty().getId() * 4));
 

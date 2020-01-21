@@ -68,7 +68,7 @@ public class TFTeleporter extends Teleporter {
 
 		BlockPos safeCoords = findSafeCoords(200, pos, entity, checkProgression);
 		if (safeCoords != null) {
-			entity.setLocationAndAngles(safeCoords.getX(), entity.posY, safeCoords.getZ(), 90.0F, 0.0F);
+			entity.setLocationAndAngles(safeCoords.getX(), entity.getY(), safeCoords.getZ(), 90.0F, 0.0F);
 			TwilightForestMod.LOGGER.debug("Safely rerouted!");
 			return;
 		}
@@ -77,7 +77,7 @@ public class TFTeleporter extends Teleporter {
 		safeCoords = findSafeCoords(400, pos, entity, checkProgression);
 
 		if (safeCoords != null) {
-			entity.setLocationAndAngles(safeCoords.getX(), entity.posY, safeCoords.getZ(), 90.0F, 0.0F);
+			entity.setLocationAndAngles(safeCoords.getX(), entity.getY(), safeCoords.getZ(), 90.0F, 0.0F);
 			TwilightForestMod.LOGGER.info("Safely rerouted to long range portal.  Return trip not guaranteed.");
 			return;
 		}
@@ -145,8 +145,8 @@ public class TFTeleporter extends Teleporter {
 	public boolean placeInExistingPortal(Entity entity, float rotationYaw) {
 		int i = 200; // TF - scan radius up to 200, and also un-inline this variable back into below
 		double d0 = -1.0D;
-		int j = MathHelper.floor(entity.posX);
-		int k = MathHelper.floor(entity.posZ);
+		int j = MathHelper.floor(entity.getX());
+		int k = MathHelper.floor(entity.getZ());
 		boolean flag = true;
 		BlockPos blockpos = BlockPos.ORIGIN;
 		long l = ChunkPos.asLong(j, k);
@@ -315,15 +315,15 @@ public class TFTeleporter extends Teleporter {
 		// adjust the portal height based on what world we're traveling to
 		double yFactor = getYFactor();
 		// modified copy of base Teleporter method:
-		cachePortalCoords(entity, makePortalAt(world, new BlockPos(entity.posX, (entity.posY * yFactor) - 1.0, entity.posZ)));
+		cachePortalCoords(entity, makePortalAt(world, new BlockPos(entity.getX(), (entity.getY() * yFactor) - 1.0, entity.getZ())));
 
 		return false;
 	}
 
 	private void loadSurroundingArea(Entity entity) {
 
-		int x = MathHelper.floor(entity.posX) >> 4;
-		int z = MathHelper.floor(entity.posZ) >> 4;
+		int x = MathHelper.floor(entity.getX()) >> 4;
+		int z = MathHelper.floor(entity.getZ()) >> 4;
 
 		for (int dx = -2; dx <= 2; dx++) {
 			for (int dz = -2; dz <= 2; dz++) {
@@ -341,8 +341,8 @@ public class TFTeleporter extends Teleporter {
 		// adjust the height based on what world we're traveling to
 		double yFactor = getYFactor();
 		// modified copy of base Teleporter method:
-		int entityX = MathHelper.floor(entity.posX);
-		int entityZ = MathHelper.floor(entity.posZ);
+		int entityX = MathHelper.floor(entity.getX());
+		int entityZ = MathHelper.floor(entity.getZ());
 
 		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
 
@@ -351,9 +351,9 @@ public class TFTeleporter extends Teleporter {
 
 		int range = 16;
 		for (int rx = entityX - range; rx <= entityX + range; rx++) {
-			double xWeight = (rx + 0.5D) - entity.posX;
+			double xWeight = (rx + 0.5D) - entity.getX();
 			for (int rz = entityZ - range; rz <= entityZ + range; rz++) {
-				double zWeight = (rz + 0.5D) - entity.posZ;
+				double zWeight = (rz + 0.5D) - entity.getZ();
 
 				for (int ry = getScanHeight(rx, rz); ry >= 0; ry--) {
 
@@ -365,7 +365,7 @@ public class TFTeleporter extends Teleporter {
 						ry--;
 					}
 
-					double yWeight = (ry + 0.5D) - entity.posY * yFactor;
+					double yWeight = (ry + 0.5D) - entity.getY() * yFactor;
 					double rPosWeight = xWeight * xWeight + yWeight * yWeight + zWeight * zWeight;
 
 					if (spotWeight < 0.0D || rPosWeight < spotWeight) {
@@ -415,7 +415,7 @@ public class TFTeleporter extends Teleporter {
 	}
 
 	private void cachePortalCoords(Entity entity, BlockPos pos) {
-		int x = MathHelper.floor(entity.posX), z = MathHelper.floor(entity.posZ);
+		int x = MathHelper.floor(entity.getX()), z = MathHelper.floor(entity.getZ());
 		destinationCoordinateCache.put(ChunkPos.asLong(x, z), new PortalPosition(pos, world.getTotalWorldTime()));
 	}
 

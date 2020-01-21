@@ -3,7 +3,6 @@ package twilightforest.entity;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
@@ -135,7 +134,7 @@ public class EntityTFTowerTermite extends MonsterEntity {
 
 				if (random.nextInt(10) == 0 && ForgeEventFactory.getMobGriefingEvent(this.creature.world, this.creature)) {
 					this.facing = Direction.random(random);
-					BlockPos blockpos = (new BlockPos(this.creature.posX, this.creature.posY + 0.5D, this.creature.posZ)).offset(this.facing);
+					BlockPos blockpos = (new BlockPos(this.creature.getX(), this.creature.getY() + 0.5D, this.creature.getZ())).offset(this.facing);
 					BlockState iblockstate = this.creature.world.getBlockState(blockpos);
 
 					// TF - Change block check
@@ -167,7 +166,7 @@ public class EntityTFTowerTermite extends MonsterEntity {
 				super.startExecuting();
 			} else {
 				World world = this.creature.world;
-				BlockPos blockpos = (new BlockPos(this.creature.posX, this.creature.posY + 0.5D, this.creature.posZ)).offset(this.facing);
+				BlockPos blockpos = (new BlockPos(this.creature.getX(), this.creature.getY() + 0.5D, this.creature.getZ())).offset(this.facing);
 				BlockState iblockstate = world.getBlockState(blockpos);
 
 				// TF - Change block check

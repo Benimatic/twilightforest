@@ -70,14 +70,14 @@ public class EntityTFHydraPart extends LivingEntity {
 
 		super.baseTick();
 
-		lastTickPosX = posX;
-		lastTickPosY = posY;
-		lastTickPosZ = posZ;
+		lastTickPosX = getX();
+		lastTickPosY = getY();
+		lastTickPosZ = getZ();
 
 		if (this.newPosRotationIncrements > 0) {
-			double x = this.posX + (this.interpTargetX - this.posX) / this.newPosRotationIncrements;
-			double y = this.posY + (this.interpTargetY - this.posY) / this.newPosRotationIncrements;
-			double z = this.posZ + (this.interpTargetZ - this.posZ) / this.newPosRotationIncrements;
+			double x = this.getX() + (this.interpTargetX - this.getX()) / this.newPosRotationIncrements;
+			double y = this.getY() + (this.interpTargetY - this.getY()) / this.newPosRotationIncrements;
+			double z = this.getZ() + (this.interpTargetZ - this.getZ()) / this.newPosRotationIncrements;
 			double yawDelta = MathHelper.wrapDegrees(this.interpTargetYaw - this.rotationYaw);
 			this.rotationYaw = (float) (this.rotationYaw + yawDelta / this.newPosRotationIncrements);
 			this.rotationPitch = (float) (this.rotationPitch + (this.interpTargetPitch - this.rotationPitch) / this.newPosRotationIncrements);

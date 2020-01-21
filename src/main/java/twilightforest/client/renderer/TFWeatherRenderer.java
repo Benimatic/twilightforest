@@ -82,9 +82,9 @@ public class TFWeatherRenderer extends IRenderHandler {
 			mc.gameRenderer.enableLightmap();
 			Entity entity = mc.getRenderViewEntity();
 			World world = mc.world;
-			int i = MathHelper.floor(entity.posX);
-			int j = MathHelper.floor(entity.posY);
-			int k = MathHelper.floor(entity.posZ);
+			int i = MathHelper.floor(entity.getX());
+			int j = MathHelper.floor(entity.getY());
+			int k = MathHelper.floor(entity.getZ());
 			Tessellator tessellator = Tessellator.getInstance();
 			BufferBuilder bufferbuilder = tessellator.getBuffer();
 			GlStateManager.disableCull();
@@ -92,9 +92,9 @@ public class TFWeatherRenderer extends IRenderHandler {
 			GlStateManager.enableBlend();
 			GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 			GlStateManager.alphaFunc(516, 0.1F);
-			double d0 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double) partialTicks;
-			double d1 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) partialTicks;
-			double d2 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double) partialTicks;
+			double d0 = entity.lastTickPosX + (entity.getX() - entity.lastTickPosX) * (double) partialTicks;
+			double d1 = entity.lastTickPosY + (entity.getY() - entity.lastTickPosY) * (double) partialTicks;
+			double d2 = entity.lastTickPosZ + (entity.getZ() - entity.lastTickPosZ) * (double) partialTicks;
 			int l = MathHelper.floor(d1);
 			int i1 = 5;
 
@@ -152,8 +152,8 @@ public class TFWeatherRenderer extends IRenderHandler {
 								}
 
 								double d5 = -((double) (this.rendererUpdateCount + l1 * l1 * 3121 + l1 * 45238971 + k1 * k1 * 418711 + k1 * 13761 & 31) + (double) partialTicks) / 32.0D * (3.0D + this.random.nextDouble());
-								double d6 = (double) ((float) l1 + 0.5F) - entity.posX;
-								double d7 = (double) ((float) k1 + 0.5F) - entity.posZ;
+								double d6 = (double) ((float) l1 + 0.5F) - entity.getX();
+								double d7 = (double) ((float) k1 + 0.5F) - entity.getZ();
 								float f3 = MathHelper.sqrt(d6 * d6 + d7 * d7) / (float) i1;
 								float f4 = ((1.0F - f3 * f3) * 0.5F + 0.5F) * f;
 								blockpos$mutableblockpos.setPos(l1, i3, k1);
@@ -178,8 +178,8 @@ public class TFWeatherRenderer extends IRenderHandler {
 								double d8 = (double) (-((float) (this.rendererUpdateCount & 511) + partialTicks) / 512.0F);
 								double d9 = this.random.nextDouble() + (double) f1 * 0.01D * (double) ((float) this.random.nextGaussian());
 								double d10 = this.random.nextDouble() + (double) (f1 * (float) this.random.nextGaussian()) * 0.001D;
-								double d11 = (double) ((float) l1 + 0.5F) - entity.posX;
-								double d12 = (double) ((float) k1 + 0.5F) - entity.posZ;
+								double d11 = (double) ((float) l1 + 0.5F) - entity.getX();
+								double d12 = (double) ((float) k1 + 0.5F) - entity.getZ();
 								float f6 = MathHelper.sqrt(d11 * d11 + d12 * d12) / (float) i1;
 								float f5 = ((1.0F - f6 * f6) * 0.3F + 0.5F) * f;
 								blockpos$mutableblockpos.setPos(l1, i3, k1);
@@ -217,9 +217,9 @@ public class TFWeatherRenderer extends IRenderHandler {
 			Entity entity = mc.getRenderViewEntity();
 			World world = mc.world;
 
-			int x0 = MathHelper.floor(entity.posX);
-			int y0 = MathHelper.floor(entity.posY);
-			int z0 = MathHelper.floor(entity.posZ);
+			int x0 = MathHelper.floor(entity.getX());
+			int y0 = MathHelper.floor(entity.getY());
+			int z0 = MathHelper.floor(entity.getZ());
 
 			Tessellator tessellator = Tessellator.getInstance();
 			BufferBuilder bufferbuilder = tessellator.getBuffer();
@@ -230,9 +230,9 @@ public class TFWeatherRenderer extends IRenderHandler {
 			GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 			GlStateManager.alphaFunc(516, 0.1F);
 
-			double dx = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double) partialTicks;
-			double dy = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) partialTicks;
-			double dz = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double) partialTicks;
+			double dx = entity.lastTickPosX + (entity.getX() - entity.lastTickPosX) * (double) partialTicks;
+			double dy = entity.lastTickPosY + (entity.getY() - entity.lastTickPosY) * (double) partialTicks;
+			double dz = entity.lastTickPosZ + (entity.getZ() - entity.lastTickPosZ) * (double) partialTicks;
 
 			int y1 = MathHelper.floor(dy);
 			int range = 5;
@@ -302,8 +302,8 @@ public class TFWeatherRenderer extends IRenderHandler {
 							switch (currentType) {
 								case BLIZZARD: {
 									double d5 = -((double) (this.rendererUpdateCount + x * x * 3121 + x * 45238971 + z * z * 418711 + z * 13761 & 31) + (double) partialTicks) / 32.0D * (3.0D + this.random.nextDouble());
-									double d6 = (double) ((float) x + 0.5F) - entity.posX;
-									double d7 = (double) ((float) z + 0.5F) - entity.posZ;
+									double d6 = (double) ((float) x + 0.5F) - entity.getX();
+									double d7 = (double) ((float) z + 0.5F) - entity.getZ();
 									float f3 = MathHelper.sqrt(d6 * d6 + d7 * d7) / (float) range;
 									float f4 = ((1.0F - f3 * f3) * 0.5F + 0.5F) * 1.0F;
 									blockpos$mutableblockpos.setPos(x, y, z);
@@ -319,8 +319,8 @@ public class TFWeatherRenderer extends IRenderHandler {
 									double d8 = 0; // TF - no wiggle
 									double d9 = this.random.nextDouble() + (double) combinedTicks * 0.01D * (double) ((float) this.random.nextGaussian());
 									double d10 = this.random.nextDouble() + (double) (combinedTicks * (float) this.random.nextGaussian()) * 0.001D;
-									double d11 = (double) ((float) x + 0.5F) - entity.posX;
-									double d12 = (double) ((float) z + 0.5F) - entity.posZ;
+									double d11 = (double) ((float) x + 0.5F) - entity.getX();
+									double d12 = (double) ((float) z + 0.5F) - entity.getZ();
 									float f6 = MathHelper.sqrt(d11 * d11 + d12 * d12) / (float) range;
 									float r = random.nextFloat() * 0.3F; // TF - random color
 									float g = random.nextFloat() * 0.3F;
@@ -338,8 +338,8 @@ public class TFWeatherRenderer extends IRenderHandler {
 									double d8 = (double) (-((float) (this.rendererUpdateCount & 511) + partialTicks) / 512.0F);
 									double d9 = this.random.nextDouble() + (double) combinedTicks * 0.01D * (double) ((float) this.random.nextGaussian());
 									double d10 = this.random.nextDouble() + (double) (combinedTicks * (float) this.random.nextGaussian()) * 0.001D;
-									double d11 = (double) ((float) x + 0.5F) - entity.posX;
-									double d12 = (double) ((float) z + 0.5F) - entity.posZ;
+									double d11 = (double) ((float) x + 0.5F) - entity.getX();
+									double d12 = (double) ((float) z + 0.5F) - entity.getZ();
 									float f6 = MathHelper.sqrt(d11 * d11 + d12 * d12) / (float) range;
 									float f5 = ((1.0F - f6 * f6) * 0.3F + 0.5F) * 1.0F;
 									int i4 = 15 << 20 | 15 << 4; // TF - fullbright
@@ -355,8 +355,8 @@ public class TFWeatherRenderer extends IRenderHandler {
 									double d8 = (double) (-((float) (this.rendererUpdateCount & 511) + partialTicks) / 512.0F);
 									double d9 = 0; // TF - no u wiggle
 									double d10 = this.random.nextDouble() + (double) (combinedTicks * (float) this.random.nextGaussian()) * 0.001D;
-									double d11 = (double) ((float) x + 0.5F) - entity.posX;
-									double d12 = (double) ((float) z + 0.5F) - entity.posZ;
+									double d11 = (double) ((float) x + 0.5F) - entity.getX();
+									double d12 = (double) ((float) z + 0.5F) - entity.getZ();
 									float f6 = MathHelper.sqrt(d11 * d11 + d12 * d12) / (float) range;
 									float f5 = ((1.0F - f6 * f6) * 0.3F + 0.5F) * random.nextFloat(); // TF - random alpha multiplier
 									int i4 = 15 << 20 | 15 << 4; // TF - fullbright
@@ -369,8 +369,8 @@ public class TFWeatherRenderer extends IRenderHandler {
 								} break;
 								case BIG_RAIN: {
 									double d5 = -((double) (this.rendererUpdateCount + x * x * 3121 + x * 45238971 + z * z * 418711 + z * 13761 & 31) + (double) partialTicks) / 32.0D * (3.0D + this.random.nextDouble());
-									double d6 = (double) ((float) x + 0.5F) - entity.posX;
-									double d7 = (double) ((float) z + 0.5F) - entity.posZ;
+									double d6 = (double) ((float) x + 0.5F) - entity.getX();
+									double d7 = (double) ((float) z + 0.5F) - entity.getZ();
 									float f3 = MathHelper.sqrt(d6 * d6 + d7 * d7) / (float) range;
 									float f4 = ((1.0F - f3 * f3) * 0.5F + 0.5F) * 1.0F;
 									blockpos$mutableblockpos.setPos(x, y, z);
@@ -407,9 +407,9 @@ public class TFWeatherRenderer extends IRenderHandler {
 			mc.gameRenderer.enableLightmap();
 			Entity entity = mc.getRenderViewEntity();
 			World world = mc.world;
-			int i = MathHelper.floor(entity.posX);
-			int j = MathHelper.floor(entity.posY);
-			int k = MathHelper.floor(entity.posZ);
+			int i = MathHelper.floor(entity.getX());
+			int j = MathHelper.floor(entity.getY());
+			int k = MathHelper.floor(entity.getZ());
 			Tessellator tessellator = Tessellator.getInstance();
 			BufferBuilder bufferbuilder = tessellator.getBuffer();
 			GlStateManager.disableCull();
@@ -417,9 +417,9 @@ public class TFWeatherRenderer extends IRenderHandler {
 			GlStateManager.enableBlend();
 			GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 			GlStateManager.alphaFunc(516, 0.1F);
-			double d0 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double) partialTicks;
-			double d1 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) partialTicks;
-			double d2 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double) partialTicks;
+			double d0 = entity.lastTickPosX + (entity.getX() - entity.lastTickPosX) * (double) partialTicks;
+			double d1 = entity.lastTickPosY + (entity.getY() - entity.lastTickPosY) * (double) partialTicks;
+			double d2 = entity.lastTickPosZ + (entity.getZ() - entity.lastTickPosZ) * (double) partialTicks;
 			int l = MathHelper.floor(d1);
 			int i1 = 5;
 
@@ -478,8 +478,8 @@ public class TFWeatherRenderer extends IRenderHandler {
 							}
 
 							double d5 = -((double) (this.rendererUpdateCount + l1 * l1 * 3121 + l1 * 45238971 + k1 * k1 * 418711 + k1 * 13761 & 31) + (double) partialTicks) / 32.0D * (3.0D + this.random.nextDouble());
-							double d6 = (double) ((float) l1 + 0.5F) - entity.posX;
-							double d7 = (double) ((float) k1 + 0.5F) - entity.posZ;
+							double d6 = (double) ((float) l1 + 0.5F) - entity.getX();
+							double d7 = (double) ((float) k1 + 0.5F) - entity.getZ();
 							float f3 = MathHelper.sqrt(d6 * d6 + d7 * d7) / (float) i1;
 							// TF - "f" was rain strength for alpha
 							float f = random.nextFloat();
@@ -511,8 +511,8 @@ public class TFWeatherRenderer extends IRenderHandler {
 	private boolean isNearLockedBiome(World world, Entity viewEntity) {
 		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
 		final int range = 15;
-		int px = MathHelper.floor(viewEntity.posX);
-		int pz = MathHelper.floor(viewEntity.posZ);
+		int px = MathHelper.floor(viewEntity.getX());
+		int pz = MathHelper.floor(viewEntity.getZ());
 
 		for (int z = pz - range; z <= pz + range; ++z) {
 			for (int x = px - range; x <= px + range; ++x) {
@@ -528,8 +528,8 @@ public class TFWeatherRenderer extends IRenderHandler {
 
 	private boolean isNearLockedStructure(World world, Entity viewEntity) {
 		final int range = 15;
-		int px = MathHelper.floor(viewEntity.posX);
-		int pz = MathHelper.floor(viewEntity.posZ);
+		int px = MathHelper.floor(viewEntity.getX());
+		int pz = MathHelper.floor(viewEntity.getZ());
 
 		if (this.protectedBox != null && this.protectedBox.intersectsWith(px - range, pz - range, px + range, pz + range)) {
 			return true;

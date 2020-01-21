@@ -88,8 +88,8 @@ public class EntityAITFAvoidFrontalAttack extends Goal {
 	protected Vec3d findCirclePoint(Entity circler, Entity toCircle, double radius, double rotation) {
 
 		// compute angle
-		double vecx = circler.posX - toCircle.posX;
-		double vecz = circler.posZ - toCircle.posZ;
+		double vecx = circler.getX() - toCircle.getX();
+		double vecz = circler.getZ() - toCircle.getZ();
 		float rangle = (float) (Math.atan2(vecz, vecx));
 
 		// add a little, so he circles
@@ -100,7 +100,7 @@ public class EntityAITFAvoidFrontalAttack extends Goal {
 		double dz = MathHelper.sin(rangle) * radius;
 
 		// add that to the target entity's position, and we have our destination
-		return new Vec3d(toCircle.posX + dx, circler.getBoundingBox().minY, toCircle.posZ + dz);
+		return new Vec3d(toCircle.getX() + dx, circler.getBoundingBox().minY, toCircle.getZ() + dz);
 	}
 
 
@@ -111,8 +111,8 @@ public class EntityAITFAvoidFrontalAttack extends Goal {
 	 */
 	public boolean isTargetLookingAtMe(LivingEntity attackTarget) {
 		// find angle of approach
-		double dx = me.posX - attackTarget.posX;
-		double dz = me.posZ - attackTarget.posZ;
+		double dx = me.getX() - attackTarget.getX();
+		double dz = me.getZ() - attackTarget.getZ();
 		float angle = (float) ((Math.atan2(dz, dx) * 180D) / 3.1415927410125732D) - 90F;
 
 		float difference = MathHelper.abs((attackTarget.rotationYaw - angle) % 360);

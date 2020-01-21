@@ -116,9 +116,9 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 		if (this.myState == null || this.myState.getMaterial() == Material.AIR) {
 			this.setDead();
 		} else {
-			this.prevPosX = this.posX;
-			this.prevPosY = this.posY;
-			this.prevPosZ = this.posZ;
+			this.prevPosX = this.getX();
+			this.prevPosY = this.getY();
+			this.prevPosZ = this.getZ();
 			++this.slideTime;
 			// start moving after warmup
 			if (this.slideTime > WARMUP_TIME) {
@@ -185,8 +185,8 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 			if (entity instanceof LivingEntity) {
 				entity.attackEntityFrom(DamageSource.GENERIC, 5);
 
-				double kx = (this.posX - entity.posX) * 2.0;
-				double kz = (this.posZ - entity.posZ) * 2.0;
+				double kx = (this.getX() - entity.getX()) * 2.0;
+				double kz = (this.getZ() - entity.getZ()) * 2.0;
 
 				((LivingEntity) entity).knockBack(this, 2, kx, kz);
 			}

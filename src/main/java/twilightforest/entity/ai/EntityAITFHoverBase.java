@@ -42,9 +42,9 @@ public abstract class EntityAITFHoverBase<T extends LivingEntity> extends Goal {
 		boolean found = false;
 
 		for (int i = 0; i < 100; i++) {
-			hx = target.posX + (this.attacker.getRNG().nextFloat() - this.attacker.getRNG().nextFloat()) * hoverRadius;
-			hy = target.posY + hoverHeight;
-			hz = target.posZ + (this.attacker.getRNG().nextFloat() - this.attacker.getRNG().nextFloat()) * hoverRadius;
+			hx = target.getX() + (this.attacker.getRNG().nextFloat() - this.attacker.getRNG().nextFloat()) * hoverRadius;
+			hy = target.getY() + hoverHeight;
+			hz = target.getZ() + (this.attacker.getRNG().nextFloat() - this.attacker.getRNG().nextFloat()) * hoverRadius;
 
 			if (!isPositionOccupied(hx, hy, hz) && this.canEntitySee(this.attacker, hx, hy, hz) && this.canEntitySee(target, hx, hy, hz)) {
 				found = true;
@@ -71,6 +71,6 @@ public abstract class EntityAITFHoverBase<T extends LivingEntity> extends Goal {
 	 * Can the specified entity see the specified location?
 	 */
 	protected boolean canEntitySee(Entity entity, double dx, double dy, double dz) {
-		return entity.world.rayTraceBlocks(new Vec3d(entity.posX, entity.posY + (double) entity.getEyeHeight(), entity.posZ), new Vec3d(dx, dy, dz)) == null;
+		return entity.world.rayTraceBlocks(new Vec3d(entity.getX(), entity.getY() + (double) entity.getEyeHeight(), entity.getZ()), new Vec3d(dx, dy, dz)) == null;
 	}
 }

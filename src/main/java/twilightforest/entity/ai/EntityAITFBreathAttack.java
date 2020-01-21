@@ -41,9 +41,9 @@ public class EntityAITFBreathAttack<T extends LivingEntity & IBreathAttacker> ex
 		if (this.attackTarget == null || this.entityHost.getDistance(attackTarget) > this.breathRange || !this.entityHost.getEntitySenses().canSee(attackTarget)) {
 			return false;
 		} else {
-			breathX = attackTarget.posX;
-			breathY = attackTarget.posY + attackTarget.getEyeHeight();
-			breathZ = attackTarget.posZ;
+			breathX = attackTarget.getX();
+			breathY = attackTarget.getY() + attackTarget.getEyeHeight();
+			breathZ = attackTarget.getZ();
 
 			return this.entityHost.getRNG().nextFloat() < this.attackChance;
 		}
@@ -104,7 +104,7 @@ public class EntityAITFBreathAttack<T extends LivingEntity & IBreathAttacker> ex
 		Entity pointedEntity = null;
 		double range = 30.0D;
 		double offset = 3.0D;
-		Vec3d srcVec = new Vec3d(this.entityHost.posX, this.entityHost.posY + 0.25, this.entityHost.posZ);
+		Vec3d srcVec = new Vec3d(this.entityHost.getX(), this.entityHost.getY() + 0.25, this.entityHost.getZ());
 		Vec3d lookVec = this.entityHost.getLook(1.0F);
 		Vec3d destVec = srcVec.add(lookVec.x * range, lookVec.y * range, lookVec.z * range);
 		float var9 = 0.5F;
@@ -139,9 +139,9 @@ public class EntityAITFBreathAttack<T extends LivingEntity & IBreathAttacker> ex
 	 * Face the head towards a specific Vector
 	 */
 	public void faceVec(double x, double y, double z, float yawConstraint, float pitchConstraint) {
-		double xOffset = x - entityHost.posX;
-		double zOffset = z - entityHost.posZ;
-		double yOffset = (entityHost.posY + 0.25) - y;
+		double xOffset = x - entityHost.getX();
+		double zOffset = z - entityHost.getZ();
+		double yOffset = (entityHost.getY() + 0.25) - y;
 
 		double distance = MathHelper.sqrt(xOffset * xOffset + zOffset * zOffset);
 		float xyAngle = (float) ((Math.atan2(zOffset, xOffset) * 180D) / Math.PI) - 90F;

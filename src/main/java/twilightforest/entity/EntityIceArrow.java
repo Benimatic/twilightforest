@@ -1,6 +1,6 @@
 package twilightforest.entity;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -24,9 +24,9 @@ public class EntityIceArrow extends EntityTFArrow {
 	public void tick() {
 		super.tick();
 		if (world.isRemote && !inGround) {
-			int stateId = Block.getStateId(Blocks.SNOW.getDefaultState());
+			BlockState stateId = Blocks.SNOW.getDefaultState();
 			for (int i = 0; i < 4; ++i) {
-				this.world.addParticle(ParticleTypes.FALLING_DUST, this.posX + this.getMotion().getX() * (double) i / 4.0D, this.posY + this.getMotion().getY() * (double) i / 4.0D, this.posZ + this.getMotion().getZ() * (double) i / 4.0D, -this.getMotion().getX(), -this.getMotion().getY() + 0.2D, -this.getMotion().getZ(), stateId);
+				this.world.addParticle(new BlockParticleData(ParticleTypes.FALLING_DUST, stateId), this.getX() + this.getMotion().getX() * (double) i / 4.0D, this.getY() + this.getMotion().getY() * (double) i / 4.0D, this.getZ() + this.getMotion().getZ() * (double) i / 4.0D, -this.getMotion().getX(), -this.getMotion().getY() + 0.2D, -this.getMotion().getZ());
 			}
 		}
 	}

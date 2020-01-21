@@ -246,7 +246,7 @@ public class ItemTFMazeMap extends FilledMapItem {
 				mapdata.updateVisiblePlayers(entityplayer, stack);
 
 				// TF - if player is far away vertically, show a dot
-				int yProximity = MathHelper.floor(entityplayer.posY - mapdata.yCenter);
+				int yProximity = MathHelper.floor(entityplayer.getY() - mapdata.yCenter);
 				if (yProximity < -YSEARCH || yProximity > YSEARCH) {
 					MapDecoration decoration = mapdata.mapDecorations.get(entityplayer.getName());
 					if (decoration != null) {

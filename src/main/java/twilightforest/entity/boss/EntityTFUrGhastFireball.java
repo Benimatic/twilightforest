@@ -28,7 +28,7 @@ public class EntityTFUrGhastFireball extends FireballEntity implements ITFProjec
 			}
 
 			boolean flag = ForgeEventFactory.getMobGriefingEvent(this.world, this.shootingEntity);
-			this.world.newExplosion(null, this.posX, this.posY, this.posZ, (float) this.explosionPower, flag, flag);
+			this.world.newExplosion(null, this.getX(), this.getY(), this.getZ(), (float) this.explosionPower, flag, flag);
 			this.setDead();
 		}
 	}

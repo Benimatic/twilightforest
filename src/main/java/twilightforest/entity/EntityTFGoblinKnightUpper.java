@@ -156,9 +156,9 @@ public class EntityTFGoblinKnightUpper extends MonsterEntity {
 		Vec3d vector = this.getLookVec();
 
 		double dist = 1.25;
-		double px = this.posX + vector.x * dist;
+		double px = this.getX() + vector.x * dist;
 		double py = this.getBoundingBox().minY - 0.75;
-		double pz = this.posZ + vector.z * dist;
+		double pz = this.getZ() + vector.z * dist;
 
 
 		for (int i = 0; i < 50; i++) {
@@ -231,8 +231,8 @@ public class EntityTFGoblinKnightUpper extends MonsterEntity {
 		Entity attacker = damageSource.getTrueSource();
 
 		if (attacker != null) {
-			double dx = this.posX - attacker.posX;
-			double dz = this.posZ - attacker.posZ;
+			double dx = this.getX() - attacker.getX();
+			double dz = this.getZ() - attacker.getZ();
 			float angle = (float) ((Math.atan2(dz, dx) * 180D) / Math.PI) - 90F;
 
 			float difference = MathHelper.abs((this.renderYawOffset - angle) % 360);
@@ -278,10 +278,10 @@ public class EntityTFGoblinKnightUpper extends MonsterEntity {
 		LivingEntity toKnockback = (getRidingEntity() instanceof LivingEntity) ? (LivingEntity) getRidingEntity() : this;
 
 		if (source.getTrueSource() != null) {
-			double d0 = source.getTrueSource().posX - this.posX;
+			double d0 = source.getTrueSource().getX() - this.getX();
 			double d1;
 
-			for (d1 = source.getTrueSource().posZ - this.posZ; d0 * d0 + d1 * d1 < 1.0E-4D; d1 = (Math.random() - Math.random()) * 0.01D) {
+			for (d1 = source.getTrueSource().getZ() - this.getZ(); d0 * d0 + d1 * d1 < 1.0E-4D; d1 = (Math.random() - Math.random()) * 0.01D) {
 				d0 = (Math.random() - Math.random()) * 0.01D;
 			}
 

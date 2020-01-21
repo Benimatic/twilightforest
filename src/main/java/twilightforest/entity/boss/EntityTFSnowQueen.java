@@ -168,9 +168,9 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 			Vec3d look = this.getLookVec();
 
 			double dist = 0.5;
-			double px = this.posX + look.x * dist;
-			double py = this.posY + 1.7F + look.y * dist;
-			double pz = this.posZ + look.z * dist;
+			double px = this.getX() + look.x * dist;
+			double py = this.getY() + 1.7F + look.y * dist;
+			double pz = this.getZ() + look.z * dist;
 
 			for (int i = 0; i < 10; i++) {
 				double dx = look.x;
@@ -209,7 +209,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 				this.iceArray[i].rotationYaw = this.getIceShieldAngle(i);
 			} else {
 				// last block beneath
-				this.iceArray[i].setPosition(this.posX, this.posY - 1, this.posZ);
+				this.iceArray[i].setPosition(this.getX(), this.getY() - 1, this.getZ());
 				this.iceArray[i].rotationYaw = this.getIceShieldAngle(i);
 			}
 
@@ -227,7 +227,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 				double d2 = rand.nextGaussian() * 0.02D;
 				ParticleTypes explosionType = rand.nextBoolean() ? ParticleTypes.EXPLOSION_HUGE : ParticleTypes.EXPLOSION_NORMAL;
 
-				world.addParticle(explosionType, (posX + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), posY + rand.nextFloat() * getHeight(), (posZ + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), d, d1, d2);
+				world.addParticle(explosionType, (getX() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), getY() + rand.nextFloat() * getHeight(), (getZ() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), d, d1, d2);
 			}
 		}
 	}
@@ -321,7 +321,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 		double dx = Math.cos((angle) * Math.PI / 180.0D) * distance;
 		double dz = Math.sin((angle) * Math.PI / 180.0D) * distance;
 
-		return new Vec3d(this.posX + dx, this.posY + this.getShieldYOffset(), this.posZ + dz);
+		return new Vec3d(this.getX() + dx, this.getY() + this.getShieldYOffset(), this.getZ() + dz);
 	}
 
 	private double getShieldYOffset() {
@@ -401,7 +401,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 
 	public void summonMinionAt(LivingEntity targetedEntity) {
 		EntityTFIceCrystal minion = new EntityTFIceCrystal(world);
-		minion.setPositionAndRotation(posX, posY, posZ, 0, 0);
+		minion.setPositionAndRotation(getX(), getY(), getZ(), 0, 0);
 
 		world.addEntity(minion);
 
@@ -415,9 +415,9 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 				attemptY = home.getY() + rand.nextGaussian() * 2D;
 				attemptZ = home.getZ() + rand.nextGaussian() * 7D;
 			} else {
-				attemptX = targetedEntity.posX + rand.nextGaussian() * 16D;
-				attemptY = targetedEntity.posY + rand.nextGaussian() * 8D;
-				attemptZ = targetedEntity.posZ + rand.nextGaussian() * 16D;
+				attemptX = targetedEntity.getX() + rand.nextGaussian() * 16D;
+				attemptY = targetedEntity.getY() + rand.nextGaussian() * 8D;
+				attemptZ = targetedEntity.getZ() + rand.nextGaussian() * 16D;
 			}
 			if (minion.attemptTeleport(attemptX, attemptY, attemptZ)) {
 				break;
@@ -431,7 +431,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 	}
 
 	public int countMyMinions() {
-		return world.getEntitiesWithinAABB(EntityTFIceCrystal.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).grow(32.0D, 16.0D, 32.0D)).size();
+		return world.getEntitiesWithinAABB(EntityTFIceCrystal.class, new AxisAlignedBB(getX(), getY(), getZ(), getX() + 1, getY() + 1, getZ() + 1).grow(32.0D, 16.0D, 32.0D)).size();
 	}
 
 	public void incrementSuccessfulDrops() {

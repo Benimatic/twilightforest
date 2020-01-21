@@ -40,9 +40,9 @@ public class EntityAITFFlockToSameKind extends Goal {
 
 		for (LivingEntity flocker : flockList) {
 			flocknum++;
-			flockX += flocker.posX;
-			flockY += flocker.posY;
-			flockZ += flocker.posZ;
+			flockX += flocker.getX();
+			flockY += flocker.getY();
+			flockZ += flocker.getZ();
 		}
 
 		flockX /= flocknum;

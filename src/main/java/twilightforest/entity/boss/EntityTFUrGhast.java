@@ -113,9 +113,9 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 			if (!entitymovehelper.isUpdating()) {
 				return true;
 			} else {
-				double d0 = entitymovehelper.getX() - this.taskOwner.posX;
-				double d1 = entitymovehelper.getY() - this.taskOwner.posY;
-				double d2 = entitymovehelper.getZ() - this.taskOwner.posZ;
+				double d0 = entitymovehelper.getX() - this.taskOwner.getX();
+				double d1 = entitymovehelper.getY() - this.taskOwner.getY();
+				double d2 = entitymovehelper.getZ() - this.taskOwner.getZ();
 				double d3 = d0 * d0 + d1 * d1 + d2 * d2;
 				return d3 < 1.0D || d3 > 3600.0D;
 			}
@@ -204,9 +204,9 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		} else {
 			if (this.isInTantrum()) {
 				TwilightForestMod.proxy.addParticle(TFParticleType.BOSS_TEAR,
-						this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(),
-						this.posY + this.rand.nextDouble() * (double) this.getHeight() - 0.25D,
-						this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(),
+						this.getX() + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(),
+						this.getY() + this.rand.nextDouble() * (double) this.getHeight() - 0.25D,
+						this.getZ() + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(),
 						0, 0, 0
 				);
 			}
@@ -220,9 +220,9 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 					double d2 = rand.nextGaussian() * 0.02D;
 
 					world.addParticle(rand.nextBoolean() ? ParticleTypes.EXPLOSION_HUGE : ParticleTypes.EXPLOSION_NORMAL,
-							(posX + rand.nextFloat() * getWidth() * 2.0F) - getWidth(),
-							posY + rand.nextFloat() * getHeight(),
-							(posZ + rand.nextFloat() * getWidth() * 2.0F) - getWidth(),
+							(getX() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(),
+							getY() + rand.nextFloat() * getHeight(),
+							(getZ() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(),
 							d, d1, d2
 					);
 				}
@@ -432,25 +432,25 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 
 	@Override
 	protected void spitFireball() {
-		double offsetX = this.getAttackTarget().posX - this.posX;
-		double offsetY = this.getAttackTarget().getBoundingBox().minY + (double) (this.getAttackTarget().getHeight() / 2.0F) - (this.posY + (double) (this.getHeight() / 2.0F));
-		double offsetZ = this.getAttackTarget().posZ - this.posZ;
+		double offsetX = this.getAttackTarget().getX() - this.getX();
+		double offsetY = this.getAttackTarget().getBoundingBox().minY + (double) (this.getAttackTarget().getHeight() / 2.0F) - (this.getY() + (double) (this.getHeight() / 2.0F));
+		double offsetZ = this.getAttackTarget().getZ() - this.getZ();
 
 		EntityTFUrGhastFireball entityFireball = new EntityTFUrGhastFireball(this.world, this, offsetX, offsetY, offsetZ);
 		entityFireball.explosionPower = 1;
 		double shotSpawnDistance = 8.5D;
 		Vec3d lookVec = this.getLook(1.0F);
-		entityFireball.posX = this.posX + lookVec.x * shotSpawnDistance;
-		entityFireball.posY = this.posY + (double) (this.getHeight() / 2.0F) + lookVec.y * shotSpawnDistance;
-		entityFireball.posZ = this.posZ + lookVec.z * shotSpawnDistance;
+		entityFireball.getX() = this.getX() + lookVec.x * shotSpawnDistance;
+		entityFireball.getY() = this.getY() + (double) (this.getHeight() / 2.0F) + lookVec.y * shotSpawnDistance;
+		entityFireball.getZ() = this.getZ() + lookVec.z * shotSpawnDistance;
 		this.world.addEntity(entityFireball);
 
 		for (int i = 0; i < 2; i++) {
 			entityFireball = new EntityTFUrGhastFireball(this.world, this, offsetX + (rand.nextFloat() - rand.nextFloat()) * 8, offsetY, offsetZ + (rand.nextFloat() - rand.nextFloat()) * 8);
 			entityFireball.explosionPower = 1;
-			entityFireball.posX = this.posX + lookVec.x * shotSpawnDistance;
-			entityFireball.posY = this.posY + (double) (this.getHeight() / 2.0F) + lookVec.y * shotSpawnDistance;
-			entityFireball.posZ = this.posZ + lookVec.z * shotSpawnDistance;
+			entityFireball.getX() = this.getX() + lookVec.x * shotSpawnDistance;
+			entityFireball.getY() = this.getY() + (double) (this.getHeight() / 2.0F) + lookVec.y * shotSpawnDistance;
+			entityFireball.getZ() = this.getZ() + lookVec.z * shotSpawnDistance;
 			this.world.addEntity(entityFireball);
 		}
 

@@ -127,7 +127,7 @@ public class EntityTFBlockGoblin extends MonsterEntity implements IEntityMultiPa
 		double dx = Math.cos((angle) * Math.PI / 180.0D) * distance;
 		double dz = Math.sin((angle) * Math.PI / 180.0D) * distance;
 
-		return new Vec3d(this.posX + dx, this.posY + this.getChainYOffset(), this.posZ + dz);
+		return new Vec3d(this.getX() + dx, this.getY() + this.getChainYOffset(), this.getZ() + dz);
 	}
 
 	public boolean isSwingingChain() {
@@ -171,9 +171,9 @@ public class EntityTFBlockGoblin extends MonsterEntity implements IEntityMultiPa
 
 			Vec3d blockPos = this.getThrowPos();
 
-			double sx2 = this.posX;
-			double sy2 = this.posY + this.getHeight() - 0.1;
-			double sz2 = this.posZ;
+			double sx2 = this.getX();
+			double sy2 = this.getY() + this.getHeight() - 0.1;
+			double sz2 = this.getZ();
 
 			double ox2 = sx2 - blockPos.x;
 			double oy2 = sy2 - blockPos.y - 0.25F;
@@ -198,9 +198,9 @@ public class EntityTFBlockGoblin extends MonsterEntity implements IEntityMultiPa
 			this.block.rotationYaw = getChainAngle();
 
 			// interpolate chain position
-			double sx = this.posX;
-			double sy = this.posY + this.height - 0.1;
-			double sz = this.posZ;
+			double sx = this.getX();
+			double sy = this.getY() + this.height - 0.1;
+			double sz = this.getZ();
 
 			double ox = sx - blockPos.x;
 			double oy = sy - blockPos.y - (block.height / 3D);
@@ -221,7 +221,7 @@ public class EntityTFBlockGoblin extends MonsterEntity implements IEntityMultiPa
 
 	private Vec3d getThrowPos() {
 		Vec3d vec3d = this.getLook(1.0F);
-		return new Vec3d(this.posX + vec3d.x * this.chainMoveLength, this.posY + this.getEyeHeight(), this.posZ + vec3d.z * this.chainMoveLength);
+		return new Vec3d(this.getX() + vec3d.x * this.chainMoveLength, this.getY() + this.getEyeHeight(), this.getZ() + vec3d.z * this.chainMoveLength);
 	}
 
 	private void chainMove() {

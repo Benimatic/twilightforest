@@ -90,8 +90,8 @@ public class TFTickHandler {
 		ChunkGeneratorTFBase chunkGenerator = TFWorld.getChunkGenerator(world);
 		if (chunkGenerator == null) return false;
 
-		int px = MathHelper.floor(player.posX);
-		int pz = MathHelper.floor(player.posZ);
+		int px = MathHelper.floor(player.getX());
+		int pz = MathHelper.floor(player.getZ());
 
 		MutableBoundingBox fullSBB = chunkGenerator.getFullSBBNear(px, pz, 100);
 		if (fullSBB != null) {
@@ -129,7 +129,7 @@ public class TFTickHandler {
 							double vy = rand.nextGaussian() * 0.02D;
 							double vz = rand.nextGaussian() * 0.02D;
 
-							world.addParticle(ParticleTypes.SPELL, entityItem.posX, entityItem.posY + 0.2, entityItem.posZ, vx, vy, vz);
+							world.addParticle(ParticleTypes.SPELL, entityItem.getX(), entityItem.getY() + 0.2, entityItem.getZ(), vx, vy, vz);
 						}
 
 						if (TFBlocks.twilight_portal.get().tryToCreatePortal(world, pos, entityItem, player)) {

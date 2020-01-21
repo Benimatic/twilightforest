@@ -193,9 +193,9 @@ public class EntityTFLich extends MonsterEntity {
 		// determine the hand position
 		float angle = ((renderYawOffset * 3.141593F) / 180F);
 
-		double dx = posX + (MathHelper.cos(angle) * 0.65);
-		double dy = posY + (getHeight() * 0.94);
-		double dz = posZ + (MathHelper.sin(angle) * 0.65);
+		double dx = getX() + (MathHelper.cos(angle) * 0.65);
+		double dy = getY() + (getHeight() * 0.94);
+		double dz = getZ() + (MathHelper.sin(angle) * 0.65);
 
 
 		// add particles!
@@ -225,9 +225,9 @@ public class EntityTFLich extends MonsterEntity {
 
 		if (this.getPhase() == 3)
 			world.addParticle(ParticleTypes.ANGRY_VILLAGER,
-				this.posX + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(),
-				this.posY + 1.0D + (double) (this.rand.nextFloat() * this.getHeight()),
-				this.posZ + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(),
+				this.getX() + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(),
+				this.getY() + 1.0D + (double) (this.rand.nextFloat() * this.getHeight()),
+				this.getZ() + (double) (this.rand.nextFloat() * this.getWidth() * 2.0F) - (double) this.getWidth(),
 				this.rand.nextGaussian() * 0.02D, this.rand.nextGaussian() * 0.02D, this.rand.nextGaussian() * 0.02D);
 
 		if (!world.isRemote) {
@@ -321,13 +321,13 @@ public class EntityTFLich extends MonsterEntity {
 
 	public void launchBoltAt() {
 		float bodyFacingAngle = ((renderYawOffset * 3.141593F) / 180F);
-		double sx = posX + (MathHelper.cos(bodyFacingAngle) * 0.65);
-		double sy = posY + (getHeight() * 0.82);
-		double sz = posZ + (MathHelper.sin(bodyFacingAngle) * 0.65);
+		double sx = getX() + (MathHelper.cos(bodyFacingAngle) * 0.65);
+		double sy = getY() + (getHeight() * 0.82);
+		double sz = getZ() + (MathHelper.sin(bodyFacingAngle) * 0.65);
 
-		double tx = getAttackTarget().posX - sx;
-		double ty = (getAttackTarget().getBoundingBox().minY + (double) (getAttackTarget().getHeight() / 2.0F)) - (posY + getHeight() / 2.0F);
-		double tz = getAttackTarget().posZ - sz;
+		double tx = getAttackTarget().getX() - sx;
+		double ty = (getAttackTarget().getBoundingBox().minY + (double) (getAttackTarget().getHeight() / 2.0F)) - (getY() + getHeight() / 2.0F);
+		double tz = getAttackTarget().getZ() - sz;
 
 		playSound(SoundEvents.ENTITY_GHAST_SHOOT, getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
 
@@ -340,13 +340,13 @@ public class EntityTFLich extends MonsterEntity {
 
 	public void launchBombAt() {
 		float bodyFacingAngle = ((renderYawOffset * 3.141593F) / 180F);
-		double sx = posX + (MathHelper.cos(bodyFacingAngle) * 0.65);
-		double sy = posY + (getHeight() * 0.82);
-		double sz = posZ + (MathHelper.sin(bodyFacingAngle) * 0.65);
+		double sx = getX() + (MathHelper.cos(bodyFacingAngle) * 0.65);
+		double sy = getY() + (getHeight() * 0.82);
+		double sz = getZ() + (MathHelper.sin(bodyFacingAngle) * 0.65);
 
-		double tx = getAttackTarget().posX - sx;
-		double ty = (getAttackTarget().getBoundingBox().minY + (double) (getAttackTarget().getHeight() / 2.0F)) - (posY + getHeight() / 2.0F);
-		double tz = getAttackTarget().posZ - sz;
+		double tx = getAttackTarget().getX() - sx;
+		double ty = (getAttackTarget().getBoundingBox().minY + (double) (getAttackTarget().getHeight() / 2.0F)) - (getY() + getHeight() / 2.0F);
+		double tz = getAttackTarget().getZ() - sz;
 
 		playSound(SoundEvents.ENTITY_GHAST_SHOOT, getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
 
@@ -358,7 +358,7 @@ public class EntityTFLich extends MonsterEntity {
 	}
 
 	private void popNearbyMob() {
-		List<LivingEntity> nearbyMobs = world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).grow(32.0D, 16.0D, 32.0D), e -> POPPABLE.contains(e.getClass()));
+		List<LivingEntity> nearbyMobs = world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(getX(), getY(), getZ(), getX() + 1, getY() + 1, getZ() + 1).grow(32.0D, 16.0D, 32.0D), e -> POPPABLE.contains(e.getClass()));
 
 		for (LivingEntity mob : nearbyMobs) {
 			if (getEntitySenses().canSee(mob)) {
@@ -368,7 +368,7 @@ public class EntityTFLich extends MonsterEntity {
 //					world.playSoundAtEntity(mob, mob.getDeathSound(), mob.getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
 
 				// make trail so it's clear that we did it
-				makeRedMagicTrail(mob.posX, mob.posY + mob.getHeight() / 2.0, mob.posZ, this.posX, this.posY + this.getHeight() / 2.0, this.posZ);
+				makeRedMagicTrail(mob.getX(), mob.getY() + mob.getHeight() / 2.0, mob.getZ(), this.getX(), this.getY() + this.getHeight() / 2.0, this.getZ());
 
 				break;
 			}
@@ -397,7 +397,7 @@ public class EntityTFLich extends MonsterEntity {
 	}
 
 	public List<EntityTFLich> getNearbyLiches() {
-		return world.getEntitiesWithinAABB(getClass(), new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).grow(32.0D, 16.0D, 32.0D));
+		return world.getEntitiesWithinAABB(getClass(), new AxisAlignedBB(getX(), getY(), getZ(), getX() + 1, getY() + 1, getZ() + 1).grow(32.0D, 16.0D, 32.0D));
 	}
 
 	public boolean wantsNewMinion(EntityTFLichMinion minion) {
@@ -405,7 +405,7 @@ public class EntityTFLich extends MonsterEntity {
 	}
 
 	public int countMyMinions() {
-		return (int) world.getEntitiesWithinAABB(EntityTFLichMinion.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).grow(32.0D, 16.0D, 32.0D))
+		return (int) world.getEntitiesWithinAABB(EntityTFLichMinion.class, new AxisAlignedBB(getX(), getY(), getZ(), getX() + 1, getY() + 1, getZ() + 1).grow(32.0D, 16.0D, 32.0D))
 				.stream()
 				.filter(m -> m.master == this)
 				.count();
@@ -413,9 +413,9 @@ public class EntityTFLich extends MonsterEntity {
 
 	public void teleportToSightOfEntity(Entity entity) {
 		Vec3d dest = findVecInLOSOf(entity);
-		double srcX = posX;
-		double srcY = posY;
-		double srcZ = posZ;
+		double srcX = getX();
+		double srcY = getY();
+		double srcZ = getZ();
 
 		if (dest != null) {
 			teleportToNoChecks(dest.x, dest.y, dest.z);
@@ -435,16 +435,16 @@ public class EntityTFLich extends MonsterEntity {
 	@Nullable
 	public Vec3d findVecInLOSOf(Entity targetEntity) {
 		if (targetEntity == null) return null;
-		double origX = posX;
-		double origY = posY;
-		double origZ = posZ;
+		double origX = getX();
+		double origY = getY();
+		double origZ = getZ();
 
 		int tries = 100;
 		for (int i = 0; i < tries; i++) {
 			// we abuse LivingEntity.attemptTeleport, which does all the collision/ground checking for us, then teleport back to our original spot
-			double tx = targetEntity.posX + rand.nextGaussian() * 16D;
-			double ty = targetEntity.posY;
-			double tz = targetEntity.posZ + rand.nextGaussian() * 16D;
+			double tx = targetEntity.getX() + rand.nextGaussian() * 16D;
+			double ty = targetEntity.getY();
+			double tz = targetEntity.getZ() + rand.nextGaussian() * 16D;
 
 			boolean destClear = attemptTeleport(tx, ty, tz);
 			boolean canSeeTargetAtDest = canEntityBeSeen(targetEntity); // Don't use senses cache because we're in a temporary position
@@ -463,9 +463,9 @@ public class EntityTFLich extends MonsterEntity {
 	 */
 	private void teleportToNoChecks(double destX, double destY, double destZ) {
 		// save original position
-		double srcX = posX;
-		double srcY = posY;
-		double srcZ = posZ;
+		double srcX = getX();
+		double srcY = getY();
+		double srcZ = getZ();
 
 		// change position
 		setPositionAndUpdate(destX, destY, destZ);

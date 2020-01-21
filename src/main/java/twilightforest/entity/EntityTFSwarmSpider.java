@@ -101,9 +101,9 @@ public class EntityTFSwarmSpider extends SpiderEntity {
 		EntityTFSwarmSpider another = new EntityTFSwarmSpider(world, false);
 
 
-		double sx = posX + (rand.nextBoolean() ? 0.9 : -0.9);
-		double sy = posY;
-		double sz = posZ + (rand.nextBoolean() ? 0.9 : -0.9);
+		double sx = getX() + (rand.nextBoolean() ? 0.9 : -0.9);
+		double sy = getY();
+		double sz = getZ() + (rand.nextBoolean() ? 0.9 : -0.9);
 		another.setLocationAndAngles(sx, sy, sz, rand.nextFloat() * 360F, 0.0F);
 		if (!another.getCanSpawnHere()) {
 			another.setDead();
@@ -117,8 +117,8 @@ public class EntityTFSwarmSpider extends SpiderEntity {
 
 	@Override
 	protected boolean isValidLightLevel() {
-		int chunkX = MathHelper.floor(posX) >> 4;
-		int chunkZ = MathHelper.floor(posZ) >> 4;
+		int chunkX = MathHelper.floor(getX()) >> 4;
+		int chunkZ = MathHelper.floor(getZ()) >> 4;
 		// We're allowed to spawn in bright light only in hedge mazes.
 		return TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.HEDGE_MAZE || super.isValidLightLevel();
 	}

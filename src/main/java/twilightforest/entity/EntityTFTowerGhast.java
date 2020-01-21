@@ -76,9 +76,9 @@ public class EntityTFTowerGhast extends GhastEntity {
 			if (!entitymovehelper.isUpdating()) {
 				return parentEntity.getAttackTarget() == null;
 			} else {
-				double d0 = entitymovehelper.getX() - this.parentEntity.posX;
-				double d1 = entitymovehelper.getY() - this.parentEntity.posY;
-				double d2 = entitymovehelper.getZ() - this.parentEntity.posZ;
+				double d0 = entitymovehelper.getX() - this.parentEntity.getX();
+				double d1 = entitymovehelper.getY() - this.parentEntity.getY();
+				double d2 = entitymovehelper.getZ() - this.parentEntity.getZ();
 				double d3 = d0 * d0 + d1 * d1 + d2 * d2;
 				return parentEntity.getAttackTarget() == null && (d3 < 1.0D || d3 > 3600.0D);
 			}
@@ -92,9 +92,9 @@ public class EntityTFTowerGhast extends GhastEntity {
 		@Override
 		public void startExecuting() {
 			Random random = this.parentEntity.getRNG();
-			double d0 = this.parentEntity.posX + (double) ((random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
-			double d1 = this.parentEntity.posY + (double) ((random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
-			double d2 = this.parentEntity.posZ + (double) ((random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
+			double d0 = this.parentEntity.getX() + (double) ((random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
+			double d1 = this.parentEntity.getY() + (double) ((random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
+			double d2 = this.parentEntity.getZ() + (double) ((random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
 			this.parentEntity.getMoveHelper().setMoveTo(d0, d1, d2, 1.0D);
 		}
 	}
@@ -116,9 +116,9 @@ public class EntityTFTowerGhast extends GhastEntity {
 			if (!entitymovehelper.isUpdating()) {
 				return !this.parentEntity.isWithinHomeDistanceCurrentPosition();
 			} else {
-				double d0 = entitymovehelper.getX() - this.parentEntity.posX;
-				double d1 = entitymovehelper.getY() - this.parentEntity.posY;
-				double d2 = entitymovehelper.getZ() - this.parentEntity.posZ;
+				double d0 = entitymovehelper.getX() - this.parentEntity.getX();
+				double d1 = entitymovehelper.getY() - this.parentEntity.getY();
+				double d2 = entitymovehelper.getZ() - this.parentEntity.getZ();
 				double d3 = d0 * d0 + d1 * d1 + d2 * d2;
 				return (d3 < 1.0D || d3 > 3600.0D)
 						&& !this.parentEntity.isWithinHomeDistanceCurrentPosition();
@@ -135,17 +135,17 @@ public class EntityTFTowerGhast extends GhastEntity {
 		@Override
 		public void startExecuting() {
 			Random random = this.parentEntity.getRNG();
-			double d0 = this.parentEntity.posX + (double) ((random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
-			double d1 = this.parentEntity.posY + (double) ((random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
-			double d2 = this.parentEntity.posZ + (double) ((random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
+			double d0 = this.parentEntity.getX() + (double) ((random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
+			double d1 = this.parentEntity.getY() + (double) ((random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
+			double d2 = this.parentEntity.getZ() + (double) ((random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
 			this.parentEntity.getMoveHelper().setMoveTo(d0, d1, d2, 1.0D);
 
 			if (this.parentEntity.getDistanceSq(this.parentEntity.getHomePosition()) > 256.0D) {
 				Vec3d vecToHome = new Vec3d(this.parentEntity.getHomePosition()).subtract(this.parentEntity.getPositionVector()).normalize();
 
-				double targetX = this.parentEntity.posX + vecToHome.x * parentEntity.wanderFactor + (double) ((this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
-				double targetY = this.parentEntity.posY + vecToHome.y * parentEntity.wanderFactor + (double) ((this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
-				double targetZ = this.parentEntity.posZ + vecToHome.z * parentEntity.wanderFactor + (double) ((this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
+				double targetX = this.parentEntity.getX() + vecToHome.x * parentEntity.wanderFactor + (double) ((this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
+				double targetY = this.parentEntity.getY() + vecToHome.y * parentEntity.wanderFactor + (double) ((this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
+				double targetZ = this.parentEntity.getZ() + vecToHome.z * parentEntity.wanderFactor + (double) ((this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
 
 				this.parentEntity.getMoveHelper().setMoveTo(targetX, targetY, targetZ, 1.0D);
 			} else {
@@ -243,7 +243,7 @@ public class EntityTFTowerGhast extends GhastEntity {
 		}
 
 		if (this.rand.nextBoolean()) {
-			this.world.addParticle(ParticleTypes.REDSTONE, this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width, this.posY + this.rand.nextDouble() * (double) this.height - 0.25D, this.posZ + (this.rand.nextDouble() - 0.5D) * (double) this.width, 0, 0, 0);
+			this.world.addParticle(ParticleTypes.REDSTONE, this.getX() + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(), this.getY() + this.rand.nextDouble() * (double) this.getHeight() - 0.25D, this.getZ() + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(), 0, 0, 0);
 		}
 
 		super.livingTick();
@@ -291,14 +291,14 @@ public class EntityTFTowerGhast extends GhastEntity {
 
 	protected void spitFireball() {
 		Vec3d vec3d = this.getLook(1.0F);
-		double d2 = getAttackTarget().posX - (this.posX + vec3d.x * 4.0D);
-		double d3 = getAttackTarget().getBoundingBox().minY + (double) (getAttackTarget().getHeight() / 2.0F) - (0.5D + this.posY + (double) (this.getHeight() / 2.0F));
-		double d4 = getAttackTarget().posZ - (this.posZ + vec3d.z * 4.0D);
+		double d2 = getAttackTarget().getX() - (this.getX() + vec3d.x * 4.0D);
+		double d3 = getAttackTarget().getBoundingBox().minY + (double) (getAttackTarget().getHeight() / 2.0F) - (0.5D + this.getY() + (double) (this.getHeight() / 2.0F));
+		double d4 = getAttackTarget().getZ() - (this.getZ() + vec3d.z * 4.0D);
 		FireballEntity entitylargefireball = new FireballEntity(world, this, d2, d3, d4);
 		entitylargefireball.explosionPower = this.getFireballStrength();
-		entitylargefireball.posX = this.posX + vec3d.x * 4.0D;
-		entitylargefireball.posY = this.posY + (double) (this.getHeight() / 2.0F) + 0.5D;
-		entitylargefireball.posZ = this.posZ + vec3d.z * 4.0D;
+		entitylargefireball.getX() = this.getX() + vec3d.x * 4.0D;
+		entitylargefireball.getY() = this.getY() + (double) (this.getHeight() / 2.0F) + 0.5D;
+		entitylargefireball.getZ() = this.getZ() + vec3d.z * 4.0D;
 		world.addEntity(entitylargefireball);
 
 		// when we attack, there is a 1-in-6 chance we decide to stop attacking
@@ -325,8 +325,8 @@ public class EntityTFTowerGhast extends GhastEntity {
 
 	private void findHome() {
 		if (!this.hasHome()) {
-			int chunkX = MathHelper.floor(this.posX) >> 4;
-			int chunkZ = MathHelper.floor(this.posZ) >> 4;
+			int chunkX = MathHelper.floor(this.getX()) >> 4;
+			int chunkZ = MathHelper.floor(this.getZ()) >> 4;
 
 			TFFeature nearFeature = TFFeature.getFeatureForRegion(chunkX, chunkZ, this.world);
 

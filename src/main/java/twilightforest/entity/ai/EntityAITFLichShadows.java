@@ -96,7 +96,7 @@ public class EntityAITFLichShadows extends Goal {
 			newClone.setAttackCooldown(60 + lich.getRNG().nextInt(3) - lich.getRNG().nextInt(3));
 
 			// make sparkles leading to it
-			lich.makeTeleportTrail(lich.posX, lich.posY, lich.posZ, cloneSpot.x, cloneSpot.y, cloneSpot.z);
+			lich.makeTeleportTrail(lich.getX(), lich.getY(), lich.getZ(), cloneSpot.x, cloneSpot.y, cloneSpot.z);
 		}
 	}
 
@@ -115,7 +115,7 @@ public class EntityAITFLichShadows extends Goal {
 				lich.setMaster(nearbyLich);
 
 				// animate our new linkage!
-				lich.makeTeleportTrail(lich.posX, lich.posY, lich.posZ, nearbyLich.posX, nearbyLich.posY, nearbyLich.posZ);
+				lich.makeTeleportTrail(lich.getX(), lich.getY(), lich.getZ(), nearbyLich.getX(), nearbyLich.getY(), nearbyLich.getZ());
 
 				lich.setAttackTarget(nearbyLich.getAttackTarget());
 				break;

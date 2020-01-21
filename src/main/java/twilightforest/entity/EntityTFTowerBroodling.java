@@ -29,9 +29,9 @@ public class EntityTFTowerBroodling extends EntityTFSwarmSpider {
 	protected boolean spawnAnother() {
 		EntityTFSwarmSpider another = new EntityTFTowerBroodling(world, false);
 
-		double sx = posX + (rand.nextBoolean() ? 0.9 : -0.9);
-		double sy = posY;
-		double sz = posZ + (rand.nextBoolean() ? 0.9 : -0.9);
+		double sx = getX() + (rand.nextBoolean() ? 0.9 : -0.9);
+		double sy = getY();
+		double sz = getZ() + (rand.nextBoolean() ? 0.9 : -0.9);
 		another.setLocationAndAngles(sx, sy, sz, rand.nextFloat() * 360F, 0.0F);
 		if (!another.getCanSpawnHere()) {
 			another.setDead();

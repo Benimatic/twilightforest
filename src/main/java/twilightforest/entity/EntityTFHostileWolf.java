@@ -62,8 +62,8 @@ public class EntityTFHostileWolf extends WolfEntity implements IMob {
 	@Override
 	public boolean getCanSpawnHere() {
 		// are we near a hedge maze?
-		int chunkX = MathHelper.floor(posX) >> 4;
-		int chunkZ = MathHelper.floor(posZ) >> 4;
+		int chunkX = MathHelper.floor(getX()) >> 4;
+		int chunkZ = MathHelper.floor(getZ()) >> 4;
 		return (TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.HEDGE_MAZE || isValidLightLevel())
 				&& world.checkNoEntityCollision(this)
 				&& world.getCollisionBoxes(this, getBoundingBox()).size() == 0
@@ -72,7 +72,7 @@ public class EntityTFHostileWolf extends WolfEntity implements IMob {
 
 	// [VanillaCopy] Direct copy of EntityMob.isValidLightLevel
 	protected boolean isValidLightLevel() {
-		BlockPos blockpos = new BlockPos(this.posX, this.getBoundingBox().minY, this.posZ);
+		BlockPos blockpos = new BlockPos(this.getX(), this.getBoundingBox().minY, this.getZ());
 
 		if (this.world.getLightFor(LightType.SKY, blockpos) > this.rand.nextInt(32)) {
 			return false;

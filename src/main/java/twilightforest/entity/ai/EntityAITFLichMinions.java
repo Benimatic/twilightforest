@@ -99,7 +99,7 @@ public class EntityAITFLichMinions extends Goal {
 			minion.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1.0F, ((lich.getRNG().nextFloat() - lich.getRNG().nextFloat()) * 0.7F + 1.0F) * 2.0F);
 
 			// make sparkles leading to it
-			lich.makeBlackMagicTrail(lich.posX, lich.posY + lich.getEyeHeight(), lich.posZ, minionSpot.x, minionSpot.y + minion.getHeight() / 2.0, minionSpot.z);
+			lich.makeBlackMagicTrail(lich.getX(), lich.getY() + lich.getEyeHeight(), lich.getZ(), minionSpot.x, minionSpot.y + minion.getHeight() / 2.0, minionSpot.z);
 		}
 	}
 

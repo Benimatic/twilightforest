@@ -110,9 +110,9 @@ public class EntityAITFHoverBeam extends EntityAITFHoverBase<EntityTFSnowQueen> 
 		}
 
 		// check if we are at our waypoint target
-		double offsetX = this.hoverPosX - this.attacker.posX;
-		double offsetY = this.hoverPosY - this.attacker.posY;
-		double offsetZ = this.hoverPosZ - this.attacker.posZ;
+		double offsetX = this.hoverPosX - this.attacker.getX();
+		double offsetY = this.hoverPosY - this.attacker.getY();
+		double offsetZ = this.hoverPosZ - this.attacker.getZ();
 
 		double distanceDesired = offsetX * offsetX + offsetY * offsetY + offsetZ * offsetZ;
 
@@ -145,7 +145,7 @@ public class EntityAITFHoverBeam extends EntityAITFHoverBase<EntityTFSnowQueen> 
 
 		double range = 20.0D;
 		double offset = 10.0D;
-		Vec3d srcVec = new Vec3d(this.attacker.posX, this.attacker.posY + 0.25, this.attacker.posZ);
+		Vec3d srcVec = new Vec3d(this.attacker.getX(), this.attacker.getY() + 0.25, this.attacker.getZ());
 		Vec3d lookVec = this.attacker.getLook(1.0F);
 		Vec3d destVec = srcVec.add(lookVec.x * range, lookVec.y * range, lookVec.z * range);
 		List<Entity> possibleList = this.attacker.world.getEntitiesWithinAABBExcludingEntity(this.attacker, this.attacker.getBoundingBox().offset(lookVec.x * offset, lookVec.y * offset, lookVec.z * offset).grow(range, range, range));
@@ -177,7 +177,7 @@ public class EntityAITFHoverBeam extends EntityAITFHoverBase<EntityTFSnowQueen> 
 	@Override
 	protected void makeNewHoverSpot(LivingEntity target) {
 		super.makeNewHoverSpot(target);
-		this.beamY = target.posY;
+		this.beamY = target.getY();
 		this.seekTimer = 0;
 	}
 }

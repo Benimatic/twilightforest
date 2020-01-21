@@ -82,9 +82,9 @@ public class EntityTFSlimeBeetle extends MonsterEntity implements IRangedAttackM
 	public void attackEntityWithRangedAttack(LivingEntity target, float distanceFactor) {
 		ThrowableEntity projectile = new EntityTFSlimeProjectile(this.world, this);
 		playSound(SoundEvents.ENTITY_SLIME_SQUISH_SMALL, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-		double tx = target.posX - this.posX;
-		double ty = target.posY + target.getEyeHeight() - 1.100000023841858D - projectile.posY;
-		double tz = target.posZ - this.posZ;
+		double tx = target.getX() - this.getX();
+		double ty = target.getY() + target.getEyeHeight() - 1.100000023841858D - projectile.getY();
+		double tz = target.getZ() - this.getZ();
 		float heightOffset = MathHelper.sqrt(tx * tx + tz * tz) * 0.2F;
 		projectile.shoot(tx, ty + heightOffset, tz, 0.6F, 6.0F);
 		this.world.addEntity(projectile);

@@ -89,10 +89,9 @@ public class EntityTFKobold extends MonsterEntity {
 
 		if (world.isRemote && isPanicked()) {
 			for (int i = 0; i < 2; i++) {
-				this.world.addParticle(ParticleTypes.SPLASH, this.posX + (this.rand.nextDouble() - 0.5D) * this.getWidth() * 0.5, this.posY + this.getEyeHeight(), this.posZ + (this.rand.nextDouble() - 0.5D) * this.getWidth() * 0.5, 0, 0, 0);
+				this.world.addParticle(ParticleTypes.SPLASH, this.getX() + (this.rand.nextDouble() - 0.5D) * this.getWidth() * 0.5, this.getY() + this.getEyeHeight(), this.getZ() + (this.rand.nextDouble() - 0.5D) * this.getWidth() * 0.5, 0, 0, 0);
 			}
 		}
-
 	}
 
 	@Override

@@ -79,7 +79,7 @@ public class EntityTFIceExploder extends EntityTFIceMob {
 		{
 			if (!world.isRemote) {
 				boolean mobGriefing = ForgeEventFactory.getMobGriefingEvent(world, this);
-				this.world.createExplosion(this, this.posX, this.posY, this.posZ, EntityTFIceExploder.EXPLOSION_RADIUS, mobGriefing);
+				this.world.createExplosion(this, this.getX(), this.getY(), this.getZ(), EntityTFIceExploder.EXPLOSION_RADIUS, mobGriefing);
 
 				if (mobGriefing) {
 					this.transformBlocks();

@@ -40,25 +40,25 @@ public class EntityTFCharmEffect extends Entity {
 
 		Vec3d look = new Vec3d(DISTANCE, 0, 0);
 
-		this.setLocationAndAngles(owner.posX, owner.posY + owner.getEyeHeight(), owner.posZ, owner.rotationYaw, owner.rotationPitch);
-		this.posX += look.x * DISTANCE;
-		//this.posY += look.y * DISTANCE;
-		this.posZ += look.z * DISTANCE;
-		this.setPosition(this.posX, this.posY, this.posZ);
+		this.setLocationAndAngles(owner.getX(), owner.getY() + owner.getEyeHeight(), owner.getZ(), owner.rotationYaw, owner.rotationPitch);
+		this.getX() += look.x * DISTANCE;
+		//this.getY() += look.y * DISTANCE;
+		this.getZ() += look.z * DISTANCE;
+		this.setPosition(this.getX(), this.getY(), this.getZ());
 	}
 
 	@Override
 	public void tick() {
-		this.lastTickPosX = this.posX;
-		this.lastTickPosY = this.posY;
-		this.lastTickPosZ = this.posZ;
+		this.lastTickPosX = this.getX();
+		this.lastTickPosY = this.getY();
+		this.lastTickPosZ = this.getZ();
 		super.tick();
 
 		//[VanillaCopy] Beginning of LivingEntity.onLivingUpdate
 		if (this.newPosRotationIncrements > 0) {
-			double d0 = this.posX + (this.interpTargetX - this.posX) / (double) this.newPosRotationIncrements;
-			double d1 = this.posY + (this.interpTargetY - this.posY) / (double) this.newPosRotationIncrements;
-			double d2 = this.posZ + (this.interpTargetZ - this.posZ) / (double) this.newPosRotationIncrements;
+			double d0 = this.getX() + (this.interpTargetX - this.getX()) / (double) this.newPosRotationIncrements;
+			double d1 = this.getY() + (this.interpTargetY - this.getY()) / (double) this.newPosRotationIncrements;
+			double d2 = this.getZ() + (this.interpTargetZ - this.getZ()) / (double) this.newPosRotationIncrements;
 			double d3 = MathHelper.wrapDegrees(this.interpTargetYaw - (double) this.rotationYaw);
 			this.rotationYaw = (float) ((double) this.rotationYaw + d3 / (double) this.newPosRotationIncrements);
 			this.rotationPitch = (float) ((double) this.rotationPitch + (this.interpTargetPitch - (double) this.rotationPitch) / (double) this.newPosRotationIncrements);
@@ -70,22 +70,22 @@ public class EntityTFCharmEffect extends Entity {
 		LivingEntity orbiting = getOwner();
 
 		if (orbiting != null) {
-			this.setLocationAndAngles(orbiting.posX, orbiting.posY + orbiting.getEyeHeight(), orbiting.posZ, orbiting.rotationYaw, orbiting.rotationPitch);
+			this.setLocationAndAngles(orbiting.getX(), orbiting.getY() + orbiting.getEyeHeight(), orbiting.getZ(), orbiting.rotationYaw, orbiting.rotationPitch);
 
 			float rotation = this.ticksExisted / 5.0F + offset;
 			Vec3d look = new Vec3d(DISTANCE, 0, 0).rotateYaw(rotation);
-			this.posX += look.x;
-//        	this.posY += Math.sin(this.ticksExisted / 3.0F + offset);
-			this.posZ += look.z;
+			this.getX() += look.x;
+//        	this.getY() += Math.sin(this.ticksExisted / 3.0F + offset);
+			this.getZ() += look.z;
 
-			this.setPosition(this.posX, this.posY, this.posZ);
+			this.setPosition(this.getX(), this.getY(), this.getZ());
 		}
 
 		if (this.getItemID() > -1) {
 			for (int i = 0; i < 3; i++) {
-				double dx = posX + 0.5 * (rand.nextDouble() - rand.nextDouble());
-				double dy = posY + 0.5 * (rand.nextDouble() - rand.nextDouble());
-				double dz = posZ + 0.5 * (rand.nextDouble() - rand.nextDouble());
+				double dx = getX() + 0.5 * (rand.nextDouble() - rand.nextDouble());
+				double dy = getY() + 0.5 * (rand.nextDouble() - rand.nextDouble());
+				double dz = getZ() + 0.5 * (rand.nextDouble() - rand.nextDouble());
 
 				world.addParticle(ParticleTypes.ITEM_CRACK, dx, dy, dz, 0, 0.2, 0, getItemID());
 			}

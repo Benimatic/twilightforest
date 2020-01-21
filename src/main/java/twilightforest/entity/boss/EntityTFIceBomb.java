@@ -98,9 +98,9 @@ public class EntityTFIceBomb extends EntityTFThrowable {
 	public void makeTrail() {
 		int stateId = Block.getStateId(Blocks.SNOW.getDefaultState());
 		for (int i = 0; i < 10; i++) {
-			double dx = posX + 0.75F * (rand.nextFloat() - 0.5F);
-			double dy = posY + 0.75F * (rand.nextFloat() - 0.5F);
-			double dz = posZ + 0.75F * (rand.nextFloat() - 0.5F);
+			double dx = getX() + 0.75F * (rand.nextFloat() - 0.5F);
+			double dy = getY() + 0.75F * (rand.nextFloat() - 0.5F);
+			double dz = getZ() + 0.75F * (rand.nextFloat() - 0.5F);
 
 			world.addParticle(ParticleTypes.FALLING_DUST, dx, dy, dz, -motionX, -motionY, -motionZ, stateId);
 		}
@@ -111,9 +111,9 @@ public class EntityTFIceBomb extends EntityTFThrowable {
 			// sparkles
 			int stateId = Block.getStateId(Blocks.SNOW.getDefaultState());
 			for (int i = 0; i < 20; i++) {
-				double dx = this.posX + (rand.nextFloat() - rand.nextFloat()) * 3.0F;
-				double dy = this.posY + (rand.nextFloat() - rand.nextFloat()) * 3.0F;
-				double dz = this.posZ + (rand.nextFloat() - rand.nextFloat()) * 3.0F;
+				double dx = this.getX() + (rand.nextFloat() - rand.nextFloat()) * 3.0F;
+				double dy = this.getY() + (rand.nextFloat() - rand.nextFloat()) * 3.0F;
+				double dz = this.getZ() + (rand.nextFloat() - rand.nextFloat()) * 3.0F;
 
 				world.addParticle(ParticleTypes.FALLING_DUST, dx, dy, dz, 0, 0, 0, stateId);
 			}

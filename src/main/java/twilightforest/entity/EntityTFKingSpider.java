@@ -54,7 +54,7 @@ public class EntityTFKingSpider extends SpiderEntity {
 
 		// will always have a dryad riding the spider or whatever is riding the spider
 		EntityTFSkeletonDruid druid = new EntityTFSkeletonDruid(this.world);
-		druid.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
+		druid.setLocationAndAngles(this.getX(), this.getY(), this.getZ(), this.rotationYaw, 0.0F);
 		druid.onInitialSpawn(difficulty, null);
 		this.world.addEntity(druid);
 		Entity lastRider = this;

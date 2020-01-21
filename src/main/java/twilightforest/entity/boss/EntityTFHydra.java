@@ -174,7 +174,7 @@ public class EntityTFHydra extends LivingEntity implements IEntityMultiPart, IMo
 			if (!world.isRemote && shouldSpawnHeads()) {
 				for (int i = 0; i < numHeads; i++) {
 					hc[i].headEntity = new EntityTFHydraHead(this, "head" + i, 3F, 3F);
-					hc[i].headEntity.setPosition(this.posX, this.posY, this.posZ);
+					hc[i].headEntity.setPosition(this.getX(), this.getY(), this.getZ());
 					hc[i].setHeadPosition();
 					world.addEntity(hc[i].headEntity);
 				}
@@ -218,14 +218,14 @@ public class EntityTFHydra extends LivingEntity implements IEntityMultiPart, IMo
 		// body goes behind the actual position of the hydra
 		angle = (((renderYawOffset + 180) * 3.141593F) / 180F);
 
-		dx = posX - MathHelper.sin(angle) * 3.0;
-		dy = posY + 0.1;
-		dz = posZ + MathHelper.cos(angle) * 3.0;
+		dx = getX() - MathHelper.sin(angle) * 3.0;
+		dy = getY() + 0.1;
+		dz = getZ() + MathHelper.cos(angle) * 3.0;
 		body.setPosition(dx, dy, dz);
 
-		dx = posX - MathHelper.sin(angle) * 10.5;
-		dy = posY + 0.1;
-		dz = posZ + MathHelper.cos(angle) * 10.5;
+		dx = getX() - MathHelper.sin(angle) * 10.5;
+		dy = getY() + 0.1;
+		dz = getZ() + MathHelper.cos(angle) * 10.5;
 		tail.setPosition(dx, dy, dz);
 
 		// destroy blocks
@@ -521,14 +521,14 @@ public class EntityTFHydra extends LivingEntity implements IEntityMultiPart, IMo
 	 * Square of distance between two entities with y not a factor, just x and z
 	 */
 	private double distanceSqXZ(Entity headEntity, Entity target) {
-		double distX = headEntity.posX - target.posX;
-		double distZ = headEntity.posZ - target.posZ;
+		double distX = headEntity.getX() - target.getX();
+		double distZ = headEntity.getZ() - target.getZ();
 		return distX * distX + distZ * distZ;
 	}
 
 	@Nullable
 	private LivingEntity findSecondaryTarget(double range) {
-		return this.world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(this.posX, this.posY, this.posZ, this.posX + 1, this.posY + 1, this.posZ + 1).grow(range, range, range))
+		return this.world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(this.getX(), this.getY(), this.getZ(), this.getX() + 1, this.getY() + 1, this.getZ() + 1).grow(range, range, range))
 				.stream()
 				.filter(e -> !(e instanceof EntityTFHydra || e instanceof EntityTFHydraPart))
 				.filter(e -> e != getAttackTarget() && !isAnyHeadTargeting(e) && getEntitySenses().canSee(e))
@@ -552,8 +552,8 @@ public class EntityTFHydra extends LivingEntity implements IEntityMultiPart, IMo
 
 		for (Entity entity : entities) {
 			if (entity instanceof LivingEntity) {
-				double d2 = entity.posX - d0;
-				double d3 = entity.posZ - d1;
+				double d2 = entity.getX() - d0;
+				double d3 = entity.getZ() - d1;
 				double d4 = d2 * d2 + d3 * d3;
 				entity.addVelocity(d2 / d4 * 4.0D, 0.20000000298023224D, d3 / d4 * 4.0D);
 			}
@@ -769,7 +769,7 @@ public class EntityTFHydra extends LivingEntity implements IEntityMultiPart, IMo
 				while (i > 0) {
 					int j = ExperienceOrbEntity.getXPSplit(i);
 					i -= j;
-					this.world.addEntity(new ExperienceOrbEntity(this.world, this.posX, this.posY, this.posZ, j));
+					this.world.addEntity(new ExperienceOrbEntity(this.world, this.getX(), this.getY(), this.getZ(), j));
 				}
 			}
 
@@ -782,9 +782,9 @@ public class EntityTFHydra extends LivingEntity implements IEntityMultiPart, IMo
 			double vz = this.rand.nextGaussian() * 0.02D;
 			ParticleTypes particle = rand.nextInt(2) == 0 ? ParticleTypes.EXPLOSION_LARGE : ParticleTypes.EXPLOSION_NORMAL;
 			this.world.addParticle(particle,
-					this.posX + this.rand.nextFloat() * this.body.width * 2.0F - this.body.width,
-					this.posY + this.rand.nextFloat() * this.body.height,
-					this.posZ + this.rand.nextFloat() * this.body.width * 2.0F - this.body.width,
+					this.getX() + this.rand.nextFloat() * this.body.width * 2.0F - this.body.width,
+					this.getY() + this.rand.nextFloat() * this.body.height,
+					this.getZ() + this.rand.nextFloat() * this.body.width * 2.0F - this.body.width,
 					vx, vy, vz
 			);
 		}

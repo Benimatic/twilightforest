@@ -55,7 +55,7 @@ public class EntityTFDeathTome extends MonsterEntity implements IRangedAttackMob
 		super.livingTick();
 
 		for (int i = 0; i < 1; ++i) {
-			this.world.addParticle(ParticleTypes.ENCHANTMENT_TABLE, this.posX + (this.rand.nextDouble() - 0.5D) * this.getWidth(), this.posY + this.rand.nextDouble() * (this.getHeight() - 0.75D) + 0.5D, this.posZ + (this.rand.nextDouble() - 0.5D) * this.getWidth(),
+			this.world.addParticle(ParticleTypes.ENCHANT, this.getX() + (this.rand.nextDouble() - 0.5D) * this.getWidth(), this.getY() + this.rand.nextDouble() * (this.getHeight() - 0.75D) + 0.5D, this.getZ() + (this.rand.nextDouble() - 0.5D) * this.getWidth(),
 					0, 0.5, 0);
 		}
 	}
@@ -107,10 +107,10 @@ public class EntityTFDeathTome extends MonsterEntity implements IRangedAttackMob
 
 	@Override
 	public void attackEntityWithRangedAttack(LivingEntity target, float distanceFactor) {
-		ThrowableEntity projectile = new EntityTFTomeBolt(this.world, this);
-		double tx = target.posX - this.posX;
-		double ty = target.posY + target.getEyeHeight() - 1.100000023841858D - projectile.posY;
-		double tz = target.posZ - this.posZ;
+		ThrowableEntity projectile = new EntityTFTomeBolt(TFEntities.tome_bolt.get(), this.world, this);
+		double tx = target.getX() - this.getX();
+		double ty = target.getY() + target.getEyeHeight() - 1.100000023841858D - projectile.getY();
+		double tz = target.getZ() - this.getZ();
 		float heightOffset = MathHelper.sqrt(tx * tx + tz * tz) * 0.2F;
 		projectile.shoot(tx, ty + heightOffset, tz, 0.6F, 6.0F);
 		this.world.addEntity(projectile);

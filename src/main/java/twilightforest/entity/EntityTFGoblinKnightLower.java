@@ -93,7 +93,7 @@ public class EntityTFGoblinKnightLower extends MonsterEntity {
 		livingData = super.onInitialSpawn(worldIn, difficulty, reason, livingData, dataTag);
 
 		EntityTFGoblinKnightUpper upper = new EntityTFGoblinKnightUpper(this.world);
-		upper.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
+		upper.setLocationAndAngles(this.getX(), this.getY(), this.getZ(), this.rotationYaw, 0.0F);
 		upper.onInitialSpawn(difficulty, null);
 		this.world.addEntity(upper);
 		upper.startRiding(this);
@@ -141,8 +141,8 @@ public class EntityTFGoblinKnightLower extends MonsterEntity {
 		if (attacker != null) {
 			// determine angle
 
-			double dx = this.posX - attacker.posX;
-			double dz = this.posZ - attacker.posZ;
+			double dx = this.getX() - attacker.getX();
+			double dz = this.getZ() - attacker.getZ();
 			float angle = (float) ((Math.atan2(dz, dx) * 180D) / Math.PI) - 90F;
 
 			float difference = MathHelper.abs((this.renderYawOffset - angle) % 360);

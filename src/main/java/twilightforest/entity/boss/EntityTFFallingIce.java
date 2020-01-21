@@ -68,9 +68,9 @@ public class EntityTFFallingIce extends FallingBlockEntity {
 
 	private void makeTrail() {
 		for (int i = 0; i < 2; i++) {
-			double dx = this.posX + 2F * (rand.nextFloat() - rand.nextFloat());
-			double dy = this.posY - 3F + 3F * (rand.nextFloat() - rand.nextFloat());
-			double dz = this.posZ + 2F * (rand.nextFloat() - rand.nextFloat());
+			double dx = this.getX() + 2F * (rand.nextFloat() - rand.nextFloat());
+			double dy = this.getY() - 3F + 3F * (rand.nextFloat() - rand.nextFloat());
+			double dz = this.getZ() + 2F * (rand.nextFloat() - rand.nextFloat());
 
 			world.addParticle(TFParticleType.SNOW_WARNING.get(), dx, dy, dz, 0, -1, 0);
 		}
@@ -96,9 +96,9 @@ public class EntityTFFallingIce extends FallingBlockEntity {
 
 		int stateId = Block.getStateId(Blocks.PACKED_ICE.getDefaultState());
 		for (int i = 0; i < 200; i++) {
-			double dx = this.posX + 3F * (rand.nextFloat() - rand.nextFloat());
-			double dy = this.posY + 2 + 3F * (rand.nextFloat() - rand.nextFloat());
-			double dz = this.posZ + 3F * (rand.nextFloat() - rand.nextFloat());
+			double dx = this.getX() + 3F * (rand.nextFloat() - rand.nextFloat());
+			double dy = this.getY() + 2 + 3F * (rand.nextFloat() - rand.nextFloat());
+			double dz = this.getZ() + 3F * (rand.nextFloat() - rand.nextFloat());
 
 			this.world.addParticle(ParticleTypes.BLOCK_CRACK, dx, dy, dz, 0, 0, 0, stateId);
 		}

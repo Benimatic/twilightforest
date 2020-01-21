@@ -42,9 +42,9 @@ public class EntityTFNatureBolt extends EntityTFThrowable implements ITFProjecti
 
 	private void makeTrail() {
 		for (int i = 0; i < 5; i++) {
-			double dx = posX + 0.5 * (rand.nextDouble() - rand.nextDouble());
-			double dy = posY + 0.5 * (rand.nextDouble() - rand.nextDouble());
-			double dz = posZ + 0.5 * (rand.nextDouble() - rand.nextDouble());
+			double dx = getX() + 0.5 * (rand.nextDouble() - rand.nextDouble());
+			double dy = getY() + 0.5 * (rand.nextDouble() - rand.nextDouble());
+			double dz = getZ() + 0.5 * (rand.nextDouble() - rand.nextDouble());
 			world.addParticle(ParticleTypes.HAPPY_VILLAGER, dx, dy, dz, 0.0D, 0.0D, 0.0D);
 		}
 	}
@@ -55,7 +55,7 @@ public class EntityTFNatureBolt extends EntityTFThrowable implements ITFProjecti
 		if (id == 3) {
 			int stateId = Block.getStateId(Blocks.OAK_LEAVES.getDefaultState());
 			for (int i = 0; i < 8; ++i) {
-				this.world.addParticle(ParticleTypes.BLOCK_CRACK, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, stateId);
+				this.world.addParticle(ParticleTypes.BLOCK_CRACK, this.getX(), this.getY(), this.getZ(), rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, stateId);
 			}
 		} else {
 			super.handleStatusUpdate(id);

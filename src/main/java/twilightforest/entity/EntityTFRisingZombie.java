@@ -43,7 +43,7 @@ public class EntityTFRisingZombie extends ZombieEntity {
 		if (!world.isRemote && ticksExisted % 130 == 0) {
 			setDead();
 			ZombieEntity zombie = new ZombieEntity(world);
-			zombie.setPositionAndUpdate(posX, posY, posZ);
+			zombie.setPositionAndUpdate(getX(), getY(), getZ());
 			zombie.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(getMaxHealth());
 			zombie.setHealth(getHealth());
 			zombie.setChild(isChild());
@@ -53,7 +53,7 @@ public class EntityTFRisingZombie extends ZombieEntity {
 		}
 		if (world.isRemote && !world.isAirBlock(getPosition().down())) {
 			for (int i = 0; i < 5; i++)
-				world.addParticle(ParticleTypes.BLOCK_CRACK, posX + rand.nextGaussian() * 0.01F, posY + rand.nextGaussian() * 0.01F, posZ + rand.nextGaussian() * 0.01F, 0, 0, 0, Block.getStateId(world.getBlockState(getPosition().down())));
+				world.addParticle(ParticleTypes.BLOCK_CRACK, getX() + rand.nextGaussian() * 0.01F, getY() + rand.nextGaussian() * 0.01F, getZ() + rand.nextGaussian() * 0.01F, 0, 0, 0, Block.getStateId(world.getBlockState(getPosition().down())));
 		}
 	}
 

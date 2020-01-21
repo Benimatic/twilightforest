@@ -68,7 +68,7 @@ public class EntityTFWraith extends FlyingEntity implements IMob {
 		public void startExecuting() {
 			LivingEntity target = taskOwner.getAttackTarget();
 			if (target != null)
-				taskOwner.getMoveHelper().setMoveTo(target.posX, target.posY, target.posZ, 0.5F);
+				taskOwner.getMoveHelper().setMoveTo(target.getX(), target.getY(), target.getZ(), 0.5F);
 		}
 	}
 
@@ -125,9 +125,9 @@ public class EntityTFWraith extends FlyingEntity implements IMob {
 			if (parentEntity.getAttackTarget() != null)
 				return false;
 			MovementController entitymovehelper = this.parentEntity.getMoveHelper();
-			double d0 = entitymovehelper.getX() - this.parentEntity.posX;
-			double d1 = entitymovehelper.getY() - this.parentEntity.posY;
-			double d2 = entitymovehelper.getZ() - this.parentEntity.posZ;
+			double d0 = entitymovehelper.getX() - this.parentEntity.getX();
+			double d1 = entitymovehelper.getY() - this.parentEntity.getY();
+			double d2 = entitymovehelper.getZ() - this.parentEntity.getZ();
 			double d3 = d0 * d0 + d1 * d1 + d2 * d2;
 			return d3 < 1.0D || d3 > 3600.0D;
 		}
@@ -140,9 +140,9 @@ public class EntityTFWraith extends FlyingEntity implements IMob {
 		@Override
 		public void startExecuting() {
 			Random random = this.parentEntity.getRNG();
-			double d0 = this.parentEntity.posX + (double) ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
-			double d1 = this.parentEntity.posY + (double) ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
-			double d2 = this.parentEntity.posZ + (double) ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+			double d0 = this.parentEntity.getX() + (double) ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+			double d1 = this.parentEntity.getY() + (double) ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+			double d2 = this.parentEntity.getZ() + (double) ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
 			this.parentEntity.getMoveHelper().setMoveTo(d0, d1, d2, 0.5D);
 		}
 	}
@@ -170,8 +170,8 @@ public class EntityTFWraith extends FlyingEntity implements IMob {
 				LivingEntity entitylivingbase = this.parentEntity.getAttackTarget();
 
 				if (entitylivingbase.getDistanceSq(this.parentEntity) < 4096.0D) {
-					double d1 = entitylivingbase.posX - this.parentEntity.posX;
-					double d2 = entitylivingbase.posZ - this.parentEntity.posZ;
+					double d1 = entitylivingbase.getX() - this.parentEntity.getX();
+					double d2 = entitylivingbase.getZ() - this.parentEntity.getZ();
 					this.parentEntity.rotationYaw = -((float) MathHelper.atan2(d1, d2)) * (180F / (float) Math.PI);
 					this.parentEntity.renderYawOffset = this.parentEntity.rotationYaw;
 				}
@@ -291,7 +291,7 @@ public class EntityTFWraith extends FlyingEntity implements IMob {
 
 	// [VanillaCopy] Direct copy of EntityMob.isValidLightLevel
 	protected boolean isValidLightLevel() {
-		BlockPos blockpos = new BlockPos(this.posX, this.getBoundingBox().minY, this.posZ);
+		BlockPos blockpos = new BlockPos(this.getX(), this.getBoundingBox().minY, this.getZ());
 
 		if (this.world.getLightFor(LightType.SKY, blockpos) > this.rand.nextInt(32)) {
 			return false;

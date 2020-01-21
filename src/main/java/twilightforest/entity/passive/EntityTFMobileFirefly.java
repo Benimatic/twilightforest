@@ -76,13 +76,13 @@ public class EntityTFMobileFirefly extends AmbientEntity {
 			this.spawnPosition = null;
 		}
 
-		if (this.spawnPosition == null || this.rand.nextInt(30) == 0 || this.spawnPosition.distanceSq((double) ((int) this.posX), (double) ((int) this.posY), (double) ((int) this.posZ)) < 4.0D) {
-			this.spawnPosition = new BlockPos((int) this.posX + this.rand.nextInt(7) - this.rand.nextInt(7), (int) this.posY + this.rand.nextInt(6) - 2, (int) this.posZ + this.rand.nextInt(7) - this.rand.nextInt(7));
+		if (this.spawnPosition == null || this.rand.nextInt(30) == 0 || this.spawnPosition.distanceSq((double) ((int) this.getX()), (double) ((int) this.getY()), (double) ((int) this.getZ())) < 4.0D) {
+			this.spawnPosition = new BlockPos((int) this.getX() + this.rand.nextInt(7) - this.rand.nextInt(7), (int) this.getY() + this.rand.nextInt(6) - 2, (int) this.getZ() + this.rand.nextInt(7) - this.rand.nextInt(7));
 		}
 
-		double d0 = (double) this.spawnPosition.getX() + 0.5D - this.posX;
-		double d1 = (double) this.spawnPosition.getY() + 0.1D - this.posY;
-		double d2 = (double) this.spawnPosition.getZ() + 0.5D - this.posZ;
+		double d0 = (double) this.spawnPosition.getX() + 0.5D - this.getX();
+		double d1 = (double) this.spawnPosition.getY() + 0.1D - this.getY();
+		double d2 = (double) this.spawnPosition.getZ() + 0.5D - this.getZ();
 		this.motionX += (Math.signum(d0) * 0.5D - this.motionX) * 0.10000000149011612D;
 		this.motionY += (Math.signum(d1) * 0.699999988079071D - this.motionY) * 0.10000000149011612D;
 		this.motionZ += (Math.signum(d2) * 0.5D - this.motionZ) * 0.10000000149011612D;
@@ -114,7 +114,7 @@ public class EntityTFMobileFirefly extends AmbientEntity {
 	// [VanillaCopy] EntityBat.getCanSpawnHere. Edits noted.
 	@Override
 	public boolean getCanSpawnHere() {
-		BlockPos blockpos = new BlockPos(this.posX, this.getBoundingBox().minY, this.posZ);
+		BlockPos blockpos = new BlockPos(this.getX(), this.getBoundingBox().minY, this.getZ());
 
 		return blockpos.getY() < this.world.getSeaLevel()
 				&& !this.rand.nextBoolean()

@@ -91,8 +91,8 @@ public class EntityTFQuestRam extends AnimalEntity {
 			this.randomTickDivider = 70 + this.rand.nextInt(50);
 
 			// check if we're near a quest grove and if so, set that as home
-			int chunkX = MathHelper.floor(this.posX) / 16;
-			int chunkZ = MathHelper.floor(this.posZ) / 16;
+			int chunkX = MathHelper.floor(this.getX()) / 16;
+			int chunkZ = MathHelper.floor(this.getZ()) / 16;
 
 			TFFeature nearFeature = TFFeature.getNearestFeature(chunkX, chunkZ, this.world);
 
@@ -100,7 +100,7 @@ public class EntityTFQuestRam extends AnimalEntity {
 				this.detachHome();
 			} else {
 				// set our home position to the center of the quest grove
-				BlockPos cc = TFFeature.getNearestCenterXYZ(MathHelper.floor(this.posX), MathHelper.floor(this.posZ), world);
+				BlockPos cc = TFFeature.getNearestCenterXYZ(MathHelper.floor(this.getX()), MathHelper.floor(this.getZ()), world);
 				this.setHomePosAndDistance(cc, 13);
 			}
 
@@ -200,7 +200,7 @@ public class EntityTFQuestRam extends AnimalEntity {
 		int blue = (int) (colorVal[2] * 255F);
 
 		for (int i = 0; i < iterations; i++) {
-			this.world.addParticle(ParticleTypes.SPELL_MOB, this.posX + (this.rand.nextDouble() - 0.5D) * this.width * 1.5, this.posY + this.rand.nextDouble() * this.height * 1.5, this.posZ + (this.rand.nextDouble() - 0.5D) * this.width * 1.5, red, green, blue);
+			this.world.addParticle(ParticleTypes.SPELL_MOB, this.getX() + (this.rand.nextDouble() - 0.5D) * this.width * 1.5, this.getY() + this.rand.nextDouble() * this.height * 1.5, this.getZ() + (this.rand.nextDouble() - 0.5D) * this.width * 1.5, red, green, blue);
 		}
 
 		//TODO: it would be nice to play a custom sound

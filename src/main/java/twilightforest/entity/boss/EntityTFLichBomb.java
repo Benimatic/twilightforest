@@ -31,9 +31,9 @@ public class EntityTFLichBomb extends EntityTFThrowable {
 			double sz = 0.5 * (rand.nextDouble() - rand.nextDouble()) + this.motionZ;
 
 
-			double dx = posX + sx;
-			double dy = posY + sy;
-			double dz = posZ + sz;
+			double dx = getX() + sx;
+			double dy = getY() + sy;
+			double dz = getZ() + sz;
 
 			world.addParticle(ParticleTypes.FLAME, dx, dy, dz, sx * -0.25, sy * -0.25, sz * -0.25);
 		}
@@ -69,7 +69,7 @@ public class EntityTFLichBomb extends EntityTFThrowable {
 
 	private void explode() {
 		if (!this.world.isRemote) {
-			this.world.newExplosion(this, this.posX, this.posY, this.posZ, 2F, false, false);
+			this.world.newExplosion(this, this.getX(), this.getY(), this.getZ(), 2F, false, false);
 			this.setDead();
 		}
 	}

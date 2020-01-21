@@ -34,9 +34,9 @@ public class EntityTFIceSnowball extends EntityTFThrowable {
 
 	public void makeTrail() {
 		for (int i = 0; i < 2; i++) {
-			double dx = posX + 0.5 * (rand.nextDouble() - rand.nextDouble());
-			double dy = posY + 0.5 * (rand.nextDouble() - rand.nextDouble());
-			double dz = posZ + 0.5 * (rand.nextDouble() - rand.nextDouble());
+			double dx = getX() + 0.5 * (rand.nextDouble() - rand.nextDouble());
+			double dy = getY() + 0.5 * (rand.nextDouble() - rand.nextDouble());
+			double dz = getZ() + 0.5 * (rand.nextDouble() - rand.nextDouble());
 			world.addParticle(ParticleTypes.ITEM_SNOWBALL, dx, dy, dz, 0.0D, 0.0D, 0.0D);
 		}
 	}
@@ -53,7 +53,7 @@ public class EntityTFIceSnowball extends EntityTFThrowable {
 	public void handleStatusUpdate(byte id) {
 		if (id == 3) {
 			for (int j = 0; j < 8; ++j) {
-				this.world.addParticle(ParticleTypes.ITEM_SNOWBALL, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
+				this.world.addParticle(ParticleTypes.ITEM_SNOWBALL, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
 			}
 		} else {
 			super.handleStatusUpdate(id);

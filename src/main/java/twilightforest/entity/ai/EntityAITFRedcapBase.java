@@ -22,8 +22,8 @@ public abstract class EntityAITFRedcapBase extends Goal {
 	 */
 	public boolean isTargetLookingAtMe(LivingEntity attackTarget) {
 		// find angle of approach
-		double dx = redcap.posX - attackTarget.posX;
-		double dz = redcap.posZ - attackTarget.posZ;
+		double dx = redcap.getX() - attackTarget.getX();
+		double dz = redcap.getZ() - attackTarget.getZ();
 		float angle = (float) ((Math.atan2(dz, dx) * 180D) / Math.PI) - 90F;
 
 		float difference = MathHelper.abs((attackTarget.rotationYaw - angle) % 360);

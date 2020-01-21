@@ -150,8 +150,8 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 			for (int i = 0; i < 4; ++i) {
 				Item particleID = rand.nextBoolean() ? TFItems.phantom_helmet : TFItems.knightmetal_sword;
 
-				world.addParticle(ParticleTypes.ITEM_CRACK, posX + (rand.nextFloat() - 0.5D) * width, posY + rand.nextFloat() * (height - 0.75D) + 0.5D, posZ + (rand.nextFloat() - 0.5D) * width, 0, -0.1, 0, Item.getIdFromItem(particleID));
-				world.addParticle(ParticleTypes.SMOKE, posX + (rand.nextFloat() - 0.5D) * width, posY + rand.nextFloat() * (height - 0.75D) + 0.5D, posZ + (rand.nextFloat() - 0.5D) * width, 0, 0.1, 0);
+				world.addParticle(ParticleTypes.ITEM_CRACK, getX() + (rand.nextFloat() - 0.5D) * width, getY() + rand.nextFloat() * (height - 0.75D) + 0.5D, getZ() + (rand.nextFloat() - 0.5D) * width, 0, -0.1, 0, Item.getIdFromItem(particleID));
+				world.addParticle(ParticleTypes.SMOKE, getX() + (rand.nextFloat() - 0.5D) * width, getY() + rand.nextFloat() * (height - 0.75D) + 0.5D, getZ() + (rand.nextFloat() - 0.5D) * width, 0, 0.1, 0);
 			}
 		}
 	}
@@ -164,7 +164,7 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 			double d0 = rand.nextGaussian() * 0.02D;
 			double d1 = rand.nextGaussian() * 0.02D;
 			double d2 = rand.nextGaussian() * 0.02D;
-			world.addParticle(ParticleTypes.EXPLOSION_NORMAL, posX + (double) (rand.nextFloat() * width * 2.0F) - (double) width, posY + (double) (rand.nextFloat() * height), posZ + (double) (rand.nextFloat() * width * 2.0F) - (double) width, d0, d1, d2);
+			world.addParticle(ParticleTypes.EXPLOSION_NORMAL, getX() + (double) (rand.nextFloat() * width * 2.0F) - (double) width, getY() + (double) (rand.nextFloat() * height), getZ() + (double) (rand.nextFloat() * width * 2.0F) - (double) width, d0, d1, d2);
 		}
 	}
 
@@ -264,7 +264,7 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 	}
 
 	public List<EntityTFKnightPhantom> getNearbyKnights() {
-		return world.getEntitiesWithinAABB(EntityTFKnightPhantom.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).grow(32.0D, 8.0D, 32.0D), EntitySelectors.IS_ALIVE);
+		return world.getEntitiesWithinAABB(EntityTFKnightPhantom.class, new AxisAlignedBB(getX(), getY(), getZ(), getX() + 1, getY() + 1, getZ() + 1).grow(32.0D, 8.0D, 32.0D), EntitySelectors.IS_ALIVE);
 	}
 
 	private void updateMyNumber() {

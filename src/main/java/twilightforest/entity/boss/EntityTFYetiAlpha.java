@@ -150,7 +150,7 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 
 			if (this.isTired()) {
 				for (int i = 0; i < 20; i++) {
-					this.world.addParticle(ParticleTypes.SPLASH, this.posX + (this.rand.nextDouble() - 0.5D) * this.getWidth() * 0.5, this.posY + this.getEyeHeight(), this.posZ + (this.rand.nextDouble() - 0.5D) * this.getWidth() * 0.5, (rand.nextFloat() - 0.5F) * 0.75F, 0, (rand.nextFloat() - 0.5F) * 0.75F);
+					this.world.addParticle(ParticleTypes.SPLASH, this.getX() + (this.rand.nextDouble() - 0.5D) * this.getWidth() * 0.5, this.getY() + this.getEyeHeight(), this.getZ() + (this.rand.nextDouble() - 0.5D) * this.getWidth() * 0.5, (rand.nextFloat() - 0.5F) * 0.75F, 0, (rand.nextFloat() - 0.5F) * 0.75F);
 				}
 			}
 		}
@@ -234,9 +234,9 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 			double dx = Math.cos((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
 			double dz = Math.sin((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
 
-			return new Vec3d(this.posX + dx, this.posY + this.getMountedYOffset() + this.getPassengers().get(0).getYOffset(), this.posZ + dz);
+			return new Vec3d(this.getX() + dx, this.getY() + this.getMountedYOffset() + this.getPassengers().get(0).getYOffset(), this.getZ() + dz);
 		} else {
-			return new Vec3d(this.posX, this.posY, this.posZ);
+			return new Vec3d(this.getX(), this.getY(), this.getZ());
 		}
 	}
 
@@ -262,9 +262,9 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 
 	private void makeRandomBlockFall(int range) {
 		// find a block nearby
-		int bx = MathHelper.floor(this.posX) + this.getRNG().nextInt(range) - this.getRNG().nextInt(range);
-		int bz = MathHelper.floor(this.posZ) + this.getRNG().nextInt(range) - this.getRNG().nextInt(range);
-		int by = MathHelper.floor(this.posY + this.getEyeHeight());
+		int bx = MathHelper.floor(this.getX()) + this.getRNG().nextInt(range) - this.getRNG().nextInt(range);
+		int bz = MathHelper.floor(this.getZ()) + this.getRNG().nextInt(range) - this.getRNG().nextInt(range);
+		int by = MathHelper.floor(this.getY() + this.getEyeHeight());
 
 		makeBlockFallAbove(new BlockPos(bx, bz, by));
 	}
@@ -288,9 +288,9 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 	public void makeBlockAboveTargetFall() {
 		if (this.getAttackTarget() != null) {
 
-			int bx = MathHelper.floor(this.getAttackTarget().posX);
-			int bz = MathHelper.floor(this.getAttackTarget().posZ);
-			int by = MathHelper.floor(this.getAttackTarget().posY + this.getAttackTarget().getEyeHeight());
+			int bx = MathHelper.floor(this.getAttackTarget().getX());
+			int bz = MathHelper.floor(this.getAttackTarget().getZ());
+			int by = MathHelper.floor(this.getAttackTarget().getY() + this.getAttackTarget().getEyeHeight());
 
 			makeBlockFallAbove(new BlockPos(bx, bz, by));
 		}
@@ -311,9 +311,9 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 			EntityTFIceBomb ice = new EntityTFIceBomb(this.world, this);
 
 			// [VanillaCopy] Part of EntitySkeleton.attackEntityWithRangedAttack
-			double d0 = target.posX - this.posX;
-			double d1 = target.getBoundingBox().minY + (double) (target.getHeight() / 3.0F) - ice.posY;
-			double d2 = target.posZ - this.posZ;
+			double d0 = target.getX() - this.getX();
+			double d1 = target.getBoundingBox().minY + (double) (target.getHeight() / 3.0F) - ice.getY();
+			double d2 = target.getZ() - this.getZ();
 			double d3 = (double) MathHelper.sqrt(d0 * d0 + d2 * d2);
 			ice.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float) (14 - this.world.getDifficulty().getId() * 4));
 

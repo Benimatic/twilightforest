@@ -37,9 +37,9 @@ public class EntityTFTwilightWandBolt extends EntityTFThrowable {
 
 	private void makeTrail() {
 		for (int i = 0; i < 5; i++) {
-			double dx = posX + 0.5 * (rand.nextDouble() - rand.nextDouble());
-			double dy = posY + 0.5 * (rand.nextDouble() - rand.nextDouble());
-			double dz = posZ + 0.5 * (rand.nextDouble() - rand.nextDouble());
+			double dx = getX() + 0.5 * (rand.nextDouble() - rand.nextDouble());
+			double dy = getY() + 0.5 * (rand.nextDouble() - rand.nextDouble());
+			double dz = getZ() + 0.5 * (rand.nextDouble() - rand.nextDouble());
 
 			double s1 = ((rand.nextFloat() * 0.5F) + 0.5F) * 0.17F;  // color
 			double s2 = ((rand.nextFloat() * 0.5F) + 0.5F) * 0.80F;  // color
@@ -60,7 +60,7 @@ public class EntityTFTwilightWandBolt extends EntityTFThrowable {
 		if (id == 3) {
 			int itemId = Item.getIdFromItem(Items.ENDER_PEARL);
 			for (int i = 0; i < 8; ++i) {
-				this.world.addParticle(ParticleTypes.ITEM_CRACK, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, itemId);
+				this.world.addParticle(ParticleTypes.ITEM_CRACK, this.getX(), this.getY(), this.getZ(), rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, itemId);
 			}
 		} else {
 			super.handleStatusUpdate(id);

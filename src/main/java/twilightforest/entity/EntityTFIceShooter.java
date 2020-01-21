@@ -77,10 +77,10 @@ public class EntityTFIceShooter extends EntityTFIceMob implements IRangedAttackM
 		EntityTFIceSnowball snowball = new EntityTFIceSnowball(this.world, this);
 
 		// [VanillaCopy] Adapted from EntitySnowman
-		double d0 = target.posY + (double) target.getEyeHeight() - 1.4;
-		double d1 = target.posX - this.posX;
-		double d2 = d0 - snowball.posY;
-		double d3 = target.posZ - this.posZ;
+		double d0 = target.getY() + (double) target.getEyeHeight() - 1.4;
+		double d1 = target.getX() - this.getX();
+		double d2 = d0 - snowball.getY();
+		double d3 = target.getZ() - this.getZ();
 		float f = MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.2F;
 		snowball.shoot(d1, d2 + (double) f, d3, 1.6F, 0.0F);
 

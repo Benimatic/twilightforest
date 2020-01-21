@@ -55,9 +55,9 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 		super.shoot(x, y, z, speed, accuracy);
 
 		// save velocity
-		this.velX = this.motionX;
-		this.velY = this.motionY;
-		this.velZ = this.motionZ;
+		this.velX = this.getMotion().getX();
+		this.velY = this.getMotion().getY();
+		this.velZ = this.getMotion().getZ();
 	}
 
 	@Override
@@ -190,13 +190,13 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 				// interpolate chain position
 				Vec3d handVec = this.getThrower().getLookVec().rotateYaw(hand == Hand.MAIN_HAND ? -0.4F : 0.4F);
 
-				double sx = this.getThrower().posX + handVec.x;
-				double sy = this.getThrower().posY + handVec.y - 0.4F + this.getThrower().getEyeHeight();
-				double sz = this.getThrower().posZ + handVec.z;
+				double sx = this.getThrower().getX() + handVec.x;
+				double sy = this.getThrower().getY() + handVec.y - 0.4F + this.getThrower().getEyeHeight();
+				double sz = this.getThrower().getZ() + handVec.z;
 
-				double ox = sx - this.posX;
-				double oy = sy - this.posY - 0.25F;
-				double oz = sz - this.posZ;
+				double ox = sx - this.getX();
+				double oy = sy - this.getY() - 0.25F;
+				double oz = sz - this.getZ();
 
 				this.chain1.setPosition(sx - ox * 0.05, sy - oy * 0.05, sz - oz * 0.05);
 				this.chain2.setPosition(sx - ox * 0.25, sy - oy * 0.25, sz - oz * 0.25);
@@ -222,13 +222,13 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 
 					LivingEntity returnTo = this.getThrower();
 
-					Vec3d back = new Vec3d(returnTo.posX, returnTo.posY + returnTo.getEyeHeight(), returnTo.posZ).subtract(this.getPositionVector()).normalize();
+					Vec3d back = new Vec3d(returnTo.getX(), returnTo.getY() + returnTo.getEyeHeight(), returnTo.getZ()).subtract(this.getPositionVector()).normalize();
 					float age = Math.min(this.ticksExisted * 0.03F, 1.0F);
 
 					// separate the return velocity from the normal bouncy velocity
-					this.motionX = this.velX * (1.0 - age) + (back.x * 2F * age);
-					this.motionY = this.velY * (1.0 - age) + (back.y * 2F * age) - this.getGravityVelocity();
-					this.motionZ = this.velZ * (1.0 - age) + (back.z * 2F * age);
+					this.getMotion().getX() = this.velX * (1.0 - age) + (back.x * 2F * age);
+					this.getMotion().getY() = this.velY * (1.0 - age) + (back.y * 2F * age) - this.getGravityVelocity();
+					this.getMotion().getZ() = this.velZ * (1.0 - age) + (back.z * 2F * age);
 				}
 			}
 		}
@@ -238,7 +238,7 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 	public void setDead() {
 		super.setDead();
 		LivingEntity thrower = this.getThrower();
-		if (thrower != null && thrower.getActiveItemStack().getItem() == TFItems.block_and_chain) {
+		if (thrower != null && thrower.getActiveItemStack().getItem() == TFItems.block_and_chain.get()) {
 			thrower.resetActiveHand();
 		}
 	}

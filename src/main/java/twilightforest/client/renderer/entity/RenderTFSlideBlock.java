@@ -50,7 +50,7 @@ public class RenderTFSlideBlock<T extends EntityTFSlideBlock> extends EntityRend
 					}
 
 					bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
-					BlockPos blockpos = new BlockPos(entity.posX, entity.getBoundingBox().maxY, entity.posZ);
+					BlockPos blockpos = new BlockPos(entity.getX(), entity.getBoundingBox().maxY, entity.getZ());
 
 					// spin
 					if (iblockstate.getProperties().contains(RotatedPillarBlock.AXIS)) {

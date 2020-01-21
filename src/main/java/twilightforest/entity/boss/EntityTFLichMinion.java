@@ -66,14 +66,14 @@ public class EntityTFLichMinion extends ZombieEntity {
 	}
 
 	private void findNewMaster() {
-		List<EntityTFLich> nearbyLiches = world.getEntitiesWithinAABB(EntityTFLich.class, new AxisAlignedBB(posX, posY, posZ, posX + 1, posY + 1, posZ + 1).grow(32.0D, 16.0D, 32.0D));
+		List<EntityTFLich> nearbyLiches = world.getEntitiesWithinAABB(EntityTFLich.class, new AxisAlignedBB(getX(), getY(), getZ(), getX() + 1, getY() + 1, getZ() + 1).grow(32.0D, 16.0D, 32.0D));
 
 		for (EntityTFLich nearbyLich : nearbyLiches) {
 			if (!nearbyLich.isShadowClone() && nearbyLich.wantsNewMinion(this)) {
 				this.master = nearbyLich;
 
 				// animate our new linkage!
-				master.makeBlackMagicTrail(posX, posY + this.getEyeHeight(), posZ, master.posX, master.posY + master.getEyeHeight(), master.posZ);
+				master.makeBlackMagicTrail(getX(), getY() + this.getEyeHeight(), getZ(), master.getX(), master.getY() + master.getEyeHeight(), master.getZ());
 
 				// become angry at our masters target
 				setAttackTarget(master.getAttackTarget());

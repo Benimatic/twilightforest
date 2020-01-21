@@ -50,7 +50,7 @@ public class EntityTFNagaSegment extends MultiPartEntityPart {
 					double d2 = rand.nextGaussian() * 0.02D;
 					ParticleTypes explosionType = rand.nextBoolean() ? ParticleTypes.EXPLOSION_LARGE : ParticleTypes.EXPLOSION_NORMAL;
 
-					this.world.spawnParticle(explosionType, (posX + rand.nextFloat() * width * 2.0F) - width, posY + rand.nextFloat() * height, (posZ + rand.nextFloat() * width * 2.0F) - width, d, d1, d2);
+					this.world.spawnParticle(explosionType, (getX() + rand.nextFloat() * width * 2.0F) - width, getY() + rand.nextFloat() * height, (getZ() + rand.nextFloat() * width * 2.0F) - width, d, d1, d2);
 				}
 
 				deactivate();

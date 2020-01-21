@@ -33,9 +33,9 @@ public class EntityTFSlimeProjectile extends EntityTFThrowable {
 
 	private void makeTrail() {
 		for (int i = 0; i < 2; i++) {
-			double dx = posX + 0.5 * (rand.nextDouble() - rand.nextDouble());
-			double dy = posY + 0.5 * (rand.nextDouble() - rand.nextDouble());
-			double dz = posZ + 0.5 * (rand.nextDouble() - rand.nextDouble());
+			double dx = getX() + 0.5 * (rand.nextDouble() - rand.nextDouble());
+			double dy = getY() + 0.5 * (rand.nextDouble() - rand.nextDouble());
+			double dz = getZ() + 0.5 * (rand.nextDouble() - rand.nextDouble());
 			world.addParticle(ParticleTypes.ITEM_SLIME, dx, dy, dz, 0.0D, 0.0D, 0.0D);
 		}
 	}
@@ -52,7 +52,7 @@ public class EntityTFSlimeProjectile extends EntityTFThrowable {
 	public void handleStatusUpdate(byte id) {
 		if (id == 3) {
 			for (int i = 0; i < 8; ++i) {
-				this.world.addParticle(ParticleTypes.ITEM_SLIME, this.posX, this.posY, this.posZ, rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
+				this.world.addParticle(ParticleTypes.ITEM_SLIME, this.getX(), this.getY(), this.getZ(), rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
 			}
 		} else {
 			super.handleStatusUpdate(id);

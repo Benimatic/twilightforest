@@ -14,9 +14,9 @@ public class EntityTFGoblinChain extends MultiPartEntityPart {
 
 		this.ticksExisted++;
 
-		lastTickPosX = posX;
-		lastTickPosY = posY;
-		lastTickPosZ = posZ;
+		lastTickPosX = getX();
+		lastTickPosY = getY();
+		lastTickPosZ = getZ();
 
 		for (; rotationYaw - prevRotationYaw < -180F; prevRotationYaw -= 360F) {
 		}

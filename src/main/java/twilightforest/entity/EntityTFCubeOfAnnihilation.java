@@ -15,7 +15,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.PacketDistributor;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.block.BlockTFCastleMagic;
@@ -115,7 +114,7 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 			}
 
 			// always head towards either the point or towards the player
-			Vec3d destPoint = new Vec3d(this.getThrower().posX, this.getThrower().posY + this.getThrower().getEyeHeight(), this.getThrower().posZ);
+			Vec3d destPoint = new Vec3d(this.getThrower().getX(), this.getThrower().getY() + this.getThrower().getEyeHeight(), this.getThrower().getZ());
 
 			if (this.isReturning()) {
 				// if we are returning, and are near enough to the player, then we are done
@@ -129,7 +128,7 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 			}
 
 			// set motions
-			Vec3d velocity = new Vec3d(this.posX - destPoint.x, (this.posY + this.height / 2F) - destPoint.y, this.posZ - destPoint.z);
+			Vec3d velocity = new Vec3d(this.getX() - destPoint.x, (this.getY() + this.getHeight() / 2F) - destPoint.y, this.getZ() - destPoint.z);
 
 			this.motionX -= velocity.x;
 			this.motionY -= velocity.y;

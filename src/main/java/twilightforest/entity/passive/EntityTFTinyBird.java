@@ -154,7 +154,7 @@ public class EntityTFTinyBird extends EntityTFBird {
 		if (this.isBirdLanded()) {
 			this.currentFlightTime = 0;
 
-			if (isSpooked() || isInWater() || world.containsAnyLiquid(getBoundingBox()) || (this.rand.nextInt(200) == 0 && !isLandableBlock(new BlockPos(posX, posY - 1, posZ)))) {
+			if (isSpooked() || isInWater() || world.containsAnyLiquid(getBoundingBox()) || (this.rand.nextInt(200) == 0 && !isLandableBlock(new BlockPos(getX(), getY() - 1, getZ())))) {
 				this.setIsBirdLanded(false);
 				this.world.playEvent(1025, new BlockPos(this), 0);
 				this.motionY = 0.4;
@@ -172,15 +172,15 @@ public class EntityTFTinyBird extends EntityTFBird {
 				motionY = 0.1F;
 			}
 
-			if (this.spawnPosition == null || this.rand.nextInt(30) == 0 || this.spawnPosition.distanceSq((double) ((int) this.posX), (double) ((int) this.posY), (double) ((int) this.posZ)) < 4.0D) {
+			if (this.spawnPosition == null || this.rand.nextInt(30) == 0 || this.spawnPosition.distanceSq((double) ((int) this.getX()), (double) ((int) this.getY()), (double) ((int) this.getZ())) < 4.0D) {
 				// TF - modify shift factor of Y
 				int yTarget = this.currentFlightTime < 100 ? 2 : 4;
-				this.spawnPosition = new BlockPos((int) this.posX + this.rand.nextInt(7) - this.rand.nextInt(7), (int) this.posY + this.rand.nextInt(6) - yTarget, (int) this.posZ + this.rand.nextInt(7) - this.rand.nextInt(7));
+				this.spawnPosition = new BlockPos((int) this.getX() + this.rand.nextInt(7) - this.rand.nextInt(7), (int) this.getY() + this.rand.nextInt(6) - yTarget, (int) this.getZ() + this.rand.nextInt(7) - this.rand.nextInt(7));
 			}
 
-			double d0 = (double) this.spawnPosition.getX() + 0.5D - this.posX;
-			double d1 = (double) this.spawnPosition.getY() + 0.1D - this.posY;
-			double d2 = (double) this.spawnPosition.getZ() + 0.5D - this.posZ;
+			double d0 = (double) this.spawnPosition.getX() + 0.5D - this.getX();
+			double d1 = (double) this.spawnPosition.getY() + 0.1D - this.getY();
+			double d2 = (double) this.spawnPosition.getZ() + 0.5D - this.getZ();
 
 			this.motionX += (Math.signum(d0) * 0.5D - this.motionX) * 0.10000000149011612D;
 			this.motionY += (Math.signum(d1) * 0.699999988079071D - this.motionY) * 0.10000000149011612D;
@@ -192,7 +192,7 @@ public class EntityTFTinyBird extends EntityTFBird {
 			this.rotationYaw += f1;
 
 			// TF - change chance 100 -> 10; change check to isLandable
-			if (this.rand.nextInt(100) == 0 && isLandableBlock(new BlockPos(posX, posY - 1, posZ))) //this.world.getBlockState(blockpos1).isNormalCube())
+			if (this.rand.nextInt(100) == 0 && isLandableBlock(new BlockPos(getX(), getY() - 1, getZ()))) //this.world.getBlockState(blockpos1).isNormalCube())
 			{
 				// this.setIsBatHanging(true); TF - land the bird
 				setIsBirdLanded(true);

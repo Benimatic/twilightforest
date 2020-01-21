@@ -75,7 +75,7 @@ public class EntityAITFFindLoose extends Goal {
 		if (this.temptedEntity.getDistanceSq(this.temptingItem) < 6.25D) {
 			this.temptedEntity.getNavigator().clearPath();
 		} else {
-			this.temptedEntity.getNavigator().tryMoveToXYZ(temptingItem.posX, temptingItem.posY, temptingItem.posZ, this.pursueSpeed);
+			this.temptedEntity.getNavigator().tryMoveToXYZ(temptingItem.getX(), temptingItem.getY(), temptingItem.getZ(), this.pursueSpeed);
 		}
 	}
 }

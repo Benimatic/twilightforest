@@ -53,7 +53,7 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast {
 			return living.canEntityBeSeen(this);
 		} else {
 			Vec3d vec3d = living.getLook(1.0F).normalize();
-			Vec3d vec3d1 = new Vec3d(this.posX - living.posX, this.getBoundingBox().minY + (double) this.getEyeHeight() - (living.posY + (double) living.getEyeHeight()), this.posZ - living.posZ);
+			Vec3d vec3d1 = new Vec3d(this.getX() - living.getX(), this.getBoundingBox().minY + (double) this.getEyeHeight() - (living.getY() + (double) living.getEyeHeight()), this.getZ() - living.getZ());
 			double d0 = vec3d1.length();
 			vec3d1 = vec3d1.normalize();
 			double d1 = vec3d.dotProduct(vec3d1);
@@ -68,7 +68,7 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast {
 		}
 
 		// [VanillaCopy] EntityMob.isValidLightLevel
-		BlockPos blockpos = new BlockPos(this.posX, this.getBoundingBox().minY, this.posZ);
+		BlockPos blockpos = new BlockPos(this.getX(), this.getBoundingBox().minY, this.getZ());
 
 		if (this.world.getLightFor(LightType.SKY.SKY, blockpos) > this.rand.nextInt(32)) {
 			return false;

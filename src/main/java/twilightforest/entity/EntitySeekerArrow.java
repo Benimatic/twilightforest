@@ -46,7 +46,7 @@ public class EntitySeekerArrow extends EntityTFArrow {
 
 			if (world.isRemote && !inGround) {
 				for (int i = 0; i < 4; ++i) {
-					this.world.addParticle(ParticleTypes.SPELL_WITCH, this.posX + this.motionX * (double) i / 4.0D, this.posY + this.motionY * (double) i / 4.0D, this.posZ + this.motionZ * (double) i / 4.0D, -this.motionX, -this.motionY + 0.2D, -this.motionZ);
+					this.world.addParticle(ParticleTypes.WITCH, this.getX() + this.getMotion().getX() * (double) i / 4.0D, this.getY() + this.getMotion().getY() * (double) i / 4.0D, this.getZ() + this.getMotion().getZ() * (double) i / 4.0D, -this.getMotion().getX(), -this.getMotion().getY() + 0.2D, -this.getMotion().getZ());
 				}
 			}
 
@@ -68,12 +68,12 @@ public class EntitySeekerArrow extends EntityTFArrow {
 					// add vector to target, scale to match current velocity
 					Vec3d newMotion = courseVec.scale(courseLen / totalLen).add(targetVec.scale(targetLen / totalLen));
 
-					this.motionX = newMotion.x;
-					this.motionY = newMotion.y;
-					this.motionZ = newMotion.z;
+					this.getMotion().getX() = newMotion.x;
+					this.getMotion().getY() = newMotion.y;
+					this.getMotion().getZ() = newMotion.z;
 
 					// compensate (mostly) for gravity
-					this.motionY += 0.045F;
+					this.getMotion().getY() += 0.045F;
 
 				} else if (!world.isRemote) {
 					// too inaccurate for our intended target, give up on it
@@ -94,7 +94,7 @@ public class EntitySeekerArrow extends EntityTFArrow {
 		}
 
 		if (target == null) {
-			AxisAlignedBB positionBB = new AxisAlignedBB(posX, posY, posZ, posX, posY, posZ);
+			AxisAlignedBB positionBB = new AxisAlignedBB(getX(), getY(), getZ(), getX(), getY(), getZ());
 			AxisAlignedBB targetBB = positionBB;
 
 			// add two possible courses to our selection box
@@ -135,7 +135,7 @@ public class EntitySeekerArrow extends EntityTFArrow {
 	}
 
 	private Vec3d getVectorToTarget(Entity target) {
-		return new Vec3d(target.posX - this.posX, (target.posY + (double) target.getEyeHeight()) - this.posY, target.posZ - this.posZ);
+		return new Vec3d(target.getX() - this.getX(), (target.getY() + (double) target.getEyeHeight()) - this.getY(), target.getZ() - this.getZ());
 	}
 
 	@Nullable

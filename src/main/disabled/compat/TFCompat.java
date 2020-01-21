@@ -110,9 +110,9 @@ public enum TFCompat {
                 public boolean overrideHitEntity(Entity entityHit, Entity shooter) {
                     World world = entityHit.getEntityWorld();
 
-                    world.addEntity(new EntityFallingBlock(world, entityHit.posX, entityHit.posY, entityHit.posZ, TFBlocks.cicada.getDefaultState()));
+                    world.addEntity(new EntityFallingBlock(world, entityHit.getX(), entityHit.getY(), entityHit.getZ(), TFBlocks.cicada.getDefaultState()));
 
-                    world.playSound(null, entityHit.posX, entityHit.posY, entityHit.posZ, TFSounds.CICADA, SoundCategory.NEUTRAL, 1.0f, (world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F + 1.0F);
+                    world.playSound(null, entityHit.getX(), entityHit.getY(), entityHit.getZ(), TFSounds.CICADA, SoundCategory.NEUTRAL, 1.0f, (world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F + 1.0F);
 
                     return false;
                 }

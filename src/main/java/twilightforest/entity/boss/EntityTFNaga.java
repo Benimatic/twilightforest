@@ -468,7 +468,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 				double d2 = rand.nextGaussian() * 0.02D;
 				ParticleTypes explosionType = rand.nextBoolean() ? ParticleTypes.EXPLOSION_HUGE : ParticleTypes.EXPLOSION_NORMAL;
 
-				world.addParticle(explosionType, (posX + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), posY + rand.nextFloat() * getHeight(), (posZ + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), d, d1, d2);
+				world.addParticle(explosionType, (getX() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), getY() + rand.nextFloat() * getHeight(), (getZ() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), d, d1, d2);
 			}
 		}
 
@@ -504,7 +504,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 		double d = getWidth() * 4.0F;
 		Vec3d vec3d = hasPath() ? getNavigator().getPath().getPosition(this) : null;
 
-		while (vec3d != null && vec3d.squareDistanceTo(posX, vec3d.y, posZ) < d * d) {
+		while (vec3d != null && vec3d.squareDistanceTo(getX(), vec3d.y, getZ()) < d * d) {
 			getNavigator().getPath().incrementPathIndex();
 
 			if (getNavigator().getPath().isFinished()) {
@@ -572,8 +572,8 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 		int targetY = (int) getAttackTarget().getBoundingBox().minY;
 
 		if (targetY > floor) {
-			int dx = (int) getAttackTarget().posX + rand.nextInt(range) - rand.nextInt(range);
-			int dz = (int) getAttackTarget().posZ + rand.nextInt(range) - rand.nextInt(range);
+			int dx = (int) getAttackTarget().getX() + rand.nextInt(range) - rand.nextInt(range);
+			int dz = (int) getAttackTarget().getZ() + rand.nextInt(range) - rand.nextInt(range);
 			int dy = targetY - rand.nextInt(range) + rand.nextInt(range > 1 ? range - 1 : range);
 
 			if (dy <= floor) {
@@ -592,7 +592,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 					double d1 = rand.nextGaussian() * 0.02D;
 					double d2 = rand.nextGaussian() * 0.02D;
 
-					world.addParticle(ParticleTypes.CRIT, (posX + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), posY + rand.nextFloat() * getHeight(), (posZ + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), d, d1, d2);
+					world.addParticle(ParticleTypes.CRIT, (getX() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), getY() + rand.nextFloat() * getHeight(), (getZ() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), d, d1, d2);
 				}
 			}
 		}
@@ -636,8 +636,8 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 		LivingEntity toCircle = getAttackTarget();
 
 		// compute angle
-		double vecx = posX - toCircle.posX;
-		double vecz = posZ - toCircle.posZ;
+		double vecx = getX() - toCircle.getX();
+		double vecz = getZ() - toCircle.getZ();
 		float rangle = (float) (Math.atan2(vecz, vecx));
 
 		// add a little, so he circles (clockwise)
@@ -647,10 +647,10 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 		double dx = MathHelper.cos(rangle) * radius;
 		double dz = MathHelper.sin(rangle) * radius;
 
-		double dy = Math.min(getBoundingBox().minY, toCircle.posY);
+		double dy = Math.min(getBoundingBox().minY, toCircle.getY());
 
 		// add that to the target entity's position, and we have our destination
-		return new BlockPos(toCircle.posX + dx, dy, toCircle.posZ + dz);
+		return new BlockPos(toCircle.getX() + dx, dy, toCircle.getZ() + dz);
 	}
 
 	@Override
@@ -746,15 +746,15 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 		for (int i = 0; i < currentSegmentCount; i++) {
 			EntityTFNagaSegment segment = bodySegments[i];
 			segment.activate();
-			segment.setLocationAndAngles(posX + 0.1 * i, posY + 0.5D, posZ + 0.1 * i, rand.nextFloat() * 360F, 0.0F);
+			segment.setLocationAndAngles(getX() + 0.1 * i, getY() + 0.5D, getZ() + 0.1 * i, rand.nextFloat() * 360F, 0.0F);
 			for (int j = 0; j < 20; j++) {
 				double d0 = this.rand.nextGaussian() * 0.02D;
 				double d1 = this.rand.nextGaussian() * 0.02D;
 				double d2 = this.rand.nextGaussian() * 0.02D;
 				this.world.addParticle(ParticleTypes.EXPLOSION_NORMAL,
-						segment.posX + (double) (this.rand.nextFloat() * segment.getWidth() * 2.0F) - (double) segment.getWidth() - d0 * 10.0D,
-						segment.posY + (double) (this.rand.nextFloat() * segment.getHeight()) - d1 * 10.0D,
-						segment.posZ + (double) (this.rand.nextFloat() * segment.getWidth() * 2.0F) - (double) segment.getWidth() - d2 * 10.0D,
+						segment.getX() + (double) (this.rand.nextFloat() * segment.getWidth() * 2.0F) - (double) segment.getWidth() - d0 * 10.0D,
+						segment.getY() + (double) (this.rand.nextFloat() * segment.getHeight()) - d1 * 10.0D,
+						segment.getZ() + (double) (this.rand.nextFloat() * segment.getWidth() * 2.0F) - (double) segment.getWidth() - d2 * 10.0D,
 						d0, d1, d2);
 			}
 		}
@@ -766,9 +766,9 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 	private void moveSegments() {
 		for (int i = 0; i < this.bodySegments.length; i++) {
 			Entity leader = i == 0 ? this : this.bodySegments[i - 1];
-			double followX = leader.posX;
-			double followY = leader.posY;
-			double followZ = leader.posZ;
+			double followX = leader.getX();
+			double followY = leader.getY();
+			double followZ = leader.getZ();
 
 			// also weight the position so that the segments straighten out a little bit, and the front ones straighten more
 			float angle = (((leader.rotationYaw + 180) * 3.141593F) / 180F);
@@ -780,7 +780,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 			double idealZ = MathHelper.cos(angle) * straightenForce;
 
 
-			Vec3d diff = new Vec3d(bodySegments[i].posX - followX, bodySegments[i].posY - followY, bodySegments[i].posZ - followZ);
+			Vec3d diff = new Vec3d(bodySegments[i].getX() - followX, bodySegments[i].getY() - followY, bodySegments[i].getZ() - followZ);
 			diff = diff.normalize();
 
 			// weight so segments drift towards their ideal position

@@ -124,7 +124,7 @@ public class EntityAITFChargeAttack extends Goal {
 		// attack the target when we get in range
 		double rangeSq = this.charger.getWidth() * 2.1F * this.charger.getWidth() * 2.1F;
 
-		if (this.charger.getDistanceSq(this.chargeTarget.posX, this.chargeTarget.getBoundingBox().minY, this.chargeTarget.posZ) <= rangeSq) {
+		if (this.charger.getDistanceSq(this.chargeTarget.getX(), this.chargeTarget.getBoundingBox().minY, this.chargeTarget.getZ()) <= rangeSq) {
 			if (!this.hasAttacked) {
 				this.hasAttacked = true;
 				this.charger.attackEntityAsMob(this.chargeTarget);
@@ -151,8 +151,8 @@ public class EntityAITFChargeAttack extends Goal {
 	protected Vec3d findChargePoint(Entity attacker, Entity target, double overshoot) {
 
 		// compute angle
-		double vecx = target.posX - attacker.posX;
-		double vecz = target.posZ - attacker.posZ;
+		double vecx = target.getX() - attacker.getX();
+		double vecz = target.getZ() - attacker.getZ();
 		float rangle = (float) (Math.atan2(vecz, vecx));
 
 		double distance = MathHelper.sqrt(vecx * vecx + vecz * vecz);
@@ -162,7 +162,7 @@ public class EntityAITFChargeAttack extends Goal {
 		double dz = MathHelper.sin(rangle) * (distance + overshoot);
 
 		// add that to the target entity's position, and we have our destination
-		return new Vec3d(attacker.posX + dx, target.posY, attacker.posZ + dz);
+		return new Vec3d(attacker.getX() + dx, target.getY(), attacker.getZ() + dz);
 	}
 
 

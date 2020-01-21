@@ -121,9 +121,9 @@ public class EntityTFPinchBeetle extends MonsterEntity implements IHostileMount 
 			double dx = Math.cos((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
 			double dz = Math.sin((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
 
-			return new Vec3d(this.posX + dx, this.posY + this.getMountedYOffset() + this.getPassengers().get(0).getYOffset(), this.posZ + dz);
+			return new Vec3d(this.getX() + dx, this.getY() + this.getMountedYOffset() + this.getPassengers().get(0).getYOffset(), this.getZ() + dz);
 		} else {
-			return new Vec3d(this.posX, this.posY, this.posZ);
+			return new Vec3d(this.getX(), this.getY(), this.getZ());
 		}
 	}
 

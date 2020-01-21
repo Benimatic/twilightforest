@@ -48,8 +48,8 @@ public class EntityTFHedgeSpider extends SpiderEntity {
 
 	@Override
 	protected boolean isValidLightLevel() {
-		int chunkX = MathHelper.floor(posX) >> 4;
-		int chunkZ = MathHelper.floor(posZ) >> 4;
+		int chunkX = MathHelper.floor(getX()) >> 4;
+		int chunkZ = MathHelper.floor(getZ()) >> 4;
 		// We're allowed to spawn in bright light only in hedge mazes.
 		return TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.HEDGE_MAZE
 				|| super.isValidLightLevel();
