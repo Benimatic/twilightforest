@@ -112,13 +112,12 @@ public class EntityTFIceExploder extends EntityTFIceMob {
 		}
 	}
 
-
 	private void transformBlock(BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 
 		// check if we should even explode this
-		if (block.getExplosionResistance(this) < 8F && state.getBlockHardness(world, pos) >= 0) {
+		if (block.getExplosionResistance(state, world, pos, this) < 8F && state.getBlockHardness(world, pos) >= 0) {
 			// todo improve for blocks where state is known? or perhaps if a propertycolor is present
 			int blockColor = state.getMaterialColor(world, pos).colorValue;
 
@@ -132,21 +131,17 @@ public class EntityTFIceExploder extends EntityTFIceMob {
 		}
 	}
 
-
 	private boolean shouldTransformClay(BlockState state, BlockPos pos) {
 		return state.getBlock().isNormalCube(state, this.world, pos);
 	}
-
 
 	private boolean shouldTransformGlass(BlockState state, BlockPos pos) {
 		return state.getBlock() != Blocks.AIR && this.isBlockNormalBounds(state, pos) && (!state.getMaterial().isOpaque() || state.getBlock().isLeaves(state, this.world, pos) || state.getBlock() == Blocks.ICE || state.getBlock() == TFBlocks.aurora_block);
 	}
 
-
 	private boolean isBlockNormalBounds(BlockState state, BlockPos pos) {
 		return Block.FULL_BLOCK_AABB.equals(state.getBoundingBox(world, pos));
 	}
-
 
 	private DyeColor getClosestDyeColor(int blockColor) {
 		int red = (blockColor >> 16) & 255;

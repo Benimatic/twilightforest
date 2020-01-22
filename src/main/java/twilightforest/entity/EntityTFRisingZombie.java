@@ -10,6 +10,7 @@ import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
@@ -36,12 +37,10 @@ public class EntityTFRisingZombie extends ZombieEntity {
 
 	@Override
 	public void livingTick() {
-		motionX = 0;
-		motionY = 0;
-		motionZ = 0;
+		setMotion(new Vec3d(0, 0, 0));
 		super.livingTick();
 		if (!world.isRemote && ticksExisted % 130 == 0) {
-			setDead();
+			remove();
 			ZombieEntity zombie = new ZombieEntity(world);
 			zombie.setPositionAndUpdate(getX(), getY(), getZ());
 			zombie.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(getMaxHealth());

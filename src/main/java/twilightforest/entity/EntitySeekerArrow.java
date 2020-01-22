@@ -68,12 +68,14 @@ public class EntitySeekerArrow extends EntityTFArrow {
 					// add vector to target, scale to match current velocity
 					Vec3d newMotion = courseVec.scale(courseLen / totalLen).add(targetVec.scale(targetLen / totalLen));
 
-					this.getMotion().getX() = newMotion.x;
-					this.getMotion().getY() = newMotion.y;
-					this.getMotion().getZ() = newMotion.z;
+//					this.getMotion().getX() = newMotion.x;
+//					this.getMotion().getY() = newMotion.y;
+//					this.getMotion().getZ() = newMotion.z;
+					this.setMotion(newMotion);
 
 					// compensate (mostly) for gravity
-					this.getMotion().getY() += 0.045F;
+//					this.getMotion().getY() += 0.045F;
+					this.getMotion().add(0, 0.045F, 0);
 
 				} else if (!world.isRemote) {
 					// too inaccurate for our intended target, give up on it

@@ -25,6 +25,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.IWorld;
@@ -250,12 +251,17 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 		isAirBorne = true;
 		float f = MathHelper.sqrt(xRatio * xRatio + zRatio * zRatio);
 		float distance = 0.2F;
-		motionX /= 2.0D;
-		motionY /= 2.0D;
-		motionZ /= 2.0D;
-		motionX -= xRatio / (double) f * (double) distance;
-		motionY += (double) distance;
-		motionZ -= zRatio / (double) f * (double) distance;
+//		motionX /= 2.0D;
+//		motionY /= 2.0D;
+//		motionZ /= 2.0D;
+		setMotion(new Vec3d(getMotion().getX() / 2.0D, getMotion().getY() / 2.0D, getMotion().getZ() / 2.0D));
+//		motionX -= xRatio / (double) f * (double) distance;
+//		motionY += (double) distance;
+//		motionZ -= zRatio / (double) f * (double) distance;
+		setMotion(new Vec3d(
+				getMotion().getX() - xRatio / (double) f * (double) distance,
+				getMotion().getY() + (double) distance,
+				getMotion().getZ() - zRatio / (double) f * (double) distance));
 
 		if (motionY > 0.4000000059604645D) {
 			motionY = 0.4000000059604645D;

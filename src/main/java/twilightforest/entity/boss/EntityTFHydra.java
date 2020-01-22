@@ -1,9 +1,6 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.PlayerEntity;
@@ -41,7 +38,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class EntityTFHydra extends LivingEntity implements IEntityMultiPart, IMob {
+public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/hydra");
 
@@ -342,7 +339,7 @@ public class EntityTFHydra extends LivingEntity implements IEntityMultiPart, IMo
 				}
 			}
 
-			if (numTicksToChaseTarget-- <= 0 || getAttackTarget().isDead || getAttackTarget().getDistanceSq(this) > (double) (f * f)) {
+			if (numTicksToChaseTarget-- <= 0 || !getAttackTarget().isAlive() || getAttackTarget().getDistanceSq(this) > (double) (f * f)) {
 				setAttackTarget(null);
 			}
 		} else {

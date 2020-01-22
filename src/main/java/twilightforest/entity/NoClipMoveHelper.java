@@ -26,9 +26,10 @@ public class NoClipMoveHelper extends MovementController {
 				this.courseChangeCooldown += this.parentEntity.getRNG().nextInt(5) + 2;
 				d3 = (double) MathHelper.sqrt(d3);
 
-				this.parentEntity.motionX += (d0 / d3 * 0.1D) * speed;
-				this.parentEntity.motionY += (d1 / d3 * 0.1D) * speed;
-				this.parentEntity.motionZ += (d2 / d3 * 0.1D) * speed;
+//				this.parentEntity.motionX += (d0 / d3 * 0.1D) * speed;
+//				this.parentEntity.motionY += (d1 / d3 * 0.1D) * speed;
+//				this.parentEntity.motionZ += (d2 / d3 * 0.1D) * speed;
+				this.parentEntity.getMotion().add((d0 / d3 * 0.1D) * speed, (d1 / d3 * 0.1D) * speed, (d2 / d3 * 0.1D) * speed);
 			}
 		}
 	}

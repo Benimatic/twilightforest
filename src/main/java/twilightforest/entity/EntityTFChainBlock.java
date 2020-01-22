@@ -162,7 +162,7 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 			BlockState state = world.getBlockState(pos);
 			Block block = state.getBlock();
 
-			if (!block.isAir(state, world, pos) && block.getExplosionResistance(this) < 7F
+			if (!block.isAir(state, world, pos) && block.getExplosionResistance(state, world, pos, this) < 7F
 					&& state.getBlockHardness(world, pos) >= 0 && block.canEntityDestroy(state, world, pos, this)) {
 
 				if (getThrower() instanceof PlayerEntity) {
@@ -231,9 +231,14 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 					float age = Math.min(this.ticksExisted * 0.03F, 1.0F);
 
 					// separate the return velocity from the normal bouncy velocity
-					this.getMotion().getX() = this.velX * (1.0 - age) + (back.x * 2F * age);
-					this.getMotion().getY() = this.velY * (1.0 - age) + (back.y * 2F * age) - this.getGravityVelocity();
-					this.getMotion().getZ() = this.velZ * (1.0 - age) + (back.z * 2F * age);
+//					this.getMotion().getX() = this.velX * (1.0 - age) + (back.x * 2F * age);
+//					this.getMotion().getY() = this.velY * (1.0 - age) + (back.y * 2F * age) - this.getGravityVelocity();
+//					this.getMotion().getZ() = this.velZ * (1.0 - age) + (back.z * 2F * age);
+					this.setMotion(new Vec3d(
+							this.velX * (1.0 - age) + (back.x * 2F * age),
+							this.velY * (1.0 - age) + (back.y * 2F * age) - this.getGravityVelocity(),
+							this.velZ * (1.0 - age) + (back.z * 2F * age)
+					));
 				}
 			}
 		}

@@ -43,9 +43,7 @@ public class EntityTFHydraMortar extends ThrowableEntity {
 
 		setLocationAndAngles(px, py, pz, 0, 0);
 		// these are being set to extreme numbers when we get here, why?
-		head.motionX = 0;
-		head.motionY = 0;
-		head.motionZ = 0;
+		head.setMotion(new Vec3d(0, 0, 0));
 		shoot(head, head.rotationPitch, head.rotationYaw, -20.0F, 0.5F, 1F);
 
 		TwilightForestMod.LOGGER.debug("Launching mortar! Current head motion is {}, {}", head.getMotion().getX(), head.getMotion().getZ());
@@ -58,9 +56,10 @@ public class EntityTFHydraMortar extends ThrowableEntity {
 		this.pushOutOfBlocks(this.getX(), (this.getBoundingBox().minY + this.getBoundingBox().maxY) / 2.0D, this.getZ());
 
 		if (this.onGround) {
-			this.motionX *= 0.9D;
-			this.motionY *= 0.9D;
-			this.motionZ *= 0.9D;
+//			this.motionX *= 0.9D;
+//			this.motionY *= 0.9D;
+//			this.motionZ *= 0.9D;
+			this.getMotion().mul(0.9D, 0.9D, 0.9D);
 
 			if (!world.isRemote && this.fuse-- <= 0) {
 				detonate();

@@ -1,9 +1,6 @@
 package twilightforest.entity;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
@@ -134,7 +131,7 @@ public class EntityTFGoblinKnightUpper extends MonsterEntity {
 		if (this.isAlive()) {
 			// synch target with lower goblin
 			if (getRidingEntity() instanceof LivingEntity && this.getAttackTarget() == null) {
-				this.setAttackTarget(((LivingEntity) this.getRidingEntity()).getAttackTarget());
+				this.setAttackTarget(((MobEntity) this.getRidingEntity()).getAttackTarget());
 			}
 
 			if (!isPassenger() && this.hasShield()) {

@@ -19,6 +19,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
@@ -182,9 +183,14 @@ public class EntityTFTinyBird extends EntityTFBird {
 			double d1 = (double) this.spawnPosition.getY() + 0.1D - this.getY();
 			double d2 = (double) this.spawnPosition.getZ() + 0.5D - this.getZ();
 
-			this.motionX += (Math.signum(d0) * 0.5D - this.motionX) * 0.10000000149011612D;
-			this.motionY += (Math.signum(d1) * 0.699999988079071D - this.motionY) * 0.10000000149011612D;
-			this.motionZ += (Math.signum(d2) * 0.5D - this.motionZ) * 0.10000000149011612D;
+//			this.motionX += (Math.signum(d0) * 0.5D - this.motionX) * 0.10000000149011612D;
+//			this.motionY += (Math.signum(d1) * 0.699999988079071D - this.motionY) * 0.10000000149011612D;
+//			this.motionZ += (Math.signum(d2) * 0.5D - this.motionZ) * 0.10000000149011612D;
+			this.getMotion().add(new Vec3d(
+					(Math.signum(d0) * 0.5D - this.getMotion().getX()) * 0.10000000149011612D,
+					(Math.signum(d1) * 0.699999988079071D - this.getMotion().getY()) * 0.10000000149011612D,
+					(Math.signum(d2) * 0.5D - this.getMotion().getZ()) * 0.10000000149011612D
+			));
 
 			float f = (float) (MathHelper.atan2(this.getMotion().getZ(), this.getMotion().getX()) * (180D / Math.PI)) - 90.0F;
 			float f1 = MathHelper.wrapDegrees(f - this.rotationYaw);

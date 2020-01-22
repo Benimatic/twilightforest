@@ -142,9 +142,10 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 
 
 			if (currentSpeed > maxSpeed) {
-				this.motionX /= currentSpeed / maxSpeed;
-				this.motionY /= currentSpeed / maxSpeed;
-				this.motionZ /= currentSpeed / maxSpeed;
+				this.setMotion(new Vec3d(
+						this.getMotion().getX() / currentSpeed / maxSpeed,
+						this.getMotion().getY() / currentSpeed / maxSpeed,
+						this.getMotion().getZ() / currentSpeed / maxSpeed));
 			} else {
 				float slow = 0.5F;
 //				this.motionX *= slow;

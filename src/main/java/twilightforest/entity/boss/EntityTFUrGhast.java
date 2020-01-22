@@ -33,6 +33,7 @@ import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.EntityTFMiniGhast;
 import twilightforest.entity.EntityTFTowerGhast;
 import twilightforest.entity.NoClipMoveHelper;
+import twilightforest.entity.TFEntities;
 import twilightforest.enums.BossVariant;
 import twilightforest.loot.TFTreasure;
 
@@ -185,7 +186,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 	public void checkDespawn() {
 		if (world.getDifficulty() == Difficulty.PEACEFUL) {
 			if (hasHome()) {
-				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.UR_GHAST));
+				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.UR_GHAST));
 			}
 			remove();
 		} else {
@@ -337,7 +338,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 
 
 		for (int i = 0; i < tries; i++) {
-			EntityTFMiniGhast minion = new EntityTFMiniGhast(world);
+			EntityTFMiniGhast minion = new EntityTFMiniGhast(TFEntities.mini_ghast.get(), world);
 
 			double sx = x + ((rand.nextDouble() - rand.nextDouble()) * rangeXZ);
 			double sy = y + (rand.nextDouble() * rangeY);

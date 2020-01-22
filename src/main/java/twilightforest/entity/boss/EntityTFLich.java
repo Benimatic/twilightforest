@@ -350,7 +350,7 @@ public class EntityTFLich extends MonsterEntity {
 
 		playSound(SoundEvents.ENTITY_GHAST_SHOOT, getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
 
-		EntityTFLichBomb projectile = new EntityTFLichBomb(world, this);
+		EntityTFLichBomb projectile = new EntityTFLichBomb(TFEntities.lich_bomb.get(), world, this);
 		projectile.setLocationAndAngles(sx, sy, sz, rotationYaw, rotationPitch);
 		projectile.shoot(tx, ty, tz, 0.35F, 1.0F);
 

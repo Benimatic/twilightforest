@@ -53,9 +53,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 		this.entityCollisionReduction = 1F;
 		//this.yOffset = this.height / 2.0F;
 		this.setPosition(x, y, z);
-		this.motionX = 0.0D;
-		this.motionY = 0.0D;
-		this.motionZ = 0.0D;
+		this.setMotion(new Vec3d(0, 0, 0));
 		this.prevPosX = x;
 		this.prevPosY = y;
 		this.prevPosZ = z;
@@ -125,14 +123,16 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 			if (this.slideTime > WARMUP_TIME) {
 				final double moveAcceleration = 0.04;
 				Direction moveDirection = dataManager.get(MOVE_DIRECTION);
-				this.motionX += moveDirection.getXOffset() * moveAcceleration;
-				this.motionY += moveDirection.getYOffset() * moveAcceleration;
-				this.motionZ += moveDirection.getZOffset() * moveAcceleration;
+//				this.motionX += moveDirection.getXOffset() * moveAcceleration;
+//				this.motionY += moveDirection.getYOffset() * moveAcceleration;
+//				this.motionZ += moveDirection.getZOffset() * moveAcceleration;
+				this.getMotion().add(moveDirection.getXOffset() * moveAcceleration, moveDirection.getYOffset() * moveAcceleration, moveDirection.getZOffset() * moveAcceleration)
 				this.move(MoverType.SELF, new Vec3d(this.getMotion().getX(), this.getMotion().getY(), this.getMotion().getZ()));
 			}
-			this.motionX *= 0.98;
-			this.motionY *= 0.98;
-			this.motionZ *= 0.98;
+//			this.motionX *= 0.98;
+//			this.motionY *= 0.98;
+//			this.motionZ *= 0.98;
+			this.getMotion().mul(0.98, 0.98, 0.98);
 
 			if (!this.world.isRemote) {
 				if (this.slideTime % 5 == 0) {
@@ -151,17 +151,16 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 				}
 
 				if (this.slideTime == WARMUP_TIME + 40) {
-					this.motionX = 0;
-					this.motionY = 0;
-					this.motionZ = 0;
+					this.setMotion(new Vec3d(0, 0, 0));
 
 					dataManager.set(MOVE_DIRECTION, dataManager.get(MOVE_DIRECTION).getOpposite());
 				}
 
 				if (this.collided) {
-					this.motionX *= 0.699999988079071D;
-					this.motionZ *= 0.699999988079071D;
-					this.motionY *= 0.699999988079071D;
+//					this.motionX *= 0.699999988079071D;
+//					this.motionZ *= 0.699999988079071D;
+//					this.motionY *= 0.699999988079071D;
+					this.getMotion().mul(0.699999988079071D, 0.699999988079071D, 0.699999988079071D);
 
 					this.remove();
 

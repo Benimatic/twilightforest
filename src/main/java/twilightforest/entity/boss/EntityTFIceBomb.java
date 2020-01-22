@@ -80,9 +80,10 @@ public class EntityTFIceBomb extends EntityTFThrowable {
 		super.tick();
 
 		if (this.hasHit) {
-			this.motionX *= 0.1D;
-			this.motionY *= 0.1D;
-			this.motionZ *= 0.1D;
+//			this.motionX *= 0.1D;
+//			this.motionY *= 0.1D;
+//			this.motionZ *= 0.1D;
+			this.getMotion().mul(0.1D, 0.1D, 0.1D);
 
 			this.zoneTimer--;
 			makeIceZone();
@@ -97,13 +98,13 @@ public class EntityTFIceBomb extends EntityTFThrowable {
 	}
 
 	public void makeTrail() {
-		int stateId = Block.getStateId(Blocks.SNOW.getDefaultState());
+		BlockState stateId = Blocks.SNOW.getDefaultState();
 		for (int i = 0; i < 10; i++) {
 			double dx = getX() + 0.75F * (rand.nextFloat() - 0.5F);
 			double dy = getY() + 0.75F * (rand.nextFloat() - 0.5F);
 			double dz = getZ() + 0.75F * (rand.nextFloat() - 0.5F);
 
-			world.addParticle(ParticleTypes.FALLING_DUST, dx, dy, dz, -motionX, -motionY, -motionZ, stateId);
+			world.addParticle(new BlockParticleData(ParticleTypes.FALLING_DUST, stateId), dx, dy, dz, -getMotion().getX(), -getMotion().getY(), -getMotion().getZ());
 		}
 	}
 

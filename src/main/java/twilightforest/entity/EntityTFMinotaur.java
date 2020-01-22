@@ -99,7 +99,7 @@ public class EntityTFMinotaur extends MonsterEntity implements ITFCharger {
 		boolean success = super.attackEntityAsMob(entity);
 
 		if (success && this.isCharging()) {
-			entity.motionY += 0.4;
+			entity.getMotion().add(0, 0.4, 0);
 			playSound(SoundEvents.ENTITY_IRON_GOLEM_ATTACK, 1.0F, 1.0F);
 		}
 

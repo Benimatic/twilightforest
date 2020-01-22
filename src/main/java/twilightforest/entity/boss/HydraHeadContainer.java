@@ -17,6 +17,7 @@ import net.minecraft.world.Difficulty;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.particle.TFParticleType;
+import twilightforest.entity.TFEntities;
 
 import javax.annotation.Nullable;
 import java.util.EnumMap;
@@ -656,7 +657,7 @@ public class HydraHeadContainer {
 				// stop hurting yourself!
 				this.endCurrentAction();
 			} else {
-				EntityTFHydraMortar mortar = new EntityTFHydraMortar(headEntity.world, this.headEntity);
+				EntityTFHydraMortar mortar = new EntityTFHydraMortar(TFEntities.hydra_mortar.get(), headEntity.world, this.headEntity);
 
 				// launch blasting mortars if the player is hiding
 				if (this.targetEntity != null && !headEntity.getEntitySenses().canSee(this.targetEntity)) {
