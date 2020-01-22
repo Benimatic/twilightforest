@@ -1,8 +1,6 @@
 package twilightforest.structures;
 
 import net.minecraft.block.*;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.properties.Half;
 import net.minecraft.state.properties.SlabType;
@@ -10,6 +8,7 @@ import net.minecraft.tileentity.MobSpawnerTileEntity;
 import net.minecraft.tileentity.SignTileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.IBlockReader;
@@ -17,7 +16,6 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.LightType;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraftforge.common.util.BlockSnapshot;
 import twilightforest.TFFeature;

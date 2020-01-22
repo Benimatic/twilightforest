@@ -1,10 +1,6 @@
 package twilightforest.structures.darktower;
 
 import net.minecraft.block.*;
-import net.minecraft.block.HorizontalBlock;
-import net.minecraft.block.LadderBlock;
-import net.minecraft.block.LogBlock;
-import net.minecraft.block.StairsBlock;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.properties.Half;
 import net.minecraft.state.properties.SlabType;
@@ -13,22 +9,17 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
-import twilightforest.loot.TFTreasure;
 import twilightforest.block.TFBlocks;
+import twilightforest.loot.TFTreasure;
 import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.structures.StructureTFDecorator;
-import twilightforest.structures.lichtower.ComponentTFTowerRoof;
-import twilightforest.structures.lichtower.ComponentTFTowerRoofAttachedSlab;
-import twilightforest.structures.lichtower.ComponentTFTowerRoofFence;
-import twilightforest.structures.lichtower.ComponentTFTowerRoofGableForwards;
-import twilightforest.structures.lichtower.ComponentTFTowerRoofSlabForwards;
-import twilightforest.structures.lichtower.ComponentTFTowerWing;
+import twilightforest.structures.lichtower.*;
 import twilightforest.util.RotationUtil;
 import twilightforest.util.TFEntityNames;
 

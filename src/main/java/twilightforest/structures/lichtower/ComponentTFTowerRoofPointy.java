@@ -3,8 +3,8 @@ package twilightforest.structures.lichtower;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.IWorld;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
 import twilightforest.TFFeature;
 

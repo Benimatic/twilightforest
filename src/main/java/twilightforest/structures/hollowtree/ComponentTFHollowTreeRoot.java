@@ -1,11 +1,11 @@
 package twilightforest.structures.hollowtree;
 
-import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.material.Material;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;

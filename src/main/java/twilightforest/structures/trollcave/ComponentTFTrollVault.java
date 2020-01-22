@@ -3,12 +3,12 @@ package twilightforest.structures.trollcave;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.IWorld;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
 import twilightforest.TFFeature;
-import twilightforest.loot.TFTreasure;
 import twilightforest.block.TFBlocks;
+import twilightforest.loot.TFTreasure;
 import twilightforest.structures.StructureTFComponentOld;
 
 import java.util.Random;

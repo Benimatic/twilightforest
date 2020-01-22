@@ -1,9 +1,9 @@
 package twilightforest.structures.lichtower;
 
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.gen.ChunkGenerator;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentOld;

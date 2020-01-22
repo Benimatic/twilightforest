@@ -1,20 +1,20 @@
 package twilightforest.structures;
 
-import net.minecraft.block.CarvedPumpkinBlock;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.EntityType;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.CarvedPumpkinBlock;
+import net.minecraft.entity.EntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.gen.ChunkGenerator;
 import twilightforest.TFFeature;
+import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
-import twilightforest.block.TFBlocks;
 
 import java.util.Random;
 

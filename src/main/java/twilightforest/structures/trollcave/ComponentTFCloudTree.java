@@ -2,8 +2,8 @@ package twilightforest.structures.trollcave;
 
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.IWorld;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponentOld;

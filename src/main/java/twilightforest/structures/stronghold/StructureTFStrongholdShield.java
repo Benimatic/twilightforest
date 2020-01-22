@@ -1,11 +1,11 @@
 package twilightforest.structures.stronghold;
 
-import net.minecraft.block.DirectionalBlock;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.DirectionalBlock;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.IWorld;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;

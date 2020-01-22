@@ -1,9 +1,7 @@
 package twilightforest.structures.darktower;
 
 import net.minecraft.block.Blocks;
-import twilightforest.block.BlockTFTowerWood;
 import twilightforest.block.TFBlocks;
-import twilightforest.enums.TowerWoodVariant;
 import twilightforest.structures.StructureTFDecorator;
 
 public class StructureDecoratorDarkTower extends StructureTFDecorator {

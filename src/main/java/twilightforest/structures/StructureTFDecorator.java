@@ -2,7 +2,6 @@ package twilightforest.structures;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.structures.darktower.StructureDecoratorDarkTower;
 import twilightforest.structures.finalcastle.StructureTFDecoratorCastle;

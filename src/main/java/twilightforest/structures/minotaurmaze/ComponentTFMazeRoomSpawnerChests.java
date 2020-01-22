@@ -4,13 +4,13 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.gen.ChunkGenerator;
 import twilightforest.TFFeature;
-import twilightforest.loot.TFTreasure;
 import twilightforest.block.TFBlocks;
+import twilightforest.loot.TFTreasure;
 import twilightforest.util.TFEntityNames;
 
 import java.util.Random;
