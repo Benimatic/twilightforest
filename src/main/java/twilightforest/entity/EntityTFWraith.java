@@ -164,7 +164,7 @@ public class EntityTFWraith extends FlyingEntity implements IMob {
 		@Override
 		public void tick() {
 			if (this.parentEntity.getAttackTarget() == null) {
-				this.parentEntity.rotationYaw = -((float) MathHelper.atan2(this.parentEntity.motionX, this.parentEntity.motionZ)) * (180F / (float) Math.PI);
+				this.parentEntity.rotationYaw = -((float) MathHelper.atan2(this.parentEntity.getMotion().getX(), this.parentEntity.getMotion().getZ())) * (180F / (float) Math.PI);
 				this.parentEntity.renderYawOffset = this.parentEntity.rotationYaw;
 			} else {
 				LivingEntity entitylivingbase = this.parentEntity.getAttackTarget();
@@ -244,7 +244,7 @@ public class EntityTFWraith extends FlyingEntity implements IMob {
 
 	private void despawnIfPeaceful() {
 		if (!world.isRemote && world.getDifficulty() == Difficulty.PEACEFUL)
-			setDead();
+			remove();
 	}
 
 	@Override

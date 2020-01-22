@@ -199,11 +199,11 @@ public class EntityTFBlockGoblin extends MonsterEntity implements IEntityMultiPa
 
 			// interpolate chain position
 			double sx = this.getX();
-			double sy = this.getY() + this.height - 0.1;
+			double sy = this.getY() + this.getHeight() - 0.1;
 			double sz = this.getZ();
 
 			double ox = sx - blockPos.x;
-			double oy = sy - blockPos.y - (block.height / 3D);
+			double oy = sy - blockPos.y - (block.getHeight() / 3D);
 			double oz = sz - blockPos.z;
 
 			this.chain1.setPosition(sx - ox * 0.4, sy - oy * 0.4, sz - oz * 0.4);

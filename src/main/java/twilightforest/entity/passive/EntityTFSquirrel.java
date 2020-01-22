@@ -50,7 +50,8 @@ public class EntityTFSquirrel extends CreatureEntity implements IAnimals {
 	 * TODO: maybe they should just take less damage?
 	 */
 	@Override
-	public void fall(float distance, float multiplier) {
+	public boolean handleFallDamage(float distance, float multiplier) {
+		return false;
 	}
 
 	@Override
@@ -86,8 +87,7 @@ public class EntityTFSquirrel extends CreatureEntity implements IAnimals {
 	}
 
 	@Override
-	protected boolean canDespawn() {
+	public boolean canDespawn(double p_213397_1_) {
 		return false;
 	}
-
 }

@@ -60,12 +60,12 @@ public class EntityTFHydraPart extends LivingEntity {
 	@Override
 	public void tick() {
 		if (this.hydra != null && this.hydra.deathTime > 190) {
-			setDead();
+			remove();
 		}
 
 		//  just die if we've been alive 60 seconds and there's still no body
 		if (this.hydra == null && this.ticksExisted > 1200) {
-			setDead();
+			remove();
 		}
 
 		super.baseTick();
@@ -130,7 +130,7 @@ public class EntityTFHydraPart extends LivingEntity {
 	}
 
 	@Override
-	protected boolean canDespawn() {
+	public boolean canDespawn(double p_213397_1_) {
 		return hydra == null;
 	}
 }

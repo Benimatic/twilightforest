@@ -125,19 +125,19 @@ public class EntityTFMinoshroom extends EntityTFMinotaur {
 	}
 
 	@Override
-	protected boolean canDespawn() {
+	public boolean canDespawn(double p_213397_1_) {
 		return false;
 	}
 
 	@Override
-	protected void despawnEntity() {
+	public void checkDespawn() {
 		if (world.getDifficulty() == Difficulty.PEACEFUL) {
 			if (hasHome()) {
 				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.MINOSHROOM));
 			}
-			setDead();
+			remove();
 		} else {
-			super.despawnEntity();
+			super.checkDespawn();
 		}
 	}
 

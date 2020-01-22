@@ -36,7 +36,7 @@ public class EntityTFProtectionBox extends Entity {
 		super.tick();
 
 		if (lifeTime <= 1) {
-			setDead();
+			remove();
 		} else {
 			lifeTime--;
 		}

@@ -326,19 +326,19 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 	public void setSwingingArms(boolean swingingArms) {} // todo 1.12
 
 	@Override
-	public boolean canDespawn() {
+	public boolean canDespawn(double p_213397_1_) {
 		return false;
 	}
 
 	@Override
-	protected void despawnEntity() {
+	public void checkDespawn() {
 		if (world.getDifficulty() == Difficulty.PEACEFUL) {
 			if (hasHome()) {
 				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.ALPHA_YETI));
 			}
-			setDead();
+			remove();
 		} else {
-			super.despawnEntity();
+			super.checkDespawn();
 		}
 	}
 

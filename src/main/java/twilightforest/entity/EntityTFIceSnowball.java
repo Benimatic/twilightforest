@@ -74,7 +74,7 @@ public class EntityTFIceSnowball extends EntityTFThrowable {
 	private void die() {
 		if (!this.world.isRemote) {
 			this.world.setEntityState(this, (byte) 3);
-			this.setDead();
+			this.remove();
 		}
 	}
 }

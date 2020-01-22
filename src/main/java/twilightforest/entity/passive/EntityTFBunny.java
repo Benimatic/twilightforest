@@ -94,7 +94,7 @@ public class EntityTFBunny extends CreatureEntity implements IAnimals {
 	}
 
 	@Override
-	protected boolean canDespawn() {
+	public boolean canDespawn(double p_213397_1_) {
 		return false;
 	}
 

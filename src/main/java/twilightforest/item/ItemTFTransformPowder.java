@@ -83,7 +83,7 @@ public class ItemTFTransformPowder extends ItemTF {
 		}
 
 		target.world.addEntity(newEntity);
-		target.setDead();
+		target.remove();
 		stack.shrink(1);
 
 		if (target instanceof LivingEntity) {

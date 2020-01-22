@@ -88,7 +88,7 @@ public class EntityTFTowerGolem extends MonsterEntity {
 		}
 
 		// [VanillaCopy] last half of EntityIronGolem.onLivingUpdate
-		if (this.motionX * this.motionX + this.motionZ * this.motionZ > 2.500000277905201E-7D && this.rand.nextInt(5) == 0) {
+		if (this.getMotion().getX() * this.getMotion().getX() + this.getMotion().getZ() * this.getMotion().getZ() > 2.500000277905201E-7D && this.rand.nextInt(5) == 0) {
 			int i = MathHelper.floor(this.getX());
 			int j = MathHelper.floor(this.getY() - 0.20000000298023224D);
 			int k = MathHelper.floor(this.getZ());

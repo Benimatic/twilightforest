@@ -109,13 +109,13 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 
 	@Override
 	public boolean canBeCollidedWith() {
-		return !this.isDead;
+		return this.isAlive();
 	}
 
 	@Override
 	public void tick() {
 		if (this.myState == null || this.myState.getMaterial() == Material.AIR) {
-			this.setDead();
+			this.remove();
 		} else {
 			this.prevPosX = this.getX();
 			this.prevPosY = this.getY();
@@ -143,11 +143,11 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 
 				if (this.slideTime == 1) {
 					if (this.world.getBlockState(pos) != this.myState) {
-						this.setDead();
+						this.remove();
 						return;
 					}
 
-					this.world.setBlockToAir(pos);
+					this.world.removeBlock(pos, false);
 				}
 
 				if (this.slideTime == WARMUP_TIME + 40) {
@@ -163,7 +163,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 					this.motionZ *= 0.699999988079071D;
 					this.motionY *= 0.699999988079071D;
 
-					this.setDead();
+					this.remove();
 
 					if (this.world.mayPlace(myState.getBlock(), pos, true, Direction.UP, null)) {
 						world.setBlockState(pos, myState);
@@ -172,7 +172,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 					}
 				} else if (this.slideTime > 100 && (pos.getY() < 1 || pos.getY() > 256) || this.slideTime > 600) {
 					this.entityDropItem(new ItemStack(this.myState.getBlock(), 1, this.myState.getBlock().damageDropped(this.myState)), 0.0F);
-					this.setDead();
+					this.remove();
 				}
 
 				// push things out and damage them

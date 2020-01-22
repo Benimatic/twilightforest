@@ -12,7 +12,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
 import twilightforest.client.particle.TFParticleType;
 
 import java.util.List;
@@ -55,7 +54,7 @@ public class EntityTFFallingIce extends FallingBlockEntity {
 			for (EntityTFFallingIce entity : nearby) {
 				if (entity != this) {
 					if (entity.fallTime < this.fallTime) {
-						entity.setDead();
+						entity.remove();
 					}
 				}
 			}

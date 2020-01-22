@@ -89,7 +89,7 @@ public class EntityTFIceBomb extends EntityTFThrowable {
 
 			if (!world.isRemote && this.zoneTimer <= 0) {
 				world.playEvent(2001, new BlockPos(this), Block.getStateId(Blocks.ICE.getDefaultState()));
-				setDead();
+				remove();
 			}
 		} else {
 			makeTrail();
@@ -136,7 +136,7 @@ public class EntityTFIceBomb extends EntityTFThrowable {
 					world.setBlockState(pos, Blocks.ICE.getDefaultState());
 					world.setBlockState(pos.up(), Blocks.ICE.getDefaultState());
 
-					entity.setDead();
+					entity.remove();
 				} else {
 					entity.attackEntityFrom(DamageSource.MAGIC, 1);
 					entity.addPotionEffect(new EffectInstance(TFPotions.frosty.get(), 20 * 5, 2));

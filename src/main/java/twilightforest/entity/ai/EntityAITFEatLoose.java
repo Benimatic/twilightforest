@@ -73,7 +73,7 @@ public class EntityAITFEatLoose extends Goal {
 		if (this.temptedQuestRam.getDistanceSq(this.temptingItem) < 6.25D) {
 			DyeColor color = DyeColor.byMetadata(temptingItem.getItem().getItemDamage());
 			if (!temptedQuestRam.isColorPresent(color)) { // we did technically already check this, but why not check again
-				this.temptingItem.setDead();
+				this.temptingItem.remove();
 				this.temptedQuestRam.playLivingSound();
 				this.temptedQuestRam.setColorPresent(color);
 				this.temptedQuestRam.animateAddColor(color, 50); // TODO: find a better place for this?  refactor?

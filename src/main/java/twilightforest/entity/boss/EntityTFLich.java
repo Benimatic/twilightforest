@@ -155,19 +155,19 @@ public class EntityTFLich extends MonsterEntity {
 	}
 
 	@Override
-	protected boolean canDespawn() {
+	public boolean canDespawn(double p_213397_1_) {
 		return false;
 	}
 
 	@Override
-	protected void despawnEntity() {
+	public void checkDespawn() {
 		if (world.getDifficulty() == Difficulty.PEACEFUL && !isShadowClone()) {
 			if (hasHome()) {
 				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.LICH));
 			}
-			setDead();
+			remove();
 		} else {
-			super.despawnEntity();
+			super.checkDespawn();
 		}
 	}
 
@@ -363,7 +363,7 @@ public class EntityTFLich extends MonsterEntity {
 		for (LivingEntity mob : nearbyMobs) {
 			if (getEntitySenses().canSee(mob)) {
 				mob.spawnExplosionParticle();
-				mob.setDead();
+				mob.remove();
 				// play death sound
 //					world.playSoundAtEntity(mob, mob.getDeathSound(), mob.getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
 

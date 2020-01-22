@@ -73,7 +73,7 @@ public class EntityTFSlimeProjectile extends EntityTFThrowable {
 	private void die() {
 		if (!this.world.isRemote) {
 			this.playSound(SoundEvents.ENTITY_SLIME_SQUISH, 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
-			this.setDead();
+			this.remove();
 			this.world.setEntityState(this, (byte) 3);
 		}
 	}

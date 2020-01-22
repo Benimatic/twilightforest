@@ -68,8 +68,7 @@ public class EntityTFTomeBolt extends EntityTFThrowable {
 			}
 
 			this.world.setEntityState(this, (byte) 3);
-			this.setDead();
+			this.remove();
 		}
 	}
-
 }

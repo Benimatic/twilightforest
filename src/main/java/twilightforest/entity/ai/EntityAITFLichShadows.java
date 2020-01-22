@@ -70,7 +70,7 @@ public class EntityAITFLichShadows extends Goal {
 			findNewMaster();
 		}
 		if (!lich.world.isRemote && (lich.getMasterLich() == null || lich.getMasterLich().isDead)) {
-			lich.setDead();
+			lich.remove();
 		}
 	}
 

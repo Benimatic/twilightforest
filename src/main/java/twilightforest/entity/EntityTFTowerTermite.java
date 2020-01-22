@@ -172,7 +172,7 @@ public class EntityTFTowerTermite extends MonsterEntity {
 					// TF - Change block type
 					world.setBlockState(blockpos, TFBlocks.tower_wood_infested.get().getDefaultState(), 3);
 					this.creature.spawnExplosionParticle();
-					this.creature.setDead();
+					this.creature.remove();
 				}
 			}
 		}

@@ -87,7 +87,7 @@ public class EntityTFNatureBolt extends EntityTFThrowable implements ITFProjecti
 			}
 
 			this.world.setEntityState(this, (byte) 3);
-			this.setDead();
+			this.remove();
 		}
 	}
 

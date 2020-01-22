@@ -700,20 +700,20 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 	}
 
 	@Override
-	protected void despawnEntity() {
+	public void checkDespawn() {
 		if (world.getDifficulty() == Difficulty.PEACEFUL) {
 			if (hasHome()) {
 				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.NAGA));
 			}
-			setDead();
+			remove();
 		} else {
-			super.despawnEntity();
+			super.checkDespawn();
 		}
 	}
 
 	@Override
-	public void setDead() {
-		super.setDead();
+	public void remove() {
+		super.remove();
 		for (EntityTFNagaSegment seg : bodySegments) {
 			// must use this instead of setDead
 			// since multiparts are not added to the world tick list which is what checks isDead

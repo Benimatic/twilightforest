@@ -34,7 +34,7 @@ public class EntityTFTowerBroodling extends EntityTFSwarmSpider {
 		double sz = getZ() + (rand.nextBoolean() ? 0.9 : -0.9);
 		another.setLocationAndAngles(sx, sy, sz, rand.nextFloat() * 360F, 0.0F);
 		if (!another.getCanSpawnHere()) {
-			another.setDead();
+			another.remove();
 			return false;
 		}
 		world.addEntity(another);

@@ -26,10 +26,9 @@ public class EntityTFLichBomb extends EntityTFThrowable {
 
 	private void makeTrail() {
 		for (int i = 0; i < 1; i++) {
-			double sx = 0.5 * (rand.nextDouble() - rand.nextDouble()) + this.motionX;
-			double sy = 0.5 * (rand.nextDouble() - rand.nextDouble()) + this.motionY;
-			double sz = 0.5 * (rand.nextDouble() - rand.nextDouble()) + this.motionZ;
-
+			double sx = 0.5 * (rand.nextDouble() - rand.nextDouble()) + this.getMotion().getX();
+			double sy = 0.5 * (rand.nextDouble() - rand.nextDouble()) + this.getMotion().getY();
+			double sz = 0.5 * (rand.nextDouble() - rand.nextDouble()) + this.getMotion().getZ();
 
 			double dx = getX() + sx;
 			double dy = getY() + sy;
@@ -70,7 +69,7 @@ public class EntityTFLichBomb extends EntityTFThrowable {
 	private void explode() {
 		if (!this.world.isRemote) {
 			this.world.newExplosion(this, this.getX(), this.getY(), this.getZ(), 2F, false, false);
-			this.setDead();
+			this.remove();
 		}
 	}
 

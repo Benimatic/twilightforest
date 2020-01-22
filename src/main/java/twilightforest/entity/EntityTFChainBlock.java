@@ -207,7 +207,7 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 			}
 		} else {
 			if (getThrower() == null) {
-				setDead();
+				remove();
 			} else {
 				double distToPlayer = this.getDistance(this.getThrower());
 				// return if far enough away
@@ -218,7 +218,7 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 				if (this.isReturning) {
 					// despawn if close enough
 					if (distToPlayer < 2F) {
-						this.setDead();
+						this.remove();
 					}
 
 					LivingEntity returnTo = this.getThrower();
@@ -236,8 +236,8 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 	}
 
 	@Override
-	public void setDead() {
-		super.setDead();
+	public void remove() {
+		super.remove();
 		LivingEntity thrower = this.getThrower();
 		if (thrower != null && thrower.getActiveItemStack().getItem() == TFItems.block_and_chain.get()) {
 			thrower.resetActiveHand();

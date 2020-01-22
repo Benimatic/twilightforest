@@ -106,7 +106,7 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 
 		if (!this.world.isRemote) {
 			if (this.getThrower() == null) {
-				this.setDead();
+				this.remove();
 				return;
 			}
 
@@ -115,10 +115,10 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 
 			if (this.isReturning()) {
 				// if we are returning, and are near enough to the player, then we are done
-				List<LivingEntity> list = this.world.getEntitiesWithinAABB(LivingEntity.class, this.getBoundingBox().offset(this.motionX, this.motionY, this.motionZ).grow(1.0D, 1.0D, 1.0D));
+				List<LivingEntity> list = this.world.getEntitiesWithinAABB(LivingEntity.class, this.getBoundingBox().offset(this.getMotion().getX(), this.getMotion().getY(), this.getMotion().getZ()).grow(1.0D, 1.0D, 1.0D));
 
 				if (list.contains(this.getThrower())) {
-					this.setDead();
+					this.remove();
 				}
 			} else {
 				destPoint = destPoint.add(getThrower().getLookVec().scale(16F));
@@ -133,7 +133,7 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 			this.getMotion().subtract(velocity.x, velocity.y, velocity.z);
 
 			// normalize speed
-			float currentSpeed = MathHelper.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
+			float currentSpeed = MathHelper.sqrt(this.getMotion().getX() * this.getMotion().getX() + this.getMotion().getY() * this.getMotion().getY() + this.getMotion().getZ() * this.getMotion().getZ());
 
 			float maxSpeed = 0.5F;
 
@@ -156,8 +156,8 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 	}
 
 	@Override
-	public void setDead() {
-		super.setDead();
+	public void remove() {
+		super.remove();
 		LivingEntity thrower = this.getThrower();
 		if (thrower != null && thrower.getActiveItemStack().getItem() == TFItems.cube_of_annihilation.get()) {
 			thrower.resetActiveHand();

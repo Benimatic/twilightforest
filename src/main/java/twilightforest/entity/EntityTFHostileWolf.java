@@ -55,7 +55,7 @@ public class EntityTFHostileWolf extends WolfEntity implements IMob {
 	public void tick() {
 		super.tick();
 		if (!world.isRemote && world.getDifficulty() == Difficulty.PEACEFUL) {
-			setDead();
+			remove();
 		}
 	}
 

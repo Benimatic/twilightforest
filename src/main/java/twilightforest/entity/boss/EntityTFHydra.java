@@ -119,17 +119,17 @@ public class EntityTFHydra extends LivingEntity implements IEntityMultiPart, IMo
 	}
 
 	@Override
-	protected void despawnEntity() {
+	public void checkDespawn() {
 		if (world.getDifficulty() == Difficulty.PEACEFUL) {
 			world.setBlockState(getPosition().add(0, 2, 0), TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.HYDRA));
-			setDead();
+			remove();
 			for (HydraHeadContainer container : hc) {
 				if (container.headEntity != null) {
-					container.headEntity.setDead();
+					container.headEntity.remove();
 				}
 			}
 		} else {
-			super.despawnEntity();
+			super.checkDespawn();
 		}
 	}
 
@@ -773,7 +773,7 @@ public class EntityTFHydra extends LivingEntity implements IEntityMultiPart, IMo
 				}
 			}
 
-			this.setDead();
+			this.remove();
 		}
 
 		for (int i = 0; i < 20; ++i) {

@@ -137,7 +137,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 						target.playSound(SoundEvents.ENTITY_GENERIC_BIG_FALL, 1.0F, ((random.nextFloat() - random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
 						animateTargetShatter(world, (LivingEntity) target);
 						if (!world.isRemote) {
-							target.setDead();
+							target.remove();
 							target.onDeath(DamageSource.causeIndirectMagicDamage(living, living));
 						}
 						living.resetActiveHand();

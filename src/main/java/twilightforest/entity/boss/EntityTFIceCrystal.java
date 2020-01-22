@@ -80,7 +80,7 @@ public class EntityTFIceCrystal extends EntityTFIceMob {
 		if (!world.isRemote) {
 			this.crystalAge++;
 			if (this.maxCrystalAge > 0 && this.crystalAge >= this.maxCrystalAge) {
-				this.setDead();
+				this.remove();
 			}
 		}
 	}

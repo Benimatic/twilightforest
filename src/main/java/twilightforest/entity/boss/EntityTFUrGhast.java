@@ -177,19 +177,19 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 	}
 
 	@Override
-	protected boolean canDespawn() {
+	public boolean canDespawn(double p_213397_1_) {
 		return false;
 	}
 
 	@Override
-	protected void despawnEntity() {
+	public void checkDespawn() {
 		if (world.getDifficulty() == Difficulty.PEACEFUL) {
 			if (hasHome()) {
 				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.UR_GHAST));
 			}
-			setDead();
+			remove();
 		} else {
-			super.despawnEntity();
+			super.checkDespawn();
 		}
 	}
 
@@ -365,7 +365,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		// despawn mini ghasts that are in our AABB
 		for (EntityTFMiniGhast ghast : world.getEntitiesWithinAABB(EntityTFMiniGhast.class, this.getBoundingBox().grow(1, 1, 1))) {
 			ghast.spawnExplosionParticle();
-			ghast.setDead();
+			ghast.remove();
 			this.heal(2);
 		}
 

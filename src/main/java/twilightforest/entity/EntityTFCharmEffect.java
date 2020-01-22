@@ -93,7 +93,7 @@ public class EntityTFCharmEffect extends Entity {
 
 		if (!this.world.isRemote
 				&& (this.ticksExisted > 200 || (orbiting != null && !orbiting.isAlive()))) {
-			this.setDead();
+			this.remove();
 		}
 	}
 

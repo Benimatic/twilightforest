@@ -232,19 +232,19 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 	}
 
 	@Override
-	protected boolean canDespawn() {
+	public boolean canDespawn(double p_213397_1_) {
 		return false;
 	}
 
 	@Override
-	protected void despawnEntity() {
+	public void checkDespawn() {
 		if (world.getDifficulty() == Difficulty.PEACEFUL) {
 			if (hasHome()) {
 				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.SNOW_QUEEN));
 			}
-			setDead();
+			remove();
 		} else {
-			super.despawnEntity();
+			super.checkDespawn();
 		}
 	}
 
@@ -328,7 +328,8 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 	}
 
 	@Override
-	public void fall(float distance, float damageMultiplier) {
+	public boolean handleFallDamage(float distance, float damageMultiplier) {
+		return false;
 	}
 
 	@Override

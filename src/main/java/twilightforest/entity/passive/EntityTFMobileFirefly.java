@@ -99,7 +99,8 @@ public class EntityTFMobileFirefly extends AmbientEntity {
 	}
 
 	@Override
-	public void fall(float dist, float mult) {
+	public boolean handleFallDamage(float dist, float mult) {
+		return false;
 	}
 
 	@Override
