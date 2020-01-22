@@ -4,22 +4,10 @@ import net.minecraft.util.IStringSerializable;
 
 import java.util.Locale;
 
-//TODO: Slim this down, removing those that aren't in use
 public enum TowerDeviceVariant implements IStringSerializable {
-	REAPPEARING_INACTIVE,
-	REAPPEARING_ACTIVE,
-	VANISH_INACTIVE,
-	VANISH_ACTIVE,
-	VANISH_LOCKED,
-	VANISH_UNLOCKED,
 	BUILDER_INACTIVE,
 	BUILDER_ACTIVE,
-	BUILDER_TIMEOUT,
-	ANTIBUILDER,
-	GHASTTRAP_INACTIVE,
-	GHASTTRAP_ACTIVE,
-	REACTOR_INACTIVE,
-	REACTOR_ACTIVE;
+	BUILDER_TIMEOUT;
 
 	@Override
 	public String getName() {
