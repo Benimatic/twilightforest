@@ -68,75 +68,79 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 			return;
 		}
 
-		EntityRayTraceResult entityRay = (EntityRayTraceResult) ray;
+		if (ray instanceof EntityRayTraceResult) {
+			EntityRayTraceResult entityRay = (EntityRayTraceResult) ray;
 
-		// only hit living things
-		if (entityRay.getEntity() instanceof LivingEntity && entityRay.getEntity() != this.getThrower()) {
-			if (entityRay.getEntity().attackEntityFrom(this.getDamageSource(), 10)) {
-				// age when we hit a monster so that we go back to the player faster
-				this.ticksExisted += 60;
+			// only hit living things
+			if (entityRay.getEntity() instanceof LivingEntity && entityRay.getEntity() != this.getThrower()) {
+				if (entityRay.getEntity().attackEntityFrom(this.getDamageSource(), 10)) {
+					// age when we hit a monster so that we go back to the player faster
+					this.ticksExisted += 60;
+				}
 			}
 		}
 
-		BlockRayTraceResult blockRay = (BlockRayTraceResult) ray;
+		if (ray instanceof BlockRayTraceResult) {
+			BlockRayTraceResult blockRay = (BlockRayTraceResult) ray;
 
-		if (blockRay.getPos() != null && !this.world.isAirBlock(blockRay.getPos())) {
-			if (!this.isReturning) {
-				playSound(SoundEvents.BLOCK_ANVIL_LAND, 0.125f, this.rand.nextFloat());
-			}
-
-			if (this.blocksSmashed < MAX_SMASH) {
-				if (this.world.getBlockState(blockRay.getPos()).getBlockHardness(world, blockRay.getPos()) > 0.3F) {
-					// riccochet
-					double bounce = 0.6;
-					this.velX *= bounce;
-					this.velY *= bounce;
-					this.velZ *= bounce;
-
-
-					switch (blockRay.getFace()) {
-						case DOWN:
-							if (this.velY > 0) {
-								this.velY *= -bounce;
-							}
-							break;
-						case UP:
-							if (this.velY < 0) {
-								this.velY *= -bounce;
-							}
-							break;
-						case NORTH:
-							if (this.velZ > 0) {
-								this.velZ *= -bounce;
-							}
-							break;
-						case SOUTH:
-							if (this.velZ < 0) {
-								this.velZ *= -bounce;
-							}
-							break;
-						case WEST:
-							if (this.velX > 0) {
-								this.velX *= -bounce;
-							}
-							break;
-						case EAST:
-							if (this.velX < 0) {
-								this.velX *= -bounce;
-							}
-							break;
-					}
+			if (blockRay.getPos() != null && !this.world.isAirBlock(blockRay.getPos())) {
+				if (!this.isReturning) {
+					playSound(SoundEvents.BLOCK_ANVIL_LAND, 0.125f, this.rand.nextFloat());
 				}
 
-				// demolish some blocks
-				this.affectBlocksInAABB(this.getBoundingBox());
-			}
+				if (this.blocksSmashed < MAX_SMASH) {
+					if (this.world.getBlockState(blockRay.getPos()).getBlockHardness(world, blockRay.getPos()) > 0.3F) {
+						// riccochet
+						double bounce = 0.6;
+						this.velX *= bounce;
+						this.velY *= bounce;
+						this.velZ *= bounce;
 
-			this.isReturning = true;
 
-			// if we have smashed enough, add to ticks so that we go back faster
-			if (this.blocksSmashed > MAX_SMASH && this.ticksExisted < 60) {
-				this.ticksExisted += 60;
+						switch (blockRay.getFace()) {
+							case DOWN:
+								if (this.velY > 0) {
+									this.velY *= -bounce;
+								}
+								break;
+							case UP:
+								if (this.velY < 0) {
+									this.velY *= -bounce;
+								}
+								break;
+							case NORTH:
+								if (this.velZ > 0) {
+									this.velZ *= -bounce;
+								}
+								break;
+							case SOUTH:
+								if (this.velZ < 0) {
+									this.velZ *= -bounce;
+								}
+								break;
+							case WEST:
+								if (this.velX > 0) {
+									this.velX *= -bounce;
+								}
+								break;
+							case EAST:
+								if (this.velX < 0) {
+									this.velX *= -bounce;
+								}
+								break;
+						}
+					}
+
+					// demolish some blocks
+					this.affectBlocksInAABB(this.getBoundingBox());
+				}
+
+				this.isReturning = true;
+
+				// if we have smashed enough, add to ticks so that we go back faster
+				if (this.blocksSmashed > MAX_SMASH && this.ticksExisted < 60) {
+					this.ticksExisted += 60;
+				}
 			}
 		}
 	}

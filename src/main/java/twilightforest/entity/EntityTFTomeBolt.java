@@ -8,6 +8,7 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
@@ -60,11 +61,13 @@ public class EntityTFTomeBolt extends EntityTFThrowable {
 	@Override
 	protected void onImpact(RayTraceResult result) {
 		if (!this.world.isRemote) {
-			if (result.entityHit instanceof LivingEntity
-					&& result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 6)) {
-				// inflict move slowdown
-				int duration = world.getDifficulty() == Difficulty.PEACEFUL ? 3 : world.getDifficulty() == Difficulty.NORMAL ? 7 : 9;
-				((LivingEntity) result.entityHit).addPotionEffect(new EffectInstance(Effects.SLOWNESS, duration * 20, 1));
+			if (result instanceof EntityRayTraceResult) {
+				if (((EntityRayTraceResult)result).getEntity() instanceof LivingEntity
+						&& ((EntityRayTraceResult)result).getEntity().attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 6)) {
+					// inflict move slowdown
+					int duration = world.getDifficulty() == Difficulty.PEACEFUL ? 3 : world.getDifficulty() == Difficulty.NORMAL ? 7 : 9;
+					((LivingEntity) ((EntityRayTraceResult)result).getEntity()).addPotionEffect(new EffectInstance(Effects.SLOWNESS, duration * 20, 1));
+				}
 			}
 
 			this.world.setEntityState(this, (byte) 3);

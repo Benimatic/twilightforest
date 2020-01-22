@@ -21,7 +21,6 @@ import twilightforest.util.WorldUtil;
 
 import java.util.List;
 
-
 public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 
 	private boolean hasHitObstacle = false;
@@ -48,12 +47,16 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 			return;
 
 		// only hit living things
-		if (((EntityRayTraceResult) ray).getEntity() instanceof LivingEntity && ((EntityRayTraceResult) ray).getEntity().attackEntityFrom(this.getDamageSource(), 10)) {
-			this.ticksExisted += 60;
+		if (ray instanceof EntityRayTraceResult) {
+			if (((EntityRayTraceResult) ray).getEntity() instanceof LivingEntity && ((EntityRayTraceResult) ray).getEntity().attackEntityFrom(this.getDamageSource(), 10)) {
+				this.ticksExisted += 60;
+			}
 		}
 
-		if (((BlockRayTraceResult)ray).getPos() != null && !this.world.isAirBlock(((BlockRayTraceResult)ray).getPos())) {
-			this.affectBlocksInAABB(this.getBoundingBox().grow(0.2F, 0.2F, 0.2F));
+		if (ray instanceof BlockRayTraceResult) {
+			if (((BlockRayTraceResult)ray).getPos() != null && !this.world.isAirBlock(((BlockRayTraceResult)ray).getPos())) {
+				this.affectBlocksInAABB(this.getBoundingBox().grow(0.2F, 0.2F, 0.2F));
+			}
 		}
 	}
 

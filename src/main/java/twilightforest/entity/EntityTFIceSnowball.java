@@ -63,9 +63,11 @@ public class EntityTFIceSnowball extends EntityTFThrowable {
 
 	@Override
 	protected void onImpact(RayTraceResult result) {
-		if (!world.isRemote && ((EntityRayTraceResult)result).getEntity() instanceof LivingEntity) {
-			((EntityRayTraceResult)result).getEntity().attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), DAMAGE);
-			// TODO: damage armor?
+		if (result instanceof EntityRayTraceResult) {
+			if (!world.isRemote && ((EntityRayTraceResult)result).getEntity() instanceof LivingEntity) {
+				((EntityRayTraceResult)result).getEntity().attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), DAMAGE);
+				// TODO: damage armor?
+			}
 		}
 
 		die();

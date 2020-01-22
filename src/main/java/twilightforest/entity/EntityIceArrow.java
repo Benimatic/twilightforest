@@ -36,9 +36,11 @@ public class EntityIceArrow extends EntityTFArrow {
 	@Override
 	protected void onHit(RayTraceResult ray) {
 		super.onHit(ray);
-		if (!world.isRemote && ((EntityRayTraceResult)ray).getEntity() instanceof LivingEntity) {
-			int chillLevel = 2;
-			((LivingEntity) ((EntityRayTraceResult)ray).getEntity()).addPotionEffect(new EffectInstance(TFPotions.frosty.get(), 20 * 10, chillLevel));
+		if (ray instanceof EntityRayTraceResult) {
+			if (!world.isRemote && ((EntityRayTraceResult)ray).getEntity() instanceof LivingEntity) {
+				int chillLevel = 2;
+				((LivingEntity) ((EntityRayTraceResult)ray).getEntity()).addPotionEffect(new EffectInstance(TFPotions.frosty.get(), 20 * 10, chillLevel));
+			}
 		}
 	}
 }

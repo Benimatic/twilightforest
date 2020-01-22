@@ -10,6 +10,7 @@ import net.minecraft.fluid.IFluidState;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.IndirectEntityDamageSource;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Explosion;
@@ -73,12 +74,14 @@ public class EntityTFHydraMortar extends ThrowableEntity {
 
 	@Override
 	protected void onImpact(RayTraceResult ray) {
-		if (ray.entityHit == null && !megaBlast) {
-			// we hit the ground
-			this.motionY = 0;
-			this.onGround = true;
-		} else if (!world.isRemote && ray.entityHit != owner && !isPartOfHydra(ray.entityHit)) {
-			detonate();
+		if (ray instanceof EntityRayTraceResult) {
+			if (((EntityRayTraceResult)ray).getEntity() == null && !megaBlast) {
+				// we hit the ground
+				this.motionY = 0;
+				this.onGround = true;
+			} else if (!world.isRemote && ((EntityRayTraceResult)ray).getEntity() != owner && !isPartOfHydra(((EntityRayTraceResult)ray).getEntity())) {
+				detonate();
+			}
 		}
 	}
 

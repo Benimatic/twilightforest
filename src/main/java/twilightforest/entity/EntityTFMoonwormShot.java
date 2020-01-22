@@ -9,8 +9,8 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -83,7 +83,7 @@ public class EntityTFMoonwormShot extends EntityTFThrowable {
 	@Override
 	protected void onImpact(RayTraceResult ray) {
 		if (!world.isRemote) {
-			if (ray.getType() == Type.BLOCK) {
+			if (ray instanceof BlockRayTraceResult) {
 
 				BlockPos pos = ((BlockRayTraceResult)ray).getPos().offset(((BlockRayTraceResult) ray).getFace());
 				BlockState currentState = world.getBlockState(pos);
@@ -94,8 +94,10 @@ public class EntityTFMoonwormShot extends EntityTFThrowable {
 				}
 			}
 
-			if (ray.entityHit != null) {
-				ray.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 0);
+			if (ray instanceof EntityRayTraceResult) {
+				if (((EntityRayTraceResult)ray).getEntity() != null) {
+					((EntityRayTraceResult)ray).getEntity().attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 0);
+				}
 			}
 
 			this.world.setEntityState(this, (byte) 3);

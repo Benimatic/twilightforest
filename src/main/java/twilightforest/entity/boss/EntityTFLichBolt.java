@@ -1,11 +1,13 @@
 package twilightforest.entity.boss;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -92,18 +94,21 @@ public class EntityTFLichBolt extends EntityTFThrowable {
 
 	@Override
 	protected void onImpact(RayTraceResult result) {
-		if (result.entityHit instanceof EntityTFLichBolt
-				|| result.entityHit instanceof EntityTFLichBomb
-				|| (result.entityHit instanceof EntityTFLich && ((EntityTFLich) result.entityHit).isShadowClone())) {
-			return;
-		}
-
-		if (!this.world.isRemote) {
-			if (result.entityHit instanceof LivingEntity) {
-				result.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), 6);
+		if (result instanceof EntityRayTraceResult) {
+			Entity entityHit = ((EntityRayTraceResult)result).getEntity();
+			if (entityHit instanceof EntityTFLichBolt
+					|| entityHit instanceof EntityTFLichBomb
+					|| (entityHit instanceof EntityTFLich && ((EntityTFLich) entityHit).isShadowClone())) {
+				return;
 			}
-			this.world.setEntityState(this, (byte) 3);
-			this.setDead();
+
+			if (!this.world.isRemote) {
+				if (entityHit instanceof LivingEntity) {
+					entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), 6);
+				}
+				this.world.setEntityState(this, (byte) 3);
+				this.remove();
+			}
 		}
 	}
 }

@@ -80,10 +80,12 @@ public class EntityTFLichBomb extends EntityTFThrowable {
 
 	@Override
 	protected void onImpact(RayTraceResult result) {
-		if (result.entityHit instanceof EntityTFLichBolt
-				|| result.entityHit instanceof EntityTFLichBomb
-				|| result.entityHit instanceof EntityTFLich) {
-			return;
+		if (result instanceof EntityRayTraceResult) {
+			if (((EntityRayTraceResult)result).getEntity() instanceof EntityTFLichBolt
+					|| ((EntityRayTraceResult)result).getEntity() instanceof EntityTFLichBomb
+					|| ((EntityRayTraceResult)result).getEntity() instanceof EntityTFLich) {
+				return;
+			}
 		}
 
 		explode();

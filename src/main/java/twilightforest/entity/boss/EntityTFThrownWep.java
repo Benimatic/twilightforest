@@ -8,6 +8,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -68,16 +69,18 @@ public class EntityTFThrownWep extends EntityTFThrowable {
 
 	@Override
 	protected void onImpact(RayTraceResult result) {
-		if (result.entityHit instanceof EntityTFKnightPhantom || result.entityHit == this.getThrower()) {
-			return;
-		}
-
-		if (!world.isRemote) {
-			if (result.entityHit != null) {
-				result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), projectileDamage);
+		if (result instanceof EntityRayTraceResult) {
+			if (((EntityRayTraceResult)result).getEntity() instanceof EntityTFKnightPhantom || ((EntityRayTraceResult)result).getEntity() == this.getThrower()) {
+				return;
 			}
-			world.setEntityState(this, (byte) 3);
-			setDead();
+
+			if (!world.isRemote) {
+				if (((EntityRayTraceResult)result).getEntity() != null) {
+					((EntityRayTraceResult)result).getEntity().attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), projectileDamage);
+				}
+				world.setEntityState(this, (byte) 3);
+				remove();
+			}
 		}
 	}
 

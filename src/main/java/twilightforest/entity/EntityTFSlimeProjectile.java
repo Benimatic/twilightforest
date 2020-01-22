@@ -5,6 +5,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -62,9 +63,11 @@ public class EntityTFSlimeProjectile extends EntityTFThrowable {
 	@Override
 	protected void onImpact(RayTraceResult target) {
 		// only damage living things
-		if (!world.isRemote && target.entityHit instanceof LivingEntity) {
-			target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 8);
-			// TODO: damage armor?
+		if (target instanceof EntityRayTraceResult) {
+			if (!world.isRemote && ((EntityRayTraceResult)target).getEntity() instanceof LivingEntity) {
+				((EntityRayTraceResult)target).getEntity().attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 8);
+				// TODO: damage armor?
+			}
 		}
 
 		die();

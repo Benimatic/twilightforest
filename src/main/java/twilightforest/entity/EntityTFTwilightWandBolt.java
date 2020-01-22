@@ -6,6 +6,7 @@ import net.minecraft.item.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -70,8 +71,10 @@ public class EntityTFTwilightWandBolt extends EntityTFThrowable {
 	@Override
 	protected void onImpact(RayTraceResult result) {
 		if (!this.world.isRemote) {
-			if (result.entityHit instanceof LivingEntity) {
-				result.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), 6);
+			if (result instanceof EntityRayTraceResult) {
+				if (((EntityRayTraceResult)result).getEntity() instanceof LivingEntity) {
+					((EntityRayTraceResult)result).getEntity().attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), 6);
+				}
 			}
 
 			this.world.setEntityState(this, (byte) 3);

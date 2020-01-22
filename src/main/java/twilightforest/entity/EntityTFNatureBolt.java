@@ -3,6 +3,7 @@ package twilightforest.entity;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.BoneMealItem;
@@ -13,6 +14,8 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
@@ -65,24 +68,30 @@ public class EntityTFNatureBolt extends EntityTFThrowable implements ITFProjecti
 	@Override
 	protected void onImpact(RayTraceResult ray) {
 		if (!this.world.isRemote) {
-			if (ray.getBlockPos() != null) {
-				Material materialHit = world.getBlockState(ray.getBlockPos()).getMaterial();
+			if (ray instanceof BlockRayTraceResult) {
+				BlockPos blockPosHit = ((BlockRayTraceResult)ray).getPos();
+				if (blockPosHit != null) {
+					Material materialHit = world.getBlockState(blockPosHit).getMaterial();
 
-				if (materialHit == Material.ORGANIC) {
-					ItemStack dummy = new ItemStack(Items.DYE, 1, 15);
-					if (BoneMealItem.applyBonemeal(dummy, world, ray.getBlockPos())) {
-						world.playEvent(2005, ray.getBlockPos(), 0);
+					if (materialHit == Material.ORGANIC) {
+						ItemStack dummy = new ItemStack(Items.BONE_MEAL, 1);
+						if (BoneMealItem.applyBonemeal(dummy, world, blockPosHit)) {
+							world.playEvent(2005, blockPosHit, 0);
+						}
+					} else if (materialHit.isSolid() && canReplaceBlock(world, blockPosHit)) {
+						world.setBlockState(blockPosHit, Blocks.BIRCH_LEAVES.getDefaultState());
 					}
-				} else if (materialHit.isSolid() && canReplaceBlock(world, ray.getBlockPos())) {
-					world.setBlockState(ray.getBlockPos(), Blocks.BIRCH_LEAVES.getDefaultState());
 				}
 			}
 
-			if (ray.hitInfo instanceof LivingEntity && (owner == null || (ray.entityHit != owner && ray.entityHit != owner.getRidingEntity()))) {
-				if (ray.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), 2)
-						&& world.getDifficulty() != Difficulty.PEACEFUL) {
-					int poisonTime = world.getDifficulty() == Difficulty.HARD ? 7 : 3;
-					((LivingEntity) ray.entityHit).addPotionEffect(new EffectInstance(Effects.POISON, poisonTime * 20, 0));
+			if (ray instanceof EntityRayTraceResult) {
+				Entity entityHit = ((EntityRayTraceResult)ray).getEntity();
+				if (ray.hitInfo instanceof LivingEntity && (owner == null || (entityHit != owner && entityHit != owner.getRidingEntity()))) {
+					if (entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), 2)
+							&& world.getDifficulty() != Difficulty.PEACEFUL) {
+						int poisonTime = world.getDifficulty() == Difficulty.HARD ? 7 : 3;
+						((LivingEntity) entityHit).addPotionEffect(new EffectInstance(Effects.POISON, poisonTime * 20, 0));
+					}
 				}
 			}
 
