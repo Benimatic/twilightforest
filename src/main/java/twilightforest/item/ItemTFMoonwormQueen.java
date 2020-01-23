@@ -1,10 +1,8 @@
 package twilightforest.item;
 
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -12,10 +10,10 @@ import net.minecraft.item.*;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -66,20 +64,19 @@ public class ItemTFMoonwormQueen extends ItemTF {
 		World worldIn = context.getWorld();
 		BlockPos pos = context.getPos();
 		BlockState iblockstate = worldIn.getBlockState(pos);
-		Block block = iblockstate.getBlock();
 		PlayerEntity player = context.getPlayer();
+		BlockItemUseContext blockItemUseContext = new BlockItemUseContext(context);
 
-		if (!block.isReplaceable(worldIn, pos)) {
+		if (!iblockstate.getMaterial().isReplaceable()) {
 			pos = pos.offset(context.getFace());
 		}
 
 		ItemStack itemstack = player.getHeldItem(context.getHand());
 
-		if (itemstack.getDamage() < itemstack.getMaxDamage() && player.canPlayerEdit(pos, context.getFace(), itemstack) && worldIn.mayPlace(TFBlocks.moonworm, pos, false, context.getFace(), (Entity) null)) {
-			int i = this.getMetadata(itemstack.getMetadata());
-			BlockState iblockstate1 = TFBlocks.moonworm.get().getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, i, player, hand);
+		if (itemstack.getDamage() < itemstack.getMaxDamage() && player.canPlayerEdit(pos, context.getFace(), itemstack) && worldIn.canPlace(TFBlocks.moonworm.get().getDefaultState(), pos, ISelectionContext.dummy())) {
+			BlockState iblockstate1 = TFBlocks.moonworm.get().getStateForPlacement(blockItemUseContext);
 
-			if (placeMoonwormAt(itemstack, player, worldIn, pos, facing, hitX, hitY, hitZ, iblockstate1)) {
+			if (placeMoonwormAt(itemstack, player, worldIn, pos, iblockstate1)) {
 				SoundType soundtype = worldIn.getBlockState(pos).getBlock().getSoundType(worldIn.getBlockState(pos), worldIn, pos, player);
 				worldIn.playSound(player, pos, soundtype.getPlaceSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
 				// TF - damage stack instead of shrinking
@@ -94,7 +91,7 @@ public class ItemTFMoonwormQueen extends ItemTF {
 	}
 
 	//	[VanillaCopy] ItemBlock.placeBlockAt
-	private boolean placeMoonwormAt(ItemStack stack, PlayerEntity player, World world, BlockPos pos, Direction side, float hitX, float hitY, float hitZ, BlockState state) {
+	private boolean placeMoonwormAt(ItemStack stack, PlayerEntity player, World world, BlockPos pos, BlockState state) {
 		if (!world.setBlockState(pos, state, 11)) return false;
 
 		BlockState real = world.getBlockState(pos);

@@ -46,11 +46,13 @@ public class ItemTFMagicMap extends FilledMapItem {
 
 	// [VanillaCopy] super with own id
 	public static ItemStack setupNewMap(World world, double worldX, double worldZ, byte scale, boolean trackingPosition, boolean unlimitedTracking) {
-		// TF - own item and string id
-		ItemStack itemstack = new ItemStack(TFItems.magic_map, 1, world.getUniqueDataId(ItemTFMagicMap.STR_ID));
-		String s = ItemTFMagicMap.STR_ID + "_" + itemstack.getMetadata();
+		// TF - own item and string id TODO: unique id may not be used in 1.14
+		//ItemStack itemstack = new ItemStack(TFItems.magic_map, 1, world.getUniqueDataId(ItemTFMagicMap.STR_ID));
+		ItemStack itemstack = new ItemStack(TFItems.magic_map.get());
+		String s = ItemTFMagicMap.STR_ID + "_" + world.getNextMapId();
 		MapData mapdata = new TFMagicMapData(s);
-		world.setData(s, mapdata);
+		world.registerMapData(mapdata);
+		itemstack.getOrCreateTag().putString("map", s);
 		mapdata.scale = scale;
 		mapdata.calculateMapCenter(worldX, worldZ, mapdata.scale);
 		mapdata.dimension = world.dimension.getType();

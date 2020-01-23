@@ -150,7 +150,7 @@ public class ItemTFMagicBeans extends ItemTF {
 	 */
 	private boolean tryToPlaceStalk(World world, BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
-		if (state.getBlock().isAir(state, world, pos) || state.getBlock().isReplaceable(world, pos) || state.getBlock().canBeReplacedByLeaves(state, world, pos) || BlockTags.LEAVES.contains(state.getBlock()) || state.getBlock().canSustainLeaves(state, world, pos)) {
+		if (state.getBlock().isAir(state, world, pos) || state.getMaterial().isReplaceable() || state.getBlock().canBeReplacedByLeaves(state, world, pos) || BlockTags.LEAVES.contains(state.getBlock()) || state.getBlock().canSustainLeaves(state, world, pos)) {
 			world.setBlockState(pos, TFBlocks.huge_stalk.get().getDefaultState());
 			return true;
 		} else {

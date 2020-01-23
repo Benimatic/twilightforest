@@ -148,9 +148,10 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 
 							// only do lifting effect on creatures weaker than the player
 							if (getMaxHealth(target) <= getMaxHealth(living)) {
-								target.motionX = 0;
-								target.motionY = 0.2;
-								target.motionZ = 0;
+//								target.motionX = 0;
+//								target.motionY = 0.2;
+//								target.motionZ = 0;
+								target.setMotion(0, 0.2, 0);
 							}
 
 							target.addPotionEffect(new EffectInstance(Effects.SLOWNESS, 20, 2));
@@ -175,9 +176,10 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 
 						// only do lifting effect on creatures weaker than the player
 						if (getMaxHealth(target) <= getMaxHealth(living)) {
-							target.motionX = 0;
-							target.motionY = 0.2;
-							target.motionZ = 0;
+//							target.motionX = 0;
+//							target.motionY = 0.2;
+//							target.motionZ = 0;
+							target.setMotion(0, 0.2, 0);
 						}
 
 						target.addPotionEffect(new EffectInstance(Effects.SLOWNESS, 20, 2));
@@ -187,10 +189,8 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 				if (!world.isRemote) {
 					stack.damageItem(1, living, (user) -> user.sendBreakAnimation(living.getActiveHand()));
 				}
-
 			}
 		}
-
 	}
 
 	private float getMaxHealth(LivingEntity target) {

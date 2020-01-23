@@ -1,11 +1,11 @@
 package twilightforest.item;
 
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Food;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
@@ -13,6 +13,7 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.world.World;
 import twilightforest.block.TFBlocks;
 
@@ -27,9 +28,9 @@ public class ItemTFExperiment115 extends ItemTFFood {
 		World world = context.getWorld();
 		BlockPos pos = context.getPos();
 		BlockState state = world.getBlockState(pos);
-		Block block = state.getBlock();
 		PlayerEntity player = context.getPlayer();
 		Direction facing = context.getFace();
+		BlockItemUseContext blockitemusecontext = new BlockItemUseContext(context);
 
 		// Let eating take priority over block placement
 		if (player.canEat(false))
@@ -37,10 +38,10 @@ public class ItemTFExperiment115 extends ItemTFFood {
 
 		BlockState e115 = TFBlocks.experiment_115.get().getDefaultState();
 
-		if (!block.isReplaceable(world, pos)) pos = pos.offset(facing);
+		if (!state.isReplaceable(blockitemusecontext)) pos = pos.offset(facing);
 		ItemStack itemstack = player.getHeldItem(context.getHand());
 
-		if (!itemstack.isEmpty() && player.canPlayerEdit(pos, facing, itemstack) && world.mayPlace(e115.getBlock(), pos, false, facing, null)) {
+		if (!itemstack.isEmpty() && player.canPlayerEdit(pos, facing, itemstack) && world.canPlace(e115, pos, ISelectionContext.dummy())) {
 			if (world.setBlockState(pos, e115, 11)) {
 				TFBlocks.experiment_115.get().onBlockPlacedBy(world, pos, e115, player, itemstack);
 				SoundType soundtype = world.getBlockState(pos).getBlock().getSoundType(world.getBlockState(pos), world, pos, player);

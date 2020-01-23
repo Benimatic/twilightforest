@@ -46,6 +46,7 @@ public class ItemTFTrophy extends ItemTF {
 	}
 
 	// [VanillaCopy] ItemSkull, with own block and no player heads
+	//TODO: needs flattening, and possible rewriting
 	@Nonnull
 	@Override
 	public ActionResultType onItemUse(ItemUseContext context) {
@@ -57,13 +58,12 @@ public class ItemTFTrophy extends ItemTF {
 		if (facing == Direction.DOWN) {
 			return ActionResultType.FAIL;
 		} else {
-			if (worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos)) {
+			if (worldIn.getBlockState(pos).getMaterial().isReplaceable()) {
 				facing = Direction.UP;
 				pos = pos.down();
 			}
 			BlockState iblockstate = worldIn.getBlockState(pos);
-			Block block = iblockstate.getBlock();
-			boolean flag = block.isReplaceable(worldIn, pos);
+			boolean flag = iblockstate.getMaterial().isReplaceable();
 
 			if (!flag) {
 				if (!worldIn.getBlockState(pos).getMaterial().isSolid() && !worldIn.isSideSolid(pos, facing, true)) {

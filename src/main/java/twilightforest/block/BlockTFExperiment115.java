@@ -97,8 +97,8 @@ public class BlockTFExperiment115 extends Block {
 			}
 		}
 
-		//TODO: Result must be ActionResultType
-		return this.eatCake(worldIn, pos, state, player) || stack.isEmpty();
+		if (stack.isEmpty()) return ActionResultType.SUCCESS;
+		return this.eatCake(worldIn, pos, state, player);
 	}
 
 	private ActionResultType eatCake(World world, BlockPos pos, BlockState state, PlayerEntity player) {

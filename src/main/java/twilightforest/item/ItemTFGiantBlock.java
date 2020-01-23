@@ -3,11 +3,13 @@ package twilightforest.item;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.world.World;
 import twilightforest.block.BlockTFGiantBlock;
 import twilightforest.block.TFBlocks;
@@ -24,10 +26,10 @@ public class ItemTFGiantBlock extends BlockItem {
 		World worldIn = context.getWorld();
 		BlockPos pos = context.getPos();
 		BlockState iblockstate = worldIn.getBlockState(pos);
-		Block block = iblockstate.getBlock();
 		Direction facing = context.getFace();
+		BlockItemUseContext blockItemUseContext = new BlockItemUseContext(context);
 
-		if (!block.isReplaceable(worldIn, pos)) {
+		if (!iblockstate.isReplaceable(blockItemUseContext)) {
 			pos = pos.offset(facing);
 		}
 
@@ -38,7 +40,7 @@ public class ItemTFGiantBlock extends BlockItem {
 		}
 
 		for (BlockPos iterPos : BlockTFGiantBlock.getVolume(pos)) {
-			if (!context.getPlayer().canPlayerEdit(iterPos, facing, itemstack) || !worldIn.mayPlace(this.getBlock(), iterPos, false, facing, null)) {
+			if (!context.getPlayer().canPlayerEdit(iterPos, facing, itemstack) || !worldIn.canPlace(iblockstate, iterPos, ISelectionContext.dummy())) {
 				return ActionResultType.FAIL;
 			}
 		}

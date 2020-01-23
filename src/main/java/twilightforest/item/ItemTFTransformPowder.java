@@ -1,6 +1,7 @@
 package twilightforest.item;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.SoundEvents;
@@ -59,7 +60,7 @@ public class ItemTFTransformPowder extends ItemTF {
 
 		if (!target.isAlive()) return false;
 
-		ResourceLocation location = transformMap.get(EntityList.getKey(target));
+		ResourceLocation location = transformMap.get(EntityType.getKey(target.getType()));
 		if (location == null) return false;
 
 		if (target.world.isRemote) {

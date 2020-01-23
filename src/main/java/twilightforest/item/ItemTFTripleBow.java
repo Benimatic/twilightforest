@@ -3,6 +3,7 @@ package twilightforest.item;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.Items;
@@ -45,7 +46,7 @@ public class ItemTFTripleBow extends ItemTFBowBase {
 
 					if (!worldIn.isRemote) {
 						ArrowItem itemarrow = (ArrowItem) (itemstack.getItem() instanceof ArrowItem ? itemstack.getItem() : Items.ARROW);
-						ArrowEntity entityarrow = itemarrow.createArrow(worldIn, itemstack, entityplayer);
+						AbstractArrowEntity entityarrow = itemarrow.createArrow(worldIn, itemstack, entityplayer);
 						entityarrow.shoot(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, f * 3.0F, 1.0F);
 
 						// other arrows with slight deviation

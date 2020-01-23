@@ -13,6 +13,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import twilightforest.util.WorldUtil;
 
 import javax.annotation.Nullable;
 
@@ -122,6 +123,7 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar {
 	}
 
 	@Override
+	@Deprecated
 	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moving) {
 		int range = 4;
 		int exRange = range + 1;

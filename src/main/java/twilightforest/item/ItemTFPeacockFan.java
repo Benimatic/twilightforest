@@ -47,9 +47,14 @@ public class ItemTFPeacockFan extends ItemTF {
 			// jump if the player is in the air
 			//TODO: only one extra jump per jump
 			if (!player.onGround && !player.isPotionActive(Effects.JUMP_BOOST)) {
-				player.motionX *= 3F;
-				player.motionY = 1.5F;
-				player.motionZ *= 3F;
+//				player.motionX *= 3F;
+//				player.motionY = 1.5F;
+//				player.motionZ *= 3F;
+				player.setMotion(new Vec3d(
+						player.getMotion().getX() * 3F,
+						1.5F,
+						player.getMotion().getZ() * 3F
+				));
 				player.fallDistance = 0.0F;
 			} else {
 				AxisAlignedBB fanBox = getEffectAABB(player);
@@ -99,9 +104,10 @@ public class ItemTFPeacockFan extends ItemTF {
 
 		for (Entity entity : world.getEntitiesWithinAABB(Entity.class, fanBox)) {
 			if (entity.canBePushed() || entity instanceof ItemEntity) {
-				entity.motionX = moveVec.x;
-				entity.motionY = moveVec.y;
-				entity.motionZ = moveVec.z;
+//				entity.motionX = moveVec.x;
+//				entity.motionY = moveVec.y;
+//				entity.motionZ = moveVec.z;
+				entity.setMotion(moveVec.x, moveVec.y, moveVec.z);
 			}
 		}
 
