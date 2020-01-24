@@ -2,6 +2,7 @@ package twilightforest.structures.lichtower;
 
 import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.HangingEntity;
 import net.minecraft.entity.item.PaintingEntity;
 import net.minecraft.entity.item.PaintingType;
@@ -20,12 +21,11 @@ import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.block.BlockTFCastleBlock;
+import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
 import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.structures.StructureTFHelper;
 import twilightforest.util.RotationUtil;
-import twilightforest.util.TFEntityNames;
-import twilightforest.util.VanillaEntityNames;
 
 import javax.annotation.Nullable;
 import java.nio.IntBuffer;
@@ -578,7 +578,7 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 	 */
 	protected void decorateSkeletonRoom(World world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, MutableBoundingBox sbb) {
 		// skeleton spawner
-		setSpawner(world, size / 2, bottom + 2, size / 2, sbb, VanillaEntityNames.SKELETON);
+		setSpawner(world, size / 2, bottom + 2, size / 2, sbb, EntityType.getKey(EntityType.SKELETON));
 
 		// floor-to-ceiling chains
 		ArrayList<BlockPos> chainList = new ArrayList<BlockPos>();
@@ -616,7 +616,7 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 	 */
 	protected void decorateZombieRoom(World world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, MutableBoundingBox sbb) {
 		// zombie spawner
-		setSpawner(world, size / 2, bottom + 2, size / 2, sbb, VanillaEntityNames.ZOMBIE);
+		setSpawner(world, size / 2, bottom + 2, size / 2, sbb, EntityType.getKey(EntityType.ZOMBIE));
 		final BlockState ironBars = Blocks.IRON_BARS.getDefaultState();
 		final BlockState soulSand = Blocks.SOUL_SAND.getDefaultState();
 		final BlockState brownMushroom = Blocks.BROWN_MUSHROOM.getDefaultState();
@@ -735,25 +735,24 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 
 		// 20% chance of a spider spawner!
 		if (rand.nextInt(5) == 0) {
-			ResourceLocation spiderName;
+			EntityType<?> spiderName;
 			switch (rand.nextInt(4)) {
 				case 3:
-					spiderName = VanillaEntityNames.CAVE_SPIDER;
+					spiderName = EntityType.CAVE_SPIDER;
 					break;
 				case 2:
-					spiderName = TFEntityNames.SWARM_SPIDER;
+					spiderName = TFEntities.swarm_spider.get();
 					break;
 				case 1:
-					spiderName = TFEntityNames.HEDGE_SPIDER;
+					spiderName = TFEntities.hedge_spider.get();
 					break;
 				case 0:
 				default:
-					spiderName = VanillaEntityNames.SPIDER;
+					spiderName = EntityType.SPIDER;
 					break;
 			}
 
-			setSpawner(world, size / 2, bottom + 2, size / 2, sbb, spiderName);
-
+			setSpawner(world, size / 2, bottom + 2, size / 2, sbb, EntityType.getKey(spiderName));
 
 		} else {
 			decorateFurniture(world, rand, bottom, size - 2, sbb);

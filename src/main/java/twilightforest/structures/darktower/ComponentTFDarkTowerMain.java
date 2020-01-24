@@ -1,6 +1,7 @@
 package twilightforest.structures.darktower;
 
 import net.minecraft.block.*;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.ItemFrameEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -29,7 +30,6 @@ import twilightforest.structures.StructureTFDecorator;
 import twilightforest.structures.TFMaze;
 import twilightforest.util.RotationUtil;
 import twilightforest.util.TFEntityNames;
-import twilightforest.util.VanillaEntityNames;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -1077,7 +1077,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		this.setBlockStateRotated(world, netherDeco.blockState, 6, y + 1, 13, rotation, sbb);
 		this.setBlockStateRotated(world, netherDeco.blockState, 6, y + (isTop ? 4 : 9), 13, rotation, sbb);
 
-		this.setSpawnerRotated(world, 6, y + 3, 13, rotation, VanillaEntityNames.BLAZE, sbb);
+		this.setSpawnerRotated(world, 6, y + 3, 13, rotation, EntityType.getKey(EntityType.BLAZE), sbb);
 
 
 		// destruction blob

@@ -4,6 +4,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.EntityType;
 import net.minecraft.state.properties.SlabType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
@@ -19,11 +20,10 @@ import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
+import twilightforest.entity.TFEntities;
 import twilightforest.enums.BossVariant;
 import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.util.RotationUtil;
-import twilightforest.util.TFEntityNames;
-import twilightforest.util.VanillaEntityNames;
 
 import java.util.List;
 import java.util.Random;
@@ -256,20 +256,20 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 9, floorLevel, 3, sbb);
 
 		// place spawner in the middle
-		ResourceLocation mobID = VanillaEntityNames.SKELETON;
+		EntityType<?> mobID = EntityType.SKELETON;
 		switch (rand.nextInt(4)) {
 			case 0:
 			case 1:
-				mobID = VanillaEntityNames.SKELETON;
+				mobID = EntityType.SKELETON;
 				break;
 			case 2:
-				mobID = VanillaEntityNames.ZOMBIE;
+				mobID = EntityType.ZOMBIE;
 				break;
 			case 3:
-				mobID = TFEntityNames.SWARM_SPIDER;
+				mobID = TFEntities.swarm_spider.get();
 				break;
 		}
-		setSpawner(world, 7, floorLevel + 2, 7, sbb, mobID);
+		setSpawner(world, 7, floorLevel + 2, 7, sbb, EntityType.getKey(mobID));
 
 		// make a fence arch support for the spawner
 		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 6, floorLevel + 1, 7, sbb);
