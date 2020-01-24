@@ -1,6 +1,5 @@
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.renderer.entity.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.model.SheepWoolModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import twilightforest.entity.passive.EntityTFBighorn;

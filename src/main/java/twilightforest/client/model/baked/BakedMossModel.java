@@ -1,15 +1,12 @@
 package twilightforest.client.model.baked;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.Direction;
-import net.minecraft.util.Direction;
-import org.lwjgl.util.vector.Vector3f;
 import twilightforest.TwilightForestMod;
 
 import javax.annotation.Nullable;

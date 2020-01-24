@@ -2,7 +2,6 @@ package twilightforest.client.model.entity.finalcastle;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.client.renderer.entity.model.ModelRenderer;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import twilightforest.entity.finalcastle.EntityTFCastleGuardian;
 

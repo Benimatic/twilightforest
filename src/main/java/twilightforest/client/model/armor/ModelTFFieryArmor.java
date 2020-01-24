@@ -1,7 +1,6 @@
 package twilightforest.client.model.armor;
 
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import org.lwjgl.opengl.GL11;
 
