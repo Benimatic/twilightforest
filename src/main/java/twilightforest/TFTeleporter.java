@@ -11,14 +11,12 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.ServerWorld;
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.server.ServerWorld;
 import twilightforest.block.BlockTFPortal;
 import twilightforest.block.TFBlocks;
-import twilightforest.world.ChunkGeneratorTFBase;
-import twilightforest.world.TFWorld;
 
 import javax.annotation.Nullable;
 import java.util.HashSet;
@@ -28,6 +26,7 @@ import java.util.function.Predicate;
 
 public class TFTeleporter extends Teleporter {
 
+	//TODO: int -> DimensionType
 	public static TFTeleporter getTeleporterForDim(MinecraftServer server, int dim) {
 		ServerWorld ws = server.getWorld(dim);
 
@@ -148,7 +147,7 @@ public class TFTeleporter extends Teleporter {
 		int j = MathHelper.floor(entity.getX());
 		int k = MathHelper.floor(entity.getZ());
 		boolean flag = true;
-		BlockPos blockpos = BlockPos.ORIGIN;
+		BlockPos blockpos = BlockPos.ZERO;
 		long l = ChunkPos.asLong(j, k);
 
 		if (this.destinationCoordinateCache.containsKey(l)) {
@@ -225,7 +224,7 @@ public class TFTeleporter extends Teleporter {
 			double portalY = borderPos.getY() + 1.0;
 			double portalZ = borderPos.getZ() + 0.5;
 
-			entity.motionX = entity.motionY = entity.motionZ = 0.0D;
+			entity.getMotion().getX() = entity.motionY = entity.motionZ = 0.0D;
 
 			if (entity instanceof ServerPlayerEntity) {
 				((ServerPlayerEntity) entity).connection.setPlayerLocation(portalX, portalY, portalZ, entity.rotationYaw, entity.rotationPitch);
@@ -284,7 +283,7 @@ public class TFTeleporter extends Teleporter {
 		loadSurroundingArea(entity);
 
 		BlockPos spot = findPortalCoords(entity, this::isPortalAt);
-		String name = entity.getName();
+		String name = entity.getName().toString();
 
 		if (spot != null) {
 			TwilightForestMod.LOGGER.debug("Found existing portal for {} at {}", name, spot);
@@ -344,7 +343,7 @@ public class TFTeleporter extends Teleporter {
 		int entityX = MathHelper.floor(entity.getX());
 		int entityZ = MathHelper.floor(entity.getZ());
 
-		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+		BlockPos.Mutable pos = new BlockPos.Mutable();
 
 		double spotWeight = -1D;
 		BlockPos spot = null;
@@ -388,7 +387,7 @@ public class TFTeleporter extends Teleporter {
 				for (int potentialY = 0; potentialY < 4; potentialY++) {
 					BlockPos tPos = pos.add(potentialX - 1, potentialY, potentialZ - 1);
 					Material material = world.getBlockState(tPos).getMaterial();
-					if (potentialY == 0 && material != Material.GRASS
+					if (potentialY == 0 && material != Material.ORGANIC
 							|| potentialY >= 1 && !material.isReplaceable()) {
 						return false;
 					}
@@ -455,7 +454,7 @@ public class TFTeleporter extends Teleporter {
 		world.setBlockState(pos.east().south().down(), dirt);
 
 		// portal in it
-		BlockState portal = TFBlocks.twilight_portal.getDefaultState().with(BlockTFPortal.DISALLOW_RETURN, !TFConfig.shouldReturnPortalBeUsable);
+		BlockState portal = TFBlocks.twilight_portal.get().getDefaultState().with(BlockTFPortal.DISALLOW_RETURN, !TFConfig.shouldReturnPortalBeUsable);
 
 		world.setBlockState(pos, portal, 2);
 		world.setBlockState(pos.east(), portal, 2);
@@ -466,7 +465,7 @@ public class TFTeleporter extends Teleporter {
 		for (int dx = -1; dx <= 2; dx++) {
 			for (int dz = -1; dz <= 2; dz++) {
 				for (int dy = 1; dy <= 5; dy++) {
-					world.setBlockToAir(pos.add(dx, dy, dz));
+					world.removeBlock(pos.add(dx, dy, dz), false);
 				}
 			}
 		}
@@ -492,7 +491,7 @@ public class TFTeleporter extends Teleporter {
 	}
 
 	private BlockState randNatureBlock(Random random) {
-		Block[] blocks = {Blocks.BROWN_MUSHROOM, Blocks.RED_MUSHROOM, Blocks.TALLGRASS, Blocks.RED_FLOWER, Blocks.YELLOW_FLOWER};
+		Block[] blocks = {Blocks.BROWN_MUSHROOM, Blocks.RED_MUSHROOM, Blocks.TALL_GRASS, Blocks.POPPY, Blocks.DANDELION};
 		return blocks[random.nextInt(blocks.length)].getDefaultState();
 	}
 }

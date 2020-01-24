@@ -29,8 +29,6 @@ import twilightforest.structures.stronghold.TFStrongholdPieces;
 import twilightforest.structures.trollcave.TFTrollCavePieces;
 import twilightforest.util.IntPair;
 import twilightforest.util.PlayerHelper;
-import twilightforest.world.MapGenTFMajorFeature;
-import twilightforest.world.TFWorld;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -53,9 +51,9 @@ public enum TFFeature {
 
 			this.addMonster(EntityType.SPIDER, 10, 4, 4)
 					.addMonster(EntityType.ZOMBIE, 10, 4, 4)
-					.addMonster(EntityTFRedcap.class, 10, 4, 4)
-					.addMonster(EntityTFSwarmSpider.class, 10, 4, 4)
-					.addMonster(EntityTFKobold.class, 10, 4, 8);
+					.addMonster(TFEntities.redcap.get(), 10, 4, 4)
+					.addMonster(TFEntities.swarm_spider.get(), 10, 4, 4)
+					.addMonster(TFEntities.kobold.get(), 10, 4, 8);
 		}
 
 		@Override
@@ -67,15 +65,15 @@ public enum TFFeature {
 		{
 			this.enableDecorations().enableTerrainAlterations();
 
-			this.addMonster(EntityTFRedcap.class, 10, 4, 4)
-					.addMonster(EntityTFRedcapSapper.class, 1, 1, 4)
-					.addMonster(EntityTFKobold.class, 10, 4, 8)
+			this.addMonster(TFEntities.redcap.get(), 10, 4, 4)
+					.addMonster(TFEntities.redcap_sapper.get(), 1, 1, 4)
+					.addMonster(TFEntities.kobold.get(), 10, 4, 8)
 					.addMonster(EntityType.SKELETON, 10, 4, 4)
-					.addMonster(EntityTFSwarmSpider.class, 10, 4, 4)
+					.addMonster(TFEntities.swarm_spider.get(), 10, 4, 4)
 					.addMonster(EntityType.SPIDER, 10, 4, 4)
 					.addMonster(EntityType.CREEPER, 10, 4, 4)
-					.addMonster(EntityTFFireBeetle.class, 5, 4, 4)
-					.addMonster(EntityTFSlimeBeetle.class, 5, 4, 4)
+					.addMonster(TFEntities.fire_beetle.get(), 5, 4, 4)
+					.addMonster(TFEntities.slime_beetle.get(), 5, 4, 4)
 					.addMonster(EntityType.WITCH, 1, 1, 1);
 		}
 
@@ -88,16 +86,16 @@ public enum TFFeature {
 		{
 			this.enableDecorations().enableTerrainAlterations();
 
-			this.addMonster(EntityTFRedcap.class, 10, 4, 4)
-					.addMonster(EntityTFRedcapSapper.class, 2, 1, 4)
+			this.addMonster(TFEntities.redcap.get(), 10, 4, 4)
+					.addMonster(TFEntities.redcap_sapper.get(), 2, 1, 4)
 					.addMonster(EntityType.SKELETON, 10, 4, 4)
 					.addMonster(EntityType.CAVE_SPIDER, 10, 4, 4)
 					.addMonster(EntityType.CREEPER, 10, 4, 4)
 					.addMonster(EntityType.ENDERMAN, 1, 1, 4)
-					.addMonster(EntityTFWraith.class, 2, 1, 4)
-					.addMonster(EntityTFFireBeetle.class, 10, 4, 4)
-					.addMonster(EntityTFSlimeBeetle.class, 10, 4, 4)
-					.addMonster(EntityTFPinchBeetle.class, 10, 2, 4)
+					.addMonster(TFEntities.wraith.get(), 2, 1, 4)
+					.addMonster(TFEntities.fire_beetle.get(), 10, 4, 4)
+					.addMonster(TFEntities.slime_beetle.get(), 10, 4, 4)
+					.addMonster(TFEntities.pinch_beetle.get(), 10, 2, 4)
 					.addMonster(EntityType.WITCH, 1, 1, 1);
 		}
 
@@ -140,7 +138,7 @@ public enum TFFeature {
 					.addMonster(EntityType.SKELETON, 10, 4, 4)
 					.addMonster(EntityType.CREEPER, 1, 4, 4)
 					.addMonster(EntityType.ENDERMAN, 1, 1, 4)
-					.addMonster(EntityTFDeathTome.class, 10, 4, 4)
+					.addMonster(TFEntities.death_tome.get(), 10, 4, 4)
 					.addMonster(EntityType.WITCH, 1, 1, 1);
 		}
 
@@ -150,8 +148,8 @@ public enum TFFeature {
 			addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.lichtower", 4);
 
 			book.setTagInfo("pages", bookPages);
-			book.setTagInfo("author", new StringNBT(BOOK_AUTHOR));
-			book.setTagInfo("title", new StringNBT("Notes on a Pointy Tower"));
+			book.setTagInfo("author", StringNBT.of(BOOK_AUTHOR));
+			book.setTagInfo("title", StringNBT.of("Notes on a Pointy Tower"));
 		}
 
 		@Override
@@ -163,9 +161,9 @@ public enum TFFeature {
 		{
 			TFIceTowerPieces.registerPieces();
 
-			this.addMonster(EntityTFSnowGuardian.class, 10, 4, 4)
-					.addMonster(EntityTFIceShooter.class, 10, 4, 4)
-					.addMonster(EntityTFIceExploder.class, 5, 4, 4);
+			this.addMonster(TFEntities.snow_guardian.get(), 10, 4, 4)
+					.addMonster(TFEntities.stable_ice_core.get(), 10, 4, 4)
+					.addMonster(TFEntities.unstable_ice_core.get(), 5, 4, 4);
 		}
 
 		@Override
@@ -174,8 +172,8 @@ public enum TFFeature {
 			addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.icetower", 3);
 
 			book.setTagInfo("pages", bookPages);
-			book.setTagInfo("author", new StringNBT(BOOK_AUTHOR));
-			book.setTagInfo("title", new StringNBT("Notes on Auroral Fortification"));
+			book.setTagInfo("author", StringNBT.of(BOOK_AUTHOR));
+			book.setTagInfo("title", StringNBT.of("Notes on Auroral Fortification"));
 		}
 
 		@Override
@@ -213,8 +211,8 @@ public enum TFFeature {
 			addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.hydralair", 4);
 
 			book.setTagInfo("pages", bookPages);
-			book.setTagInfo("author", new StringNBT(BOOK_AUTHOR));
-			book.setTagInfo("title", new StringNBT("Notes on the Fire Swamp"));
+			book.setTagInfo("author", StringNBT.of(BOOK_AUTHOR));
+			book.setTagInfo("title", StringNBT.of("Notes on the Fire Swamp"));
 		}
 
 		@Override
@@ -228,14 +226,14 @@ public enum TFFeature {
 
 			TFMinotaurMazePieces.registerPieces();
 
-			this.addMonster(EntityTFMinotaur.class, 20, 2, 4)
+			this.addMonster(TFEntities.minotaur.get(), 20, 2, 4)
 					.addMonster(EntityType.CAVE_SPIDER, 10, 4, 4)
 					.addMonster(EntityType.CREEPER, 10, 4, 4)
-					.addMonster(EntityTFMazeSlime.class, 10, 4, 4)
+					.addMonster(TFEntities.maze_slime.get(), 10, 4, 4)
 					.addMonster(EntityType.ENDERMAN, 1, 1, 4)
-					.addMonster(EntityTFFireBeetle.class, 10, 4, 4)
-					.addMonster(EntityTFSlimeBeetle.class, 10, 4, 4)
-					.addMonster(EntityTFPinchBeetle.class, 10, 2, 4);
+					.addMonster(TFEntities.fire_beetle.get(), 10, 4, 4)
+					.addMonster(TFEntities.slime_beetle.get(), 10, 4, 4)
+					.addMonster(TFEntities.pinch_beetle.get(), 10, 2, 4);
 		}
 
 		@Override
@@ -244,8 +242,8 @@ public enum TFFeature {
 			addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.labyrinth", 5);
 
 			book.setTagInfo("pages", bookPages);
-			book.setTagInfo("author", new StringNBT(BOOK_AUTHOR));
-			book.setTagInfo("title", new StringNBT("Notes on a Swampy Labyrinth"));
+			book.setTagInfo("author", StringNBT.of(BOOK_AUTHOR));
+			book.setTagInfo("title", StringNBT.of("Notes on a Swampy Labyrinth"));
 		}
 
 		@Override
@@ -257,16 +255,16 @@ public enum TFFeature {
 		{
 			TFDarkTowerPieces.registerPieces();
 
-			this.addMonster(EntityTFTowerGolem.class, 10, 4, 4)
+			this.addMonster(TFEntities.tower_golem.get(), 10, 4, 4)
 					.addMonster(EntityType.SKELETON, 10, 4, 4)
 					.addMonster(EntityType.CREEPER, 10, 4, 4)
 					.addMonster(EntityType.ENDERMAN, 2, 1, 4)
 					.addMonster(EntityType.WITCH, 1, 1, 1)
-					.addMonster(EntityTFMiniGhast.class, 10, 1, 4)
-					.addMonster(EntityTFTowerBroodling.class, 10, 8, 8)
-					.addMonster(EntityTFPinchBeetle.class, 10, 2, 4)
+					.addMonster(TFEntities.mini_ghast.get(), 10, 1, 4)
+					.addMonster(TFEntities.tower_broodling.get(), 10, 8, 8)
+					.addMonster(TFEntities.pinch_beetle.get(), 10, 2, 4)
 					// roof ghasts
-					.addMonster(1, EntityTFTowerGhast.class, 10, 1, 4)
+					.addMonster(1, TFEntities.tower_ghast.get(), 10, 1, 4)
 					// aquarium squids (only in aquariums between y = 35 and y = 64. :/
 					.addWaterCreature(EntityType.SQUID, 10, 4, 4);
 		}
@@ -277,8 +275,8 @@ public enum TFFeature {
 			addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.darktower", 3);
 
 			book.setTagInfo("pages", bookPages);
-			book.setTagInfo("author", new StringNBT(BOOK_AUTHOR));
-			book.setTagInfo("title", new StringNBT("Notes on a Wooden Tower"));
+			book.setTagInfo("author", StringNBT.of(BOOK_AUTHOR));
+			book.setTagInfo("title", StringNBT.of("Notes on a Wooden Tower"));
 		}
 
 		@Override
@@ -292,12 +290,12 @@ public enum TFFeature {
 
 			TFStrongholdPieces.registerPieces();
 
-			this.addMonster(EntityTFBlockGoblin.class, 10, 4, 4)
-					.addMonster(EntityTFGoblinKnightLower.class, 5, 1, 2)
-					.addMonster(EntityTFHelmetCrab.class, 10, 4, 4)
-					.addMonster(EntityTFSlimeBeetle.class, 10, 4, 4)
-					.addMonster(EntityTFRedcapSapper.class, 2, 1, 4)
-					.addMonster(EntityTFKobold.class, 10, 4, 8)
+			this.addMonster(TFEntities.blockchain_goblin.get(), 10, 4, 4)
+					.addMonster(TFEntities.goblin_knight_lower.get(), 5, 1, 2)
+					.addMonster(TFEntities.helmet_crab.get(), 10, 4, 4)
+					.addMonster(TFEntities.slime_beetle.get(), 10, 4, 4)
+					.addMonster(TFEntities.redcap_sapper.get(), 2, 1, 4)
+					.addMonster(TFEntities.kobold.get(), 10, 4, 8)
 					.addMonster(EntityType.CREEPER, 10, 4, 4)
 					.addMonster(EntityType.SLIME, 5, 4, 4);
 		}
@@ -308,8 +306,8 @@ public enum TFFeature {
 			addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.tfstronghold", 5);
 
 			book.setTagInfo("pages", bookPages);
-			book.setTagInfo("author", new StringNBT(BOOK_AUTHOR));
-			book.setTagInfo("title", new StringNBT("Notes on a Stronghold"));
+			book.setTagInfo("author", StringNBT.of(BOOK_AUTHOR));
+			book.setTagInfo("title", StringNBT.of("Notes on a Stronghold"));
 		}
 
 		@Override
@@ -325,7 +323,7 @@ public enum TFFeature {
 			MapGenStructureIO.registerStructure(StructureStartYetiCave.class, "TFYeti");
 			MapGenStructureIO.registerStructureComponent(ComponentTFYetiCave.class, "TFYeti");
 
-			this.addMonster(EntityTFYeti.class, 10, 4, 4);
+			this.addMonster(TFEntities.yeti.get(), 10, 4, 4);
 		}
 
 		@Override
@@ -334,8 +332,8 @@ public enum TFFeature {
 			addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.yeticave", 3);
 
 			book.setTagInfo("pages" , bookPages);
-			book.setTagInfo("author", new StringNBT(BOOK_AUTHOR));
-			book.setTagInfo("title" , new StringNBT("Notes on an Icy Cave"));
+			book.setTagInfo("author", StringNBT.of(BOOK_AUTHOR));
+			book.setTagInfo("title" , StringNBT.of("Notes on an Icy Cave"));
 		}
 
 		@Override
@@ -352,11 +350,11 @@ public enum TFFeature {
 
 			this.addMonster(EntityType.CREEPER, 5, 4, 4)
 					.addMonster(EntityType.SKELETON, 10, 4, 4)
-					.addMonster(EntityTFTroll.class, 20, 4, 4)
+					.addMonster(TFEntities.troll.get(), 20, 4, 4)
 					.addMonster(EntityType.WITCH, 5, 1, 1)
 					// cloud monsters
-					.addMonster(1, EntityTFGiantMiner.class, 10, 1, 4)
-					.addMonster(1, EntityTFArmoredGiant.class, 10, 1, 4);
+					.addMonster(1, TFEntities.giant_miner.get(), 10, 1, 4)
+					.addMonster(1, TFEntities.armored_giant.get(), 10, 1, 4);
 		}
 
 		@Override
@@ -365,8 +363,8 @@ public enum TFFeature {
 			addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.trollcave", 3);
 
 			book.setTagInfo("pages", bookPages);
-			book.setTagInfo("author", new StringNBT(BOOK_AUTHOR));
-			book.setTagInfo("title", new StringNBT("Notes on the Highlands"));
+			book.setTagInfo("author", StringNBT.of(BOOK_AUTHOR));
+			book.setTagInfo("title", StringNBT.of("Notes on the Highlands"));
 		}
 
 		@Override
@@ -379,17 +377,17 @@ public enum TFFeature {
 			TFFinalCastlePieces.registerFinalCastlePieces();
 
 			// plain parts of the castle, like the tower maze
-			this.addMonster(EntityTFKobold.class, 10, 4, 4)
-					.addMonster(EntityTFAdherent.class, 10, 1, 1)
-					.addMonster(EntityTFHarbingerCube.class, 10, 1, 1)
+			this.addMonster(TFEntities.kobold.get(), 10, 4, 4)
+					.addMonster(TFEntities.adherent.get(), 10, 1, 1)
+					.addMonster(TFEntities.harbinger_cube.get(), 10, 1, 1)
 					.addMonster(EntityType.ENDERMAN, 10, 1, 1)
 					// internal castle
-					.addMonster(1, EntityTFKobold.class, 10, 4, 4)
-					.addMonster(1, EntityTFAdherent.class, 10, 1, 1)
-					.addMonster(1, EntityTFHarbingerCube.class, 10, 1, 1)
-					.addMonster(1, EntityTFArmoredGiant.class, 10, 1, 1)
+					.addMonster(1, TFEntities.kobold.get(), 10, 4, 4)
+					.addMonster(1, TFEntities.adherent.get(), 10, 1, 1)
+					.addMonster(1, TFEntities.harbinger_cube.get(), 10, 1, 1)
+					.addMonster(1, TFEntities.armored_giant.get(), 10, 1, 1)
 					// dungeons
-					.addMonster(2, EntityTFAdherent.class, 10, 1, 1)
+					.addMonster(2, TFEntities.adherent.get(), 10, 1, 1)
 					// forge
 					.addMonster(3, EntityType.BLAZE, 10, 1, 1);
 		}
@@ -884,7 +882,7 @@ public enum TFFeature {
 		int dz = world.rand.nextInt(16) - world.rand.nextInt(16);
 
 		// make our hint monster
-		EntityTFKobold hinty = new EntityTFKobold(world);
+		EntityTFKobold hinty = new EntityTFKobold(TFEntities.kobold.get(), world);
 		hinty.moveToBlockPosAndAngles(pos.add(dx, dy, dz), 0f, 0f);
 
 		// check if the bounding box is clear
@@ -918,8 +916,8 @@ public enum TFFeature {
 		addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.unknown", 2);
 
 		book.setTagInfo("pages", bookPages);
-		book.setTagInfo("author", new StringNBT(BOOK_AUTHOR));
-		book.setTagInfo("title", new StringNBT("Notes on the Unexplained"));
+		book.setTagInfo("author", StringNBT.of(BOOK_AUTHOR));
+		book.setTagInfo("title", StringNBT.of("Notes on the Unexplained"));
 	}
 
 	public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
@@ -928,7 +926,7 @@ public enum TFFeature {
 
 	private static void addTranslatedPages(ListNBT bookPages, String translationKey, int pageCount) {
 		for (int i = 1; i <= pageCount; i++) {
-			bookPages.add(new StringNBT(ITextComponent.Serializer.toJson(new TranslationTextComponent(translationKey + "." + i))));
+			bookPages.add(StringNBT.of(ITextComponent.Serializer.toJson(new TranslationTextComponent(translationKey + "." + i))));
 		}
 	}
 }

@@ -14,7 +14,7 @@ public class PlayerHelper {
 	@Deprecated
 	public static void grantAdvancement(ServerPlayerEntity player, ResourceLocation id) {
 		PlayerAdvancements advancements = player.getAdvancements();
-		Advancement advancement = player.getServerWorld().getAdvancementManager().getAdvancement(id);
+		Advancement advancement = player.getServer().getAdvancementManager().getAdvancement(id);
 		if (advancement != null) {
 			for (String criterion : advancements.getProgress(advancement).getRemaningCriteria()) {
 				advancements.grantCriterion(advancement, criterion);
@@ -25,12 +25,13 @@ public class PlayerHelper {
 	@Deprecated
 	public static void grantCriterion(ServerPlayerEntity player, ResourceLocation id, String criterion) {
 		PlayerAdvancements advancements = player.getAdvancements();
-		Advancement advancement = player.getServerWorld().getAdvancementManager().getAdvancement(id);
+		Advancement advancement = player.getServer().getAdvancementManager().getAdvancement(id);
 		if (advancement != null) {
 			advancements.grantCriterion(advancement, criterion);
 		}
 	}
 
+	//TODO: The proxy methods it is referring to might need to be in here, using runWhenOn for each side
 	public static boolean doesPlayerHaveRequiredAdvancements(PlayerEntity player, ResourceLocation... requiredAdvancements) {
 		for (ResourceLocation advancementLocation : requiredAdvancements) {
 			if (!TwilightForestMod.proxy.doesPlayerHaveAdvancement(player, advancementLocation)) {

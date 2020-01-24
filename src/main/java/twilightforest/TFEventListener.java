@@ -705,7 +705,7 @@ public class TFEventListener {
 	private static final String NBT_TAG_TWILIGHT = "twilightforest_banished";
 
 	private static void banishNewbieToTwilightZone(PlayerEntity player) {
-		CompoundNBT tagCompound = player.getEntityData();
+		CompoundNBT tagCompound = player.getPersistentData();
 		CompoundNBT playerData = tagCompound.getCompound(PlayerEntity.PERSISTED_NBT_TAG);
 
 		// getBoolean returns false, if false or didn't exist
@@ -780,18 +780,19 @@ public class TFEventListener {
 			if (event.getEntity() != null && entity instanceof LivingEntity) {
 				LivingEntity entityBlocking = (LivingEntity) entity;
 
-				if (entityBlocking.canBlockDamageSource(new DamageSource("parry_this") {
+				if (entityBlocking.canBlockDamageSource(new DamageSource("parry_this") { /*TODO AT*/
 					@Override
 					public Vec3d getDamageLocation() { return projectile.getPositionVector(); }
 				}) && (entityBlocking.getActiveItemStack().getItem().getUseDuration(entityBlocking.getActiveItemStack()) - entityBlocking.getItemInUseCount()) <= TFConfig.shieldInteractions.shieldParryTicksFireball) {
 					Vec3d playerVec3 = entityBlocking.getLookVec();
 
-					projectile.motionX = playerVec3.x;
-					projectile.motionY = playerVec3.y;
-					projectile.motionZ = playerVec3.z;
-					projectile.accelerationX = projectile.motionX * 0.1D;
-					projectile.accelerationY = projectile.motionY * 0.1D;
-					projectile.accelerationZ = projectile.motionZ * 0.1D;
+//					projectile.motionX = playerVec3.x;
+//					projectile.motionY = playerVec3.y;
+//					projectile.motionZ = playerVec3.z;
+					projectile.setMotion(new Vec3d(playerVec3.x, playerVec3.y, playerVec3.z));
+					projectile.accelerationX = projectile.getMotion().getX() * 0.1D;
+					projectile.accelerationY = projectile.getMotion().getY() * 0.1D;
+					projectile.accelerationZ = projectile.getMotion().getZ() * 0.1D;
 
 					projectile.shootingEntity = entityBlocking;
 
