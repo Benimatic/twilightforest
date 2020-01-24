@@ -13,6 +13,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.storage.MapData;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.RegistryObject;
 import twilightforest.TFFeature;
 import twilightforest.TFMagicMapData;
 import twilightforest.biomes.TFBiomes;
@@ -118,8 +119,8 @@ public class ItemTFMagicMap extends FilledMapItem {
 						// make streams more visible
 						Biome overBiome = biomes[xPixel * biomesPerPixel + zPixel * biomesPerPixel * 128 * biomesPerPixel + 1];
 						Biome downBiome = biomes[xPixel * biomesPerPixel + (zPixel * biomesPerPixel + 1) * 128 * biomesPerPixel];
-						if (overBiome == TFBiomes.stream || downBiome == TFBiomes.stream) {
-							biome = TFBiomes.stream;
+						if (overBiome == TFBiomes.stream.get() || downBiome == TFBiomes.stream.get()) {
+							biome = TFBiomes.stream.get();
 						}
 
 						MapColorBrightness colorBrightness = this.getMapColorPerBiome(world, biome);
@@ -189,8 +190,8 @@ public class ItemTFMagicMap extends FilledMapItem {
 		putBiomeColor(TFBiomes.spookyForest, new MapColorBrightness(MaterialColor.PURPLE, 0));
 	}
 
-	private static void putBiomeColor(Biome biome, MapColorBrightness color) {
-		BIOME_COLORS.put(biome.getRegistryName(), color);
+	private static void putBiomeColor(RegistryObject<Biome> biome, MapColorBrightness color) {
+		BIOME_COLORS.put(biome.get().getRegistryName(), color);
 	}
 
 	@Override

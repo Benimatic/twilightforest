@@ -51,7 +51,7 @@ public abstract class StructureStartTFAbstract extends StructureStart {
         int offY = (int) ((biomeAt.getBaseHeight() + biomeAt.getHeightVariation()) * 8);
 
         // dark forest doesn't seem to get the right value. Why is my calculation so bad?
-        if (biomeAt == TFBiomes.darkForest) offY += 4;
+        if (biomeAt == TFBiomes.darkForest.get()) offY += 4;
 
         if (offY > 0) {
             boundingBox.offset(0, offY, 0);

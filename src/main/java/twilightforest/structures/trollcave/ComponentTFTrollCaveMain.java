@@ -209,7 +209,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 		return new BlockPos(x, y, z);
 	}
 
-	protected static final Predicate<Biome> highlands = biome -> biome == TFBiomes.highlands;
+	protected static final Predicate<Biome> highlands = biome -> biome == TFBiomes.highlands.get();
 
 	/**
 	 * Make a random stone stalactite

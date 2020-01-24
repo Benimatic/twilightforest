@@ -144,7 +144,7 @@ public class BlockTFMagicLogSpecial extends LogBlock {
 	 */
 	private void doTreeOfTransformationEffect(World world, BlockPos pos, Random rand) {
 
-		Biome targetBiome = TFBiomes.enchantedForest;
+		Biome targetBiome = TFBiomes.enchantedForest.get();
 
 		for (int i = 0; i < 16; i++) {
 

@@ -16,6 +16,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import twilightforest.advancements.TFAdvancements;
+import twilightforest.biomes.TFBiomes;
 import twilightforest.block.TFBlocks;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.client.particle.TFParticleType;
@@ -66,6 +67,7 @@ public class TwilightForestMod {
 		TFBlocks.BLOCKS.register(modbus);
 		TFItems.ITEMS.register(modbus);
 		TFPotions.POTIONS.register(modbus);
+		TFBiomes.BIOMES.register(modbus);
 		TFEntities.ENTITIES.register(modbus);
 		TFTileEntities.TILE_ENTITIES.register(modbus);
 		TFParticleType.PARTICLE_TYPES.register(modbus);
@@ -112,6 +114,7 @@ public class TwilightForestMod {
 		TFPacketHandler.init();
 		TFAdvancements.init();
 		TFTreasure.init();
+		TFBiomes.addBiomeTypes();
 
 		if (compat) {
 			try {

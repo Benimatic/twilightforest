@@ -195,7 +195,7 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 	}
 
 	protected static final Predicate<Biome> plateauBiomes = biome ->
-			biome == TFBiomes.highlandsCenter || biome == TFBiomes.thornlands;
+			biome == TFBiomes.highlandsCenter.get() || biome == TFBiomes.thornlands.get();
 
 	//TODO: Flatten
 	protected DyeColor getRuneColor(DyeColor forceFieldColor) {

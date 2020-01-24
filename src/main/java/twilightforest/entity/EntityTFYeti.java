@@ -177,7 +177,7 @@ public class EntityTFYeti extends MonsterEntity implements IHostileMount {
 	@Override
 	public boolean getCanSpawnHere() {
 		// don't check light level in the snow
-		if (world.getBiome(new BlockPos(this)) == TFBiomes.snowy_forest) {
+		if (world.getBiome(new BlockPos(this)) == TFBiomes.snowy_forest.get()) {
 			return world.checkNoEntityCollision(this) && world.getCollisionBoxes(this, getBoundingBox()).size() == 0;
 		} else {
 			// normal EntityMob spawn check, checks light level
@@ -187,7 +187,7 @@ public class EntityTFYeti extends MonsterEntity implements IHostileMount {
 
 	@Override
 	protected boolean isValidLightLevel() {
-		return world.getBiome(new BlockPos(this)) == TFBiomes.snowy_forest || super.isValidLightLevel();
+		return world.getBiome(new BlockPos(this)) == TFBiomes.snowy_forest.get() || super.isValidLightLevel();
 	}
 
 	@Override

@@ -80,7 +80,7 @@ public class EntityTFMosquitoSwarm extends MonsterEntity {
 	//TODO: Move to factory
 	@Override
 	public boolean getCanSpawnHere() {
-		if (world.getBiome(new BlockPos(this)) == TFBiomes.tfSwamp) {
+		if (world.getBiome(new BlockPos(this)) == TFBiomes.tfSwamp.get()) {
 			// don't check light level
 			return world.checkNoEntityCollision(getBoundingBox()) && world.getCollisionBoxes(this, getBoundingBox()).size() == 0;
 		} else {

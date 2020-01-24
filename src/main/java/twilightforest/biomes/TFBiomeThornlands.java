@@ -23,7 +23,7 @@ public class TFBiomeThornlands extends TFBiomeBase {
 
 	private final WorldGenerator tfGenThorns = new TFGenThorns();
 
-	public TFBiomeThornlands(BiomeProperties props) {
+	public TFBiomeThornlands(Builder props) {
 		super(props);
 
         //TODO: Move to SurfaceBuilderConfig

@@ -122,7 +122,7 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf implements IBreathAt
 
 	@Override
 	protected boolean isValidLightLevel() {
-		return world.getBiome(new BlockPos(this)) == TFBiomes.snowy_forest
+		return world.getBiome(new BlockPos(this)) == TFBiomes.snowy_forest.get()
 				|| super.isValidLightLevel();
 	}
 
