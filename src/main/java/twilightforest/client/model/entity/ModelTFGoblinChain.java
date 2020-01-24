@@ -12,7 +12,7 @@ public class ModelTFGoblinChain extends EntityModel {
 	public ModelTFGoblinChain() {
 
 		chain = new ModelRenderer(this, 56, 16);
-		chain.addBox(-1F, -1F, -1F, 2, 2, 2, 0F);
+		chain.addCuboid(-1F, -1F, -1F, 2, 2, 2, 0F);
 		chain.setRotationPoint(0F, 0F, 0F);
 
 	}

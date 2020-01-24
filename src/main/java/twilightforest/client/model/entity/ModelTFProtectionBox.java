@@ -21,7 +21,7 @@ public class ModelTFProtectionBox extends EntityModel {
 		textureWidth = 16;
 		textureHeight = 16;
 		box = new ModelRenderer(this, 0, 0);
-		box.addBox(0F, 0F, 0F, 16, 16, 16, 0F);
+		box.addCuboid(0F, 0F, 0F, 16, 16, 16, 0F);
 		box.setRotationPoint(0F, 0F, 0F);
 	}
 
@@ -43,7 +43,7 @@ public class ModelTFProtectionBox extends EntityModel {
 
 	private void resizeBoxElement(int pixelsX, int pixelsY, int pixelsZ) {
 		box = new ModelRenderer(this, 0, 0);
-		box.addBox(-1F, -1F, -1F, pixelsX, pixelsY, pixelsZ, 0F);
+		box.addCuboid(-1F, -1F, -1F, pixelsX, pixelsY, pixelsZ, 0F);
 		box.setRotationPoint(0F, 0F, 0F);
 
 		this.lastPixelsX = pixelsX;

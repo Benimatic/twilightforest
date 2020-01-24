@@ -8,7 +8,7 @@ import twilightforest.entity.passive.EntityTFMobileFirefly;
 public class ModelTFTinyFirefly<T extends EntityTFMobileFirefly> extends EntityModel<T> {
 	public ModelTFTinyFirefly() {
 		glow1 = new ModelRenderer(this, 20, 0);
-		glow1.addBox(-5F, -5F, 0F, 10, 10, 0, 0F);
+		glow1.addCuboid(-5F, -5F, 0F, 10, 10, 0, 0F);
 
 	}
 

@@ -19,7 +19,7 @@ public class ModelTFGhast<T extends EntityTFTowerGhast> extends EntityModel<T> {
 	public ModelTFGhast() {
 		byte yOffset = -16;
 		this.body = new ModelRenderer(this, 0, 0);
-		this.body.addBox(-8.0F, -8.0F, -8.0F, 16, 16, 16);
+		this.body.addCuboid(-8.0F, -8.0F, -8.0F, 16, 16, 16);
 		this.body.rotationPointY += (float) (24 + yOffset);
 		Random rand = new Random(1660L);
 
@@ -33,7 +33,7 @@ public class ModelTFGhast<T extends EntityTFTowerGhast> extends EntityModel<T> {
 		float xPoint = (((float) (i % 3) - (float) (i / 3 % 2) * 0.5F + 0.25F) / 2.0F * 2.0F - 1.0F) * 5.0F;
 		float zPoint = ((float) (i / 3) / 2.0F * 2.0F - 1.0F) * 5.0F;
 		int length = random.nextInt(7) + 8;
-		this.tentacles[i].addBox(-1.0F, 0.0F, -1.0F, 2, length, 2);
+		this.tentacles[i].addCuboid(-1.0F, 0.0F, -1.0F, 2, length, 2);
 		this.tentacles[i].rotationPointX = xPoint;
 		this.tentacles[i].rotationPointZ = zPoint;
 		this.tentacles[i].rotationPointY = (float) (23 + yOffset);

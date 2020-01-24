@@ -20,9 +20,9 @@ public class ModelTFDeathTome extends BookModel {
 	private ModelRenderer loosePage4;
 
 	public ModelTFDeathTome() {
-		everything = (new ModelRenderer(this)).setTextureOffset(0, 0).addBox(0.0F, 0.0F, 0.0F, 0, 0, 0);
+		everything = (new ModelRenderer(this)).setTextureOffset(0, 0).addCuboid(0.0F, 0.0F, 0.0F, 0, 0, 0);
 
-		book = (new ModelRenderer(this)).setTextureOffset(0, 0).addBox(0.0F, 0.0F, 0.0F, 0, 0, 0);
+		book = (new ModelRenderer(this)).setTextureOffset(0, 0).addCuboid(0.0F, 0.0F, 0.0F, 0, 0, 0);
 
 		book.addChild(coverRight);
 		book.addChild(coverLeft);
@@ -32,10 +32,10 @@ public class ModelTFDeathTome extends BookModel {
 		book.addChild(flippingPageRight);
 		book.addChild(flippingPageLeft);
 
-		loosePage1 = (new ModelRenderer(this)).setTextureOffset(24, 10).addBox(0F, -4F, -8F, 5, 8, 0);
-		loosePage2 = (new ModelRenderer(this)).setTextureOffset(24, 10).addBox(0F, -4F, 9F, 5, 8, 0);
-		loosePage3 = (new ModelRenderer(this)).setTextureOffset(24, 10).addBox(0F, -4F, 11F, 5, 8, 0);
-		loosePage4 = (new ModelRenderer(this)).setTextureOffset(24, 10).addBox(0F, -4F, 7F, 5, 8, 0);
+		loosePage1 = (new ModelRenderer(this)).setTextureOffset(24, 10).addCuboid(0F, -4F, -8F, 5, 8, 0);
+		loosePage2 = (new ModelRenderer(this)).setTextureOffset(24, 10).addCuboid(0F, -4F, 9F, 5, 8, 0);
+		loosePage3 = (new ModelRenderer(this)).setTextureOffset(24, 10).addCuboid(0F, -4F, 11F, 5, 8, 0);
+		loosePage4 = (new ModelRenderer(this)).setTextureOffset(24, 10).addCuboid(0F, -4F, 7F, 5, 8, 0);
 
 		everything.addChild(book);
 		everything.addChild(loosePage1);

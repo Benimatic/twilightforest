@@ -35,31 +35,31 @@ public class ModelTFHydraHead<T extends EntityTFHydraHead> extends EntityModel<T
 
 
 		head = new ModelRenderer(this, "head");
-		head.addBox("box", -16F, -14F, -32F, 32, 24, 32);
-		head.addBox("upperlip", -15F, -2F, -56F, 30, 12, 24);
-		head.addBox("rearjaw", -15F, 10F, -20F, 30, 8, 16);
-		head.addBox("fin", -2F, -30F, -12F, 4, 24, 24);
-		head.addBox("fang1", -12F, 10, -49F, 2, 5, 2);
-		head.addBox("fang2", 10F, 10, -49F, 2, 5, 2);
-		head.addBox("teeth", -8F, 9, -49F, 16, 2, 2);
-		head.addBox("teeth2", -10F, 9, -45F, 2, 2, 16);
-		head.addBox("teeth3", 8F, 9, -45F, 2, 2, 16);
+		head.addCuboid("box", -16F, -14F, -32F, 32, 24, 32);
+		head.addCuboid("upperlip", -15F, -2F, -56F, 30, 12, 24);
+		head.addCuboid("rearjaw", -15F, 10F, -20F, 30, 8, 16);
+		head.addCuboid("fin", -2F, -30F, -12F, 4, 24, 24);
+		head.addCuboid("fang1", -12F, 10, -49F, 2, 5, 2);
+		head.addCuboid("fang2", 10F, 10, -49F, 2, 5, 2);
+		head.addCuboid("teeth", -8F, 9, -49F, 16, 2, 2);
+		head.addCuboid("teeth2", -10F, 9, -45F, 2, 2, 16);
+		head.addCuboid("teeth3", 8F, 9, -45F, 2, 2, 16);
 		head.setRotationPoint(0F, 0F, 0F);
 
 		jaw = new ModelRenderer(this, "jaw");
 		jaw.setRotationPoint(0F, 10F, -20F);
-		jaw.addBox("jaw", -15F, 0F, -32F, 30, 8, 32);
-		jaw.addBox("fang1", -10F, -5, -29F, 2, 5, 2);
-		jaw.addBox("fang2", 8F, -5, -29F, 2, 5, 2);
-		jaw.addBox("teeth", -8F, -1, -29F, 16, 2, 2);
-		jaw.addBox("teeth2", -10F, -1, -25F, 2, 2, 16);
-		jaw.addBox("teeth3", 8F, -1, -25F, 2, 2, 16);
+		jaw.addCuboid("jaw", -15F, 0F, -32F, 30, 8, 32);
+		jaw.addCuboid("fang1", -10F, -5, -29F, 2, 5, 2);
+		jaw.addCuboid("fang2", 8F, -5, -29F, 2, 5, 2);
+		jaw.addCuboid("teeth", -8F, -1, -29F, 16, 2, 2);
+		jaw.addCuboid("teeth2", -10F, -1, -25F, 2, 2, 16);
+		jaw.addCuboid("teeth3", 8F, -1, -25F, 2, 2, 16);
 		setRotation(jaw, 0F, 0F, 0F);
 		head.addChild(jaw);
 
 		frill = new ModelRenderer(this, "frill");
 		frill.setRotationPoint(0F, 0F, -14F);
-		frill.addBox("frill", -24F, -40.0F, 0F, 48, 48, 4);
+		frill.addCuboid("frill", -24F, -40.0F, 0F, 48, 48, 4);
 		setRotation(frill, -0.5235988F, 0F, 0F);
 		head.addChild(frill);
 	}

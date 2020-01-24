@@ -27,7 +27,7 @@ public class ModelTFTowerBoss<T extends EntityTFUrGhast> extends ModelTFGhast<T>
 
 		int length = 5;
 
-		this.tentacles[num].addBox(-1.5F, 0.0F, -1.5F, 3, length, 3);
+		this.tentacles[num].addCuboid(-1.5F, 0.0F, -1.5F, 3, length, 3);
 
 
 		if (num == 0) {
@@ -90,7 +90,7 @@ public class ModelTFTowerBoss<T extends EntityTFUrGhast> extends ModelTFGhast<T>
 
 			this.subTentacles[num][i] = new ModelRenderer(this, num % 4, (i * 5) - 1);
 
-			this.subTentacles[num][i].addBox(-1.5F, -0.5F, -1.5F, 3, length, 3);
+			this.subTentacles[num][i].addCuboid(-1.5F, -0.5F, -1.5F, 3, length, 3);
 			this.subTentacles[num][i].rotationPointX = 0;
 			this.subTentacles[num][i].rotationPointZ = 0;
 			this.subTentacles[num][i].rotationPointY = length;

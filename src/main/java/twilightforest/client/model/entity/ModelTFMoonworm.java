@@ -28,19 +28,19 @@ public class ModelTFMoonworm extends EntityModel {
 		textureHeight = 32;
 
 		Shape1 = new ModelRenderer(this, 0, 4);
-		Shape1.addBox(-1F, -1F, -1F, 4, 2, 2);
+		Shape1.addCuboid(-1F, -1F, -1F, 4, 2, 2);
 		Shape1.setRotationPoint(-1F, 7F, 3F);
 
 		Shape2 = new ModelRenderer(this, 0, 8);
-		Shape2.addBox(-1F, -1F, -1F, 2, 2, 4);
+		Shape2.addCuboid(-1F, -1F, -1F, 2, 2, 4);
 		Shape2.setRotationPoint(3F, 7F, 0F);
 
 		Shape3 = new ModelRenderer(this, 0, 14);
-		Shape3.addBox(-1F, -1F, -1F, 2, 2, 2);
+		Shape3.addCuboid(-1F, -1F, -1F, 2, 2, 2);
 		Shape3.setRotationPoint(2F, 7F, -2F);
 
 		head = new ModelRenderer(this, 0, 0);
-		head.addBox(-1F, -1F, -1F, 2, 2, 2);
+		head.addCuboid(-1F, -1F, -1F, 2, 2, 2);
 		head.setRotationPoint(-3F, 7F, 2F);
 	}
 

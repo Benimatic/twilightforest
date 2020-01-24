@@ -37,31 +37,31 @@ public class ModelTFSquirrel<T extends EntityTFSquirrel> extends EntityModel<T> 
 		setTextureOffset("tail.fluff3", 0, 26);
 
 		body = new ModelRenderer(this, 0, 8);
-		body.addBox(-2F, -1F, -2F, 4, 3, 5);
+		body.addCuboid(-2F, -1F, -2F, 4, 3, 5);
 		body.setRotationPoint(0F, 21F, 0F);
 		body.setTextureSize(32, 32);
 		body.mirror = true;
 		setRotation(body, 0F, 0F, 0F);
 		leg1 = new ModelRenderer(this, 0, 16);
-		leg1.addBox(0F, 0F, 0F, 1, 1, 1);
+		leg1.addCuboid(0F, 0F, 0F, 1, 1, 1);
 		leg1.setRotationPoint(-2F, 23F, 2F);
 		leg1.setTextureSize(32, 32);
 		leg1.mirror = true;
 		setRotation(leg1, 0F, 0F, 0F);
 		leg2 = new ModelRenderer(this, 0, 16);
-		leg2.addBox(0F, 0F, 0F, 1, 1, 1);
+		leg2.addCuboid(0F, 0F, 0F, 1, 1, 1);
 		leg2.setRotationPoint(1F, 23F, 2F);
 		leg2.setTextureSize(32, 32);
 		leg2.mirror = true;
 		setRotation(leg2, 0F, 0F, 0F);
 		leg3 = new ModelRenderer(this, 0, 16);
-		leg3.addBox(0F, 0F, 0F, 1, 1, 1);
+		leg3.addCuboid(0F, 0F, 0F, 1, 1, 1);
 		leg3.setRotationPoint(-2F, 23F, -2F);
 		leg3.setTextureSize(32, 32);
 
 		setRotation(leg3, 0F, 0F, 0F);
 		leg4 = new ModelRenderer(this, 0, 16);
-		leg4.addBox(0F, 0F, 0F, 1, 1, 1);
+		leg4.addCuboid(0F, 0F, 0F, 1, 1, 1);
 		leg4.setRotationPoint(1F, 23F, -2F);
 		leg4.setTextureSize(32, 32);
 
@@ -70,26 +70,26 @@ public class ModelTFSquirrel<T extends EntityTFSquirrel> extends EntityModel<T> 
 		head.setRotationPoint(0F, 22F, -2F);
 		setRotation(head, 0F, 0F, 0F);
 
-		head.addBox("head", -2F, -5F, -3F, 4, 4, 4);
-		head.addBox("ear2", -2F, -6F, -0.5F, 1, 1, 1);
-		head.addBox("ear1", 1F, -6F, -0.5F, 1, 1, 1);
+		head.addCuboid("head", -2F, -5F, -3F, 4, 4, 4);
+		head.addCuboid("ear2", -2F, -6F, -0.5F, 1, 1, 1);
+		head.addCuboid("ear1", 1F, -6F, -0.5F, 1, 1, 1);
 
 		tail = new ModelRenderer(this, "tail");
 		tail.setRotationPoint(0F, 21F, 2F);
 
-		tail.addBox("base", -0.5F, -1.5F, 0.5F, 1, 1, 1);
+		tail.addCuboid("base", -0.5F, -1.5F, 0.5F, 1, 1, 1);
 
 		fluff1 = new ModelRenderer(this, 0, 20);
-		fluff1.addBox(-1.5F, -4F, 1F, 3, 3, 3);
+		fluff1.addCuboid(-1.5F, -4F, 1F, 3, 3, 3);
 		tail.addChild(fluff1);
 
 		fluff2 = new ModelRenderer(this, 0, 20);
-		fluff2.addBox(0F, -3F, -1.5F, 3, 3, 3);
+		fluff2.addCuboid(0F, -3F, -1.5F, 3, 3, 3);
 		fluff2.setRotationPoint(-1.5F, -4F, 2.5F);
 		fluff1.addChild(fluff2);
 
 		fluff3 = new ModelRenderer(this, 0, 26);
-		fluff3.addBox(1.5F, -3F, -1.5F, 3, 3, 3);
+		fluff3.addCuboid(1.5F, -3F, -1.5F, 3, 3, 3);
 		fluff3.setRotationPoint(-1.5F, -3F, 0F);
 		fluff2.addChild(fluff3);
 	}

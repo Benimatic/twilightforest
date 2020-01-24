@@ -43,27 +43,27 @@ public class ModelTFHelmetCrab<T extends EntityTFHelmetCrab> extends EntityModel
 		textureHeight = 32;
 
 		body = new ModelRenderer(this, 32, 4);
-		body.addBox(-2.5F, -2.5F, -5F, 5, 5, 5);
+		body.addCuboid(-2.5F, -2.5F, -5F, 5, 5, 5);
 		body.setRotationPoint(0F, 19F, 0F);
 
 		helmetBase = new ModelRenderer(this, 0, 0);
-		helmetBase.addBox(0, 0, 0, 0, 0, 0);
+		helmetBase.addCuboid(0, 0, 0, 0, 0, 0);
 		helmetBase.setRotationPoint(0F, 18F, 0F);
 		this.helmetBase.rotateAngleX = -100F / (180F / (float) Math.PI);
 		this.helmetBase.rotateAngleY = -30F / (180F / (float) Math.PI);
 
 		this.helmet = new ModelRenderer(this, 0, 14);
-		this.helmet.addBox(-3.5F, -11.0F, -3.5F, 7, 11, 7);
+		this.helmet.addCuboid(-3.5F, -11.0F, -3.5F, 7, 11, 7);
 		this.helmet.rotateAngleY = 45F / (180F / (float) Math.PI);
 
 		this.righthorn1 = new ModelRenderer(this, 28, 14);
-		this.righthorn1.addBox(-6F, -1.5F, -1.5F, 7, 3, 3);
+		this.righthorn1.addCuboid(-6F, -1.5F, -1.5F, 7, 3, 3);
 		this.righthorn1.setRotationPoint(-3.5F, -9F, 0.0F);
 		this.righthorn1.rotateAngleY = -15F / (180F / (float) Math.PI);
 		this.righthorn1.rotateAngleZ = 10F / (180F / (float) Math.PI);
 
 		this.righthorn2 = new ModelRenderer(this, 28, 20);
-		this.righthorn2.addBox(-3.0F, -1.0F, -1.0F, 3, 2, 2);
+		this.righthorn2.addCuboid(-3.0F, -1.0F, -1.0F, 3, 2, 2);
 		this.righthorn2.setRotationPoint(-5.5F, 0.0F, 0.0F);
 		this.righthorn2.rotateAngleY = -15F / (180F / (float) Math.PI);
 		this.righthorn2.rotateAngleZ = 10F / (180F / (float) Math.PI);
@@ -72,13 +72,13 @@ public class ModelTFHelmetCrab<T extends EntityTFHelmetCrab> extends EntityModel
 
 		this.lefthorn1 = new ModelRenderer(this, 28, 14);
 		this.lefthorn1.mirror = true;
-		this.lefthorn1.addBox(-1F, -1.5F, -1.5F, 7, 3, 3);
+		this.lefthorn1.addCuboid(-1F, -1.5F, -1.5F, 7, 3, 3);
 		this.lefthorn1.setRotationPoint(3.5F, -9F, 0.0F);
 		this.lefthorn1.rotateAngleY = 15F / (180F / (float) Math.PI);
 		this.lefthorn1.rotateAngleZ = -10F / (180F / (float) Math.PI);
 
 		this.lefthorn2 = new ModelRenderer(this, 28, 20);
-		this.lefthorn2.addBox(0.0F, -1.0F, -1.0F, 3, 2, 2);
+		this.lefthorn2.addCuboid(0.0F, -1.0F, -1.0F, 3, 2, 2);
 		this.lefthorn2.setRotationPoint(5.5F, 0.0F, 0.0F);
 		this.lefthorn2.rotateAngleY = 15F / (180F / (float) Math.PI);
 		this.lefthorn2.rotateAngleZ = -10F / (180F / (float) Math.PI);
@@ -90,47 +90,47 @@ public class ModelTFHelmetCrab<T extends EntityTFHelmetCrab> extends EntityModel
 		this.helmetBase.addChild(lefthorn1);
 
 		Leg8 = new ModelRenderer(this, 18, 0);
-		Leg8.addBox(-1F, -1F, -1F, 8, 2, 2);
+		Leg8.addCuboid(-1F, -1F, -1F, 8, 2, 2);
 		Leg8.setRotationPoint(3F, 20F, -3F);
 		setRotation(Leg8, 0F, 0.5759587F, 0.1919862F);
 
 		Leg6 = new ModelRenderer(this, 18, 0);
-		Leg6.addBox(-1F, -1F, -1F, 8, 2, 2);
+		Leg6.addCuboid(-1F, -1F, -1F, 8, 2, 2);
 		Leg6.setRotationPoint(3F, 20F, -2F);
 		setRotation(Leg6, 0F, 0.2792527F, 0.1919862F);
 
 		Leg4 = new ModelRenderer(this, 18, 0);
-		Leg4.addBox(-1F, -1F, -1F, 8, 2, 2);
+		Leg4.addCuboid(-1F, -1F, -1F, 8, 2, 2);
 		Leg4.setRotationPoint(3F, 20F, -1F);
 		setRotation(Leg4, 0F, -0.2792527F, 0.1919862F);
 
 		rightArm = new ModelRenderer(this, 38, 0);
-		rightArm.addBox(-7F, -1F, -1F, 8, 2, 2);
+		rightArm.addCuboid(-7F, -1F, -1F, 8, 2, 2);
 		rightArm.setRotationPoint(-3F, 20F, -3F);
 		setRotation(rightArm, 0F, -1.319531F, -0.1919862F);
 
 		Leg5 = new ModelRenderer(this, 18, 0);
-		Leg5.addBox(-7F, -1F, -1F, 8, 2, 2);
+		Leg5.addCuboid(-7F, -1F, -1F, 8, 2, 2);
 		Leg5.setRotationPoint(-3F, 20F, -2F);
 		setRotation(Leg5, 0F, -0.2792527F, -0.1919862F);
 
 		Leg3 = new ModelRenderer(this, 18, 0);
-		Leg3.addBox(-7F, -1F, -1F, 8, 2, 2);
+		Leg3.addCuboid(-7F, -1F, -1F, 8, 2, 2);
 		Leg3.setRotationPoint(-3F, 20F, -1F);
 		setRotation(Leg3, 0F, 0.2792527F, -0.1919862F);
 
 		clawbase = new ModelRenderer(this, 0, 0);
-		clawbase.addBox(0F, -1.5F, -1F, 3, 3, 2);
+		clawbase.addCuboid(0F, -1.5F, -1F, 3, 3, 2);
 		clawbase.setRotationPoint(-6F, 0F, -0.5F);
 		setRotation(clawbase, 0.0F, (float) (Math.PI / 2.0F), 0);
 
 		clawtop = new ModelRenderer(this, 0, 5);
-		clawtop.addBox(0F, -0.5F, -1F, 3, 1, 2);
+		clawtop.addCuboid(0F, -0.5F, -1F, 3, 1, 2);
 		clawtop.setRotationPoint(3F, -1F, 0F);
 		setRotation(clawtop, 0F, 0F, -0.1858931F);
 
 		clawbottom = new ModelRenderer(this, 0, 8);
-		clawbottom.addBox(0F, -0.5F, -1F, 3, 2, 2);
+		clawbottom.addCuboid(0F, -0.5F, -1F, 3, 2, 2);
 		clawbottom.setRotationPoint(3F, 0F, 0F);
 		setRotation(clawbottom, 0F, 0F, 0.2602503F);
 
@@ -140,12 +140,12 @@ public class ModelTFHelmetCrab<T extends EntityTFHelmetCrab> extends EntityModel
 		this.rightArm.addChild(clawbase);
 
 		righteye = new ModelRenderer(this, 10, 0);
-		righteye.addBox(-1F, -3F, -1F, 2, 3, 2);
+		righteye.addCuboid(-1F, -3F, -1F, 2, 3, 2);
 		righteye.setRotationPoint(-1F, -1F, -4F);
 		setRotation(righteye, (float) (Math.PI / 4.0F), 0.0F, -(float) (Math.PI / 4.0F));
 
 		lefteye = new ModelRenderer(this, 10, 0);
-		lefteye.addBox(-1F, -3F, -1F, 2, 3, 2);
+		lefteye.addCuboid(-1F, -3F, -1F, 2, 3, 2);
 		lefteye.setRotationPoint(1F, -1F, -4F);
 		setRotation(lefteye, (float) (Math.PI / 4.0F), 0.0F, (float) (Math.PI / 4.0F));
 

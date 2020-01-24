@@ -16,19 +16,19 @@ public class ModelTFCubeOfAnnihilation<T extends EntityTFCubeOfAnnihilation> ext
 		textureWidth = 64;
 		textureHeight = 64;
 		box = new ModelRenderer(this, 0, 0);
-		box.addBox(-8F, -8F, -8F, 16, 16, 16, 0F);
+		box.addCuboid(-8F, -8F, -8F, 16, 16, 16, 0F);
 		box.setRotationPoint(0F, 0F, 0F);
 
 		boxX = new ModelRenderer(this, 0, 32);
-		boxX.addBox(-8F, -8F, -8F, 16, 16, 16, 0F);
+		boxX.addCuboid(-8F, -8F, -8F, 16, 16, 16, 0F);
 		boxX.setRotationPoint(0F, 0F, 0F);
 
 		boxY = new ModelRenderer(this, 0, 32);
-		boxY.addBox(-8F, -8F, -8F, 16, 16, 16, 0F);
+		boxY.addCuboid(-8F, -8F, -8F, 16, 16, 16, 0F);
 		boxY.setRotationPoint(0F, 0F, 0F);
 
 		boxZ = new ModelRenderer(this, 0, 32);
-		boxZ.addBox(-8F, -8F, -8F, 16, 16, 16, 0F);
+		boxZ.addCuboid(-8F, -8F, -8F, 16, 16, 16, 0F);
 		boxZ.setRotationPoint(0F, 0F, 0F);
 	}
 

@@ -18,29 +18,29 @@ public class ModelTFAdherent<T extends EntityTFAdherent> extends BipedModel<T> {
 		this.bipedRightLeg = new ModelRenderer(this, 0, 0);
 
 		this.bipedHead = new ModelRenderer(this, 0, 0);
-		this.bipedHead.addBox(-4F, -8F, -4F, 8, 8, 8);
+		this.bipedHead.addCuboid(-4F, -8F, -4F, 8, 8, 8);
 		this.bipedHead.setRotationPoint(0F, 0F, 0F);
 
 		this.bipedBody = new ModelRenderer(this, 32, 0);
-		this.bipedBody.addBox(-4F, 0F, -2F, 8, 24, 4);
+		this.bipedBody.addCuboid(-4F, 0F, -2F, 8, 24, 4);
 		this.bipedBody.setRotationPoint(0F, 0F, 0F);
 
 		this.bipedRightArm = new ModelRenderer(this, 0, 16);
-		this.bipedRightArm.addBox(-3F, -2F, -2F, 4, 12, 4);
+		this.bipedRightArm.addCuboid(-3F, -2F, -2F, 4, 12, 4);
 		this.bipedRightArm.setRotationPoint(-5F, 2F, 0F);
 
 		this.bipedLeftArm = new ModelRenderer(this, 0, 16);
-		this.bipedLeftArm.addBox(-1F, -2F, -2F, 4, 12, 4);
+		this.bipedLeftArm.addCuboid(-1F, -2F, -2F, 4, 12, 4);
 		this.bipedLeftArm.setRotationPoint(5F, 2F, 0F);
 
 		this.leftSleeve = new ModelRenderer(this, 16, 16);
-		this.leftSleeve.addBox(-1F, -2F, 2F, 4, 12, 4);
+		this.leftSleeve.addCuboid(-1F, -2F, 2F, 4, 12, 4);
 		this.leftSleeve.setRotationPoint(0F, 0F, 0F);
 
 		this.bipedLeftArm.addChild(this.leftSleeve);
 
 		this.rightSleeve = new ModelRenderer(this, 16, 16);
-		this.rightSleeve.addBox(-3F, -2F, 2F, 4, 12, 4);
+		this.rightSleeve.addCuboid(-3F, -2F, 2F, 4, 12, 4);
 		this.rightSleeve.setRotationPoint(0F, 0F, 0F);
 
 		this.bipedRightArm.addChild(this.rightSleeve);

@@ -56,48 +56,48 @@ public class ModelTFQuestRam<T extends EntityTFQuestRam> extends EntityModel<T> 
 		setTextureOffset("head.horn1g", 88, 97);
 
 		frontbody = new ModelRenderer(this, 0, 0);
-		frontbody.addBox(-9F, -7.5F, -15F, 18, 15, 15);
+		frontbody.addCuboid(-9F, -7.5F, -15F, 18, 15, 15);
 		frontbody.setRotationPoint(0F, -1F, 2F);
 
 		rearbody = new ModelRenderer(this, 0, 30);
-		rearbody.addBox(-9F, -7.5F, 0F, 18, 15, 15);
+		rearbody.addCuboid(-9F, -7.5F, 0F, 18, 15, 15);
 		rearbody.setRotationPoint(0F, -1F, 4F);
 
 
 		leg1 = new ModelRenderer(this, 66, 0);
-		leg1.addBox(-3F, 10F, -3F, 6, 12, 6);
+		leg1.addCuboid(-3F, 10F, -3F, 6, 12, 6);
 		leg1.setRotationPoint(-6F, 2F, 13F);
 
 		haunch1 = new ModelRenderer(this, 90, 0);
-		haunch1.addBox(-3.5F, 0F, -6F, 7, 10, 10);
+		haunch1.addCuboid(-3.5F, 0F, -6F, 7, 10, 10);
 		haunch1.setRotationPoint(-6F, 2F, 13F);
 
 		leg2 = new ModelRenderer(this, 66, 0);
-		leg2.addBox(-3F, 10F, -3F, 6, 12, 6);
+		leg2.addCuboid(-3F, 10F, -3F, 6, 12, 6);
 		leg2.setRotationPoint(6F, 2F, 13F);
 
 		haunch2 = new ModelRenderer(this, 90, 0);
-		haunch2.addBox(-3.5F, 0F, -6F, 7, 10, 10);
+		haunch2.addCuboid(-3.5F, 0F, -6F, 7, 10, 10);
 		haunch2.setRotationPoint(6F, 2F, 13F);
 
 		leg3 = new ModelRenderer(this, 66, 18);
-		leg3.addBox(-3F, 10F, -3F, 6, 13, 6);
+		leg3.addCuboid(-3F, 10F, -3F, 6, 13, 6);
 		leg3.setRotationPoint(-6F, 1F, -8F);
 
 		haunch3 = new ModelRenderer(this, 90, 20);
-		haunch3.addBox(-3.5F, 0F, -4F, 7, 10, 7);
+		haunch3.addCuboid(-3.5F, 0F, -4F, 7, 10, 7);
 		haunch3.setRotationPoint(-6F, 1F, -8F);
 
 		leg4 = new ModelRenderer(this, 66, 18);
-		leg4.addBox(-3F, 10F, -3F, 6, 13, 6);
+		leg4.addCuboid(-3F, 10F, -3F, 6, 13, 6);
 		leg4.setRotationPoint(6F, 1F, -8F);
 
 		haunch4 = new ModelRenderer(this, 90, 20);
-		haunch4.addBox(-3.5F, 0F, -4F, 7, 10, 7);
+		haunch4.addCuboid(-3.5F, 0F, -4F, 7, 10, 7);
 		haunch4.setRotationPoint(6F, 1F, -8F);
 
 		neck = new ModelRenderer(this, 66, 37);
-		neck.addBox(-5.5F, -8F, -8F, 11, 14, 12);
+		neck.addCuboid(-5.5F, -8F, -8F, 11, 14, 12);
 		neck.setRotationPoint(0F, -8F, -7F);
 
 		setRotation(neck, 0.2617994F, 0F, 0F);
@@ -105,24 +105,24 @@ public class ModelTFQuestRam<T extends EntityTFQuestRam> extends EntityModel<T> 
 		head = new ModelRenderer(this, "head");
 		head.setRotationPoint(0F, -13F, -5F);
 
-		head.addBox("head", -6F, -4.5F, -15F, 12, 9, 15);
-		head.addBox("horn1a", 5F, -9F, -7F, 4, 4, 6);
-		head.addBox("horn1b", 7F, -8F, -2F, 3, 4, 4);
-		head.addBox("horn1c", 8F, -6F, 0F, 3, 6, 3);
-		head.addBox("horn1d", 9.5F, -2F, -2F, 3, 3, 3);
-		head.addBox("horn1e", 11F, 0F, -7F, 3, 3, 6);
-		head.addBox("horn1f", 12F, -4F, -9F, 3, 6, 3);
-		head.addBox("horn1g", 13F, -6F, -7F, 3, 3, 4);
-		head.addBox("horn1a", -9F, -9F, -7F, 4, 4, 6);
-		head.addBox("horn1b", -10F, -8F, -2F, 3, 4, 4);
-		head.addBox("horn1c", -11F, -6F, 0F, 3, 6, 3);
-		head.addBox("horn1d", -12.5F, -2F, -2F, 3, 3, 3);
-		head.addBox("horn1e", -14F, 0F, -7F, 3, 3, 6);
-		head.addBox("horn1f", -15F, -4F, -9F, 3, 6, 3);
-		head.addBox("horn1g", -16F, -6F, -7F, 3, 3, 4);
+		head.addCuboid("head", -6F, -4.5F, -15F, 12, 9, 15);
+		head.addCuboid("horn1a", 5F, -9F, -7F, 4, 4, 6);
+		head.addCuboid("horn1b", 7F, -8F, -2F, 3, 4, 4);
+		head.addCuboid("horn1c", 8F, -6F, 0F, 3, 6, 3);
+		head.addCuboid("horn1d", 9.5F, -2F, -2F, 3, 3, 3);
+		head.addCuboid("horn1e", 11F, 0F, -7F, 3, 3, 6);
+		head.addCuboid("horn1f", 12F, -4F, -9F, 3, 6, 3);
+		head.addCuboid("horn1g", 13F, -6F, -7F, 3, 3, 4);
+		head.addCuboid("horn1a", -9F, -9F, -7F, 4, 4, 6);
+		head.addCuboid("horn1b", -10F, -8F, -2F, 3, 4, 4);
+		head.addCuboid("horn1c", -11F, -6F, 0F, 3, 6, 3);
+		head.addCuboid("horn1d", -12.5F, -2F, -2F, 3, 3, 3);
+		head.addCuboid("horn1e", -14F, 0F, -7F, 3, 3, 6);
+		head.addCuboid("horn1f", -15F, -4F, -9F, 3, 6, 3);
+		head.addCuboid("horn1g", -16F, -6F, -7F, 3, 3, 4);
 
 		nose = new ModelRenderer(this, 54, 73);
-		nose.addBox(-5.5F, -5F, -13F, 11, 9, 12);
+		nose.addCuboid(-5.5F, -5F, -13F, 11, 9, 12);
 		nose.setRotationPoint(0F, -7F, -1F);
 		nose.setTextureSize(128, 128);
 		setRotation(nose, 0.5235988F, 0F, 0F);
@@ -132,7 +132,7 @@ public class ModelTFQuestRam<T extends EntityTFQuestRam> extends EntityModel<T> 
 		segmentEnabled = new boolean[16];
 		for (int i = 0; i < 16; i++) {
 			segments[i] = new ModelRenderer(this, 0, 104);
-			segments[i].addBox(-9F, -7.5F, 0F, 18, 15, 2);
+			segments[i].addCuboid(-9F, -7.5F, 0F, 18, 15, 2);
 			segments[i].setRotationPoint(0F, -1F, 2F);
 
 			segmentEnabled[i] = false;

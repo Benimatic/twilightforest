@@ -31,37 +31,37 @@ public class ModelTFBunny<T extends EntityTFBunny> extends EntityModel<T> {
 		setTextureOffset("head.ear1", 16, 0);
 
 		tail = new ModelRenderer(this, 0, 18);
-		tail.addBox(-1F, -1F, 0F, 2, 2, 2);
+		tail.addCuboid(-1F, -1F, 0F, 2, 2, 2);
 		tail.setRotationPoint(0F, 20F, 3F);
 		tail.setTextureSize(32, 32);
 		tail.mirror = true;
 		setRotation(tail, 0F, 0F, 0F);
 		body = new ModelRenderer(this, 0, 8);
-		body.addBox(-2F, -1F, -2F, 4, 3, 5);
+		body.addCuboid(-2F, -1F, -2F, 4, 3, 5);
 		body.setRotationPoint(0F, 21F, 0F);
 		body.setTextureSize(32, 32);
 		body.mirror = true;
 		setRotation(body, 0F, 0F, 0F);
 		leg1 = new ModelRenderer(this, 0, 16);
-		leg1.addBox(0F, 0F, 0F, 1, 1, 1);
+		leg1.addCuboid(0F, 0F, 0F, 1, 1, 1);
 		leg1.setRotationPoint(-2F, 23F, 2F);
 		leg1.setTextureSize(32, 32);
 		leg1.mirror = true;
 		setRotation(leg1, 0F, 0F, 0F);
 		leg2 = new ModelRenderer(this, 0, 16);
-		leg2.addBox(0F, 0F, 0F, 1, 1, 1);
+		leg2.addCuboid(0F, 0F, 0F, 1, 1, 1);
 		leg2.setRotationPoint(1F, 23F, 2F);
 		leg2.setTextureSize(32, 32);
 		leg2.mirror = true;
 		setRotation(leg2, 0F, 0F, 0F);
 		leg3 = new ModelRenderer(this, 0, 16);
-		leg3.addBox(0F, 0F, 0F, 1, 1, 1);
+		leg3.addCuboid(0F, 0F, 0F, 1, 1, 1);
 		leg3.setRotationPoint(-2F, 23F, -2F);
 		leg3.setTextureSize(32, 32);
 		leg3.mirror = true;
 		setRotation(leg3, 0F, 0F, 0F);
 		leg4 = new ModelRenderer(this, 0, 16);
-		leg4.addBox(0F, 0F, 0F, 1, 1, 1);
+		leg4.addCuboid(0F, 0F, 0F, 1, 1, 1);
 		leg4.setRotationPoint(1F, 23F, -2F);
 		leg4.setTextureSize(32, 32);
 		leg4.mirror = true;
@@ -70,12 +70,12 @@ public class ModelTFBunny<T extends EntityTFBunny> extends EntityModel<T> {
 		head.setRotationPoint(0F, 22F, -1F);
 		setRotation(head, 0F, 0F, 0F);
 		head.mirror = true;
-		//head.addBox("head", -2F, -4F, -3F, 4, 4, 4);
-		//head.addBox("ear2", -2.5F, -8F, -0.5F, 2, 4, 1);
-		//head.addBox("ear1", 0.5F, -8F, -0.5F, 2, 4, 1);
-		head.addBox(-2F, -4F, -3F, 4, 4, 4);
-		head.addBox(-2.5F, -8F, -0.5F, 2, 4, 1);
-		head.addBox(0.5F, -8F, -0.5F, 2, 4, 1);
+		//head.addCuboid("head", -2F, -4F, -3F, 4, 4, 4);
+		//head.addCuboid("ear2", -2.5F, -8F, -0.5F, 2, 4, 1);
+		//head.addCuboid("ear1", 0.5F, -8F, -0.5F, 2, 4, 1);
+		head.addCuboid(-2F, -4F, -3F, 4, 4, 4);
+		head.addCuboid(-2.5F, -8F, -0.5F, 2, 4, 1);
+		head.addCuboid(0.5F, -8F, -0.5F, 2, 4, 1);
 	}
 
 	@Override

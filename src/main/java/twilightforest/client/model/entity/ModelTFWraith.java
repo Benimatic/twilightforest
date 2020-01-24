@@ -13,7 +13,7 @@ public class ModelTFWraith<T extends EntityTFWraith> extends BipedModel<T> {
 	public ModelTFWraith() {
 		float f = 0.0F;
 		dress = new ModelRenderer(this, 40, 16);
-		dress.addBox(-4F, 12.0F, -2F, 8, 12, 4, f);
+		dress.addCuboid(-4F, 12.0F, -2F, 8, 12, 4, f);
 		dress.setRotationPoint(0.0F, 0.0F, 0.0F);
 
 	}

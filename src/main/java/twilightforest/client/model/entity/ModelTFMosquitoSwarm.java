@@ -23,36 +23,36 @@ public class ModelTFMosquitoSwarm<T extends EntityTFMosquitoSwarm> extends Entit
 
 	public ModelTFMosquitoSwarm() {
 		core = new ModelRenderer(this, rand.nextInt(28), rand.nextInt(28));
-		core.addBox(-4F, 0.0F, -2F, 1, 1, 1);
+		core.addCuboid(-4F, 0.0F, -2F, 1, 1, 1);
 		core.setRotationPoint(0.0F, -4.0F, 0.0F);
 
 		node1 = new ModelRenderer(this, rand.nextInt(28), rand.nextInt(28));
-		node1.addBox(-5.5F, -5F, -13F, 1, 1, 1);
+		node1.addCuboid(-5.5F, -5F, -13F, 1, 1, 1);
 		node1.setRotationPoint(2F, -1F, -6F);
 		core.addChild(node1);
 
 		node2 = new ModelRenderer(this, rand.nextInt(28), rand.nextInt(28));
-		node2.addBox(-5.5F, -13F, -5F, 1, 1, 1);
+		node2.addCuboid(-5.5F, -13F, -5F, 1, 1, 1);
 		node2.setRotationPoint(0F, -7F, -1F);
 		core.addChild(node2);
 
 		node3 = new ModelRenderer(this, rand.nextInt(28), rand.nextInt(28));
-		node3.addBox(-13F, -5F, -5F, 1, 1, 1);
+		node3.addCuboid(-13F, -5F, -5F, 1, 1, 1);
 		node3.setRotationPoint(5F, -2F, -1F);
 		core.addChild(node3);
 
 		node4 = new ModelRenderer(this, rand.nextInt(28), rand.nextInt(28));
-		node4.addBox(-5.5F, -5F, -13F, 1, 1, 1);
+		node4.addCuboid(-5.5F, -5F, -13F, 1, 1, 1);
 		node4.setRotationPoint(2F, -1F, -6F);
 		core.addChild(node4);
 
 		node5 = new ModelRenderer(this, rand.nextInt(28), rand.nextInt(28));
-		node5.addBox(-5.5F, -13F, -5F, 1, 1, 1);
+		node5.addCuboid(-5.5F, -13F, -5F, 1, 1, 1);
 		node5.setRotationPoint(0F, -7F, -1F);
 		core.addChild(node5);
 
 		node6 = new ModelRenderer(this, rand.nextInt(28), rand.nextInt(28));
-		node6.addBox(-13F, -5F, -5F, 1, 1, 1);
+		node6.addCuboid(-13F, -5F, -5F, 1, 1, 1);
 		node6.setRotationPoint(5F, -2F, -1F);
 		core.addChild(node6);
 
@@ -88,7 +88,7 @@ public class ModelTFMosquitoSwarm<T extends EntityTFMosquitoSwarm> extends Entit
 			float bugY = (rand.nextFloat() - rand.nextFloat()) * 4.0f;
 			float bugZ = (rand.nextFloat() - rand.nextFloat()) * 4.0f;
 
-			bug.addBox(bugX, bugY, bugZ, 1, 1, 1);
+			bug.addCuboid(bugX, bugY, bugZ, 1, 1, 1);
 
 			bug.setRotationPoint((float) vec.x, (float) vec.y, (float) vec.z);
 			bug.rotateAngleY = rotateY;

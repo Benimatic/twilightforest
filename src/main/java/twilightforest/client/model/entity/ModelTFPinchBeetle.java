@@ -44,125 +44,125 @@ public class ModelTFPinchBeetle<T extends EntityTFPinchBeetle> extends EntityMod
 		textureHeight = 32;
 
 		thorax = new ModelRenderer(this, 0, 22);
-		thorax.addBox(-4.5F, -4F, 0F, 9, 8, 2);
+		thorax.addCuboid(-4.5F, -4F, 0F, 9, 8, 2);
 		thorax.setRotationPoint(0F, 18F, -4.5F);
 
 		connector1 = new ModelRenderer(this, 0, 12);
-		connector1.addBox(-3F, -3F, 0F, 6, 6, 1);
+		connector1.addCuboid(-3F, -3F, 0F, 6, 6, 1);
 		connector1.setRotationPoint(0F, 18F, -3F);
 
 		connector2 = new ModelRenderer(this, 0, 12);
-		connector2.addBox(-3F, -3F, -1F, 6, 6, 1);
+		connector2.addCuboid(-3F, -3F, -1F, 6, 6, 1);
 		connector2.setRotationPoint(0F, 18F, -4F);
 
 		RearEnd = new ModelRenderer(this, 28, 14);
-		RearEnd.addBox(-5F, -9F, -4F, 10, 10, 8);
+		RearEnd.addCuboid(-5F, -9F, -4F, 10, 10, 8);
 		RearEnd.setRotationPoint(0F, 18F, 7F);
 		setRotation(RearEnd, 1.570796F, 0F, 0F);
 
 		Leg6 = new ModelRenderer(this, 40, 0);
-		Leg6.addBox(-1F, -1F, -1F, 10, 2, 2);
+		Leg6.addCuboid(-1F, -1F, -1F, 10, 2, 2);
 		Leg6.setRotationPoint(4F, 21F, -4F);
 		setRotation(Leg6, 0F, 0.2792527F, 0.3490659F);
 
 		Leg5 = new ModelRenderer(this, 40, 0);
 		Leg5.mirror = true;
-		Leg5.addBox(-9F, -1F, -1F, 10, 2, 2);
+		Leg5.addCuboid(-9F, -1F, -1F, 10, 2, 2);
 		Leg5.setRotationPoint(-4F, 21F, -4F);
 		setRotation(Leg5, 0F, -0.2792527F, -0.3490659F);
 
 		Leg4 = new ModelRenderer(this, 40, 0);
-		Leg4.addBox(-1F, -1F, -1F, 10, 2, 2);
+		Leg4.addCuboid(-1F, -1F, -1F, 10, 2, 2);
 		Leg4.setRotationPoint(4F, 21F, -1F);
 		setRotation(Leg4, 0F, -0.2792527F, 0.3490659F);
 
 		Leg2 = new ModelRenderer(this, 40, 0);
-		Leg2.addBox(-1F, -1F, -1F, 10, 2, 2);
+		Leg2.addCuboid(-1F, -1F, -1F, 10, 2, 2);
 		Leg2.setRotationPoint(4F, 21F, 4F);
 		setRotation(Leg2, 0F, -0.6981317F, 0.3490659F);
 
 		Leg3 = new ModelRenderer(this, 40, 0);
 		Leg3.mirror = true;
-		Leg3.addBox(-9F, -1F, -1F, 10, 2, 2);
+		Leg3.addCuboid(-9F, -1F, -1F, 10, 2, 2);
 		Leg3.setRotationPoint(-4F, 21F, -1F);
 		setRotation(Leg3, 0F, 0.2792527F, -0.3490659F);
 
 		Leg1 = new ModelRenderer(this, 40, 0);
 		Leg1.mirror = true;
-		Leg1.addBox(-9F, -1F, -1F, 10, 2, 2);
+		Leg1.addCuboid(-9F, -1F, -1F, 10, 2, 2);
 		Leg1.setRotationPoint(-4F, 21F, 4F);
 		Leg1.setTextureSize(64, 32);
 		setRotation(Leg1, 0F, 0.6981317F, -0.3490659F);
 
 		head = new ModelRenderer(this, 0, 0);
-		head.addBox(-4F, -4F, -6F, 8, 6, 6);
+		head.addCuboid(-4F, -4F, -6F, 8, 6, 6);
 		head.setRotationPoint(0F, 19F, -5F);
 
 		jaw1a = new ModelRenderer(this, 40, 6);
-		jaw1a.addBox(-1F, -1F, -1.5F, 8, 2, 3);
+		jaw1a.addCuboid(-1F, -1F, -1.5F, 8, 2, 3);
 		jaw1a.setRotationPoint(-3F, 1F, -6F);
 		setRotation(jaw1a, 0F, 2.6354471F, 0F);
 
 		jaw1b = new ModelRenderer(this, 40, 10);
-		jaw1b.addBox(-1F, -1F, -1F, 10, 2, 2);
+		jaw1b.addCuboid(-1F, -1F, -1F, 10, 2, 2);
 		jaw1b.setRotationPoint(7F, 0F, 0F);
 		setRotation(jaw1b, 0F, -1.047197F, 0F);
 
 		jaw2a = new ModelRenderer(this, 40, 6);
-		jaw2a.addBox(-1F, -1F, -1.5F, 8, 2, 3);
+		jaw2a.addCuboid(-1F, -1F, -1.5F, 8, 2, 3);
 		jaw2a.setRotationPoint(3F, 1F, -6F);
 		setRotation(jaw2a, 0F, 0.5410520F, 0F);
 
 		jaw2b = new ModelRenderer(this, 40, 10);
-		jaw2b.addBox(-1F, -1F, -1F, 10, 2, 2);
+		jaw2b.addCuboid(-1F, -1F, -1F, 10, 2, 2);
 		jaw2b.setRotationPoint(7F, 0F, 0F);
 		setRotation(jaw2b, 0F, 1.047197F, 0F);
 
 		antenna1 = new ModelRenderer(this, 42, 4);
-		antenna1.addBox(0F, -0.5F, -0.5F, 10, 1, 1);
+		antenna1.addCuboid(0F, -0.5F, -0.5F, 10, 1, 1);
 		antenna1.setRotationPoint(1F, -3F, -5F);
 		setRotation(antenna1, 0F, 1.047198F, -0.296706F);
 
 		antenna2 = new ModelRenderer(this, 42, 4);
-		antenna2.addBox(0F, -0.5F, -0.5F, 10, 1, 1);
+		antenna2.addCuboid(0F, -0.5F, -0.5F, 10, 1, 1);
 		antenna2.setRotationPoint(-1F, -3F, -5F);
 		setRotation(antenna2, 0F, 2.094395F, 0.296706F);
 
 		eye1 = new ModelRenderer(this, 15, 12);
-		eye1.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3);
+		eye1.addCuboid(-1.5F, -1.5F, -1.5F, 3, 3, 3);
 		eye1.setRotationPoint(-3F, -2F, -5F);
 
 		eye2 = new ModelRenderer(this, 15, 12);
-		eye2.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3);
+		eye2.addCuboid(-1.5F, -1.5F, -1.5F, 3, 3, 3);
 		eye2.setRotationPoint(3F, -2F, -5F);
 
 		tooth1a = new ModelRenderer(this, 0, 0);
-		tooth1a.addBox(0F, -0.5F, -0F, 2, 1, 1);
+		tooth1a.addCuboid(0F, -0.5F, -0F, 2, 1, 1);
 		tooth1a.setRotationPoint(9F, 0F, 0F);
 		setRotation(tooth1a, 0F, -0.5235987F, 0);
 
 		tooth1b = new ModelRenderer(this, 0, 0);
-		tooth1b.addBox(-2.5F, -0.5F, -0F, 2, 1, 1);
+		tooth1b.addCuboid(-2.5F, -0.5F, -0F, 2, 1, 1);
 		tooth1b.setRotationPoint(6F, 0F, 0F);
 		setRotation(tooth1b, 0F, 1.5707963F, 0);
 
 		tooth1c = new ModelRenderer(this, 0, 0);
-		tooth1c.addBox(-2.5F, -0.5F, -0F, 2, 1, 1);
+		tooth1c.addCuboid(-2.5F, -0.5F, -0F, 2, 1, 1);
 		tooth1c.setRotationPoint(3F, 0F, 0F);
 		setRotation(tooth1c, 0F, 1.5707963F, 0);
 
 		tooth2a = new ModelRenderer(this, 0, 0);
-		tooth2a.addBox(0F, -0.5F, -1F, 2, 1, 1);
+		tooth2a.addCuboid(0F, -0.5F, -1F, 2, 1, 1);
 		tooth2a.setRotationPoint(9F, 0F, 0F);
 		setRotation(tooth2a, 0F, 0.5235987F, 0);
 
 		tooth2b = new ModelRenderer(this, 0, 0);
-		tooth2b.addBox(-2.5F, -0.5F, -1F, 2, 1, 1);
+		tooth2b.addCuboid(-2.5F, -0.5F, -1F, 2, 1, 1);
 		tooth2b.setRotationPoint(6F, 0F, 0F);
 		setRotation(tooth2b, 0F, -1.5707963F, 0);
 
 		tooth2c = new ModelRenderer(this, 0, 0);
-		tooth2c.addBox(-2.5F, -0.5F, -1F, 2, 1, 1);
+		tooth2c.addCuboid(-2.5F, -0.5F, -1F, 2, 1, 1);
 		tooth2c.setRotationPoint(3F, 0F, 0F);
 		setRotation(tooth2c, 0F, -1.5707963F, 0);
 
