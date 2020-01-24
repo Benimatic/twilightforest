@@ -54,7 +54,8 @@ public final class ColorHandler {
 
 			for (int dz = -1; dz <= 1; ++dz) {
 				for (int dx = -1; dx <= 1; ++dx) {
-					int i2 = worldIn.getBiome(pos.add(dx, 0, dz)).getFoliageColor(pos.add(dx, 0, dz));
+					//int i2 = worldIn.getBiome(pos.add(dx, 0, dz)).getFoliageColor(pos.add(dx, 0, dz));
+					int i2 = BiomeColors.getFoliageColor(worldIn, pos.add(dx, 0, dz));
 					red += (i2 & 16711680) >> 16;
 					grn += (i2 & 65280) >> 8;
 					blu += i2 & 255;
@@ -183,7 +184,8 @@ public final class ColorHandler {
 
 				for (int dz = -1; dz <= 1; ++dz) {
 					for (int dx = -1; dx <= 1; ++dx) {
-						int color = world.getBiome(pos.add(dx, 0, dz)).getFoliageColor(pos);
+						//int color = world.getBiome(pos.add(dx, 0, dz)).getFoliageColor(pos);
+						int color = BiomeColors.getFoliageColor(world, pos);
 						red += (color & 16711680) >> 16;
 						green += (color & 65280) >> 8;
 						blue += color & 255;
@@ -205,7 +207,8 @@ public final class ColorHandler {
 
 				for (int dz = -1; dz <= 1; ++dz) {
 					for (int dx = -1; dx <= 1; ++dx) {
-						int color = world.getBiome(pos.add(dx, 0, dz)).getFoliageColor(pos);
+						//int color = world.getBiome(pos.add(dx, 0, dz)).getFoliageColor(pos);
+						int color = BiomeColors.getFoliageColor(world, pos);
 						red += (color & 16711680) >> 16;
 						green += (color & 65280) >> 8;
 						blue += color & 255;
@@ -230,7 +233,8 @@ public final class ColorHandler {
 
 				for (int dz = -1; dz <= 1; ++dz) {
 					for (int dx = -1; dx <= 1; ++dx) {
-						int color = world.getBiome(pos.add(dx, 0, dz)).getFoliageColor(pos);
+						//int color = world.getBiome(pos.add(dx, 0, dz)).getFoliageColor(pos);
+						int color = BiomeColors.getFoliageColor(world, pos);
 						red += (color & 16711680) >> 16;
 						green += (color & 65280) >> 8;
 						blue += color & 255;
@@ -254,7 +258,8 @@ public final class ColorHandler {
 
 				for (int dz = -1; dz <= 1; ++dz) {
 					for (int dx = -1; dx <= 1; ++dx) {
-						int color = world.getBiome(pos.add(dx, 0, dz)).getFoliageColor(pos);
+						//int color = world.getBiome(pos.add(dx, 0, dz)).getFoliageColor(pos);
+						int color = BiomeColors.getFoliageColor(world, pos);
 						red += (color & 16711680) >> 16;
 						green += (color & 65280) >> 8;
 						blue += color & 255;
