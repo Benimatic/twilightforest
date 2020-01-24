@@ -1,12 +1,13 @@
 package twilightforest.client.model.entity;
 
 import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.entity.model.ModelRenderer;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import twilightforest.entity.boss.EntityTFHydraNeck;
 
 public class ModelTFHydraNeck<T extends EntityTFHydraNeck> extends EntityModel<T> {
 
-	RendererModel neck;
+	ModelRenderer neck;
 
 	public ModelTFHydraNeck() {
 		textureWidth = 512;
@@ -14,7 +15,7 @@ public class ModelTFHydraNeck<T extends EntityTFHydraNeck> extends EntityModel<T
 
 		setTextureOffset("neck.box", 128, 136);
 		setTextureOffset("neck.fin", 128, 200);
-		neck = new RendererModel(this, "neck");
+		neck = new ModelRenderer(this, "neck");
 		neck.addBox("box", -16F, -16F, -16F, 32, 32, 32);
 		neck.addBox("fin", -2F, -23F, 0F, 4, 24, 24);
 		neck.setRotationPoint(0F, 0F, 0F);

@@ -1,21 +1,22 @@
 package twilightforest.client.model.entity;
 
 import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.entity.model.ModelRenderer;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.EntityTFGoblinKnightUpper;
 
 public class ModelTFGoblinKnightUpper<T extends EntityTFGoblinKnightUpper> extends BipedModel<T> {
 
-	public RendererModel breastplate;
-	public RendererModel helmet;
-	public RendererModel righthorn1;
-	public RendererModel righthorn2;
-	public RendererModel lefthorn1;
-	public RendererModel lefthorn2;
+	public ModelRenderer breastplate;
+	public ModelRenderer helmet;
+	public ModelRenderer righthorn1;
+	public ModelRenderer righthorn2;
+	public ModelRenderer lefthorn1;
+	public ModelRenderer lefthorn2;
 
-	public RendererModel shield;
-	public RendererModel spear;
+	public ModelRenderer shield;
+	public ModelRenderer spear;
 
 
 	public ModelTFGoblinKnightUpper() {
@@ -25,48 +26,48 @@ public class ModelTFGoblinKnightUpper<T extends EntityTFGoblinKnightUpper> exten
 
 //FIXME: AtomicBlom: Replace with something like LayerCape
 /*
-		this.bipedCloak = new RendererModel(this, 0, 0);
+		this.bipedCloak = new ModelRenderer(this, 0, 0);
         this.bipedCloak.addBox(-5.0F, 0.0F, -1.0F, 10, 16, 1);
 */
 //FIXME: AtomicBlom replace with some variant of LayerDeadmau5Head
 /*
-        this.bipedEars = new RendererModel(this, 24, 0);
+        this.bipedEars = new ModelRenderer(this, 24, 0);
         this.bipedEars.addBox(-3.0F, -6.0F, -1.0F, 6, 6, 1);
 */
 
-		this.bipedHead = new RendererModel(this, 0, 0);
+		this.bipedHead = new ModelRenderer(this, 0, 0);
 		this.bipedHead.addBox(0, 0, 0, 0, 0, 0);
 		this.bipedHead.setRotationPoint(0.0F, 12.0F, 0.0F);
 
-		this.bipedHeadwear = new RendererModel(this, 0, 0);
+		this.bipedHeadwear = new ModelRenderer(this, 0, 0);
 		this.bipedHeadwear.addBox(0, 0, 0, 0, 0, 0);
 		this.bipedHeadwear.setRotationPoint(0.0F, 12.0F, 0.0F);
 
-		this.helmet = new RendererModel(this, 0, 0);
+		this.helmet = new ModelRenderer(this, 0, 0);
 		this.helmet.addBox(-3.5F, -11.0F, -3.5F, 7, 11, 7);
 		this.helmet.rotateAngleY = 45F / (180F / (float) Math.PI);
 
-		this.righthorn1 = new RendererModel(this, 28, 0);
+		this.righthorn1 = new ModelRenderer(this, 28, 0);
 		this.righthorn1.addBox(-6F, -1.5F, -1.5F, 7, 3, 3);
 		this.righthorn1.setRotationPoint(-3.5F, -9F, 0.0F);
 		this.righthorn1.rotateAngleY = 15F / (180F / (float) Math.PI);
 		this.righthorn1.rotateAngleZ = 10F / (180F / (float) Math.PI);
 
-		this.righthorn2 = new RendererModel(this, 28, 6);
+		this.righthorn2 = new ModelRenderer(this, 28, 6);
 		this.righthorn2.addBox(-3.0F, -1.0F, -1.0F, 3, 2, 2);
 		this.righthorn2.setRotationPoint(-5.5F, 0.0F, 0.0F);
 		this.righthorn2.rotateAngleZ = 10F / (180F / (float) Math.PI);
 
 		this.righthorn1.addChild(righthorn2);
 
-		this.lefthorn1 = new RendererModel(this, 28, 0);
+		this.lefthorn1 = new ModelRenderer(this, 28, 0);
 		this.lefthorn1.mirror = true;
 		this.lefthorn1.addBox(-1F, -1.5F, -1.5F, 7, 3, 3);
 		this.lefthorn1.setRotationPoint(3.5F, -9F, 0.0F);
 		this.lefthorn1.rotateAngleY = -15F / (180F / (float) Math.PI);
 		this.lefthorn1.rotateAngleZ = -10F / (180F / (float) Math.PI);
 
-		this.lefthorn2 = new RendererModel(this, 28, 6);
+		this.lefthorn2 = new ModelRenderer(this, 28, 6);
 		this.lefthorn2.addBox(0.0F, -1.0F, -1.0F, 3, 2, 2);
 		this.lefthorn2.setRotationPoint(5.5F, 0.0F, 0.0F);
 		this.lefthorn2.rotateAngleZ = -10F / (180F / (float) Math.PI);
@@ -77,38 +78,38 @@ public class ModelTFGoblinKnightUpper<T extends EntityTFGoblinKnightUpper> exten
 		this.bipedHeadwear.addChild(righthorn1);
 		this.bipedHeadwear.addChild(lefthorn1);
 
-		this.bipedBody = new RendererModel(this, 0, 18);
+		this.bipedBody = new ModelRenderer(this, 0, 18);
 		this.bipedBody.setRotationPoint(0.0F, 12.0F, 0.0F);
 		this.bipedBody.addBox(-5.5F, 0.0F, -2.0F, 11, 8, 4);
 		this.bipedBody.setTextureOffset(30, 24).addBox(-6.5F, 0F, -2F, 1, 4, 4); // right shoulder
 		this.bipedBody.setTextureOffset(30, 24).addBox(5.5F, 0F, -2F, 1, 4, 4); // left shoulder
 
-		this.bipedRightArm = new RendererModel(this, 44, 16);
+		this.bipedRightArm = new ModelRenderer(this, 44, 16);
 		this.bipedRightArm.addBox(-4.0F, -2.0F, -2.0F, 4, 12, 4);
 		this.bipedRightArm.setRotationPoint(-6.5F, 14.0F, 0.0F);
 
-		this.bipedLeftArm = new RendererModel(this, 44, 16);
+		this.bipedLeftArm = new ModelRenderer(this, 44, 16);
 		this.bipedLeftArm.mirror = true;
 		this.bipedLeftArm.addBox(0.0F, -2.0F, -2.0F, 4, 12, 4);
 		this.bipedLeftArm.setRotationPoint(6.5F, 14.0F, 0.0F);
 
-		this.bipedRightLeg = new RendererModel(this, 30, 16);
+		this.bipedRightLeg = new ModelRenderer(this, 30, 16);
 		this.bipedRightLeg.addBox(-1.5F, 0.0F, -2.0F, 3, 4, 4);
 		this.bipedRightLeg.setRotationPoint(-4F, 20.0F, 0.0F);
 
-		this.bipedLeftLeg = new RendererModel(this, 30, 16);
+		this.bipedLeftLeg = new ModelRenderer(this, 30, 16);
 		this.bipedLeftLeg.mirror = true;
 		this.bipedLeftLeg.addBox(-1.5F, 0.0F, -2.0F, 3, 4, 4);
 		this.bipedLeftLeg.setRotationPoint(4F, 20.0F, 0.0F);
 
-		this.shield = new RendererModel(this, 63, 36);
+		this.shield = new ModelRenderer(this, 63, 36);
 		this.shield.addBox(-6.0F, -6.0F, -2.0F, 12, 20, 2);
 		this.shield.setRotationPoint(0F, 12F, 0.0F);
 		this.shield.rotateAngleX = 90F / (180F / (float) Math.PI);
 
 		this.bipedLeftArm.addChild(shield);
 
-		this.spear = new RendererModel(this, 108, 0);
+		this.spear = new ModelRenderer(this, 108, 0);
 		this.spear.addBox(-1.0F, -19.0F, -1.0F, 2, 40, 2);
 		this.spear.setRotationPoint(-2F, 8.5F, 0.0F);
 		this.spear.rotateAngleX = 90F / (180F / (float) Math.PI);
@@ -116,7 +117,7 @@ public class ModelTFGoblinKnightUpper<T extends EntityTFGoblinKnightUpper> exten
 		this.bipedRightArm.addChild(spear);
 
 
-		this.breastplate = new RendererModel(this, 64, 0);
+		this.breastplate = new ModelRenderer(this, 64, 0);
 		this.breastplate.addBox(-6.5F, 0.0F, -3.0F, 13, 12, 6);
 		this.breastplate.setRotationPoint(0F, 11.5F, 0.0F);
 

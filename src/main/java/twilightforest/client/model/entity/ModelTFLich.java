@@ -2,7 +2,8 @@ package twilightforest.client.model.entity;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.entity.model.ModelRenderer;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
 import twilightforest.entity.boss.EntityTFLich;
@@ -10,59 +11,59 @@ import twilightforest.entity.boss.EntityTFLich;
 import javax.annotation.Nonnull;
 
 public class ModelTFLich<T extends EntityTFLich> extends BipedModel<T> {
-	private final RendererModel collar;
-	private final RendererModel cloak;
+	private final ModelRenderer collar;
+	private final ModelRenderer cloak;
 
 	public ModelTFLich() {
 		textureWidth = 64;
 		textureHeight = 64;
 
 
-		bipedBody = new RendererModel(this, 8, 16);
+		bipedBody = new ModelRenderer(this, 8, 16);
 		bipedBody.addBox(-4F, 0.0F, -2F, 8, 24, 4);
 		bipedBody.setRotationPoint(0.0F, -4.0F, 0.0F);
 		bipedBody.setTextureSize(64, 64);
 
-		bipedRightArm = new RendererModel(this, 0, 16);
+		bipedRightArm = new ModelRenderer(this, 0, 16);
 		bipedRightArm.addBox(-2F, -2F, -1F, 2, 12, 2);
 		bipedRightArm.setTextureSize(64, 64);
 		bipedRightArm.setRotationPoint(-5F, -2.0F, 0.0F);
 
-		bipedLeftArm = new RendererModel(this, 0, 16);
+		bipedLeftArm = new ModelRenderer(this, 0, 16);
 		bipedLeftArm.mirror = true;
 		bipedLeftArm.addBox(-2F, -2F, -1F, 2, 12, 2);
 		bipedLeftArm.setRotationPoint(5F, -2.0F, 0.0F);
 		bipedLeftArm.setTextureSize(64, 64);
 
-		bipedHeadwear = new RendererModel(this, 32, 0);
+		bipedHeadwear = new ModelRenderer(this, 32, 0);
 		bipedHeadwear.addBox(-4F, -12F, -4F, 8, 8, 8, 0.5F);
 		bipedHeadwear.setRotationPoint(0.0F, -4.0F, 0.0F);
 		bipedHeadwear.setTextureSize(64, 64);
 
-		bipedHead = new RendererModel(this, 0, 0);
+		bipedHead = new ModelRenderer(this, 0, 0);
 		bipedHead.addBox(-4F, -8F, -4F, 8, 8, 8);
 		bipedHead.setRotationPoint(0F, -4F, 0F);
 		bipedHead.setTextureSize(64, 64);
 
-		bipedRightLeg = new RendererModel(this, 0, 16);
+		bipedRightLeg = new ModelRenderer(this, 0, 16);
 		bipedRightLeg.addBox(-1F, 0F, -1F, 2, 12, 2);
 		bipedRightLeg.setRotationPoint(-2F, 9.5F, 0F);
 		bipedRightLeg.setTextureSize(64, 64);
 
-		bipedLeftLeg = new RendererModel(this, 0, 16);
+		bipedLeftLeg = new ModelRenderer(this, 0, 16);
 		bipedLeftLeg.addBox(-1F, 0F, -1F, 2, 12, 2);
 		bipedLeftLeg.setRotationPoint(2F, 9.5F, 0F);
 		bipedLeftLeg.setTextureSize(64, 64);
 		bipedLeftLeg.mirror = true;
 
-		collar = new RendererModel(this, 32, 16);
+		collar = new ModelRenderer(this, 32, 16);
 		collar.addBox(-6F, 0F, 0F, 12, 12, 1);
 		collar.setRotationPoint(0F, -3F, -1F);
 		collar.setTextureSize(64, 64);
 		setRotation(collar, 2.164208F, 0F, 0F);
 
 
-		cloak = new RendererModel(this, 0, 44);
+		cloak = new ModelRenderer(this, 0, 44);
 		cloak.addBox(-6F, 0F, 0F, 12, 19, 1);
 		cloak.setRotationPoint(0F, -4F, 2.5F);
 		cloak.setTextureSize(64, 64);
@@ -109,7 +110,7 @@ public class ModelTFLich<T extends EntityTFLich> extends BipedModel<T> {
 		bipedLeftLeg.rotationPointY = 9.5F;
 	}
 
-	private void setRotation(RendererModel model, float x, float y, float z) {
+	private void setRotation(ModelRenderer model, float x, float y, float z) {
 		model.rotateAngleX = x;
 		model.rotateAngleY = y;
 		model.rotateAngleZ = z;

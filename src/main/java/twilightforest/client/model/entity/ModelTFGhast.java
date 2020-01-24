@@ -1,7 +1,8 @@
 package twilightforest.client.model.entity;
 
 import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.entity.model.ModelRenderer;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -11,13 +12,13 @@ import java.util.Random;
 
 @OnlyIn(Dist.CLIENT)
 public class ModelTFGhast<T extends EntityTFTowerGhast> extends EntityModel<T> {
-	RendererModel body;
-	protected RendererModel[] tentacles = new RendererModel[9];
+	ModelRenderer body;
+	protected ModelRenderer[] tentacles = new ModelRenderer[9];
 
 
 	public ModelTFGhast() {
 		byte yOffset = -16;
-		this.body = new RendererModel(this, 0, 0);
+		this.body = new ModelRenderer(this, 0, 0);
 		this.body.addBox(-8.0F, -8.0F, -8.0F, 16, 16, 16);
 		this.body.rotationPointY += (float) (24 + yOffset);
 		Random rand = new Random(1660L);
@@ -28,7 +29,7 @@ public class ModelTFGhast<T extends EntityTFTowerGhast> extends EntityModel<T> {
 	}
 
 	protected void makeTentacle(byte yOffset, Random random, int i) {
-		this.tentacles[i] = new RendererModel(this, 0, 0);
+		this.tentacles[i] = new ModelRenderer(this, 0, 0);
 		float xPoint = (((float) (i % 3) - (float) (i / 3 % 2) * 0.5F + 0.25F) / 2.0F * 2.0F - 1.0F) * 5.0F;
 		float zPoint = ((float) (i / 3) / 2.0F * 2.0F - 1.0F) * 5.0F;
 		int length = random.nextInt(7) + 8;

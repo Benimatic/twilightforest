@@ -1,24 +1,25 @@
 package twilightforest.client.model.entity;
 
 import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.entity.model.ModelRenderer;
+import net.minecraft.client.renderer.model.ModelRenderer;
 
 
 public class ModelTFFirefly extends EntityModel {
 	public ModelTFFirefly() {
-		legs = new RendererModel(this, 0, 21);
+		legs = new ModelRenderer(this, 0, 21);
 		legs.addBox(-4F, 7.9F, -5F, 8, 1, 10, 0F);
 		//legs.setRotationPoint(0F, 16F, 0F);
 
-		fatbody = new RendererModel(this, 0, 11);
+		fatbody = new ModelRenderer(this, 0, 11);
 		fatbody.addBox(-2F, 6F, -4F, 4, 2, 6, 0F);
 		//fatbody.setRotationPoint(0F, 16F, 0F);
 
-		skinnybody = new RendererModel(this, 0, 0);
+		skinnybody = new ModelRenderer(this, 0, 0);
 		skinnybody.addBox(-1F, 7F, -5F, 2, 1, 8, 0F);
 		//skinnybody.setRotationPoint(0F, 16F, 0F);
 
-		glow = new RendererModel(this, 20, 0);
+		glow = new ModelRenderer(this, 20, 0);
 		glow.addBox(-5F, 5.9F, -9F, 10, 0, 10, 0F);
 		//glow.setRotationPoint(0F, 16F, 0F);
 
@@ -39,9 +40,9 @@ public class ModelTFFirefly extends EntityModel {
 	}
 
 	//fields
-	public RendererModel legs;
-	public RendererModel fatbody;
-	public RendererModel skinnybody;
-	public RendererModel glow;
+	public ModelRenderer legs;
+	public ModelRenderer fatbody;
+	public ModelRenderer skinnybody;
+	public ModelRenderer glow;
 
 }

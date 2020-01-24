@@ -1,17 +1,18 @@
 package twilightforest.client.model.entity;
 
 import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.entity.model.ModelRenderer;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.EntityTFWraith;
 
 public class ModelTFWraith<T extends EntityTFWraith> extends BipedModel<T> {
 
-	public RendererModel dress;
+	public ModelRenderer dress;
 
 	public ModelTFWraith() {
 		float f = 0.0F;
-		dress = new RendererModel(this, 40, 16);
+		dress = new ModelRenderer(this, 40, 16);
 		dress.addBox(-4F, 12.0F, -2F, 8, 12, 4, f);
 		dress.setRotationPoint(0.0F, 0.0F, 0.0F);
 

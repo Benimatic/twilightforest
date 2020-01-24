@@ -1,17 +1,18 @@
 package twilightforest.client.model.entity;
 
 import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.entity.model.ModelRenderer;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.EntityTFYeti;
 
 public class ModelTFYeti<T extends EntityTFYeti> extends BipedModel<T> {
 
-	public RendererModel mouth;
-	public RendererModel leftEye;
-	public RendererModel rightEye;
-	public RendererModel angryLeftEye;
-	public RendererModel angryRightEye;
+	public ModelRenderer mouth;
+	public ModelRenderer leftEye;
+	public ModelRenderer rightEye;
+	public ModelRenderer angryLeftEye;
+	public ModelRenderer angryRightEye;
 
 
 	public ModelTFYeti() {
@@ -20,52 +21,52 @@ public class ModelTFYeti<T extends EntityTFYeti> extends BipedModel<T> {
 		this.textureWidth = 128;
 		this.textureHeight = 64;
 
-		this.bipedHead = new RendererModel(this, 0, 0);
+		this.bipedHead = new ModelRenderer(this, 0, 0);
 		this.bipedHead.addBox(-4.0F, -8.0F, -4.0F, 0, 0, 0);
-		this.bipedHeadwear = new RendererModel(this, 32, 0);
+		this.bipedHeadwear = new ModelRenderer(this, 32, 0);
 		this.bipedHeadwear.addBox(-4.0F, -8.0F, -4.0F, 0, 0, 0);
 
-		this.bipedBody = new RendererModel(this, 32, 0);
+		this.bipedBody = new ModelRenderer(this, 32, 0);
 		this.bipedBody.addBox(-10.0F, 0.0F, -6.0F, 20, 26, 12);
 		this.bipedBody.setRotationPoint(0.0F, -14.0F, 0.0F);
 
 
-		this.mouth = new RendererModel(this, 96, 6);
+		this.mouth = new ModelRenderer(this, 96, 6);
 		this.mouth.addBox(-7.0F, -5.0F, -0.5F, 14, 10, 1);
 		this.mouth.setRotationPoint(0.0F, 12.0F, -6.0F);
 		this.bipedBody.addChild(mouth);
 
-		this.rightEye = new RendererModel(this, 96, 0);
+		this.rightEye = new ModelRenderer(this, 96, 0);
 		this.rightEye.addBox(-2.5F, -2.5F, -0.5F, 5, 5, 1);
 		this.rightEye.setRotationPoint(-5.5F, 4.5F, -6.0F);
 		this.bipedBody.addChild(rightEye);
 
-		this.leftEye = new RendererModel(this, 96, 0);
+		this.leftEye = new ModelRenderer(this, 96, 0);
 		this.leftEye.addBox(-2.5F, -2.5F, -0.5F, 5, 5, 1);
 		this.leftEye.setRotationPoint(5.5F, 4.5F, -6.0F);
 		this.bipedBody.addChild(leftEye);
 
-		this.angryRightEye = new RendererModel(this, 109, 0);
+		this.angryRightEye = new ModelRenderer(this, 109, 0);
 		this.angryRightEye.addBox(-2.5F, -2.5F, -0.5F, 5, 5, 1);
 		this.angryRightEye.setRotationPoint(5.5F, 4.5F, -6.0F);
 		this.bipedBody.addChild(angryRightEye);
 
-		this.angryLeftEye = new RendererModel(this, 109, 0);
+		this.angryLeftEye = new ModelRenderer(this, 109, 0);
 		this.angryLeftEye.addBox(-2.5F, -2.5F, -0.5F, 5, 5, 1);
 		this.angryLeftEye.setRotationPoint(-5.5F, 4.5F, -6.0F);
 		this.bipedBody.addChild(angryLeftEye);
 
-		this.bipedRightArm = new RendererModel(this, 0, 0);
+		this.bipedRightArm = new ModelRenderer(this, 0, 0);
 		this.bipedRightArm.addBox(-5.0F, -2.0F, -3.0F, 6, 16, 6);
 		this.bipedRightArm.setRotationPoint(-11.0F, -4.0F, 0.0F);
-		this.bipedLeftArm = new RendererModel(this, 0, 0);
+		this.bipedLeftArm = new ModelRenderer(this, 0, 0);
 		this.bipedLeftArm.mirror = true;
 		this.bipedLeftArm.addBox(-1.0F, -2.0F, -3.0F, 6, 16, 6);
 		this.bipedLeftArm.setRotationPoint(11.0F, -4.0F, 0.0F);
-		this.bipedRightLeg = new RendererModel(this, 0, 22);
+		this.bipedRightLeg = new ModelRenderer(this, 0, 22);
 		this.bipedRightLeg.addBox(-4.0F, 0.0F, -4.0F, 8, 12, 8);
 		this.bipedRightLeg.setRotationPoint(-6.0F, 12.0F, 0.0F);
-		this.bipedLeftLeg = new RendererModel(this, 0, 22);
+		this.bipedLeftLeg = new ModelRenderer(this, 0, 22);
 		this.bipedLeftLeg.mirror = true;
 		this.bipedLeftLeg.addBox(-4.0F, 0.0F, -4.0F, 8, 12, 8);
 		this.bipedLeftLeg.setRotationPoint(6.0F, 12.0F, 0.0F);

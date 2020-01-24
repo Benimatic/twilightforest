@@ -2,14 +2,15 @@ package twilightforest.client.model.entity;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.entity.model.ModelRenderer;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
 import twilightforest.entity.boss.EntityTFIceCrystal;
 
 public class ModelTFIceCrystal<T extends EntityTFIceCrystal> extends EntityModel<T> {
 
-	public RendererModel[] spikes = new RendererModel[16];
+	public ModelRenderer[] spikes = new ModelRenderer[16];
 
 
 	public ModelTFIceCrystal() {
@@ -21,14 +22,14 @@ public class ModelTFIceCrystal<T extends EntityTFIceCrystal> extends EntityModel
 
 		// spikes
 		for (int i = 0; i < spikes.length; i++) {
-			this.spikes[i] = new RendererModel(this, 0, 16);
+			this.spikes[i] = new ModelRenderer(this, 0, 16);
 
 			int spikeLength = i % 2 == 0 ? 6 : 8;
 
 			this.spikes[i].addBox(-1.0F, -1.0F, -1.0F, 2, spikeLength, 2, par1);
 			this.spikes[i].setRotationPoint(0.0F, 0.0F + par2, 0.0F);
 
-			RendererModel cube = new RendererModel(this, 8, 16);
+			ModelRenderer cube = new ModelRenderer(this, 8, 16);
 			cube.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3);
 			cube.setRotationPoint(0.0F, spikeLength, 0.0F);
 
@@ -87,7 +88,7 @@ public class ModelTFIceCrystal<T extends EntityTFIceCrystal> extends EntityModel
 //        	this.spikes[i].rotationPointY = 5F + MathHelper.sin((entity.ticksExisted + partialTicks) / (float)i) * 3F;
 //        	this.spikes[i].rotationPointZ = MathHelper.sin((entity.ticksExisted + partialTicks) / (float)i) * 3F;
 
-			//((RendererModel)this.spikes[i].childModels.get(0)).rotationPointY = 10 + MathHelper.sin((i + entity.ticksExisted + partialTicks) / i) * 3F;
+			//((ModelRenderer)this.spikes[i].childModels.get(0)).rotationPointY = 10 + MathHelper.sin((i + entity.ticksExisted + partialTicks) / i) * 3F;
 
 		}
 	}

@@ -1,7 +1,8 @@
 package twilightforest.client.model.entity;
 
 import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.entity.model.ModelRenderer;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.boss.EntityTFSnowQueen;
 import twilightforest.entity.boss.EntityTFSnowQueen.Phase;
@@ -15,7 +16,7 @@ public class ModelTFSnowQueen<T extends EntityTFSnowQueen> extends BipedModel<T>
 
 
 		// crown
-		this.bipedHeadwear = new RendererModel(this, 0, 0);
+		this.bipedHeadwear = new ModelRenderer(this, 0, 0);
 
 		this.bipedHeadwear.addChild(makeFrontCrown(-1, -4, 10F));
 		this.bipedHeadwear.addChild(makeFrontCrown(0, 4, -10F));
@@ -26,45 +27,45 @@ public class ModelTFSnowQueen<T extends EntityTFSnowQueen> extends BipedModel<T>
 
 
 		// dress
-		this.bipedBody = new RendererModel(this, 32, 0);
+		this.bipedBody = new ModelRenderer(this, 32, 0);
 		this.bipedBody.addBox(-4.0F, 0.0F, -2.0F, 8, 23, 4, par1);
 		this.bipedBody.setRotationPoint(0.0F, 0.0F + par2, 0.0F);
 
 		// shrink
-		this.bipedRightArm = new RendererModel(this, 16, 16);
+		this.bipedRightArm = new ModelRenderer(this, 16, 16);
 		this.bipedRightArm.addBox(-2.0F, -2.0F, -1.5F, 3, 12, 3, par1);
 		this.bipedRightArm.setRotationPoint(-5.0F, 2.0F + par2, 0.0F);
-		this.bipedLeftArm = new RendererModel(this, 16, 16);
+		this.bipedLeftArm = new ModelRenderer(this, 16, 16);
 		this.bipedLeftArm.mirror = true;
 		this.bipedLeftArm.addBox(-1.0F, -2.0F, -1.3F, 3, 12, 3, par1);
 		this.bipedLeftArm.setRotationPoint(5.0F, 2.0F + par2, 0.0F);
-		this.bipedRightLeg = new RendererModel(this, 0, 16);
+		this.bipedRightLeg = new ModelRenderer(this, 0, 16);
 		this.bipedRightLeg.addBox(-1.5F, 0.0F, -1.5F, 3, 12, 3, par1);
 		this.bipedRightLeg.setRotationPoint(-1.9F, 12.0F + par2, 0.0F);
-		this.bipedLeftLeg = new RendererModel(this, 0, 16);
+		this.bipedLeftLeg = new ModelRenderer(this, 0, 16);
 		this.bipedLeftLeg.mirror = true;
 		this.bipedLeftLeg.addBox(-1.5F, 0.0F, -1.5F, 3, 12, 3, par1);
 		this.bipedLeftLeg.setRotationPoint(1.9F, 12.0F + par2, 0.0F);
 
 	}
 
-	private RendererModel makeSideCrown(float spikeDepth, float crownX, float angle) {
-		RendererModel crownSide = new RendererModel(this, 28, 28);
+	private ModelRenderer makeSideCrown(float spikeDepth, float crownX, float angle) {
+		ModelRenderer crownSide = new ModelRenderer(this, 28, 28);
 		crownSide.addBox(-3.5F, -0.5F, -0.5F, 7, 1, 1);
 		crownSide.setRotationPoint(crownX, -6.0F, 0.0F);
 		crownSide.rotateAngleY = 3.14159F / 2.0F;
 
-		RendererModel spike4 = new RendererModel(this, 48, 27);
+		ModelRenderer spike4 = new ModelRenderer(this, 48, 27);
 		spike4.addBox(-0.5F, -3.5F, spikeDepth, 1, 4, 1);
 		spike4.rotateAngleX = angle * 1.5F / 180F * 3.14159F;
 
-		RendererModel spike3l = new RendererModel(this, 52, 28);
+		ModelRenderer spike3l = new ModelRenderer(this, 52, 28);
 		spike3l.addBox(-0.5F, -2.5F, spikeDepth, 1, 3, 1);
 		spike3l.setRotationPoint(-2.5F, 0.0F, 0.0F);
 		spike3l.rotateAngleX = angle / 180F * 3.14159F;
 		spike3l.rotateAngleZ = -10F / 180F * 3.14159F;
 
-		RendererModel spike3r = new RendererModel(this, 52, 28);
+		ModelRenderer spike3r = new ModelRenderer(this, 52, 28);
 		spike3r.addBox(-0.5F, -2.5F, spikeDepth, 1, 3, 1);
 		spike3r.setRotationPoint(2.5F, 0.0F, 0.0F);
 		spike3r.rotateAngleX = angle / 180F * 3.14159F;
@@ -77,22 +78,22 @@ public class ModelTFSnowQueen<T extends EntityTFSnowQueen> extends BipedModel<T>
 		return crownSide;
 	}
 
-	private RendererModel makeFrontCrown(float spikeDepth, float crownZ, float angle) {
-		RendererModel crownFront = new RendererModel(this, 28, 30);
+	private ModelRenderer makeFrontCrown(float spikeDepth, float crownZ, float angle) {
+		ModelRenderer crownFront = new ModelRenderer(this, 28, 30);
 		crownFront.addBox(-4.5F, -0.5F, -0.5F, 9, 1, 1);
 		crownFront.setRotationPoint(0.0F, -6.0F, crownZ);
 
-		RendererModel spike4 = new RendererModel(this, 48, 27);
+		ModelRenderer spike4 = new ModelRenderer(this, 48, 27);
 		spike4.addBox(-0.5F, -3.5F, spikeDepth, 1, 4, 1);
 		spike4.rotateAngleX = angle * 1.5F / 180F * 3.14159F;
 
-		RendererModel spike3l = new RendererModel(this, 52, 28);
+		ModelRenderer spike3l = new ModelRenderer(this, 52, 28);
 		spike3l.addBox(-0.5F, -2.5F, spikeDepth, 1, 3, 1);
 		spike3l.setRotationPoint(-2.5F, 0.0F, 0.0F);
 		spike3l.rotateAngleX = angle / 180F * 3.14159F;
 		spike3l.rotateAngleZ = -10F / 180F * 3.14159F;
 
-		RendererModel spike3r = new RendererModel(this, 52, 28);
+		ModelRenderer spike3r = new ModelRenderer(this, 52, 28);
 		spike3r.addBox(-0.5F, -2.5F, spikeDepth, 1, 3, 1);
 		spike3r.setRotationPoint(2.5F, 0.0F, 0.0F);
 		spike3r.rotateAngleX = angle / 180F * 3.14159F;

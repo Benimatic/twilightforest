@@ -8,7 +8,8 @@ package twilightforest.client.model.entity;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.entity.model.ModelRenderer;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.item.DyeColor;
 import net.minecraft.util.math.MathHelper;
@@ -16,21 +17,21 @@ import twilightforest.entity.passive.EntityTFQuestRam;
 
 public class ModelTFQuestRam<T extends EntityTFQuestRam> extends EntityModel<T> {
 	//fields
-	RendererModel frontbody;
-	RendererModel rearbody;
-	RendererModel leg1;
-	RendererModel haunch1;
-	RendererModel leg2;
-	RendererModel haunch2;
-	RendererModel leg3;
-	RendererModel haunch3;
-	RendererModel leg4;
-	RendererModel haunch4;
-	RendererModel neck;
-	RendererModel nose;
-	public RendererModel head;
+	ModelRenderer frontbody;
+	ModelRenderer rearbody;
+	ModelRenderer leg1;
+	ModelRenderer haunch1;
+	ModelRenderer leg2;
+	ModelRenderer haunch2;
+	ModelRenderer leg3;
+	ModelRenderer haunch3;
+	ModelRenderer leg4;
+	ModelRenderer haunch4;
+	ModelRenderer neck;
+	ModelRenderer nose;
+	public ModelRenderer head;
 
-	RendererModel[] segments;
+	ModelRenderer[] segments;
 	boolean[] segmentEnabled;
 
 	int[] colorOrder = new int[]{0, 8, 7, 15, 14, 1, 4, 5, 13, 3, 9, 11, 10, 2, 6, 12};
@@ -54,54 +55,54 @@ public class ModelTFQuestRam<T extends EntityTFQuestRam> extends EntityModel<T> 
 		setTextureOffset("head.horn1f", 76, 95);
 		setTextureOffset("head.horn1g", 88, 97);
 
-		frontbody = new RendererModel(this, 0, 0);
+		frontbody = new ModelRenderer(this, 0, 0);
 		frontbody.addBox(-9F, -7.5F, -15F, 18, 15, 15);
 		frontbody.setRotationPoint(0F, -1F, 2F);
 
-		rearbody = new RendererModel(this, 0, 30);
+		rearbody = new ModelRenderer(this, 0, 30);
 		rearbody.addBox(-9F, -7.5F, 0F, 18, 15, 15);
 		rearbody.setRotationPoint(0F, -1F, 4F);
 
 
-		leg1 = new RendererModel(this, 66, 0);
+		leg1 = new ModelRenderer(this, 66, 0);
 		leg1.addBox(-3F, 10F, -3F, 6, 12, 6);
 		leg1.setRotationPoint(-6F, 2F, 13F);
 
-		haunch1 = new RendererModel(this, 90, 0);
+		haunch1 = new ModelRenderer(this, 90, 0);
 		haunch1.addBox(-3.5F, 0F, -6F, 7, 10, 10);
 		haunch1.setRotationPoint(-6F, 2F, 13F);
 
-		leg2 = new RendererModel(this, 66, 0);
+		leg2 = new ModelRenderer(this, 66, 0);
 		leg2.addBox(-3F, 10F, -3F, 6, 12, 6);
 		leg2.setRotationPoint(6F, 2F, 13F);
 
-		haunch2 = new RendererModel(this, 90, 0);
+		haunch2 = new ModelRenderer(this, 90, 0);
 		haunch2.addBox(-3.5F, 0F, -6F, 7, 10, 10);
 		haunch2.setRotationPoint(6F, 2F, 13F);
 
-		leg3 = new RendererModel(this, 66, 18);
+		leg3 = new ModelRenderer(this, 66, 18);
 		leg3.addBox(-3F, 10F, -3F, 6, 13, 6);
 		leg3.setRotationPoint(-6F, 1F, -8F);
 
-		haunch3 = new RendererModel(this, 90, 20);
+		haunch3 = new ModelRenderer(this, 90, 20);
 		haunch3.addBox(-3.5F, 0F, -4F, 7, 10, 7);
 		haunch3.setRotationPoint(-6F, 1F, -8F);
 
-		leg4 = new RendererModel(this, 66, 18);
+		leg4 = new ModelRenderer(this, 66, 18);
 		leg4.addBox(-3F, 10F, -3F, 6, 13, 6);
 		leg4.setRotationPoint(6F, 1F, -8F);
 
-		haunch4 = new RendererModel(this, 90, 20);
+		haunch4 = new ModelRenderer(this, 90, 20);
 		haunch4.addBox(-3.5F, 0F, -4F, 7, 10, 7);
 		haunch4.setRotationPoint(6F, 1F, -8F);
 
-		neck = new RendererModel(this, 66, 37);
+		neck = new ModelRenderer(this, 66, 37);
 		neck.addBox(-5.5F, -8F, -8F, 11, 14, 12);
 		neck.setRotationPoint(0F, -8F, -7F);
 
 		setRotation(neck, 0.2617994F, 0F, 0F);
 
-		head = new RendererModel(this, "head");
+		head = new ModelRenderer(this, "head");
 		head.setRotationPoint(0F, -13F, -5F);
 
 		head.addBox("head", -6F, -4.5F, -15F, 12, 9, 15);
@@ -120,17 +121,17 @@ public class ModelTFQuestRam<T extends EntityTFQuestRam> extends EntityModel<T> 
 		head.addBox("horn1f", -15F, -4F, -9F, 3, 6, 3);
 		head.addBox("horn1g", -16F, -6F, -7F, 3, 3, 4);
 
-		nose = new RendererModel(this, 54, 73);
+		nose = new ModelRenderer(this, 54, 73);
 		nose.addBox(-5.5F, -5F, -13F, 11, 9, 12);
 		nose.setRotationPoint(0F, -7F, -1F);
 		nose.setTextureSize(128, 128);
 		setRotation(nose, 0.5235988F, 0F, 0F);
 		head.addChild(nose);
 
-		segments = new RendererModel[16];
+		segments = new ModelRenderer[16];
 		segmentEnabled = new boolean[16];
 		for (int i = 0; i < 16; i++) {
-			segments[i] = new RendererModel(this, 0, 104);
+			segments[i] = new ModelRenderer(this, 0, 104);
 			segments[i].addBox(-9F, -7.5F, 0F, 18, 15, 2);
 			segments[i].setRotationPoint(0F, -1F, 2F);
 
@@ -169,7 +170,7 @@ public class ModelTFQuestRam<T extends EntityTFQuestRam> extends EntityModel<T> 
 		GlStateManager.color3f(1.0F, 1.0F, 1.0F);
 	}
 
-	private void setRotation(RendererModel model, float x, float y, float z) {
+	private void setRotation(ModelRenderer model, float x, float y, float z) {
 		model.rotateAngleX = x;
 		model.rotateAngleY = y;
 		model.rotateAngleZ = z;

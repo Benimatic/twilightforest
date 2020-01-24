@@ -1,21 +1,22 @@
 package twilightforest.client.model.entity;
 
 import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.entity.model.ModelRenderer;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import twilightforest.entity.EntityTFSpikeBlock;
 
 public class ModelTFSpikeBlock<T extends EntityTFSpikeBlock> extends EntityModel<T> {
-	RendererModel block;
-	RendererModel[] spikes = new RendererModel[27];
+	ModelRenderer block;
+	ModelRenderer[] spikes = new ModelRenderer[27];
 
 	public ModelTFSpikeBlock() {
 
-		block = new RendererModel(this, 32, 16);
+		block = new ModelRenderer(this, 32, 16);
 		block.addBox(-4F, -8F, -4F, 8, 8, 8, 0F);
 		block.setRotationPoint(0F, 0F, 0F);
 
 		for (int i = 0; i < spikes.length; i++) {
-			spikes[i] = new RendererModel(this, 56, 16);
+			spikes[i] = new ModelRenderer(this, 56, 16);
 			spikes[i].addBox(-1F, -1F, -1F, 2, 2, 2, 0F);
 			block.addChild(spikes[i]);
 		}

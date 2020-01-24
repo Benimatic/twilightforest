@@ -1,13 +1,14 @@
 package twilightforest.client.model.entity;
 
 import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.entity.model.ModelRenderer;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.EntityTFGoblinKnightLower;
 
 public class ModelTFGoblinKnightLower<T extends EntityTFGoblinKnightLower> extends BipedModel<T> {
 
-	public RendererModel tunic;
+	public ModelRenderer tunic;
 
 	public ModelTFGoblinKnightLower() {
 		this.isSneak = false;
@@ -16,45 +17,45 @@ public class ModelTFGoblinKnightLower<T extends EntityTFGoblinKnightLower> exten
 
 //FIXME: AtomicBlom: Replace with something like LayerCape
 /*
-		this.bipedCloak = new RendererModel(this, 0, 0);
+		this.bipedCloak = new ModelRenderer(this, 0, 0);
         this.bipedCloak.addBox(-5.0F, 0.0F, -1.0F, 10, 16, 1);
 */
 //FIXME: AtomicBlom replace with some variant of LayerDeadmau5Head
 /*
-        this.bipedEars = new RendererModel(this, 24, 0);
+        this.bipedEars = new ModelRenderer(this, 24, 0);
         this.bipedEars.addBox(-3.0F, -6.0F, -1.0F, 6, 6, 1);
 */
 
-		this.bipedHead = new RendererModel(this, 0, 32);
+		this.bipedHead = new ModelRenderer(this, 0, 32);
 		this.bipedHead.addBox(-2.5F, -5.0F, -3.5F, 5, 5, 5);
 		this.bipedHead.setRotationPoint(0.0F, 10.0F, 1.0F);
 
-		this.bipedHeadwear = new RendererModel(this, 0, 0);
+		this.bipedHeadwear = new ModelRenderer(this, 0, 0);
 		this.bipedHeadwear.addBox(0, 0, 0, 0, 0, 0);
 
-		this.bipedBody = new RendererModel(this, 16, 48);
+		this.bipedBody = new ModelRenderer(this, 16, 48);
 		this.bipedBody.addBox(-3.5F, 0.0F, -2.0F, 7, 8, 4);
 		this.bipedBody.setRotationPoint(0.0F, 8.0F, 0.0F);
 
-		this.bipedRightArm = new RendererModel(this, 40, 48);
+		this.bipedRightArm = new ModelRenderer(this, 40, 48);
 		this.bipedRightArm.addBox(-2.0F, -2.0F, -1.5F, 2, 8, 3);
 		this.bipedRightArm.setRotationPoint(-3.5F, 10.0F, 0.0F);
 
-		this.bipedLeftArm = new RendererModel(this, 40, 48);
+		this.bipedLeftArm = new ModelRenderer(this, 40, 48);
 		this.bipedLeftArm.mirror = true;
 		this.bipedLeftArm.addBox(0.0F, -2.0F, -1.5F, 2, 8, 3);
 		this.bipedLeftArm.setRotationPoint(3.5F, 10.0F, 0.0F);
 
-		this.bipedRightLeg = new RendererModel(this, 0, 48);
+		this.bipedRightLeg = new ModelRenderer(this, 0, 48);
 		this.bipedRightLeg.addBox(-3.0F, 0.0F, -2.0F, 4, 8, 4);
 		this.bipedRightLeg.setRotationPoint(-2.5F, 16.0F, 0.0F);
 
-		this.bipedLeftLeg = new RendererModel(this, 0, 48);
+		this.bipedLeftLeg = new ModelRenderer(this, 0, 48);
 		this.bipedLeftLeg.mirror = true;
 		this.bipedLeftLeg.addBox(-1.0F, 0.0F, -2.0F, 4, 8, 4);
 		this.bipedLeftLeg.setRotationPoint(2.5F, 16.0F, 0.0F);
 
-		this.tunic = new RendererModel(this, 64, 19);
+		this.tunic = new ModelRenderer(this, 64, 19);
 		this.tunic.addBox(-6.0F, 0.0F, -3.0F, 12, 9, 6);
 		this.tunic.setRotationPoint(0F, 7.5F, 0.0F);
 	}

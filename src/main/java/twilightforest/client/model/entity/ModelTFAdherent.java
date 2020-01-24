@@ -1,45 +1,45 @@
 package twilightforest.client.model.entity;
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.EntityTFAdherent;
 
 public class ModelTFAdherent<T extends EntityTFAdherent> extends BipedModel<T> {
 
-	RendererModel leftSleeve;
-	RendererModel rightSleeve;
+	ModelRenderer leftSleeve;
+	ModelRenderer rightSleeve;
 
 	public ModelTFAdherent() {
 
-		this.bipedHeadwear = new RendererModel(this, 0, 0);
-		this.bipedLeftLeg = new RendererModel(this, 0, 0);
-		this.bipedRightLeg = new RendererModel(this, 0, 0);
+		this.bipedHeadwear = new ModelRenderer(this, 0, 0);
+		this.bipedLeftLeg = new ModelRenderer(this, 0, 0);
+		this.bipedRightLeg = new ModelRenderer(this, 0, 0);
 
-		this.bipedHead = new RendererModel(this, 0, 0);
+		this.bipedHead = new ModelRenderer(this, 0, 0);
 		this.bipedHead.addBox(-4F, -8F, -4F, 8, 8, 8);
 		this.bipedHead.setRotationPoint(0F, 0F, 0F);
 
-		this.bipedBody = new RendererModel(this, 32, 0);
+		this.bipedBody = new ModelRenderer(this, 32, 0);
 		this.bipedBody.addBox(-4F, 0F, -2F, 8, 24, 4);
 		this.bipedBody.setRotationPoint(0F, 0F, 0F);
 
-		this.bipedRightArm = new RendererModel(this, 0, 16);
+		this.bipedRightArm = new ModelRenderer(this, 0, 16);
 		this.bipedRightArm.addBox(-3F, -2F, -2F, 4, 12, 4);
 		this.bipedRightArm.setRotationPoint(-5F, 2F, 0F);
 
-		this.bipedLeftArm = new RendererModel(this, 0, 16);
+		this.bipedLeftArm = new ModelRenderer(this, 0, 16);
 		this.bipedLeftArm.addBox(-1F, -2F, -2F, 4, 12, 4);
 		this.bipedLeftArm.setRotationPoint(5F, 2F, 0F);
 
-		this.leftSleeve = new RendererModel(this, 16, 16);
+		this.leftSleeve = new ModelRenderer(this, 16, 16);
 		this.leftSleeve.addBox(-1F, -2F, 2F, 4, 12, 4);
 		this.leftSleeve.setRotationPoint(0F, 0F, 0F);
 
 		this.bipedLeftArm.addChild(this.leftSleeve);
 
-		this.rightSleeve = new RendererModel(this, 16, 16);
+		this.rightSleeve = new ModelRenderer(this, 16, 16);
 		this.rightSleeve.addBox(-3F, -2F, 2F, 4, 12, 4);
 		this.rightSleeve.setRotationPoint(0F, 0F, 0F);
 

@@ -1,15 +1,16 @@
 package twilightforest.client.model.entity;
 
 import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.entity.model.ModelRenderer;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import twilightforest.entity.boss.EntityTFHydraHead;
 import twilightforest.entity.boss.EntityTFHydraPart;
 
 public class ModelTFHydraHead<T extends EntityTFHydraHead> extends EntityModel<T> {
 
-	RendererModel head;
-	RendererModel jaw;
-	RendererModel frill;
+	ModelRenderer head;
+	ModelRenderer jaw;
+	ModelRenderer frill;
 
 	public ModelTFHydraHead() {
 		textureWidth = 512;
@@ -33,7 +34,7 @@ public class ModelTFHydraHead<T extends EntityTFHydraHead> extends EntityModel<T
 		setTextureOffset("frill.frill", 272, 200);
 
 
-		head = new RendererModel(this, "head");
+		head = new ModelRenderer(this, "head");
 		head.addBox("box", -16F, -14F, -32F, 32, 24, 32);
 		head.addBox("upperlip", -15F, -2F, -56F, 30, 12, 24);
 		head.addBox("rearjaw", -15F, 10F, -20F, 30, 8, 16);
@@ -45,7 +46,7 @@ public class ModelTFHydraHead<T extends EntityTFHydraHead> extends EntityModel<T
 		head.addBox("teeth3", 8F, 9, -45F, 2, 2, 16);
 		head.setRotationPoint(0F, 0F, 0F);
 
-		jaw = new RendererModel(this, "jaw");
+		jaw = new ModelRenderer(this, "jaw");
 		jaw.setRotationPoint(0F, 10F, -20F);
 		jaw.addBox("jaw", -15F, 0F, -32F, 30, 8, 32);
 		jaw.addBox("fang1", -10F, -5, -29F, 2, 5, 2);
@@ -56,14 +57,14 @@ public class ModelTFHydraHead<T extends EntityTFHydraHead> extends EntityModel<T
 		setRotation(jaw, 0F, 0F, 0F);
 		head.addChild(jaw);
 
-		frill = new RendererModel(this, "frill");
+		frill = new ModelRenderer(this, "frill");
 		frill.setRotationPoint(0F, 0F, -14F);
 		frill.addBox("frill", -24F, -40.0F, 0F, 48, 48, 4);
 		setRotation(frill, -0.5235988F, 0F, 0F);
 		head.addChild(frill);
 	}
 
-	private void setRotation(RendererModel model, float x, float y, float z) {
+	private void setRotation(ModelRenderer model, float x, float y, float z) {
 		model.rotateAngleX = x;
 		model.rotateAngleY = y;
 		model.rotateAngleZ = z;

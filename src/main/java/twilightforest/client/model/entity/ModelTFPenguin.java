@@ -8,54 +8,55 @@ package twilightforest.client.model.entity;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.entity.model.ModelRenderer;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.passive.EntityTFPenguin;
 
 public class ModelTFPenguin<T extends EntityTFPenguin> extends EntityModel<T> {
 	//fields
-	RendererModel body;
-	RendererModel rightarm;
-	RendererModel leftarm;
-	RendererModel rightleg;
-	RendererModel leftleg;
-	RendererModel head;
-	RendererModel beak;
+	ModelRenderer body;
+	ModelRenderer rightarm;
+	ModelRenderer leftarm;
+	ModelRenderer rightleg;
+	ModelRenderer leftleg;
+	ModelRenderer head;
+	ModelRenderer beak;
 
 	public ModelTFPenguin() {
 		textureWidth = 64;
 		textureHeight = 32;
 
-		body = new RendererModel(this, 32, 0);
+		body = new ModelRenderer(this, 32, 0);
 		body.addBox(-4F, 0F, -4F, 8, 9, 8);
 		body.setRotationPoint(0F, 14F, 0F);
 
-		rightarm = new RendererModel(this, 34, 18);
+		rightarm = new ModelRenderer(this, 34, 18);
 		rightarm.addBox(-1F, -1F, -2F, 1, 8, 4);
 		rightarm.setRotationPoint(-4F, 15F, 0F);
 
-		leftarm = new RendererModel(this, 24, 18);
+		leftarm = new ModelRenderer(this, 24, 18);
 		leftarm.addBox(0F, -1F, -2F, 1, 8, 4);
 		leftarm.setRotationPoint(4F, 15F, 0F);
 
 		leftarm.mirror = true;
 
 
-		rightleg = new RendererModel(this, 0, 16);
+		rightleg = new ModelRenderer(this, 0, 16);
 		rightleg.addBox(-2F, 0F, -5F, 4, 1, 8);
 		rightleg.setRotationPoint(-2F, 23F, 0F);
 		rightleg.setTextureSize(64, 32);
 
-		leftleg = new RendererModel(this, 0, 16);
+		leftleg = new ModelRenderer(this, 0, 16);
 		leftleg.addBox(-2F, 0F, -5F, 4, 1, 8);
 		leftleg.setRotationPoint(2F, 23F, 0F);
 
 
-		head = new RendererModel(this, 0, 0);
+		head = new ModelRenderer(this, 0, 0);
 		head.addBox(-3.5F, -4F, -3.5F, 7, 5, 7);
 		head.setRotationPoint(0F, 13F, 0F);
 
-		beak = new RendererModel(this, 0, 13);
+		beak = new ModelRenderer(this, 0, 13);
 		beak.addBox(-1F, 0F, -1F, 2, 1, 2);
 		beak.setRotationPoint(0F, -1F, -4F);
 

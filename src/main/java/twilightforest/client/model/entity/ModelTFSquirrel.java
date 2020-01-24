@@ -7,22 +7,23 @@
 package twilightforest.client.model.entity;
 
 import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.entity.model.ModelRenderer;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.passive.EntityTFSquirrel;
 
 public class ModelTFSquirrel<T extends EntityTFSquirrel> extends EntityModel<T> {
 	//fields
-	RendererModel body;
-	RendererModel leg1;
-	RendererModel leg2;
-	RendererModel leg3;
-	RendererModel leg4;
-	RendererModel head;
-	RendererModel tail;
-	RendererModel fluff1;
-	RendererModel fluff2;
-	RendererModel fluff3;
+	ModelRenderer body;
+	ModelRenderer leg1;
+	ModelRenderer leg2;
+	ModelRenderer leg3;
+	ModelRenderer leg4;
+	ModelRenderer head;
+	ModelRenderer tail;
+	ModelRenderer fluff1;
+	ModelRenderer fluff2;
+	ModelRenderer fluff3;
 
 	public ModelTFSquirrel() {
 		textureWidth = 32;
@@ -35,37 +36,37 @@ public class ModelTFSquirrel<T extends EntityTFSquirrel> extends EntityModel<T> 
 		setTextureOffset("tail.fluff2", 0, 20);
 		setTextureOffset("tail.fluff3", 0, 26);
 
-		body = new RendererModel(this, 0, 8);
+		body = new ModelRenderer(this, 0, 8);
 		body.addBox(-2F, -1F, -2F, 4, 3, 5);
 		body.setRotationPoint(0F, 21F, 0F);
 		body.setTextureSize(32, 32);
 		body.mirror = true;
 		setRotation(body, 0F, 0F, 0F);
-		leg1 = new RendererModel(this, 0, 16);
+		leg1 = new ModelRenderer(this, 0, 16);
 		leg1.addBox(0F, 0F, 0F, 1, 1, 1);
 		leg1.setRotationPoint(-2F, 23F, 2F);
 		leg1.setTextureSize(32, 32);
 		leg1.mirror = true;
 		setRotation(leg1, 0F, 0F, 0F);
-		leg2 = new RendererModel(this, 0, 16);
+		leg2 = new ModelRenderer(this, 0, 16);
 		leg2.addBox(0F, 0F, 0F, 1, 1, 1);
 		leg2.setRotationPoint(1F, 23F, 2F);
 		leg2.setTextureSize(32, 32);
 		leg2.mirror = true;
 		setRotation(leg2, 0F, 0F, 0F);
-		leg3 = new RendererModel(this, 0, 16);
+		leg3 = new ModelRenderer(this, 0, 16);
 		leg3.addBox(0F, 0F, 0F, 1, 1, 1);
 		leg3.setRotationPoint(-2F, 23F, -2F);
 		leg3.setTextureSize(32, 32);
 
 		setRotation(leg3, 0F, 0F, 0F);
-		leg4 = new RendererModel(this, 0, 16);
+		leg4 = new ModelRenderer(this, 0, 16);
 		leg4.addBox(0F, 0F, 0F, 1, 1, 1);
 		leg4.setRotationPoint(1F, 23F, -2F);
 		leg4.setTextureSize(32, 32);
 
 		setRotation(leg4, 0F, 0F, 0F);
-		head = new RendererModel(this, "head");
+		head = new ModelRenderer(this, "head");
 		head.setRotationPoint(0F, 22F, -2F);
 		setRotation(head, 0F, 0F, 0F);
 
@@ -73,21 +74,21 @@ public class ModelTFSquirrel<T extends EntityTFSquirrel> extends EntityModel<T> 
 		head.addBox("ear2", -2F, -6F, -0.5F, 1, 1, 1);
 		head.addBox("ear1", 1F, -6F, -0.5F, 1, 1, 1);
 
-		tail = new RendererModel(this, "tail");
+		tail = new ModelRenderer(this, "tail");
 		tail.setRotationPoint(0F, 21F, 2F);
 
 		tail.addBox("base", -0.5F, -1.5F, 0.5F, 1, 1, 1);
 
-		fluff1 = new RendererModel(this, 0, 20);
+		fluff1 = new ModelRenderer(this, 0, 20);
 		fluff1.addBox(-1.5F, -4F, 1F, 3, 3, 3);
 		tail.addChild(fluff1);
 
-		fluff2 = new RendererModel(this, 0, 20);
+		fluff2 = new ModelRenderer(this, 0, 20);
 		fluff2.addBox(0F, -3F, -1.5F, 3, 3, 3);
 		fluff2.setRotationPoint(-1.5F, -4F, 2.5F);
 		fluff1.addChild(fluff2);
 
-		fluff3 = new RendererModel(this, 0, 26);
+		fluff3 = new ModelRenderer(this, 0, 26);
 		fluff3.addBox(1.5F, -3F, -1.5F, 3, 3, 3);
 		fluff3.setRotationPoint(-1.5F, -3F, 0F);
 		fluff2.addChild(fluff3);
@@ -106,7 +107,7 @@ public class ModelTFSquirrel<T extends EntityTFSquirrel> extends EntityModel<T> 
 		tail.render(scale);
 	}
 
-	private void setRotation(RendererModel model, float x, float y, float z) {
+	private void setRotation(ModelRenderer model, float x, float y, float z) {
 		model.rotateAngleX = x;
 		model.rotateAngleY = y;
 		model.rotateAngleZ = z;

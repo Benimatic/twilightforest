@@ -7,17 +7,18 @@
 package twilightforest.client.model.entity;
 
 import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.entity.model.ModelRenderer;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.EntityTFKobold;
 
 public class ModelTFKobold<T extends EntityTFKobold> extends BipedModel<T> {
 	//fields
 
-	RendererModel rightear;
-	RendererModel leftear;
-	RendererModel snout;
-	RendererModel jaw;
+	ModelRenderer rightear;
+	ModelRenderer leftear;
+	ModelRenderer snout;
+	ModelRenderer jaw;
 
 	boolean isJumping;
 
@@ -27,33 +28,33 @@ public class ModelTFKobold<T extends EntityTFKobold> extends BipedModel<T> {
 		textureWidth = 64;
 		textureHeight = 32;
 
-		bipedHead = new RendererModel(this, 0, 0);
+		bipedHead = new ModelRenderer(this, 0, 0);
 		bipedHead.addBox(-3.5F, -7F, -3F, 7, 6, 6);
 		bipedHead.setRotationPoint(0F, 13F, 0F);
 
-		bipedBody = new RendererModel(this, 12, 19);
+		bipedBody = new ModelRenderer(this, 12, 19);
 		bipedBody.addBox(0F, 0F, 0F, 7, 7, 4);
 		bipedBody.setRotationPoint(-3.5F, 12F, -2F);
 
-		bipedRightArm = new RendererModel(this, 36, 17);
+		bipedRightArm = new ModelRenderer(this, 36, 17);
 		bipedRightArm.addBox(-3F, -1F, -1.5F, 3, 7, 3);
 		bipedRightArm.setRotationPoint(-3.5F, 12F, 0F);
 
 		bipedLeftArm.mirror = true;
-		bipedLeftArm = new RendererModel(this, 36, 17);
+		bipedLeftArm = new ModelRenderer(this, 36, 17);
 		bipedLeftArm.addBox(0F, -1F, -1.5F, 3, 7, 3);
 		bipedLeftArm.setRotationPoint(3.5F, 12F, 0F);
 
 		bipedLeftArm.mirror = false;
-		bipedRightLeg = new RendererModel(this, 0, 20);
+		bipedRightLeg = new ModelRenderer(this, 0, 20);
 		bipedRightLeg.addBox(-1.5F, 0F, -1.5F, 3, 5, 3);
 		bipedRightLeg.setRotationPoint(-2F, 19F, 0F);
 
-		bipedLeftLeg = new RendererModel(this, 0, 20);
+		bipedLeftLeg = new ModelRenderer(this, 0, 20);
 		bipedLeftLeg.addBox(-1.5F, 0F, -1.5F, 3, 5, 3);
 		bipedLeftLeg.setRotationPoint(2F, 19F, 0F);
 
-		rightear = new RendererModel(this, 48, 20);
+		rightear = new ModelRenderer(this, 48, 20);
 		rightear.addBox(0F, -4F, 0F, 4, 4, 1);
 		rightear.setRotationPoint(3.5F, -3F, -1F);
 		rightear.rotateAngleY = 0.2617994F;
@@ -61,7 +62,7 @@ public class ModelTFKobold<T extends EntityTFKobold> extends BipedModel<T> {
 
 		bipedHead.addChild(rightear);
 
-		leftear = new RendererModel(this, 48, 25);
+		leftear = new ModelRenderer(this, 48, 25);
 		leftear.addBox(-4F, -4F, 0F, 4, 4, 1);
 		leftear.setRotationPoint(-3.5F, -3F, -1F);
 		leftear.rotateAngleY = -0.2617994F;
@@ -70,13 +71,13 @@ public class ModelTFKobold<T extends EntityTFKobold> extends BipedModel<T> {
 		bipedHead.addChild(leftear);
 
 
-		snout = new RendererModel(this, 28, 0);
+		snout = new ModelRenderer(this, 28, 0);
 		snout.addBox(-1.5F, -2F, -2F, 3, 2, 3);
 		snout.setRotationPoint(0F, -2F, -3F);
 
 		bipedHead.addChild(snout);
 
-		jaw = new RendererModel(this, 28, 5);
+		jaw = new ModelRenderer(this, 28, 5);
 		jaw.addBox(-1.5F, 0F, -2F, 3, 1, 3);
 		jaw.setRotationPoint(0F, -2F, -3F);
 		jaw.rotateAngleX = 0.20944F;

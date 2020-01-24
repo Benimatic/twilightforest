@@ -1,7 +1,8 @@
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.entity.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.model.SheepModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import twilightforest.entity.passive.EntityTFBighorn;
 
 
@@ -9,27 +10,27 @@ public class ModelTFBighorn<T extends EntityTFBighorn> extends SheepModel<T> {
 
 	public ModelTFBighorn() {
 		super();
-		headModel = new RendererModel(this, 0, 0);
+		headModel = new ModelRenderer(this, 0, 0);
 		headModel.addBox(-3F, -4F, -6F, 6, 6, 7, 0F);
 		headModel.setRotationPoint(0F, 6F, -8F);
 
-		body = new RendererModel(this, 36, 10);
+		body = new ModelRenderer(this, 36, 10);
 		body.addBox(-4F, -9F, -7F, 8, 15, 6, 0F);
 		body.setRotationPoint(0F, 5F, 2F);
 
-		legBackRight = new RendererModel(this, 0, 16);
+		legBackRight = new ModelRenderer(this, 0, 16);
 		legBackRight.addBox(-2F, 0.0F, -2F, 4, 12, 4, 0F);
 		legBackRight.setRotationPoint(-3F, 12F, 7F);
 
-		legBackLeft = new RendererModel(this, 0, 16);
+		legBackLeft = new ModelRenderer(this, 0, 16);
 		legBackLeft.addBox(-2F, 0.0F, -2F, 4, 12, 4, 0F);
 		legBackLeft.setRotationPoint(3F, 12F, 7F);
 
-		legFrontRight = new RendererModel(this, 0, 16);
+		legFrontRight = new ModelRenderer(this, 0, 16);
 		legFrontRight.addBox(-2F, 0.0F, -2F, 4, 12, 4, 0F);
 		legFrontRight.setRotationPoint(-3F, 12F, -5F);
 
-		legFrontLeft = new RendererModel(this, 0, 16);
+		legFrontLeft = new ModelRenderer(this, 0, 16);
 		legFrontLeft.addBox(-2F, 0.0F, -2F, 4, 12, 4, 0F);
 		legFrontLeft.setRotationPoint(3F, 12F, -5F);
 

@@ -6,41 +6,42 @@
 package twilightforest.client.model.entity;
 
 import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.entity.model.ModelRenderer;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.boss.EntityTFHydra;
 import twilightforest.entity.boss.EntityTFHydraPart;
 
 public class ModelTFHydra<T extends EntityTFHydra> extends EntityModel<T> {
 	//fields
-	RendererModel body;
-	RendererModel leg1;
-	RendererModel leg2;
-	RendererModel tail1;
-	RendererModel tail2;
-	RendererModel tail3;
-	RendererModel tail4;
-	RendererModel neck1a;
-	RendererModel neck1b;
-	RendererModel neck1c;
-	RendererModel neck1d;
-	RendererModel head1;
-	RendererModel jaw1;
-	RendererModel frill1;
-	RendererModel neck2a;
-	RendererModel neck2b;
-	RendererModel neck2c;
-	RendererModel neck2d;
-	RendererModel head2;
-	RendererModel jaw2;
-	RendererModel frill2;
-	RendererModel neck3a;
-	RendererModel neck3b;
-	RendererModel neck3c;
-	RendererModel neck3d;
-	RendererModel head3;
-	RendererModel jaw3;
-	RendererModel frill3;
+	ModelRenderer body;
+	ModelRenderer leg1;
+	ModelRenderer leg2;
+	ModelRenderer tail1;
+	ModelRenderer tail2;
+	ModelRenderer tail3;
+	ModelRenderer tail4;
+	ModelRenderer neck1a;
+	ModelRenderer neck1b;
+	ModelRenderer neck1c;
+	ModelRenderer neck1d;
+	ModelRenderer head1;
+	ModelRenderer jaw1;
+	ModelRenderer frill1;
+	ModelRenderer neck2a;
+	ModelRenderer neck2b;
+	ModelRenderer neck2c;
+	ModelRenderer neck2d;
+	ModelRenderer head2;
+	ModelRenderer jaw2;
+	ModelRenderer frill2;
+	ModelRenderer neck3a;
+	ModelRenderer neck3b;
+	ModelRenderer neck3c;
+	ModelRenderer neck3d;
+	ModelRenderer head3;
+	ModelRenderer jaw3;
+	ModelRenderer frill3;
 
 	public ModelTFHydra() {
 		textureWidth = 512;
@@ -59,19 +60,19 @@ public class ModelTFHydra<T extends EntityTFHydra> extends EntityModel<T> {
 		setTextureOffset("jaw.jaw", 272, 92);
 		setTextureOffset("frill.frill", 272, 200);
 
-		body = new RendererModel(this, "body");
+		body = new ModelRenderer(this, "body");
 		body.setRotationPoint(0F, -12F, 0F);
 		body.addBox("body", -48F, 0F, 0F, 96, 96, 40);
 		setRotation(body, 1.22173F, 0F, 0F);
 
-		leg1 = new RendererModel(this, "leg");
+		leg1 = new ModelRenderer(this, "leg");
 		leg1.setRotationPoint(48F, -24F, 0F);
 		leg1.addBox("main", -16F, 0F, -16F, 32, 48, 32);
 		leg1.addBox("toe", -20F, 40F, -20F, 8, 8, 8);
 		leg1.addBox("toe", -4F, 40F, -22F, 8, 8, 8);
 		leg1.addBox("toe", 12F, 40F, -20F, 8, 8, 8);
 
-		leg2 = new RendererModel(this, "leg");
+		leg2 = new ModelRenderer(this, "leg");
 		leg2.setRotationPoint(-48F, -24F, 0F);
 		leg2.mirror = true;
 		leg2.addBox("main", -16F, 0F, -16F, 32, 48, 32);
@@ -80,138 +81,138 @@ public class ModelTFHydra<T extends EntityTFHydra> extends EntityModel<T> {
 		leg2.addBox("toe", 12F, 40F, -20F, 8, 8, 8);
 
 
-		tail1 = new RendererModel(this, "tail");
+		tail1 = new ModelRenderer(this, "tail");
 		tail1.setRotationPoint(0F, 6F, 108F);
 		tail1.addBox("box", -16F, -16F, -16F, 32, 32, 32);
 		tail1.addBox("fin", -2F, -28F, -11F, 4, 24, 24);
 
-		tail2 = new RendererModel(this, "tail");
+		tail2 = new ModelRenderer(this, "tail");
 		tail2.addBox("box", -16F, -16F, -16F, 32, 32, 32);
 		tail2.addBox("fin", -2F, -28F, -11F, 4, 24, 24);
 		tail2.setRotationPoint(0F, 7F, 142F);
 
-		tail3 = new RendererModel(this, "tail");
+		tail3 = new ModelRenderer(this, "tail");
 		tail3.addBox("box", -16F, -16F, -16F, 32, 32, 32);
 		tail3.addBox("fin", -2F, -28F, -11F, 4, 24, 24);
 		tail3.setRotationPoint(0F, 8F, 176F);
 
-		tail4 = new RendererModel(this, "tail");
+		tail4 = new ModelRenderer(this, "tail");
 		tail4.addBox("box", -16F, -16F, -16F, 32, 32, 32);
 		tail4.addBox("fin", -2F, -28F, -11F, 4, 24, 24);
 		tail4.setRotationPoint(0F, 8F, 210F);
 
-		neck1a = new RendererModel(this, "neck");
+		neck1a = new ModelRenderer(this, "neck");
 		neck1a.addBox("box", -16F, -16F, -16F, 32, 32, 32);
 		neck1a.addBox("fin", -2F, -23F, 0F, 4, 24, 24);
 		neck1a.setRotationPoint(0F, -48F, 16F);
 
-		neck1b = new RendererModel(this, "neck");
+		neck1b = new ModelRenderer(this, "neck");
 		neck1b.addBox("box", -16F, -16F, -16F, 32, 32, 32);
 		neck1b.addBox("fin", -2F, -23F, 0F, 4, 24, 24);
 		neck1b.setRotationPoint(0F, -68F, 0F);
 
-		neck1c = new RendererModel(this, "neck");
+		neck1c = new ModelRenderer(this, "neck");
 		neck1c.addBox("box", -16F, -16F, -16F, 32, 32, 32);
 		neck1c.addBox("fin", -2F, -23F, 0F, 4, 24, 24);
 		neck1c.setRotationPoint(0F, -93F, -14F);
 
-		neck1d = new RendererModel(this, "neck");
+		neck1d = new ModelRenderer(this, "neck");
 		neck1d.addBox("box", -16F, -16F, -16F, 32, 32, 32);
 		neck1d.addBox("fin", -2F, -23F, 0F, 4, 24, 24);
 		neck1d.setRotationPoint(0F, -116F, -37F);
 
 
-		head1 = new RendererModel(this, "head");
+		head1 = new ModelRenderer(this, "head");
 		head1.addBox("box", -16F, -14F, -32F, 32, 24, 32);
 		head1.addBox("upperlip", -15F, -2F, -56F, 30, 12, 24);
 		head1.addBox("fin", -2F, -30F, -12F, 4, 24, 24);
 		head1.setRotationPoint(0F, -128F, -53F);
 
-		jaw1 = new RendererModel(this, "jaw");
+		jaw1 = new ModelRenderer(this, "jaw");
 		jaw1.setRotationPoint(0F, 10F, -4F);
 		jaw1.addBox("jaw", -15F, 0F, -48F, 30, 8, 48);
 		setRotation(jaw1, 0F, 0F, 0F);
 		head1.addChild(jaw1);
 
-		frill1 = new RendererModel(this, "frill");
+		frill1 = new ModelRenderer(this, "frill");
 		frill1.setRotationPoint(0F, 0F, -10F);
 		frill1.addBox("frill", -24F, -40.0F, 0F, 48, 48, 4);
 		setRotation(frill1, -0.5235988F, 0F, 0F);
 		head1.addChild(frill1);
 
-		neck2a = new RendererModel(this, "neck");
+		neck2a = new ModelRenderer(this, "neck");
 		neck2a.addBox("box", -16F, -16F, -16F, 32, 32, 32);
 		neck2a.addBox("fin", -2F, -23F, 0F, 4, 24, 24);
 		neck2a.setRotationPoint(48F, -48F, 16F);
 
-		neck2b = new RendererModel(this, "neck");
+		neck2b = new ModelRenderer(this, "neck");
 		neck2b.addBox("box", -16F, -16F, -16F, 32, 32, 32);
 		neck2b.addBox("fin", -2F, -23F, 0F, 4, 24, 24);
 		neck2b.setRotationPoint(71F, -68F, 0F);
 
-		neck2c = new RendererModel(this, "neck");
+		neck2c = new ModelRenderer(this, "neck");
 		neck2c.addBox("box", -16F, -16F, -16F, 32, 32, 32);
 		neck2c.addBox("fin", -2F, -23F, 0F, 4, 24, 24);
 		neck2c.setRotationPoint(96F, -93F, -14F);
 
-		neck2d = new RendererModel(this, "neck");
+		neck2d = new ModelRenderer(this, "neck");
 		neck2d.addBox("box", -16F, -16F, -16F, 32, 32, 32);
 		neck2d.addBox("fin", -2F, -23F, 0F, 4, 24, 24);
 		neck2d.setRotationPoint(108F, -116F, -37F);
 
-		head2 = new RendererModel(this, "head");
+		head2 = new ModelRenderer(this, "head");
 		head2.addBox("box", -16F, -14F, -32F, 32, 24, 32);
 		head2.addBox("upperlip", -15F, -2F, -56F, 30, 12, 24);
 		head2.addBox("fin", -2F, -30F, -12F, 4, 24, 24);
 		head2.setRotationPoint(108F, -128F, -53F);
 
-		jaw2 = new RendererModel(this, "jaw");
+		jaw2 = new ModelRenderer(this, "jaw");
 		jaw2.setRotationPoint(0F, 10F, -4F);
 		jaw2.addBox("jaw", -15F, 0F, -48F, 30, 8, 48);
 		setRotation(jaw2, 0F, 0F, 0F);
 		head2.addChild(jaw2);
 
-		frill2 = new RendererModel(this, "frill");
+		frill2 = new ModelRenderer(this, "frill");
 		frill2.setRotationPoint(0F, 0F, -10F);
 		frill2.addBox("frill", -24F, -40.0F, 0F, 48, 48, 4);
 		setRotation(frill2, -0.5235988F, 0F, 0F);
 		head2.addChild(frill2);
 
 
-		neck3a = new RendererModel(this, "neck");
+		neck3a = new ModelRenderer(this, "neck");
 		neck3a.addBox("box", -16F, -16F, -16F, 32, 32, 31);
 		neck3a.addBox("fin", -2F, -23F, 0F, 4, 24, 24);
 		neck3a.setRotationPoint(-48F, -48F, 16F);
 
-		neck3b = new RendererModel(this, "neck");
+		neck3b = new ModelRenderer(this, "neck");
 		neck3b.addBox("box", -16F, -16F, -16F, 32, 32, 32);
 		neck3b.addBox("fin", -2F, -23F, 0F, 4, 24, 24);
 		neck3b.setRotationPoint(-71F, -43F, 0F);
 
-		neck3c = new RendererModel(this, "neck");
+		neck3c = new ModelRenderer(this, "neck");
 		neck3c.addBox("box", -16F, -16F, -16F, 32, 32, 32);
 		neck3c.addBox("fin", -2F, -23F, 0F, 4, 24, 24);
 		neck3c.setRotationPoint(-96F, -33F, -14F);
 
-		neck3d = new RendererModel(this, "neck");
+		neck3d = new ModelRenderer(this, "neck");
 		neck3d.addBox("box", -16F, -16F, -16F, 32, 32, 32);
 		neck3d.addBox("fin", -2F, -23F, 0F, 4, 24, 24);
 		neck3d.setRotationPoint(-108F, -24F, -37F);
 
 
-		head3 = new RendererModel(this, "head");
+		head3 = new ModelRenderer(this, "head");
 		head3.addBox("box", -16F, -14F, -32F, 32, 24, 32);
 		head3.addBox("upperlip", -15F, -2F, -56F, 30, 12, 24);
 		head3.addBox("fin", -2F, -30F, -12F, 4, 24, 24);
 		head3.setRotationPoint(-108F, -24F, -53F);
 
-		jaw3 = new RendererModel(this, "jaw");
+		jaw3 = new ModelRenderer(this, "jaw");
 		jaw3.setRotationPoint(0F, 10F, -4F);
 		jaw3.addBox("jaw", -15F, 0F, -48F, 30, 8, 48);
 		setRotation(jaw3, 0.125F, 0F, 0F);
 		head3.addChild(jaw3);
 
-		frill3 = new RendererModel(this, "frill");
+		frill3 = new ModelRenderer(this, "frill");
 		frill3.setRotationPoint(0F, 0F, -10F);
 		frill3.addBox("frill", -24F, -40.0F, 0F, 48, 48, 4);
 		setRotation(frill3, -0.5235988F, 0F, 0F);
@@ -247,7 +248,7 @@ public class ModelTFHydra<T extends EntityTFHydra> extends EntityModel<T> {
 //		head3.render(scale);
 	}
 
-	private void setRotation(RendererModel model, float x, float y, float z) {
+	private void setRotation(ModelRenderer model, float x, float y, float z) {
 		model.rotateAngleX = x;
 		model.rotateAngleY = y;
 		model.rotateAngleZ = z;

@@ -2,14 +2,15 @@ package twilightforest.client.model.entity;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.entity.model.BipedModel;
-import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.entity.model.ModelRenderer;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
 import twilightforest.entity.EntityTFIceMob;
 
 public class ModelTFIceExploder<T extends EntityTFIceMob> extends BipedModel<T> {
 
-	public RendererModel[] spikes = new RendererModel[16];
+	public ModelRenderer[] spikes = new ModelRenderer[16];
 
 
 	public ModelTFIceExploder() {
@@ -18,29 +19,29 @@ public class ModelTFIceExploder<T extends EntityTFIceMob> extends BipedModel<T> 
 
 		float par1 = 0F;
 		float par2 = 0F;
-		this.bipedHead = new RendererModel(this, 0, 0);
+		this.bipedHead = new ModelRenderer(this, 0, 0);
 		this.bipedHead.addBox(-4.0F, 0.0F, -4.0F, 8, 8, 8, par1);
 		this.bipedHead.setRotationPoint(0.0F, 0.0F + par2, 0.0F);
 
 		// delete all other body parts
-		this.bipedHeadwear = new RendererModel(this, 0, 0);
-		this.bipedBody = new RendererModel(this, 0, 0);
-		this.bipedRightArm = new RendererModel(this, 0, 0);
-		this.bipedLeftArm = new RendererModel(this, 0, 0);
-		this.bipedRightLeg = new RendererModel(this, 0, 0);
-		this.bipedLeftLeg = new RendererModel(this, 0, 0);
+		this.bipedHeadwear = new ModelRenderer(this, 0, 0);
+		this.bipedBody = new ModelRenderer(this, 0, 0);
+		this.bipedRightArm = new ModelRenderer(this, 0, 0);
+		this.bipedLeftArm = new ModelRenderer(this, 0, 0);
+		this.bipedRightLeg = new ModelRenderer(this, 0, 0);
+		this.bipedLeftLeg = new ModelRenderer(this, 0, 0);
 
 		// spikes
 
 		for (int i = 0; i < spikes.length; i++) {
-			this.spikes[i] = new RendererModel(this, 0, 16);
+			this.spikes[i] = new ModelRenderer(this, 0, 16);
 
 			int spikeLength = i % 2 == 0 ? 6 : 8;
 
 			this.spikes[i].addBox(-1.0F, 6.0F, -1.0F, 2, spikeLength, 2, par1);
 			this.spikes[i].setRotationPoint(0.0F, 4.0F + par2, 0.0F);
 
-			RendererModel cube = new RendererModel(this, 8, 16);
+			ModelRenderer cube = new ModelRenderer(this, 8, 16);
 			cube.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3);
 			cube.setRotationPoint(0.0F, 8F, 0.0F);
 

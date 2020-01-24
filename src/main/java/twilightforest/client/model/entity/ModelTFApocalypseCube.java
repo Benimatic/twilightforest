@@ -1,7 +1,8 @@
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.entity.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.model.QuadrupedModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import twilightforest.entity.EntityTFHarbingerCube;
 
 public class ModelTFApocalypseCube<T extends EntityTFHarbingerCube> extends QuadrupedModel<T> {
@@ -16,25 +17,25 @@ public class ModelTFApocalypseCube<T extends EntityTFHarbingerCube> extends Quad
 		this.textureWidth = 128;
 		this.textureHeight = 64;
 
-		this.headModel = new RendererModel(this, 0, 0);
+		this.headModel = new ModelRenderer(this, 0, 0);
 
-		body = new RendererModel(this, 0, 0);
+		body = new ModelRenderer(this, 0, 0);
 		body.addBox(-16F, -16F, -16F, 32, 32, 32);
 		body.setRotationPoint(0F, 0F, -2F);
 
-        legBackRight = new RendererModel(this, 0, 0);
+        legBackRight = new ModelRenderer(this, 0, 0);
         legBackRight.addBox(-4F, 0F, -4F, 8, 8, 8);
         legBackRight.setRotationPoint(-6F, 16F, 9F);
 
-        legBackLeft = new RendererModel(this, 0, 0);
+        legBackLeft = new ModelRenderer(this, 0, 0);
         legBackLeft.addBox(-4F, 0F, -4F, 8, 8, 8);
         legBackLeft.setRotationPoint(6F, 16F, 9F);
 
-        legFrontRight = new RendererModel(this, 0, 0);
+        legFrontRight = new ModelRenderer(this, 0, 0);
         legFrontRight.addBox(-4F, 0F, -4F, 8, 8, 8);
         legFrontRight.setRotationPoint(-9F, 16F, -14F);
 
-        legFrontLeft = new RendererModel(this, 0, 0);
+        legFrontLeft = new ModelRenderer(this, 0, 0);
         legFrontLeft.addBox(-4F, 0F, -4F, 8, 8, 8);
         legFrontLeft.setRotationPoint(9F, 16F, -14F);
 
