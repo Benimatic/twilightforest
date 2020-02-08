@@ -11,13 +11,15 @@ import twilightforest.entity.boss.EntityTFLich;
 import twilightforest.entity.boss.EntityTFLichMinion;
 import twilightforest.item.TFItems;
 
+import java.util.EnumSet;
+
 public class EntityAITFLichMinions extends Goal {
 
 	private final EntityTFLich lich;
 
 	public EntityAITFLichMinions(EntityTFLich boss) {
 		lich = boss;
-		setMutexBits(3);
+		setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
 	}
 
 	@Override

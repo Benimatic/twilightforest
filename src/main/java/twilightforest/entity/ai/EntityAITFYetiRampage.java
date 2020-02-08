@@ -7,6 +7,8 @@ import twilightforest.TFSounds;
 import twilightforest.entity.boss.EntityTFIceBomb;
 import twilightforest.entity.boss.EntityTFYetiAlpha;
 
+import java.util.EnumSet;
+
 public class EntityAITFYetiRampage extends Goal {
 
 	private EntityTFYetiAlpha yeti;
@@ -21,8 +23,7 @@ public class EntityAITFYetiRampage extends Goal {
 		this.maxTantrumTimeOut = timeout;
 		this.tantrumDuration = duration;
 
-		this.setMutexBits(5);
-
+		this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.JUMP));
 	}
 
 	@Override

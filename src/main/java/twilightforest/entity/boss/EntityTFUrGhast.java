@@ -40,6 +40,7 @@ import twilightforest.loot.TFTreasure;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
 
 public class EntityTFUrGhast extends EntityTFTowerGhast {
@@ -101,7 +102,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		AIWaypointFly(EntityTFUrGhast ghast) {
 			this.taskOwner = ghast;
 			pointsToVisit = createPath();
-			setMutexBits(1);
+			setMutexFlags(EnumSet.of(Flag.MOVE));
 		}
 
 		// [VanillaCopy] EntityGhast.AIRandomFly

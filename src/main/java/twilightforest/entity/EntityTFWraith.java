@@ -25,6 +25,7 @@ import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFFindEntityNearestPlayer;
 
+import java.util.EnumSet;
 import java.util.Random;
 
 public class EntityTFWraith extends FlyingEntity implements IMob {
@@ -51,7 +52,7 @@ public class EntityTFWraith extends FlyingEntity implements IMob {
 
 		AIFlyTowardsTarget(EntityTFWraith wraith) {
 			this.taskOwner = wraith;
-			this.setMutexBits(1);
+			this.setMutexFlags(EnumSet.of(Flag.MOVE));
 		}
 
 		@Override
@@ -117,7 +118,7 @@ public class EntityTFWraith extends FlyingEntity implements IMob {
 
 		public AIRandomFly(EntityTFWraith wraith) {
 			this.parentEntity = wraith;
-			this.setMutexBits(1);
+			this.setMutexFlags(EnumSet.of(Flag.MOVE));
 		}
 
 		@Override
@@ -153,7 +154,7 @@ public class EntityTFWraith extends FlyingEntity implements IMob {
 
 		public AILookAround(EntityTFWraith wraith) {
 			this.parentEntity = wraith;
-			this.setMutexBits(2);
+			this.setMutexFlags(EnumSet.of(Flag.LOOK));
 		}
 
 		@Override

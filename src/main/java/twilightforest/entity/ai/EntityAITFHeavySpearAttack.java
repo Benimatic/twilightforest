@@ -3,13 +3,15 @@ package twilightforest.entity.ai;
 import net.minecraft.entity.ai.goal.Goal;
 import twilightforest.entity.EntityTFGoblinKnightUpper;
 
+import java.util.EnumSet;
+
 public class EntityAITFHeavySpearAttack extends Goal {
 
 	private EntityTFGoblinKnightUpper entity;
 
 	public EntityAITFHeavySpearAttack(EntityTFGoblinKnightUpper upperKnight) {
 		this.entity = upperKnight;
-		this.setMutexBits(3); // Prevent moving
+		this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK)); // Prevent moving TODO 1.15: check this again, I'm uncertain
 	}
 
 	@Override

@@ -5,6 +5,8 @@ import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.boss.EntityTFSnowQueen;
 import twilightforest.entity.boss.EntityTFSnowQueen.Phase;
 
+import java.util.EnumSet;
+
 public class EntityAITFHoverSummon extends EntityAITFHoverBase<EntityTFSnowQueen> {
 
 	private static final int MAX_MINIONS_AT_ONCE = 4;
@@ -16,7 +18,7 @@ public class EntityAITFHoverSummon extends EntityAITFHoverBase<EntityTFSnowQueen
 	public EntityAITFHoverSummon(EntityTFSnowQueen snowQueen, double speed) {
 		super(snowQueen, 6F, 6F);
 
-		this.setMutexBits(3);
+		this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
 		this.maxSeekTime = 80;
 	}
 

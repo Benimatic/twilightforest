@@ -8,6 +8,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.entity.EntityTFRedcap;
 
+import java.util.EnumSet;
+
 public class EntityAITFRedcapLightTNT extends EntityAITFRedcapBase {
 
 	private float pursueSpeed;
@@ -17,7 +19,7 @@ public class EntityAITFRedcapLightTNT extends EntityAITFRedcapBase {
 	public EntityAITFRedcapLightTNT(EntityTFRedcap hostEntity, float speed) {
 		super(hostEntity);
 		this.pursueSpeed = speed;
-		this.setMutexBits(3);
+		this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
 	}
 
 	@Override

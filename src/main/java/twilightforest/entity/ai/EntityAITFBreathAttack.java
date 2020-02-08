@@ -9,6 +9,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import twilightforest.entity.IBreathAttacker;
 
+import java.util.EnumSet;
 import java.util.List;
 
 public class EntityAITFBreathAttack<T extends LivingEntity & IBreathAttacker> extends Goal {
@@ -31,7 +32,7 @@ public class EntityAITFBreathAttack<T extends LivingEntity & IBreathAttacker> ex
 		this.breathRange = range;
 		this.maxDuration = time;
 		this.attackChance = chance;
-		this.setMutexBits(7);
+		this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK, Flag.JUMP)); //TODO: I'm very uncertain about this
 	}
 
 	@Override

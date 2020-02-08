@@ -4,6 +4,8 @@ import net.minecraft.entity.ai.goal.Goal;
 import twilightforest.TFSounds;
 import twilightforest.entity.boss.EntityTFYetiAlpha;
 
+import java.util.EnumSet;
+
 public class EntityAITFYetiTired extends Goal {
 
 	private EntityTFYetiAlpha yeti;
@@ -13,7 +15,7 @@ public class EntityAITFYetiTired extends Goal {
 	public EntityAITFYetiTired(EntityTFYetiAlpha entityTFYetiAlpha, int i) {
 		this.yeti = entityTFYetiAlpha;
 		this.tiredDuration = i;
-		this.setMutexBits(5);
+		this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.JUMP));
 	}
 
 	@Override
@@ -47,5 +49,4 @@ public class EntityAITFYetiTired extends Goal {
 		if(++this.tiredTimer % 10 == 0)
 			this.yeti.playSound(TFSounds.ALPHAYETI_PANT, 4F, 0.5F + yeti.getRNG().nextFloat() * 0.5F);
 	}
-
 }

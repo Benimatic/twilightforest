@@ -8,13 +8,15 @@ import net.minecraft.util.math.Vec3d;
 import twilightforest.entity.boss.EntityTFLich;
 import twilightforest.item.TFItems;
 
+import java.util.EnumSet;
+
 public class EntityAITFLichShadows extends Goal {
 
 	private final EntityTFLich lich;
 
 	public EntityAITFLichShadows(EntityTFLich boss) {
 		lich = boss;
-		setMutexBits(3);
+		setMutexFlags(EnumSet.of(Flag.LOOK, Flag.MOVE));
 	}
 
 	@Override

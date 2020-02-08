@@ -7,6 +7,7 @@ import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.Vec3d;
 import twilightforest.entity.EntityTFKobold;
 
+import java.util.EnumSet;
 import java.util.List;
 
 public class EntityAITFPanicOnFlockDeath extends Goal {
@@ -21,7 +22,7 @@ public class EntityAITFPanicOnFlockDeath extends Goal {
 	public EntityAITFPanicOnFlockDeath(CreatureEntity creature, float speed) {
 		this.flockCreature = creature;
 		this.speed = speed;
-		this.setMutexBits(1);
+		this.setMutexFlags(EnumSet.of(Flag.MOVE));
 		this.fleeTimer = 0;
 	}
 

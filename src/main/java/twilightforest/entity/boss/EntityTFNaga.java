@@ -45,6 +45,7 @@ import twilightforest.network.TFPacketHandler;
 import twilightforest.util.EntityUtil;
 
 import javax.annotation.Nullable;
+import java.util.EnumSet;
 
 public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 
@@ -243,7 +244,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 
 		AIMovementPattern(EntityTFNaga taskOwner) {
 			this.taskOwner = taskOwner;
-			setMutexBits(3);
+			setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
 			resetTask();
 		}
 

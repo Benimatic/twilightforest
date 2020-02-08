@@ -24,7 +24,7 @@ public class EntityAITFEatLoose extends Goal {
 	public EntityAITFEatLoose(EntityTFQuestRam entityTFQuestRam, Item blockID) {
 		this.temptedQuestRam = entityTFQuestRam;
 		this.temptID = blockID;
-		this.setMutexBits(0);
+		//this.setMutexBits(0); What would equate to 0 now?
 	}
 
 	@Override

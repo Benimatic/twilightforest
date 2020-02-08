@@ -10,6 +10,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import twilightforest.entity.boss.EntityTFMinoshroom;
 
+import java.util.EnumSet;
 import java.util.List;
 
 public class EntityAITFGroundAttack extends Goal {
@@ -24,7 +25,7 @@ public class EntityAITFGroundAttack extends Goal {
 
 	public EntityAITFGroundAttack(EntityTFMinoshroom entityTFMinoshroom) {
 		this.attacker = entityTFMinoshroom;
-		this.setMutexBits(3);
+		this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
 	}
 
 	@Override

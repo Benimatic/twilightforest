@@ -5,6 +5,8 @@ import net.minecraft.entity.ai.goal.Goal;
 import twilightforest.entity.EntityTFBlockGoblin;
 import twilightforest.entity.EntityTFSpikeBlock;
 
+import java.util.EnumSet;
+
 public class EntityAIThrowSpikeBlock extends Goal {
 
 	protected EntityTFBlockGoblin attacker;
@@ -13,7 +15,7 @@ public class EntityAIThrowSpikeBlock extends Goal {
 	public EntityAIThrowSpikeBlock(EntityTFBlockGoblin entityTFBlockGoblin, EntityTFSpikeBlock entitySpikeBlock) {
 		this.attacker = entityTFBlockGoblin;
 		this.spikeBlock = entitySpikeBlock;
-		this.setMutexBits(3);
+		this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
 	}
 
 	@Override

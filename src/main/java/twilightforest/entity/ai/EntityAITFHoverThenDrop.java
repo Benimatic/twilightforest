@@ -5,6 +5,8 @@ import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.boss.EntityTFSnowQueen;
 import twilightforest.entity.boss.EntityTFSnowQueen.Phase;
 
+import java.util.EnumSet;
+
 public class EntityAITFHoverThenDrop extends EntityAITFHoverBase<EntityTFSnowQueen> {
 
 	private int hoverTimer;
@@ -20,7 +22,7 @@ public class EntityAITFHoverThenDrop extends EntityAITFHoverBase<EntityTFSnowQue
 	public EntityAITFHoverThenDrop(EntityTFSnowQueen snowQueen, int hoverTime, int dropTime) {
 		super(snowQueen, 6F, 0F);
 
-		this.setMutexBits(3);
+		this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
 		this.maxHoverTime = hoverTime;
 		this.maxSeekTime = hoverTime;
 		this.maxDropTime = dropTime;

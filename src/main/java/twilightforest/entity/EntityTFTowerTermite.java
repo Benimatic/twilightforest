@@ -19,6 +19,7 @@ import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 
+import java.util.EnumSet;
 import java.util.Random;
 
 public class EntityTFTowerTermite extends MonsterEntity {
@@ -115,7 +116,7 @@ public class EntityTFTowerTermite extends MonsterEntity {
 
 		public AIHideInStone(EntityTFTowerTermite silverfishIn) {
 			super(silverfishIn, 1.0D, 10);
-			this.setMutexBits(1);
+			this.setMutexFlags(EnumSet.of(Flag.MOVE));
 		}
 
 		/**

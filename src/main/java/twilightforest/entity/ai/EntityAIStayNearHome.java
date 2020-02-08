@@ -5,6 +5,8 @@ import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.Vec3d;
 
+import java.util.EnumSet;
+
 public class EntityAIStayNearHome extends Goal {
 	private final CreatureEntity entity;
 	private final float speed;
@@ -12,7 +14,7 @@ public class EntityAIStayNearHome extends Goal {
 	public EntityAIStayNearHome(CreatureEntity entityTFYetiAlpha, float sp) {
 		this.entity = entityTFYetiAlpha;
 		this.speed = sp;
-		this.setMutexBits(1);
+		this.setMutexFlags(EnumSet.of(Flag.MOVE));
 	}
 
 	@Override

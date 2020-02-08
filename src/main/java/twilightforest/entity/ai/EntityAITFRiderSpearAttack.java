@@ -4,13 +4,15 @@ import net.minecraft.entity.ai.goal.Goal;
 import twilightforest.entity.EntityTFGoblinKnightLower;
 import twilightforest.entity.EntityTFGoblinKnightUpper;
 
+import java.util.EnumSet;
+
 public class EntityAITFRiderSpearAttack extends Goal {
 
 	private EntityTFGoblinKnightLower entity;
 
 	public EntityAITFRiderSpearAttack(EntityTFGoblinKnightLower lowerKnight) {
 		this.entity = lowerKnight;
-		this.setMutexBits(3); // Prevent moving
+		this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK)); // Prevent moving
 	}
 
 	@Override
@@ -22,5 +24,4 @@ public class EntityAITFRiderSpearAttack extends Goal {
 			return false;
 		}
 	}
-
 }

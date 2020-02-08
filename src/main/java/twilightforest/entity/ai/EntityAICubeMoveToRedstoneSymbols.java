@@ -6,6 +6,8 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import twilightforest.entity.EntityTFRovingCube;
 
+import java.util.EnumSet;
+
 public class EntityAICubeMoveToRedstoneSymbols extends Goal {
 
 	private final EntityTFRovingCube myCube;
@@ -15,7 +17,7 @@ public class EntityAICubeMoveToRedstoneSymbols extends Goal {
 	public EntityAICubeMoveToRedstoneSymbols(EntityTFRovingCube entityTFRovingCube, double d) {
 		this.myCube = entityTFRovingCube;
 		this.speed = d;
-		this.setMutexBits(1);
+		this.setMutexFlags(EnumSet.of(Flag.MOVE));
 	}
 
 	@Override

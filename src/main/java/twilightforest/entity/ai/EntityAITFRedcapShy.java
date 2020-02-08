@@ -6,6 +6,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import twilightforest.entity.EntityTFRedcap;
 
+import java.util.EnumSet;
+
 public class EntityAITFRedcapShy extends EntityAITFRedcapBase {
 
 	private LivingEntity entityTarget;
@@ -21,7 +23,7 @@ public class EntityAITFRedcapShy extends EntityAITFRedcapBase {
 	public EntityAITFRedcapShy(EntityTFRedcap entityTFRedcap, float moveSpeed) {
 		super(entityTFRedcap);
 		this.speed = moveSpeed;
-		this.setMutexBits(3);
+		this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
 	}
 
 	@Override

@@ -5,6 +5,7 @@ import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.Item;
 
+import java.util.EnumSet;
 import java.util.List;
 
 public class EntityAITFFindLoose extends Goal {
@@ -25,7 +26,7 @@ public class EntityAITFFindLoose extends Goal {
 		this.temptedEntity = entityCreature;
 		this.pursueSpeed = speed;
 		this.item = item;
-		this.setMutexBits(3);
+		this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
 	}
 
 	@Override

@@ -5,9 +5,12 @@ import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
+import twilightforest.entity.TFEntities;
 import twilightforest.entity.boss.EntityTFKnightPhantom;
 import twilightforest.entity.boss.EntityTFThrownWep;
 import twilightforest.item.TFItems;
+
+import java.util.EnumSet;
 
 public class EntityAIPhantomThrowWeapon extends Goal {
 
@@ -15,7 +18,7 @@ public class EntityAIPhantomThrowWeapon extends Goal {
 
 	public EntityAIPhantomThrowWeapon(EntityTFKnightPhantom entity) {
 		boss = entity;
-		setMutexBits(2);
+		setMutexFlags(EnumSet.of(Flag.LOOK));
 	}
 
 	@Override

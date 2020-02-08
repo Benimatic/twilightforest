@@ -56,7 +56,7 @@ public class EntityTFTowerGhast extends GhastEntity {
 	protected void registerGoals() {
 		this.goalSelector.addGoal(5, new AIHomedFly(this));
 		if (!(this instanceof EntityTFUrGhast)) this.goalSelector.addGoal(5, new AIRandomFly(this));
-		this.goalSelector.addGoal(7, new GhastEntity.AILookAround(this));
+		this.goalSelector.addGoal(7, new GhastEntity.LookAroundGoal(this)); //TODO: AT
 		this.goalSelector.addGoal(7, attackAI = new AIAttack(this));
 		this.targetSelector.addGoal(1, new EntityAITFFindEntityNearestPlayer(this));
 	}
@@ -67,7 +67,7 @@ public class EntityTFTowerGhast extends GhastEntity {
 
 		public AIRandomFly(EntityTFTowerGhast ghast) {
 			this.parentEntity = ghast;
-			this.setMutexBits(1);
+			this.setMutexFlags(EnumSet.of(Flag.MOVE));
 		}
 
 		@Override
@@ -105,7 +105,7 @@ public class EntityTFTowerGhast extends GhastEntity {
 
 		AIHomedFly(EntityTFTowerGhast ghast) {
 			this.parentEntity = ghast;
-			setMutexBits(1);
+			setMutexFlags(EnumSet.of(Flag.MOVE));
 		}
 
 		// From AIFly, but with extra condition from AIStayNearHome

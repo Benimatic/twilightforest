@@ -9,6 +9,7 @@ import net.minecraft.util.math.Vec3d;
 import twilightforest.entity.boss.EntityTFSnowQueen;
 import twilightforest.entity.boss.EntityTFSnowQueen.Phase;
 
+import java.util.EnumSet;
 import java.util.List;
 
 public class EntityAITFHoverBeam extends EntityAITFHoverBase<EntityTFSnowQueen> {
@@ -27,7 +28,7 @@ public class EntityAITFHoverBeam extends EntityAITFHoverBase<EntityTFSnowQueen> 
 	public EntityAITFHoverBeam(EntityTFSnowQueen snowQueen, int hoverTime, int dropTime) {
 		super(snowQueen, 3F, 4F);
 
-		this.setMutexBits(3);
+		this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
 		this.maxHoverTime = hoverTime;
 		this.maxSeekTime = hoverTime;
 		this.maxBeamTime = dropTime;

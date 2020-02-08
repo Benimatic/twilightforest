@@ -3,6 +3,8 @@ package twilightforest.entity.ai;
 import net.minecraft.entity.ai.goal.Goal;
 import twilightforest.entity.EntityTFRovingCube;
 
+import java.util.EnumSet;
+
 /**
  * This is a task that runs when we are near a symbol and have stopped pathfinding, but are not centered on the symbol.
  * <p>
@@ -24,7 +26,7 @@ public class EntityAICubeCenterOnSymbol extends Goal {
 		this.yPosition = this.myCube.symbolY;
 		this.zPosition = this.myCube.symbolZ;
 		this.speed = d;
-		this.setMutexBits(1);
+		this.setMutexFlags(EnumSet.of(Flag.MOVE));
 	}
 
 	@Override

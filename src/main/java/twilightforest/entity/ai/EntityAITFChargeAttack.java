@@ -12,6 +12,8 @@ import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.entity.ITFCharger;
 import twilightforest.util.EntityUtil;
 
+import java.util.EnumSet;
+
 public class EntityAITFChargeAttack extends Goal {
 
 	private static final double MIN_RANGE_SQ = 16.0D;
@@ -38,7 +40,7 @@ public class EntityAITFChargeAttack extends Goal {
 		this.canBreak = canBreak;
 		this.windup = 0;
 		this.hasAttacked = false;
-		this.setMutexBits(3);
+		this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
 	}
 
 	@Override

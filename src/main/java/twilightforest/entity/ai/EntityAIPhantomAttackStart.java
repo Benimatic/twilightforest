@@ -5,13 +5,15 @@ import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.BlockPos;
 import twilightforest.entity.boss.EntityTFKnightPhantom;
 
+import java.util.EnumSet;
+
 public class EntityAIPhantomAttackStart extends Goal {
 
 	private final EntityTFKnightPhantom boss;
 
 	public EntityAIPhantomAttackStart(EntityTFKnightPhantom entity) {
 		boss = entity;
-		setMutexBits(2);
+		setMutexFlags(EnumSet.of(Flag.LOOK));
 	}
 
 	@Override
