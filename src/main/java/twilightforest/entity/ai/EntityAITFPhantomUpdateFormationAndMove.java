@@ -86,13 +86,13 @@ public class EntityAITFPhantomUpdateFormationAndMove extends Goal {
 				// random weapon switch!
 				switch (boss.getRNG().nextInt(3)) {
 					case 0:
-						boss.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(TFItems.knightmetal_sword));
+						boss.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(TFItems.knightmetal_sword.get()));
 						break;
 					case 1:
-						boss.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(TFItems.knightmetal_axe));
+						boss.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(TFItems.knightmetal_axe.get()));
 						break;
 					case 2:
-						boss.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(TFItems.knightmetal_pickaxe));
+						boss.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(TFItems.knightmetal_pickaxe.get()));
 						break;
 				}
 

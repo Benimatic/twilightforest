@@ -23,6 +23,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.entity.ai.EntityAITFFindEntityNearestPlayer;
 import twilightforest.entity.boss.EntityTFUrGhast;
 
+import java.util.EnumSet;
 import java.util.Random;
 
 public class EntityTFTowerGhast extends GhastEntity {

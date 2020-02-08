@@ -90,6 +90,7 @@ public class EntityTFSlimeBeetle extends MonsterEntity implements IRangedAttackM
 		this.world.addEntity(projectile);
 	}
 
-	@Override
-	public void setSwingingArms(boolean swingingArms) {}
+	//TODO: Unused?
+//	@Override
+//	public void setSwingingArms(boolean swingingArms) {}
 }

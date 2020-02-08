@@ -1,6 +1,7 @@
 package twilightforest.entity.ai;
 
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -29,7 +30,7 @@ public class EntityAITFLichMinions extends Goal {
 
 	@Override
 	public void startExecuting() {
-		lich.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(TFItems.zombie_scepter));
+		lich.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(TFItems.zombie_scepter.get()));
 	}
 
 	@Override
@@ -92,7 +93,7 @@ public class EntityAITFLichMinions extends Goal {
 			// put a clone there
 			EntityTFLichMinion minion = new EntityTFLichMinion(lich.world, lich);
 			minion.setPosition(minionSpot.x, minionSpot.y, minionSpot.z);
-			minion.onInitialSpawn(lich.world.getDifficultyForLocation(new BlockPos(minionSpot)), null);
+			minion.onInitialSpawn(lich.world, lich.world.getDifficultyForLocation(new BlockPos(minionSpot)), SpawnReason.MOB_SUMMONED, null, null);
 			lich.world.addEntity(minion);
 
 			minion.setAttackTarget(targetedEntity);

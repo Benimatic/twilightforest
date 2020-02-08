@@ -11,6 +11,7 @@ import java.util.Collections;
 /**
  * Same as superclass, but uses an {@code Ingredient} instead of a {@code Set<Item>}
  */
+//TODO: Superclass now accepts Ingredient. Remove this?
 public class EntityAITFTempt extends TemptGoal {
 
 	protected final Ingredient ingredient;

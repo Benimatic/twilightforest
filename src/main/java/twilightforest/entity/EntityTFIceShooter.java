@@ -88,7 +88,8 @@ public class EntityTFIceShooter extends EntityTFIceMob implements IRangedAttackM
 		this.world.addEntity(snowball);
 	}
 
-	@Override
-	public void setSwingingArms(boolean swingingArms) {
-	}
+	//TODO: Unused?
+//	@Override
+//	public void setSwingingArms(boolean swingingArms) {
+//	}
 }

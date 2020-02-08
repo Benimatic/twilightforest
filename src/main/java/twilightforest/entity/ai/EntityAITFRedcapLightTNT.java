@@ -65,9 +65,9 @@ public class EntityAITFRedcapLightTNT extends EntityAITFRedcapBase {
 		this.redcap.getLookController().setLookPosition(tntPos.getX(), tntPos.getY(), tntPos.getZ(), 30.0F, this.redcap.getVerticalFaceSpeed());
 
 		if (this.redcap.getDistanceSq(tntPos) < 2.4D * 2.4D) {
-			redcap.playLivingSound();
+			redcap.playAmbientSound();
 
-			Blocks.TNT.onPlayerDestroy(redcap.world, tntPos, Blocks.TNT.getDefaultState().with(TNTBlock.EXPLODE, true));
+			Blocks.TNT.onPlayerDestroy(redcap.world, tntPos, Blocks.TNT.getDefaultState().with(TNTBlock.UNSTABLE, true));
 			redcap.swingArm(Hand.MAIN_HAND);
 			redcap.world.setBlockState(tntPos, Blocks.AIR.getDefaultState(), 2);
 			this.redcap.getNavigator().clearPath();

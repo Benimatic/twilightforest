@@ -4,6 +4,7 @@ import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.Vec3d;
 import twilightforest.TFSounds;
+import twilightforest.entity.TFEntities;
 import twilightforest.entity.boss.EntityTFIceBomb;
 import twilightforest.entity.boss.EntityTFYetiAlpha;
 
@@ -73,9 +74,10 @@ public class EntityAITFYetiRampage extends Goal {
 		}
 
 		if (this.yeti.onGround) {
-			this.yeti.motionX = 0;
-			this.yeti.motionZ = 0;
-			this.yeti.motionY = 0.4F;
+//			this.yeti.motionX = 0;
+//			this.yeti.motionZ = 0;
+//			this.yeti.motionY = 0.4F;
+			this.yeti.setMotion(0, 0.4, 0);
 		}
 
 		this.yeti.destroyBlocksInAABB(this.yeti.getBoundingBox().grow(1, 2, 1).offset(0, 2, 0));
@@ -96,7 +98,7 @@ public class EntityAITFYetiRampage extends Goal {
 		}
 
 		if (currentDuration % 10 == 0) {
-			EntityTFIceBomb ice = new EntityTFIceBomb(yeti.world, yeti);
+			EntityTFIceBomb ice = new EntityTFIceBomb(TFEntities.thrown_ice.get(), yeti.world, yeti);
 			Vec3d vec = new Vec3d(0.5F + yeti.getRNG().nextFloat() * 0.5F, 0.5F + yeti.getRNG().nextFloat() * 0.3F, 0).rotateYaw(yeti.getRNG().nextFloat() * 360F);
 			ice.shoot(vec.x, vec.y, vec.z, 0.4F + yeti.getRNG().nextFloat() * 0.3F, 0);
 			yeti.playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (yeti.getRNG().nextFloat() * 0.4F + 0.8F));

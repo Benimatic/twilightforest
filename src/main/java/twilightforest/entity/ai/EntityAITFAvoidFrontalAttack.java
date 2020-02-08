@@ -8,6 +8,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import twilightforest.entity.EntityTFRedcap;
 
+//TODO: Unused?
 public class EntityAITFAvoidFrontalAttack extends Goal {
 
 	private final MobEntity me;

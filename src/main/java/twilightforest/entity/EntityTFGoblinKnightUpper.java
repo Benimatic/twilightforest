@@ -193,6 +193,7 @@ public class EntityTFGoblinKnightUpper extends MonsterEntity {
 			this.heavySpearTimer = HEAVY_SPEAR_TIMER_START;
 		} else if (id == 5) {
 			ItemStack broken = new ItemStack(Items.IRON_CHESTPLATE);
+			//TODO: AT renderBrokenItemStack
 			this.renderBrokenItemStack(broken);
 			this.renderBrokenItemStack(broken);
 			this.renderBrokenItemStack(broken);

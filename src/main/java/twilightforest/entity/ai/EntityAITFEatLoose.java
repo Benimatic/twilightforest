@@ -68,13 +68,13 @@ public class EntityAITFEatLoose extends Goal {
 
 	@Override
 	public void tick() {
-		this.temptedQuestRam.getLookHelper().setLookPositionWithEntity(this.temptingItem, 30.0F, this.temptedQuestRam.getVerticalFaceSpeed());
+		this.temptedQuestRam.getLookController().setLookPositionWithEntity(this.temptingItem, 30.0F, this.temptedQuestRam.getVerticalFaceSpeed());
 
 		if (this.temptedQuestRam.getDistanceSq(this.temptingItem) < 6.25D) {
 			DyeColor color = DyeColor.byMetadata(temptingItem.getItem().getItemDamage());
 			if (!temptedQuestRam.isColorPresent(color)) { // we did technically already check this, but why not check again
 				this.temptingItem.remove();
-				this.temptedQuestRam.playLivingSound();
+				this.temptedQuestRam.playAmbientSound();
 				this.temptedQuestRam.setColorPresent(color);
 				this.temptedQuestRam.animateAddColor(color, 50); // TODO: find a better place for this?  refactor?
 			}

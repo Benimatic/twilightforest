@@ -20,6 +20,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.api.distmarker.Dist;
@@ -126,7 +127,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 //				this.motionX += moveDirection.getXOffset() * moveAcceleration;
 //				this.motionY += moveDirection.getYOffset() * moveAcceleration;
 //				this.motionZ += moveDirection.getZOffset() * moveAcceleration;
-				this.getMotion().add(moveDirection.getXOffset() * moveAcceleration, moveDirection.getYOffset() * moveAcceleration, moveDirection.getZOffset() * moveAcceleration)
+				this.getMotion().add(moveDirection.getXOffset() * moveAcceleration, moveDirection.getYOffset() * moveAcceleration, moveDirection.getZOffset() * moveAcceleration);
 				this.move(MoverType.SELF, new Vec3d(this.getMotion().getX(), this.getMotion().getY(), this.getMotion().getZ()));
 			}
 //			this.motionX *= 0.98;
@@ -164,7 +165,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 
 					this.remove();
 
-					if (this.world.mayPlace(myState.getBlock(), pos, true, Direction.UP, null)) {
+					if (this.world.canPlace(myState, pos, ISelectionContext.dummy())) {
 						world.setBlockState(pos, myState);
 					} else {
 						this.entityDropItem(new ItemStack(myState.getBlock(), 1, myState.getBlock().damageDropped(myState)), 0.0F);
@@ -210,9 +211,9 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void readAdditional(@Nonnull CompoundNBT compound) {
-		Block b = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(compound.getString("TileID")));
-		int meta = compound.getByte("Meta");
-		this.myState = b.getStateFromMeta(meta);
+		//Block b = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(compound.getString("TileID")));
+		//int meta = compound.getByte("Meta");
+		//this.myState = b.getStateFromMeta(meta);
 		this.slideTime = compound.getInt("Time");
 		dataManager.set(MOVE_DIRECTION, Direction.byIndex(compound.getByte("Direction")));
 	}
@@ -220,7 +221,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 	@Override
 	protected void writeAdditional(@Nonnull CompoundNBT compound) {
 		compound.putString("TileID", myState.getBlock().getRegistryName().toString());
-		compound.putByte("Meta", (byte) this.myState.getBlock().getMetaFromState(myState));
+		//compound.putByte("Meta", (byte) this.myState.getBlock().getMetaFromState(myState));
 		compound.putInt("Time", this.slideTime);
 		compound.putByte("Direction", (byte) dataManager.get(MOVE_DIRECTION).getIndex());
 	}

@@ -26,7 +26,7 @@ public class EntityAITFLichShadows extends Goal {
 
 	@Override
 	public void startExecuting() {
-		lich.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(TFItems.twilight_scepter));
+		lich.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(TFItems.twilight_scepter.get()));
 	}
 
 	@Override
@@ -71,7 +71,7 @@ public class EntityAITFLichShadows extends Goal {
 		if (lich.getMasterLich() == null) {
 			findNewMaster();
 		}
-		if (!lich.world.isRemote && (lich.getMasterLich() == null || lich.getMasterLich().isDead)) {
+		if (!lich.world.isRemote && (lich.getMasterLich() == null || !lich.getMasterLich().isAlive())) {
 			lich.remove();
 		}
 	}

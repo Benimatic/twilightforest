@@ -1,8 +1,8 @@
 package twilightforest.entity;
 
-import net.minecraftforge.fml.common.registry.IThrowableEntity;
+import net.minecraft.entity.IProjectile;
 
 /**
  * Marker interface for our projectiles, used for parrying.
  */
-public interface ITFProjectile extends IThrowableEntity {}
+public interface ITFProjectile extends IProjectile {}

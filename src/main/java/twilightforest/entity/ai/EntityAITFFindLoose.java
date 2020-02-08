@@ -71,7 +71,7 @@ public class EntityAITFFindLoose extends Goal {
 
 	@Override
 	public void tick() {
-		this.temptedEntity.getLookHelper().setLookPositionWithEntity(this.temptingItem, 30.0F, this.temptedEntity.getVerticalFaceSpeed());
+		this.temptedEntity.getLookController().setLookPositionWithEntity(this.temptingItem, 30.0F, this.temptedEntity.getVerticalFaceSpeed());
 
 		if (this.temptedEntity.getDistanceSq(this.temptingItem) < 6.25D) {
 			this.temptedEntity.getNavigator().clearPath();

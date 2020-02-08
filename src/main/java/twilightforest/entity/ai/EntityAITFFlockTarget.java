@@ -7,6 +7,7 @@ import net.minecraft.entity.ai.goal.TargetGoal;
 import java.util.ArrayList;
 import java.util.List;
 
+//TODO: Unused?
 public class EntityAITFFlockTarget extends TargetGoal {
 
 	private final LivingEntity flockCreature;

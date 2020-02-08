@@ -59,6 +59,7 @@ public class EntityTFHostileWolf extends WolfEntity implements IMob {
 		}
 	}
 
+	//TODO: Move to factory
 	@Override
 	public boolean getCanSpawnHere() {
 		// are we near a hedge maze?

@@ -5,6 +5,7 @@ import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.util.math.Vec3d;
 
+//TODO: Unused?
 public class EntityAITFKidnapRider extends Goal {
 	private CreatureEntity theEntityCreature;
 	private float speed;

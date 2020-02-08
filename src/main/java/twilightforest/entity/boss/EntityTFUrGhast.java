@@ -296,7 +296,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		// start raining
 		int rainTime = 300 * 20;
 
-		WorldInfo worldInfo = world.getMinecraftServer().worlds[0].getWorldInfo(); // grab the overworld to set weather properly
+		WorldInfo worldInfo = world.getServer().worlds[0].getWorldInfo(); // grab the overworld to set weather properly TODO: AT
 
 		worldInfo.setClearWeatherTime(0);
 		worldInfo.setRainTime(rainTime);

@@ -33,7 +33,7 @@ public class EntityAITFRedcapPlantTNT extends EntityAITFRedcapBase {
 
 		if (this.redcap.world.isAirBlock(entityPos)) {
 			redcap.heldTNT.shrink(1);
-			redcap.playLivingSound();
+			redcap.playAmbientSound();
 			redcap.world.setBlockState(entityPos, Blocks.TNT.getDefaultState());
 		}
 	}

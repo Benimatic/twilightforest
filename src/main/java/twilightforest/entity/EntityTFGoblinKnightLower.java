@@ -94,7 +94,7 @@ public class EntityTFGoblinKnightLower extends MonsterEntity {
 
 		EntityTFGoblinKnightUpper upper = new EntityTFGoblinKnightUpper(TFEntities.goblin_knight_upper.get(), this.world);
 		upper.setLocationAndAngles(this.getX(), this.getY(), this.getZ(), this.rotationYaw, 0.0F);
-		upper.onInitialSpawn(difficulty, null);
+		upper.onInitialSpawn(worldIn, difficulty, SpawnReason.NATURAL, livingData, dataTag); //TODO: verify
 		this.world.addEntity(upper);
 		upper.startRiding(this);
 
@@ -169,6 +169,7 @@ public class EntityTFGoblinKnightLower extends MonsterEntity {
 		return super.attackEntityFrom(source, amount);
 	}
 
+	//TODO: AT renderBrokenItemStack
 	private void breakArmor() {
 		this.renderBrokenItemStack(new ItemStack(Items.IRON_CHESTPLATE));
 		this.renderBrokenItemStack(new ItemStack(Items.IRON_CHESTPLATE));
