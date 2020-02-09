@@ -8,16 +8,12 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.ChunkPrimer;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFEntities;
 import twilightforest.enums.PlantVariant;
-import twilightforest.entity.EntityTFTroll;
-import twilightforest.world.feature.TFGenTallGrass;
-import twilightforest.world.feature.TFGenTrollRoots;
 
 import java.util.Random;
 
@@ -70,21 +66,6 @@ public class TFBiomeHighlands extends TFBiomeBase {
 		return random.nextInt(5) > 0
 				? new WorldGenTallGrass(BlockTallGrass.EnumType.FERN)
 				: new WorldGenTallGrass(BlockTallGrass.EnumType.GRASS);
-	}
-
-    //TODO: Move to SurfaceBuilderConfig?
-	@Override
-	public void genTerrainBlocks(World world, Random rand, ChunkPrimer primer, int x, int z, double noiseVal) {
-		this.topBlock = Blocks.GRASS.getDefaultState();
-		this.fillerBlock = Blocks.DIRT.getDefaultState();
-
-		if (noiseVal > 1.75D) {
-			this.topBlock = Blocks.DIRT.getDefaultState().with(BlockDirt.VARIANT, BlockDirt.DirtType.COARSE_DIRT);
-		} else if (noiseVal > -0.95D) {
-			this.topBlock = Blocks.DIRT.getDefaultState().with(BlockDirt.VARIANT, BlockDirt.DirtType.PODZOL);
-		}
-
-		this.genTwilightBiomeTerrain(world, rand, primer, x, z, noiseVal);
 	}
 
     //TODO: Move to feature decorator

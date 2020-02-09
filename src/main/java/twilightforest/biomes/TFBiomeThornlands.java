@@ -1,6 +1,7 @@
 package twilightforest.biomes;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
@@ -10,11 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.BlockTFDeadrock;
 import twilightforest.block.TFBlocks;
-import twilightforest.enums.DeadrockVariant;
-import twilightforest.world.feature.TFGenThorns;
-import twilightforest.world.TFWorld;
 
 import java.util.Random;
 import java.util.function.Predicate;
@@ -25,10 +22,6 @@ public class TFBiomeThornlands extends TFBiomeBase {
 
 	public TFBiomeThornlands(Builder props) {
 		super(props);
-
-        //TODO: Move to SurfaceBuilderConfig
-		this.topBlock = TFBlocks.deadrock.getDefaultState().with(BlockTFDeadrock.VARIANT, DeadrockVariant.SURFACE);
-		this.fillerBlock = TFBlocks.deadrock.getDefaultState().with(BlockTFDeadrock.VARIANT, DeadrockVariant.CRACKED);
 
 		getTFBiomeDecorator().hasCanopy = false;
 		getTFBiomeDecorator().setTreesPerChunk(-999);
@@ -53,13 +46,7 @@ public class TFBiomeThornlands extends TFBiomeBase {
 		}
 	}
 
-	private final Predicate<Block> otherGround = block -> block == Blocks.SANDSTONE || block == Blocks.SAND || block == Blocks.CLAY || block == TFBlocks.deadrock;
-
-    //TODO: Move to SurfaceBuilder
-	@Override
-	public BlockState getStoneReplacementState() {
-		return TFBlocks.deadrock.getDefaultState().with(BlockTFDeadrock.VARIANT, DeadrockVariant.SOLID);
-	}
+	private final Predicate<Block> otherGround = block -> block == Blocks.SANDSTONE || block == Blocks.SAND || block == Blocks.CLAY || block == TFBlocks.deadrock.get() || block == TFBlocks.deadrock_cracked.get() || block == TFBlocks.deadrock_weathered.get();
 
 	@Override
 	protected ResourceLocation[] getRequiredAdvancements() {

@@ -29,6 +29,7 @@ import twilightforest.network.TFPacketHandler;
 import twilightforest.potions.TFPotions;
 import twilightforest.tileentity.TFTileEntities;
 import twilightforest.world.feature.TFGenCaveStalactite;
+import twilightforest.world.surfacebuilders.TFSurfaceBuilders;
 
 @Mod(TwilightForestMod.ID)
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -71,6 +72,7 @@ public class TwilightForestMod {
 		TFEntities.ENTITIES.register(modbus);
 		TFTileEntities.TILE_ENTITIES.register(modbus);
 		TFParticleType.PARTICLE_TYPES.register(modbus);
+		TFSurfaceBuilders.SURFACE_BUILDERS.register(modbus);
 
 		if (ModList.get().isLoaded("sponge")) {
 			LOGGER.info("It looks like you have Sponge installed! You may notice Hydras spawning incorrectly with floating heads.\n" +

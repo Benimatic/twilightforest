@@ -5,10 +5,6 @@ import net.minecraft.world.World;
 import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.PlantVariant;
-import twilightforest.world.feature.TFGenHangingLamps;
-import twilightforest.world.feature.TFGenLampposts;
-import twilightforest.world.feature.TFGenTallGrass;
-import twilightforest.world.TFWorld;
 
 import java.util.Random;
 

@@ -4,19 +4,12 @@ import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.chunk.ChunkPrimer;
 import twilightforest.TFFeature;
-import twilightforest.entity.EntityTFKobold;
 import twilightforest.entity.TFEntities;
-import twilightforest.entity.passive.*;
 import twilightforest.util.PlayerHelper;
-import twilightforest.world.ChunkGeneratorTFBase;
-import twilightforest.world.TFWorld;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -99,98 +92,6 @@ public class TFBiomeBase extends Biome {
 		} else {
 			return new WorldGenTallGrass(BlockTallGrass.EnumType.GRASS);
 		}
-	}
-
-	//TODO: Not needed after SurfaceBuilder
-	@Override
-	public void genTerrainBlocks(World world, Random rand, ChunkPrimer primer, int x, int z, double noiseVal) {
-		this.genTwilightBiomeTerrain(world, rand, primer, x, z, noiseVal);
-	}
-
-	//TODO: Move to SurfaceBuilder
-	// Copy of super's generateBiomeTerrain, relevant edits noted.
-	protected void genTwilightBiomeTerrain(World world, Random rand, ChunkPrimer primer, int x, int z, double noiseVal) {
-		int i = TFWorld.SEALEVEL; // TF - set sea level to 31
-		BlockState iblockstate = this.topBlock;
-		BlockState iblockstate1 = this.fillerBlock;
-		BlockState stoneReplacement = getStoneReplacementState(); // TF - Replace stone
-		int j = -1;
-		int k = (int) (noiseVal / 3.0D + 3.0D + rand.nextDouble() * 0.25D);
-		int l = x & 15;
-		int i1 = z & 15;
-		BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
-		boolean generateBedrock = shouldGenerateBedrock(world); // TF - conditional bedrock gen
-
-		for (int j1 = 255; j1 >= 0; --j1) {
-			// TF - conditional bedrock gen
-			if (generateBedrock && j1 <= rand.nextInt(5)) {
-				primer.setBlockState(i1, j1, l, BEDROCK);
-			} else {
-				BlockState iblockstate2 = primer.getBlockState(i1, j1, l);
-
-				// TF - use block check for air
-				if (iblockstate2.getBlock() == Blocks.AIR) {
-					// j = -1; TF - commented out? todo 1.9
-				} else if (iblockstate2.getBlock() == Blocks.STONE) {
-					if (j == -1) {
-						if (k <= 0) {
-							iblockstate = AIR;
-							iblockstate1 = STONE;
-						} else if (j1 >= i - 4 && j1 <= i + 1) {
-							iblockstate = this.topBlock;
-							iblockstate1 = this.fillerBlock;
-						}
-
-						// TF - use block check for air
-						if (j1 < i && (iblockstate == null || iblockstate.getBlock() == Blocks.AIR)) {
-							if (this.getTemperature(blockpos$mutableblockpos.setPos(x, j1, z)) < 0.15F) {
-								iblockstate = ICE;
-							} else {
-								iblockstate = WATER;
-							}
-						}
-
-						j = k;
-
-						if (j1 >= i - 1) {
-							primer.setBlockState(i1, j1, l, iblockstate);
-						} else if (j1 < i - 7 - k) {
-							iblockstate = AIR;
-							iblockstate1 = STONE;
-							primer.setBlockState(i1, j1, l, GRAVEL);
-						} else {
-							primer.setBlockState(i1, j1, l, iblockstate1);
-						}
-					} else if (j > 0) {
-						--j;
-						primer.setBlockState(i1, j1, l, iblockstate1);
-
-						if (j == 0 && iblockstate1.getBlock() == Blocks.SAND) {
-							j = rand.nextInt(4) + Math.max(0, j1 - 63);
-							iblockstate1 = iblockstate1.getValue(BlockSand.VARIANT) == BlockSand.EnumType.RED_SAND ? RED_SANDSTONE : SANDSTONE;
-						}
-					} else if (stoneReplacement != null) {
-						// TF - Replace stone
-						primer.setBlockState(i1, j1, l, stoneReplacement);
-					}
-				}
-			}
-		}
-	}
-
-	//TODO: Move to SurfaceBuilder
-	private static boolean shouldGenerateBedrock(World world) {
-		ChunkGeneratorTFBase generator = TFWorld.getChunkGenerator(world);
-		return generator == null || generator.shouldGenerateBedrock();
-	}
-
-	/**
-	 * Return a block if you want it to replace stone in the terrain generation
-	 */
-	//TODO: Move to SurfaceBuilder
-	@Nullable
-	public BlockState getStoneReplacementState() {
-		return null;
 	}
 
 	/**

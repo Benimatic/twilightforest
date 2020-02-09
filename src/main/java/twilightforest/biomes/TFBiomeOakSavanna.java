@@ -5,9 +5,6 @@ import net.minecraft.world.World;
 import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.PlantVariant;
-import twilightforest.world.feature.TFGenCanopyOak;
-import twilightforest.world.feature.TFGenNoTree;
-import twilightforest.world.feature.TFGenTallGrass;
 
 import java.util.Random;
 
