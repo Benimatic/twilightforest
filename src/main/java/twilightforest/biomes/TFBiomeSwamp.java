@@ -17,12 +17,6 @@ import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFEntities;
 import twilightforest.enums.PlantVariant;
-import twilightforest.entity.EntityTFMosquitoSwarm;
-import twilightforest.world.feature.TFGenHugeLilyPad;
-import twilightforest.world.feature.TFGenHugeWaterLily;
-import twilightforest.world.feature.TFGenTallGrass;
-import twilightforest.world.feature.TFGenVines;
-import twilightforest.world.TFWorld;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,15 +102,15 @@ public class TFBiomeSwamp extends TFBiomeBase {
 	}
 
 	@Override
-	public int getGrassColor(BlockPos pos) {
-		double temperature = (double) MathHelper.clamp(this.getTemperature(pos), 0.0F, 1.0F);
+	public int getGrassColorAt(double p_225528_1_, double p_225528_3_) {
+		double temperature = (double) MathHelper.clamp(this.getDefaultTemperature(), 0.0F, 1.0F);
 		double humidity = (double) MathHelper.clamp(this.getDownfall(), 0.0F, 1.0F);
 		return ((GrassColors.get(temperature, humidity) & 0xFEFEFE) + 0x4E0E4E) / 2;
 	}
 
 	@Override
-	public int getFoliageColor(BlockPos pos) {
-		double temperature = (double) MathHelper.clamp(this.getTemperature(pos), 0.0F, 1.0F);
+	public int getFoliageColor() {
+		double temperature = (double) MathHelper.clamp(this.getDefaultTemperature(), 0.0F, 1.0F);
 		double humidity = (double) MathHelper.clamp(this.getDownfall(), 0.0F, 1.0F);
 		return ((FoliageColors.get(temperature, humidity) & 0xFEFEFE) + 0x4E0E4E) / 2;
 	}

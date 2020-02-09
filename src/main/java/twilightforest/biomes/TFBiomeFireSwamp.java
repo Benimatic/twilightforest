@@ -4,14 +4,9 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.enums.FireJetVariant;
-import twilightforest.world.feature.TFGenFireJet;
-import twilightforest.world.feature.TFGenVines;
-import twilightforest.world.TFWorld;
 
 import java.util.Random;
 
@@ -81,14 +76,12 @@ public class TFBiomeFireSwamp extends TFBiomeBase {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
-	public int getGrassColor(BlockPos pos) {
+	public int getGrassColorAt(double p_225528_1_, double p_225528_3_) {
 		return 0x572e23;
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
-	public int getFoliageColor(BlockPos pos) {
+	public int getFoliageColor() {
 		return 0x64260f;
 	}
 

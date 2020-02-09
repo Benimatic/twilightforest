@@ -9,7 +9,6 @@ import twilightforest.block.TFBlocks;
 import twilightforest.enums.LeavesVariant;
 import twilightforest.enums.PlantVariant;
 import twilightforest.enums.WoodVariant;
-import twilightforest.world.feature.TFGenTallGrass;
 
 import java.util.Random;
 

@@ -9,10 +9,7 @@ import net.minecraft.world.World;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFEntities;
-import twilightforest.entity.passive.EntityTFPenguin;
 import twilightforest.potions.TFPotions;
-import twilightforest.world.feature.TFGenPenguins;
-import twilightforest.world.TFWorld;
 
 import java.util.Random;
 
@@ -78,7 +75,7 @@ public class TFBiomeGlacier extends TFBiomeBase {
 	@Override
 	public void enforceProgression(PlayerEntity player, World world) {
 		if (!world.isRemote && player.ticksExisted % 60 == 0) {
-			player.addPotionEffect(new EffectInstance(TFPotions.frosty, 100, 3));
+			player.addPotionEffect(new EffectInstance(TFPotions.frosty.get(), 100, 3));
 		}
 		trySpawnHintMonster(player, world);
 	}

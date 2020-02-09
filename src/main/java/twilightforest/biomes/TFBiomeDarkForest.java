@@ -6,12 +6,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.FoliageColors;
 import net.minecraft.world.GrassColors;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.*;
@@ -71,15 +69,15 @@ public class TFBiomeDarkForest extends TFBiomeBase {
 	}
 
 	@Override
-	public int getGrassColor(BlockPos pos) {
-		double temperature = (double) MathHelper.clamp(this.getTemperature(pos), 0.0F, 1.0F);
+	public int getGrassColorAt(double p_225528_1_, double p_225528_3_) {
+		double temperature = (double) MathHelper.clamp(this.getDefaultTemperature(), 0.0F, 1.0F);
 		double humidity = (double) MathHelper.clamp(this.getDownfall(), 0.0F, 1.0F);
 		return ((GrassColors.get(temperature, humidity) & 0xFEFEFE) + 0x1E0E4E) / 2;
 	}
 
 	@Override
-	public int getFoliageColor(BlockPos pos) {
-		double temperature = (double) MathHelper.clamp(this.getTemperature(pos), 0.0F, 1.0F);
+	public int getFoliageColor() {
+		double temperature = (double) MathHelper.clamp(this.getDefaultTemperature(), 0.0F, 1.0F);
 		double humidity = (double) MathHelper.clamp(this.getDownfall(), 0.0F, 1.0F);
 		return ((FoliageColors.get(temperature, humidity) & 0xFEFEFE) + 0x1E0E4E) / 2;
 	}

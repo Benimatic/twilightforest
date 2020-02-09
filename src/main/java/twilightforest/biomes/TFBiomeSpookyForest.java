@@ -4,19 +4,10 @@ import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFEntities;
 import twilightforest.enums.PlantVariant;
-import twilightforest.features.TFGenGraveyard;
-import twilightforest.world.TFWorld;
-import twilightforest.world.feature.TFGenCanopyTree;
-import twilightforest.world.feature.TFGenFallenLeaves;
-import twilightforest.world.feature.TFGenLampposts;
-import twilightforest.world.feature.TFGenTallGrass;
-import twilightforest.world.feature.TFGenWebs;
 
 import java.util.Random;
 
@@ -120,14 +111,12 @@ public class TFBiomeSpookyForest extends TFBiomeBase {
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
-	public int getGrassColor(BlockPos pos) {
+	public int getGrassColorAt(double p_225528_1_, double p_225528_3_) {
 		return 0xC45123;
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
-	public int getFoliageColor(BlockPos pos) {
+	public int getFoliageColor() {
 		return 0xFF8501;
 	}
 }
