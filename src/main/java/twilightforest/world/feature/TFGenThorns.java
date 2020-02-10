@@ -1,24 +1,33 @@
 package twilightforest.world.feature;
 
-import net.minecraft.block.BlockLeaves;
-import net.minecraft.block.BlockRotatedPillar;
+import com.mojang.datafixers.Dynamic;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.GenerationSettings;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
 import twilightforest.block.TFBlocks;
 
 import java.util.Random;
+import java.util.function.Function;
 
-public class TFGenThorns extends TFGenerator {
+public class TFGenThorns<T extends NoFeatureConfig> extends Feature<T> {
 
 	private static final int MAX_SPREAD = 7;
 	private static final int CHANCE_OF_BRANCH = 3;
 	private static final int CHANCE_OF_LEAF = 3;
 	private static final int CHANCE_LEAF_IS_ROSE = 50;
 
+	public TFGenThorns(Function<Dynamic<?>, T> config) {
+		super(config);
+	}
+
 	@Override
-	public boolean generate(World world, Random rand, BlockPos pos) {
+	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, T config) {
 
 		// make a 3-5 long stack going up
 		int nextLength = 2 + rand.nextInt(4);
@@ -26,17 +35,16 @@ public class TFGenThorns extends TFGenerator {
 
 		placeThorns(world, rand, pos, nextLength, Direction.UP, maxLength, pos);
 
-
 		return true;
 	}
 
-	private void placeThorns(World world, Random rand, BlockPos pos, int length, Direction dir, int maxLength, BlockPos oPos) {
+	private void placeThorns(IWorld world, Random rand, BlockPos pos, int length, Direction dir, int maxLength, BlockPos oPos) {
 		boolean complete = false;
 		for (int i = 0; i < length; i++) {
 			BlockPos dPos = pos.offset(dir, i);
 
 			if (Math.abs(dPos.getX() - oPos.getX()) < MAX_SPREAD && Math.abs(dPos.getZ() - oPos.getZ()) < MAX_SPREAD && canPlaceThorns(world, dPos)) {
-				this.setBlockAndNotifyAdequately(world, dPos, TFBlocks.thorns.getDefaultState().with(BlockRotatedPillar.AXIS, dir.getAxis()));
+				this.setBlockState(world, dPos, TFBlocks.brown_thorns.get().getDefaultState().with(RotatedPillarBlock.AXIS, dir.getAxis()));
 
 				// did we make it to the end?
 				if (i == length - 1) {
@@ -45,10 +53,10 @@ public class TFGenThorns extends TFGenerator {
 					if (rand.nextInt(CHANCE_OF_LEAF) == 0 && world.isAirBlock(dPos.offset(dir))) {
 						if (rand.nextInt(CHANCE_LEAF_IS_ROSE) > 0) {
 							// leaf
-							this.setBlockAndNotifyAdequately(world, dPos.offset(dir), TFBlocks.twilight_leaves_3.getDefaultState().with(BlockLeaves.CHECK_DECAY, false));
+							this.setBlockState(world, dPos.offset(dir), TFBlocks.thorn_leaves.get().getDefaultState()/*.with(BlockLeaves.CHECK_DECAY, false)*/);
 						} else {
 							// rose
-							this.setBlockAndNotifyAdequately(world, dPos.offset(dir), TFBlocks.thorn_rose.getDefaultState());
+							this.setBlockState(world, dPos.offset(dir), TFBlocks.thorn_rose.get().getDefaultState());
 						}
 					}
 				}
@@ -91,15 +99,14 @@ public class TFGenThorns extends TFGenerator {
 			BlockPos nextPos = pos.offset(dir, middle).offset(nextDir);
 
 			if (world.isAirBlock(nextPos)) {
-				this.setBlockAndNotifyAdequately(world, nextPos, TFBlocks.twilight_leaves_3.getDefaultState().with(BlockLeaves.CHECK_DECAY, false));
+				this.setBlockState(world, nextPos, TFBlocks.thorn_leaves.get().getDefaultState()/*.with(BlockLeaves.CHECK_DECAY, false)*/);
 			}
 		}
 	}
 
-	private boolean canPlaceThorns(World world, BlockPos pos) {
+	private boolean canPlaceThorns(IWorld world, BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
 		return state.getBlock().isAir(state, world, pos)
 				|| state.getBlock().isLeaves(state, world, pos);
 	}
-
 }

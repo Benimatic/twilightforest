@@ -1,29 +1,37 @@
 package twilightforest.world.feature;
 
-import net.minecraft.block.BlockVine;
+import com.mojang.datafixers.Dynamic;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.VineBlock;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenerator;
-import twilightforest.world.TFWorld;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.GenerationSettings;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
 
 import java.util.EnumSet;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.Function;
 
 /**
  * This class fixes the vanilla WorldGenVines, which appears to be nonfunctional in 1.11
  */
-public class TFGenVines extends WorldGenerator {
+public class TFGenVines<T extends NoFeatureConfig> extends Feature<T> {
+
+	public TFGenVines(Function<Dynamic<?>, T> config) {
+		super(config);
+	}
 
 	@Override
-	public boolean generate(World world, Random rand, BlockPos position) {
+	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos position, T config) {
 
 		BlockPos original = position;
 
-		for (; position.getY() > TFWorld.SEALEVEL; position = position.down()) {
+		for (; position.getY() > generator.getSeaLevel(); position = position.down()) {
 
 			if (world.isAirBlock(position)) {
 
@@ -39,7 +47,7 @@ public class TFGenVines extends WorldGenerator {
 
 					BlockState vine = Blocks.VINE.getDefaultState();
 					for (Direction facing : facings) {
-						vine = vine.with(BlockVine.getPropertyFor(facing), true);
+						vine = vine.with(VineBlock.getPropertyFor(facing), true);
 					}
 
 					BlockPos down = position;

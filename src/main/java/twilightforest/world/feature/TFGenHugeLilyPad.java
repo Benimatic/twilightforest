@@ -1,14 +1,19 @@
 package twilightforest.world.feature;
 
+import com.mojang.datafixers.Dynamic;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenerator;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.GenerationSettings;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
 import twilightforest.block.TFBlocks;
 
 import java.util.Random;
+import java.util.function.Function;
 
 import static twilightforest.block.BlockTFHugeLilyPad.FACING;
 import static twilightforest.block.BlockTFHugeLilyPad.PIECE;
@@ -22,10 +27,14 @@ import static twilightforest.enums.HugeLilypadPiece.SW;
  *
  * @author Ben
  */
-public class TFGenHugeLilyPad extends WorldGenerator {
+public class TFGenHugeLilyPad<T extends NoFeatureConfig> extends Feature<T> {
+
+	public TFGenHugeLilyPad(Function<Dynamic<?>, T> config) {
+		super(config);
+	}
 
 	@Override
-	public boolean generate(World world, Random random, BlockPos pos) {
+	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random random, BlockPos pos, T config) {
 		for (int i = 0; i < 10; i++) {
 			BlockPos dPos = pos.add(
 					random.nextInt(8) - random.nextInt(8),
@@ -35,7 +44,7 @@ public class TFGenHugeLilyPad extends WorldGenerator {
 
 			if (shouldPlacePadAt(world, dPos) && world.isAreaLoaded(dPos, 1)) {
 				final Direction horizontal = Direction.byHorizontalIndex(random.nextInt(4));
-				final BlockState lilypad = TFBlocks.huge_lilypad.getDefaultState().with(FACING, horizontal);
+				final BlockState lilypad = TFBlocks.huge_lilypad.get().getDefaultState().with(FACING, horizontal);
 
 				world.setBlockState(dPos, lilypad.with(PIECE, NW), 16 | 2);
 				world.setBlockState(dPos.east(), lilypad.with(PIECE, NE), 16 | 2);
@@ -47,7 +56,7 @@ public class TFGenHugeLilyPad extends WorldGenerator {
 		return true;
 	}
 
-	private boolean shouldPlacePadAt(World world, BlockPos pos) {
+	private boolean shouldPlacePadAt(IWorld world, BlockPos pos) {
 		return world.isAirBlock(pos) && world.getBlockState(pos.down()).getMaterial() == Material.WATER
 				&& world.isAirBlock(pos.east()) && world.getBlockState(pos.east().down()).getMaterial() == Material.WATER
 				&& world.isAirBlock(pos.south()) && world.getBlockState(pos.south().down()).getMaterial() == Material.WATER
