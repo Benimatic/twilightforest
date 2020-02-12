@@ -24,7 +24,7 @@ public class TFConfig {
 
 	public static class Common {
 
-		public Common(ForgeConfigSpec.Builder builder){
+		public Common(ForgeConfigSpec.Builder builder) {
 			builder.
 					translation(config + "dimension").
 					comment("Settings that are not reversible without consequences.").
@@ -33,12 +33,10 @@ public class TFConfig {
 				DIMENSION.twilightForestSeed = builder.
 						translation(config + "dimension_seed").
 						worldRestart().
-						comment("If set, this will override the normal world seed when generating parts of the Twilight Forest Dimension.")
-						.define("twilightForestSeed", "");
+						comment("If set, this will override the normal world seed when generating parts of the Twilight Forest Dimension.").define("twilightForestSeed", "");
 				DIMENSION.newPlayersSpawnInTF = builder.
 						translation(config + "spawn_in_tf").
-						comment("If true, players spawning for the first time will spawn in the Twilight Forest.")
-						.define("newPlayersSpawnInTF", false);
+						comment("If true, players spawning for the first time will spawn in the Twilight Forest.").define("newPlayersSpawnInTF", false);
 				DIMENSION.skylightForest = builder.
 						translation(config + "skylight_forest").
 						worldRestart().
@@ -136,111 +134,112 @@ public class TFConfig {
 							define("useConfigOnly", false);
 				}
 				builder.pop();
-				doCompat = builder.
-						worldRestart().
-						translation(config + "compat").
-						comment("Should TF Compatibility load? Turn off if TF's Compatibility is causing crashes or if not desired.").
-						define("doCompat", true);
-				builder.
-						translation(config + "performance").
-						comment("Lets you sacrifice various things to improve world performance.").
-						push("Performance Tweaks");
-				{
-					PERFORMANCE.canopyCoverage = builder.
-							translation(config + "canopy_coverage").
-							comment("Amount of canopy coverage. Lower numbers improve chunk generation speed at the cost of a thinner forest.").
-							defineInRange("canopyCoverage", 1.7F, 0, Double.MAX_VALUE);
-					PERFORMANCE.twilightOakChance = builder.
-							translation(config + "twilight_oaks").
-							comment("Chance that a chunk in the Twilight Forest will contain a twilight oak tree. Higher numbers reduce the number of trees, increasing performance.").
-							defineInRange("twilightOakChance", 48, 1, Integer.MAX_VALUE);
-					PERFORMANCE.leavesLightOpacity = builder.
-							translation(config + "leaves_light_opacity").
-							comment("This controls the opacity of leaves, changing the amount of light blocked. Can be used to decrease complexity in some lighting checks.").
-							defineInRange("leavesLightOpacity", 1, 0, 255);
-					PERFORMANCE.glacierPackedIce = builder.
-							translation(config + "glacier_packed_ice").
-							comment("Setting this true will make Twilight Glaciers generate with Packed Ice instead of regular translucent Ice, decreasing amount of light checking calculations.").
-							define("glacierPackedIce", false);
-					PERFORMANCE.enableSkylight = builder.
-							translation(config + "enable_skylight").
-							comment("If the dimension has per-block skylight values. Disabling this will significantly improve world generation performance, at the cost of flat lighting everywhere." +
-
-									"\nWARNING: Once chunks are loaded without skylight, that data is lost and cannot easily be regenerated. Be careful!").
-							worldRestart().
-							define("enableSkylight", true);
-				}
-				builder.pop();
-				originDimension = builder.
-						translation(config + "origin_dimension").
-						comment("The dimension you can always travel to the Twilight Forest from, as well as the dimension you will return to. Defaults to the overworld.").
-						define("originDimension", 0);
-				allowPortalsInOtherDimensions = builder.
-						translation(config + "portals_in_other_dimensions").
-						comment("Allow portals to the Twilight Forest to be made outside of the 'origin' dimension. May be considered an exploit.").
-						define("allowPortalsInOtherDimensions", false);
-				adminOnlyPortals = builder.
-						translation(config + "admin_portals").
-						comment("Allow portals only for admins (Operators). This severely reduces the range in which the mod usually scans for valid portal conditions, and it scans near ops only.").
-						define("adminOnlyPortals", false);
-				disablePortalCreation = builder.
-						translation(config + "portals").
-						comment("Disable Twilight Forest portal creation entirely. Provided for server operators looking to restrict action to the dimension.").
-						define("disablePortalCreation", false);
-				portalCreationItems = builder.
-						translation(config + "portal_creator").
-						comment("Registry String IDs of items used to create the Twilight Forest Portal. (domain:regname).").
-						define("portalCreationItems", new String[]{"minecraft:diamond"});
-				checkPortalDestination = builder.
-						translation(config + "check_portal_destination").
-						comment("Determines if new portals should be pre-checked for safety. If enabled, portals will fail to form rather than redirect to a safe alternate destination." +
-
-								"\nNote that enabling this also reduces the rate at which portal formation checks are performed.").
-						define("checkPortalDestination", false);
-				portalLightning = builder.
-						translation(config + "portal_lighting").
-						comment("Set this true if you want the lightning that zaps the portal to not set things on fire. For those who don't like fun.").
-						define("portalLightning", false);
-				shouldReturnPortalBeUsable = builder.
-						translation(config + "portal_return").
-						comment("If false, the return portal will require the activation item.").
-						define("shouldReturnPortalBeUsable", true);
-				progressionRuleDefault = builder.
-						translation(config + "progression_default").
-						comment("Sets the default value of the game rule controlling enforced progression.").
-						define("progressionRuleDefault", true);
-				disableUncrafting = builder.
-						worldRestart().
-						translation(config + "uncrafting").
-						comment("Disable the uncrafting function of the uncrafting table. Provided as an option when interaction with other mods produces exploitable recipes.").
-						define("disableUncrafting", false);
-				builder.
-						translation(config + "shield_parry").
-						comment("We recommend downloading the Shield Parry mod for parrying, but these controls remain for without.").
-						push("Shield Parrying");
-				{
-					SHIELD_INTERACTIONS.parryNonTwilightAttacks = builder.
-							translation(config + "parry_non_twilight").
-							comment("Set to true to parry non-Twilight projectiles.").
-							define("parryNonTwilightAttacks", false);
-					SHIELD_INTERACTIONS.shieldParryTicksArrow = builder.
-							translation(config + "parry_window_arrow").
-							comment("The amount of ticks after raising a shield that makes it OK to parry an arrow.").
-							defineInRange("shieldParryTicksArrow", 40, 0, Integer.MAX_VALUE);
-					SHIELD_INTERACTIONS.shieldParryTicksFireball = builder.
-							translation(config + "parry_window_fireball").
-							comment("The amount of ticks after raising a shield that makes it OK to parry a fireball.").
-							defineInRange("shieldParryTicksFireball", 40, 0, Integer.MAX_VALUE);
-					SHIELD_INTERACTIONS.shieldParryTicksThrowable = builder.
-							translation(config + "parry_window_throwable").
-							comment("The amount of ticks after raising a shield that makes it OK to parry a thrown item.").
-							defineInRange("shieldParryTicksThrowable", 40, 0, Integer.MAX_VALUE);
-					SHIELD_INTERACTIONS.shieldParryTicksBeam = builder.
-							translation(config + "parry_window_beam").
-							defineInRange("shieldParryTicksBeam", 10, 0, Integer.MAX_VALUE);
-				}
-				builder.pop();
 			}
+			builder.pop();
+			doCompat = builder.
+					worldRestart().
+					translation(config + "compat").
+					comment("Should TF Compatibility load? Turn off if TF's Compatibility is causing crashes or if not desired.").
+					define("doCompat", true);
+			builder.
+					translation(config + "performance").
+					comment("Lets you sacrifice various things to improve world performance.").
+					push("Performance Tweaks");
+			{
+				PERFORMANCE.canopyCoverage = builder.
+						translation(config + "canopy_coverage").
+						comment("Amount of canopy coverage. Lower numbers improve chunk generation speed at the cost of a thinner forest.").
+						defineInRange("canopyCoverage", 1.7F, 0, Double.MAX_VALUE);
+				PERFORMANCE.twilightOakChance = builder.
+						translation(config + "twilight_oaks").
+						comment("Chance that a chunk in the Twilight Forest will contain a twilight oak tree. Higher numbers reduce the number of trees, increasing performance.").
+						defineInRange("twilightOakChance", 48, 1, Integer.MAX_VALUE);
+				PERFORMANCE.leavesLightOpacity = builder.
+						translation(config + "leaves_light_opacity").
+						comment("This controls the opacity of leaves, changing the amount of light blocked. Can be used to decrease complexity in some lighting checks.").
+						defineInRange("leavesLightOpacity", 1, 0, 255);
+				PERFORMANCE.glacierPackedIce = builder.
+						translation(config + "glacier_packed_ice").
+						comment("Setting this true will make Twilight Glaciers generate with Packed Ice instead of regular translucent Ice, decreasing amount of light checking calculations.").
+						define("glacierPackedIce", false);
+				PERFORMANCE.enableSkylight = builder.
+						translation(config + "enable_skylight").
+						comment("If the dimension has per-block skylight values. Disabling this will significantly improve world generation performance, at the cost of flat lighting everywhere." +
+
+								"\nWARNING: Once chunks are loaded without skylight, that data is lost and cannot easily be regenerated. Be careful!").
+						worldRestart().
+						define("enableSkylight", true);
+			}
+			builder.pop();
+			originDimension = builder.
+					translation(config + "origin_dimension").
+					comment("The dimension you can always travel to the Twilight Forest from, as well as the dimension you will return to. Defaults to the overworld.").
+					define("originDimension", 0);
+			allowPortalsInOtherDimensions = builder.
+					translation(config + "portals_in_other_dimensions").
+					comment("Allow portals to the Twilight Forest to be made outside of the 'origin' dimension. May be considered an exploit.").
+					define("allowPortalsInOtherDimensions", false);
+			adminOnlyPortals = builder.
+					translation(config + "admin_portals").
+					comment("Allow portals only for admins (Operators). This severely reduces the range in which the mod usually scans for valid portal conditions, and it scans near ops only.").
+					define("adminOnlyPortals", false);
+			disablePortalCreation = builder.
+					translation(config + "portals").
+					comment("Disable Twilight Forest portal creation entirely. Provided for server operators looking to restrict action to the dimension.").
+					define("disablePortalCreation", false);
+			portalCreationItems = builder.
+					translation(config + "portal_creator").
+					comment("Registry String IDs of items used to create the Twilight Forest Portal. (domain:regname).").
+					define("portalCreationItems", new String[]{"minecraft:diamond"});
+			checkPortalDestination = builder.
+					translation(config + "check_portal_destination").
+					comment("Determines if new portals should be pre-checked for safety. If enabled, portals will fail to form rather than redirect to a safe alternate destination." +
+
+							"\nNote that enabling this also reduces the rate at which portal formation checks are performed.").
+					define("checkPortalDestination", false);
+			portalLightning = builder.
+					translation(config + "portal_lighting").
+					comment("Set this true if you want the lightning that zaps the portal to not set things on fire. For those who don't like fun.").
+					define("portalLightning", false);
+			shouldReturnPortalBeUsable = builder.
+					translation(config + "portal_return").
+					comment("If false, the return portal will require the activation item.").
+					define("shouldReturnPortalBeUsable", true);
+			progressionRuleDefault = builder.
+					translation(config + "progression_default").
+					comment("Sets the default value of the game rule controlling enforced progression.").
+					define("progressionRuleDefault", true);
+			disableUncrafting = builder.
+					worldRestart().
+					translation(config + "uncrafting").
+					comment("Disable the uncrafting function of the uncrafting table. Provided as an option when interaction with other mods produces exploitable recipes.").
+					define("disableUncrafting", false);
+			builder.
+					translation(config + "shield_parry").
+					comment("We recommend downloading the Shield Parry mod for parrying, but these controls remain for without.").
+					push("Shield Parrying");
+			{
+				SHIELD_INTERACTIONS.parryNonTwilightAttacks = builder.
+						translation(config + "parry_non_twilight").
+						comment("Set to true to parry non-Twilight projectiles.").
+						define("parryNonTwilightAttacks", false);
+				SHIELD_INTERACTIONS.shieldParryTicksArrow = builder.
+						translation(config + "parry_window_arrow").
+						comment("The amount of ticks after raising a shield that makes it OK to parry an arrow.").
+						defineInRange("shieldParryTicksArrow", 40, 0, Integer.MAX_VALUE);
+				SHIELD_INTERACTIONS.shieldParryTicksFireball = builder.
+						translation(config + "parry_window_fireball").
+						comment("The amount of ticks after raising a shield that makes it OK to parry a fireball.").
+						defineInRange("shieldParryTicksFireball", 40, 0, Integer.MAX_VALUE);
+				SHIELD_INTERACTIONS.shieldParryTicksThrowable = builder.
+						translation(config + "parry_window_throwable").
+						comment("The amount of ticks after raising a shield that makes it OK to parry a thrown item.").
+						defineInRange("shieldParryTicksThrowable", 40, 0, Integer.MAX_VALUE);
+				SHIELD_INTERACTIONS.shieldParryTicksBeam = builder.
+						translation(config + "parry_window_beam").
+						defineInRange("shieldParryTicksBeam", 10, 0, Integer.MAX_VALUE);
+			}
+			builder.pop();
 		}
 
 		public Dimension DIMENSION = new Dimension();
