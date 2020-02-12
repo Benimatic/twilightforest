@@ -2,399 +2,475 @@ package twilightforest;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.item.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.config.Config;
-import net.minecraftforge.common.config.ConfigManager;
+import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.ForgeRegistries;
-import twilightforest.world.WorldProviderTwilightForest;
-import twilightforest.world.feature.TFGenCaveStalactite;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-//TODO: Yeah, all this work? Move it again.
-@SuppressWarnings("WeakerAccess")
-@Config(modid = TwilightForestMod.ID)
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class TFConfig {
-	@Config.Ignore
-	private static final String config = TwilightForestMod.ID + ".config.";
 
-	@Config.LangKey(config + "dimension")
-	@Config.Comment("Settings that are not reversible without consequences.")
-	public static Dimension dimension = new Dimension();
+	public static Common COMMON_CONFIG;
+	public static Client CLIENT_CONFIG;
 
-	public static class Dimension {
-		//TODO: Dimension IDs are now dynamic. Delete
-		@Config.LangKey(config + "dimension_id")
-		@Config.RequiresMcRestart
-		@Config.Comment("What ID number to assign to the Twilight Forest dimension. Change if you are having conflicts with another mod.")
-		public int dimensionID = 7;
+	public static class Common {
 
-		@Config.LangKey(config + "dimension_seed")
-		@Config.RequiresWorldRestart
-		@Config.Comment("If set, this will override the normal world seed when generating parts of the Twilight Forest Dimension.")
-		public String twilightForestSeed = "";
+		public Common(ForgeConfigSpec.Builder builder){
+			builder.
+					translation(config + "dimension").
+					comment("Settings that are not reversible without consequences.").
+					push("Dimension Settings");
+			{
+				DIMENSION.twilightForestSeed = builder.
+						translation(config + "dimension_seed").
+						worldRestart().
+						comment("If set, this will override the normal world seed when generating parts of the Twilight Forest Dimension.")
+						.define("twilightForestSeed", "");
+				DIMENSION.newPlayersSpawnInTF = builder.
+						translation(config + "spawn_in_tf").
+						comment("If true, players spawning for the first time will spawn in the Twilight Forest.")
+						.define("newPlayersSpawnInTF", false);
+				DIMENSION.skylightForest = builder.
+						translation(config + "skylight_forest").
+						worldRestart().
+						comment("If true, Twilight Forest will generate as a void except for Major Structures").
+						define("skylightForest", false);
+				DIMENSION.skylightOaks = builder.
+						translation(config + "skylight_oaks").
+						worldRestart().
+						comment("If true, giant Twilight Oaks will also spawn in void worlds").
+						define("skylightOaks", true);
+				builder.
+						translation(config + "world_gen_weights").
+						comment("Weights for various small features").
+						worldRestart().
+						push("World-Gen Weights");
+				{
+					DIMENSION.worldGenWeights.stoneCircleWeight = builder.
+							translation(config + "stone_circle_weight").
+							worldRestart().
+							defineInRange("stoneCircleWeight", 10, 0, Integer.MAX_VALUE);
+					DIMENSION.worldGenWeights.wellWeight = builder.
+							translation(config + "well_weight").
+							worldRestart().
+							defineInRange("wellWeight", 10, 0, Integer.MAX_VALUE);
+					DIMENSION.worldGenWeights.stalagmiteWeight = builder.
+							translation(config + "stalagmite_weight").
+							worldRestart().
+							defineInRange("stalagmiteWeight", 12, 0, Integer.MAX_VALUE);
+					DIMENSION.worldGenWeights.foundationWeight = builder.
+							translation(config + "foundation_weight").
+							worldRestart().
+							defineInRange("foundationWeight", 10, 0, Integer.MAX_VALUE);
+					DIMENSION.worldGenWeights.monolithWeight = builder.
+							translation(config + "monolith_weight").
+							worldRestart().
+							defineInRange("monolithWeight", 10, 0, Integer.MAX_VALUE);
+					DIMENSION.worldGenWeights.groveRuinsWeight = builder.
+							translation(config + "grove_ruins_weight").
+							worldRestart().
+							defineInRange("groveRuinsWeight", 5, 0, Integer.MAX_VALUE);
+					DIMENSION.worldGenWeights.hollowStumpWeight = builder.
+							translation(config + "hollow_stump_weight").
+							worldRestart().
+							defineInRange("hollowStumpWeight", 12, 0, Integer.MAX_VALUE);
+					DIMENSION.worldGenWeights.fallenHollowLogWeight = builder.
+							translation(config + "fallen_hollow_log_weight").
+							worldRestart().
+							defineInRange("fallenHollowLogWeight", 10, 0, Integer.MAX_VALUE);
+					DIMENSION.worldGenWeights.fallenSmallLogWeight = builder.
+							translation(config + "fallen_small_log_weight").
+							worldRestart().
+							defineInRange("fallenSmallLogWeight", 10, 0, Integer.MAX_VALUE);
+					DIMENSION.worldGenWeights.druidHutWeight = builder.
+							translation(config + "druid_hut_weight").
+							worldRestart().
+							defineInRange("druidHutWeight", 10, 0, Integer.MAX_VALUE);
+				}
+				builder.pop().
+						translation(config + "hollow_hill_stalactites").
+						comment("Defines custom stalactites generated in hollow hills." +
 
-		@Config.LangKey(config + "spawn_in_tf")
-		@Config.Comment("If true, players spawning for the first time will spawn in the Twilight Forest.")
-		public boolean newPlayersSpawnInTF = false;
+								"\nFormat is \"modid:block size maxLength minHeight weight\", where the properties are:" +
 
-		@Config.LangKey(config + "skylight_forest")
-		@Config.RequiresWorldRestart
-		@Config.Comment("If true, Twilight Forest will generate as a void except for Major Structures")
-		public boolean skylightForest = false;
+								"\nSize - the maximum length of the stalactite relative to the space between hill floor and ceiling," +
 
-		@Config.LangKey(config + "skylight_oaks")
-		@Config.RequiresWorldRestart
-		@Config.Comment("If true, giant Twilight Oaks will also spawn in void worlds")
-		public boolean skylightOaks = true;
+								"\nMax length - maximum length of a stalactite in blocks," +
 
-		@Config.LangKey(config + "world_gen_weights")
-		@Config.Comment("Weights for various small features")
-		@Config.RequiresMcRestart
-		public WorldGenWeights worldGenWeights = new WorldGenWeights();
+								"\nMin height - minimum space between the hill floor and the stalactite to let it generate," +
 
-		public static class WorldGenWeights {
+								"\nWeight - how often it generates." +
 
-			@Config.LangKey(config + "stone_circle_weight")
-			@Config.RequiresMcRestart
-			@Config.RangeInt(min = 0)
-			public int stoneCircleWeight = 10;
+								"\n\nFor example: \"minecraft:iron_ore 0.7 8 1 24\" would add a stalactite equal to the default iron ore stalactite.").
+						worldRestart().
+						push("Custom Hollow Hill Stalactites");
+				{
+					DIMENSION.hollowHillStalactites.largeHill = builder.
+							translation(config + "large_hill").
+							worldRestart().
+							comment("Blocks generating as stalactites in large hills only").
+							define("largeHill", new String[0]);
+					DIMENSION.hollowHillStalactites.mediumHill = builder.
+							translation(config + "medium_hill").
+							worldRestart().
+							comment("Blocks generating as stalactites in medium and large hills").
+							define("mediumHill", new String[0]);
+					DIMENSION.hollowHillStalactites.smallHill = builder.
+							translation(config + "small_hill").
+							worldRestart().
+							comment("Blocks generating as stalactites in all hills").
+							define("mediumHill", new String[0]);
+					DIMENSION.hollowHillStalactites.useConfigOnly = builder.
+							translation(config + "stalactite_config_only").
+							worldRestart().
+							comment("If true, default stalactites and stalactites defined by other mods will not be used.").
+							define("useConfigOnly", false);
+				}
+				builder.pop();
+				doCompat = builder.
+						worldRestart().
+						translation(config + "compat").
+						comment("Should TF Compatibility load? Turn off if TF's Compatibility is causing crashes or if not desired.").
+						define("doCompat", true);
+				builder.
+						translation(config + "performance").
+						comment("Lets you sacrifice various things to improve world performance.").
+						push("Performance Tweaks");
+				{
+					PERFORMANCE.canopyCoverage = builder.
+							translation(config + "canopy_coverage").
+							comment("Amount of canopy coverage. Lower numbers improve chunk generation speed at the cost of a thinner forest.").
+							defineInRange("canopyCoverage", 1.7F, 0, Double.MAX_VALUE);
+					PERFORMANCE.twilightOakChance = builder.
+							translation(config + "twilight_oaks").
+							comment("Chance that a chunk in the Twilight Forest will contain a twilight oak tree. Higher numbers reduce the number of trees, increasing performance.").
+							defineInRange("twilightOakChance", 48, 1, Integer.MAX_VALUE);
+					PERFORMANCE.leavesLightOpacity = builder.
+							translation(config + "leaves_light_opacity").
+							comment("This controls the opacity of leaves, changing the amount of light blocked. Can be used to decrease complexity in some lighting checks.").
+							defineInRange("leavesLightOpacity", 1, 0, 255);
+					PERFORMANCE.glacierPackedIce = builder.
+							translation(config + "glacier_packed_ice").
+							comment("Setting this true will make Twilight Glaciers generate with Packed Ice instead of regular translucent Ice, decreasing amount of light checking calculations.").
+							define("glacierPackedIce", false);
+					PERFORMANCE.enableSkylight = builder.
+							translation(config + "enable_skylight").
+							comment("If the dimension has per-block skylight values. Disabling this will significantly improve world generation performance, at the cost of flat lighting everywhere." +
 
-			@Config.LangKey(config + "well_weight")
-			@Config.RequiresMcRestart
-			@Config.RangeInt(min = 0)
-			public int wellWeight = 10;
+									"\nWARNING: Once chunks are loaded without skylight, that data is lost and cannot easily be regenerated. Be careful!").
+							worldRestart().
+							define("enableSkylight", true);
+				}
+				builder.pop();
+				originDimension = builder.
+						translation(config + "origin_dimension").
+						comment("The dimension you can always travel to the Twilight Forest from, as well as the dimension you will return to. Defaults to the overworld.").
+						define("originDimension", 0);
+				allowPortalsInOtherDimensions = builder.
+						translation(config + "portals_in_other_dimensions").
+						comment("Allow portals to the Twilight Forest to be made outside of the 'origin' dimension. May be considered an exploit.").
+						define("allowPortalsInOtherDimensions", false);
+				adminOnlyPortals = builder.
+						translation(config + "admin_portals").
+						comment("Allow portals only for admins (Operators). This severely reduces the range in which the mod usually scans for valid portal conditions, and it scans near ops only.").
+						define("adminOnlyPortals", false);
+				disablePortalCreation = builder.
+						translation(config + "portals").
+						comment("Disable Twilight Forest portal creation entirely. Provided for server operators looking to restrict action to the dimension.").
+						define("disablePortalCreation", false);
+				portalCreationItems = builder.
+						translation(config + "portal_creator").
+						comment("Registry String IDs of items used to create the Twilight Forest Portal. (domain:regname).").
+						define("portalCreationItems", new String[]{"minecraft:diamond"});
+				checkPortalDestination = builder.
+						translation(config + "check_portal_destination").
+						comment("Determines if new portals should be pre-checked for safety. If enabled, portals will fail to form rather than redirect to a safe alternate destination." +
 
-			@Config.LangKey(config + "stalagmite_weight")
-			@Config.RequiresMcRestart
-			@Config.RangeInt(min = 0)
-			public int stalagmiteWeight = 12;
-
-			@Config.LangKey(config + "foundation_weight")
-			@Config.RequiresMcRestart
-			@Config.RangeInt(min = 0)
-			public int foundationWeight = 10;
-
-			@Config.LangKey(config + "monolith_weight")
-			@Config.RequiresMcRestart
-			@Config.RangeInt(min = 0)
-			public int monolithWeight = 10;
-
-			@Config.LangKey(config + "grove_ruins_weight")
-			@Config.RequiresMcRestart
-			@Config.RangeInt(min = 0)
-			public int groveRuinsWeight = 5;
-
-			@Config.LangKey(config + "hollow_stump_weight")
-			@Config.RequiresMcRestart
-			@Config.RangeInt(min = 0)
-			public int hollowStumpWeight = 12;
-
-			@Config.LangKey(config + "fallen_hollow_log_weight")
-			@Config.RequiresMcRestart
-			@Config.RangeInt(min = 0)
-			public int fallenHollowLogWeight = 10;
-
-			@Config.LangKey(config + "fallen_small_log_weight")
-			@Config.RequiresMcRestart
-			@Config.RangeInt(min = 0)
-			public int fallenSmallLogWeight = 10;
-
-			@Config.LangKey(config + "druid_hut_weight")
-			@Config.RequiresMcRestart
-			@Config.RangeInt(min = 0)
-			public int druidHutWeight = 10;
+								"\nNote that enabling this also reduces the rate at which portal formation checks are performed.").
+						define("checkPortalDestination", false);
+				portalLightning = builder.
+						translation(config + "portal_lighting").
+						comment("Set this true if you want the lightning that zaps the portal to not set things on fire. For those who don't like fun.").
+						define("portalLightning", false);
+				shouldReturnPortalBeUsable = builder.
+						translation(config + "portal_return").
+						comment("If false, the return portal will require the activation item.").
+						define("shouldReturnPortalBeUsable", true);
+				progressionRuleDefault = builder.
+						translation(config + "progression_default").
+						comment("Sets the default value of the game rule controlling enforced progression.").
+						define("progressionRuleDefault", true);
+				disableUncrafting = builder.
+						worldRestart().
+						translation(config + "uncrafting").
+						comment("Disable the uncrafting function of the uncrafting table. Provided as an option when interaction with other mods produces exploitable recipes.").
+						define("disableUncrafting", false);
+				builder.
+						translation(config + "shield_parry").
+						comment("We recommend downloading the Shield Parry mod for parrying, but these controls remain for without.").
+						push("Shield Parrying");
+				{
+					SHIELD_INTERACTIONS.parryNonTwilightAttacks = builder.
+							translation(config + "parry_non_twilight").
+							comment("Set to true to parry non-Twilight projectiles.").
+							define("parryNonTwilightAttacks", false);
+					SHIELD_INTERACTIONS.shieldParryTicksArrow = builder.
+							translation(config + "parry_window_arrow").
+							comment("The amount of ticks after raising a shield that makes it OK to parry an arrow.").
+							defineInRange("shieldParryTicksArrow", 40, 0, Integer.MAX_VALUE);
+					SHIELD_INTERACTIONS.shieldParryTicksFireball = builder.
+							translation(config + "parry_window_fireball").
+							comment("The amount of ticks after raising a shield that makes it OK to parry a fireball.").
+							defineInRange("shieldParryTicksFireball", 40, 0, Integer.MAX_VALUE);
+					SHIELD_INTERACTIONS.shieldParryTicksThrowable = builder.
+							translation(config + "parry_window_throwable").
+							comment("The amount of ticks after raising a shield that makes it OK to parry a thrown item.").
+							defineInRange("shieldParryTicksThrowable", 40, 0, Integer.MAX_VALUE);
+					SHIELD_INTERACTIONS.shieldParryTicksBeam = builder.
+							translation(config + "parry_window_beam").
+							defineInRange("shieldParryTicksBeam", 10, 0, Integer.MAX_VALUE);
+				}
+				builder.pop();
+			}
 		}
 
-		@Config.LangKey(config + "hollow_hill_stalactites")
-		@Config.Comment("Defines custom stalactites generated in hollow hills." +
-				"\nFormat is \"modid:block size maxLength minHeight weight\", where the properties are:" +
-				"\nSize - the maximum length of the stalactite relative to the space between hill floor and ceiling," +
-				"\nMax length - maximum length of a stalactite in blocks," +
-				"\nMin height - minimum space between the hill floor and the stalactite to let it generate," +
-				"\nWeight - how often it generates." +
-				"\n\nFor example: \"minecraft:iron_ore 0.7 8 1 24\" would add a stalactite equal to the default iron ore stalactite.")
-		@Config.RequiresMcRestart
-		public HollowHillStalactites hollowHillStalactites = new HollowHillStalactites();
+		public Dimension DIMENSION = new Dimension();
 
-		public static class HollowHillStalactites {
-			@Config.LangKey(config + "large_hill")
-			@Config.RequiresMcRestart
-			@Config.Comment("Blocks generating as stalactites in large hills only")
-			public String[] largeHill = {};
+		public static class Dimension {
 
-			@Config.LangKey(config + "medium_hill")
-			@Config.RequiresMcRestart
-			@Config.Comment("Blocks generating as stalactites in medium and large hills")
-			public String[] mediumHill = {};
+			public ForgeConfigSpec.ConfigValue<String> twilightForestSeed;
+			public ForgeConfigSpec.BooleanValue newPlayersSpawnInTF;
+			public ForgeConfigSpec.BooleanValue skylightForest;
+			public ForgeConfigSpec.BooleanValue skylightOaks;
 
-			@Config.LangKey(config + "small_hill")
-			@Config.RequiresMcRestart
-			@Config.Comment("Blocks generating as stalactites in all hills")
-			public String[] smallHill = {};
+			public WorldGenWeights worldGenWeights = new WorldGenWeights();
 
-			@Config.LangKey(config + "stalactite_config_only")
-			@Config.RequiresMcRestart
-			@Config.Comment("If true, default stalactites and stalactites defined by other mods will not be used.")
-			public boolean useConfigOnly = false;
+			public static class WorldGenWeights {
 
-			public void load() {
-				registerHill(smallHill, 1);
-				registerHill(mediumHill, 2);
-				registerHill(largeHill, 3);
+				public ForgeConfigSpec.IntValue stoneCircleWeight;
+				public ForgeConfigSpec.IntValue wellWeight;
+				public ForgeConfigSpec.IntValue stalagmiteWeight;
+				public ForgeConfigSpec.IntValue foundationWeight;
+				public ForgeConfigSpec.IntValue monolithWeight;
+				public ForgeConfigSpec.IntValue groveRuinsWeight;
+				public ForgeConfigSpec.IntValue hollowStumpWeight;
+				public ForgeConfigSpec.IntValue fallenHollowLogWeight;
+				public ForgeConfigSpec.IntValue fallenSmallLogWeight;
+				public ForgeConfigSpec.IntValue druidHutWeight;
 			}
 
-			private void registerHill(String[] definitions, int tier) {
-				for (String definition : definitions) {
-					if (!parseStalactite(definition, tier)) {
-						TwilightForestMod.LOGGER.warn("Invalid hollow hill stalactite definition: {}", definition);
+			public HollowHillStalactites hollowHillStalactites = new HollowHillStalactites();
+
+			public class HollowHillStalactites {
+
+				public ForgeConfigSpec.ConfigValue<String[]> largeHill;
+				public ForgeConfigSpec.ConfigValue<String[]> mediumHill;
+				public ForgeConfigSpec.ConfigValue<String[]> smallHill;
+				public ForgeConfigSpec.BooleanValue useConfigOnly;
+
+				public void load() {
+					registerHill(smallHill.get(), 1);
+					registerHill(mediumHill.get(), 2);
+					registerHill(largeHill.get(), 3);
+				}
+
+				private void registerHill(String[] definitions, int tier) {
+					for (String definition : definitions) {
+						if (!parseStalactite(definition, tier)) {
+							TwilightForestMod.LOGGER.warn("Invalid hollow hill stalactite definition: {}", definition);
+						}
 					}
 				}
-			}
 
-			private boolean parseStalactite(String definition, int tier) {
-				String[] split = definition.split(" ");
-				if (split.length != 5) return false;
+				private boolean parseStalactite(String definition, int tier) {
+					String[] split = definition.split(" ");
+					if (split.length != 5) return false;
 
-				Optional<Block> block = parseBlock(split[0]);
-				if (!block.isPresent()) return false;
+					Optional<Block> block = parseBlock(split[0]);
+					if (!block.isPresent()) return false;
 
-				try {
-					TFGenCaveStalactite.addStalactite(tier, block.get(),
-							Float.parseFloat(split[1]),
-							Integer.parseInt(split[2]),
-							Integer.parseInt(split[3]),
-							Integer.parseInt(split[4])
-					);
-				} catch (NumberFormatException e) {
-					return false;
+					try {
+						TFGenCaveStalactite.addStalactite(tier, block.get(),
+								Float.parseFloat(split[1]),
+								Integer.parseInt(split[2]),
+								Integer.parseInt(split[3]),
+								Integer.parseInt(split[4])
+						);
+					} catch (NumberFormatException e) {
+						return false;
+					}
+					return true;
 				}
-				return true;
 			}
 		}
-	}
 
-	@Config.RequiresMcRestart
-	@Config.LangKey(config + "compat")
-	@Config.Comment("Should TF Compatibility load? Turn off if TF's Compatibility is causing crashes or if not desired.")
-	public static boolean doCompat = true;
+		public ForgeConfigSpec.BooleanValue doCompat;
 
-	@Config.LangKey(config + "performance")
-	@Config.Comment("Lets you sacrifice various things to improve world performance.")
-	public static Performance performance = new Performance();
+		public Performance PERFORMANCE = new Performance();
 
-	public static class Performance {
-		@Config.LangKey(config + "canopy_coverage")
-		@Config.RangeDouble(min = 0)
-		@Config.Comment("Amount of canopy coverage. Lower numbers improve chunk generation speed at the cost of a thinner forest.")
-		public float canopyCoverage = 1.7F;
+		public static class Performance {
+			public ForgeConfigSpec.DoubleValue canopyCoverage;
+			public ForgeConfigSpec.IntValue twilightOakChance;
+			public ForgeConfigSpec.IntValue leavesLightOpacity;
+			public ForgeConfigSpec.BooleanValue glacierPackedIce;
+			public ForgeConfigSpec.BooleanValue enableSkylight;
 
-		@Config.LangKey(config + "twilight_oaks")
-		@Config.RangeInt(min = 1)
-		@Config.Comment("Chance that a chunk in the Twilight Forest will contain a twilight oak tree. Higher numbers reduce the number of trees, increasing performance.")
-		public int twilightOakChance = 48;
-
-		@Config.LangKey(config + "leaves_light_opacity")
-		@Config.RangeInt(min = 0, max = 255)
-		@Config.Comment("This controls the opacity of leaves, changing the amount of light blocked. Can be used to decrease complexity in some lighting checks.")
-		public int leavesLightOpacity = 1;
-
-		@Config.LangKey(config + "glacier_packed_ice")
-		@Config.Comment("Setting this true will make Twilight Glaciers generate with Packed Ice instead of regular translucent Ice, decreasing amount of light checking calculations.")
-		public boolean glacierPackedIce = false;
-
-		@Config.LangKey(config + "enable_skylight")
-		@Config.Comment("If the dimension has per-block skylight values. Disabling this will significantly improve world generation performance, at the cost of flat lighting everywhere." +
-				"\nWARNING: Once chunks are loaded without skylight, that data is lost and cannot easily be regenerated. Be careful!")
-		@Config.RequiresWorldRestart
-		public boolean enableSkylight = true;
-
-		@Config.Ignore
-		public boolean shadersSupported = true;
-	}
-
-	@Config.LangKey(config + "silent_cicadas")
-	@Config.Comment("Make cicadas silent for those having sound library problems, or otherwise finding them annoying.")
-	public static boolean silentCicadas = false;
-
-	@Config.LangKey(config + "first_person_effects")
-	@Config.Comment("Controls whether various effects from the mod are rendered while in first-person view. Turn this off if you find them distracting.")
-	public static boolean firstPersonEffects = true;
-
-	@Config.LangKey(config + "origin_dimension")
-	@Config.Comment("The dimension you can always travel to the Twilight Forest from, as well as the dimension you will return to. Defaults to the overworld.")
-	public static int originDimension = 0;
-
-	@Config.LangKey(config + "portals_in_other_dimensions")
-	@Config.Comment("Allow portals to the Twilight Forest to be made outside of the 'origin' dimension. May be considered an exploit.")
-	public static boolean allowPortalsInOtherDimensions = false;
-
-	@Config.LangKey(config + "admin_portals")
-	@Config.Comment("Allow portals only for admins (Operators). This severely reduces the range in which the mod usually scans for valid portal conditions, and it scans near ops only.")
-	public static boolean adminOnlyPortals = false;
-
-	@Config.LangKey(config + "portals")
-	@Config.Comment("Disable Twilight Forest portal creation entirely. Provided for server operators looking to restrict action to the dimension.")
-	public static boolean disablePortalCreation = false;
-
-	@Config.LangKey(config + "portal_creator")
-	@Config.Comment("Registry String IDs of items used to create the Twilight Forest Portal. (domain:regname).")
-	public static String[] portalCreationItems = {"minecraft:diamond"};
-
-	@Config.LangKey(config + "check_portal_destination")
-	@Config.Comment("Determines if new portals should be pre-checked for safety. If enabled, portals will fail to form rather than redirect to a safe alternate destination." +
-			"\nNote that enabling this also reduces the rate at which portal formation checks are performed.")
-	public static boolean checkPortalDestination = false;
-
-	@Config.LangKey(config + "portal_lighting")
-	@Config.Comment("Set this true if you want the lightning that zaps the portal to not set things on fire. For those who don't like fun.")
-	public static boolean portalLightning = false;
-
-	@Config.LangKey(config + "portal_return")
-	@Config.Comment("If false, the return portal will require the activation item.")
-	public static boolean shouldReturnPortalBeUsable = true;
-
-	@Config.LangKey(config + "progression_default")
-	@Config.Comment("Sets the default value of the game rule controlling enforced progression.")
-	public static boolean progressionRuleDefault = true;
-
-	@Config.RequiresMcRestart
-	@Config.LangKey(config + "uncrafting")
-	@Config.Comment("Disable the uncrafting function of the uncrafting table. Provided as an option when interaction with other mods produces exploitable recipes.")
-	public static boolean disableUncrafting = false;
-
-	@Config.LangKey(config + "animate_trophyitem")
-	@Config.Comment("Rotate trophy heads on item model. Has no performance impact at all. For those who don't like fun.")
-	public static boolean rotateTrophyHeadsGui = true;
-
-	@Config.LangKey(config + "shield_parry")
-	@Config.Comment("We recommend downloading the Shield Parry mod for parrying, but these controls remain for without.")
-	public static ShieldInteractions shieldInteractions = new ShieldInteractions();
-
-	public static class ShieldInteractions {
-		@Config.LangKey(config + "parry_non_twilight")
-		@Config.Comment("Set to true to parry non-Twilight projectiles.")
-		public boolean parryNonTwilightAttacks = false;
-
-		@Config.LangKey(config + "parry_window_arrow")
-		@Config.RangeInt(min = 0)
-		@Config.Comment("The amount of ticks after raising a shield that makes it OK to parry an arrow.")
-		public int shieldParryTicksArrow = 40;
-
-		@Config.LangKey(config + "parry_window_fireball")
-		@Config.RangeInt(min = 0)
-		@Config.Comment("The amount of ticks after raising a shield that makes it OK to parry a fireball.")
-		public int shieldParryTicksFireball = 40;
-
-		@Config.LangKey(config + "parry_window_throwable")
-		@Config.RangeInt(min = 0)
-		@Config.Comment("The amount of ticks after raising a shield that makes it OK to parry a thrown item.")
-		public int shieldParryTicksThrowable = 40;
-
-		@Config.LangKey(config + "parry_window_beam")
-		@Config.RangeInt(min = 0)
-		public int shieldParryTicksBeam = 10;
-	}
-
-	@Config.LangKey(config + "loading_screen")
-	@Config.Comment("Client only: Controls for the Loading screen")
-	public static final LoadingScreen loadingScreen = new LoadingScreen();
-
-	public static class LoadingScreen {
-		@Config.LangKey(config + "loading_icon_enable")
-		@Config.Comment("Wobble the Loading icon. Has no performance impact at all. For those who don't like fun.")
-		public boolean enable = true;
-
-		@Config.LangKey(config + "loading_screen_swap_frequency")
-		@Config.RangeInt(min = 0)
-		@Config.Comment("How many ticks between each loading screen change. Set to 0 to not cycle at all.")
-		public int cycleLoadingScreenFrequency = 0;
-
-		@Config.LangKey(config + "loading_icon_wobble_bounce_frequency")
-		@Config.RangeDouble(min = 0F)
-		@Config.Comment("Frequency of wobble and bounce.")
-		public float frequency = 5F;
-
-		@Config.LangKey(config + "loading_icon_scale")
-		@Config.RangeDouble(min = 0F)
-		@Config.Comment("Scale of whole bouncy loading icon.")
-		public float scale = 3F;
-
-		@Config.LangKey(config + "loading_icon_bounciness")
-		@Config.RangeDouble(min = 0F)
-		@Config.Comment("How much the loading icon bounces.")
-		public float scaleDeviation = 5.25F;
-
-		@Config.LangKey(config + "loading_icon_tilting")
-		@Config.RangeDouble(min = 0F, max = 360F)
-		@Config.Comment("How far the loading icon wobbles.")
-		public float tiltRange = 11.25F;
-
-		@Config.LangKey(config + "loading_icon_tilt_pushback")
-		@Config.RangeDouble(min = 0F, max = 360F)
-		@Config.Comment("Pushback value to re-center the wobble of loading icon.")
-		public float tiltConstant = 22.5F;
-
-		@Config.LangKey(config + "loading_icon_stacks")
-		@Config.Comment("List of items to be used for the wobbling Loading Icon. (domain:item).")
-		public String[] loadingIconStacks = {
-				"twilightforest:experiment_115",
-				"twilightforest:magic_map",
-				"twilightforest:charm_of_life_2",
-				"twilightforest:charm_of_keeping_3",
-				"twilightforest:phantom_helmet",
-				"twilightforest:lamp_of_cinders",
-				"twilightforest:carminite",
-				"twilightforest:block_and_chain",
-				"twilightforest:yeti_helmet",
-				"twilightforest:hydra_chop",
-				"twilightforest:magic_beans",
-				"twilightforest:ironwood_raw",
-				"twilightforest:naga_scale",
-				"twilightforest:experiment_115:2",
-				"twilightforest:miniature_structure",
-				"twilightforest:miniature_structure:6",
-				"twilightforest:knightmetal_block",
-				"twilightforest:tower_device:10",
-				"twilightforest:twilight_sapling:5",
-				"twilightforest:twilight_sapling:6",
-				"twilightforest:twilight_sapling:7",
-				"twilightforest:twilight_sapling:8",
-				"twilightforest:twilight_sapling:9",
-				"twilightforest:borer_essence"
-		};
-
-		@Config.Ignore
-		private ImmutableList<ItemStack> loadingScreenIcons;
-
-		public ImmutableList<ItemStack> getLoadingScreenIcons() {
-			return loadingScreenIcons;
+			public boolean shadersSupported = true;
 		}
 
-		void loadLoadingScreenIcons() {
-			ImmutableList.Builder<ItemStack> iconList = ImmutableList.builder();
+		public ForgeConfigSpec.ConfigValue<Integer> originDimension;
+		public ForgeConfigSpec.BooleanValue allowPortalsInOtherDimensions;
+		public ForgeConfigSpec.BooleanValue adminOnlyPortals;
+		public ForgeConfigSpec.BooleanValue disablePortalCreation;
+		public ForgeConfigSpec.ConfigValue<String[]> portalCreationItems;
+		public ForgeConfigSpec.BooleanValue checkPortalDestination;
+		public ForgeConfigSpec.BooleanValue portalLightning;
+		public ForgeConfigSpec.BooleanValue shouldReturnPortalBeUsable;
+		public ForgeConfigSpec.BooleanValue progressionRuleDefault;
+		public ForgeConfigSpec.BooleanValue disableUncrafting;
 
-			iconList.addAll(IMCHandler.getLoadingIconStacks());
+		public ShieldInteractions SHIELD_INTERACTIONS = new ShieldInteractions();
 
-			for (String s : loadingIconStacks) {
-				parseItemStack(s).ifPresent(iconList::add);
+		public static class ShieldInteractions {
+
+			public ForgeConfigSpec.BooleanValue parryNonTwilightAttacks;
+			public ForgeConfigSpec.IntValue shieldParryTicksArrow;
+			public ForgeConfigSpec.IntValue shieldParryTicksFireball;
+			public ForgeConfigSpec.IntValue shieldParryTicksThrowable;
+			public ForgeConfigSpec.IntValue shieldParryTicksBeam;
+		}
+
+	}
+
+	public static class Client {
+
+		public Client(ForgeConfigSpec.Builder builder) {
+			silentCicadas = builder.
+					translation(config + "silent_cicadas").
+					comment("Make cicadas silent for those having sound library problems, or otherwise finding them annoying.").
+					define("silentCicadas", false);
+			firstPersonEffects = builder.
+					translation(config + "first_person_effects").
+					comment("Controls whether various effects from the mod are rendered while in first-person view. Turn this off if you find them distracting.").
+					define("firstPersonEffects", true);
+			rotateTrophyHeadsGui = builder.
+					translation(config + "animate_trophyitem").
+					comment("Rotate trophy heads on item model. Has no performance impact at all. For those who don't like fun.").
+					define("rotateTrophyHeadsGui", true);
+			builder.
+					translation(config + "loading_screen").
+					comment("Client only: Controls for the Loading screen").
+					push("Loading Screen");
+			{
+				LOADING_SCREEN.enable = builder.
+						translation(config + "loading_icon_enable").
+						comment("Wobble the Loading icon. Has no performance impact at all. For those who don't like fun.").
+						define("enable", true);
+				LOADING_SCREEN.cycleLoadingScreenFrequency = builder.
+						translation(config + "loading_screen_swap_frequency").
+						comment("How many ticks between each loading screen change. Set to 0 to not cycle at all.").
+						defineInRange("cycleLoadingScreenFrequency", 0, 0, Integer.MAX_VALUE);
+				LOADING_SCREEN.frequency = builder.
+						translation(config + "loading_icon_wobble_bounce_frequency").
+						comment("Frequency of wobble and bounce.").
+						defineInRange("frequency", 5F, 0F, Double.MAX_VALUE);
+				LOADING_SCREEN.scale = builder.
+						translation(config + "loading_icon_scale").
+						comment("Scale of whole bouncy loading icon.").
+						defineInRange("scale", 3F, 0F, Double.MAX_VALUE);
+				LOADING_SCREEN.scaleDeviation = builder.
+						translation(config + "loading_icon_bounciness").
+						comment("How much the loading icon bounces.").
+						defineInRange("scaleDeviation", 5.25F, 0F, Double.MAX_VALUE);
+				LOADING_SCREEN.tiltRange = builder.
+						translation(config + "loading_icon_tilting").
+						comment("How far the loading icon wobbles.").
+						defineInRange("tiltRange", 11.25F, 0F, 360F);
+				LOADING_SCREEN.tiltConstant = builder.
+						translation(config + "loading_icon_tilt_pushback").
+						comment("Pushback value to re-center the wobble of loading icon.").
+						defineInRange("tiltConstant", 22.5F, 0F, 360F);
+				LOADING_SCREEN.loadingIconStacks = builder.
+						translation(config + "loading_icon_stacks").
+						comment("List of items to be used for the wobbling Loading Icon. (domain:item).").
+						define("loadingIconStacks", new String[]{
+								"twilightforest:experiment_115",
+								"twilightforest:magic_map",
+								"twilightforest:charm_of_life_2",
+								"twilightforest:charm_of_keeping_3",
+								"twilightforest:phantom_helmet",
+								"twilightforest:lamp_of_cinders",
+								"twilightforest:carminite",
+								"twilightforest:block_and_chain",
+								"twilightforest:yeti_helmet",
+								"twilightforest:hydra_chop",
+								"twilightforest:magic_beans",
+								"twilightforest:ironwood_raw",
+								"twilightforest:naga_scale",
+								"twilightforest:experiment_115:2",
+								"twilightforest:miniature_structure",
+								"twilightforest:miniature_structure:6",
+								"twilightforest:knightmetal_block",
+								"twilightforest:tower_device:10",
+								"twilightforest:twilight_sapling:5",
+								"twilightforest:twilight_sapling:6",
+								"twilightforest:twilight_sapling:7",
+								"twilightforest:twilight_sapling:8",
+								"twilightforest:twilight_sapling:9",
+								"twilightforest:borer_essence"
+						});
+			}
+			builder.pop();
+		}
+
+		public ForgeConfigSpec.BooleanValue silentCicadas;
+		public ForgeConfigSpec.BooleanValue firstPersonEffects;
+		public ForgeConfigSpec.BooleanValue rotateTrophyHeadsGui;
+
+		public final LoadingScreen LOADING_SCREEN = new LoadingScreen();
+
+		public static class LoadingScreen {
+
+			public ForgeConfigSpec.BooleanValue enable;
+			public ForgeConfigSpec.IntValue cycleLoadingScreenFrequency;
+			public ForgeConfigSpec.DoubleValue frequency;
+			public ForgeConfigSpec.DoubleValue scale;
+			public ForgeConfigSpec.DoubleValue scaleDeviation;
+			public ForgeConfigSpec.DoubleValue tiltRange;
+			public ForgeConfigSpec.DoubleValue tiltConstant;
+			public ForgeConfigSpec.ConfigValue<String[]> loadingIconStacks;
+
+			private ImmutableList<ItemStack> loadingScreenIcons;
+
+			public ImmutableList<ItemStack> getLoadingScreenIcons() {
+				return loadingScreenIcons;
 			}
 
-			loadingScreenIcons = iconList.build();
+			void loadLoadingScreenIcons() {
+				ImmutableList.Builder<ItemStack> iconList = ImmutableList.builder();
+
+				iconList.addAll(IMCHandler.getLoadingIconStacks());
+
+				for (String s : loadingIconStacks) {
+					parseItemStack(s).ifPresent(iconList::add);
+				}
+
+				loadingScreenIcons = iconList.build();
+			}
 		}
+
 	}
+
+	private static final String config = TwilightForestMod.ID + ".config.";
 
 	@SubscribeEvent
 	public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
@@ -413,7 +489,6 @@ public class TFConfig {
 		loadingScreen.loadLoadingScreenIcons();
 	}
 
-	@Config.Ignore
 	public static Ingredient portalIngredient;
 
 	private static void buildPortalIngredient() {

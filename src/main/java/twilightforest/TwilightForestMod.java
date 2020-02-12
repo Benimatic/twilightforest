@@ -3,16 +3,19 @@ package twilightforest;
 import net.minecraft.item.Rarity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import twilightforest.advancements.TFAdvancements;
@@ -23,7 +26,12 @@ import twilightforest.client.particle.TFParticleType;
 import twilightforest.command.TFCommand;
 import twilightforest.compat.TFCompat;
 import twilightforest.entity.TFEntities;
-import twilightforest.item.*;
+import twilightforest.item.ItemTFArcticArmor;
+import twilightforest.item.ItemTFFieryArmor;
+import twilightforest.item.ItemTFKnightlyArmor;
+import twilightforest.item.ItemTFPhantomArmor;
+import twilightforest.item.ItemTFYetiArmor;
+import twilightforest.item.TFItems;
 import twilightforest.loot.TFTreasure;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.potions.TFPotions;
@@ -62,6 +70,17 @@ public class TwilightForestMod {
 	// public static TFCommonProxy proxy;
 
 	public TwilightForestMod() {
+		{
+			final Pair<TFConfig.Common, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(TFConfig.Common::new);
+			ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, specPair.getRight());
+			TFConfig.COMMON_CONFIG = specPair.getLeft();
+		}
+		{
+			final Pair<TFConfig.Client, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(TFConfig.Client::new);
+			ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, specPair.getRight());
+			TFConfig.CLIENT_CONFIG = specPair.getLeft();
+		}
+
 		MinecraftForge.EVENT_BUS.addListener(this::startServer);
 
 		IEventBus modbus = FMLJavaModLoadingContext.get().getModEventBus();
