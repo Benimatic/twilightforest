@@ -4,13 +4,15 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
 import twilightforest.block.BlockTFFireJet;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.FireJetVariant;
 
 import java.util.Random;
 
-public class TFGenFireJet extends TFGenerator {
+public class TFGenFireJet extends Feature<NoFeatureConfig> {
 	private final FireJetVariant variant;
 
 	public TFGenFireJet(FireJetVariant variant) {

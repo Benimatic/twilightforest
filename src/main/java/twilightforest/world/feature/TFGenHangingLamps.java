@@ -16,7 +16,7 @@ public class TFGenHangingLamps extends TFGenerator {
 	@Override
 	public boolean generate(World world, Random random, BlockPos pos) {
 		// this must be an air block, surrounded by air
-		if (!world.isAirBlock(pos) || !TFGenerator.surroundedByAir(world, pos)) {
+		if (!world.isAirBlock(pos) || !surroundedByAir(world, pos)) {
 			return false;
 		}
 

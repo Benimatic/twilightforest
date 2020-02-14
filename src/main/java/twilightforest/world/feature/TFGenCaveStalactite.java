@@ -1,22 +1,28 @@
 package twilightforest.world.feature;
 
+import com.mojang.datafixers.Dynamic;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.WeightedRandom;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.GenerationSettings;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
 import twilightforest.IMCHandler;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
-import twilightforest.world.TFWorld;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Function;
 
-public class TFGenCaveStalactite extends TFGenerator {
+//TODO: Placeholder FeatureConfig. Constructors may need rewrite
+public class TFGenCaveStalactite extends Feature<NoFeatureConfig> {
 
 	private static final List<StalactiteEntry> largeHillStalactites = new ArrayList<>();
 	private static final List<StalactiteEntry> mediumHillStalactites = new ArrayList<>();
@@ -31,11 +37,12 @@ public class TFGenCaveStalactite extends TFGenerator {
 	/**
 	 * Initializes a stalactite builder.  Actually also makes stalagmites
 	 */
-	public TFGenCaveStalactite(Block block, float size, boolean down) {
-		this(block.getDefaultState(), size, down);
+	public TFGenCaveStalactite(Function<Dynamic<?>, ? extends NoFeatureConfig> configIn, Block block, float size, boolean down) {
+		this(configIn, block.getDefaultState(), size, down);
 	}
 
-	public TFGenCaveStalactite(BlockState blockState, float size, boolean down) {
+	public TFGenCaveStalactite(Function<Dynamic<?>, ? extends NoFeatureConfig> configIn, BlockState blockState, float size, boolean down) {
+		super(configIn);
 		this.blockState = blockState;
 		this.sizeFactor = size;
 		this.maxLength = -1;
@@ -46,7 +53,8 @@ public class TFGenCaveStalactite extends TFGenerator {
 	/**
 	 * Initializes a stalactite builder
 	 */
-	public TFGenCaveStalactite(BlockState blockState, float size, int maxLength, int minHeight) {
+	public TFGenCaveStalactite(Function<Dynamic<?>, ? extends NoFeatureConfig> configIn, BlockState blockState, float size, int maxLength, int minHeight) {
+		super(configIn);
 		this.blockState = blockState;
 		this.sizeFactor = size;
 		this.maxLength = maxLength;
@@ -79,7 +87,7 @@ public class TFGenCaveStalactite extends TFGenerator {
 	 * This will return false if it can't find a valid ceiling and floor, or if there are other errors.
 	 */
 	@Override
-	public boolean generate(World world, Random random, BlockPos pos) {
+	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random random, BlockPos pos, NoFeatureConfig config) {
 		int ceiling = Integer.MAX_VALUE;
 		int floor = -1;
 
@@ -93,7 +101,7 @@ public class TFGenCaveStalactite extends TFGenerator {
 				continue;
 			}
 			// if we get something that's not cave material, fail!
-			if (m != Material.GROUND && m != Material.ROCK) {
+			if (m != Material.EARTH && m != Material.ROCK) {
 				return false;
 			}
 			// okay, we found a valid ceiling.
@@ -115,7 +123,7 @@ public class TFGenCaveStalactite extends TFGenerator {
 			}
 			// if we get something that's not cave material, fail!
 			// actually stalactites can hang above water or lava
-			if (m != Material.GROUND && m != Material.ROCK && (!hang && m != Material.WATER) && (!hang && m != Material.LAVA)) {
+			if (m != Material.EARTH && m != Material.ROCK && (!hang && m != Material.WATER) && (!hang && m != Material.LAVA)) {
 				return false;
 			}
 			// okay, we found a valid floor.
@@ -138,7 +146,7 @@ public class TFGenCaveStalactite extends TFGenerator {
 		return makeSpike(world, random, new BlockPos(pos.getX(), hang ? ceiling : floor, pos.getZ()), length);
 	}
 
-	public boolean makeSpike(World world, Random random, BlockPos pos, int maxLength) {
+	public boolean makeSpike(IWorld world, Random random, BlockPos pos, int maxLength) {
 
 		int diameter = (int) (maxLength / 4.5); // diameter of the base
 
@@ -167,7 +175,7 @@ public class TFGenCaveStalactite extends TFGenerator {
 				}
 
 				for (int dy = 0; dy != (spikeLength * dir); dy += dir) {
-					setBlockAndNotifyAdequately(world, pos.add(dx, dy, dz), blockState);
+					setBlockState(world, pos.add(dx, dy, dz), blockState);
 				}
 			}
 		}
@@ -175,6 +183,7 @@ public class TFGenCaveStalactite extends TFGenerator {
 		return true;
 	}
 
+	//TODO: Rewrite or move to config?
 	public static class StalactiteEntry extends WeightedRandom.Item {
 
 		final TFGenCaveStalactite stalactite;

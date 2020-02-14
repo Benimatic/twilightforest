@@ -22,6 +22,7 @@ public abstract class TFGenerator extends WorldGenerator implements IBlockSettab
 		super(notify);
 	}
 
+	//TODO: Do we need this?
 	@Override
 	public final void setBlockAndNotify(World worldIn, BlockPos pos, BlockState state) {
 		setBlockAndNotifyAdequately(worldIn, pos, state);
@@ -33,6 +34,7 @@ public abstract class TFGenerator extends WorldGenerator implements IBlockSettab
 	 * This goofy function takes a float between 0 and 1 for the angle, where 0 is 0 degrees, .5 is 180 degrees and 1 and 360 degrees.
 	 * For the tilt, it takes a float between 0 and 1 where 0 is straight up, 0.5 is straight out and 1 is straight down.
 	 */
+	//TODO: Used in TFGenHollowTree, TFGenCanopyTree, TFGenCanopyOak, TFGenDarkCanopyTree, TFGenCanopyMushroom, TFGenMangroveTree, TFGenWoodRoots, TFTreeGenerator
 	public static BlockPos translate(BlockPos pos, double distance, double angle, double tilt) {
 		double rangle = angle * 2.0D * Math.PI;
 		double rtilt = tilt * Math.PI;
@@ -47,6 +49,7 @@ public abstract class TFGenerator extends WorldGenerator implements IBlockSettab
 	/**
 	 * Draws a line from {x1, y1, z1} to {x2, y2, z2}
 	 */
+	//TODO: Used in TFGenHollowTree, TFGenCanopyTree, TFGenCanopyOak, TFGenDarkCanopyTree, TFGenCanopyMushroom, TFGenMangroveTree
 	protected static void drawBresehnam(IBlockSettable generator, World world, BlockPos from, BlockPos to, BlockState state) {
 		for (BlockPos pixel : getBresehnamArrays(from, to)) {
 			generator.setBlockAndNotify(world, pixel, state);
@@ -56,6 +59,7 @@ public abstract class TFGenerator extends WorldGenerator implements IBlockSettab
 	/**
 	 * Get an array of values that represent a line from point A to point B
 	 */
+	//TODO: Used by TFGenHollowTree, TFGenMangroveTree, TFGenWorldRoots, TFTreeGenerator
 	public static BlockPos[] getBresehnamArrays(BlockPos src, BlockPos dest) {
 		return getBresehnamArrays(src.getX(), src.getY(), src.getZ(), dest.getX(), dest.getY(), dest.getZ());
 	}
@@ -64,6 +68,7 @@ public abstract class TFGenerator extends WorldGenerator implements IBlockSettab
 	 * Get an array of values that represent a line from point A to point B
 	 * todo 1.9 lazify this into an iterable?
 	 */
+	//TODO: Used by TFGenHollowTree, TFGenMangroveTree, TFGenWorldRoots, TFTreeGenerator
 	public static BlockPos[] getBresehnamArrays(int x1, int y1, int z1, int x2, int y2, int z2) {
 		int i, dx, dy, dz, absDx, absDy, absDz, x_inc, y_inc, z_inc, err_1, err_2, doubleAbsDx, doubleAbsDy, doubleAbsDz;
 
@@ -146,6 +151,7 @@ public abstract class TFGenerator extends WorldGenerator implements IBlockSettab
 	/**
 	 * Draw a flat blob (circle) of leaves
 	 */
+	//TODO: Used in TFGenCanopyTree, TFGenDarkCanopyTree, TFGenMangroveTree
 	public static void makeLeafCircle(IBlockSettable generator, World world, BlockPos pos, int rad, BlockState state, boolean useHack) {
 		// trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++) {
@@ -172,6 +178,7 @@ public abstract class TFGenerator extends WorldGenerator implements IBlockSettab
 	/**
 	 * Draw a flat blob (circle) of leaves.  This one makes it offset to surround a 2x2 area instead of a 1 block area
 	 */
+	//TODO: Used in TFGenLargeWinter
 	public static void makeLeafCircle2(IBlockSettable generator, World world, BlockPos pos, int rad, BlockState state, boolean useHack) {
 		// trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++) {
@@ -198,6 +205,7 @@ public abstract class TFGenerator extends WorldGenerator implements IBlockSettab
 	/**
 	 * Put a leaf only in spots where leaves can go!
 	 */
+	//TODO: Used in TFGenMinersTree, TFGenSortingTree,
 	public static void putLeafBlock(IBlockSettable generator, World world, BlockPos pos, BlockState state) {
 		BlockState whatsThere = world.getBlockState(pos);
 
@@ -209,6 +217,7 @@ public abstract class TFGenerator extends WorldGenerator implements IBlockSettab
 	/**
 	 * Gets either cobblestone or mossy cobblestone, randomly.  Used for ruins.
 	 */
+	//TODO: Used in TFGenFoundation, TFGenWitchHut
 	protected static BlockState randStone(Random rand, int howMuch) {
 		return rand.nextInt(howMuch) >= 1 ? Blocks.COBBLESTONE.getDefaultState() : Blocks.MOSSY_COBBLESTONE.getDefaultState();
 	}
@@ -216,6 +225,7 @@ public abstract class TFGenerator extends WorldGenerator implements IBlockSettab
 	/**
 	 * Checks an area to see if it consists of flat natural ground below and air above
 	 */
+	//TODO: Used in TFGenWell, TFGenStoneCircle, TFGenBigMushgloom, TFGenGroveRuins, TFGenFallenSmallLog, TFGenFoundation, TFGenOutsideStalagmite, TFGenWitchHut, TFGenMonolith, TGenFallenHollowLog, TFGenHollowStump
 	protected static boolean isAreaSuitable(World world, Random rand, BlockPos pos, int width, int height, int depth) {
 		boolean flag = true;
 
@@ -252,6 +262,7 @@ public abstract class TFGenerator extends WorldGenerator implements IBlockSettab
 	/**
 	 * Draw a giant blob of whatevs.
 	 */
+	//Used in TFGenHollowTree
 	public static void drawBlob(IBlockSettable generator, World world, BlockPos pos, int rad, BlockState state) {
 		// then trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++) {
@@ -288,6 +299,7 @@ public abstract class TFGenerator extends WorldGenerator implements IBlockSettab
 	/**
 	 * Draw a giant blob of leaves.
 	 */
+	//TODO: Used in TFGenHollowTree, TFGenCanopyOak
 	public static void drawLeafBlob(IBlockSettable generator, World world, BlockPos pos, int rad, BlockState state) {
 		// then trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++) {
@@ -324,6 +336,7 @@ public abstract class TFGenerator extends WorldGenerator implements IBlockSettab
 	/**
 	 * Does the block have only air blocks adjacent
 	 */
+	//Used by TFGenHangingLamps
 	protected static boolean surroundedByAir(IBlockAccess world, BlockPos pos) {
 		for (Direction e : Direction.VALUES) {
 			if (!world.isAirBlock(pos.offset(e))) {
@@ -337,6 +350,7 @@ public abstract class TFGenerator extends WorldGenerator implements IBlockSettab
 	/**
 	 * Does the block have at least 1 air block adjacent
 	 */
+	//TODO: Used in TFGenHollowTree, TFGenCanopyTree, TFGenMinersTree, TFGenCanopyOak, TFGenDarkCanopyTree, TFGenMangroveTree, TFGenHollowStump
 	protected static boolean hasAirAround(World world, BlockPos pos) {
 		for (Direction e : Direction.VALUES) {
 			if (e == Direction.DOWN)
@@ -350,6 +364,7 @@ public abstract class TFGenerator extends WorldGenerator implements IBlockSettab
 		return false;
 	}
 
+	//TODO: Used in TFTreeGenerator
 	protected static boolean isNearSolid(World world, BlockPos pos) {
 		for (Direction e : Direction.HORIZONTALS) {
 			if (world.isBlockLoaded(pos.offset(e))
