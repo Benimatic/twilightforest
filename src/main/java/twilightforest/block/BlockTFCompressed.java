@@ -55,6 +55,7 @@ public class BlockTFCompressed extends Block {
 	}
 
 	//TODO 1.14: Move to supports_beacon Tag
+	//Addendum: it has been proposed that this Tag is removed. Keep an eye on this, maybe keep it.
 	@Override
 	public boolean isBeaconBase(BlockState state, IWorldReader world, BlockPos pos, BlockPos beacon) {
 		return true;

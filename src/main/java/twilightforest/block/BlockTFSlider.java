@@ -37,7 +37,7 @@ public class BlockTFSlider extends RotatedPillarBlock {
 	private static final VoxelShape X_BB = VoxelShapes.create(new AxisAlignedBB(0, 0.3125, 0.3125, 1F, 0.6875, 0.6875));
 
 	protected BlockTFSlider() {
-		super(Properties.create(Material.IRON, MaterialColor.DIRT).hardnessAndResistance(2.0F, 10.0F).tickRandomly());
+		super(Properties.create(Material.IRON, MaterialColor.DIRT).hardnessAndResistance(2.0F, 10.0F).tickRandomly().nonOpaque());
 		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
 		this.setDefaultState(stateContainer.getBaseState().with(AXIS, Direction.Axis.Y).with(DELAY, 0));
 	}
@@ -59,14 +59,7 @@ public class BlockTFSlider extends RotatedPillarBlock {
 			case Z:
 				return Z_BB;
 		}
-
 	}
-
-	//TODO: Check this
-//	@Override
-//	public boolean isSolid(BlockState state) {
-//		return false;
-//	}
 
 	@Override
 	@Deprecated

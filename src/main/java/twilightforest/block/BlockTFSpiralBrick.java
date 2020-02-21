@@ -159,7 +159,6 @@ public class BlockTFSpiralBrick extends Block {
 //		return false;
 //	}
 
-
 //
 //	@Override
 //	public boolean doesSideBlockRendering(BlockState state, IEnviromentBlockReader world, BlockPos pos, Direction face) {

@@ -17,7 +17,7 @@ public class BlockTFLeaves extends LeavesBlock {
 
 	@Override
 	public int getOpacity(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return TFConfig.performance.leavesLightOpacity;
+		return TFConfig.COMMON_CONFIG.PERFORMANCE.leavesLightOpacity.get();
 	}
 
 	//TODO: Move to loot table

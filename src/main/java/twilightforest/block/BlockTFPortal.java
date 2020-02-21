@@ -30,6 +30,7 @@ import org.apache.commons.lang3.mutable.MutableInt;
 import twilightforest.TFConfig;
 import twilightforest.TFTeleporter;
 import twilightforest.TwilightForestMod;
+import twilightforest.world.TFWorld;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -48,7 +49,7 @@ public class BlockTFPortal extends BreakableBlock {
 	private static final int MAX_PORTAL_SIZE = 64;
 
 	public BlockTFPortal() {
-		super(Properties.create(Material.PORTAL).hardnessAndResistance(-1.0F).sound(SoundType.GLASS).lightValue(11).doesNotBlockMovement().noDrops());
+		super(Properties.create(Material.PORTAL).hardnessAndResistance(-1.0F).sound(SoundType.GLASS).lightValue(11).doesNotBlockMovement().nonOpaque().noDrops());
 		this.setDefaultState(this.stateContainer.getBaseState().with(DISALLOW_RETURN, false));
 	}
 
@@ -74,12 +75,6 @@ public class BlockTFPortal extends BreakableBlock {
 //		addCollisionBoxToList(pos, entityBB, blockBBs, entity instanceof EntityItem ? AABB_ITEM : state.getCollisionBoundingBox(world, pos));
 //	}
 
-	//TODO: Check this
-//	@Override
-//	public boolean isSolid(BlockState state) {
-//		return false;
-//	}
-
 	public boolean tryToCreatePortal(World world, BlockPos pos, ItemEntity catalyst, @Nullable PlayerEntity player) {
 
 		BlockState state = world.getBlockState(pos);
@@ -92,7 +87,7 @@ public class BlockTFPortal extends BreakableBlock {
 
 			if (recursivelyValidatePortal(world, pos, blocksChecked, size, state) && size.intValue() >= MIN_PORTAL_SIZE) {
 
-				if (TFConfig.checkPortalDestination) {
+				if (TFConfig.COMMON_CONFIG.checkPortalDestination.get()) {
 					TFTeleporter teleporter = TFTeleporter.getTeleporterForDim(catalyst.getServer(), getDestination(catalyst));
 					boolean checkProgression = TFWorld.isProgressionEnforced(catalyst.world);
 					if (!teleporter.isSafeAround(pos, catalyst, checkProgression)) {
@@ -105,7 +100,7 @@ public class BlockTFPortal extends BreakableBlock {
 				}
 
 				catalyst.getItem().shrink(1);
-				causeLightning(world, pos, TFConfig.portalLightning);
+				causeLightning(world, pos, TFConfig.COMMON_CONFIG.portalLightning.get());
 
 				for (Map.Entry<BlockPos, Boolean> checkedPos : blocksChecked.entrySet()) {
 					if (checkedPos.getValue()) {
@@ -146,24 +141,24 @@ public class BlockTFPortal extends BreakableBlock {
 
 		boolean isPoolProbablyEnclosed = true;
 
-//		for (int i = 0; i < Direction.Plane.HORIZONTAL.ordinal() && portalSize.intValue() <= MAX_PORTAL_SIZE; i++) {
-//			BlockPos positionCheck = pos.offset(Direction.HORIZONTALS[i]);
-//
-//			if (!blocksChecked.containsKey(positionCheck)) {
-//				BlockState state = world.getBlockState(positionCheck);
-//
-//				if (state == requiredState && world.getBlockState(positionCheck.down()).isSolid()) {
-//					blocksChecked.put(positionCheck, true);
-//					if (isPoolProbablyEnclosed) {
-//						isPoolProbablyEnclosed = recursivelyValidatePortal(world, positionCheck, blocksChecked, portalSize, requiredState);
-//					}
-//
-//				} else if (isGrassOrDirt(state) && isNatureBlock(world.getBlockState(positionCheck.up())) || state.getBlock() == TFBlocks.uberous_soil.get()) {
-//					blocksChecked.put(positionCheck, false);
-//
-//				} else return false;
-//			}
-//		}
+		for (int i = 0; i < Direction.Plane.HORIZONTAL.ordinal() && portalSize.intValue() <= MAX_PORTAL_SIZE; i++) {
+			BlockPos positionCheck = pos.offset(Direction.HORIZONTALS[i]);
+
+			if (!blocksChecked.containsKey(positionCheck)) {
+				BlockState state = world.getBlockState(positionCheck);
+
+				if (state == requiredState && world.getBlockState(positionCheck.down()).isSolid()) {
+					blocksChecked.put(positionCheck, true);
+					if (isPoolProbablyEnclosed) {
+						isPoolProbablyEnclosed = recursivelyValidatePortal(world, positionCheck, blocksChecked, portalSize, requiredState);
+					}
+
+				} else if (isGrassOrDirt(state) && isNatureBlock(world.getBlockState(positionCheck.up())) || state.getBlock() == TFBlocks.uberous_soil.get()) {
+					blocksChecked.put(positionCheck, false);
+
+				} else return false;
+			}
+		}
 
 		return isPoolProbablyEnclosed;
 	}
@@ -211,9 +206,10 @@ public class BlockTFPortal extends BreakableBlock {
 		}
 	}
 
+	//TODO: ID to DimensionType
 	private static int getDestination(Entity entity) {
 //		return entity.dimension != TFConfig.dimension.dimensionID
-//				? TFConfig.dimension.dimensionID : TFConfig.originDimension; //TODO: ID to DimensionType
+//				? TFConfig.dimension.dimensionID : TFConfig.originDimension;
 		return 0; //PLACEHOLDER
 	}
 
@@ -236,8 +232,7 @@ public class BlockTFPortal extends BreakableBlock {
 
 		int destination = getDestination(entity);
 
-		//TODO 1.14: changeDimension patch does not exist. Create helper?
-		//entity.changeDimension(destination, TFTeleporter.getTeleporterForDim(entity.getServer(), destination));
+		entity.changeDimension(destination, TFTeleporter.getTeleporterForDim(entity.getServer(), destination));
 
 		if (destination == TFConfig.dimension.dimensionID && entity instanceof ServerPlayerEntity) {
 			ServerPlayerEntity playerMP = (ServerPlayerEntity) entity;

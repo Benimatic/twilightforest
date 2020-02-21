@@ -36,7 +36,7 @@ public class BlockTFPlant extends BushBlock implements IShearable {
 	public final PlantVariant plantVariant;
 
 	protected BlockTFPlant(PlantVariant plant) {
-		super(Properties.create(Material.PLANTS).hardnessAndResistance(0.0F).sound(SoundType.PLANT).tickRandomly().doesNotBlockMovement());
+		super(Properties.create(Material.PLANTS).hardnessAndResistance(0.0F).sound(SoundType.PLANT).tickRandomly().doesNotBlockMovement().nonOpaque());
 		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
 
 		plantVariant = plant;
@@ -125,12 +125,6 @@ public class BlockTFPlant extends BushBlock implements IShearable {
 			return VoxelShapes.fullCube();
 		}
 	}
-
-	//TODO: Check this
-//	@Override
-//	public boolean isSolid(BlockState state) {
-//		return false;
-//	}
 
 	@Override
 	public int getLightValue(BlockState state) {

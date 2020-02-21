@@ -23,6 +23,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
+import twilightforest.world.TFWorld;
 
 import javax.annotation.Nullable;
 

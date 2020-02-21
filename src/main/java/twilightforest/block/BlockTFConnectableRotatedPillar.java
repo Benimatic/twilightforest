@@ -29,7 +29,7 @@ public abstract class BlockTFConnectableRotatedPillar extends RotatedPillarBlock
     }
 
     BlockTFConnectableRotatedPillar(Properties props, double width, double height) {
-        super(props);
+        super(props.nonOpaque());
 
         if (width >= 16d) {
             this.boundingBoxWidthLower = 0d;
@@ -158,13 +158,6 @@ public abstract class BlockTFConnectableRotatedPillar extends RotatedPillarBlock
                 z1/16.0d, x2/16.0d,
                 y2/16.0d, z2/16.0d);
     }
-
-    //TODO: Check this
-//	@Override
-//	@Deprecated
-//	public boolean isSolid(BlockState state) {
-//		return false;
-//	}
 
     enum PairHelper {
         NORTH(Direction.NORTH, FenceBlock.NORTH),

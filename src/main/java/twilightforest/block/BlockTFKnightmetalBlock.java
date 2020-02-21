@@ -24,7 +24,7 @@ public class BlockTFKnightmetalBlock extends Block {
 	private static final float BLOCK_DAMAGE = 4;
 
 	public BlockTFKnightmetalBlock() {
-		super(Properties.create(Material.IRON).hardnessAndResistance(5.0F, 41.0F).sound(SoundType.METAL));
+		super(Properties.create(Material.IRON).hardnessAndResistance(5.0F, 41.0F).sound(SoundType.METAL).nonOpaque());
 		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
 	}
 
@@ -45,12 +45,6 @@ public class BlockTFKnightmetalBlock extends Block {
 	public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entity) {
 		entity.attackEntityFrom(DamageSource.CACTUS, BLOCK_DAMAGE);
 	}
-
-	//TODO: Check this
-//	@Override
-//	public boolean isSolid(BlockState state) {
-//		return false;
-//	}
 
 	//TODO: Removed. Check this
 //	@Override

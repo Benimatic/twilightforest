@@ -35,7 +35,7 @@ public abstract class BlockTFCritter extends Block {
 	private final VoxelShape EAST_BB  = VoxelShapes.create(new AxisAlignedBB(0.0F, 0.2F, 0.5F - WIDTH, WIDTH * 2.0F, 0.8F, 0.5F + WIDTH));
 
 	protected BlockTFCritter(Properties props) {
-		super(props.sound(SoundType.SLIME).hardnessAndResistance(0.0F).doesNotBlockMovement());
+		super(props.sound(SoundType.SLIME).hardnessAndResistance(0.0F).doesNotBlockMovement().nonOpaque());
 		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
 		this.setDefaultState(stateContainer.getBaseState().with(DirectionalBlock.FACING, Direction.UP));
 	}
@@ -68,13 +68,6 @@ public abstract class BlockTFCritter extends Block {
 				return EAST_BB;
 		}
 	}
-
-	//TODO: Check this
-//	@Override
-//	@Deprecated
-//	public boolean isSolid(BlockState state) {
-//		return false;
-//	}
 
 //	@Override
 //	@Deprecated

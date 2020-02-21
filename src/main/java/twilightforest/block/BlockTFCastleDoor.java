@@ -21,6 +21,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import twilightforest.world.ChunkGeneratorTFBase;
+import twilightforest.world.TFWorld;
 
 import java.util.Random;
 
