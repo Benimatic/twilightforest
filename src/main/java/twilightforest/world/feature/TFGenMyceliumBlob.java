@@ -1,40 +1,49 @@
 package twilightforest.world.feature;
 
+import com.mojang.datafixers.Dynamic;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenerator;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.GenerationSettings;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.SphereReplaceConfig;
 
 import java.util.Random;
+import java.util.function.Function;
 
 /**
  * This is a copypasta of the sand/gravel/clay generator that produces mycelium blobs for mushroom biomes
  *
  * @author Ben
  */
-public class TFGenMyceliumBlob extends WorldGenerator {
+public class TFGenMyceliumBlob<T extends SphereReplaceConfig> extends Feature<T> {
 
-	private final BlockState myceliumState;
-	private final int numberOfBlocks;
+//	private final BlockState myceliumState;
+//	private final int numberOfBlocks;
 
-	public TFGenMyceliumBlob(int i) {
-		this(Blocks.MYCELIUM, i);
+	public TFGenMyceliumBlob(Function<Dynamic<?>, T> configIn) {
+		super(configIn);
 	}
 
-	public TFGenMyceliumBlob(Block block, int i) {
-		myceliumState = block.getDefaultState();
-		numberOfBlocks = i;
-	}
+//	public TFGenMyceliumBlob(int i) {
+//		this(Blocks.MYCELIUM, i);
+//	}
+//
+//	public TFGenMyceliumBlob(Block block, int i) {
+//		myceliumState = block.getDefaultState();
+//		numberOfBlocks = i;
+//	}
+
 
 	@Override
-	public boolean generate(World world, Random random, BlockPos pos) {
+	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random random, BlockPos pos, T config) {
 //        if (world.getBlock(i, j, k).getMaterial() != Material.WATER)
 //        {
 //            return false;
 //        }
-		int range = random.nextInt(numberOfBlocks - 2) + 2;
+		int range = random.nextInt(config.radius - 2) + 2;
 		int yRange = 1;
 		for (int dx = pos.getX() - range; dx <= pos.getX() + range; dx++) {
 			for (int dz = pos.getZ() - range; dz <= pos.getZ() + range; dz++) {
@@ -47,7 +56,7 @@ public class TFGenMyceliumBlob extends WorldGenerator {
 					BlockPos dPos = new BlockPos(dx, dy, dz);
 					Block blockThere = world.getBlockState(dPos).getBlock();
 					if (blockThere == Blocks.DIRT || blockThere == Blocks.GRASS || blockThere == Blocks.STONE) {
-						world.setBlockState(dPos, myceliumState, 16 | 2);
+						world.setBlockState(dPos, config.state, 16 | 2);
 					}
 				}
 			}

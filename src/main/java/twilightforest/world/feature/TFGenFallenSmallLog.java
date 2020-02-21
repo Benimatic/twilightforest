@@ -1,25 +1,30 @@
 package twilightforest.world.feature;
 
-import net.minecraft.block.BlockLog;
-import net.minecraft.block.BlockOldLog;
-import net.minecraft.block.BlockPlanks;
+import com.mojang.datafixers.Dynamic;
+import net.minecraft.block.LogBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import twilightforest.block.BlockTFLog;
-import twilightforest.block.BlockTFPlant;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.GenerationSettings;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
 import twilightforest.block.TFBlocks;
-import twilightforest.enums.PlantVariant;
-import twilightforest.enums.WoodVariant;
+import twilightforest.util.FeatureUtil;
 
 import java.util.Random;
+import java.util.function.Function;
 
-public class TFGenFallenSmallLog extends TFGenerator {
+public class TFGenFallenSmallLog<T extends NoFeatureConfig> extends Feature<T> {
+
+	public TFGenFallenSmallLog(Function<Dynamic<?>, T> configIn) {
+		super(configIn);
+	}
 
 	@Override
-	public boolean generate(World world, Random rand, BlockPos pos) {
-
+	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, T config) {
 		// determine direction
 		boolean goingX = rand.nextBoolean();
 
@@ -28,11 +33,11 @@ public class TFGenFallenSmallLog extends TFGenerator {
 
 		// check area clear
 		if (goingX) {
-			if (!isAreaSuitable(world, rand, pos, length, 3, 2)) {
+			if (!FeatureUtil.isAreaSuitable(world, rand, pos, length, 3, 2)) {
 				return false;
 			}
 		} else {
-			if (!isAreaSuitable(world, rand, pos, 3, length, 2)) {
+			if (!FeatureUtil.isAreaSuitable(world, rand, pos, 3, length, 2)) {
 				return false;
 			}
 		}
@@ -44,51 +49,52 @@ public class TFGenFallenSmallLog extends TFGenerator {
 		switch (rand.nextInt(7)) {
 			case 0:
 			default:
-				logState = TFBlocks.twilight_log.getDefaultState();
+				logState = TFBlocks.oak_log.get().getDefaultState();
 				break;
 			case 1:
-				logState = TFBlocks.twilight_log.getDefaultState().with(BlockTFLog.VARIANT, WoodVariant.CANOPY);
+				logState = TFBlocks.canopy_log.get().getDefaultState();
 				break;
 			case 2:
-				logState = TFBlocks.twilight_log.getDefaultState().with(BlockTFLog.VARIANT, WoodVariant.MANGROVE);
+				logState = TFBlocks.mangrove_log.get().getDefaultState();
 				break;
 			case 3:
-				logState = Blocks.LOG.getDefaultState();
+				logState = Blocks.OAK_LOG.getDefaultState();
 				break;
 			case 4:
-				logState = Blocks.LOG.getDefaultState().with(BlockOldLog.VARIANT, BlockPlanks.EnumType.SPRUCE);
+				logState = Blocks.SPRUCE_LOG.getDefaultState();
 				break;
 			case 5:
-				logState = Blocks.LOG.getDefaultState().with(BlockOldLog.VARIANT, BlockPlanks.EnumType.BIRCH);
+				logState = Blocks.BIRCH_LOG.getDefaultState();
 				break;
 			case 6:
-				logState = Blocks.LOG.getDefaultState().with(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE);
+				logState = Blocks.JUNGLE_LOG.getDefaultState();
 				break;
 		}
 		branchState = logState;
 
 		// check biome
+		// Androsa: Uh...what are we checking?
 
 
 		// make log
 		if (goingX) {
-			logState = logState.with(BlockLog.LOG_AXIS, BlockLog.EnumAxis.X);
-			branchState = logState.with(BlockLog.LOG_AXIS, BlockLog.EnumAxis.Z);
+			logState = logState.with(LogBlock.AXIS, Direction.Axis.X);
+			branchState = logState.with(LogBlock.AXIS, Direction.Axis.Z);
 
 			for (int lx = 0; lx < length; lx++) {
-				this.setBlockAndNotifyAdequately(world, pos.add(lx, 0, 1), logState);
+				world.setBlockState(pos.add(lx, 0, 1), logState, 3);
 				if (rand.nextInt(3) > 0) {
-					this.setBlockAndNotifyAdequately(world, pos.add(lx, 1, 1), TFBlocks.twilight_plant.getDefaultState().with(BlockTFPlant.VARIANT, PlantVariant.MOSSPATCH));
+					world.setBlockState(pos.add(lx, 1, 1), TFBlocks.moss_patch.get().getDefaultState(), 3);
 				}
 			}
 		} else {
-			logState = logState.with(BlockLog.LOG_AXIS, BlockLog.EnumAxis.Z);
-			branchState = logState.with(BlockLog.LOG_AXIS, BlockLog.EnumAxis.X);
+			logState = logState.with(LogBlock.AXIS, Direction.Axis.Z);
+			branchState = logState.with(LogBlock.AXIS, Direction.Axis.X);
 
 			for (int lz = 0; lz < length; lz++) {
-				this.setBlockAndNotifyAdequately(world, pos.add(1, 0, lz), logState);
+				world.setBlockState(pos.add(1, 0, lz), logState, 3);
 				if (rand.nextInt(3) > 0) {
-					this.setBlockAndNotifyAdequately(world, pos.add(1, 1, lz), TFBlocks.twilight_plant.getDefaultState().with(BlockTFPlant.VARIANT, PlantVariant.MOSSPATCH));
+					world.setBlockState(pos.add(1, 1, lz), TFBlocks.moss_patch.get().getDefaultState(), 3);
 				}
 			}
 		}
@@ -99,22 +105,21 @@ public class TFGenFallenSmallLog extends TFGenerator {
 				int bx = rand.nextInt(length);
 				int bz = rand.nextBoolean() ? 2 : 0;
 
-				this.setBlockAndNotifyAdequately(world, pos.add(bx, 0, bz), branchState);
+				world.setBlockState(pos.add(bx, 0, bz), branchState, 3);
 				if (rand.nextBoolean()) {
-					this.setBlockAndNotifyAdequately(world, pos.add(bx, 1, bz), TFBlocks.twilight_plant.getDefaultState().with(BlockTFPlant.VARIANT, PlantVariant.MOSSPATCH));
+					world.setBlockState(pos.add(bx, 1, bz), TFBlocks.moss_patch.get().getDefaultState(), 3);
 				}
 			} else {
 				int bx = rand.nextBoolean() ? 2 : 0;
 				int bz = rand.nextInt(length);
 
-				this.setBlockAndNotifyAdequately(world, pos.add(bx, 0, bz), branchState);
+				world.setBlockState(pos.add(bx, 0, bz), branchState, 3);
 				if (rand.nextBoolean()) {
-					this.setBlockAndNotifyAdequately(world, pos.add(bx, 1, bz), TFBlocks.twilight_plant.getDefaultState().with(BlockTFPlant.VARIANT, PlantVariant.MOSSPATCH));
+					world.setBlockState(pos.add(bx, 1, bz), TFBlocks.moss_patch.get().getDefaultState(), 3);
 				}
 			}
 		}
 
 		return true;
 	}
-
 }

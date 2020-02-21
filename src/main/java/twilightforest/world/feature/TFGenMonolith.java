@@ -1,27 +1,38 @@
 package twilightforest.world.feature;
 
+import com.mojang.datafixers.Dynamic;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.GenerationSettings;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
+import twilightforest.entity.TFEntities;
 import twilightforest.entity.passive.EntityTFRaven;
+import twilightforest.util.FeatureUtil;
 
 import java.util.Random;
+import java.util.function.Function;
 
 /**
  * A 2x2 monolith of obsidian
  *
  * @author Ben
  */
-public class TFGenMonolith extends TFGenerator {
+public class TFGenMonolith<T extends NoFeatureConfig> extends Feature<T> {
+
+	public TFGenMonolith(Function<Dynamic<?>, T> configIn) {
+		super(configIn);
+	}
 
 	@Override
-	public boolean generate(World world, Random rand, BlockPos pos) {
-
+	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, T config) {
 		int ht = rand.nextInt(10) + 10;
 		int dir = rand.nextInt(4);
 		int h0, h1, h2, h3;
 
-		if (!isAreaSuitable(world, rand, pos, 2, ht, 2)) {
+		if (!FeatureUtil.isAreaSuitable(world, rand, pos, 2, ht, 2)) {
 			return false;
 		}
 
@@ -54,16 +65,16 @@ public class TFGenMonolith extends TFGenerator {
 		}
 
 		for (int cy = 0; cy <= h0; cy++) {
-			setBlockAndNotifyAdequately(world, pos.add(0, cy - 1, 0), cy == ht ? Blocks.LAPIS_BLOCK.getDefaultState() : Blocks.OBSIDIAN.getDefaultState());
+			world.setBlockState(pos.add(0, cy - 1, 0), cy == ht ? Blocks.LAPIS_BLOCK.getDefaultState() : Blocks.OBSIDIAN.getDefaultState(), 3);
 		}
 		for (int cy = 0; cy <= h1; cy++) {
-			setBlockAndNotifyAdequately(world, pos.add(1, cy - 1, 0), cy == ht ? Blocks.LAPIS_BLOCK.getDefaultState() : Blocks.OBSIDIAN.getDefaultState());
+			world.setBlockState(pos.add(1, cy - 1, 0), cy == ht ? Blocks.LAPIS_BLOCK.getDefaultState() : Blocks.OBSIDIAN.getDefaultState(), 3);
 		}
 		for (int cy = 0; cy <= h2; cy++) {
-			setBlockAndNotifyAdequately(world, pos.add(0, cy - 1, 1), cy == ht ? Blocks.LAPIS_BLOCK.getDefaultState() : Blocks.OBSIDIAN.getDefaultState());
+			world.setBlockState(pos.add(0, cy - 1, 1), cy == ht ? Blocks.LAPIS_BLOCK.getDefaultState() : Blocks.OBSIDIAN.getDefaultState(), 3);
 		}
 		for (int cy = 0; cy <= h3; cy++) {
-			setBlockAndNotifyAdequately(world, pos.add(1, cy - 1, 1), cy == ht ? Blocks.LAPIS_BLOCK.getDefaultState() : Blocks.OBSIDIAN.getDefaultState());
+			world.setBlockState(pos.add(1, cy - 1, 1), cy == ht ? Blocks.LAPIS_BLOCK.getDefaultState() : Blocks.OBSIDIAN.getDefaultState(), 3);
 		}
 
 		// spawn a few ravens nearby
@@ -76,7 +87,7 @@ public class TFGenMonolith extends TFGenerator {
 			dPos = world.getTopSolidOrLiquidBlock(dPos);
 
 			if (dPos.getY() > 0) {
-				EntityTFRaven raven = new EntityTFRaven(world);
+				EntityTFRaven raven = new EntityTFRaven(TFEntities.raven.get(), world.getWorld());
 				raven.moveToBlockPosAndAngles(dPos, rand.nextFloat() * 360.0F, 0.0F);
 
 				world.addEntity(raven);

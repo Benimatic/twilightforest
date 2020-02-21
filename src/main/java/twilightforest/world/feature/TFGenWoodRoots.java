@@ -1,22 +1,32 @@
 package twilightforest.world.feature;
 
+import com.mojang.datafixers.Dynamic;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import twilightforest.block.BlockTFRoots;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.GenerationSettings;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
 import twilightforest.block.TFBlocks;
-import twilightforest.enums.RootVariant;
+import twilightforest.util.FeatureUtil;
 
 import java.util.Random;
+import java.util.function.Function;
 
-public class TFGenWoodRoots extends TFGenerator {
+public class TFGenWoodRoots<T extends NoFeatureConfig> extends Feature<T> {
 
-	private BlockState rootBlock = TFBlocks.root.getDefaultState();
-	private BlockState oreBlock = TFBlocks.root.getDefaultState().with(BlockTFRoots.VARIANT, RootVariant.LIVEROOT);
+	private BlockState rootBlock = TFBlocks.root.get().getDefaultState();
+	private BlockState oreBlock = TFBlocks.liveroot.get().getDefaultState();
+
+	public TFGenWoodRoots(Function<Dynamic<?>, T> configIn) {
+		super(configIn);
+	}
 
 	@Override
-	public boolean generate(World world, Random rand, BlockPos pos) {
+	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, T config) {
 		// start must be in stone
 		if (world.getBlockState(pos).getBlock() != Blocks.STONE) {
 			return false;
@@ -30,7 +40,7 @@ public class TFGenWoodRoots extends TFGenerator {
 		// tilt between 0.6 and 0.9
 		float tilt = 0.6F + rand.nextFloat() * 0.3F;
 
-		return drawRoot(world, rand, pos, length, rand.nextFloat(), tilt);
+		return drawRoot(world.getWorld(), rand, pos, length, rand.nextFloat(), tilt);
 	}
 
 	private boolean drawRoot(World world, Random rand, BlockPos pos, float length, float angle, float tilt) {
@@ -38,10 +48,9 @@ public class TFGenWoodRoots extends TFGenerator {
 		return this.drawRoot(world, rand, pos, pos, length, angle, tilt);
 	}
 
-
 	private boolean drawRoot(World world, Random rand, BlockPos oPos, BlockPos pos, float length, float angle, float tilt) {
 		// generate a direction and a length
-		BlockPos dest = translate(pos, length, angle, tilt);
+		BlockPos dest = FeatureUtil.translate(pos, length, angle, tilt);
 
 		// restrict x and z to within 7
 		int limit = 6;
@@ -64,7 +73,7 @@ public class TFGenWoodRoots extends TFGenerator {
 		}
 
 		// if both the start and the end are in stone, put a root there
-		BlockPos[] lineArray = getBresehnamArrays(pos, dest);
+		BlockPos[] lineArray = FeatureUtil.getBresehnamArrays(pos, dest);
 		for (BlockPos coord : lineArray) {
 			this.placeRootBlock(world, coord, rootBlock);
 		}
@@ -74,20 +83,18 @@ public class TFGenWoodRoots extends TFGenerator {
 		if (length > 8) {
 			if (rand.nextInt(3) > 0) {
 				// length > 8, usually split off into another root half as long
-				BlockPos nextSrc = translate(pos, length / 2, angle, tilt);
+				BlockPos nextSrc = FeatureUtil.translate(pos, length / 2, angle, tilt);
 				float nextAngle = (angle + 0.25F + (rand.nextFloat() * 0.5F)) % 1.0F;
 				float nextTilt = 0.6F + rand.nextFloat() * 0.3F;
 				drawRoot(world, rand, oPos, nextSrc, length / 2.0F, nextAngle, nextTilt);
-
-
 			}
 		}
 
 		if (length > 6) {
 			if (rand.nextInt(4) == 0) {
 				// length > 6, potentially make oreball
-				BlockPos ballSrc = translate(pos, length / 2, angle, tilt);
-				BlockPos ballDest = translate(ballSrc, 1.5, (angle + 0.5F) % 1.0F, 0.75);
+				BlockPos ballSrc = FeatureUtil.translate(pos, length / 2, angle, tilt);
+				BlockPos ballDest = FeatureUtil.translate(ballSrc, 1.5, (angle + 0.5F) % 1.0F, 0.75);
 
 				this.placeRootBlock(world, ballSrc, oreBlock);
 				this.placeRootBlock(world, new BlockPos(ballSrc.getX(), ballSrc.getY(), ballDest.getZ()), oreBlock);
@@ -108,8 +115,7 @@ public class TFGenWoodRoots extends TFGenerator {
 	 */
 	protected void placeRootBlock(World world, BlockPos pos, BlockState state) {
 		if (TFTreeGenerator.canRootGrowIn(world, pos)) {
-			this.setBlockAndNotifyAdequately(world, pos, state);
+			world.setBlockState(pos, state);
 		}
 	}
-
 }

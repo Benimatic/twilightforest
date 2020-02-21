@@ -1,7 +1,6 @@
 package twilightforest.world.feature;
 
 import com.mojang.datafixers.Dynamic;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -11,18 +10,17 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
 import twilightforest.IMCHandler;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
+import twilightforest.world.feature.config.CaveStalactiteConfig;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
 
-//TODO: Placeholder FeatureConfig. Constructors may need rewrite
-public class TFGenCaveStalactite extends Feature<NoFeatureConfig> {
+public class TFGenCaveStalactite<T extends CaveStalactiteConfig> extends Feature<T> {
 
 	private static final List<StalactiteEntry> largeHillStalactites = new ArrayList<>();
 	private static final List<StalactiteEntry> mediumHillStalactites = new ArrayList<>();
@@ -37,29 +35,33 @@ public class TFGenCaveStalactite extends Feature<NoFeatureConfig> {
 	/**
 	 * Initializes a stalactite builder.  Actually also makes stalagmites
 	 */
-	public TFGenCaveStalactite(Function<Dynamic<?>, ? extends NoFeatureConfig> configIn, Block block, float size, boolean down) {
-		this(configIn, block.getDefaultState(), size, down);
-	}
+//	public TFGenCaveStalactite(Function<Dynamic<?>, ? extends NoFeatureConfig> configIn, Block block, float size, boolean down) {
+//		this(configIn, block.getDefaultState(), size, down);
+//	}
 
-	public TFGenCaveStalactite(Function<Dynamic<?>, ? extends NoFeatureConfig> configIn, BlockState blockState, float size, boolean down) {
-		super(configIn);
-		this.blockState = blockState;
-		this.sizeFactor = size;
-		this.maxLength = -1;
-		this.minHeight = -1;
-		this.hang = down;
-	}
+//	public TFGenCaveStalactite(Function<Dynamic<?>, ? extends NoFeatureConfig> configIn, BlockState blockState, float size, boolean down) {
+//		super(configIn);
+//		this.blockState = blockState;
+//		this.sizeFactor = size;
+//		this.maxLength = -1;
+//		this.minHeight = -1;
+//		this.hang = down;
+//	}
 
 	/**
 	 * Initializes a stalactite builder
 	 */
-	public TFGenCaveStalactite(Function<Dynamic<?>, ? extends NoFeatureConfig> configIn, BlockState blockState, float size, int maxLength, int minHeight) {
+//	public TFGenCaveStalactite(Function<Dynamic<?>, ? extends NoFeatureConfig> configIn, BlockState blockState, float size, int maxLength, int minHeight) {
+//		super(configIn);
+//		this.blockState = blockState;
+//		this.sizeFactor = size;
+//		this.maxLength = maxLength;
+//		this.minHeight = minHeight;
+//		this.hang = true;
+//	}
+
+	public TFGenCaveStalactite(Function<Dynamic<?>, T> configIn) {
 		super(configIn);
-		this.blockState = blockState;
-		this.sizeFactor = size;
-		this.maxLength = maxLength;
-		this.minHeight = minHeight;
-		this.hang = true;
 	}
 
 	/**
@@ -87,7 +89,7 @@ public class TFGenCaveStalactite extends Feature<NoFeatureConfig> {
 	 * This will return false if it can't find a valid ceiling and floor, or if there are other errors.
 	 */
 	@Override
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random random, BlockPos pos, NoFeatureConfig config) {
+	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random random, BlockPos pos, T config) {
 		int ceiling = Integer.MAX_VALUE;
 		int floor = -1;
 
@@ -123,7 +125,7 @@ public class TFGenCaveStalactite extends Feature<NoFeatureConfig> {
 			}
 			// if we get something that's not cave material, fail!
 			// actually stalactites can hang above water or lava
-			if (m != Material.EARTH && m != Material.ROCK && (!hang && m != Material.WATER) && (!hang && m != Material.LAVA)) {
+			if (m != Material.EARTH && m != Material.ROCK && (!config.hang && m != Material.WATER) && (!config.hang && m != Material.LAVA)) {
 				return false;
 			}
 			// okay, we found a valid floor.
@@ -131,22 +133,22 @@ public class TFGenCaveStalactite extends Feature<NoFeatureConfig> {
 			break;
 		}
 
-		int length = (int) ((ceiling - floor) * this.sizeFactor * random.nextFloat());
+		int length = (int) ((ceiling - floor) * config.sizeFactor * random.nextFloat());
 
 		// check max length
-		if (this.maxLength > -1 && length > this.maxLength) {
-			length = this.maxLength;
+		if (config.maxLength > -1 && length > config.maxLength) {
+			length = config.maxLength;
 		}
 
 		// check minimum height
-		if (this.minHeight > -1 && ceiling - floor - length < this.minHeight) {
+		if (config.minHeight > -1 && ceiling - floor - length < config.minHeight) {
 			return false;
 		}
 
-		return makeSpike(world, random, new BlockPos(pos.getX(), hang ? ceiling : floor, pos.getZ()), length);
+		return makeSpike(world, random, new BlockPos(pos.getX(), config.hang ? ceiling : floor, pos.getZ()), length, config);
 	}
 
-	public boolean makeSpike(IWorld world, Random random, BlockPos pos, int maxLength) {
+	public boolean makeSpike(IWorld world, Random random, BlockPos pos, int maxLength, T config) {
 
 		int diameter = (int) (maxLength / 4.5); // diameter of the base
 
@@ -167,7 +169,7 @@ public class TFGenCaveStalactite extends Feature<NoFeatureConfig> {
 					spikeLength = random.nextInt((int) (maxLength / (dist + 0.25)));
 				}
 
-				int dir = hang ? -1 : 1;
+				int dir = config.hang ? -1 : 1;
 
 				// check if we're generating over anything
 				if (!world.getBlockState(pos.add(dx, -dir, dz)).getMaterial().isSolid()) {
@@ -175,7 +177,7 @@ public class TFGenCaveStalactite extends Feature<NoFeatureConfig> {
 				}
 
 				for (int dy = 0; dy != (spikeLength * dir); dy += dir) {
-					setBlockState(world, pos.add(dx, dy, dz), blockState);
+					setBlockState(world, pos.add(dx, dy, dz), config.blockState);
 				}
 			}
 		}

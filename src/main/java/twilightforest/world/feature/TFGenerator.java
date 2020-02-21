@@ -11,7 +11,7 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 
 import java.util.Random;
 
-
+//TODO: Murder this
 public abstract class TFGenerator extends WorldGenerator implements IBlockSettable {
 
 	public TFGenerator() {
@@ -333,19 +333,18 @@ public abstract class TFGenerator extends WorldGenerator implements IBlockSettab
 		}
 	}
 
-	/**
-	 * Does the block have only air blocks adjacent
-	 */
-	//Used by TFGenHangingLamps
-	protected static boolean surroundedByAir(IBlockAccess world, BlockPos pos) {
-		for (Direction e : Direction.VALUES) {
-			if (!world.isAirBlock(pos.offset(e))) {
-				return false;
-			}
-		}
-
-		return true;
-	}
+//	/**
+//	 * Does the block have only air blocks adjacent
+//	 */
+//	protected static boolean surroundedByAir(IBlockAccess world, BlockPos pos) {
+//		for (Direction e : Direction.VALUES) {
+//			if (!world.isAirBlock(pos.offset(e))) {
+//				return false;
+//			}
+//		}
+//
+//		return true;
+//	}
 
 	/**
 	 * Does the block have at least 1 air block adjacent

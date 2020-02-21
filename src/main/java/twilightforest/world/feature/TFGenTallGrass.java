@@ -8,6 +8,7 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 
 import java.util.Random;
 
+//TODO: It should be noted that there is a RandomPatchFeature class that accepts all BlockStates, since it also includes Pumpkins and Melons. Look into that Feature and make this redunant
 // [VanillaCopy] of WorldGenTallGrass, relevant changes noted
 public class TFGenTallGrass extends WorldGenerator {
 

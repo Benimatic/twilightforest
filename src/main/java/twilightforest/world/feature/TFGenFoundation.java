@@ -1,22 +1,32 @@
 package twilightforest.world.feature;
 
+import com.mojang.datafixers.Dynamic;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.GenerationSettings;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
 import twilightforest.loot.TFTreasure;
+import twilightforest.util.FeatureUtil;
 
 import java.util.Random;
+import java.util.function.Function;
 
+public class TFGenFoundation<T extends NoFeatureConfig> extends Feature<T> {
 
-public class TFGenFoundation extends TFGenerator {
+	public TFGenFoundation(Function<Dynamic<?>, T> configIn) {
+		super(configIn);
+	}
 
 	@Override
-	public boolean generate(World world, Random rand, BlockPos pos) {
+	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, T config) {
 		int sx = 5 + rand.nextInt(5);
 		int sz = 5 + rand.nextInt(5);
 
 
-		if (!isAreaSuitable(world, rand, pos, sx, 4, sz)) {
+		if (!FeatureUtil.isAreaSuitable(world, rand, pos, sx, 4, sz)) {
 			return false;
 		}
 
@@ -28,12 +38,12 @@ public class TFGenFoundation extends TFGenerator {
 					int ht = rand.nextInt(4) + 1;
 
 					for (int cy = 0; cy <= ht; cy++) {
-						setBlockAndNotifyAdequately(world, pos.add(cx, cy - 1, cz), randStone(rand, cy + 1));
+						world.setBlockState(pos.add(cx, cy - 1, cz), FeatureUtil.randStone(rand, cy + 1), 3);
 					}
 				} else {
 					// destroyed wooden plank floor
 					if (rand.nextInt(3) != 0) {
-						setBlockAndNotifyAdequately(world, pos.add(cx, -1, cz), Blocks.PLANKS.getDefaultState());
+						world.setBlockState(pos.add(cx, -1, cz), Blocks.OAK_PLANKS.getDefaultState(), 3);
 					}
 				}
 			}
@@ -46,18 +56,17 @@ public class TFGenFoundation extends TFGenerator {
 			// clear basement
 			for (int cx = 1; cx < sx; cx++) {
 				for (int cz = 1; cz < sz; cz++) {
-					setBlockAndNotifyAdequately(world, pos.add(cx, -3, cz), Blocks.AIR.getDefaultState());
-					setBlockAndNotifyAdequately(world, pos.add(cx, -4, cz), Blocks.AIR.getDefaultState());
+					world.setBlockState(pos.add(cx, -3, cz), Blocks.AIR.getDefaultState(), 3);
+					world.setBlockState(pos.add(cx, -4, cz), Blocks.AIR.getDefaultState(), 3);
 				}
 			}
 
 			// make chest
 			int cx = rand.nextInt(sx - 1) + 1;
 			int cz = rand.nextInt(sz - 1) + 1;
-			TFTreasure.basement.generateChest(world, pos.add(cx, -4, cz), false);
+			TFTreasure.basement.generateChest(world.getWorld(), pos.add(cx, -4, cz), false);
 
 		}
-
 
 		return true;
 	}

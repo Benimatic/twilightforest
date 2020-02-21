@@ -1,68 +1,77 @@
 package twilightforest.world.feature;
 
+import com.mojang.datafixers.Dynamic;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.GenerationSettings;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
 import twilightforest.loot.TFTreasure;
+import twilightforest.util.FeatureUtil;
 
 import java.util.Random;
+import java.util.function.Function;
 
+public class TFGenWell<T extends NoFeatureConfig> extends Feature<T> {
 
-public class TFGenWell extends TFGenerator {
-
-	@Override
-	public boolean generate(World world, Random rand, BlockPos pos) {
-		if (rand.nextInt(4) == 0) {
-			return generate4x4Well(world, rand, pos);
-		} else {
-			return generate3x3Well(world, rand, pos);
-		}
+	public TFGenWell(Function<Dynamic<?>, T> configIn) {
+		super(configIn);
 	}
 
+	@Override
+	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, T config) {
+		if (rand.nextInt(4) == 0) {
+			return generate4x4Well(world.getWorld(), rand, pos);
+		} else {
+			return generate3x3Well(world.getWorld(), rand, pos);
+		}
+	}
 
 	/**
 	 * make a cute little well
 	 */
 	public boolean generate3x3Well(World world, Random rand, BlockPos pos) {
-		if (!isAreaSuitable(world, rand, pos, 3, 4, 3)) {
+		if (!FeatureUtil.isAreaSuitable(world, rand, pos, 3, 4, 3)) {
 			return false;
 		}
 
-
 		// make a cute well!
-		setBlockAndNotifyAdequately(world, pos, Blocks.MOSSY_COBBLESTONE.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(1, 0, 0), Blocks.MOSSY_COBBLESTONE.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(2, 0, 0), Blocks.MOSSY_COBBLESTONE.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(0, 0, 2), Blocks.MOSSY_COBBLESTONE.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(1, 0, 2), Blocks.MOSSY_COBBLESTONE.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(2, 0, 2), Blocks.MOSSY_COBBLESTONE.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(0, 0, 1), Blocks.MOSSY_COBBLESTONE.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(2, 0, 1), Blocks.MOSSY_COBBLESTONE.getDefaultState());
+		world.setBlockState(pos, Blocks.MOSSY_COBBLESTONE.getDefaultState());
+		world.setBlockState(pos.add(1, 0, 0), Blocks.MOSSY_COBBLESTONE.getDefaultState());
+		world.setBlockState(pos.add(2, 0, 0), Blocks.MOSSY_COBBLESTONE.getDefaultState());
+		world.setBlockState(pos.add(0, 0, 2), Blocks.MOSSY_COBBLESTONE.getDefaultState());
+		world.setBlockState(pos.add(1, 0, 2), Blocks.MOSSY_COBBLESTONE.getDefaultState());
+		world.setBlockState(pos.add(2, 0, 2), Blocks.MOSSY_COBBLESTONE.getDefaultState());
+		world.setBlockState(pos.add(0, 0, 1), Blocks.MOSSY_COBBLESTONE.getDefaultState());
+		world.setBlockState(pos.add(2, 0, 1), Blocks.MOSSY_COBBLESTONE.getDefaultState());
 
-		setBlockAndNotifyAdequately(world, pos.add(1, 0, 1), Blocks.WATER.getDefaultState());
+		world.setBlockState(pos.add(1, 0, 1), Blocks.WATER.getDefaultState());
 
-		setBlockAndNotifyAdequately(world, pos.add(0, 1, 0), Blocks.OAK_FENCE.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(2, 1, 0), Blocks.OAK_FENCE.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(0, 1, 2), Blocks.OAK_FENCE.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(2, 1, 2), Blocks.OAK_FENCE.getDefaultState());
+		world.setBlockState(pos.add(0, 1, 0), Blocks.OAK_FENCE.getDefaultState());
+		world.setBlockState(pos.add(2, 1, 0), Blocks.OAK_FENCE.getDefaultState());
+		world.setBlockState(pos.add(0, 1, 2), Blocks.OAK_FENCE.getDefaultState());
+		world.setBlockState(pos.add(2, 1, 2), Blocks.OAK_FENCE.getDefaultState());
 
-		setBlockAndNotifyAdequately(world, pos.add(0, 2, 0), Blocks.OAK_FENCE.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(2, 2, 0), Blocks.OAK_FENCE.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(0, 2, 2), Blocks.OAK_FENCE.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(2, 2, 2), Blocks.OAK_FENCE.getDefaultState());
+		world.setBlockState(pos.add(0, 2, 0), Blocks.OAK_FENCE.getDefaultState());
+		world.setBlockState(pos.add(2, 2, 0), Blocks.OAK_FENCE.getDefaultState());
+		world.setBlockState(pos.add(0, 2, 2), Blocks.OAK_FENCE.getDefaultState());
+		world.setBlockState(pos.add(2, 2, 2), Blocks.OAK_FENCE.getDefaultState());
 
-		setBlockAndNotifyAdequately(world, pos.add(0, 3, 0), Blocks.WOODEN_SLAB.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(1, 3, 0), Blocks.WOODEN_SLAB.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(2, 3, 0), Blocks.WOODEN_SLAB.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(0, 3, 2), Blocks.WOODEN_SLAB.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(1, 3, 2), Blocks.WOODEN_SLAB.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(2, 3, 2), Blocks.WOODEN_SLAB.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(0, 3, 1), Blocks.WOODEN_SLAB.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(2, 3, 1), Blocks.WOODEN_SLAB.getDefaultState());
+		world.setBlockState(pos.add(0, 3, 0), Blocks.OAK_SLAB.getDefaultState());
+		world.setBlockState(pos.add(1, 3, 0), Blocks.OAK_SLAB.getDefaultState());
+		world.setBlockState(pos.add(2, 3, 0), Blocks.OAK_SLAB.getDefaultState());
+		world.setBlockState(pos.add(0, 3, 2), Blocks.OAK_SLAB.getDefaultState());
+		world.setBlockState(pos.add(1, 3, 2), Blocks.OAK_SLAB.getDefaultState());
+		world.setBlockState(pos.add(2, 3, 2), Blocks.OAK_SLAB.getDefaultState());
+		world.setBlockState(pos.add(0, 3, 1), Blocks.OAK_SLAB.getDefaultState());
+		world.setBlockState(pos.add(2, 3, 1), Blocks.OAK_SLAB.getDefaultState());
 
-		setBlockAndNotifyAdequately(world, pos.add(1, 3, 1), Blocks.PLANKS.getDefaultState());
+		world.setBlockState(pos.add(1, 3, 1), Blocks.OAK_PLANKS.getDefaultState());
 
 
 		boolean madeTreasure = false;
@@ -79,14 +88,14 @@ public class TFGenWell extends TFGenerator {
 			}
 
 			// okay, we're good to dig.
-			setBlockAndNotifyAdequately(world, pos.add(1, dy, 1), Blocks.WATER.getDefaultState());
+			world.setBlockState(pos.add(1, dy, 1), Blocks.WATER.getDefaultState());
 
 			// if we're below 15 squares, there's a small chance of treasure
 			if (dy < -15 && !madeTreasure && rand.nextInt(8) == 0) {
 				//TODO: more directions
-				setBlockAndNotifyAdequately(world, pos.add(2, dy, 1), Blocks.WATER.getDefaultState());
-				setBlockAndNotifyAdequately(world, pos.add(3, dy + 1, 1), Blocks.AIR.getDefaultState());
-				setBlockAndNotifyAdequately(world, pos.add(3, dy, 1), Blocks.AIR.getDefaultState());
+				world.setBlockState(pos.add(2, dy, 1), Blocks.WATER.getDefaultState());
+				world.setBlockState(pos.add(3, dy + 1, 1), Blocks.AIR.getDefaultState());
+				world.setBlockState(pos.add(3, dy, 1), Blocks.AIR.getDefaultState());
 
 				//TODO: unique treasure table that is themed for underwater well exploration
 				TFTreasure.basement.generateChest(world, pos.add(3, dy, 1), false);
@@ -100,56 +109,56 @@ public class TFGenWell extends TFGenerator {
 	}
 
 	private boolean generate4x4Well(World world, Random rand, BlockPos pos) {
-		if (!isAreaSuitable(world, rand, pos, 4, 4, 4)) {
+		if (!FeatureUtil.isAreaSuitable(world, rand, pos, 4, 4, 4)) {
 			return false;
 		}
 
 		// make a cute well!
-		setBlockAndNotifyAdequately(world, pos, Blocks.MOSSY_COBBLESTONE.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(1, 0, 0), Blocks.MOSSY_COBBLESTONE.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(2, 0, 0), Blocks.MOSSY_COBBLESTONE.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(3, 0, 0), Blocks.MOSSY_COBBLESTONE.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(0, 0, 3), Blocks.MOSSY_COBBLESTONE.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(1, 0, 3), Blocks.MOSSY_COBBLESTONE.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(2, 0, 3), Blocks.MOSSY_COBBLESTONE.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(3, 0, 3), Blocks.MOSSY_COBBLESTONE.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(0, 0, 1), Blocks.MOSSY_COBBLESTONE.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(0, 0, 2), Blocks.MOSSY_COBBLESTONE.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(3, 0, 1), Blocks.MOSSY_COBBLESTONE.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(3, 0, 2), Blocks.MOSSY_COBBLESTONE.getDefaultState());
+		world.setBlockState(pos, Blocks.MOSSY_COBBLESTONE.getDefaultState());
+		world.setBlockState(pos.add(1, 0, 0), Blocks.MOSSY_COBBLESTONE.getDefaultState());
+		world.setBlockState(pos.add(2, 0, 0), Blocks.MOSSY_COBBLESTONE.getDefaultState());
+		world.setBlockState(pos.add(3, 0, 0), Blocks.MOSSY_COBBLESTONE.getDefaultState());
+		world.setBlockState(pos.add(0, 0, 3), Blocks.MOSSY_COBBLESTONE.getDefaultState());
+		world.setBlockState(pos.add(1, 0, 3), Blocks.MOSSY_COBBLESTONE.getDefaultState());
+		world.setBlockState(pos.add(2, 0, 3), Blocks.MOSSY_COBBLESTONE.getDefaultState());
+		world.setBlockState(pos.add(3, 0, 3), Blocks.MOSSY_COBBLESTONE.getDefaultState());
+		world.setBlockState(pos.add(0, 0, 1), Blocks.MOSSY_COBBLESTONE.getDefaultState());
+		world.setBlockState(pos.add(0, 0, 2), Blocks.MOSSY_COBBLESTONE.getDefaultState());
+		world.setBlockState(pos.add(3, 0, 1), Blocks.MOSSY_COBBLESTONE.getDefaultState());
+		world.setBlockState(pos.add(3, 0, 2), Blocks.MOSSY_COBBLESTONE.getDefaultState());
 
-		setBlockAndNotifyAdequately(world, pos.add(1, 0, 1), Blocks.WATER.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(2, 0, 1), Blocks.WATER.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(1, 0, 2), Blocks.WATER.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(2, 0, 2), Blocks.WATER.getDefaultState());
+		world.setBlockState(pos.add(1, 0, 1), Blocks.WATER.getDefaultState());
+		world.setBlockState(pos.add(2, 0, 1), Blocks.WATER.getDefaultState());
+		world.setBlockState(pos.add(1, 0, 2), Blocks.WATER.getDefaultState());
+		world.setBlockState(pos.add(2, 0, 2), Blocks.WATER.getDefaultState());
 
-		setBlockAndNotifyAdequately(world, pos.add(0, 1, 0), Blocks.OAK_FENCE.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(3, 1, 0), Blocks.OAK_FENCE.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(0, 1, 3), Blocks.OAK_FENCE.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(3, 1, 3), Blocks.OAK_FENCE.getDefaultState());
+		world.setBlockState(pos.add(0, 1, 0), Blocks.OAK_FENCE.getDefaultState());
+		world.setBlockState(pos.add(3, 1, 0), Blocks.OAK_FENCE.getDefaultState());
+		world.setBlockState(pos.add(0, 1, 3), Blocks.OAK_FENCE.getDefaultState());
+		world.setBlockState(pos.add(3, 1, 3), Blocks.OAK_FENCE.getDefaultState());
 
-		setBlockAndNotifyAdequately(world, pos.add(0, 2, 0), Blocks.OAK_FENCE.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(3, 2, 0), Blocks.OAK_FENCE.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(0, 2, 3), Blocks.OAK_FENCE.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(3, 2, 3), Blocks.OAK_FENCE.getDefaultState());
+		world.setBlockState(pos.add(0, 2, 0), Blocks.OAK_FENCE.getDefaultState());
+		world.setBlockState(pos.add(3, 2, 0), Blocks.OAK_FENCE.getDefaultState());
+		world.setBlockState(pos.add(0, 2, 3), Blocks.OAK_FENCE.getDefaultState());
+		world.setBlockState(pos.add(3, 2, 3), Blocks.OAK_FENCE.getDefaultState());
 
-		setBlockAndNotifyAdequately(world, pos.add(0, 3, 0), Blocks.WOODEN_SLAB.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(1, 3, 0), Blocks.WOODEN_SLAB.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(2, 3, 0), Blocks.WOODEN_SLAB.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(3, 3, 0), Blocks.WOODEN_SLAB.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(0, 3, 3), Blocks.WOODEN_SLAB.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(1, 3, 3), Blocks.WOODEN_SLAB.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(2, 3, 3), Blocks.WOODEN_SLAB.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(3, 3, 3), Blocks.WOODEN_SLAB.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(0, 3, 1), Blocks.WOODEN_SLAB.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(0, 3, 2), Blocks.WOODEN_SLAB.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(3, 3, 1), Blocks.WOODEN_SLAB.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(3, 3, 2), Blocks.WOODEN_SLAB.getDefaultState());
+		world.setBlockState(pos.add(0, 3, 0), Blocks.OAK_SLAB.getDefaultState());
+		world.setBlockState(pos.add(1, 3, 0), Blocks.OAK_SLAB.getDefaultState());
+		world.setBlockState(pos.add(2, 3, 0), Blocks.OAK_SLAB.getDefaultState());
+		world.setBlockState(pos.add(3, 3, 0), Blocks.OAK_SLAB.getDefaultState());
+		world.setBlockState(pos.add(0, 3, 3), Blocks.OAK_SLAB.getDefaultState());
+		world.setBlockState(pos.add(1, 3, 3), Blocks.OAK_SLAB.getDefaultState());
+		world.setBlockState(pos.add(2, 3, 3), Blocks.OAK_SLAB.getDefaultState());
+		world.setBlockState(pos.add(3, 3, 3), Blocks.OAK_SLAB.getDefaultState());
+		world.setBlockState(pos.add(0, 3, 1), Blocks.OAK_SLAB.getDefaultState());
+		world.setBlockState(pos.add(0, 3, 2), Blocks.OAK_SLAB.getDefaultState());
+		world.setBlockState(pos.add(3, 3, 1), Blocks.OAK_SLAB.getDefaultState());
+		world.setBlockState(pos.add(3, 3, 2), Blocks.OAK_SLAB.getDefaultState());
 
-		setBlockAndNotifyAdequately(world, pos.add(1, 3, 1), Blocks.PLANKS.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(2, 3, 1), Blocks.PLANKS.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(1, 3, 2), Blocks.PLANKS.getDefaultState());
-		setBlockAndNotifyAdequately(world, pos.add(2, 3, 2), Blocks.PLANKS.getDefaultState());
+		world.setBlockState(pos.add(1, 3, 1), Blocks.OAK_PLANKS.getDefaultState());
+		world.setBlockState(pos.add(2, 3, 1), Blocks.OAK_PLANKS.getDefaultState());
+		world.setBlockState(pos.add(1, 3, 2), Blocks.OAK_PLANKS.getDefaultState());
+		world.setBlockState(pos.add(2, 3, 2), Blocks.OAK_PLANKS.getDefaultState());
 
 
 		// now drill each of the 4 well squares down 20 squares, or until we hit something
@@ -170,7 +179,7 @@ public class TFGenWell extends TFGenerator {
 					}
 
 					// okay, we're good to dig.
-					setBlockAndNotifyAdequately(world, dPos, Blocks.WATER.getDefaultState());
+					world.setBlockState(dPos, Blocks.WATER.getDefaultState());
 				}
 
 			}
@@ -179,5 +188,4 @@ public class TFGenWell extends TFGenerator {
 
 		return true;
 	}
-
 }

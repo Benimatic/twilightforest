@@ -9,7 +9,7 @@ import twilightforest.entity.EntityTFSkeletonDruid;
 
 import java.util.Random;
 
-
+//TODO: Are we still using this? Do we need to keep it?
 public class TFGenWitchHut extends TFGenerator {
 
 	/**

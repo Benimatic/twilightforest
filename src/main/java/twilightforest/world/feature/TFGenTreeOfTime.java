@@ -11,6 +11,7 @@ import twilightforest.world.TFWorld;
 
 import java.util.Random;
 
+//TODO: Must extend AbstractTreeFeature. TFGenHollowTree is a Feature
 public class TFGenTreeOfTime extends TFGenHollowTree {
 
 	public TFGenTreeOfTime(boolean notify) {

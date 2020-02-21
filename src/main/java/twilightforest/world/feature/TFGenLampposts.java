@@ -1,24 +1,30 @@
 package twilightforest.world.feature;
 
+import com.mojang.datafixers.Dynamic;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.GenerationSettings;
+import net.minecraft.world.gen.feature.BlockStateFeatureConfig;
+import net.minecraft.world.gen.feature.Feature;
 
 import java.util.Random;
+import java.util.function.Function;
 
-public class TFGenLampposts extends TFGenerator {
+public class TFGenLampposts<T extends BlockStateFeatureConfig> extends Feature<T> {
 
 	private static final Rotation[] ROTATIONS = Rotation.values();
-	private final BlockState lamp;
+	//private final BlockState lamp;
 
-	public TFGenLampposts(BlockState state) {
-		lamp = state;
+	public TFGenLampposts(Function<Dynamic<?>, T> configIn) {
+		super(configIn);
 	}
 
 	@Override
-	public boolean generate(World world, Random rand, BlockPos pos) {
+	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, T config) {
 		// we should start on a grass block
 		if (world.getBlockState(pos.down()).getBlock() != Blocks.GRASS) {
 			return false;
@@ -30,7 +36,7 @@ public class TFGenLampposts extends TFGenerator {
 		// is it air or replaceable above our grass block
 		for (int dy = 0; dy <= height; dy++) {
 			BlockState state = world.getBlockState(pos.up(dy));
-			if (!state.getBlock().isAir(state, world, pos.up(dy)) && !state.getBlock().isReplaceable(world, pos.up(dy))) {
+			if (!state.getBlock().isAir(state, world, pos.up(dy)) && !state.getMaterial().isReplaceable()) {
 				return false;
 			}
 		}
@@ -39,8 +45,7 @@ public class TFGenLampposts extends TFGenerator {
 		for (int dy = 0; dy < height; dy++) {
 			world.setBlockState(pos.up(dy), Blocks.OAK_FENCE.getDefaultState(), 16 | 2);
 		}
-		world.setBlockState(pos.up(height), lamp.withRotation(ROTATIONS[rand.nextInt(ROTATIONS.length)]), 16 | 2);
+		world.setBlockState(pos.up(height), config.state.rotate(ROTATIONS[rand.nextInt(ROTATIONS.length)]), 16 | 2);
 		return true;
 	}
-
 }

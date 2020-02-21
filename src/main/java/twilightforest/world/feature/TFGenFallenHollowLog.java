@@ -1,36 +1,44 @@
 package twilightforest.world.feature;
 
-import net.minecraft.block.BlockLeaves;
-import net.minecraft.block.BlockLog;
+import com.mojang.datafixers.Dynamic;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.LogBlock;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import twilightforest.block.BlockTFLog;
-import twilightforest.block.BlockTFPlant;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.GenerationSettings;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
 import twilightforest.block.TFBlocks;
-import twilightforest.enums.PlantVariant;
+import twilightforest.util.FeatureUtil;
 
 import java.util.Random;
+import java.util.function.Function;
 
-public class TFGenFallenHollowLog extends TFGenerator {
+public class TFGenFallenHollowLog<T extends NoFeatureConfig> extends Feature<T> {
 
-	final BlockState mossPatch = TFBlocks.twilight_plant.getDefaultState().with(BlockTFPlant.VARIANT, PlantVariant.MOSSPATCH);
-	final BlockState oakLeaves = TFBlocks.twilight_leaves.getDefaultState().with(BlockLeaves.CHECK_DECAY, false);
-	final BlockState oakLogWithZAxis = TFBlocks.twilight_log.getDefaultState().with(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.Z);
-	final BlockState oakLogWithXAxis = TFBlocks.twilight_log.getDefaultState().with(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.X);
+	final BlockState mossPatch = TFBlocks.moss_patch.get().getDefaultState();
+	final BlockState oakLeaves = TFBlocks.oak_leaves.get().getDefaultState()/*.with(BlockLeaves.CHECK_DECAY, false)*/;
+	final BlockState oakLogWithZAxis = TFBlocks.oak_log.get().getDefaultState().with(LogBlock.AXIS, Direction.Axis.Z);
+	final BlockState oakLogWithXAxis = TFBlocks.oak_log.get().getDefaultState().with(LogBlock.AXIS, Direction.Axis.X);
 	final BlockState dirt = Blocks.DIRT.getDefaultState();
-	final BlockState firefly = TFBlocks.firefly.getDefaultState();
+	final BlockState firefly = TFBlocks.firefly.get().getDefaultState();
+
+	public TFGenFallenHollowLog(Function<Dynamic<?>, T> configIn) {
+		super(configIn);
+	}
 
 	@Override
-	public boolean generate(World world, Random rand, BlockPos pos) {
-
-		return rand.nextBoolean() ? makeLog4Z(world, rand, pos) : makeLog4X(world, rand, pos);
+	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, T config) {
+		return rand.nextBoolean() ? makeLog4Z(world.getWorld(), rand, pos) : makeLog4X(world.getWorld(), rand, pos);
 	}
 
 	private boolean makeLog4Z(World world, Random rand, BlockPos pos) {
 		// +Z 4x4 log
-		if (!isAreaSuitable(world, rand, pos, 9, 3, 4)) {
+		if (!FeatureUtil.isAreaSuitable(world, rand, pos, 9, 3, 4)) {
 			return false;
 		}
 
@@ -53,36 +61,36 @@ public class TFGenFallenHollowLog extends TFGenerator {
 		for (int dz = 0; dz < 4; dz++) {
 			// floor
 			if (rand.nextBoolean()) {
-				this.setBlockAndNotifyAdequately(world, pos.add(1, -1, dz + 3), oakLogWithZAxis);
+				world.setBlockState(pos.add(1, -1, dz + 3), oakLogWithZAxis);
 				if (rand.nextBoolean()) {
-					this.setBlockAndNotifyAdequately(world, pos.add(1, 0, dz + 3), mossPatch);
+					world.setBlockState(pos.add(1, 0, dz + 3), mossPatch);
 				}
 			} else {
-				this.setBlockAndNotifyAdequately(world, pos.add(1, -1, dz + 3), dirt);
-				this.setBlockAndNotifyAdequately(world, pos.add(1, 0, dz + 3), mossPatch);
+				world.setBlockState(pos.add(1, -1, dz + 3), dirt);
+				world.setBlockState(pos.add(1, 0, dz + 3), mossPatch);
 			}
 			if (rand.nextBoolean()) {
-				this.setBlockAndNotifyAdequately(world, pos.add(2, -1, dz + 3), oakLogWithZAxis);
+				world.setBlockState(pos.add(2, -1, dz + 3), oakLogWithZAxis);
 				if (rand.nextBoolean()) {
-					this.setBlockAndNotifyAdequately(world, pos.add(2, 0, dz + 3), mossPatch);
+					world.setBlockState(pos.add(2, 0, dz + 3), mossPatch);
 				}
 			} else {
-				this.setBlockAndNotifyAdequately(world, pos.add(2, -1, dz + 3), dirt);
-				this.setBlockAndNotifyAdequately(world, pos.add(2, 0, dz + 3), mossPatch);
+				world.setBlockState(pos.add(2, -1, dz + 3), dirt);
+				world.setBlockState(pos.add(2, 0, dz + 3), mossPatch);
 			}
 
 			// log part
-			this.setBlockAndNotifyAdequately(world, pos.add(0, 0, dz + 3), oakLogWithZAxis);
-			this.setBlockAndNotifyAdequately(world, pos.add(3, 0, dz + 3), oakLogWithZAxis);
-			this.setBlockAndNotifyAdequately(world, pos.add(0, 1, dz + 3), oakLogWithZAxis);
-			this.setBlockAndNotifyAdequately(world, pos.add(3, 1, dz + 3), oakLogWithZAxis);
-			this.setBlockAndNotifyAdequately(world, pos.add(1, 2, dz + 3), oakLogWithZAxis);
-			this.setBlockAndNotifyAdequately(world, pos.add(2, 2, dz + 3), oakLogWithZAxis);
+			world.setBlockState(pos.add(0, 0, dz + 3), oakLogWithZAxis);
+			world.setBlockState(pos.add(3, 0, dz + 3), oakLogWithZAxis);
+			world.setBlockState(pos.add(0, 1, dz + 3), oakLogWithZAxis);
+			world.setBlockState(pos.add(3, 1, dz + 3), oakLogWithZAxis);
+			world.setBlockState(pos.add(1, 2, dz + 3), oakLogWithZAxis);
+			world.setBlockState(pos.add(2, 2, dz + 3), oakLogWithZAxis);
 			if (rand.nextBoolean()) {
-				this.setBlockAndNotifyAdequately(world, pos.add(1, 3, dz + 3), mossPatch);
+				world.setBlockState(pos.add(1, 3, dz + 3), mossPatch);
 			}
 			if (rand.nextBoolean()) {
-				this.setBlockAndNotifyAdequately(world, pos.add(2, 3, dz + 3), mossPatch);
+				world.setBlockState(pos.add(2, 3, dz + 3), mossPatch);
 			}
 		}
 
@@ -91,19 +99,19 @@ public class TFGenFallenHollowLog extends TFGenerator {
 		boolean plusX = rand.nextBoolean();
 		for (int dz = 0; dz < 3; dz++) {
 			if (rand.nextBoolean()) {
-				this.setBlockAndNotifyAdequately(world, pos.add(plusX ? 3 : 0, 2, dz + offZ), oakLeaves);
+				world.setBlockState(pos.add(plusX ? 3 : 0, 2, dz + offZ), oakLeaves);
 				if (rand.nextBoolean()) {
-					this.setBlockAndNotifyAdequately(world, pos.add(plusX ? 3 : 0, 3, dz + offZ), oakLeaves);
+					world.setBlockState(pos.add(plusX ? 3 : 0, 3, dz + offZ), oakLeaves);
 				}
 				if (rand.nextBoolean()) {
-					this.setBlockAndNotifyAdequately(world, pos.add(plusX ? 4 : -1, 2, dz + offZ), oakLeaves);
+					world.setBlockState(pos.add(plusX ? 4 : -1, 2, dz + offZ), oakLeaves);
 				}
 			}
 		}
 
 
 		// firefly
-		this.setBlockAndNotifyAdequately(world, pos.add(plusX ? 0 : 3, 2, rand.nextInt(4) + 3), firefly);
+		world.setBlockState(pos.add(plusX ? 0 : 3, 2, rand.nextInt(4) + 3), firefly);
 
 
 		return true;
@@ -111,13 +119,13 @@ public class TFGenFallenHollowLog extends TFGenerator {
 
 	private void makeNegativeZJaggy(World world, BlockPos pos, int length, int dx, int dy) {
 		for (int dz = -length; dz < 0; dz++) {
-			this.setBlockAndNotifyAdequately(world, pos.add(dx, dy, dz + 3), oakLogWithZAxis);
+			world.setBlockState(pos.add(dx, dy, dz + 3), oakLogWithZAxis);
 		}
 	}
 
 	private void makePositiveZJaggy(World world, BlockPos pos, int length, int dx, int dy) {
 		for (int dz = 0; dz < length; dz++) {
-			this.setBlockAndNotifyAdequately(world, pos.add(dx, dy, dz + 7), oakLogWithZAxis);
+			world.setBlockState(pos.add(dx, dy, dz + 7), oakLogWithZAxis);
 		}
 	}
 
@@ -126,7 +134,7 @@ public class TFGenFallenHollowLog extends TFGenerator {
 	 */
 	private boolean makeLog4X(World world, Random rand, BlockPos pos) {
 		// +Z 4x4 log
-		if (!isAreaSuitable(world, rand, pos, 4, 3, 9)) {
+		if (!FeatureUtil.isAreaSuitable(world, rand, pos, 4, 3, 9)) {
 			return false;
 		}
 
@@ -149,36 +157,36 @@ public class TFGenFallenHollowLog extends TFGenerator {
 		for (int dx = 0; dx < 4; dx++) {
 			// floor
 			if (rand.nextBoolean()) {
-				this.setBlockAndNotifyAdequately(world, pos.add(dx + 3, -1, 1), oakLogWithXAxis);
+				world.setBlockState(pos.add(dx + 3, -1, 1), oakLogWithXAxis);
 				if (rand.nextBoolean()) {
-					this.setBlockAndNotifyAdequately(world, pos.add(dx + 3, 0, 1), mossPatch);
+					world.setBlockState(pos.add(dx + 3, 0, 1), mossPatch);
 				}
 			} else {
-				this.setBlockAndNotifyAdequately(world, pos.add(dx + 3, -1, 1), dirt);
-				this.setBlockAndNotifyAdequately(world, pos.add(dx + 3, 0, 1), mossPatch);
+				world.setBlockState(pos.add(dx + 3, -1, 1), dirt);
+				world.setBlockState(pos.add(dx + 3, 0, 1), mossPatch);
 			}
 			if (rand.nextBoolean()) {
-				this.setBlockAndNotifyAdequately(world, pos.add(dx + 3, -1, 2), oakLogWithXAxis);
+				world.setBlockState(pos.add(dx + 3, -1, 2), oakLogWithXAxis);
 				if (rand.nextBoolean()) {
-					this.setBlockAndNotifyAdequately(world, pos.add(dx + 3, 0, 2), mossPatch);
+					world.setBlockState(pos.add(dx + 3, 0, 2), mossPatch);
 				}
 			} else {
-				this.setBlockAndNotifyAdequately(world, pos.add(dx + 3, -1, 2), dirt);
-				this.setBlockAndNotifyAdequately(world, pos.add(dx + 3, 0, 2), mossPatch);
+				world.setBlockState(pos.add(dx + 3, -1, 2), dirt);
+				world.setBlockState(pos.add(dx + 3, 0, 2), mossPatch);
 			}
 
 			// log part
-			this.setBlockAndNotifyAdequately(world, pos.add(dx + 3, 0, 0), oakLogWithXAxis);
-			this.setBlockAndNotifyAdequately(world, pos.add(dx + 3, 0, 3), oakLogWithXAxis);
-			this.setBlockAndNotifyAdequately(world, pos.add(dx + 3, 1, 0), oakLogWithXAxis);
-			this.setBlockAndNotifyAdequately(world, pos.add(dx + 3, 1, 3), oakLogWithXAxis);
-			this.setBlockAndNotifyAdequately(world, pos.add(dx + 3, 2, 1), oakLogWithXAxis);
-			this.setBlockAndNotifyAdequately(world, pos.add(dx + 3, 2, 2), oakLogWithXAxis);
+			world.setBlockState(pos.add(dx + 3, 0, 0), oakLogWithXAxis);
+			world.setBlockState(pos.add(dx + 3, 0, 3), oakLogWithXAxis);
+			world.setBlockState(pos.add(dx + 3, 1, 0), oakLogWithXAxis);
+			world.setBlockState(pos.add(dx + 3, 1, 3), oakLogWithXAxis);
+			world.setBlockState(pos.add(dx + 3, 2, 1), oakLogWithXAxis);
+			world.setBlockState(pos.add(dx + 3, 2, 2), oakLogWithXAxis);
 			if (rand.nextBoolean()) {
-				this.setBlockAndNotifyAdequately(world, pos.add(dx + 3, 3, 1), mossPatch);
+				world.setBlockState(pos.add(dx + 3, 3, 1), mossPatch);
 			}
 			if (rand.nextBoolean()) {
-				this.setBlockAndNotifyAdequately(world, pos.add(dx + 3, 3, 2), mossPatch);
+				world.setBlockState(pos.add(dx + 3, 3, 2), mossPatch);
 			}
 
 		}
@@ -189,32 +197,32 @@ public class TFGenFallenHollowLog extends TFGenerator {
 		for (int dx = 0; dx < 3; dx++) {
 			if (rand.nextBoolean()) {
 
-				this.setBlockAndNotifyAdequately(world, pos.add(dx + offX, 2, plusZ ? 3 : 0), oakLeaves);
+				world.setBlockState(pos.add(dx + offX, 2, plusZ ? 3 : 0), oakLeaves);
 				if (rand.nextBoolean()) {
-					this.setBlockAndNotifyAdequately(world, pos.add(dx + offX, 3, plusZ ? 3 : 0), oakLeaves);
+					world.setBlockState(pos.add(dx + offX, 3, plusZ ? 3 : 0), oakLeaves);
 				}
 				if (rand.nextBoolean()) {
-					this.setBlockAndNotifyAdequately(world, pos.add(dx + offX, 2, plusZ ? 4 : -1), oakLeaves);
+					world.setBlockState(pos.add(dx + offX, 2, plusZ ? 4 : -1), oakLeaves);
 				}
 			}
 		}
 
 
 		// firefly
-		this.setBlockAndNotifyAdequately(world, pos.add(rand.nextInt(4) + 3, 2, plusZ ? 0 : 3), firefly);
+		world.setBlockState(pos.add(rand.nextInt(4) + 3, 2, plusZ ? 0 : 3), firefly);
 
 		return true;
 	}
 
 	private void makeNegativeXJaggy(World world, BlockPos pos, int length, int dz, int dy) {
 		for (int dx = -length; dx < 0; dx++) {
-			this.setBlockAndNotifyAdequately(world, pos.add(dx + 3, dy, dz), oakLogWithXAxis);
+			world.setBlockState(pos.add(dx + 3, dy, dz), oakLogWithXAxis);
 		}
 	}
 
 	private void makePositiveXJaggy(World world, BlockPos pos, int length, int dz, int dy) {
 		for (int dx = 0; dx < length; dx++) {
-			this.setBlockAndNotifyAdequately(world, pos.add(dx + 7, dy, dz), oakLogWithXAxis);
+			world.setBlockState(pos.add(dx + 7, dy, dz), oakLogWithXAxis);
 		}
 	}
 }
