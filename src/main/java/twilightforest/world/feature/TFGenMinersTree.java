@@ -1,35 +1,43 @@
 package twilightforest.world.feature;
 
-import net.minecraft.block.BlockLeaves;
-import net.minecraft.block.BlockLog;
+import com.mojang.datafixers.Dynamic;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.IWorldGenerationReader;
 import twilightforest.block.BlockTFMagicLog;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.MagicWoodVariant;
+import twilightforest.util.FeatureUtil;
 import twilightforest.world.TFWorld;
+import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
 import java.util.Random;
+import java.util.Set;
+import java.util.function.Function;
 
-public class TFGenMinersTree extends TFTreeGenerator {
+public class TFGenMinersTree<T extends TFTreeFeatureConfig> extends TFTreeGenerator<T> {
 
-	public TFGenMinersTree() {
-		this(false);
-	}
+//	public TFGenMinersTree() {
+//		this(false);
+//	}
+//
+//	public TFGenMinersTree(boolean notify) {
+//		super(notify);
+//		this.treeState = TFBlocks.magic_log.getDefaultState().with(BlockTFMagicLog.VARIANT, MagicWoodVariant.MINE);
+//		this.branchState = treeState.with(BlockLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
+//		this.leafState = TFBlocks.magic_leaves.getDefaultState().with(BlockTFMagicLog.VARIANT, MagicWoodVariant.MINE).with(BlockLeaves.CHECK_DECAY, false);
+//		this.rootState = TFBlocks.root.getDefaultState();
+//	}
 
-	public TFGenMinersTree(boolean notify) {
-		super(notify);
-		this.treeState = TFBlocks.magic_log.getDefaultState().with(BlockTFMagicLog.VARIANT, MagicWoodVariant.MINE);
-		this.branchState = treeState.with(BlockLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
-		this.leafState = TFBlocks.magic_leaves.getDefaultState().with(BlockTFMagicLog.VARIANT, MagicWoodVariant.MINE).with(BlockLeaves.CHECK_DECAY, false);
-		this.rootState = TFBlocks.root.getDefaultState();
+	public TFGenMinersTree(Function<Dynamic<?>, T> config) {
+		super(config);
 	}
 
 	@Override
-	public boolean generate(World world, Random rand, BlockPos pos) {
-
+	protected boolean generate(IWorldGenerationReader world, Random rand, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, MutableBoundingBox mbb, T config) {
 		if (pos.getY() >= TFWorld.MAXHEIGHT - 12) {
 			return false;
 		}
@@ -62,9 +70,8 @@ public class TFGenMinersTree extends TFTreeGenerator {
 		setBlockAndNotifyAdequately(world, pos.up(), TFBlocks.magic_log_core.getDefaultState().with(BlockTFMagicLog.VARIANT, MagicWoodVariant.MINE));
 		world.scheduleUpdate(pos.up(), TFBlocks.magic_log_core, TFBlocks.magic_log_core.tickRate(world));
 
-
 		// root bulb
-		if (TFGenerator.hasAirAround(world, pos.down())) {
+		if (FeatureUtil.hasAirAround(world, pos.down())) {
 			this.setBlockAndNotifyAdequately(world, pos.down(), treeState);
 		} else {
 			this.setBlockAndNotifyAdequately(world, pos.down(), rootState);
@@ -80,7 +87,6 @@ public class TFGenMinersTree extends TFTreeGenerator {
 		return true;
 	}
 
-
 	protected void putBranchWithLeaves(World world, BlockPos pos, boolean bushy) {
 		setBlockAndNotifyAdequately(world, pos, branchState);
 
@@ -90,11 +96,9 @@ public class TFGenMinersTree extends TFTreeGenerator {
 					if (!bushy && Math.abs(ly) > 0 && Math.abs(lx) > 0) {
 						continue;
 					}
-					TFGenerator.putLeafBlock(this, world, pos.add(lx, ly, lz), leafState);
+					FeatureUtil.putLeafBlock(this, world, pos.add(lx, ly, lz), leafState);
 				}
 			}
 		}
 	}
-
-
 }

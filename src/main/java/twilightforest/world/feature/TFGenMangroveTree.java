@@ -1,51 +1,54 @@
 package twilightforest.world.feature;
 
 import com.google.common.collect.Lists;
-import net.minecraft.block.BlockLeaves;
-import net.minecraft.block.BlockLog;
-import net.minecraft.block.BlockState;
+import com.mojang.datafixers.Dynamic;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
-import twilightforest.block.BlockTFLeaves;
-import twilightforest.block.BlockTFLog;
-import twilightforest.block.TFBlocks;
-import twilightforest.enums.LeavesVariant;
-import twilightforest.enums.WoodVariant;
+import net.minecraft.world.gen.IWorldGenerationReader;
+import twilightforest.util.FeatureUtil;
+import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
+import java.util.function.Function;
 
-public class TFGenMangroveTree extends TFTreeGenerator {
+public class TFGenMangroveTree<T extends TFTreeFeatureConfig> extends TFTreeGenerator<T> {
 
-	private boolean checkForWater;
+	//private boolean checkForWater;
 	private List<LeafBlob> leaves = Lists.newArrayList();
 
-	public TFGenMangroveTree() {
-		this(false);
+//	public TFGenMangroveTree() {
+//		this(false);
+//	}
+//
+//	public TFGenMangroveTree(boolean notify) {
+//		super(notify);
+//
+//		this.checkForWater = !notify;
+//
+//		treeState = TFBlocks.twilight_log.getDefaultState().with(BlockTFLog.VARIANT, WoodVariant.MANGROVE);
+//		branchState = treeState.with(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
+//		leafState = TFBlocks.twilight_leaves.getDefaultState().with(BlockTFLeaves.VARIANT, LeavesVariant.MANGROVE).with(BlockLeaves.CHECK_DECAY, false);
+//		rootState = TFBlocks.root.getDefaultState();
+//	}
+
+	public TFGenMangroveTree(Function<Dynamic<?>, T> config) {
+		super(config);
 	}
 
-	public TFGenMangroveTree(boolean notify) {
-		super(notify);
-
-		this.checkForWater = !notify;
-
-		treeState = TFBlocks.twilight_log.getDefaultState().with(BlockTFLog.VARIANT, WoodVariant.MANGROVE);
-		branchState = treeState.with(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
-		leafState = TFBlocks.twilight_leaves.getDefaultState().with(BlockTFLeaves.VARIANT, LeavesVariant.MANGROVE).with(BlockLeaves.CHECK_DECAY, false);
-		rootState = TFBlocks.root.getDefaultState();
-	}
+//	@Override
+//	protected void setBlockAndNotifyAdequately(World worldIn, BlockPos pos, BlockState state) {
+//		if (canGrowInto(worldIn.getBlockState(pos).getBlock()))
+//			worldIn.setBlockState(pos, state);
+//	}
 
 	@Override
-	protected void setBlockAndNotifyAdequately(World worldIn, BlockPos pos, BlockState state) {
-		if (canGrowInto(worldIn.getBlockState(pos).getBlock()))
-			super.setBlockAndNotifyAdequately(worldIn, pos, state);
-	}
-
-	@Override
-	public boolean generate(World world, Random random, BlockPos pos) {
+	protected boolean generate(IWorldGenerationReader world, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, MutableBoundingBox mbb, T config) {
 		// we only start over water
-		if (pos.getY() >= 128 - 18 - 1 || (this.checkForWater && world.getBlockState(pos.down()).getBlock() != Blocks.WATER)) {
+		if (pos.getY() >= 128 - 18 - 1 || (config.checkWater && world.getBlockState(pos.down()).getBlock() != Blocks.WATER)) {
 			return false;
 		}
 
@@ -82,9 +85,9 @@ public class TFGenMangroveTree extends TFTreeGenerator {
 	}
 
 	private void makeLeafBlob(World world, BlockPos pos, int size) {
-		TFGenerator.makeLeafCircle(this, world, pos.down(), size - 1, leafState, false);
-		TFGenerator.makeLeafCircle(this, world, pos, size, leafState, false);
-		TFGenerator.makeLeafCircle(this, world, pos.up(), size - 2, leafState, false);
+		FeatureUtil.makeLeafCircle(this, world, pos.down(), size - 1, leafState, false);
+		FeatureUtil.makeLeafCircle(this, world, pos, size, leafState, false);
+		FeatureUtil.makeLeafCircle(this, world, pos.up(), size - 2, leafState, false);
 	}
 
 	/**
@@ -92,7 +95,7 @@ public class TFGenMangroveTree extends TFTreeGenerator {
 	 */
 	private void buildBranch(World world, Random random, BlockPos pos, int height, double length, double angle, double tilt, boolean trunk) {
 		BlockPos src = pos.up(height);
-		BlockPos dest = TFGenerator.translate(src, length, angle, tilt);
+		BlockPos dest = FeatureUtil.translate(src, length, angle, tilt);
 
 		// variable size leaves
 		int bSize = 2 + random.nextInt(3);
@@ -100,7 +103,7 @@ public class TFGenMangroveTree extends TFTreeGenerator {
 		// only actually draw the branch if it's not going to load new chunks
 		if (world.isAreaLoaded(dest, bSize + 1)) {
 
-			TFGenerator.drawBresehnam(this, world, src, dest, trunk ? treeState : branchState);
+			FeatureUtil.drawBresehnam(this, world, src, dest, trunk ? treeState : branchState);
 
 			// we only need these side blocks if the size is > 2
 			if (bSize > 2) {
@@ -115,17 +118,18 @@ public class TFGenMangroveTree extends TFTreeGenerator {
 
 	/**
 	 * Build a root.  (Which is really like a branch without the leaves)
+	 * TODO: Method is unused. Remove?
 	 */
 	private void buildRoot(World world, BlockPos pos, int height, double length, double angle, double tilt) {
 		BlockPos src = pos.up(height);
-		BlockPos dest = TFGenerator.translate(src, length, angle, tilt);
+		BlockPos dest = FeatureUtil.translate(src, length, angle, tilt);
 
 		// only actually draw the root if it's not going to load new chunks
 		if (world.isAreaLoaded(dest, 1)) {
-			BlockPos[] lineArray = TFGenerator.getBresehnamArrays(src, dest);
+			BlockPos[] lineArray = FeatureUtil.getBresehnamArrays(src, dest);
 			boolean stillAboveGround = true;
 			for (BlockPos coord : lineArray) {
-				if (stillAboveGround && TFGenerator.hasAirAround(world, coord)) {
+				if (stillAboveGround && FeatureUtil.hasAirAround(world, coord)) {
 					this.setBlockAndNotifyAdequately(world, coord, branchState);
 					this.setBlockAndNotifyAdequately(world, coord.down(), branchState);
 				} else {

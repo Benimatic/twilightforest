@@ -19,6 +19,7 @@ import twilightforest.biomes.TFBiomeBase;
 import javax.annotation.Nullable;
 import java.util.function.Predicate;
 
+//TODO: Turn this into a GenerationSettings class
 public class TFWorld {
 
 	public static final int SEALEVEL = 31;

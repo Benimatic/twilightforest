@@ -1,40 +1,50 @@
 package twilightforest.world.feature;
 
+import com.mojang.datafixers.Dynamic;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.EntityList;
 import net.minecraft.block.Blocks;
-import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.GenerationSettings;
+import net.minecraft.world.gen.feature.Feature;
 import net.minecraftforge.common.IPlantable;
 import twilightforest.loot.TFTreasure;
 import twilightforest.block.BlockTFLog;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.EntityTFSwarmSpider;
+import twilightforest.util.FeatureUtil;
 import twilightforest.world.TFWorld;
+import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
 import java.util.Random;
+import java.util.function.Function;
 
-public class TFGenHollowTree extends TFGenerator {
+public class TFGenHollowTree<T extends TFTreeFeatureConfig> extends Feature<T> {
 
 	private static final int LEAF_DUNGEON_CHANCE = 8;
 
-	protected BlockState treeState = TFBlocks.twilight_log.getDefaultState();
-	protected BlockState branchState = treeState.with(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
-	protected BlockState leafState = TFBlocks.twilight_leaves.getDefaultState().with(BlockLeaves.CHECK_DECAY, false);
-	protected BlockState rootState = TFBlocks.root.getDefaultState();
+	protected BlockState treeState = TFBlocks.oak_log.get().getDefaultState();
+	protected BlockState branchState = treeState.with(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE); //TODO: Twilight Oak Wood
+	protected BlockState leafState = TFBlocks.oak_leaves.get().getDefaultState()/*.with(BlockLeaves.CHECK_DECAY, false)*/;
+	protected BlockState rootState = TFBlocks.root.get().getDefaultState();
 
-	protected IPlantable source = TFBlocks.twilight_sapling;
+	protected IPlantable source = TFBlocks.oak_sapling.get();
 
-	public TFGenHollowTree() {
-		this(false);
-	}
+//	public TFGenHollowTree() {
+//		this(false);
+//	}
+//
+//	public TFGenHollowTree(boolean notify) {
+//		super(notify);
+//	}
 
-	public TFGenHollowTree(boolean notify) {
-		super(notify);
+	public TFGenHollowTree(Function<Dynamic<?>, T> config) {
+		super(config);
 	}
 
 	public static boolean canGrowInto(Block blockType) {
@@ -49,8 +59,7 @@ public class TFGenHollowTree extends TFGenerator {
 	}
 
 	@Override
-	public boolean generate(World world, Random random, BlockPos pos) {
-
+	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random random, BlockPos pos, T config) {
 		int height = random.nextInt(64) + 32;
 		int diameter = random.nextInt(4) + 1;
 
@@ -118,7 +127,6 @@ public class TFGenHollowTree extends TFGenerator {
 		// build the crown
 		buildFullCrown(world, random, pos, diameter, height);
 
-
 		// 3-5 couple branches on the way up...
 		int numBranches = random.nextInt(3) + 3;
 		for (int i = 0; i <= numBranches; i++) {
@@ -129,7 +137,6 @@ public class TFGenHollowTree extends TFGenerator {
 
 		// 3-5 roots at the bottom
 		buildBranchRing(world, random, pos, diameter, 3, 2, 6, 0, 0.75D, 0, 3, 5, 3, false);
-
 
 		// several more taproots
 		buildBranchRing(world, random, pos, diameter, 1, 2, 8, 0, 0.9D, 0, 3, 5, 3, false);
@@ -168,6 +175,7 @@ public class TFGenHollowTree extends TFGenerator {
 	 * Build the crown of the tree.  This builds a smaller crown, since the large ones were causing some performance issues
 	 *
 	 * @param height
+	 * TODO: Method is unused. Remove?
 	 */
 	protected void buildWeakCrown(World world, Random random, BlockPos pos, int diameter, int height) {
 		int crownRadius = 8;
@@ -217,14 +225,12 @@ public class TFGenHollowTree extends TFGenerator {
 		}
 	}
 
-
 	/**
 	 * This function builds the hollow trunk of the tree
 	 */
 	protected void buildTrunk(World world, Random random, BlockPos pos, int diameter, int height) {
 
 		int hollow = diameter / 2;
-
 
 		// go down 4 squares and fill in extra trunk as needed, in case we're on uneven terrain
 		for (int dx = -diameter; dx <= diameter; dx++) {
@@ -237,7 +243,7 @@ public class TFGenHollowTree extends TFGenerator {
 
 					if (dist <= diameter) {
 						BlockPos dPos = pos.add(dx, dy, dz);
-						if (hasAirAround(world, dPos)) {
+						if (FeatureUtil.hasAirAround(world, dPos)) {
 							this.setBlockAndNotifyAdequately(world, dPos, dist > hollow ? treeState : branchState);
 						} else {
 							this.setBlockAndNotifyAdequately(world, dPos, rootState);
@@ -263,7 +269,6 @@ public class TFGenHollowTree extends TFGenerator {
 						setBlockAndNotifyAdequately(world, dPos, treeState);
 					}
 
-
 					// fill it with lava!
 					if (dist <= hollow) {
 						// just kidding!
@@ -278,14 +283,13 @@ public class TFGenHollowTree extends TFGenerator {
 				}
 			}
 		}
-
 	}
 
 	/**
 	 * Make a branch!
 	 */
 	protected void makeMedBranch(World world, Random random, BlockPos pos, int diameter, int branchHeight, double length, double angle, double tilt, boolean leafy) {
-		BlockPos src = translate(pos.up(branchHeight), diameter, angle, 0.5);
+		BlockPos src = FeatureUtil.translate(pos.up(branchHeight), diameter, angle, 0.5);
 		makeMedBranch(world, random, src, length, angle, tilt, leafy);
 	}
 
@@ -293,9 +297,9 @@ public class TFGenHollowTree extends TFGenerator {
 	 * Make a branch!
 	 */
 	protected void makeMedBranch(World world, Random random, BlockPos src, double length, double angle, double tilt, boolean leafy) {
-		BlockPos dest = translate(src, length, angle, tilt);
+		BlockPos dest = FeatureUtil.translate(src, length, angle, tilt);
 
-		drawBresehnam(this, world, src, dest, branchState);
+		FeatureUtil.drawBresehnam(this, world, src, dest, branchState);
 
 		// with leaves!
 
@@ -307,15 +311,13 @@ public class TFGenHollowTree extends TFGenerator {
 				double slength = random.nextDouble() * 0.6 + 0.2;
 				int[] bdst = translate(src[0], src[1], src[2], slength, angle, tilt);
 
-
 				drawBlob(bdst[0], bdst[1], bdst[2], 2, leafBlock, false);		
 			}
 			*/
 
 			// and a blob at the end
-			drawLeafBlob(this, world, dest, 2, leafState);
+			FeatureUtil.drawLeafBlob(this, world, dest, 2, leafState);
 		}
-
 
 		// and several small branches
 
@@ -330,7 +332,7 @@ public class TFGenHollowTree extends TFGenerator {
 			outVar = (random.nextDouble() * 0.8) + 0.2;
 			tiltVar = (random.nextDouble() * 0.75) + 0.15;
 
-			BlockPos bsrc = translate(src, length * outVar, angle, tilt);
+			BlockPos bsrc = FeatureUtil.translate(src, length * outVar, angle, tilt);
 			double slength = length * 0.4;
 
 			makeSmallBranch(world, random, bsrc, slength, angle + angleVar, tilt * tiltVar, leafy);
@@ -341,13 +343,13 @@ public class TFGenHollowTree extends TFGenerator {
 	 * Make a small branch with a leaf blob at the end
 	 */
 	protected void makeSmallBranch(World world, Random random, BlockPos src, double length, double angle, double tilt, boolean leafy) {
-		BlockPos dest = translate(src, length, angle, tilt);
+		BlockPos dest = FeatureUtil.translate(src, length, angle, tilt);
 
-		drawBresehnam(this, world, src, dest, branchState);
+		FeatureUtil.drawBresehnam(this, world, src, dest, branchState);
 
 		if (leafy) {
 			byte leafRad = (byte) (random.nextInt(2) + 1);
-			drawLeafBlob(this, world, dest, leafRad, leafState);
+			FeatureUtil.drawLeafBlob(this, world, dest, leafRad, leafState);
 		}
 	}
 
@@ -355,21 +357,22 @@ public class TFGenHollowTree extends TFGenerator {
 	 * Make a small branch at a certain height
 	 */
 	protected void makeSmallBranch(World world, Random random, BlockPos pos, int diameter, int branchHeight, double length, double angle, double tilt, boolean leafy) {
-		BlockPos src = translate(pos.up(branchHeight), diameter, angle, 0.5);
+		BlockPos src = FeatureUtil.translate(pos.up(branchHeight), diameter, angle, 0.5);
 		makeSmallBranch(world, random, src, length, angle, tilt, leafy);
 	}
 
 	/**
 	 * Make a root
+	 * TODO: Parameter "random" is unused. Remove?
 	 */
 	protected void makeRoot(World world, Random random, BlockPos pos, int diameter, int branchHeight, double length, double angle, double tilt) {
-		BlockPos src = translate(pos.up(branchHeight), diameter, angle, 0.5);
-		BlockPos dest = translate(src, length, angle, tilt);
+		BlockPos src = FeatureUtil.translate(pos.up(branchHeight), diameter, angle, 0.5);
+		BlockPos dest = FeatureUtil.translate(src, length, angle, tilt);
 
-		BlockPos[] lineArray = getBresehnamArrays(src, dest);
+		BlockPos[] lineArray = FeatureUtil.getBresehnamArrays(src, dest);
 		boolean stillAboveGround = true;
 		for (BlockPos coord : lineArray) {
-			if (stillAboveGround && hasAirAround(world, coord)) {
+			if (stillAboveGround && FeatureUtil.hasAirAround(world, coord)) {
 				this.setBlockAndNotifyAdequately(world, coord, branchState);
 				this.setBlockAndNotifyAdequately(world, coord.down(), branchState);
 			} else {
@@ -386,10 +389,10 @@ public class TFGenHollowTree extends TFGenerator {
 	 * The large branch will have 1-4 medium branches and several small branches too
 	 */
 	protected void makeLargeBranch(World world, Random random, BlockPos src, double length, double angle, double tilt, boolean leafy) {
-		BlockPos dest = translate(src, length, angle, tilt);
+		BlockPos dest = FeatureUtil.translate(src, length, angle, tilt);
 
 		// draw the main branch
-		drawBresehnam(this, world, src, dest, branchState);
+		FeatureUtil.drawBresehnam(this, world, src, dest, branchState);
 
 		// reinforce it
 		//drawBresehnam(src[0], src[1] + 1, src[2], dest[0], dest[1], dest[2], treeBlock, true);
@@ -398,12 +401,12 @@ public class TFGenHollowTree extends TFGenerator {
 			int vx = (i & 2) == 0 ? 1 : 0;
 			int vy = (i & 1) == 0 ? 1 : -1;
 			int vz = (i & 2) == 0 ? 0 : 1;
-			drawBresehnam(this, world, src.add(vx, vy, vz), dest, branchState);
+			FeatureUtil.drawBresehnam(this, world, src.add(vx, vy, vz), dest, branchState);
 		}
 
 		if (leafy) {
 			// add a leaf blob at the end
-			drawLeafBlob(this, world, dest.up(), 3, leafState);
+			FeatureUtil.drawLeafBlob(this, world, dest.up(), 3, leafState);
 		}
 
 		// go about halfway out and make a few medium branches.
@@ -415,7 +418,7 @@ public class TFGenHollowTree extends TFGenerator {
 
 			double outVar = (random.nextDouble() * 0.3) + 0.3;
 			double angleVar = random.nextDouble() * 0.225 * ((i & 1) == 0 ? 1.0 : -1.0);
-			BlockPos bsrc = translate(src, length * outVar, angle, tilt);
+			BlockPos bsrc = FeatureUtil.translate(src, length * outVar, angle, tilt);
 
 			makeMedBranch(world, random, bsrc, length * 0.6, angle + angleVar, tilt, leafy);
 		}
@@ -426,7 +429,7 @@ public class TFGenHollowTree extends TFGenerator {
 
 			double outVar = (random.nextDouble() * 0.25) + 0.25;
 			double angleVar = random.nextDouble() * 0.25 * ((i & 1) == 0 ? 1.0 : -1.0);
-			BlockPos bsrc = translate(src, length * outVar, angle, tilt);
+			BlockPos bsrc = FeatureUtil.translate(src, length * outVar, angle, tilt);
 
 			makeSmallBranch(world, random, bsrc, Math.max(length * 0.3, 2), angle + angleVar, tilt, leafy);
 		}
@@ -434,17 +437,15 @@ public class TFGenHollowTree extends TFGenerator {
 		if (random.nextInt(LEAF_DUNGEON_CHANCE) == 0) {
 			makeLeafDungeon(world, random, dest.up());
 		}
-
 	}
-
 
 	private void makeLeafDungeon(World world, Random random, BlockPos pos) {
 		// make leaves
-		drawLeafBlob(this, world, pos, 4, leafState);
+		FeatureUtil.drawLeafBlob(this, world, pos, 4, leafState);
 		// wood support
-		drawBlob(this, world, pos, 3, branchState);
+		FeatureUtil.drawBlob(this, world, pos, 3, branchState);
 		// air
-		drawBlob(this, world, pos, 2, Blocks.AIR.getDefaultState());
+		FeatureUtil.drawBlob(this, world, pos, 2, Blocks.AIR.getDefaultState());
 
 		// spawner
 		world.setBlockState(pos.up(), Blocks.MOB_SPAWNER.getDefaultState(), 16 | 2);
@@ -466,7 +467,7 @@ public class TFGenHollowTree extends TFGenerator {
 	 * Make a large, branching "base" branch off of the tree
 	 */
 	protected void makeLargeBranch(World world, Random random, BlockPos pos, int diameter, int branchHeight, double length, double angle, double tilt, boolean leafy) {
-		BlockPos src = translate(pos.up(branchHeight), diameter, angle, 0.5);
+		BlockPos src = FeatureUtil.translate(pos.up(branchHeight), diameter, angle, 0.5);
 		makeLargeBranch(world, random, src, length, angle, tilt, leafy);
 	}
 
@@ -474,7 +475,7 @@ public class TFGenHollowTree extends TFGenerator {
 	 * Add a firefly at the specified height and angle.
 	 */
 	protected void addFirefly(World world, BlockPos pos, int diameter, int fHeight, double fAngle) {
-		BlockPos src = translate(pos.up(fHeight), diameter + 1, fAngle, 0.5);
+		BlockPos src = FeatureUtil.translate(pos.up(fHeight), diameter + 1, fAngle, 0.5);
 
 		fAngle = fAngle % 1.0;
 		Direction facing = Direction.EAST;
@@ -490,12 +491,12 @@ public class TFGenHollowTree extends TFGenerator {
 		}
 
 		if (TFBlocks.firefly.canPlaceBlockAt(world, src)) {
-			setBlockAndNotifyAdequately(world, src, TFBlocks.firefly.getDefaultState().with(BlockDirectional.FACING, facing));
+			setBlockAndNotifyAdequately(world, src, TFBlocks.firefly.get().getDefaultState().with(DirectionalBlock.FACING, facing));
 		}
 	}
 
 	protected void addCicada(World world, BlockPos pos, int diameter, int fHeight, double fAngle) {
-		BlockPos src = translate(pos.up(fHeight), diameter + 1, fAngle, 0.5);
+		BlockPos src = FeatureUtil.translate(pos.up(fHeight), diameter + 1, fAngle, 0.5);
 
 		fAngle = fAngle % 1.0;
 		Direction facing = Direction.EAST;
@@ -511,9 +512,7 @@ public class TFGenHollowTree extends TFGenerator {
 		}
 
 		if (TFBlocks.cicada.canPlaceBlockAt(world, src)) {
-			setBlockAndNotifyAdequately(world, src, TFBlocks.cicada.getDefaultState().with(BlockDirectional.FACING, facing));
+			setBlockAndNotifyAdequately(world, src, TFBlocks.cicada.get().getDefaultState().with(DirectionalBlock.FACING, facing));
 		}
 	}
-
-
 }

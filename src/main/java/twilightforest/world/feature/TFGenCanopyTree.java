@@ -1,28 +1,28 @@
 package twilightforest.world.feature;
 
 import com.google.common.collect.Lists;
-import net.minecraft.block.BlockLeaves;
-import net.minecraft.block.BlockLog;
+import com.mojang.datafixers.Dynamic;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
-import twilightforest.block.BlockTFLeaves;
-import twilightforest.block.BlockTFLog;
-import twilightforest.block.TFBlocks;
-import twilightforest.enums.LeavesVariant;
-import twilightforest.enums.WoodVariant;
+import net.minecraft.world.gen.IWorldGenerationReader;
+import twilightforest.util.FeatureUtil;
 import twilightforest.world.TFWorld;
+import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
+import java.util.function.Function;
 
 /**
  * Makes large trees with flat leaf ovals that provide a canopy for the forest
  *
  * @author Ben
  */
-public class TFGenCanopyTree extends TFTreeGenerator {
+public class TFGenCanopyTree<T extends TFTreeFeatureConfig> extends TFTreeGenerator<T> {
 
 	protected int minHeight = 20;
 	protected int chanceAddFirstFive = 3;
@@ -30,24 +30,24 @@ public class TFGenCanopyTree extends TFTreeGenerator {
 
 	private List<BlockPos> leaves = Lists.newArrayList();
 
-	public TFGenCanopyTree() {
-		this(false);
-	}
+//	public TFGenCanopyTree() {
+//		this(false);
+//	}
+//
+//	public TFGenCanopyTree(boolean notify) {
+//		super(notify);
+//		treeState = TFBlocks.twilight_log.getDefaultState().with(BlockTFLog.VARIANT, WoodVariant.CANOPY);
+//		branchState = treeState.with(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
+//		leafState = TFBlocks.twilight_leaves.getDefaultState().with(BlockTFLeaves.VARIANT, LeavesVariant.CANOPY).with(BlockLeaves.CHECK_DECAY, false);
+//		rootState = TFBlocks.root.getDefaultState();
+//	}
 
-	public TFGenCanopyTree(boolean notify) {
-		super(notify);
-		treeState = TFBlocks.twilight_log.getDefaultState().with(BlockTFLog.VARIANT, WoodVariant.CANOPY);
-		branchState = treeState.with(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
-		leafState = TFBlocks.twilight_leaves.getDefaultState().with(BlockTFLeaves.VARIANT, LeavesVariant.CANOPY).with(BlockLeaves.CHECK_DECAY, false);
-		rootState = TFBlocks.root.getDefaultState();
+	public TFGenCanopyTree(Function<Dynamic<?>, T> config) {
+		super(config);
 	}
 
 	@Override
-	public boolean generate(World world, Random random, BlockPos pos) {
-		return generate(world, random, pos, true);
-	}
-
-	public boolean generate(World world, Random random, BlockPos pos, boolean hasLeaves) {
+	protected boolean generate(IWorldGenerationReader world, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, MutableBoundingBox mbb, T config) {
 		// determine a height
 		int treeHeight = minHeight;
 		if (random.nextInt(chanceAddFirstFive) == 0) {
@@ -64,7 +64,7 @@ public class TFGenCanopyTree extends TFTreeGenerator {
 
 		// check if we're on dirt or grass
 		BlockState state = world.getBlockState(pos.down());
-		if (!state.getBlock().canSustainPlant(state, world, pos.down(), Direction.UP, source)) {
+		if (!state.getBlock().canSustainPlant(state, world, pos.down(), Direction.UP, config.getSapling())) {
 			return false;
 		}
 
@@ -81,14 +81,14 @@ public class TFGenCanopyTree extends TFTreeGenerator {
 		}
 
 		// add the actual leaves
-		if (hasLeaves)
+		if (config.hasLeaves)
 			for (BlockPos leafPos : leaves) {
 				makeLeafBlob(world, leafPos);
 			}
 
 		// root bulb
-		if (TFGenerator.hasAirAround(world, pos.down())) {
-			this.setBlockAndNotifyAdequately(world, pos.down(), treeState);
+		if (FeatureUtil.hasAirAround(world, pos.down())) {
+			this.setLogBlockState(world, random, pos.down(), trunk, mbb, config);
 		} else {
 			this.setBlockAndNotifyAdequately(world, pos.down(), rootState);
 		}
@@ -100,14 +100,18 @@ public class TFGenCanopyTree extends TFTreeGenerator {
 			buildRoot(world, pos, offset, b);
 		}
 
-
 		return true;
 	}
 
+//	@Override
+//	public boolean generate(World world, Random random, BlockPos pos) {
+//		return generate(world, random, pos, true);
+//	}
+
 	private void makeLeafBlob(World world, BlockPos leafPos) {
-		TFGenerator.makeLeafCircle(this, world, leafPos.down(), 3, leafState, true);
-		TFGenerator.makeLeafCircle(this, world, leafPos, 4, leafState, true);
-		TFGenerator.makeLeafCircle(this, world, leafPos.up(), 2, leafState, true);
+		FeatureUtil.makeLeafCircle(this, world, leafPos.down(), 3, leafState, true);
+		FeatureUtil.makeLeafCircle(this, world, leafPos, 4, leafState, true);
+		FeatureUtil.makeLeafCircle(this, world, leafPos.up(), 2, leafState, true);
 	}
 
 	/**
@@ -115,12 +119,12 @@ public class TFGenCanopyTree extends TFTreeGenerator {
 	 */
 	void buildBranch(World world, BlockPos pos, int height, double length, double angle, double tilt, boolean trunk, Random treeRNG) {
 		BlockPos src = pos.up(height);
-		BlockPos dest = TFGenerator.translate(src, length, angle, tilt);
+		BlockPos dest = FeatureUtil.translate(src, length, angle, tilt);
 
 		// only actually draw the branch if it's not going to load new chunks
 		if (world.isAreaLoaded(dest, 5)) {
 
-			TFGenerator.drawBresehnam(this, world, src, dest, trunk ? treeState : branchState);
+			FeatureUtil.drawBresehnam(this, world, src, dest, trunk ? treeState : branchState);
 
 			// seems to help lighting to place this firefly now
 			if (trunk) {

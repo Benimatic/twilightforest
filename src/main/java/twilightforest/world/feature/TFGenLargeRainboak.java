@@ -11,13 +11,15 @@ import net.minecraft.world.World;
 import twilightforest.block.BlockTFLeaves;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.LeavesVariant;
+import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
 import java.util.Random;
 
 /**
  * This is a lame copy of WorldGenLargeTree, since I'm too lazy to make my own tree and all the methods in WorldGenLargeTree are package-only
  */
-public class TFGenLargeRainboak extends TFTreeGenerator {
+//TODO: Hey...time to re-copy all this... :)
+public class TFGenLargeRainboak<T extends TFTreeFeatureConfig> extends TFTreeGenerator<T> {
 	/**
 	 * Contains three sets of two values that provide complimentary indices for a given 'major' index - 1 and 2 for 0, 0
 	 * and 2 for 1, and 0 and 1 for 2.

@@ -7,6 +7,9 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
+import net.minecraft.world.World;
+import net.minecraft.world.gen.blockstateprovider.BlockStateProvider;
+import twilightforest.world.feature.IBlockSettable;
 
 import java.util.Random;
 
@@ -21,6 +24,12 @@ public class FeatureUtil {
 				Math.round(Math.cos(rtilt) * distance),
 				Math.round(Math.cos(rangle) * Math.sin(rtilt) * distance)
 		);
+	}
+
+	public static void drawBresehnam(IBlockSettable generator, World world, BlockPos from, BlockPos to, BlockState state) {
+		for (BlockPos pixel : getBresehnamArrays(from, to)) {
+			generator.setBlockAndNotify(world, pixel, state);
+		}
 	}
 
 	public static BlockPos[] getBresehnamArrays(BlockPos src, BlockPos dest) {
@@ -106,6 +115,61 @@ public class FeatureUtil {
 		return lineArray;
 	}
 
+	public static void makeLeafCircle(IBlockSettable generator, World world, BlockPos pos, int rad, BlockState state, boolean useHack) {
+		// trace out a quadrant
+		for (byte dx = 0; dx <= rad; dx++) {
+			for (byte dz = 0; dz <= rad; dz++) {
+				int dist = Math.max(dx, dz) + (Math.min(dx, dz) >> 1);
+
+				//hack!  I keep getting failing leaves at a certain position.
+				if (useHack && dx == 3 && dz == 3) {
+					dist = 6;
+				}
+
+				// if we're inside the blob, fill it
+				if (dist <= rad) {
+					// do four at a time for easiness!
+					putLeafBlock(generator, world, pos.add(+dx, 0, +dz), state);
+					putLeafBlock(generator, world, pos.add(+dx, 0, -dz), state);
+					putLeafBlock(generator, world, pos.add(-dx, 0, +dz), state);
+					putLeafBlock(generator, world, pos.add(-dx, 0, -dz), state);
+				}
+			}
+		}
+	}
+
+	public static void putLeafBlock(IBlockSettable generator, World world, BlockPos pos, BlockState state) {
+		BlockState whatsThere = world.getBlockState(pos);
+
+		if (whatsThere.getBlock().canBeReplacedByLeaves(whatsThere, world, pos) && whatsThere.getBlock() != state.getBlock()) {
+			generator.setBlockAndNotify(world, pos, state);
+		}
+	}
+
+	// TODO: Parameter "useHack" is unused. Is it worth keeping? -Androsa
+	public static void makeLeafCircle2(IBlockSettable generator, World world, BlockPos pos, int rad, BlockState state, boolean useHack) {
+		// trace out a quadrant
+		for (byte dx = 0; dx <= rad; dx++) {
+			for (byte dz = 0; dz <= rad; dz++) {
+//				int dist = Math.max(dx, dz) + (int)(Math.min(dx, dz) * 0.6F);
+//
+//				//hack!  I keep getting failing leaves at a certain position.
+//				if (useHack && dx == 3 && dz == 3) {
+//					dist = 6;
+//				}
+
+				// if we're inside the blob, fill it
+				if (dx * dx + dz * dz <= rad * rad) {
+					// do four at a time for easiness!
+					putLeafBlock(generator, world, pos.add(1 + dx, 0, 1 + dz), state);
+					putLeafBlock(generator, world, pos.add(1 + dx, 0, -dz), state);
+					putLeafBlock(generator, world, pos.add(-dx, 0, 1 + dz), state);
+					putLeafBlock(generator, world, pos.add(-dx, 0, -dz), state);
+				}
+			}
+		}
+	}
+
 	public static BlockState randStone(Random rand, int howMuch) {
 		return rand.nextInt(howMuch) >= 1 ? Blocks.COBBLESTONE.getDefaultState() : Blocks.MOSSY_COBBLESTONE.getDefaultState();
 	}
@@ -142,6 +206,72 @@ public class FeatureUtil {
 		return flag;
 	}
 
+	public static void drawBlob(IBlockSettable generator, World world, BlockPos pos, int rad, BlockState state) {
+		// then trace out a quadrant
+		for (byte dx = 0; dx <= rad; dx++) {
+			for (byte dy = 0; dy <= rad; dy++) {
+				for (byte dz = 0; dz <= rad; dz++) {
+					// determine how far we are from the center.
+					int dist = 0;
+					if (dx >= dy && dx >= dz) {
+						dist = dx + (Math.max(dy, dz) >> 1) + (Math.min(dy, dz) >> 2);
+					} else if (dy >= dx && dy >= dz) {
+						dist = dy + (Math.max(dx, dz) >> 1) + (Math.min(dx, dz) >> 2);
+					} else {
+						dist = dz + (Math.max(dx, dy) >> 1) + (Math.min(dx, dy) >> 2);
+					}
+
+
+					// if we're inside the blob, fill it
+					if (dist <= rad) {
+						// do eight at a time for easiness!
+						generator.setBlockAndNotify(world, pos.add(+dx, +dy, +dz), state);
+						generator.setBlockAndNotify(world, pos.add(+dx, +dy, -dz), state);
+						generator.setBlockAndNotify(world, pos.add(-dx, +dy, +dz), state);
+						generator.setBlockAndNotify(world, pos.add(-dx, +dy, -dz), state);
+						generator.setBlockAndNotify(world, pos.add(+dx, -dy, +dz), state);
+						generator.setBlockAndNotify(world, pos.add(+dx, -dy, -dz), state);
+						generator.setBlockAndNotify(world, pos.add(-dx, -dy, +dz), state);
+						generator.setBlockAndNotify(world, pos.add(-dx, -dy, -dz), state);
+					}
+				}
+			}
+		}
+	}
+
+	public static void drawLeafBlob(IBlockSettable generator, World world, BlockPos pos, int rad, BlockState state) {
+		// then trace out a quadrant
+		for (byte dx = 0; dx <= rad; dx++) {
+			for (byte dy = 0; dy <= rad; dy++) {
+				for (byte dz = 0; dz <= rad; dz++) {
+					// determine how far we are from the center.
+					int dist = 0;
+					if (dx >= dy && dx >= dz) {
+						dist = dx + (Math.max(dy, dz) >> 1) + (Math.min(dy, dz) >> 2);
+					} else if (dy >= dx && dy >= dz) {
+						dist = dy + (Math.max(dx, dz) >> 1) + (Math.min(dx, dz) >> 2);
+					} else {
+						dist = dz + (Math.max(dx, dy) >> 1) + (Math.min(dx, dy) >> 2);
+					}
+
+
+					// if we're inside the blob, fill it
+					if (dist <= rad) {
+						// do eight at a time for easiness!
+						putLeafBlock(generator, world, pos.add(+dx, +dy, +dz), state);
+						putLeafBlock(generator, world, pos.add(+dx, +dy, -dz), state);
+						putLeafBlock(generator, world, pos.add(-dx, +dy, +dz), state);
+						putLeafBlock(generator, world, pos.add(-dx, +dy, -dz), state);
+						putLeafBlock(generator, world, pos.add(+dx, -dy, +dz), state);
+						putLeafBlock(generator, world, pos.add(+dx, -dy, -dz), state);
+						putLeafBlock(generator, world, pos.add(-dx, -dy, +dz), state);
+						putLeafBlock(generator, world, pos.add(-dx, -dy, -dz), state);
+					}
+				}
+			}
+		}
+	}
+
 	public static boolean surroundedByAir(IWorldReader world, BlockPos pos) {
 		for (Direction e : Direction.values()) {
 			if (!world.isAirBlock(pos.offset(e))) {
@@ -150,5 +280,33 @@ public class FeatureUtil {
 		}
 
 		return true;
+	}
+
+	public static boolean hasAirAround(World world, BlockPos pos) {
+		for (Direction e : Direction.values()) {
+			if (e == Direction.DOWN)
+				continue; // todo 1.9 was in old logic
+			if (world.isBlockLoaded(pos.offset(e))
+					&& world.isAirBlock(pos.offset(e))) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public static boolean isNearSolid(World world, BlockPos pos) {
+		for (Direction e : Direction.values()) {
+			if (world.isBlockLoaded(pos.offset(e))
+					&& world.getBlockState(pos.offset(e)).getMaterial().isSolid()) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public static void setBlockStateProvider(IWorld world, BlockStateProvider provider, Random rand, BlockPos pos) {
+		world.setBlockState(pos, provider.getBlockState(rand, pos), 3);
 	}
 }

@@ -1,36 +1,47 @@
 package twilightforest.world.feature;
 
+import com.mojang.datafixers.Dynamic;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHugeMushroom;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.IWorldGenerationReader;
+import twilightforest.util.FeatureUtil;
 import twilightforest.world.TFWorld;
+import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
 import java.util.Random;
+import java.util.Set;
+import java.util.function.Function;
 
 /**
  * Makes large mushrooms with flat mushroom tops that provide a canopy for the forest
  *
  * @author Ben
  */
-public class TFGenCanopyMushroom extends TFTreeGenerator {
+public class TFGenCanopyMushroom<T extends TFTreeFeatureConfig> extends TFTreeGenerator<T> {
 
-	public TFGenCanopyMushroom() {
-		this(false);
-	}
+//	public TFGenCanopyMushroom() {
+//		this(false);
+//	}
+//
+//	public TFGenCanopyMushroom(boolean notify) {
+//		super(notify);
+//		treeState   = Blocks.RED_MUSHROOM_BLOCK.getDefaultState().with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.STEM);
+//		branchState = Blocks.RED_MUSHROOM_BLOCK.getDefaultState().with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.ALL_STEM);
+//		leafState   = Blocks.RED_MUSHROOM_BLOCK.getDefaultState().with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.CENTER);
+//		source = Blocks.RED_MUSHROOM;
+//	}
 
-	public TFGenCanopyMushroom(boolean notify) {
-		super(notify);
-		treeState   = Blocks.RED_MUSHROOM_BLOCK.getDefaultState().with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.STEM);
-		branchState = Blocks.RED_MUSHROOM_BLOCK.getDefaultState().with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.ALL_STEM);
-		leafState   = Blocks.RED_MUSHROOM_BLOCK.getDefaultState().with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.CENTER);
-		source = Blocks.RED_MUSHROOM;
+	public TFGenCanopyMushroom(Function<Dynamic<?>, T> config) {
+		super(config);
 	}
 
 	@Override
-	public boolean generate(World world, Random random, BlockPos pos) {
+	protected boolean generate(IWorldGenerationReader world, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, MutableBoundingBox mbb, T config) {
 		// determine a height
 		int treeHeight = 12;
 		if (random.nextInt(3) == 0) {
@@ -80,17 +91,17 @@ public class TFGenCanopyMushroom extends TFTreeGenerator {
 	 */
 	private void buildBranch(World world, BlockPos pos, int height, double length, double angle, double tilt, boolean trunk, Random treeRNG) {
 		BlockPos src = pos.up(height);
-		BlockPos dest = TFGenerator.translate(src, length, angle, tilt);
+		BlockPos dest = FeatureUtil.translate(src, length, angle, tilt);
 
 		// only actually draw the branch if it's not going to load new chunks
 		if (world.isAreaLoaded(dest, 5)) {
 			if (src.getX() != dest.getX() || src.getZ() != dest.getZ()) {
 				// branch
-				TFGenerator.drawBresehnam(this, world, src, new BlockPos(dest.getX(), src.getY(), dest.getZ()), branchState);
-				TFGenerator.drawBresehnam(this, world, new BlockPos(dest.getX(), src.getY() + 1, dest.getZ()), dest.down(), treeState);
+				FeatureUtil.drawBresehnam(this, world, src, new BlockPos(dest.getX(), src.getY(), dest.getZ()), branchState);
+				FeatureUtil.drawBresehnam(this, world, new BlockPos(dest.getX(), src.getY() + 1, dest.getZ()), dest.down(), treeState);
 			} else {
 				// trunk
-				TFGenerator.drawBresehnam(this, world, src, dest.down(), treeState);
+				FeatureUtil.drawBresehnam(this, world, src, dest.down(), treeState);
 			}
 
 			if (trunk) {

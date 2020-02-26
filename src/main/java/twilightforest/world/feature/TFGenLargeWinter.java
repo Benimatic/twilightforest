@@ -1,38 +1,41 @@
 package twilightforest.world.feature;
 
-import net.minecraft.block.BlockLeaves;
-import net.minecraft.block.BlockLog;
-import net.minecraft.block.BlockOldLeaf;
-import net.minecraft.block.BlockOldLog;
-import net.minecraft.block.BlockPlanks;
+import com.mojang.datafixers.Dynamic;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
-import net.minecraftforge.common.IPlantable;
-import twilightforest.block.TFBlocks;
+import net.minecraft.world.gen.IWorldGenerationReader;
+import twilightforest.util.FeatureUtil;
 import twilightforest.world.TFWorld;
+import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
 import java.util.Random;
+import java.util.Set;
+import java.util.function.Function;
 
-public class TFGenLargeWinter extends TFTreeGenerator {
+public class TFGenLargeWinter<T extends TFTreeFeatureConfig> extends TFTreeGenerator<T> {
 
-	public TFGenLargeWinter() {
-		this(false);
-	}
+//	public TFGenLargeWinter() {
+//		this(false);
+//	}
+//
+//	public TFGenLargeWinter(boolean notify) {
+//		super(notify);
+//		treeState = Blocks.LOG.getDefaultState().with(BlockOldLog.VARIANT, BlockPlanks.EnumType.SPRUCE);
+//		branchState = Blocks.LOG.getDefaultState().with(BlockOldLog.VARIANT, BlockPlanks.EnumType.SPRUCE).with(BlockLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
+//		leafState = Blocks.LEAVES.getDefaultState().with(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.SPRUCE).with(BlockLeaves.CHECK_DECAY, false);
+//		rootState = TFBlocks.root.getDefaultState();
+//		source = (IPlantable) Blocks.SAPLING;
+//	}
 
-	public TFGenLargeWinter(boolean notify) {
-		super(notify);
-		treeState = Blocks.LOG.getDefaultState().with(BlockOldLog.VARIANT, BlockPlanks.EnumType.SPRUCE);
-		branchState = Blocks.LOG.getDefaultState().with(BlockOldLog.VARIANT, BlockPlanks.EnumType.SPRUCE).with(BlockLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
-		leafState = Blocks.LEAVES.getDefaultState().with(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.SPRUCE).with(BlockLeaves.CHECK_DECAY, false);
-		rootState = TFBlocks.root.getDefaultState();
-		source = (IPlantable) Blocks.SAPLING;
+	public TFGenLargeWinter(Function<Dynamic<?>, T> config) {
+		super(config);
 	}
 
 	@Override
-	public boolean generate(World world, Random random, BlockPos pos) {
+	protected boolean generate(IWorldGenerationReader world, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, MutableBoundingBox mbb, T config) {
 		// determine a height
 		int treeHeight = 35;
 		if (random.nextInt(3) == 0) {
@@ -49,7 +52,7 @@ public class TFGenLargeWinter extends TFTreeGenerator {
 
 		// check if we're on dirt or grass
 		BlockState state = world.getBlockState(pos.down());
-		if (!state.getBlock().canSustainPlant(state, world, pos.down(), Direction.UP, source)) {
+		if (!state.getBlock().canSustainPlant(state, world, pos.down(), Direction.UP, config.getSapling())) {
 			return false;
 		}
 
@@ -77,7 +80,7 @@ public class TFGenLargeWinter extends TFTreeGenerator {
 
 			int radius = leafRadius(treeHeight, dy, leafType);
 
-			TFGenerator.makeLeafCircle2(this, world, pos.up(offGround + treeHeight - dy), radius, leafState, false);
+			FeatureUtil.makeLeafCircle2(this, world, pos.up(offGround + treeHeight - dy), radius, leafState, false);
 			this.makePineBranches(world, pos.up(offGround + treeHeight - dy), radius);
 		}
 	}
@@ -126,5 +129,4 @@ public class TFGenLargeWinter extends TFTreeGenerator {
 			this.setBlockAndNotifyAdequately(world, pos.add(1, dy, 1), treeState);
 		}
 	}
-
 }
