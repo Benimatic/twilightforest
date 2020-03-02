@@ -11,30 +11,23 @@ import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.StringNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import twilightforest.biomes.TFBiomeBase;
 import twilightforest.entity.*;
-import twilightforest.structures.ComponentTFHollowHill;
-import twilightforest.structures.courtyard.NagaCourtyardPieces;
-import twilightforest.structures.darktower.TFDarkTowerPieces;
-import twilightforest.structures.finalcastle.TFFinalCastlePieces;
-import twilightforest.structures.lichtower.TFLichTowerPieces;
-import twilightforest.structures.minotaurmaze.TFMinotaurMazePieces;
-import twilightforest.structures.mushroomtower.TFMushroomTowerPieces;
+import twilightforest.structures.*;
+import twilightforest.structures.courtyard.ComponentNagaCourtyardMain;
 import twilightforest.structures.start.*;
-import twilightforest.structures.stronghold.TFStrongholdPieces;
-import twilightforest.structures.trollcave.TFTrollCavePieces;
 import twilightforest.util.IntPair;
 import twilightforest.util.PlayerHelper;
+import twilightforest.world.TFWorld;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Arbiting class that decides what feature goes where in the world, in terms of the major features in the world
@@ -46,8 +39,8 @@ public enum TFFeature {
 		{
 			this.enableDecorations().enableTerrainAlterations();
 
-			MapGenStructureIO.registerStructure(StructureStartHollowHill.class, "TFHill");
-			MapGenStructureIO.registerStructureComponent(ComponentTFHollowHill.class, "TFHill");
+			registerPiece("TFHill", StructureStartHollowHill::new); //TODO: put this into a field. Need it for constructor. Clash with Component
+			registerPiece("TFHill", ComponentTFHollowHill::new); //TODO: put this into a field. Need it for constructor. Clash with Start
 
 			this.addMonster(EntityType.SPIDER, 10, 4, 4)
 					.addMonster(EntityType.ZOMBIE, 10, 4, 4)
@@ -108,8 +101,8 @@ public enum TFFeature {
 		{
 			this.enableTerrainAlterations();
 
-			MapGenStructureIO.registerStructure(StructureStartHedgeMaze.class, "TFHedge");
-			MapGenStructureIO.registerStructureComponent(ComponentTFHedgeMaze.class, "TFHedge");
+			registerPiece("TFHedge", StructureStartHedgeMaze::new); //TODO: put this into a field. Need it for constructor. Clash with Component
+			registerPiece("TFHedge", ComponentTFHedgeMaze::new); //TODO: put this into a field. Need it for constructor. Clash with Start
 		}
 
 		@Override
@@ -121,8 +114,8 @@ public enum TFFeature {
 		{
 			this.enableTerrainAlterations();
 
-			//MapGenStructureIO.registerStructureComponent(ComponentNagaCourtyardMain.class, "TFNaga");
-			NagaCourtyardPieces.registerPieces();
+			registerPiece("TFNaga", ComponentNagaCourtyardMain::new); //TODO: put this into a field. Need it for constructor
+			//NagaCourtyardPieces.registerPieces();
 		}
 
 		@Override
@@ -132,7 +125,7 @@ public enum TFFeature {
 	},
 	LICH_TOWER ( 1, "lich_tower", true, TwilightForestMod.prefix("progress_naga") ) {
 		{
-			TFLichTowerPieces.registerPieces();
+			//TFLichTowerPieces.registerPieces();
 
 			this.addMonster(EntityType.ZOMBIE, 10, 4, 4)
 					.addMonster(EntityType.SKELETON, 10, 4, 4)
@@ -159,7 +152,7 @@ public enum TFFeature {
 	},
 	ICE_TOWER ( 2, "ice_tower", true, TwilightForestMod.prefix("progress_yeti") ) {
 		{
-			TFIceTowerPieces.registerPieces();
+			//TFIceTowerPieces.registerPieces();
 
 			this.addMonster(TFEntities.snow_guardian.get(), 10, 4, 4)
 					.addMonster(TFEntities.stable_ice_core.get(), 10, 4, 4)
@@ -186,8 +179,8 @@ public enum TFFeature {
 		{
 			this.enableTerrainAlterations();
 
-			MapGenStructureIO.registerStructure(StructureStartQuestGrove.class, "TFQuest1");
-			MapGenStructureIO.registerStructureComponent(ComponentTFQuestGrove.class, "TFQuest1");
+			registerPiece("TFQuest1", StructureStartQuestGrove::new); //TODO: put this into a field. Need it for constructor. Clash with Component
+			registerPiece("TFQuest1", ComponentTFQuestGrove::new); //TODO: put this into a field. Need it for constructor. Clash with Start
 		}
 
 		@Override
@@ -201,8 +194,8 @@ public enum TFFeature {
 		{
 			this.enableTerrainAlterations();
 
-			MapGenStructureIO.registerStructure(StructureStartHydraLair.class, "TFHydra");
-			MapGenStructureIO.registerStructureComponent(ComponentTFHydraLair.class, "TFHydra");
+			registerPiece("TFHydra", StructureStartHydraLair::new); //TODO: put this into a field. Need it for constructor. Clash with Component
+			registerPiece("TFHydra", ComponentTFHydraLair::new); //TODO: put this into a field. Need it for constructor. Clash with Start
 		}
 
 		@Override
@@ -224,7 +217,7 @@ public enum TFFeature {
 		{
 			this.enableDecorations();
 
-			TFMinotaurMazePieces.registerPieces();
+			//TFMinotaurMazePieces.registerPieces();
 
 			this.addMonster(TFEntities.minotaur.get(), 20, 2, 4)
 					.addMonster(EntityType.CAVE_SPIDER, 10, 4, 4)
@@ -253,7 +246,7 @@ public enum TFFeature {
 	},
 	DARK_TOWER ( 1, "dark_tower", true, TwilightForestMod.prefix("progress_knights") ) {
 		{
-			TFDarkTowerPieces.registerPieces();
+			//TFDarkTowerPieces.registerPieces();
 
 			this.addMonster(TFEntities.tower_golem.get(), 10, 4, 4)
 					.addMonster(EntityType.SKELETON, 10, 4, 4)
@@ -288,7 +281,7 @@ public enum TFFeature {
 		{
 			this.enableDecorations().disableProtectionAura();
 
-			TFStrongholdPieces.registerPieces();
+			//TFStrongholdPieces.registerPieces();
 
 			this.addMonster(TFEntities.blockchain_goblin.get(), 10, 4, 4)
 					.addMonster(TFEntities.goblin_knight_lower.get(), 5, 1, 2)
@@ -320,8 +313,8 @@ public enum TFFeature {
 		{
 			this.enableDecorations().enableTerrainAlterations();
 
-			MapGenStructureIO.registerStructure(StructureStartYetiCave.class, "TFYeti");
-			MapGenStructureIO.registerStructureComponent(ComponentTFYetiCave.class, "TFYeti");
+			registerPiece("TFYeti", StructureStartYetiCave::new); //TODO: put this into a field. Need it for constructor. Clash with Component
+			registerPiece("TFYeti", ComponentTFYetiCave::new); //TODO: put this into a field. Need it for constructor. Clash with Start
 
 			this.addMonster(TFEntities.yeti.get(), 10, 4, 4);
 		}
@@ -346,7 +339,7 @@ public enum TFFeature {
 		{
 			this.enableDecorations().enableTerrainAlterations().disableProtectionAura();
 
-			TFTrollCavePieces.registerPieces();
+			//TFTrollCavePieces.registerPieces();
 
 			this.addMonster(EntityType.CREEPER, 5, 4, 4)
 					.addMonster(EntityType.SKELETON, 10, 4, 4)
@@ -374,7 +367,7 @@ public enum TFFeature {
 	},
 	FINAL_CASTLE ( 4, "final_castle", true, TwilightForestMod.prefix("progress_troll") ) {
 		{
-			TFFinalCastlePieces.registerFinalCastlePieces();
+			//TFFinalCastlePieces.registerFinalCastlePieces();
 
 			// plain parts of the castle, like the tower maze
 			this.addMonster(TFEntities.kobold.get(), 10, 4, 4)
@@ -399,7 +392,7 @@ public enum TFFeature {
 	},
 	MUSHROOM_TOWER ( 2, "mushroom_tower", true ) {
 		{
-			TFMushroomTowerPieces.registerPieces();
+			//TFMushroomTowerPieces.registerPieces();
 		}
 
 		@Override
@@ -928,5 +921,10 @@ public enum TFFeature {
 		for (int i = 1; i <= pageCount; i++) {
 			bookPages.add(StringNBT.of(ITextComponent.Serializer.toJson(new TranslationTextComponent(translationKey + "." + i))));
 		}
+	}
+
+	public static IStructurePieceType registerPiece(String name, IStructurePieceType piece) {
+		//TODO: Verify if this needs the namespace
+		return Registry.register(Registry.STRUCTURE_PIECE, TwilightForestMod.prefix(name.toLowerCase(Locale.ROOT)), piece);
 	}
 }

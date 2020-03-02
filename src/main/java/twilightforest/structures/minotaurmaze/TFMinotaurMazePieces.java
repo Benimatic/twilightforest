@@ -1,42 +1,38 @@
 package twilightforest.structures.minotaurmaze;
 
-import net.minecraft.world.gen.feature.StructureIO;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
+import twilightforest.TFFeature;
 import twilightforest.structures.start.StructureStartLabyrinth;
-
 
 public class TFMinotaurMazePieces {
 
+	public static final IStructurePieceType TFLr = TFFeature.registerPiece("TFLr", StructureStartLabyrinth::new);
 
-	public static void registerPieces() {
-		StructureIO.registerStructure(StructureStartLabyrinth.class, "TFLr");
-
-		StructureIO.registerStructureComponent(ComponentTFMazeCorridor.class, "TFMMC");
-		StructureIO.registerStructureComponent(ComponentTFMazeCorridorIronFence.class, "TFMMCIF");
-		StructureIO.registerStructureComponent(ComponentTFMazeCorridorRoots.class, "TFMMCR");
-		StructureIO.registerStructureComponent(ComponentTFMazeCorridorShrooms.class, "TFMMCS");
-		StructureIO.registerStructureComponent(ComponentTFMazeDeadEnd.class, "TFMMDE");
-		StructureIO.registerStructureComponent(ComponentTFMazeDeadEndChest.class, "TFMMDEC");
-		StructureIO.registerStructureComponent(ComponentTFMazeDeadEndFountain.class, "TFMMDEF");
-		StructureIO.registerStructureComponent(ComponentTFMazeDeadEndFountainLava.class, "TFMMDEFL");
-		StructureIO.registerStructureComponent(ComponentTFMazeDeadEndPainting.class, "TFMMDEP");
-		StructureIO.registerStructureComponent(ComponentTFMazeDeadEndRoots.class, "TFMMDER");
-		StructureIO.registerStructureComponent(ComponentTFMazeDeadEndShrooms.class, "TFMMDES");
-		StructureIO.registerStructureComponent(ComponentTFMazeDeadEndTorches.class, "TFMMDET");
-		StructureIO.registerStructureComponent(ComponentTFMazeDeadEndTrappedChest.class, "TFMMDETrC");
-		StructureIO.registerStructureComponent(ComponentTFMazeDeadEndTripwireChest.class, "TFMMDETC");
-		StructureIO.registerStructureComponent(ComponentTFMazeEntranceShaft.class, "TFMMES");
-		StructureIO.registerStructureComponent(ComponentTFMazeMound.class, "TFMMMound");
-		StructureIO.registerStructureComponent(ComponentTFMazeMushRoom.class, "TFMMMR");
-		StructureIO.registerStructureComponent(ComponentTFMazeRoom.class, "TFMMR");
-		StructureIO.registerStructureComponent(ComponentTFMazeRoomBoss.class, "TFMMRB");
-		StructureIO.registerStructureComponent(ComponentTFMazeRoomCollapse.class, "TFMMRC");
-		StructureIO.registerStructureComponent(ComponentTFMazeRoomExit.class, "TFMMRE");
-		StructureIO.registerStructureComponent(ComponentTFMazeRoomFountain.class, "TFMMRF");
-		StructureIO.registerStructureComponent(ComponentTFMazeRoomSpawnerChests.class, "TFMMRSC");
-		StructureIO.registerStructureComponent(ComponentTFMazeRoomVault.class, "TFMMRV");
-		StructureIO.registerStructureComponent(ComponentTFMazeRuins.class, "TFMMRuins");
-		StructureIO.registerStructureComponent(ComponentTFMazeUpperEntrance.class, "TFMMUE");
-		StructureIO.registerStructureComponent(ComponentTFMinotaurMaze.class, "TFMMaze");
-	}
-
+	public static final IStructurePieceType TFMMC = TFFeature.registerPiece("TFMMC", ComponentTFMazeCorridor::new);
+	public static final IStructurePieceType TFMMCIF = TFFeature.registerPiece("TFMMCIF", ComponentTFMazeCorridorIronFence::new);
+	public static final IStructurePieceType TFMMCR = TFFeature.registerPiece("TFMMCR", ComponentTFMazeCorridorRoots::new);
+	public static final IStructurePieceType TFMMCS = TFFeature.registerPiece("TFMMCS", ComponentTFMazeCorridorShrooms::new);
+	public static final IStructurePieceType TFMMDE = TFFeature.registerPiece("TFMMDE", ComponentTFMazeDeadEnd::new);
+	public static final IStructurePieceType TFMMDEC = TFFeature.registerPiece("TFMMDEC", ComponentTFMazeDeadEndChest::new);
+	public static final IStructurePieceType TFMMDEF = TFFeature.registerPiece("TFMMDEF", ComponentTFMazeDeadEndFountain::new);
+	public static final IStructurePieceType TFMMDEFL = TFFeature.registerPiece("TFMMDEFL", ComponentTFMazeDeadEndFountainLava::new);
+	public static final IStructurePieceType TFMMDEP = TFFeature.registerPiece("TFMMDEP", ComponentTFMazeDeadEndPainting::new);
+	public static final IStructurePieceType TFMMDER = TFFeature.registerPiece("TFMMDER", ComponentTFMazeDeadEndRoots::new);
+	public static final IStructurePieceType TFMMDES = TFFeature.registerPiece("TFMMDES", ComponentTFMazeDeadEndShrooms::new);
+	public static final IStructurePieceType TFMMDET = TFFeature.registerPiece("TFMMDET", ComponentTFMazeDeadEndTorches::new);
+	public static final IStructurePieceType TFMMDETrC = TFFeature.registerPiece("TFMMDETrC", ComponentTFMazeDeadEndTrappedChest::new);
+	public static final IStructurePieceType TFMMDETC = TFFeature.registerPiece("TFMMDETC", ComponentTFMazeDeadEndTripwireChest::new);
+	public static final IStructurePieceType TFMMES = TFFeature.registerPiece("TFMMES", ComponentTFMazeEntranceShaft::new);
+	public static final IStructurePieceType TFMMMound = TFFeature.registerPiece("TFMMMound", ComponentTFMazeMound::new);
+	public static final IStructurePieceType TFMMMR = TFFeature.registerPiece("TFMMMR", ComponentTFMazeMushRoom::new);
+	public static final IStructurePieceType TFMMR = TFFeature.registerPiece("TFMMR", ComponentTFMazeRoom::new);
+	public static final IStructurePieceType TFMMRB = TFFeature.registerPiece("TFMMRB", ComponentTFMazeRoomBoss::new);
+	public static final IStructurePieceType TFMMRC = TFFeature.registerPiece("TFMMRC", ComponentTFMazeRoomCollapse::new);
+	public static final IStructurePieceType TFMMRE = TFFeature.registerPiece("TFMMRE", ComponentTFMazeRoomExit::new);
+	public static final IStructurePieceType TFMMRF = TFFeature.registerPiece("TFMMRF", ComponentTFMazeRoomFountain::new);
+	public static final IStructurePieceType TFMMRSC = TFFeature.registerPiece("TFMMRSC", ComponentTFMazeRoomSpawnerChests::new);
+	public static final IStructurePieceType TFMMRV = TFFeature.registerPiece("TFMMRV", ComponentTFMazeRoomVault::new);
+	public static final IStructurePieceType TFMMRuins = TFFeature.registerPiece("TFMMRuins", ComponentTFMazeRuins::new);
+	public static final IStructurePieceType TFMMUE = TFFeature.registerPiece("TFMMUE", ComponentTFMazeUpperEntrance::new);
+	public static final IStructurePieceType TFMMaze = TFFeature.registerPiece("TFMMaze", ComponentTFMinotaurMaze::new);
 }
