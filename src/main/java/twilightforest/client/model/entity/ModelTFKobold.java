@@ -69,7 +69,6 @@ public class ModelTFKobold<T extends EntityTFKobold> extends BipedModel<T> {
 
 		bipedHead.addChild(leftear);
 
-
 		snout = new ModelRenderer(this, 28, 0);
 		snout.addCuboid(-1.5F, -2F, -2F, 3, 2, 3);
 		snout.setRotationPoint(0F, -2F, -3F);
@@ -85,7 +84,7 @@ public class ModelTFKobold<T extends EntityTFKobold> extends BipedModel<T> {
 	}
 
 	@Override
-	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.bipedHead.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 		this.bipedHead.rotateAngleX = headPitch / (180F / (float) Math.PI);
 
@@ -96,7 +95,6 @@ public class ModelTFKobold<T extends EntityTFKobold> extends BipedModel<T> {
 
 		this.bipedRightArm.rotateAngleX = -((float) Math.PI * .15F);
 		this.bipedLeftArm.rotateAngleX = -((float) Math.PI * .15F);
-
 
 		this.bipedRightLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
 		this.bipedLeftLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
@@ -121,7 +119,6 @@ public class ModelTFKobold<T extends EntityTFKobold> extends BipedModel<T> {
 		// check if entity is jumping
 		this.isJumping = entity.getMotion().getY() > 0;
 	}
-
 
 	@Override
 	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {

@@ -6,13 +6,13 @@
 
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.renderer.entity.model.EntityModel;
+import com.google.common.collect.ImmutableList;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.passive.EntityTFBunny;
 
-
-public class ModelTFBunny<T extends EntityTFBunny> extends EntityModel<T> {
+public class ModelTFBunny<T extends EntityTFBunny> extends SegmentedModel<T> {
 	//fields
 	ModelRenderer tail;
 	ModelRenderer body;
@@ -77,17 +77,23 @@ public class ModelTFBunny<T extends EntityTFBunny> extends EntityModel<T> {
 		head.addCuboid(0.5F, -8F, -0.5F, 2, 4, 1);
 	}
 
+//	@Override
+//	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+//		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+//		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+//	}
+
 	@Override
-	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-		tail.render(scale);
-		body.render(scale);
-		leg1.render(scale);
-		leg2.render(scale);
-		leg3.render(scale);
-		leg4.render(scale);
-		head.render(scale);
+	public Iterable<ModelRenderer> getParts() {
+		return ImmutableList.of(
+				tail,
+				body,
+				leg1,
+				leg2,
+				leg3,
+				leg4,
+				head
+		);
 	}
 
 	private void setRotation(ModelRenderer model, float x, float y, float z) {
@@ -100,14 +106,12 @@ public class ModelTFBunny<T extends EntityTFBunny> extends EntityModel<T> {
 	 * Sets the models various rotation angles.
 	 */
 	@Override
-	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.head.rotateAngleX = headPitch / (180F / (float) Math.PI);
 		this.head.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 		this.leg1.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
 		this.leg2.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
 		this.leg3.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
 		this.leg4.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-
 	}
-
 }

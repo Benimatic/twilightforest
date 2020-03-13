@@ -11,7 +11,6 @@ public class ModelTFIceExploder<T extends EntityTFIceMob> extends BipedModel<T> 
 
 	public ModelRenderer[] spikes = new ModelRenderer[16];
 
-
 	public ModelTFIceExploder() {
 		this.textureWidth = 32;
 		this.textureHeight = 32;
@@ -47,7 +46,6 @@ public class ModelTFIceExploder<T extends EntityTFIceMob> extends BipedModel<T> 
 			cube.rotateAngleZ = (float) (Math.PI / 4F);
 
 			this.spikes[i].addChild(cube);
-
 		}
 	}
 
@@ -92,7 +90,6 @@ public class ModelTFIceExploder<T extends EntityTFIceMob> extends BipedModel<T> 
 			this.spikes[i].rotationPointZ = MathHelper.sin((entity.ticksExisted + partialTicks) / (float) i) * 3F;
 
 			this.spikes[i].childModels.get(0).rotationPointY = 10 + MathHelper.sin((i + entity.ticksExisted + partialTicks) / i) * 3F;
-
 		}
 	}
 }

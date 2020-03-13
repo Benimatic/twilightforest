@@ -5,15 +5,17 @@ import twilightforest.entity.EntityTFSnowGuardian;
 
 public class ModelTFSnowGuardian<T extends EntityTFSnowGuardian> extends BipedModel<T> {
 
-
-	/**
-	 * Sets the models various rotation angles then renders the model.
-	 */
-	@Override
-	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-		this.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+	public ModelTFSnowGuardian() {
 
 	}
+
+//	/**
+//	 * Sets the models various rotation angles then renders the model.
+//	 */
+//	@Override
+//	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+//		this.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+//	}
 
 	/**
 	 * Used for easily adding entity-dependent animations. The second and third float params here are the same second

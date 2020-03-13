@@ -5,7 +5,6 @@ import twilightforest.entity.EntityTFIceShooter;
 
 public class ModelTFIceShooter<T extends EntityTFIceShooter> extends ModelTFIceExploder<T> {
 
-
 	/**
 	 * Used for easily adding entity-dependent animations. The second and third float params here are the same second
 	 * and third as in the setRotationAngles method.
@@ -24,9 +23,7 @@ public class ModelTFIceShooter<T extends EntityTFIceShooter> extends ModelTFIceE
 
 			this.spikes[i].childModels.get(0).rotationPointY = 9.5F + MathHelper.sin((i + entity.ticksExisted + partialTicks) / 3F) * 3F;
 
-
 			//((ModelBox)this.spikes[i].cubeList.get(0)). = 6 + MathHelper.sin((entity.ticksExisted + partialTicks) / (float)i) * 3F;
-
 		}
 	}
 }

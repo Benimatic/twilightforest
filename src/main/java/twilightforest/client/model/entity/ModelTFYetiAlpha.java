@@ -11,7 +11,6 @@ public class ModelTFYetiAlpha<T extends EntityTFYetiAlpha> extends BipedModel<T>
 	public ModelRenderer leftEye;
 	public ModelRenderer rightEye;
 
-
 	public ModelTFYetiAlpha() {
 		super();
 
@@ -56,7 +55,6 @@ public class ModelTFYetiAlpha<T extends EntityTFYetiAlpha> extends BipedModel<T>
 
 		this.bipedBody.addChild(this.bipedLeftArm);
 
-
 		this.bipedRightLeg = new ModelRenderer(this, 0, 66);
 		this.bipedRightLeg.addCuboid(-10.0F, 0.0F, -10.0F, 20, 20, 20);
 		this.bipedRightLeg.setRotationPoint(-13.5F, 4.0F, 0.0F);
@@ -69,10 +67,7 @@ public class ModelTFYetiAlpha<T extends EntityTFYetiAlpha> extends BipedModel<T>
 		addPairHorns(-58.0F, 35F);
 		addPairHorns(-46.0F, 15F);
 		addPairHorns(-36.0F, -5F);
-
-
 	}
-
 
 	/**
 	 * Add a pair of horns
@@ -113,7 +108,6 @@ public class ModelTFYetiAlpha<T extends EntityTFYetiAlpha> extends BipedModel<T>
 		horn2a.addChild(horn2b);
 	}
 
-
 	/**
 	 * Sets the models various rotation angles then renders the model.
 	 */
@@ -132,13 +126,11 @@ public class ModelTFYetiAlpha<T extends EntityTFYetiAlpha> extends BipedModel<T>
 	 * "far" arms and legs can swing at most.
 	 */
 	@Override
-	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
-
+	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.bipedHead.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 		this.bipedHead.rotateAngleX = headPitch / (180F / (float) Math.PI);
 
 		this.bipedBody.rotateAngleX = headPitch / (180F / (float) Math.PI);
-
 
 		this.bipedRightLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
 		this.bipedLeftLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
@@ -163,7 +155,6 @@ public class ModelTFYetiAlpha<T extends EntityTFYetiAlpha> extends BipedModel<T>
 		this.bipedBody.rotationPointY = -6F;
 		this.bipedRightLeg.rotationPointY = 4F;
 		this.bipedLeftLeg.rotationPointY = 4F;
-
 
 		if (entity.isTired()) {
 			// arms down

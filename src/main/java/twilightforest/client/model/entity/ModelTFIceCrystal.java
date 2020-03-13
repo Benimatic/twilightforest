@@ -11,7 +11,6 @@ public class ModelTFIceCrystal<T extends EntityTFIceCrystal> extends EntityModel
 
 	public ModelRenderer[] spikes = new ModelRenderer[16];
 
-
 	public ModelTFIceCrystal() {
 		this.textureWidth = 32;
 		this.textureHeight = 32;
@@ -35,7 +34,6 @@ public class ModelTFIceCrystal<T extends EntityTFIceCrystal> extends EntityModel
 			cube.rotateAngleZ = (float) (Math.PI / 4F);
 
 			this.spikes[i].addChild(cube);
-
 		}
 	}
 
@@ -88,7 +86,6 @@ public class ModelTFIceCrystal<T extends EntityTFIceCrystal> extends EntityModel
 //        	this.spikes[i].rotationPointZ = MathHelper.sin((entity.ticksExisted + partialTicks) / (float)i) * 3F;
 
 			//((ModelRenderer)this.spikes[i].childModels.get(0)).rotationPointY = 10 + MathHelper.sin((i + entity.ticksExisted + partialTicks) / i) * 3F;
-
 		}
 	}
 }

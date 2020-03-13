@@ -53,7 +53,7 @@ public class ModelTFAdherent<T extends EntityTFAdherent> extends BipedModel<T> {
 	 * "far" arms and legs can swing at most.
 	 */
 	@Override
-	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		//super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entity);
 
 		// rotate head normally
@@ -73,7 +73,7 @@ public class ModelTFAdherent<T extends EntityTFAdherent> extends BipedModel<T> {
 		this.bipedLeftArm.rotateAngleX -= MathHelper.sin(ageInTicks * 0.067F) * 0.05F;
 	}
 
-    /**
+	/**
 	 * Used for easily adding entity-dependent animations. The second and third float params here are the same second
 	 * and third as in the setRotationAngles method.
 	 */

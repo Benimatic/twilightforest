@@ -6,7 +6,8 @@
 
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.renderer.entity.model.EntityModel;
+import com.google.common.collect.ImmutableList;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
@@ -15,7 +16,7 @@ import twilightforest.tileentity.critters.TileEntityTFMoonwormTicking;
 
 import javax.annotation.Nullable;
 
-public class ModelTFMoonworm extends EntityModel {
+public class ModelTFMoonworm extends SegmentedModel {
 	//fields
 	ModelRenderer Shape1;
 	ModelRenderer Shape2;
@@ -43,27 +44,29 @@ public class ModelTFMoonworm extends EntityModel {
 		head.setRotationPoint(-3F, 7F, 2F);
 	}
 
-	@Override
-	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-		Shape1.render(scale);
-		Shape2.render(scale);
-		Shape3.render(scale);
-		head.render(scale);
-	}
-
-	public void render(float scale) {
-		Shape1.render(scale);
-		Shape2.render(scale);
-		Shape3.render(scale);
-		head.render(scale);
-	}
+//	@Override
+//	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+//		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+//		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+//	}
 
 	@Override
-	public void setRotationAngles(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
-		super.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+	public Iterable<ModelRenderer> getParts() {
+		return ImmutableList.of(
+				Shape1,
+				Shape2,
+				Shape3,
+				head
+		);
 	}
+
+//	@Override
+//	public void setRotationAngles(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+//		super.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+//	}
+
+	@Override
+	public void setAngles(Entity entity, float v, float v1, float v2, float v3, float v4) {	}
 
 	public void setLivingAnimations(@Nullable TileEntityTFMoonwormTicking moonworm, float partialTime) {
 

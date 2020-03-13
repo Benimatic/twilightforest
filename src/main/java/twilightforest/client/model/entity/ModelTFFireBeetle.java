@@ -5,12 +5,13 @@
 // - ZeuX
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.renderer.entity.model.EntityModel;
+import com.google.common.collect.ImmutableList;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.EntityTFFireBeetle;
 
-public class ModelTFFireBeetle<T extends EntityTFFireBeetle> extends EntityModel<T> {
+public class ModelTFFireBeetle<T extends EntityTFFireBeetle> extends SegmentedModel<T> {
 	//fields
 	ModelRenderer thorax;
 	ModelRenderer head;
@@ -141,21 +142,27 @@ public class ModelTFFireBeetle<T extends EntityTFFireBeetle> extends EntityModel
 
 	}
 
+//	@Override
+//	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+//		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+//		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+//	}
+
 	@Override
-	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-		thorax.render(scale);
-		head.render(scale);
-		connector2.render(scale);
-		RearEnd.render(scale);
-		Leg6.render(scale);
-		Leg4.render(scale);
-		Leg2.render(scale);
-		Leg5.render(scale);
-		Leg3.render(scale);
-		Leg1.render(scale);
-		connector1.render(scale);
+	public Iterable<ModelRenderer> getParts() {
+		return ImmutableList.of(
+				thorax,
+				head,
+				connector2,
+				RearEnd,
+				Leg6,
+				Leg4,
+				Leg2,
+				Leg5,
+				Leg3,
+				Leg1,
+				connector1
+		);
 	}
 
 	private void setRotation(ModelRenderer model, float x, float y, float z) {
@@ -170,7 +177,7 @@ public class ModelTFFireBeetle<T extends EntityTFFireBeetle> extends EntityModel
 	 * "far" arms and legs can swing at most.
 	 */
 	@Override
-	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.head.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 		this.head.rotateAngleX = headPitch / (180F / (float) Math.PI);
 
@@ -214,9 +221,5 @@ public class ModelTFFireBeetle<T extends EntityTFFireBeetle> extends EntityModel
 
 		this.Leg5.rotateAngleZ += var18;
 		this.Leg6.rotateAngleZ += -var18;
-
-
 	}
-
-
 }

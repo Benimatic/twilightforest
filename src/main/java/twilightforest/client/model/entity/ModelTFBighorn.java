@@ -4,7 +4,6 @@ import net.minecraft.client.renderer.entity.model.SheepModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import twilightforest.entity.passive.EntityTFBighorn;
 
-
 public class ModelTFBighorn<T extends EntityTFBighorn> extends SheepModel<T> {
 
 	public ModelTFBighorn() {
@@ -47,5 +46,4 @@ public class ModelTFBighorn<T extends EntityTFBighorn> extends SheepModel<T> {
 		headModel.setTextureOffset(18, 27).addCuboid(6F, 0F, -2F, 2, 2, 3, 0F);
 		headModel.setTextureOffset(28, 27).addCuboid(7F, -1F, -3F, 2, 2, 1, 0F);
 	}
-
 }

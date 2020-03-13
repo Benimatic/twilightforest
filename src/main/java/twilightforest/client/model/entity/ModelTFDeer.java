@@ -4,7 +4,6 @@ import net.minecraft.client.renderer.entity.model.QuadrupedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import twilightforest.entity.passive.EntityTFDeer;
 
-
 public class ModelTFDeer<T extends EntityTFDeer> extends QuadrupedModel<T> {
 	public ModelTFDeer() {
 		super(12, 0.0F);

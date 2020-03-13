@@ -1,6 +1,7 @@
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.renderer.entity.model.EntityModel;
+import com.google.common.collect.ImmutableList;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.EntityTFTowerGolem;
@@ -11,8 +12,8 @@ import twilightforest.entity.EntityTFTowerGolem;
 //Keep in mind that you still need to fill in some blanks
 //- ZeuX
 
-public class ModelTFTowerGolem<T extends EntityTFTowerGolem> extends EntityModel<T> {
-	//fields
+public class ModelTFTowerGolem<T extends EntityTFTowerGolem> extends SegmentedModel<T> {
+	//fields TODO: Can we delete some of these unused fields?
 	ModelRenderer head;
 	ModelRenderer jaw;
 	ModelRenderer body;
@@ -80,23 +81,27 @@ public class ModelTFTowerGolem<T extends EntityTFTowerGolem> extends EntityModel
 		rightleg.setRotationPoint(-1F, 2F, 0F);
 		rightleg.setTextureOffset(84, 32).addCuboid(-3F, 0F, -1.5F, 3, 8, 3);
 		rightleg.setTextureOffset(84, 43).addCuboid(-5.5F, 8F, -4F, 6, 14, 7);
-
 	}
 
+//	@Override
+//	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+//		//super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+//		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+//	}
 
 	@Override
-	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-		//super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-		head.render(scale);
-		body.render(scale);
-		rightarm.render(scale);
-		leftarm.render(scale);
-		rightleg.render(scale);
-		leftleg.render(scale);
-		ribs.render(scale);
-		hips.render(scale);
-		spine.render(scale);
+	public Iterable<ModelRenderer> getParts() {
+		return ImmutableList.of(
+				head,
+				body,
+				rightarm,
+				leftarm,
+				rightleg,
+				leftleg,
+				ribs,
+				hips,
+				spine
+		);
 	}
 
 	/**
@@ -105,7 +110,7 @@ public class ModelTFTowerGolem<T extends EntityTFTowerGolem> extends EntityModel
 	 * "far" arms and legs can swing at most.
 	 */
 	@Override
-	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.head.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 		this.head.rotateAngleX = headPitch / (180F / (float) Math.PI);
 		this.leftleg.rotateAngleX = -1.5F * this.func_78172_a(limbSwing, 13.0F) * limbSwingAmount;
@@ -119,9 +124,7 @@ public class ModelTFTowerGolem<T extends EntityTFTowerGolem> extends EntityModel
 
 		this.rightarm.rotateAngleZ = MathHelper.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
 		this.leftarm.rotateAngleZ = -MathHelper.cos(ageInTicks * 0.09F) * 0.05F - 0.05F;
-
 	}
-
 
 	/**
 	 * Used for easily adding entity-dependent animations. The second and third float params here are the same second

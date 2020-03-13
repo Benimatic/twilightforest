@@ -1,6 +1,7 @@
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.renderer.entity.model.EntityModel;
+import com.google.common.collect.ImmutableList;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -8,7 +9,7 @@ import twilightforest.entity.EntityTFMosquitoSwarm;
 
 import java.util.Random;
 
-public class ModelTFMosquitoSwarm<T extends EntityTFMosquitoSwarm> extends EntityModel<T> {
+public class ModelTFMosquitoSwarm<T extends EntityTFMosquitoSwarm> extends SegmentedModel<T> {
 
 	ModelRenderer core;
 	ModelRenderer node1;
@@ -63,12 +64,17 @@ public class ModelTFMosquitoSwarm<T extends EntityTFMosquitoSwarm> extends Entit
 		addBugsToNodes(node6);
 	}
 
+//	@Override
+//	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+//		core.render(scale / 2.0F);
+////		node1.render(scale);
+////		node2.render(scale);
+////		node3.render(scale);
+//	}
+
 	@Override
-	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-		core.render(scale / 2.0F);
-//		node1.render(scale);
-//		node2.render(scale);
-//		node3.render(scale);
+	public Iterable<ModelRenderer> getParts() {
+		return ImmutableList.of(core);
 	}
 
 	/**
@@ -94,6 +100,9 @@ public class ModelTFMosquitoSwarm<T extends EntityTFMosquitoSwarm> extends Entit
 			node.addChild(bug);
 		}
 	}
+
+	@Override
+	public void setAngles(T entity, float v, float v1, float v2, float v3, float v4) { }
 
 	@Override
 	public void setLivingAnimations(T entity, float limbSwing, float limbSwingAmount, float partialTicks) {
@@ -124,8 +133,5 @@ public class ModelTFMosquitoSwarm<T extends EntityTFMosquitoSwarm> extends Entit
 		node6.rotateAngleZ = MathHelper.cos((entity.ticksExisted + partialTicks) / 7.0F) / 3.0F;
 		node6.rotateAngleX = MathHelper.cos((entity.ticksExisted + partialTicks) / 4.0F) / 2.0F;
 		node6.rotateAngleY = (entity.ticksExisted + partialTicks) / 5.0F;
-
 	}
-
-
 }

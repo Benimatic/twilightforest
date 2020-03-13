@@ -7,14 +7,14 @@
 package twilightforest.client.model.entity;
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.item.DyeColor;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.passive.EntityTFQuestRam;
 
-public class ModelTFQuestRam<T extends EntityTFQuestRam> extends EntityModel<T> {
+public class ModelTFQuestRam<T extends EntityTFQuestRam> extends SegmentedModel<T> {
 	//fields
 	ModelRenderer frontbody;
 	ModelRenderer rearbody;
@@ -179,7 +179,7 @@ public class ModelTFQuestRam<T extends EntityTFQuestRam> extends EntityModel<T> 
 	 * Sets the models various rotation angles.
 	 */
 	@Override
-	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.head.rotateAngleX = headPitch / (180F / (float) Math.PI);
 		this.head.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 

@@ -55,7 +55,5 @@ public class ModelTFMinotaur<T extends EntityTFMinotaur> extends BipedModel<T> {
 
 		// kill off headwear box
 		this.bipedHeadwear = new ModelRenderer(this, 0, 0);
-
 	}
-
 }

@@ -17,7 +17,6 @@ public class ModelTFLich<T extends EntityTFLich> extends BipedModel<T> {
 		textureWidth = 64;
 		textureHeight = 64;
 
-
 		bipedBody = new ModelRenderer(this, 8, 16);
 		bipedBody.addCuboid(-4F, 0.0F, -2F, 8, 24, 4);
 		bipedBody.setRotationPoint(0.0F, -4.0F, 0.0F);
@@ -61,7 +60,6 @@ public class ModelTFLich<T extends EntityTFLich> extends BipedModel<T> {
 		collar.setTextureSize(64, 64);
 		setRotation(collar, 2.164208F, 0F, 0F);
 
-
 		cloak = new ModelRenderer(this, 0, 44);
 		cloak.addCuboid(-6F, 0F, 0F, 12, 19, 1);
 		cloak.setRotationPoint(0F, -4F, 2.5F);
@@ -86,8 +84,9 @@ public class ModelTFLich<T extends EntityTFLich> extends BipedModel<T> {
 	}
 
 	@Override
-	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
-		super.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+		super.setAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+
 		float ogSin = MathHelper.sin(swingProgress * 3.141593F);
 		float otherSin = MathHelper.sin((1.0F - (1.0F - swingProgress) * (1.0F - swingProgress)) * 3.141593F);
 		bipedRightArm.rotateAngleZ = 0.0F;

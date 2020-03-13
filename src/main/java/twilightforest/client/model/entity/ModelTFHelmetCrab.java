@@ -6,7 +6,8 @@
 
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.renderer.entity.model.EntityModel;
+import com.google.common.collect.ImmutableList;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.EntityTFHelmetCrab;
@@ -14,7 +15,7 @@ import twilightforest.entity.EntityTFHelmetCrab;
 /**
  * Helmet crab model, based partially on some of the spider code
  */
-public class ModelTFHelmetCrab<T extends EntityTFHelmetCrab> extends EntityModel<T> {
+public class ModelTFHelmetCrab<T extends EntityTFHelmetCrab> extends SegmentedModel<T> {
 	//fields
 	ModelRenderer body;
 	ModelRenderer helmetBase;
@@ -155,22 +156,29 @@ public class ModelTFHelmetCrab<T extends EntityTFHelmetCrab> extends EntityModel
 	/**
 	 * Sets the models various rotation angles then renders the model.
 	 */
+//	@Override
+//	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+//		this.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+//
+////		clawbase.render(scale);
+////		clawtop.render(scale);
+////		clawbottom.render(scale);
+////		righteye.render(scale);
+////		lefteye.render(scale);
+//	}
+
 	@Override
-	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-		this.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-		body.render(scale);
-		helmetBase.render(scale);
-		Leg8.render(scale);
-		Leg6.render(scale);
-		Leg4.render(scale);
-		rightArm.render(scale);
-		Leg5.render(scale);
-		Leg3.render(scale);
-//		clawbase.render(scale);
-//		clawtop.render(scale);
-//		clawbottom.render(scale);
-//		righteye.render(scale);
-//		lefteye.render(scale);
+	public Iterable<ModelRenderer> getParts() {
+		return ImmutableList.of(
+				body,
+				helmetBase,
+				Leg8,
+				Leg6,
+				Leg4,
+				rightArm,
+				Leg5,
+				Leg3
+		);
 	}
 
 	private void setRotation(ModelRenderer model, float x, float y, float z) {
@@ -185,8 +193,8 @@ public class ModelTFHelmetCrab<T extends EntityTFHelmetCrab> extends EntityModel
 	 * "far" arms and legs can swing at most.
 	 */
 	@Override
-	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
-		super.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+		//super.setAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
 		this.body.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 		this.body.rotateAngleX = headPitch / (180F / (float) Math.PI);
@@ -235,8 +243,5 @@ public class ModelTFHelmetCrab<T extends EntityTFHelmetCrab> extends EntityModel
 		// swing right arm as if it were an arm, not a leg
 		this.rightArm.rotateAngleY = -1.319531F;
 		this.rightArm.rotateAngleY += MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 2.0F * limbSwingAmount * 0.5F;
-
-
 	}
-
 }

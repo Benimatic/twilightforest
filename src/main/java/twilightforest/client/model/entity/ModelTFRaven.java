@@ -6,12 +6,13 @@
 
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.renderer.entity.model.EntityModel;
+import com.google.common.collect.ImmutableList;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.passive.EntityTFRaven;
 
-public class ModelTFRaven<T extends EntityTFRaven> extends EntityModel<T> {
+public class ModelTFRaven<T extends EntityTFRaven> extends SegmentedModel<T> {
 	//fields
 	ModelRenderer head;
 	ModelRenderer beak1;
@@ -95,18 +96,23 @@ public class ModelTFRaven<T extends EntityTFRaven> extends EntityModel<T> {
 		setRotation(tail, -0.5235988F, 0F, 0F);
 	}
 
-	@Override
-	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-		head.render(scale);
-		body.render(scale);
-		rightarm.render(scale);
-		leftarm.render(scale);
-		rightleg.render(scale);
-		leftleg.render(scale);
+//	@Override
+//	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+//		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+//		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+//	}
 
-		tail.render(scale);
+	@Override
+	public Iterable<ModelRenderer> getParts() {
+		return ImmutableList.of(
+				head,
+				body,
+				rightarm,
+				leftarm,
+				rightleg,
+				leftleg,
+				tail
+		);
 	}
 
 	private void setRotation(ModelRenderer model, float x, float y, float z) {
@@ -120,7 +126,7 @@ public class ModelTFRaven<T extends EntityTFRaven> extends EntityModel<T> {
 	 * Sets the models various rotation angles.
 	 */
 	@Override
-	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		head.rotateAngleX = headPitch / (180F / (float) Math.PI);
 		head.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 		head.rotateAngleZ = netHeadYaw > 5 ? -0.2617994F : 0;

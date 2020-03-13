@@ -4,7 +4,6 @@ import net.minecraft.client.renderer.entity.model.QuadrupedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import twilightforest.entity.passive.EntityTFBoar;
 
-
 public class ModelTFBoar<T extends EntityTFBoar> extends QuadrupedModel<T> {
 	public ModelTFBoar() {
 		super(6, 0.0F);
@@ -43,5 +42,4 @@ public class ModelTFBoar<T extends EntityTFBoar> extends QuadrupedModel<T> {
 		headModel.setTextureOffset(17, 17).addCuboid(3F, 2F, -9F, 1, 2, 1, 0F); // tusk1
 		headModel.setTextureOffset(17, 17).addCuboid(-4F, 2F, -9F, 1, 2, 1, 0F); // tusk2
 	}
-
 }

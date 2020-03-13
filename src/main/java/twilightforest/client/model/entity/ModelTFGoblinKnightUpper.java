@@ -19,7 +19,7 @@ public class ModelTFGoblinKnightUpper<T extends EntityTFGoblinKnightUpper> exten
 
 
 	public ModelTFGoblinKnightUpper() {
-		this.isSneak = false;
+		this.isSneaking = false;
 		this.textureWidth = 128;
 		this.textureHeight = 64;
 
@@ -115,12 +115,9 @@ public class ModelTFGoblinKnightUpper<T extends EntityTFGoblinKnightUpper> exten
 
 		this.bipedRightArm.addChild(spear);
 
-
 		this.breastplate = new ModelRenderer(this, 64, 0);
 		this.breastplate.addCuboid(-6.5F, 0.0F, -3.0F, 13, 12, 6);
 		this.breastplate.setRotationPoint(0F, 11.5F, 0.0F);
-
-
 	}
 
 	/**
@@ -135,7 +132,6 @@ public class ModelTFGoblinKnightUpper<T extends EntityTFGoblinKnightUpper> exten
 		if (entity.hasArmor()) {
 			this.renderBreastplate(scale);
 		}
-
 	}
 
 	/**
@@ -152,8 +148,7 @@ public class ModelTFGoblinKnightUpper<T extends EntityTFGoblinKnightUpper> exten
 	 * "far" arms and legs can swing at most.
 	 */
 	@Override
-	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
-
+	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		boolean hasShield = entity.hasShield();
 
 		this.bipedHead.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
@@ -163,7 +158,6 @@ public class ModelTFGoblinKnightUpper<T extends EntityTFGoblinKnightUpper> exten
 		this.bipedHeadwear.rotateAngleX = this.bipedHead.rotateAngleX;
 		this.bipedHeadwear.rotateAngleZ = this.bipedHead.rotateAngleZ;
 
-
 		this.bipedRightArm.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 2.0F * limbSwingAmount * 0.5F;
 
 		float leftConstraint = hasShield ? 0.2F : limbSwingAmount;
@@ -171,7 +165,6 @@ public class ModelTFGoblinKnightUpper<T extends EntityTFGoblinKnightUpper> exten
 		this.bipedLeftArm.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 2.0F * leftConstraint * 0.5F;
 		this.bipedRightArm.rotateAngleZ = 0.0F;
 		this.bipedLeftArm.rotateAngleZ = 0.0F;
-
 
 		this.bipedRightLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
 		this.bipedLeftLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;

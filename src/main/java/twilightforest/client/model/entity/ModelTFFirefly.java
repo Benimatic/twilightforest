@@ -1,10 +1,11 @@
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.renderer.entity.model.EntityModel;
+import com.google.common.collect.ImmutableList;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.entity.Entity;
 
-
-public class ModelTFFirefly extends EntityModel {
+public class ModelTFFirefly extends SegmentedModel {
 	public ModelTFFirefly() {
 		legs = new ModelRenderer(this, 0, 21);
 		legs.addCuboid(-4F, 7.9F, -5F, 8, 1, 10, 0F);
@@ -24,17 +25,24 @@ public class ModelTFFirefly extends EntityModel {
 
 	}
 
-	public void render(float f5) {
-		//super.render(f, f1, f2, f3, f4, f5);
-		//setRotationAngles(f, f1, f2, f3, f4, f5);
-		legs.render(f5);
-		fatbody.render(f5);
-		skinnybody.render(f5);
-//		glow.render(f5);
+//	public void render(float f5) {
+//		//super.render(f, f1, f2, f3, f4, f5);
+//		//setRotationAngles(f, f1, f2, f3, f4, f5);
+//
+////		glow.render(f5);
+//	}
 
+	@Override
+	public Iterable<ModelRenderer> getParts() {
+		return ImmutableList.of(
+				legs,
+				fatbody,
+				skinnybody
+		);
 	}
 
-	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5) {
+	@Override
+	public void setAngles(Entity entity, float v, float v1, float v2, float v3, float v4) {
 		//super.setRotationAngles(f, f1, f2, f3, f4, f5);
 	}
 

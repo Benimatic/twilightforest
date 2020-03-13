@@ -4,7 +4,6 @@ import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import twilightforest.entity.EntityTFBlockGoblin;
 
-
 public class ModelTFBlockGoblin<T extends EntityTFBlockGoblin> extends BipedModel<T> {
 	public ModelRenderer helmet;
 
@@ -161,16 +160,16 @@ public class ModelTFBlockGoblin<T extends EntityTFBlockGoblin> extends BipedMode
 
 	}
 
-	@Override
-	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+//	@Override
+//	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+//		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+//
+//		//block.render(scale);
+//	}
 
-		//block.render(scale);
-	}
-
 	@Override
-	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
-		super.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+		super.setAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
 		bipedHead.rotationPointY = 11.0F;
 		bipedHeadwear.rotationPointY = 11.0F;
@@ -196,6 +195,5 @@ public class ModelTFBlockGoblin<T extends EntityTFBlockGoblin> extends BipedMode
 
 
 		block.rotateAngleY = -angle;
-
 	}
 }

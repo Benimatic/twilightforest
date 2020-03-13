@@ -5,13 +5,15 @@
 // - ZeuX
 package twilightforest.client.model.entity;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.boss.EntityTFHydra;
 import twilightforest.entity.boss.EntityTFHydraPart;
 
-public class ModelTFHydra<T extends EntityTFHydra> extends EntityModel<T> {
+public class ModelTFHydra<T extends EntityTFHydra> extends SegmentedModel<T> {
 	//fields
 	ModelRenderer body;
 	ModelRenderer leg1;
@@ -219,32 +221,39 @@ public class ModelTFHydra<T extends EntityTFHydra> extends EntityModel<T> {
 
 	}
 
+//	@Override
+//	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+//		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+//		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+//
+////		neck1a.render(scale);
+////		neck1b.render(scale);
+////		neck1c.render(scale);
+////		neck1d.render(scale);
+////		head1.render(scale);
+////		neck2a.render(scale);
+////		neck2b.render(scale);
+////		neck2c.render(scale);
+////		neck2d.render(scale);
+////		head2.render(scale);
+////		neck3a.render(scale);
+////		neck3b.render(scale);
+////		neck3c.render(scale);
+////		neck3d.render(scale);
+////		head3.render(scale);
+//	}
+
 	@Override
-	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-		body.render(scale);
-		leg1.render(scale);
-		leg2.render(scale);
-		tail1.render(scale);
-		tail2.render(scale);
-		tail3.render(scale);
-		tail4.render(scale);
-//		neck1a.render(scale);
-//		neck1b.render(scale);
-//		neck1c.render(scale);
-//		neck1d.render(scale);
-//		head1.render(scale);
-//		neck2a.render(scale);
-//		neck2b.render(scale);
-//		neck2c.render(scale);
-//		neck2d.render(scale);
-//		head2.render(scale);
-//		neck3a.render(scale);
-//		neck3b.render(scale);
-//		neck3c.render(scale);
-//		neck3d.render(scale);
-//		head3.render(scale);
+	public Iterable<ModelRenderer> getParts() {
+		return ImmutableList.of(
+				body,
+				leg1,
+				leg2,
+				tail1,
+				tail2,
+				tail3,
+				tail4
+		);
 	}
 
 	private void setRotation(ModelRenderer model, float x, float y, float z) {
@@ -254,19 +263,17 @@ public class ModelTFHydra<T extends EntityTFHydra> extends EntityModel<T> {
 	}
 
 	@Override
-	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
-		super.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+		//super.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
 
 		leg1.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
 		leg2.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + 3.141593F) * 1.4F * limbSwingAmount;
 
 		leg1.rotateAngleY = 0.0F;
 		leg2.rotateAngleY = 0.0F;
-
 	}
 
-
-//	@Override
+	//	@Override
 //	public void setLivingAnimations(EntityLiving entityliving, float f, float f1, float time) {
 //		EntityTFHydra hydra = (EntityTFHydra)entityliving;
 //		
@@ -314,6 +321,4 @@ public class ModelTFHydra<T extends EntityTFHydra> extends EntityModel<T> {
 
 		return (whichHead.prevRotationPitch + (whichHead.rotationPitch - whichHead.prevRotationPitch) * time) / 57.29578F;
 	}
-
-
 }

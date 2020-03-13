@@ -1,11 +1,11 @@
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.renderer.entity.model.EntityModel;
+import com.google.common.collect.ImmutableList;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
-
-public class ModelTFGoblinChain extends EntityModel {
+public class ModelTFGoblinChain extends SegmentedModel {
 	ModelRenderer chain;
 
 	public ModelTFGoblinChain() {
@@ -17,8 +17,10 @@ public class ModelTFGoblinChain extends EntityModel {
 	}
 
 	@Override
-	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-		chain.render(scale);
+	public Iterable<ModelRenderer> getParts() {
+		return ImmutableList.of(chain);
 	}
 
+	@Override
+	public void setAngles(Entity entity, float v, float v1, float v2, float v3, float v4) { }
 }

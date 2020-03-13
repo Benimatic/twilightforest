@@ -10,7 +10,7 @@ public class ModelTFGoblinKnightLower<T extends EntityTFGoblinKnightLower> exten
 	public ModelRenderer tunic;
 
 	public ModelTFGoblinKnightLower() {
-		this.isSneak = false;
+		this.isSneaking = false;
 		this.textureWidth = 128;
 		this.textureHeight = 64;
 
@@ -84,7 +84,7 @@ public class ModelTFGoblinKnightLower<T extends EntityTFGoblinKnightLower> exten
 	 * "far" arms and legs can swing at most.
 	 */
 	@Override
-	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.bipedHead.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 		this.bipedHead.rotateAngleX = headPitch / (180F / (float) Math.PI);
 		this.bipedHeadwear.rotateAngleY = this.bipedHead.rotateAngleY;
@@ -122,5 +122,4 @@ public class ModelTFGoblinKnightLower<T extends EntityTFGoblinKnightLower> exten
 		this.bipedRightArm.rotateAngleX += MathHelper.sin(ageInTicks * 0.067F) * 0.05F;
 		this.bipedLeftArm.rotateAngleX -= MathHelper.sin(ageInTicks * 0.067F) * 0.05F;
 	}
-
 }

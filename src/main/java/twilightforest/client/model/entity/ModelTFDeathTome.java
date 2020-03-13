@@ -1,6 +1,8 @@
 package twilightforest.client.model.entity;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.entity.model.BookModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
@@ -40,16 +42,14 @@ public class ModelTFDeathTome extends BookModel {
 		everything.addChild(loosePage2);
 		everything.addChild(loosePage3);
 		everything.addChild(loosePage4);
-
 	}
 
 	@Override
-	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+	public void render(MatrixStack state, IVertexBuilder builder, int limbSwing, int limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 		GlStateManager.enableCull();
 		this.setRotationAngles(entity.ticksExisted, 0.4F, 0.6F, 0.9F, headPitch, 0.0625F, entity);
 		this.everything.render(scale);
 		GlStateManager.disableCull();
-
 	}
 
 	@Override

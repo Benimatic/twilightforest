@@ -5,12 +5,12 @@
 // - ZeuX
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.EntityTFSlimeBeetle;
 
-public class ModelTFSlimeBeetle<T extends EntityTFSlimeBeetle> extends EntityModel<T> {
+public class ModelTFSlimeBeetle<T extends EntityTFSlimeBeetle> extends SegmentedModel<T> {
 	//fields
 	ModelRenderer head;
 	ModelRenderer RearEnd;
@@ -110,18 +110,15 @@ public class ModelTFSlimeBeetle<T extends EntityTFSlimeBeetle> extends EntityMod
 		eye2.addCuboid(-1.5F, -1.5F, -1.5F, 3, 3, 3);
 		eye2.setRotationPoint(3F, -2F, -5F);
 
-
 		mouth = new ModelRenderer(this, 17, 12);
 		mouth.addCuboid(-1F, -1F, -1F, 2, 2, 1);
 		mouth.setRotationPoint(0F, 1, -6F);
-
 
 		head.addChild(antenna1);
 		head.addChild(antenna2);
 		head.addChild(eye1);
 		head.addChild(eye2);
 		head.addChild(mouth);
-
 
 		tail1 = new ModelRenderer(this, 0, 20);
 		tail1.addCuboid(-3F, -3F, -3F, 6, 6, 6);
@@ -183,7 +180,7 @@ public class ModelTFSlimeBeetle<T extends EntityTFSlimeBeetle> extends EntityMod
 	 * "far" arms and legs can swing at most.
 	 */
 	@Override
-	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.head.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 		this.head.rotateAngleX = headPitch / (180F / (float) Math.PI);
 
@@ -229,14 +226,10 @@ public class ModelTFSlimeBeetle<T extends EntityTFSlimeBeetle> extends EntityMod
 		this.Leg5.rotateAngleZ += var18;
 		this.Leg6.rotateAngleZ += -var18;
 
-
 		// tail wiggle
 		this.tail1.rotateAngleX = MathHelper.cos(ageInTicks * 0.3335F) * 0.15F;
 		this.tail2.rotateAngleX = MathHelper.cos(ageInTicks * 0.4445F) * 0.20F;
 		this.slimeCube.rotateAngleX = MathHelper.cos(ageInTicks * 0.5555F) * 0.25F;
 		this.slimeCenter.rotateAngleX = MathHelper.cos(ageInTicks * 0.5555F + 0.25F) * 0.25F;
-
 	}
-
-
 }

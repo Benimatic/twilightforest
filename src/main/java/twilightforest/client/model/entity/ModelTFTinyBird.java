@@ -40,7 +40,6 @@ public class ModelTFTinyBird<T extends EntityTFTinyBird> extends EntityModel<T> 
 
 		head.addChild(beak);
 
-
 		body = new ModelRenderer(this, 0, 6);
 		body.addCuboid(-1.5F, 0F, -1F, 3, 3, 3);
 		body.setRotationPoint(0F, 20F, 0F);
@@ -119,12 +118,11 @@ public class ModelTFTinyBird<T extends EntityTFTinyBird> extends EntityModel<T> 
 		model.rotateAngleZ = z;
 	}
 
-
 	/**
 	 * Sets the models various rotation angles.
 	 */
 	@Override
-	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		head.rotateAngleX = headPitch / (180F / (float) Math.PI);
 		head.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 
@@ -141,6 +139,5 @@ public class ModelTFTinyBird<T extends EntityTFTinyBird> extends EntityModel<T> 
 			rightleg.rotationPointY = 22.5F;
 			leftleg.rotationPointY = 22.5F;
 		}
-
 	}
 }

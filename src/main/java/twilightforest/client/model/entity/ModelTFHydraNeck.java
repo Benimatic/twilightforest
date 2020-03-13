@@ -1,10 +1,11 @@
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.renderer.entity.model.EntityModel;
+import com.google.common.collect.ImmutableList;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import twilightforest.entity.boss.EntityTFHydraNeck;
 
-public class ModelTFHydraNeck<T extends EntityTFHydraNeck> extends EntityModel<T> {
+public class ModelTFHydraNeck<T extends EntityTFHydraNeck> extends SegmentedModel<T> {
 
 	ModelRenderer neck;
 
@@ -18,21 +19,22 @@ public class ModelTFHydraNeck<T extends EntityTFHydraNeck> extends EntityModel<T
 		neck.addCuboid("box", -16F, -16F, -16F, 32, 32, 32);
 		neck.addCuboid("fin", -2F, -23F, 0F, 4, 24, 24);
 		neck.setRotationPoint(0F, 0F, 0F);
+	}
 
+//	@Override
+//	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+//		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+//		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+//	}
+
+	@Override
+	public Iterable<ModelRenderer> getParts() {
+		return ImmutableList.of(neck);
 	}
 
 	@Override
-	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-		neck.render(scale);
-	}
-
-	@Override
-	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		neck.rotateAngleY = netHeadYaw / 57.29578F;
 		neck.rotateAngleX = headPitch / 57.29578F;
 	}
-
-
 }

@@ -4,7 +4,6 @@ import net.minecraft.client.renderer.entity.model.SheepWoolModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import twilightforest.entity.passive.EntityTFBighorn;
 
-
 public class ModelTFBighornFur<T extends EntityTFBighorn> extends SheepWoolModel<T> {
 
 	public ModelTFBighornFur() {

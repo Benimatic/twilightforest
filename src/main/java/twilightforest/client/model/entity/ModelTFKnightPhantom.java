@@ -16,7 +16,7 @@ public class ModelTFKnightPhantom<T extends EntityTFKnightPhantom> extends Biped
 
 	@Deprecated
 	public ModelTFKnightPhantom() {
-		this.isSneak = false;
+		this.isSneaking = false;
 		this.textureWidth = 128;
 		this.textureHeight = 64;
 
@@ -95,8 +95,6 @@ public class ModelTFKnightPhantom<T extends EntityTFKnightPhantom> extends Biped
 		this.bipedLeftLeg = new ModelRenderer(this, 0, 0);
 		this.bipedLeftLeg.addCuboid(0, 0, 0, 0, 0, 0);
 		this.bipedLeftLeg.setRotationPoint(0.0F, 12.0F, 0.0F);
-
-
 	}
 
 
@@ -106,7 +104,7 @@ public class ModelTFKnightPhantom<T extends EntityTFKnightPhantom> extends Biped
 	 * "far" arms and legs can swing at most.
 	 */
 	@Override
-	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.bipedHead.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 		this.bipedHead.rotateAngleX = headPitch / (180F / (float) Math.PI);
 		this.bipedHead.rotateAngleZ = 0;
@@ -114,12 +112,10 @@ public class ModelTFKnightPhantom<T extends EntityTFKnightPhantom> extends Biped
 		this.bipedHeadwear.rotateAngleX = this.bipedHead.rotateAngleX;
 		this.bipedHeadwear.rotateAngleZ = this.bipedHead.rotateAngleZ;
 
-
 		this.bipedRightArm.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float) Math.PI) * 2.0F * limbSwingAmount * 0.5F;
 		this.bipedLeftArm.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.5F;
 		this.bipedRightArm.rotateAngleZ = 0.0F;
 		this.bipedLeftArm.rotateAngleZ = 0.0F;
-
 
 //        this.bipedRightLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
 //        this.bipedLeftLeg.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;
@@ -161,8 +157,5 @@ public class ModelTFKnightPhantom<T extends EntityTFKnightPhantom> extends Biped
 		this.bipedLeftArm.rotateAngleZ -= MathHelper.cos(ageInTicks * 0.09F) * 0.05F + 0.05F;
 		this.bipedRightArm.rotateAngleX += MathHelper.sin(ageInTicks * 0.067F) * 0.05F;
 		this.bipedLeftArm.rotateAngleX -= MathHelper.sin(ageInTicks * 0.067F) * 0.05F;
-
 	}
-
-
 }

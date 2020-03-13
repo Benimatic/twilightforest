@@ -6,12 +6,13 @@
 
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.renderer.entity.model.EntityModel;
+import com.google.common.collect.ImmutableList;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.passive.EntityTFSquirrel;
 
-public class ModelTFSquirrel<T extends EntityTFSquirrel> extends EntityModel<T> {
+public class ModelTFSquirrel<T extends EntityTFSquirrel> extends SegmentedModel<T> {
 	//fields
 	ModelRenderer body;
 	ModelRenderer leg1;
@@ -93,17 +94,23 @@ public class ModelTFSquirrel<T extends EntityTFSquirrel> extends EntityModel<T> 
 		fluff2.addChild(fluff3);
 	}
 
+//	@Override
+//	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+//		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+//		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+//	}
+
 	@Override
-	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-		body.render(scale);
-		leg1.render(scale);
-		leg2.render(scale);
-		leg3.render(scale);
-		leg4.render(scale);
-		head.render(scale);
-		tail.render(scale);
+	public Iterable<ModelRenderer> getParts() {
+		return ImmutableList.of(
+				body,
+				leg1,
+				leg2,
+				leg3,
+				leg4,
+				head,
+				tail
+		);
 	}
 
 	private void setRotation(ModelRenderer model, float x, float y, float z) {
@@ -112,7 +119,6 @@ public class ModelTFSquirrel<T extends EntityTFSquirrel> extends EntityModel<T> 
 		model.rotateAngleZ = z;
 	}
 
-
 	/**
 	 * Used for easily adding entity-dependent animations. The second and third float params here are the same second
 	 * and third as in the setRotationAngles method.
@@ -120,15 +126,13 @@ public class ModelTFSquirrel<T extends EntityTFSquirrel> extends EntityModel<T> 
 	@Override
 	public void setLivingAnimations(T entity, float limbSwing, float limbSwingAmount, float partialTickTime) {
 		//EntityTFSquirrel squirrel = (EntityTFSquirrel)entity;
-
-
 	}
 
 	/**
 	 * Sets the models various rotation angles.
 	 */
 	@Override
-	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.head.rotateAngleX = headPitch / (180F / (float) Math.PI);
 		this.head.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 		this.leg1.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
@@ -146,7 +150,5 @@ public class ModelTFSquirrel<T extends EntityTFSquirrel> extends EntityModel<T> 
 			this.fluff2.rotateAngleX = 0.1F + MathHelper.cos(ageInTicks * 0.4445F) * 0.20F;
 			this.fluff3.rotateAngleX = 0.1F + MathHelper.cos(ageInTicks * 0.5555F) * 0.25F;
 		}
-
 	}
-
 }

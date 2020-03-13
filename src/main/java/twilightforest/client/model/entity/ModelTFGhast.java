@@ -1,6 +1,7 @@
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.renderer.entity.model.EntityModel;
+import com.google.common.collect.ImmutableList;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
@@ -10,10 +11,9 @@ import twilightforest.entity.EntityTFTowerGhast;
 import java.util.Random;
 
 @OnlyIn(Dist.CLIENT)
-public class ModelTFGhast<T extends EntityTFTowerGhast> extends EntityModel<T> {
+public class ModelTFGhast<T extends EntityTFTowerGhast> extends SegmentedModel<T> {
 	ModelRenderer body;
 	protected ModelRenderer[] tentacles = new ModelRenderer[9];
-
 
 	public ModelTFGhast() {
 		byte yOffset = -16;
@@ -46,7 +46,7 @@ public class ModelTFGhast<T extends EntityTFTowerGhast> extends EntityModel<T> {
 	 * "far" arms and legs can swing at most.
 	 */
 	@Override
-	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		// wave tentacles
 		for (int i = 0; i < this.tentacles.length; ++i) {
 			this.tentacles[i].rotateAngleX = 0.2F * MathHelper.sin(ageInTicks * 0.3F + (float) i) + 0.4F;
@@ -60,10 +60,13 @@ public class ModelTFGhast<T extends EntityTFTowerGhast> extends EntityModel<T> {
 	/**
 	 * Sets the models various rotation angles then renders the model.
 	 */
-	@Override
-	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-		this.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+//	@Override
+//	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+//		this.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+//	}
 
-		this.body.render(scale);
+	@Override
+	public Iterable<ModelRenderer> getParts() {
+		return ImmutableList.of(body);
 	}
 }

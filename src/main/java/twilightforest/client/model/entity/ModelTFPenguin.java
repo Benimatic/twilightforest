@@ -40,7 +40,6 @@ public class ModelTFPenguin<T extends EntityTFPenguin> extends EntityModel<T> {
 
 		leftarm.mirror = true;
 
-
 		rightleg = new ModelRenderer(this, 0, 16);
 		rightleg.addCuboid(-2F, 0F, -5F, 4, 1, 8);
 		rightleg.setRotationPoint(-2F, 23F, 0F);
@@ -60,7 +59,6 @@ public class ModelTFPenguin<T extends EntityTFPenguin> extends EntityModel<T> {
 		beak.setRotationPoint(0F, -1F, -4F);
 
 		head.addChild(beak);
-
 	}
 
 	/**
@@ -99,7 +97,7 @@ public class ModelTFPenguin<T extends EntityTFPenguin> extends EntityModel<T> {
 	 * Sets the models various rotation angles.
 	 */
 	@Override
-	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		head.rotateAngleX = headPitch / (180F / (float) Math.PI);
 		head.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 
@@ -109,6 +107,4 @@ public class ModelTFPenguin<T extends EntityTFPenguin> extends EntityModel<T> {
 		rightarm.rotateAngleZ = ageInTicks;
 		leftarm.rotateAngleZ = -ageInTicks;
 	}
-
-
 }

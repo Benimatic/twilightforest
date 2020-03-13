@@ -28,7 +28,6 @@ public class ModelTFTowerBoss<T extends EntityTFUrGhast> extends ModelTFGhast<T>
 
 		this.tentacles[num].addCuboid(-1.5F, 0.0F, -1.5F, 3, length, 3);
 
-
 		if (num == 0) {
 			this.tentacles[num].rotationPointX = 4.5F;
 			this.tentacles[num].rotationPointZ = 4.5F;
@@ -102,7 +101,6 @@ public class ModelTFTowerBoss<T extends EntityTFUrGhast> extends ModelTFGhast<T>
 		}
 
 		this.body.addChild(this.tentacles[num]);
-
 	}
 
 
@@ -119,15 +117,15 @@ public class ModelTFTowerBoss<T extends EntityTFUrGhast> extends ModelTFGhast<T>
 	 * "far" arms and legs can swing at most.
 	 */
 	@Override
-	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
-		super.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+		super.setAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
 		// wave tentacles
 		for (int i = 0; i < this.subTentacles.length; ++i) {
 //            for (int j = 0; j < this.subTentacles[i].length; ++j)
 //            {
 //            	this.subTentacles[i][j].rotateAngleX = 0.8F * MathHelper.sin(i * 2.3F) + 0.3F * MathHelper.sin(j) + 0.2F;
-//            	
+//
 //            }
 
 			float wiggle = Math.min(limbSwingAmount, 0.6F);
@@ -142,12 +140,9 @@ public class ModelTFTowerBoss<T extends EntityTFUrGhast> extends ModelTFGhast<T>
 			this.subTentacles[i][1].rotateAngleX = 0.1F + MathHelper.cos(time * 0.4445F) * 0.20F;
 			this.subTentacles[i][2].rotateAngleX = 0.1F + MathHelper.cos(time * 0.5555F) * 0.25F;
 
-
 			float yTwist = 0.4F;
 
 			this.tentacles[i].rotateAngleY = yTwist * MathHelper.sin(time * 0.3F);
-
 		}
 	}
-
 }

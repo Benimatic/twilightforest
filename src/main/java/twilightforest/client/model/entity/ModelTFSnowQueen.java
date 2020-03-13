@@ -13,7 +13,6 @@ public class ModelTFSnowQueen<T extends EntityTFSnowQueen> extends BipedModel<T>
 		float par1 = 0;
 		float par2 = 0;
 
-
 		// crown
 		this.bipedHeadwear = new ModelRenderer(this, 0, 0);
 
@@ -23,7 +22,6 @@ public class ModelTFSnowQueen<T extends EntityTFSnowQueen> extends BipedModel<T>
 		this.bipedHeadwear.addChild(makeSideCrown(0, 4, -10F));
 
 		// copy to back
-
 
 		// dress
 		this.bipedBody = new ModelRenderer(this, 32, 0);
@@ -45,7 +43,6 @@ public class ModelTFSnowQueen<T extends EntityTFSnowQueen> extends BipedModel<T>
 		this.bipedLeftLeg.mirror = true;
 		this.bipedLeftLeg.addCuboid(-1.5F, 0.0F, -1.5F, 3, 12, 3, par1);
 		this.bipedLeftLeg.setRotationPoint(1.9F, 12.0F + par2, 0.0F);
-
 	}
 
 	private ModelRenderer makeSideCrown(float spikeDepth, float crownX, float angle) {
@@ -69,7 +66,6 @@ public class ModelTFSnowQueen<T extends EntityTFSnowQueen> extends BipedModel<T>
 		spike3r.setRotationPoint(2.5F, 0.0F, 0.0F);
 		spike3r.rotateAngleX = angle / 180F * 3.14159F;
 		spike3r.rotateAngleZ = 10F / 180F * 3.14159F;
-
 
 		crownSide.addChild(spike4);
 		crownSide.addChild(spike3l);
@@ -110,8 +106,8 @@ public class ModelTFSnowQueen<T extends EntityTFSnowQueen> extends BipedModel<T>
 	 * "far" arms and legs can swing at most.
 	 */
 	@Override
-	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
-		super.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+		super.setAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
 		// in beam phase, arms forwards
 		if (entity.getCurrentPhase() == Phase.BEAM) {
@@ -137,5 +133,4 @@ public class ModelTFSnowQueen<T extends EntityTFSnowQueen> extends BipedModel<T>
 			}
 		}
 	}
-
 }

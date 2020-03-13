@@ -49,8 +49,8 @@ public class ModelTFKnightPhantom2<T extends EntityTFKnightPhantom> extends Bipe
 	 * "far" arms and legs can swing at most.
 	 */
 	@Override
-	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
-		super.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+		super.setAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 		this.bipedLeftLeg.rotateAngleX = 0;
 		this.bipedLeftLeg.rotateAngleY = 0;
 		this.bipedLeftLeg.rotateAngleZ = 0;
@@ -61,8 +61,5 @@ public class ModelTFKnightPhantom2<T extends EntityTFKnightPhantom> extends Bipe
 
 		this.bipedRightLeg.rotateAngleX = 0.2F * MathHelper.sin(ageInTicks * 0.3F) + 0.4F;
 		this.bipedLeftLeg.rotateAngleX = 0.2F * MathHelper.sin(ageInTicks * 0.3F) + 0.4F;
-
-
 	}
-
 }

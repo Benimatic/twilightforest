@@ -1,11 +1,12 @@
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.renderer.entity.model.EntityModel;
+import com.google.common.collect.ImmutableList;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import twilightforest.entity.boss.EntityTFHydraHead;
 import twilightforest.entity.boss.EntityTFHydraPart;
 
-public class ModelTFHydraHead<T extends EntityTFHydraHead> extends EntityModel<T> {
+public class ModelTFHydraHead<T extends EntityTFHydraHead> extends SegmentedModel<T> {
 
 	ModelRenderer head;
 	ModelRenderer jaw;
@@ -69,26 +70,29 @@ public class ModelTFHydraHead<T extends EntityTFHydraHead> extends EntityModel<T
 		model.rotateAngleZ = z;
 	}
 
-	@Override
-	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-		head.render(scale);
-	}
-
-	public void render(float f5) {
-		head.render(f5);
-	}
+//	@Override
+//	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+//		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+//		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+//		head.render(scale);
+//	}
 
 	@Override
-	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
-//		head.rotateAngleY = netHeadYaw / (180F / (float)Math.PI);
-//		head.rotateAngleX = headPitch / (180F / (float)Math.PI);
+	public Iterable<ModelRenderer> getParts() {
+		return ImmutableList.of(head);
 	}
+
+//	@Override
+//	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+////		head.rotateAngleY = netHeadYaw / (180F / (float)Math.PI);
+////		head.rotateAngleX = headPitch / (180F / (float)Math.PI);
+//	}
+
+	@Override
+	public void setAngles(T entity, float v, float v1, float v2, float v3, float v4) { }
 
 	@Override
 	public void setLivingAnimations(T entity, float limbSwing, float limbSwingAmount, float partialTicks) {
-
 		head.rotateAngleY = getRotationY(entity, partialTicks);
 		head.rotateAngleX = getRotationX(entity, partialTicks);
 
@@ -103,11 +107,9 @@ public class ModelTFHydraHead<T extends EntityTFHydraHead> extends EntityModel<T
 
 		head.rotateAngleX -= (float) (mouthOpen * (Math.PI / 12.0));
 		jaw.rotateAngleX = (float) (mouthOpen * (Math.PI / 3.0));
-
 	}
 
 	public float getRotationY(EntityTFHydraPart whichHead, float time) {
-
 		//float yawOffset = hydra.prevRenderYawOffset + (hydra.renderYawOffset - hydra.prevRenderYawOffset) * time;
 		float yaw = whichHead.prevRotationYaw + (whichHead.rotationYaw - whichHead.prevRotationYaw) * time;
 
@@ -115,8 +117,6 @@ public class ModelTFHydraHead<T extends EntityTFHydraHead> extends EntityModel<T
 	}
 
 	public float getRotationX(EntityTFHydraPart whichHead, float time) {
-
 		return (whichHead.prevRotationPitch + (whichHead.rotationPitch - whichHead.prevRotationPitch) * time) / 57.29578F;
 	}
-
 }

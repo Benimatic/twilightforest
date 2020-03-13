@@ -110,7 +110,6 @@ public class ModelTFMinoshroom<T extends EntityTFMinoshroom> extends BipedModel<
 
 		// kill off headwear box
 		this.bipedHeadwear = new ModelRenderer(this, 0, 0);
-
 	}
 
 	@Override
@@ -142,7 +141,7 @@ public class ModelTFMinoshroom<T extends EntityTFMinoshroom> extends BipedModel<
 	 * "far" arms and legs can swing at most.
 	 */
 	@Override
-	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		// copied from ModelBiped
 
 		this.bipedHead.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);

@@ -5,6 +5,7 @@ import net.minecraft.client.renderer.model.ModelRenderer;
 import twilightforest.entity.EntityTFRedcap;
 
 public class ModelTFRedcap<T extends EntityTFRedcap> extends BipedModel<T> {
+
 	public ModelTFRedcap() {
 		bipedHead = new ModelRenderer(this, 0, 0);
 		bipedHead.addCuboid(-3.4F, 1F, -4F, 7, 7, 7, 0F);
@@ -46,8 +47,8 @@ public class ModelTFRedcap<T extends EntityTFRedcap> extends BipedModel<T> {
 	}
 
 	@Override
-	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
-		super.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+		super.setAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
 		goblinRightEar.rotateAngleX = bipedHead.rotateAngleX;
 		goblinRightEar.rotateAngleY = bipedHead.rotateAngleY;
@@ -58,7 +59,6 @@ public class ModelTFRedcap<T extends EntityTFRedcap> extends BipedModel<T> {
 		goblinLeftEar.rotateAngleZ = bipedHead.rotateAngleZ;
 	}
 
-
 	@Override
 	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
@@ -66,7 +66,6 @@ public class ModelTFRedcap<T extends EntityTFRedcap> extends BipedModel<T> {
 		goblinRightEar.render(scale);
 		goblinLeftEar.render(scale);
 	}
-
 
 	ModelRenderer goblinRightEar;
 	ModelRenderer goblinLeftEar;

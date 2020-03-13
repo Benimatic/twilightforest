@@ -1,26 +1,25 @@
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.renderer.entity.model.EntityModel;
+import com.google.common.collect.ImmutableList;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import twilightforest.entity.passive.EntityTFMobileFirefly;
 
-public class ModelTFTinyFirefly<T extends EntityTFMobileFirefly> extends EntityModel<T> {
+public class ModelTFTinyFirefly<T extends EntityTFMobileFirefly> extends SegmentedModel<T> {
+
 	public ModelTFTinyFirefly() {
 		glow1 = new ModelRenderer(this, 20, 0);
 		glow1.addCuboid(-5F, -5F, 0F, 10, 10, 0, 0F);
-
 	}
 
 	@Override
-	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-		glow1.render(scale);
+	public Iterable<ModelRenderer> getParts() {
+		return ImmutableList.of(glow1);
 	}
 
-	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5) {
-		//super.setRotationAngles(f, f1, f2, f3, f4, f5);
-	}
+	@Override
+	public void setAngles(T entity, float v, float v1, float v2, float v3, float v4) { }
 
 	//fields
 	public ModelRenderer glow1;
-
 }
