@@ -123,14 +123,24 @@ public class ModelTFKobold<T extends EntityTFKobold> extends BipedModel<T> {
 		this.isJumping = entity.getMotion().getY() > 0;
 	}
 
+//	@Override
+//	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+//		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+//	}
+
 	@Override
-	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-		bipedHead.render(scale);
-		bipedBody.render(scale);
-		bipedRightArm.render(scale);
-		bipedLeftArm.render(scale);
-		bipedRightLeg.render(scale);
-		bipedLeftLeg.render(scale);
+	protected Iterable<ModelRenderer> getHeadParts() {
+		return ImmutableList.of(bipedHead);
+	}
+
+	@Override
+	protected Iterable<ModelRenderer> getBodyParts() {
+		return ImmutableList.of(
+				bipedBody,
+				bipedRightArm,
+				bipedLeftArm,
+				bipedRightLeg,
+				bipedLeftLeg
+		);
 	}
 }

@@ -136,15 +136,15 @@ public class ModelTFYeti<T extends EntityTFYeti> extends BipedModel<T> {
 	@Override
 	public void setLivingAnimations(T entity, float limbSwing, float limbSwingAmount, float partialTicks) {
 		if (entity.isAngry()) {
-			this.rightEye.isHidden = true;
-			this.leftEye.isHidden = true;
-			this.angryRightEye.isHidden = false;
-			this.angryLeftEye.isHidden = false;
+			this.rightEye.showModel = false;
+			this.leftEye.showModel = false;
+			this.angryRightEye.showModel = true;
+			this.angryLeftEye.showModel = true;
 		} else {
-			this.rightEye.isHidden = false;
-			this.leftEye.isHidden = false;
-			this.angryRightEye.isHidden = true;
-			this.angryLeftEye.isHidden = true;
+			this.rightEye.showModel = true;
+			this.leftEye.showModel = true;
+			this.angryRightEye.showModel = false;
+			this.angryLeftEye.showModel = false;
 		}
 	}
 }

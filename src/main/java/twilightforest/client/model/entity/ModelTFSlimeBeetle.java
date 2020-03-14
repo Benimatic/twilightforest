@@ -34,7 +34,6 @@ public class ModelTFSlimeBeetle<T extends EntityTFSlimeBeetle> extends Segmented
 
 	boolean renderPassModel = false;
 
-
 	public ModelTFSlimeBeetle() {
 		this(false);
 	}

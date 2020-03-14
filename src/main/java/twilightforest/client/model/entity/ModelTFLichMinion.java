@@ -6,6 +6,10 @@ import twilightforest.entity.boss.EntityTFLichMinion;
 
 public class ModelTFLichMinion<T extends EntityTFLichMinion> extends ZombieModel<T> {
 
+	public ModelTFLichMinion() {
+		super(0.0F, true);
+	}
+
 	/**
 	 * Used for easily adding entity-dependent animations. The second and third float params here are the same second
 	 * and third as in the setRotationAngles method.

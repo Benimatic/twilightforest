@@ -1,5 +1,6 @@
 package twilightforest.client.model.entity;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
@@ -18,19 +19,34 @@ public class ModelTFWraith<T extends EntityTFWraith> extends BipedModel<T> {
 		dress.setRotationPoint(0.0F, 0.0F, 0.0F);
 	}
 
+//	@Override
+//	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+//		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+//		bipedHead.render(scale);
+//		bipedBody.render(scale);
+//		bipedRightArm.render(scale);
+//		bipedLeftArm.render(scale);
+//
+//		dress.render(scale);
+//
+//		//bipedRightLeg.render(scale);
+//		//bipedLeftLeg.render(scale);
+//		bipedHeadwear.render(scale);
+//	}
+
 	@Override
-	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-		bipedHead.render(scale);
-		bipedBody.render(scale);
-		bipedRightArm.render(scale);
-		bipedLeftArm.render(scale);
+	protected Iterable<ModelRenderer> getHeadParts() {
+		return ImmutableList.of(bipedHead, bipedHeadwear);
+	}
 
-		dress.render(scale);
-
-		//bipedRightLeg.render(scale);
-		//bipedLeftLeg.render(scale);
-		bipedHeadwear.render(scale);
+	@Override
+	protected Iterable<ModelRenderer> getBodyParts() {
+		return ImmutableList.of(
+				bipedBody,
+				bipedRightArm,
+				bipedLeftArm,
+				dress
+		);
 	}
 
 	/**

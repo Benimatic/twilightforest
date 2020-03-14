@@ -8,11 +8,12 @@ package twilightforest.client.model.entity;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.passive.EntityTFPenguin;
 
-public class ModelTFPenguin<T extends EntityTFPenguin> extends EntityModel<T> {
+public class ModelTFPenguin<T extends EntityTFPenguin> extends SegmentedModel<T> {
 	//fields
 	ModelRenderer body;
 	ModelRenderer rightarm;
