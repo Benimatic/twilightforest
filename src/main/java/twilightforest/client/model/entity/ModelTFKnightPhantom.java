@@ -16,9 +16,10 @@ public class ModelTFKnightPhantom<T extends EntityTFKnightPhantom> extends Biped
 
 	@Deprecated
 	public ModelTFKnightPhantom() {
+		super(0.0F, 0.0F, 128, 64);
 		this.isSneaking = false;
-		this.textureWidth = 128;
-		this.textureHeight = 64;
+//		this.textureWidth = 128;
+//		this.textureHeight = 64;
 
 //FIXME: AtomicBlom: Replace with something like LayerCape
 /*

@@ -12,6 +12,7 @@ public class ModelTFAdherent<T extends EntityTFAdherent> extends BipedModel<T> {
 	ModelRenderer rightSleeve;
 
 	public ModelTFAdherent() {
+		super(0.0F);
 
 		this.bipedHeadwear = new ModelRenderer(this, 0, 0);
 		this.bipedLeftLeg = new ModelRenderer(this, 0, 0);

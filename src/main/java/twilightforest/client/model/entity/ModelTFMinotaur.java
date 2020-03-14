@@ -14,6 +14,7 @@ public class ModelTFMinotaur<T extends EntityTFMinotaur> extends BipedModel<T> {
 	ModelRenderer snout;
 
 	public ModelTFMinotaur() {
+		super(0.0F);
 
 		this.righthorn1 = new ModelRenderer(this, 24, 0);
 		this.righthorn1.addCuboid(-5.5F, -1.5F, -1.5F, 5, 3, 3);

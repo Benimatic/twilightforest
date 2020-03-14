@@ -10,6 +10,8 @@ public class ModelTFGoblinKnightLower<T extends EntityTFGoblinKnightLower> exten
 	public ModelRenderer tunic;
 
 	public ModelTFGoblinKnightLower() {
+		super(0.0F, 0.0F, 128, 64);
+
 		this.isSneaking = false;
 		this.textureWidth = 128;
 		this.textureHeight = 64;

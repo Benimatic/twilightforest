@@ -10,6 +10,8 @@ public class ModelTFWraith<T extends EntityTFWraith> extends BipedModel<T> {
 	public ModelRenderer dress;
 
 	public ModelTFWraith() {
+		super(0.0F);
+
 		float f = 0.0F;
 		dress = new ModelRenderer(this, 40, 16);
 		dress.addCuboid(-4F, 12.0F, -2F, 8, 12, 4, f);

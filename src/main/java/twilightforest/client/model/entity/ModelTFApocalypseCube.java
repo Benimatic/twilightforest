@@ -11,7 +11,7 @@ public class ModelTFApocalypseCube<T extends EntityTFHarbingerCube> extends Quad
 	}
 
 	public ModelTFApocalypseCube(float fNumber) {
-		super(6, fNumber);
+		super(6, fNumber, false, 0.0F, 0.0F, 0.0F, 0.0F, 4); //All this is from AgeableModel. Do we scale?
 
 		this.textureWidth = 128;
 		this.textureHeight = 64;
@@ -37,9 +37,6 @@ public class ModelTFApocalypseCube<T extends EntityTFHarbingerCube> extends Quad
         legFrontLeft = new ModelRenderer(this, 0, 0);
         legFrontLeft.addCuboid(-4F, 0F, -4F, 8, 8, 8);
         legFrontLeft.setRotationPoint(9F, 16F, -14F);
-
-
-		this.childYOffset = 4.0F;
 	}
 
 	/**

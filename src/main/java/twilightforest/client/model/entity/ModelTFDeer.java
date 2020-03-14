@@ -6,10 +6,7 @@ import twilightforest.entity.passive.EntityTFDeer;
 
 public class ModelTFDeer<T extends EntityTFDeer> extends QuadrupedModel<T> {
 	public ModelTFDeer() {
-		super(12, 0.0F);
-
-		// head height for baby
-		childYOffset = 10F;
+		super(12, 0.0F, false, 4.0F, 4.0F, 2.0F, 2.0F, 10);
 
 		headModel = new ModelRenderer(this, 0, 5);
 		headModel.addCuboid(-2F, -8F, -6F, 4, 6, 6, 0F);
@@ -79,5 +76,4 @@ public class ModelTFDeer<T extends EntityTFDeer> extends QuadrupedModel<T> {
 
 	//fields
 	public ModelRenderer neck;
-
 }

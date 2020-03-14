@@ -7,6 +7,8 @@ import twilightforest.entity.EntityTFRedcap;
 public class ModelTFRedcap<T extends EntityTFRedcap> extends BipedModel<T> {
 
 	public ModelTFRedcap() {
+		super(0.0F);
+
 		bipedHead = new ModelRenderer(this, 0, 0);
 		bipedHead.addCuboid(-3.4F, 1F, -4F, 7, 7, 7, 0F);
 		bipedHead.setRotationPoint(0F, 0F, 0F);

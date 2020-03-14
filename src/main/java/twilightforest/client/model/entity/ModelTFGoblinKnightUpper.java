@@ -19,6 +19,7 @@ public class ModelTFGoblinKnightUpper<T extends EntityTFGoblinKnightUpper> exten
 
 
 	public ModelTFGoblinKnightUpper() {
+		super(0.0F, 0.0F, 128, 64);
 		this.isSneaking = false;
 		this.textureWidth = 128;
 		this.textureHeight = 64;
@@ -140,7 +141,6 @@ public class ModelTFGoblinKnightUpper<T extends EntityTFGoblinKnightUpper> exten
 	public void renderBreastplate(float scale) {
 		this.breastplate.render(scale);
 	}
-
 
 	/**
 	 * Sets the model's various rotation angles. For bipeds, par1 and par2 are used for animating the movement of arms

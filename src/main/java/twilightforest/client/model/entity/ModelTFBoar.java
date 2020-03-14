@@ -6,10 +6,7 @@ import twilightforest.entity.passive.EntityTFBoar;
 
 public class ModelTFBoar<T extends EntityTFBoar> extends QuadrupedModel<T> {
 	public ModelTFBoar() {
-		super(6, 0.0F);
-
-		// headModel height for baby
-		childYOffset = 4F;
+		super(6, 0.0F, false, 4.0F, 4.0F, 2.0F, 2.0F, 4);
 
 		headModel = new ModelRenderer(this, 0, 0);
 		headModel.addCuboid(-4F, -2F, -6F, 8, 7, 6, 0F);

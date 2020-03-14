@@ -11,6 +11,8 @@ public class ModelTFBlockGoblin<T extends EntityTFBlockGoblin> extends BipedMode
 	ModelRenderer[] spikes = new ModelRenderer[27];
 
 	public ModelTFBlockGoblin() {
+		super(0.0F);
+
 		bipedHead = new ModelRenderer(this, 0, 0);
 		bipedHead.addCuboid(0F, 0F, 0F, 0, 0, 0, 0F);
 		bipedHead.setRotationPoint(0F, 11F, 0F);
@@ -157,7 +159,6 @@ public class ModelTFBlockGoblin<T extends EntityTFBlockGoblin> extends BipedMode
 		spikes[8].rotateAngleY = -fourtyFive;
 		spikes[22].rotateAngleX = -55F / (180F / (float) Math.PI);
 		spikes[22].rotateAngleY = -fourtyFive;
-
 	}
 
 //	@Override
@@ -179,12 +180,9 @@ public class ModelTFBlockGoblin<T extends EntityTFBlockGoblin> extends BipedMode
 		bipedLeftLeg.rotationPointY = 18F;
 
 		bipedRightArm.setRotationPoint(-3.5F, 12F, 0F);
-
 		bipedRightArm.rotateAngleX += Math.PI;
 
 		bipedLeftArm.setRotationPoint(3.5F, 12F, 0F);
-
-
 		bipedLeftArm.rotateAngleX += Math.PI;
 
 		float angle = ageInTicks / 4F;
@@ -192,7 +190,6 @@ public class ModelTFBlockGoblin<T extends EntityTFBlockGoblin> extends BipedMode
 
 		block.rotationPointX = (float) Math.sin(angle) * length;
 		block.rotationPointZ = (float) -Math.cos(angle) * length;
-
 
 		block.rotateAngleY = -angle;
 	}

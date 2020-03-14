@@ -5,6 +5,11 @@ import net.minecraft.client.renderer.entity.model.ZombieModel;
 import twilightforest.entity.EntityTFRisingZombie;
 
 public class ModelTFRisingZombie<T extends EntityTFRisingZombie> extends ZombieModel<T> {
+
+	public ModelTFRisingZombie() {
+		super(0.0F, true);
+	}
+
 	@Override
 	public void render(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 		this.setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);

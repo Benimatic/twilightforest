@@ -14,10 +14,10 @@ public class ModelTFYeti<T extends EntityTFYeti> extends BipedModel<T> {
 	public ModelRenderer angryRightEye;
 
 	public ModelTFYeti() {
-		super();
+		super(0.0F, 0.0F, 128, 64);
 
-		this.textureWidth = 128;
-		this.textureHeight = 64;
+//		this.textureWidth = 128;
+//		this.textureHeight = 64;
 
 		this.bipedHead = new ModelRenderer(this, 0, 0);
 		this.bipedHead.addCuboid(-4.0F, -8.0F, -4.0F, 0, 0, 0);

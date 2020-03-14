@@ -12,10 +12,10 @@ public class ModelTFYetiAlpha<T extends EntityTFYetiAlpha> extends BipedModel<T>
 	public ModelRenderer rightEye;
 
 	public ModelTFYetiAlpha() {
-		super();
+		super(0.0F, 0.0F, 256, 128);
 
-		this.textureWidth = 256;
-		this.textureHeight = 128;
+//		this.textureWidth = 256;
+//		this.textureHeight = 128;
 
 		this.bipedHead = new ModelRenderer(this, 0, 0);
 		this.bipedHead.addCuboid(-4.0F, -8.0F, -4.0F, 0, 0, 0);

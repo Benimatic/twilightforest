@@ -12,8 +12,9 @@ public class ModelTFIceExploder<T extends EntityTFIceMob> extends BipedModel<T> 
 	public ModelRenderer[] spikes = new ModelRenderer[16];
 
 	public ModelTFIceExploder() {
-		this.textureWidth = 32;
-		this.textureHeight = 32;
+		super(0.0F, 0.0F, 32, 32);
+//		this.textureWidth = 32;
+//		this.textureHeight = 32;
 
 		float par1 = 0F;
 		float par2 = 0F;

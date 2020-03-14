@@ -14,8 +14,9 @@ public class ModelTFLich<T extends EntityTFLich> extends BipedModel<T> {
 	private final ModelRenderer cloak;
 
 	public ModelTFLich() {
-		textureWidth = 64;
-		textureHeight = 64;
+		super(0.0F, 0.0F, 64, 64);
+//		textureWidth = 64;
+//		textureHeight = 64;
 
 		bipedBody = new ModelRenderer(this, 8, 16);
 		bipedBody.addCuboid(-4F, 0.0F, -2F, 8, 24, 4);

@@ -6,6 +6,7 @@
 
 package twilightforest.client.model.entity;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
@@ -22,10 +23,12 @@ public class ModelTFKobold<T extends EntityTFKobold> extends BipedModel<T> {
 	boolean isJumping;
 
 	public ModelTFKobold() {
+		super(0.0F);
+
 		isJumping = false;
 
-		textureWidth = 64;
-		textureHeight = 32;
+//		textureWidth = 64;
+//		textureHeight = 32;
 
 		bipedHead = new ModelRenderer(this, 0, 0);
 		bipedHead.addCuboid(-3.5F, -7F, -3F, 7, 6, 6);

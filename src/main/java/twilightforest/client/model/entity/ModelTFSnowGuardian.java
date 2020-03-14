@@ -6,7 +6,7 @@ import twilightforest.entity.EntityTFSnowGuardian;
 public class ModelTFSnowGuardian<T extends EntityTFSnowGuardian> extends BipedModel<T> {
 
 	public ModelTFSnowGuardian() {
-
+		super(0.0F);
 	}
 
 //	/**

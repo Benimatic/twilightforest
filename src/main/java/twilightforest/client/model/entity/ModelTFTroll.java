@@ -10,10 +10,10 @@ public class ModelTFTroll<T extends EntityTFTroll> extends BipedModel<T> {
 	public ModelRenderer nose;
 
 	public ModelTFTroll() {
-		super();
+		super(0.0F, 0.0F, 128, 64);
 
-		this.textureWidth = 128;
-		this.textureHeight = 64;
+//		this.textureWidth = 128;
+//		this.textureHeight = 64;
 
 		this.bipedHead = new ModelRenderer(this, 0, 0);
 		this.bipedHead.addCuboid(-5.0F, -8.0F, -3.0F, 10, 10, 10);

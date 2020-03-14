@@ -23,8 +23,9 @@ public class ModelTFMinoshroom<T extends EntityTFMinoshroom> extends BipedModel<
 	public ModelRenderer lefthorn2;
 
 	public ModelTFMinoshroom() {
-		textureWidth = 128;
-		textureHeight = 32;
+		super(0.0F, 0.0F, 128, 32);
+//		textureWidth = 128;
+//		textureHeight = 32;
 
 		bipedHead = new ModelRenderer(this, 96, 16);
 		bipedHead.addCuboid(-4F, -8F, -4F, 8, 8, 8);

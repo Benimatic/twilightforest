@@ -9,6 +9,7 @@ import twilightforest.entity.boss.EntityTFSnowQueen.Phase;
 public class ModelTFSnowQueen<T extends EntityTFSnowQueen> extends BipedModel<T> {
 
 	public ModelTFSnowQueen() {
+		super(0.0F);
 
 		float par1 = 0;
 		float par2 = 0;

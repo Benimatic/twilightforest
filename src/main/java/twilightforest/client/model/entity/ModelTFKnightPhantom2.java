@@ -12,7 +12,8 @@ public class ModelTFKnightPhantom2<T extends EntityTFKnightPhantom> extends Bipe
 	}
 
 	public ModelTFKnightPhantom2(float scale) {
-		super(scale, 0.0F, 64, 32);
+		super(scale);
+
 		this.bipedRightArm = new ModelRenderer(this, 40, 16);
 		this.bipedRightArm.addCuboid(-1.0F, -2.0F, -1.0F, 2, 12, 2, scale);
 		this.bipedRightArm.setRotationPoint(-5.0F, 2.0F, 0.0F);
@@ -41,7 +42,6 @@ public class ModelTFKnightPhantom2<T extends EntityTFKnightPhantom> extends Bipe
 			super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 		}
 	}
-
 
 	/**
 	 * Sets the model's various rotation angles. For bipeds, limbSwing and limbSwingAmount are used for animating the movement of arms
