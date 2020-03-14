@@ -22,8 +22,7 @@ public class RenderTFGenericLiving<T extends LivingEntity, M extends EntityModel
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(T entity) {
+	public ResourceLocation getEntityTexture(T entity) {
 		return textureLoc;
 	}
-
 }

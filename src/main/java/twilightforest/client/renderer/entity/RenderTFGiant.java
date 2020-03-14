@@ -22,7 +22,7 @@ public class RenderTFGiant extends BipedRenderer<EntityTFGiantMiner> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFGiantMiner entity) {
+	public ResourceLocation getEntityTexture(EntityTFGiantMiner entity) {
 		Minecraft mc = Minecraft.getInstance();
 		boolean type = false;
 		ResourceLocation texture = DefaultPlayerSkin.getDefaultSkinLegacy();

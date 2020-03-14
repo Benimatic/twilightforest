@@ -17,7 +17,7 @@ public class RenderTFHarbingerCube<T extends EntityTFHarbingerCube, M extends Mo
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFHarbingerCube entity) {
+	public ResourceLocation getEntityTexture(EntityTFHarbingerCube entity) {
 		return textureLoc;
 	}
 

@@ -21,7 +21,7 @@ public class RenderTFBighorn extends SheepRenderer {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(SheepEntity ent) {
+	public ResourceLocation getEntityTexture(SheepEntity ent) {
 		return textureLoc;
 	}
 }

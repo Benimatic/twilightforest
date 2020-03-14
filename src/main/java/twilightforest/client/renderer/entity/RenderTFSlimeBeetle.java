@@ -19,7 +19,7 @@ public class RenderTFSlimeBeetle<T extends EntityTFSlimeBeetle, M extends ModelT
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFSlimeBeetle entity) {
+	public ResourceLocation getEntityTexture(EntityTFSlimeBeetle entity) {
 		return textureLoc;
 	}
 

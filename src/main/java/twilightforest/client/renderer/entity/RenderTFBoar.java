@@ -18,7 +18,7 @@ public class RenderTFBoar extends PigRenderer {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(PigEntity entity) {
+	public ResourceLocation getEntityTexture(PigEntity entity) {
 		return textureLoc;
 	}
 }

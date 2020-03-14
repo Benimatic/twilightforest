@@ -24,7 +24,7 @@ public class RenderTFBiped<T extends MobEntity, M extends BipedModel<T>> extends
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(T entity) {
+	public ResourceLocation getEntityTexture(T entity) {
 		return textureLoc;
 	}
 }

@@ -25,7 +25,7 @@ public class RenderTFBlockGoblin<T extends EntityTFBlockGoblin, M extends ModelT
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(T entity) {
+	public ResourceLocation getEntityTexture(T entity) {
 		return textureLoc;
 	}
 }

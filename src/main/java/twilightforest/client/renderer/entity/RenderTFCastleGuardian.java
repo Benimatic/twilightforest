@@ -23,7 +23,7 @@ public class RenderTFCastleGuardian<T extends EntityTFCastleGuardian, M extends 
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(@Nonnull T entity) {
+	public ResourceLocation getEntityTexture(@Nonnull T entity) {
 		return textureLoc;
 	}
 }

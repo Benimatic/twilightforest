@@ -19,8 +19,7 @@ public class RenderTFLich<T extends EntityTFLich, M extends ModelTFLich<T>> exte
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(@Nonnull EntityTFLich entity) {
+	public ResourceLocation getEntityTexture(@Nonnull EntityTFLich entity) {
 		return LICH_TEXTURE;
 	}
-
 }

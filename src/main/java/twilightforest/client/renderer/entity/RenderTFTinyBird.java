@@ -18,7 +18,7 @@ public class RenderTFTinyBird<T extends EntityTFTinyBird, M extends ModelTFTinyB
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(T entity) {
+	public ResourceLocation getEntityTexture(T entity) {
 		if (entity instanceof EntityTFTinyBird) {
 			switch (entity.getBirdType()) {
 				default:

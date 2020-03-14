@@ -68,8 +68,7 @@ public class RenderTFProtectionBox<T extends EntityTFProtectionBox> extends Enti
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(T entity) {
+	public ResourceLocation getEntityTexture(T entity) {
 		return textureLoc;
 	}
-
 }

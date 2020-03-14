@@ -46,7 +46,7 @@ public class RenderTFChainBlock<T extends EntityTFChainBlock> extends EntityRend
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFChainBlock entity) {
+	public ResourceLocation getEntityTexture(EntityTFChainBlock entity) {
 		return textureLoc;
 	}
 }

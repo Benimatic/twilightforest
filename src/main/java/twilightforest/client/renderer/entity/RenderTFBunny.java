@@ -18,7 +18,7 @@ public class RenderTFBunny<T extends EntityTFBunny, M extends ModelTFBunny<T>> e
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(T entity) {
+	public ResourceLocation getEntityTexture(T entity) {
 		switch (entity.getBunnyType()) {
 			default:
 			case 0:

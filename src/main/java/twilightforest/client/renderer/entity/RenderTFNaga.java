@@ -29,7 +29,7 @@ public class RenderTFNaga<T extends EntityTFNaga, M extends ModelTFNaga<T>> exte
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFNaga entity) {
+	public ResourceLocation getEntityTexture(EntityTFNaga entity) {
 		return textureLoc;
 	}
 }

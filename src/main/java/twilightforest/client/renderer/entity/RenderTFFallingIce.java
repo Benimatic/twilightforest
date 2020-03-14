@@ -68,7 +68,7 @@ public class RenderTFFallingIce<T extends EntityTFFallingIce> extends EntityRend
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFFallingIce entity) {
+	public ResourceLocation getEntityTexture(EntityTFFallingIce entity) {
 		return AtlasTexture.LOCATION_BLOCKS_TEXTURE;
 	}
 }

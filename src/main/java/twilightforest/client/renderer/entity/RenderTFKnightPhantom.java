@@ -21,7 +21,7 @@ public class RenderTFKnightPhantom<T extends EntityTFKnightPhantom, M extends Mo
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFKnightPhantom entity) {
+	public ResourceLocation getEntityTexture(EntityTFKnightPhantom entity) {
 		return PHANTOM_TEXTURE;
 	}
 

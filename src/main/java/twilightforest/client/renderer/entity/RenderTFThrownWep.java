@@ -58,7 +58,7 @@ public class RenderTFThrownWep<T extends EntityTFThrownWep> extends EntityRender
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(T entity) {
+	public ResourceLocation getEntityTexture(T entity) {
 		return AtlasTexture.LOCATION_BLOCKS_TEXTURE;
 	}
 }

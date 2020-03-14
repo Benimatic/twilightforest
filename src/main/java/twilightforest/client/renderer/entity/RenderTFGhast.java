@@ -18,7 +18,7 @@ public class RenderTFGhast<T extends EntityTFTowerGhast, M extends ModelTFGhast<
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(T entity) {
+	public ResourceLocation getEntityTexture(T entity) {
 		switch (entity.isAttacking() ? 2 : entity.getAttackStatus()) {
 			default:
 			case 0:

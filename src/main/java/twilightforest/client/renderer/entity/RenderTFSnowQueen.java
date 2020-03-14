@@ -17,7 +17,7 @@ public class RenderTFSnowQueen<T extends EntityTFSnowQueen, M extends ModelTFSno
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(T entity) {
+	public ResourceLocation getEntityTexture(T entity) {
 		return textureLoc;
 	}
 

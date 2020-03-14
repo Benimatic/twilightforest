@@ -28,7 +28,7 @@ public class RenderTFBird<T extends EntityTFBird, M extends EntityModel<T>> exte
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(T entity) {
+	public ResourceLocation getEntityTexture(T entity) {
 		return textureLoc;
 	}
 }

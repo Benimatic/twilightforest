@@ -120,8 +120,7 @@ public class RenderTFSlideBlock<T extends EntityTFSlideBlock> extends EntityRend
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(T entity) {
+	public ResourceLocation getEntityTexture(T entity) {
 		return AtlasTexture.LOCATION_BLOCKS_TEXTURE;
 	}
-
 }

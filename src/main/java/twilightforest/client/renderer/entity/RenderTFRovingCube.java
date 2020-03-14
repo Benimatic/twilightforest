@@ -43,7 +43,7 @@ public class RenderTFRovingCube<T extends EntityTFRovingCube> extends EntityRend
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(T entity) {
+	public ResourceLocation getEntityTexture(T entity) {
 		return textureLoc;
 	}
 }

@@ -21,7 +21,7 @@ public class RenderTFQuestRam<T extends EntityTFQuestRam, M extends ModelTFQuest
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFQuestRam entity) {
+	public ResourceLocation getEntityTexture(EntityTFQuestRam entity) {
 		return textureLoc;
 	}
 
@@ -50,5 +50,4 @@ public class RenderTFQuestRam<T extends EntityTFQuestRam, M extends ModelTFQuest
 			return false;
 		}
 	}
-
 }

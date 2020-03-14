@@ -16,7 +16,7 @@ public class RenderTFSwarmSpider<T extends EntityTFSwarmSpider> extends SpiderRe
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(T entity) {
+	public ResourceLocation getEntityTexture(T entity) {
 		return textureLoc;
 	}
 

@@ -64,8 +64,7 @@ public class RenderTFHydraHead<T extends EntityTFHydraHead, M extends ModelTFHyd
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(T entity) {
+	public ResourceLocation getEntityTexture(T entity) {
 		return textureLoc;
 	}
-
 }

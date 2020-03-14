@@ -16,7 +16,7 @@ public class RenderTFTowerBroodling<T extends EntityTFTowerBroodling> extends Sp
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(T entity) {
+	public ResourceLocation getEntityTexture(T entity) {
 		return textureLoc;
 	}
 

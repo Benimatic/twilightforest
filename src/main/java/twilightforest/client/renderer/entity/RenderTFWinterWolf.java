@@ -44,13 +44,11 @@ public class RenderTFWinterWolf extends WolfRenderer {
 //        GL11.glFogf(GL11.GL_FOG_START, 1.0f);	
 //        GL11.glFogf(GL11.GL_FOG_END, 5.0f);
 
-
 		return -1;
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(WolfEntity entity) {
+	public ResourceLocation getEntityTexture(WolfEntity entity) {
 		return textureLoc;
 	}
-
 }

@@ -29,8 +29,7 @@ public class RenderTFTowerGolem<T extends EntityTFTowerGolem, M extends ModelTFT
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(T entity) {
+	public ResourceLocation getEntityTexture(T entity) {
 		return textureLoc;
 	}
-
 }

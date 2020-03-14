@@ -48,8 +48,7 @@ public class RenderTFMistWolf extends WolfRenderer {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(WolfEntity entity) {
+	public ResourceLocation getEntityTexture(WolfEntity entity) {
 		return textureLoc;
 	}
-
 }

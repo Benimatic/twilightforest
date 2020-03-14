@@ -22,7 +22,7 @@ public class RenderTFWraith<T extends EntityTFWraith, M extends ModelTFWraith<T>
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(@Nonnull T wraith) {
+	public ResourceLocation getEntityTexture(@Nonnull T wraith) {
 		return textureCrown;
 	}
 

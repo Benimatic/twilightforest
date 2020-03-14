@@ -72,8 +72,7 @@ public class RenderTFMobileFirefly<T extends EntityTFMobileFirefly> extends Enti
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(T entity) {
+	public ResourceLocation getEntityTexture(T entity) {
 		return textureLoc;
 	}
-
 }

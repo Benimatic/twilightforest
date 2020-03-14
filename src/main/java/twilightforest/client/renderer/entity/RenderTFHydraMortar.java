@@ -65,7 +65,7 @@ public class RenderTFHydraMortar<T extends RenderTFHydraMortar<T>> extends Entit
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(T entity) {
+	public ResourceLocation getEntityTexture(T entity) {
 		return textureLoc;
 	}
 }

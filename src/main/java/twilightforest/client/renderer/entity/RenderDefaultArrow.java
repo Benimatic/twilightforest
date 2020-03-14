@@ -13,7 +13,7 @@ public class RenderDefaultArrow<T extends ArrowEntity> extends ArrowRenderer<T> 
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(T entity) {
+	public ResourceLocation getEntityTexture(T entity) {
 		return RES_ARROW;
 	}
 }

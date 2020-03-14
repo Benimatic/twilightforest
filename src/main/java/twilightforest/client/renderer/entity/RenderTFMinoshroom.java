@@ -66,8 +66,7 @@ public class RenderTFMinoshroom<T extends EntityTFMinoshroom, M extends ModelTFM
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(T entity) {
+	public ResourceLocation getEntityTexture(T entity) {
 		return textureLoc;
 	}
-
 }

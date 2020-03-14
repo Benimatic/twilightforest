@@ -32,7 +32,7 @@ public class RenderTFMoonwormShot<T extends EntityTFMoonwormShot> extends Entity
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(T entity) {
+	public ResourceLocation getEntityTexture(T entity) {
 		return textureLoc;
 	}
 }

@@ -47,7 +47,7 @@ public class RenderTFCubeOfAnnihilation extends EntityRenderer<EntityTFCubeOfAnn
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityTFCubeOfAnnihilation entity) {
+	public ResourceLocation getEntityTexture(EntityTFCubeOfAnnihilation entity) {
 		return textureLoc;
 	}
 }
