@@ -38,21 +38,7 @@ public class ModelTFQuestRam<T extends EntityTFQuestRam> extends SegmentedModel<
 	public ModelTFQuestRam() {
 		textureWidth = 128;
 		textureHeight = 128;
-		setTextureOffset("head.head", 0, 70);
-		setTextureOffset("head.horn1a", 0, 94);
-		setTextureOffset("head.horn1b", 20, 96);
-		setTextureOffset("head.horn1c", 34, 95);
-		setTextureOffset("head.horn1d", 46, 98);
-		setTextureOffset("head.horn1e", 58, 95);
-		setTextureOffset("head.horn1f", 76, 95);
-		setTextureOffset("head.horn1g", 88, 97);
-		setTextureOffset("head.horn1a", 0, 94);
-		setTextureOffset("head.horn1b", 20, 96);
-		setTextureOffset("head.horn1c", 34, 95);
-		setTextureOffset("head.horn1d", 46, 98);
-		setTextureOffset("head.horn1e", 58, 95);
-		setTextureOffset("head.horn1f", 76, 95);
-		setTextureOffset("head.horn1g", 88, 97);
+
 
 		frontbody = new ModelRenderer(this, 0, 0);
 		frontbody.addCuboid(-9F, -7.5F, -15F, 18, 15, 15);
@@ -61,7 +47,6 @@ public class ModelTFQuestRam<T extends EntityTFQuestRam> extends SegmentedModel<
 		rearbody = new ModelRenderer(this, 0, 30);
 		rearbody.addCuboid(-9F, -7.5F, 0F, 18, 15, 15);
 		rearbody.setRotationPoint(0F, -1F, 4F);
-
 
 		leg1 = new ModelRenderer(this, 66, 0);
 		leg1.addCuboid(-3F, 10F, -3F, 6, 12, 6);
@@ -101,24 +86,24 @@ public class ModelTFQuestRam<T extends EntityTFQuestRam> extends SegmentedModel<
 
 		setRotation(neck, 0.2617994F, 0F, 0F);
 
-		head = new ModelRenderer(this, "head");
+		head = new ModelRenderer(this/*, "head"*/);
 		head.setRotationPoint(0F, -13F, -5F);
 
-		head.addCuboid("head", -6F, -4.5F, -15F, 12, 9, 15);
-		head.addCuboid("horn1a", 5F, -9F, -7F, 4, 4, 6);
-		head.addCuboid("horn1b", 7F, -8F, -2F, 3, 4, 4);
-		head.addCuboid("horn1c", 8F, -6F, 0F, 3, 6, 3);
-		head.addCuboid("horn1d", 9.5F, -2F, -2F, 3, 3, 3);
-		head.addCuboid("horn1e", 11F, 0F, -7F, 3, 3, 6);
-		head.addCuboid("horn1f", 12F, -4F, -9F, 3, 6, 3);
-		head.addCuboid("horn1g", 13F, -6F, -7F, 3, 3, 4);
-		head.addCuboid("horn1a", -9F, -9F, -7F, 4, 4, 6);
-		head.addCuboid("horn1b", -10F, -8F, -2F, 3, 4, 4);
-		head.addCuboid("horn1c", -11F, -6F, 0F, 3, 6, 3);
-		head.addCuboid("horn1d", -12.5F, -2F, -2F, 3, 3, 3);
-		head.addCuboid("horn1e", -14F, 0F, -7F, 3, 3, 6);
-		head.addCuboid("horn1f", -15F, -4F, -9F, 3, 6, 3);
-		head.addCuboid("horn1g", -16F, -6F, -7F, 3, 3, 4);
+		head.setTextureOffset(0, 70).addCuboid(-6F, -4.5F, -15F, 12, 9, 15);
+		head.setTextureOffset(0, 94).addCuboid(5F, -9F, -7F, 4, 4, 6);
+		head.setTextureOffset(20, 96).addCuboid(7F, -8F, -2F, 3, 4, 4);
+		head.setTextureOffset(34, 95).addCuboid(8F, -6F, 0F, 3, 6, 3);
+		head.setTextureOffset(46, 98).addCuboid(9.5F, -2F, -2F, 3, 3, 3);
+		head.setTextureOffset(58, 95).addCuboid(11F, 0F, -7F, 3, 3, 6);
+		head.setTextureOffset(76, 95).addCuboid(12F, -4F, -9F, 3, 6, 3);
+		head.setTextureOffset(88, 97).addCuboid(13F, -6F, -7F, 3, 3, 4);
+		head.setTextureOffset(0, 94).addCuboid(-9F, -9F, -7F, 4, 4, 6);
+		head.setTextureOffset(20, 96).addCuboid(-10F, -8F, -2F, 3, 4, 4);
+		head.setTextureOffset(34, 95).addCuboid(-11F, -6F, 0F, 3, 6, 3);
+		head.setTextureOffset(46, 98).addCuboid(-12.5F, -2F, -2F, 3, 3, 3);
+		head.setTextureOffset(58, 95).addCuboid(-14F, 0F, -7F, 3, 3, 6);
+		head.setTextureOffset(76, 95).addCuboid(-15F, -4F, -9F, 3, 6, 3);
+		head.setTextureOffset(88, 97).addCuboid(-16F, -6F, -7F, 3, 3, 4);
 
 		nose = new ModelRenderer(this, 54, 73);
 		nose.addCuboid(-5.5F, -5F, -13F, 11, 9, 12);

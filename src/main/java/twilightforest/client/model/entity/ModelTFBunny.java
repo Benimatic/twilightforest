@@ -25,9 +25,6 @@ public class ModelTFBunny<T extends EntityTFBunny> extends SegmentedModel<T> {
 	public ModelTFBunny() {
 		textureWidth = 32;
 		textureHeight = 32;
-		setTextureOffset("head.head", 0, 0);
-		setTextureOffset("head.ear2", 16, 0);
-		setTextureOffset("head.ear1", 16, 0);
 
 		tail = new ModelRenderer(this, 0, 18);
 		tail.addCuboid(-1F, -1F, 0F, 2, 2, 2);
@@ -65,16 +62,16 @@ public class ModelTFBunny<T extends EntityTFBunny> extends SegmentedModel<T> {
 		leg4.setTextureSize(32, 32);
 		leg4.mirror = true;
 		setRotation(leg4, 0F, 0F, 0F);
-		head = new ModelRenderer(this, "head");
+		head = new ModelRenderer(this/*, "head"*/);
 		head.setRotationPoint(0F, 22F, -1F);
 		setRotation(head, 0F, 0F, 0F);
 		head.mirror = true;
 		//head.addCuboid("head", -2F, -4F, -3F, 4, 4, 4);
 		//head.addCuboid("ear2", -2.5F, -8F, -0.5F, 2, 4, 1);
 		//head.addCuboid("ear1", 0.5F, -8F, -0.5F, 2, 4, 1);
-		head.addCuboid(-2F, -4F, -3F, 4, 4, 4);
-		head.addCuboid(-2.5F, -8F, -0.5F, 2, 4, 1);
-		head.addCuboid(0.5F, -8F, -0.5F, 2, 4, 1);
+		head.setTextureOffset(0, 0).addCuboid(-2F, -4F, -3F, 4, 4, 4);
+		head.setTextureOffset(16, 0).addCuboid(-2.5F, -8F, -0.5F, 2, 4, 1);
+		head.setTextureOffset(16, 0).addCuboid(0.5F, -8F, -0.5F, 2, 4, 1);
 	}
 
 //	@Override

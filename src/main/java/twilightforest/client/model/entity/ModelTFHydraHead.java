@@ -16,50 +16,32 @@ public class ModelTFHydraHead<T extends EntityTFHydraHead> extends SegmentedMode
 		textureWidth = 512;
 		textureHeight = 256;
 
-		setTextureOffset("head.box", 272, 0);
-		setTextureOffset("head.upperlip", 272, 56);
-		setTextureOffset("head.rearjaw", 272, 132);
-		setTextureOffset("head.fin", 128, 200);
-		setTextureOffset("head.fang1", 272, 156);
-		setTextureOffset("head.fang2", 272, 156);
-		setTextureOffset("head.teeth", 280, 156);
-		setTextureOffset("head.teeth2", 280, 160);
-		setTextureOffset("head.teeth3", 280, 160);
-		setTextureOffset("jaw.jaw", 272, 92);
-		setTextureOffset("jaw.fang1", 272, 156);
-		setTextureOffset("jaw.fang2", 272, 156);
-		setTextureOffset("jaw.teeth", 280, 156);
-		setTextureOffset("jaw.teeth2", 280, 160);
-		setTextureOffset("jaw.teeth3", 280, 160);
-		setTextureOffset("frill.frill", 272, 200);
-
-
-		head = new ModelRenderer(this, "head");
-		head.addCuboid("box", -16F, -14F, -32F, 32, 24, 32);
-		head.addCuboid("upperlip", -15F, -2F, -56F, 30, 12, 24);
-		head.addCuboid("rearjaw", -15F, 10F, -20F, 30, 8, 16);
-		head.addCuboid("fin", -2F, -30F, -12F, 4, 24, 24);
-		head.addCuboid("fang1", -12F, 10, -49F, 2, 5, 2);
-		head.addCuboid("fang2", 10F, 10, -49F, 2, 5, 2);
-		head.addCuboid("teeth", -8F, 9, -49F, 16, 2, 2);
-		head.addCuboid("teeth2", -10F, 9, -45F, 2, 2, 16);
-		head.addCuboid("teeth3", 8F, 9, -45F, 2, 2, 16);
+		head = new ModelRenderer(this/*, "head"*/);
+		head.setTextureOffset(272, 0).addCuboid(-16F, -14F, -32F, 32, 24, 32);
+		head.setTextureOffset(272, 56).addCuboid(-15F, -2F, -56F, 30, 12, 24);
+		head.setTextureOffset(272, 132).addCuboid(-15F, 10F, -20F, 30, 8, 16);
+		head.setTextureOffset(128, 200).addCuboid(-2F, -30F, -12F, 4, 24, 24);
+		head.setTextureOffset(272, 156).addCuboid(-12F, 10, -49F, 2, 5, 2);
+		head.setTextureOffset(272, 156).addCuboid(10F, 10, -49F, 2, 5, 2);
+		head.setTextureOffset(280, 156).addCuboid(-8F, 9, -49F, 16, 2, 2);
+		head.setTextureOffset(280, 160).addCuboid(-10F, 9, -45F, 2, 2, 16);
+		head.setTextureOffset(280, 160).addCuboid(8F, 9, -45F, 2, 2, 16);
 		head.setRotationPoint(0F, 0F, 0F);
 
-		jaw = new ModelRenderer(this, "jaw");
+		jaw = new ModelRenderer(this/*, "jaw"*/);
 		jaw.setRotationPoint(0F, 10F, -20F);
-		jaw.addCuboid("jaw", -15F, 0F, -32F, 30, 8, 32);
-		jaw.addCuboid("fang1", -10F, -5, -29F, 2, 5, 2);
-		jaw.addCuboid("fang2", 8F, -5, -29F, 2, 5, 2);
-		jaw.addCuboid("teeth", -8F, -1, -29F, 16, 2, 2);
-		jaw.addCuboid("teeth2", -10F, -1, -25F, 2, 2, 16);
-		jaw.addCuboid("teeth3", 8F, -1, -25F, 2, 2, 16);
+		jaw.setTextureOffset(272, 92).addCuboid(-15F, 0F, -32F, 30, 8, 32);
+		jaw.setTextureOffset(272, 156).addCuboid(-10F, -5, -29F, 2, 5, 2);
+		jaw.setTextureOffset(272, 156).addCuboid(8F, -5, -29F, 2, 5, 2);
+		jaw.setTextureOffset(280, 156).addCuboid(-8F, -1, -29F, 16, 2, 2);
+		jaw.setTextureOffset(280, 160).addCuboid(-10F, -1, -25F, 2, 2, 16);
+		jaw.setTextureOffset(280, 160).addCuboid(8F, -1, -25F, 2, 2, 16);
 		setRotation(jaw, 0F, 0F, 0F);
 		head.addChild(jaw);
 
-		frill = new ModelRenderer(this, "frill");
+		frill = new ModelRenderer(this/*, "frill"*/);
 		frill.setRotationPoint(0F, 0F, -14F);
-		frill.addCuboid("frill", -24F, -40.0F, 0F, 48, 48, 4);
+		frill.setTextureOffset(272, 200).addCuboid(-24F, -40.0F, 0F, 48, 48, 4);
 		setRotation(frill, -0.5235988F, 0F, 0F);
 		head.addChild(frill);
 	}

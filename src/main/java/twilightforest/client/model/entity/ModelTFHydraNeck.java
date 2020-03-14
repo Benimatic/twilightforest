@@ -13,11 +13,9 @@ public class ModelTFHydraNeck<T extends EntityTFHydraNeck> extends SegmentedMode
 		textureWidth = 512;
 		textureHeight = 256;
 
-		setTextureOffset("neck.box", 128, 136);
-		setTextureOffset("neck.fin", 128, 200);
-		neck = new ModelRenderer(this, "neck");
-		neck.addCuboid("box", -16F, -16F, -16F, 32, 32, 32);
-		neck.addCuboid("fin", -2F, -23F, 0F, 4, 24, 24);
+		neck = new ModelRenderer(this/*, "neck"*/);
+		neck.setTextureOffset(128, 136).addCuboid(-16F, -16F, -16F, 32, 32, 32);
+		neck.setTextureOffset(128, 200).addCuboid(-2F, -23F, 0F, 4, 24, 24);
 		neck.setRotationPoint(0F, 0F, 0F);
 	}
 

@@ -28,13 +28,10 @@ public class ModelTFSquirrel<T extends EntityTFSquirrel> extends SegmentedModel<
 	public ModelTFSquirrel() {
 		textureWidth = 32;
 		textureHeight = 32;
-		setTextureOffset("head.head", 0, 0);
-		setTextureOffset("head.ear2", 16, 0);
-		setTextureOffset("head.ear1", 16, 0);
-		setTextureOffset("tail.fluff1", 0, 20);
-		setTextureOffset("tail.base", 0, 18);
-		setTextureOffset("tail.fluff2", 0, 20);
-		setTextureOffset("tail.fluff3", 0, 26);
+
+//		setTextureOffset("tail.fluff1", 0, 20);
+//		setTextureOffset("tail.fluff2", 0, 20);
+//		setTextureOffset("tail.fluff3", 0, 26);
 
 		body = new ModelRenderer(this, 0, 8);
 		body.addCuboid(-2F, -1F, -2F, 4, 3, 5);
@@ -66,18 +63,17 @@ public class ModelTFSquirrel<T extends EntityTFSquirrel> extends SegmentedModel<
 		leg4.setTextureSize(32, 32);
 
 		setRotation(leg4, 0F, 0F, 0F);
-		head = new ModelRenderer(this, "head");
+		head = new ModelRenderer(this/*, "head"*/);
 		head.setRotationPoint(0F, 22F, -2F);
 		setRotation(head, 0F, 0F, 0F);
 
-		head.addCuboid("head", -2F, -5F, -3F, 4, 4, 4);
-		head.addCuboid("ear2", -2F, -6F, -0.5F, 1, 1, 1);
-		head.addCuboid("ear1", 1F, -6F, -0.5F, 1, 1, 1);
+		head.setTextureOffset(0, 0).addCuboid(-2F, -5F, -3F, 4, 4, 4);
+		head.setTextureOffset(16, 0).addCuboid(-2F, -6F, -0.5F, 1, 1, 1);
+		head.setTextureOffset(16, 0).addCuboid(1F, -6F, -0.5F, 1, 1, 1);
 
-		tail = new ModelRenderer(this, "tail");
+		tail = new ModelRenderer(this/*, "tail"*/);
 		tail.setRotationPoint(0F, 21F, 2F);
-
-		tail.addCuboid("base", -0.5F, -1.5F, 0.5F, 1, 1, 1);
+		tail.setTextureOffset(0, 18).addCuboid(-0.5F, -1.5F, 0.5F, 1, 1, 1);
 
 		fluff1 = new ModelRenderer(this, 0, 20);
 		fluff1.addCuboid(-1.5F, -4F, 1F, 3, 3, 3);
