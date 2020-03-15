@@ -1,6 +1,6 @@
 package twilightforest.client;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
@@ -63,7 +63,7 @@ public class GuiTFGoblinCrafting extends ContainerScreen<ContainerTFUncrafting> 
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-		GlStateManager.color4f(1, 1, 1, 1);
+		RenderSystem.color4f(1, 1, 1, 1);
 		this.minecraft.getTextureManager().bindTexture(textureLoc);
 		int frameX = (this.width - this.xSize) / 2;
 		int frameY = (this.height - this.ySize) / 2;
@@ -73,8 +73,8 @@ public class GuiTFGoblinCrafting extends ContainerScreen<ContainerTFUncrafting> 
 
 		// show uncrafting ingredients as background
 		RenderHelper.enableGUIStandardItemLighting();
-		GlStateManager.pushMatrix();
-		GlStateManager.translatef(guiLeft, guiTop, 0);
+		RenderSystem.pushMatrix();
+		RenderSystem.translatef(guiLeft, guiTop, 0);
 
 		for (int i = 0; i < 9; i++) {
 			Slot uncrafting = tfContainer.getSlot(2 + i);
@@ -84,7 +84,7 @@ public class GuiTFGoblinCrafting extends ContainerScreen<ContainerTFUncrafting> 
 				drawSlotAsBackground(uncrafting, assembly);
 			}
 		}
-		GlStateManager.popMatrix();
+		RenderSystem.popMatrix();
 
 		// show the costs if there are any
 		FontRenderer fontRendererObj = this.minecraft.fontRenderer;
@@ -132,11 +132,11 @@ public class GuiTFGoblinCrafting extends ContainerScreen<ContainerTFUncrafting> 
 		boolean itemBroken = ContainerTFUncrafting.isMarked(itemStackToRender);
 
 		// draw 50% gray rectangle over the item
-		GlStateManager.disableLighting();
-		GlStateManager.disableDepth();
+		RenderSystem.disableLighting();
+		RenderSystem.disableDepthTest();
 		Gui.drawRect(screenX, screenY, screenX + 16, screenY + 16, itemBroken ? 0x80FF8b8b : 0x9f8b8b8b);
-		GlStateManager.enableLighting();
-		GlStateManager.enableDepth();
+		RenderSystem.enableLighting();
+		RenderSystem.enableDepthTest();
 
         itemRenderer.zLevel = 0.0F;
 		this.zLevel = 0.0F;
@@ -193,8 +193,8 @@ public class GuiTFGoblinCrafting extends ContainerScreen<ContainerTFUncrafting> 
 				uncrafting.onCraftMatrixChanged(uncrafting.tinkerInput);
 			}
 
-			this.buttonList.clear();
-			this.initGui();
+			this.buttons.clear();
+			this.init();
 			this.updateScreen();
 		}
 	}
@@ -213,7 +213,7 @@ public class GuiTFGoblinCrafting extends ContainerScreen<ContainerTFUncrafting> 
 		public void renderButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
 			if (this.visible) {
 				mc.getTextureManager().bindTexture(GuiTFGoblinCrafting.textureLoc);
-				GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+				RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 				this.isHovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
 
 				int textureX = 176;
@@ -262,7 +262,7 @@ public class GuiTFGoblinCrafting extends ContainerScreen<ContainerTFUncrafting> 
 		public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
 			if (this.visible) {
 				mc.getTextureManager().bindTexture(GuiTFGoblinCrafting.textureLoc);
-				GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+				RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 				this.isHovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
 
 				int textureX = 176;

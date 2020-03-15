@@ -48,7 +48,7 @@ public enum RenderEffect {
 				float dx = (float) (x + random.nextGaussian() * 0.2F * entity.getWidth());
 				float dy = (float) (y + random.nextGaussian() * 0.2F * entity.getHeight()) + entity.getHeight() / 2F;
 				float dz = (float) (z + random.nextGaussian() * 0.2F * entity.getWidth());
-				GlStateManager.translatef(dx, dy, dz);
+				RenderSystem.translatef(dx, dy, dz);
 				GlStateManager.scalef(0.5F, 0.5F, 0.5F);
 				GlStateManager.rotatef(random.nextFloat() * 360F, 1.0F, 0.0F, 0.0F);
 				GlStateManager.rotatef(random.nextFloat() * 360F, 0.0F, 1.0F, 0.0F);
@@ -77,7 +77,7 @@ public enum RenderEffect {
 			GlStateManager.pushMatrix();
 			GlStateManager.translated(x, y, z);
 			GlStateManager.rotatef(180, 1, 0, 0);
-			GlStateManager.translatef(0, 0.5F - entity.getEyeHeight(), 0);
+			RenderSystem.translatef(0, 0.5F - entity.getEyeHeight(), 0);
 			GlStateManager.enableBlend();
 			GlStateManager.disableCull();
 			GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);

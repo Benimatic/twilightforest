@@ -2,7 +2,10 @@ package twilightforest.client;
 
 import net.minecraft.client.GameSettings;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraftforge.api.distmarker.Dist;
@@ -19,7 +22,6 @@ import twilightforest.TFEventListener;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.renderer.TFWeatherRenderer;
-import twilightforest.client.texture.GradientNode;
 import twilightforest.world.TFWorld;
 
 @OnlyIn(Dist.CLIENT)
@@ -28,7 +30,7 @@ public class TFClientEvents {
 
 	@SubscribeEvent
 	public static void texStitch(TextureStitchEvent.Pre evt) {
-		TextureMap map = evt.getMap();
+		AtlasTexture map = evt.getMap();
 
 		//TODO: These are handled by Particles now
 		/*map.registerSprite(new ResourceLocation(TwilightForestMod.ID, "particles/snow_0"));
@@ -72,7 +74,8 @@ public class TFClientEvents {
 		}*/
 	}
 
-	public static final GradientNode[] KNIGHTMETAL_GRADIENT_MAP = {
+	//TODO: Fields are unused due to missing compat
+	/*public static final GradientNode[] KNIGHTMETAL_GRADIENT_MAP = {
 			new GradientNode(0.0f , 0xFF_33_32_32),
 			new GradientNode(0.1f , 0xFF_6A_73_5E),
 			new GradientNode(0.15f, 0xFF_80_8C_72),
@@ -90,7 +93,7 @@ public class TFClientEvents {
 			new GradientNode(0.0f, 0xFF_80_80_80),
 			new GradientNode(0.5f, 0xFF_AA_AA_AA), // AAAAAAaaaaaaaaaaa
 			new GradientNode(1.0f, 0xFF_FF_FF_FF)
-	};
+	};*/
 
 	/**
 	 * Stop the game from rendering the mount health for unfriendly creatures
@@ -122,7 +125,7 @@ public class TFClientEvents {
 	public static void renderLivingPost(RenderLivingEvent.Post<LivingEntity, EntityModel<LivingEntity>> event) {
 		for (RenderEffect effect : RenderEffect.VALUES) {
 			if (effect.shouldRender(event.getEntity(), false)) {
-				effect.render(event.getEntity(), event.getRenderer(), event.getX(), event.getY(), event.getZ(), event.getPartialRenderTick(), false);
+				effect.render(event.getEntity(), event.getRenderer().getEntityModel(), event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ(), event.getPartialRenderTick(), false);
 			}
 		}
 	}
@@ -133,18 +136,18 @@ public class TFClientEvents {
 	@SubscribeEvent
 	public static void renderWorldLast(RenderWorldLastEvent event) {
 
-		if (!TFConfig.firstPersonEffects) return;
+		if (!TFConfig.CLIENT_CONFIG.firstPersonEffects.get()) return;
 
 		GameSettings settings = Minecraft.getInstance().gameSettings;
 		if (settings.thirdPersonView != 0 || settings.hideGUI) return;
 
 		Entity entity = Minecraft.getInstance().getRenderViewEntity();
 		if (entity instanceof LivingEntity) {
-			Render<? extends Entity> renderer = Minecraft.getInstance().getRenderManager().getEntityRenderObject(entity);
-			if (renderer instanceof RenderLivingBase<?>) {
+			EntityRenderer<? extends Entity> renderer = Minecraft.getInstance().getRenderManager().getRenderer(entity);
+			if (renderer instanceof LivingRenderer<?,?>) {
 				for (RenderEffect effect : RenderEffect.VALUES) {
 					if (effect.shouldRender((LivingEntity) entity, true)) {
-						effect.render((LivingEntity) entity, (RenderLivingBase<? extends LivingEntity>) renderer, 0.0, 0.0, 0.0, event.getPartialTicks(), true);
+						effect.render((LivingEntity) entity, ((LivingRenderer<?,?>) renderer).getEntityModel(), 0.0, 0.0, 0.0, event.getPartialTicks(), true);
 					}
 				}
 			}

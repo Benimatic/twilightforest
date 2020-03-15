@@ -1,6 +1,7 @@
 package twilightforest.client;
 
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
@@ -54,14 +55,14 @@ public class FogHandler {
 				spoopFog += shift;
 			spoopFog = MathHelper.clamp(spoopFog, 0F, 1F);
 
-			GlStateManager.fogMode(GlStateManager.FogMode.LINEAR);
+			RenderSystem.fogMode(GlStateManager.FogMode.LINEAR);
 
 			if (event.getFogMode() == -1) {
-				GlStateManager.fogStart(0.0F);
-				GlStateManager.fogEnd(f);
+				RenderSystem.fogStart(0.0F);
+				RenderSystem.fogEnd(f);
 			} else {
-				GlStateManager.fogStart(f * 0.75F);
-				GlStateManager.fogEnd(f);
+				RenderSystem.fogStart(f * 0.75F);
+				RenderSystem.fogEnd(f);
 			}
 
 			if (GLContext.getCapabilities().GL_NV_fog_distance) {

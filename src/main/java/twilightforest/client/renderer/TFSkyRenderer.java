@@ -1,12 +1,12 @@
 package twilightforest.client.renderer;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.GLAllocation;
 import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -20,7 +20,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import java.util.Random;
 
 @OnlyIn(Dist.CLIENT)
-public class TFSkyRenderer extends IRenderHandler {
+public class TFSkyRenderer implements IRenderHandler {
 
 	private boolean vboEnabled;
 	private int starGLCallList;
@@ -35,7 +35,7 @@ public class TFSkyRenderer extends IRenderHandler {
 	@SuppressWarnings("unused")
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void render(float partialTicks, ClientWorld world, Minecraft mc) {
+	public void render(int ticks, float partialTicks, ClientWorld world, Minecraft mc) {
 
 		// [VanillaCopy] Excerpt from RenderGlobal.loadRenderers as we don't get a callback
 		boolean flag = this.vboEnabled;
@@ -44,10 +44,10 @@ public class TFSkyRenderer extends IRenderHandler {
 			generateStars();
 		}
 
-		WorldRenderer rg = mc.renderGlobal;
+		WorldRenderer rg = mc.worldRenderer;
 		int pass = GameRenderer.anaglyphEnable ? GameRenderer.anaglyphField : 2;
 
-		GlStateManager.disableTexture2D();
+		RenderSystem.disableTexture();
 		Vec3d vec3d = world.getSkyColor(mc.getRenderViewEntity(), partialTicks);
 		float f = (float) vec3d.x;
 		float f1 = (float) vec3d.y;
@@ -62,12 +62,12 @@ public class TFSkyRenderer extends IRenderHandler {
 			f2 = f5;
 		}
 
-		GlStateManager.color(f, f1, f2);
+		RenderSystem.color3f(f, f1, f2);
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder bufferbuilder = tessellator.getBuffer();
 		GlStateManager.depthMask(false);
-		GlStateManager.enableFog();
-		GlStateManager.color(f, f1, f2);
+		RenderSystem.enableFog();
+		RenderSystem.color3f(f, f1, f2);
 
 		if (this.vboEnabled) {
 			rg.skyVBO.bindBuffer();
@@ -80,33 +80,33 @@ public class TFSkyRenderer extends IRenderHandler {
 			GlStateManager.callList(rg.glSkyList);
 		}
 
-		GlStateManager.disableFog();
-		GlStateManager.disableAlpha();
+		RenderSystem.disableFog();
+		RenderSystem.disableAlphaTest();
 		GlStateManager.enableBlend();
-		GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+		RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 		RenderHelper.disableStandardItemLighting();
 		/* TF - snip out sunrise/sunset since that doesn't happen here
          * float[] afloat = ...
          * if (afloat != null) ...
          */
 
-		GlStateManager.enableTexture2D();
-		GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-		GlStateManager.pushMatrix();
+		RenderSystem.enableTexture();
+		RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+		RenderSystem.pushMatrix();
 		float f16 = 1.0F - world.getRainStrength(partialTicks);
-		GlStateManager.color(1.0F, 1.0F, 1.0F, f16);
-		GlStateManager.rotatef(-90.0F, 0.0F, 1.0F, 0.0F);
-		GlStateManager.rotatef(world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
+		RenderSystem.color4f(1.0F, 1.0F, 1.0F, f16);
+		RenderSystem.rotatef(-90.0F, 0.0F, 1.0F, 0.0F);
+		RenderSystem.rotatef(world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
         /* TF - snip out sun/moon
          * float f17 = 30.0F;
          * ...
          * tessellator.draw();
          */
-		GlStateManager.disableTexture2D();
+		RenderSystem.disableTexture();
 		float f15 = 1.0F; // TF - stars are always bright
 
 		if (f15 > 0.0F) {
-			GlStateManager.color(f15, f15, f15, f15);
+			RenderSystem.color4f(f15, f15, f15, f15);
 
 			if (this.vboEnabled) {
 				this.starVBO.bindBuffer();
@@ -120,18 +120,18 @@ public class TFSkyRenderer extends IRenderHandler {
 			}
 		}
 
-		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GlStateManager.disableBlend();
-		GlStateManager.enableAlpha();
-		GlStateManager.enableFog();
-		GlStateManager.popMatrix();
-		GlStateManager.disableTexture2D();
-		GlStateManager.color(0.0F, 0.0F, 0.0F);
-		double d0 = mc.player.getPositionEyes(partialTicks).y - world.getHorizon();
+		RenderSystem.enableAlphaTest();
+		RenderSystem.enableFog();
+		RenderSystem.popMatrix();
+		RenderSystem.disableTexture();
+		RenderSystem.color3f(0.0F, 0.0F, 0.0F);
+		double d0 = mc.player.getPositionEyes(partialTicks).y - world.getSeaLevel();
 
 		if (d0 < 0.0D) {
-			GlStateManager.pushMatrix();
-			GlStateManager.translatef(0.0F, 12.0F, 0.0F);
+			RenderSystem.pushMatrix();
+			RenderSystem.translatef(0.0F, 12.0F, 0.0F);
 
 			if (this.vboEnabled) {
 				rg.sky2VBO.bindBuffer();
@@ -144,45 +144,45 @@ public class TFSkyRenderer extends IRenderHandler {
 				GlStateManager.callList(rg.glSkyList2);
 			}
 
-			GlStateManager.popMatrix();
+			RenderSystem.popMatrix();
 			float f18 = 1.0F;
 			float f19 = -((float) (d0 + 65.0D));
 			float f20 = -1.0F;
 			bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
-			bufferbuilder.pos(-1.0D, (double) f19, 1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(1.0D, (double) f19, 1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(-1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(-1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(1.0D, (double) f19, -1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(-1.0D, (double) f19, -1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(1.0D, (double) f19, 1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(1.0D, (double) f19, -1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(-1.0D, (double) f19, -1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(-1.0D, (double) f19, 1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(-1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(-1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(-1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(-1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.vertex(-1.0D, (double) f19, 1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.vertex(1.0D, (double) f19, 1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.vertex(1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.vertex(-1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.vertex(-1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.vertex(1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.vertex(1.0D, (double) f19, -1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.vertex(-1.0D, (double) f19, -1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.vertex(1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.vertex(1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.vertex(1.0D, (double) f19, 1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.vertex(1.0D, (double) f19, -1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.vertex(-1.0D, (double) f19, -1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.vertex(-1.0D, (double) f19, 1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.vertex(-1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.vertex(-1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.vertex(-1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.vertex(-1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.vertex(1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.vertex(1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
 			tessellator.draw();
 		}
 
-		if (world.provider.isSkyColored()) {
-			GlStateManager.color(f * 0.2F + 0.04F, f1 * 0.2F + 0.04F, f2 * 0.6F + 0.1F);
+		if (world.dimension.isSkyColored()) {
+			RenderSystem.color3f(f * 0.2F + 0.04F, f1 * 0.2F + 0.04F, f2 * 0.6F + 0.1F);
 		} else {
-			GlStateManager.color(f, f1, f2);
+			RenderSystem.color3f(f, f1, f2);
 		}
 
-		GlStateManager.pushMatrix();
-		GlStateManager.translatef(0.0F, -((float) (d0 - 16.0D)), 0.0F);
+		RenderSystem.pushMatrix();
+		RenderSystem.translatef(0.0F, -((float) (d0 - 16.0D)), 0.0F);
 		GlStateManager.callList(rg.glSkyList2);
-		GlStateManager.popMatrix();
-		GlStateManager.enableTexture2D();
+		RenderSystem.popMatrix();
+		RenderSystem.enableTexture();
 		GlStateManager.depthMask(true);
 	}
 
@@ -192,7 +192,7 @@ public class TFSkyRenderer extends IRenderHandler {
 		BufferBuilder bufferbuilder = tessellator.getBuffer();
 
 		if (this.starVBO != null) {
-			this.starVBO.deleteGlBuffers();
+			this.starVBO.close();
 		}
 
 		if (this.starGLCallList >= 0) {
@@ -210,12 +210,12 @@ public class TFSkyRenderer extends IRenderHandler {
 
 		} else {
 			this.starGLCallList = GLAllocation.generateDisplayLists(1);
-			GlStateManager.pushMatrix();
+			RenderSystem.pushMatrix();
 			GlStateManager.glNewList(this.starGLCallList, 4864);
 			this.renderStars(bufferbuilder);
 			tessellator.draw();
 			GlStateManager.glEndList();
-			GlStateManager.popMatrix();
+			RenderSystem.popMatrix();
 		}
 	}
 
@@ -262,7 +262,7 @@ public class TFSkyRenderer extends IRenderHandler {
 					double d24 = 0.0D * d12 - d21 * d13;
 					double d25 = d24 * d9 - d22 * d10;
 					double d26 = d22 * d9 + d24 * d10;
-					bufferBuilder.pos(d5 + d25, d6 + d23, d7 + d26).endVertex();
+					bufferBuilder.vertex(d5 + d25, d6 + d23, d7 + d26).endVertex();
 				}
 			}
 		}

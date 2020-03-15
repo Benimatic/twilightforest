@@ -13,10 +13,10 @@ public class GuiUtils {
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder bufferbuilder = tessellator.getBuffer();
 		bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-		bufferbuilder.pos((double)x, (double)(y + height), (double)z).tex((double)(u * f), (double)((v + (float)height) * f1)).endVertex();
-		bufferbuilder.pos((double)(x + width), (double)(y + height), (double)z).tex((double)((u + (float)width) * f), (double)((v + (float)height) * f1)).endVertex();
-		bufferbuilder.pos((double)(x + width), (double)y, (double)z).tex((double)((u + (float)width) * f), (double)(v * f1)).endVertex();
-		bufferbuilder.pos((double)x, (double)y, (double)z).tex((double)(u * f), (double)(v * f1)).endVertex();
+		bufferbuilder.vertex((double)x, (double)(y + height), (double)z).texture((u * f), ((v + (float)height) * f1)).endVertex();
+		bufferbuilder.vertex((double)(x + width), (double)(y + height), (double)z).texture(((u + (float)width) * f), ((v + (float)height) * f1)).endVertex();
+		bufferbuilder.vertex((double)(x + width), (double)y, (double)z).texture(((u + (float)width) * f), (v * f1)).endVertex();
+		bufferbuilder.vertex((double)x, (double)y, (double)z).texture((u * f), (v * f1)).endVertex();
 		tessellator.draw();
 	}
 }
