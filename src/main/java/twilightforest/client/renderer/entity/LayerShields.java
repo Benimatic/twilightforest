@@ -1,9 +1,12 @@
 package twilightforest.client.renderer.entity;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.entity.IEntityRenderer;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
@@ -19,10 +22,13 @@ import twilightforest.capabilities.shield.IShieldCapability;
 import twilightforest.entity.boss.EntityTFLich;
 import twilightforest.item.TFItems;
 
-import javax.annotation.Nonnull;
-
 public class LayerShields<T extends LivingEntity, M extends EntityModel<T>> extends LayerRenderer<T, M> {
-    private int getShieldCount(T entity) {
+
+	public LayerShields(IEntityRenderer<T, M> renderer) {
+		super(renderer);
+	}
+
+	private int getShieldCount(T entity) {
         EntityTFLich lich = null;
         if (entity instanceof EntityTFLich)
             lich = (EntityTFLich) entity;
@@ -32,12 +38,12 @@ public class LayerShields<T extends LivingEntity, M extends EntityModel<T>> exte
         return lich != null ? lich.getShieldStrength() : capShields;
     }
 
-    private void renderShields(float scale, T entity, float partialTicks) {
+    private void renderShields(MatrixStack stack, float scale, T entity, float partialTicks) {
         float rotateAngleY = (entity.ticksExisted + partialTicks) / 5.0F;
         float rotateAngleX = MathHelper.sin((entity.ticksExisted + partialTicks) / 5.0F) / 4.0F;
         float rotateAngleZ = MathHelper.cos((entity.ticksExisted + partialTicks) / 5.0F) / 4.0F;
 
-        ItemStack shieldStack = new ItemStack(TFItems.experiment_115, 1, 3);
+        ItemStack shieldStack = new ItemStack(TFItems.experiment_115.get(), 1, 3); //TODO: Evaluate this
         IBakedModel model = Minecraft.getInstance().getItemRenderer().getItemModelWithOverrides(shieldStack, entity.world, entity);
 
         float prevX = OpenGlHelper.lastBrightnessX, prevY = OpenGlHelper.lastBrightnessY;
@@ -47,21 +53,21 @@ public class LayerShields<T extends LivingEntity, M extends EntityModel<T>> exte
         Minecraft.getInstance().getTextureManager().bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
         int count = getShieldCount(entity);
         for (int c = 0; c < count; c++) {
-            GlStateManager.pushMatrix();
+            stack.push();
 
-            GlStateManager.rotatef(rotateAngleZ * (180F / (float) Math.PI)                       , 0.0F, 0.0F, 1.0F);
-            GlStateManager.rotatef(rotateAngleY * (180F / (float) Math.PI) + (c * (360F / count)), 0.0F, 1.0F, 0.0F);
-            GlStateManager.rotatef(rotateAngleX * (180F / (float) Math.PI)                       , 1.0F, 0.0F, 0.0F);
+            RenderSystem.rotatef(rotateAngleZ * (180F / (float) Math.PI)                       , 0.0F, 0.0F, 1.0F);
+            RenderSystem.rotatef(rotateAngleY * (180F / (float) Math.PI) + (c * (360F / count)), 0.0F, 1.0F, 0.0F);
+            RenderSystem.rotatef(rotateAngleX * (180F / (float) Math.PI)                       , 1.0F, 0.0F, 0.0F);
 
             // It's upside-down, gotta make it upside-up
-            GlStateManager.scalef(scale, -scale, scale);
+            stack.scale(scale, -scale, scale);
 
             // Move the draw away from the entity being drawn around
-            GlStateManager.translatef(0F, 0F, 1F);
+            stack.translate(0F, 0F, 1F);
 
-            Minecraft.getInstance().getItemRenderer().renderItem(shieldStack, ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.NONE, false));
+            Minecraft.getInstance().getItemRenderer().renderItem(shieldStack, ForgeHooksClient.handleCameraTransforms(stack, model, ItemCameraTransforms.TransformType.NONE, false));
 
-            GlStateManager.popMatrix();
+            stack.pop();
         }
 
         GL11.glMaterial(GL11.GL_FRONT_AND_BACK, GL11.GL_EMISSION, RenderHelper.setColorBuffer(0f, 0f, 0f, 1f));
@@ -69,17 +75,17 @@ public class LayerShields<T extends LivingEntity, M extends EntityModel<T>> exte
     }
 
     @Override
-    public void render(@Nonnull T living, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        if (getShieldCount(living) > 0) {
-            GlStateManager.enableBlend();
-            GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0f);
-            renderShields(scale * 13, living, partialTicks);
-        }
+    public void render(MatrixStack stack, IRenderTypeBuffer buffer, int i, T living, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+		if (getShieldCount(living) > 0) {
+			GlStateManager.enableBlend();
+			GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+			RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0f);
+			renderShields(stack, scale * 13, living, partialTicks);
+		}
     }
-
-    @Override
-    public boolean shouldCombineTextures() {
-        return false;
-    }
+//
+//    @Override
+//    public boolean shouldCombineTextures() {
+//        return false;
+//    }
 }

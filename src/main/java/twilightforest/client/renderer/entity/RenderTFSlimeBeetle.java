@@ -1,9 +1,14 @@
 package twilightforest.client.renderer.entity;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.entity.IEntityRenderer;
 import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.client.renderer.model.Model;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ModelTFSlimeBeetle;
@@ -15,7 +20,7 @@ public class RenderTFSlimeBeetle<T extends EntityTFSlimeBeetle, M extends ModelT
 
 	public RenderTFSlimeBeetle(EntityRendererManager manager, M par1ModelBase, float shadowSize) {
 		super(manager, par1ModelBase, shadowSize);
-		addLayer(new LayerInner());
+		addLayer(new LayerInner(this));
 	}
 
 	@Override
@@ -24,25 +29,29 @@ public class RenderTFSlimeBeetle<T extends EntityTFSlimeBeetle, M extends ModelT
 	}
 
 	class LayerInner extends LayerRenderer<T, M> {
-		private final ModelBase innerModel = new ModelTFSlimeBeetle(true);
+		private final Model innerModel = new ModelTFSlimeBeetle(true);
+
+		public LayerInner(IEntityRenderer<T, M> renderer) {
+			super(renderer);
+		}
 
 		@Override
-		public void render(T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+		public void render(MatrixStack stack, IRenderTypeBuffer buffer, int i, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 			if (!entity.isInvisible()) {
-				GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-				GlStateManager.enableNormalize();
+				RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+				RenderSystem.enableNormalize();
 				GlStateManager.enableBlend();
 				GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 				this.innerModel.setModelAttributes(RenderTFSlimeBeetle.this.getEntityModel());
-				this.innerModel.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+				this.innerModel.render(stack, buffer, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 				GlStateManager.disableBlend();
 				GlStateManager.disableNormalize();
 			}
 		}
-
-		@Override
-		public boolean shouldCombineTextures() {
-			return true;
-		}
+//
+//		@Override
+//		public boolean shouldCombineTextures() {
+//			return true;
+//		}
 	}
 }

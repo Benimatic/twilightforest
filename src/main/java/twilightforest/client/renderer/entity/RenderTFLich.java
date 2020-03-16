@@ -15,7 +15,7 @@ public class RenderTFLich<T extends EntityTFLich, M extends ModelTFLich<T>> exte
 
 	public RenderTFLich(EntityRendererManager manager, M modelbiped, float shadowSize) {
 		super(manager, modelbiped, shadowSize);
-		addLayer(new LayerShields<>());
+		addLayer(new LayerShields<>(this));
 	}
 
 	@Override

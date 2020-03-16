@@ -1,6 +1,7 @@
 package twilightforest.client.renderer.entity;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.BipedRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
@@ -22,14 +23,14 @@ public class RenderTFSnowQueen<T extends EntityTFSnowQueen, M extends ModelTFSno
 	}
 
 	@Override
-	protected void preRenderCallback(T queen, float partialTicks) {
+	protected void scale(T queen, MatrixStack stack, float partialTicks) {
 		float scale = 1.2F;
-		GlStateManager.scalef(scale, scale, scale);
+		stack.scale(scale, scale, scale);
 	}
 
 	@Override
-	public void doRender(T queen, double x, double y, double z, float yaw, float partialTicks) {
-		super.doRender(queen, x, y, z, yaw, partialTicks);
+	public void render(T queen, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
+		super.render(queen, yaw, partialTicks, stack, buffer, light);
 
 		for (int i = 0; i < queen.iceArray.length; i++) {
 			renderManager.renderEntityStatic(queen.iceArray[i], partialTicks, false);

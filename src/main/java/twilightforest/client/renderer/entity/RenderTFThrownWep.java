@@ -1,7 +1,9 @@
 package twilightforest.client.renderer.entity;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
-import com.mojang.blaze3d.platform.GlStateManager;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
@@ -17,44 +19,42 @@ public class RenderTFThrownWep<T extends EntityTFThrownWep> extends EntityRender
 	}
 
 	@Override
-	public void doRender(EntityTFThrownWep entity, double x, double y, double z, float yaw, float partialTicks) {
-
-		GlStateManager.pushMatrix();
+	public void render(T entity, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
+		stack.push();
 
 		float spin = (entity.ticksExisted + partialTicks) * -10F + 90F;
 
-
-		GlStateManager.translatef((float) x, (float) y, (float) z);
-		GlStateManager.enableRescaleNormal();
+		stack.translate((float) x, (float) y, (float) z);
+		RenderSystem.enableRescaleNormal();
 
 		// size up
-		GlStateManager.scalef(1.25F, 1.25F, 1.25F);
+		stack.scale(1.25F, 1.25F, 1.25F);
 
-		this.renderDroppedItem(entity.getItem(), yaw, spin);
+		this.renderDroppedItem(stack, entity.getItem(), yaw, spin);
 
-		GlStateManager.disableRescaleNormal();
-		GlStateManager.popMatrix();
+		RenderSystem.disableRescaleNormal();
+		stack.pop();
 	}
 
 	// todo recheck transformations
-	private void renderDroppedItem(ItemStack stack, float rotation, float spin) {
-		GlStateManager.pushMatrix();
+	private void renderDroppedItem(MatrixStack matrix, ItemStack stack, float rotation, float spin) {
+		matrix.push();
 
 		float f9 = 0.5F;
 		float f10 = 0.25F;
 
-		GlStateManager.rotatef(rotation + 270f, 0.0F, 1.0F, 0.0F);
-		GlStateManager.rotatef(spin, 0.0F, 0.0F, 1.0F);
+		RenderSystem.rotatef(rotation + 270f, 0.0F, 1.0F, 0.0F);
+		RenderSystem.rotatef(spin, 0.0F, 0.0F, 1.0F);
 
 		float f12 = 0.0625F;
 		float f11 = 0.021875F;
 
-		GlStateManager.translatef(-f9, -f10, -(f12 + f11));
-		GlStateManager.translatef(0f, 0f, f12 + f11);
+		matrix.translate(-f9, -f10, -(f12 + f11));
+		matrix.translate(0f, 0f, f12 + f11);
 
 		Minecraft.getInstance().getItemRenderer().renderItem(stack, ItemCameraTransforms.TransformType.GROUND);
 
-		GlStateManager.popMatrix();
+		matrix.pop();
 	}
 
 	@Override

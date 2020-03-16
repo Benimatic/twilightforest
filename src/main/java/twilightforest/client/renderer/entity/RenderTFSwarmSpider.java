@@ -1,6 +1,6 @@
 package twilightforest.client.renderer.entity;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.SpiderRenderer;
 import net.minecraft.util.ResourceLocation;
@@ -21,8 +21,8 @@ public class RenderTFSwarmSpider<T extends EntityTFSwarmSpider> extends SpiderRe
 	}
 
 	@Override
-	protected void preRenderCallback(T entity, float partialTicks) {
+	protected void scale(T entity, MatrixStack stack, float partialTicks) {
 		float scale = 0.5F;
-		GlStateManager.scalef(scale, scale, scale);
+		stack.scale(scale, scale, scale);
 	}
 }

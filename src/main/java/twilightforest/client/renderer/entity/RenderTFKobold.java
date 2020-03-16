@@ -1,6 +1,6 @@
 package twilightforest.client.renderer.entity;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.layers.HeldItemLayer;
 import twilightforest.client.model.entity.ModelTFKobold;
@@ -19,7 +19,6 @@ public class RenderTFKobold<T extends EntityTFKobold, M extends ModelTFKobold<T>
 	//TODO: AtomicBlom: Somehow introduce this into LayerHeldItem
 	//er, actually, this seems like it's not available...
 	protected void func_82422_c() {
-		GlStateManager.translatef(0.0F, 0.01875F, 0.0F);
+		RenderSystem.translatef(0.0F, 0.01875F, 0.0F);
 	}
-
 }

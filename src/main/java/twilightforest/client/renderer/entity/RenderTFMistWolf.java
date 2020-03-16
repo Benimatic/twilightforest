@@ -33,7 +33,7 @@ public class RenderTFMistWolf extends WolfRenderer {
 
 		float smoky = entity.getBrightness() * 2F + 0.6F;
 
-		GlStateManager.color4f(misty, misty, misty, smoky);
+		RenderSystem.color4f(misty, misty, misty, smoky);
 	}
 
 	/**

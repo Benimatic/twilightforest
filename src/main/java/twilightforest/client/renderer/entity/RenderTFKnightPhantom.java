@@ -1,6 +1,6 @@
 package twilightforest.client.renderer.entity;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.renderer.entity.BipedRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.layers.BipedArmorLayer;
@@ -26,8 +26,8 @@ public class RenderTFKnightPhantom<T extends EntityTFKnightPhantom, M extends Mo
 	}
 
 	@Override
-	protected void preRenderCallback(EntityTFKnightPhantom entity, float partialTicks) {
+	protected void scale(T entity, MatrixStack stack, float partialTicks) {
 		float scale = entity.isChargingAtPlayer() ? 1.8F : 1.2F;
-		GlStateManager.scalef(scale, scale, scale);
+		stack.scale(scale, scale, scale);
 	}
 }

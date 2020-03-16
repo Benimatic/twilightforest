@@ -1,14 +1,18 @@
 package twilightforest.client.renderer.entity;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ModelTFHydraMortar;
+import twilightforest.entity.boss.EntityTFHydraMortar;
 
-public class RenderTFHydraMortar<T extends RenderTFHydraMortar<T>> extends EntityRenderer<T> {
+public class RenderTFHydraMortar<T extends EntityTFHydraMortar> extends EntityRenderer<T> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("hydramortar.png");
 	private final ModelTFHydraMortar mortarModel = new ModelTFHydraMortar();
@@ -19,9 +23,9 @@ public class RenderTFHydraMortar<T extends RenderTFHydraMortar<T>> extends Entit
 	}
 
 	@Override
-	public void doRender(T mortar, double x, double y, double z, float yaw, float partialTicks) {
-		GlStateManager.pushMatrix();
-		GlStateManager.translatef((float) x, (float) y, (float) z);
+	public void render(T mortar, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
+		stack.push();
+		stack.translate((float) x, (float) y, (float) z);
 		float var10;
 
 		if ((float) mortar.fuse - partialTicks + 1.0F < 10.0F) {
@@ -48,20 +52,20 @@ public class RenderTFHydraMortar<T extends RenderTFHydraMortar<T>> extends Entit
 
 		if (mortar.fuse / 5 % 2 == 0) {
 			GlStateManager.disableTexture2D();
-			GlStateManager.disableLighting();
+			RenderSystem.disableLighting();
 			GlStateManager.enableBlend();
 			GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_DST_ALPHA);
-			GlStateManager.color4f(1.0F, 1.0F, 1.0F, var10);
+			RenderSystem.color4f(1.0F, 1.0F, 1.0F, var10);
 
 			mortarModel.render(0.075F);
 
-			GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+			RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GlStateManager.disableBlend();
-			GlStateManager.enableLighting();
+			RenderSystem.enableLighting();
 			GlStateManager.enableTexture2D();
 		}
 
-		GlStateManager.popMatrix();
+		stack.pop();
 	}
 
 	@Override

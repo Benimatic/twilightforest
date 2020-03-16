@@ -1,6 +1,8 @@
 package twilightforest.client.renderer.entity;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.particles.ParticleTypes;
@@ -20,8 +22,8 @@ public class RenderTFNaga<T extends EntityTFNaga, M extends ModelTFNaga<T>> exte
 	}
 
 	@Override
-	public void doRender(T entity, double x, double y, double z, float entityYaw, float partialTicks) {
-		super.doRender(entity, x, y, z, entityYaw, partialTicks);
+	public void render(T entity, float entityYaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
+		super.render(entity, entityYaw, partialTicks, stack, buffer, light);
 		if (!Minecraft.getInstance().isGamePaused() && entity.isDazed()) {
 			Vec3d pos = new Vec3d(entity.getX(), entity.getY() + 3.15D, entity.getZ()).add(new Vec3d(1.5D, 0, 0).rotateYaw((float) Math.toRadians(entity.getRNG().nextInt(360))));
 			Minecraft.getInstance().world.addParticle(ParticleTypes.CRIT, pos.x, pos.y, pos.z, 0, 0, 0);

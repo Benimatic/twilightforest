@@ -1,6 +1,5 @@
 package twilightforest.client.renderer.entity;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.layers.BipedArmorLayer;
 import net.minecraft.util.math.MathHelper;
@@ -17,6 +16,6 @@ public class RenderTFSnowGuardian<T extends EntityTFSnowGuardian, M extends Mode
 	@Override
 	protected void preRenderCallback(T entity, float partialTicks) {
 		float bounce = entity.ticksExisted + partialTicks;
-		GlStateManager.translatef(0F, MathHelper.sin((bounce) * 0.2F) * 0.15F, 0F);
+		RenderSystem.translatef(0F, MathHelper.sin((bounce) * 0.2F) * 0.15F, 0F);
 	}
 }

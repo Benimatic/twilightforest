@@ -1,11 +1,14 @@
 package twilightforest.client.renderer.entity;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
@@ -26,7 +29,7 @@ public class RenderTFFallingIce<T extends EntityTFFallingIce> extends EntityRend
 	}
 
 	@Override
-	public void doRender(T entity, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void render(T entity, float entityYaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
 		if (entity.getBlock() != null) {
 			BlockState iblockstate = entity.getBlock();
 
@@ -35,33 +38,33 @@ public class RenderTFFallingIce<T extends EntityTFFallingIce> extends EntityRend
 
 				if (iblockstate != world.getBlockState(new BlockPos(entity)) && iblockstate.getRenderType() != BlockRenderType.INVISIBLE) {
 					this.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
-					GlStateManager.pushMatrix();
-					GlStateManager.disableLighting();
+					stack.push();
+					RenderSystem.disableLighting();
 					Tessellator tessellator = Tessellator.getInstance();
 					BufferBuilder bufferbuilder = tessellator.getBuffer();
 
 					if (this.renderOutlines) {
-						GlStateManager.enableColorMaterial();
+						RenderSystem.enableColorMaterial();
 						GlStateManager.enableOutlineMode(this.getTeamColor(entity));
 					}
 
 					bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
 					BlockPos blockpos = new BlockPos(entity.getX(), entity.getBoundingBox().maxY, entity.getZ());
-					GlStateManager.translatef((float) (x - (double) blockpos.getX() - 0.5D), (float) (y - (double) blockpos.getY()), (float) (z - (double) blockpos.getZ() - 0.5D));
+					stack.translate((float) (x - (double) blockpos.getX() - 0.5D), (float) (y - (double) blockpos.getY()), (float) (z - (double) blockpos.getZ() - 0.5D));
 					// TF - 3 times as big
-					GlStateManager.scalef(3, 3, 3);
+					stack.scale(3, 3, 3);
 					BlockRendererDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
 					blockrendererdispatcher.getBlockModelRenderer().renderModel(world, blockrendererdispatcher.getModelForState(iblockstate), iblockstate, blockpos, bufferbuilder, false, MathHelper.getPositionRandom(entity.getOrigin()));
 					tessellator.draw();
 
 					if (this.renderOutlines) {
 						GlStateManager.disableOutlineMode();
-						GlStateManager.disableColorMaterial();
+						RenderSystem.disableColorMaterial();
 					}
 
-					GlStateManager.enableLighting();
-					GlStateManager.popMatrix();
-					super.doRender(entity, x, y, z, entityYaw, partialTicks);
+					RenderSystem.enableLighting();
+					stack.pop();
+					super.render(entity, entityYaw, partialTicks, stack, buffer, light);
 				}
 			}
 		}

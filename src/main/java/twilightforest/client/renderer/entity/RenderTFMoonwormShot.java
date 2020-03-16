@@ -1,6 +1,8 @@
 package twilightforest.client.renderer.entity;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
@@ -19,16 +21,15 @@ public class RenderTFMoonwormShot<T extends EntityTFMoonwormShot> extends Entity
 	}
 
 	@Override
-	public void doRender(T entity, double x, double y, double z, float yaw, float partialTicks) {
-
-		GlStateManager.pushMatrix();
-		GlStateManager.translated(x, y, z);
-		GlStateManager.rotatef(90F, 1F, 0F, 1F);
+	public void render(T entity, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
+		stack.push();
+		stack.translate(x, y, z);
+		RenderSystem.rotatef(90F, 1F, 0F, 1F);
 
 		this.bindTexture(getEntityTexture(entity));
 		wormModel.render(0.075F);
 
-		GlStateManager.popMatrix();
+		stack.pop();
 	}
 
 	@Override

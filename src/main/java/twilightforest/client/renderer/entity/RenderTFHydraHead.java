@@ -1,5 +1,7 @@
 package twilightforest.client.renderer.entity;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
@@ -18,14 +20,14 @@ public class RenderTFHydraHead<T extends EntityTFHydraHead, M extends ModelTFHyd
 	}
 
 	@Override
-	public void doRender(T entity, double x, double y, double z, float yaw, float partialTicks) {
+	public void render(T entity, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
 		// get the HydraHeadContainer that we're taking about
 		HydraHeadContainer headCon = getHeadObject(entity);
 
 		if (headCon != null) {
 			// see whether we want to render these
 			if (headCon.shouldRenderHead()) {
-				super.doRender(entity, x, y, z, yaw, partialTicks);
+				super.render(entity, yaw, partialTicks, stack, buffer, light);
 			}
 
 			if (headCon.shouldRenderNeck(0)) {
@@ -44,8 +46,7 @@ public class RenderTFHydraHead<T extends EntityTFHydraHead, M extends ModelTFHyd
 				renderManager.renderEntityStatic(headCon.necke, partialTicks, false);
 			}
 		} else {
-			super.doRender(entity, x, y, z, yaw, partialTicks);
-
+			super.render(entity, yaw, partialTicks, stack, buffer, light);
 		}
 	}
 
@@ -57,7 +58,6 @@ public class RenderTFHydraHead<T extends EntityTFHydraHead, M extends ModelTFHyd
 				if (hydra.hc[i].headEntity == entity) {
 					return hydra.hc[i];
 				}
-
 			}
 		}
 		return null;

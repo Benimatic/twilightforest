@@ -1,12 +1,14 @@
 package twilightforest.client.renderer.entity;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.DirectionalBlock;
 import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
@@ -29,8 +31,7 @@ public class RenderTFSlideBlock<T extends EntityTFSlideBlock> extends EntityRend
 
 	// [VanillaCopy] RenderFallingBlock, with spin
 	@Override
-	public void doRender(T entity, double x, double y, double z, float yaw, float partialTicks) {
-
+	public void render(T entity, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
 		if (entity.getBlockState() != null) {
 			BlockState iblockstate = entity.getBlockState();
 
@@ -39,14 +40,14 @@ public class RenderTFSlideBlock<T extends EntityTFSlideBlock> extends EntityRend
 
 				if (iblockstate != world.getBlockState(new BlockPos(entity)) && iblockstate.getRenderType() != BlockRenderType.INVISIBLE) {
 					this.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
-					GlStateManager.pushMatrix();
-					GlStateManager.disableLighting();
+					stack.push();
+					RenderSystem.disableLighting();
 					Tessellator tessellator = Tessellator.getInstance();
 					BufferBuilder bufferbuilder = tessellator.getBuffer();
 
 					if (this.renderOutlines) {
-						GlStateManager.enableColorMaterial();
-						GlStateManager.enableOutlineMode(this.getTeamColor(entity));
+						RenderSystem.enableColorMaterial();
+						RenderSystem.enableOutlineMode(this.getTeamColor(entity));
 					}
 
 					bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
@@ -57,18 +58,18 @@ public class RenderTFSlideBlock<T extends EntityTFSlideBlock> extends EntityRend
 						Direction.Axis axis = iblockstate.get(RotatedPillarBlock.AXIS);
 						float angle = (entity.ticksExisted + partialTicks) * 60F;
 						double dy = y + 0.5;
-						GlStateManager.translatef((float) x, (float) dy, (float) z);
+						stack.translate((float) x, (float) dy, (float) z);
 						if (axis == Direction.Axis.Y) {
-							GlStateManager.rotatef(angle, 0F, 1F, 0F);
+							RenderSystem.rotatef(angle, 0F, 1F, 0F);
 						} else if (axis == Direction.Axis.X) {
-							GlStateManager.rotatef(angle, 1F, 0F, 0F);
+							RenderSystem.rotatef(angle, 1F, 0F, 0F);
 						} else if (axis == Direction.Axis.Z) {
-							GlStateManager.rotatef(angle, 0F, 0F, 1F);
+							RenderSystem.rotatef(angle, 0F, 0F, 1F);
 						}
-						GlStateManager.translatef((float) -x, (float) -dy, (float) -z);
+						stack.translate((float) -x, (float) -dy, (float) -z);
 					}
 
-					GlStateManager.translatef((float) (x - (double) blockpos.getX() - 0.5D), (float) (y - (double) blockpos.getY()), (float) (z - (double) blockpos.getZ() - 0.5D));
+					stack.translate((float) (x - (double) blockpos.getX() - 0.5D), (float) (y - (double) blockpos.getY()), (float) (z - (double) blockpos.getZ() - 0.5D));
 
 					BlockRendererDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
 					blockrendererdispatcher.getBlockModelRenderer().renderModel(world, blockrendererdispatcher.getModelForState(iblockstate), iblockstate, blockpos, bufferbuilder, false, 0L);
@@ -76,12 +77,12 @@ public class RenderTFSlideBlock<T extends EntityTFSlideBlock> extends EntityRend
 
 					if (this.renderOutlines) {
 						GlStateManager.disableOutlineMode();
-						GlStateManager.disableColorMaterial();
+						RenderSystem.disableColorMaterial();
 					}
 
-					GlStateManager.enableLighting();
-					GlStateManager.popMatrix();
-					super.doRender(entity, x, y, z, yaw, partialTicks);
+					RenderSystem.enableLighting();
+					stack.pop();
+					super.render(entity, yaw, partialTicks, stack, buffer, light);
 				}
 			}
 		}
@@ -95,7 +96,7 @@ public class RenderTFSlideBlock<T extends EntityTFSlideBlock> extends EntityRend
         if (block != null && block.getBlock() != world.getBlockState(pos).getBlock())
         {
             GlStateManager.pushMatrix();
-            GlStateManager.translatef((float)x, (float)y + 0.5F, (float)z);
+            RenderSystem.translatef((float)x, (float)y + 0.5F, (float)z);
 
             // spin
             if (block.getValue(BlockRotatedPillar.AXIS_FACING) == Direction.Axis.Y) {
@@ -107,14 +108,14 @@ public class RenderTFSlideBlock<T extends EntityTFSlideBlock> extends EntityRend
             }
 
             this.bindEntityTexture(sliderEntity);
-            GlStateManager.disableLighting();
+            RenderSystem.disableLighting();
 
             Tessellator.getInstance().getBuffer().begin(7, DefaultVertexFormats.BLOCK);
             BlockRendererDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
             blockrendererdispatcher.getBlockModelRenderer().renderModel(world, blockrendererdispatcher.getModelForState(block), block, pos, Tessellator.getInstance().getBuffer(), false, MathHelper.getPositionRandom(pos));
             Tessellator.getInstance().draw();
 
-            GlStateManager.enableLighting();
+            RenderSystem.enableLighting();
             GlStateManager.popMatrix();
         }*/
 	}

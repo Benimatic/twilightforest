@@ -1,8 +1,12 @@
 package twilightforest.client.renderer.entity;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.model.Model;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
@@ -13,33 +17,33 @@ import twilightforest.entity.EntityTFRovingCube;
 public class RenderTFRovingCube<T extends EntityTFRovingCube> extends EntityRenderer<T> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("cubeofannihilation.png");
-	private final ModelBase model = new ModelTFCubeOfAnnihilation();
+	private final Model model = new ModelTFCubeOfAnnihilation();
 
 	public RenderTFRovingCube(EntityRendererManager manager) {
 		super(manager);
 	}
 
 	@Override
-	public void doRender(T entity, double x, double y, double z, float yaw, float partialTicks) {
-		GlStateManager.pushMatrix();
-		GlStateManager.translated(x, y, z);
+	public void render(T entity, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
+		stack.push();
+		RenderSystem.translated(x, y, z);
 
 		this.bindEntityTexture(entity);
 
-		GlStateManager.scalef(2.0F, 2.0F, 2.0F);
+		stack.scale(2.0F, 2.0F, 2.0F);
 
-		GlStateManager.rotatef(MathHelper.wrapDegrees(((float) x + (float) z + entity.ticksExisted + partialTicks) * 11F), 0, 1, 0);
+		RenderSystem.rotatef(MathHelper.wrapDegrees(((float) x + (float) z + entity.ticksExisted + partialTicks) * 11F), 0, 1, 0);
 
-		GlStateManager.disableLighting();
+		RenderSystem.disableLighting();
 		GlStateManager.enableBlend();
 		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-		GlStateManager.translatef(0F, 0.75F, 0F);
+		RenderSystem.translatef(0F, 0.75F, 0F);
 		this.model.render(entity, 0.0F, 0.0F, 0.0F, 0.0F, partialTicks, 0.0625F / 2F);
-		GlStateManager.enableLighting();
+		RenderSystem.enableLighting();
 		GlStateManager.disableBlend();
 
-		GlStateManager.popMatrix();
+		stack.pop();
 	}
 
 	@Override

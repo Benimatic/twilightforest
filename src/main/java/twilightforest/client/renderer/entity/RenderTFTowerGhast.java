@@ -34,6 +34,6 @@ public class RenderTFTowerGhast<T extends EntityTFTowerGhast, M extends ModelTFG
 		float yScale = (ghastScale + scaleVariable) / 2.0F;
 		float xzScale = (ghastScale + 1.0F / scaleVariable) / 2.0F;
 		GlStateManager.scalef(xzScale, yScale, xzScale);
-		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 	}
 }
