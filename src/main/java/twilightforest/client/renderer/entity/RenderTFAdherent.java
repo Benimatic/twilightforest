@@ -10,11 +10,11 @@ public class RenderTFAdherent<T extends EntityTFAdherent, M extends ModelTFAdher
 		super(manager, modelBiped, shadowSize, textureName);
 	}
 
-	@Override
-	public void doRender(T entity, double x, double y, double z, float yaw, float partialTicks) {
-		//GlStateManager.translatef(0.0F, 1.0F, 0.0F);
-
-		super.doRender(entity, x, y, z, yaw, partialTicks);
-	}
-
+	//TODO: Do we need this?
+//	@Override
+//	public void doRender(T entity, double x, double y, double z, float yaw, float partialTicks) {
+//		//RenderSystem.translatef(0.0F, 1.0F, 0.0F);
+//
+//		super.doRender(entity, x, y, z, yaw, partialTicks);
+//	}
 }
