@@ -123,10 +123,10 @@ public class TFMagicMapData extends MapData {
 			if (TFFeature.getFeatureByID(featureId).isStructureEnabled) {
 				Minecraft.getInstance().textureManager.bindTexture(MAP_ICONS);
 				GlStateManager.pushMatrix();
-				GlStateManager.translatef(0.0F + getX() / 2.0F + 64.0F, 0.0F + getY() / 2.0F + 64.0F, -0.02F);
+				RenderSystem.translatef(0.0F + getX() / 2.0F + 64.0F, 0.0F + getY() / 2.0F + 64.0F, -0.02F);
 				GlStateManager.rotatef((float) (getRotation() * 360) / 16.0F, 0.0F, 0.0F, 1.0F);
 				GlStateManager.scalef(4.0F, 4.0F, 3.0F);
-				GlStateManager.translatef(-0.125F, 0.125F, 0.0F);
+				RenderSystem.translatef(-0.125F, 0.125F, 0.0F);
 				float f1 = (float) (featureId % 8) / 8.0F;
 				float f2 = (float) (featureId / 8) / 8.0F;
 				float f3 = (float) (featureId % 8 + 1) / 8.0F;

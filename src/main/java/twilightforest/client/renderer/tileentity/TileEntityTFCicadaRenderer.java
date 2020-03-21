@@ -36,7 +36,7 @@ public class TileEntityTFCicadaRenderer extends TileEntityRenderer<TileEntityTFC
 		} else if (facing == Direction.DOWN) {
 			rotX = 180F;
 		}
-		GlStateManager.translatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
+		RenderSystem.translatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
 		GlStateManager.rotatef(rotX, 1F, 0F, 0F);
 		GlStateManager.rotatef(rotZ, 0F, 0F, 1F);
 		GlStateManager.rotatef(yaw, 0F, 1F, 0F);
@@ -46,7 +46,7 @@ public class TileEntityTFCicadaRenderer extends TileEntityRenderer<TileEntityTFC
 		GlStateManager.scalef(1f, -1f, -1f);
 		cicadaModel.render(0.0625f);
 		GlStateManager.popMatrix();
-		GlStateManager.color4f(1, 1, 1, 1);
+		RenderSystem.color4f(1, 1, 1, 1);
 		GlStateManager.popMatrix();
 	}
 }

@@ -110,14 +110,14 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 				ModelResourceLocation trophyModelLocation = new ModelResourceLocation(TwilightForestMod.ID + ":" + modelName, "inventory");
 				IBakedModel trophyModel = Minecraft.getInstance().getItemRenderer().getItemModelMesher().getModelManager().getModel(trophyModelLocation);
 
-				GlStateManager.disableLighting();
-				GlStateManager.translatef(0.5F, 0.5F, -1.5F);
+				RenderSystem.disableLighting();
+				RenderSystem.translatef(0.5F, 0.5F, -1.5F);
 				Minecraft.getInstance().getItemRenderer().renderItem(stack, ForgeHooksClient.handleCameraTransforms(trophyModel, transform, false));
-				GlStateManager.enableLighting();
-				GlStateManager.translatef(-0.5F, 0.0F, 1.5F);
+				RenderSystem.enableLighting();
+				RenderSystem.translatef(-0.5F, 0.0F, 1.5F);
 
 				//if (variant == BossVariant.QUEST_RAM)
-				//	GlStateManager.translatef(0.0F,0.0625F,0.0F);
+				//	RenderSystem.translatef(0.0F,0.0625F,0.0F);
 
 				GlStateManager.rotatef(30, 1F, 0F, 0F);
 
@@ -126,19 +126,19 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 				GlStateManager.scalef(0.5F, 0.5F, 0.5F);
 				GlStateManager.rotatef(45, 1.0F, 0.0F, 0.0F);
 				GlStateManager.rotatef(45, 0.0F, 1.0F, 0.0F);
-				GlStateManager.translatef(0.40625F, 1.171875F, 0.0F);
+				RenderSystem.translatef(0.40625F, 1.171875F, 0.0F);
 
 			} else if (transform == ItemCameraTransforms.TransformType.GROUND) {
-				GlStateManager.translatef(0.25F, 0.3F, 0.25F);
+				RenderSystem.translatef(0.25F, 0.3F, 0.25F);
 				GlStateManager.scalef(0.5F, 0.5F, 0.5F);
 
 			} else if (transform == ItemCameraTransforms.TransformType.HEAD) {
 				if (BossVariant.getVariant(stack.getMetadata()) == BossVariant.QUEST_RAM) {
 					GlStateManager.scalef(3F, 3F, 3F);
-					GlStateManager.translatef(-0.33F, -0.13F, -0.33F);
+					RenderSystem.translatef(-0.33F, -0.13F, -0.33F);
 				} else {
 					GlStateManager.scalef(2.0F, 2.0F, 2.0F);
-					GlStateManager.translatef(-0.25F, 0.0F, -0.25F);
+					RenderSystem.translatef(-0.25F, 0.0F, -0.25F);
 				}
 			}
 		}
@@ -171,12 +171,12 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 			rotation = TFConfig.rotateTrophyHeadsGui ? TFClientEvents.rotationTicker : 135;
 		}
 
-		GlStateManager.translatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
+		RenderSystem.translatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
 
 		switch (BossVariant.getVariant(trophy != null ? trophy.getSkullType() : stack.getMetadata())) {
 			case HYDRA:
 				if (trophy == null) {
-					GlStateManager.translatef(0.0F, -0.25F, transform == ItemCameraTransforms.TransformType.HEAD ? -0.125F : 0.0F);
+					RenderSystem.translatef(0.0F, -0.25F, transform == ItemCameraTransforms.TransformType.HEAD ? -0.125F : 0.0F);
 				}
 				renderHydraHead(rotation, onGround && trophy != null);
 				break;
@@ -187,7 +187,7 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 				renderLichHead(rotation, onGround);
 				break;
 			case UR_GHAST:
-				if (trophy == null) GlStateManager.translatef(0.0F, -0.5F, 0.0F);
+				if (trophy == null) RenderSystem.translatef(0.0F, -0.5F, 0.0F);
 				renderUrGhastHead(trophy, rotation, onGround, partialTime);
 				break;
 			case SNOW_QUEEN:
@@ -224,7 +224,7 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 		GlStateManager.rotatef(rotation, 0F, 1F, 0F);
 		GlStateManager.rotatef(180F, 0F, 1F, 0F);
 
-		GlStateManager.translatef(0, onGround ? 1F : -0F, 1.5F);
+		RenderSystem.translatef(0, onGround ? 1F : -0F, 1.5F);
 
 		// open mouth?
 		hydraHeadModel.openMouthForTrophy(onGround ? 0F : 0.25F);
@@ -234,7 +234,7 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 	}
 
 	private void renderNagaHead(float rotation, boolean onGround) {
-		GlStateManager.translatef(0, -0.125F, 0);
+		RenderSystem.translatef(0, -0.125F, 0);
 
 		GlStateManager.scalef(0.25f, 0.25f, 0.25f);
 
@@ -246,7 +246,7 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 		GlStateManager.rotatef(rotation, 0F, 1F, 0F);
 		GlStateManager.rotatef(180F, 0F, 1F, 0F);
 
-		GlStateManager.translatef(0, onGround ? 1F : -0F, onGround ? 0F : 1F);
+		RenderSystem.translatef(0, onGround ? 1F : -0F, onGround ? 0F : 1F);
 
 		// render the naga head
 		nagaHeadModel.render(null, 0.0F, 0.0F, 0.0F, rotation, 0.0F, 0.0625F);
@@ -254,7 +254,7 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 
 
 	private void renderLichHead(float rotation, boolean onGround) {
-		GlStateManager.translatef(0, 1, 0);
+		RenderSystem.translatef(0, 1, 0);
 
 		//GlStateManager.scalef(0.5f, 0.5f, 0.5f);
 
@@ -266,7 +266,7 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 		GlStateManager.rotatef(rotation, 0F, 1F, 0F);
 		GlStateManager.rotatef(180F, 0F, 1F, 0F);
 
-		GlStateManager.translatef(0, onGround ? 1.75F : 1.5F, onGround ? 0F : 0.24F);
+		RenderSystem.translatef(0, onGround ? 1.75F : 1.5F, onGround ? 0F : 0.24F);
 
 		// render the lich head
 		lichModel.bipedHead.render(0.0625F);
@@ -275,7 +275,7 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 
 
 	private void renderUrGhastHead(@Nullable TileEntityTFTrophy trophy, float rotation, boolean onGround, float partialTime) {
-		GlStateManager.translatef(0, 1, 0);
+		RenderSystem.translatef(0, 1, 0);
 
 		GlStateManager.scalef(0.5f, 0.5f, 0.5f);
 
@@ -287,14 +287,14 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 		GlStateManager.rotatef(rotation, 0F, 1F, 0F);
 		GlStateManager.rotatef(180F, 0F, 1F, 0F);
 
-		GlStateManager.translatef(0, onGround ? 1F : 1F, onGround ? 0F : 0F);
+		RenderSystem.translatef(0, onGround ? 1F : 1F, onGround ? 0F : 0F);
 
 		// render the head
 		urGhastModel.render(null, 0.0F, 0, trophy != null ? trophy.ticksExisted + partialTime : TFClientEvents.sineTicker + partialTime, 0, 0.0F, 0.0625F);
 	}
 
 	private void renderSnowQueenHead(float rotation, boolean onGround) {
-		GlStateManager.translatef(0, 1, 0);
+		RenderSystem.translatef(0, 1, 0);
 
 		//GlStateManager.scalef(0.5f, 0.5f, 0.5f);
 
@@ -306,7 +306,7 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 		GlStateManager.rotatef(rotation, 0F, 1F, 0F);
 		GlStateManager.rotatef(180F, 0F, 1F, 0F);
 
-		GlStateManager.translatef(0, onGround ? 1.5F : 1.25F, onGround ? 0F : 0.24F);
+		RenderSystem.translatef(0, onGround ? 1.5F : 1.25F, onGround ? 0F : 0.24F);
 
 		// render the head
 		snowQueenModel.bipedHead.render(0.0625F);
@@ -314,7 +314,7 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 	}
 
 	private void renderMinoshroomHead(float rotation, boolean onGround) {
-		GlStateManager.translatef(0, 1, 0);
+		RenderSystem.translatef(0, 1, 0);
 
 		//GlStateManager.scalef(0.5f, 0.5f, 0.5f);
 
@@ -326,14 +326,14 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 		GlStateManager.rotatef(rotation, 0F, 1F, 0F);
 		GlStateManager.rotatef(180F, 0F, 1F, 0F);
 
-		GlStateManager.translatef(0, onGround ? 1.875F : 1.625F, onGround ? 0.5625F : 0.8125F);
+		RenderSystem.translatef(0, onGround ? 1.875F : 1.625F, onGround ? 0.5625F : 0.8125F);
 
 		// render the head
 		minoshroomModel.bipedHead.render(0.0625F);
 	}
 
 	private void renderKnightPhantomHead(float rotation, boolean onGround) {
-		GlStateManager.translatef(0, 1, 0);
+		RenderSystem.translatef(0, 1, 0);
 
 		GlStateManager.scalef(1f, -1f, -1f);
 
@@ -341,7 +341,7 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 		GlStateManager.rotatef(rotation, 0F, 1F, 0F);
 		GlStateManager.rotatef(180F, 0F, 1F, 0F);
 
-		GlStateManager.translatef(0, onGround ? 1.5F : 1.25F, onGround ? 0.0F : 0.25F);
+		RenderSystem.translatef(0, onGround ? 1.5F : 1.25F, onGround ? 0.0F : 0.25F);
 
 		GlStateManager.scalef(0.9375F, 0.9375F, 0.9375F);
 
@@ -349,7 +349,7 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 		this.bindTexture(textureLocKnightPhantomArmor);
 		knightPhantomArmorModel.bipedHead.render(0.0625F);
 
-		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 0.75F);
+		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 0.75F);
 
 		this.bindTexture(textureLocKnightPhantom);
 		knightPhantomModel.bipedHead.render(0.0625F);
@@ -365,7 +365,7 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 
 		if (transform == ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND
 				|| transform == ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND) {
-			GlStateManager.translatef(0.0F, 0.5F, 0.0F);
+			RenderSystem.translatef(0.0F, 0.5F, 0.0F);
 		}
 
 		this.bindTexture(textureLocQuestRam);
@@ -375,12 +375,12 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 		GlStateManager.rotatef(rotation, 0F, 1F, 0F);
 		GlStateManager.rotatef(180F, 0F, 1F, 0F);
 
-		GlStateManager.translatef(0F, onGround ? 1.30F : 1.03F, onGround ? 0.765625F : 1.085F);
+		RenderSystem.translatef(0F, onGround ? 1.30F : 1.03F, onGround ? 0.765625F : 1.085F);
 
 		// render the head
 		questRamModel.head.render(0.0625F);
 
-		GlStateManager.disableLighting();
+		RenderSystem.disableLighting();
 		this.bindTexture(textureLocQuestRamLines);
 		float var4 = 1.0F;
 		GlStateManager.enableBlend();
@@ -397,6 +397,6 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
 		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GlStateManager.enableAlpha();
-		GlStateManager.enableLighting();
+		RenderSystem.enableLighting();
 	}
 }

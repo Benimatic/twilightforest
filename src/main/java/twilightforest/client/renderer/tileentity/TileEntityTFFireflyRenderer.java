@@ -38,7 +38,7 @@ public class TileEntityTFFireflyRenderer extends TileEntityRenderer<TileEntityTF
 		} else if (facing == Direction.DOWN) {
 			rotX = 180F;
 		}
-		GlStateManager.translatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
+		RenderSystem.translatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
 		GlStateManager.rotatef(rotX, 1F, 0F, 0F);
 		GlStateManager.rotatef(rotZ, 0F, 0F, 1F);
 		GlStateManager.rotatef(yaw, 0F, 1F, 0F);
@@ -62,17 +62,17 @@ public class TileEntityTFFireflyRenderer extends TileEntityRenderer<TileEntityTF
 		// render the firefly glow
 		GlStateManager.enableBlend();
 		GlStateManager.disableAlpha();
-		GlStateManager.disableLighting();
-		GlStateManager.color4f(1.0F, 1.0F, 1.0F, glow);
+		RenderSystem.disableLighting();
+		RenderSystem.color4f(1.0F, 1.0F, 1.0F, glow);
 		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 		fireflyModel.glow.render(0.0625f);
 		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GlStateManager.disableBlend();
 		GlStateManager.enableAlpha();
-		GlStateManager.enableLighting();
+		RenderSystem.enableLighting();
 
 		GlStateManager.popMatrix();
-		GlStateManager.color4f(1, 1, 1, 1);
+		RenderSystem.color4f(1, 1, 1, 1);
 		GlStateManager.popMatrix();
 	}
 }

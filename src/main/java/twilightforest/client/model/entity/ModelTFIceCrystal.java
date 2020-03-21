@@ -48,7 +48,7 @@ public class ModelTFIceCrystal<T extends EntityTFIceCrystal> extends EntityModel
 				GlStateManager.enableBlend();
 				GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-				GlStateManager.color4f(1F, 1F, 1F, 0.6F);
+				RenderSystem.color4f(1F, 1F, 1F, 0.6F);
 			}
 
 			this.spikes[i].render(scale);

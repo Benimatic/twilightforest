@@ -83,6 +83,6 @@ public class ModelTFAdherent<T extends EntityTFAdherent> extends BipedModel<T> {
 		float bounce = entity.ticksExisted + partialTicks;
 
 		// this is where we add the floating
-		GlStateManager.translatef(0F, -0.125F - MathHelper.sin((bounce) * 0.133F) * 0.1F, 0F);
+		RenderSystem.translatef(0F, -0.125F - MathHelper.sin((bounce) * 0.133F) * 0.1F, 0F);
 	}
 }

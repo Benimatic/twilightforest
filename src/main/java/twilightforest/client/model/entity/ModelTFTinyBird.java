@@ -88,12 +88,12 @@ public class ModelTFTinyBird<T extends EntityTFTinyBird> extends EntityModel<T> 
 		if (isChild) {
 			float f = 2.0F;
 			GlStateManager.pushMatrix();
-			GlStateManager.translatef(0.0F, 5F * scale, 0.75F * scale);
+			RenderSystem.translatef(0.0F, 5F * scale, 0.75F * scale);
 			head.render(scale);
 			GlStateManager.popMatrix();
 			GlStateManager.pushMatrix();
 			GlStateManager.scalef(1.0F / f, 1.0F / f, 1.0F / f);
-			GlStateManager.translatef(0.0F, 24F * scale, 0.0F);
+			RenderSystem.translatef(0.0F, 24F * scale, 0.0F);
 			body.render(scale);
 			rightleg.render(scale);
 			leftleg.render(scale);

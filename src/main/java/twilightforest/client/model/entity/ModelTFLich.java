@@ -78,7 +78,7 @@ public class ModelTFLich<T extends EntityTFLich> extends BipedModel<T> {
 			GlStateManager.enableBlend();
 			GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			float shadow = 0.33f;
-			GlStateManager.color4f(shadow, shadow, shadow, 0.8F);
+			RenderSystem.color4f(shadow, shadow, shadow, 0.8F);
 			super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 			GlStateManager.disableBlend();
 		}
