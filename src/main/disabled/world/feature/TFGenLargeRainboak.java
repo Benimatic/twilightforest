@@ -1,5 +1,6 @@
 package twilightforest.world.feature;
 
+import com.mojang.datafixers.Dynamic;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLog;
@@ -14,6 +15,7 @@ import twilightforest.enums.LeavesVariant;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
 import java.util.Random;
+import java.util.function.Function;
 
 /**
  * This is a lame copy of WorldGenLargeTree, since I'm too lazy to make my own tree and all the methods in WorldGenLargeTree are package-only
@@ -64,12 +66,16 @@ public class TFGenLargeRainboak<T extends TFTreeFeatureConfig> extends TFTreeGen
 	 */
 	int[][] leafNodes;
 
-	public TFGenLargeRainboak(boolean par1) {
-		super(par1);
-	}
+//	public TFGenLargeRainboak(boolean par1) {
+//		super(par1);
+//	}
+//
+//	public TFGenLargeRainboak() {
+//		this(false);
+//	}
 
-	public TFGenLargeRainboak() {
-		this(false);
+	public TFGenLargeRainboak(Function<Dynamic<?>, T> config) {
+		super(config);
 	}
 
 	/**

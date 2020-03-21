@@ -5,6 +5,7 @@ import twilightforest.block.BlockTFLeaves;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.LeavesVariant;
 
+//TODO: Turn this into a simple tree Builder
 public class TFGenSmallRainboak extends TFGenSmallTwilightOak {
 
 	public TFGenSmallRainboak() {

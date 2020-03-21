@@ -20,6 +20,7 @@ import java.util.function.Function;
 /**
  * This class fixes the vanilla WorldGenVines, which appears to be nonfunctional in 1.11
  */
+//TODO: Do we still need this?
 public class TFGenVines<T extends NoFeatureConfig> extends Feature<T> {
 
 	public TFGenVines(Function<Dynamic<?>, T> config) {
