@@ -25,22 +25,8 @@ import java.util.function.Function;
 public class TFGenCanopyTree<T extends TFTreeFeatureConfig> extends TFTreeGenerator<T> {
 
 	protected int minHeight = 20;
-	protected int chanceAddFirstFive = 3;
-	protected int chanceAddSecondFive = 8;
 
 	private List<BlockPos> leaves = Lists.newArrayList();
-
-//	public TFGenCanopyTree() {
-//		this(false);
-//	}
-//
-//	public TFGenCanopyTree(boolean notify) {
-//		super(notify);
-//		treeState = TFBlocks.twilight_log.getDefaultState().with(BlockTFLog.VARIANT, WoodVariant.CANOPY);
-//		branchState = treeState.with(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
-//		leafState = TFBlocks.twilight_leaves.getDefaultState().with(BlockTFLeaves.VARIANT, LeavesVariant.CANOPY).with(BlockLeaves.CHECK_DECAY, false);
-//		rootState = TFBlocks.root.getDefaultState();
-//	}
 
 	public TFGenCanopyTree(Function<Dynamic<?>, T> config) {
 		super(config);
@@ -50,10 +36,10 @@ public class TFGenCanopyTree<T extends TFTreeFeatureConfig> extends TFTreeGenera
 	protected boolean generate(IWorldGenerationReader world, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, MutableBoundingBox mbb, T config) {
 		// determine a height
 		int treeHeight = minHeight;
-		if (random.nextInt(chanceAddFirstFive) == 0) {
+		if (random.nextInt(config.chanceAddFiveFirst) == 0) {
 			treeHeight += random.nextInt(5);
 
-			if (random.nextInt(chanceAddSecondFive) == 0) {
+			if (random.nextInt(config.chanceAddFiveSecond) == 0) {
 				treeHeight += random.nextInt(5);
 			}
 		}
@@ -124,7 +110,7 @@ public class TFGenCanopyTree<T extends TFTreeFeatureConfig> extends TFTreeGenera
 		// only actually draw the branch if it's not going to load new chunks
 		if (world.isAreaLoaded(dest, 5)) {
 
-			FeatureUtil.drawBresehnam(this, world, src, dest, trunk ? treeState : branchState);
+			FeatureUtil.drawBresehnam(world, src, dest, trunk ? treeState : branchState);
 
 			// seems to help lighting to place this firefly now
 			if (trunk) {

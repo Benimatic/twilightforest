@@ -21,18 +21,6 @@ public class TFGenCanopyOak<T extends TFTreeFeatureConfig> extends TFGenCanopyTr
 
 	private List<BlockPos> leaves = Lists.newArrayList();
 
-//	public TFGenCanopyOak() {
-//		this(false);
-//	}
-//
-//	public TFGenCanopyOak(boolean notify) {
-//		super(notify);
-//		this.treeState = TFBlocks.twilight_log.getDefaultState();
-//		this.branchState = treeState.with(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
-//		this.leafState = TFBlocks.twilight_leaves.getDefaultState().with(BlockLeaves.CHECK_DECAY, false);
-//		this.rootState = TFBlocks.root.getDefaultState();
-//	}
-
 	public TFGenCanopyOak(Function<Dynamic<?>, T> config) {
 		super(config);
 	}
@@ -144,7 +132,7 @@ public class TFGenCanopyOak<T extends TFTreeFeatureConfig> extends TFGenCanopyTr
 			dest = new BlockPos(dest.getX(), dest.getY(), pos.getZ() + limit);
 		}
 
-		FeatureUtil.drawBresehnam(this, world, src, dest, trunk ? treeState : branchState);
+		FeatureUtil.drawBresehnam(world, src, dest, trunk ? treeState : branchState);
 
 		setBlockAndNotifyAdequately(world, dest.east(), branchState);
 		setBlockAndNotifyAdequately(world, dest.west(), branchState);

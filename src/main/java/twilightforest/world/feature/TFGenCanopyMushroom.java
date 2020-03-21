@@ -1,20 +1,21 @@
 package twilightforest.world.feature;
 
 import com.mojang.datafixers.Dynamic;
-import net.minecraft.block.Block;
+import net.minecraft.block.*;
 import net.minecraft.block.BlockHugeMushroom;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.IWorldGenerationReader;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.GenerationSettings;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
+import twilightforest.block.TFBlocks;
 import twilightforest.util.FeatureUtil;
 import twilightforest.world.TFWorld;
-import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
 import java.util.Random;
-import java.util.Set;
 import java.util.function.Function;
 
 /**
@@ -22,7 +23,12 @@ import java.util.function.Function;
  *
  * @author Ben
  */
-public class TFGenCanopyMushroom<T extends TFTreeFeatureConfig> extends TFTreeGenerator<T> {
+public class TFGenCanopyMushroom<T extends NoFeatureConfig> extends Feature<T> {
+
+	public BlockState treeState   = Blocks.MUSHROOM_STEM.getDefaultState().with(HugeMushroomBlock.DOWN, false).with(HugeMushroomBlock.UP, false);
+	public BlockState branchState = Blocks.MUSHROOM_STEM.getDefaultState();
+	public BlockState leafState   = Blocks.RED_MUSHROOM_BLOCK.getDefaultState().with(HugeMushroomBlock.DOWN, false).with(HugeMushroomBlock.NORTH, false).with(HugeMushroomBlock.SOUTH, false).with(HugeMushroomBlock.EAST, false).with(HugeMushroomBlock.WEST, false);
+	public Block source = Blocks.RED_MUSHROOM;
 
 //	public TFGenCanopyMushroom() {
 //		this(false);
@@ -41,7 +47,7 @@ public class TFGenCanopyMushroom<T extends TFTreeFeatureConfig> extends TFTreeGe
 	}
 
 	@Override
-	protected boolean generate(IWorldGenerationReader world, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, MutableBoundingBox mbb, T config) {
+	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random random, BlockPos pos, T config) {
 		// determine a height
 		int treeHeight = 12;
 		if (random.nextInt(3) == 0) {
@@ -64,18 +70,16 @@ public class TFGenCanopyMushroom<T extends TFTreeFeatureConfig> extends TFTreeGe
 
 		BlockState baseState = (random.nextInt(3) == 0 ? Blocks.RED_MUSHROOM_BLOCK : Blocks.BROWN_MUSHROOM_BLOCK).getDefaultState();
 
-		this.treeState   = baseState.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.STEM);
-		this.branchState = baseState.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.ALL_STEM);
-		this.leafState   = baseState.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.CENTER);
+		leafState = baseState.with(HugeMushroomBlock.DOWN, false).with(HugeMushroomBlock.NORTH, false).with(HugeMushroomBlock.SOUTH, false).with(HugeMushroomBlock.EAST, false).with(HugeMushroomBlock.WEST, false);
 
 		//okay build a tree!  Go up to the height
-		buildBranch(world, pos, 0, treeHeight, 0, 0, true, random);
+		buildBranch(world.getWorld(), pos, 0, treeHeight, 0, 0, true, random);
 
 		// make 3-4 branches
 		int numBranches = 3 + random.nextInt(2);
 		double offset = random.nextDouble();
 		for (int b = 0; b < numBranches; b++) {
-			buildBranch(world, pos, treeHeight - 5 + b, 9, 0.3 * b + offset, 0.2, false, random);
+			buildBranch(world.getWorld(), pos, treeHeight - 5 + b, 9, 0.3 * b + offset, 0.2, false, random);
 		}
 
 		return true;
@@ -97,11 +101,11 @@ public class TFGenCanopyMushroom<T extends TFTreeFeatureConfig> extends TFTreeGe
 		if (world.isAreaLoaded(dest, 5)) {
 			if (src.getX() != dest.getX() || src.getZ() != dest.getZ()) {
 				// branch
-				FeatureUtil.drawBresehnam(this, world, src, new BlockPos(dest.getX(), src.getY(), dest.getZ()), branchState);
-				FeatureUtil.drawBresehnam(this, world, new BlockPos(dest.getX(), src.getY() + 1, dest.getZ()), dest.down(), treeState);
+				FeatureUtil.drawBresehnam(world, src, new BlockPos(dest.getX(), src.getY(), dest.getZ()), branchState);
+				FeatureUtil.drawBresehnam(world, new BlockPos(dest.getX(), src.getY() + 1, dest.getZ()), dest.down(), treeState);
 			} else {
 				// trunk
-				FeatureUtil.drawBresehnam(this, world, src, dest.down(), treeState);
+				FeatureUtil.drawBresehnam(world, src, dest.down(), treeState);
 			}
 
 			if (trunk) {
@@ -133,35 +137,54 @@ public class TFGenCanopyMushroom<T extends TFTreeFeatureConfig> extends TFTreeGe
 				if (dx == 0) {
 					// two!
 					if (dz < rad) {
-						setBlockAndNotifyAdequately(world, pos.add(0, 0, dz), baseState);
-						setBlockAndNotifyAdequately(world, pos.add(0, 0, -dz), baseState);
+						world.setBlockState(pos.add(0, 0, dz), baseState);
+						world.setBlockState(pos.add(0, 0, -dz), baseState);
 					} else {
-						setBlockAndNotifyAdequately(world, pos.add(0, 0, dz), baseState.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.SOUTH));
-						setBlockAndNotifyAdequately(world, pos.add(0, 0, -dz), baseState.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.NORTH));
+						world.setBlockState(pos.add(0, 0, dz), baseState.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.SOUTH));
+						world.setBlockState(pos.add(0, 0, -dz), baseState.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.NORTH));
 					}
 				} else if (dz == 0) {
 					// two!
 					if (dx < rad) {
-						setBlockAndNotifyAdequately(world, pos.add(dx, 0, 0), baseState);
-						setBlockAndNotifyAdequately(world, pos.add(-dx, 0, 0), baseState);
+						world.setBlockState(pos.add(dx, 0, 0), baseState);
+						world.setBlockState(pos.add(-dx, 0, 0), baseState);
 					} else {
-						setBlockAndNotifyAdequately(world, pos.add(dx, 0, 0), baseState.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.EAST));
-						setBlockAndNotifyAdequately(world, pos.add(-dx, 0, 0), baseState.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.WEST));
+						world.setBlockState(pos.add(dx, 0, 0), baseState.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.EAST));
+						world.setBlockState(pos.add(-dx, 0, 0), baseState.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.WEST));
 					}
 				} else if (dist < rad) {
 					// do four at a time for easiness!
-					setBlockAndNotifyAdequately(world, pos.add(dx, 0, dz), baseState);
-					setBlockAndNotifyAdequately(world, pos.add(dx, 0, -dz), baseState);
-					setBlockAndNotifyAdequately(world, pos.add(-dx, 0, dz), baseState);
-					setBlockAndNotifyAdequately(world, pos.add(-dx, 0, -dz), baseState);
+					world.setBlockState(pos.add(dx, 0, dz), baseState);
+					world.setBlockState(pos.add(dx, 0, -dz), baseState);
+					world.setBlockState(pos.add(-dx, 0, dz), baseState);
+					world.setBlockState(pos.add(-dx, 0, -dz), baseState);
 				} else if (dist == rad) {
 					// do four at a time for easiness!
-					setBlockAndNotifyAdequately(world, pos.add(dx, 0, dz), baseState.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.SOUTH_EAST));
-					setBlockAndNotifyAdequately(world, pos.add(dx, 0, -dz), baseState.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.NORTH_EAST));
-					setBlockAndNotifyAdequately(world, pos.add(-dx, 0, dz), baseState.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.SOUTH_WEST));
-					setBlockAndNotifyAdequately(world, pos.add(-dx, 0, -dz), baseState.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.NORTH_WEST));
+					world.setBlockState(pos.add(dx, 0, dz), baseState.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.SOUTH_EAST));
+					world.setBlockState(pos.add(dx, 0, -dz), baseState.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.NORTH_EAST));
+					world.setBlockState(pos.add(-dx, 0, dz), baseState.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.SOUTH_WEST));
+					world.setBlockState(pos.add(-dx, 0, -dz), baseState.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.NORTH_WEST));
 				}
 			}
+		}
+	}
+
+	protected void addFirefly(World world, BlockPos pos, int height, double angle) {
+		int iAngle = (int) (angle * 4.0);
+		if (iAngle == 0) {
+			setIfEmpty(world, pos.add( 1, height,  0), TFBlocks.firefly.get().getDefaultState().with(DirectionalBlock.FACING, Direction.EAST));
+		} else if (iAngle == 1) {
+			setIfEmpty(world, pos.add(-1, height,  0), TFBlocks.firefly.get().getDefaultState().with(DirectionalBlock.FACING, Direction.WEST));
+		} else if (iAngle == 2) {
+			setIfEmpty(world, pos.add( 0, height,  1), TFBlocks.firefly.get().getDefaultState().with(DirectionalBlock.FACING, Direction.SOUTH));
+		} else if (iAngle == 3) {
+			setIfEmpty(world, pos.add( 0, height, -1), TFBlocks.firefly.get().getDefaultState().with(DirectionalBlock.FACING, Direction.NORTH));
+		}
+	}
+
+	private void setIfEmpty(World world, BlockPos pos, BlockState state) {
+		if (world.isAirBlock(pos)) {
+			world.setBlockState(pos, state);
 		}
 	}
 }

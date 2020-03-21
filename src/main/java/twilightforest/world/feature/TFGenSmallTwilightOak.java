@@ -7,6 +7,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenTrees;
 import twilightforest.block.TFBlocks;
 
+//TODO: Turn this into a simple tree Builder
 public class TFGenSmallTwilightOak extends WorldGenTrees implements IBlockSettable {
 
 	public TFGenSmallTwilightOak(boolean notify) {

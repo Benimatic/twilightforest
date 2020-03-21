@@ -26,9 +26,9 @@ public class FeatureUtil {
 		);
 	}
 
-	public static void drawBresehnam(IBlockSettable generator, World world, BlockPos from, BlockPos to, BlockState state) {
+	public static void drawBresehnam(World world, BlockPos from, BlockPos to, BlockState state) {
 		for (BlockPos pixel : getBresehnamArrays(from, to)) {
-			generator.setBlockAndNotify(world, pixel, state);
+			world.setBlockState(pixel, state);
 		}
 	}
 

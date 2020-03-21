@@ -103,7 +103,7 @@ public class TFGenMangroveTree<T extends TFTreeFeatureConfig> extends TFTreeGene
 		// only actually draw the branch if it's not going to load new chunks
 		if (world.isAreaLoaded(dest, bSize + 1)) {
 
-			FeatureUtil.drawBresehnam(this, world, src, dest, trunk ? treeState : branchState);
+			FeatureUtil.drawBresehnam(world, src, dest, trunk ? treeState : branchState);
 
 			// we only need these side blocks if the size is > 2
 			if (bSize > 2) {

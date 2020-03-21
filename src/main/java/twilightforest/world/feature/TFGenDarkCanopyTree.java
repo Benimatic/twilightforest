@@ -22,18 +22,6 @@ import java.util.function.Function;
  */
 public class TFGenDarkCanopyTree<T extends TFTreeFeatureConfig> extends TFTreeGenerator<T> {
 
-//	public TFGenDarkCanopyTree() {
-//		this(false);
-//	}
-//
-//	public TFGenDarkCanopyTree(boolean notify) {
-//		super(notify);
-//		treeState = TFBlocks.twilight_log.getDefaultState().with(BlockTFLog.VARIANT, WoodVariant.DARK);
-//		branchState = treeState.with(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
-//		leafState = TFBlocks.dark_leaves.getDefaultState();
-//		rootState = TFBlocks.root.getDefaultState();
-//	}
-
 	public TFGenDarkCanopyTree(Function<Dynamic<?>, T> config) {
 		super(config);
 	}
@@ -70,7 +58,7 @@ public class TFGenDarkCanopyTree<T extends TFTreeFeatureConfig> extends TFTreeGe
 		int treeHeight = 6 + random.nextInt(5);
 
 		//okay build a tree!  trunk here
-		FeatureUtil.drawBresehnam(this, world, pos, pos.up(treeHeight), treeState);
+		FeatureUtil.drawBresehnam(world, pos, pos.up(treeHeight), treeState);
 		leafAround(world, pos.up(treeHeight));
 
 		// make 4 branches
@@ -106,7 +94,7 @@ public class TFGenDarkCanopyTree<T extends TFTreeFeatureConfig> extends TFTreeGe
 
 		// only actually draw the branch if it's not going to load new chunks
 		if (world.isAreaLoaded(dest, 6)) {
-			FeatureUtil.drawBresehnam(this, world, src, dest, branchState);
+			FeatureUtil.drawBresehnam(world, src, dest, branchState);
 			leafAround(world, dest);
 		}
 	}

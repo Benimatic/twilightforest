@@ -2,44 +2,53 @@ package twilightforest.features;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.math.StatsAccumulator;
-import net.minecraft.block.BlockChest;
+import com.mojang.datafixers.Dynamic;
+import net.minecraft.block.ChestBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.monster.EntityZombieVillager;
 import net.minecraft.block.Blocks;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.tileentity.TileEntityMobSpawner;
+import net.minecraft.tileentity.MobSpawnerTileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.MutableBoundingBox;
-import net.minecraft.world.gen.structure.template.PlacementSettings;
-import net.minecraft.world.gen.structure.template.Template;
-import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.GenerationSettings;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.gen.feature.template.PlacementSettings;
+import net.minecraft.world.gen.feature.template.Template;
+import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.server.ServerWorld;
 import org.apache.commons.lang3.tuple.Pair;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFRisingZombie;
 import twilightforest.entity.EntityTFWraith;
+import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
 import twilightforest.structures.RandomizedTemplateProcessor;
-import twilightforest.world.feature.TFGenerator;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Function;
 
-public class TFGenGraveyard extends TFGenerator {
+public class TFGenGraveyard<T extends NoFeatureConfig> extends Feature<T> {
 
 	private static final ResourceLocation GRAVEYARD = TwilightForestMod.prefix("landscape/graveyard/graveyard");
 	private static final ResourceLocation TRAP = TwilightForestMod.prefix("landscape/graveyard/grave_trap");
-	private static final ImmutableSet<Material> MATERIAL_WHITELIST = ImmutableSet.of(Material.GROUND, Material.GRASS, Material.LEAVES, Material.WOOD, Material.PLANTS, Material.ROCK);
+	private static final ImmutableSet<Material> MATERIAL_WHITELIST = ImmutableSet.of(Material.EARTH, Material.ORGANIC, Material.LEAVES, Material.WOOD, Material.PLANTS, Material.ROCK);
+
+	public TFGenGraveyard(Function<Dynamic<?>, T> config) {
+		super(config);
+	}
 
 	private static boolean offsetToAverageGroundLevel(World world, BlockPos.Mutable startPos, BlockPos size) {
 		StatsAccumulator heights = new StatsAccumulator();
@@ -80,7 +89,7 @@ public class TFGenGraveyard extends TFGenerator {
 		return isAreaClear(world, startPos.up(maxY - baseY + 1), startPos.add(size));
 	}
 
-	private static boolean isAreaClear(IBlockAccess world, BlockPos min, BlockPos max) {
+	private static boolean isAreaClear(IBlockReader world, BlockPos min, BlockPos max) {
 		for (BlockPos pos : BlockPos.getAllInBoxMutable(min, max)) {
 			Material material = world.getBlockState(pos).getMaterial();
 			if (!material.isReplaceable() && !MATERIAL_WHITELIST.contains(material) && !material.isLiquid()) {
@@ -92,7 +101,7 @@ public class TFGenGraveyard extends TFGenerator {
 
 	private static boolean isBlockOk(BlockState state) {
 		Material material = state.getMaterial();
-		return material == Material.ROCK || material == Material.GROUND || material == Material.GRASS || material == Material.SAND;
+		return material == Material.ROCK || material == Material.EARTH || material == Material.ORGANIC || material == Material.SAND;
 	}
 
 	private static boolean isBlockNotOk(BlockState state) {
@@ -101,17 +110,18 @@ public class TFGenGraveyard extends TFGenerator {
 	}
 
 	@Override
-	public boolean generate(World world, Random rand, BlockPos pos) {
+	public boolean place(IWorld worldIn, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, T config) {
 		int flags = 0b10100;
-		Random random = world.getChunk(pos).getRandomWithSeed(987234911L);
+		World world = worldIn.getWorld();
+		//Random random = world.getChunk(pos).getRandomWithSeed(987234911L);
+		Random random = world.getRandom();
 
-		MinecraftServer minecraftserver = world.getMinecraftServer();
-		TemplateManager templatemanager = world.getSaveHandler().getStructureTemplateManager();
-		Template base = templatemanager.getTemplate(minecraftserver, GRAVEYARD);
+		TemplateManager templatemanager = ((ServerWorld) world).getSaveHandler().getStructureTemplateManager();
+		Template base = templatemanager.getTemplate(GRAVEYARD);
 		List<Pair<GraveType, Template>> graves = new ArrayList<>();
-		Template trap = templatemanager.getTemplate(minecraftserver, TRAP);
+		Template trap = templatemanager.getTemplate(TRAP);
 		for (GraveType type : GraveType.VALUES)
-			graves.add(Pair.of(type, templatemanager.getTemplate(minecraftserver, type.RL)));
+			graves.add(Pair.of(type, templatemanager.getTemplate(type.RL)));
 
 		Rotation[] rotations = Rotation.values();
 		Rotation rotation = rotations[random.nextInt(rotations.length)];
@@ -138,7 +148,7 @@ public class TFGenGraveyard extends TFGenerator {
 		BlockPos size = transformedSize.add(-1, 0, -1);
 		BlockPos graveSize = transformedGraveSize.add(-1, 0, -1);
 
-		base.addBlocksToWorld(world, placementPos, new WebTemplateProcessor(placementPos, placementsettings), placementsettings, flags);
+		base.addBlocksToWorld(worldIn, placementPos, /*new WebTemplateProcessor(placementPos, placementsettings),*/ placementsettings, flags);
 
 		BlockPos start = startPos.add(1, 1, 0);
 		BlockPos end = start.add(size.getX(), 0, size.getZ());
@@ -146,7 +156,7 @@ public class TFGenGraveyard extends TFGenerator {
 		for (int x = 1; x <= size.getX() - 1; x++)
 			for (int z = 1; z <= size.getZ() - 1; z++)
 				if (world.isAirBlock(start.add(x, 0, z)) && rand.nextInt(12) == 0)
-					world.setBlockState(start.add(x, 0, z), Blocks.WEB.getDefaultState(), flags);
+					world.setBlockState(start.add(x, 0, z), Blocks.COBWEB.getDefaultState(), flags);
 
 		BlockPos inner = start.add(2, 0, 2);
 		BlockPos bound = end.add(-2, 0, -2);
@@ -174,9 +184,9 @@ public class TFGenGraveyard extends TFGenerator {
 					if (random.nextBoolean()) {
 						if (random.nextInt(3) == 0)
 							trap.addBlocksToWorld(world, placement.add(new BlockPos(mirror == Mirror.FRONT_BACK ? 1 : -1, 0, mirror == Mirror.LEFT_RIGHT ? 1 : -1).rotate(rotation)), placementsettings, flags);
-						if (world.setBlockState(placement.add(chestloc), Blocks.TRAPPED_CHEST.getDefaultState().with(BlockChest.FACING, Direction.WEST).withRotation(rotation).withMirror(mirror), flags))
+						if (world.setBlockState(placement.add(chestloc), Blocks.TRAPPED_CHEST.getDefaultState().with(ChestBlock.FACING, Direction.WEST).rotate(rotation).mirror(mirror), flags))
 							TFTreasure.graveyard.generateChestContents(world, placement.add(chestloc));
-						EntityTFWraith wraith = new EntityTFWraith(world);
+						EntityTFWraith wraith = new EntityTFWraith(TFEntities.wraith.get(), world);
 						wraith.setPositionAndUpdate(placement.getX(), placement.getY(), placement.getZ());
 						world.addEntity(wraith);
 					}
@@ -184,8 +194,8 @@ public class TFGenGraveyard extends TFGenerator {
 				grave.getValue().getDataBlocks(placement, placementsettings).forEach((p, s) -> {
 					if ("spawner".equals(s))
 						if (random.nextInt(4) == 0) {
-							if (world.setBlockState(p, Blocks.MOB_SPAWNER.getDefaultState(), flags)) {
-								TileEntityMobSpawner ms = (TileEntityMobSpawner) world.getTileEntity(p);
+							if (world.setBlockState(p, Blocks.SPAWNER.getDefaultState(), flags)) {
+								MobSpawnerTileEntity ms = (MobSpawnerTileEntity) world.getTileEntity(p);
 								if (ms != null)
 									ms.getSpawnerBaseLogic().setEntityId(EntityList.getKey(EntityTFRisingZombie.class));
 							}

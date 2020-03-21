@@ -17,19 +17,6 @@ import java.util.function.Function;
 
 public class TFGenLargeWinter<T extends TFTreeFeatureConfig> extends TFTreeGenerator<T> {
 
-//	public TFGenLargeWinter() {
-//		this(false);
-//	}
-//
-//	public TFGenLargeWinter(boolean notify) {
-//		super(notify);
-//		treeState = Blocks.LOG.getDefaultState().with(BlockOldLog.VARIANT, BlockPlanks.EnumType.SPRUCE);
-//		branchState = Blocks.LOG.getDefaultState().with(BlockOldLog.VARIANT, BlockPlanks.EnumType.SPRUCE).with(BlockLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
-//		leafState = Blocks.LEAVES.getDefaultState().with(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.SPRUCE).with(BlockLeaves.CHECK_DECAY, false);
-//		rootState = TFBlocks.root.getDefaultState();
-//		source = (IPlantable) Blocks.SAPLING;
-//	}
-
 	public TFGenLargeWinter(Function<Dynamic<?>, T> config) {
 		super(config);
 	}

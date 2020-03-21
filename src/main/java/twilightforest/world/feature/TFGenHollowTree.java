@@ -299,7 +299,7 @@ public class TFGenHollowTree<T extends TFTreeFeatureConfig> extends Feature<T> {
 	protected void makeMedBranch(World world, Random random, BlockPos src, double length, double angle, double tilt, boolean leafy) {
 		BlockPos dest = FeatureUtil.translate(src, length, angle, tilt);
 
-		FeatureUtil.drawBresehnam(this, world, src, dest, branchState);
+		FeatureUtil.drawBresehnam(world, src, dest, branchState);
 
 		// with leaves!
 
@@ -345,7 +345,7 @@ public class TFGenHollowTree<T extends TFTreeFeatureConfig> extends Feature<T> {
 	protected void makeSmallBranch(World world, Random random, BlockPos src, double length, double angle, double tilt, boolean leafy) {
 		BlockPos dest = FeatureUtil.translate(src, length, angle, tilt);
 
-		FeatureUtil.drawBresehnam(this, world, src, dest, branchState);
+		FeatureUtil.drawBresehnam(world, src, dest, branchState);
 
 		if (leafy) {
 			byte leafRad = (byte) (random.nextInt(2) + 1);
@@ -392,7 +392,7 @@ public class TFGenHollowTree<T extends TFTreeFeatureConfig> extends Feature<T> {
 		BlockPos dest = FeatureUtil.translate(src, length, angle, tilt);
 
 		// draw the main branch
-		FeatureUtil.drawBresehnam(this, world, src, dest, branchState);
+		FeatureUtil.drawBresehnam(world, src, dest, branchState);
 
 		// reinforce it
 		//drawBresehnam(src[0], src[1] + 1, src[2], dest[0], dest[1], dest[2], treeBlock, true);
@@ -401,7 +401,7 @@ public class TFGenHollowTree<T extends TFTreeFeatureConfig> extends Feature<T> {
 			int vx = (i & 2) == 0 ? 1 : 0;
 			int vy = (i & 1) == 0 ? 1 : -1;
 			int vz = (i & 2) == 0 ? 0 : 1;
-			FeatureUtil.drawBresehnam(this, world, src.add(vx, vy, vz), dest, branchState);
+			FeatureUtil.drawBresehnam(world, src.add(vx, vy, vz), dest, branchState);
 		}
 
 		if (leafy) {

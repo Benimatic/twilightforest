@@ -2,84 +2,92 @@ package twilightforest.features;
 
 import com.google.common.math.StatsAccumulator;
 
+import com.mojang.datafixers.Dynamic;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.EntityList;
 import net.minecraft.block.Blocks;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.tileentity.TileEntityMobSpawner;
+import net.minecraft.tileentity.MobSpawnerTileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.MutableBoundingBox;
-import net.minecraft.world.gen.structure.template.PlacementSettings;
-import net.minecraft.world.gen.structure.template.Template;
-import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.GenerationSettings;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.gen.feature.template.PlacementSettings;
+import net.minecraft.world.gen.feature.template.Template;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 
+import net.minecraft.world.server.ServerWorld;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFSkeletonDruid;
 import twilightforest.enums.StructureWoodVariant;
 import twilightforest.loot.TFTreasure;
 import twilightforest.structures.RandomizedTemplateProcessor;
-import twilightforest.world.feature.TFGenerator;
 
 import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.Random;
+import java.util.function.Function;
 
-public class GenDruidHut extends TFGenerator {
+public class GenDruidHut<T extends NoFeatureConfig> extends Feature<T> {
 
-    @Override // Loosely based on WorldGenFossils
-    public boolean generate(World world, Random rand, BlockPos pos) {
-        Random random = world.getChunk(pos).getRandomWithSeed(987234911L);
+	public GenDruidHut(Function<Dynamic<?>, ? extends T> renderer) {
+		super(renderer);
+	}
 
-        MinecraftServer minecraftserver = world.getMinecraftServer();
-        TemplateManager templatemanager = world.getSaveHandler().getStructureTemplateManager();
-        Template template = templatemanager.getTemplate(minecraftserver, HutType.values()[random.nextInt(HutType.size)].RL);
+	@Override // Loosely based on WorldGenFossils
+	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, T config) {
+		//Random random = world.getChunk(pos).getRandomWithSeed(987234911L);
+		Random random = world.getRandom();
 
-        Rotation[] rotations = Rotation.values();
-        Rotation rotation = rotations[random.nextInt(rotations.length)];
+		TemplateManager templatemanager = ((ServerWorld)world).getSaveHandler().getStructureTemplateManager();
+		Template template = templatemanager.getTemplate(HutType.values()[random.nextInt(HutType.size)].RL);
 
-        Mirror[] mirrors = Mirror.values();
-        Mirror mirror = mirrors[random.nextInt(mirrors.length+1) % mirrors.length];
+		Rotation[] rotations = Rotation.values();
+		Rotation rotation = rotations[random.nextInt(rotations.length)];
 
-        ChunkPos chunkpos = new ChunkPos(pos.add(-8, 0, -8));
-        MutableBoundingBox structureboundingbox = new MutableBoundingBox(chunkpos.getXStart() + 8, 0, chunkpos.getZStart() + 8, chunkpos.getXEnd() + 8, 255, chunkpos.getZEnd() + 8);
-        PlacementSettings placementsettings = (new PlacementSettings()).setMirror(mirror).setRotation(rotation).setBoundingBox(structureboundingbox).setRandom(random);
+		Mirror[] mirrors = Mirror.values();
+		Mirror mirror = mirrors[random.nextInt(mirrors.length+1) % mirrors.length];
 
-        BlockPos posSnap = chunkpos.getBlock(8, pos.getY() - 1, 8);
+		ChunkPos chunkpos = new ChunkPos(pos.add(-8, 0, -8));
+		MutableBoundingBox structureboundingbox = new MutableBoundingBox(chunkpos.getXStart() + 8, 0, chunkpos.getZStart() + 8, chunkpos.getXEnd() + 8, 255, chunkpos.getZEnd() + 8);
+		PlacementSettings placementsettings = (new PlacementSettings()).setMirror(mirror).setRotation(rotation).setBoundingBox(structureboundingbox).setRandom(random);
 
-        BlockPos transformedSize = template.transformedSize(rotation);
-        int dx = random.nextInt(17 - transformedSize.getX());
-        int dz = random.nextInt(17 - transformedSize.getZ());
+		BlockPos posSnap = chunkpos.getBlock(8, pos.getY() - 1, 8);
 
-        BlockPos.Mutable startPos = new BlockPos.Mutable(posSnap.add(dx, 0, dz));
+		BlockPos transformedSize = template.transformedSize(rotation);
+		int dx = random.nextInt(17 - transformedSize.getX());
+		int dz = random.nextInt(17 - transformedSize.getZ());
 
-        if (!offsetToAverageGroundLevel(world, startPos, transformedSize)) {
-            return false;
-        }
+		BlockPos.Mutable startPos = new BlockPos.Mutable(posSnap.add(dx, 0, dz));
 
-        BlockPos placementPos = template.getZeroPositionWithTransform(startPos, mirror, rotation);
-        template.addBlocksToWorld(world, placementPos, new HutTemplateProcessor(placementPos, placementsettings, random.nextInt(), random.nextInt(), random.nextInt()), placementsettings, 20);
+		if (!offsetToAverageGroundLevel(world, startPos, transformedSize)) {
+			return false;
+		}
 
-        Map<BlockPos, String> data = template.getDataBlocks(placementPos, placementsettings);
+		BlockPos placementPos = template.getZeroPositionWithTransform(startPos, mirror, rotation);
+		template.addBlocksToWorld(world, placementPos, new HutTemplateProcessor(placementPos, placementsettings, random.nextInt(), random.nextInt(), random.nextInt()), placementsettings, 20);
 
-        if (random.nextBoolean()) {
-            template = templatemanager.getTemplate(minecraftserver, BasementType.values()[random.nextInt(BasementType.size)].getBasement(random.nextBoolean()));
-            placementPos = placementPos.down(12).offset(rotation.rotate(mirror.mirror(Direction.NORTH)), 1).offset(rotation.rotate(mirror.mirror(Direction.EAST)), 1);
+		Map<BlockPos, String> data = template.getDataBlocks(placementPos, placementsettings);
 
-            template.addBlocksToWorld(world, placementPos, new HutTemplateProcessor(placementPos, placementsettings, random.nextInt(), random.nextInt(), random.nextInt()), placementsettings, 20);
+		if (random.nextBoolean()) {
+			template = templatemanager.getTemplate(BasementType.values()[random.nextInt(BasementType.size)].getBasement(random.nextBoolean()));
+			placementPos = placementPos.down(12).offset(rotation.rotate(mirror.mirror(Direction.NORTH)), 1).offset(rotation.rotate(mirror.mirror(Direction.EAST)), 1);
 
-            data.putAll(template.getDataBlocks(placementPos, placementsettings));
-        }
+			template.addBlocksToWorld(world, placementPos, new HutTemplateProcessor(placementPos, placementsettings, random.nextInt(), random.nextInt(), random.nextInt()), placementsettings, 20);
 
-        data.forEach((blockPos, s) -> {
+			data.putAll(template.getDataBlocks(placementPos, placementsettings));
+		}
+
+		data.forEach((blockPos, s) -> {
             /*
             `spawner` will place a Druid spawner.
 
@@ -93,40 +101,40 @@ public class GenDruidHut extends TFGenerator {
             `lootET` will place a trapped chest facing the was-East.
             `lootNT` will place a trapped chest facing the was-North.
              */
-            if ("spawner".equals(s)) {
-                if (world.setBlockState(blockPos, Blocks.MOB_SPAWNER.getDefaultState(), 16 | 2)) {
-                    TileEntityMobSpawner ms = (TileEntityMobSpawner) world.getTileEntity(blockPos);
+			if ("spawner".equals(s)) {
+				if (world.setBlockState(blockPos, Blocks.SPAWNER.getDefaultState(), 16 | 2)) {
+					MobSpawnerTileEntity ms = (MobSpawnerTileEntity) world.getTileEntity(blockPos);
 
-                    if (ms != null) {
-                        ms.getSpawnerBaseLogic().setEntityId(EntityList.getKey(EntityTFSkeletonDruid.class));
-                    }
-                }
-            } else if (s.startsWith("loot")) {
-                BlockState chest = s.endsWith("T") ? Blocks.TRAPPED_CHEST.getDefaultState() : Blocks.CHEST.getDefaultState();
+					if (ms != null) {
+						ms.getSpawnerBaseLogic().setEntityId(EntityList.getKey(EntityTFSkeletonDruid.class));
+					}
+				}
+			} else if (s.startsWith("loot")) {
+				BlockState chest = s.endsWith("T") ? Blocks.TRAPPED_CHEST.getDefaultState() : Blocks.CHEST.getDefaultState();
 
-                switch (s.substring(4, 5)) {
-                    case "W":
-                        chest = chest.with(BlockHorizontal.FACING, rotation.rotate(mirror.mirror(Direction.WEST)));
-                        break;
-                    case "E":
-                        chest = chest.with(BlockHorizontal.FACING, rotation.rotate(mirror.mirror(Direction.EAST)));
-                        break;
-                    case "S":
-                        chest = chest.with(BlockHorizontal.FACING, rotation.rotate(mirror.mirror(Direction.SOUTH)));
-                        break;
-                    default:
-                        chest = chest.with(BlockHorizontal.FACING, rotation.rotate(mirror.mirror(Direction.NORTH)));
-                        break;
-                }
+				switch (s.substring(4, 5)) {
+					case "W":
+						chest = chest.with(HorizontalBlock.HORIZONTAL_FACING, rotation.rotate(mirror.mirror(Direction.WEST)));
+						break;
+					case "E":
+						chest = chest.with(HorizontalBlock.HORIZONTAL_FACING, rotation.rotate(mirror.mirror(Direction.EAST)));
+						break;
+					case "S":
+						chest = chest.with(HorizontalBlock.HORIZONTAL_FACING, rotation.rotate(mirror.mirror(Direction.SOUTH)));
+						break;
+					default:
+						chest = chest.with(HorizontalBlock.HORIZONTAL_FACING, rotation.rotate(mirror.mirror(Direction.NORTH)));
+						break;
+				}
 
-                if (world.setBlockState(blockPos, chest, 16 | 2)) {
-                    TFTreasure.basement.generateChestContents(world, blockPos);
-                }
-            }
-        });
+				if (world.setBlockState(blockPos, chest, 16 | 2)) {
+					TFTreasure.basement.generateChestContents(world.getWorld(), blockPos);
+				}
+			}
+		});
 
-        return true;
-    }
+		return true;
+	}
 
     private static boolean offsetToAverageGroundLevel(World world, BlockPos.Mutable startPos, BlockPos size) {
         StatsAccumulator heights = new StatsAccumulator();

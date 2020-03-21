@@ -1,30 +1,39 @@
 package twilightforest.world.feature;
 
-import net.minecraft.block.BlockLeaves;
-import net.minecraft.block.BlockLog;
+import com.mojang.datafixers.Dynamic;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.GenerationSettings;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.TFWorld;
+import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
 import java.util.Random;
+import java.util.function.Function;
 
 //TODO: Must extend AbstractTreeFeature. TFGenHollowTree is a Feature
-public class TFGenTreeOfTime extends TFGenHollowTree {
+public class TFGenTreeOfTime<T extends TFTreeFeatureConfig> extends TFGenHollowTree<T> {
 
-	public TFGenTreeOfTime(boolean notify) {
-		super(notify);
-
-		this.treeState = TFBlocks.magic_log.getDefaultState();
-		this.branchState = treeState.with(BlockLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
-		this.leafState = TFBlocks.magic_leaves.getDefaultState().with(BlockLeaves.CHECK_DECAY, false);
+	public TFGenTreeOfTime(Function<Dynamic<?>, T> config) {
+		super(config);
 	}
 
-	@Override
-	public boolean generate(World world, Random random, BlockPos pos) {
+//	public TFGenTreeOfTime(boolean notify) {
+//		super(notify);
+//
+//		this.treeState = TFBlocks.magic_log.getDefaultState();
+//		this.branchState = treeState.with(BlockLog.LOG_AXIS, BlockLog.EnumAxis.NONE);
+//		this.leafState = TFBlocks.magic_leaves.getDefaultState().with(BlockLeaves.CHECK_DECAY, false);
+//	}
 
+
+	@Override
+	public boolean place(IWorld worldIn, ChunkGenerator<? extends GenerationSettings> generator, Random random, BlockPos pos, T config) {
+		World world = worldIn.getWorld();
 		int height = 8;
 		int diameter = 1;
 
@@ -54,7 +63,7 @@ public class TFGenTreeOfTime extends TFGenHollowTree {
 		buildBranchRing(world, random, pos, diameter, 1, 2, 18, 0, 0.9D, 0, 3, 5, 3, false);
 
 		// add clock block
-		this.setBlockAndNotifyAdequately(world, pos.add(-1, 2, 0), TFBlocks.magic_log_core.getDefaultState());
+		this.setBlockAndNotifyAdequately(world, pos.add(-1, 2, 0), TFBlocks.time_log_core.get().getDefaultState());
 
 		return true;
 	}
@@ -79,5 +88,4 @@ public class TFGenTreeOfTime extends TFGenHollowTree {
 		// 3-6 medium branches going straight up
 		buildBranchRing(world, random, pos, diameter, height, 0, (crownRadius / 2), 0, 0.05D, 0, bvar, bvar + 2, 0, true);
 	}
-
 }
