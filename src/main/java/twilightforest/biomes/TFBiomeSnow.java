@@ -26,26 +26,19 @@ public class TFBiomeSnow extends TFBiomeBase {
 	public TFBiomeSnow(Builder props) {
 		super(props);
 
-		getTFBiomeDecorator().setTreesPerChunk(7);
-		getTFBiomeDecorator().setGrassPerChunk(1);
-
-		getTFBiomeDecorator().hasCanopy = false;
-		getTFBiomeDecorator().generateFalls = false;
-
 		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.yeti.get(), 20, 4, 4));
 		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.winter_wolf.get(), 5, 1, 4));
-	}
 
-    //TODO: Move to feature decorator
-	@Override
-	public WorldGenAbstractTree getRandomTreeFeature(Random random) {
-		if (random.nextInt(3) == 0) {
-			return new WorldGenTaiga1();
-		} else if (random.nextInt(8) == 0) {
-			return new TFGenLargeWinter();
-		} else {
-			return new WorldGenTaiga2(true);
-		}
+		TFBiomeDecorator.addWoodRoots(this);
+		TFBiomeDecorator.addOres(this);
+		TFBiomeDecorator.addClayDisks(this, 1);
+		TFBiomeDecorator.addLakes(this);
+		TFBiomeDecorator.addPlantRoots(this);
+		TFBiomeDecorator.addMultipleTrees(this, TFBiomeDecorator.SNOWY_TREES_CONFIG, 7);
+		TFBiomeDecorator.addTorchberries(this);
+		TFBiomeDecorator.addGrassWithFern(this, 1);
+		TFBiomeDecorator.addFlowers(this, 2);
+		TFBiomeDecorator.addMushrooms(this);
 	}
 
 	@Override
@@ -59,12 +52,12 @@ public class TFBiomeSnow extends TFBiomeBase {
 	}
 
 	@Override
-	public List<SpawnListEntry> getSpawnableList(EnumCreatureType creatureType) {
+	public List<SpawnListEntry> getSpawns(EntityClassification creatureType) {
 		// if it is monster, then only give it the real list 1/MONSTER_SPAWN_RATE of the time
-		if (creatureType == EnumCreatureType.MONSTER) {
+		if (creatureType == EntityClassification.MONSTER) {
 			return monsterRNG.nextInt(MONSTER_SPAWN_RATE) == 0 ? this.spawnableMonsterList : new ArrayList<>();
 		}
-		return super.getSpawnableList(creatureType);
+		return super.getSpawns(creatureType);
 	}
 
 	@Override

@@ -5,9 +5,18 @@ public class TFBiomeMushrooms extends TFBiomeBase {
 	public TFBiomeMushrooms(Builder props) {
 		super(props);
 
-		getTFBiomeDecorator().setTreesPerChunk(8);
-		getTFBiomeDecorator().setMushroomsPerChunk(8);
-		getTFBiomeDecorator().setBigMushroomsPerChunk(2);
-		getTFBiomeDecorator().alternateCanopyChance = 0.2F;
+		TFBiomeDecorator.addWoodRoots(this);
+		TFBiomeDecorator.addOres(this);
+		TFBiomeDecorator.addClayDisks(this, 1);
+		TFBiomeDecorator.addLakes(this);
+		TFBiomeDecorator.addSprings(this);
+		TFBiomeDecorator.addPlantRoots(this);
+		TFBiomeDecorator.addTorchberries(this);
+		TFBiomeDecorator.addCanopyAlt(this, 0.2F);
+		TFBiomeDecorator.addHugeMushrooms(this, 2);
+		TFBiomeDecorator.addMultipleTrees(this, TFBiomeDecorator.NORMAL_TREES_CONFIG, 8);
+		TFBiomeDecorator.addGrassWithFern(this, 2);
+		TFBiomeDecorator.addFlowers(this, 2);
+		TFBiomeDecorator.addMushroomsSometimes(this);
 	}
 }

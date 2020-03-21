@@ -12,12 +12,8 @@ import twilightforest.util.PlayerHelper;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class TFBiomeBase extends Biome {
-
-    //TODO: Move to feature decoration
-	protected final WorldGenAbstractTree birchGen = new WorldGenBirchTree(false, false);
 
 	protected final List<SpawnListEntry> undergroundMonsterList = new ArrayList<>();
 
@@ -50,48 +46,12 @@ public class TFBiomeBase extends Biome {
 
 		addSpawn(EntityClassification.AMBIENT, new SpawnListEntry(EntityType.BAT, 10, 8, 8));
 		addSpawn(EntityClassification.AMBIENT, new SpawnListEntry(TFEntities.firefly.get(), 10, 8, 8));
-
-		getTFBiomeDecorator().setTreesPerChunk(10);
-		getTFBiomeDecorator().setGrassPerChunk(2);
 	}
 
 	@Override
 	public float getSpawningChance() {
 		// okay, 20% more animals
 		return 0.12F;
-	}
-
-	//TODO: YEET
-	@Override
-	public TFBiomeDecorator createBiomeDecorator() {
-		return new TFBiomeDecorator();
-	}
-
-	//TODO: YEET
-	protected TFBiomeDecorator getTFBiomeDecorator() {
-		return (TFBiomeDecorator) this.decorator;
-	}
-
-	//TODO: Move to decoration
-	@Override
-	public WorldGenAbstractTree getRandomTreeFeature(Random random) {
-		if (random.nextInt(5) == 0) {
-			return birchGen;
-		} else if (random.nextInt(10) == 0) {
-			return new WorldGenBigTree(false);
-		} else {
-			return TREE_FEATURE;
-		}
-	}
-
-	//TODO: Move to decoration
-	@Override
-	public WorldGenerator getRandomWorldGenForGrass(Random random) {
-		if (random.nextInt(4) == 0) {
-			return new WorldGenTallGrass(BlockTallGrass.EnumType.FERN);
-		} else {
-			return new WorldGenTallGrass(BlockTallGrass.EnumType.GRASS);
-		}
 	}
 
 	/**

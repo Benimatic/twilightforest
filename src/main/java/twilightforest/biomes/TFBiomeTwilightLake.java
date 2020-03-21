@@ -9,6 +9,13 @@ public class TFBiomeTwilightLake extends TFBiomeBase {
 	public TFBiomeTwilightLake(Builder props) {
 		super(props);
 		addSpawn(EntityClassification.WATER_CREATURE, new SpawnListEntry(EntityType.SQUID, 10, 4, 4));
+
+		TFBiomeDecorator.addOres(this);
+		TFBiomeDecorator.addLakes(this);
+		TFBiomeDecorator.addSprings(this);
+		TFBiomeDecorator.addTorchberries(this);
+		TFBiomeDecorator.addMushrooms(this);
+		TFBiomeDecorator.addReeds(this, 1);
 	}
 
 	@Override

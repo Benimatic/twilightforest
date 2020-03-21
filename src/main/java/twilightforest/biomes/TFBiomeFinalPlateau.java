@@ -6,32 +6,24 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFEntities;
-
-import java.util.Random;
 
 public class TFBiomeFinalPlateau extends TFBiomeBase {
 
 	public TFBiomeFinalPlateau(Builder props) {
 		super(props);
 
-		getTFBiomeDecorator().hasCanopy = false;
-		getTFBiomeDecorator().setTreesPerChunk(-999);
-
-		this.decorator.generateFalls = false;
-
 		// custom creature list.
-		//TODO: Due to the new way of adding spawns, look into how to clear lists
-		//spawnableCreatureList.clear();
+		getSpawns(EntityClassification.CREATURE).clear();
 		addSpawn(EntityClassification.CREATURE, new SpawnListEntry(TFEntities.raven.get(), 10, 4, 4));
-	}
 
-	@Override
-	public void decorate(World world, Random rand, BlockPos pos) {}
+		TFBiomeDecorator.addClayDisks(this, 1);
+		TFBiomeDecorator.addLakes(this);
+		TFBiomeDecorator.addMushrooms(this);
+	}
 
 	@Override
 	protected ResourceLocation[] getRequiredAdvancements() {

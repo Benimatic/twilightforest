@@ -27,7 +27,6 @@ public class TFBiomeDarkForestCenter extends TFBiomeDarkForest {
 		return new ResourceLocation[]{ TwilightForestMod.prefix("progress_knights") };
 	}
 
-
 	@Override
 	protected TFFeature getContainedFeature() {
 		return TFFeature.DARK_TOWER;

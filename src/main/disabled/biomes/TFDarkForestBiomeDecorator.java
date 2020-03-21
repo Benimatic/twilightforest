@@ -4,12 +4,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.PumpkinFeature;
 import twilightforest.TFFeature;
 import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.PlantVariant;
-import twilightforest.world.feature.TFGenDarkCanopyTree;
 import twilightforest.world.feature.TFGenTallGrass;
 import twilightforest.world.TFWorld;
 

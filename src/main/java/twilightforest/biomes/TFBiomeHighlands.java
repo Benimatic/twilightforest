@@ -6,108 +6,37 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.BlockTFPlant;
-import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFEntities;
-import twilightforest.enums.PlantVariant;
-
-import java.util.Random;
 
 public class TFBiomeHighlands extends TFBiomeBase {
 
-	private final WorldGenAbstractTree taigaGen1 = new WorldGenTaiga1();
-	private final WorldGenAbstractTree taigaGen2 = new WorldGenTaiga2(false);
-	private final WorldGenAbstractTree megaPineGen1 = new WorldGenMegaPineTree(false, false);
-	private final WorldGenAbstractTree megaPineGen2 = new WorldGenMegaPineTree(false, true);
-
-	private final WorldGenerator genBoulder = new WorldGenBlockBlob(Blocks.MOSSY_COBBLESTONE, 0);
-	private final WorldGenerator genTrollRoots = new TFGenTrollRoots();
-	private final WorldGenerator worldGenMushgloom = new TFGenTallGrass(TFBlocks.twilight_plant.getDefaultState().with(BlockTFPlant.VARIANT, PlantVariant.MUSHGLOOM));
-
 	public TFBiomeHighlands(Builder props) {
 		super(props);
-
-		getTFBiomeDecorator().hasCanopy = false;
-
-		this.decorator.grassPerChunk = 7;
-		this.decorator.deadBushPerChunk = 1;
-		this.decorator.generateFalls = false;
 
 		undergroundMonsterList.clear();
 		undergroundMonsterList.add(new SpawnListEntry(EntityType.SKELETON, 10, 4, 4));
 		undergroundMonsterList.add(new SpawnListEntry(EntityType.CREEPER, 1, 4, 4));
 		undergroundMonsterList.add(new SpawnListEntry(EntityType.SLIME, 10, 4, 4));
 		undergroundMonsterList.add(new SpawnListEntry(TFEntities.troll.get(), 10, 4, 4));
-	}
 
-    //TODO: Move to feature decorator
-	@Override
-	public WorldGenAbstractTree getRandomTreeFeature(Random random) {
-		if (random.nextInt(4) == 0) {
-			return taigaGen1;
-		} else if (random.nextInt(10) == 0) {
-			return taigaGen2;
-		} else if (random.nextInt(3) == 0) {
-			return megaPineGen1;
-		} else if (random.nextInt(13) == 0) {
-			return megaPineGen2;
-		} else {
-			return birchGen;
-		}
-	}
-
-    //TODO: Move to feature decorator
-	@Override
-	public WorldGenerator getRandomWorldGenForGrass(Random random) {
-		return random.nextInt(5) > 0
-				? new WorldGenTallGrass(BlockTallGrass.EnumType.FERN)
-				: new WorldGenTallGrass(BlockTallGrass.EnumType.GRASS);
-	}
-
-    //TODO: Move to feature decorator
-	@Override
-	public void decorate(World world, Random rand, BlockPos pos) {
-
-		// boulders
-		int maxBoulders = rand.nextInt(2);
-		for (int i = 0; i < maxBoulders; ++i) {
-			int dx = pos.getX() + rand.nextInt(16) + 8;
-			int dz = pos.getZ() + rand.nextInt(16) + 8;
-			int dy = world.getHeight(dx, dz);
-			genBoulder.generate(world, rand, new BlockPos(dx, dy, dz));
-		}
-
-		// giant ferns
-		DOUBLE_PLANT_GENERATOR.setPlantType(BlockDoublePlant.EnumPlantType.FERN);
-		for (int i = 0; i < 7; ++i) {
-			int dx = pos.getX() + rand.nextInt(16) + 8;
-			int dz = pos.getZ() + rand.nextInt(16) + 8;
-			int dy = rand.nextInt(world.getHeight(dx, dz) + 32);
-			DOUBLE_PLANT_GENERATOR.generate(world, rand, new BlockPos(dx, dy, dz));
-		}
-
-		// mushglooms
-		for (int i = 0; i < 1; ++i) {
-			int rx = pos.getX() + rand.nextInt(16) + 8;
-			int rz = pos.getZ() + rand.nextInt(16) + 8;
-			int ry = rand.nextInt(64);
-			// mushglooms
-			worldGenMushgloom.generate(world, rand, new BlockPos(rx, ry, rz));
-		}
-
-		// generate roots
-		for (int i = 0; i < 24; ++i) {
-			int rx = pos.getX() + rand.nextInt(16) + 8;
-			int ry = 64;
-			int rz = pos.getZ() + rand.nextInt(16) + 8;
-			genTrollRoots.generate(world, rand, new BlockPos(rx, ry, rz));
-		}
-
-		super.decorate(world, rand, pos);
+		TFBiomeDecorator.addWoodRoots(this);
+		TFBiomeDecorator.addOres(this);
+		TFBiomeDecorator.addClayDisks(this, 1);
+		TFBiomeDecorator.addLakes(this);
+		TFBiomeDecorator.addPlantRoots(this);
+		TFBiomeDecorator.addTorchberries(this);
+		TFBiomeDecorator.addMultipleTrees(this, TFBiomeDecorator.HIGHLANDS_TREES_CONFIG, 10);
+		TFBiomeDecorator.addFernWithGrass(this, 7);
+		TFBiomeDecorator.addTallFerns(this, 7);
+		TFBiomeDecorator.addDeadBushes(this, 16);
+		TFBiomeDecorator.addMossyBoulders(this);
+		TFBiomeDecorator.addTrollRoots(this);
+		TFBiomeDecorator.addFlowers(this, 2);
+		TFBiomeDecorator.addMushgloom(this, 1);
+		TFBiomeDecorator.addMushrooms(this);
 	}
 
 	@Override

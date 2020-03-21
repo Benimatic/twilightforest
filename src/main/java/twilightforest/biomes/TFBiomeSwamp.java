@@ -6,17 +6,13 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.FoliageColors;
 import net.minecraft.world.GrassColors;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.BlockTFPlant;
-import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFEntities;
-import twilightforest.enums.PlantVariant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,77 +24,32 @@ public class TFBiomeSwamp extends TFBiomeBase {
 
 	private final Random monsterRNG = new Random(53439L);
 
-	private final WorldGenerator vinesGen = new TFGenVines();
-	private final WorldGenerator hugeLilyPadGen = new TFGenHugeLilyPad();
-	private final WorldGenerator hugeWaterLilyGen = new TFGenHugeWaterLily();
-
 	public TFBiomeSwamp(Builder props) {
 		super(props);
-
-		getTFBiomeDecorator().setDeadBushPerChunk(1);
-		getTFBiomeDecorator().setMushroomsPerChunk(8);
-		getTFBiomeDecorator().setReedsPerChunk(10);
-		getTFBiomeDecorator().setClayPerChunk(1);
-		getTFBiomeDecorator().setTreesPerChunk(2);
-		getTFBiomeDecorator().setWaterlilyPerChunk(20);
-
-		getTFBiomeDecorator().hasCanopy = false;
-		getTFBiomeDecorator().lakesPerChunk = 2;
-		getTFBiomeDecorator().mangrovesPerChunk = 3;
 
 		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.mosquito_swarm.get(), 10, 1, 1));
 		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(EntityType.CREEPER, 10, 4, 4));
 		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(EntityType.ZOMBIE, 10, 4, 4));
-	}
 
-    //TODO: Move to feature decorator
-	@Override
-	public WorldGenAbstractTree getRandomTreeFeature(Random random) {
-		if (random.nextInt(3) == 0) {
-			return new WorldGenShrub(
-					Blocks.LOG.getDefaultState().with(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE),
-					Blocks.LEAVES.getDefaultState().with(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.OAK).with(BlockLeaves.CHECK_DECAY, false)
-			);
-		} else {
-			return SWAMP_FEATURE;
-		}
-	}
-
-    //TODO: Move to feature decorator
-	@Override
-	public WorldGenerator getRandomWorldGenForGrass(Random random) {
-		if (random.nextInt(4) == 0) {
-			return new WorldGenTallGrass(BlockTallGrass.EnumType.FERN);
-		} else if (random.nextInt(4) == 0) {
-			return new TFGenTallGrass(TFBlocks.twilight_plant.getDefaultState().with(BlockTFPlant.VARIANT, PlantVariant.MAYAPPLE));
-		} else {
-			return new WorldGenTallGrass(BlockTallGrass.EnumType.GRASS);
-		}
-	}
-
-    //TODO: Move to feature decorator
-	@Override
-	public void decorate(World world, Random random, BlockPos pos) {
-		super.decorate(world, random, pos);
-
-		for (int i = 0; i < 50; i++) {
-			int x = pos.getX() + random.nextInt(16) + 8;
-			int y = TFWorld.SEALEVEL + 128;
-			int z = pos.getZ() + random.nextInt(16) + 8;
-			vinesGen.generate(world, random, new BlockPos(x, y, z));
-		}
-		for (int i = 0; i < 25; i++) {
-			int x = pos.getX() + random.nextInt(15) + 8;
-			int y = TFWorld.SEALEVEL;
-			int z = pos.getZ() + random.nextInt(15) + 8;
-			hugeLilyPadGen.generate(world, random, new BlockPos(x, y, z));
-		}
-		for (int i = 0; i < 2; i++) {
-			int x = pos.getX() + random.nextInt(16) + 8;
-			int y = TFWorld.SEALEVEL;
-			int z = pos.getZ() + random.nextInt(16) + 8;
-			hugeWaterLilyGen.generate(world, random, new BlockPos(x, y, z));
-		}
+		TFBiomeDecorator.addWoodRoots(this);
+		TFBiomeDecorator.addOres(this);
+		TFBiomeDecorator.addClayDisks(this, 1);
+		TFBiomeDecorator.addLakes(this);
+		TFBiomeDecorator.addSprings(this);
+		TFBiomeDecorator.addPlantRoots(this);
+		TFBiomeDecorator.addExtraPoolsWater(this, 2);
+		TFBiomeDecorator.addMangroves(this, 3);
+		TFBiomeDecorator.addMultipleTrees(this, TFBiomeDecorator.SWAMP_TREES_CONFIG, 2);
+		TFBiomeDecorator.addTorchberries(this);
+		TFBiomeDecorator.addTwilightGrass(this, TFBiomeDecorator.SWAMP_GRASS_CONFIG, 2);
+		TFBiomeDecorator.addFlowers(this, 2);
+		TFBiomeDecorator.addMushroomsSometimes(this);
+		TFBiomeDecorator.addDeadBushes(this, 16);
+		TFBiomeDecorator.addVines(this, 50);
+		TFBiomeDecorator.addWaterlilies(this, 20);
+		TFBiomeDecorator.addHugeLilyPads(this);
+		TFBiomeDecorator.addHugeWaterLiles(this);
+		TFBiomeDecorator.addReeds(this, 10);
 	}
 
 	@Override
@@ -116,12 +67,12 @@ public class TFBiomeSwamp extends TFBiomeBase {
 	}
 
 	@Override
-	public List<SpawnListEntry> getSpawnableList(EnumCreatureType creatureType) {
+	public List<SpawnListEntry> getSpawns(EntityClassification creatureType) {
 		// if it is monster, then only give it the real list 1/MONSTER_SPAWN_RATE of the time
-		if (creatureType == EnumCreatureType.MONSTER) {
+		if (creatureType == EntityClassification.MONSTER) {
 			return monsterRNG.nextInt(MONSTER_SPAWN_RATE) == 0 ? this.spawnableMonsterList : new ArrayList<>();
 		}
-		return super.getSpawnableList(creatureType);
+		return super.getSpawns(creatureType);
 	}
 
 	@Override

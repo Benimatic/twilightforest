@@ -2,48 +2,33 @@ package twilightforest.biomes;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 
-import java.util.Random;
 import java.util.function.Predicate;
 
 public class TFBiomeThornlands extends TFBiomeBase {
 
-	private final WorldGenerator tfGenThorns = new TFGenThorns();
-
 	public TFBiomeThornlands(Builder props) {
 		super(props);
 
-		getTFBiomeDecorator().hasCanopy = false;
-		getTFBiomeDecorator().setTreesPerChunk(-999);
-		this.decorator.deadBushPerChunk = 2;
-		this.decorator.cactiPerChunk = -9999; // gotta be sure
-		//TODO: Find out how to clear lists
-		this.spawnableCreatureList.clear();
+		getSpawns(EntityClassification.CREATURE).clear();
 
-		this.decorator.generateFalls = false;
-	}
-
-    //TODO: Move to feature decorator
-	@Override
-	public void decorate(World world, Random rand, BlockPos pos) {
-		// add thorns!
-		for (int i = 0; i < 128; i++) {
-			int rx = pos.getX() + rand.nextInt(16) + 8;
-			int rz = pos.getZ() + rand.nextInt(16) + 8;
-			int ry = TFWorld.getGroundLevel(world, rx, rz, otherGround);
-
-			this.tfGenThorns.generate(world, rand, new BlockPos(rx, ry, rz));
-		}
+		TFBiomeDecorator.addClayDisks(this, 1);
+		TFBiomeDecorator.addLakes(this);
+		TFBiomeDecorator.addThorns(this);
+		TFBiomeDecorator.addGrassWithFern(this, 2);
+		TFBiomeDecorator.addFlowers(this, 2);
+		TFBiomeDecorator.addDeadBushes(this, 4);
+		TFBiomeDecorator.addMushrooms(this);
 	}
 
 	private final Predicate<Block> otherGround = block -> block == Blocks.SANDSTONE || block == Blocks.SAND || block == Blocks.CLAY || block == TFBlocks.deadrock.get() || block == TFBlocks.deadrock_cracked.get() || block == TFBlocks.deadrock_weathered.get();
