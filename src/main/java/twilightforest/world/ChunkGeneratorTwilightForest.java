@@ -256,27 +256,27 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 
 		hollowTreeGenerator.generateStructure(world, rand, chunkpos);
 
-		if (!disableFeatures && rand.nextInt(4) == 0) {
-			if (TerrainGen.populate(this, this.world, this.rand, x, x, flag, PopulateChunkEvent.Populate.EventType.LAKE)) {
-				int i1 = blockpos.getX() + rand.nextInt(16) + 8;
-				int i2 = rand.nextInt(TFWorld.CHUNKHEIGHT);
-				int i3 = blockpos.getZ() + rand.nextInt(16) + 8;
-				if (i2 < TFWorld.SEALEVEL || allowSurfaceLakes(biome)) {
-					(new WorldGenLakes(Blocks.WATER)).generate(world, rand, new BlockPos(i1, i2, i3));
-				}
-			}
-		}
+//		if (!disableFeatures && rand.nextInt(4) == 0) {
+//			if (TerrainGen.populate(this, this.world, this.rand, x, x, flag, PopulateChunkEvent.Populate.EventType.LAKE)) {
+//				int i1 = blockpos.getX() + rand.nextInt(16) + 8;
+//				int i2 = rand.nextInt(TFWorld.CHUNKHEIGHT);
+//				int i3 = blockpos.getZ() + rand.nextInt(16) + 8;
+//				if (i2 < TFWorld.SEALEVEL || allowSurfaceLakes(biome)) {
+//					(new WorldGenLakes(Blocks.WATER)).generate(world, rand, new BlockPos(i1, i2, i3));
+//				}
+//			}
+//		}
 
-		if (!disableFeatures && rand.nextInt(32) == 0) { // reduced from 8
-			if (TerrainGen.populate(this, this.world, this.rand, x, z, flag, PopulateChunkEvent.Populate.EventType.LAVA)) {
-				int j1 = blockpos.getX() + rand.nextInt(16) + 8;
-				int j2 = rand.nextInt(rand.nextInt(TFWorld.CHUNKHEIGHT - 8) + 8);
-				int j3 = blockpos.getZ() + rand.nextInt(16) + 8;
-				if (j2 < TFWorld.SEALEVEL || allowSurfaceLakes(biome) && rand.nextInt(10) == 0) {
-					(new WorldGenLakes(Blocks.LAVA)).generate(world, rand, new BlockPos(j1, j2, j3));
-				}
-			}
-		}
+//		if (!disableFeatures && rand.nextInt(32) == 0) { // reduced from 8
+//			if (TerrainGen.populate(this, this.world, this.rand, x, z, flag, PopulateChunkEvent.Populate.EventType.LAVA)) {
+//				int j1 = blockpos.getX() + rand.nextInt(16) + 8;
+//				int j2 = rand.nextInt(rand.nextInt(TFWorld.CHUNKHEIGHT - 8) + 8);
+//				int j3 = blockpos.getZ() + rand.nextInt(16) + 8;
+//				if (j2 < TFWorld.SEALEVEL || allowSurfaceLakes(biome) && rand.nextInt(10) == 0) {
+//					(new WorldGenLakes(Blocks.LAVA)).generate(world, rand, new BlockPos(j1, j2, j3));
+//				}
+//			}
+//		}
 
 		if (TerrainGen.populate(this, this.world, this.rand, x, z, flag, PopulateChunkEvent.Populate.EventType.DUNGEON)) {
 			for (int k1 = 0; k1 < 8; k1++) {

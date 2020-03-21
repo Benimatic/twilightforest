@@ -7,6 +7,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
@@ -665,12 +666,12 @@ public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
 		}
 	}
 
-	protected final boolean allowSurfaceLakes(Biome biome) {
-		if (biome.decorator instanceof TFBiomeDecorator) {
-			return !((TFBiomeDecorator) biome.decorator).hasCanopy;
-		}
-		return true;
-	}
+//	protected final boolean allowSurfaceLakes(Biome biome) {
+//		if (biome.decorator instanceof TFBiomeDecorator) {
+//			return !((TFBiomeDecorator) biome.decorator).hasCanopy;
+//		}
+//		return true;
+//	}
 
 	public final boolean shouldGenerateBedrock() {
 		return shouldGenerateBedrock;
