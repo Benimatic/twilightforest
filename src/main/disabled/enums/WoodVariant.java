@@ -6,7 +6,7 @@ import twilightforest.util.IMapColorSupplier;
 
 import java.util.Locale;
 
-public enum WoodVariant implements IStringSerializable, IMapColorSupplier {
+public enum WoodVariant implements IStringSerializable {
 
 	OAK(BlockPlanks.EnumType.OAK),
 	CANOPY(BlockPlanks.EnumType.SPRUCE),
