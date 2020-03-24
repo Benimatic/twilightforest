@@ -1,7 +1,10 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.IRendersAsItem;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.DamageSource;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.EntityRayTraceResult;
@@ -10,7 +13,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class EntityTFIceSnowball extends EntityTFThrowable {
+public class EntityTFIceSnowball extends EntityTFThrowable implements IRendersAsItem {
 
 	private static final int DAMAGE = 8;
 
@@ -78,5 +81,10 @@ public class EntityTFIceSnowball extends EntityTFThrowable {
 			this.world.setEntityState(this, (byte) 3);
 			this.remove();
 		}
+	}
+
+	@Override
+	public ItemStack getItem() {
+		return new ItemStack(Items.SNOWBALL);
 	}
 }

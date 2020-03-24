@@ -3,10 +3,12 @@ package twilightforest;
 import net.minecraft.item.Rarity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -24,7 +26,6 @@ import twilightforest.block.TFBlocks;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.command.TFCommand;
-import twilightforest.compat.TFCompat;
 import twilightforest.entity.TFEntities;
 import twilightforest.item.ItemTFArcticArmor;
 import twilightforest.item.ItemTFFieryArmor;
@@ -173,6 +174,7 @@ public class TwilightForestMod {
 		ItemTFYetiArmor.initArmorModel();
 		ItemTFArcticArmor.initArmorModel();
 		ItemTFFieryArmor.initArmorModel();
+		DistExecutor.runWhenOn(Dist.CLIENT, () -> TFEntities::registerEntityRenderer);
 	}
 
 	public void startServer(FMLServerStartingEvent event) {

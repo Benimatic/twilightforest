@@ -5,6 +5,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.IRendersAsItem;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.BoneMealItem;
 import net.minecraft.item.ItemStack;
@@ -22,7 +23,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class EntityTFNatureBolt extends EntityTFThrowable implements ITFProjectile {
+public class EntityTFNatureBolt extends EntityTFThrowable implements ITFProjectile, IRendersAsItem {
 
 	public EntityTFNatureBolt(EntityType<? extends EntityTFNatureBolt> type, World world) {
 		super(type, world);
@@ -103,5 +104,10 @@ public class EntityTFNatureBolt extends EntityTFThrowable implements ITFProjecti
 	private boolean canReplaceBlock(World world, BlockPos pos) {
 		float hardness = world.getBlockState(pos).getBlockHardness(world, pos);
 		return hardness >= 0 && hardness < 50F;
+	}
+
+	@Override
+	public ItemStack getItem() {
+		return new ItemStack(Items.WHEAT_SEEDS);
 	}
 }

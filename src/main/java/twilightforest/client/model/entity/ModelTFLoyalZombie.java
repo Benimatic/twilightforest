@@ -1,14 +1,20 @@
 package twilightforest.client.model.entity;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.entity.model.ZombieModel;
-import net.minecraft.entity.LivingEntity;
 
 public class ModelTFLoyalZombie extends ZombieModel {
+
+	public ModelTFLoyalZombie() {
+		super(0.0F, true);
+	}
+
 	@Override
-	public void render(LivingEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+	public void render(MatrixStack stack, IVertexBuilder builder, int light, int overlay, float red, float green, float blue, float scale) {
 		// GREEEEN
-		GlStateManager.color3f(0.25F, 2.0F, 0.25F);
-		super.render(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+		RenderSystem.color3f(0.25F, 2.0F, 0.25F);
+		super.render(stack, builder, light, overlay, red, green, blue, scale);
 	}
 }

@@ -1,7 +1,10 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.IRendersAsItem;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
@@ -11,7 +14,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class EntityTFSlimeProjectile extends EntityTFThrowable {
+public class EntityTFSlimeProjectile extends EntityTFThrowable implements IRendersAsItem {
 
 	public EntityTFSlimeProjectile(EntityType<? extends EntityTFSlimeProjectile> type, World world) {
 		super(type, world);
@@ -81,4 +84,8 @@ public class EntityTFSlimeProjectile extends EntityTFThrowable {
 		}
 	}
 
+	@Override
+	public ItemStack getItem() {
+		return new ItemStack(Items.SLIME_BALL);
+	}
 }

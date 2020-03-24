@@ -1,12 +1,13 @@
 package twilightforest.client.model.entity;
 
+import net.minecraft.client.renderer.entity.model.PigModel;
 import net.minecraft.client.renderer.entity.model.QuadrupedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import twilightforest.entity.passive.EntityTFBoar;
 
-public class ModelTFBoar<T extends EntityTFBoar> extends QuadrupedModel<T> {
+public class ModelTFBoar<T extends EntityTFBoar> extends PigModel<T> {
 	public ModelTFBoar() {
-		super(6, 0.0F, false, 4.0F, 4.0F, 2.0F, 2.0F, 4);
+		super();
 
 		headModel = new ModelRenderer(this, 0, 0);
 		headModel.addCuboid(-4F, -2F, -6F, 8, 7, 6, 0F);

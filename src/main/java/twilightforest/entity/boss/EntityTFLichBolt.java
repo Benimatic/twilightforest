@@ -2,7 +2,9 @@ package twilightforest.entity.boss;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.IRendersAsItem;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
@@ -15,7 +17,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.entity.EntityTFThrowable;
 
-public class EntityTFLichBolt extends EntityTFThrowable {
+public class EntityTFLichBolt extends EntityTFThrowable implements IRendersAsItem {
 
 	@SuppressWarnings("unused")
 	public EntityTFLichBolt(EntityType<? extends EntityTFLichBolt> type, World world) {
@@ -110,5 +112,10 @@ public class EntityTFLichBolt extends EntityTFThrowable {
 				this.remove();
 			}
 		}
+	}
+
+	@Override
+	public ItemStack getItem() {
+		return new ItemStack(Items.ENDER_PEARL);
 	}
 }

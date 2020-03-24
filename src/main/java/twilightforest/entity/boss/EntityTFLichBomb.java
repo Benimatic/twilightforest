@@ -1,7 +1,10 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.IRendersAsItem;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.DamageSource;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.EntityRayTraceResult;
@@ -9,7 +12,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import twilightforest.entity.EntityTFThrowable;
 
-public class EntityTFLichBomb extends EntityTFThrowable {
+public class EntityTFLichBomb extends EntityTFThrowable implements IRendersAsItem {
 
 	public EntityTFLichBomb(EntityType<? extends EntityTFLichBomb> type, World world) {
 		super(type, world);
@@ -90,5 +93,10 @@ public class EntityTFLichBomb extends EntityTFThrowable {
 		}
 
 		explode();
+	}
+
+	@Override
+	public ItemStack getItem() {
+		return new ItemStack(Items.MAGMA_CREAM);
 	}
 }

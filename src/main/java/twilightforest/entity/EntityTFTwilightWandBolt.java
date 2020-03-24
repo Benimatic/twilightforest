@@ -1,7 +1,9 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.IRendersAsItem;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
@@ -13,7 +15,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class EntityTFTwilightWandBolt extends EntityTFThrowable {
+public class EntityTFTwilightWandBolt extends EntityTFThrowable implements IRendersAsItem {
 
 	@SuppressWarnings("unused")
 	public EntityTFTwilightWandBolt(EntityType<? extends EntityTFTwilightWandBolt> type, World world) {
@@ -98,5 +100,10 @@ public class EntityTFTwilightWandBolt extends EntityTFThrowable {
 		}
 
 		return false;
+	}
+
+	@Override
+	public ItemStack getItem() {
+		return new ItemStack(Items.ENDER_PEARL);
 	}
 }

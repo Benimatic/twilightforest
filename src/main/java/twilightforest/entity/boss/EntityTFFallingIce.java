@@ -26,10 +26,10 @@ public class EntityTFFallingIce extends FallingBlockEntity {
 
 	public EntityTFFallingIce(EntityType<? extends EntityTFFallingIce> type, World world, int x, int y, int z) {
 		super(type, world);
-		this.fallHurtAmount = 10.0F; // TODO: AT
-		this.fallHurtMax = 30; // TODO: AT
+		this.fallHurtAmount = 10.0F;
+		this.fallHurtMax = 30;
 		this.setHurtEntities(true);
-		this.fallTile = Blocks.PACKED_ICE.getDefaultState(); // TODO: AT
+		this.fallTile = Blocks.PACKED_ICE.getDefaultState(); // TODO: AT, or put into super
 		this.preventEntitySpawning = true;
 		this.setPosition(x, y + (double)((1.0F - this.getHeight()) / 2.0F), z);
 		this.setMotion(Vec3d.ZERO);
@@ -77,7 +77,7 @@ public class EntityTFFallingIce extends FallingBlockEntity {
 
 	// [VanillaCopy] Like super, but without anvil cases and with extra stuff
 	@Override
-	public void fall(float distance, float multiplier) {
+	public boolean handleFallDamage(float distance, float multiplier) {
 		if (this.hurtEntities) {
 			int i = MathHelper.ceil(distance - 1.0F);
 
@@ -103,6 +103,7 @@ public class EntityTFFallingIce extends FallingBlockEntity {
 		}
 
 		this.playSound(Blocks.PACKED_ICE.getSoundType(Blocks.PACKED_ICE.getDefaultState(), world, getPosition(), null).getBreakSound(), 3F, 0.5F);
+		return false;
 	}
 
 	private void destroyIceInAABB(AxisAlignedBB aabb) {
