@@ -7,10 +7,11 @@ import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.ServerWorld;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.gen.IChunkGenerator;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.GenerationSettings;
+import net.minecraft.world.server.ServerWorld;
 import twilightforest.TFConfig;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
@@ -19,24 +20,28 @@ import twilightforest.biomes.TFBiomeBase;
 import javax.annotation.Nullable;
 import java.util.function.Predicate;
 
-//TODO: Turn this into a GenerationSettings class
-public class TFWorld {
+public class TFWorld extends GenerationSettings {
 
 	public static final int SEALEVEL = 31;
 	public static final int CHUNKHEIGHT = 256; // more like world generation height
 	public static final int MAXHEIGHT = 256; // actual max height
 
+	@Override
+	public int getBedrockFloorHeight() {
+		return 0;
+	}
+
 	@Nullable
 	public static ChunkGeneratorTFBase getChunkGenerator(World world) {
 		if (world instanceof ServerWorld) {
-			IChunkGenerator chunkGenerator = ((ServerWorld) world).getChunkProvider().chunkGenerator;
+			ChunkGenerator<?> chunkGenerator = ((ServerWorld) world).getChunkProvider().generator;
 			return chunkGenerator instanceof ChunkGeneratorTFBase ? (ChunkGeneratorTFBase) chunkGenerator : null;
 		}
 		return null;
 	}
 
 	public static boolean isTwilightForest(World world) {
-		return world.provider instanceof WorldProviderTwilightForest;
+		return world.dimension instanceof WorldProviderTwilightForest;
 	}
 
 	public static CompoundNBT getDimensionData(World world) {

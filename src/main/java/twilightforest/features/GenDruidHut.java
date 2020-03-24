@@ -268,6 +268,7 @@ public class GenDruidHut<T extends NoFeatureConfig> extends Feature<T> {
             if (block == Blocks.STONEBRICK && state != Blocks.STONEBRICK.getDefaultState().with(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED))
                 return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, state.with(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.values()[random.nextInt(3)]), null);
 
+            //TODO: Do we need this section
             BlockPlanks.EnumType type = StructureWoodVariant.getTypeFromBlockState(state);
             if (type != null) {
                 switch (type) {

@@ -12,6 +12,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
+import twilightforest.entity.TFEntities;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -37,7 +38,7 @@ public class EntityTFBighorn extends SheepEntity {
 	}
 
 	public EntityTFBighorn(World world, double x, double y, double z) {
-		this(world);
+		this(TFEntities.bighorn_sheep.get(), world);
 		this.setPosition(x, y, z);
 	}
 
@@ -63,7 +64,7 @@ public class EntityTFBighorn extends SheepEntity {
     @Override
 	public SheepEntity createChild(AgeableEntity ageable) {
 		EntityTFBighorn otherParent = (EntityTFBighorn) ageable;
-		EntityTFBighorn babySheep = new EntityTFBighorn(world);
+		EntityTFBighorn babySheep = new EntityTFBighorn(TFEntities.bighorn_sheep.get(), world);
 		babySheep.setFleeceColor(getDyeColorMixFromParents(this, otherParent));
 		return babySheep;
 	}

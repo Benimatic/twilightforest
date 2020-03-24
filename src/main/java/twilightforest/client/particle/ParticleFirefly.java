@@ -1,6 +1,5 @@
 package twilightforest.client.particle;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -8,7 +7,6 @@ import net.minecraft.particles.BasicParticleType;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.TwilightForestMod;
 
 public class ParticleFirefly extends SpriteTexturedParticle {
 
@@ -34,7 +32,7 @@ public class ParticleFirefly extends SpriteTexturedParticle {
 		halfLife = lifeTime / 2;
 		canCollide = true;
 
-		sprite = Minecraft.getInstance().getTextureMap().getAtlasSprite(TwilightForestMod.ID + ":particles/firefly");
+		//sprite = Minecraft.getInstance().getTextureMap().getAtlasSprite(TwilightForestMod.ID + ":particles/firefly"); TODO: put into particle json
 	}
 
 	@Override

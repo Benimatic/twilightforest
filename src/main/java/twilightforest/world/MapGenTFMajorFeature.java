@@ -1,16 +1,17 @@
 package twilightforest.world;
 
 import com.google.common.base.Predicates;
-import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.util.EntitySelectors;
+import net.minecraft.entity.EntityClassification;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.feature.Structure;
-import net.minecraft.world.gen.feature.StructurePiece;
-import net.minecraft.world.gen.structure.MutableBoundingBox;
-import net.minecraft.world.gen.feature.StructureStart;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.Structure;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.structure.StructureStart;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
@@ -49,9 +50,9 @@ public class MapGenTFMajorFeature extends Structure {
 
     @Nullable
     @Override
-    public BlockPos getNearestStructurePos(World worldIn, BlockPos pos, boolean findUnexplored) {
-        this.world = worldIn;
-        return findNearestStructurePosBySpacing(worldIn, this, pos, 20, 11, 10387313, true, 100, findUnexplored);
+    public BlockPos findNearest(World worldIn, ChunkGenerator generator, BlockPos pos, int p_211405_4_, boolean findUnexplored) {
+		this.world = worldIn;
+		return findNearestStructurePosBySpacing(worldIn, this, pos, 20, 11, 10387313, true, 100, findUnexplored);
     }
 
     @Override
@@ -77,7 +78,7 @@ public class MapGenTFMajorFeature extends Structure {
         return this.getFeature().provideStructureStart(world, rand, chunkX, chunkZ);
     }
 
-    /**
+	/**
      * Returns true if the structure generator has generated a structure located at the given position tuple.
      */
     public int getSpawnListIndexAt(BlockPos pos) {
@@ -107,10 +108,10 @@ public class MapGenTFMajorFeature extends Structure {
 
     // TODO: look at combining duplicate logic here
     @Nullable
-    public List<Biome.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos) {
+    public List<Biome.SpawnListEntry> getPossibleCreatures(EntityClassification creatureType, BlockPos pos) {
 
         // if the feature is already conquered, no hostile spawns
-        if (creatureType == EnumCreatureType.MONSTER && isStructureConquered(pos)) {
+        if (creatureType == EntityClassification.MONSTER && isStructureConquered(pos)) {
             return Collections.emptyList();
         }
 
@@ -202,8 +203,8 @@ public class MapGenTFMajorFeature extends Structure {
         }
     }
 
-    private List<EntityPlayerMP> getPlayersInsideStructure(StructureStart start) {
-        return world.getPlayers(EntityPlayerMP.class, Predicates.and(EntitySelectors.IS_ALIVE,
+    private List<ServerPlayerEntity> getPlayersInsideStructure(StructureStart start) {
+        return world.getPlayers(ServerPlayerEntity.class, Predicates.and(EntitySelectors.IS_ALIVE,
                 p -> p.getBoundingBox().intersects(StructureBoundingBoxUtils.toAABB(start.getBoundingBox()))));
     }
 

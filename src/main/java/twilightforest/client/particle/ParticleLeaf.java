@@ -39,7 +39,7 @@ public class ParticleLeaf extends SpriteTexturedParticle {
 		this.maxAge = (int) ((float) this.maxAge * scale);
 		this.canCollide = true;
 
-		this.sprite = Minecraft.getInstance().getTextureMap().getAtlasSprite(TwilightForestMod.ID + ":particles/fallen_leaf");
+		//this.sprite = Minecraft.getInstance().getTextureMap().getAtlasSprite(TwilightForestMod.ID + ":particles/fallen_leaf"); TODO: put into particle json
 
 		//this.onUpdate(); TODO: ???
 	}

@@ -1,12 +1,10 @@
 package twilightforest.client.particle;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.*;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.TwilightForestMod;
 
 @OnlyIn(Dist.CLIENT)
 public class ParticleAnnihilate extends SpriteTexturedParticle {
@@ -33,7 +31,7 @@ public class ParticleAnnihilate extends SpriteTexturedParticle {
 		this.maxAge = (int) ((float) this.maxAge * scale);
 		this.canCollide = true;
 
-		this.sprite = Minecraft.getInstance().getTextureMap().getAtlasSprite(TwilightForestMod.ID + ":particles/annihilate_particle");
+		//this.sprite = Minecraft.getInstance().getTextureMap().getAtlasSprite(TwilightForestMod.ID + ":particles/annihilate_particle"); TODO: Put into particle json
 
 		//this.onUpdate(); TODO: ???
 	}

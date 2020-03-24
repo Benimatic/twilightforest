@@ -1,12 +1,10 @@
 package twilightforest.client.particle;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.*;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.TwilightForestMod;
 
 @OnlyIn(Dist.CLIENT)
 public class ParticleIceBeam extends SpriteTexturedParticle {
@@ -34,7 +32,7 @@ public class ParticleIceBeam extends SpriteTexturedParticle {
 		this.maxAge = 50;
 		this.canCollide = true;
 
-		this.sprite = Minecraft.getInstance().getTextureMap().getAtlasSprite(TwilightForestMod.ID + ":particles/snow_" + rand.nextInt(4));
+		//this.sprite = Minecraft.getInstance().getTextureMap().getAtlasSprite(TwilightForestMod.ID + ":particles/snow_" + rand.nextInt(4)); TODO: put into particle json
 
 		//this.onUpdate(); TODO: ???
 	}

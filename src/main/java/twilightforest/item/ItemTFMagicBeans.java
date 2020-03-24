@@ -13,6 +13,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.TFBlocks;
+import twilightforest.world.WorldProviderTwilightForest;
 
 import javax.annotation.Nonnull;
 

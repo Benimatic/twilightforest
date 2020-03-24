@@ -6,6 +6,7 @@ import net.minecraft.item.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.ILightReader;
 import net.minecraft.world.World;
 
@@ -14,7 +15,7 @@ import javax.annotation.Nullable;
 public class BlockTFRipeTorchCluster extends BlockTFTrollRoot {
 
 	@Override
-	public int getLightValue(BlockState state, ILightReader world, BlockPos pos) {
+	public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
 		return 15;
 	}
 

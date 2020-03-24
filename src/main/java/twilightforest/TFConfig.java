@@ -11,6 +11,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
+import twilightforest.world.feature.TFGenCaveStalactite;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -300,7 +301,7 @@ public class TFConfig {
 					if (!block.isPresent()) return false;
 
 					try {
-						TFGenCaveStalactite.addStalactite(tier, block.get(),
+						TFGenCaveStalactite.addStalactite(tier, block.get().getDefaultState(),
 								Float.parseFloat(split[1]),
 								Integer.parseInt(split[2]),
 								Integer.parseInt(split[3]),
@@ -328,6 +329,7 @@ public class TFConfig {
 			public boolean shadersSupported = true;
 		}
 
+		//TODO: We can't be an Integer; must be Dimension
 		public ForgeConfigSpec.ConfigValue<Integer> originDimension;
 		public ForgeConfigSpec.BooleanValue allowPortalsInOtherDimensions;
 		public ForgeConfigSpec.BooleanValue adminOnlyPortals;

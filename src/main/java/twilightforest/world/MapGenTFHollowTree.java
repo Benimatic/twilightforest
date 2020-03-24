@@ -1,10 +1,11 @@
 package twilightforest.world;
 
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.feature.Structure;
-import net.minecraft.world.gen.feature.StructureStart;
+import net.minecraft.world.gen.feature.structure.Structure;
+import net.minecraft.world.gen.feature.structure.StructureStart;
 import twilightforest.TFConfig;
 import twilightforest.TFFeature;
 import twilightforest.biomes.TFBiomes;
@@ -21,7 +22,7 @@ public class MapGenTFHollowTree extends Structure {
 
 	//public static final int SPAWN_CHANCE = 48;
 
-	private static final List<Supplier<Biome>> oakSpawnBiomes = Arrays.asList(
+	private static final List<Supplier<Supplier<Biome>>> oakSpawnBiomes = Arrays.asList(
 			() -> TFBiomes.twilightForest,
 			() -> TFBiomes.denseTwilightForest,
 			() -> TFBiomes.mushrooms,

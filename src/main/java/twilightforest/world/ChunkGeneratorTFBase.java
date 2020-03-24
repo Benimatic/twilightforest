@@ -16,6 +16,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 import net.minecraft.world.gen.IChunkGenerator;
+import net.minecraft.world.gen.NoiseChunkGenerator;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import net.minecraft.world.gen.structure.MutableBoundingBox;
@@ -33,7 +34,7 @@ import java.util.Map;
 import java.util.Random;
 
 // TODO: doc out all the vanilla copying
-public abstract class ChunkGeneratorTFBase implements IChunkGenerator {
+public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator<TFWorld> {
 
 	protected final Random rand;
 

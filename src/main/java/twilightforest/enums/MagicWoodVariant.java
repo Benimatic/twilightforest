@@ -1,28 +1,15 @@
 package twilightforest.enums;
 
-import net.minecraft.block.BlockPlanks;
 import net.minecraft.util.IStringSerializable;
-import twilightforest.util.IMapColorSupplier;
 
 import java.util.Locale;
 
-public enum MagicWoodVariant implements IStringSerializable, IMapColorSupplier {
+public enum MagicWoodVariant implements IStringSerializable {
 
-	TIME(BlockPlanks.EnumType.JUNGLE),
-	TRANS(BlockPlanks.EnumType.OAK),
-	MINE(BlockPlanks.EnumType.BIRCH),
-	SORT(BlockPlanks.EnumType.SPRUCE);
-
-	private final BlockPlanks.EnumType plankType;
-
-	MagicWoodVariant(BlockPlanks.EnumType plankType) {
-		this.plankType = plankType;
-	}
-
-	@Override
-	public BlockPlanks.EnumType supplyPlankColor() {
-		return plankType;
-	}
+	TIME,
+	TRANS,
+	MINE,
+	SORT;
 
 	@Override
 	public String getName() {

@@ -1,7 +1,8 @@
 package twilightforest.world.layer;
 
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.layer.GenLayer;
+import net.minecraft.world.gen.layer.Layer;
 import net.minecraft.world.gen.layer.IntCache;
 import twilightforest.biomes.TFBiomes;
 
@@ -11,9 +12,9 @@ import twilightforest.biomes.TFBiomes;
  *
  * @author Ben
  */
-public class GenLayerTFKeyBiomes extends GenLayer {
+public class GenLayerTFKeyBiomes extends Layer {
 
-	public GenLayerTFKeyBiomes(long l, GenLayer genlayer) {
+	public GenLayerTFKeyBiomes(long l, Layer genlayer) {
 		super(l);
 		parent = genlayer;
 	}
@@ -22,6 +23,7 @@ public class GenLayerTFKeyBiomes extends GenLayer {
 		super(l);
 	}
 
+	//TODO: Find out how to get an X, Z, Width, and Depth of a Layer. Generally, you don't see it.
 	@Override
 	public int[] getInts(int x, int z, int width, int depth) {
 		int src[] = this.parent.getInts(x, z, width, depth);
@@ -76,13 +78,13 @@ public class GenLayerTFKeyBiomes extends GenLayer {
 		switch ((index + offset) % 4) {
 			case 0:
 			default:
-				return Biome.getIdForBiome(TFBiomes.glacier);
+				return Registry.BIOME.getId(TFBiomes.glacier.get());
 			case 1:
-				return Biome.getIdForBiome(TFBiomes.fireSwamp);
+				return Registry.BIOME.getId(TFBiomes.fireSwamp.get());
 			case 2:
-				return Biome.getIdForBiome(TFBiomes.darkForestCenter);
+				return Registry.BIOME.getId(TFBiomes.darkForestCenter.get());
 			case 3:
-				return Biome.getIdForBiome(TFBiomes.highlandsCenter);
+				return Registry.BIOME.getId(TFBiomes.highlandsCenter.get());
 		}
 	}
 }

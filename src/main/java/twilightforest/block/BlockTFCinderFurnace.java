@@ -17,7 +17,6 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.ILightReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -38,8 +37,8 @@ public class BlockTFCinderFurnace extends Block {
 	}
 
 	@Override
-	public int getLightValue(BlockState state, ILightReader world, BlockPos pos) {
-		return 0;
+	public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
+		return state.get(LIT) ? 15 : 0;
 	}
 
 	@Override

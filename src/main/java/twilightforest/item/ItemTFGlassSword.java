@@ -1,13 +1,12 @@
 package twilightforest.item;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.NonNullList;
-import twilightforest.util.ParticleHelper;
 
 import javax.annotation.Nonnull;
 
@@ -20,8 +19,8 @@ public class ItemTFGlassSword extends SwordItem {
 	@Override
 	public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 		attacker.world.playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), Blocks.GLASS.getDefaultState().getSoundType().getBreakSound(), attacker.getSoundCategory(), 1F, 0.5F);
-		//TODO: Move to regular particle spawner?
-		ParticleHelper.spawnParticles(target, ParticleTypes.BLOCK_CRACK, 20, 0.0, Block.getStateId(Blocks.STAINED_GLASS.getDefaultState()));
+		//ParticleHelper.spawnParticles(target, ParticleTypes.BLOCK_CRACK, 20, 0.0, Block.getStateId(Blocks.STAINED_GLASS.getDefaultState()));
+		target.world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, Blocks.WHITE_STAINED_GLASS.getDefaultState()), target.getX(), target.getY(), target.getZ(), 1, 1, 1);
 		stack.damageItem(stack.getMaxDamage() + 1, attacker, (user) -> user.sendBreakAnimation(attacker.getActiveHand()));
 		return true;
 	}
@@ -32,7 +31,6 @@ public class ItemTFGlassSword extends SwordItem {
 		return Rarity.RARE;
 	}
 
-	//TODO 1.14: This method doesn't exist
 	@Override
 	public void fillItemGroup(ItemGroup tab, NonNullList<ItemStack> items) {
 		super.fillItemGroup(tab, items);
