@@ -8,14 +8,14 @@ import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.gen.feature.TemplateStructurePiece;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.template.PlacementSettings;
 import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 
 /**
- * Copied a few things from {@link TemplateStructurePiece}
+ * Copied a few things from {@link net.minecraft.world.gen.feature.structure.TemplateStructurePiece}
  */
 public abstract class StructureTFComponentTemplate extends StructureTFComponent {
 
@@ -24,8 +24,8 @@ public abstract class StructureTFComponentTemplate extends StructureTFComponent 
     protected BlockPos rotatedPosition;
     protected Template TEMPLATE;
 
-    public StructureTFComponentTemplate() {
-        super();
+    public StructureTFComponentTemplate(IStructurePieceType piece, CompoundNBT nbt) {
+        super(piece, nbt);
         this.rotation = Rotation.NONE;
         this.mirror = Mirror.NONE;
     }
@@ -96,8 +96,7 @@ public abstract class StructureTFComponentTemplate extends StructureTFComponent 
         Mirror mirror = this.placeSettings.getMirror();
         this.boundingBox = new MutableBoundingBox(0, 0, 0, size.getX(), size.getY() - 1, size.getZ());
 
-        switch (rotation)
-        {
+        switch (rotation) {
             case NONE:
             default:
                 break;
@@ -111,27 +110,20 @@ public abstract class StructureTFComponentTemplate extends StructureTFComponent 
                 this.boundingBox.offset(-size.getX(), 0, -size.getZ());
         }
 
-        switch (mirror)
-        {
+        switch (mirror) {
             case NONE:
             default:
                 break;
             case FRONT_BACK:
                 BlockPos blockpos2 = BlockPos.ZERO;
 
-                if (rotation != Rotation.CLOCKWISE_90 && rotation != Rotation.COUNTERCLOCKWISE_90)
-                {
-                    if (rotation == Rotation.CLOCKWISE_180)
-                    {
+                if (rotation != Rotation.CLOCKWISE_90 && rotation != Rotation.COUNTERCLOCKWISE_90) {
+                    if (rotation == Rotation.CLOCKWISE_180) {
                         blockpos2 = blockpos2.offset(Direction.EAST, size.getX());
-                    }
-                    else
-                    {
+                    } else {
                         blockpos2 = blockpos2.offset(Direction.WEST, size.getX());
                     }
-                }
-                else
-                {
+                } else {
                     blockpos2 = blockpos2.offset(rotation.rotate(Direction.WEST), size.getZ());
                 }
 
@@ -140,19 +132,13 @@ public abstract class StructureTFComponentTemplate extends StructureTFComponent 
             case LEFT_RIGHT:
                 BlockPos blockpos1 = BlockPos.ZERO;
 
-                if (rotation != Rotation.CLOCKWISE_90 && rotation != Rotation.COUNTERCLOCKWISE_90)
-                {
-                    if (rotation == Rotation.CLOCKWISE_180)
-                    {
+                if (rotation != Rotation.CLOCKWISE_90 && rotation != Rotation.COUNTERCLOCKWISE_90) {
+                    if (rotation == Rotation.CLOCKWISE_180) {
                         blockpos1 = blockpos1.offset(Direction.SOUTH, size.getZ());
-                    }
-                    else
-                    {
+                    } else {
                         blockpos1 = blockpos1.offset(Direction.NORTH, size.getZ());
                     }
-                }
-                else
-                {
+                } else {
                     blockpos1 = blockpos1.offset(rotation.rotate(Direction.NORTH), size.getX());
                 }
 
@@ -181,8 +167,7 @@ public abstract class StructureTFComponentTemplate extends StructureTFComponent 
         Mirror mirror = this.placeSettings.getMirror();
         this.boundingBox = new MutableBoundingBox(0, 0, 0, size.getX(), size.getY() - 1, size.getZ());
 
-        switch (rotation)
-        {
+        switch (rotation) {
             case NONE:
             default:
                 break;
@@ -196,27 +181,20 @@ public abstract class StructureTFComponentTemplate extends StructureTFComponent 
                 this.boundingBox.offset(-size.getX(), 0, -size.getZ());
         }
 
-        switch (mirror)
-        {
+        switch (mirror) {
             case NONE:
             default:
                 break;
             case FRONT_BACK:
                 BlockPos blockpos2 = BlockPos.ZERO;
 
-                if (rotation != Rotation.CLOCKWISE_90 && rotation != Rotation.COUNTERCLOCKWISE_90)
-                {
-                    if (rotation == Rotation.CLOCKWISE_180)
-                    {
+                if (rotation != Rotation.CLOCKWISE_90 && rotation != Rotation.COUNTERCLOCKWISE_90) {
+                    if (rotation == Rotation.CLOCKWISE_180) {
                         blockpos2 = blockpos2.offset(Direction.EAST, size.getX());
-                    }
-                    else
-                    {
+                    } else {
                         blockpos2 = blockpos2.offset(Direction.WEST, size.getX());
                     }
-                }
-                else
-                {
+                } else {
                     blockpos2 = blockpos2.offset(rotation.rotate(Direction.WEST), size.getZ());
                 }
 
@@ -225,19 +203,13 @@ public abstract class StructureTFComponentTemplate extends StructureTFComponent 
             case LEFT_RIGHT:
                 BlockPos blockpos1 = BlockPos.ZERO;
 
-                if (rotation != Rotation.CLOCKWISE_90 && rotation != Rotation.COUNTERCLOCKWISE_90)
-                {
-                    if (rotation == Rotation.CLOCKWISE_180)
-                    {
+                if (rotation != Rotation.CLOCKWISE_90 && rotation != Rotation.COUNTERCLOCKWISE_90) {
+                    if (rotation == Rotation.CLOCKWISE_180) {
                         blockpos1 = blockpos1.offset(Direction.SOUTH, size.getZ());
-                    }
-                    else
-                    {
+                    } else {
                         blockpos1 = blockpos1.offset(Direction.NORTH, size.getZ());
                     }
-                }
-                else
-                {
+                } else {
                     blockpos1 = blockpos1.offset(rotation.rotate(Direction.NORTH), size.getX());
                 }
 

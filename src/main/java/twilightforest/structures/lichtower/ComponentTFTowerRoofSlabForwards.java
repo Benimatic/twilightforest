@@ -3,11 +3,13 @@ package twilightforest.structures.lichtower;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SlabBlock;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.properties.SlabType;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 
 import java.util.Random;
@@ -19,8 +21,8 @@ import java.util.Random;
  */
 public class ComponentTFTowerRoofSlabForwards extends ComponentTFTowerRoofSlab {
 
-	public ComponentTFTowerRoofSlabForwards() {
-		super();
+	public ComponentTFTowerRoofSlabForwards(TemplateManager manager, CompoundNBT nbt) {
+		super(TFLichTowerPieces.TFLTRSF, nbt);
 	}
 
 	public ComponentTFTowerRoofSlabForwards(TFFeature feature, int i, ComponentTFTowerWing wing) {

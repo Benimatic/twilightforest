@@ -1,10 +1,12 @@
 package twilightforest.structures.minotaurmaze;
 
 import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 
@@ -12,8 +14,8 @@ import java.util.Random;
 
 public class ComponentTFMazeRoomFountain extends ComponentTFMazeRoom {
 
-	public ComponentTFMazeRoomFountain() {
-		super();
+	public ComponentTFMazeRoomFountain(TemplateManager manager, CompoundNBT nbt) {
+		super(TFMinotaurMazePieces.TFMMRF, nbt);
 	}
 
 	public ComponentTFMazeRoomFountain(TFFeature feature, int i, Random rand, int x, int y, int z) {

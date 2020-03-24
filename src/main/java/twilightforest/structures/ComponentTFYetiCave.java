@@ -2,23 +2,26 @@ package twilightforest.structures;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.BossVariant;
+import twilightforest.world.TFWorld;
 
 import java.util.Random;
 
 public class ComponentTFYetiCave extends ComponentTFHollowHill {
 
-	public ComponentTFYetiCave() {
-		super();
+	public ComponentTFYetiCave(TemplateManager manager, CompoundNBT nbt) {
+		super(TFFeature.TFYeti, nbt);
 	}
 
 	public ComponentTFYetiCave(TFFeature feature, World world, Random rand, int i, int x, int y, int z) {
@@ -83,5 +86,4 @@ public class ComponentTFYetiCave extends ComponentTFHollowHill {
 
 		return true;
 	}
-
 }

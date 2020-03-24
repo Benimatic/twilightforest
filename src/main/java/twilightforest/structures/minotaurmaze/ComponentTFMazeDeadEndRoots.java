@@ -1,11 +1,14 @@
 package twilightforest.structures.minotaurmaze;
 
 import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 
@@ -13,8 +16,12 @@ import java.util.Random;
 
 public class ComponentTFMazeDeadEndRoots extends ComponentTFMazeDeadEnd {
 
-	public ComponentTFMazeDeadEndRoots() {
-		super();
+	public ComponentTFMazeDeadEndRoots(TemplateManager manager, CompoundNBT nbt) {
+		super(TFMinotaurMazePieces.TFMMDER, nbt);
+	}
+
+	public ComponentTFMazeDeadEndRoots(IStructurePieceType piece, CompoundNBT nbt) {
+		super(piece, nbt);
 	}
 
 	public ComponentTFMazeDeadEndRoots(TFFeature feature, int i, int x, int y, int z, Direction rotation) {

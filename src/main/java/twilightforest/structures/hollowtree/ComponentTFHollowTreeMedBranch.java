@@ -9,9 +9,12 @@ import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
+import twilightforest.util.FeatureUtil;
 
 import java.util.List;
 import java.util.Random;
@@ -24,15 +27,19 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 	double tilt;
 	boolean leafy;
 
-	public ComponentTFHollowTreeMedBranch() {
-		super();
+	public ComponentTFHollowTreeMedBranch(TemplateManager manager, CompoundNBT nbt) {
+		super(TFHollowTreePieces.TFHTMB, nbt);
+	}
+
+	public ComponentTFHollowTreeMedBranch(IStructurePieceType piece, CompoundNBT nbt) {
+		super(piece, nbt);
 	}
 
 	protected ComponentTFHollowTreeMedBranch(TFFeature feature, int i, int sx, int sy, int sz, double length, double angle, double tilt, boolean leafy) {
 		super(feature, i);
 
 		this.src = new BlockPos(sx, sy, sz);
-		this.dest = TFGenerator.translate(src, length, angle, tilt);
+		this.dest = FeatureUtil.translate(src, length, angle, tilt);
 
 		this.length = length;
 		this.angle = angle;
@@ -49,8 +56,8 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 	}
 
 	private MutableBoundingBox makeExpandedBB(double outVar, double branchLength, double branchAngle, double branchTilt) {
-		BlockPos branchSrc = TFGenerator.translate(src, this.length * outVar, this.angle, this.tilt);
-		BlockPos branchDest = TFGenerator.translate(branchSrc, branchLength, branchAngle, branchTilt);
+		BlockPos branchSrc = FeatureUtil.translate(src, this.length * outVar, this.angle, this.tilt);
+		BlockPos branchDest = FeatureUtil.translate(branchSrc, branchLength, branchAngle, branchTilt);
 
 		return new MutableBoundingBox(branchSrc, branchDest);
 	}
@@ -108,7 +115,7 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 		BlockPos rDest = dest.add(-boundingBox.minX, -boundingBox.minY, -boundingBox.minZ);
 
 		if (!drawLeaves) {
-			BlockState log = TFBlocks.oak_log.get().getDefaultState().with(LOG_AXIS, BlockLog.EnumAxis.NONE);
+			BlockState log = TFBlocks.oak_log.get().getDefaultState().with(LOG_AXIS, BlockLog.EnumAxis.NONE); //TODO: Should be Twilight Oak Wood
 			drawBresehnam(world, sbb, rSrc.getX(), rSrc.getY(), rSrc.getZ(), rDest.getX(), rDest.getY(), rDest.getZ(), log);
 			drawBresehnam(world, sbb, rSrc.getX(), rSrc.getY() + 1, rSrc.getZ(), rDest.getX(), rDest.getY(), rDest.getZ(), log);
 		}
@@ -126,7 +133,7 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 			angleVar = (angleInc * i) - 0.4;
 			outVar = (decoRNG.nextDouble() * 0.8) + 0.2;
 
-			BlockPos bSrc = TFGenerator.translate(rSrc, length * outVar, angle, tilt);
+			BlockPos bSrc = FeatureUtil.translate(rSrc, length * outVar, angle, tilt);
 
 			drawSmallBranch(world, sbb, bSrc.getX(), bSrc.getY(), bSrc.getZ(), Math.max(length * 0.3F, 2F), angle + angleVar, tilt, drawLeaves);
 		}
@@ -137,7 +144,7 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 			for (int i = 0; i < numLeafBalls; i++) {
 
 				double slength = (decoRNG.nextFloat() * 0.6F + 0.2F) * length;
-				BlockPos bdst = TFGenerator.translate(rSrc, slength, angle, tilt);
+				BlockPos bdst = FeatureUtil.translate(rSrc, slength, angle, tilt);
 
 				makeLeafBlob(world, sbb, bdst.getX(), bdst.getY(), bdst.getZ(), decoRNG.nextBoolean() ? 2 : 3);
 			}
@@ -152,7 +159,7 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 	 * Draws a line
 	 */
 	protected void drawBresehnam(World world, MutableBoundingBox sbb, int x1, int y1, int z1, int x2, int y2, int z2, BlockState blockState) {
-		BlockPos lineCoords[] = TFGenerator.getBresehnamArrays(x1, y1, z1, x2, y2, z2);
+		BlockPos lineCoords[] = FeatureUtil.getBresehnamArrays(x1, y1, z1, x2, y2, z2);
 
 		for (BlockPos coords : lineCoords) {
 			this.setBlockState(world, blockState, coords.getX(), coords.getY(), coords.getZ(), sbb);
@@ -182,7 +189,7 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 					// if we're inside the blob, fill it
 					if (dist <= radius) {
 						// do eight at a time for easiness!
-						final BlockState leaves = TFBlocks.oak_leaves.get().getDefaultState().with(BlockLeaves.CHECK_DECAY, false);
+						final BlockState leaves = TFBlocks.oak_leaves.get().getDefaultState();
 						placeLeafBlock(world, leaves, sx + dx, sy + dy, sz + dz, sbb);
 						placeLeafBlock(world, leaves, sx + dx, sy + dy, sz - dz, sbb);
 						placeLeafBlock(world, leaves, sx - dx, sy + dy, sz + dz, sbb);
@@ -203,10 +210,10 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 	 */
 	protected void drawSmallBranch(World world, MutableBoundingBox sbb, int sx, int sy, int sz, double branchLength, double branchAngle, double branchTilt, boolean drawLeaves) {
 		// draw a line
-		BlockPos branchDest = TFGenerator.translate(new BlockPos(sx, sy, sz), branchLength, branchAngle, branchTilt);
+		BlockPos branchDest = FeatureUtil.translate(new BlockPos(sx, sy, sz), branchLength, branchAngle, branchTilt);
 
 		if (!drawLeaves) {
-			BlockState log = TFBlocks.oak_log.get().getDefaultState().with(LOG_AXIS, BlockLog.EnumAxis.NONE);
+			BlockState log = TFBlocks.oak_log.get().getDefaultState().with(LOG_AXIS, BlockLog.EnumAxis.NONE); //TODO: Should be Twilight Oak Wood
 			drawBresehnam(world, sbb, sx, sy, sz, branchDest.getX(), branchDest.getY(), branchDest.getZ(), log);
 		} else {
 			makeLeafBlob(world, sbb, branchDest.getX(), branchDest.getY(), branchDest.getZ(), 2);

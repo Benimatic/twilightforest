@@ -1,5 +1,6 @@
 package twilightforest.structures.stronghold;
 
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.ChunkPos;
@@ -8,6 +9,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 
@@ -18,7 +20,8 @@ public class ComponentTFStrongholdEntrance extends StructureTFStrongholdComponen
 
 	public TFStrongholdPieces lowerPieces;
 
-	public ComponentTFStrongholdEntrance() {
+	public ComponentTFStrongholdEntrance(TemplateManager manager, CompoundNBT nbt) {
+		super(TFStrongholdPieces.TFSEnter, nbt);
 	}
 
 	public ComponentTFStrongholdEntrance(TFFeature feature, World world, Random rand, int i, int x, int y, int z) {
@@ -135,5 +138,4 @@ public class ComponentTFStrongholdEntrance extends StructureTFStrongholdComponen
 
 		return true;
 	}
-
 }

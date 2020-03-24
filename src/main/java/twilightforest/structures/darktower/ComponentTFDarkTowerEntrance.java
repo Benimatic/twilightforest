@@ -1,5 +1,6 @@
 package twilightforest.structures.darktower;
 
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.ChunkPos;
@@ -8,6 +9,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 
 import java.util.List;
@@ -15,7 +17,8 @@ import java.util.Random;
 
 public class ComponentTFDarkTowerEntrance extends ComponentTFDarkTowerWing {
 
-	public ComponentTFDarkTowerEntrance() {
+	public ComponentTFDarkTowerEntrance(TemplateManager manager, CompoundNBT nbt) {
+		super(TFDarkTowerPieces.TFDTEnt, nbt);
 	}
 
 	protected ComponentTFDarkTowerEntrance(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {

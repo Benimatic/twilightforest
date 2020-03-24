@@ -1,17 +1,21 @@
 package twilightforest.structures.finalcastle;
 
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentOld;
 
 import java.util.Random;
 
 public class ComponentTFFinalCastleDungeonForgeRoom extends StructureTFComponentOld {
-	public ComponentTFFinalCastleDungeonForgeRoom() {
+
+	public ComponentTFFinalCastleDungeonForgeRoom(TemplateManager manager, CompoundNBT nbt) {
+		super(TFFinalCastlePieces.TFFCDunBoR, nbt);
 	}
 
 	public ComponentTFFinalCastleDungeonForgeRoom(TFFeature feature, Random rand, int i, int x, int y, int z, Direction direction) {

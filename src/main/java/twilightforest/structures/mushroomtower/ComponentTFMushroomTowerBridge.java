@@ -8,7 +8,9 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.structures.StructureTFComponentOld;
@@ -21,8 +23,12 @@ public class ComponentTFMushroomTowerBridge extends ComponentTFMushroomTowerWing
 	int dSize;
 	int dHeight;
 
-	public ComponentTFMushroomTowerBridge() {
-		super();
+	public ComponentTFMushroomTowerBridge(TemplateManager manager, CompoundNBT nbt) {
+		super(TFMushroomTowerPieces.TFMTBri, nbt);
+	}
+
+	public ComponentTFMushroomTowerBridge(IStructurePieceType piece, CompoundNBT nbt) {
+		super(piece, nbt);
 	}
 
 	protected ComponentTFMushroomTowerBridge(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
@@ -73,7 +79,6 @@ public class ComponentTFMushroomTowerBridge extends ComponentTFMushroomTowerWing
 	public MutableBoundingBox getWingBB() {
 		int[] dest = offsetTowerCoords(dSize - 1, 1, 1, dSize, this.getCoordBaseMode());
 		return StructureTFComponentOld.getComponentToAddBoundingBox(dest[0], dest[1], dest[2], 0, 0, 0, dSize - 1, dHeight - 1, dSize - 1, this.getCoordBaseMode());
-
 	}
 
 	@Override
@@ -90,8 +95,6 @@ public class ComponentTFMushroomTowerBridge extends ComponentTFMushroomTowerWing
 		// clear bridge walkway
 		this.fillWithAir(world, sbb, 0, 1, 1, 2, 2, 1);
 
-
 		return true;
 	}
-
 }

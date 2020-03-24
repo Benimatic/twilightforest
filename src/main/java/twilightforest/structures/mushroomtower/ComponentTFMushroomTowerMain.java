@@ -1,10 +1,12 @@
 package twilightforest.structures.mushroomtower;
 
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.structures.StructureTFComponentOld;
@@ -16,8 +18,8 @@ import java.util.Random;
 
 public class ComponentTFMushroomTowerMain extends ComponentTFMushroomTowerWing {
 
-	public ComponentTFMushroomTowerMain() {
-		super();
+	public ComponentTFMushroomTowerMain(TemplateManager manager, CompoundNBT nbt) {
+		super(TFMushroomTowerPieces.TFMTMai, nbt);
 	}
 
 	public ComponentTFMushroomTowerMain(TFFeature feature, World world, Random rand, int index, int x, int y, int z) {
@@ -43,7 +45,6 @@ public class ComponentTFMushroomTowerMain extends ComponentTFMushroomTowerWing {
 			this.deco = new StructureDecoratorMushroomTower();
 		}
 	}
-
 
 	protected ComponentTFMushroomTowerMain(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
 		super(feature, i, x, y, z, pSize, pHeight, direction);
@@ -93,7 +94,6 @@ public class ComponentTFMushroomTowerMain extends ComponentTFMushroomTowerWing {
 			// add a roof?
 			makeARoof(parent, list, rand);
 		}
-
 	}
 
 	/**
@@ -113,7 +113,6 @@ public class ComponentTFMushroomTowerMain extends ComponentTFMushroomTowerWing {
 			TwilightForestMod.LOGGER.info("Main tower failed to branch off at index {}", this.componentType);
 			return null;
 		}
-
 	}
 
 	/**
@@ -125,7 +124,6 @@ public class ComponentTFMushroomTowerMain extends ComponentTFMushroomTowerWing {
 		list.add(roof);
 		roof.buildComponent(this, list, rand);
 	}
-
 
 	/**
 	 * Make an opening in this tower for a door.  This now only makes one opening, so you need two
@@ -151,8 +149,5 @@ public class ComponentTFMushroomTowerMain extends ComponentTFMushroomTowerWing {
 			setBlockState(world, AIR, dx, dy + 0, dz - 1, sbb);
 			setBlockState(world, AIR, dx, dy + 1, dz - 1, sbb);
 		}
-
 	}
-
-
 }

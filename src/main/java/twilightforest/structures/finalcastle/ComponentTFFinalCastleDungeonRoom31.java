@@ -3,6 +3,7 @@ package twilightforest.structures.finalcastle;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.DyeColor;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
@@ -12,7 +13,9 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.block.BlockTFCastleMagic;
@@ -30,7 +33,13 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 
 	public int level; // this is not serialized, since it's only used during build, which should be all one step
 
-	public ComponentTFFinalCastleDungeonRoom31() {}
+	public ComponentTFFinalCastleDungeonRoom31(TemplateManager manager, CompoundNBT nbt) {
+		super(TFFinalCastlePieces.TFFCDunR31, nbt);
+	}
+
+	public ComponentTFFinalCastleDungeonRoom31(IStructurePieceType piece, CompoundNBT nbt) {
+		super(piece, nbt);
+	}
 
 	public ComponentTFFinalCastleDungeonRoom31(TFFeature feature, Random rand, int i, int x, int y, int z, Direction direction, int level) {
 		super(feature, i);

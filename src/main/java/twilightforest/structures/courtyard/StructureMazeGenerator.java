@@ -6,6 +6,7 @@ import net.minecraft.nbt.IntNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.enums.Diagonals;
@@ -20,8 +21,8 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
     private int widthInCellCount;
     private int heightInCellCount;
 
-    StructureMazeGenerator() {
-        super();
+    public StructureMazeGenerator(IStructurePieceType piece, CompoundNBT nbt) {
+        super(piece, nbt);
     }
 
     StructureMazeGenerator(TFFeature feature, Random rand, int i, int widthInCellCount, int heightInCellCount) {
@@ -615,7 +616,7 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
         for (int x = 0; x < widthInCellCount-1; x++) {
             ListNBT mazeY = new ListNBT();
 
-            for (int y = 0; y < heightInCellCount-1; y++) mazeY.add(new IntNBT(maze[x][y]));
+            for (int y = 0; y < heightInCellCount-1; y++) mazeY.add(IntNBT.of(maze[x][y]));
 
             mazeX.add(mazeY);
         }

@@ -1,13 +1,16 @@
 package twilightforest.structures.finalcastle;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponentOld;
@@ -21,7 +24,13 @@ public class ComponentTFFinalCastleFoundation13 extends StructureTFComponentOld 
 
 	protected int groundLevel = -1;
 
-	public ComponentTFFinalCastleFoundation13() {}
+	public ComponentTFFinalCastleFoundation13(TemplateManager manager, CompoundNBT nbt) {
+		super(TFFinalCastlePieces.TFFCToF13, nbt);
+	}
+
+	public ComponentTFFinalCastleFoundation13(IStructurePieceType piece, CompoundNBT nbt) {
+		super(piece, nbt);
+	}
 
 	public ComponentTFFinalCastleFoundation13(TFFeature feature, Random rand, int i, StructureTFComponentOld sideTower) {
 		super(feature, i);

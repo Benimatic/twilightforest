@@ -2,10 +2,12 @@ package twilightforest.structures.icetower;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
@@ -15,8 +17,8 @@ import java.util.Random;
 
 public class ComponentTFIceTowerBossWing extends ComponentTFIceTowerWing {
 
-	public ComponentTFIceTowerBossWing() {
-		super();
+	public ComponentTFIceTowerBossWing(TemplateManager manager, CompoundNBT nbt) {
+		super(TFIceTowerPieces.TFITBoss, nbt);
 		// no spawns
 		this.spawnListIndex = -1;
 	}
@@ -31,7 +33,6 @@ public class ComponentTFIceTowerBossWing extends ComponentTFIceTowerWing {
 	protected boolean shouldHaveBase(Random rand) {
 		return false;
 	}
-
 
 	/**
 	 * Put down planks or whatevs for a floor
@@ -69,7 +70,6 @@ public class ComponentTFIceTowerBossWing extends ComponentTFIceTowerWing {
 			placeIceStairs(world, sbb, rand, bottom + (y * 3), r.add(Rotation.CLOCKWISE_180));
 			r = r.add(Rotation.CLOCKWISE_90);
 		}
-
 	}
 
 	private void placeIceStairs(World world, MutableBoundingBox sbb, Random rand, int y, Rotation rotation) {

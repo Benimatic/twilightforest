@@ -1,5 +1,6 @@
 package twilightforest.structures.stronghold;
 
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.ChunkPos;
@@ -7,6 +8,7 @@ import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 
 import java.util.List;
@@ -14,7 +16,8 @@ import java.util.Random;
 
 public class ComponentTFStrongholdLeftTurn extends StructureTFStrongholdComponent {
 
-	public ComponentTFStrongholdLeftTurn() {
+	public ComponentTFStrongholdLeftTurn(TemplateManager manager, CompoundNBT nbt) {
+		super(TFStrongholdPieces.TFSLT, nbt);
 	}
 
 	public ComponentTFStrongholdLeftTurn(TFFeature feature, int i, Direction facing, int x, int y, int z) {
@@ -35,7 +38,6 @@ public class ComponentTFStrongholdLeftTurn extends StructureTFStrongholdComponen
 
 		// make a random component to the left
 		addNewComponent(parent, list, random, Rotation.COUNTERCLOCKWISE_90, 9, 1, 4);
-
 	}
 
 	@Override
@@ -59,6 +61,4 @@ public class ComponentTFStrongholdLeftTurn extends StructureTFStrongholdComponen
 
 		return true;
 	}
-
-
 }

@@ -8,6 +8,7 @@ import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentOld;
 
@@ -18,7 +19,8 @@ public class ComponentTFTrollCloud extends StructureTFComponentOld {
 	private int size;
 	private int height;
 
-	public ComponentTFTrollCloud() {
+	public ComponentTFTrollCloud(TemplateManager manager, CompoundNBT nbt) {
+		super(TFTrollCavePieces.TFTCloud, nbt);
 	}
 
 	public ComponentTFTrollCloud(TFFeature feature, int index, int x, int y, int z) {

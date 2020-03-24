@@ -1,5 +1,6 @@
 package twilightforest.structures.trollcave;
 
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -8,6 +9,7 @@ import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.EntityTFArmoredGiant;
@@ -23,7 +25,8 @@ public class ComponentTFCloudCastle extends StructureTFComponentOld {
 	private boolean minerPlaced = false;
 	private boolean warriorPlaced = false;
 
-	public ComponentTFCloudCastle() {
+	public ComponentTFCloudCastle(TemplateManager manager, CompoundNBT nbt) {
+		super(TFTrollCavePieces.TFClCa, nbt);
 	}
 
 	public ComponentTFCloudCastle(TFFeature feature, int index, int x, int y, int z) {
@@ -101,7 +104,7 @@ public class ComponentTFCloudCastle extends StructureTFComponentOld {
 				EntityTFGiantMiner miner = new EntityTFGiantMiner(TFEntities.giant_miner.get(), world.getWorld());
 				miner.setPosition(bx, by, bz);
 				miner.enablePersistence();
-				miner.onInitialSpawn(world.getDifficultyForLocation(pos), null);
+				miner.onInitialSpawn(world, world.getDifficultyForLocation(pos), SpawnReason.STRUCTURE, null, null);
 
 				world.addEntity(miner);
 			}
@@ -118,7 +121,7 @@ public class ComponentTFCloudCastle extends StructureTFComponentOld {
 				EntityTFArmoredGiant warrior = new EntityTFArmoredGiant(TFEntities.armored_giant.get(), world.getWorld());
 				warrior.setPosition(bx, by, bz);
 				warrior.enablePersistence();
-				warrior.onInitialSpawn(world.getDifficultyForLocation(pos), null);
+				warrior.onInitialSpawn(world, world.getDifficultyForLocation(pos), SpawnReason.STRUCTURE, null, null);
 
 				world.addEntity(warrior);
 			}

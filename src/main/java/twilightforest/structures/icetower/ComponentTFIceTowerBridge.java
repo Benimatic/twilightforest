@@ -7,6 +7,7 @@ import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentOld;
 
@@ -17,8 +18,8 @@ public class ComponentTFIceTowerBridge extends StructureTFComponentOld {
 
 	private int length;
 
-	public ComponentTFIceTowerBridge() {
-		super();
+	public ComponentTFIceTowerBridge(TemplateManager manager, CompoundNBT nbt) {
+		super(TFIceTowerPieces.TFITBri, nbt);
 	}
 
 	public ComponentTFIceTowerBridge(TFFeature feature, int index, int x, int y, int z, int length, Direction direction) {

@@ -1,6 +1,7 @@
 package twilightforest.structures.finalcastle;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
@@ -9,7 +10,9 @@ import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
@@ -27,7 +30,12 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 
 	public BlockState color;
 
-	public ComponentTFFinalCastleMazeTower13() {
+	public ComponentTFFinalCastleMazeTower13(IStructurePieceType piece, CompoundNBT nbt) {
+		super(piece, nbt);
+	}
+
+	public ComponentTFFinalCastleMazeTower13(TemplateManager manager, CompoundNBT nbt) {
+		super(TFFinalCastlePieces.TFFCSiTo, nbt);
 	}
 
 	public ComponentTFFinalCastleMazeTower13(TFFeature feature, Random rand, int i, int x, int y, int z, BlockState color, Direction direction) {

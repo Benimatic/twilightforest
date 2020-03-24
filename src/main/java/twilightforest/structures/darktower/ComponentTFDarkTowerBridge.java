@@ -1,12 +1,15 @@
 package twilightforest.structures.darktower;
 
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
@@ -16,7 +19,12 @@ import java.util.Random;
 
 public class ComponentTFDarkTowerBridge extends ComponentTFTowerWing {
 
-	public ComponentTFDarkTowerBridge() {
+	public ComponentTFDarkTowerBridge(IStructurePieceType piece, CompoundNBT nbt) {
+		super(piece, nbt);
+	}
+
+	public ComponentTFDarkTowerBridge(TemplateManager manager, CompoundNBT nbt) {
+		super(TFDarkTowerPieces.TFDTBri, nbt);
 	}
 
 	private int dSize;

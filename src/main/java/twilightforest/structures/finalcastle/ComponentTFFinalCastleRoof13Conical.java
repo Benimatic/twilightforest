@@ -8,6 +8,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.util.RotationUtil;
@@ -22,7 +23,8 @@ public class ComponentTFFinalCastleRoof13Conical extends StructureTFComponentOld
 
 	public int slope;
 
-	public ComponentTFFinalCastleRoof13Conical() {
+	public ComponentTFFinalCastleRoof13Conical(TemplateManager manager, CompoundNBT nbt) {
+		super(TFFinalCastlePieces.TFFCRo13Con, nbt);
 	}
 
 	public ComponentTFFinalCastleRoof13Conical(TFFeature feature, Random rand, int i, StructureTFComponentOld sideTower) {

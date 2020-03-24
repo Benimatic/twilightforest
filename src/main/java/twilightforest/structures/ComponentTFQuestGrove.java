@@ -4,7 +4,10 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.HorizontalFaceBlock;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.state.properties.AttachFace;
 import net.minecraft.tileentity.DispenserTileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -13,6 +16,7 @@ import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.passive.EntityTFQuestRam;
@@ -28,8 +32,8 @@ public class ComponentTFQuestGrove extends StructureTFComponentOld {
 	protected boolean beastPlaced = false;
 	protected boolean dispenserPlaced = false;
 
-	public ComponentTFQuestGrove() {
-		super();
+	public ComponentTFQuestGrove(TemplateManager manager, CompoundNBT nbt) {
+		super(TFFeature.TFQuest1, nbt);
 	}
 
 	public ComponentTFQuestGrove(TFFeature feature, World world, Random rand, int i, int x, int y, int z) {
@@ -66,7 +70,7 @@ public class ComponentTFQuestGrove extends StructureTFComponentOld {
 		}
 
 		// dispenser frame and button
-		setBlockState(world, Blocks.STONE_BUTTON.getDefaultState().with(HorizontalFaceBlock.FACE, Direction.SOUTH), 13, 5, 19, sbb);
+		setBlockState(world, Blocks.STONE_BUTTON.getDefaultState().with(HorizontalFaceBlock.FACE, AttachFace.WALL).with(HorizontalFaceBlock.HORIZONTAL_FACING, Direction.SOUTH), 13, 5, 19, sbb);
 
 		setBlockState(world, MOSSY_STONEBRICK, 12, 7, 20, sbb);
 		setBlockState(world, MOSSY_STONEBRICK, 13, 7, 20, sbb);
@@ -74,7 +78,6 @@ public class ComponentTFQuestGrove extends StructureTFComponentOld {
 		setBlockState(world, MOSSY_STONEBRICK, 12, 7, 21, sbb);
 		setBlockState(world, MOSSY_STONEBRICK, 13, 7, 21, sbb);
 		setBlockState(world, MOSSY_STONEBRICK, 14, 7, 21, sbb);
-
 
 		// the dispenser
 		if (!dispenserPlaced) {
@@ -111,7 +114,7 @@ public class ComponentTFQuestGrove extends StructureTFComponentOld {
 				EntityTFQuestRam ram = new EntityTFQuestRam(TFEntities.quest_ram.get(), world.getWorld());
 				ram.setPosition(bx, by, bz);
 				ram.setHomePosAndDistance(pos, 13);
-				ram.onInitialSpawn(world.getDifficultyForLocation(pos), null);
+				ram.onInitialSpawn(world, world.getDifficultyForLocation(pos), SpawnReason.STRUCTURE, null, null);
 
 				world.addEntity(ram);
 			}
@@ -185,5 +188,4 @@ public class ComponentTFQuestGrove extends StructureTFComponentOld {
 			}
 		}
 	}
-
 }

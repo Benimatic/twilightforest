@@ -1,6 +1,7 @@
 package twilightforest.structures.trollcave;
 
 import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -9,8 +10,8 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.WorldGenBigMushroom;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.world.feature.TFGenBigMushgloom;
@@ -26,7 +27,9 @@ public class ComponentTFTrollCaveGarden extends ComponentTFTrollCaveMain {
 	private WorldGenBigMushroom bigMushroomGen = new WorldGenBigMushroom();
 	private TFGenBigMushgloom bigMushgloomGen = new TFGenBigMushgloom();
 
-	public ComponentTFTrollCaveGarden() {}
+	public ComponentTFTrollCaveGarden(TemplateManager manager, CompoundNBT nbt) {
+		super(TFTrollCavePieces.TFTCGard, nbt);
+	}
 
 	public ComponentTFTrollCaveGarden(TFFeature feature, int index, int x, int y, int z, int caveSize, int caveHeight, Direction direction) {
 		super(feature, index);

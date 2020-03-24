@@ -10,6 +10,7 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFConfig;
 import twilightforest.TFFeature;
@@ -24,7 +25,8 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 
 	public List<BlockPos> doors = new ArrayList<BlockPos>();
 
-	public StructureTFStrongholdComponent() {
+	public StructureTFStrongholdComponent(IStructurePieceType piece, CompoundNBT nbt) {
+		super(piece, nbt);
 	}
 
 	public StructureTFStrongholdComponent(TFFeature feature, int i, Direction facing, int x, int y, int z) {
@@ -150,7 +152,6 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 		return null;
 	}
 
-
 	protected void addNewUpperComponent(StructurePiece parent, List<StructurePiece> list, Random random, Rotation facing, int x, int y, int z) {
 		StructureTFStrongholdComponent attempted = null;
 
@@ -184,7 +185,6 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 				attempted = new ComponentTFStrongholdUpperAscender(getFeatureType(), index, nFacing, nx, ny, nz);
 				break;
 		}
-
 
 		// is it clear?
 		if (attempted != null && StructurePiece.findIntersecting(list, attempted.getBoundingBox()) == null) {
@@ -257,7 +257,6 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 		Direction smx = Direction.EAST;
 		Direction smz = Direction.SOUTH;
 
-
 		switch (facing) {
 			case 0:
 				// already set up
@@ -288,7 +287,6 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 		this.setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), x + ox, y + 4, z + 0, sbb);
 
 		// arms
-
 		this.setBlockState(world, getStairState(deco.stairState, smz, rotation, false), x + 0, y + 3, z + oz, sbb);
 		this.setBlockState(world, getStairState(deco.stairState, smx, rotation, false), x + ox, y + 3, z + 0, sbb);
 		this.setBlockState(world, getStairState(deco.stairState, smz, rotation, true), x + 0, y + 2, z + oz, sbb);
@@ -302,7 +300,6 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 		// feet
 		this.setBlockState(world, getStairState(deco.stairState, smz, rotation, false), x + 0, y + 0, z + oz, sbb);
 		this.setBlockState(world, getStairState(deco.stairState, smx, rotation, false), x + ox, y + 0, z + 0, sbb);
-
 	}
 
 	/**
@@ -377,7 +374,6 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.NONE).rotate(Direction.WEST), rotation, false), x, y + 0, z - ox, sbb);
 			this.setBlockState(world, getStairState(deco.stairState, facing.add(Rotation.CLOCKWISE_180).rotate(Direction.WEST), rotation, false), x, y + 0, z + ox, sbb);
 		}
-
 	}
 
 	/**
@@ -498,7 +494,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 					boolean wall = y == sy || y == dy || x == sx || x == dx || z == sz || z == dz;
 					Block blockID = this.getBlockStateFromPos(world, x, y, z, sbb).getBlock();
 
-					if (blockID == Blocks.AIR && !TFConfig.dimension.skylightForest) {
+					if (blockID == Blocks.AIR && !TFConfig.COMMON_CONFIG.DIMENSION.skylightForest.get()) {
 						// cobblestone to "fill in holes"
 						if (wall) {
 							this.setBlockState(world, Blocks.COBBLESTONE.getDefaultState(), x, y, z, sbb);
@@ -518,7 +514,6 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 			}
 		}
 	}
-
 
 	/**
 	 * Place stronghold walls on dirt/grass/stone

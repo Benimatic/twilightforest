@@ -6,6 +6,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
@@ -17,7 +18,8 @@ public class ComponentTFIceTowerBeard extends StructureTFComponentOld {
 	protected int size;
 	protected int height;
 
-	public ComponentTFIceTowerBeard() {
+	public ComponentTFIceTowerBeard(TemplateManager manager, CompoundNBT nbt) {
+		super(TFIceTowerPieces.TFITBea, nbt);
 	}
 
 	public ComponentTFIceTowerBeard(TFFeature feature, int i, ComponentTFTowerWing wing) {

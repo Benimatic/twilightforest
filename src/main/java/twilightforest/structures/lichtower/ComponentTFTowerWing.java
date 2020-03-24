@@ -18,7 +18,11 @@ import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TFFeature;
 import twilightforest.block.BlockTFCastleBlock;
 import twilightforest.entity.TFEntities;
@@ -28,6 +32,7 @@ import twilightforest.structures.StructureTFHelper;
 import twilightforest.util.RotationUtil;
 
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,9 +40,12 @@ import java.util.Random;
 
 public class ComponentTFTowerWing extends StructureTFComponentOld {
 
-	public ComponentTFTowerWing() {
-		super();
-		// TODO Auto-generated constructor stub
+	public ComponentTFTowerWing(TemplateManager manager, CompoundNBT nbt) {
+		super(TFLichTowerPieces.TFLTWin, nbt);
+	}
+
+	public ComponentTFTowerWing(IStructurePieceType piece, CompoundNBT nbt) {
+		super(piece, nbt);
 	}
 
 	public int size;
@@ -1359,9 +1367,9 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 		final BlockPos pos = getBlockPosWithOffset(cx, 2, cz);
 
 		if(isTree) //grow tree
-			((SaplingBlock) Blocks.SAPLING).grow(world, pos, plant, world.rand);
+			((SaplingBlock) Blocks.OAK_SAPLING).grow((ServerWorld)world, world.rand, pos, plant);
 		else //grow sapling
-			plant.getBlock().updateTick(world, pos, plant, world.rand);
+			plant.getBlock().scheduledTick(plant, (ServerWorld)world, pos, world.rand);
 
 
 		// otherwise, place the block into a flowerpot
@@ -1995,8 +2003,8 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 	protected PaintingType getPaintingOfSize(Random rand, int minSize) {
 		ArrayList<PaintingType> valid = new ArrayList<PaintingType>();
 
-		for (PaintingType art : PaintingType.values()) {
-			if (art.sizeX >= minSize || art.sizeY >= minSize) {
+		for (PaintingType art : ForgeRegistries.PAINTING_TYPES) {
+			if (art.getWidth() >= minSize || art.getHeight() >= minSize) {
 				valid.add(art);
 			}
 		}
@@ -2121,7 +2129,6 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 			for (int y = startHeight; y < (startHeight + leftHeight); y++) {
 				this.setBlockStateRotated(world, colour, 0, y, leftOffset, rotation, sbb);
 			}
-
 		}
 
 		// go right a little
@@ -2134,8 +2141,6 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 			for (int y = startHeight; y < (startHeight + rightHeight); y++) {
 				this.setBlockStateRotated(world, colour, 0, y, rightOffset, rotation, sbb);
 			}
-
 		}
 	}
-
 }

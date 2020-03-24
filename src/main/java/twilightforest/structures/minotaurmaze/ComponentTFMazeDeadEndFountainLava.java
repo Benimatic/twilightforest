@@ -1,19 +1,21 @@
 package twilightforest.structures.minotaurmaze;
 
 import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 
 import java.util.Random;
 
 public class ComponentTFMazeDeadEndFountainLava extends ComponentTFMazeDeadEndFountain {
 
-	public ComponentTFMazeDeadEndFountainLava() {
-		super();
+	public ComponentTFMazeDeadEndFountainLava(TemplateManager manager, CompoundNBT nbt) {
+		super(TFMinotaurMazePieces.TFMMDEFL, nbt);
 	}
 
 	public ComponentTFMazeDeadEndFountainLava(TFFeature feature, int i, int x, int y, int z, Direction rotation) {
@@ -35,6 +37,4 @@ public class ComponentTFMazeDeadEndFountainLava extends ComponentTFMazeDeadEndFo
 
 		return true;
 	}
-
-
 }

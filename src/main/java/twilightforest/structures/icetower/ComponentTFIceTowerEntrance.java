@@ -2,12 +2,14 @@ package twilightforest.structures.icetower;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.RotatedPillarBlock;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentOld;
 
@@ -16,7 +18,8 @@ import java.util.Random;
 
 public class ComponentTFIceTowerEntrance extends ComponentTFIceTowerWing {
 
-	public ComponentTFIceTowerEntrance() {
+	public ComponentTFIceTowerEntrance(TemplateManager manager, CompoundNBT nbt) {
+		super(TFIceTowerPieces.TFITEnt, nbt);
 	}
 
 	public ComponentTFIceTowerEntrance(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {

@@ -14,7 +14,9 @@ import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.loot.TFTreasure;
 import twilightforest.structures.StructureTFComponentOld;
@@ -32,8 +34,12 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 	boolean hasBase = false;
 	protected int treasureFloor = -1;
 
-	public ComponentTFIceTowerWing() {
-		super();
+	public ComponentTFIceTowerWing(TemplateManager manager, CompoundNBT nbt) {
+		super(TFIceTowerPieces.TFITWin, nbt);
+	}
+
+	public ComponentTFIceTowerWing(IStructurePieceType piece, CompoundNBT nbt) {
+		super(piece, nbt);
 	}
 
 	protected ComponentTFIceTowerWing(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {

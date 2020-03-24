@@ -1,8 +1,10 @@
 package twilightforest.structures.darktower;
 
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 
 import java.util.List;
@@ -10,7 +12,8 @@ import java.util.Random;
 
 public class ComponentTFDarkTowerEntranceBridge extends ComponentTFDarkTowerBridge {
 
-	public ComponentTFDarkTowerEntranceBridge() {
+	public ComponentTFDarkTowerEntranceBridge(TemplateManager manager, CompoundNBT nbt) {
+		super(TFDarkTowerPieces.TFDTEB, nbt);
 	}
 
 	protected ComponentTFDarkTowerEntranceBridge(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {

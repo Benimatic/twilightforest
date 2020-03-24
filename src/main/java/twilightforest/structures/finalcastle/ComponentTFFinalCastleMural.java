@@ -1,11 +1,13 @@
 package twilightforest.structures.finalcastle;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponentOld;
@@ -20,7 +22,8 @@ public class ComponentTFFinalCastleMural extends StructureTFComponentOld {
 	// we will model the mural in this byte array
 	private byte[][] mural;
 
-	public ComponentTFFinalCastleMural() {
+	public ComponentTFFinalCastleMural(TemplateManager manager, CompoundNBT nbt) {
+		super(TFFinalCastlePieces.TFFCMur, nbt);
 	}
 
 	public ComponentTFFinalCastleMural(TFFeature feature, Random rand, int i, int x, int y, int z, int width, int height, Direction direction) {

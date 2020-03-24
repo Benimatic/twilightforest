@@ -9,6 +9,7 @@ import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFConfig;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
@@ -24,8 +25,8 @@ public class ComponentTFMinotaurMaze extends StructureTFComponentOld {
 	int rcoords[];
 	private int level;
 
-	public ComponentTFMinotaurMaze() {
-		super();
+	public ComponentTFMinotaurMaze(TemplateManager manager, CompoundNBT nbt) {
+		super(TFMinotaurMazePieces.TFMMaze, nbt);
 	}
 
 	public ComponentTFMinotaurMaze(TFFeature feature, int index, int x, int y, int z, int entranceX, int entranceZ, int level) {
@@ -307,7 +308,7 @@ public class ComponentTFMinotaurMaze extends StructureTFComponentOld {
 		fillWithAir(world, sbb, 1, 1, 1, getDiameter(), 4, getDiameter());
 //		fillWithBlocks(world, sbb, 0, 0, 0, getDiameter(), 0, getDiameter(), TFBlocks.mazestone, Blocks.STONE, false);
 //		fillWithBlocks(world, sbb, 0, 5, 0, getDiameter(), 5, getDiameter(), TFBlocks.mazestone, Blocks.STONE, true);
-		boolean onlyReplaceCeiling = this.level == 1 && !TFConfig.dimension.skylightForest;
+		boolean onlyReplaceCeiling = this.level == 1 && !TFConfig.COMMON_CONFIG.DIMENSION.skylightForest.get();
 		fillWithBlocks(world, sbb, 1, 5, 1, getDiameter(), 5, getDiameter(), TFBlocks.maze_stone.get().getDefaultState(), stone, onlyReplaceCeiling);
 		fillWithBlocks(world, sbb, 1, 0, 1, getDiameter(), 0, getDiameter(), TFBlocks.maze_stone_mosaic.get().getDefaultState(), stone, false);
 

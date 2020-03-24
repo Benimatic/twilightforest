@@ -1,12 +1,14 @@
 package twilightforest.structures.lichtower;
 
 
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 
 public class ComponentTFTowerRoofPointyOverhang extends ComponentTFTowerRoofPointy {
 
-	public ComponentTFTowerRoofPointyOverhang() {
-		super();
+	public ComponentTFTowerRoofPointyOverhang(TemplateManager manager, CompoundNBT nbt) {
+		super(TFLichTowerPieces.TFLTRPO, nbt);
 	}
 
 	public ComponentTFTowerRoofPointyOverhang(TFFeature feature, int i, ComponentTFTowerWing wing) {

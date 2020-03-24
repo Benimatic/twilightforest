@@ -1,11 +1,13 @@
 package twilightforest.structures.courtyard;
 
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponentOld;
@@ -22,9 +24,8 @@ public class ComponentNagaCourtyardMain extends StructureMazeGenerator {
 	static final float WALL_DECAY = 0.1f;
 	static final float WALL_INTEGRITY = 0.9f;
 
-	@SuppressWarnings("unused")
-	public ComponentNagaCourtyardMain() {
-		super();
+	public ComponentNagaCourtyardMain(TemplateManager manager, CompoundNBT nbt) {
+		super(NagaCourtyardPieces.TFNCMn, nbt);
 	}
 
 	public ComponentNagaCourtyardMain(TFFeature feature, World world, Random rand, int i, int x, int y, int z) {

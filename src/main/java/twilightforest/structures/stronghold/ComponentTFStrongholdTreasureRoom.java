@@ -10,6 +10,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.loot.TFTreasure;
 import twilightforest.util.TFEntityNames;
@@ -21,7 +22,8 @@ public class ComponentTFStrongholdTreasureRoom extends StructureTFStrongholdComp
 
 	private boolean enterBottom;
 
-	public ComponentTFStrongholdTreasureRoom() {
+	public ComponentTFStrongholdTreasureRoom(TemplateManager manager, CompoundNBT nbt) {
+		super(TFStrongholdPieces.TFTreaR, nbt);
 	}
 
 	public ComponentTFStrongholdTreasureRoom(TFFeature feature, int i, Direction facing, int x, int y, int z) {

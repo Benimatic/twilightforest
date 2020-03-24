@@ -7,6 +7,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 
 import java.util.List;
@@ -15,8 +16,8 @@ import java.util.Random;
 public class ComponentTFIceTowerMain extends ComponentTFIceTowerWing {
 	public boolean hasBossWing = false;
 
-	public ComponentTFIceTowerMain() {
-		super();
+	public ComponentTFIceTowerMain(TemplateManager manager, CompoundNBT nbt) {
+		super(TFIceTowerPieces.TFITMai, nbt);
 	}
 
 	public ComponentTFIceTowerMain(TFFeature feature, World world, Random rand, int index, int x, int y, int z) {

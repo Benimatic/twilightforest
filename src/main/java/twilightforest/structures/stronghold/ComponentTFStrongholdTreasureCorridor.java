@@ -1,6 +1,7 @@
 package twilightforest.structures.stronghold;
 
 import net.minecraft.block.StairsBlock;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.ChunkPos;
@@ -9,6 +10,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.loot.TFTreasure;
 
@@ -17,7 +19,8 @@ import java.util.Random;
 
 public class ComponentTFStrongholdTreasureCorridor extends StructureTFStrongholdComponent {
 
-	public ComponentTFStrongholdTreasureCorridor() {
+	public ComponentTFStrongholdTreasureCorridor(TemplateManager manager, CompoundNBT nbt) {
+		super(TFStrongholdPieces.TFSTC, nbt);
 	}
 
 	public ComponentTFStrongholdTreasureCorridor(TFFeature feature, int i, Direction facing, int x, int y, int z) {
@@ -72,6 +75,4 @@ public class ComponentTFStrongholdTreasureCorridor extends StructureTFStronghold
 
 		return true;
 	}
-
-
 }

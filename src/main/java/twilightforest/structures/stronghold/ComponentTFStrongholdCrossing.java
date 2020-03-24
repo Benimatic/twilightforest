@@ -3,6 +3,7 @@ package twilightforest.structures.stronghold;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.StairsBlock;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.ChunkPos;
@@ -11,6 +12,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 
 import java.util.List;
@@ -18,7 +20,8 @@ import java.util.Random;
 
 public class ComponentTFStrongholdCrossing extends StructureTFStrongholdComponent {
 
-	public ComponentTFStrongholdCrossing() {
+	public ComponentTFStrongholdCrossing(TemplateManager manager, CompoundNBT nbt) {
+		super(TFStrongholdPieces.TFSCr, nbt);
 	}
 
 	public ComponentTFStrongholdCrossing(TFFeature feature, int i, Direction facing, int x, int y, int z) {
@@ -85,6 +88,4 @@ public class ComponentTFStrongholdCrossing extends StructureTFStrongholdComponen
 		this.setBlockStateRotated(world, Blocks.SPRUCE_STAIRS.getDefaultState().with(StairsBlock.FACING, Rotation.CLOCKWISE_90.rotate(Direction.WEST)), 6, 1, 5, rotation, sbb);
 		this.setBlockStateRotated(world, Blocks.SPRUCE_STAIRS.getDefaultState().with(StairsBlock.FACING, Rotation.CLOCKWISE_180.rotate(Direction.WEST)), 4, 1, 4, rotation, sbb);
 	}
-
-
 }

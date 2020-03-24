@@ -9,6 +9,7 @@ import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.BlockTFLog;
 import twilightforest.block.TFBlocks;
@@ -25,8 +26,8 @@ import java.util.Random;
 public class ComponentTFHollowTreeLeafDungeon extends StructureTFTreeComponent {
 	int radius;
 
-	public ComponentTFHollowTreeLeafDungeon() {
-		super();
+	public ComponentTFHollowTreeLeafDungeon(TemplateManager manager, CompoundNBT nbt) {
+		super(TFHollowTreePieces.TFHTLD, nbt);
 	}
 
 	/**
@@ -72,7 +73,7 @@ public class ComponentTFHollowTreeLeafDungeon extends StructureTFTreeComponent {
 	@Override
 	public boolean addComponentParts(World world, ChunkGenerator<?> generator, Random random, MutableBoundingBox sbb, boolean drawLeaves) {
 		if (!drawLeaves) {
-			// wood
+			// wood TODO: Should be Twilight Oak Wood
 			drawHollowBlob(world, sbb, radius, radius, radius, 3, 2, TFBlocks.oak_log.get().getDefaultState().with(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE), false);
 			// then treasure chest
 			// which direction is this chest in?
@@ -82,7 +83,7 @@ public class ComponentTFHollowTreeLeafDungeon extends StructureTFTreeComponent {
 			setSpawner(world, radius, radius, radius, sbb, EntityType.getKey(TFEntities.swarm_spider.get()));
 		} else {
 			// hollow sphere of leaves on the outside
-			drawHollowBlob(world, sbb, radius, radius, radius, 4, 2, TFBlocks.oak_leaves.get().getDefaultState().with(BlockLeaves.CHECK_DECAY, false), true);
+			drawHollowBlob(world, sbb, radius, radius, radius, 4, 2, TFBlocks.oak_leaves.get().getDefaultState(), true);
 		}
 		return true;
 	}

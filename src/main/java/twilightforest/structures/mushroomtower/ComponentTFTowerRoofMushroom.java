@@ -1,5 +1,6 @@
 package twilightforest.structures.mushroomtower;
 
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
@@ -8,6 +9,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.structures.lichtower.ComponentTFTowerRoof;
@@ -40,8 +42,8 @@ public class ComponentTFTowerRoofMushroom extends ComponentTFTowerRoof {
 		}
 	}
 
-	public ComponentTFTowerRoofMushroom() {
-		super();
+	public ComponentTFTowerRoofMushroom(TemplateManager manager, CompoundNBT nbt) {
+		super(TFMushroomTowerPieces.TFMTRoofMush, nbt);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -92,5 +94,4 @@ public class ComponentTFTowerRoofMushroom extends ComponentTFTowerRoof {
 			}
 		}
 	}
-
 }

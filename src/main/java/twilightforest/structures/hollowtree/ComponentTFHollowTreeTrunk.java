@@ -13,8 +13,10 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
+import twilightforest.util.FeatureUtil;
 
 import java.util.List;
 import java.util.Random;
@@ -27,8 +29,8 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 
 	enum BranchSize {SMALL, MEDIUM, LARGE, ROOT}
 
-	public ComponentTFHollowTreeTrunk() {
-		super();
+	public ComponentTFHollowTreeTrunk(TemplateManager manager, CompoundNBT nbt) {
+		super(TFHollowTreePieces.TFHTTr, nbt);
 	}
 
 	public ComponentTFHollowTreeTrunk(World world, Random rand, int index, int x, int y, int z) {
@@ -174,7 +176,7 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 	 * Where should we start this branch?
 	 */
 	private BlockPos getBranchSrc(int branchHeight, double branchRotation) {
-		return TFGenerator.translate(new BlockPos(boundingBox.minX + radius + 1, boundingBox.minY + branchHeight, boundingBox.minZ + radius + 1), radius, branchRotation, 0.5);
+		return FeatureUtil.translate(new BlockPos(boundingBox.minX + radius + 1, boundingBox.minY + branchHeight, boundingBox.minZ + radius + 1), radius, branchRotation, 0.5);
 	}
 
 	@Override
@@ -243,7 +245,7 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 	 * Add a random insect
 	 */
 	protected void addInsect(World world, int fHeight, double fAngle, Random random, MutableBoundingBox sbb) {
-		BlockPos bugSpot = TFGenerator.translate(new BlockPos(this.radius + 1, fHeight, this.radius + 1), this.radius + 1, fAngle, 0.5);
+		BlockPos bugSpot = FeatureUtil.translate(new BlockPos(this.radius + 1, fHeight, this.radius + 1), this.radius + 1, fAngle, 0.5);
 
 		fAngle = fAngle % 1.0;
 		Direction insectDirection = Direction.DOWN;

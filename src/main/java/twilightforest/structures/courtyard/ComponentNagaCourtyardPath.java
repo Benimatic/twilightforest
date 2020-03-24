@@ -1,5 +1,6 @@
 package twilightforest.structures.courtyard;
 
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
@@ -19,8 +20,8 @@ public class ComponentNagaCourtyardPath extends StructureTFComponentTemplate {
     private static final ResourceLocation PATH = new ResourceLocation(TwilightForestMod.ID, "courtyard/pathway");
 
     @SuppressWarnings({"WeakerAccess", "unused"})
-    public ComponentNagaCourtyardPath() {
-        super();
+    public ComponentNagaCourtyardPath(TemplateManager manager, CompoundNBT nbt) {
+        super(NagaCourtyardPieces.TFNCPa, nbt);
     }
 
     @SuppressWarnings("WeakerAccess")

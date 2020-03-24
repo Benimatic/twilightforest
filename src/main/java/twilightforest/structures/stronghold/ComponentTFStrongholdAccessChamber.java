@@ -2,6 +2,7 @@ package twilightforest.structures.stronghold;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.ChunkPos;
@@ -9,6 +10,7 @@ import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.BlockTFTrophyPedestal;
 import twilightforest.block.TFBlocks;
@@ -18,7 +20,8 @@ import java.util.Random;
 
 public class ComponentTFStrongholdAccessChamber extends StructureTFStrongholdComponent {
 
-	public ComponentTFStrongholdAccessChamber() {
+	public ComponentTFStrongholdAccessChamber(TemplateManager manager, CompoundNBT nbt) {
+		super(TFStrongholdPieces.TFSAC, nbt);
 	}
 
 	public ComponentTFStrongholdAccessChamber(TFFeature feature, int i, Direction facing, int x, int y, int z) {

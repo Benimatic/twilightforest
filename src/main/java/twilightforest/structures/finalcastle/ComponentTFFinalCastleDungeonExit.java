@@ -2,6 +2,7 @@ package twilightforest.structures.finalcastle;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.item.DyeColor;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.ChunkPos;
@@ -10,6 +11,7 @@ import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.BlockTFCastleMagic;
 import twilightforest.block.BlockTFForceField;
@@ -22,7 +24,9 @@ import java.util.Random;
 
 public class ComponentTFFinalCastleDungeonExit extends ComponentTFFinalCastleDungeonRoom31 {
 
-	public ComponentTFFinalCastleDungeonExit() {}
+	public ComponentTFFinalCastleDungeonExit(TemplateManager manager, CompoundNBT nbt) {
+		super(TFFinalCastlePieces.TFFCDunEx, nbt);
+	}
 
 	public ComponentTFFinalCastleDungeonExit(TFFeature feature, Random rand, int i, int x, int y, int z, Direction direction, int level) {
 		super(feature, rand, i, x, y, z, direction, level);

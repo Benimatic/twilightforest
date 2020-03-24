@@ -2,18 +2,25 @@ package twilightforest.structures.lichtower;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 
 import java.util.Random;
 
 public class ComponentTFTowerRoofPointy extends ComponentTFTowerRoof {
 
-	public ComponentTFTowerRoofPointy() {
-		super();
+	public ComponentTFTowerRoofPointy(TemplateManager manager, CompoundNBT nbt) {
+		super(TFLichTowerPieces.TFLTRP, nbt);
+	}
+
+	public ComponentTFTowerRoofPointy(IStructurePieceType piece, CompoundNBT nbt) {
+		super(piece, nbt);
 	}
 
 	public ComponentTFTowerRoofPointy(TFFeature feature, int i, ComponentTFTowerWing wing) {

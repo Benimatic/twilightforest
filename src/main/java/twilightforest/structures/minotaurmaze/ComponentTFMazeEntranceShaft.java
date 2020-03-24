@@ -1,5 +1,6 @@
 package twilightforest.structures.minotaurmaze;
 
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -8,17 +9,19 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponentOld;
+import twilightforest.world.TFWorld;
 
 import java.util.List;
 import java.util.Random;
 
 public class ComponentTFMazeEntranceShaft extends StructureTFComponentOld {
 
-	public ComponentTFMazeEntranceShaft() {
-		super();
+	public ComponentTFMazeEntranceShaft(TemplateManager manager, CompoundNBT nbt) {
+		super(TFMinotaurMazePieces.TFMMES, nbt);
 	}
 
 	private int averageGroundLevel = -1;

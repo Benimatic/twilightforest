@@ -24,8 +24,10 @@ public class CourtyardStairsTemplateProcessor extends RandomizedTemplateProcesso
 			BlockState state = blockInfo.state;
 			Block block = state.getBlock();
 
-			if (block == TFBlocks.nagastone_stairs.get())
-				return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, translateState(state, randomBlock(TFBlocks.nagastone_stairs_mossy.get(), TFBlocks.nagastone_stairs_weathered.get()), BlockTFNagastoneStairs.DIRECTION, BlockTFNagastoneStairs.FACING, BlockTFNagastoneStairs.HALF, BlockTFNagastoneStairs.SHAPE), null);
+			if (block == TFBlocks.nagastone_stairs_left.get())
+				return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, translateState(state, randomBlock(TFBlocks.nagastone_stairs_mossy_left.get(), TFBlocks.nagastone_stairs_weathered_left.get()), BlockTFNagastoneStairs.FACING, BlockTFNagastoneStairs.HALF, BlockTFNagastoneStairs.SHAPE), null);
+			if (block == TFBlocks.nagastone_stairs_right.get())
+				return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, translateState(state, randomBlock(TFBlocks.nagastone_stairs_mossy_right.get(), TFBlocks.nagastone_stairs_weathered_right.get()), BlockTFNagastoneStairs.FACING, BlockTFNagastoneStairs.HALF, BlockTFNagastoneStairs.SHAPE), null);
 
 			return blockInfo;
 		}

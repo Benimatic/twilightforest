@@ -1,10 +1,12 @@
 package twilightforest.structures.finalcastle;
 
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
@@ -15,7 +17,8 @@ import java.util.Random;
 
 public class ComponentTFFinalCastleEntranceTower extends ComponentTFFinalCastleMazeTower13 {
 
-	public ComponentTFFinalCastleEntranceTower() {
+	public ComponentTFFinalCastleEntranceTower(TemplateManager manager, CompoundNBT nbt) {
+		super(TFFinalCastlePieces.TFFCEnTo, nbt);
 	}
 
 	public ComponentTFFinalCastleEntranceTower(TFFeature feature, Random rand, int i, int x, int y, int z, Direction direction) {

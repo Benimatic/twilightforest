@@ -1,8 +1,10 @@
 package twilightforest.structures.mushroomtower;
 
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 
 import java.util.List;
@@ -10,8 +12,8 @@ import java.util.Random;
 
 public class ComponentTFMushroomTowerMainBridge extends ComponentTFMushroomTowerBridge {
 
-	public ComponentTFMushroomTowerMainBridge() {
-		super();
+	public ComponentTFMushroomTowerMainBridge(TemplateManager manager, CompoundNBT nbt) {
+		super(TFMushroomTowerPieces.TFMTMB, nbt);
 	}
 
 	protected ComponentTFMushroomTowerMainBridge(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {

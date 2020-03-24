@@ -1,6 +1,7 @@
 package twilightforest.structures.finalcastle;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.ChunkPos;
@@ -9,6 +10,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponentOld;
@@ -21,7 +23,8 @@ public class ComponentTFFinalCastleBellTower21 extends ComponentTFFinalCastleMaz
 
 	private static final int FLOORS = 8;
 
-	public ComponentTFFinalCastleBellTower21() {
+	public ComponentTFFinalCastleBellTower21(TemplateManager manager, CompoundNBT nbt) {
+		super(TFFinalCastlePieces.TFFCBelTo, nbt);
 	}
 
 	public ComponentTFFinalCastleBellTower21(TFFeature feature, Random rand, int i, int x, int y, int z, Direction direction) {

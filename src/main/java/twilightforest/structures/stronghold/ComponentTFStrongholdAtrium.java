@@ -12,6 +12,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 
 import java.util.List;
@@ -21,7 +22,8 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 
 	private boolean enterBottom;
 
-	public ComponentTFStrongholdAtrium() {
+	public ComponentTFStrongholdAtrium(TemplateManager manager, CompoundNBT nbt) {
+		super(TFStrongholdPieces.TFSAt, nbt);
 	}
 
 	public ComponentTFStrongholdAtrium(TFFeature feature, int i, Direction facing, int x, int y, int z) {

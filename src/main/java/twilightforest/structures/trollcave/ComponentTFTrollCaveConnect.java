@@ -14,6 +14,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponentOld;
@@ -26,7 +27,9 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 
 	protected boolean[] openingTowards = {false, false, true, false};
 
-	public ComponentTFTrollCaveConnect() {}
+	public ComponentTFTrollCaveConnect(TemplateManager manager, CompoundNBT nbt) {
+		super(TFTrollCavePieces.TFTCCon, nbt);
+	}
 
 	public ComponentTFTrollCaveConnect(TFFeature feature, int index, int x, int y, int z, int caveSize, int caveHeight, Direction direction) {
 		super(feature, index);

@@ -20,10 +20,10 @@ import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import twilightforest.biomes.TFBiomeBase;
 import twilightforest.entity.*;
 import twilightforest.structures.*;
-import twilightforest.structures.courtyard.ComponentNagaCourtyardMain;
 import twilightforest.structures.start.*;
 import twilightforest.util.IntPair;
 import twilightforest.util.PlayerHelper;
+import twilightforest.world.MapGenTFMajorFeature;
 import twilightforest.world.TFWorld;
 
 import javax.annotation.Nullable;
@@ -38,9 +38,6 @@ public enum TFFeature {
 	SMALL_HILL ( 1, "small_hollow_hill", true ) {
 		{
 			this.enableDecorations().enableTerrainAlterations();
-
-			registerPiece("TFHill", StructureStartHollowHill::new); //TODO: put this into a field. Need it for constructor. Clash with Component
-			registerPiece("TFHill", ComponentTFHollowHill::new); //TODO: put this into a field. Need it for constructor. Clash with Start
 
 			this.addMonster(EntityType.SPIDER, 10, 4, 4)
 					.addMonster(EntityType.ZOMBIE, 10, 4, 4)
@@ -100,9 +97,6 @@ public enum TFFeature {
 	HEDGE_MAZE ( 2, "hedge_maze", true ) {
 		{
 			this.enableTerrainAlterations();
-
-			registerPiece("TFHedge", StructureStartHedgeMaze::new); //TODO: put this into a field. Need it for constructor. Clash with Component
-			registerPiece("TFHedge", ComponentTFHedgeMaze::new); //TODO: put this into a field. Need it for constructor. Clash with Start
 		}
 
 		@Override
@@ -113,9 +107,6 @@ public enum TFFeature {
 	NAGA_COURTYARD ( 3, "naga_courtyard", true ) {
 		{
 			this.enableTerrainAlterations();
-
-			registerPiece("TFNaga", ComponentNagaCourtyardMain::new); //TODO: put this into a field. Need it for constructor
-			//NagaCourtyardPieces.registerPieces();
 		}
 
 		@Override
@@ -125,8 +116,6 @@ public enum TFFeature {
 	},
 	LICH_TOWER ( 1, "lich_tower", true, TwilightForestMod.prefix("progress_naga") ) {
 		{
-			//TFLichTowerPieces.registerPieces();
-
 			this.addMonster(EntityType.ZOMBIE, 10, 4, 4)
 					.addMonster(EntityType.SKELETON, 10, 4, 4)
 					.addMonster(EntityType.CREEPER, 1, 4, 4)
@@ -152,8 +141,6 @@ public enum TFFeature {
 	},
 	ICE_TOWER ( 2, "ice_tower", true, TwilightForestMod.prefix("progress_yeti") ) {
 		{
-			//TFIceTowerPieces.registerPieces();
-
 			this.addMonster(TFEntities.snow_guardian.get(), 10, 4, 4)
 					.addMonster(TFEntities.stable_ice_core.get(), 10, 4, 4)
 					.addMonster(TFEntities.unstable_ice_core.get(), 5, 4, 4);
@@ -178,9 +165,6 @@ public enum TFFeature {
 	QUEST_GROVE  ( 1, "quest_grove" , true  ) {
 		{
 			this.enableTerrainAlterations();
-
-			registerPiece("TFQuest1", StructureStartQuestGrove::new); //TODO: put this into a field. Need it for constructor. Clash with Component
-			registerPiece("TFQuest1", ComponentTFQuestGrove::new); //TODO: put this into a field. Need it for constructor. Clash with Start
 		}
 
 		@Override
@@ -193,9 +177,6 @@ public enum TFFeature {
 	HYDRA_LAIR     ( 2, "hydra_lair"    , true , TwilightForestMod.prefix("progress_labyrinth") ) {
 		{
 			this.enableTerrainAlterations();
-
-			registerPiece("TFHydra", StructureStartHydraLair::new); //TODO: put this into a field. Need it for constructor. Clash with Component
-			registerPiece("TFHydra", ComponentTFHydraLair::new); //TODO: put this into a field. Need it for constructor. Clash with Start
 		}
 
 		@Override
@@ -216,8 +197,6 @@ public enum TFFeature {
 	LABYRINTH ( 3, "labyrinth", true, TwilightForestMod.prefix("progress_lich") ) {
 		{
 			this.enableDecorations();
-
-			//TFMinotaurMazePieces.registerPieces();
 
 			this.addMonster(TFEntities.minotaur.get(), 20, 2, 4)
 					.addMonster(EntityType.CAVE_SPIDER, 10, 4, 4)
@@ -246,8 +225,6 @@ public enum TFFeature {
 	},
 	DARK_TOWER ( 1, "dark_tower", true, TwilightForestMod.prefix("progress_knights") ) {
 		{
-			//TFDarkTowerPieces.registerPieces();
-
 			this.addMonster(TFEntities.tower_golem.get(), 10, 4, 4)
 					.addMonster(EntityType.SKELETON, 10, 4, 4)
 					.addMonster(EntityType.CREEPER, 10, 4, 4)
@@ -281,8 +258,6 @@ public enum TFFeature {
 		{
 			this.enableDecorations().disableProtectionAura();
 
-			//TFStrongholdPieces.registerPieces();
-
 			this.addMonster(TFEntities.blockchain_goblin.get(), 10, 4, 4)
 					.addMonster(TFEntities.goblin_knight_lower.get(), 5, 1, 2)
 					.addMonster(TFEntities.helmet_crab.get(), 10, 4, 4)
@@ -313,9 +288,6 @@ public enum TFFeature {
 		{
 			this.enableDecorations().enableTerrainAlterations();
 
-			registerPiece("TFYeti", StructureStartYetiCave::new); //TODO: put this into a field. Need it for constructor. Clash with Component
-			registerPiece("TFYeti", ComponentTFYetiCave::new); //TODO: put this into a field. Need it for constructor. Clash with Start
-
 			this.addMonster(TFEntities.yeti.get(), 10, 4, 4);
 		}
 
@@ -338,8 +310,6 @@ public enum TFFeature {
 	TROLL_CAVE ( 4, "troll_lairs", true, TwilightForestMod.prefix("progress_merge") ) {
 		{
 			this.enableDecorations().enableTerrainAlterations().disableProtectionAura();
-
-			//TFTrollCavePieces.registerPieces();
 
 			this.addMonster(EntityType.CREEPER, 5, 4, 4)
 					.addMonster(EntityType.SKELETON, 10, 4, 4)
@@ -367,8 +337,6 @@ public enum TFFeature {
 	},
 	FINAL_CASTLE ( 4, "final_castle", true, TwilightForestMod.prefix("progress_troll") ) {
 		{
-			//TFFinalCastlePieces.registerFinalCastlePieces();
-
 			// plain parts of the castle, like the tower maze
 			this.addMonster(TFEntities.kobold.get(), 10, 4, 4)
 					.addMonster(TFEntities.adherent.get(), 10, 1, 1)
@@ -391,15 +359,24 @@ public enum TFFeature {
 		}
 	},
 	MUSHROOM_TOWER ( 2, "mushroom_tower", true ) {
-		{
-			//TFMushroomTowerPieces.registerPieces();
-		}
 
 		@Override
 		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
 			return new StructureStartMushroomTower(world, this, rand, chunkX, chunkZ);
 		}
 	};
+
+	//IStructurePieceTypes that can be referred to
+	public static final IStructurePieceType TFHillS = registerPiece("TFHillS", StructureStartHollowHill::new);
+	public static final IStructurePieceType TFHill = registerPiece("TFHill", ComponentTFHollowHill::new);
+	public static final IStructurePieceType TFHedgeS = registerPiece("TFHedgeS", StructureStartHedgeMaze::new);
+	public static final IStructurePieceType TFHedge = registerPiece("TFHedge", ComponentTFHedgeMaze::new);
+	public static final IStructurePieceType TFQuest1S = registerPiece("TFQuest1S", StructureStartQuestGrove::new);
+	public static final IStructurePieceType TFQuest1 = registerPiece("TFQuest1", ComponentTFQuestGrove::new);
+	public static final IStructurePieceType TFHydraS = registerPiece("TFHydraS", StructureStartHydraLair::new);
+	public static final IStructurePieceType TFHydra = registerPiece("TFHydra", ComponentTFHydraLair::new);
+	public static final IStructurePieceType TFYetiS = registerPiece("TFYetiS", StructureStartYetiCave::new);
+	public static final IStructurePieceType TFYeti = registerPiece("TFYeti", ComponentTFYetiCave::new);
 
 	public final int size;
 	public final String name;

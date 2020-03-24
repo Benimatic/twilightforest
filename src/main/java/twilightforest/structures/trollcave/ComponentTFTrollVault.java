@@ -1,11 +1,13 @@
 package twilightforest.structures.trollcave;
 
 import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.loot.TFTreasure;
@@ -15,7 +17,8 @@ import java.util.Random;
 
 public class ComponentTFTrollVault extends StructureTFComponentOld {
 
-	public ComponentTFTrollVault() {
+	public ComponentTFTrollVault(TemplateManager manager, CompoundNBT nbt) {
+		super(TFTrollCavePieces.TFTCVa, nbt);
 	}
 
 	public ComponentTFTrollVault(TFFeature feature, int index, int x, int y, int z) {

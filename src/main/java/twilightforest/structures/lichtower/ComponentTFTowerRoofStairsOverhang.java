@@ -3,11 +3,13 @@ package twilightforest.structures.lichtower;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.StairsBlock;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 
 import java.util.Random;
@@ -15,8 +17,8 @@ import java.util.Random;
 
 public class ComponentTFTowerRoofStairsOverhang extends ComponentTFTowerRoof {
 
-	public ComponentTFTowerRoofStairsOverhang() {
-		super();
+	public ComponentTFTowerRoofStairsOverhang(TemplateManager manager, CompoundNBT nbt) {
+		super(TFLichTowerPieces.TFLTRStO, nbt);
 	}
 
 	public ComponentTFTowerRoofStairsOverhang(TFFeature feature, int i, ComponentTFTowerWing wing) {

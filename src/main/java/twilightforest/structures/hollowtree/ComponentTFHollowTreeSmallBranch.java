@@ -1,12 +1,14 @@
 package twilightforest.structures.hollowtree;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 
@@ -14,8 +16,8 @@ import java.util.Random;
 
 public class ComponentTFHollowTreeSmallBranch extends ComponentTFHollowTreeMedBranch {
 
-	public ComponentTFHollowTreeSmallBranch() {
-		super();
+	public ComponentTFHollowTreeSmallBranch(TemplateManager manager, CompoundNBT nbt) {
+		super(TFHollowTreePieces.TFHTSB, nbt);
 	}
 
 	protected ComponentTFHollowTreeSmallBranch(TFFeature feature, int i, int sx, int sy, int sz, double length, double angle, double tilt, boolean leafy) {
@@ -35,7 +37,7 @@ public class ComponentTFHollowTreeSmallBranch extends ComponentTFHollowTreeMedBr
 
 		if (!drawLeaves)
 		{
-			BlockState log = TFBlocks.oak_log.get().getDefaultState().with(LOG_AXIS, BlockLog.EnumAxis.NONE);
+			BlockState log = TFBlocks.oak_log.get().getDefaultState().with(LOG_AXIS, BlockLog.EnumAxis.NONE); //TODO: Needs to be Twilight Oak Wood
 			drawBresehnam(world, sbb, rSrc.getX(), rSrc.getY(), rSrc.getZ(), rDest.getX(), rDest.getY(), rDest.getZ(), log);
 		} else {
 			int leafRad = random.nextInt(2) + 1;
@@ -43,6 +45,4 @@ public class ComponentTFHollowTreeSmallBranch extends ComponentTFHollowTreeMedBr
 		}
 		return true;
 	}
-
-
 }

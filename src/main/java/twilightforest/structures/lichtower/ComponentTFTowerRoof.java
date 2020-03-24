@@ -5,6 +5,7 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentOld;
@@ -17,8 +18,8 @@ public abstract class ComponentTFTowerRoof extends StructureTFComponentOld {
 	protected int size;
 	protected int height;
 
-	public ComponentTFTowerRoof() {
-		super();
+	public ComponentTFTowerRoof(IStructurePieceType piece, CompoundNBT nbt) {
+		super(piece, nbt);
 	}
 
 	public ComponentTFTowerRoof(TFFeature feature, int i, ComponentTFTowerWing wing) {

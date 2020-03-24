@@ -5,6 +5,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityType;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.properties.SlabType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
@@ -17,6 +18,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
@@ -31,8 +33,8 @@ import java.util.Random;
 
 public class ComponentTFTowerMain extends ComponentTFTowerWing {
 
-	public ComponentTFTowerMain() {
-		super();
+	public ComponentTFTowerMain(TemplateManager manager, CompoundNBT nbt) {
+		super(TFLichTowerPieces.TFLTMai, nbt);
 	}
 
 	public ComponentTFTowerMain(TFFeature feature, World world, Random rand, int index, int x, int y, int z) {

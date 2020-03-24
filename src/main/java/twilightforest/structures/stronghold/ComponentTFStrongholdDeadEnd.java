@@ -11,6 +11,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.loot.TFTreasure;
 
@@ -21,7 +22,8 @@ public class ComponentTFStrongholdDeadEnd extends StructureTFStrongholdComponent
 
 	private boolean chestTrapped;
 
-	public ComponentTFStrongholdDeadEnd() {
+	public ComponentTFStrongholdDeadEnd(TemplateManager manager, CompoundNBT nbt) {
+		super(TFStrongholdPieces.TFSDE, nbt);
 	}
 
 	public ComponentTFStrongholdDeadEnd(TFFeature feature, int i, Direction facing, int x, int y, int z) {
@@ -86,6 +88,4 @@ public class ComponentTFStrongholdDeadEnd extends StructureTFStrongholdComponent
 
 		return true;
 	}
-
-
 }

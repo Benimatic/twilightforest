@@ -1,10 +1,12 @@
 package twilightforest.structures.finalcastle;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponentOld;
@@ -14,7 +16,9 @@ import java.util.List;
 import java.util.Random;
 
 public class ComponentTFFinalCastleWreckedTower extends ComponentTFFinalCastleDamagedTower {
-	public ComponentTFFinalCastleWreckedTower() {
+
+	public ComponentTFFinalCastleWreckedTower(TemplateManager manager, CompoundNBT nbt) {
+		super(TFFinalCastlePieces.TFFCWrT, nbt);
 	}
 
 	public ComponentTFFinalCastleWreckedTower(TFFeature feature, Random rand, int i, int x, int y, int z, Direction direction) {
@@ -69,9 +73,7 @@ public class ComponentTFFinalCastleWreckedTower extends ComponentTFFinalCastleDa
 		if (!isInside) {
 			world.removeBlock(pos, false);
 		}
-
 	}
-
 
 	@Override
 	protected ArrayList<DestroyArea> makeInitialDestroyList(Random rand) {
@@ -83,6 +85,4 @@ public class ComponentTFFinalCastleWreckedTower extends ComponentTFFinalCastleDa
 		areas.add(DestroyArea.createNonIntersecting(this.getBoundingBox(), rand, this.getBoundingBox().maxY - 1, areas));
 		return areas;
 	}
-
-
 }

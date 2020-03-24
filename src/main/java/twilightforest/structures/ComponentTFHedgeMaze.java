@@ -4,6 +4,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CarvedPumpkinBlock;
 import net.minecraft.entity.EntityType;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.ChunkPos;
@@ -11,13 +12,13 @@ import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
 
 import java.util.Random;
-
 
 public class ComponentTFHedgeMaze extends StructureTFComponentOld {
 
@@ -26,8 +27,8 @@ public class ComponentTFHedgeMaze extends StructureTFComponentOld {
 	private static final int DIAMETER = 2 * RADIUS;
 	private static final int FLOOR_LEVEL = 3;
 
-	public ComponentTFHedgeMaze() {
-		super();
+	public ComponentTFHedgeMaze(TemplateManager manager, CompoundNBT nbt) {
+		super(TFFeature.TFHedge, nbt);
 	}
 
 	public ComponentTFHedgeMaze(TFFeature feature, World world, Random rand, int i, int x, int y, int z) {
@@ -77,7 +78,6 @@ public class ComponentTFHedgeMaze extends StructureTFComponentOld {
 		setBlockState(world, northJacko, 29, FLOOR_LEVEL, 0, sbb);
 		setBlockState(world, southJacko, 24, FLOOR_LEVEL, 50, sbb);
 		setBlockState(world, southJacko, 29, FLOOR_LEVEL, 50, sbb);
-
 
 		int nrooms = MSIZE / 3;
 		int rcoords[] = new int[nrooms * 2];
@@ -200,7 +200,6 @@ public class ComponentTFHedgeMaze extends StructureTFComponentOld {
 		placeTreasureAtCurrentPosition(world, rand, rx, FLOOR_LEVEL, rz, TFTreasure.hedgemaze, sbb);
 	}
 
-
 	/**
 	 * Place a lit pumpkin lantern within diameter / 2 squares of the specified x and z coordinates
 	 */
@@ -211,6 +210,4 @@ public class ComponentTFHedgeMaze extends StructureTFComponentOld {
 		setBlockState(world, Blocks.JACK_O_LANTERN.getDefaultState().with(CarvedPumpkinBlock.FACING, Direction.byHorizontalIndex(rand.nextInt(4))),
 				rx, FLOOR_LEVEL, rz, sbb);
 	}
-
-
 }

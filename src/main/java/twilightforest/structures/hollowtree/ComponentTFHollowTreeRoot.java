@@ -3,12 +3,15 @@ package twilightforest.structures.hollowtree;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
+import twilightforest.util.FeatureUtil;
 
 import java.util.Random;
 import java.util.function.Predicate;
@@ -17,8 +20,8 @@ public class ComponentTFHollowTreeRoot extends ComponentTFHollowTreeMedBranch {
 
 	protected int groundLevel = -1;
 
-	public ComponentTFHollowTreeRoot() {
-		super();
+	public ComponentTFHollowTreeRoot(TemplateManager manager, CompoundNBT nbt) {
+		super(TFHollowTreePieces.TFHTRo, nbt);
 	}
 
 	public ComponentTFHollowTreeRoot(TFFeature feature, int i, int sx, int sy, int sz, double length, double angle, double tilt, boolean leafy) {
@@ -56,7 +59,7 @@ public class ComponentTFHollowTreeRoot extends ComponentTFHollowTreeMedBranch {
 	 * Draws a line
 	 */
 	protected void drawRootLine(World world, MutableBoundingBox sbb, int x1, int y1, int z1, int x2, int y2, int z2, BlockState blockValue) {
-		BlockPos lineCoords[] = TFGenerator.getBresehnamArrays(x1, y1, z1, x2, y2, z2);
+		BlockPos lineCoords[] = FeatureUtil.getBresehnamArrays(x1, y1, z1, x2, y2, z2);
 
 		for (BlockPos coords : lineCoords) {
 			BlockState block = this.getBlockStateFromPos(world, coords.getX(), coords.getY(), coords.getZ(), sbb);
@@ -65,7 +68,7 @@ public class ComponentTFHollowTreeRoot extends ComponentTFHollowTreeMedBranch {
 			if (!block.isNormalCube() || block.getBlock() != Blocks.AIR && block.getMaterial() == Material.ORGANIC) {
 
 				// air, other non-solid, or grass, make wood block
-				BlockState log = TFBlocks.oak_log.get().getDefaultState().with(LOG_AXIS, BlockLog.EnumAxis.NONE);
+				BlockState log = TFBlocks.oak_log.get().getDefaultState().with(LOG_AXIS, BlockLog.EnumAxis.NONE); //TODO: Should be Twilight Oak Wood
 				this.setBlockState(world, log, coords.getX(), coords.getY(), coords.getZ(), sbb);
 			} else if (block.getBlock() != Blocks.AIR && block.getMaterial() == Material.WOOD) {
 				// wood, do nothing

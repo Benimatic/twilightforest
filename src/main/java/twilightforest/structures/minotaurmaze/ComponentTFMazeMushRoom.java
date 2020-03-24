@@ -3,22 +3,23 @@ package twilightforest.structures.minotaurmaze;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.HugeMushroomBlock;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 
 import java.util.Random;
 
 public class ComponentTFMazeMushRoom extends ComponentTFMazeRoom {
 
-	public ComponentTFMazeMushRoom() {
-		super();
+	public ComponentTFMazeMushRoom(TemplateManager manager, CompoundNBT nbt) {
+		super(TFMinotaurMazePieces.TFMMMR, nbt);
 	}
-
 
 	public ComponentTFMazeMushRoom(TFFeature feature, int i, Random rand, int x, int y, int z) {
 		super(feature, i, rand, x, y, z);

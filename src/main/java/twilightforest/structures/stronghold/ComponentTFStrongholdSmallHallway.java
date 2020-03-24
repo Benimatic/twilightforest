@@ -1,5 +1,6 @@
 package twilightforest.structures.stronghold;
 
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.ChunkPos;
@@ -8,6 +9,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 
 import java.util.List;
@@ -15,7 +17,8 @@ import java.util.Random;
 
 public class ComponentTFStrongholdSmallHallway extends StructureTFStrongholdComponent {
 
-	public ComponentTFStrongholdSmallHallway() {
+	public ComponentTFStrongholdSmallHallway(TemplateManager manager, CompoundNBT nbt) {
+		super(TFStrongholdPieces.TFSSH, nbt);
 	}
 
 	public ComponentTFStrongholdSmallHallway(TFFeature feature, int i, Direction facing, int x, int y, int z) {
@@ -36,7 +39,6 @@ public class ComponentTFStrongholdSmallHallway extends StructureTFStrongholdComp
 
 		// make a random component at the end
 		addNewComponent(parent, list, random, Rotation.NONE, 4, 1, 18);
-
 	}
 
 	@Override
@@ -53,6 +55,4 @@ public class ComponentTFStrongholdSmallHallway extends StructureTFStrongholdComp
 
 		return true;
 	}
-
-
 }

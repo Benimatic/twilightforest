@@ -18,6 +18,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFBossSpawner;
@@ -41,9 +42,9 @@ import static net.minecraft.util.Direction.WEST;
 public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 	private boolean placedKeys = false;
 
-	public ComponentTFDarkTowerMain() {
+	public ComponentTFDarkTowerMain(TemplateManager manager, CompoundNBT nbt) {
+		super(TFDarkTowerPieces.TFDTMai, nbt);
 	}
-
 
 	public ComponentTFDarkTowerMain(TFFeature feature, World world, Random rand, int index, int x, int y, int z) {
 		this(feature, world, rand, index, x + 10, y, z + 10, Direction.NORTH);

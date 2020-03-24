@@ -13,7 +13,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.block.TFBlocks;
@@ -32,7 +34,13 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 
 	public static final TFGenMyceliumBlob uberousGen = new TFGenMyceliumBlob(TFBlocks.uberous_soil, 4);
 
-	public ComponentTFTrollCaveMain() {}
+	public ComponentTFTrollCaveMain(TemplateManager manager, CompoundNBT nbt) {
+		super(TFTrollCavePieces.TFTCMai, nbt);
+	}
+
+	public ComponentTFTrollCaveMain(IStructurePieceType piece, CompoundNBT nbt) {
+		super(piece, nbt);
+	}
 
 	public ComponentTFTrollCaveMain(TFFeature feature, int index) {
 		super(feature, index);

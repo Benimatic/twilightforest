@@ -2,6 +2,7 @@ package twilightforest.structures.lichtower;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.ChunkPos;
@@ -9,6 +10,7 @@ import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 
 import java.util.List;
@@ -16,8 +18,8 @@ import java.util.Random;
 
 public class ComponentTFTowerOutbuilding extends ComponentTFTowerWing {
 
-	public ComponentTFTowerOutbuilding() {
-		super();
+	public ComponentTFTowerOutbuilding(TemplateManager manager, CompoundNBT nbt) {
+		super(TFLichTowerPieces.TFLTOut, nbt);
 	}
 
 	protected ComponentTFTowerOutbuilding(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {

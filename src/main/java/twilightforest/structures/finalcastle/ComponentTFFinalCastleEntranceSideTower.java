@@ -1,8 +1,10 @@
 package twilightforest.structures.finalcastle;
 
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponentOld;
@@ -11,7 +13,9 @@ import java.util.List;
 import java.util.Random;
 
 public class ComponentTFFinalCastleEntranceSideTower extends ComponentTFFinalCastleMazeTower13 {
-	public ComponentTFFinalCastleEntranceSideTower() {
+
+	public ComponentTFFinalCastleEntranceSideTower(TemplateManager manager, CompoundNBT nbt) {
+		super(TFFinalCastlePieces.TFFCEnSiTo, nbt);
 	}
 
 	public ComponentTFFinalCastleEntranceSideTower(TFFeature feature, Random rand, int i, int x, int y, int z, int floors, int entranceFloor, Direction direction) {
@@ -36,5 +40,4 @@ public class ComponentTFFinalCastleEntranceSideTower extends ComponentTFFinalCas
 		list.add(roof);
 		roof.buildComponent(this, list, rand);
 	}
-
 }

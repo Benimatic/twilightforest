@@ -1,6 +1,7 @@
 package twilightforest.structures.lichtower;
 
 import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.ChunkPos;
@@ -8,6 +9,7 @@ import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentOld;
 
@@ -19,8 +21,8 @@ public class ComponentTFTowerBridge extends ComponentTFTowerWing {
 	int dSize;
 	int dHeight;
 
-	public ComponentTFTowerBridge() {
-		super();
+	public ComponentTFTowerBridge(TemplateManager manager, CompoundNBT nbt) {
+		super(TFLichTowerPieces.TFLTBri, nbt);
 	}
 
 	protected ComponentTFTowerBridge(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {

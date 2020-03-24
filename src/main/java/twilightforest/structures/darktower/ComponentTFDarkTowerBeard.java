@@ -6,6 +6,7 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponentOld;
@@ -18,8 +19,8 @@ public class ComponentTFDarkTowerBeard extends StructureTFComponentOld {
 	protected int size;
 	protected int height;
 
-	public ComponentTFDarkTowerBeard() {
-		super();
+	public ComponentTFDarkTowerBeard(TemplateManager manager, CompoundNBT nbt) {
+		super(TFDarkTowerPieces.TFDTBea, nbt);
 	}
 
 	public ComponentTFDarkTowerBeard(TFFeature feature, int i, ComponentTFTowerWing wing) {

@@ -1,5 +1,6 @@
 package twilightforest.structures.courtyard;
 
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
@@ -7,6 +8,7 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.template.IntegrityProcessor;
 import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.gen.feature.template.TemplateManager;
@@ -24,8 +26,8 @@ public class ComponentNagaCourtyardWallAbstract extends StructureTFComponentTemp
     private Template decayTemplate;
 
     @SuppressWarnings({"WeakerAccess", "unused"})
-    public ComponentNagaCourtyardWallAbstract(ResourceLocation wall, ResourceLocation wall_decayed) {
-        super();
+    public ComponentNagaCourtyardWallAbstract(IStructurePieceType piece, CompoundNBT nbt, ResourceLocation wall, ResourceLocation wall_decayed) {
+        super(piece, nbt);
         this.WALL = wall;
         this.WALL_DECAYED = wall_decayed;
     }

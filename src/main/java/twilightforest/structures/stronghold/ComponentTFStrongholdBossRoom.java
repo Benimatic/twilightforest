@@ -1,6 +1,7 @@
 package twilightforest.structures.stronghold;
 
 import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.ChunkPos;
@@ -9,6 +10,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
@@ -19,7 +21,8 @@ import java.util.Random;
 
 public class ComponentTFStrongholdBossRoom extends StructureTFStrongholdComponent {
 
-	public ComponentTFStrongholdBossRoom() {
+	public ComponentTFStrongholdBossRoom(TemplateManager manager, CompoundNBT nbt) {
+		super(TFStrongholdPieces.TFSBR, nbt);
 	}
 
 	public ComponentTFStrongholdBossRoom(TFFeature feature, int i, Direction facing, int x, int y, int z) {

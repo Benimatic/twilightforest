@@ -10,17 +10,18 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 
-//TODO: "rotation" is private
 public abstract class StructureTFComponent extends StructurePiece {
 
 	public StructureTFDecorator deco = null;
 	public int spawnListIndex = 0;
 	protected TFFeature feature = TFFeature.NOTHING;
 
-	public StructureTFComponent() {
+	public StructureTFComponent(IStructurePieceType piece, CompoundNBT nbt) {
+		super(piece, nbt);
 		this.rotation = Rotation.NONE;
 	}
 

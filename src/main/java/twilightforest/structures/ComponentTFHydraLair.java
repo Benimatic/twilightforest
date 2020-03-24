@@ -1,12 +1,14 @@
 package twilightforest.structures;
 
 import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
@@ -17,8 +19,8 @@ import java.util.Random;
 
 public class ComponentTFHydraLair extends ComponentTFHollowHill {
 
-	public ComponentTFHydraLair() {
-		super();
+	public ComponentTFHydraLair(TemplateManager manager, CompoundNBT nbt) {
+		super(TFFeature.TFHydra, nbt);
 	}
 
 	public ComponentTFHydraLair(TFFeature feature, World world, Random rand, int i, int x, int y, int z) {
@@ -57,5 +59,4 @@ public class ComponentTFHydraLair extends ComponentTFHollowHill {
 
 		return true;
 	}
-
 }

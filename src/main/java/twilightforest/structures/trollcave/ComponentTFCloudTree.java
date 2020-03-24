@@ -1,10 +1,12 @@
 package twilightforest.structures.trollcave;
 
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponentOld;
 
@@ -12,10 +14,13 @@ import java.util.Random;
 
 public class ComponentTFCloudTree extends StructureTFComponentOld {
 
-	public ComponentTFCloudTree() {
+	public ComponentTFCloudTree(TemplateManager manager, CompoundNBT nbt) {
+		super(TFTrollCavePieces.TFClTr, nbt);
 	}
 
 	public ComponentTFCloudTree(int index, int x, int y, int z) {
+		//TODO: Constructor pls
+
 		this.setCoordBaseMode(Direction.SOUTH);
 
 		// adjust x, y, z

@@ -9,7 +9,9 @@ import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.structures.StructureTFComponentOld;
@@ -29,8 +31,12 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 	boolean hasBase = false;
 	public boolean isAscender = false;
 
-	public ComponentTFMushroomTowerWing() {
-		super();
+	public ComponentTFMushroomTowerWing(TemplateManager manager, CompoundNBT nbt) {
+		super(TFMushroomTowerPieces.TFMTWin, nbt);
+	}
+
+	public ComponentTFMushroomTowerWing(IStructurePieceType piece, CompoundNBT nbt) {
+		super(piece, nbt);
 	}
 
 	protected ComponentTFMushroomTowerWing(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
@@ -107,7 +113,6 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 			// add a roof?
 			makeARoof(parent, list, rand);
 		}
-
 	}
 
 	/**
@@ -158,7 +163,6 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 		} else {
 			return false;
 		}
-
 	}
 
 	/**
@@ -188,7 +192,6 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 				}
 			}
 		}
-
 
 		return new int[]{x, y, z};
 	}
@@ -236,10 +239,8 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 				list.add(roof);
 				roof.buildComponent(this, list, rand);
 			}
-
 		}
 	}
-
 
 	@Override
 	protected boolean makeBridge(List<StructurePiece> list, Random rand, int index, int x, int y, int z, int wingSize, int wingHeight, Rotation rotation) {
@@ -287,7 +288,6 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 		bridge.buildComponent(this, list, rand);
 		addOpening(x, y, z, rotation);
 		return true;
-
 	}
 
 	/**
@@ -317,7 +317,6 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 			return new int[]{rx, ry, rz};
 		}
 
-
 		return new int[]{0, 0, 0};
 	}
 
@@ -344,18 +343,14 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 
 		makeTrunk(worldIn, sbb);
 
-
 		// make floors
 		makeFloorsForTower(worldIn, decoRNG, sbb);
-
 
 		// nullify sky light
 		this.nullifySkyLightForBoundingBox(worldIn);
 
-
 		// openings
 		makeOpenings(worldIn, sbb);
-
 
 		return true;
 	}
@@ -409,20 +404,14 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 
 		// divide the tower into floors
 		for (int i = 0; i < floors; i++) {
-
-
 			placeFloor(world, i * FLOOR_HEIGHT, sbb);
-
 
 			downLadderDir = ladderDir;
 			ladderDir++;
 			ladderDir %= 4;
 
 //			decorateFloor(world, decoRNG, i, (i * floorHeight), (i * floorHeight) + floorHeight, ladderDir, downLadderDir, sbb);
-
 		}
-
-
 	}
 
 	private void placeFloor(World world, int dy, MutableBoundingBox sbb) {
@@ -473,8 +462,5 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 	@Override
 	protected void decorateFloor(World world, Random rand, int floor, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, MutableBoundingBox sbb) {
 		//decorateWraparoundWallSteps(world, rand, bottom, top, ladderUpDir, ladderDownDir, sbb);
-
 	}
-
-
 }

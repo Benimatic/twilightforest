@@ -1,5 +1,6 @@
 package twilightforest.structures.stronghold;
 
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.ChunkPos;
@@ -7,6 +8,7 @@ import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 
 import java.util.List;
@@ -14,7 +16,8 @@ import java.util.Random;
 
 public class ComponentTFStrongholdUpperRightTurn extends StructureTFStrongholdComponent {
 
-	public ComponentTFStrongholdUpperRightTurn() {
+	public ComponentTFStrongholdUpperRightTurn(TemplateManager manager, CompoundNBT nbt) {
+		super(TFStrongholdPieces.TFSURT, nbt);
 	}
 
 	public ComponentTFStrongholdUpperRightTurn(TFFeature feature, int i, Direction facing, int x, int y, int z) {
@@ -32,7 +35,6 @@ public class ComponentTFStrongholdUpperRightTurn extends StructureTFStrongholdCo
 
 		// make a random component to the right
 		addNewUpperComponent(parent, list, random, Rotation.CLOCKWISE_90, -1, 1, 2);
-
 	}
 
 	@Override
@@ -56,5 +58,4 @@ public class ComponentTFStrongholdUpperRightTurn extends StructureTFStrongholdCo
 	public boolean isComponentProtected() {
 		return false;
 	}
-
 }

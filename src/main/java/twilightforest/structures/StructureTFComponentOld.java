@@ -2,6 +2,7 @@ package twilightforest.structures;
 
 import net.minecraft.block.*;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.properties.Half;
 import net.minecraft.state.properties.SlabType;
 import net.minecraft.tileentity.MobSpawnerTileEntity;
@@ -16,6 +17,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.LightType;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraftforge.common.util.BlockSnapshot;
 import twilightforest.TFFeature;
@@ -34,7 +36,8 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	protected static final BlockState AIR = Blocks.AIR.getDefaultState();
 	private static final StructureTFStrongholdStones strongholdStones = new StructureTFStrongholdStones();
 
-	public StructureTFComponentOld() {
+	public StructureTFComponentOld(IStructurePieceType piece, CompoundNBT nbt) {
+		super(piece, nbt);
 	}
 
 	public StructureTFComponentOld(TFFeature feature, int i) {
@@ -50,7 +53,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	//Let's not use vanilla's weird rotation+mirror thing...
 	@Override
 	public void setCoordBaseMode(@Nullable Direction facing) {
-		this.getCoordBaseMode() = facing;
+		this.field_74885_f = facing;
 		this.mirror = Mirror.NONE;
 
 		if (facing == null) {

@@ -40,14 +40,14 @@ public class TFStrongholdPieces {
 	public static final IStructurePieceType TFSCr = TFFeature.registerPiece("TFSCr", ComponentTFStrongholdCrossing::new);
 	public static final IStructurePieceType TFSRT = TFFeature.registerPiece("TFSRT", ComponentTFStrongholdRightTurn::new);
 	public static final IStructurePieceType TFSDE = TFFeature.registerPiece("TFSDE", ComponentTFStrongholdDeadEnd::new);
-	public static final IStructurePieceType TFSBR = TFFeature.registerPiece("TFSBR", ComponentTFStrongholdBalconyRoom::new); //FIXME: Clash with BossRoom
+	public static final IStructurePieceType TFSBalR = TFFeature.registerPiece("TFSBalR", ComponentTFStrongholdBalconyRoom::new);
 	public static final IStructurePieceType TFSTR = TFFeature.registerPiece("TFSTR", ComponentTFStrongholdTrainingRoom::new);
 	public static final IStructurePieceType TFSSS = TFFeature.registerPiece("TFSSS", ComponentTFStrongholdSmallStairs::new);
 	public static final IStructurePieceType TFSTC = TFFeature.registerPiece("TFSTC", ComponentTFStrongholdTreasureCorridor::new);
 	public static final IStructurePieceType TFSAt = TFFeature.registerPiece("TFSAt", ComponentTFStrongholdAtrium::new);
 	public static final IStructurePieceType TFSFo = TFFeature.registerPiece("TFSFo", ComponentTFStrongholdFoundry::new);
 	public static final IStructurePieceType TFTreaR = TFFeature.registerPiece("TFTreaR", ComponentTFStrongholdTreasureRoom::new);
-	public static final IStructurePieceType TFSBR = TFFeature.registerPiece("TFSBR", ComponentTFStrongholdBossRoom::new); //FIXME: Clash with BlaconyRoom
+	public static final IStructurePieceType TFSBR = TFFeature.registerPiece("TFSBR", ComponentTFStrongholdBossRoom::new);
 	public static final IStructurePieceType TFSAC = TFFeature.registerPiece("TFSAC", ComponentTFStrongholdAccessChamber::new);
 	public static final IStructurePieceType TFSEnter = TFFeature.registerPiece("TFSEnter", ComponentTFStrongholdEntrance::new);
 	public static final IStructurePieceType TFSUA = TFFeature.registerPiece("TFSUA", ComponentTFStrongholdUpperAscender::new);

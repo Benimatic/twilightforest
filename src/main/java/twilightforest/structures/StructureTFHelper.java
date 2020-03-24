@@ -24,7 +24,6 @@ public class StructureTFHelper {
         return type.getDefaultState().with(SlabBlock.TYPE, side);
     }
 
-
     public static BlockState getSlab(Block type) {
         return getSlabType(type, SlabType.BOTTOM);
     }
@@ -47,6 +46,4 @@ public class StructureTFHelper {
         if(i == 0) return Blocks.RED_MUSHROOM.getDefaultState();
         else return Blocks.BROWN_MUSHROOM.getDefaultState();
     }
-
-
 }

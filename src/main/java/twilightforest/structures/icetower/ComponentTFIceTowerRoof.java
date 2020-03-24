@@ -1,10 +1,12 @@
 package twilightforest.structures.icetower;
 
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.structures.lichtower.ComponentTFTowerRoof;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
@@ -13,7 +15,8 @@ import java.util.Random;
 
 public class ComponentTFIceTowerRoof extends ComponentTFTowerRoof {
 
-	public ComponentTFIceTowerRoof() {
+	public ComponentTFIceTowerRoof(TemplateManager manager, CompoundNBT nbt) {
+		super(TFIceTowerPieces.TFITRoof, nbt);
 	}
 
 	public ComponentTFIceTowerRoof(TFFeature feature, int i, ComponentTFTowerWing wing) {

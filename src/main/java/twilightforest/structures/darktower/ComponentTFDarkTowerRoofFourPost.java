@@ -1,10 +1,12 @@
 package twilightforest.structures.darktower;
 
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
 
@@ -12,7 +14,8 @@ import java.util.Random;
 
 public class ComponentTFDarkTowerRoofFourPost extends ComponentTFDarkTowerRoof {
 
-	public ComponentTFDarkTowerRoofFourPost() {
+	public ComponentTFDarkTowerRoofFourPost(TemplateManager manager, CompoundNBT nbt) {
+		super(TFDarkTowerPieces.TFDTRFP, nbt);
 	}
 
 	public ComponentTFDarkTowerRoofFourPost(TFFeature feature, int i, ComponentTFTowerWing wing) {

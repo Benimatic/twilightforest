@@ -1,5 +1,6 @@
 package twilightforest.structures.finalcastle;
 
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
@@ -7,6 +8,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.util.RotationUtil;
@@ -15,7 +17,9 @@ import java.util.List;
 import java.util.Random;
 
 public class ComponentTFFinalCastleRoof13Peaked extends StructureTFComponentOld {
-	public ComponentTFFinalCastleRoof13Peaked() {
+
+	public ComponentTFFinalCastleRoof13Peaked(TemplateManager manager, CompoundNBT nbt) {
+		super(TFFinalCastlePieces.TFFCRo13Pk, nbt);
 	}
 
 	public ComponentTFFinalCastleRoof13Peaked(TFFeature feature, Random rand, int i, StructureTFComponentOld sideTower) {

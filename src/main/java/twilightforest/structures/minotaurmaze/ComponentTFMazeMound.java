@@ -1,6 +1,7 @@
 package twilightforest.structures.minotaurmaze;
 
 import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -9,6 +10,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentOld;
 
@@ -17,8 +19,8 @@ import java.util.Random;
 
 public class ComponentTFMazeMound extends StructureTFComponentOld {
 
-	public ComponentTFMazeMound() {
-		super();
+	public ComponentTFMazeMound(TemplateManager manager, CompoundNBT nbt) {
+		super(TFMinotaurMazePieces.TFMMMound, nbt);
 	}
 
 	public static final int DIAMETER = 35;
