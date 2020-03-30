@@ -5,13 +5,16 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.blockstateprovider.BlockStateProvider;
-import twilightforest.world.feature.IBlockSettable;
+import twilightforest.world.feature.TFTreeGenerator;
+import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
 import java.util.Random;
+import java.util.Set;
 
 public class FeatureUtil {
 
@@ -26,9 +29,17 @@ public class FeatureUtil {
 		);
 	}
 
-	public static void drawBresehnam(World world, BlockPos from, BlockPos to, BlockState state) {
+	public static void drawBresehnamBranch(TFTreeGenerator generator, World world, Random random, BlockPos from, BlockPos to, Set<BlockPos> state, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
+		for (BlockPos pixel : getBresehnamArrays(from, to)) {
+			generator.setBranchBlockState(world, random, pixel, state, mbb, config);
+			//world.setBlockState(pixel, state);
+		}
+	}
+
+	public static void drawBresehnamTree(World world, BlockPos from, BlockPos to, BlockState state, Set<BlockPos> treepos) {
 		for (BlockPos pixel : getBresehnamArrays(from, to)) {
 			world.setBlockState(pixel, state);
+			treepos.add(pixel.toImmutable());
 		}
 	}
 
@@ -115,7 +126,7 @@ public class FeatureUtil {
 		return lineArray;
 	}
 
-	public static void makeLeafCircle(IBlockSettable generator, World world, BlockPos pos, int rad, BlockState state, boolean useHack) {
+	public static void makeLeafCircle(World world, BlockPos pos, int rad, BlockState state, Set<BlockPos> leaves, boolean useHack) {
 		// trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++) {
 			for (byte dz = 0; dz <= rad; dz++) {
@@ -129,25 +140,26 @@ public class FeatureUtil {
 				// if we're inside the blob, fill it
 				if (dist <= rad) {
 					// do four at a time for easiness!
-					putLeafBlock(generator, world, pos.add(+dx, 0, +dz), state);
-					putLeafBlock(generator, world, pos.add(+dx, 0, -dz), state);
-					putLeafBlock(generator, world, pos.add(-dx, 0, +dz), state);
-					putLeafBlock(generator, world, pos.add(-dx, 0, -dz), state);
+					putLeafBlock(world, pos.add(+dx, 0, +dz), state, leaves);
+					putLeafBlock(world, pos.add(+dx, 0, -dz), state, leaves);
+					putLeafBlock(world, pos.add(-dx, 0, +dz), state, leaves);
+					putLeafBlock(world, pos.add(-dx, 0, -dz), state, leaves);
 				}
 			}
 		}
 	}
 
-	public static void putLeafBlock(IBlockSettable generator, World world, BlockPos pos, BlockState state) {
+	public static void putLeafBlock(World world, BlockPos pos, BlockState state, Set<BlockPos> leavespos) {
 		BlockState whatsThere = world.getBlockState(pos);
 
 		if (whatsThere.getBlock().canBeReplacedByLeaves(whatsThere, world, pos) && whatsThere.getBlock() != state.getBlock()) {
-			generator.setBlockAndNotify(world, pos, state);
+			world.setBlockState(pos, state);
+			leavespos.add(pos.toImmutable());
 		}
 	}
 
 	// TODO: Parameter "useHack" is unused. Is it worth keeping? -Androsa
-	public static void makeLeafCircle2(IBlockSettable generator, World world, BlockPos pos, int rad, BlockState state, boolean useHack) {
+	public static void makeLeafCircle2(World world, BlockPos pos, int rad, BlockState state, Set<BlockPos> leaves,  boolean useHack) {
 		// trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++) {
 			for (byte dz = 0; dz <= rad; dz++) {
@@ -161,10 +173,10 @@ public class FeatureUtil {
 				// if we're inside the blob, fill it
 				if (dx * dx + dz * dz <= rad * rad) {
 					// do four at a time for easiness!
-					putLeafBlock(generator, world, pos.add(1 + dx, 0, 1 + dz), state);
-					putLeafBlock(generator, world, pos.add(1 + dx, 0, -dz), state);
-					putLeafBlock(generator, world, pos.add(-dx, 0, 1 + dz), state);
-					putLeafBlock(generator, world, pos.add(-dx, 0, -dz), state);
+					putLeafBlock(world, pos.add(1 + dx, 0, 1 + dz), state, leaves);
+					putLeafBlock(world, pos.add(1 + dx, 0, -dz), state, leaves);
+					putLeafBlock(world, pos.add(-dx, 0, 1 + dz), state, leaves);
+					putLeafBlock(world, pos.add(-dx, 0, -dz), state, leaves);
 				}
 			}
 		}
@@ -206,7 +218,7 @@ public class FeatureUtil {
 		return flag;
 	}
 
-	public static void drawBlob(IBlockSettable generator, World world, BlockPos pos, int rad, BlockState state) {
+	public static void drawBlob(World world, BlockPos pos, int rad, BlockState state) {
 		// then trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++) {
 			for (byte dy = 0; dy <= rad; dy++) {
@@ -225,21 +237,21 @@ public class FeatureUtil {
 					// if we're inside the blob, fill it
 					if (dist <= rad) {
 						// do eight at a time for easiness!
-						generator.setBlockAndNotify(world, pos.add(+dx, +dy, +dz), state);
-						generator.setBlockAndNotify(world, pos.add(+dx, +dy, -dz), state);
-						generator.setBlockAndNotify(world, pos.add(-dx, +dy, +dz), state);
-						generator.setBlockAndNotify(world, pos.add(-dx, +dy, -dz), state);
-						generator.setBlockAndNotify(world, pos.add(+dx, -dy, +dz), state);
-						generator.setBlockAndNotify(world, pos.add(+dx, -dy, -dz), state);
-						generator.setBlockAndNotify(world, pos.add(-dx, -dy, +dz), state);
-						generator.setBlockAndNotify(world, pos.add(-dx, -dy, -dz), state);
+						world.setBlockState(pos.add(+dx, +dy, +dz), state);
+						world.setBlockState(pos.add(+dx, +dy, -dz), state);
+						world.setBlockState(pos.add(-dx, +dy, +dz), state);
+						world.setBlockState(pos.add(-dx, +dy, -dz), state);
+						world.setBlockState(pos.add(+dx, -dy, +dz), state);
+						world.setBlockState(pos.add(+dx, -dy, -dz), state);
+						world.setBlockState(pos.add(-dx, -dy, +dz), state);
+						world.setBlockState(pos.add(-dx, -dy, -dz), state);
 					}
 				}
 			}
 		}
 	}
 
-	public static void drawLeafBlob(IBlockSettable generator, World world, BlockPos pos, int rad, BlockState state) {
+	public static void drawLeafBlob(World world, BlockPos pos, int rad, BlockState state, Set<BlockPos> leaves) {
 		// then trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++) {
 			for (byte dy = 0; dy <= rad; dy++) {
@@ -258,14 +270,14 @@ public class FeatureUtil {
 					// if we're inside the blob, fill it
 					if (dist <= rad) {
 						// do eight at a time for easiness!
-						putLeafBlock(generator, world, pos.add(+dx, +dy, +dz), state);
-						putLeafBlock(generator, world, pos.add(+dx, +dy, -dz), state);
-						putLeafBlock(generator, world, pos.add(-dx, +dy, +dz), state);
-						putLeafBlock(generator, world, pos.add(-dx, +dy, -dz), state);
-						putLeafBlock(generator, world, pos.add(+dx, -dy, +dz), state);
-						putLeafBlock(generator, world, pos.add(+dx, -dy, -dz), state);
-						putLeafBlock(generator, world, pos.add(-dx, -dy, +dz), state);
-						putLeafBlock(generator, world, pos.add(-dx, -dy, -dz), state);
+						putLeafBlock(world, pos.add(+dx, +dy, +dz), state, leaves);
+						putLeafBlock(world, pos.add(+dx, +dy, -dz), state, leaves);
+						putLeafBlock(world, pos.add(-dx, +dy, +dz), state, leaves);
+						putLeafBlock(world, pos.add(-dx, +dy, -dz), state, leaves);
+						putLeafBlock(world, pos.add(+dx, -dy, +dz), state, leaves);
+						putLeafBlock(world, pos.add(+dx, -dy, -dz), state, leaves);
+						putLeafBlock(world, pos.add(-dx, -dy, +dz), state, leaves);
+						putLeafBlock(world, pos.add(-dx, -dy, -dz), state, leaves);
 					}
 				}
 			}

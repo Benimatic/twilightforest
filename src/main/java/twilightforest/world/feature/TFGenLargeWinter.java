@@ -2,6 +2,7 @@ package twilightforest.world.feature;
 
 import com.mojang.datafixers.Dynamic;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
@@ -22,7 +23,9 @@ public class TFGenLargeWinter<T extends TFTreeFeatureConfig> extends TFTreeGener
 	}
 
 	@Override
-	protected boolean generate(IWorldGenerationReader world, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, MutableBoundingBox mbb, T config) {
+	protected boolean generate(IWorldGenerationReader worldIn, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, T config) {
+		World world = (World)worldIn;
+
 		// determine a height
 		int treeHeight = 35;
 		if (random.nextInt(3) == 0) {
@@ -44,22 +47,22 @@ public class TFGenLargeWinter<T extends TFTreeFeatureConfig> extends TFTreeGener
 		}
 
 		//okay build a tree!  Go up to the height
-		buildTrunk(world, pos, treeHeight);
+		buildTrunk(world, random, pos, trunk, treeHeight, mbb, config);
 
 		// make leaves
-		makeLeaves(world, pos, treeHeight);
+		makeLeaves(world, random, pos, treeHeight, trunk, leaves, mbb, config);
 
 		// roots!
 		int numRoots = 4 + random.nextInt(3);
 		float offset = random.nextFloat();
 		for (int b = 0; b < numRoots; b++) {
-			buildRoot(world, pos, offset, b);
+			buildRoot(world, random, pos, root, offset, b, mbb, config);
 		}
 
 		return true;
 	}
 
-	private void makeLeaves(World world, BlockPos pos, int treeHeight) {
+	private void makeLeaves(World world, Random random, BlockPos pos, int treeHeight, Set<BlockPos> trunk, Set<BlockPos> leaves, MutableBoundingBox mbb, T config) {
 		int offGround = 3;
 		int leafType = 1;
 
@@ -67,33 +70,38 @@ public class TFGenLargeWinter<T extends TFTreeFeatureConfig> extends TFTreeGener
 
 			int radius = leafRadius(treeHeight, dy, leafType);
 
-			FeatureUtil.makeLeafCircle2(this, world, pos.up(offGround + treeHeight - dy), radius, leafState, false);
-			this.makePineBranches(world, pos.up(offGround + treeHeight - dy), radius);
+			FeatureUtil.makeLeafCircle2(world, pos.up(offGround + treeHeight - dy), radius, config.leavesProvider.getBlockState(random, pos.up(offGround + treeHeight - dy)), leaves, false);
+			this.makePineBranches(world, random, pos.up(offGround + treeHeight - dy), trunk, radius, mbb, config);
 		}
 	}
 
-	private void makePineBranches(World world, BlockPos pos, int radius) {
+	private void makePineBranches(World world, Random rand, BlockPos pos, Set<BlockPos> trunk, int radius, MutableBoundingBox mbb, T config) {
 		int branchLength = radius > 4 ? radius - 1 : radius - 2;
 
 		switch (pos.getY() % 2) {
 			case 0:
 				// branches
 				for (int i = 1; i <= branchLength; i++) {
-					this.setBlockAndNotifyAdequately(world, pos.add(-i, 0, 0), branchState.with(BlockOldLog.LOG_AXIS, BlockLog.EnumAxis.X));
-					this.setBlockAndNotifyAdequately(world, pos.add(0, 0, i + 1), branchState.with(BlockOldLog.LOG_AXIS, BlockLog.EnumAxis.Z));
-					this.setBlockAndNotifyAdequately(world, pos.add(i + 1, 0, 1), branchState.with(BlockOldLog.LOG_AXIS, BlockLog.EnumAxis.X));
-					this.setBlockAndNotifyAdequately(world, pos.add(1, 0, -i), branchState.with(BlockOldLog.LOG_AXIS, BlockLog.EnumAxis.Z));
+					this.placeLogAt(world, rand, pos.add(-i, 0, 0), Direction.Axis.X, trunk, mbb, config);
+					this.placeLogAt(world, rand, pos.add(0, 0, i + 1), Direction.Axis.Z, trunk, mbb, config);
+					this.placeLogAt(world, rand, pos.add(i + 1, 0, 1), Direction.Axis.X, trunk, mbb, config);
+					this.placeLogAt(world, rand, pos.add(1, 0, -i), Direction.Axis.Z, trunk, mbb, config);
 				}
 				break;
 			case 1:
 				for (int i = 1; i <= branchLength; i++) {
-					this.setBlockAndNotifyAdequately(world, pos.add(-1, 0, 1), branchState.with(BlockOldLog.LOG_AXIS, BlockLog.EnumAxis.X));
-					this.setBlockAndNotifyAdequately(world, pos.add(1, 0, i + 1), branchState.with(BlockOldLog.LOG_AXIS, BlockLog.EnumAxis.Z));
-					this.setBlockAndNotifyAdequately(world, pos.add(i + 1, 0, 0), branchState.with(BlockOldLog.LOG_AXIS, BlockLog.EnumAxis.X));
-					this.setBlockAndNotifyAdequately(world, pos.add(0, 0, -i), branchState.with(BlockOldLog.LOG_AXIS, BlockLog.EnumAxis.Z));
+					this.placeLogAt(world, rand, pos.add(-1, 0, 1), Direction.Axis.X, trunk, mbb, config);
+					this.placeLogAt(world, rand, pos.add(1, 0, i + 1), Direction.Axis.Z, trunk, mbb, config);
+					this.placeLogAt(world, rand, pos.add(i + 1, 0, 0), Direction.Axis.X, trunk, mbb, config);
+					this.placeLogAt(world, rand, pos.add(0, 0, -i), Direction.Axis.Z, trunk, mbb, config);
 				}
 				break;
 		}
+	}
+
+	private void placeLogAt(IWorldGenerationReader reader, Random rand, BlockPos pos, Direction.Axis axis, Set<BlockPos> logPos, MutableBoundingBox boundingBox, T config) {
+		this.setBlockState(reader, pos, config.trunkProvider.getBlockState(rand, pos).with(RotatedPillarBlock.AXIS, axis), boundingBox);
+		logPos.add(pos.toImmutable());
 	}
 
 	private int leafRadius(int treeHeight, int dy, int functionType) {
@@ -108,12 +116,12 @@ public class TFGenLargeWinter<T extends TFTreeFeatureConfig> extends TFTreeGener
 		}
 	}
 
-	private void buildTrunk(World world, BlockPos pos, int treeHeight) {
+	private void buildTrunk(World world, Random rand, BlockPos pos, Set<BlockPos> trunk, int treeHeight, MutableBoundingBox mbb, T config) {
 		for (int dy = 0; dy < treeHeight; dy++) {
-			this.setBlockAndNotifyAdequately(world, pos.add(0, dy, 0), treeState);
-			this.setBlockAndNotifyAdequately(world, pos.add(1, dy, 0), treeState);
-			this.setBlockAndNotifyAdequately(world, pos.add(0, dy, 1), treeState);
-			this.setBlockAndNotifyAdequately(world, pos.add(1, dy, 1), treeState);
+			this.setLogBlockState(world, rand, pos.add(0, dy, 0), trunk, mbb, config);
+			this.setLogBlockState(world, rand, pos.add(1, dy, 0), trunk, mbb, config);
+			this.setLogBlockState(world, rand, pos.add(0, dy, 1), trunk, mbb, config);
+			this.setLogBlockState(world, rand, pos.add(1, dy, 1), trunk, mbb, config);
 		}
 	}
 }

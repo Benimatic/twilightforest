@@ -1,5 +1,6 @@
 package twilightforest.world.feature;
 
+import com.google.common.collect.Sets;
 import com.mojang.datafixers.Dynamic;
 import net.minecraft.block.Block;
 import net.minecraft.block.DirectionalBlock;
@@ -7,13 +8,17 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.IWorldGenerationReader;
 import net.minecraft.world.gen.feature.AbstractTreeFeature;
+import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.FeatureUtil;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
 import java.util.Random;
+import java.util.Set;
 import java.util.function.Function;
 
 public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends AbstractTreeFeature<T> {
@@ -48,22 +53,57 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Abs
 		return TFGenHollowTree.canGrowInto(blockType);
 	}
 
+	//TODO: Check the logic here
+	@Override
+	protected boolean generate(IWorldGenerationReader world, Random random, BlockPos pos, Set<BlockPos> logpos, Set<BlockPos> leavespos, MutableBoundingBox mbb, T config) {
+		Set<BlockPos> branchSet = Sets.newHashSet();
+		Set<BlockPos> rootSet = Sets.newHashSet();
+		return generate(world, random, pos, logpos, leavespos, branchSet, rootSet, mbb, config);
+	}
+
+	/**
+	 * This works akin to the AbstractTreeFeature.generate, but put our branches and roots here
+	 */
+	protected abstract boolean generate(IWorldGenerationReader world, Random random, BlockPos pos, Set<BlockPos> logpos, Set<BlockPos> leavespos, Set<BlockPos> branchpos, Set<BlockPos> rootpos, MutableBoundingBox mbb, T config);
+
+	public boolean setBranchBlockState(IWorldGenerationReader world, Random random, BlockPos pos, Set<BlockPos> branchpos, MutableBoundingBox mbb, BaseTreeFeatureConfig config) {
+		if (!isAirOrLeaves(world, pos) && !isTallPlants(world, pos) && !isWater(world, pos)) {
+			return false;
+		} else {
+			this.setBlockState(world, pos, config.trunkProvider.getBlockState(random, pos), mbb);
+			branchpos.add(pos.toImmutable());
+			return true;
+		}
+	}
+
+	protected boolean setRootsBlockState(IWorldGenerationReader world, Random random, BlockPos pos, Set<BlockPos> branchpos, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
+		if (canRootGrowIn((World)world, pos)) { //this feels dirty. Is it even going to work?
+			this.setBlockState(world, pos, config.rootsProvider.getBlockState(random, pos), mbb);
+			branchpos.add(pos.toImmutable());
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	/**
 	 * Build a root, but don't let it stick out too far into thin air because that's weird
 	 */
-	protected void buildRoot(World world, Random rand, BlockPos pos, double offset, int b, T config) {
+	protected void buildRoot(World world, Random rand, BlockPos pos, Set<BlockPos> setpos, double offset, int b, MutableBoundingBox mbb, T config) {
 		BlockPos dest = FeatureUtil.translate(pos.down(b + 2), 5, 0.3 * b + offset, 0.8);
 
 		// go through block by block and stop drawing when we head too far into open air
 		BlockPos[] lineArray = FeatureUtil.getBresehnamArrays(pos.down(), dest);
 		for (BlockPos coord : lineArray) {
-			this.placeRootBlock(world, coord, config.rootsProvider.getBlockState(rand, coord));
+			this.setRootsBlockState(world, rand, coord, setpos, mbb, config);
 		}
 	}
 
 	/**
 	 * Function used to actually place root blocks if they're not going to break anything important
+	 * TODO: Deprecated. Use setRootsBlockState
 	 */
+	@Deprecated
 	protected void placeRootBlock(World world, BlockPos pos, BlockState state) {
 		if (canRootGrowIn(world, pos)) {
 			world.setBlockState(pos, state);

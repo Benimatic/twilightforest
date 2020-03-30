@@ -26,13 +26,15 @@ public class TFGenCanopyOak<T extends TFTreeFeatureConfig> extends TFGenCanopyTr
 	}
 
 	@Override
-	protected boolean generate(IWorldGenerationReader world, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, MutableBoundingBox mbb, T config) {
+	protected boolean generate(IWorldGenerationReader worldIn, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, T config) {
+		World world = (World)worldIn;
+
 		// determine a height
 		int treeHeight = minHeight;
-		if (random.nextInt(chanceAddFirstFive) == 0) {
+		if (random.nextInt(config.chanceAddFiveFirst) == 0) {
 			treeHeight += random.nextInt(5);
 
-			if (random.nextInt(chanceAddSecondFive) == 0) {
+			if (random.nextInt(config.chanceAddFiveSecond) == 0) {
 				treeHeight += random.nextInt(5);
 			}
 		}
@@ -57,7 +59,7 @@ public class TFGenCanopyOak<T extends TFTreeFeatureConfig> extends TFGenCanopyTr
 		float bangle = random.nextFloat();
 		for (int b = 0; b < numBranches; b++) {
 			float btilt = 0.15F + (random.nextFloat() * 0.35F);
-			buildBranch(world, pos, treeHeight - 10 + (b / 2), 5, bangle, btilt, false, random);
+			buildBranch(world, pos, trunk, branch, treeHeight - 10 + (b / 2), 5, bangle, btilt, false, random, mbb, config);
 
 			bangle += (random.nextFloat() * 0.4F);
 			if (bangle > 1.0F) {
@@ -67,34 +69,34 @@ public class TFGenCanopyOak<T extends TFTreeFeatureConfig> extends TFGenCanopyTr
 
 		// add the actual leaves
 		for (BlockPos leafPos : leaves) {
-			makeLeafBlob(world, leafPos);
+			makeLeafBlob(world, random, leafPos, leaves, config);
 		}
 
-		makeRoots(world, random, pos);
-		makeRoots(world, random, pos.east());
-		makeRoots(world, random, pos.south());
-		makeRoots(world, random, pos.east().south());
+		makeRoots(world, random, pos, trunk, root, mbb, config);
+		makeRoots(world, random, pos.east(), trunk, root, mbb, config);
+		makeRoots(world, random, pos.south(), trunk, root, mbb, config);
+		makeRoots(world, random, pos.east().south(), trunk, root, mbb, config);
 
 		return true;
 	}
 
-	private void makeLeafBlob(World world, BlockPos leafPos) {
-		FeatureUtil.drawLeafBlob(this, world, leafPos, 2, leafState);
+	private void makeLeafBlob(World world, Random rand, BlockPos leafPos, Set<BlockPos> setLeaves, T config) {
+		FeatureUtil.drawLeafBlob(world, leafPos, 2, config.leavesProvider.getBlockState(rand, leafPos), setLeaves);
 	}
 
-	private void makeRoots(World world, Random random, BlockPos pos) {
+	private void makeRoots(World world, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> root, MutableBoundingBox mbb, T config) {
 		// root bulb
 		if (FeatureUtil.hasAirAround(world, pos.down())) {
-			this.setBlockAndNotifyAdequately(world, pos.down(), treeState);
+			this.setLogBlockState(world, random, pos.down(), trunk, mbb, config);
 		} else {
-			this.setBlockAndNotifyAdequately(world, pos.down(), rootState);
+			this.setRootsBlockState(world, random, pos.down(), root, mbb, config);
 		}
 
 		// roots!
 		int numRoots = 1 + random.nextInt(2);
 		float offset = random.nextFloat();
 		for (int b = 0; b < numRoots; b++) {
-			buildRoot(world, pos, offset, b);
+			buildRoot(world, random, pos, root, offset, b, mbb, config);
 		}
 	}
 
@@ -113,7 +115,7 @@ public class TFGenCanopyOak<T extends TFTreeFeatureConfig> extends TFGenCanopyTr
 	 * Build a branch with a flat blob of leaves at the end.
 	 */
 	@Override
-	void buildBranch(World world, BlockPos pos, int height, double length, double angle, double tilt, boolean trunk, Random treeRNG) {
+	void buildBranch(World world, BlockPos pos, Set<BlockPos> logpos, Set<BlockPos> branchpos, int height, double length, double angle, double tilt, boolean trunk, Random treeRNG, MutableBoundingBox mbb, T config) {
 		BlockPos src = pos.up(height);
 		BlockPos dest = FeatureUtil.translate(src, length, angle, tilt);
 
@@ -132,12 +134,20 @@ public class TFGenCanopyOak<T extends TFTreeFeatureConfig> extends TFGenCanopyTr
 			dest = new BlockPos(dest.getX(), dest.getY(), pos.getZ() + limit);
 		}
 
-		FeatureUtil.drawBresehnam(world, src, dest, trunk ? treeState : branchState);
+		if (trunk) {
+			FeatureUtil.drawBresehnamTree(world, src, dest, config.trunkProvider.getBlockState(treeRNG, src), logpos);
+		} else {
+			FeatureUtil.drawBresehnamBranch(this, world, treeRNG, src, dest, branchpos, mbb, config);
+		}
 
-		setBlockAndNotifyAdequately(world, dest.east(), branchState);
-		setBlockAndNotifyAdequately(world, dest.west(), branchState);
-		setBlockAndNotifyAdequately(world, dest.north(), branchState);
-		setBlockAndNotifyAdequately(world, dest.south(), branchState);
+		this.setBranchBlockState(world, treeRNG, dest.east(), branchpos, mbb, config);
+		this.setBranchBlockState(world, treeRNG, dest.west(), branchpos, mbb, config);
+		this.setBranchBlockState(world, treeRNG, dest.north(), branchpos, mbb, config);
+		this.setBranchBlockState(world, treeRNG, dest.south(), branchpos, mbb, config);
+//		setBlockAndNotifyAdequately(world, dest.east(), branchState);
+//		setBlockAndNotifyAdequately(world, dest.west(), branchState);
+//		setBlockAndNotifyAdequately(world, dest.north(), branchState);
+//		setBlockAndNotifyAdequately(world, dest.south(), branchState);
 
 		this.leaves.add(dest);
 	}

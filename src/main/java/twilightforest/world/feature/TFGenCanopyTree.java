@@ -33,7 +33,9 @@ public class TFGenCanopyTree<T extends TFTreeFeatureConfig> extends TFTreeGenera
 	}
 
 	@Override
-	protected boolean generate(IWorldGenerationReader world, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, MutableBoundingBox mbb, T config) {
+	protected boolean generate(IWorldGenerationReader worldIn, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, T config) {
+		World world = (World)worldIn;
+
 		// determine a height
 		int treeHeight = minHeight;
 		if (random.nextInt(config.chanceAddFiveFirst) == 0) {
@@ -54,36 +56,36 @@ public class TFGenCanopyTree<T extends TFTreeFeatureConfig> extends TFTreeGenera
 			return false;
 		}
 
-		leaves.clear();
+		this.leaves.clear();
 
 		//okay build a tree!  Go up to the height
-		buildBranch(world, pos, 0, treeHeight, 0, 0, true, random);
+		buildBranch(world, pos, trunk, branch, 0, treeHeight, 0, 0, true, random, mbb, config);
 
 		// make 3-4 branches
 		int numBranches = 3 + random.nextInt(2);
 		float offset = random.nextFloat();
 		for (int b = 0; b < numBranches; b++) {
-			buildBranch(world, pos, treeHeight - 10 + b, 9, 0.3 * b + offset, 0.2, false, random);
+			buildBranch(world, pos, trunk, branch, treeHeight - 10 + b, 9, 0.3 * b + offset, 0.2, false, random, mbb, config);
 		}
 
 		// add the actual leaves
 		if (config.hasLeaves)
-			for (BlockPos leafPos : leaves) {
-				makeLeafBlob(world, leafPos);
+			for (BlockPos leafPos : this.leaves) {
+				makeLeafBlob(world, random, leafPos, leaves, config);
 			}
 
 		// root bulb
 		if (FeatureUtil.hasAirAround(world, pos.down())) {
 			this.setLogBlockState(world, random, pos.down(), trunk, mbb, config);
 		} else {
-			this.setBlockAndNotifyAdequately(world, pos.down(), rootState);
+			this.setRootsBlockState(world, random, pos.down(), root, mbb, config);
 		}
 
 		// roots!
 		int numRoots = 3 + random.nextInt(2);
 		offset = random.nextFloat();
 		for (int b = 0; b < numRoots; b++) {
-			buildRoot(world, pos, offset, b);
+			buildRoot(world, random, pos, root, offset, b, mbb, config);
 		}
 
 		return true;
@@ -94,23 +96,27 @@ public class TFGenCanopyTree<T extends TFTreeFeatureConfig> extends TFTreeGenera
 //		return generate(world, random, pos, true);
 //	}
 
-	private void makeLeafBlob(World world, BlockPos leafPos) {
-		FeatureUtil.makeLeafCircle(this, world, leafPos.down(), 3, leafState, true);
-		FeatureUtil.makeLeafCircle(this, world, leafPos, 4, leafState, true);
-		FeatureUtil.makeLeafCircle(this, world, leafPos.up(), 2, leafState, true);
+	private void makeLeafBlob(World world, Random random, BlockPos leafPos, Set<BlockPos> setLeaves, T config) {
+		FeatureUtil.makeLeafCircle(world, leafPos.down(), 3, config.leavesProvider.getBlockState(random, leafPos.down()), setLeaves, true);
+		FeatureUtil.makeLeafCircle(world, leafPos, 4, config.leavesProvider.getBlockState(random, leafPos), setLeaves, true);
+		FeatureUtil.makeLeafCircle(world, leafPos.up(), 2, config.leavesProvider.getBlockState(random, leafPos.up()), setLeaves, true);
 	}
 
 	/**
 	 * Build a branch with a flat blob of leaves at the end.
 	 */
-	void buildBranch(World world, BlockPos pos, int height, double length, double angle, double tilt, boolean trunk, Random treeRNG) {
+	void buildBranch(World world, BlockPos pos, Set<BlockPos> logpos, Set<BlockPos> branchpos, int height, double length, double angle, double tilt, boolean trunk, Random treeRNG, MutableBoundingBox mbb, T config) {
 		BlockPos src = pos.up(height);
 		BlockPos dest = FeatureUtil.translate(src, length, angle, tilt);
 
 		// only actually draw the branch if it's not going to load new chunks
 		if (world.isAreaLoaded(dest, 5)) {
 
-			FeatureUtil.drawBresehnam(world, src, dest, trunk ? treeState : branchState);
+			if (trunk) {
+				FeatureUtil.drawBresehnamTree(world, src, dest, config.trunkProvider.getBlockState(treeRNG, src), logpos);
+			} else {
+				FeatureUtil.drawBresehnamBranch(this, world, treeRNG, src, dest, branchpos, mbb, config);
+			}
 
 			// seems to help lighting to place this firefly now
 			if (trunk) {
@@ -118,10 +124,14 @@ public class TFGenCanopyTree<T extends TFTreeFeatureConfig> extends TFTreeGenera
 				addFirefly(world, pos, 3 + treeRNG.nextInt(7), treeRNG.nextDouble());
 			}
 
-			setBlockAndNotifyAdequately(world, dest.east(), branchState);
-			setBlockAndNotifyAdequately(world, dest.west(), branchState);
-			setBlockAndNotifyAdequately(world, dest.south(), branchState);
-			setBlockAndNotifyAdequately(world, dest.north(), branchState);
+			this.setBranchBlockState(world, treeRNG, dest.east(), branchpos, mbb, config);
+			this.setBranchBlockState(world, treeRNG, dest.west(), branchpos, mbb, config);
+			this.setBranchBlockState(world, treeRNG, dest.south(), branchpos, mbb, config);
+			this.setBranchBlockState(world, treeRNG, dest.north(), branchpos, mbb, config);
+//			setBlockAndNotifyAdequately(world, dest.east(), branchState);
+//			setBlockAndNotifyAdequately(world, dest.west(), branchState);
+//			setBlockAndNotifyAdequately(world, dest.south(), branchState);
+//			setBlockAndNotifyAdequately(world, dest.north(), branchState);
 
 			// save leaf position for later
 			this.leaves.add(dest);

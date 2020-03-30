@@ -4,9 +4,7 @@ import com.mojang.datafixers.Dynamic;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.gen.IWorldGenerationReader;
-import twilightforest.block.BlockTFMagicLog;
 import twilightforest.block.TFBlocks;
-import twilightforest.enums.MagicWoodVariant;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
 import java.util.Random;
@@ -36,10 +34,10 @@ public class TFGenTreeOfTransformation<T extends TFTreeFeatureConfig> extends TF
 	}
 
 	@Override
-	protected boolean generate(IWorldGenerationReader world, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, MutableBoundingBox mbb, T config) {
+	protected boolean generate(IWorldGenerationReader world, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, T config) {
 		if (super.generate(world, random, pos, trunk, leaves, mbb, config)) {
 			// heart of transformation
-			setBlockAndNotifyAdequately(world, pos.up(3), TFBlocks.magic_log_core.getDefaultState().with(BlockTFMagicLog.VARIANT, MagicWoodVariant.TRANS));
+			world.setBlockState(pos.up(3), TFBlocks.transformation_log_core.get().getDefaultState(), 3);
 			return true;
 		} else {
 			return false;

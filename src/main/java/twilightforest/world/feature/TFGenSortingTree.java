@@ -1,6 +1,7 @@
 package twilightforest.world.feature;
 
 import com.mojang.datafixers.Dynamic;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
@@ -49,8 +50,8 @@ public class TFGenSortingTree<T extends TFTreeFeatureConfig> extends Feature<T> 
 		}
 
 		// leaves
-		putLeaves(world.getWorld(), pos.up(2), false);
-		putLeaves(world.getWorld(), pos.up(3), false);
+		putLeaves(world.getWorld(), rand, pos.up(2), false, config);
+		putLeaves(world.getWorld(), rand, pos.up(3), false, config);
 
 		// sorting engine
 		world.setBlockState(pos.up(), TFBlocks.sorting_log_core.get().getDefaultState(), 3);
@@ -58,16 +59,24 @@ public class TFGenSortingTree<T extends TFTreeFeatureConfig> extends Feature<T> 
 		return true;
 	}
 
-	private void putLeaves(World world, BlockPos pos, boolean bushy) {
+	private void putLeaves(World world, Random rand, BlockPos pos, boolean bushy, T config) {
 		for (int lx = -1; lx <= 1; lx++) {
 			for (int ly = -1; ly <= 1; ly++) {
 				for (int lz = -1; lz <= 1; lz++) {
 					if (!bushy && Math.abs(ly) > 0 && (Math.abs(lx) + Math.abs(lz)) > 1) {
 						continue;
 					}
-					FeatureUtil.putLeafBlock(this, world, pos.add(lx, ly, lz), leafState);
+					putLeafBlock(world, pos.add(lx, ly, lz), config.leavesProvider.getBlockState(rand, pos.add(lx, ly, lz)));
 				}
 			}
+		}
+	}
+
+	public void putLeafBlock(World world, BlockPos pos, BlockState state) {
+		BlockState whatsThere = world.getBlockState(pos);
+
+		if (whatsThere.getBlock().canBeReplacedByLeaves(whatsThere, world, pos) && whatsThere.getBlock() != state.getBlock()) {
+			world.setBlockState(pos, state);
 		}
 	}
 }
