@@ -11,7 +11,6 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
-import twilightforest.entity.ai.EntityAITFTempt;
 
 public class EntityTFRaven extends EntityTFTinyBird {
 
@@ -28,7 +27,7 @@ public class EntityTFRaven extends EntityTFTinyBird {
 	protected void registerGoals() {
 		this.goalSelector.addGoal(0, new SwimGoal(this));
 		this.goalSelector.addGoal(1, new PanicGoal(this, 1.5F));
-		this.goalSelector.addGoal(2, new EntityAITFTempt(this, 0.85F, true, SEEDS));
+		this.goalSelector.addGoal(2, new TemptGoal(this, 0.85F, true, SEEDS));
 		this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 1.0F));
 		this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 6F));
 		this.goalSelector.addGoal(7, new LookRandomlyGoal(this));

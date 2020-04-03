@@ -1,11 +1,9 @@
 package twilightforest.entity.passive;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.Pose;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
@@ -13,9 +11,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
-import twilightforest.entity.ai.EntityAITFTempt;
 
-public class EntityTFSquirrel extends CreatureEntity implements IAnimals {
+import javax.annotation.Nullable;
+
+// TODO: See Bunny
+public class EntityTFSquirrel extends AnimalEntity {
 
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/squirrel");
 	protected static final Ingredient SEEDS = Ingredient.fromItems(Items.WHEAT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS, Items.BEETROOT_SEEDS);
@@ -31,7 +31,7 @@ public class EntityTFSquirrel extends CreatureEntity implements IAnimals {
 	protected void registerGoals() {
 		this.goalSelector.addGoal(0, new SwimGoal(this));
 		this.goalSelector.addGoal(1, new PanicGoal(this, 1.38F));
-		this.goalSelector.addGoal(2, new EntityAITFTempt(this, 1.0F, true, SEEDS));
+		this.goalSelector.addGoal(2, new TemptGoal(this, 1.0F, true, SEEDS));
 		this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, PlayerEntity.class, 2.0F, 0.8F, 1.4F));
 		this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 1.0F));
 		this.goalSelector.addGoal(6, new WaterAvoidingRandomWalkingGoal(this, 1.25F));
@@ -89,5 +89,11 @@ public class EntityTFSquirrel extends CreatureEntity implements IAnimals {
 	@Override
 	public boolean canDespawn(double p_213397_1_) {
 		return false;
+	}
+
+	@Nullable
+	@Override
+	public AgeableEntity createChild(AgeableEntity ageableEntity) {
+		return null;
 	}
 }
