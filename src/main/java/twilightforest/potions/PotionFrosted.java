@@ -27,17 +27,4 @@ public class PotionFrosted extends Effect {
 
 		addAttributesModifier(SharedMonsterAttributes.MOVEMENT_SPEED, PotionFrosted.MODIFIER_UUID.toString(), -0.15000000596046448D, AttributeModifier.Operation.MULTIPLY_TOTAL);
 	}
-
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void renderHUDEffect(EffectInstance effect, AbstractGui gui, int x, int y, float z, float alpha) {
-		Minecraft.getInstance().textureManager.bindTexture(sprite);
-		GuiUtils.drawModalRectWithCustomSizedTexture(x + 3, y + 3, z, 0, 0, 18, 18, 18, 18);
-	}
-
-	@Override
-	public void renderInventoryEffect(EffectInstance effect, DisplayEffectsScreen<?> gui, int x, int y, float z) {
-		Minecraft.getInstance().textureManager.bindTexture(sprite);
-		GuiUtils.drawModalRectWithCustomSizedTexture(x + 6, y + 7, z, 0, 0, 18, 18, 18, 18);
-	}
 }

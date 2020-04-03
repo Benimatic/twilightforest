@@ -8,15 +8,13 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.inventory.ContainerTFUncrafting;
 import twilightforest.tileentity.TileEntityTFCinderFurnace;
 import twilightforest.tileentity.critters.*;
 
-//TODO 1.14: Splinter this from Proxies. We're not using them anymore. Meantime, here's what to keep and toss:
-public class TFCommonProxy implements IGuiHandler /* TODO: JESUS CHRIST WHAT THE FUCK WHY WAS THIS A IGUIHANDLER?! */ {
+public class TFCommonProxy
 
 	public void preInit() {}
 

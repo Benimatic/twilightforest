@@ -19,12 +19,12 @@ public class StructureBoundingBoxUtils {
 			return null;
 
 		return new MutableBoundingBox(
-				sbbIn.minX > sbbMask.minX ? sbbIn.minX : sbbMask.minX,
-				sbbIn.minY > sbbMask.minY ? sbbIn.minY : sbbMask.minY,
-				sbbIn.minZ > sbbMask.minZ ? sbbIn.minZ : sbbMask.minZ,
-				sbbIn.maxX < sbbMask.maxX ? sbbIn.maxX : sbbMask.maxX,
-				sbbIn.maxY < sbbMask.maxY ? sbbIn.maxY : sbbMask.maxY,
-				sbbIn.maxZ < sbbMask.maxZ ? sbbIn.maxZ : sbbMask.maxZ);
+						Math.max(sbbIn.minX, sbbMask.minX),
+						Math.max(sbbIn.minY, sbbMask.minY),
+						Math.max(sbbIn.minZ, sbbMask.minZ),
+						Math.min(sbbIn.maxX, sbbMask.maxX),
+						Math.min(sbbIn.maxY, sbbMask.maxY),
+						Math.min(sbbIn.maxZ, sbbMask.maxZ));
 	}
 
 	public static AxisAlignedBB toAABB(MutableBoundingBox sbb) {

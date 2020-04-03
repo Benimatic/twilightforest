@@ -70,7 +70,7 @@ public class TileEntityTFCicadaTicking extends TileEntityTFCicada implements ITi
 	}
 
 	private void playSong() {
-		if (!TFConfig.silentCicadas) {
+		if (!TFConfig.CLIENT_CONFIG.silentCicadas.get()) {
 			world.playSound(pos.getX(), pos.getY(), pos.getZ(), TFSounds.CICADA, SoundCategory.NEUTRAL, 1.0f, (world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F + 1.0F, false);
 		}
 	}

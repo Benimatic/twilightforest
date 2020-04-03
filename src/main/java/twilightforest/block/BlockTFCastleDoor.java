@@ -43,7 +43,6 @@ public class BlockTFCastleDoor extends Block {
 		lockIndex = lock;
 		//this.lightOpacity = isVanished ? 0 : 255;
 
-		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
 		this.setDefaultState(stateContainer.getBaseState().with(ACTIVE, false).with(VANISH, false));
 	}
 

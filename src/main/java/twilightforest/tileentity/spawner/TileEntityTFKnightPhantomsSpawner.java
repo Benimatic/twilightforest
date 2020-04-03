@@ -2,6 +2,7 @@ package twilightforest.tileentity.spawner;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
@@ -12,14 +13,14 @@ import twilightforest.entity.boss.EntityTFKnightPhantom;
 import twilightforest.item.TFItems;
 import twilightforest.tileentity.TFTileEntities;
 
-public class TileEntityTFKnightPhantomsSpawner extends TileEntityTFBossSpawner {
+public class TileEntityTFKnightPhantomsSpawner extends TileEntityTFBossSpawner<EntityTFKnightPhantom> {
 
 	private static final int COUNT = 6;
 
 	private int spawned = 0;
 
 	public TileEntityTFKnightPhantomsSpawner() {
-		super(TFTileEntities.KNIGHT_PHANTOM_SPAWNER.get(), EntityType.getKey(TFEntities.knight_phantom.get()));
+		super(TFTileEntities.KNIGHT_PHANTOM_SPAWNER.get(), TFEntities.knight_phantom.get());
 	}
 
 	@Override
@@ -32,7 +33,7 @@ public class TileEntityTFKnightPhantomsSpawner extends TileEntityTFBossSpawner {
 	protected boolean spawnMyBoss() {
 		for (int i = spawned; i < COUNT; i++) {
 			// create creature
-			LivingEntity myCreature = makeMyCreature();
+			EntityTFKnightPhantom myCreature = makeMyCreature();
 
 			float angle = (360F / COUNT) * i;
 			final float distance = 4F;
@@ -42,7 +43,7 @@ public class TileEntityTFKnightPhantomsSpawner extends TileEntityTFBossSpawner {
 			double rz = pos.getZ() + 0.5D + Math.sin(angle * Math.PI / 180.0D) * distance;
 
 			myCreature.setLocationAndAngles(rx, ry, rz, world.rand.nextFloat() * 360F, 0.0F);
-			myCreature.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(myCreature)), null);
+			myCreature.onInitialSpawn(world, world.getDifficultyForLocation(new BlockPos(myCreature)), SpawnReason.SPAWNER, null, null);
 
 			if(i == 5 && world.getDifficulty() == Difficulty.HARD){
 				myCreature.setItemStackToSlot(EquipmentSlotType.OFFHAND,new ItemStack(TFItems.knightmetal_shield.get()));
@@ -51,7 +52,7 @@ public class TileEntityTFKnightPhantomsSpawner extends TileEntityTFBossSpawner {
 			// set creature's home to this
 			initializeCreature(myCreature);
 
-			((EntityTFKnightPhantom) myCreature).setNumber(i);
+			myCreature.setNumber(i);
 
 			// spawn it
 			if (world.addEntity(myCreature)) {
@@ -59,12 +60,5 @@ public class TileEntityTFKnightPhantomsSpawner extends TileEntityTFBossSpawner {
 			}
 		}
 		return spawned == COUNT;
-	}
-
-	@Override
-	protected void initializeCreature(LivingEntity myCreature) {
-		if (myCreature instanceof EntityTFKnightPhantom) {
-			((EntityTFKnightPhantom) myCreature).setHomePosAndDistance(pos, 46);
-		}
 	}
 }

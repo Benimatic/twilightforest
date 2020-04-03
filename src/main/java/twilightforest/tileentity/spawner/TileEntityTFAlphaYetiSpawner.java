@@ -1,14 +1,14 @@
 package twilightforest.tileentity.spawner;
 
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import twilightforest.entity.TFEntities;
+import twilightforest.entity.boss.EntityTFYetiAlpha;
 import twilightforest.tileentity.TFTileEntities;
 
-public class TileEntityTFAlphaYetiSpawner extends TileEntityTFBossSpawner {
+public class TileEntityTFAlphaYetiSpawner extends TileEntityTFBossSpawner<EntityTFYetiAlpha> {
 
 	public TileEntityTFAlphaYetiSpawner() {
-		super(TFTileEntities.ALPHA_YETI_SPAWNER.get(), EntityType.getKey(TFEntities.yeti_alpha.get()));
+		super(TFTileEntities.ALPHA_YETI_SPAWNER.get(), TFEntities.yeti_alpha.get());
 	}
 
 	@Override

@@ -1,11 +1,10 @@
 package twilightforest.tileentity.critters;
 
 import net.minecraft.tileentity.TileEntity;
+import twilightforest.tileentity.TFTileEntities;
 
-/**
- * Created by Drullkus on 1/19/18.
- */
 public class TileEntityTFMoonworm extends TileEntity {
-
-	//TODO: Figure out what this does now
+	public TileEntityTFMoonworm() {
+		super(TFTileEntities.MOONWORM.get());
+	}
 }

@@ -1,8 +1,6 @@
 package twilightforest.tileentity.spawner;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.particles.ParticleTypes;
@@ -10,17 +8,17 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.Difficulty;
 
-public abstract class TileEntityTFBossSpawner extends TileEntity implements ITickableTileEntity {
+public abstract class TileEntityTFBossSpawner<T extends MobEntity> extends TileEntity implements ITickableTileEntity {
 
 	protected static final int SHORT_RANGE = 9, LONG_RANGE = 50;
 
-	protected final ResourceLocation mobID;
+	protected final EntityType<T> entityType;
 	protected Entity displayCreature = null;
 	protected boolean spawnedBoss = false;
 
-	protected TileEntityTFBossSpawner(TileEntityType<?> type, ResourceLocation mobID) {
+	protected TileEntityTFBossSpawner(TileEntityType<?> type, EntityType<T> entityType) {
 		super(type);
-		this.mobID = mobID;
+		this.entityType = entityType;
 	}
 
 	public boolean anyPlayerInRange() {
@@ -49,15 +47,12 @@ public abstract class TileEntityTFBossSpawner extends TileEntity implements ITic
 		}
 	}
 
-	/**
-	 * Spawn the boss
-	 */
 	protected boolean spawnMyBoss() {
 		// create creature
-		LivingEntity myCreature = makeMyCreature();
+		T myCreature = makeMyCreature();
 
 		myCreature.moveToBlockPosAndAngles(pos, world.rand.nextFloat() * 360F, 0.0F);
-		myCreature.onInitialSpawn(world.getDifficultyForLocation(pos), null);
+		myCreature.onInitialSpawn(world, world.getDifficultyForLocation(pos), SpawnReason.SPAWNER, null, null);
 
 		// set creature's home to this
 		initializeCreature(myCreature);
@@ -76,20 +71,15 @@ public abstract class TileEntityTFBossSpawner extends TileEntity implements ITic
 		return this.displayCreature;
 	}
 
-	/**
-	 * Any post-creation initialization goes here
-	 */
-	protected void initializeCreature(LivingEntity myCreature) {
-		if (myCreature instanceof CreatureEntity) {
-			((CreatureEntity) myCreature).setHomePosAndDistance(pos, 46);
-		}
+	protected void initializeCreature(T myCreature) {
+		myCreature.setHomePosAndDistance(pos, 46);
 	}
 
 	protected int getRange() {
 		return SHORT_RANGE;
 	}
 
-	protected LivingEntity makeMyCreature() {
-		return (LivingEntity) EntityList.createEntityByIDFromName(mobID, world);
+	protected T makeMyCreature() {
+		return entityType.create(world);
 	}
 }

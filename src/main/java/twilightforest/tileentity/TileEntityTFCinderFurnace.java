@@ -4,6 +4,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.LogBlock;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Items;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tileentity.FurnaceTileEntity;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.item.Item;
@@ -12,6 +14,7 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.oredict.OreDictionary;
 import twilightforest.block.BlockTFCinderFurnace;
 import twilightforest.block.BlockTFCinderLog;
@@ -100,7 +103,7 @@ public class TileEntityTFCinderFurnace extends FurnaceTileEntity {
 		if (this.world.isBlockLoaded(pos)) {
 			Block nearbyBlock = this.getWorld().getBlockState(pos).getBlock();
 
-			if (nearbyBlock != TFBlocks.cinder_log.get() && this.isLog(nearbyBlock)) {
+			if (nearbyBlock != TFBlocks.cinder_log.get() && BlockTags.LOGS.contains(nearbyBlock)) {
 				this.getWorld().setBlockState(pos, TFBlocks.cinder_log.get().getDefaultState().with(BlockTFCinderLog.AXIS, getCinderFacing(dx, dy, dz)), 2);
 				this.getWorld().playEvent(2004, pos, 0);
 				this.getWorld().playEvent(2004, pos, 0);
@@ -123,18 +126,6 @@ public class TileEntityTFCinderFurnace extends FurnaceTileEntity {
 			return dy == 0 ? LogBlock.EnumAxis.Y : LogBlock.EnumAxis.NONE;
 		}
 
-	}
-
-	//TODO: OreDict is dead. Use Tag
-	private boolean isLog(Block nearbyBlock) {
-		int[] oreIDs = OreDictionary.getOreIDs(new ItemStack(nearbyBlock));
-		for (int id : oreIDs) {
-			if (id == OreDictionary.getOreID("logWood")) {
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	/**
@@ -227,16 +218,8 @@ public class TileEntityTFCinderFurnace extends FurnaceTileEntity {
 		}
 	}
 
-	//TODO: OreDict dead, Tag pls
 	private boolean canMultiply(ItemStack input, ItemStack output) {
-		int[] oreIDs = OreDictionary.getOreIDs(input);
-		for (int id : oreIDs) {
-			if (OreDictionary.getOreName(id).startsWith("ore") || id == OreDictionary.getOreID("logWood")) {
-				return true;
-			}
-		}
-
-		return false;
+		return ItemTags.LOGS.contains(input.getItem()) || Tags.Items.ORES.contains(input.getItem());
 	}
 
 	/**
