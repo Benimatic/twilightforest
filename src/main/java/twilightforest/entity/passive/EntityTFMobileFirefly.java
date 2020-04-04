@@ -13,8 +13,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
 
 public class EntityTFMobileFirefly extends AmbientEntity {
@@ -99,10 +97,10 @@ public class EntityTFMobileFirefly extends AmbientEntity {
 		// End copy
 	}
 
-	@Override
-	protected boolean canTriggerWalking() {
-		return false;
-	}
+//	@Override
+//	protected boolean canTriggerWalking() {
+//		return false;
+//	}
 
 	@Override
 	public boolean handleFallDamage(float dist, float mult) {
@@ -129,11 +127,12 @@ public class EntityTFMobileFirefly extends AmbientEntity {
 				&& super.getCanSpawnHere();
 	}
 
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public int getBrightnessForRender() {
-		return 15728880;
-	}
+	//TODO: I believe this is done via the Renderer now
+//	@Override
+//	@OnlyIn(Dist.CLIENT)
+//	public int getBrightnessForRender() {
+//		return 15728880;
+//	}
 
 	public float getGlowBrightness() {
 		return (float) Math.sin(this.ticksExisted / 7.0) + 1F;
