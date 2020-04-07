@@ -61,8 +61,8 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 		deformTerrainForFeature(x, z, primer);
 		replaceBiomeBlocks(x, z, primer, biomesForGeneration);
 
-		caveGenerator.generate(world, x, z, primer);
-		ravineGenerator.generate(world, x, z, primer);
+//		caveGenerator.generate(world, x, z, primer); TODO: Handled in Biome carvers
+//		ravineGenerator.generate(world, x, z, primer); TODO: Handled in Biome carvers
 		generateFeatures(x, z, primer);
 		hollowTreeGenerator.generate(world, x, z, primer);
 
@@ -80,9 +80,9 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 				for (int y = 0; y < 256; y++) {
 					boolean solid = data.get(getIndex(x, y, z));
 					if (y < TFWorld.SEALEVEL && !solid) {
-						primer.setBlockState(x, y, z, water);
+						primer.setBlockState(new BlockPos(x, y, z), water, false);
 					} else if (solid) {
-						primer.setBlockState(x, y, z, stone);
+						primer.setBlockState(new BlockPos(x, y, z), stone, false);
 					}
 				}
 			}
@@ -92,22 +92,22 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 	private void addGlaciers(int chunkX, int chunkZ, ChunkPrimer primer, Biome[] biomes) {
 
 		BlockState glacierBase = Blocks.GRAVEL.getDefaultState();
-		BlockState glacierMain = TFConfig.performance.glacierPackedIce ? Blocks.PACKED_ICE.getDefaultState() : Blocks.ICE.getDefaultState();
+		BlockState glacierMain = TFConfig.COMMON_CONFIG.PERFORMANCE.glacierPackedIce.get() ? Blocks.PACKED_ICE.getDefaultState() : Blocks.ICE.getDefaultState();
 		BlockState glacierTop = Blocks.ICE.getDefaultState();
 
 		for (int z = 0; z < 16; z++) {
 			for (int x = 0; x < 16; x++) {
 
 				Biome biome = biomes[x & 15 | (z & 15) << 4];
-				if (biome != TFBiomes.glacier) continue;
+				if (biome != TFBiomes.glacier.get()) continue;
 
 				// find the (current) top block
 				int gBase = -1;
 				for (int y = 127; y >= 0; y--) {
-					Block currentBlock = primer.getBlockState(x, y, z).getBlock();
+					Block currentBlock = primer.getBlockState(new BlockPos(x, y, z)).getBlock();
 					if (currentBlock == Blocks.STONE) {
 						gBase = y + 1;
-						primer.setBlockState(x, y, z, glacierBase);
+						primer.setBlockState(new BlockPos(x, y, z), glacierBase, false);
 						break;
 					}
 				}
@@ -117,9 +117,9 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 				int gTop = Math.min(gBase + gHeight, 127);
 
 				for (int y = gBase; y < gTop; y++) {
-					primer.setBlockState(x, y, z, glacierMain);
+					primer.setBlockState(new BlockPos(x, y, z), glacierMain, false);
 				}
-				primer.setBlockState(x, gTop, z, glacierTop);
+				primer.setBlockState(new BlockPos(x, gTop, z), glacierTop, false);
 			}
 		}
 	}
@@ -139,7 +139,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 					for (int bz = -1; bz <= 1; bz++) {
 						Biome biome = biomesForGeneration[x + bx + 2 + (z + bz + 2) * (10)];
 
-						if (biome == TFBiomes.darkForest || biome == TFBiomes.darkForestCenter) {
+						if (biome == TFBiomes.darkForest.get() || biome == TFBiomes.darkForestCenter.get()) {
 							thicks[x + z * 5]++;
 							biomeFound = true;
 						}
@@ -318,9 +318,10 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 		BlockFalling.fallInstantly = false;
 	}
 
-	@Override
-	public void recreateStructures(Chunk chunk, int x, int z) {
-		super.recreateStructures(chunk, x, z);
-		hollowTreeGenerator.generate(world, x, z, null);
-	}
+	//TODO: See super
+//	@Override
+//	public void recreateStructures(Chunk chunk, int x, int z) {
+//		super.recreateStructures(chunk, x, z);
+//		hollowTreeGenerator.generate(world, x, z, null);
+//	}
 }

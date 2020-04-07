@@ -19,6 +19,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
+import twilightforest.entity.projectile.EntityTFSlimeProjectile;
 
 public class EntityTFSlimeBeetle extends MonsterEntity implements IRangedAttackMob {
 
@@ -89,8 +90,4 @@ public class EntityTFSlimeBeetle extends MonsterEntity implements IRangedAttackM
 		projectile.shoot(tx, ty + heightOffset, tz, 0.6F, 6.0F);
 		this.world.addEntity(projectile);
 	}
-
-	//TODO: Unused?
-//	@Override
-//	public void setSwingingArms(boolean swingingArms) {}
 }

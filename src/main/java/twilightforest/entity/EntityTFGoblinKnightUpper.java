@@ -39,7 +39,6 @@ public class EntityTFGoblinKnightUpper extends MonsterEntity {
 	private int shieldHits = 0;
 	public int heavySpearTimer;
 
-
 	public EntityTFGoblinKnightUpper(EntityType<? extends EntityTFGoblinKnightUpper> type, World world) {
 		super(type, world);
 
@@ -193,7 +192,6 @@ public class EntityTFGoblinKnightUpper extends MonsterEntity {
 			this.heavySpearTimer = HEAVY_SPEAR_TIMER_START;
 		} else if (id == 5) {
 			ItemStack broken = new ItemStack(Items.IRON_CHESTPLATE);
-			//TODO: AT renderBrokenItemStack
 			this.renderBrokenItemStack(broken);
 			this.renderBrokenItemStack(broken);
 			this.renderBrokenItemStack(broken);
@@ -271,7 +269,6 @@ public class EntityTFGoblinKnightUpper extends MonsterEntity {
 			playSound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
 		}
 
-
 		// knock back slightly
 		LivingEntity toKnockback = (getRidingEntity() instanceof LivingEntity) ? (LivingEntity) getRidingEntity() : this;
 
@@ -290,7 +287,6 @@ public class EntityTFGoblinKnightUpper extends MonsterEntity {
 				this.setRevengeTarget((LivingEntity) source.getTrueSource());
 			}
 		}
-
 
 		return true;
 	}

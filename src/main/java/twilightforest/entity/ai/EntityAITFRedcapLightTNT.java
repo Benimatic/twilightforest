@@ -5,6 +5,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.entity.EntityTFRedcap;
 
@@ -64,7 +65,7 @@ public class EntityAITFRedcapLightTNT extends EntityAITFRedcapBase {
 	public void tick() {
 		this.redcap.getLookController().setLookPosition(tntPos.getX(), tntPos.getY(), tntPos.getZ(), 30.0F, this.redcap.getVerticalFaceSpeed());
 
-		if (this.redcap.getDistanceSq(tntPos) < 2.4D * 2.4D) {
+		if (this.redcap.getDistanceSq(new Vec3d(tntPos)) < 2.4D * 2.4D) {
 			redcap.playAmbientSound();
 
 			Blocks.TNT.onPlayerDestroy(redcap.world, tntPos, Blocks.TNT.getDefaultState().with(TNTBlock.UNSTABLE, true));

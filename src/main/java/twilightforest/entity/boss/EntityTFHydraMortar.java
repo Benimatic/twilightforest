@@ -50,6 +50,11 @@ public class EntityTFHydraMortar extends ThrowableEntity {
 	}
 
 	@Override
+	protected void registerData() {
+
+	}
+
+	@Override
 	public void tick() {
 		super.tick();
 

@@ -98,5 +98,4 @@ public class EntityAITFRedcapShy extends EntityAITFRedcapBase {
 		// add that to the target entity's position, and we have our destination
 		return new Vec3d(toCircle.getX() + dx, circler.getBoundingBox().minY, toCircle.getZ() + dz);
 	}
-
 }

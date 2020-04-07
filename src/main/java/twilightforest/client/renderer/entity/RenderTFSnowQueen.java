@@ -13,8 +13,8 @@ public class RenderTFSnowQueen<T extends EntityTFSnowQueen, M extends ModelTFSno
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("snowqueen.png");
 
-	public RenderTFSnowQueen(EntityRendererManager manager) {
-		super(manager, new ModelTFSnowQueen(), 0.625F);
+	public RenderTFSnowQueen(EntityRendererManager manager, M model) {
+		super(manager, model, 0.625F);
 	}
 
 	@Override

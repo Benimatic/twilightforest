@@ -1,10 +1,12 @@
 package twilightforest.client.model.entity;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import twilightforest.entity.EntityTFSpikeBlock;
 
-public class ModelTFSpikeBlock<T extends EntityTFSpikeBlock> extends EntityModel<T> {
+public class ModelTFSpikeBlock<T extends EntityTFSpikeBlock> extends SegmentedModel<T> {
 	ModelRenderer block;
 	ModelRenderer[] spikes = new ModelRenderer[27];
 
@@ -122,12 +124,15 @@ public class ModelTFSpikeBlock<T extends EntityTFSpikeBlock> extends EntityModel
 		spikes[8].rotateAngleY = -fourtyFive;
 		spikes[22].rotateAngleX = -55F / (180F / (float) Math.PI);
 		spikes[22].rotateAngleY = -fourtyFive;
+	}
+
+	@Override
+	public void setAngles(T entity, float v, float v1, float v2, float v3, float v4) {
 
 	}
 
 	@Override
-	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-		block.render(scale);
+	public Iterable<ModelRenderer> getParts() {
+		return ImmutableList.of(block);
 	}
-
 }

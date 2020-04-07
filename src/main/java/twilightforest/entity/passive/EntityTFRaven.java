@@ -74,5 +74,4 @@ public class EntityTFRaven extends EntityTFTinyBird {
 	public boolean isSpooked() {
 		return this.hurtTime > 0;
 	}
-
 }

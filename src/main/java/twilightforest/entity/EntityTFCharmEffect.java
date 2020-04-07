@@ -2,6 +2,7 @@ package twilightforest.entity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.IRendersAsItem;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.CompoundNBT;
@@ -15,7 +16,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class EntityTFCharmEffect extends Entity {
+public class EntityTFCharmEffect extends Entity implements IRendersAsItem {
 	private static final DataParameter<Integer> DATA_OWNER = EntityDataManager.createKey(EntityTFCharmEffect.class, DataSerializers.VARINT);
 	private static final DataParameter<Integer> DATA_ITEMID = EntityDataManager.createKey(EntityTFCharmEffect.class, DataSerializers.VARINT);
 	private static final double DISTANCE = 1.75;
@@ -138,5 +139,4 @@ public class EntityTFCharmEffect extends Entity {
 
 	@Override
 	protected void writeAdditional(CompoundNBT cmp) {}
-
 }

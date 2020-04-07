@@ -1,8 +1,8 @@
 package twilightforest;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
-import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.nbt.CompoundNBT;
@@ -122,10 +122,10 @@ public class TFMagicMapData extends MapData {
 		public boolean render(int idx) {
 			if (TFFeature.getFeatureByID(featureId).isStructureEnabled) {
 				Minecraft.getInstance().textureManager.bindTexture(MAP_ICONS);
-				GlStateManager.pushMatrix();
+				RenderSystem.pushMatrix();
 				RenderSystem.translatef(0.0F + getX() / 2.0F + 64.0F, 0.0F + getY() / 2.0F + 64.0F, -0.02F);
-				GlStateManager.rotatef((float) (getRotation() * 360) / 16.0F, 0.0F, 0.0F, 1.0F);
-				GlStateManager.scalef(4.0F, 4.0F, 3.0F);
+				RenderSystem.rotatef((float) (getRotation() * 360) / 16.0F, 0.0F, 0.0F, 1.0F);
+				RenderSystem.scalef(4.0F, 4.0F, 3.0F);
 				RenderSystem.translatef(-0.125F, 0.125F, 0.0F);
 				float f1 = (float) (featureId % 8) / 8.0F;
 				float f2 = (float) (featureId / 8) / 8.0F;
@@ -134,12 +134,12 @@ public class TFMagicMapData extends MapData {
 				Tessellator tessellator = Tessellator.getInstance();
 				BufferBuilder bufferbuilder = tessellator.getBuffer();
 				bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-				bufferbuilder.pos(-1.0D, 1.0D, (float) idx * -0.001F).tex((double) f1, (double) f2).endVertex();
-				bufferbuilder.pos(1.0D, 1.0D, (float) idx * -0.001F).tex((double) f3, (double) f2).endVertex();
-				bufferbuilder.pos(1.0D, -1.0D, (float) idx * -0.001F).tex((double) f3, (double) f4).endVertex();
-				bufferbuilder.pos(-1.0D, -1.0D, (float) idx * -0.001F).tex((double) f1, (double) f4).endVertex();
+				bufferbuilder.vertex(-1.0D, 1.0D, (float) idx * -0.001F).texture(f1, f2).endVertex();
+				bufferbuilder.vertex(1.0D, 1.0D, (float) idx * -0.001F).texture(f3, f2).endVertex();
+				bufferbuilder.vertex(1.0D, -1.0D, (float) idx * -0.001F).texture(f3, f4).endVertex();
+				bufferbuilder.vertex(-1.0D, -1.0D, (float) idx * -0.001F).texture(f1, f4).endVertex();
 				tessellator.draw();
-				GlStateManager.popMatrix();
+				RenderSystem.popMatrix();
 			}
 			return true;
 		}

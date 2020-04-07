@@ -29,7 +29,7 @@ public class EntityAITFYetiTired extends Goal {
 	}
 
 	@Override
-	public boolean isInterruptible() {
+	public boolean isPreemptible() {
 		return false;
 	}
 

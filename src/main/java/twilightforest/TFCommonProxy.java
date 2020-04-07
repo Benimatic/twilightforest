@@ -1,21 +1,12 @@
 package twilightforest;
 
 import net.minecraft.advancements.Advancement;
-import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.inventory.container.FurnaceContainer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import org.apache.logging.log4j.core.jmx.Server;
-import twilightforest.client.particle.TFParticleType;
 import twilightforest.inventory.ContainerTFUncrafting;
-import twilightforest.tileentity.TileEntityTFCinderFurnace;
-import twilightforest.tileentity.critters.*;
 
 public class TFCommonProxy {
 	public void init() {}

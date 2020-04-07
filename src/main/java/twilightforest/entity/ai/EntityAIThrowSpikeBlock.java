@@ -37,5 +37,4 @@ public class EntityAIThrowSpikeBlock extends Goal {
 	public void startExecuting() {
 		this.attacker.setThrowing(true);
 	}
-
 }

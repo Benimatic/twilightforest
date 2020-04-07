@@ -13,6 +13,7 @@ import net.minecraft.world.gen.feature.Feature;
 import twilightforest.IMCHandler;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
+import twilightforest.world.TFWorld;
 import twilightforest.world.feature.config.CaveStalactiteConfig;
 
 import java.util.ArrayList;
@@ -28,9 +29,10 @@ public class TFGenCaveStalactite<T extends CaveStalactiteConfig> extends Feature
 
 	public BlockState blockState;
 	public boolean hang;
-	public float sizeFactor;
-	public int maxLength;
-	public int minHeight;
+	//TODO: Moved to CaveStalactiteConfig
+//	public float sizeFactor;
+//	public int maxLength;
+//	public int minHeight;
 
 	/**
 	 * Initializes a stalactite builder.  Actually also makes stalagmites
@@ -251,8 +253,8 @@ public class TFGenCaveStalactite<T extends CaveStalactiteConfig> extends Feature
 		mediumHillStalactites.clear();
 		largeHillStalactites.clear();
 
-		TFConfig.dimension.hollowHillStalactites.load();
-		if (TFConfig.dimension.hollowHillStalactites.useConfigOnly) {
+		TFConfig.COMMON_CONFIG.DIMENSION.hollowHillStalactites.load();
+		if (TFConfig.COMMON_CONFIG.DIMENSION.hollowHillStalactites.useConfigOnly.get()) {
 			if (smallHillStalactites.isEmpty()) {
 				TwilightForestMod.LOGGER.info("Not all hollow hills are populated with the config, adding fallback");
 				addStalactite(1, Blocks.STONE.getDefaultState(), 0.7F, 8, 1, 1);

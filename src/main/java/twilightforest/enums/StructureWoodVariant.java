@@ -13,8 +13,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public enum StructureWoodVariant implements IStringSerializable {
 
@@ -86,12 +84,6 @@ public enum StructureWoodVariant implements IStringSerializable {
 	private final Block fence;
 	private final Block gate;
 	private final Block plate;
-
-	@Nullable
-	public static StructureWoodVariant getVariantFromBlockState(BlockState state) {
-		Block block = state.getBlock();
-		return getVariantFromBlock(block);
-	}
 
 	@Nullable
 	public static StructureWoodVariant getVariantFromBlock(Block block) {

@@ -29,7 +29,7 @@ public class EntityAIStayNearHome extends Goal {
 
 	@Override
 	public void startExecuting() {
-		if (this.entity.getDistanceSq(this.entity.getHomePosition()) > 256.0D) {
+		if (this.entity.getDistanceSq(new Vec3d(this.entity.getHomePosition())) > 256.0D) {
 			Vec3d vec3 = RandomPositionGenerator.findRandomTargetBlockTowards(this.entity, 14, 3, new Vec3d(this.entity.getHomePosition().getX() + 0.5D, this.entity.getHomePosition().getY(), this.entity.getHomePosition().getZ() + 0.5D));
 
 			if (vec3 != null) {
@@ -39,5 +39,4 @@ public class EntityAIStayNearHome extends Goal {
 			this.entity.getNavigator().tryMoveToXYZ(this.entity.getHomePosition().getX() + 0.5D, this.entity.getHomePosition().getY(), this.entity.getHomePosition().getZ() + 0.5D, speed);
 		}
 	}
-
 }

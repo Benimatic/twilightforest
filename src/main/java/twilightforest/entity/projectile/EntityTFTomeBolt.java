@@ -29,11 +29,6 @@ public class EntityTFTomeBolt extends EntityTFThrowable implements IRendersAsIte
 	}
 
 	@Override
-	protected void registerData() {
-		// TODO: Needed?
-	}
-
-	@Override
 	public void tick() {
 		super.tick();
 		makeTrail();

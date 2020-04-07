@@ -35,11 +35,6 @@ public class EntityTFNatureBolt extends EntityTFThrowable implements ITFProjecti
 	}
 
 	@Override
-	protected void registerData() {
-		// TODO: Needed?
-	}
-
-	@Override
 	public void tick() {
 		super.tick();
 		makeTrail();

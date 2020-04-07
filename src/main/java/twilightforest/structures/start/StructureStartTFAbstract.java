@@ -12,6 +12,7 @@ import twilightforest.biomes.TFBiomes;
 import twilightforest.structures.StructureTFComponentTemplate;
 import twilightforest.structures.darktower.ComponentTFDarkTowerMain;
 import twilightforest.structures.lichtower.ComponentTFTowerMain;
+import twilightforest.world.TFWorld;
 
 import java.util.Random;
 

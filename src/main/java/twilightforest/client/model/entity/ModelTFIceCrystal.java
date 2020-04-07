@@ -1,13 +1,13 @@
 package twilightforest.client.model.entity;
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
 import twilightforest.entity.boss.EntityTFIceCrystal;
 
-public class ModelTFIceCrystal<T extends EntityTFIceCrystal> extends EntityModel<T> {
+public class ModelTFIceCrystal<T extends EntityTFIceCrystal> extends SegmentedModel<T> {
 
 	public ModelRenderer[] spikes = new ModelRenderer[16];
 

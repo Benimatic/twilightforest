@@ -22,6 +22,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.block.TFBlocks;
+import twilightforest.util.FeatureUtil;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -135,7 +136,7 @@ public class ItemTFOreMagnet extends ItemTF {
 	public static int doMagnet(World world, BlockPos usePos, BlockPos destPos) {
 		int blocksMoved = 0;
 		// get blocks in line from src to dest
-		BlockPos[] lineArray = TFGenerator.getBresehnamArrays(usePos, destPos);
+		BlockPos[] lineArray = FeatureUtil.getBresehnamArrays(usePos, destPos);
 
 		// find some ore?
 		BlockState foundState = Blocks.AIR.getDefaultState();

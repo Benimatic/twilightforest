@@ -105,7 +105,7 @@ public class EntityAITFLichShadows extends Goal {
 	private void despawnClones() {
 		for (EntityTFLich nearbyLich : lich.getNearbyLiches()) {
 			if (nearbyLich.isShadowClone()) {
-				nearbyLich.isDead = true;
+				nearbyLich.remove(true);
 			}
 		}
 	}

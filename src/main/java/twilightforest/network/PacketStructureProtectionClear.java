@@ -1,6 +1,5 @@
 package twilightforest.network;
 
-import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.world.dimension.Dimension;
@@ -22,7 +21,7 @@ public class PacketStructureProtectionClear {
 	public static class Handler {
 		public static boolean onMessage(PacketStructureProtectionClear message, Supplier<NetworkEvent.Context> ctx) {
 			ctx.get().enqueueWork(() -> {
-				Dimension provider = Minecraft.getInstance().world.provider;
+				Dimension provider = Minecraft.getInstance().world.dimension;
 
 				// add weather box if needed
 				if (provider instanceof WorldProviderTwilightForest) {

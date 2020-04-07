@@ -182,29 +182,29 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 				if (trophy == null) {
 					matrix.translate(0.0F, -0.25F, transform == ItemCameraTransforms.TransformType.HEAD ? -0.125F : 0.0F);
 				}
-				renderHydraHead(rotation, onGround && trophy != null);
+				renderHydraHead(matrix, rotation, onGround && trophy != null);
 				break;
 			case NAGA:
-				renderNagaHead(rotation, onGround);
+				renderNagaHead(matrix, rotation, onGround);
 				break;
 			case LICH:
-				renderLichHead(rotation, onGround);
+				renderLichHead(matrix, rotation, onGround);
 				break;
 			case UR_GHAST:
 				if (trophy == null) matrix.translate(0.0F, -0.5F, 0.0F);
-				renderUrGhastHead(trophy, rotation, onGround, partialTime);
+				renderUrGhastHead(trophy, matrix, rotation, onGround, partialTime);
 				break;
 			case SNOW_QUEEN:
-				renderSnowQueenHead(rotation, onGround);
+				renderSnowQueenHead(matrix, rotation, onGround);
 				break;
 			case MINOSHROOM:
-				renderMinoshroomHead(rotation, onGround);
+				renderMinoshroomHead(matrix, rotation, onGround);
 				break;
 			case KNIGHT_PHANTOM:
-				renderKnightPhantomHead(rotation, onGround);
+				renderKnightPhantomHead(matrix, rotation, onGround);
 				break;
 			case QUEST_RAM:
-				renderQuestRamHead(rotation, onGround);
+				renderQuestRamHead(matrix, rotation, onGround);
 				break;
 			default:
 				break;

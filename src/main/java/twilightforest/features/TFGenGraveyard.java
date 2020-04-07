@@ -231,7 +231,7 @@ public class TFGenGraveyard<T extends NoFeatureConfig> extends Feature<T> {
 		@Nullable
 		@Override
 		public Template.BlockInfo processBlock(World worldIn, BlockPos pos, Template.BlockInfo blockInfo) {
-			return blockInfo.blockState.getBlock() == Blocks.GRASS ? blockInfo : random.nextInt(5) == 0 ? new Template.BlockInfo(pos, Blocks.WEB.getDefaultState(), null) : blockInfo;
+			return blockInfo.state.getBlock() == Blocks.GRASS ? blockInfo : random.nextInt(5) == 0 ? new Template.BlockInfo(pos, Blocks.COBWEB.getDefaultState(), null) : blockInfo;
 		}
 	}
 }

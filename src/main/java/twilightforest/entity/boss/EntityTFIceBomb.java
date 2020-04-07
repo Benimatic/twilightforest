@@ -35,7 +35,7 @@ public class EntityTFIceBomb extends EntityTFThrowable {
 
 	@Override
 	protected void onImpact(RayTraceResult ray) {
-		this.motionY = 0;
+		this.setMotion(this.getMotion().getX(), 0.0D, this.getMotion().getZ());
 		this.hasHit = true;
 
 		if (!world.isRemote)
@@ -70,7 +70,7 @@ public class EntityTFIceBomb extends EntityTFThrowable {
 		if (state.getMaterial() == Material.LAVA) {
 			this.world.setBlockState(pos, Blocks.OBSIDIAN.getDefaultState());
 		}
-		if (this.world.isAirBlock(pos) && Blocks.SNOW.canPlaceBlockAt(this.world, pos)) {
+		if (this.world.isAirBlock(pos) && Blocks.SNOW.getDefaultState().isValidPosition(this.world, pos)) {
 			this.world.setBlockState(pos, Blocks.SNOW.getDefaultState());
 		}
 	}

@@ -1230,10 +1230,10 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 	 * @param top
 	 */
 	protected void makeTimberBeams(World world, Random rand, MutableBoundingBox sbb, Rotation rotation, int y, boolean isBottom, boolean isTop, int top) {
-		BlockState beamID = TFBlocks.twilight_log.getDefaultState();
-		BlockState beamStateNS = beamID.with(LogBlock.LOG_AXIS, LogBlock.EnumAxis.Z);
-		BlockState beamStateUD = beamID.with(LogBlock.LOG_AXIS, LogBlock.EnumAxis.Y);
-		BlockState beamStateEW = beamID.with(LogBlock.LOG_AXIS, LogBlock.EnumAxis.X);
+		BlockState beamID = TFBlocks.oak_log.get().getDefaultState();
+		BlockState beamStateNS = beamID.with(LogBlock.AXIS, Direction.Axis.Z);
+		BlockState beamStateUD = beamID.with(LogBlock.AXIS, Direction.Axis.Y);
+		BlockState beamStateEW = beamID.with(LogBlock.AXIS, Direction.Axis.X);
 
 		// three beams going n/s
 		for (int z = 1; z < size - 1; z++) {
@@ -1528,7 +1528,6 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 							orientation = LeverBlock.EnumOrientation.DOWN_X;
 							break;
 					}
-
 
 					setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), orientation, rotation, false), lx, ly, lz, rotation, sbb);
 					break;

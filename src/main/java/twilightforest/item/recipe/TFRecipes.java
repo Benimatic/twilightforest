@@ -1,29 +1,27 @@
 package twilightforest.item.recipe;
 
-import net.minecraft.item.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.item.crafting.SpecialRecipeSerializer;
+import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.TFBlocks;
 import twilightforest.item.TFItems;
 
-@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class TFRecipes {
 
-	@SubscribeEvent
-	public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
+	//FIXME: Put a Serializer on the Cloning Recipes. Currently used ones aren't liking it
+	public static final DeferredRegister<IRecipeSerializer<?>> RECIPE_SERIALIZERS = new DeferredRegister<>(ForgeRegistries.RECIPE_SERIALIZERS, TwilightForestMod.ID);
 
-		// recipe sorter
-		// RecipeSorter.register(TwilightForestMod.ID + ":mapcloning", TFMapCloningRecipe.class, SHAPELESS, "after:minecraft:shapeless");
+	public static final RegistryObject<SpecialRecipeSerializer<TFArmorDyeingRecipe>> ARCTIC_ARMOR_DYEING = RECIPE_SERIALIZERS.register("armor_dyeing_tf",
+			() -> new SpecialRecipeSerializer<>(TFArmorDyeingRecipe::new));
+	public static final RegistryObject<SpecialRecipeSerializer<TFMapCloningRecipe>> MAGIC_MAP_CLONE = RECIPE_SERIALIZERS.register("magic_map_cloning",
+			() -> new SpecialRecipeSerializer<>(new TFMapCloningRecipe(TFItems.magic_map.get(), TFItems.magic_map_empty.get())));
+	public static final RegistryObject<SpecialRecipeSerializer<TFMapCloningRecipe>> MAZE_MAP_CLONE = RECIPE_SERIALIZERS.register("maze_map_cloning",
+			() -> new SpecialRecipeSerializer<>(new TFMapCloningRecipe(TFItems.maze_map.get(), TFItems.maze_map_empty.get())));
+	public static final RegistryObject<SpecialRecipeSerializer<TFMapCloningRecipe>> ORE_MAP_CLONE = RECIPE_SERIALIZERS.register("ore_map_cloning",
+			() -> new SpecialRecipeSerializer<>(new TFMapCloningRecipe(TFItems.ore_map.get(), TFItems.ore_map_empty.get())));
 
-		event.getRegistry().register(new TFArmorDyeingRecipe().setRegistryName(TwilightForestMod.ID, "arctic_armor_dyeing"));
-
-		event.getRegistry().register(new TFMapCloningRecipe(TFItems.magic_map, TFItems.magic_map_empty).setRegistryName(TwilightForestMod.ID, "magic_map_cloning"));
-		event.getRegistry().register(new TFMapCloningRecipe(TFItems.maze_map, TFItems.maze_map_empty).setRegistryName(TwilightForestMod.ID, "maze_map_cloning"));
-		event.getRegistry().register(new TFMapCloningRecipe(TFItems.ore_map, TFItems.ore_map_empty).setRegistryName(TwilightForestMod.ID, "ore_map_cloning"));
-	}
+	// recipe sorter
+	// RecipeSorter.register(TwilightForestMod.ID + ":mapcloning", TFMapCloningRecipe.class, SHAPELESS, "after:minecraft:shapeless");
 }

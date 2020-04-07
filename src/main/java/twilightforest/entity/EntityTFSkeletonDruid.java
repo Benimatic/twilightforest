@@ -35,13 +35,11 @@ public class EntityTFSkeletonDruid extends SkeletonEntity {
 			@Override
 			public void startExecuting() {
 				super.startExecuting();
-				setSwingingArms(true);
 			}
 
 			@Override
 			public void resetTask() {
 				super.resetTask();
-				setSwingingArms(false);
 			}
 		});
 	}

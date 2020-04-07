@@ -36,7 +36,6 @@ public class EntityAITFYetiRampage extends Goal {
 		return this.currentTimeOut <= 0;
 	}
 
-
 	/**
 	 * Execute a one shot task or start executing a continuous task
 	 */
@@ -46,7 +45,6 @@ public class EntityAITFYetiRampage extends Goal {
 		this.yeti.setRampaging(true);
 		this.yeti.playSound(TFSounds.ALPHAYETI_ROAR, 4F, 0.5F + yeti.getRNG().nextFloat() * 0.5F);
 	}
-
 
 	/**
 	 * Returns whether an in-progress EntityAIBase should continue executing
@@ -105,7 +103,6 @@ public class EntityAITFYetiRampage extends Goal {
 			yeti.world.addEntity(ice);
 		}
 	}
-
 
 	/**
 	 * Resets the task

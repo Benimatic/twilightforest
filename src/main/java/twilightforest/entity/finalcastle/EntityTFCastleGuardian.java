@@ -78,6 +78,4 @@ public class EntityTFCastleGuardian extends CreatureEntity { // Not exactly livi
     public boolean canBreatheUnderwater() {
         return false;
     }
-
-
 }

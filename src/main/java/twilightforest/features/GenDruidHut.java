@@ -83,7 +83,7 @@ public class GenDruidHut<T extends NoFeatureConfig> extends Feature<T> {
 			template = templatemanager.getTemplate(BasementType.values()[random.nextInt(BasementType.size)].getBasement(random.nextBoolean()));
 			placementPos = placementPos.down(12).offset(rotation.rotate(mirror.mirror(Direction.NORTH)), 1).offset(rotation.rotate(mirror.mirror(Direction.EAST)), 1);
 
-			template.addBlocksToWorld(world, placementPos, new HutTemplateProcessor(placementPos, placementsettings, random.nextInt(), random.nextInt(), random.nextInt()), placementsettings, 20);
+			template.addBlocksToWorld(world, placementPos, /*new HutTemplateProcessor(placementPos, placementsettings, random.nextInt(), random.nextInt(), random.nextInt()),*/ placementsettings, 20);
 
 			data.putAll(template.getDataBlocks(placementPos, placementsettings));
 		}
@@ -268,19 +268,6 @@ public class GenDruidHut<T extends NoFeatureConfig> extends Feature<T> {
 
 			if (block == Blocks.STONE_BRICKS) { // TODO: By default it's not chiseled stone as that's a different block
 				return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, state.with(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.values()[random.nextInt(3)]), null);
-			}
-
-			//TODO: Do we need this section
-			BlockPlanks.EnumType type = StructureWoodVariant.getTypeFromBlockState(state);
-			if (type != null) {
-				switch (type) {
-					case OAK:
-						return new Template.BlockInfo(pos, StructureWoodVariant.modifyBlockWithType(state, OAK_SWIZZLE   ), null);
-					case SPRUCE:
-						return new Template.BlockInfo(pos, StructureWoodVariant.modifyBlockWithType(state, SPRUCE_SWIZZLE), null);
-					case BIRCH:
-						return new Template.BlockInfo(pos, StructureWoodVariant.modifyBlockWithType(state, BIRCH_SWIZZLE ), null);
-				}
 			}
 
 			return blockInfo;

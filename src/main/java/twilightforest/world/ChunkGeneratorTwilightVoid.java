@@ -1,6 +1,5 @@
 package twilightforest.world;
 
-import net.minecraft.block.BlockFalling;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -10,8 +9,6 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.event.terraingen.PopulateChunkEvent;
-import net.minecraftforge.event.terraingen.TerrainGen;
 import twilightforest.TFConfig;
 import twilightforest.TFFeature;
 import twilightforest.biomes.TFBiomes;
@@ -136,11 +133,12 @@ public class ChunkGeneratorTwilightVoid extends ChunkGeneratorTFBase {
 		}
 	}
 
-	@Override
-	public void recreateStructures(Chunk chunk, int x, int z) {
-		super.recreateStructures(chunk, x, z);
-		if (generateHollowTrees) {
-			hollowTreeGenerator.generate(world, x, z, null);
-		}
-	}
+	//TODO: See super
+//	@Override
+//	public void recreateStructures(Chunk chunk, int x, int z) {
+//		super.recreateStructures(chunk, x, z);
+//		if (generateHollowTrees) {
+//			hollowTreeGenerator.generate(world, x, z, null);
+//		}
+//	}
 }

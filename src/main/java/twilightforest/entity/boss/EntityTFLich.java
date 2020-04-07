@@ -76,7 +76,7 @@ public class EntityTFLich extends MonsterEntity {
 	}
 
 	public EntityTFLich(World world, EntityTFLich otherLich) {
-		this(world);
+		this(TFEntities.lich.get(), world);
 
 		setShadowClone(true);
 		this.masterLich = otherLich;
@@ -221,7 +221,7 @@ public class EntityTFLich extends MonsterEntity {
 				blu = 0.00F * sparkle;
 			}
 
-			world.addParticle(ParticleTypes.SPELL_MOB, dx + (rand.nextGaussian() * 0.025), dy + (rand.nextGaussian() * 0.025), dz + (rand.nextGaussian() * 0.025), red, grn, blu);
+			world.addParticle(ParticleTypes.ENTITY_EFFECT, dx + (rand.nextGaussian() * 0.025), dy + (rand.nextGaussian() * 0.025), dz + (rand.nextGaussian() * 0.025), red, grn, blu);
 		}
 
 		if (this.getPhase() == 3)
@@ -490,7 +490,7 @@ public class EntityTFLich extends MonsterEntity {
 			double tx = srcX + (destX - srcX) * trailFactor + (rand.nextDouble() - 0.5D) * getWidth() * 2D;
 			double ty = srcY + (destY - srcY) * trailFactor + rand.nextDouble() * getHeight();
 			double tz = srcZ + (destZ - srcZ) * trailFactor + (rand.nextDouble() - 0.5D) * getWidth() * 2D;
-			world.addParticle(ParticleTypes.SPELL, tx, ty, tz, f, f1, f2);
+			world.addParticle(ParticleTypes.EFFECT, tx, ty, tz, f, f1, f2);
 		}
 	}
 
@@ -504,7 +504,7 @@ public class EntityTFLich extends MonsterEntity {
 			double tx = srcX + (destX - srcX) * trailFactor + rand.nextGaussian() * 0.005;
 			double ty = srcY + (destY - srcY) * trailFactor + rand.nextGaussian() * 0.005;
 			double tz = srcZ + (destZ - srcZ) * trailFactor + rand.nextGaussian() * 0.005;
-			world.addParticle(ParticleTypes.SPELL_MOB, tx, ty, tz, f, f1, f2);
+			world.addParticle(ParticleTypes.ENTITY_EFFECT, tx, ty, tz, f, f1, f2);
 		}
 	}
 
@@ -519,7 +519,7 @@ public class EntityTFLich extends MonsterEntity {
 			double tx = srcX + (destX - srcX) * trailFactor + rand.nextGaussian() * 0.005;
 			double ty = srcY + (destY - srcY) * trailFactor + rand.nextGaussian() * 0.005;
 			double tz = srcZ + (destZ - srcZ) * trailFactor + rand.nextGaussian() * 0.005;
-			world.addParticle(ParticleTypes.SPELL_MOB, tx, ty, tz, f, f1, f2);
+			world.addParticle(ParticleTypes.ENTITY_EFFECT, tx, ty, tz, f, f1, f2);
 		}
 	}
 

@@ -8,10 +8,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import twilightforest.entity.EntityTFCharmEffect;
 
-public class RenderTFCharm extends SpriteRenderer<EntityTFCharmEffect> {
+public class RenderTFCharm<T extends EntityTFCharmEffect> extends SpriteRenderer<T> {
 
 	public RenderTFCharm(EntityRendererManager manager, ItemRenderer itemRenderer) {
-		super(manager, Item.getItemFromBlock(Blocks.BARRIER), itemRenderer);
+		super(manager, itemRenderer);
 	}
 
 	@Override

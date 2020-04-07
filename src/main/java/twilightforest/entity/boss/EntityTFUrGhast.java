@@ -22,6 +22,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerBossInfo;
 import net.minecraft.world.storage.WorldInfo;
 import twilightforest.TFFeature;
@@ -36,6 +37,7 @@ import twilightforest.entity.NoClipMoveHelper;
 import twilightforest.entity.TFEntities;
 import twilightforest.enums.BossVariant;
 import twilightforest.loot.TFTreasure;
+import twilightforest.world.TFWorld;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -219,7 +221,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 					double d1 = rand.nextGaussian() * 0.02D;
 					double d2 = rand.nextGaussian() * 0.02D;
 
-					world.addParticle(rand.nextBoolean() ? ParticleTypes.EXPLOSION_HUGE : ParticleTypes.EXPLOSION_NORMAL,
+					world.addParticle(rand.nextBoolean() ? ParticleTypes.EXPLOSION_EMITTER : ParticleTypes.EXPLOSION,
 							(getX() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(),
 							getY() + rand.nextFloat() * getHeight(),
 							(getZ() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(),
@@ -296,7 +298,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		// start raining
 		int rainTime = 300 * 20;
 
-		WorldInfo worldInfo = world.getServer().worlds[0].getWorldInfo(); // grab the overworld to set weather properly TODO: AT
+		WorldInfo worldInfo = world.getServer().getWorld(DimensionType.OVERWORLD).getWorldInfo(); // grab the overworld to set weather properly
 
 		worldInfo.setClearWeatherTime(0);
 		worldInfo.setRainTime(rainTime);
@@ -407,7 +409,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 
 		// also suck up mini ghasts
 		for (EntityTFMiniGhast ghast : world.getEntitiesWithinAABB(EntityTFMiniGhast.class, below)) {
-			ghast.motionY += 1;
+			ghast.getMotion().add(0.0D, 1.0D, 0.0D);
 		}
 	}
 
@@ -440,20 +442,23 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		entityFireball.explosionPower = 1;
 		double shotSpawnDistance = 8.5D;
 		Vec3d lookVec = this.getLook(1.0F);
-		entityFireball.getX() = this.getX() + lookVec.x * shotSpawnDistance;
-		entityFireball.getY() = this.getY() + (double) (this.getHeight() / 2.0F) + lookVec.y * shotSpawnDistance;
-		entityFireball.getZ() = this.getZ() + lookVec.z * shotSpawnDistance;
+		entityFireball.setPos(
+				this.getX() + lookVec.x * shotSpawnDistance,
+				this.getY() + (double) (this.getHeight() / 2.0F) + lookVec.y * shotSpawnDistance,
+				this.getZ() + lookVec.z * shotSpawnDistance
+		);
 		this.world.addEntity(entityFireball);
 
 		for (int i = 0; i < 2; i++) {
 			entityFireball = new EntityTFUrGhastFireball(this.world, this, offsetX + (rand.nextFloat() - rand.nextFloat()) * 8, offsetY, offsetZ + (rand.nextFloat() - rand.nextFloat()) * 8);
 			entityFireball.explosionPower = 1;
-			entityFireball.getX() = this.getX() + lookVec.x * shotSpawnDistance;
-			entityFireball.getY() = this.getY() + (double) (this.getHeight() / 2.0F) + lookVec.y * shotSpawnDistance;
-			entityFireball.getZ() = this.getZ() + lookVec.z * shotSpawnDistance;
+			entityFireball.setPos(
+					this.getX() + lookVec.x * shotSpawnDistance,
+					this.getY() + (double) (this.getHeight() / 2.0F) + lookVec.y * shotSpawnDistance,
+					this.getZ() + lookVec.z * shotSpawnDistance
+			);
 			this.world.addEntity(entityFireball);
 		}
-
 	}
 
 	/**

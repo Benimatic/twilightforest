@@ -27,6 +27,7 @@ import twilightforest.entity.EntityTFMinotaur;
 import twilightforest.entity.ai.EntityAITFGroundAttack;
 import twilightforest.enums.BossVariant;
 import twilightforest.item.TFItems;
+import twilightforest.world.TFWorld;
 
 public class EntityTFMinoshroom extends EntityTFMinotaur {
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/minoshroom");

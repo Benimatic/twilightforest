@@ -20,10 +20,15 @@ public abstract class EntityTFThrowable extends ThrowableEntity implements ITFPr
 		super(type, throwerIn, worldIn);
 	}
 
-	// TODO: Isn't actually an override
+	// TODO: Isn't actually an override. Also not in use
 	public void setThrower(Entity entity) {
 		if (entity instanceof LivingEntity) {
 			this.owner = (LivingEntity) entity;
 		}
+	}
+
+	@Override
+	protected void registerData() {
+		
 	}
 }

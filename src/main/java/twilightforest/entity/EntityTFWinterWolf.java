@@ -130,5 +130,4 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf implements IBreathAt
 	public ResourceLocation getLootTable() {
 		return LOOT_TABLE;
 	}
-
 }

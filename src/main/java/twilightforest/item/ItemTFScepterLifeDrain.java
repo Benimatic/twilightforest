@@ -208,7 +208,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 			double tx = srcX + (destX - srcX) * trailFactor + world.rand.nextGaussian() * 0.005;
 			double ty = srcY + (destY - srcY) * trailFactor + world.rand.nextGaussian() * 0.005;
 			double tz = srcZ + (destZ - srcZ) * trailFactor + world.rand.nextGaussian() * 0.005;
-			world.addParticle(ParticleTypes.SPELL_MOB, tx, ty, tz, f, f1, f2);
+			world.addParticle(ParticleTypes.ENTITY_EFFECT, tx, ty, tz, f, f1, f2);
 		}
 	}
 

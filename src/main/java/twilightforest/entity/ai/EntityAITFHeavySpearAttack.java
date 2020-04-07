@@ -25,5 +25,4 @@ public class EntityAITFHeavySpearAttack extends Goal {
 	public boolean shouldExecute() {
 		return entity.heavySpearTimer > 0 && entity.heavySpearTimer < EntityTFGoblinKnightUpper.HEAVY_SPEAR_TIMER_START;
 	}
-
 }

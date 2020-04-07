@@ -5,6 +5,7 @@ import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import twilightforest.entity.TFEntities;
 import twilightforest.entity.projectile.EntityIceArrow;
 
 public class ItemTFIceBow extends ItemTFBowBase {
@@ -15,9 +16,8 @@ public class ItemTFIceBow extends ItemTFBowBase {
 
 	@Override
 	public AbstractArrowEntity customeArrow(AbstractArrowEntity arrow) {
-		//TODO: Needs to be UUID
-		if (arrow.shootingEntity instanceof LivingEntity) {
-			return new EntityIceArrow(arrow.world, (LivingEntity) arrow.shootingEntity);
+		if (arrow.getShooter() instanceof LivingEntity) {
+			return new EntityIceArrow(TFEntities.ice_arrow.get(), arrow.world, (LivingEntity) arrow.getShooter());
 		}
 		return arrow;
 	}

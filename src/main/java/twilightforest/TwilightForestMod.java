@@ -33,6 +33,7 @@ import twilightforest.item.ItemTFKnightlyArmor;
 import twilightforest.item.ItemTFPhantomArmor;
 import twilightforest.item.ItemTFYetiArmor;
 import twilightforest.item.TFItems;
+import twilightforest.item.recipe.TFRecipes;
 import twilightforest.loot.TFTreasure;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.potions.TFPotions;
@@ -95,6 +96,7 @@ public class TwilightForestMod {
 		TFParticleType.PARTICLE_TYPES.register(modbus);
 		TFSurfaceBuilders.SURFACE_BUILDERS.register(modbus);
 		TFBiomeFeatures.FEATURES.register(modbus);
+		TFRecipes.RECIPE_SERIALIZERS.register(modbus);
 
 		if (ModList.get().isLoaded("sponge")) {
 			LOGGER.info("It looks like you have Sponge installed! You may notice Hydras spawning incorrectly with floating heads.\n" +

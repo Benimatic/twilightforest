@@ -74,6 +74,4 @@ public class ComponentTFFinalCastleEntranceStairs extends StructureTFComponentOl
 			this.replaceAirAndLiquidDownwards(world, deco.blockState, x, y - 1, z, sbb);
 		}
 	}
-
-
 }

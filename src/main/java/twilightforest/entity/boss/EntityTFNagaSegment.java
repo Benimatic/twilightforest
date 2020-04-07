@@ -1,10 +1,10 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MultiPartEntityPart;
 import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.particles.BasicParticleType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
@@ -50,9 +50,9 @@ public class EntityTFNagaSegment extends MultiPartEntityPart {
 					double d = rand.nextGaussian() * 0.02D;
 					double d1 = rand.nextGaussian() * 0.02D;
 					double d2 = rand.nextGaussian() * 0.02D;
-					ParticleTypes explosionType = rand.nextBoolean() ? ParticleTypes.EXPLOSION_LARGE : ParticleTypes.EXPLOSION_NORMAL;
+					BasicParticleType explosionType = rand.nextBoolean() ? ParticleTypes.EXPLOSION_EMITTER : ParticleTypes.EXPLOSION;
 
-					this.world.spawnParticle(explosionType, (getX() + rand.nextFloat() * width * 2.0F) - width, getY() + rand.nextFloat() * height, (getZ() + rand.nextFloat() * width * 2.0F) - width, d, d1, d2);
+					this.world.addParticle(explosionType, (getX() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), getY() + rand.nextFloat() * getHeight(), (getZ() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), d, d1, d2);
 				}
 
 				deactivate();
@@ -103,7 +103,7 @@ public class EntityTFNagaSegment extends MultiPartEntityPart {
 	}
 
 	@Override
-	protected void playStepSound(BlockPos pos, Block block) {}
+	protected void playStepSound(BlockPos pos, BlockState block) {}
 
 	public void selfDestruct() {
 		this.deathCounter = 10;

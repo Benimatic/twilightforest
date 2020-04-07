@@ -1,9 +1,11 @@
 package twilightforest.client.model.entity;
 
-import net.minecraft.client.renderer.entity.model.EntityModel;
+import com.google.common.collect.ImmutableList;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
+import twilightforest.entity.boss.EntityTFHydraMortar;
 
-public class ModelTFHydraMortar extends EntityModel {
+public class ModelTFHydraMortar<T extends EntityTFHydraMortar> extends SegmentedModel<T> {
 
 	public ModelRenderer box;
 
@@ -15,7 +17,13 @@ public class ModelTFHydraMortar extends EntityModel {
 		box.setRotationPoint(0F, 0F, 0F);
 	}
 
-	public void render(float f5) {
-		box.render(f5);
+	@Override
+	public void setAngles(T entity, float v, float v1, float v2, float v3, float v4) {
+
+	}
+
+	@Override
+	public Iterable<ModelRenderer> getParts() {
+		return ImmutableList.of(this.box);
 	}
 }

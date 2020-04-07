@@ -153,5 +153,4 @@ public class EntityTFFireBeetle extends MonsterEntity implements IBreathAttacker
 			target.setFire(BREATH_DURATION);
 		}
 	}
-
 }

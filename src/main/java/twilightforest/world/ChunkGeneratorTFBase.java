@@ -680,10 +680,11 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator<TFWorld> 
 		return shouldGenerateBedrock;
 	}
 
-	@Override
-	public boolean generateStructures(Chunk chunk, int x, int z) {
-		return false;
-	}
+	//TODO: If we handled this, it is now done via Biome
+//	@Override
+//	public boolean generateStructures(Chunk chunk, int x, int z) {
+//		return false;
+//	}
 
 	/**
 	 * Returns a list of creatures of the specified type that can spawn at the
@@ -737,6 +738,7 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator<TFWorld> 
 		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world)).isStructureLocked(pos, lockIndex);
 	}
 
+	//TODO: isInsideStructure doesn't exist
 	public boolean isBlockInStructureBB(BlockPos pos) {
 		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world)).isInsideStructure(pos);
 	}
@@ -772,23 +774,26 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator<TFWorld> 
 		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(mapX, mapZ, world)).getFullSBBNear(mapX, mapZ, range);
 	}
 
+	//TODO: Unused
 	public TFFeature getFeatureAt(BlockPos pos) {
 		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world)).getFeatureAt(pos);
 	}
 
-	@Override
-	public void recreateStructures(Chunk chunk, int x, int z) {
-		for (MapGenTFMajorFeature generator : featureGenerators.values()) {
-			generator.generate(world, x, z, null);
-		}
-	}
+	//FIXME: Method does not exist
+//	@Override
+//	public void recreateStructures(Chunk chunk, int x, int z) {
+//		for (MapGenTFMajorFeature generator : featureGenerators.values()) {
+//			generator.generate(world, x, z, null);
+//		}
+//	}
 
-	@Override
-	public boolean isInsideStructure(World world, String structureName, BlockPos pos) {
-		if (structureName.equalsIgnoreCase(hollowTreeGenerator.getStructureName())) {
-			return hollowTreeGenerator.isInsideStructure(pos);
-		}
-		TFFeature feature = TFFeature.getFeatureByName(new ResourceLocation(structureName));
-		return feature != TFFeature.NOTHING && getFeatureGenerator(feature).isInsideStructure(pos);
-	}
+	//FIXME: Method does not exist
+//	@Override
+//	public boolean isInsideStructure(World world, String structureName, BlockPos pos) {
+//		if (structureName.equalsIgnoreCase(hollowTreeGenerator.getStructureName())) {
+//			return hollowTreeGenerator.isInsideStructure(pos);
+//		}
+//		TFFeature feature = TFFeature.getFeatureByName(new ResourceLocation(structureName));
+//		return feature != TFFeature.NOTHING && getFeatureGenerator(feature).isInsideStructure(pos);
+//	}
 }

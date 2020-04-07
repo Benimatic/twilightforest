@@ -256,7 +256,7 @@ public class ContainerTFUncrafting extends Container {
 	}
 
 	public static void markStack(ItemStack stack) {
-		stack.setTagInfo(TAG_MARKER, new ByteNBT((byte) 1));
+		stack.setTagInfo(TAG_MARKER, ByteNBT.of((byte) 1));
 	}
 
 	public static boolean isMarked(ItemStack stack) {

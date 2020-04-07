@@ -324,9 +324,6 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 	}
 
 	@Override
-	public void setSwingingArms(boolean swingingArms) {} // todo 1.12
-
-	@Override
 	public boolean canDespawn(double p_213397_1_) {
 		return false;
 	}

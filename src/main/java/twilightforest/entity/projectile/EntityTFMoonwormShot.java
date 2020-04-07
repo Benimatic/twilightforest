@@ -32,11 +32,6 @@ public class EntityTFMoonwormShot extends EntityTFThrowable {
 	}
 
 	@Override
-	protected void registerData() {
-		// TODO: Is this needed?
-	}
-
-	@Override
 	public void tick() {
 		super.tick();
 		makeTrail();

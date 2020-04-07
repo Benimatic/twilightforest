@@ -367,6 +367,7 @@ public enum TFFeature {
 	};
 
 	//IStructurePieceTypes that can be referred to
+	//TODO: StructureStarts do not have their own piece. These are just here for reference's sake
 	public static final IStructurePieceType TFHillS = registerPiece("TFHillS", StructureStartHollowHill::new);
 	public static final IStructurePieceType TFHill = registerPiece("TFHill", ComponentTFHollowHill::new);
 	public static final IStructurePieceType TFHedgeS = registerPiece("TFHedgeS", StructureStartHedgeMaze::new);

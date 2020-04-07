@@ -9,7 +9,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.util.ParticleHelper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -35,7 +34,13 @@ public class ItemTFFierySword extends SwordItem {
 
 		if (result && !target.world.isRemote && !target.isImmuneToFire()) {
 			//TODO: Move to regular particle spawner?
-			ParticleHelper.spawnParticles(target, ParticleTypes.FLAME, 20, 0.02);
+//			ParticleHelper.spawnParticles(target, ParticleTypes.FLAME, 20, 0.02);
+			for (int var1 = 0; var1 < 20; ++var1) {
+				double px = target.getX() + random.nextFloat() * target.getWidth() * 2.0F - target.getWidth();
+				double py = target.getY() + random.nextFloat() * target.getHeight();
+				double pz = target.getZ() + random.nextFloat() * target.getWidth() * 2.0F - target.getWidth();
+				target.world.addParticle(ParticleTypes.FLAME, px, py, pz, 0.02, 0.02, 0.02);
+			}
 		}
 
 		return result;

@@ -1,5 +1,6 @@
 package twilightforest.client.renderer.entity;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
@@ -17,9 +18,9 @@ public class RenderTFIceCrystal<T extends EntityTFIceCrystal> extends LivingRend
 	}
 
 	@Override
-	protected void preRenderCallback(T entity, float partialTicks) {
+	protected void scale(T entity, MatrixStack stack, float partialTicks) {
 		float bounce = entity.ticksExisted + partialTicks;
-		RenderSystem.translatef(0F, MathHelper.sin((bounce) * 0.2F) * 0.15F, 0F);
+		stack.translate(0F, MathHelper.sin((bounce) * 0.2F) * 0.15F, 0F);
 	}
 
 	@Override

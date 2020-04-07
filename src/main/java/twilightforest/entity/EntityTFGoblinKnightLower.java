@@ -176,5 +176,4 @@ public class EntityTFGoblinKnightLower extends MonsterEntity {
 
 		this.setHasArmor(false);
 	}
-
 }

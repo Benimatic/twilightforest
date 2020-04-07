@@ -37,6 +37,10 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 	}
 
 	@Override
+	protected void registerData() {
+	}
+
+	@Override
 	protected float getGravityVelocity() {
 		return 0F;
 	}
@@ -96,7 +100,6 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 
 		return block.getExplosionResistance(this) < 8F && state.getBlockHardness(world, pos) >= 0;
 	}
-
 
 	private void sendAnnihilateBlockPacket(World world, BlockPos pos) {
 		PacketDistributor.TargetPoint targetPoint = new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), 64, world.getDimension().getType());

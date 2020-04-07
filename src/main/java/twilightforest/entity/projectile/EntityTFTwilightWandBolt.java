@@ -34,11 +34,6 @@ public class EntityTFTwilightWandBolt extends EntityTFThrowable implements IRend
 	}
 
 	@Override
-	protected void registerData() {
-		// TODO: Needed?
-	}
-
-	@Override
 	public void tick() {
 		super.tick();
 		makeTrail();

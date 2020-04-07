@@ -116,5 +116,4 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast {
 			makeBossMinion();
 		}
 	}
-
 }

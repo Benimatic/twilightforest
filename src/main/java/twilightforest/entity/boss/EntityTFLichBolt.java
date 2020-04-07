@@ -44,7 +44,7 @@ public class EntityTFLichBolt extends EntityTFThrowable implements IRendersAsIte
 			double s2 = ((rand.nextFloat() * 0.5F) + 0.5F) * 0.80F;
 			double s3 = ((rand.nextFloat() * 0.5F) + 0.5F) * 0.69F;
 
-			world.addParticle(ParticleTypes.SPELL_MOB, dx, dy, dz, s1, s2, s3);
+			world.addParticle(ParticleTypes.ENTITY_EFFECT, dx, dy, dz, s1, s2, s3);
 		}
 	}
 

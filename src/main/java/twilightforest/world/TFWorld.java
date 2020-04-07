@@ -45,11 +45,11 @@ public class TFWorld extends GenerationSettings {
 	}
 
 	public static CompoundNBT getDimensionData(World world) {
-		return world.getWorldInfo().getDimensionData(TFConfig.dimension.dimensionID);
+		return world.getWorldInfo().getDimensionData(TFConfig.dimension.dimensionID); //TODO: DimensionType
 	}
 
 	public static void setDimensionData(World world, CompoundNBT data) {
-		world.getWorldInfo().setDimensionData(TFConfig.dimension.dimensionID, data);
+		world.getWorldInfo().setDimensionData(TFConfig.dimension.dimensionID, data); //TODO: DimensionType
 	}
 
 	public static boolean isProgressionEnforced(World world) {

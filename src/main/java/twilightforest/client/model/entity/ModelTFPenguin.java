@@ -6,14 +6,15 @@
 
 package twilightforest.client.model.entity;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.client.renderer.entity.model.SegmentedModel;
+import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.minecraft.client.renderer.entity.model.AgeableModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.passive.EntityTFPenguin;
 
-public class ModelTFPenguin<T extends EntityTFPenguin> extends SegmentedModel<T> {
+public class ModelTFPenguin<T extends EntityTFPenguin> extends AgeableModel<T> {
 	//fields
 	ModelRenderer body;
 	ModelRenderer rightarm;
@@ -62,35 +63,41 @@ public class ModelTFPenguin<T extends EntityTFPenguin> extends SegmentedModel<T>
 		head.addChild(beak);
 	}
 
+	@Override
+	protected Iterable<ModelRenderer> getHeadParts() {
+		return ImmutableList.of(this.head);
+	}
+
+	@Override
+	protected Iterable<ModelRenderer> getBodyParts() {
+		return ImmutableList.of(
+				body,
+				rightleg,
+				leftleg,
+				rightarm,
+				leftarm
+		);
+	}
+
 	/**
 	 * Sets the models various rotation angles then renders the model.
 	 */
 	@Override
-	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-
+	public void render(MatrixStack stack, IVertexBuilder builder, int light, int overlay, float red, float green, float blue, float scale) {
 		if (isChild) {
 			float f = 2.0F;
-			GlStateManager.pushMatrix();
-			RenderSystem.translatef(0.0F, 5F * scale, 0.75F * scale);
-			head.render(scale);
-			GlStateManager.popMatrix();
-			GlStateManager.pushMatrix();
-			GlStateManager.scalef(1.0F / f, 1.0F / f, 1.0F / f);
-			RenderSystem.translatef(0.0F, 24F * scale, 0.0F);
-			body.render(scale);
-			rightleg.render(scale);
-			leftleg.render(scale);
-			rightarm.render(scale);
-			leftarm.render(scale);
-			GlStateManager.popMatrix();
+			stack.push();
+			stack.translate(0.0F, 5F * scale, 0.75F * scale);
+			this.getHeadParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
+			stack.pop();
+			stack.push();
+			stack.scale(1.0F / f, 1.0F / f, 1.0F / f);
+			stack.translate(0.0F, 24F * scale, 0.0F);
+			this.getBodyParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
+			stack.pop();
 		} else {
-			head.render(scale);
-			body.render(scale);
-			rightleg.render(scale);
-			leftleg.render(scale);
-			rightarm.render(scale);
-			leftarm.render(scale);
+			this.getHeadParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
+			this.getBodyParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
 		}
 	}
 

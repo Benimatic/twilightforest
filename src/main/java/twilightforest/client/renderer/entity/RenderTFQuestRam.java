@@ -19,8 +19,8 @@ public class RenderTFQuestRam<T extends EntityTFQuestRam, M extends ModelTFQuest
 	private static final ResourceLocation textureLoc      = TwilightForestMod.getModelTexture("questram.png");
 	private static final ResourceLocation textureLocLines = TwilightForestMod.getModelTexture("questram_lines.png");
 
-	public RenderTFQuestRam(EntityRendererManager manager) {
-		super(manager, new ModelTFQuestRam(), 1.0F);
+	public RenderTFQuestRam(EntityRendererManager manager, M model) {
+		super(manager, model, 1.0F);
 		addLayer(new LayerGlowingLines(this));
 	}
 

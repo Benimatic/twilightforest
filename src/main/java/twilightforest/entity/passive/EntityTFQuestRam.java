@@ -201,11 +201,11 @@ public class EntityTFQuestRam extends AnimalEntity {
 		int blue = (int) (colorVal[2] * 255F);
 
 		for (int i = 0; i < iterations; i++) {
-			this.world.addParticle(ParticleTypes.SPELL_MOB, this.getX() + (this.rand.nextDouble() - 0.5D) * this.getWidth() * 1.5, this.getY() + this.rand.nextDouble() * this.getHeight() * 1.5, this.getZ() + (this.rand.nextDouble() - 0.5D) * this.getWidth() * 1.5, red, green, blue);
+			this.world.addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + (this.rand.nextDouble() - 0.5D) * this.getWidth() * 1.5, this.getY() + this.rand.nextDouble() * this.getHeight() * 1.5, this.getZ() + (this.rand.nextDouble() - 0.5D) * this.getWidth() * 1.5, red, green, blue);
 		}
 
 		//TODO: it would be nice to play a custom sound
-		playLivingSound();
+		playAmbientSound();
 	}
 
 	public int countColorsSet() {

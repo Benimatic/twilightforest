@@ -18,6 +18,12 @@ import java.util.Set;
 
 public class FeatureUtil {
 
+	/**
+	 * Moves distance along the vector.
+	 * <p>
+	 * This goofy function takes a float between 0 and 1 for the angle, where 0 is 0 degrees, .5 is 180 degrees and 1 and 360 degrees.
+	 * For the tilt, it takes a float between 0 and 1 where 0 is straight up, 0.5 is straight out and 1 is straight down.
+	 */
 	public static BlockPos translate(BlockPos pos, double distance, double angle, double tilt) {
 		double rangle = angle * 2.0D * Math.PI;
 		double rtilt = tilt * Math.PI;
@@ -29,6 +35,10 @@ public class FeatureUtil {
 		);
 	}
 
+	/**
+	 * Draws a line from {x1, y1, z1} to {x2, y2, z2}
+	 * This takes all variables for setting Branch
+	 */
 	public static void drawBresehnamBranch(TFTreeGenerator generator, World world, Random random, BlockPos from, BlockPos to, Set<BlockPos> state, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		for (BlockPos pixel : getBresehnamArrays(from, to)) {
 			generator.setBranchBlockState(world, random, pixel, state, mbb, config);
@@ -36,6 +46,10 @@ public class FeatureUtil {
 		}
 	}
 
+	/**
+	 * Draws a line from {x1, y1, z1} to {x2, y2, z2}
+	 * This just takes a BlockState, used to set Trunk
+	 */
 	public static void drawBresehnamTree(World world, BlockPos from, BlockPos to, BlockState state, Set<BlockPos> treepos) {
 		for (BlockPos pixel : getBresehnamArrays(from, to)) {
 			world.setBlockState(pixel, state);
@@ -43,10 +57,17 @@ public class FeatureUtil {
 		}
 	}
 
+	/**
+	 * Get an array of values that represent a line from point A to point B
+	 */
 	public static BlockPos[] getBresehnamArrays(BlockPos src, BlockPos dest) {
 		return getBresehnamArrays(src.getX(), src.getY(), src.getZ(), dest.getX(), dest.getY(), dest.getZ());
 	}
 
+	/**
+	 * Get an array of values that represent a line from point A to point B
+	 * todo 1.9 lazify this into an iterable?
+	 */
 	public static BlockPos[] getBresehnamArrays(int x1, int y1, int z1, int x2, int y2, int z2) {
 		int i, dx, dy, dz, absDx, absDy, absDz, x_inc, y_inc, z_inc, err_1, err_2, doubleAbsDx, doubleAbsDy, doubleAbsDz;
 
@@ -126,6 +147,9 @@ public class FeatureUtil {
 		return lineArray;
 	}
 
+	/**
+	 * Draw a flat blob (circle) of leaves
+	 */
 	public static void makeLeafCircle(World world, BlockPos pos, int rad, BlockState state, Set<BlockPos> leaves, boolean useHack) {
 		// trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++) {
@@ -149,6 +173,9 @@ public class FeatureUtil {
 		}
 	}
 
+	/**
+	 * Put a leaf only in spots where leaves can go!
+	 */
 	public static void putLeafBlock(World world, BlockPos pos, BlockState state, Set<BlockPos> leavespos) {
 		BlockState whatsThere = world.getBlockState(pos);
 
@@ -158,6 +185,9 @@ public class FeatureUtil {
 		}
 	}
 
+	/**
+	 * Draw a flat blob (circle) of leaves.  This one makes it offset to surround a 2x2 area instead of a 1 block area
+	 */
 	// TODO: Parameter "useHack" is unused. Is it worth keeping? -Androsa
 	public static void makeLeafCircle2(World world, BlockPos pos, int rad, BlockState state, Set<BlockPos> leaves,  boolean useHack) {
 		// trace out a quadrant
@@ -182,10 +212,16 @@ public class FeatureUtil {
 		}
 	}
 
+	/**
+	 * Gets either cobblestone or mossy cobblestone, randomly.  Used for ruins.
+	 */
 	public static BlockState randStone(Random rand, int howMuch) {
 		return rand.nextInt(howMuch) >= 1 ? Blocks.COBBLESTONE.getDefaultState() : Blocks.MOSSY_COBBLESTONE.getDefaultState();
 	}
 
+	/**
+	 * Checks an area to see if it consists of flat natural ground below and air above
+	 */
 	// TODO: Parameter "rand" is unused. Is it worth keeping? -Androsa
 	public static boolean isAreaSuitable(IWorld world, Random rand, BlockPos pos, int width, int height, int depth) {
 		boolean flag = true;
@@ -218,6 +254,9 @@ public class FeatureUtil {
 		return flag;
 	}
 
+	/**
+	 * Draw a giant blob of whatevs.
+	 */
 	public static void drawBlob(World world, BlockPos pos, int rad, BlockState state) {
 		// then trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++) {
@@ -251,6 +290,9 @@ public class FeatureUtil {
 		}
 	}
 
+	/**
+	 * Draw a giant blob of leaves.
+	 */
 	public static void drawLeafBlob(World world, BlockPos pos, int rad, BlockState state, Set<BlockPos> leaves) {
 		// then trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++) {
@@ -265,7 +307,6 @@ public class FeatureUtil {
 					} else {
 						dist = dz + (Math.max(dx, dy) >> 1) + (Math.min(dx, dy) >> 2);
 					}
-
 
 					// if we're inside the blob, fill it
 					if (dist <= rad) {
@@ -284,6 +325,9 @@ public class FeatureUtil {
 		}
 	}
 
+	/**
+	 * Does the block have only air blocks adjacent
+	 */
 	public static boolean surroundedByAir(IWorldReader world, BlockPos pos) {
 		for (Direction e : Direction.values()) {
 			if (!world.isAirBlock(pos.offset(e))) {
@@ -294,6 +338,9 @@ public class FeatureUtil {
 		return true;
 	}
 
+	/**
+	 * Does the block have at least 1 air block adjacent
+	 */
 	public static boolean hasAirAround(World world, BlockPos pos) {
 		for (Direction e : Direction.values()) {
 			if (e == Direction.DOWN)

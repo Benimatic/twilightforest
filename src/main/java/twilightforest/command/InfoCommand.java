@@ -6,10 +6,11 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
 import twilightforest.TFFeature;
+import twilightforest.world.ChunkGeneratorTFBase;
+import twilightforest.world.TFWorld;
 
 public class InfoCommand {
     public static LiteralArgumentBuilder<CommandSource> register() {

@@ -97,6 +97,4 @@ public class EntityAITFPanicOnFlockDeath extends Goal {
 			((EntityTFKobold) flockCreature).setPanicked(false);
 		}
 	}
-
-
 }

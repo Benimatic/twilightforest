@@ -1,9 +1,7 @@
 package twilightforest.world;
 
 import com.google.common.collect.ImmutableSet;
-import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.gen.IExtendedNoiseRandom;
 import net.minecraft.world.gen.LazyAreaLayerContext;
@@ -11,10 +9,7 @@ import net.minecraft.world.gen.area.IArea;
 import net.minecraft.world.gen.area.IAreaFactory;
 import net.minecraft.world.gen.area.LazyArea;
 import net.minecraft.world.gen.layer.Layer;
-import net.minecraft.world.gen.layer.GenLayerSmooth;
 import net.minecraft.world.gen.layer.SmoothLayer;
-import net.minecraft.world.gen.layer.VoroniZoomLayer;
-import net.minecraft.world.gen.layer.GenLayerZoom;
 import net.minecraft.world.gen.layer.ZoomLayer;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.world.layer.GenLayerTFBiomeStabilize;

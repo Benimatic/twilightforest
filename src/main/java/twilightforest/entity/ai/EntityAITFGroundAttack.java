@@ -75,7 +75,7 @@ public class EntityAITFGroundAttack extends Goal {
 	public void tick() {
 		// look where we're going
 		this.attacker.getLookController().setLookPositionWithEntity(attackTarget, 30.0F, 30.0F);
-		this.attacker.getMoveHelper().action = MovementController.Action.WAIT;
+		this.attacker.getMoveHelper().action = MovementController.Action.WAIT; //TODO: AT
 
 		if (this.attackTick-- <= 0) {
 			this.attacker.setGroundAttackCharge(false);
@@ -94,9 +94,9 @@ public class EntityAITFGroundAttack extends Goal {
 
 				if (entity instanceof LivingEntity) {
 					if (entity.onGround) {
-						entity.motionY += 0.23;
+						entity.getMotion().add(0F, 0.23F, 0F);
 
-						entity.attackEntityFrom(DamageSource.causeMobDamage(this.attacker).setDamageBypassesArmor(), (float) (this.attacker.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue() * 0.5F));
+						entity.attackEntityFrom(DamageSource.causeMobDamage(this.attacker).setDamageBypassesArmor(), (float) (this.attacker.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getValue() * 0.5F));
 					}
 				}
 			}

@@ -28,7 +28,6 @@ public class EntityTFBlockGoblin extends MonsterEntity implements IEntityMultiPa
 	private static final UUID MODIFIER_UUID = UUID.fromString("5CD17E52-A79A-43D3-A529-90FDE04B181E");
 	private static final AttributeModifier MODIFIER = (new AttributeModifier(MODIFIER_UUID, "speedPenalty", -0.25D, AttributeModifier.Operation.ADDITION)).setSaved(false);
 
-
 	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/block_goblin");
 	private static final float CHAIN_SPEED = 16F;
 	private static final DataParameter<Byte> DATA_CHAINLENGTH = EntityDataManager.createKey(EntityTFBlockGoblin.class, DataSerializers.BYTE);
@@ -152,7 +151,6 @@ public class EntityTFBlockGoblin extends MonsterEntity implements IEntityMultiPa
 			recoilCounter--;
 		}
 
-
 		chainAngle += CHAIN_SPEED;
 		chainAngle %= 360;
 
@@ -191,7 +189,6 @@ public class EntityTFBlockGoblin extends MonsterEntity implements IEntityMultiPa
 			this.block.setPosition(sx2 - ox2 * 1.0, sy2 - oy2 * 1.0, sz2 - oz2 * 1.0);
 		} else {
 
-
 			// set block position
 			Vec3d blockPos = this.getChainPosition();
 			this.block.setPosition(blockPos.x, blockPos.y, blockPos.z);
@@ -209,7 +206,6 @@ public class EntityTFBlockGoblin extends MonsterEntity implements IEntityMultiPa
 			this.chain1.setPosition(sx - ox * 0.4, sy - oy * 0.4, sz - oz * 0.4);
 			this.chain2.setPosition(sx - ox * 0.5, sy - oy * 0.5, sz - oz * 0.5);
 			this.chain3.setPosition(sx - ox * 0.6, sy - oy * 0.6, sz - oz * 0.6);
-
 		}
 
 		// collide things with the block
@@ -225,14 +221,10 @@ public class EntityTFBlockGoblin extends MonsterEntity implements IEntityMultiPa
 	}
 
 	private void chainMove() {
-
 		if (this.isThrowing()) {
-
 			this.chainMoveLength = MathHelper.clamp(this.chainMoveLength + 0.5F, 0.0F, 6.0F);
 		} else {
-
 			this.chainMoveLength = MathHelper.clamp(this.chainMoveLength - 1.5F, 0.0F, 6.0F);
-
 		}
 	}
 

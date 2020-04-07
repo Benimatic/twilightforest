@@ -21,7 +21,7 @@ public class RenderTFWraith<T extends EntityTFWraith, M extends ModelTFWraith<T>
 
 	public RenderTFWraith(EntityRendererManager manager, M modelbiped, float shadowSize) {
 		super(manager, modelbiped, shadowSize);
-		addLayer(new LayerWraith());
+		addLayer(new LayerWraith(this));
 	}
 
 	@Override

@@ -1,7 +1,6 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -26,7 +25,7 @@ public class RenderTFRovingCube<T extends EntityTFRovingCube> extends EntityRend
 	@Override
 	public void render(T entity, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
 		stack.push();
-		RenderSystem.translated(x, y, z);
+		stack.translate(x, y, z);
 
 		this.bindEntityTexture(entity);
 
@@ -35,13 +34,13 @@ public class RenderTFRovingCube<T extends EntityTFRovingCube> extends EntityRend
 		RenderSystem.rotatef(MathHelper.wrapDegrees(((float) x + (float) z + entity.ticksExisted + partialTicks) * 11F), 0, 1, 0);
 
 		RenderSystem.disableLighting();
-		GlStateManager.enableBlend();
-		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		RenderSystem.enableBlend();
+		RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-		RenderSystem.translatef(0F, 0.75F, 0F);
+		stack.translate(0F, 0.75F, 0F);
 		this.model.render(entity, 0.0F, 0.0F, 0.0F, 0.0F, partialTicks, 0.0625F / 2F);
 		RenderSystem.enableLighting();
-		GlStateManager.disableBlend();
+		RenderSystem.disableBlend();
 
 		stack.pop();
 	}

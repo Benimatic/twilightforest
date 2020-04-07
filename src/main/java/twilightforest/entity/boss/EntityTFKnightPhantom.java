@@ -165,7 +165,7 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 			double d0 = rand.nextGaussian() * 0.02D;
 			double d1 = rand.nextGaussian() * 0.02D;
 			double d2 = rand.nextGaussian() * 0.02D;
-			world.addParticle(ParticleTypes.EXPLOSION_NORMAL, getX() + (double) (rand.nextFloat() * getWidth() * 2.0F) - (double) getWidth(), getY() + (double) (rand.nextFloat() * getHeight()), getZ() + (double) (rand.nextFloat() * getWidth() * 2.0F) - (double) getWidth(), d0, d1, d2);
+			world.addParticle(ParticleTypes.EXPLOSION, getX() + (double) (rand.nextFloat() * getWidth() * 2.0F) - (double) getWidth(), getY() + (double) (rand.nextFloat() * getHeight()), getZ() + (double) (rand.nextFloat() * getWidth() * 2.0F) - (double) getWidth(), d0, d1, d2);
 		}
 	}
 
@@ -211,8 +211,10 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 		if (flag) {
 			if (i > 0 && entityIn instanceof LivingEntity) {
 				((LivingEntity) entityIn).knockBack(this, (float) i * 0.5F, (double) MathHelper.sin(this.rotationYaw * 0.017453292F), (double) (-MathHelper.cos(this.rotationYaw * 0.017453292F)));
-				this.motionX *= 0.6D;
-				this.motionZ *= 0.6D;
+				setMotion(new Vec3d(
+						getMotion().getX() * 0.6D,
+						getMotion().getY(),
+						getMotion().getZ() * 0.6D));
 			}
 
 			int j = EnchantmentHelper.getFireAspectModifier(this);
@@ -252,20 +254,14 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 		isAirBorne = true;
 		float f = MathHelper.sqrt(xRatio * xRatio + zRatio * zRatio);
 		float distance = 0.2F;
-//		motionX /= 2.0D;
-//		motionY /= 2.0D;
-//		motionZ /= 2.0D;
 		setMotion(new Vec3d(getMotion().getX() / 2.0D, getMotion().getY() / 2.0D, getMotion().getZ() / 2.0D));
-//		motionX -= xRatio / (double) f * (double) distance;
-//		motionY += (double) distance;
-//		motionZ -= zRatio / (double) f * (double) distance;
 		setMotion(new Vec3d(
 				getMotion().getX() - xRatio / (double) f * (double) distance,
 				getMotion().getY() + (double) distance,
 				getMotion().getZ() - zRatio / (double) f * (double) distance));
 
-		if (motionY > 0.4000000059604645D) {
-			motionY = 0.4000000059604645D;
+		if (this.getMotion().getY() > 0.4000000059604645D) {
+			setMotion(getMotion().getX(), 0.4000000059604645D, getMotion().getZ());
 		}
 	}
 

@@ -6,7 +6,6 @@ import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.Pose;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.boss.dragon.EnderDragonPartEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
@@ -89,9 +88,4 @@ public class EntityTFIceShooter extends EntityTFIceMob implements IRangedAttackM
 		this.playSound(SoundEvents.ENTITY_SNOWBALL_THROW, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
 		this.world.addEntity(snowball);
 	}
-
-	//TODO: Unused?
-//	@Override
-//	public void setSwingingArms(boolean swingingArms) {
-//	}
 }

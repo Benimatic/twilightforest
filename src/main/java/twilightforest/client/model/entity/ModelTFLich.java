@@ -1,13 +1,13 @@
 package twilightforest.client.model.entity;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
 import twilightforest.entity.boss.EntityTFLich;
-
-import javax.annotation.Nonnull;
 
 public class ModelTFLich<T extends EntityTFLich> extends BipedModel<T> {
 	private final ModelRenderer collar;
@@ -69,18 +69,18 @@ public class ModelTFLich<T extends EntityTFLich> extends BipedModel<T> {
 	}
 
 	@Override
-	public void render(@Nonnull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+	public void render(MatrixStack stack, IVertexBuilder builder, int light, int overlay, float red, float green, float blue, float scale) {
 		if (!entity.isShadowClone()) {
-			super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+			super.render(stack, builder, light, overlay, red, green, blue, scale);
 			collar.render(scale * 1.125F);
 			cloak.render(scale * 1.125F);
 		} else {
-			GlStateManager.enableBlend();
-			GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+			RenderSystem.enableBlend();
+			RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			float shadow = 0.33f;
 			RenderSystem.color4f(shadow, shadow, shadow, 0.8F);
-			super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-			GlStateManager.disableBlend();
+			super.render(stack, builder, light, overlay, red, green, blue, scale);
+			RenderSystem.disableBlend();
 		}
 	}
 

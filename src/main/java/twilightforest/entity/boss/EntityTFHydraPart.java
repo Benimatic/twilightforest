@@ -1,9 +1,6 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntitySize;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -18,6 +15,10 @@ public class EntityTFHydraPart extends MobEntity {
 	private static final DataParameter<String> PART_NAME = EntityDataManager.createKey(EntityTFHydraPart.class, DataSerializers.STRING);
 
 	public EntityTFHydra hydra;
+
+	public EntityTFHydraPart(EntityType<? extends EntityTFHydraPart> type, World world) {
+		super(type, world);
+	}
 
 	public EntityTFHydraPart(EntityTFHydra parent, World world, float width, float height) {
 		super(TFEntities.hydra.get(), world);

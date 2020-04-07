@@ -5,12 +5,15 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.world.World;
-import twilightforest.entity.TFEntities;
 
 public class EntityTFHydraHead extends EntityTFHydraPart {
 
 	private static final DataParameter<Float> DATA_MOUTH_POSITION = EntityDataManager.createKey(EntityTFHydraHead.class, DataSerializers.FLOAT);
 	private static final DataParameter<Byte> DATA_STATE = EntityDataManager.createKey(EntityTFHydraHead.class, DataSerializers.BYTE);
+
+	public EntityTFHydraHead(EntityType<? extends EntityTFHydraHead> type, World world) {
+		super(type, world);
+	}
 
 	public EntityTFHydraHead(EntityTFHydra hydra, World world, float width, float height) {
 		super(hydra, world, width, height);
@@ -54,5 +57,4 @@ public class EntityTFHydraHead extends EntityTFHydraPart {
 	public void setState(HydraHeadContainer.State state) {
 		dataManager.set(DATA_STATE, (byte) state.ordinal());
 	}
-
 }

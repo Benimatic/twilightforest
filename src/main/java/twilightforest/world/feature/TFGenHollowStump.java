@@ -2,14 +2,14 @@ package twilightforest.world.feature;
 
 import com.mojang.datafixers.Dynamic;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
+import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
+import net.minecraft.world.gen.IWorldGenerationReader;
 import twilightforest.util.FeatureUtil;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
 import java.util.Random;
+import java.util.Set;
 import java.util.function.Function;
 
 /**
@@ -24,26 +24,27 @@ public class TFGenHollowStump<T extends TFTreeFeatureConfig> extends TFGenHollow
 	}
 
 	@Override
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, T config) {
+	public boolean generate(IWorldGenerationReader worldIn, Random rand, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, T config) {
+		World world = (World) worldIn;
 		int radius = rand.nextInt(2) + 2;
 
 		if (!FeatureUtil.isAreaSuitable(world, rand, pos.add(-radius, 0, -radius), 2 * radius, 6, 2 * radius)) {
 			return false;
 		}
 
-		buildTrunk(world, rand, pos, radius, 6);
+		buildTrunk(world, rand, pos, trunk, branch, root, radius, 6, mbb, config);
 
 		// 3-5 roots at the bottom
-		buildBranchRing(world, rand, pos, radius, 3, 2, 6, 0, 0.75D, 0, 3, 5, 3, false);
+		buildBranchRing(world, rand, pos, leaves, branch, radius, 3, 2, 6, 0, 0.75D, 0, 3, 5, 3, false, mbb, config);
 
 		// several more taproots
-		buildBranchRing(world, rand, pos, radius, 1, 2, 8, 0, 0.9D, 0, 3, 5, 3, false);
+		buildBranchRing(world, rand, pos, leaves, branch, radius, 1, 2, 8, 0, 0.9D, 0, 3, 5, 3, false, mbb, config);
 
 		return true;
 	}
 
 	@Override
-	protected void buildTrunk(World world, Random random, BlockPos pos, int diameter, int maxHeight) {
+	protected void buildTrunk(World world, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> branch, Set<BlockPos> root, int diameter, int maxHeight, MutableBoundingBox mbb, T config) {
 
 		int hollow = diameter / 2;
 
@@ -59,9 +60,13 @@ public class TFGenHollowStump<T extends TFTreeFeatureConfig> extends TFGenHollow
 					if (dist <= diameter) {
 						BlockPos dPos = pos.add(dx, dy, dz);
 						if (FeatureUtil.hasAirAround(world, dPos)) {
-							this.setBlockAndNotifyAdequately(world, dPos, dist > hollow ? treeState : branchState);
+							if (dist > hollow) {
+								this.setLogBlockState(world, random, dPos, trunk, mbb, config);
+							} else {
+								this.setLogBlockState(world, random, dPos, branch, mbb, config);
+							}
 						} else {
-							this.setBlockAndNotifyAdequately(world, dPos, rootState);
+							this.setRootsBlockState(world, random, dPos, root, mbb, config);
 						}
 					}
 				}
@@ -81,7 +86,7 @@ public class TFGenHollowStump<T extends TFTreeFeatureConfig> extends TFGenHollow
 
 					// make a trunk!
 					if (dist <= diameter && dist > hollow) {
-						setBlockAndNotifyAdequately(world, pos.add(dx, dy, dz), treeState);
+						this.setLogBlockState(world, random, pos.add(dx, dy, dz), trunk, mbb, config);
 					}
 				}
 			}

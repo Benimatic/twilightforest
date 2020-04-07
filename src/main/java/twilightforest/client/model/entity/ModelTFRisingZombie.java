@@ -1,6 +1,8 @@
 package twilightforest.client.model.entity;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.entity.model.ZombieModel;
 import twilightforest.entity.EntityTFRisingZombie;
 
@@ -11,53 +13,51 @@ public class ModelTFRisingZombie<T extends EntityTFRisingZombie> extends ZombieM
 	}
 
 	@Override
-	public void render(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-		this.setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-		GlStateManager.pushMatrix();
+	public void render(MatrixStack stack, IVertexBuilder builder, int light, int overlay, float red, float green, float blue, float scale) {
+		stack.push();
 
 		if (this.isChild) {
-			GlStateManager.pushMatrix();
-			{
-				GlStateManager.scalef(0.75F, 0.75F, 0.75F);
-				RenderSystem.translatef(0.0F, 16.0F * scale, 0.0F);
-				this.bipedHead.render(scale);
-				GlStateManager.popMatrix();
-				GlStateManager.pushMatrix();
-				GlStateManager.scalef(0.5F, 0.5F, 0.5F);
-				RenderSystem.translatef(0.0F, 24.0F * scale, 0.0F);
+			stack.push();{
+				stack.scale(0.75F, 0.75F, 0.75F);
+				stack.translate(0.0F, 16.0F * scale, 0.0F);
+				this.getHeadParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
+				stack.pop();
+				stack.push();
+				stack.scale(0.5F, 0.5F, 0.5F);
+				stack.translate(0.0F, 24.0F * scale, 0.0F);
 				this.bipedBody.render(scale);
 				this.bipedRightArm.render(scale);
 				this.bipedLeftArm.render(scale);
 				this.bipedHeadwear.render(scale);
 			}
-			GlStateManager.popMatrix();
+			stack.pop();
 			this.bipedRightLeg.render(scale);
 			this.bipedLeftLeg.render(scale);
 		} else {
-			if (entityIn.isSneaking()) {
-				RenderSystem.translatef(0.0F, 0.2F, 0.0F);
+			if (this.isSneaking) {
+				stack.translate(0.0F, 0.2F, 0.0F);
 			}
 
-			RenderSystem.translatef(0F, (80F - Math.min(80F, ageInTicks)) / 80F, 0F);
-			RenderSystem.translatef(0F, (40F - Math.min(40F, Math.max(0F, ageInTicks - 80F))) / 40F, 0F);
-			GlStateManager.pushMatrix();
+			stack.translate(0F, (80F - Math.min(80F, ageInTicks)) / 80F, 0F);
+			stack.translate(0F, (40F - Math.min(40F, Math.max(0F, ageInTicks - 80F))) / 40F, 0F);
+			stack.push();
 			{
 				final float yOff = 1F;
-				RenderSystem.translatef(0, yOff, 0);
-				GlStateManager.rotatef(-120F * (80F - Math.min(80F, ageInTicks)) / 80F, 1F, 0F, 0F);
-				GlStateManager.rotatef(30F * (40F - Math.min(40F, Math.max(0F, ageInTicks - 80F))) / 40F, 1F, 0F, 0F);
-				RenderSystem.translatef(0, -yOff, 0);
-				this.bipedHead.render(scale);
+				stack.translate(0, yOff, 0);
+				RenderSystem.rotatef(-120F * (80F - Math.min(80F, ageInTicks)) / 80F, 1F, 0F, 0F);
+				RenderSystem.rotatef(30F * (40F - Math.min(40F, Math.max(0F, ageInTicks - 80F))) / 40F, 1F, 0F, 0F);
+				stack.translate(0, -yOff, 0);
+				this.getHeadParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
 				this.bipedBody.render(scale);
 				this.bipedRightArm.render(scale);
 				this.bipedLeftArm.render(scale);
 				this.bipedHeadwear.render(scale);
 			}
-			GlStateManager.popMatrix();
+			stack.pop();
 			this.bipedRightLeg.render(scale);
 			this.bipedLeftLeg.render(scale);
 		}
 
-		GlStateManager.popMatrix();
+		stack.pop();
 	}
 }

@@ -215,5 +215,4 @@ public class EntityTFYeti extends MonsterEntity implements IHostileMount {
 	public ResourceLocation getLootTable() {
 		return LOOT_TABLE;
 	}
-
 }

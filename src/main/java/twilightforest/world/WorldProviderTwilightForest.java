@@ -1,13 +1,10 @@
 package twilightforest.world;
 
 import net.minecraft.client.audio.MusicTicker;
-import net.minecraft.entity.Entity;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.dimension.OverworldDimension;
 import net.minecraft.world.gen.ChunkGenerator;
@@ -18,7 +15,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
-import twilightforest.biomes.TFBiomes;
 import twilightforest.client.TFClientProxy;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.TFWeatherRenderer;
@@ -102,13 +98,19 @@ public class WorldProviderTwilightForest extends OverworldDimension { //TODO: Sh
 	public void init() {
 		CompoundNBT data = TFWorld.getDimensionData(world);
 		seed = data.contains(SEED_KEY, Constants.NBT.TAG_LONG) ? data.getLong(SEED_KEY) : loadSeed();
-		hasSkyLight = isSkylightEnabled(data);
+		//hasSkyLight = isSkylightEnabled(data);
 		biomeProvider = new TFBiomeProvider(world);
 	}
 
 	@Override
+	public boolean hasSkyLight() {
+		CompoundNBT data = TFWorld.getDimensionData(world);
+		return isSkylightEnabled(data);
+	}
+
+	@Override
 	protected void generateLightBrightnessTable() {
-		float f = this.hasSkyLight ? 0.0F : 0.1F;
+		float f = this.hasSkyLight() ? 0.0F : 0.1F;
 		for (int i = 0; i <= 15; ++i) {
 			float f1 = 1.0F - (float)i / 15.0F;
 			this.lightBrightnessTable[i] = (1.0F - f1) / (f1 * 3.0F + 1.0F) * (1.0F - f) + f;
@@ -164,12 +166,13 @@ public class WorldProviderTwilightForest extends OverworldDimension { //TODO: Sh
 		return false;
 	}
 
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public Vec3d getSkyColor(Entity cameraEntity, float partialTicks) {
-		// TODO Maybe in the future we can get the return of sky color by biome?
-		return new Vec3d(32 / 256.0, 34 / 256.0, 74 / 256.0);
-	}
+	//TODO: Handled in Biome.getSkyColor now
+//	@Override
+//	@OnlyIn(Dist.CLIENT)
+//	public Vec3d getSkyColor(Entity cameraEntity, float partialTicks) {
+//		// TODO Maybe in the future we can get the return of sky color by biome?
+//		return new Vec3d(32 / 256.0, 34 / 256.0, 74 / 256.0);
+//	}
 
 	@Override
 	public void getLightmapColors(float partialTicks, float sunBrightness, float skyLight, float blockLight, float[] colors) {
@@ -193,14 +196,15 @@ public class WorldProviderTwilightForest extends OverworldDimension { //TODO: Sh
 		return TFWorld.SEALEVEL;
 	}
 
-	@Override
-	public Biome getBiomeForCoords(BlockPos pos) {
-		Biome biome = super.getBiomeForCoords(pos);
-		if (biome == null) {
-			biome = TFBiomes.twilightForest;
-		}
-		return biome;
-	}
+	//TODO: Doesn't exist
+//	@Override
+//	public Biome getBiomeForCoords(BlockPos pos) {
+//		Biome biome = super.getBiomeForCoords(pos);
+//		if (biome == null) {
+//			biome = TFBiomes.twilightForest;
+//		}
+//		return biome;
+//	}
 
 	/**
 	 * If there is a specific twilight forest seed set, use that.  Otherwise use the world seed.
@@ -225,7 +229,7 @@ public class WorldProviderTwilightForest extends OverworldDimension { //TODO: Sh
 	@Override
 	public void onWorldSave() {
 		CompoundNBT data = new CompoundNBT();
-		data.setLong(SEED_KEY, seed);
+		data.putLong(SEED_KEY, seed);
 		// TODO: decide on persisting this
 		//data.putBoolean(SKYLIGHT_KEY, hasSkyLight);
 		TFWorld.setDimensionData(world, data);

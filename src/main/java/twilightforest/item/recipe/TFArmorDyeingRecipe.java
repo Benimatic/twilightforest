@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.ArmorDyeRecipe;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import twilightforest.item.ItemTFArcticArmor;
 
@@ -11,6 +12,10 @@ import java.util.List;
 
 /* Copied from net.minecraft.item.crafting.RecipesArmorDyes with a bit of modification */
 public class TFArmorDyeingRecipe extends ArmorDyeRecipe {
+    public TFArmorDyeingRecipe(ResourceLocation location) {
+        super(location);
+    }
+
     @Override
     public boolean matches(CraftingInventory inv, World worldIn) {
         ItemStack itemstack = ItemStack.EMPTY;

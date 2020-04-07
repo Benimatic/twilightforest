@@ -87,5 +87,4 @@ public class EntityTFIceCrystal extends EntityTFIceMob {
 			}
 		}
 	}
-
 }

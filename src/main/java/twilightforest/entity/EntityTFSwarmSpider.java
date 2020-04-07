@@ -98,8 +98,7 @@ public class EntityTFSwarmSpider extends SpiderEntity {
 	}
 
 	protected boolean spawnAnother() {
-		EntityTFSwarmSpider another = new EntityTFSwarmSpider(world, false);
-
+		EntityTFSwarmSpider another = new EntityTFSwarmSpider(TFEntities.swarm_spider.get(), world, false);
 
 		double sx = getX() + (rand.nextBoolean() ? 0.9 : -0.9);
 		double sy = getY();
