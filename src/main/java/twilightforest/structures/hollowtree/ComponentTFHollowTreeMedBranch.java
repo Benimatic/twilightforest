@@ -115,7 +115,7 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 		BlockPos rDest = dest.add(-boundingBox.minX, -boundingBox.minY, -boundingBox.minZ);
 
 		if (!drawLeaves) {
-			BlockState log = TFBlocks.oak_log.get().getDefaultState().with(LOG_AXIS, BlockLog.EnumAxis.NONE); //TODO: Should be Twilight Oak Wood
+			BlockState log = TFBlocks.oak_wood.get().getDefaultState();
 			drawBresehnam(world, sbb, rSrc.getX(), rSrc.getY(), rSrc.getZ(), rDest.getX(), rDest.getY(), rDest.getZ(), log);
 			drawBresehnam(world, sbb, rSrc.getX(), rSrc.getY() + 1, rSrc.getZ(), rDest.getX(), rDest.getY(), rDest.getZ(), log);
 		}
@@ -213,7 +213,7 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 		BlockPos branchDest = FeatureUtil.translate(new BlockPos(sx, sy, sz), branchLength, branchAngle, branchTilt);
 
 		if (!drawLeaves) {
-			BlockState log = TFBlocks.oak_log.get().getDefaultState().with(LOG_AXIS, BlockLog.EnumAxis.NONE); //TODO: Should be Twilight Oak Wood
+			BlockState log = TFBlocks.oak_wood.get().getDefaultState();
 			drawBresehnam(world, sbb, sx, sy, sz, branchDest.getX(), branchDest.getY(), branchDest.getZ(), log);
 		} else {
 			makeLeafBlob(world, sbb, branchDest.getX(), branchDest.getY(), branchDest.getZ(), 2);

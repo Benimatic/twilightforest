@@ -37,7 +37,7 @@ public class ComponentTFHollowTreeSmallBranch extends ComponentTFHollowTreeMedBr
 
 		if (!drawLeaves)
 		{
-			BlockState log = TFBlocks.oak_log.get().getDefaultState().with(LOG_AXIS, BlockLog.EnumAxis.NONE); //TODO: Needs to be Twilight Oak Wood
+			BlockState log = TFBlocks.oak_wood.get().getDefaultState();
 			drawBresehnam(world, sbb, rSrc.getX(), rSrc.getY(), rSrc.getZ(), rDest.getX(), rDest.getY(), rDest.getZ(), log);
 		} else {
 			int leafRad = random.nextInt(2) + 1;

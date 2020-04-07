@@ -135,7 +135,7 @@ public class TileEntityTFCinderFurnace extends FurnaceTileEntity {
 		} else if (dx == 0 && dz == 0) {
 			return Direction.Axis.Y;
 		} else {
-			return dy == 0 ? Direction.Axis.Y : LogBlock.EnumAxis.NONE; //TODO: Needs Cinder Wood
+			return dy == 0 ? Direction.Axis.Y : LogBlock.EnumAxis.NONE; //TODO: None does not exist. Should return Block/State
 		}
 
 	}

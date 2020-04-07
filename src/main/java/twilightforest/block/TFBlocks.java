@@ -24,6 +24,10 @@ public class TFBlocks {
 	public static final RegistryObject<Block> canopy_log                 = BLOCKS.register("canopy_log", () -> new BlockTFLog(MaterialColor.OBSIDIAN, MaterialColor.BROWN));
 	public static final RegistryObject<Block> mangrove_log               = BLOCKS.register("mangrove_log", () -> new BlockTFLog(MaterialColor.DIRT, MaterialColor.OBSIDIAN));
 	public static final RegistryObject<Block> dark_log                   = BLOCKS.register("dark_log", () -> new BlockTFLog(MaterialColor.ADOBE, MaterialColor.STONE));
+	public static final RegistryObject<Block> oak_wood                   = BLOCKS.register("oak_wood", () -> new BlockTFLog(MaterialColor.WOOD, MaterialColor.WOOD));
+	public static final RegistryObject<Block> canopy_wood                = BLOCKS.register("canopy_wood", () -> new BlockTFLog(MaterialColor.OBSIDIAN, MaterialColor.OBSIDIAN));
+	public static final RegistryObject<Block> mangrove_wood              = BLOCKS.register("mangrove_wood", () -> new BlockTFLog(MaterialColor.DIRT, MaterialColor.DIRT));
+	public static final RegistryObject<Block> dark_wood                  = BLOCKS.register("dark_wood", () -> new BlockTFLog(MaterialColor.ADOBE, MaterialColor.ADOBE));
 	public static final RegistryObject<Block> oak_leaves                 = BLOCKS.register("oak_leaves", () -> new BlockTFLeaves());
 	public static final RegistryObject<Block> canopy_leaves              = BLOCKS.register("canopy_leaves", () -> new BlockTFLeaves());
 	public static final RegistryObject<Block> mangrove_leaves            = BLOCKS.register("mangrove_leaves", () -> new BlockTFLeaves());
@@ -75,6 +79,10 @@ public class TFBlocks {
 	public static final RegistryObject<Block> transformation_log         = BLOCKS.register("transformation_log", () -> new BlockTFMagicLog(MaterialColor.WOOD, MaterialColor.OBSIDIAN));
 	public static final RegistryObject<Block> mining_log                 = BLOCKS.register("mining_log", () -> new BlockTFMagicLog(MaterialColor.SAND, MaterialColor.QUARTZ));
 	public static final RegistryObject<Block> sorting_log                = BLOCKS.register("sorting_log", () -> new BlockTFMagicLog(MaterialColor.OBSIDIAN, MaterialColor.BROWN));
+	public static final RegistryObject<Block> time_wood                  = BLOCKS.register("time_wood", () -> new BlockTFMagicLog(MaterialColor.DIRT, MaterialColor.DIRT));
+	public static final RegistryObject<Block> transformation_wood        = BLOCKS.register("transformation_wood", () -> new BlockTFMagicLog(MaterialColor.WOOD, MaterialColor.WOOD));
+	public static final RegistryObject<Block> mining_wood                = BLOCKS.register("mining_wood", () -> new BlockTFMagicLog(MaterialColor.SAND, MaterialColor.SAND));
+	public static final RegistryObject<Block> sorting_wood               = BLOCKS.register("sorting_wood", () -> new BlockTFMagicLog(MaterialColor.OBSIDIAN, MaterialColor.OBSIDIAN));
 	public static final RegistryObject<Block> time_log_core              = BLOCKS.register("time_log_core", () -> new BlockTFMagicLogSpecial(MaterialColor.DIRT, MaterialColor.OBSIDIAN, MagicWoodVariant.TIME));
 	public static final RegistryObject<Block> transformation_log_core    = BLOCKS.register("transformation_log_core", () -> new BlockTFMagicLogSpecial(MaterialColor.WOOD, MaterialColor.OBSIDIAN, MagicWoodVariant.TRANS));
 	public static final RegistryObject<Block> mining_log_core            = BLOCKS.register("mining_log_core", () -> new BlockTFMagicLogSpecial(MaterialColor.SAND, MaterialColor.QUARTZ, MagicWoodVariant.MINE));
@@ -170,6 +178,7 @@ public class TFBlocks {
 	public static final RegistryObject<Block> force_field_blue           = BLOCKS.register("force_field_blue", () -> new BlockTFForceField());
 	public static final RegistryObject<Block> cinder_furnace             = BLOCKS.register("cinder_furnace", () -> new BlockTFCinderFurnace());
 	public static final RegistryObject<Block> cinder_log                 = BLOCKS.register("cinder_log", () -> new BlockTFCinderLog());
+	public static final RegistryObject<Block> cinder_wood                = BLOCKS.register("cinder_wood", () -> new BlockTFCinderLog());
 	public static final RegistryObject<Block> castle_door_yellow         = BLOCKS.register("castle_door_yellow", () -> new BlockTFCastleDoor(0));
 	public static final RegistryObject<Block> castle_door_purple         = BLOCKS.register("castle_door_purple", () -> new BlockTFCastleDoor(1));
 	public static final RegistryObject<Block> castle_door_pink           = BLOCKS.register("castle_door_pink", () -> new BlockTFCastleDoor(2));

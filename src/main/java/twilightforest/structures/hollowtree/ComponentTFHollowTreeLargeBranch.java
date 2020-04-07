@@ -3,7 +3,9 @@ package twilightforest.structures.hollowtree;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
@@ -74,29 +76,27 @@ public class ComponentTFHollowTreeLargeBranch extends ComponentTFHollowTreeMedBr
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random random, MutableBoundingBox sbb) {
-		return this.addComponentParts(world, random, sbb, false);
+	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random random, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		return this.addComponentParts(world.getWorld(), generator, random, sbb, false);
 	}
 
 	@Override
-	public boolean generate(World world, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, boolean drawLeaves) {
+	public boolean addComponentParts(World world, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, boolean drawLeaves) {
 		BlockPos rsrc = src.add(-boundingBox.minX, -boundingBox.minY, -boundingBox.minZ);
 		BlockPos rdest = dest.add(-boundingBox.minX, -boundingBox.minY, -boundingBox.minZ);
 
-		if (!drawLeaves)
-		{
+		if (!drawLeaves) {
 			// main branch
-			final BlockState defaultState = TFBlocks.oak_log.get().getDefaultState();
-			drawBresehnam(world, sbb, rsrc.getX(), rsrc.getY(), rsrc.getZ(), rdest.getX(), rdest.getY(), rdest.getZ(), defaultState.with(LOG_AXIS, BlockLog.EnumAxis.NONE)); //TODO: Needs to be Twilight Oak Wood
+			final BlockState defaultState = TFBlocks.oak_wood.get().getDefaultState();
+			drawBresehnam(world, sbb, rsrc.getX(), rsrc.getY(), rsrc.getZ(), rdest.getX(), rdest.getY(), rdest.getZ(), defaultState);
 
 			// reinforce it
 			int reinforcements = 4;
-			for (int i = 0; i <= reinforcements; i++)
-			{
+			for (int i = 0; i <= reinforcements; i++) {
 				int vx = (i & 2) == 0 ? 1 : 0;
 				int vy = (i & 1) == 0 ? 1 : -1;
 				int vz = (i & 2) == 0 ? 0 : 1;
-				drawBresehnam(world, sbb, rsrc.getX() + vx, rsrc.getY() + vy, rsrc.getZ() + vz, rdest.getX(), rdest.getY(), rdest.getZ(), defaultState.with(LOG_AXIS, BlockLog.EnumAxis.NONE)); //TODO: Needs to be Twilight Oak Wood
+				drawBresehnam(world, sbb, rsrc.getX() + vx, rsrc.getY() + vy, rsrc.getZ() + vz, rdest.getX(), rdest.getY(), rdest.getZ(), defaultState);
 			}
 		}
 

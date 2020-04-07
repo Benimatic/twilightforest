@@ -11,7 +11,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
-import twilightforest.block.BlockTFLog;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
@@ -73,8 +72,8 @@ public class ComponentTFHollowTreeLeafDungeon extends StructureTFTreeComponent {
 	@Override
 	public boolean addComponentParts(World world, ChunkGenerator<?> generator, Random random, MutableBoundingBox sbb, boolean drawLeaves) {
 		if (!drawLeaves) {
-			// wood TODO: Should be Twilight Oak Wood
-			drawHollowBlob(world, sbb, radius, radius, radius, 3, 2, TFBlocks.oak_log.get().getDefaultState().with(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE), false);
+			// wood
+			drawHollowBlob(world, sbb, radius, radius, radius, 3, 2, TFBlocks.oak_wood.get().getDefaultState(), false);
 			// then treasure chest
 			// which direction is this chest in?
 			this.placeTreasureAtCurrentPosition(world, random, radius + 2, radius - 1, radius, TFTreasure.tree_cache, sbb);
