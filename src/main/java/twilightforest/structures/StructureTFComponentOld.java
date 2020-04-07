@@ -1,6 +1,7 @@
 package twilightforest.structures;
 
 import net.minecraft.block.*;
+import net.minecraft.entity.EntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.properties.Half;
@@ -117,7 +118,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	}
 
 	// [VanillaCopy] Keep pinned to signature of setBlockState (no state arg)
-	protected MobSpawnerTileEntity setSpawner(World world, int x, int y, int z, MutableBoundingBox sbb, ResourceLocation monsterID) {
+	protected MobSpawnerTileEntity setSpawner(World world, int x, int y, int z, MutableBoundingBox sbb, EntityType<?> monsterID) {
 		MobSpawnerTileEntity tileEntitySpawner = null;
 
 		int dx = getXWithOffset(x, z);
@@ -128,7 +129,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 			world.setBlockState(pos, Blocks.SPAWNER.getDefaultState(), 2);
 			tileEntitySpawner = (MobSpawnerTileEntity) world.getTileEntity(pos);
 			if (tileEntitySpawner != null) {
-				tileEntitySpawner.getSpawnerBaseLogic().setEntityId(monsterID);
+				tileEntitySpawner.getSpawnerBaseLogic().setEntityType(monsterID);
 			}
 		}
 
@@ -156,7 +157,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 		setBlockState(world, block, x + 1, y, z + 1, sbb);
 	}
 
-	protected MobSpawnerTileEntity setSpawnerRotated(World world, int x, int y, int z, Rotation rotation, ResourceLocation monsterID, MutableBoundingBox sbb) {
+	protected MobSpawnerTileEntity setSpawnerRotated(World world, int x, int y, int z, Rotation rotation, EntityType<?> monsterID, MutableBoundingBox sbb) {
 		Direction oldBase = fakeBaseMode(rotation);
 		MobSpawnerTileEntity ret = setSpawner(world, x, y, z, sbb, monsterID);
 		setCoordBaseMode(oldBase);

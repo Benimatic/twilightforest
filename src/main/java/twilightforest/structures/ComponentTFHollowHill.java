@@ -5,7 +5,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
@@ -79,7 +78,7 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 		// monster generators!
 		for (int i = 0; i < mg; i++) {
 			int[] dest = getCoordsInHill2D(rand);
-			ResourceLocation mobID = getMobID(rand);
+			EntityType<?> mobID = getMobID(rand);
 
 			setSpawner(world, dest[0], rand.nextInt(4), dest[1], sbb, mobID);
 //			placeMobSpawner(dest[0], hy + rand.nextInt(4), dest[1]);
@@ -220,7 +219,7 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 	/**
 	 * Gets the id of a mob appropriate to the current hill size.
 	 */
-	protected ResourceLocation getMobID(Random rand) {
+	protected EntityType<?> getMobID(Random rand) {
 		return getMobID(rand, this.hillSize);
 	}
 
@@ -230,7 +229,7 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 	 * @param level
 	 * @return
 	 */
-	protected ResourceLocation getMobID(Random rand, int level) {
+	protected EntityType<?> getMobID(Random rand, int level) {
 		if (level == 1) {
 			return getLevel1Mob(rand);
 		}
@@ -241,83 +240,83 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 			return getLevel3Mob(rand);
 		}
 
-		return EntityType.getKey(EntityType.SPIDER);
+		return EntityType.SPIDER;
 	}
 
 	/**
 	 * Returns a mob string appropriate for a level 1 hill
 	 */
-	public ResourceLocation getLevel1Mob(Random rand) {
+	public EntityType<?> getLevel1Mob(Random rand) {
 		switch (rand.nextInt(10)) {
 			case 0:
 			case 1:
 			case 2:
-				return EntityType.getKey(TFEntities.swarm_spider.get());
+				return TFEntities.swarm_spider.get();
 			case 3:
 			case 4:
 			case 5:
-				return EntityType.getKey(EntityType.SPIDER);
+				return EntityType.SPIDER;
 			case 6:
 			case 7:
-				return EntityType.getKey(EntityType.ZOMBIE);
+				return EntityType.ZOMBIE;
 			case 8:
-				return EntityType.getKey(EntityType.SILVERFISH);
+				return EntityType.SILVERFISH;
 			case 9:
-				return EntityType.getKey(TFEntities.redcap.get());
+				return TFEntities.redcap.get();
 			default:
-				return EntityType.getKey(TFEntities.swarm_spider.get());
+				return TFEntities.swarm_spider.get();
 		}
 	}
 
 	/**
 	 * Returns a mob string appropriate for a level 2 hill
 	 */
-	public ResourceLocation getLevel2Mob(Random rand) {
+	public EntityType<?> getLevel2Mob(Random rand) {
 		switch (rand.nextInt(10)) {
 			case 0:
 			case 1:
 			case 2:
-				return EntityType.getKey(TFEntities.redcap.get());
+				return TFEntities.redcap.get();
 			case 3:
 			case 4:
 			case 5:
-				return EntityType.getKey(EntityType.ZOMBIE);
+				return EntityType.ZOMBIE;
 			case 6:
 			case 7:
-				return EntityType.getKey(EntityType.SKELETON);
+				return EntityType.SKELETON;
 			case 8:
-				return EntityType.getKey(TFEntities.swarm_spider.get());
+				return TFEntities.swarm_spider.get();
 			case 9:
-				return EntityType.getKey(EntityType.CAVE_SPIDER);
+				return EntityType.CAVE_SPIDER;
 			default:
-				return EntityType.getKey(TFEntities.redcap.get());
+				return TFEntities.redcap.get();
 		}
 	}
 
 	/**
 	 * Returns a mob string appropriate for a level 3 hill.  The level 3 also has 2 mid-air wraith spawners.
 	 */
-	public ResourceLocation getLevel3Mob(Random rand) {
+	public EntityType<?> getLevel3Mob(Random rand) {
 		switch (rand.nextInt(11)) {
 			case 0:
-				return EntityType.getKey(TFEntities.slime_beetle.get());
+				return TFEntities.slime_beetle.get();
 			case 1:
-				return EntityType.getKey(TFEntities.fire_beetle.get());
+				return TFEntities.fire_beetle.get();
 			case 2:
-				return EntityType.getKey(TFEntities.pinch_beetle.get());
+				return TFEntities.pinch_beetle.get();
 			case 3:
 			case 4:
 			case 5:
-				return EntityType.getKey(EntityType.SKELETON);
+				return EntityType.SKELETON;
 			case 6:
 			case 7:
 			case 8:
-				return EntityType.getKey(EntityType.CAVE_SPIDER);
+				return EntityType.CAVE_SPIDER;
 			case 9:
-				return EntityType.getKey(EntityType.CREEPER);
+				return EntityType.CREEPER;
 			case 10:
 			default:
-				return EntityType.getKey(TFEntities.wraith.get());
+				return TFEntities.wraith.get();
 		}
 	}
 }

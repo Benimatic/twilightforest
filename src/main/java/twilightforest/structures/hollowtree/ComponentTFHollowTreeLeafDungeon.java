@@ -1,7 +1,6 @@
 package twilightforest.structures.hollowtree;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.ChunkPos;
@@ -79,7 +78,7 @@ public class ComponentTFHollowTreeLeafDungeon extends StructureTFTreeComponent {
 			this.placeTreasureAtCurrentPosition(world, random, radius + 2, radius - 1, radius, TFTreasure.tree_cache, sbb);
 
 			// then spawner
-			setSpawner(world, radius, radius, radius, sbb, EntityType.getKey(TFEntities.swarm_spider.get()));
+			setSpawner(world, radius, radius, radius, sbb, TFEntities.swarm_spider.get());
 		} else {
 			// hollow sphere of leaves on the outside
 			drawHollowBlob(world, sbb, radius, radius, radius, 4, 2, TFBlocks.oak_leaves.get().getDefaultState(), true);
@@ -102,7 +101,6 @@ public class ComponentTFHollowTreeLeafDungeon extends StructureTFTreeComponent {
 					} else {
 						dist = (byte) (dz + (byte) ((Math.max(dx, dy) * 0.5) + (Math.min(dx, dy) * 0.25)));
 					}
-
 
 					// if we're inside the blob, fill it
 					if (dist > hollowRadius && dist <= blobRadius) {

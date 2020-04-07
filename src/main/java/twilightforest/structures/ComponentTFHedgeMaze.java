@@ -6,7 +6,6 @@ import net.minecraft.block.CarvedPumpkinBlock;
 import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
@@ -173,18 +172,18 @@ public class ComponentTFHedgeMaze extends StructureTFComponentOld {
 		int rx = x + rand.nextInt(diameter) - (diameter / 2);
 		int rz = z + rand.nextInt(diameter) - (diameter / 2);
 
-		ResourceLocation mobID;
+		EntityType<?> mobID;
 
 		switch (rand.nextInt(3)) {
 			case 1:
-				mobID = EntityType.getKey(TFEntities.swarm_spider.get());
+				mobID = TFEntities.swarm_spider.get();
 				break;
 			case 2:
-				mobID = EntityType.getKey(TFEntities.hostile_wolf.get());
+				mobID = TFEntities.hostile_wolf.get();
 				break;
 			case 0:
 			default:
-				mobID = EntityType.getKey(TFEntities.hedge_spider.get());
+				mobID = TFEntities.hedge_spider.get();
 		}
 
 		setSpawner(world, rx, FLOOR_LEVEL, rz, sbb, mobID);

@@ -1,6 +1,7 @@
 package twilightforest.structures.darktower;
 
 import net.minecraft.block.*;
+import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.properties.Half;
 import net.minecraft.state.properties.SlabType;
@@ -18,6 +19,7 @@ import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
+import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
 import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.structures.StructureTFDecorator;
@@ -521,12 +523,12 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 		int x = this.size > 9 ? 4 : 3;
 		int z = this.size > 9 ? 5 : 4;
 
-		ResourceLocation mobID;
+		EntityType<?> mobID;
 
 		if (this.size > 9) {
-			mobID = rand.nextBoolean() ? TFEntityNames.TOWER_GOLEM : TFEntityNames.TOWER_BROODLING;
+			mobID = rand.nextBoolean() ? TFEntities.tower_golem.get() : TFEntities.tower_broodling.get();
 		} else {
-			mobID = TFEntityNames.TOWER_BROODLING;
+			mobID = TFEntities.tower_broodling.get();
 		}
 
 		// pillar frame

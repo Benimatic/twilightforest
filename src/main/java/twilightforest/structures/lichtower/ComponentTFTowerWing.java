@@ -586,7 +586,7 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 	 */
 	protected void decorateSkeletonRoom(World world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, MutableBoundingBox sbb) {
 		// skeleton spawner
-		setSpawner(world, size / 2, bottom + 2, size / 2, sbb, EntityType.getKey(EntityType.SKELETON));
+		setSpawner(world, size / 2, bottom + 2, size / 2, sbb, EntityType.SKELETON);
 
 		// floor-to-ceiling chains
 		ArrayList<BlockPos> chainList = new ArrayList<BlockPos>();
@@ -624,7 +624,7 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 	 */
 	protected void decorateZombieRoom(World world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, MutableBoundingBox sbb) {
 		// zombie spawner
-		setSpawner(world, size / 2, bottom + 2, size / 2, sbb, EntityType.getKey(EntityType.ZOMBIE));
+		setSpawner(world, size / 2, bottom + 2, size / 2, sbb, EntityType.ZOMBIE);
 		final BlockState ironBars = Blocks.IRON_BARS.getDefaultState();
 		final BlockState soulSand = Blocks.SOUL_SAND.getDefaultState();
 		final BlockState brownMushroom = Blocks.BROWN_MUSHROOM.getDefaultState();
@@ -760,7 +760,7 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 					break;
 			}
 
-			setSpawner(world, size / 2, bottom + 2, size / 2, sbb, EntityType.getKey(spiderName));
+			setSpawner(world, size / 2, bottom + 2, size / 2, sbb, spiderName);
 
 		} else {
 			decorateFurniture(world, rand, bottom, size - 2, sbb);

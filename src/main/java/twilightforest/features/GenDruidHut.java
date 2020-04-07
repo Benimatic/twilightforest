@@ -28,7 +28,7 @@ import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import net.minecraft.world.server.ServerWorld;
 import twilightforest.TwilightForestMod;
-import twilightforest.entity.EntityTFSkeletonDruid;
+import twilightforest.entity.TFEntities;
 import twilightforest.enums.StructureWoodVariant;
 import twilightforest.loot.TFTreasure;
 import twilightforest.structures.RandomizedTemplateProcessor;
@@ -107,7 +107,7 @@ public class GenDruidHut<T extends NoFeatureConfig> extends Feature<T> {
 					MobSpawnerTileEntity ms = (MobSpawnerTileEntity) world.getTileEntity(blockPos);
 
 					if (ms != null) {
-						ms.getSpawnerBaseLogic().setEntityId(EntityList.getKey(EntityTFSkeletonDruid.class));
+						ms.getSpawnerBaseLogic().setEntityType(TFEntities.skeleton_druid.get());
 					}
 				}
 			} else if (s.startsWith("loot")) {

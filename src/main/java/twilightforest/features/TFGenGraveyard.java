@@ -28,7 +28,6 @@ import net.minecraft.world.gen.feature.template.TemplateManager;
 import net.minecraft.world.server.ServerWorld;
 import org.apache.commons.lang3.tuple.Pair;
 import twilightforest.TwilightForestMod;
-import twilightforest.entity.EntityTFRisingZombie;
 import twilightforest.entity.EntityTFWraith;
 import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
@@ -197,7 +196,7 @@ public class TFGenGraveyard<T extends NoFeatureConfig> extends Feature<T> {
 							if (world.setBlockState(p, Blocks.SPAWNER.getDefaultState(), flags)) {
 								MobSpawnerTileEntity ms = (MobSpawnerTileEntity) world.getTileEntity(p);
 								if (ms != null)
-									ms.getSpawnerBaseLogic().setEntityId(EntityList.getKey(EntityTFRisingZombie.class));
+									ms.getSpawnerBaseLogic().setEntityType(TFEntities.rising_zombie.get());
 							}
 						} else
 							world.setBlockToAir(p);

@@ -8,7 +8,6 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.properties.SlabType;
 import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -29,7 +28,6 @@ import twilightforest.util.RotationUtil;
 
 import java.util.List;
 import java.util.Random;
-
 
 public class ComponentTFTowerMain extends ComponentTFTowerWing {
 
@@ -271,7 +269,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 				mobID = TFEntities.swarm_spider.get();
 				break;
 		}
-		setSpawner(world, 7, floorLevel + 2, 7, sbb, EntityType.getKey(mobID));
+		setSpawner(world, 7, floorLevel + 2, 7, sbb, mobID);
 
 		// make a fence arch support for the spawner
 		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 6, floorLevel + 1, 7, sbb);

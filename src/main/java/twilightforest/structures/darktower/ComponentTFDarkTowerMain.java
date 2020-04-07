@@ -23,6 +23,7 @@ import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
+import twilightforest.entity.TFEntities;
 import twilightforest.enums.BossVariant;
 import twilightforest.item.TFItems;
 import twilightforest.loot.TFTreasure;
@@ -1078,7 +1079,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		this.setBlockStateRotated(world, netherDeco.blockState, 6, y + 1, 13, rotation, sbb);
 		this.setBlockStateRotated(world, netherDeco.blockState, 6, y + (isTop ? 4 : 9), 13, rotation, sbb);
 
-		this.setSpawnerRotated(world, 6, y + 3, 13, rotation, EntityType.getKey(EntityType.BLAZE), sbb);
+		this.setSpawnerRotated(world, 6, y + 3, 13, rotation, EntityType.BLAZE, sbb);
 
 
 		// destruction blob
@@ -1316,7 +1317,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 	 * Make a mini ghast spawner and then set the spawn range and max entities for that spawner
 	 */
 	private void makeMiniGhastSpawner(World world, Random rand, int y, int sx, int sz, MutableBoundingBox sbb) {
-		MobSpawnerTileEntity spawner = setSpawner(world, sx, y + 2, sz, sbb, TFEntityNames.MINI_GHAST);
+		MobSpawnerTileEntity spawner = setSpawner(world, sx, y + 2, sz, sbb, TFEntities.mini_ghast.get());
 
 		if (spawner != null) {
 			// change the spawner detection range by this goofy process of writing to and reading from NBT tags

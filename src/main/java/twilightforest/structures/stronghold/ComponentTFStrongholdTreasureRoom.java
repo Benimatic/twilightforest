@@ -12,8 +12,8 @@ import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
+import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
-import twilightforest.util.TFEntityNames;
 
 import java.util.List;
 import java.util.Random;
@@ -74,9 +74,9 @@ public class ComponentTFStrongholdTreasureRoom extends StructureTFStrongholdComp
 		this.fillWithBlocks(world, sbb, 3, 1, 8, 5, 4, 9, Blocks.IRON_BARS.getDefaultState(), Blocks.IRON_BARS.getDefaultState(), false);
 
 		// spawnwers
-		this.setSpawner(world, 4, 1, 4, sbb, TFEntityNames.HELMET_CRAB);
+		this.setSpawner(world, 4, 1, 4, sbb, TFEntities.helmet_crab.get());
 
-		this.setSpawner(world, 4, 4, 15, sbb, TFEntityNames.HELMET_CRAB);
+		this.setSpawner(world, 4, 4, 15, sbb, TFEntities.helmet_crab.get());
 
 		// treasure!
 		this.placeTreasureAtCurrentPosition(world, rand, 2, 4, 13, TFTreasure.stronghold_room, sbb);

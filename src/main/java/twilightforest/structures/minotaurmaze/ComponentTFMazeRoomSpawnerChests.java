@@ -12,8 +12,8 @@ import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
+import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
-import twilightforest.util.TFEntityNames;
 
 import java.util.Random;
 
@@ -39,7 +39,7 @@ public class ComponentTFMazeRoomSpawnerChests extends ComponentTFMazeRoom {
 		placePillarEnclosure(worldIn, sbb, 10, 10);
 
 		// spawner
-		setSpawner(worldIn, 4, 2, 4, sbb, TFEntityNames.MINOTAUR);
+		setSpawner(worldIn, 4, 2, 4, sbb, TFEntities.minotaur.get());
 
 		// treasure
 		this.placeTreasureAtCurrentPosition(worldIn, rand, 4, 2, 11, TFTreasure.labyrinth_room, sbb);
