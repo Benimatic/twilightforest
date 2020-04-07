@@ -1,6 +1,9 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntitySize;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -8,6 +11,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import twilightforest.entity.TFEntities;
 
 public class EntityTFHydraPart extends MobEntity {
 
@@ -15,17 +19,18 @@ public class EntityTFHydraPart extends MobEntity {
 
 	public EntityTFHydra hydra;
 
-	public EntityTFHydraPart(EntityType<? extends EntityTFHydraPart> type, World world) {
-		super(type, world);
+	public EntityTFHydraPart(EntityTFHydra parent, World world, float width, float height) {
+		super(TFEntities.hydra.get(), world);
 		isImmuneToFire();
+		this.hydra = parent;
+		this.size = EntitySize.flexible(width, height);
+		this.recalculateSize();
 	}
 
-	public EntityTFHydraPart(EntityType<? extends EntityTFHydraPart> type, EntityTFHydra hydra, String name) {
-		super(type, hydra.world);
-		this.hydra = hydra;
+	public EntityTFHydraPart(EntityTFHydra hydra, String name, float width, float height) {
+		this(hydra, hydra.world, width, height);
 		setPartName(name);
 		//texture = TwilightForestMod.MODEL_DIR + "hydra4.png";
-		isImmuneToFire();
 	}
 
 	@Override
@@ -129,5 +134,22 @@ public class EntityTFHydraPart extends MobEntity {
 	@Override
 	public boolean canDespawn(double p_213397_1_) {
 		return hydra == null;
+	}
+
+	public void setWidth(float width) {
+		setWidthAndHeight(width, size.height);
+	}
+
+	public void setHeight(float height) {
+		setWidthAndHeight(size.width, height);
+	}
+
+	public void setWidthAndHeight(float value) {
+		setWidthAndHeight(value, value);
+	}
+
+	public void setWidthAndHeight(float width, float height) {
+		size = EntitySize.flexible(width, height);
+		recalculateSize();
 	}
 }

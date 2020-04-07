@@ -63,7 +63,8 @@ public class EntityTFMobileFirefly extends AmbientEntity {
 	public void tick() {
 		super.tick();
 
-		this.motionY *= 0.6000000238418579D;
+		Vec3d motion = getMotion();
+		this.setMotion(motion.x, motion.y * 0.6000000238418579D, motion.z);
 	}
 
 	@Override
@@ -75,21 +76,19 @@ public class EntityTFMobileFirefly extends AmbientEntity {
 			this.spawnPosition = null;
 		}
 
-		if (this.spawnPosition == null || this.rand.nextInt(30) == 0 || this.spawnPosition.distanceSq((double) ((int) this.getX()), (double) ((int) this.getY()), (double) ((int) this.getZ())) < 4.0D) {
+		// TODO: True adds 0.5
+		if (this.spawnPosition == null || this.rand.nextInt(30) == 0 || this.spawnPosition.distanceSq((double) ((int) this.getX()), (double) ((int) this.getY()), (double) ((int) this.getZ()), false) < 4.0D) {
 			this.spawnPosition = new BlockPos((int) this.getX() + this.rand.nextInt(7) - this.rand.nextInt(7), (int) this.getY() + this.rand.nextInt(6) - 2, (int) this.getZ() + this.rand.nextInt(7) - this.rand.nextInt(7));
 		}
 
 		double d0 = (double) this.spawnPosition.getX() + 0.5D - this.getX();
 		double d1 = (double) this.spawnPosition.getY() + 0.1D - this.getY();
 		double d2 = (double) this.spawnPosition.getZ() + 0.5D - this.getZ();
-//		this.motionX += (Math.signum(d0) * 0.5D - this.motionX) * 0.10000000149011612D;
-//		this.motionY += (Math.signum(d1) * 0.699999988079071D - this.motionY) * 0.10000000149011612D;
-//		this.motionZ += (Math.signum(d2) * 0.5D - this.motionZ) * 0.10000000149011612D;
-		this.getMotion().add(new Vec3d(
+		this.setMotion(this.getMotion().add(new Vec3d(
 				(Math.signum(d0) * 0.5D - this.getMotion().getX()) * 0.10000000149011612D,
 				(Math.signum(d1) * 0.699999988079071D - this.getMotion().getY()) * 0.10000000149011612D,
 				(Math.signum(d2) * 0.5D - this.getMotion().getZ()) * 0.10000000149011612D
-		));
+		)));
 		float f = (float) (MathHelper.atan2(this.getMotion().getZ(), this.getMotion().getX()) * (180D / Math.PI)) - 90.0F;
 		float f1 = MathHelper.wrapDegrees(f - this.rotationYaw);
 		this.moveForward = 0.5F;
@@ -97,10 +96,10 @@ public class EntityTFMobileFirefly extends AmbientEntity {
 		// End copy
 	}
 
-//	@Override
-//	protected boolean canTriggerWalking() {
-//		return false;
-//	}
+	@Override
+	public boolean bypassesSteppingEffects() {
+		return false;
+	}
 
 	@Override
 	public boolean handleFallDamage(float dist, float mult) {
@@ -117,7 +116,8 @@ public class EntityTFMobileFirefly extends AmbientEntity {
 	}
 
 	// [VanillaCopy] EntityBat.getCanSpawnHere. Edits noted.
-	@Override
+	// TODO: These are now moved to spawn predicates
+/*	@Override
 	public boolean getCanSpawnHere() {
 		BlockPos blockpos = new BlockPos(this.getX(), this.getBoundingBox().minY, this.getZ());
 
@@ -125,7 +125,7 @@ public class EntityTFMobileFirefly extends AmbientEntity {
 				&& !this.rand.nextBoolean()
 				&& this.world.getLightFromNeighbors(blockpos) <= this.rand.nextInt(4)
 				&& super.getCanSpawnHere();
-	}
+	}*/
 
 	//TODO: I believe this is done via the Renderer now
 //	@Override
@@ -136,6 +136,11 @@ public class EntityTFMobileFirefly extends AmbientEntity {
 
 	public float getGlowBrightness() {
 		return (float) Math.sin(this.ticksExisted / 7.0) + 1F;
+	}
+
+	@Override
+	public float getBrightness() {
+		return getGlowBrightness();
 	}
 
 	@Override

@@ -162,7 +162,8 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 			BlockState state = world.getBlockState(pos);
 			Block block = state.getBlock();
 
-			if (!block.isAir(state, world, pos) && block.getExplosionResistance(state, world, pos, this) < 7F
+			// TODO: The "explosion" parameter can't actually be null
+			if (!block.isAir(state, world, pos) && block.getExplosionResistance(state, world, pos, this, null) < 7F
 					&& state.getBlockHardness(world, pos) >= 0 && block.canEntityDestroy(state, world, pos, this)) {
 
 				if (getThrower() instanceof PlayerEntity) {
@@ -184,11 +185,11 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 		super.tick();
 
 		if (world.isRemote) {
-			chain1.onUpdate();
-			chain2.onUpdate();
-			chain3.onUpdate();
-			chain4.onUpdate();
-			chain5.onUpdate();
+			chain1.tick();
+			chain2.tick();
+			chain3.tick();
+			chain4.tick();
+			chain5.tick();
 
 			// set chain positions
 			if (this.getThrower() != null) {
@@ -245,6 +246,10 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 	}
 
 	@Override
+	protected void registerData() {
+	}
+
+	@Override
 	public void remove() {
 		super.remove();
 		LivingEntity thrower = this.getThrower();
@@ -278,7 +283,7 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 	public void readSpawnData(PacketBuffer additionalData) {
 		Entity e = world.getEntityByID(additionalData.readInt());
 		if (e instanceof LivingEntity) {
-			thrower = (LivingEntity) e;
+			owner = (LivingEntity) e;
 		}
 		hand = additionalData.readBoolean() ? Hand.MAIN_HAND : Hand.OFF_HAND;
 	}

@@ -1,4 +1,4 @@
-package twilightforest.entity;
+package twilightforest.entity.projectile;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IRendersAsItem;
@@ -6,6 +6,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.particles.ItemParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
@@ -25,6 +26,11 @@ public class EntityTFTomeBolt extends EntityTFThrowable implements IRendersAsIte
 
 	public EntityTFTomeBolt(EntityType<? extends EntityTFTomeBolt> type, World world) {
 		super(type, world);
+	}
+
+	@Override
+	protected void registerData() {
+		// TODO: Needed?
 	}
 
 	@Override
@@ -48,12 +54,14 @@ public class EntityTFTomeBolt extends EntityTFThrowable implements IRendersAsIte
 	}
 
 	@OnlyIn(Dist.CLIENT)
+	private final static ItemStack particleItem = new ItemStack(Items.PAPER);
+
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void handleStatusUpdate(byte id) {
 		if (id == 3) {
-			int itemId = Item.getIdFromItem(Items.PAPER);
 			for (int i = 0; i < 8; ++i) {
-				this.world.addParticle(ParticleTypes.ITEM_CRACK, this.getX(), this.getY(), this.getZ(), rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, itemId);
+				this.world.addParticle(new ItemParticleData(ParticleTypes.ITEM, particleItem), false, this.getX(), this.getY(), this.getZ(), rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
 			}
 		} else {
 			super.handleStatusUpdate(id);

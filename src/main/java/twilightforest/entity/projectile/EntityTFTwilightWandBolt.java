@@ -1,4 +1,4 @@
-package twilightforest.entity;
+package twilightforest.entity.projectile;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IRendersAsItem;
@@ -6,6 +6,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.Item;
+import net.minecraft.particles.ItemParticleData;
 import net.minecraft.util.DamageSource;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.EntityRayTraceResult;
@@ -33,6 +34,11 @@ public class EntityTFTwilightWandBolt extends EntityTFThrowable implements IRend
 	}
 
 	@Override
+	protected void registerData() {
+		// TODO: Needed?
+	}
+
+	@Override
 	public void tick() {
 		super.tick();
 		makeTrail();
@@ -48,7 +54,7 @@ public class EntityTFTwilightWandBolt extends EntityTFThrowable implements IRend
 			double s2 = ((rand.nextFloat() * 0.5F) + 0.5F) * 0.80F;  // color
 			double s3 = ((rand.nextFloat() * 0.5F) + 0.5F) * 0.69F;  // color
 
-			world.addParticle(ParticleTypes.SPELL_MOB, dx, dy, dz, s1, s2, s3);
+			world.addParticle(ParticleTypes.ENTITY_EFFECT, dx, dy, dz, s1, s2, s3);
 		}
 	}
 
@@ -58,12 +64,14 @@ public class EntityTFTwilightWandBolt extends EntityTFThrowable implements IRend
 	}
 
 	@OnlyIn(Dist.CLIENT)
+	private final static ItemStack particleItem = new ItemStack(Items.ENDER_PEARL);
+
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void handleStatusUpdate(byte id) {
 		if (id == 3) {
-			int itemId = Item.getIdFromItem(Items.ENDER_PEARL);
 			for (int i = 0; i < 8; ++i) {
-				this.world.addParticle(ParticleTypes.ITEM_CRACK, this.getX(), this.getY(), this.getZ(), rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, itemId);
+				this.world.addParticle(new ItemParticleData(ParticleTypes.ITEM, particleItem), false, this.getX(), this.getY(), this.getZ(), rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
 			}
 		} else {
 			super.handleStatusUpdate(id);

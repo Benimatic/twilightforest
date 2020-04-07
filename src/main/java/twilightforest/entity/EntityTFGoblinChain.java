@@ -1,16 +1,15 @@
 package twilightforest.entity;
 
-import net.minecraft.entity.IEntityMultiPart;
-import net.minecraft.entity.MultiPartEntityPart;
+import net.minecraft.entity.Entity;
 
 public class EntityTFGoblinChain extends MultiPartEntityPart {
-	public EntityTFGoblinChain(IEntityMultiPart goblin) {
+	public EntityTFGoblinChain(Entity goblin) {
 		super(goblin, "chain", 0.1F, 0.1F);
 	}
 
 	@Override
-	public void onUpdate() {
-		super.onUpdate();
+	public void tick() {
+		super.tick();
 
 		this.ticksExisted++;
 

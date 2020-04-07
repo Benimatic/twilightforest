@@ -1,8 +1,8 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.entity.MultiPartEntityPart;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvents;
+import twilightforest.entity.MultiPartEntityPart;
 
 public class EntityTFSnowQueenIceShield extends MultiPartEntityPart {
 
@@ -17,8 +17,8 @@ public class EntityTFSnowQueenIceShield extends MultiPartEntityPart {
 	}
 
 	@Override
-	public void onUpdate() {
-		super.onUpdate();
+	public void tick() {
+		super.tick();
 
 		this.ticksExisted++;
 

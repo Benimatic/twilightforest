@@ -9,6 +9,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.particles.ParticleType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ResourceLocation;
@@ -28,9 +29,12 @@ import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
+import twilightforest.entity.IEntityMultiPart;
+import twilightforest.entity.MultiPartEntityPart;
 import twilightforest.enums.BossVariant;
 import twilightforest.util.EntityUtil;
 import twilightforest.util.WorldUtil;
+import twilightforest.world.TFWorld;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -59,11 +63,12 @@ public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 	public final int numHeads = 7;
 	public final HydraHeadContainer[] hc = new HydraHeadContainer[numHeads];
 
-	public final MultiPartEntityPart body = new MultiPartEntityPart(this, "body", 4F, 4F);
-	private final MultiPartEntityPart leftLeg = new MultiPartEntityPart(this, "leg", 2F, 3F);
-	private final MultiPartEntityPart rightLeg = new MultiPartEntityPart(this, "leg", 2F, 3F);
-	private final MultiPartEntityPart tail = new MultiPartEntityPart(this, "tail", 4F, 4F);
+	public final MultiPartEntityPart body = new MultiPartEntityPart<>(this, "body", 4F, 4F);
+	private final MultiPartEntityPart leftLeg = new MultiPartEntityPart<>(this, "leg", 2F, 3F);
+	private final MultiPartEntityPart rightLeg = new MultiPartEntityPart<>(this, "leg", 2F, 3F);
+	private final MultiPartEntityPart tail = new MultiPartEntityPart<>(this, "tail", 4F, 4F);
 	private final ServerBossInfo bossInfo = new ServerBossInfo(getDisplayName(), BossInfo.Color.BLUE, BossInfo.Overlay.PROGRESS);
+	private float randomYawVelocity = 0f;
 
 	private int ticksSinceDamaged = 0;
 
@@ -184,7 +189,7 @@ public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 
 		// update all heads (maybe we should change to only active ones
 		for (int i = 0; i < numHeads; i++) {
-			hc[i].onUpdate();
+			hc[i].tick();
 		}
 
 		if (this.hurtTime > 0) {
@@ -204,9 +209,8 @@ public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 
 		super.livingTick();
 
-		body.width = body.height = 6.0F;
-		tail.width = 6.0F;
-		tail.height = 2.0F;
+		body.setWidthAndHeight(6.0f);
+		tail.setWidthAndHeight(6.0f, 2.0f);
 
 		// set body part positions
 		float angle;
@@ -310,7 +314,7 @@ public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 		}
 
 		if (rand.nextFloat() < 0.7F) {
-			PlayerEntity entityplayer1 = world.getNearestAttackablePlayer(this, f, f);
+			PlayerEntity entityplayer1 = world.getClosestPlayer(this, f);
 
 			if (entityplayer1 != null) {
 				setAttackTarget(entityplayer1);
@@ -724,7 +728,7 @@ public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 	}
 
 	@Override
-	protected boolean canDespawn() {
+	public boolean canDespawn(double distance) {
 		return false;
 	}
 
@@ -777,11 +781,10 @@ public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 			double vx = this.rand.nextGaussian() * 0.02D;
 			double vy = this.rand.nextGaussian() * 0.02D;
 			double vz = this.rand.nextGaussian() * 0.02D;
-			ParticleTypes particle = rand.nextInt(2) == 0 ? ParticleTypes.EXPLOSION_LARGE : ParticleTypes.EXPLOSION_NORMAL;
-			this.world.addParticle(particle,
-					this.getX() + this.rand.nextFloat() * this.body.width * 2.0F - this.body.width,
-					this.getY() + this.rand.nextFloat() * this.body.height,
-					this.getZ() + this.rand.nextFloat() * this.body.width * 2.0F - this.body.width,
+			this.world.addParticle((rand.nextInt(2) == 0 ? ParticleTypes.EXPLOSION_EMITTER : ParticleTypes.EXPLOSION),
+					this.getX() + this.rand.nextFloat() * this.body.getWidth() * 2.0F - this.body.getWidth(),
+					this.getY() + this.rand.nextFloat() * this.body.getHeight(),
+					this.getZ() + this.rand.nextFloat() * this.body.getWidth() * 2.0F - this.body.getWidth(),
 					vx, vy, vz
 			);
 		}

@@ -1,4 +1,4 @@
-package twilightforest.entity;
+package twilightforest.entity.projectile;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -10,6 +10,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.BoneMealItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
@@ -31,6 +32,11 @@ public class EntityTFNatureBolt extends EntityTFThrowable implements ITFProjecti
 
 	public EntityTFNatureBolt(EntityType<? extends EntityTFNatureBolt> type, World world, LivingEntity owner) {
 		super(type, world, owner);
+	}
+
+	@Override
+	protected void registerData() {
+		// TODO: Needed?
 	}
 
 	@Override
@@ -57,9 +63,8 @@ public class EntityTFNatureBolt extends EntityTFThrowable implements ITFProjecti
 	@Override
 	public void handleStatusUpdate(byte id) {
 		if (id == 3) {
-			int stateId = Block.getStateId(Blocks.OAK_LEAVES.getDefaultState());
 			for (int i = 0; i < 8; ++i) {
-				this.world.addParticle(ParticleTypes.BLOCK_CRACK, this.getX(), this.getY(), this.getZ(), rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D, stateId);
+				this.world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, Blocks.OAK_LEAVES.getDefaultState()), false, this.getX(), this.getY(), this.getZ(), rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
 			}
 		} else {
 			super.handleStatusUpdate(id);
@@ -70,7 +75,7 @@ public class EntityTFNatureBolt extends EntityTFThrowable implements ITFProjecti
 	protected void onImpact(RayTraceResult ray) {
 		if (!this.world.isRemote) {
 			if (ray instanceof BlockRayTraceResult) {
-				BlockPos blockPosHit = ((BlockRayTraceResult)ray).getPos();
+				BlockPos blockPosHit = ((BlockRayTraceResult) ray).getPos();
 				if (blockPosHit != null) {
 					Material materialHit = world.getBlockState(blockPosHit).getMaterial();
 
@@ -86,7 +91,7 @@ public class EntityTFNatureBolt extends EntityTFThrowable implements ITFProjecti
 			}
 
 			if (ray instanceof EntityRayTraceResult) {
-				Entity entityHit = ((EntityRayTraceResult)ray).getEntity();
+				Entity entityHit = ((EntityRayTraceResult) ray).getEntity();
 				if (ray.hitInfo instanceof LivingEntity && (owner == null || (entityHit != owner && entityHit != owner.getRidingEntity()))) {
 					if (entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), 2)
 							&& world.getDifficulty() != Difficulty.PEACEFUL) {

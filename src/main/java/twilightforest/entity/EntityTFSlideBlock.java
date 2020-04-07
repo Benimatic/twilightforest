@@ -1,31 +1,31 @@
 package twilightforest.entity;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.network.PacketBuffer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.IPacket;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
+import net.minecraftforge.fml.network.NetworkHooks;
 import twilightforest.TFSounds;
 
 import javax.annotation.Nonnull;
@@ -102,7 +102,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 	}
 
 	@Override
-	protected boolean canTriggerWalking() {
+	public boolean bypassesSteppingEffects() {
 		return false;
 	}
 
@@ -158,20 +158,18 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 				}
 
 				if (this.collided) {
-//					this.motionX *= 0.699999988079071D;
-//					this.motionZ *= 0.699999988079071D;
-//					this.motionY *= 0.699999988079071D;
-					this.getMotion().mul(0.699999988079071D, 0.699999988079071D, 0.699999988079071D);
+					this.setMotion(this.getMotion().mul(0.699999988079071D, 0.699999988079071D, 0.699999988079071D));
 
 					this.remove();
 
 					if (this.world.canPlace(myState, pos, ISelectionContext.dummy())) {
 						world.setBlockState(pos, myState);
 					} else {
-						this.entityDropItem(new ItemStack(myState.getBlock(), 1, myState.getBlock().damageDropped(myState)), 0.0F);
+						// TODO: This and the below item might not be correctly reflecting the state
+						this.entityDropItem(new ItemStack(myState.getBlock()), 0.0F);
 					}
 				} else if (this.slideTime > 100 && (pos.getY() < 1 || pos.getY() > 256) || this.slideTime > 600) {
-					this.entityDropItem(new ItemStack(this.myState.getBlock(), 1, this.myState.getBlock().damageDropped(this.myState)), 0.0F);
+					this.entityDropItem(new ItemStack(this.myState.getBlock()), 0.0F);
 					this.remove();
 				}
 
@@ -244,6 +242,11 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 	@Override
 	public boolean isPushedByWater() {
 		return false;
+	}
+
+	@Override
+	public IPacket<?> createSpawnPacket() {
+		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 
 	public BlockState getBlockState() {

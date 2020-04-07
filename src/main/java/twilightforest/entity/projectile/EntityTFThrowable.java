@@ -1,4 +1,4 @@
-package twilightforest.entity;
+package twilightforest.entity.projectile;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -20,7 +20,7 @@ public abstract class EntityTFThrowable extends ThrowableEntity implements ITFPr
 		super(type, throwerIn, worldIn);
 	}
 
-	@Override
+	// TODO: Isn't actually an override
 	public void setThrower(Entity entity) {
 		if (entity instanceof LivingEntity) {
 			this.owner = (LivingEntity) entity;

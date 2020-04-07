@@ -1,4 +1,4 @@
-package twilightforest.entity;
+package twilightforest.entity.projectile;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IRendersAsItem;
@@ -23,6 +23,11 @@ public class EntityTFIceSnowball extends EntityTFThrowable implements IRendersAs
 
 	public EntityTFIceSnowball(EntityType<? extends EntityTFIceSnowball> type, World world, LivingEntity thrower) {
 		super(type, world, thrower);
+	}
+
+	@Override
+	protected void registerData() {
+		// TODO: Is this needed?
 	}
 
 	@Override
