@@ -6,8 +6,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.server.ServerWorld;
 import twilightforest.TwilightForestMod;
+import twilightforest.biomes.TFBiomeDecorator;
 import twilightforest.block.TFBlocks;
+import twilightforest.world.feature.TFBiomeFeatures;
 
 import java.util.Random;
 
@@ -197,7 +200,7 @@ public class TFMaze {
 					if (isEven(x) && isEven(z)) {
 						if (type == 4 && shouldTree(x, z)) {
 							// occasionally make a tree 
-							(new TFGenCanopyTree()).generate(world, rand, new BlockPos(mdx, dy, mdz));
+							TFBiomeFeatures.CANOPY_TREE.get().configure(TFBiomeDecorator.CANOPY_TREE_CONFIG).place(world, ((ServerWorld) world).getChunkProvider().getChunkGenerator(), rand, new BlockPos(mdx, dy, mdz));
 						} else {
 							// make a block!
 							for (int y = 0; y < head; y++) {
@@ -508,7 +511,7 @@ public class TFMaze {
 
 		// only place it if we're actually generating the chunk the tree is in (or at least the middle of the tree)
 		if (sbb.isVecInside(pos)) {
-			(new TFGenCanopyTree()).generate(world, rand, pos);
+			TFBiomeFeatures.CANOPY_TREE.get().configure(TFBiomeDecorator.CANOPY_TREE_CONFIG).place(world, ((ServerWorld) world).getChunkProvider().getChunkGenerator(), rand, pos);
 		}
 	}
 

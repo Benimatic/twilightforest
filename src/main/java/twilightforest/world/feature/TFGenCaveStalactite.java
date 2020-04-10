@@ -187,7 +187,6 @@ public class TFGenCaveStalactite<T extends CaveStalactiteConfig> extends Feature
 		return true;
 	}
 
-	//TODO: Rewrite or move to config?
 	public static class StalactiteEntry extends WeightedRandom.Item {
 
 		final TFGenCaveStalactite stalactite;
@@ -198,7 +197,7 @@ public class TFGenCaveStalactite<T extends CaveStalactiteConfig> extends Feature
 		}
 
 		public StalactiteEntry(BlockState blockState, float size, int maxLength, int minHeight, int itemWeight) {
-			this(new TFGenCaveStalactite(blockState, size, maxLength, minHeight), itemWeight);
+			this(new TFGenCaveStalactite<>((dyn) -> new CaveStalactiteConfig(blockState, size, maxLength, minHeight, true)), itemWeight);
 		}
 	}
 

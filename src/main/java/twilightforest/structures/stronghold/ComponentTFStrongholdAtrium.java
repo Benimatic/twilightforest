@@ -10,10 +10,15 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.DefaultBiomeFeatures;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.ConfiguredFeature;
+import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.server.ServerWorld;
 import twilightforest.TFFeature;
+import twilightforest.biomes.TFBiomeDecorator;
 
 import java.util.List;
 import java.util.Random;
@@ -143,40 +148,35 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 		BlockPos pos = getBlockPosWithOffset(x, y, z);
 
 		if (sbb.isVecInside(pos)) {
-			WorldGenerator treeGen;
+			ConfiguredFeature<?,?> treeGen;
 			// grow a tree
 			int minHeight = 8;
 
+			//TODO: All trees here grab configs from DefaultBiomeFeatures or TFBiomeDecorator, and will not have "minHeight"
 			switch (treeNum) {
 				case 0:
 				default:
 					// oak tree
-					BlockState oakWood = Blocks.OAK_LOG.getDefaultState();
-					BlockState oakLeaves = Blocks.OAK_LEAVES.getDefaultState().with(LeavesBlock.CHECK_DECAY, false);
-					treeGen = new WorldGenTrees(true, minHeight, oakWood, oakLeaves, false);
+					treeGen = Feature.NORMAL_TREE.configure(DefaultBiomeFeatures.OAK_TREE_CONFIG); //TODO: minHeight
 					break;
 				case 1:
 					// jungle tree
-					BlockState jungleWood = Blocks.JUNGLE_LOG.getDefaultState();
-					BlockState jungleLeaves = Blocks.JUNGLE_LEAVES.getDefaultState().with(LeavesBlock.CHECK_DECAY, false);
-					treeGen = new WorldGenTrees(true, minHeight, jungleWood, jungleLeaves, false);
+					treeGen = Feature.NORMAL_TREE.configure(DefaultBiomeFeatures.JUNGLE_TREE_CONFIG); //TODO: minHeight
 					break;
 				case 2:
 					// birch
-					BlockState birchWood = Blocks.BIRCH_LOG.getDefaultState();
-					BlockState birchLeaves = Blocks.BIRCH_LEAVES.getDefaultState().with(LeavesBlock.CHECK_DECAY, false);
-					treeGen = new WorldGenTrees(true, minHeight, birchWood, birchLeaves, false);
+					treeGen = Feature.NORMAL_TREE.configure(DefaultBiomeFeatures.BIRCH_TREE_CONFIG); //TODO: minHeight
 					break;
 				case 3:
-					treeGen = new TFGenSmallTwilightOak(false, minHeight);
+					treeGen = Feature.NORMAL_TREE.configure(TFBiomeDecorator.OAK_TREE); //TODO: minHeight
 					break;
 				case 4:
-					treeGen = new TFGenSmallRainboak(false);
+					treeGen = Feature.NORMAL_TREE.configure(TFBiomeDecorator.RAINBOAK_TREE);
 					break;
 			}
 
 			for (int i = 0; i < 100; i++) {
-				if (treeGen.generate(world, world.rand, pos)) {
+				if (treeGen.place(world, ((ServerWorld) world).getChunkProvider().getChunkGenerator(), world.rand, pos)) {
 					break;
 				}
 			}

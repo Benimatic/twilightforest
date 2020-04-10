@@ -16,11 +16,16 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.DefaultBiomeFeatures;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.ConfiguredFeature;
+import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.server.ServerWorld;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
+import twilightforest.biomes.TFBiomeDecorator;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFEntities;
@@ -31,7 +36,6 @@ import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.structures.StructureTFDecorator;
 import twilightforest.structures.TFMaze;
 import twilightforest.util.RotationUtil;
-import twilightforest.util.TFEntityNames;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -1148,45 +1152,40 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 
 		setBlockStateRotated(world, Blocks.DIRT.getDefaultState(), x, y, z, rotation, sbb);
 
-
 		int dx = getXWithOffsetRotated(x, z, rotation);
 		int dy = getYWithOffset(y + 1);
 		int dz = getZWithOffsetRotated(x, z, rotation);
 		if (sbb.isVecInside(new BlockPos(dx, dy, dz))) {
-			WorldGenerator treeGen;
+			ConfiguredFeature<?,?> treeGen;
 			// grow a tree
 			switch (treeNum) {
 				case 0:
 				default:
 					// oak tree
-					treeGen = new WorldGenTrees(false);
+					treeGen = Feature.NORMAL_TREE.configure(DefaultBiomeFeatures.OAK_TREE_CONFIG);
 					break;
 				case 1:
-					final BlockState leaves = Blocks.LEAVES.getDefaultState().with(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.JUNGLE).with(LeavesBlock.CHECK_DECAY, false);
-					final BlockState wood = Blocks.LOG.getDefaultState().with(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE);
-
 					// jungle tree
-					treeGen = new WorldGenTrees(true, 3, wood, leaves, false);
+					treeGen = Feature.NORMAL_TREE.configure(DefaultBiomeFeatures.JUNGLE_TREE_CONFIG); //TODO: This probably needs to be shorter. Default's max height is 8. Original value 3
 					break;
 				case 2:
 					// birch
-					treeGen = new WorldGenBirchTree(true, false);
+					treeGen = Feature.NORMAL_TREE.configure(DefaultBiomeFeatures.BIRCH_TREE_CONFIG);
 					break;
 				case 3:
-					treeGen = new TFGenSmallTwilightOak(false);
+					treeGen = Feature.NORMAL_TREE.configure(TFBiomeDecorator.OAK_TREE);
 					break;
 				case 4:
-					treeGen = new TFGenSmallRainboak(false);
+					treeGen = Feature.NORMAL_TREE.configure(TFBiomeDecorator.RAINBOAK_TREE);
 					break;
 			}
 
 			for (int i = 0; i < 100; i++) {
-				if (treeGen.generate(world, world.rand, new BlockPos(dx, dy, dz))) {
+				if (treeGen.place(world, ((ServerWorld) world).getChunkProvider().getChunkGenerator(), world.rand, new BlockPos(dx, dy, dz))) {
 					break;
 				}
 			}
 		}
-
 	}
 
 

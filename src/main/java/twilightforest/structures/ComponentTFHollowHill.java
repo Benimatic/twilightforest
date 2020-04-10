@@ -13,9 +13,12 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.server.ServerWorld;
 import twilightforest.TFFeature;
 import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
+import twilightforest.world.feature.TFBiomeFeatures;
+import twilightforest.world.feature.config.CaveStalactiteConfig;
 
 import java.util.Random;
 
@@ -146,6 +149,7 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 			Random stalRNG = new Random(world.getSeed() + dx * dz);
 
 			// make the actual stalactite
+			//TODO: Figure out how to get this working...
 			TFGenCaveStalactite stalag = TFGenCaveStalactite.makeRandomOreStalactite(stalRNG, hillSize);
 			stalag.generate(world, stalRNG, pos);
 		}
@@ -170,7 +174,7 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 			}
 
 			// make the actual stalactite
-			(new TFGenCaveStalactite(blockToGenerate, length, up)).generate(world, stalRNG, pos);
+			TFBiomeFeatures.CAVE_STALACTITE.get().configure(new CaveStalactiteConfig(blockToGenerate.getDefaultState(), length, -1, -1, up)).place(world, ((ServerWorld)world).getChunkProvider().getChunkGenerator(), stalRNG, pos);
 		}
 	}
 

@@ -1,5 +1,6 @@
 package twilightforest.structures.trollcave;
 
+import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
@@ -12,18 +13,20 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.ConfiguredFeature;
+import net.minecraft.world.gen.feature.SphereReplaceConfig;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.server.ServerWorld;
 import twilightforest.TFFeature;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.block.TFBlocks;
 import twilightforest.loot.TFTreasure;
 import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.util.RotationUtil;
-import twilightforest.world.feature.TFGenCaveStalactite;
-import twilightforest.world.feature.TFGenMyceliumBlob;
+import twilightforest.world.feature.TFBiomeFeatures;
+import twilightforest.world.feature.config.CaveStalactiteConfig;
 
 import java.util.List;
 import java.util.Random;
@@ -34,7 +37,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 	protected int size;
 	protected int height;
 
-	public static final TFGenMyceliumBlob uberousGen = new TFGenMyceliumBlob(TFBlocks.uberous_soil, 4);
+	public static final ConfiguredFeature<?,?> uberousGen = TFBiomeFeatures.MYCELIUM_BLOB.get().configure(new SphereReplaceConfig(TFBlocks.uberous_soil.get().getDefaultState(), 4, 1, Lists.newArrayList(Blocks.GRASS_BLOCK.getDefaultState())));
 
 	public ComponentTFTrollCaveMain(TemplateManager manager, CompoundNBT nbt) {
 		super(TFTrollCavePieces.TFTCMai, nbt);
@@ -169,6 +172,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 
 	/**
 	 * Gets a random position in the specified direction that connects to stairs currently in the tower.
+	 * TODO: Parameter "caveHeight" is unused. Remove?
 	 */
 	public BlockPos getValidOpening(Random rand, int caveHeight, Rotation direction) {
 		// variables!
@@ -233,14 +237,14 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 
 		BlockPos pos = new BlockPos(dx, dy, dz);
 		if (sbb.isVecInside(pos)) {
-			new TFGenCaveStalactite(blockToGenerate, length, up).generate(world, rand, pos);
+			TFBiomeFeatures.CAVE_STALACTITE.get().configure(new CaveStalactiteConfig(blockToGenerate.getDefaultState(), length, -1, -1, up)).place(world, ((ServerWorld) world).getChunkProvider().getChunkGenerator(), rand, pos);
 		}
 	}
 
 	/**
 	 * Use the generator at the surface above specified coords
 	 */
-	protected void generateAtSurface(World world, Feature generator, Random rand, int x, int y, int z, MutableBoundingBox sbb) {
+	protected void generateAtSurface(World world, ConfiguredFeature<?,?> generator, Random rand, int x, int y, int z, MutableBoundingBox sbb) {
 		// are the coordinates in our bounding box?
 		int dx = getXWithOffset(x, z);
 		int dy = y;
@@ -257,7 +261,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 				}
 			}
 
-			generator.generate(world, rand, pos.toImmutable());
+			generator.place(world, ((ServerWorld) world).getChunkProvider().getChunkGenerator(), rand, pos.toImmutable());
 		}
 	}
 
