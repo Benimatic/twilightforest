@@ -25,7 +25,7 @@ public class ComponentTFMazeUpperEntrance extends StructureTFComponentOld {
 	}
 
 	public ComponentTFMazeUpperEntrance(TFFeature feature, int i, Random rand, int x, int y, int z) {
-		super(feature, i);
+		super(TFMinotaurMazePieces.TFMMUE, feature, i);
 		this.setCoordBaseMode(Direction.Plane.HORIZONTAL.random(rand));
 
 		this.boundingBox = new MutableBoundingBox(x, y, z, x + 15, y + 4, z + 15);

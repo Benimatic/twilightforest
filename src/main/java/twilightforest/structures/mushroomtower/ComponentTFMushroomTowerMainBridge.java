@@ -18,7 +18,7 @@ public class ComponentTFMushroomTowerMainBridge extends ComponentTFMushroomTower
 
 	protected ComponentTFMushroomTowerMainBridge(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
 		// bridge only 11 long
-		super(feature, i, x, y, z, 11, pHeight, direction);
+		super(TFMushroomTowerPieces.TFMTMB, feature, i, x, y, z, 11, pHeight, direction);
 	}
 
 	@Override

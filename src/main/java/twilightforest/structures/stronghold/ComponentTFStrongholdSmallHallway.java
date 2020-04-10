@@ -22,7 +22,7 @@ public class ComponentTFStrongholdSmallHallway extends StructureTFStrongholdComp
 	}
 
 	public ComponentTFStrongholdSmallHallway(TFFeature feature, int i, Direction facing, int x, int y, int z) {
-		super(feature, i, facing, x, y, z);
+		super(TFStrongholdPieces.TFSSH, feature, i, facing, x, y, z);
 	}
 
 	@Override

@@ -29,7 +29,7 @@ public class ComponentTFFinalCastleMain extends StructureTFComponentOld {
 	}
 
 	public ComponentTFFinalCastleMain(TFFeature feature, World world, Random rand, int i, int x, int y, int z) {
-		super(feature, i);
+		super(TFFinalCastlePieces.TFFCMain, feature, i);
 		this.setCoordBaseMode(Direction.SOUTH);
 		this.spawnListIndex = 1; // main monsters
 
@@ -137,7 +137,7 @@ public class ComponentTFFinalCastleMain extends StructureTFComponentOld {
 
 			// build
 			BlockPos tc = this.offsetTowerCCoords(x, y, z, howFar, direction);
-			ComponentTFFinalCastleMazeTower13 sTower = new ComponentTFFinalCastleMazeTower13(getFeatureType(), rand, 3, tc.getX(), tc.getY(), tc.getZ(), type, direction);
+			ComponentTFFinalCastleMazeTower13 sTower = new ComponentTFFinalCastleMazeTower13(TFFinalCastlePieces.TFFCSiTo, getFeatureType(), rand, 3, tc.getX(), tc.getY(), tc.getZ(), type, direction);
 
 			// add bridge
 			BlockPos bc = this.offsetTowerCCoords(x, y, z, 1, direction);

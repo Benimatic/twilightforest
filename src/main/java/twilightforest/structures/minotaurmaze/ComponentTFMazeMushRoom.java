@@ -22,7 +22,7 @@ public class ComponentTFMazeMushRoom extends ComponentTFMazeRoom {
 	}
 
 	public ComponentTFMazeMushRoom(TFFeature feature, int i, Random rand, int x, int y, int z) {
-		super(feature, i, rand, x, y, z);
+		super(TFMinotaurMazePieces.TFMMMR, feature, i, rand, x, y, z);
 
 		this.setCoordBaseMode(Direction.SOUTH); // let's just make this easy on us?
 	}

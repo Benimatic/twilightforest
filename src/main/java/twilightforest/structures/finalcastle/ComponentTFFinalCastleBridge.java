@@ -26,7 +26,7 @@ public class ComponentTFFinalCastleBridge extends StructureTFComponentOld {
 	}
 
 	public ComponentTFFinalCastleBridge(TFFeature feature, int i, int x, int y, int z, int length, Direction direction) {
-		super(feature, i);
+		super(TFFinalCastlePieces.TFFCBri, feature, i);
 		this.setCoordBaseMode(direction);
 		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox2(x, y, z, 0, -1, -3, length - 1, 5, 6, direction);
 	}

@@ -24,8 +24,8 @@ public class ComponentTFMazeDeadEndRoots extends ComponentTFMazeDeadEnd {
 		super(piece, nbt);
 	}
 
-	public ComponentTFMazeDeadEndRoots(TFFeature feature, int i, int x, int y, int z, Direction rotation) {
-		super(feature, i, x, y, z, rotation);
+	public ComponentTFMazeDeadEndRoots(IStructurePieceType type, TFFeature feature, int i, int x, int y, int z, Direction rotation) {
+		super(type, feature, i, x, y, z, rotation);
 	}
 
 	@Override

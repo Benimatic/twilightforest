@@ -39,8 +39,8 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 		super(piece, nbt);
 	}
 
-	protected ComponentTFMushroomTowerWing(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
-		super(feature, i, x, y, z, pSize, pHeight, direction);
+	protected ComponentTFMushroomTowerWing(IStructurePieceType piece, TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
+		super(piece, feature, i, x, y, z, pSize, pHeight, direction);
 	}
 
 	/**
@@ -145,7 +145,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 			dx = adjustCoordinates(dx[0], dx[1], dx[2], wingSize, direction, list);
 		}
 
-		ComponentTFMushroomTowerWing wing = new ComponentTFMushroomTowerWing(getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
+		ComponentTFMushroomTowerWing wing = new ComponentTFMushroomTowerWing(TFMushroomTowerPieces.TFMTWin, getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// check to see if it intersects something already there
 		StructurePiece intersect = StructurePiece.findIntersecting(list, wing.getBoundingBox());
 		if (intersect == null || intersect == this || intersect instanceof ComponentTFTowerRoofMushroom) {
@@ -257,7 +257,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 			wingHeight = 4;
 		}
 
-		ComponentTFMushroomTowerBridge bridge = new ComponentTFMushroomTowerBridge(getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
+		ComponentTFMushroomTowerBridge bridge = new ComponentTFMushroomTowerBridge(TFMushroomTowerPieces.TFMTBri, getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		bridge.isAscender = ascender;
 		// check to see if it intersects something already there
 		StructurePiece intersect = StructurePiece.findIntersecting(list, bridge.getBoundingBox());
@@ -319,7 +319,6 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 
 		return new int[]{0, 0, 0};
 	}
-
 
 	/**
 	 * Gets a Y value where the stairs meet the specified X coordinate.

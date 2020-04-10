@@ -26,8 +26,8 @@ public class ComponentTFDarkTowerRoof extends ComponentTFTowerRoof {
 		super(piece, nbt);
 	}
 
-	public ComponentTFDarkTowerRoof(TFFeature feature, int i, ComponentTFTowerWing wing) {
-		super(feature, i, wing);
+	public ComponentTFDarkTowerRoof(IStructurePieceType piece, TFFeature feature, int i, ComponentTFTowerWing wing) {
+		super(piece, feature, i, wing);
 
 		// same alignment
 		this.setCoordBaseMode(wing.getCoordBaseMode());

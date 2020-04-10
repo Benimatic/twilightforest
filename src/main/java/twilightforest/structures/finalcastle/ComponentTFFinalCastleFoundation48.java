@@ -22,8 +22,9 @@ public class ComponentTFFinalCastleFoundation48 extends StructureTFComponentOld 
 		super(TFFinalCastlePieces.TFFCToF48, nbt);
 	}
 
+	//TODO: Parameter "rand" is unused. Remove?
 	public ComponentTFFinalCastleFoundation48(TFFeature feature, Random rand, int i, StructureTFComponentOld sideTower) {
-		super(feature, i);
+		super(TFFinalCastlePieces.TFFCToF48, feature, i);
 
 		this.setCoordBaseMode(sideTower.getCoordBaseMode());
 		this.boundingBox = new MutableBoundingBox(sideTower.getBoundingBox().minX, sideTower.getBoundingBox().minY, sideTower.getBoundingBox().minZ, sideTower.getBoundingBox().maxX, sideTower.getBoundingBox().minY - 1, sideTower.getBoundingBox().maxZ);

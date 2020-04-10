@@ -23,7 +23,7 @@ public class ComponentTFIceTowerBeard extends StructureTFComponentOld {
 	}
 
 	public ComponentTFIceTowerBeard(TFFeature feature, int i, ComponentTFTowerWing wing) {
-		super(feature, i);
+		super(TFIceTowerPieces.TFITBea, feature, i);
 
 		// same alignment
 		this.setCoordBaseMode(wing.getCoordBaseMode());

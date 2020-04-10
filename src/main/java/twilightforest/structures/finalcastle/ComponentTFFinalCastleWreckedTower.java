@@ -22,7 +22,7 @@ public class ComponentTFFinalCastleWreckedTower extends ComponentTFFinalCastleDa
 	}
 
 	public ComponentTFFinalCastleWreckedTower(TFFeature feature, Random rand, int i, int x, int y, int z, Direction direction) {
-		super(feature, rand, i, x, y, z, direction);
+		super(TFFinalCastlePieces.TFFCWrT, feature, rand, i, x, y, z, direction);
 	}
 
 	@Override
@@ -36,18 +36,15 @@ public class ComponentTFFinalCastleWreckedTower extends ComponentTFFinalCastleDa
 //    		list.add(foundation);
 //    		foundation.buildComponent(this, list, rand);
 
-
 		// add thorns
 		ComponentTFFinalCastleFoundation13 thorns = new ComponentTFFinalCastleFoundation13Thorns(getFeatureType(), rand, 0, this);
 		list.add(thorns);
 		thorns.buildComponent(this, list, rand);
 
-
 //    		// add roof
 //    		StructureTFComponentOld roof = rand.nextBoolean() ? new Roof13Conical(rand, 4, this) :  new Roof13Crenellated(rand, 4, this);
 //    		list.add(roof);
 //    		roof.buildComponent(this, list, rand);
-
 
 		// keep on building?
 //    		this.buildNonCriticalTowers(parent, list, rand);

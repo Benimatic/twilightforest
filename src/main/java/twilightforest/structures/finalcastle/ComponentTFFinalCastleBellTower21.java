@@ -28,7 +28,7 @@ public class ComponentTFFinalCastleBellTower21 extends ComponentTFFinalCastleMaz
 	}
 
 	public ComponentTFFinalCastleBellTower21(TFFeature feature, Random rand, int i, int x, int y, int z, Direction direction) {
-		super(feature, rand, i, x, y, z, FLOORS, 1, TFBlocks.castle_rune_brick_blue.get().getDefaultState(), direction);
+		super(TFFinalCastlePieces.TFFCBelTo, feature, rand, i, x, y, z, FLOORS, 1, TFBlocks.castle_rune_brick_blue.get().getDefaultState(), direction);
 		this.size = 21;
 		int floors = FLOORS;
 		this.height = floors * 8 + 1;

@@ -27,7 +27,7 @@ public class ComponentTFStrongholdDeadEnd extends StructureTFStrongholdComponent
 	}
 
 	public ComponentTFStrongholdDeadEnd(TFFeature feature, int i, Direction facing, int x, int y, int z) {
-		super(feature, i, facing, x, y, z);
+		super(TFStrongholdPieces.TFSDE, feature, i, facing, x, y, z);
 	}
 
 	@Override

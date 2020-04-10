@@ -26,7 +26,7 @@ public class ComponentTFDarkTowerBossTrap extends ComponentTFDarkTowerWing {
 	}
 
 	protected ComponentTFDarkTowerBossTrap(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
-		super(feature, i, x, y, z, pSize, pHeight, direction);
+		super(TFDarkTowerPieces.TFDTBT, feature, i, x, y, z, pSize, pHeight, direction);
 
 		// no spawns
 		this.spawnListIndex = -1;

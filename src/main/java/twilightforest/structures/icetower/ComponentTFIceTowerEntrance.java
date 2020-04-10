@@ -23,7 +23,7 @@ public class ComponentTFIceTowerEntrance extends ComponentTFIceTowerWing {
 	}
 
 	public ComponentTFIceTowerEntrance(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
-		super(feature, i, x, y, z, pSize, pHeight, direction);
+		super(TFIceTowerPieces.TFITEnt, feature, i, x, y, z, pSize, pHeight, direction);
 	}
 
 	@Override

@@ -20,7 +20,7 @@ public class ComponentTFMazeCorridorIronFence extends ComponentTFMazeCorridor {
 	}
 
 	public ComponentTFMazeCorridorIronFence(TFFeature feature, int i, int x, int y, int z, Direction rotation) {
-		super(feature, i, x, y, z, rotation);
+		super(TFMinotaurMazePieces.TFMMCIF, feature, i, x, y, z, rotation);
 	}
 
 	@Override

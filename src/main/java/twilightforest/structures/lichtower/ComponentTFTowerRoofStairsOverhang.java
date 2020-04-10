@@ -14,7 +14,6 @@ import twilightforest.TFFeature;
 
 import java.util.Random;
 
-
 public class ComponentTFTowerRoofStairsOverhang extends ComponentTFTowerRoof {
 
 	public ComponentTFTowerRoofStairsOverhang(TemplateManager manager, CompoundNBT nbt) {
@@ -22,7 +21,7 @@ public class ComponentTFTowerRoofStairsOverhang extends ComponentTFTowerRoof {
 	}
 
 	public ComponentTFTowerRoofStairsOverhang(TFFeature feature, int i, ComponentTFTowerWing wing) {
-		super(feature, i, wing);
+		super(TFLichTowerPieces.TFLTRStO, feature, i, wing);
 
 		// always facing = 0.  This roof cannot rotate, due to stair facing issues.
 		this.setCoordBaseMode(Direction.SOUTH);
@@ -32,7 +31,6 @@ public class ComponentTFTowerRoofStairsOverhang extends ComponentTFTowerRoof {
 
 		// just hang out at the very top of the tower
 		this.boundingBox = new MutableBoundingBox(wing.getBoundingBox().minX - 1, wing.getBoundingBox().maxY, wing.getBoundingBox().minZ - 1, wing.getBoundingBox().maxX + 1, wing.getBoundingBox().maxY + this.height - 1, wing.getBoundingBox().maxZ + 1);
-
 	}
 
 	/**

@@ -19,7 +19,7 @@ public class ComponentTFMazeRoomFountain extends ComponentTFMazeRoom {
 	}
 
 	public ComponentTFMazeRoomFountain(TFFeature feature, int i, Random rand, int x, int y, int z) {
-		super(feature, i, rand, x, y, z);
+		super(TFMinotaurMazePieces.TFMMRF, feature, i, rand, x, y, z);
 	}
 
 	@Override

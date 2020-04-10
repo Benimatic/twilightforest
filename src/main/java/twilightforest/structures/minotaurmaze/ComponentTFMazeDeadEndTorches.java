@@ -20,7 +20,7 @@ public class ComponentTFMazeDeadEndTorches extends ComponentTFMazeDeadEnd {
 	}
 
 	public ComponentTFMazeDeadEndTorches(TFFeature feature, int i, int x, int y, int z, Direction rotation) {
-		super(feature, i, x, y, z, rotation);
+		super(TFMinotaurMazePieces.TFMMDET, feature, i, x, y, z, rotation);
 	}
 
 	@Override

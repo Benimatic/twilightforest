@@ -32,7 +32,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 	}
 
 	public ComponentTFTrollCaveConnect(TFFeature feature, int index, int x, int y, int z, int caveSize, int caveHeight, Direction direction) {
-		super(feature, index);
+		super(TFTrollCavePieces.TFTCCon, feature, index);
 		this.size = caveSize;
 		this.height = caveHeight;
 		this.setCoordBaseMode(direction);

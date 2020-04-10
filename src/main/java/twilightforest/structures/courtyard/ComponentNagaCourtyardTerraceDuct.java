@@ -15,6 +15,6 @@ public class ComponentNagaCourtyardTerraceDuct extends ComponentNagaCourtyardTer
 
     @SuppressWarnings("WeakerAccess")
     public ComponentNagaCourtyardTerraceDuct(TFFeature feature, int i, int x, int y, int z, Rotation rotation) {
-        super(feature, i, x, y, z, rotation, new ResourceLocation(TwilightForestMod.ID, "courtyard/terrace_duct"));
+        super(NagaCourtyardPieces.TFNCDu, feature, i, x, y, z, rotation, new ResourceLocation(TwilightForestMod.ID, "courtyard/terrace_duct"));
     }
 }

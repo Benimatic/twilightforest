@@ -26,8 +26,8 @@ public class ComponentTFTowerBeard extends StructureTFComponentOld {
 		super(piece, nbt);
 	}
 
-	public ComponentTFTowerBeard(TFFeature feature, int i, ComponentTFTowerWing wing) {
-		super(feature, i);
+	public ComponentTFTowerBeard(IStructurePieceType piece, TFFeature feature, int i, ComponentTFTowerWing wing) {
+		super(piece, feature, i);
 
 		this.setCoordBaseMode(wing.getCoordBaseMode());
 		this.size = wing.size - 2;

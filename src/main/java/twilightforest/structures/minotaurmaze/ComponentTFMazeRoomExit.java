@@ -19,7 +19,7 @@ public class ComponentTFMazeRoomExit extends ComponentTFMazeRoom {
 	}
 
 	public ComponentTFMazeRoomExit(TFFeature feature, int i, Random rand, int x, int y, int z) {
-		super(feature, i, rand, x, y, z);
+		super(TFMinotaurMazePieces.TFMMRE, feature, i, rand, x, y, z);
 	}
 
 	@Override

@@ -26,8 +26,8 @@ public abstract class ComponentNagaCourtyardTerraceAbstract extends StructureTFC
     }
 
     @SuppressWarnings("WeakerAccess")
-    public ComponentNagaCourtyardTerraceAbstract(TFFeature feature, int i, int x, int y, int z, Rotation rotation, ResourceLocation terrace) {
-        super(feature, i, x, y, z, rotation);
+    public ComponentNagaCourtyardTerraceAbstract(IStructurePieceType type, TFFeature feature, int i, int x, int y, int z, Rotation rotation, ResourceLocation terrace) {
+        super(type, feature, i, x, y, z, rotation);
         TERRACE = terrace;
     }
 

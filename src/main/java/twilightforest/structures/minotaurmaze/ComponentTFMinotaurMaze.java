@@ -30,7 +30,7 @@ public class ComponentTFMinotaurMaze extends StructureTFComponentOld {
 	}
 
 	public ComponentTFMinotaurMaze(TFFeature feature, int index, int x, int y, int z, int entranceX, int entranceZ, int level) {
-		super(feature, index);
+		super(TFMinotaurMazePieces.TFMMaze, feature, index);
 		this.setCoordBaseMode(Direction.SOUTH);
 		this.level = level;
 		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -getRadius(), 0, -getRadius(), getRadius() * 2, 5, getRadius() * 2, Direction.SOUTH);
@@ -127,7 +127,7 @@ public class ComponentTFMinotaurMaze extends StructureTFComponentOld {
 
 		if (i == 0) {
 			// default room
-			room = new ComponentTFMazeRoom(getFeatureType(), 3 + i, random, worldX, worldY, worldZ);
+			room = new ComponentTFMazeRoom(TFMinotaurMazePieces.TFMMR, getFeatureType(), 3 + i, random, worldX, worldY, worldZ);
 		} else if (i == 1) {
 			if (this.level == 1) {
 				// exit room
@@ -217,24 +217,22 @@ public class ComponentTFMinotaurMaze extends StructureTFComponentOld {
 			default:
 			case 0:
 				// blank with fence doorway
-				return new ComponentTFMazeDeadEnd(getFeatureType(), 4, worldX, worldY, worldZ, rotation);
+				return new ComponentTFMazeDeadEnd(TFMinotaurMazePieces.TFMMDE, getFeatureType(), 4, worldX, worldY, worldZ, rotation);
 			case 1:
-				return new ComponentTFMazeDeadEndChest(getFeatureType(), 4, worldX, worldY, worldZ, rotation);
+				return new ComponentTFMazeDeadEndChest(TFMinotaurMazePieces.TFMMDEC, getFeatureType(), 4, worldX, worldY, worldZ, rotation);
 			case 2:
 				return random.nextBoolean() ? new ComponentTFMazeDeadEndTripwireChest(getFeatureType(), 4, worldX, worldY, worldZ, rotation) : new ComponentTFMazeDeadEndTrappedChest(getFeatureType(), 4, worldX, worldY, worldZ, rotation);
 			case 3:
 				return new ComponentTFMazeDeadEndTorches(getFeatureType(), 4, worldX, worldY, worldZ, rotation);
 			case 4:
-				return new ComponentTFMazeDeadEndFountain(getFeatureType(), 4, worldX, worldY, worldZ, rotation);
+				return new ComponentTFMazeDeadEndFountain(TFMinotaurMazePieces.TFMMDEF, getFeatureType(), 4, worldX, worldY, worldZ, rotation);
 			case 5:
 				return new ComponentTFMazeDeadEndFountainLava(getFeatureType(), 4, worldX, worldY, worldZ, rotation);
 			case 6:
 				return new ComponentTFMazeDeadEndPainting(getFeatureType(), 4, worldX, worldY, worldZ, rotation);
 			case 7:
-				return this.level == 1 ? new ComponentTFMazeDeadEndRoots(getFeatureType(), 4, worldX, worldY, worldZ, rotation) : new ComponentTFMazeDeadEndShrooms(getFeatureType(), 4, worldX, worldY, worldZ, rotation);
-
+				return this.level == 1 ? new ComponentTFMazeDeadEndRoots(TFMinotaurMazePieces.TFMMDER, getFeatureType(), 4, worldX, worldY, worldZ, rotation) : new ComponentTFMazeDeadEndShrooms(getFeatureType(), 4, worldX, worldY, worldZ, rotation);
 		}
-
 	}
 
 	protected ComponentTFMazeCorridor makeCorridor(Random random, int dx, int dz, Direction rotation) {
@@ -249,7 +247,7 @@ public class ComponentTFMinotaurMaze extends StructureTFComponentOld {
 			case 0:
 				return null;
 			case 1:
-				return new ComponentTFMazeCorridor(getFeatureType(), 4, worldX, worldY, worldZ, rotation);
+				return new ComponentTFMazeCorridor(TFMinotaurMazePieces.TFMMC, getFeatureType(), 4, worldX, worldY, worldZ, rotation);
 			case 2:
 				return new ComponentTFMazeCorridorIronFence(getFeatureType(), 4, worldX, worldY, worldZ, rotation);
 			case 3:
@@ -257,7 +255,6 @@ public class ComponentTFMinotaurMaze extends StructureTFComponentOld {
 			case 4:
 				return this.level == 1 ? new ComponentTFMazeCorridorRoots(getFeatureType(), 4, worldX, worldY, worldZ, rotation) : new ComponentTFMazeCorridorShrooms(getFeatureType(), 4, worldX, worldY, worldZ, rotation);
 		}
-
 	}
 
 	/**
@@ -276,7 +273,6 @@ public class ComponentTFMinotaurMaze extends StructureTFComponentOld {
 			list.add(maze);
 			maze.buildComponent(this, list, random);
 		}
-
 
 		// add rooms where we have our coordinates
 		for (int i = 0; i < rcoords.length / 2; i++) {
@@ -364,5 +360,4 @@ public class ComponentTFMinotaurMaze extends StructureTFComponentOld {
 		}
 		return false;
 	}
-
 }

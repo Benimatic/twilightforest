@@ -21,7 +21,7 @@ import java.util.Random;
 public class ComponentTFTowerRoofMushroom extends ComponentTFTowerRoof {
 
 	public ComponentTFTowerRoofMushroom(TFFeature feature, int i, ComponentTFTowerWing wing, float pHang) {
-		super(feature, i, wing);
+		super(TFMushroomTowerPieces.TFMTRoofMush, feature, i, wing);
 
 		this.height = wing.size;
 
@@ -32,7 +32,6 @@ public class ComponentTFTowerRoofMushroom extends ComponentTFTowerRoof {
 		this.setCoordBaseMode(Direction.SOUTH);
 
 		this.boundingBox = new MutableBoundingBox(wing.getBoundingBox().minX - overhang, wing.getBoundingBox().maxY + 2, wing.getBoundingBox().minZ - overhang, wing.getBoundingBox().maxX + overhang, wing.getBoundingBox().maxY + this.height + 1, wing.getBoundingBox().maxZ + overhang);
-
 	}
 
 	@Override

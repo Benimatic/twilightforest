@@ -26,7 +26,7 @@ public class ComponentTFMazeRoomBoss extends ComponentTFMazeRoom {
 	}
 
 	public ComponentTFMazeRoomBoss(TFFeature feature, int i, Random rand, int x, int y, int z) {
-		super(feature, i, rand, x, y, z);
+		super(TFMinotaurMazePieces.TFMMRB, feature, i, rand, x, y, z);
 	}
 
 	@Override

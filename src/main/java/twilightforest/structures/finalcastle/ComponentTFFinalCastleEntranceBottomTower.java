@@ -20,7 +20,7 @@ public class ComponentTFFinalCastleEntranceBottomTower extends ComponentTFFinalC
 	}
 
 	public ComponentTFFinalCastleEntranceBottomTower(TFFeature feature, Random rand, int i, int x, int y, int z, int floors, int entranceFloor, Direction direction) {
-		super(feature, rand, i, x, y, z, floors, entranceFloor, TFBlocks.castle_rune_brick_pink.get().getDefaultState(), direction);
+		super(TFFinalCastlePieces.TFFCEnBoTo, feature, rand, i, x, y, z, floors, entranceFloor, TFBlocks.castle_rune_brick_pink.get().getDefaultState(), direction);
 
 //    		addOpening(12, 1, size / 2, 0);
 //    		addOpening(size / 2, 1, 0, 1);
@@ -39,9 +39,7 @@ public class ComponentTFFinalCastleEntranceBottomTower extends ComponentTFFinalC
 		addStairs(list, rand, this.getComponentType() + 1, 0, 1, size / 2, Rotation.CLOCKWISE_180);
 		addStairs(list, rand, this.getComponentType() + 1, this.size / 2, 1, 0, Rotation.COUNTERCLOCKWISE_90);
 		addStairs(list, rand, this.getComponentType() + 1, this.size / 2, 1, this.size - 1, Rotation.CLOCKWISE_90);
-
 	}
-
 
 	/**
 	 * Add some stairs leading to this tower
@@ -64,5 +62,4 @@ public class ComponentTFFinalCastleEntranceBottomTower extends ComponentTFFinalC
 	protected boolean hasAccessibleRoof() {
 		return false;
 	}
-
 }

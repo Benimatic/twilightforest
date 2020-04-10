@@ -19,7 +19,7 @@ public class ComponentTFDarkTowerRoofFourPost extends ComponentTFDarkTowerRoof {
 	}
 
 	public ComponentTFDarkTowerRoofFourPost(TFFeature feature, int i, ComponentTFTowerWing wing) {
-		super(feature, i, wing);
+		super(TFDarkTowerPieces.TFDTRFP, feature, i, wing);
 	}
 
 	@Override

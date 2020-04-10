@@ -25,7 +25,7 @@ public class ComponentTFStrongholdBalconyRoom extends StructureTFStrongholdCompo
 	}
 
 	public ComponentTFStrongholdBalconyRoom(TFFeature feature, int i, Direction facing, int x, int y, int z) {
-		super(feature, i, facing, x, y, z);
+		super(TFStrongholdPieces.TFSBalR, feature, i, facing, x, y, z);
 	}
 
 	@Override

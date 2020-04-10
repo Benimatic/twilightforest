@@ -21,7 +21,7 @@ public class ComponentTFStrongholdUpperTIntersection extends StructureTFStrongho
 	}
 
 	public ComponentTFStrongholdUpperTIntersection(TFFeature feature, int i, Direction facing, int x, int y, int z) {
-		super(feature, i, facing, x, y, z);
+		super(TFStrongholdPieces.TFSUTI, feature, i, facing, x, y, z);
 	}
 
 	@Override

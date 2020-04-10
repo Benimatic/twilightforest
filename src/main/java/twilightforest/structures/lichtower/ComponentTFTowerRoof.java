@@ -7,13 +7,14 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentOld;
 
 import java.util.List;
 import java.util.Random;
 
-public abstract class ComponentTFTowerRoof extends StructureTFComponentOld {
+public class ComponentTFTowerRoof extends StructureTFComponentOld {
 
 	protected int size;
 	protected int height;
@@ -22,12 +23,17 @@ public abstract class ComponentTFTowerRoof extends StructureTFComponentOld {
 		super(piece, nbt);
 	}
 
-	public ComponentTFTowerRoof(TFFeature feature, int i, ComponentTFTowerWing wing) {
-		super(feature, i);
+	//TODO: Parameter "wing" is unused. Remove?
+	public ComponentTFTowerRoof(IStructurePieceType type, TFFeature feature, int i, ComponentTFTowerWing wing) {
+		super(type, feature, i);
 
 		this.spawnListIndex = -1;
 
 		// inheritors need to add a bounding box or die~!
+	}
+
+	public ComponentTFTowerRoof(TemplateManager manager, CompoundNBT nbt) {
+		super(TFLichTowerPieces.TFLTRoo, nbt);
 	}
 
 	/**
@@ -76,7 +82,6 @@ public abstract class ComponentTFTowerRoof extends StructureTFComponentOld {
 		}
 	}
 
-
 	/**
 	 * Makes a bounding box that sits at the top of the tower.  Works for attached or freestanding roofs.
 	 *
@@ -85,7 +90,6 @@ public abstract class ComponentTFTowerRoof extends StructureTFComponentOld {
 	protected void makeCapBB(ComponentTFTowerWing wing) {
 		this.boundingBox = new MutableBoundingBox(wing.getBoundingBox().minX, wing.getBoundingBox().maxY, wing.getBoundingBox().minZ, wing.getBoundingBox().maxX, wing.getBoundingBox().maxY + this.height, wing.getBoundingBox().maxZ);
 	}
-
 
 	/**
 	 * Make a bounding box that hangs over the sides of the tower 1 block.  Freestanding towers only.
@@ -107,5 +111,4 @@ public abstract class ComponentTFTowerRoof extends StructureTFComponentOld {
 	public boolean fits(ComponentTFTowerWing parent, List<StructurePiece> list, Random rand) {
 		return StructurePiece.findIntersecting(list, this.boundingBox) == parent;
 	}
-
 }

@@ -30,8 +30,8 @@ public abstract class StructureTFComponentTemplate extends StructureTFComponent 
         this.mirror = Mirror.NONE;
     }
 
-    public StructureTFComponentTemplate(TFFeature feature, int i, int x, int y, int z, Rotation rotation) {
-        super(i);
+    public StructureTFComponentTemplate(IStructurePieceType type, TFFeature feature, int i, int x, int y, int z, Rotation rotation) {
+        super(type, i);
         this.feature = feature;
         this.rotation = rotation;
         this.mirror = Mirror.NONE;
@@ -40,8 +40,8 @@ public abstract class StructureTFComponentTemplate extends StructureTFComponent 
         this.boundingBox = new MutableBoundingBox(x, y, z, x, y, z);
     }
 
-    public StructureTFComponentTemplate(TFFeature feature, int i, int x, int y, int z, Rotation rotation, Mirror mirror) {
-        super(i);
+    public StructureTFComponentTemplate(IStructurePieceType type, TFFeature feature, int i, int x, int y, int z, Rotation rotation, Mirror mirror) {
+        super(type, i);
         this.feature = feature;
         this.rotation = rotation;
         this.mirror = mirror;

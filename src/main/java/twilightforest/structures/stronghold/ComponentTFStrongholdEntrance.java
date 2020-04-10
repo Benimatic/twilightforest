@@ -24,8 +24,9 @@ public class ComponentTFStrongholdEntrance extends StructureTFStrongholdComponen
 		super(TFStrongholdPieces.TFSEnter, nbt);
 	}
 
+	//TODO: Parameters "world" and "rand" are unused. Remove?
 	public ComponentTFStrongholdEntrance(TFFeature feature, World world, Random rand, int i, int x, int y, int z) {
-		super(feature, i, Direction.SOUTH, x, y - 10, z);
+		super(TFStrongholdPieces.TFSEnter, feature, i, Direction.SOUTH, x, y - 10, z);
 
 		this.deco = new StructureTFDecoratorStronghold();
 
@@ -97,8 +98,6 @@ public class ComponentTFStrongholdEntrance extends StructureTFStrongholdComponen
 		StructureTFStrongholdComponent accessChamber = new ComponentTFStrongholdAccessChamber(getFeatureType(), 2, this.getCoordBaseMode(), boundingBox.minX + 8, boundingBox.minY + 7, boundingBox.minZ + 4);
 		list.add(accessChamber);
 		accessChamber.buildComponent(this, list, random);
-
-
 	}
 
 	private boolean listContainsBossRoom(List<StructurePiece> list) {

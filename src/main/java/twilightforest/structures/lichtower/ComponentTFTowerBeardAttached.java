@@ -19,7 +19,7 @@ public class ComponentTFTowerBeardAttached extends ComponentTFTowerBeard {
 	}
 
 	public ComponentTFTowerBeardAttached(TFFeature feature, int i, ComponentTFTowerWing wing) {
-		super(feature, i, wing);
+		super(TFLichTowerPieces.TFLTBA, feature, i, wing);
 
 		// just hang out at the very bottom of the tower
 		this.boundingBox = new MutableBoundingBox(wing.getBoundingBox().minX, wing.getBoundingBox().minY - this.height - 1, wing.getBoundingBox().minZ, wing.getBoundingBox().maxX, wing.getBoundingBox().minY - 1, wing.getBoundingBox().maxZ);

@@ -32,7 +32,7 @@ public class ComponentTFTrollCaveGarden extends ComponentTFTrollCaveMain {
 	}
 
 	public ComponentTFTrollCaveGarden(TFFeature feature, int index, int x, int y, int z, int caveSize, int caveHeight, Direction direction) {
-		super(feature, index);
+		super(TFTrollCavePieces.TFTCGard, feature, index);
 		this.size = caveSize;
 		this.height = caveHeight;
 		this.setCoordBaseMode(direction);

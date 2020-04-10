@@ -33,8 +33,9 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 		super(TFHollowTreePieces.TFHTTr, nbt);
 	}
 
+	//TODO: Parameter "world" is unused. Remove?
 	public ComponentTFHollowTreeTrunk(World world, Random rand, int index, int x, int y, int z) {
-		super(TFFeature.NOTHING, index);
+		super(TFHollowTreePieces.TFHTTr, TFFeature.NOTHING, index);
 
 		height = rand.nextInt(64) + 32;
 		radius = rand.nextInt(4) + 1;
@@ -156,7 +157,7 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 			default:
 				return new ComponentTFHollowTreeSmallBranch(getFeatureType(), index, pos.getX(), pos.getY(), pos.getZ(), branchLength, branchRotation, branchAngle, leafy);
 			case MEDIUM:
-				return new ComponentTFHollowTreeMedBranch(getFeatureType(), index, pos.getX(), pos.getY(), pos.getZ(), branchLength, branchRotation, branchAngle, leafy);
+				return new ComponentTFHollowTreeMedBranch(TFHollowTreePieces.TFHTMB, getFeatureType(), index, pos.getX(), pos.getY(), pos.getZ(), branchLength, branchRotation, branchAngle, leafy);
 			case ROOT:
 				return new ComponentTFHollowTreeRoot(getFeatureType(), index, pos.getX(), pos.getY(), pos.getZ(), branchLength, branchRotation, branchAngle, false);
 		}

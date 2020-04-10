@@ -30,8 +30,8 @@ public class ComponentTFDarkTowerBridge extends ComponentTFTowerWing {
 	private int dSize;
 	private int dHeight;
 
-	protected ComponentTFDarkTowerBridge(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
-		super(feature, i, x, y, z, 5, 5, direction);
+	protected ComponentTFDarkTowerBridge(IStructurePieceType type, TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
+		super(type, feature, i, x, y, z, 5, 5, direction);
 
 		this.dSize = pSize;
 		this.dHeight = pHeight;
@@ -60,7 +60,7 @@ public class ComponentTFDarkTowerBridge extends ComponentTFTowerWing {
 			return false;
 		}
 
-		ComponentTFTowerWing wing = new ComponentTFDarkTowerWing(getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
+		ComponentTFTowerWing wing = new ComponentTFDarkTowerWing(TFDarkTowerPieces.TFDTWin, getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// check to see if it intersects something already there
 		StructurePiece intersect = StructurePiece.findIntersecting(list, wing.getBoundingBox());
 		if (intersect == null || intersect == this) {

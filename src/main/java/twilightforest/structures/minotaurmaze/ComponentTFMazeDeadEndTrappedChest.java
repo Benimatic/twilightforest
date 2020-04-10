@@ -22,7 +22,7 @@ public class ComponentTFMazeDeadEndTrappedChest extends ComponentTFMazeDeadEnd {
 	}
 
 	public ComponentTFMazeDeadEndTrappedChest(TFFeature feature, int i, int x, int y, int z, Direction rotation) {
-		super(feature, i, x, y, z, rotation);
+		super(TFMinotaurMazePieces.TFMMDETrC, feature, i, x, y, z, rotation);
 
 		// specify a non-existant high spawn list value to stop actual monster spawns
 		this.spawnListIndex = Integer.MAX_VALUE;

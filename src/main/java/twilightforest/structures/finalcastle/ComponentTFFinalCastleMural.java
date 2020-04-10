@@ -26,8 +26,9 @@ public class ComponentTFFinalCastleMural extends StructureTFComponentOld {
 		super(TFFinalCastlePieces.TFFCMur, nbt);
 	}
 
+	//TODO: Parameter "rand" is unused. Remove?
 	public ComponentTFFinalCastleMural(TFFeature feature, Random rand, int i, int x, int y, int z, int width, int height, Direction direction) {
-		super(feature, i);
+		super(TFFinalCastlePieces.TFFCMur, feature, i);
 		this.setCoordBaseMode(direction);
 		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox2(x, y, z, 0, -height / 2, -width / 2, 1, height - 1, width - 1, direction);
 	}

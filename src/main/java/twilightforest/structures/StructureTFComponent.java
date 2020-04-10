@@ -25,13 +25,13 @@ public abstract class StructureTFComponent extends StructurePiece {
 		this.rotation = Rotation.NONE;
 	}
 
-	public StructureTFComponent(int i) {
-		super(i);
+	public StructureTFComponent(IStructurePieceType type, int i) {
+		super(type, i);
 		this.rotation = Rotation.NONE;
 	}
 
-	public StructureTFComponent(TFFeature feature, int i) {
-		super(i);
+	public StructureTFComponent(IStructurePieceType type, TFFeature feature, int i) {
+		super(type, i);
 		this.feature = feature;
 		this.rotation = Rotation.NONE;
 	}

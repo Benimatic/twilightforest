@@ -19,7 +19,7 @@ public class ComponentTFDarkTowerRoofRings extends ComponentTFDarkTowerRoof {
 	}
 
 	public ComponentTFDarkTowerRoofRings(TFFeature feature, int i, ComponentTFTowerWing wing) {
-		super(feature, i, wing);
+		super(TFDarkTowerPieces.TFDTRR, feature, i, wing);
 	}
 
 	@Override
@@ -33,7 +33,6 @@ public class ComponentTFDarkTowerRoofRings extends ComponentTFDarkTowerRoof {
 
 		setBlockState(world, deco.accentState, size / 2, 10, size / 2, sbb);
 
-
 		setBlockState(world, deco.accentState, size / 2 - 1, 1, size / 2, sbb);
 		setBlockState(world, deco.accentState, size / 2 + 1, 1, size / 2, sbb);
 		setBlockState(world, deco.accentState, size / 2, 1, size / 2 - 1, sbb);
@@ -44,7 +43,6 @@ public class ComponentTFDarkTowerRoofRings extends ComponentTFDarkTowerRoof {
 
 		return true;
 	}
-
 
 	protected void makeARing(World world, int y, MutableBoundingBox sbb) {
 		setBlockState(world, deco.accentState, size / 2 - 2, y, size / 2 + 1, sbb);

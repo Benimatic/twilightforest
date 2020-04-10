@@ -26,7 +26,7 @@ public class ComponentNagaCourtyardPath extends StructureTFComponentTemplate {
 
     @SuppressWarnings("WeakerAccess")
     public ComponentNagaCourtyardPath(TFFeature feature, int i, int x, int y, int z) {
-        super(feature, i, x, y, z, Rotation.NONE);
+        super(NagaCourtyardPieces.TFNCPa, feature, i, x, y, z, Rotation.NONE);
     }
 
     @Override

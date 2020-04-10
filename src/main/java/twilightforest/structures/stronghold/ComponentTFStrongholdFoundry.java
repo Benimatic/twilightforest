@@ -26,7 +26,7 @@ public class ComponentTFStrongholdFoundry extends StructureTFStrongholdComponent
 	}
 
 	public ComponentTFStrongholdFoundry(TFFeature feature, int i, Direction facing, int x, int y, int z) {
-		super(feature, i, facing, x, y, z);
+		super(TFStrongholdPieces.TFSFo, feature, i, facing, x, y, z);
 	}
 
 	@Override
@@ -79,8 +79,6 @@ public class ComponentTFStrongholdFoundry extends StructureTFStrongholdComponent
 				addNewComponent(parent, list, random, Rotation.CLOCKWISE_90, -1, 13, 13);
 				addNewComponent(parent, list, random, Rotation.COUNTERCLOCKWISE_90, 18, 13, 4);
 		}
-
-
 	}
 
 	@Override
@@ -197,5 +195,4 @@ public class ComponentTFStrongholdFoundry extends StructureTFStrongholdComponent
 			}
 		}
 	}
-
 }

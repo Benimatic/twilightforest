@@ -26,7 +26,7 @@ public class ComponentTFStrongholdBossRoom extends StructureTFStrongholdComponen
 	}
 
 	public ComponentTFStrongholdBossRoom(TFFeature feature, int i, Direction facing, int x, int y, int z) {
-		super(feature, i, facing, x, y, z);
+		super(TFStrongholdPieces.TFSBR, feature, i, facing, x, y, z);
 		this.spawnListIndex = Integer.MAX_VALUE;
 	}
 
@@ -91,7 +91,6 @@ public class ComponentTFStrongholdBossRoom extends StructureTFStrongholdComponen
 		placeSarcophagus(worldIn, sbb, 13, 1, 15, Rotation.NONE);
 		placeSarcophagus(worldIn, sbb, 18, 1, 15, Rotation.NONE);
 
-
 		// doorway
 		this.fillWithAir(world, sbb, 12, 1, 1, 14, 4, 2);
 		this.fillWithBlocks(world, sbb, 12, 1, 3, 14, 4, 3, Blocks.IRON_BARS.getDefaultState(), Blocks.IRON_BARS.getDefaultState(), false);
@@ -104,7 +103,6 @@ public class ComponentTFStrongholdBossRoom extends StructureTFStrongholdComponen
 
 		return true;
 	}
-
 
 	private void placeSarcophagus(World world, MutableBoundingBox sbb, int x, int y, int z, Rotation rotation) {
 
@@ -146,7 +144,6 @@ public class ComponentTFStrongholdBossRoom extends StructureTFStrongholdComponen
 
 		this.setBlockStateRotated(world, Blocks.STONE_SLAB.getDefaultState(), x + 0, y + 1, z + 1, rotation, sbb);
 		this.setBlockStateRotated(world, Blocks.STONE_SLAB.getDefaultState(), x + 0, y + 1, z + 2, rotation, sbb);
-
 	}
 
 	protected void placePillarDecorations(World world, MutableBoundingBox sbb, Rotation rotation) {

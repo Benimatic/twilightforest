@@ -36,8 +36,8 @@ public class ComponentTFQuestGrove extends StructureTFComponentOld {
 		super(TFFeature.TFQuest1, nbt);
 	}
 
+	//TODO: Parameters "world", "rand" is unused. Remove?
 	public ComponentTFQuestGrove(TFFeature feature, World world, Random rand, int i, int x, int y, int z) {
-		super(feature, i);
 
 		this.setCoordBaseMode(Direction.SOUTH);
 

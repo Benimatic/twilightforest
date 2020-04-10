@@ -18,7 +18,7 @@ public class ComponentTFDarkTowerRoofCactus extends ComponentTFDarkTowerRoof {
 	}
 
 	public ComponentTFDarkTowerRoofCactus(TFFeature feature, int i, ComponentTFTowerWing wing) {
-		super(feature, i, wing);
+		super(TFDarkTowerPieces.TFDTRC, feature, i, wing);
 	}
 
 	@Override
@@ -60,7 +60,6 @@ public class ComponentTFDarkTowerRoofCactus extends ComponentTFDarkTowerRoof {
 		setBlockState(world, deco.accentState, size / 2, 5, size / 2 - 2, sbb);
 		setBlockState(world, deco.accentState, size / 2, 6, size / 2 - 2, sbb);
 		setBlockState(world, deco.accentState, size / 2, 6, size / 2 - 3, sbb);
-
 
 		return true;
 	}

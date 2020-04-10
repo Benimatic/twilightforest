@@ -33,8 +33,8 @@ public class ComponentNagaCourtyardWallAbstract extends StructureTFComponentTemp
     }
 
     @SuppressWarnings("WeakerAccess")
-    public ComponentNagaCourtyardWallAbstract(TFFeature feature, int i, int x, int y, int z, Rotation rotation, ResourceLocation wall, ResourceLocation wall_decayed) {
-        super(feature, i, x, y, z, rotation);
+    public ComponentNagaCourtyardWallAbstract(IStructurePieceType type, TFFeature feature, int i, int x, int y, int z, Rotation rotation, ResourceLocation wall, ResourceLocation wall_decayed) {
+        super(type, feature, i, x, y, z, rotation);
         this.WALL = wall;
         this.WALL_DECAYED = wall_decayed;
     }

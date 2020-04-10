@@ -26,7 +26,7 @@ public class ComponentTFFinalCastleEntranceStairs extends StructureTFComponentOl
 	}
 
 	public ComponentTFFinalCastleEntranceStairs(TFFeature feature, int index, int x, int y, int z, Direction direction) {
-		super(feature, index);
+		super(TFFinalCastlePieces.TFFCEnSt, feature, index);
 		this.setCoordBaseMode(direction);
 		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox2(x, y, z, 0, -1, -5, 12, 0, 12, direction);
 	}
@@ -62,7 +62,6 @@ public class ComponentTFFinalCastleEntranceStairs extends StructureTFComponentOl
 		}
 
 		this.replaceAirAndLiquidDownwards(world, deco.blockState, 0, 0, 5, sbb);
-
 
 		return true;
 	}

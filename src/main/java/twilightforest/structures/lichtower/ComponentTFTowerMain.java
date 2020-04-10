@@ -35,9 +35,10 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		super(TFLichTowerPieces.TFLTMai, nbt);
 	}
 
+	//TODO: Parameter "world" is unused. Remove?
 	public ComponentTFTowerMain(TFFeature feature, World world, Random rand, int index, int x, int y, int z) {
 		// some of these are subject to change if the ground level is > 30.
-		super(feature, index, x, y, z, 15, 55 + rand.nextInt(32), Direction.SOUTH);
+		super(TFLichTowerPieces.TFLTMai, feature, index, x, y, z, 15, 55 + rand.nextInt(32), Direction.SOUTH);
 	}
 
 	@Override
@@ -277,7 +278,6 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 6, floorLevel + 2, 7, sbb);
 		setBlockState(world, Blocks.OAK_FENCE.getDefaultState(), 8, floorLevel + 2, 7, sbb);
 
-
 		this.setCoordBaseMode(temp);
 	}
 
@@ -303,7 +303,6 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		// seems like we should have a spawner
 		setBlockState(world, TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.LICH), size / 2, floorLevel + 2, size / 2, sbb);
 	}
-
 
 	protected void makeTowerPaintings(World world, Random rand, MutableBoundingBox sbb) {
 		int howMany = 10;
@@ -382,7 +381,6 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		setBlockState(world, AIR, 11, floorLevel + 2, 3, sbb);
 
 		this.setCoordBaseMode(temp);
-
 	}
 
 	/**
@@ -480,6 +478,4 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 			}
 		}
 	}
-
-
 }

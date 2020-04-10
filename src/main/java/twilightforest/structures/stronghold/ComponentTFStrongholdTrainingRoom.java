@@ -24,7 +24,7 @@ public class ComponentTFStrongholdTrainingRoom extends StructureTFStrongholdComp
 	}
 
 	public ComponentTFStrongholdTrainingRoom(TFFeature feature, int i, Direction facing, int x, int y, int z) {
-		super(feature, i, facing, x, y, z);
+		super(TFStrongholdPieces.TFSTR, feature, i, facing, x, y, z);
 	}
 
 	@Override
@@ -87,5 +87,4 @@ public class ComponentTFStrongholdTrainingRoom extends StructureTFStrongholdComp
 		this.setBlockStateRotated(world, Blocks.OAK_FENCE.getDefaultState(), 7, 2, 6, rotation, sbb);
 		this.setBlockStateRotated(world, Blocks.PUMPKIN.getDefaultState().with(CarvedPumpkinBlock.FACING, getStructureRelativeRotation(rotation)), 6, 3, 6, rotation, sbb);
 	}
-
 }

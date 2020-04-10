@@ -25,7 +25,7 @@ public class ComponentTFStrongholdCrossing extends StructureTFStrongholdComponen
 	}
 
 	public ComponentTFStrongholdCrossing(TFFeature feature, int i, Direction facing, int x, int y, int z) {
-		super(feature, i, facing, x, y, z);
+		super(TFStrongholdPieces.TFSCr, feature, i, facing, x, y, z);
 	}
 
 	@Override
@@ -61,7 +61,6 @@ public class ComponentTFStrongholdCrossing extends StructureTFStrongholdComponen
 		placeWallStatue(world, 9, 1, 10, Rotation.CLOCKWISE_180, sbb);
 		placeWallStatue(world, 10, 1, 8, Rotation.CLOCKWISE_90, sbb);
 
-
 		// tables
 		placeTableAndChairs(world, sbb, Rotation.NONE);
 		placeTableAndChairs(world, sbb, Rotation.CLOCKWISE_90);
@@ -77,7 +76,7 @@ public class ComponentTFStrongholdCrossing extends StructureTFStrongholdComponen
 	private void placeTableAndChairs(World world, MutableBoundingBox sbb, Rotation rotation) {
 		// table
 		BlockState oakStairs = Blocks.OAK_STAIRS.getDefaultState();
-		;
+
 		this.setBlockStateRotated(world, getStairState(oakStairs, Rotation.NONE.rotate(Direction.WEST), rotation, true), 5, 1, 3, rotation, sbb);
 		this.setBlockStateRotated(world, getStairState(oakStairs, Rotation.COUNTERCLOCKWISE_90.rotate(Direction.WEST), rotation, true), 5, 1, 4, rotation, sbb);
 		this.setBlockStateRotated(world, getStairState(oakStairs, Rotation.CLOCKWISE_90.rotate(Direction.WEST), rotation, true), 6, 1, 3, rotation, sbb);

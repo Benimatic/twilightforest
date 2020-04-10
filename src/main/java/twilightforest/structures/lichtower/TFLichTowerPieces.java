@@ -13,7 +13,7 @@ public class TFLichTowerPieces {
 	public static final IStructurePieceType TFLTBri = TFFeature.registerPiece("TFLTBri", ComponentTFTowerBridge::new);
 	public static final IStructurePieceType TFLTMai = TFFeature.registerPiece("TFLTMai", ComponentTFTowerMain::new);
 	public static final IStructurePieceType TFLTOut = TFFeature.registerPiece("TFLTOut", ComponentTFTowerOutbuilding::new);
-	public static final IStructurePieceType TFLTRoo = TFFeature.registerPiece("TFLTRoo", ComponentTFTowerRoof::new); //TODO: This is abstract. Can't do this
+	public static final IStructurePieceType TFLTRoo = TFFeature.registerPiece("TFLTRoo", ComponentTFTowerRoof::new);
 	public static final IStructurePieceType TFLTRAS = TFFeature.registerPiece("TFLTRAS", ComponentTFTowerRoofAttachedSlab::new);
 	public static final IStructurePieceType TFLTRF = TFFeature.registerPiece("TFLTRF", ComponentTFTowerRoofFence::new);
 	public static final IStructurePieceType TFLTRGF = TFFeature.registerPiece("TFLTRGF", ComponentTFTowerRoofGableForwards::new);

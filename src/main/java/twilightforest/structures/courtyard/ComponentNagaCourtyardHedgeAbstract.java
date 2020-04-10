@@ -32,8 +32,8 @@ public abstract class ComponentNagaCourtyardHedgeAbstract extends StructureTFCom
     }
 
     @SuppressWarnings("WeakerAccess")
-    public ComponentNagaCourtyardHedgeAbstract(TFFeature feature, int i, int x, int y, int z, Rotation rotation, ResourceLocation hedge, ResourceLocation hedgeBig) {
-        super(feature, i, x, y, z, rotation);
+    public ComponentNagaCourtyardHedgeAbstract(IStructurePieceType type, TFFeature feature, int i, int x, int y, int z, Rotation rotation, ResourceLocation hedge, ResourceLocation hedgeBig) {
+        super(type, feature, i, x, y, z, rotation);
         this.HEDGE = hedge;
         this.HEDGE_BIG = hedgeBig;
     }

@@ -25,7 +25,7 @@ public class ComponentTFHollowTreeRoot extends ComponentTFHollowTreeMedBranch {
 	}
 
 	public ComponentTFHollowTreeRoot(TFFeature feature, int i, int sx, int sy, int sz, double length, double angle, double tilt, boolean leafy) {
-		super(feature, i, sx, sy, sz, length, angle, tilt, leafy);
+		super(TFHollowTreePieces.TFHTRo, feature, i, sx, sy, sz, length, angle, tilt, leafy);
 		this.boundingBox = new MutableBoundingBox(src, dest);
 	}
 

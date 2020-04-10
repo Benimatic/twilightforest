@@ -32,8 +32,8 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 		super(piece, nbt);
 	}
 
-	public ComponentTFHollowHill(TFFeature feature, World world, Random rand, int i, int size, int x, int y, int z) {
-		super(feature, i);
+	public ComponentTFHollowHill(IStructurePieceType type, TFFeature feature, World world, Random rand, int i, int size, int x, int y, int z) {
+		super(type, feature, i);
 
 		this.setCoordBaseMode(Direction.SOUTH);
 

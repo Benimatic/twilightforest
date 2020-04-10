@@ -14,7 +14,6 @@ import twilightforest.TFFeature;
 
 import java.util.Random;
 
-
 public class ComponentTFTowerRoofStairs extends ComponentTFTowerRoof {
 
 	public ComponentTFTowerRoofStairs(TemplateManager manager, CompoundNBT nbt) {
@@ -22,7 +21,7 @@ public class ComponentTFTowerRoofStairs extends ComponentTFTowerRoof {
 	}
 
 	public ComponentTFTowerRoofStairs(TFFeature feature, int i, ComponentTFTowerWing wing) {
-		super(feature, i, wing);
+		super(TFLichTowerPieces.TFLTRSt, feature, i, wing);
 
 		// always facing = 0.  This roof cannot rotate, due to stair facing issues.
 		this.setCoordBaseMode(Direction.SOUTH);

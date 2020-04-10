@@ -25,13 +25,13 @@ public class ComponentTFFinalCastleStairTower extends ComponentTFTowerWing {
 		super(TFFinalCastlePieces.TFFCStTo, nbt);
 	}
 
+	//TODO: Parameter "rand" is unused. Remove?
 	public ComponentTFFinalCastleStairTower(TFFeature feature, Random rand, int i, int x, int y, int z, Direction rotation) {
-		super(feature, i);
+		super(TFFinalCastlePieces.TFFCStTo, feature, i);
 		this.setCoordBaseMode(rotation);
 		this.size = 9;
 		this.height = 51;
 		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -4, 0, -4, 8, 50, 8, Direction.SOUTH);
-
 	}
 
 	@Override
@@ -63,7 +63,6 @@ public class ComponentTFFinalCastleStairTower extends ComponentTFTowerWing {
 			fillWithRandomizedBlocks(world, sbb, i, 0 - (i * 2), i, 8 - i, 1 - (i * 2), 8 - i, false, rand, deco.randomBlocks);
 		}
 		this.setBlockState(world, deco.blockState, 4, -7, 4, sbb);
-
 
 		// door, first floor
 		final BlockState castleDoor = getGlyphMeta(); //TODO: WTF do I do here...?
@@ -115,7 +114,6 @@ public class ComponentTFFinalCastleStairTower extends ComponentTFTowerWing {
 				int sy = y + i;
 				int sz = 1;
 
-
 				this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.WEST, rotation, false), sx, sy, sz, rotation, sbb);
 				this.setBlockStateRotated(world, deco.blockState, sx, sy - 1, sz, rotation, sbb);
 				this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.WEST, rotation, false), sx, sy, sz + 1, rotation, sbb);
@@ -129,13 +127,10 @@ public class ComponentTFFinalCastleStairTower extends ComponentTFTowerWing {
 		this.fillWithBlocks(world, sbb, 1, 38, 1, 3, 38, 5, deco.blockState, deco.blockState, false);
 		this.fillWithBlocks(world, sbb, 3, 39, 1, 3, 39, 5, deco.fenceState, deco.fenceState, false);
 
-
 		return true;
 	}
 
 	public BlockState getGlyphMeta() {
 		return TFBlocks.castle_rune_brick_blue.get().getDefaultState();
 	}
-
-
 }

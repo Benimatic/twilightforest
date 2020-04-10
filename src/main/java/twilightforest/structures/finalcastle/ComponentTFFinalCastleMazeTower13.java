@@ -38,8 +38,8 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 		super(TFFinalCastlePieces.TFFCSiTo, nbt);
 	}
 
-	public ComponentTFFinalCastleMazeTower13(TFFeature feature, Random rand, int i, int x, int y, int z, BlockState color, Direction direction) {
-		super(feature, i);
+	public ComponentTFFinalCastleMazeTower13(IStructurePieceType piece, TFFeature feature, Random rand, int i, int x, int y, int z, BlockState color, Direction direction) {
+		super(piece, feature, i);
 		this.setCoordBaseMode(direction);
 		this.color = color;
 		this.size = 13;
@@ -66,11 +66,11 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 
 		// we should have a door where we started
 		addOpening(0, entranceFloor * 8 + 1, size / 2, Rotation.CLOCKWISE_180);
-
 	}
 
-	public ComponentTFFinalCastleMazeTower13(TFFeature feature, Random rand, int i, int x, int y, int z, int floors, int entranceFloor, BlockState color, Direction direction) {
-		super(feature, i);
+	//TODO: Parameter "rand" is unused. Remove?
+	public ComponentTFFinalCastleMazeTower13(IStructurePieceType piece, TFFeature feature, Random rand, int i, int x, int y, int z, int floors, int entranceFloor, BlockState color, Direction direction) {
+		super(piece, feature, i);
 		this.setCoordBaseMode(direction);
 		this.color = color;
 		this.size = 13;
@@ -86,7 +86,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 		}
 
 		// add foundation
-		ComponentTFFinalCastleFoundation13 foundation = new ComponentTFFinalCastleFoundation13(getFeatureType(), rand, 4, this);
+		ComponentTFFinalCastleFoundation13 foundation = new ComponentTFFinalCastleFoundation13(TFFinalCastlePieces.TFFCToF13, getFeatureType(), rand, 4, this);
 		list.add(foundation);
 		foundation.buildComponent(this, list, rand);
 
@@ -254,7 +254,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 
 		if (isWithinRange(centerX, centerZ, tc.getX(), tc.getZ(), 128)) {
 
-			ComponentTFFinalCastleMazeTower13 sTower = new ComponentTFFinalCastleMazeTower13(getFeatureType(), rand, this.getComponentType() + 1, tc.getX(), tc.getY(), tc.getZ(), this.color, facing);
+			ComponentTFFinalCastleMazeTower13 sTower = new ComponentTFFinalCastleMazeTower13(TFFinalCastlePieces.TFFCSiTo, getFeatureType(), rand, this.getComponentType() + 1, tc.getX(), tc.getY(), tc.getZ(), this.color, facing);
 
 			MutableBoundingBox largerBB = new MutableBoundingBox(sTower.getBoundingBox());
 
@@ -333,7 +333,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 	}
 
 	protected ComponentTFFinalCastleMazeTower13 makeNewDamagedTower(Random rand, Direction facing, BlockPos tc) {
-		return new ComponentTFFinalCastleDamagedTower(getFeatureType(), rand, this.getComponentType() + 1, tc.getX(), tc.getY(), tc.getZ(), facing);
+		return new ComponentTFFinalCastleDamagedTower(TFFinalCastlePieces.TFFCDamT, getFeatureType(), rand, this.getComponentType() + 1, tc.getX(), tc.getY(), tc.getZ(), facing);
 	}
 
 	private int adjustOpening(int posY, BlockPos dest) {

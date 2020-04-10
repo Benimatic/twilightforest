@@ -21,7 +21,7 @@ public class ComponentTFStrongholdUpperRightTurn extends StructureTFStrongholdCo
 	}
 
 	public ComponentTFStrongholdUpperRightTurn(TFFeature feature, int i, Direction facing, int x, int y, int z) {
-		super(feature, i, facing, x, y, z);
+		super(TFStrongholdPieces.TFSURT, feature, i, facing, x, y, z);
 	}
 
 	@Override

@@ -26,8 +26,9 @@ public class ComponentTFMazeRuins extends StructureTFComponentOld {
 		super(TFMinotaurMazePieces.TFMMRuins, nbt);
 	}
 
+	//TODO: Parameters "world" and "rand" are unused. Remove?
 	public ComponentTFMazeRuins(TFFeature feature, World world, Random rand, int i, int x, int y, int z) {
-		super(feature, i);
+		super(TFMinotaurMazePieces.TFMMRuins, feature, i);
 		this.setCoordBaseMode(Direction.SOUTH);
 
 		// I have no bounding box
@@ -66,5 +67,4 @@ public class ComponentTFMazeRuins extends StructureTFComponentOld {
 		// I have no components
 		return true;
 	}
-
 }

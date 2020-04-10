@@ -27,7 +27,7 @@ public class ComponentTFHollowTreeLargeBranch extends ComponentTFHollowTreeMedBr
 	}
 
 	protected ComponentTFHollowTreeLargeBranch(TFFeature feature, int i, int sx, int sy, int sz, double length, double angle, double tilt, boolean leafy) {
-		super(feature, i, sx, sy, sz, length, angle, tilt, leafy);
+		super(TFHollowTreePieces.TFHTLB, feature, i, sx, sy, sz, length, angle, tilt, leafy);
 	}
 
 	/**
@@ -67,7 +67,7 @@ public class ComponentTFHollowTreeLargeBranch extends ComponentTFHollowTreeMedBr
 	}
 
 	public void makeMedBranch(List<StructurePiece> list, Random rand, int index, int x, int y, int z, double branchLength, double branchRotation, double branchAngle, boolean leafy) {
-		ComponentTFHollowTreeMedBranch branch = new ComponentTFHollowTreeMedBranch(getFeatureType(), index, x, y, z, branchLength, branchRotation, branchAngle, leafy);
+		ComponentTFHollowTreeMedBranch branch = new ComponentTFHollowTreeMedBranch(TFHollowTreePieces.TFHTMB, getFeatureType(), index, x, y, z, branchLength, branchRotation, branchAngle, leafy);
 		if (!branchIntersectsDungeon(branch, list))
 		{
 			list.add(branch);

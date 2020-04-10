@@ -15,6 +15,6 @@ public class ComponentNagaCourtyardTerraceStatue extends ComponentNagaCourtyardT
 
     @SuppressWarnings("WeakerAccess")
     public ComponentNagaCourtyardTerraceStatue(TFFeature feature, int i, int x, int y, int z, Rotation rotation) {
-        super(feature, i, x, y, z, rotation, new ResourceLocation(TwilightForestMod.ID, "courtyard/terrace_statue"));
+        super(NagaCourtyardPieces.TFNCSt, feature, i, x, y, z, rotation, new ResourceLocation(TwilightForestMod.ID, "courtyard/terrace_statue"));
     }
 }

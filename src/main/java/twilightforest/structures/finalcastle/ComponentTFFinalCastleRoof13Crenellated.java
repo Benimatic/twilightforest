@@ -22,14 +22,14 @@ public class ComponentTFFinalCastleRoof13Crenellated extends StructureTFComponen
 		super(TFFinalCastlePieces.TFFCRo13Cr, nbt);
 	}
 
+	//TODO: Parameter "rand" is unused. Remove?
 	public ComponentTFFinalCastleRoof13Crenellated(TFFeature feature, Random rand, int i, StructureTFComponentOld sideTower) {
-		super(feature, i);
+		super(TFFinalCastlePieces.TFFCRo13Cr, feature, i);
 
 		int height = 5;
 
 		this.setCoordBaseMode(sideTower.getCoordBaseMode());
 		this.boundingBox = new MutableBoundingBox(sideTower.getBoundingBox().minX - 2, sideTower.getBoundingBox().maxY - 1, sideTower.getBoundingBox().minZ - 2, sideTower.getBoundingBox().maxX + 2, sideTower.getBoundingBox().maxY + height - 1, sideTower.getBoundingBox().maxZ + 2);
-
 	}
 
 	@Override

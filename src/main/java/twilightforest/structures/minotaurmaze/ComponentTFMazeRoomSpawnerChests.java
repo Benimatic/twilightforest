@@ -24,7 +24,7 @@ public class ComponentTFMazeRoomSpawnerChests extends ComponentTFMazeRoom {
 	}
 
 	public ComponentTFMazeRoomSpawnerChests(TFFeature feature, int i, Random rand, int x, int y, int z) {
-		super(feature, i, rand, x, y, z);
+		super(TFMinotaurMazePieces.TFMMRSC, feature, i, rand, x, y, z);
 	}
 
 	@Override
@@ -90,8 +90,5 @@ public class ComponentTFMazeRoomSpawnerChests extends ComponentTFMazeRoom {
 		setBlockState(world, Blocks.IRON_BARS.getDefaultState(), dx + 0, 3, dz + 1, sbb);
 		setBlockState(world, Blocks.IRON_BARS.getDefaultState(), dx + 2, 3, dz + 1, sbb);
 		setBlockState(world, Blocks.IRON_BARS.getDefaultState(), dx + 1, 3, dz + 2, sbb);
-
-
 	}
-
 }

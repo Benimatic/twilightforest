@@ -24,8 +24,8 @@ public class ComponentTFMazeDeadEndFountain extends ComponentTFMazeDeadEnd {
 		super(piece, nbt);
 	}
 
-	public ComponentTFMazeDeadEndFountain(TFFeature feature, int i, int x, int y, int z, Direction rotation) {
-		super(feature, i, x, y, z, rotation);
+	public ComponentTFMazeDeadEndFountain(IStructurePieceType type, TFFeature feature, int i, int x, int y, int z, Direction rotation) {
+		super(type, feature, i, x, y, z, rotation);
 	}
 
 	@Override

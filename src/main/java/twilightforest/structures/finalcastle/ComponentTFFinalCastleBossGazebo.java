@@ -27,7 +27,7 @@ public class ComponentTFFinalCastleBossGazebo extends StructureTFComponentOld {
 	}
 
 	public ComponentTFFinalCastleBossGazebo(TFFeature feature, Random rand, int i, StructureTFComponentOld keep) {
-		super(feature, i);
+		super(TFFinalCastlePieces.TFFCBoGaz, feature, i);
 		this.spawnListIndex = -1; // no monsters
 
 		this.setCoordBaseMode(keep.getCoordBaseMode());

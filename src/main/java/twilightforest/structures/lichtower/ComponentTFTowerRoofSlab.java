@@ -24,8 +24,8 @@ public class ComponentTFTowerRoofSlab extends ComponentTFTowerRoof {
 		super(piece, nbt);
 	}
 
-	public ComponentTFTowerRoofSlab(TFFeature feature, int i, ComponentTFTowerWing wing) {
-		super(feature, i, wing);
+	public ComponentTFTowerRoofSlab(IStructurePieceType piece, TFFeature feature, int i, ComponentTFTowerWing wing) {
+		super(piece, feature, i, wing);
 
 		// same alignment
 		this.setCoordBaseMode(wing.getCoordBaseMode());
@@ -35,7 +35,6 @@ public class ComponentTFTowerRoofSlab extends ComponentTFTowerRoof {
 
 		// just hang out at the very top of the tower
 		makeCapBB(wing);
-
 	}
 
 	/**

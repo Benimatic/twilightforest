@@ -51,9 +51,9 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		this(feature, world, rand, index, x + 10, y, z + 10, Direction.NORTH);
 	}
 
-
+	//TODO: Parameter "world" is unused. Remove?
 	public ComponentTFDarkTowerMain(TFFeature feature, World world, Random rand, int index, int x, int y, int z, Direction rotation) {
-		super(feature, index, x, y, z, 19, 56 + ((rand.nextInt(32) / 5) * 5), rotation);
+		super(TFDarkTowerPieces.TFDTMai, feature, index, x, y, z, 19, 56 + ((rand.nextInt(32) / 5) * 5), rotation);
 
 		// check to make sure we can build the whole tower
 		if (this.boundingBox.maxY > 245) {

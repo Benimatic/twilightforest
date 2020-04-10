@@ -17,11 +17,11 @@ import java.util.Random;
 public class ComponentTFTowerRoofGableForwards extends ComponentTFTowerRoof {
 
 	public ComponentTFTowerRoofGableForwards(TemplateManager manager, CompoundNBT nbt) {
-		super(TFLichTowerPieces.TFLTRGF,  nbt);
+		super(TFLichTowerPieces.TFLTRGF, nbt);
 	}
 
 	public ComponentTFTowerRoofGableForwards(TFFeature feature, int i, ComponentTFTowerWing wing) {
-		super(feature, i, wing);
+		super(TFLichTowerPieces.TFLTRGF, feature, i, wing);
 
 		// same facing
 		this.setCoordBaseMode(wing.getCoordBaseMode());

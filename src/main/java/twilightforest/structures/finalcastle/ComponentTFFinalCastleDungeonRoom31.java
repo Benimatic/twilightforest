@@ -41,8 +41,9 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 		super(piece, nbt);
 	}
 
-	public ComponentTFFinalCastleDungeonRoom31(TFFeature feature, Random rand, int i, int x, int y, int z, Direction direction, int level) {
-		super(feature, i);
+	//TODO: Parameter "rand" is unused. Remove?
+	public ComponentTFFinalCastleDungeonRoom31(IStructurePieceType piece, TFFeature feature, Random rand, int i, int x, int y, int z, Direction direction, int level) {
+		super(piece, feature, i);
 		this.setCoordBaseMode(direction);
 		this.spawnListIndex = 2; // dungeon monsters
 		this.size = 31;
@@ -99,7 +100,7 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 
 		BlockPos rc = this.getNewRoomCoords(rand, rotation);
 
-		ComponentTFFinalCastleDungeonRoom31 dRoom = new ComponentTFFinalCastleDungeonRoom31(getFeatureType(), rand, this.componentType + 1, rc.getX(), rc.getY(), rc.getZ(), rotation.rotate(Direction.SOUTH), level);
+		ComponentTFFinalCastleDungeonRoom31 dRoom = new ComponentTFFinalCastleDungeonRoom31(TFFinalCastlePieces.TFFCDunR31, getFeatureType(), rand, this.componentType + 1, rc.getX(), rc.getY(), rc.getZ(), rotation.rotate(Direction.SOUTH), level);
 
 		MutableBoundingBox largerBB = new MutableBoundingBox(dRoom.getBoundingBox());
 

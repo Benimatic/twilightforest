@@ -32,12 +32,11 @@ public class ComponentTFFinalCastleFoundation13 extends StructureTFComponentOld 
 		super(piece, nbt);
 	}
 
-	public ComponentTFFinalCastleFoundation13(TFFeature feature, Random rand, int i, StructureTFComponentOld sideTower) {
-		super(feature, i);
+	public ComponentTFFinalCastleFoundation13(IStructurePieceType type, TFFeature feature, Random rand, int i, StructureTFComponentOld sideTower) {
+		super(type, feature, i);
 
 		this.setCoordBaseMode(sideTower.getCoordBaseMode());
 		this.boundingBox = new MutableBoundingBox(sideTower.getBoundingBox().minX - 2, sideTower.getBoundingBox().minY - 1, sideTower.getBoundingBox().minZ - 2, sideTower.getBoundingBox().maxX + 2, sideTower.getBoundingBox().minY, sideTower.getBoundingBox().maxZ + 2);
-
 	}
 
 	@Override
@@ -78,7 +77,6 @@ public class ComponentTFFinalCastleFoundation13 extends StructureTFComponentOld 
 				this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, x, -1, 1, rotation, sbb);
 				this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, x, -mid, 0, rotation, sbb);
 			}
-
 		}
 
 		return true;

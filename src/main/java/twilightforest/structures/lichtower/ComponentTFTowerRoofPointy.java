@@ -23,8 +23,8 @@ public class ComponentTFTowerRoofPointy extends ComponentTFTowerRoof {
 		super(piece, nbt);
 	}
 
-	public ComponentTFTowerRoofPointy(TFFeature feature, int i, ComponentTFTowerWing wing) {
-		super(feature, i, wing);
+	public ComponentTFTowerRoofPointy(IStructurePieceType piece, TFFeature feature, int i, ComponentTFTowerWing wing) {
+		super(piece, feature, i, wing);
 
 		// same facing, but it doesn't matter
 		this.setCoordBaseMode(wing.getCoordBaseMode());

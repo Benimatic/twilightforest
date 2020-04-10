@@ -20,8 +20,8 @@ public abstract class StructureTFTreeComponent extends StructureTFComponentOld {
 		super(piece, nbt);
 	}
 
-	public StructureTFTreeComponent(TFFeature feature, int i) {
-		super(feature, i);
+	public StructureTFTreeComponent(IStructurePieceType type, TFFeature feature, int i) {
+		super(type, feature, i);
 	}
 
 	public abstract boolean addComponentParts(World world, ChunkGenerator<?> generator, Random random, MutableBoundingBox sbb, boolean drawLeaves);

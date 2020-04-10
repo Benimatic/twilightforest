@@ -35,8 +35,8 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 		super(piece, nbt);
 	}
 
-	protected ComponentTFHollowTreeMedBranch(TFFeature feature, int i, int sx, int sy, int sz, double length, double angle, double tilt, boolean leafy) {
-		super(feature, i);
+	protected ComponentTFHollowTreeMedBranch(IStructurePieceType type, TFFeature feature, int i, int sx, int sy, int sz, double length, double angle, double tilt, boolean leafy) {
+		super(type, feature, i);
 
 		this.src = new BlockPos(sx, sy, sz);
 		this.dest = FeatureUtil.translate(src, length, angle, tilt);

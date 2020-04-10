@@ -26,8 +26,9 @@ public class ComponentTFMushroomTowerMain extends ComponentTFMushroomTowerWing {
 		this(feature, world, rand, index, x + MAIN_SIZE, y + 4, z + MAIN_SIZE, Direction.NORTH);
 	}
 
+	//TODO: Parameter "world" is unused. Remove?
 	public ComponentTFMushroomTowerMain(TFFeature feature, World world, Random rand, int index, int x, int y, int z, Direction rotation) {
-		super(feature, index, x, y, z, MAIN_SIZE, 8 + (rand.nextInt(3) * FLOOR_HEIGHT), rotation);
+		super(TFMushroomTowerPieces.TFMTMai, feature, index, x, y, z, MAIN_SIZE, 8 + (rand.nextInt(3) * FLOOR_HEIGHT), rotation);
 
 //		// check to make sure we can build the whole tower
 //		if (this.boundingBox.maxY > 245)
@@ -47,7 +48,7 @@ public class ComponentTFMushroomTowerMain extends ComponentTFMushroomTowerWing {
 	}
 
 	protected ComponentTFMushroomTowerMain(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
-		super(feature, i, x, y, z, pSize, pHeight, direction);
+		super(TFMushroomTowerPieces.TFMTMai, feature, i, x, y, z, pSize, pHeight, direction);
 	}
 
 	@Override

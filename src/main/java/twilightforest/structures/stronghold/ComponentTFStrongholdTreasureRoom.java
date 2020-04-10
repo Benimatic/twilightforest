@@ -27,7 +27,7 @@ public class ComponentTFStrongholdTreasureRoom extends StructureTFStrongholdComp
 	}
 
 	public ComponentTFStrongholdTreasureRoom(TFFeature feature, int i, Direction facing, int x, int y, int z) {
-		super(feature, i, facing, x, y, z);
+		super(TFStrongholdPieces.TFTreaR, feature, i, facing, x, y, z);
 	}
 
 	@Override
@@ -99,6 +99,4 @@ public class ComponentTFStrongholdTreasureRoom extends StructureTFStrongholdComp
 			this.fillWithBlocks(world, sbb, x - 1, y, z, x + 1, y + 3, z, Blocks.IRON_BARS.getDefaultState(), Blocks.AIR.getDefaultState(), false);
 		}
 	}
-
-
 }

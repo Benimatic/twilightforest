@@ -26,7 +26,7 @@ public class ComponentTFTowerBridge extends ComponentTFTowerWing {
 	}
 
 	protected ComponentTFTowerBridge(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
-		super(feature, i, x, y, z, 3, 3, direction);
+		super(TFLichTowerPieces.TFLTBri, feature, i, x, y, z, 3, 3, direction);
 
 		this.dSize = pSize;
 		this.dHeight = pHeight;

@@ -20,7 +20,7 @@ public class ComponentTFMazeRoomVault extends ComponentTFMazeRoom {
 	}
 
 	public ComponentTFMazeRoomVault(TFFeature feature, int i, Random rand, int x, int y, int z) {
-		super(feature, i, rand, x, y, z);
+		super(TFMinotaurMazePieces.TFMMRV, feature, i, rand, x, y, z);
 
 		// specify a non-existant high spawn list value to stop actual monster spawns
 		this.spawnListIndex = Integer.MAX_VALUE;
@@ -62,9 +62,7 @@ public class ComponentTFMazeRoomVault extends ComponentTFMazeRoom {
 		this.setBlockState(world, Blocks.CHEST.getDefaultState(), 9, 2, 8, sbb);
 		this.placeTreasureAtCurrentPosition(world.getWorld(), rand, 9, 2, 7, TFTreasure.labyrinth_vault, sbb);
 
-
 		// mazebreaker!
-
 
 		return true;
 	}

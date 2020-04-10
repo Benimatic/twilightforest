@@ -41,8 +41,8 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 		super(piece, nbt);
 	}
 
-	public StructureTFComponentOld(TFFeature feature, int i) {
-		super(i);
+	public StructureTFComponentOld(IStructurePieceType type, TFFeature feature, int i) {
+		super(type, i);
 		this.feature = feature;
 	}
 

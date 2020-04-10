@@ -42,8 +42,8 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 		super(piece, nbt);
 	}
 
-	protected ComponentTFIceTowerWing(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
-		super(feature, i, x, y, z, pSize, pHeight, direction);
+	protected ComponentTFIceTowerWing(IStructurePieceType piece, TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
+		super(piece, feature, i, x, y, z, pSize, pHeight, direction);
 	}
 
 	/**
@@ -153,7 +153,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 			return false;
 		}
 
-		ComponentTFIceTowerWing wing = new ComponentTFIceTowerWing(getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
+		ComponentTFIceTowerWing wing = new ComponentTFIceTowerWing(TFIceTowerPieces.TFITWin, getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// check to see if it intersects something already there
 		StructurePiece intersect = StructurePiece.findIntersecting(list, wing.getBoundingBox());
 		if (intersect == null || intersect == this) {

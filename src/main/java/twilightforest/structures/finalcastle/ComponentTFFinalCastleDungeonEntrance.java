@@ -28,7 +28,7 @@ public class ComponentTFFinalCastleDungeonEntrance extends ComponentTFFinalCastl
 	}
 
 	public ComponentTFFinalCastleDungeonEntrance(TFFeature feature, Random rand, int i, int x, int y, int z, Direction direction, int level) {
-		super(feature, rand, i, x, y, z, direction, level);
+		super(TFFinalCastlePieces.TFFCDunEn, feature, rand, i, x, y, z, direction, level);
 	}
 
 	@Override

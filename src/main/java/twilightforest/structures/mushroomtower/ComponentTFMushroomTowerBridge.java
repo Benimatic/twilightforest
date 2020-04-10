@@ -31,8 +31,8 @@ public class ComponentTFMushroomTowerBridge extends ComponentTFMushroomTowerWing
 		super(piece, nbt);
 	}
 
-	protected ComponentTFMushroomTowerBridge(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
-		super(feature, i, x, y, z, pSize, pHeight, direction);
+	protected ComponentTFMushroomTowerBridge(IStructurePieceType piece, TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
+		super(piece, feature, i, x, y, z, pSize, pHeight, direction);
 
 		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, 3, direction);
 

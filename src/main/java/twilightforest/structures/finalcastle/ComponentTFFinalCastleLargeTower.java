@@ -25,7 +25,7 @@ public class ComponentTFFinalCastleLargeTower extends ComponentTFTowerWing {
 	}
 
 	public ComponentTFFinalCastleLargeTower(TFFeature feature, Random rand, int i, int x, int y, int z, Direction rotation) {
-		super(feature, i);
+		super(TFFinalCastlePieces.TFFCLaTo, feature, i);
 		this.setCoordBaseMode(rotation);
 		this.size = 13;
 		this.height = 61;
@@ -75,6 +75,4 @@ public class ComponentTFFinalCastleLargeTower extends ComponentTFTowerWing {
 	public BlockState getGlyphMeta() {
 		return TFBlocks.castle_rune_brick_pink.get().getDefaultState();
 	}
-
-
 }

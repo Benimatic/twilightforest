@@ -15,6 +15,6 @@ public class ComponentNagaCourtyardTerraceBrazier extends ComponentNagaCourtyard
 
     @SuppressWarnings("WeakerAccess")
     public ComponentNagaCourtyardTerraceBrazier(TFFeature feature, int i, int x, int y, int z, Rotation rotation) {
-        super(feature, i, x, y, z, rotation, new ResourceLocation(TwilightForestMod.ID, "courtyard/terrace_fire"));
+        super(NagaCourtyardPieces.TFNCTr, feature, i, x, y, z, rotation, new ResourceLocation(TwilightForestMod.ID, "courtyard/terrace_fire"));
     }
 }

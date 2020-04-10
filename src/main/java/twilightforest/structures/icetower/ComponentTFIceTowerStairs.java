@@ -24,7 +24,7 @@ public class ComponentTFIceTowerStairs extends ComponentTFTowerWing {
 	}
 
 	public ComponentTFIceTowerStairs(TFFeature feature, int index, int x, int y, int z, int size, int height, Direction direction) {
-		super(feature, index, x, y, z, size, height, direction);
+		super(TFIceTowerPieces.TFITSt, feature, index, x, y, z, size, height, direction);
 	}
 
 	@Override

@@ -29,8 +29,8 @@ public class ComponentTFFinalCastleDamagedTower extends ComponentTFFinalCastleMa
 		super(piece, nbt);
 	}
 
-	public ComponentTFFinalCastleDamagedTower(TFFeature feature, Random rand, int i, int x, int y, int z, Direction direction) {
-		super(feature, rand, i, x, y, z, TFBlocks.castle_rune_brick_yellow.get().getDefaultState(), direction);  //TODO: change rune color
+	public ComponentTFFinalCastleDamagedTower(IStructurePieceType piece, TFFeature feature, Random rand, int i, int x, int y, int z, Direction direction) {
+		super(piece, feature, rand, i, x, y, z, TFBlocks.castle_rune_brick_yellow.get().getDefaultState(), direction);  //TODO: change rune color
 	}
 
 	@Override
@@ -40,7 +40,7 @@ public class ComponentTFFinalCastleDamagedTower extends ComponentTFFinalCastleMa
 		}
 
 		// add foundation
-		ComponentTFFinalCastleFoundation13 foundation = new ComponentTFFinalCastleFoundation13(getFeatureType(), rand, 0, this);
+		ComponentTFFinalCastleFoundation13 foundation = new ComponentTFFinalCastleFoundation13(TFFinalCastlePieces.TFFCToF13, getFeatureType(), rand, 0, this);
 		list.add(foundation);
 		foundation.buildComponent(this, list, rand);
 
@@ -132,5 +132,4 @@ public class ComponentTFFinalCastleDamagedTower extends ComponentTFFinalCastleMa
 			}
 		}
 	}
-
 }

@@ -19,7 +19,7 @@ public class ComponentTFMazeRoomCollapse extends ComponentTFMazeRoom {
 	}
 
 	public ComponentTFMazeRoomCollapse(TFFeature feature, int i, Random rand, int x, int y, int z) {
-		super(feature, i, rand, x, y, z);
+		super(TFMinotaurMazePieces.TFMMRC, feature, i, rand, x, y, z);
 	}
 
 	@Override

@@ -24,8 +24,8 @@ public class ComponentTFMazeDeadEnd extends StructureTFComponentOld {
 		super(piece, nbt);
 	}
 
-	public ComponentTFMazeDeadEnd(TFFeature feature, int i, int x, int y, int z, Direction rotation) {
-		super(feature, i);
+	public ComponentTFMazeDeadEnd(IStructurePieceType type, TFFeature feature, int i, int x, int y, int z, Direction rotation) {
+		super(type, feature, i);
 		this.setCoordBaseMode(rotation);
 		this.boundingBox = new MutableBoundingBox(x, y, z, x + 5, y + 5, z + 5);
 	}

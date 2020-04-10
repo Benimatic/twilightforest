@@ -23,7 +23,7 @@ public class ComponentTFIceTowerBridge extends StructureTFComponentOld {
 	}
 
 	public ComponentTFIceTowerBridge(TFFeature feature, int index, int x, int y, int z, int length, Direction direction) {
-		super(feature, index);
+		super(TFIceTowerPieces.TFITBri, feature, index);
 		this.length = length;
 		this.setCoordBaseMode(direction);
 

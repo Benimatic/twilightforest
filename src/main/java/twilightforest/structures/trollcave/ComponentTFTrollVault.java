@@ -7,6 +7,7 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
@@ -22,7 +23,7 @@ public class ComponentTFTrollVault extends StructureTFComponentOld {
 	}
 
 	public ComponentTFTrollVault(TFFeature feature, int index, int x, int y, int z) {
-		super(feature, index);
+		super(TFTrollCavePieces.TFTCVa, feature, index);
 		this.setCoordBaseMode(Direction.SOUTH);
 
 		// adjust x, y, z
@@ -56,5 +57,4 @@ public class ComponentTFTrollVault extends StructureTFComponentOld {
 
 		return true;
 	}
-
 }

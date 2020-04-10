@@ -1,6 +1,5 @@
 package twilightforest.structures.lichtower;
 
-
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
@@ -12,7 +11,7 @@ public class ComponentTFTowerRoofPointyOverhang extends ComponentTFTowerRoofPoin
 	}
 
 	public ComponentTFTowerRoofPointyOverhang(TFFeature feature, int i, ComponentTFTowerWing wing) {
-		super(feature, i, wing);
+		super(TFLichTowerPieces.TFLTRPO, feature, i, wing);
 
 		// same facing, but it doesn't matter
 		this.setCoordBaseMode(wing.getCoordBaseMode());
@@ -22,6 +21,5 @@ public class ComponentTFTowerRoofPointyOverhang extends ComponentTFTowerRoofPoin
 
 		// just hang out at the very top of the tower
 		makeOverhangBB(wing);
-
 	}
 }

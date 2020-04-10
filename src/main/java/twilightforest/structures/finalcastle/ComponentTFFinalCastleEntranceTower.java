@@ -22,7 +22,7 @@ public class ComponentTFFinalCastleEntranceTower extends ComponentTFFinalCastleM
 	}
 
 	public ComponentTFFinalCastleEntranceTower(TFFeature feature, Random rand, int i, int x, int y, int z, Direction direction) {
-		super(feature, rand, i, x, y, z, 3, 2, TFBlocks.castle_rune_brick_pink.get().getDefaultState(), direction);
+		super(TFFinalCastlePieces.TFFCEnTo, feature, rand, i, x, y, z, 3, 2, TFBlocks.castle_rune_brick_pink.get().getDefaultState(), direction);
 	}
 
 	@Override
@@ -32,7 +32,7 @@ public class ComponentTFFinalCastleEntranceTower extends ComponentTFFinalCastleM
 		}
 
 		// add foundation
-		ComponentTFFinalCastleFoundation13 foundation = new ComponentTFFinalCastleFoundation13(getFeatureType(), rand, 4, this);
+		ComponentTFFinalCastleFoundation13 foundation = new ComponentTFFinalCastleFoundation13(TFFinalCastlePieces.TFFCToF13, getFeatureType(), rand, 4, this);
 		list.add(foundation);
 		foundation.buildComponent(this, list, rand);
 

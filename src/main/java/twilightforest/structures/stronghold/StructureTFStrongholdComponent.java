@@ -29,8 +29,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 		super(piece, nbt);
 	}
 
-	public StructureTFStrongholdComponent(TFFeature feature, int i, Direction facing, int x, int y, int z) {
-		super(feature, i);
+	public StructureTFStrongholdComponent(IStructurePieceType type, TFFeature feature, int i, Direction facing, int x, int y, int z) {
 		this.boundingBox = generateBoundingBox(facing, x, y, z);
 		this.setCoordBaseMode(facing);
 	}

@@ -38,7 +38,7 @@ public class ComponentTFHollowTreeLeafDungeon extends StructureTFTreeComponent {
 	 * @param radius
 	 */
 	protected ComponentTFHollowTreeLeafDungeon(TFFeature feature, int index, int x, int y, int z, int radius) {
-		super(feature, index);
+		super(TFHollowTreePieces.TFHTLD, feature, index);
 		this.setCoordBaseMode(Direction.SOUTH);
 		boundingBox = new MutableBoundingBox(x - radius, y - radius, z - radius, x + radius, y + radius, z + radius);
 		this.radius = radius;

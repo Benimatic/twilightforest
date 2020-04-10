@@ -24,8 +24,9 @@ public class ComponentTFFinalCastleRoof48Crenellated extends StructureTFComponen
 		super(TFFinalCastlePieces.TFFCRo48Cr, nbt);
 	}
 
+	//TODO: Parameter "rand" is unused. Remove?
 	public ComponentTFFinalCastleRoof48Crenellated(TFFeature feature, Random rand, int i, StructureTFComponentOld keep) {
-		super(feature, i);
+		super(TFFinalCastlePieces.TFFCRo48Cr,feature, i);
 
 		int height = 5;
 

@@ -24,7 +24,7 @@ public class ComponentTFDarkTowerBeard extends StructureTFComponentOld {
 	}
 
 	public ComponentTFDarkTowerBeard(TFFeature feature, int i, ComponentTFTowerWing wing) {
-		super(feature, i);
+		super(TFDarkTowerPieces.TFDTBea, feature, i);
 
 		this.setCoordBaseMode(wing.getCoordBaseMode());
 		this.size = wing.size;

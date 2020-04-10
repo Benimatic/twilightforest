@@ -24,7 +24,7 @@ public class ComponentTFIceTowerBossWing extends ComponentTFIceTowerWing {
 	}
 
 	public ComponentTFIceTowerBossWing(TFFeature feature, int index, int x, int y, int z, int wingSize, int wingHeight, Direction direction) {
-		super(feature, index, x, y, z, wingSize, wingHeight, direction);
+		super(TFIceTowerPieces.TFITBoss, feature, index, x, y, z, wingSize, wingHeight, direction);
 		// no spawns
 		this.spawnListIndex = -1;
 	}

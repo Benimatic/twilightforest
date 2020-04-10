@@ -15,6 +15,6 @@ public class ComponentNagaCourtyardHedgeCorner extends ComponentNagaCourtyardHed
 
     @SuppressWarnings("WeakerAccess")
     public ComponentNagaCourtyardHedgeCorner(TFFeature feature, int i, int x, int y, int z, Rotation rotation) {
-        super(feature, i, x, y, z, rotation, new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_corner"), new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_corner_big"));
+        super(NagaCourtyardPieces.TFNCCr, feature, i, x, y, z, rotation, new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_corner"), new ResourceLocation(TwilightForestMod.ID, "courtyard/hedge_corner_big"));
     }
 }

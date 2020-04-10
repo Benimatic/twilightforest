@@ -25,7 +25,7 @@ public class ComponentTFIceTowerMain extends ComponentTFIceTowerWing {
 	}
 
 	public ComponentTFIceTowerMain(TFFeature feature, World world, Random rand, int index, int x, int y, int z, Direction rotation) {
-		super(feature, index, x, y, z, SIZE, 31 + (rand.nextInt(3) * 10), rotation);
+		super(TFIceTowerPieces.TFITMai, feature, index, x, y, z, SIZE, 31 + (rand.nextInt(3) * 10), rotation);
 
 		// decorator
 		if (this.deco == null) {
@@ -33,9 +33,9 @@ public class ComponentTFIceTowerMain extends ComponentTFIceTowerWing {
 		}
 	}
 
-
+	//TODO: Unused. Remove?
 	protected ComponentTFIceTowerMain(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
-		super(feature, i, x, y, z, pSize, pHeight, direction);
+		super(TFIceTowerPieces.TFITMai, feature, i, x, y, z, pSize, pHeight, direction);
 	}
 
 	/**
@@ -115,5 +115,4 @@ public class ComponentTFIceTowerMain extends ComponentTFIceTowerWing {
 		addOpening(x, y, z, rotation);
 		return true;
 	}
-
 }

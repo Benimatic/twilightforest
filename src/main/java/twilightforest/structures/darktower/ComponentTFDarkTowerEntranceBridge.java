@@ -17,7 +17,7 @@ public class ComponentTFDarkTowerEntranceBridge extends ComponentTFDarkTowerBrid
 	}
 
 	protected ComponentTFDarkTowerEntranceBridge(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
-		super(feature, i, x, y, z, pSize, pHeight, direction);
+		super(TFDarkTowerPieces.TFDTEB, feature, i, x, y, z, pSize, pHeight, direction);
 	}
 
 	@Override

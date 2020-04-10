@@ -21,7 +21,7 @@ public class ComponentTFMazeCorridorShrooms extends ComponentTFMazeCorridor {
 	}
 
 	public ComponentTFMazeCorridorShrooms(TFFeature feature, int i, int x, int y, int z, Direction rotation) {
-		super(feature, i, x, y, z, rotation);
+		super(TFMinotaurMazePieces.TFMMCS, feature, i, x, y, z, rotation);
 	}
 
 	@Override
@@ -54,7 +54,6 @@ public class ComponentTFMazeCorridorShrooms extends ComponentTFMazeCorridor {
 		mushZ = rand.nextInt(4) + 1;
 		this.fillWithBlocks(world, sbb, 4, 1, mushZ, 4, mushY, mushZ, mushType.with(HugeMushroomBlock.VARIANT, HugeMushroomBlock.EnumType.STEM), AIR, false);
 		this.fillWithBlocks(world, sbb, 3, mushY, mushZ - 1, 4, mushY, mushZ + 1, mushType.with(HugeMushroomBlock.VARIANT, HugeMushroomBlock.EnumType.ALL_OUTSIDE), AIR, false);
-
 
 		return true;
 	}

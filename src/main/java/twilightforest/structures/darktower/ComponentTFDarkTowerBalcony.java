@@ -23,7 +23,7 @@ public class ComponentTFDarkTowerBalcony extends ComponentTFTowerWing {
 	}
 
 	protected ComponentTFDarkTowerBalcony(TFFeature feature, int i, int x, int y, int z, Direction direction) {
-		super(feature, i, x, y, z, 5, 5, direction);
+		super(TFDarkTowerPieces.TFDTBal, feature, i, x, y, z, 5, 5, direction);
 	}
 
 	@Override

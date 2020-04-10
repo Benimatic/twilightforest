@@ -29,7 +29,7 @@ public class ComponentTFStrongholdSmallStairs extends StructureTFStrongholdCompo
 	}
 
 	public ComponentTFStrongholdSmallStairs(TFFeature feature, int i, Direction facing, int x, int y, int z) {
-		super(feature, i, facing, x, y, z);
+		super(TFStrongholdPieces.TFSSS, feature, i, facing, x, y, z);
 	}
 
 	@Override

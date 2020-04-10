@@ -22,7 +22,7 @@ public class ComponentTFDarkTowerEntrance extends ComponentTFDarkTowerWing {
 	}
 
 	protected ComponentTFDarkTowerEntrance(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
-		super(feature, i, x, y, z, pSize, pHeight, direction);
+		super(TFDarkTowerPieces.TFDTEnt, feature, i, x, y, z, pSize, pHeight, direction);
 	}
 
 	@Override

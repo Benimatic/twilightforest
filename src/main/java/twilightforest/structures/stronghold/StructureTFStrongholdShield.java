@@ -20,8 +20,9 @@ public class StructureTFStrongholdShield extends StructureTFStrongholdComponent 
 		super(TFStrongholdPieces.TFSShield, nbt);
 	}
 
+	//TODO: Unused. Remove?
 	public StructureTFStrongholdShield(TFFeature feature, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
-		super(feature, 0, Direction.SOUTH, minX, minY, minZ);
+		super(TFStrongholdPieces.TFSShield, feature, 0, Direction.SOUTH, minX, minY, minZ);
 		this.boundingBox = new MutableBoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
 		this.spawnListIndex = -1;
 	}

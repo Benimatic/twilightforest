@@ -19,7 +19,7 @@ public class ComponentTFMazeDeadEndFountainLava extends ComponentTFMazeDeadEndFo
 	}
 
 	public ComponentTFMazeDeadEndFountainLava(TFFeature feature, int i, int x, int y, int z, Direction rotation) {
-		super(feature, i, x, y, z, rotation);
+		super(TFMinotaurMazePieces.TFMMDEFL, feature, i, x, y, z, rotation);
 	}
 
 	@Override

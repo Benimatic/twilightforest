@@ -56,13 +56,13 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 	protected int highestOpening;
 	protected boolean[] openingTowards = new boolean[]{false, false, true, false};
 
-	protected ComponentTFTowerWing(TFFeature feature, int i) {
-		super(feature, i);
+	protected ComponentTFTowerWing(IStructurePieceType type, TFFeature feature, int i) {
+		super(type, feature, i);
 		this.highestOpening = 0;
 	}
 
-	protected ComponentTFTowerWing(TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
-		super(feature, i);
+	protected ComponentTFTowerWing(IStructurePieceType type, TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
+		super(type, feature, i);
 
 		this.size = pSize;
 		this.height = pHeight;
@@ -173,7 +173,7 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 			// I think there are very few circumstances where we can make a wing and not a bridge
 		}
 
-		ComponentTFTowerWing wing = new ComponentTFTowerWing(getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
+		ComponentTFTowerWing wing = new ComponentTFTowerWing(getStructurePieceType(), getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// check to see if it intersects something already there
 		StructurePiece intersect = StructurePiece.findIntersecting(list, wing.boundingBox);
 		if (intersect == null || intersect == this) {
@@ -249,7 +249,7 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 		if (attached) {
 			beard = new ComponentTFTowerBeardAttached(getFeatureType(), index + 1, this);
 		} else {
-			beard = new ComponentTFTowerBeard(getFeatureType(), index + 1, this);
+			beard = new ComponentTFTowerBeard(TFLichTowerPieces.TFLTBea, getFeatureType(), index + 1, this);
 		}
 		list.add(beard);
 		beard.buildComponent(this, list, rand);
@@ -341,7 +341,7 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 
 		if (roofType == null && rand.nextInt(53) != 0) {
 			// fall through to this next roof
-			roof = new ComponentTFTowerRoofSlab(getFeatureType(), index + 1, this);
+			roof = new ComponentTFTowerRoofSlab(TFLichTowerPieces.TFLTRS, getFeatureType(), index + 1, this);
 			tryToFitRoof(list, rand, roof);
 		}
 

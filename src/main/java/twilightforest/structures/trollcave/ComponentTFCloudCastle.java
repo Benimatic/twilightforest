@@ -30,7 +30,7 @@ public class ComponentTFCloudCastle extends StructureTFComponentOld {
 	}
 
 	public ComponentTFCloudCastle(TFFeature feature, int index, int x, int y, int z) {
-		super(feature, index);
+		super(TFTrollCavePieces.TFClCa, feature, index);
 		this.setCoordBaseMode(Direction.SOUTH);
 
 		// round to nearest mult of 4
@@ -75,7 +75,6 @@ public class ComponentTFCloudCastle extends StructureTFComponentOld {
 		ComponentTFCloudTree treeZ = new ComponentTFCloudTree(this.getComponentType() + 1, boundingBox.minX - 8 + (offset * 4), 168, boundingBox.minZ + (plus ? 16 : -16));
 		list.add(treeZ);
 		treeZ.buildComponent(this, list, rand);
-
 	}
 
 	@Override
@@ -129,5 +128,4 @@ public class ComponentTFCloudCastle extends StructureTFComponentOld {
 
 		return true;
 	}
-
 }

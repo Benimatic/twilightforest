@@ -21,7 +21,7 @@ public class ComponentTFStrongholdUpperCorridor extends StructureTFStrongholdCom
 	}
 
 	public ComponentTFStrongholdUpperCorridor(TFFeature feature, int i, Direction facing, int x, int y, int z) {
-		super(feature, i, facing, x, y, z);
+		super(TFStrongholdPieces.TFSUCo, feature, i, facing, x, y, z);
 	}
 
 	@Override

@@ -21,7 +21,7 @@ public class ComponentTFHollowTreeSmallBranch extends ComponentTFHollowTreeMedBr
 	}
 
 	protected ComponentTFHollowTreeSmallBranch(TFFeature feature, int i, int sx, int sy, int sz, double length, double angle, double tilt, boolean leafy) {
-		super(feature, i, sx, sy, sz, length, angle, tilt, leafy);
+		super(TFHollowTreePieces.TFHTSB, feature, i, sx, sy, sz, length, angle, tilt, leafy);
 	}
 
 	@Override

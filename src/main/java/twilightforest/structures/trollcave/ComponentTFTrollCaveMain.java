@@ -44,12 +44,13 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 		super(piece, nbt);
 	}
 
-	public ComponentTFTrollCaveMain(TFFeature feature, int index) {
-		super(feature, index);
+	public ComponentTFTrollCaveMain(IStructurePieceType type, TFFeature feature, int index) {
+		super(type, feature, index);
 	}
 
-	public ComponentTFTrollCaveMain(TFFeature feature, World world, Random rand, int i, int x, int y, int z) {
-		super(feature, i);
+	//TODO: Parameters "world" and "rand" are unused. Remove?
+	public ComponentTFTrollCaveMain(IStructurePieceType type, TFFeature feature, World world, Random rand, int i, int x, int y, int z) {
+		super(type, feature, i);
 		this.setCoordBaseMode(Direction.SOUTH);
 
 		// adjust y

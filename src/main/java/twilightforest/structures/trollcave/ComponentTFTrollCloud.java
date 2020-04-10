@@ -24,7 +24,7 @@ public class ComponentTFTrollCloud extends StructureTFComponentOld {
 	}
 
 	public ComponentTFTrollCloud(TFFeature feature, int index, int x, int y, int z) {
-		super(feature, index);
+		super(TFTrollCavePieces.TFTCloud, feature, index);
 		this.setCoordBaseMode(Direction.SOUTH);
 
 		this.size = 40;
@@ -61,5 +61,4 @@ public class ComponentTFTrollCloud extends StructureTFComponentOld {
 		this.fillWithBlocks(world, sbb, minX + 2, minY + 2, minZ + 2, maxX - 2, maxY - 1, maxZ - 2, Blocks.QUARTZ_BLOCK.getDefaultState(), Blocks.QUARTZ_BLOCK.getDefaultState(), false);
 
 	}
-
 }

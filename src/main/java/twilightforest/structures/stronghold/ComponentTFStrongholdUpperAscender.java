@@ -26,7 +26,7 @@ public class ComponentTFStrongholdUpperAscender extends StructureTFStrongholdCom
 	}
 
 	public ComponentTFStrongholdUpperAscender(TFFeature feature, int i, Direction facing, int x, int y, int z) {
-		super(feature, i, facing, x, y, z);
+		super(TFStrongholdPieces.TFSUA, feature, i, facing, x, y, z);
 	}
 
 	@Override

@@ -18,7 +18,7 @@ public class ComponentTFDarkTowerRoofAntenna extends ComponentTFDarkTowerRoof {
 	}
 
 	public ComponentTFDarkTowerRoofAntenna(TFFeature feature, int i, ComponentTFTowerWing wing) {
-		super(feature, i, wing);
+		super(TFDarkTowerPieces.TFDTRA, feature, i, wing);
 	}
 
 	/**

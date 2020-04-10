@@ -29,7 +29,7 @@ public class ComponentTFMazeMound extends StructureTFComponentOld {
 	private ComponentTFMazeUpperEntrance mazeAbove;
 
 	public ComponentTFMazeMound(TFFeature feature, int i, Random rand, int x, int y, int z) {
-		super(feature, i);
+		super(TFMinotaurMazePieces.TFMMMound, feature, i);
 		this.setCoordBaseMode(Direction.Plane.HORIZONTAL.random(rand));
 
 		this.boundingBox = new MutableBoundingBox(x, y, z, x + DIAMETER, y + 8, z + DIAMETER);
