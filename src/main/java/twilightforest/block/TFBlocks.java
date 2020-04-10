@@ -12,6 +12,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.enums.BossVariant;
 import twilightforest.enums.MagicWoodVariant;
 import twilightforest.enums.PlantVariant;
+import twilightforest.world.feature.tree.*;
 
 import javax.annotation.Nonnull;
 
@@ -65,16 +66,16 @@ public class TFBlocks {
 	public static final RegistryObject<Block> encased_fire_jet           = BLOCKS.register("encased_fire_jet", () -> new BlockTFEncasedFireJet());
 	public static final RegistryObject<Block> naga_stone_head            = BLOCKS.register("naga_stone_head", () -> new BlockTFNagastoneHead());
 	public static final RegistryObject<Block> naga_stone                 = BLOCKS.register("naga_stone", () -> new BlockTFNagastone());
-	public static final RegistryObject<SaplingBlock> oak_sapling            = BLOCKS.register("oak_sapling", () -> new BlockTFSapling(new TFGenSmallTwilightOak(true))); //TODO Tree
-	public static final RegistryObject<SaplingBlock> canopy_sapling         = BLOCKS.register("canopy_sapling", () -> new BlockTFSapling(new TFGenCanopyOak(true))); //TODO Tree
-	public static final RegistryObject<SaplingBlock> mangrove_sapling       = BLOCKS.register("mangrove_sapling", () -> new BlockTFSapling(new TFGenMangroveTree(true))); //TODO Tree
-	public static final RegistryObject<SaplingBlock> darkwood_sapling       = BLOCKS.register("darkwood_sapling", () -> new BlockTFSapling(new TFGenDarkCanopyTree(true))); //TODO Tree
-	public static final RegistryObject<SaplingBlock> hollow_oak_sapling     = BLOCKS.register("hollow_oak_sapling", () -> new BlockTFSapling(new TFGenHollowTree(true))); //TODO Tree
-	public static final RegistryObject<SaplingBlock> time_sapling           = BLOCKS.register("time_sapling", () -> new BlockTFSapling(new TFGenTreeOfTime(true))); //TODO Tree
-	public static final RegistryObject<SaplingBlock> transformation_sapling = BLOCKS.register("transformation_sapling", () -> new BlockTFSapling(new TFGenTreeOfTransformation(true))); //TODO Tree
-	public static final RegistryObject<SaplingBlock> mining_sapling         = BLOCKS.register("mining_sapling", () -> new BlockTFSapling(new TFGenMinersTree(true))); //TODO Tree
-	public static final RegistryObject<SaplingBlock> sorting_sapling        = BLOCKS.register("sorting_sapling", () -> new BlockTFSapling(new TFGenSortingTree(true))); //TODO Tree
-	public static final RegistryObject<SaplingBlock> rainboak_sapling       = BLOCKS.register("rainboak_sapling", () -> new BlockTFSapling(new TFGenSmallRainboak())); //TODO Tree
+	public static final RegistryObject<SaplingBlock> oak_sapling            = BLOCKS.register("oak_sapling", () -> new BlockTFSapling(new SmallOakTree()));
+	public static final RegistryObject<SaplingBlock> canopy_sapling         = BLOCKS.register("canopy_sapling", () -> new BlockTFSapling(new CanopyTree()));
+	public static final RegistryObject<SaplingBlock> mangrove_sapling       = BLOCKS.register("mangrove_sapling", () -> new BlockTFSapling(new MangroveTree()));
+	public static final RegistryObject<SaplingBlock> darkwood_sapling       = BLOCKS.register("darkwood_sapling", () -> new BlockTFSapling(new DarkCanopyTree()));
+	public static final RegistryObject<SaplingBlock> hollow_oak_sapling     = BLOCKS.register("hollow_oak_sapling", () -> new BlockTFSapling(new HollowTree()));
+	public static final RegistryObject<SaplingBlock> time_sapling           = BLOCKS.register("time_sapling", () -> new BlockTFSapling(new TimeTree()));
+	public static final RegistryObject<SaplingBlock> transformation_sapling = BLOCKS.register("transformation_sapling", () -> new BlockTFSapling(new TransformationTree()));
+	public static final RegistryObject<SaplingBlock> mining_sapling         = BLOCKS.register("mining_sapling", () -> new BlockTFSapling(new MinersTree()));
+	public static final RegistryObject<SaplingBlock> sorting_sapling        = BLOCKS.register("sorting_sapling", () -> new BlockTFSapling(new SortingTree()));
+	public static final RegistryObject<SaplingBlock> rainboak_sapling       = BLOCKS.register("rainboak_sapling", () -> new BlockTFSapling(new RainboakTree()));
 	public static final RegistryObject<Block> time_log                   = BLOCKS.register("time_log", () -> new BlockTFMagicLog(MaterialColor.DIRT, MaterialColor.OBSIDIAN));
 	public static final RegistryObject<Block> transformation_log         = BLOCKS.register("transformation_log", () -> new BlockTFMagicLog(MaterialColor.WOOD, MaterialColor.OBSIDIAN));
 	public static final RegistryObject<Block> mining_log                 = BLOCKS.register("mining_log", () -> new BlockTFMagicLog(MaterialColor.SAND, MaterialColor.QUARTZ));
