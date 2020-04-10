@@ -1,6 +1,5 @@
 package twilightforest.structures;
 
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.entity.passive.SheepEntity;
@@ -13,6 +12,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
+import twilightforest.util.WoolUtil;
 
 public abstract class StructureTFComponent extends StructurePiece {
 
@@ -51,10 +51,10 @@ public abstract class StructureTFComponent extends StructurePiece {
 		if (shouldDebug() ) { // && rotation!= Rotation.NONE) {
 			//TODO: Flattening doesn't allow for this anymore
 			int i = rotation.ordinal() * 4;
-			world.setBlockState(new BlockPos(this.getBoundingBox().minX, this.getBoundingBox().maxY + i    , this.getBoundingBox().minZ), Blocks.WOOL.getStateFromMeta(i));
-			world.setBlockState(new BlockPos(this.getBoundingBox().maxX, this.getBoundingBox().maxY + i + 1, this.getBoundingBox().minZ), Blocks.WOOL.getStateFromMeta(1 + i));
-			world.setBlockState(new BlockPos(this.getBoundingBox().minX, this.getBoundingBox().maxY + i + 2, this.getBoundingBox().maxZ), Blocks.WOOL.getStateFromMeta(2 + i));
-			world.setBlockState(new BlockPos(this.getBoundingBox().maxX, this.getBoundingBox().maxY + i + 3, this.getBoundingBox().maxZ), Blocks.WOOL.getStateFromMeta(3 + i));
+			world.setBlockState(new BlockPos(this.getBoundingBox().minX, this.getBoundingBox().maxY + i    , this.getBoundingBox().minZ), WoolUtil.getStateById(i));
+			world.setBlockState(new BlockPos(this.getBoundingBox().maxX, this.getBoundingBox().maxY + i + 1, this.getBoundingBox().minZ), WoolUtil.getStateById(1 + i));
+			world.setBlockState(new BlockPos(this.getBoundingBox().minX, this.getBoundingBox().maxY + i + 2, this.getBoundingBox().maxZ), WoolUtil.getStateById(2 + i));
+			world.setBlockState(new BlockPos(this.getBoundingBox().maxX, this.getBoundingBox().maxY + i + 3, this.getBoundingBox().maxZ), WoolUtil.getStateById(3 + i));
 		}
 	}
 
@@ -100,13 +100,13 @@ public abstract class StructureTFComponent extends StructurePiece {
 		}
 	}
 
-	//TODO: write is final
-	@Override
-	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-		tagCompound.putInt("si", this.spawnListIndex);
-		tagCompound.putString("deco", StructureTFDecorator.getDecoString(this.deco));
-		tagCompound.putInt("rot", this.rotation.ordinal());
-	}
+	//TODO: I do not think we need to write. As far as I can see, readAdditional does this itself
+//	@Override
+//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
+//		tagCompound.putInt("si", this.spawnListIndex);
+//		tagCompound.putString("deco", StructureTFDecorator.getDecoString(this.deco));
+//		tagCompound.putInt("rot", this.rotation.ordinal());
+//	}
 
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {

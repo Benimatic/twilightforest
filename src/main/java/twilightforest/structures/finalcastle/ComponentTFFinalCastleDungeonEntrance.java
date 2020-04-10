@@ -2,7 +2,6 @@ package twilightforest.structures.finalcastle;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.StairsBlock;
-import net.minecraft.item.DyeColor;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.ChunkPos;
@@ -12,8 +11,6 @@ import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
-import twilightforest.block.BlockTFCastleMagic;
-import twilightforest.block.BlockTFForceField;
 import twilightforest.block.TFBlocks;
 
 import java.util.List;
@@ -68,15 +65,13 @@ public class ComponentTFFinalCastleDungeonEntrance extends ComponentTFFinalCastl
 		return true;
 	}
 
-	//TODO: Make this BlockState
 	@Override
-	protected DyeColor getForceFieldColor(Random decoRNG) {
-		return BlockTFForceField.VALID_COLORS.get(1);
+	protected BlockState getForceFieldColor(Random decoRNG) {
+		return TFBlocks.force_field_pink.get().getDefaultState();
 	}
 
-	//TODO: Make this BlockState
 	@Override
-	protected DyeColor getRuneColor(DyeColor fieldColor) {
-		return BlockTFCastleMagic.VALID_COLORS.get(0);
+	protected BlockState getRuneColor(BlockState fieldColor) {
+		return TFBlocks.castle_rune_brick_pink.get().getDefaultState();
 	}
 }

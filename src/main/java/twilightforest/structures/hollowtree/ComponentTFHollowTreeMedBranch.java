@@ -148,8 +148,8 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 
 				makeLeafBlob(world, sbb, bdst.getX(), bdst.getY(), bdst.getZ(), decoRNG.nextBoolean() ? 2 : 3);
 			}
-			makeLeafBlob(world, sbb, rDest.getX(), rDest.getY(), rDest.getZ(), 3);
 
+			makeLeafBlob(world, sbb, rDest.getX(), rDest.getY(), rDest.getZ(), 3);
 		}
 
 		return true;
@@ -185,7 +185,6 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 						dist = (int) (dz + ((Math.max(dx, dy) * 0.5F) + (Math.min(dx, dy) * 0.25F)));
 					}
 
-
 					// if we're inside the blob, fill it
 					if (dist <= radius) {
 						// do eight at a time for easiness!
@@ -198,7 +197,6 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 						placeLeafBlock(world, leaves, sx + dx, sy - dy, sz - dz, sbb);
 						placeLeafBlock(world, leaves, sx - dx, sy - dy, sz + dz, sbb);
 						placeLeafBlock(world, leaves, sx - dx, sy - dy, sz - dz, sbb);
-
 					}
 				}
 			}

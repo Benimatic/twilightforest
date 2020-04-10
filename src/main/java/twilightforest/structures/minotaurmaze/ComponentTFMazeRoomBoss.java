@@ -2,7 +2,6 @@ package twilightforest.structures.minotaurmaze;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.HugeMushroomBlock;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.ChunkPos;
@@ -70,8 +69,8 @@ public class ComponentTFMazeRoomBoss extends ComponentTFMazeRoom {
 		}
 
 		// mushroom chest shelves in corner
-		final BlockState redMushroom = Blocks.RED_MUSHROOM_BLOCK.getDefaultState().with(HugeMushroomBlock.VARIANT, HugeMushroomBlock.EnumType.ALL_OUTSIDE);
-		final BlockState brownMushroom = Blocks.BROWN_MUSHROOM_BLOCK.getDefaultState().with(HugeMushroomBlock.VARIANT, HugeMushroomBlock.EnumType.ALL_OUTSIDE);
+		final BlockState redMushroom = Blocks.RED_MUSHROOM_BLOCK.getDefaultState();
+		final BlockState brownMushroom = Blocks.BROWN_MUSHROOM_BLOCK.getDefaultState();
 
 		fillWithBlocks(world, sbb, 1, 1, 1, 3, 1, 3, redMushroom, AIR, false);
 		fillWithBlocks(world, sbb, 1, 2, 1, 1, 3, 4, redMushroom, AIR, false);

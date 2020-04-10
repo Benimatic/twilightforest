@@ -102,12 +102,12 @@ public class ComponentTFDarkTowerBossTrap extends ComponentTFDarkTowerWing {
 		this.setBlockState(world, Blocks.REDSTONE_WIRE.getDefaultState(), 3, 1, 8, sbb);
 		this.setBlockState(world, Blocks.OAK_PRESSURE_PLATE.getDefaultState(), 2, 1, 8, sbb);
 
-
 		return true;
 	}
 
 	/**
 	 * Add specific boss trap floors
+	 * TODO: Parameter "rand" is unused. Remove?
 	 */
 	protected void addBossTrapFloors(World world, Random rand, MutableBoundingBox sbb, int bottom, int top) {
 
@@ -120,6 +120,4 @@ public class ComponentTFDarkTowerBossTrap extends ComponentTFDarkTowerWing {
 		addStairsDown(world, sbb, Rotation.CLOCKWISE_90, this.height - 1, size - 2, 4);
 		addStairsDown(world, sbb, Rotation.CLOCKWISE_90, this.height - 1, size - 3, 4);
 	}
-
-
 }

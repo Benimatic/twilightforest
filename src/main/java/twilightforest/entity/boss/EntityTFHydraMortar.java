@@ -81,7 +81,7 @@ public class EntityTFHydraMortar extends ThrowableEntity {
 		if (ray instanceof EntityRayTraceResult) {
 			if (((EntityRayTraceResult)ray).getEntity() == null && !megaBlast) {
 				// we hit the ground
-				this.motionY = 0;
+				this.setMotion(this.getMotion().getX(), 0.0D, this.getMotion().getZ());
 				this.onGround = true;
 			} else if (!world.isRemote && ((EntityRayTraceResult)ray).getEntity() != owner && !isPartOfHydra(((EntityRayTraceResult)ray).getEntity())) {
 				detonate();

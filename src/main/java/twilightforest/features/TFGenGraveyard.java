@@ -17,6 +17,7 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.GenerationSettings;
@@ -199,7 +200,7 @@ public class TFGenGraveyard<T extends NoFeatureConfig> extends Feature<T> {
 									ms.getSpawnerBaseLogic().setEntityType(TFEntities.rising_zombie.get());
 							}
 						} else
-							world.setBlockToAir(p);
+							world.removeBlock(p);
 				});
 			}
 
@@ -230,7 +231,7 @@ public class TFGenGraveyard<T extends NoFeatureConfig> extends Feature<T> {
 
 		@Nullable
 		@Override
-		public Template.BlockInfo processBlock(World worldIn, BlockPos pos, Template.BlockInfo blockInfo) {
+		public Template.BlockInfo process(IWorldReader worldIn, BlockPos pos, Template.BlockInfo p_process_3_, Template.BlockInfo blockInfo, PlacementSettings settings, @Nullable Template template) {
 			return blockInfo.state.getBlock() == Blocks.GRASS ? blockInfo : random.nextInt(5) == 0 ? new Template.BlockInfo(pos, Blocks.COBWEB.getDefaultState(), null) : blockInfo;
 		}
 	}

@@ -30,6 +30,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	}
 
 	public StructureTFStrongholdComponent(IStructurePieceType type, TFFeature feature, int i, Direction facing, int x, int y, int z) {
+		super(type, feature, i);
 		this.boundingBox = generateBoundingBox(facing, x, y, z);
 		this.setCoordBaseMode(facing);
 	}
@@ -196,6 +197,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 
 	/**
 	 * Have we strayed more than range blocks away from the center?
+	 * TODO: Parameter "ny" is unused. Remove?
 	 */
 	private boolean isOutOfRange(StructurePiece parent, int nx, int ny, int nz, int range) {
 
@@ -232,6 +234,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 
 	/**
 	 * Make a smaller doorway
+	 * TODO: Parameter "rand" is unused. Remove?
 	 */
 	protected void placeSmallDoorwayAt(World world, Random rand, int facing, int x, int y, int z, MutableBoundingBox sbb) {
 		if (facing == 0 || facing == 2) {

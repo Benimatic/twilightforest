@@ -185,6 +185,7 @@ public class TFMaze {
 
 	/**
 	 * Copies the maze into the world by placing walls.
+	 * TODO: Unused. Remove?
 	 */
 	public void copyToWorld(World world, int dx, int dy, int dz) {
 		worldX = dx;
@@ -255,6 +256,7 @@ public class TFMaze {
 
 	/**
 	 * Copies the maze into the world by carving out empty spaces.
+	 * TODO: Unused. Remove?
 	 */
 	public void carveToWorld(World world, int dx, int dy, int dz) {
 		worldX = dx;
@@ -303,7 +305,6 @@ public class TFMaze {
 
 		placeTorches(world);
 	}
-
 
 	/**
 	 * Copy the maze into a StructureTFComponentOld
@@ -488,7 +489,6 @@ public class TFMaze {
 		component.setBlockState(world, headBlockState, x, y, z, sbb);
 	}
 
-
 	/**
 	 * Puts a root block in the world, at the specified world coordinates.
 	 */
@@ -600,7 +600,6 @@ public class TFMaze {
 			return true;
 		}
 
-
 		return rand.nextInt(50) == 0;
 	}
 
@@ -609,6 +608,7 @@ public class TFMaze {
 	 *
 	 * @param x
 	 * @return
+	 * TODO: Unused. Remove?
 	 */
 	int getWorldX(int x) {
 		return worldX + (x * (evenBias + oddBias)) + 1;
@@ -627,6 +627,7 @@ public class TFMaze {
 
 	/**
 	 * Carves a room into the maze.  The coordinates given are cell coordinates.
+	 * TODO: Unused. Remove?
 	 */
 	public void carveRoom0(int cx, int cz) {
 
@@ -676,7 +677,6 @@ public class TFMaze {
 			putRaw(rx - 3, rz, ROOM);
 		}
 	}
-
 
 	/**
 	 * Adds four exits into the maze.

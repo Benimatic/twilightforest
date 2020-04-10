@@ -92,7 +92,6 @@ public class ComponentTFDarkTowerBridge extends ComponentTFTowerWing {
 		// clear inside
 		fillWithAir(world, sbb, 0, 1, 1, size - 1, height - 2, size - 2);
 
-
 		return true;
 	}
 
@@ -105,5 +104,4 @@ public class ComponentTFDarkTowerBridge extends ComponentTFTowerWing {
 		int[] dest = offsetTowerCoords(4, 1, 2, dSize, this.getCoordBaseMode());
 		return StructureTFComponentOld.getComponentToAddBoundingBox(dest[0], dest[1], dest[2], 0, 0, 0, dSize - 1, dHeight - 1, dSize - 1, this.getCoordBaseMode());
 	}
-
 }

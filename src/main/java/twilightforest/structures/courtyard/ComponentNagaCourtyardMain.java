@@ -17,7 +17,7 @@ import java.util.Random;
 public class ComponentNagaCourtyardMain extends StructureMazeGenerator {
 	static int ROW_OF_CELLS = 8;
 	static int RADIUS = (int) ((((ROW_OF_CELLS - 2) / 2.0F) * 12.0F) + 8);
-	static int DIAMETER = 2 * RADIUS + 1;
+	static int DIAMETER = 2 * RADIUS + 1; //TODO: Unused
 
 	static final float HEDGE_FLOOF = 0.5f;
 

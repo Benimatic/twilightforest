@@ -30,7 +30,6 @@ public class ComponentTFFinalCastleRoof13Peaked extends StructureTFComponentOld 
 
 		this.setCoordBaseMode(sideTower.getCoordBaseMode());
 		this.boundingBox = new MutableBoundingBox(sideTower.getBoundingBox().minX - 2, sideTower.getBoundingBox().maxY - 1, sideTower.getBoundingBox().minZ - 2, sideTower.getBoundingBox().maxX + 2, sideTower.getBoundingBox().maxY + height - 1, sideTower.getBoundingBox().maxZ + 2);
-
 	}
 
 	@Override
@@ -43,7 +42,7 @@ public class ComponentTFFinalCastleRoof13Peaked extends StructureTFComponentOld 
 	@Override
 	public boolean generate(IWorld worldIn, ChunkGenerator<?> generator, Random randomIn, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 		World world = worldIn.getWorld();
-// peaky roof, loop unrolled as it was getting dumb
+		// peaky roof, loop unrolled as it was getting dumb
 		for (int i = 0; i < 3; i++) {
 			this.fillWithBlocks(world, sbb, 1, i, i, 15, i, i, deco.roofState, deco.roofState, false);
 			this.fillWithBlocks(world, sbb, 1, i, 16 - i, 15, i, 16 - i, deco.roofState, deco.roofState, false);
@@ -86,7 +85,6 @@ public class ComponentTFFinalCastleRoof13Peaked extends StructureTFComponentOld 
 		this.fillWithBlocks(world, sbb, 11, 18, 8, 14, 18, 8, deco.roofState, deco.roofState, false);
 		this.fillWithBlocks(world, sbb, 0, 17, 8, 1, 19, 8, deco.roofState, deco.roofState, false);
 		this.fillWithBlocks(world, sbb, 15, 17, 8, 16, 19, 8, deco.roofState, deco.roofState, false);
-
 
 		for (Rotation rotation : new Rotation[]{Rotation.CLOCKWISE_90, Rotation.COUNTERCLOCKWISE_90}) {
 			// this might be one of my more confusing instances of code recycling

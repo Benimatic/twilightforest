@@ -141,9 +141,9 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 
 		// finally, now that the critical path is built, let's add some other towers for atmosphere and complication
 		this.buildNonCriticalTowers(parent, list, rand);
-
 	}
 
+	//TODO: Parameter "parent" is unused. Remove?
 	protected void buildNonCriticalTowers(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		// pick a random direction
 		Direction dir = RotationUtil.getRandomFacing(rand);
@@ -159,8 +159,6 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 				}
 			}
 		}
-
-
 	}
 
 	private Direction findBestDirectionTowards(BlockPos dest) {
@@ -292,7 +290,6 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 		}
 	}
 
-
 	protected boolean buildDamagedTower(List<StructurePiece> list, Random rand, Direction facing) {
 		BlockPos opening = this.getValidOpeningCC(rand, facing);
 
@@ -400,7 +397,6 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 			//TwilightForestMod.LOGGER.info("end tower blocked");
 			return false;
 		}
-
 	}
 
 	private boolean isWithinRange(int centerX, int centerZ, int posX, int posZ, int range) {
@@ -437,7 +433,6 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 
 			return new BlockPos(rx, ry, rz);
 		}
-
 
 		return new BlockPos(0, 0, 0);
 	}
@@ -486,7 +481,6 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 			for (int z = 0; z < this.size; z++) {
 				this.replaceAirAndLiquidDownwards(world, deco.blockState, x, -1, z, sbb);
 			}
-
 		}
 
 		// add branching runes
@@ -529,7 +523,6 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 			// add stairs to roof
 			addStairsDown(world, sbb, RotationUtil.ROTATIONS[(floors + 2) & 3], this.height - 1);
 		}
-
 	}
 
 	protected boolean hasAccessibleRoof() {
@@ -553,7 +546,6 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 		// landing
 		this.fillBlocksRotated(world, sbb, 3, y - 4, 8, 4, y - 4, 9, deco.blockState, rotation);
 
-
 		// bottom flight
 		for (int i = 0; i < 4; i++) {
 			int sx = 4;
@@ -566,7 +558,6 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 			this.setBlockStateRotated(world, deco.blockState, sx - 1, sy - 1, sz, rotation, sbb);
 			this.fillAirRotated(world, sbb, sx, sy + 1, sz, sx - 1, sy + 3, sz, rotation);
 		}
-
 	}
 
 	/**

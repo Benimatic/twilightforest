@@ -78,6 +78,7 @@ public class ComponentTFTowerRoofGableForwards extends ComponentTFTowerRoof {
 		return true;
 	}
 
+	//TODO: Parameter "pSize" is unused. Remove?
 	public int slopeChangeForSize(int pSize) {
 		if (size > 10) {
 			return 3;

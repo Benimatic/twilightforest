@@ -1,11 +1,11 @@
 package twilightforest.entity;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.monster.SlimeEntity;
+import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -74,7 +74,7 @@ public class EntityTFMazeSlime extends SlimeEntity {
 			double d0 = this.getX() + (double) f2;
 			double d1 = this.getZ() + (double) f3;
 			BlockState state = TFBlocks.maze_stone_brick.get().getDefaultState();
-			world.addParticle(ParticleTypes.BLOCK_CRACK, d0, this.getBoundingBox().minY, d1, 0.0D, 0.0D, 0.0D, Block.getStateId(state));
+			world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, state), d0, this.getBoundingBox().minY, d1, 0.0D, 0.0D, 0.0D);
 		}
 		return true;
 	}

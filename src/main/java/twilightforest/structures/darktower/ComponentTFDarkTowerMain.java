@@ -160,7 +160,6 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 			// count how many size 9 towers we have hanging off us
 			ArrayList<ComponentTFDarkTowerWing> possibleKeyTowers = new ArrayList<ComponentTFDarkTowerWing>();
 
-
 			for (Object piece : list) {
 				if (piece instanceof ComponentTFDarkTowerWing) {
 					ComponentTFDarkTowerWing wing = (ComponentTFDarkTowerWing) piece;
@@ -287,6 +286,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		int bottomFloors = (totalFloors - centerFloors) / 2;
 
 		// readjust center floors if we have leftover floors
+		//TODO: Variable is unused. Remove?
 		centerFloors = totalFloors - (bottomFloors * 2);
 
 		// where do the top floors start?
@@ -379,13 +379,11 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 			if (!isTopFloor) {
 				makeLargeStairsUp(world, sbb, rotation, y);
 				decorateExperiment(world, decoRNG, sbb, rotation, y);
-
 			}
 
 			rotation = rotation.add(Rotation.COUNTERCLOCKWISE_90);
 		}
 	}
-
 
 	private void decorateFloor(World world, Random decoRNG, MutableBoundingBox sbb, Rotation rotation, int y, boolean isBottom, boolean isTop) {
 		// pick an appropriate decoration and use it
@@ -455,7 +453,6 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		}
 	}
 
-
 	/**
 	 * Make a single three quarter floor
 	 *
@@ -482,7 +479,6 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 			this.fillBlocksRotated(world, sbb, 1, y + 0, half - 1, 2, y + 0, half, deco.fenceState, rotation);
 			this.fillBlocksRotated(world, sbb, 1, y + 1, half - 1, 2, y + 1, half, AIR, rotation);
 		}
-
 	}
 
 //	protected void makeLargeStairsDown(World world, MutableBoundingBox sbb, int rotation, int y) {
@@ -621,7 +617,6 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 				break;
 		}
 
-
 		// copy the maze to us!
 		maze.wallBlockState = deco.blockState;
 		maze.headBlockState = deco.accentState;
@@ -636,7 +631,6 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		maze.copyToStructure(world, 0, y + 1, 0, this, sbb);
 
 		decorateMazeDeadEnds(world, decoRNG, maze, y, rotation, sbb);
-
 	}
 
 	/**
@@ -664,6 +658,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 
 	/**
 	 * Decorate a specific maze dead end
+	 * TODO: Parameters "maze" and "rotation" are unused. Remove?
 	 */
 	private void decorateDeadEnd(World world, Random decoRNG, TFMaze maze, int mx, int y, int mz, int facing, Rotation rotation, MutableBoundingBox sbb) {
 		int x = mx * 3 + 1;
@@ -695,9 +690,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 				this.placeTreasureAtCurrentPosition(world, decoRNG, x + 1, y + 2, z + 1, TFTreasure.darktower_cache, sbb);
 				break;
 		}
-
 	}
-
 
 	private void decorateUnbuilderMaze(World world, Random decoRNG, MutableBoundingBox sbb, Rotation rotation, int y) {
 
@@ -787,7 +780,6 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 
 		// planter for trees
 		placeTreePlanter(world, decoRNG.nextInt(5), 6, y + 1, 12, rotation, sbb);
-
 	}
 
 	private void makeDispenserPillar(World world, StructureTFDecorator forgeDeco, int x, int y, int z, Direction stairMeta, Rotation rotation, MutableBoundingBox sbb) {
@@ -796,12 +788,12 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		this.setBlockStateRotated(world, getStairState(forgeDeco.stairState, stairMeta, rotation, false), x, y + 4, z, rotation, sbb);
 	}
 
-
+	//TODO: Parameter "rand" is unused. Remove?
 	private void decorateBossSpawner(World world, Random rand, MutableBoundingBox sbb, Rotation rotation, int y) {
 		this.setBlockStateRotated(world, TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.UR_GHAST), 9, y + 4, 9, rotation, sbb);
 	}
 
-
+	//TODO: Parameter "decoRNG" is unused. Remove?
 	private void decorateExperiment(World world, Random decoRNG, MutableBoundingBox sbb, Rotation rotation, int y) {
 		final BlockState obsidian = Blocks.OBSIDIAN.getDefaultState();
 		final BlockState netherrack = Blocks.NETHERRACK.getDefaultState();
@@ -881,13 +873,11 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 			setBlockStateRotated(world, redstone, 14, y + 3, 14, rotation, sbb);
 		}
 
-
 		// short piston plunger 1
 		setBlockStateRotated(world, deco.accentState, 14, y + 1, 17, rotation, sbb);
 		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), LeverBlock.EnumOrientation.EAST, rotation, false), 13, y + 1, 17, rotation, sbb);
 		setBlockStateRotated(world, Blocks.PISTON.getDefaultState().with(PistonBlock.FACING, Direction.SOUTH), 14, y + 2, 17, rotation, sbb);
 		setBlockStateRotated(world, redstone, 14, y + 2, 16, rotation, sbb);
-
 
 		// short piston plunger 2
 		setBlockStateRotated(world, deco.accentState, 17, y + 1, 14, rotation, sbb);
@@ -914,6 +904,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		setBlockStateRotated(world, Blocks.STICKY_PISTON.getDefaultState().with(PistonBlock.FACING, Direction.WEST), 9, y + 2, 14, rotation, sbb);
 	}
 
+	//TODO: Parameter "forgeDeco" is unused. Remove?
 	private void makeWoodPillar(World world, StructureTFDecorator forgeDeco, int x, int y, int z, Rotation rotation, MutableBoundingBox sbb) {
 		final BlockState log = TFBlocks.dark_log.get().getDefaultState();
 		this.setBlockStateRotated(world, log, x, y + 2, z, rotation, sbb);
@@ -939,7 +930,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		}
 	}
 
-
+	//TODO: Parameter "decoRNG" is unused. Remove?
 	private void decorateAquarium(World world, Random decoRNG, MutableBoundingBox sbb, Rotation rotation, int y) {
 		// main aquarium
 		makePillarFrame(world, sbb, this.deco, rotation, 12, y, 3, 4, 4, 13, false);
@@ -973,7 +964,6 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		this.fillBlocksRotated(world, sbb, 13, y + 1, 13, 16, y + 1, 16, forgeDeco.blockState, rotation);
 		this.fillBlocksRotated(world, sbb, 12, y + 1, 12, 12, y + 1, 16, getStairState(deco.stairState, Direction.WEST, rotation, false), rotation);
 		this.fillBlocksRotated(world, sbb, 12, y + 1, 12, 16, y + 1, 12, getStairState(deco.stairState, Direction.NORTH, rotation, false), rotation);
-
 
 		// furnaces
 		this.makeFurnacePillar(world, forgeDeco, decoRNG, 13, y, 1, Direction.SOUTH, rotation, sbb);
@@ -1009,6 +999,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		makeFirePit(world, forgeDeco, 6, y + 1, 12, rotation, sbb);
 	}
 
+	//TODO: Parameter "forgeDeco" is unused. Remove?
 	private void makeFurnacePillar(World world, StructureTFDecorator forgeDeco, Random rand, int x, int y, int z, Direction direction, Rotation rotation, MutableBoundingBox sbb) {
 
 		this.setBlockStateRotated(world, getStairState(deco.stairState, direction, rotation, true), x, y + 2, z, rotation, sbb);
@@ -1034,7 +1025,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		this.setBlockStateRotated(world, getStairState(deco.stairState, direction, rotation, false), x, y + 4, z, rotation, sbb);
 	}
 
-
+	//TODO: Parameter "stairDirection" is unused. Remove?
 	private void makeStonePillar(World world, StructureTFDecorator forgeDeco, int x, int y, int z, Direction stairDirection, Rotation rotation, MutableBoundingBox sbb) {
 		for (int py = 1; py <= 4; py++) {
 			this.setBlockStateRotated(world, forgeDeco.pillarState, x, y + py, z, rotation, sbb);
@@ -1055,7 +1046,6 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		setBlockStateRotated(world, Blocks.NETHERRACK.getDefaultState(), x, y, z, rotation, sbb);
 		setBlockStateRotated(world, Blocks.FIRE.getDefaultState(), x, y + 1, z, rotation, sbb);
 	}
-
 
 	private void decorateNetherwart(World world, Random decoRNG, MutableBoundingBox sbb, Rotation rotation, int y, boolean isTop) {
 //		StructureTFDecorator netherDeco = new StructureTFDecorator();
@@ -1085,10 +1075,8 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 
 		this.setSpawnerRotated(world, 6, y + 3, 13, rotation, EntityType.BLAZE, sbb);
 
-
 		// destruction blob
 		destroyTower(world, decoRNG, 12, y, 3, 2, sbb);
-
 	}
 
 	private void decorateBotanical(World world, Random decoRNG, MutableBoundingBox sbb, Rotation rotation, int y) {
@@ -1139,7 +1127,6 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		placeTreePlanter(world, decoRNG.nextInt(5), 6, y + 1, 12, rotation, sbb);
 	}
 
-
 	private void placeTreePlanter(World world, int treeNum, int x, int y, int z, Rotation rotation, MutableBoundingBox sbb) {
 		setBlockStateRotated(world, deco.pillarState, x + 1, y, z + 1, rotation, sbb);
 		setBlockStateRotated(world, deco.pillarState, x + 1, y, z - 1, rotation, sbb);
@@ -1188,21 +1175,20 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		}
 	}
 
-
+	//TODO: Flatten
 	private void placeRandomPlant(World world, Random decoRNG, int x, int y, int z, Rotation rotation, MutableBoundingBox sbb) {
 		int potMeta = decoRNG.nextInt(15); // this seems to be the only way to set the flower pre-placement
 		final BlockState flowerPotState = Blocks.FLOWER_POT.getDefaultState().with(FlowerPotBlock.LEGACY_DATA, potMeta);
 		setBlockStateRotated(world, flowerPotState, x, y, z, rotation, sbb);
 	}
 
-
+	//TODO: Parameter "decoRNG" is unused. Remove?
 	private void makeBottomEntrance(World world, Random decoRNG, MutableBoundingBox sbb, Rotation rotation, int y) {
 		makeFirePit(world, this.deco, 13, y + 1, 3, rotation, sbb);
 		makeFirePit(world, this.deco, 3, y + 1, 13, rotation, sbb);
 		makeFirePit(world, this.deco, 13, y + 1, 13, rotation, sbb);
 
 		makePillarFrame(world, sbb, this.deco, rotation, 7, y, 7, 3, 4, 3, false);
-
 	}
 
 	/**
@@ -1252,7 +1238,6 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 			setBlockStateRotated(world, beamStateEW, x, y, z, rotation, sbb);
 		}
 
-
 		// beams going down
 		int x1 = 4;
 		int z1 = pickFrom(rand, 4, 9, 14);
@@ -1300,7 +1285,6 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 			int sz = pickFrom(rand, 6, 11, 12);
 
 			makeMiniGhastSpawner(world, rand, y, sx, sz, sbb);
-
 		}
 
 		// lamps
@@ -1311,9 +1295,9 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), rand.nextBoolean() ? LeverBlock.EnumOrientation.DOWN_X : LeverBlock.EnumOrientation.DOWN_Z, rotation, false), lx, y + 1, lz, rotation, sbb);
 	}
 
-
 	/**
 	 * Make a mini ghast spawner and then set the spawn range and max entities for that spawner
+	 * TODO: Parameter "rand" is unused. Remove?
 	 */
 	private void makeMiniGhastSpawner(World world, Random rand, int y, int sx, int sz, MutableBoundingBox sbb) {
 		MobSpawnerTileEntity spawner = setSpawner(world, sx, y + 2, sz, sbb, TFEntities.mini_ghast.get());
@@ -1330,7 +1314,6 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 			spawner.read(tags);
 		}
 	}
-
 
 	/**
 	 * Add a bunch of platforms accessible with the block builder
@@ -1361,11 +1344,11 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 
 		// top platform
 		addTopBuilderPlatform(world, rand, bottom, top, spacing, sbb);
-
 	}
 
 	/**
 	 * Make platform with a block builder
+	 * TODO: Parameters "bottom" and "top" are unused. Remove?
 	 */
 	protected void makeBuilderPlatforms(World world, Random rand, MutableBoundingBox sbb, Rotation rotation, int y, boolean bottom, boolean top) {
 		int z = size / 2 + rand.nextInt(5) - rand.nextInt(5);
@@ -1399,6 +1382,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 
 	/**
 	 * Add the top floating platform in the builder platforms area
+	 * TODO: Parameter "bottom" is unused. Remove?
 	 */
 	private void addTopBuilderPlatform(World world, Random rand, int bottom, int top, int spacing, MutableBoundingBox sbb) {
 		Rotation rotation = RotationUtil.ROTATIONS[(this.boundingBox.minY + top + 1) % 4];
@@ -1417,7 +1401,6 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		final BlockState inactiveBuilder = TFBlocks.carminite_builder.get().getDefaultState();
 		setBlockStateRotated(world, inactiveBuilder, 7, top - spacing, 10, rotation, sbb);
 		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), rand.nextBoolean() ? LeverBlock.EnumOrientation.UP_Z : LeverBlock.EnumOrientation.UP_X, rotation, false), 7, top - spacing + 1, 11, rotation, sbb);
-
 	}
 
 	private void makeBuilderPlatform(World world, Random rand, Rotation rotation, int y, int z, boolean hole, MutableBoundingBox sbb) {
@@ -1461,7 +1444,6 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 				}
 				Direction facing = Direction.values()[direction];
 
-
 				lx += facing.getXOffset();
 				ly += facing.getYOffset();
 				lz += facing.getZOffset();
@@ -1487,7 +1469,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 				if (direction > 5) {
 					direction -= 2;
 				}
-				directions[move] = Direction.VALUES[direction];
+				directions[move] = Direction.values()[direction];
 			}
 
 			for (int move = 0; move < 10; move++) {

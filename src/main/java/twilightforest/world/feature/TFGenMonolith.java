@@ -6,6 +6,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.GenerationSettings;
+import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import twilightforest.entity.TFEntities;
@@ -84,7 +85,7 @@ public class TFGenMonolith<T extends NoFeatureConfig> extends Feature<T> {
 					0,
 					rand.nextInt(8) - rand.nextInt(8)
 			);
-			dPos = world.getTopSolidOrLiquidBlock(dPos);
+			dPos = world.getHeight(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, dPos);
 
 			if (dPos.getY() > 0) {
 				EntityTFRaven raven = new EntityTFRaven(TFEntities.raven.get(), world.getWorld());

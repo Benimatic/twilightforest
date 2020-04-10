@@ -29,7 +29,6 @@ import net.minecraft.world.gen.feature.template.TemplateManager;
 import net.minecraft.world.server.ServerWorld;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFEntities;
-import twilightforest.enums.StructureWoodVariant;
 import twilightforest.loot.TFTreasure;
 import twilightforest.structures.RandomizedTemplateProcessor;
 
@@ -240,16 +239,8 @@ public class GenDruidHut<T extends NoFeatureConfig> extends Feature<T> {
 
     public class HutTemplateProcessor extends RandomizedTemplateProcessor {
 
-        private final StructureWoodVariant OAK_SWIZZLE;
-        private final StructureWoodVariant SPRUCE_SWIZZLE;
-        private final StructureWoodVariant BIRCH_SWIZZLE;
-
-        public HutTemplateProcessor(BlockPos pos, PlacementSettings settings, int oakSwizzle, int spruceSwizzle, int birchSwizzle) {
+        public HutTemplateProcessor(BlockPos pos, PlacementSettings settings) {
             super(pos, settings);
-            int limit = StructureWoodVariant.values().length;
-            this.OAK_SWIZZLE    = StructureWoodVariant.values()[ Math.floorMod(oakSwizzle   , limit) ];
-            this.SPRUCE_SWIZZLE = StructureWoodVariant.values()[ Math.floorMod(spruceSwizzle, limit) ];
-            this.BIRCH_SWIZZLE  = StructureWoodVariant.values()[ Math.floorMod(birchSwizzle , limit) ];
         }
 
 		@Nullable

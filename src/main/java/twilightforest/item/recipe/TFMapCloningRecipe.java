@@ -74,7 +74,7 @@ public class TFMapCloningRecipe extends MapCloningRecipe {
 			ItemStack itemstack2 = new ItemStack(fullMapID, i + 1, itemstack.getMetadata());
 
 			if (itemstack.hasDisplayName()) {
-				itemstack2.setStackDisplayName(itemstack.getDisplayName());
+				itemstack2.setDisplayName(itemstack.getDisplayName());
 			}
 
 			if (itemstack.hasTag()) {

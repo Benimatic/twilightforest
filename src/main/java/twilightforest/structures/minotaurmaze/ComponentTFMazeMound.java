@@ -9,8 +9,10 @@ import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.server.ServerWorld;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentOld;
 
@@ -108,8 +110,8 @@ public class ComponentTFMazeMound extends StructureTFComponentOld {
 				BlockPos pos = new BlockPos(x, 64, z);
 
 				if (boundingBox.isVecInside(pos)) {
-					final BlockPos topPos = world.getTopSolidOrLiquidBlock(pos);
-					totalHeight += Math.max(topPos.getY(), world.dimension.getAverageGroundLevel());
+					final BlockPos topPos = world.getHeight(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, pos);
+					totalHeight += Math.max(topPos.getY(), ((ServerWorld) world).getChunkProvider().getChunkGenerator().getGroundHeight());
 					++totalMeasures;
 				}
 			}

@@ -226,6 +226,7 @@ public class ComponentTFFinalCastleMural extends StructureTFComponentOld {
 		}
 	}
 
+	//TODO: Parameter "mural2" is unused. Remove?
 	private void makeSingleStripe(byte[][] mural2, int y) {
 		for (int x = 0; x < this.width - 2; x++) {
 			if (mural[x + 1][y] == 0 && mural[x + 1][y + 1] == 0) {
@@ -242,5 +243,4 @@ public class ComponentTFFinalCastleMural extends StructureTFComponentOld {
 			}
 		}
 	}
-
 }

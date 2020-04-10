@@ -9,8 +9,10 @@ import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.server.ServerWorld;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponentOld;
@@ -50,7 +52,6 @@ public class ComponentTFMazeUpperEntrance extends StructureTFComponentOld {
 		this.fillWithBlocks(world, sbb, 0, 2, 0, 15, 3, 15, TFBlocks.maze_stone_brick.get().getDefaultState(), AIR, true);
 		this.fillWithBlocks(world, sbb, 0, 4, 0, 15, 4, 15, TFBlocks.maze_stone_decorative.get().getDefaultState(), AIR, true);
 		this.generateMaybeBox(world, sbb, rand, 0.2F, 0, 0, 0, 15, 5, 15, Blocks.GRAVEL.getDefaultState(), AIR, true, 0);
-
 
 		// doorways
 		fillWithBlocks(world, sbb, 6, 1, 0, 9, 4, 0, Blocks.OAK_FENCE.getDefaultState(), AIR, false);
@@ -93,8 +94,8 @@ public class ComponentTFMazeUpperEntrance extends StructureTFComponentOld {
 				BlockPos pos = new BlockPos(x, 64, z);
 
 				if (boundingBox.isVecInside(pos)) {
-					final BlockPos topPos = world.getTopSolidOrLiquidBlock(pos);
-					yTotal += Math.max(topPos.getY(), world.dimension.getAverageGroundLevel());
+					final BlockPos topPos = world.getHeight(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, pos);
+					yTotal += Math.max(topPos.getY(), ((ServerWorld) world).getChunkProvider().getChunkGenerator().getGroundHeight());
 					++count;
 				}
 			}

@@ -2,7 +2,6 @@ package twilightforest.structures.finalcastle;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.item.DyeColor;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
@@ -18,8 +17,6 @@ import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.biomes.TFBiomes;
-import twilightforest.block.BlockTFCastleMagic;
-import twilightforest.block.BlockTFForceField;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
@@ -119,6 +116,7 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 		return false;
 	}
 
+	//TODO: Parameter "parent" is unused. Remove?
 	protected boolean addDungeonExit(StructurePiece parent, List<StructurePiece> list, Random rand, Rotation rotation) {
 
 		//TODO: check if we are sufficiently near the castle center
@@ -180,13 +178,8 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 		this.fillWithBlocks(world, sbb, cs , -1, cs, this.size - 1 - cs, -1, this.size - 1 - cs, border, floor, replacing);
 		this.fillWithBlocks(world, sbb, cs , this.height, cs, this.size - 1 - cs, this.height, this.size - 1 - cs, border, floor, replacing);
 
-		DyeColor forceFieldColor = this.getForceFieldColor(decoRNG);
-		DyeColor runeColor = getRuneColor(forceFieldColor);
-
-		BlockState forceField = TFBlocks.force_field.getDefaultState()
-				.with(BlockTFForceField.COLOR, forceFieldColor);
-		BlockState castleMagic = TFBlocks.castle_rune_brick.getDefaultState()
-				.with(BlockTFCastleMagic.COLOR, runeColor);
+		BlockState forceField = getForceFieldColor(decoRNG);
+		BlockState castleMagic = getRuneColor(forceField);
 
 		for (Rotation rotation : RotationUtil.ROTATIONS) {
 
@@ -207,13 +200,16 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 	protected static final Predicate<Biome> plateauBiomes = biome ->
 			biome == TFBiomes.highlandsCenter.get() || biome == TFBiomes.thornlands.get();
 
-	//TODO: Flatten
-	protected DyeColor getRuneColor(DyeColor forceFieldColor) {
-		return BlockTFCastleMagic.VALID_COLORS.get(forceFieldColor == BlockTFForceField.VALID_COLORS.get(4) ? 1 : 2);
+	protected BlockState getRuneColor(BlockState forceFieldColor) {
+		return forceFieldColor == TFBlocks.force_field_blue.get().getDefaultState() ? TFBlocks.castle_rune_brick_blue.get().getDefaultState() : TFBlocks.castle_rune_brick_yellow.get().getDefaultState();
 	}
 
-	//TODO: Flatten
-	protected DyeColor getForceFieldColor(Random decoRNG) {
-		return BlockTFForceField.VALID_COLORS.get(decoRNG.nextInt(2) + 3);
+	protected BlockState getForceFieldColor(Random decoRNG) {
+		int i = decoRNG.nextInt(2) + 3;
+
+		if (i == 3)
+			return TFBlocks.force_field_green.get().getDefaultState();
+		else
+			return TFBlocks.force_field_blue.get().getDefaultState();
 	}
 }

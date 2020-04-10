@@ -395,6 +395,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 		}
 	}
 
+	//TODO: Parameter "decoRNG" is unused. Remove?
 	private void makeFloorsForTower(World world, Random decoRNG, MutableBoundingBox sbb) {
 		int floors = this.height / FLOOR_HEIGHT;
 

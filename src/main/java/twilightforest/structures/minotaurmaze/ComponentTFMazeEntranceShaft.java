@@ -8,8 +8,10 @@ import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.server.ServerWorld;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponentOld;
@@ -54,13 +56,11 @@ public class ComponentTFMazeEntranceShaft extends StructureTFComponentOld {
 			this.boundingBox.minY = TFWorld.SEALEVEL - 10;
 		}
 
-
 		this.fillWithBlocks(world, sbb, 0, 0, 0, 5, this.boundingBox.getYSize(), 5, TFBlocks.maze_stone_brick.get().getDefaultState(), AIR, true);
 		this.fillWithAir(world, sbb, 1, 0, 1, 4, this.boundingBox.getYSize(), 4);
 
 		return true;
 	}
-
 
 	/**
 	 * Discover the y coordinate that will serve as the ground level of the supplied BoundingBox. (A median of all the
@@ -75,8 +75,8 @@ public class ComponentTFMazeEntranceShaft extends StructureTFComponentOld {
 			for (int x = this.boundingBox.minX; x <= this.boundingBox.maxX; ++x) {
 				BlockPos pos = new BlockPos(x, 64, z);
 				if (boundingBox.isVecInside(pos)) {
-					final BlockPos topBlock = world.getTopSolidOrLiquidBlock(pos);
-					yTotal += Math.max(topBlock.getY(), world.dimension.getAverageGroundLevel());
+					final BlockPos topBlock = world.getHeight(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, pos);
+					yTotal += Math.max(topBlock.getY(), ((ServerWorld) world).getChunkProvider().getChunkGenerator().getGroundHeight());
 					++count;
 				}
 			}

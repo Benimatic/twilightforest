@@ -28,7 +28,6 @@ public class ComponentTFFinalCastleFoundation48 extends StructureTFComponentOld 
 
 		this.setCoordBaseMode(sideTower.getCoordBaseMode());
 		this.boundingBox = new MutableBoundingBox(sideTower.getBoundingBox().minX, sideTower.getBoundingBox().minY, sideTower.getBoundingBox().minZ, sideTower.getBoundingBox().maxX, sideTower.getBoundingBox().minY - 1, sideTower.getBoundingBox().maxZ);
-
 	}
 
 	@Override
@@ -46,7 +45,6 @@ public class ComponentTFFinalCastleFoundation48 extends StructureTFComponentOld 
 			for (int z = 4; z < 45; z++) {
 				this.replaceAirAndLiquidDownwards(world, deco.blockState, x, -1, z, sbb);
 			}
-
 		}
 
 		int mid = 16;
@@ -66,10 +64,9 @@ public class ComponentTFFinalCastleFoundation48 extends StructureTFComponentOld 
 
 			makePiling(world, sbb, mid, rotation, 4);
 			makePiling(world, sbb, mid, rotation, 44);
-
 		}
 
-// add supports for entrance bridge
+		// add supports for entrance bridge
 		this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 21, -2, 0, Rotation.CLOCKWISE_90, sbb);
 		this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 21, -4, 1, Rotation.CLOCKWISE_90, sbb);
 		this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, 21, -6, 2, Rotation.CLOCKWISE_90, sbb);
@@ -88,5 +85,4 @@ public class ComponentTFFinalCastleFoundation48 extends StructureTFComponentOld 
 		this.setBlockStateRotated(world, deco.blockState, i, -3, 1, rotation, sbb);
 		this.setBlockStateRotated(world, deco.blockState, i, -5, 2, rotation, sbb);
 	}
-
 }

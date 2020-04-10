@@ -60,6 +60,7 @@ public class ComponentTFIceTowerStairs extends ComponentTFTowerWing {
 		return true;
 	}
 
+	//TODO: Parameter "stairMeta" is unused. Remove?
 	private void placeStairs(World world, MutableBoundingBox sbb, int x, int y, int z, int stairMeta) {
 		BlockPos pos = new BlockPos(x, y, z);
 		if (this.getBlockStateFromPos(world, x, y, z, sbb).getBlock().isReplaceable(world, pos)) {

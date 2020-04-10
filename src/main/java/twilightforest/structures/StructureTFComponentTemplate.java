@@ -19,7 +19,7 @@ import twilightforest.TFFeature;
  */
 public abstract class StructureTFComponentTemplate extends StructureTFComponent {
 
-    protected PlacementSettings placeSettings = new PlacementSettings().setReplacedBlock(Blocks.STRUCTURE_VOID);
+    protected PlacementSettings placeSettings = new PlacementSettings().setReplacedBlock(Blocks.STRUCTURE_VOID); //TODO: StructureProcessor now
     protected BlockPos templatePosition = BlockPos.ZERO;
     protected BlockPos rotatedPosition;
     protected Template TEMPLATE;

@@ -242,6 +242,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 		this.setBlockStateRotated(world, southWestMushroom, size - (depth + 1), y, z + width, rotation, sbb);
 	}
 
+	//TODO: Modernise
 	private BlockState getMushroomState(BlockState mushroomBlockState, HugeMushroomBlock.EnumType defaultRotation) {
 		if (mushroomBlockState.getPropertyKeys().contains(HugeMushroomBlock.VARIANT)) {
 			return mushroomBlockState.with(HugeMushroomBlock.VARIANT, defaultRotation);

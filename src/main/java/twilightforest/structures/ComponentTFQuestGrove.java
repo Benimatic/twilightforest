@@ -20,6 +20,7 @@ import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.passive.EntityTFQuestRam;
+import twilightforest.util.WoolUtil;
 
 import java.util.Random;
 
@@ -38,6 +39,7 @@ public class ComponentTFQuestGrove extends StructureTFComponentOld {
 
 	//TODO: Parameters "world", "rand" is unused. Remove?
 	public ComponentTFQuestGrove(TFFeature feature, World world, Random rand, int i, int x, int y, int z) {
+		super(TFFeature.TFQuest1, feature, i);
 
 		this.setCoordBaseMode(Direction.SOUTH);
 
@@ -94,10 +96,8 @@ public class ComponentTFQuestGrove extends StructureTFComponentOld {
 
 				// add 4 random wool blocks
 				for (int i = 0; i < 4; i++) {
-					//TODO: Flatten
-					ted.setInventorySlotContents(i, new ItemStack(Blocks.WOOL, 1, rand.nextInt(16)));
+					ted.setInventorySlotContents(i, new ItemStack(WoolUtil.getRandomBlock(rand), 1));
 				}
-
 			}
 		}
 
@@ -123,6 +123,7 @@ public class ComponentTFQuestGrove extends StructureTFComponentOld {
 		return true;
 	}
 
+	//TODO: Parameter "rand" is unused. Remove?
 	private void makeWallSide(World world, Random rand, Direction direction, MutableBoundingBox sbb) {
 		Direction temp = this.getCoordBaseMode();
 		this.setCoordBaseMode(direction);

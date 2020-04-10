@@ -92,10 +92,8 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 		// 3-5 roots at the bottom
 		buildBranchRing(list, rand, index, 3, 2, 6, 0.75D, 0.1,3, 5, BranchSize.ROOT, false);
 
-
 		// several more taproots
 		buildBranchRing(list, rand, index, 1, 2, 8, 0.9D, 0.1,3, 5, BranchSize.ROOT, false);
-
 	}
 
 	/**
@@ -273,7 +271,7 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 		BlockState whatsThere = world.getBlockState(pos);
 
 		// don't overwrite wood or leaves
-		if (sbb.isVecInside(pos) && whatsThere == AIR && blockState.getBlock().canPlaceBlockAt(world, pos)) {
+		if (sbb.isVecInside(pos) && whatsThere == AIR && blockState.getBlock().getDefaultState().isValidPosition(world, pos)) {
 			world.setBlockState(pos, blockState, 2);
 		}
 	}

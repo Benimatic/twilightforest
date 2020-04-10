@@ -18,8 +18,10 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.LightType;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.BlockSnapshot;
 import twilightforest.TFFeature;
 import twilightforest.loot.TFTreasure;
@@ -54,7 +56,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	//Let's not use vanilla's weird rotation+mirror thing...
 	@Override
 	public void setCoordBaseMode(@Nullable Direction facing) {
-		this.field_74885_f = facing;
+		this.field_74885_f = facing; //TODO: AT
 		this.mirror = Mirror.NONE;
 
 		if (facing == null) {
@@ -177,6 +179,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	 * Place a treasure chest at the specified coordinates
 	 *
 	 * @param treasureType
+	 * TODO: Parameter "rand" is unused. Remove?
 	 */
 	protected void placeTreasureAtCurrentPosition(World world, Random rand, int x, int y, int z, TFTreasure treasureType, boolean trapped, MutableBoundingBox sbb) {
 		int dx = getXWithOffset(x, z);
@@ -245,13 +248,12 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 		List<BlockSnapshot> blockSnapshots = (List<BlockSnapshot>) world.capturedBlockSnapshots.clone();
 		world.capturedBlockSnapshots.clear();
 
-		for (BlockSnapshot snap : blockSnapshots)
-		{
+		for (BlockSnapshot snap : blockSnapshots) {
 			int updateFlag = snap.getFlag();
 			BlockState oldBlock = snap.getReplacedBlock();
 			BlockState newBlock = world.getBlockState(snap.getPos());
 
-			newBlock.getBlock().onBlockAdded(world, snap.getPos(), newBlock);
+			newBlock.getBlock().onBlockAdded(oldBlock, world, snap.getPos(), newBlock, false);
 			world.markAndNotifyBlock(snap.getPos(), null, oldBlock, newBlock, updateFlag);
 		}
 	}
@@ -272,6 +274,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 		}
 	}
 
+	//TODO: Method unused. Remove?
 	protected void placeSignAtCurrentPosition(World world, int x, int y, int z, MutableBoundingBox sbb, String... text) {
 		int dx = getXWithOffset(x, z);
 		int dy = getYWithOffset(y);
@@ -564,7 +567,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 			for (int by = this.boundingBox.minX; by <= this.boundingBox.maxX; ++by) {
 				BlockPos pos = new BlockPos(by, 64, bz);
 				if (sbb.isVecInside(pos)) {
-					totalHeight += Math.max(world.getTopSolidOrLiquidBlock(pos).getY(), world.dimension.getAverageGroundLevel());
+					totalHeight += Math.max(world.getHeight(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, pos).getY(), ((ServerWorld) world).getChunkProvider().getChunkGenerator().getGroundHeight());
 					++heightCount;
 				}
 			}
@@ -595,6 +598,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 		return 0;
 	}
 
+	//TODO: Parameter "sbb" is unused. Remove?
 	protected boolean isBoundingBoxOutsideBiomes(World world, MutableBoundingBox sbb, Predicate<Biome> predicate) {
 
 		int minX = this.boundingBox.minX - 1;
@@ -644,6 +648,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	}
 
 	/* BlockState Helpers */
+	//TODO: Parameter "rotation" is unused. Remove?
 	protected static BlockState getStairState(BlockState stairState, Direction direction, Rotation rotation, boolean isTopHalf) {
 		return stairState
 				.with(StairsBlock.FACING, direction)

@@ -20,7 +20,7 @@ public class ComponentTFMazeDeadEndTripwireChest extends ComponentTFMazeDeadEndC
 	}
 
 	public ComponentTFMazeDeadEndTripwireChest(TFFeature feature, int i, int x, int y, int z, Direction rotation) {
-		super(feature, i, x, y, z, rotation);
+		super(TFMinotaurMazePieces.TFMMDETC, feature, i, x, y, z, rotation);
 	}
 
 	@Override

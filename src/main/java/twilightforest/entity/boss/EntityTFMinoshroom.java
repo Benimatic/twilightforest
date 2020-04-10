@@ -1,6 +1,5 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -9,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.particles.BlockParticleData;
 import net.minecraft.util.DamageSource;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ResourceLocation;
@@ -82,14 +82,13 @@ public class EntityTFMinoshroom extends EntityTFMinotaur {
 				this.clientSideChargeAnimation = MathHelper.clamp(this.clientSideChargeAnimation - 1.0F, 0.0F, 6.0F);
 				if (groundSmashState) {
 					BlockState block = world.getBlockState(getPosition().down());
-					int stateId = Block.getStateId(block);
 
 					for (int i = 0; i < 80; i++) {
 						double cx = getPosition().getX() + world.rand.nextFloat() * 10F - 5F;
 						double cy = getBoundingBox().minY + 0.1F + world.rand.nextFloat() * 0.3F;
 						double cz = getPosition().getZ() + world.rand.nextFloat() * 10F - 5F;
 
-						world.addParticle(ParticleTypes.BLOCK_CRACK, cx, cy, cz, 0D, 0D, 0D, stateId);
+						world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, block), cx, cy, cz, 0D, 0D, 0D);
 					}
 					groundSmashState = false;
 				}
