@@ -8,7 +8,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class ParticleProtection extends SuspendedTownParticle {
 
 	public ParticleProtection(World world, double x, double y, double z, double velX, double velY, double velZ) {
-		//TODO: Private constructor
 		super(world, x, y, z, velX, velY, velZ);
 		//this.setParticleTextureIndex(82); TODO: probably not needed?
 		this.setColor(1.0F, 1.0F, 1.0F);

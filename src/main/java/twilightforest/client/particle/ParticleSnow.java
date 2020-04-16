@@ -1,12 +1,10 @@
 package twilightforest.client.particle;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.*;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.TwilightForestMod;
 
 @OnlyIn(Dist.CLIENT)
 public class ParticleSnow extends SpriteTexturedParticle {

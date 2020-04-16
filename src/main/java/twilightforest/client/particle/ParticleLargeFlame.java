@@ -1,8 +1,8 @@
 package twilightforest.client.particle;
 
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.renderer.ActiveRenderInfo;
-import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -32,13 +32,20 @@ public class ParticleLargeFlame extends SpriteTexturedParticle {
 	}
 
 	@Override
-	public void renderParticle(BufferBuilder buffer, ActiveRenderInfo entity, float partialTicks,
-							   float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
-
+	public void buildGeometry(IVertexBuilder buffer, ActiveRenderInfo entity, float partialTicks) {
 		float var8 = ((float) this.age + partialTicks) / (float) this.maxAge;
 		this.particleScale = this.flameScale * (1.0F - var8 * var8 * 0.5F);
-		super.renderParticle(buffer, entity, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
+		super.buildGeometry(buffer, entity, partialTicks);
 	}
+
+//	@Override
+//	public void renderParticle(BufferBuilder buffer, ActiveRenderInfo entity, float partialTicks,
+//							   float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
+//
+//		float var8 = ((float) this.age + partialTicks) / (float) this.maxAge;
+//		this.particleScale = this.flameScale * (1.0F - var8 * var8 * 0.5F);
+//		super.renderParticle(buffer, entity, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
+//	}
 
 	@Override
 	public int getBrightnessForRender(float partialTicks) {

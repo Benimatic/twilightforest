@@ -1,8 +1,8 @@
 package twilightforest.client.particle;
 
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.renderer.ActiveRenderInfo;
-import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -54,15 +54,24 @@ public class ParticleGhastTrap extends SpriteTexturedParticle {
 	}
 
 	@Override
-	public void renderParticle(BufferBuilder buffer, ActiveRenderInfo entity, float partialTicks,
-							   float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
-
+	public void buildGeometry(IVertexBuilder buffer, ActiveRenderInfo entity, float partialTicks) {
 		float f6 = ((float) this.age + partialTicks) / (float) this.maxAge * 32.0F;
 		f6 = MathHelper.clamp(f6, 0f, 1f);
 
 		this.particleScale = this.reddustParticleScale * f6;
-		super.renderParticle(buffer, entity, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
+		super.buildGeometry(buffer, entity, partialTicks);
 	}
+
+//	@Override
+//	public void renderParticle(BufferBuilder buffer, ActiveRenderInfo entity, float partialTicks,
+//							   float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
+//
+//		float f6 = ((float) this.age + partialTicks) / (float) this.maxAge * 32.0F;
+//		f6 = MathHelper.clamp(f6, 0f, 1f);
+//
+//		this.particleScale = this.reddustParticleScale * f6;
+//		super.renderParticle(buffer, entity, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
+//	}
 
 //    /**
 //     * Called to update the entity's position/logic.

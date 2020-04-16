@@ -1,8 +1,8 @@
 package twilightforest.client.particle;
 
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.renderer.ActiveRenderInfo;
-import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -41,12 +41,18 @@ public class ParticleFirefly extends SpriteTexturedParticle {
 	}
 
 	@Override
-	public void renderParticle(BufferBuilder buffer, ActiveRenderInfo entity, float partialTicks,
-							   float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
-
+	public void buildGeometry(IVertexBuilder buffer, ActiveRenderInfo entity, float partialTicks) {
 		particleAlpha = getGlowBrightness();
-		super.renderParticle(buffer, entity, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
+		super.buildGeometry(buffer, entity, partialTicks);
 	}
+
+//	@Override
+//	public void renderParticle(BufferBuilder buffer, ActiveRenderInfo entity, float partialTicks,
+//							   float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
+//
+//		particleAlpha = getGlowBrightness();
+//		super.renderParticle(buffer, entity, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
+//	}
 
 	@Override
 	public void tick() {

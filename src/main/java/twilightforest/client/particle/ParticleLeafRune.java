@@ -12,7 +12,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class ParticleLeafRune extends EnchantmentTableParticle {
 
 	public ParticleLeafRune(World world, double x, double y, double z, double velX, double velY, double velZ) {
-		//TODO: Private constructor
 		super(world, x, y, z, velX, velY, velZ);
 
 		this.particleScale = this.rand.nextFloat() + 1F;
