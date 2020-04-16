@@ -472,7 +472,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	// [VanillaCopy] Keep pinned on signature of fillWithBlocksRandomly (though passing false for excludeAir)
 	protected void randomlyFillBlocksRotated(World worldIn, MutableBoundingBox boundingboxIn, Random rand, float chance, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, BlockState blockstate1, BlockState blockstate2, Rotation rotation) {
 		Direction oldBase = fakeBaseMode(rotation);
-		final int minimumLightLevel = 15;
+		final boolean minimumLightLevel = true;
 		generateMaybeBox(worldIn, boundingboxIn, rand, chance, minX, minY, minZ, maxX, maxY, maxZ, blockstate1, blockstate2, false, minimumLightLevel);
 		setCoordBaseMode(oldBase);
 	}

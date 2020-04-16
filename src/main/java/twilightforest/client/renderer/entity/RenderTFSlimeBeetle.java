@@ -39,13 +39,13 @@ public class RenderTFSlimeBeetle<T extends EntityTFSlimeBeetle, M extends ModelT
 		public void render(MatrixStack stack, IRenderTypeBuffer buffer, int i, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 			if (!entity.isInvisible()) {
 				RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-				RenderSystem.enableNormalize();
-				GlStateManager.enableBlend();
-				GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+				RenderSystem.enableRescaleNormal();
+				RenderSystem.enableBlend();
+				RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 				this.innerModel.setModelAttributes(RenderTFSlimeBeetle.this.getEntityModel());
 				this.innerModel.render(stack, buffer, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-				GlStateManager.disableBlend();
-				GlStateManager.disableNormalize();
+				RenderSystem.disableBlend();
+				RenderSystem.disableRescaleNormal();
 			}
 		}
 //

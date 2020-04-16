@@ -4,17 +4,20 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.MapGenCaves;
+import net.minecraft.world.gen.carver.WorldCarver;
+import net.minecraft.world.gen.feature.ProbabilityConfig;
 import twilightforest.biomes.TFBiomeHighlands;
 import twilightforest.block.TFBlocks;
 
 import java.util.Random;
 
-public class TFGenCaves extends MapGenCaves {
+public class TFGenCaves<T extends ProbabilityConfig> extends WorldCarver<T> {
 
 	private Biome[] biomes;
 
@@ -198,7 +201,7 @@ public class TFGenCaves extends MapGenCaves {
 	}
 
 	private boolean canReplace(Material material) {
-		return material == Material.GROUND || material == Material.GRASS;
+		return material == Material.EARTH || material == Material.ORGANIC;
 	}
 
 	@Override
@@ -240,8 +243,8 @@ public class TFGenCaves extends MapGenCaves {
 	}
 
 	private boolean isOceanBlock(ChunkPrimer data, int x, int y, int z) {
-		Block block = data.getBlockState(x, y, z).getBlock();
-		return block == Blocks.FLOWING_WATER || block == Blocks.WATER;
+		Block block = data.getBlockState(new BlockPos(x, y, z)).getBlock();
+		return block == Blocks.WATER;
 	}
 
 	private Biome getBiome(int x, int z) {

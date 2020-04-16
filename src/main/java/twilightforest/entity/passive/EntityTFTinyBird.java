@@ -20,6 +20,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
@@ -172,7 +173,7 @@ public class EntityTFTinyBird extends EntityTFBird {
 				motionY = 0.1F;
 			}
 
-			if (this.spawnPosition == null || this.rand.nextInt(30) == 0 || this.spawnPosition.distanceSq((double) ((int) this.getX()), (double) ((int) this.getY()), (double) ((int) this.getZ())) < 4.0D) {
+			if (this.spawnPosition == null || this.rand.nextInt(30) == 0 || this.spawnPosition.distanceSq(new Vec3i(((int) this.getX()), ((int) this.getY()), ((int) this.getZ()))) < 4.0D) {
 				// TF - modify shift factor of Y
 				int yTarget = this.currentFlightTime < 100 ? 2 : 4;
 				this.spawnPosition = new BlockPos((int) this.getX() + this.rand.nextInt(7) - this.rand.nextInt(7), (int) this.getY() + this.rand.nextInt(6) - yTarget, (int) this.getZ() + this.rand.nextInt(7) - this.rand.nextInt(7));

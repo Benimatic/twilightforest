@@ -1,10 +1,12 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.FallingBlockEntity;
+import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -93,13 +95,13 @@ public class EntityTFFallingIce extends FallingBlockEntity {
 			}
 		}
 
-		int stateId = Block.getStateId(Blocks.PACKED_ICE.getDefaultState());
+		BlockState stateId = Blocks.PACKED_ICE.getDefaultState();
 		for (int i = 0; i < 200; i++) {
 			double dx = this.getX() + 3F * (rand.nextFloat() - rand.nextFloat());
 			double dy = this.getY() + 2 + 3F * (rand.nextFloat() - rand.nextFloat());
 			double dz = this.getZ() + 3F * (rand.nextFloat() - rand.nextFloat());
 
-			this.world.addParticle(ParticleTypes.BLOCK_CRACK, dx, dy, dz, 0, 0, 0, stateId);
+			this.world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, stateId), dx, dy, dz, 0, 0, 0);
 		}
 
 		this.playSound(Blocks.PACKED_ICE.getSoundType(Blocks.PACKED_ICE.getDefaultState(), world, getPosition(), null).getBreakSound(), 3F, 0.5F);

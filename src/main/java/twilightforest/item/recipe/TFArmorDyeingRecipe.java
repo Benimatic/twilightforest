@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.ArmorDyeRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.common.Tags;
 import twilightforest.item.ItemTFArcticArmor;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class TFArmorDyeingRecipe extends ArmorDyeRecipe {
                 if (itemstack1.getItem() instanceof ItemTFArcticArmor) {
                     itemstack = itemstack1;
                 } else {
-                    if (!net.minecraftforge.oredict.DyeUtils.isDye(itemstack1)) {
+                    if (!Tags.Items.DYES.contains(itemstack1.getItem())) {
                         return false;
                     }
 
@@ -70,7 +71,7 @@ public class TFArmorDyeingRecipe extends ArmorDyeRecipe {
                         ++j;
                     }
                 } else {
-                    if (!net.minecraftforge.oredict.DyeUtils.isDye(stackInSlot)) {
+                    if (!Tags.Items.DYES.contains(stackInSlot.getItem())) {
                         return ItemStack.EMPTY;
                     }
 

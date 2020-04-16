@@ -127,7 +127,7 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 
 		// grass
 		BlockState grass = Blocks.GRASS.getDefaultState();
-		this.generateMaybeBox(world, sbb, rand, 0.5F, 6, 0, 6, 11, 0, 11, grass, grass, false, 0);
+		this.generateMaybeBox(world, sbb, rand, 0.5F, 6, 0, 6, 11, 0, 11, grass, grass, false, false);
 		this.fillWithBlocks(world, sbb, 7, 0, 7, 10, 0, 10, grass, AIR, false);
 
 		// tree

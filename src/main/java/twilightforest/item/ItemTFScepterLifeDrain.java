@@ -6,6 +6,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
+import net.minecraft.particles.ItemParticleData;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.item.UseAction;
@@ -51,13 +52,13 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 	 * Animates the target falling apart into a rain of shatter particles
 	 */
 	private static void animateTargetShatter(World world, LivingEntity target) {
-		int itemId = Item.getIdFromItem(getTargetDropItem(target));
+		ItemStack itemId = new ItemStack(getTargetDropItem(target));
 		for (int i = 0; i < 50; ++i) {
 			double gaussX = random.nextGaussian() * 0.02D;
 			double gaussY = random.nextGaussian() * 0.02D;
 			double gaussZ = random.nextGaussian() * 0.02D;
 			double gaussFactor = 10.0D;
-			world.addParticle(ParticleTypes.ITEM_CRACK, target.getX() + random.nextFloat() * target.getWidth() * 2.0F - target.getWidth() - gaussX * gaussFactor, target.getY() + random.nextFloat() * target.getHeight() - gaussY * gaussFactor, target.getZ() + random.nextFloat() * target.getWidth() * 2.0F - target.getWidth() - gaussZ * gaussFactor, gaussX, gaussY, gaussZ, itemId);
+			world.addParticle(new ItemParticleData(ParticleTypes.ITEM, itemId), target.getX() + random.nextFloat() * target.getWidth() * 2.0F - target.getWidth() - gaussX * gaussFactor, target.getY() + random.nextFloat() * target.getHeight() - gaussY * gaussFactor, target.getZ() + random.nextFloat() * target.getWidth() * 2.0F - target.getWidth() - gaussZ * gaussFactor, gaussX, gaussY, gaussZ);
 		}
 	}
 

@@ -3,18 +3,21 @@ package twilightforest.world;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.MapGenBase;
+import net.minecraft.world.gen.carver.WorldCarver;
+import net.minecraft.world.gen.feature.ProbabilityConfig;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 
 import java.util.Random;
 
 //FIXME: AtomicBlom - Deobfuscate this crap
-public class TFGenRavine extends MapGenBase {
+public class TFGenRavine<T extends ProbabilityConfig> extends WorldCarver<T> {
 
 	protected static final BlockState AIR = Blocks.AIR.getDefaultState();
 	private final float[] rs = new float[1024];
@@ -192,14 +195,14 @@ public class TFGenRavine extends MapGenBase {
 
 	//[VanillaCopy] MapGenRavine.isOceanBlock
 	protected boolean isOceanBlock(ChunkPrimer data, int x, int y, int z, int chunkX, int chunkZ) {
-		Block block = data.getBlockState(x, y, z).getBlock();
-		return block == Blocks.FLOWING_WATER || block == Blocks.WATER;
+		Block block = data.getBlockState(new BlockPos(x, y, z)).getBlock();
+		return block == Blocks.WATER;
 	}
 
 	//Determine if the block at the specified location is the top block for the biome, we take into account
 	//Vanilla bugs to make sure that we generate the map the same way vanilla does.
 	private boolean isTopBlock(ChunkPrimer data, int x, int y, int z, int chunkX, int chunkZ) {
-		BlockState state = data.getBlockState(x, y, z);
+		BlockState state = data.getBlockState(new BlockPos(x, y, z));
 		return state.getBlock() == Blocks.GRASS;
 	}
 
@@ -219,11 +222,11 @@ public class TFGenRavine extends MapGenBase {
 	 */
 	protected void digBlock(ChunkPrimer data, int x, int y, int z, int chunkX, int chunkZ, boolean foundTop) {
 
-		BlockState state = data.getBlockState(x, y, z);
+		BlockState state = data.getBlockState(new BlockPos(x, y, z));
 		Block block = state.getBlock();
 
-		if (block == Blocks.STONE || block == TFBlocks.trollsteinn || block == Blocks.DIRT || block == Blocks.GRASS) {
-			data.setBlockState(x, y, z, AIR);
+		if (block == Blocks.STONE || block == TFBlocks.trollsteinn.get() || block == Blocks.DIRT || block == Blocks.GRASS) {
+			data.setBlockState(new BlockPos(x, y, z), AIR);
 
 			if (foundTop && data.getBlockState(x, y - 1, z).getBlock() == Blocks.DIRT) {
 				data.setBlockState(x, y - 1, z, getBiome(x, z).topBlock);

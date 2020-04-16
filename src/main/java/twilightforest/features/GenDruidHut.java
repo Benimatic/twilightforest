@@ -20,6 +20,7 @@ import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.GenerationSettings;
+import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.template.IStructureProcessorType;
@@ -147,7 +148,7 @@ public class GenDruidHut<T extends NoFeatureConfig> extends Feature<T> {
                 int x = startPos.getX() + dx;
                 int z = startPos.getZ() + dz;
 
-                int y = world.getHeight(x, z);
+                int y = world.getHeight(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, x, z);
 
                 while (y >= 0) {
                     BlockState state = world.getBlockState(new BlockPos(x, y, z));

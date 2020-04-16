@@ -57,6 +57,11 @@ public class ModelTFIceCrystal<T extends EntityTFIceCrystal> extends SegmentedMo
 		}
 	}
 
+	@Override
+	public void setAngles(T entity, float v, float v1, float v2, float v3, float v4) {
+
+	}
+
 	/**
 	 * Used for easily adding entity-dependent animations. The second and third float params here are the same second
 	 * and third as in the setRotationAngles method.

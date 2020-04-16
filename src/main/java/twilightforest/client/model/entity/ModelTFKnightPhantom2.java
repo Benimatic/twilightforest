@@ -1,5 +1,7 @@
 package twilightforest.client.model.entity;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
@@ -34,12 +36,10 @@ public class ModelTFKnightPhantom2<T extends EntityTFKnightPhantom> extends Bipe
 	 * Sets the models various rotation angles then renders the model.
 	 */
 	@Override
-	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-		this.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-
+	public void render(MatrixStack stack, IVertexBuilder builder, int light, int overlay, float red, float green, float blue, float scale) {
 		if (entity.isChargingAtPlayer()) {
 			// render full skeleton
-			super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+			super.render(stack, builder, light, overlay, red, green, blue, scale);
 		}
 	}
 

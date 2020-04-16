@@ -36,10 +36,11 @@ public class EntityTFKingSpider extends SpiderEntity {
 		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6.0D);
 	}
 
-	@Override
-	public float getRenderSizeModifier() {
-		return 2.0F;
-	}
+	//TODO: Moved to renderer?
+//	@Override
+//	public float getRenderSizeModifier() {
+//		return 2.0F;
+//	}
 
 	@Override
 	public boolean isOnLadder() {

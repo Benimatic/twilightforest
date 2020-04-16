@@ -9,6 +9,7 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
+import net.minecraft.particles.ItemParticleData;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
@@ -151,7 +152,7 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 			for (int i = 0; i < 4; ++i) {
 				Item particleID = rand.nextBoolean() ? TFItems.phantom_helmet.get() : TFItems.knightmetal_sword.get();
 
-				world.addParticle(ParticleTypes.ITEM_CRACK, getX() + (rand.nextFloat() - 0.5D) * getWidth(), getY() + rand.nextFloat() * (getHeight() - 0.75D) + 0.5D, getZ() + (rand.nextFloat() - 0.5D) * getWidth(), 0, -0.1, 0, Item.getIdFromItem(particleID));
+				world.addParticle(new ItemParticleData(ParticleTypes.ITEM, new ItemStack(particleID)), getX() + (rand.nextFloat() - 0.5D) * getWidth(), getY() + rand.nextFloat() * (getHeight() - 0.75D) + 0.5D, getZ() + (rand.nextFloat() - 0.5D) * getWidth(), 0, -0.1, 0);
 				world.addParticle(ParticleTypes.SMOKE, getX() + (rand.nextFloat() - 0.5D) * getWidth(), getY() + rand.nextFloat() * (getHeight() - 0.75D) + 0.5D, getZ() + (rand.nextFloat() - 0.5D) * getWidth(), 0, 0.1, 0);
 			}
 		}
@@ -266,7 +267,7 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 	}
 
 	public List<EntityTFKnightPhantom> getNearbyKnights() {
-		return world.getEntitiesWithinAABB(EntityTFKnightPhantom.class, new AxisAlignedBB(getX(), getY(), getZ(), getX() + 1, getY() + 1, getZ() + 1).grow(32.0D, 8.0D, 32.0D), EntitySelectors.IS_ALIVE);
+		return world.getEntitiesWithinAABB(EntityTFKnightPhantom.class, new AxisAlignedBB(getX(), getY(), getZ(), getX() + 1, getY() + 1, getZ() + 1).grow(32.0D, 8.0D, 32.0D), LivingEntity::isAlive);
 	}
 
 	private void updateMyNumber() {

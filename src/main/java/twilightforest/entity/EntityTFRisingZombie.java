@@ -1,6 +1,5 @@
 package twilightforest.entity;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -9,6 +8,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DifficultyInstance;
@@ -52,7 +52,7 @@ public class EntityTFRisingZombie extends ZombieEntity {
 		}
 		if (world.isRemote && !world.isAirBlock(getPosition().down())) {
 			for (int i = 0; i < 5; i++)
-				world.addParticle(ParticleTypes.BLOCK_CRACK, getX() + rand.nextGaussian() * 0.01F, getY() + rand.nextGaussian() * 0.01F, getZ() + rand.nextGaussian() * 0.01F, 0, 0, 0, Block.getStateId(world.getBlockState(getPosition().down())));
+				world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, world.getBlockState(getPosition().down())), getX() + rand.nextGaussian() * 0.01F, getY() + rand.nextGaussian() * 0.01F, getZ() + rand.nextGaussian() * 0.01F, 0, 0, 0);
 		}
 	}
 

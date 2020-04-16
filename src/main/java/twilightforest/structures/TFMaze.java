@@ -425,7 +425,6 @@ public class TFMaze {
 				}
 			}
 		}
-
 	}
 
 	private void makeWallThing(World world, int dy, StructureTFComponentOld component, MutableBoundingBox sbb, int mdx, int mdz, int even, int odd) {
@@ -619,11 +618,11 @@ public class TFMaze {
 	 *
 	 * @param z
 	 * @return
+	 * TODO: Unused. Remove?
 	 */
 	int getWorldZ(int z) {
 		return worldZ + (z * (evenBias + oddBias)) + 1;
 	}
-
 
 	/**
 	 * Carves a room into the maze.  The coordinates given are cell coordinates.
