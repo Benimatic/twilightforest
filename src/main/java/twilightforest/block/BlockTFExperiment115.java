@@ -195,9 +195,5 @@ public class BlockTFExperiment115 extends Block {
 //        ModelLoader.setCustomModelResourceLocation(TFItems.experiment_115, 0, new ModelResourceLocation(TwilightForestMod.ID + ":experiment_115", "inventory"));
 //        ModelLoader.setCustomModelResourceLocation(TFItems.experiment_115, 1, new ModelResourceLocation(TwilightForestMod.ID + ":experiment_115", "inventory_full"));
 //        ModelLoader.setCustomModelResourceLocation(TFItems.experiment_115, 2, new ModelResourceLocation(TwilightForestMod.ID + ":experiment_115", "inventory_think"));
-//
-//        // Sorry, just gonna tack this here for now. The Shielding Scepter doesn't allow me to tack on another model like I would here. I'd like to not make a placeholder item either >.>
-//        // TODO 1.14: Well...we may need a placeholder item
-//        ModelLoader.setCustomModelResourceLocation(TFItems.experiment_115, 3, new ModelResourceLocation(TwilightForestMod.ID + ":shield", "inventory"));
 //    }
 }
