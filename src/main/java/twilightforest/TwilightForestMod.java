@@ -66,8 +66,6 @@ public class TwilightForestMod {
 
 	private static final Rarity rarity = Rarity.create("TWILIGHT", TextFormatting.DARK_GREEN);
 
-	private static boolean compat = true;
-
 	// TODO: PROXIES ARE DEAD!
 	// @SidedProxy(clientSide = "twilightforest.client.TFClientProxy", serverSide = "twilightforest.TFCommonProxy")
 	// public static TFCommonProxy proxy;
@@ -119,13 +117,11 @@ public class TwilightForestMod {
 		// MapGenStructureIO.registerStructure(StructureStartNothing.class,                  				 "TFNothing"); // TODO: move, (also wtf is the giant whitespace)
 		// TFHollowTreePieces.registerPieces(); TODO: structures are now a real registry
 
-		compat = TFConfig.doCompat;
-
-		if (compat) {
+		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
 			try {
-				TFCompat.preInitCompat();
+				// TFCompat.preInitCompat(); TODO
 			} catch (Exception e) {
-				compat = false;
+				TFConfig.COMMON_CONFIG.doCompat.set(false);
 				LOGGER.error("Had an error loading preInit compatibility!");
 				LOGGER.catching(e.fillInStackTrace());
 			}
@@ -142,11 +138,11 @@ public class TwilightForestMod {
 		TFTreasure.init();
 		TFBiomes.addBiomeTypes();
 
-		if (compat) {
+		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
 			try {
-				TFCompat.initCompat();
+				// TFCompat.initCompat(); TODO
 			} catch (Exception e) {
-				compat = false;
+				TFConfig.COMMON_CONFIG.doCompat.set(false);
 				LOGGER.error("Had an error loading init compatibility!");
 				LOGGER.catching(e.fillInStackTrace());
 			}
@@ -155,11 +151,11 @@ public class TwilightForestMod {
 		// registerDimension(); // TODO: deferred registry
 		// checkOriginDimension(); // TODO: move
 
-		if (compat) {
+		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
 			try {
-				TFCompat.postInitCompat();
+				// TFCompat.postInitCompat(); TODO
 			} catch (Exception e) {
-				compat = false;
+				TFConfig.COMMON_CONFIG.doCompat.set(false);
 				LOGGER.error("Had an error loading postInit compatibility!");
 				LOGGER.catching(e.fillInStackTrace());
 			}
