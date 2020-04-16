@@ -22,6 +22,7 @@ import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.gen.feature.template.IStructureProcessorType;
 import net.minecraft.world.gen.feature.template.PlacementSettings;
 import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.gen.feature.template.TemplateManager;
@@ -31,6 +32,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
 import twilightforest.structures.RandomizedTemplateProcessor;
+import twilightforest.structures.TFStructureProcessors;
 
 import javax.annotation.Nullable;
 import java.util.Map;
@@ -74,7 +76,7 @@ public class GenDruidHut<T extends NoFeatureConfig> extends Feature<T> {
 		}
 
 		BlockPos placementPos = template.getZeroPositionWithTransform(startPos, mirror, rotation);
-		template.addBlocksToWorld(world, placementPos/*, new HutTemplateProcessor(placementPos, placementsettings, random.nextInt(), random.nextInt(), random.nextInt())*/, placementsettings, 20);
+		template.addBlocksToWorld(world, placementPos, placementsettings.addProcessor(new HutTemplateProcessor(0.2F)), 20);
 
 		Map<BlockPos, String> data = template.getDataBlocks(placementPos, placementsettings);
 
@@ -82,7 +84,7 @@ public class GenDruidHut<T extends NoFeatureConfig> extends Feature<T> {
 			template = templatemanager.getTemplate(BasementType.values()[random.nextInt(BasementType.size)].getBasement(random.nextBoolean()));
 			placementPos = placementPos.down(12).offset(rotation.rotate(mirror.mirror(Direction.NORTH)), 1).offset(rotation.rotate(mirror.mirror(Direction.EAST)), 1);
 
-			template.addBlocksToWorld(world, placementPos, /*new HutTemplateProcessor(placementPos, placementsettings, random.nextInt(), random.nextInt(), random.nextInt()),*/ placementsettings, 20);
+			template.addBlocksToWorld(world, placementPos, placementsettings.addProcessor(new HutTemplateProcessor(0.2F)), 20);
 
 			data.putAll(template.getDataBlocks(placementPos, placementsettings));
 		}
@@ -237,17 +239,27 @@ public class GenDruidHut<T extends NoFeatureConfig> extends Feature<T> {
         }
     }
 
-    public class HutTemplateProcessor extends RandomizedTemplateProcessor {
+    public static class HutTemplateProcessor extends RandomizedTemplateProcessor {
 
-        public HutTemplateProcessor(BlockPos pos, PlacementSettings settings) {
-            super(pos, settings);
+        public HutTemplateProcessor(float integrity) {
+            super(integrity);
         }
+
+        public HutTemplateProcessor(Dynamic<?> dynamic) {
+        	super(dynamic.get("integrity").asFloat(1.0F));
+		}
+
+		@Override
+		protected IStructureProcessorType getType() {
+			return TFStructureProcessors.HUT;
+		}
 
 		@Nullable
 		@Override
 		public Template.BlockInfo process(IWorldReader worldIn, BlockPos pos, Template.BlockInfo p_215194_3_, Template.BlockInfo blockInfo, PlacementSettings settings, @Nullable Template template) {
 			//if (!shouldPlaceBlock()) return null;
 
+			Random random = settings.getRandom(pos);
 			BlockState state = blockInfo.state;
 			Block block = state.getBlock();
 

@@ -1,6 +1,5 @@
 package twilightforest.structures;
 
-import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Direction;
@@ -9,6 +8,7 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
+import net.minecraft.world.gen.feature.template.BlockIgnoreStructureProcessor;
 import net.minecraft.world.gen.feature.template.PlacementSettings;
 import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.gen.feature.template.TemplateManager;
@@ -19,7 +19,7 @@ import twilightforest.TFFeature;
  */
 public abstract class StructureTFComponentTemplate extends StructureTFComponent {
 
-    protected PlacementSettings placeSettings = new PlacementSettings().setReplacedBlock(Blocks.STRUCTURE_VOID); //TODO: StructureProcessor now
+    protected PlacementSettings placeSettings = new PlacementSettings().addProcessor(BlockIgnoreStructureProcessor.STRUCTURE_BLOCK);
     protected BlockPos templatePosition = BlockPos.ZERO;
     protected BlockPos rotatedPosition;
     protected Template TEMPLATE;

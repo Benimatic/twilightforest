@@ -36,8 +36,8 @@ public class ComponentNagaCourtyardPath extends StructureTFComponentTemplate {
 
 	@Override
 	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random random, MutableBoundingBox structureBoundingBox, ChunkPos chunkPosIn) {
-		placeSettings.setBoundingBox(structureBoundingBox);
-		TEMPLATE.addBlocksToWorld(world, templatePosition, /*new CourtyardWallTemplateProcessor(templatePosition, placeSettings),*/ placeSettings, 18);
+		placeSettings.setBoundingBox(structureBoundingBox).addProcessor(new CourtyardWallTemplateProcessor(0.2F));
+		TEMPLATE.addBlocksToWorld(world, templatePosition, placeSettings, 18);
 		return true;
 	}
 }

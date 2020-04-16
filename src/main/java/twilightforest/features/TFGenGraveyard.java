@@ -23,6 +23,7 @@ import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.gen.feature.template.IStructureProcessorType;
 import net.minecraft.world.gen.feature.template.PlacementSettings;
 import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.gen.feature.template.TemplateManager;
@@ -33,6 +34,7 @@ import twilightforest.entity.EntityTFWraith;
 import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
 import twilightforest.structures.RandomizedTemplateProcessor;
+import twilightforest.structures.TFStructureProcessors;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -148,7 +150,7 @@ public class TFGenGraveyard<T extends NoFeatureConfig> extends Feature<T> {
 		BlockPos size = transformedSize.add(-1, 0, -1);
 		BlockPos graveSize = transformedGraveSize.add(-1, 0, -1);
 
-		base.addBlocksToWorld(worldIn, placementPos, /*new WebTemplateProcessor(placementPos, placementsettings),*/ placementsettings, flags);
+		base.addBlocksToWorld(worldIn, placementPos, placementsettings.addProcessor(new WebTemplateProcessor(0.2F)), flags);
 
 		BlockPos start = startPos.add(1, 1, 0);
 		BlockPos end = start.add(size.getX(), 0, size.getZ());
@@ -223,16 +225,25 @@ public class TFGenGraveyard<T extends NoFeatureConfig> extends Feature<T> {
 		}
 	}
 
-	public class WebTemplateProcessor extends RandomizedTemplateProcessor {
+	public static class WebTemplateProcessor extends RandomizedTemplateProcessor {
 
-		public WebTemplateProcessor(BlockPos pos, PlacementSettings settings) {
-			super(pos, settings);
+		public WebTemplateProcessor(float integrity) {
+			super(integrity);
+		}
+
+		public WebTemplateProcessor(Dynamic<?> dynamic) {
+			this(dynamic.get("integrity").asFloat(1.0F));
+		}
+
+		@Override
+		protected IStructureProcessorType getType() {
+			return TFStructureProcessors.WEB;
 		}
 
 		@Nullable
 		@Override
 		public Template.BlockInfo process(IWorldReader worldIn, BlockPos pos, Template.BlockInfo p_process_3_, Template.BlockInfo blockInfo, PlacementSettings settings, @Nullable Template template) {
-			return blockInfo.state.getBlock() == Blocks.GRASS ? blockInfo : random.nextInt(5) == 0 ? new Template.BlockInfo(pos, Blocks.COBWEB.getDefaultState(), null) : blockInfo;
+			return blockInfo.state.getBlock() == Blocks.GRASS ? blockInfo : settings.getRandom(pos).nextInt(5) == 0 ? new Template.BlockInfo(pos, Blocks.COBWEB.getDefaultState(), null) : blockInfo;
 		}
 	}
 }
