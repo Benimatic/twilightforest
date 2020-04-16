@@ -46,14 +46,15 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 		super(piece, feature, i, x, y, z, pSize, pHeight, direction);
 	}
 
-	@Override
-	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-		super.writeStructureToNBT(tagCompound);
-
-		tagCompound.putBoolean("keyTower", this.keyTower);
-
-		tagCompound.putIntArray("doorTypeInts", this.getDoorsTypesAsIntArray());
-	}
+	//TODO: See super
+//	@Override
+//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
+//		super.writeStructureToNBT(tagCompound);
+//
+//		tagCompound.putBoolean("keyTower", this.keyTower);
+//
+//		tagCompound.putIntArray("doorTypeInts", this.getDoorsTypesAsIntArray());
+//	}
 
 	/**
 	 * Turn the openings array into an array of ints.
@@ -480,6 +481,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 
 	/**
 	 * Dark tower half floors
+	 * TODO: Parameter "spacing" is unused. Remove?
 	 */
 	protected void makeHalfFloor(World world, MutableBoundingBox sbb, Rotation rotation, int y, int spacing) {
 		this.fillBlocksRotated(world, sbb, size / 2, y, 1, size - 2, y, size - 2, deco.blockState, rotation);
@@ -488,6 +490,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 
 	/**
 	 * Dark tower full floors
+	 * TODO: Parameters "rotation" and "spacing" are unused. Remove?
 	 */
 	protected void makeFullFloor(World world, MutableBoundingBox sbb, Rotation rotation, int y, int spacing) {
 		// half floor

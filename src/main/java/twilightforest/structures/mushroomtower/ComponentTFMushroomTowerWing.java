@@ -45,14 +45,15 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 
 	/**
 	 * Save to NBT
+	 * TODO: See super
 	 */
-	@Override
-	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-		super.writeStructureToNBT(tagCompound);
-
-		tagCompound.putBoolean("hasBase", this.hasBase);
-		tagCompound.putBoolean("isAscender", this.isAscender);
-	}
+//	@Override
+//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
+//		super.writeStructureToNBT(tagCompound);
+//
+//		tagCompound.putBoolean("hasBase", this.hasBase);
+//		tagCompound.putBoolean("isAscender", this.isAscender);
+//	}
 
 	/**
 	 * Load from NBT

@@ -82,14 +82,15 @@ public class ComponentTFMinotaurMaze extends StructureTFComponentOld {
 
 	/**
 	 * Save to NBT
+	 * TODO: See super
 	 */
-	@Override
-	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-		super.writeStructureToNBT(tagCompound);
-
-		tagCompound.putInt("mazeLevel", this.level);
-		tagCompound.putIntArray("roomCoords", this.rcoords);
-	}
+//	@Override
+//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
+//		super.writeStructureToNBT(tagCompound);
+//
+//		tagCompound.putInt("mazeLevel", this.level);
+//		tagCompound.putIntArray("roomCoords", this.rcoords);
+//	}
 
 	/**
 	 * Load from NBT

@@ -29,12 +29,13 @@ public class ComponentTFStrongholdFoundry extends StructureTFStrongholdComponent
 		super(TFStrongholdPieces.TFSFo, feature, i, facing, x, y, z);
 	}
 
-	@Override
-	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-		super.writeStructureToNBT(tagCompound);
-
-		tagCompound.putInt("entranceLevel", this.entranceLevel);
-	}
+	//TODO: See super
+//	@Override
+//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
+//		super.writeStructureToNBT(tagCompound);
+//
+//		tagCompound.putInt("entranceLevel", this.entranceLevel);
+//	}
 
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {

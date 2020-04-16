@@ -42,14 +42,15 @@ public class ComponentTFMushroomTowerBridge extends ComponentTFMushroomTowerWing
 
 	/**
 	 * Save to NBT
+	 * TODO: See super
 	 */
-	@Override
-	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-		super.writeStructureToNBT(tagCompound);
-
-		tagCompound.putInt("destSize", this.dSize);
-		tagCompound.putInt("destHeight", this.dHeight);
-	}
+//	@Override
+//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
+//		super.writeStructureToNBT(tagCompound);
+//
+//		tagCompound.putInt("destSize", this.dSize);
+//		tagCompound.putInt("destHeight", this.dHeight);
+//	}
 
 	/**
 	 * Load from NBT

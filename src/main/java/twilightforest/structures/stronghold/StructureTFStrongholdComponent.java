@@ -35,12 +35,13 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 		this.setCoordBaseMode(facing);
 	}
 
-	@Override
-	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-		super.writeStructureToNBT(tagCompound);
-
-		tagCompound.putIntArray("doorInts", this.getDoorsAsIntArray());
-	}
+	//TODO: See super
+//	@Override
+//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
+//		super.writeStructureToNBT(tagCompound);
+//
+//		tagCompound.putIntArray("doorInts", this.getDoorsAsIntArray());
+//	}
 
 	/**
 	 * Turn the openings array into an array of ints.

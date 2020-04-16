@@ -44,13 +44,14 @@ public class ComponentTFCloudCastle extends StructureTFComponentOld {
 		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -8, 0, -8, 16, 16, 16, Direction.SOUTH);
 	}
 
-	@Override
-	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-		super.writeStructureToNBT(tagCompound);
-
-		tagCompound.putBoolean("minerPlaced", this.minerPlaced);
-		tagCompound.putBoolean("warriorPlaced", this.warriorPlaced);
-	}
+	//TODO: See super
+//	@Override
+//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
+//		super.writeStructureToNBT(tagCompound);
+//
+//		tagCompound.putBoolean("minerPlaced", this.minerPlaced);
+//		tagCompound.putBoolean("warriorPlaced", this.warriorPlaced);
+//	}
 
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {

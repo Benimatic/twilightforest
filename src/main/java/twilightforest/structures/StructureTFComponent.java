@@ -101,6 +101,7 @@ public abstract class StructureTFComponent extends StructurePiece {
 	}
 
 	//TODO: I do not think we need to write. As far as I can see, readAdditional does this itself
+	//TODO: However, the NBT does need to be set in the constructor. Just in the ctors with (TemplateManager, CompoundNBT)
 //	@Override
 //	protected void writeStructureToNBT(CompoundNBT tagCompound) {
 //		tagCompound.putInt("si", this.spawnListIndex);

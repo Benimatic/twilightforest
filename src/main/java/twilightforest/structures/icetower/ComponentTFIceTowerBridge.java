@@ -30,12 +30,13 @@ public class ComponentTFIceTowerBridge extends StructureTFComponentOld {
 		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, length, 6, 5, direction);
 	}
 
-	@Override
-	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-		super.writeStructureToNBT(tagCompound);
-
-		tagCompound.putInt("bridgeLength", this.length);
-	}
+	//TODO: See super
+//	@Override
+//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
+//		super.writeStructureToNBT(tagCompound);
+//
+//		tagCompound.putInt("bridgeLength", this.length);
+//	}
 
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {

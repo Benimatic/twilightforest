@@ -30,12 +30,13 @@ public class ComponentTFStrongholdDeadEnd extends StructureTFStrongholdComponent
 		super(TFStrongholdPieces.TFSDE, feature, i, facing, x, y, z);
 	}
 
-	@Override
-	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-		super.writeStructureToNBT(tagCompound);
-
-		tagCompound.putBoolean("chestTrapped", this.chestTrapped);
-	}
+	//TODO: See super
+//	@Override
+//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
+//		super.writeStructureToNBT(tagCompound);
+//
+//		tagCompound.putBoolean("chestTrapped", this.chestTrapped);
+//	}
 
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {

@@ -64,22 +64,23 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 
 	/**
 	 * Save to NBT
+	 * TODO: See super
 	 */
-	@Override
-	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-		super.writeStructureToNBT(tagCompound);
-
-		tagCompound.putInt("srcPosX", this.src.getX());
-		tagCompound.putInt("srcPosY", this.src.getY());
-		tagCompound.putInt("srcPosZ", this.src.getZ());
-		tagCompound.putInt("destPosX", this.dest.getX());
-		tagCompound.putInt("destPosY", this.dest.getY());
-		tagCompound.putInt("destPosZ", this.dest.getZ());
-		tagCompound.putDouble("branchLength", this.length);
-		tagCompound.putDouble("branchAngle", this.angle);
-		tagCompound.putDouble("branchTilt", this.tilt);
-		tagCompound.putBoolean("branchLeafy", this.leafy);
-	}
+//	@Override
+//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
+//		super.writeStructureToNBT(tagCompound);
+//
+//		tagCompound.putInt("srcPosX", this.src.getX());
+//		tagCompound.putInt("srcPosY", this.src.getY());
+//		tagCompound.putInt("srcPosZ", this.src.getZ());
+//		tagCompound.putInt("destPosX", this.dest.getX());
+//		tagCompound.putInt("destPosY", this.dest.getY());
+//		tagCompound.putInt("destPosZ", this.dest.getZ());
+//		tagCompound.putDouble("branchLength", this.length);
+//		tagCompound.putDouble("branchAngle", this.angle);
+//		tagCompound.putDouble("branchTilt", this.tilt);
+//		tagCompound.putBoolean("branchLeafy", this.leafy);
+//	}
 
 	/**
 	 * Load from NBT

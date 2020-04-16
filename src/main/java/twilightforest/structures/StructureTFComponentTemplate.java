@@ -40,6 +40,7 @@ public abstract class StructureTFComponentTemplate extends StructureTFComponent 
         this.boundingBox = new MutableBoundingBox(x, y, z, x, y, z);
     }
 
+    //TODO: Unused. Remove?
     public StructureTFComponentTemplate(IStructurePieceType type, TFFeature feature, int i, int x, int y, int z, Rotation rotation, Mirror mirror) {
         super(type, i);
         this.feature = feature;
@@ -58,13 +59,14 @@ public abstract class StructureTFComponentTemplate extends StructureTFComponent 
 
     protected abstract void loadTemplates(TemplateManager templateManager, MinecraftServer server);
 
-    @Override
-    protected void writeStructureToNBT(CompoundNBT tagCompound) {
-        super.writeStructureToNBT(tagCompound);
-        tagCompound.putInt("TPX", this.templatePosition.getX());
-        tagCompound.putInt("TPY", this.templatePosition.getY());
-        tagCompound.putInt("TPZ", this.templatePosition.getZ());
-    }
+    //TODO: See super
+//    @Override
+//    protected void writeStructureToNBT(CompoundNBT tagCompound) {
+//        super.writeStructureToNBT(tagCompound);
+//        tagCompound.putInt("TPX", this.templatePosition.getX());
+//        tagCompound.putInt("TPY", this.templatePosition.getY());
+//        tagCompound.putInt("TPZ", this.templatePosition.getZ());
+//    }
 
     @Override
     protected void readAdditional(CompoundNBT tagCompound) {

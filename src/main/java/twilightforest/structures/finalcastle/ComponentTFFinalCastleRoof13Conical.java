@@ -38,11 +38,12 @@ public class ComponentTFFinalCastleRoof13Conical extends StructureTFComponentOld
 		this.boundingBox = new MutableBoundingBox(sideTower.getBoundingBox().minX - 2, sideTower.getBoundingBox().maxY - 1, sideTower.getBoundingBox().minZ - 2, sideTower.getBoundingBox().maxX + 2, sideTower.getBoundingBox().maxY + height - 1, sideTower.getBoundingBox().maxZ + 2);
 	}
 
-	@Override
-	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-		super.writeStructureToNBT(tagCompound);
-		tagCompound.putInt("slope", this.slope);
-	}
+	//TODO: See super
+//	@Override
+//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
+//		super.writeStructureToNBT(tagCompound);
+//		tagCompound.putInt("slope", this.slope);
+//	}
 
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {

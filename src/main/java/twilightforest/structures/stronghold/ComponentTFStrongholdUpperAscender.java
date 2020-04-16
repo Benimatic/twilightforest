@@ -29,12 +29,13 @@ public class ComponentTFStrongholdUpperAscender extends StructureTFStrongholdCom
 		super(TFStrongholdPieces.TFSUA, feature, i, facing, x, y, z);
 	}
 
-	@Override
-	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-		super.writeStructureToNBT(tagCompound);
-
-		tagCompound.putBoolean("exitTop", this.exitTop);
-	}
+	//TODO: See super
+//	@Override
+//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
+//		super.writeStructureToNBT(tagCompound);
+//
+//		tagCompound.putBoolean("exitTop", this.exitTop);
+//	}
 
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {

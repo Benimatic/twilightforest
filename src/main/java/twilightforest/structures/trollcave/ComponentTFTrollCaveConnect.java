@@ -39,15 +39,16 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, size - 1, direction);
 	}
 
-	@Override
-	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-		super.writeStructureToNBT(tagCompound);
-
-		tagCompound.putBoolean("openingTowards0", this.openingTowards[0]);
-		tagCompound.putBoolean("openingTowards1", this.openingTowards[1]);
-		tagCompound.putBoolean("openingTowards2", this.openingTowards[2]);
-		tagCompound.putBoolean("openingTowards3", this.openingTowards[3]);
-	}
+	//TODO: See super
+//	@Override
+//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
+//		super.writeStructureToNBT(tagCompound);
+//
+//		tagCompound.putBoolean("openingTowards0", this.openingTowards[0]);
+//		tagCompound.putBoolean("openingTowards1", this.openingTowards[1]);
+//		tagCompound.putBoolean("openingTowards2", this.openingTowards[2]);
+//		tagCompound.putBoolean("openingTowards3", this.openingTowards[3]);
+//	}
 
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {

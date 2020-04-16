@@ -32,14 +32,15 @@ public class ComponentTFStrongholdSmallStairs extends StructureTFStrongholdCompo
 		super(TFStrongholdPieces.TFSSS, feature, i, facing, x, y, z);
 	}
 
-	@Override
-	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-		super.writeStructureToNBT(tagCompound);
-
-		tagCompound.putBoolean("enterBottom", this.enterBottom);
-		tagCompound.putBoolean("hasTreasure", this.hasTreasure);
-		tagCompound.putBoolean("chestTrapped", this.chestTrapped);
-	}
+	//TODO: See super
+//	@Override
+//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
+//		super.writeStructureToNBT(tagCompound);
+//
+//		tagCompound.putBoolean("enterBottom", this.enterBottom);
+//		tagCompound.putBoolean("hasTreasure", this.hasTreasure);
+//		tagCompound.putBoolean("chestTrapped", this.chestTrapped);
+//	}
 
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {

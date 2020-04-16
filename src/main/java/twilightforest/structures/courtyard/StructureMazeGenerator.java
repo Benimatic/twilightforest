@@ -607,24 +607,25 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
         }
     }
 
-    @Override
-    protected void writeStructureToNBT(CompoundNBT tagCompound) {
-        super.writeStructureToNBT(tagCompound);
-
-        ListNBT mazeX = new ListNBT();
-
-        for (int x = 0; x < widthInCellCount-1; x++) {
-            ListNBT mazeY = new ListNBT();
-
-            for (int y = 0; y < heightInCellCount-1; y++) mazeY.add(IntNBT.of(maze[x][y]));
-
-            mazeX.add(mazeY);
-        }
-
-        tagCompound.putInt("mazeWidth", widthInCellCount);
-        tagCompound.putInt("mazeHeight", heightInCellCount);
-        tagCompound.put("maze", mazeX);
-    }
+    //TODO: See super
+//    @Override
+//    protected void writeStructureToNBT(CompoundNBT tagCompound) {
+//        super.writeStructureToNBT(tagCompound);
+//
+//        ListNBT mazeX = new ListNBT();
+//
+//        for (int x = 0; x < widthInCellCount-1; x++) {
+//            ListNBT mazeY = new ListNBT();
+//
+//            for (int y = 0; y < heightInCellCount-1; y++) mazeY.add(IntNBT.of(maze[x][y]));
+//
+//            mazeX.add(mazeY);
+//        }
+//
+//        tagCompound.putInt("mazeWidth", widthInCellCount);
+//        tagCompound.putInt("mazeHeight", heightInCellCount);
+//        tagCompound.put("maze", mazeX);
+//    }
 
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {

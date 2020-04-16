@@ -47,15 +47,16 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 
 	/**
 	 * Save to NBT
+	 * TODO: See super
 	 */
-	@Override
-	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-		super.writeStructureToNBT(tagCompound);
-
-		tagCompound.putInt("trunkRadius", this.radius);
-		tagCompound.putInt("trunkHeight", this.height);
-		tagCompound.putInt("trunkGroundLevel", this.groundLevel);
-	}
+//	@Override
+//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
+//		super.writeStructureToNBT(tagCompound);
+//
+//		tagCompound.putInt("trunkRadius", this.radius);
+//		tagCompound.putInt("trunkHeight", this.height);
+//		tagCompound.putInt("trunkGroundLevel", this.groundLevel);
+//	}
 
 	/**
 	 * Load from NBT

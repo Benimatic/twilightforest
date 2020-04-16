@@ -34,13 +34,14 @@ public class ComponentTFTrollCloud extends StructureTFComponentOld {
 		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -radius, -this.height, -radius, this.size, this.height, this.size, Direction.SOUTH);
 	}
 
-	@Override
-	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-		super.writeStructureToNBT(tagCompound);
-
-		tagCompound.putInt("size", this.size);
-		tagCompound.putInt("height", this.height);
-	}
+	//TODO: See super
+//	@Override
+//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
+//		super.writeStructureToNBT(tagCompound);
+//
+//		tagCompound.putInt("size", this.size);
+//		tagCompound.putInt("height", this.height);
+//	}
 
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {

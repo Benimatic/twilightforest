@@ -46,13 +46,14 @@ public class ComponentTFHollowTreeLeafDungeon extends StructureTFTreeComponent {
 
 	/**
 	 * Save to NBT
+	 * TODO: See super
 	 */
-	@Override
-	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-		super.writeStructureToNBT(tagCompound);
-
-		tagCompound.putInt("leafRadius", this.radius);
-	}
+//	@Override
+//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
+//		super.writeStructureToNBT(tagCompound);
+//
+//		tagCompound.putInt("leafRadius", this.radius);
+//	}
 
 	/**
 	 * Load from NBT

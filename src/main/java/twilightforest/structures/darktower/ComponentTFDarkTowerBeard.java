@@ -34,13 +34,14 @@ public class ComponentTFDarkTowerBeard extends StructureTFComponentOld {
 		this.boundingBox = new MutableBoundingBox(wing.getBoundingBox().minX, wing.getBoundingBox().minY - this.height, wing.getBoundingBox().minZ, wing.getBoundingBox().maxX, wing.getBoundingBox().minY, wing.getBoundingBox().maxZ);
 	}
 
-	@Override
-	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-		super.writeStructureToNBT(tagCompound);
-
-		tagCompound.putInt("beardSize", this.size);
-		tagCompound.putInt("beardHeight", this.height);
-	}
+	//TODO: See super
+//	@Override
+//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
+//		super.writeStructureToNBT(tagCompound);
+//
+//		tagCompound.putInt("beardSize", this.size);
+//		tagCompound.putInt("beardHeight", this.height);
+//	}
 
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {

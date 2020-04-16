@@ -48,14 +48,15 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 
 	/**
 	 * Save to NBT
+	 * TODO: See super
 	 */
-	@Override
-	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-		super.writeStructureToNBT(tagCompound);
-
-		tagCompound.putBoolean("hasBase", this.hasBase);
-		tagCompound.putInt("treasureFloor", this.treasureFloor);
-	}
+//	@Override
+//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
+//		super.writeStructureToNBT(tagCompound);
+//
+//		tagCompound.putBoolean("hasBase", this.hasBase);
+//		tagCompound.putInt("treasureFloor", this.treasureFloor);
+//	}
 
 	/**
 	 * Load from NBT

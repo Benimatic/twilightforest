@@ -28,12 +28,13 @@ public class ComponentTFStrongholdBalconyRoom extends StructureTFStrongholdCompo
 		super(TFStrongholdPieces.TFSBalR, feature, i, facing, x, y, z);
 	}
 
-	@Override
-	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-		super.writeStructureToNBT(tagCompound);
-
-		tagCompound.putBoolean("enterBottom", this.enterBottom);
-	}
+	//TODO: See super
+//	@Override
+//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
+//		super.writeStructureToNBT(tagCompound);
+//
+//		tagCompound.putBoolean("enterBottom", this.enterBottom);
+//	}
 
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {
@@ -91,8 +92,6 @@ public class ComponentTFStrongholdBalconyRoom extends StructureTFStrongholdCompo
 			//this.addDoor(13, 8, 1);
 			addNewComponent(parent, list, random, Rotation.CLOCKWISE_180, 4, 1, -1);
 		}
-
-
 	}
 
 	/**

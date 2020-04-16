@@ -38,14 +38,15 @@ public class ComponentTFTowerRoof extends StructureTFComponentOld {
 
 	/**
 	 * Save to NBT
+	 * TODO: See super
 	 */
-	@Override
-	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-		super.writeStructureToNBT(tagCompound);
-
-		tagCompound.putInt("roofSize", this.size);
-		tagCompound.putInt("roofHeight", this.height);
-	}
+//	@Override
+//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
+//		super.writeStructureToNBT(tagCompound);
+//
+//		tagCompound.putInt("roofSize", this.size);
+//		tagCompound.putInt("roofHeight", this.height);
+//	}
 
 	/**
 	 * Load from NBT

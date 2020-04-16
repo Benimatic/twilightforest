@@ -35,6 +35,7 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 		super(piece, nbt);
 	}
 
+	//TODO: Parameters "world" and "rand" are unused. Remove?
 	public ComponentTFHollowHill(IStructurePieceType type, TFFeature feature, World world, Random rand, int i, int size, int x, int y, int z) {
 		super(type, feature, i);
 
@@ -48,11 +49,12 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -radius, -(3 + hillSize), -radius, radius * 2, radius / 2, radius * 2, Direction.SOUTH);
 	}
 
-	@Override
-	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-		super.writeStructureToNBT(tagCompound);
-		tagCompound.putInt("hillSize", this.hillSize);
-	}
+	//TODO: See super
+//	@Override
+//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
+//		super.writeStructureToNBT(tagCompound);
+//		tagCompound.putInt("hillSize", this.hillSize);
+//	}
 
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {
@@ -193,6 +195,7 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 
 	/**
 	 * @return true if the coordinates are inside the hill in 3D
+	 * TODO: Unused. Remove?
 	 */
 	boolean isInHill(int mapX, int mapY, int mapZ) {
 		int dx = boundingBox.minX + radius - mapX;

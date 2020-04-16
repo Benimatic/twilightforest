@@ -39,14 +39,15 @@ public class ComponentTFTowerBeard extends StructureTFComponentOld {
 
 	/**
 	 * Save to NBT
+	 * TODO: See super
 	 */
-	@Override
-	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-		super.writeStructureToNBT(tagCompound);
-
-		tagCompound.putInt("beardSize", this.size);
-		tagCompound.putInt("beardHeight", this.height);
-	}
+//	@Override
+//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
+//		super.writeStructureToNBT(tagCompound);
+//
+//		tagCompound.putInt("beardSize", this.size);
+//		tagCompound.putInt("beardHeight", this.height);
+//	}
 
 	/**
 	 * Load from NBT
