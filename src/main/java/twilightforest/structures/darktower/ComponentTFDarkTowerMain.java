@@ -7,6 +7,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.state.properties.AttachFace;
 import net.minecraft.state.properties.SlabType;
 import net.minecraft.tileentity.MobSpawnerTileEntity;
 import net.minecraft.util.Direction;
@@ -776,7 +777,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 
 		// center lamp
 		setBlockStateRotated(world, Blocks.REDSTONE_LAMP.getDefaultState(), 8, y + 3, 8, rotation, sbb);
-		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), decoRNG.nextBoolean() ? LeverBlock.EnumOrientation.DOWN_X : LeverBlock.EnumOrientation.DOWN_Z, rotation, false), 8, y + 2, 8, rotation, sbb);
+		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), AttachFace.CEILING, decoRNG.nextBoolean() ? Direction.EAST : Direction.NORTH, false), 8, y + 2, 8, rotation, sbb);
 
 		// planter for trees
 		placeTreePlanter(world, decoRNG.nextInt(5), 6, y + 1, 12, rotation, sbb);
@@ -875,32 +876,32 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 
 		// short piston plunger 1
 		setBlockStateRotated(world, deco.accentState, 14, y + 1, 17, rotation, sbb);
-		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), LeverBlock.EnumOrientation.EAST, rotation, false), 13, y + 1, 17, rotation, sbb);
+		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), AttachFace.WALL, Direction.EAST, false), 13, y + 1, 17, rotation, sbb);
 		setBlockStateRotated(world, Blocks.PISTON.getDefaultState().with(PistonBlock.FACING, Direction.SOUTH), 14, y + 2, 17, rotation, sbb);
 		setBlockStateRotated(world, redstone, 14, y + 2, 16, rotation, sbb);
 
 		// short piston plunger 2
 		setBlockStateRotated(world, deco.accentState, 17, y + 1, 14, rotation, sbb);
-		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), LeverBlock.EnumOrientation.SOUTH, rotation, false), 17, y + 1, 13, rotation, sbb);
+		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), AttachFace.WALL, Direction.SOUTH, false), 17, y + 1, 13, rotation, sbb);
 		setBlockStateRotated(world, Blocks.PISTON.getDefaultState().with(PistonBlock.FACING, Direction.EAST), 17, y + 2, 14, rotation, sbb);
 		setBlockStateRotated(world, redstone, 16, y + 2, 14, rotation, sbb);
 
 		// long piston plunger 1
 		setBlockStateRotated(world, redstone, 14, y + 2, 11, rotation, sbb);
 		setBlockStateRotated(world, deco.accentState, 14, y + 1, 11, rotation, sbb);
-		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), LeverBlock.EnumOrientation.EAST, rotation, true), 13, y + 1, 11, rotation, sbb);
+		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), AttachFace.WALL, Direction.EAST, true), 13, y + 1, 11, rotation, sbb);
 		setBlockStateRotated(world, Blocks.PISTON.getDefaultState().with(PistonBlock.FACING, Direction.NORTH), 14, y + 2, 10, rotation, sbb);
 		setBlockStateRotated(world, deco.accentState, 14, y + 1, 9, rotation, sbb);
-		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), LeverBlock.EnumOrientation.EAST, rotation, false), 13, y + 1, 9, rotation, sbb);
+		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), AttachFace.WALL, Direction.EAST, false), 13, y + 1, 9, rotation, sbb);
 		setBlockStateRotated(world, Blocks.STICKY_PISTON.getDefaultState().with(PistonBlock.FACING, Direction.NORTH), 14, y + 2, 9, rotation, sbb);
 
 		// long piston plunger 2
 		setBlockStateRotated(world, redstone, 11, y + 2, 14, rotation, sbb);
 		setBlockStateRotated(world, deco.accentState, 11, y + 1, 14, rotation, sbb);
-		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), LeverBlock.EnumOrientation.SOUTH, rotation, true), 11, y + 1, 13, rotation, sbb);
+		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), AttachFace.WALL, Direction.SOUTH, true), 11, y + 1, 13, rotation, sbb);
 		setBlockStateRotated(world, Blocks.PISTON.getDefaultState().with(PistonBlock.FACING, Direction.WEST), 10, y + 2, 14, rotation, sbb);
 		setBlockStateRotated(world, deco.accentState, 9, y + 1, 14, rotation, sbb);
-		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), LeverBlock.EnumOrientation.SOUTH, rotation, false), 9, y + 1, 13, rotation, sbb);
+		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), AttachFace.WALL, Direction.SOUTH, false), 9, y + 1, 13, rotation, sbb);
 		setBlockStateRotated(world, Blocks.STICKY_PISTON.getDefaultState().with(PistonBlock.FACING, Direction.WEST), 9, y + 2, 14, rotation, sbb);
 	}
 
@@ -1292,7 +1293,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		int lz = 2 + rand.nextInt(15);
 
 		setBlockStateRotated(world, Blocks.REDSTONE_LAMP.getDefaultState(), lx, y + 2, lz, rotation, sbb);
-		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), rand.nextBoolean() ? LeverBlock.EnumOrientation.DOWN_X : LeverBlock.EnumOrientation.DOWN_Z, rotation, false), lx, y + 1, lz, rotation, sbb);
+		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), AttachFace.CEILING, rand.nextBoolean() ? Direction.EAST : Direction.NORTH, false), lx, y + 1, lz, rotation, sbb);
 	}
 
 	/**
@@ -1400,7 +1401,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		// builder & lever
 		final BlockState inactiveBuilder = TFBlocks.carminite_builder.get().getDefaultState();
 		setBlockStateRotated(world, inactiveBuilder, 7, top - spacing, 10, rotation, sbb);
-		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), rand.nextBoolean() ? LeverBlock.EnumOrientation.UP_Z : LeverBlock.EnumOrientation.UP_X, rotation, false), 7, top - spacing + 1, 11, rotation, sbb);
+		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), AttachFace.FLOOR, rand.nextBoolean() ? Direction.EAST : Direction.NORTH, false), 7, top - spacing + 1, 11, rotation, sbb);
 	}
 
 	private void makeBuilderPlatform(World world, Random rand, Rotation rotation, int y, int z, boolean hole, MutableBoundingBox sbb) {
@@ -1417,7 +1418,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		// builder & lever
 		final BlockState inactiveBuilder = TFBlocks.carminite_builder.get().getDefaultState();
 		setBlockStateRotated(world, inactiveBuilder, 2, y, hole ? z + 1 : z - 1, rotation, sbb);
-		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), rand.nextBoolean() ? LeverBlock.EnumOrientation.UP_Z : LeverBlock.EnumOrientation.UP_X, rotation, false), 2, y + 1, z + 0, rotation, sbb);
+		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), AttachFace.FLOOR, rand.nextBoolean() ? Direction.EAST : Direction.NORTH, false), 2, y + 1, z + 0, rotation, sbb);
 	}
 
 	/**
@@ -1487,30 +1488,37 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 
 				// if there is no lamp, place a switch and quit
 				if (getBlockStateFromPosRotated(world, lx, ly, lz, sbb, rotation).getBlock() != Blocks.REDSTONE_LAMP) {
-					LeverBlock.EnumOrientation orientation;
+					AttachFace face;
+					Direction orientation;
 					switch (direction) {
 						case NORTH:
-							orientation = LeverBlock.EnumOrientation.SOUTH;
+							face = AttachFace.WALL;
+							orientation = Direction.SOUTH;
 							break;
 						case SOUTH:
-							orientation = LeverBlock.EnumOrientation.NORTH;
+							face = AttachFace.WALL;
+							orientation = Direction.NORTH;
 							break;
 						case EAST:
-							orientation = LeverBlock.EnumOrientation.WEST;
+							face = AttachFace.WALL;
+							orientation = Direction.WEST;
 							break;
 						case WEST:
-							orientation = LeverBlock.EnumOrientation.EAST;
+							face = AttachFace.WALL;
+							orientation = Direction.EAST;
 							break;
 						case UP:
-							orientation = LeverBlock.EnumOrientation.UP_Z;
+							face = AttachFace.FLOOR;
+							orientation = Direction.EAST;
 							break;
 						case DOWN:
 						default:
-							orientation = LeverBlock.EnumOrientation.DOWN_X;
+							face = AttachFace.CEILING;
+							orientation = Direction.NORTH;
 							break;
 					}
 
-					setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), orientation, rotation, false), lx, ly, lz, rotation, sbb);
+					setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), face, orientation, false), lx, ly, lz, rotation, sbb);
 					break;
 				}
 			}

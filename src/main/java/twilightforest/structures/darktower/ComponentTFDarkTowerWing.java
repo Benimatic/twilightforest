@@ -3,6 +3,7 @@ package twilightforest.structures.darktower;
 import net.minecraft.block.*;
 import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.state.properties.AttachFace;
 import net.minecraft.state.properties.Half;
 import net.minecraft.state.properties.SlabType;
 import net.minecraft.util.Direction;
@@ -575,41 +576,55 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 		setBlockStateRotated(world, Blocks.STICKY_PISTON.getDefaultState().with(DirectionalBlock.FACING, Direction.UP), cx, y + 1, cz, rotation, sbb);
 		setBlockStateRotated(world, redstoneLamp, cx, y + 2, cz, rotation, sbb);
 		setBlockStateRotated(world, deco.accentState, cx, y + 1, cz + 1, rotation, sbb);
-		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), LeverBlock.EnumOrientation.NORTH, rotation, false), cx, y + 1, cz + 2, rotation, sbb);
+		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), AttachFace.WALL, Direction.NORTH, false), cx, y + 1, cz + 2, rotation, sbb);
 		setBlockStateRotated(world, deco.accentState, cx, y + 3, cz - 1, rotation, sbb);
-		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), LeverBlock.EnumOrientation.SOUTH, rotation, true), cx, y + 3, cz - 2, rotation, sbb);
+		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), AttachFace.WALL, Direction.SOUTH, true), cx, y + 3, cz - 2, rotation, sbb);
 	}
 
-	protected static BlockState getLeverState(BlockState initialState, LeverBlock.EnumOrientation direction, Rotation rotation, boolean isPowered) {
+	protected static BlockState getLeverState(BlockState initialState, AttachFace face, Direction direction, boolean isPowered) {
 		switch (direction) {
 			case NORTH:
 			case SOUTH:
 			case EAST:
 			case WEST:
-				// ignore rotation, as this is handled deeper in the structure code
+				//All Horizontal facings are as they should
 				break;
-			case UP_X:
-				if (rotation == Rotation.CLOCKWISE_90 || rotation == Rotation.COUNTERCLOCKWISE_90) {
-					direction = LeverBlock.EnumOrientation.UP_Z;
-				}
-				break;
-			case UP_Z:
-				if (rotation == Rotation.CLOCKWISE_90 || rotation == Rotation.COUNTERCLOCKWISE_90) {
-					direction = LeverBlock.EnumOrientation.UP_X;
-				}
-				break;
-			case DOWN_X:
-				if (rotation == Rotation.CLOCKWISE_90 || rotation == Rotation.COUNTERCLOCKWISE_90) {
-					direction = LeverBlock.EnumOrientation.DOWN_Z;
-				}
-				break;
-			case DOWN_Z:
-				if (rotation == Rotation.CLOCKWISE_90 || rotation == Rotation.COUNTERCLOCKWISE_90) {
-					direction = LeverBlock.EnumOrientation.DOWN_X;
-				}
-				break;
+			case UP:
+			case DOWN:
+			default:
+				//Levers cannot face Up or Down, as it is a Horizontal Face
+				direction = Direction.NORTH;
 		}
-		return initialState.with(LeverBlock.FACING, direction)
+//		switch (direction) {
+//			case NORTH:
+//			case SOUTH:
+//			case EAST:
+//			case WEST:
+//				// ignore rotation, as this is handled deeper in the structure code
+//				break;
+//			case UP_X:
+//				if (rotation == Rotation.CLOCKWISE_90 || rotation == Rotation.COUNTERCLOCKWISE_90) {
+//					direction = LeverBlock.EnumOrientation.UP_Z;
+//				}
+//				break;
+//			case UP_Z:
+//				if (rotation == Rotation.CLOCKWISE_90 || rotation == Rotation.COUNTERCLOCKWISE_90) {
+//					direction = LeverBlock.EnumOrientation.UP_X;
+//				}
+//				break;
+//			case DOWN_X:
+//				if (rotation == Rotation.CLOCKWISE_90 || rotation == Rotation.COUNTERCLOCKWISE_90) {
+//					direction = LeverBlock.EnumOrientation.DOWN_Z;
+//				}
+//				break;
+//			case DOWN_Z:
+//				if (rotation == Rotation.CLOCKWISE_90 || rotation == Rotation.COUNTERCLOCKWISE_90) {
+//					direction = LeverBlock.EnumOrientation.DOWN_X;
+//				}
+//				break;
+//		}
+		return initialState.with(LeverBlock.HORIZONTAL_FACING, direction)
+				.with(LeverBlock.FACE, face)
 				.with(LeverBlock.POWERED, isPowered);
 	}
 
@@ -688,7 +703,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 		setBlockStateRotated(world, deco.blockState, x + 1, y + 3, z + 1, rotation, sbb);
 		setBlockStateRotated(world, Blocks.STICKY_PISTON.getDefaultState().with(DirectionalBlock.FACING, Direction.NORTH), x + 1, y + 3, z - 1, rotation, sbb);
 		setBlockStateRotated(world, deco.accentState, x + 1, y + 3, z - 2, rotation, sbb);
-		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), LeverBlock.EnumOrientation.WEST, rotation, false), x + 2, y + 3, z - 2, rotation, sbb);
+		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), AttachFace.WALL, Direction.WEST, false), x + 2, y + 3, z - 2, rotation, sbb);
 
 		placeTreasureRotated(world, x + 1, y + 2, z + 1, rotation, TFTreasure.darktower_cache, sbb);
 	}
