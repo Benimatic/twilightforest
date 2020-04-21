@@ -1,7 +1,6 @@
 package twilightforest.client.model.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.entity.model.BipedModel;
@@ -61,15 +60,15 @@ public class ModelTFIceExploder<T extends EntityTFIceMob> extends BipedModel<T> 
 		for (int i = 0; i < spikes.length; i++) {
 
 			if (entity.isAlive()) {
-				GlStateManager.enableBlend();
-				GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+				RenderSystem.enableBlend();
+				RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
 				RenderSystem.color4f(1F, 1F, 1F, 0.6F);
 			}
 
 			this.spikes[i].render(scale);
 
-			GlStateManager.disableBlend();
+			RenderSystem.disableBlend();
 		}
 	}
 

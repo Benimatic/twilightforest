@@ -1,12 +1,12 @@
 package twilightforest.client.renderer;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.GLAllocation;
-import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -65,24 +65,24 @@ public class TFSkyRenderer implements IRenderHandler {
 		RenderSystem.color3f(f, f1, f2);
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder bufferbuilder = tessellator.getBuffer();
-		GlStateManager.depthMask(false);
+		RenderSystem.depthMask(false);
 		RenderSystem.enableFog();
 		RenderSystem.color3f(f, f1, f2);
 
 		if (this.vboEnabled) {
 			rg.skyVBO.bindBuffer();
-			GlStateManager.glEnableClientState(32884);
-			GlStateManager.glVertexPointer(3, 5126, 12, 0);
+			RenderSystem.glEnableClientState(32884);
+			RenderSystem.glVertexPointer(3, 5126, 12, 0);
 			rg.skyVBO.drawArrays(7);
 			rg.skyVBO.unbindBuffer();
-			GlStateManager.glDisableClientState(32884);
+			RenderSystem.glDisableClientState(32884);
 		} else {
-			GlStateManager.callList(rg.glSkyList);
+			RenderSystem.callList(rg.glSkyList);
 		}
 
 		RenderSystem.disableFog();
 		RenderSystem.disableAlphaTest();
-		GlStateManager.enableBlend();
+		RenderSystem.enableBlend();
 		RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 		RenderHelper.disableStandardItemLighting();
 		/* TF - snip out sunrise/sunset since that doesn't happen here
@@ -110,18 +110,18 @@ public class TFSkyRenderer implements IRenderHandler {
 
 			if (this.vboEnabled) {
 				this.starVBO.bindBuffer();
-				GlStateManager.glEnableClientState(32884);
-				GlStateManager.glVertexPointer(3, 5126, 12, 0);
+				RenderSystem.glEnableClientState(32884);
+				RenderSystem.glVertexPointer(3, 5126, 12, 0);
 				this.starVBO.drawArrays(7);
 				this.starVBO.unbindBuffer();
-				GlStateManager.glDisableClientState(32884);
+				RenderSystem.glDisableClientState(32884);
 			} else {
-				GlStateManager.callList(this.starGLCallList);
+				RenderSystem.callList(this.starGLCallList);
 			}
 		}
 
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		GlStateManager.disableBlend();
+		RenderSystem.disableBlend();
 		RenderSystem.enableAlphaTest();
 		RenderSystem.enableFog();
 		RenderSystem.popMatrix();
@@ -135,13 +135,13 @@ public class TFSkyRenderer implements IRenderHandler {
 
 			if (this.vboEnabled) {
 				rg.sky2VBO.bindBuffer();
-				GlStateManager.glEnableClientState(32884);
-				GlStateManager.glVertexPointer(3, 5126, 12, 0);
+				RenderSystem.glEnableClientState(32884);
+				RenderSystem.glVertexPointer(3, 5126, 12, 0);
 				rg.sky2VBO.drawArrays(7);
 				rg.sky2VBO.unbindBuffer();
-				GlStateManager.glDisableClientState(32884);
+				RenderSystem.glDisableClientState(32884);
 			} else {
-				GlStateManager.callList(rg.glSkyList2);
+				RenderSystem.callList(rg.glSkyList2);
 			}
 
 			RenderSystem.popMatrix();
@@ -180,10 +180,10 @@ public class TFSkyRenderer implements IRenderHandler {
 
 		RenderSystem.pushMatrix();
 		RenderSystem.translatef(0.0F, -((float) (d0 - 16.0D)), 0.0F);
-		GlStateManager.callList(rg.glSkyList2);
+		RenderSystem.callList(rg.glSkyList2);
 		RenderSystem.popMatrix();
 		RenderSystem.enableTexture();
-		GlStateManager.depthMask(true);
+		RenderSystem.depthMask(true);
 	}
 
 	// [VanillaCopy] RenderGlobal.generateStars
@@ -211,10 +211,10 @@ public class TFSkyRenderer implements IRenderHandler {
 		} else {
 			this.starGLCallList = GLAllocation.generateDisplayLists(1);
 			RenderSystem.pushMatrix();
-			GlStateManager.glNewList(this.starGLCallList, 4864);
+			RenderSystem.glNewList(this.starGLCallList, 4864);
 			this.renderStars(bufferbuilder);
 			tessellator.draw();
-			GlStateManager.glEndList();
+			RenderSystem.glEndList();
 			RenderSystem.popMatrix();
 		}
 	}

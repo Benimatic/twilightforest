@@ -126,7 +126,7 @@ public class ModelTFGoblinKnightUpper<T extends EntityTFGoblinKnightUpper> exten
 	 */
 	@Override
 	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-		this.shield.isHidden = !entity.hasShield();
+		this.shield.showModel = entity.hasShield();
 
 		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 

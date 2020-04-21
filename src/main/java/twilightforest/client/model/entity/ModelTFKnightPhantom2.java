@@ -9,6 +9,9 @@ import twilightforest.entity.boss.EntityTFKnightPhantom;
 
 public class ModelTFKnightPhantom2<T extends EntityTFKnightPhantom> extends BipedModel<T> {
 
+	//Workaround because Render doesn't accept an Entity parameter
+	private T knight;
+
 	public ModelTFKnightPhantom2() {
 		this(0.0F);
 	}
@@ -34,10 +37,11 @@ public class ModelTFKnightPhantom2<T extends EntityTFKnightPhantom> extends Bipe
 
 	/**
 	 * Sets the models various rotation angles then renders the model.
+	 * TODO: Should this be in Renderer instead?
 	 */
 	@Override
 	public void render(MatrixStack stack, IVertexBuilder builder, int light, int overlay, float red, float green, float blue, float scale) {
-		if (entity.isChargingAtPlayer()) {
+		if (knight != null && knight.isChargingAtPlayer()) {
 			// render full skeleton
 			super.render(stack, builder, light, overlay, red, green, blue, scale);
 		}
@@ -50,6 +54,8 @@ public class ModelTFKnightPhantom2<T extends EntityTFKnightPhantom> extends Bipe
 	 */
 	@Override
 	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+		this.knight = entity;
+
 		super.setAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 		this.bipedLeftLeg.rotateAngleX = 0;
 		this.bipedLeftLeg.rotateAngleY = 0;

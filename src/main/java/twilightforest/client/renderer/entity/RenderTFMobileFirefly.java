@@ -1,7 +1,6 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -24,15 +23,15 @@ public class RenderTFMobileFirefly<T extends EntityTFMobileFirefly> extends Enti
 		super(manager);
 	}
 
-	private void doRenderTinyFirefly(T firefly, double x, double y, double z, float brightness, float size) {
-		RenderSystem.pushMatrix();
+	private void doRenderTinyFirefly(T firefly, MatrixStack matrix, double x, double y, double z, float brightness, float size) {
+		matrix.push();
 
-		RenderSystem.translatef((float) x, (float) y + 0.5F, (float) z);
+		matrix.translate(x, y + 0.5D, z);
 
 		// undo rotations so we can draw a billboarded firefly
 		FloatBuffer modelview = BufferUtils.createFloatBuffer(16);
 
-		GlStateManager.getFloat(GL11.GL_MODELVIEW_MATRIX, modelview);
+		RenderSystem.getFloat(GL11.GL_MODELVIEW_MATRIX, modelview);
 
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
@@ -45,15 +44,15 @@ public class RenderTFMobileFirefly<T extends EntityTFMobileFirefly> extends Enti
 			}
 		}
 
-		GL11.glLoadMatrix(modelview);
+		GL11.glLoadMatrixf(modelview);
 
 		bindEntityTexture(firefly);
 
-		GlStateManager.colorMask(true, true, true, true);
+		RenderSystem.colorMask(true, true, true, true);
 
 		// render the firefly glow
-		GlStateManager.enableBlend();
-		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		RenderSystem.enableBlend();
+		RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		RenderSystem.enableAlphaTest();
 		RenderSystem.disableLighting();
 
@@ -61,16 +60,16 @@ public class RenderTFMobileFirefly<T extends EntityTFMobileFirefly> extends Enti
 //		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, brightness);
 		fireflyModel.glow1.render(0.0625f * size);
-		GlStateManager.disableBlend();
+		RenderSystem.disableBlend();
 		RenderSystem.enableLighting();
 
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		RenderSystem.popMatrix();
+		matrix.pop();
 	}
 
 	@Override
 	public void render(T firefly, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
-		doRenderTinyFirefly(firefly, x, y, z, firefly.getGlowBrightness(), 1.0F);
+		doRenderTinyFirefly(firefly, stack, x, y, z, firefly.getGlowBrightness(), 1.0F);
 	}
 
 	@Override

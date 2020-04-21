@@ -1,9 +1,10 @@
 package twilightforest.client.renderer;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.world.ClientWorld;
@@ -89,9 +90,9 @@ public class TFWeatherRenderer implements IRenderHandler {
 			int k = MathHelper.floor(entity.getZ());
 			Tessellator tessellator = Tessellator.getInstance();
 			BufferBuilder bufferbuilder = tessellator.getBuffer();
-			GlStateManager.disableCull();
-			GlStateManager.glNormal3f(0.0F, 1.0F, 0.0F);
-			GlStateManager.enableBlend();
+			RenderSystem.disableCull();
+			RenderSystem.normal3f(0.0F, 1.0F, 0.0F);
+			RenderSystem.enableBlend();
 			RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 			RenderSystem.alphaFunc(516, 0.1F);
 			double d0 = entity.lastTickPosX + (entity.getX() - entity.lastTickPosX) * (double) partialTicks;
@@ -226,9 +227,9 @@ public class TFWeatherRenderer implements IRenderHandler {
 			Tessellator tessellator = Tessellator.getInstance();
 			BufferBuilder bufferbuilder = tessellator.getBuffer();
 
-			GlStateManager.disableCull();
-			GlStateManager.glNormal3f(0.0F, 1.0F, 0.0F);
-			GlStateManager.enableBlend();
+			RenderSystem.disableCull();
+			RenderSystem.normal3f(0.0F, 1.0F, 0.0F);
+			RenderSystem.enableBlend();
 			RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 			RenderSystem.alphaFunc(516, 0.1F);
 
@@ -408,15 +409,15 @@ public class TFWeatherRenderer implements IRenderHandler {
 		if (isNearLockedStructure(wc, mc.getRenderViewEntity())) {
 			mc.gameRenderer.enableLightmap();
 			Entity entity = mc.getRenderViewEntity();
-			World world = mc.world;
+			//World world = mc.world;
 			int i = MathHelper.floor(entity.getX());
 			int j = MathHelper.floor(entity.getY());
 			int k = MathHelper.floor(entity.getZ());
 			Tessellator tessellator = Tessellator.getInstance();
 			BufferBuilder bufferbuilder = tessellator.getBuffer();
-			GlStateManager.disableCull();
-			GlStateManager.glNormal3f(0.0F, 1.0F, 0.0F);
-			GlStateManager.enableBlend();
+			RenderSystem.disableCull();
+			RenderSystem.normal3f(0.0F, 1.0F, 0.0F);
+			RenderSystem.enableBlend();
 			RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 			RenderSystem.alphaFunc(516, 0.1F);
 			double d0 = entity.lastTickPosX + (entity.getX() - entity.lastTickPosX) * (double) partialTicks;

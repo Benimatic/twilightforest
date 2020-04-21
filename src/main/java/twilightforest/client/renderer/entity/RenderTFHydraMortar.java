@@ -42,7 +42,7 @@ public class RenderTFHydraMortar<T extends EntityTFHydraMortar> extends EntityRe
 			var10 *= var10;
 			var10 *= var10;
 			float var11 = 1.0F + var10 * 0.3F;
-			GlStateManager.scalef(var11, var11, var11);
+			stack.scale(var11, var11, var11);
 		}
 
 		var10 = (1.0F - ((float) mortar.fuse - partialTicks + 1.0F) / 100.0F) * 0.8F;
@@ -51,18 +51,18 @@ public class RenderTFHydraMortar<T extends EntityTFHydraMortar> extends EntityRe
 		mortarModel.render(0.075F);
 
 		if (mortar.fuse / 5 % 2 == 0) {
-			GlStateManager.disableTexture2D();
+			RenderSystem.disableTexture();
 			RenderSystem.disableLighting();
-			GlStateManager.enableBlend();
-			GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_DST_ALPHA);
+			RenderSystem.enableBlend();
+			RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_DST_ALPHA);
 			RenderSystem.color4f(1.0F, 1.0F, 1.0F, var10);
 
 			mortarModel.render(0.075F);
 
 			RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-			GlStateManager.disableBlend();
+			RenderSystem.disableBlend();
 			RenderSystem.enableLighting();
-			GlStateManager.enableTexture2D();
+			RenderSystem.enableTexture();
 		}
 
 		stack.pop();
