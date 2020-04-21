@@ -10,6 +10,7 @@ public class TFBiomeClearing extends TFBiomeBase {
 		TFBiomeDecorator.addOres(this);
 		TFBiomeDecorator.addPlantRoots(this);
 		TFBiomeDecorator.addLakes(this);
+		TFBiomeDecorator.addRuins(this);
 		TFBiomeDecorator.addSprings(this);
 		TFBiomeDecorator.addTorchberries(this);
 		TFBiomeDecorator.addGrass(this, 10);

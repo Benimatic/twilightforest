@@ -9,6 +9,7 @@ public class TFBiomeOakSavanna extends TFBiomeBase {
 		TFBiomeDecorator.addOres(this);
 		TFBiomeDecorator.addClayDisks(this, 1);
 		TFBiomeDecorator.addLakes(this);
+		TFBiomeDecorator.addRuins(this);
 		TFBiomeDecorator.addSprings(this);
 		TFBiomeDecorator.addCanopySavannah(this);
 		TFBiomeDecorator.addMultipleTrees(this, TFBiomeDecorator.SAVANNAH_TREES_CONFIG, 1);

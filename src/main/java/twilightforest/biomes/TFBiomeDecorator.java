@@ -4,9 +4,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.util.WeightedRandom;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.DefaultBiomeFeatures;
 import net.minecraft.world.gen.GenerationStage;
@@ -19,80 +16,21 @@ import net.minecraft.world.gen.placement.*;
 import net.minecraftforge.common.IPlantable;
 import twilightforest.TFConfig;
 import twilightforest.block.TFBlocks;
-import twilightforest.features.GenDruidHut;
 import twilightforest.world.feature.*;
+import twilightforest.world.feature.config.CaveStalactiteConfig;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
-import java.util.function.Supplier;
 
 public class TFBiomeDecorator {
-
-	//TODO: This needs to be moved into a proper decoration method. In comes MultipleRandomFeatureConfig...
-	private static final List<RuinEntry> ruinList = new ArrayList<>();
-
-	static {
-		// make list of ruins
-		addRuin(TFGenStoneCircle::new      , TFConfig.dimension.worldGenWeights.stoneCircleWeight    );
-		addRuin(TFGenWell::new             , TFConfig.dimension.worldGenWeights.wellWeight           );
-		addRuin(TFGenOutsideStalagmite::new, TFConfig.dimension.worldGenWeights.stalagmiteWeight     );
-		addRuin(TFGenFoundation::new       , TFConfig.dimension.worldGenWeights.foundationWeight     );
-		addRuin(TFGenMonolith::new         , TFConfig.dimension.worldGenWeights.monolithWeight       );
-		addRuin(TFGenGroveRuins::new       , TFConfig.dimension.worldGenWeights.groveRuinsWeight     );
-		addRuin(TFGenHollowStump::new      , TFConfig.dimension.worldGenWeights.hollowStumpWeight    );
-		addRuin(TFGenFallenHollowLog::new  , TFConfig.dimension.worldGenWeights.fallenHollowLogWeight);
-		addRuin(TFGenFallenSmallLog::new   , TFConfig.dimension.worldGenWeights.fallenSmallLogWeight );
-
-		addRuin(GenDruidHut::new           , TFConfig.dimension.worldGenWeights.druidHutWeight       );
-	}
-
-	private static void addRuin(Supplier<TFGenerator> generator, int weight) {
-		if (weight > 0) {
-			ruinList.add(new RuinEntry(generator.get(), weight));
-		}
-	}
-
-	private static class RuinEntry extends WeightedRandom.Item {
-
-		public final TFGenerator generator;
-
-		RuinEntry(TFGenerator generator, int weight) {
-			super(weight);
-			this.generator = generator;
-		}
-	}
-
-	@Override
-	protected void genDecorations(Biome biome, World world, Random randomGenerator) {
-		// random features!
-		if (randomGenerator.nextInt(6) == 0) {
-			int rx = chunkPos.getX() + randomGenerator.nextInt(14) + 8;
-			int rz = chunkPos.getZ() + randomGenerator.nextInt(14) + 8;
-			TFGenerator rf = randomFeature(randomGenerator);
-			if (rf != null) {
-				rf.generate(world, randomGenerator, new BlockPos(rx, world.getHeight(rx, rz), rz));
-			}
-		}
-	}
-
-	/**
-	 * Gets a random feature suitable for the current biome.
-	 */
-	@Nullable
-	public TFGenerator randomFeature(Random rand) {
-		return ruinList.isEmpty() ? null : WeightedRandom.getRandomItem(rand, ruinList).generator;
-	}
-
-	//=== PORTING NOTE: BEGIN NEW DECORATION CLASS HERE ===//
 	//TODO: Should some of these be grouped into a sort of "decorate per biome" method, or keep them separate?
 	//FIXME: Not all values are 100% accurate
 	//TODO: Somehow make it so that Features may not generate if a major Structure exists. Ties into first note?
 
 	//shush, I want random
 	public static Random random = new Random();
+
+	public static TFConfig.Common.Dimension.WorldGenWeights weights = TFConfig.COMMON_CONFIG.DIMENSION.worldGenWeights;
 
 	//Blockstates
 	public static final BlockState WATER = Blocks.WATER.getDefaultState();
@@ -148,6 +86,7 @@ public class TFBiomeDecorator {
 	public static final OreFeatureConfig REDSTONE_ORE_CONFIG = (new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, Blocks.REDSTONE_ORE.getDefaultState(), 8));
 	public static final OreFeatureConfig DIAMOND_ORE_CONFIG = (new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, Blocks.DIAMOND_ORE.getDefaultState(), 8));
 	public static final OreFeatureConfig LAPIS_ORE_CONFIG = (new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, Blocks.LAPIS_ORE.getDefaultState(), 7));
+	public static final CaveStalactiteConfig OUTSIDE_STALAG_CONFIG = (new CaveStalactiteConfig(Blocks.STONE.getDefaultState(), 1.0F, -1, -1, false));
 	public static final TreeFeatureConfig OAK_TREE = (new TreeFeatureConfig.Builder(new SimpleBlockStateProvider(OAK_LOG), new SimpleBlockStateProvider(OAK_LEAVES), new BlobFoliagePlacer(2, 0))).baseHeight(4).heightRandA(2).foliageHeight(3).setSapling(TFBlocks.oak_sapling.get()).build();
 	public static final TFTreeFeatureConfig CANOPY_TREE_CONFIG = (new TFTreeFeatureConfig.Builder(new SimpleBlockStateProvider(CANOPY_LOG), new SimpleBlockStateProvider(CANOPY_LEAVES), new SimpleBlockStateProvider(CANOPY_WOOD), new SimpleBlockStateProvider(ROOTS)).chanceFirstFive(3).chanceSecondFive(8).setSapling(TFBlocks.canopy_sapling.get())).build();
 	public static final TFTreeFeatureConfig CANOPY_TREE_DEAD_CONFIG = (new TFTreeFeatureConfig.Builder(new SimpleBlockStateProvider(CANOPY_LOG), new SimpleBlockStateProvider(CANOPY_LEAVES), new SimpleBlockStateProvider(CANOPY_WOOD), new SimpleBlockStateProvider(ROOTS)).chanceFirstFive(3).chanceSecondFive(8).hasLeaves(false).setSapling(TFBlocks.canopy_sapling.get())).build();
@@ -180,6 +119,20 @@ public class TFBiomeDecorator {
 	public static final MultipleRandomFeatureConfig SAVANNAH_TREES_CONFIG = (new MultipleRandomFeatureConfig(ImmutableList.of(Feature.FANCY_TREE.configure(DefaultBiomeFeatures.FANCY_TREE_CONFIG).withChance(0.1F)), Feature.NORMAL_TREE.configure(DefaultBiomeFeatures.OAK_TREE_CONFIG)));
 	public static final MultipleRandomFeatureConfig SNOWY_TREES_CONFIG = (new MultipleRandomFeatureConfig(ImmutableList.of(Feature.NORMAL_TREE.configure(DefaultBiomeFeatures.PINE_TREE_CONFIG).withChance(0.35F), TFBiomeFeatures.LARGE_WINTER_TREE.get().configure(WINTER_TREE).withChance(0.125F)), Feature.NORMAL_TREE.configure(DefaultBiomeFeatures.SPRUCE_TREE_CONFIG)));
 	public static final MultipleRandomFeatureConfig ENCHANTED_TREES_CONFIG = (new MultipleRandomFeatureConfig(ImmutableList.of(Feature.NORMAL_TREE.configure(RAINBOAK_TREE).withChance(0.06F), Feature.FANCY_TREE.configure(FANCY_RAINBOAK_TREE).withChance(0.02F), Feature.NORMAL_TREE.configure(DefaultBiomeFeatures.BIRCH_TREE_CONFIG).withChance(0.2F), Feature.FANCY_TREE.configure(DefaultBiomeFeatures.FANCY_TREE_CONFIG).withChance(0.1F)), Feature.NORMAL_TREE.configure(DefaultBiomeFeatures.OAK_TREE_CONFIG)));
+
+	//TODO: These are using floats of a weighted config. THIS WILL BREAK GENERATION CHANCES. THIS NEEDS TO BE A FLOAT CHANCE. REMOVE floatValue() ON CHANGE
+	public static final MultipleRandomFeatureConfig RUINS_CONFIG = (new MultipleRandomFeatureConfig(ImmutableList.of(
+			TFBiomeFeatures.STONE_CIRCLE.get().configure(IFeatureConfig.NO_FEATURE_CONFIG).withChance(weights.stoneCircleWeight.get().floatValue()),
+			TFBiomeFeatures.WELL.get().configure(IFeatureConfig.NO_FEATURE_CONFIG).withChance(weights.wellWeight.get().floatValue()),
+			TFBiomeFeatures.OUTSIDE_STALAGMITE.get().configure(OUTSIDE_STALAG_CONFIG).withChance(weights.stalagmiteWeight.get().floatValue()),
+			TFBiomeFeatures.FOUNDATION.get().configure(IFeatureConfig.NO_FEATURE_CONFIG).withChance(weights.foundationWeight.get().floatValue()),
+			TFBiomeFeatures.MONOLITH.get().configure(IFeatureConfig.NO_FEATURE_CONFIG).withChance(weights.monolithWeight.get().floatValue()),
+			TFBiomeFeatures.GROVE_RUINS.get().configure(IFeatureConfig.NO_FEATURE_CONFIG).withChance(weights.groveRuinsWeight.get().floatValue()),
+			TFBiomeFeatures.HOLLOW_STUMP.get().configure(HOLLOW_TREE).withChance(weights.hollowStumpWeight.get().floatValue()),
+			TFBiomeFeatures.FALLEN_HOLLOW_LOG.get().configure(IFeatureConfig.NO_FEATURE_CONFIG).withChance(weights.fallenHollowLogWeight.get().floatValue()),
+			TFBiomeFeatures.FALLEN_SMALL_LOG.get().configure(IFeatureConfig.NO_FEATURE_CONFIG).withChance(weights.fallenSmallLogWeight.get().floatValue()),
+			TFBiomeFeatures.DRUID_HUT.get().configure(IFeatureConfig.NO_FEATURE_CONFIG).withChance(weights.druidHutWeight.get().floatValue())
+	), Feature.field_227245_q_.configure(IFeatureConfig.NO_FEATURE_CONFIG)));
 
 	//Carvers and terrain modification
 	public static void addLakes(Biome biome) {
@@ -364,6 +317,10 @@ public class TFBiomeDecorator {
 	}
 
 	//Other Features
+	public static void addRuins(Biome biome) {
+		biome.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, Feature.RANDOM_SELECTOR.configure(RUINS_CONFIG).createDecoratedFeature(Placement.CHANCE_HEIGHTMAP.configure(new ChanceConfig(6))));
+	}
+
 	public static void addHangingLamps(Biome biome) {
 		biome.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, TFBiomeFeatures.HANGING_LAMPS.get().configure(IFeatureConfig.NO_FEATURE_CONFIG).createDecoratedFeature(Placement.COUNT_HEIGHTMAP.configure(new FrequencyConfig(1))));
 	}

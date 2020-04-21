@@ -33,6 +33,7 @@ public class TFBiomeSnow extends TFBiomeBase {
 		TFBiomeDecorator.addOres(this);
 		TFBiomeDecorator.addClayDisks(this, 1);
 		TFBiomeDecorator.addLakes(this);
+		TFBiomeDecorator.addRuins(this);
 		TFBiomeDecorator.addPlantRoots(this);
 		TFBiomeDecorator.addMultipleTrees(this, TFBiomeDecorator.SNOWY_TREES_CONFIG, 7);
 		TFBiomeDecorator.addTorchberries(this);

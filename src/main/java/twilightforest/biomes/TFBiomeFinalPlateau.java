@@ -22,6 +22,7 @@ public class TFBiomeFinalPlateau extends TFBiomeBase {
 
 		TFBiomeDecorator.addClayDisks(this, 1);
 		TFBiomeDecorator.addLakes(this);
+		TFBiomeDecorator.addRuins(this);
 		TFBiomeDecorator.addMushrooms(this);
 	}
 

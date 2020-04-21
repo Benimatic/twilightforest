@@ -17,6 +17,7 @@ public class TFBiomeEnchantedForest extends TFBiomeBase {
 		TFBiomeDecorator.addOres(this);
 		TFBiomeDecorator.addClayDisks(this, 1);
 		TFBiomeDecorator.addLakes(this);
+		TFBiomeDecorator.addRuins(this);
 		TFBiomeDecorator.addSprings(this);
 		TFBiomeDecorator.addPlantRoots(this);
 		TFBiomeDecorator.addTorchberries(this);

@@ -15,6 +15,7 @@ public class TFBiomeFireSwamp extends TFBiomeBase {
 		TFBiomeDecorator.addOres(this);
 		TFBiomeDecorator.addClayDisks(this, 1);
 		TFBiomeDecorator.addLakes(this);
+		TFBiomeDecorator.addRuins(this);
 		TFBiomeDecorator.addPlantRoots(this);
 		TFBiomeDecorator.addExtraPoolsLava(this, 0.125F);
 		TFBiomeDecorator.addMangroves(this, 3);

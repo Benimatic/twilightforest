@@ -26,6 +26,7 @@ public class TFBiomeHighlands extends TFBiomeBase {
 		TFBiomeDecorator.addOres(this);
 		TFBiomeDecorator.addClayDisks(this, 1);
 		TFBiomeDecorator.addLakes(this);
+		TFBiomeDecorator.addRuins(this);
 		TFBiomeDecorator.addPlantRoots(this);
 		TFBiomeDecorator.addTorchberries(this);
 		TFBiomeDecorator.addMultipleTrees(this, TFBiomeDecorator.HIGHLANDS_TREES_CONFIG, 10);
