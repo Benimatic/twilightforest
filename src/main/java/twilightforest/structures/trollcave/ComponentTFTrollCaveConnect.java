@@ -3,7 +3,6 @@ package twilightforest.structures.trollcave;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.HugeMushroomBlock;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
@@ -18,6 +17,7 @@ import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponentOld;
+import twilightforest.util.MushroomUtil;
 import twilightforest.util.RotationUtil;
 
 import java.util.List;
@@ -224,31 +224,27 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 	 */
 	private void makeSingleBracketMushroom(World world, MutableBoundingBox sbb, Rotation rotation, int z, int y, int width, int depth, BlockState mushBlock) {
 
-		this.fillBlocksRotated(world, sbb, size - depth, y, z - (width - 1), size - 2, y, z + (width - 1), mushBlock.with(HugeMushroomBlock.VARIANT, HugeMushroomBlock.EnumType.CENTER), rotation);
+		this.fillBlocksRotated(world, sbb, size - depth, y, z - (width - 1), size - 2, y, z + (width - 1), MushroomUtil.getState(MushroomUtil.Type.CENTER, mushBlock), rotation);
 
-		this.fillBlocksRotated(world, sbb, size - (depth + 1), y, z - (width - 1), size - (depth + 1), y, z + (width - 1), getMushroomState(mushBlock, HugeMushroomBlock.EnumType.EAST), rotation);
+		this.fillBlocksRotated(world, sbb, size - (depth + 1), y, z - (width - 1), size - (depth + 1), y, z + (width - 1), getMushroomState(mushBlock, MushroomUtil.Type.EAST), rotation);
 
-		final BlockState northMushroom = getMushroomState(mushBlock, HugeMushroomBlock.EnumType.SOUTH);
+		final BlockState northMushroom = getMushroomState(mushBlock, MushroomUtil.Type.SOUTH);
 		for (int d = 0; d < (depth - 1); d++) {
 			this.setBlockStateRotated(world, northMushroom, size - (2 + d), y, z - width, rotation, sbb);
 		}
-		final BlockState northWestMushroom = getMushroomState(mushBlock, HugeMushroomBlock.EnumType.SOUTH_EAST);
+		final BlockState northWestMushroom = getMushroomState(mushBlock, MushroomUtil.Type.SOUTH_EAST);
 		this.setBlockStateRotated(world, northWestMushroom, size - (depth + 1), y, z - width, rotation, sbb);
 
-		final BlockState southMushroom = getMushroomState(mushBlock, HugeMushroomBlock.EnumType.NORTH);
+		final BlockState southMushroom = getMushroomState(mushBlock, MushroomUtil.Type.NORTH);
 		for (int d = 0; d < (depth - 1); d++) {
 			this.setBlockStateRotated(world, southMushroom, size - (2 + d), y, z + width, rotation, sbb);
 		}
-		final BlockState southWestMushroom = getMushroomState(mushBlock, HugeMushroomBlock.EnumType.NORTH_EAST);
+		final BlockState southWestMushroom = getMushroomState(mushBlock, MushroomUtil.Type.NORTH_EAST);
 		this.setBlockStateRotated(world, southWestMushroom, size - (depth + 1), y, z + width, rotation, sbb);
 	}
 
-	//TODO: Modernise
-	private BlockState getMushroomState(BlockState mushroomBlockState, HugeMushroomBlock.EnumType defaultRotation) {
-		if (mushroomBlockState.getPropertyKeys().contains(HugeMushroomBlock.VARIANT)) {
-			return mushroomBlockState.with(HugeMushroomBlock.VARIANT, defaultRotation);
-		}
-		return mushroomBlockState;
+	private BlockState getMushroomState(BlockState mushroomBlockState, MushroomUtil.Type defaultRotation) {
+		return MushroomUtil.getState(defaultRotation, mushroomBlockState);
 	}
 
 	protected boolean makeGardenCave(List<StructurePiece> list, Random rand, int index, int x, int y, int z, int caveSize, int caveHeight, Rotation rotation) {

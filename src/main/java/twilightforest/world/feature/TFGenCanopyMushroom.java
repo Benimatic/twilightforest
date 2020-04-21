@@ -2,7 +2,6 @@ package twilightforest.world.feature;
 
 import com.mojang.datafixers.Dynamic;
 import net.minecraft.block.*;
-import net.minecraft.block.BlockHugeMushroom;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
@@ -13,6 +12,7 @@ import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.FeatureUtil;
+import twilightforest.util.MushroomUtil;
 import twilightforest.world.TFWorld;
 
 import java.util.Random;
@@ -140,8 +140,8 @@ public class TFGenCanopyMushroom<T extends NoFeatureConfig> extends Feature<T> {
 						world.setBlockState(pos.add(0, 0, dz), baseState);
 						world.setBlockState(pos.add(0, 0, -dz), baseState);
 					} else {
-						world.setBlockState(pos.add(0, 0, dz), baseState.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.SOUTH));
-						world.setBlockState(pos.add(0, 0, -dz), baseState.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.NORTH));
+						world.setBlockState(pos.add(0, 0, dz), MushroomUtil.getState(MushroomUtil.Type.SOUTH, baseState));
+						world.setBlockState(pos.add(0, 0, -dz), MushroomUtil.getState(MushroomUtil.Type.NORTH, baseState));
 					}
 				} else if (dz == 0) {
 					// two!
@@ -149,8 +149,8 @@ public class TFGenCanopyMushroom<T extends NoFeatureConfig> extends Feature<T> {
 						world.setBlockState(pos.add(dx, 0, 0), baseState);
 						world.setBlockState(pos.add(-dx, 0, 0), baseState);
 					} else {
-						world.setBlockState(pos.add(dx, 0, 0), baseState.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.EAST));
-						world.setBlockState(pos.add(-dx, 0, 0), baseState.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.WEST));
+						world.setBlockState(pos.add(dx, 0, 0), MushroomUtil.getState(MushroomUtil.Type.EAST, baseState));
+						world.setBlockState(pos.add(-dx, 0, 0), MushroomUtil.getState(MushroomUtil.Type.WEST, baseState));
 					}
 				} else if (dist < rad) {
 					// do four at a time for easiness!
@@ -160,10 +160,10 @@ public class TFGenCanopyMushroom<T extends NoFeatureConfig> extends Feature<T> {
 					world.setBlockState(pos.add(-dx, 0, -dz), baseState);
 				} else if (dist == rad) {
 					// do four at a time for easiness!
-					world.setBlockState(pos.add(dx, 0, dz), baseState.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.SOUTH_EAST));
-					world.setBlockState(pos.add(dx, 0, -dz), baseState.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.NORTH_EAST));
-					world.setBlockState(pos.add(-dx, 0, dz), baseState.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.SOUTH_WEST));
-					world.setBlockState(pos.add(-dx, 0, -dz), baseState.with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.NORTH_WEST));
+					world.setBlockState(pos.add(dx, 0, dz), MushroomUtil.getState(MushroomUtil.Type.SOUTH_EAST, baseState));
+					world.setBlockState(pos.add(dx, 0, -dz), MushroomUtil.getState(MushroomUtil.Type.NORTH_EAST, baseState));
+					world.setBlockState(pos.add(-dx, 0, dz), MushroomUtil.getState(MushroomUtil.Type.SOUTH_WEST, baseState));
+					world.setBlockState(pos.add(-dx, 0, -dz), MushroomUtil.getState(MushroomUtil.Type.NORTH_WEST, baseState));
 				}
 			}
 		}

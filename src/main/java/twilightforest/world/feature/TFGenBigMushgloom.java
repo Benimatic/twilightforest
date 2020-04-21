@@ -4,7 +4,6 @@ import com.mojang.datafixers.Dynamic;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.HugeMushroomBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
@@ -14,6 +13,7 @@ import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.FeatureUtil;
+import twilightforest.util.MushroomUtil;
 
 import java.util.Random;
 import java.util.function.Function;
@@ -50,18 +50,17 @@ public class TFGenBigMushgloom<T extends NoFeatureConfig> extends Feature<T> {
 		return true;
 	}
 
-	//TODO: Please verify I did these right
 	private void makeMushroomCap(World world, BlockPos pos) {
-		BlockState defState = TFBlocks.huge_mushgloom.get().getDefaultState().with(HugeMushroomBlock.DOWN, false); //All blocks don't have the texture on the bottom
-		world.setBlockState(pos.add(-1, 0, -1), defState.with(HugeMushroomBlock.SOUTH, false).with(HugeMushroomBlock.EAST, false));
-		world.setBlockState(pos.add(0, 0, -1), defState.with(HugeMushroomBlock.SOUTH, false).with(HugeMushroomBlock.EAST, false).with(HugeMushroomBlock.WEST, false));
-		world.setBlockState(pos.add(1, 0, -1), defState.with(HugeMushroomBlock.SOUTH, false).with(HugeMushroomBlock.WEST, false));
-		world.setBlockState(pos.add(-1, 0, 0), defState.with(HugeMushroomBlock.NORTH, false).with(HugeMushroomBlock.SOUTH, false).with(HugeMushroomBlock.EAST, false));
-		world.setBlockState(pos, defState.with(HugeMushroomBlock.NORTH, false).with(HugeMushroomBlock.SOUTH, false).with(HugeMushroomBlock.EAST, false).with(HugeMushroomBlock.WEST, false));
-		world.setBlockState(pos.add(1, 0, 0), defState.with(HugeMushroomBlock.NORTH, false).with(HugeMushroomBlock.SOUTH, false).with(HugeMushroomBlock.WEST, false));
-		world.setBlockState(pos.add(-1, 0, 1), defState.with(HugeMushroomBlock.NORTH, false).with(HugeMushroomBlock.EAST, false));
-		world.setBlockState(pos.add(0, 0, 1), defState.with(HugeMushroomBlock.NORTH, false).with(HugeMushroomBlock.EAST, false).with(HugeMushroomBlock.WEST, false));
-		world.setBlockState(pos.add(1, 0, 1), defState.with(HugeMushroomBlock.NORTH, false).with(HugeMushroomBlock.WEST, false));
+		BlockState defState = TFBlocks.huge_mushgloom.get().getDefaultState();
+		world.setBlockState(pos.add(-1, 0, -1), MushroomUtil.getState(MushroomUtil.Type.NORTH_WEST, defState));
+		world.setBlockState(pos.add(0, 0, -1), MushroomUtil.getState(MushroomUtil.Type.NORTH, defState));
+		world.setBlockState(pos.add(1, 0, -1), MushroomUtil.getState(MushroomUtil.Type.NORTH_EAST, defState));
+		world.setBlockState(pos.add(-1, 0, 0), MushroomUtil.getState(MushroomUtil.Type.WEST, defState));
+		world.setBlockState(pos, MushroomUtil.getState(MushroomUtil.Type.CENTER, defState));
+		world.setBlockState(pos.add(1, 0, 0), MushroomUtil.getState(MushroomUtil.Type.EAST, defState));
+		world.setBlockState(pos.add(-1, 0, 1), MushroomUtil.getState(MushroomUtil.Type.SOUTH_WEST, defState));
+		world.setBlockState(pos.add(0, 0, 1), MushroomUtil.getState(MushroomUtil.Type.SOUTH, defState));
+		world.setBlockState(pos.add(1, 0, 1), MushroomUtil.getState(MushroomUtil.Type.SOUTH_EAST, defState));
 //		world.setBlockState(pos.add(-1, 0, -1), defState.with(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.NORTH_WEST));
 //		world.setBlockState(pos.add(0, 0, -1), defState.with(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.NORTH));
 //		world.setBlockState(pos.add(1, 0, -1), defState.with(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.NORTH_EAST));
