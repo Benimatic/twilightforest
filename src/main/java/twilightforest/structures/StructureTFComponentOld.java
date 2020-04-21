@@ -56,7 +56,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	//Let's not use vanilla's weird rotation+mirror thing...
 	@Override
 	public void setCoordBaseMode(@Nullable Direction facing) {
-		this.field_74885_f = facing; //TODO: AT
+		this.field_74885_f = facing;
 		this.mirror = Mirror.NONE;
 
 		if (facing == null) {

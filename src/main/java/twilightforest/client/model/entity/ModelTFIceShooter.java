@@ -21,7 +21,6 @@ public class ModelTFIceShooter<T extends EntityTFIceShooter> extends ModelTFIceE
 			//this.spikes[i].rotateAngleY += i * 2.5f;
 			//this.spikes[i].rotateAngleZ += i * 3;
 
-			//TODO: AT
 			this.spikes[i].childModels.get(0).rotationPointY = 9.5F + MathHelper.sin((i + entity.ticksExisted + partialTicks) / 3F) * 3F;
 
 			//((ModelBox)this.spikes[i].cubeList.get(0)). = 6 + MathHelper.sin((entity.ticksExisted + partialTicks) / (float)i) * 3F;

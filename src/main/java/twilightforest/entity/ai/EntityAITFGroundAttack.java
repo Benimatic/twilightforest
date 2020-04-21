@@ -75,7 +75,7 @@ public class EntityAITFGroundAttack extends Goal {
 	public void tick() {
 		// look where we're going
 		this.attacker.getLookController().setLookPositionWithEntity(attackTarget, 30.0F, 30.0F);
-		this.attacker.getMoveHelper().action = MovementController.Action.WAIT; //TODO: AT
+		this.attacker.getMoveHelper().action = MovementController.Action.WAIT;
 
 		if (this.attackTick-- <= 0) {
 			this.attacker.setGroundAttackCharge(false);
