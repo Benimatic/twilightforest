@@ -259,6 +259,7 @@ public class TFConfig {
 
 			public static class WorldGenWeights {
 
+				//TODO: Due to the new way of Feature generation, should these be chances?
 				public ForgeConfigSpec.IntValue stoneCircleWeight;
 				public ForgeConfigSpec.IntValue wellWeight;
 				public ForgeConfigSpec.IntValue stalagmiteWeight;

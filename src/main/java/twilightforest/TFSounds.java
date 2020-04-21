@@ -1,14 +1,10 @@
 package twilightforest;
 
-import net.minecraft.entity.passive.ParrotEntity;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import twilightforest.entity.*;
-import twilightforest.entity.boss.*;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public final class TFSounds {
@@ -144,10 +140,11 @@ public final class TFSounds {
 				MUSIC
 		);
 
-		registerParrotSounds();
+		//registerParrotSounds();
 	}
 
-	private static void registerParrotSounds() {
+	//TODO: Registering Parrot sounds are private, again
+	/*private static void registerParrotSounds() {
 
 		ParrotEntity.registerMimicSound(EntityTFKobold.class, KOBOLD_PARROT);
 		ParrotEntity.registerMimicSound(EntityTFRedcap.class, REDCAP_PARROT);
@@ -181,7 +178,7 @@ public final class TFSounds {
 		ParrotEntity.registerMimicSound(EntityTFSnowQueen.class, ICE_PARROT);
 		ParrotEntity.registerMimicSound(EntityTFUrGhast.class, SoundEvents.E_PARROT_IM_GHAST);
 		ParrotEntity.registerMimicSound(EntityTFYetiAlpha.class, ALPHAYETI_PARROT);
-	}
+	}*/
 
 	private TFSounds() {}
 

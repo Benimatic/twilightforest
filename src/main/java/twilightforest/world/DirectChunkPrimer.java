@@ -2,6 +2,7 @@ package twilightforest.world;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.ChunkPrimer;
 
 /**
@@ -14,17 +15,17 @@ public class DirectChunkPrimer extends ChunkPrimer {
 	private final BlockState[] states = new BlockState[65536];
 
 	@Override
-	public BlockState getBlockState(int x, int y, int z) {
-		BlockState state = states[getBlockIndex(x, y, z)];
+	public BlockState getBlockState(BlockPos pos) {
+		BlockState state = states[getBlockIndex(pos)];
 		return state == null ? DEFAULT_STATE : state;
 	}
 
 	@Override
-	public void setBlockState(int x, int y, int z, BlockState state) {
-		states[getBlockIndex(x, y, z)] = state;
+	public void setBlockState(BlockPos pos, BlockState state, boolean isMoving) {
+		states[getBlockIndex(pos)] = state;
 	}
 
-	private static int getBlockIndex(int x, int y, int z) {
-		return x << 12 | z << 8 | y;
+	private static int getBlockIndex(BlockPos pos) {
+		return pos.getX() << 12 | pos.getZ() << 8 | pos.getY();
 	}
 }

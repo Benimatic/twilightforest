@@ -177,7 +177,7 @@ public class GenDruidHut<T extends NoFeatureConfig> extends Feature<T> {
 
     private static boolean isAreaClear(IWorld world, BlockPos min, BlockPos max) {
         for (BlockPos pos : BlockPos.getAllInBoxMutable(min, max)) {
-            if (!world.getBlockState(pos).getBlock().isReplaceable(world, pos)) {
+            if (!world.getBlockState(pos).getMaterial().isReplaceable()) {
                 return false;
             }
         }

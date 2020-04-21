@@ -9,6 +9,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.particles.ItemParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -88,7 +89,7 @@ public class EntityTFCharmEffect extends Entity implements IRendersAsItem {
 				double dy = getY() + 0.5 * (rand.nextDouble() - rand.nextDouble());
 				double dz = getZ() + 0.5 * (rand.nextDouble() - rand.nextDouble());
 
-				world.addParticle(ParticleTypes.ITEM_CRACK, dx, dy, dz, 0, 0.2, 0, getItemID());
+				world.addParticle(new ItemParticleData(ParticleTypes.ITEM, getItemID()), dx, dy, dz, 0, 0.2, 0);
 			}
 		}
 

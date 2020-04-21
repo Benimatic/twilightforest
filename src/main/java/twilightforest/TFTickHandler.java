@@ -115,7 +115,7 @@ public class TFTickHandler {
 		//TODO: Make these checks a Dimension, not an int
 		if (world.dimension.getDimension() == TFConfig.originDimension
 				|| world.dimension.getDimension() == TFConfig.dimension.dimensionID
-				|| TFConfig.allowPortalsInOtherDimensions) {
+				|| TFConfig.COMMON_CONFIG.allowPortalsInOtherDimensions.get()) {
 
 			List<ItemEntity> itemList = world.getEntitiesWithinAABB(ItemEntity.class, player.getBoundingBox().grow(rangeToCheck));
 
@@ -130,7 +130,7 @@ public class TFTickHandler {
 							double vy = rand.nextGaussian() * 0.02D;
 							double vz = rand.nextGaussian() * 0.02D;
 
-							world.addParticle(ParticleTypes.SPELL, entityItem.getX(), entityItem.getY() + 0.2, entityItem.getZ(), vx, vy, vz);
+							world.addParticle(ParticleTypes.EFFECT, entityItem.getX(), entityItem.getY() + 0.2, entityItem.getZ(), vx, vy, vz);
 						}
 
 						if (TFBlocks.twilight_portal.get().tryToCreatePortal(world, pos, entityItem, player)) {

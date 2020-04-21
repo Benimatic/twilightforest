@@ -14,7 +14,6 @@ import twilightforest.world.feature.config.CaveStalactiteConfig;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
 //I'd call this TFFeatures, but that'd be confused with TFFeature.
-//TODO: Can we handle Structures here, too?
 public class TFBiomeFeatures {
 
 	public static final DeferredRegister<Feature<?>> FEATURES = new DeferredRegister<>(ForgeRegistries.FEATURES, TwilightForestMod.ID);

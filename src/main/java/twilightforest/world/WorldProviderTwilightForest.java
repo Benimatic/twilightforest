@@ -134,7 +134,7 @@ public class WorldProviderTwilightForest extends OverworldDimension { //TODO: Sh
 	}
 
 	@Override
-	public int getAverageGroundLevel() {
+	public int getSeaLevel() {
 		return 30;
 	}
 

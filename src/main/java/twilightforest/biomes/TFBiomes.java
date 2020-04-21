@@ -79,6 +79,7 @@ public class TFBiomes {
 							.downfall(0.9F)
 							.depth(0.2F)
 							.scale(0.2F)
+							.precipitation(Biome.RainType.SNOW)
 			));
 	public static final RegistryObject<Biome> glacier = BIOMES.register("twilight_glacier", () ->
 			new TFBiomeGlacier(

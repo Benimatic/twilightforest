@@ -43,16 +43,6 @@ public class TFBiomeSnow extends TFBiomeBase {
 	}
 
 	@Override
-	public boolean getEnableSnow() {
-		return true;
-	}
-
-	@Override
-	public boolean canRain() {
-		return false;
-	}
-
-	@Override
 	public List<SpawnListEntry> getSpawns(EntityClassification creatureType) {
 		// if it is monster, then only give it the real list 1/MONSTER_SPAWN_RATE of the time
 		if (creatureType == EntityClassification.MONSTER) {

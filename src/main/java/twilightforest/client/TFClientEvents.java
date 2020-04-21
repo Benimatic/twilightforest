@@ -5,14 +5,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
@@ -25,7 +22,6 @@ import net.minecraftforge.fml.common.Mod;
 import twilightforest.TFConfig;
 import twilightforest.TFEventListener;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.TFBlocks;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.client.renderer.entity.LayerShields;
 import twilightforest.world.TFWorld;
@@ -173,10 +169,11 @@ public class TFClientEvents {
 		if (event.phase == TickEvent.Phase.START) {
 			Minecraft minecraft = Minecraft.getInstance();
 
-			boolean fancyGraphics = minecraft.gameSettings.fancyGraphics;
-			TFBlocks.twilight_leaves.setGraphicsLevel(fancyGraphics);
-			TFBlocks.twilight_leaves_3.setGraphicsLevel(fancyGraphics);
-			TFBlocks.magic_leaves.setGraphicsLevel(fancyGraphics);
+			//TODO: Don't think we control this anymore
+//			boolean fancyGraphics = minecraft.gameSettings.fancyGraphics;
+//			TFBlocks.twilight_leaves.setGraphicsLevel(fancyGraphics);
+//			TFBlocks.twilight_leaves_3.setGraphicsLevel(fancyGraphics);
+//			TFBlocks.magic_leaves.setGraphicsLevel(fancyGraphics);
 
 			// only fire if we're in the twilight forest
 			if (minecraft.world != null && TFWorld.isTwilightForest(minecraft.world)) {

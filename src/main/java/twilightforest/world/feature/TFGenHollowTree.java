@@ -493,7 +493,7 @@ public class TFGenHollowTree<T extends TFTreeFeatureConfig> extends TFTreeGenera
 			facing = Direction.WEST;
 		}
 
-		if (TFBlocks.firefly.canPlaceBlockAt(world, src)) {
+		if (TFBlocks.firefly.get().getDefaultState().isValidPosition(world, src)) {
 			world.setBlockState(src, TFBlocks.firefly.get().getDefaultState().with(DirectionalBlock.FACING, facing));
 		}
 	}
@@ -514,7 +514,7 @@ public class TFGenHollowTree<T extends TFTreeFeatureConfig> extends TFTreeGenera
 			facing = Direction.WEST;
 		}
 
-		if (TFBlocks.cicada.canPlaceBlockAt(world, src)) {
+		if (TFBlocks.cicada.get().getDefaultState().isValidPosition(world, src)) {
 			world.setBlockState(src, TFBlocks.cicada.get().getDefaultState().with(DirectionalBlock.FACING, facing));
 		}
 	}

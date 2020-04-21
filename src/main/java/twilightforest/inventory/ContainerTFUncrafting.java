@@ -16,6 +16,7 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.ByteNBT;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraftforge.common.crafting.IShapedRecipe;
@@ -509,7 +510,7 @@ public class ContainerTFUncrafting extends Container {
 			}
 
 			// don't allow uncrafting if the server option is turned off
-			if (TFConfig.disableUncrafting) {
+			if (TFConfig.COMMON_CONFIG.disableUncrafting.get()) {
 				return ItemStack.EMPTY;
 			}
 
@@ -667,6 +668,6 @@ public class ContainerTFUncrafting extends Container {
 
 	@Override
 	public boolean canInteractWith(PlayerEntity player) {
-		return player.getDistanceSqToCenter(this.pos) <= 64.0D && this.world.getBlockState(this.pos).getBlock() == TFBlocks.uncrafting_table.get();
+		return player.getDistanceSq(new Vec3d(this.pos)) <= 64.0D && this.world.getBlockState(this.pos).getBlock() == TFBlocks.uncrafting_table.get();
 	}
 }
