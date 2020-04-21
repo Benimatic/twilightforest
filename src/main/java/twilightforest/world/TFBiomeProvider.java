@@ -66,13 +66,13 @@ public class TFBiomeProvider extends BiomeProvider {
 
 	private static <T extends IArea, C extends IExtendedNoiseRandom<T>> IAreaFactory<T> makeLayers(LongFunction<C> seed) {
 		IAreaFactory<T> biomes = new GenLayerTFBiomes().apply(seed.apply(1L));
-		biomes = new GenLayerTFKeyBiomes(1000L, biomes);
+		biomes = GenLayerTFKeyBiomes.INSTANCE.apply(seed.apply(1000L), biomes);
 		biomes = GenLayerTFCompanionBiomes.INSTANCE.apply(seed.apply(1000L), biomes);
 
 		biomes = ZoomLayer.NORMAL.apply(seed.apply(1000L), biomes);
 		biomes = ZoomLayer.NORMAL.apply(seed.apply(1001), biomes);
 
-		biomes = new GenLayerTFBiomeStabilize(700L, biomes);
+		biomes = GenLayerTFBiomeStabilize.INSTANCE.apply(seed.apply(700L), biomes);
 
 		biomes = GenLayerTFThornBorder.INSTANCE.apply(seed.apply(500L), biomes);
 
@@ -132,9 +132,14 @@ public class TFBiomeProvider extends BiomeProvider {
 	}
 
 	@Override
-	public Biome[] getBiomesForGeneration(Biome[] biomes, int x, int z, int width, int height) {
-		return getBiomesForGeneration(biomes, x, z, width, height, true);
+	public Biome getBiomeForNoiseGen(int x, int y, int z) {
+		return this.genBiomes.func_215738_a(x, z);
 	}
+
+//	@Override
+//	public Biome[] getBiomesForGeneration(Biome[] biomes, int x, int z, int width, int height) {
+//		return getBiomesForGeneration(biomes, x, z, width, height, true);
+//	}
 
 	public Biome[] getBiomesForGeneration(Biome[] biomes, int x, int z, int width, int height, boolean useCache) {
 		// for grid-centred magic maps, get from map cache

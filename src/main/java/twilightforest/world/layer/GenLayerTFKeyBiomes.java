@@ -1,65 +1,109 @@
 package twilightforest.world.layer;
 
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.layer.Layer;
-import net.minecraft.world.gen.layer.IntCache;
+import net.minecraft.world.gen.IExtendedNoiseRandom;
+import net.minecraft.world.gen.area.IArea;
+import net.minecraft.world.gen.layer.traits.IAreaTransformer1;
 import twilightforest.biomes.TFBiomes;
-
 
 /**
  * Puts key biomes in the proper positions
  *
  * @author Ben
  */
-public class GenLayerTFKeyBiomes extends Layer {
+public enum GenLayerTFKeyBiomes implements IAreaTransformer1 {
 
-	public GenLayerTFKeyBiomes(long l, Layer genlayer) {
-		super(l);
-		parent = genlayer;
+	INSTANCE;
+
+	GenLayerTFKeyBiomes() { }
+
+//	public GenLayerTFKeyBiomes(long l, Layer genlayer) {
+//		super(l);
+//		parent = genlayer;
+//	}
+//
+//	public GenLayerTFKeyBiomes(long l) {
+//		super(l);
+//	}
+
+	@Override
+	public int func_215721_a(int x) {
+		return x | 3;
 	}
 
-	public GenLayerTFKeyBiomes(long l) {
-		super(l);
+	@Override
+	public int func_215722_b(int z) {
+		return z | 3;
 	}
 
 	//TODO: Find out how to get an X, Z, Width, and Depth of a Layer. Generally, you don't see it.
+//	@Override
+//	public int[] getInts(int x, int z, int width, int depth) {
+//		int src[] = this.parent.getInts(x, z, width, depth);
+//		int dest[] = IntCache.getIntCache(width * depth);
+//		for (int dz = 0; dz < depth; dz++) {
+//			for (int dx = 0; dx < width; dx++) {
+//				// get offsets
+//				initChunkSeed(((dx + x) | 3), ((dz + z) | 3));
+//
+//				int ox = this.nextInt(3) + 1;
+//				int oz = this.nextInt(3) + 1;
+//
+//				if (((dx + x) & 3) == ox && ((dz + z) & 3) == oz) {
+//					// determine which of the 4
+//					if (((dx + x) & 4) == 0) {
+//						if (((dz + z) & 4) == 0) {
+//							dest[dx + dz * width] = getKeyBiomeFor(dx + x, dz + z, 0);
+//						} else {
+//							dest[dx + dz * width] = getKeyBiomeFor(dx + x, dz + z, 1);
+//						}
+//					} else {
+//						if (((dz + z) & 4) == 0) {
+//							dest[dx + dz * width] = getKeyBiomeFor(dx + x, dz + z, 2);
+//						} else {
+//							dest[dx + dz * width] = getKeyBiomeFor(dx + x, dz + z, 3);
+//						}
+//					}
+//
+//				} else {
+//					dest[dx + dz * width] = src[dx + dz * width];
+//				}
+//			}
+//		}
+//
+//		return dest;
+//	}
+
+	//TODO: This logic is butchered to hell and back
 	@Override
-	public int[] getInts(int x, int z, int width, int depth) {
-		int src[] = this.parent.getInts(x, z, width, depth);
-		int dest[] = IntCache.getIntCache(width * depth);
-		for (int dz = 0; dz < depth; dz++) {
-			for (int dx = 0; dx < width; dx++) {
-				// get offsets
-				initChunkSeed(((dx + x) | 3), ((dz + z) | 3));
+	public int func_215728_a(IExtendedNoiseRandom<?> iExtendedNoiseRandom, IArea iArea, int x, int z) {
+		int dx = func_215721_a(x);
+		int dz = func_215722_b(z);
+		// get offsets
+		//initChunkSeed(((dx + x) | 3), ((dz + z) | 3));
 
-				int ox = this.nextInt(3) + 1;
-				int oz = this.nextInt(3) + 1;
+		int ox = this.nextInt(3) + 1;
+		int oz = this.nextInt(3) + 1;
 
-				if (((dx + x) & 3) == ox && ((dz + z) & 3) == oz) {
-					// determine which of the 4
-					if (((dx + x) & 4) == 0) {
-						if (((dz + z) & 4) == 0) {
-							dest[dx + dz * width] = getKeyBiomeFor(dx + x, dz + z, 0);
-						} else {
-							dest[dx + dz * width] = getKeyBiomeFor(dx + x, dz + z, 1);
-						}
-					} else {
-						if (((dz + z) & 4) == 0) {
-							dest[dx + dz * width] = getKeyBiomeFor(dx + x, dz + z, 2);
-						} else {
-							dest[dx + dz * width] = getKeyBiomeFor(dx + x, dz + z, 3);
-						}
-					}
-
+		if (((dx + x) & 3) == ox && ((dz + z) & 3) == oz) {
+			// determine which of the 4
+			if (((dx + x) & 4) == 0) {
+				if (((dz + z) & 4) == 0) {
+					return getKeyBiomeFor(dx + x, dz + z, 0);
 				} else {
-					dest[dx + dz * width] = src[dx + dz * width];
+					return getKeyBiomeFor(dx + x, dz + z, 1);
+				}
+			} else {
+				if (((dz + z) & 4) == 0) {
+					return getKeyBiomeFor(dx + x, dz + z, 2);
+				} else {
+					return getKeyBiomeFor(dx + x, dz + z, 3);
 				}
 			}
+
+		} else {
+			return src[dx + dz * width];
 		}
-
-
-		return dest;
 	}
 
 	/**
