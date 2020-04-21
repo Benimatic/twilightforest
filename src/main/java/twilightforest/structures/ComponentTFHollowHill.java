@@ -18,6 +18,7 @@ import twilightforest.TFFeature;
 import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
 import twilightforest.world.feature.TFBiomeFeatures;
+import twilightforest.world.feature.TFGenCaveStalactite;
 import twilightforest.world.feature.config.CaveStalactiteConfig;
 
 import java.util.Random;
@@ -151,9 +152,8 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 			Random stalRNG = new Random(world.getSeed() + dx * dz);
 
 			// make the actual stalactite
-			//TODO: Figure out how to get this working...
-			TFGenCaveStalactite stalag = TFGenCaveStalactite.makeRandomOreStalactite(stalRNG, hillSize);
-			stalag.generate(world, stalRNG, pos);
+			CaveStalactiteConfig stalag = TFGenCaveStalactite.makeRandomOreStalactite(stalRNG, hillSize);
+			TFBiomeFeatures.CAVE_STALACTITE.get().configure(stalag).place(world, ((ServerWorld)world).getChunkProvider().getChunkGenerator(), stalRNG, pos);
 		}
 	}
 

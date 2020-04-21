@@ -75,7 +75,7 @@ public class TFGenCaveStalactite<T extends CaveStalactiteConfig> extends Feature
 	 * <p>
 	 * Diamonds and lapis only appear in size 3 and larger caves.
 	 */
-	public static TFGenCaveStalactite makeRandomOreStalactite(Random rand, int hillSize) {
+	public static CaveStalactiteConfig makeRandomOreStalactite(Random rand, int hillSize) {
 		if (hillSize >= 3 || (hillSize >= 2 && rand.nextInt(5) == 0)) {
 			return WeightedRandom.getRandomItem(rand, largeHillStalactites).stalactite;
 		}
@@ -189,15 +189,15 @@ public class TFGenCaveStalactite<T extends CaveStalactiteConfig> extends Feature
 
 	public static class StalactiteEntry extends WeightedRandom.Item {
 
-		final TFGenCaveStalactite stalactite;
+		final CaveStalactiteConfig stalactite;
 
-		StalactiteEntry(TFGenCaveStalactite stalactite, int itemWeight) {
+		StalactiteEntry(CaveStalactiteConfig stalactite, int itemWeight) {
 			super(itemWeight);
 			this.stalactite = stalactite;
 		}
 
 		public StalactiteEntry(BlockState blockState, float size, int maxLength, int minHeight, int itemWeight) {
-			this(new TFGenCaveStalactite<>((dyn) -> new CaveStalactiteConfig(blockState, size, maxLength, minHeight, true)), itemWeight);
+			this(new CaveStalactiteConfig(blockState, size, maxLength, minHeight, true), itemWeight);
 		}
 	}
 
