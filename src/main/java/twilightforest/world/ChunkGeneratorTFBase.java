@@ -1,30 +1,28 @@
 package twilightforest.world;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityClassification;
-import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SharedSeedRandom;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.SpawnListEntry;
-import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.chunk.ChunkPrimer;
-import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
-import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.NoiseChunkGenerator;
-import net.minecraft.world.gen.NoiseGeneratorOctaves;
-import net.minecraft.world.gen.NoiseGeneratorPerlin;
-import net.minecraft.world.gen.structure.MutableBoundingBox;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraft.world.gen.OctavesNoiseGenerator;
+import net.minecraft.world.gen.WorldGenRegion;
+import net.minecraft.world.spawner.WorldEntitySpawner;
 import twilightforest.TFFeature;
 import twilightforest.biomes.TFBiomeBase;
-import twilightforest.biomes.TFBiomeDecorator;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.IntPair;
 
@@ -32,292 +30,172 @@ import javax.annotation.Nullable;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 // TODO: doc out all the vanilla copying
 public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator<TFWorld> {
 
-	protected final Random rand;
+	private static final float[] field_222576_h = Util.make(new float[25], (afloat) -> {
+		for(int i = -2; i <= 2; ++i) {
+			for(int j = -2; j <= 2; ++j) {
+				float f = 10.0F / MathHelper.sqrt((float)(i * i + j * j) + 0.2F);
+				afloat[i + 2 + (j + 2) * 5] = f;
+			}
+		}
 
-	private final NoiseGeneratorOctaves minLimitPerlinNoise;
-	private final NoiseGeneratorOctaves maxLimitPerlinNoise;
-	private final NoiseGeneratorOctaves mainPerlinNoise;
-	private final NoiseGeneratorPerlin surfaceNoise;
-	private final NoiseGeneratorOctaves depthNoise;
-
-	protected final World world;
-	protected final WorldType terrainType;
-
-	private double[] mainNoiseRegion;
-	private double[] minLimitRegion;
-	private double[] maxLimitRegion;
-	private double[] depthRegion;
-
-	protected double[] depthBuffer = new double[256];
-	protected Biome[] biomesForGeneration;
-
-	private final double[] heightMap;
-	private final float[] biomeWeights;
-
-	protected final MapGenTFHollowTree hollowTreeGenerator = new MapGenTFHollowTree();
+	});
+	private final OctavesNoiseGenerator depthNoise;
+	private final boolean isAmplified;
+	private boolean shouldGenerateBedrock = true;
 	protected final Map<TFFeature, MapGenTFMajorFeature> featureGenerators = new EnumMap<>(TFFeature.class);
 	protected final MapGenTFMajorFeature nothingGenerator = new MapGenTFMajorFeature();
 
-	private final boolean shouldGenerateBedrock;
+	public ChunkGeneratorTFBase(IWorld world, BiomeProvider provider, TFWorld settings, boolean shouldGenerateBedrock) {
+		this(world, provider, settings);
 
-	protected static long getSeed(int x, int z) {
-		return x * 0x4f9939f508L + z * 0x1ef1565bd5L;
-	}
-
-	// same as ChunkPrimer
-	protected static int getIndex(int x, int y, int z) {
-		return x << 12 | z << 8 | y;
-	}
-
-	public ChunkGeneratorTFBase(World world, long seed, boolean enableFeatures, boolean shouldGenerateBedrock) {
-
-		this.world = world;
-		this.terrainType = world.getWorldInfo().getGenerator();
-		this.rand = new Random(seed);
 		this.shouldGenerateBedrock = shouldGenerateBedrock;
+	}
 
-		this.minLimitPerlinNoise = new NoiseGeneratorOctaves(this.rand, 16);
-		this.maxLimitPerlinNoise = new NoiseGeneratorOctaves(this.rand, 16);
-		this.mainPerlinNoise = new NoiseGeneratorOctaves(this.rand, 8);
-		this.surfaceNoise = new NoiseGeneratorPerlin(this.rand, 4);
-		this.depthNoise = new NoiseGeneratorOctaves(rand, 16);
+	public ChunkGeneratorTFBase(IWorld world, BiomeProvider provider, TFWorld settings) {
+		super(world, provider, 4, 8, 256, settings, true);
+		this.randomSeed.skip(2620);
+		this.depthNoise = new OctavesNoiseGenerator(this.randomSeed, 15, 0);
+		this.isAmplified = world.getWorldInfo().getGenerator() == WorldType.AMPLIFIED;
+	}
 
-		this.heightMap = new double[825];
-		this.biomeWeights = new float[25];
+	@Override
+	public void spawnMobs(WorldGenRegion region) {
+		int i = region.getMainChunkX();
+		int j = region.getMainChunkZ();
+		Biome biome = region.getBiome((new ChunkPos(i, j)).asBlockPos());
+		SharedSeedRandom sharedseedrandom = new SharedSeedRandom();
+		sharedseedrandom.setDecorationSeed(region.getSeed(), i << 4, j << 4);
+		WorldEntitySpawner.performWorldGenSpawning(region, biome, i, j, sharedseedrandom);
+	}
 
-		for (int j = -2; j <= 2; ++j) {
-			for (int k = -2; k <= 2; ++k) {
-				float f = 10.0F / MathHelper.sqrt((float) (j * j + k * k) + 0.2F);
-				this.biomeWeights[j + 2 + (k + 2) * 5] = f;
+	@Override
+	protected void fillNoiseColumn(double[] noiseY, int noiseX, int noiseZ) {
+		double d0 = (double)684.412F;
+		double d1 = (double)684.412F;
+		double d2 = 8.555149841308594D;
+		double d3 = 4.277574920654297D;
+		int i = -10;
+		int j = 3;
+		this.func_222546_a(noiseY, noiseX, noiseZ, d0, d1, d2, d3, j, i);
+	}
+
+	@Override
+	protected double func_222545_a(double depth, double noise, int y) {
+		double d1 = ((double)y - (8.5D + depth * 8.5D / 8.0D * 4.0D)) * 12.0D * 128.0D / 256.0D / noise;
+		if (d1 < 0.0D) {
+			d1 *= 4.0D;
+		}
+
+		return d1;
+	}
+
+	@Override
+	protected double[] getBiomeNoiseColumn(int x, int z) {
+		double[] adouble = new double[2];
+		float f = 0.0F;
+		float f1 = 0.0F;
+		float f2 = 0.0F;
+		int j = this.getSeaLevel();
+		float f3 = this.biomeProvider.getBiomeForNoiseGen(x, j, z).getDepth();
+
+		for(int k = -2; k <= 2; ++k) {
+			for(int l = -2; l <= 2; ++l) {
+				Biome biome = this.biomeProvider.getBiomeForNoiseGen(x + k, j, z + l);
+				float f4 = biome.getDepth();
+				float f5 = biome.getScale();
+				if (this.isAmplified && f4 > 0.0F) {
+					f4 = 1.0F + f4 * 2.0F;
+					f5 = 1.0F + f5 * 4.0F;
+				}
+
+				float f6 = field_222576_h[k + 2 + (l + 2) * 5] / (f4 + 2.0F);
+				if (biome.getDepth() > f3) {
+					f6 /= 2.0F;
+				}
+
+				f += f5 * f6;
+				f1 += f4 * f6;
+				f2 += f6;
 			}
 		}
 
-		for (TFFeature feature : TFFeature.values()) {
-			MapGenTFMajorFeature generator = feature.createFeatureGenerator();
-			if (generator != null) {
-				featureGenerators.put(feature, generator);
-			}
+		f = f / f2;
+		f1 = f1 / f2;
+		f = f * 0.9F + 0.1F;
+		f1 = (f1 * 4.0F - 1.0F) / 8.0F;
+		adouble[0] = (double)f1 + this.getNoiseDepthAt(x, z);
+		adouble[1] = (double)f;
+		return adouble;
+	}
+
+	private double getNoiseDepthAt(int p_222574_1_, int p_222574_2_) {
+		double d0 = this.depthNoise.getValue((double)(p_222574_1_ * 200), 10.0D, (double)(p_222574_2_ * 200), 1.0D, 0.0D, true) * 65535.0D / 8000.0D;
+		if (d0 < 0.0D) {
+			d0 = -d0 * 0.3D;
 		}
+
+		d0 = d0 * 3.0D - 2.0D;
+		if (d0 < 0.0D) {
+			d0 = d0 / 28.0D;
+		} else {
+			if (d0 > 1.0D) {
+				d0 = 1.0D;
+			}
+
+			d0 = d0 / 40.0D;
+		}
+
+		return d0;
 	}
 
 	protected final void generateFeatures(int x, int z, ChunkPrimer primer) {
 		for (MapGenTFMajorFeature generator : featureGenerators.values()) {
-			generator.generate(world, x, z, primer);
+			generator.place(world, settings, x, z, primer);
 		}
 	}
 
-	protected final Chunk makeChunk(int x, int z, ChunkPrimer primer) {
+	/**
+	 * Returns a list of creatures of the specified type that can spawn at the
+	 * given location.
+	 * <p>
+	 * Twilight Forest variant! First check features, then only if we're not in
+	 * a feature, check the biome.
+	 */
+	@Override
+	public List<SpawnListEntry> getPossibleCreatures(EntityClassification creatureType, BlockPos pos) {
+		// are the specified coordinates precisely in a feature?
+		TFFeature nearestFeature = TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world.getWorld());
 
-		Chunk chunk = new Chunk(world, x, z);
-
-		fillChunk(chunk, primer);
-
-		// load in biomes, to prevent striping?!
-		byte[] chunkBiomes = chunk.getBiomeArray();
-		for (int i = 0; i < chunkBiomes.length; ++i) {
-			chunkBiomes[i] = (byte) Biome.getIdForBiome(this.biomesForGeneration[i]);
+		List<SpawnListEntry> featureList = getFeatureGenerator(nearestFeature).getPossibleCreatures(creatureType, pos);
+		if (featureList != null) {
+			return featureList;
 		}
 
-		chunk.generateSkylightMap();
+		Biome biome = world.getBiome(pos);
 
-		return chunk;
-	}
-
-	// [VanillaCopy] Extended Chunk constructor, material check replaced with block check
-	private void fillChunk(Chunk chunk, ChunkPrimer primer) {
-
-		int i = 256;
-		boolean flag = world.dimension.hasSkyLight();
-		ExtendedBlockStorage[] storageArrays = chunk.getBlockStorageArray();
-
-		for (int j = 0; j < 16; ++j) {
-			for (int k = 0; k < 16; ++k) {
-				for (int l = 0; l < 256; ++l) {
-
-					BlockState iblockstate = primer.getBlockState(j, l, k);
-
-					if (iblockstate.getBlock() != Blocks.AIR) {
-
-						int i1 = l >> 4;
-
-						if (storageArrays[i1] == Chunk.NULL_BLOCK_STORAGE) {
-							storageArrays[i1] = new ExtendedBlockStorage(i1 << 4, flag);
-						}
-
-						storageArrays[i1].set(j, l & 15, k, iblockstate);
-					}
-				}
-			}
+		if (pos.getY() < TFWorld.SEALEVEL && biome instanceof TFBiomeBase) {
+			// cave monsters!
+			return ((TFBiomeBase) biome).getUndergroundSpawnableList(creatureType);
+		} else {
+			return biome.getSpawns(creatureType);
 		}
 	}
 
-	// note: ChunkPrimer changed to a BitSet marking 'solid' blocks
-	// this allows for some post-processing before populating the primer
-	protected final void setBlocksInChunk(int x, int z, ChunkBitArray data) {
-
-		byte seaLevel = 63;
-		this.biomesForGeneration = this.world.getBiomeProvider().getBiomesForGeneration(this.biomesForGeneration, x * 4 - 2, z * 4 - 2, 10, 10);
-		this.generateHeightmap(x * 4, 0, z * 4);
-
-		for (int k = 0; k < 4; ++k) {
-			int l = k * 5;
-			int i1 = (k + 1) * 5;
-
-			for (int j1 = 0; j1 < 4; ++j1) {
-				int k1 = (l + j1) * 33;
-				int l1 = (l + j1 + 1) * 33;
-				int i2 = (i1 + j1) * 33;
-				int j2 = (i1 + j1 + 1) * 33;
-
-				for (int k2 = 0; k2 < 32; ++k2) {
-					double d0 = 0.125D;
-					double d1 = this.heightMap[k1 + k2];
-					double d2 = this.heightMap[l1 + k2];
-					double d3 = this.heightMap[i2 + k2];
-					double d4 = this.heightMap[j2 + k2];
-					double d5 = (this.heightMap[k1 + k2 + 1] - d1) * d0;
-					double d6 = (this.heightMap[l1 + k2 + 1] - d2) * d0;
-					double d7 = (this.heightMap[i2 + k2 + 1] - d3) * d0;
-					double d8 = (this.heightMap[j2 + k2 + 1] - d4) * d0;
-
-					for (int l2 = 0; l2 < 8; ++l2) {
-						double d9 = 0.25D;
-						double d10 = d1;
-						double d11 = d2;
-						double d12 = (d3 - d1) * d9;
-						double d13 = (d4 - d2) * d9;
-
-						for (int i3 = 0; i3 < 4; ++i3) {
-							double d14 = 0.25D;
-							double d16 = (d11 - d10) * d14;
-							double d15 = d10 - d16;
-
-							for (int k3 = 0; k3 < 4; ++k3) {
-								if ((d15 += d16) > 0.0D) {
-									// stone here
-									data.set(getIndex(k * 4 + i3, k2 * 8 + l2, j1 * 4 + k3));
-								} /* else if (k2 * 8 + l2 < seaLevel) */ {
-									// water below sea level left until later
-								}
-							}
-
-							d10 += d12;
-							d11 += d13;
-						}
-
-						d1 += d5;
-						d2 += d6;
-						d3 += d7;
-						d4 += d8;
-					}
-				}
-			}
-		}
+	protected final MapGenTFMajorFeature getFeatureGenerator(TFFeature feature) {
+		return featureGenerators.getOrDefault(feature, nothingGenerator);
 	}
 
-	private void generateHeightmap(int x, int zero, int z) {
+	@Override
+	public int getGroundHeight() {
+		return this.world.getSeaLevel() + 1;
+	}
 
-		this.depthRegion = this.depthNoise.generateNoiseOctaves(this.depthRegion, x, z, 5, 5, 200.0D, 200.0D, 0.5D);
-		this.mainNoiseRegion = this.mainPerlinNoise.generateNoiseOctaves(this.mainNoiseRegion, x, zero, z, 5, 33, 5, 8.555150000000001D, 4.277575000000001D, 8.555150000000001D);
-		this.minLimitRegion = this.minLimitPerlinNoise.generateNoiseOctaves(this.minLimitRegion, x, zero, z, 5, 33, 5, 684.412D, 684.412D, 684.412D);
-		this.maxLimitRegion = this.maxLimitPerlinNoise.generateNoiseOctaves(this.maxLimitRegion, x, zero, z, 5, 33, 5, 684.412D, 684.412D, 684.412D);
-		int terrainIndex = 0;
-		int noiseIndex = 0;
-
-		for (int ax = 0; ax < 5; ++ax) {
-			for (int az = 0; az < 5; ++az) {
-				float totalVariation = 0.0F;
-				float totalHeight = 0.0F;
-				float totalFactor = 0.0F;
-				byte two = 2;
-				Biome biome = this.biomesForGeneration[ax + 2 + (az + 2) * 10];
-
-				for (int ox = -two; ox <= two; ++ox) {
-					for (int oz = -two; oz <= two; ++oz) {
-						Biome biome1 = this.biomesForGeneration[ax + ox + 2 + (az + oz + 2) * 10];
-						float rootHeight = biome1.getBaseHeight();
-						float heightVariation = biome1.getHeightVariation();
-
-						if (this.terrainType == WorldType.AMPLIFIED && rootHeight > 0.0F) {
-							rootHeight = 1.0F + rootHeight * 2.0F;
-							heightVariation = 1.0F + heightVariation * 4.0F;
-						}
-
-						float heightFactor = this.biomeWeights[ox + 2 + (oz + 2) * 5] / (rootHeight + 2.0F);
-
-						if (biome1.getBaseHeight() > biome.getBaseHeight()) {
-							heightFactor /= 2.0F;
-						}
-
-						totalVariation += heightVariation * heightFactor;
-						totalHeight += rootHeight * heightFactor;
-						totalFactor += heightFactor;
-					}
-				}
-
-				totalVariation /= totalFactor;
-				totalHeight /= totalFactor;
-				totalVariation = totalVariation * 0.9F + 0.1F;
-				totalHeight = (totalHeight * 4.0F - 1.0F) / 8.0F;
-				double terrainNoise = this.depthRegion[noiseIndex] / 8000.0D;
-
-				if (terrainNoise < 0.0D) {
-					terrainNoise = -terrainNoise * 0.3D;
-				}
-
-				terrainNoise = terrainNoise * 3.0D - 2.0D;
-
-				if (terrainNoise < 0.0D) {
-					terrainNoise /= 2.0D;
-
-					if (terrainNoise < -1.0D) {
-						terrainNoise = -1.0D;
-					}
-
-					terrainNoise /= 1.4D;
-					terrainNoise /= 2.0D;
-				} else {
-					if (terrainNoise > 1.0D) {
-						terrainNoise = 1.0D;
-					}
-
-					terrainNoise /= 8.0D;
-				}
-
-				++noiseIndex;
-				double heightCalc = (double) totalHeight;
-				double variationCalc = (double) totalVariation;
-				heightCalc += terrainNoise * 0.2D;
-				heightCalc = heightCalc * 8.5D / 8.0D;
-				double d5 = 8.5D + heightCalc * 4.0D;
-
-				for (int ay = 0; ay < 33; ++ay) {
-					double d6 = ((double) ay - d5) * 12.0D * 128.0D / 256.0D / variationCalc;
-
-					if (d6 < 0.0D) {
-						d6 *= 4.0D;
-					}
-
-					double d7 = this.minLimitRegion[terrainIndex] / 512.0D;
-					double d8 = this.maxLimitRegion[terrainIndex] / 512.0D;
-					double d9 = (this.mainNoiseRegion[terrainIndex] / 10.0D + 1.0D) / 2.0D;
-					double terrainCalc = MathHelper.clampedLerp(d7, d8, d9) - d6;
-
-					if (ay > 29) {
-						double d11 = (double) ((float) (ay - 29) / 3.0F);
-						terrainCalc = terrainCalc * (1.0D - d11) + -10.0D * d11;
-					}
-
-					this.heightMap[terrainIndex] = terrainCalc;
-					++terrainIndex;
-				}
-			}
-		}
+	protected static int getIndex(int x, int y, int z) {
+		return x << 12 | z << 8 | y;
 	}
 
 	/**
@@ -337,27 +215,10 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator<TFWorld> 
 		}
 	}
 
-	protected abstract void initPrimer(ChunkPrimer primer, ChunkBitArray data);
-
-	// [VanillaCopy] Exact, ChunkGeneratorOverworld.replaceBiomeBlocks
-	public void replaceBiomeBlocks(int x, int z, ChunkPrimer primer, Biome[] biomesIn) {
-
-		if (!ForgeEventFactory.onReplaceBiomeBlocks(this, x, z, primer, this.world)) return;
-		double d0 = 0.03125D;
-		this.depthBuffer = this.surfaceNoise.getRegion(this.depthBuffer, (double)(x * 16), (double)(z * 16), 16, 16, 0.0625D, 0.0625D, 1.0D);
-
-		for (int i = 0; i < 16; ++i) {
-			for (int j = 0; j < 16; ++j) {
-				Biome biome = biomesIn[j + i * 16];
-				biome.genTerrainBlocks(this.world, this.rand, primer, x * 16 + i, z * 16 + j, this.depthBuffer[j + i * 16]);
-			}
-		}
-	}
-
 	protected final void deformTerrainForFeature(int cx, int cz, ChunkPrimer primer) {
 
 		IntPair nearCenter = new IntPair();
-		TFFeature nearFeature = TFFeature.getNearestFeature(cx, cz, world, nearCenter);
+		TFFeature nearFeature = TFFeature.getNearestFeature(cx, cz, world.getWorld(), nearCenter);
 
 		if (!nearFeature.isTerrainAltered) {
 			return;
@@ -393,9 +254,9 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator<TFWorld> 
 					// yeti lairs are square
 					deformTerrainForYetiLair(primer, nearFeature, x, z, dx, dz);
 
-				} else if (nearFeature == TFFeature.TROLL_CAVE) {
-					deformTerrainForTrollCaves(primer, nearFeature, x, z, dx, dz);
-				}
+				}// else if (nearFeature == TFFeature.TROLL_CAVE) { TODO: Original method did nothing. Commented out
+				//	deformTerrainForTrollCaves(primer, nearFeature, x, z, dx, dz);
+				//}
 				//else if (nearFeature != TFFeature.NOTHING) {
 				//	// hedge mazes, naga arena
 				//	flattenTerrainForFeature(primer, nearFeature, x, z, dx, dz);
@@ -404,6 +265,82 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator<TFWorld> 
 		}
 
 		// done!
+	}
+
+	//TODO: Parameter "nearFeature" is unused. Remove?
+	private void deformTerrainForTrollCloud2(ChunkPrimer primer, TFFeature nearFeature, int cx, int cz, int hx, int hz) {
+		for (int bx = 0; bx < 4; bx++) {
+			for (int bz = 0; bz < 4; bz++) {
+				int dx = (bx * 4) - hx - 2;
+				int dz = (bz * 4) - hz - 2;
+
+				// generate several centers for other clouds
+				int regionX = (cx + 8) >> 4;
+				int regionZ = (cz + 8) >> 4;
+
+				long seed = (long) (regionX * 3129871) ^ (long) regionZ * 116129781L;
+				seed = seed * seed * 42317861L + seed * 7L;
+
+				int num0 = (int) (seed >> 12 & 3L);
+				int num1 = (int) (seed >> 15 & 3L);
+				int num2 = (int) (seed >> 18 & 3L);
+				int num3 = (int) (seed >> 21 & 3L);
+				int num4 = (int) (seed >> 9 & 3L);
+				int num5 = (int) (seed >> 6 & 3L);
+				int num6 = (int) (seed >> 3 & 3L);
+				int num7 = (int) (seed >> 0 & 3L);
+
+				int dx2 = dx + (num0 * 5) - (num1 * 4);
+				int dz2 = dz + (num2 * 4) - (num3 * 5);
+				int dx3 = dx + (num4 * 5) - (num5 * 4);
+				int dz3 = dz + (num6 * 4) - (num7 * 5);
+
+				// take the minimum distance to any center
+				double dist0 = Math.sqrt(dx * dx + dz * dz) / 4.0;
+				double dist2 = Math.sqrt(dx2 * dx2 + dz2 * dz2) / 3.5;
+				double dist3 = Math.sqrt(dx3 * dx3 + dz3 * dz3) / 4.5;
+
+				double dist = Math.min(dist0, Math.min(dist2, dist3));
+
+				float pr = world.getRandom().nextFloat();
+				double cv = (dist - 7F) - (pr * 3.0F);
+
+				// randomize depth and height
+				int y = 166;
+				int depth = 4;
+
+				if (pr < 0.1F) {
+					y++;
+				}
+				if (pr > 0.6F) {
+					depth++;
+				}
+				if (pr > 0.9F) {
+					depth++;
+				}
+
+				// generate cloud
+				for (int sx = 0; sx < 4; sx++) {
+					for (int sz = 0; sz < 4; sz++) {
+						int lx = bx * 4 + sx;
+						int lz = bz * 4 + sz;
+
+						if (dist < 7 || cv < 0.05F) {
+
+							primer.setBlockState(new BlockPos(lx, y, lz), TFBlocks.wispy_cloud.get().getDefaultState(), false);
+							for (int d = 1; d < depth; d++) {
+								primer.setBlockState(new BlockPos(lx, y - d, lz), TFBlocks.fluffy_cloud.get().getDefaultState(), false);
+							}
+							primer.setBlockState(new BlockPos(lx, y - depth, lz), TFBlocks.wispy_cloud.get().getDefaultState(), false);
+						} else if (dist < 8 || cv < 1F) {
+							for (int d = 1; d < depth; d++) {
+								primer.setBlockState(new BlockPos(lx, y - d, lz), TFBlocks.fluffy_cloud.get().getDefaultState(), false);
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 
 	/**
@@ -591,126 +528,8 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator<TFWorld> 
 		}
 	}
 
-	protected void deformTerrainForTrollCaves(ChunkPrimer primer, TFFeature nearFeature, int x, int z, int dx, int dz) {}
-
-	//TODO: Parameter "nearFeature" is unused. Remove?
-	private void deformTerrainForTrollCloud2(ChunkPrimer primer, TFFeature nearFeature, int cx, int cz, int hx, int hz) {
-		for (int bx = 0; bx < 4; bx++) {
-			for (int bz = 0; bz < 4; bz++) {
-				int dx = (bx * 4) - hx - 2;
-				int dz = (bz * 4) - hz - 2;
-
-				// generate several centers for other clouds
-				int regionX = (cx + 8) >> 4;
-				int regionZ = (cz + 8) >> 4;
-
-				long seed = (long) (regionX * 3129871) ^ (long) regionZ * 116129781L;
-				seed = seed * seed * 42317861L + seed * 7L;
-
-				int num0 = (int) (seed >> 12 & 3L);
-				int num1 = (int) (seed >> 15 & 3L);
-				int num2 = (int) (seed >> 18 & 3L);
-				int num3 = (int) (seed >> 21 & 3L);
-				int num4 = (int) (seed >> 9 & 3L);
-				int num5 = (int) (seed >> 6 & 3L);
-				int num6 = (int) (seed >> 3 & 3L);
-				int num7 = (int) (seed >> 0 & 3L);
-
-				int dx2 = dx + (num0 * 5) - (num1 * 4);
-				int dz2 = dz + (num2 * 4) - (num3 * 5);
-				int dx3 = dx + (num4 * 5) - (num5 * 4);
-				int dz3 = dz + (num6 * 4) - (num7 * 5);
-
-				// take the minimum distance to any center
-				double dist0 = Math.sqrt(dx * dx + dz * dz) / 4.0;
-				double dist2 = Math.sqrt(dx2 * dx2 + dz2 * dz2) / 3.5;
-				double dist3 = Math.sqrt(dx3 * dx3 + dz3 * dz3) / 4.5;
-
-				double dist = Math.min(dist0, Math.min(dist2, dist3));
-
-				float pr = world.rand.nextFloat();
-				double cv = (dist - 7F) - (pr * 3.0F);
-
-				// randomize depth and height
-				int y = 166;
-				int depth = 4;
-
-				if (pr < 0.1F) {
-					y++;
-				}
-				if (pr > 0.6F) {
-					depth++;
-				}
-				if (pr > 0.9F) {
-					depth++;
-				}
-
-				// generate cloud
-				for (int sx = 0; sx < 4; sx++) {
-					for (int sz = 0; sz < 4; sz++) {
-						int lx = bx * 4 + sx;
-						int lz = bz * 4 + sz;
-
-						if (dist < 7 || cv < 0.05F) {
-
-							primer.setBlockState(new BlockPos(lx, y, lz), TFBlocks.wispy_cloud.get().getDefaultState(), false);
-							for (int d = 1; d < depth; d++) {
-								primer.setBlockState(new BlockPos(lx, y - d, lz), TFBlocks.fluffy_cloud.get().getDefaultState(), false);
-							}
-							primer.setBlockState(new BlockPos(lx, y - depth, lz), TFBlocks.wispy_cloud.get().getDefaultState(), false);
-						} else if (dist < 8 || cv < 1F) {
-							for (int d = 1; d < depth; d++) {
-								primer.setBlockState(new BlockPos(lx, y - d, lz), TFBlocks.fluffy_cloud.get().getDefaultState(), false);
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-
-//	protected final boolean allowSurfaceLakes(Biome biome) {
-//		if (biome.decorator instanceof TFBiomeDecorator) {
-//			return !((TFBiomeDecorator) biome.decorator).hasCanopy;
-//		}
-//		return true;
-//	}
-
 	public final boolean shouldGenerateBedrock() {
 		return shouldGenerateBedrock;
-	}
-
-	//TODO: If we handled this, it is now done via Biome
-//	@Override
-//	public boolean generateStructures(Chunk chunk, int x, int z) {
-//		return false;
-//	}
-
-	/**
-	 * Returns a list of creatures of the specified type that can spawn at the
-	 * given location.
-	 * <p>
-	 * Twilight Forest variant! First check features, then only if we're not in
-	 * a feature, check the biome.
-	 */
-	@Override
-	public List<SpawnListEntry> getPossibleCreatures(EntityClassification creatureType, BlockPos pos) {
-		// are the specified coordinates precisely in a feature?
-		TFFeature nearestFeature = TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world);
-
-		List<SpawnListEntry> featureList = getFeatureGenerator(nearestFeature).getPossibleCreatures(creatureType, pos);
-		if (featureList != null) {
-			return featureList;
-		}
-
-		Biome biome = world.getBiome(pos);
-
-		if (pos.getY() < TFWorld.SEALEVEL && biome instanceof TFBiomeBase) {
-			// cave monsters!
-			return ((TFBiomeBase) biome).getUndergroundSpawnableList(creatureType);
-		} else {
-			return biome.getSpawns(creatureType);
-		}
 	}
 
 	@Nullable
@@ -726,74 +545,38 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator<TFWorld> 
 		return null;
 	}
 
-	protected final MapGenTFMajorFeature getFeatureGenerator(TFFeature feature) {
-		return featureGenerators.getOrDefault(feature, nothingGenerator);
-	}
-
 	public void setStructureConquered(BlockPos pos, boolean flag) {
-		getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world)).setStructureConquered(pos, flag);
+		getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world.getWorld())).setStructureConquered(pos, flag);
 	}
 
 	public boolean isStructureLocked(BlockPos pos, int lockIndex) {
-		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world)).isStructureLocked(pos, lockIndex);
+		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world.getWorld())).isStructureLocked(pos, lockIndex);
 	}
 
 	//TODO: isInsideStructure doesn't exist
 	public boolean isBlockInStructureBB(BlockPos pos) {
-		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world)).isInsideStructure(pos);
+		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world.getWorld())).isInsideStructure(pos);
 	}
 
 	@Nullable
 	public MutableBoundingBox getSBBAt(BlockPos pos) {
-		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world)).getSBBAt(pos);
+		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world.getWorld())).getSBBAt(pos);
 	}
 
 	public boolean isBlockProtected(BlockPos pos) {
-		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world)).isBlockProtectedAt(pos);
+		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world.getWorld())).isBlockProtectedAt(pos);
 	}
 
 	public boolean isStructureConquered(BlockPos pos) {
-		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world)).isStructureConquered(pos);
+		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world.getWorld())).isStructureConquered(pos);
 	}
 
 	public boolean isBlockInFullStructure(int x, int z) {
-		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(x, z, world)).isBlockInFullStructure(x, z);
+		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(x, z, world.getWorld())).isBlockInFullStructure(x, z);
 	}
-
-	//TODO: Unused
-	public boolean isBlockNearFullStructure(int x, int z, int range) {
-		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(x, z, world)).isBlockNearFullStructure(x, z, range);
-	}
-
-	//public StructureBoundingBox getFullSBBAt(int mapX, int mapZ) {
-	//	getFeatureGenerator(TFFeature.getFeatureAt(mapX, mapZ, world)).getFullSBBAt(mapX, mapZ);
-	//}
 
 	@Nullable
 	public MutableBoundingBox getFullSBBNear(int mapX, int mapZ, int range) {
-		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(mapX, mapZ, world)).getFullSBBNear(mapX, mapZ, range);
+		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(mapX, mapZ, world.getWorld())).getFullSBBNear(mapX, mapZ, range);
 	}
-
-	//TODO: Unused
-	public TFFeature getFeatureAt(BlockPos pos) {
-		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world)).getFeatureAt(pos);
-	}
-
-	//FIXME: Method does not exist
-//	@Override
-//	public void recreateStructures(Chunk chunk, int x, int z) {
-//		for (MapGenTFMajorFeature generator : featureGenerators.values()) {
-//			generator.generate(world, x, z, null);
-//		}
-//	}
-
-	//FIXME: Method does not exist
-//	@Override
-//	public boolean isInsideStructure(World world, String structureName, BlockPos pos) {
-//		if (structureName.equalsIgnoreCase(hollowTreeGenerator.getStructureName())) {
-//			return hollowTreeGenerator.isInsideStructure(pos);
-//		}
-//		TFFeature feature = TFFeature.getFeatureByName(new ResourceLocation(structureName));
-//		return feature != TFFeature.NOTHING && getFeatureGenerator(feature).isInsideStructure(pos);
-//	}
 }

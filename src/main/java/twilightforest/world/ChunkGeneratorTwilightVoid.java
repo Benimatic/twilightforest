@@ -6,9 +6,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraft.world.gen.WorldGenRegion;
 import twilightforest.TFConfig;
 import twilightforest.TFFeature;
 import twilightforest.biomes.TFBiomes;
@@ -17,8 +18,8 @@ public class ChunkGeneratorTwilightVoid extends ChunkGeneratorTFBase {
 
 	private final boolean generateHollowTrees = TFConfig.COMMON_CONFIG.DIMENSION.skylightOaks.get();
 
-	public ChunkGeneratorTwilightVoid(World world, long seed, boolean enableFeatures) {
-		super(world, seed, enableFeatures, false);
+	public ChunkGeneratorTwilightVoid(World world, BiomeProvider provider, TFWorld settings) {
+		super(world, provider, settings, false);
 	}
 
 	@Override
@@ -67,53 +68,55 @@ public class ChunkGeneratorTwilightVoid extends ChunkGeneratorTFBase {
 	}
 
 	@Override
-	public void populate(int x, int z) {
+	public void decorate(WorldGenRegion region) {
 
-		BlockFalling.fallInstantly = true;
+//		BlockFalling.fallInstantly = true;
 
-		int i = x * 16;
-		int j = z * 16;
-		BlockPos blockpos = new BlockPos(i, 0, j);
+//		int i = x * 16;
+//		int j = z * 16;
+//		BlockPos blockpos = new BlockPos(i, 0, j);
 		this.rand.setSeed(this.world.getSeed());
 		long k = this.rand.nextLong() / 2L * 2L + 1L;
 		long l = this.rand.nextLong() / 2L * 2L + 1L;
 		this.rand.setSeed((long)x * k + (long)z * l ^ this.world.getSeed());
-		boolean flag = false;
+//		boolean flag = false;
 		ChunkPos chunkpos = new ChunkPos(x, z);
 
-		ForgeEventFactory.onChunkPopulate(true, this, this.world, this.rand, x, z, flag);
+//		ForgeEventFactory.onChunkPopulate(true, this, this.world, this.rand, x, z, flag);
 
 		for (MapGenTFMajorFeature generator : featureGenerators.values()) {
-			generator.generateStructure(world, rand, chunkpos);
+			generator.place(world, world.getRandom(), chunkpos);
 		}
 
 		if (generateHollowTrees) {
 			hollowTreeGenerator.generateStructure(world, rand, chunkpos);
 		}
 
-		blockpos = blockpos.add(8, 0, 8);
+//		blockpos = blockpos.add(8, 0, 8);
 
-		if (TerrainGen.populate(this, this.world, this.rand, x, z, flag, PopulateChunkEvent.Populate.EventType.ICE)) {
-			for (int k2 = 0; k2 < 16; ++k2) {
-				for (int j3 = 0; j3 < 16; ++j3) {
+//		if (TerrainGen.populate(this, this.world, this.rand, x, z, flag, PopulateChunkEvent.Populate.EventType.ICE)) {
+//			for (int k2 = 0; k2 < 16; ++k2) {
+//				for (int j3 = 0; j3 < 16; ++j3) {
+//
+////					BlockPos blockpos1 = this.world.getPrecipitationHeight(blockpos.add(k2, 0, j3));
+////					BlockPos blockpos2 = blockpos1.down();
+//
+//					//TODO: Handled via SurfaceBuilder
+////					if (this.world.canBlockFreezeWater(blockpos2)) {
+////						this.world.setBlockState(blockpos2, Blocks.ICE.getDefaultState(), 16 | 2);
+////					}
+//
+//					//TODO: This is done via Feature now
+////					if (this.world.canSnowAt(blockpos1, true)) {
+////						this.world.setBlockState(blockpos1, Blocks.SNOW_LAYER.getDefaultState(), 16 | 2);
+////					}
+//				}
+//			}
+//		}//Forge: End ICE
 
-					BlockPos blockpos1 = this.world.getPrecipitationHeight(blockpos.add(k2, 0, j3));
-					BlockPos blockpos2 = blockpos1.down();
+//		ForgeEventFactory.onChunkPopulate(false, this, this.world, this.rand, x, z, flag);
 
-					if (this.world.canBlockFreezeWater(blockpos2)) {
-						this.world.setBlockState(blockpos2, Blocks.ICE.getDefaultState(), 16 | 2);
-					}
-
-					if (this.world.canSnowAt(blockpos1, true)) {
-						this.world.setBlockState(blockpos1, Blocks.SNOW_LAYER.getDefaultState(), 16 | 2);
-					}
-				}
-			}
-		}//Forge: End ICE
-
-		ForgeEventFactory.onChunkPopulate(false, this, this.world, this.rand, x, z, flag);
-
-		BlockFalling.fallInstantly = false;
+//		BlockFalling.fallInstantly = false;
 	}
 
 	@Override
