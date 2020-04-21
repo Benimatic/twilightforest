@@ -9,6 +9,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.structure.StructureStart;
@@ -26,7 +27,7 @@ import java.util.List;
 
 import static twilightforest.TFFeature.NOTHING;
 
-public class MapGenTFMajorFeature extends Structure {
+public class MapGenTFMajorFeature<T extends NoFeatureConfig> extends Structure<T> {
 
     private final TFFeature FEATURE;
 

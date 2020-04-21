@@ -2,10 +2,9 @@ package twilightforest.structures.finalcastle;
 
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import twilightforest.TFFeature;
-import twilightforest.structures.start.StructureStartFinalCastle;
 
 public class TFFinalCastlePieces {
-	public static final IStructurePieceType TFFC = TFFeature.registerPiece("TFFC", StructureStartFinalCastle::new);
+//	public static final IStructurePieceType TFFC = TFFeature.registerPiece("TFFC", StructureStartFinalCastle::new);
 
 	public static final IStructurePieceType TFFCMain = TFFeature.registerPiece("TFFCMain", ComponentTFFinalCastleMain::new);
 	public static final IStructurePieceType TFFCStTo = TFFeature.registerPiece("TFFCStTo", ComponentTFFinalCastleStairTower::new);

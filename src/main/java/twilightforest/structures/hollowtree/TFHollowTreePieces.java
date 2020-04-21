@@ -5,7 +5,7 @@ import twilightforest.TFFeature;
 
 public class TFHollowTreePieces {
 
-	public static final IStructurePieceType TFHTLSt = TFFeature.registerPiece("TFHTLSt", StructureTFHollowTreeStart::new);
+//	public static final IStructurePieceType TFHTLSt = TFFeature.registerPiece("TFHTLSt", StructureTFHollowTreeStart::new);
 
 	public static final IStructurePieceType TFHTLB = TFFeature.registerPiece("TFHTLB", ComponentTFHollowTreeLargeBranch::new);
 	public static final IStructurePieceType TFHTMB = TFFeature.registerPiece("TFHTMB", ComponentTFHollowTreeMedBranch::new);

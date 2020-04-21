@@ -67,7 +67,7 @@ public class ComponentTFFinalCastleEntranceStairs extends StructureTFComponentOl
 	}
 
 	private void placeStairs(World world, MutableBoundingBox sbb, int x, int y, int z, Direction facing) {
-		if (this.getBlockStateFromPos(world, x, y, z, sbb).getBlock().isReplaceable(world, this.getBlockPosWithOffset(x, y, z))) {
+		if (this.getBlockStateFromPos(world, x, y, z, sbb).getMaterial().isReplaceable()) { //TODO: Probably doesn't support replaceable blocks
 			//this.setBlockState(world, deco.blockState, x, y, z, sbb);
 			this.setBlockState(world, deco.stairState.with(StairsBlock.FACING, facing), x, y, z, sbb);
 			this.replaceAirAndLiquidDownwards(world, deco.blockState, x, y - 1, z, sbb);

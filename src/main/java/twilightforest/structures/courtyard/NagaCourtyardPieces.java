@@ -2,11 +2,10 @@ package twilightforest.structures.courtyard;
 
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import twilightforest.TFFeature;
-import twilightforest.structures.start.StructureStartCourtyard;
 
 public class NagaCourtyardPieces {
 
-	public static final IStructurePieceType TFNC = TFFeature.registerPiece("TFNC", StructureStartCourtyard::new);
+//	public static final IStructurePieceType TFNC = TFFeature.registerPiece("TFNC", StructureStartCourtyard::new);
 
 	public static final IStructurePieceType TFNCMn = TFFeature.registerPiece("TFNCMn", ComponentNagaCourtyardMain::new);
 	public static final IStructurePieceType TFNCCp = TFFeature.registerPiece("TFNCCp", ComponentNagaCourtyardHedgeCap::new);

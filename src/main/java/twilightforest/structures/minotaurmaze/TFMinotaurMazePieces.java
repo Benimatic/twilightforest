@@ -2,11 +2,10 @@ package twilightforest.structures.minotaurmaze;
 
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import twilightforest.TFFeature;
-import twilightforest.structures.start.StructureStartLabyrinth;
 
 public class TFMinotaurMazePieces {
 
-	public static final IStructurePieceType TFLr = TFFeature.registerPiece("TFLr", StructureStartLabyrinth::new);
+//	public static final IStructurePieceType TFLr = TFFeature.registerPiece("TFLr", StructureStartLabyrinth::new);
 
 	public static final IStructurePieceType TFMMC = TFFeature.registerPiece("TFMMC", ComponentTFMazeCorridor::new);
 	public static final IStructurePieceType TFMMCIF = TFFeature.registerPiece("TFMMCIF", ComponentTFMazeCorridorIronFence::new);

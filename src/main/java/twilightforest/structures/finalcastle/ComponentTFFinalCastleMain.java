@@ -98,7 +98,7 @@ public class ComponentTFFinalCastleMain extends StructureTFComponentOld {
 
 
 		// initial stairs down towards dungeon
-		ComponentTFFinalCastleDungeonSteps steps0 = new ComponentTFFinalCastleDungeonSteps(rand, 5, boundingBox.minX + 18, boundingBox.minY + 1, boundingBox.minZ + 18, Direction.SOUTH);
+		ComponentTFFinalCastleDungeonSteps steps0 = new ComponentTFFinalCastleDungeonSteps(getFeatureType(), rand, 5, boundingBox.minX + 18, boundingBox.minY + 1, boundingBox.minZ + 18, Direction.SOUTH);
 		list.add(steps0);
 		steps0.buildComponent(this, list, rand);
 

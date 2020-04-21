@@ -40,7 +40,7 @@ public class ComponentTFFinalCastleDungeonExit extends ComponentTFFinalCastleDun
 		// add stairway down
 		Rotation bestDir = this.findStairDirectionTowards(parent.getBoundingBox().minX, parent.getBoundingBox().minZ);
 
-		ComponentTFFinalCastleDungeonSteps steps0 = new ComponentTFFinalCastleDungeonSteps(rand, 5, boundingBox.minX + 15, boundingBox.minY, boundingBox.minZ + 15, bestDir.rotate(Direction.SOUTH));
+		ComponentTFFinalCastleDungeonSteps steps0 = new ComponentTFFinalCastleDungeonSteps(getFeatureType(), rand, 5, boundingBox.minX + 15, boundingBox.minY, boundingBox.minZ + 15, bestDir.rotate(Direction.SOUTH));
 		list.add(steps0);
 		steps0.buildComponent(this, list, rand);
 

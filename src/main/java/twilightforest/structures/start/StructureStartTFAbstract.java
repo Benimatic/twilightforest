@@ -2,8 +2,11 @@ package twilightforest.structures.start;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.structure.StructureStart;
 import net.minecraft.world.gen.feature.template.TemplateManager;
@@ -18,29 +21,47 @@ import java.util.Random;
 
 public abstract class StructureStartTFAbstract extends StructureStart {
 
-    public StructureStartTFAbstract() {
-        super();
-    }
+	public StructureStartTFAbstract(Structure<?> structure, int chunkX, int chunkZ, MutableBoundingBox mbb, int ref, long seed) {
+		super(structure, chunkX, chunkZ, mbb, ref, seed);
+	}
 
     public StructureStartTFAbstract(World world, TFFeature feature, Random rand, int chunkX, int chunkZ) {
         super(chunkX, chunkZ);
-        int x = (chunkX << 4) + 8;
-        int z = (chunkZ << 4) + 8;
-        int y = TFWorld.SEALEVEL + 1; //TODO: maybe a biome-specific altitude for some of them?
-
-        StructurePiece firstComponent = makeFirstComponent(world, feature, rand, x, y, z);
-        components.add(firstComponent);
-        firstComponent.buildComponent(firstComponent, components, rand);
-
-        updateBoundingBox();
-
-        if (firstComponent instanceof ComponentTFTowerMain || firstComponent instanceof ComponentTFDarkTowerMain)
-            moveToAvgGroundLevel(world, x, z);
-
-        setupComponents(world);
+//        int x = (chunkX << 4) + 8;
+//        int z = (chunkZ << 4) + 8;
+//        int y = TFWorld.SEALEVEL + 1;
+//
+//        StructurePiece firstComponent = makeFirstComponent(world, feature, rand, x, y, z);
+//        components.add(firstComponent);
+//        firstComponent.buildComponent(firstComponent, components, rand);
+//
+//        updateBoundingBox();
+//
+//        if (firstComponent instanceof ComponentTFTowerMain || firstComponent instanceof ComponentTFDarkTowerMain)
+//            moveToAvgGroundLevel(world, x, z);
+//
+//        setupComponents(world);
     }
 
-    protected abstract StructurePiece makeFirstComponent(World world, TFFeature feature, Random rand, int x, int y, int z);
+	@Override
+	public void init(ChunkGenerator<?> generator, TemplateManager manager, int chunkX, int chunkZ, Biome biome) {
+		int x = (chunkX << 4) + 8;
+		int z = (chunkZ << 4) + 8;
+		int y = TFWorld.SEALEVEL + 1; //TODO: maybe a biome-specific altitude for some of them?
+
+		StructurePiece firstComponent = makeFirstComponent(world, feature, rand, x, y, z);
+		components.add(firstComponent);
+		firstComponent.buildComponent(firstComponent, components, rand);
+
+		recalculateStructureSize();
+
+		if (firstComponent instanceof ComponentTFTowerMain || firstComponent instanceof ComponentTFDarkTowerMain)
+			moveToAvgGroundLevel(world, x, z);
+
+		setupComponents(world);
+	}
+
+	protected abstract StructurePiece makeFirstComponent(World world, TFFeature feature, Random rand, int x, int y, int z);
 
     /**
      * Move the whole structure up or down

@@ -61,8 +61,9 @@ public abstract class StructureStartTFFeatureAbstract extends StructureStartTFAb
         }
     }
 
-    @Override
-    public boolean isSizeableStructure() {
-        return feature.isStructureEnabled;
-    }
+    //TODO: Does not exist
+//    @Override
+//    public boolean isSizeableStructure() {
+//        return feature.isStructureEnabled;
+//    }
 }

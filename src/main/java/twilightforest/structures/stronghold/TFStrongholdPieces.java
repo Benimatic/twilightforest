@@ -5,7 +5,6 @@ import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentOld;
-import twilightforest.structures.start.StructureStartKnightStronghold;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +32,7 @@ public class TFStrongholdPieces {
 
 	private static TFStrongholdPieceWeight lastPieceMade;
 
-	public static final IStructurePieceType TFKSt = TFFeature.registerPiece("TFKSt", StructureStartKnightStronghold::new);
+	//public static final IStructurePieceType TFKSt = TFFeature.registerPiece("TFKSt", StructureStartKnightStronghold::new);
 
 	public static final IStructurePieceType TFSSH = TFFeature.registerPiece("TFSSH", ComponentTFStrongholdSmallHallway::new);
 	public static final IStructurePieceType TFSLT = TFFeature.registerPiece("TFSLT", ComponentTFStrongholdLeftTurn::new);

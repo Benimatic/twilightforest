@@ -2,11 +2,10 @@ package twilightforest.structures.icetower;
 
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import twilightforest.TFFeature;
-import twilightforest.structures.start.StructureStartAuroraPalace;
 
 public class TFIceTowerPieces {
 
-	public static final IStructurePieceType TFAP = TFFeature.registerPiece("TFAP", StructureStartAuroraPalace::new);
+//	public static final IStructurePieceType TFAP = TFFeature.registerPiece("TFAP", StructureStartAuroraPalace::new);
 
 	public static final IStructurePieceType TFITMai = TFFeature.registerPiece("TFITMai", ComponentTFIceTowerMain::new);
 	public static final IStructurePieceType TFITWin = TFFeature.registerPiece("TFITWin", ComponentTFIceTowerWing::new);

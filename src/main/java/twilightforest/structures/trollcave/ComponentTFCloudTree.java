@@ -7,6 +7,7 @@ import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.template.TemplateManager;
+import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponentOld;
 
@@ -18,8 +19,8 @@ public class ComponentTFCloudTree extends StructureTFComponentOld {
 		super(TFTrollCavePieces.TFClTr, nbt);
 	}
 
-	public ComponentTFCloudTree(int index, int x, int y, int z) {
-		//TODO: Constructor pls
+	public ComponentTFCloudTree(TFFeature feature, int index, int x, int y, int z) {
+		super(TFTrollCavePieces.TFClTr, feature, index);
 
 		this.setCoordBaseMode(Direction.SOUTH);
 
@@ -51,5 +52,4 @@ public class ComponentTFCloudTree extends StructureTFComponentOld {
 
 		return true;
 	}
-
 }

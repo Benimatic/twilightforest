@@ -2,11 +2,10 @@ package twilightforest.structures.lichtower;
 
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import twilightforest.TFFeature;
-import twilightforest.structures.start.StructureStartLichTower;
 
 public class TFLichTowerPieces {
 
-	public static final IStructurePieceType TFLT = TFFeature.registerPiece("TFLT", StructureStartLichTower::new);
+//	public static final IStructurePieceType TFLT = TFFeature.registerPiece("TFLT", StructureStartLichTower::new);
 
 	public static final IStructurePieceType TFLTBea = TFFeature.registerPiece("TFLTBea", ComponentTFTowerBeard::new);
 	public static final IStructurePieceType TFLTBA = TFFeature.registerPiece("TFLTBA", ComponentTFTowerBeardAttached::new);

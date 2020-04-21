@@ -24,6 +24,7 @@ public class ComponentTFIceTowerMain extends ComponentTFIceTowerWing {
 		this(feature, world, rand, index, x + SIZE, y + 40, z + SIZE, Direction.NORTH);
 	}
 
+	//TODO: Parameter "world" is unused. Remove?
 	public ComponentTFIceTowerMain(TFFeature feature, World world, Random rand, int index, int x, int y, int z, Direction rotation) {
 		super(TFIceTowerPieces.TFITMai, feature, index, x, y, z, SIZE, 31 + (rand.nextInt(3) * 10), rotation);
 

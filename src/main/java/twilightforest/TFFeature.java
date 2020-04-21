@@ -368,15 +368,15 @@ public enum TFFeature {
 
 	//IStructurePieceTypes that can be referred to
 	//TODO: StructureStarts do not have their own piece. These are just here for reference's sake
-	public static final IStructurePieceType TFHillS = registerPiece("TFHillS", StructureStartHollowHill::new);
+//	public static final IStructurePieceType TFHillS = registerPiece("TFHillS", StructureStartHollowHill::new);
 	public static final IStructurePieceType TFHill = registerPiece("TFHill", ComponentTFHollowHill::new);
-	public static final IStructurePieceType TFHedgeS = registerPiece("TFHedgeS", StructureStartHedgeMaze::new);
+//	public static final IStructurePieceType TFHedgeS = registerPiece("TFHedgeS", StructureStartHedgeMaze::new);
 	public static final IStructurePieceType TFHedge = registerPiece("TFHedge", ComponentTFHedgeMaze::new);
-	public static final IStructurePieceType TFQuest1S = registerPiece("TFQuest1S", StructureStartQuestGrove::new);
+//	public static final IStructurePieceType TFQuest1S = registerPiece("TFQuest1S", StructureStartQuestGrove::new);
 	public static final IStructurePieceType TFQuest1 = registerPiece("TFQuest1", ComponentTFQuestGrove::new);
-	public static final IStructurePieceType TFHydraS = registerPiece("TFHydraS", StructureStartHydraLair::new);
+//	public static final IStructurePieceType TFHydraS = registerPiece("TFHydraS", StructureStartHydraLair::new);
 	public static final IStructurePieceType TFHydra = registerPiece("TFHydra", ComponentTFHydraLair::new);
-	public static final IStructurePieceType TFYetiS = registerPiece("TFYetiS", StructureStartYetiCave::new);
+//	public static final IStructurePieceType TFYetiS = registerPiece("TFYetiS", StructureStartYetiCave::new);
 	public static final IStructurePieceType TFYeti = registerPiece("TFYeti", ComponentTFYetiCave::new);
 
 	public final int size;

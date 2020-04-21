@@ -66,14 +66,14 @@ public class ComponentTFCloudCastle extends StructureTFComponentOld {
 		// tree in x direction
 		boolean plus = rand.nextBoolean();
 		int offset = rand.nextInt(5) - rand.nextInt(5);
-		ComponentTFCloudTree treeX = new ComponentTFCloudTree(this.getComponentType() + 1, boundingBox.minX + (plus ? 16 : -16), 168, boundingBox.minZ - 8 + (offset * 4));
+		ComponentTFCloudTree treeX = new ComponentTFCloudTree(getFeatureType(), this.getComponentType() + 1, boundingBox.minX + (plus ? 16 : -16), 168, boundingBox.minZ - 8 + (offset * 4));
 		list.add(treeX);
 		treeX.buildComponent(this, list, rand);
 
 		// tree in z direction
 		plus = rand.nextBoolean();
 		offset = rand.nextInt(5) - rand.nextInt(5);
-		ComponentTFCloudTree treeZ = new ComponentTFCloudTree(this.getComponentType() + 1, boundingBox.minX - 8 + (offset * 4), 168, boundingBox.minZ + (plus ? 16 : -16));
+		ComponentTFCloudTree treeZ = new ComponentTFCloudTree(getFeatureType(), this.getComponentType() + 1, boundingBox.minX - 8 + (offset * 4), 168, boundingBox.minZ + (plus ? 16 : -16));
 		list.add(treeZ);
 		treeZ.buildComponent(this, list, rand);
 	}

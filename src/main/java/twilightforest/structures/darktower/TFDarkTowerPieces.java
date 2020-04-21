@@ -6,7 +6,7 @@ import twilightforest.structures.start.StructureStartDarkTower;
 
 public class TFDarkTowerPieces {
 
-	public static final IStructurePieceType TFDT = TFFeature.registerPiece("TFDT", StructureStartDarkTower::new);
+//	public static final IStructurePieceType TFDT = TFFeature.registerPiece("TFDT", StructureStartDarkTower::new);
 
 	public static final IStructurePieceType TFDTBal = TFFeature.registerPiece("TFDTBal", ComponentTFDarkTowerBalcony::new);
 	public static final IStructurePieceType TFDTBea = TFFeature.registerPiece("TFDTBea", ComponentTFDarkTowerBeard::new);

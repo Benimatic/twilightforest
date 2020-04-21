@@ -29,7 +29,7 @@ public class StructureTFHollowTreeStart extends StructureStart {
 		StructureTFComponent trunk = new ComponentTFHollowTreeTrunk(world, rand, 0, x, y, z);
 		components.add(trunk);
 		trunk.buildComponent(trunk, components, rand);
-		updateBoundingBox();
+		recalculateStructureSize();
 	}
 
 	/**

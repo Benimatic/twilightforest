@@ -2,11 +2,10 @@ package twilightforest.structures.trollcave;
 
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import twilightforest.TFFeature;
-import twilightforest.structures.start.StructureStartTrollCave;
 
 public class TFTrollCavePieces {
 
-	public static final IStructurePieceType TFTC = TFFeature.registerPiece("TFTC", StructureStartTrollCave::new);
+//	public static final IStructurePieceType TFTC = TFFeature.registerPiece("TFTC", StructureStartTrollCave::new);
 
 	public static final IStructurePieceType TFTCMai = TFFeature.registerPiece("TFTCMai", ComponentTFTrollCaveMain::new);
 	public static final IStructurePieceType TFTCCon = TFFeature.registerPiece("TFTCCon", ComponentTFTrollCaveConnect::new);
