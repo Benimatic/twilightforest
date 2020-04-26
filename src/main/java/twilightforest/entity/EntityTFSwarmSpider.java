@@ -49,7 +49,7 @@ public class EntityTFSwarmSpider extends SpiderEntity {
 		super.registerGoals();
 
 		// Remove default spider melee task
-		this.goalSelector.taskEntries.removeIf(t -> t.action instanceof MeleeAttackGoal);
+		this.goalSelector.goals.removeIf(t -> t.getGoal() instanceof MeleeAttackGoal);
 
 		// Replace with one that doesn't become docile in light
 		// [VanillaCopy] based on EntitySpider.AISpiderAttack
@@ -61,7 +61,7 @@ public class EntityTFSwarmSpider extends SpiderEntity {
 		});
 
 		// Remove default spider target player task
-		this.targetSelector.taskEntries.removeIf(t -> t.priority == 2 && t.action instanceof NearestAttackableTargetGoal);
+		this.targetSelector.goals.removeIf(t -> t.getPriority() == 2 && t.getGoal() instanceof NearestAttackableTargetGoal);
 		// Replace with one that doesn't care about light
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
 	}
