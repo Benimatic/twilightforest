@@ -15,8 +15,7 @@ import net.minecraft.item.*;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.ByteNBT;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraftforge.common.crafting.IShapedRecipe;
@@ -45,8 +44,7 @@ public class ContainerTFUncrafting extends Container {
 	private final CraftResultInventory tinkerResult = new CraftResultInventory();
 
 	// Other Data, to kick the player from GUI if they stray too far from table
-	private final World world;
-	private final BlockPos pos;
+	private final IWorldPosCallable world;
 	private final PlayerEntity player;
 
 	// Conflict resolution
@@ -54,11 +52,14 @@ public class ContainerTFUncrafting extends Container {
 	public int ingredientsInCycle = 0;
 	public int recipeInCycle = 0;
 
-	public ContainerTFUncrafting(PlayerInventory inventory, World world, int x, int y, int z) {
-		super(/*TODO*/);
+	public ContainerTFUncrafting(int id, PlayerInventory inventory) {
+		this(id, inventory, IWorldPosCallable.DUMMY);
+	}
+
+	public ContainerTFUncrafting(int id, PlayerInventory inventory, IWorldPosCallable world) {
+		super(TFContainers.UNCRAFTING.get(), id);
 
 		this.world = world;
-		this.pos = new BlockPos(x, y, z);
 		this.player = inventory.player;
 
 		this.addSlot(new Slot(this.tinkerInput, 0, 13, 35));
@@ -668,6 +669,6 @@ public class ContainerTFUncrafting extends Container {
 
 	@Override
 	public boolean canInteractWith(PlayerEntity player) {
-		return player.getDistanceSq(new Vec3d(this.pos)) <= 64.0D && this.world.getBlockState(this.pos).getBlock() == TFBlocks.uncrafting_table.get();
+		return isWithinUsableDistance(world, player, TFBlocks.uncrafting_table.get());
 	}
 }

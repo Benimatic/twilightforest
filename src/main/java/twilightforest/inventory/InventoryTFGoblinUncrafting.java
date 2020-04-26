@@ -1,14 +1,19 @@
 package twilightforest.inventory;
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import twilightforest.TFConfig;
 
-public class InventoryTFGoblinUncrafting implements IInventory {
+import javax.annotation.Nullable;
+
+public class InventoryTFGoblinUncrafting implements IInventory, INamedContainerProvider {
 
 	private final NonNullList<ItemStack> contents = NonNullList.withSize(9, ItemStack.EMPTY);
 
@@ -70,7 +75,6 @@ public class InventoryTFGoblinUncrafting implements IInventory {
 		this.markDirty();
 	}
 
-	@Override
 	public String getName() {
 		return "twilightforest.goblincrafting";
 	}
@@ -103,28 +107,8 @@ public class InventoryTFGoblinUncrafting implements IInventory {
 	}
 
 	@Override
-	public int getField(int id) {
-		return 0;
-	}
-
-	@Override
-	public void setField(int id, int value) {
-
-	}
-
-	@Override
-	public int getFieldCount() {
-		return 0;
-	}
-
-	@Override
 	public void clear() {
 		contents.clear();
-	}
-
-	@Override
-	public boolean hasCustomName() {
-		return false;
 	}
 
 	@Override
@@ -132,4 +116,9 @@ public class InventoryTFGoblinUncrafting implements IInventory {
 		return new StringTextComponent(this.getName());
 	}
 
+	@Nullable
+	@Override
+	public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
+		return new ContainerTFUncrafting(i, playerInventory);
+	}
 }

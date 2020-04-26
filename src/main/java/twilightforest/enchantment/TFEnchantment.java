@@ -15,7 +15,6 @@ public class TFEnchantment extends Enchantment {
 		super(rarity, type, slots);
 	}
 
-
 	/**
 	 * Add up the number of fiery armor pieces the player is wearing, multiplied by 5
 	 */

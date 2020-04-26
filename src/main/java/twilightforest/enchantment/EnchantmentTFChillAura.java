@@ -11,6 +11,5 @@ public class EnchantmentTFChillAura extends Enchantment {
 				EquipmentSlotType.HEAD, EquipmentSlotType.CHEST,
 				EquipmentSlotType.LEGS, EquipmentSlotType.FEET
 		});
-		this.setName("tfChillAura");
 	}
 }

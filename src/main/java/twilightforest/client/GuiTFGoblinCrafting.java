@@ -11,7 +11,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.util.text.ITextComponent;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.inventory.ContainerTFUncrafting;
@@ -24,8 +24,12 @@ public class GuiTFGoblinCrafting extends ContainerScreen<ContainerTFUncrafting> 
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getGuiTexture("guigoblintinkering.png");
 
-	public GuiTFGoblinCrafting(PlayerInventory inventory, World world, int x, int y, int z) {
-		super(new ContainerTFUncrafting(inventory, world, x, y, z));
+//	public GuiTFGoblinCrafting(PlayerInventory inventory, World world, int x, int y, int z) {
+//		super(new ContainerTFUncrafting(inventory, world, x, y, z), inventory);
+//	}
+
+	public GuiTFGoblinCrafting(ContainerTFUncrafting container, PlayerInventory player, ITextComponent name) {
+		super(container, player, name);
 	}
 
 	@Override
@@ -50,7 +54,7 @@ public class GuiTFGoblinCrafting extends ContainerScreen<ContainerTFUncrafting> 
 
 	@Override
 	public void render(int mouseX, int mouseY, float partialTicks) {
-		drawDefaultBackground();
+		renderBackground();
 		super.render(mouseX, mouseY, partialTicks);
 		renderHoveredToolTip(mouseX, mouseY);
 	}
@@ -67,7 +71,7 @@ public class GuiTFGoblinCrafting extends ContainerScreen<ContainerTFUncrafting> 
 		this.minecraft.getTextureManager().bindTexture(textureLoc);
 		int frameX = (this.width - this.xSize) / 2;
 		int frameY = (this.height - this.ySize) / 2;
-		this.drawTexturedModalRect(frameX, frameY, 0, 0, this.xSize, this.ySize);
+		this.blit(frameX, frameY, 0, 0, this.xSize, this.ySize);
 
 		ContainerTFUncrafting tfContainer = (ContainerTFUncrafting) this.inventorySlots;
 

@@ -26,7 +26,9 @@ import twilightforest.block.TFBlocks;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.command.TFCommand;
+import twilightforest.enchantment.TFEnchantments;
 import twilightforest.entity.TFEntities;
+import twilightforest.inventory.TFContainers;
 import twilightforest.item.ItemTFArcticArmor;
 import twilightforest.item.ItemTFFieryArmor;
 import twilightforest.item.ItemTFKnightlyArmor;
@@ -57,11 +59,6 @@ public class TwilightForestMod {
 	public static final String ARMOR_DIR  = ID + ":textures/armor/";
 
 	public static final String ENFORCED_PROGRESSION_RULE = "tfEnforcedProgression";
-
-	public static final int GUI_ID_UNCRAFTING = 1;
-	public static final int GUI_ID_FURNACE = 2;
-
-	// public static DimensionType dimType; // TODO: move this
 
 	public static final Logger LOGGER = LogManager.getLogger(ID);
 
@@ -96,6 +93,8 @@ public class TwilightForestMod {
 		TFSurfaceBuilders.SURFACE_BUILDERS.register(modbus);
 		TFBiomeFeatures.FEATURES.register(modbus);
 		TFRecipes.RECIPE_SERIALIZERS.register(modbus);
+		TFContainers.CONTAINERS.register(modbus);
+		TFEnchantments.ENCHANTMENTS.register(modbus);
 
 		if (ModList.get().isLoaded("sponge")) {
 			LOGGER.info("It looks like you have Sponge installed! You may notice Hydras spawning incorrectly with floating heads.\n" +
@@ -132,7 +131,6 @@ public class TwilightForestMod {
 
 	@SubscribeEvent
 	public void init(FMLCommonSetupEvent evt) {
-		// NetworkRegistry.INSTANCE.registerGuiHandler(instance, proxy); // TODO: IGuiHandler is fugly and dead
 		TFPacketHandler.init();
 		TFAdvancements.init();
 		TFTreasure.init();
@@ -173,6 +171,7 @@ public class TwilightForestMod {
 		ItemTFFieryArmor.initArmorModel();
 		DistExecutor.runWhenOn(Dist.CLIENT, () -> TFEntities::registerEntityRenderer);
 		DistExecutor.runWhenOn(Dist.CLIENT, () -> TFTileEntities::registerTileEntityRenders);
+		DistExecutor.runWhenOn(Dist.CLIENT, () -> TFContainers::renderScreens);
 	}
 
 	public void startServer(FMLServerStartingEvent event) {

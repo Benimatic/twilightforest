@@ -3,8 +3,6 @@ package twilightforest.inventory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
 
 public class InventoryTFGoblinInput implements IInventory {
 
@@ -30,10 +28,10 @@ public class InventoryTFGoblinInput implements IInventory {
 		return index == 0 ? stackInput : ItemStack.EMPTY;
 	}
 
-	@Override
-	public String getName() {
-		return "Input";
-	}
+//	@Override
+//	public String getName() {
+//		return "Input";
+//	}
 
 	@Override
 	public ItemStack decrStackSize(int index, int amount) {
@@ -102,33 +100,33 @@ public class InventoryTFGoblinInput implements IInventory {
 		return true;
 	}
 
-	@Override
-	public int getField(int id) {
-		return 0;
-	}
-
-	@Override
-	public void setField(int id, int value) {
-
-	}
-
-	@Override
-	public int getFieldCount() {
-		return 0;
-	}
+//	@Override
+//	public int getField(int id) {
+//		return 0;
+//	}
+//
+//	@Override
+//	public void setField(int id, int value) {
+//
+//	}
+//
+//	@Override
+//	public int getFieldCount() {
+//		return 0;
+//	}
 
 	@Override
 	public void clear() {
 		stackInput = ItemStack.EMPTY;
 	}
 
-	@Override
-	public boolean hasCustomName() {
-		return false;
-	}
-
-	@Override
-	public ITextComponent getDisplayName() {
-		return new StringTextComponent(getName());
-	}
+//	@Override
+//	public boolean hasCustomName() {
+//		return false;
+//	}
+//
+//	@Override
+//	public ITextComponent getDisplayName() {
+//		return new StringTextComponent(getName());
+//	}
 }
