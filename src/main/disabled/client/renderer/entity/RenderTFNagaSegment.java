@@ -23,7 +23,7 @@ public class RenderTFNagaSegment<T extends EntityTFNagaSegment> extends EntityRe
 	@Override
 	public void render(T entity, float entityYaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
 		stack.push();
-		stack.translate((float) x, (float) y, (float) z);
+		//stack.translate((float) x, (float) y, (float) z);
 		stack.scale(-1.0F, -1.0F, 1.0F);
 
 		// I forget what this glitch is called, but let's fix it

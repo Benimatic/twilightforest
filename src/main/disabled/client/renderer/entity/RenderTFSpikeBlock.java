@@ -24,7 +24,7 @@ public class RenderTFSpikeBlock<T extends EntityTFSpikeBlock> extends EntityRend
 	@Override
 	public void render(T entity, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
 		stack.push();
-		stack.translate(x, y, z);
+		//stack.translate(x, y, z);
 		RenderSystem.rotatef(180 - MathHelper.wrapDegrees(yaw), 0.0F, 1.0F, 0.0F);
 
 		float pitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;

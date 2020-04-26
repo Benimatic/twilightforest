@@ -26,7 +26,7 @@ public class RenderTFProtectionBox<T extends EntityTFProtectionBox> extends Enti
 	public void render(T entity, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
 		stack.push();
 
-		stack.translate((float) x, (float) y, (float) z);
+		//stack.translate((float) x, (float) y, (float) z);
 
 		this.bindTexture(textureLoc);
 
@@ -39,13 +39,13 @@ public class RenderTFProtectionBox<T extends EntityTFProtectionBox> extends Enti
 		stack.translate(f2, f3, 0.0F);
 		stack.scale(1.0f, 1.0f, 1.0f);
 
-		GlStateManager.matrixMode(GL11.GL_MODELVIEW);
+		RenderSystem.matrixMode(GL11.GL_MODELVIEW);
 
 		// enable transparency, go full brightness
-		GlStateManager.colorMask(true, true, true, true);
-		GlStateManager.enableBlend();
-		GlStateManager.disableCull();
-		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		RenderSystem.colorMask(true, true, true, true);
+		RenderSystem.enableBlend();
+		RenderSystem.disableCull();
+		RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		RenderSystem.disableAlphaTest();
 		RenderSystem.disableLighting();
 
@@ -58,8 +58,8 @@ public class RenderTFProtectionBox<T extends EntityTFProtectionBox> extends Enti
 
 		boxModel.render(entity, 0F, 0F, 0F, 0F, 0F, 1F / 16F);
 
-		GlStateManager.disableBlend();
-		GlStateManager.enableCull();
+		RenderSystem.disableBlend();
+		RenderSystem.enableCull();
 		RenderSystem.enableAlphaTest();
 		RenderSystem.enableLighting();
 
