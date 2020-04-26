@@ -6,23 +6,25 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ThrowableEntity;
-import net.minecraft.item.DyeColor;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.Tag;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.PacketDistributor;
 import twilightforest.network.TFPacketHandler;
-import twilightforest.block.BlockTFCastleMagic;
-import twilightforest.block.TFBlocks;
 import twilightforest.item.TFItems;
 import twilightforest.network.PacketAnnihilateBlock;
 import twilightforest.util.WorldUtil;
 
 import java.util.List;
 
+import static twilightforest.TwilightForestMod.prefix;
+
 public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 
+	private static final Tag<Block> WHITELIST = new BlockTags.Wrapper(prefix("annihilation_whitelist"));
 	private boolean hasHitObstacle = false;
 
 	public EntityTFCubeOfAnnihilation(EntityType<? extends EntityTFCubeOfAnnihilation> type, World world) {
@@ -90,15 +92,10 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 		}
 	}
 
-	//TODO: Should this be put into a Tag?
 	private boolean canAnnihilate(BlockPos pos, BlockState state) {
 		// whitelist many castle blocks
 		Block block = state.getBlock();
-		if (block == TFBlocks.deadrock || block == TFBlocks.castle_brick || (block == TFBlocks.castle_rune_brick && state.get(BlockTFCastleMagic.COLOR) != DyeColor.PURPLE) || block == TFBlocks.force_field || block == TFBlocks.thorns) {
-			return true;
-		}
-
-		return block.getExplosionResistance(this) < 8F && state.getBlockHardness(world, pos) >= 0;
+		return block.isIn(WHITELIST) || block.getExplosionResistance() < 8F && state.getBlockHardness(world, pos) >= 0;
 	}
 
 	private void sendAnnihilateBlockPacket(World world, BlockPos pos) {

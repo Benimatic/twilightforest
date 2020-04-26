@@ -21,6 +21,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.Tag;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundEvents;
@@ -539,15 +541,14 @@ public class TFEventListener {
 		}
 	}
 
+	public static final Tag<Block> PROTECTED_INTERACTION = new BlockTags.Wrapper(TwilightForestMod.prefix("protected_interaction"));
+
 	/**
 	 * Stop the player from interacting with blocks that could produce treasure or open doors in a protected area
 	 */
 	private static boolean isBlockProtectedFromInteraction(World world, BlockPos pos) {
 		Block block = world.getBlockState(pos).getBlock();
-		// TODO: improve this?
-		// We could put it...*in more Tags, yaaaaaay*
-		return block == TFBlocks.tower_device || block == Blocks.CHEST || block == Blocks.TRAPPED_CHEST
-				|| block == Blocks.STONE_BUTTON || block == Blocks.WOODEN_BUTTON || block == Blocks.LEVER;
+		return block.isIn(PROTECTED_INTERACTION);
 	}
 
 	private static boolean isBlockProtectedFromBreaking(World world, BlockPos pos) {
