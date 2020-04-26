@@ -2028,7 +2028,7 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 
 		final AxisAlignedBB largerBox = painting.getBoundingBox();
 
-		if (!world.getCollisionShapes(painting, largerBox).isEmpty()) {
+		if (world.getBlockCollisions(painting, largerBox).findAny().isPresent()) {
 			return false;
 		} else {
 			List<Entity> collidingEntities = world.getEntitiesWithinAABBExcludingEntity(painting, largerBox);

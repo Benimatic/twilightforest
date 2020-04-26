@@ -13,6 +13,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
@@ -112,10 +113,11 @@ public class EntityTFTinyBird extends EntityTFBird {
 		return this.getHeight() * 0.7F;
 	}
 
-	@Override
-	public float getRenderSizeModifier() {
-		return 0.3F;
-	}
+	//TODO: Move to Renderer?
+//	@Override
+//	public float getRenderSizeModifier() {
+//		return 0.3F;
+//	}
 
 	@Override
 	public boolean canDespawn(double p_213397_1_) {
@@ -220,7 +222,7 @@ public class EntityTFTinyBird extends EntityTFBird {
 		BlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 		return !block.isAir(state, world, pos)
-				&& (block.isLeaves(state, world, pos) || state.isSideSolid(world, pos, Direction.UP));
+				&& (block.isIn(BlockTags.LEAVES) || state.isSideSolid(world, pos, Direction.UP));
 	}
 
 	@Override

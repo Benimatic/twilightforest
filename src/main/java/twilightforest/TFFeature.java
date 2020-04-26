@@ -656,6 +656,7 @@ public enum TFFeature {
 	}
 
 	// [Vanilla Copy] from MapGenStructure#findNearestStructurePosBySpacing; changed 2nd param to be TFFeature instead of MapGenStructure
+	//TODO: Second parameter doesn't exist in Structure.findNearest
 	@Nullable
 	public static BlockPos findNearestFeaturePosBySpacing(World worldIn, TFFeature feature, BlockPos blockPos, int p_191069_3_, int p_191069_4_, int p_191069_5_, boolean p_191069_6_, int p_191069_7_, boolean findUnexplored) {
 		int i = blockPos.getX() >> 4;

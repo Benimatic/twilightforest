@@ -8,6 +8,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.IFluidState;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.state.IProperty;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -131,7 +132,7 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar {
 		if (world.isAreaLoaded(pos, exRange)) {
 			for (BlockPos pos_ : WorldUtil.getAllAround(pos, range)) {
 				BlockState state_ = world.getBlockState(pos_);
-				if (state_.getBlock().isLeaves(state_, world, pos_)) {
+				if (state_.getBlock().isIn(BlockTags.LEAVES)) {
 					state.getBlock().beginLeavesDecay(state_, world, pos_);
 				}
 			}

@@ -1,6 +1,7 @@
 package twilightforest.world;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.ResourceLocation;
@@ -16,7 +17,9 @@ import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.SpawnListEntry;
 import net.minecraft.world.biome.provider.BiomeProvider;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
+import net.minecraft.world.chunk.ChunkSection;
 import net.minecraft.world.gen.NoiseChunkGenerator;
 import net.minecraft.world.gen.OctavesNoiseGenerator;
 import net.minecraft.world.gen.WorldGenRegion;
@@ -152,9 +155,55 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator<TFWorld> 
 		return d0;
 	}
 
-	protected final void generateFeatures(int x, int z, ChunkPrimer primer) {
-		for (MapGenTFMajorFeature generator : featureGenerators.values()) {
-			generator.place(world, settings, x, z, primer);
+	//TODO: Biome Decorator
+//	protected final void generateFeatures(int x, int z, ChunkPrimer primer) {
+//		for (MapGenTFMajorFeature generator : featureGenerators.values()) {
+//			generator.place(world, settings, x, z, primer);
+//		}
+//	}
+
+	protected final Chunk makeChunk(int x, int z, ChunkPrimer primer) {
+
+		Chunk chunk = new Chunk(world.getWorld(), primer);
+
+		fillChunk(chunk, primer);
+
+		// load in biomes, to prevent striping?!
+		byte[] chunkBiomes = chunk.getBiomeArray();
+		for (int i = 0; i < chunkBiomes.length; ++i) {
+			chunkBiomes[i] = (byte) Biome.getIdForBiome(this.biomesForGeneration[i]);
+		}
+
+		chunk.generateSkylightMap();
+
+		return chunk;
+	}
+
+	// [VanillaCopy] Extended Chunk constructor, material check replaced with block check
+	private void fillChunk(Chunk chunk, ChunkPrimer primer) {
+
+//		int i = 256;
+//		boolean flag = world.getDimension().hasSkyLight();
+		ChunkSection[] storageArrays = chunk.getSections();
+
+		for (int j = 0; j < 16; ++j) {
+			for (int k = 0; k < 16; ++k) {
+				for (int l = 0; l < 256; ++l) {
+
+					BlockState iblockstate = primer.getBlockState(new BlockPos(j, l, k));
+
+					if (iblockstate.getBlock() != Blocks.AIR) {
+
+						int i1 = l >> 4;
+
+						if (storageArrays[i1] == Chunk.EMPTY_SECTION) {
+							storageArrays[i1] = new ChunkSection(i1 << 4/*, flag*/);
+						}
+
+						storageArrays[i1].setBlockState(j, l & 15, k, iblockstate);
+					}
+				}
+			}
 		}
 	}
 
@@ -254,9 +303,9 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator<TFWorld> 
 					// yeti lairs are square
 					deformTerrainForYetiLair(primer, nearFeature, x, z, dx, dz);
 
-				}// else if (nearFeature == TFFeature.TROLL_CAVE) { TODO: Original method did nothing. Commented out
-				//	deformTerrainForTrollCaves(primer, nearFeature, x, z, dx, dz);
-				//}
+				} else if (nearFeature == TFFeature.TROLL_CAVE) {
+					deformTerrainForTrollCaves(primer, nearFeature, x, z, dx, dz);
+				}
 				//else if (nearFeature != TFFeature.NOTHING) {
 				//	// hedge mazes, naga arena
 				//	flattenTerrainForFeature(primer, nearFeature, x, z, dx, dz);
@@ -266,6 +315,8 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator<TFWorld> 
 
 		// done!
 	}
+
+	protected void deformTerrainForTrollCaves(ChunkPrimer primer, TFFeature nearFeature, int x, int z, int dx, int dz) {}
 
 	//TODO: Parameter "nearFeature" is unused. Remove?
 	private void deformTerrainForTrollCloud2(ChunkPrimer primer, TFFeature nearFeature, int cx, int cz, int hx, int hz) {
@@ -553,9 +604,9 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator<TFWorld> 
 		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world.getWorld())).isStructureLocked(pos, lockIndex);
 	}
 
-	//TODO: isInsideStructure doesn't exist
+	//TODO: Verify replaced method
 	public boolean isBlockInStructureBB(BlockPos pos) {
-		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world.getWorld())).isInsideStructure(pos);
+		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world.getWorld())).isPositionInStructure(world, pos);
 	}
 
 	@Nullable

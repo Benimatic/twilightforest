@@ -49,6 +49,7 @@ public class BlockTFCompressed extends Block {
 //	}
 
 	@Override
+	@Deprecated
 	public float getPlayerRelativeBlockHardness(BlockState state, PlayerEntity player, IBlockReader worldIn, BlockPos pos) {
 		// ItemShears#getDestroySpeed is really dumb and doesn't check IShearable so we have to do it this way to try to match the wool break speed with shears
 		return state.getBlock() == TFBlocks.block_storage_arctic_fur.get() && player.getHeldItemMainhand().getItem() instanceof ShearsItem ? 0.2F : super.getPlayerRelativeBlockHardness(state, player, worldIn, pos);

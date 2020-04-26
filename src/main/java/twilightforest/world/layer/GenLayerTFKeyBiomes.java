@@ -76,14 +76,14 @@ public enum GenLayerTFKeyBiomes implements IAreaTransformer1 {
 
 	//TODO: This logic is butchered to hell and back
 	@Override
-	public int func_215728_a(IExtendedNoiseRandom<?> iExtendedNoiseRandom, IArea iArea, int x, int z) {
+	public int func_215728_a(IExtendedNoiseRandom<?> random, IArea iArea, int x, int z) {
 		int dx = func_215721_a(x);
 		int dz = func_215722_b(z);
 		// get offsets
 		//initChunkSeed(((dx + x) | 3), ((dz + z) | 3));
 
-		int ox = this.nextInt(3) + 1;
-		int oz = this.nextInt(3) + 1;
+		int ox = random.random(3) + 1;
+		int oz = random.random(3) + 1;
 
 		if (((dx + x) & 3) == ox && ((dz + z) & 3) == oz) {
 			// determine which of the 4

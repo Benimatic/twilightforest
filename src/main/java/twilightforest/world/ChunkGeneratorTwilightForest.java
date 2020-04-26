@@ -35,11 +35,14 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 	}
 
 	@Override
-	public Chunk generateChunk(int x, int z) {
-		rand.setSeed(getSeed(x, z));
+	public void decorate(WorldGenRegion region) {
+		int x = region.getMainChunkX();
+		int z = region.getMainChunkZ();
+
+		randomSeed.setSeed(getSeed(x, z));
 
 		ChunkBitArray data = new ChunkBitArray();
-		setBlocksInChunk(x, z, data);
+		func_222529_a(x, z, data);
 		squishTerrain(data);
 
 		ChunkPrimer primer = new DirectChunkPrimer();
@@ -49,7 +52,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 		addDarkForestCanopy2(x, z, primer);
 
 		// now we reload the biome array so that it's scaled 1:1 with blocks on the ground
-		this.biomesForGeneration = world.getBiomeProvider().getBiomes(biomesForGeneration, x * 16, z * 16, 16, 16);
+		this.biomesForGeneration = world.getDimension().getBiomeProvider().getBiomes(biomesForGeneration, x * 16, z * 16, 16, 16);
 
 		addGlaciers(x, z, primer, biomesForGeneration);
 		deformTerrainForFeature(x, z, primer);
@@ -57,10 +60,10 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 
 //		caveGenerator.generate(world, x, z, primer); TODO: Handled in Biome carvers
 //		ravineGenerator.generate(world, x, z, primer); TODO: Handled in Biome carvers
-		generateFeatures(x, z, primer);
-		hollowTreeGenerator.generate(world, x, z, primer);
+//		generateFeatures(x, z, primer); TODO: Should be moved to Biome Decorator
+//		hollowTreeGenerator.generate(world, x, z, primer); TODO: Should be handled via Biome Decorator
 
-		return makeChunk(x, z, primer);
+		makeChunk(x, z, primer);
 	}
 
 	@Override
@@ -222,20 +225,20 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 		}
 	}
 
-	@Override
-	public void decorate(WorldGenRegion region) {
+//	@Override
+//	public void decorate(WorldGenRegion region) {
 		//BlockFalling.fallInstantly = true;
 
 //		int i = x * 16;
 //		int j = z * 16;
 //		BlockPos blockpos = new BlockPos(i, 0, j);
 //		Biome biome = this.world.getBiome(blockpos.add(16, 0, 16));
-		this.rand.setSeed(this.world.getSeed());
-		long k = this.rand.nextLong() / 2L * 2L + 1L;
-		long l = this.rand.nextLong() / 2L * 2L + 1L;
-		this.rand.setSeed((long)x * k + (long)z * l ^ this.world.getSeed());
+//		this.rand.setSeed(this.world.getSeed());
+//		long k = this.rand.nextLong() / 2L * 2L + 1L;
+//		long l = this.rand.nextLong() / 2L * 2L + 1L;
+//		this.rand.setSeed((long)x * k + (long)z * l ^ this.world.getSeed());
 //		boolean flag = false;
-		ChunkPos chunkpos = new ChunkPos(x, z);
+//		ChunkPos chunkpos = new ChunkPos(x, z);
 
 //		ForgeEventFactory.onChunkPopulate(true, this, this.world, this.rand, x, z, flag);
 
@@ -249,7 +252,8 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 
 		//disableFeatures = disableFeatures || !TFFeature.getNearestFeature(x, z, world).areChunkDecorationsEnabled;
 
-		hollowTreeGenerator.generateStructure(world, rand, chunkpos);
+		//TODO: Move to Biome Decorator
+		//hollowTreeGenerator.generateStructure(world, rand, chunkpos);
 
 //		if (!disableFeatures && rand.nextInt(4) == 0) {
 //			if (TerrainGen.populate(this, this.world, this.rand, x, x, flag, PopulateChunkEvent.Populate.EventType.LAKE)) {
@@ -316,7 +320,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 //		ForgeEventFactory.onChunkPopulate(false, this, this.world, this.rand, x, z, flag);
 
 		//BlockFalling.fallInstantly = false;
-	}
+//	}
 
 	//TODO: See super
 //	@Override

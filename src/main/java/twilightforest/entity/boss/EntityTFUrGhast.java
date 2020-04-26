@@ -7,6 +7,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -24,6 +25,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerBossInfo;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.WorldInfo;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
@@ -337,8 +339,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		int rangeY = 8;
 
 		// lightning strike
-		this.world.addWeatherEffect(new EntityLightningBolt(world, x, y + 4, z, true));
-
+		((ServerWorld)this.world).addLightningBolt(new LightningBoltEntity(world, x, y + 4, z, true));
 
 		for (int i = 0; i < tries; i++) {
 			EntityTFMiniGhast minion = new EntityTFMiniGhast(TFEntities.mini_ghast.get(), world);

@@ -21,6 +21,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.Tags;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.FeatureUtil;
 
@@ -269,7 +270,7 @@ public class ItemTFOreMagnet extends ItemTF {
                 // todo 1.9 oh god
 				// National treasure -Drullkus
 				// TODO 1.14: noh, we are use tag instead
-                || state.getBlock().getRegistryName().getPath().contains("ore"))
+                || state.getBlock().isIn(Tags.Blocks.ORES))
 		    return true;
 
 		return false;

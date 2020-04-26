@@ -66,10 +66,11 @@ public class EntityTFSwarmSpider extends SpiderEntity {
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
 	}
 
-	@Override
-	public float getRenderSizeModifier() {
-		return 0.5F;
-	}
+	//TODO: Move to renderer?
+//	@Override
+//	public float getRenderSizeModifier() {
+//		return 0.5F;
+//	}
 
 	@Override
 	public float getEyeHeight(Pose pose) {

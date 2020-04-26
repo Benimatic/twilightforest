@@ -6,7 +6,7 @@ import net.minecraft.item.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockReader;
-import twilightforest.TwilightForestMod;
+import twilightforest.tileentity.critters.TileEntityTFFirefly;
 
 import javax.annotation.Nullable;
 
@@ -19,8 +19,8 @@ public class BlockTFFirefly extends BlockTFCritter {
 	@Nullable
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		//TODO: Get TileEntity from registry
-		return TwilightForestMod.proxy.getNewFireflyTE();
+		//TODO: Return differently per side?
+		return new TileEntityTFFirefly();
 	}
 
 	@Override

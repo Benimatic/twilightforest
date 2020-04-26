@@ -22,6 +22,7 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.api.distmarker.Dist;
@@ -30,6 +31,7 @@ import org.apache.commons.lang3.mutable.MutableInt;
 import twilightforest.TFConfig;
 import twilightforest.TFTeleporter;
 import twilightforest.TwilightForestMod;
+import twilightforest.world.TFDimensions;
 import twilightforest.world.TFWorld;
 
 import javax.annotation.Nullable;
@@ -207,11 +209,9 @@ public class BlockTFPortal extends BreakableBlock {
 		}
 	}
 
-	//TODO: ID to DimensionType
-	private static int getDestination(Entity entity) {
-//		return entity.dimension != TFConfig.dimension.dimensionID
-//				? TFConfig.dimension.dimensionID : TFConfig.originDimension;
-		return 0; //PLACEHOLDER
+	private static DimensionType getDestination(Entity entity) {
+		return entity.dimension != TFDimensions.tf_dimType
+				? TFDimensions.tf_dimType : TFConfig.originDimension;
 	}
 
 	public static void attemptSendPlayer(Entity entity, boolean forcedEntry) {

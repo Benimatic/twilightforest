@@ -3,6 +3,7 @@ package twilightforest.world.feature;
 import com.mojang.datafixers.Dynamic;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.RotatedPillarBlock;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
@@ -107,6 +108,6 @@ public class TFGenThorns<T extends NoFeatureConfig> extends Feature<T> {
 	private boolean canPlaceThorns(IWorld world, BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
 		return state.getBlock().isAir(state, world, pos)
-				|| state.getBlock().isLeaves(state, world, pos);
+				|| state.getBlock().isIn(BlockTags.LEAVES);
 	}
 }

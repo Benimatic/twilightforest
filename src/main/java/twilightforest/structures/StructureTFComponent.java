@@ -49,7 +49,6 @@ public abstract class StructureTFComponent extends StructurePiece {
 		if (rotation == null) rotation = Rotation.NONE;
 
 		if (shouldDebug() ) { // && rotation!= Rotation.NONE) {
-			//TODO: Flattening doesn't allow for this anymore
 			int i = rotation.ordinal() * 4;
 			world.setBlockState(new BlockPos(this.getBoundingBox().minX, this.getBoundingBox().maxY + i    , this.getBoundingBox().minZ), WoolUtil.getStateById(i));
 			world.setBlockState(new BlockPos(this.getBoundingBox().maxX, this.getBoundingBox().maxY + i + 1, this.getBoundingBox().minZ), WoolUtil.getStateById(1 + i));

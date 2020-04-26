@@ -37,7 +37,7 @@ public class TFDefaultSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig
 		int l = x & 15;
 		int i1 = z & 15;
 		BlockPos.Mutable blockpos$mutableblockpos = new BlockPos.Mutable();
-		boolean generateBedrock = shouldGenerateBedrock(world); // TF - conditional bedrock gen //TODO 1.15: World is not a valid argument
+		boolean generateBedrock = /*shouldGenerateBedrock(world)*/ true; // TF - conditional bedrock gen //TODO 1.15: World is not a valid argument. Defaulting to true
 
 		for (int j1 = startHeight; j1 >= 0; --j1) { //Author's note: beginning value was 255. It is now startHeight
 			blockpos$mutableblockpos.setPos(i1, j1, l);

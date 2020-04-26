@@ -212,8 +212,7 @@ public class EntityTFWraith extends FlyingEntity implements IMob {
 		if (flag) {
 			if (i > 0 && entityIn instanceof LivingEntity) {
 				((LivingEntity) entityIn).knockBack(this, (float) i * 0.5F, (double) MathHelper.sin(this.rotationYaw * 0.017453292F), (double) (-MathHelper.cos(this.rotationYaw * 0.017453292F)));
-				this.motionX *= 0.6D;
-				this.motionZ *= 0.6D;
+				this.setMotion(getMotion().getX() * 0.6D, getMotion().getY(), getMotion().getZ() * 0.6D);
 			}
 
 			int j = EnchantmentHelper.getFireAspectModifier(this);

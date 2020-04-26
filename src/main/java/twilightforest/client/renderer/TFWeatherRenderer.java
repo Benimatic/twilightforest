@@ -4,7 +4,6 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.world.ClientWorld;
@@ -82,7 +81,7 @@ public class TFWeatherRenderer implements IRenderHandler {
 		float f = mc.world.getRainStrength(partialTicks);
 
 		if (f > 0.0F) {
-			mc.gameRenderer.enableLightmap();
+			mc.gameRenderer.getLightmapTextureManager().enableLightmap();
 			Entity entity = mc.getRenderViewEntity();
 			World world = mc.world;
 			int i = MathHelper.floor(entity.getX());
@@ -107,7 +106,7 @@ public class TFWeatherRenderer implements IRenderHandler {
 
 			int j1 = -1;
 			float f1 = (float) this.rendererUpdateCount + partialTicks;
-			bufferbuilder.setTranslation(-d0, -d1, -d2);
+			//bufferbuilder.setTranslation(-d0, -d1, -d2);
 			RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 			BlockPos.Mutable blockpos$mutableblockpos = new BlockPos.Mutable();
 
@@ -119,7 +118,7 @@ public class TFWeatherRenderer implements IRenderHandler {
 					blockpos$mutableblockpos.setPos(l1, 0, k1);
 					Biome biome = world.getBiome(blockpos$mutableblockpos);
 
-					if (biome.canRain() || biome.getEnableSnow()) {
+					if (biome.getPrecipitation() != Biome.RainType.NONE) {
 						int j2 = world.getPrecipitationHeight(blockpos$mutableblockpos).getY();
 						int k2 = j - i1;
 						int l2 = j + i1;
@@ -203,11 +202,11 @@ public class TFWeatherRenderer implements IRenderHandler {
 				tessellator.draw();
 			}
 
-			bufferbuilder.setTranslation(0.0D, 0.0D, 0.0D);
+			//bufferbuilder.setTranslation(0.0D, 0.0D, 0.0D);
 			RenderSystem.enableCull();
 			RenderSystem.disableBlend();
 			RenderSystem.alphaFunc(516, 0.1F);
-			mc.gameRenderer.disableLightmap();
+			mc.gameRenderer.getLightmapTextureManager().disableLightmap();
 		}
 	}
 
@@ -216,7 +215,7 @@ public class TFWeatherRenderer implements IRenderHandler {
 		// check nearby for locked biome
 		if (isNearLockedBiome(wc, mc.getRenderViewEntity())) {
 
-			mc.gameRenderer.enableLightmap();
+			mc.gameRenderer.getLightmapTextureManager().enableLightmap();
 			Entity entity = mc.getRenderViewEntity();
 			World world = mc.world;
 
@@ -246,7 +245,7 @@ public class TFWeatherRenderer implements IRenderHandler {
 
 			RenderType currentType = null;
 			float combinedTicks = (float) this.rendererUpdateCount + partialTicks;
-			bufferbuilder.setTranslation(-dx, -dy, -dz);
+			//bufferbuilder.setTranslation(-dx, -dy, -dz);
 			RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 			BlockPos.Mutable blockpos$mutableblockpos = new BlockPos.Mutable();
 
@@ -395,11 +394,11 @@ public class TFWeatherRenderer implements IRenderHandler {
 				tessellator.draw();
 			}
 
-			bufferbuilder.setTranslation(0.0D, 0.0D, 0.0D);
+			//bufferbuilder.setTranslation(0.0D, 0.0D, 0.0D);
 			RenderSystem.enableCull();
 			RenderSystem.disableBlend();
 			RenderSystem.alphaFunc(516, 0.1F);
-			mc.gameRenderer.disableLightmap();
+			mc.gameRenderer.getLightmapTextureManager().disableLightmap();
 		}
 	}
 
@@ -407,7 +406,7 @@ public class TFWeatherRenderer implements IRenderHandler {
 	private void renderLockedStructure(float partialTicks, ClientWorld wc, Minecraft mc) {
 		// draw locked structure thing
 		if (isNearLockedStructure(wc, mc.getRenderViewEntity())) {
-			mc.gameRenderer.enableLightmap();
+			mc.gameRenderer.getLightmapTextureManager().enableLightmap();
 			Entity entity = mc.getRenderViewEntity();
 			//World world = mc.world;
 			int i = MathHelper.floor(entity.getX());
@@ -432,7 +431,7 @@ public class TFWeatherRenderer implements IRenderHandler {
 
 			int j1 = -1;
 			float f1 = (float) this.rendererUpdateCount + partialTicks;
-			bufferbuilder.setTranslation(-d0, -d1, -d2);
+			//bufferbuilder.setTranslation(-d0, -d1, -d2);
 			RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 			BlockPos.Mutable blockpos$mutableblockpos = new BlockPos.Mutable();
 
@@ -507,7 +506,7 @@ public class TFWeatherRenderer implements IRenderHandler {
 			RenderSystem.enableCull();
 			RenderSystem.disableBlend();
 			RenderSystem.alphaFunc(516, 0.1F);
-			mc.gameRenderer.disableLightmap();
+			mc.gameRenderer.getLightmapTextureManager().disableLightmap();
 		}
 	}
 

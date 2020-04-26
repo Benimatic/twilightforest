@@ -195,7 +195,7 @@ public class MapGenTFMajorFeature<T extends NoFeatureConfig> extends Structure<T
                     this.structureData.writeInstance(featureStart.writeStructureComponentsToNBT(start.getChunkPosX(), start.getChunkPosZ()), start.getChunkPosX(), start.getChunkPosZ());
                     this.structureData.setDirty(true);
                     if (flag) {
-                        for (EntityPlayerMP player : getPlayersInsideStructure(start)) {
+                        for (ServerPlayerEntity player : getPlayersInsideStructure(start)) {
                             TFAdvancements.STRUCTURE_CLEARED.trigger(player, FEATURE.name);
                         }
                     }

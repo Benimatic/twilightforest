@@ -8,6 +8,7 @@ import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 
@@ -53,7 +54,7 @@ public abstract class EntityTFBird extends AnimalEntity {
 
 		// don't fall as fast
 		if (!this.onGround && this.getMotion().getY() < 0.0D) {
-			this.motionY *= 0.6D;
+			this.setMotion(new Vec3d(getMotion().getX(), getMotion().getY() * 0.6D, getMotion().getZ()));
 		}
 
 		this.flapLength += this.flapSpeed * 2.0F;
