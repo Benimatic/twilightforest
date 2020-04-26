@@ -126,7 +126,7 @@ public class GuiTwilightForestLoading extends Screen {
 		// Shift it!
 		RenderSystem.translatef(-8f, -16.5f, 0f);
 
-		RenderHelper.enableGUIStandardItemLighting();
+		RenderHelper.enable(); //TODO: Correct?
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 0x20, 0x20);
 		// Draw it!
 		minecraft.getItemRenderer().renderItemAndEffectIntoGUI(item, 0, 0);

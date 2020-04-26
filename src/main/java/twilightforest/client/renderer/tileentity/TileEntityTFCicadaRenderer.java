@@ -2,7 +2,9 @@ package twilightforest.client.renderer.tileentity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.util.Direction;
@@ -27,6 +29,7 @@ public class TileEntityTFCicadaRenderer<T extends TileEntityTFCicada> extends Ti
 		int yaw = te != null ? ((TileEntityTFCicadaTicking) te).currentYaw : BugModelAnimationHelper.currentYaw;
 
 		stack.push();
+		//TODO: que?
 		Direction facing = Direction.byIndex(te != null ? te.getBlockMetadata() : 0);
 
 		float rotX = 90.0F;
@@ -44,15 +47,16 @@ public class TileEntityTFCicadaRenderer<T extends TileEntityTFCicada> extends Ti
 		} else if (facing == Direction.DOWN) {
 			rotX = 180F;
 		}
-		stack.translate((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
+		//stack.translate((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
 		RenderSystem.rotatef(rotX, 1F, 0F, 0F);
 		RenderSystem.rotatef(rotZ, 0F, 0F, 1F);
 		RenderSystem.rotatef(yaw, 0F, 1F, 0F);
 
-		this.bindTexture(textureLoc);
+		//this.bindTexture(textureLoc);
 		stack.push();
 		stack.scale(-1f, -1f, -1f);
-		cicadaModel.render(0.0625f);
+		IVertexBuilder vertex = buffer.getBuffer(RenderType.getEntitySolid(textureLoc));
+		cicadaModel.render(stack, vertex, light, overlay, 1.0F, 1.0F, 1.0F, 0.0625f);
 		stack.pop();
 		RenderSystem.color4f(1, 1, 1, 1);
 		stack.pop();

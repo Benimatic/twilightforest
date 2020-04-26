@@ -46,7 +46,7 @@ public class TileEntityTFMoonwormRenderer<T extends TileEntityTFMoonworm> extend
 		} else if (facing == Direction.DOWN) {
 			rotX = 180F;
 		}
-		stack.translate(x + 0.5F, y + 0.5F, z + 0.5F);
+		//stack.translate(x + 0.5F, y + 0.5F, z + 0.5F);
 		RenderSystem.rotatef(rotX, 1F, 0F, 0F);
 		RenderSystem.rotatef(rotZ, 0F, 0F, 1F);
 		RenderSystem.rotatef(yaw, 0F, 1F, 0F);

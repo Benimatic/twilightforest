@@ -1,5 +1,8 @@
 package twilightforest.client.model.entity;
 
+import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
@@ -7,6 +10,9 @@ import twilightforest.entity.boss.EntityTFNaga;
 import twilightforest.entity.boss.EntityTFNagaSegment;
 
 public class ModelTFNaga<T extends Entity> extends SegmentedModel<T> {
+
+	private T entity;
+
 	public ModelTFNaga() {
 		head = new ModelRenderer(this, 0, 0);
 		head.addCuboid(-8F, -12F, -8F, 16, 16, 16, 0F);
@@ -18,18 +24,27 @@ public class ModelTFNaga<T extends Entity> extends SegmentedModel<T> {
 	}
 
 	@Override
-	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+	public Iterable<ModelRenderer> getParts() {
+		return ImmutableList.of(head, body);
+	}
+
+	@Override
+	public void render(MatrixStack stack, IVertexBuilder builder, int light, int overlay, float red, float green, float blue, float scale) {
+		super.render(stack, builder, light, overlay, red, green, blue, scale);
+		//setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 
 		if (entity instanceof EntityTFNaga) {
-			head.render(scale * 2);
+			head.render(stack, builder, light, overlay, red, green, blue, scale * 2);
 		} else if (entity instanceof EntityTFNagaSegment) {
-			body.render(scale * 2);
+			body.render(stack, builder, light, overlay, red, green, blue, scale * 2);
 		} else {
-			head.render(scale * 2);
+			head.render(stack, builder, light, overlay, red, green, blue, scale * 2);
 		}
+	}
 
+	@Override
+	public void setAngles(T entity, float v, float v1, float v2, float v3, float v4) {
+		this.entity = entity;
 	}
 
 	//fields

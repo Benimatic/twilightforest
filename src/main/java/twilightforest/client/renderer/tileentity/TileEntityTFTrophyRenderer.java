@@ -116,7 +116,7 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 
 				RenderSystem.disableLighting();
 				matrix.translate(0.5F, 0.5F, -1.5F);
-				Minecraft.getInstance().getItemRenderer().renderItem(stack, ForgeHooksClient.handleCameraTransforms(trophyModel, transform, false));
+				Minecraft.getInstance().getItemRenderer().renderItem(stack, ForgeHooksClient.handleCameraTransforms(matrix, trophyModel, transform, false));
 				RenderSystem.enableLighting();
 				matrix.translate(-0.5F, 0.0F, 1.5F);
 

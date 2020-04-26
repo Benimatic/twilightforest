@@ -25,7 +25,7 @@ public class RenderTFRovingCube<T extends EntityTFRovingCube> extends EntityRend
 	@Override
 	public void render(T entity, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
 		stack.push();
-		stack.translate(x, y, z);
+		//stack.translate(x, y, z);
 
 		this.bindEntityTexture(entity);
 

@@ -11,6 +11,8 @@ public class ModelTFIceShooter<T extends EntityTFIceShooter> extends ModelTFIceE
 	 */
 	@Override
 	public void setLivingAnimations(T entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+		this.entity = entity;
+
 		for (int i = 0; i < spikes.length; i++) {
 			// rotate the spikes
 			this.spikes[i].rotateAngleY = (3.14159F / 2F) + (MathHelper.sin((entity.ticksExisted + partialTicks) / 5.0F) * 0.5F);

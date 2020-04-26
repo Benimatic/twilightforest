@@ -28,7 +28,7 @@ public class RenderTFCubeOfAnnihilation<T extends EntityTFCubeOfAnnihilation> ex
 		super.render(entity, yaw, partialTicks, stack, buffer, light);
 
 		stack.push();
-		stack.translate((float) x, (float) y, (float) z);
+		//stack.translate((float) x, (float) y, (float) z);
 
 		this.bindEntityTexture(entity);
 
@@ -41,7 +41,7 @@ public class RenderTFCubeOfAnnihilation<T extends EntityTFCubeOfAnnihilation> ex
 		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
 		stack.translate(0F, -0.5F, 0F);
-		this.model.renderf(entity, 0.0F, 0.0F, 0.0F, 0.0F, partialTicks, 0.0625F / 2F);
+		this.model.render(entity, 0.0F, 0.0F, 0.0F, 0.0F, partialTicks, 0.0625F / 2F);
 		RenderSystem.enableLighting();
 		GlStateManager.disableBlend();
 

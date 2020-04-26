@@ -38,8 +38,8 @@ public class RenderTFMinoshroom<T extends EntityTFMinoshroom, M extends ModelTFM
 			if (!minoshroom.isChild() && !minoshroom.isInvisible()) {
 				BlockRendererDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
 				RenderTFMinoshroom.this.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
-				GlStateManager.enableCull();
-				GlStateManager.cullFace(GlStateManager.CullFace.FRONT);
+				RenderSystem.enableCull();
+				RenderSystem.cullFace(GlStateManager.CullFace.FRONT);
 				stack.push();
 				stack.scale(1.0F, -1.0F, 1.0F);
 				stack.translate(0.2F, 0.35F, 0.5F);
@@ -64,7 +64,7 @@ public class RenderTFMinoshroom<T extends EntityTFMinoshroom, M extends ModelTFM
 				blockrendererdispatcher.renderBlockBrightness(Blocks.RED_MUSHROOM.getDefaultState(), 1.0F);
 				stack.pop();
 				RenderSystem.cullFace(GlStateManager.CullFace.BACK);
-				GlStateManager.disableCull();
+				RenderSystem.disableCull();
 			}
 		}
 

@@ -24,7 +24,7 @@ public class RenderTFThrownWep<T extends EntityTFThrownWep> extends EntityRender
 
 		float spin = (entity.ticksExisted + partialTicks) * -10F + 90F;
 
-		stack.translate((float) x, (float) y, (float) z);
+		//stack.translate((float) x, (float) y, (float) z);
 		RenderSystem.enableRescaleNormal();
 
 		// size up

@@ -1,5 +1,6 @@
 package twilightforest.client.model.entity;
 
+import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
@@ -9,9 +10,14 @@ import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
 import twilightforest.entity.EntityTFIceMob;
 
+import java.util.Arrays;
+
 public class ModelTFIceExploder<T extends EntityTFIceMob> extends BipedModel<T> {
 
 	public ModelRenderer[] spikes = new ModelRenderer[16];
+
+	private final ImmutableList<ModelRenderer> parts;
+	protected T entity;
 
 	public ModelTFIceExploder() {
 		super(0.0F, 0.0F, 32, 32);
@@ -50,12 +56,21 @@ public class ModelTFIceExploder<T extends EntityTFIceMob> extends BipedModel<T> 
 
 			this.spikes[i].addChild(cube);
 		}
+
+		ImmutableList.Builder<ModelRenderer> builder = ImmutableList.builder();
+		builder.addAll(Arrays.asList(this.spikes));
+		parts = builder.build();
+	}
+
+	@Override
+	protected Iterable<ModelRenderer> getBodyParts() {
+		return parts;
 	}
 
 	@Override
 	public void render(MatrixStack stack, IVertexBuilder builder, int light, int overlay, float red, float green, float blue, float scale) {
 		//setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-		this.bipedHead.render(scale);
+		this.getHeadParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
 
 		for (int i = 0; i < spikes.length; i++) {
 
@@ -66,7 +81,7 @@ public class ModelTFIceExploder<T extends EntityTFIceMob> extends BipedModel<T> 
 				RenderSystem.color4f(1F, 1F, 1F, 0.6F);
 			}
 
-			this.spikes[i].render(scale);
+			this.getBodyParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
 
 			RenderSystem.disableBlend();
 		}
@@ -78,6 +93,8 @@ public class ModelTFIceExploder<T extends EntityTFIceMob> extends BipedModel<T> 
 	 */
 	@Override
 	public void setLivingAnimations(T entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+		this.entity = entity;
+
 		for (int i = 0; i < spikes.length; i++) {
 			// rotate the spikes
 			this.spikes[i].rotateAngleY = (entity.ticksExisted + partialTicks) / 5.0F;
@@ -92,7 +109,6 @@ public class ModelTFIceExploder<T extends EntityTFIceMob> extends BipedModel<T> 
 			this.spikes[i].rotationPointY = 5F + MathHelper.sin((entity.ticksExisted + partialTicks) / (float) i) * 3F;
 			this.spikes[i].rotationPointZ = MathHelper.sin((entity.ticksExisted + partialTicks) / (float) i) * 3F;
 
-			//TODO: AT
 			this.spikes[i].childModels.get(0).rotationPointY = 10 + MathHelper.sin((i + entity.ticksExisted + partialTicks) / i) * 3F;
 		}
 	}

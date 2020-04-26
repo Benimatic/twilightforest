@@ -40,9 +40,9 @@ public class RenderTFQuestRam<T extends EntityTFQuestRam, M extends ModelTFQuest
 		public void render(MatrixStack stack, IRenderTypeBuffer buffer, int i, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 			RenderTFQuestRam.this.bindTexture(textureLocLines);
 			float var4 = 1.0F;
-			GlStateManager.enableBlend();
+			RenderSystem.enableBlend();
 			RenderSystem.disableAlphaTest();
-			GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+			RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 			stack.scale(1.025f, 1.025f, 1.025f);
 			char var5 = 61680;
 			int var6 = var5 % 65536;
@@ -51,7 +51,7 @@ public class RenderTFQuestRam<T extends EntityTFQuestRam, M extends ModelTFQuest
 			RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 			RenderSystem.color4f(1.0F, 1.0F, 1.0F, var4);
 			RenderTFQuestRam.this.getEntityModel().render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-			GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+			RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		}
 //
 //		@Override

@@ -23,7 +23,7 @@ public class RenderTFMoonwormShot<T extends EntityTFMoonwormShot> extends Entity
 	@Override
 	public void render(T entity, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
 		stack.push();
-		stack.translate(x, y, z);
+		//stack.translate(x, y, z);
 		RenderSystem.rotatef(90F, 1F, 0F, 1F);
 
 		this.bindTexture(getEntityTexture(entity));

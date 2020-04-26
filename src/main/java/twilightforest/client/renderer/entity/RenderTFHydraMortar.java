@@ -1,11 +1,13 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import twilightforest.TwilightForestMod;
@@ -25,7 +27,7 @@ public class RenderTFHydraMortar<T extends EntityTFHydraMortar> extends EntityRe
 	@Override
 	public void render(T mortar, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
 		stack.push();
-		stack.translate((float) x, (float) y, (float) z);
+		//stack.translate((float) x, (float) y, (float) z);
 		float var10;
 
 		if ((float) mortar.fuse - partialTicks + 1.0F < 10.0F) {
@@ -46,9 +48,10 @@ public class RenderTFHydraMortar<T extends EntityTFHydraMortar> extends EntityRe
 		}
 
 		var10 = (1.0F - ((float) mortar.fuse - partialTicks + 1.0F) / 100.0F) * 0.8F;
-		this.bindTexture(textureLoc);
+		//this.bindTexture(textureLoc);
+		IVertexBuilder builder = buffer.getBuffer(RenderType.getEntitySolid(textureLoc));
 
-		mortarModel.render(0.075F);
+		mortarModel.render(stack, builder, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 0.075F);
 
 		if (mortar.fuse / 5 % 2 == 0) {
 			RenderSystem.disableTexture();
@@ -57,7 +60,7 @@ public class RenderTFHydraMortar<T extends EntityTFHydraMortar> extends EntityRe
 			RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_DST_ALPHA);
 			RenderSystem.color4f(1.0F, 1.0F, 1.0F, var10);
 
-			mortarModel.render(0.075F);
+			mortarModel.render(stack, builder, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 0.075F);
 
 			RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 			RenderSystem.disableBlend();

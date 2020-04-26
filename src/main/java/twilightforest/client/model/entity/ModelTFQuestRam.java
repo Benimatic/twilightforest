@@ -6,7 +6,10 @@
 
 package twilightforest.client.model.entity;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.passive.SheepEntity;
@@ -124,9 +127,10 @@ public class ModelTFQuestRam<T extends EntityTFQuestRam> extends SegmentedModel<
 	}
 
 	@Override
-	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+	public void render(MatrixStack stack, IVertexBuilder builder, int light, int overlay, float red, float green, float blue, float scale) {
+		super.render(stack, builder, light, overlay, red, green, blue, scale);
+		//setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+
 		frontbody.render(scale);
 		rearbody.render(scale);
 		leg1.render(scale);
@@ -146,12 +150,11 @@ public class ModelTFQuestRam<T extends EntityTFQuestRam> extends SegmentedModel<
 				float var4 = 1.0F;
 				final float[] dyeRgb = SheepEntity.getDyeRgb(DyeColor.byId(i));
 
-				GlStateManager.color3f(var4 * dyeRgb[0], var4 * dyeRgb[1], var4 * dyeRgb[2]);
+				RenderSystem.color3f(var4 * dyeRgb[0], var4 * dyeRgb[1], var4 * dyeRgb[2]);
 				segments[i].render(scale);
-
 			}
 		}
-		GlStateManager.color3f(1.0F, 1.0F, 1.0F);
+		RenderSystem.color3f(1.0F, 1.0F, 1.0F);
 	}
 
 	private void setRotation(ModelRenderer model, float x, float y, float z) {

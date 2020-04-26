@@ -8,6 +8,8 @@ import twilightforest.entity.boss.EntityTFLichMinion;
 
 public class ModelTFLichMinion<T extends EntityTFLichMinion> extends ZombieModel<T> {
 
+	private T entity;
+
 	public ModelTFLichMinion() {
 		super(0.0F, true);
 	}
@@ -18,9 +20,9 @@ public class ModelTFLichMinion<T extends EntityTFLichMinion> extends ZombieModel
 	 */
 	@Override
 	public void setLivingAnimations(T entity, float limbSwing, float limbSwingAmount, float partialTicks) {
-		EntityTFLichMinion minion = entity;
+		this.entity = entity;
 		// make strong minions greener
-		if (minion.isStrong()) {
+		if (entity.isStrong()) {
 			RenderSystem.color3f(0.25F, 2.0F, 0.25F);
 		} else {
 			RenderSystem.color3f(0.5F, 1.0F, 0.5F);

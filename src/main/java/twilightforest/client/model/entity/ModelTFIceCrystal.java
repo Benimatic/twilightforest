@@ -1,16 +1,23 @@
 package twilightforest.client.model.entity;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
 import twilightforest.entity.boss.EntityTFIceCrystal;
 
+import java.util.Arrays;
+
 public class ModelTFIceCrystal<T extends EntityTFIceCrystal> extends SegmentedModel<T> {
 
 	public ModelRenderer[] spikes = new ModelRenderer[16];
+
+	private final ImmutableList<ModelRenderer> parts;
+	private T entity;
 
 	public ModelTFIceCrystal() {
 		this.textureWidth = 32;
@@ -36,31 +43,40 @@ public class ModelTFIceCrystal<T extends EntityTFIceCrystal> extends SegmentedMo
 
 			this.spikes[i].addChild(cube);
 		}
+
+		ImmutableList.Builder<ModelRenderer> builder = ImmutableList.builder();
+		builder.addAll(Arrays.asList(this.spikes));
+		parts = builder.build();
 	}
 
 	@Override
-	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+	public ImmutableList<ModelRenderer> getParts() {
+		return parts;
+	}
+
+	@Override
+	public void render(MatrixStack stack, IVertexBuilder builder, int light, int overlay, float red, float green, float blue, float scale) {
+		//setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 		//this.bipedHead.render(scale);
 
 		for (int i = 0; i < spikes.length; i++) {
 
 			if (entity.isAlive()) {
-				GlStateManager.enableBlend();
-				GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+				RenderSystem.enableBlend();
+				RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
 				RenderSystem.color4f(1F, 1F, 1F, 0.6F);
 			}
 
-			this.spikes[i].render(scale);
+			super.render(stack, builder, light, overlay, red, green, blue, scale);
 
-			GlStateManager.disableBlend();
+			RenderSystem.disableBlend();
 		}
 	}
 
 	@Override
 	public void setAngles(T entity, float v, float v1, float v2, float v3, float v4) {
-
+		this.entity = entity;
 	}
 
 	/**
