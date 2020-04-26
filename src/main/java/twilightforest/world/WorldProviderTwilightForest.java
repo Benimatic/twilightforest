@@ -14,7 +14,6 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TFConfig;
-import twilightforest.TwilightForestMod;
 import twilightforest.client.TFClientProxy;
 import twilightforest.client.renderer.TFSkyRenderer;
 import twilightforest.client.renderer.TFWeatherRenderer;
@@ -152,8 +151,8 @@ public class WorldProviderTwilightForest extends OverworldDimension { //TODO: Sh
 	}
 
 	@Override
-	public DimensionType getDimensionType() {
-		return TwilightForestMod.dimType;
+	public DimensionType getType() {
+		return TFDimensions.tf_dimType;
 	}
 
 	@Override

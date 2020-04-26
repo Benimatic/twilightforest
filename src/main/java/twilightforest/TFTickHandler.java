@@ -23,6 +23,7 @@ import twilightforest.network.PacketStructureProtectionClear;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.util.StructureBoundingBoxUtils;
 import twilightforest.world.ChunkGeneratorTFBase;
+import twilightforest.world.TFDimensions;
 import twilightforest.world.TFWorld;
 
 import java.util.List;
@@ -114,7 +115,7 @@ public class TFTickHandler {
 	private static void checkForPortalCreation(PlayerEntity player, World world, float rangeToCheck) {
 		//TODO: Make these checks a Dimension, not an int
 		if (world.dimension.getDimension() == TFConfig.originDimension
-				|| world.dimension.getDimension() == TFConfig.dimension.dimensionID
+				|| world.dimension.getType() == TFDimensions.tf_dimType
 				|| TFConfig.COMMON_CONFIG.allowPortalsInOtherDimensions.get()) {
 
 			List<ItemEntity> itemList = world.getEntitiesWithinAABB(ItemEntity.class, player.getBoundingBox().grow(rangeToCheck));

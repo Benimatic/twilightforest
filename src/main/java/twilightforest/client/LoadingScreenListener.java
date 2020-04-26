@@ -8,7 +8,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import twilightforest.TFConfig;
+import twilightforest.world.TFDimensions;
 
 @OnlyIn(Dist.CLIENT)
 public class LoadingScreenListener {
@@ -26,7 +26,7 @@ public class LoadingScreenListener {
 	@SubscribeEvent
 	public void onOpenGui(GuiOpenEvent event) {
 		if (event.getGui() instanceof DownloadTerrainScreen && client.player != null) {
-			int tfDimension = TFConfig.dimension.dimensionID; //TODO: We're not ints, anymore
+			DimensionType tfDimension = TFDimensions.tf_dimType;
 			if (client.player.dimension == tfDimension || lastDimension == tfDimension) {
 				GuiTwilightForestLoading guiLoading = new GuiTwilightForestLoading();
 				guiLoading.setEntering(client.player.dimension == tfDimension);

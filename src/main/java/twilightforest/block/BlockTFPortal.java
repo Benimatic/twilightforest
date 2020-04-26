@@ -231,14 +231,14 @@ public class BlockTFPortal extends BreakableBlock {
 		// set a cooldown before this can run again
 		entity.timeUntilPortal = 10;
 
-		int destination = getDestination(entity);
+		DimensionType destination = getDestination(entity);
 
 		entity.changeDimension(destination, TFTeleporter.getTeleporterForDim(entity.getServer(), destination));
 
-		if (destination == TFConfig.dimension.dimensionID && entity instanceof ServerPlayerEntity) {
+		if (destination == TFDimensions.tf_dimType && entity instanceof ServerPlayerEntity) {
 			ServerPlayerEntity playerMP = (ServerPlayerEntity) entity;
 			// set respawn point for TF dimension to near the arrival portal
-			//playerMP.setSpawnPoint(new BlockPos(playerMP), true, TFConfig.dimension.dimensionID); TODO: ID to DimensionType
+			playerMP.setSpawnPoint(new BlockPos(playerMP), true, TFDimensions.tf_dimType);
 		}
 	}
 

@@ -38,6 +38,7 @@ import twilightforest.loot.TFTreasure;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.potions.TFPotions;
 import twilightforest.tileentity.TFTileEntities;
+import twilightforest.world.TFDimensions;
 import twilightforest.world.feature.TFBiomeFeatures;
 import twilightforest.world.feature.TFGenCaveStalactite;
 import twilightforest.world.surfacebuilders.TFSurfaceBuilders;
@@ -103,7 +104,6 @@ public class TwilightForestMod {
 		}
 
 		// TODO: move these to proper spots
-		// dimType = DimensionType.register("twilight_forest", "_twilightforest", TFConfig.dimension.dimensionID, WorldProviderTwilightForest.class, false);
 		// WorldProviderTwilightForest.syncFromConfig();
 
 		// sounds on client, and whatever else needs to be registered pre-load
@@ -148,8 +148,7 @@ public class TwilightForestMod {
 			}
 		}
 
-		// registerDimension(); // TODO: deferred registry
-		// checkOriginDimension(); // TODO: move
+		TFDimensions.checkOriginDimension();
 
 		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
 			try {
@@ -179,24 +178,6 @@ public class TwilightForestMod {
 	public void startServer(FMLServerStartingEvent event) {
 		TFCommand.register(event.getCommandDispatcher());
 	}
-
-	/*private static void registerDimension() { TODO: move all this to a deferred registry
-		if (DimensionManager.isDimensionRegistered(TFConfig.dimension.dimensionID)) {
-			LOGGER.warn("Detected that the configured dimension ID '{}' is being used. Using backup ID ({}). It is recommended that you configure this mod to use a unique dimension ID.", TFConfig.dimension.dimensionID, backupDimensionID);
-			TFConfig.dimension.dimensionID = backupDimensionID;
-		}
-		DimensionManager.registerDimension(TFConfig.dimension.dimensionID, dimType);
-	}
-
-	static void checkOriginDimension() {
-		if (!DimensionManager.isDimensionRegistered(TFConfig.originDimension)) {
-			LOGGER.warn("Detected that the configured origin dimension ID ({}) is not registered. Defaulting to the overworld.", TFConfig.originDimension);
-			TFConfig.originDimension = 0;
-		} else if (TFConfig.originDimension == TFConfig.dimension.dimensionID) {
-			LOGGER.warn("Detected that the configured origin dimension ID ({}) is already used for the Twilight Forest. Defaulting to the overworld.", TFConfig.originDimension);
-			TFConfig.originDimension = 0;
-		}
-	}*/
 
 	public static ResourceLocation prefix(String name) {
 		return new ResourceLocation(ID, name);
