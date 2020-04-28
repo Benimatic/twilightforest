@@ -2,7 +2,6 @@ package twilightforest.world.feature;
 
 import com.mojang.datafixers.Dynamic;
 import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.tileentity.MobSpawnerTileEntity;
@@ -45,17 +44,17 @@ public class TFGenHollowTree<T extends TFTreeFeatureConfig> extends TFTreeGenera
 		super(config);
 	}
 
-	public static boolean canGrowInto(Block blockType) {
-		Material material = blockType.getDefaultState().getMaterial();
-		return material == Material.AIR || material == Material.LEAVES || material == Material.WATER || material == Material.LAVA || blockType instanceof IGrowable || blockType instanceof BlockDirt || blockType instanceof BlockLog || blockType instanceof BlockBush || blockType instanceof BlockVine;
-	}
+//	public static boolean canGrowInto(Block blockType) {
+//		Material material = blockType.getDefaultState().getMaterial();
+//		return material == Material.AIR || material == Material.LEAVES || material == Material.WATER || material == Material.LAVA || blockType instanceof IGrowable || blockType instanceof BlockDirt || blockType instanceof BlockLog || blockType instanceof BlockBush || blockType instanceof BlockVine;
+//	}
 
-	@Override
-	@Deprecated
-	protected void setBlockAndNotifyAdequately(World worldIn, BlockPos pos, BlockState state) {
-		if (canGrowInto(worldIn.getBlockState(pos).getBlock()))
-			super.setBlockAndNotifyAdequately(worldIn, pos, state);
-	}
+//	@Override
+//	@Deprecated
+//	protected void setBlockAndNotifyAdequately(World worldIn, BlockPos pos, BlockState state) {
+//		if (canGrowInto(worldIn.getBlockState(pos).getBlock()))
+//			super.setBlockAndNotifyAdequately(worldIn, pos, state);
+//	}
 
 	@Override
 	public boolean generate(IWorldGenerationReader worldIn, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, T config) {

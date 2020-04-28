@@ -18,7 +18,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootFunction;
 import net.minecraft.world.storage.loot.conditions.ILootCondition;
-import net.minecraft.world.storage.loot.functions.ILootFunction;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IRegistryDelegate;
@@ -26,7 +25,6 @@ import twilightforest.TwilightForestMod;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 // Similar to EnchantRandomly but applies everything and with exact levels
 public class LootFunctionEnchant extends LootFunction {

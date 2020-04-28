@@ -1,7 +1,7 @@
 package twilightforest.tileentity;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.LogBlock;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.AbstractCookingRecipe;
@@ -22,6 +22,7 @@ import twilightforest.block.BlockTFCinderFurnace;
 import twilightforest.block.BlockTFCinderLog;
 import twilightforest.block.TFBlocks;
 
+import javax.annotation.Nullable;
 import java.util.Random;
 
 public class TileEntityTFCinderFurnace extends FurnaceTileEntity {
@@ -116,7 +117,7 @@ public class TileEntityTFCinderFurnace extends FurnaceTileEntity {
 			Block nearbyBlock = this.getWorld().getBlockState(pos).getBlock();
 
 			if (nearbyBlock != TFBlocks.cinder_log.get() && BlockTags.LOGS.contains(nearbyBlock)) {
-				this.getWorld().setBlockState(pos, TFBlocks.cinder_log.get().getDefaultState().with(BlockTFCinderLog.AXIS, getCinderFacing(dx, dy, dz)), 2);
+				this.getWorld().setBlockState(pos, getCinderLog(dx, dy, dz), 2);
 				this.getWorld().playEvent(2004, pos, 0);
 				this.getWorld().playEvent(2004, pos, 0);
 				this.getWorld().playSound(null, pos, SoundEvents.BLOCK_FIRE_AMBIENT, SoundCategory.BLOCKS, 1.0F, 1.0F);
@@ -127,17 +128,20 @@ public class TileEntityTFCinderFurnace extends FurnaceTileEntity {
 	/**
 	 * What meta should we set the log block with the specified offset to?
 	 */
-	private Direction.Axis getCinderFacing(int dx, int dy, int dz) {
+	private BlockState getCinderLog(int dx, int dy, int dz) {
+		@Nullable Direction.Axis direction;
 		if (dz == 0 && dx != 0) {
-			return dy == 0 ? Direction.Axis.X : Direction.Axis.Z;
+			direction = dy == 0 ? Direction.Axis.X : Direction.Axis.Z;
 		} else if (dx == 0 && dz != 0) {
-			return dy == 0 ? Direction.Axis.Z : Direction.Axis.X;
+			direction = dy == 0 ? Direction.Axis.Z : Direction.Axis.X;
 		} else if (dx == 0 && dz == 0) {
-			return Direction.Axis.Y;
+			direction = Direction.Axis.Y;
 		} else {
-			return dy == 0 ? Direction.Axis.Y : LogBlock.EnumAxis.NONE; //TODO: None does not exist. Should return Block/State
+			direction = dy == 0 ? Direction.Axis.Y : null; //We return null so we can get Cinder Wood.
 		}
 
+		return direction != null ? TFBlocks.cinder_log.get().getDefaultState().with(BlockTFCinderLog.AXIS, direction)
+				: TFBlocks.cinder_wood.get().getDefaultState();
 	}
 
 	/**

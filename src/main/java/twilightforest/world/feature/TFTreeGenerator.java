@@ -48,10 +48,10 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Abs
 //	}
 
 	//TODO: Figure out how to get this working
-	@Override
-	protected boolean canGrowInto(Block blockType) {
-		return TFGenHollowTree.canGrowInto(blockType);
-	}
+//	@Override
+//	protected boolean canGrowInto(Block blockType) {
+//		return TFGenHollowTree.canGrowInto(blockType);
+//	}
 
 	//TODO: Check the logic here
 	@Override
