@@ -6,6 +6,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.DefaultBiomeFeatures;
 import twilightforest.TFFeature;
 import twilightforest.entity.TFEntities;
 import twilightforest.util.PlayerHelper;
@@ -23,6 +24,9 @@ public class TFBiomeBase extends Biome {
 
 	public TFBiomeBase(Builder props) {
 		super(props);
+
+		//TODO: This is just vanilla's; porting the current cave and ravine generators is not worth it, and should probably just copy-paste
+		DefaultBiomeFeatures.addCarvers(this);
 
 		addSpawn(EntityClassification.CREATURE, new SpawnListEntry(TFEntities.bighorn_sheep.get(), 12, 4, 4));
 		addSpawn(EntityClassification.CREATURE, new SpawnListEntry(TFEntities.wild_boar.get(), 10, 4, 4));
