@@ -9,6 +9,8 @@ import twilightforest.entity.EntityTFProtectionBox;
 
 public class ModelTFProtectionBox<T extends EntityTFProtectionBox> extends SegmentedModel<T> {
 
+	private T entity;
+
 	public ModelRenderer box;
 	private int lastPixelsX;
 	private int lastPixelsY;
@@ -29,7 +31,7 @@ public class ModelTFProtectionBox<T extends EntityTFProtectionBox> extends Segme
 
 	@Override
 	public void render(MatrixStack stack, IVertexBuilder builder, int light, int overlay, float red, float green, float blue, float scale) {
-		EntityTFProtectionBox boxEntity = (EntityTFProtectionBox) entity;
+		EntityTFProtectionBox boxEntity = entity;
 
 		int pixelsX = boxEntity.sizeX * 16 + 2;
 		int pixelsY = boxEntity.sizeY * 16 + 2;
@@ -49,7 +51,7 @@ public class ModelTFProtectionBox<T extends EntityTFProtectionBox> extends Segme
 
 	@Override
 	public void setLivingAnimations(T entity, float limbSwing, float limbSwingAmount, float partialTicks) {
-
+		this.entity = entity;
 	}
 
 	private void resizeBoxElement(int pixelsX, int pixelsY, int pixelsZ) {
@@ -61,6 +63,4 @@ public class ModelTFProtectionBox<T extends EntityTFProtectionBox> extends Segme
 		this.lastPixelsY = pixelsY;
 		this.lastPixelsZ = pixelsZ;
 	}
-
-
 }

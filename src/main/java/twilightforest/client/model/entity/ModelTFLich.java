@@ -13,6 +13,8 @@ public class ModelTFLich<T extends EntityTFLich> extends BipedModel<T> {
 	private final ModelRenderer collar;
 	private final ModelRenderer cloak;
 
+	private T entity;
+
 	public ModelTFLich() {
 		super(0.0F, 0.0F, 64, 64);
 //		textureWidth = 64;
@@ -72,8 +74,8 @@ public class ModelTFLich<T extends EntityTFLich> extends BipedModel<T> {
 	public void render(MatrixStack stack, IVertexBuilder builder, int light, int overlay, float red, float green, float blue, float scale) {
 		if (!entity.isShadowClone()) {
 			super.render(stack, builder, light, overlay, red, green, blue, scale);
-			collar.render(scale * 1.125F);
-			cloak.render(scale * 1.125F);
+			collar.render(stack, builder, light, overlay, red, green, blue, scale * 1.125F);
+			cloak.render(stack, builder, light, overlay, red, green, blue, scale * 1.125F);
 		} else {
 			RenderSystem.enableBlend();
 			RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -86,6 +88,7 @@ public class ModelTFLich<T extends EntityTFLich> extends BipedModel<T> {
 
 	@Override
 	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+		this.entity = entity;
 		super.setAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
 		float ogSin = MathHelper.sin(swingProgress * 3.141593F);

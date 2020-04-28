@@ -2,8 +2,10 @@ package twilightforest.client.renderer.tileentity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
@@ -35,6 +37,7 @@ import twilightforest.tileentity.TileEntityTFTrophy;
 
 import javax.annotation.Nullable;
 
+//TODO: Flatten out all the meta-related calls
 public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFTrophy> {
 
 	public static class DummyTile extends TileEntityTFTrophy {}
@@ -73,10 +76,11 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 		this.itemModelLocation = null;
 	}
 
-	public TileEntityTFTrophyRenderer(ModelResourceLocation itemModelLocation) {
-		this.itemModelLocation = itemModelLocation;
-		MinecraftForge.EVENT_BUS.register(this);
-	}
+	//TODO: Unless you can get a dispatcher here, we can't do this.
+//	public TileEntityTFTrophyRenderer(ModelResourceLocation itemModelLocation) {
+//		this.itemModelLocation = itemModelLocation;
+//		MinecraftForge.EVENT_BUS.register(this);
+//	}
 
 	@SubscribeEvent
 	public void onModelBake(ModelBakeEvent event) {
@@ -182,29 +186,29 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 				if (trophy == null) {
 					matrix.translate(0.0F, -0.25F, transform == ItemCameraTransforms.TransformType.HEAD ? -0.125F : 0.0F);
 				}
-				renderHydraHead(matrix, rotation, onGround && trophy != null);
+				renderHydraHead(matrix, buffer, light, overlay, rotation, onGround && trophy != null);
 				break;
 			case NAGA:
-				renderNagaHead(matrix, rotation, onGround);
+				renderNagaHead(matrix, buffer, light, overlay, rotation, onGround);
 				break;
 			case LICH:
-				renderLichHead(matrix, rotation, onGround);
+				renderLichHead(matrix, buffer, light, overlay, rotation, onGround);
 				break;
 			case UR_GHAST:
 				if (trophy == null) matrix.translate(0.0F, -0.5F, 0.0F);
-				renderUrGhastHead(trophy, matrix, rotation, onGround, partialTime);
+				renderUrGhastHead(trophy, matrix, buffer, light, overlay, rotation, onGround, partialTime);
 				break;
 			case SNOW_QUEEN:
-				renderSnowQueenHead(matrix, rotation, onGround);
+				renderSnowQueenHead(matrix, buffer, light, overlay, rotation, onGround);
 				break;
 			case MINOSHROOM:
-				renderMinoshroomHead(matrix, rotation, onGround);
+				renderMinoshroomHead(matrix, buffer, light, overlay, rotation, onGround);
 				break;
 			case KNIGHT_PHANTOM:
-				renderKnightPhantomHead(matrix, rotation, onGround);
+				renderKnightPhantomHead(matrix, buffer, light, overlay, rotation, onGround);
 				break;
 			case QUEST_RAM:
-				renderQuestRamHead(matrix, rotation, onGround);
+				renderQuestRamHead(matrix, buffer, light, overlay, rotation, onGround);
 				break;
 			default:
 				break;
@@ -217,10 +221,11 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 	/**
 	 * Render a hydra head
 	 */
-	private void renderHydraHead(MatrixStack matrix, float rotation, boolean onGround) {
+	private void renderHydraHead(MatrixStack matrix, IRenderTypeBuffer buffer, int light, int overlay, float rotation, boolean onGround) {
 		matrix.scale(0.25f, 0.25f, 0.25f);
 
-		this.bindTexture(textureLocHydra);
+		//this.bindTexture(textureLocHydra);
+		IVertexBuilder vertex = buffer.getBuffer(RenderType.getEntitySolid(textureLocHydra));
 
 		matrix.scale(1f, -1f, -1f);
 
@@ -234,15 +239,17 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 		hydraHeadModel.openMouthForTrophy(onGround ? 0F : 0.25F);
 
 		// render the hydra head
-		hydraHeadModel.render(null, 0.0F, 0.0F, 0.0F, rotation, 0.0F, 0.0625F);
+		//hydraHeadModel.render(null, 0.0F, 0.0F, 0.0F, rotation, 0.0F, 0.0625F);
+		hydraHeadModel.render(matrix, vertex, light, overlay, 1.0F, 1.0F, 1.0F, 0.0625F);
 	}
 
-	private void renderNagaHead(MatrixStack matrix, float rotation, boolean onGround) {
+	private void renderNagaHead(MatrixStack matrix, IRenderTypeBuffer buffer, int light, int overlay, float rotation, boolean onGround) {
 		matrix.translate(0, -0.125F, 0);
 
 		matrix.scale(0.25f, 0.25f, 0.25f);
 
-		this.bindTexture(textureLocNaga);
+		//this.bindTexture(textureLocNaga);
+		IVertexBuilder vertex = buffer.getBuffer(RenderType.getEntitySolid(textureLocNaga));
 
 		matrix.scale(1f, -1f, -1f);
 
@@ -253,16 +260,17 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 		matrix.translate(0, onGround ? 1F : -0F, onGround ? 0F : 1F);
 
 		// render the naga head
-		nagaHeadModel.render(null, 0.0F, 0.0F, 0.0F, rotation, 0.0F, 0.0625F);
+		//nagaHeadModel.render(null, 0.0F, 0.0F, 0.0F, rotation, 0.0F, 0.0625F);
+		nagaHeadModel.render(matrix, vertex, light, overlay, 1.0F, 1.0F, 1.0F, 0.0625F);
 	}
 
-
-	private void renderLichHead(MatrixStack matrix, float rotation, boolean onGround) {
+	private void renderLichHead(MatrixStack matrix, IRenderTypeBuffer buffer, int light, int overlay, float rotation, boolean onGround) {
 		matrix.translate(0, 1, 0);
 
 		//matrix.scale(0.5f, 0.5f, 0.5f);
 
-		this.bindTexture(textureLocLich);
+		//this.bindTexture(textureLocLich);'
+		IVertexBuilder vertex = buffer.getBuffer(RenderType.getEntityCutoutNoCull(textureLocLich));
 
 		matrix.scale(1f, -1f, -1f);
 
@@ -273,17 +281,17 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 		matrix.translate(0, onGround ? 1.75F : 1.5F, onGround ? 0F : 0.24F);
 
 		// render the lich head
-		lichModel.bipedHead.render(0.0625F);
-		lichModel.bipedHeadwear.render(0.0625F);
+		lichModel.bipedHead.render(matrix, vertex, light, overlay, 1.0F, 1.0F, 1.0F, 0.0625F);
+		lichModel.bipedHeadwear.render(matrix, vertex, light, overlay, 1.0F, 1.0F, 1.0F, 0.0625F);
 	}
 
-
-	private void renderUrGhastHead(@Nullable TileEntityTFTrophy trophy, MatrixStack matrix, float rotation, boolean onGround, float partialTime) {
+	private void renderUrGhastHead(@Nullable TileEntityTFTrophy trophy, MatrixStack matrix, IRenderTypeBuffer buffer, int light, int overlay, float rotation, boolean onGround, float partialTime) {
 		matrix.translate(0, 1, 0);
 
 		matrix.scale(0.5f, 0.5f, 0.5f);
 
-		this.bindTexture(textureLocUrGhast);
+		//this.bindTexture(textureLocUrGhast);
+		IVertexBuilder vertex = buffer.getBuffer(RenderType.getEntitySolid(textureLocUrGhast));
 
 		matrix.scale(1f, -1f, -1f);
 
@@ -294,15 +302,17 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 		matrix.translate(0, onGround ? 1F : 1F, onGround ? 0F : 0F);
 
 		// render the head
-		urGhastModel.render(null, 0.0F, 0, trophy != null ? trophy.ticksExisted + partialTime : TFClientEvents.sineTicker + partialTime, 0, 0.0F, 0.0625F);
+		//urGhastModel.render(null, 0.0F, 0, trophy != null ? trophy.ticksExisted + partialTime : TFClientEvents.sineTicker + partialTime, 0, 0.0F, 0.0625F);
+		urGhastModel.render(matrix, vertex, light, overlay, 1.0F, 1.0F, 1.0F, 0.0625F);
 	}
 
-	private void renderSnowQueenHead(MatrixStack matrix, float rotation, boolean onGround) {
+	private void renderSnowQueenHead(MatrixStack matrix, IRenderTypeBuffer buffer, int light, int overlay, float rotation, boolean onGround) {
 		matrix.translate(0, 1, 0);
 
 		//matrix.scale(0.5f, 0.5f, 0.5f);
 
-		this.bindTexture(textureLocSnowQueen);
+		//this.bindTexture(textureLocSnowQueen);
+		IVertexBuilder vertex = buffer.getBuffer(RenderType.getEntityCutoutNoCull(textureLocSnowQueen));
 
 		matrix.scale(1f, -1f, -1f);
 
@@ -313,16 +323,17 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 		matrix.translate(0, onGround ? 1.5F : 1.25F, onGround ? 0F : 0.24F);
 
 		// render the head
-		snowQueenModel.bipedHead.render(0.0625F);
-		snowQueenModel.bipedHeadwear.render(0.0625F);
+		snowQueenModel.bipedHead.render(matrix, vertex, light, overlay, 1.0F, 1.0F, 1.0F, 0.0625F);
+		snowQueenModel.bipedHeadwear.render(matrix, vertex, light, overlay, 1.0F, 1.0F, 1.0F, 0.0625F);
 	}
 
-	private void renderMinoshroomHead(MatrixStack matrix, float rotation, boolean onGround) {
+	private void renderMinoshroomHead(MatrixStack matrix, IRenderTypeBuffer buffer, int light, int overlay, float rotation, boolean onGround) {
 		matrix.translate(0, 1, 0);
 
 		//matrix.scale(0.5f, 0.5f, 0.5f);
 
-		this.bindTexture(textureLocMinoshroom);
+		//this.bindTexture(textureLocMinoshroom);
+		IVertexBuilder vertex = buffer.getBuffer(RenderType.getEntityCutout(textureLocMinoshroom));
 
 		matrix.scale(1f, -1f, -1f);
 
@@ -333,10 +344,10 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 		matrix.translate(0, onGround ? 1.875F : 1.625F, onGround ? 0.5625F : 0.8125F);
 
 		// render the head
-		minoshroomModel.bipedHead.render(0.0625F);
+		minoshroomModel.bipedHead.render(matrix, vertex, light, overlay, 1.0F, 1.0F, 1.0F, 0.0625F);
 	}
 
-	private void renderKnightPhantomHead(MatrixStack matrix, float rotation, boolean onGround) {
+	private void renderKnightPhantomHead(MatrixStack matrix, IRenderTypeBuffer buffer, int light, int overlay, float rotation, boolean onGround) {
 		matrix.translate(0, 1, 0);
 
 		matrix.scale(1f, -1f, -1f);
@@ -350,16 +361,18 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 		matrix.scale(0.9375F, 0.9375F, 0.9375F);
 
 		// render the head
-		this.bindTexture(textureLocKnightPhantomArmor);
-		knightPhantomArmorModel.bipedHead.render(0.0625F);
+		//this.bindTexture(textureLocKnightPhantomArmor);
+		IVertexBuilder vertex = buffer.getBuffer(RenderType.getEntityCutoutNoCull(textureLocKnightPhantomArmor));
+		knightPhantomArmorModel.bipedHead.render(matrix, vertex, light, overlay, 1.0F, 1.0F, 1.0F, 0.0625F);
 
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 0.75F);
 
-		this.bindTexture(textureLocKnightPhantom);
-		knightPhantomModel.bipedHead.render(0.0625F);
+		//this.bindTexture(textureLocKnightPhantom);
+		vertex = buffer.getBuffer(RenderType.getEntitySolid(textureLocKnightPhantom));
+		knightPhantomModel.bipedHead.render(matrix, vertex, light, overlay, 1.0F, 1.0F, 1.0F, 0.0625F);
 	}
 
-	private void renderQuestRamHead(MatrixStack matrix, float rotation, boolean onGround) {
+	private void renderQuestRamHead(MatrixStack matrix, IRenderTypeBuffer buffer, int light, int overlay, float rotation, boolean onGround) {
 		if (transform == ItemCameraTransforms.TransformType.GUI)
 			matrix.scale(0.55f, 0.55f, 0.55f);
 		else if (stack.isEmpty())
@@ -372,7 +385,8 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 			matrix.translate(0.0F, 0.5F, 0.0F);
 		}
 
-		this.bindTexture(textureLocQuestRam);
+		//this.bindTexture(textureLocQuestRam);
+		IVertexBuilder vertex = buffer.getBuffer(RenderType.getEntitySolid(textureLocQuestRam));
 
 		matrix.scale(1f, -1f, -1f);
 
@@ -382,23 +396,24 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 		matrix.translate(0F, onGround ? 1.30F : 1.03F, onGround ? 0.765625F : 1.085F);
 
 		// render the head
-		questRamModel.head.render(0.0625F);
+		questRamModel.head.render(matrix, vertex, light, overlay, 1.0F, 1.0F, 1.0F, 0.0625F);
 
 		RenderSystem.disableLighting();
-		this.bindTexture(textureLocQuestRamLines);
+		//this.bindTexture(textureLocQuestRamLines);
+		vertex = buffer.getBuffer(RenderType.getEntityTranslucent(textureLocQuestRamLines));
 		float var4 = 1.0F;
 		RenderSystem.enableBlend();
 		RenderSystem.disableAlphaTest();
 		RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 		matrix.scale(1.025f, 1.025f, 1.025f);
 		char var5 = 61680;
-		int var6 = var5 % 65536;
-		int var7 = var5 / 65536;
-		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) var6 / 1.0F, (float) var7 / 1.0F);
+		//int var6 = var5 % 65536;
+		//int var7 = var5 / 65536;
+		//OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) var6 / 1.0F, (float) var7 / 1.0F);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, var4);
-		questRamModel.head.render(0.0625F);
+		questRamModel.head.render(matrix, vertex, var5, overlay, 1.0F, 1.0F, 1.0F, 0.0625F);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
+		//OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
 		RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		RenderSystem.enableAlphaTest();
 		RenderSystem.enableLighting();

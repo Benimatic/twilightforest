@@ -6,8 +6,8 @@
 
 package twilightforest.client.model.entity;
 
+import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
@@ -127,23 +127,43 @@ public class ModelTFQuestRam<T extends EntityTFQuestRam> extends SegmentedModel<
 	}
 
 	@Override
+	public Iterable<ModelRenderer> getParts() {
+		return ImmutableList.of(
+				frontbody,
+				rearbody,
+				leg1,
+				haunch1,
+				leg2,
+				haunch2,
+				leg3,
+				haunch3,
+				leg4,
+				haunch4,
+				neck,
+				head
+		);
+	}
+
+	@Override
 	public void render(MatrixStack stack, IVertexBuilder builder, int light, int overlay, float red, float green, float blue, float scale) {
 		super.render(stack, builder, light, overlay, red, green, blue, scale);
 		//setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 
-		frontbody.render(scale);
-		rearbody.render(scale);
-		leg1.render(scale);
-		haunch1.render(scale);
-		leg2.render(scale);
-		haunch2.render(scale);
-		leg3.render(scale);
-		haunch3.render(scale);
-		leg4.render(scale);
-		haunch4.render(scale);
-		neck.render(scale);
-		//nose.render(scale);
-		head.render(scale);
+//		frontbody.render(scale);
+//		rearbody.render(scale);
+//		leg1.render(scale);
+//		haunch1.render(scale);
+//		leg2.render(scale);
+//		haunch2.render(scale);
+//		leg3.render(scale);
+//		haunch3.render(scale);
+//		leg4.render(scale);
+//		haunch4.render(scale);
+//		neck.render(scale);
+//		//nose.render(scale);
+//		head.render(scale);
+
+		this.getParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
 
 		for (int i = 0; i < 16; i++) {
 			if (segmentEnabled[i]) {
@@ -151,7 +171,7 @@ public class ModelTFQuestRam<T extends EntityTFQuestRam> extends SegmentedModel<
 				final float[] dyeRgb = SheepEntity.getDyeRgb(DyeColor.byId(i));
 
 				RenderSystem.color3f(var4 * dyeRgb[0], var4 * dyeRgb[1], var4 * dyeRgb[2]);
-				segments[i].render(scale);
+				segments[i].render(stack, builder, light, overlay, red, green, blue, scale);
 			}
 		}
 		RenderSystem.color3f(1.0F, 1.0F, 1.0F);

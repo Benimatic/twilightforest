@@ -5,6 +5,9 @@
 // - ZeuX
 package twilightforest.client.model.entity;
 
+import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
@@ -145,25 +148,28 @@ public class ModelTFSlimeBeetle<T extends EntityTFSlimeBeetle> extends Segmented
 	}
 
 	@Override
-	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+	public Iterable<ModelRenderer> getParts() {
+		return ImmutableList.of(
+				head,
+				RearEnd,
+				Leg6,
+				Leg4,
+				Leg2,
+				Leg5,
+				Leg3,
+				Leg1,
+				connector1
+		);
+	}
 
-		tail1.render(scale);
+	@Override
+	public void render(MatrixStack stack, IVertexBuilder builder, int light, int overlay, float red, float green, float blue, float scale) {
+		//setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 
-		if (renderPassModel) {
-		} else {
-			head.render(scale);
-			RearEnd.render(scale);
-			Leg6.render(scale);
-			Leg4.render(scale);
-			Leg2.render(scale);
-			Leg5.render(scale);
-			Leg3.render(scale);
-			Leg1.render(scale);
-			connector1.render(scale);
-			//tail1.render(scale);
-//			tail2.render(scale);
-//			slimeCenter.render(scale);
+		tail1.render(stack, builder, light, overlay, red, green, blue, scale);
+
+		if (!renderPassModel) {
+			getParts().forEach((part) -> part.render(stack, builder, light, overlay, red, green, blue, scale));
 		}
 	}
 

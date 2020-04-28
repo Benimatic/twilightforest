@@ -14,6 +14,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.client.IRenderHandler;
 import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomeDarkForest;
@@ -142,7 +143,7 @@ public class TFWeatherRenderer implements IRenderHandler {
 							blockpos$mutableblockpos.setPos(l1, k2, k1);
 							float f2 = biome.getTemperature(blockpos$mutableblockpos);
 
-							if (world.getBiomeProvider().getTemperatureAtHeight(f2, j2) >= 0.15F) {
+							if (((ServerWorld)world).getChunkProvider().getChunkGenerator().getBiomeProvider().getTemperatureAtHeight(f2, j2) >= 0.15F) {
 								if (j1 != 0) {
 									if (j1 >= 0) {
 										tessellator.draw();
