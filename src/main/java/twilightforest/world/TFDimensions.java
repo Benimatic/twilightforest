@@ -8,6 +8,7 @@ import net.minecraft.world.dimension.Dimension;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.ChunkGeneratorType;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ModDimension;
 import net.minecraftforge.event.world.RegisterDimensionsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -40,15 +41,26 @@ public class TFDimensions {
 
 	public static DimensionType tf_dimType;
 
-	//TODO: Need to change "originDimension" to be a DimensionType. Might have to get it by name.
+	//TODO: Does this actually work? This is a bunch of shambles
 	public static void checkOriginDimension() {
-		if (!DimensionManager.isDimensionRegistered(TFConfig.originDimension)) {
-			TwilightForestMod.LOGGER.warn("Detected that the configured origin dimension ID ({}) is not registered. Defaulting to the overworld.", TFConfig.originDimension);
-			TFConfig.originDimension = 0;
-		} else if (TFConfig.originDimension == TFConfig.dimension.dimensionID) {
-			TwilightForestMod.LOGGER.warn("Detected that the configured origin dimension ID ({}) is already used for the Twilight Forest. Defaulting to the overworld.", TFConfig.originDimension);
-			TFConfig.originDimension = 0;
+		ResourceLocation tfDim = new ResourceLocation(TwilightForestMod.ID, "twilight_forest");
+		ForgeConfigSpec.ConfigValue<String> originDim = TFConfig.COMMON_CONFIG.originDimension;
+		ResourceLocation dimRL = new ResourceLocation(originDim.get());
+
+		if (DimensionType.byName(dimRL) == null) {
+			TwilightForestMod.LOGGER.warn("Detected that the configured origin dimension ID ({}) is not registered. Defaulting to the overworld.", originDim.get());
+			originDim.set("minecraft:overworld");
+		} else if (dimRL == tfDim) {
+			TwilightForestMod.LOGGER.warn("Detected that the configured origin dimension ID ({}) is already used for the Twilight Forest. Defaulting to the overworld.", originDim.get());
+			originDim.set("minecraft:overworld");
 		}
+//		if (!DimensionManager.isDimensionRegistered(TFConfig.originDimension)) {
+//			TwilightForestMod.LOGGER.warn("Detected that the configured origin dimension ID ({}) is not registered. Defaulting to the overworld.", TFConfig.originDimension);
+//			TFConfig.originDimension = 0;
+//		} else if (TFConfig.originDimension == TFConfig.dimension.dimensionID) {
+//			TwilightForestMod.LOGGER.warn("Detected that the configured origin dimension ID ({}) is already used for the Twilight Forest. Defaulting to the overworld.", TFConfig.originDimension);
+//			TFConfig.originDimension = 0;
+//		}
 	}
 
 	@SubscribeEvent

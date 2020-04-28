@@ -177,8 +177,8 @@ public class TFConfig {
 			builder.pop();
 			originDimension = builder.
 					translation(config + "origin_dimension").
-					comment("The dimension you can always travel to the Twilight Forest from, as well as the dimension you will return to. Defaults to the overworld.").
-					define("originDimension", 0);
+					comment("The dimension you can always travel to the Twilight Forest from, as well as the dimension you will return to. Defaults to the overworld. (domain:regname).").
+					define("originDimension", "minecraft:overworld");
 			allowPortalsInOtherDimensions = builder.
 					translation(config + "portals_in_other_dimensions").
 					comment("Allow portals to the Twilight Forest to be made outside of the 'origin' dimension. May be considered an exploit.").
@@ -332,7 +332,7 @@ public class TFConfig {
 		}
 
 		//TODO: We can't be an Integer; must be Dimension
-		public ForgeConfigSpec.ConfigValue<Integer> originDimension;
+		public ForgeConfigSpec.ConfigValue<String> originDimension;
 		public ForgeConfigSpec.BooleanValue allowPortalsInOtherDimensions;
 		public ForgeConfigSpec.BooleanValue adminOnlyPortals;
 		public ForgeConfigSpec.BooleanValue disablePortalCreation;
