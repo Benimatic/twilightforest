@@ -11,7 +11,7 @@ public class RenderTFSnowGuardian<T extends EntityTFSnowGuardian, M extends Mode
 
 	public RenderTFSnowGuardian(EntityRendererManager manager, M model) {
 		super(manager, model, 0.25F, "textures/entity/zombie/zombie.png");
-		this.addLayer(new BipedArmorLayer<>(this));
+		this.addLayer(new BipedArmorLayer<>(this, new ModelTFSnowGuardian<>(), new ModelTFSnowGuardian<>()));
 	}
 
 	@Override
