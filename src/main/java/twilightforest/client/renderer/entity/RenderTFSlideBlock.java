@@ -1,7 +1,6 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.RotatedPillarBlock;
@@ -45,10 +44,10 @@ public class RenderTFSlideBlock<T extends EntityTFSlideBlock> extends EntityRend
 					Tessellator tessellator = Tessellator.getInstance();
 					BufferBuilder bufferbuilder = tessellator.getBuffer();
 
-					if (this.renderOutlines) {
-						RenderSystem.enableColorMaterial();
-						RenderSystem.enableOutlineMode(this.getTeamColor(entity));
-					}
+//					if (this.renderOutlines) {
+//						RenderSystem.enableColorMaterial();
+//						RenderSystem.enableOutlineMode(this.getTeamColor(entity));
+//					}
 
 					bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
 					BlockPos blockpos = new BlockPos(entity.getX(), entity.getBoundingBox().maxY, entity.getZ());
@@ -75,10 +74,10 @@ public class RenderTFSlideBlock<T extends EntityTFSlideBlock> extends EntityRend
 					blockrendererdispatcher.getBlockModelRenderer().renderModel(world, blockrendererdispatcher.getModelForState(iblockstate), iblockstate, blockpos, bufferbuilder, false, 0L);
 					tessellator.draw();
 
-					if (this.renderOutlines) {
-						GlStateManager.disableOutlineMode();
-						RenderSystem.disableColorMaterial();
-					}
+//					if (this.renderOutlines) {
+//						GlStateManager.disableOutlineMode();
+//						RenderSystem.disableColorMaterial();
+//					}
 
 					RenderSystem.enableLighting();
 					stack.pop();

@@ -6,19 +6,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootTables;
 import net.minecraft.world.storage.loot.conditions.LootConditionManager;
 import net.minecraft.world.storage.loot.functions.LootFunctionManager;
 import twilightforest.TwilightForestMod;
-import twilightforest.entity.*;
-import twilightforest.entity.boss.EntityTFHydra;
-import twilightforest.entity.boss.EntityTFIceCrystal;
-import twilightforest.entity.boss.EntityTFLich;
-import twilightforest.entity.boss.EntityTFMinoshroom;
-import twilightforest.entity.boss.EntityTFNaga;
-import twilightforest.entity.boss.EntityTFSnowQueen;
-import twilightforest.entity.boss.EntityTFYetiAlpha;
-import twilightforest.entity.passive.*;
 
 public class TFTreasure {
 	// For easy testing:
@@ -108,7 +98,7 @@ public class TFTreasure {
 		lootTable = TwilightForestMod.prefix(String.format("structures/%s/%s", path, path));
 
 		// only preload the primary table, the subtables will be loaded on-demand the first time the primary table is used
-		LootTables.register(lootTable);
+		//LootTables.register(lootTable);
 	}
 
 	public void generateChest(World world, BlockPos pos, boolean trapped) {

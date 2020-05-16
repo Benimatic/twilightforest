@@ -272,7 +272,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		}
 
 		// nullify sky light
-		this.nullifySkyLightForBoundingBox(world);
+//		this.nullifySkyLightForBoundingBox(world);
 
 		// how many total floors do we have?
 		int totalFloors = this.height / 5;

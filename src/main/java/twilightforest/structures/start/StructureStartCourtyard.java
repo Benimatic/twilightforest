@@ -10,9 +10,9 @@ import java.util.Random;
 import static twilightforest.TFFeature.NAGA_COURTYARD;
 
 public class StructureStartCourtyard extends StructureStartTFFeatureAbstract {
-    public StructureStartCourtyard() {
-        super();
-    }
+//    public StructureStartCourtyard() {
+//        super();
+//    }
 
     public StructureStartCourtyard(World world, TFFeature feature, Random rand, int chunkX, int chunkZ) {
         super(world, feature, rand, chunkX, chunkZ);

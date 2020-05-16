@@ -5,6 +5,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import twilightforest.TwilightForestMod;
 
 public abstract class EntityAITFHoverBase<T extends LivingEntity> extends Goal {
@@ -26,7 +27,7 @@ public abstract class EntityAITFHoverBase<T extends LivingEntity> extends Goal {
 
 	@Override
 	public void startExecuting() {
-		LivingEntity target = this.attacker.getAttackTarget();
+		LivingEntity target = this.attacker.getRevengeTarget();
 		if (target != null) {
 			// find a spot above the player
 			makeNewHoverSpot(target);
@@ -64,7 +65,7 @@ public abstract class EntityAITFHoverBase<T extends LivingEntity> extends Goal {
 	protected boolean isPositionOccupied(double hx, double hy, double hz) {
 		float radius = this.attacker.getWidth() / 2F;
 		AxisAlignedBB aabb = new AxisAlignedBB(hx - radius, hy, hz - radius, hx + radius, hy + this.attacker.getHeight(), hz + radius);
-		return !this.attacker.world.checkNoEntityCollision(aabb, attacker) || !this.attacker.world.getCollisionBoxes(attacker, aabb).isEmpty();
+		return !this.attacker.world.checkNoEntityCollision(attacker, VoxelShapes.create(aabb)) || !this.attacker.world.getCollisionBoxes(attacker, aabb).isEmpty();
 	}
 
 	/**

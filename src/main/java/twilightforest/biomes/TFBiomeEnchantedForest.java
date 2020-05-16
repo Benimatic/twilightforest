@@ -31,13 +31,14 @@ public class TFBiomeEnchantedForest extends TFBiomeBase {
 	}
 
 	@Override
-	public int getGrassColorAt(double p_225528_1_, double p_225528_3_) {
-		return (super.getGrassColorAt(p_225528_1_, p_225528_3_) & 0xFFFF00) + getEnchantedColor(pos.getX(), pos.getZ());
+	public int getGrassColorAt(double x, double z) {
+		return (super.getGrassColorAt(x, z) & 0xFFFF00) + getEnchantedColor((int) x, (int) z); //TODO
 	}
 
 	@Override
 	public int getFoliageColor() {
-		return (super.getFoliageColor() & 0xFFFF00) + getEnchantedColor(pos.getX(), pos.getZ());
+		//return (super.getFoliageColor() & 0xFFFF00) + getEnchantedColor(pos.getX(), pos.getZ());
+		return 0xFFFF00; //FIXME: Placeholder
 	}
 
 	/**

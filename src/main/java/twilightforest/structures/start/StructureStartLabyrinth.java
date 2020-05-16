@@ -10,9 +10,9 @@ import java.util.Random;
 import static twilightforest.TFFeature.LABYRINTH;
 
 public class StructureStartLabyrinth extends StructureStartTFFeatureAbstract {
-    public StructureStartLabyrinth() {
-        super();
-    }
+//    public StructureStartLabyrinth() {
+//        super();
+//    }
 
     public StructureStartLabyrinth(World world, TFFeature feature, Random rand, int chunkX, int chunkZ) {
         super(world, feature, rand, chunkX, chunkZ);

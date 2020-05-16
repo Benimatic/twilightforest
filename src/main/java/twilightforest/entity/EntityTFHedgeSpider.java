@@ -2,15 +2,22 @@ package twilightforest.entity;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
+import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.monster.SpiderEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
+
+import java.util.Random;
 
 /**
  * The hedge spider is just like a normal spider, but it can spawn in the daytime.
@@ -46,13 +53,17 @@ public class EntityTFHedgeSpider extends SpiderEntity {
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
 	}
 
-	@Override
-	protected boolean isValidLightLevel() {
-		int chunkX = MathHelper.floor(getX()) >> 4;
-		int chunkZ = MathHelper.floor(getZ()) >> 4;
+	public static boolean isValidLightLevel(IWorld world, BlockPos pos, Random random) {
+		int chunkX = MathHelper.floor(pos.getX()) >> 4;
+		int chunkZ = MathHelper.floor(pos.getZ()) >> 4;
 		// We're allowed to spawn in bright light only in hedge mazes.
-		return TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.HEDGE_MAZE
-				|| super.isValidLightLevel();
+		return TFFeature.getNearestFeature(chunkX, chunkZ, world.getWorld()) == TFFeature.HEDGE_MAZE
+				|| MonsterEntity.isValidLightLevel(world, pos, random);
+	}
+
+	public static boolean canSpawn(EntityType<EntityTFHedgeSpider> entity, IWorld world, SpawnReason reason, BlockPos pos, Random random) {
+		return world.getDifficulty() != Difficulty.PEACEFUL &&
+				isValidLightLevel(world, pos, random);
 	}
 
 	@Override

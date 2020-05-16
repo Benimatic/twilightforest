@@ -7,7 +7,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.BufferBuilder;
-import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -44,10 +43,10 @@ public class RenderTFThrownIce<T extends EntityTFIceBomb> extends EntityRenderer
 					Tessellator tessellator = Tessellator.getInstance();
 					BufferBuilder bufferbuilder = tessellator.getBuffer();
 
-					if (this.renderOutlines) {
-						RenderSystem.enableColorMaterial();
-						GlStateManager.enableOutlineMode(this.getTeamColor(entity));
-					}
+//					if (this.renderOutlines) {
+//						RenderSystem.enableColorMaterial();
+//						GlStateManager.enableOutlineMode(this.getTeamColor(entity));
+//					}
 
 					bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
 					BlockPos blockpos = new BlockPos(entity.getX(), entity.getBoundingBox().maxY, entity.getZ());
@@ -56,10 +55,10 @@ public class RenderTFThrownIce<T extends EntityTFIceBomb> extends EntityRenderer
 					blockrendererdispatcher.getBlockModelRenderer().renderModel(world, blockrendererdispatcher.getModelForState(iblockstate), iblockstate, blockpos, bufferbuilder, false, MathHelper.getPositionRandom(BlockPos.ZERO));
 					tessellator.draw();
 
-					if (this.renderOutlines) {
-						GlStateManager.disableOutlineMode();
-						RenderSystem.disableColorMaterial();
-					}
+//					if (this.renderOutlines) {
+//						GlStateManager.disableOutlineMode();
+//						RenderSystem.disableColorMaterial();
+//					}
 
 					RenderSystem.enableLighting();
 					stack.pop();

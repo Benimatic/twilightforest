@@ -75,8 +75,7 @@ public class ItemTFFieryPick extends PickaxeItem {
 						event.getHarvester().world.addEntity(new ExperienceOrbEntity(event.getWorld().getWorld(), event.getHarvester().getX(), event.getHarvester().getY() + 0.5D, event.getHarvester().getZ(), k));
 					}
 
-					//TODO: Move to regular particle spawner?
-					ParticleHelper.spawnParticles(event.getWorld(), event.getPos(), ParticleTypes.FLAME, 5, 0.02);
+					ParticleHelper.spawnParticles(event.getWorld().getWorld(), event.getPos(), ParticleTypes.FLAME);
 				}
 			}
 
@@ -90,8 +89,7 @@ public class ItemTFFieryPick extends PickaxeItem {
 		boolean result = super.hitEntity(stack, target, attacker);
 
 		if (result && !target.world.isRemote && !target.isImmuneToFire()) {
-			//TODO: Move to regular particle spawner?
-			ParticleHelper.spawnParticles(target, ParticleTypes.FLAME, 20, 0.02);
+			ParticleHelper.spawnParticles(target, ParticleTypes.FLAME);
 			target.setFire(15);
 		}
 

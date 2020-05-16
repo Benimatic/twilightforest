@@ -126,7 +126,7 @@ public class BlockTFCastleDoor extends Block {
 		// check if we are in a structure, and if that structure says that we are locked
 		if (!world.isRemote) {
 			ChunkGeneratorTFBase generator = TFWorld.getChunkGenerator(world);
-			return generator != null && generator.isStructureLocked(pos, lockIndex);
+			return generator != null /*&& generator.isStructureLocked(pos, lockIndex)*/;
 		}
 		return false;
 	}

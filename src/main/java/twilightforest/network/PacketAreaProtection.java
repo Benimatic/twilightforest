@@ -1,6 +1,5 @@
 package twilightforest.network;
 
-import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketBuffer;
@@ -8,7 +7,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraftforge.fml.network.NetworkEvent;
-import twilightforest.TwilightForestMod;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.EntityTFProtectionBox;
 
@@ -69,6 +67,7 @@ public class PacketAreaProtection {
 			return true;
 		}
 
+		//TODO: All are in ClientWorld. "weatherEffects" is "globalEntities" and private. "addWeatherEffect" is "addLightning" and only accepts LightningBoltEntity
 		static void addProtectionBox(World world, MutableBoundingBox sbb) {
 
 			for (Entity entity : world.weatherEffects) {

@@ -77,7 +77,7 @@ public class EntityTFQuestRam extends AnimalEntity {
 	}
 
 	@Override
-	protected boolean canDespawn() {
+	public boolean canDespawn(double distance) {
 		return false;
 	}
 

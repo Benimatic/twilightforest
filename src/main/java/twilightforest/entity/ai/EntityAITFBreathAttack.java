@@ -2,6 +2,7 @@ package twilightforest.entity.ai;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
@@ -12,7 +13,7 @@ import twilightforest.entity.IBreathAttacker;
 import java.util.EnumSet;
 import java.util.List;
 
-public class EntityAITFBreathAttack<T extends LivingEntity & IBreathAttacker> extends Goal {
+public class EntityAITFBreathAttack<T extends MobEntity & IBreathAttacker> extends Goal {
 
 	private final T entityHost;
 	private LivingEntity attackTarget;
@@ -37,7 +38,7 @@ public class EntityAITFBreathAttack<T extends LivingEntity & IBreathAttacker> ex
 
 	@Override
 	public boolean shouldExecute() {
-		this.attackTarget = this.entityHost.getAttackTarget();
+		this.attackTarget = this.entityHost.getRevengeTarget();
 
 		if (this.attackTarget == null || this.entityHost.getDistance(attackTarget) > this.breathRange || !this.entityHost.getEntitySenses().canSee(attackTarget)) {
 			return false;

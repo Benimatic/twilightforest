@@ -29,9 +29,9 @@ public class ConquerCommand {
         ChunkGeneratorTFBase chunkGenerator = TFWorld.getChunkGenerator(source.getWorld());
 
         BlockPos pos = new BlockPos(source.getPos());
-        if (chunkGenerator != null && chunkGenerator.isBlockInStructureBB(pos)) {
-            source.sendFeedback(new TranslationTextComponent("commands.tffeature.structure.conquer.update", chunkGenerator.isStructureConquered(pos), flag), true);
-            chunkGenerator.setStructureConquered(pos, flag);
+        if (chunkGenerator != null/* && chunkGenerator.isBlockInStructureBB(pos)*/) {
+            //source.sendFeedback(new TranslationTextComponent("commands.tffeature.structure.conquer.update", chunkGenerator.isStructureConquered(pos), flag), true);
+            //chunkGenerator.setStructureConquered(pos, flag);
             return Command.SINGLE_SUCCESS;
         } else {
             throw NOT_IN_STRUCTURE.create();

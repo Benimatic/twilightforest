@@ -66,7 +66,7 @@ public class FogHandler {
 			}
 
 			if (GLContext.getCapabilities().GL_NV_fog_distance) {
-				GlStateManager.glFogi(0x855a, 0x855b);
+				RenderSystem.fogi(0x855a, 0x855b);
 			}
 		}
 	}
@@ -74,5 +74,4 @@ public class FogHandler {
 	private static boolean isSpooky() {
 		return Minecraft.getInstance().world != null && Minecraft.getInstance().player != null && Minecraft.getInstance().world.getBiome(Minecraft.getInstance().player.getPosition()) == TFBiomes.spookyForest.get();
 	}
-
 }

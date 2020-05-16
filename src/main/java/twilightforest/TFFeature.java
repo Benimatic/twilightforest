@@ -23,7 +23,6 @@ import twilightforest.structures.*;
 import twilightforest.structures.start.*;
 import twilightforest.util.IntPair;
 import twilightforest.util.PlayerHelper;
-import twilightforest.world.MapGenTFMajorFeature;
 import twilightforest.world.TFWorld;
 
 import javax.annotation.Nullable;
@@ -427,10 +426,10 @@ public enum TFFeature {
 		return maxSize;
 	}
 
-	@Nullable
-	public MapGenTFMajorFeature createFeatureGenerator() {
-		return this.shouldHaveFeatureGenerator ? new MapGenTFMajorFeature(this) : null;
-	}
+//	@Nullable
+//	public MapGenTFMajorFeature createFeatureGenerator() {
+//		return this.shouldHaveFeatureGenerator ? new MapGenTFMajorFeature(this) : null;
+//	}
 
 	/**
 	 * doesn't require modid
@@ -684,7 +683,8 @@ public enum TFFeature {
 
 						int l1 = j1 / p_191069_3_;
 						int i2 = k1 / p_191069_3_;
-						Random random1 = worldIn.setRandomSeed(l1, i2, p_191069_5_);
+//						Random random1 = worldIn.setRandomSeed(l1, i2, p_191069_5_);
+						Random random1 = new Random();
 						l1 = l1 * p_191069_3_;
 						i2 = i2 * p_191069_3_;
 
@@ -696,7 +696,7 @@ public enum TFFeature {
 							i2 = i2 + random1.nextInt(p_191069_3_ - p_191069_4_);
 						}
 
-						MapGenBase.setupChunkSeed(worldIn.getSeed(), random, l1, i2);
+						//MapGenBase.setupChunkSeed(worldIn.getSeed(), random, l1, i2);
 						random.nextInt();
 
 						// Check changed for TFFeature

@@ -39,7 +39,7 @@ public class PacketChangeBiome {
 				@Override
 				public void run() {
 					World world = Minecraft.getInstance().world;
-					Chunk chunkAt = world.getChunk(message.pos);
+					Chunk chunkAt = (Chunk) world.getChunk(message.pos);
 
 					chunkAt.getBiomeArray()[(message.pos.getZ() & 15) << 4 | (message.pos.getX() & 15)] = message.biomeId;
 

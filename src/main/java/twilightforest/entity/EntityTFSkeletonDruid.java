@@ -2,6 +2,7 @@ package twilightforest.entity;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.goal.RangedAttackGoal;
 import net.minecraft.entity.monster.SkeletonEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -13,11 +14,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.LightType;
-import net.minecraft.world.World;
+import net.minecraft.world.*;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.projectile.EntityTFNatureBolt;
+
+import java.util.Random;
 
 //TODO: Extend AbstractSkeletonEntity?
 public class EntityTFSkeletonDruid extends SkeletonEntity {
@@ -78,15 +79,16 @@ public class EntityTFSkeletonDruid extends SkeletonEntity {
 		}
 	}
 
-	// [VanillaCopy] of super. Edits noted.
-	@Override
-	protected boolean isValidLightLevel() {
-		BlockPos blockpos = new BlockPos(this.getX(), this.getBoundingBox().minY, this.getZ());
+	public static boolean skeletonDruidSpawnHandler(EntityType<? extends EntityTFSkeletonDruid> entity, IWorld world, SpawnReason reason, BlockPos pos, Random random) {
+		return world.getDifficulty() != Difficulty.PEACEFUL && isValidLightLevel(world, pos, random) && canSpawnOn(entity, world, reason, pos, random);
+	}
 
-		if (this.world.getLightFor(LightType.SKY, blockpos) > this.rand.nextInt(32)) {
+	// [VanillaCopy] of super. Edits noted.
+	public static boolean isValidLightLevel(IWorld world, BlockPos pos, Random random) {
+		if (world.getLightLevel(LightType.SKY, pos) > random.nextInt(32)) {
 			return false;
 		} else {
-			int i = this.world.getLightFromNeighbors(blockpos);
+			int i = world.getLight(pos);
 
 			// TF - no thunder check
 			/*if (this.world.isThundering())
@@ -97,7 +99,7 @@ public class EntityTFSkeletonDruid extends SkeletonEntity {
                 this.world.setSkylightSubtracted(j);
             }*/
 
-			return i <= this.rand.nextInt(12); // TF - rand(8) -> rand(12)
+			return i <= random.nextInt(12); // TF - rand(8) -> rand(12)
 		}
 	}
 }

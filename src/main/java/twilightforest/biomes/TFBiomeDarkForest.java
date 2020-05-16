@@ -14,8 +14,6 @@ import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class TFBiomeDarkForest extends TFBiomeBase {
@@ -66,14 +64,15 @@ public class TFBiomeDarkForest extends TFBiomeBase {
 		return ((FoliageColors.get(temperature, humidity) & 0xFEFEFE) + 0x1E0E4E) / 2;
 	}
 
-	@Override
-	public List<SpawnListEntry> getSpawns(EntityClassification creatureType) {
-		// if it is monster, then only give it the real list 1/MONSTER_SPAWN_RATE of the time
-		if (creatureType == EntityClassification.MONSTER) {
-			return monsterRNG.nextInt(MONSTER_SPAWN_RATE) == 0 ? this.spawnableMonsterList : new ArrayList<>();
-		}
-		return super.getSpawns(creatureType);
-	}
+	//TODO: Figure this out
+//	@Override
+//	public List<SpawnListEntry> getSpawns(EntityClassification creatureType) {
+//		// if it is monster, then only give it the real list 1/MONSTER_SPAWN_RATE of the time
+//		if (creatureType == EntityClassification.MONSTER) {
+//			return monsterRNG.nextInt(MONSTER_SPAWN_RATE) == 0 ? this.spawnableMonsterList : new ArrayList<>();
+//		}
+//		return super.getSpawns(creatureType);
+//	}
 
 	@Override
 	public boolean isHighHumidity() {

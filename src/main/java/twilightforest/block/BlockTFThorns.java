@@ -8,13 +8,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.IFluidState;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.state.IProperty;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import twilightforest.util.WorldUtil;
 
 import javax.annotation.Nullable;
 
@@ -123,21 +121,22 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar {
 		}
 	}
 
-	@Override
-	@Deprecated
-	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moving) {
-		int range = 4;
-		int exRange = range + 1;
-
-		if (world.isAreaLoaded(pos, exRange)) {
-			for (BlockPos pos_ : WorldUtil.getAllAround(pos, range)) {
-				BlockState state_ = world.getBlockState(pos_);
-				if (state_.getBlock().isIn(BlockTags.LEAVES)) {
-					state.getBlock().beginLeavesDecay(state_, world, pos_);
-				}
-			}
-		}
-	}
+	//TODO: This might be handled via Tags now
+//	@Override
+//	@Deprecated
+//	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moving) {
+//		int range = 4;
+//		int exRange = range + 1;
+//
+//		if (world.isAreaLoaded(pos, exRange)) {
+//			for (BlockPos pos_ : WorldUtil.getAllAround(pos, range)) {
+//				BlockState state_ = world.getBlockState(pos_);
+//				if (state_.getBlock().isIn(BlockTags.LEAVES)) {
+//					state.getBlock().beginLeavesDecay(state_, world, pos_);
+//				}
+//			}
+//		}
+//	}
 
 //	@Override
 //	public int quantityDropped(Random random) {

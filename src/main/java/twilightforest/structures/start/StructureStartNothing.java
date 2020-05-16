@@ -8,9 +8,9 @@ import twilightforest.TwilightForestMod;
 import java.util.Random;
 
 public class StructureStartNothing extends StructureStartTFAbstract {
-    public StructureStartNothing() {
-        super();
-    }
+//    public StructureStartNothing() {
+//        super();
+//    }
 
     @Override
     protected StructurePiece makeFirstComponent(World world, TFFeature feature, Random rand, int x, int y, int z) {

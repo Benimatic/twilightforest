@@ -10,9 +10,9 @@ import java.util.Random;
 import static twilightforest.TFFeature.HYDRA_LAIR;
 
 public class StructureStartHydraLair extends StructureStartTFFeatureAbstract {
-    public StructureStartHydraLair() {
-        super();
-    }
+//    public StructureStartHydraLair() {
+//        super();
+//    }
 
     public StructureStartHydraLair(World world, TFFeature feature, Random rand, int chunkX, int chunkZ) {
         super(world, feature, rand, chunkX, chunkZ);

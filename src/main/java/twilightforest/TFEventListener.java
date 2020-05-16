@@ -574,14 +574,14 @@ public class TFEventListener {
 
 		ChunkGeneratorTFBase chunkGenerator = TFWorld.getChunkGenerator(world);
 
-		if (chunkGenerator != null && chunkGenerator.isBlockInStructureBB(pos)) {
+		if (chunkGenerator != null/* && chunkGenerator.isBlockInStructureBB(pos)*/) {
 			// what feature is nearby?  is it one the player has not unlocked?
 			TFFeature nearbyFeature = TFFeature.getFeatureAt(pos.getX(), pos.getZ(), world);
 
-			if (!nearbyFeature.doesPlayerHaveRequiredAdvancements(player) && chunkGenerator.isBlockProtected(pos)) {
+			if (!nearbyFeature.doesPlayerHaveRequiredAdvancements(player)/* && chunkGenerator.isBlockProtected(pos)*/) {
 
 				// send protection packet
-				sendAreaProtectionPacket(world, pos, chunkGenerator.getSBBAt(pos));
+//				sendAreaProtectionPacket(world, pos, chunkGenerator.getSBBAt(pos));
 
 				// send a hint monster?
 				nearbyFeature.trySpawnHintMonster(world, player, pos);

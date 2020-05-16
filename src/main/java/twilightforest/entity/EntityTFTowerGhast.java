@@ -312,24 +312,12 @@ public class EntityTFTowerGhast extends GhastEntity {
 		}
 	}
 
-	public static boolean ghastSpawnHandler(EntityType<? extends EntityTFTowerGhast> entityType, IWorld world, SpawnReason p_223324_2_, BlockPos pos, Random random) {
-		return world.getDifficulty() != Difficulty.PEACEFUL && isValidLightLevel(world, pos, random) && canSpawnOn(entityType, world, p_223324_2_, pos, random);
+	public static boolean ghastSpawnHandler(EntityType<? extends EntityTFTowerGhast> entityType, IWorld world, SpawnReason reason, BlockPos pos, Random random) {
+		return world.getDifficulty() != Difficulty.PEACEFUL && canSpawnOn(entityType, world, reason, pos, random);
 	}
 
-	public static boolean isValidLightLevel(IWorld world, BlockPos blockPos, Random p_223323_2_) {
-		int i = world.getWorld().isThundering() ? world.getNeighborAwareLightSubtracted(blockPos, 10) : world.getLight(blockPos);
-		return i <= p_223323_2_.nextInt(8);
-	}
-
-	public boolean isNotColliding(IWorldReader p_205019_1_) {
-		return p_205019_1_.intersectsEntities(this) && !p_205019_1_.containsAnyLiquid(this.getBoundingBox());
-	}
-
-	/**
-	 * Checks to make sure the light is not too bright where the mob is spawning
-	 */
-	protected boolean isValidLightLevel() {
-		return true;
+	public boolean isNotColliding(IWorldReader world) {
+		return world.intersectsEntities(this) && !world.containsAnyLiquid(this.getBoundingBox());
 	}
 
 	private void findHome() {

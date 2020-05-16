@@ -10,9 +10,9 @@ import java.util.Random;
 import static twilightforest.TFFeature.LICH_TOWER;
 
 public class StructureStartLichTower extends StructureStartTFFeatureAbstract {
-    public StructureStartLichTower() {
-        super();
-    }
+//    public StructureStartLichTower() {
+//        super();
+//    }
 
     public StructureStartLichTower(World world, TFFeature feature, Random rand, int chunkX, int chunkZ) {
         super(world, feature, rand, chunkX, chunkZ);

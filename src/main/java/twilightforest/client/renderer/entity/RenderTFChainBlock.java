@@ -26,7 +26,7 @@ public class RenderTFChainBlock<T extends EntityTFChainBlock> extends EntityRend
 		super.render(chainBlock, yaw, partialTicks, stack, buffer, light);
 
 		stack.push();
-		stack.translate(x, y, z);
+		//stack.translate(x, y, z);
 
 		this.bindEntityTexture(chainBlock);
 
@@ -39,11 +39,12 @@ public class RenderTFChainBlock<T extends EntityTFChainBlock> extends EntityRend
 		this.model.render(chainBlock, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 		stack.pop();
 
-		renderManager.renderEntityStatic(chainBlock.chain1, partialTicks, false);
-		renderManager.renderEntityStatic(chainBlock.chain2, partialTicks, false);
-		renderManager.renderEntityStatic(chainBlock.chain3, partialTicks, false);
-		renderManager.renderEntityStatic(chainBlock.chain4, partialTicks, false);
-		renderManager.renderEntityStatic(chainBlock.chain5, partialTicks, false);
+		//TODO: idk what's supposed to be done here
+//		renderManager.renderEntityStatic(chainBlock.chain1, partialTicks, false);
+//		renderManager.renderEntityStatic(chainBlock.chain2, partialTicks, false);
+//		renderManager.renderEntityStatic(chainBlock.chain3, partialTicks, false);
+//		renderManager.renderEntityStatic(chainBlock.chain4, partialTicks, false);
+//		renderManager.renderEntityStatic(chainBlock.chain5, partialTicks, false);
 	}
 
 	@Override

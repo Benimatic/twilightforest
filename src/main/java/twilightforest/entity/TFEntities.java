@@ -7,10 +7,9 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.SpriteRenderer;
 import net.minecraft.client.renderer.entity.model.SilverfishModel;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityClassification;
-import net.minecraft.entity.EntitySpawnPlacementRegistry;
-import net.minecraft.entity.EntityType;
+import net.minecraft.entity.*;
+import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.gen.Heightmap;
@@ -131,10 +130,6 @@ public class TFEntities {
 	public static final RegistryObject<EntityType<EntityTFBoggard>> boggard = make(TFEntityNames.BOGGARD, EntityTFBoggard::new, EntityClassification.MONSTER, 0.8F, 1.1F);
 	public static final RegistryObject<EntityType<EntityTFRisingZombie>> rising_zombie = make(TFEntityNames.RISING_ZOMBIE, EntityTFRisingZombie::new, EntityClassification.MONSTER, 0.6F, 1.95F);
 
-	static {
-		//EntitySpawnPlacementRegistry.register(EntityTFPenguin.class, ON_ICE); //TODO: find a proper time to register
-	}
-
 	private static <E extends Entity> RegistryObject<EntityType<E>> make(ResourceLocation id, EntityType.IFactory<E> factory, EntityClassification classification, float width, float height) {
 		return make(id, makeBuilder(factory, classification).size(width, height));
 	}
@@ -232,30 +227,22 @@ public class TFEntities {
 
 				helper.registerEntity(TFEntityNames.HYDRA_HEAD, EntityTFHydraHead.class, EntityTFHydraHead::new, 150, 3, false);
 
-				helper.registerEntity(TFEntityNames.NATURE_BOLT, EntityTFNatureBolt.class, EntityTFNatureBolt::new, 150, 5, true);
-				helper.registerEntity(TFEntityNames.LICH_BOLT, EntityTFLichBolt.class, EntityTFLichBolt::new, 150, 2, true);
-				helper.registerEntity(TFEntityNames.WAND_BOLT, EntityTFTwilightWandBolt.class, EntityTFTwilightWandBolt::new, 150, 5, true);
-				helper.registerEntity(TFEntityNames.TOME_BOLT, EntityTFTomeBolt.class, EntityTFTomeBolt::new, 150, 5, true);
-				helper.registerEntity(TFEntityNames.HYDRA_MORTAR, EntityTFHydraMortar.class, EntityTFHydraMortar::new, 150, 3, true);
-				helper.registerEntity(TFEntityNames.LICH_BOMB, EntityTFLichBomb.class, EntityTFLichBomb::new, 150, 3, true);
-				helper.registerEntity(TFEntityNames.MOONWORM_SHOT, EntityTFMoonwormShot.class, EntityTFMoonwormShot::new, 150, 3, true);
-				helper.registerEntity(TFEntityNames.SLIME_BLOB, EntityTFSlimeProjectile.class, EntityTFSlimeProjectile::new, 150, 3, true);
-				helper.registerEntity(TFEntityNames.CHARM_EFFECT, EntityTFCharmEffect.class, EntityTFCharmEffect::new, 80, 3, true);
-				helper.registerEntity(TFEntityNames.THROWN_WEP, EntityTFThrownWep.class, EntityTFThrownWep::new, 80, 3, true);
-				helper.registerEntity(TFEntityNames.FALLING_ICE, EntityTFFallingIce.class, EntityTFFallingIce::new, 80, 3, true);
-				helper.registerEntity(TFEntityNames.THROWN_ICE, EntityTFIceBomb.class, EntityTFIceBomb::new, 80, 2, true);
-				helper.registerEntity(TFEntityNames.SEEKER_ARROW, EntitySeekerArrow.class, EntitySeekerArrow::new, 150, 1, true);
-				helper.registerEntity(TFEntityNames.ICE_ARROW, EntityIceArrow.class, EntityIceArrow::new, 150, 1, true);
-				helper.registerEntity(TFEntityNames.ICE_SNOWBALL, EntityTFIceSnowball.class, EntityTFIceSnowball::new, 150, 3, true);
-				helper.registerEntity(TFEntityNames.CHAIN_BLOCK, EntityTFChainBlock.class, EntityTFChainBlock::new, 80, 1, true);
-				helper.registerEntity(TFEntityNames.CUBE_OF_ANNIHILATION, EntityTFCubeOfAnnihilation.class, EntityTFCubeOfAnnihilation::new, 80, 1, true);
-				helper.registerEntity(TFEntityNames.SLIDER, EntityTFSlideBlock.class, EntityTFSlideBlock::new, 80, 1, true);
 				helper.registerEntity(TFEntityNames.BOGGARD, EntityTFBoggard.class, EntityTFBoggard::new);
 				helper.registerEntity(TFEntityNames.RISING_ZOMBIE, EntityTFRisingZombie.class, EntityTFRisingZombie::new);*/
 
 		// this place is now spawn placement registry
-		EntitySpawnPlacementRegistry.register(TFEntities.yeti.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityTFYeti::yetiSnowyForestSpawnHandler);
-		EntitySpawnPlacementRegistry.register(TFEntities.tower_ghast.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityTFTowerGhast::ghastSpawnHandler);
+		EntitySpawnPlacementRegistry.register(wild_boar.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, AnimalEntity::func_223316_b);
+		EntitySpawnPlacementRegistry.register(bighorn_sheep.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, AnimalEntity::func_223316_b);
+		EntitySpawnPlacementRegistry.register(deer.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, AnimalEntity::func_223316_b);
+
+		EntitySpawnPlacementRegistry.register(redcap.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::func_223325_c);
+		EntitySpawnPlacementRegistry.register(skeleton_druid.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityTFSkeletonDruid::skeletonDruidSpawnHandler);
+		EntitySpawnPlacementRegistry.register(wraith.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityTFWraith::getCanSpawnHere);
+		EntitySpawnPlacementRegistry.register(hydra.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MobEntity::canSpawnOn);
+		EntitySpawnPlacementRegistry.register(lich.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MobEntity::canSpawnOn);
+		EntitySpawnPlacementRegistry.register(penguin.get(), ON_ICE, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, AnimalEntity::func_223316_b);
+		EntitySpawnPlacementRegistry.register(yeti.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityTFYeti::yetiSnowyForestSpawnHandler);
+		EntitySpawnPlacementRegistry.register(tower_ghast.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityTFTowerGhast::ghastSpawnHandler);
 	}
 
 	@OnlyIn(Dist.CLIENT)

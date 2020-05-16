@@ -10,9 +10,9 @@ import java.util.Random;
 import static twilightforest.TFFeature.KNIGHT_STRONGHOLD;
 
 public class StructureStartKnightStronghold extends StructureStartTFFeatureAbstract {
-    public StructureStartKnightStronghold() {
-        super();
-    }
+//    public StructureStartKnightStronghold() {
+//        super();
+//    }
 
     public StructureStartKnightStronghold(World world, TFFeature feature, Random rand, int chunkX, int chunkZ) {
         super(world, feature, rand, chunkX, chunkZ);

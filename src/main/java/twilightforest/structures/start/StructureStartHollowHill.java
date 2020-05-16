@@ -12,9 +12,9 @@ import java.util.Random;
  */
 public class StructureStartHollowHill extends StructureStartTFFeatureAbstract {
 
-    public StructureStartHollowHill() {
-        super();
-    }
+//    public StructureStartHollowHill() {
+//        super();
+//    }
 
     public StructureStartHollowHill(World world, TFFeature feature, Random rand, int chunkX, int chunkZ) {
         super(world, feature, rand, chunkX, chunkZ);

@@ -177,7 +177,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		}
 
 		// nullify sky light
-		nullifySkyLightForBoundingBox(world);
+//		nullifySkyLightForBoundingBox(world);
 
 		// fix highestOpening parameter so we don't get a ginormous lich room
 		if ((height - highestOpening) > 15) {

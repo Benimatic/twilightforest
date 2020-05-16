@@ -31,7 +31,7 @@ public class TFClientProxy extends TFCommonProxy {
 
 		MinecraftForge.EVENT_BUS.register(new LoadingScreenListener());
 
-		TFMUSICTYPE = EnumHelperClient.addMusicType("TFMUSIC", TFSounds.MUSIC, 1200, 12000);
+//		TFMUSICTYPE = EnumHelperClient.addMusicType("TFMUSIC", TFSounds.MUSIC, 1200, 12000);
 
 		//ShaderManager.initShaders();
 
@@ -58,13 +58,13 @@ public class TFClientProxy extends TFCommonProxy {
 //		});
 	}
 
-	public boolean isDangerOverlayShown() {
-		return isDangerOverlayShown;
-	}
-
-	public void setDangerOverlayShown(boolean isDangerOverlayShown) {
-		this.isDangerOverlayShown = isDangerOverlayShown;
-	}
+//	public boolean isDangerOverlayShown() {
+//		return isDangerOverlayShown;
+//	}
+//
+//	public void setDangerOverlayShown(boolean isDangerOverlayShown) {
+//		this.isDangerOverlayShown = isDangerOverlayShown;
+//	}
 
 	@Override
 	public boolean doesPlayerHaveAdvancement(PlayerEntity player, ResourceLocation advId) {

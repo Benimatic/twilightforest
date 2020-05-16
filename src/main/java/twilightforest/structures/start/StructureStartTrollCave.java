@@ -11,9 +11,9 @@ import java.util.Random;
 import static twilightforest.TFFeature.TROLL_CAVE;
 
 public class StructureStartTrollCave extends StructureStartTFFeatureAbstract {
-    public StructureStartTrollCave() {
-        super();
-    }
+//    public StructureStartTrollCave() {
+//        super();
+//    }
 
     public StructureStartTrollCave(World world, TFFeature feature, Random rand, int chunkX, int chunkZ) {
         super(world, feature, rand, chunkX, chunkZ);

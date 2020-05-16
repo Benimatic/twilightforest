@@ -10,9 +10,9 @@ import java.util.Random;
 import static twilightforest.TFFeature.MUSHROOM_TOWER;
 
 public class StructureStartMushroomTower extends StructureStartTFFeatureAbstract {
-    public StructureStartMushroomTower() {
-        super();
-    }
+//    public StructureStartMushroomTower() {
+//        super();
+//    }
 
     public StructureStartMushroomTower(World world, TFFeature feature, Random rand, int chunkX, int chunkZ) {
         super(world, feature, rand, chunkX, chunkZ);

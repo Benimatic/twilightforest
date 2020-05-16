@@ -10,6 +10,7 @@ public class RenderTFYeti<T extends EntityTFYeti, M extends BipedModel<T>> exten
 		super(manager, modelBiped, shadowSize, textureName);
 	}
 
+	//TODO: ...this is useless?
 	@Override
 	protected void scale(T living, MatrixStack stack, float partialTicks) {
 		float scale = 1.0F;

@@ -48,8 +48,8 @@ public class GuiTwilightForestLoading extends Screen {
 		this.assignContent();
 	}
 
-	@Override
-	protected void keyTyped(char typedChar, int keyCode) {}
+//	@Override
+//	protected void keyTyped(char typedChar, int keyCode) {}
 
     @Override
     public boolean isPauseScreen() {
@@ -127,7 +127,7 @@ public class GuiTwilightForestLoading extends Screen {
 		RenderSystem.translatef(-8f, -16.5f, 0f);
 
 		RenderHelper.enable(); //TODO: Correct?
-		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 0x20, 0x20);
+		//OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 0x20, 0x20);
 		// Draw it!
 		minecraft.getItemRenderer().renderItemAndEffectIntoGUI(item, 0, 0);
 		RenderHelper.disableStandardItemLighting();

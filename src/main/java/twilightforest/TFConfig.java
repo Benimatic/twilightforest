@@ -11,7 +11,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.registries.ForgeRegistries;
-import twilightforest.world.WorldProviderTwilightForest;
+import twilightforest.world.TFDimensions;
 import twilightforest.world.feature.TFGenCaveStalactite;
 
 import java.util.ArrayList;
@@ -480,11 +480,11 @@ public class TFConfig {
 	@SubscribeEvent
 	public static void onConfigChanged(ModConfig.Reloading event) {
 		if (event.getConfig().getModId().equals(TwilightForestMod.ID)) {
-			TwilightForestMod.checkOriginDimension();
-			ConfigManager.sync(TwilightForestMod.ID, Config.Type.INSTANCE);
-			if (!event.isWorldRunning()) {
-				WorldProviderTwilightForest.syncFromConfig();
-			}
+			TFDimensions.checkOriginDimension();
+//			ConfigManager.sync(TwilightForestMod.ID, Config.Type.INSTANCE);
+//			if (!event.isWorldRunning()) {
+//				WorldProviderTwilightForest.syncFromConfig();
+//			}
 			build();
 		}
 	}

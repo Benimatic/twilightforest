@@ -10,8 +10,6 @@ import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFEntities;
 import twilightforest.potions.TFPotions;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -42,14 +40,15 @@ public class TFBiomeSnow extends TFBiomeBase {
 		TFBiomeDecorator.addMushrooms(this);
 	}
 
-	@Override
-	public List<SpawnListEntry> getSpawns(EntityClassification creatureType) {
-		// if it is monster, then only give it the real list 1/MONSTER_SPAWN_RATE of the time
-		if (creatureType == EntityClassification.MONSTER) {
-			return monsterRNG.nextInt(MONSTER_SPAWN_RATE) == 0 ? this.spawnableMonsterList : new ArrayList<>();
-		}
-		return super.getSpawns(creatureType);
-	}
+	//TODO: Figure this out
+//	@Override
+//	public List<SpawnListEntry> getSpawns(EntityClassification creatureType) {
+//		// if it is monster, then only give it the real list 1/MONSTER_SPAWN_RATE of the time
+//		if (creatureType == EntityClassification.MONSTER) {
+//			return monsterRNG.nextInt(MONSTER_SPAWN_RATE) == 0 ? this.spawnableMonsterList : new ArrayList<>();
+//		}
+//		return super.getSpawns(creatureType);
+//	}
 
 	@Override
 	protected ResourceLocation[] getRequiredAdvancements() {

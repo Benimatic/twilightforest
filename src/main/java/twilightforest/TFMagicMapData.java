@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapData;
 import net.minecraft.world.storage.MapDecoration;
@@ -113,7 +114,7 @@ public class TFMagicMapData extends MapData {
 		final int featureId;
 
 		public TFMapDecoration(int featureId, byte xIn, byte yIn, byte rotationIn) {
-			super(Type.TARGET_X, xIn, yIn, rotationIn);
+			super(Type.TARGET_X, xIn, yIn, rotationIn, new TranslationTextComponent("map.magic.text")); //TODO: Shush for now
 			this.featureId = featureId;
 		}
 

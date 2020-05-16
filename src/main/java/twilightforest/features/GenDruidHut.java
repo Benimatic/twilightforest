@@ -23,6 +23,8 @@ import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
+import net.minecraft.world.gen.feature.structure.TemplateStructurePiece;
 import net.minecraft.world.gen.feature.template.IStructureProcessorType;
 import net.minecraft.world.gen.feature.template.PlacementSettings;
 import net.minecraft.world.gen.feature.template.Template;
@@ -36,7 +38,6 @@ import twilightforest.structures.RandomizedTemplateProcessor;
 import twilightforest.structures.TFStructureProcessors;
 
 import javax.annotation.Nullable;
-import java.util.Map;
 import java.util.Random;
 import java.util.function.Function;
 
@@ -79,62 +80,12 @@ public class GenDruidHut<T extends NoFeatureConfig> extends Feature<T> {
 		BlockPos placementPos = template.getZeroPositionWithTransform(startPos, mirror, rotation);
 		template.addBlocksToWorld(world, placementPos, placementsettings.addProcessor(new HutTemplateProcessor(0.2F)), 20);
 
-		Map<BlockPos, String> data = template.getDataBlocks(placementPos, placementsettings);
-
 		if (random.nextBoolean()) {
 			template = templatemanager.getTemplate(BasementType.values()[random.nextInt(BasementType.size)].getBasement(random.nextBoolean()));
 			placementPos = placementPos.down(12).offset(rotation.rotate(mirror.mirror(Direction.NORTH)), 1).offset(rotation.rotate(mirror.mirror(Direction.EAST)), 1);
 
 			template.addBlocksToWorld(world, placementPos, placementsettings.addProcessor(new HutTemplateProcessor(0.2F)), 20);
-
-			data.putAll(template.getDataBlocks(placementPos, placementsettings));
 		}
-
-		data.forEach((blockPos, s) -> {
-            /*
-            `spawner` will place a Druid spawner.
-
-            `loot` will place a chest facing the was-North.
-
-            `lootT` will place a trapped chest facing the was-North.
-
-            `lootW` will place a chest facing the was-West.
-            `lootS` will place a chest facing the was-South.
-
-            `lootET` will place a trapped chest facing the was-East.
-            `lootNT` will place a trapped chest facing the was-North.
-             */
-			if ("spawner".equals(s)) {
-				if (world.setBlockState(blockPos, Blocks.SPAWNER.getDefaultState(), 16 | 2)) {
-					MobSpawnerTileEntity ms = (MobSpawnerTileEntity) world.getTileEntity(blockPos);
-
-					if (ms != null) {
-						ms.getSpawnerBaseLogic().setEntityType(TFEntities.skeleton_druid.get());
-					}
-				}
-			} else if (s.startsWith("loot")) {
-				BlockState chest = s.endsWith("T") ? Blocks.TRAPPED_CHEST.getDefaultState() : Blocks.CHEST.getDefaultState();
-
-				switch (s.substring(4, 5)) {
-					case "W":
-						chest = chest.with(HorizontalBlock.HORIZONTAL_FACING, rotation.rotate(mirror.mirror(Direction.WEST)));
-						break;
-					case "E":
-						chest = chest.with(HorizontalBlock.HORIZONTAL_FACING, rotation.rotate(mirror.mirror(Direction.EAST)));
-						break;
-					case "S":
-						chest = chest.with(HorizontalBlock.HORIZONTAL_FACING, rotation.rotate(mirror.mirror(Direction.SOUTH)));
-						break;
-					default:
-						chest = chest.with(HorizontalBlock.HORIZONTAL_FACING, rotation.rotate(mirror.mirror(Direction.NORTH)));
-						break;
-				}
-
-				if (world.setBlockState(blockPos, chest, 16 | 2)) {
-					TFTreasure.basement.generateChestContents(world.getWorld(), blockPos);
-				}
-			}
-		});
 
 		return true;
 	}
@@ -193,6 +144,60 @@ public class GenDruidHut<T extends NoFeatureConfig> extends Feature<T> {
         Material material = state.getMaterial();
         return material == Material.WATER || material == Material.LAVA || state.getBlock() == Blocks.BEDROCK;
     }
+
+    public static class DruidHutPieces {
+
+		public static class Piece extends TemplateStructurePiece {
+
+			@Override
+			protected void handleDataMarker(String s, BlockPos blockPos, IWorld world, Random random, MutableBoundingBox mutableBoundingBox) {
+   		        /*
+   		        `spawner` will place a Druid spawner.
+
+   		        `loot` will place a chest facing the was-North.
+
+   		        `lootT` will place a trapped chest facing the was-North.
+
+   		        `lootW` will place a chest facing the was-West.
+   		        `lootS` will place a chest facing the was-South.
+
+   		        `lootET` will place a trapped chest facing the was-East.
+   		        `lootNT` will place a trapped chest facing the was-North.
+   		         */
+				if ("spawner".equals(s)) {
+					if (world.setBlockState(blockPos, Blocks.SPAWNER.getDefaultState(), 16 | 2)) {
+						MobSpawnerTileEntity ms = (MobSpawnerTileEntity) world.getTileEntity(blockPos);
+
+						if (ms != null) {
+							ms.getSpawnerBaseLogic().setEntityType(TFEntities.skeleton_druid.get());
+						}
+					}
+				} else if (s.startsWith("loot")) {
+					BlockState chest = s.endsWith("T") ? Blocks.TRAPPED_CHEST.getDefaultState() : Blocks.CHEST.getDefaultState();
+
+					switch (s.substring(4, 5)) {
+						case "W":
+							chest = chest.with(HorizontalBlock.HORIZONTAL_FACING, rotation.rotate(mirror.mirror(Direction.WEST)));
+							break;
+						case "E":
+							chest = chest.with(HorizontalBlock.HORIZONTAL_FACING, rotation.rotate(mirror.mirror(Direction.EAST)));
+							break;
+						case "S":
+							chest = chest.with(HorizontalBlock.HORIZONTAL_FACING, rotation.rotate(mirror.mirror(Direction.SOUTH)));
+							break;
+						default:
+							chest = chest.with(HorizontalBlock.HORIZONTAL_FACING, rotation.rotate(mirror.mirror(Direction.NORTH)));
+							break;
+					}
+
+					if (world.setBlockState(blockPos, chest, 16 | 2)) {
+						TFTreasure.basement.generateChestContents(world.getWorld(), blockPos);
+					}
+				}
+			}
+		}
+
+	}
 
     private enum HutType {
 

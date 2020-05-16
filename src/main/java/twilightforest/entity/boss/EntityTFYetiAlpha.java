@@ -302,7 +302,7 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 		world.setBlockState(pos, Blocks.PACKED_ICE.getDefaultState());
 		world.playEvent(2001, pos, Block.getStateId(Blocks.PACKED_ICE.getDefaultState()));
 
-		EntityTFFallingIce ice = new EntityTFFallingIce(TFEntities.falling_ice.get(), world, pos.getX(), pos.getY() - 3, pos.getZ());
+		EntityTFFallingIce ice = new EntityTFFallingIce(world, pos.getX(), pos.getY() - 3, pos.getZ());
 		world.addEntity(ice);
 	}
 

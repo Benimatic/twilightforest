@@ -50,13 +50,13 @@ public class ItemTFTripleBow extends ItemTFBowBase {
 						entityarrow.shoot(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, f * 3.0F, 1.0F);
 
 						// other arrows with slight deviation
-						ArrowEntity entityarrow1 = new EntityTippedArrow(worldIn, entityLiving);
+						ArrowEntity entityarrow1 = new ArrowEntity(worldIn, entityLiving);
 						entityarrow1.shoot(entityLiving, entityLiving.rotationPitch, entityLiving.rotationYaw, 0, f * 2, 1);
 						entityarrow1.motionY += 0.007499999832361937D * 20F;
 						entityarrow1.getY() += 0.025F;
 						entityarrow1.pickupStatus = ArrowEntity.PickupStatus.CREATIVE_ONLY;
 
-						ArrowEntity entityarrow2 = new EntityTippedArrow(worldIn, entityLiving);
+						ArrowEntity entityarrow2 = new ArrowEntity(worldIn, entityLiving);
 						entityarrow2.shoot(entityLiving, entityLiving.rotationPitch, entityLiving.rotationYaw, 0, f * 2, 1);
 						entityarrow2.motionY -= 0.007499999832361937D * 20F;
 						entityarrow2.getY() -= 0.025F;
