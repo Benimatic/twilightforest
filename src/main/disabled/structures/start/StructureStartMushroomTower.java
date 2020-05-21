@@ -19,7 +19,7 @@ public class StructureStartMushroomTower extends StructureStartTFFeatureAbstract
     }
 
     @Override
-    protected StructurePiece makeFirstComponent(World world, TFFeature feature, Random rand, int x, int y, int z) {
-        return new ComponentTFMushroomTowerMain(MUSHROOM_TOWER, world, rand, 0, x, y, z);
+    protected StructurePiece makeFirstComponent(TFFeature feature, Random rand, int x, int y, int z) {
+        return new ComponentTFMushroomTowerMain(MUSHROOM_TOWER, rand, 0, x, y, z);
     }
 }

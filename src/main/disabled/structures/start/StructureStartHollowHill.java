@@ -21,7 +21,7 @@ public class StructureStartHollowHill extends StructureStartTFFeatureAbstract {
     }
 
     @Override
-    protected StructurePiece makeFirstComponent(World world, TFFeature feature, Random rand, int x, int y, int z) {
-        return new ComponentTFHollowHill(TFFeature.TFHill, feature, world, rand, 0, feature.size, x, y, z);
+    protected StructurePiece makeFirstComponent(TFFeature feature, Random rand, int x, int y, int z) {
+        return new ComponentTFHollowHill(TFFeature.TFHill, feature, rand, 0, feature.size, x, y, z);
     }
 }

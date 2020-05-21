@@ -19,7 +19,7 @@ public class StructureStartHedgeMaze extends StructureStartTFFeatureAbstract {
     }
 
     @Override
-    protected StructurePiece makeFirstComponent(World world, TFFeature feature, Random rand, int x, int y, int z) {
-        return new ComponentTFHedgeMaze(HEDGE_MAZE, world, rand, 0, x, y, z);
+    protected StructurePiece makeFirstComponent(TFFeature feature, Random rand, int x, int y, int z) {
+        return new ComponentTFHedgeMaze(HEDGE_MAZE, rand, 0, x, y, z);
     }
 }

@@ -19,7 +19,7 @@ public class StructureStartFinalCastle extends StructureStartTFFeatureAbstract {
     }
 
     @Override
-    protected StructurePiece makeFirstComponent(World world, TFFeature feature, Random rand, int x, int y, int z) {
-        return new ComponentTFFinalCastleMain(FINAL_CASTLE, world, rand, 0, x, y, z);
+    protected StructurePiece makeFirstComponent(TFFeature feature, Random rand, int x, int y, int z) {
+        return new ComponentTFFinalCastleMain(FINAL_CASTLE, rand, 0, x, y, z);
     }
 }

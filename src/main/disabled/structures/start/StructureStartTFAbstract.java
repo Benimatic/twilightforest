@@ -21,12 +21,16 @@ import java.util.Random;
 
 public abstract class StructureStartTFAbstract extends StructureStart {
 
+	protected final TFFeature feature;
+
 	public StructureStartTFAbstract(Structure<?> structure, int chunkX, int chunkZ, MutableBoundingBox mbb, int ref, long seed) {
 		super(structure, chunkX, chunkZ, mbb, ref, seed);
+		this.feature = TFFeature.NOTHING;
 	}
 
     public StructureStartTFAbstract(World world, TFFeature feature, Random rand, int chunkX, int chunkZ) {
         super(chunkX, chunkZ);
+        this.feature = feature;
 //        int x = (chunkX << 4) + 8;
 //        int z = (chunkZ << 4) + 8;
 //        int y = TFWorld.SEALEVEL + 1;
@@ -49,7 +53,7 @@ public abstract class StructureStartTFAbstract extends StructureStart {
 		int z = (chunkZ << 4) + 8;
 		int y = TFWorld.SEALEVEL + 1; //TODO: maybe a biome-specific altitude for some of them?
 
-		StructurePiece firstComponent = makeFirstComponent(world, feature, rand, x, y, z);
+		StructurePiece firstComponent = makeFirstComponent(feature, rand, x, y, z);
 		components.add(firstComponent);
 		firstComponent.buildComponent(firstComponent, components, rand);
 
@@ -61,7 +65,7 @@ public abstract class StructureStartTFAbstract extends StructureStart {
 		setupComponents(world);
 	}
 
-	protected abstract StructurePiece makeFirstComponent(World world, TFFeature feature, Random rand, int x, int y, int z);
+	protected abstract StructurePiece makeFirstComponent(TFFeature feature, Random rand, int x, int y, int z);
 
     /**
      * Move the whole structure up or down
@@ -70,7 +74,7 @@ public abstract class StructureStartTFAbstract extends StructureStart {
         // determine the biome at the origin
         Biome biomeAt = world.getBiome(new BlockPos(x, 0, z));
 
-        int offY = (int) ((biomeAt.getBaseHeight() + biomeAt.getHeightVariation()) * 8);
+        int offY = (int) ((biomeAt.getDepth() + biomeAt.getScale()) * 8);
 
         // dark forest doesn't seem to get the right value. Why is my calculation so bad?
         if (biomeAt == TFBiomes.darkForest.get()) offY += 4;

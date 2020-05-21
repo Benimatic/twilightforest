@@ -19,7 +19,7 @@ public class StructureStartLabyrinth extends StructureStartTFFeatureAbstract {
     }
 
     @Override
-    protected StructurePiece makeFirstComponent(World world, TFFeature feature, Random rand, int x, int y, int z) {
-        return new ComponentTFMazeRuins(LABYRINTH, world, rand, 0, x, y, z);
+    protected StructurePiece makeFirstComponent(TFFeature feature, Random rand, int x, int y, int z) {
+        return new ComponentTFMazeRuins(LABYRINTH, rand, 0, x, y, z);
     }
 }

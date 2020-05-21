@@ -19,7 +19,7 @@ public class StructureStartKnightStronghold extends StructureStartTFFeatureAbstr
     }
 
     @Override
-    protected StructurePiece makeFirstComponent(World world, TFFeature feature, Random rand, int x, int y, int z) {
-        return new ComponentTFStrongholdEntrance(KNIGHT_STRONGHOLD, world, rand, 0, x, y, z);
+    protected StructurePiece makeFirstComponent(TFFeature feature, Random rand, int x, int y, int z) {
+        return new ComponentTFStrongholdEntrance(KNIGHT_STRONGHOLD, rand, 0, x, y, z);
     }
 }

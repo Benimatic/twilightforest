@@ -19,7 +19,7 @@ public class StructureStartAuroraPalace extends StructureStartTFFeatureAbstract 
     }
 
     @Override
-    protected StructurePiece makeFirstComponent(World world, TFFeature feature, Random rand, int x, int y, int z) {
-        return new ComponentTFIceTowerMain(ICE_TOWER, world, rand, 0, x, y, z);
+    protected StructurePiece makeFirstComponent(TFFeature feature, Random rand, int x, int y, int z) {
+        return new ComponentTFIceTowerMain(ICE_TOWER, rand, 0, x, y, z);
     }
 }
