@@ -149,6 +149,10 @@ public class GenDruidHut<T extends NoFeatureConfig> extends Feature<T> {
 
 		public static class Piece extends TemplateStructurePiece {
 
+			public Piece(IStructurePieceType p_i51338_1_, int p_i51338_2_) {
+				super(p_i51338_1_, p_i51338_2_);
+			}
+
 			@Override
 			protected void handleDataMarker(String s, BlockPos blockPos, IWorld world, Random random, MutableBoundingBox mutableBoundingBox) {
    		        /*
@@ -276,7 +280,7 @@ public class GenDruidHut<T extends NoFeatureConfig> extends Feature<T> {
 				return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, Blocks.MOSSY_COBBLESTONE_WALL.getDefaultState(), null);
 
 			if (block == Blocks.STONE_BRICKS) { // TODO: By default it's not chiseled stone as that's a different block
-				return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, state.with(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.values()[random.nextInt(3)]), null);
+				return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, random.nextInt(2) == 0 ? Blocks.CRACKED_STONE_BRICKS.getDefaultState() : Blocks.MOSSY_STONE_BRICKS.getDefaultState(), null);
 			}
 
 			return blockInfo;

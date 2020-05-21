@@ -15,7 +15,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.gen.Heightmap;
 import net.minecraftforge.client.IRenderHandler;
 import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomeDarkForest;
@@ -121,7 +121,7 @@ public class TFWeatherRenderer implements IRenderHandler {
 					Biome biome = world.getBiome(blockpos$mutableblockpos);
 
 					if (biome.getPrecipitation() != Biome.RainType.NONE) {
-						int j2 = world.getPrecipitationHeight(blockpos$mutableblockpos).getY();
+						int j2 = world.getHeight(Heightmap.Type.MOTION_BLOCKING, blockpos$mutableblockpos).getY();
 						int k2 = j - i1;
 						int l2 = j + i1;
 
@@ -142,9 +142,9 @@ public class TFWeatherRenderer implements IRenderHandler {
 						if (k2 != l2) {
 							this.random.setSeed((long) (l1 * l1 * 3121 + l1 * 45238971 ^ k1 * k1 * 418711 + k1 * 13761));
 							blockpos$mutableblockpos.setPos(l1, k2, k1);
-							float f2 = biome.getTemperature(blockpos$mutableblockpos);
+							float f2 = biome.getTemperatureCached(blockpos$mutableblockpos);
 
-							if (((ServerWorld)world).getChunkProvider().getChunkGenerator().getBiomeProvider().getTemperatureAtHeight(f2, j2) >= 0.15F) {
+							if (f2 >= 0.15F) {
 								if (j1 != 0) {
 									if (j1 >= 0) {
 										tessellator.draw();

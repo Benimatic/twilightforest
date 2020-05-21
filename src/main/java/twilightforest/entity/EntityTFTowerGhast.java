@@ -331,7 +331,7 @@ public class EntityTFTowerGhast extends GhastEntity {
 				this.detachHome();
 				this.idleTime += 5;
 			} else {
-				BlockPos cc = TFFeature.getNearestCenterXYZ(chunkX, chunkZ, world);
+				BlockPos cc = TFFeature.getNearestCenterXYZ(chunkX, chunkZ);
 				this.setHomePosAndDistance(cc.up(128), 64);
 			}
 		}

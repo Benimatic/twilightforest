@@ -24,7 +24,7 @@ public class CenterCommand {
         int dx = MathHelper.floor(source.getPos().getX());
         int dz = MathHelper.floor(source.getPos().getZ());
 
-        BlockPos cc = TFFeature.getNearestCenterXYZ(dx >> 4, dz >> 4, source.getWorld());
+        BlockPos cc = TFFeature.getNearestCenterXYZ(dx >> 4, dz >> 4);
 
         boolean fc = TFFeature.isInFeatureChunk(source.getWorld(), dx, dz);
         source.sendFeedback(new TranslationTextComponent("commands.tffeature.center", cc), false);

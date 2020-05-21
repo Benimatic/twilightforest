@@ -29,7 +29,7 @@ public class TFClientProxy extends TFCommonProxy {
 	@Override
 	public void init() {
 
-		MinecraftForge.EVENT_BUS.register(new LoadingScreenListener());
+//		MinecraftForge.EVENT_BUS.register(new LoadingScreenListener());
 
 //		TFMUSICTYPE = EnumHelperClient.addMusicType("TFMUSIC", TFSounds.MUSIC, 1200, 12000);
 
@@ -66,16 +66,16 @@ public class TFClientProxy extends TFCommonProxy {
 //		this.isDangerOverlayShown = isDangerOverlayShown;
 //	}
 
-	@Override
-	public boolean doesPlayerHaveAdvancement(PlayerEntity player, ResourceLocation advId) {
-		if (player instanceof ClientPlayerEntity) {
-			ClientAdvancementManager manager = ((ClientPlayerEntity) player).connection.getAdvancementManager();
-			Advancement adv = manager.getAdvancementList().getAdvancement(advId);
-			if (adv == null) return false;
-			AdvancementProgress progress = manager.advancementToProgress.get(adv);
-			return progress != null && progress.isDone();
-		}
-
-		return super.doesPlayerHaveAdvancement(player, advId);
-	}
+//	@Override
+//	public boolean doesPlayerHaveAdvancement(PlayerEntity player, ResourceLocation advId) {
+//		if (player instanceof ClientPlayerEntity) {
+//			ClientAdvancementManager manager = ((ClientPlayerEntity) player).connection.getAdvancementManager();
+//			Advancement adv = manager.getAdvancementList().getAdvancement(advId);
+//			if (adv == null) return false;
+//			AdvancementProgress progress = manager.advancementToProgress.get(adv);
+//			return progress != null && progress.isDone();
+//		}
+//
+//		return super.doesPlayerHaveAdvancement(player, advId);
+//	}
 }

@@ -9,6 +9,7 @@ import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particles.BlockParticleData;
+import net.minecraft.particles.RedstoneParticleData;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
@@ -58,7 +59,7 @@ public class EntityTFTowerGolem extends MonsterEntity {
 		boolean attackSuccess = super.attackEntityAsMob(entity);
 
 		if (attackSuccess) {
-			entity.motionY += 0.4000000059604645D;
+			entity.getMotion().add(0.0D, 0.4000000059604645D, 0.0D);
 		}
 
 		return attackSuccess;
@@ -101,7 +102,7 @@ public class EntityTFTowerGolem extends MonsterEntity {
 		// End copy
 
 		if (this.rand.nextBoolean()) {
-			this.world.addParticle(ParticleTypes.REDSTONE, this.getX() + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(), this.getY() + this.rand.nextDouble() * (double) this.getHeight() - 0.25D, this.getZ() + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(), 0, 0, 0);
+			this.world.addParticle(new RedstoneParticleData(1.0F, 0.0F, 0.0F, 1.0F), this.getX() + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(), this.getY() + this.rand.nextDouble() * (double) this.getHeight() - 0.25D, this.getZ() + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(), 0, 0, 0);
 		}
 	}
 

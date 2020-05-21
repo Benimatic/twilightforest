@@ -5,6 +5,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -36,7 +37,7 @@ public class EntityUtil {
 		Vec3d position = entity.getEyePosition(1.0F);
 		Vec3d look = entity.getLook(1.0F);
 		Vec3d dest = position.add(look.x * range, look.y * range, look.z * range);
-		return entity.world.rayTraceBlocks(position, dest);
+		return entity.world.rayTraceBlocks(new RayTraceContext(position, dest, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, entity));
 	}
 
 	@Nullable

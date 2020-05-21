@@ -267,7 +267,7 @@ public class TFEntities {
 		RenderingRegistry.registerEntityRenderingHandler(kobold.get(), m -> new RenderTFKobold<>(m, new ModelTFKobold<>(), 0.4F, "kobold.png"));
 		RenderingRegistry.registerEntityRenderingHandler(boggard.get(), m -> new RenderTFBiped<>(m, new ModelTFLoyalZombie(), 0.625F, "kobold.png"));
 		RenderingRegistry.registerEntityRenderingHandler(mosquito_swarm.get(), m -> new RenderTFGenericLiving<>(m, new ModelTFMosquitoSwarm<>(), 0.0F, "mosquitoswarm.png"));
-		RenderingRegistry.registerEntityRenderingHandler(death_tome.get(), m -> new RenderTFGenericLiving<>(m, new ModelTFDeathTome(), 0.3F, "textures/entity/enchanting_table_book.png"));
+//		RenderingRegistry.registerEntityRenderingHandler(death_tome.get(), m -> new RenderTFGenericLiving<>(m, new ModelTFDeathTome(), 0.3F, "textures/entity/enchanting_table_book.png"));
 		RenderingRegistry.registerEntityRenderingHandler(minotaur.get(), m -> new RenderTFBiped<>(m, new ModelTFMinotaur<>(), 0.625F, "minotaur.png"));
 		RenderingRegistry.registerEntityRenderingHandler(minoshroom.get(), m -> new RenderTFMinoshroom<>(m, new ModelTFMinoshroom<>(), 0.625F));
 		RenderingRegistry.registerEntityRenderingHandler(fire_beetle.get(), m -> new RenderTFGenericLiving<>(m, new ModelTFFireBeetle<>(), 0.8F, "firebeetle.png"));

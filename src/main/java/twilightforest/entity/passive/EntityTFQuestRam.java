@@ -101,7 +101,7 @@ public class EntityTFQuestRam extends AnimalEntity {
 				this.detachHome();
 			} else {
 				// set our home position to the center of the quest grove
-				BlockPos cc = TFFeature.getNearestCenterXYZ(MathHelper.floor(this.getX()), MathHelper.floor(this.getZ()), world);
+				BlockPos cc = TFFeature.getNearestCenterXYZ(MathHelper.floor(this.getX()), MathHelper.floor(this.getZ()));
 				this.setHomePosAndDistance(cc, 13);
 			}
 
@@ -134,8 +134,8 @@ public class EntityTFQuestRam extends AnimalEntity {
 		ItemStack currentItem = player.getHeldItem(hand);
 
 		if (!currentItem.isEmpty() && currentItem.getItem() == Item.getItemFromBlock(Blocks.WOOL) && !isColorPresent(DyeColor.byMetadata(currentItem.getItemDamage()))) {
-			this.setColorPresent(DyeColor.byMetadata(currentItem.getItemDamage()));
-			this.animateAddColor(DyeColor.byMetadata(currentItem.getItemDamage()), 50);
+			this.setColorPresent(DyeColor.byId(currentItem.getItemDamage()));
+			this.animateAddColor(DyeColor.byId(currentItem.getItemDamage()), 50);
 
 			if (!player.abilities.isCreativeMode) {
 				currentItem.shrink(1);

@@ -3,7 +3,9 @@ package twilightforest.entity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.item.DyeColor;
@@ -14,11 +16,14 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.ai.EntityAITFBreathAttack;
+
+import java.util.Random;
 
 public class EntityTFWinterWolf extends EntityTFHostileWolf implements IBreathAttacker {
 
@@ -120,10 +125,8 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf implements IBreathAt
 		target.attackEntityFrom(DamageSource.causeMobDamage(this), BREATH_DAMAGE);
 	}
 
-	@Override
-	protected boolean isValidLightLevel() {
-		return world.getBiome(new BlockPos(this)) == TFBiomes.snowy_forest.get()
-				|| super.isValidLightLevel();
+	public static boolean canSpawnHere(EntityType<? extends EntityTFWinterWolf> entity, IWorld world, SpawnReason reason, BlockPos pos, Random random) {
+		return world.getBiome(pos) == TFBiomes.snowy_forest.get() || MonsterEntity.isValidLightLevel(world, pos, random);
 	}
 
 	@Override

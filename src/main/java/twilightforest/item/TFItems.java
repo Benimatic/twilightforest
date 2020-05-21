@@ -68,7 +68,7 @@ public class TFItems {
 	public static final RegistryObject<Item> hydra_chop = ITEMS.register("hydra_chop", () -> new ItemTFHydraChops(TFItems.HYDRA_CHOP, new Item.Properties()));
 	public static final RegistryObject<Item> fiery_blood = ITEMS.register("fiery_blood", () -> new ItemTF(Rarity.UNCOMMON, new Item.Properties()));
 	public static final RegistryObject<Item> fiery_tears = ITEMS.register("fiery_tears", () -> new ItemTF(Rarity.UNCOMMON, new Item.Properties()));
-	public static final RegistryObject<Item> trophy = ITEMS.register("trophy", () -> new ItemTFTrophy(new Item.Properties()));
+	public static final RegistryObject<Item> trophy = ITEMS.register("trophy", () -> new ItemTF(new Item.Properties())); //TODO: PLACEHOLDER
 	public static final RegistryObject<Item> fiery_ingot = ITEMS.register("fiery_ingot", () -> new ItemTF(Rarity.UNCOMMON, new Item.Properties()));
 	public static final RegistryObject<Item> fiery_helmet = ITEMS.register("fiery_helmet", () -> new ItemTFFieryArmor(TwilightArmorMaterial.ARMOR_FIERY, EquipmentSlotType.HEAD, Rarity.UNCOMMON, new Item.Properties()));
 	public static final RegistryObject<Item> fiery_chestplate = ITEMS.register("fiery_chestplate", () -> new ItemTFFieryArmor(TwilightArmorMaterial.ARMOR_FIERY, EquipmentSlotType.CHEST, Rarity.UNCOMMON, new Item.Properties()));

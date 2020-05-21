@@ -25,13 +25,13 @@ import twilightforest.advancements.TFAdvancements;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.block.TFBlocks;
 import twilightforest.capabilities.CapabilityList;
+import twilightforest.client.LoadingScreenListener;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.command.TFCommand;
 import twilightforest.enchantment.TFEnchantments;
 import twilightforest.entity.TFEntities;
 import twilightforest.inventory.TFContainers;
 import twilightforest.item.*;
-import twilightforest.item.recipe.TFRecipes;
 import twilightforest.loot.TFTreasure;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.potions.TFPotions;
@@ -88,7 +88,6 @@ public class TwilightForestMod {
 		TFParticleType.PARTICLE_TYPES.register(modbus);
 		TFSurfaceBuilders.SURFACE_BUILDERS.register(modbus);
 		TFBiomeFeatures.FEATURES.register(modbus);
-		TFRecipes.RECIPE_SERIALIZERS.register(modbus);
 		TFContainers.CONTAINERS.register(modbus);
 		TFEnchantments.ENCHANTMENTS.register(modbus);
 
@@ -165,6 +164,7 @@ public class TwilightForestMod {
 		ItemTFYetiArmor.initArmorModel();
 		ItemTFArcticArmor.initArmorModel();
 		ItemTFFieryArmor.initArmorModel();
+		MinecraftForge.EVENT_BUS.register(new LoadingScreenListener());
 		DistExecutor.runWhenOn(Dist.CLIENT, () -> TFEntities::registerEntityRenderer);
 		DistExecutor.runWhenOn(Dist.CLIENT, () -> TFTileEntities::registerTileEntityRenders);
 		DistExecutor.runWhenOn(Dist.CLIENT, () -> TFContainers::renderScreens);

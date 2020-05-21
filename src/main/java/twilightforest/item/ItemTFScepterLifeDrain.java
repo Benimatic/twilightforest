@@ -3,6 +3,7 @@ package twilightforest.item;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
@@ -20,7 +21,6 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -30,6 +30,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Optional;
 
 public class ItemTFScepterLifeDrain extends ItemTF {
 
@@ -87,7 +88,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 			if (possibleEntity.canBeCollidedWith()) {
 				float borderSize = possibleEntity.getCollisionBorderSize();
 				AxisAlignedBB collisionBB = possibleEntity.getBoundingBox().grow((double) borderSize, (double) borderSize, (double) borderSize);
-				RayTraceResult interceptPos = collisionBB.calculateIntercept(srcVec, destVec);
+				Optional<Vec3d> interceptPos = collisionBB.rayTrace(srcVec, destVec);
 
 				if (collisionBB.contains(srcVec)) {
 					if (0.0D < hitDist || hitDist == 0.0D) {
@@ -95,7 +96,7 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 						hitDist = 0.0D;
 					}
 				} else if (interceptPos != null) {
-					double possibleDist = srcVec.distanceTo(interceptPos.hitVec);
+					double possibleDist = srcVec.distanceTo(interceptPos.get());
 
 					if (possibleDist < hitDist || hitDist == 0.0D) {
 						pointedEntity = possibleEntity;
@@ -132,8 +133,8 @@ public class ItemTFScepterLifeDrain extends ItemTF {
 						// make it explode
 
 						makeRedMagicTrail(world, living.getX(), living.getY() + living.getEyeHeight(), living.getZ(), target.getX(), target.getY() + target.getEyeHeight(), target.getZ());
-						if (target instanceof LivingEntity) {
-							((LivingEntity) target).spawnExplosionParticle();
+						if (target instanceof MobEntity) {
+							((MobEntity) target).spawnExplosionParticle();
 						}
 						target.playSound(SoundEvents.ENTITY_GENERIC_BIG_FALL, 1.0F, ((random.nextFloat() - random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
 						animateTargetShatter(world, (LivingEntity) target);

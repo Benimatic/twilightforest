@@ -9,6 +9,7 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -42,10 +43,11 @@ public class ItemTFZombieWand extends ItemTF {
 		if (!world.isRemote) {
 			// what block is the player pointing at?
 			RayTraceResult ray = EntityUtil.rayTrace(player, 20.0);
+			BlockRayTraceResult blockray = (BlockRayTraceResult) ray;
 
-			if (ray != null && ray.hitVec != null) {
+			if (ray != null && blockray.getPos() != null) {
 				EntityTFLoyalZombie zombie = new EntityTFLoyalZombie(TFEntities.loyal_zombie.get(), world);
-				zombie.setPositionAndRotation(ray.hitVec.x, ray.hitVec.y, ray.hitVec.z, 1.0F, 1.0F);
+				zombie.setPositionAndRotation(blockray.getPos().getX(), blockray.getPos().getY(), blockray.getPos().getZ(), 1.0F, 1.0F);
 				zombie.setTamed(true);
 				zombie.setOwnerId(player.getUniqueID());
 				zombie.addPotionEffect(new EffectInstance(Effects.STRENGTH, 1200, 1));
