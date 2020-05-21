@@ -38,10 +38,10 @@ public class ItemTFMazeMap extends FilledMapItem {
 
 	// [VanillaCopy] super with own item and id, and y parameter, also whether we have an ore map or not
 	public static ItemStack setupNewMap(World world, double worldX, double worldZ, byte scale, boolean trackingPosition, boolean unlimitedTracking, double worldY, boolean mapOres) {
-		ItemStack itemstack = new ItemStack(mapOres ? TFItems.ore_map : TFItems.maze_map, 1, world.getUniqueDataId(STR_ID));
-		String s = STR_ID + "_" + itemstack.getMetadata();
+		ItemStack itemstack = new ItemStack(mapOres ? TFItems.ore_map.get() : TFItems.maze_map.get());
+		String s = STR_ID + "_" + world.getNextMapId();
 		TFMazeMapData mapdata = new TFMazeMapData(s);
-		world.setData(s, mapdata);
+//		world.setData(s, mapdata);
 		mapdata.scale = scale;
 		mapdata.calculateMapCenter(world, worldX, worldY, worldZ, scale); // TF custom method here
 		mapdata.dimension = world.dimension.getType();
@@ -73,7 +73,7 @@ public class ItemTFMazeMap extends FilledMapItem {
 			mapdata.calculateMapCenter((double) worldIn.getWorldInfo().getSpawnX(), (double) worldIn.getWorldInfo().getSpawnZ(), mapdata.scale);
 			mapdata.dimension = worldIn.dimension.getType();
 			mapdata.markDirty();
-			worldIn.setData(s, mapdata);
+//			worldIn.setData(s, mapdata);
 		}
 
 		return mapdata;

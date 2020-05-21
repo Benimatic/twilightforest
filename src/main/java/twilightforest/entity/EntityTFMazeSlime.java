@@ -57,10 +57,10 @@ public class EntityTFMazeSlime extends SlimeEntity {
 		return true;
 	}
 
-	@Override
-	protected int getAttackStrength() {
-		return super.getAttackStrength() + 3;
-	}
+//	@Override
+//	protected int getAttackStrength() {
+//		return super.getAttackStrength() + 3;
+//	}
 
 	@Override
 	protected boolean spawnCustomParticles() {

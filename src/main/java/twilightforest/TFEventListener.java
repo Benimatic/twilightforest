@@ -436,7 +436,8 @@ public class TFEventListener {
 		PlayerInventory keepInventory = playerKeepsMap.remove(player.getUniqueID());
 		if (keepInventory != null) {
 			TwilightForestMod.LOGGER.warn("Dropping inventory items previously held in reserve for player {}", player.getName());
-			keepInventory.player = player;
+			//TODO: Field is final
+//			keepInventory.player = player;
 			keepInventory.dropAllItems();
 		}
 		//TODO: Baubles is dead
@@ -493,27 +494,28 @@ public class TFEventListener {
 			// check nearby blocks for same block or same drop
 
 			// pre-check for cobble!
-			Item cobbleItem = Item.getItemFromBlock(Blocks.COBBLESTONE);
-			boolean allCobble = state.getBlock().getItemDropped(state, world.rand, 0) == cobbleItem;
-
-			if (allCobble) {
-				for (BlockPos dPos : BlockTFGiantBlock.getVolume(pos)) {
-					if (dPos.equals(pos)) continue;
-					BlockState stateThere = world.getBlockState(dPos);
-					if (stateThere.getBlock().getItemDropped(stateThere, world.rand, 0) != cobbleItem) {
-						allCobble = false;
-						break;
-					}
-				}
-			}
-
-			if (allCobble && !player.abilities.isCreativeMode) {
-				shouldMakeGiantCobble = true;
-				amountOfCobbleToReplace = 64;
-			} else {
-				shouldMakeGiantCobble = false;
-				amountOfCobbleToReplace = 0;
-			}
+			//TODO: How to figure this out
+//			Item cobbleItem = Item.getItemFromBlock(Blocks.COBBLESTONE);
+//			boolean allCobble = state.getBlock().getItemDropped(state, world.rand, 0) == cobbleItem;
+//
+//			if (allCobble) {
+//				for (BlockPos dPos : BlockTFGiantBlock.getVolume(pos)) {
+//					if (dPos.equals(pos)) continue;
+//					BlockState stateThere = world.getBlockState(dPos);
+//					if (stateThere.getBlock().getItemDropped(stateThere, world.rand, 0) != cobbleItem) {
+//						allCobble = false;
+//						break;
+//					}
+//				}
+//			}
+//
+//			if (allCobble && !player.abilities.isCreativeMode) {
+//				shouldMakeGiantCobble = true;
+//				amountOfCobbleToReplace = 64;
+//			} else {
+//				shouldMakeGiantCobble = false;
+//				amountOfCobbleToReplace = 0;
+//			}
 
 			// break all nearby blocks
 			if (player instanceof ServerPlayerEntity) {

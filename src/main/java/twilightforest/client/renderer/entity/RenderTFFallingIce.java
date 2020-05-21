@@ -52,7 +52,7 @@ public class RenderTFFallingIce<T extends EntityTFFallingIce> extends EntityRend
 					// TF - 3 times as big
 					stack.scale(3, 3, 3);
 					BlockRendererDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
-					blockrendererdispatcher.getBlockModelRenderer().renderModel(world, blockrendererdispatcher.getModelForState(iblockstate), iblockstate, blockpos, stack, builder, false, MathHelper.getPositionRandom(entity.getOrigin()));
+//					blockrendererdispatcher.getBlockModelRenderer().renderModel(world, blockrendererdispatcher.getModelForState(iblockstate), iblockstate, blockpos, stack, builder, false, MathHelper.getPositionRandom(entity.getOrigin()));
 					tessellator.draw();
 
 //					if (this.renderOutlines) {

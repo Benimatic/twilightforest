@@ -37,7 +37,7 @@ public class RenderTFThrownIce<T extends EntityTFIceBomb> extends EntityRenderer
 				World world = entity.world;
 
 				if (iblockstate != world.getBlockState(new BlockPos(entity)) && iblockstate.getRenderType() != BlockRenderType.INVISIBLE) {
-					this.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
+//					this.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
 					stack.push();
 					RenderSystem.disableLighting();
 					Tessellator tessellator = Tessellator.getInstance();
@@ -50,9 +50,9 @@ public class RenderTFThrownIce<T extends EntityTFIceBomb> extends EntityRenderer
 
 					bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
 					BlockPos blockpos = new BlockPos(entity.getX(), entity.getBoundingBox().maxY, entity.getZ());
-					stack.translate((float) (x - (double) blockpos.getX() - 0.5D), (float) (y - (double) blockpos.getY()), (float) (z - (double) blockpos.getZ() - 0.5D));
+//					stack.translate((float) (x - (double) blockpos.getX() - 0.5D), (float) (y - (double) blockpos.getY()), (float) (z - (double) blockpos.getZ() - 0.5D));
 					BlockRendererDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
-					blockrendererdispatcher.getBlockModelRenderer().renderModel(world, blockrendererdispatcher.getModelForState(iblockstate), iblockstate, blockpos, bufferbuilder, false, MathHelper.getPositionRandom(BlockPos.ZERO));
+//					blockrendererdispatcher.getBlockModelRenderer().renderModel(world, blockrendererdispatcher.getModelForState(iblockstate), iblockstate, blockpos, bufferbuilder, false, MathHelper.getPositionRandom(BlockPos.ZERO));
 					tessellator.draw();
 
 //					if (this.renderOutlines) {

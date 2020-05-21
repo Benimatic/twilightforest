@@ -53,7 +53,7 @@ public enum RenderEffect {
 				RenderSystem.rotatef(random.nextFloat() * 360F, 0.0F, 1.0F, 0.0F);
 				RenderSystem.rotatef(random.nextFloat() * 360F, 0.0F, 0.0F, 1.0F);
 
-				Minecraft.getInstance().getBlockRendererDispatcher().renderBlockBrightness(Blocks.ICE.getDefaultState(), 1);
+//				Minecraft.getInstance().getBlockRendererDispatcher().renderBlockBrightness(Blocks.ICE.getDefaultState(), 1);
 				RenderSystem.popMatrix();
 			}
 

@@ -151,9 +151,9 @@ public class EntityTFLich extends MonsterEntity {
 		this.bossInfo.removePlayer(player);
 	}
 
-	@Override
-	public void setInWeb() {
-	}
+//	@Override
+//	public void setInWeb() {
+//	}
 
 	@Override
 	public boolean canDespawn(double p_213397_1_) {

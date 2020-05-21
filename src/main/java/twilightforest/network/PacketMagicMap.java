@@ -58,7 +58,7 @@ public class PacketMagicMap {
 				@Override
 				public void run() {
 
-					MapItemRenderer mapItemRenderer = Minecraft.getInstance().entityRenderer.getMapItemRenderer();
+//					MapItemRenderer mapItemRenderer = Minecraft.getInstance().entityRenderer.getMapItemRenderer();
 					TFMagicMapData mapData = ItemTFMagicMap.loadMapData(message.mapID, Minecraft.getInstance().world);
 
 					// Adapted from NetHandlerPlayClient#handleMaps
@@ -67,17 +67,17 @@ public class PacketMagicMap {
 						String s = ItemTFMagicMap.STR_ID + "_" + message.mapID;
 						mapData = new TFMagicMapData(s);
 
-						if (mapItemRenderer.getMapInstanceIfExists(s) != null)
-						{
-							MapData mapdata1 = mapItemRenderer.getData(mapItemRenderer.getMapInstanceIfExists(s));
+//						if (mapItemRenderer.getMapInstanceIfExists(s) != null)
+//						{
+//							MapData mapdata1 = mapItemRenderer.getData(mapItemRenderer.getMapInstanceIfExists(s));
+//
+//							if (mapdata1 instanceof TFMagicMapData)
+//							{
+//								mapData = (TFMagicMapData) mapdata1;
+//							}
+//						}
 
-							if (mapdata1 instanceof TFMagicMapData)
-							{
-								mapData = (TFMagicMapData) mapdata1;
-							}
-						}
-
-						Minecraft.getInstance().world.setData(s, mapData);
+//						Minecraft.getInstance().world.setData(s, mapData);
 					}
 
 					message.inner.setMapdataTo(mapData);
@@ -88,7 +88,7 @@ public class PacketMagicMap {
 					// Cheat and put tfDecorations into main collection so they are called by renderer
 					// However, clear the decorations vanilla put there so player markers go above feature markers.
 					Map<String, MapDecoration> saveVanilla = mapData.mapDecorations;
-					mapData.mapDecorations = new LinkedHashMap<>();
+//					mapData.mapDecorations = new LinkedHashMap<>();
 
 					for (TFMagicMapData.TFMapDecoration tfDecor : mapData.tfDecorations) {
 						mapData.mapDecorations.put(tfDecor.toString(), tfDecor);
@@ -96,7 +96,7 @@ public class PacketMagicMap {
 
 					mapData.mapDecorations.putAll(saveVanilla);
 
-					mapItemRenderer.updateMapTexture(mapData);
+//					mapItemRenderer.updateMapTexture(mapData);
 				}
 			});
 

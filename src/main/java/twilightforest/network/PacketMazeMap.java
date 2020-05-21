@@ -48,7 +48,7 @@ public class PacketMazeMap {
 				@Override
 				public void run() {
 
-					MapItemRenderer mapItemRenderer = Minecraft.getInstance().entityRenderer.getMapItemRenderer();
+//					MapItemRenderer mapItemRenderer = Minecraft.getInstance().entityRenderer.getMapItemRenderer();
 					MapData mapData = ItemTFMazeMap.loadMapData(message.inner.getMapId(), Minecraft.getInstance().world);
 
 					// Adapted from NetHandlerPlayClient#handleMaps
@@ -57,18 +57,18 @@ public class PacketMazeMap {
 						String s = ItemTFMazeMap.STR_ID + "_" + message.inner.getMapId();
 						mapData = new TFMazeMapData(s);
 
-						if (mapItemRenderer.getMapInstanceIfExists(s) != null) {
-							MapData mapData1 = mapItemRenderer.getData(mapItemRenderer.getMapInstanceIfExists(s));
-							if (mapData1 != null) {
-								mapData = mapData1;
-							}
-						}
+//						if (mapItemRenderer.getMapInstanceIfExists(s) != null) {
+//							MapData mapData1 = mapItemRenderer.getData(mapItemRenderer.getMapInstanceIfExists(s));
+//							if (mapData1 != null) {
+//								mapData = mapData1;
+//							}
+//						}
 
-						Minecraft.getInstance().world.setData(s, mapData);
+//						Minecraft.getInstance().world.setData(s, mapData);
 					}
 
 					message.inner.setMapdataTo(mapData);
-					mapItemRenderer.updateMapTexture(mapData);
+//					mapItemRenderer.updateMapTexture(mapData);
 				}
 			});
 			return true;

@@ -96,21 +96,21 @@ public class TFTickHandler {
 		int px = MathHelper.floor(player.getX());
 		int pz = MathHelper.floor(player.getZ());
 
-		MutableBoundingBox fullSBB = chunkGenerator.getFullSBBNear(px, pz, 100);
-		if (fullSBB != null) {
-
-			Vec3i center = StructureBoundingBoxUtils.getCenter(fullSBB);
-
-			TFFeature nearFeature = TFFeature.getFeatureForRegionPos(center.getX(), center.getZ(), world);
-
-			if (!nearFeature.hasProtectionAura || nearFeature.doesPlayerHaveRequiredAdvancements(player)) {
-				sendAllClearPacket(world, player);
-				return false;
-			} else {
-				sendStructureProtectionPacket(world, player, fullSBB);
-				return true;
-			}
-		}
+//		MutableBoundingBox fullSBB = chunkGenerator.getFullSBBNear(px, pz, 100);
+//		if (fullSBB != null) {
+//
+//			Vec3i center = StructureBoundingBoxUtils.getCenter(fullSBB);
+//
+//			TFFeature nearFeature = TFFeature.getFeatureForRegionPos(center.getX(), center.getZ(), world);
+//
+//			if (!nearFeature.hasProtectionAura || nearFeature.doesPlayerHaveRequiredAdvancements(player)) {
+//				sendAllClearPacket(world, player);
+//				return false;
+//			} else {
+//				sendStructureProtectionPacket(world, player, fullSBB);
+//				return true;
+//			}
+//		}
 		return false;
 	}
 

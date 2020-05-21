@@ -4,6 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import twilightforest.TwilightForestMod;
@@ -65,13 +66,13 @@ public abstract class EntityAITFHoverBase<T extends LivingEntity> extends Goal {
 	protected boolean isPositionOccupied(double hx, double hy, double hz) {
 		float radius = this.attacker.getWidth() / 2F;
 		AxisAlignedBB aabb = new AxisAlignedBB(hx - radius, hy, hz - radius, hx + radius, hy + this.attacker.getHeight(), hz + radius);
-		return !this.attacker.world.checkNoEntityCollision(attacker, VoxelShapes.create(aabb)) || !this.attacker.world.getCollisionBoxes(attacker, aabb).isEmpty();
+		return !this.attacker.world.checkNoEntityCollision(attacker, VoxelShapes.create(aabb)) || !this.attacker.world.getBlockCollisions(attacker, aabb).isEmpty();
 	}
 
 	/**
 	 * Can the specified entity see the specified location?
 	 */
 	protected boolean canEntitySee(Entity entity, double dx, double dy, double dz) {
-		return entity.world.rayTraceBlocks(new Vec3d(entity.getX(), entity.getY() + (double) entity.getEyeHeight(), entity.getZ()), new Vec3d(dx, dy, dz)) == null;
+		return entity.world.rayTraceBlocks(new RayTraceContext(new Vec3d(entity.getX(), entity.getY() + (double) entity.getEyeHeight(), entity.getZ()), new Vec3d(dx, dy, dz), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, entity)) == null;
 	}
 }

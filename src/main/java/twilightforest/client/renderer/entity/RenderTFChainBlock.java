@@ -28,15 +28,15 @@ public class RenderTFChainBlock<T extends EntityTFChainBlock> extends EntityRend
 		stack.push();
 		//stack.translate(x, y, z);
 
-		this.bindEntityTexture(chainBlock);
+//		this.bindEntityTexture(chainBlock);
 
 		stack.scale(-1.0F, -1.0F, 1.0F);
 
-		RenderSystem.rotatef(MathHelper.wrapDegrees((float) y), 1, 0, 1);
-		RenderSystem.rotatef(MathHelper.wrapDegrees(((float) x + (float) z) * 11F), 0, 1, 0);
+//		RenderSystem.rotatef(MathHelper.wrapDegrees((float) y), 1, 0, 1);
+//		RenderSystem.rotatef(MathHelper.wrapDegrees(((float) x + (float) z) * 11F), 0, 1, 0);
 //        GlStateManager.rotatef(MathHelper.wrapDegrees((float)yaw), 0, 0, 1);
 
-		this.model.render(chainBlock, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+//		this.model.render(chainBlock, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 		stack.pop();
 
 		//TODO: idk what's supposed to be done here

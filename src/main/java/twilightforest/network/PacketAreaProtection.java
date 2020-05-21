@@ -48,7 +48,7 @@ public class PacketAreaProtection {
 				public void run() {
 
 					World world = Minecraft.getInstance().world;
-					addProtectionBox(world, message.sbb);
+					//addProtectionBox(world, message.sbb);
 
 					for (int i = 0; i < 20; i++) {
 
@@ -68,19 +68,19 @@ public class PacketAreaProtection {
 		}
 
 		//TODO: All are in ClientWorld. "weatherEffects" is "globalEntities" and private. "addWeatherEffect" is "addLightning" and only accepts LightningBoltEntity
-		static void addProtectionBox(World world, MutableBoundingBox sbb) {
-
-			for (Entity entity : world.weatherEffects) {
-				if (entity instanceof EntityTFProtectionBox) {
-					EntityTFProtectionBox protectionBox = (EntityTFProtectionBox) entity;
-					if (protectionBox.matches(sbb)) {
-						protectionBox.resetLifetime();
-						return;
-					}
-				}
-			}
-
-			world.addWeatherEffect(new EntityTFProtectionBox(world, sbb));
-		}
+//		static void addProtectionBox(World world, MutableBoundingBox sbb) {
+//
+//			for (Entity entity : world.weatherEffects) {
+//				if (entity instanceof EntityTFProtectionBox) {
+//					EntityTFProtectionBox protectionBox = (EntityTFProtectionBox) entity;
+//					if (protectionBox.matches(sbb)) {
+//						protectionBox.resetLifetime();
+//						return;
+//					}
+//				}
+//			}
+//
+//			world.addWeatherEffect(new EntityTFProtectionBox(world, sbb));
+//		}
 	}
 }

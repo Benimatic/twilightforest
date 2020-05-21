@@ -38,7 +38,7 @@ public class TFBiomeCache {
 		Entry(int x, int z) {
 			this.x = x;
 			this.z = z;
-			provider.getBiomesForGeneration(biomes, fromGrid(x), fromGrid(z), gridSize, gridSize, false);
+//			provider.getBiomesForGeneration(biomes, fromGrid(x), fromGrid(z), gridSize, gridSize, false);
 		}
 	}
 
