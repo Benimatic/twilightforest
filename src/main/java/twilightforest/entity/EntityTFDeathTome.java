@@ -17,6 +17,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.LootParameterSets;
+import net.minecraft.world.storage.loot.LootParameters;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.projectile.EntityTFTomeBolt;
@@ -69,14 +71,9 @@ public class EntityTFDeathTome extends MonsterEntity implements IRangedAttackMob
 
 		if (super.attackEntityFrom(src, damage)) {
 			if (!world.isRemote) {
-				LootContext ctx = new LootContext.Builder((ServerWorld) world)
-						.withDamageSource(src)
-						.withLootedEntity(this)
-						.build();
+				LootContext ctx = getLootContextBuilder(true, src).build(LootParameterSets.ENTITY);
 
-				for (ItemStack stack : world.getLootTableManager().getLootTableFromLocation(HURT_LOOT_TABLE).generateLootForPools(world.rand, ctx)) {
-					entityDropItem(stack, 1.0F);
-				}
+				world.getServer().getLootTableManager().getLootTableFromLocation(HURT_LOOT_TABLE).generate(ctx, s -> entityDropItem(s, 1.0F));
 			}
 			return true;
 		} else {

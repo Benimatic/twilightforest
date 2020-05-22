@@ -1,6 +1,7 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntitySize;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
@@ -28,7 +29,7 @@ public class EntityTFProtectionBox extends Entity {
 		sizeY = sbb.getYSize();
 		sizeZ = sbb.getZSize();
 
-		this.setSize(Math.max(sizeX, sizeZ), sizeY);
+		this.size = EntitySize.fixed(Math.max(sizeX, sizeZ), sizeY);
 	}
 
 	@Override

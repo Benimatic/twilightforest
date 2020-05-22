@@ -20,6 +20,7 @@ import net.minecraft.world.storage.MapData;
 import net.minecraft.world.storage.MapDecoration;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.Tags;
 import twilightforest.TFMazeMapData;
 
 import javax.annotation.Nullable;
@@ -175,9 +176,7 @@ public class ItemTFMazeMap extends FilledMapItem {
 											multiset.add(MaterialColor.DIAMOND, 1000);
 										} else if (state.getBlock() == Blocks.EMERALD_ORE) {
 											multiset.add(MaterialColor.EMERALD, 1000);
-										} else if (state.getBlock() != Blocks.AIR && state.getBlock().getRegistryName().getPath().contains("ore")) { // TODO: improve this 0.o
-											//TODO: Well, we could use a tag for Ores
-											// any other ore, catchall
+										} else if (state.getBlock() != Blocks.AIR && state.isIn(Tags.Blocks.ORES)) {
 											multiset.add(MaterialColor.PINK, 1000);
 										}
 									}

@@ -26,6 +26,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.LootParameterSets;
+import net.minecraft.world.storage.loot.LootParameters;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.TFFeature;
@@ -119,10 +121,9 @@ public class EntityTFQuestRam extends AnimalEntity {
 	 * Pay out!
 	 */
 	private void rewardQuest() {
-		LootContext ctx = new LootContext.Builder((ServerWorld) world).withLootedEntity(this).build();
-		for (ItemStack s : world.getLootTableManager().getLootTableFromLocation(REWARD_LOOT_TABLE).generateLootForPools(world.rand, ctx)) {
-			entityDropItem(s, 1.0F);
-		}
+		// todo flesh the context out more
+		LootContext ctx = new LootContext.Builder((ServerWorld) world).withParameter(LootParameters.THIS_ENTITY, this).build(LootParameterSets.EMPTY);
+		world.getServer().getLootTableManager().getLootTableFromLocation(REWARD_LOOT_TABLE).generate(ctx, s -> entityDropItem(s, 1.0F));
 
 		for (ServerPlayerEntity player : this.world.getEntitiesWithinAABB(ServerPlayerEntity.class, getBoundingBox().grow(16.0D, 16.0D, 16.0D))) {
 			TFAdvancements.QUEST_RAM_COMPLETED.trigger(player);
@@ -179,11 +180,11 @@ public class EntityTFQuestRam extends AnimalEntity {
 	}
 
 	public boolean isColorPresent(DyeColor color) {
-		return (getColorFlags() & (1 << color.getMetadata())) > 0;
+		return (getColorFlags() & (1 << color.getId())) > 0;
 	}
 
 	public void setColorPresent(DyeColor color) {
-		setColorFlags(getColorFlags() | (1 << color.getMetadata()));
+		setColorFlags(getColorFlags() | (1 << color.getId()));
 	}
 
 	public boolean getRewarded() {
