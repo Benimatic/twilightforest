@@ -20,7 +20,7 @@ import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.passive.EntityTFQuestRam;
-import twilightforest.util.WoolUtil;
+import twilightforest.util.ColorUtil;
 
 import java.util.Random;
 
@@ -96,7 +96,7 @@ public class ComponentTFQuestGrove extends StructureTFComponentOld {
 
 				// add 4 random wool blocks
 				for (int i = 0; i < 4; i++) {
-					ted.setInventorySlotContents(i, new ItemStack(WoolUtil.getRandomBlock(rand), 1));
+					ted.setInventorySlotContents(i, new ItemStack(ColorUtil.WOOL.getRandomColor(rand), 1));
 				}
 			}
 		}

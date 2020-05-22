@@ -61,7 +61,7 @@ public enum RenderEffect {
 		}
 
 	}, SHIELDS {
-		private final LayerRenderer<LivingEntity, EntityModel<LivingEntity>> layer = new LayerShields<>();
+		// todo 1.15 just install this layer renderer directly on the entity renders on startup. private final LayerRenderer<LivingEntity, EntityModel<LivingEntity>> layer = new LayerShields<>();
 
 		@Override
 		public boolean shouldRender(LivingEntity entity, boolean firstPerson) {

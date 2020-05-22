@@ -105,7 +105,7 @@ public class ItemTFMagicMap extends FilledMapItem {
 			// use the generation map, which is larger scale than the other biome map
 			int startX = (centerX / blocksPerPixel - 64) * biomesPerPixel;
 			int startZ = (centerZ / blocksPerPixel - 64) * biomesPerPixel;
-			Biome[] biomes = world.getBiomeProvider().getBiomesForGeneration((Biome[]) null, startX, startZ, 128 * biomesPerPixel, 128 * biomesPerPixel);
+			Biome[] biomes = world.getBiomeAccess().getBiomesForGeneration((Biome[]) null, startX, startZ, 128 * biomesPerPixel, 128 * biomesPerPixel);
 
 			for (int xPixel = viewerX - viewRadiusPixels + 1; xPixel < viewerX + viewRadiusPixels; ++xPixel) {
 				for (int zPixel = viewerZ - viewRadiusPixels - 1; zPixel < viewerZ + viewRadiusPixels; ++zPixel) {
