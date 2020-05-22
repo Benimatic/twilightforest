@@ -16,7 +16,7 @@ import twilightforest.TFFeature;
 
 public class CenterCommand {
     public static LiteralArgumentBuilder<CommandSource> register() {
-        return Commands.literal("center").executes(CenterCommand::run);
+        return Commands.literal("center").requires(cs -> cs.hasPermissionLevel(2)).executes(CenterCommand::run);
     }
 
     private static int run(CommandContext<CommandSource> ctx) {

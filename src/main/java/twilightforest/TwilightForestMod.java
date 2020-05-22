@@ -1,9 +1,14 @@
 package twilightforest;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.LivingRenderer;
+import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Rarity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.GameRules;
+import net.minecraft.world.gen.layer.Layer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
@@ -16,6 +21,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.commons.lang3.tuple.Pair;
@@ -27,6 +33,8 @@ import twilightforest.block.TFBlocks;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.client.LoadingScreenListener;
 import twilightforest.client.particle.TFParticleType;
+import twilightforest.client.renderer.entity.LayerIce;
+import twilightforest.client.renderer.entity.LayerShields;
 import twilightforest.command.TFCommand;
 import twilightforest.enchantment.TFEnchantments;
 import twilightforest.entity.TFEntities;
@@ -168,6 +176,18 @@ public class TwilightForestMod {
 		DistExecutor.runWhenOn(Dist.CLIENT, () -> TFEntities::registerEntityRenderer);
 		DistExecutor.runWhenOn(Dist.CLIENT, () -> TFTileEntities::registerTileEntityRenders);
 		DistExecutor.runWhenOn(Dist.CLIENT, () -> TFContainers::renderScreens);
+	}
+
+	@SubscribeEvent
+	public void loadComplete(FMLLoadCompleteEvent evt) {
+		DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+			Minecraft.getInstance().getRenderManager().renderers.values().forEach(r -> {
+				if (r instanceof LivingRenderer) {
+					((LivingRenderer) r).addLayer(new LayerShields((LivingRenderer) r));
+					((LivingRenderer) r).addLayer(new LayerIce((LivingRenderer) r));
+				}
+			});
+		});
 	}
 
 	public void startServer(FMLServerStartingEvent event) {

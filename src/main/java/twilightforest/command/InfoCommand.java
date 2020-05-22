@@ -14,7 +14,7 @@ import twilightforest.world.TFWorld;
 
 public class InfoCommand {
     public static LiteralArgumentBuilder<CommandSource> register() {
-        return Commands.literal("info").executes(InfoCommand::run);
+        return Commands.literal("info").requires(cs -> cs.hasPermissionLevel(2)).executes(InfoCommand::run);
     }
 
     private static int run(CommandContext<CommandSource> ctx) throws CommandSyntaxException {
