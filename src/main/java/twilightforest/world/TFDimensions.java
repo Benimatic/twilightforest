@@ -55,17 +55,10 @@ public class TFDimensions {
 		if (DimensionType.byName(dimRL) == null) {
 			TwilightForestMod.LOGGER.warn("Detected that the configured origin dimension ID ({}) is not registered. Defaulting to the overworld.", originDim.get());
 			originDim.set("minecraft:overworld");
-		} else if (dimRL == tfDim) {
+		} else if (dimRL.equals(tfDim)) {
 			TwilightForestMod.LOGGER.warn("Detected that the configured origin dimension ID ({}) is already used for the Twilight Forest. Defaulting to the overworld.", originDim.get());
 			originDim.set("minecraft:overworld");
 		}
-//		if (!DimensionManager.isDimensionRegistered(TFConfig.originDimension)) {
-//			TwilightForestMod.LOGGER.warn("Detected that the configured origin dimension ID ({}) is not registered. Defaulting to the overworld.", TFConfig.originDimension);
-//			TFConfig.originDimension = 0;
-//		} else if (TFConfig.originDimension == TFConfig.dimension.dimensionID) {
-//			TwilightForestMod.LOGGER.warn("Detected that the configured origin dimension ID ({}) is already used for the Twilight Forest. Defaulting to the overworld.", TFConfig.originDimension);
-//			TFConfig.originDimension = 0;
-//		}
 	}
 
 	@SubscribeEvent
