@@ -1,6 +1,7 @@
 package twilightforest.network;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
@@ -48,7 +49,7 @@ public class PacketAreaProtection {
 				public void run() {
 
 					World world = Minecraft.getInstance().world;
-					//addProtectionBox(world, message.sbb);
+					addProtectionBox((ClientWorld) world, message.sbb);
 
 					for (int i = 0; i < 20; i++) {
 
@@ -67,20 +68,19 @@ public class PacketAreaProtection {
 			return true;
 		}
 
-		//TODO: All are in ClientWorld. "weatherEffects" is "globalEntities" and private. "addWeatherEffect" is "addLightning" and only accepts LightningBoltEntity
-//		static void addProtectionBox(World world, MutableBoundingBox sbb) {
-//
-//			for (Entity entity : world.weatherEffects) {
-//				if (entity instanceof EntityTFProtectionBox) {
-//					EntityTFProtectionBox protectionBox = (EntityTFProtectionBox) entity;
-//					if (protectionBox.matches(sbb)) {
-//						protectionBox.resetLifetime();
-//						return;
-//					}
-//				}
-//			}
-//
-//			world.addWeatherEffect(new EntityTFProtectionBox(world, sbb));
-//		}
+		static void addProtectionBox(ClientWorld world, MutableBoundingBox sbb) {
+
+			for (Entity entity : world.globalEntities) {
+				if (entity instanceof EntityTFProtectionBox) {
+					EntityTFProtectionBox protectionBox = (EntityTFProtectionBox) entity;
+					if (protectionBox.matches(sbb)) {
+						protectionBox.resetLifetime();
+						return;
+					}
+				}
+			}
+
+			world.globalEntities.add(new EntityTFProtectionBox(world, sbb));
+		}
 	}
 }

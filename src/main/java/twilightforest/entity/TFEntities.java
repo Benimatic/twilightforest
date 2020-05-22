@@ -129,6 +129,7 @@ public class TFEntities {
 	public static final RegistryObject<EntityType<EntityTFSlideBlock>> slider = make(TFEntityNames.SLIDER, makeCastedBuilder(EntityTFSlideBlock.class, EntityTFSlideBlock::new, EntityClassification.MISC).size(0.98F, 0.98F).setUpdateInterval(1));
 	public static final RegistryObject<EntityType<EntityTFBoggard>> boggard = make(TFEntityNames.BOGGARD, EntityTFBoggard::new, EntityClassification.MONSTER, 0.8F, 1.1F);
 	public static final RegistryObject<EntityType<EntityTFRisingZombie>> rising_zombie = make(TFEntityNames.RISING_ZOMBIE, EntityTFRisingZombie::new, EntityClassification.MONSTER, 0.6F, 1.95F);
+	public static final RegistryObject<EntityType<EntityTFProtectionBox>> protection_box = make(TFEntityNames.PROTECTION_BOX, makeCastedBuilder(EntityTFProtectionBox.class, EntityTFProtectionBox::new, EntityClassification.MISC).disableSerialization().disableSummoning().size(0, 0));
 
 	private static <E extends Entity> RegistryObject<EntityType<E>> make(ResourceLocation id, EntityType.IFactory<E> factory, EntityClassification classification, float width, float height) {
 		return make(id, makeBuilder(factory, classification).size(width, height));
@@ -296,7 +297,7 @@ public class TFEntities {
 		RenderingRegistry.registerEntityRenderingHandler(redcap_sapper.get(), m -> new RenderTFBiped<>(m, new ModelTFRedcap<>(), 0.4F, "redcapsapper.png"));
 		RenderingRegistry.registerEntityRenderingHandler(maze_slime.get(), m -> new RenderTFMazeSlime(m, 0.625F));
 		RenderingRegistry.registerEntityRenderingHandler(yeti.get(), m -> new RenderTFYeti<>(m, new ModelTFYeti<>(), 0.625F, "yeti2.png"));
-		//RenderingRegistry.registerEntityRenderingHandler(EntityTFProtectionBox.class, RenderTFProtectionBox::new);
+		RenderingRegistry.registerEntityRenderingHandler(protection_box.get(), RenderTFProtectionBox::new);
 		RenderingRegistry.registerEntityRenderingHandler(yeti_alpha.get(), m -> new RenderTFYeti<>(m, new ModelTFYetiAlpha<>(), 1.75F, "yetialpha.png"));
 		RenderingRegistry.registerEntityRenderingHandler(winter_wolf.get(), RenderTFWinterWolf::new);
 		RenderingRegistry.registerEntityRenderingHandler(snow_guardian.get(), m -> new RenderTFSnowGuardian<>(m, new ModelTFSnowGuardian<>()));

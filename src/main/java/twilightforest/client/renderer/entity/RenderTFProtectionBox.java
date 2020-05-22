@@ -26,8 +26,7 @@ public class RenderTFProtectionBox<T extends EntityTFProtectionBox> extends Enti
 	public void render(T entity, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
 		stack.push();
 
-		//stack.translate((float) x, (float) y, (float) z);
-
+		/* todo 1.15
 		this.bindTexture(textureLoc);
 
 		// move texture
@@ -66,6 +65,8 @@ public class RenderTFProtectionBox<T extends EntityTFProtectionBox> extends Enti
 		RenderSystem.matrixMode(GL11.GL_TEXTURE);
 		RenderSystem.loadIdentity();
 		RenderSystem.matrixMode(GL11.GL_MODELVIEW);
+
+		 */
 
 		stack.pop();
 	}

@@ -583,7 +583,8 @@ public class TFEventListener {
 			if (!nearbyFeature.doesPlayerHaveRequiredAdvancements(player)/* && chunkGenerator.isBlockProtected(pos)*/) {
 
 				// send protection packet
-//				sendAreaProtectionPacket(world, pos, chunkGenerator.getSBBAt(pos));
+				MutableBoundingBox bb = new MutableBoundingBox(pos, pos.add(16, 16, 16)); // todo 1.15 get from structure
+				sendAreaProtectionPacket(world, pos, bb);
 
 				// send a hint monster?
 				nearbyFeature.trySpawnHintMonster(world, player, pos);
