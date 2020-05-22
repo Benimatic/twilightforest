@@ -303,8 +303,7 @@ public class ContainerTFUncrafting extends Container {
 	}
 
 	private static boolean matches(ItemStack input, ItemStack output) {
-		return input.getItem() == output.getItem() && input.getCount() >= output.getCount()
-				&& (!output.getHasSubtypes() || input.getDamage() == output.getDamage());
+		return input.getItem() == output.getItem() && input.getCount() >= output.getCount();
 	}
 
 	private static IRecipe[] getRecipesFor(CraftingInventory matrix, World world) {
@@ -645,7 +644,7 @@ public class ContainerTFUncrafting extends Container {
 		}
 	}
 
-	private ItemStack[] getIngredients(IRecipe recipe) {
+	private ItemStack[] getIngredients(IRecipe<?> recipe) {
 		// todo 1.12 recheck
 		ItemStack[] stacks = new ItemStack[recipe.getIngredients().size()];
 

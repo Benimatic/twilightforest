@@ -324,7 +324,7 @@ public class TFEntities {
 		RenderingRegistry.registerEntityRenderingHandler(hydra_mortar.get(), RenderTFHydraMortar::new);
 		RenderingRegistry.registerEntityRenderingHandler(slime_blob.get(), m -> new SpriteRenderer<>(m, Minecraft.getInstance().getItemRenderer()));
 		RenderingRegistry.registerEntityRenderingHandler(moonworm_shot.get(), RenderTFMoonwormShot::new);
-		RenderingRegistry.registerEntityRenderingHandler(charm_effect.get(), m -> new RenderTFCharm(m, Minecraft.getInstance().getItemRenderer()));
+		RenderingRegistry.registerEntityRenderingHandler(charm_effect.get(), m -> new SpriteRenderer<>(m, Minecraft.getInstance().getItemRenderer()));
 		RenderingRegistry.registerEntityRenderingHandler(lich_bomb.get(), m -> new SpriteRenderer<>(m, Minecraft.getInstance().getItemRenderer()));
 		RenderingRegistry.registerEntityRenderingHandler(thrown_wep.get(), RenderTFThrownWep::new);
 		RenderingRegistry.registerEntityRenderingHandler(falling_ice.get(), RenderTFFallingIce::new);
