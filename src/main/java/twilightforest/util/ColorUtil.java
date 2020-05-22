@@ -84,7 +84,7 @@ public class ColorUtil {
 	}
 
 	public Block getRandomColor(Random rand) {
-		DyeColor color = DyeColor.values()[rand.nextInt(16)];
+		DyeColor color = DyeColor.byId(rand.nextInt(16));
 		return getColor(color).getBlock();
 	}
 }
