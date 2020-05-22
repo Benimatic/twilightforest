@@ -297,9 +297,9 @@ public class TFEntities {
 		RenderingRegistry.registerEntityRenderingHandler(hedge_spider.get(), RenderTFHedgeSpider::new);
 		RenderingRegistry.registerEntityRenderingHandler(redcap_sapper.get(), m -> new RenderTFBiped<>(m, new ModelTFRedcap<>(), 0.4F, "redcapsapper.png"));
 		RenderingRegistry.registerEntityRenderingHandler(maze_slime.get(), m -> new RenderTFMazeSlime(m, 0.625F));
-		RenderingRegistry.registerEntityRenderingHandler(yeti.get(), m -> new RenderTFYeti<>(m, new ModelTFYeti<>(), 0.625F, "yeti2.png"));
+		RenderingRegistry.registerEntityRenderingHandler(yeti.get(), m -> new RenderTFBiped<>(m, new ModelTFYeti<>(), 0.625F, "yeti2.png"));
 		RenderingRegistry.registerEntityRenderingHandler(protection_box.get(), RenderTFProtectionBox::new);
-		RenderingRegistry.registerEntityRenderingHandler(yeti_alpha.get(), m -> new RenderTFYeti<>(m, new ModelTFYetiAlpha<>(), 1.75F, "yetialpha.png"));
+		RenderingRegistry.registerEntityRenderingHandler(yeti_alpha.get(), m -> new RenderTFBiped<>(m, new ModelTFYetiAlpha<>(), 1.75F, "yetialpha.png"));
 		RenderingRegistry.registerEntityRenderingHandler(winter_wolf.get(), RenderTFWinterWolf::new);
 		RenderingRegistry.registerEntityRenderingHandler(snow_guardian.get(), m -> new RenderTFSnowGuardian<>(m, new ModelTFSnowGuardian<>()));
 		RenderingRegistry.registerEntityRenderingHandler(stable_ice_core.get(), m -> new RenderTFIceShooter<>(m, new ModelTFIceShooter<>()));
