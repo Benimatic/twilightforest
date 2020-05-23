@@ -59,7 +59,7 @@ public class EntityTFHostileWolf extends WolfEntity implements IMob {
 		}
 	}
 
-	public static boolean getCanSpawnHere(EntityType<EntityTFHostileWolf> type, IWorld world, SpawnReason reason, BlockPos pos, Random random) {
+	public static boolean getCanSpawnHere(EntityType<? extends EntityTFHostileWolf> type, IWorld world, SpawnReason reason, BlockPos pos, Random random) {
 		// are we near a hedge maze?
 		int chunkX = MathHelper.floor(pos.getX()) >> 4;
 		int chunkZ = MathHelper.floor(pos.getZ()) >> 4;

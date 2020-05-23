@@ -4,6 +4,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.passive.AmbientEntity;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.DamageSource;
@@ -11,7 +12,10 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+
+import java.util.Random;
 
 public class EntityTFMobileFirefly extends AmbientEntity {
 	private BlockPos spawnPosition;
@@ -112,16 +116,12 @@ public class EntityTFMobileFirefly extends AmbientEntity {
 	}
 
 	// [VanillaCopy] EntityBat.getCanSpawnHere. Edits noted.
-	// TODO: These are now moved to spawn predicates
-/*	@Override
-	public boolean getCanSpawnHere() {
-		BlockPos blockpos = new BlockPos(this.getX(), this.getBoundingBox().minY, this.getZ());
-
-		return blockpos.getY() < this.world.getSeaLevel()
-				&& !this.rand.nextBoolean()
-				&& this.world.getLightFromNeighbors(blockpos) <= this.rand.nextInt(4)
-				&& super.getCanSpawnHere();
-	}*/
+	public static boolean getCanSpawnHere(EntityType<EntityTFMobileFirefly> entity, IWorld world, SpawnReason reason, BlockPos pos, Random random) {
+		return pos.getY() < world.getSeaLevel()
+				&& ! random.nextBoolean()
+				&& world.getLight(pos) <= random.nextInt(4)
+				&& canSpawnOn(entity, world, reason, pos, random);
+	}
 
 	//TODO: I believe this is done via the Renderer now
 //	@Override

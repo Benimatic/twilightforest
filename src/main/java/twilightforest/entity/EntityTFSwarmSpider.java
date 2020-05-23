@@ -115,7 +115,7 @@ public class EntityTFSwarmSpider extends SpiderEntity {
 		return true;
 	}
 
-	public static boolean swarmSpiderSpawnHandler(EntityType<? extends EntityTFSwarmSpider> entity, IWorld world, SpawnReason reason, BlockPos pos, Random random) {
+	public static boolean getCanSpawnHere(EntityType<? extends EntityTFSwarmSpider> entity, IWorld world, SpawnReason reason, BlockPos pos, Random random) {
 		return world.getDifficulty() != Difficulty.PEACEFUL && isValidLightLevel(world, pos, random) && canSpawnOn(entity, world, reason, pos, random);
 	}
 
