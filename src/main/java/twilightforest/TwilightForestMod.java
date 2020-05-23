@@ -94,7 +94,6 @@ public class TwilightForestMod {
 		TFEntities.ENTITIES.register(modbus);
 		TFTileEntities.TILE_ENTITIES.register(modbus);
 		TFParticleType.PARTICLE_TYPES.register(modbus);
-		TFSurfaceBuilders.SURFACE_BUILDERS.register(modbus);
 		TFBiomeFeatures.FEATURES.register(modbus);
 		TFContainers.CONTAINERS.register(modbus);
 		TFEnchantments.ENCHANTMENTS.register(modbus);
