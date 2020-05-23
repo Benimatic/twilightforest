@@ -15,15 +15,25 @@ public class TFBiomeFinalPlateau extends TFBiomeBase {
 
 	public TFBiomeFinalPlateau(Builder props) {
 		super(props);
+	}
 
-		// custom creature list.
-		getSpawns(EntityClassification.CREATURE).clear();
-		addSpawn(EntityClassification.CREATURE, new SpawnListEntry(TFEntities.raven.get(), 10, 4, 4));
+	@Override
+	public void addFeatures() {
+		super.addFeatures();
 
 		TFBiomeDecorator.addClayDisks(this, 1);
 		TFBiomeDecorator.addLakes(this);
 		TFBiomeDecorator.addRuins(this);
 		TFBiomeDecorator.addMushrooms(this);
+	}
+
+	@Override
+	public void addSpawns() {
+		super.addSpawns();
+
+		// custom creature list.
+		getSpawns(EntityClassification.CREATURE).clear();
+		addSpawn(EntityClassification.CREATURE, new SpawnListEntry(TFEntities.raven.get(), 10, 4, 4));
 	}
 
 	@Override

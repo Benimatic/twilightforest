@@ -238,4 +238,13 @@ public class TFBiomes {
 		BiomeDictionary.addTypes(thornlands.get(), TWILIGHT, BiomeDictionary.Type.HILLS, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.DRY, BiomeDictionary.Type.WASTELAND);
 		BiomeDictionary.addTypes(spookyForest.get(), TWILIGHT, BiomeDictionary.Type.FOREST, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.DENSE, BiomeDictionary.Type.SPOOKY);
 	}
+
+	public static void addBiomeFeatures() {
+		for (Biome biome : ForgeRegistries.BIOMES.getValues()) {
+			if (biome instanceof TFBiomeBase) {
+				((TFBiomeBase)biome).addSpawns();
+				((TFBiomeBase)biome).addFeatures();
+			}
+		}
+	}
 }

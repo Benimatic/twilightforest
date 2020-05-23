@@ -24,10 +24,11 @@ public class TFBiomeSwamp extends TFBiomeBase {
 
 	public TFBiomeSwamp(Builder props) {
 		super(props);
+	}
 
-		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.mosquito_swarm.get(), 10, 1, 1));
-		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(EntityType.CREEPER, 10, 4, 4));
-		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(EntityType.ZOMBIE, 10, 4, 4));
+	@Override
+	public void addFeatures() {
+		super.addFeatures();
 
 		TFBiomeDecorator.addWoodRoots(this);
 		TFBiomeDecorator.addOres(this);
@@ -49,6 +50,15 @@ public class TFBiomeSwamp extends TFBiomeBase {
 		TFBiomeDecorator.addHugeLilyPads(this);
 		TFBiomeDecorator.addHugeWaterLiles(this);
 		TFBiomeDecorator.addReeds(this, 10);
+	}
+
+	@Override
+	public void addSpawns() {
+		super.addSpawns();
+
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.mosquito_swarm.get(), 10, 1, 1));
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(EntityType.CREEPER, 10, 4, 4));
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(EntityType.ZOMBIE, 10, 4, 4));
 	}
 
 	@Override

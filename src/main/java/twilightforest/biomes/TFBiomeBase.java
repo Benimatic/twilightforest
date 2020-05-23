@@ -25,10 +25,14 @@ public class TFBiomeBase extends Biome {
 
 	public TFBiomeBase(Builder props) {
 		super(props);
+	}
 
+	public void addFeatures() {
 		//TODO: This is just vanilla's; porting the current cave and ravine generators is not worth it, and should probably just copy-paste
 		DefaultBiomeFeatures.addCarvers(this);
+	}
 
+	public void addSpawns() {
 		addSpawn(EntityClassification.CREATURE, new SpawnListEntry(TFEntities.bighorn_sheep.get(), 12, 4, 4));
 		addSpawn(EntityClassification.CREATURE, new SpawnListEntry(TFEntities.wild_boar.get(), 10, 4, 4));
 		addSpawn(EntityClassification.CREATURE, new SpawnListEntry(EntityType.CHICKEN, 10, 4, 4));

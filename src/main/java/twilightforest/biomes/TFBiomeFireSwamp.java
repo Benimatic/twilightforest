@@ -10,6 +10,11 @@ public class TFBiomeFireSwamp extends TFBiomeBase {
 
 	public TFBiomeFireSwamp(Builder props) {
 		super(props);
+	}
+
+	@Override
+	public void addFeatures() {
+		super.addFeatures();
 
 		TFBiomeDecorator.addWoodRoots(this);
 		TFBiomeDecorator.addOres(this);

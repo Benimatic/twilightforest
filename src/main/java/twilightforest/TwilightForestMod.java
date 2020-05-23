@@ -90,8 +90,8 @@ public class TwilightForestMod {
 		TFBlocks.BLOCKS.register(modbus);
 		TFItems.ITEMS.register(modbus);
 		TFPotions.POTIONS.register(modbus);
-		TFBiomes.BIOMES.register(modbus);
 		TFEntities.ENTITIES.register(modbus);
+		TFBiomes.BIOMES.register(modbus);
 		TFTileEntities.TILE_ENTITIES.register(modbus);
 		TFParticleType.PARTICLE_TYPES.register(modbus);
 		TFBiomeFeatures.FEATURES.register(modbus);
@@ -129,6 +129,7 @@ public class TwilightForestMod {
 		TFTreasure.init();
 		TFFeature.init();
 		TFBiomes.addBiomeTypes();
+		TFBiomes.addBiomeFeatures();
 
 		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
 			try {

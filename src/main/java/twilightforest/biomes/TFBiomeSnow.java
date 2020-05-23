@@ -23,9 +23,11 @@ public class TFBiomeSnow extends TFBiomeBase {
 
 	public TFBiomeSnow(Builder props) {
 		super(props);
+	}
 
-		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.yeti.get(), 20, 4, 4));
-		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.winter_wolf.get(), 5, 1, 4));
+	@Override
+	public void addFeatures() {
+		super.addFeatures();
 
 		TFBiomeDecorator.addWoodRoots(this);
 		TFBiomeDecorator.addOres(this);
@@ -38,6 +40,14 @@ public class TFBiomeSnow extends TFBiomeBase {
 		TFBiomeDecorator.addGrassWithFern(this, 1);
 		TFBiomeDecorator.addFlowers(this, 2);
 		TFBiomeDecorator.addMushrooms(this);
+	}
+
+	@Override
+	public void addSpawns() {
+		super.addSpawns();
+
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.yeti.get(), 20, 4, 4));
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.winter_wolf.get(), 5, 1, 4));
 	}
 
 	//TODO: Figure this out

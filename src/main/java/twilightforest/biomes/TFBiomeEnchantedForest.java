@@ -12,6 +12,11 @@ public class TFBiomeEnchantedForest extends TFBiomeBase {
 	public TFBiomeEnchantedForest(Builder props) {
 		super(props);
 		colorRNG = new Random();
+	}
+
+	@Override
+	public void addFeatures() {
+		super.addFeatures();
 
 		TFBiomeDecorator.addWoodRoots(this);
 		TFBiomeDecorator.addOres(this);
@@ -69,13 +74,6 @@ public class TFBiomeEnchantedForest extends TFBiomeBase {
 	}
 
 //	@Override
-//	public void addDefaultFlowers() {
-//		for (BlockFlower.EnumFlowerType flowerType : Blocks.YELLOW_FLOWER.getTypeProperty().getAllowedValues()) {
-//			addFlower(Blocks.YELLOW_FLOWER.getDefaultState().with(Blocks.YELLOW_FLOWER.getTypeProperty(), flowerType), 10);
-//		}
-//		for (BlockFlower.EnumFlowerType flowerType : Blocks.RED_FLOWER.getTypeProperty().getAllowedValues()) {
-//			addFlower(Blocks.RED_FLOWER.getDefaultState().with(Blocks.RED_FLOWER.getTypeProperty(), flowerType), 10);
-//		}
 //	protected TFFeature getContainedFeature() {
 //		return TFFeature.QUEST_GROVE;
 //	}
