@@ -108,16 +108,6 @@ public class TwilightForestMod {
 		// TODO: move these to proper spots
 		// WorldProviderTwilightForest.syncFromConfig();
 
-		// sounds on client, and whatever else needs to be registered pre-load
-
-		CapabilityList.registerCapabilities();
-
-		// just call this so that we register structure IDs correctly
-		TFFeature.init(); // TODO: move?
-		LOGGER.debug("There are {} entries in TFFeature enum. Maximum structure size is {}", TFFeature.getCount(), TFFeature.getMaxSize());
-
-		// MapGenStructureIO.registerStructure(StructureStartNothing.class,                  				 "TFNothing"); // TODO: move, (also wtf is the giant whitespace)
-		// TFHollowTreePieces.registerPieces(); TODO: structures are now a real registry
 
 		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
 			try {
@@ -134,9 +124,11 @@ public class TwilightForestMod {
 
 	@SubscribeEvent
 	public void init(FMLCommonSetupEvent evt) {
+		CapabilityList.registerCapabilities();
 		TFPacketHandler.init();
 		TFAdvancements.init();
 		TFTreasure.init();
+		TFFeature.init();
 		TFBiomes.addBiomeTypes();
 
 		if (TFConfig.COMMON_CONFIG.doCompat.get()) {

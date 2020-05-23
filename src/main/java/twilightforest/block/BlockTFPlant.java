@@ -127,7 +127,7 @@ public class BlockTFPlant extends BushBlock implements IShearable {
 	}
 
 	@Override
-	public int getLightValue(BlockState state) {
+	public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
 		switch (plantVariant) {
 			case MUSHGLOOM:
 				return 3;

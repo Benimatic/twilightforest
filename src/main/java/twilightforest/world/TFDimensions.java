@@ -35,7 +35,7 @@ public class TFDimensions {
 	public static final RegistryObject<ChunkGeneratorType<TFWorld, ChunkGeneratorTwilightForest>> TF_CHUNK_GEN = CHUNK_GENERATOR_TYPES.register(
 			"tf_chunk_gen", () -> new ChunkGeneratorType<>(ChunkGeneratorTwilightForest::new, true, TFWorld::new));
 	public static final RegistryObject<ChunkGeneratorType<TFWorld, ChunkGeneratorTwilightVoid>> SKYLIGHT_GEN = CHUNK_GENERATOR_TYPES.register(
-			"tf_chunk_gen", () -> new ChunkGeneratorType<>(ChunkGeneratorTwilightVoid::new, true, TFWorld::new));
+			"tf_chunk_gen_void", () -> new ChunkGeneratorType<>(ChunkGeneratorTwilightVoid::new, true, TFWorld::new));
 
 	public static final RegistryObject<ModDimension> TWILIGHT_FOREST = MOD_DIMENSIONS.register("twilight_forest", () -> new ModDimension() {
 		@Override

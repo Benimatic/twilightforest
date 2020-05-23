@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.texture.ITickable;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.DoubleSidedInventory;
 import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -34,11 +35,17 @@ public class BlockTFMagicLogSpecial extends LogBlock {
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
 	protected BlockTFMagicLogSpecial(MaterialColor topColor, MaterialColor sideColor, MagicWoodVariant variant) {
-		super(topColor, Properties.create(Material.WOOD, sideColor).hardnessAndResistance(2.0F).sound(SoundType.WOOD).tickRandomly());
+		super(topColor, Properties.create(Material.WOOD, sideColor).hardnessAndResistance(2.0F).sound(SoundType.WOOD).tickRandomly().lightValue(15));
 		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
 
 		magicWoodVariant = variant;
 		setDefaultState(stateContainer.getBaseState().with(ACTIVE, false));
+	}
+
+	@Override
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> container) {
+		super.fillStateContainer(container);
+		container.add(ACTIVE);
 	}
 
 	@Override
@@ -353,11 +360,5 @@ public class BlockTFMagicLogSpecial extends LogBlock {
 		}
 
 		return -1;
-	}
-
-	@Override
-	@Deprecated
-	public int getLightValue(BlockState state) {
-		return 15;
 	}
 }

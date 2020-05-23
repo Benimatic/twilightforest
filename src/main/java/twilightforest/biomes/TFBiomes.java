@@ -159,7 +159,7 @@ public class TFBiomes {
 	public static final RegistryObject<Biome> highlandsCenter = BIOMES.register("highlands_center", () ->
 			new TFBiomeFinalPlateau(
 					new Biome.Builder()
-							.surfaceBuilder(TFSurfaceBuilders.PLATEAU.get(), TFSurfaceBuilders.FINAL_PLATEAU)
+							.surfaceBuilder(TFSurfaceBuilders.PLATEAU.get(), TFSurfaceBuilders.FINAL_PLATEAU.getValue())
 							.temperature(0.3F)
 							.downfall(0.2F)
 							.depth(10.5F)
@@ -168,7 +168,7 @@ public class TFBiomes {
 	public static final RegistryObject<Biome> thornlands = BIOMES.register("thornlands", () ->
 			new TFBiomeThornlands(
 					new Biome.Builder()
-							.surfaceBuilder(TFSurfaceBuilders.PLATEAU.get(), TFSurfaceBuilders.FINAL_PLATEAU)
+							.surfaceBuilder(TFSurfaceBuilders.PLATEAU.get(), TFSurfaceBuilders.FINAL_PLATEAU.getValue())
 							.temperature(0.3F)
 							.downfall(0.2F)
 							.depth(6)
