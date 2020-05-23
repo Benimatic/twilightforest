@@ -323,7 +323,7 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 	@Override
 	public void checkDespawn() {
 		if (world.getDifficulty() == Difficulty.PEACEFUL) {
-			if (detachHome()) {
+			if (!detachHome()) {
 				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.ALPHA_YETI));
 			}
 			remove();
