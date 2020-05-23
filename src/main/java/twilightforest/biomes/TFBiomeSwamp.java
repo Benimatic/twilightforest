@@ -93,8 +93,8 @@ public class TFBiomeSwamp extends TFBiomeBase {
 		}
 	}
 
-	@Override
-	protected TFFeature getContainedFeature() {
-		return TFFeature.LABYRINTH;
-	}
+//	@Override
+//	protected TFFeature getContainedFeature() {
+//		return TFFeature.LABYRINTH;
+//	}
 }

@@ -24,8 +24,8 @@ public class TFBiomeDeepMushrooms extends TFBiomeBase {
 		TFBiomeDecorator.addMushroomsCommon(this);
 	}
 
-	@Override
-	protected TFFeature getContainedFeature() {
-		return TFFeature.MUSHROOM_TOWER;
-	}
+	//	@Override
+//	protected TFFeature getContainedFeature() {
+//		return TFFeature.MUSHROOM_TOWER;
+//	}
 }

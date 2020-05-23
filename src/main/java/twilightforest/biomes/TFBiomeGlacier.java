@@ -45,8 +45,8 @@ public class TFBiomeGlacier extends TFBiomeBase {
 		trySpawnHintMonster(player, world);
 	}
 
-	@Override
-	protected TFFeature getContainedFeature() {
-		return TFFeature.ICE_TOWER;
-	}
+//	@Override
+//	protected TFFeature getContainedFeature() {
+//		return TFFeature.ICE_TOWER;
+//	}
 }

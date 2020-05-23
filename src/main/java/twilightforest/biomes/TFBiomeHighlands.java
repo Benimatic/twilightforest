@@ -59,8 +59,8 @@ public class TFBiomeHighlands extends TFBiomeBase {
 		}
 	}
 
-	@Override
-	protected TFFeature getContainedFeature() {
-		return TFFeature.TROLL_CAVE;
-	}
+//	@Override
+//	protected TFFeature getContainedFeature() {
+//		return TFFeature.TROLL_CAVE;
+//	}
 }

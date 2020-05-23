@@ -561,12 +561,13 @@ public enum TFFeature {
 		Biome biomeAt = world.getBiome(new BlockPos((chunkX << 4) + 8, 0, (chunkZ << 4) + 8));
 
 		// does the biome have a feature?
-		if (biomeAt instanceof TFBiomeBase) {
-			TFFeature biomeFeature = ((TFBiomeBase) biomeAt).containedFeature;
-			if (biomeFeature != NOTHING) {
-				return biomeFeature;
-			}
-		}
+		//TODO: Collaterally blocked out due to null registry objects
+//		if (biomeAt instanceof TFBiomeBase) {
+//			TFFeature biomeFeature = ((TFBiomeBase) biomeAt).containedFeature;
+//			if (biomeFeature != NOTHING) {
+//				return biomeFeature;
+//			}
+//		}
 
 		int regionOffsetX = Math.abs((chunkX + 64 >> 4) % 8);
 		int regionOffsetZ = Math.abs((chunkZ + 64 >> 4) % 8);

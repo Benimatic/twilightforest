@@ -76,10 +76,7 @@ public class TFBiomeEnchantedForest extends TFBiomeBase {
 //		for (BlockFlower.EnumFlowerType flowerType : Blocks.RED_FLOWER.getTypeProperty().getAllowedValues()) {
 //			addFlower(Blocks.RED_FLOWER.getDefaultState().with(Blocks.RED_FLOWER.getTypeProperty(), flowerType), 10);
 //		}
+//	protected TFFeature getContainedFeature() {
+//		return TFFeature.QUEST_GROVE;
 //	}
-
-	@Override
-	protected TFFeature getContainedFeature() {
-		return TFFeature.QUEST_GROVE;
-	}
 }

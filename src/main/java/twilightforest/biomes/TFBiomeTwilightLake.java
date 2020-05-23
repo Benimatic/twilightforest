@@ -22,4 +22,9 @@ public class TFBiomeTwilightLake extends TFBiomeBase {
 	protected TFFeature getContainedFeature() {
 		return TFFeature.QUEST_ISLAND;
 	}
+
+	//	@Override
+//	protected TFFeature getContainedFeature() {
+//		return TFFeature.QUEST_ISLAND;
+//	}
 }

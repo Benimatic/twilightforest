@@ -20,7 +20,8 @@ public class TFBiomeBase extends Biome {
 
 	protected final ResourceLocation[] requiredAdvancements = getRequiredAdvancements();
 
-	public final TFFeature containedFeature = getContainedFeature();
+	//FIXME: Blocked out due to null registry objects
+//	public final TFFeature containedFeature = getContainedFeature();
 
 	public TFBiomeBase(Builder props) {
 		super(props);
@@ -76,7 +77,7 @@ public class TFBiomeBase extends Biome {
 
 	protected void trySpawnHintMonster(PlayerEntity player, World world) {
 		if (world.rand.nextInt(4) == 0) {
-			containedFeature.trySpawnHintMonster(world, player);
+			//containedFeature.trySpawnHintMonster(world, player);
 		}
 	}
 

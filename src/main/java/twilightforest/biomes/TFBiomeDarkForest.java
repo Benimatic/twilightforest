@@ -92,8 +92,8 @@ public class TFBiomeDarkForest extends TFBiomeBase {
 		}
 	}
 
-	@Override
-	protected TFFeature getContainedFeature() {
-		return TFFeature.KNIGHT_STRONGHOLD;
-	}
+//	@Override
+//	protected TFFeature getContainedFeature() {
+//		return TFFeature.KNIGHT_STRONGHOLD;
+//	}
 }

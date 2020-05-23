@@ -54,8 +54,8 @@ public class TFBiomeFireSwamp extends TFBiomeBase {
 		trySpawnHintMonster(player, world);
 	}
 
-	@Override
-	protected TFFeature getContainedFeature() {
-		return TFFeature.HYDRA_LAIR;
-	}
+//	@Override
+//	protected TFFeature getContainedFeature() {
+//		return TFFeature.HYDRA_LAIR;
+//	}
 }

@@ -63,8 +63,8 @@ public class TFBiomeSnow extends TFBiomeBase {
 		}
 	}
 
-	@Override
-	protected TFFeature getContainedFeature() {
-		return TFFeature.YETI_CAVE;
-	}
+//	@Override
+//	protected TFFeature getContainedFeature() {
+//		return TFFeature.YETI_CAVE;
+//	}
 }

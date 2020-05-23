@@ -41,8 +41,8 @@ public class TFBiomeFinalPlateau extends TFBiomeBase {
 		}
 	}
 
-	@Override
-	protected TFFeature getContainedFeature() {
-		return TFFeature.FINAL_CASTLE;
-	}
+//	@Override
+//	protected TFFeature getContainedFeature() {
+//		return TFFeature.FINAL_CASTLE;
+//	}
 }
