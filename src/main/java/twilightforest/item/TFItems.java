@@ -45,8 +45,8 @@ public class TFItems {
 	//items.register("Wand of Pacification [NYI]", new ItemTF().setIconIndex(6).setTranslationKey("wandPacification").setMaxStackSize(1));
 	public static final RegistryObject<Item> ore_meter = ITEMS.register("ore_meter", () -> new ItemTFOreMeter(new Item.Properties()));
 	public static final RegistryObject<Item> magic_map = ITEMS.register("magic_map", () -> new ItemTFMagicMap(new Item.Properties()));
-	public static final RegistryObject<Item> maze_map = ITEMS.register("maze_map", () -> new ItemTFMazeMap(false, new Item.Properties()));
-	public static final RegistryObject<Item> ore_map = ITEMS.register("ore_map", () -> new ItemTFMazeMap(true, new Item.Properties()));
+	public static final RegistryObject<Item> maze_map = ITEMS.register("maze_map", () -> new ItemTFMazeMap(false, new Item.Properties().maxStackSize(1)));
+	public static final RegistryObject<Item> ore_map = ITEMS.register("ore_map", () -> new ItemTFMazeMap(true, new Item.Properties().maxStackSize(1)));
 	public static final RegistryObject<Item> raven_feather = ITEMS.register("raven_feather", () -> new ItemTF(new Item.Properties()));
 	public static final RegistryObject<Item> magic_map_focus = ITEMS.register("magic_map_focus", () -> new ItemTF(new Item.Properties()));
 	public static final RegistryObject<Item> maze_map_focus = ITEMS.register("maze_map_focus", () -> new ItemTF(new Item.Properties()));
