@@ -13,12 +13,10 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.ai.EntityAITFBreathAttack;
@@ -27,7 +25,6 @@ import java.util.Random;
 
 public class EntityTFWinterWolf extends EntityTFHostileWolf implements IBreathAttacker {
 
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/winter_wolf");
 	private static final DataParameter<Boolean> BREATH_FLAG = EntityDataManager.createKey(EntityTFWinterWolf.class, DataSerializers.BOOLEAN);
 	private static final float BREATH_DAMAGE = 2.0F;
 
@@ -127,10 +124,5 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf implements IBreathAt
 
 	public static boolean canSpawnHere(EntityType<? extends EntityTFWinterWolf> entity, IWorld world, SpawnReason reason, BlockPos pos, Random random) {
 		return world.getBiome(pos) == TFBiomes.snowy_forest.get() || MonsterEntity.isValidLightLevel(world, pos, random);
-	}
-
-	@Override
-	public ResourceLocation getLootTable() {
-		return LOOT_TABLE;
 	}
 }

@@ -13,7 +13,6 @@ import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -22,13 +21,11 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
-import twilightforest.TwilightForestMod;
 
 import javax.annotation.Nullable;
 import java.util.Random;
 
 public class EntityTFHostileWolf extends WolfEntity implements IMob {
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/hostile_wolf");
 
 	public EntityTFHostileWolf(EntityType<? extends EntityTFHostileWolf> type, World world) {
 		super(type, world);
@@ -97,10 +94,5 @@ public class EntityTFHostileWolf extends WolfEntity implements IMob {
 	@Override
 	public boolean processInteract(PlayerEntity player, Hand hand) {
 		return false;
-	}
-
-	@Override
-	protected ResourceLocation getLootTable() {
-		return LOOT_TABLE;
 	}
 }

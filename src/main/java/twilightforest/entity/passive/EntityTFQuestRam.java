@@ -41,7 +41,6 @@ import java.util.List;
 
 public class EntityTFQuestRam extends AnimalEntity {
 
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/quest_ram");
 	public static final ResourceLocation REWARD_LOOT_TABLE = TwilightForestMod.prefix("entities/questing_ram_rewards");
 	private static final DataParameter<Integer> DATA_COLOR = EntityDataManager.createKey(EntityTFQuestRam.class, DataSerializers.VARINT);
 	private static final DataParameter<Boolean> DATA_REWARDED = EntityDataManager.createKey(EntityTFQuestRam.class, DataSerializers.BOOLEAN);
@@ -82,12 +81,6 @@ public class EntityTFQuestRam extends AnimalEntity {
 		super.registerData();
 		dataManager.register(DATA_COLOR, 0);
 		dataManager.register(DATA_REWARDED, false);
-	}
-
-	@Nonnull
-	@Override
-	public ResourceLocation getLootTable() {
-		return LOOT_TABLE;
 	}
 
 	@Override

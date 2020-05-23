@@ -7,19 +7,16 @@ import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.monster.SpiderEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
-import twilightforest.TwilightForestMod;
 
 import java.util.Random;
 
 public class EntityTFSwarmSpider extends SpiderEntity {
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/swarm_spider");
 
 	protected boolean shouldSpawn = false;
 
@@ -157,10 +154,5 @@ public class EntityTFSwarmSpider extends SpiderEntity {
 	@Override
 	public int getMaxSpawnedInChunk() {
 		return 16;
-	}
-
-	@Override
-	protected ResourceLocation getLootTable() {
-		return LOOT_TABLE;
 	}
 }

@@ -8,14 +8,12 @@ import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.monster.SpiderEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import twilightforest.TFFeature;
-import twilightforest.TwilightForestMod;
 
 import java.util.Random;
 
@@ -25,7 +23,6 @@ import java.util.Random;
  * @author Ben
  */
 public class EntityTFHedgeSpider extends SpiderEntity {
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/hedge_spider");
 
 	public EntityTFHedgeSpider(EntityType<? extends EntityTFHedgeSpider> type, World world) {
 		super(type, world);
@@ -64,10 +61,5 @@ public class EntityTFHedgeSpider extends SpiderEntity {
 	public static boolean canSpawn(EntityType<EntityTFHedgeSpider> entity, IWorld world, SpawnReason reason, BlockPos pos, Random random) {
 		return world.getDifficulty() != Difficulty.PEACEFUL &&
 				isValidLightLevel(world, pos, random);
-	}
-
-	@Override
-	protected ResourceLocation getLootTable() {
-		return LOOT_TABLE;
 	}
 }

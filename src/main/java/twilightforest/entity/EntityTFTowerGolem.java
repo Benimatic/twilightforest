@@ -14,18 +14,15 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.TwilightForestMod;
 
 public class EntityTFTowerGolem extends MonsterEntity {
 
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/tower_golem");
 	private int attackTimer;
 
 	public EntityTFTowerGolem(EntityType<? extends EntityTFTowerGolem> type, World world) {
@@ -119,11 +116,6 @@ public class EntityTFTowerGolem extends MonsterEntity {
 
 	public int getAttackTimer() {
 		return this.attackTimer;
-	}
-
-	@Override
-	public ResourceLocation getLootTable() {
-		return LOOT_TABLE;
 	}
 
 	@Override

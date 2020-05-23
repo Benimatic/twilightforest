@@ -9,20 +9,17 @@ import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.monster.SlimeEntity;
 import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 
 import java.util.Random;
 
 public class EntityTFMazeSlime extends SlimeEntity {
 
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/maze_slime");
 	private static final AttributeModifier DOUBLE_HEALTH = new AttributeModifier("Maze slime double health", 1, AttributeModifier.Operation.MULTIPLY_BASE).setSaved(false);
 
 	public EntityTFMazeSlime(EntityType<? extends EntityTFMazeSlime> type, World world) {
@@ -41,7 +38,6 @@ public class EntityTFMazeSlime extends SlimeEntity {
 		this.experienceValue += 3;
 	}
 
-	//TODO: This goes into a factory
 	public static boolean getCanSpawnHere(EntityType<EntityTFMazeSlime> entity, IWorld world, SpawnReason reason, BlockPos pos, Random random) {
 		return world.getDifficulty() != Difficulty.PEACEFUL && canSpawnOn(entity, world, reason, pos, random) && MonsterEntity.isValidLightLevel(world, pos, random);
 	}
@@ -86,10 +82,4 @@ public class EntityTFMazeSlime extends SlimeEntity {
 		// OH MY GOD, SHUT UP
 		return 0.1F * this.getSlimeSize();
 	}
-
-	@Override
-	public ResourceLocation getLootTable() {
-		return LOOT_TABLE;
-	}
-
 }

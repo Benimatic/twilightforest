@@ -7,19 +7,16 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
 
 import java.util.Random;
 
 public class EntityTFMiniGhast extends EntityTFTowerGhast {
 
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/mini_ghast");
 	private boolean isMinion = false;
 
 	public EntityTFMiniGhast(EntityType<? extends EntityTFMiniGhast> type, World world) {
@@ -73,11 +70,6 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast {
 
 		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(6);
 		this.setHealth(6);
-	}
-
-	@Override
-	public ResourceLocation getLootTable() {
-		return LOOT_TABLE;
 	}
 
 	public boolean isMinion() {
