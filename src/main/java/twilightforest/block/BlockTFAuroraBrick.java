@@ -44,6 +44,7 @@ public class BlockTFAuroraBrick extends Block {
 
 	@Override
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+		super.fillStateContainer(builder);
 		builder.add(VARIANT);
 	}
 

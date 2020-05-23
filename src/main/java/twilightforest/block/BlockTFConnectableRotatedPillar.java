@@ -56,7 +56,8 @@ public abstract class BlockTFConnectableRotatedPillar extends RotatedPillarBlock
 
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-        builder.add(AXIS, FenceBlock.NORTH, FenceBlock.EAST, FenceBlock.SOUTH, FenceBlock.WEST).add(getAdditionalProperties());
+        super.fillStateContainer(builder);
+        builder.add(FenceBlock.NORTH, FenceBlock.EAST, FenceBlock.SOUTH, FenceBlock.WEST).add(getAdditionalProperties());
     }
 
 //	@Override

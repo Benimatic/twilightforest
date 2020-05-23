@@ -16,6 +16,8 @@ import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.spawner.WorldEntitySpawner;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
@@ -29,6 +31,8 @@ import twilightforest.entity.boss.*;
 import twilightforest.entity.finalcastle.EntityTFCastleGuardian;
 import twilightforest.entity.passive.*;
 import twilightforest.entity.projectile.*;
+import twilightforest.item.ItemTFTransformPowder;
+import twilightforest.item.TFItems;
 import twilightforest.util.TFEntityNames;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
@@ -163,8 +167,10 @@ public class TFEntities {
 				setShouldReceiveVelocityUpdates(true);
 	}
 
-	@Deprecated
-	public static void registerEntities() { // TODO: this is only here still for the spawnegg colors
+	@SubscribeEvent
+	public static void registerEntities(RegistryEvent.Register<EntityType<?>> evt) {
+		((ItemTFTransformPowder) TFItems.transformation_powder.get()).initTransformations();
+		// TODO: this is only here still for the spawnegg colors
 		/*		helper.registerEntity(TFEntityNames.WILD_BOAR, EntityTFBoar.class, EntityTFBoar::new, 0x83653b, 0xffefca);
 				helper.registerEntity(TFEntityNames.BIGHORN_SHEEP, EntityTFBighorn.class, EntityTFBighorn::new, 0xdbceaf, 0xd7c771);
 				helper.registerEntity(TFEntityNames.DEER, EntityTFDeer.class, EntityTFDeer::new, 0x7b4d2e, 0x4b241d);

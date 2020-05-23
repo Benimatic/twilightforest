@@ -28,8 +28,9 @@ public class ItemTFTransformPowder extends ItemTF {
 
 	protected ItemTFTransformPowder(Properties props) {
 		super(props);
-		//this.maxStackSize = 64; TODO: Is this needed?
+	}
 
+	public void initTransformations() {
 		addTwoWayTransformation(TFEntities.minotaur.get(),       EntityType.ZOMBIE_PIGMAN);
 		addTwoWayTransformation(TFEntities.deer.get(),           EntityType.COW);
 		addTwoWayTransformation(TFEntities.bighorn_sheep.get(),  EntityType.SHEEP);
