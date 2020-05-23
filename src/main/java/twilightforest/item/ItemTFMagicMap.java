@@ -14,13 +14,10 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.storage.MapData;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.network.NetworkDirection;
 import twilightforest.TFFeature;
 import twilightforest.TFMagicMapData;
-import twilightforest.TFMazeMapData;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.network.PacketMagicMap;
 import twilightforest.network.TFPacketHandler;
@@ -102,7 +99,8 @@ public class ItemTFMagicMap extends FilledMapItem {
 			// use the generation map, which is larger scale than the other biome map
 			int startX = (centerX / blocksPerPixel - 64) * biomesPerPixel;
 			int startZ = (centerZ / blocksPerPixel - 64) * biomesPerPixel;
-			Biome[] biomes = world.getBiomeAccess().getBiomesForGeneration((Biome[]) null, startX, startZ, 128 * biomesPerPixel, 128 * biomesPerPixel);
+//			Biome[] biomes = world.getBiomeAccess().getBiomesForGeneration((Biome[]) null, startX, startZ, 128 * biomesPerPixel, 128 * biomesPerPixel);
+			Biome[] biomes = new Biome[128 * biomesPerPixel * 128 * biomesPerPixel];
 
 			for (int xPixel = viewerX - viewRadiusPixels + 1; xPixel < viewerX + viewRadiusPixels; ++xPixel) {
 				for (int zPixel = viewerZ - viewRadiusPixels - 1; zPixel < viewerZ + viewRadiusPixels; ++zPixel) {
