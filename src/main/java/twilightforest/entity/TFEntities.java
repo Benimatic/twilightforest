@@ -6,6 +6,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.SpriteRenderer;
+import net.minecraft.client.renderer.entity.WolfRenderer;
 import net.minecraft.client.renderer.entity.model.SilverfishModel;
 import net.minecraft.entity.*;
 import net.minecraft.entity.monster.MonsterEntity;
@@ -309,6 +310,7 @@ public class TFEntities {
 
 		RenderingRegistry.registerEntityRenderingHandler(redcap.get(), m -> new RenderTFBiped<>(m, new ModelTFRedcap<>(), 0.4F, "redcap.png"));
 		RenderingRegistry.registerEntityRenderingHandler(skeleton_druid.get(), m -> new RenderTFBiped<>(m, new ModelTFSkeletonDruid<>(), 0.5F, "skeletondruid.png"));
+		RenderingRegistry.registerEntityRenderingHandler(hostile_wolf.get(), WolfRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(wraith.get(), m -> new RenderTFWraith<>(m, new ModelTFWraith<>(), 0.5F));
 		RenderingRegistry.registerEntityRenderingHandler(hydra.get(), m -> new RenderTFHydra<>(m, new ModelTFHydra<>(), 4.0F));
 		RenderingRegistry.registerEntityRenderingHandler(lich.get(), m -> new RenderTFLich<>(m, new ModelTFLich<>(), 0.6F));
@@ -323,7 +325,7 @@ public class TFEntities {
 		RenderingRegistry.registerEntityRenderingHandler(kobold.get(), m -> new RenderTFKobold<>(m, new ModelTFKobold<>(), 0.4F, "kobold.png"));
 		RenderingRegistry.registerEntityRenderingHandler(boggard.get(), m -> new RenderTFBiped<>(m, new ModelTFLoyalZombie(), 0.625F, "kobold.png"));
 		RenderingRegistry.registerEntityRenderingHandler(mosquito_swarm.get(), m -> new RenderTFGenericLiving<>(m, new ModelTFMosquitoSwarm<>(), 0.0F, "mosquitoswarm.png"));
-//		RenderingRegistry.registerEntityRenderingHandler(death_tome.get(), m -> new RenderTFGenericLiving<>(m, new ModelTFDeathTome(), 0.3F, "textures/entity/enchanting_table_book.png"));
+		RenderingRegistry.registerEntityRenderingHandler(death_tome.get(), m -> new RenderTFGenericLiving<>(m, new ModelTFDeathTome(), 0.3F, "textures/entity/enchanting_table_book.png"));
 		RenderingRegistry.registerEntityRenderingHandler(minotaur.get(), m -> new RenderTFBiped<>(m, new ModelTFMinotaur<>(), 0.625F, "minotaur.png"));
 		RenderingRegistry.registerEntityRenderingHandler(minoshroom.get(), m -> new RenderTFMinoshroom<>(m, new ModelTFMinoshroom<>(), 0.625F));
 		RenderingRegistry.registerEntityRenderingHandler(fire_beetle.get(), m -> new RenderTFGenericLiving<>(m, new ModelTFFireBeetle<>(), 0.8F, "firebeetle.png"));
