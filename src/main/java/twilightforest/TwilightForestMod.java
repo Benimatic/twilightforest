@@ -122,7 +122,7 @@ public class TwilightForestMod {
 	}
 
 	@SubscribeEvent
-	public void init(FMLCommonSetupEvent evt) {
+	public static void init(FMLCommonSetupEvent evt) {
 		CapabilityList.registerCapabilities();
 		TFPacketHandler.init();
 		TFAdvancements.init();
@@ -158,7 +158,7 @@ public class TwilightForestMod {
 	}
 
 	@SubscribeEvent
-	public void clientSetup(FMLClientSetupEvent evt) {
+	public static void clientSetup(FMLClientSetupEvent evt) {
 		ItemTFKnightlyArmor.initArmorModel();
 		ItemTFPhantomArmor.initArmorModel();
 		ItemTFYetiArmor.initArmorModel();
@@ -171,7 +171,7 @@ public class TwilightForestMod {
 	}
 
 	@SubscribeEvent
-	public void loadComplete(FMLLoadCompleteEvent evt) {
+	public static void loadComplete(FMLLoadCompleteEvent evt) {
 		DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
 			Minecraft.getInstance().getRenderManager().renderers.values().forEach(r -> {
 				if (r instanceof LivingRenderer) {
