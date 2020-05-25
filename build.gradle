@@ -179,7 +179,7 @@ dependencies {
     minecraft "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
 }
 
-task createPom {
+/*task createPom {
     doLast {
         pom {
             project {
@@ -200,4 +200,4 @@ task createPom {
     }
 }
 
-build.dependsOn createPom
+build.dependsOn createPom*/
