@@ -97,6 +97,9 @@ public class TwilightForestMod {
 		TFBiomeFeatures.FEATURES.register(modbus);
 		TFContainers.CONTAINERS.register(modbus);
 		TFEnchantments.ENCHANTMENTS.register(modbus);
+		TFDimensions.BIOME_PROVIDER_TYPES.register(modbus);
+		TFDimensions.CHUNK_GENERATOR_TYPES.register(modbus);
+		TFDimensions.MOD_DIMENSIONS.register(modbus);
 
 		if (ModList.get().isLoaded("sponge")) {
 			LOGGER.info("It looks like you have Sponge installed! You may notice Hydras spawning incorrectly with floating heads.\n" +
