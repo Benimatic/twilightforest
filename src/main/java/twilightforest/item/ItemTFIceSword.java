@@ -12,7 +12,7 @@ import twilightforest.util.ParticleHelper;
 public class ItemTFIceSword extends SwordItem {
 
 	public ItemTFIceSword(IItemTier toolMaterial, Properties props) {
-		super(toolMaterial, 3, -2.4F, props.group(TFItems.creativeTab));
+		super(toolMaterial, 3, -2.4F, props);
 	}
 
 	@Override

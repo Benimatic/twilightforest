@@ -38,7 +38,7 @@ public class ItemTFCrumbleHorn extends ItemTF {
 	private final List<Predicate<BlockState>> harvestedStates = new ArrayList<>();
 
 	ItemTFCrumbleHorn(Rarity rarity, Properties props) {
-		super(rarity, props.maxDamage(1024));
+		super(rarity, props);
 		this.addCrumbleTransforms();
 	}
 

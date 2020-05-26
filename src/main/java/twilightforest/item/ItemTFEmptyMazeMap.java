@@ -14,7 +14,7 @@ public class ItemTFEmptyMazeMap extends AbstractMapItem {
 	boolean mapOres;
 
 	protected ItemTFEmptyMazeMap(boolean mapOres, Properties props) {
-		super(props.group(TFItems.creativeTab));
+		super(props);
 		this.mapOres = mapOres;
 	}
 

@@ -26,7 +26,7 @@ public class ItemTFMinotaurAxe extends AxeItem {
 	private final Rarity RARITY;
 
 	protected ItemTFMinotaurAxe(IItemTier material, Rarity rarity, Properties props) {
-		super(material, 6F + material.getAttackDamage(), material.getEfficiency() * 0.05f - 3.4f, props.group(TFItems.creativeTab));
+		super(material, 6F + material.getAttackDamage(), material.getEfficiency() * 0.05f - 3.4f, props);
 		this.RARITY = rarity;
 	}
 

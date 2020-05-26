@@ -26,7 +26,7 @@ public class ItemTFLampOfCinders extends ItemTF {
 	private static final int FIRING_TIME = 12;
 
 	ItemTFLampOfCinders(Rarity rarity, Properties props) {
-		super(rarity, props.maxDamage(1024).group(TFItems.creativeTab));
+		super(rarity, props);
 	}
 
 	@Nonnull

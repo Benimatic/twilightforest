@@ -10,7 +10,7 @@ import javax.annotation.Nonnull;
 
 public class ItemTFMazebreakerPick extends PickaxeItem {
 	protected ItemTFMazebreakerPick(IItemTier material, Properties props) {
-		super(material, 1, -2.8F, props.group(TFItems.creativeTab));
+		super(material, 1, -2.8F, props);
 	}
 
 	@Override

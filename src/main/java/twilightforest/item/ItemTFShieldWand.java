@@ -23,7 +23,7 @@ import java.util.List;
 public class ItemTFShieldWand extends ItemTF {
 
 	protected ItemTFShieldWand(Rarity rarity, Properties props) {
-		super(rarity, props.maxDamage(9));
+		super(rarity, props);
 	}
 
 	@Nonnull

@@ -14,7 +14,7 @@ public class ItemTF extends Item {
 	}
 
 	protected ItemTF(Rarity rarity, Properties props) {
-		super(props.group(TFItems.creativeTab));
+		super(props);
 		this.RARITY = rarity;
 	}
 

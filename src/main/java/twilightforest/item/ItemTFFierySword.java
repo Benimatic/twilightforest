@@ -17,7 +17,7 @@ import java.util.List;
 public class ItemTFFierySword extends SwordItem {
 
 	public ItemTFFierySword(IItemTier toolMaterial, Properties props) {
-		super(toolMaterial, 3, -2.4F, props.group(TFItems.creativeTab));
+		super(toolMaterial, 3, -2.4F, props);
 	}
 
 	private static final Rarity RARITY = Rarity.UNCOMMON;

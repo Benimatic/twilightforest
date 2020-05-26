@@ -32,7 +32,7 @@ public class ItemTFMagicMap extends FilledMapItem {
 	private static final Map<ResourceLocation, MapColorBrightness> BIOME_COLORS = new HashMap<>();
 
 	protected ItemTFMagicMap(Properties props) {
-		super(props.maxStackSize(1));
+		super(props);
 	}
 
 	private static class MapColorBrightness {

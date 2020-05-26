@@ -13,7 +13,7 @@ import twilightforest.entity.boss.EntityTFIceBomb;
 public class ItemTFIceBomb extends ItemTF {
 
 	public ItemTFIceBomb(Properties props) {
-		super(props.maxStackSize(16));
+		super(props);
 	}
 
 	@Override

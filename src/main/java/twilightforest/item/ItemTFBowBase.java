@@ -9,7 +9,7 @@ public abstract class ItemTFBowBase extends BowItem {
 	private static final Rarity RARITY = Rarity.UNCOMMON;
 
 	protected ItemTFBowBase(Properties props) {
-		super(props.maxDamage(384).group(TFItems.creativeTab));
+		super(props);
 	}
 
 	@Override

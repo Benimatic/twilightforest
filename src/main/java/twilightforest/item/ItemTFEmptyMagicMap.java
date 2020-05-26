@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 
 public class ItemTFEmptyMagicMap extends AbstractMapItem {
 	protected ItemTFEmptyMagicMap(Properties props) {
-		super(props.group(TFItems.creativeTab));
+		super(props);
 	}
 
 	// [VanillaCopy] ItemEmptyMap.onItemRightClick, edits noted

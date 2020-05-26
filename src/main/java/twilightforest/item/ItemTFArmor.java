@@ -8,14 +8,8 @@ import javax.annotation.Nonnull;
 public abstract class ItemTFArmor extends ArmorItem {
 	private final Rarity RARITY;
 
-	//protected ItemTFArmor(ArmorMaterial materialIn, EquipmentSlotType equipmentSlotIn) {
-	//	super(materialIn, 0, equipmentSlotIn);
-	//	this.setCreativeTab(TFItems.creativeTab);
-	//	this.RARITY = Rarity.COMMON;
-	//}
-
 	protected ItemTFArmor(IArmorMaterial materialIn, EquipmentSlotType equipmentSlotIn, Rarity rarity, Properties props) {
-		super(materialIn, equipmentSlotIn, props.group(TFItems.creativeTab));
+		super(materialIn, equipmentSlotIn, props);
 		this.RARITY = rarity;
 	}
 

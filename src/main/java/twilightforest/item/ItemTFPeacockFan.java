@@ -26,7 +26,7 @@ import javax.annotation.Nonnull;
 
 public class ItemTFPeacockFan extends ItemTF {
 	ItemTFPeacockFan(Rarity rarity, Properties props) {
-		super(rarity, props.maxDamage(1024));
+		super(rarity, props);
 	}
 
 	@Nonnull

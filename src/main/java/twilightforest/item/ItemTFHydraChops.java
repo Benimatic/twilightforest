@@ -2,7 +2,6 @@ package twilightforest.item;
 
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Food;
 import net.minecraft.item.Rarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -12,8 +11,8 @@ import javax.annotation.Nonnull;
 
 public class ItemTFHydraChops extends ItemTFFood {
 
-	public ItemTFHydraChops(Food food, Properties props) {
-		super(food, props);
+	public ItemTFHydraChops(Properties props) {
+		super(props);
 	}
 
 	@Override

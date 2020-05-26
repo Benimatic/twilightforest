@@ -22,7 +22,7 @@ import java.util.List;
 public class ItemTFTwilightWand extends ItemTF {
 
 	protected ItemTFTwilightWand(Rarity rarity, Properties props) {
-		super(rarity, props.maxDamage(99).group(TFItems.creativeTab));
+		super(rarity, props);
 	}
 
 	@Override

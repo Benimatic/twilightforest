@@ -13,13 +13,12 @@ import javax.annotation.Nonnull;
 public class ItemTFGlassSword extends SwordItem {
 
 	public ItemTFGlassSword(IItemTier toolMaterial, Properties props) {
-		super(toolMaterial, 3, -2.4F, props.group(TFItems.creativeTab));
+		super(toolMaterial, 3, -2.4F, props);
 	}
 
 	@Override
 	public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 		attacker.world.playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), Blocks.GLASS.getDefaultState().getSoundType().getBreakSound(), attacker.getSoundCategory(), 1F, 0.5F);
-		//ParticleHelper.spawnParticles(target, ParticleTypes.BLOCK_CRACK, 20, 0.0, Block.getStateId(Blocks.STAINED_GLASS.getDefaultState()));
 		target.world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, Blocks.WHITE_STAINED_GLASS.getDefaultState()), target.getX(), target.getY(), target.getZ(), 1, 1, 1);
 		stack.damageItem(stack.getMaxDamage() + 1, attacker, (user) -> user.sendBreakAnimation(attacker.getActiveHand()));
 		return true;

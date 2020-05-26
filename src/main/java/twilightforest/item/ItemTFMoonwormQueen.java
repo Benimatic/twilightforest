@@ -30,7 +30,7 @@ public class ItemTFMoonwormQueen extends ItemTF {
 	private static final int FIRING_TIME = 12;
 
 	protected ItemTFMoonwormQueen(Rarity rarity, Properties props) {
-		super(rarity, props.maxDamage(256));
+		super(rarity, props);
 		addPropertyOverride(TwilightForestMod.prefix("alt"), new IItemPropertyGetter() {
 			@OnlyIn(Dist.CLIENT)
 			@Override

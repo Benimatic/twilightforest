@@ -27,7 +27,7 @@ public class ItemTFCubeOfAnnihilation extends ItemTF {
 	private static final String THROWN_UUID_KEY = "cubeEntity";
 
 	protected ItemTFCubeOfAnnihilation(Rarity rarity, Properties props) {
-		super(rarity, props.maxStackSize(1));
+		super(rarity, props);
 		this.addPropertyOverride(TwilightForestMod.prefix("thrown"), new IItemPropertyGetter() {
 			@OnlyIn(Dist.CLIENT)
 			@Override

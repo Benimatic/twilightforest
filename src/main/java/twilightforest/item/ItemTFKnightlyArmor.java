@@ -23,7 +23,7 @@ public class ItemTFKnightlyArmor extends ItemTFArmor {
 	private static final Map<EquipmentSlotType, BipedModel> knightlyArmorModel = new EnumMap<>(EquipmentSlotType.class);
 
 	public ItemTFKnightlyArmor(IArmorMaterial material, EquipmentSlotType slot, Rarity rarity, Properties props) {
-		super(material, slot, rarity, props.group(TFItems.creativeTab));
+		super(material, slot, rarity, props);
 	}
 
 	@Override

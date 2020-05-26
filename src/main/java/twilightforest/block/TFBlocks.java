@@ -5,6 +5,7 @@ import net.minecraft.block.SaplingBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
+import net.minecraft.item.Item;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -20,6 +21,7 @@ import javax.annotation.Nonnull;
 @Nonnull
 public class TFBlocks {
 	public static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, TwilightForestMod.ID);
+	public static final DeferredRegister<Item> BLOCK_ITEMS = new DeferredRegister<>(ForgeRegistries.ITEMS, TwilightForestMod.ID);
 
 	public static final RegistryObject<Block> oak_log                    = BLOCKS.register("oak_log", () -> new BlockTFLog(MaterialColor.WOOD, MaterialColor.OBSIDIAN));
 	public static final RegistryObject<Block> canopy_log                 = BLOCKS.register("canopy_log", () -> new BlockTFLog(MaterialColor.OBSIDIAN, MaterialColor.BROWN));

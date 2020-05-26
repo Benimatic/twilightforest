@@ -35,7 +35,7 @@ public class ItemTFOreMagnet extends ItemTF {
 	private static final float WIGGLE = 10F;
 
 	protected ItemTFOreMagnet(Properties props) {
-		super(props.maxDamage(12));
+		super(props);
 		// [VanillaCopy] ItemBow with our item
 		this.addPropertyOverride(new ResourceLocation("pull"), new IItemPropertyGetter() {
 			@Override

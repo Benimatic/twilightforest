@@ -31,7 +31,7 @@ import java.util.List;
 public class ItemTFFieryPick extends PickaxeItem {
 
 	protected ItemTFFieryPick(IItemTier toolMaterial, Properties props) {
-		super(toolMaterial, 1, -2.8F, props.group(TFItems.creativeTab));
+		super(toolMaterial, 1, -2.8F, props);
 	}
 
 	@SubscribeEvent

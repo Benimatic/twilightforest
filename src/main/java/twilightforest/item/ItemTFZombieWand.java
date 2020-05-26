@@ -27,7 +27,7 @@ import java.util.List;
 public class ItemTFZombieWand extends ItemTF {
 
 	protected ItemTFZombieWand(Rarity rarity, Properties props) {
-		super(rarity, props.maxDamage(9));
+		super(rarity, props);
 	}
 
 	@Nonnull
