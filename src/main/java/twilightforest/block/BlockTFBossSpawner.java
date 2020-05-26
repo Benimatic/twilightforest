@@ -17,10 +17,10 @@ public class BlockTFBossSpawner extends Block {
 
 	public static final EnumProperty<BossVariant> VARIANT = EnumProperty.create("boss", BossVariant.class);
 
-	protected BlockTFBossSpawner() {
+	protected BlockTFBossSpawner(BossVariant variant) {
 		super(Properties.create(Material.ROCK).hardnessAndResistance(-1.0F).noDrops());
 		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
-		this.setDefaultState(stateContainer.getBaseState().with(VARIANT, BossVariant.NAGA));
+		this.setDefaultState(stateContainer.getBaseState().with(VARIANT, variant));
 	}
 
 	@Override

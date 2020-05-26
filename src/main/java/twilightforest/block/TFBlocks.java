@@ -44,7 +44,15 @@ public class TFBlocks {
 	public static final RegistryObject<Block> maze_stone_mosaic          = BLOCKS.register("maze_stone_mosaic", () -> new BlockTFMazestone());
 	public static final RegistryObject<Block> maze_stone_border          = BLOCKS.register("maze_stone_border", () -> new BlockTFMazestone());
 	public static final RegistryObject<Block> hedge                      = BLOCKS.register("hedge", () -> new BlockTFHedge());
-	public static final RegistryObject<Block> boss_spawner               = BLOCKS.register("boss_spawner", () -> new BlockTFBossSpawner());
+	public static final RegistryObject<Block> naga_boss_spawner           = BLOCKS.register("naga_boss_spawner", () -> new BlockTFBossSpawner(BossVariant.NAGA));
+	public static final RegistryObject<Block> lich_boss_spawner           = BLOCKS.register("lich_boss_spawner", () -> new BlockTFBossSpawner(BossVariant.LICH));
+	public static final RegistryObject<Block> minoshroom_boss_spawner     = BLOCKS.register("minoshroom_boss_spawner", () -> new BlockTFBossSpawner(BossVariant.MINOSHROOM));
+	public static final RegistryObject<Block> hydra_boss_spawner          = BLOCKS.register("hydra_boss_spawner", () -> new BlockTFBossSpawner(BossVariant.HYDRA));
+	public static final RegistryObject<Block> knight_phantom_boss_spawner = BLOCKS.register("knight_phantom_boss_spawner", () -> new BlockTFBossSpawner(BossVariant.KNIGHT_PHANTOM));
+	public static final RegistryObject<Block> ur_ghast_boss_spawner       = BLOCKS.register("ur_ghast_boss_spawner", () -> new BlockTFBossSpawner(BossVariant.UR_GHAST));
+	public static final RegistryObject<Block> alpha_yeti_boss_spawner     = BLOCKS.register("alpha_yeti_boss_spawner", () -> new BlockTFBossSpawner(BossVariant.ALPHA_YETI));
+	public static final RegistryObject<Block> snow_queen_boss_spawner     = BLOCKS.register("snow_queen_boss_spawner", () -> new BlockTFBossSpawner(BossVariant.SNOW_QUEEN));
+	public static final RegistryObject<Block> final_boss_spawner          = BLOCKS.register("final_boss_spawner", () -> new BlockTFBossSpawner(BossVariant.FINAL_BOSS));
 	public static final RegistryObject<Block> firefly_jar                = BLOCKS.register("firefly_jar", () -> new BlockTFFireflyJar());
 	public static final RegistryObject<Block> moss_patch                 = BLOCKS.register("moss_patch", () -> new BlockTFPlant(PlantVariant.MOSSPATCH));
 	public static final RegistryObject<Block> mayapple                   = BLOCKS.register("mayapple", () -> new BlockTFPlant(PlantVariant.MAYAPPLE));
