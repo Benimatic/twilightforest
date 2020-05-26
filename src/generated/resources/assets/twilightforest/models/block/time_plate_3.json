@@ -1,0 +1,6 @@
+{
+  "parent": "block/pressure_plate_up",
+  "textures": {
+    "texture": "twilightforest:blocks/wood/planks_time_3"
+  }
+}
