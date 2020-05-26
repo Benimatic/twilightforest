@@ -1,0 +1,8 @@
+{
+  "parent": "block/slab",
+  "textures": {
+    "side": "twilightforest:blocks/wood/planks_time_1",
+    "bottom": "twilightforest:blocks/wood/planks_time_1",
+    "top": "twilightforest:blocks/wood/planks_time_1"
+  }
+}

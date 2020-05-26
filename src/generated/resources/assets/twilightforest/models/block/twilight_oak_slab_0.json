@@ -1,0 +1,8 @@
+{
+  "parent": "block/slab",
+  "textures": {
+    "side": "twilightforest:blocks/wood/planks_twilight_oak_0",
+    "bottom": "twilightforest:blocks/wood/planks_twilight_oak_0",
+    "top": "twilightforest:blocks/wood/planks_twilight_oak_0"
+  }
+}

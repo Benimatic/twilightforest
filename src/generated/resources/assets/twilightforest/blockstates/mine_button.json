@@ -1,0 +1,556 @@
+{
+  "variants": {
+    "face=FLOOR,facing=north,powered=false": [
+      {
+        "model": "twilightforest:block/mine_button_0",
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_1",
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_2"
+      },
+      {
+        "model": "twilightforest:block/mine_button_3"
+      }
+    ],
+    "face=WALL,facing=north,powered=false": [
+      {
+        "model": "twilightforest:block/mine_button_0",
+        "x": 90,
+        "uvlock": true,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_1",
+        "x": 90,
+        "uvlock": true,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_2",
+        "x": 90,
+        "uvlock": true
+      },
+      {
+        "model": "twilightforest:block/mine_button_3",
+        "x": 90,
+        "uvlock": true
+      }
+    ],
+    "face=CEILING,facing=north,powered=false": [
+      {
+        "model": "twilightforest:block/mine_button_0",
+        "x": 180,
+        "y": 180,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_1",
+        "x": 180,
+        "y": 180,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_2",
+        "x": 180,
+        "y": 180
+      },
+      {
+        "model": "twilightforest:block/mine_button_3",
+        "x": 180,
+        "y": 180
+      }
+    ],
+    "face=FLOOR,facing=south,powered=false": [
+      {
+        "model": "twilightforest:block/mine_button_0",
+        "y": 180,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_1",
+        "y": 180,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_2",
+        "y": 180
+      },
+      {
+        "model": "twilightforest:block/mine_button_3",
+        "y": 180
+      }
+    ],
+    "face=WALL,facing=south,powered=false": [
+      {
+        "model": "twilightforest:block/mine_button_0",
+        "x": 90,
+        "y": 180,
+        "uvlock": true,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_1",
+        "x": 90,
+        "y": 180,
+        "uvlock": true,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_2",
+        "x": 90,
+        "y": 180,
+        "uvlock": true
+      },
+      {
+        "model": "twilightforest:block/mine_button_3",
+        "x": 90,
+        "y": 180,
+        "uvlock": true
+      }
+    ],
+    "face=CEILING,facing=south,powered=false": [
+      {
+        "model": "twilightforest:block/mine_button_0",
+        "x": 180,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_1",
+        "x": 180,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_2",
+        "x": 180
+      },
+      {
+        "model": "twilightforest:block/mine_button_3",
+        "x": 180
+      }
+    ],
+    "face=FLOOR,facing=west,powered=false": [
+      {
+        "model": "twilightforest:block/mine_button_0",
+        "y": 270,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_1",
+        "y": 270,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_2",
+        "y": 270
+      },
+      {
+        "model": "twilightforest:block/mine_button_3",
+        "y": 270
+      }
+    ],
+    "face=WALL,facing=west,powered=false": [
+      {
+        "model": "twilightforest:block/mine_button_0",
+        "x": 90,
+        "y": 270,
+        "uvlock": true,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_1",
+        "x": 90,
+        "y": 270,
+        "uvlock": true,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_2",
+        "x": 90,
+        "y": 270,
+        "uvlock": true
+      },
+      {
+        "model": "twilightforest:block/mine_button_3",
+        "x": 90,
+        "y": 270,
+        "uvlock": true
+      }
+    ],
+    "face=CEILING,facing=west,powered=false": [
+      {
+        "model": "twilightforest:block/mine_button_0",
+        "x": 180,
+        "y": 90,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_1",
+        "x": 180,
+        "y": 90,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_2",
+        "x": 180,
+        "y": 90
+      },
+      {
+        "model": "twilightforest:block/mine_button_3",
+        "x": 180,
+        "y": 90
+      }
+    ],
+    "face=FLOOR,facing=east,powered=false": [
+      {
+        "model": "twilightforest:block/mine_button_0",
+        "y": 90,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_1",
+        "y": 90,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_2",
+        "y": 90
+      },
+      {
+        "model": "twilightforest:block/mine_button_3",
+        "y": 90
+      }
+    ],
+    "face=WALL,facing=east,powered=false": [
+      {
+        "model": "twilightforest:block/mine_button_0",
+        "x": 90,
+        "y": 90,
+        "uvlock": true,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_1",
+        "x": 90,
+        "y": 90,
+        "uvlock": true,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_2",
+        "x": 90,
+        "y": 90,
+        "uvlock": true
+      },
+      {
+        "model": "twilightforest:block/mine_button_3",
+        "x": 90,
+        "y": 90,
+        "uvlock": true
+      }
+    ],
+    "face=CEILING,facing=east,powered=false": [
+      {
+        "model": "twilightforest:block/mine_button_0",
+        "x": 180,
+        "y": 270,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_1",
+        "x": 180,
+        "y": 270,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_2",
+        "x": 180,
+        "y": 270
+      },
+      {
+        "model": "twilightforest:block/mine_button_3",
+        "x": 180,
+        "y": 270
+      }
+    ],
+    "face=FLOOR,facing=north,powered=true": [
+      {
+        "model": "twilightforest:block/mine_button_pressed_0",
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_pressed_1",
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_pressed_2"
+      },
+      {
+        "model": "twilightforest:block/mine_button_pressed_3"
+      }
+    ],
+    "face=WALL,facing=north,powered=true": [
+      {
+        "model": "twilightforest:block/mine_button_pressed_0",
+        "x": 90,
+        "uvlock": true,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_pressed_1",
+        "x": 90,
+        "uvlock": true,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_pressed_2",
+        "x": 90,
+        "uvlock": true
+      },
+      {
+        "model": "twilightforest:block/mine_button_pressed_3",
+        "x": 90,
+        "uvlock": true
+      }
+    ],
+    "face=CEILING,facing=north,powered=true": [
+      {
+        "model": "twilightforest:block/mine_button_pressed_0",
+        "x": 180,
+        "y": 180,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_pressed_1",
+        "x": 180,
+        "y": 180,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_pressed_2",
+        "x": 180,
+        "y": 180
+      },
+      {
+        "model": "twilightforest:block/mine_button_pressed_3",
+        "x": 180,
+        "y": 180
+      }
+    ],
+    "face=FLOOR,facing=south,powered=true": [
+      {
+        "model": "twilightforest:block/mine_button_pressed_0",
+        "y": 180,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_pressed_1",
+        "y": 180,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_pressed_2",
+        "y": 180
+      },
+      {
+        "model": "twilightforest:block/mine_button_pressed_3",
+        "y": 180
+      }
+    ],
+    "face=WALL,facing=south,powered=true": [
+      {
+        "model": "twilightforest:block/mine_button_pressed_0",
+        "x": 90,
+        "y": 180,
+        "uvlock": true,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_pressed_1",
+        "x": 90,
+        "y": 180,
+        "uvlock": true,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_pressed_2",
+        "x": 90,
+        "y": 180,
+        "uvlock": true
+      },
+      {
+        "model": "twilightforest:block/mine_button_pressed_3",
+        "x": 90,
+        "y": 180,
+        "uvlock": true
+      }
+    ],
+    "face=CEILING,facing=south,powered=true": [
+      {
+        "model": "twilightforest:block/mine_button_pressed_0",
+        "x": 180,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_pressed_1",
+        "x": 180,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_pressed_2",
+        "x": 180
+      },
+      {
+        "model": "twilightforest:block/mine_button_pressed_3",
+        "x": 180
+      }
+    ],
+    "face=FLOOR,facing=west,powered=true": [
+      {
+        "model": "twilightforest:block/mine_button_pressed_0",
+        "y": 270,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_pressed_1",
+        "y": 270,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_pressed_2",
+        "y": 270
+      },
+      {
+        "model": "twilightforest:block/mine_button_pressed_3",
+        "y": 270
+      }
+    ],
+    "face=WALL,facing=west,powered=true": [
+      {
+        "model": "twilightforest:block/mine_button_pressed_0",
+        "x": 90,
+        "y": 270,
+        "uvlock": true,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_pressed_1",
+        "x": 90,
+        "y": 270,
+        "uvlock": true,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_pressed_2",
+        "x": 90,
+        "y": 270,
+        "uvlock": true
+      },
+      {
+        "model": "twilightforest:block/mine_button_pressed_3",
+        "x": 90,
+        "y": 270,
+        "uvlock": true
+      }
+    ],
+    "face=CEILING,facing=west,powered=true": [
+      {
+        "model": "twilightforest:block/mine_button_pressed_0",
+        "x": 180,
+        "y": 90,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_pressed_1",
+        "x": 180,
+        "y": 90,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_pressed_2",
+        "x": 180,
+        "y": 90
+      },
+      {
+        "model": "twilightforest:block/mine_button_pressed_3",
+        "x": 180,
+        "y": 90
+      }
+    ],
+    "face=FLOOR,facing=east,powered=true": [
+      {
+        "model": "twilightforest:block/mine_button_pressed_0",
+        "y": 90,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_pressed_1",
+        "y": 90,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_pressed_2",
+        "y": 90
+      },
+      {
+        "model": "twilightforest:block/mine_button_pressed_3",
+        "y": 90
+      }
+    ],
+    "face=WALL,facing=east,powered=true": [
+      {
+        "model": "twilightforest:block/mine_button_pressed_0",
+        "x": 90,
+        "y": 90,
+        "uvlock": true,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_pressed_1",
+        "x": 90,
+        "y": 90,
+        "uvlock": true,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_pressed_2",
+        "x": 90,
+        "y": 90,
+        "uvlock": true
+      },
+      {
+        "model": "twilightforest:block/mine_button_pressed_3",
+        "x": 90,
+        "y": 90,
+        "uvlock": true
+      }
+    ],
+    "face=CEILING,facing=east,powered=true": [
+      {
+        "model": "twilightforest:block/mine_button_pressed_0",
+        "x": 180,
+        "y": 270,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_pressed_1",
+        "x": 180,
+        "y": 270,
+        "weight": 10
+      },
+      {
+        "model": "twilightforest:block/mine_button_pressed_2",
+        "x": 180,
+        "y": 270
+      },
+      {
+        "model": "twilightforest:block/mine_button_pressed_3",
+        "x": 180,
+        "y": 270
+      }
+    ]
+  }
+}
