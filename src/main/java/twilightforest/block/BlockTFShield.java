@@ -17,9 +17,8 @@ import javax.annotation.Nullable;
 
 public class BlockTFShield extends DirectionalBlock {
 
-	public BlockTFShield() {
-		super(Properties.create(Material.ROCK).hardnessAndResistance(-1.0F, 6000000.0F).sound(SoundType.METAL).noDrops());
-		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
+	public BlockTFShield(Block.Properties props) {
+		super(props);
 		this.setDefaultState(stateContainer.getBaseState().with(FACING, Direction.DOWN));
 	}
 

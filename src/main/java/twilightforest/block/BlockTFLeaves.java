@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.LeavesBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
@@ -10,9 +11,8 @@ import twilightforest.TFConfig;
 
 public class BlockTFLeaves extends LeavesBlock {
 
-	protected BlockTFLeaves() {
-		super(Properties.create(Material.LEAVES).hardnessAndResistance(0.2F).tickRandomly());
-		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
+	protected BlockTFLeaves(Block.Properties props) {
+		super(props);
 	}
 
 	@Override

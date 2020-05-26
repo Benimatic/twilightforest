@@ -51,8 +51,8 @@ public class BlockTFPortal extends BreakableBlock {
 	private static final int MIN_PORTAL_SIZE =  4;
 	private static final int MAX_PORTAL_SIZE = 64;
 
-	public BlockTFPortal() {
-		super(Properties.create(Material.PORTAL).hardnessAndResistance(-1.0F).sound(SoundType.GLASS).lightValue(11).doesNotBlockMovement().nonOpaque().noDrops());
+	public BlockTFPortal(Block.Properties props) {
+		super(props);
 		this.setDefaultState(this.stateContainer.getBaseState().with(DISALLOW_RETURN, false));
 	}
 

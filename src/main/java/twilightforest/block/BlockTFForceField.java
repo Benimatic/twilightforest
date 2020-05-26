@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -11,9 +12,8 @@ import net.minecraft.world.IBlockReader;
 
 public class BlockTFForceField extends BlockTFConnectableRotatedPillar {
 
-	BlockTFForceField() {
-		super(Properties.create(Material.BARRIER).hardnessAndResistance(-1.0F).lightValue(2 / 15).noDrops(), 2);
-		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
+	BlockTFForceField(Block.Properties props) {
+		super(props, 2);
 	}
 
 	@Override
