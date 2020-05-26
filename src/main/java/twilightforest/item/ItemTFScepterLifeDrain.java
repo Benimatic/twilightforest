@@ -34,8 +34,8 @@ import java.util.Optional;
 
 public class ItemTFScepterLifeDrain extends ItemTF {
 
-	protected ItemTFScepterLifeDrain(Rarity rarity, Properties props) {
-		super(rarity, props);
+	protected ItemTFScepterLifeDrain(Properties props) {
+		super(props);
 	}
 
 	@Override

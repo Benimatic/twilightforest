@@ -24,12 +24,6 @@ public class ItemTFGlassSword extends SwordItem {
 		return true;
 	}
 
-	@Nonnull
-	@Override
-	public Rarity getRarity(ItemStack stack) {
-		return Rarity.RARE;
-	}
-
 	@Override
 	public void fillItemGroup(ItemGroup tab, NonNullList<ItemStack> items) {
 		super.fillItemGroup(tab, items);

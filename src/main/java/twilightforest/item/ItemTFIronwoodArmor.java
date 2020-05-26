@@ -12,8 +12,8 @@ import twilightforest.TwilightForestMod;
 
 public class ItemTFIronwoodArmor extends ItemTFArmor {
 
-	public ItemTFIronwoodArmor(IArmorMaterial armorMaterial, EquipmentSlotType armorType, Rarity rarity, Properties props) {
-		super(armorMaterial, armorType, rarity, props);
+	public ItemTFIronwoodArmor(IArmorMaterial armorMaterial, EquipmentSlotType armorType, Properties props) {
+		super(armorMaterial, armorType, props);
 	}
 
 	@Override

@@ -8,8 +8,8 @@ import net.minecraft.util.NonNullList;
 import twilightforest.TwilightForestMod;
 
 public class ItemTFNagaArmor extends ItemTFArmor {
-	protected ItemTFNagaArmor(IArmorMaterial materialIn, EquipmentSlotType equipmentSlotIn, Rarity rarity, Properties props) {
-		super(materialIn, equipmentSlotIn, rarity, props);
+	protected ItemTFNagaArmor(IArmorMaterial materialIn, EquipmentSlotType equipmentSlotIn, Properties props) {
+		super(materialIn, equipmentSlotIn, props);
 	}
 
 	@Override

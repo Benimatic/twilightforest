@@ -21,8 +21,8 @@ import java.util.List;
 
 public class ItemTFTwilightWand extends ItemTF {
 
-	protected ItemTFTwilightWand(Rarity rarity, Properties props) {
-		super(rarity, props);
+	protected ItemTFTwilightWand(Properties props) {
+		super(props);
 	}
 
 	@Override

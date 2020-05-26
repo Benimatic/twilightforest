@@ -25,8 +25,8 @@ import javax.annotation.Nonnull;
 public class ItemTFLampOfCinders extends ItemTF {
 	private static final int FIRING_TIME = 12;
 
-	ItemTFLampOfCinders(Rarity rarity, Properties props) {
-		super(rarity, props);
+	ItemTFLampOfCinders(Properties props) {
+		super(props);
 	}
 
 	@Nonnull

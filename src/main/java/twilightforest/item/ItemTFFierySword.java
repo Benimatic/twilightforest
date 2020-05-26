@@ -20,14 +20,6 @@ public class ItemTFFierySword extends SwordItem {
 		super(toolMaterial, 3, -2.4F, props);
 	}
 
-	private static final Rarity RARITY = Rarity.UNCOMMON;
-
-	@Nonnull
-	@Override
-	public Rarity getRarity(ItemStack stack) {
-		return stack.isEnchanted() ? Rarity.RARE.compareTo(RARITY) > 0 ? Rarity.RARE : RARITY : RARITY;
-	}
-
 	@Override
 	public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 		boolean result = super.hitEntity(stack, target, attacker);

@@ -96,14 +96,6 @@ public class ItemTFFieryPick extends PickaxeItem {
 		return result;
 	}
 
-	private static final Rarity RARITY = Rarity.UNCOMMON;
-
-	@Nonnull
-	@Override
-	public Rarity getRarity(ItemStack stack) {
-		return stack.isEnchanted() ? Rarity.RARE.compareTo(RARITY) > 0 ? Rarity.RARE : RARITY : RARITY;
-	}
-
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag flags) {

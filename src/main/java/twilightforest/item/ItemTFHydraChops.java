@@ -24,12 +24,4 @@ public class ItemTFHydraChops extends ItemTFFood {
 		// then normal effects
 		return super.onItemUseFinish(itemStack, world, living);
 	}
-
-	private static final Rarity RARITY = Rarity.UNCOMMON;
-
-	@Nonnull
-	@Override
-	public Rarity getRarity(ItemStack stack) {
-		return stack.isEnchanted() ? Rarity.RARE.compareTo(RARITY) > 0 ? Rarity.RARE : RARITY : RARITY;
-	}
 }

@@ -10,8 +10,8 @@ import twilightforest.block.TFBlocks;
 import javax.annotation.Nonnull;
 
 public class ItemTFTowerKey extends ItemTF {
-	ItemTFTowerKey(Rarity rarity, Properties props) {
-		super(rarity, props);
+	ItemTFTowerKey(Properties props) {
+		super(props);
 	}
 
 	@Nonnull

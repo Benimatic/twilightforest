@@ -25,8 +25,8 @@ public class ItemTFFieryArmor extends ItemTFArmor {
 
 	private static final Map<EquipmentSlotType, BipedModel> fieryArmorModel = new EnumMap<>(EquipmentSlotType.class);
 
-	public ItemTFFieryArmor(IArmorMaterial armorMaterial, EquipmentSlotType armorType, Rarity rarity, Properties props) {
-		super(armorMaterial, armorType, rarity, props);
+	public ItemTFFieryArmor(IArmorMaterial armorMaterial, EquipmentSlotType armorType, Properties props) {
+		super(armorMaterial, armorType, props);
 	}
 
 	@Override

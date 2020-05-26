@@ -40,12 +40,6 @@ public class ItemTFTrophy extends ItemTF {
 		return new TranslationTextComponent(this.getTranslationKey(stack), new TranslationTextComponent("entity.twilightforest." + bossVariant.getName().toLowerCase(Locale.ROOT) + ".name"));
 	}
 
-	@Nonnull
-	@Override
-	public Rarity getRarity(ItemStack stack) {
-		return TwilightForestMod.getRarity();
-	}
-
 	// [VanillaCopy] ItemSkull, with own block and no player heads
 	@Nonnull
 	@Override

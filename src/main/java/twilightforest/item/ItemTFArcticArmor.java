@@ -28,8 +28,8 @@ public class ItemTFArcticArmor extends ItemTFArmor implements IDyeableArmorItem 
 
 	private static final Map<EquipmentSlotType, BipedModel> arcticArmorModel = new EnumMap<>(EquipmentSlotType.class);
 
-	public ItemTFArcticArmor(IArmorMaterial armorMaterial, EquipmentSlotType armorType, Rarity rarity, Properties props) {
-		super(armorMaterial, armorType, rarity, props);
+	public ItemTFArcticArmor(IArmorMaterial armorMaterial, EquipmentSlotType armorType, Properties props) {
+		super(armorMaterial, armorType, props);
 	}
 
 	@Override

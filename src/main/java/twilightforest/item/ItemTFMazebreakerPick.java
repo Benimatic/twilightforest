@@ -29,10 +29,4 @@ public class ItemTFMazebreakerPick extends PickaxeItem {
 		float destroySpeed = super.getDestroySpeed(stack, state);
 		return state.getBlock() instanceof BlockTFMazestone ? destroySpeed * 16F : destroySpeed;
 	}
-
-	@Nonnull
-	@Override
-	public Rarity getRarity(ItemStack stack) {
-		return Rarity.RARE;
-	}
 }

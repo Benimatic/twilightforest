@@ -28,8 +28,8 @@ public class ItemTFYetiArmor extends ItemTFArmor {
 
 	private static final Map<EquipmentSlotType, BipedModel> yetiArmorModel = new EnumMap<>(EquipmentSlotType.class);
 
-	public ItemTFYetiArmor(IArmorMaterial material, EquipmentSlotType slot, Rarity rarity, Properties props) {
-		super(material, slot, rarity, props);
+	public ItemTFYetiArmor(IArmorMaterial material, EquipmentSlotType slot, Properties props) {
+		super(material, slot, props);
 	}
 
 	@Override

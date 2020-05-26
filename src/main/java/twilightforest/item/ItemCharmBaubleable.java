@@ -4,8 +4,8 @@ import net.minecraft.item.Rarity;
 
 //TODO 1.14: Baubles is dead
 public class ItemCharmBaubleable extends ItemTF {
-    ItemCharmBaubleable(Rarity rarity, Properties props) {
-        super(rarity, props);
+    ItemCharmBaubleable(Properties props) {
+        super(props);
     }
 
 //    @Nullable

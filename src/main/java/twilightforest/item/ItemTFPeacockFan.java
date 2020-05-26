@@ -25,8 +25,8 @@ import twilightforest.util.WorldUtil;
 import javax.annotation.Nonnull;
 
 public class ItemTFPeacockFan extends ItemTF {
-	ItemTFPeacockFan(Rarity rarity, Properties props) {
-		super(rarity, props);
+	ItemTFPeacockFan(Properties props) {
+		super(props);
 	}
 
 	@Nonnull

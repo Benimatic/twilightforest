@@ -268,11 +268,6 @@ public class ItemTFMazeMap extends FilledMapItem {
 	}
 
 	@Override
-	public Rarity getRarity(ItemStack stack) {
-		return mapOres ? Rarity.UNCOMMON : Rarity.COMMON;
-	}
-
-	@Override
 	@Nullable
 	public IPacket<?> getUpdatePacket(ItemStack stack, World worldIn, PlayerEntity player) {
 		IPacket<?> p = super.getUpdatePacket(stack, worldIn, player);
