@@ -11,6 +11,8 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.TFBlocks;
+import twilightforest.enums.BossVariant;
 import twilightforest.enums.TwilightArmorMaterial;
 import twilightforest.enums.TwilightItemTier;
 
@@ -68,7 +70,14 @@ public class TFItems {
 	public static final RegistryObject<Item> hydra_chop = ITEMS.register("hydra_chop", () -> new ItemTFHydraChops(TFItems.HYDRA_CHOP, new Item.Properties()));
 	public static final RegistryObject<Item> fiery_blood = ITEMS.register("fiery_blood", () -> new ItemTF(Rarity.UNCOMMON, new Item.Properties()));
 	public static final RegistryObject<Item> fiery_tears = ITEMS.register("fiery_tears", () -> new ItemTF(Rarity.UNCOMMON, new Item.Properties()));
-	public static final RegistryObject<Item> trophy = ITEMS.register("trophy", () -> new ItemTF(new Item.Properties())); //TODO: PLACEHOLDER
+	public static final RegistryObject<Item> naga_trophy = ITEMS.register("naga_trophy", () -> new ItemTFTrophy(new Item.Properties(), TFBlocks.naga_trophy, BossVariant.NAGA));
+	public static final RegistryObject<Item> lich_trophy = ITEMS.register("lich_trophy", () -> new ItemTFTrophy(new Item.Properties(), TFBlocks.lich_trophy, BossVariant.LICH));
+	public static final RegistryObject<Item> minoshroom_trophy = ITEMS.register("minoshroom_trophy", () -> new ItemTFTrophy(new Item.Properties(), TFBlocks.minoshroom_trophy, BossVariant.MINOSHROOM));
+	public static final RegistryObject<Item> hydra_trophy = ITEMS.register("hydra_trophy", () -> new ItemTFTrophy(new Item.Properties(), TFBlocks.hydra_trophy, BossVariant.HYDRA));
+	public static final RegistryObject<Item> knight_phantom_trophy = ITEMS.register("knight_phantom_trophy", () -> new ItemTFTrophy(new Item.Properties(), TFBlocks.knight_phantom_trophy, BossVariant.KNIGHT_PHANTOM));
+	public static final RegistryObject<Item> ur_ghast_trophy = ITEMS.register("ur_ghast_trophy", () -> new ItemTFTrophy(new Item.Properties(), TFBlocks.ur_ghast_trophy, BossVariant.UR_GHAST));
+	public static final RegistryObject<Item> snow_queen_trophy = ITEMS.register("snow_queen_trophy", () -> new ItemTFTrophy(new Item.Properties(), TFBlocks.snow_queen_trophy, BossVariant.SNOW_QUEEN));
+	public static final RegistryObject<Item> quest_ram_trophy = ITEMS.register("quest_ram_trophy", () -> new ItemTFTrophy(new Item.Properties(), TFBlocks.quest_ram_trophy, BossVariant.QUEST_RAM));
 	public static final RegistryObject<Item> fiery_ingot = ITEMS.register("fiery_ingot", () -> new ItemTF(Rarity.UNCOMMON, new Item.Properties()));
 	public static final RegistryObject<Item> fiery_helmet = ITEMS.register("fiery_helmet", () -> new ItemTFFieryArmor(TwilightArmorMaterial.ARMOR_FIERY, EquipmentSlotType.HEAD, Rarity.UNCOMMON, new Item.Properties()));
 	public static final RegistryObject<Item> fiery_chestplate = ITEMS.register("fiery_chestplate", () -> new ItemTFFieryArmor(TwilightArmorMaterial.ARMOR_FIERY, EquipmentSlotType.CHEST, Rarity.UNCOMMON, new Item.Properties()));

@@ -2,13 +2,10 @@ package twilightforest;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.LivingRenderer;
-import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Rarity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.GameRules;
-import net.minecraft.world.gen.layer.Layer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
@@ -47,7 +44,6 @@ import twilightforest.tileentity.TFTileEntities;
 import twilightforest.world.TFDimensions;
 import twilightforest.world.feature.TFBiomeFeatures;
 import twilightforest.world.feature.TFGenCaveStalactite;
-import twilightforest.world.surfacebuilders.TFSurfaceBuilders;
 
 @Mod(TwilightForestMod.ID)
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
