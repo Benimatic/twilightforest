@@ -30,17 +30,17 @@ public class BlockstateGenerator extends BlockStateProvider {
 	}
 
 	private void registerWoodBlocks() {
-		woodBlock("twilight_oak", TFBlocks.twilight_oak_planks.get(), TFBlocks.twilight_oak_slab.get(), TFBlocks.twilight_oak_stairs.get(), TFBlocks.twilight_oak_button.get(), TFBlocks.twilight_oak_plate.get(), TFBlocks.twilight_oak_door.get());
-		woodBlock("canopy", TFBlocks.canopy_planks.get(), TFBlocks.canopy_slab.get(), TFBlocks.canopy_stairs.get(), TFBlocks.canopy_button.get(), TFBlocks.canopy_plate.get(), TFBlocks.canopy_door.get());
-		woodBlock("mangrove", TFBlocks.mangrove_planks.get(), TFBlocks.mangrove_slab.get(), TFBlocks.mangrove_stairs.get(), TFBlocks.mangrove_button.get(), TFBlocks.mangrove_plate.get(), TFBlocks.mangrove_door.get());
-		woodBlock("darkwood", TFBlocks.dark_planks.get(), TFBlocks.dark_slab.get(), TFBlocks.dark_stairs.get(), TFBlocks.dark_button.get(), TFBlocks.dark_plate.get(), TFBlocks.dark_door.get());
-		woodBlock("time", TFBlocks.time_planks.get(), TFBlocks.time_slab.get(), TFBlocks.time_stairs.get(), TFBlocks.time_button.get(), TFBlocks.time_plate.get(), TFBlocks.time_door.get());
-		woodBlock("trans", TFBlocks.trans_planks.get(), TFBlocks.trans_slab.get(), TFBlocks.trans_stairs.get(), TFBlocks.trans_button.get(), TFBlocks.trans_plate.get(), TFBlocks.trans_door.get());
-		woodBlock("mine", TFBlocks.mine_planks.get(), TFBlocks.mine_slab.get(), TFBlocks.mine_stairs.get(), TFBlocks.mine_button.get(), TFBlocks.mine_plate.get(), TFBlocks.mine_door.get());
-		woodBlock("sort", TFBlocks.sort_planks.get(), TFBlocks.sort_slab.get(), TFBlocks.sort_stairs.get(), TFBlocks.sort_button.get(), TFBlocks.sort_plate.get(), TFBlocks.sort_door.get());
+		woodBlock("twilight_oak", TFBlocks.twilight_oak_planks.get(), TFBlocks.twilight_oak_slab.get(), TFBlocks.twilight_oak_stairs.get(), TFBlocks.twilight_oak_button.get(), TFBlocks.twilight_oak_plate.get(), TFBlocks.twilight_oak_door.get(), TFBlocks.twilight_oak_trapdoor.get());
+		woodBlock("canopy", TFBlocks.canopy_planks.get(), TFBlocks.canopy_slab.get(), TFBlocks.canopy_stairs.get(), TFBlocks.canopy_button.get(), TFBlocks.canopy_plate.get(), TFBlocks.canopy_door.get(), TFBlocks.canopy_trapdoor.get());
+		woodBlock("mangrove", TFBlocks.mangrove_planks.get(), TFBlocks.mangrove_slab.get(), TFBlocks.mangrove_stairs.get(), TFBlocks.mangrove_button.get(), TFBlocks.mangrove_plate.get(), TFBlocks.mangrove_door.get(), TFBlocks.mangrove_trapdoor.get());
+		woodBlock("darkwood", TFBlocks.dark_planks.get(), TFBlocks.dark_slab.get(), TFBlocks.dark_stairs.get(), TFBlocks.dark_button.get(), TFBlocks.dark_plate.get(), TFBlocks.dark_door.get(), TFBlocks.dark_trapdoor.get());
+		woodBlock("time", TFBlocks.time_planks.get(), TFBlocks.time_slab.get(), TFBlocks.time_stairs.get(), TFBlocks.time_button.get(), TFBlocks.time_plate.get(), TFBlocks.time_door.get(), TFBlocks.time_trapdoor.get());
+		woodBlock("trans", TFBlocks.trans_planks.get(), TFBlocks.trans_slab.get(), TFBlocks.trans_stairs.get(), TFBlocks.trans_button.get(), TFBlocks.trans_plate.get(), TFBlocks.trans_door.get(), TFBlocks.trans_trapdoor.get());
+		woodBlock("mine", TFBlocks.mine_planks.get(), TFBlocks.mine_slab.get(), TFBlocks.mine_stairs.get(), TFBlocks.mine_button.get(), TFBlocks.mine_plate.get(), TFBlocks.mine_door.get(), TFBlocks.mine_trapdoor.get());
+		woodBlock("sort", TFBlocks.sort_planks.get(), TFBlocks.sort_slab.get(), TFBlocks.sort_stairs.get(), TFBlocks.sort_button.get(), TFBlocks.sort_plate.get(), TFBlocks.sort_door.get(), TFBlocks.sort_trapdoor.get());
 	}
 
-	private void woodBlock(String variant, Block plank, Block slab, StairsBlock stair, Block button, Block plate, DoorBlock door) {
+	private void woodBlock(String variant, Block plank, Block slab, StairsBlock stair, Block button, Block plate, DoorBlock door, TrapDoorBlock trapdoor) {
 		String plankTexName = "planks_" + variant;
 		ResourceLocation tex0 = prefix("blocks/wood/" + plankTexName + "_0");
 		ResourceLocation tex1 = prefix("blocks/wood/" + plankTexName + "_1");
@@ -71,6 +71,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 		woodButton(button, plankTexName);
 		woodPlate(plate, plankTexName);
 		doorBlock(door, prefix("blocks/wood/door/" + variant + "_lower"), prefix("blocks/wood/door/" + variant + "_upper"));
+		trapdoorBlock(trapdoor, prefix("blocks/wood/trapdoor/" + variant + "_trapdoor"), false);
 	}
 
 	private void woodPlate(Block plate, String texName) {

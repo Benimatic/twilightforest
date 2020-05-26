@@ -1,0 +1,6 @@
+{
+  "parent": "block/template_trapdoor_top",
+  "textures": {
+    "texture": "twilightforest:blocks/wood/trapdoor/twilight_oak_trapdoor"
+  }
+}
