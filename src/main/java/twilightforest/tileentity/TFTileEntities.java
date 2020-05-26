@@ -42,23 +42,23 @@ public class TFTileEntities {
 			TileEntityType.Builder.create(TileEntityTFTrophy::new, TFBlocks.naga_trophy.get(), TFBlocks.lich_trophy.get(), TFBlocks.minoshroom_trophy.get(), TFBlocks.hydra_trophy.get(), TFBlocks.knight_phantom_trophy.get(), TFBlocks.ur_ghast_trophy.get(), TFBlocks.snow_queen_trophy.get(), TFBlocks.quest_ram_trophy.get()).build(null));
 
 	public static final RegistryObject<TileEntityType<TileEntityTFAlphaYetiSpawner>> ALPHA_YETI_SPAWNER     = TILE_ENTITIES.register("alpha_yeti_spawner", () ->
-			TileEntityType.Builder.create(TileEntityTFAlphaYetiSpawner::new, TFBlocks.alpha_yeti_boss_spawner.get()).build(null));
+			TileEntityType.Builder.create(TileEntityTFAlphaYetiSpawner::new, TFBlocks.boss_spawner.get()).build(null));
 	public static final RegistryObject<TileEntityType<TileEntityTFFinalBossSpawner>> FINAL_BOSS_SPAWNER     = TILE_ENTITIES.register("final_boss_spawner", () ->
-			TileEntityType.Builder.create(TileEntityTFFinalBossSpawner::new, TFBlocks.final_boss_spawner.get()).build(null));
+			TileEntityType.Builder.create(TileEntityTFFinalBossSpawner::new, TFBlocks.boss_spawner.get()).build(null));
 	public static final RegistryObject<TileEntityType<TileEntityTFHydraSpawner>> HYDRA_SPAWNER          = TILE_ENTITIES.register("hydra_boss_spawner", () ->
-			TileEntityType.Builder.create(TileEntityTFHydraSpawner::new, TFBlocks.hydra_boss_spawner.get()).build(null));
+			TileEntityType.Builder.create(TileEntityTFHydraSpawner::new, TFBlocks.boss_spawner.get()).build(null));
 	public static final RegistryObject<TileEntityType<TileEntityTFKnightPhantomsSpawner>> KNIGHT_PHANTOM_SPAWNER = TILE_ENTITIES.register("knight_phantom_spawner", () ->
-			TileEntityType.Builder.create(TileEntityTFKnightPhantomsSpawner::new, TFBlocks.knight_phantom_boss_spawner.get()).build(null));
+			TileEntityType.Builder.create(TileEntityTFKnightPhantomsSpawner::new, TFBlocks.boss_spawner.get()).build(null));
 	public static final RegistryObject<TileEntityType<TileEntityTFLichSpawner>> LICH_SPAWNER           = TILE_ENTITIES.register("lich_spawner", () ->
-			TileEntityType.Builder.create(TileEntityTFLichSpawner::new, TFBlocks.lich_boss_spawner.get()).build(null));
+			TileEntityType.Builder.create(TileEntityTFLichSpawner::new, TFBlocks.boss_spawner.get()).build(null));
 	public static final RegistryObject<TileEntityType<TileEntityTFMinoshroomSpawner>> MINOSHROOM_SPAWNER     = TILE_ENTITIES.register("minoshroom_spawner", () ->
-			TileEntityType.Builder.create(TileEntityTFMinoshroomSpawner::new, TFBlocks.minoshroom_boss_spawner.get()).build(null));
+			TileEntityType.Builder.create(TileEntityTFMinoshroomSpawner::new, TFBlocks.boss_spawner.get()).build(null));
 	public static final RegistryObject<TileEntityType<TileEntityTFNagaSpawner>> NAGA_SPAWNER           = TILE_ENTITIES.register("naga_spawner", () ->
-			TileEntityType.Builder.create(TileEntityTFNagaSpawner::new, TFBlocks.naga_boss_spawner.get()).build(null));
+			TileEntityType.Builder.create(TileEntityTFNagaSpawner::new, TFBlocks.boss_spawner.get()).build(null));
 	public static final RegistryObject<TileEntityType<TileEntityTFSnowQueenSpawner>> SNOW_QUEEN_SPAWNER     = TILE_ENTITIES.register("snow_queen_spawner", () ->
-			TileEntityType.Builder.create(TileEntityTFSnowQueenSpawner::new, TFBlocks.snow_queen_boss_spawner.get()).build(null));
+			TileEntityType.Builder.create(TileEntityTFSnowQueenSpawner::new, TFBlocks.boss_spawner.get()).build(null));
 	public static final RegistryObject<TileEntityType<TileEntityTFTowerBossSpawner>> TOWER_BOSS_SPAWNER     = TILE_ENTITIES.register("tower_boss_spawner", () ->
-			TileEntityType.Builder.create(TileEntityTFTowerBossSpawner::new, TFBlocks.ur_ghast_boss_spawner.get()).build(null));
+			TileEntityType.Builder.create(TileEntityTFTowerBossSpawner::new, TFBlocks.boss_spawner.get()).build(null));
 
 	public static final RegistryObject<TileEntityType<TileEntityTFCicada>> CICADA     = TILE_ENTITIES.register("cicada", () ->
 			TileEntityType.Builder.create(FMLEnvironment.dist.isClient() ? TileEntityTFCicadaTicking::new : TileEntityTFCicada::new, TFBlocks.cicada.get()).build(null));
