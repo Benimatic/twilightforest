@@ -1,0 +1,7 @@
+{
+  "parent": "block/door_top",
+  "textures": {
+    "bottom": "twilightforest:blocks/wood/door/twilight_oak_lower",
+    "top": "twilightforest:blocks/wood/door/twilight_oak_upper"
+  }
+}

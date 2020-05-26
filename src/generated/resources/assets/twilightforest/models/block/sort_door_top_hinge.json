@@ -1,0 +1,7 @@
+{
+  "parent": "block/door_top_rh",
+  "textures": {
+    "bottom": "twilightforest:blocks/wood/door/sort_lower",
+    "top": "twilightforest:blocks/wood/door/sort_upper"
+  }
+}

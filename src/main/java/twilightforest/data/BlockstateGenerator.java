@@ -30,21 +30,22 @@ public class BlockstateGenerator extends BlockStateProvider {
 	}
 
 	private void registerWoodBlocks() {
-		woodBlock("planks_twilight_oak", TFBlocks.twilight_oak_planks.get(), TFBlocks.twilight_oak_slab.get(), TFBlocks.twilight_oak_stairs.get(), TFBlocks.twilight_oak_button.get(), TFBlocks.twilight_oak_plate.get());
-		woodBlock("planks_canopy", TFBlocks.canopy_planks.get(), TFBlocks.canopy_slab.get(), TFBlocks.canopy_stairs.get(), TFBlocks.canopy_button.get(), TFBlocks.canopy_plate.get());
-		woodBlock("planks_mangrove", TFBlocks.mangrove_planks.get(), TFBlocks.mangrove_slab.get(), TFBlocks.mangrove_stairs.get(), TFBlocks.mangrove_button.get(), TFBlocks.mangrove_plate.get());
-		woodBlock("planks_darkwood", TFBlocks.dark_planks.get(), TFBlocks.dark_slab.get(), TFBlocks.dark_stairs.get(), TFBlocks.dark_button.get(), TFBlocks.dark_plate.get());
-		woodBlock("planks_time", TFBlocks.time_planks.get(), TFBlocks.time_slab.get(), TFBlocks.time_stairs.get(), TFBlocks.time_button.get(), TFBlocks.time_plate.get());
-		woodBlock("planks_trans", TFBlocks.trans_planks.get(), TFBlocks.trans_slab.get(), TFBlocks.trans_stairs.get(), TFBlocks.trans_button.get(), TFBlocks.trans_plate.get());
-		woodBlock("planks_mine", TFBlocks.mine_planks.get(), TFBlocks.mine_slab.get(), TFBlocks.mine_stairs.get(), TFBlocks.mine_button.get(), TFBlocks.mine_plate.get());
-		woodBlock("planks_sort", TFBlocks.sort_planks.get(), TFBlocks.sort_slab.get(), TFBlocks.sort_stairs.get(), TFBlocks.sort_button.get(), TFBlocks.sort_plate.get());
+		woodBlock("twilight_oak", TFBlocks.twilight_oak_planks.get(), TFBlocks.twilight_oak_slab.get(), TFBlocks.twilight_oak_stairs.get(), TFBlocks.twilight_oak_button.get(), TFBlocks.twilight_oak_plate.get(), TFBlocks.twilight_oak_door.get());
+		woodBlock("canopy", TFBlocks.canopy_planks.get(), TFBlocks.canopy_slab.get(), TFBlocks.canopy_stairs.get(), TFBlocks.canopy_button.get(), TFBlocks.canopy_plate.get(), TFBlocks.canopy_door.get());
+		woodBlock("mangrove", TFBlocks.mangrove_planks.get(), TFBlocks.mangrove_slab.get(), TFBlocks.mangrove_stairs.get(), TFBlocks.mangrove_button.get(), TFBlocks.mangrove_plate.get(), TFBlocks.mangrove_door.get());
+		woodBlock("darkwood", TFBlocks.dark_planks.get(), TFBlocks.dark_slab.get(), TFBlocks.dark_stairs.get(), TFBlocks.dark_button.get(), TFBlocks.dark_plate.get(), TFBlocks.dark_door.get());
+		woodBlock("time", TFBlocks.time_planks.get(), TFBlocks.time_slab.get(), TFBlocks.time_stairs.get(), TFBlocks.time_button.get(), TFBlocks.time_plate.get(), TFBlocks.time_door.get());
+		woodBlock("trans", TFBlocks.trans_planks.get(), TFBlocks.trans_slab.get(), TFBlocks.trans_stairs.get(), TFBlocks.trans_button.get(), TFBlocks.trans_plate.get(), TFBlocks.trans_door.get());
+		woodBlock("mine", TFBlocks.mine_planks.get(), TFBlocks.mine_slab.get(), TFBlocks.mine_stairs.get(), TFBlocks.mine_button.get(), TFBlocks.mine_plate.get(), TFBlocks.mine_door.get());
+		woodBlock("sort", TFBlocks.sort_planks.get(), TFBlocks.sort_slab.get(), TFBlocks.sort_stairs.get(), TFBlocks.sort_button.get(), TFBlocks.sort_plate.get(), TFBlocks.sort_door.get());
 	}
 
-	private void woodBlock(String texName, Block plank, Block slab, StairsBlock stair, Block button, Block plate) {
-		ResourceLocation tex0 = prefix("blocks/wood/" + texName + "_0");
-		ResourceLocation tex1 = prefix("blocks/wood/" + texName + "_1");
-		ResourceLocation tex2 = prefix("blocks/wood/" + texName + "_2");
-		ResourceLocation tex3 = prefix("blocks/wood/" + texName + "_3");
+	private void woodBlock(String variant, Block plank, Block slab, StairsBlock stair, Block button, Block plate, DoorBlock door) {
+		String plankTexName = "planks_" + variant;
+		ResourceLocation tex0 = prefix("blocks/wood/" + plankTexName + "_0");
+		ResourceLocation tex1 = prefix("blocks/wood/" + plankTexName + "_1");
+		ResourceLocation tex2 = prefix("blocks/wood/" + plankTexName + "_2");
+		ResourceLocation tex3 = prefix("blocks/wood/" + plankTexName + "_3");
 		ConfiguredModel[] plankModels = ConfiguredModel.builder()
 						.weight(10).modelFile(models().cubeAll(plank.getRegistryName().getPath() + "_0", tex0)).nextModel()
 						.weight(10).modelFile(models().cubeAll(plank.getRegistryName().getPath() + "_1", tex1)).nextModel()
@@ -66,9 +67,10 @@ public class BlockstateGenerator extends BlockStateProvider {
 		getVariantBuilder(slab).partialState().with(SlabBlock.TYPE, SlabType.TOP).setModels(topSlabModels);
 		getVariantBuilder(slab).partialState().with(SlabBlock.TYPE, SlabType.DOUBLE).setModels(plankModels);
 
-		woodStairs(stair, texName);
-		woodButton(button, texName);
-		woodPlate(plate, texName);
+		woodStairs(stair, plankTexName);
+		woodButton(button, plankTexName);
+		woodPlate(plate, plankTexName);
+		doorBlock(door, prefix("blocks/wood/door/" + variant + "_lower"), prefix("blocks/wood/door/" + variant + "_upper"));
 	}
 
 	private void woodPlate(Block plate, String texName) {
