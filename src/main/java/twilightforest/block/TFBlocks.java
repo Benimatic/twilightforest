@@ -3,23 +3,32 @@ package twilightforest.block;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.TallBlockItem;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.IForgeRegistry;
 import twilightforest.TwilightForestMod;
 import twilightforest.enums.BossVariant;
 import twilightforest.enums.MagicWoodVariant;
 import twilightforest.enums.PlantVariant;
+import twilightforest.item.TFItems;
 import twilightforest.world.feature.tree.*;
 
 import javax.annotation.Nonnull;
+import java.util.Arrays;
+import java.util.List;
 
 @SuppressWarnings({"WeakerAccess", "unused"})
 @Nonnull
+@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TFBlocks {
 	public static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, TwilightForestMod.ID);
-	public static final DeferredRegister<Item> BLOCK_ITEMS = new DeferredRegister<>(ForgeRegistries.ITEMS, TwilightForestMod.ID);
 
 	public static final RegistryObject<Block> oak_log                    = BLOCKS.register("oak_log", () -> new BlockTFLog(MaterialColor.WOOD, Block.Properties.create(Material.WOOD, MaterialColor.OBSIDIAN).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<Block> canopy_log                 = BLOCKS.register("canopy_log", () -> new BlockTFLog(MaterialColor.OBSIDIAN, Block.Properties.create(Material.WOOD, MaterialColor.BROWN).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
@@ -303,4 +312,28 @@ public class TFBlocks {
 	public static final RegistryObject<Block> sort_plate            = BLOCKS.register("sort_plate", () -> new BlockTFPressurePlate(Block.Properties.create(Material.WOOD, MaterialColor.OBSIDIAN).hardnessAndResistance(0.5F).sound(SoundType.WOOD).doesNotBlockMovement()));
 	public static final RegistryObject<Block> sort_door             = BLOCKS.register("sort_door", () -> new BlockTFDoor(MaterialColor.OBSIDIAN));
 	public static final RegistryObject<Block> sort_trapdoor         = BLOCKS.register("sort_trapdoor", () -> new BlockTFTrapDoor(MaterialColor.OBSIDIAN));
+	
+	@SubscribeEvent
+	public static void registerItemblocks(RegistryEvent.Register<Item> evt) {
+		IForgeRegistry<Item> r = evt.getRegistry();
+		List<Block> standard = Arrays.asList(
+						twilight_oak_planks.get(), twilight_oak_stairs.get(), twilight_oak_slab.get(), twilight_oak_button.get(), twilight_oak_fence.get(), twilight_oak_gate.get(), twilight_oak_plate.get(), twilight_oak_trapdoor.get(),
+						canopy_planks.get(), canopy_stairs.get(), canopy_slab.get(), canopy_button.get(), canopy_fence.get(), canopy_gate.get(), canopy_plate.get(), canopy_trapdoor.get(),
+						mangrove_planks.get(), mangrove_stairs.get(), mangrove_slab.get(), mangrove_button.get(), mangrove_fence.get(), mangrove_gate.get(), mangrove_plate.get(), mangrove_trapdoor.get(),
+						dark_planks.get(), dark_stairs.get(), dark_slab.get(), dark_button.get(), dark_fence.get(), dark_gate.get(), dark_plate.get(), dark_trapdoor.get(),
+						time_planks.get(), time_stairs.get(), time_slab.get(), time_button.get(), time_fence.get(), time_gate.get(), time_plate.get(), time_trapdoor.get(),
+						trans_planks.get(), trans_stairs.get(), trans_slab.get(), trans_button.get(), trans_fence.get(), trans_gate.get(), trans_plate.get(), trans_trapdoor.get(),
+						mine_planks.get(), mine_stairs.get(), mine_slab.get(), mine_button.get(), mine_fence.get(), mine_gate.get(), mine_plate.get(), mine_trapdoor.get(),
+						sort_planks.get(), sort_stairs.get(), sort_slab.get(), sort_button.get(), sort_fence.get(), sort_gate.get(), sort_plate.get(), sort_trapdoor.get()
+		);
+		for (Block b : standard) {
+			r.register(new BlockItem(b, TFItems.defaultBuilder()).setRegistryName(b.getRegistryName()));
+		}
+		
+		List<Block> doors = Arrays.asList(twilight_oak_door.get(), canopy_door.get(), mangrove_door.get(), dark_door.get(), time_door.get(), trans_door.get(), mine_door.get(), sort_door.get());
+		for (Block b : doors) {
+			r.register(new TallBlockItem(b, TFItems.defaultBuilder()).setRegistryName(b.getRegistryName()));
+		}
+		
+	}
 }
