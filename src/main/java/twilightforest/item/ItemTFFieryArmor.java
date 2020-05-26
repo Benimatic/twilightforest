@@ -5,6 +5,7 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.ArmorItem;
 import net.minecraft.item.IArmorMaterial;
 import net.minecraft.item.Rarity;
 import net.minecraft.item.ItemStack;
@@ -21,7 +22,7 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
-public class ItemTFFieryArmor extends ItemTFArmor {
+public class ItemTFFieryArmor extends ArmorItem {
 
 	private static final Map<EquipmentSlotType, BipedModel> fieryArmorModel = new EnumMap<>(EquipmentSlotType.class);
 

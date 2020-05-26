@@ -6,6 +6,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.item.Rarity;
 import net.minecraft.item.ItemStack;
@@ -24,7 +25,7 @@ import javax.annotation.Nullable;
 import java.util.Locale;
 import java.util.function.Supplier;
 
-public class ItemTFTrophy extends ItemTF {
+public class ItemTFTrophy extends Item {
 
 	private final BossVariant bossVariant;
 	private final BlockTFTrophy bossTrophy;

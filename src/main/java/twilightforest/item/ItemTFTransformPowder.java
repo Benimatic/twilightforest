@@ -2,6 +2,7 @@ package twilightforest.item;
 
 import net.minecraft.entity.*;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -22,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class ItemTFTransformPowder extends ItemTF {
+public class ItemTFTransformPowder extends Item {
 
 	private final Map<EntityType<?>, EntityType<?>> transformMap = new HashMap<>();
 

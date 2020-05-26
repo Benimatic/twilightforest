@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.tags.BlockTags;
@@ -17,7 +18,7 @@ import twilightforest.world.WorldProviderTwilightForest;
 
 import javax.annotation.Nonnull;
 
-public class ItemTFMagicBeans extends ItemTF {
+public class ItemTFMagicBeans extends Item {
 
 	protected ItemTFMagicBeans(Properties props) {
 		super(props);

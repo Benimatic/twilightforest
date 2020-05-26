@@ -25,7 +25,7 @@ import twilightforest.entity.TFEntities;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class ItemTFMoonwormQueen extends ItemTF {
+public class ItemTFMoonwormQueen extends Item {
 
 	private static final int FIRING_TIME = 12;
 

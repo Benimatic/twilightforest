@@ -1,6 +1,7 @@
 package twilightforest.item;
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -10,7 +11,7 @@ import net.minecraft.world.World;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.boss.EntityTFIceBomb;
 
-public class ItemTFIceBomb extends ItemTF {
+public class ItemTFIceBomb extends Item {
 
 	public ItemTFIceBomb(Properties props) {
 		super(props);

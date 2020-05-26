@@ -6,6 +6,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.util.ActionResultType;
@@ -16,7 +17,7 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.world.World;
 import twilightforest.block.TFBlocks;
 
-public class ItemTFExperiment115 extends ItemTFFood {
+public class ItemTFExperiment115 extends Item {
 
 	public ItemTFExperiment115(Properties props) {
 		super(props);

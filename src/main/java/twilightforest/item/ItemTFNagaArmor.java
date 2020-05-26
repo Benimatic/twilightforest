@@ -7,7 +7,7 @@ import net.minecraft.item.*;
 import net.minecraft.util.NonNullList;
 import twilightforest.TwilightForestMod;
 
-public class ItemTFNagaArmor extends ItemTFArmor {
+public class ItemTFNagaArmor extends ArmorItem {
 	protected ItemTFNagaArmor(IArmorMaterial materialIn, EquipmentSlotType equipmentSlotIn, Properties props) {
 		super(materialIn, equipmentSlotIn, props);
 	}

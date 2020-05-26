@@ -2,6 +2,7 @@ package twilightforest.item;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.Rarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -20,7 +21,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemTFShieldWand extends ItemTF {
+public class ItemTFShieldWand extends Item {
 
 	protected ItemTFShieldWand(Properties props) {
 		super(props);

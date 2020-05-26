@@ -32,7 +32,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 
-public class ItemTFScepterLifeDrain extends ItemTF {
+public class ItemTFScepterLifeDrain extends Item {
 
 	protected ItemTFScepterLifeDrain(Properties props) {
 		super(props);
