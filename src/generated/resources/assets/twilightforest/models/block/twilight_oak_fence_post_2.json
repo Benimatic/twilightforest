@@ -1,0 +1,6 @@
+{
+  "parent": "block/fence_post",
+  "textures": {
+    "texture": "twilightforest:blocks/wood/planks_twilight_oak_2"
+  }
+}
