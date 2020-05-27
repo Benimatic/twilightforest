@@ -29,6 +29,7 @@ import twilightforest.biomes.TFBiomes;
 import twilightforest.block.TFBlocks;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.client.LoadingScreenListener;
+import twilightforest.client.RenderLayerRegistration;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.client.renderer.entity.LayerIce;
 import twilightforest.client.renderer.entity.LayerShields;
@@ -164,6 +165,7 @@ public class TwilightForestMod {
 		ItemTFArcticArmor.initArmorModel();
 		ItemTFFieryArmor.initArmorModel();
 		MinecraftForge.EVENT_BUS.register(new LoadingScreenListener());
+		DistExecutor.runWhenOn(Dist.CLIENT, () -> RenderLayerRegistration::init);
 		DistExecutor.runWhenOn(Dist.CLIENT, () -> TFEntities::registerEntityRenderer);
 		DistExecutor.runWhenOn(Dist.CLIENT, () -> TFTileEntities::registerTileEntityRenders);
 		DistExecutor.runWhenOn(Dist.CLIENT, () -> TFContainers::renderScreens);
