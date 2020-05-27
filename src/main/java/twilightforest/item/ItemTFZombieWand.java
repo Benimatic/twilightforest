@@ -35,7 +35,7 @@ public class ItemTFZombieWand extends Item {
 
 		ItemStack stack = player.getHeldItem(hand);
 
-		if (stack.getDamage() == stack.getMaxDamage()) {
+		if (stack.getDamage() == stack.getMaxDamage() - 1) {
 			return ActionResult.fail(stack);
 		}
 

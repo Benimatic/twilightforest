@@ -28,7 +28,7 @@ public class ItemTFTwilightWand extends Item {
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
 		ItemStack stack = player.getHeldItem(hand);
 
-		if (stack.getDamage() == stack.getMaxDamage()) {
+		if (stack.getDamage() == stack.getMaxDamage() - 1) {
 			return ActionResult.fail(player.getHeldItem(hand));
 		} else {
 			player.playSound(SoundEvents.ENTITY_GHAST_SHOOT, 1.0F, (world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F + 1.0F);

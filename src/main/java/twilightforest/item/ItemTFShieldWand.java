@@ -28,7 +28,7 @@ public class ItemTFShieldWand extends Item {
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, @Nonnull Hand hand) {
 		ItemStack stack = player.getHeldItem(hand);
 
-		if (stack.getDamage() == stack.getMaxDamage()) {
+		if (stack.getDamage() == stack.getMaxDamage() - 1) {
 			return ActionResult.fail(stack);
 		}
 
