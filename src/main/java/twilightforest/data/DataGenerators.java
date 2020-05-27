@@ -11,5 +11,7 @@ public class DataGenerators {
 	public static void gatherData(GatherDataEvent evt) {
 		evt.getGenerator().addProvider(new BlockstateGenerator(evt.getGenerator(), evt.getExistingFileHelper()));
 		evt.getGenerator().addProvider(new ItemModelGenerator(evt.getGenerator(), evt.getExistingFileHelper()));
+		evt.getGenerator().addProvider(new BlockTagGenerator(evt.getGenerator()));
+		evt.getGenerator().addProvider(new ItemTagGenerator(evt.getGenerator()));
 	}
 }
