@@ -2,7 +2,7 @@
   "variants": {
     "": [
       {
-        "model": "twilightforest:block/mine_planks_0",
+        "model": "twilightforest:block/mine_planks",
         "weight": 10
       },
       {

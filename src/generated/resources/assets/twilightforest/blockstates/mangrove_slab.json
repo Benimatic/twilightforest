@@ -2,7 +2,7 @@
   "variants": {
     "type=top": [
       {
-        "model": "twilightforest:block/mangrove_slab_0",
+        "model": "twilightforest:block/mangrove_slab",
         "x": 180,
         "uvlock": true,
         "weight": 10
@@ -26,7 +26,7 @@
     ],
     "type=bottom": [
       {
-        "model": "twilightforest:block/mangrove_slab_0",
+        "model": "twilightforest:block/mangrove_slab",
         "weight": 10
       },
       {
@@ -42,7 +42,7 @@
     ],
     "type=double": [
       {
-        "model": "twilightforest:block/mangrove_planks_0",
+        "model": "twilightforest:block/mangrove_planks",
         "weight": 10
       },
       {

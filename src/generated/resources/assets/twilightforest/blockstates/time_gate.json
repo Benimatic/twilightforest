@@ -2,7 +2,7 @@
   "variants": {
     "facing=north,in_wall=false,open=false": [
       {
-        "model": "twilightforest:block/time_gate_0",
+        "model": "twilightforest:block/time_gate",
         "y": 180,
         "uvlock": true,
         "weight": 10
@@ -26,7 +26,7 @@
     ],
     "facing=south,in_wall=false,open=false": [
       {
-        "model": "twilightforest:block/time_gate_0",
+        "model": "twilightforest:block/time_gate",
         "uvlock": true,
         "weight": 10
       },
@@ -46,7 +46,7 @@
     ],
     "facing=west,in_wall=false,open=false": [
       {
-        "model": "twilightforest:block/time_gate_0",
+        "model": "twilightforest:block/time_gate",
         "y": 90,
         "uvlock": true,
         "weight": 10
@@ -70,7 +70,7 @@
     ],
     "facing=east,in_wall=false,open=false": [
       {
-        "model": "twilightforest:block/time_gate_0",
+        "model": "twilightforest:block/time_gate",
         "y": 270,
         "uvlock": true,
         "weight": 10
@@ -94,7 +94,7 @@
     ],
     "facing=north,in_wall=true,open=false": [
       {
-        "model": "twilightforest:block/time_gate_wall_0",
+        "model": "twilightforest:block/time_gate_wall",
         "y": 180,
         "uvlock": true,
         "weight": 10
@@ -118,7 +118,7 @@
     ],
     "facing=south,in_wall=true,open=false": [
       {
-        "model": "twilightforest:block/time_gate_wall_0",
+        "model": "twilightforest:block/time_gate_wall",
         "uvlock": true,
         "weight": 10
       },
@@ -138,7 +138,7 @@
     ],
     "facing=west,in_wall=true,open=false": [
       {
-        "model": "twilightforest:block/time_gate_wall_0",
+        "model": "twilightforest:block/time_gate_wall",
         "y": 90,
         "uvlock": true,
         "weight": 10
@@ -162,7 +162,7 @@
     ],
     "facing=east,in_wall=true,open=false": [
       {
-        "model": "twilightforest:block/time_gate_wall_0",
+        "model": "twilightforest:block/time_gate_wall",
         "y": 270,
         "uvlock": true,
         "weight": 10
@@ -186,7 +186,7 @@
     ],
     "facing=north,in_wall=false,open=true": [
       {
-        "model": "twilightforest:block/time_gate_open_0",
+        "model": "twilightforest:block/time_gate_open",
         "y": 180,
         "uvlock": true,
         "weight": 10
@@ -210,7 +210,7 @@
     ],
     "facing=south,in_wall=false,open=true": [
       {
-        "model": "twilightforest:block/time_gate_open_0",
+        "model": "twilightforest:block/time_gate_open",
         "uvlock": true,
         "weight": 10
       },
@@ -230,7 +230,7 @@
     ],
     "facing=west,in_wall=false,open=true": [
       {
-        "model": "twilightforest:block/time_gate_open_0",
+        "model": "twilightforest:block/time_gate_open",
         "y": 90,
         "uvlock": true,
         "weight": 10
@@ -254,7 +254,7 @@
     ],
     "facing=east,in_wall=false,open=true": [
       {
-        "model": "twilightforest:block/time_gate_open_0",
+        "model": "twilightforest:block/time_gate_open",
         "y": 270,
         "uvlock": true,
         "weight": 10
@@ -278,7 +278,7 @@
     ],
     "facing=north,in_wall=true,open=true": [
       {
-        "model": "twilightforest:block/time_gate_wall_open_0",
+        "model": "twilightforest:block/time_gate_wall_open",
         "y": 180,
         "uvlock": true,
         "weight": 10
@@ -302,7 +302,7 @@
     ],
     "facing=south,in_wall=true,open=true": [
       {
-        "model": "twilightforest:block/time_gate_wall_open_0",
+        "model": "twilightforest:block/time_gate_wall_open",
         "uvlock": true,
         "weight": 10
       },
@@ -322,7 +322,7 @@
     ],
     "facing=west,in_wall=true,open=true": [
       {
-        "model": "twilightforest:block/time_gate_wall_open_0",
+        "model": "twilightforest:block/time_gate_wall_open",
         "y": 90,
         "uvlock": true,
         "weight": 10
@@ -346,7 +346,7 @@
     ],
     "facing=east,in_wall=true,open=true": [
       {
-        "model": "twilightforest:block/time_gate_wall_open_0",
+        "model": "twilightforest:block/time_gate_wall_open",
         "y": 270,
         "uvlock": true,
         "weight": 10

@@ -2,7 +2,7 @@
   "variants": {
     "": [
       {
-        "model": "twilightforest:block/trans_planks_0",
+        "model": "twilightforest:block/trans_planks",
         "weight": 10
       },
       {

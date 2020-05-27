@@ -2,7 +2,7 @@
   "variants": {
     "powered=false": [
       {
-        "model": "twilightforest:block/dark_plate_0",
+        "model": "twilightforest:block/dark_plate",
         "weight": 10
       },
       {
@@ -18,7 +18,7 @@
     ],
     "powered=true": [
       {
-        "model": "twilightforest:block/dark_plate_down_0",
+        "model": "twilightforest:block/dark_plate_down",
         "weight": 10
       },
       {

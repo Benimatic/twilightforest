@@ -2,7 +2,7 @@
   "variants": {
     "": [
       {
-        "model": "twilightforest:block/twilight_oak_planks_0",
+        "model": "twilightforest:block/twilight_oak_planks",
         "weight": 10
       },
       {

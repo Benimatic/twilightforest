@@ -2,7 +2,7 @@
   "variants": {
     "": [
       {
-        "model": "twilightforest:block/mangrove_planks_0",
+        "model": "twilightforest:block/mangrove_planks",
         "weight": 10
       },
       {

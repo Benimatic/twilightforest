@@ -2,7 +2,7 @@
   "variants": {
     "facing=north,half=top,shape=straight": [
       {
-        "model": "twilightforest:block/time_stairs_0",
+        "model": "twilightforest:block/time_stairs",
         "x": 180,
         "y": 270,
         "uvlock": true,
@@ -30,7 +30,7 @@
     ],
     "facing=south,half=top,shape=straight": [
       {
-        "model": "twilightforest:block/time_stairs_0",
+        "model": "twilightforest:block/time_stairs",
         "x": 180,
         "y": 90,
         "uvlock": true,
@@ -58,7 +58,7 @@
     ],
     "facing=west,half=top,shape=straight": [
       {
-        "model": "twilightforest:block/time_stairs_0",
+        "model": "twilightforest:block/time_stairs",
         "x": 180,
         "y": 180,
         "uvlock": true,
@@ -86,7 +86,7 @@
     ],
     "facing=east,half=top,shape=straight": [
       {
-        "model": "twilightforest:block/time_stairs_0",
+        "model": "twilightforest:block/time_stairs",
         "x": 180,
         "uvlock": true,
         "weight": 10
@@ -110,7 +110,7 @@
     ],
     "facing=north,half=bottom,shape=straight": [
       {
-        "model": "twilightforest:block/time_stairs_0",
+        "model": "twilightforest:block/time_stairs",
         "y": 270,
         "uvlock": true,
         "weight": 10
@@ -134,7 +134,7 @@
     ],
     "facing=south,half=bottom,shape=straight": [
       {
-        "model": "twilightforest:block/time_stairs_0",
+        "model": "twilightforest:block/time_stairs",
         "y": 90,
         "uvlock": true,
         "weight": 10
@@ -158,7 +158,7 @@
     ],
     "facing=west,half=bottom,shape=straight": [
       {
-        "model": "twilightforest:block/time_stairs_0",
+        "model": "twilightforest:block/time_stairs",
         "y": 180,
         "uvlock": true,
         "weight": 10
@@ -182,7 +182,7 @@
     ],
     "facing=east,half=bottom,shape=straight": [
       {
-        "model": "twilightforest:block/time_stairs_0",
+        "model": "twilightforest:block/time_stairs",
         "weight": 10
       },
       {
@@ -198,7 +198,7 @@
     ],
     "facing=north,half=top,shape=inner_left": [
       {
-        "model": "twilightforest:block/time_stairs_inner_0",
+        "model": "twilightforest:block/time_stairs_inner",
         "x": 180,
         "y": 270,
         "uvlock": true,
@@ -226,7 +226,7 @@
     ],
     "facing=south,half=top,shape=inner_left": [
       {
-        "model": "twilightforest:block/time_stairs_inner_0",
+        "model": "twilightforest:block/time_stairs_inner",
         "x": 180,
         "y": 90,
         "uvlock": true,
@@ -254,7 +254,7 @@
     ],
     "facing=west,half=top,shape=inner_left": [
       {
-        "model": "twilightforest:block/time_stairs_inner_0",
+        "model": "twilightforest:block/time_stairs_inner",
         "x": 180,
         "y": 180,
         "uvlock": true,
@@ -282,7 +282,7 @@
     ],
     "facing=east,half=top,shape=inner_left": [
       {
-        "model": "twilightforest:block/time_stairs_inner_0",
+        "model": "twilightforest:block/time_stairs_inner",
         "x": 180,
         "uvlock": true,
         "weight": 10
@@ -306,7 +306,7 @@
     ],
     "facing=north,half=bottom,shape=inner_left": [
       {
-        "model": "twilightforest:block/time_stairs_inner_0",
+        "model": "twilightforest:block/time_stairs_inner",
         "y": 180,
         "uvlock": true,
         "weight": 10
@@ -330,7 +330,7 @@
     ],
     "facing=south,half=bottom,shape=inner_left": [
       {
-        "model": "twilightforest:block/time_stairs_inner_0",
+        "model": "twilightforest:block/time_stairs_inner",
         "weight": 10
       },
       {
@@ -346,7 +346,7 @@
     ],
     "facing=west,half=bottom,shape=inner_left": [
       {
-        "model": "twilightforest:block/time_stairs_inner_0",
+        "model": "twilightforest:block/time_stairs_inner",
         "y": 90,
         "uvlock": true,
         "weight": 10
@@ -370,7 +370,7 @@
     ],
     "facing=east,half=bottom,shape=inner_left": [
       {
-        "model": "twilightforest:block/time_stairs_inner_0",
+        "model": "twilightforest:block/time_stairs_inner",
         "y": 270,
         "uvlock": true,
         "weight": 10
@@ -394,7 +394,7 @@
     ],
     "facing=north,half=top,shape=inner_right": [
       {
-        "model": "twilightforest:block/time_stairs_inner_0",
+        "model": "twilightforest:block/time_stairs_inner",
         "x": 180,
         "uvlock": true,
         "weight": 10
@@ -418,7 +418,7 @@
     ],
     "facing=south,half=top,shape=inner_right": [
       {
-        "model": "twilightforest:block/time_stairs_inner_0",
+        "model": "twilightforest:block/time_stairs_inner",
         "x": 180,
         "y": 180,
         "uvlock": true,
@@ -446,7 +446,7 @@
     ],
     "facing=west,half=top,shape=inner_right": [
       {
-        "model": "twilightforest:block/time_stairs_inner_0",
+        "model": "twilightforest:block/time_stairs_inner",
         "x": 180,
         "y": 270,
         "uvlock": true,
@@ -474,7 +474,7 @@
     ],
     "facing=east,half=top,shape=inner_right": [
       {
-        "model": "twilightforest:block/time_stairs_inner_0",
+        "model": "twilightforest:block/time_stairs_inner",
         "x": 180,
         "y": 90,
         "uvlock": true,
@@ -502,7 +502,7 @@
     ],
     "facing=north,half=bottom,shape=inner_right": [
       {
-        "model": "twilightforest:block/time_stairs_inner_0",
+        "model": "twilightforest:block/time_stairs_inner",
         "y": 270,
         "uvlock": true,
         "weight": 10
@@ -526,7 +526,7 @@
     ],
     "facing=south,half=bottom,shape=inner_right": [
       {
-        "model": "twilightforest:block/time_stairs_inner_0",
+        "model": "twilightforest:block/time_stairs_inner",
         "y": 90,
         "uvlock": true,
         "weight": 10
@@ -550,7 +550,7 @@
     ],
     "facing=west,half=bottom,shape=inner_right": [
       {
-        "model": "twilightforest:block/time_stairs_inner_0",
+        "model": "twilightforest:block/time_stairs_inner",
         "y": 180,
         "uvlock": true,
         "weight": 10
@@ -574,7 +574,7 @@
     ],
     "facing=east,half=bottom,shape=inner_right": [
       {
-        "model": "twilightforest:block/time_stairs_inner_0",
+        "model": "twilightforest:block/time_stairs_inner",
         "weight": 10
       },
       {
@@ -590,7 +590,7 @@
     ],
     "facing=north,half=top,shape=outer_left": [
       {
-        "model": "twilightforest:block/time_stairs_outer_0",
+        "model": "twilightforest:block/time_stairs_outer",
         "x": 180,
         "y": 270,
         "uvlock": true,
@@ -618,7 +618,7 @@
     ],
     "facing=south,half=top,shape=outer_left": [
       {
-        "model": "twilightforest:block/time_stairs_outer_0",
+        "model": "twilightforest:block/time_stairs_outer",
         "x": 180,
         "y": 90,
         "uvlock": true,
@@ -646,7 +646,7 @@
     ],
     "facing=west,half=top,shape=outer_left": [
       {
-        "model": "twilightforest:block/time_stairs_outer_0",
+        "model": "twilightforest:block/time_stairs_outer",
         "x": 180,
         "y": 180,
         "uvlock": true,
@@ -674,7 +674,7 @@
     ],
     "facing=east,half=top,shape=outer_left": [
       {
-        "model": "twilightforest:block/time_stairs_outer_0",
+        "model": "twilightforest:block/time_stairs_outer",
         "x": 180,
         "uvlock": true,
         "weight": 10
@@ -698,7 +698,7 @@
     ],
     "facing=north,half=bottom,shape=outer_left": [
       {
-        "model": "twilightforest:block/time_stairs_outer_0",
+        "model": "twilightforest:block/time_stairs_outer",
         "y": 180,
         "uvlock": true,
         "weight": 10
@@ -722,7 +722,7 @@
     ],
     "facing=south,half=bottom,shape=outer_left": [
       {
-        "model": "twilightforest:block/time_stairs_outer_0",
+        "model": "twilightforest:block/time_stairs_outer",
         "weight": 10
       },
       {
@@ -738,7 +738,7 @@
     ],
     "facing=west,half=bottom,shape=outer_left": [
       {
-        "model": "twilightforest:block/time_stairs_outer_0",
+        "model": "twilightforest:block/time_stairs_outer",
         "y": 90,
         "uvlock": true,
         "weight": 10
@@ -762,7 +762,7 @@
     ],
     "facing=east,half=bottom,shape=outer_left": [
       {
-        "model": "twilightforest:block/time_stairs_outer_0",
+        "model": "twilightforest:block/time_stairs_outer",
         "y": 270,
         "uvlock": true,
         "weight": 10
@@ -786,7 +786,7 @@
     ],
     "facing=north,half=top,shape=outer_right": [
       {
-        "model": "twilightforest:block/time_stairs_outer_0",
+        "model": "twilightforest:block/time_stairs_outer",
         "x": 180,
         "uvlock": true,
         "weight": 10
@@ -810,7 +810,7 @@
     ],
     "facing=south,half=top,shape=outer_right": [
       {
-        "model": "twilightforest:block/time_stairs_outer_0",
+        "model": "twilightforest:block/time_stairs_outer",
         "x": 180,
         "y": 180,
         "uvlock": true,
@@ -838,7 +838,7 @@
     ],
     "facing=west,half=top,shape=outer_right": [
       {
-        "model": "twilightforest:block/time_stairs_outer_0",
+        "model": "twilightforest:block/time_stairs_outer",
         "x": 180,
         "y": 270,
         "uvlock": true,
@@ -866,7 +866,7 @@
     ],
     "facing=east,half=top,shape=outer_right": [
       {
-        "model": "twilightforest:block/time_stairs_outer_0",
+        "model": "twilightforest:block/time_stairs_outer",
         "x": 180,
         "y": 90,
         "uvlock": true,
@@ -894,7 +894,7 @@
     ],
     "facing=north,half=bottom,shape=outer_right": [
       {
-        "model": "twilightforest:block/time_stairs_outer_0",
+        "model": "twilightforest:block/time_stairs_outer",
         "y": 270,
         "uvlock": true,
         "weight": 10
@@ -918,7 +918,7 @@
     ],
     "facing=south,half=bottom,shape=outer_right": [
       {
-        "model": "twilightforest:block/time_stairs_outer_0",
+        "model": "twilightforest:block/time_stairs_outer",
         "y": 90,
         "uvlock": true,
         "weight": 10
@@ -942,7 +942,7 @@
     ],
     "facing=west,half=bottom,shape=outer_right": [
       {
-        "model": "twilightforest:block/time_stairs_outer_0",
+        "model": "twilightforest:block/time_stairs_outer",
         "y": 180,
         "uvlock": true,
         "weight": 10
@@ -966,7 +966,7 @@
     ],
     "facing=east,half=bottom,shape=outer_right": [
       {
-        "model": "twilightforest:block/time_stairs_outer_0",
+        "model": "twilightforest:block/time_stairs_outer",
         "weight": 10
       },
       {

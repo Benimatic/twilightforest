@@ -3,7 +3,7 @@
     {
       "apply": [
         {
-          "model": "twilightforest:block/twilight_oak_fence_post_0",
+          "model": "twilightforest:block/twilight_oak_fence_post",
           "weight": 10
         },
         {
@@ -24,7 +24,7 @@
       },
       "apply": [
         {
-          "model": "twilightforest:block/twilight_oak_fence_side_0",
+          "model": "twilightforest:block/twilight_oak_fence_side",
           "uvlock": true,
           "weight": 10
         },
@@ -49,7 +49,7 @@
       },
       "apply": [
         {
-          "model": "twilightforest:block/twilight_oak_fence_side_0",
+          "model": "twilightforest:block/twilight_oak_fence_side",
           "y": 180,
           "uvlock": true,
           "weight": 10
@@ -78,7 +78,7 @@
       },
       "apply": [
         {
-          "model": "twilightforest:block/twilight_oak_fence_side_0",
+          "model": "twilightforest:block/twilight_oak_fence_side",
           "y": 270,
           "uvlock": true,
           "weight": 10
@@ -107,7 +107,7 @@
       },
       "apply": [
         {
-          "model": "twilightforest:block/twilight_oak_fence_side_0",
+          "model": "twilightforest:block/twilight_oak_fence_side",
           "y": 90,
           "uvlock": true,
           "weight": 10

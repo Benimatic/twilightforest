@@ -2,7 +2,7 @@
   "variants": {
     "type=top": [
       {
-        "model": "twilightforest:block/twilight_oak_slab_0",
+        "model": "twilightforest:block/twilight_oak_slab",
         "x": 180,
         "uvlock": true,
         "weight": 10
@@ -26,7 +26,7 @@
     ],
     "type=bottom": [
       {
-        "model": "twilightforest:block/twilight_oak_slab_0",
+        "model": "twilightforest:block/twilight_oak_slab",
         "weight": 10
       },
       {
@@ -42,7 +42,7 @@
     ],
     "type=double": [
       {
-        "model": "twilightforest:block/twilight_oak_planks_0",
+        "model": "twilightforest:block/twilight_oak_planks",
         "weight": 10
       },
       {

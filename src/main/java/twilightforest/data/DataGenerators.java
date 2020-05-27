@@ -10,5 +10,6 @@ public class DataGenerators {
 	@SubscribeEvent
 	public static void gatherData(GatherDataEvent evt) {
 		evt.getGenerator().addProvider(new BlockstateGenerator(evt.getGenerator(), evt.getExistingFileHelper()));
+		evt.getGenerator().addProvider(new ItemModelGenerator(evt.getGenerator(), evt.getExistingFileHelper()));
 	}
 }
