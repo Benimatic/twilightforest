@@ -6,7 +6,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.ExistingFileHelper;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
-import net.minecraftforge.client.model.generators.ModelFile;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 
@@ -63,6 +62,10 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.dark_gate.get());
 		toBlock(TFBlocks.dark_plate.get());
 		toBlockModel(TFBlocks.dark_trapdoor.get(), "dark_trapdoor_bottom");
+
+		toBlock(TFBlocks.time_log.get());
+		toBlock(TFBlocks.time_wood.get());
+		generated(TFBlocks.time_sapling.getId().getPath(), prefix("block/" + TFBlocks.time_sapling.getId().getPath()));
 		toBlock(TFBlocks.time_planks.get());
 		toBlock(TFBlocks.time_stairs.get());
 		toBlock(TFBlocks.time_slab.get());
@@ -71,6 +74,10 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.time_gate.get());
 		toBlock(TFBlocks.time_plate.get());
 		toBlockModel(TFBlocks.time_trapdoor.get(), "time_trapdoor_bottom");
+
+		toBlock(TFBlocks.transformation_log.get());
+		toBlock(TFBlocks.transformation_wood.get());
+		generated(TFBlocks.transformation_sapling.getId().getPath(), prefix("block/" + TFBlocks.transformation_sapling.getId().getPath()));
 		toBlock(TFBlocks.trans_planks.get());
 		toBlock(TFBlocks.trans_stairs.get());
 		toBlock(TFBlocks.trans_slab.get());
@@ -79,6 +86,10 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.trans_gate.get());
 		toBlock(TFBlocks.trans_plate.get());
 		toBlockModel(TFBlocks.trans_trapdoor.get(), "trans_trapdoor_bottom");
+
+		toBlock(TFBlocks.mining_log.get());
+		toBlock(TFBlocks.mining_wood.get());
+		generated(TFBlocks.mining_sapling.getId().getPath(), prefix("block/" + TFBlocks.mining_sapling.getId().getPath()));
 		toBlock(TFBlocks.mine_planks.get());
 		toBlock(TFBlocks.mine_stairs.get());
 		toBlock(TFBlocks.mine_slab.get());
@@ -87,6 +98,10 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.mine_gate.get());
 		toBlock(TFBlocks.mine_plate.get());
 		toBlockModel(TFBlocks.mine_trapdoor.get(), "mine_trapdoor_bottom");
+
+		toBlock(TFBlocks.sorting_log.get());
+		toBlock(TFBlocks.sorting_wood.get());
+		generated(TFBlocks.sorting_sapling.getId().getPath(), prefix("block/" + TFBlocks.sorting_sapling.getId().getPath()));
 		toBlock(TFBlocks.sort_planks.get());
 		toBlock(TFBlocks.sort_stairs.get());
 		toBlock(TFBlocks.sort_slab.get());

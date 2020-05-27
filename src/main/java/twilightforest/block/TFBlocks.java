@@ -85,10 +85,10 @@ public class TFBlocks {
 	public static final RegistryObject<SaplingBlock> mining_sapling         = BLOCKS.register("mining_sapling", () -> new BlockTFSapling(new MinersTree()));
 	public static final RegistryObject<SaplingBlock> sorting_sapling        = BLOCKS.register("sorting_sapling", () -> new BlockTFSapling(new SortingTree()));
 	public static final RegistryObject<SaplingBlock> rainboak_sapling       = BLOCKS.register("rainboak_sapling", () -> new BlockTFSapling(new RainboakTree()));
-	public static final RegistryObject<Block> time_log                   = BLOCKS.register("time_log", () -> new BlockTFMagicLog(MaterialColor.DIRT, MaterialColor.OBSIDIAN));
-	public static final RegistryObject<Block> transformation_log         = BLOCKS.register("transformation_log", () -> new BlockTFMagicLog(MaterialColor.WOOD, MaterialColor.OBSIDIAN));
-	public static final RegistryObject<Block> mining_log                 = BLOCKS.register("mining_log", () -> new BlockTFMagicLog(MaterialColor.SAND, MaterialColor.QUARTZ));
-	public static final RegistryObject<Block> sorting_log                = BLOCKS.register("sorting_log", () -> new BlockTFMagicLog(MaterialColor.OBSIDIAN, MaterialColor.BROWN));
+	public static final RegistryObject<LogBlock> time_log                   = BLOCKS.register("time_log", () -> new BlockTFMagicLog(MaterialColor.DIRT, MaterialColor.OBSIDIAN));
+	public static final RegistryObject<LogBlock> transformation_log         = BLOCKS.register("transformation_log", () -> new BlockTFMagicLog(MaterialColor.WOOD, MaterialColor.OBSIDIAN));
+	public static final RegistryObject<LogBlock> mining_log                 = BLOCKS.register("mining_log", () -> new BlockTFMagicLog(MaterialColor.SAND, MaterialColor.QUARTZ));
+	public static final RegistryObject<LogBlock> sorting_log                = BLOCKS.register("sorting_log", () -> new BlockTFMagicLog(MaterialColor.OBSIDIAN, MaterialColor.BROWN));
 	public static final RegistryObject<Block> time_wood                  = BLOCKS.register("time_wood", () -> new BlockTFMagicLog(MaterialColor.DIRT, MaterialColor.DIRT));
 	public static final RegistryObject<Block> transformation_wood        = BLOCKS.register("transformation_wood", () -> new BlockTFMagicLog(MaterialColor.WOOD, MaterialColor.WOOD));
 	public static final RegistryObject<Block> mining_wood                = BLOCKS.register("mining_wood", () -> new BlockTFMagicLog(MaterialColor.SAND, MaterialColor.SAND));
@@ -317,9 +317,9 @@ public class TFBlocks {
 	public static void registerItemblocks(RegistryEvent.Register<Item> evt) {
 		IForgeRegistry<Item> r = evt.getRegistry();
 		List<Block> standard = Arrays.asList(
-						oak_log.get(), canopy_log.get(), mangrove_log.get(), dark_log.get(),
-						oak_wood.get(), canopy_wood.get(), mangrove_wood.get(), dark_wood.get(),
-						oak_sapling.get(), canopy_sapling.get(), mangrove_sapling.get(), darkwood_sapling.get(),
+						oak_log.get(), canopy_log.get(), mangrove_log.get(), dark_log.get(), time_log.get(), transformation_log.get(), mining_log.get(), sorting_log.get(),
+						oak_wood.get(), canopy_wood.get(), mangrove_wood.get(), dark_wood.get(), time_wood.get(), transformation_wood.get(), mining_wood.get(), sorting_wood.get(),
+						oak_sapling.get(), canopy_sapling.get(), mangrove_sapling.get(), darkwood_sapling.get(), time_sapling.get(), transformation_sapling.get(), mining_sapling.get(), sorting_sapling.get(),
 						twilight_oak_planks.get(), twilight_oak_stairs.get(), twilight_oak_slab.get(), twilight_oak_button.get(), twilight_oak_fence.get(), twilight_oak_gate.get(), twilight_oak_plate.get(), twilight_oak_trapdoor.get(),
 						canopy_planks.get(), canopy_stairs.get(), canopy_slab.get(), canopy_button.get(), canopy_fence.get(), canopy_gate.get(), canopy_plate.get(), canopy_trapdoor.get(),
 						mangrove_planks.get(), mangrove_stairs.get(), mangrove_slab.get(), mangrove_button.get(), mangrove_fence.get(), mangrove_gate.get(), mangrove_plate.get(), mangrove_trapdoor.get(),

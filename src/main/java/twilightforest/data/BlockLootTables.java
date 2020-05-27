@@ -72,6 +72,9 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerLootTable(TFBlocks.dark_door.get(), (b) -> droppingWhen(b, DoorBlock.HALF, DoubleBlockHalf.LOWER));
 		registerDropSelfLootTable(TFBlocks.dark_trapdoor.get());
 
+		registerDropSelfLootTable(TFBlocks.time_log.get());
+		registerDropSelfLootTable(TFBlocks.time_wood.get());
+		registerDropSelfLootTable(TFBlocks.time_sapling.get());
 		registerDropSelfLootTable(TFBlocks.time_planks.get());
 		registerDropSelfLootTable(TFBlocks.time_stairs.get());
 		registerLootTable(TFBlocks.time_slab.get(), droppingSlab(TFBlocks.time_slab.get()));
@@ -82,6 +85,9 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerLootTable(TFBlocks.time_door.get(), (b) -> droppingWhen(b, DoorBlock.HALF, DoubleBlockHalf.LOWER));
 		registerDropSelfLootTable(TFBlocks.time_trapdoor.get());
 
+		registerDropSelfLootTable(TFBlocks.transformation_log.get());
+		registerDropSelfLootTable(TFBlocks.transformation_wood.get());
+		registerDropSelfLootTable(TFBlocks.transformation_sapling.get());
 		registerDropSelfLootTable(TFBlocks.trans_planks.get());
 		registerDropSelfLootTable(TFBlocks.trans_stairs.get());
 		registerLootTable(TFBlocks.trans_slab.get(), droppingSlab(TFBlocks.trans_slab.get()));
@@ -92,6 +98,9 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerLootTable(TFBlocks.trans_door.get(), (b) -> droppingWhen(b, DoorBlock.HALF, DoubleBlockHalf.LOWER));
 		registerDropSelfLootTable(TFBlocks.trans_trapdoor.get());
 
+		registerDropSelfLootTable(TFBlocks.mining_log.get());
+		registerDropSelfLootTable(TFBlocks.mining_wood.get());
+		registerDropSelfLootTable(TFBlocks.mining_sapling.get());
 		registerDropSelfLootTable(TFBlocks.mine_planks.get());
 		registerDropSelfLootTable(TFBlocks.mine_stairs.get());
 		registerLootTable(TFBlocks.mine_slab.get(), droppingSlab(TFBlocks.mine_slab.get()));
@@ -101,7 +110,10 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.mine_plate.get());
 		registerLootTable(TFBlocks.mine_door.get(), (b) -> droppingWhen(b, DoorBlock.HALF, DoubleBlockHalf.LOWER));
 		registerDropSelfLootTable(TFBlocks.mine_trapdoor.get());
-		
+
+		registerDropSelfLootTable(TFBlocks.sorting_log.get());
+		registerDropSelfLootTable(TFBlocks.sorting_wood.get());
+		registerDropSelfLootTable(TFBlocks.sorting_sapling.get());
 		registerDropSelfLootTable(TFBlocks.sort_planks.get());
 		registerDropSelfLootTable(TFBlocks.sort_stairs.get());
 		registerLootTable(TFBlocks.sort_slab.get(), droppingSlab(TFBlocks.sort_slab.get()));
