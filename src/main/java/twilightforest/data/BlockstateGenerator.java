@@ -50,10 +50,10 @@ public class BlockstateGenerator extends BlockStateProvider {
 
 	private void woodBlock(String variant, Block plank, Block slab, StairsBlock stair, Block button, Block fence, Block gate, Block plate, DoorBlock door, TrapDoorBlock trapdoor) {
 		String plankTexName = "planks_" + variant;
-		ResourceLocation tex0 = prefix("blocks/wood/" + plankTexName + "_0");
-		ResourceLocation tex1 = prefix("blocks/wood/" + plankTexName + "_1");
-		ResourceLocation tex2 = prefix("blocks/wood/" + plankTexName + "_2");
-		ResourceLocation tex3 = prefix("blocks/wood/" + plankTexName + "_3");
+		ResourceLocation tex0 = prefix("block/wood/" + plankTexName + "_0");
+		ResourceLocation tex1 = prefix("block/wood/" + plankTexName + "_1");
+		ResourceLocation tex2 = prefix("block/wood/" + plankTexName + "_2");
+		ResourceLocation tex3 = prefix("block/wood/" + plankTexName + "_3");
 		ConfiguredModel[] plankModels = ConfiguredModel.builder()
 						.weight(10).modelFile(models().cubeAll(plank.getRegistryName().getPath(), tex0)).nextModel()
 						.weight(10).modelFile(models().cubeAll(plank.getRegistryName().getPath() + "_1", tex1)).nextModel()
@@ -80,15 +80,15 @@ public class BlockstateGenerator extends BlockStateProvider {
 		woodFence(fence, plankTexName);
 		woodGate(gate, plankTexName);
 		woodPlate(plate, plankTexName);
-		doorBlock(door, prefix("blocks/wood/door/" + variant + "_lower"), prefix("blocks/wood/door/" + variant + "_upper"));
-		trapdoorBlock(trapdoor, prefix("blocks/wood/trapdoor/" + variant + "_trapdoor"), false);
+		doorBlock(door, prefix("block/wood/door/" + variant + "_lower"), prefix("block/wood/door/" + variant + "_upper"));
+		trapdoorBlock(trapdoor, prefix("block/wood/trapdoor/" + variant + "_trapdoor"), false);
 	}
 
 	private void woodGate(Block gate, String texName) {
-		ResourceLocation tex0 = prefix("blocks/wood/" + texName + "_0");
-		ResourceLocation tex1 = prefix("blocks/wood/" + texName + "_1");
-		ResourceLocation tex2 = prefix("blocks/wood/" + texName + "_2");
-		ResourceLocation tex3 = prefix("blocks/wood/" + texName + "_3");
+		ResourceLocation tex0 = prefix("block/wood/" + texName + "_0");
+		ResourceLocation tex1 = prefix("block/wood/" + texName + "_1");
+		ResourceLocation tex2 = prefix("block/wood/" + texName + "_2");
+		ResourceLocation tex3 = prefix("block/wood/" + texName + "_3");
 
 		ModelFile gate0 = models().fenceGate(gate.getRegistryName().getPath(), tex0);
 		ModelFile gate1 = models().fenceGate(gate.getRegistryName().getPath() + "_1", tex1);
@@ -146,10 +146,10 @@ public class BlockstateGenerator extends BlockStateProvider {
 	}
 
 	private void woodFence(Block fence, String texName) {
-		ResourceLocation tex0 = prefix("blocks/wood/" + texName + "_0");
-		ResourceLocation tex1 = prefix("blocks/wood/" + texName + "_1");
-		ResourceLocation tex2 = prefix("blocks/wood/" + texName + "_2");
-		ResourceLocation tex3 = prefix("blocks/wood/" + texName + "_3");
+		ResourceLocation tex0 = prefix("block/wood/" + texName + "_0");
+		ResourceLocation tex1 = prefix("block/wood/" + texName + "_1");
+		ResourceLocation tex2 = prefix("block/wood/" + texName + "_2");
+		ResourceLocation tex3 = prefix("block/wood/" + texName + "_3");
 
 		ModelFile post0 = models().fencePost(fence.getRegistryName().getPath() + "_post", tex0);
 		ModelFile post1 = models().fencePost(fence.getRegistryName().getPath() + "_post_1", tex1);
@@ -181,10 +181,10 @@ public class BlockstateGenerator extends BlockStateProvider {
 	}
 
 	private void woodPlate(Block plate, String texName) {
-		ResourceLocation tex0 = prefix("blocks/wood/" + texName + "_0");
-		ResourceLocation tex1 = prefix("blocks/wood/" + texName + "_1");
-		ResourceLocation tex2 = prefix("blocks/wood/" + texName + "_2");
-		ResourceLocation tex3 = prefix("blocks/wood/" + texName + "_3");
+		ResourceLocation tex0 = prefix("block/wood/" + texName + "_0");
+		ResourceLocation tex1 = prefix("block/wood/" + texName + "_1");
+		ResourceLocation tex2 = prefix("block/wood/" + texName + "_2");
+		ResourceLocation tex3 = prefix("block/wood/" + texName + "_3");
 		ConfiguredModel[] unpressed = ConfiguredModel.builder()
 						.weight(10).modelFile(models().withExistingParent(plate.getRegistryName().getPath(), "pressure_plate_up").texture("texture", tex0)).nextModel()
 						.weight(10).modelFile(models().withExistingParent(plate.getRegistryName().getPath() + "_1", "pressure_plate_up").texture("texture", tex1)).nextModel()
@@ -201,10 +201,10 @@ public class BlockstateGenerator extends BlockStateProvider {
 	}
 
 	private void woodButton(Block button, String texName) {
-		ResourceLocation tex0 = prefix("blocks/wood/" + texName + "_0");
-		ResourceLocation tex1 = prefix("blocks/wood/" + texName + "_1");
-		ResourceLocation tex2 = prefix("blocks/wood/" + texName + "_2");
-		ResourceLocation tex3 = prefix("blocks/wood/" + texName + "_3");
+		ResourceLocation tex0 = prefix("block/wood/" + texName + "_0");
+		ResourceLocation tex1 = prefix("block/wood/" + texName + "_1");
+		ResourceLocation tex2 = prefix("block/wood/" + texName + "_2");
+		ResourceLocation tex3 = prefix("block/wood/" + texName + "_3");
 		ModelFile unpressed0 = models().withExistingParent(button.getRegistryName().getPath(), "button").texture("texture", tex0);
 		ModelFile pressed0 = models().withExistingParent(button.getRegistryName().getPath() + "_pressed", "button_pressed").texture("texture", tex0);
 		ModelFile unpressed1 = models().withExistingParent(button.getRegistryName().getPath() + "_1", "button").texture("texture", tex1);
@@ -259,10 +259,10 @@ public class BlockstateGenerator extends BlockStateProvider {
 	}
 
 	private void woodStairs(StairsBlock block, String texName) {
-		ResourceLocation tex0 = prefix("blocks/wood/" + texName + "_0");
-		ResourceLocation tex1 = prefix("blocks/wood/" + texName + "_1");
-		ResourceLocation tex2 = prefix("blocks/wood/" + texName + "_2");
-		ResourceLocation tex3 = prefix("blocks/wood/" + texName + "_3");
+		ResourceLocation tex0 = prefix("block/wood/" + texName + "_0");
+		ResourceLocation tex1 = prefix("block/wood/" + texName + "_1");
+		ResourceLocation tex2 = prefix("block/wood/" + texName + "_2");
+		ResourceLocation tex3 = prefix("block/wood/" + texName + "_3");
 		ModelFile main0 = models().stairs(block.getRegistryName().getPath(), tex0, tex0, tex0);
 		ModelFile main1 = models().stairs(block.getRegistryName().getPath() + "_1", tex1, tex1, tex1);
 		ModelFile main2 = models().stairs(block.getRegistryName().getPath() + "_2", tex2, tex2, tex2);

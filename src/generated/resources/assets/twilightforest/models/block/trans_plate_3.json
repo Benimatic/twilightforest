@@ -1,6 +1,6 @@
 {
   "parent": "block/pressure_plate_up",
   "textures": {
-    "texture": "twilightforest:blocks/wood/planks_trans_3"
+    "texture": "twilightforest:block/wood/planks_trans_3"
   }
 }

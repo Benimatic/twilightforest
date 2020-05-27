@@ -1,6 +1,6 @@
 {
   "parent": "block/template_fence_gate_wall_open",
   "textures": {
-    "texture": "twilightforest:blocks/wood/planks_sort_3"
+    "texture": "twilightforest:block/wood/planks_sort_3"
   }
 }

@@ -1,6 +1,6 @@
 {
   "parent": "block/button_pressed",
   "textures": {
-    "texture": "twilightforest:blocks/wood/planks_mangrove_2"
+    "texture": "twilightforest:block/wood/planks_mangrove_2"
   }
 }

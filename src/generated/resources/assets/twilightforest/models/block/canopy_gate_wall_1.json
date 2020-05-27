@@ -1,6 +1,6 @@
 {
   "parent": "block/template_fence_gate_wall",
   "textures": {
-    "texture": "twilightforest:blocks/wood/planks_canopy_1"
+    "texture": "twilightforest:block/wood/planks_canopy_1"
   }
 }

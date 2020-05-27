@@ -85,13 +85,13 @@ public class ItemModelGenerator extends ItemModelProvider {
 	private void woodenButton(Block button, String variant) {
 		getBuilder(button.getRegistryName().getPath())
 						.parent(getExistingFile(mcLoc("block/button_inventory")))
-						.texture("texture", "blocks/wood/planks_" + variant + "_0");
+						.texture("texture", "block/wood/planks_" + variant + "_0");
 	}
 
 	private void woodenFence(Block fence, String variant) {
 		getBuilder(fence.getRegistryName().getPath())
 						.parent(getExistingFile(mcLoc("block/fence_inventory")))
-						.texture("texture", "blocks/wood/planks_" + variant + "_0");
+						.texture("texture", "block/wood/planks_" + variant + "_0");
 	}
 
 	private void toBlock(Block b) {

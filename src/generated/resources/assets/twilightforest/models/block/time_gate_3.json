@@ -1,6 +1,6 @@
 {
   "parent": "block/template_fence_gate",
   "textures": {
-    "texture": "twilightforest:blocks/wood/planks_time_3"
+    "texture": "twilightforest:block/wood/planks_time_3"
   }
 }

@@ -1,6 +1,6 @@
 {
   "parent": "block/fence_post",
   "textures": {
-    "texture": "twilightforest:blocks/wood/planks_mangrove_0"
+    "texture": "twilightforest:block/wood/planks_mangrove_0"
   }
 }

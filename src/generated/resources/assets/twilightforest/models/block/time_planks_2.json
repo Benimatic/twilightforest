@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "twilightforest:blocks/wood/planks_time_2"
+    "all": "twilightforest:block/wood/planks_time_2"
   }
 }

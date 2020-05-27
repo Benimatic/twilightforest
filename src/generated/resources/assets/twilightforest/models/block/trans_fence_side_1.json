@@ -1,6 +1,6 @@
 {
   "parent": "block/fence_side",
   "textures": {
-    "texture": "twilightforest:blocks/wood/planks_trans_1"
+    "texture": "twilightforest:block/wood/planks_trans_1"
   }
 }
