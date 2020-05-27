@@ -4,10 +4,8 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.item.Rarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -31,7 +29,7 @@ public class ItemTFTwilightWand extends Item {
 		ItemStack stack = player.getHeldItem(hand);
 
 		if (stack.getDamage() == stack.getMaxDamage()) {
-			return new ActionResult<>(ActionResultType.FAIL, player.getHeldItem(hand));
+			return ActionResult.fail(player.getHeldItem(hand));
 		} else {
 			player.playSound(SoundEvents.ENTITY_GHAST_SHOOT, 1.0F, (world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F + 1.0F);
 
@@ -40,7 +38,7 @@ public class ItemTFTwilightWand extends Item {
 				stack.damageItem(1, player, (user) -> user.sendBreakAnimation(hand));
 			}
 
-			return new ActionResult<>(ActionResultType.SUCCESS, player.getHeldItem(hand));
+			return ActionResult.success(player.getHeldItem(hand));
 		}
 	}
 

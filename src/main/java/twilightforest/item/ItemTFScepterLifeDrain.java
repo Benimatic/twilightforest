@@ -11,13 +11,11 @@ import net.minecraft.particles.ItemParticleData;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.item.UseAction;
-import net.minecraft.item.Rarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -41,7 +39,7 @@ public class ItemTFScepterLifeDrain extends Item {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
 		player.setActiveHand(hand);
-		return new ActionResult<>(ActionResultType.SUCCESS, player.getHeldItem(hand));
+		return ActionResult.success(player.getHeldItem(hand));
 	}
 
 	@Override
@@ -84,7 +82,6 @@ public class ItemTFScepterLifeDrain extends Item {
 
 		for (Entity possibleEntity : possibleList) {
 
-
 			if (possibleEntity.canBeCollidedWith()) {
 				float borderSize = possibleEntity.getCollisionBorderSize();
 				AxisAlignedBB collisionBB = possibleEntity.getBoundingBox().grow((double) borderSize, (double) borderSize, (double) borderSize);
@@ -95,7 +92,7 @@ public class ItemTFScepterLifeDrain extends Item {
 						pointedEntity = possibleEntity;
 						hitDist = 0.0D;
 					}
-				} else if (interceptPos != null) {
+				} else if (interceptPos.isPresent()) {
 					double possibleDist = srcVec.distanceTo(interceptPos.get());
 
 					if (possibleDist < hitDist || hitDist == 0.0D) {
@@ -107,7 +104,6 @@ public class ItemTFScepterLifeDrain extends Item {
 		}
 		return pointedEntity;
 	}
-
 
 	@Override
 	public void onUsingTick(ItemStack stack, LivingEntity living, int count) {

@@ -4,11 +4,9 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.potion.Effects;
-import net.minecraft.item.Rarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
@@ -38,7 +36,7 @@ public class ItemTFZombieWand extends Item {
 		ItemStack stack = player.getHeldItem(hand);
 
 		if (stack.getDamage() == stack.getMaxDamage()) {
-			return new ActionResult<>(ActionResultType.FAIL, stack);
+			return ActionResult.fail(stack);
 		}
 
 		if (!world.isRemote) {
@@ -58,7 +56,7 @@ public class ItemTFZombieWand extends Item {
 			}
 		}
 
-		return new ActionResult<>(ActionResultType.SUCCESS, stack);
+		return ActionResult.success(stack);
 	}
 
 	@Override
