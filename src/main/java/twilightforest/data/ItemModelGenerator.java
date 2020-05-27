@@ -18,6 +18,9 @@ public class ItemModelGenerator extends ItemModelProvider {
 
 	@Override
 	protected void registerModels() {
+		toBlockModel(TFBlocks.twilight_portal_miniature_structure.get(), "miniature/portal");
+		toBlockModel(TFBlocks.naga_courtyard_miniature_structure.get(), "miniature/naga_courtyard");
+		toBlockModel(TFBlocks.lich_tower_miniature_structure.get(), "miniature/lich_tower");
 		toBlock(TFBlocks.firefly_jar.get());
 		toBlock(TFBlocks.oak_log.get());
 		toBlock(TFBlocks.oak_wood.get());

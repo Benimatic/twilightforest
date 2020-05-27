@@ -23,6 +23,12 @@ public class BlockstateGenerator extends BlockStateProvider {
 
 	@Override
 	protected void registerStatesAndModels() {
+		getVariantBuilder(TFBlocks.twilight_portal_miniature_structure.get()).partialState()
+						.setModels(ConfiguredModel.builder().modelFile(models().getExistingFile(prefix("block/miniature/portal"))).build());
+		getVariantBuilder(TFBlocks.naga_courtyard_miniature_structure.get()).partialState()
+						.setModels(ConfiguredModel.builder().modelFile(models().getExistingFile(prefix("block/miniature/naga_courtyard"))).build());
+		getVariantBuilder(TFBlocks.lich_tower_miniature_structure.get()).partialState()
+						.setModels(ConfiguredModel.builder().modelFile(models().getExistingFile(prefix("block/miniature/lich_tower"))).build());
 		getVariantBuilder(TFBlocks.firefly_jar.get()).partialState()
 						.setModels(ConfiguredModel.builder().modelFile(models().getExistingFile(prefix("block/firefly_jar"))).build());
 		registerWoodBlocks();

@@ -160,8 +160,6 @@ public class TFItems {
 	public static final RegistryObject<Item> moon_dial = ITEMS.register("moon_dial", () -> new ItemTFMoonDial(defaultBuilder()));
 
 	//TODO 1.14: These may potentially not be used
-//	@GameRegistry.ObjectHolder("miniature_structure")
-//	public static final RegistryObject<Item> miniature_structure;
 //	@GameRegistry.ObjectHolder("castle_door")
 //	public static final RegistryObject<Item> castle_door;
 //	@GameRegistry.ObjectHolder("block_storage")
