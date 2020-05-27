@@ -7,6 +7,7 @@ import twilightforest.block.TFBlocks;
 public class RenderLayerRegistration {
 	public static void init() {
 		RenderType cutout = RenderType.getCutout();
+		RenderTypeLookup.setRenderLayer(TFBlocks.firefly_jar.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.oak_sapling.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.canopy_sapling.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.mangrove_sapling.get(), cutout);

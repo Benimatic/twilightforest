@@ -20,6 +20,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 
 	@Override
 	protected void addTables() {
+		registerDropSelfLootTable(TFBlocks.firefly_jar.get());
 		registerDropSelfLootTable(TFBlocks.oak_log.get());
 		registerDropSelfLootTable(TFBlocks.oak_wood.get());
 		registerDropSelfLootTable(TFBlocks.oak_sapling.get());

@@ -317,6 +317,7 @@ public class TFBlocks {
 	public static void registerItemblocks(RegistryEvent.Register<Item> evt) {
 		IForgeRegistry<Item> r = evt.getRegistry();
 		List<Block> standard = Arrays.asList(
+						firefly_jar.get(),
 						oak_log.get(), canopy_log.get(), mangrove_log.get(), dark_log.get(), time_log.get(), transformation_log.get(), mining_log.get(), sorting_log.get(),
 						oak_wood.get(), canopy_wood.get(), mangrove_wood.get(), dark_wood.get(), time_wood.get(), transformation_wood.get(), mining_wood.get(), sorting_wood.get(),
 						oak_sapling.get(), canopy_sapling.get(), mangrove_sapling.get(), darkwood_sapling.get(), time_sapling.get(), transformation_sapling.get(), mining_sapling.get(), sorting_sapling.get(),

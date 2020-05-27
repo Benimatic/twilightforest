@@ -23,6 +23,8 @@ public class BlockstateGenerator extends BlockStateProvider {
 
 	@Override
 	protected void registerStatesAndModels() {
+		getVariantBuilder(TFBlocks.firefly_jar.get()).partialState()
+						.setModels(ConfiguredModel.builder().modelFile(models().getExistingFile(prefix("block/firefly_jar"))).build());
 		registerWoodBlocks();
 	}
 
