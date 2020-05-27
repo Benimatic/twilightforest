@@ -8,6 +8,5 @@ public class BlockTFCastleStairs extends StairsBlock {
 
 	BlockTFCastleStairs(BlockState state) {
 		super(() -> state, Properties.from(state.getBlock()).hardnessAndResistance(100.0F, 35F).sound(SoundType.STONE));
-		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
 	}
 }

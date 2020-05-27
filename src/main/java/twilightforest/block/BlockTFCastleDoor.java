@@ -21,6 +21,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.network.PacketDistributor;
+import twilightforest.network.PacketAnnihilateBlock;
+import twilightforest.network.TFPacketHandler;
 import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFWorld;
 
@@ -64,12 +67,6 @@ public class BlockTFCastleDoor extends Block {
 		builder.add(ACTIVE, VANISH);
 	}
 
-	//TODO: Find out what this does now
-//	@Override
-//	public boolean isSolid(BlockState state) {
-//		return !state.get(VANISH);
-//	}
-
 	@Override
 	@Deprecated
 	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
@@ -112,14 +109,12 @@ public class BlockTFCastleDoor extends Block {
 		changeActiveState(world, pos, true, originState);
 		playVanishSound(world, pos);
 
-		//world.scheduleUpdate(pos, originState.getBlock(), 2 + world.rand.nextInt(5));
+		world.getPendingBlockTicks().scheduleTick(pos, originState.getBlock(), 2 + world.rand.nextInt(5));
 	}
 
 	private static void changeActiveState(World world, BlockPos pos, boolean active, BlockState originState) {
 		if (originState.getBlock() instanceof BlockTFCastleDoor) {
-			world.setBlockState(pos, originState.with(ACTIVE, active), 3);
-			//world.markBlockRangeForRenderUpdate(pos, pos);
-			//world.notifyNeighborsRespectDebug(pos, originState.getBlock(), false);
+			world.setBlockState(pos, originState.with(ACTIVE, active));
 		}
 	}
 
@@ -179,12 +174,10 @@ public class BlockTFCastleDoor extends Block {
 //		return state.getValue(LOCK_INDEX);
 //	}
 
-	//TODO: How to packet
-//	private void sendAnnihilateBlockPacket(World world, BlockPos pos) {
-//		IMessage message = new PacketAnnihilateBlock(pos);
-//		NetworkRegistry.TargetPoint targetPoint = new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 64);
-//		TFPacketHandler.CHANNEL.sendToAllAround(message, targetPoint);
-//	}
+	private void sendAnnihilateBlockPacket(World world, BlockPos pos) {
+		PacketDistributor.TargetPoint targetPoint = new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), 64, world.getDimension().getType());
+		TFPacketHandler.CHANNEL.send(PacketDistributor.NEAR.with(() -> targetPoint), new PacketAnnihilateBlock(pos));
+	}
 
 	private static void playVanishSound(World world, BlockPos pos) {
 		world.playSound(null, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.125f, world.rand.nextFloat() * 0.25F + 1.75F);
@@ -267,21 +260,9 @@ public class BlockTFCastleDoor extends Block {
 //		return BlockRenderLayer.TRANSLUCENT;
 //	}
 
-	//TODO: Removed. Check this
-//	@Override
-//	@Deprecated
-//	public boolean doesSideBlockRendering(BlockState blockState, IEnviromentBlockReader blockAccess, BlockPos pos, Direction side) {
-//		return !(blockAccess.getBlockState(pos.offset(side)).getBlock() instanceof BlockTFCastleDoor) && shouldSideBeRendered(blockState, blockAccess, pos, side);
-//	}
-
 	//TODO: Move to loot table
 	//	@Override
 //	public ItemStack getItem(World world, BlockPos pos, BlockState state) {
-//		return new ItemStack(TFItems.castle_door, 1, damageDropped(state));
-//	}
-//
-//	@Override
-//	protected ItemStack getSilkTouchDrop(BlockState state) {
 //		return new ItemStack(TFItems.castle_door, 1, damageDropped(state));
 //	}
 }

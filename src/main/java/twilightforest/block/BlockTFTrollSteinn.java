@@ -26,10 +26,9 @@ public class BlockTFTrollSteinn extends Block {
 
 	private static final int LIGHT_THRESHHOLD = 7;
 
-	BlockTFTrollSteinn() {
-		super(Properties.create(Material.ROCK).hardnessAndResistance(2.0F, 15.0F).sound(SoundType.STONE));
+	BlockTFTrollSteinn(Properties props) {
+		super(props);
 
-		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
 		this.setDefaultState(stateContainer.getBaseState()
 				.with(DOWN_LIT, false).with(UP_LIT, false)
 				.with(NORTH_LIT, false).with(SOUTH_LIT, false)

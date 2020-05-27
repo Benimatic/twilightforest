@@ -41,11 +41,10 @@ public class ItemTFZombieWand extends Item {
 
 		if (!world.isRemote) {
 			// what block is the player pointing at?
-			RayTraceResult ray = EntityUtil.rayTrace(player, 20.0);
-			BlockRayTraceResult blockray = (BlockRayTraceResult) ray;
+			BlockRayTraceResult blockray = EntityUtil.rayTrace(player, 20.0);
 
-			if (ray != null && blockray.getPos() != null) {
-				EntityTFLoyalZombie zombie = new EntityTFLoyalZombie(TFEntities.loyal_zombie.get(), world);
+			if (blockray.getType() != RayTraceResult.Type.MISS) {
+				EntityTFLoyalZombie zombie = TFEntities.loyal_zombie.get().create(world);
 				zombie.setPositionAndRotation(blockray.getPos().getX(), blockray.getPos().getY(), blockray.getPos().getZ(), 1.0F, 1.0F);
 				zombie.setTamed(true);
 				zombie.setOwnerId(player.getUniqueID());

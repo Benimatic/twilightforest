@@ -12,9 +12,8 @@ import net.minecraft.block.material.Material;
  */
 public class BlockTFCastleMagic extends Block {
 
-	public BlockTFCastleMagic() {
-		super(Properties.create(Material.ROCK, MaterialColor.QUARTZ).hardnessAndResistance(100.0F, 15.0F).sound(SoundType.STONE));
-		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
+	public BlockTFCastleMagic(Properties props) {
+		super(props);
 	}
 
 	//TODO: Move to client

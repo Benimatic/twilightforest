@@ -7,8 +7,7 @@ import net.minecraft.block.material.Material;
 
 public class BlockTFCastlePillar extends RotatedPillarBlock {
 
-    BlockTFCastlePillar() {
-        super(Properties.create(Material.ROCK, MaterialColor.QUARTZ).hardnessAndResistance(100.0F, 35.0F).sound(SoundType.STONE));
-        //this.setCreativeTab(TFItems.creativeTab); TODO 1.14
+    BlockTFCastlePillar(Properties props) {
+        super(props);
     }
 }

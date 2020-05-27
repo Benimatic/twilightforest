@@ -31,7 +31,6 @@ public class BlockTFShield extends DirectionalBlock {
 	@Nullable
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		//return getDefaultState().with(FACING, Direction.getDirectionFromEntityLiving(pos, placer));
 		return getDefaultState().with(FACING, context.getNearestLookingDirection().getOpposite());
 	}
 
@@ -39,9 +38,9 @@ public class BlockTFShield extends DirectionalBlock {
 	@Deprecated
 	public float getPlayerRelativeBlockHardness(BlockState state, PlayerEntity player, IBlockReader world, BlockPos pos) {
 		// why can't we just pass the side to this method?  This is annoying and failure-prone
-		RayTraceResult ray = EntityUtil.rayTrace(player, range -> range + 1.0);
+		BlockRayTraceResult ray = EntityUtil.rayTrace(player, range -> range + 1.0);
 
-		Direction hitFace = ray != null ? ((BlockRayTraceResult) ray).getFace() : null;
+		Direction hitFace = ray.getFace();
 		Direction blockFace = state.get(DirectionalBlock.FACING);
 
 		if (hitFace == blockFace) {

@@ -52,12 +52,10 @@ public abstract class BlockTFConnectableRotatedPillar extends RotatedPillarBlock
                 .with(FenceBlock.SOUTH, false).with(FenceBlock.EAST, false));
     }
 
-    protected abstract IProperty[] getAdditionalProperties();
-
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
         super.fillStateContainer(builder);
-        builder.add(FenceBlock.NORTH, FenceBlock.EAST, FenceBlock.SOUTH, FenceBlock.WEST).add(getAdditionalProperties());
+        builder.add(FenceBlock.NORTH, FenceBlock.EAST, FenceBlock.SOUTH, FenceBlock.WEST);
     }
 
 //	@Override

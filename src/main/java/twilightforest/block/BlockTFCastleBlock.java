@@ -24,7 +24,6 @@ public class BlockTFCastleBlock extends Block {
 
 	public BlockTFCastleBlock(MaterialColor color) {
 		super(Properties.create(Material.ROCK, color).hardnessAndResistance(100.0F, 35.0F).sound(SoundType.STONE));
-		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
 	}
 
 	@Override

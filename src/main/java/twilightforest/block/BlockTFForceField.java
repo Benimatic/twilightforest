@@ -61,8 +61,4 @@ public class BlockTFForceField extends BlockTFConnectableRotatedPillar {
 //		return world.getBlockState(pos.offset(face)).getBlock() != this && Block.shouldSideBeRendered(state, world, pos, face);
 //	}
 
-	@Override
-	protected IProperty[] getAdditionalProperties() {
-		return new IProperty[0];
-	}
 }

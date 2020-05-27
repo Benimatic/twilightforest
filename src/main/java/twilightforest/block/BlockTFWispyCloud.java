@@ -6,10 +6,8 @@ import net.minecraft.block.material.Material;
 
 public class BlockTFWispyCloud extends BreakableBlock {
 
-	protected BlockTFWispyCloud() {
-		//super(new Material(MaterialColor.SNOW), false); TODO: Why are we making a new Material, exactly?
-		super(Properties.create(Material.SNOW).hardnessAndResistance(0.3F).sound(SoundType.CLOTH));
-		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
+	protected BlockTFWispyCloud(Properties props) {
+		super(props);
 	}
 
 	//TODO: Move to client

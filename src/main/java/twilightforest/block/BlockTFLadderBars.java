@@ -17,8 +17,8 @@ public class BlockTFLadderBars extends LadderBlock {
     public static final BooleanProperty LEFT = BooleanProperty.create("left");
 	public static final BooleanProperty RIGHT = BooleanProperty.create("right");
 
-    BlockTFLadderBars() {
-    	super(Properties.create(Material.MISCELLANEOUS).hardnessAndResistance(5.0F, 10.0F).sound(SoundType.METAL));
+    BlockTFLadderBars(Properties props) {
+        super(props);
         this.setDefaultState(this.getDefaultState().with(LEFT, false).with(RIGHT, false));
     }
 
