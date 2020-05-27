@@ -1,8 +1,8 @@
 {
   "parent": "block/block",
   "textures": {
-    "particle": "twilightforest:blocks/forcefield_white",
-    "all2": "twilightforest:blocks/castle_door_rune_corners"
+    "particle": "twilightforest:block/forcefield_white",
+    "all2": "twilightforest:block/castle_door_rune_corners"
   },
   "elements": [
     {

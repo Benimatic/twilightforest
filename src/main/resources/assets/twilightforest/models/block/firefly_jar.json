@@ -1,10 +1,10 @@
 {
   "parent": "block/block",
   "textures": {
-    "particle": "blocks/glass",
-    "side": "twilightforest:blocks/fireflyjar_side",
-    "end": "twilightforest:blocks/fireflyjar_top",
-    "cork": "twilightforest:blocks/fireflyjar_cork"
+    "particle": "block/glass",
+    "side": "twilightforest:block/fireflyjar_side",
+    "end": "twilightforest:block/fireflyjar_top",
+    "cork": "twilightforest:block/fireflyjar_cork"
   },
   "elements": [
     {

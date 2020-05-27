@@ -37,10 +37,10 @@
     }
   },
   "textures": {
-    "particle": "blocks/stonebrick",
-    "birchwood": "blocks/planks_birch",
-    "oakwood": "blocks/planks_oak",
-    "stonebricks": "blocks/stonebrick"
+    "particle": "block/stonebrick",
+    "birchwood": "block/planks_birch",
+    "oakwood": "block/planks_oak",
+    "stonebricks": "block/stonebrick"
   },
   "elements": [
     {
