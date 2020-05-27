@@ -19,6 +19,7 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
+import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.commons.lang3.tuple.Pair;
@@ -183,8 +184,8 @@ public class TwilightForestMod {
 		});
 	}
 
-	public void startServer(FMLServerStartingEvent event) {
-		TFCommand.register(event.getCommandDispatcher());
+	public void startServer(FMLServerAboutToStartEvent event) {
+		TFCommand.register(event.getServer().getCommandManager().getDispatcher());
 	}
 
 	public static ResourceLocation prefix(String name) {
