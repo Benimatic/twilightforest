@@ -674,12 +674,16 @@ d3c87d06cf2969649131abcb34541df72cf9480f assets/twilightforest/models/item/twili
 582f0cd48d428219bf2a684ca764880337688177 data/forge/tags/blocks/fences/wooden.json
 34355afaa2aff5f9dc56e9f1a07eab82a9ff1b11 data/forge/tags/items/fence_gates/wooden.json
 582f0cd48d428219bf2a684ca764880337688177 data/forge/tags/items/fences/wooden.json
+fc4bf0a61a4e3703fe36f2b84c74e32c7cd2bbc9 data/minecraft/tags/blocks/slabs.json
+dff03e7943801be09305bd92bd4714211a275e47 data/minecraft/tags/blocks/stairs.json
 3488b037358f2a10f9a9b6a338f1101493680296 data/minecraft/tags/blocks/wooden_buttons.json
 8c5ee250c65685203f7a0599b245085647cadffc data/minecraft/tags/blocks/wooden_doors.json
 9e40cef06d152cd5e037601916c75cfdd2ed8b96 data/minecraft/tags/blocks/wooden_pressure_plates.json
 fc4bf0a61a4e3703fe36f2b84c74e32c7cd2bbc9 data/minecraft/tags/blocks/wooden_slabs.json
 dff03e7943801be09305bd92bd4714211a275e47 data/minecraft/tags/blocks/wooden_stairs.json
 6143aa3040495e5971f91285be1a9dc1c96be9da data/minecraft/tags/blocks/wooden_trapdoors.json
+fc4bf0a61a4e3703fe36f2b84c74e32c7cd2bbc9 data/minecraft/tags/items/slabs.json
+dff03e7943801be09305bd92bd4714211a275e47 data/minecraft/tags/items/stairs.json
 3488b037358f2a10f9a9b6a338f1101493680296 data/minecraft/tags/items/wooden_buttons.json
 8c5ee250c65685203f7a0599b245085647cadffc data/minecraft/tags/items/wooden_doors.json
 9e40cef06d152cd5e037601916c75cfdd2ed8b96 data/minecraft/tags/items/wooden_pressure_plates.json

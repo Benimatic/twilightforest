@@ -18,6 +18,9 @@ public class ItemTagGenerator extends ItemTagsProvider {
 		this.copy(BlockTags.WOODEN_DOORS, ItemTags.WOODEN_DOORS);
 		this.copy(BlockTags.WOODEN_SLABS, ItemTags.WOODEN_SLABS);
 		this.copy(BlockTags.WOODEN_STAIRS, ItemTags.WOODEN_STAIRS);
+		// why don't the vanilla slab/stair tags include the wooden subtags by default? >.>
+		this.copy(BlockTags.SLABS, ItemTags.SLABS);
+		this.copy(BlockTags.STAIRS, ItemTags.STAIRS);
 		this.copy(BlockTags.WOODEN_BUTTONS, ItemTags.WOODEN_BUTTONS);
 		this.copy(BlockTags.WOODEN_PRESSURE_PLATES, ItemTags.WOODEN_PRESSURE_PLATES);
 		this.copy(BlockTags.WOODEN_TRAPDOORS, ItemTags.WOODEN_TRAPDOORS);
