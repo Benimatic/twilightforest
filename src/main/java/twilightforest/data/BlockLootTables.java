@@ -20,6 +20,9 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 
 	@Override
 	protected void addTables() {
+		registerDropSelfLootTable(TFBlocks.oak_log.get());
+		registerDropSelfLootTable(TFBlocks.oak_wood.get());
+		registerDropSelfLootTable(TFBlocks.oak_sapling.get());
 		registerDropSelfLootTable(TFBlocks.twilight_oak_planks.get());
 		registerDropSelfLootTable(TFBlocks.twilight_oak_stairs.get());
 		registerLootTable(TFBlocks.twilight_oak_slab.get(), droppingSlab(TFBlocks.twilight_oak_slab.get()));
@@ -30,6 +33,9 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerLootTable(TFBlocks.twilight_oak_door.get(), (b) -> droppingWhen(b, DoorBlock.HALF, DoubleBlockHalf.LOWER));
 		registerDropSelfLootTable(TFBlocks.twilight_oak_trapdoor.get());
 
+		registerDropSelfLootTable(TFBlocks.canopy_log.get());
+		registerDropSelfLootTable(TFBlocks.canopy_wood.get());
+		registerDropSelfLootTable(TFBlocks.canopy_sapling.get());
 		registerDropSelfLootTable(TFBlocks.canopy_planks.get());
 		registerDropSelfLootTable(TFBlocks.canopy_stairs.get());
 		registerLootTable(TFBlocks.canopy_slab.get(), droppingSlab(TFBlocks.canopy_slab.get()));
@@ -40,6 +46,9 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerLootTable(TFBlocks.canopy_door.get(), (b) -> droppingWhen(b, DoorBlock.HALF, DoubleBlockHalf.LOWER));
 		registerDropSelfLootTable(TFBlocks.canopy_trapdoor.get());
 
+		registerDropSelfLootTable(TFBlocks.mangrove_log.get());
+		registerDropSelfLootTable(TFBlocks.mangrove_wood.get());
+		registerDropSelfLootTable(TFBlocks.mangrove_sapling.get());
 		registerDropSelfLootTable(TFBlocks.mangrove_planks.get());
 		registerDropSelfLootTable(TFBlocks.mangrove_stairs.get());
 		registerLootTable(TFBlocks.mangrove_slab.get(), droppingSlab(TFBlocks.mangrove_slab.get()));
@@ -50,6 +59,9 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerLootTable(TFBlocks.mangrove_door.get(), (b) -> droppingWhen(b, DoorBlock.HALF, DoubleBlockHalf.LOWER));
 		registerDropSelfLootTable(TFBlocks.mangrove_trapdoor.get());
 
+		registerDropSelfLootTable(TFBlocks.dark_log.get());
+		registerDropSelfLootTable(TFBlocks.dark_wood.get());
+		registerDropSelfLootTable(TFBlocks.darkwood_sapling.get());
 		registerDropSelfLootTable(TFBlocks.dark_planks.get());
 		registerDropSelfLootTable(TFBlocks.dark_stairs.get());
 		registerLootTable(TFBlocks.dark_slab.get(), droppingSlab(TFBlocks.dark_slab.get()));

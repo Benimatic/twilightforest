@@ -30,10 +30,10 @@ import java.util.List;
 public class TFBlocks {
 	public static final DeferredRegister<Block> BLOCKS = new DeferredRegister<>(ForgeRegistries.BLOCKS, TwilightForestMod.ID);
 
-	public static final RegistryObject<Block> oak_log                    = BLOCKS.register("oak_log", () -> new BlockTFLog(MaterialColor.WOOD, Block.Properties.create(Material.WOOD, MaterialColor.OBSIDIAN).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<Block> canopy_log                 = BLOCKS.register("canopy_log", () -> new BlockTFLog(MaterialColor.OBSIDIAN, Block.Properties.create(Material.WOOD, MaterialColor.BROWN).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<Block> mangrove_log               = BLOCKS.register("mangrove_log", () -> new BlockTFLog(MaterialColor.DIRT, Block.Properties.create(Material.WOOD, MaterialColor.OBSIDIAN).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<Block> dark_log                   = BLOCKS.register("dark_log", () -> new BlockTFLog(MaterialColor.ADOBE, Block.Properties.create(Material.WOOD, MaterialColor.STONE).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
+	public static final RegistryObject<LogBlock> oak_log                    = BLOCKS.register("oak_log", () -> new BlockTFLog(MaterialColor.WOOD, Block.Properties.create(Material.WOOD, MaterialColor.OBSIDIAN).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
+	public static final RegistryObject<LogBlock> canopy_log                 = BLOCKS.register("canopy_log", () -> new BlockTFLog(MaterialColor.OBSIDIAN, Block.Properties.create(Material.WOOD, MaterialColor.BROWN).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
+	public static final RegistryObject<LogBlock> mangrove_log               = BLOCKS.register("mangrove_log", () -> new BlockTFLog(MaterialColor.DIRT, Block.Properties.create(Material.WOOD, MaterialColor.OBSIDIAN).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
+	public static final RegistryObject<LogBlock> dark_log                   = BLOCKS.register("dark_log", () -> new BlockTFLog(MaterialColor.ADOBE, Block.Properties.create(Material.WOOD, MaterialColor.STONE).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<Block> oak_wood                   = BLOCKS.register("oak_wood", () -> new BlockTFLog(MaterialColor.WOOD, Block.Properties.create(Material.WOOD, MaterialColor.WOOD).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<Block> canopy_wood                = BLOCKS.register("canopy_wood", () -> new BlockTFLog(MaterialColor.OBSIDIAN, Block.Properties.create(Material.WOOD, MaterialColor.OBSIDIAN).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<Block> mangrove_wood              = BLOCKS.register("mangrove_wood", () -> new BlockTFLog(MaterialColor.DIRT, Block.Properties.create(Material.WOOD, MaterialColor.DIRT).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
@@ -317,6 +317,9 @@ public class TFBlocks {
 	public static void registerItemblocks(RegistryEvent.Register<Item> evt) {
 		IForgeRegistry<Item> r = evt.getRegistry();
 		List<Block> standard = Arrays.asList(
+						oak_log.get(), canopy_log.get(), mangrove_log.get(), dark_log.get(),
+						oak_wood.get(), canopy_wood.get(), mangrove_wood.get(), dark_wood.get(),
+						oak_sapling.get(), canopy_sapling.get(), mangrove_sapling.get(), darkwood_sapling.get(),
 						twilight_oak_planks.get(), twilight_oak_stairs.get(), twilight_oak_slab.get(), twilight_oak_button.get(), twilight_oak_fence.get(), twilight_oak_gate.get(), twilight_oak_plate.get(), twilight_oak_trapdoor.get(),
 						canopy_planks.get(), canopy_stairs.get(), canopy_slab.get(), canopy_button.get(), canopy_fence.get(), canopy_gate.get(), canopy_plate.get(), canopy_trapdoor.get(),
 						mangrove_planks.get(), mangrove_stairs.get(), mangrove_slab.get(), mangrove_button.get(), mangrove_fence.get(), mangrove_gate.get(), mangrove_plate.get(), mangrove_trapdoor.get(),
