@@ -39,8 +39,8 @@
     "stone":      "block/stone",
     "brick":      "block/stone_bricks",
     "moss_brick": "block/mossy_stone_bricks",
-    "slab_side":  "block/smooth_stone_slab_top",
-    "slab_top":   "block/smooth_stone_slab_top"
+    "slab_side":  "block/smooth_stone_slab_side",
+    "slab_top":   "block/smooth_stone"
   },
   "elements": [ {
     "from": [  1, 2,  1 ],
