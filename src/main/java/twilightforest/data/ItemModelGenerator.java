@@ -2,8 +2,11 @@ package twilightforest.data;
 
 import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.ExistingFileHelper;
+import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
+import net.minecraftforge.client.model.generators.ModelFile;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 
@@ -16,6 +19,9 @@ public class ItemModelGenerator extends ItemModelProvider {
 
 	@Override
 	protected void registerModels() {
+		toBlock(TFBlocks.oak_log.get());
+		toBlock(TFBlocks.oak_wood.get());
+		generated(TFBlocks.oak_sapling.getId().getPath(), prefix("block/" + TFBlocks.oak_sapling.getId().getPath()));
 		toBlock(TFBlocks.twilight_oak_planks.get());
 		toBlock(TFBlocks.twilight_oak_stairs.get());
 		toBlock(TFBlocks.twilight_oak_slab.get());
@@ -24,6 +30,9 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.twilight_oak_gate.get());
 		toBlock(TFBlocks.twilight_oak_plate.get());
 		toBlockModel(TFBlocks.twilight_oak_trapdoor.get(), "twilight_oak_trapdoor_bottom");
+		toBlock(TFBlocks.canopy_log.get());
+		toBlock(TFBlocks.canopy_wood.get());
+		generated(TFBlocks.canopy_sapling.getId().getPath(), prefix("block/" + TFBlocks.canopy_sapling.getId().getPath()));
 		toBlock(TFBlocks.canopy_planks.get());
 		toBlock(TFBlocks.canopy_stairs.get());
 		toBlock(TFBlocks.canopy_slab.get());
@@ -32,6 +41,9 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.canopy_gate.get());
 		toBlock(TFBlocks.canopy_plate.get());
 		toBlockModel(TFBlocks.canopy_trapdoor.get(), "canopy_trapdoor_bottom");
+		toBlock(TFBlocks.mangrove_log.get());
+		toBlock(TFBlocks.mangrove_wood.get());
+		generated(TFBlocks.mangrove_sapling.getId().getPath(), prefix("block/" + TFBlocks.mangrove_sapling.getId().getPath()));
 		toBlock(TFBlocks.mangrove_planks.get());
 		toBlock(TFBlocks.mangrove_stairs.get());
 		toBlock(TFBlocks.mangrove_slab.get());
@@ -40,6 +52,9 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.mangrove_gate.get());
 		toBlock(TFBlocks.mangrove_plate.get());
 		toBlockModel(TFBlocks.mangrove_trapdoor.get(), "mangrove_trapdoor_bottom");
+		toBlock(TFBlocks.dark_log.get());
+		toBlock(TFBlocks.dark_wood.get());
+		generated(TFBlocks.darkwood_sapling.getId().getPath(), prefix("block/" + TFBlocks.darkwood_sapling.getId().getPath()));
 		toBlock(TFBlocks.dark_planks.get());
 		toBlock(TFBlocks.dark_stairs.get());
 		toBlock(TFBlocks.dark_slab.get());
@@ -80,6 +95,13 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.sort_gate.get());
 		toBlock(TFBlocks.sort_plate.get());
 		toBlockModel(TFBlocks.sort_trapdoor.get(), "sort_trapdoor_bottom");
+	}
+
+	private void generated(String name, ResourceLocation... layers) {
+		ItemModelBuilder builder = withExistingParent(name, "item/generated");
+		for (int i = 0; i < layers.length; i++) {
+			builder = builder.texture("layer" + i, layers[i]);
+		}
 	}
 
 	private void woodenButton(Block button, String variant) {

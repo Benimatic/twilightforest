@@ -27,13 +27,13 @@ public class BlockstateGenerator extends BlockStateProvider {
 	}
 
 	private void registerWoodBlocks() {
-		logAndWood(TFBlocks.oak_log.get(), TFBlocks.oak_wood.get());
+		logWoodSapling(TFBlocks.oak_log.get(), TFBlocks.oak_wood.get(), TFBlocks.oak_sapling.get());
 		woodBlock("twilight_oak", TFBlocks.twilight_oak_planks.get(), TFBlocks.twilight_oak_slab.get(), TFBlocks.twilight_oak_stairs.get(), TFBlocks.twilight_oak_button.get(), TFBlocks.twilight_oak_fence.get(), TFBlocks.twilight_oak_gate.get(), TFBlocks.twilight_oak_plate.get(), TFBlocks.twilight_oak_door.get(), TFBlocks.twilight_oak_trapdoor.get());
-		logAndWood(TFBlocks.canopy_log.get(), TFBlocks.canopy_wood.get());
+		logWoodSapling(TFBlocks.canopy_log.get(), TFBlocks.canopy_wood.get(), TFBlocks.canopy_sapling.get());
 		woodBlock("canopy", TFBlocks.canopy_planks.get(), TFBlocks.canopy_slab.get(), TFBlocks.canopy_stairs.get(), TFBlocks.canopy_button.get(), TFBlocks.canopy_fence.get(), TFBlocks.canopy_gate.get(), TFBlocks.canopy_plate.get(), TFBlocks.canopy_door.get(), TFBlocks.canopy_trapdoor.get());
-		logAndWood(TFBlocks.mangrove_log.get(), TFBlocks.mangrove_wood.get());
+		logWoodSapling(TFBlocks.mangrove_log.get(), TFBlocks.mangrove_wood.get(), TFBlocks.mangrove_sapling.get());
 		woodBlock("mangrove", TFBlocks.mangrove_planks.get(), TFBlocks.mangrove_slab.get(), TFBlocks.mangrove_stairs.get(), TFBlocks.mangrove_button.get(), TFBlocks.mangrove_fence.get(), TFBlocks.mangrove_gate.get(), TFBlocks.mangrove_plate.get(), TFBlocks.mangrove_door.get(), TFBlocks.mangrove_trapdoor.get());
-		logAndWood(TFBlocks.dark_log.get(), TFBlocks.dark_wood.get());
+		logWoodSapling(TFBlocks.dark_log.get(), TFBlocks.dark_wood.get(), TFBlocks.darkwood_sapling.get());
 		woodBlock("darkwood", TFBlocks.dark_planks.get(), TFBlocks.dark_slab.get(), TFBlocks.dark_stairs.get(), TFBlocks.dark_button.get(), TFBlocks.dark_fence.get(), TFBlocks.dark_gate.get(), TFBlocks.dark_plate.get(), TFBlocks.dark_door.get(), TFBlocks.dark_trapdoor.get());
 		woodBlock("time", TFBlocks.time_planks.get(), TFBlocks.time_slab.get(), TFBlocks.time_stairs.get(), TFBlocks.time_button.get(), TFBlocks.time_fence.get(), TFBlocks.time_gate.get(), TFBlocks.time_plate.get(), TFBlocks.time_door.get(), TFBlocks.time_trapdoor.get());
 		woodBlock("trans", TFBlocks.trans_planks.get(), TFBlocks.trans_slab.get(), TFBlocks.trans_stairs.get(), TFBlocks.trans_button.get(), TFBlocks.trans_fence.get(), TFBlocks.trans_gate.get(), TFBlocks.trans_plate.get(), TFBlocks.trans_door.get(), TFBlocks.trans_trapdoor.get());
@@ -41,11 +41,15 @@ public class BlockstateGenerator extends BlockStateProvider {
 		woodBlock("sort", TFBlocks.sort_planks.get(), TFBlocks.sort_slab.get(), TFBlocks.sort_stairs.get(), TFBlocks.sort_button.get(), TFBlocks.sort_fence.get(), TFBlocks.sort_gate.get(), TFBlocks.sort_plate.get(), TFBlocks.sort_door.get(), TFBlocks.sort_trapdoor.get());
 	}
 
-	private void logAndWood(LogBlock log, Block wood) {
+	private void logWoodSapling(LogBlock log, Block wood, Block sapling) {
 		logBlock(log);
 		ResourceLocation sideTex = blockTexture(log);
 		getVariantBuilder(wood).partialState()
 						.setModels(ConfiguredModel.builder().modelFile(models().cubeAll(wood.getRegistryName().getPath(), sideTex)).build());
+
+		ResourceLocation saplingTex = prefix("block/" + sapling.getRegistryName().getPath());
+		getVariantBuilder(sapling).partialState()
+						.setModels(ConfiguredModel.builder().modelFile(models().cross(sapling.getRegistryName().getPath(), saplingTex)).build());
 	}
 
 	private void woodBlock(String variant, Block plank, Block slab, StairsBlock stair, Block button, Block fence, Block gate, Block plate, DoorBlock door, TrapDoorBlock trapdoor) {
