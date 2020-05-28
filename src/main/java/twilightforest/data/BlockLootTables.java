@@ -11,6 +11,9 @@ import java.util.Set;
 
 public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 	private final Set<Block> knownBlocks = new HashSet<>();
+	// [VanillaCopy] super
+	private static final float[] DEFAULT_SAPLING_DROP_RATES = new float[]{0.05F, 0.0625F, 0.083333336F, 0.1F};
+	private static final float[] RARE_SAPLING_DROP_RATES = new float[]{0.025F, 0.027777778F, 0.03125F, 0.041666668F, 0.1F};
 
 	@Override
 	protected void registerLootTable(Block block, LootTable.Builder builder) {
@@ -27,7 +30,9 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.oak_log.get());
 		registerDropSelfLootTable(TFBlocks.oak_wood.get());
 		registerDropSelfLootTable(TFBlocks.oak_sapling.get());
+		registerLootTable(TFBlocks.oak_leaves.get(), droppingWithChancesAndSticks(TFBlocks.oak_leaves.get(), TFBlocks.oak_sapling.get(), DEFAULT_SAPLING_DROP_RATES));
 		registerDropSelfLootTable(TFBlocks.rainboak_sapling.get());
+		registerLootTable(TFBlocks.rainboak_leaves.get(), droppingWithChancesAndSticks(TFBlocks.rainboak_leaves.get(), TFBlocks.rainboak_sapling.get(), RARE_SAPLING_DROP_RATES));
 		registerDropSelfLootTable(TFBlocks.twilight_oak_planks.get());
 		registerDropSelfLootTable(TFBlocks.twilight_oak_stairs.get());
 		registerLootTable(TFBlocks.twilight_oak_slab.get(), droppingSlab(TFBlocks.twilight_oak_slab.get()));
@@ -41,6 +46,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.canopy_log.get());
 		registerDropSelfLootTable(TFBlocks.canopy_wood.get());
 		registerDropSelfLootTable(TFBlocks.canopy_sapling.get());
+		registerLootTable(TFBlocks.canopy_leaves.get(), droppingWithChancesAndSticks(TFBlocks.canopy_leaves.get(), TFBlocks.canopy_sapling.get(), DEFAULT_SAPLING_DROP_RATES));
 		registerDropSelfLootTable(TFBlocks.canopy_planks.get());
 		registerDropSelfLootTable(TFBlocks.canopy_stairs.get());
 		registerLootTable(TFBlocks.canopy_slab.get(), droppingSlab(TFBlocks.canopy_slab.get()));
@@ -54,6 +60,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.mangrove_log.get());
 		registerDropSelfLootTable(TFBlocks.mangrove_wood.get());
 		registerDropSelfLootTable(TFBlocks.mangrove_sapling.get());
+		registerLootTable(TFBlocks.mangrove_leaves.get(), droppingWithChancesAndSticks(TFBlocks.mangrove_leaves.get(), TFBlocks.mangrove_sapling.get(), DEFAULT_SAPLING_DROP_RATES));
 		registerDropSelfLootTable(TFBlocks.mangrove_planks.get());
 		registerDropSelfLootTable(TFBlocks.mangrove_stairs.get());
 		registerLootTable(TFBlocks.mangrove_slab.get(), droppingSlab(TFBlocks.mangrove_slab.get()));
@@ -67,6 +74,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.dark_log.get());
 		registerDropSelfLootTable(TFBlocks.dark_wood.get());
 		registerDropSelfLootTable(TFBlocks.darkwood_sapling.get());
+		registerLootTable(TFBlocks.dark_leaves.get(), droppingWithChancesAndSticks(TFBlocks.dark_leaves.get(), TFBlocks.darkwood_sapling.get(), RARE_SAPLING_DROP_RATES));
 		registerDropSelfLootTable(TFBlocks.dark_planks.get());
 		registerDropSelfLootTable(TFBlocks.dark_stairs.get());
 		registerLootTable(TFBlocks.dark_slab.get(), droppingSlab(TFBlocks.dark_slab.get()));
@@ -80,6 +88,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.time_log.get());
 		registerDropSelfLootTable(TFBlocks.time_wood.get());
 		registerDropSelfLootTable(TFBlocks.time_sapling.get());
+		registerLootTable(TFBlocks.time_leaves.get(), droppingWithChancesAndSticks(TFBlocks.time_leaves.get(), TFBlocks.time_sapling.get(), RARE_SAPLING_DROP_RATES));
 		registerDropSelfLootTable(TFBlocks.time_planks.get());
 		registerDropSelfLootTable(TFBlocks.time_stairs.get());
 		registerLootTable(TFBlocks.time_slab.get(), droppingSlab(TFBlocks.time_slab.get()));
@@ -93,6 +102,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.transformation_log.get());
 		registerDropSelfLootTable(TFBlocks.transformation_wood.get());
 		registerDropSelfLootTable(TFBlocks.transformation_sapling.get());
+		registerLootTable(TFBlocks.transformation_leaves.get(), droppingWithChancesAndSticks(TFBlocks.transformation_leaves.get(), TFBlocks.transformation_sapling.get(), RARE_SAPLING_DROP_RATES));
 		registerDropSelfLootTable(TFBlocks.trans_planks.get());
 		registerDropSelfLootTable(TFBlocks.trans_stairs.get());
 		registerLootTable(TFBlocks.trans_slab.get(), droppingSlab(TFBlocks.trans_slab.get()));
@@ -106,6 +116,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.mining_log.get());
 		registerDropSelfLootTable(TFBlocks.mining_wood.get());
 		registerDropSelfLootTable(TFBlocks.mining_sapling.get());
+		registerLootTable(TFBlocks.mining_leaves.get(), droppingWithChancesAndSticks(TFBlocks.mining_leaves.get(), TFBlocks.mining_sapling.get(), RARE_SAPLING_DROP_RATES));
 		registerDropSelfLootTable(TFBlocks.mine_planks.get());
 		registerDropSelfLootTable(TFBlocks.mine_stairs.get());
 		registerLootTable(TFBlocks.mine_slab.get(), droppingSlab(TFBlocks.mine_slab.get()));
@@ -119,6 +130,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.sorting_log.get());
 		registerDropSelfLootTable(TFBlocks.sorting_wood.get());
 		registerDropSelfLootTable(TFBlocks.sorting_sapling.get());
+		registerLootTable(TFBlocks.sorting_leaves.get(), droppingWithChancesAndSticks(TFBlocks.sorting_leaves.get(), TFBlocks.sorting_sapling.get(), RARE_SAPLING_DROP_RATES));
 		registerDropSelfLootTable(TFBlocks.sort_planks.get());
 		registerDropSelfLootTable(TFBlocks.sort_stairs.get());
 		registerLootTable(TFBlocks.sort_slab.get(), droppingSlab(TFBlocks.sort_slab.get()));
