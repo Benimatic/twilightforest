@@ -1,12 +1,9 @@
 package twilightforest.item;
 
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.Food;
-import net.minecraft.item.ItemTier;
-import net.minecraft.item.Rarity;
+import net.minecraft.item.*;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
-import net.minecraft.item.Item;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -18,11 +15,6 @@ import twilightforest.enums.TwilightItemTier;
 
 import java.util.UUID;
 
-/* TODO 1.14: There's a list of things to change...
-	1. Since all items are put in the Twilight Forest Item Group, make a method for registering into this group rather than set per class?
-		1.1 Either that, or move them into classes.
-	2. Make the Item Group an anonymous class, rather than a new, separate one.
- */
 public class TFItems {
 	public static final Food EXPERIMENT_115 = new Food.Builder().hunger(4).saturation(0.3F).build();
 	public static final Food HYDRA_CHOP = new Food.Builder().hunger(18).saturation(2.0F).effect(new EffectInstance(Effects.REGENERATION, 100, 0), 1.0F).build();
@@ -165,7 +157,12 @@ public class TFItems {
 //	@GameRegistry.ObjectHolder("block_storage")
 //	public static final RegistryObject<Item> block_storage;
 
-	public static CreativeTabTwilightForest creativeTab = new CreativeTabTwilightForest("twilightForest");
+	public static ItemGroup creativeTab = new ItemGroup("twilightForest") {
+		@Override
+		public ItemStack createIcon() {
+			return new ItemStack(TFBlocks.twilight_portal_miniature_structure.get());
+		}
+	};
 
 	public static Item.Properties defaultBuilder() {
 		return new Item.Properties().group(creativeTab);
