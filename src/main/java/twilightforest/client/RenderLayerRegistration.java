@@ -7,6 +7,7 @@ import twilightforest.block.TFBlocks;
 public class RenderLayerRegistration {
 	public static void init() {
 		RenderType cutout = RenderType.getCutout();
+		RenderType translucent = RenderType.getTranslucent();
 		RenderTypeLookup.setRenderLayer(TFBlocks.oak_leaves.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.rainboak_leaves.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.canopy_leaves.get(), cutout);
@@ -15,6 +16,7 @@ public class RenderLayerRegistration {
 		RenderTypeLookup.setRenderLayer(TFBlocks.transformation_leaves.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.mining_leaves.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.sorting_leaves.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.twilight_portal.get(), translucent);
 		RenderTypeLookup.setRenderLayer(TFBlocks.twilight_portal_miniature_structure.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.hedge_maze_miniature_structure.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.hollow_hill_miniature_structure.get(), cutout);

@@ -10,6 +10,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.*;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.BlockTFPortal;
 import twilightforest.block.TFBlocks;
 
 import javax.annotation.Nonnull;
@@ -25,14 +26,15 @@ public class BlockstateGenerator extends BlockStateProvider {
 
 	@Override
 	protected void registerStatesAndModels() {
-		getVariantBuilder(TFBlocks.twilight_portal_miniature_structure.get()).partialState()
-						.setModels(ConfiguredModel.builder().modelFile(models().getExistingFile(prefix("block/miniature/portal"))).build());
-		getVariantBuilder(TFBlocks.naga_courtyard_miniature_structure.get()).partialState()
-						.setModels(ConfiguredModel.builder().modelFile(models().getExistingFile(prefix("block/miniature/naga_courtyard"))).build());
-		getVariantBuilder(TFBlocks.lich_tower_miniature_structure.get()).partialState()
-						.setModels(ConfiguredModel.builder().modelFile(models().getExistingFile(prefix("block/miniature/lich_tower"))).build());
-		getVariantBuilder(TFBlocks.firefly_jar.get()).partialState()
-						.setModels(ConfiguredModel.builder().modelFile(models().getExistingFile(prefix("block/firefly_jar"))).build());
+		ModelFile portalModel = models().getExistingFile(prefix("block/twilight_portal"));
+		ModelFile portalOverlayModel = models().getExistingFile(prefix("block/twilight_portal_barrier"));
+		getMultipartBuilder(TFBlocks.twilight_portal.get())
+						.part().modelFile(portalModel).addModel().end()
+						.part().modelFile(portalOverlayModel).addModel().condition(BlockTFPortal.DISALLOW_RETURN, true).end();
+		simpleBlock(TFBlocks.twilight_portal_miniature_structure.get(), models().getExistingFile(prefix("block/miniature/portal")));
+		simpleBlock(TFBlocks.naga_courtyard_miniature_structure.get(), models().getExistingFile(prefix("block/miniature/naga_courtyard")));
+		simpleBlock(TFBlocks.lich_tower_miniature_structure.get(), models().getExistingFile(prefix("block/miniature/lich_tower")));
+		simpleBlock(TFBlocks.firefly_jar.get(), models().getExistingFile(prefix("block/firefly_jar")));
 		registerWoodBlocks();
 	}
 
