@@ -27,6 +27,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.oak_log.get());
 		registerDropSelfLootTable(TFBlocks.oak_wood.get());
 		registerDropSelfLootTable(TFBlocks.oak_sapling.get());
+		registerDropSelfLootTable(TFBlocks.rainboak_sapling.get());
 		registerDropSelfLootTable(TFBlocks.twilight_oak_planks.get());
 		registerDropSelfLootTable(TFBlocks.twilight_oak_stairs.get());
 		registerLootTable(TFBlocks.twilight_oak_slab.get(), droppingSlab(TFBlocks.twilight_oak_slab.get()));

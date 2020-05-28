@@ -7,6 +7,14 @@ import twilightforest.block.TFBlocks;
 public class RenderLayerRegistration {
 	public static void init() {
 		RenderType cutout = RenderType.getCutout();
+		RenderTypeLookup.setRenderLayer(TFBlocks.oak_leaves.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.rainboak_leaves.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.canopy_leaves.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.mangrove_leaves.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.time_leaves.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.transformation_leaves.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.mining_leaves.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.sorting_leaves.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.twilight_portal_miniature_structure.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.hedge_maze_miniature_structure.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.hollow_hill_miniature_structure.get(), cutout);
@@ -24,6 +32,7 @@ public class RenderLayerRegistration {
 		RenderTypeLookup.setRenderLayer(TFBlocks.final_castle_miniature_structure.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.firefly_jar.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.oak_sapling.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.rainboak_sapling.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.canopy_sapling.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.mangrove_sapling.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.darkwood_sapling.get(), cutout);
