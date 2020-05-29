@@ -28,6 +28,12 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.castle_pillar_encased_tile.get());
 		registerDropSelfLootTable(TFBlocks.castle_pillar_bold.get());
 		registerDropSelfLootTable(TFBlocks.castle_pillar_bold_tile.get());
+		registerDropSelfLootTable(TFBlocks.castle_stairs_brick.get());
+		registerDropSelfLootTable(TFBlocks.castle_stairs_worn.get());
+		registerDropSelfLootTable(TFBlocks.castle_stairs_cracked.get());
+		registerDropSelfLootTable(TFBlocks.castle_stairs_mossy.get());
+		registerDropSelfLootTable(TFBlocks.castle_stairs_encased.get());
+		registerDropSelfLootTable(TFBlocks.castle_stairs_bold.get());
 		registerDropSelfLootTable(TFBlocks.castle_rune_brick_purple.get());
 		registerDropSelfLootTable(TFBlocks.castle_rune_brick_yellow.get());
 		registerDropSelfLootTable(TFBlocks.castle_rune_brick_pink.get());

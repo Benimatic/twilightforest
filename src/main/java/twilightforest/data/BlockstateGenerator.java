@@ -72,6 +72,12 @@ public class BlockstateGenerator extends BlockStateProvider {
 		rotationallyCorrectColumn(TFBlocks.castle_pillar_bold.get());
 		simpleBlock(TFBlocks.castle_pillar_encased_tile.get(), models().cubeAll(TFBlocks.castle_pillar_encased_tile.getId().getPath(), prefix("block/castle_pillar_encased_end")));
 		simpleBlock(TFBlocks.castle_pillar_bold_tile.get());
+		stairsBlock(TFBlocks.castle_stairs_brick.get(), prefix("block/" + TFBlocks.castle_stairs_brick.getId().getPath()));
+		stairsBlock(TFBlocks.castle_stairs_worn.get(), prefix("block/" + TFBlocks.castle_stairs_worn.getId().getPath()));
+		stairsBlock(TFBlocks.castle_stairs_cracked.get(), prefix("block/" + TFBlocks.castle_stairs_cracked.getId().getPath()));
+		stairsBlock(TFBlocks.castle_stairs_mossy.get(), prefix("block/" + TFBlocks.castle_stairs_mossy.getId().getPath()));
+		stairsBlock(TFBlocks.castle_stairs_encased.get(), prefix("block/castle_pillar_encased_h"), prefix("block/castleblock_tile"), prefix("block/castleblock_roof"));
+		stairsBlock(TFBlocks.castle_stairs_bold.get(), prefix("block/castle_pillar_bold_tile"));
 
 		ConfiguredModel[] runeBrickModels = new ConfiguredModel[8];
 		for (int i = 0; i < runeBrickModels.length; i++) {

@@ -174,12 +174,12 @@ public class TFBlocks {
 	public static final RegistryObject<Block> castle_pillar_encased_tile = BLOCKS.register("castle_pillar_encased_tile", () -> new Block(Block.Properties.create(Material.ROCK, MaterialColor.QUARTZ).hardnessAndResistance(100.0F, 35.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> castle_pillar_bold         = BLOCKS.register("castle_pillar_bold", () -> new RotatedPillarBlock(Block.Properties.create(Material.ROCK, MaterialColor.QUARTZ).hardnessAndResistance(100.0F, 35.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> castle_pillar_bold_tile    = BLOCKS.register("castle_pillar_bold_tile", () -> new Block(Block.Properties.create(Material.ROCK, MaterialColor.QUARTZ).hardnessAndResistance(100.0F, 35.0F).sound(SoundType.STONE)));
-	public static final RegistryObject<Block> castle_stairs_brick        = BLOCKS.register("castle_stairs_brick", () -> new BlockTFStairs(castle_brick.get().getDefaultState()));
-	public static final RegistryObject<Block> castle_stairs_worn         = BLOCKS.register("castle_stairs_worn", () -> new BlockTFStairs(castle_brick_worn.get().getDefaultState()));
-	public static final RegistryObject<Block> castle_stairs_cracked      = BLOCKS.register("castle_stairs_cracked", () -> new BlockTFStairs(castle_brick_cracked.get().getDefaultState()));
-	public static final RegistryObject<Block> castle_stairs_mossy        = BLOCKS.register("castle_stairs_mossy", () -> new BlockTFStairs(castle_brick_mossy.get().getDefaultState()));
-	public static final RegistryObject<Block> castle_stairs_encased      = BLOCKS.register("castle_stairs_encased", () -> new BlockTFCastleStairs(castle_pillar_encased.get().getDefaultState()));
-	public static final RegistryObject<Block> castle_stairs_bold         = BLOCKS.register("castle_stairs_bold", () -> new BlockTFCastleStairs(castle_pillar_bold.get().getDefaultState()));
+	public static final RegistryObject<StairsBlock> castle_stairs_brick        = BLOCKS.register("castle_stairs_brick", () -> new BlockTFStairs(castle_brick.get().getDefaultState()));
+	public static final RegistryObject<StairsBlock> castle_stairs_worn         = BLOCKS.register("castle_stairs_worn", () -> new BlockTFStairs(castle_brick_worn.get().getDefaultState()));
+	public static final RegistryObject<StairsBlock> castle_stairs_cracked      = BLOCKS.register("castle_stairs_cracked", () -> new BlockTFStairs(castle_brick_cracked.get().getDefaultState()));
+	public static final RegistryObject<StairsBlock> castle_stairs_mossy        = BLOCKS.register("castle_stairs_mossy", () -> new BlockTFStairs(castle_brick_mossy.get().getDefaultState()));
+	public static final RegistryObject<StairsBlock> castle_stairs_encased      = BLOCKS.register("castle_stairs_encased", () -> new BlockTFStairs(castle_pillar_encased.get().getDefaultState()));
+	public static final RegistryObject<StairsBlock> castle_stairs_bold         = BLOCKS.register("castle_stairs_bold", () -> new BlockTFStairs(castle_pillar_bold.get().getDefaultState()));
 	public static final RegistryObject<Block> castle_rune_brick_pink     = BLOCKS.register("castle_rune_brick_pink", () -> new Block(Block.Properties.create(Material.ROCK, MaterialColor.QUARTZ).hardnessAndResistance(100.0F, 15.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> castle_rune_brick_blue     = BLOCKS.register("castle_rune_brick_blue", () -> new Block(Block.Properties.create(Material.ROCK, MaterialColor.QUARTZ).hardnessAndResistance(100.0F, 15.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> castle_rune_brick_yellow   = BLOCKS.register("castle_rune_brick_yellow", () -> new Block(Block.Properties.create(Material.ROCK, MaterialColor.QUARTZ).hardnessAndResistance(100.0F, 15.0F).sound(SoundType.STONE)));
@@ -317,6 +317,7 @@ public class TFBlocks {
 	public static void registerItemblocks(RegistryEvent.Register<Item> evt) {
 		IForgeRegistry<Item> r = evt.getRegistry();
 		List<Block> standard = Arrays.asList(
+						castle_stairs_brick.get(), castle_stairs_worn.get(), castle_stairs_cracked.get(), castle_stairs_mossy.get(), castle_stairs_encased.get(), castle_stairs_bold.get(),
 						castle_pillar_encased.get(), castle_pillar_encased_tile.get(), castle_pillar_bold.get(), castle_pillar_bold_tile.get(),
 						castle_rune_brick_yellow.get(), castle_rune_brick_purple.get(), castle_rune_brick_pink.get(), castle_rune_brick_blue.get(),
 						castle_door_yellow.get(), castle_door_purple.get(), castle_door_pink.get(), castle_door_blue.get(),
