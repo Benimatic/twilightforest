@@ -86,6 +86,17 @@ public class BlockstateGenerator extends BlockStateProvider {
 		castleDoor(TFBlocks.castle_door_pink.get());
 		castleDoor(TFBlocks.castle_door_blue.get());
 
+		simpleBlockExisting(TFBlocks.knightmetal_block.get());
+		simpleBlockExisting(TFBlocks.ironwood_block.get());
+		simpleBlockExisting(TFBlocks.fiery_block.get());
+		simpleBlock(TFBlocks.arctic_fur_block.get());
+		ModelFile steeleafBlock = models().cubeAll(TFBlocks.steeleaf_block.getId().getPath(), prefix("block/" + TFBlocks.steeleaf_block.getId().getPath()));
+		allRotations(TFBlocks.steeleaf_block.get(), steeleafBlock);
+		ModelFile carminiteBlock = models().withExistingParent(TFBlocks.carminite_block.getId().getPath(), prefix("block/util/cube_all_2_layer"))
+						.texture("all", prefix("block/" + TFBlocks.carminite_block.getId().getPath()))
+						.texture("all2", prefix("block/" + TFBlocks.carminite_block.getId().getPath() + "_overlay"));
+		allRotations(TFBlocks.carminite_block.get(), carminiteBlock);
+
 		simpleBlock(TFBlocks.twilight_portal_miniature_structure.get(), models().getExistingFile(prefix("block/miniature/portal")));
 		simpleBlock(TFBlocks.naga_courtyard_miniature_structure.get(), models().getExistingFile(prefix("block/miniature/naga_courtyard")));
 		simpleBlock(TFBlocks.lich_tower_miniature_structure.get(), models().getExistingFile(prefix("block/miniature/lich_tower")));
@@ -137,6 +148,24 @@ public class BlockstateGenerator extends BlockStateProvider {
 		getMultipartBuilder(b)
 						.part().modelFile(overlay).addModel().end()
 						.part().modelFile(main).addModel().condition(BlockTFCastleDoor.VANISHED, false).end();
+	}
+
+	private void allRotations(Block b, ModelFile model) {
+		ConfiguredModel.Builder<?> builder = ConfiguredModel.builder();
+		int[] rots = { 0, 90, 180, 270 };
+		for (int x : rots) {
+			for (int y : rots) {
+				builder = builder.modelFile(model).rotationX(x).rotationY(y);
+				if (x != rots[rots.length - 1] && y != rots[rots.length - 1]) {
+					builder = builder.nextModel();
+				}
+			}
+		}
+		getVariantBuilder(b).partialState().setModels(builder.build());
+	}
+
+	private void simpleBlockExisting(Block b) {
+		simpleBlock(b, new ConfiguredModel(models().getExistingFile(prefix(b.getRegistryName().getPath()))));
 	}
 
 	/**

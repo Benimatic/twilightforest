@@ -161,7 +161,6 @@ public class TFBlocks {
 	public static final RegistryObject<Block> trollvidr                  = BLOCKS.register("trollvidr", () -> new BlockTFTrollRoot());
 	public static final RegistryObject<Block> unripe_trollber            = BLOCKS.register("unripe_trollber", () -> new BlockTFUnripeTorchCluster());
 	public static final RegistryObject<Block> trollber                   = BLOCKS.register("trollber", () -> new BlockTFRipeTorchCluster());
-	public static final RegistryObject<Block> knightmetal_block          = BLOCKS.register("knightmetal_block", () -> new BlockTFKnightmetalBlock());
 	public static final RegistryObject<Block> huge_lilypad               = BLOCKS.register("huge_lilypad", () -> new BlockTFHugeLilyPad());
 	public static final RegistryObject<Block> huge_waterlily             = BLOCKS.register("huge_waterlily", () -> new BlockTFHugeWaterLily());
 	public static final RegistryObject<Block> slider                     = BLOCKS.register("slider", () -> new BlockTFSlider());
@@ -209,11 +208,12 @@ public class TFBlocks {
 	public static final RegistryObject<Block> aurora_palace_miniature_structure      = BLOCKS.register("aurora_palace_miniature_structure", () -> new BlockTFMiniatureStructure());
 	public static final RegistryObject<Block> troll_cave_cottage_miniature_structure = BLOCKS.register("troll_cave_cottage_miniature_structure", () -> new BlockTFMiniatureStructure());
 	public static final RegistryObject<Block> final_castle_miniature_structure       = BLOCKS.register("final_castle_miniature_structure", () -> new BlockTFMiniatureStructure());
-	public static final RegistryObject<Block> block_storage_ironwood     = BLOCKS.register("block_storage_ironwood", () -> new BlockTFCompressed(Block.Properties.create(Material.WOOD, MaterialColor.WOOD).hardnessAndResistance(5.0F, 10.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<Block> block_storage_fiery        = BLOCKS.register("block_storage_fiery", () -> new BlockTFCompressed(Block.Properties.create(Material.IRON, MaterialColor.BLACK_TERRACOTTA).hardnessAndResistance(5.0F, 10.0F).sound(SoundType.METAL)));
-	public static final RegistryObject<Block> block_storage_steeleaf     = BLOCKS.register("block_storage_steeleaf", () -> new BlockTFCompressed(Block.Properties.create(Material.LEAVES, MaterialColor.FOLIAGE).hardnessAndResistance(5.0F, 10.0F).sound(SoundType.PLANT)));
-	public static final RegistryObject<Block> block_storage_arctic_fur   = BLOCKS.register("block_storage_arctic_fur", () -> new BlockTFCompressed(Block.Properties.create(Material.WOOL, MaterialColor.WOOL).hardnessAndResistance(0.8F, 10.0F).sound(SoundType.CLOTH)));
-	public static final RegistryObject<Block> block_storage_carminite    = BLOCKS.register("block_storage_carminite", () -> new BlockTFCompressed(Block.Properties.create(Material.CLAY, MaterialColor.RED).hardnessAndResistance(0.0F, 10.0F).sound(SoundType.SLIME)));
+	public static final RegistryObject<Block> knightmetal_block          = BLOCKS.register("knightmetal_block", () -> new BlockTFKnightmetalBlock(Block.Properties.create(Material.IRON).hardnessAndResistance(5.0F, 41.0F).sound(SoundType.METAL)));
+	public static final RegistryObject<Block> ironwood_block = BLOCKS.register("ironwood_block", () -> new BlockTFCompressed(Block.Properties.create(Material.WOOD, MaterialColor.WOOD).hardnessAndResistance(5.0F, 10.0F).sound(SoundType.WOOD)));
+	public static final RegistryObject<Block> fiery_block = BLOCKS.register("fiery_block", () -> new BlockTFCompressed(Block.Properties.create(Material.IRON, MaterialColor.BLACK_TERRACOTTA).hardnessAndResistance(5.0F, 10.0F).sound(SoundType.METAL)));
+	public static final RegistryObject<Block> steeleaf_block = BLOCKS.register("steeleaf_block", () -> new BlockTFCompressed(Block.Properties.create(Material.LEAVES, MaterialColor.FOLIAGE).hardnessAndResistance(5.0F, 10.0F).sound(SoundType.PLANT)));
+	public static final RegistryObject<Block> arctic_fur_block = BLOCKS.register("arctic_fur_block", () -> new BlockTFCompressed(Block.Properties.create(Material.WOOL, MaterialColor.WOOL).hardnessAndResistance(0.8F, 10.0F).sound(SoundType.CLOTH)));
+	public static final RegistryObject<Block> carminite_block = BLOCKS.register("carminite_block", () -> new BlockTFCompressed(Block.Properties.create(Material.CLAY, MaterialColor.RED).hardnessAndResistance(0.0F, 10.0F).sound(SoundType.SLIME)));
 	public static final RegistryObject<Block> spiral_bricks                    = BLOCKS.register("spiral_bricks", () -> new BlockTFSpiralBrick());
 	public static final RegistryObject<Block> etched_nagastone                 = BLOCKS.register("etched_nagastone", () -> new BlockTFNagastoneEtched());
 	public static final RegistryObject<Block> nagastone_pillar                 = BLOCKS.register("nagastone_pillar", () -> new BlockTFNagastonePillar());
@@ -320,6 +320,7 @@ public class TFBlocks {
 						castle_rune_brick_yellow.get(), castle_rune_brick_purple.get(), castle_rune_brick_pink.get(), castle_rune_brick_blue.get(),
 						castle_door_yellow.get(), castle_door_purple.get(), castle_door_pink.get(), castle_door_blue.get(),
 						twilight_portal_miniature_structure.get(), naga_courtyard_miniature_structure.get(), lich_tower_miniature_structure.get(),
+						knightmetal_block.get(), ironwood_block.get(), fiery_block.get(), steeleaf_block.get(), arctic_fur_block.get(), carminite_block.get(),
 						firefly_jar.get(), iron_ladder.get(),
 						oak_leaves.get(), canopy_leaves.get(), mangrove_leaves.get(), dark_leaves.get(), time_leaves.get(), transformation_leaves.get(), mining_leaves.get(), sorting_leaves.get(),
 						rainboak_leaves.get(), rainboak_sapling.get(),

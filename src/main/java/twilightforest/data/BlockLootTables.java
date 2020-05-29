@@ -35,6 +35,12 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.twilight_portal_miniature_structure.get());
 		registerDropSelfLootTable(TFBlocks.naga_courtyard_miniature_structure.get());
 		registerDropSelfLootTable(TFBlocks.lich_tower_miniature_structure.get());
+		registerDropSelfLootTable(TFBlocks.knightmetal_block.get());
+		registerDropSelfLootTable(TFBlocks.ironwood_block.get());
+		registerDropSelfLootTable(TFBlocks.fiery_block.get());
+		registerDropSelfLootTable(TFBlocks.steeleaf_block.get());
+		registerDropSelfLootTable(TFBlocks.arctic_fur_block.get());
+		registerDropSelfLootTable(TFBlocks.carminite_block.get());
 		registerDropSelfLootTable(TFBlocks.firefly_jar.get());
 		registerDropSelfLootTable(TFBlocks.iron_ladder.get());
 		registerDropSelfLootTable(TFBlocks.oak_log.get());

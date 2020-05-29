@@ -1,9 +1,6 @@
 package twilightforest.block;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.MaterialColor;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -25,13 +22,13 @@ public class BlockTFCompressed extends Block {
 
 	@Override
 	public boolean hasEmissiveLighting(BlockState state) {
-		return this == TFBlocks.block_storage_fiery.get();
+		return this == TFBlocks.fiery_block.get();
 	}
 
 	@Override
 	@Deprecated
 	public float getAmbientOcclusionLightValue(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		if (this == TFBlocks.block_storage_fiery.get()) {
+		if (this == TFBlocks.fiery_block.get()) {
 			return 1.0F;
 		}
 		return super.getAmbientOcclusionLightValue(state, worldIn, pos);
@@ -41,11 +38,10 @@ public class BlockTFCompressed extends Block {
 	@Deprecated
 	public float getPlayerRelativeBlockHardness(BlockState state, PlayerEntity player, IBlockReader worldIn, BlockPos pos) {
 		// ItemShears#getDestroySpeed is really dumb and doesn't check IShearable so we have to do it this way to try to match the wool break speed with shears
-		return state.getBlock() == TFBlocks.block_storage_arctic_fur.get() && player.getHeldItemMainhand().getItem() instanceof ShearsItem ? 0.2F : super.getPlayerRelativeBlockHardness(state, player, worldIn, pos);
+		return state.getBlock() == TFBlocks.arctic_fur_block.get() && player.getHeldItemMainhand().getItem() instanceof ShearsItem ? 0.2F : super.getPlayerRelativeBlockHardness(state, player, worldIn, pos);
 	}
 
-	//TODO 1.14: Move to supports_beacon Tag
-	//Addendum: it has been proposed that this Tag is removed. Keep an eye on this, maybe keep it.
+	//TODO 1.16: Move to supports_beacon Tag
 	@Override
 	public boolean isBeaconBase(BlockState state, IWorldReader world, BlockPos pos, BlockPos beacon) {
 		return true;
@@ -56,7 +52,7 @@ public class BlockTFCompressed extends Block {
 		if ((!entityIn.isImmuneToFire())
 				&& entityIn instanceof LivingEntity
 				&& (!EnchantmentHelper.hasFrostWalker((LivingEntity) entityIn))
-				&& this == TFBlocks.block_storage_fiery.get()) {
+				&& this == TFBlocks.fiery_block.get()) {
 			entityIn.attackEntityFrom(DamageSource.HOT_FLOOR, 1.0F);
 		}
 
@@ -65,27 +61,20 @@ public class BlockTFCompressed extends Block {
 
 	@Override
 	public void onFallenUpon(World worldIn, BlockPos pos, Entity entityIn, float fallDistance) {
-		if (this == TFBlocks.block_storage_steeleaf.get()) {
+		if (this == TFBlocks.steeleaf_block.get()) {
 			entityIn.handleFallDamage(fallDistance, 0.75F);
-		} else if (this == TFBlocks.block_storage_arctic_fur.get()) {
+		} else if (this == TFBlocks.arctic_fur_block.get()) {
 			entityIn.handleFallDamage(fallDistance, 0.1F);
 		}
 	}
 
-	//TODO: Move to client
-//	@OnlyIn(Dist.CLIENT)
-//	@Override
-//	public BlockRenderLayer getRenderLayer() {
-//		return BlockRenderLayer.CUTOUT;
-//	}
-
 	@Override
 	public boolean isFireSource(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
-		return this == TFBlocks.block_storage_fiery.get();
+		return this == TFBlocks.fiery_block.get();
 	}
 
 	@Override
 	public boolean isStickyBlock(BlockState state) {
-		return this == TFBlocks.block_storage_carminite.get();
+		return this == TFBlocks.carminite_block.get();
 	}
 }
