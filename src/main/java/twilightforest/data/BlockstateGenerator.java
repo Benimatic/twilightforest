@@ -43,6 +43,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 			}
 			return ConfiguredModel.builder().modelFile(model).build();
 		});
+
 		MultiPartBlockStateBuilder ironLadder = getMultipartBuilder(TFBlocks.iron_ladder.get());
 		ModelFile ironLadderLeft = models().getExistingFile(prefix("block/iron_ladder_left"));
 		ModelFile ironLadderLeftConnected = models().getExistingFile(prefix("block/iron_ladder_left_connection"));
@@ -66,6 +67,19 @@ public class BlockstateGenerator extends BlockStateProvider {
 			ironLadder.part().modelFile(ironLadderRightConnected).rotationY(rotY).addModel()
 							.condition(BlockTFLadderBars.FACING, d).condition(BlockTFLadderBars.RIGHT, true).end();
 		}
+
+		ConfiguredModel[] runeBrickModels = new ConfiguredModel[8];
+		for (int i = 0; i < runeBrickModels.length; i++) {
+			runeBrickModels[i] = new ConfiguredModel(
+							models().withExistingParent("castle_rune_brick_" + i, prefix("block/util/cube_all_2_layer"))
+							.texture("all", prefix("block/castleblock_brick"))
+							.texture("all2", prefix("block/castleblock_magic_" + i)));
+		}
+
+		getVariantBuilder(TFBlocks.castle_rune_brick_yellow.get()).partialState().setModels(runeBrickModels);
+		getVariantBuilder(TFBlocks.castle_rune_brick_purple.get()).partialState().setModels(runeBrickModels);
+		getVariantBuilder(TFBlocks.castle_rune_brick_pink.get()).partialState().setModels(runeBrickModels);
+		getVariantBuilder(TFBlocks.castle_rune_brick_blue.get()).partialState().setModels(runeBrickModels);
 
 		castleDoor(TFBlocks.castle_door_yellow.get());
 		castleDoor(TFBlocks.castle_door_purple.get());

@@ -177,10 +177,10 @@ public class TFBlocks {
 	public static final RegistryObject<Block> castle_pillar_bold_tile    = BLOCKS.register("castle_pillar_bold_tile", () -> new BlockTFCastlePillar(Block.Properties.create(Material.ROCK, MaterialColor.QUARTZ).hardnessAndResistance(100.0F, 35.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> castle_stairs_encased      = BLOCKS.register("castle_stairs_encased", () -> new BlockTFCastleStairs(castle_pillar_encased.get().getDefaultState()));
 	public static final RegistryObject<Block> castle_stairs_bold         = BLOCKS.register("castle_stairs_bold", () -> new BlockTFCastleStairs(castle_pillar_bold.get().getDefaultState()));
-	public static final RegistryObject<Block> castle_rune_brick_pink     = BLOCKS.register("castle_rune_brick_pink", () -> new BlockTFCastleMagic(Block.Properties.create(Material.ROCK, MaterialColor.QUARTZ).hardnessAndResistance(100.0F, 15.0F).sound(SoundType.STONE)));
-	public static final RegistryObject<Block> castle_rune_brick_blue     = BLOCKS.register("castle_rune_brick_blue", () -> new BlockTFCastleMagic(Block.Properties.create(Material.ROCK, MaterialColor.QUARTZ).hardnessAndResistance(100.0F, 15.0F).sound(SoundType.STONE)));
-	public static final RegistryObject<Block> castle_rune_brick_yellow   = BLOCKS.register("castle_rune_brick_yellow", () -> new BlockTFCastleMagic(Block.Properties.create(Material.ROCK, MaterialColor.QUARTZ).hardnessAndResistance(100.0F, 15.0F).sound(SoundType.STONE)));
-	public static final RegistryObject<Block> castle_rune_brick_purple   = BLOCKS.register("castle_rune_brick_purple", () -> new BlockTFCastleMagic(Block.Properties.create(Material.ROCK, MaterialColor.QUARTZ).hardnessAndResistance(100.0F, 15.0F).sound(SoundType.STONE)));
+	public static final RegistryObject<Block> castle_rune_brick_pink     = BLOCKS.register("castle_rune_brick_pink", () -> new Block(Block.Properties.create(Material.ROCK, MaterialColor.QUARTZ).hardnessAndResistance(100.0F, 15.0F).sound(SoundType.STONE)));
+	public static final RegistryObject<Block> castle_rune_brick_blue     = BLOCKS.register("castle_rune_brick_blue", () -> new Block(Block.Properties.create(Material.ROCK, MaterialColor.QUARTZ).hardnessAndResistance(100.0F, 15.0F).sound(SoundType.STONE)));
+	public static final RegistryObject<Block> castle_rune_brick_yellow   = BLOCKS.register("castle_rune_brick_yellow", () -> new Block(Block.Properties.create(Material.ROCK, MaterialColor.QUARTZ).hardnessAndResistance(100.0F, 15.0F).sound(SoundType.STONE)));
+	public static final RegistryObject<Block> castle_rune_brick_purple   = BLOCKS.register("castle_rune_brick_purple", () -> new Block(Block.Properties.create(Material.ROCK, MaterialColor.QUARTZ).hardnessAndResistance(100.0F, 15.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> force_field_purple         = BLOCKS.register("force_field_purple", () -> new BlockTFForceField(Block.Properties.create(Material.BARRIER).hardnessAndResistance(-1.0F).lightValue(2).noDrops()));
 	public static final RegistryObject<Block> force_field_pink           = BLOCKS.register("force_field_pink", () -> new BlockTFForceField(Block.Properties.create(Material.BARRIER).hardnessAndResistance(-1.0F).lightValue(2).noDrops()));
 	public static final RegistryObject<Block> force_field_orange         = BLOCKS.register("force_field_orange", () -> new BlockTFForceField(Block.Properties.create(Material.BARRIER).hardnessAndResistance(-1.0F).lightValue(2).noDrops()));
@@ -317,6 +317,7 @@ public class TFBlocks {
 	public static void registerItemblocks(RegistryEvent.Register<Item> evt) {
 		IForgeRegistry<Item> r = evt.getRegistry();
 		List<Block> standard = Arrays.asList(
+						castle_rune_brick_yellow.get(), castle_rune_brick_purple.get(), castle_rune_brick_pink.get(), castle_rune_brick_blue.get(),
 						castle_door_yellow.get(), castle_door_purple.get(), castle_door_pink.get(), castle_door_blue.get(),
 						twilight_portal_miniature_structure.get(), naga_courtyard_miniature_structure.get(), lich_tower_miniature_structure.get(),
 						firefly_jar.get(), iron_ladder.get(),
