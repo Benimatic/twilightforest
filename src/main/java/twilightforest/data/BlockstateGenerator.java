@@ -68,6 +68,11 @@ public class BlockstateGenerator extends BlockStateProvider {
 							.condition(BlockTFLadderBars.FACING, d).condition(BlockTFLadderBars.RIGHT, true).end();
 		}
 
+		rotationallyCorrectColumn(TFBlocks.castle_pillar_encased.get());
+		rotationallyCorrectColumn(TFBlocks.castle_pillar_bold.get());
+		simpleBlock(TFBlocks.castle_pillar_encased_tile.get(), models().cubeAll(TFBlocks.castle_pillar_encased_tile.getId().getPath(), prefix("block/castle_pillar_encased_end")));
+		simpleBlock(TFBlocks.castle_pillar_bold_tile.get());
+
 		ConfiguredModel[] runeBrickModels = new ConfiguredModel[8];
 		for (int i = 0; i < runeBrickModels.length; i++) {
 			runeBrickModels[i] = new ConfiguredModel(
@@ -140,6 +145,26 @@ public class BlockstateGenerator extends BlockStateProvider {
 		logWoodSapling(TFBlocks.sorting_log.get(), TFBlocks.sorting_wood.get(), TFBlocks.sorting_sapling.get());
 		plankBlocks("sort", TFBlocks.sort_planks.get(), TFBlocks.sort_slab.get(), TFBlocks.sort_stairs.get(), TFBlocks.sort_button.get(), TFBlocks.sort_fence.get(), TFBlocks.sort_gate.get(), TFBlocks.sort_plate.get(), TFBlocks.sort_door.get(), TFBlocks.sort_trapdoor.get());
 		singleBlockBoilerPlate(TFBlocks.sorting_leaves.get(), "block/leaves", m -> m.texture("all", "block/sorting_leaves"));
+	}
+
+	private void rotationallyCorrectColumn(Block b) {
+		ResourceLocation side = prefix("block/" + b.getRegistryName().getPath() + "_side");
+		ResourceLocation end = prefix("block/" + b.getRegistryName().getPath() + "_end");
+		ConfiguredModel yModel = new ConfiguredModel(models().cubeColumn(b.getRegistryName().getPath(), side, end));
+		ConfiguredModel xModel = ConfiguredModel.builder()
+						.modelFile(models().withExistingParent(b.getRegistryName().getPath() + "_x", prefix("block/util/cube_column_rotationally_correct_x"))
+										.texture("side", side).texture("end", end))
+						.rotationX(90).rotationY(90)
+						.buildLast();
+		ConfiguredModel zModel = ConfiguredModel.builder()
+						.modelFile(models().withExistingParent(b.getRegistryName().getPath() + "_z", prefix("block/util/cube_column_rotationally_correct_z"))
+										.texture("side", side).texture("end", end))
+						.rotationX(90)
+						.buildLast();
+		getVariantBuilder(b)
+						.partialState().with(RotatedPillarBlock.AXIS, Direction.Axis.Y).setModels(yModel)
+						.partialState().with(RotatedPillarBlock.AXIS, Direction.Axis.X).setModels(xModel)
+						.partialState().with(RotatedPillarBlock.AXIS, Direction.Axis.Z).setModels(zModel);
 	}
 
 	private void castleDoor(Block b) {
