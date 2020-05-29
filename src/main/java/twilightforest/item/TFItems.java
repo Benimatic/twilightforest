@@ -110,7 +110,7 @@ public class TFItems {
 	public static final RegistryObject<Item> tower_key = ITEMS.register("tower_key", () -> new ItemTFTowerKey(defaultBuilder().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> borer_essence = ITEMS.register("borer_essence", () -> new Item(defaultBuilder()));
 	public static final RegistryObject<Item> carminite = ITEMS.register("carminite", () -> new Item(defaultBuilder()));
-	public static final RegistryObject<Item> experiment_115 = ITEMS.register("experiment_115", () -> new ItemTFExperiment115(defaultBuilder().food(TFItems.EXPERIMENT_115)));
+	public static final RegistryObject<Item> experiment_115 = ITEMS.register("experiment_115", () -> new ItemTFExperiment115(TFBlocks.experiment_115.get(), defaultBuilder().food(TFItems.EXPERIMENT_115)));
 	public static final RegistryObject<Item> armor_shard = ITEMS.register("armor_shard", () -> new Item(defaultBuilder()));
 	public static final RegistryObject<Item> knightmetal_ingot = ITEMS.register("knightmetal_ingot", () -> new Item(defaultBuilder()));
 	public static final RegistryObject<Item> armor_shard_cluster = ITEMS.register("armor_shard_cluster", () -> new Item(defaultBuilder()));

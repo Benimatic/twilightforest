@@ -6,8 +6,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.ExistingFileHelper;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
+import net.minecraftforge.client.model.generators.ModelFile;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
+import twilightforest.item.ItemTFExperiment115;
 
 import static twilightforest.TwilightForestMod.prefix;
 
@@ -18,6 +20,11 @@ public class ItemModelGenerator extends ItemModelProvider {
 
 	@Override
 	protected void registerModels() {
+		ModelFile think115 = generated("item/think115", prefix("items/think115"));
+		ModelFile fullBlockSprinkle = getExistingFile(prefix("block/experiment115_8_8_regenerating"));
+		generated(TFBlocks.experiment_115.getId().getPath(), prefix("items/experiment_115"))
+						.override().predicate(ItemTFExperiment115.THINK, 1).model(think115).end()
+						.override().predicate(ItemTFExperiment115.FULL, 1).model(fullBlockSprinkle).end();
 		toBlockModel(TFBlocks.twilight_portal_miniature_structure.get(), "miniature/portal");
 		toBlockModel(TFBlocks.naga_courtyard_miniature_structure.get(), "miniature/naga_courtyard");
 		toBlockModel(TFBlocks.lich_tower_miniature_structure.get(), "miniature/lich_tower");
@@ -126,11 +133,12 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlockModel(TFBlocks.sort_trapdoor.get(), "sort_trapdoor_bottom");
 	}
 
-	private void generated(String name, ResourceLocation... layers) {
+	private ItemModelBuilder generated(String name, ResourceLocation... layers) {
 		ItemModelBuilder builder = withExistingParent(name, "item/generated");
 		for (int i = 0; i < layers.length; i++) {
 			builder = builder.texture("layer" + i, layers[i]);
 		}
+		return builder;
 	}
 
 	private void woodenButton(Block button, String variant) {

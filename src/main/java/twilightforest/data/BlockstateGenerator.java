@@ -10,6 +10,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.*;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.BlockTFExperiment115;
 import twilightforest.block.BlockTFPortal;
 import twilightforest.block.TFBlocks;
 
@@ -31,6 +32,18 @@ public class BlockstateGenerator extends BlockStateProvider {
 		getMultipartBuilder(TFBlocks.twilight_portal.get())
 						.part().modelFile(portalModel).addModel().end()
 						.part().modelFile(portalOverlayModel).addModel().condition(BlockTFPortal.DISALLOW_RETURN, true).end();
+		getVariantBuilder(TFBlocks.experiment_115.get()).forAllStates(state -> {
+			int bitesTaken = state.get(BlockTFExperiment115.BITES_TAKEN);
+			String basePath = String.format("block/experiment115_%d_8", 8 - bitesTaken);
+			ModelFile model;
+			if (state.get(BlockTFExperiment115.REGENERATE)) {
+				model = models().withExistingParent(basePath + "_regenerating", prefix(basePath))
+								.texture("top_2", "block/experiment115/experiment115_sprinkle");
+			} else {
+				model = models().getExistingFile(prefix(basePath));
+			}
+			return ConfiguredModel.builder().modelFile(model).build();
+		});
 		simpleBlock(TFBlocks.twilight_portal_miniature_structure.get(), models().getExistingFile(prefix("block/miniature/portal")));
 		simpleBlock(TFBlocks.naga_courtyard_miniature_structure.get(), models().getExistingFile(prefix("block/miniature/naga_courtyard")));
 		simpleBlock(TFBlocks.lich_tower_miniature_structure.get(), models().getExistingFile(prefix("block/miniature/lich_tower")));

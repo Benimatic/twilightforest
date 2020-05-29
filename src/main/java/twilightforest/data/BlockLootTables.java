@@ -23,6 +23,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 
 	@Override
 	protected void addTables() {
+		registerLootTable(TFBlocks.experiment_115.get(), LootTable.builder());
 		registerDropSelfLootTable(TFBlocks.twilight_portal_miniature_structure.get());
 		registerDropSelfLootTable(TFBlocks.naga_courtyard_miniature_structure.get());
 		registerDropSelfLootTable(TFBlocks.lich_tower_miniature_structure.get());

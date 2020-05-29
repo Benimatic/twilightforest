@@ -36,7 +36,7 @@ import java.util.Random;
 
 public class BlockTFExperiment115 extends Block {
 
-    public static final IntegerProperty NOMS = IntegerProperty.create("omnomnom", 0, 7);
+    public static final IntegerProperty BITES_TAKEN = IntegerProperty.create("omnomnom", 0, 7);
     public static final BooleanProperty REGENERATE = BooleanProperty.create("regenerate");
 
     private static final VoxelShape[] AABB = new VoxelShape[] {
@@ -47,18 +47,13 @@ public class BlockTFExperiment115 extends Block {
 
     public BlockTFExperiment115() {
         super(Properties.create(Material.CAKE, MaterialColor.IRON).hardnessAndResistance(0.5F).sound(SoundType.CLOTH).tickRandomly());
-        this.setDefaultState(this.stateContainer.getBaseState().with(NOMS, 7).with(REGENERATE, false));
-    }
-
-    @Override
-    public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
-		return new ItemStack(TFItems.experiment_115.get());
+        this.setDefaultState(this.stateContainer.getBaseState().with(BITES_TAKEN, 7).with(REGENERATE, false));
     }
 
 	@Override
 	@Deprecated
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		switch (state.get(NOMS)) {
+		switch (state.get(BITES_TAKEN)) {
 			default:
 				return AABB[0];
 			case 4:
@@ -70,22 +65,15 @@ public class BlockTFExperiment115 extends Block {
 		}
 	}
 
-	//TODO: Check this
-//	@Override
-//	@Deprecated
-//	public boolean isSolid(BlockState state) {
-//		return false;
-//	}
-
 	@Override
 	@Deprecated
 	public ActionResultType onUse(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-		int bitesTaken = state.get(NOMS);
+		int bitesTaken = state.get(BITES_TAKEN);
 		ItemStack stack = player.getHeldItem(hand);
 
 		if (!player.isSneaking()) {
 			if (bitesTaken > 0 && stack.getItem() == TFItems.experiment_115.get()) {
-				worldIn.setBlockState(pos, state.with(NOMS, bitesTaken - 1));
+				worldIn.setBlockState(pos, state.with(BITES_TAKEN, bitesTaken - 1));
 				if (!player.isCreative()) stack.shrink(1);
 				if (player instanceof ServerPlayerEntity) CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity) player, pos, stack);
 				return ActionResultType.SUCCESS;
@@ -106,10 +94,13 @@ public class BlockTFExperiment115 extends Block {
         else {
             player.addStat(Stats.EAT_CAKE_SLICE);
             player.getFoodStats().addStats(4, 0.3F);
-            int i = state.get(NOMS);
+            int i = state.get(BITES_TAKEN);
 
-            if (i < 7) world.setBlockState(pos, state.with(NOMS, i + 1), 3);
-            else       world.removeBlock(pos, false);
+            if (i < 7) {
+              world.setBlockState(pos, state.with(BITES_TAKEN, i + 1), 3);
+            } else {
+              world.removeBlock(pos, false);
+            }
 
             if (player instanceof ServerPlayerEntity)
                 CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayerEntity) player, new ItemStack(TFItems.experiment_115.get(), 8 - i));
@@ -120,19 +111,11 @@ public class BlockTFExperiment115 extends Block {
 
 	@Override
 	@Deprecated
-	public void scheduledTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random) {
-		if (state.get(REGENERATE) && state.get(NOMS) != 0) {
-			worldIn.setBlockState(pos, state.with(NOMS, state.get(NOMS) - 1));
+	public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random) {
+		if (state.get(REGENERATE) && state.get(BITES_TAKEN) != 0) {
+			worldIn.setBlockState(pos, state.with(BITES_TAKEN, state.get(BITES_TAKEN) - 1));
 		}
 	}
-
-//	@Override
-//	@Deprecated
-//	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-//		if (!this.canBlockStay(worldIn, pos)) {
-//			worldIn.removeBlock(pos, false);
-//		}
-//	}
 
 	@Override
 	@Deprecated
@@ -146,29 +129,16 @@ public class BlockTFExperiment115 extends Block {
 		return facing == Direction.DOWN && !stateIn.isValidPosition(worldIn, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
 	}
 
-//    @Override
-//    public int quantityDropped(Random random)
-//    {
-//        return 0;
-//    }
-
 	@Override
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
 		super.fillStateContainer(builder);
-		builder.add(NOMS, REGENERATE);
+		builder.add(BITES_TAKEN, REGENERATE);
 	}
 
-	//TODO: Move to client
-//	@Override
-//    @OnlyIn(Dist.CLIENT)
-//    public BlockRenderLayer getRenderLayer() {
-//        return BlockRenderLayer.CUTOUT;
-//    }
-
     @Override
-	@Deprecated
+    @Deprecated
     public int getComparatorInputOverride(BlockState state, World world, BlockPos pos) {
-        return 15-(state.get(NOMS)*2);
+        return 15-(state.get(BITES_TAKEN)*2);
     }
 
     @Override
@@ -187,14 +157,6 @@ public class BlockTFExperiment115 extends Block {
 	@Override
 	@Deprecated
 	public int getWeakPower(BlockState state, IBlockReader blockAccess, BlockPos pos, Direction side) {
-		return state.get(REGENERATE) ? 15-(state.get(NOMS)*2) : 0;
+		return state.get(REGENERATE) ? 15-(state.get(BITES_TAKEN)*2) : 0;
 	}
-
-//	@Override
-//    @OnlyIn(Dist.CLIENT)
-//    public void registerModel() {
-//        ModelLoader.setCustomModelResourceLocation(TFItems.experiment_115, 0, new ModelResourceLocation(TwilightForestMod.ID + ":experiment_115", "inventory"));
-//        ModelLoader.setCustomModelResourceLocation(TFItems.experiment_115, 1, new ModelResourceLocation(TwilightForestMod.ID + ":experiment_115", "inventory_full"));
-//        ModelLoader.setCustomModelResourceLocation(TFItems.experiment_115, 2, new ModelResourceLocation(TwilightForestMod.ID + ":experiment_115", "inventory_think"));
-//    }
 }
