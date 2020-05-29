@@ -28,6 +28,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.naga_courtyard_miniature_structure.get());
 		registerDropSelfLootTable(TFBlocks.lich_tower_miniature_structure.get());
 		registerDropSelfLootTable(TFBlocks.firefly_jar.get());
+		registerDropSelfLootTable(TFBlocks.iron_ladder.get());
 		registerDropSelfLootTable(TFBlocks.oak_log.get());
 		registerDropSelfLootTable(TFBlocks.oak_wood.get());
 		registerDropSelfLootTable(TFBlocks.oak_sapling.get());

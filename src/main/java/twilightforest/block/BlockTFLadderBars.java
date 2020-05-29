@@ -31,42 +31,15 @@ public class BlockTFLadderBars extends LadderBlock {
     @Override
     public BlockState updatePostPlacement(BlockState state, Direction direction, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
 		Direction facing = state.get(LadderBlock.FACING);
+		BlockState superUpdated = super.updatePostPlacement(state, direction, facingState, worldIn, currentPos, facingPos);
+		if (superUpdated.getBlock() != this) {
+			return superUpdated;
+		}
 
-		BlockState leftState  = worldIn.getBlockState(currentPos.offset(rotateCW (facing)));
-		BlockState rightState = worldIn.getBlockState(currentPos.offset(rotateCCW(facing)));
+		BlockState leftState  = worldIn.getBlockState(currentPos.offset(facing.rotateYCCW()));
+		BlockState rightState = worldIn.getBlockState(currentPos.offset(facing.rotateY()));
 
-		return super.updatePostPlacement(state, direction, facingState, worldIn, currentPos,facingPos)
-				.with(LEFT , leftState .getBlock() instanceof BlockTFLadderBars && leftState .get(LadderBlock.FACING) == facing)
-				.with(RIGHT, rightState.getBlock() instanceof BlockTFLadderBars && rightState.get(LadderBlock.FACING) == facing);
-    }
-
-    private static Direction rotateCW(Direction facing) {
-        switch (facing) {
-            case NORTH:
-                return WEST;
-            case WEST:
-                return SOUTH;
-            case SOUTH:
-                return EAST;
-            case EAST:
-                return NORTH;
-            default:
-                return facing;
-        }
-    }
-
-    private static Direction rotateCCW(Direction facing) {
-        switch (facing) {
-            case NORTH:
-                return EAST;
-            case EAST:
-                return SOUTH;
-            case SOUTH:
-                return WEST;
-            case WEST:
-                return NORTH;
-            default:
-                return facing;
-        }
+		return superUpdated.with(LEFT, leftState.getBlock() instanceof BlockTFLadderBars && leftState.get(LadderBlock.FACING) == facing)
+						.with(RIGHT, rightState.getBlock() instanceof BlockTFLadderBars && rightState.get(LadderBlock.FACING) == facing);
     }
 }

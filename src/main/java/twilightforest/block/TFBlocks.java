@@ -232,7 +232,7 @@ public class TFBlocks {
 	public static final RegistryObject<Block> castle_stairs_cracked      = BLOCKS.register("castle_stairs_cracked", () -> new BlockTFStairs(castle_brick_cracked.get().getDefaultState()));
 	public static final RegistryObject<Block> castle_stairs_worn         = BLOCKS.register("castle_stairs_worn", () -> new BlockTFStairs(castle_brick_worn.get().getDefaultState()));
 	public static final RegistryObject<Block> castle_stairs_mossy        = BLOCKS.register("castle_stairs_mossy", () -> new BlockTFStairs(castle_brick_mossy.get().getDefaultState()));
-	public static final RegistryObject<Block> iron_ladder                = BLOCKS.register("iron_ladder", () -> new BlockTFLadderBars(Block.Properties.create(Material.MISCELLANEOUS).hardnessAndResistance(5.0F, 10.0F).sound(SoundType.METAL)));
+	public static final RegistryObject<Block> iron_ladder                = BLOCKS.register("iron_ladder", () -> new BlockTFLadderBars(Block.Properties.create(Material.MISCELLANEOUS).hardnessAndResistance(5.0F, 10.0F).sound(SoundType.METAL).nonOpaque()));
 	public static final RegistryObject<Block> terrorcotta_circle         = BLOCKS.register("terrorcotta_circle", () -> new BlockTFHorizontal(Block.Properties.create(Material.ROCK, MaterialColor.SAND).hardnessAndResistance(1.7F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> terrorcotta_diagonal       = BLOCKS.register("terrorcotta_diagonal", () -> new BlockTFDiagonal(Block.Properties.create(Material.ROCK, MaterialColor.SAND).hardnessAndResistance(1.7F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> stone_twist                = BLOCKS.register("stone_twist", () -> new BlockTFPillar(Block.Properties.create(Material.ROCK).hardnessAndResistance(1.5F, 10.0F)));
@@ -318,7 +318,7 @@ public class TFBlocks {
 		IForgeRegistry<Item> r = evt.getRegistry();
 		List<Block> standard = Arrays.asList(
 						twilight_portal_miniature_structure.get(), naga_courtyard_miniature_structure.get(), lich_tower_miniature_structure.get(),
-						firefly_jar.get(),
+						firefly_jar.get(), iron_ladder.get(),
 						oak_leaves.get(), canopy_leaves.get(), mangrove_leaves.get(), dark_leaves.get(), time_leaves.get(), transformation_leaves.get(), mining_leaves.get(), sorting_leaves.get(),
 						rainboak_leaves.get(), rainboak_sapling.get(),
 						oak_log.get(), canopy_log.get(), mangrove_log.get(), dark_log.get(), time_log.get(), transformation_log.get(), mining_log.get(), sorting_log.get(),
