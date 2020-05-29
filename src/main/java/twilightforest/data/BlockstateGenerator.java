@@ -10,10 +10,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.*;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.BlockTFExperiment115;
-import twilightforest.block.BlockTFLadderBars;
-import twilightforest.block.BlockTFPortal;
-import twilightforest.block.TFBlocks;
+import twilightforest.block.*;
 
 import javax.annotation.Nonnull;
 
@@ -70,6 +67,11 @@ public class BlockstateGenerator extends BlockStateProvider {
 							.condition(BlockTFLadderBars.FACING, d).condition(BlockTFLadderBars.RIGHT, true).end();
 		}
 
+		castleDoor(TFBlocks.castle_door_yellow.get());
+		castleDoor(TFBlocks.castle_door_purple.get());
+		castleDoor(TFBlocks.castle_door_pink.get());
+		castleDoor(TFBlocks.castle_door_blue.get());
+
 		simpleBlock(TFBlocks.twilight_portal_miniature_structure.get(), models().getExistingFile(prefix("block/miniature/portal")));
 		simpleBlock(TFBlocks.naga_courtyard_miniature_structure.get(), models().getExistingFile(prefix("block/miniature/naga_courtyard")));
 		simpleBlock(TFBlocks.lich_tower_miniature_structure.get(), models().getExistingFile(prefix("block/miniature/lich_tower")));
@@ -113,6 +115,14 @@ public class BlockstateGenerator extends BlockStateProvider {
 		logWoodSapling(TFBlocks.sorting_log.get(), TFBlocks.sorting_wood.get(), TFBlocks.sorting_sapling.get());
 		plankBlocks("sort", TFBlocks.sort_planks.get(), TFBlocks.sort_slab.get(), TFBlocks.sort_stairs.get(), TFBlocks.sort_button.get(), TFBlocks.sort_fence.get(), TFBlocks.sort_gate.get(), TFBlocks.sort_plate.get(), TFBlocks.sort_door.get(), TFBlocks.sort_trapdoor.get());
 		singleBlockBoilerPlate(TFBlocks.sorting_leaves.get(), "block/leaves", m -> m.texture("all", "block/sorting_leaves"));
+	}
+
+	private void castleDoor(Block b) {
+		ModelFile overlay = models().getExistingFile(prefix("block/castle_door_overlay"));
+		ModelFile main = models().cubeAll(b.getRegistryName().getPath(), prefix("block/castle_door"));
+		getMultipartBuilder(b)
+						.part().modelFile(overlay).addModel().end()
+						.part().modelFile(main).addModel().condition(BlockTFCastleDoor.VANISHED, false).end();
 	}
 
 	/**

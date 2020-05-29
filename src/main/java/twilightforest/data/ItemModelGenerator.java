@@ -20,6 +20,10 @@ public class ItemModelGenerator extends ItemModelProvider {
 
 	@Override
 	protected void registerModels() {
+		toBlock(TFBlocks.castle_door_yellow.get());
+		toBlock(TFBlocks.castle_door_purple.get());
+		toBlock(TFBlocks.castle_door_pink.get());
+		toBlock(TFBlocks.castle_door_blue.get());
 		ModelFile think115 = generated("item/think115", prefix("items/think115"));
 		ModelFile fullBlockSprinkle = getExistingFile(prefix("block/experiment115_8_8_regenerating"));
 		generated(TFBlocks.experiment_115.getId().getPath(), prefix("items/experiment_115"))

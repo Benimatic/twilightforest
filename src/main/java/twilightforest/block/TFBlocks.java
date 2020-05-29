@@ -189,10 +189,10 @@ public class TFBlocks {
 	public static final RegistryObject<Block> cinder_furnace             = BLOCKS.register("cinder_furnace", () -> new BlockTFCinderFurnace());
 	public static final RegistryObject<Block> cinder_log                 = BLOCKS.register("cinder_log", () -> new BlockTFCinderLog(Block.Properties.create(Material.WOOD, MaterialColor.GRAY).hardnessAndResistance(1.0F)));
 	public static final RegistryObject<Block> cinder_wood                = BLOCKS.register("cinder_wood", () -> new BlockTFCinderLog(Block.Properties.create(Material.WOOD, MaterialColor.GRAY).hardnessAndResistance(1.0F)));
-	public static final RegistryObject<Block> castle_door_yellow         = BLOCKS.register("castle_door_yellow", () -> new BlockTFCastleDoor(0));
-	public static final RegistryObject<Block> castle_door_purple         = BLOCKS.register("castle_door_purple", () -> new BlockTFCastleDoor(1));
-	public static final RegistryObject<Block> castle_door_pink           = BLOCKS.register("castle_door_pink", () -> new BlockTFCastleDoor(2));
-	public static final RegistryObject<Block> castle_door_blue           = BLOCKS.register("castle_door_blue", () -> new BlockTFCastleDoor(3));
+	public static final RegistryObject<Block> castle_door_yellow         = BLOCKS.register("castle_door_yellow", () -> new BlockTFCastleDoor(Block.Properties.create(Material.ROCK, MaterialColor.CYAN).hardnessAndResistance(100.0F, 35.0F)));
+	public static final RegistryObject<Block> castle_door_purple         = BLOCKS.register("castle_door_purple", () -> new BlockTFCastleDoor(Block.Properties.create(Material.ROCK, MaterialColor.CYAN).hardnessAndResistance(100.0F, 35.0F)));
+	public static final RegistryObject<Block> castle_door_pink           = BLOCKS.register("castle_door_pink", () -> new BlockTFCastleDoor(Block.Properties.create(Material.ROCK, MaterialColor.CYAN).hardnessAndResistance(100.0F, 35.0F)));
+	public static final RegistryObject<Block> castle_door_blue           = BLOCKS.register("castle_door_blue", () -> new BlockTFCastleDoor(Block.Properties.create(Material.ROCK, MaterialColor.CYAN).hardnessAndResistance(100.0F, 35.0F)));
 	public static final RegistryObject<Block> experiment_115             = BLOCKS.register("experiment_115", () -> new BlockTFExperiment115());
 	public static final RegistryObject<Block> twilight_portal_miniature_structure    = BLOCKS.register("twilight_portal_miniature_structure", () -> new BlockTFMiniatureStructure());
 	public static final RegistryObject<Block> hedge_maze_miniature_structure         = BLOCKS.register("hedge_maze_miniature_structure", () -> new BlockTFMiniatureStructure());
@@ -317,6 +317,7 @@ public class TFBlocks {
 	public static void registerItemblocks(RegistryEvent.Register<Item> evt) {
 		IForgeRegistry<Item> r = evt.getRegistry();
 		List<Block> standard = Arrays.asList(
+						castle_door_yellow.get(), castle_door_purple.get(), castle_door_pink.get(), castle_door_blue.get(),
 						twilight_portal_miniature_structure.get(), naga_courtyard_miniature_structure.get(), lich_tower_miniature_structure.get(),
 						firefly_jar.get(), iron_ladder.get(),
 						oak_leaves.get(), canopy_leaves.get(), mangrove_leaves.get(), dark_leaves.get(), time_leaves.get(), transformation_leaves.get(), mining_leaves.get(), sorting_leaves.get(),
