@@ -9,6 +9,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolItem;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.item.ItemTFMazebreakerPick;
@@ -30,7 +31,7 @@ public class BlockTFCastleBlock extends Block {
 	public void harvestBlock(World world, PlayerEntity player, BlockPos pos, BlockState state, @Nullable TileEntity te, ItemStack stack) {
 		ItemStack cei = player.getHeldItemMainhand();
 		if (cei.getItem() instanceof ToolItem && !(cei.getItem() instanceof ItemTFMazebreakerPick)) {
-			cei.damageItem(16, player, (user) -> user.sendBreakAnimation(player.getActiveHand()));
+			cei.damageItem(16, player, (user) -> user.sendBreakAnimation(Hand.MAIN_HAND));
 		}
 
 		super.harvestBlock(world, player, pos, state, te, stack);

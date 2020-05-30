@@ -29,7 +29,7 @@ public class BlockTFMazestone extends Block {
 
 		// damage the player's pickaxe
 		if (!world.isRemote && !stack.isEmpty() && stack.getItem().isDamageable() && !(stack.getItem() instanceof ItemTFMazebreakerPick)) {
-			stack.damageItem(16, player, (user) -> user.sendBreakAnimation(player.getActiveHand()));
+			stack.damageItem(16, player, (user) -> user.sendBreakAnimation(Hand.MAIN_HAND));
 		}
 	}
 }
