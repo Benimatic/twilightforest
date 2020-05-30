@@ -7,6 +7,7 @@ import net.minecraft.item.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockReader;
+import twilightforest.tileentity.TFTileEntities;
 import twilightforest.tileentity.critters.TileEntityTFFirefly;
 
 import javax.annotation.Nullable;
@@ -20,8 +21,7 @@ public class BlockTFFirefly extends BlockTFCritter {
 	@Nullable
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		//TODO: Return differently per side?
-		return new TileEntityTFFirefly();
+		return TFTileEntities.FIREFLY.get().create();
 	}
 
 	@Override
