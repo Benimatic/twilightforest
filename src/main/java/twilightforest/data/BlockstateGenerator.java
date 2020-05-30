@@ -81,6 +81,10 @@ public class BlockstateGenerator extends BlockStateProvider {
 
 		simpleBlock(TFBlocks.fake_gold.get(), models().getExistingFile(new ResourceLocation("block/gold_block")));
 		simpleBlock(TFBlocks.fake_diamond.get(), models().getExistingFile(new ResourceLocation("block/diamond_block")));
+		simpleBlock(TFBlocks.underbrick.get());
+		simpleBlock(TFBlocks.underbrick_cracked.get());
+		simpleBlock(TFBlocks.underbrick_mossy.get());
+		simpleBlock(TFBlocks.underbrick_floor.get());
 		simpleBlock(TFBlocks.wispy_cloud.get());
 		simpleBlock(TFBlocks.fluffy_cloud.get());
 		simpleBlock(TFBlocks.castle_brick.get());

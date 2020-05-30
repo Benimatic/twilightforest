@@ -132,10 +132,10 @@ public class TFBlocks {
 	public static final RegistryObject<Block> stronghold_shield          = BLOCKS.register("stronghold_shield", () -> new BlockTFShield(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F, 6000000.0F).sound(SoundType.METAL).noDrops()));
 	public static final RegistryObject<Block> trophy_pedestal            = BLOCKS.register("trophy_pedestal", () -> new BlockTFTrophyPedestal());
 	public static final RegistryObject<Block> aurora_block               = BLOCKS.register("aurora_block", () -> new BlockTFAuroraBrick(Block.Properties.create(Material.PACKED_ICE).hardnessAndResistance(2.0F, 10.0F)));
-	public static final RegistryObject<Block> underbrick                 = BLOCKS.register("underbrick", () -> new BlockTFUnderBrick());
-	public static final RegistryObject<Block> underbrick_mossy           = BLOCKS.register("underbrick_mossy", () -> new BlockTFUnderBrick());
-	public static final RegistryObject<Block> underbrick_cracked         = BLOCKS.register("underbrick_cracked", () -> new BlockTFUnderBrick());
-	public static final RegistryObject<Block> underbrick_floor           = BLOCKS.register("underbrick_floor", () -> new BlockTFUnderBrick());
+	public static final RegistryObject<Block> underbrick                 = BLOCKS.register("underbrick", () -> new Block(Block.Properties.create(Material.ROCK, MaterialColor.WOOD).hardnessAndResistance(1.5F, 10.0F).sound(SoundType.STONE)));
+	public static final RegistryObject<Block> underbrick_mossy           = BLOCKS.register("underbrick_mossy", () -> new Block(Block.Properties.create(Material.ROCK, MaterialColor.WOOD).hardnessAndResistance(1.5F, 10.0F).sound(SoundType.STONE)));
+	public static final RegistryObject<Block> underbrick_cracked         = BLOCKS.register("underbrick_cracked", () -> new Block(Block.Properties.create(Material.ROCK, MaterialColor.WOOD).hardnessAndResistance(1.5F, 10.0F).sound(SoundType.STONE)));
+	public static final RegistryObject<Block> underbrick_floor           = BLOCKS.register("underbrick_floor", () -> new Block(Block.Properties.create(Material.ROCK, MaterialColor.WOOD).hardnessAndResistance(1.5F, 10.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> brown_thorns               = BLOCKS.register("brown_thorns", () -> new BlockTFThorns(Block.Properties.create(Material.WOOD, MaterialColor.OBSIDIAN).hardnessAndResistance(50.0F, 2000.0F).sound(SoundType.WOOD).noDrops()));
 	public static final RegistryObject<Block> green_thorns               = BLOCKS.register("green_thorns", () -> new BlockTFThorns(Block.Properties.create(Material.WOOD, MaterialColor.FOLIAGE).hardnessAndResistance(50.0F, 2000.0F).sound(SoundType.WOOD).noDrops()));
 	public static final RegistryObject<Block> burnt_thorns               = BLOCKS.register("burnt_thorns", () -> new BlockTFBurntThorns(Block.Properties.create(Material.WOOD, MaterialColor.STONE).hardnessAndResistance(0.01F, 0.0F).sound(SoundType.SAND).noDrops()));
@@ -318,6 +318,7 @@ public class TFBlocks {
 		List<RegistryObject<? extends Block>> standard = Arrays.asList(
 						tower_wood, tower_wood_encased, tower_wood_cracked, tower_wood_mossy, tower_wood_infested,
 						fake_gold, fake_diamond,
+						underbrick, underbrick_cracked, underbrick_mossy, underbrick_floor,
 						wispy_cloud, fluffy_cloud,
 						castle_brick, castle_brick_worn, castle_brick_cracked, castle_brick_mossy, castle_brick_roof, castle_brick_frame,
 						castle_pillar_encased, castle_pillar_encased_tile, castle_pillar_bold, castle_pillar_bold_tile,

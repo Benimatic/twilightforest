@@ -27,6 +27,10 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.tower_wood_infested.get());
 		toBlockModel(TFBlocks.fake_gold.get(), new ResourceLocation("block/gold_block"));
 		toBlockModel(TFBlocks.fake_diamond.get(), new ResourceLocation("block/diamond_block"));
+		toBlock(TFBlocks.underbrick.get());
+		toBlock(TFBlocks.underbrick_cracked.get());
+		toBlock(TFBlocks.underbrick_mossy.get());
+		toBlock(TFBlocks.underbrick_floor.get());
 		toBlock(TFBlocks.wispy_cloud.get());
 		toBlock(TFBlocks.fluffy_cloud.get());
 		toBlock(TFBlocks.castle_brick.get());

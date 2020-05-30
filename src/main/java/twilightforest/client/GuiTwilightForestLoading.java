@@ -126,11 +126,8 @@ public class GuiTwilightForestLoading extends Screen {
 		// Shift it!
 		RenderSystem.translatef(-8f, -16.5f, 0f);
 
-		RenderHelper.enable(); //TODO: Correct?
-		//OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 0x20, 0x20);
 		// Draw it!
 		minecraft.getItemRenderer().renderItemAndEffectIntoGUI(item, 0, 0);
-		RenderHelper.disableStandardItemLighting();
 
 		// Pop it!
 		RenderSystem.popMatrix();
@@ -195,16 +192,15 @@ public class GuiTwilightForestLoading extends Screen {
 			}
 		},
 		STRONGHOLD(
-				TwilightForestMod.prefix("textures/blocks/knightbrick.png"),
-				TwilightForestMod.prefix("textures/blocks/knightbrick_mossy.png"),
-				TwilightForestMod.prefix("textures/blocks/knightbrick_cracked.png")
+				TwilightForestMod.prefix("textures/blocks/underbrick.png"),
+				TwilightForestMod.prefix("textures/blocks/underbrick_mossy.png"),
+				TwilightForestMod.prefix("textures/blocks/underbrick_cracked.png")
 		),
 		DARKTOWER(
 				TwilightForestMod.prefix("textures/blocks/tower_wood.png"),
 				TwilightForestMod.prefix("textures/blocks/tower_wood.png"),
 				TwilightForestMod.prefix("textures/blocks/tower_wood_mossy.png"),
 				TwilightForestMod.prefix("textures/blocks/tower_wood_cracked.png"),
-				//TwilightForestMod.prefix("textures/blocks/tower_wood_infested.png"  ),
 				TwilightForestMod.prefix("textures/blocks/tower_wood_cracked_alt.png")
 		) {
 			private final ResourceLocation towerwoodEncased = TwilightForestMod.prefix("textures/blocks/tower_wood_encased.png");
