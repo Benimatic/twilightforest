@@ -20,6 +20,11 @@ public class ItemModelGenerator extends ItemModelProvider {
 
 	@Override
 	protected void registerModels() {
+		toBlock(TFBlocks.tower_wood.get());
+		toBlock(TFBlocks.tower_wood_encased.get());
+		toBlock(TFBlocks.tower_wood_cracked.get());
+		toBlock(TFBlocks.tower_wood_mossy.get());
+		toBlock(TFBlocks.tower_wood_infested.get());
 		toBlock(TFBlocks.castle_brick.get());
 		toBlock(TFBlocks.castle_brick_worn.get());
 		toBlock(TFBlocks.castle_brick_cracked.get());

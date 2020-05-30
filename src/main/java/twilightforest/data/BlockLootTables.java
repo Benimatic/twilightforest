@@ -28,6 +28,11 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 	@Override
 	protected void addTables() {
 		registerLootTable(TFBlocks.experiment_115.get(), LootTable.builder());
+		registerDropSelfLootTable(TFBlocks.tower_wood.get());
+		registerDropSelfLootTable(TFBlocks.tower_wood_encased.get());
+		registerDropSelfLootTable(TFBlocks.tower_wood_cracked.get());
+		registerDropSelfLootTable(TFBlocks.tower_wood_mossy.get());
+		registerSilkTouch(TFBlocks.tower_wood_infested.get());
 		registerDropSelfLootTable(TFBlocks.castle_brick.get());
 		registerDropSelfLootTable(TFBlocks.castle_brick_worn.get());
 		registerDropSelfLootTable(TFBlocks.castle_brick_cracked.get());
@@ -186,6 +191,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 
 	@Override
 	protected Iterable<Block> getKnownBlocks() {
+		// todo 1.15 once all blockitems are ported, change this to all TF blocks, so an error will be thrown if we're missing any tables
 		return knownBlocks;
 	}
 }

@@ -200,14 +200,14 @@ public class GuiTwilightForestLoading extends Screen {
 				TwilightForestMod.prefix("textures/blocks/knightbrick_cracked.png")
 		),
 		DARKTOWER(
-				TwilightForestMod.prefix("textures/blocks/towerwood_planks.png"),
-				TwilightForestMod.prefix("textures/blocks/towerwood_planks.png"),
-				TwilightForestMod.prefix("textures/blocks/towerwood_mossy.png"),
-				TwilightForestMod.prefix("textures/blocks/towerwood_cracked.png"),
-				//TwilightForestMod.prefix("textures/blocks/towerwood_infested.png"  ),
-				TwilightForestMod.prefix("textures/blocks/towerwood_alt.png")
+				TwilightForestMod.prefix("textures/blocks/tower_wood.png"),
+				TwilightForestMod.prefix("textures/blocks/tower_wood.png"),
+				TwilightForestMod.prefix("textures/blocks/tower_wood_mossy.png"),
+				TwilightForestMod.prefix("textures/blocks/tower_wood_cracked.png"),
+				//TwilightForestMod.prefix("textures/blocks/tower_wood_infested.png"  ),
+				TwilightForestMod.prefix("textures/blocks/tower_wood_cracked_alt.png")
 		) {
-			private final ResourceLocation towerwoodEncased = TwilightForestMod.prefix("textures/blocks/towerwood_encased.png");
+			private final ResourceLocation towerwoodEncased = TwilightForestMod.prefix("textures/blocks/tower_wood_encased.png");
 
 			private final float stretch = 0.985F;
 			private final float offset = 0.4F;

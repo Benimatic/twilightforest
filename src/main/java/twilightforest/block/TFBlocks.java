@@ -23,7 +23,6 @@ import twilightforest.world.feature.tree.*;
 import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Supplier;
 
 @SuppressWarnings({"WeakerAccess", "unused"})
 @Nonnull
@@ -104,11 +103,11 @@ public class TFBlocks {
 	public static final RegistryObject<Block> mining_leaves              = BLOCKS.register("mining_leaves", () -> new BlockTFMagicLeaves(Block.Properties.create(Material.LEAVES).hardnessAndResistance(0.2F).sound(SoundType.PLANT).tickRandomly().nonOpaque()));
 	public static final RegistryObject<Block> sorting_leaves             = BLOCKS.register("sorting_leaves", () -> new BlockTFMagicLeaves(Block.Properties.create(Material.LEAVES).hardnessAndResistance(0.2F).sound(SoundType.PLANT).tickRandomly().nonOpaque()));
 	public static final RegistryObject<Block> moonworm                   = BLOCKS.register("moonworm", () -> new BlockTFMoonworm(Block.Properties.create(Material.MISCELLANEOUS).lightValue(14).sound(SoundType.SLIME).hardnessAndResistance(0.0F).doesNotBlockMovement().nonOpaque()));
-	public static final RegistryObject<Block> tower_wood                 = BLOCKS.register("tower_wood", () -> new BlockTFTowerWood(MaterialColor.ADOBE, 40.0F));
-	public static final RegistryObject<Block> tower_wood_encased         = BLOCKS.register("tower_wood_encased", () -> new BlockTFTowerWood(MaterialColor.SAND, 40.0F));
-	public static final RegistryObject<Block> tower_wood_cracked         = BLOCKS.register("tower_wood_cracked", () -> new BlockTFTowerWood(MaterialColor.ADOBE, 40.0F));
-	public static final RegistryObject<Block> tower_wood_mossy           = BLOCKS.register("tower_wood_mossy", () -> new BlockTFTowerWood(MaterialColor.ADOBE, 40.0F));
-	public static final RegistryObject<Block> tower_wood_infested        = BLOCKS.register("tower_wood_infested", () -> new BlockTFTowerWood(MaterialColor.ADOBE, 0.75F));
+	public static final RegistryObject<Block> tower_wood                 = BLOCKS.register("tower_wood", () -> new BlockFlammable(1, 0, Block.Properties.create(Material.WOOD, MaterialColor.ADOBE).hardnessAndResistance(40.0F, 10.0F).sound(SoundType.WOOD)));
+	public static final RegistryObject<Block> tower_wood_encased         = BLOCKS.register("tower_wood_encased", () -> new BlockFlammable(1, 0, Block.Properties.create(Material.WOOD, MaterialColor.SAND).hardnessAndResistance(40.0F, 10.0F).sound(SoundType.WOOD)));
+	public static final RegistryObject<Block> tower_wood_cracked         = BLOCKS.register("tower_wood_cracked", () -> new BlockFlammable(1, 0, Block.Properties.create(Material.WOOD, MaterialColor.ADOBE).hardnessAndResistance(40.0F, 10.0F).sound(SoundType.WOOD)));
+	public static final RegistryObject<Block> tower_wood_mossy           = BLOCKS.register("tower_wood_mossy", () -> new BlockFlammable(1, 0, Block.Properties.create(Material.WOOD, MaterialColor.ADOBE).hardnessAndResistance(40.0F, 10.0F).sound(SoundType.WOOD)));
+	public static final RegistryObject<Block> tower_wood_infested        = BLOCKS.register("tower_wood_infested", () -> new BlockInfestedTowerWood(1, 0, Block.Properties.create(Material.WOOD, MaterialColor.ADOBE).hardnessAndResistance(0.75F, 10.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<Block> reappearing_block          = BLOCKS.register("reappearing_block", () -> new BlockTFReappearingBlock());
 	public static final RegistryObject<Block> vanishing_block            = BLOCKS.register("vanishing_block", () -> new BlockTFVanishingBlock());
 	public static final RegistryObject<Block> locked_vanishing_block     = BLOCKS.register("locked_vanishing_block", () -> new BlockTFLockedVanishing());
@@ -318,6 +317,7 @@ public class TFBlocks {
 	public static void registerItemblocks(RegistryEvent.Register<Item> evt) {
 		IForgeRegistry<Item> r = evt.getRegistry();
 		List<RegistryObject<? extends Block>> standard = Arrays.asList(
+						tower_wood, tower_wood_encased, tower_wood_cracked, tower_wood_mossy, tower_wood_infested,
 						castle_brick, castle_brick_worn, castle_brick_cracked, castle_brick_mossy, castle_brick_roof, castle_brick_frame,
 						castle_pillar_encased, castle_pillar_encased_tile, castle_pillar_bold, castle_pillar_bold_tile,
 						castle_stairs_brick, castle_stairs_worn, castle_stairs_cracked, castle_stairs_mossy, castle_stairs_encased, castle_stairs_bold,

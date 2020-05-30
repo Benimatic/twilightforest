@@ -25,6 +25,17 @@ public class BlockstateGenerator extends BlockStateProvider {
 
 	@Override
 	protected void registerStatesAndModels() {
+		tintedAndFlipped(TFBlocks.tower_wood.get());
+		simpleBlock(TFBlocks.tower_wood_encased.get(), cubeAllTinted(TFBlocks.tower_wood_encased.getId().getPath(), TFBlocks.tower_wood_encased.getId().getPath()));
+		simpleBlock(TFBlocks.tower_wood_cracked.get(), ConfiguredModel.builder()
+						.modelFile(cubeAllTinted(TFBlocks.tower_wood_cracked.getId().getPath(), TFBlocks.tower_wood_cracked.getId().getPath())).nextModel()
+						.modelFile(cubeAllTinted(TFBlocks.tower_wood_cracked.getId().getPath() + "_flipped", TFBlocks.tower_wood_cracked.getId().getPath(), true)).nextModel()
+						.modelFile(cubeAllTinted(TFBlocks.tower_wood_cracked.getId().getPath() + "_alt", TFBlocks.tower_wood_cracked.getId().getPath() + "_alt")).nextModel()
+						.modelFile(cubeAllTinted(TFBlocks.tower_wood_cracked.getId().getPath() + "_alt_flipped", TFBlocks.tower_wood_cracked.getId().getPath() + "_alt", true)).build()
+		);
+		tintedAndFlipped(TFBlocks.tower_wood_mossy.get());
+		tintedAndFlipped(TFBlocks.tower_wood_infested.get());
+
 		ModelFile portalModel = models().getExistingFile(prefix("block/twilight_portal"));
 		ModelFile portalOverlayModel = models().getExistingFile(prefix("block/twilight_portal_barrier"));
 		getMultipartBuilder(TFBlocks.twilight_portal.get())
@@ -214,6 +225,22 @@ public class BlockstateGenerator extends BlockStateProvider {
 		BlockModelBuilder bModel = models().withExistingParent(b.getRegistryName().getPath(), parent);
 		modelCustomizer.accept(bModel);
 		simpleBlock(b, bModel);
+	}
+
+	private BlockModelBuilder cubeAllTinted(String name, String all, boolean flipV) {
+		String parent = flipV ? "block/util/tinted_cube_all_flipped_v" : "block/util/tinted_cube_all";
+		return models().withExistingParent(name, prefix(parent)).texture("all", "block/" + all);
+	}
+
+	private BlockModelBuilder cubeAllTinted(String name, String all) {
+		return cubeAllTinted(name, all, false);
+	}
+
+	private void tintedAndFlipped(Block b) {
+		simpleBlock(b, ConfiguredModel.builder()
+						.modelFile(cubeAllTinted(b.getRegistryName().getPath(), b.getRegistryName().getPath())).nextModel()
+						.modelFile(cubeAllTinted(b.getRegistryName().getPath() + "_flipped", b.getRegistryName().getPath(), true)).build()
+		);
 	}
 
 	private void logWoodSapling(LogBlock log, Block wood, Block sapling) {
