@@ -68,6 +68,13 @@ public class BlockstateGenerator extends BlockStateProvider {
 							.condition(BlockTFLadderBars.FACING, d).condition(BlockTFLadderBars.RIGHT, true).end();
 		}
 
+		simpleBlock(TFBlocks.castle_brick.get());
+		simpleBlock(TFBlocks.castle_brick_worn.get());
+		simpleBlock(TFBlocks.castle_brick_cracked.get());
+		allRotations(TFBlocks.castle_brick_roof.get(), cubeAll(TFBlocks.castle_brick_roof.get()));
+		simpleBlock(TFBlocks.castle_brick_mossy.get());
+		simpleBlock(TFBlocks.castle_brick_frame.get());
+
 		rotationallyCorrectColumn(TFBlocks.castle_pillar_encased.get());
 		rotationallyCorrectColumn(TFBlocks.castle_pillar_bold.get());
 		simpleBlock(TFBlocks.castle_pillar_encased_tile.get(), models().cubeAll(TFBlocks.castle_pillar_encased_tile.getId().getPath(), prefix("block/castle_pillar_encased_end")));
@@ -76,14 +83,14 @@ public class BlockstateGenerator extends BlockStateProvider {
 		stairsBlock(TFBlocks.castle_stairs_worn.get(), prefix("block/" + TFBlocks.castle_stairs_worn.getId().getPath()));
 		stairsBlock(TFBlocks.castle_stairs_cracked.get(), prefix("block/" + TFBlocks.castle_stairs_cracked.getId().getPath()));
 		stairsBlock(TFBlocks.castle_stairs_mossy.get(), prefix("block/" + TFBlocks.castle_stairs_mossy.getId().getPath()));
-		stairsBlock(TFBlocks.castle_stairs_encased.get(), prefix("block/castle_pillar_encased_h"), prefix("block/castleblock_tile"), prefix("block/castleblock_roof"));
+		stairsBlock(TFBlocks.castle_stairs_encased.get(), prefix("block/castle_pillar_encased_h"), prefix("block/castleblock_tile"), prefix("block/castle_brick_roof"));
 		stairsBlock(TFBlocks.castle_stairs_bold.get(), prefix("block/castle_pillar_bold_tile"));
 
 		ConfiguredModel[] runeBrickModels = new ConfiguredModel[8];
 		for (int i = 0; i < runeBrickModels.length; i++) {
 			runeBrickModels[i] = new ConfiguredModel(
 							models().withExistingParent("castle_rune_brick_" + i, prefix("block/util/cube_all_2_layer"))
-							.texture("all", prefix("block/castleblock_brick"))
+							.texture("all", prefix("block/castle_brick"))
 							.texture("all2", prefix("block/castleblock_magic_" + i)));
 		}
 

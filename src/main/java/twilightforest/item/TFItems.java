@@ -157,7 +157,7 @@ public class TFItems {
 //	@GameRegistry.ObjectHolder("block_storage")
 //	public static final RegistryObject<Item> block_storage;
 
-	public static ItemGroup creativeTab = new ItemGroup("twilightForest") {
+	public static ItemGroup creativeTab = new ItemGroup(TwilightForestMod.ID) {
 		@Override
 		public ItemStack createIcon() {
 			return new ItemStack(TFBlocks.twilight_portal_miniature_structure.get());

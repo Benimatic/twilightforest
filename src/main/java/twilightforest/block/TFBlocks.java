@@ -23,6 +23,7 @@ import twilightforest.world.feature.tree.*;
 import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Supplier;
 
 @SuppressWarnings({"WeakerAccess", "unused"})
 @Nonnull
@@ -316,30 +317,31 @@ public class TFBlocks {
 	@SubscribeEvent
 	public static void registerItemblocks(RegistryEvent.Register<Item> evt) {
 		IForgeRegistry<Item> r = evt.getRegistry();
-		List<Block> standard = Arrays.asList(
-						castle_stairs_brick.get(), castle_stairs_worn.get(), castle_stairs_cracked.get(), castle_stairs_mossy.get(), castle_stairs_encased.get(), castle_stairs_bold.get(),
-						castle_pillar_encased.get(), castle_pillar_encased_tile.get(), castle_pillar_bold.get(), castle_pillar_bold_tile.get(),
-						castle_rune_brick_yellow.get(), castle_rune_brick_purple.get(), castle_rune_brick_pink.get(), castle_rune_brick_blue.get(),
-						castle_door_yellow.get(), castle_door_purple.get(), castle_door_pink.get(), castle_door_blue.get(),
-						twilight_portal_miniature_structure.get(), naga_courtyard_miniature_structure.get(), lich_tower_miniature_structure.get(),
-						knightmetal_block.get(), ironwood_block.get(), fiery_block.get(), steeleaf_block.get(), arctic_fur_block.get(), carminite_block.get(),
-						firefly_jar.get(), iron_ladder.get(),
-						oak_leaves.get(), canopy_leaves.get(), mangrove_leaves.get(), dark_leaves.get(), time_leaves.get(), transformation_leaves.get(), mining_leaves.get(), sorting_leaves.get(),
-						rainboak_leaves.get(), rainboak_sapling.get(),
-						oak_log.get(), canopy_log.get(), mangrove_log.get(), dark_log.get(), time_log.get(), transformation_log.get(), mining_log.get(), sorting_log.get(),
-						oak_wood.get(), canopy_wood.get(), mangrove_wood.get(), dark_wood.get(), time_wood.get(), transformation_wood.get(), mining_wood.get(), sorting_wood.get(),
-						oak_sapling.get(), canopy_sapling.get(), mangrove_sapling.get(), darkwood_sapling.get(), time_sapling.get(), transformation_sapling.get(), mining_sapling.get(), sorting_sapling.get(),
-						twilight_oak_planks.get(), twilight_oak_stairs.get(), twilight_oak_slab.get(), twilight_oak_button.get(), twilight_oak_fence.get(), twilight_oak_gate.get(), twilight_oak_plate.get(), twilight_oak_trapdoor.get(),
-						canopy_planks.get(), canopy_stairs.get(), canopy_slab.get(), canopy_button.get(), canopy_fence.get(), canopy_gate.get(), canopy_plate.get(), canopy_trapdoor.get(),
-						mangrove_planks.get(), mangrove_stairs.get(), mangrove_slab.get(), mangrove_button.get(), mangrove_fence.get(), mangrove_gate.get(), mangrove_plate.get(), mangrove_trapdoor.get(),
-						dark_planks.get(), dark_stairs.get(), dark_slab.get(), dark_button.get(), dark_fence.get(), dark_gate.get(), dark_plate.get(), dark_trapdoor.get(),
-						time_planks.get(), time_stairs.get(), time_slab.get(), time_button.get(), time_fence.get(), time_gate.get(), time_plate.get(), time_trapdoor.get(),
-						trans_planks.get(), trans_stairs.get(), trans_slab.get(), trans_button.get(), trans_fence.get(), trans_gate.get(), trans_plate.get(), trans_trapdoor.get(),
-						mine_planks.get(), mine_stairs.get(), mine_slab.get(), mine_button.get(), mine_fence.get(), mine_gate.get(), mine_plate.get(), mine_trapdoor.get(),
-						sort_planks.get(), sort_stairs.get(), sort_slab.get(), sort_button.get(), sort_fence.get(), sort_gate.get(), sort_plate.get(), sort_trapdoor.get()
+		List<RegistryObject<? extends Block>> standard = Arrays.asList(
+						castle_brick, castle_brick_worn, castle_brick_cracked, castle_brick_mossy, castle_brick_roof, castle_brick_frame,
+						castle_pillar_encased, castle_pillar_encased_tile, castle_pillar_bold, castle_pillar_bold_tile,
+						castle_stairs_brick, castle_stairs_worn, castle_stairs_cracked, castle_stairs_mossy, castle_stairs_encased, castle_stairs_bold,
+						castle_rune_brick_yellow, castle_rune_brick_purple, castle_rune_brick_pink, castle_rune_brick_blue,
+						castle_door_yellow, castle_door_purple, castle_door_pink, castle_door_blue,
+						twilight_portal_miniature_structure, naga_courtyard_miniature_structure, lich_tower_miniature_structure,
+						knightmetal_block, ironwood_block, fiery_block, steeleaf_block, arctic_fur_block, carminite_block,
+						firefly_jar, iron_ladder,
+						oak_leaves, canopy_leaves, mangrove_leaves, dark_leaves, time_leaves, transformation_leaves, mining_leaves, sorting_leaves,
+						rainboak_leaves, rainboak_sapling,
+						oak_log, canopy_log, mangrove_log, dark_log, time_log, transformation_log, mining_log, sorting_log,
+						oak_wood, canopy_wood, mangrove_wood, dark_wood, time_wood, transformation_wood, mining_wood, sorting_wood,
+						oak_sapling, canopy_sapling, mangrove_sapling, darkwood_sapling, time_sapling, transformation_sapling, mining_sapling, sorting_sapling,
+						twilight_oak_planks, twilight_oak_stairs, twilight_oak_slab, twilight_oak_button, twilight_oak_fence, twilight_oak_gate, twilight_oak_plate, twilight_oak_trapdoor,
+						canopy_planks, canopy_stairs, canopy_slab, canopy_button, canopy_fence, canopy_gate, canopy_plate, canopy_trapdoor,
+						mangrove_planks, mangrove_stairs, mangrove_slab, mangrove_button, mangrove_fence, mangrove_gate, mangrove_plate, mangrove_trapdoor,
+						dark_planks, dark_stairs, dark_slab, dark_button, dark_fence, dark_gate, dark_plate, dark_trapdoor,
+						time_planks, time_stairs, time_slab, time_button, time_fence, time_gate, time_plate, time_trapdoor,
+						trans_planks, trans_stairs, trans_slab, trans_button, trans_fence, trans_gate, trans_plate, trans_trapdoor,
+						mine_planks, mine_stairs, mine_slab, mine_button, mine_fence, mine_gate, mine_plate, mine_trapdoor,
+						sort_planks, sort_stairs, sort_slab, sort_button, sort_fence, sort_gate, sort_plate, sort_trapdoor
 		);
-		for (Block b : standard) {
-			r.register(new BlockItem(b, TFItems.defaultBuilder()).setRegistryName(b.getRegistryName()));
+		for (RegistryObject<? extends Block> b : standard) {
+			r.register(new BlockItem(b.get(), TFItems.defaultBuilder()).setRegistryName(b.get().getRegistryName()));
 		}
 		
 		List<Block> doors = Arrays.asList(twilight_oak_door.get(), canopy_door.get(), mangrove_door.get(), dark_door.get(), time_door.get(), trans_door.get(), mine_door.get(), sort_door.get());

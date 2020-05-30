@@ -350,14 +350,14 @@ public class GuiTwilightForestLoading extends Screen {
 			}
 		},
 		FINALCASTLE(
-				TwilightForestMod.prefix("textures/blocks/castleblock_brick.png"),
-				TwilightForestMod.prefix("textures/blocks/castleblock_brick.png"),
-				TwilightForestMod.prefix("textures/blocks/castleblock_brick.png"),
-				TwilightForestMod.prefix("textures/blocks/castleblock_brick.png"),
-				TwilightForestMod.prefix("textures/blocks/castleblock_brick.png"),
-				//TwilightForestMod.prefix("textures/blocks/castleblock_mossy.png"   ), // Jeez this one does not fit at ALL. Out!
-				TwilightForestMod.prefix("textures/blocks/castleblock_cracked.png"),
-				TwilightForestMod.prefix("textures/blocks/castleblock_faded.png")
+				TwilightForestMod.prefix("textures/blocks/castle_brick.png"),
+				TwilightForestMod.prefix("textures/blocks/castle_brick.png"),
+				TwilightForestMod.prefix("textures/blocks/castle_brick.png"),
+				TwilightForestMod.prefix("textures/blocks/castle_brick.png"),
+				TwilightForestMod.prefix("textures/blocks/castle_brick.png"),
+				//TwilightForestMod.prefix("textures/blocks/castle_brick_mossy.png"   ), // Jeez this one does not fit at ALL. Out!
+				TwilightForestMod.prefix("textures/blocks/castle_brick_cracked.png"),
+				TwilightForestMod.prefix("textures/blocks/castle_brick_worn.png")
 		) {
 			private final ResourceLocation[] magic = new ResourceLocation[]{
 					TwilightForestMod.prefix("textures/blocks/castleblock_magic_0.png"),
