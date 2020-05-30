@@ -149,8 +149,8 @@ public class TFBlocks {
 	public static final RegistryObject<Block> aurora_pillar              = BLOCKS.register("aurora_pillar", () -> new BlockTFPillar(Block.Properties.create(Material.PACKED_ICE).hardnessAndResistance(2.0F, 10.0F)));
 	public static final RegistryObject<Block> aurora_slab                = BLOCKS.register("aurora_slab", () -> new SlabBlock(Block.Properties.create(Material.PACKED_ICE).hardnessAndResistance(2.0F, 10.0F)));
 	public static final RegistryObject<Block> trollsteinn                = BLOCKS.register("trollsteinn", () -> new BlockTFTrollSteinn(Block.Properties.create(Material.ROCK).hardnessAndResistance(2.0F, 15.0F).sound(SoundType.STONE)));
-	public static final RegistryObject<Block> wispy_cloud                = BLOCKS.register("wispy_cloud", () -> new BlockTFWispyCloud(Block.Properties.create(Material.SNOW).hardnessAndResistance(0.3F).sound(SoundType.CLOTH)));
-	public static final RegistryObject<Block> fluffy_cloud               = BLOCKS.register("fluffy_cloud", () -> new BlockTFFluffyCloud(Block.Properties.create(Material.PACKED_ICE).hardnessAndResistance(0.8F, 0.0F).sound(SoundType.CLOTH)));
+	public static final RegistryObject<Block> wispy_cloud                = BLOCKS.register("wispy_cloud", () -> new BlockTFWispyCloud(Block.Properties.create(Material.SNOW).hardnessAndResistance(0.3F).sound(SoundType.CLOTH).nonOpaque()));
+	public static final RegistryObject<Block> fluffy_cloud               = BLOCKS.register("fluffy_cloud", () -> new Block(Block.Properties.create(Material.PACKED_ICE).hardnessAndResistance(0.8F, 0.0F).sound(SoundType.CLOTH)));
 	public static final RegistryObject<Block> giant_cobblestone          = BLOCKS.register("giant_cobblestone", () -> new BlockTFGiantCobble());
 	public static final RegistryObject<Block> giant_log                  = BLOCKS.register("giant_log", () -> new BlockTFGiantLog());
 	public static final RegistryObject<Block> giant_leaves               = BLOCKS.register("giant_leaves", () -> new BlockTFGiantLeaves());
@@ -318,6 +318,7 @@ public class TFBlocks {
 		IForgeRegistry<Item> r = evt.getRegistry();
 		List<RegistryObject<? extends Block>> standard = Arrays.asList(
 						tower_wood, tower_wood_encased, tower_wood_cracked, tower_wood_mossy, tower_wood_infested,
+						wispy_cloud, fluffy_cloud,
 						castle_brick, castle_brick_worn, castle_brick_cracked, castle_brick_mossy, castle_brick_roof, castle_brick_frame,
 						castle_pillar_encased, castle_pillar_encased_tile, castle_pillar_bold, castle_pillar_bold_tile,
 						castle_stairs_brick, castle_stairs_worn, castle_stairs_cracked, castle_stairs_mossy, castle_stairs_encased, castle_stairs_bold,

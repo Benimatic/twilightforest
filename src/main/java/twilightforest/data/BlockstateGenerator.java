@@ -79,6 +79,8 @@ public class BlockstateGenerator extends BlockStateProvider {
 							.condition(BlockTFLadderBars.FACING, d).condition(BlockTFLadderBars.RIGHT, true).end();
 		}
 
+		simpleBlock(TFBlocks.wispy_cloud.get());
+		simpleBlock(TFBlocks.fluffy_cloud.get());
 		simpleBlock(TFBlocks.castle_brick.get());
 		simpleBlock(TFBlocks.castle_brick_worn.get());
 		simpleBlock(TFBlocks.castle_brick_cracked.get());

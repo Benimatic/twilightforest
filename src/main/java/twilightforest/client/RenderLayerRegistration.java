@@ -18,6 +18,7 @@ public class RenderLayerRegistration {
 		RenderTypeLookup.setRenderLayer(TFBlocks.sorting_leaves.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.twilight_portal.get(), translucent);
 		RenderTypeLookup.setRenderLayer(TFBlocks.experiment_115.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.wispy_cloud.get(), translucent);
 		RenderTypeLookup.setRenderLayer(TFBlocks.castle_rune_brick_yellow.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.castle_rune_brick_purple.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.castle_rune_brick_pink.get(), cutout);
