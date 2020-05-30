@@ -79,6 +79,8 @@ public class BlockstateGenerator extends BlockStateProvider {
 							.condition(BlockTFLadderBars.FACING, d).condition(BlockTFLadderBars.RIGHT, true).end();
 		}
 
+		simpleBlock(TFBlocks.fake_gold.get(), models().getExistingFile(new ResourceLocation("block/gold_block")));
+		simpleBlock(TFBlocks.fake_diamond.get(), models().getExistingFile(new ResourceLocation("block/diamond_block")));
 		simpleBlock(TFBlocks.wispy_cloud.get());
 		simpleBlock(TFBlocks.fluffy_cloud.get());
 		simpleBlock(TFBlocks.castle_brick.get());

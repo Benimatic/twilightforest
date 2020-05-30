@@ -115,13 +115,12 @@ public class TFBlocks {
 	public static final RegistryObject<Block> antibuilder                = BLOCKS.register("antibuilder", () -> new BlockTFAntibuilder(Block.Properties.create(Material.WOOD, MaterialColor.SAND).hardnessAndResistance(10.0F, 35.0F).sound(SoundType.WOOD).lightValue(10).noDrops()));
 	public static final RegistryObject<BlockTFGhastTrap> ghast_trap      = BLOCKS.register("ghast_trap", () -> new BlockTFGhastTrap());
 	public static final RegistryObject<Block> carminite_reactor          = BLOCKS.register("carminite_reactor", () -> new BlockTFReactor());
-	//public static Block towerAntenna                                   = null; // Not you
 	public static final RegistryObject<Block> reappearing_translucent    = BLOCKS.register("reappearing_translucent", () -> new BlockTFReappearTranslucent());
 	public static final RegistryObject<Block> builder_translucent        = BLOCKS.register("builder_translucent", () -> new BlockTFBuiltTranslucent());
 	public static final RegistryObject<Block> reverter_replacement       = BLOCKS.register("reverter_replacement", () -> new BlockTFTowerTranslucent(Block.Properties.create(Material.GLASS).hardnessAndResistance(0.3F, 2000.0F).sound(SoundType.METAL)));
 	public static final RegistryObject<Block> reactor_debris             = BLOCKS.register("reactor_debris", () -> new BlockTFTowerTranslucent(Block.Properties.create(Material.GLASS).hardnessAndResistance(0.3F, 2000.0F).sound(SoundType.METAL)));
-	public static final RegistryObject<Block> fake_gold                  = BLOCKS.register("fake_gold", () -> new BlockTFTowerTranslucent(Block.Properties.create(Material.GLASS).hardnessAndResistance(50.0F, 2000.0F).sound(SoundType.METAL)));
-	public static final RegistryObject<Block> fake_diamond               = BLOCKS.register("fake_diamond", () -> new BlockTFTowerTranslucent(Block.Properties.create(Material.GLASS).hardnessAndResistance(50.0F, 2000.0F).sound(SoundType.METAL)));
+	public static final RegistryObject<Block> fake_gold                  = BLOCKS.register("fake_gold", () -> new Block(Block.Properties.create(Material.GLASS).hardnessAndResistance(50.0F, 2000.0F).sound(SoundType.METAL).noDrops()));
+	public static final RegistryObject<Block> fake_diamond               = BLOCKS.register("fake_diamond", () -> new Block(Block.Properties.create(Material.GLASS).hardnessAndResistance(50.0F, 2000.0F).sound(SoundType.METAL).noDrops()));
 	public static final RegistryObject<BlockTFTrophy> naga_trophy           = BLOCKS.register("naga_trophy", () -> new BlockTFTrophy(BossVariant.NAGA));
 	public static final RegistryObject<BlockTFTrophy> lich_trophy           = BLOCKS.register("lich_trophy", () -> new BlockTFTrophy(BossVariant.LICH));
 	public static final RegistryObject<BlockTFTrophy> hydra_trophy          = BLOCKS.register("hydra_trophy", () -> new BlockTFTrophy(BossVariant.HYDRA));
@@ -318,6 +317,7 @@ public class TFBlocks {
 		IForgeRegistry<Item> r = evt.getRegistry();
 		List<RegistryObject<? extends Block>> standard = Arrays.asList(
 						tower_wood, tower_wood_encased, tower_wood_cracked, tower_wood_mossy, tower_wood_infested,
+						fake_gold, fake_diamond,
 						wispy_cloud, fluffy_cloud,
 						castle_brick, castle_brick_worn, castle_brick_cracked, castle_brick_mossy, castle_brick_roof, castle_brick_frame,
 						castle_pillar_encased, castle_pillar_encased_tile, castle_pillar_bold, castle_pillar_bold_tile,

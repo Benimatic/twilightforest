@@ -25,6 +25,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.tower_wood_cracked.get());
 		toBlock(TFBlocks.tower_wood_mossy.get());
 		toBlock(TFBlocks.tower_wood_infested.get());
+		toBlockModel(TFBlocks.fake_gold.get(), new ResourceLocation("block/gold_block"));
+		toBlockModel(TFBlocks.fake_diamond.get(), new ResourceLocation("block/diamond_block"));
 		toBlock(TFBlocks.wispy_cloud.get());
 		toBlock(TFBlocks.fluffy_cloud.get());
 		toBlock(TFBlocks.castle_brick.get());
@@ -195,7 +197,11 @@ public class ItemModelGenerator extends ItemModelProvider {
 	}
 
 	private void toBlockModel(Block b, String model) {
-		withExistingParent(b.getRegistryName().getPath(), prefix("block/" + model));
+		toBlockModel(b, prefix("block/" + model));
+	}
+
+	private void toBlockModel(Block b, ResourceLocation model) {
+		withExistingParent(b.getRegistryName().getPath(), model);
 	}
 
 	@Override
