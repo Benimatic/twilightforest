@@ -2,8 +2,12 @@ package twilightforest.data;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.DoorBlock;
+import net.minecraft.enchantment.Enchantments;
+import net.minecraft.item.Items;
 import net.minecraft.state.properties.DoubleBlockHalf;
-import net.minecraft.world.storage.loot.LootTable;
+import net.minecraft.world.storage.loot.*;
+import net.minecraft.world.storage.loot.conditions.TableBonus;
+import net.minecraft.world.storage.loot.functions.SetCount;
 import twilightforest.block.TFBlocks;
 
 import java.util.HashSet;
@@ -119,7 +123,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.time_log.get());
 		registerDropSelfLootTable(TFBlocks.time_wood.get());
 		registerDropSelfLootTable(TFBlocks.time_sapling.get());
-		registerLootTable(TFBlocks.time_leaves.get(), droppingWithChancesAndSticks(TFBlocks.time_leaves.get(), TFBlocks.time_sapling.get(), RARE_SAPLING_DROP_RATES));
+		registerLeavesNoSapling(TFBlocks.time_leaves.get());
 		registerDropSelfLootTable(TFBlocks.time_planks.get());
 		registerDropSelfLootTable(TFBlocks.time_stairs.get());
 		registerLootTable(TFBlocks.time_slab.get(), droppingSlab(TFBlocks.time_slab.get()));
@@ -133,7 +137,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.transformation_log.get());
 		registerDropSelfLootTable(TFBlocks.transformation_wood.get());
 		registerDropSelfLootTable(TFBlocks.transformation_sapling.get());
-		registerLootTable(TFBlocks.transformation_leaves.get(), droppingWithChancesAndSticks(TFBlocks.transformation_leaves.get(), TFBlocks.transformation_sapling.get(), RARE_SAPLING_DROP_RATES));
+		registerLeavesNoSapling(TFBlocks.transformation_leaves.get());
 		registerDropSelfLootTable(TFBlocks.trans_planks.get());
 		registerDropSelfLootTable(TFBlocks.trans_stairs.get());
 		registerLootTable(TFBlocks.trans_slab.get(), droppingSlab(TFBlocks.trans_slab.get()));
@@ -147,7 +151,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.mining_log.get());
 		registerDropSelfLootTable(TFBlocks.mining_wood.get());
 		registerDropSelfLootTable(TFBlocks.mining_sapling.get());
-		registerLootTable(TFBlocks.mining_leaves.get(), droppingWithChancesAndSticks(TFBlocks.mining_leaves.get(), TFBlocks.mining_sapling.get(), RARE_SAPLING_DROP_RATES));
+		registerLeavesNoSapling(TFBlocks.mining_leaves.get());
 		registerDropSelfLootTable(TFBlocks.mine_planks.get());
 		registerDropSelfLootTable(TFBlocks.mine_stairs.get());
 		registerLootTable(TFBlocks.mine_slab.get(), droppingSlab(TFBlocks.mine_slab.get()));
@@ -161,7 +165,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.sorting_log.get());
 		registerDropSelfLootTable(TFBlocks.sorting_wood.get());
 		registerDropSelfLootTable(TFBlocks.sorting_sapling.get());
-		registerLootTable(TFBlocks.sorting_leaves.get(), droppingWithChancesAndSticks(TFBlocks.sorting_leaves.get(), TFBlocks.sorting_sapling.get(), RARE_SAPLING_DROP_RATES));
+		registerLeavesNoSapling(TFBlocks.sorting_leaves.get());
 		registerDropSelfLootTable(TFBlocks.sort_planks.get());
 		registerDropSelfLootTable(TFBlocks.sort_stairs.get());
 		registerLootTable(TFBlocks.sort_slab.get(), droppingSlab(TFBlocks.sort_slab.get()));
@@ -171,6 +175,13 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.sort_plate.get());
 		registerLootTable(TFBlocks.sort_door.get(), (b) -> droppingWhen(b, DoorBlock.HALF, DoubleBlockHalf.LOWER));
 		registerDropSelfLootTable(TFBlocks.sort_trapdoor.get());
+	}
+
+	private void registerLeavesNoSapling(Block leaves) {
+		LootEntry.Builder<?> sticks = withExplosionDecay(leaves, ItemLootEntry.builder(Items.STICK)
+						.acceptFunction(SetCount.builder(RandomValueRange.of(1.0F, 2.0F)))
+						.acceptCondition(TableBonus.builder(Enchantments.FORTUNE, 0.02F, 0.022222223F, 0.025F, 0.033333335F, 0.1F)));
+		registerLootTable(leaves, droppingWithSilkTouchOrShears(leaves, sticks));
 	}
 
 	@Override
