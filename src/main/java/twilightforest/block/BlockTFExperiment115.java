@@ -22,6 +22,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.shapes.IBooleanFunction;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
@@ -39,11 +40,10 @@ public class BlockTFExperiment115 extends Block {
     public static final IntegerProperty BITES_TAKEN = IntegerProperty.create("omnomnom", 0, 7);
     public static final BooleanProperty REGENERATE = BooleanProperty.create("regenerate");
 
-    private static final VoxelShape[] AABB = new VoxelShape[] {
-			VoxelShapes.create(new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.5D, 0.9375D)),
-            VoxelShapes.create(new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.5D, 0.5D, 0.9375D)),
-            VoxelShapes.create(new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.5D, 0.5D, 0.5D))
-    };
+    private static final VoxelShape QUARTER_SHAPE = makeCuboidShape(1, 0, 1, 8, 8, 8);
+    private static final VoxelShape HALF_SHAPE = makeCuboidShape(1, 0, 1, 8, 8, 15);
+    private static final VoxelShape THREE_QUARTER_SHAPE = VoxelShapes.combineAndSimplify(HALF_SHAPE, makeCuboidShape(8, 0, 8, 15, 8, 15), IBooleanFunction.OR);
+    private static final VoxelShape FULL_SHAPE = makeCuboidShape(1, 0, 1, 15, 8, 15);
 
     public BlockTFExperiment115() {
         super(Properties.create(Material.CAKE, MaterialColor.IRON).hardnessAndResistance(0.5F).sound(SoundType.CLOTH).tickRandomly());
@@ -55,13 +55,16 @@ public class BlockTFExperiment115 extends Block {
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
 		switch (state.get(BITES_TAKEN)) {
 			default:
-				return AABB[0];
+				return FULL_SHAPE;
+			case 2:
+			case 3:
+				return THREE_QUARTER_SHAPE;
 			case 4:
 			case 5:
-				return AABB[1];
+				return HALF_SHAPE;
 			case 6:
 			case 7:
-				return AABB[2];
+				return QUARTER_SHAPE;
 		}
 	}
 
