@@ -31,6 +31,9 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.underbrick_cracked.get());
 		toBlock(TFBlocks.underbrick_mossy.get());
 		toBlock(TFBlocks.underbrick_floor.get());
+		toBlock(TFBlocks.deadrock.get());
+		toBlock(TFBlocks.deadrock_cracked.get());
+		toBlock(TFBlocks.deadrock_weathered.get());
 		toBlock(TFBlocks.wispy_cloud.get());
 		toBlock(TFBlocks.fluffy_cloud.get());
 		toBlock(TFBlocks.castle_brick.get());

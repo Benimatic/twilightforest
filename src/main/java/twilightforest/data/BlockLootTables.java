@@ -40,6 +40,9 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.underbrick_cracked.get());
 		registerDropSelfLootTable(TFBlocks.underbrick_mossy.get());
 		registerDropSelfLootTable(TFBlocks.underbrick_floor.get());
+		registerDropSelfLootTable(TFBlocks.deadrock.get());
+		registerDropSelfLootTable(TFBlocks.deadrock_cracked.get());
+		registerDropSelfLootTable(TFBlocks.deadrock_weathered.get());
 		registerSilkTouch(TFBlocks.wispy_cloud.get());
 		registerDropSelfLootTable(TFBlocks.fluffy_cloud.get());
 		registerDropSelfLootTable(TFBlocks.castle_brick.get());

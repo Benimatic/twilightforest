@@ -89,6 +89,19 @@ public class BlockstateGenerator extends BlockStateProvider {
 		simpleBlock(TFBlocks.underbrick_cracked.get());
 		simpleBlock(TFBlocks.underbrick_mossy.get());
 		simpleBlock(TFBlocks.underbrick_floor.get());
+		ModelFile deadrock = models().cubeAll(TFBlocks.deadrock.getId().getPath(), blockTexture(TFBlocks.deadrock.get()));
+		ModelFile deadrockMirrored = models().withExistingParent(TFBlocks.deadrock.getId().getPath() + "_mirrored", prefix("block/util/cube_mirrored_all"))
+						.texture("all", blockTexture(TFBlocks.deadrock.get()));
+		simpleBlock(TFBlocks.deadrock.get(), ConfiguredModel.builder()
+						.modelFile(deadrock).nextModel()
+						.rotationY(180).modelFile(deadrock).nextModel()
+						.modelFile(deadrockMirrored).nextModel()
+						.rotationY(180).modelFile(deadrockMirrored).build()
+		);
+		ModelFile deadrockCracked = models().cubeAll(TFBlocks.deadrock_cracked.getId().getPath(), blockTexture(TFBlocks.deadrock_cracked.get()));
+		allRotations(TFBlocks.deadrock_cracked.get(), deadrockCracked);
+		ModelFile deadrockWeathered = models().cubeAll(TFBlocks.deadrock_weathered.getId().getPath(), blockTexture(TFBlocks.deadrock_weathered.get()));
+		allRotations(TFBlocks.deadrock_weathered.get(), deadrockWeathered);
 		simpleBlock(TFBlocks.wispy_cloud.get());
 		simpleBlock(TFBlocks.fluffy_cloud.get());
 		simpleBlock(TFBlocks.castle_brick.get());
@@ -228,7 +241,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 				}
 			}
 		}
-		getVariantBuilder(b).partialState().setModels(builder.build());
+		simpleBlock(b, builder.build());
 	}
 
 	private void builtinEntity(Block b, String particle) {

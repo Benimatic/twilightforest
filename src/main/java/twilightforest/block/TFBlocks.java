@@ -321,6 +321,7 @@ public class TFBlocks {
 						tower_wood, tower_wood_encased, tower_wood_cracked, tower_wood_mossy, tower_wood_infested,
 						fake_gold, fake_diamond,
 						underbrick, underbrick_cracked, underbrick_mossy, underbrick_floor,
+						deadrock, deadrock_cracked, deadrock_weathered,
 						wispy_cloud, fluffy_cloud,
 						castle_brick, castle_brick_worn, castle_brick_cracked, castle_brick_mossy, castle_brick_roof, castle_brick_frame,
 						castle_pillar_encased, castle_pillar_encased_tile, castle_pillar_bold, castle_pillar_bold_tile,
