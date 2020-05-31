@@ -151,12 +151,6 @@ public class TFItems {
 	public static final RegistryObject<Item> cube_of_annihilation = ITEMS.register("cube_of_annihilation", () -> new ItemTFCubeOfAnnihilation(unstackable().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> moon_dial = ITEMS.register("moon_dial", () -> new ItemTFMoonDial(defaultBuilder()));
 
-	//TODO 1.14: These may potentially not be used
-//	@GameRegistry.ObjectHolder("castle_door")
-//	public static final RegistryObject<Item> castle_door;
-//	@GameRegistry.ObjectHolder("block_storage")
-//	public static final RegistryObject<Item> block_storage;
-
 	public static ItemGroup creativeTab = new ItemGroup(TwilightForestMod.ID) {
 		@Override
 		public ItemStack createIcon() {

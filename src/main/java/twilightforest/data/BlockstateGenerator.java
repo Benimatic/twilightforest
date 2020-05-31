@@ -83,6 +83,8 @@ public class BlockstateGenerator extends BlockStateProvider {
 							.condition(BlockTFLadderBars.FACING, d).condition(BlockTFLadderBars.RIGHT, true).end();
 		}
 
+		terrorcotta();
+
 		simpleBlock(TFBlocks.fake_gold.get(), models().getExistingFile(new ResourceLocation("block/gold_block")));
 		simpleBlock(TFBlocks.fake_diamond.get(), models().getExistingFile(new ResourceLocation("block/diamond_block")));
 		simpleBlock(TFBlocks.underbrick.get());
@@ -552,6 +554,65 @@ public class BlockstateGenerator extends BlockStateProvider {
 											.rotationX(half == Half.BOTTOM ? 0 : 180).rotationY(yRot).uvLock(uvlock)
 											.build();
 						}, StairsBlock.WATERLOGGED);
+	}
+
+	private void terrorcotta() {
+		ModelFile terrorcottaNorth = models().withExistingParent(TFBlocks.terrorcotta_circle.getId().getPath(), prefix("block/util/terracotta"))
+						.texture("down", prefix("block/terrorcotta_b"))
+						.texture("up", prefix("block/terrorcotta_a"))
+						.texture("top_left", prefix("block/terrorcotta_b"))
+						.texture("top_right", prefix("block/terrorcotta_a"))
+						.texture("bot_left", prefix("block/terrorcotta_d"))
+						.texture("bot_right", prefix("block/terrorcotta_c"));
+		ModelFile terrorcottaSouth = models().withExistingParent(TFBlocks.terrorcotta_circle.getId().getPath() + "_south", prefix("block/util/terracotta"))
+						.texture("down", prefix("block/terrorcotta_c"))
+						.texture("up", prefix("block/terrorcotta_d"))
+						.texture("top_left", prefix("block/terrorcotta_b"))
+						.texture("top_right", prefix("block/terrorcotta_a"))
+						.texture("bot_left", prefix("block/terrorcotta_d"))
+						.texture("bot_right", prefix("block/terrorcotta_c"));
+		ModelFile terrorcottaWest = models().withExistingParent(TFBlocks.terrorcotta_circle.getId().getPath() + "_west", prefix("block/util/terracotta"))
+						.texture("down", prefix("block/terrorcotta_d"))
+						.texture("up", prefix("block/terrorcotta_c"))
+						.texture("top_left", prefix("block/terrorcotta_b"))
+						.texture("top_right", prefix("block/terrorcotta_a"))
+						.texture("bot_left", prefix("block/terrorcotta_d"))
+						.texture("bot_right", prefix("block/terrorcotta_c"));
+		ModelFile terrorcottaEast = models().withExistingParent(TFBlocks.terrorcotta_circle.getId().getPath() + "_east", prefix("block/util/terracotta"))
+						.texture("down", prefix("block/terrorcotta_a"))
+						.texture("up", prefix("block/terrorcotta_b"))
+						.texture("top_left", prefix("block/terrorcotta_b"))
+						.texture("top_right", prefix("block/terrorcotta_a"))
+						.texture("bot_left", prefix("block/terrorcotta_d"))
+						.texture("bot_right", prefix("block/terrorcotta_c"));
+
+		getVariantBuilder(TFBlocks.terrorcotta_circle.get()).partialState()
+						.with(HorizontalBlock.HORIZONTAL_FACING, Direction.NORTH).setModels(new ConfiguredModel(terrorcottaNorth));
+		getVariantBuilder(TFBlocks.terrorcotta_circle.get()).partialState()
+						.with(HorizontalBlock.HORIZONTAL_FACING, Direction.SOUTH).setModels(ConfiguredModel.builder().modelFile(terrorcottaSouth).uvLock(true).rotationY(180).build());
+		getVariantBuilder(TFBlocks.terrorcotta_circle.get()).partialState()
+						.with(HorizontalBlock.HORIZONTAL_FACING, Direction.WEST).setModels(ConfiguredModel.builder().modelFile(terrorcottaWest).uvLock(true).rotationY(270).build());
+		getVariantBuilder(TFBlocks.terrorcotta_circle.get()).partialState()
+						.with(HorizontalBlock.HORIZONTAL_FACING, Direction.EAST).setModels(ConfiguredModel.builder().modelFile(terrorcottaEast).uvLock(true).rotationY(90).build());
+
+		ModelFile terrorcottaDiagonal = models().withExistingParent(TFBlocks.terrorcotta_diagonal.getId().getPath(), prefix("block/util/terracotta"))
+						.texture("down", prefix("block/terrorcotta_0"))
+						.texture("up", prefix("block/terrorcotta_0"))
+						.texture("top_left", prefix("block/terrorcotta_0"))
+						.texture("top_right", prefix("block/terrorcotta_1"))
+						.texture("bot_left", prefix("block/terrorcotta_0"))
+						.texture("bot_right", prefix("block/terrorcotta_1"));
+		ModelFile terrorcottaDiagonalRotated = models().withExistingParent(TFBlocks.terrorcotta_diagonal.getId().getPath() + "_rotated", prefix("block/util/terracotta"))
+						.texture("down", prefix("block/terrorcotta_1"))
+						.texture("up", prefix("block/terrorcotta_1"))
+						.texture("top_left", prefix("block/terrorcotta_0"))
+						.texture("top_right", prefix("block/terrorcotta_1"))
+						.texture("bot_left", prefix("block/terrorcotta_0"))
+						.texture("bot_right", prefix("block/terrorcotta_1"));
+		getVariantBuilder(TFBlocks.terrorcotta_diagonal.get()).partialState()
+						.with(BlockTFDiagonal.IS_ROTATED, false).setModels(ConfiguredModel.builder().modelFile(terrorcottaDiagonal).build());
+		getVariantBuilder(TFBlocks.terrorcotta_diagonal.get()).partialState()
+						.with(BlockTFDiagonal.IS_ROTATED, true).setModels(ConfiguredModel.builder().modelFile(terrorcottaDiagonalRotated).uvLock(true).rotationY(90).build());
 	}
 
 	@Nonnull

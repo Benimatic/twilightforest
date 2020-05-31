@@ -147,7 +147,7 @@ public class TFBlocks {
 	public static final RegistryObject<Block> deadrock                   = BLOCKS.register("deadrock", () -> new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(100.0F, 6000000.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> deadrock_cracked           = BLOCKS.register("deadrock_cracked", () -> new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(100.0F, 6000000.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> deadrock_weathered         = BLOCKS.register("deadrock_weathered", () -> new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(100.0F, 6000000.0F).sound(SoundType.STONE)));
-	public static final RegistryObject<Block> aurora_pillar              = BLOCKS.register("aurora_pillar", () -> new BlockTFPillar(Block.Properties.create(Material.PACKED_ICE).hardnessAndResistance(2.0F, 10.0F)));
+	public static final RegistryObject<Block> aurora_pillar              = BLOCKS.register("aurora_pillar", () -> new RotatedPillarBlock(Block.Properties.create(Material.PACKED_ICE).hardnessAndResistance(2.0F, 10.0F)));
 	public static final RegistryObject<Block> aurora_slab                = BLOCKS.register("aurora_slab", () -> new SlabBlock(Block.Properties.create(Material.PACKED_ICE).hardnessAndResistance(2.0F, 10.0F)));
 	public static final RegistryObject<Block> trollsteinn                = BLOCKS.register("trollsteinn", () -> new BlockTFTrollSteinn(Block.Properties.create(Material.ROCK).hardnessAndResistance(2.0F, 15.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> wispy_cloud                = BLOCKS.register("wispy_cloud", () -> new BlockTFWispyCloud(Block.Properties.create(Material.SNOW).hardnessAndResistance(0.3F).sound(SoundType.CLOTH).nonOpaque()));
@@ -236,9 +236,9 @@ public class TFBlocks {
 	public static final RegistryObject<Block> iron_ladder                = BLOCKS.register("iron_ladder", () -> new BlockTFLadderBars(Block.Properties.create(Material.MISCELLANEOUS).hardnessAndResistance(5.0F, 10.0F).sound(SoundType.METAL).nonOpaque()));
 	public static final RegistryObject<Block> terrorcotta_circle         = BLOCKS.register("terrorcotta_circle", () -> new BlockTFHorizontal(Block.Properties.create(Material.ROCK, MaterialColor.SAND).hardnessAndResistance(1.7F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> terrorcotta_diagonal       = BLOCKS.register("terrorcotta_diagonal", () -> new BlockTFDiagonal(Block.Properties.create(Material.ROCK, MaterialColor.SAND).hardnessAndResistance(1.7F).sound(SoundType.STONE)));
-	public static final RegistryObject<Block> stone_twist                = BLOCKS.register("stone_twist", () -> new BlockTFPillar(Block.Properties.create(Material.ROCK).hardnessAndResistance(1.5F, 10.0F)));
+	public static final RegistryObject<Block> stone_twist                = BLOCKS.register("stone_twist", () -> new RotatedPillarBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(1.5F, 10.0F)));
 	public static final RegistryObject<Block> stone_twist_thin           = BLOCKS.register("stone_twist_thin", () -> new BlockTFWallPillar(Material.ROCK, 12, 16));
-	public static final RegistryObject<Block> lapis_block                = BLOCKS.register("lapis_block", () -> new BlockTFLapisBlock());
+	public static final RegistryObject<Block> lapis_block                = BLOCKS.register("lapis_block", () -> new Block(Block.Properties.create(Material.IRON).hardnessAndResistance(3.0F, 5.0F).sound(SoundType.STONE)));
 
 	// TODO chests? boats?
 	public static final RegistryObject<Block> twilight_oak_planks   = BLOCKS.register("twilight_oak_planks", () -> new Block(Block.Properties.create(Material.WOOD, MaterialColor.WOOD).hardnessAndResistance(2.0F, 5.0F).sound(SoundType.WOOD)));
@@ -331,7 +331,7 @@ public class TFBlocks {
 						castle_door_yellow, castle_door_purple, castle_door_pink, castle_door_blue,
 						twilight_portal_miniature_structure, naga_courtyard_miniature_structure, lich_tower_miniature_structure,
 						knightmetal_block, ironwood_block, fiery_block, steeleaf_block, arctic_fur_block, carminite_block,
-						firefly_jar, iron_ladder,
+						firefly_jar, iron_ladder, terrorcotta_circle, terrorcotta_diagonal,
 						oak_leaves, canopy_leaves, mangrove_leaves, dark_leaves, time_leaves, transformation_leaves, mining_leaves, sorting_leaves,
 						rainboak_leaves, rainboak_sapling,
 						oak_log, canopy_log, mangrove_log, dark_log, time_log, transformation_log, mining_log, sorting_log,

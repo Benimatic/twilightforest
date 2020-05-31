@@ -42,6 +42,7 @@ public class BlockTFDiagonal extends Block {
 	@Nullable
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		return this.getDefaultState().with(IS_ROTATED, Direction.byHorizontalIndex(MathHelper.floor(context.getPlacementYaw()* 4.0F / 360.0F) & 1) == Direction.WEST);
+		boolean rot = context.getPlacementHorizontalFacing().getOpposite() == Direction.WEST;
+		return this.getDefaultState().with(IS_ROTATED, rot);
 	}
 }
