@@ -1,7 +1,6 @@
 package twilightforest.client.renderer.tileentity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.block.DirectionalBlock;
@@ -13,18 +12,18 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.BugModelAnimationHelper;
 import twilightforest.client.model.entity.ModelTFFirefly;
-import twilightforest.tileentity.critters.TileEntityTFFirefly;
 import twilightforest.tileentity.critters.TileEntityTFFireflyTicking;
 
 import javax.annotation.Nullable;
 
-public class TileEntityTFFireflyRenderer<T extends TileEntityTFFirefly> extends TileEntityRenderer<T> {
+public class TileEntityTFFireflyRenderer extends TileEntityRenderer<TileEntityTFFireflyTicking> {
 
 	private final ModelTFFirefly fireflyModel = new ModelTFFirefly();
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("firefly-tiny.png");
@@ -53,9 +52,9 @@ public class TileEntityTFFireflyRenderer<T extends TileEntityTFFirefly> extends 
 	}
 
 	@Override
-	public void render(@Nullable T te, float partialTicks, MatrixStack ms, IRenderTypeBuffer buffer, int light, int overlay) {
-		int yaw = te != null ? ((TileEntityTFFireflyTicking) te).currentYaw : BugModelAnimationHelper.currentYaw;
-		float glow = te != null ? ((TileEntityTFFireflyTicking) te).glowIntensity : BugModelAnimationHelper.glowIntensity;
+	public void render(@Nullable TileEntityTFFireflyTicking te, float partialTicks, MatrixStack ms, IRenderTypeBuffer buffer, int light, int overlay) {
+		int yaw = te != null ? te.currentYaw : BugModelAnimationHelper.currentYaw;
+		float glow = te != null ? te.glowIntensity : BugModelAnimationHelper.glowIntensity;
 
 		ms.push();
 		Direction facing = te != null ? te.getBlockState().get(DirectionalBlock.FACING) : Direction.NORTH;

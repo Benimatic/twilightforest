@@ -1,11 +1,9 @@
 package twilightforest.client.renderer.tileentity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.block.DirectionalBlock;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
@@ -14,10 +12,11 @@ import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.BugModelAnimationHelper;
 import twilightforest.client.model.entity.ModelTFCicada;
-import twilightforest.tileentity.critters.TileEntityTFCicada;
 import twilightforest.tileentity.critters.TileEntityTFCicadaTicking;
 
-public class TileEntityTFCicadaRenderer<T extends TileEntityTFCicada> extends TileEntityRenderer<T> {
+import javax.annotation.Nullable;
+
+public class TileEntityTFCicadaRenderer extends TileEntityRenderer<TileEntityTFCicadaTicking> {
 
 	private final ModelTFCicada cicadaModel = new ModelTFCicada();
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("cicada-model.png");
@@ -27,8 +26,8 @@ public class TileEntityTFCicadaRenderer<T extends TileEntityTFCicada> extends Ti
 	}
 
 	@Override
-	public void render(T te, float partialTicks, MatrixStack ms, IRenderTypeBuffer buffers, int light, int overlay) {
-		int yaw = te != null ? ((TileEntityTFCicadaTicking) te).currentYaw : BugModelAnimationHelper.currentYaw;
+	public void render(@Nullable TileEntityTFCicadaTicking te, float partialTicks, MatrixStack ms, IRenderTypeBuffer buffers, int light, int overlay) {
+		int yaw = te != null ? te.currentYaw : BugModelAnimationHelper.currentYaw;
 
 		ms.push();
 		Direction facing = te != null ? te.getBlockState().get(DirectionalBlock.FACING) : Direction.NORTH;
