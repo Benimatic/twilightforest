@@ -117,10 +117,16 @@ public class BlockstateGenerator extends BlockStateProvider {
 							.texture("all2", prefix("block/castleblock_magic_" + i)));
 		}
 
-		getVariantBuilder(TFBlocks.castle_rune_brick_yellow.get()).partialState().setModels(runeBrickModels);
-		getVariantBuilder(TFBlocks.castle_rune_brick_purple.get()).partialState().setModels(runeBrickModels);
-		getVariantBuilder(TFBlocks.castle_rune_brick_pink.get()).partialState().setModels(runeBrickModels);
-		getVariantBuilder(TFBlocks.castle_rune_brick_blue.get()).partialState().setModels(runeBrickModels);
+		simpleBlock(TFBlocks.castle_rune_brick_yellow.get(), runeBrickModels);
+		simpleBlock(TFBlocks.castle_rune_brick_purple.get(), runeBrickModels);
+		simpleBlock(TFBlocks.castle_rune_brick_pink.get(), runeBrickModels);
+		simpleBlock(TFBlocks.castle_rune_brick_blue.get(), runeBrickModels);
+
+		logBlock(TFBlocks.cinder_log.get());
+		simpleBlock(TFBlocks.cinder_wood.get(), models().cubeAll(TFBlocks.cinder_wood.getId().getPath(), prefix("block/" + TFBlocks.cinder_log.getId().getPath())));
+		ModelFile furnaceOff = models().getExistingFile(new ResourceLocation("block/furnace"));
+		ModelFile furnaceOn = models().getExistingFile(new ResourceLocation("block/furnace_on"));
+		horizontalBlock(TFBlocks.cinder_furnace.get(), state -> state.get(AbstractFurnaceBlock.LIT) ? furnaceOn : furnaceOff);
 
 		castleDoor(TFBlocks.castle_door_yellow.get());
 		castleDoor(TFBlocks.castle_door_purple.get());
@@ -264,12 +270,10 @@ public class BlockstateGenerator extends BlockStateProvider {
 	private void logWoodSapling(LogBlock log, Block wood, Block sapling) {
 		logBlock(log);
 		ResourceLocation sideTex = blockTexture(log);
-		getVariantBuilder(wood).partialState()
-						.setModels(ConfiguredModel.builder().modelFile(models().cubeAll(wood.getRegistryName().getPath(), sideTex)).build());
+		simpleBlock(wood, models().cubeAll(wood.getRegistryName().getPath(), sideTex));
 
 		ResourceLocation saplingTex = prefix("block/" + sapling.getRegistryName().getPath());
-		getVariantBuilder(sapling).partialState()
-						.setModels(ConfiguredModel.builder().modelFile(models().cross(sapling.getRegistryName().getPath(), saplingTex)).build());
+		simpleBlock(sapling, models().cross(sapling.getRegistryName().getPath(), saplingTex));
 	}
 
 	private void plankBlocks(String variant, Block plank, Block slab, StairsBlock stair, Block button, Block fence, Block gate, Block plate, DoorBlock door, TrapDoorBlock trapdoor) {
@@ -283,7 +287,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 						.weight(10).modelFile(models().cubeAll(plank.getRegistryName().getPath() + "_1", tex1)).nextModel()
 						.weight(1).modelFile(models().cubeAll(plank.getRegistryName().getPath() + "_2", tex2)).nextModel()
 						.weight(1).modelFile(models().cubeAll(plank.getRegistryName().getPath() + "_3", tex3)).build();
-		getVariantBuilder(plank).partialState().setModels(plankModels);
+		simpleBlock(plank, plankModels);
 
 		ConfiguredModel[] bottomSlabModels = ConfiguredModel.builder()
 						.weight(10).modelFile(models().slab(slab.getRegistryName().getPath(), tex0, tex0, tex0)).nextModel()

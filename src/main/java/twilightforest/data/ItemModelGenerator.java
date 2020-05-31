@@ -53,6 +53,9 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlockModel(TFBlocks.castle_rune_brick_purple.get(), "castle_rune_brick_0");
 		toBlockModel(TFBlocks.castle_rune_brick_pink.get(), "castle_rune_brick_0");
 		toBlockModel(TFBlocks.castle_rune_brick_blue.get(), "castle_rune_brick_0");
+		toBlock(TFBlocks.cinder_log.get());
+		toBlock(TFBlocks.cinder_wood.get());
+		toBlockModel(TFBlocks.cinder_furnace.get(), new ResourceLocation("block/furnace"));
 		toBlock(TFBlocks.castle_door_yellow.get());
 		toBlock(TFBlocks.castle_door_purple.get());
 		toBlock(TFBlocks.castle_door_pink.get());

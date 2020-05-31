@@ -191,8 +191,8 @@ public class TFBlocks {
 	public static final RegistryObject<Block> force_field_green          = BLOCKS.register("force_field_green", () -> new BlockTFForceField(Block.Properties.create(Material.BARRIER).hardnessAndResistance(-1.0F).lightValue(2).noDrops()));
 	public static final RegistryObject<Block> force_field_blue           = BLOCKS.register("force_field_blue", () -> new BlockTFForceField(Block.Properties.create(Material.BARRIER).hardnessAndResistance(-1.0F).lightValue(2).noDrops()));
 	public static final RegistryObject<Block> cinder_furnace             = BLOCKS.register("cinder_furnace", () -> new BlockTFCinderFurnace());
-	public static final RegistryObject<Block> cinder_log                 = BLOCKS.register("cinder_log", () -> new BlockTFCinderLog(Block.Properties.create(Material.WOOD, MaterialColor.GRAY).hardnessAndResistance(1.0F)));
-	public static final RegistryObject<Block> cinder_wood                = BLOCKS.register("cinder_wood", () -> new BlockTFCinderLog(Block.Properties.create(Material.WOOD, MaterialColor.GRAY).hardnessAndResistance(1.0F)));
+	public static final RegistryObject<LogBlock> cinder_log                 = BLOCKS.register("cinder_log", () -> new BlockTFLog(MaterialColor.GRAY, Block.Properties.create(Material.WOOD, MaterialColor.GRAY).hardnessAndResistance(1.0F)));
+	public static final RegistryObject<Block> cinder_wood                = BLOCKS.register("cinder_wood", () -> new BlockFlammable(5, 5, Block.Properties.create(Material.WOOD, MaterialColor.GRAY).hardnessAndResistance(1.0F)));
 	public static final RegistryObject<Block> castle_door_yellow         = BLOCKS.register("castle_door_yellow", () -> new BlockTFCastleDoor(Block.Properties.create(Material.ROCK, MaterialColor.CYAN).hardnessAndResistance(100.0F, 35.0F)));
 	public static final RegistryObject<Block> castle_door_purple         = BLOCKS.register("castle_door_purple", () -> new BlockTFCastleDoor(Block.Properties.create(Material.ROCK, MaterialColor.CYAN).hardnessAndResistance(100.0F, 35.0F)));
 	public static final RegistryObject<Block> castle_door_pink           = BLOCKS.register("castle_door_pink", () -> new BlockTFCastleDoor(Block.Properties.create(Material.ROCK, MaterialColor.CYAN).hardnessAndResistance(100.0F, 35.0F)));
@@ -326,6 +326,7 @@ public class TFBlocks {
 						castle_pillar_encased, castle_pillar_encased_tile, castle_pillar_bold, castle_pillar_bold_tile,
 						castle_stairs_brick, castle_stairs_worn, castle_stairs_cracked, castle_stairs_mossy, castle_stairs_encased, castle_stairs_bold,
 						castle_rune_brick_yellow, castle_rune_brick_purple, castle_rune_brick_pink, castle_rune_brick_blue,
+						cinder_furnace, cinder_log, cinder_wood,
 						castle_door_yellow, castle_door_purple, castle_door_pink, castle_door_blue,
 						twilight_portal_miniature_structure, naga_courtyard_miniature_structure, lich_tower_miniature_structure,
 						knightmetal_block, ironwood_block, fiery_block, steeleaf_block, arctic_fur_block, carminite_block,

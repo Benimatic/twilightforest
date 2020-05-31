@@ -3,6 +3,7 @@ package twilightforest.tileentity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.LogBlock;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.AbstractCookingRecipe;
 import net.minecraft.item.crafting.IRecipe;
@@ -19,7 +20,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.Tags;
 import twilightforest.block.BlockTFCinderFurnace;
-import twilightforest.block.BlockTFCinderLog;
 import twilightforest.block.TFBlocks;
 
 import javax.annotation.Nullable;
@@ -140,7 +140,7 @@ public class TileEntityTFCinderFurnace extends FurnaceTileEntity {
 			direction = dy == 0 ? Direction.Axis.Y : null; //We return null so we can get Cinder Wood.
 		}
 
-		return direction != null ? TFBlocks.cinder_log.get().getDefaultState().with(BlockTFCinderLog.AXIS, direction)
+		return direction != null ? TFBlocks.cinder_log.get().getDefaultState().with(LogBlock.AXIS, direction)
 				: TFBlocks.cinder_wood.get().getDefaultState();
 	}
 
