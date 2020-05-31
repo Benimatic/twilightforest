@@ -1,8 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "twilightforest:miniature_structure",
-      "data": 6
+      "item": "twilightforest:lich_tower_miniature_structure"
     },
     "title": {
       "translate": "advancement.twilightforest.kill_lich"
@@ -10,7 +9,7 @@
     "description": {
       "translate": "advancement.twilightforest.kill_lich.desc",
       "with": [
-        { "translate": "entity.twilightforest.lich.name" }
+        { "translate": "entity.twilightforest.lich" }
       ]
     },
     "frame": "goal"
@@ -30,8 +29,7 @@
       "conditions": {
         "items": [
           {
-            "item": "twilightforest:trophy",
-            "data": 1
+            "item": "twilightforest:lich_trophy"
           }
         ]
       }

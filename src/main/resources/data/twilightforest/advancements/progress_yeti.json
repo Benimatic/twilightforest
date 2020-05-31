@@ -9,7 +9,7 @@
     "description": {
       "translate": "advancement.twilightforest.progress_yeti.desc",
       "with": [
-        { "translate": "entity.twilightforest.yeti_alpha.name" }
+        { "translate": "entity.twilightforest.yeti_alpha" }
       ]
     },
     "frame": "goal"

@@ -9,7 +9,7 @@
     "description": {
       "translate": "advancement.twilightforest.naga_armors.desc",
       "with": [
-        { "translate": "item.twilightforest.nagaScale.name" }
+        { "translate": "item.twilightforest.naga_scale" }
       ]
     },
     "frame": "challenge"

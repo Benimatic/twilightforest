@@ -1,8 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "twilightforest:trophy",
-      "data": 3
+      "item": "twilightforest:ur_ghast_trophy"
     },
     "title": {
       "translate": "advancement.twilightforest.progress_ur_ghast"
@@ -10,7 +9,7 @@
     "description": {
       "translate": "advancement.twilightforest.progress_ur_ghast.desc",
       "with": [
-        { "translate": "entity.twilightforest.ur_ghast.name" }
+        { "translate": "entity.twilightforest.ur_ghast" }
       ]
     },
     "frame": "goal"
@@ -30,8 +29,7 @@
       "conditions": {
         "items": [
           {
-            "item": "twilightforest:trophy",
-            "data": 3
+            "item": "twilightforest:ur_ghast_trophy"
           }
         ]
       }

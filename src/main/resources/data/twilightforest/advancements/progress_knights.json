@@ -1,8 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "twilightforest:trophy",
-      "data": 4
+      "item": "twilightforest:knight_phantom_trophy"
     },
     "title": {
       "translate": "advancement.twilightforest.progress_knights"
@@ -27,8 +26,7 @@
       "conditions": {
         "items": [
           {
-            "item": "twilightforest:trophy",
-            "data": 4
+            "item": "twilightforest:knight_phantom_trophy"
           }
         ]
       }

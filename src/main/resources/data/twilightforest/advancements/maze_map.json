@@ -9,7 +9,7 @@
     "description": {
       "translate": "advancement.twilightforest.maze_map.desc",
       "with": [
-        { "translate": "item.twilightforest.mazeMap.name" }
+        { "translate": "item.twilightforest.maze_map" }
       ]
     }
   },

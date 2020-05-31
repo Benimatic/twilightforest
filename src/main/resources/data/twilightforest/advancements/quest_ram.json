@@ -1,8 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "twilightforest:trophy",
-      "data": 8
+      "item": "twilightforest:quest_ram_trophy"
     },
     "title": {
       "translate": "advancement.twilightforest.quest_ram"
@@ -10,7 +9,7 @@
     "description": {
       "translate": "advancement.twilightforest.quest_ram.desc",
       "with": [
-        { "translate": "entity.twilightforest.quest_ram.name" }
+        { "translate": "entity.twilightforest.quest_ram" }
       ]
     }
   },

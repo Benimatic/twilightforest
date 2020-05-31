@@ -1,8 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "twilightforest:trophy",
-      "data": 5
+      "item": "twilightforest:snow_queen_trophy"
     },
     "title": {
       "translate": "advancement.twilightforest.progress_glacier"
@@ -10,8 +9,8 @@
     "description": {
       "translate": "advancement.twilightforest.progress_glacier.desc",
       "with": [
-        { "translate": "entity.twilightforest.snow_queen.name" },
-        { "translate": "structure.aurora_palace.name" }
+        { "translate": "entity.twilightforest.snow_queen" },
+        { "translate": "structure.aurora_palace" }
       ]
     },
     "frame": "goal"
@@ -31,8 +30,7 @@
       "conditions": {
         "items": [
           {
-            "item": "twilightforest:trophy",
-            "data": 5
+            "item": "twilightforest:snow_queen_trophy"
           }
         ]
       }

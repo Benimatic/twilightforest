@@ -9,7 +9,7 @@
     "description": {
       "translate": "advancement.twilightforest.ore_map.desc",
       "with": [
-        { "translate": "item.twilightforest.oreMap.name" }
+        { "translate": "item.twilightforest.ore_map" }
       ]
     },
     "frame": "challenge",

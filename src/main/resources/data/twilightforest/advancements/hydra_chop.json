@@ -9,7 +9,7 @@
     "description": {
       "translate": "advancement.twilightforest.hydra_chop.desc",
       "with": [
-        { "translate": "entity.twilightforest.hydra.name" }
+        { "translate": "entity.twilightforest.hydra" }
       ]
     }
   },

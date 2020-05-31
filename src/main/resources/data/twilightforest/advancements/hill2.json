@@ -9,8 +9,8 @@
     "description": {
       "translate": "advancement.twilightforest.hill2.desc",
       "with": [
-        { "translate": "entity.twilightforest.redcap_sapper.name" },
-        { "translate": "structure.hollow_hill.name" }
+        { "translate": "entity.twilightforest.redcap_sapper" },
+        { "translate": "structure.hollow_hill" }
       ]
     }
   },

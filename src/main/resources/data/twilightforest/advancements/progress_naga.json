@@ -1,8 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "twilightforest:miniature_structure",
-      "data": 5
+      "item": "twilightforest:naga_courtyard_miniature_structure"
     },
     "title": {
       "translate": "advancement.twilightforest.kill_naga"
@@ -10,8 +9,8 @@
     "description": {
       "translate": "advancement.twilightforest.kill_naga.desc",
       "with": [
-        { "translate": "entity.twilightforest.naga.name" },
-        { "translate": "item.twilightforest.nagaScale.name" }
+        { "translate": "entity.twilightforest.naga" },
+        { "translate": "item.twilightforest.naga_scale" }
       ]
     },
     "frame": "goal"

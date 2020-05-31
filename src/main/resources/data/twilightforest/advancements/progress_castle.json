@@ -1,8 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "twilightforest:castle_rune_brick",
-      "data": 3
+      "item": "twilightforest:castle_rune_brick_purple"
     },
     "title": {
       "translate": "advancement.twilightforest.progress_castle"

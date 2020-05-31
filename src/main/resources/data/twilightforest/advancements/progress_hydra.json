@@ -1,8 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "twilightforest:trophy",
-      "data": 2
+      "item": "twilightforest:hydra_trophy"
     },
     "title": {
       "translate": "advancement.twilightforest.kill_hydra"
@@ -10,7 +9,7 @@
     "description": {
       "translate": "advancement.twilightforest.kill_hydra.desc",
       "with": [
-        { "translate": "entity.twilightforest.hydra.name" }
+        { "translate": "entity.twilightforest.hydra" }
       ]
     },
     "frame": "goal"
@@ -30,8 +29,7 @@
       "conditions": {
         "items": [
           {
-            "item": "twilightforest:trophy",
-            "data": 2
+            "item": "twilightforest:hydra_trophy"
           }
         ]
       }

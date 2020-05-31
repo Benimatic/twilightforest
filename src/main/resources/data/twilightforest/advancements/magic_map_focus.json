@@ -9,10 +9,10 @@
     "description": {
       "translate": "advancement.twilightforest.magic_map_focus.desc",
       "with": [
-        { "translate": "item.twilightforest.magicMapFocus.name" },
-        { "translate": "item.twilightforest.tfFeather.name" },
-        { "translate": "item.yellowDust.name" },
-        { "translate": "item.twilightforest.torchberries.name" }
+        { "translate": "item.twilightforest.magic_map_focus" },
+        { "translate": "item.twilightforest.raven_feather" },
+        { "translate": "item.glowstone" },
+        { "translate": "item.twilightforest.torchberries" }
       ]
     }
   },

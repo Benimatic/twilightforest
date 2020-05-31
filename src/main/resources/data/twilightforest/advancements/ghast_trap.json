@@ -10,9 +10,9 @@
     "description": {
       "translate": "advancement.twilightforest.ghast_trap.desc",
       "with": [
-        { "translate": "entity.twilightforest.mini_ghast.name" },
-        { "translate": "tile.twilightforest.TowerDevice.10.name" },
-        { "translate": "entity.twilightforest.ur_ghast.name" }
+        { "translate": "entity.twilightforest.mini_ghast" },
+        { "translate": "tile.twilightforest.TowerDevice.10" },
+        { "translate": "entity.twilightforest.ur_ghast" }
       ]
     }
   },

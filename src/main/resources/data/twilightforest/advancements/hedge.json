@@ -9,7 +9,7 @@
     "description": {
       "translate": "advancement.twilightforest.hedge.desc",
       "with": [
-        { "translate": "structure.hedge_maze.name" }
+        { "translate": "structure.hedge_maze" }
       ]
     }
   },

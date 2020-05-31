@@ -4,9 +4,9 @@
     "title"      : { "translate": "advancement.twilightforest.progress_merge"      },
     "description": { "translate": "advancement.twilightforest.progress_merge.desc",
       "with"       : [
-        { "translate": "entity.twilightforest.hydra.name"      },
-        { "translate": "entity.twilightforest.ur_ghast.name"   },
-        { "translate": "entity.twilightforest.snow_queen.name" }
+        { "translate": "entity.twilightforest.hydra"      },
+        { "translate": "entity.twilightforest.ur_ghast"   },
+        { "translate": "entity.twilightforest.snow_queen" }
       ]
     },
     "frame": "goal"
