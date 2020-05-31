@@ -3,11 +3,14 @@ package twilightforest.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
+
+import javax.annotation.Nullable;
 
 public class BlockTFAuroraBrick extends Block {
 
@@ -29,15 +32,24 @@ public class BlockTFAuroraBrick extends Block {
 		return getFractalNoise(iterations, size, pos) / (float) iterations;
 	}
 
+	private static int calcVariant(BlockPos pos) {
+		return ((int) ((fractalNoise(3, 48.0f, pos) * 120.0f) % 16.0f)) % 16;
+	}
+
 	public static float rippleFractialNoise(int iterations, float size, BlockPos pos, float minimum, float maximum, float frequency) {
 		float i = maximum - minimum;
 		return Math.abs(((getFractalNoise(iterations, size, pos) * frequency) % (2 * i)) - i) + minimum;
 	}
 
 	@Override
+	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
+		return getDefaultState().with(VARIANT, calcVariant(ctx.getPos()));
+	}
+
+	@Override
 	@Deprecated
 	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-		return getDefaultState().with(VARIANT, ((int) ((fractalNoise(3, 48.0f, currentPos) * 120.0f) % 16.0f)) % 16);
+		return getDefaultState().with(VARIANT, calcVariant(currentPos));
 	}
 
 	@Override

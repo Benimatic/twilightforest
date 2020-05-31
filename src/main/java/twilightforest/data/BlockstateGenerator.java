@@ -87,6 +87,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 
 		simpleBlock(TFBlocks.fake_gold.get(), models().getExistingFile(new ResourceLocation("block/gold_block")));
 		simpleBlock(TFBlocks.fake_diamond.get(), models().getExistingFile(new ResourceLocation("block/diamond_block")));
+		auroraBlocks();
 		simpleBlock(TFBlocks.underbrick.get());
 		simpleBlock(TFBlocks.underbrick_cracked.get());
 		simpleBlock(TFBlocks.underbrick_mossy.get());
@@ -613,6 +614,45 @@ public class BlockstateGenerator extends BlockStateProvider {
 						.with(BlockTFDiagonal.IS_ROTATED, false).setModels(ConfiguredModel.builder().modelFile(terrorcottaDiagonal).build());
 		getVariantBuilder(TFBlocks.terrorcotta_diagonal.get()).partialState()
 						.with(BlockTFDiagonal.IS_ROTATED, true).setModels(ConfiguredModel.builder().modelFile(terrorcottaDiagonalRotated).uvLock(true).rotationY(90).build());
+	}
+
+	private void auroraBlocks() {
+		int variants = 16;
+		ModelFile[] models = new ModelFile[variants];
+		for (int i = 0; i < variants; i++) {
+			models[i] = models().withExistingParent(TFBlocks.aurora_block.getId().getPath() + "_" + i, prefix("block/util/tinted_cube_all"))
+							.texture("all", prefix("block/" + TFBlocks.aurora_block.getId().getPath() + "_" + i));
+		}
+		for (int i = 0; i < variants; i++) {
+			getVariantBuilder(TFBlocks.aurora_block.get()).partialState().with(BlockTFAuroraBrick.VARIANT, i)
+							.setModels(ConfiguredModel.builder()
+											.weight(3).modelFile(models[i]).nextModel()
+											.weight(1).modelFile(models[(i + 1) % variants]).build());
+		}
+
+		ModelFile pillarModel = models().withExistingParent(TFBlocks.aurora_pillar.getId().getPath(), prefix("block/util/tinted_cube_column"))
+						.texture("end", prefix("block/" + TFBlocks.aurora_pillar.getId().getPath() + "_top"))
+						.texture("side", blockTexture(TFBlocks.aurora_pillar.get()));
+		axisBlock(TFBlocks.aurora_pillar.get(), pillarModel);
+
+		ModelFile slabModel = models().withExistingParent(TFBlocks.aurora_slab.getId().getPath(), prefix("block/util/tinted_slab"))
+						.texture("bottom", prefix("block/" + TFBlocks.aurora_pillar.getId().getPath() + "_top"))
+						.texture("top", prefix("block/" + TFBlocks.aurora_pillar.getId().getPath() + "_top"))
+						.texture("side", prefix("block/" + TFBlocks.aurora_slab.getId().getPath() + "_side"));
+		ModelFile doubleSlabModel = models().withExistingParent(TFBlocks.aurora_slab.getId().getPath() + "_double", prefix("block/util/tinted_cube_column"))
+						.texture("end", prefix("block/" + TFBlocks.aurora_pillar.getId().getPath() + "_top"))
+						.texture("side", prefix("block/" + TFBlocks.aurora_slab.getId().getPath() + "_side"));
+
+		getVariantBuilder(TFBlocks.aurora_slab.get()).partialState()
+						.with(SlabBlock.TYPE, SlabType.BOTTOM).setModels(new ConfiguredModel(slabModel));
+		getVariantBuilder(TFBlocks.aurora_slab.get()).partialState()
+						.with(SlabBlock.TYPE, SlabType.TOP).setModels(ConfiguredModel.builder().uvLock(true).rotationX(180).modelFile(slabModel).build());
+		getVariantBuilder(TFBlocks.aurora_slab.get()).partialState()
+						.with(SlabBlock.TYPE, SlabType.DOUBLE).setModels(new ConfiguredModel(doubleSlabModel));
+
+		ModelFile auroraGlass = models().withExistingParent(TFBlocks.auroralized_glass.getId().getPath(), prefix("block/util/tinted_cube_all"))
+						.texture("all", blockTexture(TFBlocks.auroralized_glass.get()));
+		simpleBlock(TFBlocks.auroralized_glass.get(), auroraGlass);
 	}
 
 	@Nonnull

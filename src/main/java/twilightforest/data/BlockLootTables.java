@@ -38,6 +38,10 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.moonworm.get());
 		registerDropSelfLootTable(TFBlocks.terrorcotta_circle.get());
 		registerDropSelfLootTable(TFBlocks.terrorcotta_diagonal.get());
+		registerDropSelfLootTable(TFBlocks.aurora_block.get());
+		registerDropSelfLootTable(TFBlocks.aurora_pillar.get());
+		registerLootTable(TFBlocks.aurora_slab.get(), droppingSlab(TFBlocks.aurora_slab.get()));
+		registerSilkTouch(TFBlocks.auroralized_glass.get());
 		registerDropSelfLootTable(TFBlocks.underbrick.get());
 		registerDropSelfLootTable(TFBlocks.underbrick_cracked.get());
 		registerDropSelfLootTable(TFBlocks.underbrick_mossy.get());

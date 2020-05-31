@@ -134,6 +134,9 @@ public class TFBlocks {
 	public static final RegistryObject<Block> stronghold_shield          = BLOCKS.register("stronghold_shield", () -> new BlockTFShield(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F, 6000000.0F).sound(SoundType.METAL).noDrops()));
 	public static final RegistryObject<Block> trophy_pedestal            = BLOCKS.register("trophy_pedestal", () -> new BlockTFTrophyPedestal());
 	public static final RegistryObject<Block> aurora_block               = BLOCKS.register("aurora_block", () -> new BlockTFAuroraBrick(Block.Properties.create(Material.PACKED_ICE).hardnessAndResistance(2.0F, 10.0F)));
+	public static final RegistryObject<RotatedPillarBlock> aurora_pillar              = BLOCKS.register("aurora_pillar", () -> new RotatedPillarBlock(Block.Properties.create(Material.PACKED_ICE).hardnessAndResistance(2.0F, 10.0F)));
+	public static final RegistryObject<Block> aurora_slab                = BLOCKS.register("aurora_slab", () -> new SlabBlock(Block.Properties.create(Material.PACKED_ICE).hardnessAndResistance(2.0F, 10.0F)));
+	public static final RegistryObject<Block> auroralized_glass          = BLOCKS.register("auroralized_glass", () -> new BlockTFAuroralizedGlass(Block.Properties.create(Material.ICE).nonOpaque()));
 	public static final RegistryObject<Block> underbrick                 = BLOCKS.register("underbrick", () -> new Block(Block.Properties.create(Material.ROCK, MaterialColor.WOOD).hardnessAndResistance(1.5F, 10.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> underbrick_mossy           = BLOCKS.register("underbrick_mossy", () -> new Block(Block.Properties.create(Material.ROCK, MaterialColor.WOOD).hardnessAndResistance(1.5F, 10.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> underbrick_cracked         = BLOCKS.register("underbrick_cracked", () -> new Block(Block.Properties.create(Material.ROCK, MaterialColor.WOOD).hardnessAndResistance(1.5F, 10.0F).sound(SoundType.STONE)));
@@ -147,8 +150,6 @@ public class TFBlocks {
 	public static final RegistryObject<Block> deadrock                   = BLOCKS.register("deadrock", () -> new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(100.0F, 6000000.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> deadrock_cracked           = BLOCKS.register("deadrock_cracked", () -> new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(100.0F, 6000000.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> deadrock_weathered         = BLOCKS.register("deadrock_weathered", () -> new Block(Block.Properties.create(Material.ROCK).hardnessAndResistance(100.0F, 6000000.0F).sound(SoundType.STONE)));
-	public static final RegistryObject<Block> aurora_pillar              = BLOCKS.register("aurora_pillar", () -> new RotatedPillarBlock(Block.Properties.create(Material.PACKED_ICE).hardnessAndResistance(2.0F, 10.0F)));
-	public static final RegistryObject<Block> aurora_slab                = BLOCKS.register("aurora_slab", () -> new SlabBlock(Block.Properties.create(Material.PACKED_ICE).hardnessAndResistance(2.0F, 10.0F)));
 	public static final RegistryObject<Block> trollsteinn                = BLOCKS.register("trollsteinn", () -> new BlockTFTrollSteinn(Block.Properties.create(Material.ROCK).hardnessAndResistance(2.0F, 15.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> wispy_cloud                = BLOCKS.register("wispy_cloud", () -> new BlockTFWispyCloud(Block.Properties.create(Material.SNOW).hardnessAndResistance(0.3F).sound(SoundType.CLOTH).nonOpaque()));
 	public static final RegistryObject<Block> fluffy_cloud               = BLOCKS.register("fluffy_cloud", () -> new Block(Block.Properties.create(Material.PACKED_ICE).hardnessAndResistance(0.8F, 0.0F).sound(SoundType.CLOTH)));
@@ -232,7 +233,6 @@ public class TFBlocks {
 	public static final RegistryObject<Block> nagastone_pillar_weathered       = BLOCKS.register("nagastone_pillar_weathered", () -> new BlockTFNagastonePillar());
 	public static final RegistryObject<Block> nagastone_stairs_weathered_left  = BLOCKS.register("nagastone_stairs_weathered_left", () -> new BlockTFNagastoneStairs(etched_nagastone_weathered.get().getDefaultState()));
 	public static final RegistryObject<Block> nagastone_stairs_weathered_right = BLOCKS.register("nagastone_stairs_weathered_right", () -> new BlockTFNagastoneStairs(etched_nagastone_weathered.get().getDefaultState()));
-	public static final RegistryObject<Block> auroralized_glass          = BLOCKS.register("auroralized_glass", () -> new BlockTFAuroralizedGlass(Block.Properties.create(Material.ICE)));
 	public static final RegistryObject<Block> iron_ladder                = BLOCKS.register("iron_ladder", () -> new BlockTFLadderBars(Block.Properties.create(Material.MISCELLANEOUS).hardnessAndResistance(5.0F, 10.0F).sound(SoundType.METAL).nonOpaque()));
 	public static final RegistryObject<Block> terrorcotta_circle         = BLOCKS.register("terrorcotta_circle", () -> new BlockTFHorizontal(Block.Properties.create(Material.ROCK, MaterialColor.SAND).hardnessAndResistance(1.7F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> terrorcotta_diagonal       = BLOCKS.register("terrorcotta_diagonal", () -> new BlockTFDiagonal(Block.Properties.create(Material.ROCK, MaterialColor.SAND).hardnessAndResistance(1.7F).sound(SoundType.STONE)));
@@ -321,6 +321,7 @@ public class TFBlocks {
 						tower_wood, tower_wood_encased, tower_wood_cracked, tower_wood_mossy, tower_wood_infested,
 						fake_gold, fake_diamond,
 						underbrick, underbrick_cracked, underbrick_mossy, underbrick_floor,
+						aurora_block, aurora_pillar, aurora_slab, auroralized_glass,
 						deadrock, deadrock_cracked, deadrock_weathered,
 						wispy_cloud, fluffy_cloud,
 						castle_brick, castle_brick_worn, castle_brick_cracked, castle_brick_mossy, castle_brick_roof, castle_brick_frame,
