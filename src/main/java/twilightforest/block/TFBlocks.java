@@ -14,10 +14,12 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.ISTER;
 import twilightforest.enums.BossVariant;
 import twilightforest.enums.MagicWoodVariant;
 import twilightforest.enums.PlantVariant;
 import twilightforest.item.TFItems;
+import twilightforest.tileentity.TFTileEntities;
 import twilightforest.world.feature.tree.*;
 
 import javax.annotation.Nonnull;
@@ -100,9 +102,9 @@ public class TFBlocks {
 	public static final RegistryObject<Block> transformation_leaves      = BLOCKS.register("transformation_leaves", () -> new BlockTFMagicLeaves(Block.Properties.create(Material.LEAVES).hardnessAndResistance(0.2F).sound(SoundType.PLANT).tickRandomly().nonOpaque()));
 	public static final RegistryObject<Block> mining_leaves              = BLOCKS.register("mining_leaves", () -> new BlockTFMagicLeaves(Block.Properties.create(Material.LEAVES).hardnessAndResistance(0.2F).sound(SoundType.PLANT).tickRandomly().nonOpaque()));
 	public static final RegistryObject<Block> sorting_leaves             = BLOCKS.register("sorting_leaves", () -> new BlockTFMagicLeaves(Block.Properties.create(Material.LEAVES).hardnessAndResistance(0.2F).sound(SoundType.PLANT).tickRandomly().nonOpaque()));
-	public static final RegistryObject<Block> firefly                    = BLOCKS.register("firefly", () -> new BlockTFFirefly(Block.Properties.create(Material.MISCELLANEOUS).lightValue(15).sound(SoundType.SLIME).hardnessAndResistance(0.0F).doesNotBlockMovement().nonOpaque()));
+	public static final RegistryObject<Block> firefly                    = BLOCKS.register("firefly", () -> new BlockTFFirefly(Block.Properties.create(Material.MISCELLANEOUS).lightValue(15).sound(SoundType.SLIME).hardnessAndResistance(0.0F).doesNotBlockMovement()));
 	public static final RegistryObject<Block> cicada                     = BLOCKS.register("cicada", () -> new BlockTFCicada(Block.Properties.create(Material.MISCELLANEOUS).sound(SoundType.SLIME).hardnessAndResistance(0.0F).doesNotBlockMovement()));
-	public static final RegistryObject<Block> moonworm                   = BLOCKS.register("moonworm", () -> new BlockTFMoonworm(Block.Properties.create(Material.MISCELLANEOUS).lightValue(14).sound(SoundType.SLIME).hardnessAndResistance(0.0F).doesNotBlockMovement().nonOpaque()));
+	public static final RegistryObject<Block> moonworm                   = BLOCKS.register("moonworm", () -> new BlockTFMoonworm(Block.Properties.create(Material.MISCELLANEOUS).lightValue(14).sound(SoundType.SLIME).hardnessAndResistance(0.0F).doesNotBlockMovement()));
 	public static final RegistryObject<Block> tower_wood                 = BLOCKS.register("tower_wood", () -> new BlockFlammable(1, 0, Block.Properties.create(Material.WOOD, MaterialColor.ADOBE).hardnessAndResistance(40.0F, 10.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<Block> tower_wood_encased         = BLOCKS.register("tower_wood_encased", () -> new BlockFlammable(1, 0, Block.Properties.create(Material.WOOD, MaterialColor.SAND).hardnessAndResistance(40.0F, 10.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<Block> tower_wood_cracked         = BLOCKS.register("tower_wood_cracked", () -> new BlockFlammable(1, 0, Block.Properties.create(Material.WOOD, MaterialColor.ADOBE).hardnessAndResistance(40.0F, 10.0F).sound(SoundType.WOOD)));
@@ -316,7 +318,6 @@ public class TFBlocks {
 	public static void registerItemblocks(RegistryEvent.Register<Item> evt) {
 		IForgeRegistry<Item> r = evt.getRegistry();
 		List<RegistryObject<? extends Block>> standard = Arrays.asList(
-						firefly, cicada, moonworm,
 						tower_wood, tower_wood_encased, tower_wood_cracked, tower_wood_mossy, tower_wood_infested,
 						fake_gold, fake_diamond,
 						underbrick, underbrick_cracked, underbrick_mossy, underbrick_floor,
@@ -351,6 +352,12 @@ public class TFBlocks {
 		for (Block b : doors) {
 			r.register(new TallBlockItem(b, TFItems.defaultBuilder()).setRegistryName(b.getRegistryName()));
 		}
-		
+
+		r.register(new BlockItem(firefly.get(), TFItems.defaultBuilder().setISTER(() -> () -> new ISTER(TFTileEntities.FIREFLY.getId())))
+						.setRegistryName(firefly.getId()));
+		r.register(new BlockItem(moonworm.get(), TFItems.defaultBuilder().setISTER(() -> () -> new ISTER(TFTileEntities.MOONWORM.getId())))
+						.setRegistryName(moonworm.getId()));
+		r.register(new BlockItem(cicada.get(), TFItems.defaultBuilder().setISTER(() -> () -> new ISTER(TFTileEntities.CICADA.getId())))
+						.setRegistryName(cicada.getId()));
 	}
 }

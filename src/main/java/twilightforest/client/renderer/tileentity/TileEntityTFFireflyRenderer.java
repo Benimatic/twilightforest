@@ -22,6 +22,8 @@ import twilightforest.client.model.entity.ModelTFFirefly;
 import twilightforest.tileentity.critters.TileEntityTFFirefly;
 import twilightforest.tileentity.critters.TileEntityTFFireflyTicking;
 
+import javax.annotation.Nullable;
+
 public class TileEntityTFFireflyRenderer<T extends TileEntityTFFirefly> extends TileEntityRenderer<T> {
 
 	private final ModelTFFirefly fireflyModel = new ModelTFFirefly();
@@ -51,7 +53,7 @@ public class TileEntityTFFireflyRenderer<T extends TileEntityTFFirefly> extends 
 	}
 
 	@Override
-	public void render(T te, float partialTicks, MatrixStack ms, IRenderTypeBuffer buffer, int light, int overlay) {
+	public void render(@Nullable T te, float partialTicks, MatrixStack ms, IRenderTypeBuffer buffer, int light, int overlay) {
 		int yaw = te != null ? ((TileEntityTFFireflyTicking) te).currentYaw : BugModelAnimationHelper.currentYaw;
 		float glow = te != null ? ((TileEntityTFFireflyTicking) te).glowIntensity : BugModelAnimationHelper.glowIntensity;
 
@@ -73,7 +75,6 @@ public class TileEntityTFFireflyRenderer<T extends TileEntityTFFirefly> extends 
 		} else if (facing == Direction.DOWN) {
 			rotX = 180F;
 		}
-		ms.translate(0.5, 0.5, 0.5);
 		ms.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(rotX));
 		ms.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(rotZ));
 		ms.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(yaw));
