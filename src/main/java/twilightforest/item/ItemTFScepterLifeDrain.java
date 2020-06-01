@@ -146,9 +146,6 @@ public class ItemTFScepterLifeDrain extends Item {
 
 							// only do lifting effect on creatures weaker than the player
 							if (getMaxHealth(target) <= getMaxHealth(living)) {
-//								target.motionX = 0;
-//								target.motionY = 0.2;
-//								target.motionZ = 0;
 								target.setMotion(0, 0.2, 0);
 							}
 
@@ -174,9 +171,6 @@ public class ItemTFScepterLifeDrain extends Item {
 
 						// only do lifting effect on creatures weaker than the player
 						if (getMaxHealth(target) <= getMaxHealth(living)) {
-//							target.motionX = 0;
-//							target.motionY = 0.2;
-//							target.motionZ = 0;
 							target.setMotion(0, 0.2, 0);
 						}
 

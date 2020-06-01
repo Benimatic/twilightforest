@@ -55,14 +55,19 @@ public class ItemTFTransformPowder extends Item {
 
 	@Override
 	public boolean itemInteractionForEntity(ItemStack stack, PlayerEntity player, LivingEntity target, Hand hand) {
+		if (!target.isAlive()) {
+			return false;
+		}
 
-		if (!target.isAlive()) return false;
+		EntityType<?> type = transformMap.get(target.getType());
+		if (type == null) {
+			return false;
+		}
 
-//		ResourceLocation location = transformMap.get(EntityType.getKey(target.getType()));
-//		if (location == null) return false;
-
-		Entity newEntity = transformMap.get(target.getType()).create(target.world);
-		if (newEntity == null) return false;
+		Entity newEntity = type.create(player.world);
+		if (newEntity == null) {
+			return false;
+		}
 
 		newEntity.setLocationAndAngles(target.getX(), target.getY(), target.getZ(), target.rotationYaw, target.rotationPitch);
 		if (newEntity instanceof MobEntity) {
@@ -74,7 +79,7 @@ public class ItemTFTransformPowder extends Item {
 			newEntity.read(target.writeWithoutTypeId(newEntity.writeWithoutTypeId(new CompoundNBT())));
 			newEntity.setUniqueId(uuid);
 		} catch (Exception e) {
-			TwilightForestMod.LOGGER.warn("Couldn't transform entity NBT data: {}", e);
+			TwilightForestMod.LOGGER.warn("Couldn't transform entity NBT data", e);
 		}
 
 		target.world.addEntity(newEntity);
@@ -94,13 +99,13 @@ public class ItemTFTransformPowder extends Item {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, @Nonnull Hand hand) {
 		if (world.isRemote) {
-			AxisAlignedBB fanBox = getEffectAABB(player);
+			AxisAlignedBB area = getEffectAABB(player);
 
 			// particle effect
 			for (int i = 0; i < 30; i++) {
-				world.addParticle(ParticleTypes.CRIT, fanBox.minX + world.rand.nextFloat() * (fanBox.maxX - fanBox.minX),
-						fanBox.minY + world.rand.nextFloat() * (fanBox.maxY - fanBox.minY),
-						fanBox.minZ + world.rand.nextFloat() * (fanBox.maxZ - fanBox.minZ),
+				world.addParticle(ParticleTypes.CRIT, area.minX + world.rand.nextFloat() * (area.maxX - area.minX),
+						area.minY + world.rand.nextFloat() * (area.maxY - area.minY),
+						area.minZ + world.rand.nextFloat() * (area.maxZ - area.minZ),
 						0, 0, 0);
 			}
 

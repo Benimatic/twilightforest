@@ -256,24 +256,12 @@ public class ItemTFOreMagnet extends Item {
 	}
 
 	private static boolean isOre(BlockState state) {
-        Block block = state.getBlock();
+		Block block = state.getBlock();
 
-		if (block == Blocks.COAL_ORE) return false;
+		if (block == Blocks.COAL_ORE) {
+			return false;
+		}
 
-		if (block == Blocks.IRON_ORE
-                || block == Blocks.DIAMOND_ORE
-                || block == Blocks.EMERALD_ORE
-                || block == Blocks.GOLD_ORE
-                || block == Blocks.LAPIS_ORE
-                || block == Blocks.REDSTONE_ORE
-                || block == Blocks.NETHER_QUARTZ_ORE
-                || block == TFBlocks.liveroot_block.get()
-                // todo 1.9 oh god
-				// National treasure -Drullkus
-				// TODO 1.14: noh, we are use tag instead
-                || state.getBlock().isIn(Tags.Blocks.ORES))
-		    return true;
-
-		return false;
+		return block == TFBlocks.liveroot_block.get() || state.getBlock().isIn(Tags.Blocks.ORES);
 	}
 }

@@ -17,7 +17,7 @@ import java.util.UUID;
 
 public class TFItems {
 	public static final Food EXPERIMENT_115 = new Food.Builder().hunger(4).saturation(0.3F).build();
-	public static final Food HYDRA_CHOP = new Food.Builder().hunger(18).saturation(2.0F).effect(new EffectInstance(Effects.REGENERATION, 100, 0), 1.0F).build();
+	public static final Food HYDRA_CHOP = new Food.Builder().hunger(18).saturation(2.0F).effect(() -> new EffectInstance(Effects.REGENERATION, 100, 0), 1.0F).build();
 	public static final Food MAZE_WAFER = new Food.Builder().hunger(4).saturation(0.6F).build();
 	public static final Food MEEF_COOKED = new Food.Builder().hunger(6).saturation(0.6F).meat().build();
 	public static final Food MEEF_RAW = new Food.Builder().hunger(2).saturation(0.3F).meat().build();

@@ -5,12 +5,10 @@ import net.minecraft.block.FlowerBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.item.UseAction;
-import net.minecraft.item.Rarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.ActionResult;
@@ -48,9 +46,6 @@ public class ItemTFPeacockFan extends Item {
 			// jump if the player is in the air
 			//TODO: only one extra jump per jump
 			if (!player.onGround && !player.isPotionActive(Effects.JUMP_BOOST)) {
-//				player.motionX *= 3F;
-//				player.motionY = 1.5F;
-//				player.motionZ *= 3F;
 				player.setMotion(new Vec3d(
 						player.getMotion().getX() * 3F,
 						1.5F,
@@ -93,7 +88,7 @@ public class ItemTFPeacockFan extends Item {
 	private int doFan(World world, PlayerEntity player) {
 		AxisAlignedBB fanBox = getEffectAABB(player);
 
-		fanBlocksInAABB(world, player, fanBox);
+		fanBlocksInAABB(world, fanBox);
 
 		fanEntitiesInAABB(world, player, fanBox);
 
@@ -105,9 +100,6 @@ public class ItemTFPeacockFan extends Item {
 
 		for (Entity entity : world.getEntitiesWithinAABB(Entity.class, fanBox)) {
 			if (entity.canBePushed() || entity instanceof ItemEntity) {
-//				entity.motionX = moveVec.x;
-//				entity.motionY = moveVec.y;
-//				entity.motionZ = moveVec.z;
 				entity.setMotion(moveVec.x, moveVec.y, moveVec.z);
 			}
 		}
@@ -124,25 +116,22 @@ public class ItemTFPeacockFan extends Item {
 		return new AxisAlignedBB(destVec.x - radius, destVec.y - radius, destVec.z - radius, destVec.x + radius, destVec.y + radius, destVec.z + radius);
 	}
 
-	private int fanBlocksInAABB(World world, PlayerEntity player, AxisAlignedBB box) {
+	private int fanBlocksInAABB(World world, AxisAlignedBB box) {
 		int fan = 0;
 		for (BlockPos pos : WorldUtil.getAllInBB(box)) {
-			fan += fanBlock(world, player, pos);
+			fan += fanBlock(world, pos);
 		}
 		return fan;
 	}
 
-	private int fanBlock(World world, PlayerEntity player, BlockPos pos) {
+	private int fanBlock(World world, BlockPos pos) {
 		int cost = 0;
 
 		BlockState state = world.getBlockState(pos);
 
-		if (state.getBlock() != Blocks.AIR) {
-			if (state.getBlock() instanceof FlowerBlock) {
-				if (state.getBlock().canHarvestBlock(state, world, pos, player) && random.nextInt(3) == 0) {
-					state.getBlock().harvestBlock(world, player, pos, state, world.getTileEntity(pos), ItemStack.EMPTY);
-					world.destroyBlock(pos, false);
-				}
+		if (state.getBlock() instanceof FlowerBlock) {
+			if (random.nextInt(3) == 0) {
+				world.destroyBlock(pos, true);
 			}
 		}
 

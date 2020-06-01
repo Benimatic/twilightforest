@@ -38,15 +38,6 @@ public class ItemTFPhantomArmor extends ArmorItem {
 	}
 
 	@Override
-	public void fillItemGroup(ItemGroup tab, NonNullList<ItemStack> list) {
-		if (isInGroup(tab)) {
-			ItemStack istack = new ItemStack(this);
-			//istack.addEnchantment(TFEnchantment.reactFire, 2);
-			list.add(istack);
-		}
-	}
-
-	@Override
 	@OnlyIn(Dist.CLIENT)
 	public BipedModel getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, BipedModel original) {
 		return phantomArmorModel.get(armorSlot);

@@ -32,16 +32,6 @@ public class ItemTFKnightlyArmor extends ArmorItem {
 		}
 	}
 
-	//TODO: Is this even needed?
-	@Override
-	public void fillItemGroup(ItemGroup tab, NonNullList<ItemStack> list) {
-		if (isInGroup(tab)) {
-			ItemStack istack = new ItemStack(this);
-			//istack.addEnchantment(TFEnchantment.reactFire, 2);
-			list.add(istack);
-		}
-	}
-
 	@Nullable
 	@Override
 	@OnlyIn(Dist.CLIENT)

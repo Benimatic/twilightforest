@@ -52,10 +52,9 @@ public class ItemTFMagicBeans extends Item {
 
 	@SuppressWarnings("RedundantCast")
 	private float getCloudHeight(World world) {
-		//TODO: Can we just call Dimension.getCloudHeight?
 		if (world.dimension instanceof WorldProviderTwilightForest) {
 			// WorldProviderTwilightForest has this method on both server and client
-			return ((WorldProviderTwilightForest) world.dimension).getCloudHeight(); // This cast is actually needed for some reason, else this will toss a Method Not Found on dedicated servers.
+			return ((WorldProviderTwilightForest) world.dimension).getCloudHeight(); // cast needed so the bytecode targets the derived method not the stripped super method
 		} else {
 			// otherwise, world.dimension.getCloudHeight() is client only. guess 128
 			return 128;
@@ -162,7 +161,7 @@ public class ItemTFMagicBeans extends Item {
 
 	private void tryToPlaceLeaves(World world, BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
-		if (state.getBlock().isAir(state, world, pos) || state.getBlock().canBeReplacedByLeaves(state, world, pos)) {
+		if (state.getBlock().canBeReplacedByLeaves(state, world, pos)) {
 			world.setBlockState(pos, TFBlocks.beanstalk_leaves.get().getDefaultState(), 2);
 		}
 	}
