@@ -105,6 +105,8 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.maze_stone_mosaic.get());
 		registerDropSelfLootTable(TFBlocks.maze_stone_border.get());
 		registerLootTable(TFBlocks.hedge.get(), LootTable.builder());
+		registerLootTable(TFBlocks.root.get(), droppingRandomly(Items.STICK, new RandomValueRange(3, 5)));
+		registerLootTable(TFBlocks.liveroot_block.get(), dropping(TFItems.liveroot.get()));
 		registerDropSelfLootTable(TFBlocks.firefly_jar.get());
 		registerDropSelfLootTable(TFBlocks.iron_ladder.get());
 		registerDropSelfLootTable(TFBlocks.oak_log.get());

@@ -177,6 +177,8 @@ public class BlockstateGenerator extends BlockStateProvider {
 						.weight(10).modelFile(models().cubeAll(TFBlocks.hedge.getId().getPath(), blockTexture(TFBlocks.hedge.get()))).nextModel()
 						.weight(1).modelFile(models().cubeAll(TFBlocks.hedge.getId().getPath() + "_rose", prefix("block/" + TFBlocks.hedge.getId().getPath() + "_rose"))).build());
 		simpleBlockExisting(TFBlocks.firefly_jar.get());
+		simpleBlock(TFBlocks.root.get());
+		simpleBlock(TFBlocks.liveroot_block.get());
 		registerWoodBlocks();
 	}
 

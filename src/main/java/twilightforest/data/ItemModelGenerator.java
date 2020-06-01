@@ -97,6 +97,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.maze_stone_mosaic.get());
 		toBlock(TFBlocks.maze_stone_border.get());
 		toBlock(TFBlocks.hedge.get());
+		toBlock(TFBlocks.root.get());
+		toBlock(TFBlocks.liveroot_block.get());
 		toBlock(TFBlocks.firefly_jar.get());
 		toBlock(TFBlocks.oak_log.get());
 		toBlock(TFBlocks.oak_wood.get());

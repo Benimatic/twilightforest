@@ -78,7 +78,7 @@ public class ItemTFOreMeter extends Item {
 				countExposedDiamond += results.getOrDefault(Blocks.DIAMOND_ORE.getDefaultState(), dummy).exposedCount;
 
 				countRoots += results.getOrDefault(TFBlocks.root.get().getDefaultState(), dummy).count;
-				countOreRoots += results.getOrDefault(TFBlocks.liveroot.get().getDefaultState(), dummy).count;
+				countOreRoots += results.getOrDefault(TFBlocks.liveroot_block.get().getDefaultState(), dummy).count;
 			}
 		}
 
@@ -93,7 +93,7 @@ public class ItemTFOreMeter extends Item {
 		player.sendMessage(new TranslationTextComponent(Blocks.LAPIS_ORE.getTranslationKey() + ".name").appendText(" - " + countLapis + " " + percent(countLapis, total)));
 		player.sendMessage(new TranslationTextComponent(Blocks.REDSTONE_ORE.getTranslationKey() + ".name").appendText(" - " + countRedstone + " " + percent(countRedstone, total)));
 		player.sendMessage(new TranslationTextComponent(TFBlocks.root.get().getTranslationKey() + ".name").appendText(" - " + countRoots + " " + percent(countRoots, total)));
-		player.sendMessage(new TranslationTextComponent(TFBlocks.liveroot.get().getTranslationKey() + ".name").appendText(" - " + countOreRoots + " " + percent(countOreRoots, total)));
+		player.sendMessage(new TranslationTextComponent(TFBlocks.liveroot_block.get().getTranslationKey() + ".name").appendText(" - " + countOreRoots + " " + percent(countOreRoots, total)));
 	}
 
 	private String percent(int count, int total) {

@@ -67,8 +67,8 @@ public class TFBlocks {
 	public static final RegistryObject<Block> torchberry                 = BLOCKS.register("torchberry", () -> new BlockTFPlant(PlantVariant.TORCHBERRY, Block.Properties.create(Material.PLANTS).hardnessAndResistance(0.0F).sound(SoundType.PLANT).tickRandomly().doesNotBlockMovement().nonOpaque().lightValue(8)));
 	public static final RegistryObject<Block> root_strand                = BLOCKS.register("root_strand", () -> new BlockTFPlant(PlantVariant.ROOT_STRAND, Block.Properties.create(Material.PLANTS).hardnessAndResistance(0.0F).sound(SoundType.PLANT).tickRandomly().doesNotBlockMovement().nonOpaque()));
 	public static final RegistryObject<Block> fallen_leaves              = BLOCKS.register("fallen_leaves", () -> new BlockTFPlant(PlantVariant.FALLEN_LEAVES, Block.Properties.create(Material.PLANTS).hardnessAndResistance(0.0F).sound(SoundType.PLANT).tickRandomly().doesNotBlockMovement().nonOpaque()));
-	public static final RegistryObject<Block> root                       = BLOCKS.register("root", () -> new BlockTFRoots());
-	public static final RegistryObject<Block> liveroot                   = BLOCKS.register("liveroot", () -> new BlockTFRoots());
+	public static final RegistryObject<Block> root                       = BLOCKS.register("root", () -> new Block(Block.Properties.create(Material.WOOD).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
+	public static final RegistryObject<Block> liveroot_block = BLOCKS.register("liveroot_block", () -> new Block(Block.Properties.create(Material.WOOD).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<Block> uncrafting_table           = BLOCKS.register("uncrafting_table", () -> new BlockTFUncraftingTable());
 	public static final RegistryObject<Block> smoker                     = BLOCKS.register("smoker", () -> new BlockTFSmoker());
 	public static final RegistryObject<Block> encased_smoker             = BLOCKS.register("encased_smoker", () -> new BlockTFEncasedSmoker());
@@ -334,7 +334,7 @@ public class TFBlocks {
 						twilight_portal_miniature_structure, naga_courtyard_miniature_structure, lich_tower_miniature_structure,
 						knightmetal_block, ironwood_block, fiery_block, steeleaf_block, arctic_fur_block, carminite_block,
 						maze_stone, maze_stone_brick, maze_stone_chiseled, maze_stone_decorative, maze_stone_cracked, maze_stone_mossy, maze_stone_mosaic, maze_stone_border,
-						hedge, firefly_jar, iron_ladder, terrorcotta_circle, terrorcotta_diagonal,
+						hedge, root, liveroot_block, firefly_jar, iron_ladder, terrorcotta_circle, terrorcotta_diagonal,
 						oak_leaves, canopy_leaves, mangrove_leaves, dark_leaves, time_leaves, transformation_leaves, mining_leaves, sorting_leaves,
 						rainboak_leaves, rainboak_sapling,
 						oak_log, canopy_log, mangrove_log, dark_log, time_log, transformation_log, mining_log, sorting_log,

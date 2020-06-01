@@ -267,7 +267,7 @@ public class ItemTFOreMagnet extends Item {
                 || block == Blocks.LAPIS_ORE
                 || block == Blocks.REDSTONE_ORE
                 || block == Blocks.NETHER_QUARTZ_ORE
-                || block == TFBlocks.liveroot.get()
+                || block == TFBlocks.liveroot_block.get()
                 // todo 1.9 oh god
 				// National treasure -Drullkus
 				// TODO 1.14: noh, we are use tag instead

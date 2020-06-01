@@ -19,7 +19,7 @@ import java.util.function.Function;
 public class TFGenWoodRoots<T extends NoFeatureConfig> extends Feature<T> {
 
 	private BlockState rootBlock = TFBlocks.root.get().getDefaultState();
-	private BlockState oreBlock = TFBlocks.liveroot.get().getDefaultState();
+	private BlockState oreBlock = TFBlocks.liveroot_block.get().getDefaultState();
 
 	public TFGenWoodRoots(Function<Dynamic<?>, T> configIn) {
 		super(configIn);
