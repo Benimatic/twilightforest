@@ -6,10 +6,14 @@ import net.minecraft.block.DoorBlock;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.Items;
 import net.minecraft.state.properties.DoubleBlockHalf;
+import net.minecraft.util.IItemProvider;
 import net.minecraft.world.storage.loot.*;
+import net.minecraft.world.storage.loot.conditions.ILootCondition;
 import net.minecraft.world.storage.loot.conditions.TableBonus;
 import net.minecraft.world.storage.loot.functions.SetCount;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import twilightforest.block.TFBlocks;
+import twilightforest.item.TFItems;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -47,6 +51,9 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.underbrick_cracked.get());
 		registerDropSelfLootTable(TFBlocks.underbrick_mossy.get());
 		registerDropSelfLootTable(TFBlocks.underbrick_floor.get());
+		registerDropSelfLootTable(TFBlocks.thorn_rose.get());
+		registerLootTable(TFBlocks.thorn_leaves.get(), silkAndStick(TFBlocks.thorn_leaves.get(), TFItems.magic_beans.get(), RARE_SAPLING_DROP_RATES));
+		registerLootTable(TFBlocks.beanstalk_leaves.get(), silkAndStick(TFBlocks.beanstalk_leaves.get(), TFItems.magic_beans.get(), RARE_SAPLING_DROP_RATES));
 		registerDropSelfLootTable(TFBlocks.deadrock.get());
 		registerDropSelfLootTable(TFBlocks.deadrock_cracked.get());
 		registerDropSelfLootTable(TFBlocks.deadrock_weathered.get());
@@ -212,6 +219,13 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 						.acceptFunction(SetCount.builder(RandomValueRange.of(1.0F, 2.0F)))
 						.acceptCondition(TableBonus.builder(Enchantments.FORTUNE, 0.02F, 0.022222223F, 0.025F, 0.033333335F, 0.1F)));
 		registerLootTable(leaves, droppingWithSilkTouchOrShears(leaves, sticks));
+	}
+
+
+	// [VanillaCopy] super.droppingWithChancesAndSticks, but non-silk touch parameter can be an item instead of a block
+	private static LootTable.Builder silkAndStick(Block block, IItemProvider nonSilk, float... nonSilkFortune) {
+		ILootCondition.IBuilder NOT_SILK_TOUCH_OR_SHEARS = ObfuscationReflectionHelper.getPrivateValue(net.minecraft.data.loot.BlockLootTables.class, null, "field_218577_e");
+		return droppingWithSilkTouchOrShears(block, withSurvivesExplosion(block, ItemLootEntry.builder(nonSilk.asItem())).acceptCondition(TableBonus.builder(Enchantments.FORTUNE, nonSilkFortune))).addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).acceptCondition(NOT_SILK_TOUCH_OR_SHEARS).addEntry(withExplosionDecay(block, ItemLootEntry.builder(Items.STICK).acceptFunction(SetCount.builder(RandomValueRange.of(1.0F, 2.0F)))).acceptCondition(TableBonus.builder(Enchantments.FORTUNE, 0.02F, 0.022222223F, 0.025F, 0.033333335F, 0.1F))));
 	}
 
 	@Override

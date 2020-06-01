@@ -46,5 +46,9 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		getBuilder(BlockTags.WOODEN_TRAPDOORS)
 						.add(TFBlocks.twilight_oak_trapdoor.get(), TFBlocks.canopy_trapdoor.get(), TFBlocks.mangrove_trapdoor.get(), TFBlocks.dark_trapdoor.get())
 						.add(TFBlocks.time_trapdoor.get(), TFBlocks.trans_trapdoor.get(), TFBlocks.mine_trapdoor.get(), TFBlocks.sort_trapdoor.get());
+		getBuilder(BlockTags.LEAVES)
+						.add(TFBlocks.rainboak_leaves.get(), TFBlocks.oak_leaves.get(), TFBlocks.canopy_leaves.get(), TFBlocks.mangrove_leaves.get(), TFBlocks.dark_leaves.get())
+						.add(TFBlocks.time_leaves.get(), TFBlocks.transformation_leaves.get(), TFBlocks.mining_leaves.get(), TFBlocks.sorting_leaves.get())
+						.add(TFBlocks.thorn_leaves.get(), TFBlocks.beanstalk_leaves.get(), TFBlocks.giant_leaves.get());
 	}
 }

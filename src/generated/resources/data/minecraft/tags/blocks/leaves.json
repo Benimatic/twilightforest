@@ -1,0 +1,17 @@
+{
+  "replace": false,
+  "values": [
+    "twilightforest:rainboak_leaves",
+    "twilightforest:oak_leaves",
+    "twilightforest:canopy_leaves",
+    "twilightforest:mangrove_leaves",
+    "twilightforest:dark_leaves",
+    "twilightforest:time_leaves",
+    "twilightforest:transformation_leaves",
+    "twilightforest:mining_leaves",
+    "twilightforest:sorting_leaves",
+    "twilightforest:thorn_leaves",
+    "twilightforest:beanstalk_leaves",
+    "twilightforest:giant_leaves"
+  ]
+}

@@ -19,6 +19,9 @@ public class RenderLayerRegistration {
 		RenderTypeLookup.setRenderLayer(TFBlocks.sorting_leaves.get(), cutoutMipped);
 		RenderTypeLookup.setRenderLayer(TFBlocks.twilight_portal.get(), translucent);
 		RenderTypeLookup.setRenderLayer(TFBlocks.auroralized_glass.get(), translucent);
+		RenderTypeLookup.setRenderLayer(TFBlocks.thorn_rose.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.thorn_leaves.get(), cutoutMipped);
+		RenderTypeLookup.setRenderLayer(TFBlocks.beanstalk_leaves.get(), cutoutMipped);
 		RenderTypeLookup.setRenderLayer(TFBlocks.experiment_115.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.wispy_cloud.get(), translucent);
 		RenderTypeLookup.setRenderLayer(TFBlocks.uberous_soil.get(), cutout);

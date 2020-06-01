@@ -1,6 +1,7 @@
 package twilightforest.block;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
@@ -11,6 +12,8 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
 public class BlockTFThornRose extends Block {
@@ -18,9 +21,8 @@ public class BlockTFThornRose extends Block {
 	private static final float RADIUS = 0.4F;
 	private static final VoxelShape AABB = VoxelShapes.create(new AxisAlignedBB(0.5F -RADIUS, 0.5F -RADIUS, 0.5F -RADIUS, 0.5F +RADIUS, .5F +RADIUS, 0.5F +RADIUS));
 
-	protected BlockTFThornRose() {
-		super(Properties.create(Material.PLANTS).hardnessAndResistance(10.0F, 0.0F).sound(SoundType.PLANT).doesNotBlockMovement());
-		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
+	protected BlockTFThornRose(Properties props) {
+		super(props);
 	}
 
 	@Override
@@ -29,42 +31,18 @@ public class BlockTFThornRose extends Block {
 		return AABB;
 	}
 
-	//TODO: Check this
-//	@Override
-//	@Deprecated
-//	public boolean isSolid(BlockState state) {
-//		return false;
-//	}
-
-//	@Override
-//	public boolean canPlaceBlockAt(World world, BlockPos pos) {
-//		return canBlockStay(world, pos);
-//	}
-
 	@Override
-	@Deprecated
-	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-		if (!canBlockStay(world, pos)) {
-			world.destroyBlock(pos, true);
-		}
-	}
-
-	private boolean canBlockStay(World world, BlockPos pos) {
-		for (Direction dir : Direction.values()) {
-			BlockPos pos_ = pos.offset(dir);
-			BlockState state = world.getBlockState(pos_);
-
-//			if (state.getBlock().canSustainLeaves(state, world, pos_)) {
-//				return true;
-//			}
+	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos) {
+		for (Direction d : Direction.values()) {
+			if (world.getBlockState(pos.offset(d)).getBlock() instanceof BlockTFThorns) {
+				return true;
+			}
 		}
 		return false;
 	}
 
-	//TODO: Move to client
-//	@OnlyIn(Dist.CLIENT)
-//	@Override
-//	public BlockRenderLayer getRenderLayer() {
-//		return BlockRenderLayer.CUTOUT;
-//	}
+	@Override
+	public BlockState updatePostPlacement(BlockState state, Direction dirToNeighbor, BlockState neighborState, IWorld world, BlockPos pos, BlockPos neighborPos) {
+		return !isValidPosition(state, world, pos) ? Blocks.AIR.getDefaultState() : state;
+	}
 }
