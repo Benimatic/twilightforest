@@ -17,12 +17,11 @@ public class TFParticleType {
 
 	public static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES = new DeferredRegister<>(ForgeRegistries.PARTICLE_TYPES, TwilightForestMod.ID);
 
-	//TODO: the boolean value detemines if a Particle should always show. Find out which ones should be true
 	public static final RegistryObject<BasicParticleType> LARGE_FLAME = PARTICLE_TYPES.register("large_flame", () -> new BasicParticleType(false));
 	public static final RegistryObject<BasicParticleType> LEAF_RUNE = PARTICLE_TYPES.register("leaf_rune", () -> new BasicParticleType(false));
 	public static final RegistryObject<BasicParticleType> BOSS_TEAR = PARTICLE_TYPES.register("boss_tear", () -> new BasicParticleType(false));
 	public static final RegistryObject<BasicParticleType> GHAST_TRAP = PARTICLE_TYPES.register("ghast_trap", () -> new BasicParticleType(false));
-	public static final RegistryObject<BasicParticleType> PROTECTION = PARTICLE_TYPES.register("protection", () -> new BasicParticleType(false));
+	public static final RegistryObject<BasicParticleType> PROTECTION = PARTICLE_TYPES.register("protection", () -> new BasicParticleType(true));
 	public static final RegistryObject<BasicParticleType> SNOW = PARTICLE_TYPES.register("snow", () -> new BasicParticleType(false));
 	public static final RegistryObject<BasicParticleType> SNOW_WARNING = PARTICLE_TYPES.register("snow_warning", () -> new BasicParticleType(false));
 	public static final RegistryObject<BasicParticleType> SNOW_GUARDIAN = PARTICLE_TYPES.register("snow_guardian", () -> new BasicParticleType(false));
@@ -30,7 +29,7 @@ public class TFParticleType {
 	public static final RegistryObject<BasicParticleType> ANNIHILATE = PARTICLE_TYPES.register("annihilate", () -> new BasicParticleType(false));
 	public static final RegistryObject<BasicParticleType> HUGE_SMOKE = PARTICLE_TYPES.register("huge_smoke", () -> new BasicParticleType(false));
 	public static final RegistryObject<BasicParticleType> FIREFLY = PARTICLE_TYPES.register("firefly", () -> new BasicParticleType(false));
-	public static final RegistryObject<BasicParticleType> FALLEN_LEAF = PARTICLE_TYPES.register("fallen_leaf", () -> new BasicParticleType(false));
+	public static final RegistryObject<ParticleType<LeafParticleData>> FALLEN_LEAF = PARTICLE_TYPES.register("fallen_leaf", () -> new ParticleType<>(false, new LeafParticleData.Deserializer()));
 
 	@SubscribeEvent
 	public static void registerFactories(ParticleFactoryRegisterEvent event) {

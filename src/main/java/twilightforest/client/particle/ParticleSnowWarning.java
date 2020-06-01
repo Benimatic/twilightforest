@@ -10,7 +10,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ParticleSnowWarning extends ParticleSnow {
 
-	public ParticleSnowWarning(World world, double x, double y, double z, double vx, double vy, double vz, float scale) {
+	ParticleSnowWarning(World world, double x, double y, double z, double vx, double vy, double vz, float scale) {
 		super(world, x, y, z, vx, vy, vz, scale);
 		this.maxAge = 50;
 	}

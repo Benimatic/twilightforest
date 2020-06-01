@@ -10,7 +10,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ParticleSnowGuardian extends ParticleSnow {
 
-	public ParticleSnowGuardian(World world, double x, double y, double z, double vx, double vy, double vz, float scale) {
+	ParticleSnowGuardian(World world, double x, double y, double z, double vx, double vy, double vz, float scale) {
 		super(world, x, y, z, vx, vy, vz, scale);
 		this.maxAge = 10 + this.rand.nextInt(15);
 		this.particleRed = this.particleGreen = this.particleBlue = 0.75F + this.rand.nextFloat() * 0.25F;

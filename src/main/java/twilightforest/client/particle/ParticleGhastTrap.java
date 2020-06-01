@@ -16,11 +16,11 @@ public class ParticleGhastTrap extends SpriteTexturedParticle {
 	private final double originY;
 	private final double originZ;
 
-	public ParticleGhastTrap(World world, double x, double y, double z, double vx, double vy, double vz) {
+	ParticleGhastTrap(World world, double x, double y, double z, double vx, double vy, double vz) {
 		this(world, x, y, z, 3.0F, vx, vy, vz);
 	}
 
-	public ParticleGhastTrap(World world, double x, double y, double z, float scale, double mx, double my, double mz) {
+	ParticleGhastTrap(World world, double x, double y, double z, float scale, double mx, double my, double mz) {
 		super(world, x + mx, y + my, z + mz, mx, my, mz);
 		this.motionX = mx;
 		this.motionY = my;

@@ -13,7 +13,7 @@ public class ParticleLargeFlame extends SpriteTexturedParticle {
 
 	private final float flameScale;
 
-	public ParticleLargeFlame(World world, double x, double y, double z, double vx, double vy, double vz) {
+	ParticleLargeFlame(World world, double x, double y, double z, double vx, double vy, double vz) {
 		super(world, x, y, z, vx, vy, vz);
 		this.motionX = this.motionX * 0.009999999776482582D + vx;
 		this.motionY = this.motionY * 0.009999999776482582D + vy;

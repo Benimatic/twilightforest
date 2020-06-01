@@ -13,7 +13,7 @@ public class ParticleFirefly extends SpriteTexturedParticle {
 	private int lifeTime;
 	private int halfLife;
 
-	public ParticleFirefly(World world, double x, double y, double z, float f, double f1, double f2, double f3) {
+	ParticleFirefly(World world, double x, double y, double z, float f, double f1, double f2, double f3) {
 		super(world, x, y, z, 0.0D, 0.0D, 0.0D);
 		motionX *= 2.10000000149011612D;
 		motionY *= 2.10000000149011612D;

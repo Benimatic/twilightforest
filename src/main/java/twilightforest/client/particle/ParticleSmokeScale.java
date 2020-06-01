@@ -11,7 +11,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ParticleSmokeScale extends SmokeParticle {
 
-	public ParticleSmokeScale(World world, double x, double y, double z, double velX, double velY, double velZ, float scale, IAnimatedSprite sprite) {
+	ParticleSmokeScale(World world, double x, double y, double z, double velX, double velY, double velZ, float scale, IAnimatedSprite sprite) {
 		super(world, x, y, z, velX, velY, velZ, scale, sprite);
 	}
 

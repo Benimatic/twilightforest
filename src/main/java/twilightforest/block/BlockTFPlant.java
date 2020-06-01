@@ -25,6 +25,7 @@ import net.minecraftforge.common.IShearable;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.PlantType;
+import twilightforest.client.particle.LeafParticleData;
 import twilightforest.client.particle.ParticleLeaf;
 import twilightforest.enums.PlantVariant;
 
@@ -232,19 +233,12 @@ public class BlockTFPlant extends BushBlock implements IShearable {
 				if (dist > 10F)
 					return;
 			}
-			//Particle leaf = TFParticleFactory.createParticle(TFParticleType.FALLEN_LEAF, world, pos.getX() + random.nextFloat(), pos.getY() + dist - 0.25F, pos.getZ() + random.nextFloat(), 0.0D, 0.0D, 0.0D);
-			Particle leaf = new ParticleLeaf(world, pos.getX() + random.nextFloat(), pos.getY() + dist - 0.25F, pos.getZ() + random.nextFloat(), 0.0D, 0.0D, 0.0D);
+
 			int color = Minecraft.getInstance().getBlockColors().getColor(Blocks.OAK_LEAVES.getDefaultState(), world, pos, 0);
-			leaf.setColor(
-
-					MathHelper.clamp(((color >> 16) & 0xFF) + RANDOM.nextInt(0x22) - 0x11, 0x00, 0xFF) / 255F,
-
-					MathHelper.clamp(((color >> 8) & 0xFF) + RANDOM.nextInt(0x22) - 0x11, 0x00, 0xFF) / 255F,
-
-					MathHelper.clamp((color & 0xFF) + RANDOM.nextInt(0x22) - 0x11, 0x00, 0xFF) / 255F
-
-			);
-			Minecraft.getInstance().particles.addEffect(leaf);
+			int r = MathHelper.clamp(((color >> 16) & 0xFF) + RANDOM.nextInt(0x22) - 0x11, 0x00, 0xFF);
+			int g = MathHelper.clamp(((color >> 8) & 0xFF) + RANDOM.nextInt(0x22) - 0x11, 0x00, 0xFF);
+			int b = MathHelper.clamp((color & 0xFF) + RANDOM.nextInt(0x22) - 0x11, 0x00, 0xFF);
+			world.addParticle(new LeafParticleData(r, g, b), pos.getX() + random.nextFloat(), pos.getY() + dist - 0.25F, pos.getZ() + random.nextFloat(), 0.0D, 0.0D, 0.0D);
 		}
 
 	}
@@ -255,31 +249,19 @@ public class BlockTFPlant extends BushBlock implements IShearable {
 		super.onEntityCollision(state, world, pos, entityIn);
 		if (world.isRemote && state.getBlock() == TFBlocks.fallen_leaves.get() && entityIn instanceof LivingEntity && (entityIn.getMotion().getX() != 0 || entityIn.getMotion().getZ() != 0) && RANDOM.nextBoolean()) {
 			int color = Minecraft.getInstance().getBlockColors().getColor(Blocks.OAK_LEAVES.getDefaultState(), world, pos, 0);
-			Particle leaf = new ParticleLeaf(world,
+			int r = MathHelper.clamp(((color >> 16) & 0xFF) + RANDOM.nextInt(0x22) - 0x11, 0x00, 0xFF);
+			int g = MathHelper.clamp(((color >> 8) & 0xFF) + RANDOM.nextInt(0x22) - 0x11, 0x00, 0xFF);
+			int b = MathHelper.clamp((color & 0xFF) + RANDOM.nextInt(0x22) - 0x11, 0x00, 0xFF);
 
+			world.addParticle(new LeafParticleData(r, g, b),
 					pos.getX() + world.rand.nextFloat(),
-
 					pos.getY(),
-
 					pos.getZ() + world.rand.nextFloat(),
 
 					(world.rand.nextFloat() * -0.5F) * entityIn.getMotion().getX(),
-
 					world.rand.nextFloat() * 0.5F + 0.25F,
-
 					(world.rand.nextFloat() * -0.5F) * entityIn.getMotion().getZ()
-
 			);
-			leaf.setColor(
-
-					MathHelper.clamp(((color >> 16) & 0xFF) + RANDOM.nextInt(0x22) - 0x11, 0x00, 0xFF) / 255F,
-
-					MathHelper.clamp(((color >> 8) & 0xFF) + RANDOM.nextInt(0x22) - 0x11, 0x00, 0xFF) / 255F,
-
-					MathHelper.clamp((color & 0xFF) + RANDOM.nextInt(0x22) - 0x11, 0x00, 0xFF) / 255F
-
-			);
-			Minecraft.getInstance().particles.addEffect(leaf);
 		}
 	}
 

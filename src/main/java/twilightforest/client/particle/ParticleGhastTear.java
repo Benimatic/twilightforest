@@ -17,7 +17,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class ParticleGhastTear extends SpriteTexturedParticle {
 
-	public ParticleGhastTear(World world, double x, double y, double z, Item item) {
+	ParticleGhastTear(World world, double x, double y, double z, Item item) {
 		super(world, x, y, z, 0.0D, 0.0D, 0.0D);
 		this.sprite = Minecraft.getInstance().getItemRenderer().getItemModelMesher().getParticleIcon(item);
 		this.particleRed = this.particleGreen = this.particleBlue = 1.0F;

@@ -11,11 +11,11 @@ public class ParticleSnow extends SpriteTexturedParticle {
 
 	float initialParticleScale;
 
-	public ParticleSnow(World world, double x, double y, double z, double vx, double vy, double vz) {
+	ParticleSnow(World world, double x, double y, double z, double vx, double vy, double vz) {
 		this(world, x, y, z, vx, vy, vz, 1.0F);
 	}
 
-	public ParticleSnow(World world, double x, double y, double z, double vx, double vy, double vz, float scale) {
+	ParticleSnow(World world, double x, double y, double z, double vx, double vy, double vz, float scale) {
 		super(world, x, y, z, 0.0D, 0.0D, 0.0D);
 		this.motionX *= 0.10000000149011612D;
 		this.motionY *= 0.10000000149011612D;

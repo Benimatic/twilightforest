@@ -15,11 +15,11 @@ public class ParticleLeaf extends SpriteTexturedParticle {
 
 	private final Vec3d target;
 
-	public ParticleLeaf(World world, double x, double y, double z, double vx, double vy, double vz) {
+	ParticleLeaf(World world, double x, double y, double z, double vx, double vy, double vz) {
 		this(world, x, y, z, vx, vy, vz, 1.0F);
 	}
 
-	public ParticleLeaf(World world, double x, double y, double z, double vx, double vy, double vz, float scale) {
+	ParticleLeaf(World world, double x, double y, double z, double vx, double vy, double vz, float scale) {
 		super(world, x, y, z, 0.0D, 0.0D, 0.0D);
 		target = new Vec3d(x, y, z);
 		this.motionX *= 0.10000000149011612D;
@@ -84,7 +84,7 @@ public class ParticleLeaf extends SpriteTexturedParticle {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public static class Factory implements IParticleFactory<BasicParticleType> {
+	public static class Factory implements IParticleFactory<LeafParticleData> {
 		private final IAnimatedSprite spriteSet;
 
 		public Factory(IAnimatedSprite sprite) {
@@ -92,8 +92,9 @@ public class ParticleLeaf extends SpriteTexturedParticle {
 		}
 
 		@Override
-		public Particle makeParticle(BasicParticleType typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-			ParticleLeaf particle = new ParticleLeaf(worldIn, x, y, z, xSpeed, ySpeed, zSpeed);
+		public Particle makeParticle(LeafParticleData data, World world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+			ParticleLeaf particle = new ParticleLeaf(world, x, y, z, xSpeed, ySpeed, zSpeed);
+			particle.setColor(data.r / 255F, data.g / 255F, data.b / 255F);
 			particle.selectSpriteRandomly(this.spriteSet);
 			return particle;
 		}

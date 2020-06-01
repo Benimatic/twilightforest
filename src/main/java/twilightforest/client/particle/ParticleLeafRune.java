@@ -8,7 +8,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ParticleLeafRune extends SpriteTexturedParticle {
 
-	public ParticleLeafRune(World world, double x, double y, double z, double velX, double velY, double velZ) {
+	ParticleLeafRune(World world, double x, double y, double z, double velX, double velY, double velZ) {
 		super(world, x, y, z, velX, velY, velZ);
 		// super applies jittering, reset it
 		this.motionX = velX;

@@ -11,11 +11,10 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ParticleProtection extends SuspendedTownParticle {
 
-	public ParticleProtection(World world, double x, double y, double z, double velX, double velY, double velZ) {
+	ParticleProtection(World world, double x, double y, double z, double velX, double velY, double velZ) {
 		super(world, x, y, z, velX, velY, velZ);
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	@Override
 	public int getBrightnessForRender(float partialTicks) {
 		return 0xF000F0;
