@@ -3,7 +3,9 @@ package twilightforest.entity.projectile;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -11,7 +13,9 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkHooks;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class EntitySeekerArrow extends EntityTFArrow {
@@ -68,14 +72,7 @@ public class EntitySeekerArrow extends EntityTFArrow {
 					// add vector to target, scale to match current velocity
 					Vec3d newMotion = courseVec.scale(courseLen / totalLen).add(targetVec.scale(targetLen / totalLen));
 
-//					this.getMotion().getX() = newMotion.x;
-//					this.getMotion().getY() = newMotion.y;
-//					this.getMotion().getZ() = newMotion.z;
-					this.setMotion(newMotion);
-
-					// compensate (mostly) for gravity
-//					this.getMotion().getY() += 0.045F;
-					this.getMotion().add(0, 0.045F, 0);
+					this.setMotion(newMotion.add(0, 0.045F, 0));
 
 				} else if (!world.isRemote) {
 					// too inaccurate for our intended target, give up on it
@@ -92,7 +89,8 @@ public class EntitySeekerArrow extends EntityTFArrow {
 		Entity target = getTarget();
 
 		if (target != null && !target.isAlive()) {
-			setTarget(target = null);
+			target = null;
+			setTarget(null);
 		}
 
 		if (target == null) {
@@ -113,7 +111,13 @@ public class EntitySeekerArrow extends EntityTFArrow {
 
 			for (LivingEntity living : this.world.getEntitiesWithinAABB(LivingEntity.class, targetBB)) {
 
-				if (living instanceof PlayerEntity) continue;
+				if (living instanceof PlayerEntity) {
+					continue;
+				}
+
+				if (getShooter() != null && living instanceof TameableEntity && ((TameableEntity) living).getOwner() == getShooter()) {
+					continue;
+				}
 
 				Vec3d motionVec = getMotionVec().normalize();
 				Vec3d targetVec = getVectorToTarget(living).normalize();
@@ -150,6 +154,12 @@ public class EntitySeekerArrow extends EntityTFArrow {
 	}
 
 	private boolean isThisArrowFlying() {
-		return !inGround && getMotion().getX() * getMotion().getX() + getMotion().getY() * getMotion().getY() + getMotion().getZ() * getMotion().getZ() > 1.0;
+		return !inGround && getMotion().lengthSquared() > 1.0;
+	}
+
+	@Nonnull
+	@Override
+	public IPacket<?> createSpawnPacket() {
+		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 }

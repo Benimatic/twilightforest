@@ -21,15 +21,4 @@ public abstract class EntityTFArrow extends AbstractArrowEntity implements ITFPr
 	protected ItemStack getArrowStack() {
 		return new ItemStack(Items.ARROW);
 	}
-
-	// TODO: These are replaced by the getShooter/setShooter
-/*	@Override
-	public Entity getThrower() {
-		return this.shootingEntity;
-	}
-
-	@Override
-	public void setThrower(Entity entity) {
-		this.shootingEntity = entity;
-	}*/
 }

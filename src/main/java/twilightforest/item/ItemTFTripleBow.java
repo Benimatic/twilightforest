@@ -6,6 +6,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.item.BowItem;
 import net.minecraft.item.Items;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.SoundEvents;
@@ -14,7 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 
-public class ItemTFTripleBow extends ItemTFBowBase {
+public class ItemTFTripleBow extends BowItem {
 
 	public ItemTFTripleBow(Properties props) {
 		super(props);

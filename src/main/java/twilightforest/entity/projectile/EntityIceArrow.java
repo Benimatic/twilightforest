@@ -4,13 +4,17 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.network.IPacket;
 import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.NetworkHooks;
 import twilightforest.potions.TFPotions;
+
+import javax.annotation.Nonnull;
 
 public class EntityIceArrow extends EntityTFArrow {
 
@@ -42,5 +46,11 @@ public class EntityIceArrow extends EntityTFArrow {
 				((LivingEntity) ((EntityRayTraceResult)ray).getEntity()).addPotionEffect(new EffectInstance(TFPotions.frosty.get(), 20 * 10, chillLevel));
 			}
 		}
+	}
+
+	@Nonnull
+	@Override
+	public IPacket<?> createSpawnPacket() {
+		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 }

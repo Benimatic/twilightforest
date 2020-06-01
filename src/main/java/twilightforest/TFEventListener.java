@@ -183,25 +183,7 @@ public class TFEventListener {
 		}
 
 		// enderbow teleports
-		if (damageType.equals("arrow") && trueSource instanceof PlayerEntity) {
-			PlayerEntity player = (PlayerEntity) trueSource;
 
-			if (player.getHeldItemMainhand().getItem() == TFItems.ender_bow.get() || player.getHeldItemOffhand().getItem() == TFItems.ender_bow.get()) {
-
-				double sourceX = player.getX(), sourceY = player.getY(), sourceZ = player.getZ();
-				float sourceYaw = player.rotationYaw, sourcePitch = player.rotationPitch;
-
-				// this is the only method that will move the player properly
-				player.rotationYaw = living.rotationYaw;
-				player.rotationPitch = living.rotationPitch;
-				player.setPositionAndUpdate(living.getX(), living.getY(), living.getZ());
-				player.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, 1.0F, 1.0F);
-
-				// monsters are easy to move
-				living.setPositionAndRotation(sourceX, sourceY, sourceZ, sourceYaw, sourcePitch);
-				living.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, 1.0F, 1.0F);
-			}
-		}
 
 		// Smashing!
 		ItemStack stack = living.getItemStackFromSlot(EquipmentSlotType.HEAD);
