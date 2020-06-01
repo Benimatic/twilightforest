@@ -1,6 +1,7 @@
 package twilightforest.data;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.DoorBlock;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.Items;
@@ -51,6 +52,8 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.deadrock_weathered.get());
 		registerSilkTouch(TFBlocks.wispy_cloud.get());
 		registerDropSelfLootTable(TFBlocks.fluffy_cloud.get());
+		registerLootTable(TFBlocks.uberous_soil.get(), dropping(Blocks.DIRT));
+		registerDropSelfLootTable(TFBlocks.huge_stalk.get());
 		registerDropSelfLootTable(TFBlocks.castle_brick.get());
 		registerDropSelfLootTable(TFBlocks.castle_brick_worn.get());
 		registerDropSelfLootTable(TFBlocks.castle_brick_cracked.get());

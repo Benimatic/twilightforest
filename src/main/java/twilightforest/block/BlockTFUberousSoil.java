@@ -22,10 +22,8 @@ import java.util.Random;
 public class BlockTFUberousSoil extends Block implements IGrowable {
 	private static final VoxelShape AABB = VoxelShapes.create(new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 0.9375F, 1.0F));
 
-	protected BlockTFUberousSoil() {
-		super(Properties.create(Material.EARTH).hardnessAndResistance(0.6F).sound(SoundType.GROUND).tickRandomly());
-		//this.setLightOpacity(255); Is this needed?
-		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
+	protected BlockTFUberousSoil(Properties props) {
+		super(props);
 	}
 
 	@Override
@@ -34,31 +32,10 @@ public class BlockTFUberousSoil extends Block implements IGrowable {
 		return AABB;
 	}
 
-	//TODO: Check this
-//	@Override
-//	public boolean isSolid(BlockState state) {
-//		return false;
-//	}
-
-	//TODO: Move to client
-//	@Override
-//	public BlockRenderLayer getRenderLayer() {
-//		return BlockRenderLayer.TRANSLUCENT;
-//	}
-
 //	@Override
 //	public Item getItemDropped(BlockState state, Random rand, int fortune) {
 //		return Item.getItemFromBlock(Blocks.DIRT);
 //	}
-
-	@Override
-	@Deprecated
-	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-		Material aboveMaterial = world.getBlockState(pos.up()).getMaterial();
-		if (aboveMaterial.isSolid()) {
-			world.setBlockState(pos, Blocks.DIRT.getDefaultState());
-		}
-	}
 
 	@Override
 	public boolean canSustainPlant(BlockState state, IBlockReader world, BlockPos pos, Direction direction, IPlantable plantable) {

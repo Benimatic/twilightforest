@@ -6,20 +6,22 @@ import twilightforest.block.TFBlocks;
 
 public class RenderLayerRegistration {
 	public static void init() {
+		RenderType cutoutMipped = RenderType.getCutoutMipped();
 		RenderType cutout = RenderType.getCutout();
 		RenderType translucent = RenderType.getTranslucent();
-		RenderTypeLookup.setRenderLayer(TFBlocks.oak_leaves.get(), cutout);
-		RenderTypeLookup.setRenderLayer(TFBlocks.rainboak_leaves.get(), cutout);
-		RenderTypeLookup.setRenderLayer(TFBlocks.canopy_leaves.get(), cutout);
-		RenderTypeLookup.setRenderLayer(TFBlocks.mangrove_leaves.get(), cutout);
-		RenderTypeLookup.setRenderLayer(TFBlocks.time_leaves.get(), cutout);
-		RenderTypeLookup.setRenderLayer(TFBlocks.transformation_leaves.get(), cutout);
-		RenderTypeLookup.setRenderLayer(TFBlocks.mining_leaves.get(), cutout);
-		RenderTypeLookup.setRenderLayer(TFBlocks.sorting_leaves.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.oak_leaves.get(), cutoutMipped);
+		RenderTypeLookup.setRenderLayer(TFBlocks.rainboak_leaves.get(), cutoutMipped);
+		RenderTypeLookup.setRenderLayer(TFBlocks.canopy_leaves.get(), cutoutMipped);
+		RenderTypeLookup.setRenderLayer(TFBlocks.mangrove_leaves.get(), cutoutMipped);
+		RenderTypeLookup.setRenderLayer(TFBlocks.time_leaves.get(), cutoutMipped);
+		RenderTypeLookup.setRenderLayer(TFBlocks.transformation_leaves.get(), cutoutMipped);
+		RenderTypeLookup.setRenderLayer(TFBlocks.mining_leaves.get(), cutoutMipped);
+		RenderTypeLookup.setRenderLayer(TFBlocks.sorting_leaves.get(), cutoutMipped);
 		RenderTypeLookup.setRenderLayer(TFBlocks.twilight_portal.get(), translucent);
 		RenderTypeLookup.setRenderLayer(TFBlocks.auroralized_glass.get(), translucent);
 		RenderTypeLookup.setRenderLayer(TFBlocks.experiment_115.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.wispy_cloud.get(), translucent);
+		RenderTypeLookup.setRenderLayer(TFBlocks.uberous_soil.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.castle_rune_brick_yellow.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.castle_rune_brick_purple.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.castle_rune_brick_pink.get(), cutout);

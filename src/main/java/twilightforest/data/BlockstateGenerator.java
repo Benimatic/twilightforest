@@ -107,6 +107,12 @@ public class BlockstateGenerator extends BlockStateProvider {
 		allRotations(TFBlocks.deadrock_weathered.get(), deadrockWeathered);
 		simpleBlock(TFBlocks.wispy_cloud.get());
 		simpleBlock(TFBlocks.fluffy_cloud.get());
+		simpleBlock(TFBlocks.uberous_soil.get(), models().withExistingParent(TFBlocks.uberous_soil.getId().getPath(), prefix("block/util/cube_all_2_layer"))
+						.texture("all", blockTexture(TFBlocks.uberous_soil.get()))
+						.texture("all2", prefix("block/" + TFBlocks.uberous_soil.getId().getPath() + "_glow")));
+		simpleBlock(TFBlocks.huge_stalk.get(), models().cubeColumn(TFBlocks.huge_stalk.getId().getPath(),
+						prefix("block/" + TFBlocks.huge_stalk.getId().getPath()),
+						prefix("block/" + TFBlocks.huge_stalk.getId().getPath() + "_top")));
 		simpleBlock(TFBlocks.castle_brick.get());
 		simpleBlock(TFBlocks.castle_brick_worn.get());
 		simpleBlock(TFBlocks.castle_brick_cracked.get());
