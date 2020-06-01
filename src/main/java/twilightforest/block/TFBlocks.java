@@ -160,9 +160,9 @@ public class TFBlocks {
 	public static final RegistryObject<Block> uberous_soil               = BLOCKS.register("uberous_soil", () -> new BlockTFUberousSoil(Block.Properties.create(Material.EARTH).hardnessAndResistance(0.6F).sound(SoundType.GROUND)));
 	public static final RegistryObject<Block> huge_stalk                 = BLOCKS.register("huge_stalk", () -> new BlockTFHugeStalk(Block.Properties.create(Material.WOOD, MaterialColor.FOLIAGE).hardnessAndResistance(1.25F, 7.0F).sound(SoundType.PLANT)));
 	public static final RegistryObject<Block> huge_mushgloom             = BLOCKS.register("huge_mushgloom", () -> new BlockTFHugeGloomBlock());
-	public static final RegistryObject<Block> trollvidr                  = BLOCKS.register("trollvidr", () -> new BlockTFTrollRoot());
-	public static final RegistryObject<Block> unripe_trollber            = BLOCKS.register("unripe_trollber", () -> new BlockTFUnripeTorchCluster());
-	public static final RegistryObject<Block> trollber                   = BLOCKS.register("trollber", () -> new BlockTFRipeTorchCluster());
+	public static final RegistryObject<Block> trollvidr                  = BLOCKS.register("trollvidr", () -> new BlockTFTrollRoot(Block.Properties.create(Material.PLANTS).sound(SoundType.PLANT).doesNotBlockMovement()));
+	public static final RegistryObject<Block> unripe_trollber            = BLOCKS.register("unripe_trollber", () -> new BlockTFUnripeTorchCluster(Block.Properties.create(Material.PLANTS).sound(SoundType.PLANT).doesNotBlockMovement().tickRandomly()));
+	public static final RegistryObject<Block> trollber                   = BLOCKS.register("trollber", () -> new BlockTFTrollRoot(Block.Properties.create(Material.PLANTS).sound(SoundType.PLANT).doesNotBlockMovement().lightValue(15)));
 	public static final RegistryObject<Block> huge_lilypad               = BLOCKS.register("huge_lilypad", () -> new BlockTFHugeLilyPad());
 	public static final RegistryObject<Block> huge_waterlily             = BLOCKS.register("huge_waterlily", () -> new BlockTFHugeWaterLily());
 	public static final RegistryObject<Block> slider                     = BLOCKS.register("slider", () -> new BlockTFSlider());
@@ -324,7 +324,7 @@ public class TFBlocks {
 						thorn_rose, thorn_leaves, beanstalk_leaves,
 						aurora_block, aurora_pillar, aurora_slab, auroralized_glass,
 						deadrock, deadrock_cracked, deadrock_weathered,
-						wispy_cloud, fluffy_cloud, uberous_soil, huge_stalk,
+						wispy_cloud, fluffy_cloud, uberous_soil, huge_stalk, trollvidr, unripe_trollber, trollber,
 						castle_brick, castle_brick_worn, castle_brick_cracked, castle_brick_mossy, castle_brick_roof, castle_brick_frame,
 						castle_pillar_encased, castle_pillar_encased_tile, castle_pillar_bold, castle_pillar_bold_tile,
 						castle_stairs_brick, castle_stairs_worn, castle_stairs_cracked, castle_stairs_mossy, castle_stairs_encased, castle_stairs_bold,

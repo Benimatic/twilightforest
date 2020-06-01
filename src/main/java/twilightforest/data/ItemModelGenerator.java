@@ -47,6 +47,9 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.fluffy_cloud.get());
 		toBlock(TFBlocks.uberous_soil.get());
 		toBlock(TFBlocks.huge_stalk.get());
+		generated(TFBlocks.trollvidr.getId().getPath(), prefix("block/" + TFBlocks.trollvidr.getId().getPath()));
+		generated(TFBlocks.unripe_trollber.getId().getPath(), prefix("block/" + TFBlocks.unripe_trollber.getId().getPath()));
+		generated(TFBlocks.trollber.getId().getPath(), prefix("block/" + TFBlocks.trollber.getId().getPath()));
 		toBlock(TFBlocks.castle_brick.get());
 		toBlock(TFBlocks.castle_brick_worn.get());
 		toBlock(TFBlocks.castle_brick_cracked.get());

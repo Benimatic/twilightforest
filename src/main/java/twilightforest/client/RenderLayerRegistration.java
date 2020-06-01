@@ -25,6 +25,9 @@ public class RenderLayerRegistration {
 		RenderTypeLookup.setRenderLayer(TFBlocks.experiment_115.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.wispy_cloud.get(), translucent);
 		RenderTypeLookup.setRenderLayer(TFBlocks.uberous_soil.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.trollvidr.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.unripe_trollber.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.trollber.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.castle_rune_brick_yellow.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.castle_rune_brick_purple.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.castle_rune_brick_pink.get(), cutout);

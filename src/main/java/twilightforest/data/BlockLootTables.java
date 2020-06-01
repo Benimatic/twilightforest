@@ -10,6 +10,7 @@ import net.minecraft.util.IItemProvider;
 import net.minecraft.world.storage.loot.*;
 import net.minecraft.world.storage.loot.conditions.ILootCondition;
 import net.minecraft.world.storage.loot.conditions.TableBonus;
+import net.minecraft.world.storage.loot.functions.ApplyBonus;
 import net.minecraft.world.storage.loot.functions.SetCount;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import twilightforest.block.TFBlocks;
@@ -61,6 +62,13 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.fluffy_cloud.get());
 		registerLootTable(TFBlocks.uberous_soil.get(), dropping(Blocks.DIRT));
 		registerDropSelfLootTable(TFBlocks.huge_stalk.get());
+		registerLootTable(TFBlocks.trollvidr.get(), onlyWithShears(TFBlocks.trollvidr.get()));
+		registerLootTable(TFBlocks.unripe_trollber.get(), onlyWithShears(TFBlocks.unripe_trollber.get()));
+		LootTable.Builder trollber = LootTable.builder().addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(
+						withExplosionDecay(TFItems.torchberries.get(), ItemLootEntry.builder(TFItems.torchberries.get())
+										.acceptFunction(SetCount.builder(new RandomValueRange(4, 8)))
+										.acceptFunction(ApplyBonus.oreDrops(Enchantments.FORTUNE)))));
+		registerLootTable(TFBlocks.trollber.get(), trollber);
 		registerDropSelfLootTable(TFBlocks.castle_brick.get());
 		registerDropSelfLootTable(TFBlocks.castle_brick_worn.get());
 		registerDropSelfLootTable(TFBlocks.castle_brick_cracked.get());

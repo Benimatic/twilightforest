@@ -9,11 +9,13 @@ import java.util.Random;
 public class BlockTFUnripeTorchCluster extends BlockTFTrollRoot {
 	private static final int RIPEN_THRESHHOLD = 6;
 
+	protected BlockTFUnripeTorchCluster(Properties props) {
+		super(props);
+	}
+
 	@Override
 	@Deprecated
-	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random rand) {
-		super.scheduledTick(state, world, pos, rand);
-
+	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random rand) {
 		if (world.getLight(pos) >= RIPEN_THRESHHOLD) {
 			// ripen!
 			world.setBlockState(pos, TFBlocks.trollber.get().getDefaultState());

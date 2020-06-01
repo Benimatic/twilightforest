@@ -116,6 +116,12 @@ public class BlockstateGenerator extends BlockStateProvider {
 		simpleBlock(TFBlocks.huge_stalk.get(), models().cubeColumn(TFBlocks.huge_stalk.getId().getPath(),
 						prefix("block/" + TFBlocks.huge_stalk.getId().getPath()),
 						prefix("block/" + TFBlocks.huge_stalk.getId().getPath() + "_top")));
+		simpleBlock(TFBlocks.trollvidr.get(), models().cross(TFBlocks.trollvidr.getId().getPath(), blockTexture(TFBlocks.trollvidr.get())));
+		simpleBlock(TFBlocks.unripe_trollber.get(), models().cross(TFBlocks.unripe_trollber.getId().getPath(), blockTexture(TFBlocks.unripe_trollber.get())));
+		ModelFile trollber = models().withExistingParent(TFBlocks.trollber.getId().getPath(), prefix("block/util/cross_2_layer"))
+						.texture("cross", blockTexture(TFBlocks.trollber.get()))
+						.texture("cross2", prefix("block/" + TFBlocks.trollber.getId().getPath() + "_glow"));
+		simpleBlock(TFBlocks.trollber.get(), trollber);
 		simpleBlock(TFBlocks.castle_brick.get());
 		simpleBlock(TFBlocks.castle_brick_worn.get());
 		simpleBlock(TFBlocks.castle_brick_cracked.get());
