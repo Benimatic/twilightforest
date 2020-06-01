@@ -136,12 +136,12 @@ public class GuiTwilightForestLoading extends Screen {
 
 	public enum BackgroundThemes {
 		LABYRINTH(
-				TwilightForestMod.prefix("textures/blocks/mazestone_brick.png"),
-				TwilightForestMod.prefix("textures/blocks/mazestone_brick.png"),
-				//TwilightForestMod.prefix("textures/blocks/mazestone_mossy.png"     ),
-				TwilightForestMod.prefix("textures/blocks/mazestone_cracked.png")
+				TwilightForestMod.prefix("textures/blocks/maze_stone_brick.png"),
+				TwilightForestMod.prefix("textures/blocks/maze_stone_brick.png"),
+				//TwilightForestMod.prefix("textures/blocks/maze_stone_mossy.png"     ),
+				TwilightForestMod.prefix("textures/blocks/maze_stone_cracked.png")
 		) {
-			private final ResourceLocation mazestoneDecor = TwilightForestMod.prefix("textures/blocks/mazestone_decorative.png");
+			private final ResourceLocation mazestoneDecor = TwilightForestMod.prefix("textures/blocks/maze_stone_decorative.png");
 
 			@Override
 			void postRenderBackground(float width, float height) {

@@ -11,11 +11,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import twilightforest.item.ItemTFMazebreakerPick;
 
-/**
- * Mazestone mimics other types of stone in appearance, but is much harder to mine
- *
- * @author Ben
- */
 public class BlockTFMazestone extends Block {
 
 	public BlockTFMazestone(Block.Properties props) {

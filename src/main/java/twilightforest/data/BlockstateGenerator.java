@@ -172,10 +172,11 @@ public class BlockstateGenerator extends BlockStateProvider {
 		simpleBlock(TFBlocks.twilight_portal_miniature_structure.get(), models().getExistingFile(prefix("block/miniature/portal")));
 		simpleBlock(TFBlocks.naga_courtyard_miniature_structure.get(), models().getExistingFile(prefix("block/miniature/naga_courtyard")));
 		simpleBlock(TFBlocks.lich_tower_miniature_structure.get(), models().getExistingFile(prefix("block/miniature/lich_tower")));
+		mazestone();
 		simpleBlock(TFBlocks.hedge.get(), ConfiguredModel.builder()
 						.weight(10).modelFile(models().cubeAll(TFBlocks.hedge.getId().getPath(), blockTexture(TFBlocks.hedge.get()))).nextModel()
 						.weight(1).modelFile(models().cubeAll(TFBlocks.hedge.getId().getPath() + "_rose", prefix("block/" + TFBlocks.hedge.getId().getPath() + "_rose"))).build());
-		simpleBlock(TFBlocks.firefly_jar.get(), models().getExistingFile(prefix("block/firefly_jar")));
+		simpleBlockExisting(TFBlocks.firefly_jar.get());
 		registerWoodBlocks();
 	}
 
@@ -665,6 +666,32 @@ public class BlockstateGenerator extends BlockStateProvider {
 		ModelFile auroraGlass = models().withExistingParent(TFBlocks.auroralized_glass.getId().getPath(), prefix("block/util/tinted_cube_all"))
 						.texture("all", blockTexture(TFBlocks.auroralized_glass.get()));
 		simpleBlock(TFBlocks.auroralized_glass.get(), auroraGlass);
+	}
+
+	private void mazestone() {
+		ResourceLocation plainTex = blockTexture(TFBlocks.maze_stone.get());
+
+		ModelFile mazeStone = models().cubeAll(TFBlocks.maze_stone.getId().getPath(), plainTex);
+		simpleBlock(TFBlocks.maze_stone.get(), ConfiguredModel.builder()
+						.rotationX(90).rotationY(90).modelFile(mazeStone).nextModel()
+						.rotationX(270).rotationY(270).modelFile(mazeStone).build());
+		simpleBlock(TFBlocks.maze_stone_brick.get());
+
+		ModelFile chiseled = models().cubeColumn(TFBlocks.maze_stone_chiseled.getId().getPath(), blockTexture(TFBlocks.maze_stone_chiseled.get()), plainTex);
+		simpleBlock(TFBlocks.maze_stone_chiseled.get(), chiseled);
+
+		ModelFile decorative = models().cubeColumn(TFBlocks.maze_stone_decorative.getId().getPath(), blockTexture(TFBlocks.maze_stone_decorative.get()), plainTex);
+		simpleBlock(TFBlocks.maze_stone_decorative.get(), decorative);
+
+		simpleBlock(TFBlocks.maze_stone_cracked.get());
+		simpleBlock(TFBlocks.maze_stone_mossy.get());
+
+		ResourceLocation brickTex = blockTexture(TFBlocks.maze_stone_brick.get());
+		ModelFile mosaic = models().cubeColumn(TFBlocks.maze_stone_mosaic.getId().getPath(), brickTex, blockTexture(TFBlocks.maze_stone_mosaic.get()));
+		simpleBlock(TFBlocks.maze_stone_mosaic.get(), mosaic);
+
+		ModelFile border = models().cubeColumn(TFBlocks.maze_stone_border.getId().getPath(), brickTex, blockTexture(TFBlocks.maze_stone_border.get()));
+		simpleBlock(TFBlocks.maze_stone_border.get(), border);
 	}
 
 	@Nonnull

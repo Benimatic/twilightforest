@@ -88,6 +88,14 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.arctic_fur_block.get());
 		toBlock(TFBlocks.steeleaf_block.get());
 		toBlock(TFBlocks.carminite_block.get());
+		toBlock(TFBlocks.maze_stone.get());
+		toBlock(TFBlocks.maze_stone_brick.get());
+		toBlock(TFBlocks.maze_stone_chiseled.get());
+		toBlock(TFBlocks.maze_stone_decorative.get());
+		toBlock(TFBlocks.maze_stone_cracked.get());
+		toBlock(TFBlocks.maze_stone_mossy.get());
+		toBlock(TFBlocks.maze_stone_mosaic.get());
+		toBlock(TFBlocks.maze_stone_border.get());
 		toBlock(TFBlocks.hedge.get());
 		toBlock(TFBlocks.firefly_jar.get());
 		toBlock(TFBlocks.oak_log.get());
