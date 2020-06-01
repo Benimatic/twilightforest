@@ -85,6 +85,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.arctic_fur_block.get());
 		toBlock(TFBlocks.steeleaf_block.get());
 		toBlock(TFBlocks.carminite_block.get());
+		toBlock(TFBlocks.hedge.get());
 		toBlock(TFBlocks.firefly_jar.get());
 		toBlock(TFBlocks.oak_log.get());
 		toBlock(TFBlocks.oak_wood.get());

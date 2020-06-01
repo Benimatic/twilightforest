@@ -1,8 +1,6 @@
 package twilightforest.block;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MobEntity;
@@ -34,31 +32,17 @@ public class BlockTFHedge extends Block {
 
 	private static final VoxelShape HEDGE_BB = VoxelShapes.create(new AxisAlignedBB(0, 0, 0, 1, 0.9375, 1));
 
-	private final int damageDone;
+	private static final int DAMAGE = 3;
 
 	protected BlockTFHedge(Block.Properties props) {
 		super(props);
-		this.damageDone = 3;
 	}
-
-	//TODO: Removed. Check this
-//	@Override
-//	@Deprecated
-//	public boolean doesSideBlockRendering(BlockState state, IEnviromentBlockReader world, BlockPos pos, Direction side) {
-//		return world.getBlockState(pos.offset(side)).getBlock() != this && shouldSideBeRendered(state, world, pos, side);
-//	}
 
 	@Override
 	@Deprecated
 	public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
 		return HEDGE_BB;
 	}
-
-//	@Override
-//	@Deprecated
-//	public boolean isOpaqueCube(BlockState state) {
-//		return true;
-//	}
 
 	@Nullable
 	@Override
@@ -70,28 +54,28 @@ public class BlockTFHedge extends Block {
 	@Deprecated
 	public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entity) {
 		if (shouldDamage(entity)) {
-			entity.attackEntityFrom(DamageSource.CACTUS, damageDone);
+			entity.attackEntityFrom(DamageSource.CACTUS, DAMAGE);
 		}
 	}
 
 	@Override
 	public void onEntityWalk(World world, BlockPos pos, Entity entity) {
 		if (shouldDamage(entity)) {
-			entity.attackEntityFrom(DamageSource.CACTUS, damageDone);
+			entity.attackEntityFrom(DamageSource.CACTUS, DAMAGE);
 		}
 	}
 
-//	@Override
-//	public void onBlockClicked(World world, BlockPos pos, PlayerEntity player) {
-//		if (!world.isRemote && world.getBlockState(pos).getValue(VARIANT) == HedgeVariant.HEDGE) {
-//			world.scheduleUpdate(pos, this, 10);
-//		}
-//	}
+	@Override
+	public void onBlockClicked(BlockState state, World world, BlockPos pos, PlayerEntity player) {
+		if (!world.isRemote) {
+			world.getPendingBlockTicks().scheduleTick(pos, this, 10);
+		}
+	}
 
 	@Override
 	public void harvestBlock(World world, PlayerEntity player, BlockPos pos, BlockState state, @Nullable TileEntity te, ItemStack stack) {
 		super.harvestBlock(world, player, pos, state, te, stack);
-		player.attackEntityFrom(DamageSource.CACTUS, damageDone);
+		player.attackEntityFrom(DamageSource.CACTUS, DAMAGE);
 	}
 
 	@Override
@@ -107,7 +91,7 @@ public class BlockTFHedge extends Block {
 				// are they pointing at this block?
 				if (ray.getType() == RayTraceResult.Type.BLOCK && pos.equals(ray.getPos())) {
 					// prick them!  prick them hard!
-					player.attackEntityFrom(DamageSource.CACTUS, damageDone);
+					player.attackEntityFrom(DamageSource.CACTUS, DAMAGE);
 
 					// trigger this again!
 					//TODO: Do we? Or just leave it for this method to do itself?
@@ -130,34 +114,4 @@ public class BlockTFHedge extends Block {
 	public int getFireSpreadSpeed(BlockState state, IBlockReader world, BlockPos pos, Direction face) {
 		return 0;
 	}
-
-//	@Override
-//	public int quantityDropped(Random random) {
-//		return random.nextInt(40) == 0 ? 1 : 0;
-//	}
-//
-//	@Override
-//	public Item getItemDropped(BlockState state, Random random, int fortune) {
-//		if (state.getValue(VARIANT) == HedgeVariant.DARKWOOD_LEAVES) {
-//			return Item.getItemFromBlock(TFBlocks.twilight_sapling);
-//		} else {
-//			return Items.AIR;
-//		}
-//	}
-//
-//	@Override
-//	public ItemStack getItem(World world, BlockPos pos, BlockState state) {
-//		return new ItemStack(this, 1, getMetaFromState(state));
-//	}
-//
-//	@Override
-//	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, BlockState state, int fortune) {
-//		if (state.getValue(VARIANT) == HedgeVariant.DARKWOOD_LEAVES) {
-//			Random rand = world instanceof World ? ((World)world).rand : RANDOM;
-//			if (rand.nextInt(40) == 0) {
-//				Item item = this.getItemDropped(state, rand, fortune);
-//				drops.add(new ItemStack(item, 1, this.damageDropped(state)));
-//			}
-//		}
-//	}
 }

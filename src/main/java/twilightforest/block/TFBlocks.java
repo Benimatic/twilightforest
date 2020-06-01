@@ -332,7 +332,7 @@ public class TFBlocks {
 						castle_door_yellow, castle_door_purple, castle_door_pink, castle_door_blue,
 						twilight_portal_miniature_structure, naga_courtyard_miniature_structure, lich_tower_miniature_structure,
 						knightmetal_block, ironwood_block, fiery_block, steeleaf_block, arctic_fur_block, carminite_block,
-						firefly_jar, iron_ladder, terrorcotta_circle, terrorcotta_diagonal,
+						hedge, firefly_jar, iron_ladder, terrorcotta_circle, terrorcotta_diagonal,
 						oak_leaves, canopy_leaves, mangrove_leaves, dark_leaves, time_leaves, transformation_leaves, mining_leaves, sorting_leaves,
 						rainboak_leaves, rainboak_sapling,
 						oak_log, canopy_log, mangrove_log, dark_log, time_log, transformation_log, mining_log, sorting_log,

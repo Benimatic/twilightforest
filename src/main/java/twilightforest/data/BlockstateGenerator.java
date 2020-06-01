@@ -169,6 +169,9 @@ public class BlockstateGenerator extends BlockStateProvider {
 		simpleBlock(TFBlocks.twilight_portal_miniature_structure.get(), models().getExistingFile(prefix("block/miniature/portal")));
 		simpleBlock(TFBlocks.naga_courtyard_miniature_structure.get(), models().getExistingFile(prefix("block/miniature/naga_courtyard")));
 		simpleBlock(TFBlocks.lich_tower_miniature_structure.get(), models().getExistingFile(prefix("block/miniature/lich_tower")));
+		simpleBlock(TFBlocks.hedge.get(), ConfiguredModel.builder()
+						.weight(10).modelFile(models().cubeAll(TFBlocks.hedge.getId().getPath(), blockTexture(TFBlocks.hedge.get()))).nextModel()
+						.weight(1).modelFile(models().cubeAll(TFBlocks.hedge.getId().getPath() + "_rose", prefix("block/" + TFBlocks.hedge.getId().getPath() + "_rose"))).build());
 		simpleBlock(TFBlocks.firefly_jar.get(), models().getExistingFile(prefix("block/firefly_jar")));
 		registerWoodBlocks();
 	}
