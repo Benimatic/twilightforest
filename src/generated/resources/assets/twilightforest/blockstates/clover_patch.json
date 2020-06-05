@@ -2,7 +2,7 @@
   "variants": {
     "": [
       {
-        "model": "twilightforest:block/clover_patch"
+        "model": "twilightforest:block/clover_patch_0"
       },
       {
         "model": "twilightforest:block/clover_patch_1"

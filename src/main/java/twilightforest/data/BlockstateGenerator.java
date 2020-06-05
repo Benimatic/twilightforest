@@ -248,11 +248,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 		simpleBlockExisting(TFBlocks.mayapple.get());
 		ConfiguredModel[] cloverModels = new ConfiguredModel[4];
 		for (int i = 0; i < 4; i++) {
-			String modelName = TFBlocks.clover_patch.getId().getPath();
-			if (i != 0) {
-				modelName += "_" + i;
-			}
-			ModelFile model = models().withExistingParent(modelName, prefix("block/util/flat_tex"))
+			ModelFile model = models().withExistingParent(TFBlocks.clover_patch.getId().getPath() + "_" + i, prefix("block/util/flat_tex"))
 							.texture("particle", prefix("block/cloverpatch"))
 							.texture("texture", prefix("block/patch/clover_" + i))
 							.texture("ctm", prefix("block/patch/clover_" + i + "_ctm"));
