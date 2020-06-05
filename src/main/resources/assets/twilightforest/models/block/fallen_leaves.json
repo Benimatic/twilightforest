@@ -1,8 +1,8 @@
 {
   "parent": "block/thin_block",
   "textures": {
-	"particle": "block/leaves_spruce",
-	"texture": "block/leaves_spruce"
+	"particle": "#texture",
+	"texture": "block/spruce_leaves"
   },
   "elements": [
 	{

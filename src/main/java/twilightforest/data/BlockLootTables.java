@@ -33,7 +33,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 
 	@Override
 	protected void addTables() {
-		registerLootTable(TFBlocks.experiment_115.get(), LootTable.builder());
+		registerEmpty(TFBlocks.experiment_115.get());
 		registerDropSelfLootTable(TFBlocks.tower_wood.get());
 		registerDropSelfLootTable(TFBlocks.tower_wood_encased.get());
 		registerDropSelfLootTable(TFBlocks.tower_wood_cracked.get());
@@ -112,10 +112,18 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.maze_stone_mossy.get());
 		registerDropSelfLootTable(TFBlocks.maze_stone_mosaic.get());
 		registerDropSelfLootTable(TFBlocks.maze_stone_border.get());
-		registerLootTable(TFBlocks.hedge.get(), LootTable.builder());
+		registerEmpty(TFBlocks.hedge.get());
 		registerLootTable(TFBlocks.root.get(), droppingRandomly(Items.STICK, new RandomValueRange(3, 5)));
 		registerLootTable(TFBlocks.liveroot_block.get(), dropping(TFItems.liveroot.get()));
 		registerDropSelfLootTable(TFBlocks.firefly_jar.get());
+		registerLootTable(TFBlocks.moss_patch.get(), BlockLootTables::onlyWithShears);
+		registerLootTable(TFBlocks.mayapple.get(), BlockLootTables::onlyWithShears);
+		registerLootTable(TFBlocks.clover_patch.get(), BlockLootTables::onlyWithShears);
+		registerLootTable(TFBlocks.fiddlehead.get(), BlockLootTables::onlyWithShears);
+		registerDropSelfLootTable(TFBlocks.mushgloom.get());
+		registerDropping(TFBlocks.torchberry_plant.get(), TFItems.torchberries.get());
+		registerLootTable(TFBlocks.root_strand.get(), BlockLootTables::onlyWithShears);
+		registerLootTable(TFBlocks.fallen_leaves.get(), BlockLootTables::onlyWithShears);
 		registerDropSelfLootTable(TFBlocks.iron_ladder.get());
 		registerDropSelfLootTable(TFBlocks.oak_log.get());
 		registerDropSelfLootTable(TFBlocks.oak_wood.get());
@@ -248,6 +256,10 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 	private static LootTable.Builder silkAndStick(Block block, IItemProvider nonSilk, float... nonSilkFortune) {
 		ILootCondition.IBuilder NOT_SILK_TOUCH_OR_SHEARS = ObfuscationReflectionHelper.getPrivateValue(net.minecraft.data.loot.BlockLootTables.class, null, "field_218577_e");
 		return droppingWithSilkTouchOrShears(block, withSurvivesExplosion(block, ItemLootEntry.builder(nonSilk.asItem())).acceptCondition(TableBonus.builder(Enchantments.FORTUNE, nonSilkFortune))).addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).acceptCondition(NOT_SILK_TOUCH_OR_SHEARS).addEntry(withExplosionDecay(block, ItemLootEntry.builder(Items.STICK).acceptFunction(SetCount.builder(RandomValueRange.of(1.0F, 2.0F)))).acceptCondition(TableBonus.builder(Enchantments.FORTUNE, 0.02F, 0.022222223F, 0.025F, 0.033333335F, 0.1F))));
+	}
+
+	private void registerEmpty(Block b) {
+		registerLootTable(b, LootTable.builder());
 	}
 
 	@Override

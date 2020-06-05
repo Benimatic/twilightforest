@@ -52,6 +52,14 @@ public class RenderLayerRegistration {
 		RenderTypeLookup.setRenderLayer(TFBlocks.troll_cave_cottage_miniature_structure.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.final_castle_miniature_structure.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.firefly_jar.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.moss_patch.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.mayapple.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.clover_patch.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.fiddlehead.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.mushgloom.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.torchberry_plant.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.root_strand.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.fallen_leaves.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.oak_sapling.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.rainboak_sapling.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.canopy_sapling.get(), cutout);

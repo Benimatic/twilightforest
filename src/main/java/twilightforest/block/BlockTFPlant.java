@@ -173,12 +173,6 @@ public class BlockTFPlant extends BushBlock implements IShearable {
 //				ret.add(new ItemStack(TFItems.torchberries));
 //				break;
 //			case FALLEN_LEAVES:
-//			case MOSSPATCH:
-//			case MAYAPPLE:
-//			case CLOVERPATCH:
-//			case FIDDLEHEAD:
-//			case FORESTGRASS:
-//			case DEADBUSH:
 //			case ROOT_STRAND:
 //				break;
 //			default:
@@ -188,14 +182,6 @@ public class BlockTFPlant extends BushBlock implements IShearable {
 //
 //		return ret;
 //	}
-
-	@Override
-	public void harvestBlock(World world, PlayerEntity player, BlockPos pos, BlockState state, @Nullable TileEntity te, ItemStack stack) {
-		// do not call normal harvest if the player is shearing
-		if (world.isRemote || stack.getItem() != Items.SHEARS) {
-			super.harvestBlock(world, player, pos, state, te, stack);
-		}
-	}
 
 	@Override
 	public PlantType getPlantType(IBlockReader world, BlockPos pos) {

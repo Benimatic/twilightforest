@@ -103,6 +103,14 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.root.get());
 		toBlock(TFBlocks.liveroot_block.get());
 		toBlock(TFBlocks.firefly_jar.get());
+		generated(TFBlocks.moss_patch.getId().getPath(), prefix("block/patch/moss"));
+		generated(TFBlocks.mayapple.getId().getPath(), prefix("block/mayapple"));
+		generated(TFBlocks.clover_patch.getId().getPath(), prefix("block/patch/clover"));
+		generated(TFBlocks.fiddlehead.getId().getPath(), prefix("block/fiddlehead"));
+		generated(TFBlocks.mushgloom.getId().getPath(), prefix("block/mushgloom"), prefix("block/mushgloom_head"));
+		generated(TFBlocks.torchberry_plant.getId().getPath(), prefix("block/torchberry_plant"), prefix("block/torchberry_plant_glow"));
+		generated(TFBlocks.root_strand.getId().getPath(), prefix("block/root_strand"));
+		generated(TFBlocks.fallen_leaves.getId().getPath(), new ResourceLocation("block/spruce_leaves"));
 		toBlock(TFBlocks.oak_log.get());
 		toBlock(TFBlocks.oak_wood.get());
 		toBlock(TFBlocks.oak_leaves.get());
