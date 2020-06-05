@@ -339,6 +339,7 @@ public class TFBlocks {
 						rainboak_leaves, rainboak_sapling,
 						oak_log, canopy_log, mangrove_log, dark_log, time_log, transformation_log, mining_log, sorting_log,
 						oak_wood, canopy_wood, mangrove_wood, dark_wood, time_wood, transformation_wood, mining_wood, sorting_wood,
+						time_log_core, transformation_log_core, mining_log_core, sorting_log_core,
 						oak_sapling, canopy_sapling, mangrove_sapling, darkwood_sapling, time_sapling, transformation_sapling, mining_sapling, sorting_sapling,
 						twilight_oak_planks, twilight_oak_stairs, twilight_oak_slab, twilight_oak_button, twilight_oak_fence, twilight_oak_gate, twilight_oak_plate, twilight_oak_trapdoor,
 						canopy_planks, canopy_stairs, canopy_slab, canopy_button, canopy_fence, canopy_gate, canopy_plate, canopy_trapdoor,

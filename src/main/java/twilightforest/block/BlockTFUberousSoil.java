@@ -32,11 +32,6 @@ public class BlockTFUberousSoil extends Block implements IGrowable {
 		return AABB;
 	}
 
-//	@Override
-//	public Item getItemDropped(BlockState state, Random rand, int fortune) {
-//		return Item.getItemFromBlock(Blocks.DIRT);
-//	}
-
 	@Override
 	public boolean canSustainPlant(BlockState state, IBlockReader world, BlockPos pos, Direction direction, IPlantable plantable) {
 		if (direction != Direction.UP)

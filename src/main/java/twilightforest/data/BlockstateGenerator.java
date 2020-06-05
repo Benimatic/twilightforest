@@ -212,18 +212,36 @@ public class BlockstateGenerator extends BlockStateProvider {
 		logWoodSapling(TFBlocks.time_log.get(), TFBlocks.time_wood.get(), TFBlocks.time_sapling.get());
 		plankBlocks("time", TFBlocks.time_planks.get(), TFBlocks.time_slab.get(), TFBlocks.time_stairs.get(), TFBlocks.time_button.get(), TFBlocks.time_fence.get(), TFBlocks.time_gate.get(), TFBlocks.time_plate.get(), TFBlocks.time_door.get(), TFBlocks.time_trapdoor.get());
 		singleBlockBoilerPlate(TFBlocks.time_leaves.get(), "block/leaves", m -> m.texture("all", "block/time_leaves"));
+		magicLogCore(TFBlocks.time_log_core.get());
 
 		logWoodSapling(TFBlocks.transformation_log.get(), TFBlocks.transformation_wood.get(), TFBlocks.transformation_sapling.get());
 		plankBlocks("trans", TFBlocks.trans_planks.get(), TFBlocks.trans_slab.get(), TFBlocks.trans_stairs.get(), TFBlocks.trans_button.get(), TFBlocks.trans_fence.get(), TFBlocks.trans_gate.get(), TFBlocks.trans_plate.get(), TFBlocks.trans_door.get(), TFBlocks.trans_trapdoor.get());
 		singleBlockBoilerPlate(TFBlocks.transformation_leaves.get(), "block/leaves", m -> m.texture("all", "block/transformation_leaves"));
+		magicLogCore(TFBlocks.transformation_log_core.get());
 
 		logWoodSapling(TFBlocks.mining_log.get(), TFBlocks.mining_wood.get(), TFBlocks.mining_sapling.get());
 		plankBlocks("mine", TFBlocks.mine_planks.get(), TFBlocks.mine_slab.get(), TFBlocks.mine_stairs.get(), TFBlocks.mine_button.get(), TFBlocks.mine_fence.get(), TFBlocks.mine_gate.get(), TFBlocks.mine_plate.get(), TFBlocks.mine_door.get(), TFBlocks.mine_trapdoor.get());
 		singleBlockBoilerPlate(TFBlocks.mining_leaves.get(), "block/leaves", m -> m.texture("all", "block/mining_leaves"));
+		magicLogCore(TFBlocks.mining_log_core.get());
 
 		logWoodSapling(TFBlocks.sorting_log.get(), TFBlocks.sorting_wood.get(), TFBlocks.sorting_sapling.get());
 		plankBlocks("sort", TFBlocks.sort_planks.get(), TFBlocks.sort_slab.get(), TFBlocks.sort_stairs.get(), TFBlocks.sort_button.get(), TFBlocks.sort_fence.get(), TFBlocks.sort_gate.get(), TFBlocks.sort_plate.get(), TFBlocks.sort_door.get(), TFBlocks.sort_trapdoor.get());
 		singleBlockBoilerPlate(TFBlocks.sorting_leaves.get(), "block/leaves", m -> m.texture("all", "block/sorting_leaves"));
+		magicLogCore(TFBlocks.sorting_log_core.get());
+	}
+
+	private void magicLogCore(Block b) {
+		ResourceLocation topTex = prefix("block/" + b.getRegistryName().getPath().replace("_core", "_top"));
+		ModelFile off = models().cubeColumn(b.getRegistryName().getPath(), blockTexture(b), topTex);
+		ModelFile on = models().cubeColumn(b.getRegistryName().getPath() + "_on", prefix("block/" + b.getRegistryName().getPath() + "_on"), topTex);
+		getVariantBuilder(b).forAllStates(s -> {
+			ModelFile f = s.get(BlockTFMagicLogSpecial.ACTIVE) ? on : off;
+			Direction.Axis axis = s.get(BlockTFMagicLogSpecial.AXIS);
+			int rotX = axis == Direction.Axis.X || axis == Direction.Axis.Z ? 90 : 0;
+			int rotY = axis == Direction.Axis.X ? 90 : 0;
+			return ConfiguredModel.builder()
+							.modelFile(f).rotationX(rotX).rotationY(rotY).build();
+		});
 	}
 
 	private void rotationallyCorrectColumn(Block b) {
