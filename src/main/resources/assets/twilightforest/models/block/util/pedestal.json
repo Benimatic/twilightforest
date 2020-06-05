@@ -1,5 +1,8 @@
 {
   "parent": "block/block",
+  "textures": {
+    "particle": "#end"
+  },
   "elements": [
     {
       "from": [  2,  3,  2 ],

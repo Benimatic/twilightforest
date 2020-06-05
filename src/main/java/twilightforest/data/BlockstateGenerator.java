@@ -12,6 +12,9 @@ import twilightforest.enums.FireJetVariant;
 
 import javax.annotation.Nonnull;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Consumer;
 
 import static twilightforest.TwilightForestMod.prefix;
@@ -98,6 +101,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 											.build();
 						});
 
+		trophyPedestal();
 		auroraBlocks();
 		simpleBlock(TFBlocks.underbrick.get());
 		simpleBlock(TFBlocks.underbrick_cracked.get());
@@ -757,6 +761,61 @@ public class BlockstateGenerator extends BlockStateProvider {
 						.with(BlockTFDiagonal.IS_ROTATED, false).setModels(ConfiguredModel.builder().modelFile(terrorcottaDiagonal).build());
 		getVariantBuilder(TFBlocks.terrorcotta_diagonal.get()).partialState()
 						.with(BlockTFDiagonal.IS_ROTATED, true).setModels(ConfiguredModel.builder().modelFile(terrorcottaDiagonalRotated).uvLock(true).rotationY(90).build());
+	}
+	
+	private ModelFile pedestalModel(String name, String north, String south, String west, String east, boolean active) {
+		String suffix = active ? "" : "_latent";
+		BlockModelBuilder ret = models().withExistingParent(name, prefix(active ? "block/util/pedestal_2_layer" : "block/util/pedestal"))
+						.texture("end", prefix("block/pedestal/top"))
+						.texture("north", prefix("block/pedestal/" + north + suffix))
+						.texture("south", prefix("block/pedestal/" + south + suffix))
+						.texture("west", prefix("block/pedestal/" + west + suffix))
+						.texture("east", prefix("block/pedestal/" + east + suffix));
+		if (active) {
+			ret = ret
+							.texture("end2", prefix("block/pedestal/top_glow"))
+							.texture("north2", prefix("block/pedestal/" + north + "_glow"))
+							.texture("south2", prefix("block/pedestal/" + south + "_glow"))
+							.texture("west2", prefix("block/pedestal/" + west + "_glow"))
+							.texture("east2", prefix("block/pedestal/" + east + "_glow"));
+		}
+		return ret;
+	}
+
+	private void trophyPedestal() {
+		String baseName = TFBlocks.trophy_pedestal.getId().getPath();
+		ModelFile latent0 = pedestalModel(baseName, "naga", "lich", "hydra", "ur-ghast", false);
+		ModelFile latent1 = pedestalModel(baseName + "_1", "snow_queen", "naga", "lich", "hydra", false);
+		ModelFile latent2 = pedestalModel(baseName + "_2", "ur-ghast", "snow_queen", "naga", "lich", false);
+		ModelFile latent3 = pedestalModel(baseName + "_3", "hydra", "ur-ghast", "snow_queen", "naga", false);
+		ModelFile latent4 = pedestalModel(baseName + "_4", "lich", "hydra", "ur-ghast", "snow_queen", false);
+		
+		List<ConfiguredModel> latentModels = new ArrayList<>();
+		for (ModelFile f : Arrays.asList(latent0, latent1, latent2, latent3, latent4)) {
+			latentModels.add(new ConfiguredModel(f, 0, 0, false));
+			latentModels.add(new ConfiguredModel(f, 0, 90, false));
+			latentModels.add(new ConfiguredModel(f, 0, 180, false));
+			latentModels.add(new ConfiguredModel(f, 0, 270, false));
+		}
+		getVariantBuilder(TFBlocks.trophy_pedestal.get()).partialState()
+						.with(BlockTFTrophyPedestal.ACTIVE, false).setModels(latentModels.toArray(new ConfiguredModel[0]));
+
+
+		ModelFile active0 = pedestalModel(baseName + "_active", "naga", "lich", "hydra", "ur-ghast", true);
+		ModelFile active1 = pedestalModel(baseName + "_active_1", "snow_queen", "naga", "lich", "hydra", true);
+		ModelFile active2 = pedestalModel(baseName + "_active_2", "ur-ghast", "snow_queen", "naga", "lich", true);
+		ModelFile active3 = pedestalModel(baseName + "_active_3", "hydra", "ur-ghast", "snow_queen", "naga", true);
+		ModelFile active4 = pedestalModel(baseName + "_active_4", "lich", "hydra", "ur-ghast", "snow_queen", true);
+
+		List<ConfiguredModel> activeModels = new ArrayList<>();
+		for (ModelFile f : Arrays.asList(active0, active1, active2, active3, active4)) {
+			activeModels.add(new ConfiguredModel(f, 0, 0, false));
+			activeModels.add(new ConfiguredModel(f, 0, 90, false));
+			activeModels.add(new ConfiguredModel(f, 0, 180, false));
+			activeModels.add(new ConfiguredModel(f, 0, 270, false));
+		}
+		getVariantBuilder(TFBlocks.trophy_pedestal.get()).partialState()
+						.with(BlockTFTrophyPedestal.ACTIVE, true).setModels(activeModels.toArray(new ConfiguredModel[0]));
 	}
 
 	private void auroraBlocks() {

@@ -28,6 +28,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlockModel(TFBlocks.fake_gold.get(), new ResourceLocation("block/gold_block"));
 		toBlockModel(TFBlocks.fake_diamond.get(), new ResourceLocation("block/diamond_block"));
 		toBlock(TFBlocks.stronghold_shield.get());
+		toBlock(TFBlocks.trophy_pedestal.get());
 		toBlock(TFBlocks.terrorcotta_circle.get());
 		toBlock(TFBlocks.terrorcotta_diagonal.get());
 		toBlockModel(TFBlocks.aurora_block.get(), prefix("block/aurora_block_0"));

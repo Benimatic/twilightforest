@@ -130,7 +130,7 @@ public class TFBlocks {
 	public static final RegistryObject<BlockTFTrophy> minoshroom_trophy     = BLOCKS.register("minoshroom_trophy", () -> new BlockTFTrophy(BossVariant.MINOSHROOM));
 	public static final RegistryObject<BlockTFTrophy> quest_ram_trophy      = BLOCKS.register("quest_ram_trophy", () -> new BlockTFTrophy(BossVariant.QUEST_RAM));
 	public static final RegistryObject<Block> stronghold_shield          = BLOCKS.register("stronghold_shield", () -> new BlockTFShield(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F, 6000000.0F).sound(SoundType.METAL).noDrops()));
-	public static final RegistryObject<Block> trophy_pedestal            = BLOCKS.register("trophy_pedestal", () -> new BlockTFTrophyPedestal());
+	public static final RegistryObject<Block> trophy_pedestal            = BLOCKS.register("trophy_pedestal", () -> new BlockTFTrophyPedestal(Block.Properties.create(Material.ROCK).hardnessAndResistance(2.0F, 2000.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> aurora_block               = BLOCKS.register("aurora_block", () -> new BlockTFAuroraBrick(Block.Properties.create(Material.PACKED_ICE).hardnessAndResistance(2.0F, 10.0F)));
 	public static final RegistryObject<RotatedPillarBlock> aurora_pillar              = BLOCKS.register("aurora_pillar", () -> new RotatedPillarBlock(Block.Properties.create(Material.PACKED_ICE).hardnessAndResistance(2.0F, 10.0F)));
 	public static final RegistryObject<Block> aurora_slab                = BLOCKS.register("aurora_slab", () -> new SlabBlock(Block.Properties.create(Material.PACKED_ICE).hardnessAndResistance(2.0F, 10.0F)));
@@ -317,7 +317,7 @@ public class TFBlocks {
 		IForgeRegistry<Item> r = evt.getRegistry();
 		List<RegistryObject<? extends Block>> standard = Arrays.asList(
 						tower_wood, tower_wood_encased, tower_wood_cracked, tower_wood_mossy, tower_wood_infested,
-						fake_gold, fake_diamond, stronghold_shield,
+						fake_gold, fake_diamond, stronghold_shield, trophy_pedestal,
 						underbrick, underbrick_cracked, underbrick_mossy, underbrick_floor,
 						thorn_rose, thorn_leaves, beanstalk_leaves,
 						aurora_block, aurora_pillar, aurora_slab, auroralized_glass,

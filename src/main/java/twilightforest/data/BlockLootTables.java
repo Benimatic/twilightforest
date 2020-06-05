@@ -13,6 +13,7 @@ import net.minecraft.world.storage.loot.conditions.TableBonus;
 import net.minecraft.world.storage.loot.functions.ApplyBonus;
 import net.minecraft.world.storage.loot.functions.SetCount;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import twilightforest.block.BlockTFTrophyPedestal;
 import twilightforest.block.TFBlocks;
 import twilightforest.item.TFItems;
 
@@ -42,6 +43,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.firefly.get());
 		registerDropSelfLootTable(TFBlocks.cicada.get());
 		registerDropSelfLootTable(TFBlocks.moonworm.get());
+		registerDropSelfLootTable(TFBlocks.trophy_pedestal.get());
 		registerDropSelfLootTable(TFBlocks.terrorcotta_circle.get());
 		registerDropSelfLootTable(TFBlocks.terrorcotta_diagonal.get());
 		registerDropSelfLootTable(TFBlocks.aurora_block.get());

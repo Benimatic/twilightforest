@@ -74,12 +74,7 @@ public class ComponentTFStrongholdAccessChamber extends StructureTFStrongholdCom
 		this.setBlockState(world, deco.pillarState, 2, 0, 2, sbb);
 
 		// pedestal
-		final BlockState blockstateIn = TFBlocks.trophy_pedestal.get()
-				.getDefaultState()
-				.with(BlockTFTrophyPedestal.LATENT, true)
-				//TODO: Atomic: Verify this facing.
-				.with(BlockTFTrophyPedestal.FACING, Direction.EAST);
-		this.setBlockState(world, blockstateIn, 2, 1, 2, sbb);
+		this.setBlockState(world, TFBlocks.trophy_pedestal.get().getDefaultState(), 2, 1, 2, sbb);
 
 		// block point
 		this.fillWithBlocks(world, sbb, 2, -1, 2, 6, -1, 6, TFBlocks.stronghold_shield.get().getDefaultState(), AIR, false);
@@ -87,9 +82,6 @@ public class ComponentTFStrongholdAccessChamber extends StructureTFStrongholdCom
 		return true;
 	}
 
-	/**
-	 * Does this component fall under block protection when progression is turned on, normally true
-	 */
 	@Override
 	public boolean isComponentProtected() {
 		return false;

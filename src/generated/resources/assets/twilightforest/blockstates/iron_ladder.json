@@ -2,8 +2,8 @@
   "multipart": [
     {
       "when": {
-        "facing": "north",
-        "left": "false"
+        "left": "false",
+        "facing": "north"
       },
       "apply": {
         "model": "twilightforest:block/iron_ladder_left"
@@ -11,8 +11,8 @@
     },
     {
       "when": {
-        "facing": "north",
-        "left": "true"
+        "left": "true",
+        "facing": "north"
       },
       "apply": {
         "model": "twilightforest:block/iron_ladder_left_connection"
@@ -20,8 +20,8 @@
     },
     {
       "when": {
-        "right": "false",
-        "facing": "north"
+        "facing": "north",
+        "right": "false"
       },
       "apply": {
         "model": "twilightforest:block/iron_ladder_right"
@@ -29,8 +29,8 @@
     },
     {
       "when": {
-        "right": "true",
-        "facing": "north"
+        "facing": "north",
+        "right": "true"
       },
       "apply": {
         "model": "twilightforest:block/iron_ladder_right_connection"
@@ -38,8 +38,8 @@
     },
     {
       "when": {
-        "facing": "east",
-        "left": "false"
+        "left": "false",
+        "facing": "east"
       },
       "apply": {
         "model": "twilightforest:block/iron_ladder_left",
@@ -48,8 +48,8 @@
     },
     {
       "when": {
-        "facing": "east",
-        "left": "true"
+        "left": "true",
+        "facing": "east"
       },
       "apply": {
         "model": "twilightforest:block/iron_ladder_left_connection",
@@ -58,8 +58,8 @@
     },
     {
       "when": {
-        "right": "false",
-        "facing": "east"
+        "facing": "east",
+        "right": "false"
       },
       "apply": {
         "model": "twilightforest:block/iron_ladder_right",
@@ -68,8 +68,8 @@
     },
     {
       "when": {
-        "right": "true",
-        "facing": "east"
+        "facing": "east",
+        "right": "true"
       },
       "apply": {
         "model": "twilightforest:block/iron_ladder_right_connection",
@@ -78,8 +78,8 @@
     },
     {
       "when": {
-        "facing": "south",
-        "left": "false"
+        "left": "false",
+        "facing": "south"
       },
       "apply": {
         "model": "twilightforest:block/iron_ladder_left",
@@ -88,8 +88,8 @@
     },
     {
       "when": {
-        "facing": "south",
-        "left": "true"
+        "left": "true",
+        "facing": "south"
       },
       "apply": {
         "model": "twilightforest:block/iron_ladder_left_connection",
@@ -98,8 +98,8 @@
     },
     {
       "when": {
-        "right": "false",
-        "facing": "south"
+        "facing": "south",
+        "right": "false"
       },
       "apply": {
         "model": "twilightforest:block/iron_ladder_right",
@@ -108,8 +108,8 @@
     },
     {
       "when": {
-        "right": "true",
-        "facing": "south"
+        "facing": "south",
+        "right": "true"
       },
       "apply": {
         "model": "twilightforest:block/iron_ladder_right_connection",
@@ -118,8 +118,8 @@
     },
     {
       "when": {
-        "facing": "west",
-        "left": "false"
+        "left": "false",
+        "facing": "west"
       },
       "apply": {
         "model": "twilightforest:block/iron_ladder_left",
@@ -128,8 +128,8 @@
     },
     {
       "when": {
-        "facing": "west",
-        "left": "true"
+        "left": "true",
+        "facing": "west"
       },
       "apply": {
         "model": "twilightforest:block/iron_ladder_left_connection",
@@ -138,8 +138,8 @@
     },
     {
       "when": {
-        "right": "false",
-        "facing": "west"
+        "facing": "west",
+        "right": "false"
       },
       "apply": {
         "model": "twilightforest:block/iron_ladder_right",
@@ -148,8 +148,8 @@
     },
     {
       "when": {
-        "right": "true",
-        "facing": "west"
+        "facing": "west",
+        "right": "true"
       },
       "apply": {
         "model": "twilightforest:block/iron_ladder_right_connection",

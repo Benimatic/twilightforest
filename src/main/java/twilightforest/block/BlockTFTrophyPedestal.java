@@ -1,17 +1,12 @@
 package twilightforest.block;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -25,27 +20,23 @@ import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.world.TFWorld;
 
-import javax.annotation.Nullable;
-
 //TODO 1.14: Thaumcraft is dead
 //@Optional.Interface(modid = "thaumcraft", iface = "thaumcraft.api.crafting.IInfusionStabiliser")
 public class BlockTFTrophyPedestal extends Block /*implements IInfusionStabiliser*/ {
 
-	public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
-	public static final BooleanProperty LATENT = BooleanProperty.create("latent");
+	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
 	private static final VoxelShape AABB = VoxelShapes.create(new AxisAlignedBB(0.0625F, 0.0F, 0.0625F, 0.9375F, 1.0F, 0.9375F));
 
-	public BlockTFTrophyPedestal() {
-		super(Properties.create(Material.ROCK).hardnessAndResistance(2.0F, 2000.0F).sound(SoundType.STONE));
-		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
-		this.setDefaultState(getDefaultState().with(LATENT, true).with(FACING, Direction.NORTH));
+	public BlockTFTrophyPedestal(Properties props) {
+		super(props);
+		this.setDefaultState(getDefaultState().with(ACTIVE, false));
 	}
 
 	@Override
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
 		super.fillStateContainer(builder);
-		builder.add(FACING, LATENT);
+		builder.add(ACTIVE);
 	}
 
 	@Override
@@ -54,17 +45,10 @@ public class BlockTFTrophyPedestal extends Block /*implements IInfusionStabilise
 		return AABB;
 	}
 
-	//TODO: Check this
-//	@Override
-//	@Deprecated
-//	public boolean isSolid(BlockState state) {
-//		return false;
-//	}
-
 	@Override
 	@Deprecated
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-		if (world.isRemote || !state.get(LATENT) || !isTrophyOnTop(world, pos)) return;
+		if (world.isRemote || state.get(ACTIVE) || !isTrophyOnTop(world, pos)) return;
 
 		if (TFWorld.isProgressionEnforced(world)) {
 			if (areNearbyPlayersEligible(world, pos)) {
@@ -103,7 +87,7 @@ public class BlockTFTrophyPedestal extends Block /*implements IInfusionStabilise
 	}
 
 	private void doPedestalEffect(World world, BlockPos pos, BlockState state) {
-		world.setBlockState(pos, state.with(LATENT, false));
+		world.setBlockState(pos, state.with(ACTIVE, true));
 		removeNearbyShields(world, pos);
 		world.playSound(null, pos, SoundEvents.ENTITY_ZOMBIE_INFECT, SoundCategory.BLOCKS, 4.0F, 0.1F);
 	}
@@ -123,33 +107,10 @@ public class BlockTFTrophyPedestal extends Block /*implements IInfusionStabilise
 					}
 	}
 
-	@Nullable
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		return this.getDefaultState().with(FACING, context.getPlayer().getHorizontalFacing().getOpposite());
+	public float getBlockHardness(BlockState state, IBlockReader world, BlockPos pos) {
+		return state.get(ACTIVE) ? super.getBlockHardness(state, world, pos) : -1;
 	}
-
-	// todo ambiguous in 1.7, what was this supposed to be?
-	@Override
-	@Deprecated
-	public float getPlayerRelativeBlockHardness(BlockState state, PlayerEntity player, IBlockReader world, BlockPos pos) {
-		return state.get(LATENT) ? -1 : super.getPlayerRelativeBlockHardness(state, player, world, pos);
-	}
-
-	//	@Override
-//	protected boolean canSilkHarvest() {
-//		return false;
-//	}
-//
-//	@Override
-//	public boolean canSilkHarvest(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-//		return false;
-//	}
-//
-//	@Override
-//	public int damageDropped(BlockState state) {
-//		return 0;
-//	}
 
 //	@Override
 //	public boolean canStabaliseInfusion(World world, BlockPos blockPos) {
