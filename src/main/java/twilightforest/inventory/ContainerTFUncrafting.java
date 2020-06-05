@@ -41,7 +41,6 @@ public class ContainerTFUncrafting extends Container {
 	// Crafting Output
 	private final CraftResultInventory tinkerResult = new CraftResultInventory();
 
-	// Other Data, to kick the player from GUI if they stray too far from table
 	private final World world;
 	private final PlayerEntity player;
 
@@ -50,8 +49,8 @@ public class ContainerTFUncrafting extends Container {
 	public int ingredientsInCycle = 0;
 	public int recipeInCycle = 0;
 
-	public ContainerTFUncrafting(int id, PlayerInventory inventory) {
-		this(id, inventory, inventory.player.world);
+	public static ContainerTFUncrafting fromNetwork(int id, PlayerInventory inventory) {
+		return new ContainerTFUncrafting(id, inventory, inventory.player.world);
 	}
 
 	public ContainerTFUncrafting(int id, PlayerInventory inventory, World world) {
@@ -111,8 +110,8 @@ public class ContainerTFUncrafting extends Container {
 
 				if (recipe instanceof IShapedRecipe) {
 
-					int recipeWidth  = getRecipeWidth ((IShapedRecipe) recipe);
-					int recipeHeight = getRecipeHeight((IShapedRecipe) recipe);
+					int recipeWidth  = ((IShapedRecipe) recipe).getRecipeWidth();
+					int recipeHeight = ((IShapedRecipe) recipe).getRecipeHeight();
 
 					// set uncrafting grid
 					for (int invY = 0; invY < recipeHeight; invY++) {
@@ -273,16 +272,8 @@ public class ContainerTFUncrafting extends Container {
 	}
 
 	private static ItemStack normalizeIngredient(ItemStack ingredient) {
-		if (!ingredient.isEmpty()) {
-			// OLD: fix weird recipe for diamond/ingot blocks
-			// Leaving this in, in case some modder does weird crap with an IRecipe
-            //TODO: Hi, some modder here. OreDictionary is dead
-			if (ingredient.getCount() > 1) {
-				ingredient.setCount(1);
-			}
-//			if (ingredient.getDamage() == OreDictionary.WILDCARD_VALUE) {
-//				ingredient.setDamage(0);
-//			}
+		if (ingredient.getCount() > 1) {
+			ingredient.setCount(1);
 		}
 		return ingredient;
 	}
@@ -424,24 +415,6 @@ public class ContainerTFUncrafting extends Container {
 		return cost;
 	}
 
-	public static int countHighestEnchantmentCost(ItemStack stack) {
-
-		int count = 0;
-
-		for (Map.Entry<Enchantment, Integer> entry : EnchantmentHelper.getEnchantments(stack).entrySet()) {
-
-			Enchantment ench = entry.getKey();
-			int level = entry.getValue();
-
-			if (ench != null && level > count) {
-				//count = ench.getMinEnchantability(level); OLD
-				count += getWeightModifier(ench) * level;
-			}
-		}
-
-		return count;
-	}
-
 	private static int countTotalEnchantmentCost(ItemStack stack) {
 
 		int count = 0;
@@ -480,7 +453,7 @@ public class ContainerTFUncrafting extends Container {
 		}
 	}
 
-    @Override
+	@Override
 	public ItemStack slotClick(int slotNum, int mouseButton, ClickType clickType, PlayerEntity player) {
 
 		// if the player is trying to take an item out of the assembly grid, and the assembly grid is empty, take the item from the uncrafting grid.
@@ -528,17 +501,6 @@ public class ContainerTFUncrafting extends Container {
 		}
 
 		return ret;
-	}
-
-	// todo 1.12 evaluate if this logic needs to be moved elsewhere (method removed in 1.12)
-	protected void retrySlotClick(int slotNum, int mouseButton, boolean par3, PlayerEntity player) {
-		// if they are taking something out of the uncrafting matrix, bump the slot number back to the assembly matrix
-		// otherwise we lose the stuff in the uncrafting matrix when we shift-click to take multiple things
-		if (this.inventorySlots.get(slotNum).inventory == this.uncraftingMatrix) {
-			slotNum += 9;
-		}
-
-		this.slotClick(slotNum, mouseButton, ClickType.QUICK_MOVE, player);
 	}
 
 	/**
@@ -645,7 +607,6 @@ public class ContainerTFUncrafting extends Container {
 	}
 
 	private ItemStack[] getIngredients(IRecipe<?> recipe) {
-		// todo 1.12 recheck
 		ItemStack[] stacks = new ItemStack[recipe.getIngredients().size()];
 
 		for (int i = 0; i < recipe.getIngredients().size(); i++) {
@@ -654,14 +615,6 @@ public class ContainerTFUncrafting extends Container {
 		}
 
 		return stacks;
-	}
-
-	private static int getRecipeWidth(IShapedRecipe recipe) {
-		return recipe.getRecipeWidth();
-	}
-
-	private static int getRecipeHeight(IShapedRecipe recipe) {
-		return recipe.getRecipeHeight();
 	}
 
 	@Override

@@ -23,10 +23,6 @@ public class GuiTFGoblinCrafting extends ContainerScreen<ContainerTFUncrafting> 
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getGuiTexture("guigoblintinkering.png");
 
-//	public GuiTFGoblinCrafting(PlayerInventory inventory, World world, int x, int y, int z) {
-//		super(new ContainerTFUncrafting(inventory, world, x, y, z), inventory);
-//	}
-
 	public GuiTFGoblinCrafting(ContainerTFUncrafting container, PlayerInventory player, ITextComponent name) {
 		super(container, player, name);
 	}
@@ -147,7 +143,6 @@ public class GuiTFGoblinCrafting extends ContainerScreen<ContainerTFUncrafting> 
 		int screenX = appearSlot.xPos;
 		int screenY = appearSlot.yPos;
 		ItemStack itemStackToRender = backgroundSlot.getStack();
-//		this.zLevel = 50.0F;
 		itemRenderer.zLevel = 50.0F;
 
         itemRenderer.renderItemIntoGUI(itemStackToRender, screenX, screenY);
@@ -163,7 +158,6 @@ public class GuiTFGoblinCrafting extends ContainerScreen<ContainerTFUncrafting> 
 		RenderSystem.enableDepthTest();
 
         itemRenderer.zLevel = 0.0F;
-//		this.zLevel = 0.0F;
 	}
 
 	private static class CycleButton extends Button {

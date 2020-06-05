@@ -16,7 +16,6 @@ public class BlockTFUncraftingTable extends Block {
 
 	protected BlockTFUncraftingTable() {
 		super(Properties.create(Material.WOOD).hardnessAndResistance(2.5F).sound(SoundType.WOOD));
-		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
 	}
 
 	@Override
