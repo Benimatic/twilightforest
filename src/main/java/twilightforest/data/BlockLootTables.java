@@ -125,7 +125,9 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerLootTable(TFBlocks.root_strand.get(), BlockLootTables::onlyWithShears);
 		registerLootTable(TFBlocks.fallen_leaves.get(), BlockLootTables::onlyWithShears);
 		registerDropSelfLootTable(TFBlocks.smoker.get());
+		registerDropSelfLootTable(TFBlocks.encased_smoker.get());
 		registerDropSelfLootTable(TFBlocks.fire_jet.get());
+		registerDropSelfLootTable(TFBlocks.encased_fire_jet.get());
 		registerDropSelfLootTable(TFBlocks.iron_ladder.get());
 		registerDropSelfLootTable(TFBlocks.oak_log.get());
 		registerDropSelfLootTable(TFBlocks.oak_wood.get());

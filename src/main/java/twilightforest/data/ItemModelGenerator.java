@@ -113,6 +113,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		generated(TFBlocks.fallen_leaves.getId().getPath(), new ResourceLocation("block/spruce_leaves"));
 		toBlockModel(TFBlocks.smoker.get(), prefix("block/jet"));
 		toBlockModel(TFBlocks.fire_jet.get(), prefix("block/jet"));
+		toBlock(TFBlocks.encased_smoker.get());
+		toBlock(TFBlocks.encased_fire_jet.get());
 		toBlock(TFBlocks.oak_log.get());
 		toBlock(TFBlocks.oak_wood.get());
 		toBlock(TFBlocks.oak_leaves.get());

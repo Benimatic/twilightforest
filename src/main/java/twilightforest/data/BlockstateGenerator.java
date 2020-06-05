@@ -11,6 +11,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.*;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
+import twilightforest.enums.FireJetVariant;
 
 import javax.annotation.Nonnull;
 
@@ -186,9 +187,60 @@ public class BlockstateGenerator extends BlockStateProvider {
 		registerPlantBlocks();
 		simpleBlock(TFBlocks.root.get());
 		simpleBlock(TFBlocks.liveroot_block.get());
+		registerSmokersAndJets();
+		registerWoodBlocks();
+	}
+
+	private void registerSmokersAndJets() {
 		simpleBlock(TFBlocks.smoker.get(), new ConfiguredModel(models().getExistingFile(prefix("block/jet"))));
 		simpleBlock(TFBlocks.fire_jet.get(), new ConfiguredModel(models().getExistingFile(prefix("block/jet"))));
-		registerWoodBlocks();
+
+		ModelFile smokerOff = models().withExistingParent(TFBlocks.encased_smoker.getId().getPath(), prefix("block/util/cube_bottom_top_3_layer"))
+						.texture("top", prefix("block/towerdev_ghasttraplid_off"))
+						.texture("side", prefix("block/towerdev_smoker_off"))
+						.texture("bottom", blockTexture(TFBlocks.tower_wood_encased.get()))
+						.texture("top2", prefix("block/tower_device_level_2/towerdev_ghasttraplid_off_1"))
+						.texture("side2", prefix("block/tower_device_level_1/towerdev_smoker_1"))
+						.texture("top3", prefix("block/tower_device_level_2/towerdev_ghasttraplid_off_1"))
+						.texture("side3", prefix("block/tower_device_level_2/towerdev_smoker_off_1"));
+
+		ModelFile smokerOn = models().withExistingParent(TFBlocks.encased_smoker.getId().getPath() + "_on", prefix("block/util/cube_bottom_top_3_layer"))
+						.texture("top", prefix("block/towerdev_ghasttraplid_on"))
+						.texture("side", prefix("block/towerdev_firejet_on"))
+						.texture("bottom", blockTexture(TFBlocks.tower_wood_encased.get()))
+						.texture("top2", prefix("block/tower_device_level_2/towerdev_ghasttraplid_on_1"))
+						.texture("side2", prefix("block/tower_device_level_1/towerdev_smoker_1"))
+						.texture("top3", prefix("block/tower_device_level_3/towerdev_ghasttraplid_on_2"))
+						.texture("side3", prefix("block/tower_device_level_2/towerdev_smoker_on_1"));
+		getVariantBuilder(TFBlocks.encased_smoker.get()).partialState()
+						.with(BlockTFEncasedSmoker.ACTIVE, false).setModels(new ConfiguredModel(smokerOff));
+		getVariantBuilder(TFBlocks.encased_smoker.get()).partialState()
+						.with(BlockTFEncasedSmoker.ACTIVE, true).setModels(new ConfiguredModel(smokerOn));
+
+		ModelFile encasedJetOff = models().withExistingParent(TFBlocks.encased_fire_jet.getId().getPath(), prefix("block/util/cube_bottom_top_3_layer"))
+						.texture("top", prefix("block/towerdev_ghasttraplid_off"))
+						.texture("side", prefix("block/towerdev_firejet_off"))
+						.texture("bottom", blockTexture(TFBlocks.tower_wood_encased.get()))
+						.texture("top2", prefix("block/tower_device_level_2/towerdev_ghasttraplid_off_1"))
+						.texture("side2", prefix("block/tower_device_level_1/towerdev_firejet_1"))
+						.texture("top3", prefix("block/tower_device_level_2/towerdev_ghasttraplid_off_1"))
+						.texture("side3", prefix("block/tower_device_level_2/towerdev_firejet_off_1"));
+
+		ModelFile encasedJetOn = models().withExistingParent(TFBlocks.encased_fire_jet.getId().getPath() + "_on", prefix("block/util/cube_bottom_top_3_layer"))
+						.texture("top", prefix("block/towerdev_ghasttraplid_on"))
+						.texture("side", prefix("block/towerdev_firejet_on"))
+						.texture("bottom", blockTexture(TFBlocks.tower_wood_encased.get()))
+						.texture("top2", prefix("block/tower_device_level_2/towerdev_ghasttraplid_on_1"))
+						.texture("side2", prefix("block/tower_device_level_1/towerdev_firejet_1"))
+						.texture("top3", prefix("block/tower_device_level_3/towerdev_ghasttraplid_on_2"))
+						.texture("side3", prefix("block/tower_device_level_2/towerdev_firejet_on_1"));
+
+		getVariantBuilder(TFBlocks.encased_fire_jet.get()).partialState()
+						.with(BlockTFFireJet.STATE, FireJetVariant.IDLE).setModels(new ConfiguredModel(encasedJetOff));
+		getVariantBuilder(TFBlocks.encased_fire_jet.get()).partialState()
+						.with(BlockTFFireJet.STATE, FireJetVariant.POPPING).setModels(new ConfiguredModel(encasedJetOn));
+		getVariantBuilder(TFBlocks.encased_fire_jet.get()).partialState()
+						.with(BlockTFFireJet.STATE, FireJetVariant.FLAME).setModels(new ConfiguredModel(encasedJetOn));
 	}
 
 	private void registerPlantBlocks() {

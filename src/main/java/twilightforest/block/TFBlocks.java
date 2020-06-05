@@ -69,7 +69,7 @@ public class TFBlocks {
 	public static final RegistryObject<Block> liveroot_block = BLOCKS.register("liveroot_block", () -> new Block(Block.Properties.create(Material.WOOD).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<Block> uncrafting_table           = BLOCKS.register("uncrafting_table", () -> new BlockTFUncraftingTable());
 	public static final RegistryObject<Block> smoker                     = BLOCKS.register("smoker", () -> new BlockTFSmoker(Block.Properties.create(Material.ROCK, MaterialColor.GRASS).hardnessAndResistance(1.5F, 0.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<Block> encased_smoker             = BLOCKS.register("encased_smoker", () -> new BlockTFEncasedSmoker());
+	public static final RegistryObject<Block> encased_smoker             = BLOCKS.register("encased_smoker", () -> new BlockTFEncasedSmoker(Block.Properties.create(Material.WOOD, MaterialColor.SAND).hardnessAndResistance(1.5F, 0.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<Block> fire_jet                   = BLOCKS.register("fire_jet", () -> new BlockTFFireJet(Block.Properties.create(Material.ROCK, MaterialColor.GRASS).hardnessAndResistance(1.5F, 0.0F).sound(SoundType.WOOD).tickRandomly().lightValue(15)));
 	public static final RegistryObject<Block> encased_fire_jet           = BLOCKS.register("encased_fire_jet", () -> new BlockTFEncasedFireJet(Block.Properties.create(Material.WOOD, MaterialColor.SAND).hardnessAndResistance(1.5F, 0.0F).sound(SoundType.WOOD).lightValue(15)));
 	public static final RegistryObject<Block> naga_stone_head            = BLOCKS.register("naga_stone_head", () -> new BlockTFNagastoneHead());

@@ -60,6 +60,8 @@ public class RenderLayerRegistration {
 		RenderTypeLookup.setRenderLayer(TFBlocks.torchberry_plant.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.root_strand.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.fallen_leaves.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.encased_smoker.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.encased_fire_jet.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.oak_sapling.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.rainboak_sapling.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.canopy_sapling.get(), cutout);

@@ -15,13 +15,12 @@ import twilightforest.tileentity.TileEntityTFSmoker;
 
 import javax.annotation.Nullable;
 
-public class BlockTFEncasedSmoker extends Block {
+public class BlockTFEncasedSmoker extends BlockTFSmoker {
 
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
-	protected BlockTFEncasedSmoker() {
-		super(Properties.create(Material.WOOD, MaterialColor.SAND).hardnessAndResistance(1.5F, 0.0F).sound(SoundType.WOOD));
-		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
+	protected BlockTFEncasedSmoker(Properties props) {
+		super(props);
 		this.setDefaultState(stateContainer.getBaseState().with(ACTIVE, false));
 	}
 
@@ -30,32 +29,6 @@ public class BlockTFEncasedSmoker extends Block {
 		super.fillStateContainer(builder);
 		builder.add(ACTIVE);
 	}
-
-	//TODO: We drop Encased Smoker, aight?
-//	@Override
-//	public int damageDropped(BlockState state) {
-//		switch (state.get(VARIANT)) {
-//			case ENCASED_SMOKER_ON:
-//				state = state.with(VARIANT, FireJetVariant.ENCASED_SMOKER_OFF);
-//				break;
-//			case ENCASED_JET_POPPING:
-//				state = state.with(VARIANT, FireJetVariant.ENCASED_JET_IDLE);
-//				break;
-//			case ENCASED_JET_FLAME:
-//				state = state.with(VARIANT, FireJetVariant.ENCASED_JET_IDLE);
-//				break;
-//			case JET_POPPING:
-//				state = state.with(VARIANT, FireJetVariant.JET_IDLE);
-//				break;
-//			case JET_FLAME:
-//				state = state.with(VARIANT, FireJetVariant.JET_IDLE);
-//				break;
-//			default:
-//				break;
-//		}
-//
-//		return getMetaFromState(state);
-//	}
 
 	@Override
 	@Deprecated
@@ -80,9 +53,4 @@ public class BlockTFEncasedSmoker extends Block {
 		return state.get(ACTIVE);
 	}
 
-	@Nullable
-	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new TileEntityTFSmoker();
-	}
 }
