@@ -334,7 +334,7 @@ public class TFBlocks {
 						maze_stone, maze_stone_brick, maze_stone_chiseled, maze_stone_decorative, maze_stone_cracked, maze_stone_mossy, maze_stone_mosaic, maze_stone_border,
 						hedge, root, liveroot_block, firefly_jar, smoker, encased_smoker, fire_jet, encased_fire_jet,
 						moss_patch, mayapple, clover_patch, fiddlehead, mushgloom, torchberry_plant, root_strand, fallen_leaves,
-						iron_ladder, terrorcotta_circle, terrorcotta_diagonal,
+						iron_ladder, terrorcotta_circle, terrorcotta_diagonal, stone_twist, lapis_block,
 						oak_leaves, canopy_leaves, mangrove_leaves, dark_leaves, time_leaves, transformation_leaves, mining_leaves, sorting_leaves,
 						rainboak_leaves, rainboak_sapling,
 						oak_log, canopy_log, mangrove_log, dark_log, time_log, transformation_log, mining_log, sorting_log,

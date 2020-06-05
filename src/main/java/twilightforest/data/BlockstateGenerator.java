@@ -198,6 +198,16 @@ public class BlockstateGenerator extends BlockStateProvider {
 		simpleBlock(TFBlocks.root.get());
 		simpleBlock(TFBlocks.liveroot_block.get());
 		registerSmokersAndJets();
+		simpleBlock(TFBlocks.stone_twist.get(), models().cubeColumn(TFBlocks.stone_twist.getId().getPath(), prefix("block/stone_twist/twist_end"), prefix("block/stone_twist/twist_side")));
+		ConfiguredModel[] lapisModels = new ConfiguredModel[4];
+		for (int i = 0; i < 4; i++) {
+			String modelName = TFBlocks.lapis_block.getId().getPath();
+			if (i != 0) {
+				modelName += "_" + i;
+			}
+			lapisModels[i] = new ConfiguredModel(models().cubeAll(modelName, prefix("block/lapis_shale_" + i)));
+		}
+		simpleBlock(TFBlocks.lapis_block.get(), lapisModels);
 		registerWoodBlocks();
 	}
 
