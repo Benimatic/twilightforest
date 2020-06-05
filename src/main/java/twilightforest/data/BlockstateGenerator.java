@@ -2,10 +2,7 @@ package twilightforest.data;
 
 import net.minecraft.block.*;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.state.properties.AttachFace;
-import net.minecraft.state.properties.Half;
-import net.minecraft.state.properties.SlabType;
-import net.minecraft.state.properties.StairsShape;
+import net.minecraft.state.properties.*;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.*;
@@ -88,6 +85,19 @@ public class BlockstateGenerator extends BlockStateProvider {
 
 		simpleBlock(TFBlocks.fake_gold.get(), models().getExistingFile(new ResourceLocation("block/gold_block")));
 		simpleBlock(TFBlocks.fake_diamond.get(), models().getExistingFile(new ResourceLocation("block/diamond_block")));
+
+		ModelFile shieldModel = models().cubeTop(TFBlocks.stronghold_shield.getId().getPath(), prefix("block/shield_outside"), prefix("block/shield_inside"));
+		getVariantBuilder(TFBlocks.stronghold_shield.get())
+						.forAllStates(state -> {
+							Direction dir = state.get(BlockStateProperties.FACING);
+							return ConfiguredModel.builder()
+											.uvLock(true)
+											.modelFile(shieldModel)
+											.rotationX(dir == Direction.DOWN ? 180 : dir.getAxis().isHorizontal() ? 90 : 0)
+											.rotationY(dir.getAxis().isVertical() ? 0 : (int) dir.getHorizontalAngle() % 360)
+											.build();
+						});
+
 		auroraBlocks();
 		simpleBlock(TFBlocks.underbrick.get());
 		simpleBlock(TFBlocks.underbrick_cracked.get());

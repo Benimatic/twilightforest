@@ -317,7 +317,7 @@ public class TFBlocks {
 		IForgeRegistry<Item> r = evt.getRegistry();
 		List<RegistryObject<? extends Block>> standard = Arrays.asList(
 						tower_wood, tower_wood_encased, tower_wood_cracked, tower_wood_mossy, tower_wood_infested,
-						fake_gold, fake_diamond,
+						fake_gold, fake_diamond, stronghold_shield,
 						underbrick, underbrick_cracked, underbrick_mossy, underbrick_floor,
 						thorn_rose, thorn_leaves, beanstalk_leaves,
 						aurora_block, aurora_pillar, aurora_slab, auroralized_glass,
