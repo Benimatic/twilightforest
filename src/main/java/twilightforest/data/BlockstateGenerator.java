@@ -197,6 +197,11 @@ public class BlockstateGenerator extends BlockStateProvider {
 		registerPlantBlocks();
 		simpleBlock(TFBlocks.root.get());
 		simpleBlock(TFBlocks.liveroot_block.get());
+		simpleBlock(TFBlocks.uncrafting_table.get(), models().withExistingParent(TFBlocks.uncrafting_table.getId().getPath(), prefix("block/util/cube_bottom_double_top"))
+						.texture("top", prefix("block/uncrafting_top"))
+						.texture("glow", prefix("block/uncrafting_glow"))
+						.texture("bottom", new ResourceLocation("block/jungle_planks"))
+						.texture("side", prefix("block/uncrafting_side")));
 		registerSmokersAndJets();
 		simpleBlock(TFBlocks.stone_twist.get(), models().cubeColumn(TFBlocks.stone_twist.getId().getPath(), prefix("block/stone_twist/twist_end"), prefix("block/stone_twist/twist_side")));
 		ConfiguredModel[] lapisModels = new ConfiguredModel[4];

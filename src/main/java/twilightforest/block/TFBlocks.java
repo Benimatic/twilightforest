@@ -332,7 +332,7 @@ public class TFBlocks {
 						twilight_portal_miniature_structure, naga_courtyard_miniature_structure, lich_tower_miniature_structure,
 						knightmetal_block, ironwood_block, fiery_block, steeleaf_block, arctic_fur_block, carminite_block,
 						maze_stone, maze_stone_brick, maze_stone_chiseled, maze_stone_decorative, maze_stone_cracked, maze_stone_mossy, maze_stone_mosaic, maze_stone_border,
-						hedge, root, liveroot_block, firefly_jar, smoker, encased_smoker, fire_jet, encased_fire_jet,
+						hedge, root, liveroot_block, uncrafting_table, firefly_jar, smoker, encased_smoker, fire_jet, encased_fire_jet,
 						moss_patch, mayapple, clover_patch, fiddlehead, mushgloom, torchberry_plant, root_strand, fallen_leaves,
 						iron_ladder, terrorcotta_circle, terrorcotta_diagonal, stone_twist, lapis_block,
 						oak_leaves, canopy_leaves, mangrove_leaves, dark_leaves, time_leaves, transformation_leaves, mining_leaves, sorting_leaves,

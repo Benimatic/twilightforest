@@ -15,10 +15,12 @@ import net.minecraft.item.*;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.ByteNBT;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraftforge.common.crafting.IShapedRecipe;
 import twilightforest.TFConfig;
+import twilightforest.block.TFBlocks;
 import twilightforest.util.TFItemStackUtils;
 
 import java.util.ArrayList;
@@ -30,7 +32,7 @@ public class ContainerTFUncrafting extends Container {
 	private static final String TAG_MARKER = "TwilightForestMarker";
 
 	// Inaccessible grid, for uncrafting logic
-	private final InventoryTFGoblinUncrafting uncraftingMatrix = new InventoryTFGoblinUncrafting(this);
+	private final InventoryTFGoblinUncrafting uncraftingMatrix = new InventoryTFGoblinUncrafting();
 	// Accessible grid, for actual crafting
 	public final CraftingInventory assemblyMatrix = new CraftingInventory(this, 3, 3);
 	// Inaccessible grid, for recrafting logic
@@ -41,6 +43,7 @@ public class ContainerTFUncrafting extends Container {
 	// Crafting Output
 	private final CraftResultInventory tinkerResult = new CraftResultInventory();
 
+	private final IWorldPosCallable positionData;
 	private final World world;
 	private final PlayerEntity player;
 
@@ -50,12 +53,13 @@ public class ContainerTFUncrafting extends Container {
 	public int recipeInCycle = 0;
 
 	public static ContainerTFUncrafting fromNetwork(int id, PlayerInventory inventory) {
-		return new ContainerTFUncrafting(id, inventory, inventory.player.world);
+		return new ContainerTFUncrafting(id, inventory, inventory.player.world, IWorldPosCallable.DUMMY);
 	}
 
-	public ContainerTFUncrafting(int id, PlayerInventory inventory, World world) {
+	public ContainerTFUncrafting(int id, PlayerInventory inventory, World world, IWorldPosCallable positionData) {
 		super(TFContainers.UNCRAFTING.get(), id);
 
+		this.positionData = positionData;
 		this.world = world;
 		this.player = inventory.player;
 
@@ -599,11 +603,10 @@ public class ContainerTFUncrafting extends Container {
 	@Override
 	public void onContainerClosed(PlayerEntity player) {
 		super.onContainerClosed(player);
-
-		if (!player.world.isRemote) {
+		this.positionData.consume((world, pos) -> {
 			clearContainer(player, world, assemblyMatrix);
 			clearContainer(player, world, tinkerInput);
-		}
+		});
 	}
 
 	private ItemStack[] getIngredients(IRecipe<?> recipe) {
@@ -619,7 +622,6 @@ public class ContainerTFUncrafting extends Container {
 
 	@Override
 	public boolean canInteractWith(PlayerEntity player) {
-//		return isWithinUsableDistance(world, player, TFBlocks.uncrafting_table.get());
-		return true;
+		return isWithinUsableDistance(positionData, player, TFBlocks.uncrafting_table.get());
 	}
 }

@@ -78,7 +78,7 @@ public class GuiTFGoblinCrafting extends ContainerScreen<ContainerTFUncrafting> 
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		this.font.drawString(I18n.format(TFBlocks.uncrafting_table.get().getTranslationKey() + ".name"), 8, 6, 4210752);
+		this.font.drawString(I18n.format(TFBlocks.uncrafting_table.get().getTranslationKey()), 8, 6, 4210752);
 		this.font.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 

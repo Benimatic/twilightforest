@@ -13,15 +13,13 @@ import twilightforest.TFConfig;
 
 import javax.annotation.Nullable;
 
-public class InventoryTFGoblinUncrafting implements IInventory, INamedContainerProvider {
+public class InventoryTFGoblinUncrafting implements IInventory {
 
 	private final NonNullList<ItemStack> contents = NonNullList.withSize(9, ItemStack.EMPTY);
 
 	public int numberOfInputItems;
 	public int uncraftingCost;
 	public int recraftingCost;
-
-	public InventoryTFGoblinUncrafting(ContainerTFUncrafting container) {}
 
 	@Override
 	public int getSizeInventory() {
@@ -49,7 +47,6 @@ public class InventoryTFGoblinUncrafting implements IInventory, INamedContainerP
 		if (stack.isEmpty()) return ItemStack.EMPTY;
 		if (stack.getCount() <= amount) {
 			this.contents.set(index, ItemStack.EMPTY);
-			//this.eventHandler.onCraftMatrixChanged(this);
 			return stack;
 		} else {
 			return stack.split(amount);
@@ -73,10 +70,6 @@ public class InventoryTFGoblinUncrafting implements IInventory, INamedContainerP
 		}
 
 		this.markDirty();
-	}
-
-	public String getName() {
-		return "twilightforest.goblincrafting";
 	}
 
 	@Override
@@ -109,16 +102,5 @@ public class InventoryTFGoblinUncrafting implements IInventory, INamedContainerP
 	@Override
 	public void clear() {
 		contents.clear();
-	}
-
-	@Override
-	public ITextComponent getDisplayName() {
-		return new StringTextComponent(this.getName());
-	}
-
-	@Nullable
-	@Override
-	public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-		return new ContainerTFUncrafting(i, playerInventory);
 	}
 }

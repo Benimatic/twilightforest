@@ -103,6 +103,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.hedge.get());
 		toBlock(TFBlocks.root.get());
 		toBlock(TFBlocks.liveroot_block.get());
+		toBlock(TFBlocks.uncrafting_table.get());
 		toBlock(TFBlocks.firefly_jar.get());
 		generated(TFBlocks.moss_patch.getId().getPath(), prefix("block/patch/moss"));
 		generated(TFBlocks.mayapple.getId().getPath(), prefix("block/mayapple"));
