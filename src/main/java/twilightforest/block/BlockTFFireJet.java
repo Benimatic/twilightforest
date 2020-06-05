@@ -1,7 +1,6 @@
 package twilightforest.block;
 
 import net.minecraft.block.*;
-import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.state.EnumProperty;
@@ -15,7 +14,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import twilightforest.enums.FireJetVariant;
 import twilightforest.tileentity.TileEntityTFFlameJet;
-import twilightforest.tileentity.TileEntityTFPoppingJet;
 
 import javax.annotation.Nullable;
 import java.util.Random;
@@ -24,9 +22,9 @@ public class BlockTFFireJet extends Block {
 
 	public static final EnumProperty<FireJetVariant> STATE = EnumProperty.create("state", FireJetVariant.class);
 
-	protected BlockTFFireJet() {
-		super(Properties.create(Material.ROCK, MaterialColor.GRASS).hardnessAndResistance(1.5F, 0.0F).sound(SoundType.WOOD).tickRandomly());
-		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
+	protected BlockTFFireJet(Properties props) {
+		super(props);
+		setDefaultState(getDefaultState().with(STATE, FireJetVariant.IDLE));
 	}
 
 	@Override
@@ -35,36 +33,10 @@ public class BlockTFFireJet extends Block {
 		builder.add(STATE);
 	}
 
-	//TODO: We drop just Fire Jet now
-//	@Override
-//	public int damageDropped(BlockState state) {
-//		switch (state.get(VARIANT)) {
-//			case ENCASED_SMOKER_ON:
-//				state = state.with(VARIANT, FireJetVariant.ENCASED_SMOKER_OFF);
-//				break;
-//			case ENCASED_JET_POPPING:
-//				state = state.with(VARIANT, FireJetVariant.ENCASED_JET_IDLE);
-//				break;
-//			case ENCASED_JET_FLAME:
-//				state = state.with(VARIANT, FireJetVariant.ENCASED_JET_IDLE);
-//				break;
-//			case JET_POPPING:
-//				state = state.with(VARIANT, FireJetVariant.JET_IDLE);
-//				break;
-//			case JET_FLAME:
-//				state = state.with(VARIANT, FireJetVariant.JET_IDLE);
-//				break;
-//			default:
-//				break;
-//		}
-//
-//		return getMetaFromState(state);
-//	}
-
 	@Override
 	@Deprecated
 	public int getLightValue(BlockState state) {
-		return state.get(STATE) == FireJetVariant.FLAME ? 15 : 0;
+		return state.get(STATE) != FireJetVariant.FLAME ? 0 : super.getLightValue(state);
 	}
 
 	@Nullable
@@ -75,13 +47,13 @@ public class BlockTFFireJet extends Block {
 
 	@Override
 	@Deprecated
-	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		if (!world.isRemote && state.get(STATE) == FireJetVariant.IDLE) {
 			BlockPos lavaPos = findLavaAround(world, pos.down());
 
 			if (isLava(world, lavaPos)) {
 				world.setBlockState(lavaPos, Blocks.AIR.getDefaultState());
-				world.setBlockState(pos, state.with(STATE, FireJetVariant.POPPING), 2);
+				world.setBlockState(pos, state.with(STATE, FireJetVariant.POPPING));
 			}
 		}
 	}
@@ -122,14 +94,6 @@ public class BlockTFFireJet extends Block {
 	@Nullable
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		switch (state.get(STATE)) {
-			case POPPING:
-				return new TileEntityTFPoppingJet(FireJetVariant.FLAME);
-			case FLAME:
-				return new TileEntityTFFlameJet(FireJetVariant.IDLE);
-			case IDLE:
-			default:
-				return null;
-		}
+		return hasTileEntity(state) ? new TileEntityTFFlameJet() : null;
 	}
 }

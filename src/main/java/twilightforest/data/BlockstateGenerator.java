@@ -186,6 +186,8 @@ public class BlockstateGenerator extends BlockStateProvider {
 		registerPlantBlocks();
 		simpleBlock(TFBlocks.root.get());
 		simpleBlock(TFBlocks.liveroot_block.get());
+		simpleBlock(TFBlocks.smoker.get(), new ConfiguredModel(models().getExistingFile(prefix("block/jet"))));
+		simpleBlock(TFBlocks.fire_jet.get(), new ConfiguredModel(models().getExistingFile(prefix("block/jet"))));
 		registerWoodBlocks();
 	}
 

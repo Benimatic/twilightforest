@@ -19,12 +19,6 @@ import java.util.List;
 public class TileEntityTFFlameJet extends TileEntity implements ITickableTileEntity {
 
 	private int counter = 0;
-	private FireJetVariant nextVariant;
-
-	public TileEntityTFFlameJet(FireJetVariant variant) {
-		super(TFTileEntities.FLAME_JET.get());
-		this.nextVariant = variant;
-	}
 
 	public TileEntityTFFlameJet() {
 		super(TFTileEntities.FLAME_JET.get());
@@ -32,7 +26,37 @@ public class TileEntityTFFlameJet extends TileEntity implements ITickableTileEnt
 
 	@Override
 	public void tick() {
+		if (getBlockState().getBlock() == TFBlocks.fire_jet.get() || getBlockState().getBlock() == TFBlocks.encased_fire_jet.get()) {
+			switch (getBlockState().get(BlockTFFireJet.STATE)) {
+			case POPPING: tickPopping(); break;
+			case FLAME: tickFlame(); break;
+			}
+		}
+	}
 
+	private void tickPopping() {
+		if (++counter >= 80) {
+			counter = 0;
+			// turn to flame
+			if (!world.isRemote) {
+				if (getBlockState().getBlock() == TFBlocks.fire_jet.get() || getBlockState().getBlock() == TFBlocks.encased_fire_jet.get()) {
+					world.setBlockState(pos, getBlockState().with(BlockTFFireJet.STATE, FireJetVariant.FLAME));
+				} else {
+					world.removeBlock(pos, false);
+				}
+			}
+		} else {
+			if (counter % 20 == 0) {
+				for (int i = 0; i < 8; i++)
+				{
+					world.addParticle(ParticleTypes.LAVA, this.pos.getX() + 0.5, this.pos.getY() + 1.5, this.pos.getZ() + 0.5, 0.0D, 0.0D, 0.0D);
+				}
+				world.playSound(null, pos, SoundEvents.BLOCK_LAVA_POP, SoundCategory.BLOCKS, 0.2F + world.rand.nextFloat() * 0.2F, 0.9F + world.rand.nextFloat() * 0.15F);
+			}
+		}
+	}
+
+	private void tickFlame() {
 		double x = this.pos.getX();
 		double y = this.pos.getY();
 		double z = this.pos.getZ();
@@ -41,10 +65,10 @@ public class TileEntityTFFlameJet extends TileEntity implements ITickableTileEnt
 			counter = 0;
 			// idle again
 			if (!world.isRemote) {
-				if (world.getBlockState(pos).getBlock() == TFBlocks.fire_jet.get()) {
-					world.setBlockState(pos, TFBlocks.fire_jet.get().getDefaultState().with(BlockTFFireJet.STATE, this.nextVariant));
-				} else if (world.getBlockState(pos).getBlock() == TFBlocks.encased_fire_jet.get()) {
-					world.setBlockState(pos, TFBlocks.encased_fire_jet.get().getDefaultState().with(BlockTFFireJet.STATE, this.nextVariant));
+				if (getBlockState().getBlock() == TFBlocks.fire_jet.get() || getBlockState().getBlock() == TFBlocks.encased_fire_jet.get()) {
+					world.setBlockState(pos, getBlockState().with(BlockTFFireJet.STATE, FireJetVariant.IDLE));
+				} else {
+					world.removeBlock(pos, false);
 				}
 			}
 		}
@@ -53,15 +77,6 @@ public class TileEntityTFFlameJet extends TileEntity implements ITickableTileEnt
 			if (counter % 2 == 0) {
 				world.addParticle(ParticleTypes.LARGE_SMOKE, x + 0.5, y + 1.0, z + 0.5, 0.0D, 0.0D, 0.0D);
 				world.addParticle(TFParticleType.LARGE_FLAME.get(), x + 0.5, y + 1.0, z + 0.5, 0.0D, 0.5D, 0.0D);
-//			    world.addParticle();(TFParticleType.LARGE_FLAME, x + 0.5, y + 1.0, z + 0.5,
-//    				Math.cos(counter / 4.0) * 0.2, 0.35D, Math.sin(counter / 4.0) * 0.2);			
-//			    world.addParticle();(TFParticleType.LARGE_FLAME, x + 0.5, y + 1.0, this.pos.getZ() + 0.5,
-//    				Math.cos(counter / 4.0 + Math.PI) * 0.2, 0.35D, Math.sin(counter / 4.0 + Math.PI) * 0.2);			
-//		    	world.addParticle();(TFParticleType.LARGE_FLAME, x + 0.5 + Math.cos(counter / 4.0), y + 1.0, z + 0.5 + Math.sin(counter / 4.0),
-//    				Math.sin(counter / 4.0) * 0.05, 0.35D, Math.cos(counter / 4.0) * 0.05);			
-//			    world.addParticle();(TFParticleType.LARGE_FLAME, x + 0.5 + Math.cos(counter / 4.0 + Math.PI), y + 1.0, z + 0.5 + Math.sin(counter / 4.0 + Math.PI),
-//    				Math.sin(counter / 4.0 + Math.PI) * 0.05, 0.35D, Math.cos(counter / 4.0 + Math.PI) * 0.05);			
-
 				world.addParticle(TFParticleType.LARGE_FLAME.get(), x - 0.5, y + 1.0, z + 0.5, 0.05D, 0.5D, 0.0D);
 				world.addParticle(TFParticleType.LARGE_FLAME.get(), x + 0.5, y + 1.0, z - 0.5, 0.0D, 0.5D, 0.05D);
 				world.addParticle(TFParticleType.LARGE_FLAME.get(), x + 1.5, y + 1.0, z + 0.5, -0.05D, 0.5D, 0.0D);
@@ -92,18 +107,5 @@ public class TileEntityTFFlameJet extends TileEntity implements ITickableTileEnt
 				}
 			}
 		}
-	}
-
-	@Override
-	public void read(CompoundNBT compound) {
-		super.read(compound);
-		this.nextVariant = FireJetVariant.values()[compound.getInt("NextMeta")];
-	}
-
-	@Override
-	public CompoundNBT write(CompoundNBT compound) {
-		super.write(compound);
-		compound.putInt("NextMeta", this.nextVariant.ordinal());
-		return compound;
 	}
 }

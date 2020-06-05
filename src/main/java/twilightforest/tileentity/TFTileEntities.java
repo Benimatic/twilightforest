@@ -32,8 +32,6 @@ public class TFTileEntities {
 			TileEntityType.Builder.create(TileEntityTFGhastTrapActive::new, TFBlocks.ghast_trap.get()).build(null));
 	public static final RegistryObject<TileEntityType<TileEntityTFGhastTrapInactive>> GHAST_TRAP_INACTIVE = TILE_ENTITIES.register("ghast_trap_inactive", () ->
 			TileEntityType.Builder.create(TileEntityTFGhastTrapInactive::new, TFBlocks.ghast_trap.get()).build(null));
-	public static final RegistryObject<TileEntityType<TileEntityTFPoppingJet>> POPPING_JET                = TILE_ENTITIES.register("popping_jet", () ->
-			TileEntityType.Builder.create(TileEntityTFPoppingJet::new, TFBlocks.fire_jet.get(), TFBlocks.encased_fire_jet.get()).build(null));
 	public static final RegistryObject<TileEntityType<TileEntityTFSmoker>> SMOKER                           = TILE_ENTITIES.register("smoker", () ->
 			TileEntityType.Builder.create(TileEntityTFSmoker::new, TFBlocks.smoker.get(), TFBlocks.encased_smoker.get()).build(null));
 	public static final RegistryObject<TileEntityType<TileEntityTFTowerBuilder>> TOWER_BUILDER            = TILE_ENTITIES.register("tower_builder", () ->

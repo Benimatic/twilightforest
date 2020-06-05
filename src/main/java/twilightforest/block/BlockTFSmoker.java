@@ -13,9 +13,8 @@ import javax.annotation.Nullable;
 
 public class BlockTFSmoker extends Block {
 
-	protected BlockTFSmoker() {
-		super(Properties.create(Material.ROCK, MaterialColor.GRASS).hardnessAndResistance(1.5F, 0.0F).sound(SoundType.WOOD));
-		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
+	protected BlockTFSmoker(Properties props) {
+		super(props);
 	}
 
 	@Override
