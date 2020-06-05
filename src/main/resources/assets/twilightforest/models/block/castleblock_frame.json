@@ -41,13 +41,16 @@
       }
     }
   ],
+  "loader": "ctm:ctm",
   "ctm_version": 1,
   "ctm_overrides": {
     "0": { "type": "ctm"       , "layer": "CUTOUT", "textures": [ "twilightforest:block/castleblock_frame_ct"      ] },
     "1": { "type": "EDGES_FULL", "layer": "CUTOUT", "textures": [ "twilightforest:block/castleblock_frame_edge_v2" ],
       "extra": { "connect_to": [
-        { "block": "twilightforest:castle_door" },
-        { "block": "twilightforest:castle_door_vanished" }
+        { "block": "twilightforest:castle_door_yellow" },
+        { "block": "twilightforest:castle_door_purple" },
+        { "block": "twilightforest:castle_door_pink" },
+        { "block": "twilightforest:castle_door_blue" }
       ]}
     },
     "2": { "type": "EDGES", "layer": "CUTOUT", "textures": [
@@ -55,8 +58,10 @@
         "twilightforest:block/castle_door_vanished"
       ],
       "extra": { "connect_to": [
-        { "block": "twilightforest:castle_door" },
-        { "block": "twilightforest:castle_door_vanished" }
+        { "block": "twilightforest:castle_door_yellow" },
+        { "block": "twilightforest:castle_door_purple" },
+        { "block": "twilightforest:castle_door_pink" },
+        { "block": "twilightforest:castle_door_blue" }
       ] }
     }
   }

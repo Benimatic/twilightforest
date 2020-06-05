@@ -37,6 +37,7 @@
       }
     }
   ],
+  "loader": "ctm:ctm",
   "ctm_version_": 1,
   "ctm_overrides": {
     "0": {
