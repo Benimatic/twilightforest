@@ -10,8 +10,6 @@ public enum PlantVariant implements IStringSerializable {
 	CLOVERPATCH(),
 	FIDDLEHEAD(true),
 	MUSHGLOOM(),
-	FORESTGRASS(true),
-	DEADBUSH(),
 	TORCHBERRY(),
 	ROOT_STRAND(),
 	FALLEN_LEAVES(true, true);

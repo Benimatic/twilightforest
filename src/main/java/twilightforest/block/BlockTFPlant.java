@@ -67,9 +67,6 @@ public class BlockTFPlant extends BushBlock implements IShearable {
 				case TORCHBERRY:
 				case ROOT_STRAND:
 					return BlockTFPlant.canPlaceRootAt(world, pos);
-				case FORESTGRASS:
-				case DEADBUSH:
-					return soil.getBlock().canSustainPlant(soil, world, pos.down(), Direction.UP, this);
 				case FALLEN_LEAVES:
 				case MUSHGLOOM:
 				case MOSSPATCH:
