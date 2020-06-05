@@ -185,7 +185,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 
 		registerDropSelfLootTable(TFBlocks.time_log.get());
 		registerDropSelfLootTable(TFBlocks.time_wood.get());
-		registerDropSelfLootTable(TFBlocks.time_log_core.get());
+		registerDropping(TFBlocks.time_log_core.get(), TFBlocks.time_log.get());
 		registerDropSelfLootTable(TFBlocks.time_sapling.get());
 		registerLeavesNoSapling(TFBlocks.time_leaves.get());
 		registerDropSelfLootTable(TFBlocks.time_planks.get());
@@ -200,7 +200,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 
 		registerDropSelfLootTable(TFBlocks.transformation_log.get());
 		registerDropSelfLootTable(TFBlocks.transformation_wood.get());
-		registerDropSelfLootTable(TFBlocks.transformation_log_core.get());
+		registerDropping(TFBlocks.transformation_log_core.get(), TFBlocks.transformation_log.get());
 		registerDropSelfLootTable(TFBlocks.transformation_sapling.get());
 		registerLeavesNoSapling(TFBlocks.transformation_leaves.get());
 		registerDropSelfLootTable(TFBlocks.trans_planks.get());
@@ -215,7 +215,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 
 		registerDropSelfLootTable(TFBlocks.mining_log.get());
 		registerDropSelfLootTable(TFBlocks.mining_wood.get());
-		registerDropSelfLootTable(TFBlocks.mining_log_core.get());
+		registerDropping(TFBlocks.mining_log_core.get(), TFBlocks.mining_log.get());
 		registerDropSelfLootTable(TFBlocks.mining_sapling.get());
 		registerLeavesNoSapling(TFBlocks.mining_leaves.get());
 		registerDropSelfLootTable(TFBlocks.mine_planks.get());
@@ -230,7 +230,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 
 		registerDropSelfLootTable(TFBlocks.sorting_log.get());
 		registerDropSelfLootTable(TFBlocks.sorting_wood.get());
-		registerDropSelfLootTable(TFBlocks.sorting_log_core.get());
+		registerDropping(TFBlocks.sorting_log_core.get(), TFBlocks.sorting_log.get());
 		registerDropSelfLootTable(TFBlocks.sorting_sapling.get());
 		registerLeavesNoSapling(TFBlocks.sorting_leaves.get());
 		registerDropSelfLootTable(TFBlocks.sort_planks.get());

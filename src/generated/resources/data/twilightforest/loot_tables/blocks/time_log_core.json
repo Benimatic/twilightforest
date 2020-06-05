@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "twilightforest:time_log_core"
+          "name": "twilightforest:time_log"
         }
       ],
       "conditions": [

@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "twilightforest:sorting_log_core"
+          "name": "twilightforest:sorting_log"
         }
       ],
       "conditions": [
