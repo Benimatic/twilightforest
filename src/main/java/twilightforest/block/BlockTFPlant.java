@@ -21,18 +21,17 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
-import net.minecraftforge.common.IShearable;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.PlantType;
 import twilightforest.client.particle.LeafParticleData;
-import twilightforest.client.particle.ParticleLeaf;
 import twilightforest.enums.PlantVariant;
 
-import javax.annotation.Nullable;
 import java.util.Random;
 
-public class BlockTFPlant extends BushBlock implements IShearable {
+public class BlockTFPlant extends BushBlock {
+	private static final VoxelShape MAYAPPLE_SHAPE = makeCuboidShape(4, 0, 4, 13, 6, 13);
+	private static final VoxelShape FALLEN_LEAVES_SHAPE = makeCuboidShape(0, 0, 0, 1, 1, 1);
 
 	public final PlantVariant plantVariant;
 
@@ -41,39 +40,20 @@ public class BlockTFPlant extends BushBlock implements IShearable {
 		plantVariant = plant;
 	}
 
-	//TODO: Neither methods exist
-//	@Override
-//	public void onBlockAdded(World world, BlockPos pos, BlockState state) {
-//		world.scheduleUpdate(pos, this, world.rand.nextInt(50) + 20);
-//	}
-
 	@Override
 	public boolean isValidPosition(BlockState state, IWorldReader world, BlockPos pos) {
 		BlockState soil = world.getBlockState(pos.down());
 
-		//TODO: Verify if this logic actually works
-		/*
-			Comment from superclass:
-			Forge: This function is called during world gen and placement, before this block is set, so if we are not 'here' then assume it's the pre-check.
-			Therefore, we just take the OR of all the conditions below as the most general "can block stay" check
-		*/
-		if (state.getBlock() != this) {
-			return BlockTFPlant.canPlaceRootAt(world, pos)
-					|| soil.getBlock().canSustainPlant(soil, world, pos.down(), Direction.UP, this)
-					|| soil.isSideSolidFullSquare(world, pos, Direction.UP)
-					|| ((world.getLight(pos) >= 3 || world.canBlockSeeSky(pos)) && soil.getBlock().canSustainPlant(soil, world, pos.down(), Direction.UP, this));
-		} else {
-			switch (plantVariant) {
-				case TORCHBERRY:
-				case ROOT_STRAND:
-					return BlockTFPlant.canPlaceRootAt(world, pos);
-				case FALLEN_LEAVES:
-				case MUSHGLOOM:
-				case MOSSPATCH:
-					return soil.isSideSolidFullSquare(world, pos, Direction.UP);
-				default:
-					return (world.getLight(pos) >= 3 || world.canBlockSeeSky(pos)) && soil.getBlock().canSustainPlant(soil, world, pos.down(), Direction.UP, this);
-			}
+		switch (plantVariant) {
+		case TORCHBERRY:
+		case ROOT_STRAND:
+			return BlockTFPlant.canPlaceRootAt(world, pos);
+		case FALLEN_LEAVES:
+		case MUSHGLOOM:
+		case MOSSPATCH:
+			return soil.isSideSolidFullSquare(world, pos, Direction.UP);
+		default:
+			return (world.getLight(pos) >= 3 || world.canBlockSeeSky(pos)) && soil.canSustainPlant(world, pos.down(), Direction.UP, this);
 		}
 	}
 
@@ -114,9 +94,9 @@ public class BlockTFPlant extends BushBlock implements IShearable {
 			return VoxelShapes.create(new AxisAlignedBB(xConnect1 ? 0F : (1F + xOff1) / 16F, 0.0F, zConnect1 ? 0F : (1F + zOff1) / 16F,
 					xConnect0 ? 1F : (15F - xOff0) / 16F, (1F + yOff0 + yOff1) / 16F, zConnect0 ? 1F : (15F - zOff0) / 16F));
 		} else if (plantVariant == PlantVariant.MAYAPPLE) {
-			return VoxelShapes.create(new AxisAlignedBB(4F / 16F, 0, 4F / 16F, 13F / 16F, 6F / 16F, 13F / 16F));
+			return MAYAPPLE_SHAPE;
 		} else if (plantVariant == PlantVariant.FALLEN_LEAVES) {
-			return VoxelShapes.create(new AxisAlignedBB(0F, 0F, 0F, 1F, 1F / 16F, 1F));
+			return FALLEN_LEAVES_SHAPE;
 		} else {
 			return VoxelShapes.fullCube();
 		}
@@ -132,56 +112,6 @@ public class BlockTFPlant extends BushBlock implements IShearable {
 					|| state == TFBlocks.root.get().getDefaultState());
 		}
 	}
-
-	@Override
-	public OffsetType getOffsetType() {
-		return OffsetType.NONE;
-	}
-
-
-//    /** todo thaumcraft
-//     * Drops the block items with a specified chance of dropping the specified items
-//     */
-//    public void dropBlockAsItemWithChance(World var1, int var2, int var3, int var4, int var5, float var6, int var7)
-//    {
-//        super.dropBlockAsItemWithChance(var1, var2, var3, var4, var5, var6, var7);
-//
-//        if (!var1.isRemote && var5 == 1)
-//        {
-//            this.dropBlockAsItem_do(var1, var2, var3, var4, new ItemStack(mod_ThaumCraft.itemComponents, 1, 2));
-//        }
-//
-//        if (!var1.isRemote && var5 == 3)
-//        {
-//            this.dropBlockAsItem_do(var1, var2, var3, var4, new ItemStack(mod_ThaumCraft.itemPlants, 1, 3));
-//        }
-//
-//        if (!var1.isRemote && (var5 == 2 || var5 == 4) && var1.rand.nextInt(10) == 0)
-//        {
-//            this.dropBlockAsItem_do(var1, var2, var3, var4, new ItemStack(mod_ThaumCraft.itemArtifactTainted, 1, 0));
-//        }
-//    }
-//    
-
-	//TODO: Move to block loot table
-//	@Override
-//	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, BlockState state, int fortune) {
-//		List<ItemStack> ret = NonNullList.create();
-//
-//		switch (state.getValue(VARIANT)) {
-//			case TORCHBERRY:
-//				ret.add(new ItemStack(TFItems.torchberries));
-//				break;
-//			case FALLEN_LEAVES:
-//			case ROOT_STRAND:
-//				break;
-//			default:
-//				ret.add(new ItemStack(this, 1, damageDropped(state)));
-//				break;
-//		}
-//
-//		return ret;
-//	}
 
 	@Override
 	public PlantType getPlantType(IBlockReader world, BlockPos pos) {
@@ -223,7 +153,6 @@ public class BlockTFPlant extends BushBlock implements IShearable {
 			int b = MathHelper.clamp((color & 0xFF) + RANDOM.nextInt(0x22) - 0x11, 0x00, 0xFF);
 			world.addParticle(new LeafParticleData(r, g, b), pos.getX() + random.nextFloat(), pos.getY() + dist - 0.25F, pos.getZ() + random.nextFloat(), 0.0D, 0.0D, 0.0D);
 		}
-
 	}
 
 	@Override
@@ -247,11 +176,4 @@ public class BlockTFPlant extends BushBlock implements IShearable {
 			);
 		}
 	}
-
-	//TODO: Move to client
-//	@OnlyIn(Dist.CLIENT)
-//	@Override
-//	public BlockRenderLayer getRenderLayer() {
-//		return BlockRenderLayer.CUTOUT;
-//	}
 }
