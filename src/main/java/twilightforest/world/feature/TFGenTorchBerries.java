@@ -26,7 +26,7 @@ public class TFGenTorchBerries<T extends NoFeatureConfig> extends Feature<T> {
 
 		for (; pos.getY() > 5; pos = pos.down()) {
 			if (world.isAirBlock(pos) && BlockTFPlant.canPlaceRootAt(world, pos) && random.nextInt(6) > 0) {
-				world.setBlockState(pos, TFBlocks.torchberry.get().getDefaultState(), 16 | 2);
+				world.setBlockState(pos, TFBlocks.torchberry_plant.get().getDefaultState(), 16 | 2);
 			} else {
 				pos = new BlockPos(
 						copyX + random.nextInt(4) - random.nextInt(4),

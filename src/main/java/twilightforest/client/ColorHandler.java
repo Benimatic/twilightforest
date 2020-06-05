@@ -297,7 +297,7 @@ public final class ColorHandler {
 				if (worldIn != null && pos != null) {
 					return BiomeColors.getFoliageColor(worldIn, pos);
 				} else {
-					return GrassColors.get(0.5D, 1.0D);
+					return FoliageColors.getDefault();
 				}
 			}
 		}, TFBlocks.fallen_leaves.get());

@@ -50,8 +50,6 @@
         "textures": { "cross":"twilightforest:blocks/mushgloom", "cross2":"twilightforest:blocks/mushgloom_head" },
         "uvlock": true
     }],
-    "variant=forestgrass": [{ "model": "tall_grass" }],
-    "variant=deadbush": [{ "model": "dead_bush" }],
     "variant=torchberry": [{
       "model": "twilightforest:util/cross_2_layer",
       "textures": { "cross":"twilightforest:blocks/torchberry", "cross2":"twilightforest:blocks/torchberry_glow" },
