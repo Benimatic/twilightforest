@@ -192,6 +192,28 @@ public class BlockstateGenerator extends BlockStateProvider {
 	private void registerPlantBlocks() {
 		simpleBlockExisting(TFBlocks.moss_patch.get());
 		simpleBlockExisting(TFBlocks.mayapple.get());
+		ConfiguredModel[] cloverModels = new ConfiguredModel[4];
+		for (int i = 0; i < 4; i++) {
+			String modelName = TFBlocks.clover_patch.getId().getPath();
+			if (i != 0) {
+				modelName += "_" + i;
+			}
+			ModelFile model = models().withExistingParent(modelName, prefix("block/util/flat_tex"))
+							.texture("particle", prefix("block/cloverpatch"))
+							.texture("texture", prefix("block/patch/clover_" + i))
+							.texture("ctm", prefix("block/patch/clover_" + i + "_ctm"));
+			cloverModels[i] = new ConfiguredModel(model);
+		}
+		simpleBlock(TFBlocks.clover_patch.get(), cloverModels);
+		simpleBlock(TFBlocks.fiddlehead.get(), models().withExistingParent(TFBlocks.fiddlehead.getId().getPath(), "block/tinted_cross")
+						.texture("cross", blockTexture(TFBlocks.fiddlehead.get())));
+		simpleBlock(TFBlocks.mushgloom.get(), models().withExistingParent(TFBlocks.mushgloom.getId().getPath(), prefix("block/util/cross_2_layer"))
+						.texture("cross", blockTexture(TFBlocks.mushgloom.get()))
+						.texture("cross2", prefix("block/" + TFBlocks.mushgloom.getId().getPath() + "_head")));
+		simpleBlock(TFBlocks.torchberry_plant.get(), models().withExistingParent(TFBlocks.torchberry_plant.getId().getPath(), prefix("block/util/cross_2_layer"))
+						.texture("cross", blockTexture(TFBlocks.torchberry_plant.get()))
+						.texture("cross2", prefix("block/" + TFBlocks.torchberry_plant.getId().getPath() + "_glow")));
+		simpleBlockExisting(TFBlocks.root_strand.get());
 		simpleBlockExisting(TFBlocks.fallen_leaves.get());
 	}
 
