@@ -3,7 +3,7 @@
     "ctm_version": 1,
     "type": "ctm",
     "layer": "CUTOUT",
-    "textures": [ "twilightforest:blocks/stone_twist/twist_x_ctm" ],
+    "textures": [ "twilightforest:block/stone_twist/twist_x_ctm" ],
     "extra": {
       "connect_inside": true
     }
