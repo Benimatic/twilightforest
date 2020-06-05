@@ -146,10 +146,10 @@ jar {
 }
 
 repositories {
-    /*maven {
+    maven {
         name 'progwm\'s Maven' // JEI + Mantle + TCon
         url 'https://dvs1.progwml6.com/files/maven'
-    }*/
+    }
     maven {
         name 'tterrag\'s Maven' // CTM
         url 'https://maven.tterrag.com/'
@@ -170,7 +170,8 @@ repositories {
 
 dependencies {
     // progwml6
-    //runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
+    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
 
     /*deobfCompile "slimeknights.mantle:Mantle:${minecraft_sub_version}-${mantle_version}"
     deobfCompile "slimeknights:TConstruct:${minecraft_version}-${tcon_version}"

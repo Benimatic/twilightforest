@@ -1,8 +1,9 @@
 package twilightforest.compat;
 
-import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
+import mezz.jei.api.constants.VanillaRecipeCategoryUid;
 import mezz.jei.api.recipe.transfer.IRecipeTransferInfo;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.container.Slot;
+import net.minecraft.util.ResourceLocation;
 import twilightforest.inventory.ContainerTFUncrafting;
 
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ public class UncraftingRecipeTransferHandler implements IRecipeTransferInfo<Cont
     }
 
     @Override
-    public String getRecipeCategoryUid() {
+    public ResourceLocation getRecipeCategoryUid() {
         return VanillaRecipeCategoryUid.CRAFTING;
     }
 
