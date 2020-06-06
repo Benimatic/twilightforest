@@ -10,14 +10,12 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public abstract class BlockTFGiantBlock extends Block {
+public class BlockTFGiantBlock extends Block {
 
 	private boolean isSelfDestructing;
 
-	//Atomic: Suppressing deprecation because this seems like a reasonable use for it.
-	@SuppressWarnings("deprecation")
-	public BlockTFGiantBlock(BlockState state, float hardness, float resistance) {
-		super(Properties.create(state.getMaterial()).hardnessAndResistance(hardness, resistance).sound(state.getBlock().getSoundType(state)));
+	public BlockTFGiantBlock(Properties props) {
+		super(props);
 	}
 
 //	@Override

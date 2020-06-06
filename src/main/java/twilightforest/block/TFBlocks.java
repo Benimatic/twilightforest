@@ -151,10 +151,10 @@ public class TFBlocks {
 	public static final RegistryObject<Block> trollsteinn                = BLOCKS.register("trollsteinn", () -> new BlockTFTrollSteinn(Block.Properties.create(Material.ROCK).hardnessAndResistance(2.0F, 15.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> wispy_cloud                = BLOCKS.register("wispy_cloud", () -> new BlockTFWispyCloud(Block.Properties.create(Material.SNOW).hardnessAndResistance(0.3F).sound(SoundType.CLOTH).nonOpaque()));
 	public static final RegistryObject<Block> fluffy_cloud               = BLOCKS.register("fluffy_cloud", () -> new Block(Block.Properties.create(Material.PACKED_ICE).hardnessAndResistance(0.8F, 0.0F).sound(SoundType.CLOTH)));
-	public static final RegistryObject<Block> giant_cobblestone          = BLOCKS.register("giant_cobblestone", () -> new BlockTFGiantCobble());
-	public static final RegistryObject<Block> giant_log                  = BLOCKS.register("giant_log", () -> new BlockTFGiantLog());
-	public static final RegistryObject<Block> giant_leaves               = BLOCKS.register("giant_leaves", () -> new BlockTFGiantLeaves());
-	public static final RegistryObject<Block> giant_obsidian             = BLOCKS.register("giant_obsidian", () -> new BlockTFGiantObsidian());
+	public static final RegistryObject<Block> giant_cobblestone          = BLOCKS.register("giant_cobblestone", () -> new BlockTFGiantBlock(Block.Properties.from(Blocks.COBBLESTONE).hardnessAndResistance(128, 10)));
+	public static final RegistryObject<Block> giant_log                  = BLOCKS.register("giant_log", () -> new BlockTFGiantBlock(Block.Properties.from(Blocks.OAK_LOG).hardnessAndResistance(128, 0)));
+	public static final RegistryObject<Block> giant_leaves               = BLOCKS.register("giant_leaves", () -> new BlockTFGiantLeaves(Block.Properties.from(Blocks.OAK_LEAVES).hardnessAndResistance(0.2F * 64F, 0.0F).nonOpaque()));
+	public static final RegistryObject<Block> giant_obsidian             = BLOCKS.register("giant_obsidian", () -> new BlockTFGiantBlock(Block.Properties.from(Blocks.OBSIDIAN).hardnessAndResistance(50.0F * 64F * 64F, 2000.0F * 64F * 64F)));
 	public static final RegistryObject<Block> uberous_soil               = BLOCKS.register("uberous_soil", () -> new BlockTFUberousSoil(Block.Properties.create(Material.EARTH).hardnessAndResistance(0.6F).sound(SoundType.GROUND)));
 	public static final RegistryObject<Block> huge_stalk                 = BLOCKS.register("huge_stalk", () -> new BlockTFHugeStalk(Block.Properties.create(Material.WOOD, MaterialColor.FOLIAGE).hardnessAndResistance(1.25F, 7.0F).sound(SoundType.PLANT)));
 	public static final RegistryObject<Block> huge_mushgloom             = BLOCKS.register("huge_mushgloom", () -> new BlockTFHugeGloomBlock());
