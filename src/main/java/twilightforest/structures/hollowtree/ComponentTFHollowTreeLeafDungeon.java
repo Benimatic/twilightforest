@@ -76,7 +76,7 @@ public class ComponentTFHollowTreeLeafDungeon extends StructureTFTreeComponent {
 			drawHollowBlob(world, sbb, radius, radius, radius, 3, 2, TFBlocks.oak_wood.get().getDefaultState(), false);
 			// then treasure chest
 			// which direction is this chest in?
-			this.placeTreasureAtCurrentPosition(world, random, radius + 2, radius - 1, radius, TFTreasure.tree_cache, sbb);
+			this.placeTreasureAtCurrentPosition(world, radius + 2, radius - 1, radius, TFTreasure.tree_cache, sbb);
 
 			// then spawner
 			setSpawner(world, radius, radius, radius, sbb, TFEntities.swarm_spider.get());

@@ -45,10 +45,10 @@ public class ComponentTFStrongholdUpperCorridor extends StructureTFStrongholdCom
 			placeUpperStrongholdWalls(world.getWorld(), sbb, 0, 0, 0, 4, 4, 8, rand, deco.randomBlocks);
 
 			// entrance doorway
-			placeSmallDoorwayAt(world.getWorld(), rand, 2, 2, 1, 0, sbb);
+			placeSmallDoorwayAt(world.getWorld(), 2, 2, 1, 0, sbb);
 
 			// end
-			placeSmallDoorwayAt(world.getWorld(), rand, 2, 2, 1, 8, sbb);
+			placeSmallDoorwayAt(world.getWorld(), 2, 2, 1, 8, sbb);
 
 			return true;
 		}

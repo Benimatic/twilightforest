@@ -42,10 +42,10 @@ public class ComponentTFMazeRoomSpawnerChests extends ComponentTFMazeRoom {
 		setSpawner(worldIn, 4, 2, 4, sbb, TFEntities.minotaur.get());
 
 		// treasure
-		this.placeTreasureAtCurrentPosition(worldIn, rand, 4, 2, 11, TFTreasure.labyrinth_room, sbb);
+		this.placeTreasureAtCurrentPosition(worldIn, 4, 2, 11, TFTreasure.labyrinth_room, sbb);
 
 		// treasure
-		this.placeTreasureAtCurrentPosition(worldIn, rand, 11, 2, 4, TFTreasure.labyrinth_room, sbb);
+		this.placeTreasureAtCurrentPosition(worldIn, 11, 2, 4, TFTreasure.labyrinth_room, sbb);
 
 		// trap
 		setBlockState(world, Blocks.OAK_PRESSURE_PLATE.getDefaultState(), 11, 1, 11, sbb);

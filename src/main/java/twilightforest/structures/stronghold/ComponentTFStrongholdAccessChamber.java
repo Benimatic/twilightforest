@@ -12,7 +12,6 @@ import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
-import twilightforest.block.BlockTFTrophyPedestal;
 import twilightforest.block.TFBlocks;
 
 import java.util.List;
@@ -53,10 +52,10 @@ public class ComponentTFStrongholdAccessChamber extends StructureTFStrongholdCom
 		fillWithRandomizedBlocks(world, sbb, 0, 0, 0, 8, 4, 8, true, rand, deco.randomBlocks);
 
 		// doors
-		placeSmallDoorwayAt(world.getWorld(), rand, 0, 4, 1, 8, sbb);
-		placeSmallDoorwayAt(world.getWorld(), rand, 1, 0, 1, 4, sbb);
-		placeSmallDoorwayAt(world.getWorld(), rand, 2, 4, 1, 0, sbb);
-		placeSmallDoorwayAt(world.getWorld(), rand, 3, 8, 1, 4, sbb);
+		placeSmallDoorwayAt(world.getWorld(), 0, 4, 1, 8, sbb);
+		placeSmallDoorwayAt(world.getWorld(), 1, 0, 1, 4, sbb);
+		placeSmallDoorwayAt(world.getWorld(), 2, 4, 1, 0, sbb);
+		placeSmallDoorwayAt(world.getWorld(), 3, 8, 1, 4, sbb);
 
 		// shaft down
 		final BlockState defaultState = Blocks.MOSSY_STONE_BRICKS.getDefaultState();

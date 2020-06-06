@@ -54,13 +54,13 @@ public class ComponentTFMazeRoomVault extends ComponentTFMazeRoom {
 
 		// LEWTZ!
 		this.setBlockState(world, Blocks.CHEST.getDefaultState(), 7, 2, 6, sbb);
-		this.placeTreasureAtCurrentPosition(world.getWorld(), rand, 8, 2, 6, TFTreasure.labyrinth_vault, sbb);
+		this.placeTreasureAtCurrentPosition(world.getWorld(), 8, 2, 6, TFTreasure.labyrinth_vault, sbb);
 		this.setBlockState(world, Blocks.CHEST.getDefaultState(), 8, 2, 9, sbb);
-		this.placeTreasureAtCurrentPosition(world.getWorld(), rand, 7, 2, 9, TFTreasure.labyrinth_vault, sbb);
+		this.placeTreasureAtCurrentPosition(world.getWorld(), 7, 2, 9, TFTreasure.labyrinth_vault, sbb);
 		this.setBlockState(world, Blocks.CHEST.getDefaultState(), 6, 2, 7, sbb);
-		this.placeTreasureAtCurrentPosition(world.getWorld(), rand, 6, 2, 8, TFTreasure.labyrinth_vault, sbb);
+		this.placeTreasureAtCurrentPosition(world.getWorld(), 6, 2, 8, TFTreasure.labyrinth_vault, sbb);
 		this.setBlockState(world, Blocks.CHEST.getDefaultState(), 9, 2, 8, sbb);
-		this.placeTreasureAtCurrentPosition(world.getWorld(), rand, 9, 2, 7, TFTreasure.labyrinth_vault, sbb);
+		this.placeTreasureAtCurrentPosition(world.getWorld(), 9, 2, 7, TFTreasure.labyrinth_vault, sbb);
 
 		// mazebreaker!
 

@@ -169,17 +169,16 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	 *
 	 * @param treasureType
 	 */
-	protected void placeTreasureAtCurrentPosition(World world, Random rand, int x, int y, int z, TFTreasure treasureType, MutableBoundingBox sbb) {
-		this.placeTreasureAtCurrentPosition(world, rand, x, y, z, treasureType, false, sbb);
+	protected void placeTreasureAtCurrentPosition(World world, int x, int y, int z, TFTreasure treasureType, MutableBoundingBox sbb) {
+		this.placeTreasureAtCurrentPosition(world, x, y, z, treasureType, false, sbb);
 	}
 
 	/**
 	 * Place a treasure chest at the specified coordinates
 	 *
 	 * @param treasureType
-	 * TODO: Parameter "rand" is unused. Remove?
 	 */
-	protected void placeTreasureAtCurrentPosition(World world, Random rand, int x, int y, int z, TFTreasure treasureType, boolean trapped, MutableBoundingBox sbb) {
+	protected void placeTreasureAtCurrentPosition(World world, int x, int y, int z, TFTreasure treasureType, boolean trapped, MutableBoundingBox sbb) {
 		int dx = getXWithOffset(x, z);
 		int dy = getYWithOffset(y);
 		int dz = getZWithOffset(x, z);

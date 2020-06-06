@@ -45,7 +45,6 @@ public class TileEntityTFAntibuilder extends TileEntity implements ITickableTile
 				double x = this.pos.getX() + this.world.rand.nextFloat();
 				double y = this.pos.getY() + this.world.rand.nextFloat();
 				double z = this.pos.getZ() + this.world.rand.nextFloat();
-//				this.world.spawnParticle("smoke", x, y, z, 0.0D, 0.0D, 0.0D);
 				this.world.addParticle(RedstoneParticleData.REDSTONE_DUST, x, y, z, 0.0D, 0.0D, 0.0D);
 
 				// occasionally make a little red dust line to outline our radius

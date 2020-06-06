@@ -131,7 +131,7 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 		Random chestRNG = new Random(world.getSeed() + x * z);
 
 		// try placing it
-		placeTreasureAtCurrentPosition(world, chestRNG, x, y, z, this.hillSize == 3 ? TFTreasure.hill3 : (this.hillSize == 2 ? TFTreasure.hill2 : TFTreasure.hill1), sbb);
+		placeTreasureAtCurrentPosition(world, x, y, z, this.hillSize == 3 ? TFTreasure.hill3 : (this.hillSize == 2 ? TFTreasure.hill2 : TFTreasure.hill1), sbb);
 
 		// make something for it to stand on, if necessary
 		setBlockState(world, Blocks.COBBLESTONE.getDefaultState(), x, y - 1, z, sbb);

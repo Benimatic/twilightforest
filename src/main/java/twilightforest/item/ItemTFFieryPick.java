@@ -9,6 +9,7 @@ import net.minecraft.item.crafting.AbstractCookingRecipe;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -19,10 +20,8 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
-import twilightforest.util.ParticleHelper;
 import twilightforest.util.TFItemStackUtils;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +74,8 @@ public class ItemTFFieryPick extends PickaxeItem {
 						event.getHarvester().world.addEntity(new ExperienceOrbEntity(event.getWorld().getWorld(), event.getHarvester().getX(), event.getHarvester().getY() + 0.5D, event.getHarvester().getZ(), k));
 					}
 
-					ParticleHelper.spawnParticles(event.getWorld().getWorld(), event.getPos(), ParticleTypes.FLAME);
+					BlockPos pos = event.getPos();
+					event.getWorld().getWorld().addParticle(ParticleTypes.FLAME, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 0.5, 0.5, 0.5);
 				}
 			}
 
@@ -88,9 +88,12 @@ public class ItemTFFieryPick extends PickaxeItem {
 	public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 		boolean result = super.hitEntity(stack, target, attacker);
 
-		if (result && !target.world.isRemote && !target.isImmuneToFire()) {
-			ParticleHelper.spawnParticles(target, ParticleTypes.FLAME);
-			target.setFire(15);
+		if (result && !target.isImmuneToFire()) {
+			if (!target.world.isRemote) {
+				target.setFire(15);
+			} else {
+				target.world.addParticle(ParticleTypes.FLAME, target.getX(), target.getY() + target.getHeight() * 0.5, target.getZ(), target.getWidth() * 0.5, target.getHeight() * 0.5, target.getWidth() * 0.5);
+			}
 		}
 
 		return result;

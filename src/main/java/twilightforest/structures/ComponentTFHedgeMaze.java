@@ -197,7 +197,7 @@ public class ComponentTFHedgeMaze extends StructureTFComponentOld {
 		int rx = x + rand.nextInt(diameter) - (diameter / 2);
 		int rz = z + rand.nextInt(diameter) - (diameter / 2);
 
-		placeTreasureAtCurrentPosition(world, rand, rx, FLOOR_LEVEL, rz, TFTreasure.hedgemaze, sbb);
+		placeTreasureAtCurrentPosition(world, rx, FLOOR_LEVEL, rz, TFTreasure.hedgemaze, sbb);
 	}
 
 	/**

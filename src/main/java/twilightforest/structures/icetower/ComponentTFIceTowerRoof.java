@@ -20,7 +20,7 @@ public class ComponentTFIceTowerRoof extends ComponentTFTowerRoof {
 	}
 
 	public ComponentTFIceTowerRoof(TFFeature feature, int i, ComponentTFTowerWing wing) {
-		super(TFIceTowerPieces.TFITRoof, feature, i, wing);
+		super(TFIceTowerPieces.TFITRoof, feature, i);
 
 		// same alignment
 		this.setCoordBaseMode(wing.getCoordBaseMode());

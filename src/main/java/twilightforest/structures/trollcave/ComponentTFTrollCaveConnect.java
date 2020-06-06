@@ -65,7 +65,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 		// make 4 caves
 		if (this.getComponentType() < 3) {
 			for (final Rotation rotation : RotationUtil.ROTATIONS) {
-				BlockPos dest = getValidOpening(rand, 2, rotation);
+				BlockPos dest = getValidOpening(rand, rotation);
 
 				if (rand.nextBoolean() || !makeGardenCave(list, rand, this.getComponentType() + 1, dest.getX(), dest.getY(), dest.getZ(), 30, 15, rotation)) {
 					makeSmallerCave(list, rand, this.getComponentType() + 1, dest.getX(), dest.getY(), dest.getZ(), 20, 15, rotation);
@@ -110,7 +110,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 		decoRNG.setSeed(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
 		if (this.countExits() == 1 && decoRNG.nextInt(3) == 0) {
 			// treasure!
-			makeTreasureCrate(world, decoRNG, sbb);
+			makeTreasureCrate(world, sbb);
 		} else if (decoRNG.nextInt(3) == 0) {
 			// or a monolith!
 			makeMonolith(world, decoRNG, sbb);

@@ -66,7 +66,7 @@ public class ComponentTFTrollCaveGarden extends ComponentTFTrollCaveMain {
 		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
 
 		// treasure!
-		makeTreasureCrate(world, rand, sbb);
+		makeTreasureCrate(world, sbb);
 
 		// dirt!
 		for (int i = 0; i < 24; i++) {

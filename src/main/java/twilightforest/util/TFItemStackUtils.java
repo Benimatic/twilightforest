@@ -13,26 +13,26 @@ public class TFItemStackUtils {
 
 	public static boolean consumeInventoryItem(LivingEntity living, Predicate<ItemStack> matcher, int count) {
 
-//		IItemHandler inv = living.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-//		if (inv == null) return false;
+		return living.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(inv -> {
+			int innerCount = count;
+			boolean consumedSome = false;
 
-		boolean consumedSome = false;
+			for (int i = 0; i < inv.getSlots() && innerCount > 0; i++) {
+				ItemStack stack = inv.getStackInSlot(i);
+				if (matcher.test(stack)) {
+					ItemStack consumed = inv.extractItem(i, innerCount, false);
+					innerCount -= consumed.getCount();
+					consumedSome = true;
+				}
+			}
 
-//		for (int i = 0; i < inv.getSlots() && count > 0; i++) {
-//			ItemStack stack = inv.getStackInSlot(i);
-//			if (matcher.test(stack)) {
-//				ItemStack consumed = inv.extractItem(i, count, false);
-//				count -= consumed.getCount();
-//				consumedSome = true;
-//			}
-//		}
+			//TODO: Baubles is dead (I think)
+			/*if (TFCompat.BAUBLES.isActivated() && living instanceof EntityPlayer) {
+				consumedSome |= Baubles.consumeInventoryItem((EntityPlayer) living, matcher, count);
+			}*/
 
-		//TODO: Baubles is dead (I think)
-		/*if (TFCompat.BAUBLES.isActivated() && living instanceof EntityPlayer) {
-			consumedSome |= Baubles.consumeInventoryItem((EntityPlayer) living, matcher, count);
-		}*/
-
-		return consumedSome;
+			return consumedSome;
+		}).orElse(false);
 	}
 
 	public static NonNullList<ItemStack> splitToSize(ItemStack stack) {

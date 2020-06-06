@@ -7,7 +7,6 @@ import net.minecraft.item.SwordItem;
 import net.minecraft.potion.EffectInstance;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.potions.TFPotions;
-import twilightforest.util.ParticleHelper;
 
 public class ItemTFIceSword extends SwordItem {
 
@@ -19,10 +18,12 @@ public class ItemTFIceSword extends SwordItem {
 	public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 		boolean result = super.hitEntity(stack, target, attacker);
 
-		if (result && !target.world.isRemote) {
-			target.addPotionEffect(new EffectInstance(TFPotions.frosty.get(), 20 * 10, 2));
-			//TODO: Move to regular particle spawner?
-			ParticleHelper.spawnParticles(target, TFParticleType.SNOW.get());
+		if (result) {
+			if (!target.world.isRemote) {
+				target.addPotionEffect(new EffectInstance(TFPotions.frosty.get(), 20 * 10, 2));
+			} else {
+				target.world.addParticle(TFParticleType.SNOW.get(), target.getX(), target.getY() + target.getHeight() * 0.5, target.getZ(), target.getWidth() * 0.5, target.getHeight() * 0.5, target.getWidth() * 0.5);
+			}
 		}
 
 		return result;

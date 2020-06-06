@@ -21,7 +21,7 @@ public class ComponentTFTowerRoofGableForwards extends ComponentTFTowerRoof {
 	}
 
 	public ComponentTFTowerRoofGableForwards(TFFeature feature, int i, ComponentTFTowerWing wing) {
-		super(TFLichTowerPieces.TFLTRGF, feature, i, wing);
+		super(TFLichTowerPieces.TFLTRGF, feature, i);
 
 		// same facing
 		this.setCoordBaseMode(wing.getCoordBaseMode());
@@ -41,7 +41,7 @@ public class ComponentTFTowerRoofGableForwards extends ComponentTFTowerRoof {
 		BlockState birchSlab = Blocks.BIRCH_SLAB.getDefaultState();
 		BlockState birchPlanks = Blocks.BIRCH_PLANKS.getDefaultState();
 
-		int slopeChange = slopeChangeForSize(size);
+		int slopeChange = slopeChangeForSize();
 		for (int y = 0; y <= height; y++) {
 			int min, max;
 			if (y < slopeChange) {
@@ -78,8 +78,7 @@ public class ComponentTFTowerRoofGableForwards extends ComponentTFTowerRoof {
 		return true;
 	}
 
-	//TODO: Parameter "pSize" is unused. Remove?
-	public int slopeChangeForSize(int pSize) {
+	public int slopeChangeForSize() {
 		if (size > 10) {
 			return 3;
 		} else if (size > 6) {

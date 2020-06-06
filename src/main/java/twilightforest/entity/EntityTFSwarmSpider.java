@@ -31,12 +31,6 @@ public class EntityTFSwarmSpider extends SpiderEntity {
 		experienceValue = 2;
 	}
 
-	//TODO: Unused. Remove?
-	public EntityTFSwarmSpider(EntityType<? extends EntityTFSwarmSpider> type, World world, double x, double y, double z) {
-		this(type, world);
-		this.setPosition(x, y, z);
-	}
-
 	@Override
 	protected void registerAttributes() {
 		super.registerAttributes();

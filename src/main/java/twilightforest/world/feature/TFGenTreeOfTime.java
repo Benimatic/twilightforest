@@ -5,10 +5,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.IWorldGenerationReader;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.TFWorld;
@@ -58,10 +55,10 @@ public class TFGenTreeOfTime extends TFGenHollowTree {
 		buildTinyCrown(world, random, pos, leaves, branch, diameter, height, mbb, config);
 
 		// 3-5 roots at the bottom
-		buildBranchRing(world, random, pos, leaves, branch, diameter, 1, 0, 12, 0, 0.75D, 0, 3, 5, 3, false, mbb, config);
+		buildBranchRing(world, random, pos, leaves, branch, diameter, 1, 0, 12, 0.75D, 3, 5, 3, false, mbb, config);
 
 		// several more taproots
-		buildBranchRing(world, random, pos, leaves, branch, diameter, 1, 2, 18, 0, 0.9D, 0, 3, 5, 3, false, mbb, config);
+		buildBranchRing(world, random, pos, leaves, branch, diameter, 1, 2, 18, 0.9D, 3, 5, 3, false, mbb, config);
 
 		// add clock block
 		world.setBlockState(pos.add(-1, 2, 0), TFBlocks.time_log_core.get().getDefaultState());
@@ -78,15 +75,15 @@ public class TFGenTreeOfTime extends TFGenHollowTree {
 		int bvar = 1;
 
 		// 3-5 medium branches starting at the bottom of the crown
-		buildBranchRing(world, random, pos, leaves, branch, diameter, height - crownRadius, 0, crownRadius, 0, 0.35D, 0, bvar, bvar + 2, 1, true, mbb, config);
+		buildBranchRing(world, random, pos, leaves, branch, diameter, height - crownRadius, 0, crownRadius, 0.35D, bvar, bvar + 2, 1, true, mbb, config);
 
 		// 3-5 medium branches at the crown middle
-		buildBranchRing(world, random, pos, leaves, branch, diameter, height - (crownRadius / 2), 0, crownRadius, 0, 0.28D, 0, bvar, bvar + 2, 1, true, mbb, config);
+		buildBranchRing(world, random, pos, leaves, branch, diameter, height - (crownRadius / 2), 0, crownRadius, 0.28D, bvar, bvar + 2, 1, true, mbb, config);
 
 		// 2-4 medium branches at the crown top
-		buildBranchRing(world, random, pos, leaves, branch, diameter, height, 0, crownRadius, 0, 0.15D, 0, 2, 4, 0, true, mbb, config);
+		buildBranchRing(world, random, pos, leaves, branch, diameter, height, 0, crownRadius, 0.15D, 2, 4, 0, true, mbb, config);
 
 		// 3-6 medium branches going straight up
-		buildBranchRing(world, random, pos, leaves, branch, diameter, height, 0, (crownRadius / 2), 0, 0.05D, 0, bvar, bvar + 2, 0, true, mbb, config);
+		buildBranchRing(world, random, pos, leaves, branch, diameter, height, 0, (crownRadius / 2), 0.05D, bvar, bvar + 2, 0, true, mbb, config);
 	}
 }

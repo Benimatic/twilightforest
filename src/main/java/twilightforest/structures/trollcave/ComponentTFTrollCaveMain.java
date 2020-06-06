@@ -51,8 +51,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 		super(type, feature, index);
 	}
 
-	//TODO: Parameter "rand" is unused. Remove?
-	public ComponentTFTrollCaveMain(IStructurePieceType type, TFFeature feature, Random rand, int i, int x, int y, int z) {
+	public ComponentTFTrollCaveMain(IStructurePieceType type, TFFeature feature, int i, int x, int y, int z) {
 		super(type, feature, i);
 		this.setCoordBaseMode(Direction.SOUTH);
 
@@ -86,7 +85,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		// make 4 caves
 		for (final Rotation caveRotation : RotationUtil.ROTATIONS) {
-			BlockPos dest = getValidOpening(rand, 5, caveRotation);
+			BlockPos dest = getValidOpening(rand, caveRotation);
 			makeSmallerCave(list, rand, this.getComponentType() + 1, dest.getX(), dest.getY(), dest.getZ(), 18, 15, caveRotation);
 		}
 
@@ -173,9 +172,8 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 
 	/**
 	 * Gets a random position in the specified direction that connects to stairs currently in the tower.
-	 * TODO: Parameter "caveHeight" is unused. Remove?
 	 */
-	public BlockPos getValidOpening(Random rand, int caveHeight, Rotation direction) {
+	public BlockPos getValidOpening(Random rand, Rotation direction) {
 		// variables!
 		int offset = this.size / 4; // wall thickness
 		int wLength = size - (offset * 2); // wall length
@@ -266,11 +264,11 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 		}
 	}
 
-	protected void makeTreasureCrate(World world, Random rand, MutableBoundingBox sbb) {
+	protected void makeTreasureCrate(World world, MutableBoundingBox sbb) {
 		// treasure!
 		int mid = this.size / 2;
 		this.fillWithBlocks(world, sbb, mid - 2, 0, mid - 2, mid + 1, 3, mid + 1, Blocks.OBSIDIAN.getDefaultState(), Blocks.OBSIDIAN.getDefaultState(), false);
 		this.fillWithAir(world, sbb, mid - 1, 1, mid - 1, mid + 0, 2, mid + 0);
-		this.placeTreasureAtCurrentPosition(world, rand, mid, 1, mid, TFTreasure.troll_garden, false, sbb);
+		this.placeTreasureAtCurrentPosition(world, mid, 1, mid, TFTreasure.troll_garden, false, sbb);
 	}
 }

@@ -344,7 +344,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 		makeTrunk(worldIn, sbb);
 
 		// make floors
-		makeFloorsForTower(worldIn, decoRNG, sbb);
+		makeFloorsForTower(worldIn, sbb);
 
 		// nullify sky light
 //		this.nullifySkyLightForBoundingBox(worldIn);
@@ -396,8 +396,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 		}
 	}
 
-	//TODO: Parameter "decoRNG" is unused. Remove?
-	private void makeFloorsForTower(World world, Random decoRNG, MutableBoundingBox sbb) {
+	private void makeFloorsForTower(World world, MutableBoundingBox sbb) {
 		int floors = this.height / FLOOR_HEIGHT;
 
 		int ladderDir = 3;
@@ -410,8 +409,6 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 			downLadderDir = ladderDir;
 			ladderDir++;
 			ladderDir %= 4;
-
-//			decorateFloor(world, decoRNG, i, (i * floorHeight), (i * floorHeight) + floorHeight, ladderDir, downLadderDir, sbb);
 		}
 	}
 

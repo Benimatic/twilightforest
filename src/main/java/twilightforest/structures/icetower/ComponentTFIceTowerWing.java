@@ -380,7 +380,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 	private void decorateTopFloorTreasure(World world, Random rand, int bottom, int top, Rotation rotation, MutableBoundingBox sbb) {
 		this.fillBlocksRotated(world, sbb, 5, bottom + 1, 5, 5, bottom + 4, 5, deco.pillarState, rotation);
 
-		this.placeTreasureAtCurrentPosition(world, null, 5, bottom + 5, 5, TFTreasure.aurora_room, sbb);
+		this.placeTreasureAtCurrentPosition(world, 5, bottom + 5, 5, TFTreasure.aurora_room, sbb);
 	}
 
 	//TODO: Parameter "rand" is unused. Remove?

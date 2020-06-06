@@ -1,4 +1,4 @@
-package twilightforest.tileentity.critters;
+package twilightforest.tileentity;
 
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.ITickableTileEntity;

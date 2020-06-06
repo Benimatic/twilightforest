@@ -23,8 +23,7 @@ public class ComponentTFTowerRoof extends StructureTFComponentOld {
 		super(piece, nbt);
 	}
 
-	//TODO: Parameter "wing" is unused. Remove?
-	public ComponentTFTowerRoof(IStructurePieceType type, TFFeature feature, int i, ComponentTFTowerWing wing) {
+	public ComponentTFTowerRoof(IStructurePieceType type, TFFeature feature, int i) {
 		super(type, feature, i);
 
 		this.spawnListIndex = -1;

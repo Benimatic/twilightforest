@@ -26,8 +26,7 @@ public class ComponentTFMazeRuins extends StructureTFComponentOld {
 		super(TFMinotaurMazePieces.TFMMRuins, nbt);
 	}
 
-	//TODO: Parameter "rand" is unused. Remove?
-	public ComponentTFMazeRuins(TFFeature feature, Random rand, int i, int x, int y, int z) {
+	public ComponentTFMazeRuins(TFFeature feature, int i, int x, int y, int z) {
 		super(TFMinotaurMazePieces.TFMMRuins, feature, i);
 		this.setCoordBaseMode(Direction.SOUTH);
 

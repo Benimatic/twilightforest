@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.model.Model;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.client.BugModelAnimationHelper;
-import twilightforest.tileentity.critters.TileEntityTFMoonwormTicking;
+import twilightforest.tileentity.TileEntityTFMoonwormTicking;
 
 import javax.annotation.Nullable;
 

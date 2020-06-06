@@ -71,10 +71,10 @@ public class ComponentTFStrongholdUpperAscender extends StructureTFStrongholdCom
 			placeUpperStrongholdWalls(world, sbb, 0, 0, 0, 4, 9, 9, rand, deco.randomBlocks);
 
 			// entrance doorway
-			placeSmallDoorwayAt(world, rand, 2, 2, exitTop ? 1 : 6, 0, sbb);
+			placeSmallDoorwayAt(world, 2, 2, exitTop ? 1 : 6, 0, sbb);
 
 			// exit doorway
-			placeSmallDoorwayAt(world, rand, 0, 2, exitTop ? 6 : 1, 9, sbb);
+			placeSmallDoorwayAt(world, 0, 2, exitTop ? 6 : 1, 9, sbb);
 
 			// steps!
 			if (exitTop) {

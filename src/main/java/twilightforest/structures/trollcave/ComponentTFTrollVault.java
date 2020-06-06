@@ -7,7 +7,6 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
@@ -50,9 +49,9 @@ public class ComponentTFTrollVault extends StructureTFComponentOld {
 
 		// chests
 		this.setBlockState(world, Blocks.CHEST.getDefaultState(), 5, 6, 5, sbb);
-		this.placeTreasureAtCurrentPosition(world.getWorld(), rand, 5, 6, 6, TFTreasure.troll_vault, false, sbb);
+		this.placeTreasureAtCurrentPosition(world.getWorld(), 5, 6, 6, TFTreasure.troll_vault, false, sbb);
 
-		this.placeTreasureAtCurrentPosition(world.getWorld(), rand, 6, 6, 5, TFTreasure.troll_garden, true, sbb);
+		this.placeTreasureAtCurrentPosition(world.getWorld(), 6, 6, 5, TFTreasure.troll_garden, true, sbb);
 		this.setBlockState(world, Blocks.TRAPPED_CHEST.getDefaultState(), 6, 6, 6, sbb);
 
 		return true;

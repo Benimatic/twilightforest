@@ -21,7 +21,7 @@ public class ComponentTFTowerRoofStairs extends ComponentTFTowerRoof {
 	}
 
 	public ComponentTFTowerRoofStairs(TFFeature feature, int i, ComponentTFTowerWing wing) {
-		super(TFLichTowerPieces.TFLTRSt, feature, i, wing);
+		super(TFLichTowerPieces.TFLTRSt, feature, i);
 
 		// always facing = 0.  This roof cannot rotate, due to stair facing issues.
 		this.setCoordBaseMode(Direction.SOUTH);

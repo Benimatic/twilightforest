@@ -5,7 +5,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
@@ -13,7 +12,6 @@ import twilightforest.block.TFBlocks;
 import twilightforest.client.renderer.tileentity.TileEntityTFCicadaRenderer;
 import twilightforest.client.renderer.tileentity.TileEntityTFFireflyRenderer;
 import twilightforest.client.renderer.tileentity.TileEntityTFMoonwormRenderer;
-import twilightforest.tileentity.critters.*;
 import twilightforest.tileentity.spawner.*;
 
 public class TFTileEntities {

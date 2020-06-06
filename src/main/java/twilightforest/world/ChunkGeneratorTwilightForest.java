@@ -52,7 +52,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 		// now we reload the biome array so that it's scaled 1:1 with blocks on the ground
 		//this.biomesForGeneration = world.getDimension().getBiomeProvider().getBiomes(biomesForGeneration, x * 16, z * 16, 16, 16);
 
-		addGlaciers(x, z, region, this.biomeProvider.getBiomeForNoiseGen(x, getSeaLevel(), z));
+		addGlaciers(region, this.biomeProvider.getBiomeForNoiseGen(x, getSeaLevel(), z));
 		deformTerrainForFeature(x, z, region);
 		//replaceBiomeBlocks(x, z, primer, biomesForGeneration);
 
@@ -63,11 +63,6 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 	}
 
 	protected void initPrimer(WorldGenRegion primer, ChunkBitArray data) {
-
-		//TODO: Handled in TFWorld now
-//		BlockState water = Blocks.WATER.getDefaultState();
-//		BlockState stone = Blocks.STONE.getDefaultState();
-
 		for (int x = 0; x < 16; x++) {
 			for (int z = 0; z < 16; z++) {
 				for (int y = 0; y < 256; y++) {
@@ -82,8 +77,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 		}
 	}
 
-	//TODO: Parameters "chunkX" and "chunkZ" are unused. Remove?
-	private void addGlaciers(int chunkX, int chunkZ, WorldGenRegion primer, Biome biome) {
+	private void addGlaciers(WorldGenRegion world, Biome biome) {
 
 		BlockState glacierBase = Blocks.GRAVEL.getDefaultState();
 		BlockState glacierMain = TFConfig.COMMON_CONFIG.PERFORMANCE.glacierPackedIce.get() ? Blocks.PACKED_ICE.getDefaultState() : Blocks.ICE.getDefaultState();
@@ -92,16 +86,15 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 		for (int z = 0; z < 16; z++) {
 			for (int x = 0; x < 16; x++) {
 
-				//Biome biome = biomes[x & 15 | (z & 15) << 4];
 				if (biome != TFBiomes.glacier.get()) continue;
 
 				// find the (current) top block
 				int gBase = -1;
 				for (int y = 127; y >= 0; y--) {
-					Block currentBlock = primer.getBlockState(new BlockPos(x, y, z)).getBlock();
+					Block currentBlock = world.getBlockState(new BlockPos(x, y, z)).getBlock();
 					if (currentBlock == Blocks.STONE) {
 						gBase = y + 1;
-						primer.setBlockState(new BlockPos(x, y, z), glacierBase, 3);
+						world.setBlockState(new BlockPos(x, y, z), glacierBase, 3);
 						break;
 					}
 				}
@@ -111,9 +104,9 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 				int gTop = Math.min(gBase + gHeight, 127);
 
 				for (int y = gBase; y < gTop; y++) {
-					primer.setBlockState(new BlockPos(x, y, z), glacierMain, 3);
+					world.setBlockState(new BlockPos(x, y, z), glacierMain, 3);
 				}
-				primer.setBlockState(new BlockPos(x, gTop, z), glacierTop, 3);
+				world.setBlockState(new BlockPos(x, gTop, z), glacierTop, 3);
 			}
 		}
 	}

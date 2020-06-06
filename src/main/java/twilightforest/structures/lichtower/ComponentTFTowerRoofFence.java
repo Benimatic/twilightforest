@@ -18,7 +18,7 @@ public class ComponentTFTowerRoofFence extends ComponentTFTowerRoof {
 	}
 
 	public ComponentTFTowerRoofFence(TFFeature feature, int i, ComponentTFTowerWing wing) {
-		super(TFLichTowerPieces.TFLTRF, feature, i, wing);
+		super(TFLichTowerPieces.TFLTRF, feature, i);
 
 		// same alignment
 		this.setCoordBaseMode(wing.getCoordBaseMode());

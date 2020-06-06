@@ -134,10 +134,10 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 		}
 
 		// 3-5 roots at the bottom
-		buildBranchRing(world, random, pos, leaves, branch, diameter, 3, 2, 6, 0, 0.75D, 0, 3, 5, 3, false, mbb, config);
+		buildBranchRing(world, random, pos, leaves, branch, diameter, 3, 2, 6, 0.75D, 3, 5, 3, false, mbb, config);
 
 		// several more taproots
-		buildBranchRing(world, random, pos, leaves, branch, diameter, 1, 2, 8, 0, 0.9D, 0, 3, 5, 3, false, mbb, config);
+		buildBranchRing(world, random, pos, leaves, branch, diameter, 1, 2, 8, 0.9D, 3, 5, 3, false, mbb, config);
 
 		return true;
 	}
@@ -153,16 +153,16 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 		int bvar = diameter + 2;
 
 		// okay, let's do 3-5 main branches starting at the bottom of the crown
-		buildBranchRing(world, random, pos, leaves, branch, diameter, height - crownRadius, 0, crownRadius, 0, 0.35D, 0, bvar, bvar + 2, 2, true, mbb, config);
+		buildBranchRing(world, random, pos, leaves, branch, diameter, height - crownRadius, 0, crownRadius, 0.35D, bvar, bvar + 2, 2, true, mbb, config);
 
 		// then, let's do 3-5 medium branches at the crown middle
-		buildBranchRing(world, random, pos, leaves, branch, diameter, height - (crownRadius / 2), 0, crownRadius, 0, 0.28D, 0, bvar, bvar + 2, 1, true, mbb, config);
+		buildBranchRing(world, random, pos, leaves, branch, diameter, height - (crownRadius / 2), 0, crownRadius, 0.28D, bvar, bvar + 2, 1, true, mbb, config);
 
 		// finally, let's do 2-4 main branches at the crown top
-		buildBranchRing(world, random, pos, leaves, branch, diameter, height, 0, crownRadius, 0, 0.15D, 0, 2, 4, 2, true, mbb, config);
+		buildBranchRing(world, random, pos, leaves, branch, diameter, height, 0, crownRadius, 0.15D, 2, 4, 2, true, mbb, config);
 
 		// and extra finally, let's do 3-6 medium branches going straight up
-		buildBranchRing(world, random, pos, leaves, branch, diameter, height, 0, (crownRadius / 2), 0, 0.05D, 0, bvar, bvar + 2, 1, true, mbb, config);
+		buildBranchRing(world, random, pos, leaves, branch, diameter, height, 0, (crownRadius / 2), 0.05D, bvar, bvar + 2, 1, true, mbb, config);
 
 		// this glass sphere approximates where we want our crown		
 		//drawBlob(x, y + height, z, (byte)crownRadius, (byte)Blocks.GLASS, false);
@@ -170,34 +170,10 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 	}
 
 	/**
-	 * Build the crown of the tree.  This builds a smaller crown, since the large ones were causing some performance issues
-	 *
-	 * @param height
-	 * TODO: Method is unused. Remove?
-	 */
-	protected void buildWeakCrown(World world, Random random, BlockPos pos, Set<BlockPos> leaves, Set<BlockPos> branch, int diameter, int height, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
-		int crownRadius = 8;
-		int bvar = 2;
-
-		// 3-5 medium branches starting at the bottom of the crown
-		buildBranchRing(world, random, pos, leaves, branch, diameter, height - crownRadius, 0, crownRadius, 0, 0.35D, 0, bvar, bvar + 2, 1, true, mbb, config);
-
-		// 3-5 medium branches at the crown middle
-		buildBranchRing(world, random, pos, leaves, branch, diameter, height - (crownRadius / 2), 0, crownRadius, 0, 0.28D, 0, bvar, bvar + 2, 1, true, mbb, config);
-
-		// 2-4 medium branches at the crown top
-		buildBranchRing(world, random, pos, leaves, branch, diameter, height, 0, crownRadius, 0, 0.15D, 0, 2, 4, 1, true, mbb, config);
-
-		// 3-6 medium branches going straight up
-		buildBranchRing(world, random, pos, leaves, branch, diameter, height, 0, (crownRadius / 2), 0, 0.05D, 0, bvar, bvar + 2, 1, true, mbb, config);
-	}
-
-	/**
 	 * Build a ring of branches around the tree
 	 * size 0 = small, 1 = med, 2 = large, 3 = root
-	 * TODO: "lengthVar" and "tiltVar" are unused. Remove?
 	 */
-	protected void buildBranchRing(World world, Random random, BlockPos pos, Set<BlockPos> leaves, Set<BlockPos> branch, int diameter, int branchHeight, int heightVar, int length, int lengthVar, double tilt, double tiltVar, int minBranches, int maxBranches, int size, boolean leafy, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
+	protected void buildBranchRing(World world, Random random, BlockPos pos, Set<BlockPos> leaves, Set<BlockPos> branch, int diameter, int branchHeight, int heightVar, int length, double tilt, int minBranches, int maxBranches, int size, boolean leafy, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		//let's do this!
 		int numBranches = random.nextInt(maxBranches - minBranches) + minBranches;
 		;

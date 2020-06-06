@@ -73,7 +73,7 @@ public class ComponentTFStrongholdDeadEnd extends StructureTFStrongholdComponent
 		placeDoors(worldIn, rand, sbb);
 
 		// treasure
-		this.placeTreasureAtCurrentPosition(worldIn, rand, 4, 1, 3, TFTreasure.stronghold_cache, this.chestTrapped, sbb);
+		this.placeTreasureAtCurrentPosition(worldIn, 4, 1, 3, TFTreasure.stronghold_cache, this.chestTrapped, sbb);
 		if (this.chestTrapped) {
 			this.setBlockState(world, Blocks.TNT.getDefaultState(), 4, 0, 3, sbb);
 		}

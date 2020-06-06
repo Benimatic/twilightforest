@@ -48,13 +48,13 @@ public class ComponentTFStrongholdUpperTIntersection extends StructureTFStrongho
 			placeUpperStrongholdWalls(world.getWorld(), sbb, 0, 0, 0, 4, 4, 4, rand, deco.randomBlocks);
 
 			// entrance doorway
-			placeSmallDoorwayAt(world.getWorld(), rand, 2, 2, 1, 0, sbb);
+			placeSmallDoorwayAt(world.getWorld(), 2, 2, 1, 0, sbb);
 
 			// left turn doorway
-			placeSmallDoorwayAt(world.getWorld(), rand, 3, 4, 1, 2, sbb);
+			placeSmallDoorwayAt(world.getWorld(), 3, 4, 1, 2, sbb);
 
 			// right turn doorway
-			placeSmallDoorwayAt(world.getWorld(), rand, 1, 0, 1, 2, sbb);
+			placeSmallDoorwayAt(world.getWorld(), 1, 0, 1, 2, sbb);
 
 			return true;
 		}

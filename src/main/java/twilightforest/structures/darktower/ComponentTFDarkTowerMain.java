@@ -669,25 +669,25 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 				setBlockState(world, deco.accentState, x + 0, y + 1, z + 1, sbb);
 				setBlockState(world, deco.accentState, x + 1, y + 1, z + 1, sbb);
 				setBlockState(world, Blocks.CHEST.getDefaultState(), x + 0, y + 2, z + 1, sbb);
-				this.placeTreasureAtCurrentPosition(world, decoRNG, x + 1, y + 2, z + 1, TFTreasure.darktower_cache, sbb);
+				this.placeTreasureAtCurrentPosition(world, x + 1, y + 2, z + 1, TFTreasure.darktower_cache, sbb);
 				break;
 			case 1:
 				setBlockState(world, deco.accentState, x + 0, y + 1, z + 0, sbb);
 				setBlockState(world, deco.accentState, x + 0, y + 1, z + 1, sbb);
 				setBlockState(world, Blocks.CHEST.getDefaultState().with(ChestBlock.FACING, Direction.SOUTH), x + 0, y + 2, z + 0, sbb);
-				this.placeTreasureAtCurrentPosition(world, decoRNG, x + 0, y + 2, z + 1, TFTreasure.darktower_cache, sbb);
+				this.placeTreasureAtCurrentPosition(world, x + 0, y + 2, z + 1, TFTreasure.darktower_cache, sbb);
 				break;
 			case 2:
 				setBlockState(world, deco.accentState, x + 0, y + 1, z + 0, sbb);
 				setBlockState(world, deco.accentState, x + 1, y + 1, z + 0, sbb);
 				setBlockState(world, Blocks.CHEST.getDefaultState().with(ChestBlock.FACING, Direction.SOUTH), x + 0, y + 2, z + 0, sbb);
-				this.placeTreasureAtCurrentPosition(world, decoRNG, x + 1, y + 2, z + 0, TFTreasure.darktower_cache, sbb);
+				this.placeTreasureAtCurrentPosition(world, x + 1, y + 2, z + 0, TFTreasure.darktower_cache, sbb);
 				break;
 			case 3:
 				setBlockState(world, deco.accentState, x + 1, y + 1, z + 0, sbb);
 				setBlockState(world, deco.accentState, x + 1, y + 1, z + 1, sbb);
 				setBlockState(world, Blocks.CHEST.getDefaultState().with(ChestBlock.FACING, Direction.SOUTH), x + 1, y + 2, z + 0, sbb);
-				this.placeTreasureAtCurrentPosition(world, decoRNG, x + 1, y + 2, z + 1, TFTreasure.darktower_cache, sbb);
+				this.placeTreasureAtCurrentPosition(world, x + 1, y + 2, z + 1, TFTreasure.darktower_cache, sbb);
 				break;
 		}
 	}

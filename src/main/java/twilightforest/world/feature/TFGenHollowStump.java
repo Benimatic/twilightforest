@@ -35,10 +35,10 @@ public class TFGenHollowStump extends TFGenHollowTree {
 		buildTrunk(world, rand, pos, trunk, branch, root, radius, 6, mbb, config);
 
 		// 3-5 roots at the bottom
-		buildBranchRing(world, rand, pos, leaves, branch, radius, 3, 2, 6, 0, 0.75D, 0, 3, 5, 3, false, mbb, config);
+		buildBranchRing(world, rand, pos, leaves, branch, radius, 3, 2, 6, 0.75D, 3, 5, 3, false, mbb, config);
 
 		// several more taproots
-		buildBranchRing(world, rand, pos, leaves, branch, radius, 1, 2, 8, 0, 0.9D, 0, 3, 5, 3, false, mbb, config);
+		buildBranchRing(world, rand, pos, leaves, branch, radius, 1, 2, 8, 0.9D, 3, 5, 3, false, mbb, config);
 
 		return true;
 	}

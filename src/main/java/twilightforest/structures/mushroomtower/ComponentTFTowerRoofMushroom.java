@@ -21,7 +21,7 @@ import java.util.Random;
 public class ComponentTFTowerRoofMushroom extends ComponentTFTowerRoof {
 
 	public ComponentTFTowerRoofMushroom(TFFeature feature, int i, ComponentTFTowerWing wing, float pHang) {
-		super(TFMushroomTowerPieces.TFMTRoofMush, feature, i, wing);
+		super(TFMushroomTowerPieces.TFMTRoofMush, feature, i);
 
 		this.height = wing.size;
 

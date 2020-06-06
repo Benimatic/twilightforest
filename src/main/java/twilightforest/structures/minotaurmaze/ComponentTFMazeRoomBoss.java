@@ -76,25 +76,25 @@ public class ComponentTFMazeRoomBoss extends ComponentTFMazeRoom {
 		fillWithBlocks(world, sbb, 1, 2, 1, 1, 3, 4, redMushroom, AIR, false);
 		fillWithBlocks(world, sbb, 2, 2, 1, 4, 3, 1, redMushroom, AIR, false);
 		fillWithBlocks(world, sbb, 1, 4, 1, 3, 4, 3, redMushroom, AIR, false);
-		placeTreasureAtCurrentPosition(worldIn, rand, 3, 2, 3, TFTreasure.labyrinth_room, sbb);
+		placeTreasureAtCurrentPosition(worldIn, 3, 2, 3, TFTreasure.labyrinth_room, sbb);
 
 		fillWithBlocks(world, sbb, 12, 1, 12, 14, 1, 14, redMushroom, AIR, false);
 		fillWithBlocks(world, sbb, 14, 2, 11, 14, 3, 14, redMushroom, AIR, false);
 		fillWithBlocks(world, sbb, 11, 2, 14, 14, 3, 14, redMushroom, AIR, false);
 		fillWithBlocks(world, sbb, 12, 4, 12, 14, 4, 14, redMushroom, AIR, false);
-		placeTreasureAtCurrentPosition(worldIn, rand, 12, 2, 12, TFTreasure.labyrinth_room, sbb);
+		placeTreasureAtCurrentPosition(worldIn, 12, 2, 12, TFTreasure.labyrinth_room, sbb);
 
 		fillWithBlocks(world, sbb, 1, 1, 12, 3, 1, 14, redMushroom, AIR, false);
 		fillWithBlocks(world, sbb, 1, 2, 11, 1, 3, 14, redMushroom, AIR, false);
 		fillWithBlocks(world, sbb, 2, 2, 14, 4, 3, 14, redMushroom, AIR, false);
 		fillWithBlocks(world, sbb, 1, 4, 12, 3, 4, 14, redMushroom, AIR, false);
-		placeTreasureAtCurrentPosition(worldIn, rand, 3, 2, 12, TFTreasure.labyrinth_room, sbb);
+		placeTreasureAtCurrentPosition(worldIn, 3, 2, 12, TFTreasure.labyrinth_room, sbb);
 
 		fillWithBlocks(world, sbb, 12, 1, 1, 14, 1, 3, brownMushroom, AIR, false);
 		fillWithBlocks(world, sbb, 11, 2, 1, 14, 3, 1, brownMushroom, AIR, false);
 		fillWithBlocks(world, sbb, 14, 2, 2, 14, 3, 4, brownMushroom, AIR, false);
 		fillWithBlocks(world, sbb, 12, 4, 1, 14, 4, 3, brownMushroom, AIR, false);
-		placeTreasureAtCurrentPosition(worldIn, rand, 12, 2, 3, TFTreasure.labyrinth_room, sbb);
+		placeTreasureAtCurrentPosition(worldIn, 12, 2, 3, TFTreasure.labyrinth_room, sbb);
 
 		// a few more ceilingshrooms
 		fillWithBlocks(world, sbb, 5, 4, 5, 7, 5, 7, brownMushroom, AIR, false);

@@ -44,7 +44,7 @@ public class ComponentTFMazeDeadEndChest extends ComponentTFMazeDeadEnd {
 
 		// chest
 		this.setBlockState(world, Blocks.CHEST.getDefaultState(), 2, 2, 4, sbb);
-		this.placeTreasureAtCurrentPosition(world.getWorld(), rand, 3, 2, 4, TFTreasure.labyrinth_deadend, sbb);
+		this.placeTreasureAtCurrentPosition(world.getWorld(), 3, 2, 4, TFTreasure.labyrinth_deadend, sbb);
 
 //		// torches
 //		this.setBlockState(world, Blocks.TORCH, 0, 1, 3, 4, sbb);

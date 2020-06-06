@@ -3,6 +3,8 @@ package twilightforest.util;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 
+import static twilightforest.TwilightForestMod.prefix;
+
 public class TFEntityNames {
 	// Passive Animals
 	public static final ResourceLocation WILD_BOAR = prefix("wild_boar");
@@ -117,8 +119,4 @@ public class TFEntityNames {
 	public static final ResourceLocation SEEKER_ARROW = prefix("seeker_arrow");
 	public static final ResourceLocation ICE_ARROW = prefix("ice_arrow");
 	public static final ResourceLocation ICE_SNOWBALL = prefix("ice_snowball");
-
-	private static ResourceLocation prefix(String path) {
-		return new ResourceLocation(TwilightForestMod.ID, path);
-	}
 }

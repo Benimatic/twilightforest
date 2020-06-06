@@ -12,7 +12,7 @@ import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.BugModelAnimationHelper;
 import twilightforest.client.model.entity.ModelTFCicada;
-import twilightforest.tileentity.critters.TileEntityTFCicadaTicking;
+import twilightforest.tileentity.TileEntityTFCicadaTicking;
 
 import javax.annotation.Nullable;
 

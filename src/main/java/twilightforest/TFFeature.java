@@ -903,7 +903,6 @@ public enum TFFeature {
 	}
 
 	public static IStructurePieceType registerPiece(String name, IStructurePieceType piece) {
-		//TODO: Verify if this needs the namespace
 		return Registry.register(Registry.STRUCTURE_PIECE, TwilightForestMod.prefix(name.toLowerCase(Locale.ROOT)), piece);
 	}
 }

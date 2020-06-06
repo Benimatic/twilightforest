@@ -114,7 +114,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 		int nz = this.getZWithOffset(x, z);
 
 		// limit sprawl to a reasonable amount
-		if (index > 50 || isOutOfRange(entrance, nx, ny, nz, 112)) {
+		if (index > 50 || isOutOfRange(entrance, nx, nz, 112)) {
 			return;
 		}
 
@@ -163,7 +163,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 		int nz = this.getZWithOffset(x, z);
 
 		// limit sprawl to a reasonable amount
-		if (index > 100 || isOutOfRange(parent, nx, ny, nz, 48)) {
+		if (index > 100 || isOutOfRange(parent, nx, nz, 48)) {
 			return;
 		}
 
@@ -198,9 +198,8 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 
 	/**
 	 * Have we strayed more than range blocks away from the center?
-	 * TODO: Parameter "ny" is unused. Remove?
 	 */
-	private boolean isOutOfRange(StructurePiece parent, int nx, int ny, int nz, int range) {
+	private boolean isOutOfRange(StructurePiece parent, int nx, int nz, int range) {
 
 		return Math.abs(nx - parent.getBoundingBox().minX) > range
 				|| Math.abs(nz - parent.getBoundingBox().minZ) > range;
@@ -235,9 +234,8 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 
 	/**
 	 * Make a smaller doorway
-	 * TODO: Parameter "rand" is unused. Remove?
 	 */
-	protected void placeSmallDoorwayAt(World world, Random rand, int facing, int x, int y, int z, MutableBoundingBox sbb) {
+	protected void placeSmallDoorwayAt(World world, int facing, int x, int y, int z, MutableBoundingBox sbb) {
 		if (facing == 0 || facing == 2) {
 			this.fillWithBlocks(world, sbb, x - 1, y, z, x + 1, y + 1, z, Blocks.COBBLESTONE_WALL.getDefaultState(), Blocks.AIR.getDefaultState(), true);
 			this.fillWithAir(world, sbb, x, y, z, x, y + 1, z);
@@ -245,8 +243,6 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 			this.fillWithBlocks(world, sbb, x, y, z - 1, x, y + 1, z + 1, Blocks.COBBLESTONE_WALL.getDefaultState(), Blocks.AIR.getDefaultState(), true);
 			this.fillWithAir(world, sbb, x, y, z, x, y + 1, z);
 		}
-
-		//this.setBlockState(world, Blocks.WOOL, this.coordBaseMode, x, y, z, sbb);
 	}
 
 	/**

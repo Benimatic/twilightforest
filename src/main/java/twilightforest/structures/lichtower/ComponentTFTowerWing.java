@@ -9,7 +9,6 @@ import net.minecraft.entity.item.PaintingType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.properties.Half;
 import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -32,7 +31,6 @@ import twilightforest.structures.StructureTFHelper;
 import twilightforest.util.RotationUtil;
 
 import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -723,7 +721,7 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 			surroundBlockCorners(world, stoneBrick, cx, top-1, cz, sbb);
 		}
 
-		placeTreasureAtCurrentPosition(world, rand, cx, bottom + 1, cz, TFTreasure.tower_room, sbb);
+		placeTreasureAtCurrentPosition(world, cx, bottom + 1, cz, TFTreasure.tower_room, sbb);
 	}
 
 
@@ -852,22 +850,22 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 			case 0:
 			default:
 				if (!isLadderPos(2, 1, ladderUpDir, ladderDownDir)) {
-					placeTreasureAtCurrentPosition(world, rand, 2, top - 2, 1, TFTreasure.tower_library, sbb);
+					placeTreasureAtCurrentPosition(world, 2, top - 2, 1, TFTreasure.tower_library, sbb);
 					break;
 				}
 			case 1:
 				if (!isLadderPos(size - 2, 2, ladderUpDir, ladderDownDir)) {
-					placeTreasureAtCurrentPosition(world, rand, size - 2, top - 2, 2, TFTreasure.tower_library, sbb);
+					placeTreasureAtCurrentPosition(world, size - 2, top - 2, 2, TFTreasure.tower_library, sbb);
 					break;
 				}
 			case 2:
 				if (!isLadderPos(size - 3, size - 2, ladderUpDir, ladderDownDir)) {
-					placeTreasureAtCurrentPosition(world, rand, size - 3, top - 2, size - 2, TFTreasure.tower_library, sbb);
+					placeTreasureAtCurrentPosition(world, size - 3, top - 2, size - 2, TFTreasure.tower_library, sbb);
 					break;
 				}
 			case 3:
 				if (!isLadderPos(1, size - 3, ladderUpDir, ladderDownDir)) {
-					placeTreasureAtCurrentPosition(world, rand, 1, top - 2, size - 3, TFTreasure.tower_library, sbb);
+					placeTreasureAtCurrentPosition(world, 1, top - 2, size - 3, TFTreasure.tower_library, sbb);
 					break;
 				}
 		}

@@ -512,7 +512,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 
 		setBlockStateRotated(world, myDeco.platformState, x, y + 1, z, rotation, sbb);
 
-		placeTreasureAtCurrentPosition(world, null, x, y + 2, z, this.isKeyTower() ? TFTreasure.darktower_key : TFTreasure.darktower_cache, sbb);
+		placeTreasureAtCurrentPosition(world, x, y + 2, z, this.isKeyTower() ? TFTreasure.darktower_key : TFTreasure.darktower_cache, sbb);
 	}
 
 	private void decorateSpawner(World world, Random rand, MutableBoundingBox sbb, Rotation rotation, int y) {
