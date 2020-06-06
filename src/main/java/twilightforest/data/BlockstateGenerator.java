@@ -125,6 +125,15 @@ public class BlockstateGenerator extends BlockStateProvider {
 		allRotations(TFBlocks.deadrock_weathered.get(), deadrockWeathered);
 		simpleBlock(TFBlocks.wispy_cloud.get());
 		simpleBlock(TFBlocks.fluffy_cloud.get());
+		simpleBlock(TFBlocks.giant_cobblestone.get(), models().withExistingParent(TFBlocks.giant_cobblestone.getId().getPath(), prefix("block/util/giant_block"))
+						.texture("all", blockTexture(Blocks.COBBLESTONE)));
+		simpleBlock(TFBlocks.giant_log.get(), models().withExistingParent(TFBlocks.giant_log.getId().getPath(), prefix("block/util/giant_column"))
+						.texture("side", blockTexture(Blocks.OAK_LOG))
+						.texture("end", new ResourceLocation("block/oak_log_top")));
+		simpleBlock(TFBlocks.giant_leaves.get(), models().withExistingParent(TFBlocks.giant_leaves.getId().getPath(), prefix("block/util/giant_block"))
+						.texture("all", blockTexture(Blocks.OAK_LEAVES)));
+		simpleBlock(TFBlocks.giant_obsidian.get(), models().withExistingParent(TFBlocks.giant_obsidian.getId().getPath(), prefix("block/util/giant_block"))
+						.texture("all", blockTexture(Blocks.OBSIDIAN)));
 		simpleBlock(TFBlocks.uberous_soil.get(), models().withExistingParent(TFBlocks.uberous_soil.getId().getPath(), prefix("block/util/cube_all_2_layer"))
 						.texture("all", blockTexture(TFBlocks.uberous_soil.get()))
 						.texture("all2", prefix("block/" + TFBlocks.uberous_soil.getId().getPath() + "_glow")));

@@ -1,0 +1,7 @@
+{
+  "parent": "twilightforest:block/util/giant_column",
+  "textures": {
+    "side": "block/oak_log",
+    "end": "block/oak_log_top"
+  }
+}

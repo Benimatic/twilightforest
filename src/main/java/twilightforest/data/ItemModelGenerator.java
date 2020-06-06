@@ -47,6 +47,10 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.deadrock_weathered.get());
 		toBlock(TFBlocks.wispy_cloud.get());
 		toBlock(TFBlocks.fluffy_cloud.get());
+		toBlockModel(TFBlocks.giant_cobblestone.get(), new ResourceLocation("block/cobblestone"));
+		toBlockModel(TFBlocks.giant_log.get(), new ResourceLocation("block/oak_log"));
+		toBlockModel(TFBlocks.giant_leaves.get(), new ResourceLocation("block/oak_leaves"));
+		toBlockModel(TFBlocks.giant_obsidian.get(), new ResourceLocation("block/obsidian"));
 		toBlock(TFBlocks.uberous_soil.get());
 		toBlock(TFBlocks.huge_stalk.get());
 		generated(TFBlocks.trollvidr.getId().getPath(), prefix("block/" + TFBlocks.trollvidr.getId().getPath()));
