@@ -18,14 +18,14 @@ import twilightforest.util.MushroomUtil;
 import java.util.Random;
 import java.util.function.Function;
 
-public class TFGenBigMushgloom<T extends NoFeatureConfig> extends Feature<T> {
+public class TFGenBigMushgloom extends Feature<NoFeatureConfig> {
 
-	public TFGenBigMushgloom(Function<Dynamic<?>, T> config) {
+	public TFGenBigMushgloom(Function<Dynamic<?>, NoFeatureConfig> config) {
 		super(config);
 	}
 
 	@Override
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, T config) {
+	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
 		int height = 3 + rand.nextInt(2) + rand.nextInt(2);
 
 		if (!FeatureUtil.isAreaSuitable(world, rand, pos.add(-1, 0, -1), 3, height, 3)) {

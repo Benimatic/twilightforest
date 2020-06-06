@@ -14,14 +14,14 @@ import twilightforest.util.FeatureUtil;
 import java.util.Random;
 import java.util.function.Function;
 
-public class TFGenStoneCircle<T extends NoFeatureConfig> extends Feature<T> {
+public class TFGenStoneCircle extends Feature<NoFeatureConfig> {
 
-	public TFGenStoneCircle(Function<Dynamic<?>, T> configIn) {
+	public TFGenStoneCircle(Function<Dynamic<?>, NoFeatureConfig> configIn) {
 		super(configIn);
 	}
 
 	@Override
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, T config) {
+	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
 		if (!FeatureUtil.isAreaSuitable(world, rand, pos.add(-3, 0, -3), 6, 4, 6)) {
 			return false;
 		}

@@ -14,14 +14,14 @@ import twilightforest.util.FeatureUtil;
 import java.util.Random;
 import java.util.function.Function;
 
-public class TFGenFoundation<T extends NoFeatureConfig> extends Feature<T> {
+public class TFGenFoundation extends Feature<NoFeatureConfig> {
 
-	public TFGenFoundation(Function<Dynamic<?>, T> configIn) {
+	public TFGenFoundation(Function<Dynamic<?>, NoFeatureConfig> configIn) {
 		super(configIn);
 	}
 
 	@Override
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, T config) {
+	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
 		int sx = 5 + rand.nextInt(5);
 		int sz = 5 + rand.nextInt(5);
 

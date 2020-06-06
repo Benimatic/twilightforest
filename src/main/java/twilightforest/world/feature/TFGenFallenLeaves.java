@@ -15,16 +15,16 @@ import twilightforest.block.TFBlocks;
 import java.util.Random;
 import java.util.function.Function;
 
-public class TFGenFallenLeaves<T extends NoFeatureConfig> extends Feature<T> {
+public class TFGenFallenLeaves extends Feature<NoFeatureConfig> {
 
-	public TFGenFallenLeaves(Function<Dynamic<?>, T> config) {
+	public TFGenFallenLeaves(Function<Dynamic<?>, NoFeatureConfig> config) {
 		super(config);
 	}
 
 	private final BlockState state = TFBlocks.fallen_leaves.get().getDefaultState();
 
 	@Override
-	public boolean place(IWorld worldIn, ChunkGenerator< ? extends GenerationSettings> generator, Random rand, BlockPos position, T config) {
+	public boolean place(IWorld worldIn, ChunkGenerator< ? extends GenerationSettings> generator, Random rand, BlockPos position, NoFeatureConfig config) {
 		do {
 			BlockState state = worldIn.getBlockState(position.down());
 			if (worldIn.isAirBlock(position) && (state.getMaterial() == Material.ORGANIC || state.getMaterial() == Material.EARTH))

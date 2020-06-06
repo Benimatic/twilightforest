@@ -18,9 +18,9 @@ import java.util.Random;
 import java.util.Set;
 import java.util.function.Function;
 
-public class TFGenTreeOfTime<T extends TFTreeFeatureConfig> extends TFGenHollowTree<T> {
+public class TFGenTreeOfTime extends TFGenHollowTree {
 
-	public TFGenTreeOfTime(Function<Dynamic<?>, T> config) {
+	public TFGenTreeOfTime(Function<Dynamic<?>, TFTreeFeatureConfig> config) {
 		super(config);
 	}
 
@@ -33,7 +33,7 @@ public class TFGenTreeOfTime<T extends TFTreeFeatureConfig> extends TFGenHollowT
 //	}
 
 	@Override
-	public boolean generate(IWorldGenerationReader worldIn, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, T config) {
+	public boolean generate(IWorldGenerationReader worldIn, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		World world = (World)worldIn;
 		int height = 8;
 		int diameter = 1;
@@ -73,7 +73,7 @@ public class TFGenTreeOfTime<T extends TFTreeFeatureConfig> extends TFGenHollowT
 	 * Build the crown of the tree. This builds a smaller crown, since the large
 	 * ones were causing some performance issues
 	 */
-	protected void buildTinyCrown(World world, Random random, BlockPos pos, Set<BlockPos> leaves, Set<BlockPos> branch, int diameter, int height, MutableBoundingBox mbb, T config) {
+	protected void buildTinyCrown(World world, Random random, BlockPos pos, Set<BlockPos> leaves, Set<BlockPos> branch, int diameter, int height, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		int crownRadius = 4;
 		int bvar = 1;
 

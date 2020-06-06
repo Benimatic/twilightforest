@@ -21,7 +21,7 @@ import java.util.Random;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public class MapGenTFHollowTree<T extends NoFeatureConfig> extends Structure<T> {
+public class MapGenTFHollowTree extends Structure<NoFeatureConfig> {
 
 	//public static final int SPAWN_CHANCE = 48;
 
@@ -38,7 +38,7 @@ public class MapGenTFHollowTree<T extends NoFeatureConfig> extends Structure<T> 
 //			() -> TFBiomes.fireSwamp
 //	);
 
-	public MapGenTFHollowTree(Function<Dynamic<?>, ? extends T> config) {
+	public MapGenTFHollowTree(Function<Dynamic<?>, NoFeatureConfig> config) {
 		super(config);
 	}
 

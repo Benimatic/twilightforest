@@ -21,14 +21,14 @@ import java.util.function.Function;
  *
  * @author Ben
  */
-public class TFGenMonolith<T extends NoFeatureConfig> extends Feature<T> {
+public class TFGenMonolith extends Feature<NoFeatureConfig> {
 
-	public TFGenMonolith(Function<Dynamic<?>, T> configIn) {
+	public TFGenMonolith(Function<Dynamic<?>, NoFeatureConfig> configIn) {
 		super(configIn);
 	}
 
 	@Override
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, T config) {
+	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
 		int ht = rand.nextInt(10) + 10;
 		int dir = rand.nextInt(4);
 		int h0, h1, h2, h3;

@@ -17,14 +17,14 @@ import twilightforest.util.FeatureUtil;
 import java.util.Random;
 import java.util.function.Function;
 
-public class TFGenWell<T extends NoFeatureConfig> extends Feature<T> {
+public class TFGenWell extends Feature<NoFeatureConfig> {
 
-	public TFGenWell(Function<Dynamic<?>, T> configIn) {
+	public TFGenWell(Function<Dynamic<?>, NoFeatureConfig> configIn) {
 		super(configIn);
 	}
 
 	@Override
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, T config) {
+	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
 		if (rand.nextInt(4) == 0) {
 			return generate4x4Well(world.getWorld(), rand, pos);
 		} else {

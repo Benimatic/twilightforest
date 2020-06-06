@@ -20,17 +20,17 @@ import java.util.function.Function;
  *
  * @author Ben
  */
-public class TFGenGroveRuins<T extends NoFeatureConfig> extends Feature<T> {
+public class TFGenGroveRuins extends Feature<NoFeatureConfig> {
 
 	private static final BlockState MOSSY_STONEBRICK = Blocks.MOSSY_STONE_BRICKS.getDefaultState();
 	private static final BlockState CHISELED_STONEBRICK = Blocks.CHISELED_STONE_BRICKS.getDefaultState();
 
-	public TFGenGroveRuins(Function<Dynamic<?>, T> configIn) {
+	public TFGenGroveRuins(Function<Dynamic<?>, NoFeatureConfig> configIn) {
 		super(configIn);
 	}
 
 	@Override
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, T config) {
+	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
 		if (rand.nextBoolean()) {
 			return generateLargeArch(world.getWorld(), rand, pos);
 		} else {

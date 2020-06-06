@@ -22,18 +22,18 @@ import java.util.function.Function;
  *
  * @author Ben
  */
-public class TFGenCanopyTree<T extends TFTreeFeatureConfig> extends TFTreeGenerator<T> {
+public class TFGenCanopyTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 
 	protected int minHeight = 20;
 
 	private List<BlockPos> leaves = Lists.newArrayList();
 
-	public TFGenCanopyTree(Function<Dynamic<?>, T> config) {
+	public TFGenCanopyTree(Function<Dynamic<?>, TFTreeFeatureConfig> config) {
 		super(config);
 	}
 
 	@Override
-	protected boolean generate(IWorldGenerationReader worldIn, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, T config) {
+	protected boolean generate(IWorldGenerationReader worldIn, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		World world = (World)worldIn;
 
 		// determine a height
@@ -96,7 +96,7 @@ public class TFGenCanopyTree<T extends TFTreeFeatureConfig> extends TFTreeGenera
 //		return generate(world, random, pos, true);
 //	}
 
-	private void makeLeafBlob(World world, Random random, BlockPos leafPos, Set<BlockPos> setLeaves, T config) {
+	private void makeLeafBlob(World world, Random random, BlockPos leafPos, Set<BlockPos> setLeaves, TFTreeFeatureConfig config) {
 		FeatureUtil.makeLeafCircle(world, leafPos.down(), 3, config.leavesProvider.getBlockState(random, leafPos.down()), setLeaves, true);
 		FeatureUtil.makeLeafCircle(world, leafPos, 4, config.leavesProvider.getBlockState(random, leafPos), setLeaves, true);
 		FeatureUtil.makeLeafCircle(world, leafPos.up(), 2, config.leavesProvider.getBlockState(random, leafPos.up()), setLeaves, true);
@@ -105,7 +105,7 @@ public class TFGenCanopyTree<T extends TFTreeFeatureConfig> extends TFTreeGenera
 	/**
 	 * Build a branch with a flat blob of leaves at the end.
 	 */
-	void buildBranch(World world, BlockPos pos, Set<BlockPos> logpos, Set<BlockPos> branchpos, int height, double length, double angle, double tilt, boolean trunk, Random treeRNG, MutableBoundingBox mbb, T config) {
+	void buildBranch(World world, BlockPos pos, Set<BlockPos> logpos, Set<BlockPos> branchpos, int height, double length, double angle, double tilt, boolean trunk, Random treeRNG, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		BlockPos src = pos.up(height);
 		BlockPos dest = FeatureUtil.translate(src, length, angle, tilt);
 

@@ -179,7 +179,7 @@ public class FeatureUtil {
 	public static void putLeafBlock(World world, BlockPos pos, BlockState state, Set<BlockPos> leavespos) {
 		BlockState whatsThere = world.getBlockState(pos);
 
-		if (whatsThere.getBlock().canBeReplacedByLeaves(whatsThere, world, pos) && whatsThere.getBlock() != state.getBlock()) {
+		if (whatsThere.canBeReplacedByLeaves(world, pos) && whatsThere.getBlock() != state.getBlock()) {
 			world.setBlockState(pos, state);
 			leavespos.add(pos.toImmutable());
 		}
@@ -354,7 +354,7 @@ public class FeatureUtil {
 		return false;
 	}
 
-	public static boolean isNearSolid(World world, BlockPos pos) {
+	public static boolean isNearSolid(IWorldReader world, BlockPos pos) {
 		for (Direction e : Direction.values()) {
 			if (world.isBlockLoaded(pos.offset(e))
 					&& world.getBlockState(pos.offset(e)).getMaterial().isSolid()) {

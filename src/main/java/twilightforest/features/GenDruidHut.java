@@ -41,14 +41,14 @@ import javax.annotation.Nullable;
 import java.util.Random;
 import java.util.function.Function;
 
-public class GenDruidHut<T extends NoFeatureConfig> extends Feature<T> {
+public class GenDruidHut extends Feature<NoFeatureConfig> {
 
-	public GenDruidHut(Function<Dynamic<?>, ? extends T> renderer) {
-		super(renderer);
+	public GenDruidHut(Function<Dynamic<?>, NoFeatureConfig> config) {
+		super(config);
 	}
 
 	@Override // Loosely based on WorldGenFossils
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, T config) {
+	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
 		//Random random = world.getChunk(pos).getRandomWithSeed(987234911L);
 		Random random = world.getRandom();
 

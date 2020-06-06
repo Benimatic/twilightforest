@@ -16,17 +16,17 @@ import twilightforest.util.FeatureUtil;
 import java.util.Random;
 import java.util.function.Function;
 
-public class TFGenWoodRoots<T extends NoFeatureConfig> extends Feature<T> {
+public class TFGenWoodRoots extends Feature<NoFeatureConfig> {
 
 	private BlockState rootBlock = TFBlocks.root.get().getDefaultState();
 	private BlockState oreBlock = TFBlocks.liveroot_block.get().getDefaultState();
 
-	public TFGenWoodRoots(Function<Dynamic<?>, T> configIn) {
+	public TFGenWoodRoots(Function<Dynamic<?>, NoFeatureConfig> configIn) {
 		super(configIn);
 	}
 
 	@Override
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, T config) {
+	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
 		// start must be in stone
 		if (world.getBlockState(pos).getBlock() != Blocks.STONE) {
 			return false;

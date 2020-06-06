@@ -16,14 +16,14 @@ import java.util.Random;
 import java.util.Set;
 import java.util.function.Function;
 
-public class TFGenMinersTree<T extends TFTreeFeatureConfig> extends TFTreeGenerator<T> {
+public class TFGenMinersTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 
-	public TFGenMinersTree(Function<Dynamic<?>, T> config) {
+	public TFGenMinersTree(Function<Dynamic<?>, TFTreeFeatureConfig> config) {
 		super(config);
 	}
 
 	@Override
-	protected boolean generate(IWorldGenerationReader worldIn, Random rand, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, T config) {
+	protected boolean generate(IWorldGenerationReader worldIn, Random rand, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		World world = (World)worldIn;
 
 		if (pos.getY() >= TFWorld.MAXHEIGHT - 12) {
@@ -75,7 +75,7 @@ public class TFGenMinersTree<T extends TFTreeFeatureConfig> extends TFTreeGenera
 		return true;
 	}
 
-	protected void putBranchWithLeaves(World world, Random rand, BlockPos pos, Set<BlockPos> leaves, Set<BlockPos> branch, boolean bushy, MutableBoundingBox mbb, T config) {
+	protected void putBranchWithLeaves(World world, Random rand, BlockPos pos, Set<BlockPos> leaves, Set<BlockPos> branch, boolean bushy, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		setBranchBlockState(world, rand, pos, branch, mbb, config);
 
 		for (int lx = -1; lx <= 1; lx++) {

@@ -17,14 +17,14 @@ import twilightforest.util.FeatureUtil;
 import java.util.Random;
 import java.util.function.Function;
 
-public class TFGenFallenSmallLog<T extends NoFeatureConfig> extends Feature<T> {
+public class TFGenFallenSmallLog extends Feature<NoFeatureConfig> {
 
-	public TFGenFallenSmallLog(Function<Dynamic<?>, T> configIn) {
+	public TFGenFallenSmallLog(Function<Dynamic<?>, NoFeatureConfig> configIn) {
 		super(configIn);
 	}
 
 	@Override
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, T config) {
+	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
 		// determine direction
 		boolean goingX = rand.nextBoolean();
 

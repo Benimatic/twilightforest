@@ -15,14 +15,14 @@ import twilightforest.enums.PlantVariant;
 import java.util.Random;
 import java.util.function.Function;
 
-public class TFGenPlantRoots<T extends NoFeatureConfig> extends Feature<T> {
+public class TFGenPlantRoots extends Feature<NoFeatureConfig> {
 
-	public TFGenPlantRoots(Function<Dynamic<?>, T> config) {
+	public TFGenPlantRoots(Function<Dynamic<?>, NoFeatureConfig> config) {
 		super(config);
 	}
 
 	@Override
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random random, BlockPos pos, T config) {
+	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random random, BlockPos pos, NoFeatureConfig config) {
 		int copyX = pos.getX();
 		int copyZ = pos.getZ();
 

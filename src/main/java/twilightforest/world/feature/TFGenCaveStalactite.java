@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
 
-public class TFGenCaveStalactite<T extends CaveStalactiteConfig> extends Feature<T> {
+public class TFGenCaveStalactite extends Feature<CaveStalactiteConfig> {
 
 	private static final List<StalactiteEntry> largeHillStalactites = new ArrayList<>();
 	private static final List<StalactiteEntry> mediumHillStalactites = new ArrayList<>();
@@ -62,7 +62,7 @@ public class TFGenCaveStalactite<T extends CaveStalactiteConfig> extends Feature
 //		this.hang = true;
 //	}
 
-	public TFGenCaveStalactite(Function<Dynamic<?>, T> configIn) {
+	public TFGenCaveStalactite(Function<Dynamic<?>, CaveStalactiteConfig> configIn) {
 		super(configIn);
 	}
 
@@ -91,7 +91,7 @@ public class TFGenCaveStalactite<T extends CaveStalactiteConfig> extends Feature
 	 * This will return false if it can't find a valid ceiling and floor, or if there are other errors.
 	 */
 	@Override
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random random, BlockPos pos, T config) {
+	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random random, BlockPos pos, CaveStalactiteConfig config) {
 		int ceiling = Integer.MAX_VALUE;
 		int floor = -1;
 
@@ -150,7 +150,7 @@ public class TFGenCaveStalactite<T extends CaveStalactiteConfig> extends Feature
 		return makeSpike(world, random, new BlockPos(pos.getX(), config.hang ? ceiling : floor, pos.getZ()), length, config);
 	}
 
-	public boolean makeSpike(IWorld world, Random random, BlockPos pos, int maxLength, T config) {
+	public boolean makeSpike(IWorld world, Random random, BlockPos pos, int maxLength, CaveStalactiteConfig config) {
 
 		int diameter = (int) (maxLength / 4.5); // diameter of the base
 

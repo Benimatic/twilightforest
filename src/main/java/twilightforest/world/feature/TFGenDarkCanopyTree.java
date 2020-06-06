@@ -20,14 +20,14 @@ import java.util.function.Function;
  *
  * @author Ben
  */
-public class TFGenDarkCanopyTree<T extends TFTreeFeatureConfig> extends TFTreeGenerator<T> {
+public class TFGenDarkCanopyTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 
-	public TFGenDarkCanopyTree(Function<Dynamic<?>, T> config) {
+	public TFGenDarkCanopyTree(Function<Dynamic<?>, TFTreeFeatureConfig> config) {
 		super(config);
 	}
 
 	@Override
-	protected boolean generate(IWorldGenerationReader worldIn, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, T config) {
+	protected boolean generate(IWorldGenerationReader worldIn, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		World world = (World)worldIn;
 
 		// if we are given leaves as a starting position, seek dirt or grass underneath
@@ -90,7 +90,7 @@ public class TFGenDarkCanopyTree<T extends TFTreeFeatureConfig> extends TFTreeGe
 	/**
 	 * Build a branch with a flat blob of leaves at the end.
 	 */
-	private void buildBranch(World world, BlockPos pos, Set<BlockPos> leaves, Set<BlockPos> branch, int height, double length, double angle, double tilt, Random random, MutableBoundingBox mbb, T config) {
+	private void buildBranch(World world, BlockPos pos, Set<BlockPos> leaves, Set<BlockPos> branch, int height, double length, double angle, double tilt, Random random, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		BlockPos src = pos.up(height);
 		BlockPos dest = FeatureUtil.translate(src, length, angle, tilt);
 
@@ -104,7 +104,7 @@ public class TFGenDarkCanopyTree<T extends TFTreeFeatureConfig> extends TFTreeGe
 	/**
 	 * Make our leaf pattern
 	 */
-	private void leafAround(World world, Random random, BlockPos pos, Set<BlockPos> leaves, T config) {
+	private void leafAround(World world, Random random, BlockPos pos, Set<BlockPos> leaves, TFTreeFeatureConfig config) {
 		int leafSize = 4;
 
 		// only leaf if there are no leaves by where we are thinking of leafing

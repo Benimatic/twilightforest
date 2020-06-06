@@ -9,6 +9,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.IWorldGenerationReader;
 import net.minecraft.world.gen.feature.AbstractTreeFeature;
@@ -77,7 +79,9 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Abs
 	}
 
 	protected boolean setRootsBlockState(IWorldGenerationReader world, Random random, BlockPos pos, Set<BlockPos> branchpos, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
-		if (canRootGrowIn((World)world, pos)) { //this feels dirty. Is it even going to work?
+		// XXX: This was originally an IWorld in AbstractTreeFeature.place, so it should be ok to cast it back.
+		// If you're here investigating after it blew up, then the above assumption is no longer true.
+		if (canRootGrowIn((IWorld) world, pos)) {
 			this.setBlockState(world, pos, config.rootsProvider.getBlockState(random, pos), mbb);
 			branchpos.add(pos.toImmutable());
 			return true;
@@ -99,22 +103,11 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Abs
 		}
 	}
 
-	/**
-	 * Function used to actually place root blocks if they're not going to break anything important
-	 * TODO: Deprecated. Use setRootsBlockState
-	 */
-	@Deprecated
-	protected void placeRootBlock(World world, BlockPos pos, BlockState state) {
-		if (canRootGrowIn(world, pos)) {
-			world.setBlockState(pos, state);
-		}
-	}
-
-	public static boolean canRootGrowIn(World world, BlockPos pos) {
+	public static boolean canRootGrowIn(IWorldReader world, BlockPos pos) {
 		BlockState blockState = world.getBlockState(pos);
 		Block blockID = blockState.getBlock();
 
-		if (blockID.isAir(blockState, world, pos)) {
+		if (blockState.isAir(world, pos)) {
 			// roots can grow through air if they are near a solid block
 			return FeatureUtil.isNearSolid(world, pos);
 		} else {

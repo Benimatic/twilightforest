@@ -17,14 +17,14 @@ import java.util.function.Function;
  *
  * @author Ben
  */
-public class TFGenHollowStump<T extends TFTreeFeatureConfig> extends TFGenHollowTree<T> {
+public class TFGenHollowStump extends TFGenHollowTree {
 
-	public TFGenHollowStump(Function<Dynamic<?>, T> config) {
+	public TFGenHollowStump(Function<Dynamic<?>, TFTreeFeatureConfig> config) {
 		super(config);
 	}
 
 	@Override
-	public boolean generate(IWorldGenerationReader worldIn, Random rand, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, T config) {
+	public boolean generate(IWorldGenerationReader worldIn, Random rand, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		World world = (World) worldIn;
 		int radius = rand.nextInt(2) + 2;
 
@@ -44,7 +44,7 @@ public class TFGenHollowStump<T extends TFTreeFeatureConfig> extends TFGenHollow
 	}
 
 	@Override
-	protected void buildTrunk(World world, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> branch, Set<BlockPos> root, int diameter, int maxHeight, MutableBoundingBox mbb, T config) {
+	protected void buildTrunk(World world, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> branch, Set<BlockPos> root, int diameter, int maxHeight, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 
 		int hollow = diameter / 2;
 

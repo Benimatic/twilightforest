@@ -17,16 +17,16 @@ import twilightforest.util.FeatureUtil;
 import java.util.Random;
 import java.util.function.Function;
 
-public class TFGenHangingLamps<T extends NoFeatureConfig> extends Feature<T> {
+public class TFGenHangingLamps extends Feature<NoFeatureConfig> {
 
 	private static final int MAX_HANG = 8;
 
-	public TFGenHangingLamps(Function<Dynamic<?>, T> configIn) {
+	public TFGenHangingLamps(Function<Dynamic<?>, NoFeatureConfig> configIn) {
 		super(configIn);
 	}
 
 	@Override
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, T config) {
+	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
 		// this must be an air block, surrounded by air
 		if (!world.isAirBlock(pos) || !FeatureUtil.surroundedByAir(world, pos)) {
 			return false;

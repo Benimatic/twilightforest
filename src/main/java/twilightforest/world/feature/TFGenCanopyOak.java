@@ -17,16 +17,16 @@ import java.util.Random;
 import java.util.Set;
 import java.util.function.Function;
 
-public class TFGenCanopyOak<T extends TFTreeFeatureConfig> extends TFGenCanopyTree<T> {
+public class TFGenCanopyOak extends TFGenCanopyTree {
 
-	private List<BlockPos> leaves = Lists.newArrayList();
+	private final List<BlockPos> leaves = Lists.newArrayList();
 
-	public TFGenCanopyOak(Function<Dynamic<?>, T> config) {
+	public TFGenCanopyOak(Function<Dynamic<?>, TFTreeFeatureConfig> config) {
 		super(config);
 	}
 
 	@Override
-	protected boolean generate(IWorldGenerationReader worldIn, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, T config) {
+	protected boolean generate(IWorldGenerationReader worldIn, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		World world = (World)worldIn;
 
 		// determine a height
@@ -80,11 +80,11 @@ public class TFGenCanopyOak<T extends TFTreeFeatureConfig> extends TFGenCanopyTr
 		return true;
 	}
 
-	private void makeLeafBlob(World world, Random rand, BlockPos leafPos, Set<BlockPos> setLeaves, T config) {
+	private void makeLeafBlob(World world, Random rand, BlockPos leafPos, Set<BlockPos> setLeaves, TFTreeFeatureConfig config) {
 		FeatureUtil.drawLeafBlob(world, leafPos, 2, config.leavesProvider.getBlockState(rand, leafPos), setLeaves);
 	}
 
-	private void makeRoots(World world, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> root, MutableBoundingBox mbb, T config) {
+	private void makeRoots(World world, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> root, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		// root bulb
 		if (FeatureUtil.hasAirAround(world, pos.down())) {
 			this.setLogBlockState(world, random, pos.down(), trunk, mbb, config);
@@ -100,7 +100,7 @@ public class TFGenCanopyOak<T extends TFTreeFeatureConfig> extends TFGenCanopyTr
 		}
 	}
 
-	private void buildTrunk(IWorldGenerationReader world, Random rand, BlockPos pos, Set<BlockPos> trunk, int treeHeight, MutableBoundingBox mbb, T config) {
+	private void buildTrunk(IWorldGenerationReader world, Random rand, BlockPos pos, Set<BlockPos> trunk, int treeHeight, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		for (int dy = 0; dy < treeHeight; dy++) {
 			this.setLogBlockState(world, rand, pos.add(0, dy, 0), trunk, mbb, config);
 			this.setLogBlockState(world, rand, pos.add(1, dy, 0), trunk, mbb, config);
@@ -115,7 +115,7 @@ public class TFGenCanopyOak<T extends TFTreeFeatureConfig> extends TFGenCanopyTr
 	 * Build a branch with a flat blob of leaves at the end.
 	 */
 	@Override
-	void buildBranch(World world, BlockPos pos, Set<BlockPos> logpos, Set<BlockPos> branchpos, int height, double length, double angle, double tilt, boolean trunk, Random treeRNG, MutableBoundingBox mbb, T config) {
+	void buildBranch(World world, BlockPos pos, Set<BlockPos> logpos, Set<BlockPos> branchpos, int height, double length, double angle, double tilt, boolean trunk, Random treeRNG, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		BlockPos src = pos.up(height);
 		BlockPos dest = FeatureUtil.translate(src, length, angle, tilt);
 

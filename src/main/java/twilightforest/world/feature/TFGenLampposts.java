@@ -14,17 +14,17 @@ import net.minecraft.world.gen.feature.Feature;
 import java.util.Random;
 import java.util.function.Function;
 
-public class TFGenLampposts<T extends BlockStateFeatureConfig> extends Feature<T> {
+public class TFGenLampposts extends Feature<BlockStateFeatureConfig> {
 
 	private static final Rotation[] ROTATIONS = Rotation.values();
 	//private final BlockState lamp;
 
-	public TFGenLampposts(Function<Dynamic<?>, T> configIn) {
+	public TFGenLampposts(Function<Dynamic<?>, BlockStateFeatureConfig> configIn) {
 		super(configIn);
 	}
 
 	@Override
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, T config) {
+	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, BlockStateFeatureConfig config) {
 		// we should start on a grass block
 		if (world.getBlockState(pos.down()).getBlock() != Blocks.GRASS) {
 			return false;

@@ -27,14 +27,14 @@ import static twilightforest.enums.HugeLilypadPiece.SW;
  *
  * @author Ben
  */
-public class TFGenHugeLilyPad<T extends NoFeatureConfig> extends Feature<T> {
+public class TFGenHugeLilyPad extends Feature<NoFeatureConfig> {
 
-	public TFGenHugeLilyPad(Function<Dynamic<?>, T> config) {
+	public TFGenHugeLilyPad(Function<Dynamic<?>, NoFeatureConfig> config) {
 		super(config);
 	}
 
 	@Override
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random random, BlockPos pos, T config) {
+	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random random, BlockPos pos, NoFeatureConfig config) {
 		for (int i = 0; i < 10; i++) {
 			BlockPos dPos = pos.add(
 					random.nextInt(8) - random.nextInt(8),

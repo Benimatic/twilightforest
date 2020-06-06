@@ -13,9 +13,9 @@ import net.minecraft.world.gen.feature.NoFeatureConfig;
 import java.util.Random;
 import java.util.function.Function;
 
-public class TFGenWebs<T extends NoFeatureConfig> extends Feature<T> {
+public class TFGenWebs extends Feature<NoFeatureConfig> {
 
-	public TFGenWebs(Function<Dynamic<?>, T> config) {
+	public TFGenWebs(Function<Dynamic<?>, NoFeatureConfig> config) {
 		super(config);
 	}
 
@@ -24,7 +24,7 @@ public class TFGenWebs<T extends NoFeatureConfig> extends Feature<T> {
 	}
 
 	@Override
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random random, BlockPos pos, T config) {
+	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random random, BlockPos pos, NoFeatureConfig config) {
 		while (pos.getY() > generator.getSeaLevel() && world.isAirBlock(pos))
 			pos = pos.down();
 

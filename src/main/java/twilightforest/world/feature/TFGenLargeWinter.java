@@ -16,14 +16,14 @@ import java.util.Random;
 import java.util.Set;
 import java.util.function.Function;
 
-public class TFGenLargeWinter<T extends TFTreeFeatureConfig> extends TFTreeGenerator<T> {
+public class TFGenLargeWinter extends TFTreeGenerator<TFTreeFeatureConfig> {
 
-	public TFGenLargeWinter(Function<Dynamic<?>, T> config) {
+	public TFGenLargeWinter(Function<Dynamic<?>, TFTreeFeatureConfig> config) {
 		super(config);
 	}
 
 	@Override
-	protected boolean generate(IWorldGenerationReader worldIn, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, T config) {
+	protected boolean generate(IWorldGenerationReader worldIn, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		World world = (World)worldIn;
 
 		// determine a height
@@ -62,7 +62,7 @@ public class TFGenLargeWinter<T extends TFTreeFeatureConfig> extends TFTreeGener
 		return true;
 	}
 
-	private void makeLeaves(World world, Random random, BlockPos pos, int treeHeight, Set<BlockPos> trunk, Set<BlockPos> leaves, MutableBoundingBox mbb, T config) {
+	private void makeLeaves(World world, Random random, BlockPos pos, int treeHeight, Set<BlockPos> trunk, Set<BlockPos> leaves, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		int offGround = 3;
 		int leafType = 1;
 
@@ -75,7 +75,7 @@ public class TFGenLargeWinter<T extends TFTreeFeatureConfig> extends TFTreeGener
 		}
 	}
 
-	private void makePineBranches(World world, Random rand, BlockPos pos, Set<BlockPos> trunk, int radius, MutableBoundingBox mbb, T config) {
+	private void makePineBranches(World world, Random rand, BlockPos pos, Set<BlockPos> trunk, int radius, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		int branchLength = radius > 4 ? radius - 1 : radius - 2;
 
 		switch (pos.getY() % 2) {
@@ -99,7 +99,7 @@ public class TFGenLargeWinter<T extends TFTreeFeatureConfig> extends TFTreeGener
 		}
 	}
 
-	private void placeLogAt(IWorldGenerationReader reader, Random rand, BlockPos pos, Direction.Axis axis, Set<BlockPos> logPos, MutableBoundingBox boundingBox, T config) {
+	private void placeLogAt(IWorldGenerationReader reader, Random rand, BlockPos pos, Direction.Axis axis, Set<BlockPos> logPos, MutableBoundingBox boundingBox, TFTreeFeatureConfig config) {
 		this.setBlockState(reader, pos, config.trunkProvider.getBlockState(rand, pos).with(RotatedPillarBlock.AXIS, axis), boundingBox);
 		logPos.add(pos.toImmutable());
 	}
@@ -116,7 +116,7 @@ public class TFGenLargeWinter<T extends TFTreeFeatureConfig> extends TFTreeGener
 		}
 	}
 
-	private void buildTrunk(World world, Random rand, BlockPos pos, Set<BlockPos> trunk, int treeHeight, MutableBoundingBox mbb, T config) {
+	private void buildTrunk(World world, Random rand, BlockPos pos, Set<BlockPos> trunk, int treeHeight, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		for (int dy = 0; dy < treeHeight; dy++) {
 			this.setLogBlockState(world, rand, pos.add(0, dy, 0), trunk, mbb, config);
 			this.setLogBlockState(world, rand, pos.add(1, dy, 0), trunk, mbb, config);

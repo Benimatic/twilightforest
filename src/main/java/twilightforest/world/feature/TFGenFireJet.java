@@ -13,15 +13,14 @@ import net.minecraft.world.gen.feature.Feature;
 import java.util.Random;
 import java.util.function.Function;
 
-public class TFGenFireJet<T extends BlockStateFeatureConfig> extends Feature<T> {
-	//private final FireJetVariant variant;
+public class TFGenFireJet extends Feature<BlockStateFeatureConfig> {
 
-	public TFGenFireJet(Function<Dynamic<?>, T> configIn) {
+	public TFGenFireJet(Function<Dynamic<?>, BlockStateFeatureConfig> configIn) {
 		super(configIn);
 	}
 
 	@Override
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, T config) {
+	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, BlockStateFeatureConfig config) {
 		for (int i = 0; i < 4; ++i) {
 			BlockPos dPos = pos.add(
 					rand.nextInt(8) - rand.nextInt(8),

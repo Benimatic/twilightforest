@@ -16,14 +16,14 @@ import java.util.function.Function;
  *
  * @author Ben
  */
-public class TFGenOutsideStalagmite<T extends CaveStalactiteConfig> extends TFGenCaveStalactite<T> {
+public class TFGenOutsideStalagmite extends TFGenCaveStalactite {
 
-	public TFGenOutsideStalagmite(Function<Dynamic<?>, T> configIn) {
+	public TFGenOutsideStalagmite(Function<Dynamic<?>, CaveStalactiteConfig> configIn) {
 		super(configIn);
 	}
 
 	@Override
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, T config) {
+	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, CaveStalactiteConfig config) {
 		int length = rand.nextInt(10) + 5;
 
 		if (!FeatureUtil.isAreaSuitable(world, rand, pos, 1, length, 1)) {

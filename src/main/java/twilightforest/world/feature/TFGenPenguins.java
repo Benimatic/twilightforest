@@ -14,14 +14,14 @@ import twilightforest.entity.passive.EntityTFPenguin;
 import java.util.Random;
 import java.util.function.Function;
 
-public class TFGenPenguins<T extends NoFeatureConfig> extends Feature<T> {
+public class TFGenPenguins extends Feature<NoFeatureConfig> {
 
-	public TFGenPenguins(Function<Dynamic<?>, T> config) {
+	public TFGenPenguins(Function<Dynamic<?>, NoFeatureConfig> config) {
 		super(config);
 	}
 
 	@Override
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, T config) {
+	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
 
 		for (int i = 0; i < 10; i++) {
 			BlockPos dPos = pos.add(

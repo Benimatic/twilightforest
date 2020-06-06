@@ -18,14 +18,14 @@ import java.util.function.Function;
  *
  * @author Ben
  */
-public class TFGenHugeWaterLily<T extends NoFeatureConfig> extends Feature<T> {
+public class TFGenHugeWaterLily extends Feature<NoFeatureConfig> {
 
-	public TFGenHugeWaterLily(Function<Dynamic<?>, T> config) {
+	public TFGenHugeWaterLily(Function<Dynamic<?>, NoFeatureConfig> config) {
 		super(config);
 	}
 
 	@Override
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random random, BlockPos pos, T config) {
+	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random random, BlockPos pos, NoFeatureConfig config) {
 		for (int i = 0; i < 4; i++) {
 			BlockPos pos_ = pos.add(
 					random.nextInt(8) - random.nextInt(8),

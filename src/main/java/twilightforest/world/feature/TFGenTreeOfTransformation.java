@@ -11,7 +11,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.function.Function;
 
-public class TFGenTreeOfTransformation<T extends TFTreeFeatureConfig> extends TFGenCanopyTree<T> {
+public class TFGenTreeOfTransformation extends TFGenCanopyTree {
 
 //	public TFGenTreeOfTransformation() {
 //		this(false);
@@ -29,12 +29,12 @@ public class TFGenTreeOfTransformation<T extends TFTreeFeatureConfig> extends TF
 //		this.chanceAddSecondFive = Integer.MAX_VALUE;
 //	}
 
-	public TFGenTreeOfTransformation(Function<Dynamic<?>, T> config) {
+	public TFGenTreeOfTransformation(Function<Dynamic<?>, TFTreeFeatureConfig> config) {
 		super(config);
 	}
 
 	@Override
-	protected boolean generate(IWorldGenerationReader world, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, T config) {
+	protected boolean generate(IWorldGenerationReader world, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		if (super.generate(world, random, pos, trunk, leaves, branch, root, mbb, config)) {
 			// heart of transformation
 			world.setBlockState(pos.up(3), TFBlocks.transformation_log_core.get().getDefaultState(), 3);

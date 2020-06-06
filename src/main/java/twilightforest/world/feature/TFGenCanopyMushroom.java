@@ -23,31 +23,19 @@ import java.util.function.Function;
  *
  * @author Ben
  */
-public class TFGenCanopyMushroom<T extends NoFeatureConfig> extends Feature<T> {
+public class TFGenCanopyMushroom extends Feature<NoFeatureConfig> {
 
 	public BlockState treeState   = Blocks.MUSHROOM_STEM.getDefaultState().with(HugeMushroomBlock.DOWN, false).with(HugeMushroomBlock.UP, false);
 	public BlockState branchState = Blocks.MUSHROOM_STEM.getDefaultState();
 	public BlockState leafState   = Blocks.RED_MUSHROOM_BLOCK.getDefaultState().with(HugeMushroomBlock.DOWN, false).with(HugeMushroomBlock.NORTH, false).with(HugeMushroomBlock.SOUTH, false).with(HugeMushroomBlock.EAST, false).with(HugeMushroomBlock.WEST, false);
 	public Block source = Blocks.RED_MUSHROOM;
 
-//	public TFGenCanopyMushroom() {
-//		this(false);
-//	}
-//
-//	public TFGenCanopyMushroom(boolean notify) {
-//		super(notify);
-//		treeState   = Blocks.RED_MUSHROOM_BLOCK.getDefaultState().with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.STEM);
-//		branchState = Blocks.RED_MUSHROOM_BLOCK.getDefaultState().with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.ALL_STEM);
-//		leafState   = Blocks.RED_MUSHROOM_BLOCK.getDefaultState().with(BlockHugeMushroom.VARIANT, BlockHugeMushroom.EnumType.CENTER);
-//		source = Blocks.RED_MUSHROOM;
-//	}
-
-	public TFGenCanopyMushroom(Function<Dynamic<?>, T> config) {
+	public TFGenCanopyMushroom(Function<Dynamic<?>, NoFeatureConfig> config) {
 		super(config);
 	}
 
 	@Override
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random random, BlockPos pos, T config) {
+	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random random, BlockPos pos, NoFeatureConfig config) {
 		// determine a height
 		int treeHeight = 12;
 		if (random.nextInt(3) == 0) {

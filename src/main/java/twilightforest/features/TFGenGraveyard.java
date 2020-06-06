@@ -46,13 +46,13 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
 
-public class TFGenGraveyard<T extends NoFeatureConfig> extends Feature<T> {
+public class TFGenGraveyard extends Feature<NoFeatureConfig> {
 
 	private static final ResourceLocation GRAVEYARD = TwilightForestMod.prefix("landscape/graveyard/graveyard");
 	private static final ResourceLocation TRAP = TwilightForestMod.prefix("landscape/graveyard/grave_trap");
 	private static final ImmutableSet<Material> MATERIAL_WHITELIST = ImmutableSet.of(Material.EARTH, Material.ORGANIC, Material.LEAVES, Material.WOOD, Material.PLANTS, Material.ROCK);
 
-	public TFGenGraveyard(Function<Dynamic<?>, T> config) {
+	public TFGenGraveyard(Function<Dynamic<?>, NoFeatureConfig> config) {
 		super(config);
 	}
 
@@ -116,7 +116,7 @@ public class TFGenGraveyard<T extends NoFeatureConfig> extends Feature<T> {
 	}
 
 	@Override
-	public boolean place(IWorld worldIn, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, T config) {
+	public boolean place(IWorld worldIn, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
 		int flags = 0b10100;
 		World world = worldIn.getWorld();
 		//Random random = world.getChunk(pos).getRandomWithSeed(987234911L);

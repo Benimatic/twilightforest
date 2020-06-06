@@ -15,7 +15,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.function.Function;
 
-public class TFGenMangroveTree<T extends TFTreeFeatureConfig> extends TFTreeGenerator<T> {
+public class TFGenMangroveTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 
 	//private boolean checkForWater;
 	private List<LeafBlob> leaves = Lists.newArrayList();
@@ -35,7 +35,7 @@ public class TFGenMangroveTree<T extends TFTreeFeatureConfig> extends TFTreeGene
 //		rootState = TFBlocks.root.getDefaultState();
 //	}
 
-	public TFGenMangroveTree(Function<Dynamic<?>, T> config) {
+	public TFGenMangroveTree(Function<Dynamic<?>, TFTreeFeatureConfig> config) {
 		super(config);
 	}
 
@@ -46,7 +46,7 @@ public class TFGenMangroveTree<T extends TFTreeFeatureConfig> extends TFTreeGene
 //	}
 
 	@Override
-	protected boolean generate(IWorldGenerationReader worldIn, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, T config) {
+	protected boolean generate(IWorldGenerationReader worldIn, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		World world = (World)worldIn;
 		// we only start over water
 		if (pos.getY() >= 128 - 18 - 1 || (config.checkWater && world.getBlockState(pos.down()).getBlock() != Blocks.WATER)) {
@@ -84,7 +84,7 @@ public class TFGenMangroveTree<T extends TFTreeFeatureConfig> extends TFTreeGene
 		return true;
 	}
 
-	private void makeLeafBlob(World world, Random random, BlockPos pos, Set<BlockPos> leaves, int size, T config) {
+	private void makeLeafBlob(World world, Random random, BlockPos pos, Set<BlockPos> leaves, int size, TFTreeFeatureConfig config) {
 		FeatureUtil.makeLeafCircle(world, pos.down(), size - 1, config.leavesProvider.getBlockState(random, pos.down()), leaves, false);
 		FeatureUtil.makeLeafCircle(world, pos, size, config.leavesProvider.getBlockState(random, pos), leaves, false);
 		FeatureUtil.makeLeafCircle(world, pos.up(), size - 2, config.leavesProvider.getBlockState(random, pos.up()), leaves, false);
@@ -93,7 +93,7 @@ public class TFGenMangroveTree<T extends TFTreeFeatureConfig> extends TFTreeGene
 	/**
 	 * Build a branch with a flat blob of leaves at the end.
 	 */
-	private void buildBranch(World world, Random random, BlockPos pos, Set<BlockPos> log, Set<BlockPos> branch, int height, double length, double angle, double tilt, MutableBoundingBox mbb, T config, boolean trunk) {
+	private void buildBranch(World world, Random random, BlockPos pos, Set<BlockPos> log, Set<BlockPos> branch, int height, double length, double angle, double tilt, MutableBoundingBox mbb, TFTreeFeatureConfig config, boolean trunk) {
 		BlockPos src = pos.up(height);
 		BlockPos dest = FeatureUtil.translate(src, length, angle, tilt);
 
@@ -127,7 +127,7 @@ public class TFGenMangroveTree<T extends TFTreeFeatureConfig> extends TFTreeGene
 	/**
 	 * Build a root.  (Which is really like a branch without the leaves)
 	 */
-	private void buildRoot(World world, Random rand, BlockPos pos, Set<BlockPos> branch, Set<BlockPos> root, int height, double length, double angle, double tilt, MutableBoundingBox mbb, T config) {
+	private void buildRoot(World world, Random rand, BlockPos pos, Set<BlockPos> branch, Set<BlockPos> root, int height, double length, double angle, double tilt, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		BlockPos src = pos.up(height);
 		BlockPos dest = FeatureUtil.translate(src, length, angle, tilt);
 

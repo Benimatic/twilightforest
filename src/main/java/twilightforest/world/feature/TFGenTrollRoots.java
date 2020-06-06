@@ -13,14 +13,14 @@ import twilightforest.block.TFBlocks;
 import java.util.Random;
 import java.util.function.Function;
 
-public class TFGenTrollRoots<T extends NoFeatureConfig> extends Feature<T> {
+public class TFGenTrollRoots extends Feature<NoFeatureConfig> {
 
-	public TFGenTrollRoots(Function<Dynamic<?>, T> config) {
+	public TFGenTrollRoots(Function<Dynamic<?>, NoFeatureConfig> config) {
 		super(config);
 	}
 
 	@Override
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random random, BlockPos pos, T config) {
+	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random random, BlockPos pos, NoFeatureConfig config) {
 		int copyX = pos.getX();
 		int copyZ = pos.getZ();
 

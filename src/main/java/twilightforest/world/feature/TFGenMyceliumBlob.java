@@ -18,12 +18,12 @@ import java.util.function.Function;
  *
  * @author Ben
  */
-public class TFGenMyceliumBlob<T extends SphereReplaceConfig> extends Feature<T> {
+public class TFGenMyceliumBlob extends Feature<SphereReplaceConfig> {
 
 //	private final BlockState myceliumState;
 //	private final int numberOfBlocks;
 
-	public TFGenMyceliumBlob(Function<Dynamic<?>, T> configIn) {
+	public TFGenMyceliumBlob(Function<Dynamic<?>, SphereReplaceConfig> configIn) {
 		super(configIn);
 	}
 
@@ -38,7 +38,7 @@ public class TFGenMyceliumBlob<T extends SphereReplaceConfig> extends Feature<T>
 
 
 	@Override
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random random, BlockPos pos, T config) {
+	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random random, BlockPos pos, SphereReplaceConfig config) {
 //        if (world.getBlock(i, j, k).getMaterial() != Material.WATER)
 //        {
 //            return false;

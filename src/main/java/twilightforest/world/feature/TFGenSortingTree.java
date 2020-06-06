@@ -17,14 +17,14 @@ import twilightforest.world.feature.config.TFTreeFeatureConfig;
 import java.util.Random;
 import java.util.function.Function;
 
-public class TFGenSortingTree<T extends TFTreeFeatureConfig> extends Feature<T> {
+public class TFGenSortingTree extends Feature<TFTreeFeatureConfig> {
 
-	public TFGenSortingTree(Function<Dynamic<?>, T> config) {
+	public TFGenSortingTree(Function<Dynamic<?>, TFTreeFeatureConfig> config) {
 		super(config);
 	}
 
 	@Override
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, T config) {
+	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, TFTreeFeatureConfig config) {
 		// check soil
 		Material materialUnder = world.getBlockState(pos.down()).getMaterial();
 		if ((materialUnder != Material.ORGANIC && materialUnder != Material.EARTH) || pos.getY() >= TFWorld.MAXHEIGHT - 12) {
@@ -46,7 +46,7 @@ public class TFGenSortingTree<T extends TFTreeFeatureConfig> extends Feature<T> 
 		return true;
 	}
 
-	private void putLeaves(World world, Random rand, BlockPos pos, boolean bushy, T config) {
+	private void putLeaves(World world, Random rand, BlockPos pos, boolean bushy, TFTreeFeatureConfig config) {
 		for (int lx = -1; lx <= 1; lx++) {
 			for (int ly = -1; ly <= 1; ly++) {
 				for (int lz = -1; lz <= 1; lz++) {

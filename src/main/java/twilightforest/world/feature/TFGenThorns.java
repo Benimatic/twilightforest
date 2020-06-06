@@ -16,19 +16,19 @@ import twilightforest.block.TFBlocks;
 import java.util.Random;
 import java.util.function.Function;
 
-public class TFGenThorns<T extends NoFeatureConfig> extends Feature<T> {
+public class TFGenThorns extends Feature<NoFeatureConfig> {
 
 	private static final int MAX_SPREAD = 7;
 	private static final int CHANCE_OF_BRANCH = 3;
 	private static final int CHANCE_OF_LEAF = 3;
 	private static final int CHANCE_LEAF_IS_ROSE = 50;
 
-	public TFGenThorns(Function<Dynamic<?>, T> config) {
+	public TFGenThorns(Function<Dynamic<?>, NoFeatureConfig> config) {
 		super(config);
 	}
 
 	@Override
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, T config) {
+	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
 
 		// make a 3-5 long stack going up
 		int nextLength = 2 + rand.nextInt(4);
