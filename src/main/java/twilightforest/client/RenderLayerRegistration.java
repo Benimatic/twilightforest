@@ -28,6 +28,8 @@ public class RenderLayerRegistration {
 		RenderTypeLookup.setRenderLayer(TFBlocks.trollvidr.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.unripe_trollber.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.trollber.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.huge_lilypad.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.huge_waterlily.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.castle_rune_brick_yellow.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.castle_rune_brick_purple.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.castle_rune_brick_pink.get(), cutout);

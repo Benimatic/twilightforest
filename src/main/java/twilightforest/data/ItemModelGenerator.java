@@ -56,6 +56,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		generated(TFBlocks.trollvidr.getId().getPath(), prefix("block/" + TFBlocks.trollvidr.getId().getPath()));
 		generated(TFBlocks.unripe_trollber.getId().getPath(), prefix("block/" + TFBlocks.unripe_trollber.getId().getPath()));
 		generated(TFBlocks.trollber.getId().getPath(), prefix("block/" + TFBlocks.trollber.getId().getPath()));
+		generated(TFBlocks.huge_lilypad.getId().getPath(), prefix("block/" + TFBlocks.huge_lilypad.getId().getPath()));
+		generated(TFBlocks.huge_waterlily.getId().getPath(), prefix("block/" + TFBlocks.huge_waterlily.getId().getPath()));
 		toBlock(TFBlocks.castle_brick.get());
 		toBlock(TFBlocks.castle_brick_worn.get());
 		toBlock(TFBlocks.castle_brick_cracked.get());
@@ -109,6 +111,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.root.get());
 		toBlock(TFBlocks.liveroot_block.get());
 		toBlock(TFBlocks.uncrafting_table.get());
+		toBlockModel(TFBlocks.boss_spawner.get(), new ResourceLocation("block/spawner"));
 		toBlock(TFBlocks.firefly_jar.get());
 		generated(TFBlocks.moss_patch.getId().getPath(), prefix("block/patch/moss"));
 		generated(TFBlocks.mayapple.getId().getPath(), prefix("block/mayapple"));

@@ -31,9 +31,8 @@ public class BlockTFHugeLilyPad extends BushBlock {
 
 	private boolean isSelfDestructing = false;
 
-	protected BlockTFHugeLilyPad() {
-		super(Properties.create(Material.PLANTS).sound(SoundType.PLANT));
-		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
+	protected BlockTFHugeLilyPad(Properties props) {
+		super(props);
 		this.setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH).with(PIECE, HugeLilypadPiece.NW));
 	}
 
@@ -77,25 +76,6 @@ public class BlockTFHugeLilyPad extends BushBlock {
 		this.isSelfDestructing = false;
 	}
 
-//	@Override
-//	public boolean canBlockStay(World world, BlockPos pos, BlockState state) {
-//		for (BlockPos check : this.getAllMyBlocks(pos, state)) {
-//			BlockState dStateBelow = world.getBlockState(check.down());
-//
-//			if (!(dStateBelow.getBlock() == Blocks.WATER || dStateBelow.getBlock() == Blocks.FLOWING_WATER)
-//					|| dStateBelow.get(BlockLiquid.LEVEL) != 0) {
-//				return false;
-//			}
-//
-//			if (world.getBlockState(check).getBlock() != this) {
-//				//TwilightForestMod.LOGGER.info("giant lilypad cannot stay because we can't find all 4 pieces");
-//				return false;
-//			}
-//		}
-//
-//		return true;
-//	}
-
 	/**
 	 * Get all 4 coordinates for all parts of this lily pad.
 	 */
@@ -127,16 +107,6 @@ public class BlockTFHugeLilyPad extends BushBlock {
 		return pieces;
 	}
 
-	// [VanillaCopy] of super without dropping
-	//TODO: We did move to loot tables, but evaluate on testing
-//	@Override
-//	protected void checkAndDropBlock(World worldIn, BlockPos pos, BlockState state) {
-//		if (!this.canBlockStay(worldIn, pos, state)) {
-//			// this.dropBlockAsItem(worldIn, pos, state, 0); TF - nodrop
-//			worldIn.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
-//		}
-//	}
-
 	@Override
 	@Deprecated
 	public PushReaction getPushReaction(BlockState state) {
@@ -160,11 +130,4 @@ public class BlockTFHugeLilyPad extends BushBlock {
 			worldIn.destroyBlock(new BlockPos(pos), true);
 		}
 	}
-
-	//TODO: Move to client
-//	@Override
-//	@OnlyIn(Dist.CLIENT)
-//	public BlockRenderLayer getRenderLayer() {
-//		return BlockRenderLayer.CUTOUT;
-//	}
 }

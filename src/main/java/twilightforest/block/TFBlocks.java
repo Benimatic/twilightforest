@@ -18,6 +18,8 @@ import twilightforest.client.ISTER;
 import twilightforest.enums.BossVariant;
 import twilightforest.enums.MagicWoodVariant;
 import twilightforest.enums.PlantVariant;
+import twilightforest.item.ItemBlockTFHugeLilyPad;
+import twilightforest.item.ItemBlockTFHugeWaterLily;
 import twilightforest.item.TFItems;
 import twilightforest.tileentity.TFTileEntities;
 import twilightforest.world.feature.tree.*;
@@ -161,8 +163,8 @@ public class TFBlocks {
 	public static final RegistryObject<Block> trollvidr                  = BLOCKS.register("trollvidr", () -> new BlockTFTrollRoot(Block.Properties.create(Material.PLANTS).sound(SoundType.PLANT).doesNotBlockMovement()));
 	public static final RegistryObject<Block> unripe_trollber            = BLOCKS.register("unripe_trollber", () -> new BlockTFUnripeTorchCluster(Block.Properties.create(Material.PLANTS).sound(SoundType.PLANT).doesNotBlockMovement().tickRandomly()));
 	public static final RegistryObject<Block> trollber                   = BLOCKS.register("trollber", () -> new BlockTFTrollRoot(Block.Properties.create(Material.PLANTS).sound(SoundType.PLANT).doesNotBlockMovement().lightValue(15)));
-	public static final RegistryObject<Block> huge_lilypad               = BLOCKS.register("huge_lilypad", () -> new BlockTFHugeLilyPad());
-	public static final RegistryObject<Block> huge_waterlily             = BLOCKS.register("huge_waterlily", () -> new BlockTFHugeWaterLily());
+	public static final RegistryObject<BlockTFHugeLilyPad> huge_lilypad               = BLOCKS.register("huge_lilypad", () -> new BlockTFHugeLilyPad(Block.Properties.create(Material.PLANTS).sound(SoundType.PLANT)));
+	public static final RegistryObject<Block> huge_waterlily             = BLOCKS.register("huge_waterlily", () -> new BlockTFHugeWaterLily(Block.Properties.create(Material.PLANTS).sound(SoundType.PLANT)));
 	public static final RegistryObject<Block> slider                     = BLOCKS.register("slider", () -> new BlockTFSlider());
 	public static final RegistryObject<Block> castle_brick               = BLOCKS.register("castle_brick", () -> new BlockTFCastleBlock(MaterialColor.QUARTZ));
 	public static final RegistryObject<Block> castle_brick_worn          = BLOCKS.register("castle_brick_worn", () -> new BlockTFCastleBlock(MaterialColor.QUARTZ));
@@ -333,7 +335,7 @@ public class TFBlocks {
 						twilight_portal_miniature_structure, naga_courtyard_miniature_structure, lich_tower_miniature_structure,
 						knightmetal_block, ironwood_block, fiery_block, steeleaf_block, arctic_fur_block, carminite_block,
 						maze_stone, maze_stone_brick, maze_stone_chiseled, maze_stone_decorative, maze_stone_cracked, maze_stone_mossy, maze_stone_mosaic, maze_stone_border,
-						hedge, root, liveroot_block, uncrafting_table, firefly_jar, smoker, encased_smoker, fire_jet, encased_fire_jet,
+						hedge, boss_spawner, root, liveroot_block, uncrafting_table, firefly_jar, smoker, encased_smoker, fire_jet, encased_fire_jet,
 						moss_patch, mayapple, clover_patch, fiddlehead, mushgloom, torchberry_plant, root_strand, fallen_leaves,
 						iron_ladder, terrorcotta_circle, terrorcotta_diagonal, stone_twist, lapis_block,
 						oak_leaves, canopy_leaves, mangrove_leaves, dark_leaves, time_leaves, transformation_leaves, mining_leaves, sorting_leaves,
@@ -366,5 +368,9 @@ public class TFBlocks {
 						.setRegistryName(moonworm.getId()));
 		r.register(new BlockItem(cicada.get(), TFItems.defaultBuilder().setISTER(() -> () -> new ISTER(TFTileEntities.CICADA.getId())))
 						.setRegistryName(cicada.getId()));
+		r.register(new ItemBlockTFHugeLilyPad(huge_lilypad.get(), TFItems.defaultBuilder())
+						.setRegistryName(huge_lilypad.getId()));
+		r.register(new ItemBlockTFHugeWaterLily(huge_waterlily.get(), TFItems.defaultBuilder())
+						.setRegistryName(huge_waterlily.getId()));
 	}
 }

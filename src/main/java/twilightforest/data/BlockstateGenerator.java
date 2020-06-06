@@ -1,5 +1,6 @@
 package twilightforest.data;
 
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.*;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.state.properties.*;
@@ -9,12 +10,14 @@ import net.minecraftforge.client.model.generators.*;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
 import twilightforest.enums.FireJetVariant;
+import twilightforest.enums.HugeLilypadPiece;
 
 import javax.annotation.Nonnull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 import static twilightforest.TwilightForestMod.prefix;
@@ -146,6 +149,8 @@ public class BlockstateGenerator extends BlockStateProvider {
 						.texture("cross", blockTexture(TFBlocks.trollber.get()))
 						.texture("cross2", prefix("block/" + TFBlocks.trollber.getId().getPath() + "_glow"));
 		simpleBlock(TFBlocks.trollber.get(), trollber);
+		lilyPad(TFBlocks.huge_lilypad.get());
+		simpleBlock(TFBlocks.huge_waterlily.get(), models().cross(TFBlocks.huge_waterlily.getId().getPath(), blockTexture(TFBlocks.huge_waterlily.get())));
 		simpleBlock(TFBlocks.castle_brick.get());
 		simpleBlock(TFBlocks.castle_brick_worn.get());
 		simpleBlock(TFBlocks.castle_brick_cracked.get());
@@ -206,6 +211,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 		simpleBlock(TFBlocks.hedge.get(), ConfiguredModel.builder()
 						.weight(10).modelFile(models().cubeAll(TFBlocks.hedge.getId().getPath(), blockTexture(TFBlocks.hedge.get()))).nextModel()
 						.weight(1).modelFile(models().cubeAll(TFBlocks.hedge.getId().getPath() + "_rose", prefix("block/" + TFBlocks.hedge.getId().getPath() + "_rose"))).build());
+		simpleBlock(TFBlocks.boss_spawner.get(), new ConfiguredModel(models().getExistingFile(new ResourceLocation("block/spawner"))));
 		simpleBlockExisting(TFBlocks.firefly_jar.get());
 		registerPlantBlocks();
 		simpleBlock(TFBlocks.root.get());
@@ -890,6 +896,53 @@ public class BlockstateGenerator extends BlockStateProvider {
 
 		ModelFile border = models().cubeColumn(TFBlocks.maze_stone_border.getId().getPath(), brickTex, blockTexture(TFBlocks.maze_stone_border.get()));
 		simpleBlock(TFBlocks.maze_stone_border.get(), border);
+	}
+
+	private void lilyPad(Block b) {
+		String baseName = b.getRegistryName().getPath();
+		ResourceLocation parent = new ResourceLocation("block/lily_pad");
+		ModelFile[] models = new ModelFile[4];
+		for (int i = 0; i < models.length; i++) {
+			models[i] = models().withExistingParent(baseName + "_" + i, parent)
+							.texture("texture", prefix("block/huge_lilypad_" + i))
+							.texture("particle", "#texture");
+		}
+
+		Map<HugeLilypadPiece, ModelFile> north = ImmutableMap.of(HugeLilypadPiece.NW, models[1],
+						HugeLilypadPiece.NE, models[0], HugeLilypadPiece.SE, models[3], HugeLilypadPiece.SW, models[2]);
+		Map<HugeLilypadPiece, ModelFile> south = ImmutableMap.of(HugeLilypadPiece.NW, models[3],
+						HugeLilypadPiece.NE, models[2], HugeLilypadPiece.SE, models[1], HugeLilypadPiece.SW, models[0]);
+		Map<HugeLilypadPiece, ModelFile> west = ImmutableMap.of(HugeLilypadPiece.NW, models[0],
+						HugeLilypadPiece.NE, models[3], HugeLilypadPiece.SE, models[2], HugeLilypadPiece.SW, models[1]);
+		Map<HugeLilypadPiece, ModelFile> east = ImmutableMap.of(HugeLilypadPiece.NW, models[2],
+						HugeLilypadPiece.NE, models[1], HugeLilypadPiece.SE, models[0], HugeLilypadPiece.SW, models[3]);
+
+		getVariantBuilder(b).forAllStates(state -> {
+			int rotY;
+			Map<HugeLilypadPiece, ModelFile> m;
+			switch (state.get(BlockTFHugeLilyPad.FACING)) {
+			default:
+			case NORTH:
+				rotY = 0;
+				m = north;
+				break;
+			case SOUTH:
+				rotY = 180;
+				m = south;
+				break;
+			case WEST:
+				rotY = 270;
+				m = west;
+				break;
+			case EAST:
+				rotY = 90;
+				m = east;
+				break;
+			}
+
+			ModelFile model = m.get(state.get(BlockTFHugeLilyPad.PIECE));
+			return ConfiguredModel.builder().rotationY(rotY).modelFile(model).build();
+		});
 	}
 
 	@Nonnull

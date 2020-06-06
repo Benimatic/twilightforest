@@ -75,6 +75,8 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 										.acceptFunction(SetCount.builder(new RandomValueRange(4, 8)))
 										.acceptFunction(ApplyBonus.oreDrops(Enchantments.FORTUNE)))));
 		registerLootTable(TFBlocks.trollber.get(), trollber);
+		registerDropSelfLootTable(TFBlocks.huge_lilypad.get());
+		registerDropSelfLootTable(TFBlocks.huge_waterlily.get());
 		registerDropSelfLootTable(TFBlocks.castle_brick.get());
 		registerDropSelfLootTable(TFBlocks.castle_brick_worn.get());
 		registerDropSelfLootTable(TFBlocks.castle_brick_cracked.get());

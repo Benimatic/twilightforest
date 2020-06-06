@@ -18,7 +18,6 @@ import twilightforest.TFCommonProxy;
 import twilightforest.TFSounds;
 import twilightforest.client.renderer.tileentity.*;
 import twilightforest.tileentity.TileEntityTFTrophy;
-import twilightforest.tileentity.critters.*;
 
 public class TFClientProxy extends TFCommonProxy {
 

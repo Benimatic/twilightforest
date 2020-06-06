@@ -1,5 +1,0 @@
-{
-  "forge_marker": 1,
-  "defaults": { "model": "mob_spawner_cage" },
-  "variants": { "normal": [{}] }
-}
