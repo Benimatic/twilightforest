@@ -26,7 +26,7 @@ public class LoadingScreenListener {
 	@SubscribeEvent
 	public void onOpenGui(GuiOpenEvent event) {
 		if (event.getGui() instanceof DownloadTerrainScreen && client.player != null) {
-			DimensionType tfDimension = TFDimensions.tf_dimType;
+			DimensionType tfDimension = TFDimensions.twilightForestDimension;
 			if (client.player.dimension == tfDimension || lastDimension == tfDimension) {
 				GuiTwilightForestLoading guiLoading = new GuiTwilightForestLoading();
 				guiLoading.setEntering(client.player.dimension == tfDimension);

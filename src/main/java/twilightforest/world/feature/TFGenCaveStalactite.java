@@ -13,7 +13,7 @@ import net.minecraft.world.gen.feature.Feature;
 import twilightforest.IMCHandler;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
-import twilightforest.world.TFWorld;
+import twilightforest.world.TFGenerationSettings;
 import twilightforest.world.feature.config.CaveStalactiteConfig;
 
 import java.util.ArrayList;
@@ -97,7 +97,7 @@ public class TFGenCaveStalactite extends Feature<CaveStalactiteConfig> {
 
 		BlockPos.Mutable iterPos = new BlockPos.Mutable(pos);
 		// find a ceiling
-		for (int ty = pos.getY(); ty < TFWorld.CHUNKHEIGHT; ty++) {
+		for (int ty = pos.getY(); ty < TFGenerationSettings.CHUNKHEIGHT; ty++) {
 			iterPos.setY(ty);
 			Material m = world.getBlockState(iterPos).getMaterial();
 			// if we're in air, continue

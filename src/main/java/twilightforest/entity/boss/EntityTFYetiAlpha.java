@@ -44,7 +44,7 @@ import twilightforest.entity.ai.EntityAITFYetiTired;
 import twilightforest.enums.BossVariant;
 import twilightforest.util.EntityUtil;
 import twilightforest.util.WorldUtil;
-import twilightforest.world.TFWorld;
+import twilightforest.world.TFGenerationSettings;
 
 import javax.annotation.Nullable;
 
@@ -378,7 +378,7 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 		super.onDeath(cause);
 		// mark the lair as defeated
 		if (!world.isRemote) {
-			TFWorld.markStructureConquered(world, new BlockPos(this), TFFeature.YETI_CAVE);
+			TFGenerationSettings.markStructureConquered(world, new BlockPos(this), TFFeature.YETI_CAVE);
 		}
 	}
 

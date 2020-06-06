@@ -10,7 +10,7 @@ import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.structure.StructureStart;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.structures.StructureTFComponent;
-import twilightforest.world.TFWorld;
+import twilightforest.world.TFGenerationSettings;
 
 import java.util.Random;
 
@@ -24,7 +24,7 @@ public class StructureTFHollowTreeStart extends StructureStart {
 	public void init(ChunkGenerator<?> generator, TemplateManager manager, int chunkX, int chunkZ, Biome biome) {
 		int x = (chunkX << 4) + 8;
 		int z = (chunkZ << 4) + 8;
-		int y = TFWorld.SEALEVEL + 1;
+		int y = TFGenerationSettings.SEALEVEL + 1;
 
 		StructureTFComponent trunk = new ComponentTFHollowTreeTrunk(rand, 0, x, y, z);
 		components.add(trunk);

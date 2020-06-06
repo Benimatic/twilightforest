@@ -11,7 +11,7 @@ import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.ChunkGeneratorTFBase;
-import twilightforest.world.TFWorld;
+import twilightforest.world.TFGenerationSettings;
 
 import java.util.Random;
 import java.util.function.Function;
@@ -30,7 +30,7 @@ public class TFPlateauSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig
 	// Copy of super's generateBiomeTerrain, relevant edits noted.
 	//protected void genTwilightBiomeTerrain(World world, Random rand, ChunkPrimer primer, int x, int z, double noiseVal) {
 	protected void genTwilightBiomeTerrain(Random rand, IChunk primer, Biome biome, int x, int z, int startHeight, double noiseVal, BlockState defaultBlock, BlockState defaultFluid, BlockState top, BlockState middle, BlockState bottom, int sealevel) {
-		int i = TFWorld.SEALEVEL; // TF - set sea level to 31 //TODO: Sea level is now handled by seaLevel
+		int i = TFGenerationSettings.SEALEVEL; // TF - set sea level to 31 //TODO: Sea level is now handled by seaLevel
 		BlockState iblockstate = top;
 		BlockState iblockstate1 = middle;
 		BlockState stoneReplacement = TFBlocks.deadrock.get().getDefaultState();
@@ -92,7 +92,7 @@ public class TFPlateauSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig
 
 	//TODO: Re-evaluate
 	private static boolean shouldGenerateBedrock(World world) {
-		ChunkGeneratorTFBase generator = TFWorld.getChunkGenerator(world);
+		ChunkGeneratorTFBase generator = TFGenerationSettings.getChunkGenerator(world);
 		return generator == null || generator.shouldGenerateBedrock();
 	}
 }

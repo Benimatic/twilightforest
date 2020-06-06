@@ -321,7 +321,6 @@ public class TFConfig {
 			public boolean shadersSupported = true;
 		}
 
-		//TODO: We can't be an Integer; must be Dimension
 		public ForgeConfigSpec.ConfigValue<String> originDimension;
 		public ForgeConfigSpec.BooleanValue allowPortalsInOtherDimensions;
 		public ForgeConfigSpec.BooleanValue adminOnlyPortals;
@@ -470,10 +469,6 @@ public class TFConfig {
 	public static void onConfigChanged(ModConfig.Reloading event) {
 		if (event.getConfig().getModId().equals(TwilightForestMod.ID)) {
 			TFDimensions.checkOriginDimension();
-//			ConfigManager.sync(TwilightForestMod.ID, Config.Type.INSTANCE);
-//			if (!event.isWorldRunning()) {
-//				WorldProviderTwilightForest.syncFromConfig();
-//			}
 			build();
 		}
 	}

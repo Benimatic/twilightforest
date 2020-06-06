@@ -40,7 +40,7 @@ import twilightforest.entity.ai.EntityAITFHoverSummon;
 import twilightforest.entity.ai.EntityAITFHoverThenDrop;
 import twilightforest.enums.BossVariant;
 import twilightforest.util.WorldUtil;
-import twilightforest.world.TFWorld;
+import twilightforest.world.TFGenerationSettings;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -246,7 +246,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 		super.onDeath(cause);
 		// mark the tower as defeated
 		if (!world.isRemote) {
-			TFWorld.markStructureConquered(world, new BlockPos(this), TFFeature.ICE_TOWER);
+			TFGenerationSettings.markStructureConquered(world, new BlockPos(this), TFFeature.ICE_TOWER);
 		}
 	}
 

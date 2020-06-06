@@ -25,7 +25,7 @@ import net.minecraftforge.fml.network.PacketDistributor;
 import twilightforest.network.PacketAnnihilateBlock;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.world.ChunkGeneratorTFBase;
-import twilightforest.world.TFWorld;
+import twilightforest.world.TFGenerationSettings;
 
 import java.util.Random;
 
@@ -108,7 +108,7 @@ public class BlockTFCastleDoor extends Block {
 	private static boolean isBlockLocked(World world, BlockPos pos) {
 		// check if we are in a structure, and if that structure says that we are locked
 		if (!world.isRemote) {
-			ChunkGeneratorTFBase generator = TFWorld.getChunkGenerator(world);
+			ChunkGeneratorTFBase generator = TFGenerationSettings.getChunkGenerator(world);
 			return generator != null /*&& generator.isStructureLocked(pos, lockIndex)*/;
 		}
 		return false;

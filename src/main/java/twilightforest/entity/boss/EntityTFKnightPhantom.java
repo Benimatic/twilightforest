@@ -44,7 +44,7 @@ import twilightforest.entity.ai.TFNearestPlayerGoal;
 import twilightforest.entity.ai.EntityAITFPhantomUpdateFormationAndMove;
 import twilightforest.entity.ai.EntityAITFPhantomWatchAndAttack;
 import twilightforest.item.TFItems;
-import twilightforest.world.TFWorld;
+import twilightforest.world.TFGenerationSettings;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
@@ -183,7 +183,7 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 			TFTreasure.stronghold_boss.generateChest(world, treasurePos, false);
 
 			// mark the stronghold as defeated
-			TFWorld.markStructureConquered(world, treasurePos, TFFeature.KNIGHT_STRONGHOLD);
+			TFGenerationSettings.markStructureConquered(world, treasurePos, TFFeature.KNIGHT_STRONGHOLD);
 		}
 	}
 

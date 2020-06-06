@@ -40,7 +40,7 @@ import twilightforest.enums.BossVariant;
 import twilightforest.network.PacketThrowPlayer;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.util.EntityUtil;
-import twilightforest.world.TFWorld;
+import twilightforest.world.TFGenerationSettings;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
@@ -833,7 +833,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 		super.onDeath(cause);
 		// mark the courtyard as defeated
 		if (!world.isRemote) {
-			TFWorld.markStructureConquered(world, new BlockPos(this), TFFeature.NAGA_COURTYARD);
+			TFGenerationSettings.markStructureConquered(world, new BlockPos(this), TFFeature.NAGA_COURTYARD);
 		}
 	}
 

@@ -142,8 +142,6 @@ public class TwilightForestMod {
 			}
 		}
 
-		TFDimensions.checkOriginDimension();
-
 		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
 			try {
 				// TFCompat.postInitCompat(); TODO

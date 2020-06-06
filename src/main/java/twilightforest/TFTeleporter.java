@@ -23,7 +23,7 @@ import net.minecraft.world.server.TicketType;
 import twilightforest.block.BlockTFPortal;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.ChunkGeneratorTFBase;
-import twilightforest.world.TFWorld;
+import twilightforest.world.TFGenerationSettings;
 
 import javax.annotation.Nullable;
 import java.util.HashSet;
@@ -86,7 +86,7 @@ public class TFTeleporter extends Teleporter {
 
 	private void moveToSafeCoords(Entity entity) {
 		// if we're in enforced progression mode, check the biomes for safety
-		boolean checkProgression = TFWorld.isProgressionEnforced(world);
+		boolean checkProgression = TFGenerationSettings.isProgressionEnforced(world);
 
 		BlockPos pos = new BlockPos(entity);
 		if (isSafeAround(pos, entity, checkProgression)) {
@@ -155,7 +155,7 @@ public class TFTeleporter extends Teleporter {
 	}
 
 	private boolean checkStructure(BlockPos pos) {
-		ChunkGeneratorTFBase generator = TFWorld.getChunkGenerator(world);
+		ChunkGeneratorTFBase generator = TFGenerationSettings.getChunkGenerator(world);
 		if (generator != null) {
 			if (!world.isBlockLoaded(pos)) {
 				//generator.recreateStructures(null, pos.getX() >> 4, pos.getZ() >> 4); //TODO: Can we even do this?
@@ -166,7 +166,7 @@ public class TFTeleporter extends Teleporter {
 	}
 
 	private boolean checkBiome(BlockPos pos, Entity entity) {
-		return TFWorld.isBiomeSafeFor(world.getBiome(pos), entity);
+		return TFGenerationSettings.isBiomeSafeFor(world.getBiome(pos), entity);
 	}
 
 	// [VanillaCopy] copy of super, edits noted

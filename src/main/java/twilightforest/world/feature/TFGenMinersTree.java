@@ -9,7 +9,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.IWorldGenerationReader;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.FeatureUtil;
-import twilightforest.world.TFWorld;
+import twilightforest.world.TFGenerationSettings;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
 import java.util.Random;
@@ -26,7 +26,7 @@ public class TFGenMinersTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 	protected boolean generate(IWorldGenerationReader worldIn, Random rand, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		World world = (World)worldIn;
 
-		if (pos.getY() >= TFWorld.MAXHEIGHT - 12) {
+		if (pos.getY() >= TFGenerationSettings.MAXHEIGHT - 12) {
 			return false;
 		}
 

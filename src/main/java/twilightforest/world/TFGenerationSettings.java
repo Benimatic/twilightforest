@@ -19,7 +19,7 @@ import twilightforest.biomes.TFBiomeBase;
 import javax.annotation.Nullable;
 import java.util.function.Predicate;
 
-public class TFWorld extends GenerationSettings {
+public class TFGenerationSettings extends GenerationSettings {
 
 	public static final int SEALEVEL = 31;
 	public static final int CHUNKHEIGHT = 256; // more like world generation height
@@ -40,15 +40,15 @@ public class TFWorld extends GenerationSettings {
 	}
 
 	public static boolean isTwilightForest(World world) {
-		return world.dimension instanceof WorldProviderTwilightForest;
+		return world.dimension instanceof TwilightForestDimension;
 	}
 
 	public static CompoundNBT getDimensionData(World world) {
-		return world.getWorldInfo().getDimensionData(TFDimensions.tf_dimType);
+		return world.getWorldInfo().getDimensionData(TFDimensions.twilightForestDimension);
 	}
 
 	public static void setDimensionData(World world, CompoundNBT data) {
-		world.getWorldInfo().setDimensionData(TFDimensions.tf_dimType, data);
+		world.getWorldInfo().setDimensionData(TFDimensions.twilightForestDimension, data);
 	}
 
 	public static boolean isProgressionEnforced(World world) {

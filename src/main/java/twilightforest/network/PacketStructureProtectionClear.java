@@ -6,7 +6,7 @@ import net.minecraft.world.dimension.Dimension;
 import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.fml.network.NetworkEvent;
 import twilightforest.client.renderer.TFWeatherRenderer;
-import twilightforest.world.WorldProviderTwilightForest;
+import twilightforest.world.TwilightForestDimension;
 
 import java.util.function.Supplier;
 
@@ -24,7 +24,7 @@ public class PacketStructureProtectionClear {
 				Dimension provider = Minecraft.getInstance().world.dimension;
 
 				// add weather box if needed
-				if (provider instanceof WorldProviderTwilightForest) {
+				if (provider instanceof TwilightForestDimension) {
 					IRenderHandler weatherRenderer = provider.getWeatherRenderer();
 
 					if (weatherRenderer instanceof TFWeatherRenderer) {

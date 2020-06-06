@@ -11,7 +11,7 @@ import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.feature.Feature;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.FeatureUtil;
-import twilightforest.world.TFWorld;
+import twilightforest.world.TFGenerationSettings;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
 import java.util.Random;
@@ -27,7 +27,7 @@ public class TFGenSortingTree extends Feature<TFTreeFeatureConfig> {
 	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, TFTreeFeatureConfig config) {
 		// check soil
 		Material materialUnder = world.getBlockState(pos.down()).getMaterial();
-		if ((materialUnder != Material.ORGANIC && materialUnder != Material.EARTH) || pos.getY() >= TFWorld.MAXHEIGHT - 12) {
+		if ((materialUnder != Material.ORGANIC && materialUnder != Material.EARTH) || pos.getY() >= TFGenerationSettings.MAXHEIGHT - 12) {
 			return false;
 		}
 

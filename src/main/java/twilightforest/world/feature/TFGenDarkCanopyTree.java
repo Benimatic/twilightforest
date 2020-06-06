@@ -8,7 +8,7 @@ import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.IWorldGenerationReader;
 import twilightforest.util.FeatureUtil;
-import twilightforest.world.TFWorld;
+import twilightforest.world.TFGenerationSettings;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
 import java.util.Random;
@@ -33,7 +33,7 @@ public class TFGenDarkCanopyTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 		// if we are given leaves as a starting position, seek dirt or grass underneath
 		boolean foundDirt = false;
 		Material materialUnder;
-		for (int dy = pos.getY(); dy >= TFWorld.SEALEVEL; dy--) {
+		for (int dy = pos.getY(); dy >= TFGenerationSettings.SEALEVEL; dy--) {
 			materialUnder = world.getBlockState(new BlockPos(pos.getX(), dy - 1, pos.getZ())).getMaterial();
 			if (materialUnder == Material.ORGANIC || materialUnder == Material.EARTH) {
 				// yes!

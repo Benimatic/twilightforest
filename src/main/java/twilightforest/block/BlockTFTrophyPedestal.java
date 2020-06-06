@@ -18,7 +18,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.world.TFWorld;
+import twilightforest.world.TFGenerationSettings;
 
 //TODO 1.14: Thaumcraft is dead
 //@Optional.Interface(modid = "thaumcraft", iface = "thaumcraft.api.crafting.IInfusionStabiliser")
@@ -50,7 +50,7 @@ public class BlockTFTrophyPedestal extends Block /*implements IInfusionStabilise
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
 		if (world.isRemote || state.get(ACTIVE) || !isTrophyOnTop(world, pos)) return;
 
-		if (TFWorld.isProgressionEnforced(world)) {
+		if (TFGenerationSettings.isProgressionEnforced(world)) {
 			if (areNearbyPlayersEligible(world, pos)) {
 				doPedestalEffect(world, pos, state);
 			}

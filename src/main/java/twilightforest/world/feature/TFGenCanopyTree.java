@@ -9,7 +9,7 @@ import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.IWorldGenerationReader;
 import twilightforest.util.FeatureUtil;
-import twilightforest.world.TFWorld;
+import twilightforest.world.TFGenerationSettings;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
 import java.util.List;
@@ -46,7 +46,7 @@ public class TFGenCanopyTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 			}
 		}
 
-		if (pos.getY() >= TFWorld.MAXHEIGHT - treeHeight) {
+		if (pos.getY() >= TFGenerationSettings.MAXHEIGHT - treeHeight) {
 			return false;
 		}
 

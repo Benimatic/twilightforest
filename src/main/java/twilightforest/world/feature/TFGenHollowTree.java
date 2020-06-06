@@ -14,7 +14,7 @@ import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.FeatureUtil;
-import twilightforest.world.TFWorld;
+import twilightforest.world.TFGenerationSettings;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
 import java.util.Random;
@@ -63,7 +63,7 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 		int diameter = random.nextInt(4) + 1;
 
 		// do we have enough height?
-		if (pos.getY() < 1 || pos.getY() + height + diameter > TFWorld.MAXHEIGHT) {
+		if (pos.getY() < 1 || pos.getY() + height + diameter > TFGenerationSettings.MAXHEIGHT) {
 			return false;
 		}
 

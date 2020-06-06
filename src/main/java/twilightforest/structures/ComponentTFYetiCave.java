@@ -7,14 +7,13 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.BossVariant;
-import twilightforest.world.TFWorld;
+import twilightforest.world.TFGenerationSettings;
 
 import java.util.Random;
 
@@ -45,7 +44,7 @@ public class ComponentTFYetiCave extends ComponentTFHollowHill {
 	@Override
 	boolean isInHill(int mapX, int mapY, int mapZ) {
 		// yeti cave is square and 16 blocks tall
-		return mapX < this.radius * 2 && mapX > 0 && mapZ < this.radius * 2 && mapZ > 0 && mapY > TFWorld.SEALEVEL && mapY < TFWorld.SEALEVEL + 20;
+		return mapX < this.radius * 2 && mapX > 0 && mapZ < this.radius * 2 && mapZ > 0 && mapY > TFGenerationSettings.SEALEVEL && mapY < TFGenerationSettings.SEALEVEL + 20;
 	}
 
 	/**

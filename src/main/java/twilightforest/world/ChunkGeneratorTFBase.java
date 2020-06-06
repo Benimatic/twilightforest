@@ -32,7 +32,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 // TODO: doc out all the vanilla copying
-public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator<TFWorld> {
+public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator<TFGenerationSettings> {
 
 	private static final float[] field_222576_h = Util.make(new float[25], (afloat) -> {
 		for(int i = -2; i <= 2; ++i) {
@@ -49,13 +49,13 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator<TFWorld> 
 //	protected final Map<TFFeature, MapGenTFMajorFeature> featureGenerators = new EnumMap<>(TFFeature.class);
 //	protected final MapGenTFMajorFeature nothingGenerator = new MapGenTFMajorFeature();
 
-	public ChunkGeneratorTFBase(IWorld world, BiomeProvider provider, TFWorld settings, boolean shouldGenerateBedrock) {
+	public ChunkGeneratorTFBase(IWorld world, BiomeProvider provider, TFGenerationSettings settings, boolean shouldGenerateBedrock) {
 		this(world, provider, settings);
 
 		this.shouldGenerateBedrock = shouldGenerateBedrock;
 	}
 
-	public ChunkGeneratorTFBase(IWorld world, BiomeProvider provider, TFWorld settings) {
+	public ChunkGeneratorTFBase(IWorld world, BiomeProvider provider, TFGenerationSettings settings) {
 		super(world, provider, 4, 8, 256, settings, true);
 		this.randomSeed.skip(2620);
 		this.depthNoise = new OctavesNoiseGenerator(this.randomSeed, 15, 0);
@@ -223,7 +223,7 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator<TFWorld> 
 
 		Biome biome = world.getBiome(pos);
 
-		if (pos.getY() < TFWorld.SEALEVEL && biome instanceof TFBiomeBase) {
+		if (pos.getY() < TFGenerationSettings.SEALEVEL && biome instanceof TFBiomeBase) {
 			// cave monsters!
 			return ((TFBiomeBase) biome).getUndergroundSpawnableList(creatureType);
 		} else {
@@ -248,13 +248,13 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator<TFWorld> 
 	 * Crush the terrain to half the height
 	 */
 	protected final void squishTerrain(ChunkBitArray data) {
-		int squishHeight = TFWorld.MAXHEIGHT / 2;
+		int squishHeight = TFGenerationSettings.MAXHEIGHT / 2;
 		for (int x = 0; x < 16; x++) {
 			for (int z = 0; z < 16; z++) {
 				for (int y = 0; y < squishHeight; y++) {
 					data.set(getIndex(x, y, z), data.get(getIndex(x, y * 2 + 1, z)));
 				}
-				for (int y = squishHeight; y < TFWorld.CHUNKHEIGHT; y++) {
+				for (int y = squishHeight; y < TFGenerationSettings.CHUNKHEIGHT; y++) {
 					data.clear(getIndex(x, y, z));
 				}
 			}
@@ -401,7 +401,7 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator<TFWorld> 
 		boolean foundGroundLevel = false;
 
 		// raise the hill
-		for (int y = TFWorld.SEALEVEL; y < TFWorld.CHUNKHEIGHT; y++) {
+		for (int y = TFGenerationSettings.SEALEVEL; y < TFGenerationSettings.CHUNKHEIGHT; y++) {
 			Block currentTerrain = primer.getBlockState(new BlockPos(x, y, z)).getBlock();
 			if (currentTerrain != Blocks.STONE) {
 				// we found the top of the stone layer
@@ -436,15 +436,15 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator<TFWorld> 
 		}
 
 		// hollow out the hollow parts
-		int hollowFloor = TFWorld.SEALEVEL - 3 - (hollow / 8);
+		int hollowFloor = TFGenerationSettings.SEALEVEL - 3 - (hollow / 8);
 		if (nearFeature == TFFeature.HYDRA_LAIR) {
 			// different floor
-			hollowFloor = TFWorld.SEALEVEL;
+			hollowFloor = TFGenerationSettings.SEALEVEL;
 		}
 
 		if (hillHeight > 0) {
 			// put a base on hills that go over open space or water
-			for (int y = 0; y < TFWorld.SEALEVEL; y++) {
+			for (int y = 0; y < TFGenerationSettings.SEALEVEL; y++) {
 				if (primer.getBlockState(new BlockPos(x, y, z)).getBlock() != Blocks.STONE) {
 					primer.setBlockState(new BlockPos(x, y, z), Blocks.STONE.getDefaultState(), 3);
 				}
@@ -459,7 +459,7 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator<TFWorld> 
 	private void flattenTerrainForFeature(WorldGenRegion primer, TFFeature nearFeature, int x, int z, int dx, int dz) {
 
 		float squishFactor = 0f;
-		int mazeHeight = TFWorld.SEALEVEL + 1;
+		int mazeHeight = TFGenerationSettings.SEALEVEL + 1;
 		final int FEATURE_BOUNDARY = (nearFeature.size * 2 + 1) * 8 - 8;
 
 		if (dx <= -FEATURE_BOUNDARY) {
@@ -505,7 +505,7 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator<TFWorld> 
 	private void deformTerrainForYetiLair(WorldGenRegion primer, TFFeature nearFeature, int x, int z, int dx, int dz) {
 
 		float squishFactor = 0f;
-		int topHeight = TFWorld.SEALEVEL + 24;
+		int topHeight = TFGenerationSettings.SEALEVEL + 24;
 		int outerBoundary = (nearFeature.size * 2 + 1) * 8 - 8;
 
 		// outer boundary
@@ -523,24 +523,24 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator<TFWorld> 
 
 		// inner boundary
 		int caveBoundary = (nearFeature.size * 2) * 8 - 8;
-		int hollowCeiling = TFWorld.SEALEVEL + 16;
+		int hollowCeiling = TFGenerationSettings.SEALEVEL + 16;
 
 		int offset = Math.min(Math.abs(dx), Math.abs(dz));
-		hollowCeiling = (TFWorld.SEALEVEL + 40) - (offset * 4);
+		hollowCeiling = (TFGenerationSettings.SEALEVEL + 40) - (offset * 4);
 
 		// center square cave
 		if (dx >= -caveBoundary && dz >= -caveBoundary && dx <= caveBoundary && dz <= caveBoundary) {
-			hollowCeiling = TFWorld.SEALEVEL + 16;
+			hollowCeiling = TFGenerationSettings.SEALEVEL + 16;
 		}
 
 		// slope ceiling slightly
 		hollowCeiling -= (offset / 6);
 
 		// max out ceiling 8 blocks from roof
-		hollowCeiling = Math.min(hollowCeiling, TFWorld.SEALEVEL + 16);
+		hollowCeiling = Math.min(hollowCeiling, TFGenerationSettings.SEALEVEL + 16);
 
 		// floor, also with slight slope
-		int hollowFloor = TFWorld.SEALEVEL - 1 + (offset / 6);
+		int hollowFloor = TFGenerationSettings.SEALEVEL - 1 + (offset / 6);
 
 		if (squishFactor > 0f) {
 			// blend the old terrain height to arena height
@@ -571,7 +571,7 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator<TFWorld> 
 		}
 
 		// ice floor
-		if (hollowFloor < hollowCeiling && hollowFloor < TFWorld.SEALEVEL + 3) {
+		if (hollowFloor < hollowCeiling && hollowFloor < TFGenerationSettings.SEALEVEL + 3) {
 			primer.setBlockState(new BlockPos(x, hollowFloor, z), Blocks.PACKED_ICE.getDefaultState(), 3);
 		}
 	}

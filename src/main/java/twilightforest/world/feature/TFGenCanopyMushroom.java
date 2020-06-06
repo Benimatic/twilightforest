@@ -13,7 +13,7 @@ import net.minecraft.world.gen.feature.NoFeatureConfig;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.FeatureUtil;
 import twilightforest.util.MushroomUtil;
-import twilightforest.world.TFWorld;
+import twilightforest.world.TFGenerationSettings;
 
 import java.util.Random;
 import java.util.function.Function;
@@ -46,7 +46,7 @@ public class TFGenCanopyMushroom extends Feature<NoFeatureConfig> {
 			}
 		}
 
-		if (pos.getY() >= TFWorld.MAXHEIGHT - treeHeight - 1) {
+		if (pos.getY() >= TFGenerationSettings.MAXHEIGHT - treeHeight - 1) {
 			return false;
 		}
 

@@ -31,7 +31,7 @@ import twilightforest.entity.MultiPartEntityPart;
 import twilightforest.enums.BossVariant;
 import twilightforest.util.EntityUtil;
 import twilightforest.util.WorldUtil;
-import twilightforest.world.TFWorld;
+import twilightforest.world.TFGenerationSettings;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -712,7 +712,7 @@ public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 		super.onDeath(cause);
 		// mark the lair as defeated
 		if (!world.isRemote) {
-			TFWorld.markStructureConquered(world, new BlockPos(this), TFFeature.HYDRA_LAIR);
+			TFGenerationSettings.markStructureConquered(world, new BlockPos(this), TFFeature.HYDRA_LAIR);
 		}
 	}
 

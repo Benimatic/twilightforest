@@ -26,7 +26,7 @@ import twilightforest.biomes.TFBiomeHighlands;
 import twilightforest.biomes.TFBiomeSnow;
 import twilightforest.biomes.TFBiomeSwamp;
 import twilightforest.biomes.TFBiomeThornlands;
-import twilightforest.world.TFWorld;
+import twilightforest.world.TFGenerationSettings;
 
 import java.util.Random;
 
@@ -69,7 +69,7 @@ public class TFWeatherRenderer implements IRenderHandler {
 		// do normal weather rendering
 		renderNormalWeather(partialTicks, mc);
 
-		if (TFWorld.isProgressionEnforced(world) && !mc.player.isCreative() && !mc.player.isSpectator()) {
+		if (TFGenerationSettings.isProgressionEnforced(world) && !mc.player.isCreative() && !mc.player.isSpectator()) {
 			// locked biome weather effects
 			renderLockedBiome(partialTicks, world, mc);
 
@@ -262,7 +262,7 @@ public class TFWeatherRenderer implements IRenderHandler {
 					Biome biome = world.getBiome(blockpos$mutableblockpos);
 
 					// TF - check for our own biomes
-					if (!TFWorld.isBiomeSafeFor(biome, entity)) {
+					if (!TFGenerationSettings.isBiomeSafeFor(biome, entity)) {
 
 						int groundY = 0; // TF - extend through full height
 						int minY = y0 - range;
@@ -521,7 +521,7 @@ public class TFWeatherRenderer implements IRenderHandler {
 		for (int z = pz - range; z <= pz + range; ++z) {
 			for (int x = px - range; x <= px + range; ++x) {
 				Biome biome = world.getBiome(pos.setPos(x, 0, z));
-				if (!TFWorld.isBiomeSafeFor(biome, viewEntity)) {
+				if (!TFGenerationSettings.isBiomeSafeFor(biome, viewEntity)) {
 					return true;
 				}
 			}

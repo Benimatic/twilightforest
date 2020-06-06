@@ -17,12 +17,11 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
-import twilightforest.biomes.TFBiomeBase;
 import twilightforest.entity.*;
 import twilightforest.structures.*;
 import twilightforest.util.IntPair;
 import twilightforest.util.PlayerHelper;
-import twilightforest.world.TFWorld;
+import twilightforest.world.TFGenerationSettings;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -776,7 +775,7 @@ public enum TFFeature {
 			ccx = (regionX * 16 + (16 - centerX) - 8) * 16 + 9;
 		}
 
-		return new BlockPos(ccx, TFWorld.SEALEVEL, ccz);//  Math.abs(chunkX % 16) == centerX && Math.abs(chunkZ % 16) == centerZ;
+		return new BlockPos(ccx, TFGenerationSettings.SEALEVEL, ccz);//  Math.abs(chunkX % 16) == centerX && Math.abs(chunkZ % 16) == centerZ;
 	}
 
 	/**

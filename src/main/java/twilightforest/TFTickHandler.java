@@ -9,7 +9,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.dimension.DimensionType;
@@ -23,10 +22,9 @@ import twilightforest.block.TFBlocks;
 import twilightforest.network.PacketStructureProtection;
 import twilightforest.network.PacketStructureProtectionClear;
 import twilightforest.network.TFPacketHandler;
-import twilightforest.util.StructureBoundingBoxUtils;
 import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFDimensions;
-import twilightforest.world.TFWorld;
+import twilightforest.world.TFGenerationSettings;
 
 import java.util.List;
 import java.util.Random;
@@ -56,16 +54,16 @@ public class TFTickHandler {
 
 		// check the player for being in a forbidden progression area, only every 20 ticks
 		if (!world.isRemote && event.phase == TickEvent.Phase.END && player.ticksExisted % 20 == 0
-				&& TFWorld.isProgressionEnforced(world)
-				&& TFWorld.isTwilightForest(world)
+				&& TFGenerationSettings.isProgressionEnforced(world)
+				&& TFGenerationSettings.isTwilightForest(world)
 				&& !player.isCreative() && !player.isSpectator()) {
 
 			checkBiomeForProgression(player, world);
 		}
 
 		// check and send nearby forbidden structures, every 100 ticks or so
-		if (!world.isRemote && event.phase == TickEvent.Phase.END && player.ticksExisted % 100 == 0 && TFWorld.isProgressionEnforced(world)) {
-			if (TFWorld.isTwilightForest(world)) {
+		if (!world.isRemote && event.phase == TickEvent.Phase.END && player.ticksExisted % 100 == 0 && TFGenerationSettings.isProgressionEnforced(world)) {
+			if (TFGenerationSettings.isTwilightForest(world)) {
 				if (player.isCreative() || player.isSpectator()) {
 					sendAllClearPacket(world, player);
 				} else {
@@ -90,7 +88,7 @@ public class TFTickHandler {
 	@SuppressWarnings("UnusedReturnValue")
 	private static boolean checkForLockedStructuresSendPacket(PlayerEntity player, World world) {
 
-		ChunkGeneratorTFBase chunkGenerator = TFWorld.getChunkGenerator(world);
+		ChunkGeneratorTFBase chunkGenerator = TFGenerationSettings.getChunkGenerator(world);
 		if (chunkGenerator == null) return false;
 
 		int px = MathHelper.floor(player.getX());
@@ -116,7 +114,7 @@ public class TFTickHandler {
 
 	private static void checkForPortalCreation(PlayerEntity player, World world, float rangeToCheck) {
 		if (world.dimension.getType() == DimensionType.byName(new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()))
-				|| world.dimension.getType() == TFDimensions.tf_dimType
+				|| world.dimension.getType() == TFDimensions.twilightForestDimension
 				|| TFConfig.COMMON_CONFIG.allowPortalsInOtherDimensions.get()) {
 
 			List<ItemEntity> itemList = world.getEntitiesWithinAABB(ItemEntity.class, player.getBoundingBox().grow(rangeToCheck));

@@ -1,9 +1,8 @@
 package twilightforest.network;
 
-import io.netty.buffer.ByteBuf;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
-import twilightforest.world.WorldProviderTwilightForest;
+import twilightforest.world.TwilightForestDimension;
 
 import java.util.function.Supplier;
 
@@ -25,7 +24,7 @@ public class PacketSetSkylightEnabled {
 
     public static class Handler {
         public static boolean onMessage(PacketSetSkylightEnabled message, Supplier<NetworkEvent.Context> ctx) {
-            WorldProviderTwilightForest.setSkylightEnabled(message.enabled);
+            TwilightForestDimension.setSkylightEnabled(message.enabled);
             return true;
         }
     }

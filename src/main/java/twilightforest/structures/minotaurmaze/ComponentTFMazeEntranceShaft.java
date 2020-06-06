@@ -15,7 +15,7 @@ import net.minecraft.world.server.ServerWorld;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFComponentOld;
-import twilightforest.world.TFWorld;
+import twilightforest.world.TFGenerationSettings;
 
 import java.util.List;
 import java.util.Random;
@@ -53,7 +53,7 @@ public class ComponentTFMazeEntranceShaft extends StructureTFComponentOld {
 			}
 
 			this.boundingBox.maxY = this.averageGroundLevel;
-			this.boundingBox.minY = TFWorld.SEALEVEL - 10;
+			this.boundingBox.minY = TFGenerationSettings.SEALEVEL - 10;
 		}
 
 		this.fillWithBlocks(world, sbb, 0, 0, 0, 5, this.boundingBox.getYSize(), 5, TFBlocks.maze_stone_brick.get().getDefaultState(), AIR, true);

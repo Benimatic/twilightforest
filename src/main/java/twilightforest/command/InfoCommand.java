@@ -10,7 +10,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
 import twilightforest.TFFeature;
 import twilightforest.world.ChunkGeneratorTFBase;
-import twilightforest.world.TFWorld;
+import twilightforest.world.TFGenerationSettings;
 
 public class InfoCommand {
     public static LiteralArgumentBuilder<CommandSource> register() {
@@ -20,7 +20,7 @@ public class InfoCommand {
     private static int run(CommandContext<CommandSource> ctx) throws CommandSyntaxException {
         CommandSource source = ctx.getSource();
 
-        if (!TFWorld.isTwilightForest(source.getWorld())) {
+        if (!TFGenerationSettings.isTwilightForest(source.getWorld())) {
             throw TFCommand.NOT_IN_TF.create();
         }
 
@@ -31,7 +31,7 @@ public class InfoCommand {
         source.sendFeedback(new TranslationTextComponent("commands.tffeature.nearest", nearbyFeature.name), false);
 
         // are you in a structure?
-        ChunkGeneratorTFBase chunkGenerator = TFWorld.getChunkGenerator(source.getWorld());
+        ChunkGeneratorTFBase chunkGenerator = TFGenerationSettings.getChunkGenerator(source.getWorld());
         if (chunkGenerator != null/* && chunkGenerator.isBlockInStructureBB(pos)*/) {
             source.sendFeedback(new TranslationTextComponent("commands.tffeature.structure.inside"), false);
 

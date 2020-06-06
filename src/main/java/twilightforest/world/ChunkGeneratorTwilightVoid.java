@@ -10,7 +10,7 @@ public class ChunkGeneratorTwilightVoid extends ChunkGeneratorTFBase {
 
 	//private final boolean generateHollowTrees = TFConfig.COMMON_CONFIG.DIMENSION.skylightOaks.get();
 
-	public ChunkGeneratorTwilightVoid(World world, BiomeProvider provider, TFWorld settings) {
+	public ChunkGeneratorTwilightVoid(World world, BiomeProvider provider, TFGenerationSettings settings) {
 		super(world, provider, settings, false);
 	}
 

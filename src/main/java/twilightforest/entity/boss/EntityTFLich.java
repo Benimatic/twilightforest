@@ -39,7 +39,7 @@ import twilightforest.entity.TFEntities;
 import twilightforest.entity.ai.EntityAITFLichMinions;
 import twilightforest.entity.ai.EntityAITFLichShadows;
 import twilightforest.enums.BossVariant;
-import twilightforest.world.TFWorld;
+import twilightforest.world.TFGenerationSettings;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -600,7 +600,7 @@ public class EntityTFLich extends MonsterEntity {
 		super.onDeath(cause);
 		// mark the tower as defeated
 		if (!world.isRemote && !this.isShadowClone()) {
-			TFWorld.markStructureConquered(world, new BlockPos(this), TFFeature.LICH_TOWER);
+			TFGenerationSettings.markStructureConquered(world, new BlockPos(this), TFFeature.LICH_TOWER);
 		}
 	}
 

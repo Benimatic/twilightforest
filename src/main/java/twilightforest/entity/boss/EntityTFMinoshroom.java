@@ -25,7 +25,7 @@ import twilightforest.entity.EntityTFMinotaur;
 import twilightforest.entity.ai.EntityAITFGroundAttack;
 import twilightforest.enums.BossVariant;
 import twilightforest.item.TFItems;
-import twilightforest.world.TFWorld;
+import twilightforest.world.TFGenerationSettings;
 
 public class EntityTFMinoshroom extends EntityTFMinotaur {
 	private static final DataParameter<Boolean> GROUND_ATTACK = EntityDataManager.createKey(EntityTFMinoshroom.class, DataSerializers.BOOLEAN);
@@ -112,7 +112,7 @@ public class EntityTFMinoshroom extends EntityTFMinotaur {
 	public void onDeath(DamageSource cause) {
 		super.onDeath(cause);
 		if (!world.isRemote) {
-			TFWorld.markStructureConquered(world, new BlockPos(this), TFFeature.LABYRINTH);
+			TFGenerationSettings.markStructureConquered(world, new BlockPos(this), TFFeature.LABYRINTH);
 		}
 	}
 

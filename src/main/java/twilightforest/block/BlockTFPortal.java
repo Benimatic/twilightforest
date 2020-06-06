@@ -33,7 +33,7 @@ import twilightforest.TFConfig;
 import twilightforest.TFTeleporter;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.TFDimensions;
-import twilightforest.world.TFWorld;
+import twilightforest.world.TFGenerationSettings;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -94,7 +94,7 @@ public class BlockTFPortal extends BreakableBlock {
 
 				if (TFConfig.COMMON_CONFIG.checkPortalDestination.get()) {
 					TFTeleporter teleporter = TFTeleporter.getTeleporterForDim(catalyst.getServer(), getDestination(catalyst));
-					boolean checkProgression = TFWorld.isProgressionEnforced(catalyst.world);
+					boolean checkProgression = TFGenerationSettings.isProgressionEnforced(catalyst.world);
 					if (!teleporter.isSafeAround(pos, catalyst, checkProgression)) {
 						// TODO: "failure" effect - particles?
 						if (player != null) {
@@ -212,8 +212,8 @@ public class BlockTFPortal extends BreakableBlock {
 	}
 
 	private static DimensionType getDestination(Entity entity) {
-		return entity.dimension != TFDimensions.tf_dimType
-				? TFDimensions.tf_dimType : DimensionType.byName(new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()));
+		return entity.dimension != TFDimensions.twilightForestDimension
+				? TFDimensions.twilightForestDimension : DimensionType.byName(new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()));
 	}
 
 	public static void attemptSendPlayer(Entity entity, boolean forcedEntry) {
@@ -237,10 +237,10 @@ public class BlockTFPortal extends BreakableBlock {
 
 		entity.changeDimension(destination, TFTeleporter.getTeleporterForDim(entity.getServer(), destination));
 
-		if (destination == TFDimensions.tf_dimType && entity instanceof ServerPlayerEntity) {
+		if (destination == TFDimensions.twilightForestDimension && entity instanceof ServerPlayerEntity) {
 			ServerPlayerEntity playerMP = (ServerPlayerEntity) entity;
 			// set respawn point for TF dimension to near the arrival portal
-			playerMP.setSpawnPoint(new BlockPos(playerMP), true, false, TFDimensions.tf_dimType);
+			playerMP.setSpawnPoint(new BlockPos(playerMP), true, false, TFDimensions.twilightForestDimension);
 		}
 	}
 

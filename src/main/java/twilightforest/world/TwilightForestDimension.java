@@ -21,10 +21,7 @@ import twilightforest.client.renderer.TFWeatherRenderer;
 
 import javax.annotation.Nullable;
 
-/**
- * @author Ben
- */
-public class WorldProviderTwilightForest extends OverworldDimension { //TODO: Should we be extending OverworldDimension?
+public class TwilightForestDimension extends OverworldDimension { //TODO: Should we be extending OverworldDimension?
 
 	private static final String SEED_KEY = "CustomSeed";
 	private static final String SKYLIGHT_KEY = "HasSkylight";
@@ -45,9 +42,9 @@ public class WorldProviderTwilightForest extends OverworldDimension { //TODO: Sh
 		return data.contains(SKYLIGHT_KEY, Constants.NBT.TAG_BYTE) ? data.getBoolean(SKYLIGHT_KEY) : skylightEnabled;
 	}
 
-	public WorldProviderTwilightForest(World world, DimensionType type) {
+	public TwilightForestDimension(World world, DimensionType type) {
 		super(world, type);
-		CompoundNBT data = TFWorld.getDimensionData(world);
+		CompoundNBT data = TFGenerationSettings.getDimensionData(world);
 		seed = data.contains(SEED_KEY, Constants.NBT.TAG_LONG) ? data.getLong(SEED_KEY) : loadSeed();
 
 		float f = this.hasSkyLight() ? 0.0F : 0.1F;
@@ -56,15 +53,6 @@ public class WorldProviderTwilightForest extends OverworldDimension { //TODO: Sh
 			this.lightBrightnessTable[i] = (1.0F - f1) / (f1 * 3.0F + 1.0F) * (1.0F - f) + f;
 		}
 	}
-
-	/* TODO Breaking change. Uncomment for 1.13.
-	// TODO: Actually, we don't control this anymore
-	Reason for adding ID is if we want multiple TF worlds for servers in future.
-
-	@Override
-	public String getSaveFolder() {
-		return "twilightforest" + getDimension();
-	}*/
 
 	@Nullable
 	@Override
@@ -104,7 +92,7 @@ public class WorldProviderTwilightForest extends OverworldDimension { //TODO: Sh
 
 	@Override
 	public boolean hasSkyLight() {
-		CompoundNBT data = TFWorld.getDimensionData(world);
+		CompoundNBT data = TFGenerationSettings.getDimensionData(world);
 		return isSkylightEnabled(data);
 	}
 
@@ -112,8 +100,8 @@ public class WorldProviderTwilightForest extends OverworldDimension { //TODO: Sh
 	@Override
 	public ChunkGenerator<? extends GenerationSettings> createChunkGenerator() {
 		return TFConfig.COMMON_CONFIG.DIMENSION.skylightForest.get()
-				? new ChunkGeneratorTwilightVoid(world, new TFBiomeProvider(new TFBiomeProviderSettings(world.getWorldInfo())), new TFWorld())
-				: new ChunkGeneratorTwilightForest(world, new TFBiomeProvider(new TFBiomeProviderSettings(world.getWorldInfo())), new TFWorld());
+				? new ChunkGeneratorTwilightVoid(world, new TFBiomeProvider(new TFBiomeProviderSettings(world.getWorldInfo())), new TFGenerationSettings())
+				: new ChunkGeneratorTwilightForest(world, new TFBiomeProvider(new TFBiomeProviderSettings(world.getWorldInfo())), new TFGenerationSettings());
 	}
 
 	/**
@@ -145,16 +133,11 @@ public class WorldProviderTwilightForest extends OverworldDimension { //TODO: Sh
 
 	@Override
 	public DimensionType getType() {
-		return TFDimensions.tf_dimType;
+		return TFDimensions.twilightForestDimension;
 	}
 
 	@Override
 	public boolean isDaytime() {
-		return false;
-	}
-
-	@Override
-	public boolean shouldMapSpin(String entityName, double x, double z, double rotation) {
 		return false;
 	}
 
@@ -191,7 +174,7 @@ public class WorldProviderTwilightForest extends OverworldDimension { //TODO: Sh
 
 	@Override
 	public int getHeight() {
-		return TFWorld.SEALEVEL;
+		return TFGenerationSettings.SEALEVEL;
 	}
 
 	//TODO: Doesn't exist
@@ -230,7 +213,7 @@ public class WorldProviderTwilightForest extends OverworldDimension { //TODO: Sh
 		data.putLong(SEED_KEY, seed);
 		// TODO: decide on persisting this
 		//data.putBoolean(SKYLIGHT_KEY, hasSkyLight);
-		TFWorld.setDimensionData(world, data);
+		TFGenerationSettings.setDimensionData(world, data);
 	}
 
 	@Override

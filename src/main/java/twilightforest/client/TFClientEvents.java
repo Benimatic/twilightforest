@@ -4,7 +4,6 @@ import net.minecraft.client.GameSettings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingRenderer;
-import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -12,7 +11,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelLoader;
@@ -24,7 +22,7 @@ import twilightforest.TFEventListener;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.client.renderer.entity.LayerShields;
-import twilightforest.world.TFWorld;
+import twilightforest.world.TFGenerationSettings;
 
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID, value = Dist.CLIENT)
@@ -149,7 +147,7 @@ public class TFClientEvents {
 			Minecraft minecraft = Minecraft.getInstance();
 
 			// only fire if we're in the twilight forest
-			if (minecraft.world != null && TFWorld.isTwilightForest(minecraft.world)) {
+			if (minecraft.world != null && TFGenerationSettings.isTwilightForest(minecraft.world)) {
 				// vignette
 				if (minecraft.ingameGUI != null) {
 					minecraft.ingameGUI.prevVignetteBrightness = 0.0F;

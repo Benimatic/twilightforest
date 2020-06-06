@@ -40,7 +40,7 @@ import twilightforest.entity.NoClipMoveHelper;
 import twilightforest.entity.TFEntities;
 import twilightforest.enums.BossVariant;
 import twilightforest.loot.TFTreasure;
-import twilightforest.world.TFWorld;
+import twilightforest.world.TFGenerationSettings;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -579,7 +579,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		super.onDeath(cause);
 		// mark the tower as defeated
 		if (!world.isRemote) {
-			TFWorld.markStructureConquered(world, findChestCoords(), TFFeature.DARK_TOWER);
+			TFGenerationSettings.markStructureConquered(world, findChestCoords(), TFFeature.DARK_TOWER);
 		}
 	}
 

@@ -2,11 +2,10 @@ package twilightforest;
 
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.storage.MapData;
-import twilightforest.world.TFWorld;
+import twilightforest.world.TFGenerationSettings;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -41,7 +40,7 @@ public class TFMazeMapData extends MapData {
 		this.yCenter = y;
 
 		// when we are in a labyrinth, snap to the LABYRINTH
-		if (TFWorld.isTwilightForest(world) && TFFeature.getFeatureForRegion(x >> 4, z >> 4, world) == TFFeature.LABYRINTH) {
+		if (TFGenerationSettings.isTwilightForest(world) && TFFeature.getFeatureForRegion(x >> 4, z >> 4, world) == TFFeature.LABYRINTH) {
 			BlockPos mc = TFFeature.getNearestCenterXYZ(x >> 4, z >> 4);
 			this.xCenter = mc.getX();
 			this.zCenter = mc.getZ();

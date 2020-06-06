@@ -74,8 +74,8 @@ import twilightforest.potions.TFPotions;
 import twilightforest.util.TFItemStackUtils;
 import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFDimensions;
-import twilightforest.world.TFWorld;
-import twilightforest.world.WorldProviderTwilightForest;
+import twilightforest.world.TFGenerationSettings;
+import twilightforest.world.TwilightForestDimension;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -552,11 +552,11 @@ public class TFEventListener {
 	 */
 	private static boolean isAreaProtected(World world, PlayerEntity player, BlockPos pos) {
 
-		if (player.abilities.isCreativeMode || !TFWorld.isProgressionEnforced(world)) {
+		if (player.abilities.isCreativeMode || !TFGenerationSettings.isProgressionEnforced(world)) {
 			return false;
 		}
 
-		ChunkGeneratorTFBase chunkGenerator = TFWorld.getChunkGenerator(world);
+		ChunkGeneratorTFBase chunkGenerator = TFGenerationSettings.getChunkGenerator(world);
 
 		if (chunkGenerator != null/* && chunkGenerator.isBlockInStructureBB(pos)*/) {
 			// what feature is nearby?  is it one the player has not unlocked?
@@ -609,7 +609,7 @@ public class TFEventListener {
 	@SubscribeEvent
 	public static void playerLogsIn(PlayerEvent.PlayerLoggedInEvent event) {
 		if (!event.getPlayer().world.isRemote && event.getPlayer() instanceof ServerPlayerEntity) {
-			sendEnforcedProgressionStatus((ServerPlayerEntity) event.getPlayer(), TFWorld.isProgressionEnforced(event.getPlayer().world));
+			sendEnforcedProgressionStatus((ServerPlayerEntity) event.getPlayer(), TFGenerationSettings.isProgressionEnforced(event.getPlayer().world));
 			updateCapabilities((ServerPlayerEntity) event.getPlayer(), event.getPlayer());
 			banishNewbieToTwilightZone(event.getPlayer());
 		}
@@ -621,8 +621,8 @@ public class TFEventListener {
 	@SubscribeEvent
 	public static void playerPortals(PlayerEvent.PlayerChangedDimensionEvent event) {
 		if (!event.getPlayer().world.isRemote && event.getPlayer() instanceof ServerPlayerEntity) {
-			if (event.getTo() == TFDimensions.tf_dimType) {
-				sendEnforcedProgressionStatus((ServerPlayerEntity) event.getPlayer(), TFWorld.isProgressionEnforced(event.getPlayer().world));
+			if (event.getTo() == TFDimensions.twilightForestDimension) {
+				sendEnforcedProgressionStatus((ServerPlayerEntity) event.getPlayer(), TFGenerationSettings.isProgressionEnforced(event.getPlayer().world));
 			}
 			updateCapabilities((ServerPlayerEntity) event.getPlayer(), event.getPlayer());
 		}
@@ -656,12 +656,12 @@ public class TFEventListener {
 	public static void onClientConnect(PlayerEvent.PlayerLoggedInEvent event) {
 		// This event is only ever fired on the server side
 		ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
-		sendSkylightEnabled(player, WorldProviderTwilightForest.isSkylightEnabled(TFWorld.getDimensionData(player.world)));
+		sendSkylightEnabled(player, TwilightForestDimension.isSkylightEnabled(TFGenerationSettings.getDimensionData(player.world)));
 	}
 
 	@SubscribeEvent
 	public static void onServerDisconnect(PlayerEvent.PlayerLoggedOutEvent event) {
-		WorldProviderTwilightForest.syncFromConfig();
+		TwilightForestDimension.syncFromConfig();
 	}
 
 	/**

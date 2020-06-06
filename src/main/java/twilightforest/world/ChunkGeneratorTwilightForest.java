@@ -24,7 +24,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 	//private final OctavesNoiseGenerator scaleNoise;
 	//private final OctavesNoiseGenerator forestNoise;
 
-	public ChunkGeneratorTwilightForest(IWorld world, BiomeProvider seed, TFWorld settings) {
+	public ChunkGeneratorTwilightForest(IWorld world, BiomeProvider seed, TFGenerationSettings settings) {
 		super(world, seed, settings, true);
 		this.noiseGen4 = new OctavesNoiseGenerator(this.randomSeed, 4, 0);
 		//this.scaleNoise = new OctavesNoiseGenerator(rand, 10);
@@ -67,7 +67,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 			for (int z = 0; z < 16; z++) {
 				for (int y = 0; y < 256; y++) {
 					boolean solid = data.get(getIndex(x, y, z));
-					if (y < TFWorld.SEALEVEL && !solid) {
+					if (y < TFGenerationSettings.SEALEVEL && !solid) {
 						primer.setBlockState(new BlockPos(x, y, z), settings.getDefaultBlock(), 3);
 					} else if (solid) {
 						primer.setBlockState(new BlockPos(x, y, z), settings.getDefaultFluid(), 3);
