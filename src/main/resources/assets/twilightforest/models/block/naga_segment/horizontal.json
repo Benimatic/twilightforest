@@ -1,6 +1,7 @@
 {
   "parent": "block/cube",
   "textures": {
+    "particle": "twilightforest:block/nagastone_cross_section",
     "up": "twilightforest:block/nagastone_tip_long",
     "down": "twilightforest:block/nagastone_bottom_long",
     "west": "twilightforest:block/nagastone_cross_section",

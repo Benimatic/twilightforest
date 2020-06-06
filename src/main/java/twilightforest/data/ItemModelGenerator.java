@@ -125,6 +125,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlockModel(TFBlocks.fire_jet.get(), prefix("block/jet"));
 		toBlock(TFBlocks.encased_smoker.get());
 		toBlock(TFBlocks.encased_fire_jet.get());
+		toBlock(TFBlocks.naga_stone.get());
+		toBlock(TFBlocks.naga_stone_head.get());
 		toBlock(TFBlocks.stone_twist.get());
 		toBlock(TFBlocks.lapis_block.get());
 		toBlock(TFBlocks.oak_log.get());

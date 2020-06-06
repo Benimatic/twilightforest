@@ -233,6 +233,49 @@ public class BlockstateGenerator extends BlockStateProvider {
 		}
 		simpleBlock(TFBlocks.lapis_block.get(), lapisModels);
 		registerWoodBlocks();
+		registerNagastone();
+	}
+
+	private void registerNagastone() {
+		// todo 1.15 cleanup: generate these models as well instead of getExistingFile-ing them
+		String baseName = TFBlocks.naga_stone.getId().getPath();
+		ModelFile solid = models().cubeBottomTop(baseName, prefix("block/nagastone_long_side"), prefix("block/nagastone_turn_top"), prefix("block/nagastone_bottom_long"));
+		ModelFile down = models().getExistingFile(prefix("block/naga_segment/down"));
+		ModelFile up = models().getExistingFile(prefix("block/naga_segment/up"));
+		ModelFile horizontal = models().getExistingFile(prefix("block/naga_segment/horizontal"));
+		ModelFile vertical = models().getExistingFile(prefix("block/naga_segment/vertical"));
+		getVariantBuilder(TFBlocks.naga_stone.get()).forAllStates(s -> {
+			switch (s.get(BlockTFNagastone.VARIANT)) {
+			case NORTH_DOWN:
+				return ConfiguredModel.builder().modelFile(down).rotationY(270).build();
+			case SOUTH_DOWN:
+				return ConfiguredModel.builder().modelFile(down).rotationY(90).build();
+			case WEST_DOWN:
+				return ConfiguredModel.builder().modelFile(down).rotationY(180).build();
+			case EAST_DOWN:
+				return ConfiguredModel.builder().modelFile(down).build();
+			case NORTH_UP:
+				return ConfiguredModel.builder().modelFile(up).rotationY(270).build();
+			case SOUTH_UP:
+				return ConfiguredModel.builder().modelFile(up).rotationY(90).build();
+			case EAST_UP:
+				return ConfiguredModel.builder().modelFile(up).build();
+			case WEST_UP:
+				return ConfiguredModel.builder().modelFile(up).rotationY(180).build();
+			case AXIS_X:
+				return ConfiguredModel.builder().modelFile(horizontal).build();
+			case AXIS_Y:
+				return ConfiguredModel.builder().modelFile(vertical).build();
+			case AXIS_Z:
+				return ConfiguredModel.builder().modelFile(horizontal).rotationY(90).build();
+			default:
+			case SOLID:
+				return ConfiguredModel.builder().modelFile(solid).build();
+			}
+		});
+
+
+		horizontalBlock(TFBlocks.naga_stone_head.get(), models().getExistingFile(prefix("block/" + TFBlocks.naga_stone_head.getId().getPath())));
 	}
 
 	private void registerSmokersAndJets() {

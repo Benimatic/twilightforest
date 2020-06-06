@@ -8,11 +8,6 @@ import net.minecraft.util.Rotation;
 import java.util.Locale;
 
 public enum NagastoneVariant implements IStringSerializable {
-
-	NORTH_HEAD,
-	SOUTH_HEAD,
-	WEST_HEAD,
-	EAST_HEAD,
 	NORTH_DOWN,
 	SOUTH_DOWN,
 	WEST_DOWN,
@@ -29,100 +24,6 @@ public enum NagastoneVariant implements IStringSerializable {
 	@Override
 	public String getName() {
 		return name().toLowerCase(Locale.ROOT);
-	}
-
-	public static boolean isHead(NagastoneVariant variant) {
-		return variant.ordinal() < 4;
-	}
-
-	public static NagastoneVariant rotate(NagastoneVariant variant, Rotation rotation) {
-		if (!isHead(variant)) return variant;
-
-		switch (rotation) {
-			case CLOCKWISE_90:
-				switch (variant) {
-					case NORTH_HEAD:
-						return EAST_HEAD;
-					case SOUTH_HEAD:
-						return WEST_HEAD;
-					case WEST_HEAD:
-						return NORTH_HEAD;
-					case EAST_HEAD:
-						return SOUTH_HEAD;
-					default:
-						return variant;
-				}
-			case CLOCKWISE_180:
-				switch (variant) {
-					case NORTH_HEAD:
-						return SOUTH_HEAD;
-					case SOUTH_HEAD:
-						return NORTH_HEAD;
-					case WEST_HEAD:
-						return EAST_HEAD;
-					case EAST_HEAD:
-						return WEST_HEAD;
-					default:
-						return variant;
-				}
-			case COUNTERCLOCKWISE_90:
-				switch (variant) {
-					case NORTH_HEAD:
-						return WEST_HEAD;
-					case SOUTH_HEAD:
-						return EAST_HEAD;
-					case WEST_HEAD:
-						return SOUTH_HEAD;
-					case EAST_HEAD:
-						return NORTH_HEAD;
-					default:
-						return variant;
-				}
-			default:
-				return variant;
-		}
-	}
-
-	public static NagastoneVariant mirror(NagastoneVariant variant, Mirror mirror) {
-		if (!isHead(variant)) return variant;
-
-		switch (mirror) {
-			case LEFT_RIGHT:
-				switch (variant) {
-					case WEST_HEAD:
-						return EAST_HEAD;
-					case EAST_HEAD:
-						return WEST_HEAD;
-					default:
-						return variant;
-				}
-			case FRONT_BACK:
-				switch (variant) {
-					case NORTH_HEAD:
-						return SOUTH_HEAD;
-					case SOUTH_HEAD:
-						return NORTH_HEAD;
-					default:
-						return variant;
-				}
-			default:
-				return variant;
-		}
-	}
-
-	public static NagastoneVariant getHeadFromFacing(Direction facing) {
-		switch (facing) {
-			case NORTH:
-				return NORTH_HEAD;
-			case SOUTH:
-				return SOUTH_HEAD;
-			case WEST:
-				return WEST_HEAD;
-			case EAST:
-				return EAST_HEAD;
-			default:
-				return SOLID;
-		}
 	}
 
 	public static NagastoneVariant getVariantFromAxis(Direction.Axis axis) {
