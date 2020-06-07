@@ -16,16 +16,17 @@ import net.minecraft.world.IWorld;
 import javax.annotation.Nullable;
 
 public class BlockTFNagastoneEtched extends DirectionalBlock {
-    protected BlockTFNagastoneEtched() {
-        super(Properties.create(Material.ROCK).hardnessAndResistance(1.5F, 10.0F).sound(SoundType.STONE));
-        //this.setCreativeTab(TFItems.creativeTab); TODO 1.14
+    protected BlockTFNagastoneEtched(Properties props) {
+        super(props);
         this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.DOWN));
     }
 
 	@Nullable
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		return this.getDefaultState().with(FACING, context.getPlayer().isSneaking() ? context.getNearestLookingDirection().getOpposite() : context.getNearestLookingDirection());
+		return this.getDefaultState().with(FACING, context.getPlayer() != null && context.getPlayer().isSneaking()
+						? context.getNearestLookingDirection().getOpposite()
+						: context.getNearestLookingDirection());
 	}
 
 	@Override
@@ -43,9 +44,4 @@ public class BlockTFNagastoneEtched extends DirectionalBlock {
 	public BlockState mirror(BlockState state, Mirror mirrorIn) {
 		return state.with(FACING, mirrorIn.mirror(state.get(FACING)));
 	}
-
-//    @Override
-//    protected ItemStack getSilkTouchDrop(BlockState state) {
-//        return new ItemStack(Item.getItemFromBlock(this));
-//    }
 }

@@ -274,8 +274,43 @@ public class BlockstateGenerator extends BlockStateProvider {
 			}
 		});
 
-
 		horizontalBlock(TFBlocks.naga_stone_head.get(), models().getExistingFile(prefix("block/" + TFBlocks.naga_stone_head.getId().getPath())));
+		etchedNagastone(TFBlocks.etched_nagastone.get(), "");
+		etchedNagastone(TFBlocks.etched_nagastone_mossy.get(), "_mossy");
+		etchedNagastone(TFBlocks.etched_nagastone_weathered.get(), "_weathered");
+	}
+
+	private void etchedNagastone(Block b, String suffix) {
+		ResourceLocation stoneTiles = prefix("block/stone_tiles" + suffix);
+		ResourceLocation upTex = prefix("block/etched_nagastone_up" + suffix);
+		ResourceLocation downTex = prefix("block/etched_nagastone_down" + suffix);
+		ResourceLocation rightTex = prefix("block/etched_nagastone_right" + suffix);
+		ResourceLocation leftTex = prefix("block/etched_nagastone_left" + suffix);
+
+		// todo 1.15 cleanup make this more "logical" with rotations, etc. instead of just reproducing what was in the old blockstate json
+		ModelFile down = models().cubeColumn(b.getRegistryName().getPath(), downTex, stoneTiles);
+		ModelFile up = models().cubeColumn(b.getRegistryName().getPath() + "_up", upTex, stoneTiles);
+		ModelFile north = models().cube(b.getRegistryName().getPath() + "_north", upTex, upTex, stoneTiles, stoneTiles, rightTex, leftTex)
+						.texture("particle", "#down");
+		ModelFile south = models().cube(b.getRegistryName().getPath() + "_south", downTex, downTex, stoneTiles, stoneTiles, leftTex, rightTex)
+						.texture("particle", "#down");
+		ModelFile west = models().cube(b.getRegistryName().getPath() + "_west", leftTex, rightTex, rightTex, leftTex, stoneTiles, stoneTiles)
+						.texture("particle", "#down");
+		ModelFile east = models().cube(b.getRegistryName().getPath() + "_east", rightTex, leftTex, leftTex, rightTex, stoneTiles, stoneTiles)
+						.texture("particle", "#down");
+
+		getVariantBuilder(b).partialState()
+						.with(BlockTFNagastoneEtched.FACING, Direction.DOWN).setModels(new ConfiguredModel(down));
+		getVariantBuilder(b).partialState()
+						.with(BlockTFNagastoneEtched.FACING, Direction.UP).setModels(new ConfiguredModel(up));
+		getVariantBuilder(b).partialState()
+						.with(BlockTFNagastoneEtched.FACING, Direction.NORTH).setModels(new ConfiguredModel(north));
+		getVariantBuilder(b).partialState()
+						.with(BlockTFNagastoneEtched.FACING, Direction.SOUTH).setModels(new ConfiguredModel(south));
+		getVariantBuilder(b).partialState()
+						.with(BlockTFNagastoneEtched.FACING, Direction.WEST).setModels(new ConfiguredModel(west));
+		getVariantBuilder(b).partialState()
+						.with(BlockTFNagastoneEtched.FACING, Direction.EAST).setModels(new ConfiguredModel(east));
 	}
 
 	private void registerSmokersAndJets() {

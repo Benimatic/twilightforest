@@ -221,15 +221,15 @@ public class TFBlocks {
 	public static final RegistryObject<Block> arctic_fur_block = BLOCKS.register("arctic_fur_block", () -> new BlockTFCompressed(Block.Properties.create(Material.WOOL, MaterialColor.WOOL).hardnessAndResistance(0.8F, 10.0F).sound(SoundType.CLOTH)));
 	public static final RegistryObject<Block> carminite_block = BLOCKS.register("carminite_block", () -> new BlockTFCompressed(Block.Properties.create(Material.CLAY, MaterialColor.RED).hardnessAndResistance(0.0F, 10.0F).sound(SoundType.SLIME)));
 	public static final RegistryObject<Block> spiral_bricks                    = BLOCKS.register("spiral_bricks", () -> new BlockTFSpiralBrick());
-	public static final RegistryObject<Block> etched_nagastone                 = BLOCKS.register("etched_nagastone", () -> new BlockTFNagastoneEtched());
+	public static final RegistryObject<Block> etched_nagastone                 = BLOCKS.register("etched_nagastone", () -> new BlockTFNagastoneEtched(Block.Properties.create(Material.ROCK).hardnessAndResistance(1.5F, 10.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> nagastone_pillar                 = BLOCKS.register("nagastone_pillar", () -> new BlockTFNagastonePillar());
 	public static final RegistryObject<Block> nagastone_stairs_left            = BLOCKS.register("nagastone_stairs_left", () -> new BlockTFNagastoneStairs(etched_nagastone.get().getDefaultState()));
 	public static final RegistryObject<Block> nagastone_stairs_right           = BLOCKS.register("nagastone_stairs_right", () -> new BlockTFNagastoneStairs(etched_nagastone.get().getDefaultState()));
-	public static final RegistryObject<Block> etched_nagastone_mossy           = BLOCKS.register("etched_nagastone_mossy", () -> new BlockTFNagastoneEtched());
+	public static final RegistryObject<Block> etched_nagastone_mossy           = BLOCKS.register("etched_nagastone_mossy", () -> new BlockTFNagastoneEtched(Block.Properties.create(Material.ROCK).hardnessAndResistance(1.5F, 10.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> nagastone_pillar_mossy           = BLOCKS.register("nagastone_pillar_mossy", () -> new BlockTFNagastonePillar());
 	public static final RegistryObject<Block> nagastone_stairs_mossy_left      = BLOCKS.register("nagastone_stairs_mossy_left", () -> new BlockTFNagastoneStairs(etched_nagastone_mossy.get().getDefaultState()));
 	public static final RegistryObject<Block> nagastone_stairs_mossy_right     = BLOCKS.register("nagastone_stairs_mossy_right", () -> new BlockTFNagastoneStairs(etched_nagastone_mossy.get().getDefaultState()));
-	public static final RegistryObject<Block> etched_nagastone_weathered       = BLOCKS.register("etched_nagastone_weathered", () -> new BlockTFNagastoneEtched());
+	public static final RegistryObject<Block> etched_nagastone_weathered       = BLOCKS.register("etched_nagastone_weathered", () -> new BlockTFNagastoneEtched(Block.Properties.create(Material.ROCK).hardnessAndResistance(1.5F, 10.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> nagastone_pillar_weathered       = BLOCKS.register("nagastone_pillar_weathered", () -> new BlockTFNagastonePillar());
 	public static final RegistryObject<Block> nagastone_stairs_weathered_left  = BLOCKS.register("nagastone_stairs_weathered_left", () -> new BlockTFNagastoneStairs(etched_nagastone_weathered.get().getDefaultState()));
 	public static final RegistryObject<Block> nagastone_stairs_weathered_right = BLOCKS.register("nagastone_stairs_weathered_right", () -> new BlockTFNagastoneStairs(etched_nagastone_weathered.get().getDefaultState()));
@@ -334,6 +334,7 @@ public class TFBlocks {
 						castle_door_yellow, castle_door_purple, castle_door_pink, castle_door_blue,
 						twilight_portal_miniature_structure, naga_courtyard_miniature_structure, lich_tower_miniature_structure,
 						knightmetal_block, ironwood_block, fiery_block, steeleaf_block, arctic_fur_block, carminite_block,
+						etched_nagastone, etched_nagastone_mossy, etched_nagastone_weathered,
 						maze_stone, maze_stone_brick, maze_stone_chiseled, maze_stone_decorative, maze_stone_cracked, maze_stone_mossy, maze_stone_mosaic, maze_stone_border,
 						hedge, boss_spawner, root, liveroot_block, uncrafting_table, firefly_jar, smoker, encased_smoker, fire_jet, encased_fire_jet,
 						naga_stone_head, naga_stone,
