@@ -75,5 +75,8 @@ public class RenderLayerRegistration {
 		RenderTypeLookup.setRenderLayer(TFBlocks.transformation_sapling.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.mining_sapling.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.sorting_sapling.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.built_block.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.antibuilt_block.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.reactor_debris.get(), cutout);
 	}
 }

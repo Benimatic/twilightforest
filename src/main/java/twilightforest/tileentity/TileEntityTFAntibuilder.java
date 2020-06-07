@@ -2,14 +2,12 @@ package twilightforest.tileentity;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.particles.RedstoneParticleData;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
-import twilightforest.block.BlockTFTowerTranslucent;
 import twilightforest.block.TFBlocks;
 
 import java.util.Random;
@@ -20,9 +18,9 @@ public class TileEntityTFAntibuilder extends TileEntity implements ITickableTile
 	private static final Tag<Block> BLACKLIST = new BlockTags.Wrapper(prefix("antibuilder_blacklist"));
 	private static final int REVERT_CHANCE = 10;
 
-	private final int radius = 4;
-	private final int diameter = 2 * radius + 1;
-	private final double requiredPlayerRange = 16.0;
+	private static final int RADIUS = 4;
+	private static final int DIAMETER = 2 * RADIUS + 1;
+	private static final double PLAYER_RANGE = 16.0;
 
 	private final Random rand = new Random();
 
@@ -56,7 +54,7 @@ public class TileEntityTFAntibuilder extends TileEntity implements ITickableTile
 			} else {
 
 				// new plan, take a snapshot of the world when we are first activated, and then rapidly revert changes
-				if (blockData == null && world.isAreaLoaded(this.pos, this.radius)) {
+				if (blockData == null && world.isAreaLoaded(this.pos, this.RADIUS)) {
 					captureBlockData();
 					this.slowScan = true;
 				}
@@ -105,55 +103,55 @@ public class TileEntityTFAntibuilder extends TileEntity implements ITickableTile
 		switch (outline) {
 			case 0:
 			case 8:
-				sx -= radius;
-				dx += radius + 1;
-				sz -= radius;
-				dz -= radius;
+				sx -= RADIUS;
+				dx += RADIUS + 1;
+				sz -= RADIUS;
+				dz -= RADIUS;
 				break;
 			case 1:
 			case 9:
-				sx -= radius;
-				dx -= radius;
-				sz -= radius;
-				dz += radius + 1;
+				sx -= RADIUS;
+				dx -= RADIUS;
+				sz -= RADIUS;
+				dz += RADIUS + 1;
 				break;
 			case 2:
 			case 10:
-				sx -= radius;
-				dx += radius + 1;
-				sz += radius + 1;
-				dz += radius + 1;
+				sx -= RADIUS;
+				dx += RADIUS + 1;
+				sz += RADIUS + 1;
+				dz += RADIUS + 1;
 				break;
 			case 3:
 			case 11:
-				sx += radius + 1;
-				dx += radius + 1;
-				sz -= radius;
-				dz += radius + 1;
+				sx += RADIUS + 1;
+				dx += RADIUS + 1;
+				sz -= RADIUS;
+				dz += RADIUS + 1;
 				break;
 			case 4:
-				sx -= radius;
-				dx -= radius;
-				sz -= radius;
-				dz -= radius;
+				sx -= RADIUS;
+				dx -= RADIUS;
+				sz -= RADIUS;
+				dz -= RADIUS;
 				break;
 			case 5:
-				sx += radius + 1;
-				dx += radius + 1;
-				sz -= radius;
-				dz -= radius;
+				sx += RADIUS + 1;
+				dx += RADIUS + 1;
+				sz -= RADIUS;
+				dz -= RADIUS;
 				break;
 			case 6:
-				sx += radius + 1;
-				dx += radius + 1;
-				sz += radius + 1;
-				dz += radius + 1;
+				sx += RADIUS + 1;
+				dx += RADIUS + 1;
+				sz += RADIUS + 1;
+				dz += RADIUS + 1;
 				break;
 			case 7:
-				sx -= radius;
-				dx -= radius;
-				sz += radius + 1;
-				dz += radius + 1;
+				sx -= RADIUS;
+				dx -= RADIUS;
+				sz += RADIUS + 1;
+				dz += RADIUS + 1;
 				break;
 		}
 
@@ -162,22 +160,22 @@ public class TileEntityTFAntibuilder extends TileEntity implements ITickableTile
 			case 1:
 			case 2:
 			case 3:
-				sy += radius + 1;
-				dy += radius + 1;
+				sy += RADIUS + 1;
+				dy += RADIUS + 1;
 				break;
 			case 4:
 			case 5:
 			case 6:
 			case 7:
-				sy -= radius;
-				dy += radius + 1;
+				sy -= RADIUS;
+				dy += RADIUS + 1;
 				break;
 			case 8:
 			case 9:
 			case 10:
 			case 11:
-				sy -= radius;
-				dy -= radius;
+				sy -= RADIUS;
+				dy -= RADIUS;
 				break;
 		}
 
@@ -206,9 +204,9 @@ public class TileEntityTFAntibuilder extends TileEntity implements ITickableTile
 		int index = 0;
 		boolean reverted = false;
 
-		for (int x = -radius; x <= radius; x++) {
-			for (int y = -radius; y <= radius; y++) {
-				for (int z = -radius; z <= radius; z++) {
+		for (int x = -RADIUS; x <= RADIUS; x++) {
+			for (int y = -RADIUS; y <= RADIUS; y++) {
+				for (int z = -RADIUS; z <= RADIUS; z++) {
 					BlockState stateThere = world.getBlockState(pos.add(x, y, z));
 
 					if (blockData[index].getBlock() != stateThere.getBlock()) {
@@ -228,51 +226,39 @@ public class TileEntityTFAntibuilder extends TileEntity implements ITickableTile
 	}
 
 	private boolean revertBlock(BlockPos pos, BlockState stateThere, BlockState replaceWith) {
-		if (stateThere.getBlock() == Blocks.AIR && !replaceWith.getMaterial().blocksMovement()) {
+		if (stateThere.isAir(world, pos) && !replaceWith.getMaterial().blocksMovement()) {
 			return false;
 		}
 		if (stateThere.getBlockHardness(world, pos) < 0 || isUnrevertable(stateThere, replaceWith)) {
 			return false;
 		} else if (this.rand.nextInt(REVERT_CHANCE) == 0) {
 			// don't revert everything instantly
-			if (replaceWith.getBlock() != Blocks.AIR) {
-				replaceWith = TFBlocks.reverter_replacement.get().getDefaultState();
+			if (!replaceWith.isAir()) {
+				replaceWith = TFBlocks.antibuilt_block.get().getDefaultState();
 			}
 
-			world.setBlockState(pos, replaceWith, 2);
-
-			// play a little animation
-			if (stateThere.getBlock() == Blocks.AIR) {
+			if (stateThere.isAir()) {
 				world.playEvent(2001, pos, Block.getStateId(replaceWith));
-			} else if (replaceWith.getBlock() == Blocks.AIR) {
-				world.playEvent(2001, pos, Block.getStateId(stateThere));
-				//stateThere.getBlock().dropBlockAsItem(world, pos, stateThere, 0);
 			}
+			Block.replaceBlock(stateThere, replaceWith, world, pos, 2);
 		}
 
 		return true;
 	}
 
 	private boolean isUnrevertable(BlockState stateThere, BlockState replaceWith) {
-		if (stateThere.getBlock() instanceof BlockTFTowerTranslucent || replaceWith.getBlock() instanceof BlockTFTowerTranslucent) {
-			return true;
-		}
-		if (stateThere.getBlock() instanceof BlockTFTowerTranslucent && stateThere.getBlock() != TFBlocks.reverter_replacement.get()
-				|| (replaceWith.getBlock() instanceof BlockTFTowerTranslucent && stateThere.getBlock() != TFBlocks.reverter_replacement.get())) {
-			return true;
-		}
-
+		// todo 1.15 (!) add tower devices to the blacklist
 		return BLACKLIST.contains(stateThere.getBlock()) || BLACKLIST.contains(replaceWith.getBlock());
 	}
 
 	private void captureBlockData() {
-		blockData = new BlockState[diameter * diameter * diameter];
+		blockData = new BlockState[DIAMETER * DIAMETER * DIAMETER];
 
 		int index = 0;
 
-		for (int x = -radius; x <= radius; x++) {
-			for (int y = -radius; y <= radius; y++) {
-				for (int z = -radius; z <= radius; z++) {
+		for (int x = -RADIUS; x <= RADIUS; x++) {
+			for (int y = -RADIUS; y <= RADIUS; y++) {
+				for (int z = -RADIUS; z <= RADIUS; z++) {
 					blockData[index] = world.getBlockState(pos.add(x, y, z));
 					index++;
 				}
@@ -281,6 +267,6 @@ public class TileEntityTFAntibuilder extends TileEntity implements ITickableTile
 	}
 
 	private boolean anyPlayerInRange() {
-		return this.world.isPlayerWithin(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D, this.requiredPlayerRange);
+		return this.world.isPlayerWithin(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D, this.PLAYER_RANGE);
 	}
 }

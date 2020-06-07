@@ -10,16 +10,17 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.server.ServerWorld;
 
 import java.util.Random;
 
-public class BlockTFBuiltTranslucent extends BlockTFTowerTranslucent {
+public class BlockTFBuiltTranslucent extends Block {
 
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
-	public BlockTFBuiltTranslucent() {
-		super(Properties.create(Material.GLASS).hardnessAndResistance(50.0F, 2000.0F).sound(SoundType.METAL).noDrops());
+	public BlockTFBuiltTranslucent(Properties props) {
+		super(props);
 		this.setDefaultState(stateContainer.getBaseState().with(ACTIVE, false));
 	}
 
@@ -27,6 +28,11 @@ public class BlockTFBuiltTranslucent extends BlockTFTowerTranslucent {
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> container) {
 		super.fillStateContainer(container);
 		container.add(ACTIVE);
+	}
+
+	@Override
+	public int tickRate(IWorldReader world) {
+		return 15;
 	}
 
 	@Override

@@ -66,13 +66,6 @@
           "all3": "twilightforest:blocks/tower_device_level_3/towerdev_builder_timeout_2"
         }
       },
-      "antibuilder": {
-        "textures": {
-          "all": "twilightforest:blocks/towerdev_antibuilder",
-          "all2": "twilightforest:blocks/tower_device_level_1/towerdev_antibuilder_1",
-          "all3": "twilightforest:blocks/tower_device_level_2/towerdev_antibuilder_2"
-        }
-      },
       "ghasttrap_inactive": {
         "model": "twilightforest:util/cube_bottom_top_3_layer",
         "textures": {
@@ -97,20 +90,7 @@
           "side3": "twilightforest:blocks/tower_device_level_2/towerdev_ghasttrap_on_2"
         }
       },
-      "reactor_inactive": {
-        "textures": {
-          "all": "twilightforest:blocks/towerdev_reactor_off",
-          "all2": "twilightforest:blocks/tower_device_level_1/towerdev_reactor_off_1",
-          "all3": "twilightforest:blocks/tower_device_level_2/towerdev_reactor_off_2"
-        }
-      },
-      "reactor_active": {
-        "textures": {
-          "all": "twilightforest:blocks/towerdev_reactor_on",
-          "all2": "twilightforest:blocks/tower_device_level_1/towerdev_reactor_on_1",
-          "all3": "twilightforest:blocks/tower_device_level_2/towerdev_reactor_on_2"
-        }
-      }
+
     }
   }
 }

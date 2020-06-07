@@ -88,6 +88,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 		}
 
 		terrorcotta();
+		towerBlocks();
 
 		simpleBlock(TFBlocks.fake_gold.get(), models().getExistingFile(new ResourceLocation("block/gold_block")));
 		simpleBlock(TFBlocks.fake_diamond.get(), models().getExistingFile(new ResourceLocation("block/diamond_block")));
@@ -890,6 +891,46 @@ public class BlockstateGenerator extends BlockStateProvider {
 						.with(BlockTFDiagonal.IS_ROTATED, false).setModels(ConfiguredModel.builder().modelFile(terrorcottaDiagonal).build());
 		getVariantBuilder(TFBlocks.terrorcotta_diagonal.get()).partialState()
 						.with(BlockTFDiagonal.IS_ROTATED, true).setModels(ConfiguredModel.builder().modelFile(terrorcottaDiagonalRotated).uvLock(true).rotationY(90).build());
+	}
+
+	private void towerBlocks() {
+		ResourceLocation cube3 = prefix("block/util/cube_all_3_layer");
+		ResourceLocation cube2NoShade = prefix("block/util/cube_all_2_layer_no_shade");
+
+		ModelFile built = models().withExistingParent(TFBlocks.built_block.getId().getPath(), cube2NoShade)
+						.texture("all", prefix("block/towerdev_built_off"))
+						.texture("all2", prefix("block/tower_device_level_1/towerdev_builder_off_1"));
+		ModelFile builtActive = models().withExistingParent(TFBlocks.built_block.getId().getPath() + "_active", cube2NoShade)
+						.texture("all", prefix("block/towerdev_built_on"))
+						.texture("all2", prefix("block/tower_device_level_1/towerdev_builder_on_1"));
+		getVariantBuilder(TFBlocks.built_block.get()).partialState()
+						.with(BlockTFBuiltTranslucent.ACTIVE, false).setModels(new ConfiguredModel(built));
+		getVariantBuilder(TFBlocks.built_block.get()).partialState()
+						.with(BlockTFBuiltTranslucent.ACTIVE, true).setModels(new ConfiguredModel(builtActive));
+
+		ModelFile antibuilder = models().withExistingParent(TFBlocks.antibuilder.getId().getPath(), cube3)
+						.texture("all", prefix("block/towerdev_antibuilder"))
+						.texture("all2", prefix("block/tower_device_level_1/towerdev_antibuilder_1"))
+						.texture("all3", prefix("block/tower_device_level_2/towerdev_antibuilder_2"));
+		simpleBlock(TFBlocks.antibuilder.get(), antibuilder);
+		ModelFile antibuilt = models().withExistingParent(TFBlocks.antibuilt_block.getId().getPath(), cube2NoShade)
+						.texture("all", prefix("block/towerdev_antibuilt"))
+						.texture("all2", prefix("block/tower_device_level_2/towerdev_antibuilt_1"));
+		simpleBlock(TFBlocks.antibuilt_block.get(), antibuilt);
+
+		ModelFile reactor = models().withExistingParent(TFBlocks.carminite_reactor.getId().getPath(), cube3)
+						.texture("all", prefix("block/towerdev_reactor_off"))
+						.texture("all2", prefix("block/tower_device_level_1/towerdev_reactor_off_1"))
+						.texture("all3", prefix("block/tower_device_level_2/towerdev_reactor_off_2"));
+		ModelFile reactorActive = models().withExistingParent(TFBlocks.carminite_reactor.getId().getPath() + "_active", cube3)
+						.texture("all", prefix("block/towerdev_reactor_on"))
+						.texture("all2", prefix("block/tower_device_level_1/towerdev_reactor_on_1"))
+						.texture("all3", prefix("block/tower_device_level_2/towerdev_reactor_on_2"));
+		getVariantBuilder(TFBlocks.carminite_reactor.get()).partialState()
+						.with(BlockTFReactor.ACTIVE, false).setModels(new ConfiguredModel(reactor));
+		getVariantBuilder(TFBlocks.carminite_reactor.get()).partialState()
+						.with(BlockTFReactor.ACTIVE, true).setModels(new ConfiguredModel(reactorActive));
+		simpleBlock(TFBlocks.reactor_debris.get(), models().cubeAll(TFBlocks.reactor_debris.getId().getPath(), new ResourceLocation("block/destroy_stage_9")));
 	}
 	
 	private ModelFile pedestalModel(String name, String north, String south, String west, String east, boolean active) {

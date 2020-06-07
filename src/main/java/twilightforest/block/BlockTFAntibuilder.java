@@ -33,11 +33,4 @@ public class BlockTFAntibuilder extends Block {
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new TileEntityTFAntibuilder();
 	}
-
-	//TODO: Move to client
-//	@Override
-//	@OnlyIn(Dist.CLIENT)
-//	public BlockRenderLayer getRenderLayer() {
-//		return BlockRenderLayer.CUTOUT;
-//	}
 }

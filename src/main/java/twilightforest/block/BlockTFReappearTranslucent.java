@@ -13,17 +13,18 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.server.ServerWorld;
 
 import java.util.Random;
 
-public class BlockTFReappearTranslucent extends BlockTFTowerTranslucent {
+public class BlockTFReappearTranslucent extends Block {
 
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 	private static final VoxelShape REAPPEARING_BB = VoxelShapes.create(new AxisAlignedBB(0.375F, 0.375F, 0.375F, 0.625F, 0.625F, 0.625F));
 
-	public BlockTFReappearTranslucent() {
-		super(Properties.create(Material.GLASS).hardnessAndResistance(50.0F, 2000.0F).sound(SoundType.METAL).tickRandomly().doesNotBlockMovement());
+	public BlockTFReappearTranslucent(Properties props) {
+		super(props);
 		this.setDefaultState(stateContainer.getBaseState().with(ACTIVE, false));
 	}
 
@@ -31,6 +32,11 @@ public class BlockTFReappearTranslucent extends BlockTFTowerTranslucent {
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
 		super.fillStateContainer(builder);
 		builder.add(ACTIVE);
+	}
+
+	@Override
+	public int tickRate(IWorldReader world) {
+		return 15;
 	}
 
 	@Override

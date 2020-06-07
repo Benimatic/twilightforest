@@ -201,8 +201,8 @@ public class BlockTFVanishingBlock extends Block {
 			changeToActiveVanishBlock(world, pos, TFBlocks.vanishing_block.get().getDefaultState().with(BlockTFVanishingBlock.ACTIVE, true));
 		} else if (state == TFBlocks.reappearing_block.get().getDefaultState().with(BlockTFReappearingBlock.ACTIVE, false) && !areBlocksLocked(world, pos)) {
 			changeToActiveVanishBlock(world, pos, TFBlocks.reappearing_block.get().getDefaultState().with(BlockTFReappearingBlock.ACTIVE, true));
-		} else if (state == TFBlocks.builder_translucent.get().getDefaultState().with(BlockTFBuiltTranslucent.ACTIVE, false)) {
-			changeToActiveVanishBlock(world, pos, TFBlocks.builder_translucent.get().getDefaultState().with(BlockTFBuiltTranslucent.ACTIVE, true));
+		} else if (state == TFBlocks.built_block.get().getDefaultState().with(BlockTFBuiltTranslucent.ACTIVE, false)) {
+			changeToActiveVanishBlock(world, pos, TFBlocks.built_block.get().getDefaultState().with(BlockTFBuiltTranslucent.ACTIVE, true));
 		}
 	}
 

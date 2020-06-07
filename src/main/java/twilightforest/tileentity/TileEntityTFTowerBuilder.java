@@ -28,7 +28,7 @@ public class TileEntityTFTowerBuilder extends TileEntity implements ITickableTil
 
 	private PlayerEntity trackedPlayer;
 
-	private BlockState blockBuiltState = TFBlocks.builder_translucent.get().getDefaultState().with(BlockTFBuiltTranslucent.ACTIVE, false);
+	private BlockState blockBuiltState = TFBlocks.built_block.get().getDefaultState().with(BlockTFBuiltTranslucent.ACTIVE, false);
 
 	public TileEntityTFTowerBuilder() {
 		super(TFTileEntities.TOWER_BUILDER.get());
