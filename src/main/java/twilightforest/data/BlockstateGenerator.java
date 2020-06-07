@@ -896,7 +896,29 @@ public class BlockstateGenerator extends BlockStateProvider {
 
 	private void towerBlocks() {
 		ResourceLocation cube3 = prefix("block/util/cube_all_3_layer");
+		ResourceLocation cubeBt3 = prefix("block/util/cube_bottom_top_3_layer");
 		ResourceLocation cube2NoShade = prefix("block/util/cube_all_2_layer_no_shade");
+
+		ModelFile ghastTrap = models().withExistingParent(TFBlocks.ghast_trap.getId().getPath(), cubeBt3)
+						.texture("top", prefix("block/towerdev_ghasttraplid_off"))
+						.texture("side", prefix("block/towerdev_ghasttrap_off"))
+						.texture("bottom", prefix("block/tower_wood_encased"))
+						.texture("top2", prefix("block/tower_device_level_2/towerdev_ghasttraplid_off_1"))
+						.texture("side2", prefix("block/tower_device_level_1/towerdev_ghasttrap_off_1"))
+						.texture("top3", prefix("block/tower_device_level_2/towerdev_ghasttraplid_off_1"))
+						.texture("side3", prefix("block/tower_device_level_2/towerdev_ghasttrap_off_2"));
+		ModelFile ghastTrapActive = models().withExistingParent(TFBlocks.ghast_trap.getId().getPath() + "_active", cubeBt3)
+						.texture("top", prefix("block/towerdev_ghasttraplid_on"))
+						.texture("side", prefix("block/towerdev_ghasttrap_on"))
+						.texture("bottom", prefix("block/tower_wood_encased"))
+						.texture("top2", prefix("block/tower_device_level_2/towerdev_ghasttraplid_on_1"))
+						.texture("side2", prefix("block/tower_device_level_1/towerdev_ghasttrap_on_1"))
+						.texture("top3", prefix("block/tower_device_level_3/towerdev_ghasttraplid_on_2"))
+						.texture("side3", prefix("block/tower_device_level_2/towerdev_ghasttrap_on_2"));
+		getVariantBuilder(TFBlocks.ghast_trap.get()).partialState()
+						.with(BlockTFGhastTrap.ACTIVE, false).setModels(new ConfiguredModel(ghastTrap));
+		getVariantBuilder(TFBlocks.ghast_trap.get()).partialState()
+						.with(BlockTFGhastTrap.ACTIVE, true).setModels(new ConfiguredModel(ghastTrapActive));
 
 		ModelFile builder = models().withExistingParent(TFBlocks.carminite_builder.getId().getPath(), cube3)
 						.texture("all", prefix("block/towerdev_builder_off"))

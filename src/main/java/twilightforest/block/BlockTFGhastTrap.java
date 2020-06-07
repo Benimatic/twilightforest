@@ -23,7 +23,8 @@ import javax.annotation.Nullable;
 import java.util.Random;
 
 public class BlockTFGhastTrap extends Block {
-
+	public static final int ACTIVATE_EVENT = 0;
+	public static final int DEACTIVATE_EVENT = 1;
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
 	public BlockTFGhastTrap(Properties props) {
@@ -38,45 +39,35 @@ public class BlockTFGhastTrap extends Block {
 	}
 
 	@Override
-	public int tickRate(IWorldReader world) {
-		return 15;
-	}
-
-	/**
-	 * Change this block into an different device block
-	 */
-	private static void changeToBlockState(World world, BlockPos pos, BlockState state) {
-		//Block thereBlock = world.getBlockState(pos).getBlock();
-
-		//if (thereBlock == TFBlocks.tower_device || thereBlock == TFBlocks.tower_translucent) {
-			world.setBlockState(pos, state, 3);
-			//world.markBlockRangeForRenderUpdate(pos, pos);
-			//.notifyNeighborsRespectDebug(pos, thereBlock, false);
-		//}
-	}
-
-	@Override
 	@Deprecated
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-		if (world.isRemote) return;
+		if (world.isRemote) {
+			return;
+		}
 
 		if (!state.get(ACTIVE) && isInactiveTrapCharged(world, pos) && world.isBlockPowered(pos)) {
 			for (ServerPlayerEntity player : world.getEntitiesWithinAABB(ServerPlayerEntity.class, new AxisAlignedBB(pos).grow(6.0D))) {
 				TFAdvancements.ACTIVATED_GHAST_TRAP.trigger(player);
 			}
 
-			changeToBlockState(world, pos, state.with(ACTIVE, true));
+			world.setBlockState(pos, state.with(ACTIVE, true));
 			world.playSound(null, pos, SoundEvents.BLOCK_WOODEN_BUTTON_CLICK_ON, SoundCategory.BLOCKS, 0.3F, 0.6F);
-			//world.scheduleUpdate(pos, this, 4);
+			world.addBlockEvent(pos, this, ACTIVATE_EVENT, 0);
 		}
+	}
+
+	@Override
+	public boolean eventReceived(BlockState state, World world, BlockPos pos, int event, int payload) {
+		TileEntity te = world.getTileEntity(pos);
+		return te != null && te.receiveClientEvent(event, payload);
 	}
 
 	/**
 	 * Check if the inactive trap block is fully charged
 	 */
 	private boolean isInactiveTrapCharged(World world, BlockPos pos) {
-		TileEntityTFGhastTrapInactive tileEntity = (TileEntityTFGhastTrapInactive) world.getTileEntity(pos);
-		return tileEntity != null && tileEntity.isCharged();
+		TileEntity tileEntity = world.getTileEntity(pos);
+		return tileEntity instanceof TileEntityTFGhastTrapActive && ((TileEntityTFGhastTrapActive) tileEntity).isCharged();
 	}
 
 	// [VanillaCopy] BlockRedstoneOre.spawnParticles. Unchanged.
@@ -122,7 +113,7 @@ public class BlockTFGhastTrap extends Block {
 	@Override
 	@Deprecated
 	public int getLightValue(BlockState state) {
-		return state.get(ACTIVE) ? 15 : 0;
+		return state.get(ACTIVE) ? super.getLightValue(state) : 0;
 	}
 
 	@Override
@@ -133,61 +124,6 @@ public class BlockTFGhastTrap extends Block {
 	@Nullable
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return state.get(ACTIVE) ? new TileEntityTFGhastTrapActive() : new TileEntityTFGhastTrapInactive();
+		return new TileEntityTFGhastTrapActive();
 	}
-
-	//TODO: Move to loot table
-//	@Override
-//	public Item getItemDropped(BlockState state, Random random, int fortune) {
-//		switch (state.getValue(VARIANT)) {
-//			case ANTIBUILDER:
-//				return Items.AIR;
-//			default:
-//				return Item.getItemFromBlock(this);
-//		}
-//	}
-//
-//	@Override
-//	@Deprecated
-//	protected boolean canSilkHarvest() {
-//		return false;
-//	}
-//
-//	@Override
-//	public boolean canSilkHarvest(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-//		return false;
-//	}
-//
-//	@Override
-//	public int damageDropped(BlockState state) {
-//		switch (state.getValue(VARIANT)) {
-//			case REAPPEARING_ACTIVE:
-//				state = state.with(VARIANT, TowerDeviceVariant.REAPPEARING_INACTIVE);
-//				break;
-//			case BUILDER_ACTIVE:
-//			case BUILDER_TIMEOUT:
-//				state = state.with(VARIANT, TowerDeviceVariant.BUILDER_INACTIVE);
-//				break;
-//			case VANISH_ACTIVE:
-//				state = state.with(VARIANT, TowerDeviceVariant.VANISH_INACTIVE);
-//				break;
-//			case GHASTTRAP_ACTIVE:
-//				state = state.with(VARIANT, TowerDeviceVariant.GHASTTRAP_INACTIVE);
-//				break;
-//			case REACTOR_ACTIVE:
-//				state = state.with(VARIANT, TowerDeviceVariant.REACTOR_INACTIVE);
-//				break;
-//			default:
-//				break;
-//		}
-//
-//		return getMetaFromState(state);
-//	}
-
-	//TODO: Move to client
-//	@Override
-//	@OnlyIn(Dist.CLIENT)
-//	public BlockRenderLayer getRenderLayer() {
-//		return BlockRenderLayer.CUTOUT;
-//	}
 }
