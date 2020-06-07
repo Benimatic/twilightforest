@@ -275,9 +275,36 @@ public class BlockstateGenerator extends BlockStateProvider {
 		});
 
 		horizontalBlock(TFBlocks.naga_stone_head.get(), models().getExistingFile(prefix("block/" + TFBlocks.naga_stone_head.getId().getPath())));
+		nagastonePillar(TFBlocks.nagastone_pillar.get(), "");
+		nagastonePillar(TFBlocks.nagastone_pillar_mossy.get(), "_mossy");
+		nagastonePillar(TFBlocks.nagastone_pillar_weathered.get(), "_weathered");
 		etchedNagastone(TFBlocks.etched_nagastone.get(), "");
 		etchedNagastone(TFBlocks.etched_nagastone_mossy.get(), "_mossy");
 		etchedNagastone(TFBlocks.etched_nagastone_weathered.get(), "_weathered");
+	}
+
+	private void nagastonePillar(Block b, String suffix) {
+		ResourceLocation side = prefix("block/nagastone_pillar_side" + suffix);
+		ResourceLocation end = prefix("block/nagastone_pillar_end" + suffix);
+		ResourceLocation alt = prefix("block/nagastone_pillar_side" + suffix + "_alt");
+		ModelFile model = models().cubeColumn(b.getRegistryName().getPath(), side, end);
+		ModelFile reversed = models().cubeColumn(b.getRegistryName().getPath() + "_reversed", alt, end);
+		getVariantBuilder(b).forAllStates(state -> {
+			int rotX = 0, rotY = 0;
+			switch (state.get(BlockTFNagastonePillar.AXIS)) {
+			default:
+			case X:
+				rotX = rotY = 270;
+				break;
+			case Y:
+				break;
+			case Z:
+				rotX = 270;
+				break;
+			}
+			ModelFile m = state.get(BlockTFNagastonePillar.REVERSED) ? reversed : model;
+			return ConfiguredModel.builder().rotationX(rotX).rotationY(rotY).modelFile(m).build();
+		});
 	}
 
 	private void etchedNagastone(Block b, String suffix) {
