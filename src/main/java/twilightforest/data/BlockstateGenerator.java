@@ -143,6 +143,8 @@ public class BlockstateGenerator extends BlockStateProvider {
 		simpleBlock(TFBlocks.huge_stalk.get(), models().cubeColumn(TFBlocks.huge_stalk.getId().getPath(),
 						prefix("block/" + TFBlocks.huge_stalk.getId().getPath()),
 						prefix("block/" + TFBlocks.huge_stalk.getId().getPath() + "_top")));
+		mushroomBlock(TFBlocks.huge_mushgloom.get(), prefix("block/huge_gloom_inside"), prefix("block/huge_gloom_cap"));
+		simpleBlock(TFBlocks.huge_mushgloom_stem.get());
 		simpleBlock(TFBlocks.trollvidr.get(), models().cross(TFBlocks.trollvidr.getId().getPath(), blockTexture(TFBlocks.trollvidr.get())));
 		simpleBlock(TFBlocks.unripe_trollber.get(), models().cross(TFBlocks.unripe_trollber.getId().getPath(), blockTexture(TFBlocks.unripe_trollber.get())));
 		ModelFile trollber = models().withExistingParent(TFBlocks.trollber.getId().getPath(), prefix("block/util/cross_2_layer"))
@@ -1054,6 +1056,25 @@ public class BlockstateGenerator extends BlockStateProvider {
 			ModelFile model = m.get(state.get(BlockTFHugeLilyPad.PIECE));
 			return ConfiguredModel.builder().rotationY(rotY).modelFile(model).build();
 		});
+	}
+
+	private void mushroomBlock(Block b, ResourceLocation inside, ResourceLocation outside) {
+		ModelFile modelInside = models().withExistingParent(b.getRegistryName().getPath() + "_inside", prefix("block/util/north_face"))
+						.texture("texture", inside);
+		ModelFile modelOutside = models().withExistingParent(b.getRegistryName().getPath() + "_outside", prefix("block/util/north_face"))
+						.texture("texture", outside);
+		getMultipartBuilder(b).part().modelFile(modelInside).addModel().condition(HugeMushroomBlock.NORTH, false).end();
+		getMultipartBuilder(b).part().modelFile(modelOutside).addModel().condition(HugeMushroomBlock.NORTH, true).end();
+		getMultipartBuilder(b).part().modelFile(modelInside).uvLock(true).rotationY(180).addModel().condition(HugeMushroomBlock.SOUTH, false).end();
+		getMultipartBuilder(b).part().modelFile(modelOutside).uvLock(true).rotationY(180).addModel().condition(HugeMushroomBlock.SOUTH, true).end();
+		getMultipartBuilder(b).part().modelFile(modelInside).uvLock(true).rotationY(270).addModel().condition(HugeMushroomBlock.WEST, false).end();
+		getMultipartBuilder(b).part().modelFile(modelOutside).uvLock(true).rotationY(270).addModel().condition(HugeMushroomBlock.WEST, true).end();
+		getMultipartBuilder(b).part().modelFile(modelInside).uvLock(true).rotationY(90).addModel().condition(HugeMushroomBlock.EAST, false).end();
+		getMultipartBuilder(b).part().modelFile(modelOutside).uvLock(true).rotationY(90).addModel().condition(HugeMushroomBlock.EAST, true).end();
+		getMultipartBuilder(b).part().modelFile(modelInside).uvLock(true).rotationX(270).addModel().condition(HugeMushroomBlock.UP, false).end();
+		getMultipartBuilder(b).part().modelFile(modelOutside).uvLock(true).rotationX(270).addModel().condition(HugeMushroomBlock.UP, true).end();
+		getMultipartBuilder(b).part().modelFile(modelInside).uvLock(true).rotationX(90).addModel().condition(HugeMushroomBlock.DOWN, false).end();
+		getMultipartBuilder(b).part().modelFile(modelOutside).uvLock(true).rotationX(90).addModel().condition(HugeMushroomBlock.DOWN, true).end();
 	}
 
 	@Nonnull

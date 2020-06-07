@@ -13,7 +13,6 @@ import net.minecraft.world.storage.loot.conditions.TableBonus;
 import net.minecraft.world.storage.loot.functions.ApplyBonus;
 import net.minecraft.world.storage.loot.functions.SetCount;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
-import twilightforest.block.BlockTFTrophyPedestal;
 import twilightforest.block.TFBlocks;
 import twilightforest.item.TFItems;
 
@@ -68,6 +67,8 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.giant_obsidian.get());
 		registerLootTable(TFBlocks.uberous_soil.get(), dropping(Blocks.DIRT));
 		registerDropSelfLootTable(TFBlocks.huge_stalk.get());
+		registerLootTable(TFBlocks.huge_mushgloom.get(), b -> droppingItemRarely(b, TFBlocks.mushgloom.get()));
+		registerLootTable(TFBlocks.huge_mushgloom_stem.get(), b -> droppingItemRarely(b, TFBlocks.mushgloom.get()));
 		registerLootTable(TFBlocks.trollvidr.get(), onlyWithShears(TFBlocks.trollvidr.get()));
 		registerLootTable(TFBlocks.unripe_trollber.get(), onlyWithShears(TFBlocks.unripe_trollber.get()));
 		LootTable.Builder trollber = LootTable.builder().addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(
