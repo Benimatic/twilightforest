@@ -145,6 +145,12 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.etched_nagastone.get());
 		registerDropSelfLootTable(TFBlocks.etched_nagastone_mossy.get());
 		registerDropSelfLootTable(TFBlocks.etched_nagastone_weathered.get());
+		registerDropSelfLootTable(TFBlocks.nagastone_stairs_left.get());
+		registerDropSelfLootTable(TFBlocks.nagastone_stairs_right.get());
+		registerDropSelfLootTable(TFBlocks.nagastone_stairs_mossy_left.get());
+		registerDropSelfLootTable(TFBlocks.nagastone_stairs_mossy_right.get());
+		registerDropSelfLootTable(TFBlocks.nagastone_stairs_weathered_left.get());
+		registerDropSelfLootTable(TFBlocks.nagastone_stairs_weathered_right.get());
 		registerDropSelfLootTable(TFBlocks.iron_ladder.get());
 		registerDropSelfLootTable(TFBlocks.stone_twist.get());
 		registerDropSelfLootTable(TFBlocks.lapis_block.get());

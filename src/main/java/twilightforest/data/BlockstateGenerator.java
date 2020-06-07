@@ -281,6 +281,12 @@ public class BlockstateGenerator extends BlockStateProvider {
 		etchedNagastone(TFBlocks.etched_nagastone.get(), "");
 		etchedNagastone(TFBlocks.etched_nagastone_mossy.get(), "_mossy");
 		etchedNagastone(TFBlocks.etched_nagastone_weathered.get(), "_weathered");
+		stairsBlock(TFBlocks.nagastone_stairs_left.get(), prefix("block/etched_nagastone_left"), prefix("block/stone_tiles"), prefix("block/nagastone_bare"));
+		stairsBlock(TFBlocks.nagastone_stairs_right.get(), prefix("block/etched_nagastone_right"), prefix("block/stone_tiles"), prefix("block/nagastone_bare"));
+		stairsBlock(TFBlocks.nagastone_stairs_mossy_left.get(), prefix("block/etched_nagastone_left_mossy"), prefix("block/stone_tiles_mossy"), prefix("block/nagastone_bare_mossy"));
+		stairsBlock(TFBlocks.nagastone_stairs_mossy_right.get(), prefix("block/etched_nagastone_right_mossy"), prefix("block/stone_tiles_mossy"), prefix("block/nagastone_bare_mossy"));
+		stairsBlock(TFBlocks.nagastone_stairs_weathered_left.get(), prefix("block/etched_nagastone_left_weathered"), prefix("block/stone_tiles_weathered"), prefix("block/nagastone_bare_weathered"));
+		stairsBlock(TFBlocks.nagastone_stairs_weathered_right.get(), prefix("block/etched_nagastone_right_weathered"), prefix("block/stone_tiles_weathered"), prefix("block/nagastone_bare_weathered"));
 	}
 
 	private void nagastonePillar(Block b, String suffix) {
