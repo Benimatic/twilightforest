@@ -126,6 +126,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 		allRotations(TFBlocks.deadrock_cracked.get(), deadrockCracked);
 		ModelFile deadrockWeathered = models().cubeAll(TFBlocks.deadrock_weathered.getId().getPath(), blockTexture(TFBlocks.deadrock_weathered.get()));
 		allRotations(TFBlocks.deadrock_weathered.get(), deadrockWeathered);
+		perFaceBlock(TFBlocks.trollsteinn.get(), blockTexture(TFBlocks.trollsteinn.get()), prefix("block/" + TFBlocks.trollsteinn.getId().getPath() + "_light"));
 		simpleBlock(TFBlocks.wispy_cloud.get());
 		simpleBlock(TFBlocks.fluffy_cloud.get());
 		simpleBlock(TFBlocks.giant_cobblestone.get(), models().withExistingParent(TFBlocks.giant_cobblestone.getId().getPath(), prefix("block/util/giant_block"))
@@ -143,7 +144,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 		simpleBlock(TFBlocks.huge_stalk.get(), models().cubeColumn(TFBlocks.huge_stalk.getId().getPath(),
 						prefix("block/" + TFBlocks.huge_stalk.getId().getPath()),
 						prefix("block/" + TFBlocks.huge_stalk.getId().getPath() + "_top")));
-		mushroomBlock(TFBlocks.huge_mushgloom.get(), prefix("block/huge_gloom_inside"), prefix("block/huge_gloom_cap"));
+		perFaceBlock(TFBlocks.huge_mushgloom.get(), prefix("block/huge_gloom_inside"), prefix("block/huge_gloom_cap"));
 		simpleBlock(TFBlocks.huge_mushgloom_stem.get());
 		simpleBlock(TFBlocks.trollvidr.get(), models().cross(TFBlocks.trollvidr.getId().getPath(), blockTexture(TFBlocks.trollvidr.get())));
 		simpleBlock(TFBlocks.unripe_trollber.get(), models().cross(TFBlocks.unripe_trollber.getId().getPath(), blockTexture(TFBlocks.unripe_trollber.get())));
@@ -1058,7 +1059,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 		});
 	}
 
-	private void mushroomBlock(Block b, ResourceLocation inside, ResourceLocation outside) {
+	private void perFaceBlock(Block b, ResourceLocation inside, ResourceLocation outside) {
 		ModelFile modelInside = models().withExistingParent(b.getRegistryName().getPath() + "_inside", prefix("block/util/north_face"))
 						.texture("texture", inside);
 		ModelFile modelOutside = models().withExistingParent(b.getRegistryName().getPath() + "_outside", prefix("block/util/north_face"))

@@ -45,6 +45,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.deadrock.get());
 		toBlock(TFBlocks.deadrock_cracked.get());
 		toBlock(TFBlocks.deadrock_weathered.get());
+		getBuilder(TFBlocks.trollsteinn.getId().getPath()).parent(getExistingFile(new ResourceLocation("block/cube_all")))
+						.texture("all", prefix("block/trollsteinn"));
 		toBlock(TFBlocks.wispy_cloud.get());
 		toBlock(TFBlocks.fluffy_cloud.get());
 		toBlockModel(TFBlocks.giant_cobblestone.get(), new ResourceLocation("block/cobblestone"));

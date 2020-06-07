@@ -325,7 +325,7 @@ public class TFBlocks {
 						thorn_rose, thorn_leaves, beanstalk_leaves,
 						aurora_block, aurora_pillar, aurora_slab, auroralized_glass,
 						deadrock, deadrock_cracked, deadrock_weathered,
-						wispy_cloud, fluffy_cloud, giant_cobblestone, giant_log, giant_leaves, giant_obsidian,
+						trollsteinn, wispy_cloud, fluffy_cloud, giant_cobblestone, giant_log, giant_leaves, giant_obsidian,
 						uberous_soil, huge_stalk, huge_mushgloom, huge_mushgloom_stem, trollvidr, unripe_trollber, trollber,
 						castle_brick, castle_brick_worn, castle_brick_cracked, castle_brick_mossy, castle_brick_roof, castle_brick_frame,
 						castle_pillar_encased, castle_pillar_encased_tile, castle_pillar_bold, castle_pillar_bold_tile,

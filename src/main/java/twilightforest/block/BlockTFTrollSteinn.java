@@ -1,28 +1,40 @@
 package twilightforest.block;
 
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.particles.RedstoneParticleData;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.block.BlockState;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import javax.annotation.Nullable;
+import java.util.Map;
 import java.util.Random;
 
 public class BlockTFTrollSteinn extends Block {
 
-	static final BooleanProperty DOWN_LIT  = BooleanProperty.create("down");
-	static final BooleanProperty UP_LIT    = BooleanProperty.create("up");
-	static final BooleanProperty NORTH_LIT = BooleanProperty.create("north");
-	static final BooleanProperty SOUTH_LIT = BooleanProperty.create("south");
-	static final BooleanProperty WEST_LIT  = BooleanProperty.create("west");
-	static final BooleanProperty EAST_LIT  = BooleanProperty.create("east");
+	private static final BooleanProperty DOWN_LIT  = BooleanProperty.create("down");
+	private static final BooleanProperty UP_LIT    = BooleanProperty.create("up");
+	private static final BooleanProperty NORTH_LIT = BooleanProperty.create("north");
+	private static final BooleanProperty SOUTH_LIT = BooleanProperty.create("south");
+	private static final BooleanProperty WEST_LIT  = BooleanProperty.create("west");
+	private static final BooleanProperty EAST_LIT  = BooleanProperty.create("east");
+	private static final Map<Direction, BooleanProperty> PROPERTY_MAP = ImmutableMap.<Direction, BooleanProperty>builder()
+					.put(Direction.DOWN, DOWN_LIT)
+					.put(Direction.UP, UP_LIT)
+					.put(Direction.NORTH, NORTH_LIT)
+					.put(Direction.SOUTH, SOUTH_LIT)
+					.put(Direction.WEST, WEST_LIT)
+					.put(Direction.EAST, EAST_LIT).build();
 
 	private static final int LIGHT_THRESHHOLD = 7;
 
@@ -41,21 +53,28 @@ public class BlockTFTrollSteinn extends Block {
 		builder.add(DOWN_LIT, UP_LIT, NORTH_LIT, SOUTH_LIT, WEST_LIT, EAST_LIT);
 	}
 
-//	@Override
-//	@Deprecated
-//	public BlockState getActualState(BlockState state, IBlockAccess world, BlockPos pos) {
-//		if (!(world instanceof World)) return this.getDefaultState();
-//
-//		for (SideProps side : SideProps.values())
-//			state = state.with(side.prop, ((World) world).getLight(pos.offset(side.facing)) > LIGHT_THRESHHOLD);
-//
-//		return state;
-//	}
+	@Override
+	public BlockState updatePostPlacement(BlockState state, Direction dirToNeighbor, BlockState neighborState, IWorld world, BlockPos pos, BlockPos neighborPos) {
+		boolean lit = world.getLight(neighborPos) > LIGHT_THRESHHOLD;
+		return state.with(PROPERTY_MAP.get(dirToNeighbor), lit);
+	}
+
+	@Override
+	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
+		BlockState ret = getDefaultState();
+		for (Map.Entry<Direction, BooleanProperty> e : PROPERTY_MAP.entrySet()) {
+			int light = ctx.getWorld().getLight(ctx.getPos().offset(e.getKey()));
+			ret = ret.with(e.getValue(), light > LIGHT_THRESHHOLD);
+		}
+		return ret;
+	}
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void animateTick(BlockState state, World world, BlockPos pos, Random rand) {
-		if (rand.nextInt(2) == 0) this.sparkle(world, pos);
+		if (rand.nextInt(2) == 0) {
+			this.sparkle(world, pos);
+		}
 	}
 
 	// [VanillaCopy] Based on BlockRedstoneOre.spawnParticles
@@ -95,23 +114,6 @@ public class BlockTFTrollSteinn extends Block {
 			if (rx < (double) pos.getX() || rx > (double) (pos.getX() + 1) || ry < 0.0D || ry > (double) (pos.getY() + 1) || rz < (double) pos.getZ() || rz > (double) (pos.getZ() + 1)) {
 				world.addParticle(RedstoneParticleData.REDSTONE_DUST, rx, ry, rz, 0.25D, -1.0D, 0.5D);
 			}
-		}
-	}
-
-	private enum SideProps {
-		UP(UP_LIT, Direction.UP),
-		DOWN(DOWN_LIT, Direction.DOWN),
-		NORTH(NORTH_LIT, Direction.NORTH),
-		SOUTH(SOUTH_LIT, Direction.SOUTH),
-		WEST(WEST_LIT, Direction.WEST),
-		EAST(EAST_LIT, Direction.EAST);
-
-		private final BooleanProperty prop;
-		private final Direction facing;
-
-		SideProps(BooleanProperty prop, Direction faceing) {
-			this.prop = prop;
-			this.facing = faceing;
 		}
 	}
 }
