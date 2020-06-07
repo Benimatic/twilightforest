@@ -2,9 +2,6 @@ package twilightforest.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.material.MaterialColor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particles.RedstoneParticleData;
@@ -13,6 +10,9 @@ import net.minecraft.state.StateContainer;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
@@ -22,18 +22,25 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
-//TODO: Breaking and entering, but without the entering and more the breaking
+/**
+ * Block that disappears then reappears after a short delay.
+ * Blockstate lifecycle: [active=false, vanish=false] -> right click or redstone
+ * -> [active=true, vanish=false] -> delay -> [active=false, vanish=true]
+ * -> delay -> [active=true, vanish=true] -> delay -> initial state
+ *
+ * If the block has no "vanish" state property registered, it simply deletes itself after the first delay.
+ * @see BlockReappearing, It is only separated from this class because vanilla does
+ * not like having blockstate properties be conditionally registered.
+ */
 public class BlockTFVanishingBlock extends Block {
-
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
+	public static final BooleanProperty VANISHED = BooleanProperty.create("vanish");
+	private static final VoxelShape VANISHED_SHAPE = makeCuboidShape(6, 6, 6, 10, 10, 10);
 
-	public BlockTFVanishingBlock() {
-		super(Properties.create(Material.WOOD, MaterialColor.SAND).hardnessAndResistance(-1.0F, 35.0F).sound(SoundType.WOOD).tickRandomly());
-		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
+	public BlockTFVanishingBlock(Properties props) {
+		super(props);
 		this.setDefaultState(stateContainer.getBaseState().with(ACTIVE, false));
 	}
 
@@ -43,19 +50,28 @@ public class BlockTFVanishingBlock extends Block {
 		builder.add(ACTIVE);
 	}
 
+	private boolean isVanished(BlockState state) {
+		return state.has(VANISHED) && state.get(VANISHED);
+	}
+
 	@Override
-	public int tickRate(IWorldReader world) {
-		return 15;
+	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
+		return isVanished(state) ? VANISHED_SHAPE : super.getShape(state, world, pos, ctx);
+	}
+
+	@Override
+	public VoxelShape getCollisionShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext ctx) {
+		return isVanished(state) ? VoxelShapes.empty() : super.getCollisionShape(state, world, pos, ctx);
 	}
 
 	@Override
 	@Deprecated
 	public ActionResultType onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-		if (!state.get(ACTIVE)) {
+		if (!isVanished(state) && !state.get(ACTIVE)) {
 			if (areBlocksLocked(world, pos)) {
 				world.playSound(null, pos, SoundEvents.BLOCK_WOODEN_BUTTON_CLICK_OFF, SoundCategory.BLOCKS, 1.0F, 0.3F);
 			} else {
-				changeToActiveVanishBlock(world, pos, true);
+				activate(world, pos);
 			}
 			return ActionResultType.SUCCESS;
 		}
@@ -73,69 +89,75 @@ public class BlockTFVanishingBlock extends Block {
 		return !state.get(ACTIVE) ? !areBlocksLocked(world, pos) : super.canEntityDestroy(state, world, pos, entity);
 	}
 
-	/**
-	 * Are any of the connected tower device blocks a locked vanishing block?
-	 */
-	private static boolean areBlocksLocked(IBlockReader world, BlockPos pos) {
+	private static boolean areBlocksLocked(IBlockReader world, BlockPos start) {
+		int limit = 512;
+		Deque<BlockPos> queue = new ArrayDeque<>();
 		Set<BlockPos> checked = new HashSet<>();
-		checked.add(pos);
-		return areBlocksLocked(world, pos, checked);
-	}
+		queue.offer(start);
 
-	private static boolean areBlocksLocked(IBlockReader world, BlockPos pos, Set<BlockPos> checked) {
-		for (Direction facing : Direction.values()) {
-			BlockPos offset = pos.offset(facing);
-			if (!checked.add(offset)) continue;
-			BlockState state = world.getBlockState(offset);
-			if (state.getBlock() == TFBlocks.locked_vanishing_block.get()) {
-				if (state.get(BlockTFLockedVanishing.LOCKED)) {
-					return true;
-				}
-				if (areBlocksLocked(world, offset, checked)) {
-					return true;
+		for (int iter = 0; !queue.isEmpty() && iter < limit; iter++) {
+			BlockPos cur = queue.pop();
+			BlockState state = world.getBlockState(cur);
+			if (state.getBlock() == TFBlocks.locked_vanishing_block.get() && state.get(BlockTFLockedVanishing.LOCKED)) {
+				return true;
+			}
+
+			checked.add(cur);
+
+			if (state.getBlock() instanceof BlockTFVanishingBlock) {
+				for (Direction facing : Direction.values()) {
+					BlockPos neighbor = cur.offset(facing);
+					if (!checked.contains(neighbor)) {
+						queue.offer(neighbor);
+					}
 				}
 			}
 		}
+
 		return false;
-	}
-
-	/**
-	 * Change this block into an different device block
-	 */
-	private static void changeToBlockState(World world, BlockPos pos, BlockState state) {
-		Block thereBlock = world.getBlockState(pos).getBlock();
-
-		//if (thereBlock == TFBlocks.tower_device || thereBlock == TFBlocks.tower_translucent) {
-		world.setBlockState(pos, state, 3);
-		//world.markBlockRangeForRenderUpdate(pos, pos);
-		//world.notifyNeighborsRespectDebug(pos, thereBlock, false);
-		//}
 	}
 
 	@Override
 	@Deprecated
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-		if (world.isRemote) return;
+		if (world.isRemote) {
+			return;
+		}
 
-		if (!state.get(ACTIVE) && world.isBlockPowered(pos) && !areBlocksLocked(world, pos)) {
-			changeToActiveVanishBlock(world, pos, true);
+		if (!isVanished(state) && !state.get(ACTIVE) && world.isBlockPowered(pos) && !areBlocksLocked(world, pos)) {
+			activate(world, pos);
 		}
 	}
 
 	@Override
 	@Deprecated
 	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-		if (world.isRemote) return;
+		if (world.isRemote) {
+			return;
+		}
 
-		if (state.get(ACTIVE)) {
-			world.removeBlock(pos, false);
-			//world.notifyNeighborsRespectDebug(pos, this, false);
-			world.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 0.3F, 0.5F);
-			//world.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
+		if (isVanished(state)) {
+			if (state.get(ACTIVE)) {
+				world.setBlockState(pos, state.with(VANISHED, false).with(ACTIVE, false));
+			} else {
+				world.setBlockState(pos, state.with(ACTIVE, true));
+				world.getPendingBlockTicks().scheduleTick(pos, this, 15);
+			}
+			world.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 0.3F, 0.6F);
+		} else {
+			if (state.get(ACTIVE)) {
+				if (state.has(VANISHED)) {
+					world.setBlockState(pos, state.with(ACTIVE, false).with(VANISHED, true));
+					world.getPendingBlockTicks().scheduleTick(pos, this, 80);
+				} else {
+					world.removeBlock(pos, false);
+				}
 
-			// activate all adjacent inactive vanish blocks
-			for (Direction e : Direction.values()) {
-				checkAndActivateVanishBlock(world, pos.offset(e));
+				world.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 0.3F, 0.5F);
+
+				for (Direction e : Direction.values()) {
+					activate(world, pos.offset(e));
+				}
 			}
 		}
 	}
@@ -191,104 +213,17 @@ public class BlockTFVanishingBlock extends Block {
 		}
 	}
 
-	/**
-	 * If the targeted block is a vanishing block, activate it
-	 */
-	public static void checkAndActivateVanishBlock(World world, BlockPos pos) {
+	private void activate(World world, BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
-
-		if (state == TFBlocks.vanishing_block.get().getDefaultState().with(BlockTFVanishingBlock.ACTIVE, false) || state == TFBlocks.locked_vanishing_block.get().getDefaultState().with(BlockTFLockedVanishing.LOCKED, false) && !areBlocksLocked(world, pos)) {
-			changeToActiveVanishBlock(world, pos, TFBlocks.vanishing_block.get().getDefaultState().with(BlockTFVanishingBlock.ACTIVE, true));
-		} else if (state == TFBlocks.reappearing_block.get().getDefaultState().with(BlockTFReappearingBlock.ACTIVE, false) && !areBlocksLocked(world, pos)) {
-			changeToActiveVanishBlock(world, pos, TFBlocks.reappearing_block.get().getDefaultState().with(BlockTFReappearingBlock.ACTIVE, true));
-		} else if (state == TFBlocks.built_block.get().getDefaultState().with(BlockTFBuiltTranslucent.ACTIVE, false)) {
-			changeToActiveVanishBlock(world, pos, TFBlocks.built_block.get().getDefaultState().with(BlockTFBuiltTranslucent.ACTIVE, true));
+		if (state.getBlock() instanceof BlockTFVanishingBlock && !isVanished(state) && !state.get(ACTIVE)) {
+			world.setBlockState(pos, state.with(ACTIVE, true));
+			world.getPendingBlockTicks().scheduleTick(pos, state.getBlock(), 2 + world.rand.nextInt(5));
 		}
 	}
-
-	public static void changeToActiveVanishBlock(World world, BlockPos pos, boolean variant) {
-		changeToActiveVanishBlock(world, pos, TFBlocks.vanishing_block.get().getDefaultState().with(ACTIVE, variant));
-	}
-
-	/**
-	 * Change this block into an active vanishing block
-	 */
-	private static void changeToActiveVanishBlock(World world, BlockPos pos, BlockState state) {
-		changeToBlockState(world, pos, state);
-		world.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 0.3F, 0.6F);
-		//world.scheduleUpdate(pos, state.getBlock(), getTickRateFor(state, world.rand));
-	}
-
-	/**
-	 * We need variable, metadata-based tick rates
-	 */
-//	private static int getTickRateFor(BlockState state, Random rand) {
-//		if (state.getBlock() == TFBlocks.tower_device && (state.getValue(VARIANT) == TowerDeviceVariant.VANISH_ACTIVE || state.getValue(VARIANT) == TowerDeviceVariant.REAPPEARING_ACTIVE)) {
-//			return 2 + rand.nextInt(5);
-//		} else if (state.getBlock() == TFBlocks.tower_translucent && state.getValue(BlockTFTowerTranslucent.VARIANT) == TowerTranslucentVariant.BUILT_ACTIVE) {
-//			return 10;
-//		}
-//
-//		return 15;
-//	}
 
 	@Override
 	@Deprecated
 	public int getLightValue(BlockState state) {
-		return state.get(ACTIVE) ? 4 : 0;
+		return state.get(ACTIVE) ? super.getLightValue(state) : 0;
 	}
-
-//	@Override
-//	public Item getItemDropped(BlockState state, Random random, int fortune) {
-//		switch (state.getValue(VARIANT)) {
-//			case ANTIBUILDER:
-//				return Items.AIR;
-//			default:
-//				return Item.getItemFromBlock(this);
-//		}
-//	}
-//
-//	@Override
-//	@Deprecated
-//	protected boolean canSilkHarvest() {
-//		return false;
-//	}
-//
-//	@Override
-//	public boolean canSilkHarvest(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-//		return false;
-//	}
-//
-//	@Override
-//	public int damageDropped(BlockState state) {
-//		switch (state.getValue(VARIANT)) {
-//			case REAPPEARING_ACTIVE:
-//				state = state.with(VARIANT, TowerDeviceVariant.REAPPEARING_INACTIVE);
-//				break;
-//			case BUILDER_ACTIVE:
-//			case BUILDER_TIMEOUT:
-//				state = state.with(VARIANT, TowerDeviceVariant.BUILDER_INACTIVE);
-//				break;
-//			case VANISH_ACTIVE:
-//				state = state.with(VARIANT, TowerDeviceVariant.VANISH_INACTIVE);
-//				break;
-//			case GHASTTRAP_ACTIVE:
-//				state = state.with(VARIANT, TowerDeviceVariant.GHASTTRAP_INACTIVE);
-//				break;
-//			case REACTOR_ACTIVE:
-//				state = state.with(VARIANT, TowerDeviceVariant.REACTOR_INACTIVE);
-//				break;
-//			default:
-//				break;
-//		}
-//
-//		return getMetaFromState(state);
-//	}
-
-	//TODO: Move to client
-//	@Override
-//	@OnlyIn(Dist.CLIENT)
-//	public BlockRenderLayer getRenderLayer() {
-//		return BlockRenderLayer.CUTOUT;
-//	}
 }

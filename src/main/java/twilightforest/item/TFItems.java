@@ -107,7 +107,7 @@ public class TFItems {
 	public static final RegistryObject<Item> charm_of_keeping_1 = ITEMS.register("charm_of_keeping_1", () -> new ItemCharmBaubleable(defaultBuilder().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> charm_of_keeping_2 = ITEMS.register("charm_of_keeping_2", () -> new ItemCharmBaubleable(defaultBuilder().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> charm_of_keeping_3 = ITEMS.register("charm_of_keeping_3", () -> new ItemCharmBaubleable(defaultBuilder().rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<Item> tower_key = ITEMS.register("tower_key", () -> new ItemTFTowerKey(defaultBuilder().rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<Item> tower_key = ITEMS.register("tower_key", () -> new Item(defaultBuilder().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> borer_essence = ITEMS.register("borer_essence", () -> new Item(defaultBuilder()));
 	public static final RegistryObject<Item> carminite = ITEMS.register("carminite", () -> new Item(defaultBuilder()));
 	public static final RegistryObject<Item> experiment_115 = ITEMS.register("experiment_115", () -> new ItemTFExperiment115(TFBlocks.experiment_115.get(), defaultBuilder().food(TFItems.EXPERIMENT_115)));
