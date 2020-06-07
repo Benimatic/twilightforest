@@ -368,6 +368,7 @@ public class TFEntities {
 		//RenderingRegistry.registerEntityRenderingHandler(EntityTFSnowQueenIceShield.class, RenderTFSnowQueenIceShield::new);
 		RenderingRegistry.registerEntityRenderingHandler(troll.get(), m -> new RenderTFBiped<>(m, new ModelTFTroll<>(), 0.625F, "troll.png"));
 		RenderingRegistry.registerEntityRenderingHandler(giant_miner.get(), RenderTFGiant::new);
+		RenderingRegistry.registerEntityRenderingHandler(armored_giant.get(), RenderTFGiant::new);
 		RenderingRegistry.registerEntityRenderingHandler(ice_crystal.get(), RenderTFIceCrystal::new);
 		RenderingRegistry.registerEntityRenderingHandler(chain_block.get(), m -> new RenderTFChainBlock<>(m, new ModelTFSpikeBlock()));
 		RenderingRegistry.registerEntityRenderingHandler(cube_of_annihilation.get(), RenderTFCubeOfAnnihilation::new);
