@@ -7,6 +7,7 @@ import net.minecraft.potion.Effects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
@@ -45,7 +46,8 @@ public class ItemTFZombieWand extends Item {
 
 			if (blockray.getType() != RayTraceResult.Type.MISS) {
 				EntityTFLoyalZombie zombie = TFEntities.loyal_zombie.get().create(world);
-				zombie.setPositionAndRotation(blockray.getPos().getX(), blockray.getPos().getY(), blockray.getPos().getZ(), 1.0F, 1.0F);
+				Direction face = blockray.getFace();
+				zombie.setPositionAndRotation(blockray.getPos().getX() + 0.5F + face.getXOffset(), blockray.getPos().getY() + face.getYOffset(), blockray.getPos().getZ() + 0.5F + face.getZOffset(), 1.0F, 1.0F);
 				zombie.setTamed(true);
 				zombie.setOwnerId(player.getUniqueID());
 				zombie.addPotionEffect(new EffectInstance(Effects.STRENGTH, 1200, 1));
