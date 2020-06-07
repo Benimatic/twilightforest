@@ -26,9 +26,8 @@ public class BlockTFGhastTrap extends Block {
 
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
-	public BlockTFGhastTrap() {
-		super(Properties.create(Material.WOOD, MaterialColor.SAND).hardnessAndResistance(10.0F, 35.0F).sound(SoundType.WOOD));
-		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
+	public BlockTFGhastTrap(Properties props) {
+		super(props);
 		this.setDefaultState(stateContainer.getBaseState().with(ACTIVE, false));
 	}
 

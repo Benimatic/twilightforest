@@ -23,9 +23,8 @@ public class BlockTFReactor extends Block {
 
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
-	public BlockTFReactor() {
-		super(Properties.create(Material.WOOD, MaterialColor.SAND).hardnessAndResistance(10.0F, 35.0F).sound(SoundType.WOOD));
-		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
+	public BlockTFReactor(Properties props) {
+		super(props);
 		this.setDefaultState(stateContainer.getBaseState().with(ACTIVE, false));
 	}
 
@@ -40,19 +39,6 @@ public class BlockTFReactor extends Block {
 		return 15;
 	}
 
-	/**
-	 * Change this block into an different device block
-	 */
-	private static void changeToBlockState(World world, BlockPos pos, BlockState state) {
-		//Block thereBlock = world.getBlockState(pos).getBlock();
-
-		//if (thereBlock == TFBlocks.tower_device || thereBlock == TFBlocks.tower_translucent) {
-			world.setBlockState(pos, state, 3);
-			//world.markBlockRangeForRenderUpdate(pos, pos);
-			//world.notifyNeighborsRespectDebug(pos, thereBlock, false);
-		//}
-	}
-
 	@Override
 	@Deprecated
 	public void neighborChanged(BlockState state, World world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
@@ -60,7 +46,7 @@ public class BlockTFReactor extends Block {
 
 		if (!state.get(ACTIVE) && isReactorReady(world, pos)) {
 			// check if we should fire up the reactor
-			changeToBlockState(world, pos, state.with(ACTIVE, true));
+			world.setBlockState(pos, state.with(ACTIVE, true));
 		}
 	}
 
@@ -86,60 +72,6 @@ public class BlockTFReactor extends Block {
 	@Nullable
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return state.get(ACTIVE) ? new TileEntityTFCReactorActive() : null;
+		return hasTileEntity(state) ? new TileEntityTFCReactorActive() : null;
 	}
-
-//	@Override
-//	public Item getItemDropped(BlockState state, Random random, int fortune) {
-//		switch (state.getValue(VARIANT)) {
-//			case ANTIBUILDER:
-//				return Items.AIR;
-//			default:
-//				return Item.getItemFromBlock(this);
-//		}
-//	}
-//
-//	@Override
-//	@Deprecated
-//	protected boolean canSilkHarvest() {
-//		return false;
-//	}
-//
-//	@Override
-//	public boolean canSilkHarvest(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-//		return false;
-//	}
-//
-//	@Override
-//	public int damageDropped(BlockState state) {
-//		switch (state.getValue(VARIANT)) {
-//			case REAPPEARING_ACTIVE:
-//				state = state.with(VARIANT, TowerDeviceVariant.REAPPEARING_INACTIVE);
-//				break;
-//			case BUILDER_ACTIVE:
-//			case BUILDER_TIMEOUT:
-//				state = state.with(VARIANT, TowerDeviceVariant.BUILDER_INACTIVE);
-//				break;
-//			case VANISH_ACTIVE:
-//				state = state.with(VARIANT, TowerDeviceVariant.VANISH_INACTIVE);
-//				break;
-//			case GHASTTRAP_ACTIVE:
-//				state = state.with(VARIANT, TowerDeviceVariant.GHASTTRAP_INACTIVE);
-//				break;
-//			case REACTOR_ACTIVE:
-//				state = state.with(VARIANT, TowerDeviceVariant.REACTOR_INACTIVE);
-//				break;
-//			default:
-//				break;
-//		}
-//
-//		return getMetaFromState(state);
-//	}
-
-	//TODO: Move to client
-//	@Override
-//	@OnlyIn(Dist.CLIENT)
-//	public BlockRenderLayer getRenderLayer() {
-//		return BlockRenderLayer.CUTOUT;
-//	}
 }

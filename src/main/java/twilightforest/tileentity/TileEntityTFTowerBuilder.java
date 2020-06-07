@@ -85,8 +85,8 @@ public class TileEntityTFTowerBuilder extends TileEntity implements ITickableTil
 			this.trackedPlayer = null;
 			if (++ticksStopped == 60) {
 				// force the builder back into an inactive state
-				world.setBlockState(getPos(), TFBlocks.carminite_builder.get().getDefaultState().with(BlockTFBuilder.STATE, TowerDeviceVariant.BUILDER_TIMEOUT), 3);
-				//world.scheduleUpdate(getPos(), TFBlocks.tower_device, 4);
+				world.setBlockState(getPos(), getBlockState().with(BlockTFBuilder.STATE, TowerDeviceVariant.BUILDER_TIMEOUT));
+				world.getPendingBlockTicks().scheduleTick(getPos(), getBlockState().getBlock(), 4);
 			}
 		}
 	}

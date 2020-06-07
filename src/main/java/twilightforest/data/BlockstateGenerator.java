@@ -11,6 +11,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
 import twilightforest.enums.FireJetVariant;
 import twilightforest.enums.HugeLilypadPiece;
+import twilightforest.enums.TowerDeviceVariant;
 
 import javax.annotation.Nonnull;
 
@@ -896,6 +897,25 @@ public class BlockstateGenerator extends BlockStateProvider {
 	private void towerBlocks() {
 		ResourceLocation cube3 = prefix("block/util/cube_all_3_layer");
 		ResourceLocation cube2NoShade = prefix("block/util/cube_all_2_layer_no_shade");
+
+		ModelFile builder = models().withExistingParent(TFBlocks.carminite_builder.getId().getPath(), cube3)
+						.texture("all", prefix("block/towerdev_builder_off"))
+						.texture("all2", prefix("block/tower_device_level_1/towerdev_builder_off_1"))
+						.texture("all3", prefix("block/tower_device_level_2/towerdev_builder_off_2"));
+		ModelFile builderActive = models().withExistingParent(TFBlocks.carminite_builder.getId().getPath() + "_active", cube3)
+						.texture("all", prefix("block/towerdev_builder_on"))
+						.texture("all2", prefix("block/tower_device_level_1/towerdev_builder_on_1"))
+						.texture("all3", prefix("block/tower_device_level_2/towerdev_builder_on_2"));
+		ModelFile builderTimeout = models().withExistingParent(TFBlocks.carminite_builder.getId().getPath() + "_timeout", cube3)
+						.texture("all", prefix("block/towerdev_builder_timeout"))
+						.texture("all2", prefix("block/tower_device_level_2/towerdev_builder_timeout_1"))
+						.texture("all3", prefix("block/tower_device_level_3/towerdev_builder_timeout_2"));
+		getVariantBuilder(TFBlocks.carminite_builder.get()).partialState()
+						.with(BlockTFBuilder.STATE, TowerDeviceVariant.BUILDER_INACTIVE).setModels(new ConfiguredModel(builder));
+		getVariantBuilder(TFBlocks.carminite_builder.get()).partialState()
+						.with(BlockTFBuilder.STATE, TowerDeviceVariant.BUILDER_ACTIVE).setModels(new ConfiguredModel(builderActive));
+		getVariantBuilder(TFBlocks.carminite_builder.get()).partialState()
+						.with(BlockTFBuilder.STATE, TowerDeviceVariant.BUILDER_TIMEOUT).setModels(new ConfiguredModel(builderTimeout));
 
 		ModelFile built = models().withExistingParent(TFBlocks.built_block.getId().getPath(), cube2NoShade)
 						.texture("all", prefix("block/towerdev_built_off"))
