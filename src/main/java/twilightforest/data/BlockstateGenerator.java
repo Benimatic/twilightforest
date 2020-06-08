@@ -898,6 +898,55 @@ public class BlockstateGenerator extends BlockStateProvider {
 		ResourceLocation cube3 = prefix("block/util/cube_all_3_layer");
 		ResourceLocation cubeBt3 = prefix("block/util/cube_bottom_top_3_layer");
 		ResourceLocation cube2NoShade = prefix("block/util/cube_all_2_layer_no_shade");
+		ResourceLocation fourCube = prefix("block/util/4_cubed");
+
+		ModelFile reappear = models().withExistingParent(TFBlocks.reappearing_block.getId().getPath(), cube3)
+						.texture("all", prefix("block/towerdev_reappearing_off"))
+						.texture("all2", prefix("block/tower_device_level_1/towerdev_reappearing_off_1"))
+						.texture("all3", prefix("block/tower_device_level_2/towerdev_reappearing_off_2"));
+		ModelFile reappearActive = models().withExistingParent(TFBlocks.reappearing_block.getId().getPath() + "_active", cube3)
+						.texture("all", prefix("block/towerdev_reappearing_on"))
+						.texture("all2", prefix("block/tower_device_level_1/towerdev_reappearing_on_1"))
+						.texture("all3", prefix("block/tower_device_level_2/towerdev_reappearing_on_2"));
+		ModelFile reappearVanished = models().withExistingParent(TFBlocks.reappearing_block.getId().getPath() + "_vanished", fourCube)
+						.texture("all", prefix("block/towerdev_reappearing_trace_off"));
+		ModelFile reappearVanishedActive = models().withExistingParent(TFBlocks.reappearing_block.getId().getPath() + "_vanished_active", fourCube)
+						.texture("all", prefix("block/towerdev_reappearing_trace_on"));
+		getVariantBuilder(TFBlocks.reappearing_block.get()).forAllStates(s -> {
+			ModelFile model;
+			if (s.get(BlockReappearing.VANISHED)) {
+				model = s.get(BlockReappearing.ACTIVE) ? reappearVanishedActive : reappearVanished;
+			} else {
+				model = s.get(BlockReappearing.ACTIVE) ? reappearActive : reappear;
+			}
+			return ConfiguredModel.builder().modelFile(model).build();
+		});
+
+		ModelFile vanish = models().withExistingParent(TFBlocks.vanishing_block.getId().getPath(), cube3)
+						.texture("all", prefix("block/towerdev_vanish_off"))
+						.texture("all2", prefix("block/tower_device_level_1/towerdev_vanish_off_1"))
+						.texture("all3", prefix("block/tower_device_level_2/towerdev_vanish_off_2"));
+		ModelFile vanishActive = models().withExistingParent(TFBlocks.vanishing_block.getId().getPath() + "_active", cube3)
+						.texture("all", prefix("block/towerdev_vanish_on"))
+						.texture("all2", prefix("block/tower_device_level_1/towerdev_vanish_on_1"))
+						.texture("all3", prefix("block/tower_device_level_2/towerdev_vanish_on_2"));
+		getVariantBuilder(TFBlocks.vanishing_block.get()).partialState()
+						.with(BlockTFLockedVanishing.ACTIVE, false).setModels(new ConfiguredModel(vanish));
+		getVariantBuilder(TFBlocks.vanishing_block.get()).partialState()
+						.with(BlockTFLockedVanishing.ACTIVE, true).setModels(new ConfiguredModel(vanishActive));
+
+		ModelFile vanishLocked = models().withExistingParent(TFBlocks.locked_vanishing_block.getId().getPath(), cube3)
+						.texture("all", prefix("block/towerdev_lock_on"))
+						.texture("all2", prefix("block/tower_device_level_1/towerdev_lock_on_1"))
+						.texture("all3", prefix("block/tower_device_level_2/towerdev_lock_on_2"));
+		ModelFile vanishUnlocked = models().withExistingParent(TFBlocks.locked_vanishing_block.getId().getPath() + "_unlocked", cube3)
+						.texture("all", prefix("block/towerdev_lock_off"))
+						.texture("all2", prefix("block/tower_device_level_1/towerdev_lock_off_1"))
+						.texture("all3", prefix("block/tower_device_level_2/towerdev_lock_off_2"));
+		getVariantBuilder(TFBlocks.locked_vanishing_block.get()).partialState()
+						.with(BlockTFLockedVanishing.LOCKED, true).setModels(new ConfiguredModel(vanishLocked));
+		getVariantBuilder(TFBlocks.locked_vanishing_block.get()).partialState()
+						.with(BlockTFLockedVanishing.LOCKED, false).setModels(new ConfiguredModel(vanishUnlocked));
 
 		ModelFile ghastTrap = models().withExistingParent(TFBlocks.ghast_trap.getId().getPath(), cubeBt3)
 						.texture("top", prefix("block/towerdev_ghasttraplid_off"))

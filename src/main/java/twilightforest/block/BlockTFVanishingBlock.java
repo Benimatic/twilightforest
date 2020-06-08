@@ -26,17 +26,17 @@ import java.util.*;
 
 /**
  * Block that disappears then reappears after a short delay.
- * Blockstate lifecycle: [active=false, vanish=false] -> right click or redstone
- * -> [active=true, vanish=false] -> delay -> [active=false, vanish=true]
- * -> delay -> [active=true, vanish=true] -> delay -> initial state
+ * Blockstate lifecycle: [active=false, vanished=false] -> right click or redstone
+ * -> [active=true, vanished=false] -> delay -> [active=false, vanished=true]
+ * -> delay -> [active=true, vanished=true] -> delay -> initial state
  *
- * If the block has no "vanish" state property registered, it simply deletes itself after the first delay.
+ * If the block has no "vanished" state property registered, it simply deletes itself after the first delay.
  * @see BlockReappearing, It is only separated from this class because vanilla does
  * not like having blockstate properties be conditionally registered.
  */
 public class BlockTFVanishingBlock extends Block {
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
-	public static final BooleanProperty VANISHED = BooleanProperty.create("vanish");
+	public static final BooleanProperty VANISHED = BooleanProperty.create("vanished");
 	private static final VoxelShape VANISHED_SHAPE = makeCuboidShape(6, 6, 6, 10, 10, 10);
 
 	public BlockTFVanishingBlock(Properties props) {

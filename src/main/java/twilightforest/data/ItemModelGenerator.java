@@ -28,6 +28,9 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.carminite_builder.get());
 		toBlock(TFBlocks.antibuilder.get());
 		toBlock(TFBlocks.ghast_trap.get());
+		toBlock(TFBlocks.vanishing_block.get());
+		toBlock(TFBlocks.locked_vanishing_block.get());
+		toBlock(TFBlocks.reappearing_block.get());
 		toBlock(TFBlocks.carminite_reactor.get());
 		toBlockModel(TFBlocks.fake_gold.get(), new ResourceLocation("block/gold_block"));
 		toBlockModel(TFBlocks.fake_diamond.get(), new ResourceLocation("block/diamond_block"));
