@@ -4,14 +4,14 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.layers.BipedArmorLayer;
 import net.minecraft.util.math.MathHelper;
-import twilightforest.client.model.entity.ModelTFSnowGuardian;
+import twilightforest.client.model.entity.ModelNoop;
 import twilightforest.entity.EntityTFSnowGuardian;
 
-public class RenderTFSnowGuardian extends RenderTFBiped<EntityTFSnowGuardian, ModelTFSnowGuardian> {
+public class RenderTFSnowGuardian extends RenderTFBiped<EntityTFSnowGuardian, ModelNoop<EntityTFSnowGuardian>> {
 
-	public RenderTFSnowGuardian(EntityRendererManager manager, ModelTFSnowGuardian model) {
+	public RenderTFSnowGuardian(EntityRendererManager manager, ModelNoop<EntityTFSnowGuardian> model) {
 		super(manager, model, 0.25F, "textures/entity/zombie/zombie.png");
-		this.addLayer(new BipedArmorLayer<>(this, new ModelTFSnowGuardian(), new ModelTFSnowGuardian()));
+		this.addLayer(new BipedArmorLayer<>(this, new ModelNoop<>(), new ModelNoop<>()));
 	}
 
 	@Override

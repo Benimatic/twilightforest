@@ -27,8 +27,6 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.*;
@@ -360,7 +358,7 @@ public class TFEntities {
 		RenderingRegistry.registerEntityRenderingHandler(protection_box, RenderTFProtectionBox::new);
 		RenderingRegistry.registerEntityRenderingHandler(yeti_alpha, m -> new RenderTFBiped<>(m, new ModelTFYetiAlpha(), 1.75F, "yetialpha.png"));
 		RenderingRegistry.registerEntityRenderingHandler(winter_wolf, RenderTFWinterWolf::new);
-		RenderingRegistry.registerEntityRenderingHandler(snow_guardian, m -> new RenderTFSnowGuardian(m, new ModelTFSnowGuardian()));
+		RenderingRegistry.registerEntityRenderingHandler(snow_guardian, m -> new RenderTFSnowGuardian(m, new ModelNoop<>()));
 		RenderingRegistry.registerEntityRenderingHandler(stable_ice_core, m -> new RenderTFIceShooter(m, new ModelTFIceShooter()));
 		RenderingRegistry.registerEntityRenderingHandler(unstable_ice_core, m -> new RenderTFIceExploder<>(m, new ModelTFIceExploder<>()));
 		RenderingRegistry.registerEntityRenderingHandler(snow_queen, m -> new RenderTFSnowQueen(m, new ModelTFSnowQueen()));
