@@ -2,8 +2,10 @@ package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ModelTFTowerGolem;
@@ -17,15 +19,18 @@ public class RenderTFTowerGolem<T extends EntityTFTowerGolem, M extends ModelTFT
 		super(manager, model, shadowSize);
 	}
 
+	/**
+	 * [VanillaCopy] {@link net.minecraft.client.renderer.entity.IronGolemRenderer}
+	 */
 	@Override
-	protected void setupTransforms(T entity, MatrixStack stack, float ageInTicks, float rotationYaw, float partialTicks) {
-		super.setupTransforms(entity, stack, ageInTicks, rotationYaw, partialTicks);
+	protected void setupTransforms(T entity, MatrixStack ms, float ageInTicks, float rotationYaw, float partialTicks) {
+		super.setupTransforms(entity, ms, ageInTicks, rotationYaw, partialTicks);
 
-		if ((double) entity.limbSwingAmount >= 0.01D) {
-			float var5 = 13.0F;
-			float var6 = entity.limbSwing - entity.limbSwingAmount * (1.0F - partialTicks) + 6.0F;
-			float var7 = (Math.abs(var6 % var5 - var5 * 0.5F) - var5 * 0.25F) / (var5 * 0.25F);
-			RenderSystem.rotatef(6.5F * var7, 0.0F, 0.0F, 1.0F);
+		if (!((double)entity.limbSwingAmount < 0.01D)) {
+			float f = 13.0F;
+			float f1 = entity.limbSwing - entity.limbSwingAmount * (1.0F - partialTicks) + 6.0F;
+			float f2 = (Math.abs(f1 % 13.0F - 6.5F) - 3.25F) / 3.25F;
+			ms.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(6.5F * f2));
 		}
 	}
 
