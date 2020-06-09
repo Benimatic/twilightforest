@@ -31,7 +31,6 @@ public class RenderTFQuestRam extends MobRenderer<EntityTFQuestRam, ModelTFQuest
 		return textureLoc;
 	}
 
-	// todo verify / cleanup gl state?
 	class LayerGlowingLines extends LayerRenderer<EntityTFQuestRam, ModelTFQuestRam> {
 
 		public LayerGlowingLines(IEntityRenderer<EntityTFQuestRam, ModelTFQuestRam> renderer) {
@@ -40,21 +39,9 @@ public class RenderTFQuestRam extends MobRenderer<EntityTFQuestRam, ModelTFQuest
 
 		@Override
 		public void render(MatrixStack stack, IRenderTypeBuffer buffer, int i, EntityTFQuestRam entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-//			RenderTFQuestRam.this.bindTexture(textureLocLines);
 			IVertexBuilder builder = buffer.getBuffer(RenderType.getEntityTranslucent(textureLocLines));
-			float var4 = 1.0F;
-			RenderSystem.enableBlend();
-			RenderSystem.disableAlphaTest();
-			RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 			stack.scale(1.025f, 1.025f, 1.025f);
-			char var5 = 61680;
-			int var6 = var5 % 65536;
-			int var7 = var5 / 65536;
-//			OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) var6 / 1.0F, (float) var7 / 1.0F);
-//			RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-//			RenderSystem.color4f(1.0F, 1.0F, 1.0F, var4);
-			RenderTFQuestRam.this.getEntityModel().render(stack, builder, var5, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
-			RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+			RenderTFQuestRam.this.getEntityModel().render(stack, builder, 0xF000F0, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
 		}
 	}
 }
