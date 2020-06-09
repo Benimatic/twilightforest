@@ -3,12 +3,15 @@ package twilightforest.client.renderer.entity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.BipedRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
+import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.renderer.texture.AtlasTexture;
@@ -26,52 +29,48 @@ public class RenderTFMinoshroom extends BipedRenderer<EntityTFMinoshroom, ModelT
 		this.addLayer(new LayerMinoshroomMushroom(this));
 	}
 
-	// TODO fix offsets (currently copypastedfrom LayerMooshroomMushroom)
-	class LayerMinoshroomMushroom extends LayerRenderer<EntityTFMinoshroom, ModelTFMinoshroom> {
+	/**
+	 * [VanillaCopy] {@link net.minecraft.client.renderer.entity.layers.MooshroomMushroomLayer}
+	 */
+	static class LayerMinoshroomMushroom extends LayerRenderer<EntityTFMinoshroom, ModelTFMinoshroom> {
 
 		public LayerMinoshroomMushroom(IEntityRenderer<EntityTFMinoshroom, ModelTFMinoshroom> renderer) {
 			super(renderer);
 		}
 
 		@Override
-		public void render(MatrixStack stack, IRenderTypeBuffer buffer, int i, EntityTFMinoshroom minoshroom, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-			if (!minoshroom.isChild() && !minoshroom.isInvisible()) {
+		public void render(MatrixStack ms, IRenderTypeBuffer buffers, int light, EntityTFMinoshroom entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+			if (!entity.isChild() && !entity.isInvisible()) {
 				BlockRendererDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
-//				RenderTFMinoshroom.this.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
-				RenderSystem.enableCull();
-//				RenderSystem.cullFace(GlStateManager.CullFace.FRONT);
-				stack.push();
-				stack.scale(1.0F, -1.0F, 1.0F);
-				stack.translate(0.2F, 0.35F, 0.5F);
-				RenderSystem.rotatef(42.0F, 0.0F, 1.0F, 0.0F);
-				stack.push();
-				stack.translate(-0.5F, -0.5F, 0.5F);
-//				blockrendererdispatcher.renderBlockBrightness(Blocks.RED_MUSHROOM.getDefaultState(), 1.0F);
-				stack.pop();
-				stack.push();
-				stack.translate(0.1F, 0.0F, -0.6F);
-				RenderSystem.rotatef(42.0F, 0.0F, 1.0F, 0.0F);
-				stack.translate(-0.5F, -0.5F, 0.5F);
-//				blockrendererdispatcher.renderBlockBrightness(Blocks.RED_MUSHROOM.getDefaultState(), 1.0F);
-				stack.pop();
-				stack.pop();
-				stack.push();
-//				RenderTFMinoshroom.this.getEntityModel().bipedHead.postRender(0.0625F);
-				stack.scale(1.0F, -1.0F, 1.0F);
-				stack.translate(0.0F, 1.0F, 0.0F);
-				RenderSystem.rotatef(12.0F, 0.0F, 1.0F, 0.0F);
-				stack.translate(-0.5F, -0.5F, 0.5F);
-//				blockrendererdispatcher.renderBlockBrightness(Blocks.RED_MUSHROOM.getDefaultState(), 1.0F);
-				stack.pop();
-//				RenderSystem.cullFace(GlStateManager.CullFace.BACK);
-				RenderSystem.disableCull();
+				BlockState blockstate = Blocks.RED_MUSHROOM.getDefaultState(); // TF: hardcode mushroom state
+				int i = LivingRenderer.getOverlay(entity, 0.0F);
+				ms.push();
+				ms.translate((double)0.2F, (double)-0.35F, 0.5D);
+				ms.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(-48.0F));
+				ms.scale(-1.0F, -1.0F, 1.0F);
+				ms.translate(-0.5D, -0.5D, -0.5D);
+				blockrendererdispatcher.renderBlockAsEntity(blockstate, ms, buffers, light, i);
+				ms.pop();
+				ms.push();
+				ms.translate((double)0.2F, (double)-0.35F, 0.5D);
+				ms.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(42.0F));
+				ms.translate((double)0.1F, 0.0D, (double)-0.6F);
+				ms.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(-48.0F));
+				ms.scale(-1.0F, -1.0F, 1.0F);
+				ms.translate(-0.5D, -0.5D, -0.5D);
+				blockrendererdispatcher.renderBlockAsEntity(blockstate, ms, buffers, light, i);
+				ms.pop();
+				ms.push();
+				this.getEntityModel().bipedHead.rotate(ms);
+				// TF - adjust head shroom
+				ms.translate(0.0D, -0.9, 0.05);
+				ms.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(-78.0F));
+				ms.scale(-1.0F, -1.0F, 1.0F);
+				ms.translate(-0.5D, -0.5D, -0.5D);
+				blockrendererdispatcher.renderBlockAsEntity(blockstate, ms, buffers, light, i);
+				ms.pop();
 			}
 		}
-
-//		@Override
-//		public boolean shouldCombineTextures() {
-//			return false;
-//		}
 	}
 
 	@Override
