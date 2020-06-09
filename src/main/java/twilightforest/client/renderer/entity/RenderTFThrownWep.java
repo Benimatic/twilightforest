@@ -1,9 +1,9 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
@@ -25,15 +25,11 @@ public class RenderTFThrownWep extends EntityRenderer<EntityTFThrownWep> {
 
 		float spin = (entity.ticksExisted + partialTicks) * -10F + 90F;
 
-		//stack.translate((float) x, (float) y, (float) z);
-		RenderSystem.enableRescaleNormal();
-
 		// size up
 		stack.scale(1.25F, 1.25F, 1.25F);
 
 		this.renderDroppedItem(stack, buffer, light, entity.getItem(), yaw, spin);
 
-		RenderSystem.disableRescaleNormal();
 		stack.pop();
 	}
 
@@ -44,8 +40,8 @@ public class RenderTFThrownWep extends EntityRenderer<EntityTFThrownWep> {
 		float f9 = 0.5F;
 		float f10 = 0.25F;
 
-		RenderSystem.rotatef(rotation + 270f, 0.0F, 1.0F, 0.0F);
-		RenderSystem.rotatef(spin, 0.0F, 0.0F, 1.0F);
+		matrix.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(rotation + 270));
+		matrix.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(spin));
 
 		float f12 = 0.0625F;
 		float f11 = 0.021875F;

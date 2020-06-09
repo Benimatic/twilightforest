@@ -1,7 +1,6 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import twilightforest.client.model.entity.ModelTFGhast;
 import twilightforest.entity.EntityTFTowerGhast;
@@ -35,6 +34,5 @@ public class RenderTFTowerGhast<T extends EntityTFTowerGhast, M extends ModelTFG
 		float yScale = (ghastScale + scaleVariable) / 2.0F;
 		float xzScale = (ghastScale + 1.0F / scaleVariable) / 2.0F;
 		stack.scale(xzScale, yScale, xzScale);
-		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 	}
 }

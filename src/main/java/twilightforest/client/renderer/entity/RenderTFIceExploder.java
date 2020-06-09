@@ -1,7 +1,7 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.client.model.entity.ModelTFIceExploder;
@@ -42,7 +42,7 @@ public class RenderTFIceExploder<T extends EntityTFIceExploder, M extends ModelT
 
 	@Override
 	protected void setupTransforms(T entity, MatrixStack stack, float ageInTicks, float rotationYaw, float partialTicks) {
-		RenderSystem.rotatef(180.0F - rotationYaw, 0.0F, 1.0F, 0.0F);
+		stack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180 - rotationYaw));
 	}
 
 	@Override

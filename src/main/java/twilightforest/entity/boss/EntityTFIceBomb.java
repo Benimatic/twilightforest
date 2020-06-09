@@ -146,7 +146,7 @@ public class EntityTFIceBomb extends EntityTFThrowable {
 		}
 	}
 
-	public BlockState getBlock() {
+	public BlockState getBlockState() {
 		return Blocks.PACKED_ICE.getDefaultState();
 	}
 

@@ -5,7 +5,7 @@ import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import twilightforest.entity.boss.EntityTFHydraMortar;
 
-public class ModelTFHydraMortar<T extends EntityTFHydraMortar> extends SegmentedModel<T> {
+public class ModelTFHydraMortar extends SegmentedModel<EntityTFHydraMortar> {
 
 	public ModelRenderer box;
 
@@ -18,7 +18,7 @@ public class ModelTFHydraMortar<T extends EntityTFHydraMortar> extends Segmented
 	}
 
 	@Override
-	public void setAngles(T entity, float v, float v1, float v2, float v3, float v4) {
+	public void setAngles(EntityTFHydraMortar entity, float v, float v1, float v2, float v3, float v4) {
 
 	}
 
