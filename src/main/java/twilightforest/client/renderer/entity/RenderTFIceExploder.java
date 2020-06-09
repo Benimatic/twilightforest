@@ -5,9 +5,9 @@ import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.client.model.entity.ModelTFIceExploder;
-import twilightforest.entity.EntityTFIceExploder;
+import twilightforest.entity.EntityUnstableIceCore;
 
-public class RenderTFIceExploder<T extends EntityTFIceExploder, M extends ModelTFIceExploder<T>> extends RenderTFBiped<T, M> {
+public class RenderTFIceExploder<T extends EntityUnstableIceCore, M extends ModelTFIceExploder<T>> extends RenderTFBiped<T, M> {
 
 	public RenderTFIceExploder(EntityRendererManager manager, M model) {
 		super(manager, model, 0.4F, "iceexploder.png");

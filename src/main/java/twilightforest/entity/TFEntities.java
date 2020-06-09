@@ -106,8 +106,8 @@ public class TFEntities {
 	public static final EntityType<EntityTFYetiAlpha> yeti_alpha = make(TFEntityNames.YETI_ALPHA, EntityTFYetiAlpha::new, EntityClassification.MONSTER, 3.8F, 5.0F);
 	public static final EntityType<EntityTFWinterWolf> winter_wolf = make(TFEntityNames.WINTER_WOLF, EntityTFWinterWolf::new, EntityClassification.MONSTER, 1.4F, 1.9F);
 	public static final EntityType<EntityTFSnowGuardian> snow_guardian = make(TFEntityNames.SNOW_GUARDIAN, EntityTFSnowGuardian::new, EntityClassification.MONSTER, 0.6F, 1.8F);
-	public static final EntityType<EntityTFIceShooter> stable_ice_core = make(TFEntityNames.STABLE_ICE_CORE, EntityTFIceShooter::new, EntityClassification.MONSTER, 0.8F, 1.8F);
-	public static final EntityType<EntityTFIceExploder> unstable_ice_core = make(TFEntityNames.UNSTABLE_ICE_CORE, EntityTFIceExploder::new, EntityClassification.MONSTER, 0.8F, 1.8F);
+	public static final EntityType<EntityStableIceCore> stable_ice_core = make(TFEntityNames.STABLE_ICE_CORE, EntityStableIceCore::new, EntityClassification.MONSTER, 0.8F, 1.8F);
+	public static final EntityType<EntityUnstableIceCore> unstable_ice_core = make(TFEntityNames.UNSTABLE_ICE_CORE, EntityUnstableIceCore::new, EntityClassification.MONSTER, 0.8F, 1.8F);
 	public static final EntityType<EntityTFSnowQueen> snow_queen = make(TFEntityNames.SNOW_QUEEN, EntityTFSnowQueen::new, EntityClassification.MONSTER, 0.7F, 2.2F);
 	public static final EntityType<EntityTFTroll> troll = make(TFEntityNames.TROLL, EntityTFTroll::new, EntityClassification.MONSTER, 1.4F, 2.4F);
 	public static final EntityType<EntityTFGiantMiner> giant_miner = make(TFEntityNames.GIANT_MINER, EntityTFGiantMiner::new, EntityClassification.MONSTER, 2.4F, 7.2F);

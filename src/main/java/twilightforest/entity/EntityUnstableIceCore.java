@@ -20,11 +20,11 @@ import twilightforest.TFSounds;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.ColorUtil;
 
-public class EntityTFIceExploder extends EntityTFIceMob {
+public class EntityUnstableIceCore extends EntityTFIceMob {
 
 	private static final float EXPLOSION_RADIUS = 1;
 
-	public EntityTFIceExploder(EntityType<? extends EntityTFIceExploder> type, World world) {
+	public EntityUnstableIceCore(EntityType<? extends EntityUnstableIceCore> type, World world) {
 		super(type, world);
 	}
 
@@ -74,7 +74,7 @@ public class EntityTFIceExploder extends EntityTFIceMob {
 		{
 			if (!world.isRemote) {
 				boolean mobGriefing = ForgeEventFactory.getMobGriefingEvent(world, this);
-				this.world.createExplosion(this, this.getX(), this.getY(), this.getZ(), EntityTFIceExploder.EXPLOSION_RADIUS, mobGriefing ? Explosion.Mode.BREAK : Explosion.Mode.DESTROY);
+				this.world.createExplosion(this, this.getX(), this.getY(), this.getZ(), EntityUnstableIceCore.EXPLOSION_RADIUS, mobGriefing ? Explosion.Mode.BREAK : Explosion.Mode.DESTROY);
 
 				if (mobGriefing) {
 					this.transformBlocks();

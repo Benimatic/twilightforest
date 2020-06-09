@@ -1,12 +1,12 @@
 package twilightforest.client.model.entity;
 
 import net.minecraft.util.math.MathHelper;
-import twilightforest.entity.EntityTFIceShooter;
+import twilightforest.entity.EntityStableIceCore;
 
-public class ModelTFIceShooter extends ModelTFIceExploder<EntityTFIceShooter> {
+public class ModelTFIceShooter extends ModelTFIceExploder<EntityStableIceCore> {
 
 	@Override
-	public void setLivingAnimations(EntityTFIceShooter entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+	public void setLivingAnimations(EntityStableIceCore entity, float limbSwing, float limbSwingAmount, float partialTicks) {
 		this.entity = entity;
 
 		for (int i = 0; i < spikes.length; i++) {

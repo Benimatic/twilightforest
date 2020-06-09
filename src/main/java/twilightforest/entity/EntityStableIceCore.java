@@ -15,9 +15,9 @@ import net.minecraft.world.World;
 import twilightforest.TFSounds;
 import twilightforest.entity.projectile.EntityTFIceSnowball;
 
-public class EntityTFIceShooter extends EntityTFIceMob implements IRangedAttackMob {
+public class EntityStableIceCore extends EntityTFIceMob implements IRangedAttackMob {
 
-	public EntityTFIceShooter(EntityType<? extends EntityTFIceShooter> type, World world) {
+	public EntityStableIceCore(EntityType<? extends EntityStableIceCore> type, World world) {
 		super(type, world);
 	}
 
@@ -66,7 +66,7 @@ public class EntityTFIceShooter extends EntityTFIceMob implements IRangedAttackM
 
 	@Override
 	public void attackEntityWithRangedAttack(LivingEntity target, float distanceFactor) {
-		EntityTFIceSnowball snowball = new EntityTFIceSnowball(TFEntities.ice_snowball, this.world, this);
+		EntityTFIceSnowball snowball = TFEntities.ice_snowball.create(this.world);
 
 		// [VanillaCopy] Adapted from EntitySnowman
 		double d0 = target.getY() + (double) target.getEyeHeight() - 1.4;
