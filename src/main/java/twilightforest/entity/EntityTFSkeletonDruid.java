@@ -18,7 +18,6 @@ import twilightforest.entity.projectile.EntityTFNatureBolt;
 
 import java.util.Random;
 
-//TODO: Extend AbstractSkeletonEntity?
 public class EntityTFSkeletonDruid extends SkeletonEntity {
 
 	public EntityTFSkeletonDruid(EntityType<? extends EntityTFSkeletonDruid> type, World world) {
@@ -28,17 +27,7 @@ public class EntityTFSkeletonDruid extends SkeletonEntity {
 	@Override
 	protected void registerGoals() {
 		super.registerGoals();
-		this.goalSelector.addGoal(4, new RangedAttackGoal(this, 1.25D, 20, 10.0F) {
-			@Override
-			public void startExecuting() {
-				super.startExecuting();
-			}
-
-			@Override
-			public void resetTask() {
-				super.resetTask();
-			}
-		});
+		this.goalSelector.addGoal(4, new RangedAttackGoal(this, 1.25D, 20, 10.0F));
 	}
 
 	@Override
@@ -56,7 +45,7 @@ public class EntityTFSkeletonDruid extends SkeletonEntity {
 	@Override
 	public void attackEntityWithRangedAttack(LivingEntity attackTarget, float extraDamage) {
 		if (this.getHeldItem(Hand.MAIN_HAND).getItem() instanceof HoeItem) {
-			EntityTFNatureBolt natureBolt = new EntityTFNatureBolt(TFEntities.nature_bolt, this.world, this);
+			EntityTFNatureBolt natureBolt = new EntityTFNatureBolt(this.world, this);
 			playSound(SoundEvents.ENTITY_GHAST_SHOOT, 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
 
 			double tx = attackTarget.getX() - this.getX();

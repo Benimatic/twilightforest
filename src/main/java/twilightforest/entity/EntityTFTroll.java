@@ -124,10 +124,6 @@ public class EntityTFTroll extends MonsterEntity implements IRangedAttackMob {
 		if (this.deathTime % 5 == 0) {
 			this.ripenTrollBerNearby(this.deathTime / 5);
 		}
-
-		if (this.deathTime == 1) {
-			//this.makeTrollStoneInAABB(this.boundingBox);
-		}
 	}
 
 	private void ripenTrollBerNearby(int offset) {
@@ -141,22 +137,6 @@ public class EntityTFTroll extends MonsterEntity implements IRangedAttackMob {
 		if (this.world.getBlockState(pos).getBlock() == TFBlocks.unripe_trollber.get() && this.rand.nextBoolean() && (Math.abs(pos.getX() + pos.getY() + pos.getZ()) % 5 == offset)) {
 			this.world.setBlockState(pos, TFBlocks.trollber.get().getDefaultState());
 			world.playEvent(2004, pos, 0);
-		}
-	}
-
-	private void makeTrollStoneInAABB(AxisAlignedBB aabb) {
-		int minX = MathHelper.ceil(aabb.minX);
-		int minY = MathHelper.ceil(aabb.minY);
-		int minZ = MathHelper.ceil(aabb.minZ);
-		int maxX = MathHelper.floor(aabb.maxX);
-		int maxY = MathHelper.floor(aabb.maxY);
-		int maxZ = MathHelper.floor(aabb.maxZ);
-
-		for (BlockPos pos : BlockPos.getAllInBoxMutable(new BlockPos(minX, minY, minZ), new BlockPos(maxX, maxY, maxZ))) {
-			if (world.isAirBlock(pos)) {
-				world.setBlockState(pos, TFBlocks.trollsteinn.get().getDefaultState());
-				world.playEvent(2001, pos, Block.getStateId(TFBlocks.trollsteinn.get().getDefaultState()));
-			}
 		}
 	}
 
@@ -175,24 +155,5 @@ public class EntityTFTroll extends MonsterEntity implements IRangedAttackMob {
 			this.playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
 			this.world.addEntity(ice);
 		}
-	}
-
-	// [VanillaCopy] super but hardcode swing progress to ignore potions
-	@Override
-	protected void updateArmSwingProgress() {
-		int i = 6;
-
-		if (this.isSwingInProgress) {
-			++this.swingProgressInt;
-
-			if (this.swingProgressInt >= i) {
-				this.swingProgressInt = 0;
-				this.isSwingInProgress = false;
-			}
-		} else {
-			this.swingProgressInt = 0;
-		}
-
-		this.swingProgress = (float) this.swingProgressInt / (float) i;
 	}
 }

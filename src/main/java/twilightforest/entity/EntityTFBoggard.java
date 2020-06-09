@@ -20,7 +20,6 @@ public class EntityTFBoggard extends MonsterEntity {
 	@Override
 	protected void registerGoals() {
 		this.goalSelector.addGoal(0, new SwimGoal(this));
-//        this.goalSelector.addGoal(1, new EntityAITFRedcapShy(this, this.moveSpeed));
 		this.goalSelector.addGoal(2, new EntityAITFChargeAttack(this, 2.0F, false));
 		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0F, false));
 		this.goalSelector.addGoal(6, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
