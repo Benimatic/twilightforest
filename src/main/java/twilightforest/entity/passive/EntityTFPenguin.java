@@ -27,13 +27,13 @@ public class EntityTFPenguin extends EntityTFBird {
 		goalSelector.addGoal(4, new FollowParentGoal(this, 1.15F));
 		goalSelector.addGoal(5, new RandomWalkingGoal(this, 1.0F));
 		goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 6F));
-		goalSelector.addGoal(7, new LookAtGoal(this, twilightforest.entity.passive.EntityTFPenguin.class, 5F, 0.02F));
+		goalSelector.addGoal(7, new LookAtGoal(this, EntityTFPenguin.class, 5F, 0.02F));
 		goalSelector.addGoal(8, new LookRandomlyGoal(this));
 	}
 
 	@Override
 	public AnimalEntity createChild(AgeableEntity entityanimal) {
-		return new EntityTFPenguin(TFEntities.penguin, world);
+		return TFEntities.penguin.create(world);
 	}
 
 	@Override

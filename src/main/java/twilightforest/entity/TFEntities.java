@@ -90,7 +90,7 @@ public class TFEntities {
 	public static final EntityType<EntityTFRedcapSapper> redcap_sapper = make(TFEntityNames.REDCAP_SAPPER, EntityTFRedcapSapper::new, EntityClassification.MONSTER, 0.9F, 1.4F);
 	public static final EntityType<EntityTFMistWolf> mist_wolf = make(TFEntityNames.MIST_WOLF, EntityTFMistWolf::new, EntityClassification.MONSTER, 1.4F, 1.9F);
 	public static final EntityType<EntityTFKingSpider> king_spider = make(TFEntityNames.KING_SPIDER, EntityTFKingSpider::new, EntityClassification.MONSTER, 1.6F, 1.6F);
-	public static final EntityType<EntityTFMobileFirefly> firefly = make(TFEntityNames.FIREFLY, EntityTFMobileFirefly::new, EntityClassification.CREATURE, 0.5F, 0.5F);
+	public static final EntityType<EntityTFMobileFirefly> firefly = make(TFEntityNames.FIREFLY, EntityTFMobileFirefly::new, EntityClassification.AMBIENT, 0.5F, 0.5F);
 	public static final EntityType<EntityTFMiniGhast> mini_ghast = make(TFEntityNames.MINI_GHAST, EntityTFMiniGhast::new, EntityClassification.MONSTER, 1.1F, 1.5F);
 	public static final EntityType<EntityTFTowerGhast> tower_ghast = make(TFEntityNames.TOWER_GHAST, EntityTFTowerGhast::new, EntityClassification.MONSTER, 4.0F, 6.0F);
 	public static final EntityType<EntityTFTowerGolem> tower_golem = make(TFEntityNames.TOWER_GOLEM, EntityTFTowerGolem::new, EntityClassification.MONSTER, 1.4F, 2.9F);

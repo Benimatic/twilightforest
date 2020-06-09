@@ -43,9 +43,6 @@ public class EntityTFSquirrel extends AnimalEntity {
 		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
 	}
 
-	/**
-	 * TODO: maybe they should just take less damage?
-	 */
 	@Override
 	public boolean handleFallDamage(float distance, float multiplier) {
 		return false;
@@ -77,11 +74,6 @@ public class EntityTFSquirrel extends AnimalEntity {
 		}
 		// default to just prefering lighter areas
 		return this.world.getLight(pos) - 0.5F;
-	}
-
-	@Override
-	public boolean canDespawn(double p_213397_1_) {
-		return false;
 	}
 
 	@Nullable

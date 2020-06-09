@@ -3,9 +3,9 @@ package twilightforest.entity.projectile;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IRendersAsItem;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.particles.IParticleData;
 import net.minecraft.particles.ItemParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
@@ -49,14 +49,12 @@ public class EntityTFTomeBolt extends EntityTFThrowable implements IRendersAsIte
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	private final static ItemStack particleItem = new ItemStack(Items.PAPER);
-
-	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void handleStatusUpdate(byte id) {
 		if (id == 3) {
+			IParticleData particle = new ItemParticleData(ParticleTypes.ITEM, new ItemStack(Items.PAPER));
 			for (int i = 0; i < 8; ++i) {
-				this.world.addParticle(new ItemParticleData(ParticleTypes.ITEM, particleItem), false, this.getX(), this.getY(), this.getZ(), rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
+				this.world.addParticle(particle, false, this.getX(), this.getY(), this.getZ(), rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
 			}
 		} else {
 			super.handleStatusUpdate(id);
@@ -67,11 +65,12 @@ public class EntityTFTomeBolt extends EntityTFThrowable implements IRendersAsIte
 	protected void onImpact(RayTraceResult result) {
 		if (!this.world.isRemote) {
 			if (result instanceof EntityRayTraceResult) {
-				if (((EntityRayTraceResult)result).getEntity() instanceof LivingEntity
-						&& ((EntityRayTraceResult)result).getEntity().attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 6)) {
+				EntityRayTraceResult entityRay = ((EntityRayTraceResult) result);
+				if (entityRay.getEntity() instanceof LivingEntity
+						&& entityRay.getEntity().attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 6)) {
 					// inflict move slowdown
 					int duration = world.getDifficulty() == Difficulty.PEACEFUL ? 3 : world.getDifficulty() == Difficulty.NORMAL ? 7 : 9;
-					((LivingEntity) ((EntityRayTraceResult)result).getEntity()).addPotionEffect(new EffectInstance(Effects.SLOWNESS, duration * 20, 1));
+					((LivingEntity) entityRay.getEntity()).addPotionEffect(new EffectInstance(Effects.SLOWNESS, duration * 20, 1));
 				}
 			}
 

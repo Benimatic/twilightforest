@@ -12,6 +12,7 @@ import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
+import twilightforest.entity.TFEntities;
 import twilightforest.potions.TFPotions;
 
 import javax.annotation.Nonnull;
@@ -22,8 +23,8 @@ public class EntityIceArrow extends EntityTFArrow {
 		super(type, world);
 	}
 
-	public EntityIceArrow(EntityType<? extends EntityIceArrow> type, World world, LivingEntity shooter) {
-		super(type, world, shooter);
+	public EntityIceArrow(World world, LivingEntity shooter) {
+		super(TFEntities.ice_arrow, world, shooter);
 	}
 
 	@Override
@@ -46,11 +47,5 @@ public class EntityIceArrow extends EntityTFArrow {
 				((LivingEntity) ((EntityRayTraceResult)ray).getEntity()).addPotionEffect(new EffectInstance(TFPotions.frosty.get(), 20 * 10, chillLevel));
 			}
 		}
-	}
-
-	@Nonnull
-	@Override
-	public IPacket<?> createSpawnPacket() {
-		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 }

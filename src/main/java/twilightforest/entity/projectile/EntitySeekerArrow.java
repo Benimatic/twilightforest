@@ -156,10 +156,4 @@ public class EntitySeekerArrow extends EntityTFArrow {
 	private boolean isThisArrowFlying() {
 		return !inGround && getMotion().lengthSquared() > 1.0;
 	}
-
-	@Nonnull
-	@Override
-	public IPacket<?> createSpawnPacket() {
-		return NetworkHooks.getEntitySpawningPacket(this);
-	}
 }

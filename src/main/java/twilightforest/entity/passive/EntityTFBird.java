@@ -14,7 +14,6 @@ import javax.annotation.Nonnull;
 
 public abstract class EntityTFBird extends AnimalEntity {
 
-	// same items as EntityChicken / EntityParrot
 	protected static final Ingredient SEEDS = Ingredient.fromItems(Items.WHEAT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS, Items.BEETROOT_SEEDS);
 
 	public float flapLength = 0.0F;

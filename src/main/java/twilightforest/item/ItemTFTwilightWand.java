@@ -34,7 +34,7 @@ public class ItemTFTwilightWand extends Item {
 			player.playSound(SoundEvents.ENTITY_GHAST_SHOOT, 1.0F, (world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F + 1.0F);
 
 			if (!world.isRemote) {
-				world.addEntity(new EntityTFTwilightWandBolt(TFEntities.wand_bolt, world, player));
+				world.addEntity(new EntityTFTwilightWandBolt(world, player));
 				stack.damageItem(1, player, (user) -> user.sendBreakAnimation(hand));
 			}
 

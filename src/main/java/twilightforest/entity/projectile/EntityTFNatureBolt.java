@@ -23,6 +23,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import twilightforest.entity.TFEntities;
 
 public class EntityTFNatureBolt extends EntityTFThrowable implements ITFProjectile, IRendersAsItem {
 
@@ -30,8 +31,8 @@ public class EntityTFNatureBolt extends EntityTFThrowable implements ITFProjecti
 		super(type, world);
 	}
 
-	public EntityTFNatureBolt(EntityType<? extends EntityTFNatureBolt> type, World world, LivingEntity owner) {
-		super(type, world, owner);
+	public EntityTFNatureBolt(World world, LivingEntity owner) {
+		super(TFEntities.nature_bolt, world, owner);
 	}
 
 	@Override
@@ -69,19 +70,17 @@ public class EntityTFNatureBolt extends EntityTFThrowable implements ITFProjecti
 	@Override
 	protected void onImpact(RayTraceResult ray) {
 		if (!this.world.isRemote) {
-			if (ray instanceof BlockRayTraceResult) {
+			if (ray.getType() == RayTraceResult.Type.BLOCK) {
 				BlockPos blockPosHit = ((BlockRayTraceResult) ray).getPos();
-				if (blockPosHit != null) {
-					Material materialHit = world.getBlockState(blockPosHit).getMaterial();
+				Material materialHit = world.getBlockState(blockPosHit).getMaterial();
 
-					if (materialHit == Material.ORGANIC) {
-						ItemStack dummy = new ItemStack(Items.BONE_MEAL, 1);
-						if (BoneMealItem.applyBonemeal(dummy, world, blockPosHit)) {
-							world.playEvent(2005, blockPosHit, 0);
-						}
-					} else if (materialHit.isSolid() && canReplaceBlock(world, blockPosHit)) {
-						world.setBlockState(blockPosHit, Blocks.BIRCH_LEAVES.getDefaultState());
+				if (materialHit == Material.ORGANIC) {
+					ItemStack dummy = new ItemStack(Items.BONE_MEAL, 1);
+					if (BoneMealItem.applyBonemeal(dummy, world, blockPosHit)) {
+						world.playEvent(2005, blockPosHit, 0);
 					}
+				} else if (materialHit.isSolid() && canReplaceBlock(world, blockPosHit)) {
+					world.setBlockState(blockPosHit, Blocks.BIRCH_LEAVES.getDefaultState());
 				}
 			}
 
