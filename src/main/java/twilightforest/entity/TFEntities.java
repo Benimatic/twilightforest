@@ -307,7 +307,7 @@ public class TFEntities {
 	public static void registerEntityRenderer() {
 		RenderingRegistry.registerEntityRenderingHandler(wild_boar, m -> new RenderTFBoar(m, new ModelTFBoar()));
 		RenderingRegistry.registerEntityRenderingHandler(bighorn_sheep, m -> new RenderTFBighorn(m, new ModelTFBighorn(), new ModelTFBighornFur(), 0.7F));
-		RenderingRegistry.registerEntityRenderingHandler(deer, m -> new RenderTFDeer(m, new ModelTFDeer(), 0.7F));
+		RenderingRegistry.registerEntityRenderingHandler(deer, m -> new RenderTFGenericMob<>(m, new ModelTFDeer(), 0.7F, "wilddeer.png"));
 
 		RenderingRegistry.registerEntityRenderingHandler(redcap, m -> new RenderTFBiped<>(m, new ModelTFRedcap<>(), 0.4F, "redcap.png"));
 		RenderingRegistry.registerEntityRenderingHandler(skeleton_druid, m -> new RenderTFBiped<>(m, new ModelTFSkeletonDruid(), 0.5F, "skeletondruid.png"));
