@@ -75,6 +75,7 @@ public class EntityAITFChargeAttack extends Goal {
 	@Override
 	public void startExecuting() {
 		this.windup = 15 + this.charger.getRNG().nextInt(30);
+		this.charger.setSprinting(true);
 	}
 
 	@Override
@@ -140,6 +141,7 @@ public class EntityAITFChargeAttack extends Goal {
 		this.windup = 0;
 		this.chargeTarget = null;
 		this.hasAttacked = false;
+		this.charger.setSprinting(false);
 
 		if (this.charger instanceof ITFCharger) {
 			((ITFCharger) charger).setCharging(false);

@@ -13,28 +13,30 @@ import net.minecraft.util.ResourceLocation;
 import twilightforest.entity.EntityTFGiantMiner;
 
 public class RenderTFGiant<T extends EntityTFGiantMiner> extends BipedRenderer<T, PlayerModel<T>> {
-
-	private boolean typeCache = false;
+	private final PlayerModel<T> normalModel;
+	private final PlayerModel<T> slimModel;
 
 	public RenderTFGiant(EntityRendererManager manager) {
 		super(manager, new PlayerModel<>(0, false), 1.8F);
+		normalModel = getEntityModel();
+		slimModel = new PlayerModel<>(0, true);
+
 		this.addLayer(new BipedArmorLayer<>(this, new BipedModel<>(0.5F), new BipedModel<>(0.5F)));
 	}
 
 	@Override
 	public ResourceLocation getEntityTexture(EntityTFGiantMiner entity) {
 		Minecraft mc = Minecraft.getInstance();
-		boolean type = false;
+		boolean slim = false;
 		ResourceLocation texture = DefaultPlayerSkin.getDefaultSkinLegacy();
+
 		if (mc.getRenderViewEntity() instanceof AbstractClientPlayerEntity) {
 			AbstractClientPlayerEntity client = ((AbstractClientPlayerEntity) mc.getRenderViewEntity());
 			texture = client.getLocationSkin();
-			type = client.getSkinType().equals("slim");
+			slim = client.getSkinType().equals("slim");
 		}
-		if (type != typeCache) {
-			typeCache = type;
-			entityModel = new PlayerModel<>(0, type);
-		}
+
+		entityModel = slim ? slimModel : normalModel;
 		return texture;
 	}
 

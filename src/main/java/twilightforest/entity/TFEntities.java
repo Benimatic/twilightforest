@@ -319,8 +319,8 @@ public class TFEntities {
 		RenderingRegistry.registerEntityRenderingHandler(lich_minion, m -> new RenderTFBiped<>(m, new ModelTFLichMinion(), 0.5F, "textures/entity/zombie/zombie.png"));
 		RenderingRegistry.registerEntityRenderingHandler(loyal_zombie, m -> new RenderTFBiped<>(m, new ModelTFLoyalZombie(), 0.5F, "textures/entity/zombie/zombie.png"));
 		RenderingRegistry.registerEntityRenderingHandler(tiny_bird, m -> new RenderTFTinyBird(m, new ModelTFTinyBird(), 1.0F));
-		RenderingRegistry.registerEntityRenderingHandler(squirrel, m -> new RenderTFGenericMob<>(m, new ModelTFSquirrel(), 1.0F, "squirrel2.png"));
-		RenderingRegistry.registerEntityRenderingHandler(bunny, m -> new RenderTFBunny(m, new ModelTFBunny(), 1.0F));
+		RenderingRegistry.registerEntityRenderingHandler(squirrel, m -> new RenderTFGenericMob<>(m, new ModelTFSquirrel(), 0.3F, "squirrel2.png"));
+		RenderingRegistry.registerEntityRenderingHandler(bunny, m -> new RenderTFBunny(m, new ModelTFBunny(), 0.3F));
 		RenderingRegistry.registerEntityRenderingHandler(raven, m -> new RenderTFBird<>(m, new ModelTFRaven(), 1.0F, "raven.png"));
 		RenderingRegistry.registerEntityRenderingHandler(quest_ram, manager -> new RenderTFQuestRam(manager, new ModelTFQuestRam()));
 		RenderingRegistry.registerEntityRenderingHandler(kobold, m -> new RenderTFKobold(m, new ModelTFKobold(), 0.4F, "kobold.png"));

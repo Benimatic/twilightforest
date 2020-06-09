@@ -83,15 +83,15 @@ public class EntityTFHydraMortar extends ThrowableEntity {
 				// we hit the ground
 				this.setMotion(this.getMotion().getX(), 0.0D, this.getMotion().getZ());
 				this.onGround = true;
-			} else if (!world.isRemote && ((EntityRayTraceResult)ray).getEntity() != owner && !isPartOfHydra(((EntityRayTraceResult)ray).getEntity())) {
+			} else if (!world.isRemote && ((EntityRayTraceResult)ray).getEntity() != getThrower() && !isPartOfHydra(((EntityRayTraceResult)ray).getEntity())) {
 				detonate();
 			}
 		}
 	}
 
 	private boolean isPartOfHydra(Entity entity) {
-		if (owner instanceof EntityTFHydraPart) {
-			EntityTFHydra hydra = ((EntityTFHydraPart) owner).hydra;
+		if (getThrower() instanceof EntityTFHydraPart) {
+			EntityTFHydra hydra = ((EntityTFHydraPart) getThrower()).hydra;
 			if (hydra == null || hydra.getParts() == null)
 				return false;
 			if (entity == hydra)

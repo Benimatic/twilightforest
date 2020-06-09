@@ -26,7 +26,7 @@ public class EntityTFPinchBeetle extends MonsterEntity implements IHostileMount 
 	@Override
 	protected void registerGoals() {
 		this.goalSelector.addGoal(0, new SwimGoal(this));
-		this.goalSelector.addGoal(2, new EntityAITFChargeAttack(this, 2.0F, false));
+		this.goalSelector.addGoal(2, new EntityAITFChargeAttack(this, 1.5F, false));
 		this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, false));
 		this.goalSelector.addGoal(6, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
 		this.goalSelector.addGoal(7, new LookAtGoal(this, PlayerEntity.class, 8.0F));

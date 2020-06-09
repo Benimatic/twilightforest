@@ -1,6 +1,7 @@
 package twilightforest.client.model.entity;
 
 import com.google.common.collect.ImmutableList;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
@@ -11,28 +12,13 @@ public class ModelTFWraith extends BipedModel<EntityTFWraith> {
 	public ModelRenderer dress;
 
 	public ModelTFWraith() {
-		super(0.0F);
+		super(RenderType::getEntityTranslucent, 0.0F, 0.0F, 64, 32);
 
 		float f = 0.0F;
 		dress = new ModelRenderer(this, 40, 16);
 		dress.addCuboid(-4F, 12.0F, -2F, 8, 12, 4, f);
 		dress.setRotationPoint(0.0F, 0.0F, 0.0F);
 	}
-
-//	@Override
-//	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-//		setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-//		bipedHead.render(scale);
-//		bipedBody.render(scale);
-//		bipedRightArm.render(scale);
-//		bipedLeftArm.render(scale);
-//
-//		dress.render(scale);
-//
-//		//bipedRightLeg.render(scale);
-//		//bipedLeftLeg.render(scale);
-//		bipedHeadwear.render(scale);
-//	}
 
 	@Override
 	protected Iterable<ModelRenderer> getHeadParts() {
