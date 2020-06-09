@@ -3,14 +3,10 @@ package twilightforest.client.model.entity;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.EntityTFIceShooter;
 
-public class ModelTFIceShooter<T extends EntityTFIceShooter> extends ModelTFIceExploder<T> {
+public class ModelTFIceShooter extends ModelTFIceExploder<EntityTFIceShooter> {
 
-	/**
-	 * Used for easily adding entity-dependent animations. The second and third float params here are the same second
-	 * and third as in the setRotationAngles method.
-	 */
 	@Override
-	public void setLivingAnimations(T entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+	public void setLivingAnimations(EntityTFIceShooter entity, float limbSwing, float limbSwingAmount, float partialTicks) {
 		this.entity = entity;
 
 		for (int i = 0; i < spikes.length; i++) {

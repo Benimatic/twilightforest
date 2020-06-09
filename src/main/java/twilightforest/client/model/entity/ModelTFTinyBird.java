@@ -14,7 +14,7 @@ import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.passive.EntityTFTinyBird;
 
-public class ModelTFTinyBird<T extends EntityTFTinyBird> extends AgeableModel<T> {
+public class ModelTFTinyBird extends AgeableModel<EntityTFTinyBird> {
 	//fields
 	ModelRenderer beak;
 	ModelRenderer head;
@@ -98,9 +98,6 @@ public class ModelTFTinyBird<T extends EntityTFTinyBird> extends AgeableModel<T>
 		);
 	}
 
-	/**
-	 * Sets the models various rotation angles then renders the model.
-	 */
 	@Override
 	public void render(MatrixStack stack, IVertexBuilder builder, int light, int overlay, float red, float green, float blue, float scale) {
 		if (isChild) {
@@ -130,7 +127,7 @@ public class ModelTFTinyBird<T extends EntityTFTinyBird> extends AgeableModel<T>
 	 * Sets the models various rotation angles.
 	 */
 	@Override
-	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setAngles(EntityTFTinyBird entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		head.rotateAngleX = headPitch / (180F / (float) Math.PI);
 		head.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 

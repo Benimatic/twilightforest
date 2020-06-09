@@ -7,18 +7,18 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ModelTFBunny;
 import twilightforest.entity.passive.EntityTFBunny;
 
-public class RenderTFBunny<T extends EntityTFBunny, M extends ModelTFBunny<T>> extends MobRenderer<T, M> {
+public class RenderTFBunny extends MobRenderer<EntityTFBunny, ModelTFBunny> {
 
 	private final ResourceLocation textureLocDutch = TwilightForestMod.getModelTexture("bunnydutch.png");
 	private final ResourceLocation textureLocWhite = TwilightForestMod.getModelTexture("bunnywhite.png");
 	private final ResourceLocation textureLocBrown = TwilightForestMod.getModelTexture("bunnybrown.png");
 
-	public RenderTFBunny(EntityRendererManager manager, M model, float shadowSize) {
+	public RenderTFBunny(EntityRendererManager manager, ModelTFBunny model, float shadowSize) {
 		super(manager, model, shadowSize);
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(T entity) {
+	public ResourceLocation getEntityTexture(EntityTFBunny entity) {
 		switch (entity.getBunnyType()) {
 			default:
 			case 0:

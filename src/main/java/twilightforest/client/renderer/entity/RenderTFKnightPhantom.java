@@ -10,14 +10,14 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ModelTFKnightPhantom2;
 import twilightforest.entity.boss.EntityTFKnightPhantom;
 
-public class RenderTFKnightPhantom<T extends EntityTFKnightPhantom, M extends ModelTFKnightPhantom2<T>> extends BipedRenderer<T, M> {
+public class RenderTFKnightPhantom extends BipedRenderer<EntityTFKnightPhantom, ModelTFKnightPhantom2> {
 
 	private static final ResourceLocation PHANTOM_TEXTURE = TwilightForestMod.getModelTexture("phantomskeleton.png");
 
-	public RenderTFKnightPhantom(EntityRendererManager manager, M model, float shadowSize) {
+	public RenderTFKnightPhantom(EntityRendererManager manager, ModelTFKnightPhantom2 model, float shadowSize) {
 		super(manager, model, shadowSize);
 		this.addLayer(new HeldItemLayer<>(this));
-		this.addLayer(new BipedArmorLayer<>(this, new ModelTFKnightPhantom2<>(), new ModelTFKnightPhantom2<>()));
+		this.addLayer(new BipedArmorLayer<>(this, new ModelTFKnightPhantom2(), new ModelTFKnightPhantom2()));
 	}
 
 	@Override
@@ -26,7 +26,7 @@ public class RenderTFKnightPhantom<T extends EntityTFKnightPhantom, M extends Mo
 	}
 
 	@Override
-	protected void scale(T entity, MatrixStack stack, float partialTicks) {
+	protected void scale(EntityTFKnightPhantom entity, MatrixStack stack, float partialTicks) {
 		float scale = entity.isChargingAtPlayer() ? 1.8F : 1.2F;
 		stack.scale(scale, scale, scale);
 	}

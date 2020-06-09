@@ -16,12 +16,12 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ModelTFQuestRam;
 import twilightforest.entity.passive.EntityTFQuestRam;
 
-public class RenderTFQuestRam<T extends EntityTFQuestRam, M extends ModelTFQuestRam<T>> extends MobRenderer<T, M> {
+public class RenderTFQuestRam extends MobRenderer<EntityTFQuestRam, ModelTFQuestRam> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("questram.png");
 	private static final ResourceLocation textureLocLines = TwilightForestMod.getModelTexture("questram_lines.png");
 
-	public RenderTFQuestRam(EntityRendererManager manager, M model) {
+	public RenderTFQuestRam(EntityRendererManager manager, ModelTFQuestRam model) {
 		super(manager, model, 1.0F);
 		addLayer(new LayerGlowingLines(this));
 	}
@@ -32,14 +32,14 @@ public class RenderTFQuestRam<T extends EntityTFQuestRam, M extends ModelTFQuest
 	}
 
 	// todo verify / cleanup gl state?
-	class LayerGlowingLines extends LayerRenderer<T, M> {
+	class LayerGlowingLines extends LayerRenderer<EntityTFQuestRam, ModelTFQuestRam> {
 
-		public LayerGlowingLines(IEntityRenderer<T, M> renderer) {
+		public LayerGlowingLines(IEntityRenderer<EntityTFQuestRam, ModelTFQuestRam> renderer) {
 			super(renderer);
 		}
 
 		@Override
-		public void render(MatrixStack stack, IRenderTypeBuffer buffer, int i, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+		public void render(MatrixStack stack, IRenderTypeBuffer buffer, int i, EntityTFQuestRam entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 //			RenderTFQuestRam.this.bindTexture(textureLocLines);
 			IVertexBuilder builder = buffer.getBuffer(RenderType.getEntityTranslucent(textureLocLines));
 			float var4 = 1.0F;
@@ -56,10 +56,5 @@ public class RenderTFQuestRam<T extends EntityTFQuestRam, M extends ModelTFQuest
 			RenderTFQuestRam.this.getEntityModel().render(stack, builder, var5, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
 			RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		}
-//
-//		@Override
-//		public boolean shouldCombineTextures() {
-//			return false;
-//		}
 	}
 }

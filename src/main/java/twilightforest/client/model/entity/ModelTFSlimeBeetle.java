@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.EntityTFSlimeBeetle;
 
-public class ModelTFSlimeBeetle<T extends EntityTFSlimeBeetle> extends SegmentedModel<T> {
+public class ModelTFSlimeBeetle extends SegmentedModel<EntityTFSlimeBeetle> {
 	//fields
 	ModelRenderer head;
 	ModelRenderer RearEnd;
@@ -179,13 +179,8 @@ public class ModelTFSlimeBeetle<T extends EntityTFSlimeBeetle> extends Segmented
 		model.rotateAngleZ = z;
 	}
 
-	/**
-	 * Sets the model's various rotation angles. For bipeds, limbSwing and limbSwingAmount are used for animating the movement of arms
-	 * and legs, where limbSwing represents the time(so that arms and legs swing back and forth) and limbSwingAmount represents how
-	 * "far" arms and legs can swing at most.
-	 */
 	@Override
-	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setAngles(EntityTFSlimeBeetle entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.head.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 		this.head.rotateAngleX = headPitch / (180F / (float) Math.PI);
 

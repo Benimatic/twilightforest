@@ -15,7 +15,7 @@ import twilightforest.entity.EntityTFHelmetCrab;
 /**
  * Helmet crab model, based partially on some of the spider code
  */
-public class ModelTFHelmetCrab<T extends EntityTFHelmetCrab> extends SegmentedModel<T> {
+public class ModelTFHelmetCrab extends SegmentedModel<EntityTFHelmetCrab> {
 	//fields
 	ModelRenderer body;
 	ModelRenderer helmetBase;
@@ -187,14 +187,8 @@ public class ModelTFHelmetCrab<T extends EntityTFHelmetCrab> extends SegmentedMo
 		model.rotateAngleZ = z;
 	}
 
-	/**
-	 * Sets the model's various rotation angles. For bipeds, par1 and par2 are used for animating the movement of arms
-	 * and legs, where par1 represents the time(so that arms and legs swing back and forth) and par2 represents how
-	 * "far" arms and legs can swing at most.
-	 */
 	@Override
-	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		//super.setAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+	public void setAngles(EntityTFHelmetCrab entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 
 		this.body.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 		this.body.rotateAngleX = headPitch / (180F / (float) Math.PI);

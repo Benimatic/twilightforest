@@ -4,9 +4,9 @@ import net.minecraft.client.renderer.entity.EntityRendererManager;
 import twilightforest.client.model.entity.ModelTFAdherent;
 import twilightforest.entity.EntityTFAdherent;
 
-public class RenderTFAdherent<T extends EntityTFAdherent, M extends ModelTFAdherent<T>> extends RenderTFBiped<T, M> {
+public class RenderTFAdherent extends RenderTFBiped<EntityTFAdherent, ModelTFAdherent> {
 
-	public RenderTFAdherent(EntityRendererManager manager, M modelBiped, float shadowSize, String textureName) {
+	public RenderTFAdherent(EntityRendererManager manager, ModelTFAdherent modelBiped, float shadowSize, String textureName) {
 		super(manager, modelBiped, shadowSize, textureName);
 	}
 

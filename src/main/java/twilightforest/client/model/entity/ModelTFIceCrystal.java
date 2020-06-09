@@ -12,12 +12,12 @@ import twilightforest.entity.boss.EntityTFIceCrystal;
 
 import java.util.Arrays;
 
-public class ModelTFIceCrystal<T extends EntityTFIceCrystal> extends SegmentedModel<T> {
+public class ModelTFIceCrystal extends SegmentedModel<EntityTFIceCrystal> {
 
 	public ModelRenderer[] spikes = new ModelRenderer[16];
 
 	private final ImmutableList<ModelRenderer> parts;
-	private T entity;
+	private EntityTFIceCrystal entity;
 
 	public ModelTFIceCrystal() {
 		this.textureWidth = 32;
@@ -75,16 +75,12 @@ public class ModelTFIceCrystal<T extends EntityTFIceCrystal> extends SegmentedMo
 	}
 
 	@Override
-	public void setAngles(T entity, float v, float v1, float v2, float v3, float v4) {
+	public void setAngles(EntityTFIceCrystal entity, float v, float v1, float v2, float v3, float v4) {
 		this.entity = entity;
 	}
 
-	/**
-	 * Used for easily adding entity-dependent animations. The second and third float params here are the same second
-	 * and third as in the setRotationAngles method.
-	 */
 	@Override
-	public void setLivingAnimations(T entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+	public void setLivingAnimations(EntityTFIceCrystal entity, float limbSwing, float limbSwingAmount, float partialTicks) {
 		for (int i = 0; i < spikes.length; i++) {
 			// rotate the spikes
 			this.spikes[i].rotateAngleX = MathHelper.sin((entity.ticksExisted + partialTicks) / 5.0F) / 4.0F;

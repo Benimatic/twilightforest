@@ -9,11 +9,11 @@ import net.minecraft.util.math.MathHelper;
 import org.lwjgl.opengl.GL11;
 import twilightforest.entity.boss.EntityTFLich;
 
-public class ModelTFLich<T extends EntityTFLich> extends BipedModel<T> {
+public class ModelTFLich extends BipedModel<EntityTFLich> {
 	private final ModelRenderer collar;
 	private final ModelRenderer cloak;
 
-	private T entity;
+	private EntityTFLich entity;
 
 	public ModelTFLich() {
 		super(0.0F, 0.0F, 64, 64);
@@ -87,7 +87,7 @@ public class ModelTFLich<T extends EntityTFLich> extends BipedModel<T> {
 	}
 
 	@Override
-	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setAngles(EntityTFLich entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.entity = entity;
 		super.setAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 

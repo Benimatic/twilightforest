@@ -18,30 +18,30 @@ import twilightforest.entity.EntityTFWraith;
 
 import javax.annotation.Nonnull;
 
-public class RenderTFWraith<T extends EntityTFWraith, M extends ModelTFWraith<T>> extends BipedRenderer<T, M> {
+public class RenderTFWraith extends BipedRenderer<EntityTFWraith, ModelTFWraith> {
 
 	private static final ResourceLocation textureWraith = TwilightForestMod.getModelTexture("ghost.png");
 	private static final ResourceLocation textureCrown  = TwilightForestMod.getModelTexture("ghost-crown.png");
 
-	public RenderTFWraith(EntityRendererManager manager, M modelbiped, float shadowSize) {
+	public RenderTFWraith(EntityRendererManager manager, ModelTFWraith modelbiped, float shadowSize) {
 		super(manager, modelbiped, shadowSize);
 		addLayer(new LayerWraith(this));
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(@Nonnull T wraith) {
+	public ResourceLocation getEntityTexture(@Nonnull EntityTFWraith wraith) {
 		return textureCrown;
 	}
 
-	class LayerWraith extends LayerRenderer<T, M> {
+	class LayerWraith extends LayerRenderer<EntityTFWraith, ModelTFWraith> {
 
-		public LayerWraith(IEntityRenderer<T, M> renderer) {
+		public LayerWraith(IEntityRenderer<EntityTFWraith, ModelTFWraith> renderer) {
 			super(renderer);
 		}
 
 		@Override
 		//TODO: I tried
-		public void render(MatrixStack stack, IRenderTypeBuffer buffer, int i, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+		public void render(MatrixStack stack, IRenderTypeBuffer buffer, int i, EntityTFWraith entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 			//RenderTFWraith.this.bindTexture();
 			//RenderSystem.enableBlendProfile(GlStateManager.Profile.TRANSPARENT_MODEL);
 			IVertexBuilder vertex = buffer.getBuffer(RenderType.getEntityTranslucent(textureWraith));

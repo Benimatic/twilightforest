@@ -13,7 +13,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ModelTFMoonworm;
 import twilightforest.entity.projectile.EntityTFMoonwormShot;
 
-public class RenderTFMoonwormShot<T extends EntityTFMoonwormShot> extends EntityRenderer<T> {
+public class RenderTFMoonwormShot extends EntityRenderer<EntityTFMoonwormShot> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("moonworm.png");
 	private final ModelTFMoonworm wormModel = new ModelTFMoonworm();
@@ -24,9 +24,8 @@ public class RenderTFMoonwormShot<T extends EntityTFMoonwormShot> extends Entity
 	}
 
 	@Override
-	public void render(T entity, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
+	public void render(EntityTFMoonwormShot entity, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
 		stack.push();
-		//stack.translate(x, y, z);
 		RenderSystem.rotatef(90F, 1F, 0F, 1F);
 
 		IVertexBuilder builder = buffer.getBuffer(RenderType.getEntityCutout(getEntityTexture(entity)));
@@ -36,7 +35,7 @@ public class RenderTFMoonwormShot<T extends EntityTFMoonwormShot> extends Entity
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(T entity) {
+	public ResourceLocation getEntityTexture(EntityTFMoonwormShot entity) {
 		return textureLoc;
 	}
 }

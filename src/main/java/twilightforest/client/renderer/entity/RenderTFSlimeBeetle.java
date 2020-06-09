@@ -14,11 +14,11 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ModelTFSlimeBeetle;
 import twilightforest.entity.EntityTFSlimeBeetle;
 
-public class RenderTFSlimeBeetle<T extends EntityTFSlimeBeetle, M extends ModelTFSlimeBeetle<T>> extends MobRenderer<T, M> {
+public class RenderTFSlimeBeetle extends MobRenderer<EntityTFSlimeBeetle, ModelTFSlimeBeetle> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("slimebeetle.png");
 
-	public RenderTFSlimeBeetle(EntityRendererManager manager, M par1ModelBase, float shadowSize) {
+	public RenderTFSlimeBeetle(EntityRendererManager manager, ModelTFSlimeBeetle par1ModelBase, float shadowSize) {
 		super(manager, par1ModelBase, shadowSize);
 		addLayer(new LayerInner(this));
 	}
@@ -28,15 +28,15 @@ public class RenderTFSlimeBeetle<T extends EntityTFSlimeBeetle, M extends ModelT
 		return textureLoc;
 	}
 
-	class LayerInner extends LayerRenderer<T, M> {
+	class LayerInner extends LayerRenderer<EntityTFSlimeBeetle, ModelTFSlimeBeetle> {
 		private final Model innerModel = new ModelTFSlimeBeetle(true);
 
-		public LayerInner(IEntityRenderer<T, M> renderer) {
+		public LayerInner(IEntityRenderer<EntityTFSlimeBeetle, ModelTFSlimeBeetle> renderer) {
 			super(renderer);
 		}
 
 		@Override
-		public void render(MatrixStack stack, IRenderTypeBuffer buffer, int i, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+		public void render(MatrixStack stack, IRenderTypeBuffer buffer, int i, EntityTFSlimeBeetle entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 			if (!entity.isInvisible()) {
 				RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 				RenderSystem.enableRescaleNormal();
@@ -48,10 +48,5 @@ public class RenderTFSlimeBeetle<T extends EntityTFSlimeBeetle, M extends ModelT
 				RenderSystem.disableRescaleNormal();
 			}
 		}
-//
-//		@Override
-//		public boolean shouldCombineTextures() {
-//			return true;
-//		}
 	}
 }

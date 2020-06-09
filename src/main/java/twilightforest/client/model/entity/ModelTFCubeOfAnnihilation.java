@@ -5,7 +5,7 @@ import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import twilightforest.entity.EntityTFCubeOfAnnihilation;
 
-public class ModelTFCubeOfAnnihilation<T extends EntityTFCubeOfAnnihilation> extends SegmentedModel<T> {
+public class ModelTFCubeOfAnnihilation extends SegmentedModel<EntityTFCubeOfAnnihilation> {
 
 	public ModelRenderer box;
 	public ModelRenderer boxX;
@@ -48,7 +48,7 @@ public class ModelTFCubeOfAnnihilation<T extends EntityTFCubeOfAnnihilation> ext
 	}
 
 	@Override
-	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setAngles(EntityTFCubeOfAnnihilation entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		boxX.rotateAngleX = (float) Math.sin((entity.ticksExisted + headPitch)) / 5F;
 		boxY.rotateAngleY = (float) Math.sin((entity.ticksExisted + headPitch)) / 5F;
 		boxZ.rotateAngleZ = (float) Math.sin((entity.ticksExisted + headPitch)) / 5F;

@@ -13,14 +13,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.entity.boss.EntityTFThrownWep;
 
-public class RenderTFThrownWep<T extends EntityTFThrownWep> extends EntityRenderer<T> {
+public class RenderTFThrownWep extends EntityRenderer<EntityTFThrownWep> {
 
 	public RenderTFThrownWep(EntityRendererManager manager) {
 		super(manager);
 	}
 
 	@Override
-	public void render(T entity, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
+	public void render(EntityTFThrownWep entity, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
 		stack.push();
 
 		float spin = (entity.ticksExisted + partialTicks) * -10F + 90F;
@@ -59,7 +59,7 @@ public class RenderTFThrownWep<T extends EntityTFThrownWep> extends EntityRender
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(T entity) {
+	public ResourceLocation getEntityTexture(EntityTFThrownWep entity) {
 		return AtlasTexture.LOCATION_BLOCKS_TEXTURE;
 	}
 }

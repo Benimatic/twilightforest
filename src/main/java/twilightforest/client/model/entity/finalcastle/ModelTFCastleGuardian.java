@@ -13,7 +13,7 @@ import twilightforest.entity.finalcastle.EntityTFCastleGuardian;
 
 // TODO Optimize, holy fudge
 @SuppressWarnings({"unused", "WeakerAccess"})
-public class ModelTFCastleGuardian<T extends EntityTFCastleGuardian> extends SegmentedModel<T> {
+public class ModelTFCastleGuardian extends SegmentedModel<EntityTFCastleGuardian> {
 	public ModelRenderer MainBody;
 	public ModelRenderer MidBody;
 	public ModelRenderer Head;
@@ -570,7 +570,7 @@ public class ModelTFCastleGuardian<T extends EntityTFCastleGuardian> extends Seg
 	}
 
 	@Override
-	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setAngles(EntityTFCastleGuardian entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.Head.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 	}
 

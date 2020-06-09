@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 import twilightforest.entity.EntityTFSlideBlock;
 
-public class RenderTFSlideBlock<T extends EntityTFSlideBlock> extends EntityRenderer<T> {
+public class RenderTFSlideBlock extends EntityRenderer<EntityTFSlideBlock> {
 
 	public RenderTFSlideBlock(EntityRendererManager manager) {
 		super(manager);
@@ -30,7 +30,7 @@ public class RenderTFSlideBlock<T extends EntityTFSlideBlock> extends EntityRend
 
 	// [VanillaCopy] RenderFallingBlock, with spin
 	@Override
-	public void render(T entity, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
+	public void render(EntityTFSlideBlock entity, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
 		if (entity.getBlockState() != null) {
 			BlockState iblockstate = entity.getBlockState();
 
@@ -120,7 +120,7 @@ public class RenderTFSlideBlock<T extends EntityTFSlideBlock> extends EntityRend
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(T entity) {
+	public ResourceLocation getEntityTexture(EntityTFSlideBlock entity) {
 		return AtlasTexture.LOCATION_BLOCKS_TEXTURE;
 	}
 }

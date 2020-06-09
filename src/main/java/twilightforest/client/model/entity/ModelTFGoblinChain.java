@@ -5,7 +5,7 @@ import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
-public class ModelTFGoblinChain extends SegmentedModel {
+public class ModelTFGoblinChain extends SegmentedModel<Entity> {
 	ModelRenderer chain;
 
 	public ModelTFGoblinChain() {

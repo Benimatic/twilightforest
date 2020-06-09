@@ -6,14 +6,14 @@ import net.minecraft.util.math.MathHelper;
 import twilightforest.client.model.entity.ModelTFIceShooter;
 import twilightforest.entity.EntityTFIceShooter;
 
-public class RenderTFIceShooter<T extends EntityTFIceShooter, M extends ModelTFIceShooter<T>> extends RenderTFBiped<T, M> {
+public class RenderTFIceShooter extends RenderTFBiped<EntityTFIceShooter, ModelTFIceShooter> {
 
-	public RenderTFIceShooter(EntityRendererManager manager, M model) {
+	public RenderTFIceShooter(EntityRendererManager manager, ModelTFIceShooter model) {
 		super(manager, model, 0.4F, "iceshooter.png");
 	}
 
 	@Override
-	protected void scale(T entity, MatrixStack stack, float partialTicks) {
+	protected void scale(EntityTFIceShooter entity, MatrixStack stack, float partialTicks) {
 		float bounce = entity.ticksExisted + partialTicks;
 		stack.translate(0F, MathHelper.sin((bounce) * 0.2F) * 0.15F, 0F);
 	}

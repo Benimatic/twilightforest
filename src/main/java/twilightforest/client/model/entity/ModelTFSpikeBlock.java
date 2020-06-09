@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import twilightforest.entity.EntityTFSpikeBlock;
 
-public class ModelTFSpikeBlock<T extends EntityTFSpikeBlock> extends SegmentedModel<T> {
+public class ModelTFSpikeBlock extends SegmentedModel<EntityTFSpikeBlock> {
 	ModelRenderer block;
 	ModelRenderer[] spikes = new ModelRenderer[27];
 
@@ -127,7 +127,7 @@ public class ModelTFSpikeBlock<T extends EntityTFSpikeBlock> extends SegmentedMo
 	}
 
 	@Override
-	public void setAngles(T entity, float v, float v1, float v2, float v3, float v4) {
+	public void setAngles(EntityTFSpikeBlock entity, float v, float v1, float v2, float v3, float v4) {
 
 	}
 

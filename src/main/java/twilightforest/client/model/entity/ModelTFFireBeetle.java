@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.EntityTFFireBeetle;
 
-public class ModelTFFireBeetle<T extends EntityTFFireBeetle> extends SegmentedModel<T> {
+public class ModelTFFireBeetle extends SegmentedModel<EntityTFFireBeetle> {
 	//fields
 	ModelRenderer thorax;
 	ModelRenderer head;
@@ -171,13 +171,8 @@ public class ModelTFFireBeetle<T extends EntityTFFireBeetle> extends SegmentedMo
 		model.rotateAngleZ = z;
 	}
 
-	/**
-	 * Sets the model's various rotation angles. For bipeds, par1 and par2 are used for animating the movement of arms
-	 * and legs, where par1 represents the time(so that arms and legs swing back and forth) and par2 represents how
-	 * "far" arms and legs can swing at most.
-	 */
 	@Override
-	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setAngles(EntityTFFireBeetle entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.head.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 		this.head.rotateAngleX = headPitch / (180F / (float) Math.PI);
 

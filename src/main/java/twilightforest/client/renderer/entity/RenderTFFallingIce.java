@@ -19,14 +19,14 @@ import org.lwjgl.opengl.GL11;
 import twilightforest.entity.boss.EntityTFFallingIce;
 
 // [VanillaCopy] complete copy of RenderFallingBlock but scaling by 3 before rendering
-public class RenderTFFallingIce<T extends EntityTFFallingIce> extends EntityRenderer<T> {
+public class RenderTFFallingIce extends EntityRenderer<EntityTFFallingIce> {
 	public RenderTFFallingIce(EntityRendererManager renderManagerIn) {
 		super(renderManagerIn);
 		this.shadowSize = 0.5F;
 	}
 
 	@Override
-	public void render(T entity, float entityYaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
+	public void render(EntityTFFallingIce entity, float entityYaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
 		if (entity.getBlockState() != null) {
 			BlockState iblockstate = entity.getBlockState();
 

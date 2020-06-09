@@ -4,7 +4,7 @@ import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import twilightforest.entity.EntityTFMinotaur;
 
-public class ModelTFMinotaur<T extends EntityTFMinotaur> extends BipedModel<T> {
+public class ModelTFMinotaur extends BipedModel<EntityTFMinotaur> {
 
 	public ModelRenderer righthorn1;
 	public ModelRenderer righthorn2;

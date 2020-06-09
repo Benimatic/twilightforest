@@ -14,7 +14,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ModelTFHydraMortar;
 import twilightforest.entity.boss.EntityTFHydraMortar;
 
-public class RenderTFHydraMortar<T extends EntityTFHydraMortar> extends EntityRenderer<T> {
+public class RenderTFHydraMortar extends EntityRenderer<EntityTFHydraMortar> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("hydramortar.png");
 	private final ModelTFHydraMortar mortarModel = new ModelTFHydraMortar();
@@ -25,9 +25,8 @@ public class RenderTFHydraMortar<T extends EntityTFHydraMortar> extends EntityRe
 	}
 
 	@Override
-	public void render(T mortar, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
+	public void render(EntityTFHydraMortar mortar, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
 		stack.push();
-		//stack.translate((float) x, (float) y, (float) z);
 		float var10;
 
 		if ((float) mortar.fuse - partialTicks + 1.0F < 10.0F) {
@@ -72,7 +71,7 @@ public class RenderTFHydraMortar<T extends EntityTFHydraMortar> extends EntityRe
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(T entity) {
+	public ResourceLocation getEntityTexture(EntityTFHydraMortar entity) {
 		return textureLoc;
 	}
 }

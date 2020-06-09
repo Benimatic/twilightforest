@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.EntityTFAdherent;
 
-public class ModelTFAdherent<T extends EntityTFAdherent> extends BipedModel<T> {
+public class ModelTFAdherent extends BipedModel<EntityTFAdherent> {
 
 	ModelRenderer leftSleeve;
 	ModelRenderer rightSleeve;
@@ -54,7 +54,7 @@ public class ModelTFAdherent<T extends EntityTFAdherent> extends BipedModel<T> {
 	 * "far" arms and legs can swing at most.
 	 */
 	@Override
-	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setAngles(EntityTFAdherent entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		//super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entity);
 
 		// rotate head normally
@@ -79,7 +79,7 @@ public class ModelTFAdherent<T extends EntityTFAdherent> extends BipedModel<T> {
 	 * and third as in the setRotationAngles method.
 	 */
 	@Override
-	public void setLivingAnimations(T entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+	public void setLivingAnimations(EntityTFAdherent entity, float limbSwing, float limbSwingAmount, float partialTicks) {
 		float bounce = entity.ticksExisted + partialTicks;
 
 		// this is where we add the floating

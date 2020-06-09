@@ -3,16 +3,18 @@ package twilightforest.client.model.entity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.entity.model.BipedModel;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.EntityTFLoyalZombie;
 
-public class ModelTFLoyalZombie<T extends EntityTFLoyalZombie> extends BipedModel<T> {
+public class ModelTFLoyalZombie extends BipedModel<MobEntity> {
 
 	public ModelTFLoyalZombie() {
 		super(0.0F, 0.0F, 64, 64);
 	}
 
-	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	@Override
+	public void setAngles(MobEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		super.setAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 		boolean flag = entity.isAggressive();
 		float f = MathHelper.sin(this.swingProgress * (float) Math.PI);

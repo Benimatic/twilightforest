@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.passive.EntityTFRaven;
 
-public class ModelTFRaven<T extends EntityTFRaven> extends SegmentedModel<T> {
+public class ModelTFRaven extends SegmentedModel<EntityTFRaven> {
 	//fields
 	ModelRenderer head;
 	ModelRenderer beak1;
@@ -122,11 +122,8 @@ public class ModelTFRaven<T extends EntityTFRaven> extends SegmentedModel<T> {
 	}
 
 
-	/**
-	 * Sets the models various rotation angles.
-	 */
 	@Override
-	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setAngles(EntityTFRaven entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		head.rotateAngleX = headPitch / (180F / (float) Math.PI);
 		head.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 		head.rotateAngleZ = netHeadYaw > 5 ? -0.2617994F : 0;

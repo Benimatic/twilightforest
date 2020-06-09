@@ -5,7 +5,7 @@ import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.EntityTFTroll;
 
-public class ModelTFTroll<T extends EntityTFTroll> extends BipedModel<T> {
+public class ModelTFTroll extends BipedModel<EntityTFTroll> {
 
 	public ModelRenderer nose;
 
@@ -52,13 +52,8 @@ public class ModelTFTroll<T extends EntityTFTroll> extends BipedModel<T> {
 		this.bipedLeftLeg.setRotationPoint(5.0F, 12.0F, 0.0F);
 	}
 
-	/**
-	 * Sets the model's various rotation angles. For bipeds, limbSwing and limbSwingAmount are used for animating the movement of arms
-	 * and legs, where limbSwing represents the time(so that arms and legs swing back and forth) and limbSwingAmount represents how
-	 * "far" arms and legs can swing at most.
-	 */
 	@Override
-	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setAngles(EntityTFTroll entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.bipedHead.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 		this.bipedHead.rotateAngleX = headPitch / (180F / (float) Math.PI);
 		this.bipedHeadwear.rotateAngleY = this.bipedHead.rotateAngleY;
@@ -102,11 +97,8 @@ public class ModelTFTroll<T extends EntityTFTroll> extends BipedModel<T> {
 		this.bipedLeftArm.rotateAngleX -= MathHelper.sin(ageInTicks * 0.067F) * 0.05F;
 	}
 
-	/**
-	 * Change eye color if yeti is angry
-	 */
 	@Override
-	public void setLivingAnimations(T entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+	public void setLivingAnimations(EntityTFTroll entity, float limbSwing, float limbSwingAmount, float partialTicks) {
 		if (entity.getAttackTarget() != null) {
 			this.bipedRightArm.rotateAngleX += Math.PI;
 			this.bipedLeftArm.rotateAngleX += Math.PI;

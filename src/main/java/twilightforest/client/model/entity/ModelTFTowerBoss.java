@@ -6,7 +6,7 @@ import twilightforest.entity.boss.EntityTFUrGhast;
 
 import java.util.Random;
 
-public class ModelTFTowerBoss<T extends EntityTFUrGhast> extends ModelTFGhast<T> {
+public class ModelTFTowerBoss extends ModelTFGhast<EntityTFUrGhast> {
 
 	protected ModelRenderer[][] subTentacles;
 	protected ModelRenderer[][] smallTentacles;
@@ -111,13 +111,8 @@ public class ModelTFTowerBoss<T extends EntityTFUrGhast> extends ModelTFGhast<T>
 		;
 	}
 
-	/**
-	 * Sets the model's various rotation angles. For bipeds, par1 and par2 are used for animating the movement of arms
-	 * and legs, where par1 represents the time(so that arms and legs swing back and forth) and par2 represents how
-	 * "far" arms and legs can swing at most.
-	 */
 	@Override
-	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setAngles(EntityTFUrGhast entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		super.setAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
 		// wave tentacles

@@ -7,16 +7,16 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ModelTFDeer;
 import twilightforest.entity.passive.EntityTFDeer;
 
-public class RenderTFDeer<T extends EntityTFDeer, M extends ModelTFDeer<T>> extends MobRenderer<T, M> {
+public class RenderTFDeer extends MobRenderer<EntityTFDeer, ModelTFDeer> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("wilddeer.png");
 
-	public RenderTFDeer(EntityRendererManager manager, M model, float shadowSize) {
+	public RenderTFDeer(EntityRendererManager manager, ModelTFDeer model, float shadowSize) {
 		super(manager, model, shadowSize);
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(T entity) {
+	public ResourceLocation getEntityTexture(EntityTFDeer entity) {
 		return textureLoc;
 	}
 }

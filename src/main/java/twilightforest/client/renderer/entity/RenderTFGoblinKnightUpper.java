@@ -6,13 +6,13 @@ import net.minecraft.client.renderer.entity.EntityRendererManager;
 import twilightforest.client.model.entity.ModelTFGoblinKnightUpper;
 import twilightforest.entity.EntityTFGoblinKnightUpper;
 
-public class RenderTFGoblinKnightUpper<T extends EntityTFGoblinKnightUpper, M extends ModelTFGoblinKnightUpper<T>> extends RenderTFBiped<T, M> {
-	public RenderTFGoblinKnightUpper(EntityRendererManager manager, M model, float shadowSize) {
+public class RenderTFGoblinKnightUpper extends RenderTFBiped<EntityTFGoblinKnightUpper, ModelTFGoblinKnightUpper> {
+	public RenderTFGoblinKnightUpper(EntityRendererManager manager, ModelTFGoblinKnightUpper model, float shadowSize) {
 		super(manager, model, shadowSize, "doublegoblin.png");
 	}
 
 	@Override
-	protected void setupTransforms(T upperKnight, MatrixStack stack, float ageInTicks, float rotationYaw, float partialTicks) {
+	protected void setupTransforms(EntityTFGoblinKnightUpper upperKnight, MatrixStack stack, float ageInTicks, float rotationYaw, float partialTicks) {
 		super.setupTransforms(upperKnight, stack, ageInTicks, rotationYaw, partialTicks);
 
 		if (upperKnight.heavySpearTimer > 0) {

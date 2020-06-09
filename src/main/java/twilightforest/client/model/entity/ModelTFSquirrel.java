@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.passive.EntityTFSquirrel;
 
-public class ModelTFSquirrel<T extends EntityTFSquirrel> extends SegmentedModel<T> {
+public class ModelTFSquirrel extends SegmentedModel<EntityTFSquirrel> {
 	//fields
 	ModelRenderer body;
 	ModelRenderer leg1;
@@ -115,20 +115,13 @@ public class ModelTFSquirrel<T extends EntityTFSquirrel> extends SegmentedModel<
 		model.rotateAngleZ = z;
 	}
 
-	/**
-	 * Used for easily adding entity-dependent animations. The second and third float params here are the same second
-	 * and third as in the setRotationAngles method.
-	 */
 	@Override
-	public void setLivingAnimations(T entity, float limbSwing, float limbSwingAmount, float partialTickTime) {
+	public void setLivingAnimations(EntityTFSquirrel entity, float limbSwing, float limbSwingAmount, float partialTickTime) {
 		//EntityTFSquirrel squirrel = (EntityTFSquirrel)entity;
 	}
 
-	/**
-	 * Sets the models various rotation angles.
-	 */
 	@Override
-	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setAngles(EntityTFSquirrel entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.head.rotateAngleX = headPitch / (180F / (float) Math.PI);
 		this.head.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 		this.leg1.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;

@@ -6,9 +6,9 @@ import net.minecraft.client.renderer.entity.layers.HeldItemLayer;
 import twilightforest.client.model.entity.ModelTFKobold;
 import twilightforest.entity.EntityTFKobold;
 
-public class RenderTFKobold<T extends EntityTFKobold, M extends ModelTFKobold<T>> extends RenderTFBiped<T, M> {
+public class RenderTFKobold extends RenderTFBiped<EntityTFKobold, ModelTFKobold> {
 
-	public RenderTFKobold(EntityRendererManager manager, M modelBiped, float shadowSize, String textureName) {
+	public RenderTFKobold(EntityRendererManager manager, ModelTFKobold modelBiped, float shadowSize, String textureName) {
 		super(manager, modelBiped, shadowSize, textureName);
 		this.addLayer(new HeldItemLayer<>(this));
 	}

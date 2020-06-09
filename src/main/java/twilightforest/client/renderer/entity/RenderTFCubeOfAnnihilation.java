@@ -13,7 +13,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ModelTFCubeOfAnnihilation;
 import twilightforest.entity.EntityTFCubeOfAnnihilation;
 
-public class RenderTFCubeOfAnnihilation<T extends EntityTFCubeOfAnnihilation> extends EntityRenderer<T> {
+public class RenderTFCubeOfAnnihilation extends EntityRenderer<EntityTFCubeOfAnnihilation> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("cubeofannihilation.png");
 	private final Model model = new ModelTFCubeOfAnnihilation();
@@ -23,7 +23,7 @@ public class RenderTFCubeOfAnnihilation<T extends EntityTFCubeOfAnnihilation> ex
 	}
 
 	@Override
-	public void render(T entity, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
+	public void render(EntityTFCubeOfAnnihilation entity, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
 		super.render(entity, yaw, partialTicks, stack, buffer, light);
 
 		stack.push();

@@ -9,11 +9,11 @@ import twilightforest.entity.boss.EntityTFLich;
 
 import javax.annotation.Nonnull;
 
-public class RenderTFLich<T extends EntityTFLich, M extends ModelTFLich<T>> extends BipedRenderer<T, M> {
+public class RenderTFLich extends BipedRenderer<EntityTFLich, ModelTFLich> {
 
 	private static final ResourceLocation LICH_TEXTURE = TwilightForestMod.getModelTexture("twilightlich64.png");
 
-	public RenderTFLich(EntityRendererManager manager, M modelbiped, float shadowSize) {
+	public RenderTFLich(EntityRendererManager manager, ModelTFLich modelbiped, float shadowSize) {
 		super(manager, modelbiped, shadowSize);
 		addLayer(new LayerShields<>(this));
 	}

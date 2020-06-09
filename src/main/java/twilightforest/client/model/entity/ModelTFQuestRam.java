@@ -17,7 +17,7 @@ import net.minecraft.item.DyeColor;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.passive.EntityTFQuestRam;
 
-public class ModelTFQuestRam<T extends EntityTFQuestRam> extends SegmentedModel<T> {
+public class ModelTFQuestRam extends SegmentedModel<EntityTFQuestRam> {
 	//fields
 	ModelRenderer frontbody;
 	ModelRenderer rearbody;
@@ -183,11 +183,8 @@ public class ModelTFQuestRam<T extends EntityTFQuestRam> extends SegmentedModel<
 		model.rotateAngleZ = z;
 	}
 
-	/**
-	 * Sets the models various rotation angles.
-	 */
 	@Override
-	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setAngles(EntityTFQuestRam entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.head.rotateAngleX = headPitch / (180F / (float) Math.PI);
 		this.head.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 
@@ -208,7 +205,7 @@ public class ModelTFQuestRam<T extends EntityTFQuestRam> extends SegmentedModel<
 	 * and third as in the setRotationAngles method.
 	 */
 	@Override
-	public void setLivingAnimations(T entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+	public void setLivingAnimations(EntityTFQuestRam entity, float limbSwing, float limbSwingAmount, float partialTicks) {
 
 		// how many colors should we display?
 		int count = entity.countColorsSet();

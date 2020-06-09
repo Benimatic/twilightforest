@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.boss.EntityTFYetiAlpha;
 
-public class ModelTFYetiAlpha<T extends EntityTFYetiAlpha> extends BipedModel<T> {
+public class ModelTFYetiAlpha extends BipedModel<EntityTFYetiAlpha> {
 
 	public ModelRenderer mouth;
 	public ModelRenderer leftEye;
@@ -14,9 +14,6 @@ public class ModelTFYetiAlpha<T extends EntityTFYetiAlpha> extends BipedModel<T>
 
 	public ModelTFYetiAlpha() {
 		super(0.0F, 0.0F, 256, 128);
-
-//		this.textureWidth = 256;
-//		this.textureHeight = 128;
 
 		this.bipedHead = new ModelRenderer(this, 0, 0);
 		this.bipedHead.addCuboid(-4.0F, -8.0F, -4.0F, 0, 0, 0);
@@ -115,13 +112,8 @@ public class ModelTFYetiAlpha<T extends EntityTFYetiAlpha> extends BipedModel<T>
 		return ImmutableList.of(this.bipedBody, this.bipedRightLeg, this.bipedLeftLeg);
 	}
 
-	/**
-	 * Sets the model's various rotation angles. For bipeds, limbSwing and limbSwingAmount are used for animating the movement of arms
-	 * and legs, where limbSwing represents the time(so that arms and legs swing back and forth) and limbSwingAmount represents how
-	 * "far" arms and legs can swing at most.
-	 */
 	@Override
-	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setAngles(EntityTFYetiAlpha entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.bipedHead.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 		this.bipedHead.rotateAngleX = headPitch / (180F / (float) Math.PI);
 

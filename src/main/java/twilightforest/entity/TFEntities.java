@@ -310,45 +310,45 @@ public class TFEntities {
 	public static void registerEntityRenderer() {
 		RenderingRegistry.registerEntityRenderingHandler(wild_boar.get(), m -> new RenderTFBoar(m, new ModelTFBoar()));
 		RenderingRegistry.registerEntityRenderingHandler(bighorn_sheep.get(), m -> new RenderTFBighorn(m, new ModelTFBighorn(), new ModelTFBighornFur(), 0.7F));
-		RenderingRegistry.registerEntityRenderingHandler(deer.get(), m -> new RenderTFDeer<>(m, new ModelTFDeer<>(), 0.7F));
+		RenderingRegistry.registerEntityRenderingHandler(deer.get(), m -> new RenderTFDeer(m, new ModelTFDeer(), 0.7F));
 
 		RenderingRegistry.registerEntityRenderingHandler(redcap.get(), m -> new RenderTFBiped<>(m, new ModelTFRedcap<>(), 0.4F, "redcap.png"));
-		RenderingRegistry.registerEntityRenderingHandler(skeleton_druid.get(), m -> new RenderTFBiped<>(m, new ModelTFSkeletonDruid<>(), 0.5F, "skeletondruid.png"));
+		RenderingRegistry.registerEntityRenderingHandler(skeleton_druid.get(), m -> new RenderTFBiped<>(m, new ModelTFSkeletonDruid(), 0.5F, "skeletondruid.png"));
 		RenderingRegistry.registerEntityRenderingHandler(hostile_wolf.get(), WolfRenderer::new);
-		RenderingRegistry.registerEntityRenderingHandler(wraith.get(), m -> new RenderTFWraith<>(m, new ModelTFWraith<>(), 0.5F));
-		RenderingRegistry.registerEntityRenderingHandler(hydra.get(), m -> new RenderTFHydra<>(m, new ModelTFHydra<>(), 4.0F));
-		RenderingRegistry.registerEntityRenderingHandler(lich.get(), m -> new RenderTFLich<>(m, new ModelTFLich<>(), 0.6F));
-		RenderingRegistry.registerEntityRenderingHandler(penguin.get(), m -> new RenderTFBird<>(m, new ModelTFPenguin<>(), 0.375F, "penguin.png"));
-		RenderingRegistry.registerEntityRenderingHandler(lich_minion.get(), m -> new RenderTFBiped<>(m, new ModelTFLichMinion<>(), 0.5F, "textures/entity/zombie/zombie.png"));
+		RenderingRegistry.registerEntityRenderingHandler(wraith.get(), m -> new RenderTFWraith(m, new ModelTFWraith(), 0.5F));
+		RenderingRegistry.registerEntityRenderingHandler(hydra.get(), m -> new RenderTFHydra(m, new ModelTFHydra(), 4.0F));
+		RenderingRegistry.registerEntityRenderingHandler(lich.get(), m -> new RenderTFLich(m, new ModelTFLich(), 0.6F));
+		RenderingRegistry.registerEntityRenderingHandler(penguin.get(), m -> new RenderTFBird<>(m, new ModelTFPenguin(), 0.375F, "penguin.png"));
+		RenderingRegistry.registerEntityRenderingHandler(lich_minion.get(), m -> new RenderTFBiped<>(m, new ModelTFLichMinion(), 0.5F, "textures/entity/zombie/zombie.png"));
 		RenderingRegistry.registerEntityRenderingHandler(loyal_zombie.get(), m -> new RenderTFBiped<>(m, new ModelTFLoyalZombie(), 0.5F, "textures/entity/zombie/zombie.png"));
-		RenderingRegistry.registerEntityRenderingHandler(tiny_bird.get(), m -> new RenderTFTinyBird<>(m, new ModelTFTinyBird<>(), 1.0F));
-		RenderingRegistry.registerEntityRenderingHandler(squirrel.get(), m -> new RenderTFGenericMob<>(m, new ModelTFSquirrel<>(), 1.0F, "squirrel2.png"));
-		RenderingRegistry.registerEntityRenderingHandler(bunny.get(), m -> new RenderTFBunny<>(m, new ModelTFBunny<>(), 1.0F));
-		RenderingRegistry.registerEntityRenderingHandler(raven.get(), m -> new RenderTFBird<>(m, new ModelTFRaven<>(), 1.0F, "raven.png"));
-		RenderingRegistry.registerEntityRenderingHandler(quest_ram.get(), manager -> new RenderTFQuestRam<>(manager, new ModelTFQuestRam<>()));
-		RenderingRegistry.registerEntityRenderingHandler(kobold.get(), m -> new RenderTFKobold<>(m, new ModelTFKobold<>(), 0.4F, "kobold.png"));
+		RenderingRegistry.registerEntityRenderingHandler(tiny_bird.get(), m -> new RenderTFTinyBird(m, new ModelTFTinyBird(), 1.0F));
+		RenderingRegistry.registerEntityRenderingHandler(squirrel.get(), m -> new RenderTFGenericMob<>(m, new ModelTFSquirrel(), 1.0F, "squirrel2.png"));
+		RenderingRegistry.registerEntityRenderingHandler(bunny.get(), m -> new RenderTFBunny(m, new ModelTFBunny(), 1.0F));
+		RenderingRegistry.registerEntityRenderingHandler(raven.get(), m -> new RenderTFBird<>(m, new ModelTFRaven(), 1.0F, "raven.png"));
+		RenderingRegistry.registerEntityRenderingHandler(quest_ram.get(), manager -> new RenderTFQuestRam(manager, new ModelTFQuestRam()));
+		RenderingRegistry.registerEntityRenderingHandler(kobold.get(), m -> new RenderTFKobold(m, new ModelTFKobold(), 0.4F, "kobold.png"));
 		RenderingRegistry.registerEntityRenderingHandler(boggard.get(), m -> new RenderTFBiped<>(m, new ModelTFLoyalZombie(), 0.625F, "kobold.png"));
-		RenderingRegistry.registerEntityRenderingHandler(mosquito_swarm.get(), m -> new RenderTFGenericMob<>(m, new ModelTFMosquitoSwarm<>(), 0.0F, "mosquitoswarm.png"));
+		RenderingRegistry.registerEntityRenderingHandler(mosquito_swarm.get(), m -> new RenderTFGenericMob<>(m, new ModelTFMosquitoSwarm(), 0.0F, "mosquitoswarm.png"));
 		RenderingRegistry.registerEntityRenderingHandler(death_tome.get(), m -> new RenderTFGenericMob<>(m, new ModelTFDeathTome(), 0.3F, "textures/entity/enchanting_table_book.png"));
-		RenderingRegistry.registerEntityRenderingHandler(minotaur.get(), m -> new RenderTFBiped<>(m, new ModelTFMinotaur<>(), 0.625F, "minotaur.png"));
-		RenderingRegistry.registerEntityRenderingHandler(minoshroom.get(), m -> new RenderTFMinoshroom<>(m, new ModelTFMinoshroom<>(), 0.625F));
-		RenderingRegistry.registerEntityRenderingHandler(fire_beetle.get(), m -> new RenderTFGenericMob<>(m, new ModelTFFireBeetle<>(), 0.8F, "firebeetle.png"));
-		RenderingRegistry.registerEntityRenderingHandler(slime_beetle.get(), m -> new RenderTFSlimeBeetle<>(m, new ModelTFSlimeBeetle<>(), 0.6F));
-		RenderingRegistry.registerEntityRenderingHandler(pinch_beetle.get(), m -> new RenderTFGenericMob<>(m, new ModelTFPinchBeetle<>(), 0.6F, "pinchbeetle.png"));
+		RenderingRegistry.registerEntityRenderingHandler(minotaur.get(), m -> new RenderTFBiped<>(m, new ModelTFMinotaur(), 0.625F, "minotaur.png"));
+		RenderingRegistry.registerEntityRenderingHandler(minoshroom.get(), m -> new RenderTFMinoshroom(m, new ModelTFMinoshroom(), 0.625F));
+		RenderingRegistry.registerEntityRenderingHandler(fire_beetle.get(), m -> new RenderTFGenericMob<>(m, new ModelTFFireBeetle(), 0.8F, "firebeetle.png"));
+		RenderingRegistry.registerEntityRenderingHandler(slime_beetle.get(), m -> new RenderTFSlimeBeetle(m, new ModelTFSlimeBeetle(), 0.6F));
+		RenderingRegistry.registerEntityRenderingHandler(pinch_beetle.get(), m -> new RenderTFGenericMob<>(m, new ModelTFPinchBeetle(), 0.6F, "pinchbeetle.png"));
 		RenderingRegistry.registerEntityRenderingHandler(mist_wolf.get(), RenderTFMistWolf::new);
 		RenderingRegistry.registerEntityRenderingHandler(firefly.get(), RenderTFMobileFirefly::new);
 		RenderingRegistry.registerEntityRenderingHandler(mini_ghast.get(), m -> new RenderTFGhast<>(m, new ModelTFGhast<>(), 0.625F));
 		RenderingRegistry.registerEntityRenderingHandler(tower_golem.get(), m -> new RenderTFTowerGolem<>(m, new ModelTFTowerGolem<>(), 0.75F));
 		RenderingRegistry.registerEntityRenderingHandler(tower_termite.get(), m -> new RenderTFGenericMob<>(m, new SilverfishModel<>(), 0.3F, "towertermite.png"));
 		RenderingRegistry.registerEntityRenderingHandler(tower_ghast.get(), m -> new RenderTFTowerGhast<>(m, new ModelTFGhast<>(), 3.0F));
-		RenderingRegistry.registerEntityRenderingHandler(ur_ghast.get(), m -> new RenderTFUrGhast<>(m, new ModelTFTowerBoss<>(), 8.0F, 24F));
+		RenderingRegistry.registerEntityRenderingHandler(ur_ghast.get(), m -> new RenderTFUrGhast(m, new ModelTFTowerBoss(), 8.0F, 24F));
 		RenderingRegistry.registerEntityRenderingHandler(blockchain_goblin.get(), m -> new RenderTFBlockGoblin<>(m, new ModelTFBlockGoblin<>(), 0.4F));
 		//RenderingRegistry.registerEntityRenderingHandler(EntityTFGoblinChain.class, m -> new RenderTFSpikeBlock<>(m, new ModelTFGoblinChain()));
 		//RenderingRegistry.registerEntityRenderingHandler(EntityTFSpikeBlock.class, m -> new RenderTFSpikeBlock<>(m, new ModelTFSpikeBlock()));
-		RenderingRegistry.registerEntityRenderingHandler(goblin_knight_upper.get(), m -> new RenderTFGoblinKnightUpper<>(m, new ModelTFGoblinKnightUpper<>(), 0.625F));
-		RenderingRegistry.registerEntityRenderingHandler(goblin_knight_lower.get(), m -> new RenderTFBiped<>(m, new ModelTFGoblinKnightLower<>(), 0.625F, "doublegoblin.png"));
-		RenderingRegistry.registerEntityRenderingHandler(helmet_crab.get(), m -> new RenderTFGenericMob<>(m, new ModelTFHelmetCrab<>(), 0.625F, "helmetcrab.png"));
-		RenderingRegistry.registerEntityRenderingHandler(knight_phantom.get(), m -> new RenderTFKnightPhantom<>(m, new ModelTFKnightPhantom2<>(), 0.625F));
+		RenderingRegistry.registerEntityRenderingHandler(goblin_knight_upper.get(), m -> new RenderTFGoblinKnightUpper(m, new ModelTFGoblinKnightUpper(), 0.625F));
+		RenderingRegistry.registerEntityRenderingHandler(goblin_knight_lower.get(), m -> new RenderTFBiped<>(m, new ModelTFGoblinKnightLower(), 0.625F, "doublegoblin.png"));
+		RenderingRegistry.registerEntityRenderingHandler(helmet_crab.get(), m -> new RenderTFGenericMob<>(m, new ModelTFHelmetCrab(), 0.625F, "helmetcrab.png"));
+		RenderingRegistry.registerEntityRenderingHandler(knight_phantom.get(), m -> new RenderTFKnightPhantom(m, new ModelTFKnightPhantom2(), 0.625F));
 		RenderingRegistry.registerEntityRenderingHandler(naga.get(), m -> new RenderTFNaga<>(m, new ModelTFNaga<>(), 1.45F));
 		//RenderingRegistry.registerEntityRenderingHandler(EntityTFNagaSegment.class, m -> new RenderTFNagaSegment(m, new ModelTFNaga()));
 		RenderingRegistry.registerEntityRenderingHandler(swarm_spider.get(), RenderTFSwarmSpider::new);
@@ -359,25 +359,25 @@ public class TFEntities {
 		RenderingRegistry.registerEntityRenderingHandler(maze_slime.get(), m -> new RenderTFMazeSlime(m, 0.625F));
 		RenderingRegistry.registerEntityRenderingHandler(yeti.get(), m -> new RenderTFBiped<>(m, new ModelTFYeti<>(), 0.625F, "yeti2.png"));
 		RenderingRegistry.registerEntityRenderingHandler(protection_box.get(), RenderTFProtectionBox::new);
-		RenderingRegistry.registerEntityRenderingHandler(yeti_alpha.get(), m -> new RenderTFBiped<>(m, new ModelTFYetiAlpha<>(), 1.75F, "yetialpha.png"));
+		RenderingRegistry.registerEntityRenderingHandler(yeti_alpha.get(), m -> new RenderTFBiped<>(m, new ModelTFYetiAlpha(), 1.75F, "yetialpha.png"));
 		RenderingRegistry.registerEntityRenderingHandler(winter_wolf.get(), RenderTFWinterWolf::new);
-		RenderingRegistry.registerEntityRenderingHandler(snow_guardian.get(), m -> new RenderTFSnowGuardian<>(m, new ModelTFSnowGuardian<>()));
-		RenderingRegistry.registerEntityRenderingHandler(stable_ice_core.get(), m -> new RenderTFIceShooter<>(m, new ModelTFIceShooter<>()));
+		RenderingRegistry.registerEntityRenderingHandler(snow_guardian.get(), m -> new RenderTFSnowGuardian(m, new ModelTFSnowGuardian()));
+		RenderingRegistry.registerEntityRenderingHandler(stable_ice_core.get(), m -> new RenderTFIceShooter(m, new ModelTFIceShooter()));
 		RenderingRegistry.registerEntityRenderingHandler(unstable_ice_core.get(), m -> new RenderTFIceExploder<>(m, new ModelTFIceExploder<>()));
-		RenderingRegistry.registerEntityRenderingHandler(snow_queen.get(), m -> new RenderTFSnowQueen<>(m, new ModelTFSnowQueen<>()));
+		RenderingRegistry.registerEntityRenderingHandler(snow_queen.get(), m -> new RenderTFSnowQueen(m, new ModelTFSnowQueen()));
 		//RenderingRegistry.registerEntityRenderingHandler(EntityTFSnowQueenIceShield.class, RenderTFSnowQueenIceShield::new);
-		RenderingRegistry.registerEntityRenderingHandler(troll.get(), m -> new RenderTFBiped<>(m, new ModelTFTroll<>(), 0.625F, "troll.png"));
+		RenderingRegistry.registerEntityRenderingHandler(troll.get(), m -> new RenderTFBiped<>(m, new ModelTFTroll(), 0.625F, "troll.png"));
 		RenderingRegistry.registerEntityRenderingHandler(giant_miner.get(), RenderTFGiant::new);
 		RenderingRegistry.registerEntityRenderingHandler(armored_giant.get(), RenderTFGiant::new);
 		RenderingRegistry.registerEntityRenderingHandler(ice_crystal.get(), RenderTFIceCrystal::new);
-		RenderingRegistry.registerEntityRenderingHandler(chain_block.get(), m -> new RenderTFChainBlock<>(m, new ModelTFSpikeBlock()));
+		RenderingRegistry.registerEntityRenderingHandler(chain_block.get(), m -> new RenderTFChainBlock(m, new ModelTFSpikeBlock()));
 		RenderingRegistry.registerEntityRenderingHandler(cube_of_annihilation.get(), RenderTFCubeOfAnnihilation::new);
 		RenderingRegistry.registerEntityRenderingHandler(harbinger_cube.get(), RenderTFHarbingerCube::new);
-		RenderingRegistry.registerEntityRenderingHandler(adherent.get(), m -> new RenderTFAdherent<>(m, new ModelTFAdherent<>(), 0.625F, "adherent.png"));
+		RenderingRegistry.registerEntityRenderingHandler(adherent.get(), m -> new RenderTFAdherent(m, new ModelTFAdherent(), 0.625F, "adherent.png"));
 		RenderingRegistry.registerEntityRenderingHandler(roving_cube.get(), RenderTFRovingCube::new);
-		RenderingRegistry.registerEntityRenderingHandler(rising_zombie.get(), m -> new RenderTFBiped<>(m, new ModelTFRisingZombie<>(), 0.5F, "textures/entity/zombie/zombie.png"));
+		RenderingRegistry.registerEntityRenderingHandler(rising_zombie.get(), m -> new RenderTFBiped<>(m, new ModelTFRisingZombie(), 0.5F, "textures/entity/zombie/zombie.png"));
 
-		RenderingRegistry.registerEntityRenderingHandler(castle_guardian.get(), m -> new RenderTFCastleGuardian<>(m, new ModelTFCastleGuardian<>(), 2.0F, "finalcastle/castle_guardian.png"));
+		RenderingRegistry.registerEntityRenderingHandler(castle_guardian.get(), m -> new RenderTFCastleGuardian(m, new ModelTFCastleGuardian(), 2.0F, "finalcastle/castle_guardian.png"));
 
 		// projectiles
 		RenderingRegistry.registerEntityRenderingHandler(nature_bolt.get(), m -> new SpriteRenderer<>(m, Minecraft.getInstance().getItemRenderer()));
@@ -398,7 +398,7 @@ public class TFEntities {
 		RenderingRegistry.registerEntityRenderingHandler(ice_arrow.get(), RenderDefaultArrow::new);
 
 		// I guess the hydra gets its own section
-		RenderingRegistry.registerEntityRenderingHandler(hydra_head.get(), m -> new RenderTFHydraHead<>(m, new ModelTFHydraHead<>(), 1.0F));
+		RenderingRegistry.registerEntityRenderingHandler(hydra_head.get(), m -> new RenderTFHydraHead(m, new ModelTFHydraHead(), 1.0F));
 		//RenderingRegistry.registerEntityRenderingHandler(EntityTFHydraNeck.class, m -> new RenderTFGenericLiving<>(m, new ModelTFHydraNeck(), 1.0F, "hydra4.png"));
 	}
 }

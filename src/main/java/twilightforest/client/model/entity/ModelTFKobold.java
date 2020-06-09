@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.EntityTFKobold;
 
-public class ModelTFKobold<T extends EntityTFKobold> extends BipedModel<T> {
+public class ModelTFKobold extends BipedModel<EntityTFKobold> {
 	//fields
 
 	ModelRenderer rightear;
@@ -87,7 +87,7 @@ public class ModelTFKobold<T extends EntityTFKobold> extends BipedModel<T> {
 	}
 
 	@Override
-	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setAngles(EntityTFKobold entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.bipedHead.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 		this.bipedHead.rotateAngleX = headPitch / (180F / (float) Math.PI);
 
@@ -118,7 +118,7 @@ public class ModelTFKobold<T extends EntityTFKobold> extends BipedModel<T> {
 	}
 
 	@Override
-	public void setLivingAnimations(T entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+	public void setLivingAnimations(EntityTFKobold entity, float limbSwing, float limbSwingAmount, float partialTicks) {
 		// check if entity is jumping
 		this.isJumping = entity.getMotion().getY() > 0;
 	}

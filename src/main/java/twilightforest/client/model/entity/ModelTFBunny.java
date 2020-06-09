@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.passive.EntityTFBunny;
 
-public class ModelTFBunny<T extends EntityTFBunny> extends SegmentedModel<T> {
+public class ModelTFBunny extends SegmentedModel<EntityTFBunny> {
 	//fields
 	ModelRenderer tail;
 	ModelRenderer body;
@@ -99,11 +99,8 @@ public class ModelTFBunny<T extends EntityTFBunny> extends SegmentedModel<T> {
 		model.rotateAngleZ = z;
 	}
 
-	/**
-	 * Sets the models various rotation angles.
-	 */
 	@Override
-	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setAngles(EntityTFBunny entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.head.rotateAngleX = headPitch / (180F / (float) Math.PI);
 		this.head.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 		this.leg1.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;

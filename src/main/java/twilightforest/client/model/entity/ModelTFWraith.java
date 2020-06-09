@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.EntityTFWraith;
 
-public class ModelTFWraith<T extends EntityTFWraith> extends BipedModel<T> {
+public class ModelTFWraith extends BipedModel<EntityTFWraith> {
 
 	public ModelRenderer dress;
 
@@ -49,13 +49,8 @@ public class ModelTFWraith<T extends EntityTFWraith> extends BipedModel<T> {
 		);
 	}
 
-	/**
-	 * Sets the model's various rotation angles. For bipeds, limbSwing and limbSwingAmount are used for animating the movement of arms
-	 * and legs, where limbSwing represents the time(so that arms and legs swing back and forth) and limbSwingAmount represents how
-	 * "far" arms and legs can swing at most.
-	 */
 	@Override
-	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setAngles(EntityTFWraith entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		super.setAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
 		float var8 = MathHelper.sin(this.swingProgress * (float) Math.PI);

@@ -12,7 +12,7 @@ import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.boss.EntityTFHydra;
 import twilightforest.entity.boss.EntityTFHydraPart;
 
-public class ModelTFHydra<T extends EntityTFHydra> extends SegmentedModel<T> {
+public class ModelTFHydra extends SegmentedModel<EntityTFHydra> {
 	//fields
 	ModelRenderer body;
 	ModelRenderer leg1;
@@ -247,7 +247,7 @@ public class ModelTFHydra<T extends EntityTFHydra> extends SegmentedModel<T> {
 	}
 
 	@Override
-	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setAngles(EntityTFHydra entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		//super.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
 
 		leg1.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;

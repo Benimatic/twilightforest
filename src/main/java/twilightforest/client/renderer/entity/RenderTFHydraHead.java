@@ -11,16 +11,16 @@ import twilightforest.entity.boss.EntityTFHydra;
 import twilightforest.entity.boss.EntityTFHydraHead;
 import twilightforest.entity.boss.HydraHeadContainer;
 
-public class RenderTFHydraHead<T extends EntityTFHydraHead, M extends ModelTFHydraHead<T>> extends MobRenderer<T, M> {
+public class RenderTFHydraHead extends MobRenderer<EntityTFHydraHead, ModelTFHydraHead> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("hydra4.png");
 
-	public RenderTFHydraHead(EntityRendererManager manager, M modelbase, float shadowSize) {
+	public RenderTFHydraHead(EntityRendererManager manager, ModelTFHydraHead modelbase, float shadowSize) {
 		super(manager, modelbase, shadowSize);
 	}
 
 	@Override
-	public void render(T entity, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
+	public void render(EntityTFHydraHead entity, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
 		// get the HydraHeadContainer that we're taking about
 		HydraHeadContainer headCon = getHeadObject(entity);
 
@@ -51,7 +51,7 @@ public class RenderTFHydraHead<T extends EntityTFHydraHead, M extends ModelTFHyd
 		}
 	}
 
-	private HydraHeadContainer getHeadObject(T entity) {
+	private HydraHeadContainer getHeadObject(EntityTFHydraHead entity) {
 		EntityTFHydra hydra = entity.hydra;
 
 		if (hydra != null) {
@@ -65,7 +65,7 @@ public class RenderTFHydraHead<T extends EntityTFHydraHead, M extends ModelTFHyd
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(T entity) {
+	public ResourceLocation getEntityTexture(EntityTFHydraHead entity) {
 		return textureLoc;
 	}
 }

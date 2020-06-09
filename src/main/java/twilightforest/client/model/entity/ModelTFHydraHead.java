@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.model.ModelRenderer;
 import twilightforest.entity.boss.EntityTFHydraHead;
 import twilightforest.entity.boss.EntityTFHydraPart;
 
-public class ModelTFHydraHead<T extends EntityTFHydraHead> extends SegmentedModel<T> {
+public class ModelTFHydraHead extends SegmentedModel<EntityTFHydraHead> {
 
 	ModelRenderer head;
 	ModelRenderer jaw;
@@ -71,10 +71,10 @@ public class ModelTFHydraHead<T extends EntityTFHydraHead> extends SegmentedMode
 //	}
 
 	@Override
-	public void setAngles(T entity, float v, float v1, float v2, float v3, float v4) { }
+	public void setAngles(EntityTFHydraHead entity, float v, float v1, float v2, float v3, float v4) { }
 
 	@Override
-	public void setLivingAnimations(T entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+	public void setLivingAnimations(EntityTFHydraHead entity, float limbSwing, float limbSwingAmount, float partialTicks) {
 		head.rotateAngleY = getRotationY(entity, partialTicks);
 		head.rotateAngleX = getRotationX(entity, partialTicks);
 

@@ -7,7 +7,7 @@ import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFKingSpider;
 
-public class RenderTFKingSpider<T extends EntityTFKingSpider> extends SpiderRenderer<T> {
+public class RenderTFKingSpider extends SpiderRenderer<EntityTFKingSpider> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("kingspider.png");
 
@@ -16,12 +16,12 @@ public class RenderTFKingSpider<T extends EntityTFKingSpider> extends SpiderRend
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(T entity) {
+	public ResourceLocation getEntityTexture(EntityTFKingSpider entity) {
 		return textureLoc;
 	}
 
 	@Override
-	protected void scale(T entity, MatrixStack stack, float partialTicks) {
+	protected void scale(EntityTFKingSpider entity, MatrixStack stack, float partialTicks) {
 		float scale = 1.9F;
 		stack.scale(scale, scale, scale);
 	}

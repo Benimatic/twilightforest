@@ -7,7 +7,7 @@ import net.minecraft.util.HandSide;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.boss.EntityTFMinoshroom;
 
-public class ModelTFMinoshroom<T extends EntityTFMinoshroom> extends BipedModel<T> {
+public class ModelTFMinoshroom extends BipedModel<EntityTFMinoshroom> {
 
 	ModelRenderer body;
 	ModelRenderer leg1;
@@ -152,7 +152,7 @@ public class ModelTFMinoshroom<T extends EntityTFMinoshroom> extends BipedModel<
 	 * "far" arms and legs can swing at most.
 	 */
 	@Override
-	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setAngles(EntityTFMinoshroom entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		// copied from ModelBiped
 
 		this.bipedHead.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);

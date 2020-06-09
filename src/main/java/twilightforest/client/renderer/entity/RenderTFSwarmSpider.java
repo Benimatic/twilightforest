@@ -7,7 +7,7 @@ import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFSwarmSpider;
 
-public class RenderTFSwarmSpider<T extends EntityTFSwarmSpider> extends SpiderRenderer<T> {
+public class RenderTFSwarmSpider extends SpiderRenderer<EntityTFSwarmSpider> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("swarmspider.png");
 
@@ -16,12 +16,12 @@ public class RenderTFSwarmSpider<T extends EntityTFSwarmSpider> extends SpiderRe
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(T entity) {
+	public ResourceLocation getEntityTexture(EntityTFSwarmSpider entity) {
 		return textureLoc;
 	}
 
 	@Override
-	protected void scale(T entity, MatrixStack stack, float partialTicks) {
+	protected void scale(EntityTFSwarmSpider entity, MatrixStack stack, float partialTicks) {
 		float scale = 0.5F;
 		stack.scale(scale, scale, scale);
 	}

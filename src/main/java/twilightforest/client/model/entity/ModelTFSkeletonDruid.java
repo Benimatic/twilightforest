@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.entity.model.SkeletonModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import twilightforest.entity.EntityTFSkeletonDruid;
 
-public class ModelTFSkeletonDruid<T extends EntityTFSkeletonDruid> extends SkeletonModel<T> {
+public class ModelTFSkeletonDruid extends SkeletonModel<EntityTFSkeletonDruid> {
 	private ModelRenderer dress;
 
 	public ModelTFSkeletonDruid() {

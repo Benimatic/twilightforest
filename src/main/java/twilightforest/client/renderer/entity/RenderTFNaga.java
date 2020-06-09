@@ -20,7 +20,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ModelTFNaga;
 import twilightforest.entity.boss.EntityTFNaga;
 
-public class RenderTFNaga<T extends EntityTFNaga, M extends ModelTFNaga<T>> extends MobRenderer<T, M> {
+public class RenderTFNaga<M extends ModelTFNaga<EntityTFNaga>> extends MobRenderer<EntityTFNaga, M> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("nagahead.png");
 	private static final ResourceLocation part_TextureLoc = TwilightForestMod.getModelTexture("nagasegment.png");
@@ -32,7 +32,7 @@ public class RenderTFNaga<T extends EntityTFNaga, M extends ModelTFNaga<T>> exte
 	}
 
 	@Override
-	public void render(T entity, float entityYaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
+	public void render(EntityTFNaga entity, float entityYaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
 		super.render(entity, entityYaw, partialTicks, stack, buffer, light);
 		if (!Minecraft.getInstance().isGamePaused() && entity.isDazed()) {
 			Vec3d pos = new Vec3d(entity.getX(), entity.getY() + 3.15D, entity.getZ()).add(new Vec3d(1.5D, 0, 0).rotateYaw((float) Math.toRadians(entity.getRNG().nextInt(360))));
@@ -47,14 +47,14 @@ public class RenderTFNaga<T extends EntityTFNaga, M extends ModelTFNaga<T>> exte
 	}
 
 	@Override
-	protected void scale(T entity, MatrixStack stack, float p_225620_3_) {
+	protected void scale(EntityTFNaga entity, MatrixStack stack, float p_225620_3_) {
 		super.scale(entity, stack, p_225620_3_);
 		//make size adjustment
 		stack.translate(0.0F, 1.75F, 0.0F);
 		stack.scale(2.0F, 2.0F, 2.0F);
 	}
 
-	private void renderSegment(T entity, Entity segment, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
+	private void renderSegment(EntityTFNaga entity, Entity segment, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
 		if (segment != null) {
 			double segmentInX = (segment.getX() - entity.getX());
 			double segmentInY = (segment.getY() - entity.getY());

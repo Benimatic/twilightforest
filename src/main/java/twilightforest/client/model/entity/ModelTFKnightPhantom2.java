@@ -7,10 +7,9 @@ import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.boss.EntityTFKnightPhantom;
 
-public class ModelTFKnightPhantom2<T extends EntityTFKnightPhantom> extends BipedModel<T> {
+public class ModelTFKnightPhantom2 extends BipedModel<EntityTFKnightPhantom> {
 
-	//Workaround because Render doesn't accept an Entity parameter
-	private T knight;
+	private EntityTFKnightPhantom knight;
 
 	public ModelTFKnightPhantom2() {
 		this(0.0F);
@@ -36,7 +35,6 @@ public class ModelTFKnightPhantom2<T extends EntityTFKnightPhantom> extends Bipe
 	}
 
 	/**
-	 * Sets the models various rotation angles then renders the model.
 	 * TODO: Should this be in Renderer instead?
 	 */
 	@Override
@@ -47,13 +45,8 @@ public class ModelTFKnightPhantom2<T extends EntityTFKnightPhantom> extends Bipe
 		}
 	}
 
-	/**
-	 * Sets the model's various rotation angles. For bipeds, limbSwing and limbSwingAmount are used for animating the movement of arms
-	 * and legs, where limbSwing represents the time(so that arms and legs swing back and forth) and limbSwingAmount represents how
-	 * "far" arms and legs can swing at most.
-	 */
 	@Override
-	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setAngles(EntityTFKnightPhantom entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.knight = entity;
 
 		super.setAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);

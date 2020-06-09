@@ -9,7 +9,7 @@ import twilightforest.entity.EntityTFMosquitoSwarm;
 
 import java.util.Random;
 
-public class ModelTFMosquitoSwarm<T extends EntityTFMosquitoSwarm> extends SegmentedModel<T> {
+public class ModelTFMosquitoSwarm extends SegmentedModel<EntityTFMosquitoSwarm> {
 
 	ModelRenderer core;
 	ModelRenderer node1;
@@ -102,10 +102,10 @@ public class ModelTFMosquitoSwarm<T extends EntityTFMosquitoSwarm> extends Segme
 	}
 
 	@Override
-	public void setAngles(T entity, float v, float v1, float v2, float v3, float v4) { }
+	public void setAngles(EntityTFMosquitoSwarm entity, float v, float v1, float v2, float v3, float v4) { }
 
 	@Override
-	public void setLivingAnimations(T entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+	public void setLivingAnimations(EntityTFMosquitoSwarm entity, float limbSwing, float limbSwingAmount, float partialTicks) {
 		core.rotateAngleY = (entity.ticksExisted + partialTicks) / 5.0F;
 		core.rotateAngleX = MathHelper.sin((entity.ticksExisted + partialTicks) / 5.0F) / 4.0F;
 		core.rotateAngleZ = MathHelper.cos((entity.ticksExisted + partialTicks) / 5.0F) / 4.0F;

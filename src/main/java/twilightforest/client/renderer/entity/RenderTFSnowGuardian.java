@@ -7,15 +7,15 @@ import net.minecraft.util.math.MathHelper;
 import twilightforest.client.model.entity.ModelTFSnowGuardian;
 import twilightforest.entity.EntityTFSnowGuardian;
 
-public class RenderTFSnowGuardian<T extends EntityTFSnowGuardian, M extends ModelTFSnowGuardian<T>> extends RenderTFBiped<T, M> {
+public class RenderTFSnowGuardian extends RenderTFBiped<EntityTFSnowGuardian, ModelTFSnowGuardian> {
 
-	public RenderTFSnowGuardian(EntityRendererManager manager, M model) {
+	public RenderTFSnowGuardian(EntityRendererManager manager, ModelTFSnowGuardian model) {
 		super(manager, model, 0.25F, "textures/entity/zombie/zombie.png");
-		this.addLayer(new BipedArmorLayer<>(this, new ModelTFSnowGuardian<>(), new ModelTFSnowGuardian<>()));
+		this.addLayer(new BipedArmorLayer<>(this, new ModelTFSnowGuardian(), new ModelTFSnowGuardian()));
 	}
 
 	@Override
-	protected void scale(T entity, MatrixStack stack, float partialTicks) {
+	protected void scale(EntityTFSnowGuardian entity, MatrixStack stack, float partialTicks) {
 		float bounce = entity.ticksExisted + partialTicks;
 		stack.translate(0F, MathHelper.sin((bounce) * 0.2F) * 0.15F, 0F);
 	}

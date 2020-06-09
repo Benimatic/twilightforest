@@ -19,7 +19,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ModelTFGoblinChain;
 import twilightforest.entity.EntityTFChainBlock;
 
-public class RenderTFChainBlock<T extends EntityTFChainBlock> extends EntityRenderer<T> {
+public class RenderTFChainBlock extends EntityRenderer<EntityTFChainBlock> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("blockgoblin.png");
 	private final Model model;
@@ -31,7 +31,7 @@ public class RenderTFChainBlock<T extends EntityTFChainBlock> extends EntityRend
 	}
 
 	@Override
-	public void render(T chainBlock, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
+	public void render(EntityTFChainBlock chainBlock, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
 		super.render(chainBlock, yaw, partialTicks, stack, buffer, light);
 
 		stack.push();
@@ -52,7 +52,7 @@ public class RenderTFChainBlock<T extends EntityTFChainBlock> extends EntityRend
 		renderChain(chainBlock, chainBlock.chain5, yaw, partialTicks, stack, buffer, light);
 	}
 
-	private void renderChain(T chainBlock, Entity chain, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
+	private void renderChain(EntityTFChainBlock chainBlock, Entity chain, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
 		if (chain != null) {
 			double chainInX = (chain.getX() - chainBlock.getX());
 			double chainInY = (chain.getY() - chainBlock.getY());

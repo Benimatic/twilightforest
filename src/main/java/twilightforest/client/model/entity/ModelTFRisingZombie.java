@@ -6,7 +6,7 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.entity.model.ZombieModel;
 import twilightforest.entity.EntityTFRisingZombie;
 
-public class ModelTFRisingZombie<T extends EntityTFRisingZombie> extends ZombieModel<T> {
+public class ModelTFRisingZombie extends ZombieModel<EntityTFRisingZombie> {
 
 	public ModelTFRisingZombie() {
 		super(0.0F, true);

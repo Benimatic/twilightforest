@@ -21,7 +21,7 @@ import org.lwjgl.opengl.GL11;
 import twilightforest.entity.boss.EntityTFIceBomb;
 
 // [VanillaCopy] direct of RenderFallingBlock because of generic type restrictions
-public class RenderTFThrownIce<T extends EntityTFIceBomb> extends EntityRenderer<T> {
+public class RenderTFThrownIce extends EntityRenderer<EntityTFIceBomb> {
 
 	public RenderTFThrownIce(EntityRendererManager manager) {
 		super(manager);
@@ -29,7 +29,7 @@ public class RenderTFThrownIce<T extends EntityTFIceBomb> extends EntityRenderer
 	}
 
 	@Override
-	public void render(T entity, float entityYaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
+	public void render(EntityTFIceBomb entity, float entityYaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
 		if (entity.getBlock() != null) {
 			BlockState iblockstate = entity.getBlock();
 
@@ -69,7 +69,7 @@ public class RenderTFThrownIce<T extends EntityTFIceBomb> extends EntityRenderer
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(T entity) {
+	public ResourceLocation getEntityTexture(EntityTFIceBomb entity) {
 		return AtlasTexture.LOCATION_BLOCKS_TEXTURE;
 	}
 }

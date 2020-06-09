@@ -9,11 +9,11 @@ import twilightforest.entity.finalcastle.EntityTFCastleGuardian;
 
 import javax.annotation.Nonnull;
 
-public class RenderTFCastleGuardian<T extends EntityTFCastleGuardian, M extends ModelTFCastleGuardian<T>> extends LivingRenderer<T, M> {
+public class RenderTFCastleGuardian extends LivingRenderer<EntityTFCastleGuardian, ModelTFCastleGuardian> {
 
 	private final ResourceLocation textureLoc;
 
-	public RenderTFCastleGuardian(EntityRendererManager manager, M model, float shadowSize, String textureName) {
+	public RenderTFCastleGuardian(EntityRendererManager manager, ModelTFCastleGuardian model, float shadowSize, String textureName) {
 		super(manager, model, shadowSize);
 
 		if (textureName.startsWith("textures"))
@@ -23,7 +23,7 @@ public class RenderTFCastleGuardian<T extends EntityTFCastleGuardian, M extends 
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(@Nonnull T entity) {
+	public ResourceLocation getEntityTexture(@Nonnull EntityTFCastleGuardian entity) {
 		return textureLoc;
 	}
 }
