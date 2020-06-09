@@ -19,7 +19,7 @@ public class RenderTFLich extends BipedRenderer<EntityTFLich, ModelTFLich> {
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(@Nonnull EntityTFLich entity) {
+	public ResourceLocation getEntityTexture(EntityTFLich entity) {
 		return LICH_TEXTURE;
 	}
 }

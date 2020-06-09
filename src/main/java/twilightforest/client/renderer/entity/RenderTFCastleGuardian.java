@@ -23,7 +23,7 @@ public class RenderTFCastleGuardian extends LivingRenderer<EntityTFCastleGuardia
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(@Nonnull EntityTFCastleGuardian entity) {
+	public ResourceLocation getEntityTexture(EntityTFCastleGuardian entity) {
 		return textureLoc;
 	}
 }

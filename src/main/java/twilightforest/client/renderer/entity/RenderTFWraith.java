@@ -29,7 +29,7 @@ public class RenderTFWraith extends BipedRenderer<EntityTFWraith, ModelTFWraith>
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(@Nonnull EntityTFWraith wraith) {
+	public ResourceLocation getEntityTexture(EntityTFWraith wraith) {
 		return textureCrown;
 	}
 

@@ -14,7 +14,6 @@ import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.EntityTFSlimeBeetle;
 
 public class ModelTFSlimeBeetle extends SegmentedModel<EntityTFSlimeBeetle> {
-	//fields
 	ModelRenderer head;
 	ModelRenderer RearEnd;
 	ModelRenderer Leg6;
@@ -35,14 +34,14 @@ public class ModelTFSlimeBeetle extends SegmentedModel<EntityTFSlimeBeetle> {
 	ModelRenderer mouth;
 	ModelRenderer slimeCenter;
 
-	boolean renderPassModel = false;
+	private final boolean translucent;
 
 	public ModelTFSlimeBeetle() {
 		this(false);
 	}
 
-	public ModelTFSlimeBeetle(boolean renderpass) {
-		this.renderPassModel = renderpass;
+	public ModelTFSlimeBeetle(boolean translucent) {
+		this.translucent = translucent;
 
 		textureWidth = 64;
 		textureHeight = 64;
@@ -140,7 +139,7 @@ public class ModelTFSlimeBeetle extends SegmentedModel<EntityTFSlimeBeetle> {
 
 		tail1.addChild(tail2);
 
-		if (renderPassModel) {
+		if (this.translucent) {
 			tail2.addChild(slimeCube);
 		} else {
 			tail2.addChild(slimeCenter);
@@ -163,13 +162,11 @@ public class ModelTFSlimeBeetle extends SegmentedModel<EntityTFSlimeBeetle> {
 	}
 
 	@Override
-	public void render(MatrixStack stack, IVertexBuilder builder, int light, int overlay, float red, float green, float blue, float scale) {
-		//setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+	public void render(MatrixStack stack, IVertexBuilder builder, int light, int overlay, float red, float green, float blue, float alpha) {
+		tail1.render(stack, builder, light, overlay, red, green, blue, alpha);
 
-		tail1.render(stack, builder, light, overlay, red, green, blue, scale);
-
-		if (!renderPassModel) {
-			getParts().forEach((part) -> part.render(stack, builder, light, overlay, red, green, blue, scale));
+		if (!translucent) {
+			getParts().forEach((part) -> part.render(stack, builder, light, overlay, red, green, blue, alpha));
 		}
 	}
 
