@@ -192,7 +192,7 @@ public class TFGenGraveyard extends Feature<NoFeatureConfig> {
 							trap.addBlocksToWorld(world, placement.add(new BlockPos(mirror == Mirror.FRONT_BACK ? 1 : -1, 0, mirror == Mirror.LEFT_RIGHT ? 1 : -1).rotate(rotation)), placementsettings, flags);
 						if (world.setBlockState(placement.add(chestloc), Blocks.TRAPPED_CHEST.getDefaultState().with(ChestBlock.FACING, Direction.WEST).rotate(rotation).mirror(mirror), flags))
 							TFTreasure.graveyard.generateChestContents(world, placement.add(chestloc));
-						EntityTFWraith wraith = new EntityTFWraith(TFEntities.wraith.get(), world);
+						EntityTFWraith wraith = new EntityTFWraith(TFEntities.wraith, world);
 						wraith.setPositionAndUpdate(placement.getX(), placement.getY(), placement.getZ());
 						world.addEntity(wraith);
 					}
@@ -215,7 +215,7 @@ public class TFGenGraveyard extends Feature<NoFeatureConfig> {
 					if (world.setBlockState(p, Blocks.SPAWNER.getDefaultState(), 3)) {
 						MobSpawnerTileEntity ms = (MobSpawnerTileEntity) world.getTileEntity(p);
 						if (ms != null)
-							ms.getSpawnerBaseLogic().setEntityType(TFEntities.rising_zombie.get());
+							ms.getSpawnerBaseLogic().setEntityType(TFEntities.rising_zombie);
 					}
 				} else
 					world.removeBlock(p, false);

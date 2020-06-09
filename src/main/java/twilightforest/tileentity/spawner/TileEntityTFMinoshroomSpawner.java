@@ -8,7 +8,7 @@ import twilightforest.tileentity.TFTileEntities;
 public class TileEntityTFMinoshroomSpawner extends TileEntityTFBossSpawner<EntityTFMinoshroom> {
 
 	public TileEntityTFMinoshroomSpawner() {
-		super(TFTileEntities.MINOSHROOM_SPAWNER.get(), TFEntities.minoshroom.get());
+		super(TFTileEntities.MINOSHROOM_SPAWNER.get(), TFEntities.minoshroom);
 	}
 
 	@Override

@@ -17,7 +17,7 @@ public class EntityTFBoar extends PigEntity {
 	}
 
 	public EntityTFBoar(World world, double x, double y, double z) {
-		this(TFEntities.wild_boar.get(), world);
+		this(TFEntities.wild_boar, world);
 		this.setPosition(x, y, z);
 	}
 
@@ -28,6 +28,6 @@ public class EntityTFBoar extends PigEntity {
 
 	@Override
 	public PigEntity createChild(AgeableEntity entityanimal) {
-		return new EntityTFBoar(TFEntities.wild_boar.get(), world);
+		return new EntityTFBoar(TFEntities.wild_boar, world);
 	}
 }

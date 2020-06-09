@@ -33,7 +33,7 @@ public class EntityTFPenguin extends EntityTFBird {
 
 	@Override
 	public AnimalEntity createChild(AgeableEntity entityanimal) {
-		return new EntityTFPenguin(TFEntities.penguin.get(), world);
+		return new EntityTFPenguin(TFEntities.penguin, world);
 	}
 
 	@Override

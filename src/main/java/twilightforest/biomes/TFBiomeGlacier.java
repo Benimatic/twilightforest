@@ -39,7 +39,7 @@ public class TFBiomeGlacier extends TFBiomeBase {
 		super.addSpawns();
 
 		getSpawns(EntityClassification.CREATURE).clear();
-		addSpawn(EntityClassification.CREATURE, new SpawnListEntry(TFEntities.penguin.get(), 10, 4, 4));
+		addSpawn(EntityClassification.CREATURE, new SpawnListEntry(TFEntities.penguin, 10, 4, 4));
 	}
 
 	@Override

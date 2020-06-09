@@ -50,7 +50,7 @@ public class ItemTFCubeOfAnnihilation extends Item {
 			return new ActionResult<>(ActionResultType.PASS, stack);
 
 		if (!world.isRemote) {
-			EntityTFCubeOfAnnihilation launchedCube = new EntityTFCubeOfAnnihilation(TFEntities.cube_of_annihilation.get(), world, player);
+			EntityTFCubeOfAnnihilation launchedCube = new EntityTFCubeOfAnnihilation(TFEntities.cube_of_annihilation, world, player);
 			world.addEntity(launchedCube);
 			setThrownEntity(stack, launchedCube);
 		}

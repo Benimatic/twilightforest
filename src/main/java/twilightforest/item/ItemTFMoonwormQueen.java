@@ -110,7 +110,7 @@ public class ItemTFMoonwormQueen extends Item {
 		int useTime = this.getUseDuration(stack) - useRemaining;
 
 		if (!world.isRemote && useTime > FIRING_TIME && (stack.getDamage() + 1) < stack.getMaxDamage()) {
-			boolean fired = world.addEntity(new EntityTFMoonwormShot(TFEntities.moonworm_shot.get(), world, living));
+			boolean fired = world.addEntity(new EntityTFMoonwormShot(TFEntities.moonworm_shot, world, living));
 
 			if (fired) {
 				stack.damageItem(2, living, (user) -> user.sendBreakAnimation(living.getActiveHand()));

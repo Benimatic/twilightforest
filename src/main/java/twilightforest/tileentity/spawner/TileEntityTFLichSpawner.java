@@ -8,7 +8,7 @@ import twilightforest.tileentity.TFTileEntities;
 public class TileEntityTFLichSpawner extends TileEntityTFBossSpawner<EntityTFLich> {
 
 	public TileEntityTFLichSpawner() {
-		super(TFTileEntities.LICH_SPAWNER.get(), TFEntities.lich.get());
+		super(TFTileEntities.LICH_SPAWNER.get(), TFEntities.lich);
 	}
 
 	@Override

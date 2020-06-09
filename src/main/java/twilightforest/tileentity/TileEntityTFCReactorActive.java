@@ -147,7 +147,7 @@ public class TileEntityTFCReactorActive extends TileEntity implements ITickableT
 
 
 	private void spawnGhastNear(int x, int y, int z) {
-		EntityTFMiniGhast ghast = new EntityTFMiniGhast(TFEntities.mini_ghast.get(), world);
+		EntityTFMiniGhast ghast = new EntityTFMiniGhast(TFEntities.mini_ghast, world);
 		ghast.setLocationAndAngles(x - 1.5 + world.rand.nextFloat() * 3.0, y - 1.5 + world.rand.nextFloat() * 3.0, z - 1.5 + world.rand.nextFloat() * 3.0, world.rand.nextFloat() * 360F, 0.0F);
 		world.addEntity(ghast);
 	}

@@ -95,7 +95,7 @@ public class EntityTFDeathTome extends MonsterEntity implements IRangedAttackMob
 
 	@Override
 	public void attackEntityWithRangedAttack(LivingEntity target, float distanceFactor) {
-		ThrowableEntity projectile = new EntityTFTomeBolt(TFEntities.tome_bolt.get(), this.world, this);
+		ThrowableEntity projectile = new EntityTFTomeBolt(TFEntities.tome_bolt, this.world, this);
 		double tx = target.getX() - this.getX();
 		double ty = target.getY() + target.getEyeHeight() - 1.100000023841858D - projectile.getY();
 		double tz = target.getZ() - this.getZ();

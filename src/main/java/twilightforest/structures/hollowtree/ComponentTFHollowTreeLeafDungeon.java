@@ -79,7 +79,7 @@ public class ComponentTFHollowTreeLeafDungeon extends StructureTFTreeComponent {
 			this.placeTreasureAtCurrentPosition(world, radius + 2, radius - 1, radius, TFTreasure.tree_cache, sbb);
 
 			// then spawner
-			setSpawner(world, radius, radius, radius, sbb, TFEntities.swarm_spider.get());
+			setSpawner(world, radius, radius, radius, sbb, TFEntities.swarm_spider);
 		} else {
 			// hollow sphere of leaves on the outside
 			drawHollowBlob(world, sbb, radius, radius, radius, 4, 2, TFBlocks.oak_leaves.get().getDefaultState(), true);

@@ -56,7 +56,7 @@ public class TFBiomeSwamp extends TFBiomeBase {
 	public void addSpawns() {
 		super.addSpawns();
 
-		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.mosquito_swarm.get(), 10, 1, 1));
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.mosquito_swarm, 10, 1, 1));
 		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(EntityType.CREEPER, 10, 4, 4));
 		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(EntityType.ZOMBIE, 10, 4, 4));
 	}

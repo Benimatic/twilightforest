@@ -173,7 +173,7 @@ public class GenDruidHut extends Feature<NoFeatureConfig> {
 						MobSpawnerTileEntity ms = (MobSpawnerTileEntity) world.getTileEntity(blockPos);
 
 						if (ms != null) {
-							ms.getSpawnerBaseLogic().setEntityType(TFEntities.skeleton_druid.get());
+							ms.getSpawnerBaseLogic().setEntityType(TFEntities.skeleton_druid);
 						}
 					}
 				} else if (s.startsWith("loot")) {

@@ -522,9 +522,9 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 		EntityType<?> mobID;
 
 		if (this.size > 9) {
-			mobID = rand.nextBoolean() ? TFEntities.tower_golem.get() : TFEntities.tower_broodling.get();
+			mobID = rand.nextBoolean() ? TFEntities.tower_golem : TFEntities.tower_broodling;
 		} else {
-			mobID = TFEntities.tower_broodling.get();
+			mobID = TFEntities.tower_broodling;
 		}
 
 		// pillar frame

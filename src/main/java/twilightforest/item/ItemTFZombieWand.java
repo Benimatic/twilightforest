@@ -45,7 +45,7 @@ public class ItemTFZombieWand extends Item {
 			BlockRayTraceResult blockray = EntityUtil.rayTrace(player, 20.0);
 
 			if (blockray.getType() != RayTraceResult.Type.MISS) {
-				EntityTFLoyalZombie zombie = TFEntities.loyal_zombie.get().create(world);
+				EntityTFLoyalZombie zombie = TFEntities.loyal_zombie.create(world);
 				Direction face = blockray.getFace();
 				zombie.setPositionAndRotation(blockray.getPos().getX() + 0.5F + face.getXOffset(), blockray.getPos().getY() + face.getYOffset(), blockray.getPos().getZ() + 0.5F + face.getZOffset(), 1.0F, 1.0F);
 				zombie.setTamed(true);

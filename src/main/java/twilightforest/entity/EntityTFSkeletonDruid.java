@@ -56,7 +56,7 @@ public class EntityTFSkeletonDruid extends SkeletonEntity {
 	@Override
 	public void attackEntityWithRangedAttack(LivingEntity attackTarget, float extraDamage) {
 		if (this.getHeldItem(Hand.MAIN_HAND).getItem() instanceof HoeItem) {
-			EntityTFNatureBolt natureBolt = new EntityTFNatureBolt(TFEntities.nature_bolt.get(), this.world, this);
+			EntityTFNatureBolt natureBolt = new EntityTFNatureBolt(TFEntities.nature_bolt, this.world, this);
 			playSound(SoundEvents.ENTITY_GHAST_SHOOT, 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
 
 			double tx = attackTarget.getX() - this.getX();

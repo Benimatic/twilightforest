@@ -53,10 +53,10 @@ public class TFBiomeDarkForest extends TFBiomeBase {
 		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(EntityType.ENDERMAN, 1, 1, 4));
 		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(EntityType.ZOMBIE, 5, 1, 4));
 		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(EntityType.SKELETON, 5, 1, 4));
-		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.mist_wolf.get(), 10, 1, 4));
-		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.skeleton_druid.get(), 10, 1, 4));
-		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.king_spider.get(), 10, 1, 4));
-		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.kobold.get(), 10, 4, 8));
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.mist_wolf, 10, 1, 4));
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.skeleton_druid, 10, 1, 4));
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.king_spider, 10, 1, 4));
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.kobold, 10, 4, 8));
 		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(EntityType.WITCH, 1, 1, 1));
 	}
 

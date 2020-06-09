@@ -7,7 +7,7 @@ import twilightforest.tileentity.TFTileEntities;
 public class TileEntityTFNagaSpawner extends TileEntityTFBossSpawner<EntityTFNaga> {
 
 	public TileEntityTFNagaSpawner() {
-		super(TFTileEntities.NAGA_SPAWNER.get(), TFEntities.naga.get());
+		super(TFTileEntities.NAGA_SPAWNER.get(), TFEntities.naga);
 	}
 
 	@Override

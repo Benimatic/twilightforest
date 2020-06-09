@@ -33,7 +33,7 @@ public class TFBiomeFinalPlateau extends TFBiomeBase {
 
 		// custom creature list.
 		getSpawns(EntityClassification.CREATURE).clear();
-		addSpawn(EntityClassification.CREATURE, new SpawnListEntry(TFEntities.raven.get(), 10, 4, 4));
+		addSpawn(EntityClassification.CREATURE, new SpawnListEntry(TFEntities.raven, 10, 4, 4));
 	}
 
 	@Override

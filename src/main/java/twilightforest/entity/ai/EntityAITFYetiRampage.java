@@ -96,7 +96,7 @@ public class EntityAITFYetiRampage extends Goal {
 		}
 
 		if (currentDuration % 10 == 0) {
-			EntityTFIceBomb ice = new EntityTFIceBomb(TFEntities.thrown_ice.get(), yeti.world, yeti);
+			EntityTFIceBomb ice = new EntityTFIceBomb(TFEntities.thrown_ice, yeti.world, yeti);
 			Vec3d vec = new Vec3d(0.5F + yeti.getRNG().nextFloat() * 0.5F, 0.5F + yeti.getRNG().nextFloat() * 0.3F, 0).rotateYaw(yeti.getRNG().nextFloat() * 360F);
 			ice.shoot(vec.x, vec.y, vec.z, 0.4F + yeti.getRNG().nextFloat() * 0.3F, 0);
 			yeti.playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (yeti.getRNG().nextFloat() * 0.4F + 0.8F));

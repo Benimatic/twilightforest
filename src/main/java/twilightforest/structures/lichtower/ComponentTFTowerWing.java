@@ -748,10 +748,10 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 					spiderName = EntityType.CAVE_SPIDER;
 					break;
 				case 2:
-					spiderName = TFEntities.swarm_spider.get();
+					spiderName = TFEntities.swarm_spider;
 					break;
 				case 1:
-					spiderName = TFEntities.hedge_spider.get();
+					spiderName = TFEntities.hedge_spider;
 					break;
 				case 0:
 				default:

@@ -8,7 +8,7 @@ import twilightforest.tileentity.TFTileEntities;
 public class TileEntityTFSnowQueenSpawner extends TileEntityTFBossSpawner<EntityTFSnowQueen> {
 
 	public TileEntityTFSnowQueenSpawner() {
-		super(TFTileEntities.SNOW_QUEEN_SPAWNER.get(), TFEntities.snow_queen.get());
+		super(TFTileEntities.SNOW_QUEEN_SPAWNER.get(), TFEntities.snow_queen);
 	}
 
 	@Override

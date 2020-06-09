@@ -111,7 +111,7 @@ public class ComponentTFQuestGrove extends StructureTFComponentOld {
 			if (sbb.isVecInside(pos)) {
 				beastPlaced = true;
 
-				EntityTFQuestRam ram = new EntityTFQuestRam(TFEntities.quest_ram.get(), world.getWorld());
+				EntityTFQuestRam ram = new EntityTFQuestRam(TFEntities.quest_ram, world.getWorld());
 				ram.setPosition(bx, by, bz);
 				ram.setHomePosAndDistance(pos, 13);
 				ram.onInitialSpawn(world, world.getDifficultyForLocation(pos), SpawnReason.STRUCTURE, null, null);

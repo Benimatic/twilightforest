@@ -101,7 +101,7 @@ public class ComponentTFCloudCastle extends StructureTFComponentOld {
 			if (sbb.isVecInside(pos)) {
 				this.minerPlaced = true;
 
-				EntityTFGiantMiner miner = new EntityTFGiantMiner(TFEntities.giant_miner.get(), world.getWorld());
+				EntityTFGiantMiner miner = new EntityTFGiantMiner(TFEntities.giant_miner, world.getWorld());
 				miner.setPosition(bx, by, bz);
 				miner.enablePersistence();
 				miner.onInitialSpawn(world, world.getDifficultyForLocation(pos), SpawnReason.STRUCTURE, null, null);
@@ -118,7 +118,7 @@ public class ComponentTFCloudCastle extends StructureTFComponentOld {
 			if (sbb.isVecInside(pos)) {
 				this.warriorPlaced = true;
 
-				EntityTFArmoredGiant warrior = new EntityTFArmoredGiant(TFEntities.armored_giant.get(), world.getWorld());
+				EntityTFArmoredGiant warrior = new EntityTFArmoredGiant(TFEntities.armored_giant, world.getWorld());
 				warrior.setPosition(bx, by, bz);
 				warrior.enablePersistence();
 				warrior.onInitialSpawn(world, world.getDifficultyForLocation(pos), SpawnReason.STRUCTURE, null, null);

@@ -47,7 +47,7 @@ public class EntityAIPhantomThrowWeapon extends Goal {
 		double tz = targetedEntity.getZ() - sz;
 
 		boss.playSound(SoundEvents.ENTITY_SNOWBALL_THROW, 1.0F, (boss.getRNG().nextFloat() - boss.getRNG().nextFloat()) * 0.2F + 0.4F);
-		EntityTFThrownWep projectile = new EntityTFThrownWep(TFEntities.thrown_wep.get(), boss.world, boss).setItem(new ItemStack(TFItems.knightmetal_axe.get()));
+		EntityTFThrownWep projectile = new EntityTFThrownWep(TFEntities.thrown_wep, boss.world, boss).setItem(new ItemStack(TFItems.knightmetal_axe.get()));
 
 		float speed = 0.75F;
 
@@ -73,7 +73,7 @@ public class EntityAIPhantomThrowWeapon extends Goal {
 			double vz = MathHelper.sin(throwAngle);
 
 
-			EntityTFThrownWep projectile = new EntityTFThrownWep(TFEntities.thrown_wep.get(), boss.world, boss).setDamage(3).setVelocity(0.015F).setItem(new ItemStack(TFItems.knightmetal_pickaxe.get()));
+			EntityTFThrownWep projectile = new EntityTFThrownWep(TFEntities.thrown_wep, boss.world, boss).setDamage(3).setVelocity(0.015F).setItem(new ItemStack(TFItems.knightmetal_pickaxe.get()));
 
 
 			projectile.setLocationAndAngles(sx, sy, sz, i * 45F, boss.rotationPitch);

@@ -21,7 +21,7 @@ public class BlockInfestedTowerWood extends BlockFlammable {
 	public void spawnAdditionalDrops(BlockState state, World world, BlockPos pos, ItemStack stack) {
 		super.spawnAdditionalDrops(state, world, pos, stack);
 		if (!world.isRemote && world.getGameRules().getBoolean(GameRules.DO_TILE_DROPS) && EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, stack) == 0) {
-			EntityTFTowerTermite termite = new EntityTFTowerTermite(TFEntities.tower_termite.get(), world);
+			EntityTFTowerTermite termite = new EntityTFTowerTermite(TFEntities.tower_termite, world);
 			termite.setLocationAndAngles(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, 0.0F, 0.0F);
 			world.addEntity(termite);
 			termite.spawnExplosionParticle();

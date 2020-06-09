@@ -301,7 +301,7 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 	@Override
 	public void attackEntityWithRangedAttack(LivingEntity target, float distanceFactor) {
 		if (!this.canRampage) {
-			EntityTFIceBomb ice = new EntityTFIceBomb(TFEntities.thrown_ice.get(), this.world, this);
+			EntityTFIceBomb ice = new EntityTFIceBomb(TFEntities.thrown_ice, this.world, this);
 
 			// [VanillaCopy] Part of EntitySkeleton.attackEntityWithRangedAttack
 			double d0 = target.getX() - this.getX();

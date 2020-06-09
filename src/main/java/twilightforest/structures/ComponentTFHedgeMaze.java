@@ -177,14 +177,14 @@ public class ComponentTFHedgeMaze extends StructureTFComponentOld {
 
 		switch (rand.nextInt(3)) {
 			case 1:
-				mobID = TFEntities.swarm_spider.get();
+				mobID = TFEntities.swarm_spider;
 				break;
 			case 2:
-				mobID = TFEntities.hostile_wolf.get();
+				mobID = TFEntities.hostile_wolf;
 				break;
 			case 0:
 			default:
-				mobID = TFEntities.hedge_spider.get();
+				mobID = TFEntities.hedge_spider;
 		}
 
 		setSpawner(world, rx, FLOOR_LEVEL, rz, sbb, mobID);

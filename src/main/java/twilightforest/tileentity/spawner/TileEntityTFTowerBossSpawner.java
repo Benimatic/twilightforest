@@ -8,7 +8,7 @@ import twilightforest.tileentity.TFTileEntities;
 public class TileEntityTFTowerBossSpawner extends TileEntityTFBossSpawner<EntityTFUrGhast> {
 
 	public TileEntityTFTowerBossSpawner() {
-		super(TFTileEntities.TOWER_BOSS_SPAWNER.get(), TFEntities.ur_ghast.get());
+		super(TFTileEntities.TOWER_BOSS_SPAWNER.get(), TFEntities.ur_ghast);
 	}
 
 	@Override

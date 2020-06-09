@@ -68,7 +68,7 @@ public class BlockTFSlider extends RotatedPillarBlock {
 		if (!world.isRemote && this.isConnectedInRange(world, pos)) {
 			//world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, TwilightForestMod.ID + ":random.creakstart", 0.75F, 1.5F);
 
-			EntityTFSlideBlock slideBlock = new EntityTFSlideBlock(TFEntities.slider.get(), world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, state);
+			EntityTFSlideBlock slideBlock = new EntityTFSlideBlock(TFEntities.slider, world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, state);
 			world.addEntity(slideBlock);
 		}
 

@@ -1300,7 +1300,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 	 * TODO: Parameter "rand" is unused. Remove?
 	 */
 	private void makeMiniGhastSpawner(World world, Random rand, int y, int sx, int sz, MutableBoundingBox sbb) {
-		MobSpawnerTileEntity spawner = setSpawner(world, sx, y + 2, sz, sbb, TFEntities.mini_ghast.get());
+		MobSpawnerTileEntity spawner = setSpawner(world, sx, y + 2, sz, sbb, TFEntities.mini_ghast);
 
 		if (spawner != null) {
 			// change the spawner detection range by this goofy process of writing to and reading from NBT tags

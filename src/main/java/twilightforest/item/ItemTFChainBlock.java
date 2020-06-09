@@ -62,7 +62,7 @@ public class ItemTFChainBlock extends ToolItem {
 		player.playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (random.nextFloat() * 0.4F + 1.2F));
 
 		if (!world.isRemote) {
-			EntityTFChainBlock launchedBlock = new EntityTFChainBlock(TFEntities.chain_block.get(), world, player, hand);
+			EntityTFChainBlock launchedBlock = new EntityTFChainBlock(TFEntities.chain_block, world, player, hand);
 			world.addEntity(launchedBlock);
 			setThrownEntity(stack, launchedBlock);
 

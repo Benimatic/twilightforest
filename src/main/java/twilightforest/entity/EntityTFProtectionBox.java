@@ -32,7 +32,7 @@ public class EntityTFProtectionBox extends Entity {
 	}
 
 	public EntityTFProtectionBox(World world, MutableBoundingBox sbb) {
-		super(TFEntities.protection_box.get(), world);
+		super(TFEntities.protection_box, world);
 
 		this.sbb = new MutableBoundingBox(sbb);
 

@@ -258,7 +258,7 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 			case 0:
 			case 1:
 			case 2:
-				return TFEntities.swarm_spider.get();
+				return TFEntities.swarm_spider;
 			case 3:
 			case 4:
 			case 5:
@@ -269,9 +269,9 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 			case 8:
 				return EntityType.SILVERFISH;
 			case 9:
-				return TFEntities.redcap.get();
+				return TFEntities.redcap;
 			default:
-				return TFEntities.swarm_spider.get();
+				return TFEntities.swarm_spider;
 		}
 	}
 
@@ -283,7 +283,7 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 			case 0:
 			case 1:
 			case 2:
-				return TFEntities.redcap.get();
+				return TFEntities.redcap;
 			case 3:
 			case 4:
 			case 5:
@@ -292,11 +292,11 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 			case 7:
 				return EntityType.SKELETON;
 			case 8:
-				return TFEntities.swarm_spider.get();
+				return TFEntities.swarm_spider;
 			case 9:
 				return EntityType.CAVE_SPIDER;
 			default:
-				return TFEntities.redcap.get();
+				return TFEntities.redcap;
 		}
 	}
 
@@ -306,11 +306,11 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 	public EntityType<?> getLevel3Mob(Random rand) {
 		switch (rand.nextInt(11)) {
 			case 0:
-				return TFEntities.slime_beetle.get();
+				return TFEntities.slime_beetle;
 			case 1:
-				return TFEntities.fire_beetle.get();
+				return TFEntities.fire_beetle;
 			case 2:
-				return TFEntities.pinch_beetle.get();
+				return TFEntities.pinch_beetle;
 			case 3:
 			case 4:
 			case 5:
@@ -323,7 +323,7 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 				return EntityType.CREEPER;
 			case 10:
 			default:
-				return TFEntities.wraith.get();
+				return TFEntities.wraith;
 		}
 	}
 }

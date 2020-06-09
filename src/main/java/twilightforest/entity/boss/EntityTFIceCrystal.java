@@ -17,7 +17,7 @@ public class EntityTFIceCrystal extends EntityTFIceMob {
 	private int maxCrystalAge = -1;
 
 	public EntityTFIceCrystal(World worldIn) {
-		super(TFEntities.ice_crystal.get(), worldIn);
+		super(TFEntities.ice_crystal, worldIn);
 	}
 
 	public EntityTFIceCrystal(EntityType<? extends EntityTFIceCrystal> type, World world) {

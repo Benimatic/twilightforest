@@ -76,7 +76,7 @@ public class EntityTFLich extends MonsterEntity {
 	}
 
 	public EntityTFLich(World world, EntityTFLich otherLich) {
-		this(TFEntities.lich.get(), world);
+		this(TFEntities.lich, world);
 
 		setShadowClone(true);
 		this.masterLich = otherLich;
@@ -332,7 +332,7 @@ public class EntityTFLich extends MonsterEntity {
 
 		playSound(SoundEvents.ENTITY_GHAST_SHOOT, getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
 
-		EntityTFLichBolt projectile = new EntityTFLichBolt(TFEntities.lich_bolt.get(), world, this);
+		EntityTFLichBolt projectile = new EntityTFLichBolt(TFEntities.lich_bolt, world, this);
 		projectile.setLocationAndAngles(sx, sy, sz, rotationYaw, rotationPitch);
 		projectile.shoot(tx, ty, tz, 0.5F, 1.0F);
 
@@ -351,7 +351,7 @@ public class EntityTFLich extends MonsterEntity {
 
 		playSound(SoundEvents.ENTITY_GHAST_SHOOT, getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
 
-		EntityTFLichBomb projectile = new EntityTFLichBomb(TFEntities.lich_bomb.get(), world, this);
+		EntityTFLichBomb projectile = new EntityTFLichBomb(TFEntities.lich_bomb, world, this);
 		projectile.setLocationAndAngles(sx, sy, sz, rotationYaw, rotationPitch);
 		projectile.shoot(tx, ty, tz, 0.35F, 1.0F);
 

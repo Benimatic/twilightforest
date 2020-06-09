@@ -72,7 +72,7 @@ public class EntityTFSlimeBeetle extends MonsterEntity implements IRangedAttackM
 
 	@Override
 	public void attackEntityWithRangedAttack(LivingEntity target, float distanceFactor) {
-		ThrowableEntity projectile = new EntityTFSlimeProjectile(TFEntities.slime_blob.get(), this.world, this);
+		ThrowableEntity projectile = new EntityTFSlimeProjectile(TFEntities.slime_blob, this.world, this);
 		playSound(SoundEvents.ENTITY_SLIME_SQUISH_SMALL, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
 		double tx = target.getX() - this.getX();
 		double ty = target.getY() + target.getEyeHeight() - 1.100000023841858D - projectile.getY();

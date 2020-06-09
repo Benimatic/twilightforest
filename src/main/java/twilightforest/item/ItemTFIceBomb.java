@@ -25,7 +25,7 @@ public class ItemTFIceBomb extends Item {
 			if (!player.abilities.isCreativeMode) {
 				player.getHeldItem(hand).shrink(1);
 			}
-			EntityTFIceBomb ice = new EntityTFIceBomb(TFEntities.thrown_ice.get(), world, player);
+			EntityTFIceBomb ice = new EntityTFIceBomb(TFEntities.thrown_ice, world, player);
 			ice.shoot(player, player.rotationPitch, player.rotationYaw, -20.0F, 0.75F, 1.0F);
 			world.addEntity(ice);
 		}

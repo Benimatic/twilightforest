@@ -18,7 +18,7 @@ public class ItemTFIceBow extends BowItem {
 	@Override
 	public AbstractArrowEntity customeArrow(AbstractArrowEntity arrow) {
 		if (arrow.getShooter() instanceof LivingEntity) {
-			return new EntityIceArrow(TFEntities.ice_arrow.get(), arrow.world, (LivingEntity) arrow.getShooter());
+			return new EntityIceArrow(TFEntities.ice_arrow, arrow.world, (LivingEntity) arrow.getShooter());
 		}
 		return arrow;
 	}

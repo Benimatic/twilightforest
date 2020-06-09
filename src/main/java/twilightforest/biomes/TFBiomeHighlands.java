@@ -47,7 +47,7 @@ public class TFBiomeHighlands extends TFBiomeBase {
 		undergroundMonsterList.add(new SpawnListEntry(EntityType.SKELETON, 10, 4, 4));
 		undergroundMonsterList.add(new SpawnListEntry(EntityType.CREEPER, 1, 4, 4));
 		undergroundMonsterList.add(new SpawnListEntry(EntityType.SLIME, 10, 4, 4));
-		undergroundMonsterList.add(new SpawnListEntry(TFEntities.troll.get(), 10, 4, 4));
+		undergroundMonsterList.add(new SpawnListEntry(TFEntities.troll, 10, 4, 4));
 	}
 
 	@Override

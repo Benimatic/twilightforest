@@ -2,14 +2,19 @@ package twilightforest.data;
 
 import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.item.Item;
+import net.minecraft.item.SpawnEggItem;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.Registry;
 import net.minecraftforge.client.model.generators.ExistingFileHelper;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.fml.RegistryObject;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.item.ItemTFExperiment115;
+import twilightforest.item.TFItems;
 
 import static twilightforest.TwilightForestMod.prefix;
 
@@ -20,6 +25,12 @@ public class ItemModelGenerator extends ItemModelProvider {
 
 	@Override
 	protected void registerModels() {
+		for (Item i : Registry.ITEM) {
+			if (i instanceof SpawnEggItem && i.getRegistryName().getNamespace().equals(TwilightForestMod.ID)) {
+				getBuilder(i.getRegistryName().getPath())
+								.parent(getExistingFile(new ResourceLocation("item/template_spawn_egg")));
+			}
+		}
 		toBlock(TFBlocks.tower_wood.get());
 		toBlock(TFBlocks.tower_wood_encased.get());
 		toBlock(TFBlocks.tower_wood_cracked.get());

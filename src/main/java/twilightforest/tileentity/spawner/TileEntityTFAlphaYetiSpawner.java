@@ -8,7 +8,7 @@ import twilightforest.tileentity.TFTileEntities;
 public class TileEntityTFAlphaYetiSpawner extends TileEntityTFBossSpawner<EntityTFYetiAlpha> {
 
 	public TileEntityTFAlphaYetiSpawner() {
-		super(TFTileEntities.ALPHA_YETI_SPAWNER.get(), TFEntities.yeti_alpha.get());
+		super(TFTileEntities.ALPHA_YETI_SPAWNER.get(), TFEntities.yeti_alpha);
 	}
 
 	@Override

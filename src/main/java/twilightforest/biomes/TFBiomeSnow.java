@@ -46,8 +46,8 @@ public class TFBiomeSnow extends TFBiomeBase {
 	public void addSpawns() {
 		super.addSpawns();
 
-		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.yeti.get(), 20, 4, 4));
-		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.winter_wolf.get(), 5, 1, 4));
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.yeti, 20, 4, 4));
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.winter_wolf, 5, 1, 4));
 	}
 
 	//TODO: Figure this out

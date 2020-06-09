@@ -13,7 +13,7 @@ public class EntityTFSpikeBlock extends Entity {
 	private EntityTFBlockGoblin goblin;
 
 	public EntityTFSpikeBlock(World world) {
-		super(TFEntities.blockchain_goblin.get(), world);
+		super(TFEntities.blockchain_goblin, world);
 	}
 
 	@Override

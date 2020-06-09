@@ -266,7 +266,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 				mobID = EntityType.ZOMBIE;
 				break;
 			case 3:
-				mobID = TFEntities.swarm_spider.get();
+				mobID = TFEntities.swarm_spider;
 				break;
 		}
 		setSpawner(world, 7, floorLevel + 2, 7, sbb, mobID);

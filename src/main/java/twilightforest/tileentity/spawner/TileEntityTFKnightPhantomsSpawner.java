@@ -18,7 +18,7 @@ public class TileEntityTFKnightPhantomsSpawner extends TileEntityTFBossSpawner<E
 	private int spawned = 0;
 
 	public TileEntityTFKnightPhantomsSpawner() {
-		super(TFTileEntities.KNIGHT_PHANTOM_SPAWNER.get(), TFEntities.knight_phantom.get());
+		super(TFTileEntities.KNIGHT_PHANTOM_SPAWNER.get(), TFEntities.knight_phantom);
 	}
 
 	@Override

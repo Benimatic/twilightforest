@@ -32,7 +32,7 @@ public class TFGenPenguins extends Feature<NoFeatureConfig> {
 			dPos = world.getHeight(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, dPos); //TODO: Verify
 
 			if (dPos.getY() > 0) {
-				EntityTFPenguin penguin = new EntityTFPenguin(TFEntities.penguin.get(), world.getWorld());
+				EntityTFPenguin penguin = new EntityTFPenguin(TFEntities.penguin, world.getWorld());
 				penguin.moveToBlockPosAndAngles(dPos, rand.nextFloat() * 360.0F, 0.0F);
 
 				world.addEntity(penguin);

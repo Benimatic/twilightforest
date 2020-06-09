@@ -45,7 +45,7 @@ public class TFBiomeSpookyForest extends TFBiomeBase {
 
 		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(EntityType.SPIDER, 50, 1, 4));
 		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(EntityType.SKELETON, 20, 1, 4));
-		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.skeleton_druid.get(), 5, 1, 1));
+		addSpawn(EntityClassification.MONSTER, new SpawnListEntry(TFEntities.skeleton_druid, 5, 1, 1));
 	}
 
 	@Override

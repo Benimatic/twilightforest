@@ -8,7 +8,7 @@ import twilightforest.tileentity.TFTileEntities;
 public class TileEntityTFHydraSpawner extends TileEntityTFBossSpawner<EntityTFHydra> {
 
 	public TileEntityTFHydraSpawner() {
-		super(TFTileEntities.HYDRA_SPAWNER.get(), TFEntities.hydra.get());
+		super(TFTileEntities.HYDRA_SPAWNER.get(), TFEntities.hydra);
 	}
 
 	@Override
@@ -19,7 +19,7 @@ public class TileEntityTFHydraSpawner extends TileEntityTFBossSpawner<EntityTFHy
 	@Override
 	public Entity getDisplayEntity() {
 		if (this.displayCreature == null) {
-			this.displayCreature = TFEntities.hydra_head.get().create(world);
+			this.displayCreature = TFEntities.hydra_head.create(world);
 		}
 		return this.displayCreature;
 	}

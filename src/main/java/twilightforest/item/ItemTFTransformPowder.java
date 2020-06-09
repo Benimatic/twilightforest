@@ -32,20 +32,20 @@ public class ItemTFTransformPowder extends Item {
 	}
 
 	public void initTransformations() {
-		addTwoWayTransformation(TFEntities.minotaur.get(),       EntityType.ZOMBIE_PIGMAN);
-		addTwoWayTransformation(TFEntities.deer.get(),           EntityType.COW);
-		addTwoWayTransformation(TFEntities.bighorn_sheep.get(),  EntityType.SHEEP);
-		addTwoWayTransformation(TFEntities.wild_boar.get(),      EntityType.PIG);
-		addTwoWayTransformation(TFEntities.bunny.get(),          EntityType.RABBIT);
-		addTwoWayTransformation(TFEntities.tiny_bird.get(),      EntityType.PARROT);
-		addTwoWayTransformation(TFEntities.raven.get(),          EntityType.BAT);
-		addTwoWayTransformation(TFEntities.hostile_wolf.get(),   EntityType.WOLF);
-		addTwoWayTransformation(TFEntities.penguin.get(),        EntityType.CHICKEN);
-		addTwoWayTransformation(TFEntities.hedge_spider.get(),   EntityType.SPIDER);
-		addTwoWayTransformation(TFEntities.swarm_spider.get(),   EntityType.CAVE_SPIDER);
-		addTwoWayTransformation(TFEntities.wraith.get(),         EntityType.BLAZE);
-		addTwoWayTransformation(TFEntities.redcap.get(),         EntityType.VILLAGER);
-		addTwoWayTransformation(TFEntities.skeleton_druid.get(), EntityType.WITCH);
+		addTwoWayTransformation(TFEntities.minotaur,       EntityType.ZOMBIE_PIGMAN);
+		addTwoWayTransformation(TFEntities.deer,           EntityType.COW);
+		addTwoWayTransformation(TFEntities.bighorn_sheep,  EntityType.SHEEP);
+		addTwoWayTransformation(TFEntities.wild_boar,      EntityType.PIG);
+		addTwoWayTransformation(TFEntities.bunny,          EntityType.RABBIT);
+		addTwoWayTransformation(TFEntities.tiny_bird,      EntityType.PARROT);
+		addTwoWayTransformation(TFEntities.raven,          EntityType.BAT);
+		addTwoWayTransformation(TFEntities.hostile_wolf,   EntityType.WOLF);
+		addTwoWayTransformation(TFEntities.penguin,        EntityType.CHICKEN);
+		addTwoWayTransformation(TFEntities.hedge_spider,   EntityType.SPIDER);
+		addTwoWayTransformation(TFEntities.swarm_spider,   EntityType.CAVE_SPIDER);
+		addTwoWayTransformation(TFEntities.wraith,         EntityType.BLAZE);
+		addTwoWayTransformation(TFEntities.redcap,         EntityType.VILLAGER);
+		addTwoWayTransformation(TFEntities.skeleton_druid, EntityType.WITCH);
 	}
 
 	private void addTwoWayTransformation(EntityType<?> from, EntityType<?> to) {

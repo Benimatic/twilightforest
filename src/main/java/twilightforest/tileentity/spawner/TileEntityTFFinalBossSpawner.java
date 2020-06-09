@@ -9,7 +9,7 @@ import twilightforest.tileentity.TFTileEntities;
 public class TileEntityTFFinalBossSpawner extends TileEntityTFBossSpawner<EntityTFKobold> {
 
 	public TileEntityTFFinalBossSpawner() {
-		super(TFTileEntities.FINAL_BOSS_SPAWNER.get(), TFEntities.kobold.get());
+		super(TFTileEntities.FINAL_BOSS_SPAWNER.get(), TFEntities.kobold);
 	}
 
 	@Override

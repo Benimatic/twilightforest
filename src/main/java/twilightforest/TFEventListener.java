@@ -223,10 +223,10 @@ public class TFEventListener {
 			}
 
 			// spawn effect thingers
-			EntityTFCharmEffect effect = new EntityTFCharmEffect(TFEntities.charm_effect.get(), living.world, living, charm1 ? TFItems.charm_of_life_1.get() : TFItems.charm_of_life_2.get());
+			EntityTFCharmEffect effect = new EntityTFCharmEffect(TFEntities.charm_effect, living.world, living, charm1 ? TFItems.charm_of_life_1.get() : TFItems.charm_of_life_2.get());
 			living.world.addEntity(effect);
 
-			EntityTFCharmEffect effect2 = new EntityTFCharmEffect(TFEntities.charm_effect.get(), living.world, living, charm1 ? TFItems.charm_of_life_1.get() : TFItems.charm_of_life_2.get());
+			EntityTFCharmEffect effect2 = new EntityTFCharmEffect(TFEntities.charm_effect, living.world, living, charm1 ? TFItems.charm_of_life_1.get() : TFItems.charm_of_life_2.get());
 			effect2.offset = (float) Math.PI;
 			living.world.addEntity(effect2);
 
@@ -385,10 +385,10 @@ public class TFEventListener {
 
 			// spawn effect thingers
 			if (!keepInventory.getItemStack().isEmpty()) {
-				EntityTFCharmEffect effect = new EntityTFCharmEffect(TFEntities.charm_effect.get(), player.world, player, keepInventory.getItemStack().getItem());
+				EntityTFCharmEffect effect = new EntityTFCharmEffect(TFEntities.charm_effect, player.world, player, keepInventory.getItemStack().getItem());
 				player.world.addEntity(effect);
 
-				EntityTFCharmEffect effect2 = new EntityTFCharmEffect(TFEntities.charm_effect.get(), player.world, player, keepInventory.getItemStack().getItem());
+				EntityTFCharmEffect effect2 = new EntityTFCharmEffect(TFEntities.charm_effect, player.world, player, keepInventory.getItemStack().getItem());
 				effect2.offset = (float) Math.PI;
 				player.world.addEntity(effect2);
 

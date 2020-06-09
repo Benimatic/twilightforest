@@ -343,7 +343,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		((ServerWorld)this.world).addLightningBolt(new LightningBoltEntity(world, x, y + 4, z, true));
 
 		for (int i = 0; i < tries; i++) {
-			EntityTFMiniGhast minion = new EntityTFMiniGhast(TFEntities.mini_ghast.get(), world);
+			EntityTFMiniGhast minion = new EntityTFMiniGhast(TFEntities.mini_ghast, world);
 
 			double sx = x + ((rand.nextDouble() - rand.nextDouble()) * rangeXZ);
 			double sy = y + (rand.nextDouble() * rangeY);

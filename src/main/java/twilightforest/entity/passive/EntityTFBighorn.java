@@ -38,7 +38,7 @@ public class EntityTFBighorn extends SheepEntity {
 	}
 
 	public EntityTFBighorn(World world, double x, double y, double z) {
-		this(TFEntities.bighorn_sheep.get(), world);
+		this(TFEntities.bighorn_sheep, world);
 		this.setPosition(x, y, z);
 	}
 
@@ -64,7 +64,7 @@ public class EntityTFBighorn extends SheepEntity {
     @Override
 	public SheepEntity createChild(AgeableEntity ageable) {
 		EntityTFBighorn otherParent = (EntityTFBighorn) ageable;
-		EntityTFBighorn babySheep = new EntityTFBighorn(TFEntities.bighorn_sheep.get(), world);
+		EntityTFBighorn babySheep = new EntityTFBighorn(TFEntities.bighorn_sheep, world);
 		babySheep.setFleeceColor(getDyeColorMixFromParents(this, otherParent));
 		return babySheep;
 	}

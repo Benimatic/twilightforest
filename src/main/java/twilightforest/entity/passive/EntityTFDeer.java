@@ -31,7 +31,7 @@ public class EntityTFDeer extends CowEntity {
 	}
 
 	public EntityTFDeer(World world, double x, double y, double z) {
-		this(TFEntities.deer.get(), world);
+		this(TFEntities.deer, world);
 		this.setPosition(x, y, z);
 	}
 
@@ -78,6 +78,6 @@ public class EntityTFDeer extends CowEntity {
 
 	@Override
 	public CowEntity createChild(AgeableEntity entityanimal) {
-		return new EntityTFDeer(TFEntities.deer.get(), world);
+		return new EntityTFDeer(TFEntities.deer, world);
 	}
 }

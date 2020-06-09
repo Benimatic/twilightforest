@@ -652,7 +652,7 @@ public class HydraHeadContainer {
 				// stop hurting yourself!
 				this.endCurrentAction();
 			} else {
-				EntityTFHydraMortar mortar = new EntityTFHydraMortar(TFEntities.hydra_mortar.get(), headEntity.world, this.headEntity);
+				EntityTFHydraMortar mortar = new EntityTFHydraMortar(TFEntities.hydra_mortar, headEntity.world, this.headEntity);
 
 				// launch blasting mortars if the player is hiding
 				if (this.targetEntity != null && !headEntity.getEntitySenses().canSee(this.targetEntity)) {
