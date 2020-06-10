@@ -7,7 +7,7 @@ public class ModelTFIceShooter extends ModelTFIceExploder<EntityStableIceCore> {
 
 	@Override
 	public void setLivingAnimations(EntityStableIceCore entity, float limbSwing, float limbSwingAmount, float partialTicks) {
-		this.entity = entity;
+		this.alive = entity.isAlive();
 
 		for (int i = 0; i < spikes.length; i++) {
 			// rotate the spikes
@@ -16,12 +16,8 @@ public class ModelTFIceShooter extends ModelTFIceExploder<EntityStableIceCore> {
 			this.spikes[i].rotateAngleZ = MathHelper.cos(i / 5.0F) / 4.0F;
 
 			this.spikes[i].rotateAngleX += i * (Math.PI / 8F);
-			//this.spikes[i].rotateAngleY += i * 2.5f;
-			//this.spikes[i].rotateAngleZ += i * 3;
 
 			this.spikes[i].childModels.get(0).rotationPointY = 9.5F + MathHelper.sin((i + entity.ticksExisted + partialTicks) / 3F) * 3F;
-
-			//((ModelBox)this.spikes[i].cubeList.get(0)). = 6 + MathHelper.sin((entity.ticksExisted + partialTicks) / (float)i) * 3F;
 		}
 	}
 }

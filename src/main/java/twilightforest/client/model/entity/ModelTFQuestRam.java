@@ -8,7 +8,6 @@ package twilightforest.client.model.entity;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
@@ -34,7 +33,6 @@ public class ModelTFQuestRam extends SegmentedModel<EntityTFQuestRam> {
 	public ModelRenderer head;
 
 	ModelRenderer[] segments;
-	boolean[] segmentEnabled;
 
 	int[] colorOrder = new int[]{0, 8, 7, 15, 14, 1, 4, 5, 13, 3, 9, 11, 10, 2, 6, 12};
 
@@ -116,13 +114,11 @@ public class ModelTFQuestRam extends SegmentedModel<EntityTFQuestRam> {
 		head.addChild(nose);
 
 		segments = new ModelRenderer[16];
-		segmentEnabled = new boolean[16];
 		for (int i = 0; i < 16; i++) {
 			segments[i] = new ModelRenderer(this, 0, 104);
 			segments[i].addCuboid(-9F, -7.5F, 0F, 18, 15, 2);
 			segments[i].setRotationPoint(0F, -1F, 2F);
-
-			segmentEnabled[i] = false;
+			segments[i].showModel = false;
 		}
 	}
 
@@ -145,36 +141,13 @@ public class ModelTFQuestRam extends SegmentedModel<EntityTFQuestRam> {
 	}
 
 	@Override
-	public void render(MatrixStack stack, IVertexBuilder builder, int light, int overlay, float red, float green, float blue, float scale) {
-		super.render(stack, builder, light, overlay, red, green, blue, scale);
-		//setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-
-//		frontbody.render(scale);
-//		rearbody.render(scale);
-//		leg1.render(scale);
-//		haunch1.render(scale);
-//		leg2.render(scale);
-//		haunch2.render(scale);
-//		leg3.render(scale);
-//		haunch3.render(scale);
-//		leg4.render(scale);
-//		haunch4.render(scale);
-//		neck.render(scale);
-//		//nose.render(scale);
-//		head.render(scale);
-
-		this.getParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
+	public void render(MatrixStack stack, IVertexBuilder builder, int light, int overlay, float red, float green, float blue, float alpha) {
+		super.render(stack, builder, light, overlay, red, green, blue, alpha);
 
 		for (int i = 0; i < 16; i++) {
-			if (segmentEnabled[i]) {
-				float var4 = 1.0F;
-				final float[] dyeRgb = SheepEntity.getDyeRgb(DyeColor.byId(i));
-
-				RenderSystem.color3f(var4 * dyeRgb[0], var4 * dyeRgb[1], var4 * dyeRgb[2]);
-				segments[i].render(stack, builder, light, overlay, red, green, blue, scale);
-			}
+			final float[] dyeRgb = SheepEntity.getDyeRgb(DyeColor.byId(i));
+			segments[i].render(stack, builder, light, overlay, dyeRgb[0], dyeRgb[1], dyeRgb[2], alpha);
 		}
-		RenderSystem.color3f(1.0F, 1.0F, 1.0F);
 	}
 
 	private void setRotation(ModelRenderer model, float x, float y, float z) {
@@ -200,10 +173,6 @@ public class ModelTFQuestRam extends SegmentedModel<EntityTFQuestRam> {
 		this.haunch4.rotateAngleX = this.leg4.rotateAngleX;
 	}
 
-	/**
-	 * Used for easily adding entity-dependent animations. The second and third float params here are the same second
-	 * and third as in the setRotationAngles method.
-	 */
 	@Override
 	public void setLivingAnimations(EntityTFQuestRam entity, float limbSwing, float limbSwingAmount, float partialTicks) {
 
@@ -220,12 +189,12 @@ public class ModelTFQuestRam extends SegmentedModel<EntityTFQuestRam> {
 		int segmentOffset = 2;
 		for (int color : colorOrder) {
 			if (entity.isColorPresent(DyeColor.byId(color))) {
-				segmentEnabled[color] = true;
+				segments[color].showModel = true;
 				segments[color].rotationPointZ = segmentOffset;
 
 				segmentOffset += 2;
 			} else {
-				segmentEnabled[color] = false;
+				segments[color].showModel = false;
 			}
 		}
 	}

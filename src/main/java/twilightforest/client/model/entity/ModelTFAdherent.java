@@ -1,6 +1,5 @@
 package twilightforest.client.model.entity;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
@@ -48,41 +47,20 @@ public class ModelTFAdherent extends BipedModel<EntityTFAdherent> {
 
 	}
 
-	/**
-	 * Sets the model's various rotation angles. For bipeds, limbSwing and limbSwingAmount are used for animating the movement of arms
-	 * and legs, where limbSwing represents the time(so that arms and legs swing back and forth) and limbSwingAmount represents how
-	 * "far" arms and legs can swing at most.
-	 */
 	@Override
 	public void setAngles(EntityTFAdherent entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		//super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entity);
-
 		// rotate head normally
 		this.bipedHead.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 		this.bipedHead.rotateAngleX = headPitch / (180F / (float) Math.PI);
 
-		// wave arms more
-		this.bipedRightArm.rotateAngleX = 0.0F;//MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 2.0F * limbSwingAmount * 0.5F;
-		this.bipedLeftArm.rotateAngleX = 0.0F;//MathHelper.cos(limbSwing * 0.6662F) * 2.0F * limbSwingAmount * 0.5F;
+		this.bipedRightArm.rotateAngleX = 0.0F;
+		this.bipedLeftArm.rotateAngleX = 0.0F;
 		this.bipedRightArm.rotateAngleZ = 0.0F;
 		this.bipedLeftArm.rotateAngleZ = 0.0F;
-
 
 		this.bipedRightArm.rotateAngleZ += MathHelper.cos((ageInTicks + 10F) * 0.133F) * 0.3F + 0.3F;
 		this.bipedLeftArm.rotateAngleZ -= MathHelper.cos((ageInTicks + 10F) * 0.133F) * 0.3F + 0.3F;
 		this.bipedRightArm.rotateAngleX += MathHelper.sin(ageInTicks * 0.067F) * 0.05F;
 		this.bipedLeftArm.rotateAngleX -= MathHelper.sin(ageInTicks * 0.067F) * 0.05F;
-	}
-
-	/**
-	 * Used for easily adding entity-dependent animations. The second and third float params here are the same second
-	 * and third as in the setRotationAngles method.
-	 */
-	@Override
-	public void setLivingAnimations(EntityTFAdherent entity, float limbSwing, float limbSwingAmount, float partialTicks) {
-		float bounce = entity.ticksExisted + partialTicks;
-
-		// this is where we add the floating
-		RenderSystem.translatef(0F, -0.125F - MathHelper.sin((bounce) * 0.133F) * 0.1F, 0F);
 	}
 }

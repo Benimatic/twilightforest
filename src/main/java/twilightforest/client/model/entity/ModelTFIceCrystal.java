@@ -1,25 +1,23 @@
 package twilightforest.client.model.entity;
 
-import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.client.renderer.entity.model.SegmentedModel;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
-import org.lwjgl.opengl.GL11;
 import twilightforest.entity.boss.EntityTFIceCrystal;
 
 import java.util.Arrays;
 
-public class ModelTFIceCrystal extends SegmentedModel<EntityTFIceCrystal> {
+public class ModelTFIceCrystal extends EntityModel<EntityTFIceCrystal> {
 
-	public ModelRenderer[] spikes = new ModelRenderer[16];
+	private final ModelRenderer[] spikes = new ModelRenderer[16];
 
-	private final ImmutableList<ModelRenderer> parts;
-	private EntityTFIceCrystal entity;
+	private boolean alive;
 
 	public ModelTFIceCrystal() {
+		super(RenderType::getEntityTranslucent);
 		this.textureWidth = 32;
 		this.textureHeight = 32;
 
@@ -43,44 +41,22 @@ public class ModelTFIceCrystal extends SegmentedModel<EntityTFIceCrystal> {
 
 			this.spikes[i].addChild(cube);
 		}
-
-		ImmutableList.Builder<ModelRenderer> builder = ImmutableList.builder();
-		builder.addAll(Arrays.asList(this.spikes));
-		parts = builder.build();
 	}
 
 	@Override
-	public ImmutableList<ModelRenderer> getParts() {
-		return parts;
-	}
-
-	@Override
-	public void render(MatrixStack stack, IVertexBuilder builder, int light, int overlay, float red, float green, float blue, float scale) {
-		//setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-		//this.bipedHead.render(scale);
-
-		for (int i = 0; i < spikes.length; i++) {
-
-			if (entity.isAlive()) {
-				RenderSystem.enableBlend();
-				RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-
-				RenderSystem.color4f(1F, 1F, 1F, 0.6F);
-			}
-
-			super.render(stack, builder, light, overlay, red, green, blue, scale);
-
-			RenderSystem.disableBlend();
+	public void render(MatrixStack stack, IVertexBuilder builder, int light, int overlay, float red, float green, float blue, float alpha) {
+		for (ModelRenderer spike : spikes) {
+			spike.render(stack, builder, light, overlay, red, green, blue, alive ? 0.6F : alpha);
 		}
 	}
 
 	@Override
 	public void setAngles(EntityTFIceCrystal entity, float v, float v1, float v2, float v3, float v4) {
-		this.entity = entity;
 	}
 
 	@Override
 	public void setLivingAnimations(EntityTFIceCrystal entity, float limbSwing, float limbSwingAmount, float partialTicks) {
+		this.alive = entity.isAlive();
 		for (int i = 0; i < spikes.length; i++) {
 			// rotate the spikes
 			this.spikes[i].rotateAngleX = MathHelper.sin((entity.ticksExisted + partialTicks) / 5.0F) / 4.0F;
@@ -94,16 +70,6 @@ public class ModelTFIceCrystal extends SegmentedModel<EntityTFIceCrystal> {
 			} else if (i % 4 == 2) {
 				this.spikes[i].rotateAngleY -= 1;
 			}
-
-			//this.spikes[i].rotateAngleY += i * (Math.PI / 8F);
-			//this.spikes[i].rotateAngleZ += i * (Math.PI / 8F);
-
-
-//        	this.spikes[i].rotationPointX = MathHelper.cos((entity.ticksExisted + partialTicks) / (float)i) * 3F;
-//        	this.spikes[i].rotationPointY = 5F + MathHelper.sin((entity.ticksExisted + partialTicks) / (float)i) * 3F;
-//        	this.spikes[i].rotationPointZ = MathHelper.sin((entity.ticksExisted + partialTicks) / (float)i) * 3F;
-
-			//((ModelRenderer)this.spikes[i].childModels.get(0)).rotationPointY = 10 + MathHelper.sin((i + entity.ticksExisted + partialTicks) / i) * 3F;
 		}
 	}
 }

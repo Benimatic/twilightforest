@@ -1,24 +1,23 @@
 package twilightforest.client.model.entity;
 
+import com.google.common.collect.Iterables;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
-import org.lwjgl.opengl.GL11;
 import twilightforest.entity.boss.EntityTFLich;
+
+import java.util.Arrays;
 
 public class ModelTFLich extends BipedModel<EntityTFLich> {
 	private final ModelRenderer collar;
 	private final ModelRenderer cloak;
 
-	private EntityTFLich entity;
+	private boolean shadowClone;
 
 	public ModelTFLich() {
 		super(0.0F, 0.0F, 64, 64);
-//		textureWidth = 64;
-//		textureHeight = 64;
 
 		bipedBody = new ModelRenderer(this, 8, 16);
 		bipedBody.addCuboid(-4F, 0.0F, -2F, 8, 24, 4);
@@ -71,24 +70,27 @@ public class ModelTFLich extends BipedModel<EntityTFLich> {
 	}
 
 	@Override
-	public void render(MatrixStack stack, IVertexBuilder builder, int light, int overlay, float red, float green, float blue, float scale) {
-		if (!entity.isShadowClone()) {
-			super.render(stack, builder, light, overlay, red, green, blue, scale);
-			collar.render(stack, builder, light, overlay, red, green, blue, scale * 1.125F);
-			cloak.render(stack, builder, light, overlay, red, green, blue, scale * 1.125F);
+	public void render(MatrixStack stack, IVertexBuilder builder, int light, int overlay, float red, float green, float blue, float alpha) {
+		if (!shadowClone) {
+			super.render(stack, builder, light, overlay, red, green, blue, alpha);
 		} else {
-			RenderSystem.enableBlend();
-			RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			float shadow = 0.33f;
-			RenderSystem.color4f(shadow, shadow, shadow, 0.8F);
-			super.render(stack, builder, light, overlay, red, green, blue, scale);
-			RenderSystem.disableBlend();
+			super.render(stack, builder, light, overlay, red * shadow, green * shadow, blue * shadow, 0.8F);
+		}
+	}
+
+	@Override
+	protected Iterable<ModelRenderer> getBodyParts() {
+		if (shadowClone) {
+			return super.getBodyParts();
+		} else {
+			return Iterables.concat(Arrays.asList(cloak, collar), super.getBodyParts());
 		}
 	}
 
 	@Override
 	public void setAngles(EntityTFLich entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		this.entity = entity;
+		this.shadowClone = entity.isShadowClone();
 		super.setAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
 		float ogSin = MathHelper.sin(swingProgress * 3.141593F);

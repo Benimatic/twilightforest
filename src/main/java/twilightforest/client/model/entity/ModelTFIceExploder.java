@@ -2,12 +2,11 @@ package twilightforest.client.model.entity;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
-import org.lwjgl.opengl.GL11;
 import twilightforest.entity.EntityTFIceMob;
 
 import java.util.Arrays;
@@ -17,12 +16,10 @@ public class ModelTFIceExploder<T extends EntityTFIceMob> extends BipedModel<T> 
 	public ModelRenderer[] spikes = new ModelRenderer[16];
 
 	private final ImmutableList<ModelRenderer> parts;
-	protected T entity;
+	protected boolean alive;
 
 	public ModelTFIceExploder() {
-		super(0.0F, 0.0F, 32, 32);
-//		this.textureWidth = 32;
-//		this.textureHeight = 32;
+		super(RenderType::getEntityTranslucent, 0.0F, 0.0F, 32, 32);
 
 		float par1 = 0F;
 		float par2 = 0F;
@@ -68,32 +65,14 @@ public class ModelTFIceExploder<T extends EntityTFIceMob> extends BipedModel<T> 
 	}
 
 	@Override
-	public void render(MatrixStack stack, IVertexBuilder builder, int light, int overlay, float red, float green, float blue, float scale) {
-		//setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-		this.getHeadParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
-
-		for (int i = 0; i < spikes.length; i++) {
-
-			if (entity.isAlive()) {
-				RenderSystem.enableBlend();
-				RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-
-				RenderSystem.color4f(1F, 1F, 1F, 0.6F);
-			}
-
-			this.getBodyParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
-
-			RenderSystem.disableBlend();
-		}
+	public void render(MatrixStack stack, IVertexBuilder builder, int light, int overlay, float red, float green, float blue, float alpha) {
+		this.getHeadParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, alpha));
+		this.getBodyParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, alive ? 0.6F : alpha));
 	}
 
-	/**
-	 * Used for easily adding entity-dependent animations. The second and third float params here are the same second
-	 * and third as in the setRotationAngles method.
-	 */
 	@Override
 	public void setLivingAnimations(T entity, float limbSwing, float limbSwingAmount, float partialTicks) {
-		this.entity = entity;
+		this.alive = entity.isAlive();
 
 		for (int i = 0; i < spikes.length; i++) {
 			// rotate the spikes
