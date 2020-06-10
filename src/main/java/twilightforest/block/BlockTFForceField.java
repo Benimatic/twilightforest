@@ -27,38 +27,8 @@ public class BlockTFForceField extends BlockTFConnectableRotatedPillar {
 				facing == Direction.NORTH || axis == Direction.Axis.Z ?  0 : this.boundingBoxWidthUpper);
 	}
 
-//	@Override
-//	protected boolean canConnectTo(BlockState state, BlockState otherState, IBlockAccess world, BlockPos pos, Direction connectTo) {
-//		BlockFaceShape blockFaceShape = otherState.getBlockFaceShape(world, pos, connectTo);
-//
-//		return blockFaceShape == BlockFaceShape.SOLID
-//				|| blockFaceShape == BlockFaceShape.MIDDLE_POLE_THIN
-//				|| super.canConnectTo(state, otherState, world, pos, connectTo);
-//	}
-
-	//TODO: Check this
-//	@Override
-//	public boolean isSolid(BlockState state) {
-//		return false;
-//	}
-
 	@Override
 	public boolean canEntityDestroy(BlockState state, IBlockReader world, BlockPos pos, Entity entity) {
-		return false; // TODO: ???
+		return false;
 	}
-
-	//TODO: Move to client
-//	@OnlyIn(Dist.CLIENT)
-//	@Override
-//	public BlockRenderLayer getRenderLayer() {
-//		return BlockRenderLayer.TRANSLUCENT;
-//	}
-
-	//TODO: Removed. Check this
-//	@Override
-//	@Deprecated
-//	public boolean doesSideBlockRendering(BlockState state, IEnviromentBlockReader world, BlockPos pos, Direction face) {
-//		return world.getBlockState(pos.offset(face)).getBlock() != this && Block.shouldSideBeRendered(state, world, pos, face);
-//	}
-
 }

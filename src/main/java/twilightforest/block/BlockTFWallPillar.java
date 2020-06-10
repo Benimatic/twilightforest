@@ -15,19 +15,9 @@ import twilightforest.TwilightForestMod;
 
 public class BlockTFWallPillar extends BlockTFConnectableRotatedPillar {
 
-    protected static final BooleanProperty UP = BooleanProperty.create("up");
-    protected static final BooleanProperty DOWN = BooleanProperty.create("down");
 
     BlockTFWallPillar(Material material, double width, double height) {
         super(Properties.create(material).hardnessAndResistance(1.5F, 10.0F), width, height);
-
-        this.setDefaultState(this.getDefaultState().with(UP, false).with(DOWN, false));
-    }
-
-    @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-        super.fillStateContainer(builder);
-        builder.add(UP, DOWN);
     }
 
 //    @Override

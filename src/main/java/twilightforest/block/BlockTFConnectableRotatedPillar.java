@@ -17,6 +17,8 @@ import net.minecraft.world.IBlockReader;
 import twilightforest.TwilightForestMod;
 
 public abstract class BlockTFConnectableRotatedPillar extends RotatedPillarBlock {
+	protected static final BooleanProperty UP = BooleanProperty.create("up");
+	protected static final BooleanProperty DOWN = BooleanProperty.create("down");
 
     final double boundingBoxWidthLower;
     final double boundingBoxWidthUpper;
@@ -49,13 +51,14 @@ public abstract class BlockTFConnectableRotatedPillar extends RotatedPillarBlock
 
         this.setDefaultState(stateContainer.getBaseState().with(AXIS, Direction.Axis.Y)
                 .with(FenceBlock.NORTH, false).with(FenceBlock.WEST, false)
-                .with(FenceBlock.SOUTH, false).with(FenceBlock.EAST, false));
+                .with(FenceBlock.SOUTH, false).with(FenceBlock.EAST, false)
+                .with(DOWN, false).with(UP, false));
     }
 
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
         super.fillStateContainer(builder);
-        builder.add(FenceBlock.NORTH, FenceBlock.EAST, FenceBlock.SOUTH, FenceBlock.WEST);
+        builder.add(FenceBlock.NORTH, FenceBlock.EAST, FenceBlock.SOUTH, FenceBlock.WEST, DOWN, UP);
     }
 
 //	@Override
@@ -116,38 +119,34 @@ public abstract class BlockTFConnectableRotatedPillar extends RotatedPillarBlock
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
-		//state = this.getActualState(state, world, pos);
-
-		state = this.getDefaultState(); //Look, this probably isn't going to work
-
 		switch (state.get(AXIS)) {
 			case X:
-				return VoxelShapes.create(makeQuickAABB(
+				return makeCuboidShape(
 						0d,
 						state.get(FenceBlock.NORTH) ?  0d : this.boundingBoxWidthLower,
 						state.get(FenceBlock.WEST ) ?  0d : this.boundingBoxWidthLower,
 						16d,
 						state.get(FenceBlock.SOUTH) ? 16d : this.boundingBoxWidthUpper,
 						state.get(FenceBlock.EAST ) ? 16d : this.boundingBoxWidthUpper
-				));
+				);
 			case Z:
-				return VoxelShapes.create(makeQuickAABB(
+				return makeCuboidShape(
 						state.get(FenceBlock.EAST ) ?  0d : this.boundingBoxWidthLower,
 						state.get(FenceBlock.SOUTH) ?  0d : this.boundingBoxWidthLower,
 						0d,
 						state.get(FenceBlock.WEST ) ? 16d : this.boundingBoxWidthUpper,
 						state.get(FenceBlock.NORTH) ? 16d : this.boundingBoxWidthUpper,
 						16d
-				));
+				);
 			default:
-				return VoxelShapes.create(makeQuickAABB(
+				return makeCuboidShape(
 						state.get(FenceBlock.WEST)  ?  0d : this.boundingBoxWidthLower,
 						0d,
 						state.get(FenceBlock.NORTH) ?  0d : this.boundingBoxWidthLower,
 						state.get(FenceBlock.EAST)  ? 16d : this.boundingBoxWidthUpper,
 						16d,
 						state.get(FenceBlock.SOUTH) ? 16d : this.boundingBoxWidthUpper
-				));
+				);
 		}
 	}
 
