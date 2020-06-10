@@ -14,6 +14,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import twilightforest.client.particle.PinnedFireflyData;
 
 import java.util.Random;
 
@@ -65,6 +66,10 @@ public class EntityTFMobileFirefly extends AmbientEntity {
 
 		Vec3d motion = getMotion();
 		this.setMotion(motion.x, motion.y * 0.6000000238418579D, motion.z);
+
+		if (world.isRemote && ticksExisted % 30 == 0) {
+			world.addParticle(new PinnedFireflyData(getEntityId()), getX(), getY(), getZ(), 0, 0, 0);
+		}
 	}
 
 	@Override
@@ -121,21 +126,5 @@ public class EntityTFMobileFirefly extends AmbientEntity {
 				&& ! random.nextBoolean()
 				&& world.getLight(pos) <= random.nextInt(4)
 				&& canSpawnOn(entity, world, reason, pos, random);
-	}
-
-	//TODO: I believe this is done via the Renderer now
-//	@Override
-//	@OnlyIn(Dist.CLIENT)
-//	public int getBrightnessForRender() {
-//		return 15728880;
-//	}
-
-	public float getGlowBrightness() {
-		return (float) Math.sin(this.ticksExisted / 7.0) + 1F;
-	}
-
-	@Override
-	public float getBrightness() {
-		return getGlowBrightness();
 	}
 }

@@ -334,7 +334,7 @@ public class TFEntities {
 		RenderingRegistry.registerEntityRenderingHandler(slime_beetle, m -> new RenderTFSlimeBeetle(m, new ModelTFSlimeBeetle(), 0.6F));
 		RenderingRegistry.registerEntityRenderingHandler(pinch_beetle, m -> new RenderTFGenericMob<>(m, new ModelTFPinchBeetle(), 0.6F, "pinchbeetle.png"));
 		RenderingRegistry.registerEntityRenderingHandler(mist_wolf, RenderTFMistWolf::new);
-		RenderingRegistry.registerEntityRenderingHandler(firefly, RenderTFMobileFirefly::new);
+		RenderingRegistry.registerEntityRenderingHandler(firefly, RenderNoop<EntityTFMobileFirefly>::new);
 		RenderingRegistry.registerEntityRenderingHandler(mini_ghast, m -> new RenderTFGhast<>(m, new ModelTFGhast<>(), 0.625F));
 		RenderingRegistry.registerEntityRenderingHandler(tower_golem, m -> new RenderTFTowerGolem<>(m, new ModelTFTowerGolem<>(), 0.75F));
 		RenderingRegistry.registerEntityRenderingHandler(tower_termite, m -> new RenderTFGenericMob<>(m, new SilverfishModel<>(), 0.3F, "towertermite.png"));

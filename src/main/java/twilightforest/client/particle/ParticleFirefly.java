@@ -45,7 +45,7 @@ public class ParticleFirefly extends SpriteTexturedParticle {
 	}
 
 	public float getGlowBrightness() {
-		float lifeTime = maxAge - age;
+		int lifeTime = maxAge - age;
 		if (lifeTime <= halfLife) {
 			return (float) lifeTime / (float) halfLife;
 		} else {

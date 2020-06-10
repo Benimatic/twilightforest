@@ -29,6 +29,7 @@ public class TFParticleType {
 	public static final RegistryObject<BasicParticleType> ANNIHILATE = PARTICLE_TYPES.register("annihilate", () -> new BasicParticleType(false));
 	public static final RegistryObject<BasicParticleType> HUGE_SMOKE = PARTICLE_TYPES.register("huge_smoke", () -> new BasicParticleType(false));
 	public static final RegistryObject<BasicParticleType> FIREFLY = PARTICLE_TYPES.register("firefly", () -> new BasicParticleType(false));
+	public static final RegistryObject<ParticleType<PinnedFireflyData>> FIREFLY_PINNED = PARTICLE_TYPES.register("firefly_pinned", () -> new ParticleType<>(false, new PinnedFireflyData.Deserializer()));
 	public static final RegistryObject<ParticleType<LeafParticleData>> FALLEN_LEAF = PARTICLE_TYPES.register("fallen_leaf", () -> new ParticleType<>(false, new LeafParticleData.Deserializer()));
 
 	@SubscribeEvent
@@ -47,6 +48,7 @@ public class TFParticleType {
 		particles.registerFactory(TFParticleType.ANNIHILATE.get(), ParticleAnnihilate.Factory::new);
 		particles.registerFactory(TFParticleType.HUGE_SMOKE.get(), ParticleSmokeScale.Factory::new);
 		particles.registerFactory(TFParticleType.FIREFLY.get(), ParticleFirefly.Factory::new);
+		particles.registerFactory(TFParticleType.FIREFLY_PINNED.get(), ParticleFireflyPinned.Factory::new);
 		particles.registerFactory(TFParticleType.FALLEN_LEAF.get(), ParticleLeaf.Factory::new);
 	}
 }
