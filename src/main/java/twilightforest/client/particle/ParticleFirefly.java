@@ -10,22 +10,19 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ParticleFirefly extends SpriteTexturedParticle {
 
-	private int lifeTime;
-	private int halfLife;
+	private final int halfLife;
 
-	ParticleFirefly(World world, double x, double y, double z, float f, double f1, double f2, double f3) {
-		super(world, x, y, z, 0.0D, 0.0D, 0.0D);
-		motionX *= 2.10000000149011612D;
-		motionY *= 2.10000000149011612D;
-		motionZ *= 2.10000000149011612D;
-		particleRed = particleGreen = 1.0F * f;
-		particleRed *= 0.9F;
+	ParticleFirefly(World world, double x, double y, double z, double vx, double vy, double vz) {
+		super(world, x, y, z, vx, vy, vz);
+		motionX *= 2.1;
+		motionY *= 2.1;
+		motionZ *= 2.1;
+		particleRed = 0.9F;
+		particleGreen = 1.0F;
 		particleBlue = 0.0F;
-		particleScale = 1.0f + (rand.nextFloat() * 0.6f);
-		particleScale *= f;
-		lifeTime = maxAge = 10 + rand.nextInt(21);
-		maxAge *= f;
-		halfLife = lifeTime / 2;
+		particleScale = 0.2f + (rand.nextFloat() * 0.6f);
+		maxAge = 10 + rand.nextInt(21);
+		halfLife = maxAge / 2;
 		canCollide = true;
 	}
 
@@ -42,14 +39,13 @@ public class ParticleFirefly extends SpriteTexturedParticle {
 
 	@Override
 	public void tick() {
-		if (lifeTime <= 1) {
+		if (age++ >= maxAge) {
 			setExpired();
-		} else {
-			lifeTime--;
 		}
 	}
 
 	public float getGlowBrightness() {
+		float lifeTime = maxAge - age;
 		if (lifeTime <= halfLife) {
 			return (float) lifeTime / (float) halfLife;
 		} else {
@@ -72,7 +68,7 @@ public class ParticleFirefly extends SpriteTexturedParticle {
 
 		@Override
 		public Particle makeParticle(BasicParticleType typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-			ParticleFirefly particle = new ParticleFirefly(worldIn, x, y, z, 1.0F, xSpeed, ySpeed, zSpeed);
+			ParticleFirefly particle = new ParticleFirefly(worldIn, x, y, z, xSpeed, ySpeed, zSpeed);
 			particle.selectSpriteRandomly(this.spriteSet);
 			return particle;
 		}
