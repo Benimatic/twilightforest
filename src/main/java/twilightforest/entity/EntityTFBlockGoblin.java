@@ -254,7 +254,7 @@ public class EntityTFBlockGoblin extends MonsterEntity implements IEntityMultiPa
 			collided.applyEntityCollision(collider);
 			if (collided instanceof LivingEntity) {
 				if (super.attackEntityAsMob(collided)) {
-					collided.getMotion().add(0, 0.4, 0);
+					collided.addVelocity(0, 0.4, 0);
 					this.playSound(SoundEvents.ENTITY_IRON_GOLEM_ATTACK, 1.0F, 1.0F);
 					this.recoilCounter = 40;
 					if (this.isThrowing()) {

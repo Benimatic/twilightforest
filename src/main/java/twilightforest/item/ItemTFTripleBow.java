@@ -51,14 +51,14 @@ public class ItemTFTripleBow extends BowItem {
 						// other arrows with slight deviation
 						ArrowEntity entityarrow1 = new ArrowEntity(worldIn, entityLiving);
 						entityarrow1.shoot(entityLiving, entityLiving.rotationPitch, entityLiving.rotationYaw, 0, f * 2, 1);
-						entityarrow1.getMotion().add(0.0D, 0.007499999832361937D * 20F, 0.0D);
-						entityarrow1.getPosition().add(0.0D, 0.025F, 0.0D);
+						entityarrow1.setMotion(entityarrow1.getMotion().add(0.0D, 0.0075 * 20F, 0.0D));
+						entityarrow1.setPosition(entityarrow1.getX(), entityarrow1.getY() + 0.025F, entityarrow1.getZ());
 						entityarrow1.pickupStatus = ArrowEntity.PickupStatus.CREATIVE_ONLY;
 
 						ArrowEntity entityarrow2 = new ArrowEntity(worldIn, entityLiving);
 						entityarrow2.shoot(entityLiving, entityLiving.rotationPitch, entityLiving.rotationYaw, 0, f * 2, 1);
-						entityarrow2.getMotion().subtract(0.0D, 0.007499999832361937D * 20F, 0.0D);
-						entityarrow2.getPosition().add(0.0D, 0.025F, 0.0D).getY();
+						entityarrow2.setMotion(entityarrow2.getMotion().subtract(0.0D, 0.0075 * 20F, 0.0D));
+						entityarrow2.setPosition(entityarrow2.getX(), entityarrow2.getY() + 0.025F, entityarrow2.getZ());
 						entityarrow2.pickupStatus = ArrowEntity.PickupStatus.CREATIVE_ONLY;
 
 						if (f == 1.0F) {

@@ -60,7 +60,7 @@ public class EntityTFLoyalZombie extends TameableEntity {
 		boolean success = entity.attackEntityFrom(DamageSource.causeMobDamage(this), 7);
 
 		if (success) {
-			entity.getMotion().add(0, 0.2, 0);
+			entity.addVelocity(0, 0.2, 0);
 		}
 
 		return success;

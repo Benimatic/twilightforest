@@ -368,7 +368,7 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 	private void hitNearbyEntities() {
 		for (LivingEntity entity : this.world.getEntitiesWithinAABB(LivingEntity.class, this.getBoundingBox().grow(5, 0, 5))) {
 			if (entity != this && entity.attackEntityFrom(DamageSource.causeMobDamage(this), 5F)) {
-				entity.setMotion(entity.getMotion().add(0.0F, 0.4, 0.0F));
+				entity.addVelocity(0, 0.4, 0);
 			}
 		}
 	}

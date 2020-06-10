@@ -130,10 +130,7 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 			// set motions
 			Vec3d velocity = new Vec3d(this.getX() - destPoint.x, (this.getY() + this.getHeight() / 2F) - destPoint.y, this.getZ() - destPoint.z);
 
-//			this.motionX -= velocity.x;
-//			this.motionY -= velocity.y;
-//			this.motionZ -= velocity.z;
-			this.getMotion().subtract(velocity.x, velocity.y, velocity.z);
+			addVelocity(-velocity.x, -velocity.y, -velocity.z);
 
 			// normalize speed
 			float currentSpeed = MathHelper.sqrt(this.getMotion().getX() * this.getMotion().getX() + this.getMotion().getY() * this.getMotion().getY() + this.getMotion().getZ() * this.getMotion().getZ());

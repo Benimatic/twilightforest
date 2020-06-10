@@ -411,7 +411,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 
 		// also suck up mini ghasts
 		for (EntityTFMiniGhast ghast : world.getEntitiesWithinAABB(EntityTFMiniGhast.class, below)) {
-			ghast.getMotion().add(0.0D, 1.0D, 0.0D);
+			ghast.addVelocity(0, 1, 0);
 		}
 	}
 

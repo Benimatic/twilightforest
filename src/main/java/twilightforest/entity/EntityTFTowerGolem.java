@@ -56,7 +56,7 @@ public class EntityTFTowerGolem extends MonsterEntity {
 		boolean attackSuccess = super.attackEntityAsMob(entity);
 
 		if (attackSuccess) {
-			entity.getMotion().add(0.0D, 0.4000000059604645D, 0.0D);
+			entity.addVelocity(0, 0.4, 0);
 		}
 
 		return attackSuccess;

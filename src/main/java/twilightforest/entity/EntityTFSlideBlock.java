@@ -124,7 +124,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 			if (this.slideTime > WARMUP_TIME) {
 				final double moveAcceleration = 0.04;
 				Direction moveDirection = dataManager.get(MOVE_DIRECTION);
-				this.getMotion().add(moveDirection.getXOffset() * moveAcceleration, moveDirection.getYOffset() * moveAcceleration, moveDirection.getZOffset() * moveAcceleration);
+				setMotion(this.getMotion().add(moveDirection.getXOffset() * moveAcceleration, moveDirection.getYOffset() * moveAcceleration, moveDirection.getZOffset() * moveAcceleration));
 				this.move(MoverType.SELF, new Vec3d(this.getMotion().getX(), this.getMotion().getY(), this.getMotion().getZ()));
 			}
 			this.getMotion().mul(0.98, 0.98, 0.98);

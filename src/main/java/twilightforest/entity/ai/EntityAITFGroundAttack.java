@@ -94,7 +94,7 @@ public class EntityAITFGroundAttack extends Goal {
 
 				if (entity instanceof LivingEntity) {
 					if (entity.onGround) {
-						entity.getMotion().add(0F, 0.23F, 0F);
+						entity.addVelocity(0, 0.23, 0);
 
 						entity.attackEntityFrom(DamageSource.causeMobDamage(this.attacker).setDamageBypassesArmor(), (float) (this.attacker.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getValue() * 0.5F));
 					}
