@@ -8,8 +8,8 @@ import twilightforest.entity.EntityTFRisingZombie;
 
 public class ModelTFRisingZombie extends ZombieModel<EntityTFRisingZombie> {
 
-	public ModelTFRisingZombie() {
-		super(0.0F, true);
+	public ModelTFRisingZombie(boolean armor) {
+		super(0.0F, armor);
 	}
 
 	@Override

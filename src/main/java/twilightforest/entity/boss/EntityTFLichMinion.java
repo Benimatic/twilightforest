@@ -16,8 +16,6 @@ import java.util.List;
 
 public class EntityTFLichMinion extends ZombieEntity {
 
-	private static final DataParameter<Boolean> STRONG = EntityDataManager.createKey(EntityTFLichMinion.class, DataSerializers.BOOLEAN);
-
 	EntityTFLich master;
 
 	public EntityTFLichMinion(EntityType<? extends EntityTFLichMinion> type, World world) {
@@ -28,12 +26,6 @@ public class EntityTFLichMinion extends ZombieEntity {
 	public EntityTFLichMinion(World world, EntityTFLich entityTFLich) {
 		super(world);
 		this.master = entityTFLich;
-	}
-
-	@Override
-	protected void registerData() {
-		super.registerData();
-		dataManager.register(STRONG, false);
 	}
 
 	@Override
@@ -82,25 +74,5 @@ public class EntityTFLichMinion extends ZombieEntity {
 				break;
 			}
 		}
-	}
-
-	@Override
-	protected void onNewPotionEffect(EffectInstance effect) {
-		super.onNewPotionEffect(effect);
-		if (!world.isRemote && effect.getPotion() == Effects.STRENGTH) {
-			dataManager.set(STRONG, true);
-		}
-	}
-
-	@Override
-	protected void onFinishedPotionEffect(EffectInstance effect) {
-		super.onFinishedPotionEffect(effect);
-		if (!world.isRemote && effect.getPotion() == Effects.STRENGTH) {
-			dataManager.set(STRONG, false);
-		}
-	}
-
-	public boolean isStrong() {
-		return dataManager.get(STRONG);
 	}
 }

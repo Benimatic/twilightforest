@@ -7,23 +7,26 @@ import net.minecraft.entity.MobEntity;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.EntityTFLoyalZombie;
 
-public class ModelTFLoyalZombie extends BipedModel<MobEntity> {
+/**
+ * [VanillaCopy] {@link net.minecraft.client.renderer.entity.model.AbstractZombieModel} due to generic restrictions
+ */
+public class ModelTFLoyalZombie extends BipedModel<EntityTFLoyalZombie> {
 
-	public ModelTFLoyalZombie() {
-		super(0.0F, 0.0F, 64, 64);
+	public ModelTFLoyalZombie(boolean armor) {
+		super(0.0F, 0.0F, 64, armor ? 32 : 64);
 	}
 
 	@Override
-	public void setAngles(MobEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		super.setAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-		boolean flag = entity.isAggressive();
-		float f = MathHelper.sin(this.swingProgress * (float) Math.PI);
-		float f1 = MathHelper.sin((1.0F - (1.0F - this.swingProgress) * (1.0F - this.swingProgress)) * (float) Math.PI);
+	public void setAngles(EntityTFLoyalZombie e, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+		super.setAngles(e, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+		boolean flag = e.isAggressive();
+		float f = MathHelper.sin(this.swingProgress * (float)Math.PI);
+		float f1 = MathHelper.sin((1.0F - (1.0F - this.swingProgress) * (1.0F - this.swingProgress)) * (float)Math.PI);
 		this.bipedRightArm.rotateAngleZ = 0.0F;
 		this.bipedLeftArm.rotateAngleZ = 0.0F;
 		this.bipedRightArm.rotateAngleY = -(0.1F - f * 0.6F);
 		this.bipedLeftArm.rotateAngleY = 0.1F - f * 0.6F;
-		float f2 = -(float) Math.PI / (flag ? 1.5F : 2.25F);
+		float f2 = -(float)Math.PI / (flag ? 1.5F : 2.25F);
 		this.bipedRightArm.rotateAngleX = f2;
 		this.bipedLeftArm.rotateAngleX = f2;
 		this.bipedRightArm.rotateAngleX += f * 1.2F - f1 * 0.4F;

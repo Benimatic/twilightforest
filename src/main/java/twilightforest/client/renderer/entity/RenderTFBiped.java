@@ -14,13 +14,17 @@ public class RenderTFBiped<T extends MobEntity, M extends BipedModel<T>> extends
 
 	public RenderTFBiped(EntityRendererManager manager, M modelBiped, float shadowSize, String textureName) {
 		super(manager, modelBiped, shadowSize);
-		this.addLayer(new BipedArmorLayer<>(this, modelBiped, modelBiped)); //TODO: probably janky
 
 		if (textureName.startsWith("textures")) {
 			textureLoc = new ResourceLocation(textureName);
 		} else {
 			textureLoc = TwilightForestMod.getModelTexture(textureName);
 		}
+	}
+
+	public RenderTFBiped(EntityRendererManager manager, M modelBiped, M armorModel1, M armorModel2, float shadowSize, String textureName) {
+		this(manager, modelBiped, shadowSize, textureName);
+		this.addLayer(new BipedArmorLayer<>(this, armorModel1, armorModel2));
 	}
 
 	@Override

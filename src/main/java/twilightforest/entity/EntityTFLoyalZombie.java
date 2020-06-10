@@ -77,19 +77,22 @@ public class EntityTFLoyalZombie extends TameableEntity {
 		super.livingTick();
 	}
 
-	// [VanillaCopy] EntityWolf.shouldAttackEntity, substituting with our class
+	/**
+	 * [VanillaCopy] {@link net.minecraft.entity.passive.WolfEntity#shouldAttackEntity}, substituting with our class
+ 	 */
 	@Override
 	public boolean shouldAttackEntity(LivingEntity target, LivingEntity owner) {
 		if (!(target instanceof CreeperEntity) && !(target instanceof GhastEntity)) {
 			if (target instanceof EntityTFLoyalZombie) {
 				EntityTFLoyalZombie zombie = (EntityTFLoyalZombie) target;
-
-				if (zombie.isTamed() && zombie.getOwner() == owner) {
-					return false;
-				}
+				return !zombie.isTamed() || zombie.getOwner() != owner;
+			} else if (target instanceof PlayerEntity && owner instanceof PlayerEntity && !((PlayerEntity)owner).canAttackPlayer((PlayerEntity)target)) {
+				return false;
+			} else if (target instanceof AbstractHorseEntity && ((AbstractHorseEntity)target).isTame()) {
+				return false;
+			} else {
+				return !(target instanceof TameableEntity) || !((TameableEntity)target).isTamed();
 			}
-
-			return target instanceof PlayerEntity && owner instanceof PlayerEntity && !((PlayerEntity) owner).canAttackPlayer((PlayerEntity) target) ? false : !(target instanceof AbstractHorseEntity) || !((AbstractHorseEntity) target).isTame();
 		} else {
 			return false;
 		}

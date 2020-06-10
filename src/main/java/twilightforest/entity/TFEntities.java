@@ -7,6 +7,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.SpriteRenderer;
 import net.minecraft.client.renderer.entity.WolfRenderer;
+import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.entity.model.SilverfishModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
@@ -309,22 +310,22 @@ public class TFEntities {
 		RenderingRegistry.registerEntityRenderingHandler(bighorn_sheep, m -> new RenderTFBighorn(m, new ModelTFBighorn(), new ModelTFBighornFur(), 0.7F));
 		RenderingRegistry.registerEntityRenderingHandler(deer, m -> new RenderTFGenericMob<>(m, new ModelTFDeer(), 0.7F, "wilddeer.png"));
 
-		RenderingRegistry.registerEntityRenderingHandler(redcap, m -> new RenderTFBiped<>(m, new ModelTFRedcap<>(), 0.4F, "redcap.png"));
-		RenderingRegistry.registerEntityRenderingHandler(skeleton_druid, m -> new RenderTFBiped<>(m, new ModelTFSkeletonDruid(), 0.5F, "skeletondruid.png"));
+		RenderingRegistry.registerEntityRenderingHandler(redcap, m -> new RenderTFBiped<>(m, new ModelTFRedcap<>(), new ModelTFRedcap<>(), new ModelTFRedcap<>(), 0.4F, "redcap.png"));
+		RenderingRegistry.registerEntityRenderingHandler(skeleton_druid, m -> new RenderTFBiped<>(m, new ModelTFSkeletonDruid(), new ModelTFSkeletonDruid(), new ModelTFSkeletonDruid(), 0.5F, "skeletondruid.png"));
 		RenderingRegistry.registerEntityRenderingHandler(hostile_wolf, WolfRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(wraith, m -> new RenderTFWraith(m, new ModelTFWraith(), 0.5F));
 		RenderingRegistry.registerEntityRenderingHandler(hydra, m -> new RenderTFHydra(m, new ModelTFHydra(), 4.0F));
 		RenderingRegistry.registerEntityRenderingHandler(lich, m -> new RenderTFLich(m, new ModelTFLich(), 0.6F));
 		RenderingRegistry.registerEntityRenderingHandler(penguin, m -> new RenderTFBird<>(m, new ModelTFPenguin(), 0.375F, "penguin.png"));
-		RenderingRegistry.registerEntityRenderingHandler(lich_minion, m -> new RenderTFBiped<>(m, new ModelTFLichMinion(), 0.5F, "textures/entity/zombie/zombie.png"));
-		RenderingRegistry.registerEntityRenderingHandler(loyal_zombie, m -> new RenderTFBiped<>(m, new ModelTFLoyalZombie(), 0.5F, "textures/entity/zombie/zombie.png"));
+		RenderingRegistry.registerEntityRenderingHandler(lich_minion, m -> new RenderTFBiped<>(m, new ModelTFLichMinion(false), new ModelTFLichMinion(true), new ModelTFLichMinion(true), 0.5F, "textures/entity/zombie/zombie.png"));
+		RenderingRegistry.registerEntityRenderingHandler(loyal_zombie, m -> new RenderTFBiped<>(m, new ModelTFLoyalZombie(false), new ModelTFLoyalZombie(true), new ModelTFLoyalZombie(true), 0.5F, "textures/entity/zombie/zombie.png"));
 		RenderingRegistry.registerEntityRenderingHandler(tiny_bird, m -> new RenderTFTinyBird(m, new ModelTFTinyBird(), 1.0F));
 		RenderingRegistry.registerEntityRenderingHandler(squirrel, m -> new RenderTFGenericMob<>(m, new ModelTFSquirrel(), 0.3F, "squirrel2.png"));
 		RenderingRegistry.registerEntityRenderingHandler(bunny, m -> new RenderTFBunny(m, new ModelTFBunny(), 0.3F));
 		RenderingRegistry.registerEntityRenderingHandler(raven, m -> new RenderTFBird<>(m, new ModelTFRaven(), 1.0F, "raven.png"));
 		RenderingRegistry.registerEntityRenderingHandler(quest_ram, manager -> new RenderTFQuestRam(manager, new ModelTFQuestRam()));
 		RenderingRegistry.registerEntityRenderingHandler(kobold, m -> new RenderTFKobold(m, new ModelTFKobold(), 0.4F, "kobold.png"));
-		RenderingRegistry.registerEntityRenderingHandler(boggard, m -> new RenderTFBiped<>(m, new ModelTFLoyalZombie(), 0.625F, "kobold.png"));
+		RenderingRegistry.registerEntityRenderingHandler(boggard, m -> new RenderTFBiped<>(m, new BipedModel<>(0), 0.625F, "kobold.png"));
 		RenderingRegistry.registerEntityRenderingHandler(mosquito_swarm, m -> new RenderTFGenericMob<>(m, new ModelTFMosquitoSwarm(), 0.0F, "mosquitoswarm.png"));
 		RenderingRegistry.registerEntityRenderingHandler(death_tome, m -> new RenderTFGenericMob<>(m, new ModelTFDeathTome(), 0.3F, "textures/entity/enchanting_table_book.png"));
 		RenderingRegistry.registerEntityRenderingHandler(minotaur, m -> new RenderTFBiped<>(m, new ModelTFMinotaur(), 0.625F, "minotaur.png"));
@@ -352,7 +353,7 @@ public class TFEntities {
 		RenderingRegistry.registerEntityRenderingHandler(king_spider, RenderTFKingSpider::new);
 		RenderingRegistry.registerEntityRenderingHandler(tower_broodling, RenderTFTowerBroodling::new);
 		RenderingRegistry.registerEntityRenderingHandler(hedge_spider, RenderTFHedgeSpider::new);
-		RenderingRegistry.registerEntityRenderingHandler(redcap_sapper, m -> new RenderTFBiped<>(m, new ModelTFRedcap<>(), 0.4F, "redcapsapper.png"));
+		RenderingRegistry.registerEntityRenderingHandler(redcap_sapper, m -> new RenderTFBiped<>(m, new ModelTFRedcap<>(), new ModelTFRedcap<>(), new ModelTFRedcap<>(), 0.4F, "redcapsapper.png"));
 		RenderingRegistry.registerEntityRenderingHandler(maze_slime, m -> new RenderTFMazeSlime(m, 0.625F));
 		RenderingRegistry.registerEntityRenderingHandler(yeti, m -> new RenderTFBiped<>(m, new ModelTFYeti<>(), 0.625F, "yeti2.png"));
 		RenderingRegistry.registerEntityRenderingHandler(protection_box, RenderTFProtectionBox::new);
@@ -370,9 +371,9 @@ public class TFEntities {
 		RenderingRegistry.registerEntityRenderingHandler(chain_block, m -> new RenderTFChainBlock(m, new ModelTFSpikeBlock()));
 		RenderingRegistry.registerEntityRenderingHandler(cube_of_annihilation, RenderTFCubeOfAnnihilation::new);
 		RenderingRegistry.registerEntityRenderingHandler(harbinger_cube, RenderTFHarbingerCube::new);
-		RenderingRegistry.registerEntityRenderingHandler(adherent, m -> new RenderTFAdherent(m, new ModelTFAdherent(), 0.625F, "adherent.png"));
+		RenderingRegistry.registerEntityRenderingHandler(adherent, m -> new RenderTFBiped<>(m, new ModelTFAdherent(), new ModelTFAdherent(), new ModelTFAdherent(), 0.625F, "adherent.png"));
 		RenderingRegistry.registerEntityRenderingHandler(roving_cube, RenderTFRovingCube::new);
-		RenderingRegistry.registerEntityRenderingHandler(rising_zombie, m -> new RenderTFBiped<>(m, new ModelTFRisingZombie(), 0.5F, "textures/entity/zombie/zombie.png"));
+		RenderingRegistry.registerEntityRenderingHandler(rising_zombie, m -> new RenderTFBiped<>(m, new ModelTFRisingZombie(false), new ModelTFRisingZombie(true), new ModelTFRisingZombie(true), 0.5F, "textures/entity/zombie/zombie.png"));
 
 		RenderingRegistry.registerEntityRenderingHandler(castle_guardian, m -> new RenderTFCastleGuardian(m, new ModelTFCastleGuardian(), 2.0F, "finalcastle/castle_guardian.png"));
 
