@@ -112,6 +112,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 		simpleBlock(TFBlocks.underbrick_cracked.get());
 		simpleBlock(TFBlocks.underbrick_mossy.get());
 		simpleBlock(TFBlocks.underbrick_floor.get());
+		thorns();
 		simpleBlock(TFBlocks.thorn_rose.get(), models().cross(TFBlocks.thorn_rose.getId().getPath(), blockTexture(TFBlocks.thorn_rose.get())));
 		simpleBlock(TFBlocks.thorn_leaves.get(), models().getExistingFile(new ResourceLocation("block/oak_leaves")));
 		simpleBlock(TFBlocks.beanstalk_leaves.get(), models().getExistingFile(new ResourceLocation("block/spruce_leaves")));
@@ -1077,6 +1078,68 @@ public class BlockstateGenerator extends BlockStateProvider {
 		}
 		getVariantBuilder(TFBlocks.trophy_pedestal.get()).partialState()
 						.with(BlockTFTrophyPedestal.ACTIVE, true).setModels(activeModels.toArray(new ConfiguredModel[0]));
+	}
+	
+	private void thorns() {
+		ModelFile green = models().withExistingParent(TFBlocks.green_thorns.getId().getPath(), prefix("block/thorns_main"))
+						.texture("side", prefix("block/green_thorns_side"))
+						.texture("end", prefix("block/green_thorns_top"));
+		ModelFile greenBottom = models().withExistingParent(TFBlocks.green_thorns.getId().getPath() + "_bottom", prefix("block/thorns_section_bottom"))
+						.texture("side", prefix("block/green_thorns_side"))
+						.texture("end", prefix("block/green_thorns_top"));
+		ModelFile greenTop = models().withExistingParent(TFBlocks.green_thorns.getId().getPath() + "_top", prefix("block/thorns_section_top"))
+						.texture("side", prefix("block/green_thorns_side"))
+						.texture("end", prefix("block/green_thorns_top"));
+		getMultipartBuilder(TFBlocks.green_thorns.get())
+						.part().modelFile(green).addModel().condition(BlockTFThorns.AXIS, Direction.Axis.Y).end()
+						.part().modelFile(green).rotationX(90).addModel().condition(BlockTFThorns.AXIS, Direction.Axis.Z).end()
+						.part().modelFile(green).rotationX(90).rotationY(90).addModel().condition(BlockTFThorns.AXIS, Direction.Axis.X).end()
+						.part().modelFile(greenTop).rotationX(90).addModel().condition(SixWayBlock.UP, true).end()
+						.part().modelFile(greenBottom).rotationX(90).addModel().condition(SixWayBlock.DOWN, true).end()
+						.part().modelFile(greenTop).rotationY(270).addModel().condition(SixWayBlock.EAST, true).end()
+						.part().modelFile(greenBottom).rotationY(270).addModel().condition(SixWayBlock.WEST, true).end()
+						.part().modelFile(greenTop).addModel().condition(SixWayBlock.SOUTH, true).end()
+						.part().modelFile(greenBottom).addModel().condition(SixWayBlock.NORTH, true).end();
+
+		ModelFile brown = models().withExistingParent(TFBlocks.brown_thorns.getId().getPath(), prefix("block/thorns_main"))
+						.texture("side", prefix("block/brown_thorns_side"))
+						.texture("end", prefix("block/brown_thorns_top"));
+		ModelFile brownBottom = models().withExistingParent(TFBlocks.brown_thorns.getId().getPath() + "_bottom", prefix("block/thorns_section_bottom"))
+						.texture("side", prefix("block/brown_thorns_side"))
+						.texture("end", prefix("block/brown_thorns_top"));
+		ModelFile brownTop = models().withExistingParent(TFBlocks.brown_thorns.getId().getPath() + "_top", prefix("block/thorns_section_top"))
+						.texture("side", prefix("block/brown_thorns_side"))
+						.texture("end", prefix("block/brown_thorns_top"));
+		getMultipartBuilder(TFBlocks.brown_thorns.get())
+						.part().modelFile(brown).addModel().condition(BlockTFThorns.AXIS, Direction.Axis.Y).end()
+						.part().modelFile(brown).rotationX(90).addModel().condition(BlockTFThorns.AXIS, Direction.Axis.Z).end()
+						.part().modelFile(brown).rotationX(90).rotationY(90).addModel().condition(BlockTFThorns.AXIS, Direction.Axis.X).end()
+						.part().modelFile(brownTop).rotationX(90).addModel().condition(SixWayBlock.UP, true).end()
+						.part().modelFile(brownBottom).rotationX(90).addModel().condition(SixWayBlock.DOWN, true).end()
+						.part().modelFile(brownTop).rotationY(270).addModel().condition(SixWayBlock.EAST, true).end()
+						.part().modelFile(brownBottom).rotationY(270).addModel().condition(SixWayBlock.WEST, true).end()
+						.part().modelFile(brownTop).addModel().condition(SixWayBlock.SOUTH, true).end()
+						.part().modelFile(brownBottom).addModel().condition(SixWayBlock.NORTH, true).end();
+
+		ModelFile burnt = models().withExistingParent(TFBlocks.burnt_thorns.getId().getPath(), prefix("block/thorns_main"))
+						.texture("side", prefix("block/burnt_thorns_side"))
+						.texture("end", prefix("block/burnt_thorns_top"));
+		ModelFile burntBottom = models().withExistingParent(TFBlocks.burnt_thorns.getId().getPath() + "_bottom", prefix("block/thorns_section_bottom"))
+						.texture("side", prefix("block/burnt_thorns_side"))
+						.texture("end", prefix("block/burnt_thorns_top"));
+		ModelFile burntTop = models().withExistingParent(TFBlocks.burnt_thorns.getId().getPath() + "_top", prefix("block/thorns_section_top"))
+						.texture("side", prefix("block/burnt_thorns_side"))
+						.texture("end", prefix("block/burnt_thorns_top"));
+		getMultipartBuilder(TFBlocks.burnt_thorns.get())
+						.part().modelFile(burnt).addModel().condition(BlockTFThorns.AXIS, Direction.Axis.Y).end()
+						.part().modelFile(burnt).rotationX(90).addModel().condition(BlockTFThorns.AXIS, Direction.Axis.Z).end()
+						.part().modelFile(burnt).rotationX(90).rotationY(90).addModel().condition(BlockTFThorns.AXIS, Direction.Axis.X).end()
+						.part().modelFile(burntTop).rotationX(90).addModel().condition(SixWayBlock.UP, true).end()
+						.part().modelFile(burntBottom).rotationX(90).addModel().condition(SixWayBlock.DOWN, true).end()
+						.part().modelFile(burntTop).rotationY(270).addModel().condition(SixWayBlock.EAST, true).end()
+						.part().modelFile(burntBottom).rotationY(270).addModel().condition(SixWayBlock.WEST, true).end()
+						.part().modelFile(burntTop).addModel().condition(SixWayBlock.SOUTH, true).end()
+						.part().modelFile(burntBottom).addModel().condition(SixWayBlock.NORTH, true).end();
 	}
 
 	private void auroraBlocks() {

@@ -1,5 +1,6 @@
 package twilightforest.block;
 
+import net.minecraft.block.material.Material;
 import net.minecraft.block.material.PushReaction;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -12,6 +13,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -24,15 +26,15 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar {
 		super(props, 10);
 	}
 
-//	@Override
-//	protected boolean canConnectTo(BlockState state, BlockState otherState, IBlockAccess world, BlockPos pos, Direction connectTo) {
-//		return (otherState.getBlock() instanceof BlockTFThorns
-//				|| otherState.getBlock() == TFBlocks.thorn_rose
-//				||(otherState.getBlock() == TFBlocks.twilight_leaves_3 && otherState.getValue(BlockTFLeaves3.VARIANT) == Leaves3Variant.THORN)
-//				|| otherState.getMaterial() == Material.GRASS
-//				|| otherState.getMaterial() == Material.GROUND)
-//				|| super.canConnectTo(state, otherState, world, pos, connectTo);
-//	}
+	@Override
+	protected boolean canConnectTo(BlockState state, Direction dirToNeighbor, BlockState neighborState, IWorld world, BlockPos pos, BlockPos neighborPos) {
+		return (neighborState.getBlock() instanceof BlockTFThorns
+						|| neighborState.getBlock() == TFBlocks.thorn_rose.get()
+						|| neighborState.getBlock() == TFBlocks.thorn_leaves.get()
+						|| neighborState.getMaterial() == Material.PLANTS
+						|| neighborState.getMaterial() == Material.EARTH)
+						&& dirToNeighbor.getAxis() != state.get(AXIS);
+	}
 
 	@Nullable
 	@Override
@@ -50,8 +52,9 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar {
 	public void onEntityWalk(World world, BlockPos pos, Entity entity) {
 		BlockState state = world.getBlockState(pos);
 
-		if (state.getBlock() instanceof BlockTFThorns && state.get(AXIS) == Direction.Axis.Y)
+		if (state.getBlock() instanceof BlockTFThorns && state.get(AXIS) == Direction.Axis.Y) {
 			onEntityCollision(state, world, pos, entity);
+		}
 
 		super.onEntityWalk(world, pos, entity);
 	}
@@ -60,16 +63,13 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar {
 	public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, IFluidState fluid) {
 		if (!player.abilities.isCreativeMode) {
 			if (!world.isRemote) {
-				// grow back
-				world.setBlockState(pos, state, 2);
 				// grow more
 				this.doThornBurst(world, pos, state);
 			}
+			return false;
 		} else {
-			world.removeBlock(pos, false);
+			return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
 		}
-
-		return true;
 	}
 
 	@Override
@@ -119,17 +119,4 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar {
 			}
 		}
 	}
-
-
-//	@Override
-//	public int quantityDropped(Random random) {
-//		return 0;
-//	}
-
-	//TODO: Move to client
-//	@OnlyIn(Dist.CLIENT)
-//	@Override
-//	public BlockRenderLayer getRenderLayer() {
-//		return BlockRenderLayer.CUTOUT;
-//	}
 }

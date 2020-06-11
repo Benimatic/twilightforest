@@ -38,6 +38,9 @@ public class RenderLayerRegistration {
 		RenderTypeLookup.setRenderLayer(TFBlocks.castle_door_purple.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.castle_door_pink.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.castle_door_blue.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.green_thorns.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.brown_thorns.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.burnt_thorns.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.twilight_portal_miniature_structure.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.hedge_maze_miniature_structure.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.hollow_hill_miniature_structure.get(), cutout);

@@ -37,7 +37,8 @@
       }
     }
   ],
-  "loader": "ctm:ctm",
+  "__comment": "TODO: specify loader = ctm:ctm. currently breaks loading for unknown reasons",
+  "_COMMENTED_loader": "ctm:ctm",
   "ctm_version": 1,
   "ctm_overrides": {
     "0": {

@@ -39,10 +39,7 @@ public class BlockTFBurntThorns extends BlockTFThorns {
 
 	@Override
 	public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, IFluidState fluid) {
-		world.removeBlock(pos, false);
-		return true;
+		getBlock().onBlockHarvested(world, pos, state, player);
+		return world.setBlockState(pos, fluid.getBlockState(), world.isRemote ? 11 : 3);
 	}
-
-	@Override
-	public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moving) {}
 }

@@ -57,6 +57,9 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.underbrick_cracked.get());
 		toBlock(TFBlocks.underbrick_mossy.get());
 		toBlock(TFBlocks.underbrick_floor.get());
+		toBlock(TFBlocks.green_thorns.get());
+		toBlock(TFBlocks.brown_thorns.get());
+		toBlock(TFBlocks.burnt_thorns.get());
 		generated(TFBlocks.thorn_rose.getId().getPath(), prefix("block/" + TFBlocks.thorn_rose.getId().getPath()));
 		toBlockModel(TFBlocks.thorn_leaves.get(), new ResourceLocation("block/oak_leaves"));
 		toBlockModel(TFBlocks.beanstalk_leaves.get(), new ResourceLocation("block/spruce_leaves"));

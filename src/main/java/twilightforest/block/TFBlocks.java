@@ -322,7 +322,7 @@ public class TFBlocks {
 						reappearing_block, vanishing_block, locked_vanishing_block, carminite_builder, antibuilder, carminite_reactor, ghast_trap,
 						fake_gold, fake_diamond, stronghold_shield, trophy_pedestal,
 						underbrick, underbrick_cracked, underbrick_mossy, underbrick_floor,
-						thorn_rose, thorn_leaves, beanstalk_leaves,
+						brown_thorns, green_thorns, burnt_thorns, thorn_rose, thorn_leaves, beanstalk_leaves,
 						aurora_block, aurora_pillar, aurora_slab, auroralized_glass,
 						deadrock, deadrock_cracked, deadrock_weathered,
 						trollsteinn, wispy_cloud, fluffy_cloud, giant_cobblestone, giant_log, giant_leaves, giant_obsidian,
