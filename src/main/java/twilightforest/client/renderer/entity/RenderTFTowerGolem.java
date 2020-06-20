@@ -1,52 +1,40 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.entity.RenderLiving;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.renderer.Vector3f;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.opengl.GL11;
-
 import twilightforest.TwilightForestMod;
+import twilightforest.client.model.entity.ModelTFTowerGolem;
 import twilightforest.entity.EntityTFTowerGolem;
 
-public class RenderTFTowerGolem extends RenderLiving 
-{
+public class RenderTFTowerGolem<T extends EntityTFTowerGolem, M extends ModelTFTowerGolem<T>> extends MobRenderer<T, M> {
 
-    private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "carminitegolem.png");
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("carminitegolem.png");
 
-	public RenderTFTowerGolem(ModelBase par1ModelBase, float par2) 
-	{
-		super(par1ModelBase, par2);
+	public RenderTFTowerGolem(EntityRendererManager manager, M model, float shadowSize) {
+		super(manager, model, shadowSize);
 	}
 
-	
-    protected void rotateCorpse(EntityLivingBase par1EntityLiving, float par2, float par3, float par4)
-    {
-        this.rotateTowerGolem((EntityTFTowerGolem)par1EntityLiving, par2, par3, par4);
-    }
-
-
-	private void rotateTowerGolem(EntityTFTowerGolem par1EntityLiving, float par2, float par3, float par4) 
-	{
-        super.rotateCorpse(par1EntityLiving, par2, par3, par4);
-
-        if ((double)par1EntityLiving.limbSwingAmount >= 0.01D)
-        {
-            float var5 = 13.0F;
-            float var6 = par1EntityLiving.limbSwing - par1EntityLiving.limbSwingAmount * (1.0F - par4) + 6.0F;
-            float var7 = (Math.abs(var6 % var5 - var5 * 0.5F) - var5 * 0.25F) / (var5 * 0.25F);
-            GL11.glRotatef(6.5F * var7, 0.0F, 0.0F, 1.0F);
-        }
-	}
-	
 	/**
-	 * Return our specific texture
+	 * [VanillaCopy] {@link net.minecraft.client.renderer.entity.IronGolemRenderer}
 	 */
-    protected ResourceLocation getEntityTexture(Entity par1Entity)
-    {
-        return textureLoc;
-    }
+	@Override
+	protected void setupTransforms(T entity, MatrixStack ms, float ageInTicks, float rotationYaw, float partialTicks) {
+		super.setupTransforms(entity, ms, ageInTicks, rotationYaw, partialTicks);
 
+		if (!((double)entity.limbSwingAmount < 0.01D)) {
+			float f = 13.0F;
+			float f1 = entity.limbSwing - entity.limbSwingAmount * (1.0F - partialTicks) + 6.0F;
+			float f2 = (Math.abs(f1 % 13.0F - 6.5F) - 3.25F) / 3.25F;
+			ms.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(6.5F * f2));
+		}
+	}
+
+	@Override
+	public ResourceLocation getEntityTexture(T entity) {
+		return textureLoc;
+	}
 }

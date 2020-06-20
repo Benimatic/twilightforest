@@ -1,192 +1,144 @@
 package twilightforest.item;
 
-import java.util.List;
-
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumRarity;
+import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemUseContext;
+import net.minecraft.item.Rarity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntitySkull;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.TFBlocks;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import twilightforest.block.BlockTFTrophy;
+import twilightforest.enums.BossVariant;
 
-public class ItemTFTrophy extends ItemTF 
-{
-    private static final String[] trophyTypes = new String[] {"hydra", "naga", "lich", "ur-ghast", "snowQueen"};
-    public static final String[] trophyTextures = new String[] {"hydraTrophy", "nagaTrophy", "lichTrophy", "urGhastTrophy", "snowQueenTrophy"};
-	public IIcon[] trophyIcons;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.Locale;
+import java.util.function.Supplier;
 
-	
-	public ItemTFTrophy() 
-	{
-		super();
-        this.setCreativeTab(TFItems.creativeTab);
-        this.setMaxDamage(0);
-        this.setHasSubtypes(true);
+public class ItemTFTrophy extends Item {
+
+	private final BossVariant bossVariant;
+	private final BlockTFTrophy bossTrophy;
+
+	public ItemTFTrophy(Properties props, Supplier<? extends BlockTFTrophy> trophy, BossVariant variant) {
+		super(props);
+		bossTrophy = trophy.get();
+		bossVariant = variant;
 	}
-	
-    /**
-     * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
-     */
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
-        for (int j = 0; j < trophyTypes.length; ++j) {
-            par3List.add(new ItemStack(par1, 1, j));
-        }
-    }
 
-	
-    /**
-     * Return an item rarity from EnumRarity
-     * 
-     * This is automatically uncommon
-     */    
-    @Override
-    @SideOnly(Side.CLIENT)
-	public EnumRarity getRarity(ItemStack par1ItemStack) {
-    	return EnumRarity.rare;
+	@Override
+	public ITextComponent getDisplayName(ItemStack stack) {
+		return new TranslationTextComponent(this.getTranslationKey(stack), new TranslationTextComponent("entity.twilightforest." + bossVariant.getName().toLowerCase(Locale.ROOT) + ".name"));
 	}
-	
-    /**
-     * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
-     * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
-     */
-    public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int direction, float par8, float par9, float par10)
-    {
-        if (direction == 0)
-        {
-            return false;
-        }
-        else if (!world.getBlock(x, y, z).getMaterial().isSolid())
-        {
-            return false;
-        }
-        else
-        {
-            if (direction == 1)
-            {
-                ++y;
-            }
 
-            if (direction == 2)
-            {
-                --z;
-            }
+	// [VanillaCopy] ItemSkull, with own block and no player heads
+	@Nonnull
+	@Override
+	public ActionResultType onItemUse(ItemUseContext context) {
+		Direction facing = context.getFace();
+		World worldIn = context.getWorld();
+		BlockPos pos = context.getPos();
+		PlayerEntity playerIn = context.getPlayer();
 
-            if (direction == 3)
-            {
-                ++z;
-            }
+		if (facing == Direction.DOWN) {
+			return ActionResultType.FAIL;
+		} else {
+			if (worldIn.getBlockState(pos).getMaterial().isReplaceable()) {
+				facing = Direction.UP;
+				pos = pos.down();
+			}
+			BlockState iblockstate = worldIn.getBlockState(pos);
+			boolean flag = iblockstate.getMaterial().isReplaceable();
 
-            if (direction == 4)
-            {
-                --x;
-            }
+			if (!flag) {
+				if (!worldIn.getBlockState(pos).getMaterial().isSolid() && !worldIn.getBlockState(pos).isSideSolidFullSquare(worldIn, pos, facing)) {
+					return ActionResultType.FAIL;
+				}
 
-            if (direction == 5)
-            {
-                ++x;
-            }
+				pos = pos.offset(facing);
+			}
 
-            if (!player.canPlayerEdit(x, y, z, direction, itemStack))
-            {
-                return false;
-            }
-            else if (!TFBlocks.trophy.canPlaceBlockAt(world, x, y, z))
-            {
-                return false;
-            }
-            else
-            {
-                world.setBlock(x, y, z, TFBlocks.trophy, direction, 3);
-                int skullRotate = 0;
+			ItemStack itemstack = playerIn.getHeldItem(context.getHand());
 
-                if (direction == 1)
-                {
-                    skullRotate = MathHelper.floor_double((double)(player.rotationYaw * 16.0F / 360.0F) + 0.5D) & 15;
-                }
+			if (playerIn.canPlayerEdit(pos, facing, itemstack) && bossTrophy.getDefaultState().isValidPosition(worldIn, pos)) {
+				if (worldIn.isRemote) {
+					return ActionResultType.SUCCESS;
+				} else {
+					int i = 0;
 
-                TileEntity tileEntity = world.getTileEntity(x, y, z);
+					if (facing == Direction.UP) {
+						i = MathHelper.floor((double) (playerIn.rotationYaw * 16.0F / 360.0F) + 0.5D) & 15;
+					}
 
-                if (tileEntity != null && tileEntity instanceof TileEntitySkull)
-                {
-                	TileEntitySkull skull = ((TileEntitySkull)tileEntity);
-                	
-                	// use NBT method to set skulltype in order to have 1.7.10 compatibility
-        		    NBTTagCompound tags = new NBTTagCompound();
-        		    skull.writeToNBT(tags);
-        		    tags.setByte("SkullType", (byte)(itemStack.getItemDamage() & 255));
-        		    skull.readFromNBT(tags);
-        		    
-//                	try {
-//                		String skullName = "";
-//                		((TileEntitySkull)tileEntity).func_145905_a(itemStack.getItemDamage(), skullName);
-//                	} catch (NoSuchMethodError ex) {
-//                		// stop checking admin
-//                		FMLLog.warning("[TwilightForest] Could not determine op status for adminOnlyPortals option, ignoring option.");
-//                		TwilightForestMod.adminOnlyPortals = false;
-//                	}
-        		    skull.func_145903_a(skullRotate);
-                }
+					worldIn.setBlockState(pos, bossTrophy.getDefaultState().with(BlockTFTrophy.ROTATION, i), 11);
 
-                --itemStack.stackSize;
-                return true;
-            }
-        }
-    }
-    
-    /**
-     * Returns the unlocalized name of this item. This version accepts an ItemStack so different stacks can have
-     * different names based on their damage or NBT.
-     */
-    public String getUnlocalizedName(ItemStack par1ItemStack)
-    {
-        int i = par1ItemStack.getItemDamage();
+//					TileEntity tileentity = worldIn.getTileEntity(pos);
+//
+//					if (tileentity instanceof SkullTileEntity) {
+//						SkullTileEntity tileentityskull = (SkullTileEntity) tileentity;
+//
+//						tileentityskull.setType(itemstack.getMetadata());
+//
+//						tileentityskull.setSkullRotation(i);
+//					}
 
-        if (i < 0 || i >= trophyTypes.length)
-        {
-            i = 0;
-        }
+					if (playerIn instanceof ServerPlayerEntity) {
+						CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity) playerIn, pos, itemstack);
+					}
 
-        return super.getUnlocalizedName() + "." + trophyTypes[i];
-    }
-	
-	/**
-	 * Properly register icon source
-	 */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-        this.trophyIcons = new IIcon[trophyTextures.length];
+					itemstack.shrink(1);
+					return ActionResultType.SUCCESS;
+				}
+			} else {
+				return ActionResultType.FAIL;
+			}
+		}
+	}
 
-        for (int i = 0; i < trophyTextures.length; ++i)
-        {
-            this.trophyIcons[i] = par1IconRegister.registerIcon(TwilightForestMod.ID + ":" + trophyTextures[i]);
-        }
-    }
-    
+	@Override
+	public boolean canEquip(ItemStack stack, EquipmentSlotType armorType, Entity entity) {
+		return armorType == EquipmentSlotType.HEAD;
+	}
 
-    /**
-     * Gets an icon index based on an item's damage value
-     */
-    @SideOnly(Side.CLIENT)
-    public IIcon getIconFromDamage(int par1)
-    {
-        if (par1 < 0 || par1 >= trophyTypes.length)
-        {
-            par1 = 0;
-        }
+	@Override
+	@Nullable
+	public EquipmentSlotType getEquipmentSlot(ItemStack stack) {
+		return EquipmentSlotType.HEAD;
+	}
 
-        return this.trophyIcons[par1];
-    }
+	//TODO 1.14: Somehow get this working...
+//	@OnlyIn(Dist.CLIENT)
+//	@Override
+//	public void registerModel() {
+//
+//		ModelResourceLocation itemModelLocation = new ModelResourceLocation(TwilightForestMod.ID + ":trophy_tesr", "inventory");
+//
+//		TileEntityTFTrophyRenderer tesr = new TileEntityTFTrophyRenderer(itemModelLocation);
+//		//TileEntityTFTrophyRenderer tesrMinor = new TileEntityTFTrophyRenderer() { @Override protected String getModelRSL() { return TwilightForestMod.ID + ":trophy_minor"; } };
+//
+//		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTFTrophyRenderer.DummyTile.class, tesr);
+//
+//		for (BossVariant variant : BossVariant.values()) {
+//			if (variant != BossVariant.ALPHA_YETI) {
+//				ModelLoader.setCustomModelResourceLocation(this, variant.ordinal(), itemModelLocation);
+//				ForgeHooksClient.registerTESRItemStack(this, variant.ordinal(), TileEntityTFTrophyRenderer.DummyTile.class);
+//			}
+//		}
+//
+//		ModelBakery.registerItemVariants(this,
+//				new ModelResourceLocation(new ResourceLocation(TwilightForestMod.ID, "trophy"), "inventory"),
+//				new ModelResourceLocation(new ResourceLocation(TwilightForestMod.ID, "trophy_minor"), "inventory"),
+//				new ModelResourceLocation(new ResourceLocation(TwilightForestMod.ID, "trophy_quest"), "inventory")
+//		);
+//	}
 }

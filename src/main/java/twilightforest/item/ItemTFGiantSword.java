@@ -1,60 +1,35 @@
 package twilightforest.item;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
+import com.google.common.collect.Multimap;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.IItemTier;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
-import net.minecraft.util.IIcon;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.item.SwordItem;
 
-public class ItemTFGiantSword extends ItemSword {
+import javax.annotation.Nonnull;
 
-	private GiantItemIcon giantIcon;
+public class ItemTFGiantSword extends SwordItem {
 
-	public ItemTFGiantSword(Item.ToolMaterial par2EnumToolMaterial) {
-		super(par2EnumToolMaterial);
-		this.setCreativeTab(TFItems.creativeTab);
+	public ItemTFGiantSword(IItemTier material, Properties props) {
+		super(material, 10 + (int)material.getAttackDamage(), -3.5F, props);
 	}
 
-    /**
-     * Return whether this item is repairable in an anvil.
-     */
-    @Override
-	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
-    {
-    	// repair with ironwood ingots
-        return par2ItemStack.getItem() == TFItems.ironwoodIngot ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
-    }
-    
-	/**
-	 * Properly register icon source
-	 */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-        this.itemIcon = Items.stone_sword.getIconFromDamage(0);
-        this.giantIcon = new GiantItemIcon(this.itemIcon, 0.0625F * 3F, 0.0625F * 5F);
+	@Override
+	public boolean getIsRepairable(ItemStack stack, ItemStack material) {
+		return material.getItem() == TFItems.ironwood_ingot.get() || super.getIsRepairable(stack, material);
+	}
 
-    }
-    
-    /**
-     * Return the correct icon for rendering based on the supplied ItemStack and render pass.
-     *
-     * Defers to {@link #getIconFromDamageForRenderPass(int, int)}
-     * @param stack to render for
-     * @param pass the multi-render pass
-     * @return the icon
-     */
-    public IIcon getIcon(ItemStack stack, int pass)
-    {
-    	// render pass 1 gives the giant Icon
-    	if (pass == -1) {
-    		return this.giantIcon;
-    	} else {
-    		return super.getIcon(stack, pass);
-    	}
-    }
+	@Override
+	@Nonnull
+	public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlotType equipmentSlot) {
+		Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(equipmentSlot);
+
+		if (equipmentSlot == EquipmentSlotType.MAINHAND) {
+			multimap.put(PlayerEntity.REACH_DISTANCE.getName(), new AttributeModifier(TFItems.GIANT_REACH_MODIFIER, "Weapon modifier", 2.5, AttributeModifier.Operation.ADDITION));
+		}
+
+		return multimap;
+	}
 }

@@ -1,0 +1,11 @@
+{
+  "result": {
+    "item": "minecraft:stick"
+  },
+  "ingredients": [
+    {
+      "item": "twilightforest:root_strand"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

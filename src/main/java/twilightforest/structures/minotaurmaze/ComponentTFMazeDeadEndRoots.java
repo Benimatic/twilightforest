@@ -1,59 +1,62 @@
 package twilightforest.structures.minotaurmaze;
 
-import java.util.Random;
-
-import net.minecraft.init.Blocks;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import twilightforest.block.BlockTFPlant;
+import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
+import net.minecraft.world.gen.feature.template.TemplateManager;
+import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
+
+import java.util.Random;
 
 public class ComponentTFMazeDeadEndRoots extends ComponentTFMazeDeadEnd {
 
-	public ComponentTFMazeDeadEndRoots() {
-		super();
-		// TODO Auto-generated constructor stub
+	public ComponentTFMazeDeadEndRoots(TemplateManager manager, CompoundNBT nbt) {
+		super(TFMinotaurMazePieces.TFMMDER, nbt);
 	}
 
-	public ComponentTFMazeDeadEndRoots(int i, int x, int y, int z, int rotation) {
-		super(i, x, y, z, rotation);
+	public ComponentTFMazeDeadEndRoots(IStructurePieceType piece, CompoundNBT nbt) {
+		super(piece, nbt);
+	}
+
+	public ComponentTFMazeDeadEndRoots(IStructurePieceType type, TFFeature feature, int i, int x, int y, int z, Direction rotation) {
+		super(type, feature, i, x, y, z, rotation);
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {		
+	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 		// no door
-		for (int x = 1; x < 5; x++)
-		{
-			for (int z = 0; z < 5; z++)
-			{
+		for (int x = 1; x < 5; x++) {
+			for (int z = 0; z < 5; z++) {
 				// as we go +z, there are more vines
-				if (rand.nextInt(z + 2) > 0)
-				{
+				if (rand.nextInt(z + 2) > 0) {
 					int length = rand.nextInt(6);
 
 					//place dirt above ceiling
-					this.placeBlockAtCurrentPosition(world, Blocks.dirt, 0, x, 6, z, sbb);
-					
+					this.setBlockState(world, Blocks.DIRT.getDefaultState(), x, 6, z, sbb);
+
 					// roots
-					for (int y = 6 - length; y < 6; y++)
-					{
-						this.placeBlockAtCurrentPosition(world, TFBlocks.plant, BlockTFPlant.META_ROOT_STRAND, x, y, z, sbb);
+					for (int y = 6 - length; y < 6; y++) {
+						this.setBlockState(world, TFBlocks.root_strand.get().getDefaultState(), x, y, z, sbb);
 					}
-					
+
 					// occasional gravel
-					if (rand.nextInt(z + 1) > 1)
-					{
-						this.placeBlockAtCurrentPosition(world, Blocks.gravel, 0, x, 1, z, sbb);
-						
-						if (rand.nextInt(z + 1) > 1)
-						{
-							this.placeBlockAtCurrentPosition(world, Blocks.gravel, 0, x, 2, z, sbb);
+					if (rand.nextInt(z + 1) > 1) {
+						this.setBlockState(world, Blocks.GRAVEL.getDefaultState(), x, 1, z, sbb);
+
+						if (rand.nextInt(z + 1) > 1) {
+							this.setBlockState(world, Blocks.GRAVEL.getDefaultState(), x, 2, z, sbb);
 						}
 					}
 				}
 			}
 		}
-		
+
 		return true;
 	}
 }

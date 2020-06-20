@@ -1,119 +1,84 @@
 package twilightforest.entity.passive;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAvoidEntity;
-import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAIPanic;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAITempt;
-import net.minecraft.entity.ai.EntityAIWander;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.passive.IAnimals;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.util.DamageSource;
+import net.minecraft.entity.*;
+import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Items;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import twilightforest.TFAchievementPage;
 
+import javax.annotation.Nullable;
 
-public class EntityTFSquirrel extends EntityCreature implements IAnimals {
+// TODO: See Bunny
+public class EntityTFSquirrel extends AnimalEntity {
 
-	public EntityTFSquirrel(World par1World) {
-		super(par1World);
-		
-        this.setSize(0.3F, 0.7F);
-		
+	protected static final Ingredient SEEDS = Ingredient.fromItems(Items.WHEAT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS, Items.BEETROOT_SEEDS);
+
+	public EntityTFSquirrel(EntityType<? extends EntityTFSquirrel> type, World world) {
+		super(type, world);
+
 		// maybe this will help them move cuter?
 		this.stepHeight = 1;
-		
-		// squirrel AI
-        this.getNavigator().setAvoidsWater(true);
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAIPanic(this, 1.38F));
-        this.tasks.addTask(2, new EntityAITempt(this, 1.0F, Items.wheat_seeds, true));
-        this.tasks.addTask(3, new EntityAIAvoidEntity(this, EntityPlayer.class, 2.0F, 0.8F, 1.4F));
-        this.tasks.addTask(5, new EntityAIWander(this, 1.0F));
-        this.tasks.addTask(6, new EntityAIWander(this, 1.25F));
-        this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 6F));
-        this.tasks.addTask(8, new EntityAILookIdle(this));
-
 	}
 
-	/**
-	 * Set monster attributes
-	 */
 	@Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(1.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.3D);
-    }
-	
-	/**
-	 * Called when the mob is falling. Calculates and applies fall damage.
-	 * TODO: maybe they should just take less damage?
-	 */
-	@Override
-	protected void fall(float par1) {}
-
-	/**
-	 * Returns true if the newer Entity AI code should be run
-	 */
-	@Override
-	public boolean isAIEnabled() {
-	    return true;
+	protected void registerGoals() {
+		this.goalSelector.addGoal(0, new SwimGoal(this));
+		this.goalSelector.addGoal(1, new PanicGoal(this, 1.38F));
+		this.goalSelector.addGoal(2, new TemptGoal(this, 1.0F, true, SEEDS));
+		this.goalSelector.addGoal(3, new AvoidEntityGoal<>(this, PlayerEntity.class, 2.0F, 0.8F, 1.4F));
+		this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 1.0F));
+		this.goalSelector.addGoal(6, new WaterAvoidingRandomWalkingGoal(this, 1.25F));
+		this.goalSelector.addGoal(7, new LookAtGoal(this, PlayerEntity.class, 6F));
+		this.goalSelector.addGoal(8, new LookRandomlyGoal(this));
 	}
 
-	/**
-	 * Actually only used for the shadow
-	 */
 	@Override
-	public float getRenderSizeModifier() {
-		 return 0.3F;
+	protected void registerAttributes() {
+		super.registerAttributes();
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(1.0D);
+		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
 	}
-	
-    /**
-     * Takes a coordinate in and returns a weight to determine how likely this creature will try to path to the block.
-     * Args: x, y, z
-     */
+
 	@Override
-    public float getBlockPathWeight(int par1, int par2, int par3)
-    {
-    	// prefer standing on leaves
-		Material underMaterial = this.worldObj.getBlock(par1, par2 - 1, par3).getMaterial();
-		if (underMaterial == Material.leaves) {
+	public boolean handleFallDamage(float distance, float multiplier) {
+		return false;
+	}
+
+	@Override
+	public float getEyeHeight(Pose pose) {
+		return this.getHeight() * 0.7F;
+	}
+
+	//TODO: Move this to Renderer?
+//	@Override
+//	public float getRenderSizeModifier() {
+//		return 0.3F;
+//	}
+
+	@Override
+	public float getBlockPathWeight(BlockPos pos) {
+		// prefer standing on leaves
+		Material underMaterial = this.world.getBlockState(pos.down()).getMaterial();
+		if (underMaterial == Material.LEAVES) {
 			return 12.0F;
 		}
-		if (underMaterial == Material.wood) {
+		if (underMaterial == Material.WOOD) {
 			return 15.0F;
 		}
-		if (underMaterial == Material.grass) {
+		if (underMaterial == Material.ORGANIC) {
 			return 10.0F;
 		}
 		// default to just prefering lighter areas
-		return this.worldObj.getLightBrightness(par1, par2, par3) - 0.5F;
-    }
-	
-	/**
-     * Determines if an entity can be despawned, used on idle far away entities
-     */
-    @Override
-	protected boolean canDespawn()
-    {
-        return false;
-    }
-	
-    /**
-     * Trigger achievement when killed
-     */
+		return this.world.getLight(pos) - 0.5F;
+	}
+
+	@Nullable
 	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
-			((EntityPlayer)par1DamageSource.getSourceOfDamage()).triggerAchievement(TFAchievementPage.twilightHunter);
-		}
+	public AgeableEntity createChild(AgeableEntity ageableEntity) {
+		return null;
 	}
 }

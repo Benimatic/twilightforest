@@ -1,106 +1,62 @@
 package twilightforest.item;
 
-import java.util.List;
-
-import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.client.renderer.entity.model.BipedModel;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemArmor;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.ArmorItem;
+import net.minecraft.item.IArmorMaterial;
+import net.minecraft.item.Rarity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.TwilightForestMod;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import twilightforest.client.model.armor.ModelTFFieryArmor;
 
-public class ItemTFFieryArmor extends ItemArmor {
+import javax.annotation.Nullable;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
 
-	public ItemTFFieryArmor(ItemArmor.ArmorMaterial par2EnumArmorMaterial, int renderIndex, int armorType) {
-		super(par2EnumArmorMaterial, renderIndex, armorType);
-		this.setCreativeTab(TFItems.creativeTab);
-	}
+public class ItemTFFieryArmor extends ArmorItem {
 
-	/**
-	 * Return an item rarity from EnumRarity
-	 */    
-	@Override
-	public EnumRarity getRarity(ItemStack par1ItemStack) {
-		return EnumRarity.epic;
+	private static final Map<EquipmentSlotType, BipedModel> fieryArmorModel = new EnumMap<>(EquipmentSlotType.class);
+
+	public ItemTFFieryArmor(IArmorMaterial armorMaterial, EquipmentSlotType armorType, Properties props) {
+		super(armorMaterial, armorType, props);
 	}
 
 	@Override
-	public String getArmorTexture(ItemStack itemstack, Entity entity, int slot, String layer) {
-
-
-		if(itemstack.getItem() == TFItems.fieryPlate || itemstack.getItem() == TFItems.fieryHelm || itemstack.getItem() == TFItems.fieryBoots)
-		{
+	public String getArmorTexture(ItemStack itemstack, Entity entity, EquipmentSlotType slot, String layer) {
+		if (slot == EquipmentSlotType.LEGS) {
+			return TwilightForestMod.ARMOR_DIR + "fiery_2.png";
+		} else {
 			return TwilightForestMod.ARMOR_DIR + "fiery_1.png";
 		}
-		if(itemstack.getItem() == TFItems.fieryLegs)
-		{
-			return TwilightForestMod.ARMOR_DIR + "fiery_2.png";
-		}
-		return TwilightForestMod.ARMOR_DIR + "fiery_1.png";
 	}
-	
-    /**
-     * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
-     */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+
 	@Override
-	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
-    {
-    	ItemStack istack = new ItemStack(par1, 1, 0);
-    	//istack.addEnchantment(TFEnchantment.fieryAura, 2);
-        par3List.add(istack);
-    }
-    
-    /**
-     * Return whether this item is repairable in an anvil.
-     */
-    @Override
-	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
-    {
-    	// repair with fiery ingots
-        return par2ItemStack.getItem() == TFItems.fieryIngot ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
-    }
-	
-	/**
-	 * Properly register icon source
-	 */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":" + this.getUnlocalizedName().substring(5));
-    }
-    
-    /**
-     * allows items to add custom lines of information to the mouseover description
-     */
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
-		par3List.add(StatCollector.translateToLocal(getUnlocalizedName() + ".tooltip"));
+	@OnlyIn(Dist.CLIENT)
+	public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag flags) {
+		super.addInformation(stack, world, tooltip, flags);
+		tooltip.add(new TranslationTextComponent(getTranslationKey() + ".tooltip"));
 	}
-    
-    /**
-     * Override this method to have an item handle its own armor rendering.
-     * 
-     * @param  entityLiving  The entity wearing the armor 
-     * @param  itemStack  The itemStack to render the model of 
-     * @param  armorSlot  0=head, 1=torso, 2=legs, 3=feet
-     * 
-     * @return  A ModelBiped to render instead of the default
-     */
-    @SideOnly(Side.CLIENT)
-    public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, int armorSlot)
-    {
-        return TwilightForestMod.proxy.getFieryArmorModel(armorSlot);
-    }
+
+	@Override
+	@OnlyIn(Dist.CLIENT)
+	public BipedModel getArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlotType armorSlot, BipedModel oldModel) {
+		return fieryArmorModel.get(armorSlot);
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	public static void initArmorModel() {
+		fieryArmorModel.put(EquipmentSlotType.HEAD, new ModelTFFieryArmor(0.5F));
+		fieryArmorModel.put(EquipmentSlotType.CHEST, new ModelTFFieryArmor(1.0F));
+		fieryArmorModel.put(EquipmentSlotType.LEGS, new ModelTFFieryArmor(0.5F));
+		fieryArmorModel.put(EquipmentSlotType.FEET, new ModelTFFieryArmor(0.5F));
+	}
 }

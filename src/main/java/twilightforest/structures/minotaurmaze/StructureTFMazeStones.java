@@ -1,38 +1,29 @@
 package twilightforest.structures.minotaurmaze;
 
-import java.util.Random;
-
-import net.minecraft.init.Blocks;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.block.Blocks;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.block.TFBlocks;
 
-public class StructureTFMazeStones extends StructureComponent.BlockSelector {
+import java.util.Random;
+
+public class StructureTFMazeStones extends StructurePiece.BlockSelector {
 
 	@Override
-	public void selectBlocks(Random par1Random, int par2, int par3, int par4, boolean wall) {
-        if (!wall)
-        {
-            this.field_151562_a = Blocks.air;
-            this.selectedBlockMetaData = 0;
-        }
-        else
-        {
-            this.field_151562_a = TFBlocks.mazestone;
-            float rf = par1Random.nextFloat();
+	public void selectBlocks(Random random, int x, int y, int z, boolean wall) {
+		if (!wall) {
+			this.blockstate = Blocks.AIR.getDefaultState();
+		} else {
+			this.blockstate = TFBlocks.maze_stone.get().getDefaultState();
+			float rf = random.nextFloat();
 
-            if (rf < 0.2F)
-            {
-                this.selectedBlockMetaData = 5;
-            }
-            else if (rf < 0.5F)
-            {
-                this.selectedBlockMetaData = 4;
-            }
-            else
-            {
-                this.selectedBlockMetaData = 1;
-            }
-        }
+			if (rf < 0.2F) {
+				this.blockstate = TFBlocks.maze_stone_mossy.get().getDefaultState();
+			} else if (rf < 0.5F) {
+				this.blockstate = TFBlocks.maze_stone_cracked.get().getDefaultState();
+			} else {
+				this.blockstate = TFBlocks.maze_stone_brick.get().getDefaultState();
+			}
+		}
 	}
 
 }

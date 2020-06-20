@@ -1,185 +1,130 @@
 package twilightforest.entity;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityAgeable;
-import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
-import net.minecraft.entity.ai.EntityAIFollowOwner;
-import net.minecraft.entity.ai.EntityAIHurtByTarget;
-import net.minecraft.entity.ai.EntityAILeapAtTarget;
-import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.ai.EntityAIOwnerHurtByTarget;
-import net.minecraft.entity.ai.EntityAIOwnerHurtTarget;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWander;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.passive.EntityTameable;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.potion.Potion;
+import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.monster.CreeperEntity;
+import net.minecraft.entity.monster.GhastEntity;
+import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.passive.TameableEntity;
+import net.minecraft.entity.passive.horse.AbstractHorseEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+public class EntityTFLoyalZombie extends TameableEntity {
 
-public class EntityTFLoyalZombie extends EntityTameable {
-
-	public EntityTFLoyalZombie(World par1World) {
-        super(par1World);
-        //this.texture = "/mob/zombie.png";
-        //this.moveSpeed = 0.3F;
-        this.setSize(0.6F, 1.8F);
-        this.getNavigator().setAvoidsWater(true);
-        this.tasks.addTask(1, new EntityAISwimming(this));
-        this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.4F));
-        this.tasks.addTask(4, new EntityAIAttackOnCollide(this, 1.0D, true));
-        this.tasks.addTask(5, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
-        this.tasks.addTask(7, new EntityAIWander(this, 1.0D));
-        this.tasks.addTask(9, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.tasks.addTask(9, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
-        this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
-        this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, true));
-        this.targetTasks.addTask(4, new EntityAINearestAttackableTarget(this, EntityMob.class, 0, true));
-
+	public EntityTFLoyalZombie(EntityType<? extends EntityTFLoyalZombie> type, World world) {
+		super(type, world);
 	}
 
 	@Override
-	public EntityAnimal createChild(EntityAgeable entityanimal)
-	{
+	protected void registerGoals() {
+		this.goalSelector.addGoal(1, new SwimGoal(this));
+		this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, true));
+		this.goalSelector.addGoal(5, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F, true));
+		this.goalSelector.addGoal(7, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
+		this.goalSelector.addGoal(9, new LookAtGoal(this, PlayerEntity.class, 8.0F));
+		this.goalSelector.addGoal(9, new LookRandomlyGoal(this));
+		this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
+		this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
+		this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
+		this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, MonsterEntity.class, true));
+	}
+
+	@Override
+	public AnimalEntity createChild(AgeableEntity entityanimal) {
 		return null;
 	}
 
-
-	/**
-	 * Set monster attributes
-	 */
 	@Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(40.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.3D); // movement speed
-    }
-	
+	protected void registerAttributes() {
+		super.registerAttributes();
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(40.0D);
+		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
+		this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(3.0D);
+	}
+
+	@Override
+	public boolean attackEntityAsMob(Entity entity) {
+		boolean success = entity.attackEntityFrom(DamageSource.causeMobDamage(this), 7);
+
+		if (success) {
+			entity.addVelocity(0, 0.2, 0);
+		}
+
+		return success;
+	}
+
+	@Override
+	public void livingTick() {
+		// once our damage boost effect wears out, start to burn
+		// the effect here is that we die shortly after our 60 second lifespan
+		if (!this.world.isRemote && this.getActivePotionEffect(Effects.STRENGTH) == null) {
+			this.setFire(100);
+		}
+
+		super.livingTick();
+	}
+
 	/**
-	 * Rawr!
-	 */
-    public boolean attackEntityAsMob(Entity par1Entity)
-    {
-        int attackpower = 7;
-        boolean success = par1Entity.attackEntityFrom(DamageSource.causeMobDamage(this), attackpower);
-        
-        // throw some enemies around!
-        if (success)
-        {
-            par1Entity.motionY += 0.2000000059604645D;
-        }
-        
-        return success;
-    }
-    
-    /**
-     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
-     * use this to react to sunlight and start to burn.
-     */
-    @Override
-	public void onLivingUpdate()
-    {
-    	// once our damage boost effect wears out, start to burn
-    	// the effect here is that we die shortly after our 60 second lifespan
-        if (!this.worldObj.isRemote && this.getActivePotionEffect(Potion.damageBoost) == null)
-        {
-            this.setFire(100);
-        }
+	 * [VanillaCopy] {@link net.minecraft.entity.passive.WolfEntity#shouldAttackEntity}, substituting with our class
+ 	 */
+	@Override
+	public boolean shouldAttackEntity(LivingEntity target, LivingEntity owner) {
+		if (!(target instanceof CreeperEntity) && !(target instanceof GhastEntity)) {
+			if (target instanceof EntityTFLoyalZombie) {
+				EntityTFLoyalZombie zombie = (EntityTFLoyalZombie) target;
+				return !zombie.isTamed() || zombie.getOwner() != owner;
+			} else if (target instanceof PlayerEntity && owner instanceof PlayerEntity && !((PlayerEntity)owner).canAttackPlayer((PlayerEntity)target)) {
+				return false;
+			} else if (target instanceof AbstractHorseEntity && ((AbstractHorseEntity)target).isTame()) {
+				return false;
+			} else {
+				return !(target instanceof TameableEntity) || !((TameableEntity)target).isTamed();
+			}
+		} else {
+			return false;
+		}
+	}
 
-        super.onLivingUpdate();
-    }
+	@Override
+	public boolean canDespawn(double distanceToClosestPlayer) {
+		return !this.isTamed();
+	}
 
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return SoundEvents.ENTITY_ZOMBIE_AMBIENT;
+	}
 
-    /**
-     * Determines if an entity can be despawned, used on idle far away entities
-     */
-    @Override
-	protected boolean canDespawn()
-    {
-        return !this.isTamed();
-    }
+	@Override
+	protected SoundEvent getHurtSound(DamageSource source) {
+		return SoundEvents.ENTITY_ZOMBIE_HURT;
+	}
 
-    /**
-     * Returns the current armor value as determined by a call to InventoryPlayer.getTotalArmorValue
-     */
-    @Override
-	public int getTotalArmorValue()
-    {
-        return 3;
-    }
+	@Override
+	protected SoundEvent getDeathSound() {
+		return SoundEvents.ENTITY_ZOMBIE_DEATH;
+	}
 
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
-    @Override
-	protected boolean isAIEnabled()
-    {
-        return true;
-    }
-    
-    /**
-     * Returns the sound this mob makes while it's alive.
-     */
-    @Override
-	protected String getLivingSound()
-    {
-        return "mob.zombie.say";
-    }
+	@Override
+	protected void playStepSound(BlockPos pos, BlockState block) {
+		playSound(SoundEvents.ENTITY_ZOMBIE_STEP, 0.15F, 1.0F);
+	}
 
-    /**
-     * Returns the sound this mob makes when it is hurt.
-     */
-    @Override
-	protected String getHurtSound()
-    {
-        return "mob.zombie.hurt";
-    }
-
-    /**
-     * Returns the sound this mob makes on death.
-     */
-    @Override
-	protected String getDeathSound()
-    {
-        return "mob.zombie.death";
-    }
-
-    /**
-     * Plays step sound at given x, y, z for the entity
-     */
-    @Override
-	protected void func_145780_a(int par1, int par2, int par3, Block par4)
-    {
-        this.worldObj.playSoundAtEntity(this, "mob.zombie.step", 0.15F, 1.0F);
-    }
-
-
-    /**
-     * Returns the item ID for the item the mob drops on death.
-     */
-    @Override
-	protected Item getDropItem()
-    {
-        return Item.getItemById(0);
-    }
-
-    /**
-     * Get this Entity's EnumCreatureAttribute
-     */
-    @Override
-	public EnumCreatureAttribute getCreatureAttribute()
-    {
-        return EnumCreatureAttribute.UNDEAD;
-    }
+	@Override
+	public CreatureAttribute getCreatureAttribute() {
+		return CreatureAttribute.UNDEAD;
+	}
 }

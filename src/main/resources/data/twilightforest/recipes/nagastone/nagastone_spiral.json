@@ -1,0 +1,30 @@
+{
+  "result": {
+    "item": "twilightforest:spiral_bricks",
+    "count": 8
+  },
+  "pattern": [
+    "BSS",
+    "BSS",
+    "BBB"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "B": [
+      {
+        "tag": "forge:stone"
+      },
+      {
+        "tag": "minecraft:stone_bricks"
+      }
+    ],
+    "S": [
+      {
+        "item": "minecraft:smooth_stone_slab"
+      },
+      {
+        "item": "minecraft:stone_brick_slab"
+      }
+    ]
+  }
+}

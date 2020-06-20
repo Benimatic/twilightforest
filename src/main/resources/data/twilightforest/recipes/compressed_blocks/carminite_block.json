@@ -1,0 +1,16 @@
+{
+  "result": {
+    "item": "twilightforest:block_storage_carminite"
+  },
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "#": {
+      "tag": "twilightforest:carminite"
+    }
+  }
+}

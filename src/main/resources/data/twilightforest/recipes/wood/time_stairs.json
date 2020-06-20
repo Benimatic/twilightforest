@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "twilightforest:time_stairs",
+    "count": 8
+  },
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "twilightforest:time_planks"
+    }
+  }
+}

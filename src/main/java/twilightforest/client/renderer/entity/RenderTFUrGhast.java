@@ -1,50 +1,31 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.model.ModelTFGhast;
-import twilightforest.entity.EntityTFTowerGhast;
+import twilightforest.client.model.entity.ModelTFTowerBoss;
+import twilightforest.entity.boss.EntityTFUrGhast;
 
+public class RenderTFUrGhast extends RenderTFTowerGhast<EntityTFUrGhast, ModelTFTowerBoss> {
 
-public class RenderTFUrGhast extends RenderTFTowerGhast {
+	private final ResourceLocation textureLocClosed = TwilightForestMod.getModelTexture("towerboss.png");
+	private final ResourceLocation textureLocOpen   = TwilightForestMod.getModelTexture("towerboss_openeyes.png");
+	private final ResourceLocation textureLocAttack = TwilightForestMod.getModelTexture("towerboss_fire.png");
 
-	
-	final ResourceLocation textureLocClosed;
-	final ResourceLocation textureLocOpen;
-	final ResourceLocation textureLocAttack;
-	
-	
-	public RenderTFUrGhast(ModelTFGhast modelTFGhast, float f, float scale) {
-		super(modelTFGhast, f, scale);
-		textureLocClosed = new ResourceLocation(TwilightForestMod.MODEL_DIR + "towerboss.png");
-		textureLocOpen = new ResourceLocation(TwilightForestMod.MODEL_DIR + "towerboss_openeyes.png");
-		textureLocAttack = new ResourceLocation(TwilightForestMod.MODEL_DIR + "towerboss_fire.png");
+	public RenderTFUrGhast(EntityRendererManager manager, ModelTFTowerBoss modelTFGhast, float shadowSize, float scale) {
+		super(manager, modelTFGhast, shadowSize, scale);
 	}
 
-	
-	/**
-	 * Return our specific texture
-	 */
-	protected ResourceLocation getEntityTexture(Entity par1Entity)
-	{
-		if (par1Entity instanceof EntityTFTowerGhast)
-		{
-			switch (((EntityTFTowerGhast)par1Entity).getAttackStatus())
-			{
-			default: 
+	@Override
+	public ResourceLocation getEntityTexture(EntityTFUrGhast entity) {
+		switch (entity.isAttacking() ? 2 : entity.getAttackStatus()) {
+			default:
 			case 0:
 				return textureLocClosed;
-
 			case 1:
 				return textureLocOpen;
-
 			case 2:
 				return textureLocAttack;
-			}
 		}
-
-		// fallback
-		return textureLocClosed;
-    }
+	}
 }

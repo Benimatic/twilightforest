@@ -1,51 +1,60 @@
 package twilightforest.structures.minotaurmaze;
 
-import java.util.Random;
-
-import net.minecraft.init.Blocks;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import twilightforest.TFTreasure;
+import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
+import net.minecraft.world.gen.feature.template.TemplateManager;
+import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
+import twilightforest.loot.TFTreasure;
+
+import java.util.Random;
 
 public class ComponentTFMazeDeadEndChest extends ComponentTFMazeDeadEnd {
 
-	public ComponentTFMazeDeadEndChest() {
-		super();
-		// TODO Auto-generated constructor stub
+	public ComponentTFMazeDeadEndChest(TemplateManager manager, CompoundNBT nbt) {
+		super(TFMinotaurMazePieces.TFMMDEC, nbt);
 	}
 
-	public ComponentTFMazeDeadEndChest(int i, int x, int y, int z, int rotation) {
-		super(i, x, y, z, rotation);
-		
+	public ComponentTFMazeDeadEndChest(IStructurePieceType piece, CompoundNBT nbt) {
+		super(piece, nbt);
+	}
+
+	public ComponentTFMazeDeadEndChest(IStructurePieceType type, TFFeature feature, int i, int x, int y, int z, Direction rotation) {
+		super(type, feature, i, x, y, z, rotation);
+
 		// specify a non-existant high spawn list value to stop actual monster spawns
 		this.spawnListIndex = Integer.MAX_VALUE;
 	}
-	
+
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {		
-		//super.addComponentParts(world, rand, sbb);
-		
+	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		//super.addComponentParts(world, rand, sbb, chunkPosIn);
+
 		// dais
-		this.placeBlockAtCurrentPosition(world, Blocks.planks, 0, 2, 1, 4, sbb);
-		this.placeBlockAtCurrentPosition(world, Blocks.planks, 0, 3, 1, 4, sbb);
-		this.placeBlockAtCurrentPosition(world, Blocks.oak_stairs, getStairMeta(1), 2, 1, 3, sbb);
-		this.placeBlockAtCurrentPosition(world, Blocks.oak_stairs, getStairMeta(1), 3, 1, 3, sbb);
-		
+		this.setBlockState(world, Blocks.OAK_PLANKS.getDefaultState(), 2, 1, 4, sbb);
+		this.setBlockState(world, Blocks.OAK_PLANKS.getDefaultState(), 3, 1, 4, sbb);
+		this.setBlockState(world, getStairState(Blocks.OAK_STAIRS.getDefaultState(), Direction.NORTH, rotation, false), 2, 1, 3, sbb);
+		this.setBlockState(world, getStairState(Blocks.OAK_STAIRS.getDefaultState(), Direction.NORTH, rotation, false), 3, 1, 3, sbb);
+
 		// chest
-		this.placeBlockAtCurrentPosition(world, Blocks.chest, 0, 2, 2, 4, sbb);
-		this.placeTreasureAtCurrentPosition(world, rand, 3, 2, 4, TFTreasure.labyrinth_deadend, sbb);
-		
+		this.setBlockState(world, Blocks.CHEST.getDefaultState(), 2, 2, 4, sbb);
+		this.placeTreasureAtCurrentPosition(world.getWorld(), 3, 2, 4, TFTreasure.labyrinth_deadend, sbb);
+
 //		// torches
-//		this.placeBlockAtCurrentPosition(world, Blocks.torch, 0, 1, 3, 4, sbb);
-//		this.placeBlockAtCurrentPosition(world, Blocks.torch, 0, 4, 3, 4, sbb);
-		
+//		this.setBlockState(world, Blocks.TORCH, 0, 1, 3, 4, sbb);
+//		this.setBlockState(world, Blocks.TORCH, 0, 4, 3, 4, sbb);
+
 		// doorway w/ bars
-		this.fillWithMetadataBlocks(world, sbb, 1, 1, 0, 4, 3, 1, TFBlocks.mazestone, 2, Blocks.air, 0, false);
-		this.fillWithMetadataBlocks(world, sbb, 1, 4, 0, 4, 4, 1, TFBlocks.mazestone, 3, Blocks.air, 0, false);
-		this.fillWithBlocks(world, sbb, 2, 1, 0, 3, 3, 1, Blocks.iron_bars, Blocks.air, false);
-		
+		this.fillWithBlocks(world, sbb, 1, 1, 0, 4, 3, 1, TFBlocks.maze_stone_chiseled.get().getDefaultState(), AIR, false);
+		this.fillWithBlocks(world, sbb, 1, 4, 0, 4, 4, 1, TFBlocks.maze_stone_decorative.get().getDefaultState(), AIR, false);
+		this.fillWithBlocks(world, sbb, 2, 1, 0, 3, 3, 1, Blocks.IRON_BARS.getDefaultState(), AIR, false);
+
 		return true;
 	}
-
 }

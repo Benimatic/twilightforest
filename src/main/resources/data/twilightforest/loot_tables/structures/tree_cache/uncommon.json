@@ -1,0 +1,41 @@
+{
+  "pools": [{
+    "name": "main",
+    "rolls": 1,
+    "entries": [
+      {
+        "type": "item",
+        "name": "twilightforest:firefly",
+        "functions": [{ "function": "set_count", "count": { "min": 1, "max": 12 } }]
+      },
+      {
+        "type": "item",
+        "name": "twilightforest:oak_sapling",
+        "functions": [
+          { "function": "set_count", "count": { "min": 1, "max": 4 } }
+        ]
+      },
+      {
+        "type": "item",
+        "name": "twilightforest:canopy_sapling",
+        "functions": [
+          { "function": "set_count", "count": { "min": 1, "max": 4 } }
+        ]
+      },
+      {
+        "type": "item",
+        "name": "twilightforest:mangrove_sapling",
+        "functions": [
+          { "function": "set_count", "count": { "min": 1, "max": 4 } }
+        ]
+      },
+      {
+        "type": "item",
+        "name": "twilightforest:dark_sapling",
+        "functions": [
+          { "function": "set_count", "count": { "min": 1, "max": 4 } }
+        ]
+      }
+    ]
+  }]
+}

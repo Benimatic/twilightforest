@@ -1,0 +1,16 @@
+{
+  "result": {
+    "item": "twilightforest:castle_brick_worn",
+    "count": 3
+  },
+  "ingredients": [ {
+    "item": "twilightforest:castle_stairs_worn"
+  }, {
+    "item": "twilightforest:castle_stairs_worn"
+  }, {
+    "item": "twilightforest:castle_stairs_worn"
+  }, {
+    "item": "twilightforest:castle_stairs_worn"
+  } ],
+  "type": "minecraft:crafting_shapeless"
+}

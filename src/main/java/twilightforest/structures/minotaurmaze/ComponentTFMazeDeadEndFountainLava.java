@@ -1,37 +1,40 @@
 package twilightforest.structures.minotaurmaze;
 
+import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.template.TemplateManager;
+import twilightforest.TFFeature;
+
 import java.util.Random;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-
 public class ComponentTFMazeDeadEndFountainLava extends ComponentTFMazeDeadEndFountain {
-	
-	public ComponentTFMazeDeadEndFountainLava() {
-		super();
-		// TODO Auto-generated constructor stub
+
+	public ComponentTFMazeDeadEndFountainLava(TemplateManager manager, CompoundNBT nbt) {
+		super(TFMinotaurMazePieces.TFMMDEFL, nbt);
 	}
 
-	public ComponentTFMazeDeadEndFountainLava(int i, int x, int y, int z, int rotation) {
-		super(i, x, y, z, rotation);
+	public ComponentTFMazeDeadEndFountainLava(TFFeature feature, int i, int x, int y, int z, Direction rotation) {
+		super(TFMinotaurMazePieces.TFMMDEFL, feature, i, x, y, z, rotation);
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {		
+	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 		// normal fountain
-		super.addComponentParts(world, rand, sbb);
-		
+		super.generate(world, generator, rand, sbb, chunkPosIn);
+
 		// remove water
-		this.placeBlockAtCurrentPosition(world, Blocks.air, 0, 2, 3, 4, sbb);
-		this.placeBlockAtCurrentPosition(world, Blocks.air, 0, 3, 3, 4, sbb);
-		
+		this.setBlockState(world, AIR, 2, 3, 4, sbb);
+		this.setBlockState(world, AIR, 3, 3, 4, sbb);
+
 		// lava instead of water
-		this.placeBlockAtCurrentPosition(world, Blocks.flowing_lava, 0, 2, 3, 4, sbb);
-		this.placeBlockAtCurrentPosition(world, Blocks.flowing_lava, 0, 3, 3, 4, sbb);
-		
+		this.setBlockState(world, Blocks.LAVA.getDefaultState(), 2, 3, 4, sbb);
+		this.setBlockState(world, Blocks.LAVA.getDefaultState(), 3, 3, 4, sbb);
+
 		return true;
 	}
-
-
 }

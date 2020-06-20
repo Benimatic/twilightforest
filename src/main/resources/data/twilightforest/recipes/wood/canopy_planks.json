@@ -1,0 +1,10 @@
+{
+  "result": {
+    "item": "twilightforest:canopy_planks",
+    "count": 4
+  },
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [{
+    "item": "twilightforest:canopy_log"
+  }]
+}

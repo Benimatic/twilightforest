@@ -1,75 +1,92 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Vector3f;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.model.Model;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.opengl.GL11;
-
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
 import twilightforest.TwilightForestMod;
-import twilightforest.entity.EntityTFBlockGoblin;
+import twilightforest.client.model.entity.ModelTFGoblinChain;
 import twilightforest.entity.EntityTFChainBlock;
 
-public class RenderTFChainBlock extends Render {
+public class RenderTFChainBlock extends EntityRenderer<EntityTFChainBlock> {
 
-	private ModelBase model;
-    private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "blockgoblin.png");
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("blockgoblin.png");
+	private final Model model;
+	private final Model chainModel = new ModelTFGoblinChain();
 
-	public RenderTFChainBlock(ModelBase modelTFSpikeBlock, float f) {
+	public RenderTFChainBlock(EntityRendererManager manager, Model modelTFSpikeBlock) {
+		super(manager);
 		this.model = modelTFSpikeBlock;
 	}
 
-    /**
-     * The render method used in RenderBoat that renders the boat model.
-     */
-    public void renderSpikeBlock(EntityTFChainBlock par1Entity, double par2, double par4, double par6, float par8, float time)
-    {
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float)par2, (float)par4, (float)par6);
+	@Override
+	public void render(EntityTFChainBlock chainBlock, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
+		super.render(chainBlock, yaw, partialTicks, stack, buffer, light);
 
-        this.bindEntityTexture(par1Entity);
+		stack.push();
+		IVertexBuilder ivertexbuilder = buffer.getBuffer(this.model.getLayer(textureLoc));
 
-        GL11.glScalef(-1.0F, -1.0F, 1.0F);
-        
-        
-        GL11.glRotatef(MathHelper.wrapAngleTo180_float((float)par4), 1, 0, 1);
-        GL11.glRotatef(MathHelper.wrapAngleTo180_float(((float)par2 + (float)par6) * 11F), 0, 1, 0);
-//        GL11.glRotatef(MathHelper.wrapAngleTo180_float((float)par8), 0, 0, 1);
-        
+		float pitch = chainBlock.prevRotationPitch + (chainBlock.rotationPitch - chainBlock.prevRotationPitch) * partialTicks;
+		stack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180 - MathHelper.wrapDegrees(yaw)));
+		stack.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(pitch));
 
-        
-        this.model.render(par1Entity, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
-        GL11.glPopMatrix();
-    }
+		stack.scale(-1.0F, -1.0F, 1.0F);
+		this.model.render(stack, ivertexbuilder, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
+		stack.pop();
 
-    /**
-     * Actually renders the given argument. This is a synthetic bridge method, always casting down its argument and then
-     * handing it off to a worker function which does the actual work. In all probabilty, the class Render is generic
-     * (Render<T extends Entity) and this method has signature public void doRender(T entity, double d, double d1,
-     * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
-     */
-    public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
-    {
-        EntityTFChainBlock chainBlock = (EntityTFChainBlock)par1Entity;
+		renderChain(chainBlock, chainBlock.chain1, yaw, partialTicks, stack, buffer, light);
+		renderChain(chainBlock, chainBlock.chain2, yaw, partialTicks, stack, buffer, light);
+		renderChain(chainBlock, chainBlock.chain3, yaw, partialTicks, stack, buffer, light);
+		renderChain(chainBlock, chainBlock.chain4, yaw, partialTicks, stack, buffer, light);
+		renderChain(chainBlock, chainBlock.chain5, yaw, partialTicks, stack, buffer, light);
+	}
 
-        this.renderSpikeBlock(chainBlock, par2, par4, par6, par8, par9);
-                
-		RenderManager.instance.renderEntitySimple(chainBlock.chain1, par9);
-		RenderManager.instance.renderEntitySimple(chainBlock.chain2, par9);
-		RenderManager.instance.renderEntitySimple(chainBlock.chain3, par9);
-		RenderManager.instance.renderEntitySimple(chainBlock.chain4, par9);
-		RenderManager.instance.renderEntitySimple(chainBlock.chain5, par9);
-    }
+	private void renderChain(EntityTFChainBlock chainBlock, Entity chain, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
+		if (chain != null) {
+			double chainInX = (chain.getX() - chainBlock.getX());
+			double chainInY = (chain.getY() - chainBlock.getY());
+			double chainInZ = (chain.getZ() - chainBlock.getZ());
 
-    
-	/**
-	 * Return our specific texture
-	 */
-    protected ResourceLocation getEntityTexture(Entity par1Entity)
-    {
-        return textureLoc;
-    }
+			stack.push();
+			IVertexBuilder ivertexbuilder = buffer.getBuffer(this.chainModel.getLayer(textureLoc));
+
+			stack.translate(chainInX, chainInY, chainInZ);
+			float pitch = chain.prevRotationPitch + (chain.rotationPitch - chain.prevRotationPitch) * partialTicks;
+			stack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180 - MathHelper.wrapDegrees(yaw)));
+			stack.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(pitch));
+
+			stack.scale(-1.0F, -1.0F, 1.0F);
+			this.chainModel.render(stack, ivertexbuilder, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
+			stack.pop();
+
+			//when you allowed debugBoundingBox, you can see Hitbox
+			if (this.renderManager.isDebugBoundingBox() && !chain.isInvisible() && !Minecraft.getInstance().isReducedDebug()) {
+				stack.push();
+				stack.translate(chainInX, chainInY, chainInZ);
+				this.renderMultiBoundingBox(stack, buffer.getBuffer(RenderType.getLines()), chain, 0.25F, 1.0F, 0.0F);
+				stack.pop();
+			}
+		}
+	}
+
+	private void renderMultiBoundingBox(MatrixStack stack, IVertexBuilder builder, Entity entity, float red, float grean, float blue) {
+		AxisAlignedBB axisalignedbb = entity.getBoundingBox().offset(-entity.getX(), -entity.getY(), -entity.getZ());
+		WorldRenderer.drawBox(stack, builder, axisalignedbb, red, grean, blue, 1.0F);
+	}
+
+	@Override
+	public ResourceLocation getEntityTexture(EntityTFChainBlock entity) {
+		return textureLoc;
+	}
 }

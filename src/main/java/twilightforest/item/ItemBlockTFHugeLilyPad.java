@@ -1,84 +1,97 @@
 package twilightforest.item;
 
-import java.util.Random;
-
-import twilightforest.block.TFBlocks;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemLilyPad;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.fluid.IFluidState;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.item.ItemUseContext;
+import net.minecraft.item.LilyPadItem;
+import net.minecraft.stats.Stats;
+import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.RayTraceContext;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import twilightforest.block.BlockTFHugeLilyPad;
+import twilightforest.block.TFBlocks;
 
+import static twilightforest.block.BlockTFHugeLilyPad.FACING;
+import static twilightforest.block.BlockTFHugeLilyPad.PIECE;
+import static twilightforest.enums.HugeLilypadPiece.NE;
+import static twilightforest.enums.HugeLilypadPiece.NW;
+import static twilightforest.enums.HugeLilypadPiece.SE;
+import static twilightforest.enums.HugeLilypadPiece.SW;
 
-public class ItemBlockTFHugeLilyPad extends ItemLilyPad {
-	
-	Random rand = new Random();
+public class ItemBlockTFHugeLilyPad extends LilyPadItem {
 
-	public ItemBlockTFHugeLilyPad(Block block) {
-		super(block);
+	public ItemBlockTFHugeLilyPad(BlockTFHugeLilyPad block, Properties props) {
+		super(block, props);
 	}
 
-	
-    /**
-     * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
-     */
-    public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
-    	MovingObjectPosition movingobjectposition = this.getMovingObjectPositionFromPlayer(world, player, true);
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
+		ItemStack itemstack = player.getHeldItem(hand);
+		RayTraceResult raytraceresult = rayTrace(world, player, RayTraceContext.FluidMode.SOURCE_ONLY);
+		if (raytraceresult.getType() == RayTraceResult.Type.MISS) {
+			return ActionResult.pass(itemstack);
+		} else {
+			if (raytraceresult.getType() == RayTraceResult.Type.BLOCK) {
+				BlockRayTraceResult blockraytraceresult = (BlockRayTraceResult)raytraceresult;
+				BlockPos blockpos = blockraytraceresult.getPos();
+				Direction direction = blockraytraceresult.getFace();
+				if (!world.isBlockModifiable(player, blockpos) || !player.canPlayerEdit(blockpos.offset(direction), direction, itemstack)
+								// TF - check east, south, southeast as well
+								|| !world.isBlockModifiable(player, blockpos.east()) || !player.canPlayerEdit(blockpos.offset(direction).east(), direction, itemstack)
+								|| !world.isBlockModifiable(player, blockpos.south()) || !player.canPlayerEdit(blockpos.offset(direction).south(), direction, itemstack)
+								|| !world.isBlockModifiable(player, blockpos.east().south()) || !player.canPlayerEdit(blockpos.offset(direction).east().south(), direction, itemstack)
+				) {
+					return ActionResult.fail(itemstack);
+				}
 
-        if (movingobjectposition == null) {
-            return itemStack;
-        } else {
-            if (movingobjectposition.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
-            {
-                int x = movingobjectposition.blockX;
-                int y = movingobjectposition.blockY;
-                int z = movingobjectposition.blockZ;
-                
-                // 2x2 lily pads go in a larger grid
-            	int bx = (x >> 1) << 1;
-            	int by = y;
-            	int bz = (z >> 1) << 1;
-            	
-            	if (this.canPlacePadOn(itemStack, world, player, bx, by, bz) && this.canPlacePadOn(itemStack, world, player, bx + 1, by, bz) 
-            			&& this.canPlacePadOn(itemStack, world, player, bx, by, bz + 1) && this.canPlacePadOn(itemStack, world, player, bx + 1, by, bz + 1)) {
-            		
-            		// this seems like a difficult way to generate 2 pseudorandom bits
-            		rand.setSeed(8890919293L);
-            		rand.setSeed((bx * rand.nextLong()) ^ (bz * rand.nextLong()) ^ 8890919293L);
-            		int orient = rand.nextInt(4) << 2;
-            		
-                    world.setBlock(bx, by + 1, bz, TFBlocks.hugeLilyPad, 0 | orient, 2);
-                    world.setBlock(bx + 1, by + 1, bz, TFBlocks.hugeLilyPad, 1 | orient, 2);
-                    world.setBlock(bx + 1, by + 1, bz + 1, TFBlocks.hugeLilyPad, 2 | orient, 2);
-                    world.setBlock(bx, by + 1, bz + 1, TFBlocks.hugeLilyPad, 3 | orient, 2);
-                    
-                    if (!player.capabilities.isCreativeMode)
-                    {
-                        --itemStack.stackSize;
-                    }
+				BlockPos blockpos1 = blockpos.up();
+				BlockState blockstate = world.getBlockState(blockpos);
+				Material material = blockstate.getMaterial();
+				IFluidState ifluidstate = world.getFluidState(blockpos);
+				if ((ifluidstate.getFluid() == Fluids.WATER || material == Material.ICE) && world.isAirBlock(blockpos1)
+								// TF - check east, south, southeast as well
+								&& (world.getFluidState(blockpos.east()).getFluid() == Fluids.WATER || world.getBlockState(blockpos.east()).getMaterial() == Material.ICE) && world.isAirBlock(blockpos1.east())
+								&& (world.getFluidState(blockpos.south()).getFluid() == Fluids.WATER || world.getBlockState(blockpos.south()).getMaterial() == Material.ICE) && world.isAirBlock(blockpos1.south())
+								&& (world.getFluidState(blockpos.east().south()).getFluid() == Fluids.WATER || world.getBlockState(blockpos.east().south()).getMaterial() == Material.ICE) && world.isAirBlock(blockpos1.east().south())
+				) {
+					// TF - use our own block. dispense with the blocksnapshot stuff for now due to complexity. FIXME: Implement it
+					final BlockState lilypad = getBlock().getDefaultState().with(FACING, player.getHorizontalFacing());
+					world.setBlockState(blockpos1, lilypad.with(PIECE, NW), 11);
+					world.setBlockState(blockpos1.east(), lilypad.with(PIECE, NE), 11);
+					world.setBlockState(blockpos1.east().south(), lilypad.with(PIECE, SE), 11);
+					world.setBlockState(blockpos1.south(), lilypad.with(PIECE, SW), 11);
 
-            	}
-            }
+					if (player instanceof ServerPlayerEntity) {
+						CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity)player, blockpos1, itemstack);
+						CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity)player, blockpos1.east(), itemstack);
+						CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity)player, blockpos1.east().south(), itemstack);
+						CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity)player, blockpos1.south(), itemstack);
+					}
 
-            return itemStack;
-        }
-    }
-    
-    public boolean canPlacePadOn(ItemStack itemStack, World world, EntityPlayer player, int x, int y, int z) {
-        if (!world.canMineBlock(player, x, y, z)) {
-            return false;
-        }
-        
-        if (!player.canPlayerEdit(x, y, z, 1, itemStack)) {
-            return false;
-        }
-        
-        return world.getBlock(x, y, z).getMaterial() == Material.water && world.getBlockMetadata(x, y, z) == 0 && world.isAirBlock(x, y + 1, z);
-        
-    }
+					if (!player.abilities.isCreativeMode) {
+						itemstack.shrink(1);
+					}
 
+					player.addStat(Stats.ITEM_USED.get(this));
+					world.playSound(player, blockpos, SoundEvents.BLOCK_LILY_PAD_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
+					return ActionResult.success(itemstack);
+				}
+			}
+
+			return ActionResult.fail(itemstack);
+		}
+	}
 }

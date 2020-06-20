@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": {
+      "item": "twilightforest:magic_map_focus"
+    },
+    "title": {
+      "translate": "advancement.twilightforest.magic_map_focus"
+    },
+    "description": {
+      "translate": "advancement.twilightforest.magic_map_focus.desc",
+      "with": [
+        { "translate": "item.twilightforest.magic_map_focus" },
+        { "translate": "item.twilightforest.raven_feather" },
+        { "translate": "item.glowstone" },
+        { "translate": "item.twilightforest.torchberries" }
+      ]
+    }
+  },
+  "parent": "twilightforest:twilight_hunter",
+  "criteria": {
+    "focus": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "twilightforest:magic_map_focus"
+          }
+        ]
+      }
+    }
+  }
+}

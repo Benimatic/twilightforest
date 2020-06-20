@@ -1,351 +1,298 @@
 package twilightforest.entity;
 
-import java.util.List;
-
-import twilightforest.item.ItemTFChainBlock;
-import twilightforest.item.TFItems;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IEntityMultiPart;
-import net.minecraft.entity.boss.EntityDragonPart;
-import net.minecraft.entity.item.EntityMinecart;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityThrowable;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.ThrowableEntity;
+import net.minecraft.network.IPacket;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.*;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
+import net.minecraftforge.fml.network.NetworkHooks;
+import twilightforest.item.TFItems;
+import twilightforest.util.WorldUtil;
 
+public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiPart, IEntityAdditionalSpawnData {
 
-public class EntityTFChainBlock extends EntityThrowable implements IEntityMultiPart  {
-	
 	private static final int MAX_SMASH = 12;
 	private static final int MAX_CHAIN = 16;
+
+	private Hand hand = Hand.MAIN_HAND;
 	private boolean isReturning = false;
 	private int blocksSmashed = 0;
-
-	// where are we headed?
 	private double velX;
 	private double velY;
 	private double velZ;
 
+	public final EntityTFGoblinChain chain1 = new EntityTFGoblinChain(this);
+	public final EntityTFGoblinChain chain2 = new EntityTFGoblinChain(this);
+	public final EntityTFGoblinChain chain3 = new EntityTFGoblinChain(this);
+	public final EntityTFGoblinChain chain4 = new EntityTFGoblinChain(this);
+	public final EntityTFGoblinChain chain5 = new EntityTFGoblinChain(this);
+	private final Entity[] partsArray = { chain1, chain2, chain3, chain4, chain5 };
 
-	// for the client to show the chain
-	private boolean isAttached;
-	private EntityLivingBase attachedTo;
-	
-	public EntityTFGoblinChain chain1;
-	public EntityTFGoblinChain chain2;
-	public EntityTFGoblinChain chain3;
-	public EntityTFGoblinChain chain4;
-	public EntityTFGoblinChain chain5;
-	public Entity[] partsArray;
-
-	public EntityTFChainBlock(World par1World) {
-		super(par1World);
-		
-		this.setSize(0.6F, 0.6F);
-
-
-        this.partsArray = (new Entity[]
-        		{
-        		chain1 = new EntityTFGoblinChain(this), chain2 = new EntityTFGoblinChain(this), chain3 = new EntityTFGoblinChain(this), chain4 = new EntityTFGoblinChain(this), chain5 = new EntityTFGoblinChain(this)
-        		});
+	public EntityTFChainBlock(EntityType<? extends EntityTFChainBlock> type, World world) {
+		super(type, world);
 	}
 
-	
-	public EntityTFChainBlock(World par1World, double par2, double par4, double par6) {
-		super(par1World, par2, par4, par6);
-		// TODO Auto-generated constructor stub
-	}
-
-
-	public EntityTFChainBlock(World par1World, EntityLivingBase par2EntityLiving) {
-		super(par1World, par2EntityLiving);
-		
-		this.setSize(0.6F, 0.6F);
-		
+	public EntityTFChainBlock(EntityType<? extends EntityTFChainBlock> type, World world, LivingEntity thrower, Hand hand) {
+		super(type, thrower, world);
 		this.isReturning = false;
-	}
-	
-    /**
-     * Similar to setArrowHeading, it's point the throwable entity to a x, y, z direction.
-     */
-    public void setThrowableHeading(double x, double y, double z, float speed, float accuracy)
-    {
-    	super.setThrowableHeading(x, y, z, speed, accuracy);
-    	
-    	// save velocity
-    	this.velX = this.motionX;
-    	this.velY = this.motionY;
-    	this.velZ = this.motionZ;
-    }
-
-	/**
-	 * How much this entity falls each tick
-	 */
-	@Override
-    protected float getGravityVelocity()
-    {
-        return 0.05F;
-    }
-
-
-
-	@Override
-	protected void onImpact(MovingObjectPosition mop) {
-		// only hit living things
-        if (mop.entityHit != null && mop.entityHit instanceof EntityLivingBase && mop.entityHit != this.getThrower()) {
-            if (mop.entityHit.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer) this.getThrower()), 10)) {
-            	// age when we hit a monster so that we go back to the player faster
-                this.ticksExisted += 60;
-            }
-        }
-        
-        if (!this.worldObj.isAirBlock(mop.blockX, mop.blockY, mop.blockZ)) {
-
-        	// clang!
-        	if (!this.isReturning) {
-        		this.worldObj.playSoundAtEntity(this, "random.anvil_land", 0.125f, this.rand.nextFloat());
-        	}
-
-        	if (!this.worldObj.isRemote && this.blocksSmashed < MAX_SMASH) {
-        		if (this.worldObj.getBlock(mop.blockX, mop.blockY, mop.blockZ).getBlockHardness(worldObj, mop.blockX, mop.blockY, mop.blockZ) > 0.3F) {
-        			// riccochet
-        			double bounce = 0.6;
-        			this.velX *= bounce;
-        			this.velY *= bounce;
-        			this.velZ *= bounce;
-        			
-        			
-        			switch (mop.sideHit) {
-        			case 0:
-        				if (this.velY > 0) {
-        					this.velY *= -bounce;
-        				}
-        				break;
-        			case 1:
-        				if (this.velY < 0) {
-        					this.velY *= -bounce;
-        				}
-        				break;
-        			case 2:
-        				if (this.velZ > 0) {
-        					this.velZ *= -bounce;
-        				}
-        				break;
-        			case 3:
-        				if (this.velZ < 0) {
-        					this.velZ *= -bounce;
-        				}
-        				break;
-        			case 4:
-        				if (this.velX > 0) {
-        					this.velX *= -bounce;
-        				}
-        				break;
-        			case 5:
-        				if (this.velX < 0) {
-        					this.velX *= -bounce;
-        				}
-        				break;
-        			}
-        		}
-        		
-            	// demolish some blocks
-        		this.affectBlocksInAABB(this.boundingBox, this.getThrower());
-        	}
-
-        	// head back to owner
-        	if (!this.worldObj.isRemote) {
-        		this.isReturning = true;
-        	}
-        	
-        	// if we have smashed enough, add to ticks so that we go back faster
-        	if (this.blocksSmashed > MAX_SMASH && this.ticksExisted < 60) {
-                this.ticksExisted += 60;
-        	}
-        }
-
-	}
-	
-	
-	/**
-     * Do our ball and chain effect on blocks we hit.  Harvest/destroy/whatevs
-	 * @param entity 
-     */
-    private boolean affectBlocksInAABB(AxisAlignedBB par1AxisAlignedBB, EntityLivingBase entity) {
-    	//System.out.println("Destroying blocks in " + par1AxisAlignedBB);
-    	
-        int minX = MathHelper.floor_double(par1AxisAlignedBB.minX);
-        int minY = MathHelper.floor_double(par1AxisAlignedBB.minY);
-        int minZ = MathHelper.floor_double(par1AxisAlignedBB.minZ);
-        int maxX = MathHelper.floor_double(par1AxisAlignedBB.maxX);
-        int maxY = MathHelper.floor_double(par1AxisAlignedBB.maxY);
-        int maxZ = MathHelper.floor_double(par1AxisAlignedBB.maxZ);
-        boolean hitBlock = false;
-        for (int dx = minX; dx <= maxX; ++dx) {
-            for (int dy = minY; dy <= maxY; ++dy) {
-                for (int dz = minZ; dz <= maxZ; ++dz) {
-                    Block block = this.worldObj.getBlock(dx, dy, dz);
-                    int currentMeta = this.worldObj.getBlockMetadata(dx, dy, dz);
-                    
-                    if (block != Blocks.air && block.getExplosionResistance(this) < 7F && block.getBlockHardness(worldObj, dx, dy, dz) >= 0) {
-
-                    	if (entity != null && entity instanceof EntityPlayer) {
-                    		EntityPlayer player = (EntityPlayer)entity;
-
-                    		if (block.canHarvestBlock(player, currentMeta)){
-                    			block.harvestBlock(this.worldObj, player, dx, dy, dz, currentMeta);
-                    		}
-                    	}
-
-                    	this.worldObj.setBlockToAir(dx, dy, dz);
-
-                    	// here, this effect will have to do
-            			worldObj.playAuxSFX(2001, dx, dy, dz, Block.getIdFromBlock(block) + (currentMeta << 12));
-            			
-            			this.blocksSmashed++;
-            			
-            			hitBlock = true;
-                    }
-                }
-            }
-        }
-
-        return hitBlock;
-    }
-
-	
-	/**
-	 * Skip most of the living update things
-	 */
-    @Override
-    public void onUpdate() {
-    	super.onUpdate();
-    	
-    	// chains are probably always null on the server
-    	if (this.chain1 != null) {
-			chain1.onUpdate();
-			chain2.onUpdate();
-			chain3.onUpdate();
-			chain4.onUpdate();
-			chain5.onUpdate();
-    	}
-    	
-    	if (this.getThrower() == null && !this.worldObj.isRemote) {
-    		this.setDead();
-    	}
-    	
-    	if (this.getThrower() != null) {
-    		float distToPlayer = this.getDistanceToEntity(this.getThrower());
-        	// return if far enough away
-    		if (!this.isReturning && distToPlayer > MAX_CHAIN) {
-    			this.isReturning = true;
-    		}
-
-    		// despawn if close enough
-    		if (this.isReturning && distToPlayer < 1F) {
-    			//System.out.println("we have returned after smashing " + this.blocksSmashed + " blocks");
-        		if (this.getThrower() instanceof EntityPlayer) {
-        			ItemTFChainBlock.setChainAsReturned((EntityPlayer)this.getThrower());
-        		}
-    			this.setDead();
-    		}
-    	}
-    	
-    	// if we are returning, set course for the player
-        if (this.isReturning && !this.worldObj.isRemote && this.getThrower() != null) {
-        	
-        	EntityLivingBase returnTo = this.getThrower();
-        
-            Vec3 back = Vec3.createVectorHelper(returnTo.posX - this.posX, returnTo.posY + (double)returnTo.getEyeHeight() - 1.200000023841858D - this.posY, returnTo.posZ - this.posZ).normalize();
-            
-            float age = Math.min(this.ticksExisted * 0.03F, 1.0F);
-            
-            // separate the return velocity from the normal bouncy velocity
-            this.motionX = this.velX * (1.0 - age) + (back.xCoord * 2F * age);
-            this.motionY = this.velY * (1.0 - age) + (back.yCoord * 2F * age) - this.getGravityVelocity();
-            this.motionZ = this.velZ * (1.0 - age) + (back.zCoord * 2F * age);
-
-        }
-        
-        
-        // on the client, if we are not attached, assume we have just spawned, and attach to the player
-        if (this.worldObj.isRemote && !this.isAttached) {
-            List nearbyEntities = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(-this.motionX, -this.motionY, -this.motionZ).expand(2.0D, 2.0D, 2.0D));
-            for (int i = 0; i < nearbyEntities.size(); ++i) {
-                Entity nearby = (Entity)nearbyEntities.get(i);
-                
-                // attach?  should we check for closest player?
-                if (nearby instanceof EntityPlayer) {
-                	this.attachedTo = (EntityPlayer) nearby;
-                	
-                	//System.out.println("Attached to player nearby");
-                }
-            }
-            
-            this.isAttached = true;
-        }
-        
-        // set chain positions, client only
-        if (this.attachedTo != null) {
-    		// interpolate chain position
-        	Vec3 handVec = this.attachedTo.getLookVec();
-        	
-        	handVec.rotateAroundY(-0.4F);
-        	
-    		double sx = this.attachedTo.posX + handVec.xCoord;
-    		double sy = this.attachedTo.posY + handVec.yCoord - 0.6F;
-    		double sz = this.attachedTo.posZ + handVec.zCoord;
-    		
-    		double ox = sx - this.posX;
-    		double oy = sy - this.posY - 0.25F;
-    		double oz = sz - this.posZ;
-    		
-    		this.chain1.setPosition(sx - ox * 0.05, sy - oy * 0.05, sz - oz * 0.05);
-    		this.chain2.setPosition(sx - ox * 0.25, sy - oy * 0.25, sz - oz * 0.25);
-    		this.chain3.setPosition(sx - ox * 0.45, sy - oy * 0.45, sz - oz * 0.45);
-    		this.chain4.setPosition(sx - ox * 0.65, sy - oy * 0.65, sz - oz * 0.65);
-    		this.chain5.setPosition(sx - ox * 0.85, sy - oy * 0.85, sz - oz * 0.85);
-        }
-    }
-
-	
-
-    /**
-     * Velocity
-     */
-    protected float func_70182_d()
-    {
-        return 1.5F;
-    }
-
-
-	@Override
-	public World func_82194_d() {
-		return this.worldObj;
+		this.hand = hand;
+		this.shoot(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 1.5F, 1F);
 	}
 
+	@Override
+	public void shoot(double x, double y, double z, float speed, float accuracy) {
+		super.shoot(x, y, z, speed, accuracy);
+
+		// save velocity
+		this.velX = this.getMotion().getX();
+		this.velY = this.getMotion().getY();
+		this.velZ = this.getMotion().getZ();
+	}
 
 	@Override
-	public boolean attackEntityFromPart(EntityDragonPart p_70965_1_, DamageSource p_70965_2_, float p_70965_3_) {
+	protected float getGravityVelocity() {
+		return 0.05F;
+	}
+
+	@Override
+	protected void onImpact(RayTraceResult ray) {
+		if (world.isRemote) {
+			return;
+		}
+
+		if (ray instanceof EntityRayTraceResult) {
+			EntityRayTraceResult entityRay = (EntityRayTraceResult) ray;
+
+			// only hit living things
+			if (entityRay.getEntity() instanceof LivingEntity && entityRay.getEntity() != this.getThrower()) {
+				if (entityRay.getEntity().attackEntityFrom(this.getDamageSource(), 10)) {
+					// age when we hit a monster so that we go back to the player faster
+					this.ticksExisted += 60;
+				}
+			}
+		}
+
+		if (ray instanceof BlockRayTraceResult) {
+			BlockRayTraceResult blockRay = (BlockRayTraceResult) ray;
+
+			if (blockRay.getPos() != null && !this.world.isAirBlock(blockRay.getPos())) {
+				if (!this.isReturning) {
+					playSound(SoundEvents.BLOCK_ANVIL_LAND, 0.125f, this.rand.nextFloat());
+				}
+
+				if (this.blocksSmashed < MAX_SMASH) {
+					if (this.world.getBlockState(blockRay.getPos()).getBlockHardness(world, blockRay.getPos()) > 0.3F) {
+						// riccochet
+						double bounce = 0.6;
+						this.velX *= bounce;
+						this.velY *= bounce;
+						this.velZ *= bounce;
+
+
+						switch (blockRay.getFace()) {
+							case DOWN:
+								if (this.velY > 0) {
+									this.velY *= -bounce;
+								}
+								break;
+							case UP:
+								if (this.velY < 0) {
+									this.velY *= -bounce;
+								}
+								break;
+							case NORTH:
+								if (this.velZ > 0) {
+									this.velZ *= -bounce;
+								}
+								break;
+							case SOUTH:
+								if (this.velZ < 0) {
+									this.velZ *= -bounce;
+								}
+								break;
+							case WEST:
+								if (this.velX > 0) {
+									this.velX *= -bounce;
+								}
+								break;
+							case EAST:
+								if (this.velX < 0) {
+									this.velX *= -bounce;
+								}
+								break;
+						}
+					}
+
+					// demolish some blocks
+					this.affectBlocksInAABB(this.getBoundingBox());
+				}
+
+				this.isReturning = true;
+
+				// if we have smashed enough, add to ticks so that we go back faster
+				if (this.blocksSmashed > MAX_SMASH && this.ticksExisted < 60) {
+					this.ticksExisted += 60;
+				}
+			}
+		}
+	}
+
+	private DamageSource getDamageSource() {
+		LivingEntity thrower = this.getThrower();
+		if (thrower instanceof PlayerEntity) {
+			return DamageSource.causePlayerDamage((PlayerEntity) thrower);
+		} else if (thrower != null) {
+			return DamageSource.causeMobDamage(thrower);
+		} else {
+			return DamageSource.causeThrownDamage(this, null);
+		}
+	}
+
+	private void affectBlocksInAABB(AxisAlignedBB box) {
+		for (BlockPos pos : WorldUtil.getAllInBB(box)) {
+
+			BlockState state = world.getBlockState(pos);
+			Block block = state.getBlock();
+
+			// TODO: The "explosion" parameter can't actually be null
+			if (!block.isAir(state, world, pos) && block.getExplosionResistance(state, world, pos, this, null) < 7F
+					&& state.getBlockHardness(world, pos) >= 0 && block.canEntityDestroy(state, world, pos, this)) {
+
+				if (getThrower() instanceof PlayerEntity) {
+					PlayerEntity player = (PlayerEntity) getThrower();
+
+					if (block.canHarvestBlock(state, world, pos, player)) {
+						block.harvestBlock(world, player, pos, state, world.getTileEntity(pos), player.getHeldItem(hand));
+					}
+				}
+
+				world.destroyBlock(pos, false);
+				this.blocksSmashed++;
+			}
+		}
+	}
+
+	@Override
+	public void tick() {
+		super.tick();
+
+		if (world.isRemote) {
+			chain1.tick();
+			chain2.tick();
+			chain3.tick();
+			chain4.tick();
+			chain5.tick();
+
+			// set chain positions
+			if (this.getThrower() != null) {
+				// interpolate chain position
+				Vec3d handVec = this.getThrower().getLookVec().rotateYaw(hand == Hand.MAIN_HAND ? -0.4F : 0.4F);
+
+				double sx = this.getThrower().getX() + handVec.x;
+				double sy = this.getThrower().getY() + handVec.y - 0.4F + this.getThrower().getEyeHeight();
+				double sz = this.getThrower().getZ() + handVec.z;
+
+				double ox = sx - this.getX();
+				double oy = sy - this.getY() - 0.25F;
+				double oz = sz - this.getZ();
+
+				this.chain1.setPosition(sx - ox * 0.05, sy - oy * 0.05, sz - oz * 0.05);
+				this.chain2.setPosition(sx - ox * 0.25, sy - oy * 0.25, sz - oz * 0.25);
+				this.chain3.setPosition(sx - ox * 0.45, sy - oy * 0.45, sz - oz * 0.45);
+				this.chain4.setPosition(sx - ox * 0.65, sy - oy * 0.65, sz - oz * 0.65);
+				this.chain5.setPosition(sx - ox * 0.85, sy - oy * 0.85, sz - oz * 0.85);
+			}
+		} else {
+			if (getThrower() == null) {
+				remove();
+			} else {
+				double distToPlayer = this.getDistance(this.getThrower());
+				// return if far enough away
+				if (!this.isReturning && distToPlayer > MAX_CHAIN) {
+					this.isReturning = true;
+				}
+
+				if (this.isReturning) {
+					// despawn if close enough
+					if (distToPlayer < 2F) {
+						this.remove();
+					}
+
+					LivingEntity returnTo = this.getThrower();
+
+					Vec3d back = new Vec3d(returnTo.getX(), returnTo.getY() + returnTo.getEyeHeight(), returnTo.getZ()).subtract(this.getPositionVector()).normalize();
+					float age = Math.min(this.ticksExisted * 0.03F, 1.0F);
+
+					// separate the return velocity from the normal bouncy velocity
+//					this.getMotion().getX() = this.velX * (1.0 - age) + (back.x * 2F * age);
+//					this.getMotion().getY() = this.velY * (1.0 - age) + (back.y * 2F * age) - this.getGravityVelocity();
+//					this.getMotion().getZ() = this.velZ * (1.0 - age) + (back.z * 2F * age);
+					this.setMotion(new Vec3d(
+							this.velX * (1.0 - age) + (back.x * 2F * age),
+							this.velY * (1.0 - age) + (back.y * 2F * age) - this.getGravityVelocity(),
+							this.velZ * (1.0 - age) + (back.z * 2F * age)
+					));
+				}
+			}
+		}
+	}
+
+	@Override
+	protected void registerData() {
+	}
+
+	@Override
+	public void remove() {
+		super.remove();
+		LivingEntity thrower = this.getThrower();
+		if (thrower != null && thrower.getActiveItemStack().getItem() == TFItems.block_and_chain.get()) {
+			thrower.resetActiveHand();
+		}
+	}
+
+	@Override
+	public World getWorld() {
+		return this.world;
+	}
+
+	@Override
+	public boolean attackEntityFromPart(MultiPartEntityPart part, DamageSource source, float damage) {
 		return false;
 	}
-	
-    /**
-     * We need to do this for the bounding boxes on the parts to become active
-     */
-    @Override
-    public Entity[] getParts()
-    {
-        return partsArray;
-    }
-    
+
+	@Override
+	public Entity[] getParts() {
+		return partsArray;
+	}
+
+	@Override
+	public void writeSpawnData(PacketBuffer buffer) {
+		buffer.writeInt(getThrower() != null ? getThrower().getEntityId() : -1);
+		buffer.writeBoolean(hand == Hand.MAIN_HAND);
+	}
+
+	@Override
+	public void readSpawnData(PacketBuffer additionalData) {
+		Entity e = world.getEntityByID(additionalData.readInt());
+		if (e instanceof LivingEntity) {
+			owner = (LivingEntity) e;
+		}
+		hand = additionalData.readBoolean() ? Hand.MAIN_HAND : Hand.OFF_HAND;
+	}
+
+
+	@Override
+	public IPacket<?> createSpawnPacket() {
+		return NetworkHooks.getEntitySpawningPacket(this);
+	}
 }

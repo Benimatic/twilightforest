@@ -1,148 +1,103 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.projectile.EntityThrowable;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.IRendersAsItem;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.math.EntityRayTraceResult;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
+import twilightforest.entity.projectile.EntityTFThrowable;
 
+public class EntityTFLichBomb extends EntityTFThrowable implements IRendersAsItem {
 
-public class EntityTFLichBomb extends EntityThrowable {
-	
-	public EntityTFLichBomb(World par1World, double par2, double par4, double par6) {
-		super(par1World, par2, par4, par6);
+	public EntityTFLichBomb(EntityType<? extends EntityTFLichBomb> type, World world) {
+		super(type, world);
 	}
 
-	public EntityTFLichBomb(World par1World, EntityLivingBase par2EntityLiving) {
-		super(par1World, par2EntityLiving);
+	public EntityTFLichBomb(EntityType<? extends EntityTFLichBomb> type, World world, LivingEntity thrower) {
+		super(type, world, thrower);
 	}
 
-	public EntityTFLichBomb(World par1World) {
-		super(par1World);
-	}
-
-
-	/**
-	 * projectile speed
-	 */
-    protected float func_40077_c()
-    {
-        return 0.35F;
-    }
-	
-	
 	@Override
-	public void onUpdate() {
-		super.onUpdate();
-
-        makeTrail();
+	public void tick() {
+		super.tick();
+		makeTrail();
 	}
-	
 
-	public void makeTrail() {
+	private void makeTrail() {
 		for (int i = 0; i < 1; i++) {
-			double sx =  0.5 * (rand.nextDouble() - rand.nextDouble()) + this.motionX;
-			double sy =  0.5 * (rand.nextDouble() - rand.nextDouble()) + this.motionY;
-			double sz =  0.5 * (rand.nextDouble() - rand.nextDouble()) + this.motionZ;
-			
-			
-			double dx = posX + sx; 
-			double dy = posY + sy; 
-			double dz = posZ + sz; 
+			double sx = 0.5 * (rand.nextDouble() - rand.nextDouble()) + this.getMotion().getX();
+			double sy = 0.5 * (rand.nextDouble() - rand.nextDouble()) + this.getMotion().getY();
+			double sz = 0.5 * (rand.nextDouble() - rand.nextDouble()) + this.getMotion().getZ();
 
-			worldObj.spawnParticle("flame", dx, dy, dz, sx * -0.25, sy * -0.25, sz * -0.25);
+			double dx = getX() + sx;
+			double dy = getY() + sy;
+			double dz = getZ() + sz;
+
+			world.addParticle(ParticleTypes.FLAME, dx, dy, dz, sx * -0.25, sy * -0.25, sz * -0.25);
 		}
 	}
-	
 
-	/**
-	 * Always be on fire!
-	 */
 	@Override
-	public boolean isBurning()
-	{
+	public boolean isBurning() {
 		return true;
 	}
 
-    /**
-     * Returns true if other Entities should be prevented from moving through this Entity.
-     */
-    @Override
-	public boolean canBeCollidedWith()
-    {
-        return true;
-    }
-    
-    /**
-     * We need to set this so that the player can attack and reflect the bolt
-     */
-    @Override
-	public float getCollisionBorderSize()
-    {
-        return 1.0F;
-    }
-
-	
-	/**
-	 * Reflect!
-	 */
 	@Override
-    public boolean attackEntityFrom(DamageSource damagesource, float i)
-    {
-//		System.out.println("Lich bolt being attacked!");
-		
-        setBeenAttacked();
-        if (damagesource.getEntity() != null)
-        {
-        	// explode
-        	explode();
-        	
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-	protected void explode() {
-		float explosionPower = 2F;
-        this.worldObj.newExplosion(this, this.posX, this.posY, this.posZ, explosionPower, false, false);
-
-        this.setDead();
+	public boolean canBeCollidedWith() {
+		return true;
 	}
 
-	/**
-	 * How much this entity falls each tick
-	 */
 	@Override
-    protected float getGravityVelocity()
-    {
-        return 0.001F;
-    }
-
-	@Override
-	protected void onImpact(MovingObjectPosition par1MovingObjectPosition) {
-		boolean passThrough = false;
-		
-		// pass through other lich bolts
-		if (par1MovingObjectPosition.entityHit != null && (par1MovingObjectPosition.entityHit instanceof EntityTFLichBolt || par1MovingObjectPosition.entityHit instanceof EntityTFLichBomb)) {
-			passThrough = true;
-		}
-		
-		// only damage living things
-		if (par1MovingObjectPosition.entityHit != null && par1MovingObjectPosition.entityHit instanceof EntityTFLich)
-		{
-			passThrough = true;
-		}
-        
-    	// if we're not set to pass, damage what we hit
-        if (!passThrough)
-        {
-        	explode();
-        }
-
+	public float getCollisionBorderSize() {
+		return 1.0F;
 	}
 
+	@Override
+	public boolean attackEntityFrom(DamageSource source, float amount) {
+		super.attackEntityFrom(source, amount);
 
+		if (source.getImmediateSource() != null) {
+			if (!source.isExplosion())
+				explode();
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	private void explode() {
+		if (!this.world.isRemote) {
+			this.world.createExplosion(this, this.getX(), this.getY(), this.getZ(), 2F, false, Explosion.Mode.NONE);
+			this.remove();
+		}
+	}
+
+	@Override
+	protected float getGravityVelocity() {
+		return 0.001F;
+	}
+
+	@Override
+	protected void onImpact(RayTraceResult result) {
+		if (result instanceof EntityRayTraceResult) {
+			if (((EntityRayTraceResult)result).getEntity() instanceof EntityTFLichBolt
+					|| ((EntityRayTraceResult)result).getEntity() instanceof EntityTFLichBomb
+					|| ((EntityRayTraceResult)result).getEntity() instanceof EntityTFLich) {
+				return;
+			}
+		}
+
+		explode();
+	}
+
+	@Override
+	public ItemStack getItem() {
+		return new ItemStack(Items.MAGMA_CREAM);
+	}
 }

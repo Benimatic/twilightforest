@@ -1,41 +1,30 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.renderer.entity.RenderLiving;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.MathHelper;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.opengl.GL11;
-
+import net.minecraft.util.math.MathHelper;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.model.ModelTFIceCrystal;
+import twilightforest.client.model.entity.ModelTFIceCrystal;
+import twilightforest.entity.boss.EntityTFIceCrystal;
 
-public class RenderTFIceCrystal extends RenderLiving {
+public class RenderTFIceCrystal extends MobRenderer<EntityTFIceCrystal, ModelTFIceCrystal> {
 
-    private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "icecrystal.png");
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("icecrystal.png");
 
-
-	public RenderTFIceCrystal() {
-		super(new ModelTFIceCrystal(), 1.0F);
+	public RenderTFIceCrystal(EntityRendererManager manager) {
+		super(manager, new ModelTFIceCrystal(), 0.25F);
 	}
-
-    
-    /**
-     * Allows the render to do any OpenGL state modifications necessary before the model is rendered. Args:
-     * entityLiving, partialTickTime
-     */
-    protected void preRenderCallback(EntityLivingBase par1EntityLivingBase, float partialTick)
-    {
-		float bounce = par1EntityLivingBase.ticksExisted + partialTick;
-		
-		GL11.glTranslatef(0F, MathHelper.sin((bounce) * 0.2F) * 0.15F, 0F);
-    }
-
 
 	@Override
-	protected ResourceLocation getEntityTexture(Entity var1) {
-		return RenderTFIceCrystal.textureLoc;
+	protected void scale(EntityTFIceCrystal entity, MatrixStack stack, float partialTicks) {
+		float bounce = entity.ticksExisted + partialTicks;
+		stack.translate(0F, MathHelper.sin((bounce) * 0.2F) * 0.15F, 0F);
 	}
 
+	@Override
+	public ResourceLocation getEntityTexture(EntityTFIceCrystal entity) {
+		return textureLoc;
+	}
 }

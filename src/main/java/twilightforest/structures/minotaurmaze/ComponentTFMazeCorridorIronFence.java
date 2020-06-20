@@ -1,28 +1,33 @@
 package twilightforest.structures.minotaurmaze;
 
-import java.util.Random;
-
-import net.minecraft.init.Blocks;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.template.TemplateManager;
+import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
+
+import java.util.Random;
 
 public class ComponentTFMazeCorridorIronFence extends ComponentTFMazeCorridor {
 
-	public ComponentTFMazeCorridorIronFence() {
-		super();
-		// TODO Auto-generated constructor stub
+	public ComponentTFMazeCorridorIronFence(TemplateManager manager, CompoundNBT nbt) {
+		super(TFMinotaurMazePieces.TFMMCIF, nbt);
 	}
 
-	public ComponentTFMazeCorridorIronFence(int i, int x, int y, int z, int rotation) {
-		super(i, x, y, z, rotation);
+	public ComponentTFMazeCorridorIronFence(TFFeature feature, int i, int x, int y, int z, Direction rotation) {
+		super(TFMinotaurMazePieces.TFMMCIF, feature, i, x, y, z, rotation);
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {		
-		this.fillWithMetadataBlocks(world, sbb, 1, 4, 2, 4, 4, 3, TFBlocks.mazestone, 3, Blocks.air, 0, false);
-		this.fillWithMetadataBlocks(world, sbb, 1, 1, 2, 4, 3, 3, TFBlocks.mazestone, 2, Blocks.air, 0, false);
-		this.fillWithBlocks(world, sbb, 2, 1, 2, 3, 3, 3, Blocks.iron_bars, Blocks.air, false);
+	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		this.fillWithBlocks(world, sbb, 1, 4, 2, 4, 4, 3, TFBlocks.maze_stone_decorative.get().getDefaultState(), AIR, false);
+		this.fillWithBlocks(world, sbb, 1, 1, 2, 4, 3, 3, TFBlocks.maze_stone_chiseled.get().getDefaultState(), AIR, false);
+		this.fillWithBlocks(world, sbb, 2, 1, 2, 3, 3, 3, Blocks.IRON_BARS.getDefaultState(), Blocks.AIR.getDefaultState(), false);
 		return true;
 	}
 }

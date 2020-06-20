@@ -1,0 +1,18 @@
+{
+  "result": {
+    "nbt": "{ench:[{lvl:1s,id:6s}]}",
+    "item": "twilightforest:ironwood_helmet",
+    "type": "minecraft:item_nbt"
+  },
+  "group": "ironwood_armor",
+  "pattern": [
+    "###",
+    "# #"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "#": {
+      "tag": "twilightforest:ironwood_ingots"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "twilightforest:arctic_chestplate"
+  },
+  "group": "arctic_armor",
+  "pattern": [
+    "# #",
+    "###",
+    "###"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "twilightforest:arctic_fur"
+    }
+  }
+}

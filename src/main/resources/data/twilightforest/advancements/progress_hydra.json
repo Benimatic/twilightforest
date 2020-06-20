@@ -1,0 +1,61 @@
+{
+  "display": {
+    "icon": {
+      "item": "twilightforest:hydra_trophy"
+    },
+    "title": {
+      "translate": "advancement.twilightforest.kill_hydra"
+    },
+    "description": {
+      "translate": "advancement.twilightforest.kill_hydra.desc",
+      "with": [
+        { "translate": "entity.twilightforest.hydra" }
+      ]
+    },
+    "frame": "goal"
+  },
+  "parent": "twilightforest:progress_labyrinth",
+  "criteria": {
+    "hydra": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:hydra"
+        }
+      }
+    },
+    "trophy": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "twilightforest:hydra_trophy"
+          }
+        ]
+      }
+    },
+    "blood": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "twilightforest:fiery_blood"
+          }
+        ]
+      }
+    },
+    "stroganoff": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:progress_labyrinth"
+      }
+    }
+  },
+  "requirements": [
+    [ "hydra", "trophy", "blood" ],
+    [ "stroganoff" ]
+  ],
+  "rewards": {
+    "function": "twilightforest:give_3_shields"
+  }
+}

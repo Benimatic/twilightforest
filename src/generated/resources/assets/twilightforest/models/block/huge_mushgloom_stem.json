@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "twilightforest:block/huge_mushgloom_stem"
+  }
+}

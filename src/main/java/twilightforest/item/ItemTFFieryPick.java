@@ -1,150 +1,108 @@
 package twilightforest.item;
 
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.ExperienceOrbEntity;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.item.*;
+import net.minecraft.item.crafting.AbstractCookingRecipe;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.IRecipeType;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.World;
+import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import twilightforest.TwilightForestMod;
+import twilightforest.util.TFItemStackUtils;
+
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemPickaxe;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
+public class ItemTFFieryPick extends PickaxeItem {
 
-public class ItemTFFieryPick extends ItemPickaxe {
-
-	protected ItemTFFieryPick(Item.ToolMaterial par2EnumToolMaterial) {
-		super(par2EnumToolMaterial);
-		this.setCreativeTab(TFItems.creativeTab);
+	protected ItemTFFieryPick(IItemTier toolMaterial, Properties props) {
+		super(toolMaterial, 1, -2.8F, props);
 	}
 
-	@Override
-	public boolean onBlockDestroyed(ItemStack par1ItemStack, World par2World, Block blockID, int x, int y, int z, EntityLivingBase par7EntityLiving) {
-		if (super.onBlockDestroyed(par1ItemStack, par2World, blockID, x, y, z, par7EntityLiving) && this.func_150897_b(blockID))
-		{
-			// we are just displaying the fire animation here, so check if we're on the client
-			if (par2World.isRemote)
-			{
-				int meta = par2World.getBlockMetadata(x, y, z); // I guess the block is still there at this point
+	@SubscribeEvent
+	public static void onDrops(BlockEvent.HarvestDropsEvent event) {
+		if (event.getHarvester() != null && event.getHarvester().getHeldItemMainhand().getItem() == TFItems.fiery_pickaxe.get()
+				&& event.getState().getBlock().canHarvestBlock(event.getState(), event.getWorld(), event.getPos(), event.getHarvester())) {
 
-				ArrayList<ItemStack> items = blockID.getDrops(par2World, x, y, z, meta, 0);
+			List<ItemStack> removeThese = new ArrayList<>();
+			List<ItemStack> addThese = new ArrayList<>();
 
-				for (ItemStack input : items)
-				{
-					// does it smelt?
-					ItemStack result = FurnaceRecipes.smelting().getSmeltingResult(input);
-					if (result != null)
-					{
+			//TODO 1.14: Furnace recipes are now handled differently. Verify
+			for (ItemStack input : event.getDrops()) {
+				IRecipe<?> irecipe = event.getWorld().getWorld().getRecipeManager().getRecipe(IRecipeType.SMELTING, new Inventory(input), event.getWorld().getWorld()).orElse(null);
+				ItemStack result = irecipe.getRecipeOutput();
+				if (!result.isEmpty()) {
 
-						// display fire animation
-						for (int var1 = 0; var1 < 5; ++var1)
-						{
-							double rx = itemRand.nextGaussian() * 0.02D;
-							double ry = itemRand.nextGaussian() * 0.02D;
-							double rz = itemRand.nextGaussian() * 0.02D;
-							double magnitude = 20.0;
-							par2World.spawnParticle("flame", x + 0.5 + (rx * magnitude), y + 0.5 + (ry * magnitude), z + 0.5 + (rz * magnitude), -rx, -ry, -rz);
+					int combinedCount = input.getCount() * result.getCount();
+
+					addThese.addAll(TFItemStackUtils.splitToSize(new ItemStack(result.getItem(), combinedCount/*, result.getItemDamage()*/)));
+					removeThese.add(input);
+
+					// [VanillaCopy] SlotFurnaceOutput.onCrafting
+					int i = combinedCount;
+					float f = ((AbstractCookingRecipe) irecipe).getExperience();
+
+					if (f == 0.0F) {
+						i = 0;
+					} else if (f < 1.0F) {
+						int j = MathHelper.floor((float) i * f);
+
+						if (j < MathHelper.ceil((float) i * f) && Math.random() < (double) ((float) i * f - (float) j)) {
+							++j;
 						}
 
+						i = j;
 					}
 
+					while (i > 0) {
+						int k = ExperienceOrbEntity.getXPSplit(i);
+						i -= k;
+						event.getHarvester().world.addEntity(new ExperienceOrbEntity(event.getWorld().getWorld(), event.getHarvester().getX(), event.getHarvester().getY() + 0.5D, event.getHarvester().getZ(), k));
+					}
+
+					BlockPos pos = event.getPos();
+					event.getWorld().getWorld().addParticle(ParticleTypes.FLAME, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 0.5, 0.5, 0.5);
 				}
 			}
 
-
-			return true;
-		}
-		else
-		{
-			return false;
+			event.getDrops().removeAll(removeThese);
+			event.getDrops().addAll(addThese);
 		}
 	}
-	
-    /**
-     * Current implementations of this method in child classes do not use the entry argument beside ev. They just raise
-     * the damage on the stack.
-     */
-    @Override
-	public boolean hitEntity(ItemStack par1ItemStack, EntityLivingBase par2EntityLiving, EntityLivingBase par3EntityLiving) {
-		boolean result = super.hitEntity(par1ItemStack, par2EntityLiving, par3EntityLiving);
-		
-		if (result && !par2EntityLiving.isImmuneToFire())
-		{
-			if (par2EntityLiving.worldObj.isRemote)
-			{
-				// fire animation!
-		        for (int var1 = 0; var1 < 20; ++var1)
-		        {
-		            double var2 = itemRand.nextGaussian() * 0.02D;
-		            double var4 = itemRand.nextGaussian() * 0.02D;
-		            double var6 = itemRand.nextGaussian() * 0.02D;
-		            double var8 = 10.0D;
-		            par2EntityLiving.worldObj.spawnParticle("flame", par2EntityLiving.posX + itemRand.nextFloat() * par2EntityLiving.width * 2.0F - par2EntityLiving.width - var2 * var8, par2EntityLiving.posY + itemRand.nextFloat() * par2EntityLiving.height - var4 * var8, par2EntityLiving.posZ + itemRand.nextFloat() * par2EntityLiving.width * 2.0F - par2EntityLiving.width - var6 * var8, var2, var4, var6);
-		        }
-			}
-			else
-			{
-				par2EntityLiving.setFire(15);
+
+	@Override
+	public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+		boolean result = super.hitEntity(stack, target, attacker);
+
+		if (result && !target.isImmuneToFire()) {
+			if (!target.world.isRemote) {
+				target.setFire(15);
+			} else {
+				target.world.addParticle(ParticleTypes.FLAME, target.getX(), target.getY() + target.getHeight() * 0.5, target.getZ(), target.getWidth() * 0.5, target.getHeight() * 0.5, target.getWidth() * 0.5);
 			}
 		}
-		
+
 		return result;
 	}
 
-	/**
-     * Return an item rarity from EnumRarity
-     * 
-     * This is automatically rare
-     */    
-    @Override
-	public EnumRarity getRarity(ItemStack par1ItemStack) {
-    	return EnumRarity.rare;
-	}
-    
-    /**
-     * allows items to add custom lines of information to the mouseover description
-     */
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
-		par3List.add(StatCollector.translateToLocal(getUnlocalizedName() + ".tooltip"));
+	@OnlyIn(Dist.CLIENT)
+	public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> tooltip, ITooltipFlag flags) {
+		super.addInformation(stack, world, tooltip, flags);
+		tooltip.add(new TranslationTextComponent(getTranslationKey() + ".tooltip"));
 	}
-    
-    /**
-     * Return whether this item is repairable in an anvil.
-     */
-    @Override
-	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
-    {
-    	// repair with fiery ingots
-        return par2ItemStack.getItem() == TFItems.fieryIngot ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
-    }
-    
-    
-    /**
-     * Returns if the item (tool) can harvest results from the block type. (canHarvestBlock)
-     */
-    public boolean func_150897_b(Block par1Block)
-    {
-        return par1Block == Blocks.obsidian ? true : super.func_150897_b(par1Block);
-    }
-	
-	/**
-	 * Properly register icon source
-	 */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":" + this.getUnlocalizedName().substring(5));
-    }
 }

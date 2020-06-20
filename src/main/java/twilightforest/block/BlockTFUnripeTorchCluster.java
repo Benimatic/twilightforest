@@ -1,35 +1,24 @@
 package twilightforest.block;
 
+import net.minecraft.block.BlockState;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.server.ServerWorld;
+
 import java.util.Random;
 
-import net.minecraft.block.material.Material;
-import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
-import twilightforest.item.TFItems;
-
 public class BlockTFUnripeTorchCluster extends BlockTFTrollRoot {
-	
 	private static final int RIPEN_THRESHHOLD = 6;
 
-
-	protected BlockTFUnripeTorchCluster() {
-		super();
-
-        this.setBlockTextureName(TwilightForestMod.ID + ":unripe_torch_cluster");
-
+	protected BlockTFUnripeTorchCluster(Properties props) {
+		super(props);
 	}
 
-	
-    /**
-     * Ticks the block if it's been scheduled
-     */
 	@Override
-    public void updateTick(World world, int x, int y, int z, Random rand) {
-        super.updateTick(world, x, y, z, rand);
-
-        if (world.getBlockLightValue(x, y, z) >= RIPEN_THRESHHOLD) {
-        	// ripen!
-        	world.setBlock(x, y, z, TFBlocks.trollBer);
-        }
-    }
+	@Deprecated
+	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random rand) {
+		if (world.getLight(pos) >= RIPEN_THRESHHOLD) {
+			// ripen!
+			world.setBlockState(pos, TFBlocks.trollber.get().getDefaultState());
+		}
+	}
 }

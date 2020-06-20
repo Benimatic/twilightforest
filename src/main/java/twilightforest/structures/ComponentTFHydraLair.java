@@ -1,66 +1,62 @@
 package twilightforest.structures;
 
+import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.World;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
+import twilightforest.TFFeature;
+import twilightforest.block.BlockTFBossSpawner;
+import twilightforest.block.TFBlocks;
+import twilightforest.enums.BossVariant;
+
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
-import twilightforest.block.TFBlocks;
-
 public class ComponentTFHydraLair extends ComponentTFHollowHill {
 
-	public ComponentTFHydraLair() {
-		super();
-		// TODO Auto-generated constructor stub
+	public ComponentTFHydraLair(TemplateManager manager, CompoundNBT nbt) {
+		super(TFFeature.TFHydra, nbt);
 	}
 
-	public ComponentTFHydraLair(World world, Random rand, int i, int x, int y, int z) {
-		super(world, rand, i, 2, x, y + 2, z);
+	public ComponentTFHydraLair(TFFeature feature, Random rand, int i, int x, int y, int z) {
+		super(TFFeature.TFHydra, feature, rand, i, 2, x, y + 2, z);
 	}
 
-	/**
-	 * Add on any other components we need.  Override with noop since we don't need a maze
-	 */
-	@SuppressWarnings("rawtypes")
 	@Override
-	public void buildComponent(StructureComponent structurecomponent, List list, Random random) {
+	public void buildComponent(StructurePiece structurecomponent, List<StructurePiece> list, Random random) {
 		;
 	}
-	
-	/**
-	 * Add in all the blocks we're adding.
-	 */
+
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 		int stalacts = 64;
 		int stalags = 8;
 
 		// fill in features
 		// ore or glowing stalactites! (smaller, less plentiful)
-		for (int i = 0; i < stalacts; i++)
-		{
+		for (int i = 0; i < stalacts; i++) {
 			int[] dest = getCoordsInHill2D(rand);
-			generateOreStalactite(world, dest[0], 1, dest[1], sbb);
+			generateOreStalactite(world.getWorld(), dest[0], 1, dest[1], sbb);
 		}
 		// stone stalactites!
-		for (int i = 0; i < stalacts; i++)
-		{
+		for (int i = 0; i < stalacts; i++) {
 			int[] dest = getCoordsInHill2D(rand);
-			generateBlockStalactite(world, Blocks.stone, 1.0F, true, dest[0], 1, dest[1], sbb);
+			generateBlockStalactite(world.getWorld(), Blocks.STONE, 1.0F, true, dest[0], 1, dest[1], sbb);
 		}
 		// stone stalagmites!
-		for (int i = 0; i < stalags; i++)
-		{
+		for (int i = 0; i < stalags; i++) {
 			int[] dest = getCoordsInHill2D(rand);
-			generateBlockStalactite(world, Blocks.stone, 0.9F, false, dest[0], 1, dest[1], sbb);
+			generateBlockStalactite(world.getWorld(), Blocks.STONE, 0.9F, false, dest[0], 1, dest[1], sbb);
 		}
 
 		// boss spawner seems important
-		placeBlockAtCurrentPosition(world, TFBlocks.bossSpawner, 2, 27, 3, 27, sbb);
+		setBlockState(world, TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.HYDRA), 27, 3, 27, sbb);
 
 		return true;
 	}
-
 }

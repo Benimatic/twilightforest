@@ -1,25 +1,22 @@
 package twilightforest.item;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
-import twilightforest.entity.EntitySeekerArrow;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.projectile.AbstractArrowEntity;
+import net.minecraft.item.BowItem;
+import twilightforest.entity.TFEntities;
+import twilightforest.entity.projectile.EntitySeekerArrow;
 
-public class ItemTFSeekerBow extends ItemTFBowBase {
-	
-    
-    public ItemTFSeekerBow() {
-    	this.setTextureName(TwilightForestMod.ID + ":seekerbow");
-		this.setCreativeTab(TFItems.creativeTab);
-    }
+public class ItemTFSeekerBow extends BowItem {
 
-	/**
-	 * Get the arrow for this specific bow
-	 */
-    @Override
-	protected EntityArrow getArrow(World world, EntityPlayer entityPlayer, float velocity) {
-		return new EntitySeekerArrow(world, entityPlayer, velocity * 0.5F);
+	public ItemTFSeekerBow(Properties props) {
+		super(props);
 	}
 
+	@Override
+	public AbstractArrowEntity customeArrow(AbstractArrowEntity arrow) {
+		if (arrow.getShooter() instanceof LivingEntity) {
+			return new EntitySeekerArrow(TFEntities.seeker_arrow, arrow.world, (LivingEntity) arrow.getShooter());
+		}
+		return arrow;
+	}
 }

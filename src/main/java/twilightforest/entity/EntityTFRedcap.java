@@ -1,176 +1,113 @@
 package twilightforest.entity;
 
+import net.minecraft.block.Blocks;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
-import net.minecraft.entity.ai.EntityAIAvoidEntity;
-import net.minecraft.entity.ai.EntityAIHurtByTarget;
-import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWander;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.item.EntityTNTPrimed;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
+import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.item.TNTEntity;
+import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import twilightforest.TFAchievementPage;
-import twilightforest.TFFeature;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFSounds;
 import twilightforest.entity.ai.EntityAITFRedcapLightTNT;
 import twilightforest.entity.ai.EntityAITFRedcapShy;
 
+import javax.annotation.Nullable;
 
-public class EntityTFRedcap extends EntityMob {
-	
+public class EntityTFRedcap extends MonsterEntity {
 
-    public static ItemStack heldPick = new ItemStack(Items.iron_pickaxe, 1);
-    public static ItemStack heldTNT = new ItemStack(Blocks.tnt, 1);
-    public static ItemStack heldFlint = new ItemStack(Items.flint_and_steel, 1);
-    
-	private boolean shy;
-	
-	private int tntLeft = 0;
+	public ItemStack heldPick = new ItemStack(Items.IRON_PICKAXE, 1);
+	public ItemStack heldTNT = new ItemStack(Blocks.TNT, 1);
+	public ItemStack heldFlint = new ItemStack(Items.FLINT_AND_STEEL, 1);
 
-	public EntityTFRedcap(World world)
-    {
-        super(world);
-        //texture = TwilightForestMod.MODEL_DIR + "redcap.png";
-        //moveSpeed = 0.28F;
-        setSize(0.9F, 1.4F);
-
-        shy = true;
-        
-        this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(1, new EntityAIAvoidEntity(this, EntityTNTPrimed.class, 2.0F, 1.0F, 2.0F));
-		this.tasks.addTask(2, new EntityAITFRedcapShy(this, 1.0F));
-		this.tasks.addTask(3, new EntityAITFRedcapLightTNT(this, 1.0F)); // light TNT
-        this.tasks.addTask(5, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
-        this.tasks.addTask(6, new EntityAIWander(this, 1.0D));
-        this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.tasks.addTask(7, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
-        
-        this.setCurrentItemOrArmor(0, heldPick);
-        this.setCurrentItemOrArmor(1, new ItemStack(Items.iron_boots));
-        
-        this.equipmentDropChances[0] = 0.2F;
-        this.equipmentDropChances[1] = 0.2F;
-
-    }
-    
-    public EntityTFRedcap(World world, double x, double y, double z)
-    {
-        this(world);
-        this.setPosition(x, y, z);
-    }
-
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
-    @Override
-	protected boolean isAIEnabled()
-    {
-        return true;
-    }
-    
-	/**
-	 * Set monster attributes
-	 */
-	@Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.28D); // movement speed
-    }
-
-    @Override
-	protected String getLivingSound()
-    {
-        return TwilightForestMod.ID + ":mob.redcap.redcap";
-    }
-
-    @Override
-	protected String getHurtSound()
-    {
-        return TwilightForestMod.ID + ":mob.redcap.hurt";
-    }
-
-    @Override
-	protected String getDeathSound()
-    {
-        return TwilightForestMod.ID + ":mob.redcap.die";
-    }
-
-    @Override
-	protected Item getDropItem()
-    {
-        return Items.coal;
-    }
-    
-    public boolean isShy() 
-    {
-    	return shy && this.recentlyHit <= 0;
-    }
-    
-    public int getTntLeft() {
-		return tntLeft;
+	public EntityTFRedcap(EntityType<? extends EntityTFRedcap> type, World world) {
+		super(type, world);
 	}
 
-	public void setTntLeft(int tntLeft) {
-		this.tntLeft = tntLeft;
-	}
-	
-	public ItemStack getPick()
-	{
-		return heldPick;
-	}
-	
-    /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
-	@Override
-    public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
-    {
-        super.writeEntityToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setInteger("TNTLeft", this.getTntLeft());
-    }
-
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
-	@Override
-    public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
-    {
-        super.readEntityFromNBT(par1NBTTagCompound);
-        this.setTntLeft(par1NBTTagCompound.getInteger("TNTLeft"));
-    }
-	
-    /**
-     * Trigger achievement when killed
-     */
-	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
-			((EntityPlayer)par1DamageSource.getSourceOfDamage()).triggerAchievement(TFAchievementPage.twilightHunter);
-			// are we in a level 1 hill?
-			int chunkX = MathHelper.floor_double(posX) >> 4;
-			int chunkZ = MathHelper.floor_double(posZ) >> 4;
-			if (TFFeature.getNearestFeature(chunkX, chunkZ, worldObj) == TFFeature.hill1) {
-				// award level 1 hill cheevo
-				((EntityPlayer)par1DamageSource.getSourceOfDamage()).triggerAchievement(TFAchievementPage.twilightHill1);
-			}
-
-		}
+	public EntityTFRedcap(EntityType<? extends EntityTFRedcap> type, World world, double x, double y, double z) {
+		this(type, world);
+		this.setPosition(x, y, z);
 	}
 
+	@Override
+	protected void registerGoals() {
+		this.goalSelector.addGoal(0, new SwimGoal(this));
+		this.goalSelector.addGoal(1, new AvoidEntityGoal(this, TNTEntity.class, 2.0F, 1.0F, 2.0F));
+		this.goalSelector.addGoal(2, new EntityAITFRedcapShy(this, 1.0F));
+		this.goalSelector.addGoal(3, new EntityAITFRedcapLightTNT(this, 1.0F)); // light TNT
+		this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0D, false));
+		this.goalSelector.addGoal(6, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
+		this.goalSelector.addGoal(7, new LookAtGoal(this, PlayerEntity.class, 8.0F));
+		this.goalSelector.addGoal(7, new LookRandomlyGoal(this));
+		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
+	}
+
+	@Override
+	protected void registerAttributes() {
+		super.registerAttributes();
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
+		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
+	}
+
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return TFSounds.REDCAP_AMBIENT;
+	}
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource source) {
+		return TFSounds.REDCAP_HURT;
+	}
+
+	@Override
+	protected SoundEvent getDeathSound() {
+		return TFSounds.REDCAP_DEATH;
+	}
+
+	public boolean isShy() {
+		return this.recentlyHit <= 0;
+	}
+
+	@Nullable
+	@Override
+	public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficulty, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+		ILivingEntityData data = super.onInitialSpawn(worldIn, difficulty, reason, spawnDataIn, dataTag);
+
+		this.setEquipmentBasedOnDifficulty(difficulty);
+		this.setEnchantmentBasedOnDifficulty(difficulty);
+
+		this.setDropChance(EquipmentSlotType.MAINHAND, 0.2F);
+		this.setDropChance(EquipmentSlotType.FEET, 0.2F);
+
+		return data;
+	}
+
+	@Override
+	protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
+		this.setItemStackToSlot(EquipmentSlotType.MAINHAND, heldPick);
+		this.setItemStackToSlot(EquipmentSlotType.FEET, new ItemStack(Items.IRON_BOOTS));
+	}
+
+	@Override
+	public void writeAdditional(CompoundNBT compound) {
+		super.writeAdditional(compound);
+		compound.putInt("TNTLeft", heldTNT.getCount());
+	}
+
+	@Override
+	public void readAdditional(CompoundNBT compound) {
+		super.readAdditional(compound);
+		heldTNT.setCount(compound.getInt("TNTLeft"));
+	}
 }

@@ -1,0 +1,15 @@
+{
+  "type": "entity",
+  "pools": [
+    {
+      "name": "twilight",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "loot_table",
+          "name": "twilightforest:entities/redcap"
+        }
+      ]
+    }
+  ]
+}

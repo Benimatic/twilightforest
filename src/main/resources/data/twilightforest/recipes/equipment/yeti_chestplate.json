@@ -1,0 +1,19 @@
+{
+  "result": {
+    "nbt": "{ench:[{lvl:2s,id:0s}]}",
+    "item": "twilightforest:yeti_chestplate",
+    "type": "minecraft:item_nbt"
+  },
+  "group": "yeti_armor",
+  "pattern": [
+    "# #",
+    "###",
+    "###"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "twilightforest:alpha_fur"
+    }
+  }
+}

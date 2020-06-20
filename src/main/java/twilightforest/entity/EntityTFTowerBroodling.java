@@ -1,52 +1,43 @@
 package twilightforest.entity;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.world.World;
 
-public class EntityTFTowerBroodling extends EntityTFSwarmSpider 
-{
+public class EntityTFTowerBroodling extends EntityTFSwarmSpider {
 
-	public EntityTFTowerBroodling(World world) {
-		this(world, true);
+	public EntityTFTowerBroodling(EntityType<? extends EntityTFTowerBroodling> type, World world) {
+		this(type, world, true);
 	}
 
-	public EntityTFTowerBroodling(World world, boolean spawnMore) {
-		super(world, spawnMore);
-		experienceValue = 3; // XP value
-		//texture = TwilightForestMod.MODEL_DIR + "towerbroodling.png";
+	public EntityTFTowerBroodling(EntityType<? extends EntityTFTowerBroodling> type, World world, boolean spawnMore) {
+		super(type, world, spawnMore);
+		experienceValue = 3;
 	}
-	
-	/**
-	 * Set monster attributes
-	 */
+
 	@Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(7.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(4.0D); // attack damage
-    }
+	protected void registerAttributes() {
+		super.registerAttributes();
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(7.0D);
+		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
+	}
 
-	/**
-	 * Spawn another spider!
-	 * 
-	 * @return
-	 */
-	protected boolean spawnAnother() 
-	{
-		EntityTFSwarmSpider another = new EntityTFTowerBroodling(worldObj, false);
+	@Override
+	protected boolean spawnAnother() {
+		EntityTFSwarmSpider another = new EntityTFTowerBroodling(TFEntities.tower_broodling, world, false);
 
-		double sx = posX + (rand.nextBoolean() ? 0.9 : -0.9);
-		double sy = posY;
-		double sz = posZ + (rand.nextBoolean() ? 0.9 : -0.9);
+		double sx = getX() + (rand.nextBoolean() ? 0.9 : -0.9);
+		double sy = getY();
+		double sz = getZ() + (rand.nextBoolean() ? 0.9 : -0.9);
 		another.setLocationAndAngles(sx, sy, sz, rand.nextFloat() * 360F, 0.0F);
-		if(!another.getCanSpawnHere())
-		{
-			another.setDead();
+		if (!another.canSpawn(world, SpawnReason.MOB_SUMMONED)) {
+			another.remove();
 			return false;
 		}
-		worldObj.spawnEntityInWorld(another);
-		
+		world.addEntity(another);
+		another.spawnExplosionParticle();
+
 		return true;
 	}
 }

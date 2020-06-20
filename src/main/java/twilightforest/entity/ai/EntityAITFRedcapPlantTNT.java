@@ -1,62 +1,45 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.MathHelper;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.block.Blocks;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.entity.EntityTFRedcap;
 
 public class EntityAITFRedcapPlantTNT extends EntityAITFRedcapBase {
 
-	public EntityAITFRedcapPlantTNT(EntityTFRedcap entityTFRedcap) 
-	{
-		this.entityObj = entityTFRedcap;
+	public EntityAITFRedcapPlantTNT(EntityTFRedcap entityTFRedcap) {
+		super(entityTFRedcap);
 	}
-	
+
 	@Override
 	public boolean shouldExecute() {
-		EntityLivingBase attackTarget = this.entityObj.getAttackTarget();
-        
-        if (attackTarget != null && entityObj.getTntLeft() > 0 && entityObj.getDistanceSqToEntity(attackTarget) < 25 && !isTargetLookingAtMe(attackTarget) 
-        		&& !isLitTNTNearby(8) && findBlockTNTNearby(5) == null)
-        {
-        	//System.out.println("Redcap can plant TNT");
-        	return true;
-        }
-        else
-        {
-    		return false;
-        }
+		LivingEntity attackTarget = this.redcap.getAttackTarget();
+		return attackTarget != null
+				&& !redcap.heldTNT.isEmpty()
+				&& redcap.getDistanceSq(attackTarget) < 25
+				&& !isTargetLookingAtMe(attackTarget)
+				&& ForgeEventFactory.getMobGriefingEvent(redcap.world, redcap)
+				&& !isLitTNTNearby(8)
+				&& findBlockTNTNearby(5) == null;
 	}
-    
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
-    @Override
-	public void startExecuting()
-    {
-        int entityPosX = MathHelper.floor_double(this.entityObj.posX);
-        int entityPosY = MathHelper.floor_double(this.entityObj.posY);
-        int entityPosZ = MathHelper.floor_double(this.entityObj.posZ);
-        
-        //System.out.println("Redcap trying to plant TNT");
-        
-    	this.entityObj.setCurrentItemOrArmor(0, EntityTFRedcap.heldTNT);
 
-    	if (this.entityObj.worldObj.isAirBlock(entityPosX, entityPosY, entityPosZ))
-    	{
-    		entityObj.setTntLeft(entityObj.getTntLeft() - 1);
-    		entityObj.playLivingSound();
-    		entityObj.worldObj.setBlock(entityPosX, entityPosY, entityPosZ, Blocks.tnt, 0, 3);
-    	}
-    }
-    
+	@Override
+	public void startExecuting() {
+		BlockPos entityPos = new BlockPos(redcap);
 
-    /**
-     * Resets the task
-     */
-    @Override
-	public void resetTask()
-    {
-    	this.entityObj.setCurrentItemOrArmor(0, entityObj.getPick());
-    }
+		this.redcap.setItemStackToSlot(EquipmentSlotType.MAINHAND, redcap.heldTNT);
+
+		if (this.redcap.world.isAirBlock(entityPos)) {
+			redcap.heldTNT.shrink(1);
+			redcap.playAmbientSound();
+			redcap.world.setBlockState(entityPos, Blocks.TNT.getDefaultState());
+		}
+	}
+
+	@Override
+	public void resetTask() {
+		this.redcap.setItemStackToSlot(EquipmentSlotType.MAINHAND, redcap.heldPick);
+	}
 }

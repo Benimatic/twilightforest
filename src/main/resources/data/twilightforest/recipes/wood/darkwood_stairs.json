@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "twilightforest:dark_stairs",
+    "count": 8
+  },
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "twilightforest:dark_planks"
+    }
+  }
+}

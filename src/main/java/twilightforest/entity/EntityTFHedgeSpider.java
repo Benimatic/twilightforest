@@ -1,80 +1,65 @@
 package twilightforest.entity;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.monster.EntitySpider;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
+import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.monster.SpiderEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
 
+import java.util.Random;
 
 /**
  * The hedge spider is just like a normal spider, but it can spawn in the daytime.
- * 
- * @author Ben
  *
+ * @author Ben
  */
-public class EntityTFHedgeSpider extends EntitySpider {
+public class EntityTFHedgeSpider extends SpiderEntity {
 
-	public EntityTFHedgeSpider(World world) {
-		super(world);
-		//texture = TwilightForestMod.MODEL_DIR + "hedgespider.png";
+	public EntityTFHedgeSpider(EntityType<? extends EntityTFHedgeSpider> type, World world) {
+		super(type, world);
 	}
 
-    public EntityTFHedgeSpider(World world, double x, double y, double z)
-    {
-        this(world);
-        this.setPosition(x, y, z);
-    }
-    
-    /**
-     * Finds the closest player within 16 blocks to attack, or null if this Entity isn't interested in attacking
-     * (Animals, Spiders at day, peaceful PigZombies).
-     */
-    @Override
-	protected Entity findPlayerToAttack()
-    {
-    	// kill at all times!
-    	double var2 = 16.0D;
-    	return this.worldObj.getClosestVulnerablePlayerToEntity(this, var2);
-    }
-	
-	/**
-     * Checks to make sure the light is not too bright where the mob is spawning
-	 */
 	@Override
-    protected boolean isValidLightLevel()
-    {
-		int chunkX = MathHelper.floor_double(posX) >> 4;
-		int chunkZ = MathHelper.floor_double(posZ) >> 4;
-		// We're allowed to spawn in bright light only in hedge mazes.
-		if (TFFeature.getNearestFeature(chunkX, chunkZ, worldObj) == TFFeature.hedgeMaze) 
-		{
-			return true;
-		}
-		else
-		{
-			return super.isValidLightLevel();
-		}
-    }
-	
-    /**
-     * Trigger achievement when killed
-     */
-	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
-			((EntityPlayer)par1DamageSource.getSourceOfDamage()).triggerAchievement(TFAchievementPage.twilightHunter);
-			// are in a hedge maze?
-			int chunkX = MathHelper.floor_double(posX) >> 4;
-			int chunkZ = MathHelper.floor_double(posZ) >> 4;
-			if (TFFeature.getNearestFeature(chunkX, chunkZ, worldObj) == TFFeature.hedgeMaze) {
-				// award hedge maze cheevo
-				((EntityPlayer)par1DamageSource.getSourceOfDamage()).triggerAchievement(TFAchievementPage.twilightHedge);
+	protected void registerGoals() {
+		super.registerGoals();
+
+		// Remove default spider melee task
+		this.goalSelector.goals.removeIf(t -> t.getGoal() instanceof MeleeAttackGoal);
+
+		// Replace with one that doesn't become docile in light
+		// [VanillaCopy] based on EntitySpider.AISpiderAttack
+		this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1, true) {
+			@Override
+			protected double getAttackReachSqr(LivingEntity attackTarget) {
+				return 4.0F + attackTarget.getWidth();
 			}
-		}
+		});
+
+		// Remove default spider target player task
+		this.targetSelector.goals.removeIf(t -> t.getPriority() == 2 && t.getGoal() instanceof NearestAttackableTargetGoal);
+		// Replace with one that doesn't care about light
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
+	}
+
+	public static boolean isValidLightLevel(IWorld world, BlockPos pos, Random random) {
+		int chunkX = MathHelper.floor(pos.getX()) >> 4;
+		int chunkZ = MathHelper.floor(pos.getZ()) >> 4;
+		// We're allowed to spawn in bright light only in hedge mazes.
+		return TFFeature.getNearestFeature(chunkX, chunkZ, world.getWorld()) == TFFeature.HEDGE_MAZE
+				|| MonsterEntity.isValidLightLevel(world, pos, random);
+	}
+
+	public static boolean canSpawn(EntityType<EntityTFHedgeSpider> entity, IWorld world, SpawnReason reason, BlockPos pos, Random random) {
+		return world.getDifficulty() != Difficulty.PEACEFUL &&
+				isValidLightLevel(world, pos, random);
 	}
 }

@@ -1,52 +1,59 @@
 package twilightforest.structures.stronghold;
 
-import java.util.Random;
-
-import net.minecraft.block.Block;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.DirectionalBlock;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.template.TemplateManager;
+import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
+
+import java.util.Random;
 
 public class StructureTFStrongholdShield extends StructureTFStrongholdComponent {
 
-
-
-	public StructureTFStrongholdShield() {
-		super();
-		// TODO Auto-generated constructor stub
+	public StructureTFStrongholdShield(TemplateManager manager, CompoundNBT nbt) {
+		super(TFStrongholdPieces.TFSShield, nbt);
 	}
 
-	public StructureTFStrongholdShield(int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
-		super(0, 0, minX, minY, minZ);
-		this.boundingBox = new StructureBoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
+	//TODO: Unused. Remove?
+	public StructureTFStrongholdShield(TFFeature feature, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
+		super(TFStrongholdPieces.TFSShield, feature, 0, Direction.SOUTH, minX, minY, minZ);
+		this.boundingBox = new MutableBoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
 		this.spawnListIndex = -1;
 	}
 
 	@Override
-	public StructureBoundingBox generateBoundingBox(int facing, int x, int y, int z) {
+	public MutableBoundingBox generateBoundingBox(Direction facing, int x, int y, int z) {
 		return null;
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random random, StructureBoundingBox sbb) {
-		Block shieldBlock = TFBlocks.shield;
-		
-		//Facing.facings
-		
-        // +x
-        this.fillWithMetadataBlocks(world, sbb, this.boundingBox.getXSize(), 0, 0, this.boundingBox.getXSize(), this.boundingBox.getYSize(), this.boundingBox.getZSize(), shieldBlock, 4, shieldBlock, 4, false);
-        // -x
-        this.fillWithMetadataBlocks(world, sbb, 0, 0, 0, 0, this.boundingBox.getYSize(), this.boundingBox.getZSize(), shieldBlock, 5, shieldBlock, 5, false);
-        // +z
-        this.fillWithMetadataBlocks(world, sbb, 0, 0, this.boundingBox.getZSize(), this.boundingBox.getXSize(), this.boundingBox.getYSize(), this.boundingBox.getZSize(), shieldBlock, 2, shieldBlock, 2, false);
-        // -z
-        this.fillWithMetadataBlocks(world, sbb, 0, 0, 0, this.boundingBox.getXSize(), this.boundingBox.getYSize(), 0, shieldBlock, 3, shieldBlock, 3, false);
-		// top
-        this.fillWithMetadataBlocks(world, sbb, 0, 0, 0, this.boundingBox.getXSize(), 0, this.boundingBox.getZSize(), shieldBlock, 1, shieldBlock, 1, false);
-        // bottom
-        this.fillWithMetadataBlocks(world, sbb, 0, this.boundingBox.getYSize(), 0, this.boundingBox.getXSize(), this.boundingBox.getYSize(), this.boundingBox.getZSize(), shieldBlock, 0, shieldBlock, 0, false);
-        
-        return true;
-	}
+	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random randomIn, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		BlockState down  = TFBlocks.stronghold_shield.get().getDefaultState().with(DirectionalBlock.FACING, Direction.DOWN);
+		BlockState up    = TFBlocks.stronghold_shield.get().getDefaultState().with(DirectionalBlock.FACING, Direction.UP);
+		BlockState north = TFBlocks.stronghold_shield.get().getDefaultState().with(DirectionalBlock.FACING, Direction.NORTH);
+		BlockState south = TFBlocks.stronghold_shield.get().getDefaultState().with(DirectionalBlock.FACING, Direction.SOUTH);
+		BlockState west  = TFBlocks.stronghold_shield.get().getDefaultState().with(DirectionalBlock.FACING, Direction.WEST);
+		BlockState east  = TFBlocks.stronghold_shield.get().getDefaultState().with(DirectionalBlock.FACING, Direction.EAST);
 
+		// +x
+		this.fillWithBlocks(world, sbb, this.boundingBox.getXSize(), 0, 0, this.boundingBox.getXSize(), this.boundingBox.getYSize(), this.boundingBox.getZSize(), west, west, false);
+		// -x
+		this.fillWithBlocks(world, sbb, 0, 0, 0, 0, this.boundingBox.getYSize(), this.boundingBox.getZSize(), east, east, false);
+		// +z
+		this.fillWithBlocks(world, sbb, 0, 0, this.boundingBox.getZSize(), this.boundingBox.getXSize(), this.boundingBox.getYSize(), this.boundingBox.getZSize(), north, north, false);
+		// -z
+		this.fillWithBlocks(world, sbb, 0, 0, 0, this.boundingBox.getXSize(), this.boundingBox.getYSize(), 0, south, south, false);
+		// top
+		this.fillWithBlocks(world, sbb, 0, 0, 0, this.boundingBox.getXSize(), 0, this.boundingBox.getZSize(), up, up, false);
+		// bottom
+		this.fillWithBlocks(world, sbb, 0, this.boundingBox.getYSize(), 0, this.boundingBox.getXSize(), this.boundingBox.getYSize(), this.boundingBox.getZSize(), down, down, false);
+
+		return true;
+	}
 }

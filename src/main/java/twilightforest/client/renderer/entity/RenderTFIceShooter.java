@@ -1,27 +1,20 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.MathHelper;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.util.math.MathHelper;
+import twilightforest.client.model.entity.ModelTFIceShooter;
+import twilightforest.entity.EntityStableIceCore;
 
-import org.lwjgl.opengl.GL11;
+public class RenderTFIceShooter extends RenderTFBiped<EntityStableIceCore, ModelTFIceShooter> {
 
-import twilightforest.client.model.ModelTFIceShooter;
-import twilightforest.client.renderer.entity.RenderTFBiped;
-
-public class RenderTFIceShooter extends RenderTFBiped {
-
-	public RenderTFIceShooter() {
-		super(new ModelTFIceShooter(), 1.0F, "iceshooter.png");
+	public RenderTFIceShooter(EntityRendererManager manager, ModelTFIceShooter model) {
+		super(manager, model, 0.4F, "iceshooter.png");
 	}
 
-    /**
-     * Allows the render to do any OpenGL state modifications necessary before the model is rendered. Args:
-     * entityLiving, partialTickTime
-     */
-    protected void preRenderCallback(EntityLivingBase par1EntityLivingBase, float partialTick)
-    {
-		float bounce = par1EntityLivingBase.ticksExisted + partialTick;
-		
-		GL11.glTranslatef(0F, MathHelper.sin((bounce) * 0.2F) * 0.15F, 0F);
-    }
+	@Override
+	protected void scale(EntityStableIceCore entity, MatrixStack stack, float partialTicks) {
+		float bounce = entity.ticksExisted + partialTicks;
+		stack.translate(0F, MathHelper.sin((bounce) * 0.2F) * 0.15F, 0F);
+	}
 }

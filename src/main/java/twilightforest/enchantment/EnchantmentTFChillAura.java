@@ -1,14 +1,15 @@
 package twilightforest.enchantment;
 
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnumEnchantmentType;
+import net.minecraft.enchantment.EnchantmentType;
+import net.minecraft.inventory.EquipmentSlotType;
 
 public class EnchantmentTFChillAura extends Enchantment {
-
-    public EnchantmentTFChillAura(int par1, int par2)
-    {
-        super(par1, par2, EnumEnchantmentType.armor);
-        this.setName("tfChillAura");
-
-    }      
+	// TODO implement
+	public EnchantmentTFChillAura(Rarity rarity) {
+		super(rarity, EnchantmentType.ARMOR, new EquipmentSlotType[]{
+				EquipmentSlotType.HEAD, EquipmentSlotType.CHEST,
+				EquipmentSlotType.LEGS, EquipmentSlotType.FEET
+		});
+	}
 }

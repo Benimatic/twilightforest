@@ -1,0 +1,16 @@
+{
+  "result": {
+    "item": "twilightforest:fiery_boots"
+  },
+  "group": "fiery_armor",
+  "pattern": [
+    "# #",
+    "# #"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "#": {
+      "tag": "twilightforest:fiery_ingots"
+    }
+  }
+}

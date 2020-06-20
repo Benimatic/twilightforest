@@ -1,0 +1,10 @@
+{
+  "result": {
+    "item": "twilightforest:mangrove_planks",
+    "count": 4
+  },
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [{
+    "item": "twilightforest:mangrove_log"
+  }]
+}

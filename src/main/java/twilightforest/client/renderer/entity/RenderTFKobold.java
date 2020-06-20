@@ -1,134 +1,69 @@
 package twilightforest.client.renderer.entity;
 
-import java.util.UUID;
-
-import org.lwjgl.opengl.GL11;
-
-import com.mojang.authlib.GameProfile;
-
-import net.minecraft.block.Block;
-import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.tileentity.TileEntitySkullRenderer;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.Vector3f;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.IEntityRenderer;
+import net.minecraft.client.renderer.entity.layers.HeldItemLayer;
+import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.client.renderer.entity.model.IHasArm;
+import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTUtil;
-import net.minecraft.util.StringUtils;
+import net.minecraft.util.HandSide;
+import twilightforest.client.model.entity.ModelTFKobold;
+import twilightforest.entity.EntityTFKobold;
 
-public class RenderTFKobold extends RenderTFBiped {
+public class RenderTFKobold extends RenderTFBiped<EntityTFKobold, ModelTFKobold> {
 
-	public RenderTFKobold(ModelBiped modelBiped, float scale, String textureName) {
-		super(modelBiped, scale, textureName);
+	public RenderTFKobold(EntityRendererManager manager, ModelTFKobold modelBiped, float shadowSize, String textureName) {
+		super(manager, modelBiped, shadowSize, textureName);
+
+		this.layerRenderers.removeIf(r -> r instanceof net.minecraft.client.renderer.entity.layers.HeldItemLayer);
+		this.addLayer(new HeldItemLayer(this));
 	}
-	
-	
-    protected void renderEquippedItems(EntityLiving p_77029_1_, float p_77029_2_)
-    {
-        GL11.glColor3f(1.0F, 1.0F, 1.0F);
-        //super.renderEquippedItems(p_77029_1_, p_77029_2_);
-        ItemStack itemstack = p_77029_1_.getHeldItem();
-        ItemStack itemstack1 = p_77029_1_.func_130225_q(3);
-        Item item;
-        float f1;
-        
-        // no armor
-
-        if (itemstack != null && itemstack.getItem() != null)
-        {
-            item = itemstack.getItem();
-            GL11.glPushMatrix();
-
-            this.modelBipedMain.bipedRightArm.postRender(0.0625F);
-            GL11.glTranslatef(-0.0625F, 0.4375F, 0.0625F);
-
-            net.minecraftforge.client.IItemRenderer customRenderer = net.minecraftforge.client.MinecraftForgeClient.getItemRenderer(itemstack, net.minecraftforge.client.IItemRenderer.ItemRenderType.EQUIPPED);
-            boolean is3D = (customRenderer != null && customRenderer.shouldUseRenderHelper(net.minecraftforge.client.IItemRenderer.ItemRenderType.EQUIPPED, itemstack, net.minecraftforge.client.IItemRenderer.ItemRendererHelper.BLOCK_3D));
-
-            if (item instanceof ItemBlock && (is3D || RenderBlocks.renderItemIn3d(Block.getBlockFromItem(item).getRenderType())))
-            {
-                f1 = 0.5F;
-                GL11.glTranslatef(0.0F, 0.1875F, -0.3125F);
-                f1 *= 0.75F;
-                GL11.glRotatef(20.0F, 1.0F, 0.0F, 0.0F);
-                GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
-                GL11.glScalef(-f1, -f1, f1);
-            }
-            else if (item == Items.bow)
-            {
-                f1 = 0.625F;
-                GL11.glTranslatef(0.0F, 0.125F, 0.3125F);
-                GL11.glRotatef(-20.0F, 0.0F, 1.0F, 0.0F);
-                GL11.glScalef(f1, -f1, f1);
-                GL11.glRotatef(-100.0F, 1.0F, 0.0F, 0.0F);
-                GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
-            }
-            else if (item.isFull3D())
-            {
-                f1 = 0.625F;
-
-                if (item.shouldRotateAroundWhenRendering())
-                {
-                    GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
-                    GL11.glTranslatef(0.0F, -0.125F, 0.0F);
-                }
-
-                this.func_82422_c();
-                GL11.glScalef(f1, -f1, f1);
-                GL11.glRotatef(-100.0F, 1.0F, 0.0F, 0.0F);
-                GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
-            }
-            else
-            {
-                f1 = 0.375F;
-                GL11.glTranslatef(0.25F, 0.0F, -0.1875F);
-                this.func_82422_c(); // include short arms even when rendering non-tools
-                GL11.glScalef(f1, f1, f1);
-                GL11.glRotatef(60.0F, 0.0F, 0.0F, 1.0F);
-                GL11.glRotatef(-90.0F, 1.0F, 0.0F, 0.0F);
-                GL11.glRotatef(20.0F, 0.0F, 0.0F, 1.0F);
-            }
-
-            float f2;
-            int i;
-            float f5;
-
-            if (itemstack.getItem().requiresMultipleRenderPasses())
-            {
-                for (i = 0; i < itemstack.getItem().getRenderPasses(itemstack.getItemDamage()); ++i)
-                {
-                    int j = itemstack.getItem().getColorFromItemStack(itemstack, i);
-                    f5 = (float)(j >> 16 & 255) / 255.0F;
-                    f2 = (float)(j >> 8 & 255) / 255.0F;
-                    float f3 = (float)(j & 255) / 255.0F;
-                    GL11.glColor4f(f5, f2, f3, 1.0F);
-                    this.renderManager.itemRenderer.renderItem(p_77029_1_, itemstack, i);
-                }
-            }
-            else
-            {
-                i = itemstack.getItem().getColorFromItemStack(itemstack, 0);
-                float f4 = (float)(i >> 16 & 255) / 255.0F;
-                f5 = (float)(i >> 8 & 255) / 255.0F;
-                f2 = (float)(i & 255) / 255.0F;
-                GL11.glColor4f(f4, f5, f2, 1.0F);
-                this.renderManager.itemRenderer.renderItem(p_77029_1_, itemstack, 0);
-            }
-
-            GL11.glPopMatrix();
-        }
-    }
-
 
 	/**
-	 * How far down the arm should we render the equipped item?
+	 * [VanillaCopy] {@link net.minecraft.client.renderer.entity.layers.HeldItemLayer} with additional transforms
 	 */
-    protected void func_82422_c()
-    {
-        GL11.glTranslatef(0.0F, 0.01875F, 0.0F);
-    }
+	private static class HeldItemLayer extends LayerRenderer<EntityTFKobold, ModelTFKobold> {
+		public HeldItemLayer(IEntityRenderer<EntityTFKobold, ModelTFKobold> renderer) {
+			super(renderer);
+		}
 
+		@Override
+		public void render(MatrixStack ms, IRenderTypeBuffer buffers, int light, EntityTFKobold living, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+			boolean flag = living.getPrimaryHand() == HandSide.RIGHT;
+			ItemStack itemstack = flag ? living.getHeldItemOffhand() : living.getHeldItemMainhand();
+			ItemStack itemstack1 = flag ? living.getHeldItemMainhand() : living.getHeldItemOffhand();
+			if (!itemstack.isEmpty() || !itemstack1.isEmpty()) {
+				ms.push();
+				if (this.getEntityModel().isChild) {
+					float f = 0.5F;
+					ms.translate(0.0D, 0.75D, 0.0D);
+					ms.scale(0.5F, 0.5F, 0.5F);
+				}
+
+				ms.translate(0, 0, 0.25);
+				this.renderItem(living, itemstack1, ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, HandSide.RIGHT, ms, buffers, light);
+				this.renderItem(living, itemstack, ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, HandSide.LEFT, ms, buffers, light);
+				ms.pop();
+			}
+		}
+
+		private void renderItem(LivingEntity entity, ItemStack stack, ItemCameraTransforms.TransformType transform, HandSide handSide, MatrixStack ms, IRenderTypeBuffer buffers, int light) {
+			if (!stack.isEmpty()) {
+				ms.push();
+				((IHasArm)this.getEntityModel()).setArmAngle(handSide, ms);
+				ms.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(-90.0F));
+				ms.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180.0F));
+				boolean flag = handSide == HandSide.LEFT;
+				ms.translate((double)((float)(flag ? -1 : 1) / 16.0F), 0.125D, -0.625D);
+				Minecraft.getInstance().getFirstPersonRenderer().renderItem(entity, stack, transform, flag, ms, buffers, light);
+				ms.pop();
+			}
+		}
+	}
 }

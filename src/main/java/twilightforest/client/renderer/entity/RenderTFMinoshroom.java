@@ -1,62 +1,78 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.renderer.entity.RenderBiped;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.init.Blocks;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BlockRendererDispatcher;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.Vector3f;
+import net.minecraft.client.renderer.entity.BipedRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.IEntityRenderer;
+import net.minecraft.client.renderer.entity.LivingRenderer;
+import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.block.Blocks;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.opengl.GL11;
-
 import twilightforest.TwilightForestMod;
+import twilightforest.client.model.entity.ModelTFMinoshroom;
+import twilightforest.entity.boss.EntityTFMinoshroom;
 
-public class RenderTFMinoshroom extends RenderBiped {
+public class RenderTFMinoshroom extends BipedRenderer<EntityTFMinoshroom, ModelTFMinoshroom> {
 
-    private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "minoshroomtaur.png");
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("minoshroomtaur.png");
 
-	public RenderTFMinoshroom(ModelBiped par1ModelBase, float par2) {
-		super(par1ModelBase, par2);
+	public RenderTFMinoshroom(EntityRendererManager manager, ModelTFMinoshroom model, float shadowSize) {
+		super(manager, model, shadowSize);
+		this.addLayer(new LayerMinoshroomMushroom(this));
 	}
-	
-    protected void renderMooshroomEquippedItems(EntityLivingBase par1EntityLiving, float par2)
-    {
-        super.renderEquippedItems(par1EntityLiving, par2);
-
-        this.bindTexture(TextureMap.locationBlocksTexture);
-        GL11.glEnable(GL11.GL_CULL_FACE);
-        GL11.glPushMatrix();
-        GL11.glScalef(1.0F, -1.0F, 1.0F);
-        GL11.glTranslatef(0.2F, 0.375F, 0.5F);
-        GL11.glRotatef(42.0F, 0.0F, 1.0F, 0.0F);
-        this.field_147909_c.renderBlockAsItem(Blocks.red_mushroom, 0, 1.0F);
-        GL11.glTranslatef(0.1F, 0.0F, -0.6F);
-        GL11.glRotatef(42.0F, 0.0F, 1.0F, 0.0F);
-        this.field_147909_c.renderBlockAsItem(Blocks.red_mushroom, 0, 1.0F);
-        GL11.glPopMatrix();
-        GL11.glPushMatrix();
-        ((ModelBiped)this.mainModel).bipedHead.postRender(0.0625F);
-        GL11.glScalef(1.0F, -1.0F, 1.0F);
-        GL11.glTranslatef(0.0F, 1.0F, 0F);
-        GL11.glRotatef(12.0F, 0.0F, 1.0F, 0.0F);
-        this.field_147909_c.renderBlockAsItem(Blocks.red_mushroom, 0, 1.0F);
-        GL11.glPopMatrix();
-        GL11.glDisable(GL11.GL_CULL_FACE);
-    }
-    
-    @Override
-    protected void renderEquippedItems(EntityLivingBase par1EntityLiving, float par2)
-    {
-        this.renderMooshroomEquippedItems(par1EntityLiving, par2);
-    }
 
 	/**
-	 * Return our specific texture
+	 * [VanillaCopy] {@link net.minecraft.client.renderer.entity.layers.MooshroomMushroomLayer}
 	 */
-    protected ResourceLocation getEntityTexture(Entity par1Entity)
-    {
-        return textureLoc;
-    }
+	static class LayerMinoshroomMushroom extends LayerRenderer<EntityTFMinoshroom, ModelTFMinoshroom> {
 
+		public LayerMinoshroomMushroom(IEntityRenderer<EntityTFMinoshroom, ModelTFMinoshroom> renderer) {
+			super(renderer);
+		}
+
+		@Override
+		public void render(MatrixStack ms, IRenderTypeBuffer buffers, int light, EntityTFMinoshroom entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+			if (!entity.isChild() && !entity.isInvisible()) {
+				BlockRendererDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
+				BlockState blockstate = Blocks.RED_MUSHROOM.getDefaultState(); // TF: hardcode mushroom state
+				int i = LivingRenderer.getOverlay(entity, 0.0F);
+				ms.push();
+				ms.translate((double)0.2F, (double)-0.35F, 0.5D);
+				ms.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(-48.0F));
+				ms.scale(-1.0F, -1.0F, 1.0F);
+				ms.translate(-0.5D, -0.5D, -0.5D);
+				blockrendererdispatcher.renderBlockAsEntity(blockstate, ms, buffers, light, i);
+				ms.pop();
+				ms.push();
+				ms.translate((double)0.2F, (double)-0.35F, 0.5D);
+				ms.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(42.0F));
+				ms.translate((double)0.1F, 0.0D, (double)-0.6F);
+				ms.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(-48.0F));
+				ms.scale(-1.0F, -1.0F, 1.0F);
+				ms.translate(-0.5D, -0.5D, -0.5D);
+				blockrendererdispatcher.renderBlockAsEntity(blockstate, ms, buffers, light, i);
+				ms.pop();
+				ms.push();
+				this.getEntityModel().bipedHead.rotate(ms);
+				// TF - adjust head shroom
+				ms.translate(0.0D, -0.9, 0.05);
+				ms.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(-78.0F));
+				ms.scale(-1.0F, -1.0F, 1.0F);
+				ms.translate(-0.5D, -0.5D, -0.5D);
+				blockrendererdispatcher.renderBlockAsEntity(blockstate, ms, buffers, light, i);
+				ms.pop();
+			}
+		}
+	}
+
+	@Override
+	public ResourceLocation getEntityTexture(EntityTFMinoshroom entity) {
+		return textureLoc;
+	}
 }

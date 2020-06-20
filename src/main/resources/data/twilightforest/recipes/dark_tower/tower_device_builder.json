@@ -1,0 +1,22 @@
+{
+  "result": {
+    "item": "twilightforest:carminite_builder"
+  },
+  "pattern": [
+    "ece",
+    "cdc",
+    "ece"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "c": {
+      "item": "twilightforest:carminite"
+    },
+    "d": {
+      "item": "minecraft:dispenser"
+    },
+    "e": {
+      "item": "twilightforest:tower_wood_encased"
+    }
+  }
+}

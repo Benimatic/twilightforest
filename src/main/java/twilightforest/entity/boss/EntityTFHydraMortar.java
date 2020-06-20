@@ -1,232 +1,181 @@
 package twilightforest.entity.boss;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.projectile.EntityThrowable;
-import net.minecraft.init.Blocks;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.block.Blocks;
+import net.minecraft.entity.projectile.ThrowableEntity;
+import net.minecraft.fluid.IFluidState;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.IndirectEntityDamageSource;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.EntityRayTraceResult;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Explosion;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.event.ForgeEventFactory;
+import twilightforest.TwilightForestMod;
 
-public class EntityTFHydraMortar extends EntityThrowable {
+public class EntityTFHydraMortar extends ThrowableEntity {
 
-    private static final int BURN_FACTOR = 5;
+	private static final int BURN_FACTOR = 5;
 	private static final int DIRECT_DAMAGE = 18;
-	
-	public EntityLivingBase playerReflects = null;
-	
-	public int fuse = 80;
-	
-	public boolean megaBlast = false;
 
-	public EntityTFHydraMortar(World par1World)
-    {
-        super(par1World);
-        this.setSize(0.75F, 0.75F);
-        
-    }
-	
-	public EntityTFHydraMortar(World par1World, EntityLivingBase par2EntityLiving) {
-		super(par1World, par2EntityLiving);
-        this.setSize(0.75F, 0.75F);
+	public int fuse = 80;
+	private boolean megaBlast = false;
+
+	public EntityTFHydraMortar(EntityType<? extends EntityTFHydraMortar> type, World world) {
+		super(type, world);
 	}
 
-    /**
-     * Called to update the entity's position/logic.
-     */
-    @Override
-	public void onUpdate()
-    {
-    	super.onUpdate();
-    	
-        this.func_145771_j(this.posX, (this.boundingBox.minY + this.boundingBox.maxY) / 2.0D, this.posZ); // push out of block
+	public EntityTFHydraMortar(EntityType<? extends EntityTFHydraMortar> type, World world, EntityTFHydraHead head) {
+		super(type, head, world);
 
-    	if (this.onGround)
-    	{
-    		if (!worldObj.isRemote)
-    		{
-	    		// slow down
-	    		this.motionX *= 0.9D;
-	    		this.motionY *= 0.9D;
-	    		this.motionZ *= 0.9D;
-    		}
+		Vec3d vector = head.getLookVec();
 
-    		// eventually explode
-    		if (this.fuse-- <= 0)
-    		{
-    			detonate();
-    		}
+		double dist = 3.5;
+		double px = head.getX() + vector.x * dist;
+		double py = head.getY() + 1 + vector.y * dist;
+		double pz = head.getZ() + vector.z * dist;
 
-    	}
-    }
-    
+		setLocationAndAngles(px, py, pz, 0, 0);
+		// these are being set to extreme numbers when we get here, why?
+		head.setMotion(new Vec3d(0, 0, 0));
+		shoot(head, head.rotationPitch, head.rotationYaw, -20.0F, 0.5F, 1F);
 
-    /**
-     * Converts this mortar into a blasting one.
-     */
+		TwilightForestMod.LOGGER.debug("Launching mortar! Current head motion is {}, {}", head.getMotion().getX(), head.getMotion().getZ());
+	}
+
+	@Override
+	protected void registerData() {
+
+	}
+
+	@Override
+	public void tick() {
+		super.tick();
+
+		this.pushOutOfBlocks(this.getX(), (this.getBoundingBox().minY + this.getBoundingBox().maxY) / 2.0D, this.getZ());
+
+		if (this.onGround) {
+//			this.motionX *= 0.9D;
+//			this.motionY *= 0.9D;
+//			this.motionZ *= 0.9D;
+			this.getMotion().mul(0.9D, 0.9D, 0.9D);
+
+			if (!world.isRemote && this.fuse-- <= 0) {
+				detonate();
+			}
+		}
+	}
+
 	public void setToBlasting() {
 		this.megaBlast = true;
 	}
 
-	
-    /**
-     * Called when this EntityThrowable hits a block or entity.
-     */
 	@Override
-	protected void onImpact(MovingObjectPosition mop) {
-		if (mop.entityHit == null && !megaBlast)
-		{
-			// we hit the ground
-			this.motionY = 0;
-			this.onGround = true;
-		}
-		else 
-		{
-			detonate();
-
+	protected void onImpact(RayTraceResult ray) {
+		if (ray instanceof EntityRayTraceResult) {
+			if (((EntityRayTraceResult)ray).getEntity() == null && !megaBlast) {
+				// we hit the ground
+				this.setMotion(this.getMotion().getX(), 0.0D, this.getMotion().getZ());
+				this.onGround = true;
+			} else if (!world.isRemote && ((EntityRayTraceResult)ray).getEntity() != getThrower() && !isPartOfHydra(((EntityRayTraceResult)ray).getEntity())) {
+				detonate();
+			}
 		}
 	}
-	
+
+	private boolean isPartOfHydra(Entity entity) {
+		if (getThrower() instanceof EntityTFHydraPart) {
+			EntityTFHydra hydra = ((EntityTFHydraPart) getThrower()).hydra;
+			if (hydra == null || hydra.getParts() == null)
+				return false;
+			if (entity == hydra)
+				return true;
+			for (Entity e : hydra.getParts())
+				if (entity == e)
+					return true;
+			for (HydraHeadContainer container : hydra.hc)
+				if (entity == container.headEntity)
+					return true;
+		}
+		return false;
+	}
+
 	@Override
-    public float func_145772_a(Explosion par1Explosion, World par2World, int par3, int par4, int par5, Block par6Block)
-    {
-        float var6 = super.func_145772_a(par1Explosion, par2World, par3, par4, par5, par6Block);
+	public float getExplosionResistance(Explosion explosion, IBlockReader world, BlockPos pos, BlockState state, IFluidState fluid, float p_180428_6_) {
+		float resistance = super.getExplosionResistance(explosion, world, pos, state, fluid, p_180428_6_);
 
-        if (this.megaBlast && par6Block != Blocks.bedrock && par6Block != Blocks.end_portal && par6Block != Blocks.end_portal_frame)
-        {
-            var6 = Math.min(0.8F, var6);
-        }
+		if (this.megaBlast && state.getBlock() != Blocks.BEDROCK && state.getBlock() != Blocks.END_PORTAL && state.getBlock() != Blocks.END_PORTAL_FRAME) {
+			resistance = Math.min(0.8F, resistance);
+		}
 
-        return var6;
-    }
-	
-	@SuppressWarnings("unchecked")
-	protected void detonate()
-	{
-		//this.worldObj.playAuxSFX(2004, (int)Math.round(this.posX), (int)Math.round(this.posY), (int)Math.round(this.posZ), 32764);
-		
-        //this.worldObj.createExplosion((Entity)null, this.posX, this.posY, this.posZ, explosionPower, true);
-        
+		return resistance;
+	}
+
+	private void detonate() {
 		float explosionPower = megaBlast ? 4.0F : 0.1F;
-        this.worldObj.newExplosion(this, this.posX, this.posY, this.posZ, explosionPower, true, true);
+		boolean flag = ForgeEventFactory.getMobGriefingEvent(world, this);
+		Explosion.Mode flag1 = flag ? Explosion.Mode.BREAK : Explosion.Mode.NONE;
+		this.world.createExplosion(this, this.getX(), this.getY(), this.getZ(), explosionPower, flag, flag1);
 
+		DamageSource src = new IndirectEntityDamageSource("onFire", this, getThrower()).setFireDamage().setProjectile();
 
-		if (!worldObj.isRemote)
-		{
-			// damage nearby things
-			List<Entity> nearbyList = new ArrayList<Entity>(this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(1.0D, 1.0D, 1.0D)));
-
-			for (Entity nearby : nearbyList)
-			{
-				if (nearby.attackEntityFrom(DamageSource.causeFireballDamage(null, this.getThrower()), DIRECT_DAMAGE) && !nearby.isImmuneToFire())
-				{
-					nearby.setFire(BURN_FACTOR);
-				}
+		for (Entity nearby : this.world.getEntitiesWithinAABBExcludingEntity(this, this.getBoundingBox().grow(1.0D, 1.0D, 1.0D))) {
+			if (nearby.attackEntityFrom(src, DIRECT_DAMAGE) && !nearby.isImmuneToFire()) {
+				nearby.setFire(BURN_FACTOR);
 			}
 		}
 
-        this.setDead();
-    }
-	
-	/**
-	 * Reflect!
-	 */
-	@Override
-    public boolean attackEntityFrom(DamageSource damagesource, float i)
-    {
-//		System.out.println("Hydra mortar being attacked!");
-		
-        setBeenAttacked();
-        if (damagesource.getEntity() != null && !this.worldObj.isRemote)
-        {
-            Vec3 vec3d = damagesource.getEntity().getLookVec();
-            if (vec3d != null)
-            {
-            	this.setThrowableHeading(vec3d.xCoord, vec3d.yCoord + 1, vec3d.zCoord, 1.5F, 0.1F);  // reflect faster and more accurately
-    			this.onGround = false;
-    			this.fuse += 20;
+		this.remove();
+	}
 
-            }
-            if (damagesource.getEntity() instanceof EntityLivingBase)
-            {
-            	this.playerReflects = (EntityLivingBase)damagesource.getEntity();
-            }
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-	
-	
-	/**
-	 * Return who threw this projectile
-	 */
-    @Override
-	public EntityLivingBase getThrower()
-    {
-        if (this.playerReflects != null)
-        {
-        	return this.playerReflects;
-        }
-        else
-        {
-        	return super.getThrower();
-        }
-    }
-
-	/**
-	 * Always be on fire!
-	 */
 	@Override
-	public boolean isBurning()
-	{
+	public boolean attackEntityFrom(DamageSource source, float amount) {
+		super.attackEntityFrom(source, amount);
+
+		if (source.getTrueSource() != null && !this.world.isRemote) {
+			Vec3d vec3d = source.getTrueSource().getLookVec();
+			if (vec3d != null) {
+				// reflect faster and more accurately
+				this.shoot(vec3d.x, vec3d.y, vec3d.z, 1.5F, 0.1F);  // reflect faster and more accurately
+				this.onGround = false;
+				this.fuse += 20;
+			}
+
+			if (source.getTrueSource() instanceof LivingEntity) {
+				this.owner = (LivingEntity) source.getTrueSource();
+			}
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean isBurning() {
 		return true;
 	}
 
-    /**
-     * Returns true if other Entities should be prevented from moving through this Entity.
-     */
-    @Override
-	public boolean canBeCollidedWith()
-    {
-        return true;
-    }
-    
-    /**
-     * We need to set this so that the player can attack and reflect the bolt
-     */
-    @Override
-	public float getCollisionBorderSize()
-    {
-        return 1.5F;
-    }
+	@Override
+	public boolean canBeCollidedWith() {
+		return true;
+	}
 
-    /**
-     * Gets the amount of gravity to apply to the thrown entity with each tick.
-     */
-    @Override
-	protected float getGravityVelocity()
-    {
-        return 0.05F;
-    }
+	/**
+	 * We need to set this so that the player can attack and reflect the bolt
+	 */
+	@Override
+	public float getCollisionBorderSize() {
+		return 1.5F;
+	}
 
-    @Override
-	protected float func_70182_d()
-    {
-        return 0.75F;
-    }
-
-    @Override
-	protected float func_70183_g()
-    {
-        return -20.0F;
-    }
+	@Override
+	protected float getGravityVelocity() {
+		return 0.05F;
+	}
 }

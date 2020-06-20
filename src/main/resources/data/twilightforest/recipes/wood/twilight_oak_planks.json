@@ -1,0 +1,10 @@
+{
+  "result": {
+    "item": "twilightforest:twilight_oak_planks",
+    "count": 4
+  },
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [{
+    "item": "twilightforest:oak_log"
+  }]
+}

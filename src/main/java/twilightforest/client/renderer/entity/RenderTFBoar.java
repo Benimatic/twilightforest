@@ -1,25 +1,23 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.entity.RenderPig;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.PigRenderer;
+import net.minecraft.client.renderer.entity.model.PigModel;
+import net.minecraft.entity.passive.PigEntity;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 
-public class RenderTFBoar extends RenderPig {
-	
-    private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "wildboar.png");
+public class RenderTFBoar extends PigRenderer {
 
-	public RenderTFBoar(ModelBase par1ModelBase, ModelBase par2ModelBase, float par3) {
-		super(par1ModelBase, par2ModelBase, par3);
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("wildboar.png");
+
+	public RenderTFBoar(EntityRendererManager manager, PigModel<PigEntity> model) {
+		super(manager);
+		this.entityModel = model;
 	}
-	
-	/**
-	 * Return our specific texture
-	 */
-    protected ResourceLocation getEntityTexture(Entity par1Entity)
-    {
-        return textureLoc;
-    }
 
+	@Override
+	public ResourceLocation getEntityTexture(PigEntity entity) {
+		return textureLoc;
+	}
 }

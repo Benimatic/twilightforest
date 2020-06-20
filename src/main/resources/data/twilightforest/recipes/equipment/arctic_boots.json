@@ -1,0 +1,16 @@
+{
+  "result": {
+    "item": "twilightforest:arctic_boots"
+  },
+  "group": "arctic_armor",
+  "pattern": [
+    "# #",
+    "# #"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "twilightforest:arctic_fur"
+    }
+  }
+}

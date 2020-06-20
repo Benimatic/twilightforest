@@ -1,319 +1,133 @@
 package twilightforest.block;
 
-import java.util.List;
+import net.minecraft.block.Block;
+import net.minecraft.block.RotatedPillarBlock;
+import net.minecraft.block.material.MaterialColor;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.state.IntegerProperty;
+import net.minecraft.state.StateContainer;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
+import twilightforest.entity.EntityTFSlideBlock;
+import twilightforest.entity.TFEntities;
+
 import java.util.Random;
 
-import org.lwjgl.opengl.GL11;
+public class BlockTFSlider extends RotatedPillarBlock {
 
-import twilightforest.TwilightForestMod;
-import twilightforest.entity.EntityTFSlideBlock;
-import twilightforest.item.TFItems;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRotatedPillar;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityFallingBlock;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+	public static final IntegerProperty DELAY = IntegerProperty.create("delay", 0, 3);
 
-public class BlockTFSlider extends BlockRotatedPillar {
-	
 	private static final int TICK_TIME = 80;
 	private static final int OFFSET_TIME = 20;
 	private static final int PLAYER_RANGE = 32;
 	private static final float BLOCK_DAMAGE = 5;
-	private IIcon horiIcon;
-	private IIcon vertIcon;
-	private IIcon topIcon;
+	private static final VoxelShape Y_BB = VoxelShapes.create(new AxisAlignedBB(0.3125, 0, 0.3125, 0.6875, 1F, 0.6875));
+	private static final VoxelShape Z_BB = VoxelShapes.create(new AxisAlignedBB(0.3125, 0.3125, 0, 0.6875, 0.6875, 1F));
+	private static final VoxelShape X_BB = VoxelShapes.create(new AxisAlignedBB(0, 0.3125, 0.3125, 1F, 0.6875, 0.6875));
 
 	protected BlockTFSlider() {
-		super(Material.iron);
-		this.setCreativeTab(TFItems.creativeTab);
-		this.setHardness(2.0F);
-		this.setResistance(10.0F);
+		super(Properties.create(Material.IRON, MaterialColor.DIRT).hardnessAndResistance(2.0F, 10.0F).tickRandomly().nonOpaque());
+		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
+		this.setDefaultState(stateContainer.getBaseState().with(AXIS, Direction.Axis.Y).with(DELAY, 0));
 	}
-	
-    /**
-     * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
-     * cleared to be reused)
-     */
-    @Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
-    {
-    	int meta = world.getBlockMetadata(x, y, z);
-    	
-    	int rotation = meta & 12;
-		float pixel = 0.0625F;
-    	float inset = 5F;
-    	
-		switch (rotation) {
-    	case 0:
-    	default:
-        	return AxisAlignedBB.getBoundingBox(x + pixel * inset, y, z + pixel * inset, x + 1F - pixel * inset, y + 1F, z + 1F - pixel * inset);
-    	case 4:
-        	return AxisAlignedBB.getBoundingBox(x, y + pixel * inset, z + pixel * inset, x + 1F, y + 1F - pixel * inset, z + 1F - pixel * inset);
-    	case 8:
-        	return AxisAlignedBB.getBoundingBox(x + pixel * inset, y + pixel * inset, z, x + 1F - pixel * inset, y + 1F - pixel * inset, z + 1F);
-    	}
 
-    }
-    
-
-    /**
-     * Returns the bounding box of the wired rectangular prism to render.
-     */
-    @SideOnly(Side.CLIENT)
-    public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z)
-    {
-        return this.getCollisionBoundingBoxFromPool(world, x, y, z);
-    }
-    
-    /**
-     * Updates the blocks bounds based on its current state. Args: world, x, y, z
-     */
-    public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
-    {
-    	int meta = world.getBlockMetadata(x, y, z);
-    	
-    	setBlockBoundsBasedOnMeta(meta);
-    }
-
-	public void setBlockBoundsBasedOnMeta(int meta) {
-		int rotation = meta & 12;
-		float pixel = 0.0625F;
-    	float inset = 5F;
-    	
-		switch (rotation) {
-    	case 0:
-    	default:
-        	this.setBlockBounds(pixel * inset, 0, pixel * inset, 1F - pixel * inset, 1F, 1F - pixel * inset);
-        	break;
-    	case 4:
-    		this.setBlockBounds(0, pixel * inset, pixel * inset, 1F, 1F - pixel * inset, 1F - pixel * inset);
-    		break;
-    	case 8:
-    		this.setBlockBounds(pixel * inset, pixel * inset, 0, 1F - pixel * inset, 1F - pixel * inset, 1F);
-    		break;
-    	}
+	@Override
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+		super.fillStateContainer(builder);
+		builder.add(DELAY);
 	}
-    
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
-    public boolean renderAsNormalBlock()
-    {
-        return false;
-    }
 
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
-    public boolean isOpaqueCube()
-    {
-        return false;
-    }
-    
-    /**
-     * The type of render function that is called for this block
-     */
-    public int getRenderType()
-    {
-        return 0;
-    }
-    
-    /**
-     * Gets the block's texture. Args: side, meta
-     */
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta)
-    {
-        int rotation = meta & 12;
-        
-        if (rotation == 0) {
-        	switch (side) {
-        	case 0:
-        	case 1:
-        		return this.topIcon;
-        	default:
-        		return this.vertIcon;
-        	}
-        } else if (rotation == 4) {
-        	switch (side) {
-        	case 4:
-        	case 5:
-        		return this.topIcon;
-        	default:
-        		return this.horiIcon;
-        	}
-        } else { // rotation == 8
-        	switch (side) {
-        	case 2:
-        	case 3:
-        		return this.topIcon;
-        	case 0:
-        	case 1:     
-        		return this.vertIcon;
-        	default:
-        		return this.horiIcon;
-        	}
-        }
-        
-        
-//        int type = 0;
-//        return rotation == 0 && (side == 1 || side == 0) ? this.getTopIcon(type) : (rotation == 4 && (side == 5 || side == 4) ? this.getTopIcon(type) : (rotation == 8 && (side == 2 || side == 3) ? this.getTopIcon(type) : this.getSideIcon(type)));
-    }
-
-    @SideOnly(Side.CLIENT)
 	@Override
-    protected IIcon getSideIcon(int meta)
-    {
-        if ((meta & 12) == 0) {
-            return this.horiIcon;
-        } else if ((meta & 12) == 8) {
-            return this.horiIcon;
-        }
-        return this.vertIcon;
-    }
-
-    @SideOnly(Side.CLIENT)
-	@Override
-    protected IIcon getTopIcon(int p_150161_1_)
-    {
-        return this.topIcon;
-    }
-    
-    
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister par1IconRegister)
-	{
-		this.horiIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":slider_h");
-		this.vertIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":slider_v");
-		this.topIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":slider_top");
+	@Deprecated
+	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+		switch (state.get(AXIS)) {
+			case Y:
+			default:
+				return Y_BB;
+			case X:
+				return X_BB;
+			case Z:
+				return Z_BB;
+		}
 	}
-	
-    /**
-     * Ticks the block if it's been scheduled
-     */
-    @Override
-	public void updateTick(World world, int x, int y, int z, Random par5Random)
-    {
-    	if (!world.isRemote && this.isConnectedInRange(world, x, y, z))
-    	{
-    		//world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, TwilightForestMod.ID + ":random.creakstart", 0.75F, 1.5F);
-    		
-    		EntityTFSlideBlock slideBlock = new EntityTFSlideBlock(world, x + 0.5, y, z + 0.5, this, world.getBlockMetadata(x, y, z));
-            world.spawnEntityInWorld(slideBlock);
-    		
-    	}
-    	
-		scheduleBlockUpdate(world, x, y, z);
 
-    }
-    
-    /**
-     * Check if there is any players in range, and also recursively check connected blocks
-     */
-    public boolean isConnectedInRange(World world, int x, int y, int z) {
-    	int meta = world.getBlockMetadata(x, y, z);
-    	
-    	if ((meta & 12) == 0) {
-    		return this.anyPlayerInRange(world, x, y, z) || this.isConnectedInRangeRecursive(world, x, y, z, ForgeDirection.UP) || this.isConnectedInRangeRecursive(world, x, y, z, ForgeDirection.DOWN);
-    	} else if ((meta & 12) == 4) {
-    		return this.anyPlayerInRange(world, x, y, z) || this.isConnectedInRangeRecursive(world, x, y, z, ForgeDirection.WEST) || this.isConnectedInRangeRecursive(world, x, y, z, ForgeDirection.EAST);
-    	} else if ((meta & 12) == 8) {
-    		return this.anyPlayerInRange(world, x, y, z) || this.isConnectedInRangeRecursive(world, x, y, z, ForgeDirection.NORTH) || this.isConnectedInRangeRecursive(world, x, y, z, ForgeDirection.SOUTH);
-    	} else {
-    		// why are we here?
-    		return this.anyPlayerInRange(world, x, y, z);
-    	}
-    }
+	@Override
+	@Deprecated
+	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+		if (!world.isRemote && this.isConnectedInRange(world, pos)) {
+			//world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, TwilightForestMod.ID + ":random.creakstart", 0.75F, 1.5F);
 
-	private boolean isConnectedInRangeRecursive(World world, int x, int y, int z, ForgeDirection dir) {
-		// where is the coords we're talking about
-		int dx = x + dir.offsetX;
-		int dy = y + dir.offsetY;
-		int dz = z + dir.offsetZ;
-		
-		// are the blocks connected?  (block and meta are the same
-		if (world.getBlock(x, y, z) == world.getBlock(dx, dy, dz) && world.getBlockMetadata(x, y, z) == world.getBlockMetadata(dx, dy, dz)) {
-			return this.anyPlayerInRange(world, dx, dy, dz) || this.isConnectedInRangeRecursive(world, dx, dy, dz, dir);
+			EntityTFSlideBlock slideBlock = new EntityTFSlideBlock(TFEntities.slider, world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, state);
+			world.addEntity(slideBlock);
+		}
+
+		scheduleBlockUpdate(world, pos);
+	}
+
+	/**
+	 * Check if there is any players in range, and also recursively check connected blocks
+	 */
+	public boolean isConnectedInRange(World world, BlockPos pos) {
+		Direction.Axis axis = world.getBlockState(pos).get(AXIS);
+
+		switch (axis) {
+			case Y:
+				return this.anyPlayerInRange(world, pos) || this.isConnectedInRangeRecursive(world, pos, Direction.UP) || this.isConnectedInRangeRecursive(world, pos, Direction.DOWN);
+			case X:
+				return this.anyPlayerInRange(world, pos) || this.isConnectedInRangeRecursive(world, pos, Direction.WEST) || this.isConnectedInRangeRecursive(world, pos, Direction.EAST);
+			case Z:
+				return this.anyPlayerInRange(world, pos) || this.isConnectedInRangeRecursive(world, pos, Direction.NORTH) || this.isConnectedInRangeRecursive(world, pos, Direction.SOUTH);
+			default:
+				return this.anyPlayerInRange(world, pos);
+		}
+	}
+
+	private boolean isConnectedInRangeRecursive(World world, BlockPos pos, Direction dir) {
+		BlockPos dPos = pos.offset(dir);
+
+		if (world.getBlockState(pos) == world.getBlockState(dPos)) {
+			return this.anyPlayerInRange(world, dPos) || this.isConnectedInRangeRecursive(world, dPos, dir);
 		} else {
 			return false;
 		}
 	}
 
-	/**
-     * Returns true if there is a player in range (using World.getClosestPlayer)
-	 * @param world 
-	 * @param z 
-	 * @param y 
-	 * @param x 
-     */
-    public boolean anyPlayerInRange(World world, int x, int y, int z) {
-        return world.getClosestPlayer((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, PLAYER_RANGE) != null;
-    }
-
-	public void scheduleBlockUpdate(World world, int x, int y, int z) {
-		int offset = world.getBlockMetadata(x, y, z) & 3;
-		int update = TICK_TIME - ((int)(world.getWorldTime() - (offset * OFFSET_TIME)) % TICK_TIME);
-		world.scheduleBlockUpdate(x, y, z, this, update);
-		
-		//System.out.println("The current world time is " + world.getWorldTime() + " so update scheduled for " + update + " ticks.");
+	private boolean anyPlayerInRange(World world, BlockPos pos) {
+		return world.getClosestPlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, PLAYER_RANGE, false) != null;
 	}
 
-	/**
-	 * Schedule an update to try to get lighting right
-	 */
+	public void scheduleBlockUpdate(World world, BlockPos pos) {
+		int offset = world.getBlockState(pos).get(DELAY);
+		int update = TICK_TIME - ((int) (world.getDayTime() - (offset * OFFSET_TIME)) % TICK_TIME);
+		//world.scheduleUpdate(pos, this, update); TODO: ?
+	}
+
 	@Override
-	public void onBlockAdded(World world, int x, int y, int z) {
-		scheduleBlockUpdate(world, x, y, z);
+	@Deprecated
+	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean isMoving) {
+		scheduleBlockUpdate(world, pos);
 	}
-	
- 	/**
-     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     */
-    @Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
-    {
-        par3List.add(new ItemStack(par1, 1, 0));
-        par3List.add(new ItemStack(par1, 1, 1));
-        par3List.add(new ItemStack(par1, 1, 2));
-        par3List.add(new ItemStack(par1, 1, 3));
-    }
-    
-    /**
-     * Sets the block's bounds for rendering it as an item
-     */
-    public void setBlockBoundsForItemRender()
-    {
-        this.setBlockBoundsBasedOnMeta(0);
-    }
-    
-    /**
-     * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
-     */
-    public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity)
-    {
-    	entity.attackEntityFrom(DamageSource.generic, BLOCK_DAMAGE);
-    	if (entity instanceof EntityLivingBase) {
-			double kx = (x + 0.5 - entity.posX) * 2.0;
-			double kz = (z + 0.5 - entity.posZ) * 2.0;
-			
-			((EntityLivingBase) entity).knockBack(null, 5, kx, kz);
-    	}
-    }
+
+	@Override
+	@Deprecated
+	public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entity) {
+		entity.attackEntityFrom(DamageSource.GENERIC, BLOCK_DAMAGE);
+		if (entity instanceof LivingEntity) {
+			double kx = (pos.getX() + 0.5 - entity.getX()) * 2.0;
+			double kz = (pos.getZ() + 0.5 - entity.getZ()) * 2.0;
+
+			((LivingEntity) entity).knockBack(null, 2, kx, kz); //TODO: Can't be null
+		}
+	}
 }

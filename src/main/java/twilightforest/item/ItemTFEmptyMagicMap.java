@@ -1,70 +1,40 @@
 package twilightforest.item;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemMapBase;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.AbstractMapItem;
+import net.minecraft.item.FilledMapItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.stats.Stats;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.MapData;
-import twilightforest.TFAchievementPage;
-import twilightforest.TFMagicMapData;
-import twilightforest.TwilightForestMod;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemTFEmptyMagicMap extends ItemMapBase
-{
-    protected ItemTFEmptyMagicMap()
-    {
-        super();
-		this.setCreativeTab(TFItems.creativeTab);
-    }
+public class ItemTFEmptyMagicMap extends AbstractMapItem {
+	protected ItemTFEmptyMagicMap(Properties props) {
+		super(props);
+	}
 
-    /**
-     * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
-     */
-    @Override
-	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
-    {
-        ItemStack mapItem = new ItemStack(TFItems.magicMap, 1, par2World.getUniqueDataId(ItemTFMagicMap.STR_ID));
-        String mapName = ItemTFMagicMap.STR_ID + "_" + mapItem.getItemDamage();
-        MapData mapData = new TFMagicMapData(mapName);
-        par2World.setItemData(mapName, mapData);
-        mapData.scale = 4;
-        int step = 128 * (1 << mapData.scale);
-        mapData.xCenter = (int)(Math.round(par3EntityPlayer.posX / step) * step);
-        mapData.zCenter = (int)(Math.round(par3EntityPlayer.posZ / step) * step);
-        mapData.dimension = (byte)par2World.provider.dimensionId;
-        mapData.markDirty();
-        --par1ItemStack.stackSize;
-        
-        //cheevo
-    	if (mapItem.getItem() == TFItems.magicMap) {
-    		par3EntityPlayer.triggerAchievement(TFAchievementPage.twilightMagicMap);
-    	}	
+	// [VanillaCopy] ItemEmptyMap.onItemRightClick, edits noted
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
+		// TF - scale at 4
+		ItemStack itemstack = ItemTFMagicMap.setupNewMap(worldIn, MathHelper.floor(playerIn.getX()), MathHelper.floor(playerIn.getZ()), (byte) 4, true, false);
+		ItemStack itemstack1 = playerIn.getHeldItem(handIn);
+		if (!playerIn.abilities.isCreativeMode) {
+			itemstack1.shrink(1);
+		}
 
-        if (par1ItemStack.stackSize <= 0)
-        {
-            return mapItem;
-        }
-        else
-        {
-            if (!par3EntityPlayer.inventory.addItemStackToInventory(mapItem.copy()))
-            {
-                par3EntityPlayer.dropPlayerItemWithRandomChoice(mapItem, false);
-            }
+		if (itemstack1.isEmpty()) {
+			return ActionResult.success(itemstack);
+		} else {
+			if (!playerIn.inventory.addItemStackToInventory(itemstack.copy())) {
+				playerIn.dropItem(itemstack, false);
+			}
 
-            return par1ItemStack;
-        }
-    }
-
-	/**
-	 * Properly register icon source
-	 */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":" + this.getUnlocalizedName().substring(5));
-    }
+			playerIn.addStat(Stats.ITEM_USED.get(this));
+			return ActionResult.success(itemstack1);
+		}
+	}
 }

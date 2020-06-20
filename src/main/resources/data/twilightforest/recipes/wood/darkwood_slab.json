@@ -1,0 +1,15 @@
+{
+  "result": {
+    "item": "twilightforest:dark_slab",
+    "count": 6
+  },
+  "pattern": [
+    "###"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "twilightforest:dark_planks"
+    }
+  }
+}

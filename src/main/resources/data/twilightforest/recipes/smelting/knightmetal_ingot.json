@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "tag": "twilightforest:knightmetal_ores"
+  },
+  "result": "twilightforest:knightmetal_ingot",
+  "experience": 1.0,
+  "cookingtime": 200
+}

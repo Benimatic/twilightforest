@@ -1,218 +1,152 @@
 package twilightforest.entity;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.monster.EntitySpider;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
+import net.minecraft.entity.*;
+import net.minecraft.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
+import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.monster.SpiderEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
 
+import java.util.Random;
 
-public class EntityTFSwarmSpider extends EntitySpider {
-	
+public class EntityTFSwarmSpider extends SpiderEntity {
+
 	protected boolean shouldSpawn = false;
-	
-	public EntityTFSwarmSpider(World world) {
-		this(world, true);
+
+	public EntityTFSwarmSpider(EntityType<? extends EntityTFSwarmSpider> type, World world) {
+		this(type, world, true);
 	}
-	
-	public EntityTFSwarmSpider(World world, boolean spawnMore) {
-		super(world);
-		
-		setSize(0.8F, 0.4F);
+
+	public EntityTFSwarmSpider(EntityType<? extends EntityTFSwarmSpider> type, World world, boolean spawnMore) {
+		super(type, world);
+
 		setSpawnMore(spawnMore);
-		//texture = TwilightForestMod.MODEL_DIR + "swarmspider.png";
-		experienceValue = 2; // XP value
-	}
-	
-    public EntityTFSwarmSpider(World world, double x, double y, double z)
-    {
-        this(world);
-        this.setPosition(x, y, z);
-    }
-
-	/**
-	 * Set monster attributes
-	 */
-	@Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(3.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(1.0D); // attack damage
-    }
-	
-
-    /**
-     * How large the spider should be scaled.
-     */
-	//@Override
-    public float spiderScaleAmount()
-    {
-        return 0.5F;
-    }
-
-	/**
-	 * Actually only used for the shadow
-	 */
-	@Override
-	public float getRenderSizeModifier() {
-		 return 0.5F;
+		experienceValue = 2;
 	}
 
-	/**
-	 * Spawn more if that flag is set.
-	 */
 	@Override
-	public void onUpdate() {
-		if (shouldSpawnMore()) {
-			// don't spawn if we're connected in multiplayer 
-			if (!worldObj.isRemote) {
-				int more = 1 + rand.nextInt(2);
-				for (int i = 0; i < more; i++) {
-					// try twice to spawn
-					if (!spawnAnother()) {
-						spawnAnother();
-					}
+	protected void registerAttributes() {
+		super.registerAttributes();
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(3.0D);
+		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
+	}
+
+	@Override
+	protected void registerGoals() {
+		super.registerGoals();
+
+		// Remove default spider melee task
+		this.goalSelector.goals.removeIf(t -> t.getGoal() instanceof MeleeAttackGoal);
+
+		// Replace with one that doesn't become docile in light
+		// [VanillaCopy] based on EntitySpider.AISpiderAttack
+		this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1, true) {
+			@Override
+			protected double getAttackReachSqr(LivingEntity attackTarget) {
+				return 4.0F + attackTarget.getWidth();
+			}
+		});
+
+		// Remove default spider target player task
+		this.targetSelector.goals.removeIf(t -> t.getPriority() == 2 && t.getGoal() instanceof NearestAttackableTargetGoal);
+		// Replace with one that doesn't care about light
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
+	}
+
+	//TODO: Move to renderer?
+//	@Override
+//	public float getRenderSizeModifier() {
+//		return 0.5F;
+//	}
+
+	@Override
+	public float getEyeHeight(Pose pose) {
+		return 0.3F;
+	}
+
+	@Override
+	public void tick() {
+		if (!world.isRemote && shouldSpawnMore()) {
+			int more = 1 + rand.nextInt(2);
+			for (int i = 0; i < more; i++) {
+				// try twice to spawn
+				if (!spawnAnother()) {
+					spawnAnother();
 				}
 			}
 			setSpawnMore(false);
 		}
 
-		super.onUpdate();
+		super.tick();
 	}
-    
-	/**
-	 * Only have the spider do damage a fraction of the time
-	 */
-    protected void attackEntity(Entity entity, float f)
-    {
-    	if (this.attackTime <= 0 && (!this.isAirBorne || rand.nextInt(4) != 0))
-        {
-            this.attackTime = 20;
-        }
-    	else
-    	{
-    		super.attackEntity(entity, f);
-    	}
 
-    }
-    
-    /**
-     * Finds the closest player within 16 blocks to attack, or null if this Entity isn't interested in attacking
-     * (Animals, Spiders at day, peaceful PigZombies).
-     */
-    @Override
-	protected Entity findPlayerToAttack()
-    {
-    	// kill at all times!
-    	double var2 = 16.0D;
-    	return this.worldObj.getClosestVulnerablePlayerToEntity(this, var2);
-    }
+	@Override
+	public boolean attackEntityAsMob(Entity entity) {
+		return rand.nextInt(4) == 0 && super.attackEntityAsMob(entity);
+	}
 
-	/**
-	 * Spawn another spider!
-	 * 
-	 * @return
-	 */
 	protected boolean spawnAnother() {
-		EntityTFSwarmSpider another = new EntityTFSwarmSpider(worldObj, false);
+		EntityTFSwarmSpider another = new EntityTFSwarmSpider(TFEntities.swarm_spider, world, false);
 
-
-		double sx = posX + (rand.nextBoolean() ? 0.9 : -0.9);
-		double sy = posY;
-		double sz = posZ + (rand.nextBoolean() ? 0.9 : -0.9);
+		double sx = getX() + (rand.nextBoolean() ? 0.9 : -0.9);
+		double sy = getY();
+		double sz = getZ() + (rand.nextBoolean() ? 0.9 : -0.9);
 		another.setLocationAndAngles(sx, sy, sz, rand.nextFloat() * 360F, 0.0F);
-		if(!another.getCanSpawnHere())
-		{
-			another.setDead();
+		if (!another.canSpawn(world, SpawnReason.MOB_SUMMONED)) {
+			another.remove();
 			return false;
 		}
-		worldObj.spawnEntityInWorld(another);
-		
+		world.addEntity(another);
+		another.spawnExplosionParticle();
+
 		return true;
 	}
 
-	/**
-     * Checks to make sure the light is not too bright where the mob is spawning
-	 */
-	@Override
-    protected boolean isValidLightLevel()
-    {
-		int chunkX = MathHelper.floor_double(posX) >> 4;
-		int chunkZ = MathHelper.floor_double(posZ) >> 4;
-		// We're allowed to spawn in bright light only in hedge mazes.
-		if (TFFeature.getNearestFeature(chunkX, chunkZ, worldObj) == TFFeature.hedgeMaze) 
-		{
-			return true;
-		}
-		else
-		{
-			return super.isValidLightLevel();
-		}
-    }
-	
-    public boolean shouldSpawnMore()
-    {
-    	return shouldSpawn;
-    }
-
-    public void setSpawnMore(boolean flag)
-    {
-    	this.shouldSpawn = flag;
-    }
-
-    @Override
-	public void writeEntityToNBT(NBTTagCompound nbttagcompound)
-    {
-        super.writeEntityToNBT(nbttagcompound);
-        nbttagcompound.setBoolean("SpawnMore", shouldSpawnMore());
-    }
-
-    @Override
-	public void readEntityFromNBT(NBTTagCompound nbttagcompound)
-    {
-        super.readEntityFromNBT(nbttagcompound);
-        setSpawnMore(nbttagcompound.getBoolean("SpawnMore"));
-    }
-
-    /**
-     * Trigger achievement when killed
-     */
-	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
-			((EntityPlayer)par1DamageSource.getSourceOfDamage()).triggerAchievement(TFAchievementPage.twilightHunter);
-			// are we in a hedge maze?
-			int chunkX = MathHelper.floor_double(posX) >> 4;
-			int chunkZ = MathHelper.floor_double(posZ) >> 4;
-			if (TFFeature.getNearestFeature(chunkX, chunkZ, worldObj) == TFFeature.hedgeMaze) {
-				// award hedge maze cheevo
-				((EntityPlayer)par1DamageSource.getSourceOfDamage()).triggerAchievement(TFAchievementPage.twilightHedge);
-			}
-		}
+	public static boolean getCanSpawnHere(EntityType<? extends EntityTFSwarmSpider> entity, IWorld world, SpawnReason reason, BlockPos pos, Random random) {
+		return world.getDifficulty() != Difficulty.PEACEFUL && isValidLightLevel(world, pos, random) && canSpawnOn(entity, world, reason, pos, random);
 	}
-	
-    /**
-     * Gets the pitch of living sounds in living entities.
-     */
-    @Override
-	protected float getSoundPitch()
-    {
-        return (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.5F;
-    }
-	
-    /**
-     * Will return how many at most can spawn in a chunk at once.
-     */
-    public int getMaxSpawnedInChunk()
-    {
-        return 16;
-    }
 
+	public static boolean isValidLightLevel(IWorld world, BlockPos pos, Random random) {
+		int chunkX = MathHelper.floor(pos.getX()) >> 4;
+		int chunkZ = MathHelper.floor(pos.getZ()) >> 4;
+		// We're allowed to spawn in bright light only in hedge mazes.
+		return TFFeature.getNearestFeature(chunkX, chunkZ, world.getWorld()) == TFFeature.HEDGE_MAZE || MonsterEntity.isValidLightLevel(world, pos, random);
+	}
+
+	public boolean shouldSpawnMore() {
+		return shouldSpawn;
+	}
+
+	public void setSpawnMore(boolean flag) {
+		this.shouldSpawn = flag;
+	}
+
+	@Override
+	public void writeAdditional(CompoundNBT compound) {
+		super.writeAdditional(compound);
+		compound.putBoolean("SpawnMore", shouldSpawnMore());
+	}
+
+	@Override
+	public void readAdditional(CompoundNBT compound) {
+		super.readAdditional(compound);
+		setSpawnMore(compound.getBoolean("SpawnMore"));
+	}
+
+	@Override
+	protected float getSoundPitch() {
+		return (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.5F;
+	}
+
+	@Override
+	public int getMaxSpawnedInChunk() {
+		return 16;
+	}
 }

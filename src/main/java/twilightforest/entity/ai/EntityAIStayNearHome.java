@@ -1,71 +1,42 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.util.Vec3;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.util.math.Vec3d;
 
-public class EntityAIStayNearHome extends EntityAIBase {
+import java.util.EnumSet;
 
-	private EntityCreature entity;
-	private float speed;
+public class EntityAIStayNearHome extends Goal {
+	private final CreatureEntity entity;
+	private final float speed;
 
-	public EntityAIStayNearHome(EntityCreature entityTFYetiAlpha, float sp) {
+	public EntityAIStayNearHome(CreatureEntity entityTFYetiAlpha, float sp) {
 		this.entity = entityTFYetiAlpha;
 		this.speed = sp;
-        this.setMutexBits(1);
-
+		this.setMutexFlags(EnumSet.of(Flag.MOVE));
 	}
 
 	@Override
 	public boolean shouldExecute() {
-		boolean isOutOfRange = !this.entity.isWithinHomeDistanceCurrentPosition();
-		
-//		if (isOutOfRange) {
-//			System.out.println("This creature is outside home range, moving home!");
-//		} else {
-//			System.out.println("This creature is inside home range");
-//		}
-		
-		return isOutOfRange;
+		return !this.entity.isWithinHomeDistanceCurrentPosition();
 	}
 
-	/**
-	 * Returns whether an in-progress EntityAIBase should continue executing
-	 */
-	public boolean continueExecuting()
-	{
+	@Override
+	public boolean shouldContinueExecuting() {
 		return !this.entity.getNavigator().noPath();
 	}
 
-//	/**
-//	 * Execute a one shot task or start executing a continuous task
-//	 */
-//	public void startExecuting()
-//	{
-//		this.entity.getNavigator().tryMoveToXYZ(this.entity.getHomePosition().posX, this.entity.getHomePosition().posY, this.entity.getHomePosition().posZ, this.speed);
-//	}
-	
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
-    public void startExecuting()
-    {
-        //this.insidePosX = -1;
+	@Override
+	public void startExecuting() {
+		if (this.entity.getDistanceSq(new Vec3d(this.entity.getHomePosition())) > 256.0D) {
+			Vec3d vec3 = RandomPositionGenerator.findRandomTargetBlockTowards(this.entity, 14, 3, new Vec3d(this.entity.getHomePosition().getX() + 0.5D, this.entity.getHomePosition().getY(), this.entity.getHomePosition().getZ() + 0.5D));
 
-        if (this.entity.getDistanceSq(this.entity.getHomePosition().posX, this.entity.getHomePosition().posY, this.entity.getHomePosition().posZ) > 256.0D)
-        {
-            Vec3 vec3 = RandomPositionGenerator.findRandomTargetBlockTowards(this.entity, 14, 3, Vec3.createVectorHelper(this.entity.getHomePosition().posX + 0.5D, this.entity.getHomePosition().posY, this.entity.getHomePosition().posZ + 0.5D));
-
-            if (vec3 != null)
-            {
-                this.entity.getNavigator().tryMoveToXYZ(vec3.xCoord, vec3.yCoord, vec3.zCoord, speed);
-            }
-        }
-        else
-        {
-            this.entity.getNavigator().tryMoveToXYZ(this.entity.getHomePosition().posX + 0.5D, this.entity.getHomePosition().posY, this.entity.getHomePosition().posZ + 0.5D, speed);
-        }
-    }
-
+			if (vec3 != null) {
+				this.entity.getNavigator().tryMoveToXYZ(vec3.x, vec3.y, vec3.z, speed);
+			}
+		} else {
+			this.entity.getNavigator().tryMoveToXYZ(this.entity.getHomePosition().getX() + 0.5D, this.entity.getHomePosition().getY(), this.entity.getHomePosition().getZ() + 0.5D, speed);
+		}
+	}
 }

@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "twilightforest:maze_map_empty"
+  },
+  "pattern": [
+    "###",
+    "#X#",
+    "###"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "#": {
+      "tag": "forge:paper"
+    },
+    "X": {
+      "item": "twilightforest:maze_map_focus"
+    }
+  }
+}

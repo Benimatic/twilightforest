@@ -1,242 +1,116 @@
 package twilightforest.block;
 
+import net.minecraft.block.*;
+import net.minecraft.block.material.Material;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.item.ItemStack;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.DirectionProperty;
+import net.minecraft.state.StateContainer;
+import net.minecraft.tileentity.FurnaceTileEntity;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import twilightforest.tileentity.TileEntityTFCinderFurnace;
+
+import javax.annotation.Nullable;
 import java.util.Random;
 
-import twilightforest.TwilightForestMod;
-import twilightforest.item.TFItems;
-import twilightforest.tileentity.TileEntityTFCinderFurnace;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
+public class BlockTFCinderFurnace extends Block {
 
-public class BlockTFCinderFurnace  extends BlockContainer{
+	public static final BooleanProperty LIT = BooleanProperty.create("lit");
+	private static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
 
-	private static boolean isUpdating;
-	private Boolean isLit;
-	private IIcon topIcon;
-	private Random furnaceRandom = new Random();
-
-	protected BlockTFCinderFurnace(Boolean isLit) {
-		super(Material.wood);
-		
-		this.isLit = isLit;
-		
-		this.setHardness(7.0F);
-		
-		this.setLightLevel(isLit ? 1F : 0);
-		
-		if (!isLit) {
-			this.setCreativeTab(TFItems.creativeTab);
-		}
-		
+	BlockTFCinderFurnace() {
+		super(Properties.create(Material.WOOD).hardnessAndResistance(7.0F).lightValue(15));
+		this.setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH).with(LIT, false));
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
-        return new TileEntityTFCinderFurnace();
+	public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
+		return state.get(LIT) ? 15 : 0;
 	}
 
-	
-    /**
-     * Gets the block's texture. Args: side, meta
-     */
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta)
-    {
-        return side == 1 ? this.topIcon : (side == 0 ? this.topIcon : this.blockIcon);
-    }
+	@Override
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+		super.fillStateContainer(builder);
+		builder.add(LIT, FACING);
+	}
 
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister p_149651_1_)
-    {
-        this.blockIcon = p_149651_1_.registerIcon(this.isLit ? "furnace_front_on" : "furnace_front_off");
-        this.topIcon = p_149651_1_.registerIcon("furnace_top");
-    }
-    
+	@Override
+	public boolean hasTileEntity(BlockState state) {
+		return true;
+	}
 
-    /**
-     * Called upon block activation (right click on the block.)
-     */
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_)
-    {
-        if (world.isRemote)
-        {
-            return true;
-        }
-        else
-        {
-            TileEntityTFCinderFurnace tileentityfurnace = (TileEntityTFCinderFurnace)world.getTileEntity(x, y, z);
+	@Nullable
+	@Override
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+		return new TileEntityTFCinderFurnace();
+	}
 
-            if (tileentityfurnace != null)
-            {
-            	player.openGui(TwilightForestMod.instance, TwilightForestMod.GUI_ID_FURNACE, world, x, y, z);
-            	return true;
-            }
+	@Override
+	@Deprecated
+	public boolean eventReceived(BlockState state, World worldIn, BlockPos pos, int id, int param) {
+		super.eventReceived(state, worldIn, pos, id, param);
+		TileEntity tileentity = worldIn.getTileEntity(pos);
+		return tileentity != null && tileentity.receiveClientEvent(id, param);
+	}
 
-            return true;
-        }
-    }
-    
-    /**
-     * Called when the block is placed in the world.
-     */
-    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase p_149689_5_, ItemStack itemStack)
-    {
+	@Override
+	@Deprecated
+	public ActionResultType onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+		if (!world.isRemote && world.getTileEntity(pos) instanceof TileEntityTFCinderFurnace) {
+			player.openContainer((TileEntityTFCinderFurnace) world.getTileEntity(pos));
+		}
 
-        if (itemStack.hasDisplayName())
-        {
-            ((TileEntityFurnace)world.getTileEntity(x, y, z)).func_145951_a(itemStack.getDisplayName());
-        }
-    }
+		return ActionResultType.PASS;
+	}
 
+	@Override
+	public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+		if (stack.hasDisplayName()) {
+			((FurnaceTileEntity) world.getTileEntity(pos)).setCustomName(stack.getDisplayName());
+		}
+	}
 
-    /**
-     * Update which block the furnace is using depending on whether or not it is burning
-     */
-    public static void updateFurnaceBlockState(boolean isBurning, World world, int x, int y, int z)
-    {
-        TileEntity tileentity = world.getTileEntity(x, y, z);
-        isUpdating = true;
+	@OnlyIn(Dist.CLIENT)
+	@Override
+	public void animateTick(BlockState state, World world, BlockPos pos, Random random) {
+		if (state.get(LIT)) {
+			Blocks.FURNACE.animateTick(state, world, pos, random);
+		}
+	}
 
-        if (isBurning)
-        {
-            world.setBlock(x, y, z, TFBlocks.cinderFurnaceLit);
-        }
-        else
-        {
-            world.setBlock(x, y, z, TFBlocks.cinderFurnace);
-        }
+	@Override
+	@Deprecated
+	public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (state.getBlock() != newState.getBlock()) {
+			TileEntity tileentity = worldIn.getTileEntity(pos);
+			if (tileentity instanceof TileEntityTFCinderFurnace) {
+				InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityTFCinderFurnace)tileentity);
+				worldIn.updateComparatorOutputLevel(pos, this);
+			}
 
-        isUpdating = false;
+			super.onReplaced(state, worldIn, pos, newState, isMoving);
+		}
+	}
 
-        if (tileentity != null)
-        {
-            tileentity.validate();
-            world.setTileEntity(x, y, z, tileentity);
-        }
-    }
-    
-    /**
-     * A randomly called display update to be able to add particles or other items for display
-     */
-    @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(World world, int x, int y, int z, Random random)
-    {
-   	
-        if (this.isLit)
-        {
-            float f = (float)x + 0.5F;
-            float f1 = (float)y + 0.0F + random.nextFloat() * 6.0F / 16.0F;
-            float f2 = (float)z + 0.5F;
-            float f3 = 0.52F;
-            float f4 = random.nextFloat() * 0.6F - 0.3F;
-            
-            int l = random.nextInt(4) + 2;
-
-            if (l == 4)
-            {
-                world.spawnParticle("smoke", (double)(f - f3), (double)f1, (double)(f2 + f4), 0.0D, 0.0D, 0.0D);
-                world.spawnParticle("flame", (double)(f - f3), (double)f1, (double)(f2 + f4), 0.0D, 0.0D, 0.0D);
-            }
-            else if (l == 5)
-            {
-                world.spawnParticle("smoke", (double)(f + f3), (double)f1, (double)(f2 + f4), 0.0D, 0.0D, 0.0D);
-                world.spawnParticle("flame", (double)(f + f3), (double)f1, (double)(f2 + f4), 0.0D, 0.0D, 0.0D);
-            }
-            else if (l == 2)
-            {
-                world.spawnParticle("smoke", (double)(f + f4), (double)f1, (double)(f2 - f3), 0.0D, 0.0D, 0.0D);
-                world.spawnParticle("flame", (double)(f + f4), (double)f1, (double)(f2 - f3), 0.0D, 0.0D, 0.0D);
-            }
-            else if (l == 3)
-            {
-                world.spawnParticle("smoke", (double)(f + f4), (double)f1, (double)(f2 + f3), 0.0D, 0.0D, 0.0D);
-                world.spawnParticle("flame", (double)(f + f4), (double)f1, (double)(f2 + f3), 0.0D, 0.0D, 0.0D);
-            }
-        }
-    }
-    
-    
-    /**
-     * Dump things all over if broken
-     */
-    public void breakBlock(World world, int x, int y, int z, Block block, int p_149749_6_)
-    {
-        if (!isUpdating)
-        {
-        	TileEntityTFCinderFurnace tileEntity = (TileEntityTFCinderFurnace)world.getTileEntity(x, y, z);
-
-            if (tileEntity != null)
-            {
-                for (int i = 0; i < tileEntity.getSizeInventory(); ++i)
-                {
-                    ItemStack itemstack = tileEntity.getStackInSlot(i);
-
-                    if (itemstack != null)
-                    {
-                        float dx = this.furnaceRandom.nextFloat() * 0.8F + 0.1F;
-                        float dy = this.furnaceRandom.nextFloat() * 0.8F + 0.1F;
-                        float dz = this.furnaceRandom.nextFloat() * 0.8F + 0.1F;
-
-                        while (itemstack.stackSize > 0)
-                        {
-                            int j1 = this.furnaceRandom.nextInt(21) + 10;
-
-                            if (j1 > itemstack.stackSize)
-                            {
-                                j1 = itemstack.stackSize;
-                            }
-
-                            itemstack.stackSize -= j1;
-                            EntityItem entityitem = new EntityItem(world, (double)((float)x + dx), (double)((float)y + dy), (double)((float)z + dz), new ItemStack(itemstack.getItem(), j1, itemstack.getItemDamage()));
-
-                            if (itemstack.hasTagCompound())
-                            {
-                                entityitem.getEntityItem().setTagCompound((NBTTagCompound)itemstack.getTagCompound().copy());
-                            }
-
-                            float pointFive = 0.05F;
-                            entityitem.motionX = (double)((float)this.furnaceRandom.nextGaussian() * pointFive);
-                            entityitem.motionY = (double)((float)this.furnaceRandom.nextGaussian() * pointFive + 0.2F);
-                            entityitem.motionZ = (double)((float)this.furnaceRandom.nextGaussian() * pointFive);
-                            world.spawnEntityInWorld(entityitem);
-                        }
-                    }
-                }
-
-                world.func_147453_f(x, y, z, block);
-            }
-        }
-
-        super.breakBlock(world, x, y, z, block, p_149749_6_);
-    }
-    
-    public Item getItemDropped(int meta, Random rand, int fortune)
-    {
-        return Item.getItemFromBlock(TFBlocks.cinderFurnace);
-    }
-    
-    /**
-     * Gets an item for the block being called on. Args: world, x, y, z
-     */
-    @SideOnly(Side.CLIENT)
-    public Item getItem(World world, int x, int y, int z)
-    {
-        return Item.getItemFromBlock(TFBlocks.cinderFurnace);
-    }
+	//	@Override
+//	public Item getItemDropped(BlockState state, Random rand, int fortune) {
+//		return Item.getItemFromBlock(TFBlocks.cinder_furnace);
+//	}
+//
+//	@Override
+//	public ItemStack getPickBlock(BlockState state, RayTraceResult target, World world, BlockPos pos, PlayerEntity player) {
+//		return new ItemStack(Item.getItemFromBlock(TFBlocks.cinder_furnace));
+//	}
 }

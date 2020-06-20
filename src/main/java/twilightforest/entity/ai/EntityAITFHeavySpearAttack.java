@@ -1,33 +1,28 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.goal.Goal;
 import twilightforest.entity.EntityTFGoblinKnightUpper;
 
-public class EntityAITFHeavySpearAttack extends EntityAIBase {
+import java.util.EnumSet;
 
-    private EntityTFGoblinKnightUpper entity;
+public class EntityAITFHeavySpearAttack extends Goal {
 
-    public EntityAITFHeavySpearAttack(EntityTFGoblinKnightUpper par1EntityCreature)
-    {
-        this.entity = par1EntityCreature;
-        this.setMutexBits(7);
-    }
-	
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
+	private EntityTFGoblinKnightUpper entity;
+
+	public EntityAITFHeavySpearAttack(EntityTFGoblinKnightUpper upperKnight) {
+		this.entity = upperKnight;
+		this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK)); // Prevent moving TODO 1.15: check this again, I'm uncertain
+	}
+
+	@Override
+	public void tick() {
+		if (entity.heavySpearTimer == 25) {
+			entity.landHeavySpearAttack();
+		}
+	}
+
 	@Override
 	public boolean shouldExecute() {
-       return entity.heavySpearTimer > 0 && entity.heavySpearTimer < 50;
+		return entity.heavySpearTimer > 0 && entity.heavySpearTimer < EntityTFGoblinKnightUpper.HEAVY_SPEAR_TIMER_START;
 	}
-	
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
-    @Override
-	public boolean continueExecuting()
-    {
-        return entity.heavySpearTimer > 0 && entity.heavySpearTimer < 50;
-    }
-
 }

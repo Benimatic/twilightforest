@@ -1,119 +1,116 @@
 package twilightforest.item;
 
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.init.Items;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.AbstractArrowEntity;
+import net.minecraft.entity.projectile.ArrowEntity;
+import net.minecraft.enchantment.Enchantments;
+import net.minecraft.item.BowItem;
+import net.minecraft.item.Items;
+import net.minecraft.stats.Stats;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.item.ArrowItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.ArrowLooseEvent;
-import twilightforest.TwilightForestMod;
 
-public class ItemTFTripleBow extends ItemTFBowBase {
-	
-	
-    public ItemTFTripleBow() {
-    	this.setTextureName(TwilightForestMod.ID + ":triplebow");
-		this.setCreativeTab(TFItems.creativeTab);
-    }
+public class ItemTFTripleBow extends BowItem {
 
-    /**
-     * called when the player releases the use item button. Args: itemstack, world, entityplayer, itemInUseCount
-     */
-    public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4)
-    {
-        int j = this.getMaxItemUseDuration(par1ItemStack) - par4;
+	public ItemTFTripleBow(Properties props) {
+		super(props);
+	}
 
-        ArrowLooseEvent event = new ArrowLooseEvent(par3EntityPlayer, par1ItemStack, j);
-        MinecraftForge.EVENT_BUS.post(event);
-        if (event.isCanceled())
-        {
-            return;
-        }
-        j = event.charge;
+	// Half [VanillaCopy]: copy of modified super to fire three arrows
+	// TODO: make it less dirty
+	@SuppressWarnings("unused")
+	@Override
+	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, LivingEntity entityLiving, int timeLeft) {
+		if (entityLiving instanceof PlayerEntity) {
+			PlayerEntity entityplayer = (PlayerEntity)entityLiving;
+			boolean flag = entityplayer.abilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
+			ItemStack itemstack = entityplayer.findAmmo(stack);
 
-        boolean flag = par3EntityPlayer.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantment.infinity.effectId, par1ItemStack) > 0;
+			int i = this.getUseDuration(stack) - timeLeft;
+			i = net.minecraftforge.event.ForgeEventFactory.onArrowLoose(stack, worldIn, entityplayer, i, !itemstack.isEmpty() || flag);
+			if (i < 0) return;
 
-        if (flag || par3EntityPlayer.inventory.hasItem(Items.arrow))
-        {
-            float f = (float)j / 20.0F;
-            f = (f * f + f * 2.0F) / 3.0F;
+			if (!itemstack.isEmpty() || flag) {
+				if (itemstack.isEmpty()) {
+					itemstack = new ItemStack(Items.ARROW);
+				}
 
-            if ((double)f < 0.1D)
-            {
-                return;
-            }
+				float f = getArrowVelocity(i);
+				if (!((double)f < 0.1D)) {
+					boolean flag1 = entityplayer.abilities.isCreativeMode || (itemstack.getItem() instanceof ArrowItem && ((ArrowItem)itemstack.getItem()).isInfinite(itemstack, stack, entityplayer));
+					if (!worldIn.isRemote) {
+						ArrowItem arrowitem = (ArrowItem)(itemstack.getItem() instanceof ArrowItem ? itemstack.getItem() : Items.ARROW);
+						AbstractArrowEntity entityarrow = arrowitem.createArrow(worldIn, itemstack, entityplayer);
+						entityarrow.shoot(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, f * 3.0F, 1.0F);
 
-            if (f > 1.0F)
-            {
-                f = 1.0F;
-            }
+						// other arrows with slight deviation
+						ArrowEntity entityarrow1 = new ArrowEntity(worldIn, entityLiving);
+						entityarrow1.shoot(entityLiving, entityLiving.rotationPitch, entityLiving.rotationYaw, 0, f * 2, 1);
+						entityarrow1.setMotion(entityarrow1.getMotion().add(0.0D, 0.0075 * 20F, 0.0D));
+						entityarrow1.setPosition(entityarrow1.getX(), entityarrow1.getY() + 0.025F, entityarrow1.getZ());
+						entityarrow1.pickupStatus = ArrowEntity.PickupStatus.CREATIVE_ONLY;
 
-            EntityArrow entityarrow = new EntityArrow(par2World, par3EntityPlayer, f * 2.0F);
-            // other arrows with slight deviation
-            EntityArrow entityarrow1 = new EntityArrow(par2World, par3EntityPlayer, f * 2.0F);
-            entityarrow1.motionY += 0.007499999832361937D * 20F;
-            entityarrow1.posY += 0.025F;
-            EntityArrow entityarrow2 = new EntityArrow(par2World, par3EntityPlayer, f * 2.0F);
-            entityarrow2.motionY -= 0.007499999832361937D * 20F;
-            entityarrow2.posY -= 0.025F;
+						ArrowEntity entityarrow2 = new ArrowEntity(worldIn, entityLiving);
+						entityarrow2.shoot(entityLiving, entityLiving.rotationPitch, entityLiving.rotationYaw, 0, f * 2, 1);
+						entityarrow2.setMotion(entityarrow2.getMotion().subtract(0.0D, 0.0075 * 20F, 0.0D));
+						entityarrow2.setPosition(entityarrow2.getX(), entityarrow2.getY() + 0.025F, entityarrow2.getZ());
+						entityarrow2.pickupStatus = ArrowEntity.PickupStatus.CREATIVE_ONLY;
 
-            if (f == 1.0F)
-            {
-                entityarrow.setIsCritical(true);
-                entityarrow1.setIsCritical(true);
-                entityarrow2.setIsCritical(true);
-            }
+						if (f == 1.0F) {
+							entityarrow.setIsCritical(true);
+							entityarrow1.setIsCritical(true);
+							entityarrow2.setIsCritical(true);
+						}
 
-            int k = EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, par1ItemStack);
+						int j = EnchantmentHelper.getEnchantmentLevel(Enchantments.POWER, stack);
 
-            if (k > 0)
-            {
-                entityarrow.setDamage(entityarrow.getDamage() + (double)k * 0.5D + 0.5D);
-                entityarrow1.setDamage(entityarrow.getDamage() + (double)k * 0.5D + 0.5D);
-                entityarrow2.setDamage(entityarrow.getDamage() + (double)k * 0.5D + 0.5D);
-            }
+						if (j > 0) {
+							entityarrow.setDamage(entityarrow.getDamage() + (double)j * 0.5D + 0.5D);
+							entityarrow1.setDamage(entityarrow.getDamage() + (double)j * 0.5D + 0.5D);
+							entityarrow2.setDamage(entityarrow.getDamage() + (double)j * 0.5D + 0.5D);
+						}
 
-            int l = EnchantmentHelper.getEnchantmentLevel(Enchantment.punch.effectId, par1ItemStack);
+						int k = EnchantmentHelper.getEnchantmentLevel(Enchantments.PUNCH, stack);
 
-            if (l > 0)
-            {
-                entityarrow.setKnockbackStrength(l);
-                entityarrow1.setKnockbackStrength(l);
-                entityarrow2.setKnockbackStrength(l);
-            }
+						if (k > 0) {
+							entityarrow.setKnockbackStrength(k);
+							entityarrow1.setKnockbackStrength(k);
+							entityarrow2.setKnockbackStrength(k);
+						}
 
-            if (EnchantmentHelper.getEnchantmentLevel(Enchantment.flame.effectId, par1ItemStack) > 0)
-            {
-                entityarrow.setFire(100);
-                entityarrow1.setFire(100);
-                entityarrow2.setFire(100);
-            }
+						if (EnchantmentHelper.getEnchantmentLevel(Enchantments.FLAME, stack) > 0) {
+							entityarrow.setFire(100);
+							entityarrow1.setFire(100);
+							entityarrow2.setFire(100);
+						}
 
-            par1ItemStack.damageItem(1, par3EntityPlayer);
-            par2World.playSoundAtEntity(par3EntityPlayer, "random.bow", 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
+						stack.damageItem(1, entityplayer, (user) -> user.sendBreakAnimation(entityplayer.getActiveHand()));
 
-            if (flag)
-            {
-                entityarrow.canBePickedUp = 2;
-            }
-            else
-            {
-                par3EntityPlayer.inventory.consumeInventoryItem(Items.arrow);
-            }
-            entityarrow1.canBePickedUp = 2;
-            entityarrow2.canBePickedUp = 2;
+						if (flag1 || entityplayer.abilities.isCreativeMode && (itemstack.getItem() == Items.SPECTRAL_ARROW || itemstack.getItem() == Items.TIPPED_ARROW)) {
+							entityarrow.pickupStatus = AbstractArrowEntity.PickupStatus.CREATIVE_ONLY;
+						}
 
+						worldIn.addEntity(entityarrow);
+						worldIn.addEntity(entityarrow1);
+						worldIn.addEntity(entityarrow2);
+					}
 
-            if (!par2World.isRemote)
-            {
-                par2World.spawnEntityInWorld(entityarrow);
-                par2World.spawnEntityInWorld(entityarrow1);
-                par2World.spawnEntityInWorld(entityarrow2);
-            }
-        }
-    }
+					worldIn.playSound((PlayerEntity)null, entityplayer.getX(), entityplayer.getY(), entityplayer.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (random.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
+					if (!flag1 && !entityplayer.abilities.isCreativeMode) {
+						itemstack.shrink(1);
+						if (itemstack.isEmpty()) {
+							entityplayer.inventory.deleteStack(itemstack);
+						}
+					}
 
+					entityplayer.addStat(Stats.ITEM_USED.get(this));
+				}
+			}
+		}
+	}
 }

@@ -1,117 +1,46 @@
 package twilightforest.block;
 
-import java.util.List;
-
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemTool;
-import net.minecraft.util.IIcon;
+import net.minecraft.item.ToolItem;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Hand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
 import twilightforest.item.ItemTFMazebreakerPick;
-import twilightforest.item.TFItems;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-
+import javax.annotation.Nullable;
 
 /**
- * 
  * Castle block makes a castle
- * 
- * @author Ben
  *
+ * @author Ben
  */
 public class BlockTFCastleBlock extends Block {
-	
-	private static IIcon brickIcon;
-	private static IIcon crackIcon;
-	private static IIcon fadedIcon;
-	private static IIcon roofIcon;
 
-	/**
-	 * Note that the texture called for here will only be used when the meta value is not a good block to mimic
-	 * 
-	 * @param id
-	 * @param texture
-	 */
-    public BlockTFCastleBlock()
-    {
-        super(Material.rock);
-        this.setHardness(100F);
-        this.setResistance(15F);
-        this.setStepSound(Block.soundTypeStone);
-		this.setCreativeTab(TFItems.creativeTab);
+	public BlockTFCastleBlock(MaterialColor color) {
+		super(Properties.create(Material.ROCK, color).hardnessAndResistance(100.0F, 35.0F).sound(SoundType.STONE));
+	}
 
-    }
-
-    /**
-     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-     */
 	@Override
-	public IIcon getIcon(int side, int meta) {
-		switch (meta)
-		{
-		case 0:
-		default:
-			return brickIcon;
-		case 1:
-			return fadedIcon;
-		case 2:
-			return crackIcon;
-		case 3:
-			return roofIcon;
+	public void harvestBlock(World world, PlayerEntity player, BlockPos pos, BlockState state, @Nullable TileEntity te, ItemStack stack) {
+		ItemStack cei = player.getHeldItemMainhand();
+		if (cei.getItem() instanceof ToolItem && !(cei.getItem() instanceof ItemTFMazebreakerPick)) {
+			cei.damageItem(16, player, (user) -> user.sendBreakAnimation(Hand.MAIN_HAND));
 		}
+
+		super.harvestBlock(world, player, pos, state, te, stack);
 	}
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister par1IconRegister)
-	{
-		BlockTFCastleBlock.brickIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":castleblock_brick");
-		BlockTFCastleBlock.fadedIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":castleblock_faded");
-		BlockTFCastleBlock.crackIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":castleblock_cracked");
-		BlockTFCastleBlock.roofIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":castleblock_roof");
-	}
-
-	@Override
-	public void harvestBlock(World world, EntityPlayer entityplayer, int x, int y, int z, int meta)
-	{
-		// damage the player's pickaxe
-    	ItemStack cei = entityplayer.getCurrentEquippedItem();
-        if(cei != null && cei.getItem() instanceof ItemTool && !(cei.getItem() instanceof ItemTFMazebreakerPick)) 
-        {
-            cei.damageItem(16, entityplayer);
-        }
-    	
-		super.harvestBlock(world, entityplayer, x, y, z, meta);
-    }
-    
-    
-	/**
-     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     */
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-	@Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
-    {
-        par3List.add(new ItemStack(par1, 1, 0));
-        par3List.add(new ItemStack(par1, 1, 1));
-        par3List.add(new ItemStack(par1, 1, 2));
-        par3List.add(new ItemStack(par1, 1, 3));
-    }
-    
-    /**
-     * Determines the damage on the item the block drops. Used in cloth and wood.
-     */
-    @Override
-	public int damageDropped(int meta) {
-    	return meta;
-	}
-
+	//TODO: Move to client
+//	@Override
+//	@OnlyIn(Dist.CLIENT)
+//	public BlockRenderLayer getRenderLayer() {
+//		return BlockRenderLayer.CUTOUT;
+//	}
 }

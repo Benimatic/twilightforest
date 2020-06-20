@@ -1,59 +1,45 @@
 package twilightforest.block;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.material.MaterialColor;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.IFluidState;
+import net.minecraft.pathfinding.PathNodeType;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import twilightforest.item.TFItems;
+
+import javax.annotation.Nullable;
 
 public class BlockTFBurntThorns extends BlockTFThorns {
 
-	protected BlockTFBurntThorns() {
-		super();
-		this.setHardness(0.01F);
-		this.setResistance(0.0F);
-		this.setStepSound(soundTypeSand);
-		this.setCreativeTab(TFItems.creativeTab);
-		
-		this.setNames(new String[] {"burnt"});
-
+	protected BlockTFBurntThorns(Properties props) {
+		super(props);
 	}
-	
 
-    /**
-     * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
-     */
-    public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity)
-    {
-    	// dissolve
-    	if (!world.isRemote && entity instanceof EntityLivingBase) {
-	    	int metadata = world.getBlockMetadata(x, y, z);
-	    	world.playAuxSFX(2001, x, y, z, Block.getIdFromBlock(this) + (metadata << 12));
-	    	world.setBlockToAir(x, y, z);
-    	}
-    }
+	@Nullable
+	@Override
+	public PathNodeType getAiPathNodeType(BlockState state, IBlockReader world, BlockPos pos, @Nullable MobEntity entity) {
+		return null;
+	}
 
-    /**
-     * Break normally
-     */
-    public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
-    	world.setBlockToAir(x, y, z);
-    	return true;
-    }
-    
-    @Override
-    public boolean canSustainLeaves(IBlockAccess world, int x, int y, int z)
-    {
-        return false;
-    }
-    
-	/**
-	 * no need for leaf decay, I think
-	 */
-    public void breakBlock(World world, int x, int y, int z, Block logBlock, int metadata)
-    {
-    	;
-    }
+	@Override
+	@Deprecated
+	public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
+		// dissolve
+		if (!world.isRemote && entity instanceof LivingEntity) {
+			world.destroyBlock(pos, false);
+		}
+	}
+
+	@Override
+	public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, IFluidState fluid) {
+		getBlock().onBlockHarvested(world, pos, state, player);
+		return world.setBlockState(pos, fluid.getBlockState(), world.isRemote ? 11 : 3);
+	}
 }

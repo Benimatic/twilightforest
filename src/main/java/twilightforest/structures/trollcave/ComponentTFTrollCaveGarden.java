@@ -1,120 +1,123 @@
 package twilightforest.structures.trollcave;
 
+import com.google.common.collect.Lists;
+import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.World;
+import net.minecraft.world.biome.DefaultBiomeFeatures;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.ConfiguredFeature;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.IFeatureConfig;
+import net.minecraft.world.gen.feature.SphereReplaceConfig;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.server.ServerWorld;
+import twilightforest.TFFeature;
+import twilightforest.structures.StructureTFComponentOld;
+import twilightforest.world.feature.TFBiomeFeatures;
+
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenBigMushroom;
-import net.minecraft.world.gen.feature.WorldGenerator;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
-import twilightforest.structures.StructureTFComponent;
-import twilightforest.world.TFGenBigMushgloom;
-import twilightforest.world.TFGenMyceliumBlob;
-
 public class ComponentTFTrollCaveGarden extends ComponentTFTrollCaveMain {
-	
-	TFGenMyceliumBlob myceliumBlobGen = new TFGenMyceliumBlob(5);
-	TFGenMyceliumBlob dirtGen = new TFGenMyceliumBlob(Blocks.dirt, 5);
-	WorldGenBigMushroom bigMushroomGen = new WorldGenBigMushroom();
-	TFGenBigMushgloom bigMushgloomGen = new TFGenBigMushgloom();
 
-	
-	public ComponentTFTrollCaveGarden() { }
+	private ConfiguredFeature<?,?> myceliumBlobGen = TFBiomeFeatures.MYCELIUM_BLOB.get().configure(new SphereReplaceConfig(Blocks.MYCELIUM.getDefaultState(), 5, 1, Lists.newArrayList(Blocks.GRASS_BLOCK.getDefaultState())));
+	private ConfiguredFeature<?,?> dirtGen = TFBiomeFeatures.MYCELIUM_BLOB.get().configure(new SphereReplaceConfig(Blocks.DIRT.getDefaultState(), 5, 1, Lists.newArrayList(Blocks.GRASS_BLOCK.getDefaultState())));
+	private ConfiguredFeature<?,?> bigRedMushroomGen = Feature.HUGE_RED_MUSHROOM.configure(DefaultBiomeFeatures.HUGE_RED_MUSHROOM_CONFIG);
+	private ConfiguredFeature<?,?> bigBrownMushroomGen = Feature.HUGE_BROWN_MUSHROOM.configure(DefaultBiomeFeatures.HUGE_BROWN_MUSHROOM_CONFIG);
+	private ConfiguredFeature<?,?> bigMushgloomGen = TFBiomeFeatures.BIG_MUSHGLOOM.get().configure(IFeatureConfig.NO_FEATURE_CONFIG);
 
-	public ComponentTFTrollCaveGarden(int index, int x, int y, int z, int caveSize, int caveHeight, int direction) {
-		super(index);
+	public ComponentTFTrollCaveGarden(TemplateManager manager, CompoundNBT nbt) {
+		super(TFTrollCavePieces.TFTCGard, nbt);
+	}
+
+	public ComponentTFTrollCaveGarden(TFFeature feature, int index, int x, int y, int z, int caveSize, int caveHeight, Direction direction) {
+		super(TFTrollCavePieces.TFTCGard, feature, index);
 		this.size = caveSize;
 		this.height = caveHeight;
 		this.setCoordBaseMode(direction);
-		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, size - 1, direction);
+		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, size - 1, direction);
 	}
 
-	@SuppressWarnings({ "rawtypes" })
 	@Override
-	public void buildComponent(StructureComponent parent, List list, Random rand) {
+	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
 		// add a cloud
 //		ComponentTFTrollCloud cloud = new ComponentTFTrollCloud(1, boundingBox.minX + ((boundingBox.maxX - boundingBox.minX) / 2), rand.nextInt(64) + 160, boundingBox.minZ + ((boundingBox.maxZ - boundingBox.minZ) / 2));
 //		list.add(cloud);
 //		cloud.buildComponent(this, list, rand);
 	}
-	
+
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-        if (this.isBoundingBoxOutOfHighlands(world, sbb)) {
-            return false;
-        } else {
-    		// clear inside
-    		hollowCaveMiddle(world, sbb, rand, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1);
-    		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
+	public boolean generate(IWorld worldIn, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		World world = worldIn.getWorld();
 
-    		// treasure!
-    		makeTreasureCrate(world, rand, sbb);
+		if (this.isBoundingBoxOutsideBiomes(world, sbb, highlands)) {
+			return false;
+		}
 
-    		// dirt!
-    		for (int i = 0; i < 24; i++)
-    		{
-    			ChunkCoordinates dest = getCoordsInCave(decoRNG);
-    			generate(world, dirtGen, decoRNG, dest.posX, 1, dest.posZ, sbb);
-    		}
-    		
-    		// mycelium!
-    		for (int i = 0; i < 16; i++)
-    		{
-    			ChunkCoordinates dest = getCoordsInCave(decoRNG);
-    			generate(world, myceliumBlobGen, decoRNG, dest.posX, 1, dest.posZ, sbb);
-    		}
-    		
-    		// uberous!
-    		for (int i = 0; i < 16; i++)
-    		{
-    			ChunkCoordinates dest = getCoordsInCave(decoRNG);
-    			generate(world, uberousGen, decoRNG, dest.posX, 1, dest.posZ, sbb);
-    			
-    			generateAtSurface(world, uberousGen, decoRNG, dest.posX, 60, dest.posZ, sbb);
-    		}
-    		
-    		// mushglooms first
-    		for (int i = 0; i < 32; i++)
-    		{
-    			ChunkCoordinates dest = getCoordsInCave(decoRNG);
-    			generate(world, bigMushgloomGen, decoRNG, dest.posX, 1, dest.posZ, sbb);
-    		}
-    		
-    		// mushrooms!
-    		for (int i = 0; i < 64; i++)
-    		{
-    			ChunkCoordinates dest = getCoordsInCave(decoRNG);
-    			generate(world, bigMushroomGen, decoRNG, dest.posX, 1, dest.posZ, sbb);
-    		}
-    		
-    		// stone stalactites!
-    		for (int i = 0; i < 128; i++)
-    		{
-    			ChunkCoordinates dest = getCoordsInCave(decoRNG);
-    			generateBlockStalactite(world, decoRNG, Blocks.stone, 0.7F, true, dest.posX, 3, dest.posZ, sbb);
-    		}
+		// clear inside
+		hollowCaveMiddle(world, sbb, rand, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1);
+		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
 
-    		
-    		return true;
-        }
+		// treasure!
+		makeTreasureCrate(world, sbb);
+
+		// dirt!
+		for (int i = 0; i < 24; i++) {
+			BlockPos dest = getCoordsInCave(decoRNG);
+			generate(world, dirtGen, decoRNG, dest.getX(), 1, dest.getZ(), sbb);
+		}
+
+		// mycelium!
+		for (int i = 0; i < 16; i++) {
+			BlockPos dest = getCoordsInCave(decoRNG);
+			generate(world, myceliumBlobGen, decoRNG, dest.getX(), 1, dest.getZ(), sbb);
+		}
+
+		// uberous!
+		for (int i = 0; i < 16; i++) {
+			BlockPos dest = getCoordsInCave(decoRNG);
+			generate(world, uberousGen, decoRNG, dest.getX(), 1, dest.getZ(), sbb);
+
+			generateAtSurface(world, uberousGen, decoRNG, dest.getX(), 60, dest.getZ(), sbb);
+		}
+
+		// mushglooms first
+		for (int i = 0; i < 32; i++) {
+			BlockPos dest = getCoordsInCave(decoRNG);
+			generate(world, bigMushgloomGen, decoRNG, dest.getX(), 1, dest.getZ(), sbb);
+		}
+
+		// mushrooms!
+		for (int i = 0; i < 64; i++) {
+			BlockPos dest = getCoordsInCave(decoRNG);
+			generate(world, rand.nextBoolean() ? bigBrownMushroomGen : bigRedMushroomGen, decoRNG, dest.getX(), 1, dest.getZ(), sbb);
+		}
+
+		// stone stalactites!
+		for (int i = 0; i < 128; i++) {
+			BlockPos dest = getCoordsInCave(decoRNG);
+			generateBlockStalactite(world, decoRNG, Blocks.STONE, 0.7F, true, dest.getX(), 3, dest.getZ(), sbb);
+		}
+
+		return true;
 	}
 
-	/**
-	 * Use the generator at the specified coords
-	 */
-	protected void generate(World world, WorldGenerator generator, Random rand, int x, int y, int z, StructureBoundingBox sbb) {
+	protected void generate(World world, ConfiguredFeature<?,?> generator, Random rand, int x, int y, int z, MutableBoundingBox sbb) {
 		// are the coordinates in our bounding box?
-        int dx = getXWithOffset(x, z);
-        int dy = getYWithOffset(y);
-        int dz = getZWithOffset(x, z);
-        if(sbb.isVecInside(dx, dy, dz)) {
-        	generator.generate(world, rand, dx, dy, dz);
-        }
+		int dx = getXWithOffset(x, z);
+		int dy = getYWithOffset(y);
+		int dz = getZWithOffset(x, z);
+
+		BlockPos pos = new BlockPos(dx, dy, dz);
+		if (sbb.isVecInside(pos)) {
+			generator.place(world, ((ServerWorld) world).getChunkProvider().getChunkGenerator(), rand, pos);
+		}
 	}
-	
-
-
 }

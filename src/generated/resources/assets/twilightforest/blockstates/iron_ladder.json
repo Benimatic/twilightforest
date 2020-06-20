@@ -1,0 +1,160 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "left": "false",
+        "facing": "north"
+      },
+      "apply": {
+        "model": "twilightforest:block/iron_ladder_left"
+      }
+    },
+    {
+      "when": {
+        "left": "true",
+        "facing": "north"
+      },
+      "apply": {
+        "model": "twilightforest:block/iron_ladder_left_connection"
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "right": "false"
+      },
+      "apply": {
+        "model": "twilightforest:block/iron_ladder_right"
+      }
+    },
+    {
+      "when": {
+        "facing": "north",
+        "right": "true"
+      },
+      "apply": {
+        "model": "twilightforest:block/iron_ladder_right_connection"
+      }
+    },
+    {
+      "when": {
+        "left": "false",
+        "facing": "east"
+      },
+      "apply": {
+        "model": "twilightforest:block/iron_ladder_left",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "left": "true",
+        "facing": "east"
+      },
+      "apply": {
+        "model": "twilightforest:block/iron_ladder_left_connection",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "right": "false"
+      },
+      "apply": {
+        "model": "twilightforest:block/iron_ladder_right",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "facing": "east",
+        "right": "true"
+      },
+      "apply": {
+        "model": "twilightforest:block/iron_ladder_right_connection",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "left": "false",
+        "facing": "south"
+      },
+      "apply": {
+        "model": "twilightforest:block/iron_ladder_left",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "left": "true",
+        "facing": "south"
+      },
+      "apply": {
+        "model": "twilightforest:block/iron_ladder_left_connection",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "right": "false"
+      },
+      "apply": {
+        "model": "twilightforest:block/iron_ladder_right",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "facing": "south",
+        "right": "true"
+      },
+      "apply": {
+        "model": "twilightforest:block/iron_ladder_right_connection",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "left": "false",
+        "facing": "west"
+      },
+      "apply": {
+        "model": "twilightforest:block/iron_ladder_left",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "left": "true",
+        "facing": "west"
+      },
+      "apply": {
+        "model": "twilightforest:block/iron_ladder_left_connection",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "right": "false"
+      },
+      "apply": {
+        "model": "twilightforest:block/iron_ladder_right",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "facing": "west",
+        "right": "true"
+      },
+      "apply": {
+        "model": "twilightforest:block/iron_ladder_right_connection",
+        "y": 270
+      }
+    }
+  ]
+}

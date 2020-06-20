@@ -1,58 +1,58 @@
 package twilightforest.biomes;
 
-import java.util.Random;
-
-import net.minecraft.block.Block;
-import net.minecraft.stats.Achievement;
-import net.minecraft.world.biome.BiomeGenBase.SpawnListEntry;
-import net.minecraft.world.gen.feature.WorldGenAbstractTree;
-import net.minecraft.world.gen.feature.WorldGenBigTree;
-import net.minecraft.world.gen.feature.WorldGenTaiga2;
-import twilightforest.TFAchievementPage;
-import twilightforest.block.TFBlocks;
-
+import net.minecraft.entity.EntityClassification;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.world.World;
+import twilightforest.TFFeature;
+import twilightforest.TwilightForestMod;
+import twilightforest.entity.TFEntities;
 
 public class TFBiomeFinalPlateau extends TFBiomeBase {
 
-	public TFBiomeFinalPlateau(int i) {
-		super(i);
-		
-        this.topBlock = TFBlocks.deadrock;
-        this.field_150604_aj = 0;
-        this.fillerBlock = TFBlocks.deadrock;
-        this.field_76754_C = 1;
-		
-//		this.rootHeight = 7F;
-//		this.heightVariation = 0.4F;
-        
-        this.temperature = 0.3F;
-        this.rainfall = 0.2F;
-        
-        getTFBiomeDecorator().canopyPerChunk = -999;
-		getTFBiomeDecorator().setTreesPerChunk(-999);
-		
-		this.theBiomeDecorator.generateLakes = false;
-		
-        // custom creature list.
-        spawnableCreatureList.clear();
-        spawnableCreatureList.add(new SpawnListEntry(twilightforest.entity.passive.EntityTFRaven.class, 10, 4, 4));
-	}
-	
-    /**
-     * Return a block if you want it to replace stone in the terrain generation
-     */
-	public Block getStoneReplacementBlock() {
-		return TFBlocks.deadrock;
-	}
-	
-    /**
-     * Metadata for the stone replacement block
-     */
-	public byte getStoneReplacementMeta() {
-		return 2;
+	public TFBiomeFinalPlateau(Builder props) {
+		super(props);
 	}
 
-	protected Achievement getRequiredAchievement() {
-		return TFAchievementPage.twilightProgressGlacier;
+	@Override
+	public void addFeatures() {
+		super.addFeatures();
+
+		TFBiomeDecorator.addClayDisks(this, 1);
+		TFBiomeDecorator.addLakes(this);
+		TFBiomeDecorator.addRuins(this);
+		TFBiomeDecorator.addMushrooms(this);
 	}
+
+	@Override
+	public void addSpawns() {
+		super.addSpawns();
+
+		// custom creature list.
+		getSpawns(EntityClassification.CREATURE).clear();
+		addSpawn(EntityClassification.CREATURE, new SpawnListEntry(TFEntities.raven, 10, 4, 4));
+	}
+
+	@Override
+	protected ResourceLocation[] getRequiredAdvancements() {
+		return new ResourceLocation[]{ TwilightForestMod.prefix("progress_troll") };
+	}
+
+	@Override
+	public void enforceProgression(PlayerEntity player, World world) {
+		if (!world.isRemote && player.ticksExisted % 5 == 0) {
+			player.attackEntityFrom(DamageSource.MAGIC, 1.5F);
+			world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, SoundCategory.PLAYERS, 1.0F, 1.0F);
+			// TODO: change this when there's a book for the castle
+			if (world.rand.nextInt(4) == 0) TFFeature.TROLL_CAVE.trySpawnHintMonster(world, player);
+		}
+	}
+
+//	@Override
+//	protected TFFeature getContainedFeature() {
+//		return TFFeature.FINAL_CASTLE;
+//	}
 }

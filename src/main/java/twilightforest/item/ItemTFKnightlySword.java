@@ -1,113 +1,57 @@
 package twilightforest.item;
 
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.IItemTier;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.SwordItem;
+import net.minecraft.network.play.server.SAnimateHandPacket;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import twilightforest.TwilightForestMod;
+
+import javax.annotation.Nullable;
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
-import net.minecraft.util.StatCollector;
-import twilightforest.TwilightForestMod;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
-public class ItemTFKnightlySword extends ItemSword {
+@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
+public class ItemTFKnightlySword extends SwordItem {
 
 	private static final int BONUS_DAMAGE = 2;
-	private Entity bonusDamageEntity;
-	private EntityPlayer bonusDamagePlayer;
 
-	public ItemTFKnightlySword(Item.ToolMaterial par2EnumToolMaterial) {
-		super(par2EnumToolMaterial);
-		this.setCreativeTab(TFItems.creativeTab);
-	}
-    
-    /**
-     * Return an item rarity from EnumRarity
-     * 
-     * This is automatically rare
-     */    
-    @Override
-	public EnumRarity getRarity(ItemStack par1ItemStack) {
-    	return EnumRarity.rare;
+	public ItemTFKnightlySword(IItemTier material, Properties props) {
+		super(material, 3, -2.4F, props);
 	}
 
-    
-    /**
-     * Return whether this item is repairable in an anvil.
-     */
-    @Override
-	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
-    {
-    	// repair with knightmetal ingots
-        return par2ItemStack.getItem() == TFItems.knightMetal ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
-    }
-    
-    /**
-     * Called when the player Left Clicks (attacks) an entity.
-     * Processed before damage is done, if return value is true further processing is canceled
-     * and the entity is not attacked.
-     * 
-     * @param stack The Item being used
-     * @param player The player that is attacking
-     * @param entity The entity being attacked
-     * @return True to cancel the rest of the interaction.
-     */
-    @Override
-    public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity) 
-    {
-    	// extra damage to armored targets
-    	if (entity instanceof EntityLivingBase && ((EntityLivingBase)entity).getTotalArmorValue() > 0)
-    	{
-    		this.bonusDamageEntity = entity;
-    		this.bonusDamagePlayer = player;
-    	}
-    	
-        return false;
-    }
-    
-//    /**
-//     * Returns the damage against a given entity.
-//     */
-//    @Override
-//    public float getDamageVsEntity(Entity par1Entity, ItemStack itemStack)
-//    {
-//       	if (this.bonusDamagePlayer != null && this.bonusDamageEntity != null && par1Entity == this.bonusDamageEntity)
-//       	{
-//       		//System.out.println("Minotaur Axe extra damage!");
-//       		this.bonusDamagePlayer.onEnchantmentCritical(par1Entity);
-//       		this.bonusDamagePlayer = null;
-//       		this.bonusDamageEntity = null;
-//       		return super.getDamageVsEntity(par1Entity, itemStack) + BONUS_DAMAGE;
-//       	}
-//       	else
-//       	{
-//       		return super.getDamageVsEntity(par1Entity, itemStack);
-//       	}
-//    }
+	@SubscribeEvent
+	public static void onDamage(LivingAttackEvent evt) {
+		LivingEntity target = evt.getEntityLiving();
 
-	
-	/**
-	 * Properly register icon source
-	 */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":" + this.getUnlocalizedName().substring(5));
-    }
-    
-    /**
-     * allows items to add custom lines of information to the mouseover description
-     */
+		if (!target.world.isRemote && evt.getSource().getImmediateSource() instanceof LivingEntity) {
+			ItemStack weapon = ((LivingEntity) evt.getSource().getImmediateSource()).getHeldItemMainhand();
+
+			if (!weapon.isEmpty() && ((target.getTotalArmorValue() > 0 && (weapon.getItem() == TFItems.knightmetal_pickaxe.get() || weapon.getItem() == TFItems.knightmetal_sword.get())) || (target.getTotalArmorValue() == 0 && weapon.getItem() == TFItems.knightmetal_axe.get()))) {
+				// TODO scale bonus dmg with the amount of armor?
+				target.attackEntityFrom(DamageSource.MAGIC, BONUS_DAMAGE);
+				// don't prevent main damage from applying
+				target.hurtResistantTime = 0;
+				// enchantment attack sparkles
+				((ServerWorld) target.world).getChunkProvider().sendToTrackingAndSelf(target, new SAnimateHandPacket(target, 5));
+			}
+		}
+	}
+
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
-		par3List.add(StatCollector.translateToLocal(getUnlocalizedName() + ".tooltip"));
+	@OnlyIn(Dist.CLIENT)
+	public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flags) {
+		super.addInformation(stack, world, list, flags);
+		list.add(new TranslationTextComponent(getTranslationKey() + ".tooltip"));
 	}
 }

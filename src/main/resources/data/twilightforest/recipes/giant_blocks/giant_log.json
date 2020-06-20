@@ -1,0 +1,12 @@
+{
+  "result": {
+    "item": "minecraft:oak_planks",
+    "count": 64
+  },
+  "ingredients": [
+    {
+      "item": "twilightforest:giant_log"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

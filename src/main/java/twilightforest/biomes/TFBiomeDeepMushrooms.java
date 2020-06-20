@@ -1,26 +1,36 @@
 package twilightforest.biomes;
 
+import twilightforest.TFFeature;
 
 public class TFBiomeDeepMushrooms extends TFBiomeBase {
 
-	public TFBiomeDeepMushrooms(int i) {
-		super(i);
-
-		
-		this.temperature = 0.8F;
-		this.rainfall = 1.0F;
-		
-		this.rootHeight = 0.15F;
-		this.heightVariation = 0.4F;
-		
-		getTFBiomeDecorator().setTreesPerChunk(1);
-        
-        getTFBiomeDecorator().setMushroomsPerChunk(12);
-        getTFBiomeDecorator().setBigMushroomsPerChunk(8);
-        
-        getTFBiomeDecorator().myceliumPerChunk = 3;
-        getTFBiomeDecorator().alternateCanopyChance = 0.9F;
-        
+	public TFBiomeDeepMushrooms(Builder props) {
+		super(props);
 	}
-	
+
+	@Override
+	public void addFeatures() {
+		super.addFeatures();
+
+		TFBiomeDecorator.addWoodRoots(this);
+		TFBiomeDecorator.addOres(this);
+		TFBiomeDecorator.addClayDisks(this, 1);
+		TFBiomeDecorator.addLakes(this);
+		TFBiomeDecorator.addRuins(this);
+		TFBiomeDecorator.addSprings(this);
+		TFBiomeDecorator.addPlantRoots(this);
+		TFBiomeDecorator.addTorchberries(this);
+		TFBiomeDecorator.addCanopyAlt(this, 0.9F);
+		TFBiomeDecorator.addHugeMushrooms(this, 8);
+		TFBiomeDecorator.addMultipleTrees(this, TFBiomeDecorator.NORMAL_TREES_CONFIG, 1);
+		TFBiomeDecorator.addMyceliumBlobs(this, 3);
+		TFBiomeDecorator.addGrassWithFern(this, 2);
+		TFBiomeDecorator.addFlowers(this, 2);
+		TFBiomeDecorator.addMushroomsCommon(this);
+	}
+
+	//	@Override
+//	protected TFFeature getContainedFeature() {
+//		return TFFeature.MUSHROOM_TOWER;
+//	}
 }

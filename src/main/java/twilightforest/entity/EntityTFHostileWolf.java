@@ -1,132 +1,98 @@
 package twilightforest.entity;
 
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.passive.EntityWolf;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.passive.WolfEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.EnumDifficulty;
-import net.minecraft.world.EnumSkyBlock;
+import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
+import twilightforest.TFSounds;
 
+import javax.annotation.Nullable;
+import java.util.Random;
 
-public class EntityTFHostileWolf extends EntityWolf implements IMob {
+public class EntityTFHostileWolf extends WolfEntity implements IMob {
 
-	public EntityTFHostileWolf(World world) {
-		super(world);
+	public EntityTFHostileWolf(EntityType<? extends EntityTFHostileWolf> type, World world) {
+		super(type, world);
 		setAngry(true);
-		
-        this.targetTasks.addTask(4, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
+		setCollarColor(DyeColor.BLACK);
+		setAttributes(); // Must call this again because EntityWolf calls setTamed(false) which messes with our changes
 	}
-	
-    public EntityTFHostileWolf(World world, double x, double y, double z)
-    {
-        this(world);
-        this.setPosition(x, y, z);
-    }
-    
 
-	/**
-	 * Set monster attributes
-	 */
+	// Split out from registerAttributes because of above comment
+	protected void setAttributes() {
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
+	}
+
 	@Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(10.0D); // max health
-    }
+	protected final void registerAttributes() {
+		super.registerAttributes();
+		setAttributes();
+	}
 
-    @Override
-	public void onUpdate()
-    {
-        super.onUpdate();
-        if(!worldObj.isRemote && worldObj.difficultySetting == EnumDifficulty.PEACEFUL)
-        {
-        	setDead();
-        }
-    }
-
-    /**
-     * Trigger achievement when killed
-     */
 	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
-			((EntityPlayer)par1DamageSource.getSourceOfDamage()).triggerAchievement(TFAchievementPage.twilightHunter);
+	protected void registerGoals() {
+		super.registerGoals();
+		this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
+	}
+
+	@Override
+	public void tick() {
+		super.tick();
+		if (!world.isRemote && world.getDifficulty() == Difficulty.PEACEFUL) {
+			remove();
 		}
 	}
-	
-    /**
-     * Checks if the entity's current position is a valid location to spawn this entity.
-     */
-    @Override
-	public boolean getCanSpawnHere()
-    {
+
+	public static boolean getCanSpawnHere(EntityType<? extends EntityTFHostileWolf> type, IWorld world, SpawnReason reason, BlockPos pos, Random random) {
 		// are we near a hedge maze?
-		int chunkX = MathHelper.floor_double(posX) >> 4;
-		int chunkZ = MathHelper.floor_double(posZ) >> 4;
-		if (TFFeature.getNearestFeature(chunkX, chunkZ, worldObj) == TFFeature.hedgeMaze) {
-			// don't check light level
-	        return worldObj.checkNoEntityCollision(boundingBox) && worldObj.getCollidingBoundingBoxes(this, boundingBox).size() == 0 && !worldObj.isAnyLiquid(boundingBox);
-		}
-		else {
-			return isValidLightLevel() && worldObj.checkNoEntityCollision(boundingBox) && worldObj.getCollidingBoundingBoxes(this, boundingBox).size() == 0 && !worldObj.isAnyLiquid(boundingBox);
-		}
-    }
-    
-    /**
-     * Checks to make sure the light is not too bright where the mob is spawning
-     * Copied from EntityMob
-     */
-    protected boolean isValidLightLevel()
-    {
-        int var1 = MathHelper.floor_double(this.posX);
-        int var2 = MathHelper.floor_double(this.boundingBox.minY);
-        int var3 = MathHelper.floor_double(this.posZ);
+		int chunkX = MathHelper.floor(pos.getX()) >> 4;
+		int chunkZ = MathHelper.floor(pos.getZ()) >> 4;
+		return (TFFeature.getNearestFeature(chunkX, chunkZ, world.getWorld()) == TFFeature.HEDGE_MAZE || MonsterEntity.isValidLightLevel(world, pos, random));
+				/*&& world.checkNoEntityCollision(this)
+				&& world.getCollisionBoxes(this, getBoundingBox()).size() == 0
+				&& !world.containsAnyLiquid(getBoundingBox());*/
+	}
 
-        if (this.worldObj.getSavedLightValue(EnumSkyBlock.Sky, var1, var2, var3) > this.rand.nextInt(32))
-        {
-            return false;
-        }
-        else
-        {
-            int var4 = this.worldObj.getBlockLightValue(var1, var2, var3);
+	@Override
+	public void setAttackTarget(@Nullable LivingEntity entity) {
+		if (entity != null && entity != getAttackTarget())
+			playSound(TFSounds.MISTWOLF_TARGET, 4F, getSoundPitch());
+		super.setAttackTarget(entity);
+	}
 
-            if (this.worldObj.isThundering())
-            {
-                int var5 = this.worldObj.skylightSubtracted;
-                this.worldObj.skylightSubtracted = 10;
-                var4 = this.worldObj.getBlockLightValue(var1, var2, var3);
-                this.worldObj.skylightSubtracted = var5;
-            }
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return TFSounds.MISTWOLF_IDLE;
+	}
 
-            return var4 <= this.rand.nextInt(8);
-        }
-    }
+	@Override
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+		return TFSounds.MISTWOLF_HURT;
+	}
 
-    /**
-     * Checks if the parameter is an item which this animal can be fed to breed it (wheat, carrots or seeds depending on
-     * the animal type)
-     */
-    @Override
-	public boolean isBreedingItem(ItemStack par1ItemStack)
-    {
-    	return false;
-    }
+	@Override
+	public boolean isBreedingItem(ItemStack stack) {
+		return false;
+	}
 
-    /**
-     * Called when a player interacts with a mob. e.g. gets milk from a cow, gets into the saddle on a pig.
-     */
-    @Override
-	public boolean interact(EntityPlayer par1EntityPlayer)
-    {
-    	return false;
-    }
-
+	@Override
+	public boolean processInteract(PlayerEntity player, Hand hand) {
+		return false;
+	}
 }

@@ -1,31 +1,33 @@
 package twilightforest.structures.minotaurmaze;
 
-import java.util.Random;
-
-import net.minecraft.init.Blocks;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.template.TemplateManager;
+import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
+
+import java.util.Random;
 
 public class ComponentTFMazeRoomFountain extends ComponentTFMazeRoom {
 
-	public ComponentTFMazeRoomFountain() {
-		super();
-		// TODO Auto-generated constructor stub
+	public ComponentTFMazeRoomFountain(TemplateManager manager, CompoundNBT nbt) {
+		super(TFMinotaurMazePieces.TFMMRF, nbt);
 	}
 
-
-	public ComponentTFMazeRoomFountain(int i, Random rand, int x, int y, int z) {
-		super(i, rand, x, y, z);
+	public ComponentTFMazeRoomFountain(TFFeature feature, int i, Random rand, int x, int y, int z) {
+		super(TFMinotaurMazePieces.TFMMRF, feature, i, rand, x, y, z);
 	}
 
-	
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		super.addComponentParts(world, rand, sbb);
-		
-		this.fillWithMetadataBlocks(world, sbb, 5, 1, 5, 10, 1, 10, TFBlocks.mazestone, 3, Blocks.air, 0, false);
-		this.fillWithBlocks(world, sbb, 6, 1, 6, 9, 1, 9, Blocks.water, Blocks.air, false);
+	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		super.generate(world, generator, rand, sbb, chunkPosIn);
+
+		this.fillWithBlocks(world, sbb, 5, 1, 5, 10, 1, 10, TFBlocks.maze_stone_decorative.get().getDefaultState(), AIR, false);
+		this.fillWithBlocks(world, sbb, 6, 1, 6, 9, 1, 9, Blocks.WATER.getDefaultState(), AIR, false);
 
 		return true;
 	}

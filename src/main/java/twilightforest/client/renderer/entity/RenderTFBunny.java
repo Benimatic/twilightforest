@@ -1,50 +1,33 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.entity.RenderLiving;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.model.entity.ModelTFBunny;
 import twilightforest.entity.passive.EntityTFBunny;
 
-public class RenderTFBunny extends RenderLiving {
-	
-	final ResourceLocation textureLocDutch;
-	final ResourceLocation textureLocWhite;
-	final ResourceLocation textureLocBrown;
-	
-	public RenderTFBunny(ModelBase par1ModelBase, float par2) {
-		super(par1ModelBase, par2);
-		
-		textureLocDutch = new ResourceLocation(TwilightForestMod.MODEL_DIR + "bunnydutch.png");
-		textureLocWhite = new ResourceLocation(TwilightForestMod.MODEL_DIR + "bunnywhite.png");
-		textureLocBrown = new ResourceLocation(TwilightForestMod.MODEL_DIR + "bunnybrown.png");
+public class RenderTFBunny extends MobRenderer<EntityTFBunny, ModelTFBunny> {
+
+	private final ResourceLocation textureLocDutch = TwilightForestMod.getModelTexture("bunnydutch.png");
+	private final ResourceLocation textureLocWhite = TwilightForestMod.getModelTexture("bunnywhite.png");
+	private final ResourceLocation textureLocBrown = TwilightForestMod.getModelTexture("bunnybrown.png");
+
+	public RenderTFBunny(EntityRendererManager manager, ModelTFBunny model, float shadowSize) {
+		super(manager, model, shadowSize);
 	}
 
-	/**
-	 * Return our specific texture
-	 */
-	protected ResourceLocation getEntityTexture(Entity par1Entity)
-	{
-		if (par1Entity instanceof EntityTFBunny)
-		{
-			switch (((EntityTFBunny)par1Entity).getBunnyType())
-			{
-			default: 
+	@Override
+	public ResourceLocation getEntityTexture(EntityTFBunny entity) {
+		switch (entity.getBunnyType()) {
+			default:
 			case 0:
 			case 1:
 				return textureLocDutch;
-
 			case 2:
 				return textureLocWhite;
-
 			case 3:
 				return textureLocBrown;
-			}
 		}
-
-		// fallback
-		return textureLocDutch;
-    }
-
+	}
 }

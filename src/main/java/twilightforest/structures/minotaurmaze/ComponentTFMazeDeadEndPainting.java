@@ -1,38 +1,44 @@
 package twilightforest.structures.minotaurmaze;
 
-import java.util.Random;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.WallTorchBlock;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.template.TemplateManager;
+import twilightforest.TFFeature;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import java.util.Random;
 
 public class ComponentTFMazeDeadEndPainting extends ComponentTFMazeDeadEnd {
 
-	public ComponentTFMazeDeadEndPainting() {
-		super();
-		// TODO Auto-generated constructor stub
+	public ComponentTFMazeDeadEndPainting(TemplateManager manager, CompoundNBT nbt) {
+		super(TFMinotaurMazePieces.TFMMDEP, nbt);
 	}
 
-	public ComponentTFMazeDeadEndPainting(int i, int x, int y, int z, int rotation) {
-		super(i, x, y, z, rotation);
+	public ComponentTFMazeDeadEndPainting(TFFeature feature, int i, int x, int y, int z, Direction rotation) {
+		super(TFMinotaurMazePieces.TFMMDEP, feature, i, x, y, z, rotation);
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {		
+	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
 		// normal doorway
-		super.addComponentParts(world, rand, sbb);
-		
+		super.generate(world, generator, rand, sbb, chunkPosIn);
+
 		// torches
-		this.placeBlockAtCurrentPosition(world, Blocks.torch, 0, 1, 3, 3, sbb);
-		this.placeBlockAtCurrentPosition(world, Blocks.torch, 0, 4, 3, 3, sbb);
-		
+		this.setBlockState(world, Blocks.WALL_TORCH.getDefaultState().with(WallTorchBlock.HORIZONTAL_FACING, Direction.WEST), 1, 3, 3, sbb);
+		this.setBlockState(world, Blocks.WALL_TORCH.getDefaultState().with(WallTorchBlock.HORIZONTAL_FACING, Direction.EAST), 4, 3, 3, sbb);
+
 //		// painting
 //		EntityPainting painting = new EntityPainting(world, pCoords.posX, pCoords.posY, pCoords.posZ, this.get); 
 //		painting.art = getPaintingOfSize(rand, minSize);
 //		painting.setDirection(direction);
 //		
-//		world.spawnEntityInWorld(painting);
-		
+//		world.addEntity(painting);
+
 		return true;
 	}
 }

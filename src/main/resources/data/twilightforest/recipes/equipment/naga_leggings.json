@@ -1,0 +1,19 @@
+{
+  "result": {
+    "nbt": "{ench:[{lvl:3s,id:0s}]}",
+    "item": "twilightforest:naga_leggings",
+    "type": "minecraft:item_nbt"
+  },
+  "group": "naga_armor",
+  "pattern": [
+    "###",
+    "# #",
+    "# #"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "twilightforest:naga_scale"
+    }
+  }
+}

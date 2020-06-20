@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "twilightforest:dark_fence",
+    "count": 3
+  },
+  "pattern": [
+    "#S#",
+    "#S#"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "#": {
+      "item": "twilightforest:dark_planks"
+    },
+    "S": {
+      "tag": "forge:rods/wooden"
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "result": {
+    "item": "minecraft:oak_leaves",
+    "count": 64
+  },
+  "ingredients": [
+    {
+      "item": "twilightforest:giant_leaves"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

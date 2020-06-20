@@ -1,87 +1,75 @@
 package twilightforest.structures;
 
-import java.util.List;
+import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
+import net.minecraft.entity.EntityType;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.World;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
+import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.server.ServerWorld;
+import twilightforest.TFFeature;
+import twilightforest.entity.TFEntities;
+import twilightforest.loot.TFTreasure;
+import twilightforest.world.feature.TFBiomeFeatures;
+import twilightforest.world.feature.TFGenCaveStalactite;
+import twilightforest.world.feature.config.CaveStalactiteConfig;
+
 import java.util.Random;
 
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
-import twilightforest.TFTreasure;
-import twilightforest.entity.TFCreatures;
-import twilightforest.world.TFGenCaveStalactite;
+public class ComponentTFHollowHill extends StructureTFComponentOld {
 
-
-
-public class ComponentTFHollowHill extends StructureTFComponent {
-	
 	int hillSize;
 	int radius;
 
-	public ComponentTFHollowHill() {
-		super();
-		// TODO Auto-generated constructor stub
+	public ComponentTFHollowHill(TemplateManager manager, CompoundNBT nbt) {
+		super(TFFeature.TFHill, nbt);
 	}
 
+	public ComponentTFHollowHill(IStructurePieceType piece, CompoundNBT nbt) {
+		super(piece, nbt);
+	}
 
+	//TODO: Parameter "rand" is unused. Remove?
+	public ComponentTFHollowHill(IStructurePieceType type, TFFeature feature, Random rand, int i, int size, int x, int y, int z) {
+		super(type, feature, i);
 
-	public ComponentTFHollowHill(World world, Random rand, int i, int size, int x, int y, int z) {
-		super(i);
+		this.setCoordBaseMode(Direction.SOUTH);
 
-		this.setCoordBaseMode(0);
-		
 		// get the size of this hill?
 		this.hillSize = size;
 		radius = ((hillSize * 2 + 1) * 8) - 6;
 
 		// can we determine the size here?
-		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -radius, -3, -radius, radius * 2, 10, radius * 2, 0);
-	}
-	
-	
-	/**
-	 * Save to NBT
-	 */
-	@Override
-	protected void func_143012_a(NBTTagCompound par1NBTTagCompound) {
-		super.func_143012_a(par1NBTTagCompound);
-		
-        par1NBTTagCompound.setInteger("hillSize", this.hillSize);
+		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -radius, -(3 + hillSize), -radius, radius * 2, radius / 2, radius * 2, Direction.SOUTH);
 	}
 
-	/**
-	 * Load from NBT
-	 */
-	@Override
-	protected void func_143011_b(NBTTagCompound par1NBTTagCompound) {
-		super.func_143011_b(par1NBTTagCompound);
-        this.hillSize = par1NBTTagCompound.getInteger("hillSize");
-        this.radius = ((hillSize * 2 + 1) * 8) - 6;
+	//TODO: See super
+//	@Override
+//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
+//		super.writeStructureToNBT(tagCompound);
+//		tagCompound.putInt("hillSize", this.hillSize);
+//	}
 
-	}
-
-	/**
-	 * Add on any other components we need.  In this case we add the maze below the hill
-	 */
-	@SuppressWarnings("rawtypes")
 	@Override
-	public void buildComponent(StructureComponent structurecomponent, List list, Random random) {
-		
-//		// add a maze
-//		ComponentTFHillMaze maze = new ComponentTFHillMaze(1, boundingBox.minX + ((boundingBox.maxX - boundingBox.minX) / 2), boundingBox.minY - 20, boundingBox.minZ + ((boundingBox.maxZ - boundingBox.minZ) / 2), hillSize);
-//		list.add(maze);
-//		maze.buildComponent(this, list, random);
-		
-		
+	protected void readAdditional(CompoundNBT tagCompound) {
+		super.readAdditional(tagCompound);
+		this.hillSize = tagCompound.getInt("hillSize");
+		this.radius = ((hillSize * 2 + 1) * 8) - 6;
 	}
 
 	/**
 	 * Add in all the blocks we're adding.
 	 */
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
+	public boolean generate(IWorld worldIn, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		World world = worldIn.getWorld();
 //		int area = (int)(Math.PI * radius * radius);
 //		int sn = area / 16; // number of stalactites (there will actually be around twice this number)
 		int[] sna = {0, 128, 256, 512};
@@ -92,279 +80,250 @@ public class ComponentTFHollowHill extends StructureTFComponent {
 		int tc = tca[hillSize];  // number of treasure chests tca = {0, 2, 6, 12};
 
 		// fill in features
-		
+
 		// monster generators!
-		for (int i = 0; i < mg; i++)
-		{
+		for (int i = 0; i < mg; i++) {
 			int[] dest = getCoordsInHill2D(rand);
-			String mobID = getMobID(rand);
-			
-			placeSpawnerAtCurrentPosition(world, rand, dest[0],rand.nextInt(4), dest[1], mobID, sbb);
+			EntityType<?> mobID = getMobID(rand);
+
+			setSpawner(world, dest[0], rand.nextInt(4), dest[1], sbb, mobID);
 //			placeMobSpawner(dest[0], hy + rand.nextInt(4), dest[1]);
 		}
 		// treasure chests!!
-		for (int i = 0; i < tc; i++)
-		{
+		for (int i = 0; i < tc; i++) {
 			int[] dest = getCoordsInHill2D(rand);
 			generateTreasureChest(world, dest[0], 0, dest[1], sbb);
 		}
 
 		// ore or glowing stalactites! (smaller, less plentiful)
-		for (int i = 0; i < sn; i++)
-		{
+		for (int i = 0; i < sn; i++) {
 			int[] dest = getCoordsInHill2D(rand);
 			generateOreStalactite(world, dest[0], 1, dest[1], sbb);
 		}
 		// stone stalactites!
-		for (int i = 0; i < sn; i++)
-		{
+		for (int i = 0; i < sn; i++) {
 			int[] dest = getCoordsInHill2D(rand);
-			generateBlockStalactite(world, Blocks.stone, 1.0F, true, dest[0], 1, dest[1], sbb);
+			generateBlockStalactite(world, Blocks.STONE, 1.0F, true, dest[0], 1, dest[1], sbb);
 		}
 		// stone stalagmites!
-		for (int i = 0; i < sn; i++)
-		{
+		for (int i = 0; i < sn; i++) {
 			int[] dest = getCoordsInHill2D(rand);
-			generateBlockStalactite(world, Blocks.stone, 0.9F, false, dest[0], 1, dest[1], sbb);
+			generateBlockStalactite(world, Blocks.STONE, 0.9F, false, dest[0], 1, dest[1], sbb);
 		}
-		
+
 		// level 3 hills get 2 mid-air wraith spawners
-		if (hillSize == 3)
-		{
-//			int[] dest = getEmptyCoordsInHill(hy + 10, 20);
+		if (hillSize == 3) {
+//			int[] dest = getEmptysInHill(hy + 10, 20);
 //			placeWraithSpawner(dest[0], hy + 10, dest[1]);
-//			dest = getEmptyCoordsInHill(hy + 10, 20);
+//			dest = getEmptysInHill(hy + 10, 20);
 //			placeWraithSpawner(dest[0], hy + 10, dest[1]);
 		}
 
-
-		
 		return true;
 	}
-	
+
 	/**
 	 * Make an RNG and attempt to use it to place a treasure chest
 	 */
-	protected void generateTreasureChest(World world, int x, int y, int z, StructureBoundingBox sbb) {
+	protected void generateTreasureChest(World world, int x, int y, int z, MutableBoundingBox sbb) {
 		// generate an RNG for this chest
-    	//TODO: MOAR RANDOM!
-    	Random chestRNG = new Random(world.getSeed() + x * z);
-    	
-    	// try placing it
-    	placeTreasureAtCurrentPosition(world, chestRNG, x, y, z, this.hillSize == 3 ? TFTreasure.hill3 : (this.hillSize == 2 ? TFTreasure.hill2 : TFTreasure.hill1), sbb);
-    	
-    	// make something for it to stand on, if necessary
-        func_151554_b(world, Blocks.cobblestone, 0, x, y - 1, z, sbb);
+		//TODO: MOAR RANDOM!
+		Random chestRNG = new Random(world.getSeed() + x * z);
 
+		// try placing it
+		placeTreasureAtCurrentPosition(world, x, y, z, this.hillSize == 3 ? TFTreasure.hill3 : (this.hillSize == 2 ? TFTreasure.hill2 : TFTreasure.hill1), sbb);
+
+		// make something for it to stand on, if necessary
+		setBlockState(world, Blocks.COBBLESTONE.getDefaultState(), x, y - 1, z, sbb);
 	}
 
 	/**
 	 * Generate a random ore stalactite
 	 */
-	protected void generateOreStalactite(World world, int x, int y, int z, StructureBoundingBox sbb) {
+	protected void generateOreStalactite(World world, int x, int y, int z, MutableBoundingBox sbb) {
 		// are the coordinates in our bounding box?
-        int dx = getXWithOffset(x, z);
-        int dy = getYWithOffset(y);
-        int dz = getZWithOffset(x, z);
-        if(sbb.isVecInside(dx, dy, dz) && world.getBlock(dx, dy, dz) != Blocks.mob_spawner)
-        {
-        	// generate an RNG for this stalactite
-        	//TODO: MOAR RANDOM!
-        	Random stalRNG = new Random(world.getSeed() + dx * dz);
-        	
-        	// make the actual stalactite
-			TFGenCaveStalactite stalag = TFGenCaveStalactite.makeRandomOreStalactite(stalRNG, hillSize);
-			stalag.generate(world, stalRNG, dx, dy, dz);
-        }
+		int dx = getXWithOffset(x, z);
+		int dy = getYWithOffset(y);
+		int dz = getZWithOffset(x, z);
+		BlockPos pos = new BlockPos(dx, dy, dz);
+		if (sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != Blocks.SPAWNER) {
+			// generate an RNG for this stalactite
+			//TODO: MOAR RANDOM!
+			Random stalRNG = new Random(world.getSeed() + dx * dz);
+
+			// make the actual stalactite
+			CaveStalactiteConfig stalag = TFGenCaveStalactite.makeRandomOreStalactite(stalRNG, hillSize);
+			TFBiomeFeatures.CAVE_STALACTITE.get().configure(stalag).place(world, ((ServerWorld)world).getChunkProvider().getChunkGenerator(), stalRNG, pos);
+		}
 	}
 
 	/**
 	 * Make a random stone stalactite
 	 */
-	protected void generateBlockStalactite(World world, Block blockToGenerate, float length, boolean up, int x, int y, int z, StructureBoundingBox sbb) {
+	protected void generateBlockStalactite(World world, Block blockToGenerate, float length, boolean up, int x, int y, int z, MutableBoundingBox sbb) {
 		// are the coordinates in our bounding box?
-        int dx = getXWithOffset(x, z);
-        int dy = getYWithOffset(y);
-        int dz = getZWithOffset(x, z);
-        if(sbb.isVecInside(dx, dy, dz) && world.getBlock(dx, dy, dz) != Blocks.mob_spawner)
-        {
-        	// generate an RNG for this stalactite
-        	//TODO: MOAR RANDOM!
-        	Random stalRNG = new Random(world.getSeed() + dx * dz);
-        	
-        	if (hillSize == 1) {
-        		length *= 1.9F;
-        	}
-        	
-        	// make the actual stalactite
-        	(new TFGenCaveStalactite(blockToGenerate, length, up)).generate(world, stalRNG, dx, dy, dz);
-        }
+		int dx = getXWithOffset(x, z);
+		int dy = getYWithOffset(y);
+		int dz = getZWithOffset(x, z);
+		BlockPos pos = new BlockPos(dx, dy, dz);
+		if (sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != Blocks.SPAWNER) {
+			// generate an RNG for this stalactite
+			//TODO: MOAR RANDOM!
+			Random stalRNG = new Random(world.getSeed() + dx * dz);
+
+			if (hillSize == 1) {
+				length *= 1.9F;
+			}
+
+			// make the actual stalactite
+			TFBiomeFeatures.CAVE_STALACTITE.get().configure(new CaveStalactiteConfig(blockToGenerate.getDefaultState(), length, -1, -1, up)).place(world, ((ServerWorld)world).getChunkProvider().getChunkGenerator(), stalRNG, pos);
+		}
 	}
 
-
 	/**
-	 * 
 	 * @param cx
 	 * @param cz
 	 * @return true if the coordinates would be inside the hill on the "floor" of the hill
 	 */
-	boolean isInHill(int cx, int cz)
-	{
+	boolean isInHill(int cx, int cz) {
 		int dx = radius - cx;
 		int dz = radius - cz;
 		int dist = (int) Math.sqrt(dx * dx + dz * dz);
-		
+
 		return dist < radius;
 	}
-	
+
 	/**
 	 * @return true if the coordinates are inside the hill in 3D
+	 * TODO: Unused. Remove?
 	 */
-	boolean isInHill(int mapX, int mapY, int mapZ)
-	{
+	boolean isInHill(int mapX, int mapY, int mapZ) {
 		int dx = boundingBox.minX + radius - mapX;
 		int dy = (boundingBox.minY - mapY) * 2; // hill is half as high as it is wide, thus we just double y distance from center.  I *think* that math works!
 		int dz = boundingBox.minZ + radius - mapZ;
 		int dist = dx * dx + dy * dy + dz * dz;
 		return dist < radius * radius;
 	}
-	
-	int[] getCoordsInHill2D(Random rand)
-	{
+
+	int[] getCoordsInHill2D(Random rand) {
 		return getCoordsInHill2D(rand, radius);
 	}
-	
+
 	/**
-	 * 
 	 * @return a two element array containing some coordinates in the hill
 	 */
-	int[] getCoordsInHill2D(Random rand, int rad)
-	{
+	int[] getCoordsInHill2D(Random rand, int rad) {
 		int rx, rz;
 		do {
 			rx = rand.nextInt(2 * rad);
 			rz = rand.nextInt(2 * rad);
 		} while (!isInHill(rx, rz));
-		
+
 		int[] coords = {rx, rz};
 		return coords;
 	}
-	
+
 	/**
 	 * Gets the id of a mob appropriate to the current hill size.
 	 */
-	protected String getMobID(Random rand)
-	{
+	protected EntityType<?> getMobID(Random rand) {
 		return getMobID(rand, this.hillSize);
 	}
 
-	
 	/**
 	 * Gets the id of a mob appropriate to the specified hill size.
-	 * 
+	 *
 	 * @param level
 	 * @return
 	 */
-	protected String getMobID(Random rand, int level)
-	{
-		if (level == 1)
-		{
+	protected EntityType<?> getMobID(Random rand, int level) {
+		if (level == 1) {
 			return getLevel1Mob(rand);
 		}
-		if (level == 2)
-		{
+		if (level == 2) {
 			return getLevel2Mob(rand);
 		}
-		if (level == 3)
-		{
+		if (level == 3) {
 			return getLevel3Mob(rand);
 		}
-		
-		/// aaah, default: spider!
-		return "Spider";
+
+		return EntityType.SPIDER;
 	}
-	
+
 	/**
 	 * Returns a mob string appropriate for a level 1 hill
 	 */
-	public String getLevel1Mob(Random rand)
-	{
-		switch (rand.nextInt(10))
-		{
-		case 0:
-		case 1:
-		case 2:
-			return TFCreatures.getSpawnerNameFor("Swarm Spider");
-		case 3:
-		case 4:
-		case 5:
-			return "Spider";
-		case 6:
-		case 7:
-			return "Zombie";
-		case 8:
-			return "Silverfish";
-		case 9:
-			return TFCreatures.getSpawnerNameFor("Redcap");
-		default:
-			return TFCreatures.getSpawnerNameFor("Swarm Spider");
-		}
-	}
-	
-	/**
-	 * Returns a mob string appropriate for a level 2 hill
-	 */
-	public String getLevel2Mob(Random rand)
-	{
-		switch (rand.nextInt(10))
-		{
-		case 0:
-		case 1:
-		case 2:
-			return TFCreatures.getSpawnerNameFor("Redcap");
-		case 3:
-		case 4:
-		case 5:
-			return "Zombie";
-		case 6:
-		case 7:
-			return "Skeleton";
-		case 8:
-			return TFCreatures.getSpawnerNameFor("Swarm Spider");
-		case 9:
-			return "CaveSpider";
-		default:
-			return TFCreatures.getSpawnerNameFor("Redcap");
-		}
-	}
-	
-	/**
-	 * Returns a mob string appropriate for a level 3 hill.  The level 3 also has 2 mid-air wraith spawners.
-	 */
-	public String getLevel3Mob(Random rand)
-	{
-		switch (rand.nextInt(11))
-		{
-		case 0:
-			return TFCreatures.getSpawnerNameFor("Slime Beetle");
-		case 1:
-			return TFCreatures.getSpawnerNameFor("Fire Beetle");
-		case 2:
-			return TFCreatures.getSpawnerNameFor("Pinch Beetle");
-		case 3:
-		case 4:
-		case 5:
-			return "Skeleton";
-		case 6:
-		case 7:
-		case 8:
-			return "CaveSpider";
-		case 9:
-			return "Creeper";
-		case 10:
-		default:
-			return TFCreatures.getSpawnerNameFor("Twilight Wraith");
+	public EntityType<?> getLevel1Mob(Random rand) {
+		switch (rand.nextInt(10)) {
+			case 0:
+			case 1:
+			case 2:
+				return TFEntities.swarm_spider;
+			case 3:
+			case 4:
+			case 5:
+				return EntityType.SPIDER;
+			case 6:
+			case 7:
+				return EntityType.ZOMBIE;
+			case 8:
+				return EntityType.SILVERFISH;
+			case 9:
+				return TFEntities.redcap;
+			default:
+				return TFEntities.swarm_spider;
 		}
 	}
 
+	/**
+	 * Returns a mob string appropriate for a level 2 hill
+	 */
+	public EntityType<?> getLevel2Mob(Random rand) {
+		switch (rand.nextInt(10)) {
+			case 0:
+			case 1:
+			case 2:
+				return TFEntities.redcap;
+			case 3:
+			case 4:
+			case 5:
+				return EntityType.ZOMBIE;
+			case 6:
+			case 7:
+				return EntityType.SKELETON;
+			case 8:
+				return TFEntities.swarm_spider;
+			case 9:
+				return EntityType.CAVE_SPIDER;
+			default:
+				return TFEntities.redcap;
+		}
+	}
+
+	/**
+	 * Returns a mob string appropriate for a level 3 hill.  The level 3 also has 2 mid-air wraith spawners.
+	 */
+	public EntityType<?> getLevel3Mob(Random rand) {
+		switch (rand.nextInt(11)) {
+			case 0:
+				return TFEntities.slime_beetle;
+			case 1:
+				return TFEntities.fire_beetle;
+			case 2:
+				return TFEntities.pinch_beetle;
+			case 3:
+			case 4:
+			case 5:
+				return EntityType.SKELETON;
+			case 6:
+			case 7:
+			case 8:
+				return EntityType.CAVE_SPIDER;
+			case 9:
+				return EntityType.CREEPER;
+			case 10:
+			default:
+				return TFEntities.wraith;
+		}
+	}
 }

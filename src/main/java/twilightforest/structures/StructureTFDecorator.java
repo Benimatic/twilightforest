@@ -1,96 +1,70 @@
 package twilightforest.structures;
 
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.structures.darktower.StructureDecoratorDarkTower;
+import twilightforest.structures.finalcastle.StructureTFDecoratorCastle;
 import twilightforest.structures.icetower.StructureDecoratorIceTower;
 import twilightforest.structures.mushroomtower.StructureDecoratorMushroomTower;
 import twilightforest.structures.stronghold.StructureTFDecoratorStronghold;
 
 /**
- *	Stores information about what blocks to use in constructing this structure
- * 
- * @author Ben
+ * Stores information about what blocks to use in constructing this structure
  *
+ * @author Ben
  */
-public class StructureTFDecorator 
-{
-	public Block blockID = Blocks.stone;
-	public int blockMeta;
-	
-	public Block accentID = Blocks.cobblestone;
-	public int accentMeta;
-	
-	public Block stairID;
-	public int stairMeta; // probably not useful
-	
-	public Block fenceID;
-	public int fenceMeta;
-	
-	public Block pillarID;
-	public int pillarMeta;
-	
-	public Block platformID;
-	public int platformMeta;
-	
-	public Block floorID;
-	public int floorMeta;
-	
-	public Block roofID;
-	public int roofMeta;
-	
-	public StructureComponent.BlockSelector randomBlocks = new StructureTFStrongholdStones();
-	
-	public static String getDecoString(StructureTFDecorator deco)
-	{
-		if (deco instanceof StructureDecoratorDarkTower)
-		{
+public class StructureTFDecorator {
+	public BlockState blockState = Blocks.STONE.getDefaultState();
+	public BlockState accentState = Blocks.COBBLESTONE.getDefaultState();
+	public BlockState stairState = Blocks.STONE_STAIRS.getDefaultState();
+	public BlockState fenceState = Blocks.OAK_FENCE.getDefaultState();
+	public BlockState pillarState = Blocks.STONE_BRICKS.getDefaultState();
+	public BlockState platformState = Blocks.STONE_SLAB.getDefaultState();
+	public BlockState floorState = Blocks.STONE_BRICKS.getDefaultState();
+	public BlockState roofState = Blocks.STONE_BRICKS.getDefaultState();
+
+	public StructurePiece.BlockSelector randomBlocks = new StructureTFStrongholdStones();
+
+	public static String getDecoString(StructureTFDecorator deco) {
+//TODO: Structure Disabled
+		if (deco instanceof StructureDecoratorDarkTower) {
 			return "DecoDarkTower";
 		}
-		if (deco instanceof StructureDecoratorIceTower)
-		{
+		if (deco instanceof StructureDecoratorIceTower) {
 			return "DecoIceTower";
 		}
-		if (deco instanceof StructureDecoratorMushroomTower)
-		{
+		if (deco instanceof StructureDecoratorMushroomTower) {
 			return "DecoMushroomTower";
 		}
-		if (deco instanceof StructureTFDecoratorStronghold)
-		{
+		if (deco instanceof StructureTFDecoratorStronghold) {
 			return "DecoStronghold";
 		}
-		if (deco instanceof StructureTFDecoratorCastle)
-		{
+		if (deco instanceof StructureTFDecoratorCastle) {
 			return "DecoCastle";
 		}
-		
+
 		return "";
 	}
-	
-	public static StructureTFDecorator getDecoFor(String decoString)
-	{
-		if (decoString.equals("DecoDarkTower"))
-		{
+
+	public static StructureTFDecorator getDecoFor(String decoString) {
+//TODO: Structure Disabled
+		if (decoString.equals("DecoDarkTower")) {
 			return new StructureDecoratorDarkTower();
 		}
-		if (decoString.equals("DecoIceTower"))
-		{
+		if (decoString.equals("DecoIceTower")) {
 			return new StructureDecoratorIceTower();
 		}
-		if (decoString.equals("DecoMushroomTower"))
-		{
+		if (decoString.equals("DecoMushroomTower")) {
 			return new StructureDecoratorMushroomTower();
 		}
-		if (decoString.equals("DecoStronghold"))
-		{
+		if (decoString.equals("DecoStronghold")) {
 			return new StructureTFDecoratorStronghold();
 		}
-		if (decoString.equals("DecoCastle"))
-		{
+		if (decoString.equals("DecoCastle")) {
 			return new StructureTFDecoratorCastle();
 		}
-		
+
 		return new StructureTFDecorator();
 	}
 }

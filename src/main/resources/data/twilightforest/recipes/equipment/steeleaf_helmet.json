@@ -1,0 +1,18 @@
+{
+  "result": {
+    "nbt": "{ench:[{lvl:2s,id:4s}]}",
+    "item": "twilightforest:steeleaf_helmet",
+    "type": "minecraft:item_nbt"
+  },
+  "group": "steeleaf_armor",
+  "pattern": [
+    "###",
+    "# #"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "#": {
+      "tag": "twilightforest:steeleaf_ingots"
+    }
+  }
+}

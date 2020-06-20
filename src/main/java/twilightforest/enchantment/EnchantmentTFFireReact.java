@@ -1,14 +1,15 @@
 package twilightforest.enchantment;
 
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnumEnchantmentType;
+import net.minecraft.enchantment.EnchantmentType;
+import net.minecraft.inventory.EquipmentSlotType;
 
 public class EnchantmentTFFireReact extends Enchantment {
-
-    public EnchantmentTFFireReact(int par1, int par2)
-    {
-        super(par1, par2, EnumEnchantmentType.armor);
-        this.setName("tfFireReact");
-
-    }      
+	// TODO implement
+	public EnchantmentTFFireReact(Rarity rarity) {
+		super(rarity, EnchantmentType.ARMOR, new EquipmentSlotType[]{
+				EquipmentSlotType.HEAD, EquipmentSlotType.CHEST,
+				EquipmentSlotType.LEGS, EquipmentSlotType.FEET
+		});
+	}
 }

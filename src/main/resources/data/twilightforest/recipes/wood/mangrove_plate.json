@@ -1,0 +1,15 @@
+{
+  "result": {
+    "item": "twilightforest:mangrove_plate",
+    "count": 1
+  },
+  "pattern": [
+    "##"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "twilightforest:mangrove_planks"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "result": {
+    "item": "twilightforest:canopy_trapdoor",
+    "count": 6
+  },
+  "pattern": [
+    "###",
+    "###"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "twilightforest:canopy_planks"
+    }
+  }
+}

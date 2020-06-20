@@ -1,0 +1,42 @@
+{
+  "result": {
+    "item": "twilightforest:etched_nagastone",
+    "count": 3
+  },
+  "group": "nagastone_stairs_reverse",
+  "ingredients": [
+    [
+      {
+        "item": "minecraft:nagastone_stairs_mossy_left"
+      },
+      {
+        "item": "minecraft:nagastone_stairs_mossy_right"
+      }
+    ],
+    [
+      {
+        "item": "minecraft:nagastone_stairs_mossy_left"
+      },
+      {
+        "item": "minecraft:nagastone_stairs_mossy_right"
+      }
+    ],
+    [
+      {
+        "item": "minecraft:nagastone_stairs_mossy_left"
+      },
+      {
+        "item": "minecraft:nagastone_stairs_mossy_right"
+      }
+    ],
+    [
+      {
+        "item": "minecraft:nagastone_stairs_mossy_left"
+      },
+      {
+        "item": "minecraft:nagastone_stairs_mossy_right"
+      }
+    ]
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

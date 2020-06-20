@@ -1,27 +1,26 @@
 package twilightforest.structures.lichtower;
 
-import net.minecraft.world.gen.structure.MapGenStructureIO;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
+import twilightforest.TFFeature;
 
 public class TFLichTowerPieces {
 
-    public static void registerPieces()
-    {
-        MapGenStructureIO.func_143031_a(ComponentTFTowerBeard.class, "TFLTBea");
-        MapGenStructureIO.func_143031_a(ComponentTFTowerBeardAttached.class, "TFLTBA");
-        MapGenStructureIO.func_143031_a(ComponentTFTowerBridge.class, "TFLTBri");
-        MapGenStructureIO.func_143031_a(ComponentTFTowerMain.class, "TFLTMai");
-        MapGenStructureIO.func_143031_a(ComponentTFTowerOutbuilding.class, "TFLTOut");
-        MapGenStructureIO.func_143031_a(ComponentTFTowerRoof.class, "TFLTRoo");
-        MapGenStructureIO.func_143031_a(ComponentTFTowerRoofAttachedSlab.class, "TFLTRAS");
-        MapGenStructureIO.func_143031_a(ComponentTFTowerRoofFence.class, "TFLTRF");
-        MapGenStructureIO.func_143031_a(ComponentTFTowerRoofGableForwards.class, "TFLTRGF");
-        MapGenStructureIO.func_143031_a(ComponentTFTowerRoofPointy.class, "TFLTRP");
-        MapGenStructureIO.func_143031_a(ComponentTFTowerRoofPointyOverhang.class, "TFLTRPO");
-        MapGenStructureIO.func_143031_a(ComponentTFTowerRoofSlab.class, "TFLTRS");
-        MapGenStructureIO.func_143031_a(ComponentTFTowerRoofSlabForwards.class, "TFLTRSF");
-        MapGenStructureIO.func_143031_a(ComponentTFTowerRoofStairs.class, "TFLTRSt");
-        MapGenStructureIO.func_143031_a(ComponentTFTowerRoofStairsOverhang.class, "TFLTRStO");
-        MapGenStructureIO.func_143031_a(ComponentTFTowerWing.class, "TFLTWin");
-        
-    }
+//	public static final IStructurePieceType TFLT = TFFeature.registerPiece("TFLT", StructureStartLichTower::new);
+
+	public static final IStructurePieceType TFLTBea = TFFeature.registerPiece("TFLTBea", ComponentTFTowerBeard::new);
+	public static final IStructurePieceType TFLTBA = TFFeature.registerPiece("TFLTBA", ComponentTFTowerBeardAttached::new);
+	public static final IStructurePieceType TFLTBri = TFFeature.registerPiece("TFLTBri", ComponentTFTowerBridge::new);
+	public static final IStructurePieceType TFLTMai = TFFeature.registerPiece("TFLTMai", ComponentTFTowerMain::new);
+	public static final IStructurePieceType TFLTOut = TFFeature.registerPiece("TFLTOut", ComponentTFTowerOutbuilding::new);
+	public static final IStructurePieceType TFLTRoo = TFFeature.registerPiece("TFLTRoo", ComponentTFTowerRoof::new);
+	public static final IStructurePieceType TFLTRAS = TFFeature.registerPiece("TFLTRAS", ComponentTFTowerRoofAttachedSlab::new);
+	public static final IStructurePieceType TFLTRF = TFFeature.registerPiece("TFLTRF", ComponentTFTowerRoofFence::new);
+	public static final IStructurePieceType TFLTRGF = TFFeature.registerPiece("TFLTRGF", ComponentTFTowerRoofGableForwards::new);
+	public static final IStructurePieceType TFLTRP = TFFeature.registerPiece("TFLTRP", ComponentTFTowerRoofPointy::new);
+	public static final IStructurePieceType TFLTRPO = TFFeature.registerPiece("TFLTRPO", ComponentTFTowerRoofPointyOverhang::new);
+	public static final IStructurePieceType TFLTRS = TFFeature.registerPiece("TFLTRS", ComponentTFTowerRoofSlab::new);
+	public static final IStructurePieceType TFLTRSF = TFFeature.registerPiece("TFLTRSF", ComponentTFTowerRoofSlabForwards::new);
+	public static final IStructurePieceType TFLTRSt = TFFeature.registerPiece("TFLTRSt", ComponentTFTowerRoofStairs::new);
+	public static final IStructurePieceType TFLTRStO = TFFeature.registerPiece("TFLTRStO", ComponentTFTowerRoofStairsOverhang::new);
+	public static final IStructurePieceType TFLTWin = TFFeature.registerPiece("TFLTWin", ComponentTFTowerWing::new);
 }

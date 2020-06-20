@@ -1,0 +1,34 @@
+{
+  "display": {
+    "icon": {
+      "item": "twilightforest:experiment_115",
+      "nbt": {
+        "think": 1
+      }
+    },
+    "title": {
+      "translate": "advancement.twilightforest.experiment_115_3"
+    },
+    "description": {
+      "translate": "advancement.twilightforest.experiment_115_3.desc"
+    },
+    "frame": "challenge",
+    "hidden": true
+  },
+  "parent": "twilightforest:experiment_115",
+  "criteria": {
+    "eat_115_1": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "__comment": "TEMP UNTIL WE FIGURE OUT HOW TO FIGURE OUT THAT THE PLAYER ATE 115 OF THEM",
+          "item": "twilightforest:experiment_115",
+          "count": {
+            "max": 115,
+            "min": 63
+          }
+        }
+      }
+    }
+  }
+}

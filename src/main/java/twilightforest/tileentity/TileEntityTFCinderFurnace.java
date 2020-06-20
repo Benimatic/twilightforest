@@ -1,621 +1,254 @@
 package twilightforest.tileentity;
 
-import java.util.Random;
-
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.LogBlock;
+import net.minecraft.item.Items;
+import net.minecraft.item.crafting.AbstractCookingRecipe;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.IRecipeType;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tileentity.FurnaceTileEntity;
+import net.minecraft.util.Direction;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.common.Tags;
 import twilightforest.block.BlockTFCinderFurnace;
 import twilightforest.block.TFBlocks;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockFurnace;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemHoe;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
-import net.minecraft.item.ItemTool;
-import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraftforge.oredict.OreDictionary;
 
-public class TileEntityTFCinderFurnace extends TileEntity implements ISidedInventory {
-	
-    private static final int SMELT_LOG_FACTOR = 10;
-	private static final int SLOT_INPUT = 0;
-    private static final int SLOT_FUEL = 1;
-	private static final int SLOT_OUTPUT = 2;
-	
-    private static final int[] slotsTop = new int[] {SLOT_INPUT};
-    private static final int[] slotsBottom = new int[] {SLOT_OUTPUT, SLOT_FUEL};
-    private static final int[] slotsSides = new int[] {SLOT_FUEL};
-    
-	/** The ItemStacks that hold the items currently being used in the furnace */
-    private ItemStack[] furnaceItemStacks = new ItemStack[3];
-    /** The number of ticks that the furnace will keep burning */
-    public int furnaceBurnTime;
-    /** The number of ticks that a fresh copy of the currently-burning item would keep the furnace burning for */
-    public int currentItemBurnTime;
-    /** The number of ticks that the current item has been cooking for */
-    public int furnaceCookTime;
-	private String customName;
+import javax.annotation.Nullable;
+import java.util.Random;
 
+public class TileEntityTFCinderFurnace extends FurnaceTileEntity {
+	private static final int SMELT_LOG_FACTOR = 10;
+
+	// [VanillaCopy] of superclass, edits noted
 	@Override
-	public int getSizeInventory() {
-		return this.furnaceItemStacks.length;
+	public void tick() {
+		boolean flag = this.isBurning();
+		boolean flag1 = false;
+
+		if (this.isBurning()) {
+			--this.burnTime;
+		}
+
+		if (!this.world.isRemote) {
+			ItemStack itemstack = this.items.get(1);
+
+			if (this.isBurning() || !itemstack.isEmpty() && !this.items.get(0).isEmpty()) {
+				IRecipe<?> irecipe = this.world.getRecipeManager().getRecipe(IRecipeType.SMELTING, this, this.world).orElse(null);
+				if (!this.isBurning() && this.canSmelt(irecipe)) {
+					this.burnTime = getBurnTime(itemstack);
+					this.recipesUsed = this.burnTime;
+
+					if (this.isBurning()) {
+						flag1 = true;
+
+						if (!itemstack.isEmpty()) {
+							Item item = itemstack.getItem();
+							itemstack.shrink(1);
+
+							if (itemstack.isEmpty()) {
+								ItemStack item1 = item.getContainerItem(itemstack);
+								this.items.set(1, item1);
+							}
+						}
+					}
+				}
+
+				if (this.isBurning() && this.canSmelt(irecipe)) {
+					// TF - cook faster
+					this.cookTime += this.getCurrentSpeedMultiplier();
+
+					if (this.cookTime >= this.cookTimeTotal) { // TF - change to geq since we can increment by >1
+						this.cookTime = 0;
+						this.cookTimeTotal = this.getRecipeBurnTime();
+						this.smeltItem(irecipe);
+						flag1 = true;
+					}
+				} else {
+					this.cookTime = 0;
+				}
+			} else if (!this.isBurning() && this.cookTime > 0) {
+				this.cookTime = MathHelper.clamp(this.cookTime - 2, 0, this.cookTimeTotal);
+			}
+
+			if (flag != this.isBurning()) {
+				flag1 = true;
+				this.world.setBlockState(this.pos, this.world.getBlockState(pos).with(BlockTFCinderFurnace.LIT, isBurning()), 3); // TF - use our furnace
+			}
+
+			// TF - occasionally cinderize nearby logs
+			if (this.isBurning() && this.burnTime % 5 == 0) {
+				this.cinderizeNearbyLog();
+			}
+		}
+
+		if (flag1) {
+			this.markDirty();
+		}
 	}
 
-	@Override
-	public ItemStack getStackInSlot(int slot) {
-		return this.furnaceItemStacks[slot];
+	// [VanillaCopy] of super
+	private boolean isBurning() {
+		return this.burnTime > 0;
 	}
 
-    /**
-     * Removes from an inventory slot (first arg) up to a specified number (second arg) of items and returns them in a
-     * new stack.
-     */
-    public ItemStack decrStackSize(int slot, int amount)
-    {
-        if (this.furnaceItemStacks[slot] != null)
-        {
-            ItemStack itemstack;
+	// [VanillaCopy] of super, only using SMELTING IRecipeType
+	protected int getRecipeBurnTime() {
+		return this.world.getRecipeManager().getRecipe(IRecipeType.SMELTING, this, this.world).map(AbstractCookingRecipe::getCookTime).orElse(200);
+	}
 
-            if (this.furnaceItemStacks[slot].stackSize <= amount)
-            {
-                itemstack = this.furnaceItemStacks[slot];
-                this.furnaceItemStacks[slot] = null;
-                return itemstack;
-            }
-            else
-            {
-                itemstack = this.furnaceItemStacks[slot].splitStack(amount);
+	private void cinderizeNearbyLog() {
+		Random rand = this.getWorld().rand;
 
-                if (this.furnaceItemStacks[slot].stackSize == 0)
-                {
-                    this.furnaceItemStacks[slot] = null;
-                }
-
-                return itemstack;
-            }
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    /**
-     * When some containers are closed they call this on each slot, then drop whatever it returns as an EntityItem -
-     * like when you close a workbench GUI.
-     */
-    public ItemStack getStackInSlotOnClosing(int slot)
-    {
-        if (this.furnaceItemStacks[slot] != null)
-        {
-            ItemStack itemstack = this.furnaceItemStacks[slot];
-            this.furnaceItemStacks[slot] = null;
-            return itemstack;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    /**
-     * Sets the given item stack to the specified slot in the inventory (can be crafting or armor sections).
-     */
-    public void setInventorySlotContents(int slot, ItemStack itemStack)
-    {
-        this.furnaceItemStacks[slot] = itemStack;
-
-        if (itemStack != null && itemStack.stackSize > this.getInventoryStackLimit())
-        {
-            itemStack.stackSize = this.getInventoryStackLimit();
-        }
-    }
-
-    /**
-     * Returns the name of the inventory
-     */
-    public String getInventoryName()
-    {
-        return this.hasCustomInventoryName() ? this.customName : "twilightforest.container.furnace";
-    }
-
-    /**
-     * Returns if the inventory is named
-     */
-    public boolean hasCustomInventoryName()
-    {
-        return this.customName != null && this.customName.length() > 0;
-    }
-    
-    
-    public void readFromNBT(NBTTagCompound nbtTags)
-    {
-        super.readFromNBT(nbtTags);
-        NBTTagList nbttaglist = nbtTags.getTagList("Items", 10);
-        this.furnaceItemStacks = new ItemStack[this.getSizeInventory()];
-
-        for (int i = 0; i < nbttaglist.tagCount(); ++i)
-        {
-            NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
-            byte slot = nbttagcompound1.getByte("Slot");
-
-            if (slot >= 0 && slot < this.furnaceItemStacks.length)
-            {
-                this.furnaceItemStacks[slot] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
-            }
-        }
-
-        this.furnaceBurnTime = nbtTags.getShort("BurnTime");
-        this.furnaceCookTime = nbtTags.getShort("CookTime");
-        this.currentItemBurnTime = getItemBurnTime(this.furnaceItemStacks[1]);
-
-        if (nbtTags.hasKey("CustomName", 8))
-        {
-            this.customName = nbtTags.getString("CustomName");
-        }
-    }
-
-    public void writeToNBT(NBTTagCompound nbtTags)
-    {
-        super.writeToNBT(nbtTags);
-        nbtTags.setShort("BurnTime", (short)this.furnaceBurnTime);
-        nbtTags.setShort("CookTime", (short)this.furnaceCookTime);
-        NBTTagList nbttaglist = new NBTTagList();
-
-        for (int i = 0; i < this.furnaceItemStacks.length; ++i)
-        {
-            if (this.furnaceItemStacks[i] != null)
-            {
-                NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-                nbttagcompound1.setByte("Slot", (byte)i);
-                this.furnaceItemStacks[i].writeToNBT(nbttagcompound1);
-                nbttaglist.appendTag(nbttagcompound1);
-            }
-        }
-
-        nbtTags.setTag("Items", nbttaglist);
-
-        if (this.hasCustomInventoryName())
-        {
-            nbtTags.setString("CustomName", this.customName);
-        }
-    }
-
-    /**
-     * Returns an integer between 0 and the passed value representing how close the current item is to being completely
-     * cooked
-     */
-    @SideOnly(Side.CLIENT)
-    public int getCookProgressScaled(int p_145953_1_)
-    {
-        return this.furnaceCookTime * p_145953_1_ / 200;
-    }
-
-    /**
-     * Returns an integer between 0 and the passed value representing how much burn time is left on the current fuel
-     * item, where 0 means that the item is exhausted and the passed value means that the item is fresh
-     */
-    @SideOnly(Side.CLIENT)
-    public int getBurnTimeRemainingScaled(int p_145955_1_)
-    {
-        if (this.currentItemBurnTime == 0)
-        {
-            this.currentItemBurnTime = 200;
-        }
-
-        return this.furnaceBurnTime * p_145955_1_ / this.currentItemBurnTime;
-    }
-
-    /**
-     * Furnace isBurning
-     */
-    public boolean isBurning()
-    {
-        return this.furnaceBurnTime > 0;
-    }
-
-    public void updateEntity()
-    {
-        boolean flag = this.furnaceBurnTime > 0;
-        boolean flag1 = false;
-        
-
-        if (this.furnaceBurnTime > 0)
-        {
-            --this.furnaceBurnTime;
-        }
-
-        if (!this.worldObj.isRemote)
-        {
-            if (this.furnaceBurnTime != 0 || this.furnaceItemStacks[1] != null && this.furnaceItemStacks[0] != null)
-            {
-                if (this.furnaceBurnTime == 0 && this.canSmelt())
-                {
-                    this.currentItemBurnTime = this.furnaceBurnTime = getItemBurnTime(this.furnaceItemStacks[1]);
-
-                    if (this.furnaceBurnTime > 0)
-                    {
-                        flag1 = true;
-
-                        if (this.furnaceItemStacks[1] != null)
-                        {
-                            --this.furnaceItemStacks[1].stackSize;
-
-                            if (this.furnaceItemStacks[1].stackSize == 0)
-                            {
-                                this.furnaceItemStacks[1] = furnaceItemStacks[1].getItem().getContainerItem(furnaceItemStacks[1]);
-                            }
-                        }
-                    }
-                }
-
-                if (this.isBurning() && this.canSmelt())
-                {
-                    int speedMultiplier = this.getCurrentSpeedMultiplier();
-                    
-                    //System.out.println("cooking with cinder furnace, speed multiplier = " + speedMultiplier);
-                	
-                    this.furnaceCookTime += speedMultiplier;
-
-                    if (this.furnaceCookTime >= 200)
-                    {
-                        this.furnaceCookTime = 0;
-                        this.smeltItem();
-                        flag1 = true;
-                    }
-                }
-                else
-                {
-                    this.furnaceCookTime = 0;
-                }
-            }
-
-            // update block if needed
-            if (flag != this.furnaceBurnTime > 0)
-            {
-                flag1 = true;
-                BlockTFCinderFurnace.updateFurnaceBlockState(this.furnaceBurnTime > 0, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
-            }
-            
-            // occasionally cinderize nearby logs
-            if (this.isBurning() && this.furnaceBurnTime % 5 == 0) {
-            	this.cinderizeNearbyLog();
-            }
-        }
-
-        if (flag1)
-        {
-            this.markDirty();
-        }
-    }
-
-    /**
-     * Turn a nearby log into a cinder log
-     */
-    private void cinderizeNearbyLog() {
-    	Random rand = this.getWorldObj().rand;
-    	
 		int dx = rand.nextInt(2) - rand.nextInt(2);
 		int dy = rand.nextInt(2) - rand.nextInt(2);
 		int dz = rand.nextInt(2) - rand.nextInt(2);
+		BlockPos pos = getPos().add(dx, dy, dz);
 
-		if (this.worldObj.blockExists(this.xCoord + dx, this.yCoord + dy, this.zCoord + dz)) {
-			Block nearbyBlock = this.getWorldObj().getBlock(this.xCoord + dx, this.yCoord + dy, this.zCoord + dz);
+		if (this.world.isBlockLoaded(pos)) {
+			Block nearbyBlock = this.getWorld().getBlockState(pos).getBlock();
 
-			if (nearbyBlock != TFBlocks.cinderLog && this.isLog(nearbyBlock)) {
-				this.getWorldObj().setBlock(this.xCoord + dx, this.yCoord + dy, this.zCoord + dz, TFBlocks.cinderLog, getCinderMetaFor(dx, dy, dz), 2);
-				// special effect?
-				this.getWorldObj().playAuxSFX(2004, this.xCoord + dx, this.yCoord + dy, this.zCoord + dz, 0);
-				this.getWorldObj().playAuxSFX(2004, this.xCoord + dx, this.yCoord + dy, this.zCoord + dz, 0);
-				this.getWorldObj().playSoundEffect(this.xCoord + dx + 0.5F, this.yCoord + dy + 0.5F, this.zCoord + dz + 0.5F, "fire.fire", 1.0F, 1.0F);
+			if (nearbyBlock != TFBlocks.cinder_log.get() && BlockTags.LOGS.contains(nearbyBlock)) {
+				this.getWorld().setBlockState(pos, getCinderLog(dx, dy, dz), 2);
+				this.getWorld().playEvent(2004, pos, 0);
+				this.getWorld().playEvent(2004, pos, 0);
+				this.getWorld().playSound(null, pos, SoundEvents.BLOCK_FIRE_AMBIENT, SoundCategory.BLOCKS, 1.0F, 1.0F);
 			}
 		}
 	}
 
-    /**
-     * What meta should we set the log block with the specified offset to?
-     */
-    private int getCinderMetaFor(int dx, int dy, int dz) {
+	/**
+	 * What meta should we set the log block with the specified offset to?
+	 */
+	private BlockState getCinderLog(int dx, int dy, int dz) {
+		@Nullable Direction.Axis direction;
 		if (dz == 0 && dx != 0) {
-			return dy == 0 ? 4 : 8;
+			direction = dy == 0 ? Direction.Axis.X : Direction.Axis.Z;
 		} else if (dx == 0 && dz != 0) {
-			return dy == 0 ? 8 : 4;
+			direction = dy == 0 ? Direction.Axis.Z : Direction.Axis.X;
 		} else if (dx == 0 && dz == 0) {
-			return 0;
+			direction = Direction.Axis.Y;
 		} else {
-			return dy == 0 ? 0 : 12;
+			direction = dy == 0 ? Direction.Axis.Y : null; //We return null so we can get Cinder Wood.
 		}
-		
+
+		return direction != null ? TFBlocks.cinder_log.get().getDefaultState().with(LogBlock.AXIS, direction)
+				: TFBlocks.cinder_wood.get().getDefaultState();
 	}
 
 	/**
-     * Check the ore dictionary to see if a nearby block is a wood log block
-     */
-	private boolean isLog(Block nearbyBlock) {
-    	int[] oreIDs = OreDictionary.getOreIDs(new ItemStack(nearbyBlock));
-    	for (int id : oreIDs) {
-        	if (id == OreDictionary.getOreID("logWood")) {
-    			return true;
-    		}
-    	}
-    	
-    	return false;
-	}
-
-	/**
-     * What is the current speed multiplier, as an int.
-     */
-    private int getCurrentSpeedMultiplier() {
+	 * What is the current speed multiplier, as an int.
+	 */
+	private int getCurrentSpeedMultiplier() {
 		return getCurrentMultiplier(2);
 	}
 
-    /**
-     * Returns a number that is based on the number of nearby logs divided by the factor given.
-     */
+	/**
+	 * Returns a number that is based on the number of nearby logs divided by the factor given.
+	 */
 	private int getCurrentMultiplier(int factor) {
 		int logs = this.countNearbyLogs();
-		
+
 		if (logs < factor) {
 			return 1;
 		} else {
-			return (logs / factor) + (this.worldObj.rand.nextInt(factor) >= (logs % factor) ? 0 : 1);
+			return (logs / factor) + (this.world.rand.nextInt(factor) >= (logs % factor) ? 0 : 1);
 		}
 	}
 
-    /**
-     * Search around the block and return how many (out of a possible 26) of the blocks nearby are cinder log blocks
-     */
-    private int countNearbyLogs() {
-    	int count = 0;
-    	
+	private int countNearbyLogs() {
+		int count = 0;
+
 		for (int dx = -1; dx <= 1; dx++) {
 			for (int dy = -1; dy <= 1; dy++) {
 				for (int dz = -1; dz <= 1; dz++) {
-					if (this.worldObj.blockExists(this.xCoord + dx, this.yCoord + dy, this.zCoord + dz) && this.getWorldObj().getBlock(this.xCoord + dx, this.yCoord + dy, this.zCoord + dz) == TFBlocks.cinderLog) {
+					BlockPos pos = getPos().add(dx, dy, dz);
+					if (this.world.isBlockLoaded(pos) && this.getWorld().getBlockState(pos).getBlock() == TFBlocks.cinder_log.get()) {
 						count++;
 					}
 				}
 			}
 		}
-		
-        //System.out.println("cooking with cinder furnace, log factor = " + count);
 
-		
 		return count;
 	}
 
-	/**
-     * Returns true if the furnace can smelt an item, i.e. has a source item, destination stack isn't full, etc.
-     */
-    private boolean canSmelt()
-    {
-        if (this.furnaceItemStacks[SLOT_INPUT] == null)
-        {
-            return false;
-        }
-        else
-        {
-            ItemStack outputStack = FurnaceRecipes.smelting().getSmeltingResult(this.furnaceItemStacks[SLOT_INPUT]);
-            if (outputStack == null) {
-            	return false;
-            }
-            if (this.furnaceItemStacks[SLOT_OUTPUT] == null) {
-            	return true;
-            }
-            if (!this.furnaceItemStacks[SLOT_OUTPUT].isItemEqual(outputStack)) {
-            	return false;
-            }
-            
-            int resultStackSize = furnaceItemStacks[SLOT_OUTPUT].stackSize + this.getMaxOutputStacks(this.furnaceItemStacks[SLOT_INPUT], outputStack);
-            
-            return resultStackSize <= getInventoryStackLimit() && resultStackSize <= this.furnaceItemStacks[2].getMaxStackSize();
-        }
-    }
-    
-    /**
-     * Return the max number of items in the output stack, given our current multiplier
-     */
-    public int getMaxOutputStacks(ItemStack input, ItemStack output) {
-    	if (this.canMultiply(input, output)) {
-    		return output.stackSize * this.getCurrentMaxSmeltMultiplier();
-    	} else {
-    		return output.stackSize;
-    	}
-    }
+	// [VanillaCopy] of superclass ver, changes noted
+	@Override
+	protected boolean canSmelt(IRecipe<?> recipe) {
+		if (this.items.get(0).isEmpty()) {
+			return false;
+		} else {
+			ItemStack itemstack = recipe.getRecipeOutput();
 
-    /**
-     * Turn one item from the furnace source stack into the appropriate smelted item in the furnace result stack
-     */
-    public void smeltItem()
-    {
-        if (this.canSmelt())
-        {
-            ItemStack outputStack = FurnaceRecipes.smelting().getSmeltingResult(this.furnaceItemStacks[SLOT_INPUT]);
-            
-            if (this.canMultiply(this.furnaceItemStacks[SLOT_INPUT], outputStack)) {
-	            
-	            // multiply number of results by our current smelt factor
-	            int smeltMultiplier = this.getCurrentSmeltMultiplier();
-	            
-	            if (smeltMultiplier > 1) {
-	            	// copy output stack
-	            	outputStack = outputStack.copy();
-
-	            	// we shouldn't run into max stack size problems, since we've already checked in canSmelt()
-	            	outputStack.stackSize *= smeltMultiplier;
-	            }
-	            
-	            
-            }
-
-            if (this.furnaceItemStacks[SLOT_OUTPUT] == null)
-            {
-                this.furnaceItemStacks[SLOT_OUTPUT] = outputStack.copy();
-            }
-            else if (this.furnaceItemStacks[SLOT_OUTPUT].getItem() == outputStack.getItem())
-            {
-                this.furnaceItemStacks[SLOT_OUTPUT].stackSize += outputStack.stackSize; // Forge BugFix: Results may have multiple items
-            }
-
-            --this.furnaceItemStacks[SLOT_INPUT].stackSize;
-
-            if (this.furnaceItemStacks[SLOT_INPUT].stackSize <= 0)
-            {
-                this.furnaceItemStacks[SLOT_INPUT] = null;
-            }
-        }
-    }
-    
-
-    /**
-     * Can we multiply the output?  We currently multiply logs->charcoal, ore->ingots, and food
-     */
-    public boolean canMultiply(ItemStack input, ItemStack output) {
-
-    	// check the input ore ID for ores
-    	int[] oreIDs = OreDictionary.getOreIDs(input);
-    	for (int id : oreIDs) {
-        	// does the input have an oredictionary result that starts with "ore"?
-    		if (OreDictionary.getOreName(id).startsWith("ore")) {
-    			//System.out.println("cinder furnace cook result, ore found, name is " + OreDictionary.getOreName(id));
-    			
-    			return true;
-    		} else if (id == OreDictionary.getOreID("logWood")) {
-    			//System.out.println("cinder furnace cook result, log found");
-    			return true;
-    		}
-    	}
-    	
-    	// does the in
-    	
-		return false;
+			if (itemstack.isEmpty()) {
+				return false;
+			} else {
+				ItemStack itemstack1 = this.items.get(2);
+				if (itemstack1.isEmpty()) return true;
+				if (!itemstack1.isItemEqual(itemstack)) return false;
+				int result = itemstack1.getCount() + getMaxOutputStacks(items.get(0), itemstack); // TF - account for multiplying
+				return result <= getInventoryStackLimit() && result <= itemstack1.getMaxStackSize(); // Forge fix: make furnace respect stack sizes in furnace recipes
+			}
+		}
 	}
 
 	/**
-     * What is the current speed multiplier, as an int.
-     */
-    private int getCurrentSmeltMultiplier() {
+	 * Return the max number of items in the output stack, given our current multiplier
+	 */
+	public int getMaxOutputStacks(ItemStack input, ItemStack output) {
+		if (this.canMultiply(input, output)) {
+			return output.getCount() * this.getCurrentMaxSmeltMultiplier();
+		} else {
+			return output.getCount();
+		}
+	}
+
+	// [VanillaCopy] superclass, using our own canSmelt and multiplying output
+	public void smeltItem(IRecipe<?> recipe) {
+		if (this.canSmelt(recipe)) {
+			ItemStack itemstack = this.items.get(0);
+			ItemStack itemstack1 = recipe.getRecipeOutput();
+			itemstack1.setCount(itemstack1.getCount() * getCurrentSmeltMultiplier());
+			ItemStack itemstack2 = this.items.get(2);
+
+			if (itemstack2.isEmpty()) {
+				this.items.set(2, itemstack1.copy());
+			} else if (itemstack2.getItem() == itemstack1.getItem()) {
+				itemstack2.grow(itemstack1.getCount());
+			}
+
+			if (itemstack.getItem() == Blocks.WET_SPONGE.asItem() && !this.items.get(1).isEmpty() && this.items.get(1).getItem() == Items.BUCKET) {
+				this.items.set(1, new ItemStack(Items.WATER_BUCKET));
+			}
+
+			itemstack.shrink(1);
+		}
+	}
+
+	private boolean canMultiply(ItemStack input, ItemStack output) {
+		return ItemTags.LOGS.contains(input.getItem()) || Tags.Items.ORES.contains(input.getItem());
+	}
+
+	/**
+	 * What is the current speed multiplier, as an int.
+	 */
+	private int getCurrentSmeltMultiplier() {
 		return getCurrentMultiplier(SMELT_LOG_FACTOR);
 	}
 
 	/**
-     * What is the current speed multiplier, as an int.
-     */
-    private int getCurrentMaxSmeltMultiplier() {
-		return (int)Math.ceil((float)this.countNearbyLogs() / (float)SMELT_LOG_FACTOR);
+	 * What is the current speed multiplier, as an int.
+	 */
+	private int getCurrentMaxSmeltMultiplier() {
+		return (int) Math.ceil((float) this.countNearbyLogs() / (float) SMELT_LOG_FACTOR);
 	}
-
-
-    /**
-     * Returns the number of ticks that the supplied fuel item will keep the furnace burning, or 0 if the item isn't
-     * fuel
-     */
-    public static int getItemBurnTime(ItemStack p_145952_0_)
-    {
-        if (p_145952_0_ == null)
-        {
-            return 0;
-        }
-        else
-        {
-            Item item = p_145952_0_.getItem();
-
-            if (item instanceof ItemBlock && Block.getBlockFromItem(item) != Blocks.air)
-            {
-                Block block = Block.getBlockFromItem(item);
-
-                if (block == Blocks.wooden_slab)
-                {
-                    return 150;
-                }
-
-                if (block.getMaterial() == Material.wood)
-                {
-                    return 300;
-                }
-
-                if (block == Blocks.coal_block)
-                {
-                    return 16000;
-                }
-            }
-
-            if (item instanceof ItemTool && ((ItemTool)item).getToolMaterialName().equals("WOOD")) return 200;
-            if (item instanceof ItemSword && ((ItemSword)item).getToolMaterialName().equals("WOOD")) return 200;
-            if (item instanceof ItemHoe && ((ItemHoe)item).getToolMaterialName().equals("WOOD")) return 200;
-            if (item == Items.stick) return 100;
-            if (item == Items.coal) return 1600;
-            if (item == Items.lava_bucket) return 20000;
-            if (item == Item.getItemFromBlock(Blocks.sapling)) return 100;
-            if (item == Items.blaze_rod) return 2400;
-            return GameRegistry.getFuelValue(p_145952_0_);
-        }
-    }
-
-    public static boolean isItemFuel(ItemStack p_145954_0_)
-    {
-        /**
-         * Returns the number of ticks that the supplied fuel item will keep the furnace burning, or 0 if the item isn't
-         * fuel
-         */
-        return getItemBurnTime(p_145954_0_) > 0;
-    }
-
-	@Override
-	public int getInventoryStackLimit() {
-		return 64;
-	}
-
-	@Override
-	public boolean isUseableByPlayer(EntityPlayer player) {
-        return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : player.getDistanceSq((double)this.xCoord + 0.5D, (double)this.yCoord + 0.5D, (double)this.zCoord + 0.5D) <= 64.0D;
-
-	}
-
-	@Override
-	public void openInventory() {;}
-
-	@Override
-	public void closeInventory() {;}
-
-	@Override
-	public boolean isItemValidForSlot(int slot, ItemStack itemStack) {
-        return slot == SLOT_OUTPUT ? false : (slot == SLOT_FUEL ? TileEntityFurnace.isItemFuel(itemStack) : true);
-	}
-
-	@Override
-	public int[] getAccessibleSlotsFromSide(int p_94128_1_) {
-        return p_94128_1_ == 0 ? slotsBottom : (p_94128_1_ == 1 ? slotsTop : slotsSides);
-	}
-
-    /**
-     * Returns true if automation can insert the given item in the given slot from the given side. Args: Slot, item,
-     * side
-     */
-    public boolean canInsertItem(int slot, ItemStack itemStack, int side)
-    {
-        return this.isItemValidForSlot(slot, itemStack);
-    }
-
-    /**
-     * Returns true if automation can extract the given item in the given slot from the given side. Args: Slot, item,
-     * side
-     */
-    public boolean canExtractItem(int slot, ItemStack itemStack, int side)
-    {
-        return side != SLOT_INPUT || slot != SLOT_FUEL || itemStack.getItem() == Items.bucket;
-    }
-
 }

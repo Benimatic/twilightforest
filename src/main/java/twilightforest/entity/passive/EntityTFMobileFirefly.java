@@ -1,197 +1,130 @@
 package twilightforest.entity.passive;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.passive.EntityAmbientCreature;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.MathHelper;
+import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.passive.AmbientEntity;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import twilightforest.client.particle.PinnedFireflyData;
 
-public class EntityTFMobileFirefly extends EntityAmbientCreature
-{
-    /**
-     * randomly selected ChunkCoordinates in a 7x6x7 box around the bat (y offset -2 to 4) towards which it will fly.
-     * upon getting close a new target will be selected
-     */
-    private ChunkCoordinates currentFlightTarget;
+import java.util.Random;
 
-    public EntityTFMobileFirefly(World par1World)
-    {
-        super(par1World);
-        this.setSize(0.5F, 0.5F);
-    }
-    /**
-     * Returns the volume for the sounds this mob makes.
-     */
-    @Override
-	protected float getSoundVolume()
-    {
-        return 0.1F;
-    }
+public class EntityTFMobileFirefly extends AmbientEntity {
+	private BlockPos spawnPosition;
 
-    /**
-     * Gets the pitch of living sounds in living entities.
-     */
-    @Override
-	protected float getSoundPitch()
-    {
-        return super.getSoundPitch() * 0.95F;
-    }
+	public EntityTFMobileFirefly(EntityType<? extends EntityTFMobileFirefly> type, World world) {
+		super(type, world);
+	}
 
-    /**
-     * Returns the sound this mob makes when it is hurt.
-     */
-    @Override
-	protected String getHurtSound()
-    {
-        return "mob.bat.hurt";
-    }
-
-    /**
-     * Returns the sound this mob makes on death.
-     */
-    @Override
-	protected String getDeathSound()
-    {
-        return "mob.bat.death";
-    }
-
-    /**
-     * Returns true if this entity should push and be pushed by other entities when colliding.
-     */
-    @Override
-	public boolean canBePushed()
-    {
-        return false;
-    }
-
-    protected void collideWithEntity(Entity par1Entity) {}
-
-	/**
-	 * Set monster attributes
-	 */
 	@Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(6.0D); // max health
-    }
-    
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
-    @Override
-	protected boolean isAIEnabled()
-    {
-        return true;
-    }
+	protected float getSoundVolume() {
+		return 0.1F;
+	}
 
-    /**
-     * Called to update the entity's position/logic.
-     */
-    @Override
-	public void onUpdate()
-    {
-        super.onUpdate();
+	@Override
+	protected float getSoundPitch() {
+		return super.getSoundPitch() * 0.95F;
+	}
 
-        this.motionY *= 0.6000000238418579D;
-    }
+	@Override
+	protected SoundEvent getHurtSound(DamageSource source) {
+		return SoundEvents.ENTITY_BAT_HURT;
+	}
 
-    @Override
-	protected void updateAITasks()
-    {
-    	super.updateAITasks();
+	@Override
+	protected SoundEvent getDeathSound() {
+		return SoundEvents.ENTITY_BAT_DEATH;
+	}
 
+	@Override
+	public boolean canBePushed() {
+		return false;
+	}
 
-    	if (this.currentFlightTarget != null && (!this.worldObj.isAirBlock(this.currentFlightTarget.posX, this.currentFlightTarget.posY, this.currentFlightTarget.posZ) || this.currentFlightTarget.posY < 1))
-    	{
-    		this.currentFlightTarget = null;
-    	}
+	@Override
+	protected void collideWithEntity(Entity entity) {
+	}
 
-    	if (this.currentFlightTarget == null || this.rand.nextInt(30) == 0 || this.currentFlightTarget.getDistanceSquared((int)this.posX, (int)this.posY, (int)this.posZ) < 4.0F)
-    	{
-    		this.currentFlightTarget = new ChunkCoordinates((int)this.posX + this.rand.nextInt(7) - this.rand.nextInt(7), (int)this.posY + this.rand.nextInt(6) - 2, (int)this.posZ + this.rand.nextInt(7) - this.rand.nextInt(7));
-    	}
+	@Override
+	protected void registerAttributes() {
+		super.registerAttributes();
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(6.0D);
+	}
 
-    	double var1 = this.currentFlightTarget.posX + 0.5D - this.posX;
-    	double var3 = this.currentFlightTarget.posY + 0.1D - this.posY;
-    	double var5 = this.currentFlightTarget.posZ + 0.5D - this.posZ;
-    	double speed = 0.05000000149011612D;
-		this.motionX += (Math.signum(var1) * 0.5D - this.motionX) * speed;
-    	this.motionY += (Math.signum(var3) * 0.699999988079071D - this.motionY) * speed * 2;
-    	this.motionZ += (Math.signum(var5) * 0.5D - this.motionZ) * speed;
-    	float var7 = (float)(Math.atan2(this.motionZ, this.motionX) * 180.0D / Math.PI) - 90.0F;
-    	float var8 = MathHelper.wrapAngleTo180_float(var7 - this.rotationYaw);
-    	this.moveForward = 0.5F;
-    	this.rotationYaw += var8;
-   }
+	@Override
+	public void tick() {
+		super.tick();
 
-    /**
-     * returns if this entity triggers Blocks.onEntityWalking on the blocks they walk on. used for spiders and wolves to
-     * prevent them from trampling crops
-     */
-    @Override
-	protected boolean canTriggerWalking()
-    {
-        return false;
-    }
+		Vec3d motion = getMotion();
+		this.setMotion(motion.x, motion.y * 0.6000000238418579D, motion.z);
 
-    /**
-     * Called when the mob is falling. Calculates and applies fall damage.
-     */
-    @Override
-	protected void fall(float par1) {}
+		if (world.isRemote && ticksExisted % 30 == 0) {
+			world.addParticle(new PinnedFireflyData(getEntityId()), getX(), getY(), getZ(), 0, 0, 0);
+		}
+	}
 
-    /**
-     * Takes in the distance the entity has fallen this tick and whether its on the ground to update the fall distance
-     * and deal fall damage if landing on the ground.  Args: distanceFallenThisTick, onGround
-     */
-    @Override
-	protected void updateFallState(double par1, boolean par3) {}
+	@Override
+	protected void updateAITasks() {
+		super.updateAITasks();
 
-    /**
-     * Return whether this entity should NOT trigger a pressure plate or a tripwire.
-     */
-    @Override
-	public boolean doesEntityNotTriggerPressurePlate()
-    {
-        return true;
-    }
+		// [VanillaCopy] direct from last half of EntityBat.updateAITasks
+		if (this.spawnPosition != null && (!this.world.isAirBlock(this.spawnPosition) || this.spawnPosition.getY() < 1)) {
+			this.spawnPosition = null;
+		}
 
-    /**
-     * Checks if the entity's current position is a valid location to spawn this entity.
-     */
-    @Override
-	public boolean getCanSpawnHere()
-    {
-        int var1 = MathHelper.floor_double(this.boundingBox.minY);
+		// TODO: True adds 0.5
+		if (this.spawnPosition == null || this.rand.nextInt(30) == 0 || this.spawnPosition.distanceSq((double) ((int) this.getX()), (double) ((int) this.getY()), (double) ((int) this.getZ()), false) < 4.0D) {
+			this.spawnPosition = new BlockPos((int) this.getX() + this.rand.nextInt(7) - this.rand.nextInt(7), (int) this.getY() + this.rand.nextInt(6) - 2, (int) this.getZ() + this.rand.nextInt(7) - this.rand.nextInt(7));
+		}
 
-        if (var1 >= 63)
-        {
-            return false;
-        }
-        else
-        {
-            int var2 = MathHelper.floor_double(this.posX);
-            int var3 = MathHelper.floor_double(this.posZ);
-            int var4 = this.worldObj.getBlockLightValue(var2, var1, var3);
-            byte var5 = 4;
-  
-            return var4 > this.rand.nextInt(var5) ? false : super.getCanSpawnHere();
-        }
-    }
-    
-    @Override
-	@SideOnly(Side.CLIENT)
-    public int getBrightnessForRender(float par1)
-    {
-        return 15728880;
-    }
-    
-    public float getGlowBrightness() 
-    {
-    	return (float)Math.sin(this.ticksExisted / 7.0) + 1F;
-    }
+		double d0 = (double) this.spawnPosition.getX() + 0.5D - this.getX();
+		double d1 = (double) this.spawnPosition.getY() + 0.1D - this.getY();
+		double d2 = (double) this.spawnPosition.getZ() + 0.5D - this.getZ();
+		this.setMotion(this.getMotion().add(new Vec3d(
+				(Math.signum(d0) * 0.5D - this.getMotion().getX()) * 0.10000000149011612D,
+				(Math.signum(d1) * 0.699999988079071D - this.getMotion().getY()) * 0.10000000149011612D,
+				(Math.signum(d2) * 0.5D - this.getMotion().getZ()) * 0.10000000149011612D
+		)));
+		float f = (float) (MathHelper.atan2(this.getMotion().getZ(), this.getMotion().getX()) * (180D / Math.PI)) - 90.0F;
+		float f1 = MathHelper.wrapDegrees(f - this.rotationYaw);
+		this.moveForward = 0.5F;
+		this.rotationYaw += f1;
+		// End copy
+	}
+
+	@Override
+	public boolean bypassesSteppingEffects() {
+		return false;
+	}
+
+	@Override
+	public boolean handleFallDamage(float dist, float mult) {
+		return false;
+	}
+
+	@Override
+	protected void updateFallState(double y, boolean onGround, BlockState state, BlockPos pos) {
+	}
+
+	@Override
+	public boolean doesEntityNotTriggerPressurePlate() {
+		return true;
+	}
+
+	// [VanillaCopy] EntityBat.getCanSpawnHere. Edits noted.
+	public static boolean getCanSpawnHere(EntityType<EntityTFMobileFirefly> entity, IWorld world, SpawnReason reason, BlockPos pos, Random random) {
+		return pos.getY() < world.getSeaLevel()
+				&& ! random.nextBoolean()
+				&& world.getLight(pos) <= random.nextInt(4)
+				&& canSpawnOn(entity, world, reason, pos, random);
+	}
 }

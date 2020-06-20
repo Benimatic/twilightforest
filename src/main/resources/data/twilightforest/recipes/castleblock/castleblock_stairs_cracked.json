@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "twilightforest:castle_stairs_cracked",
+    "count": 8
+  },
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "twilightforest:castle_brick_cracked"
+    }
+  }
+}

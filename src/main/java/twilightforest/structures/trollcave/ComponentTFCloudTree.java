@@ -1,48 +1,55 @@
 package twilightforest.structures.trollcave;
 
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.template.TemplateManager;
+import twilightforest.TFFeature;
+import twilightforest.block.TFBlocks;
+import twilightforest.structures.StructureTFComponentOld;
+
 import java.util.Random;
 
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import twilightforest.block.TFBlocks;
-import twilightforest.structures.StructureTFComponent;
+public class ComponentTFCloudTree extends StructureTFComponentOld {
 
+	public ComponentTFCloudTree(TemplateManager manager, CompoundNBT nbt) {
+		super(TFTrollCavePieces.TFClTr, nbt);
+	}
 
-public class ComponentTFCloudTree extends StructureTFComponent {
-	
-	public ComponentTFCloudTree() {}
+	public ComponentTFCloudTree(TFFeature feature, int index, int x, int y, int z) {
+		super(TFTrollCavePieces.TFClTr, feature, index);
 
+		this.setCoordBaseMode(Direction.SOUTH);
 
-	public ComponentTFCloudTree(int index, int x, int y, int z) {
-		this.setCoordBaseMode(0);
-		
 		// adjust x, y, z
-    	x = (x >> 2) << 2;
-    	y = (y >> 2) << 2;
-    	z = (z >> 2) << 2;
-    	
-		this.boundingBox = StructureTFComponent.getComponentToAddBoundingBox(x, y, z, -8, 0, -8, 20, 28, 20, 0);
+		x = (x >> 2) << 2;
+		y = (y >> 2) << 2;
+		z = (z >> 2) << 2;
+
+		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -8, 0, -8, 20, 28, 20, Direction.SOUTH);
 
 		// spawn list!
 		this.spawnListIndex = 1;
 	}
 
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		
+	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+
 		// leaves
-		this.fillWithMetadataBlocks(world, sbb, 0, 12, 0, 19, 19, 19, TFBlocks.giantLeaves, 0,TFBlocks.giantLeaves, 0, false); 
-		this.fillWithMetadataBlocks(world, sbb, 4, 20, 4, 15, 23, 15, TFBlocks.giantLeaves, 0,TFBlocks.giantLeaves, 0, false); 
-		this.fillWithMetadataBlocks(world, sbb, 8, 24, 4, 11, 27, 15, TFBlocks.giantLeaves, 0,TFBlocks.giantLeaves, 0, false); 
-		this.fillWithMetadataBlocks(world, sbb, 4, 24, 8, 15, 27, 11, TFBlocks.giantLeaves, 0,TFBlocks.giantLeaves, 0, false); 
-		
+		this.fillWithBlocks(world, sbb, 0, 12, 0, 19, 19, 19, TFBlocks.giant_leaves.get().getDefaultState(), TFBlocks.giant_leaves.get().getDefaultState(), false);
+		this.fillWithBlocks(world, sbb, 4, 20, 4, 15, 23, 15, TFBlocks.giant_leaves.get().getDefaultState(), TFBlocks.giant_leaves.get().getDefaultState(), false);
+		this.fillWithBlocks(world, sbb, 8, 24, 4, 11, 27, 15, TFBlocks.giant_leaves.get().getDefaultState(), TFBlocks.giant_leaves.get().getDefaultState(), false);
+		this.fillWithBlocks(world, sbb, 4, 24, 8, 15, 27, 11, TFBlocks.giant_leaves.get().getDefaultState(), TFBlocks.giant_leaves.get().getDefaultState(), false);
+
 		// trunk
-		this.fillWithMetadataBlocks(world, sbb, 8, 0, 8, 11, 23, 11, TFBlocks.giantLog, 0,TFBlocks.giantLog, 0, false);
-		
+		this.fillWithBlocks(world, sbb, 8, 0, 8, 11, 23, 11, TFBlocks.giant_log.get().getDefaultState(), TFBlocks.giant_log.get().getDefaultState(), false);
+
 		// cloud base
-		this.fillWithMetadataBlocks(world, sbb, 8, -4, 8, 11, -1, 11, TFBlocks.fluffyCloud, 0,TFBlocks.fluffyCloud, 0, false); 
+		this.fillWithBlocks(world, sbb, 8, -4, 8, 11, -1, 11, TFBlocks.fluffy_cloud.get().getDefaultState(), TFBlocks.fluffy_cloud.get().getDefaultState(), false);
 
 		return true;
 	}
-
 }

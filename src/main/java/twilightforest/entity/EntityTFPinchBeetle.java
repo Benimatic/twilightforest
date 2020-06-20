@@ -1,288 +1,136 @@
 package twilightforest.entity;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.EntitySize;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.Pose;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
-import net.minecraft.entity.ai.EntityAIHurtByTarget;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWander;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import twilightforest.TFAchievementPage;
 import twilightforest.entity.ai.EntityAITFChargeAttack;
-import twilightforest.entity.ai.EntityAITFKidnapRider;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-public class EntityTFPinchBeetle extends EntityMob
-{
-	public EntityTFPinchBeetle(World world) {
-		super(world);
-		//texture = TwilightForestMod.MODEL_DIR + "pinchbeetle.png";
-		//moveSpeed = 0.23F;
-		setSize(1.2F, 1.1F);
+public class EntityTFPinchBeetle extends MonsterEntity implements IHostileMount {
 
-		this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(1, new EntityAITFKidnapRider(this, 2.0F));
-		this.tasks.addTask(2, new EntityAITFChargeAttack(this, 2.0F));
-		this.tasks.addTask(4, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
-		this.tasks.addTask(6, new EntityAIWander(this, 1.0D));
-		this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-		//this.tasks.addTask(8, new EntityAILookIdle(this));
-		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
+	public EntityTFPinchBeetle(EntityType<? extends EntityTFPinchBeetle> type, World world) {
+		super(type, world);
 	}
 
-
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
-    @Override
-	protected boolean isAIEnabled()
-    {
-        return true;
-    }
-
-	/**
-	 * Set monster attributes
-	 */
 	@Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(40.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23D); // movement speed
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(4.0D); // attack damage
-    }
-
-    /**
-     * Returns the current armor value as determined by a call to InventoryPlayer.getTotalArmorValue
-     */
-    @Override
-	public int getTotalArmorValue()
-    {
-        int var1 = super.getTotalArmorValue() + 2;
-
-        if (var1 > 20)
-        {
-            var1 = 20;
-        }
-
-        return var1;
-    }
-	
-    /**
-     * Returns the sound this mob makes while it's alive.
-     */
-    @Override
-	protected String getLivingSound()
-    {
-        return null;
-    }
-
-    /**
-     * Returns the sound this mob makes when it is hurt.
-     */
-    @Override
-	protected String getHurtSound()
-    {
-        return "mob.spider.say";
-    }
-
-    /**
-     * Returns the sound this mob makes on death.
-     */
-    @Override
-	protected String getDeathSound()
-    {
-        return "mob.spider.death";
-    }
-
-    /**
-     * Plays step sound at given x, y, z for the entity
-     */
-    @Override
-	protected void func_145780_a(int var1, int var2, int var3, Block var4)
-    {
-        this.worldObj.playSoundAtEntity(this, "mob.spider.step", 0.15F, 1.0F);
-    }
-
-    /**
-     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
-     * use this to react to sunlight and start to burn.
-     */
-    @Override
-	public void onLivingUpdate()
-    {
-    	if (this.riddenByEntity != null)
-    	{
-    		this.setSize(1.9F, 2.0F);
-    		
-            // stop player sneaking so that they can't dismount!
-            if (this.riddenByEntity.isSneaking())
-            {
-            	//System.out.println("Pinch beetle sneaking detected!");
-            	
-            	this.riddenByEntity.setSneaking(false);
-            }
-    	}
-    	else
-    	{
-    		this.setSize(1.2F, 1.1F);
-
-    	}
-    	
-    	super.onLivingUpdate();
-
-    	// look at things in our jaws
-    	if (this.riddenByEntity != null)
-    	{
-            this.getLookHelper().setLookPositionWithEntity(riddenByEntity, 100F, 100F);
-    		//this.faceEntity(riddenByEntity, 100F, 100F);
-
-            
-            // push out of user in wall
-            Vec3 riderPos = this.getRiderPosition();
-            this.func_145771_j(riderPos.xCoord, riderPos.yCoord, riderPos.zCoord); // push out of block
-            
-
-    	}
-    }
-    
-    /**
-     * Trigger achievement when killed
-     */
-    @Override
-    public void onDeath(DamageSource par1DamageSource) {
-    	super.onDeath(par1DamageSource);
-    	if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
-    		((EntityPlayer)par1DamageSource.getSourceOfDamage()).triggerAchievement(TFAchievementPage.twilightHunter);
-    	}
-    }
-
-    /**
-     * Attack strength
-     */
-    public int getAttackStrength(Entity par1Entity)
-    {
-        return 8;
-    }
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public float getShadowSize() 
-	{
-		return 1.1F;
-	}
-	
-	/**
-	 * Pick up things we attack!
-	 */
-    @Override
-	public boolean attackEntityAsMob(Entity par1Entity) 
-    {
-    	if (this.riddenByEntity == null && par1Entity.ridingEntity == null)
-    	{
-    		par1Entity.mountEntity(this);
-    	}
-    	
-		return super.attackEntityAsMob(par1Entity);
+	protected void registerGoals() {
+		this.goalSelector.addGoal(0, new SwimGoal(this));
+		this.goalSelector.addGoal(2, new EntityAITFChargeAttack(this, 1.5F, false));
+		this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, false));
+		this.goalSelector.addGoal(6, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
+		this.goalSelector.addGoal(7, new LookAtGoal(this, PlayerEntity.class, 8.0F));
+		this.goalSelector.addGoal(8, new LookRandomlyGoal(this));
+		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
 	}
 
-
-	/**
-     * Called when a player interacts with a mob. e.g. gets milk from a cow, gets into the saddle on a pig.
-     */
-    @Override
-	public boolean interact(EntityPlayer par1EntityPlayer)
-    {
-        if (super.interact(par1EntityPlayer))
-        {
-            return true;
-        }
-//        else if (!this.worldObj.isRemote && (this.riddenByEntity == null || this.riddenByEntity == par1EntityPlayer))
-//        {
-//            par1EntityPlayer.mountEntity(this);
-//            return true;
-//        }
-        else
-        {
-            return false;
-        }
-    }
-    
 	@Override
-	public float getEyeHeight() {
+	protected void registerAttributes() {
+		super.registerAttributes();
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(40.0D);
+		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
+		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
+		this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(2.0D);
+	}
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource source) {
+		return SoundEvents.ENTITY_SPIDER_HURT;
+	}
+
+	@Override
+	protected SoundEvent getDeathSound() {
+		return SoundEvents.ENTITY_SPIDER_DEATH;
+	}
+
+	@Override
+	protected void playStepSound(BlockPos pos, BlockState block) {
+		playSound(SoundEvents.ENTITY_SPIDER_STEP, 0.15F, 1.0F);
+	}
+
+	@Override
+	public void livingTick() {
+		if (!this.getPassengers().isEmpty()) {
+			if (this.getPassengers().get(0).isSneaking()) {
+				this.getPassengers().get(0).setSneaking(false);
+			}
+		}
+
+		super.livingTick();
+
+		if (!this.getPassengers().isEmpty()) {
+			this.getLookController().setLookPositionWithEntity(getPassengers().get(0), 100F, 100F);
+
+			// push out of user in wall
+			Vec3d riderPos = this.getRiderPosition();
+			this.pushOutOfBlocks(riderPos.x, riderPos.y, riderPos.z);
+		}
+	}
+
+	@Override
+	public boolean attackEntityAsMob(Entity entity) {
+		if (this.getPassengers().isEmpty() && !entity.isPassenger()) {
+			entity.startRiding(this);
+		}
+
+		return super.attackEntityAsMob(entity);
+	}
+
+	@Override
+	public float getEyeHeight(Pose pose) {
 		return 0.25F;
 	}
 
-    /**
-     * Get this Entity's EnumCreatureAttribute
-     */
-    @Override
-	public EnumCreatureAttribute getCreatureAttribute()
-    {
-        return EnumCreatureAttribute.ARTHROPOD;
-    }
-    
-    /**
-     * Put the player out in front of where we are
-     */
-    @Override
-	public void updateRiderPosition()
-    {
-        if (this.riddenByEntity != null)
-        {
-        	Vec3 riderPos = this.getRiderPosition();
-        	
-            this.riddenByEntity.setPosition(riderPos.xCoord, riderPos.yCoord, riderPos.zCoord);
-        }
-    }
-    
-    /**
-     * Returns the Y offset from the entity's position for any entity riding this one.
-     */
-    @Override
-	public double getMountedYOffset()
-    {
-        return 0.75D;
-    }
-    
-    /**
-     * Used to both get a rider position and to push out of blocks
-     */
-    public Vec3 getRiderPosition()
-    {
-    	if (this.riddenByEntity != null)
-    	{
-    		float distance = 0.9F;
+	@Override
+	public void updatePassenger(Entity passenger) {
+		if (!this.getPassengers().isEmpty()) {
+			Vec3d riderPos = this.getRiderPosition();
 
-    		double var1 = Math.cos((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
-    		double var3 = Math.sin((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
+			this.getPassengers().get(0).setPosition(riderPos.x, riderPos.y, riderPos.z);
+		}
+	}
 
-    		return Vec3.createVectorHelper(this.posX + var1, this.posY + this.getMountedYOffset() + this.riddenByEntity.getYOffset(), this.posZ + var3);
-    	}
-    	else
-    	{
-    		return Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
-    	}
-    }
-    
-    /**
-     * If a rider of this entity can interact with this entity. Should return true on the
-     * ridden entity if so.
-     *
-     * @return if the entity can be interacted with from a rider
-     */
-    public boolean canRiderInteract()
-    {
-        return true;
-    }
+	@Override
+	public double getMountedYOffset() {
+		return 0.75D;
+	}
+
+	private Vec3d getRiderPosition() {
+		if (!this.getPassengers().isEmpty()) {
+			float distance = 0.9F;
+
+			double dx = Math.cos((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
+			double dz = Math.sin((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
+
+			return new Vec3d(this.getX() + dx, this.getY() + this.getMountedYOffset() + this.getPassengers().get(0).getYOffset(), this.getZ() + dz);
+		} else {
+			return new Vec3d(this.getX(), this.getY(), this.getZ());
+		}
+	}
+
+	@Override
+	public boolean canRiderInteract() {
+		return true;
+	}
+
+	@Override
+	public EntitySize getSize(Pose pose) {
+
+		if (!this.getPassengers().isEmpty()) {
+			return EntitySize.flexible(1.9F, 2.0F);
+		} else {
+			return super.getSize(pose);
+		}
+	}
 }

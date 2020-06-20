@@ -1,43 +1,48 @@
 package twilightforest.client.renderer.entity;
 
-import org.lwjgl.opengl.GL11;
-
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.renderer.entity.RenderBiped;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
+import net.minecraft.client.renderer.entity.BipedRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.layers.BipedArmorLayer;
+import net.minecraft.client.renderer.entity.model.BipedModel;
+import net.minecraft.client.renderer.entity.model.PlayerModel;
+import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.util.ResourceLocation;
+import twilightforest.entity.EntityTFGiantMiner;
 
-public class RenderTFGiant extends RenderBiped {
+public class RenderTFGiant<T extends EntityTFGiantMiner> extends BipedRenderer<T, PlayerModel<T>> {
+	private final PlayerModel<T> normalModel;
+	private final PlayerModel<T> slimModel;
 
-	private ResourceLocation textureLoc;
+	public RenderTFGiant(EntityRendererManager manager) {
+		super(manager, new PlayerModel<>(0, false), 1.8F);
+		normalModel = getEntityModel();
+		slimModel = new PlayerModel<>(0, true);
 
-	public RenderTFGiant() {
-		super(new ModelBiped(), 0.625F);
-		
-		this.textureLoc = new ResourceLocation("textures/entity/steve.png");
+		this.addLayer(new BipedArmorLayer<>(this, new BipedModel<>(0.5F), new BipedModel<>(0.5F)));
 	}
 
-	/**
-	 * Return our specific texture
-	 */
-    protected ResourceLocation getEntityTexture(Entity par1Entity)
-    {
-    	if (Minecraft.getMinecraft().thePlayer.getLocationSkin() != null) {
-    		return Minecraft.getMinecraft().thePlayer.getLocationSkin();
-    	} else {
-    		return textureLoc;
-    	}
-    }
-    
-    /**
-     * Allows the render to do any OpenGL state modifications necessary before the model is rendered. Args:
-     * entityLiving, partialTickTime
-     */
-    protected void preRenderCallback(EntityLivingBase par1EntityLivingBase, float par2)
-    {
-    	float scale = 4.0F;
-        GL11.glScalef(scale, scale, scale);
-    }
+	@Override
+	public ResourceLocation getEntityTexture(EntityTFGiantMiner entity) {
+		Minecraft mc = Minecraft.getInstance();
+		boolean slim = false;
+		ResourceLocation texture = DefaultPlayerSkin.getDefaultSkinLegacy();
+
+		if (mc.getRenderViewEntity() instanceof AbstractClientPlayerEntity) {
+			AbstractClientPlayerEntity client = ((AbstractClientPlayerEntity) mc.getRenderViewEntity());
+			texture = client.getLocationSkin();
+			slim = client.getSkinType().equals("slim");
+		}
+
+		entityModel = slim ? slimModel : normalModel;
+		return texture;
+	}
+
+	@Override
+	public void scale(T entitylivingbaseIn, MatrixStack stack, float partialTickTime) {
+		float scale = 4.0F;
+		stack.scale(scale, scale, scale);
+	}
 }

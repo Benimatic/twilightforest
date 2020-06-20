@@ -1,23 +1,36 @@
 package twilightforest.biomes;
 
-import net.minecraft.entity.passive.EntitySquid;
+import net.minecraft.entity.EntityClassification;
+import net.minecraft.entity.EntityType;
+import twilightforest.TFFeature;
 
 public class TFBiomeTwilightLake extends TFBiomeBase {
 
-	@SuppressWarnings("unchecked")
-	public TFBiomeTwilightLake(int i) {
-		super(i);
-		
-		
-//		this.rootHeight = -1.9F;
-//		this.heightVariation = 0.5F;
-
-		this.temperature = 0.66F;
-        this.rainfall = 1F;
-        
-        //spawnableCreatureList.clear();
-        this.spawnableWaterCreatureList.add(new SpawnListEntry(EntitySquid.class, 10, 4, 4));
-
+	public TFBiomeTwilightLake(Builder props) {
+		super(props);
 	}
 
+	@Override
+	public void addFeatures() {
+		super.addFeatures();
+
+		TFBiomeDecorator.addOres(this);
+		TFBiomeDecorator.addLakes(this);
+		TFBiomeDecorator.addSprings(this);
+		TFBiomeDecorator.addTorchberries(this);
+		TFBiomeDecorator.addMushrooms(this);
+		TFBiomeDecorator.addReeds(this, 1);
+	}
+
+	@Override
+	public void addSpawns() {
+		super.addSpawns();
+
+		addSpawn(EntityClassification.WATER_CREATURE, new SpawnListEntry(EntityType.SQUID, 10, 4, 4));
+	}
+
+	//	@Override
+//	protected TFFeature getContainedFeature() {
+//		return TFFeature.QUEST_ISLAND;
+//	}
 }

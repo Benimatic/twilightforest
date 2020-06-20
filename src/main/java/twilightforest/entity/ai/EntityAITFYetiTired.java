@@ -1,9 +1,12 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.goal.Goal;
+import twilightforest.TFSounds;
 import twilightforest.entity.boss.EntityTFYetiAlpha;
 
-public class EntityAITFYetiTired extends EntityAIBase {
+import java.util.EnumSet;
+
+public class EntityAITFYetiTired extends Goal {
 
 	private EntityTFYetiAlpha yeti;
 	private int tiredDuration;
@@ -12,7 +15,7 @@ public class EntityAITFYetiTired extends EntityAIBase {
 	public EntityAITFYetiTired(EntityTFYetiAlpha entityTFYetiAlpha, int i) {
 		this.yeti = entityTFYetiAlpha;
 		this.tiredDuration = i;
-		this.setMutexBits(5);
+		this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.JUMP));
 	}
 
 	@Override
@@ -21,12 +24,12 @@ public class EntityAITFYetiTired extends EntityAIBase {
 	}
 
 	@Override
-	public boolean continueExecuting() {
+	public boolean shouldContinueExecuting() {
 		return this.tiredTimer < this.tiredDuration;
 	}
 
 	@Override
-	public boolean isInterruptible() {
+	public boolean isPreemptible() {
 		return false;
 	}
 
@@ -42,8 +45,8 @@ public class EntityAITFYetiTired extends EntityAIBase {
 	}
 
 	@Override
-	public void updateTask() {
-		this.tiredTimer++;
+	public void tick() {
+		if(++this.tiredTimer % 10 == 0)
+			this.yeti.playSound(TFSounds.ALPHAYETI_PANT, 4F, 0.5F + yeti.getRNG().nextFloat() * 0.5F);
 	}
-
 }

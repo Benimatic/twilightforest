@@ -1,33 +1,21 @@
 package twilightforest.entity.ai;
 
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.goal.Goal;
 import twilightforest.entity.passive.EntityTFTinyBird;
 
-public class EntityAITFBirdFly extends EntityAIBase {
+import java.util.EnumSet;
 
-    private EntityTFTinyBird entity;
+public class EntityAITFBirdFly extends Goal {
 
-    public EntityAITFBirdFly(EntityTFTinyBird par1EntityCreature)
-    {
-        this.entity = par1EntityCreature;
-        this.setMutexBits(5);
-    }
-	
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
+	private EntityTFTinyBird entity;
+
+	public EntityAITFBirdFly(EntityTFTinyBird bird) {
+		this.entity = bird;
+		this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.JUMP));
+	}
+
 	@Override
 	public boolean shouldExecute() {
-       return !entity.isBirdLanded();
+		return !entity.isBirdLanded();
 	}
-	
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
-    @Override
-	public boolean continueExecuting()
-    {
-        return !entity.isBirdLanded();
-    }
-
 }

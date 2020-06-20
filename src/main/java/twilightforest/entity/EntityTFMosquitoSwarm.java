@@ -1,146 +1,90 @@
 package twilightforest.entity;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
-import net.minecraft.entity.ai.EntityAIHurtByTarget;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWander;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.EnumDifficulty;
+import net.minecraft.entity.*;
+import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import twilightforest.TFAchievementPage;
-import twilightforest.TwilightForestMod;
-import twilightforest.biomes.TFBiomeBase;
+import twilightforest.TFSounds;
+import twilightforest.biomes.TFBiomes;
 
-public class EntityTFMosquitoSwarm extends EntityMob {
+import java.util.Random;
 
-	public EntityTFMosquitoSwarm(World par1World) {
-		super(par1World);
+public class EntityTFMosquitoSwarm extends MonsterEntity {
 
-        setSize(.7F, 1.9F);
-        this.stepHeight = 2.1f;
-        
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(3, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
-        this.tasks.addTask(6, new EntityAIWander(this, 1.0D));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
+	public EntityTFMosquitoSwarm(EntityType<? extends EntityTFMosquitoSwarm> type, World world) {
+		super(type, world);
+
+		this.stepHeight = 2.1f;
 	}
 
-
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
-    @Override
-	protected boolean isAIEnabled()
-    {
-        return true;
-    }
-	
-	/**
-	 * Set monster attributes
-	 */
 	@Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(12.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23D); // movement speed
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(3.0D); // attack damage
-    }
-    
+	protected void registerGoals() {
+		this.goalSelector.addGoal(0, new SwimGoal(this));
+		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, false));
+		this.goalSelector.addGoal(6, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
+		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
+	}
 
-	
-    @Override
-	protected String getLivingSound()
-    {
-        return TwilightForestMod.ID + ":mob.mosquito.mosquito";
-    }
-
-
-    /**
-     * Like cave spiders, but we add the hunger effect
-     */
-    public boolean attackEntityAsMob(Entity par1Entity)
-    {
-        if (super.attackEntityAsMob(par1Entity))
-        {
-            if (par1Entity instanceof EntityLivingBase)
-            {
-                byte duration = 7;
-
-                if (this.worldObj.difficultySetting != EnumDifficulty.EASY)
-                {
-                    if (this.worldObj.difficultySetting == EnumDifficulty.NORMAL)
-                    {
-                        duration = 15;
-                    }
-                    else if (this.worldObj.difficultySetting == EnumDifficulty.HARD)
-                    {
-                        duration = 30;
-                    }
-                }
-
-                if (duration > 0)
-                {
-                    ((EntityLivingBase)par1Entity).addPotionEffect(new PotionEffect(Potion.hunger.id, duration * 20, 0));
-                }
-            }
-
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    
-	
-	/**
-	 * We're allowed to spawn in bright light only in swamps
-	 */
 	@Override
-	public boolean getCanSpawnHere()
-    {
-		// are we in the swamp
-		if (worldObj.getBiomeGenForCoords(MathHelper.floor_double(posX), MathHelper.floor_double(posZ)) == TFBiomeBase.tfSwamp) {
-			// don't check light level
-	        return worldObj.checkNoEntityCollision(boundingBox) && worldObj.getCollidingBoundingBoxes(this, boundingBox).size() == 0;
-		}
-		else {
-			// normal EntityMob spawn check, checks light level
-			return super.getCanSpawnHere();
-		}
-    }
+	protected void registerAttributes() {
+		super.registerAttributes();
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(12.0D);
+		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
+		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
+	}
 
-    /**
-     * Will return how many at most can spawn in a chunk at once.
-     */
-    @Override
-	public int getMaxSpawnedInChunk()
-    {
-    	// we are solitary creatures
-        return 1;
-    }
-
-    /**
-     * Trigger achievement when killed
-     */
 	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
-			((EntityPlayer)par1DamageSource.getSourceOfDamage()).triggerAchievement(TFAchievementPage.twilightHunter);
+	protected SoundEvent getAmbientSound() {
+		return TFSounds.MOSQUITO;
+	}
+
+	@Override
+	public boolean attackEntityAsMob(Entity entity) {
+		if (super.attackEntityAsMob(entity)) {
+			if (entity instanceof LivingEntity) {
+				int duration;
+				switch (world.getDifficulty()) {
+					case EASY:
+						duration = 7;
+						break;
+					default:
+					case NORMAL:
+						duration = 15;
+						break;
+					case HARD:
+						duration = 30;
+						break;
+				}
+
+				((LivingEntity) entity).addPotionEffect(new EffectInstance(Effects.HUNGER, duration * 20, 0));
+			}
+
+			return true;
+		} else {
+			return false;
 		}
+	}
+
+	public static boolean canSpawn(EntityType<? extends MonsterEntity> type, IWorld world, SpawnReason reason, BlockPos pos, Random rand) {
+		if (world.getBiome(pos) == TFBiomes.tfSwamp.get()) {
+			// no light level check
+			return world.getDifficulty() != Difficulty.PEACEFUL && MonsterEntity.canSpawnOn(type, world, reason, pos, rand);
+		} else {
+			return MonsterEntity.func_223325_c(type, world, reason, pos, rand);
+		}
+	}
+
+	@Override
+	public int getMaxSpawnedInChunk() {
+		return 1;
 	}
 
 }

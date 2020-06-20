@@ -1,69 +1,58 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.entity.RenderWolf;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.WolfRenderer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
-
 import twilightforest.TwilightForestMod;
 
-public class RenderTFMistWolf extends RenderWolf {
+public class RenderTFMistWolf extends WolfRenderer {
 
-    private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "mistwolf.png");
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("mistwolf.png");
 
-	public RenderTFMistWolf(ModelBase par1ModelBase, ModelBase par2ModelBase, float par3) {
-		super(par1ModelBase, par2ModelBase, par3);
+	public RenderTFMistWolf(EntityRendererManager manager) {
+		super(manager);
+		this.shadowSize = 1.0F;
 	}
 
-	
-    /**
-     * Allows the render to do any OpenGL state modifications necessary before the model is rendered. Args:
-     * entityLiving, partialTickTime
-     */
-    protected void preRenderCallback(EntityLivingBase par1EntityLiving, float par2)
-    {
-    	float wolfScale = 1.9F;
-        GL11.glScalef(wolfScale, wolfScale, wolfScale);
-        
-        GL11.glEnable(3042 /*GL_BLEND*/);
-        GL11.glDisable(3008 /*GL_ALPHA_TEST*/);
-        //GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        //GL11.glBlendFunc(GL11.GL_ONE_MINUS_DST_ALPHA, GL11.GL_DST_ALPHA);
-        
-        float misty = par1EntityLiving.getBrightness(0F) * 3F + 0.25F;
-        misty = Math.min(1F, misty);
+	//TODO: Yes, I know, I shoved everything from preRenderCallback into here. Might want to check this
+	@Override
+	protected void scale(WolfEntity entity, MatrixStack stack, float partialTicks) {
+		float wolfScale = 1.9F;
+		stack.scale(wolfScale, wolfScale, wolfScale);
 
-        float smoky = par1EntityLiving.getBrightness(0F) * 2F + 0.6F;
+		RenderSystem.enableBlend();
+		RenderSystem.disableAlphaTest();
+		//GlStateManager.blendFunc(GL11.GL_ONE, GL11.GL_ONE);
+		RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		//GlStateManager.blendFunc(GL11.GL_ONE_MINUS_DST_ALPHA, GL11.GL_DST_ALPHA);
 
-        //System.out.println("Misty value is " + misty);
-        
-        GL11.glColor4f(misty, misty, misty, smoky);
+		float misty = entity.getBrightness() * 3F + 0.25F;
+		misty = Math.min(1F, misty);
 
-    }
-    
-    /**
-     * Queries whether should render the specified pass or not.
-     */
-    protected int shouldRenderPass(EntityLivingBase par1EntityLiving, int par2, float par3)
-    {
-//        GL11.glFogf(GL11.GL_FOG_START, 1.0f);	
-//        GL11.glFogf(GL11.GL_FOG_END, 5.0f);
-        
+		float smoky = entity.getBrightness() * 2F + 0.6F;
 
-    	
-        return -1;
-    }
-    
+		RenderSystem.color4f(misty, misty, misty, smoky);
+	}
+
 	/**
-	 * Return our specific texture
+	 * Queries whether should render the specified pass or not.
 	 */
-    protected ResourceLocation getEntityTexture(Entity par1Entity)
-    {
-        return textureLoc;
-    }
-    
+//	protected int shouldRenderPass(LivingEntity par1EntityLiving, int par2, float par3) {
+////        GL11.glFogf(GL11.GL_FOG_START, 1.0f);
+////        GL11.glFogf(GL11.GL_FOG_END, 5.0f);
+//
+//
+//		return -1;
+//	}
+
+	@Override
+	public ResourceLocation getEntityTexture(WolfEntity entity) {
+		return textureLoc;
+	}
 }

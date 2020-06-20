@@ -1,91 +1,71 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.entity.RenderLiving;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.entity.Entity;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.model.entity.ModelTFHydraHead;
 import twilightforest.entity.boss.EntityTFHydra;
-import twilightforest.entity.boss.EntityTFHydraPart;
+import twilightforest.entity.boss.EntityTFHydraHead;
 import twilightforest.entity.boss.HydraHeadContainer;
 
-public class RenderTFHydraHead extends RenderLiving {
+public class RenderTFHydraHead extends MobRenderer<EntityTFHydraHead, ModelTFHydraHead> {
 
-    private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "hydra4.png");
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("hydra4.png");
 
-	public RenderTFHydraHead(ModelBase modelbase, float f) {
-		super(modelbase, f);
-		
+	public RenderTFHydraHead(EntityRendererManager manager, ModelTFHydraHead modelbase, float shadowSize) {
+		super(manager, modelbase, shadowSize);
 	}
-	
-	/**
-	 * Override render to perform a few special rendering tricks, like not rendering "dead" heads & their necks
-	 */
+
 	@Override
-	public void doRender(Entity entity, double d, double d1, double d2, float f, float f1) {
+	public void render(EntityTFHydraHead entity, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
 		// get the HydraHeadContainer that we're taking about
 		HydraHeadContainer headCon = getHeadObject(entity);
 
-		if (headCon != null)
-		{
+		if (headCon != null) {
 			// see whether we want to render these
-			if (headCon.shouldRenderHead())
-			{
-				super.doRender(entity, d, d1, d2, f, f1);
+			if (headCon.shouldRenderHead()) {
+				super.render(entity, yaw, partialTicks, stack, buffer, light);
 			}
 
-			if (headCon.shouldRenderNeck(0))
-			{
-				RenderManager.instance.renderEntitySimple(headCon.necka, f1);
-			}
-			if (headCon.shouldRenderNeck(1))
-			{
-				RenderManager.instance.renderEntitySimple(headCon.neckb, f1);
-			}
-			if (headCon.shouldRenderNeck(2))
-			{
-				RenderManager.instance.renderEntitySimple(headCon.neckc, f1);
-			}
-			if (headCon.shouldRenderNeck(3))
-			{
-				RenderManager.instance.renderEntitySimple(headCon.neckd, f1);
-			}
-			if (headCon.shouldRenderNeck(4))
-			{
-				RenderManager.instance.renderEntitySimple(headCon.necke, f1);
-			}
-		}
-		else
-		{
-			super.doRender(entity, d, d1, d2, f, f1);
-
+			//TODO: Idk what I should do about this
+//			if (headCon.shouldRenderNeck(0)) {
+//				renderManager.renderEntityStatic(headCon.necka, partialTicks, false);
+//			}
+//			if (headCon.shouldRenderNeck(1)) {
+//				renderManager.renderEntityStatic(headCon.neckb, partialTicks, false);
+//			}
+//			if (headCon.shouldRenderNeck(2)) {
+//				renderManager.renderEntityStatic(headCon.neckc, partialTicks, false);
+//			}
+//			if (headCon.shouldRenderNeck(3)) {
+//				renderManager.renderEntityStatic(headCon.neckd, partialTicks, false);
+//			}
+//			if (headCon.shouldRenderNeck(4)) {
+//				renderManager.renderEntityStatic(headCon.necke, partialTicks, false);
+//			}
+		} else {
+			super.render(entity, yaw, partialTicks, stack, buffer, light);
 		}
 	}
 
-	private HydraHeadContainer getHeadObject(Entity entity) {
-		EntityTFHydra hydra = ((EntityTFHydraPart)entity).hydraObj;
-		
-		if (hydra != null)
-		{
-			for (int i = 0; i < hydra.numHeads; i++)
-			{
-				if (hydra.hc[i].headEntity == entity)
-				{
+	private HydraHeadContainer getHeadObject(EntityTFHydraHead entity) {
+		EntityTFHydra hydra = entity.hydra;
+
+		if (hydra != null) {
+			for (int i = 0; i < hydra.numHeads; i++) {
+				if (hydra.hc[i].headEntity == entity) {
 					return hydra.hc[i];
 				}
-
 			}
 		}
 		return null;
 	}
 
-	/**
-	 * Return our specific texture
-	 */
-    protected ResourceLocation getEntityTexture(Entity par1Entity)
-    {
-        return textureLoc;
-    }
-
+	@Override
+	public ResourceLocation getEntityTexture(EntityTFHydraHead entity) {
+		return textureLoc;
+	}
 }

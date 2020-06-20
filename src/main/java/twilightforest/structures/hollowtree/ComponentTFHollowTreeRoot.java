@@ -1,87 +1,86 @@
 package twilightforest.structures.hollowtree;
 
-import java.util.Random;
-
-import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.template.TemplateManager;
+import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
-import twilightforest.world.TFGenerator;
+import twilightforest.util.FeatureUtil;
 
-public class ComponentTFHollowTreeRoot extends ComponentTFHollowTreeMedBranch  {
+import java.util.Random;
+import java.util.function.Predicate;
 
-	private int groundLevel = -1;
+public class ComponentTFHollowTreeRoot extends ComponentTFHollowTreeMedBranch {
 
+	protected int groundLevel = -1;
 
-	public ComponentTFHollowTreeRoot() {
-		super();
+	public ComponentTFHollowTreeRoot(TemplateManager manager, CompoundNBT nbt) {
+		super(TFHollowTreePieces.TFHTRo, nbt);
 	}
 
-	public ComponentTFHollowTreeRoot(int i, int sx, int sy, int sz, double length, double angle, double tilt, boolean leafy) {
-		super(i, sx, sy, sz, length, angle, tilt, leafy);
-		this.boundingBox = new StructureBoundingBox(Math.min(src.posX, dest.posX), Math.min(src.posY, dest.posY), Math.min(src.posZ, dest.posZ), Math.max(src.posX, dest.posX), Math.max(src.posY, dest.posY), Math.max(src.posZ, dest.posZ));
+	public ComponentTFHollowTreeRoot(TFFeature feature, int i, int sx, int sy, int sz, double length, double angle, double tilt, boolean leafy) {
+		super(TFHollowTreePieces.TFHTRo, feature, i, sx, sy, sz, length, angle, tilt, leafy);
+		this.boundingBox = new MutableBoundingBox(src, dest);
 	}
 
-	
 	@Override
-	public boolean addComponentParts(World world, Random random, StructureBoundingBox sbb) {
-		
-		// offset bounding box to average ground level
-        if (this.groundLevel < 0)
-        {
-        	int rootHeight = this.boundingBox.maxY - this.boundingBox.minY;
-        	
-            this.groundLevel = this.getSampledDirtLevel(world, sbb);
+	public boolean addComponentParts(World world, ChunkGenerator<?> generator, Random random, MutableBoundingBox sbb, boolean drawLeaves) {
+		if (!drawLeaves) {
+			// offset bounding box to average ground level
+			if (this.groundLevel < 0) {
+				this.groundLevel = this.findGroundLevel(world, sbb, 90, isGround); // is 90 like a good place to start? :)
 
-            if (this.groundLevel < 0)
-            {
-                return true;
-            }
+				if (this.groundLevel < 0) {
+					return true;
+				}
 
-            src.posY = this.groundLevel + 5;
-            
-            //System.out.println("Adjusting root bounding box to " + this.boundingBox.minY);
-        }
-		
-		ChunkCoordinates rSrc = new ChunkCoordinates(src.posX - boundingBox.minX, src.posY - boundingBox.minY, src.posZ - boundingBox.minZ);
-		ChunkCoordinates rDest = new ChunkCoordinates(dest.posX - boundingBox.minX, dest.posY - boundingBox.minY, dest.posZ - boundingBox.minZ);
+				int dy = groundLevel + 5 - src.getY();
+				src = src.add(0, dy, 0);
+				dest = dest.add(0, dy, 0);
+			}
 
-		drawRootLine(world, sbb, rSrc.posX, rSrc.posY, rSrc.posZ, rDest.posX, rDest.posY, rDest.posZ, TFBlocks.root, 0);
-		drawRootLine(world, sbb, rSrc.posX, rSrc.posY - 1, rSrc.posZ, rDest.posX, rDest.posY - 1, rDest.posZ, TFBlocks.root, 0);
+			BlockPos rSrc = src.add(-boundingBox.minX, -boundingBox.minY, -boundingBox.minZ);
+			BlockPos rDest = dest.add(-boundingBox.minX, -boundingBox.minY, -boundingBox.minZ);
+
+			drawRootLine(world, sbb, rSrc.getX(), rSrc.getY(), rSrc.getZ(), rDest.getX(), rDest.getY(), rDest.getZ(), TFBlocks.root.get().getDefaultState());
+			drawRootLine(world, sbb, rSrc.getX(), rSrc.getY() - 1, rSrc.getZ(), rDest.getX(), rDest.getY() - 1, rDest.getZ(), TFBlocks.root.get().getDefaultState());
+		}
 
 		return true;
 	}
 
-	
-	
 	/**
 	 * Draws a line
 	 */
-	protected void drawRootLine(World world, StructureBoundingBox sbb, int x1, int y1, int z1, int x2, int y2, int z2, Block blockValue, int metaValue) {
-		ChunkCoordinates lineCoords[] = TFGenerator.getBresehnamArrayCoords(x1, y1, z1, x2, y2, z2);
-		
-		for (ChunkCoordinates coords : lineCoords)
-		{
-			Block block = this.getBlockAtCurrentPosition(world, coords.posX, coords.posY, coords.posZ, sbb);
-			
-			// three choices here
-			if (!block.isNormalCube(world, coords.posX, coords.posY, coords.posZ) || (block != null && block.getMaterial() == Material.grass))
-			{
-				// air, other non-solid, or grass, make wood block
-				this.placeBlockAtCurrentPosition(world, TFBlocks.log, 12, coords.posX, coords.posY, coords.posZ, sbb);
-			}
-			else if (block != null && block.getMaterial() == Material.wood)
-			{
-				// wood, do nothing
+	protected void drawRootLine(World world, MutableBoundingBox sbb, int x1, int y1, int z1, int x2, int y2, int z2, BlockState blockValue) {
+		BlockPos lineCoords[] = FeatureUtil.getBresehnamArrays(x1, y1, z1, x2, y2, z2);
 
-			}
-			else
-			{
+		for (BlockPos coords : lineCoords) {
+			BlockState block = this.getBlockStateFromPos(world, coords.getX(), coords.getY(), coords.getZ(), sbb);
+
+			// three choices here
+			if (!block.isNormalCube(world, coords) || block.getBlock() != Blocks.AIR && block.getMaterial() == Material.ORGANIC) {
+
+				// air, other non-solid, or grass, make wood block
+				BlockState log = TFBlocks.oak_wood.get().getDefaultState();
+				this.setBlockState(world, log, coords.getX(), coords.getY(), coords.getZ(), sbb);
+			} else if (block.getBlock() != Blocks.AIR && block.getMaterial() == Material.WOOD) {
+				// wood, do nothing
+			} else {
 				// solid, make root block
-				this.placeBlockAtCurrentPosition(world, blockValue, metaValue, coords.posX, coords.posY, coords.posZ, sbb);
+				this.setBlockState(world, blockValue, coords.getX(), coords.getY(), coords.getZ(), sbb);
 			}
 		}
 	}
+
+	protected static final Predicate<BlockState> isGround = state -> {
+		Material material = state.getMaterial();
+		return material == Material.EARTH || material == Material.ROCK || material == Material.ORGANIC;
+	};
 }

@@ -1,17 +1,21 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.renderer.entity.RenderSpider;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.SpiderRenderer;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
+import twilightforest.entity.EntityTFHedgeSpider;
 
-public class RenderTFHedgeSpider extends RenderSpider {
+public class RenderTFHedgeSpider<T extends EntityTFHedgeSpider> extends SpiderRenderer<T> {
 
-    private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "hedgespider.png");
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("hedgespider.png");
 
-	@Override
-	protected ResourceLocation getEntityTexture(Entity entity) {
-		return textureLoc;
+	public RenderTFHedgeSpider(EntityRendererManager manager) {
+		super(manager);
 	}
 
+	@Override
+	public ResourceLocation getEntityTexture(T entity) {
+		return textureLoc;
+	}
 }

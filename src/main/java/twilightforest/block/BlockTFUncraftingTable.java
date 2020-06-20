@@ -1,68 +1,47 @@
 package twilightforest.block;
 
-import java.util.List;
-
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.IContainerProvider;
+import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.inventory.container.SimpleNamedContainerProvider;
+import net.minecraft.stats.Stats;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
+import net.minecraft.util.IWorldPosCallable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
-import twilightforest.item.TFItems;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import twilightforest.inventory.ContainerTFUncrafting;
+
+import javax.annotation.Nullable;
 
 public class BlockTFUncraftingTable extends Block {
-	
-	public static IIcon tinkerTop;
-	public static IIcon tinkerSide;
-	
+
 	protected BlockTFUncraftingTable() {
-		super(Material.wood);
-		this.setHardness(2.5F);
-		this.setStepSound(Block.soundTypeWood);
-		this.setCreativeTab(TFItems.creativeTab);
+		super(Properties.create(Material.WOOD).hardnessAndResistance(2.5F).sound(SoundType.WOOD));
 	}
 
-
-    /**
-     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-     */
-    @Override
-	public IIcon getIcon(int side, int meta)
-    {
-    	return side == 1 ? tinkerTop : tinkerSide;
-    }
-    
-    @Override
-	@SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
-    	tinkerTop = par1IconRegister.registerIcon(TwilightForestMod.ID + ":uncrafting_top");
-    	tinkerSide = par1IconRegister.registerIcon(TwilightForestMod.ID + ":uncrafting_side");
-    }
-
-    /**
-     * Called when the block is clicked by a player. Args: x, y, z, entityPlayer
-     */
-    @Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
-    	player.openGui(TwilightForestMod.instance, 1, world, x, y, z);
-    	return true;
+	@Override
+	@Deprecated
+	public ActionResultType onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+		if (!world.isRemote) {
+			player.openContainer(state.getContainer(world, pos));
+			player.addStat(Stats.INTERACT_WITH_CRAFTING_TABLE);
+		}
+		return ActionResultType.SUCCESS;
 	}
 
-    /**
-     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     */
-    @Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
-    {
-        par3List.add(new ItemStack(par1, 1, 0));
-    }
-
-
+	@Nullable
+	@Override
+	public INamedContainerProvider getContainer(BlockState state, World world, BlockPos pos) {
+		return new SimpleNamedContainerProvider((id, inv, player) -> new ContainerTFUncrafting(id, inv, player.world, IWorldPosCallable.of(world, pos)),
+						new TranslationTextComponent(getTranslationKey()));
+	}
 }

@@ -1,22 +1,23 @@
 package twilightforest.tileentity;
 
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import twilightforest.TwilightForestMod;
+import twilightforest.client.particle.TFParticleType;
 
-public class TileEntityTFSmoker extends TileEntity {
-	
-	public long counter = 0;
+public class TileEntityTFSmoker extends TileEntity implements ITickableTileEntity {
 
-    /**
-     * Allows the entity to update its state. Overridden in most subclasses, e.g. the mob spawner uses this to count
-     * ticks and creates a new spawn inside its implementation.
-     */
-    @Override
-	public void updateEntity()
-    {
-    	if (++counter % 4 == 0) {
-    		TwilightForestMod.proxy.spawnParticle(this.worldObj, "hugesmoke", this.xCoord + 0.5, this.yCoord + 0.95, this.zCoord + 0.5, 
-    				Math.cos(counter / 10.0) * 0.05, 0.25D, Math.sin(counter / 10.0) * 0.05);
-    	}
-    }
+	private long counter = 0;
+
+	public TileEntityTFSmoker() {
+		super(TFTileEntities.SMOKER.get());
+	}
+
+	@Override
+	public void tick() {
+		if (world.isRemote && ++counter % 4 == 0) {
+			world.addParticle(TFParticleType.HUGE_SMOKE.get(), pos.getX() + 0.5, pos.getY() + 0.95, pos.getZ() + 0.5,
+					Math.cos(counter / 10.0) * 0.05, 0.25D, Math.sin(counter / 10.0) * 0.05
+			);
+		}
+	}
 }

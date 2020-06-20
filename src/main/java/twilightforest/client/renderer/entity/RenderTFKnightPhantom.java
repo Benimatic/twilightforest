@@ -1,38 +1,33 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.renderer.entity.RenderBiped;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.renderer.entity.BipedRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.layers.BipedArmorLayer;
+import net.minecraft.client.renderer.entity.layers.HeldItemLayer;
 import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.opengl.GL11;
-
 import twilightforest.TwilightForestMod;
-import twilightforest.client.model.ModelTFKnightPhantom2;
+import twilightforest.client.model.entity.ModelTFKnightPhantom2;
 import twilightforest.entity.boss.EntityTFKnightPhantom;
 
-public class RenderTFKnightPhantom extends RenderBiped {
+public class RenderTFKnightPhantom extends BipedRenderer<EntityTFKnightPhantom, ModelTFKnightPhantom2> {
 
-    private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "phantomskeleton.png");
+	private static final ResourceLocation PHANTOM_TEXTURE = TwilightForestMod.getModelTexture("phantomskeleton.png");
 
-	
-	public RenderTFKnightPhantom(ModelTFKnightPhantom2 modelTFKnightPhantom2, float f) {
-		super(modelTFKnightPhantom2, f);
+	public RenderTFKnightPhantom(EntityRendererManager manager, ModelTFKnightPhantom2 model, float shadowSize) {
+		super(manager, model, shadowSize);
+		this.addLayer(new HeldItemLayer<>(this));
+		this.addLayer(new BipedArmorLayer<>(this, new ModelTFKnightPhantom2(), new ModelTFKnightPhantom2()));
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(Entity entity) {
-		return textureLoc;
+	public ResourceLocation getEntityTexture(EntityTFKnightPhantom entity) {
+		return PHANTOM_TEXTURE;
 	}
-	
-    /**
-     * Allows the render to do any OpenGL state modifications necessary before the model is rendered. Args:
-     * entityLiving, partialTickTime
-     */
-    protected void preRenderCallback(EntityLivingBase par1EntityLivingBase, float par2)
-    {
-        float scale = ((EntityTFKnightPhantom)par1EntityLivingBase).isChargingAtPlayer() ? 1.8F : 1.2F;
-		GL11.glScalef(scale, scale, scale);
-    }
 
+	@Override
+	protected void scale(EntityTFKnightPhantom entity, MatrixStack stack, float partialTicks) {
+		float scale = entity.isChargingAtPlayer() ? 1.8F : 1.2F;
+		stack.scale(scale, scale, scale);
+	}
 }

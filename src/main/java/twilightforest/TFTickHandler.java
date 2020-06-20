@@ -1,192 +1,142 @@
 package twilightforest;
 
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.dimension.DimensionType;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.network.PacketDistributor;
+import twilightforest.advancements.TFAdvancements;
+import twilightforest.biomes.TFBiomeBase;
+import twilightforest.block.TFBlocks;
+import twilightforest.network.PacketStructureProtection;
+import twilightforest.network.PacketStructureProtectionClear;
+import twilightforest.network.TFPacketHandler;
+import twilightforest.world.ChunkGeneratorTFBase;
+import twilightforest.world.TFDimensions;
+import twilightforest.world.TFGenerationSettings;
+
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraftforge.event.entity.item.ItemTossEvent;
-import twilightforest.biomes.TFBiomeBase;
-import twilightforest.block.BlockTFPortal;
-import twilightforest.block.TFBlocks;
-import twilightforest.world.ChunkProviderTwilightForest;
-import twilightforest.world.WorldProviderTwilightForest;
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.network.internal.FMLProxyPacket;
+@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
+public class TFTickHandler {
 
-/**
- * This class listens for ticks in the world.  If the player is near a diamond in the water, this class attempts to open a portal.
- * 
- * @author Ben
- *
- */
-public class TFTickHandler 
-{
-
-	public Item portalItem = null;
-
-
-    /**
-     * On the tick, we check for eligible portals
-	 */
 	@SubscribeEvent
-	public void playerTick(PlayerTickEvent event) {
+	public static void playerTick(TickEvent.PlayerTickEvent event) {
 
-
-		EntityPlayer player = event.player;
-		World world = player.worldObj;
+		PlayerEntity player = event.player;
+		World world = player.world;
 
 		// check for portal creation, at least if it's not disabled
-		if (!TwilightForestMod.disablePortalCreation && event.phase == TickEvent.Phase.END && !world.isRemote && world.getWorldTime() % 20 == 0) {
+		if (!world.isRemote && !TFConfig.COMMON_CONFIG.disablePortalCreation.get() && event.phase == TickEvent.Phase.END && player.ticksExisted % (TFConfig.COMMON_CONFIG.checkPortalDestination.get() ? 100 : 20) == 0) {
 			// skip non admin players when the option is on
-			if (TwilightForestMod.adminOnlyPortals) {
-				try {
-					//if (MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(player.getCommandSenderName().toString())) {
-					if (MinecraftServer.getServer().getConfigurationManager().func_152596_g(player.getGameProfile())) {
-						// reduce range to 4.0 when the option is on
-						checkForPortalCreation(player, world, 4.0F);
-
-					}
-				} catch (NoSuchMethodError ex) {
-					// stop checking admin
-					FMLLog.warning("[TwilightForest] Could not determine op status for adminOnlyPortals option, ignoring option.");
-					TwilightForestMod.adminOnlyPortals = false;
+			if (TFConfig.COMMON_CONFIG.adminOnlyPortals.get()) {
+				if (world.getServer().getPermissionLevel(player.getGameProfile()) != 0) {
+					// reduce range to 4.0 when the option is on
+					checkForPortalCreation(player, world, 4.0F);
 				}
 			} else {
 				// normal check, no special options
 				checkForPortalCreation(player, world, 32.0F);
-				
 			}
 		}
 
 		// check the player for being in a forbidden progression area, only every 20 ticks
-		if (!world.isRemote && event.phase == TickEvent.Phase.END && world.getWorldTime() % 20 == 0 && world.getGameRules().getGameRuleBooleanValue(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
-			if (world.provider instanceof WorldProviderTwilightForest && !player.capabilities.isCreativeMode) {
-				checkBiomeForProgression(player, world);
-			}
+		if (!world.isRemote && event.phase == TickEvent.Phase.END && player.ticksExisted % 20 == 0
+				&& TFGenerationSettings.isProgressionEnforced(world)
+				&& TFGenerationSettings.isTwilightForest(world)
+				&& !player.isCreative() && !player.isSpectator()) {
+
+			checkBiomeForProgression(player, world);
 		}
-		
+
 		// check and send nearby forbidden structures, every 100 ticks or so
-		if (!world.isRemote && event.phase == TickEvent.Phase.END && world.getWorldTime() % 100 == 0 && world.getGameRules().getGameRuleBooleanValue(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
-			if (world.provider instanceof WorldProviderTwilightForest) {
-				if (!player.capabilities.isCreativeMode) {
-					checkForLockedStructuresSendPacket(player, world);
-				} else {
+		if (!world.isRemote && event.phase == TickEvent.Phase.END && player.ticksExisted % 100 == 0 && TFGenerationSettings.isProgressionEnforced(world)) {
+			if (TFGenerationSettings.isTwilightForest(world)) {
+				if (player.isCreative() || player.isSpectator()) {
 					sendAllClearPacket(world, player);
+				} else {
+					checkForLockedStructuresSendPacket(player, world);
 				}
 			}
 		}
 	}
-	
-	private void sendStructureProtectionPacket(World world, EntityPlayer player, StructureBoundingBox sbb) {
-		// send packet
-		FMLProxyPacket message = TFGenericPacketHandler.makeStructureProtectionPacket(sbb);
-		if (player instanceof EntityPlayerMP) {
-			TwilightForestMod.genericChannel.sendTo(message, (EntityPlayerMP) player);
-			//System.out.println("Sent structure protection");
-		} else {
-			//System.err.println("Can't sent packet to player, not an EntityPlayerMP");
-		}
-	}
-	
-	private void sendAllClearPacket(World world, EntityPlayer player) {
-		FMLProxyPacket message = TFGenericPacketHandler.makeStructureProtectionClearPacket();
-		if (player instanceof EntityPlayerMP) {
-			TwilightForestMod.genericChannel.sendTo(message, (EntityPlayerMP) player);
-			//System.out.println("Sent structure all clear");
-		} else {
-			//System.err.println("Can't sent packet to player, not an EntityPlayerMP");
+
+	private static void sendStructureProtectionPacket(World world, PlayerEntity player, MutableBoundingBox sbb) {
+		if (player instanceof ServerPlayerEntity) {
+			TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new PacketStructureProtection(sbb));
 		}
 	}
 
-	private boolean checkForLockedStructuresSendPacket(EntityPlayer player, World world) {
-		ChunkProviderTwilightForest chunkProvider = ((WorldProviderTwilightForest)world.provider).getChunkProvider();
-		
-		int px = MathHelper.floor_double(player.posX);
-		int py = MathHelper.floor_double(player.posY);
-		int pz = MathHelper.floor_double(player.posZ);
-		
-		if (chunkProvider != null && chunkProvider.isBlockNearFullStructure(px, pz, 100)) {
-			
-			StructureBoundingBox fullSBB = chunkProvider.getFullSBBNear(px, pz, 100);
-			
-			TFFeature nearFeature = TFFeature.getFeatureForRegion(fullSBB.getCenterX() >> 4, fullSBB.getCenterZ() >> 4, world);
-			
-			if (!nearFeature.hasProtectionAura || nearFeature.doesPlayerHaveRequiredAchievement(player)) {
-				sendAllClearPacket(world, player);
-				return false;
-			} else {
-				sendStructureProtectionPacket(world, player, fullSBB);
-				return true;
-			}
-
-			
-		} else {
-			return false;
+	private static void sendAllClearPacket(World world, PlayerEntity player) {
+		if (player instanceof ServerPlayerEntity) {
+			TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new PacketStructureProtectionClear());
 		}
 	}
 
-	@SubscribeEvent
-	public void tickStart(ItemTossEvent event) {
-		System.out.println("ItemTossEvent Tick");
+	@SuppressWarnings("UnusedReturnValue")
+	private static boolean checkForLockedStructuresSendPacket(PlayerEntity player, World world) {
+
+		ChunkGeneratorTFBase chunkGenerator = TFGenerationSettings.getChunkGenerator(world);
+		if (chunkGenerator == null) return false;
+
+		int px = MathHelper.floor(player.getX());
+		int pz = MathHelper.floor(player.getZ());
+
+//		MutableBoundingBox fullSBB = chunkGenerator.getFullSBBNear(px, pz, 100);
+//		if (fullSBB != null) {
+//
+//			Vec3i center = StructureBoundingBoxUtils.getCenter(fullSBB);
+//
+//			TFFeature nearFeature = TFFeature.getFeatureForRegionPos(center.getX(), center.getZ(), world);
+//
+//			if (!nearFeature.hasProtectionAura || nearFeature.doesPlayerHaveRequiredAdvancements(player)) {
+//				sendAllClearPacket(world, player);
+//				return false;
+//			} else {
+//				sendStructureProtectionPacket(world, player, fullSBB);
+//				return true;
+//			}
+//		}
+		return false;
 	}
 
+	private static void checkForPortalCreation(PlayerEntity player, World world, float rangeToCheck) {
+		if (world.dimension.getType() == DimensionType.byName(new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()))
+				|| world.dimension.getType() == TFDimensions.twilightForestDimension
+				|| TFConfig.COMMON_CONFIG.allowPortalsInOtherDimensions.get()) {
 
+			List<ItemEntity> itemList = world.getEntitiesWithinAABB(ItemEntity.class, player.getBoundingBox().grow(rangeToCheck));
 
-	private void checkForPortalCreation(EntityPlayer player, World world, float rangeToCheck) {
-		// make sure we are allowed to make a portal in this dimension
-		if (world != null && player != null 
-				&& (world.provider.dimensionId == 0 || world.provider.dimensionId == TwilightForestMod.dimensionID 
-				|| TwilightForestMod.allowPortalsInOtherDimensions)) 
-		{
-			@SuppressWarnings("unchecked")
-			List<EntityItem> itemList = world.getEntitiesWithinAABB(EntityItem.class, player.boundingBox.expand(rangeToCheck, rangeToCheck, rangeToCheck));
-			
-			// do we have the item set?  if not, can we set it?
-			if (this.portalItem == null) {
+			for (ItemEntity entityItem : itemList) {
+				if (TFConfig.portalIngredient.test(entityItem.getItem())) {
+					BlockPos pos = entityItem.getPosition();
+					BlockState state = world.getBlockState(pos);
+					if (TFBlocks.twilight_portal.get().canFormPortal(state)) {
+						Random rand = new Random();
+						for (int i = 0; i < 2; i++) {
+							double vx = rand.nextGaussian() * 0.02D;
+							double vy = rand.nextGaussian() * 0.02D;
+							double vz = rand.nextGaussian() * 0.02D;
 
-				
-				
-			}
-			
-			// check to see if someone's thrown the portal item into the water
-			for (EntityItem entityItem : itemList) 
-			{
-				if (entityItem.getEntityItem().getItem() == portalItem && world.isMaterialInBB(entityItem.boundingBox, Material.water))
-				{
-					//System.out.println("There is a diamond in the water");
-	
-					// make sparkles in the area
-					Random rand = new Random();
-					for (int k = 0; k < 2; k++)
-					{
-						double d = rand.nextGaussian() * 0.02D;
-						double d1 = rand.nextGaussian() * 0.02D;
-						double d2 = rand.nextGaussian() * 0.02D;
-	
-						world.spawnParticle("spell", entityItem.posX, entityItem.posY + 0.2, entityItem.posZ, d, d1, d2);
-					}
-	
-					// try to make a portal
-					int dx = MathHelper.floor_double(entityItem.posX);
-					int dy = MathHelper.floor_double(entityItem.posY);
-					int dz = MathHelper.floor_double(entityItem.posZ);
-	
-					if (((BlockTFPortal)TFBlocks.portal).tryToCreatePortal(world, dx, dy, dz)) {
-						player.triggerAchievement(TFAchievementPage.twilightPortal);
+							world.addParticle(ParticleTypes.EFFECT, entityItem.getX(), entityItem.getY() + 0.2, entityItem.getZ(), vx, vy, vz);
+						}
+
+						if (TFBlocks.twilight_portal.get().tryToCreatePortal(world, pos, entityItem, player)) {
+							TFAdvancements.MADE_TF_PORTAL.trigger((ServerPlayerEntity) player);
+							return;
+						}
 					}
 				}
 			}
@@ -196,18 +146,13 @@ public class TFTickHandler
 	/**
 	 * Check what biome the player is in, and see if current progression allows that biome.  If not, take appropriate action
 	 */
-	private void checkBiomeForProgression(EntityPlayer player, World world) {
-		BiomeGenBase currentBiome = world.getBiomeGenForCoords(MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posZ));
-		
+	private static void checkBiomeForProgression(PlayerEntity player, World world) {
+		Biome currentBiome = world.getBiome(new BlockPos(player));
 		if (currentBiome instanceof TFBiomeBase) {
-			TFBiomeBase tfBiome = (TFBiomeBase)currentBiome;
-			
-			boolean dangerousBiome = !tfBiome.doesPlayerHaveRequiredAchievement(player);
-			if (dangerousBiome) {
-				tfBiome.enforceProgession(player, world);
+			TFBiomeBase tfBiome = (TFBiomeBase) currentBiome;
+			if (!tfBiome.doesPlayerHaveRequiredAdvancements(player)) {
+				tfBiome.enforceProgression(player, world);
 			}
 		}
 	}
-
-
 }

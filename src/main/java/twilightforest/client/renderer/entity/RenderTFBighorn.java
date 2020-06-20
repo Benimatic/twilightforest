@@ -1,24 +1,27 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.entity.RenderSheep;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.SheepRenderer;
+import net.minecraft.client.renderer.entity.layers.SheepWoolLayer;
+import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.entity.model.SheepModel;
+import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 
-public class RenderTFBighorn extends RenderSheep {
+public class RenderTFBighorn extends SheepRenderer {
 
-	private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "bighorn.png");
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("bighorn.png");
 
-	public RenderTFBighorn(ModelBase par1ModelBase, ModelBase par2ModelBase, float par3) {
-		super(par1ModelBase, par2ModelBase, par3);
+	public RenderTFBighorn(EntityRendererManager manager, SheepModel<SheepEntity> baseModel, EntityModel coatModel, float shadowSize) {
+		super(manager);
+		this.shadowSize = shadowSize;
+		this.entityModel = baseModel;
+		this.addLayer(new SheepWoolLayer(this));
 	}
 
-	/**
-	 * Return our specific texture
-	 */
-    protected ResourceLocation getEntityTexture(Entity par1Entity)
-    {
-        return textureLoc;
-    }
+	@Override
+	public ResourceLocation getEntityTexture(SheepEntity ent) {
+		return textureLoc;
+	}
 }

@@ -1,230 +1,125 @@
 package twilightforest.entity;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
-import net.minecraft.entity.ai.EntityAIHurtByTarget;
-import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.ai.EntityAIWander;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.util.MathHelper;
+import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.particles.BlockParticleData;
+import net.minecraft.particles.RedstoneParticleData;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.pathfinding.PathNodeType;
+import net.minecraft.util.DamageSource;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import twilightforest.block.TFBlocks;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class EntityTFTowerGolem extends EntityMob
-{
+public class EntityTFTowerGolem extends MonsterEntity {
 
-    private int attackTimer;
+	private int attackTimer;
 
-	public EntityTFTowerGolem(World par1World)
-    {
-        super(par1World);
-        //this.texture = TwilightForestMod.MODEL_DIR + "carminitegolem.png";
+	public EntityTFTowerGolem(EntityType<? extends EntityTFTowerGolem> type, World world) {
+		super(type, world);
+		this.setPathPriority(PathNodeType.WATER, -1.0F);
+	}
 
-        this.setSize(1.4F, 2.9F);
-        //this.moveSpeed = 0.25F;
-
-        
-        this.getNavigator().setAvoidsWater(true);
-        this.tasks.addTask(1, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
-        this.tasks.addTask(2, new EntityAIWander(this, 1.0F));
-        this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
-        this.tasks.addTask(3, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
-    }
-
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
-    @Override
-	protected boolean isAIEnabled()
-    {
-        return true;
-    }
-
-	/**
-	 * Set monster attributes
-	 */
 	@Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(40.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.25D); // movement speed
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(9.0D); // attack damage
-    }
+	protected void registerGoals() {
+		this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.0D, false));
+		this.goalSelector.addGoal(2, new WaterAvoidingRandomWalkingGoal(this, 1.0D, 0.0F));
+		this.goalSelector.addGoal(3, new LookAtGoal(this, PlayerEntity.class, 6.0F));
+		this.goalSelector.addGoal(3, new LookRandomlyGoal(this));
+		this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
+	}
 
-    /**
-     * Returns the current armor value as determined by a call to InventoryPlayer.getTotalArmorValue
-     */
-    @Override
-	public int getTotalArmorValue()
-    {
-        int var1 = super.getTotalArmorValue() + 2;
+	@Override
+	protected void registerAttributes() {
+		super.registerAttributes();
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(40.0D);
+		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
+		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(9.0D);
+		this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(2.0D);
+	}
 
-        if (var1 > 20)
-        {
-            var1 = 20;
-        }
+	@Override
+	public boolean attackEntityAsMob(Entity entity) {
+		this.attackTimer = 10;
+		this.world.setEntityState(this, (byte) 4);
+		boolean attackSuccess = super.attackEntityAsMob(entity);
 
-        return var1;
-    }
-	
-    public boolean attackEntityAsMob(Entity par1Entity)
-    {
-        this.attackTimer = 10;
-        this.worldObj.setEntityState(this, (byte)4);
-        boolean attackSuccess = super.attackEntityAsMob(par1Entity);
+		if (attackSuccess) {
+			entity.addVelocity(0, 0.4, 0);
+		}
 
-        if (attackSuccess)
-        {
-            par1Entity.motionY += 0.4000000059604645D;
-        }
+		return attackSuccess;
+	}
 
-        this.playSound("mob.irongolem.throw", 1.0F, 1.0F);
-        return attackSuccess;
-    }
+	@Override
+	protected SoundEvent getHurtSound(DamageSource source) {
+		return SoundEvents.ENTITY_IRON_GOLEM_HURT;
+	}
 
-    /**
-     * Returns the sound this mob makes while it's alive.
-     */
-    protected String getLivingSound()
-    {
-        return "none";
-    }
+	@Override
+	protected SoundEvent getDeathSound() {
+		return SoundEvents.ENTITY_IRON_GOLEM_DEATH;
+	}
 
-    /**
-     * Returns the sound this mob makes when it is hurt.
-     */
-    protected String getHurtSound()
-    {
-        return "mob.irongolem.hit";
-    }
+	@Override
+	protected void playStepSound(BlockPos pos, BlockState block) {
+		this.playSound(SoundEvents.ENTITY_IRON_GOLEM_STEP, 1.0F, 1.0F);
+	}
 
-    /**
-     * Returns the sound this mob makes on death.
-     */
-    protected String getDeathSound()
-    {
-        return "mob.irongolem.death";
-    }
+	@Override
+	public void livingTick() {
+		super.livingTick();
 
-    /**
-     * Plays step sound at given x, y, z for the entity
-     */
-    protected void func_145780_a(int par1, int par2, int par3, Block par4)
-    {
-        this.playSound("mob.irongolem.walk", 1.0F, 1.0F);
-    }
-    
-    
-    protected void collideWithEntity(Entity par1Entity)
-    {
-        if (par1Entity instanceof IMob && this.getRNG().nextInt(10) == 0)
-        {
-            this.setAttackTarget((EntityLivingBase)par1Entity);
-        }
+		if (this.attackTimer > 0) {
+			--this.attackTimer;
+		}
 
-        super.collideWithEntity(par1Entity);
-    }
+		// [VanillaCopy] last half of EntityIronGolem.onLivingUpdate
+		if (this.getMotion().getX() * this.getMotion().getX() + this.getMotion().getZ() * this.getMotion().getZ() > 2.500000277905201E-7D && this.rand.nextInt(5) == 0) {
+			int i = MathHelper.floor(this.getX());
+			int j = MathHelper.floor(this.getY() - 0.20000000298023224D);
+			int k = MathHelper.floor(this.getZ());
+			BlockState iblockstate = this.world.getBlockState(new BlockPos(i, j, k));
 
+			if (iblockstate.getMaterial() != Material.AIR) {
+				this.world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, iblockstate), this.getX() + ((double) this.rand.nextFloat() - 0.5D) * (double) this.getWidth(), this.getBoundingBox().minY + 0.1D, this.getZ() + ((double) this.rand.nextFloat() - 0.5D) * (double) this.getWidth(), 4.0D * ((double) this.rand.nextFloat() - 0.5D), 0.5D, ((double) this.rand.nextFloat() - 0.5D) * 4.0D);
+			}
+		}
+		// End copy
 
-    /**
-     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
-     * use this to react to sunlight and start to burn.
-     */
-    public void onLivingUpdate()
-    {
-        super.onLivingUpdate();
+		if (this.rand.nextBoolean()) {
+			this.world.addParticle(new RedstoneParticleData(1.0F, 0.0F, 0.0F, 1.0F), this.getX() + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(), this.getY() + this.rand.nextDouble() * (double) this.getHeight() - 0.25D, this.getZ() + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(), 0, 0, 0);
+		}
+	}
 
-        if (this.attackTimer > 0)
-        {
-            --this.attackTimer;
-        }
+	@OnlyIn(Dist.CLIENT)
+	@Override
+	public void handleStatusUpdate(byte id) {
+		if (id == 4) {
+			this.attackTimer = 10;
+			this.playSound(SoundEvents.ENTITY_IRON_GOLEM_ATTACK, 1.0F, 1.0F);
+		} else {
+			super.handleStatusUpdate(id);
+		}
+	}
 
-        if (this.motionX * this.motionX + this.motionZ * this.motionZ > 2.500000277905201E-7D && this.rand.nextInt(5) == 0)
-        {
-            int var1 = MathHelper.floor_double(this.posX);
-            int var2 = MathHelper.floor_double(this.posY - 0.20000000298023224D - (double)this.yOffset);
-            int var3 = MathHelper.floor_double(this.posZ);
-            Block block = this.worldObj.getBlock(var1, var2, var3);
+	public int getAttackTimer() {
+		return this.attackTimer;
+	}
 
-            if (block.getMaterial() != Material.air)
-            {
-                this.worldObj.spawnParticle("blockcrack_" + Block.getIdFromBlock(block) + "_" + this.worldObj.getBlockMetadata(var1, var2, var3), this.posX + ((double)this.rand.nextFloat() - 0.5D) * (double)this.width, this.boundingBox.minY + 0.1D, this.posZ + ((double)this.rand.nextFloat() - 0.5D) * (double)this.width, 4.0D * ((double)this.rand.nextFloat() - 0.5D), 0.5D, ((double)this.rand.nextFloat() - 0.5D) * 4.0D);
-            }
-        }
-        
-        // redstone sparkles?
-        if (this.rand.nextBoolean())
-        {
-            this.worldObj.spawnParticle("reddust", this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0, 0, 0);
-        }
-
-    }
-
-    
-    @SideOnly(Side.CLIENT)
-    public void handleHealthUpdate(byte par1)
-    {
-        if (par1 == 4)
-        {
-            this.attackTimer = 10;
-            this.playSound("mob.irongolem.throw", 1.0F, 1.0F);
-        }
-        else
-        {
-            super.handleHealthUpdate(par1);
-        }
-    }
-
-    @SideOnly(Side.CLIENT)
-    public int getAttackTimer()
-    {
-        return this.attackTimer;
-    }
-
-    /**
-     * Drop 0-2 items of this living's type. @param par1 - Whether this entity has recently been hit by a player. @param
-     * par2 - Level of Looting used to kill this mob.
-     */
-    protected void dropFewItems(boolean par1, int par2)
-    {
-        int var4;
-
-        var4 = this.rand.nextInt(3);
-
-        for (int i = 0; i < var4; ++i)
-        {
-            this.dropItem(Items.iron_ingot, 1);
-        }
-        
-        var4 = this.rand.nextInt(3);
-        
-        for (int i = 0; i < var4; ++i)
-        {
-            this.dropItem(Item.getItemFromBlock(TFBlocks.towerWood), 1);
-        }
-    }
-
-    /**
-     * Will return how many at most can spawn in a chunk at once.
-     */
-    public int getMaxSpawnedInChunk()
-    {
-        return 16;
-    }
-
+	@Override
+	public int getMaxSpawnedInChunk() {
+		return 16;
+	}
 }

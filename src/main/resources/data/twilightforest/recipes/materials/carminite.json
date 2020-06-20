@@ -1,0 +1,23 @@
+{
+  "result": {
+    "item": "twilightforest:carminite"
+  },
+  "group": "twilightforest:carminite",
+  "pattern": [
+    "brb",
+    "rgr",
+    "brb"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "b": {
+      "item": "twilightforest:borer_essence"
+    },
+    "r": {
+      "tag": "forge:dusts/redstone"
+    },
+    "g": {
+      "item": "minecraft:ghast_tear"
+    }
+  }
+}

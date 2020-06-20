@@ -1,17 +1,17 @@
 package twilightforest.structures.trollcave;
 
-import net.minecraft.world.gen.structure.MapGenStructureIO;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
+import twilightforest.TFFeature;
 
 public class TFTrollCavePieces {
 
-    public static void registerPieces()
-    {
-        MapGenStructureIO.func_143031_a(ComponentTFTrollCaveMain.class, "TFTCMai");
-        MapGenStructureIO.func_143031_a(ComponentTFTrollCaveConnect.class, "TFTCCon");
-        MapGenStructureIO.func_143031_a(ComponentTFTrollCaveGarden.class, "TFTCGard");
-        MapGenStructureIO.func_143031_a(ComponentTFTrollCloud.class, "TFTCloud");
-        MapGenStructureIO.func_143031_a(ComponentTFCloudCastle.class, "TFClCa");
-        MapGenStructureIO.func_143031_a(ComponentTFCloudTree.class, "TFClTr");
-        MapGenStructureIO.func_143031_a(ComponentTFTrollVault.class, "TFTCVa");
-    }
+//	public static final IStructurePieceType TFTC = TFFeature.registerPiece("TFTC", StructureStartTrollCave::new);
+
+	public static final IStructurePieceType TFTCMai = TFFeature.registerPiece("TFTCMai", ComponentTFTrollCaveMain::new);
+	public static final IStructurePieceType TFTCCon = TFFeature.registerPiece("TFTCCon", ComponentTFTrollCaveConnect::new);
+	public static final IStructurePieceType TFTCGard = TFFeature.registerPiece("TFTCGard", ComponentTFTrollCaveGarden::new);
+	public static final IStructurePieceType TFTCloud = TFFeature.registerPiece("TFTCloud", ComponentTFTrollCloud::new);
+	public static final IStructurePieceType TFClCa = TFFeature.registerPiece("TFClCa", ComponentTFCloudCastle::new);
+	public static final IStructurePieceType TFClTr = TFFeature.registerPiece("TFClTr", ComponentTFCloudTree::new);
+	public static final IStructurePieceType TFTCVa = TFFeature.registerPiece("TFTCVa", ComponentTFTrollVault::new);
 }

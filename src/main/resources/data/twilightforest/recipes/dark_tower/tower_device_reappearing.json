@@ -1,0 +1,23 @@
+{
+  "result": {
+    "item": "twilightforest:reappearing_block",
+    "count": 2
+  },
+  "pattern": [
+    "ere",
+    "rcr",
+    "ere"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "r": {
+      "tag": "forge:dusts/redstone"
+    },
+    "c": {
+      "item": "twilightforest:carminite"
+    },
+    "e": {
+      "item": "twilightforest:tower_wood_encased"
+    }
+  }
+}

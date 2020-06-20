@@ -1,0 +1,29 @@
+{
+  "display": {
+    "icon"       : { "item"     : "twilightforest:uberous_soil"              },
+    "title"      : { "translate": "advancement.twilightforest.progress_merge"      },
+    "description": { "translate": "advancement.twilightforest.progress_merge.desc",
+      "with"       : [
+        { "translate": "entity.twilightforest.hydra"      },
+        { "translate": "entity.twilightforest.ur_ghast"   },
+        { "translate": "entity.twilightforest.snow_queen" }
+      ]
+    },
+    "frame": "goal"
+  },
+  "parent": "twilightforest:progress_lich",
+  "criteria": {
+    "hydra": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": { "advancement": "twilightforest:progress_hydra"    }
+    },
+    "snow_queen": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": { "advancement": "twilightforest:progress_glacier"  }
+    },
+    "ur_ghast": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": { "advancement": "twilightforest:progress_ur_ghast" }
+    }
+  }
+}

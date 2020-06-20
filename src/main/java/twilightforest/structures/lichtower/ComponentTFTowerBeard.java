@@ -1,73 +1,79 @@
 package twilightforest.structures.lichtower;
 
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.World;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.IStructurePieceType;
+import net.minecraft.world.gen.feature.template.TemplateManager;
+import twilightforest.TFFeature;
+import twilightforest.structures.StructureTFComponentOld;
+
 import java.util.Random;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import twilightforest.structures.StructureTFComponent;
-
-
-public class ComponentTFTowerBeard extends StructureTFComponent {
+public class ComponentTFTowerBeard extends StructureTFComponentOld {
 
 	int size;
 	int height;
 
-	public ComponentTFTowerBeard() {
-		super();
-		// TODO Auto-generated constructor stub
+	public ComponentTFTowerBeard(TemplateManager manager, CompoundNBT nbt) {
+		super(TFLichTowerPieces.TFLTBea, nbt);
 	}
 
-	public ComponentTFTowerBeard(int i, ComponentTFTowerWing wing) {
-		super(i);
-		
+	public ComponentTFTowerBeard(IStructurePieceType piece, CompoundNBT nbt) {
+		super(piece, nbt);
+	}
+
+	public ComponentTFTowerBeard(IStructurePieceType piece, TFFeature feature, int i, ComponentTFTowerWing wing) {
+		super(piece, feature, i);
+
 		this.setCoordBaseMode(wing.getCoordBaseMode());
 		this.size = wing.size - 2;
 		this.height = size / 2;
-		
-		// just hang out at the very bottom of the tower
-		this.boundingBox = new StructureBoundingBox(wing.getBoundingBox().minX + 1, wing.getBoundingBox().minY - this.height - 1, wing.getBoundingBox().minZ + 1, wing.getBoundingBox().maxX - 1, wing.getBoundingBox().minY - 1, wing.getBoundingBox().maxZ - 1);
 
+		// just hang out at the very bottom of the tower
+		this.boundingBox = new MutableBoundingBox(wing.getBoundingBox().minX + 1, wing.getBoundingBox().minY - this.height - 1, wing.getBoundingBox().minZ + 1, wing.getBoundingBox().maxX - 1, wing.getBoundingBox().minY - 1, wing.getBoundingBox().maxZ - 1);
 	}
-	
+
 	/**
 	 * Save to NBT
+	 * TODO: See super
 	 */
-	@Override
-	protected void func_143012_a(NBTTagCompound par1NBTTagCompound) {
-		super.func_143012_a(par1NBTTagCompound);
-		
-        par1NBTTagCompound.setInteger("beardSize", this.size);
-        par1NBTTagCompound.setInteger("beardHeight", this.height);
-	}
-	
+//	@Override
+//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
+//		super.writeStructureToNBT(tagCompound);
+//
+//		tagCompound.putInt("beardSize", this.size);
+//		tagCompound.putInt("beardHeight", this.height);
+//	}
+
 	/**
 	 * Load from NBT
 	 */
 	@Override
-	protected void func_143011_b(NBTTagCompound par1NBTTagCompound) {
-		super.func_143011_b(par1NBTTagCompound);
-        this.size = par1NBTTagCompound.getInteger("beardSize");
-        this.height = par1NBTTagCompound.getInteger("beardHeight");
+	protected void readAdditional(CompoundNBT tagCompound) {
+		super.readAdditional(tagCompound);
+		this.size = tagCompound.getInt("beardSize");
+		this.height = tagCompound.getInt("beardHeight");
 	}
 
 	/**
 	 * Makes a pyramid-shaped beard
 	 */
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
-		return makePyramidBeard(world, rand, sbb);
+	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+		return makePyramidBeard(world.getWorld(), rand, sbb);
 	}
 
-	private boolean makePyramidBeard(World world, Random rand, StructureBoundingBox sbb) {
-		for (int y = 0; y <= height ; y++) {
+	private boolean makePyramidBeard(World world, Random rand, MutableBoundingBox sbb) {
+		for (int y = 0; y <= height; y++) {
 			int min = y;
 			int max = size - y - 1;
-			
-			fillWithRandomizedBlocks(world, sbb, min, height - y, min, max, height - y, max, false, rand, StructureTFComponent.getStrongholdStones());
-		}        
-        return true;
+
+			fillWithRandomizedBlocks(world, sbb, min, height - y, min, max, height - y, max, false, rand, StructureTFComponentOld.getStrongholdStones());
+		}
+		return true;
 	}
-
-
 }

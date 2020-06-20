@@ -1,353 +1,242 @@
 package twilightforest.entity.passive;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.Pose;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAITempt;
-import net.minecraft.entity.ai.EntityAIWander;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.Direction;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import twilightforest.TFAchievementPage;
-import twilightforest.TwilightForestMod;
+import twilightforest.TFSounds;
 import twilightforest.entity.ai.EntityAITFBirdFly;
 
-
 public class EntityTFTinyBird extends EntityTFBird {
-	
-	private static final int DATA_BIRDTYPE = 16;
-    private static final int DATA_BIRDFLAGS = 17;
-	
-	/**
-     * randomly selected ChunkCoordinates in a 7x6x7 box around the bat (y offset -2 to 4) towards which it will fly.
-     * upon getting close a new target will be selected
-     */
-    private ChunkCoordinates currentFlightTarget;
-    private int currentFlightTime;
 
-    public EntityTFTinyBird(World par1World) {
-		super(par1World);
-		//texture = TwilightForestMod.MODEL_DIR + "tinybirdbrown.png";
-		
-        this.setSize(0.5F, 0.9F);
-		
-		// maybe this will help them move cuter?
-		//this.stepHeight = 2;
-		
-		// bird AI
-        this.getNavigator().setAvoidsWater(true);
-        this.tasks.addTask(0, new EntityAITFBirdFly(this));
-        this.tasks.addTask(1, new EntityAITempt(this, 1.0F, Items.wheat_seeds, true));
-        this.tasks.addTask(2, new EntityAIWander(this, 1.0F));
-        this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 6F));
-        this.tasks.addTask(4, new EntityAILookIdle(this));
-        
-        // random color
-        setBirdType(rand.nextInt(4));
-        
-        setIsBirdLanded(true);
+	private static final DataParameter<Byte> DATA_BIRDTYPE = EntityDataManager.createKey(EntityTFTinyBird.class, DataSerializers.BYTE);
+	private static final DataParameter<Byte> DATA_BIRDFLAGS = EntityDataManager.createKey(EntityTFTinyBird.class, DataSerializers.BYTE);
+
+	// [VanillaCopy] EntityBat field
+	private BlockPos spawnPosition;
+	private int currentFlightTime;
+
+	public EntityTFTinyBird(EntityType<? extends EntityTFTinyBird> type, World world) {
+		super(type, world);
+		setBirdType(rand.nextInt(4));
+		setIsBirdLanded(true);
 	}
-	
+
 	@Override
-    protected void entityInit()
-    {
-        super.entityInit();
-        this.dataWatcher.addObject(DATA_BIRDTYPE, Byte.valueOf((byte)0));
-        this.dataWatcher.addObject(DATA_BIRDFLAGS, Byte.valueOf((byte)0));
-    }
-	
-	/**
-	 * Set monster attributes
-	 */
+	protected void registerGoals() {
+		this.goalSelector.addGoal(0, new SwimGoal(this));
+		this.goalSelector.addGoal(1, new PanicGoal(this, 1.5F));
+		this.goalSelector.addGoal(2, new EntityAITFBirdFly(this));
+		this.goalSelector.addGoal(3, new TemptGoal(this, 1.0F, true, SEEDS));
+		this.goalSelector.addGoal(4, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
+		this.goalSelector.addGoal(5, new LookAtGoal(this, PlayerEntity.class, 6F));
+		this.goalSelector.addGoal(6, new LookRandomlyGoal(this));
+	}
+
 	@Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(1.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.20000001192092896D);
-    }
-    
-//    /**
-//     * Returns the texture's file path as a String.
-//     */
+	protected void registerData() {
+		super.registerData();
+		dataManager.register(DATA_BIRDTYPE, (byte) 0);
+		dataManager.register(DATA_BIRDFLAGS, (byte) 0);
+	}
+
+	@Override
+	protected void registerAttributes() {
+		super.registerAttributes();
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(1.0D);
+		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.20000001192092896D);
+	}
+
+	@Override
+	public void writeAdditional(CompoundNBT compound) {
+		super.writeAdditional(compound);
+		compound.putInt("BirdType", this.getBirdType());
+	}
+
+	@Override
+	public void readAdditional(CompoundNBT compound) {
+		super.readAdditional(compound);
+		this.setBirdType(compound.getInt("BirdType"));
+	}
+
+	public int getBirdType() {
+		return dataManager.get(DATA_BIRDTYPE);
+	}
+
+	public void setBirdType(int type) {
+		dataManager.set(DATA_BIRDTYPE, (byte) type);
+	}
+
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return TFSounds.TINYBIRD_CHIRP;
+	}
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource source) {
+		return TFSounds.TINYBIRD_HURT;
+	}
+
+	@Override
+	protected SoundEvent getDeathSound() {
+		return TFSounds.TINYBIRD_HURT;
+	}
+
+	@Override
+	public float getEyeHeight(Pose pose) {
+		return this.getHeight() * 0.7F;
+	}
+
+	//TODO: Move to Renderer?
 //	@Override
-//    public String getTexture()
-//    {
-//        switch (this.getBirdType())
-//        {
-//            case 0:
-//                return TwilightForestMod.MODEL_DIR + "tinybirdbrown.png";
-//
-//            case 1:
-//                return TwilightForestMod.MODEL_DIR + "tinybirdblue.png";
-//
-//            case 2:
-//                return TwilightForestMod.MODEL_DIR + "tinybirdred.png";
-//
-//            case 3:
-//                return TwilightForestMod.MODEL_DIR + "tinybirdgold.png";
-//
-//            default:
-//                return super.getTexture();
-//        }
-//    }
+//	public float getRenderSizeModifier() {
+//		return 0.3F;
+//	}
 
-    /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
 	@Override
-    public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
-    {
-        super.writeEntityToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setInteger("BirdType", this.getBirdType());
-    }
-
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
-	@Override
-    public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
-    {
-        super.readEntityFromNBT(par1NBTTagCompound);
-        this.setBirdType(par1NBTTagCompound.getInteger("BirdType"));
-    }
-
-    public int getBirdType()
-    {
-        return this.dataWatcher.getWatchableObjectByte(16);
-    }
-
-    public void setBirdType(int par1)
-    {
-        this.dataWatcher.updateObject(DATA_BIRDTYPE, Byte.valueOf((byte)par1));
-    }
-	
-    /**
-     * Returns the sound this mob makes while it's alive.
-     */
-	@Override
-    protected String getLivingSound()
-    {
-        return TwilightForestMod.ID + ":mob.tinybird.chirp";
-    }
-
-    /**
-     * Returns the sound this mob makes when it is hurt.
-     */
-	@Override
-    protected String getHurtSound()
-    {
-        return TwilightForestMod.ID + ":mob.tinybird.hurt";
-    }
-
-    /**
-     * Returns the sound this mob makes on death.
-     */
-	@Override
-    protected String getDeathSound()
-    {
-        return TwilightForestMod.ID + ":mob.tinybird.hurt";
-    }
-
-	/**
-	 * Actually only used for the shadow
-	 */
-	@Override
-	public float getRenderSizeModifier() {
-		 return 0.3F;
+	public boolean canDespawn(double p_213397_1_) {
+		return false;
 	}
 
-    /**
-     * Determines if an entity can be despawned, used on idle far away entities
-     */
-    @Override
-	protected boolean canDespawn()
-    {
-        return false;
-    }
-
-    /**
-     * Takes a coordinate in and returns a weight to determine how likely this creature will try to path to the block.
-     * Args: x, y, z
-     */
 	@Override
-    public float getBlockPathWeight(int par1, int par2, int par3)
-    {
-    	// prefer standing on leaves
-		Material underMaterial = this.worldObj.getBlock(par1, par2 - 1, par3).getMaterial();
-		if (underMaterial == Material.leaves) {
+	public float getBlockPathWeight(BlockPos pos) {
+		// prefer standing on leaves
+		Material underMaterial = this.world.getBlockState(pos.down()).getMaterial();
+		if (underMaterial == Material.LEAVES) {
 			return 200.0F;
 		}
-		if (underMaterial == Material.wood) {
+		if (underMaterial == Material.WOOD) {
 			return 15.0F;
 		}
-		if (underMaterial == Material.grass) {
+		if (underMaterial == Material.ORGANIC) {
 			return 9.0F;
 		}
-		// default to just prefering lighter areas
-		return this.worldObj.getLightBrightness(par1, par2, par3) - 0.5F;
-    }
+		// default to just preferring lighter areas
+		return this.world.getLight(pos) - 0.5F;
+	}
 
-    /**
-     * Trigger achievement when killed
-     */
 	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
-			((EntityPlayer)par1DamageSource.getSourceOfDamage()).triggerAchievement(TFAchievementPage.twilightHunter);
+	public void tick() {
+		super.tick();
+		// while we are flying, try to level out somewhat
+		if (!this.isBirdLanded()) {
+			this.setMotion(this.getMotion().mul(1.0F, 0.6000000238418579D, 1.0F));
 		}
 	}
-	
-    /**
-     * Called to update the entity's position/logic.
-     */
-    public void onUpdate()
-    {
-        super.onUpdate();
-        
-        // while we are flying, try to level out somewhat
-        if (!this.isBirdLanded())
-        {
-        	this.motionY *= 0.6000000238418579D;
-        }
-        
-        
-    }
 
-    protected void updateAITasks()
-    {
-        super.updateAITasks();
+	@Override
+	protected void updateAITasks() {
+		super.updateAITasks();
 
-        if (this.isBirdLanded())
-        {
-        	this.currentFlightTime = 0;
-        	
-            if (this.rand.nextInt(200) == 0 && !isLandableBlock(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1), MathHelper.floor_double(this.posZ)))
-            {
-                this.setIsBirdLanded(false);
-                this.worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1015, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
-                this.motionY = 0.4;
-                //FMLLog.info("bird taking off because it is no longer on land");
-            }
-            else
-            {
-                if (isSpooked())
-                {
-                    this.setIsBirdLanded(false);
-                    this.motionY = 0.4;
-                    this.worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1015, (int)this.posX, (int)this.posY, (int)this.posZ, 0);
-                    //FMLLog.info("bird taking off because it was spooked");
-                }
-            }
-        }
-        else
-        {
-        	this.currentFlightTime++;
-        	
-            if (this.currentFlightTarget != null && (!this.worldObj.isAirBlock(this.currentFlightTarget.posX, this.currentFlightTarget.posY, this.currentFlightTarget.posZ) || this.currentFlightTarget.posY < 1))
-            {
-                this.currentFlightTarget = null;
-            }
+		if (this.isBirdLanded()) {
+			this.currentFlightTime = 0;
 
-            if (this.currentFlightTarget == null || this.rand.nextInt(30) == 0 || this.currentFlightTarget.getDistanceSquared((int)this.posX, (int)this.posY, (int)this.posZ) < 4.0F)
-            {
-            	int yTarget = this.currentFlightTime < 100 ? 2 : 4; 
-            	
-                this.currentFlightTarget = new ChunkCoordinates((int)this.posX + this.rand.nextInt(7) - this.rand.nextInt(7), (int)this.posY + this.rand.nextInt(6) - yTarget, (int)this.posZ + this.rand.nextInt(7) - this.rand.nextInt(7));
-            }
+			if (isSpooked() || isInWater() || world.containsAnyLiquid(getBoundingBox()) || (this.rand.nextInt(200) == 0 && !isLandableBlock(new BlockPos(getX(), getY() - 1, getZ())))) {
+				this.setIsBirdLanded(false);
+				this.world.playEvent(1025, new BlockPos(this), 0);
+				this.setMotion(this.getMotion().getX(), 0.4F, this.getMotion().getZ());
+			}
+		} else {
+			this.currentFlightTime++;
 
-            double d0 = (double)this.currentFlightTarget.posX + 0.5D - this.posX;
-            double d1 = (double)this.currentFlightTarget.posY + 0.1D - this.posY;
-            double d2 = (double)this.currentFlightTarget.posZ + 0.5D - this.posZ;
-            this.motionX += (Math.signum(d0) * 0.5D - this.motionX) * 0.10000000149011612D;
-            this.motionY += (Math.signum(d1) * 0.699999988079071D - this.motionY) * 0.10000000149011612D;
-            this.motionZ += (Math.signum(d2) * 0.5D - this.motionZ) * 0.10000000149011612D;
-            float f = (float)(Math.atan2(this.motionZ, this.motionX) * 180.0D / Math.PI) - 90.0F;
-            float f1 = MathHelper.wrapAngleTo180_float(f - this.rotationYaw);
-            this.moveForward = 0.5F;
-            this.rotationYaw += f1;
+			// [VanillaCopy] Modified version of last half of EntityBat.updateAITasks. Edits noted
+			if (this.spawnPosition != null && (!this.world.isAirBlock(this.spawnPosition) || this.spawnPosition.getY() < 1)) {
+				this.spawnPosition = null;
+			}
 
+			if (isInWater() || world.containsAnyLiquid(getBoundingBox())) {
+				currentFlightTime = 0; // reset timer for MAX FLIGHT :v
+				this.setMotion(this.getMotion().getX(), 0.1F, this.getMotion().getZ());
+			}
 
-            if (this.rand.nextInt(10) == 0 && isLandableBlock(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 1), MathHelper.floor_double(this.posZ)))
-            {
+			if (this.spawnPosition == null || this.rand.nextInt(30) == 0 || this.spawnPosition.distanceSq(new Vec3i(((int) this.getX()), ((int) this.getY()), ((int) this.getZ()))) < 4.0D) {
+				// TF - modify shift factor of Y
+				int yTarget = this.currentFlightTime < 100 ? 2 : 4;
+				this.spawnPosition = new BlockPos((int) this.getX() + this.rand.nextInt(7) - this.rand.nextInt(7), (int) this.getY() + this.rand.nextInt(6) - yTarget, (int) this.getZ() + this.rand.nextInt(7) - this.rand.nextInt(7));
+			}
 
+			double d0 = (double) this.spawnPosition.getX() + 0.5D - this.getX();
+			double d1 = (double) this.spawnPosition.getY() + 0.1D - this.getY();
+			double d2 = (double) this.spawnPosition.getZ() + 0.5D - this.getZ();
 
-            		this.setIsBirdLanded(true);
+//			this.motionX += (Math.signum(d0) * 0.5D - this.motionX) * 0.10000000149011612D;
+//			this.motionY += (Math.signum(d1) * 0.699999988079071D - this.motionY) * 0.10000000149011612D;
+//			this.motionZ += (Math.signum(d2) * 0.5D - this.motionZ) * 0.10000000149011612D;
+			this.getMotion().add(new Vec3d(
+					(Math.signum(d0) * 0.5D - this.getMotion().getX()) * 0.10000000149011612D,
+					(Math.signum(d1) * 0.699999988079071D - this.getMotion().getY()) * 0.10000000149011612D,
+					(Math.signum(d2) * 0.5D - this.getMotion().getZ()) * 0.10000000149011612D
+			));
 
-            		this.motionY = 0;
+			float f = (float) (MathHelper.atan2(this.getMotion().getZ(), this.getMotion().getX()) * (180D / Math.PI)) - 90.0F;
+			float f1 = MathHelper.wrapDegrees(f - this.rotationYaw);
+			this.moveForward = 0.5F;
+			this.rotationYaw += f1;
 
-            		//this.posY = MathHelper.floor_double(posY);
-            		//FMLLog.info("bird landing");
-            }
-        }
-    }
-
-    /**
-     * Return true if the bird is spooked
-     */
-	public boolean isSpooked() {
-		EntityPlayer closestPlayer = this.worldObj.getClosestPlayerToEntity(this, 4.0D);
-		
-		return this.hurtTime > 0 || (closestPlayer != null && (closestPlayer.inventory.getCurrentItem() == null || closestPlayer.inventory.getCurrentItem().getItem() != Items.wheat_seeds));
+			// TF - change chance 100 -> 10; change check to isLandable
+			if (this.rand.nextInt(100) == 0 && isLandableBlock(new BlockPos(getX(), getY() - 1, getZ()))) //this.world.getBlockState(blockpos1).isNormalCube())
+			{
+				// this.setIsBatHanging(true); TF - land the bird
+				setIsBirdLanded(true);
+				this.setMotion(this.getMotion().getX(), 0.0F, this.getMotion().getZ());
+			}
+			// End copy
+		}
 	}
-    
-    
-    /**
-     * Can the bird land here?
-     */
-    public boolean isLandableBlock(int x, int y, int z)
-    {
-        Block block = this.worldObj.getBlock(x, y, z);
-        
-        if (block == Blocks.air)
-        {
-            return false;
-        }
-        else
-        {
-        	return block.isLeaves(worldObj, x, y, z) || block.isSideSolid(worldObj, x, y, z, ForgeDirection.UP);
-        }
-    }
 
-    
-    public boolean isBirdLanded()
-    {
-        return (this.dataWatcher.getWatchableObjectByte(DATA_BIRDFLAGS) & 1) != 0;
-    }
+	public boolean isSpooked() {
+		if (this.hurtTime > 0) return true;
+		PlayerEntity closestPlayer = this.world.getClosestPlayer(this, 4.0D);
+		return closestPlayer != null
+				&& !SEEDS.test(closestPlayer.getHeldItemMainhand())
+				&& !SEEDS.test(closestPlayer.getHeldItemOffhand());
+	}
 
-    public void setIsBirdLanded(boolean par1)
-    {
-        byte b0 = this.dataWatcher.getWatchableObjectByte(DATA_BIRDFLAGS);
+	public boolean isLandableBlock(BlockPos pos) {
+		BlockState state = world.getBlockState(pos);
+		Block block = state.getBlock();
+		return !block.isAir(state, world, pos)
+				&& (block.isIn(BlockTags.LEAVES) || state.isSideSolidFullSquare(world, pos, Direction.UP));
+	}
 
-        if (par1)
-        {
-            this.dataWatcher.updateObject(DATA_BIRDFLAGS, Byte.valueOf((byte)(b0 | 1)));
-        }
-        else
-        {
-            this.dataWatcher.updateObject(DATA_BIRDFLAGS, Byte.valueOf((byte)(b0 & -2)));
-        }
-    }
-    
-    /**
-     * Returns true if this entity should push and be pushed by other entities when colliding.
-     */
-    public boolean canBePushed()
-    {
-        return false;
-    }
+	@Override
+	public boolean isBirdLanded() {
+		return (dataManager.get(DATA_BIRDFLAGS) & 1) != 0;
+	}
 
-    protected void collideWithEntity(Entity par1Entity) {}
+	public void setIsBirdLanded(boolean landed) {
+		byte flags = dataManager.get(DATA_BIRDFLAGS);
+		dataManager.set(DATA_BIRDFLAGS, (byte) (landed ? flags | 1 : flags & ~1));
+	}
 
-    protected void func_85033_bc() {}
+	@Override
+	public boolean canBePushed() {
+		return false;
+	}
+
+	@Override
+	protected void collideWithEntity(Entity entity) {
+	}
+
+	@Override
+	protected void collideWithNearbyEntities() {
+	}
 }

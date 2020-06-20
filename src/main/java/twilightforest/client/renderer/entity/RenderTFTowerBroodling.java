@@ -1,30 +1,28 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.client.renderer.entity.RenderSpider;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.SpiderRenderer;
 import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.opengl.GL11;
-
 import twilightforest.TwilightForestMod;
+import twilightforest.entity.EntityTFTowerBroodling;
 
-public class RenderTFTowerBroodling extends RenderSpider {
+public class RenderTFTowerBroodling<T extends EntityTFTowerBroodling> extends SpiderRenderer<T> {
 
-    private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "towerbroodling.png");
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("towerbroodling.png");
+
+	public RenderTFTowerBroodling(EntityRendererManager manager) {
+		super(manager);
+	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(Entity entity) {
+	public ResourceLocation getEntityTexture(T entity) {
 		return textureLoc;
 	}
 
-    /**
-     * Allows the render to do any OpenGL state modifications necessary before the model is rendered. Args:
-     * entityLiving, partialTickTime
-     */
-    protected void preRenderCallback(EntityLivingBase par1EntityLivingBase, float par2)
-    {
-    	float scale = 0.7F;
-        GL11.glScalef(scale, scale, scale);
-    }
+	@Override
+	protected void scale(T entity, MatrixStack stack, float partialTicks) {
+		float scale = 0.7F;
+		stack.scale(scale, scale, scale);
+	}
 }

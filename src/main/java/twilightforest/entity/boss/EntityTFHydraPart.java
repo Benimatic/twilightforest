@@ -1,161 +1,156 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.*;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import twilightforest.entity.TFEntities;
 
+public class EntityTFHydraPart extends MobEntity {
 
-public class EntityTFHydraPart extends EntityLiving {
-    public EntityTFHydra hydraObj;
+	private static final DataParameter<String> PART_NAME = EntityDataManager.createKey(EntityTFHydraPart.class, DataSerializers.STRING);
 
-    public EntityTFHydraPart(World world)
-    {
-    	super(world);
-		isImmuneToFire = true;
-    }
-    
-    public EntityTFHydraPart(EntityTFHydra hydra, String s, float f, float f1)
-    {
-        super(hydra.worldObj);
-        setSize(f, f1);
-        hydraObj = hydra;
-        setPartName(s);
-        
+	public EntityTFHydra hydra;
+
+	public EntityTFHydraPart(EntityType<? extends EntityTFHydraPart> type, World world) {
+		super(type, world);
+	}
+
+	public EntityTFHydraPart(EntityTFHydra parent, World world, float width, float height) {
+		super(TFEntities.hydra, world);
+		isImmuneToFire();
+		this.hydra = parent;
+		this.size = EntitySize.flexible(width, height);
+		this.recalculateSize();
+	}
+
+	public EntityTFHydraPart(EntityTFHydra hydra, String name, float width, float height) {
+		this(hydra, hydra.world, width, height);
+		setPartName(name);
 		//texture = TwilightForestMod.MODEL_DIR + "hydra4.png";
-		isImmuneToFire = true;
-
-    }
-	
-	@Override
-    protected void entityInit()
-    {
-        super.entityInit();
-        dataWatcher.addObject(17, "");
-    }
-    
-	
-    public String getPartName()
-    {
-        return dataWatcher.getWatchableObjectString(17);
-    }
-
-    public void setPartName(String name)
-    {
-        dataWatcher.updateObject(17, name);
-    }
-    
-
-    @Override
-	public void writeEntityToNBT(NBTTagCompound nbttagcompound)
-    {
-        super.writeEntityToNBT(nbttagcompound);
-        nbttagcompound.setString("PartName", getPartName());
-    }
-
-    @Override
-	public void readEntityFromNBT(NBTTagCompound nbttagcompound)
-    {
-        super.readEntityFromNBT(nbttagcompound);
-        setPartName(nbttagcompound.getString("PartName"));
-    }
-
-	/**
-	 * We need this to display bounding boxes
-	 */
-    @Override
-    public void onUpdate() {
-    	if (this.hydraObj != null && this.hydraObj.deathTime > 190)
-    	{
-    		setDead();
-    	}
-    	
-    	//  just die if we've been alive 60 seconds and there's still no body
-    	if (this.hydraObj == null && this.ticksExisted > 1200)
-    	{
-    		setDead();
-    	}
-    	
-    	super.onEntityUpdate();
-
-    	lastTickPosX = posX;
-    	lastTickPosY = posY;
-    	lastTickPosZ = posZ;
-    	
-        if (this.newPosRotationIncrements > 0)
-        {
-            double var1 = this.posX + (this.newPosX - this.posX) / this.newPosRotationIncrements;
-            double var3 = this.posY + (this.newPosY - this.posY) / this.newPosRotationIncrements;
-            double var5 = this.posZ + (this.newPosZ - this.posZ) / this.newPosRotationIncrements;
-            double var7 = MathHelper.wrapAngleTo180_double(this.newRotationYaw - this.rotationYaw);
-            this.rotationYaw = (float)(this.rotationYaw + var7 / this.newPosRotationIncrements);
-            this.rotationPitch = (float)(this.rotationPitch + (this.newRotationPitch - this.rotationPitch) / this.newPosRotationIncrements);
-            --this.newPosRotationIncrements;
-            this.setPosition(var1, var3, var5);
-            this.setRotation(this.rotationYaw, this.rotationPitch);
-        }
-
-        
-    	
-    	//System.out.println("Updating " + this + " with angles " + rotationYawHead + ", " + rotationPitch);
-
-
-    	this.rotationYawHead = this.rotationYaw;
-    	this.prevRotationYawHead = this.prevRotationYaw;
-
-    	for (; rotationYaw - prevRotationYaw < -180F; prevRotationYaw -= 360F) { }
-    	for (; rotationYaw - prevRotationYaw >= 180F; prevRotationYaw += 360F) { }
-    	for (; renderYawOffset - prevRenderYawOffset < -180F; prevRenderYawOffset -= 360F) { }
-    	for (; renderYawOffset - prevRenderYawOffset >= 180F; prevRenderYawOffset += 360F) { }
-    	for (; rotationPitch - prevRotationPitch < -180F; prevRotationPitch -= 360F) { }
-    	for (; rotationPitch - prevRotationPitch >= 180F; prevRotationPitch += 360F) { }
-    	for (; rotationYawHead - prevRotationYawHead < -180F; prevRotationYawHead -= 360F) { }
-    	for (; rotationYawHead - prevRotationYawHead >= 180F; prevRotationYawHead += 360F) { }
-    	
- 
-
-    }
-
-
-	/**
-	 * Set monster attributes
-	 */
-	@Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(1000D); // max health
-    }
-	
+	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource damagesource, float i)
-    {
-		if (hydraObj != null)
-		{
-			return hydraObj.attackEntityFromPart(this, damagesource, i);
+	protected void registerData() {
+		super.registerData();
+		dataManager.register(PART_NAME, "");
+	}
+
+	public String getPartName() {
+		return dataManager.get(PART_NAME);
+	}
+
+	public void setPartName(String name) {
+		dataManager.set(PART_NAME, name);
+	}
+
+	@Override
+	public void writeAdditional(CompoundNBT compound) {
+		super.writeAdditional(compound);
+		compound.putString("PartName", getPartName());
+	}
+
+	@Override
+	public void readAdditional(CompoundNBT compound) {
+		super.readAdditional(compound);
+		setPartName(compound.getString("PartName"));
+	}
+
+	@Override
+	public void tick() {
+		if (this.hydra != null && this.hydra.deathTime > 190) {
+			remove();
 		}
-		else
-		{
-			return false;
+
+		//  just die if we've been alive 60 seconds and there's still no body
+		if (this.hydra == null && this.ticksExisted > 1200) {
+			remove();
 		}
-    }
 
-    public boolean isEntityEqual(Entity entity)
-    {
-        return this == entity || hydraObj == entity;
-    }
+		super.baseTick();
 
-    /**
-     * Sets the rotation of the entity
-     */
-    @Override
-	protected void setRotation(float par1, float par2)
-    {
-        this.rotationYaw = par1 % 360.0F;
-        this.rotationPitch = par2 % 360.0F;
-    }
+		lastTickPosX = getX();
+		lastTickPosY = getY();
+		lastTickPosZ = getZ();
+
+		if (this.newPosRotationIncrements > 0) {
+			double x = this.getX() + (this.interpTargetX - this.getX()) / this.newPosRotationIncrements;
+			double y = this.getY() + (this.interpTargetY - this.getY()) / this.newPosRotationIncrements;
+			double z = this.getZ() + (this.interpTargetZ - this.getZ()) / this.newPosRotationIncrements;
+			double yawDelta = MathHelper.wrapDegrees(this.interpTargetYaw - this.rotationYaw);
+			this.rotationYaw = (float) (this.rotationYaw + yawDelta / this.newPosRotationIncrements);
+			this.rotationPitch = (float) (this.rotationPitch + (this.interpTargetPitch - this.rotationPitch) / this.newPosRotationIncrements);
+			--this.newPosRotationIncrements;
+			this.setPosition(x, y, z);
+			this.setRotation(this.rotationYaw, this.rotationPitch);
+		}
+
+		this.rotationYawHead = this.rotationYaw;
+		this.prevRotationYawHead = this.prevRotationYaw;
+
+		while (rotationYaw - prevRotationYaw < -180F) prevRotationYaw -= 360F;
+		while (rotationYaw - prevRotationYaw >= 180F) prevRotationYaw += 360F;
+
+		while (renderYawOffset - prevRenderYawOffset < -180F) prevRenderYawOffset -= 360F;
+		while (renderYawOffset - prevRenderYawOffset >= 180F) prevRenderYawOffset += 360F;
+
+		while (rotationPitch - prevRotationPitch < -180F) prevRotationPitch -= 360F;
+		while (rotationPitch - prevRotationPitch >= 180F) prevRotationPitch += 360F;
+
+		while (rotationYawHead - prevRotationYawHead < -180F) prevRotationYawHead -= 360F;
+		while (rotationYawHead - prevRotationYawHead >= 180F) prevRotationYawHead += 360F;
+	}
+
+	@Override
+	protected void registerAttributes() {
+		super.registerAttributes();
+		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(1000D);
+	}
+
+	@Override
+	public boolean attackEntityFrom(DamageSource source, float amount) {
+		return hydra != null && hydra.attackEntityFromPart(this, source, amount);
+	}
+
+	@Override
+	public boolean isEntityEqual(Entity entity) {
+		return this == entity || hydra == entity;
+	}
+
+	@Override
+	protected void setRotation(float yaw, float pitch) {
+		this.rotationYaw = yaw % 360.0F;
+		this.rotationPitch = pitch % 360.0F;
+	}
+
+	@Override
+	public boolean isNonBoss() {
+		return false;
+	}
+
+	@Override
+	public boolean canDespawn(double p_213397_1_) {
+		return hydra == null;
+	}
+
+	public void setWidth(float width) {
+		setWidthAndHeight(width, size.height);
+	}
+
+	public void setHeight(float height) {
+		setWidthAndHeight(size.width, height);
+	}
+
+	public void setWidthAndHeight(float value) {
+		setWidthAndHeight(value, value);
+	}
+
+	public void setWidthAndHeight(float width, float height) {
+		size = EntitySize.flexible(width, height);
+		recalculateSize();
+	}
 }

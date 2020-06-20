@@ -1,0 +1,27 @@
+{
+  "display": {
+    "icon": {
+      "item": "twilightforest:thorns"
+    },
+    "title": {
+      "translate": "advancement.twilightforest.progress_thorns"
+    },
+    "description": {
+      "translate": "advancement.twilightforest.progress_thorns.desc"
+    },
+    "frame": "goal"
+  },
+  "parent": "twilightforest:progress_troll",
+  "criteria": {
+    "discover": {
+      "trigger": "minecraft:location",
+      "conditions": { "feature": "twilightforest:final_castle" }
+    },
+    "previous_progression": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:progress_troll"
+      }
+    }
+  }
+}

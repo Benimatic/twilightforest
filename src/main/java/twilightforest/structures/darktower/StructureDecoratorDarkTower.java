@@ -1,30 +1,18 @@
 package twilightforest.structures.darktower;
 
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Blocks;
 import twilightforest.block.TFBlocks;
 import twilightforest.structures.StructureTFDecorator;
 
-public class StructureDecoratorDarkTower extends StructureTFDecorator 
-{
+public class StructureDecoratorDarkTower extends StructureTFDecorator {
 
-	public StructureDecoratorDarkTower() 
-	{
-		this.blockID = TFBlocks.towerWood;
-		this.blockMeta = 0;
-		
-		this.accentID = TFBlocks.towerWood;
-		this.accentMeta = 1;
-		
-		this.fenceID = Blocks.fence;
-		
-		this.stairID = Blocks.spruce_stairs;
-		
-		this.pillarID = TFBlocks.towerWood;
-		this.pillarMeta = 1;
-		
-		this.platformID = TFBlocks.towerWood;;
-		this.platformMeta = 1;
-
+	public StructureDecoratorDarkTower() {
+		this.blockState = TFBlocks.tower_wood.get().getDefaultState();
+		this.accentState = TFBlocks.castle_stairs_encased.get().getDefaultState();
+		this.fenceState = Blocks.OAK_FENCE.getDefaultState();
+		this.stairState = Blocks.SPRUCE_STAIRS.getDefaultState();
+		this.pillarState = TFBlocks.castle_stairs_encased.get().getDefaultState();
+		this.platformState = TFBlocks.castle_stairs_encased.get().getDefaultState();
 		this.randomBlocks = new StructureTFTowerWoods();
 	}
 
