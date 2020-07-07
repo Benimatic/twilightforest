@@ -2,7 +2,7 @@ package twilightforest.features;
 
 import com.google.common.math.StatsAccumulator;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
@@ -15,15 +15,16 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.TemplateStructurePiece;
 import net.minecraft.world.gen.feature.template.IStructureProcessorType;
 import net.minecraft.world.gen.feature.template.PlacementSettings;
@@ -43,14 +44,14 @@ import java.util.function.Function;
 
 public class GenDruidHut extends Feature<NoFeatureConfig> {
 
-	public GenDruidHut(Function<Dynamic<?>, NoFeatureConfig> config) {
+	public GenDruidHut(Codec<NoFeatureConfig> config) {
 		super(config);
 	}
 
 	@Override // Loosely based on WorldGenFossils
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+	public boolean func_230362_a_(ISeedReader seed, StructureManager manager, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
 		//Random random = world.getChunk(pos).getRandomWithSeed(987234911L);
-		Random random = world.getRandom();
+		Random random = seed.getRandom();
 
 		TemplateManager templatemanager = ((ServerWorld)world).getSaveHandler().getStructureTemplateManager();
 		Template template = templatemanager.getTemplate(HutType.values()[random.nextInt(HutType.size)].RL);

@@ -6,7 +6,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.Pose;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -37,12 +38,11 @@ public class EntityTFSlimeBeetle extends MonsterEntity implements IRangedAttackM
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
 	}
 
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(25.0D);
-		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
-		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4);
+	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return MonsterEntity.func_234295_eP_()
+				.func_233815_a_(Attributes.field_233818_a_, 25.0D)
+				.func_233815_a_(Attributes.field_233821_d_, 0.23D)
+				.func_233815_a_(Attributes.field_233823_f_, 4);
 	}
 
 	@Override
@@ -74,9 +74,9 @@ public class EntityTFSlimeBeetle extends MonsterEntity implements IRangedAttackM
 	public void attackEntityWithRangedAttack(LivingEntity target, float distanceFactor) {
 		ThrowableEntity projectile = new EntityTFSlimeProjectile(TFEntities.slime_blob, this.world, this);
 		playSound(SoundEvents.ENTITY_SLIME_SQUISH_SMALL, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-		double tx = target.getX() - this.getX();
-		double ty = target.getY() + target.getEyeHeight() - 1.100000023841858D - projectile.getY();
-		double tz = target.getZ() - this.getZ();
+		double tx = target.getPosX() - this.getPosX();
+		double ty = target.getPosY() + target.getEyeHeight() - 1.100000023841858D - projectile.getPosY();
+		double tz = target.getPosZ() - this.getPosZ();
 		float heightOffset = MathHelper.sqrt(tx * tx + tz * tz) * 0.2F;
 		projectile.shoot(tx, ty + heightOffset, tz, 0.6F, 6.0F);
 		this.world.addEntity(projectile);

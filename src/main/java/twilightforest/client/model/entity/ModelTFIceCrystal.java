@@ -8,8 +8,6 @@ import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
 import twilightforest.entity.boss.EntityTFIceCrystal;
 
-import java.util.Arrays;
-
 public class ModelTFIceCrystal extends EntityModel<EntityTFIceCrystal> {
 
 	private final ModelRenderer[] spikes = new ModelRenderer[16];
@@ -30,11 +28,11 @@ public class ModelTFIceCrystal extends EntityModel<EntityTFIceCrystal> {
 
 			int spikeLength = i % 2 == 0 ? 6 : 8;
 
-			this.spikes[i].addCuboid(-1.0F, -1.0F, -1.0F, 2, spikeLength, 2, par1);
+			this.spikes[i].addBox(-1.0F, -1.0F, -1.0F, 2, spikeLength, 2, par1);
 			this.spikes[i].setRotationPoint(0.0F, 0.0F + par2, 0.0F);
 
 			ModelRenderer cube = new ModelRenderer(this, 8, 16);
-			cube.addCuboid(-1.5F, -1.5F, -1.5F, 3, 3, 3);
+			cube.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3);
 			cube.setRotationPoint(0.0F, spikeLength, 0.0F);
 
 			cube.rotateAngleZ = (float) (Math.PI / 4F);
@@ -51,7 +49,7 @@ public class ModelTFIceCrystal extends EntityModel<EntityTFIceCrystal> {
 	}
 
 	@Override
-	public void setAngles(EntityTFIceCrystal entity, float v, float v1, float v2, float v3, float v4) {
+	public void setRotationAngles(EntityTFIceCrystal entity, float v, float v1, float v2, float v3, float v4) {
 	}
 
 	@Override

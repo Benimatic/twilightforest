@@ -2,11 +2,12 @@ package twilightforest.structures.finalcastle;
 
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
@@ -38,8 +39,7 @@ public class ComponentTFFinalCastleFoundation48 extends StructureTFComponentOld 
 	}
 
 	@Override
-	public boolean generate(IWorld worldIn, ChunkGenerator<?> generator, Random randomIn, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
-		World world = worldIn.getWorld();
+	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random randomIn, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// foundation
 		for (int x = 4; x < 45; x++) {
 			for (int z = 4; z < 45; z++) {
@@ -77,7 +77,7 @@ public class ComponentTFFinalCastleFoundation48 extends StructureTFComponentOld 
 		return true;
 	}
 
-	private void makePiling(World world, MutableBoundingBox sbb, int mid, Rotation rotation, int i) {
+	private void makePiling(ISeedReader world, MutableBoundingBox sbb, int mid, Rotation rotation, int i) {
 		this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, i, -7, 3, rotation, sbb);
 		this.replaceAirAndLiquidDownwardsRotated(world, deco.blockState, i, -mid, 2, rotation, sbb);
 

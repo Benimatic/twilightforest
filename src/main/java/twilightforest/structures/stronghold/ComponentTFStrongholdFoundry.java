@@ -5,11 +5,14 @@ import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
@@ -83,9 +86,8 @@ public class ComponentTFStrongholdFoundry extends StructureTFStrongholdComponent
 	}
 
 	@Override
-	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
-		World worldIn = world.getWorld();
-		placeStrongholdWalls(worldIn, sbb, 0, 0, 0, 17, 25, 17, rand, deco.randomBlocks);
+	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		placeStrongholdWalls(world, sbb, 0, 0, 0, 17, 25, 17, rand, deco.randomBlocks);
 
 		// lava bottom
 		this.fillWithBlocks(world, sbb, 1, 0, 1, 16, 4, 16, Blocks.LAVA.getDefaultState(), Blocks.LAVA.getDefaultState(), false);
@@ -146,36 +148,36 @@ public class ComponentTFStrongholdFoundry extends StructureTFStrongholdComponent
 
 		// add some redstone ore
 		for (int i = 0; i < 8; i++) {
-			addOreToMass(worldIn, sbb, massRandom, Blocks.REDSTONE_ORE.getDefaultState());
+			addOreToMass(world, sbb, massRandom, Blocks.REDSTONE_ORE.getDefaultState());
 		}
 
 		// add some iron ore
 		for (int i = 0; i < 8; i++) {
-			addOreToMass(worldIn, sbb, massRandom, Blocks.IRON_ORE.getDefaultState());
+			addOreToMass(world, sbb, massRandom, Blocks.IRON_ORE.getDefaultState());
 		}
 
 		// add some gold ore
 		for (int i = 0; i < 6; i++) {
-			addOreToMass(worldIn, sbb, massRandom, Blocks.GOLD_ORE.getDefaultState());
+			addOreToMass(world, sbb, massRandom, Blocks.GOLD_ORE.getDefaultState());
 		}
 
 		// add some glowstone
 		for (int i = 0; i < 2; i++) {
-			addOreToMass(worldIn, sbb, massRandom, Blocks.GLOWSTONE.getDefaultState());
+			addOreToMass(world, sbb, massRandom, Blocks.GLOWSTONE.getDefaultState());
 		}
 
 		// add some emerald ore
 		for (int i = 0; i < 2; i++) {
-			addOreToMass(worldIn, sbb, massRandom, Blocks.EMERALD_ORE.getDefaultState());
+			addOreToMass(world, sbb, massRandom, Blocks.EMERALD_ORE.getDefaultState());
 		}
 
 		// add some diamond ore
 		for (int i = 0; i < 4; i++) {
-			addOreToMass(worldIn, sbb, massRandom, Blocks.DIAMOND_ORE.getDefaultState());
+			addOreToMass(world, sbb, massRandom, Blocks.DIAMOND_ORE.getDefaultState());
 		}
 
 		// doors
-		placeDoors(worldIn, rand, sbb);
+		placeDoors(world, rand, sbb);
 
 		return true;
 	}
@@ -183,7 +185,7 @@ public class ComponentTFStrongholdFoundry extends StructureTFStrongholdComponent
 	/**
 	 * Add a block of ore to the mass
 	 */
-	private void addOreToMass(World world, MutableBoundingBox sbb, Random massRandom, BlockState state) {
+	private void addOreToMass(ISeedReader world, MutableBoundingBox sbb, Random massRandom, BlockState state) {
 		for (int i = 0; i < 10; i++) {
 			int dx = massRandom.nextInt(9) + 5;
 			int dz = massRandom.nextInt(9) + 5;

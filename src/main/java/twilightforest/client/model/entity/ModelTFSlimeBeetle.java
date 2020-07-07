@@ -47,72 +47,72 @@ public class ModelTFSlimeBeetle extends SegmentedModel<EntityTFSlimeBeetle> {
 		textureHeight = 64;
 
 		connector1 = new ModelRenderer(this, 0, 12);
-		connector1.addCuboid(-3F, -3F, -1F, 6, 6, 1);
+		connector1.addBox(-3F, -3F, -1F, 6, 6, 1);
 		connector1.setRotationPoint(0F, 19F, -4F);
 
 		RearEnd = new ModelRenderer(this, 31, 6);
-		RearEnd.addCuboid(-4F, -11F, -4F, 8, 10, 8);
+		RearEnd.addBox(-4F, -11F, -4F, 8, 10, 8);
 		RearEnd.setRotationPoint(0F, 18F, 7F);
 		setRotation(RearEnd, 1.570796F, 0F, 0F);
 
 		Leg6 = new ModelRenderer(this, 40, 0);
-		Leg6.addCuboid(-1F, -1F, -1F, 10, 2, 2);
+		Leg6.addBox(-1F, -1F, -1F, 10, 2, 2);
 		Leg6.setRotationPoint(2F, 21F, -4F);
 		setRotation(Leg6, 0F, 0.2792527F, 0.3490659F);
 
 		Leg5 = new ModelRenderer(this, 40, 0);
 		Leg5.mirror = true;
-		Leg5.addCuboid(-9F, -1F, -1F, 10, 2, 2);
+		Leg5.addBox(-9F, -1F, -1F, 10, 2, 2);
 		Leg5.setRotationPoint(-2F, 21F, -4F);
 		setRotation(Leg5, 0F, -0.2792527F, -0.3490659F);
 
 		Leg4 = new ModelRenderer(this, 40, 0);
-		Leg4.addCuboid(-1F, -1F, -1F, 10, 2, 2);
+		Leg4.addBox(-1F, -1F, -1F, 10, 2, 2);
 		Leg4.setRotationPoint(2F, 21F, -1F);
 		setRotation(Leg4, 0F, -0.2792527F, 0.3490659F);
 
 		Leg2 = new ModelRenderer(this, 40, 0);
-		Leg2.addCuboid(-1F, -1F, -1F, 10, 2, 2);
+		Leg2.addBox(-1F, -1F, -1F, 10, 2, 2);
 		Leg2.setRotationPoint(2F, 21F, 4F);
 		setRotation(Leg2, 0F, -0.6981317F, 0.3490659F);
 
 		Leg3 = new ModelRenderer(this, 40, 0);
 		Leg3.mirror = true;
-		Leg3.addCuboid(-9F, -1F, -1F, 10, 2, 2);
+		Leg3.addBox(-9F, -1F, -1F, 10, 2, 2);
 		Leg3.setRotationPoint(-2F, 21F, -1F);
 		setRotation(Leg3, 0F, 0.2792527F, -0.3490659F);
 
 		Leg1 = new ModelRenderer(this, 40, 0);
 		Leg1.mirror = true;
-		Leg1.addCuboid(-9F, -1F, -1F, 10, 2, 2);
+		Leg1.addBox(-9F, -1F, -1F, 10, 2, 2);
 		Leg1.setRotationPoint(-2F, 21F, 4F);
 		Leg1.setTextureSize(64, 32);
 		setRotation(Leg1, 0F, 0.6981317F, -0.3490659F);
 
 		head = new ModelRenderer(this, 0, 0);
-		head.addCuboid(-4F, -4F, -6F, 8, 6, 6);
+		head.addBox(-4F, -4F, -6F, 8, 6, 6);
 		head.setRotationPoint(0F, 19F, -5F);
 
 		antenna1 = new ModelRenderer(this, 38, 4);
-		antenna1.addCuboid(0F, -0.5F, -0.5F, 12, 1, 1);
+		antenna1.addBox(0F, -0.5F, -0.5F, 12, 1, 1);
 		antenna1.setRotationPoint(1F, -3F, -5F);
 		setRotation(antenna1, 0F, 1.047198F, -0.296706F);
 
 		antenna2 = new ModelRenderer(this, 38, 4);
-		antenna2.addCuboid(0F, -0.5F, -0.5F, 12, 1, 1);
+		antenna2.addBox(0F, -0.5F, -0.5F, 12, 1, 1);
 		antenna2.setRotationPoint(-1F, -3F, -5F);
 		setRotation(antenna2, 0F, 2.094395F, 0.296706F);
 
 		eye1 = new ModelRenderer(this, 15, 12);
-		eye1.addCuboid(-1.5F, -1.5F, -1.5F, 3, 3, 3);
+		eye1.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3);
 		eye1.setRotationPoint(-3F, -2F, -5F);
 
 		eye2 = new ModelRenderer(this, 15, 12);
-		eye2.addCuboid(-1.5F, -1.5F, -1.5F, 3, 3, 3);
+		eye2.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3);
 		eye2.setRotationPoint(3F, -2F, -5F);
 
 		mouth = new ModelRenderer(this, 17, 12);
-		mouth.addCuboid(-1F, -1F, -1F, 2, 2, 1);
+		mouth.addBox(-1F, -1F, -1F, 2, 2, 1);
 		mouth.setRotationPoint(0F, 1, -6F);
 
 		head.addChild(antenna1);
@@ -122,19 +122,19 @@ public class ModelTFSlimeBeetle extends SegmentedModel<EntityTFSlimeBeetle> {
 		head.addChild(mouth);
 
 		tail1 = new ModelRenderer(this, 0, 20);
-		tail1.addCuboid(-3F, -3F, -3F, 6, 6, 6);
+		tail1.addBox(-3F, -3F, -3F, 6, 6, 6);
 		tail1.setRotationPoint(0F, 19F, 9F);
 
 		tail2 = new ModelRenderer(this, 0, 20);
-		tail2.addCuboid(-3F, -6F, -3F, 6, 6, 6);
+		tail2.addBox(-3F, -6F, -3F, 6, 6, 6);
 		tail2.setRotationPoint(0F, -3F, 2F);
 
 		slimeCube = new ModelRenderer(this, 0, 40);
-		slimeCube.addCuboid(-6F, -12F, -9F, 12, 12, 12);
+		slimeCube.addBox(-6F, -12F, -9F, 12, 12, 12);
 		slimeCube.setRotationPoint(0F, -6, 0);
 
 		slimeCenter = new ModelRenderer(this, 32, 24);
-		slimeCenter.addCuboid(-4F, -10F, -7F, 8, 8, 8);
+		slimeCenter.addBox(-4F, -10F, -7F, 8, 8, 8);
 		slimeCenter.setRotationPoint(0F, -6, 0);
 
 		tail1.addChild(tail2);
@@ -177,7 +177,7 @@ public class ModelTFSlimeBeetle extends SegmentedModel<EntityTFSlimeBeetle> {
 	}
 
 	@Override
-	public void setAngles(EntityTFSlimeBeetle entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setRotationAngles(EntityTFSlimeBeetle entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.head.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 		this.head.rotateAngleX = headPitch / (180F / (float) Math.PI);
 

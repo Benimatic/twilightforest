@@ -9,13 +9,9 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.item.FallingBlockEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import org.lwjgl.opengl.GL11;
 import twilightforest.entity.boss.EntityTFIceBomb;
 
 import java.util.Random;
@@ -35,15 +31,15 @@ public class RenderTFThrownIce extends EntityRenderer<EntityTFIceBomb> {
 		BlockState blockstate = entity.getBlockState();
 		if (blockstate.getRenderType() == BlockRenderType.MODEL) {
 			World world = entity.getEntityWorld();
-			if (blockstate != world.getBlockState(new BlockPos(entity)) && blockstate.getRenderType() != BlockRenderType.INVISIBLE) {
+			if (blockstate != world.getBlockState(entity.func_233580_cy_()) && blockstate.getRenderType() != BlockRenderType.INVISIBLE) {
 				ms.push();
-				BlockPos blockpos = new BlockPos(entity.getX(), entity.getBoundingBox().maxY, entity.getZ());
+				BlockPos blockpos = new BlockPos(entity.getPosX(), entity.getBoundingBox().maxY, entity.getPosZ());
 				ms.translate(-0.5D, 0.0D, -0.5D);
 				BlockRendererDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
-				for (net.minecraft.client.renderer.RenderType type : net.minecraft.client.renderer.RenderType.getBlockLayers()) {
+				for (net.minecraft.client.renderer.RenderType type : net.minecraft.client.renderer.RenderType.getBlockRenderTypes()) {
 					if (RenderTypeLookup.canRenderInLayer(blockstate, type)) {
 						net.minecraftforge.client.ForgeHooksClient.setRenderLayer(type);
-						blockrendererdispatcher.getBlockModelRenderer().render(world, blockrendererdispatcher.getModelForState(blockstate), blockstate, blockpos, ms, buffers.getBuffer(type), false, new Random(), blockstate.getPositionRandom(BlockPos.ZERO), OverlayTexture.DEFAULT_UV);
+						blockrendererdispatcher.getBlockModelRenderer().renderModel(world, blockrendererdispatcher.getModelForState(blockstate), blockstate, blockpos, ms, buffers.getBuffer(type), false, new Random(), blockstate.getPositionRandom(BlockPos.ZERO), OverlayTexture.NO_OVERLAY);
 					}
 				}
 				net.minecraftforge.client.ForgeHooksClient.setRenderLayer(null);

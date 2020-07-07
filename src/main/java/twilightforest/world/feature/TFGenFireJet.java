@@ -1,26 +1,25 @@
 package twilightforest.world.feature;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.feature.BlockStateFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 
 import java.util.Random;
-import java.util.function.Function;
 
 public class TFGenFireJet extends Feature<BlockStateFeatureConfig> {
 
-	public TFGenFireJet(Function<Dynamic<?>, BlockStateFeatureConfig> configIn) {
+	public TFGenFireJet(Codec<BlockStateFeatureConfig> configIn) {
 		super(configIn);
 	}
 
 	@Override
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, BlockStateFeatureConfig config) {
+	public boolean func_230362_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateFeatureConfig config) {
 		for (int i = 0; i < 4; ++i) {
 			BlockPos dPos = pos.add(
 					rand.nextInt(8) - rand.nextInt(8),

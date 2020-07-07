@@ -4,7 +4,7 @@ import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import twilightforest.entity.EntityTFKobold;
 
 import java.util.EnumSet;
@@ -42,7 +42,7 @@ public class EntityAITFPanicOnFlockDeath extends Goal {
 		if (!yikes) {
 			return false;
 		} else {
-			Vec3d target = RandomPositionGenerator.findRandomTarget(this.flockCreature, 5, 4);
+			Vector3d target = RandomPositionGenerator.findRandomTarget(this.flockCreature, 5, 4);
 
 			if (target == null) {
 				return false;

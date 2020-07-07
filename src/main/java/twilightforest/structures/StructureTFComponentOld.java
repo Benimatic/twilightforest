@@ -10,9 +10,10 @@ import net.minecraft.tileentity.SignTileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.util.math.Vec3i;
+import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -54,7 +55,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	//Let's not use vanilla's weird rotation+mirror thing...
 	@Override
 	public void setCoordBaseMode(@Nullable Direction facing) {
-		this.field_74885_f = facing;
+		this.coordBaseMode = facing;
 		this.mirror = Mirror.NONE;
 
 		if (facing == null) {
@@ -118,7 +119,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	}
 
 	// [VanillaCopy] Keep pinned to signature of setBlockState (no state arg)
-	protected MobSpawnerTileEntity setSpawner(World world, int x, int y, int z, MutableBoundingBox sbb, EntityType<?> monsterID) {
+	protected MobSpawnerTileEntity setSpawner(ISeedReader world, int x, int y, int z, MutableBoundingBox sbb, EntityType<?> monsterID) {
 		MobSpawnerTileEntity tileEntitySpawner = null;
 
 		int dx = getXWithOffset(x, z);
@@ -136,28 +137,28 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 		return tileEntitySpawner;
 	}
 
-	protected void surroundBlockCardinal(World world, BlockState block, int x, int y, int z, MutableBoundingBox sbb) {
+	protected void surroundBlockCardinal(ISeedReader world, BlockState block, int x, int y, int z, MutableBoundingBox sbb) {
 		setBlockState(world, block, x + 0, y, z - 1, sbb);
 		setBlockState(world, block, x + 0, y, z + 1, sbb);
 		setBlockState(world, block, x - 1, y, z + 0, sbb);
 		setBlockState(world, block, x + 1, y, z + 0, sbb);
 	}
 
-	protected void surroundBlockCardinalRotated(World world, BlockState block, int x, int y, int z, MutableBoundingBox sbb) {
+	protected void surroundBlockCardinalRotated(ISeedReader world, BlockState block, int x, int y, int z, MutableBoundingBox sbb) {
 		setBlockState(world, block.with(StairsBlock.FACING, Direction.NORTH), x + 0, y, z - 1, sbb);
 		setBlockState(world, block.with(StairsBlock.FACING, Direction.SOUTH), x + 0, y, z + 1, sbb);
 		setBlockState(world, block.with(StairsBlock.FACING, Direction.WEST), x - 1, y, z + 0, sbb);
 		setBlockState(world, block.with(StairsBlock.FACING, Direction.EAST), x + 1, y, z + 0, sbb);
 	}
 
-	protected void surroundBlockCorners(World world, BlockState block, int x, int y, int z, MutableBoundingBox sbb) {
+	protected void surroundBlockCorners(ISeedReader world, BlockState block, int x, int y, int z, MutableBoundingBox sbb) {
 		setBlockState(world, block, x - 1, y, z - 1, sbb);
 		setBlockState(world, block, x - 1, y, z + 1, sbb);
 		setBlockState(world, block, x + 1, y, z - 1, sbb);
 		setBlockState(world, block, x + 1, y, z + 1, sbb);
 	}
 
-	protected MobSpawnerTileEntity setSpawnerRotated(World world, int x, int y, int z, Rotation rotation, EntityType<?> monsterID, MutableBoundingBox sbb) {
+	protected MobSpawnerTileEntity setSpawnerRotated(ISeedReader world, int x, int y, int z, Rotation rotation, EntityType<?> monsterID, MutableBoundingBox sbb) {
 		Direction oldBase = fakeBaseMode(rotation);
 		MobSpawnerTileEntity ret = setSpawner(world, x, y, z, sbb, monsterID);
 		setCoordBaseMode(oldBase);
@@ -169,7 +170,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	 *
 	 * @param treasureType
 	 */
-	protected void placeTreasureAtCurrentPosition(World world, int x, int y, int z, TFTreasure treasureType, MutableBoundingBox sbb) {
+	protected void placeTreasureAtCurrentPosition(ISeedReader world, int x, int y, int z, TFTreasure treasureType, MutableBoundingBox sbb) {
 		this.placeTreasureAtCurrentPosition(world, x, y, z, treasureType, false, sbb);
 	}
 
@@ -178,13 +179,13 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	 *
 	 * @param treasureType
 	 */
-	protected void placeTreasureAtCurrentPosition(World world, int x, int y, int z, TFTreasure treasureType, boolean trapped, MutableBoundingBox sbb) {
+	protected void placeTreasureAtCurrentPosition(ISeedReader world, int x, int y, int z, TFTreasure treasureType, boolean trapped, MutableBoundingBox sbb) {
 		int dx = getXWithOffset(x, z);
 		int dy = getYWithOffset(y);
 		int dz = getZWithOffset(x, z);
 		BlockPos pos = new BlockPos(dx, dy, dz);
 		if (sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST)) {
-			treasureType.generateChest(world, pos, trapped);
+			treasureType.generateChest(world.getWorld(), pos, trapped);
 		}
 	}
 
@@ -193,7 +194,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	 *
 	 * @param treasureType
 	 */
-	protected void placeTreasureRotated(World world, int x, int y, int z, Rotation rotation, TFTreasure treasureType, MutableBoundingBox sbb) {
+	protected void placeTreasureRotated(ISeedReader world, int x, int y, int z, Rotation rotation, TFTreasure treasureType, MutableBoundingBox sbb) {
 		this.placeTreasureRotated(world, x, y, z, rotation, treasureType, false, sbb);
 	}
 
@@ -202,13 +203,13 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	 *
 	 * @param treasureType
 	 */
-	protected void placeTreasureRotated(World world, int x, int y, int z, Rotation rotation, TFTreasure treasureType, boolean trapped, MutableBoundingBox sbb) {
+	protected void placeTreasureRotated(ISeedReader world, int x, int y, int z, Rotation rotation, TFTreasure treasureType, boolean trapped, MutableBoundingBox sbb) {
 		int dx = getXWithOffsetRotated(x, z, rotation);
 		int dy = getYWithOffset(y);
 		int dz = getZWithOffsetRotated(x, z, rotation);
 		BlockPos pos = new BlockPos(dx, dy, dz);
 		if (sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST)) {
-			treasureType.generateChest(world, pos, trapped);
+			treasureType.generateChest(world.getWorld(), pos, trapped);
 		}
 	}
 
@@ -249,11 +250,11 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 			BlockState newBlock = world.getBlockState(snap.getPos());
 
 			newBlock.getBlock().onBlockAdded(oldBlock, world, snap.getPos(), newBlock, false);
-			world.markAndNotifyBlock(snap.getPos(), null, oldBlock, newBlock, updateFlag);
+			world.markAndNotifyBlock(snap.getPos(), null, oldBlock, newBlock, updateFlag, 512 /*Placeholder*/);
 		}
 	}
 
-	protected void placeSignAtCurrentPosition(World world, int x, int y, int z, String string0, String string1, MutableBoundingBox sbb) {
+	protected void placeSignAtCurrentPosition(ISeedReader world, int x, int y, int z, String string0, String string1, MutableBoundingBox sbb) {
 		int dx = getXWithOffset(x, z);
 		int dy = getYWithOffset(y);
 		int dz = getZWithOffset(x, z);
@@ -263,14 +264,13 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 
 			SignTileEntity teSign = (SignTileEntity) world.getTileEntity(pos);
 			if (teSign != null) {
-				teSign.signText[1] = new StringTextComponent(string0);
-				teSign.signText[2] = new StringTextComponent(string1);
+				teSign.setText(1, new StringTextComponent(string0));
+				teSign.setText(2, new StringTextComponent(string1));
 			}
 		}
 	}
 
-	//TODO: Method unused. Remove?
-	protected void placeSignAtCurrentPosition(World world, int x, int y, int z, MutableBoundingBox sbb, String... text) {
+	protected void placeSignAtCurrentPosition(ISeedReader world, int x, int y, int z, MutableBoundingBox sbb, String... text) {
 		int dx = getXWithOffset(x, z);
 		int dy = getYWithOffset(y);
 		int dz = getZWithOffset(x, z);
@@ -280,17 +280,15 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 
 			SignTileEntity teSign = (SignTileEntity) world.getTileEntity(pos);
 			if (teSign != null) {
-				int min = Math.min(text.length, teSign.signText.length);
+				int min = Math.min(text.length, teSign.signText.length); //TODO: Aight, who private this?
 
 				for (int i = 0; i < min; i++) {
-					teSign.signText[i] = new StringTextComponent(text[i]);
+					teSign.setText(i, new StringTextComponent(text[i]));
 				}
 			}
 		}
 	}
 
-
-//	
 //	public boolean makeTowerWing2(List list, Random rand, int index, int x, int y, int z, int size, int height, int direction) {
 //		
 //		ComponentTFTowerWing wing = new ComponentTFTowerWing(index, x, y, z, size, height, direction);
@@ -432,7 +430,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 		return ret;
 	}
 
-	protected void setBlockStateRotated(World world, BlockState state, int x, int y, int z, Rotation rotationsCW, MutableBoundingBox sbb) {
+	protected void setBlockStateRotated(ISeedReader world, BlockState state, int x, int y, int z, Rotation rotationsCW, MutableBoundingBox sbb) {
 		Direction oldMode = fakeBaseMode(rotationsCW);
 		setBlockState(world, state, x, y, z, sbb);
 		setCoordBaseMode(oldMode);
@@ -451,21 +449,21 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	}
 
 	// [VanillaCopy] Keep pinned to the signature of getBlockStateFromPos
-	public BlockState getBlockStateFromPosRotated(World world, int x, int y, int z, MutableBoundingBox sbb, Rotation rotationsCW) {
+	public BlockState getBlockStateFromPosRotated(ISeedReader world, int x, int y, int z, MutableBoundingBox sbb, Rotation rotationsCW) {
 		Direction oldMode = fakeBaseMode(rotationsCW);
 		BlockState ret = getBlockStateFromPos(world, x, y, z, sbb);
 		setCoordBaseMode(oldMode);
 		return ret;
 	}
 
-	protected void fillBlocksRotated(World world, MutableBoundingBox sbb, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, BlockState state, Rotation rotation) {
+	protected void fillBlocksRotated(ISeedReader world, MutableBoundingBox sbb, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, BlockState state, Rotation rotation) {
 		Direction oldBase = fakeBaseMode(rotation);
 		fillWithBlocks(world, sbb, minX, minY, minZ, maxX, maxY, maxZ, state, state, false);
 		setCoordBaseMode(oldBase);
 	}
 
 	// [VanillaCopy] Keep pinned on signature of fillWithBlocksRandomly (though passing false for excludeAir)
-	protected void randomlyFillBlocksRotated(World worldIn, MutableBoundingBox boundingboxIn, Random rand, float chance, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, BlockState blockstate1, BlockState blockstate2, Rotation rotation) {
+	protected void randomlyFillBlocksRotated(ISeedReader worldIn, MutableBoundingBox boundingboxIn, Random rand, float chance, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, BlockState blockstate1, BlockState blockstate2, Rotation rotation) {
 		Direction oldBase = fakeBaseMode(rotation);
 		final boolean minimumLightLevel = true;
 		generateMaybeBox(worldIn, boundingboxIn, rand, chance, minX, minY, minZ, maxX, maxY, maxZ, blockstate1, blockstate2, false, minimumLightLevel);
@@ -473,27 +471,27 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	}
 
 	// [VanillaCopy] Keep pinned to signature of replaceAirAndLiquidDownwards
-	public void replaceAirAndLiquidDownwardsRotated(World world, BlockState state, int x, int y, int z, Rotation rotation, MutableBoundingBox sbb) {
+	public void replaceAirAndLiquidDownwardsRotated(ISeedReader world, BlockState state, int x, int y, int z, Rotation rotation, MutableBoundingBox sbb) {
 		Direction oldBaseMode = fakeBaseMode(rotation);
 		replaceAirAndLiquidDownwards(world, state, x, y, z, sbb);
 		setCoordBaseMode(oldBaseMode);
 	}
 
-	protected void fillAirRotated(World world, MutableBoundingBox sbb, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, Rotation rotation) {
+	protected void fillAirRotated(ISeedReader world, MutableBoundingBox sbb, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, Rotation rotation) {
 		Direction oldBaseMode = fakeBaseMode(rotation);
 		fillWithAir(world, sbb, minX, minY, minZ, maxX, maxY, maxZ);
 		setCoordBaseMode(oldBaseMode);
 	}
 
-	protected void fillWithAir(World world, MutableBoundingBox boundingBox, int xMin, int yMin, int zMin, int xMax, int yMax, int zMax, Predicate<BlockState> predicate) {
+	protected void fillWithAir(ISeedReader world, MutableBoundingBox boundingBox, int xMin, int yMin, int zMin, int xMax, int yMax, int zMax, Predicate<BlockState> predicate) {
 		fillWithBlocks(world, boundingBox, xMin, yMin, zMin, xMax, yMax, zMax, Blocks.AIR.getDefaultState(), predicate);
 	}
 
-	protected void fillWithBlocks(World world, MutableBoundingBox boundingBox, int xMin, int yMin, int zMin, int xMax, int yMax, int zMax, BlockState state, Predicate<BlockState> predicate) {
+	protected void fillWithBlocks(ISeedReader world, MutableBoundingBox boundingBox, int xMin, int yMin, int zMin, int xMax, int yMax, int zMax, BlockState state, Predicate<BlockState> predicate) {
 		fillWithBlocks(world, boundingBox, xMin, yMin, zMin, xMax, yMax, zMax, state, state, predicate);
 	}
 
-	protected void fillWithBlocks(World world, MutableBoundingBox boundingBox, int xMin, int yMin, int zMin, int xMax, int yMax, int zMax, BlockState borderState, BlockState interiorState, Predicate<BlockState> predicate) {
+	protected void fillWithBlocks(ISeedReader world, MutableBoundingBox boundingBox, int xMin, int yMin, int zMin, int xMax, int yMax, int zMax, BlockState borderState, BlockState interiorState, Predicate<BlockState> predicate) {
 		for (int y = yMin; y <= yMax; ++y) {
 			for (int x = xMin; x <= xMax; ++x) {
 				for (int z = zMin; z <= zMax; ++z) {
@@ -554,7 +552,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	 * <p>
 	 * This is basically copied from ComponentVillage
 	 */
-	protected int getAverageGroundLevel(World world, MutableBoundingBox sbb) {
+	protected int getAverageGroundLevel(ISeedReader world, MutableBoundingBox sbb) {
 		int totalHeight = 0;
 		int heightCount = 0;
 
@@ -578,9 +576,9 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	/**
 	 * Find what y-level the ground is. Just check the center of the chunk we're given.
 	 */
-	protected int findGroundLevel(World world, MutableBoundingBox sbb, int start, Predicate<BlockState> predicate) {
+	protected int findGroundLevel(ISeedReader world, MutableBoundingBox sbb, int start, Predicate<BlockState> predicate) {
 
-		Vec3i center = StructureBoundingBoxUtils.getCenter(sbb);
+		Vector3i center = StructureBoundingBoxUtils.getCenter(sbb);
 		BlockPos.Mutable pos = new BlockPos.Mutable(center.getX(), 0, center.getZ());
 
 		for (int y = start; y > 0; y--) {
@@ -594,7 +592,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	}
 
 	//TODO: Parameter "sbb" is unused. Remove?
-	protected boolean isBoundingBoxOutsideBiomes(World world, MutableBoundingBox sbb, Predicate<Biome> predicate) {
+	protected boolean isBoundingBoxOutsideBiomes(ISeedReader world, MutableBoundingBox sbb, Predicate<Biome> predicate) {
 
 		int minX = this.boundingBox.minX - 1;
 		int minZ = this.boundingBox.minZ - 1;

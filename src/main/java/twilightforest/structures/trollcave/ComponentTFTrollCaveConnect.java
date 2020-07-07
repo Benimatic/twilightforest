@@ -9,9 +9,9 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
@@ -75,9 +75,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 	}
 
 	@Override
-	public boolean generate(IWorld worldIn, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
-		World world = worldIn.getWorld();
-
+	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		if (this.isBoundingBoxOutsideBiomes(world, sbb, highlands)) {
 			return false;
 		}
@@ -98,12 +96,12 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 		// stone stalactites!
 		for (int i = 0; i < 32; i++) {
 			BlockPos dest = getCoordsInCave(decoRNG);
-			generateBlockStalactite(world, decoRNG, Blocks.STONE, 0.5F, true, dest.getX(), 3, dest.getZ(), sbb);
+			generateBlockStalactite(world, manager, decoRNG, Blocks.STONE, 0.5F, true, dest.getX(), 3, dest.getZ(), sbb);
 		}
 		// stone stalagmites!
 		for (int i = 0; i < 8; i++) {
 			BlockPos dest = getCoordsInCave(decoRNG);
-			generateBlockStalactite(world, decoRNG, Blocks.STONE, 0.5F, false, dest.getX(), 3, dest.getZ(), sbb);
+			generateBlockStalactite(world, manager, decoRNG, Blocks.STONE, 0.5F, false, dest.getX(), 3, dest.getZ(), sbb);
 		}
 
 		// possible treasure
@@ -119,7 +117,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 		return true;
 	}
 
-	protected void makeMonolith(World world, Random rand, MutableBoundingBox sbb) {
+	protected void makeMonolith(ISeedReader world, Random rand, MutableBoundingBox sbb) {
 		// monolith
 		int mid = this.size / 2;
 		int height = 7 + rand.nextInt(8);
@@ -141,7 +139,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 		return count;
 	}
 
-	private void decorateWall(World world, MutableBoundingBox sbb, Random decoRNG, Rotation rotation) {
+	private void decorateWall(ISeedReader world, MutableBoundingBox sbb, Random decoRNG, Rotation rotation) {
 		if (decoRNG.nextBoolean()) {
 			//FIXME: AtomicBlom: Don't do this, bring rotation all the way through.
 			decorateBracketMushrooms(world, sbb, decoRNG, rotation);
@@ -153,7 +151,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 		}
 	}
 
-	private void decorateStoneFormation(World world, MutableBoundingBox sbb, Random decoRNG, Rotation rotation) {
+	private void decorateStoneFormation(ISeedReader world, MutableBoundingBox sbb, Random decoRNG, Rotation rotation) {
 		int z = 5 + decoRNG.nextInt(7);
 		int startY = 1 + decoRNG.nextInt(2);
 
@@ -171,7 +169,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 		}
 	}
 
-	private void makeSingleStoneFormation(World world, MutableBoundingBox sbb, Random decoRNG, Rotation rotation, int z, int y, int width, int depth) {
+	private void makeSingleStoneFormation(ISeedReader world, MutableBoundingBox sbb, Random decoRNG, Rotation rotation, int z, int y, int width, int depth) {
 		if (decoRNG.nextInt(8) == 0) {
 			this.fillBlocksRotated(world, sbb, size - (depth + 1), y - width, z - width, size - 1, y + width, z + width, Blocks.OBSIDIAN.getDefaultState(), rotation);
 		} else if (decoRNG.nextInt(4) == 0) {
@@ -183,7 +181,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 		//this.randomlyFillBlocksRotated(world, sbb, decoRNG, 0.5F, size - (depth + 1), y - width, z - width, size - 1, y + width, z + width, TFBlocks.trollsteinn, 0, Blocks.STONE, 0, rotation);
 	}
 
-	private void decorateStoneProjection(World world, MutableBoundingBox sbb, Random decoRNG, Rotation rotation) {
+	private void decorateStoneProjection(ISeedReader world, MutableBoundingBox sbb, Random decoRNG, Rotation rotation) {
 		int z = 7 + decoRNG.nextInt(3) - decoRNG.nextInt(3);
 		int y = 7 + decoRNG.nextInt(3) - decoRNG.nextInt(3);
 
@@ -200,7 +198,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 	/**
 	 * Decorate with a patch of bracket fungi
 	 */
-	private void decorateBracketMushrooms(World world, MutableBoundingBox sbb, Random decoRNG, Rotation rotation) {
+	private void decorateBracketMushrooms(ISeedReader world, MutableBoundingBox sbb, Random decoRNG, Rotation rotation) {
 		int z = 5 + decoRNG.nextInt(7);
 		int startY = 1 + decoRNG.nextInt(4);
 
@@ -222,7 +220,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 	/**
 	 * Make one mushroom with the specified parameters
 	 */
-	private void makeSingleBracketMushroom(World world, MutableBoundingBox sbb, Rotation rotation, int z, int y, int width, int depth, BlockState mushBlock) {
+	private void makeSingleBracketMushroom(ISeedReader world, MutableBoundingBox sbb, Rotation rotation, int z, int y, int width, int depth, BlockState mushBlock) {
 
 		this.fillBlocksRotated(world, sbb, size - depth, y, z - (width - 1), size - 2, y, z + (width - 1), MushroomUtil.getState(MushroomUtil.Type.CENTER, mushBlock), rotation);
 

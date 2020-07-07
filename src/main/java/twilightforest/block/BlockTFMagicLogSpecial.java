@@ -1,8 +1,6 @@
 package twilightforest.block;
 
 import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.material.MaterialColor;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.DoubleSidedInventory;
 import net.minecraft.state.BooleanProperty;
@@ -15,7 +13,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
@@ -32,13 +29,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class BlockTFMagicLogSpecial extends LogBlock {
+public class BlockTFMagicLogSpecial extends RotatedPillarBlock {
 
 	private final MagicWoodVariant magicWoodVariant;
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
-	protected BlockTFMagicLogSpecial(MaterialColor topColor, MaterialColor sideColor, MagicWoodVariant variant) {
-		super(topColor, Properties.create(Material.WOOD, sideColor).hardnessAndResistance(2.0F).sound(SoundType.WOOD).lightValue(15));
+	protected BlockTFMagicLogSpecial(AbstractBlock.Properties props, MagicWoodVariant variant) {
+		super(props.hardnessAndResistance(2.0F).sound(SoundType.WOOD).func_235838_a_((state) -> 15));
 
 		magicWoodVariant = variant;
 		setDefaultState(stateContainer.getBaseState().with(ACTIVE, false));
@@ -50,19 +47,19 @@ public class BlockTFMagicLogSpecial extends LogBlock {
 		container.add(ACTIVE);
 	}
 
-	@Override
-	public int tickRate(IWorldReader world) {
+	//No longer an override, but keep here for sanity
+	public int tickRate() {
 		return 20;
 	}
 
 	@Override
 	public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean isMoving) {
-		world.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(world));
+		world.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate());
 	}
 
 	@Override
 	@Deprecated
-	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random rand) {
+	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random rand) {
 		if (world.isRemote || !state.get(ACTIVE)) return;
 
 		switch (this.magicWoodVariant) {
@@ -82,15 +79,15 @@ public class BlockTFMagicLogSpecial extends LogBlock {
 				break;
 		}
 
-		world.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(world));
+		world.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate());
 	}
 
 	@Override
 	@Deprecated
-	public ActionResultType onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
 		if (!state.get(ACTIVE)) {
 			world.setBlockState(pos, state.with(ACTIVE, true));
-			world.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate(world));
+			world.getPendingBlockTicks().scheduleTick(pos, this, this.tickRate());
 			return ActionResultType.SUCCESS;
 		} else if (state.get(ACTIVE)) {
 			world.setBlockState(pos, state.with(ACTIVE, false));
@@ -105,7 +102,7 @@ public class BlockTFMagicLogSpecial extends LogBlock {
 	 */
 	private void doTreeOfTimeEffect(World world, BlockPos pos, Random rand) {
 
-		int numticks = 8 * 3 * this.tickRate(world);
+		int numticks = 8 * 3 * this.tickRate();
 
 		for (int i = 0; i < numticks; i++) {
 
@@ -114,7 +111,7 @@ public class BlockTFMagicLogSpecial extends LogBlock {
 			BlockState state = world.getBlockState(dPos);
 
 			if (state.ticksRandomly()) {
-				state.scheduledTick((ServerWorld) world, dPos, rand);
+				state.randomTick((ServerWorld) world, dPos, rand);
 			}
 
 			TileEntity te = world.getTileEntity(dPos);
@@ -185,7 +182,7 @@ public class BlockTFMagicLogSpecial extends LogBlock {
 
 			Block block = world.getBlockState(iterPos).getBlock();
 			if (block instanceof ChestBlock) {
-				chestInventory = ChestBlock.getInventory((ChestBlock) block, block.getDefaultState(), world, iterPos, true);
+				chestInventory = ChestBlock.func_226916_a_((ChestBlock) block, block.getDefaultState(), world, iterPos, true);
 			}
 
 			TileEntity te = world.getTileEntity(iterPos);

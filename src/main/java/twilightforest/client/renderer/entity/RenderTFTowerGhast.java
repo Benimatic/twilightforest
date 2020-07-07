@@ -22,7 +22,7 @@ public class RenderTFTowerGhast<T extends EntityTFTowerGhast, M extends ModelTFG
 	}
 
 	@Override
-	protected void scale(T ghast, MatrixStack stack, float partialTicks) {
+	protected void preRenderCallback(T ghast, MatrixStack stack, float partialTicks) {
 		int attackTimer = ghast.getAttackTimer();
 		int prevAttackTimer = ghast.getPrevAttackTimer();
 		float scaleVariable = (prevAttackTimer + (attackTimer - prevAttackTimer) * partialTicks) / 20.0F;

@@ -7,10 +7,10 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
@@ -469,31 +469,30 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 	}
 
 	@Override
-	public boolean generate(IWorld worldIn, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
-		World world = worldIn.getWorld();
-		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
+	public boolean func_230383_a_(ISeedReader worldIn, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		Random decoRNG = new Random(worldIn.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
 
 		// walls
-		fillWithRandomizedBlocks(world, sbb, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1, false, rand, deco.randomBlocks);
+		fillWithRandomizedBlocks(worldIn, sbb, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1, false, rand, deco.randomBlocks);
 
 		// stone to ground
 		for (int x = 0; x < this.size; x++) {
 			for (int z = 0; z < this.size; z++) {
-				this.replaceAirAndLiquidDownwards(world, deco.blockState, x, -1, z, sbb);
+				this.replaceAirAndLiquidDownwards(worldIn, deco.blockState, x, -1, z, sbb);
 			}
 		}
 
 		// add branching runes
 		int numBranches = 2 + decoRNG.nextInt(4) + +decoRNG.nextInt(3);
 		for (int i = 0; i < numBranches; i++) {
-			makeGlyphBranches(world, decoRNG, this.getGlyphColour(), sbb);
+			makeGlyphBranches(worldIn, decoRNG, this.getGlyphColour(), sbb);
 		}
 
 		// floors
-		addFloors(world, decoRNG, sbb);
+		addFloors(worldIn, decoRNG, sbb);
 
 		// openings
-		makeOpenings(world, sbb);
+		makeOpenings(worldIn, sbb);
 
 		return true;
 	}
@@ -507,7 +506,8 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 		}
 	}
 
-	private void addFloors(World world, Random rand, MutableBoundingBox sbb) {
+	//TODO: Parameter "rand" is unused. Remove?
+	private void addFloors(ISeedReader world, Random rand, MutableBoundingBox sbb) {
 		// only add floors up to highest opening
 		int floors = (this.highestOpening / 8) + 1;
 
@@ -529,13 +529,12 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 		return this.height - this.highestOpening < 9;
 	}
 
-	private void addStairsDown(World world, MutableBoundingBox sbb, Rotation rotation, int y) {
+	private void addStairsDown(ISeedReader world, MutableBoundingBox sbb, Rotation rotation, int y) {
 		// top flight
 		for (int i = 0; i < 4; i++) {
 			int sx = 8 - i;
 			int sy = y - i;
 			int sz = 9;
-
 
 			this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.WEST, rotation, false), sx, sy, sz, rotation, sbb);
 			this.setBlockStateRotated(world, deco.blockState, sx, sy - 1, sz, rotation, sbb);
@@ -564,7 +563,7 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 	 * Make an opening in this tower for a door.
 	 */
 	@Override
-	protected void makeDoorOpening(World world, int dx, int dy, int dz, MutableBoundingBox sbb) {
+	protected void makeDoorOpening(ISeedReader world, int dx, int dy, int dz, MutableBoundingBox sbb) {
 		// nullify sky light
 		//nullifySkyLightAtCurrentPosition(world, dx - 3, dy - 1, dz - 3, dx + 3, dy + 3, dz + 3);
 

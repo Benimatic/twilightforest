@@ -37,7 +37,7 @@ public class TFBiomeFireSwamp extends TFBiomeBase {
 	}
 
 	@Override
-	public int getGrassColorAt(double p_225528_1_, double p_225528_3_) {
+	public int getGrassColor(double x, double z) {
 		return 0x572e23;
 	}
 

@@ -3,9 +3,10 @@ package twilightforest.entity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -16,7 +17,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.LightType;
@@ -31,7 +32,7 @@ import java.util.Random;
 public class EntityTFYeti extends MonsterEntity implements IHostileMount {
 
 	private static final DataParameter<Boolean> ANGER_FLAG = EntityDataManager.createKey(EntityTFYeti.class, DataSerializers.BOOLEAN);
-	private static final AttributeModifier ANGRY_MODIFIER = new AttributeModifier("Angry follow range boost", 24, AttributeModifier.Operation.ADDITION).setSaved(false);
+	private static final AttributeModifier ANGRY_MODIFIER = new AttributeModifier("Angry follow range boost", 24, AttributeModifier.Operation.ADDITION);
 
 	public EntityTFYeti(EntityType<? extends EntityTFYeti> type, World world) {
 		super(type, world);
@@ -62,13 +63,12 @@ public class EntityTFYeti extends MonsterEntity implements IHostileMount {
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
 	}
 
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
-		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.38D);
-		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(0.0D);
-		this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(4.0D);
+	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return MonsterEntity.func_234295_eP_()
+				.func_233815_a_(Attributes.field_233818_a_, 20.0D)
+				.func_233815_a_(Attributes.field_233821_d_, 0.38D)
+				.func_233815_a_(Attributes.field_233823_f_, 0.0D)
+				.func_233815_a_(Attributes.field_233819_b_, 4.0D);
 	}
 
 	@Override
@@ -93,7 +93,7 @@ public class EntityTFYeti extends MonsterEntity implements IHostileMount {
 			this.getLookController().setLookPositionWithEntity(getPassengers().get(0), 100F, 100F);
 
 			// push out of user in wall
-			Vec3d riderPos = this.getRiderPosition(getPassengers().get(0));
+			Vector3d riderPos = this.getRiderPosition(getPassengers().get(0));
 			this.pushOutOfBlocks(riderPos.x, riderPos.y, riderPos.z);
 		}
 	}
@@ -117,11 +117,11 @@ public class EntityTFYeti extends MonsterEntity implements IHostileMount {
 
 		if (!world.isRemote) {
 			if (anger) {
-				if (!getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).hasModifier(ANGRY_MODIFIER)) {
-					this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).applyModifier(ANGRY_MODIFIER);
+				if (!getAttribute(Attributes.field_233819_b_).hasModifier(ANGRY_MODIFIER)) {
+					this.getAttribute(Attributes.field_233819_b_).func_233767_b_(ANGRY_MODIFIER);
 				}
 			} else {
-				this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).removeModifier(ANGRY_MODIFIER);
+				this.getAttribute(Attributes.field_233819_b_).removeModifier(ANGRY_MODIFIER);
 			}
 		}
 	}
@@ -143,7 +143,7 @@ public class EntityTFYeti extends MonsterEntity implements IHostileMount {
 	 */
 	@Override
 	public void updatePassenger(Entity passenger) {
-		Vec3d riderPos = this.getRiderPosition(passenger);
+		Vector3d riderPos = this.getRiderPosition(passenger);
 		passenger.setPosition(riderPos.x, riderPos.y, riderPos.z);
 	}
 
@@ -158,16 +158,16 @@ public class EntityTFYeti extends MonsterEntity implements IHostileMount {
 	/**
 	 * Used to both get a rider position and to push out of blocks
 	 */
-	private Vec3d getRiderPosition(@Nullable Entity passenger) {
+	private Vector3d getRiderPosition(@Nullable Entity passenger) {
 		if (passenger != null) {
 			float distance = 0.4F;
 
 			double dx = Math.cos((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
 			double dz = Math.sin((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
 
-			return new Vec3d(this.getX() + dx, this.getY() + this.getMountedYOffset() + passenger.getYOffset(), this.getZ() + dz);
+			return new Vector3d(this.getPosX() + dx, this.getPosY() + this.getMountedYOffset() + passenger.getYOffset(), this.getPosZ() + dz);
 		} else {
-			return new Vec3d(this.getX(), this.getY(), this.getZ());
+			return new Vector3d(this.getPosX(), this.getPosY(), this.getPosZ());
 		}
 	}
 
@@ -190,7 +190,7 @@ public class EntityTFYeti extends MonsterEntity implements IHostileMount {
 	}
 
 	public static boolean isValidLightLevel(IWorld world, BlockPos blockPos, Random random) {
-		if (world.getLightLevel(LightType.SKY, blockPos) > random.nextInt(32)) {
+		if (world.getLightFor(LightType.SKY, blockPos) > random.nextInt(32)) {
 			return world.getBiome(blockPos) == TFBiomes.snowy_forest.get();
 		} else {
 			int i = world.getWorld().isThundering() ? world.getNeighborAwareLightSubtracted(blockPos, 10) : world.getLight(blockPos);

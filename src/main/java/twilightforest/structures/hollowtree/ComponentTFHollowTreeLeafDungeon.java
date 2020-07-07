@@ -3,11 +3,12 @@ package twilightforest.structures.hollowtree;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
@@ -65,12 +66,12 @@ public class ComponentTFHollowTreeLeafDungeon extends StructureTFTreeComponent {
 	}
 
 	@Override
-	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random random, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
-		return this.addComponentParts(world.getWorld(), generator, random, sbb, false);
+	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random random, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		return this.addComponentParts(world, generator, random, sbb, false);
 	}
 
 	@Override
-	public boolean addComponentParts(World world, ChunkGenerator<?> generator, Random random, MutableBoundingBox sbb, boolean drawLeaves) {
+	public boolean addComponentParts(ISeedReader world, ChunkGenerator generator, Random random, MutableBoundingBox sbb, boolean drawLeaves) {
 		if (!drawLeaves) {
 			// wood
 			drawHollowBlob(world, sbb, radius, radius, radius, 3, 2, TFBlocks.oak_wood.get().getDefaultState(), false);
@@ -87,7 +88,7 @@ public class ComponentTFHollowTreeLeafDungeon extends StructureTFTreeComponent {
 		return true;
 	}
 
-	private void drawHollowBlob(World world, MutableBoundingBox sbb, int sx, int sy, int sz, int blobRadius, int hollowRadius, BlockState blockState, boolean isLeaves) {
+	private void drawHollowBlob(ISeedReader world, MutableBoundingBox sbb, int sx, int sy, int sz, int blobRadius, int hollowRadius, BlockState blockState, boolean isLeaves) {
 		// then trace out a quadrant
 		for (byte dx = 0; dx <= blobRadius; dx++) {
 			for (byte dy = 0; dy <= blobRadius; dy++) {

@@ -11,6 +11,6 @@ public class MangroveTree extends TFTree {
 
 	@Override
 	public ConfiguredFeature<TFTreeFeatureConfig, ?> createTreeFeature(Random rand) {
-		return TFBiomeFeatures.MANGROVE_TREE.get().configure(TFBiomeDecorator.MANGROVE_TREE_NO_WATER);
+		return TFBiomeFeatures.MANGROVE_TREE.get().withConfiguration(TFBiomeDecorator.MANGROVE_TREE_NO_WATER);
 	}
 }

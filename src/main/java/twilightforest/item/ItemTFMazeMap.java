@@ -12,15 +12,13 @@ import net.minecraft.block.Blocks;
 import net.minecraft.item.*;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.play.server.SMapDataPacket;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.storage.MapData;
 import net.minecraft.world.storage.MapDecoration;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.fml.network.NetworkDirection;
 import twilightforest.TFMazeMapData;
@@ -45,7 +43,7 @@ public class ItemTFMazeMap extends FilledMapItem {
 	// [VanillaCopy] super with own item and methods, plus y and mapOres
 	public static ItemStack setupNewMap(World world, int worldX, int worldZ, byte scale, boolean trackingPosition, boolean unlimitedTracking, int worldY, boolean mapOres) {
 		ItemStack itemstack = new ItemStack(mapOres ? TFItems.ore_map.get() : TFItems.maze_map.get());
-		createMapData(itemstack, world, worldX, worldZ, scale, trackingPosition, unlimitedTracking, world.dimension.getType(), worldY);
+		createMapData(itemstack, world, worldX, worldZ, scale, trackingPosition, unlimitedTracking, world.func_234923_W_(), worldY);
 		return itemstack;
 	}
 
@@ -59,17 +57,17 @@ public class ItemTFMazeMap extends FilledMapItem {
 	protected TFMazeMapData getCustomMapData(ItemStack stack, World world) {
 		TFMazeMapData mapdata = getData(stack, world);
 		if (mapdata == null && !world.isRemote) {
-			mapdata = ItemTFMazeMap.createMapData(stack, world, world.getWorldInfo().getSpawnX(), world.getWorldInfo().getSpawnZ(), 0, false, false, world.dimension.getType(), world.getWorldInfo().getSpawnY());
+			mapdata = ItemTFMazeMap.createMapData(stack, world, world.getWorldInfo().getSpawnX(), world.getWorldInfo().getSpawnZ(), 0, false, false, world.func_234923_W_(), world.getWorldInfo().getSpawnY());
 		}
 
 		return mapdata;
 	}
 
 	// [VanillaCopy] super with own item and id, and y parameter
-	private static TFMazeMapData createMapData(ItemStack stack, World world, int x, int z, int scale, boolean trackingPosition, boolean unlimitedTracking, DimensionType dimension, int y) {
+	private static TFMazeMapData createMapData(ItemStack stack, World world, int x, int z, int scale, boolean trackingPosition, boolean unlimitedTracking, RegistryKey<World> dimension, int y) {
 		int i = world.getNextMapId();
 		TFMazeMapData mapdata = new TFMazeMapData(getMapName(i));
-		mapdata.func_212440_a(x, z, scale, trackingPosition, unlimitedTracking, dimension);
+		mapdata.func_237241_a_(x, z, scale, trackingPosition, unlimitedTracking, dimension);
 		mapdata.calculateMapCenter(world, x, y, z, scale); // call our own map center calculation
 		TFMazeMapData.registerMazeMapData(world, mapdata); // call our own register method
 		stack.getOrCreateTag().putInt("map", i);
@@ -84,15 +82,15 @@ public class ItemTFMazeMap extends FilledMapItem {
 	@SuppressWarnings("unused")
 	@Override
 	public void updateMapData(World world, Entity viewer, MapData data) {
-		if (world.dimension.getType() == data.dimension && viewer instanceof PlayerEntity) {
+		if (world.func_234923_W_() == data.dimension && viewer instanceof PlayerEntity) {
 			int blocksPerPixel = 1 << data.scale;
 			int centerX = data.xCenter;
 			int centerZ = data.zCenter;
-			int viewerX = MathHelper.floor(viewer.getX() - (double) centerX) / blocksPerPixel + 64;
-			int viewerZ = MathHelper.floor(viewer.getZ() - (double) centerZ) / blocksPerPixel + 64;
+			int viewerX = MathHelper.floor(viewer.getPosX() - (double) centerX) / blocksPerPixel + 64;
+			int viewerZ = MathHelper.floor(viewer.getPosZ() - (double) centerZ) / blocksPerPixel + 64;
 			int viewRadiusPixels = 16; // TF this is smaller on the maze map
 
-			if (world.dimension.isNether()) {
+			if (world.func_230315_m_().func_236037_d_()) {
 				viewRadiusPixels /= 2;
 			}
 
@@ -122,7 +120,7 @@ public class ItemTFMazeMap extends FilledMapItem {
 								int numLiquid = 0;
 								double d1 = 0.0D;
 
-								if (world.dimension.isNether()) {
+								if (world.func_230315_m_().func_236037_d_()) {
 									int l3 = worldX + worldZ * 231871;
 									l3 = l3 * l3 * 31287121 + l3 * 11;
 
@@ -246,7 +244,7 @@ public class ItemTFMazeMap extends FilledMapItem {
 					mapdata.updateVisiblePlayers(entityplayer, stack);
 
 					// TF - if player is far away vertically, show a dot
-					int yProximity = MathHelper.floor(entityplayer.getY() - mapdata.yCenter);
+					int yProximity = MathHelper.floor(entityplayer.getPosY() - mapdata.yCenter);
 					if (yProximity < -YSEARCH || yProximity > YSEARCH) {
 						MapDecoration decoration = mapdata.mapDecorations.get(entityplayer.getName().getString());
 						if (decoration != null) {

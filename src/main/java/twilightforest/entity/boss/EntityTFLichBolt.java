@@ -11,7 +11,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -36,9 +36,9 @@ public class EntityTFLichBolt extends EntityTFThrowable implements IRendersAsIte
 
 	private void makeTrail() {
 		for (int i = 0; i < 5; i++) {
-			double dx = getX() + 0.5 * (rand.nextDouble() - rand.nextDouble());
-			double dy = getY() + 0.5 * (rand.nextDouble() - rand.nextDouble());
-			double dz = getZ() + 0.5 * (rand.nextDouble() - rand.nextDouble());
+			double dx = getPosX() + 0.5 * (rand.nextDouble() - rand.nextDouble());
+			double dy = getPosY() + 0.5 * (rand.nextDouble() - rand.nextDouble());
+			double dz = getPosZ() + 0.5 * (rand.nextDouble() - rand.nextDouble());
 
 			double s1 = ((rand.nextFloat() * 0.5F) + 0.5F) * 0.17F;
 			double s2 = ((rand.nextFloat() * 0.5F) + 0.5F) * 0.80F;
@@ -63,7 +63,7 @@ public class EntityTFLichBolt extends EntityTFThrowable implements IRendersAsIte
 		super.attackEntityFrom(damagesource, amount);
 
 		if (!this.world.isRemote && damagesource.getTrueSource() != null) {
-			Vec3d vec3d = damagesource.getTrueSource().getLookVec();
+			Vector3d vec3d = damagesource.getTrueSource().getLookVec();
 			// reflect faster and more accurately
 			this.shoot(vec3d.x, vec3d.y, vec3d.z, 1.5F, 0.1F);  // reflect faster and more accurately
 
@@ -87,7 +87,7 @@ public class EntityTFLichBolt extends EntityTFThrowable implements IRendersAsIte
 		if (id == 3) {
 			ItemStack itemId = new ItemStack(Items.ENDER_PEARL);
 			for (int i = 0; i < 8; ++i) {
-				this.world.addParticle(new ItemParticleData(ParticleTypes.ITEM, itemId), this.getX(), this.getY(), this.getZ(), rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
+				this.world.addParticle(new ItemParticleData(ParticleTypes.ITEM, itemId), this.getPosX(), this.getPosY(), this.getPosZ(), rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
 			}
 		} else {
 			super.handleStatusUpdate(id);

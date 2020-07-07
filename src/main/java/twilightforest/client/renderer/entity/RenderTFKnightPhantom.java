@@ -26,7 +26,7 @@ public class RenderTFKnightPhantom extends BipedRenderer<EntityTFKnightPhantom, 
 	}
 
 	@Override
-	protected void scale(EntityTFKnightPhantom entity, MatrixStack stack, float partialTicks) {
+	protected void preRenderCallback(EntityTFKnightPhantom entity, MatrixStack stack, float partialTicks) {
 		float scale = entity.isChargingAtPlayer() ? 1.8F : 1.2F;
 		stack.scale(scale, scale, scale);
 	}

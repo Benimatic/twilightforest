@@ -70,9 +70,9 @@ public class EntityAITFHoverSummon extends EntityAITFHoverBase<EntityTFSnowQueen
 		}
 
 		// check if we are at our waypoint target
-		double offsetX = this.hoverPosX - this.attacker.getX();
-		double offsetY = this.hoverPosY - this.attacker.getY();
-		double offsetZ = this.hoverPosZ - this.attacker.getZ();
+		double offsetX = this.hoverPosX - this.attacker.getPosX();
+		double offsetY = this.hoverPosY - this.attacker.getPosY();
+		double offsetZ = this.hoverPosZ - this.attacker.getPosZ();
 
 		double distanceDesired = offsetX * offsetX + offsetY * offsetY + offsetZ * offsetZ;
 

@@ -14,7 +14,7 @@ public class RenderTFSnowGuardian extends RenderTFBiped<EntityTFSnowGuardian, Mo
 	}
 
 	@Override
-	protected void scale(EntityTFSnowGuardian entity, MatrixStack stack, float partialTicks) {
+	protected void preRenderCallback(EntityTFSnowGuardian entity, MatrixStack stack, float partialTicks) {
 		float bounce = entity.ticksExisted + partialTicks;
 		stack.translate(0F, MathHelper.sin((bounce) * 0.2F) * 0.15F, 0F);
 	}

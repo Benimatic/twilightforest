@@ -3,7 +3,7 @@ package twilightforest.entity.ai;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import twilightforest.entity.boss.EntityTFKnightPhantom;
 import twilightforest.item.TFItems;
 
@@ -31,14 +31,14 @@ public class EntityAITFPhantomUpdateFormationAndMove extends Goal {
 		boss.setTicksProgress(boss.getTicksProgress() + 1);
 		if (boss.getTicksProgress() >= boss.getMaxTicksForFormation())
 			switchToNextFormation();
-		Vec3d dest = getDestination();
+		Vector3d dest = getDestination();
 		boss.getMoveHelper().setMoveTo(dest.x, dest.y, dest.z, boss.isChargingAtPlayer() ? 2 : 1);
 	}
 
-	public Vec3d getDestination() {
+	public Vector3d getDestination() {
 
 		if (!boss.hasHome())
-			boss.setHomePosAndDistance(boss.getPosition(), 20);
+			boss.setHomePosAndDistance(boss.func_233580_cy_(), 20);
 
 		switch (boss.getCurrentFormation()) {
 			case LARGE_CLOCKWISE:
@@ -203,7 +203,7 @@ public class EntityAITFPhantomUpdateFormationAndMove extends Goal {
 		return noCharge;
 	}
 
-	private Vec3d getMoveAcrossPosition(boolean plus, boolean alongX) {
+	private Vector3d getMoveAcrossPosition(boolean plus, boolean alongX) {
 		float offset0 = (boss.getNumber() * 3F) - 7.5F;
 		float offset1;
 
@@ -220,10 +220,10 @@ public class EntityAITFPhantomUpdateFormationAndMove extends Goal {
 		double dx = boss.getHomePosition().getX() + (alongX ? offset0 : offset1);
 		double dy = boss.getHomePosition().getY() + Math.cos(boss.getTicksProgress() / 7F + boss.getNumber());
 		double dz = boss.getHomePosition().getZ() + (alongX ? offset1 : offset0);
-		return new Vec3d(dx, dy, dz);
+		return new Vector3d(dx, dy, dz);
 	}
 
-	private Vec3d getCirclePosition(float distance, boolean clockwise) {
+	private Vector3d getCirclePosition(float distance, boolean clockwise) {
 		float angle = (boss.getTicksProgress() * 2.0F);
 
 		if (!clockwise) {
@@ -235,10 +235,10 @@ public class EntityAITFPhantomUpdateFormationAndMove extends Goal {
 		double dx = boss.getHomePosition().getX() + Math.cos((angle) * Math.PI / 180.0D) * distance;
 		double dy = boss.getHomePosition().getY() + Math.cos(boss.getTicksProgress() / 7F + boss.getNumber());
 		double dz = boss.getHomePosition().getZ() + Math.sin((angle) * Math.PI / 180.0D) * distance;
-		return new Vec3d(dx, dy, dz);
+		return new Vector3d(dx, dy, dz);
 	}
 
-	private Vec3d getHoverPosition(float distance) {
+	private Vector3d getHoverPosition(float distance) {
 		// bound this by distance so we don't hover in walls if we get knocked into them
 
 		double dx = boss.lastTickPosX;
@@ -257,19 +257,19 @@ public class EntityAITFPhantomUpdateFormationAndMove extends Goal {
 			dz = boss.getHomePosition().getZ() + (oz / dDist * distance);
 		}
 
-		return new Vec3d(dx, dy, dz);
+		return new Vector3d(dx, dy, dz);
 	}
 
-	private Vec3d getLoiterPosition() {
+	private Vector3d getLoiterPosition() {
 		double dx = boss.getHomePosition().getX();
 		double dy = boss.getHomePosition().getY() + Math.cos(boss.getTicksProgress() / 7F + boss.getNumber());
 		double dz = boss.getHomePosition().getZ();
-		return new Vec3d(dx, dy, dz);
+		return new Vector3d(dx, dy, dz);
 	}
 
-	private Vec3d getAttackPlayerPosition() {
+	private Vector3d getAttackPlayerPosition() {
 		if (boss.isSwordKnight()) {
-			return new Vec3d(boss.getChargePos());
+			return new Vector3d(boss.getChargePos());
 		} else {
 			return getHoverPosition(CIRCLE_LARGE_RADIUS);
 		}

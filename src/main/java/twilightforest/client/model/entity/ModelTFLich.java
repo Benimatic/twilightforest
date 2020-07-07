@@ -20,50 +20,50 @@ public class ModelTFLich extends BipedModel<EntityTFLich> {
 		super(0.0F, 0.0F, 64, 64);
 
 		bipedBody = new ModelRenderer(this, 8, 16);
-		bipedBody.addCuboid(-4F, 0.0F, -2F, 8, 24, 4);
+		bipedBody.addBox(-4F, 0.0F, -2F, 8, 24, 4);
 		bipedBody.setRotationPoint(0.0F, -4.0F, 0.0F);
 		bipedBody.setTextureSize(64, 64);
 
 		bipedRightArm = new ModelRenderer(this, 0, 16);
-		bipedRightArm.addCuboid(-2F, -2F, -1F, 2, 12, 2);
+		bipedRightArm.addBox(-2F, -2F, -1F, 2, 12, 2);
 		bipedRightArm.setTextureSize(64, 64);
 		bipedRightArm.setRotationPoint(-5F, -2.0F, 0.0F);
 
 		bipedLeftArm = new ModelRenderer(this, 0, 16);
 		bipedLeftArm.mirror = true;
-		bipedLeftArm.addCuboid(-2F, -2F, -1F, 2, 12, 2);
+		bipedLeftArm.addBox(-2F, -2F, -1F, 2, 12, 2);
 		bipedLeftArm.setRotationPoint(5F, -2.0F, 0.0F);
 		bipedLeftArm.setTextureSize(64, 64);
 
 		bipedHeadwear = new ModelRenderer(this, 32, 0);
-		bipedHeadwear.addCuboid(-4F, -12F, -4F, 8, 8, 8, 0.5F);
+		bipedHeadwear.addBox(-4F, -12F, -4F, 8, 8, 8, 0.5F);
 		bipedHeadwear.setRotationPoint(0.0F, -4.0F, 0.0F);
 		bipedHeadwear.setTextureSize(64, 64);
 
 		bipedHead = new ModelRenderer(this, 0, 0);
-		bipedHead.addCuboid(-4F, -8F, -4F, 8, 8, 8);
+		bipedHead.addBox(-4F, -8F, -4F, 8, 8, 8);
 		bipedHead.setRotationPoint(0F, -4F, 0F);
 		bipedHead.setTextureSize(64, 64);
 
 		bipedRightLeg = new ModelRenderer(this, 0, 16);
-		bipedRightLeg.addCuboid(-1F, 0F, -1F, 2, 12, 2);
+		bipedRightLeg.addBox(-1F, 0F, -1F, 2, 12, 2);
 		bipedRightLeg.setRotationPoint(-2F, 9.5F, 0F);
 		bipedRightLeg.setTextureSize(64, 64);
 
 		bipedLeftLeg = new ModelRenderer(this, 0, 16);
-		bipedLeftLeg.addCuboid(-1F, 0F, -1F, 2, 12, 2);
+		bipedLeftLeg.addBox(-1F, 0F, -1F, 2, 12, 2);
 		bipedLeftLeg.setRotationPoint(2F, 9.5F, 0F);
 		bipedLeftLeg.setTextureSize(64, 64);
 		bipedLeftLeg.mirror = true;
 
 		collar = new ModelRenderer(this, 32, 16);
-		collar.addCuboid(-6F, 0F, 0F, 12, 12, 1);
+		collar.addBox(-6F, 0F, 0F, 12, 12, 1);
 		collar.setRotationPoint(0F, -3F, -1F);
 		collar.setTextureSize(64, 64);
 		setRotation(collar, 2.164208F, 0F, 0F);
 
 		cloak = new ModelRenderer(this, 0, 44);
-		cloak.addCuboid(-6F, 0F, 0F, 12, 19, 1);
+		cloak.addBox(-6F, 0F, 0F, 12, 19, 1);
 		cloak.setRotationPoint(0F, -4F, 2.5F);
 		cloak.setTextureSize(64, 64);
 		setRotation(cloak, 0F, 0F, 0F);
@@ -89,9 +89,9 @@ public class ModelTFLich extends BipedModel<EntityTFLich> {
 	}
 
 	@Override
-	public void setAngles(EntityTFLich entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setRotationAngles(EntityTFLich entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.shadowClone = entity.isShadowClone();
-		super.setAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+		super.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
 		float ogSin = MathHelper.sin(swingProgress * 3.141593F);
 		float otherSin = MathHelper.sin((1.0F - (1.0F - swingProgress) * (1.0F - swingProgress)) * 3.141593F);

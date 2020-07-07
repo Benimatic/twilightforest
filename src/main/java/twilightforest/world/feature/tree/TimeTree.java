@@ -11,6 +11,6 @@ public class TimeTree extends TFTree {
 
 	@Override
 	public ConfiguredFeature<TFTreeFeatureConfig, ?> createTreeFeature(Random rand) {
-		return TFBiomeFeatures.TREE_OF_TIME.get().configure(TFBiomeDecorator.TIME_TREE);
+		return TFBiomeFeatures.TREE_OF_TIME.get().withConfiguration(TFBiomeDecorator.TIME_TREE);
 	}
 }

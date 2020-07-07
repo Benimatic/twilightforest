@@ -1,8 +1,10 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
@@ -35,12 +37,11 @@ public class EntityTFIceCrystal extends EntityTFIceMob {
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
 	}
 
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
-		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
-		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D);
+	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return MonsterEntity.func_234295_eP_()
+				.func_233815_a_(Attributes.field_233818_a_, 10.0D)
+				.func_233815_a_(Attributes.field_233821_d_, 0.23D)
+				.func_233815_a_(Attributes.field_233823_f_, 5.0D);
 	}
 
 	@Override

@@ -21,7 +21,7 @@ public class RenderTFSwarmSpider extends SpiderRenderer<EntityTFSwarmSpider> {
 	}
 
 	@Override
-	protected void scale(EntityTFSwarmSpider entity, MatrixStack stack, float partialTicks) {
+	protected void preRenderCallback(EntityTFSwarmSpider entity, MatrixStack stack, float partialTicks) {
 		float scale = 0.5F;
 		stack.scale(scale, scale, scale);
 	}

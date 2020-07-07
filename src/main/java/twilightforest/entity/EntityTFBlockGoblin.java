@@ -4,8 +4,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.Pose;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.monster.MonsterEntity;
@@ -18,7 +19,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
 import twilightforest.entity.ai.EntityAIThrowSpikeBlock;
@@ -28,7 +29,7 @@ import java.util.UUID;
 
 public class EntityTFBlockGoblin extends MonsterEntity implements IEntityMultiPart {
 	private static final UUID MODIFIER_UUID = UUID.fromString("5CD17E52-A79A-43D3-A529-90FDE04B181E");
-	private static final AttributeModifier MODIFIER = (new AttributeModifier(MODIFIER_UUID, "speedPenalty", -0.25D, AttributeModifier.Operation.ADDITION)).setSaved(false);
+	private static final AttributeModifier MODIFIER = new AttributeModifier(MODIFIER_UUID, "speedPenalty", -0.25D, AttributeModifier.Operation.ADDITION);
 
 	private static final float CHAIN_SPEED = 16F;
 	private static final DataParameter<Byte> DATA_CHAINLENGTH = EntityDataManager.createKey(EntityTFBlockGoblin.class, DataSerializers.BYTE);
@@ -72,13 +73,12 @@ public class EntityTFBlockGoblin extends MonsterEntity implements IEntityMultiPa
 		dataManager.register(IS_THROWING, false);
 	}
 
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
-		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
-		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(8.0D);
-		this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(11.0D);
+	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return MonsterEntity.func_234295_eP_()
+				.func_233815_a_(Attributes.field_233818_a_, 20.0D)
+				.func_233815_a_(Attributes.field_233821_d_, 0.28D)
+				.func_233815_a_(Attributes.field_233823_f_, 8.0D)
+				.func_233815_a_(Attributes.field_233826_i_, 11.0D);
 	}
 
     @Override
@@ -111,18 +111,18 @@ public class EntityTFBlockGoblin extends MonsterEntity implements IEntityMultiPa
 	/**
 	 * Get the block & chain position
 	 */
-	public Vec3d getChainPosition() {
+	public Vector3d getChainPosition() {
 		return this.getChainPosition(getChainAngle(), getChainLength());
 	}
 
 	/**
 	 * Get the block & chain position
 	 */
-	public Vec3d getChainPosition(float angle, float distance) {
+	public Vector3d getChainPosition(float angle, float distance) {
 		double dx = Math.cos((angle) * Math.PI / 180.0D) * distance;
 		double dz = Math.sin((angle) * Math.PI / 180.0D) * distance;
 
-		return new Vec3d(this.getX() + dx, this.getY() + this.getChainYOffset(), this.getZ() + dz);
+		return new Vector3d(this.getPosX() + dx, this.getPosY() + this.getChainYOffset(), this.getPosZ() + dz);
 	}
 
 	public boolean isSwingingChain() {
@@ -163,11 +163,11 @@ public class EntityTFBlockGoblin extends MonsterEntity implements IEntityMultiPa
 
 		if (this.chainMoveLength > 0) {
 
-			Vec3d blockPos = this.getThrowPos();
+			Vector3d blockPos = this.getThrowPos();
 
-			double sx2 = this.getX();
-			double sy2 = this.getY() + this.getHeight() - 0.1;
-			double sz2 = this.getZ();
+			double sx2 = this.getPosX();
+			double sy2 = this.getPosY() + this.getHeight() - 0.1;
+			double sz2 = this.getPosZ();
 
 			double ox2 = sx2 - blockPos.x;
 			double oy2 = sy2 - blockPos.y - 0.25F;
@@ -186,14 +186,14 @@ public class EntityTFBlockGoblin extends MonsterEntity implements IEntityMultiPa
 		} else {
 
 			// set block position
-			Vec3d blockPos = this.getChainPosition();
+			Vector3d blockPos = this.getChainPosition();
 			this.block.setPosition(blockPos.x, blockPos.y, blockPos.z);
 			this.block.rotationYaw = getChainAngle();
 
 			// interpolate chain position
-			double sx = this.getX();
-			double sy = this.getY() + this.getHeight() - 0.1;
-			double sz = this.getZ();
+			double sx = this.getPosX();
+			double sy = this.getPosY() + this.getHeight() - 0.1;
+			double sz = this.getPosZ();
 
 			double ox = sx - blockPos.x;
 			double oy = sy - blockPos.y - (block.getHeight() / 3D);
@@ -211,9 +211,9 @@ public class EntityTFBlockGoblin extends MonsterEntity implements IEntityMultiPa
 		this.chainMove();
 	}
 
-	private Vec3d getThrowPos() {
-		Vec3d vec3d = this.getLook(1.0F);
-		return new Vec3d(this.getX() + vec3d.x * this.chainMoveLength, this.getY() + this.getEyeHeight(), this.getZ() + vec3d.z * this.chainMoveLength);
+	private Vector3d getThrowPos() {
+		Vector3d vec3d = this.getLook(1.0F);
+		return new Vector3d(this.getPosX() + vec3d.x * this.chainMoveLength, this.getPosY() + this.getEyeHeight(), this.getPosZ() + vec3d.z * this.chainMoveLength);
 	}
 
 	private void chainMove() {

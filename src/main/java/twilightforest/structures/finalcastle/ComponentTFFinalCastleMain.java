@@ -7,9 +7,9 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
@@ -217,8 +217,7 @@ public class ComponentTFFinalCastleMain extends StructureTFComponentOld {
 	}
 
 	@Override
-	public boolean generate(IWorld worldIn, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
-		World world = worldIn.getWorld();
+	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// walls
 		fillWithRandomizedBlocks(world, sbb, 0, 0, 0, 48, 40, 48, false, rand, deco.randomBlocks);
 
@@ -308,7 +307,7 @@ public class ComponentTFFinalCastleMain extends StructureTFComponentOld {
 		return true;
 	}
 
-	private void makeSmallTowerStairs(World world, MutableBoundingBox sbb, Rotation rotation) {
+	private void makeSmallTowerStairs(ISeedReader world, MutableBoundingBox sbb, Rotation rotation) {
 		for (int y = 1; y < 4; y++) {
 			int z = 40 + y;
 			this.fillBlocksRotated(world, sbb, 1, 1, z, 4, y, z, deco.blockState, rotation);
@@ -317,7 +316,7 @@ public class ComponentTFFinalCastleMain extends StructureTFComponentOld {
 		}
 	}
 
-	private void makeLargeTowerStairs(World world, MutableBoundingBox sbb, Rotation rotation) {
+	private void makeLargeTowerStairs(ISeedReader world, MutableBoundingBox sbb, Rotation rotation) {
 		final BlockState stairState = getStairState(deco.stairState, Direction.NORTH, rotation, false);
 		for (int y = 1; y < 4; y++) {
 			int z = 38 + y;
@@ -326,20 +325,20 @@ public class ComponentTFFinalCastleMain extends StructureTFComponentOld {
 		}
 	}
 
-	private void makeMezzTopStairs(World world, MutableBoundingBox sbb, int y, int z, Direction stairMeta) {
+	private void makeMezzTopStairs(ISeedReader world, MutableBoundingBox sbb, int y, int z, Direction stairMeta) {
 		final BlockState stairState = getStairState(deco.stairState, stairMeta, rotation, false);
 		this.fillWithBlocks(world, sbb, 38, y, z, 46, y, z, stairState, stairState, false);
 		this.fillWithBlocks(world, sbb, 38, y - 1, z, 46, y - 1, z, deco.blockState, deco.blockState, false);
 		this.fillWithAir(world, sbb, 38, y + 1, z, 46, y + 3, z);
 	}
 
-	private void makeHalfPillarBase(World world, MutableBoundingBox sbb, Rotation rotation, int y, int z, boolean isFlipped) {
+	private void makeHalfPillarBase(ISeedReader world, MutableBoundingBox sbb, Rotation rotation, int y, int z, boolean isFlipped) {
 		this.fillBlocksRotated(world, sbb, 2, y, z - 1, 2, y, z + 3, getStairState(deco.stairState, Direction.EAST, rotation, isFlipped), rotation);
 		this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.NORTH, rotation, isFlipped), 1, y, z - 1, rotation, sbb);
 		this.setBlockStateRotated(world, getStairState(deco.stairState, Direction.SOUTH, rotation, isFlipped), 1, y, z + 3, rotation, sbb);
 	}
 
-	private void makePillarBase(World world, MutableBoundingBox sbb, int x, int z, int y, boolean isFlipped) {
+	private void makePillarBase(ISeedReader world, MutableBoundingBox sbb, int x, int z, int y, boolean isFlipped) {
 		this.fillWithBlocks(world, sbb, x + 0, y, z + 3, x + 3, y, z + 3, getStairState(deco.stairState, Direction.SOUTH, rotation, isFlipped), AIR, false);
 		this.fillWithBlocks(world, sbb, x - 1, y, z - 1, x + 2, y, z - 1, getStairState(deco.stairState, Direction.NORTH, rotation, isFlipped), AIR, false);
 

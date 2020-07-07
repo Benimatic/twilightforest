@@ -3,19 +3,20 @@ package twilightforest.entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.IRangedAttackMob;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ThrowableEntity;
+import net.minecraft.loot.LootContext;
+import net.minecraft.loot.LootParameterSets;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.LootParameterSets;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.projectile.EntityTFTomeBolt;
@@ -41,12 +42,11 @@ public class EntityTFDeathTome extends MonsterEntity implements IRangedAttackMob
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
 	}
 
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
-		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
-		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4);
+	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return MonsterEntity.func_234295_eP_()
+				.func_233815_a_(Attributes.field_233818_a_, 30.0D)
+				.func_233815_a_(Attributes.field_233821_d_, 0.25D)
+				.func_233815_a_(Attributes.field_233823_f_, 4);
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class EntityTFDeathTome extends MonsterEntity implements IRangedAttackMob
 		super.livingTick();
 
 		for (int i = 0; i < 1; ++i) {
-			this.world.addParticle(ParticleTypes.ENCHANT, this.getX() + (this.rand.nextDouble() - 0.5D) * this.getWidth(), this.getY() + this.rand.nextDouble() * (this.getHeight() - 0.75D) + 0.5D, this.getZ() + (this.rand.nextDouble() - 0.5D) * this.getWidth(),
+			this.world.addParticle(ParticleTypes.ENCHANT, this.getPosX() + (this.rand.nextDouble() - 0.5D) * this.getWidth(), this.getPosY() + this.rand.nextDouble() * (this.getHeight() - 0.75D) + 0.5D, this.getPosZ() + (this.rand.nextDouble() - 0.5D) * this.getWidth(),
 					0, 0.5, 0);
 		}
 	}
@@ -96,9 +96,9 @@ public class EntityTFDeathTome extends MonsterEntity implements IRangedAttackMob
 	@Override
 	public void attackEntityWithRangedAttack(LivingEntity target, float distanceFactor) {
 		ThrowableEntity projectile = new EntityTFTomeBolt(TFEntities.tome_bolt, this.world, this);
-		double tx = target.getX() - this.getX();
-		double ty = target.getY() + target.getEyeHeight() - 1.100000023841858D - projectile.getY();
-		double tz = target.getZ() - this.getZ();
+		double tx = target.getPosX() - this.getPosX();
+		double ty = target.getPosY() + target.getEyeHeight() - 1.100000023841858D - projectile.getPosY();
+		double tz = target.getPosZ() - this.getPosZ();
 		float heightOffset = MathHelper.sqrt(tx * tx + tz * tz) * 0.2F;
 		projectile.shoot(tx, ty + heightOffset, tz, 0.6F, 6.0F);
 		this.world.addEntity(projectile);

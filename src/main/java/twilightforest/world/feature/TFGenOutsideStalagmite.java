@@ -1,15 +1,14 @@
 package twilightforest.world.feature;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import twilightforest.util.FeatureUtil;
 import twilightforest.world.feature.config.CaveStalactiteConfig;
 
 import java.util.Random;
-import java.util.function.Function;
 
 /**
  * Makes a Stalagmite suitable for outside appearances.
@@ -18,12 +17,12 @@ import java.util.function.Function;
  */
 public class TFGenOutsideStalagmite extends TFGenCaveStalactite {
 
-	public TFGenOutsideStalagmite(Function<Dynamic<?>, CaveStalactiteConfig> configIn) {
+	public TFGenOutsideStalagmite(Codec<CaveStalactiteConfig> configIn) {
 		super(configIn);
 	}
 
 	@Override
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, CaveStalactiteConfig config) {
+	public boolean func_230362_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, BlockPos pos, CaveStalactiteConfig config) {
 		int length = rand.nextInt(10) + 5;
 
 		if (!FeatureUtil.isAreaSuitable(world, rand, pos, 1, length, 1)) {

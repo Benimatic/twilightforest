@@ -8,12 +8,12 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.biome.DefaultBiomeFeatures;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import net.minecraft.world.server.ServerWorld;
@@ -97,8 +97,8 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 	 * Generate the blocks that go here
 	 */
 	@Override
-	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
-		placeStrongholdWalls(world.getWorld(), sbb, 0, 0, 0, 17, 13, 17, rand, deco.randomBlocks);
+	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		placeStrongholdWalls(world, sbb, 0, 0, 0, 17, 13, 17, rand, deco.randomBlocks);
 
 
 		// balcony
@@ -107,10 +107,10 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 		this.fillWithAir(world, sbb, 6, 6, 6, 11, 8, 11);
 
 		// balcony pillars
-		placeBalconyPillar(world.getWorld(), sbb, Rotation.NONE);
-		placeBalconyPillar(world.getWorld(), sbb, Rotation.CLOCKWISE_90);
-		placeBalconyPillar(world.getWorld(), sbb, Rotation.CLOCKWISE_180);
-		placeBalconyPillar(world.getWorld(), sbb, Rotation.COUNTERCLOCKWISE_90);
+		placeBalconyPillar(world, sbb, Rotation.NONE);
+		placeBalconyPillar(world, sbb, Rotation.CLOCKWISE_90);
+		placeBalconyPillar(world, sbb, Rotation.CLOCKWISE_180);
+		placeBalconyPillar(world, sbb, Rotation.COUNTERCLOCKWISE_90);
 
 		// corner pillars
 		this.fillWithRandomizedBlocks(world, sbb, 1, 1, 1, 1, 12, 2, false, rand, deco.randomBlocks);
@@ -131,21 +131,21 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 		this.fillWithBlocks(world, sbb, 7, 0, 7, 10, 0, 10, grass, AIR, false);
 
 		// tree
-		this.spawnATree(world.getWorld(), rand.nextInt(5), 8, 1, 8, sbb);
+		this.spawnATree(world, manager, rand.nextInt(5), 8, 1, 8, sbb);
 
 		// statues
-		placeCornerStatue(world.getWorld(), 2, 8, 2, 0, sbb);
-		placeCornerStatue(world.getWorld(), 2, 1, 15, 1, sbb);
-		placeCornerStatue(world.getWorld(), 15, 1, 2, 2, sbb);
-		placeCornerStatue(world.getWorld(), 15, 8, 15, 3, sbb);
+		placeCornerStatue(world, 2, 8, 2, 0, sbb);
+		placeCornerStatue(world, 2, 1, 15, 1, sbb);
+		placeCornerStatue(world, 15, 1, 2, 2, sbb);
+		placeCornerStatue(world, 15, 8, 15, 3, sbb);
 
 		// doors
-		placeDoors(world.getWorld(), rand, sbb);
+		placeDoors(world, rand, sbb);
 
 		return true;
 	}
 
-	private void spawnATree(World world, int treeNum, int x, int y, int z, MutableBoundingBox sbb) {
+	private void spawnATree(ISeedReader world, StructureManager manager, int treeNum, int x, int y, int z, MutableBoundingBox sbb) {
 		BlockPos pos = getBlockPosWithOffset(x, y, z);
 
 		if (sbb.isVecInside(pos)) {
@@ -158,33 +158,33 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 				case 0:
 				default:
 					// oak tree
-					treeGen = Feature.NORMAL_TREE.configure(DefaultBiomeFeatures.OAK_TREE_CONFIG); //TODO: minHeight
+					treeGen = Feature.field_236291_c_.withConfiguration(DefaultBiomeFeatures.OAK_TREE_CONFIG); //TODO: minHeight
 					break;
 				case 1:
 					// jungle tree
-					treeGen = Feature.NORMAL_TREE.configure(DefaultBiomeFeatures.JUNGLE_TREE_CONFIG); //TODO: minHeight
+					treeGen = Feature.field_236291_c_.withConfiguration(DefaultBiomeFeatures.JUNGLE_TREE_CONFIG); //TODO: minHeight
 					break;
 				case 2:
 					// birch
-					treeGen = Feature.NORMAL_TREE.configure(DefaultBiomeFeatures.BIRCH_TREE_CONFIG); //TODO: minHeight
+					treeGen = Feature.field_236291_c_.withConfiguration(DefaultBiomeFeatures.BIRCH_TREE_CONFIG); //TODO: minHeight
 					break;
 				case 3:
-					treeGen = Feature.NORMAL_TREE.configure(TFBiomeDecorator.OAK_TREE); //TODO: minHeight
+					treeGen = Feature.field_236291_c_.withConfiguration(TFBiomeDecorator.OAK_TREE); //TODO: minHeight
 					break;
 				case 4:
-					treeGen = Feature.NORMAL_TREE.configure(TFBiomeDecorator.RAINBOAK_TREE);
+					treeGen = Feature.field_236291_c_.withConfiguration(TFBiomeDecorator.RAINBOAK_TREE);
 					break;
 			}
 
 			for (int i = 0; i < 100; i++) {
-				if (treeGen.place(world, ((ServerWorld) world).getChunkProvider().getChunkGenerator(), world.rand, pos)) {
+				if (treeGen.func_236265_a_(world, manager, ((ServerWorld) world).getChunkProvider().getChunkGenerator(), world.getRandom(), pos)) {
 					break;
 				}
 			}
 		}
 	}
 
-	private void placeBalconyPillar(World world, MutableBoundingBox sbb, Rotation rotation) {
+	private void placeBalconyPillar(ISeedReader world, MutableBoundingBox sbb, Rotation rotation) {
 		this.fillBlocksRotated(world, sbb, 5, 1, 5, 5, 12, 5, deco.pillarState, rotation);
 		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.COUNTERCLOCKWISE_90.rotate(Direction.WEST), rotation, false), 5, 1, 6, rotation, sbb);
 		this.setBlockStateRotated(world, getStairState(deco.stairState, Rotation.CLOCKWISE_180.rotate(Direction.WEST), rotation, false), 6, 1, 5, rotation, sbb);

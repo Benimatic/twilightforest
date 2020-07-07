@@ -9,11 +9,11 @@ import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -28,8 +28,9 @@ public abstract class BuiltInItemModel implements IBakedModel {
 			super(/*Collections.emptyList()*/);
 		}
 
+		@Nullable
 		@Override
-		public IBakedModel getModelWithOverrides(IBakedModel originalModel, ItemStack stack, @Nullable World world, @Nullable LivingEntity entity) {
+		public IBakedModel func_239290_a_(IBakedModel originalModel, ItemStack stack, @Nullable ClientWorld world, @Nullable LivingEntity entity) {
 			setItemStack(stack);
 			return BuiltInItemModel.this;
 		}
@@ -39,7 +40,7 @@ public abstract class BuiltInItemModel implements IBakedModel {
 	private final ItemOverrideList overrides = new Overrides();
 
 	protected BuiltInItemModel(String particleTextureName) {
-		this.particleTexture = Minecraft.getInstance().getSpriteAtlas(AtlasTexture.LOCATION_BLOCKS_TEXTURE).apply(new ResourceLocation(particleTextureName));
+		this.particleTexture = Minecraft.getInstance().getAtlasSpriteGetter(AtlasTexture.LOCATION_BLOCKS_TEXTURE).apply(new ResourceLocation(particleTextureName));
 	}
 
 	@Override

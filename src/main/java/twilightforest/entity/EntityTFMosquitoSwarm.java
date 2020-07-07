@@ -1,6 +1,8 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -33,12 +35,11 @@ public class EntityTFMosquitoSwarm extends MonsterEntity {
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
 	}
 
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(12.0D);
-		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
-		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
+	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return MonsterEntity.func_234295_eP_()
+				.func_233815_a_(Attributes.field_233818_a_, 12.0D)
+				.func_233815_a_(Attributes.field_233821_d_, 0.23D)
+				.func_233815_a_(Attributes.field_233823_f_, 3.0D);
 	}
 
 	@Override
@@ -78,7 +79,7 @@ public class EntityTFMosquitoSwarm extends MonsterEntity {
 			// no light level check
 			return world.getDifficulty() != Difficulty.PEACEFUL && MonsterEntity.canSpawnOn(type, world, reason, pos, rand);
 		} else {
-			return MonsterEntity.func_223325_c(type, world, reason, pos, rand);
+			return MonsterEntity.canMonsterSpawn(type, world, reason, pos, rand);
 		}
 	}
 

@@ -9,6 +9,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
@@ -207,8 +208,9 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 
 	/**
 	 * Make a doorway
+	 * TODO: Parameter "rand" is unused. Remove?
 	 */
-	protected void placeDoorwayAt(World world, Random rand, int x, int y, int z, MutableBoundingBox sbb) {
+	protected void placeDoorwayAt(ISeedReader world, Random rand, int x, int y, int z, MutableBoundingBox sbb) {
 		if (x == 0 || x == this.getXSize()) {
 			this.fillWithBlocks(world, sbb, x, y, z - 2, x, y + 3, z + 2, deco.fenceState, Blocks.AIR.getDefaultState(), false);
 			this.fillWithAir(world, sbb, x, y, z - 1, x, y + 3, z + 1);
@@ -235,7 +237,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	/**
 	 * Make a smaller doorway
 	 */
-	protected void placeSmallDoorwayAt(World world, int facing, int x, int y, int z, MutableBoundingBox sbb) {
+	protected void placeSmallDoorwayAt(ISeedReader world, int facing, int x, int y, int z, MutableBoundingBox sbb) {
 		if (facing == 0 || facing == 2) {
 			this.fillWithBlocks(world, sbb, x - 1, y, z, x + 1, y + 1, z, Blocks.COBBLESTONE_WALL.getDefaultState(), Blocks.AIR.getDefaultState(), true);
 			this.fillWithAir(world, sbb, x, y, z, x, y + 1, z);
@@ -248,7 +250,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	/**
 	 * Generate a statue in the corner
 	 */
-	public void placeCornerStatue(World world, int x, int y, int z, int facing, MutableBoundingBox sbb) {
+	public void placeCornerStatue(ISeedReader world, int x, int y, int z, int facing, MutableBoundingBox sbb) {
 
 		// set offsets and stair metas
 		int ox = 1;
@@ -304,7 +306,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	/**
 	 * Make a statue that faces out from a wall
 	 */
-	public void placeWallStatue(World world, int x, int y, int z, Rotation facing, MutableBoundingBox sbb) {
+	public void placeWallStatue(ISeedReader world, int x, int y, int z, Rotation facing, MutableBoundingBox sbb) {
 		int ox = 1;
 		int oz = 1;
 
@@ -473,7 +475,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	/**
 	 * Place any doors on our list
 	 */
-	public void placeDoors(World world, Random rand, MutableBoundingBox sbb) {
+	public void placeDoors(ISeedReader world, Random rand, MutableBoundingBox sbb) {
 		if (this.doors != null) {
 			for (BlockPos doorCoords : doors) {
 				this.placeDoorwayAt(world, rand, doorCoords.getX(), doorCoords.getY(), doorCoords.getZ(), sbb);
@@ -486,7 +488,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	/**
 	 * Place stronghold walls in every position except those filled with dirt.
 	 */
-	protected void placeStrongholdWalls(World world, MutableBoundingBox sbb, int sx, int sy, int sz, int dx, int dy, int dz, Random rand, StructurePiece.BlockSelector randomBlocks) {
+	protected void placeStrongholdWalls(ISeedReader world, MutableBoundingBox sbb, int sx, int sy, int sz, int dx, int dy, int dz, Random rand, StructurePiece.BlockSelector randomBlocks) {
 		for (int y = sy; y <= dy; ++y) {
 			for (int x = sx; x <= dx; ++x) {
 				for (int z = sz; z <= dz; ++z) {
@@ -517,7 +519,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 	/**
 	 * Place stronghold walls on dirt/grass/stone
 	 */
-	protected void placeUpperStrongholdWalls(World world, MutableBoundingBox sbb, int sx, int sy, int sz, int dx, int dy, int dz, Random rand, StructurePiece.BlockSelector randomBlocks) {
+	protected void placeUpperStrongholdWalls(ISeedReader world, MutableBoundingBox sbb, int sx, int sy, int sz, int dx, int dy, int dz, Random rand, StructurePiece.BlockSelector randomBlocks) {
 		for (int y = sy; y <= dy; ++y) {
 			for (int x = sx; x <= dx; ++x) {
 				for (int z = sz; z <= dz; ++z) {

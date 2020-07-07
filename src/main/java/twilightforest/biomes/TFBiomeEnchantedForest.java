@@ -1,7 +1,6 @@
 package twilightforest.biomes;
 
 import net.minecraft.util.math.MathHelper;
-import twilightforest.TFFeature;
 
 import java.util.Random;
 
@@ -36,8 +35,8 @@ public class TFBiomeEnchantedForest extends TFBiomeBase {
 	}
 
 	@Override
-	public int getGrassColorAt(double x, double z) {
-		return (super.getGrassColorAt(x, z) & 0xFFFF00) + getEnchantedColor((int) x, (int) z); //TODO
+	public int getGrassColor(double x, double z) {
+		return (super.getGrassColor(x, z) & 0xFFFF00) + getEnchantedColor((int) x, (int) z); //TODO
 	}
 
 	@Override

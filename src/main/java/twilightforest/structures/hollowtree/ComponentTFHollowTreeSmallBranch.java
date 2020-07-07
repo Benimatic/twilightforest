@@ -5,9 +5,9 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
@@ -25,12 +25,12 @@ public class ComponentTFHollowTreeSmallBranch extends ComponentTFHollowTreeMedBr
 	}
 
 	@Override
-	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random random, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
-		return this.addComponentParts(world.getWorld(), generator, random, sbb, false);
+	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random random, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		return this.addComponentParts(world, generator, random, sbb, false);
 	}
 
 	@Override
-	public boolean addComponentParts(World world, ChunkGenerator<?> generator, Random random, MutableBoundingBox sbb, boolean drawLeaves) {
+	public boolean addComponentParts(ISeedReader world, ChunkGenerator generator, Random random, MutableBoundingBox sbb, boolean drawLeaves) {
 
 		BlockPos rSrc = src.add(-boundingBox.minX, -boundingBox.minY, -boundingBox.minZ);
 		BlockPos rDest = dest.add(-boundingBox.minX, -boundingBox.minY, -boundingBox.minZ);

@@ -3,11 +3,10 @@ package twilightforest.block;
 import com.google.common.collect.Lists;
 import net.minecraft.block.*;
 import net.minecraft.block.material.PushReaction;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.BoatEntity;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
@@ -49,7 +48,7 @@ public class BlockTFHugeLilyPad extends BushBlock {
 
 	@Override
 	protected boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		IFluidState ifluidstate = worldIn.getFluidState(pos);
+		FluidState ifluidstate = worldIn.getFluidState(pos);
 		return ifluidstate.getFluid() == Fluids.WATER;
 	}
 

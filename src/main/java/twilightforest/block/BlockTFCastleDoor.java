@@ -41,17 +41,19 @@ public class BlockTFCastleDoor extends Block {
 		this.setDefaultState(stateContainer.getBaseState().with(ACTIVE, false).with(VANISHED, false));
 	}
 
-	@Override
-	@Deprecated
-	public Material getMaterial(BlockState state) {
-		return state.get(VANISHED) ? Material.GLASS : super.getMaterial(state);
-	}
+	//TODO: Material cannot be dynamic
+//	@Override
+//	@Deprecated
+//	public Material getMaterial(BlockState state) {
+//		return state.get(VANISHED) ? Material.GLASS : super.getMaterial(state);
+//	}
 
-	@Override
-	@Deprecated
-	public MaterialColor getMaterialColor(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return state.get(VANISHED) ? MaterialColor.AIR : super.getMaterialColor(state, worldIn, pos);
-	}
+	//TODO: Move to unmapped method
+//	@Override
+//	@Deprecated
+//	public MaterialColor getMaterialColor(BlockState state, IBlockReader worldIn, BlockPos pos) {
+//		return state.get(VANISHED) ? MaterialColor.AIR : super.getMaterialColor(state, worldIn, pos);
+//	}
 
 	@Override
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
@@ -73,7 +75,7 @@ public class BlockTFCastleDoor extends Block {
 
 	@Override
 	@Deprecated
-	public ActionResultType onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
 		return onActivation(world, pos, state);
 	}
 
@@ -114,14 +116,15 @@ public class BlockTFCastleDoor extends Block {
 		return false;
 	}
 
-	@Override
-	public int tickRate(IWorldReader world) {
-		return 5;
-	}
+	//TODO: Does not exist. Must be specified in scheduleTick() directly
+//	@Override
+//	public int tickRate() {
+//		return 5;
+//	}
 
 	@Override
 	@Deprecated
-	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		if (state.get(VANISHED)) {
 			if (state.get(ACTIVE)) {
 				world.setBlockState(pos, state.with(VANISHED, false).with(ACTIVE, false));
@@ -147,7 +150,7 @@ public class BlockTFCastleDoor extends Block {
 	}
 
 	private void sendAnnihilateBlockPacket(World world, BlockPos pos) {
-		PacketDistributor.TargetPoint targetPoint = new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), 64, world.getDimension().getType());
+		PacketDistributor.TargetPoint targetPoint = new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), 64, world.func_234923_W_()); //RegistryKey<World>
 		TFPacketHandler.CHANNEL.send(PacketDistributor.NEAR.with(() -> targetPoint), new PacketAnnihilateBlock(pos));
 	}
 

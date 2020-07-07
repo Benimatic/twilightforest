@@ -14,9 +14,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
+import net.minecraft.world.server.ServerWorld;
 import twilightforest.entity.*;
 import twilightforest.structures.*;
 import twilightforest.util.IntPair;
@@ -127,8 +129,8 @@ public enum TFFeature {
 			addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.lichtower", 4);
 
 			book.setTagInfo("pages", bookPages);
-			book.setTagInfo("author", StringNBT.of(BOOK_AUTHOR));
-			book.setTagInfo("title", StringNBT.of("Notes on a Pointy Tower"));
+			book.setTagInfo("author", StringNBT.valueOf(BOOK_AUTHOR));
+			book.setTagInfo("title", StringNBT.valueOf("Notes on a Pointy Tower"));
 		}
 
 //		@Override
@@ -149,8 +151,8 @@ public enum TFFeature {
 			addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.icetower", 3);
 
 			book.setTagInfo("pages", bookPages);
-			book.setTagInfo("author", StringNBT.of(BOOK_AUTHOR));
-			book.setTagInfo("title", StringNBT.of("Notes on Auroral Fortification"));
+			book.setTagInfo("author", StringNBT.valueOf(BOOK_AUTHOR));
+			book.setTagInfo("title", StringNBT.valueOf("Notes on Auroral Fortification"));
 		}
 
 //		@Override
@@ -182,8 +184,8 @@ public enum TFFeature {
 			addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.hydralair", 4);
 
 			book.setTagInfo("pages", bookPages);
-			book.setTagInfo("author", StringNBT.of(BOOK_AUTHOR));
-			book.setTagInfo("title", StringNBT.of("Notes on the Fire Swamp"));
+			book.setTagInfo("author", StringNBT.valueOf(BOOK_AUTHOR));
+			book.setTagInfo("title", StringNBT.valueOf("Notes on the Fire Swamp"));
 		}
 
 //		@Override
@@ -211,8 +213,8 @@ public enum TFFeature {
 			addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.labyrinth", 5);
 
 			book.setTagInfo("pages", bookPages);
-			book.setTagInfo("author", StringNBT.of(BOOK_AUTHOR));
-			book.setTagInfo("title", StringNBT.of("Notes on a Swampy Labyrinth"));
+			book.setTagInfo("author", StringNBT.valueOf(BOOK_AUTHOR));
+			book.setTagInfo("title", StringNBT.valueOf("Notes on a Swampy Labyrinth"));
 		}
 
 //		@Override
@@ -242,8 +244,8 @@ public enum TFFeature {
 			addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.darktower", 3);
 
 			book.setTagInfo("pages", bookPages);
-			book.setTagInfo("author", StringNBT.of(BOOK_AUTHOR));
-			book.setTagInfo("title", StringNBT.of("Notes on a Wooden Tower"));
+			book.setTagInfo("author", StringNBT.valueOf(BOOK_AUTHOR));
+			book.setTagInfo("title", StringNBT.valueOf("Notes on a Wooden Tower"));
 		}
 
 //		@Override
@@ -271,8 +273,8 @@ public enum TFFeature {
 			addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.tfstronghold", 5);
 
 			book.setTagInfo("pages", bookPages);
-			book.setTagInfo("author", StringNBT.of(BOOK_AUTHOR));
-			book.setTagInfo("title", StringNBT.of("Notes on a Stronghold"));
+			book.setTagInfo("author", StringNBT.valueOf(BOOK_AUTHOR));
+			book.setTagInfo("title", StringNBT.valueOf("Notes on a Stronghold"));
 		}
 
 //		@Override
@@ -294,8 +296,8 @@ public enum TFFeature {
 			addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.yeticave", 3);
 
 			book.setTagInfo("pages" , bookPages);
-			book.setTagInfo("author", StringNBT.of(BOOK_AUTHOR));
-			book.setTagInfo("title" , StringNBT.of("Notes on an Icy Cave"));
+			book.setTagInfo("author", StringNBT.valueOf(BOOK_AUTHOR));
+			book.setTagInfo("title" , StringNBT.valueOf("Notes on an Icy Cave"));
 		}
 
 //		@Override
@@ -323,8 +325,8 @@ public enum TFFeature {
 			addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.trollcave", 3);
 
 			book.setTagInfo("pages", bookPages);
-			book.setTagInfo("author", StringNBT.of(BOOK_AUTHOR));
-			book.setTagInfo("title", StringNBT.of("Notes on the Highlands"));
+			book.setTagInfo("author", StringNBT.valueOf(BOOK_AUTHOR));
+			book.setTagInfo("title", StringNBT.valueOf("Notes on the Highlands"));
 		}
 
 //		@Override
@@ -455,15 +457,15 @@ public enum TFFeature {
 		return id < VALUES.length ? VALUES[id] : NOTHING;
 	}
 
-	public static int getFeatureID(int mapX, int mapZ, World world) {
+	public static int getFeatureID(int mapX, int mapZ, ISeedReader world) {
 		return getFeatureAt(mapX, mapZ, world).ordinal();
 	}
 
-	public static TFFeature getFeatureAt(int mapX, int mapZ, World world) {
+	public static TFFeature getFeatureAt(int mapX, int mapZ, ServerWorld world) {
 		return generateFeature(mapX >> 4, mapZ >> 4, world);
 	}
 
-	public static boolean isInFeatureChunk(World world, int mapX, int mapZ) {
+	public static boolean isInFeatureChunk(int mapX, int mapZ) {
 		int chunkX = mapX >> 4;
 		int chunkZ = mapZ >> 4;
 		BlockPos cc = getNearestCenterXYZ(chunkX, chunkZ);
@@ -535,8 +537,8 @@ public enum TFFeature {
 	/**
 	 * @return The type of feature directly at the specified Chunk coordinates
 	 */
-	public static TFFeature getFeatureDirectlyAt(int chunkX, int chunkZ, World world) {
-		if (isInFeatureChunk(world, chunkX << 4, chunkZ << 4)) {
+	public static TFFeature getFeatureDirectlyAt(int chunkX, int chunkZ, ISeedReader world) {
+		if (isInFeatureChunk(chunkX << 4, chunkZ << 4)) {
 			return getFeatureAt(chunkX << 4, chunkZ << 4, world);
 		}
 		return NOTHING;
@@ -546,7 +548,7 @@ public enum TFFeature {
 	 * What feature would go in this chunk.  Called when we know there is a feature, but there is no cache data,
 	 * either generating this chunk for the first time, or using the magic map to forecast beyond the edge of the world.
 	 */
-	public static TFFeature generateFeature(int chunkX, int chunkZ, World world) {
+	public static TFFeature generateFeature(int chunkX, int chunkZ, ServerWorld world) {
 		// FIXME Remove block comment start-marker to enable debug
 		/*if (true) {
 			return NAGA_COURTYARD;
@@ -613,7 +615,7 @@ public enum TFFeature {
 	/**
 	 * Returns the feature nearest to the specified chunk coordinates.
 	 */
-	public static TFFeature getNearestFeature(int cx, int cz, World world) {
+	public static TFFeature getNearestFeature(int cx, int cz, ISeedReader world) {
 		return getNearestFeature(cx, cz, world, null);
 	}
 
@@ -624,7 +626,7 @@ public enum TFFeature {
 	 * it will be set to relative block coordinates indicating the center of
 	 * that feature relative to the current chunk block coordinate system.
 	 */
-	public static TFFeature getNearestFeature(int cx, int cz, World world, @Nullable IntPair center) {
+	public static TFFeature getNearestFeature(int cx, int cz, ISeedReader world, @Nullable IntPair center) {
 
 		int diam = maxSize * 2 + 1;
 		TFFeature[] features = new TFFeature[diam * diam];
@@ -656,7 +658,7 @@ public enum TFFeature {
 	// [Vanilla Copy] from MapGenStructure#findNearestStructurePosBySpacing; changed 2nd param to be TFFeature instead of MapGenStructure
 	//TODO: Second parameter doesn't exist in Structure.findNearest
 	@Nullable
-	public static BlockPos findNearestFeaturePosBySpacing(World worldIn, TFFeature feature, BlockPos blockPos, int p_191069_3_, int p_191069_4_, int p_191069_5_, boolean p_191069_6_, int p_191069_7_, boolean findUnexplored) {
+	public static BlockPos findNearestFeaturePosBySpacing(ISeedReader worldIn, TFFeature feature, BlockPos blockPos, int p_191069_3_, int p_191069_4_, int p_191069_5_, boolean p_191069_6_, int p_191069_7_, boolean findUnexplored) {
 		int i = blockPos.getX() >> 4;
 		int j = blockPos.getZ() >> 4;
 		int k = 0;
@@ -721,7 +723,7 @@ public enum TFFeature {
 	/**
 	 * @return The feature in the chunk "region"
 	 */
-	public static TFFeature getFeatureForRegion(int chunkX, int chunkZ, World world) {
+	public static TFFeature getFeatureForRegion(int chunkX, int chunkZ, ISeedReader world) {
 		//just round to the nearest multiple of 16 chunks?
 		int featureX = Math.round(chunkX / 16F) * 16;
 		int featureZ = Math.round(chunkZ / 16F) * 16;
@@ -732,7 +734,7 @@ public enum TFFeature {
 	/**
 	 * @return The feature in the chunk "region"
 	 */
-	public static TFFeature getFeatureForRegionPos(int posX, int posZ, World world) {
+	public static TFFeature getFeatureForRegionPos(int posX, int posZ, ISeedReader world) {
 		return getFeatureForRegion(posX >> 4, posZ >> 4, world);
 	}
 
@@ -815,7 +817,7 @@ public enum TFFeature {
 	 * Try to spawn a hint monster near the specified player
 	 */
 	public void trySpawnHintMonster(World world, PlayerEntity player) {
-		this.trySpawnHintMonster(world, player, new BlockPos(player));
+		this.trySpawnHintMonster(world, player, player.func_233580_cy_());
 	}
 
 	/**
@@ -887,8 +889,8 @@ public enum TFFeature {
 		addTranslatedPages(bookPages, TwilightForestMod.ID + ".book.unknown", 2);
 
 		book.setTagInfo("pages", bookPages);
-		book.setTagInfo("author", StringNBT.of(BOOK_AUTHOR));
-		book.setTagInfo("title", StringNBT.of("Notes on the Unexplained"));
+		book.setTagInfo("author", StringNBT.valueOf(BOOK_AUTHOR));
+		book.setTagInfo("title", StringNBT.valueOf("Notes on the Unexplained"));
 	}
 
 //	public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
@@ -897,7 +899,7 @@ public enum TFFeature {
 
 	private static void addTranslatedPages(ListNBT bookPages, String translationKey, int pageCount) {
 		for (int i = 1; i <= pageCount; i++) {
-			bookPages.add(StringNBT.of(ITextComponent.Serializer.toJson(new TranslationTextComponent(translationKey + "." + i))));
+			bookPages.add(StringNBT.valueOf(ITextComponent.Serializer.toJson(new TranslationTextComponent(translationKey + "." + i))));
 		}
 	}
 

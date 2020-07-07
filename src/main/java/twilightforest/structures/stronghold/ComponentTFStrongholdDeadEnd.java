@@ -5,11 +5,12 @@ import net.minecraft.block.StairsBlock;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
@@ -60,20 +61,19 @@ public class ComponentTFStrongholdDeadEnd extends StructureTFStrongholdComponent
 	}
 
 	@Override
-	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
-		World worldIn = world.getWorld();
-		placeStrongholdWalls(worldIn, sbb, 0, 0, 0, 8, 6, 8, rand, deco.randomBlocks);
+	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		placeStrongholdWalls(world, sbb, 0, 0, 0, 8, 6, 8, rand, deco.randomBlocks);
 
 		// statues
-		this.placeWallStatue(worldIn, 1, 1, 4, Rotation.CLOCKWISE_90, sbb);
-		this.placeWallStatue(worldIn, 7, 1, 4, Rotation.COUNTERCLOCKWISE_90, sbb);
-		this.placeWallStatue(worldIn, 4, 1, 7, Rotation.NONE, sbb);
+		this.placeWallStatue(world, 1, 1, 4, Rotation.CLOCKWISE_90, sbb);
+		this.placeWallStatue(world, 7, 1, 4, Rotation.COUNTERCLOCKWISE_90, sbb);
+		this.placeWallStatue(world, 4, 1, 7, Rotation.NONE, sbb);
 
 		// doors
-		placeDoors(worldIn, rand, sbb);
+		placeDoors(world, rand, sbb);
 
 		// treasure
-		this.placeTreasureAtCurrentPosition(worldIn, 4, 1, 3, TFTreasure.stronghold_cache, this.chestTrapped, sbb);
+		this.placeTreasureAtCurrentPosition(world, 4, 1, 3, TFTreasure.stronghold_cache, this.chestTrapped, sbb);
 		if (this.chestTrapped) {
 			this.setBlockState(world, Blocks.TNT.getDefaultState(), 4, 0, 3, sbb);
 		}

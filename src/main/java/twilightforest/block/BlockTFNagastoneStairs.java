@@ -1,13 +1,9 @@
 package twilightforest.block;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.StairsBlock;
 import net.minecraft.block.BlockState;
-import net.minecraft.state.EnumProperty;
-import net.minecraft.state.StateContainer;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.Mirror;
 
 import java.util.Locale;
 
@@ -43,7 +39,7 @@ public class BlockTFNagastoneStairs extends StairsBlock {
 		RIGHT;
 
 		@Override
-		public String getName() {
+		public String func_176610_l() {
 			return name().toLowerCase(Locale.ROOT);
 		}
 	}

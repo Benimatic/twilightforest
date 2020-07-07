@@ -10,7 +10,6 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ModelTFQuestRam;
 import twilightforest.entity.passive.EntityTFQuestRam;
@@ -40,7 +39,7 @@ public class RenderTFQuestRam extends MobRenderer<EntityTFQuestRam, ModelTFQuest
 		public void render(MatrixStack stack, IRenderTypeBuffer buffer, int i, EntityTFQuestRam entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 			IVertexBuilder builder = buffer.getBuffer(RenderType.getEntityTranslucent(textureLocLines));
 			stack.scale(1.025f, 1.025f, 1.025f);
-			RenderTFQuestRam.this.getEntityModel().render(stack, builder, 0xF000F0, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
+			RenderTFQuestRam.this.getEntityModel().render(stack, builder, 0xF000F0, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 		}
 	}
 }

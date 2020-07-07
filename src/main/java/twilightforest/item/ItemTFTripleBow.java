@@ -46,19 +46,19 @@ public class ItemTFTripleBow extends BowItem {
 					if (!worldIn.isRemote) {
 						ArrowItem arrowitem = (ArrowItem)(itemstack.getItem() instanceof ArrowItem ? itemstack.getItem() : Items.ARROW);
 						AbstractArrowEntity entityarrow = arrowitem.createArrow(worldIn, itemstack, entityplayer);
-						entityarrow.shoot(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, f * 3.0F, 1.0F);
+						entityarrow.func_234612_a_(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, f * 3.0F, 1.0F);
 
 						// other arrows with slight deviation
 						ArrowEntity entityarrow1 = new ArrowEntity(worldIn, entityLiving);
-						entityarrow1.shoot(entityLiving, entityLiving.rotationPitch, entityLiving.rotationYaw, 0, f * 2, 1);
+						entityarrow1.func_234612_a_(entityLiving, entityLiving.rotationPitch, entityLiving.rotationYaw, 0, f * 2, 1);
 						entityarrow1.setMotion(entityarrow1.getMotion().add(0.0D, 0.0075 * 20F, 0.0D));
-						entityarrow1.setPosition(entityarrow1.getX(), entityarrow1.getY() + 0.025F, entityarrow1.getZ());
+						entityarrow1.setPosition(entityarrow1.getPosX(), entityarrow1.getPosY() + 0.025F, entityarrow1.getPosX());
 						entityarrow1.pickupStatus = ArrowEntity.PickupStatus.CREATIVE_ONLY;
 
 						ArrowEntity entityarrow2 = new ArrowEntity(worldIn, entityLiving);
-						entityarrow2.shoot(entityLiving, entityLiving.rotationPitch, entityLiving.rotationYaw, 0, f * 2, 1);
+						entityarrow2.func_234612_a_(entityLiving, entityLiving.rotationPitch, entityLiving.rotationYaw, 0, f * 2, 1);
 						entityarrow2.setMotion(entityarrow2.getMotion().subtract(0.0D, 0.0075 * 20F, 0.0D));
-						entityarrow2.setPosition(entityarrow2.getX(), entityarrow2.getY() + 0.025F, entityarrow2.getZ());
+						entityarrow2.setPosition(entityarrow2.getPosX(), entityarrow2.getPosY() + 0.025F, entityarrow2.getPosX());
 						entityarrow2.pickupStatus = ArrowEntity.PickupStatus.CREATIVE_ONLY;
 
 						if (f == 1.0F) {
@@ -100,7 +100,7 @@ public class ItemTFTripleBow extends BowItem {
 						worldIn.addEntity(entityarrow2);
 					}
 
-					worldIn.playSound((PlayerEntity)null, entityplayer.getX(), entityplayer.getY(), entityplayer.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (random.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
+					worldIn.playSound((PlayerEntity)null, entityplayer.getPosX(), entityplayer.getPosY(), entityplayer.getPosZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (random.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
 					if (!flag1 && !entityplayer.abilities.isCreativeMode) {
 						itemstack.shrink(1);
 						if (itemstack.isEmpty()) {

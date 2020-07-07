@@ -17,41 +17,41 @@ public class ModelTFKnightPhantom<T extends EntityTFKnightPhantom> extends Biped
 	@Deprecated
 	public ModelTFKnightPhantom() {
 		super(0.0F, 0.0F, 128, 64);
-		this.isSneaking = false;
+		this.isSneak = false;
 //		this.textureWidth = 128;
 //		this.textureHeight = 64;
 
 //FIXME: AtomicBlom: Replace with something like LayerCape
 /*
 		this.bipedCloak = new ModelRenderer(this, 0, 0);
-        this.bipedCloak.addCuboid(-5.0F, 0.0F, -1.0F, 10, 16, 1);
+        this.bipedCloak.addBox(-5.0F, 0.0F, -1.0F, 10, 16, 1);
 */
 //FIXME: AtomicBlom replace with some variant of LayerDeadmau5Head
 /*
         this.bipedEars = new ModelRenderer(this, 24, 0);
-        this.bipedEars.addCuboid(-3.0F, -6.0F, -1.0F, 6, 6, 1);
+        this.bipedEars.addBox(-3.0F, -6.0F, -1.0F, 6, 6, 1);
 */
 
 		this.bipedHead = new ModelRenderer(this, 0, 0);
-		this.bipedHead.addCuboid(0, 0, 0, 0, 0, 0);
+		this.bipedHead.addBox(0, 0, 0, 0, 0, 0);
 		this.bipedHead.setRotationPoint(0.0F, -10.0F, 0.0F);
 
 		this.bipedHeadwear = new ModelRenderer(this, 0, 0);
-		this.bipedHeadwear.addCuboid(0, 0, 0, 0, 0, 0);
+		this.bipedHeadwear.addBox(0, 0, 0, 0, 0, 0);
 		this.bipedHeadwear.setRotationPoint(0.0F, -10.0F, 0.0F);
 
 		this.helmet = new ModelRenderer(this, 0, 0);
-		this.helmet.addCuboid(-4.0F, -11.0F, -4.0F, 8, 11, 8);
+		this.helmet.addBox(-4.0F, -11.0F, -4.0F, 8, 11, 8);
 		this.helmet.rotateAngleY = 45F / (180F / (float) Math.PI);
 
 		this.righthorn1 = new ModelRenderer(this, 28, 0);
-		this.righthorn1.addCuboid(-6F, -1.5F, -1.5F, 7, 3, 3);
+		this.righthorn1.addBox(-6F, -1.5F, -1.5F, 7, 3, 3);
 		this.righthorn1.setRotationPoint(-3.5F, -9F, 0.0F);
 		this.righthorn1.rotateAngleY = 15F / (180F / (float) Math.PI);
 		this.righthorn1.rotateAngleZ = 10F / (180F / (float) Math.PI);
 
 		this.righthorn2 = new ModelRenderer(this, 28, 6);
-		this.righthorn2.addCuboid(-3.0F, -1.0F, -1.0F, 3, 2, 2);
+		this.righthorn2.addBox(-3.0F, -1.0F, -1.0F, 3, 2, 2);
 		this.righthorn2.setRotationPoint(-5.5F, 0.0F, 0.0F);
 		this.righthorn2.rotateAngleZ = 10F / (180F / (float) Math.PI);
 
@@ -59,13 +59,13 @@ public class ModelTFKnightPhantom<T extends EntityTFKnightPhantom> extends Biped
 
 		this.lefthorn1 = new ModelRenderer(this, 28, 0);
 		this.lefthorn1.mirror = true;
-		this.lefthorn1.addCuboid(-1F, -1.5F, -1.5F, 7, 3, 3);
+		this.lefthorn1.addBox(-1F, -1.5F, -1.5F, 7, 3, 3);
 		this.lefthorn1.setRotationPoint(3.5F, -9F, 0.0F);
 		this.lefthorn1.rotateAngleY = -15F / (180F / (float) Math.PI);
 		this.lefthorn1.rotateAngleZ = -10F / (180F / (float) Math.PI);
 
 		this.lefthorn2 = new ModelRenderer(this, 28, 6);
-		this.lefthorn2.addCuboid(0.0F, -1.0F, -1.0F, 3, 2, 2);
+		this.lefthorn2.addBox(0.0F, -1.0F, -1.0F, 3, 2, 2);
 		this.lefthorn2.setRotationPoint(5.5F, 0.0F, 0.0F);
 		this.lefthorn2.rotateAngleZ = -10F / (180F / (float) Math.PI);
 
@@ -77,24 +77,24 @@ public class ModelTFKnightPhantom<T extends EntityTFKnightPhantom> extends Biped
 
 		this.bipedBody = new ModelRenderer(this, 0, 18);
 		this.bipedBody.setRotationPoint(0.0F, 2.0F, 0.0F);
-		this.bipedBody.addCuboid(-7.0F, -12.0F, -3.5F, 14, 12, 7);
-		this.bipedBody.setTextureOffset(30, 24).addCuboid(-6.0F, 0F, -3F, 12, 8, 6); // torso
+		this.bipedBody.addBox(-7.0F, -12.0F, -3.5F, 14, 12, 7);
+		this.bipedBody.setTextureOffset(30, 24).addBox(-6.0F, 0F, -3F, 12, 8, 6); // torso
 
 		this.bipedRightArm = new ModelRenderer(this, 44, 16);
-		this.bipedRightArm.addCuboid(-5.0F, -2.0F, -3.0F, 6, 7, 6);
+		this.bipedRightArm.addBox(-5.0F, -2.0F, -3.0F, 6, 7, 6);
 		this.bipedRightArm.setRotationPoint(-8.0F, -8.0F, 0.0F);
 
 		this.bipedLeftArm = new ModelRenderer(this, 44, 16);
 		this.bipedLeftArm.mirror = true;
-		this.bipedLeftArm.addCuboid(-1.0F, -2.0F, -3.0F, 6, 7, 6);
+		this.bipedLeftArm.addBox(-1.0F, -2.0F, -3.0F, 6, 7, 6);
 		this.bipedLeftArm.setRotationPoint(8.0F, -8.0F, 0.0F);
 
 		this.bipedRightLeg = new ModelRenderer(this, 0, 0);
-		this.bipedRightLeg.addCuboid(0, 0, 0, 0, 0, 0);
+		this.bipedRightLeg.addBox(0, 0, 0, 0, 0, 0);
 		this.bipedRightLeg.setRotationPoint(0.0F, 12.0F, 0.0F);
 
 		this.bipedLeftLeg = new ModelRenderer(this, 0, 0);
-		this.bipedLeftLeg.addCuboid(0, 0, 0, 0, 0, 0);
+		this.bipedLeftLeg.addBox(0, 0, 0, 0, 0, 0);
 		this.bipedLeftLeg.setRotationPoint(0.0F, 12.0F, 0.0F);
 	}
 
@@ -105,7 +105,7 @@ public class ModelTFKnightPhantom<T extends EntityTFKnightPhantom> extends Biped
 	 * "far" arms and legs can swing at most.
 	 */
 	@Override
-	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.bipedHead.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 		this.bipedHead.rotateAngleX = headPitch / (180F / (float) Math.PI);
 		this.bipedHead.rotateAngleZ = 0;

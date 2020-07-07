@@ -18,7 +18,7 @@ public class ModelTFGhast<T extends EntityTFTowerGhast> extends SegmentedModel<T
 	public ModelTFGhast() {
 		byte yOffset = -16;
 		this.body = new ModelRenderer(this, 0, 0);
-		this.body.addCuboid(-8.0F, -8.0F, -8.0F, 16, 16, 16);
+		this.body.addBox(-8.0F, -8.0F, -8.0F, 16, 16, 16);
 		this.body.rotationPointY += (float) (24 + yOffset);
 		Random rand = new Random(1660L);
 
@@ -32,7 +32,7 @@ public class ModelTFGhast<T extends EntityTFTowerGhast> extends SegmentedModel<T
 		float xPoint = (((float) (i % 3) - (float) (i / 3 % 2) * 0.5F + 0.25F) / 2.0F * 2.0F - 1.0F) * 5.0F;
 		float zPoint = ((float) (i / 3) / 2.0F * 2.0F - 1.0F) * 5.0F;
 		int length = random.nextInt(7) + 8;
-		this.tentacles[i].addCuboid(-1.0F, 0.0F, -1.0F, 2, length, 2);
+		this.tentacles[i].addBox(-1.0F, 0.0F, -1.0F, 2, length, 2);
 		this.tentacles[i].rotationPointX = xPoint;
 		this.tentacles[i].rotationPointZ = zPoint;
 		this.tentacles[i].rotationPointY = (float) (23 + yOffset);
@@ -46,7 +46,7 @@ public class ModelTFGhast<T extends EntityTFTowerGhast> extends SegmentedModel<T
 	 * "far" arms and legs can swing at most.
 	 */
 	@Override
-	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		// wave tentacles
 		for (int i = 0; i < this.tentacles.length; ++i) {
 			this.tentacles[i].rotateAngleX = 0.2F * MathHelper.sin(ageInTicks * 0.3F + (float) i) + 0.4F;

@@ -3,6 +3,7 @@ package twilightforest.client.particle;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.renderer.ActiveRenderInfo;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -12,7 +13,7 @@ public class ParticleFirefly extends SpriteTexturedParticle {
 
 	private final int halfLife;
 
-	ParticleFirefly(World world, double x, double y, double z, double vx, double vy, double vz) {
+	ParticleFirefly(ClientWorld world, double x, double y, double z, double vx, double vy, double vz) {
 		super(world, x, y, z, vx, vy, vz);
 		motionX *= 2.1;
 		motionY *= 2.1;
@@ -32,9 +33,9 @@ public class ParticleFirefly extends SpriteTexturedParticle {
 	}
 
 	@Override
-	public void buildGeometry(IVertexBuilder buffer, ActiveRenderInfo entity, float partialTicks) {
+	public void renderParticle(IVertexBuilder buffer, ActiveRenderInfo entity, float partialTicks) {
 		particleAlpha = getGlowBrightness();
-		super.buildGeometry(buffer, entity, partialTicks);
+		super.renderParticle(buffer, entity, partialTicks);
 	}
 
 	@Override
@@ -67,7 +68,7 @@ public class ParticleFirefly extends SpriteTexturedParticle {
 		}
 
 		@Override
-		public Particle makeParticle(BasicParticleType typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+		public Particle makeParticle(BasicParticleType typeIn, ClientWorld worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
 			ParticleFirefly particle = new ParticleFirefly(worldIn, x, y, z, xSpeed, ySpeed, zSpeed);
 			particle.selectSpriteRandomly(this.spriteSet);
 			return particle;

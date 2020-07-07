@@ -71,7 +71,7 @@ public class ItemTFFieryPick extends PickaxeItem {
 					while (i > 0) {
 						int k = ExperienceOrbEntity.getXPSplit(i);
 						i -= k;
-						event.getHarvester().world.addEntity(new ExperienceOrbEntity(event.getWorld().getWorld(), event.getHarvester().getX(), event.getHarvester().getY() + 0.5D, event.getHarvester().getZ(), k));
+						event.getHarvester().world.addEntity(new ExperienceOrbEntity(event.getWorld().getWorld(), event.getHarvester().getPosX(), event.getHarvester().getPosY() + 0.5D, event.getHarvester().getPosZ(), k));
 					}
 
 					BlockPos pos = event.getPos();
@@ -88,11 +88,11 @@ public class ItemTFFieryPick extends PickaxeItem {
 	public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 		boolean result = super.hitEntity(stack, target, attacker);
 
-		if (result && !target.isImmuneToFire()) {
+		if (result && !target.func_230279_az_()) {
 			if (!target.world.isRemote) {
 				target.setFire(15);
 			} else {
-				target.world.addParticle(ParticleTypes.FLAME, target.getX(), target.getY() + target.getHeight() * 0.5, target.getZ(), target.getWidth() * 0.5, target.getHeight() * 0.5, target.getWidth() * 0.5);
+				target.world.addParticle(ParticleTypes.FLAME, target.getPosX(), target.getPosY() + target.getHeight() * 0.5, target.getPosZ(), target.getWidth() * 0.5, target.getHeight() * 0.5, target.getWidth() * 0.5);
 			}
 		}
 

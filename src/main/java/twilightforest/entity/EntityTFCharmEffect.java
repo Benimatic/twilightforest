@@ -14,7 +14,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ItemParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -50,27 +50,27 @@ public class EntityTFCharmEffect extends Entity implements IRendersAsItem {
 		this.setOwner(owner);
 		this.setItemID(item);
 
-		Vec3d look = new Vec3d(DISTANCE, 0, 0);
+		Vector3d look = new Vector3d(DISTANCE, 0, 0);
 
-		this.setLocationAndAngles(owner.getX(), owner.getY() + owner.getEyeHeight(), owner.getZ(), owner.rotationYaw, owner.rotationPitch);
-		double x = getX() + look.x * DISTANCE;
-		//this.getY() += look.y * DISTANCE;
-		double z = getZ() + look.z * DISTANCE;
-		this.setPosition(x, this.getY(), z);
+		this.setLocationAndAngles(owner.getPosX(), owner.getPosY() + owner.getEyeHeight(), owner.getPosZ(), owner.rotationYaw, owner.rotationPitch);
+		double x = getPosX() + look.x * DISTANCE;
+		//this.getPosY() += look.y * DISTANCE;
+		double z = getPosZ() + look.z * DISTANCE;
+		this.setPosition(x, this.getPosY(), z);
 	}
 
 	@Override
 	public void tick() {
-		this.lastTickPosX = this.getX();
-		this.lastTickPosY = this.getY();
-		this.lastTickPosZ = this.getZ();
+		this.lastTickPosX = this.getPosX();
+		this.lastTickPosY = this.getPosY();
+		this.lastTickPosZ = this.getPosZ();
 		super.tick();
 
 		//[VanillaCopy] Beginning of LivingEntity.onLivingUpdate
 		if (this.newPosRotationIncrements > 0) {
-			double d0 = this.getX() + (this.interpTargetX - this.getX()) / (double) this.newPosRotationIncrements;
-			double d1 = this.getY() + (this.interpTargetY - this.getY()) / (double) this.newPosRotationIncrements;
-			double d2 = this.getZ() + (this.interpTargetZ - this.getZ()) / (double) this.newPosRotationIncrements;
+			double d0 = this.getPosX() + (this.interpTargetX - this.getPosX()) / (double) this.newPosRotationIncrements;
+			double d1 = this.getPosY() + (this.interpTargetY - this.getPosY()) / (double) this.newPosRotationIncrements;
+			double d2 = this.getPosZ() + (this.interpTargetZ - this.getPosZ()) / (double) this.newPosRotationIncrements;
 			double d3 = MathHelper.wrapDegrees(this.interpTargetYaw - (double) this.rotationYaw);
 			this.rotationYaw = (float) ((double) this.rotationYaw + d3 / (double) this.newPosRotationIncrements);
 			this.rotationPitch = (float) ((double) this.rotationPitch + (this.interpTargetPitch - (double) this.rotationPitch) / (double) this.newPosRotationIncrements);
@@ -82,23 +82,23 @@ public class EntityTFCharmEffect extends Entity implements IRendersAsItem {
 		LivingEntity orbiting = getOwner();
 
 		if (orbiting != null) {
-			this.setLocationAndAngles(orbiting.getX(), orbiting.getY() + orbiting.getEyeHeight(), orbiting.getZ(), orbiting.rotationYaw, orbiting.rotationPitch);
+			this.setLocationAndAngles(orbiting.getPosX(), orbiting.getPosY() + orbiting.getEyeHeight(), orbiting.getPosZ(), orbiting.rotationYaw, orbiting.rotationPitch);
 
 			float rotation = this.ticksExisted / 5.0F + offset;
-			Vec3d look = new Vec3d(DISTANCE, 0, 0).rotateYaw(rotation);
+			Vector3d look = new Vector3d(DISTANCE, 0, 0).rotateYaw(rotation);
 			//this.getX() += look.x;
 //        	this.getY() += Math.sin(this.ticksExisted / 3.0F + offset);
 			//this.getZ() += look.z;
-			this.getPosition().add(look.x, 0.0D, look.z);
+			this.getPositionVec().add(look.x, 0.0D, look.z);
 
-			this.setPosition(this.getX(), this.getY(), this.getZ());
+			this.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
 		}
 
 		if (!this.getItemID().isEmpty()) {
 			for (int i = 0; i < 3; i++) {
-				double dx = getX() + 0.5 * (rand.nextDouble() - rand.nextDouble());
-				double dy = getY() + 0.5 * (rand.nextDouble() - rand.nextDouble());
-				double dz = getZ() + 0.5 * (rand.nextDouble() - rand.nextDouble());
+				double dx = getPosX() + 0.5 * (rand.nextDouble() - rand.nextDouble());
+				double dy = getPosY() + 0.5 * (rand.nextDouble() - rand.nextDouble());
+				double dz = getPosZ() + 0.5 * (rand.nextDouble() - rand.nextDouble());
 
 				world.addParticle(new ItemParticleData(ParticleTypes.ITEM, getItemID()), dx, dy, dz, 0, 0.2, 0);
 			}

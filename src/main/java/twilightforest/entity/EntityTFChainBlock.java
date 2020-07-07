@@ -13,6 +13,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.*;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -46,7 +47,7 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 		super(type, thrower, world);
 		this.isReturning = false;
 		this.hand = hand;
-		this.shoot(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 1.5F, 1F);
+		this.func_234612_a_(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 1.5F, 1F);
 	}
 
 	@Override
@@ -165,7 +166,7 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 			Block block = state.getBlock();
 
 			// TODO: The "explosion" parameter can't actually be null
-			if (!block.isAir(state, world, pos) && block.getExplosionResistance(state, world, pos, this, null) < 7F
+			if (!block.isAir(state, world, pos) && block.getExplosionResistance(state, world, pos, null) < 7F
 					&& state.getBlockHardness(world, pos) >= 0 && block.canEntityDestroy(state, world, pos, this)) {
 
 				if (getThrower() instanceof PlayerEntity) {
@@ -196,15 +197,15 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 			// set chain positions
 			if (this.getThrower() != null) {
 				// interpolate chain position
-				Vec3d handVec = this.getThrower().getLookVec().rotateYaw(hand == Hand.MAIN_HAND ? -0.4F : 0.4F);
+				Vector3d handVec = this.getThrower().getLookVec().rotateYaw(hand == Hand.MAIN_HAND ? -0.4F : 0.4F);
 
 				double sx = this.getThrower().getX() + handVec.x;
 				double sy = this.getThrower().getY() + handVec.y - 0.4F + this.getThrower().getEyeHeight();
 				double sz = this.getThrower().getZ() + handVec.z;
 
-				double ox = sx - this.getX();
-				double oy = sy - this.getY() - 0.25F;
-				double oz = sz - this.getZ();
+				double ox = sx - this.getPosX();
+				double oy = sy - this.getPosY() - 0.25F;
+				double oz = sz - this.getPosZ();
 
 				this.chain1.setPosition(sx - ox * 0.05, sy - oy * 0.05, sz - oz * 0.05);
 				this.chain2.setPosition(sx - ox * 0.25, sy - oy * 0.25, sz - oz * 0.25);
@@ -230,14 +231,14 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 
 					LivingEntity returnTo = this.getThrower();
 
-					Vec3d back = new Vec3d(returnTo.getX(), returnTo.getY() + returnTo.getEyeHeight(), returnTo.getZ()).subtract(this.getPositionVector()).normalize();
+					Vector3d back = new Vector3d(returnTo.getPosX(), returnTo.getPosY() + returnTo.getEyeHeight(), returnTo.getPosZ()).subtract(this.getPositionVec()).normalize();
 					float age = Math.min(this.ticksExisted * 0.03F, 1.0F);
 
 					// separate the return velocity from the normal bouncy velocity
 //					this.getMotion().getX() = this.velX * (1.0 - age) + (back.x * 2F * age);
 //					this.getMotion().getY() = this.velY * (1.0 - age) + (back.y * 2F * age) - this.getGravityVelocity();
 //					this.getMotion().getZ() = this.velZ * (1.0 - age) + (back.z * 2F * age);
-					this.setMotion(new Vec3d(
+					this.setMotion(new Vector3d(
 							this.velX * (1.0 - age) + (back.x * 2F * age),
 							this.velY * (1.0 - age) + (back.y * 2F * age) - this.getGravityVelocity(),
 							this.velZ * (1.0 - age) + (back.z * 2F * age)
@@ -289,7 +290,6 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 		}
 		hand = additionalData.readBoolean() ? Hand.MAIN_HAND : Hand.OFF_HAND;
 	}
-
 
 	@Override
 	public IPacket<?> createSpawnPacket() {

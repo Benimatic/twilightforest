@@ -3,6 +3,7 @@ package twilightforest.client.particle;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.renderer.ActiveRenderInfo;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -13,7 +14,7 @@ public class ParticleLargeFlame extends SpriteTexturedParticle {
 
 	private final float flameScale;
 
-	ParticleLargeFlame(World world, double x, double y, double z, double vx, double vy, double vz) {
+	ParticleLargeFlame(ClientWorld world, double x, double y, double z, double vx, double vy, double vz) {
 		super(world, x, y, z, vx, vy, vz);
 		this.motionX = this.motionX * 0.009999999776482582D + vx;
 		this.motionY = this.motionY * 0.009999999776482582D + vy;
@@ -92,7 +93,7 @@ public class ParticleLargeFlame extends SpriteTexturedParticle {
 		}
 
 		@Override
-		public Particle makeParticle(BasicParticleType typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+		public Particle makeParticle(BasicParticleType typeIn, ClientWorld worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
 			ParticleLargeFlame particle = new ParticleLargeFlame(worldIn, x, y, z, xSpeed, ySpeed, zSpeed);
 			particle.selectSpriteRandomly(this.spriteSet);
 			return particle;

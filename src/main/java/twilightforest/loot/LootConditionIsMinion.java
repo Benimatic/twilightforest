@@ -3,15 +3,14 @@ package twilightforest.loot;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
+import net.minecraft.loot.LootContext;
+import net.minecraft.loot.LootParameters;
+import net.minecraft.loot.conditions.ILootCondition;
 import net.minecraft.util.JSONUtils;
-import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.LootParameters;
-import net.minecraft.world.storage.loot.conditions.ILootCondition;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFMiniGhast;
 
 import javax.annotation.Nonnull;
-import java.util.Random;
 
 public class LootConditionIsMinion implements ILootCondition {
 

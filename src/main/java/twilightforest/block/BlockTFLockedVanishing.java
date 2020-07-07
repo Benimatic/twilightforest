@@ -49,7 +49,7 @@ public class BlockTFLockedVanishing extends BlockTFVanishingBlock {
 	}
 
 	@Override
-	public ActionResultType onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		ItemStack stack = player.getHeldItem(hand);
 		if (!stack.isEmpty() && stack.getItem() == TFItems.tower_key.get() && state.get(LOCKED)) {
 			if (!world.isRemote) {
@@ -59,6 +59,6 @@ public class BlockTFLockedVanishing extends BlockTFVanishingBlock {
 			}
 			return ActionResultType.SUCCESS;
 		}
-		return super.onUse(state, world, pos, player, hand, hit);
+		return super.onBlockActivated(state, world, pos, player, hand, hit);
 	}
 }

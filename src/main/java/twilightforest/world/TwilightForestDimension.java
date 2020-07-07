@@ -21,7 +21,7 @@ import twilightforest.client.renderer.TFWeatherRenderer;
 
 import javax.annotation.Nullable;
 
-public class TwilightForestDimension extends OverworldDimension { //TODO: Should we be extending OverworldDimension?
+public class TwilightForestDimension extends OverworldDimension { //TODO: Pack this away into a stupid, predetermined DimensionType...
 
 	private static final String SEED_KEY = "CustomSeed";
 	private static final String SKYLIGHT_KEY = "HasSkylight";

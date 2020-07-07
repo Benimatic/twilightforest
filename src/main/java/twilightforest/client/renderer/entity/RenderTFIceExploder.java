@@ -1,9 +1,9 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Vector3f;
 import twilightforest.client.model.entity.ModelTFIceExploder;
 import twilightforest.entity.EntityUnstableIceCore;
 
@@ -14,7 +14,7 @@ public class RenderTFIceExploder<T extends EntityUnstableIceCore, M extends Mode
 	}
 
 	@Override
-	protected void scale(T entity, MatrixStack stack, float partialTicks) {
+	protected void preRenderCallback(T entity, MatrixStack stack, float partialTicks) {
 		float bounce = entity.ticksExisted + partialTicks;
 
 		stack.translate(0F, MathHelper.sin((bounce) * 0.2F) * 0.15F, 0F);
@@ -41,12 +41,12 @@ public class RenderTFIceExploder<T extends EntityUnstableIceCore, M extends Mode
 	}
 
 	@Override
-	protected void setupTransforms(T entity, MatrixStack stack, float ageInTicks, float rotationYaw, float partialTicks) {
-		stack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180 - rotationYaw));
+	protected void applyRotations(T entity, MatrixStack stack, float ageInTicks, float rotationYaw, float partialTicks) {
+		stack.rotate(Vector3f.YP.rotationDegrees(180 - rotationYaw));
 	}
 
 	@Override
-	protected float getWhiteOverlayProgress(T entity, float partialTicks) {
+	protected float getOverlayProgress(T entity, float partialTicks) {
 		if (entity.deathTime > 0) {
 			float f2 = entity.deathTime + partialTicks;
 

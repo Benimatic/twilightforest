@@ -1,18 +1,13 @@
 package twilightforest.item;
 
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
 import net.minecraft.item.LilyPadItem;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.*;
@@ -22,7 +17,6 @@ import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import twilightforest.block.BlockTFHugeLilyPad;
-import twilightforest.block.TFBlocks;
 
 import static twilightforest.block.BlockTFHugeLilyPad.FACING;
 import static twilightforest.block.BlockTFHugeLilyPad.PIECE;
@@ -42,7 +36,7 @@ public class ItemBlockTFHugeLilyPad extends LilyPadItem {
 		ItemStack itemstack = player.getHeldItem(hand);
 		RayTraceResult raytraceresult = rayTrace(world, player, RayTraceContext.FluidMode.SOURCE_ONLY);
 		if (raytraceresult.getType() == RayTraceResult.Type.MISS) {
-			return ActionResult.pass(itemstack);
+			return ActionResult.resultPass(itemstack);
 		} else {
 			if (raytraceresult.getType() == RayTraceResult.Type.BLOCK) {
 				BlockRayTraceResult blockraytraceresult = (BlockRayTraceResult)raytraceresult;
@@ -54,13 +48,13 @@ public class ItemBlockTFHugeLilyPad extends LilyPadItem {
 								|| !world.isBlockModifiable(player, blockpos.south()) || !player.canPlayerEdit(blockpos.offset(direction).south(), direction, itemstack)
 								|| !world.isBlockModifiable(player, blockpos.east().south()) || !player.canPlayerEdit(blockpos.offset(direction).east().south(), direction, itemstack)
 				) {
-					return ActionResult.fail(itemstack);
+					return ActionResult.resultFail(itemstack);
 				}
 
 				BlockPos blockpos1 = blockpos.up();
 				BlockState blockstate = world.getBlockState(blockpos);
 				Material material = blockstate.getMaterial();
-				IFluidState ifluidstate = world.getFluidState(blockpos);
+				FluidState ifluidstate = world.getFluidState(blockpos);
 				if ((ifluidstate.getFluid() == Fluids.WATER || material == Material.ICE) && world.isAirBlock(blockpos1)
 								// TF - check east, south, southeast as well
 								&& (world.getFluidState(blockpos.east()).getFluid() == Fluids.WATER || world.getBlockState(blockpos.east()).getMaterial() == Material.ICE) && world.isAirBlock(blockpos1.east())
@@ -87,11 +81,11 @@ public class ItemBlockTFHugeLilyPad extends LilyPadItem {
 
 					player.addStat(Stats.ITEM_USED.get(this));
 					world.playSound(player, blockpos, SoundEvents.BLOCK_LILY_PAD_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
-					return ActionResult.success(itemstack);
+					return ActionResult.resultSuccess(itemstack);
 				}
 			}
 
-			return ActionResult.fail(itemstack);
+			return ActionResult.resultFail(itemstack);
 		}
 	}
 }

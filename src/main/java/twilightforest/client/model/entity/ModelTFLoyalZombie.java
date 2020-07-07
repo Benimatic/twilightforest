@@ -17,8 +17,8 @@ public class ModelTFLoyalZombie extends BipedModel<EntityTFLoyalZombie> {
 	}
 
 	@Override
-	public void setAngles(EntityTFLoyalZombie e, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		super.setAngles(e, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+	public void setRotationAngles(EntityTFLoyalZombie e, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+		super.setRotationAngles(e, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 		boolean flag = e.isAggressive();
 		float f = MathHelper.sin(this.swingProgress * (float)Math.PI);
 		float f1 = MathHelper.sin((1.0F - (1.0F - this.swingProgress) * (1.0F - this.swingProgress)) * (float)Math.PI);

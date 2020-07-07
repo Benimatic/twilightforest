@@ -3,7 +3,8 @@ package twilightforest.entity;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -40,17 +41,16 @@ public class EntityTFTowerTermite extends MonsterEntity {
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
 	}
 
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(15.0D);
-		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.27D);
-		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D);
-		this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(8.0D);
+	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return MonsterEntity.func_234295_eP_()
+				.func_233815_a_(Attributes.field_233818_a_, 15.0D)
+				.func_233815_a_(Attributes.field_233821_d_, 0.27D)
+				.func_233815_a_(Attributes.field_233823_f_, 5.0D)
+				.func_233815_a_(Attributes.field_233819_b_, 8.0D);
 	}
 
 	@Override
-	public boolean bypassesSteppingEffects() {
+	public boolean isSteppingCarefully() {
 		return false;
 	}
 
@@ -123,8 +123,8 @@ public class EntityTFTowerTermite extends MonsterEntity {
 				Random random = this.creature.getRNG();
 
 				if (random.nextInt(10) == 0 && ForgeEventFactory.getMobGriefingEvent(this.creature.world, this.creature)) {
-					this.facing = Direction.random(random);
-					BlockPos blockpos = (new BlockPos(this.creature.getX(), this.creature.getY() + 0.5D, this.creature.getZ())).offset(this.facing);
+					this.facing = Direction.func_239631_a_(random);
+					BlockPos blockpos = (new BlockPos(this.creature.getPosX(), this.creature.getPosY() + 0.5D, this.creature.getPosZ())).offset(this.facing);
 					BlockState iblockstate = this.creature.world.getBlockState(blockpos);
 
 					// TF - Change block check
@@ -156,7 +156,7 @@ public class EntityTFTowerTermite extends MonsterEntity {
 				super.startExecuting();
 			} else {
 				World world = this.creature.world;
-				BlockPos blockpos = (new BlockPos(this.creature.getX(), this.creature.getY() + 0.5D, this.creature.getZ())).offset(this.facing);
+				BlockPos blockpos = (new BlockPos(this.creature.getPosX(), this.creature.getPosY() + 0.5D, this.creature.getPosZ())).offset(this.facing);
 				BlockState iblockstate = world.getBlockState(blockpos);
 
 				// TF - Change block check
@@ -205,7 +205,7 @@ public class EntityTFTowerTermite extends MonsterEntity {
 
 				World world = this.silverfish.world;
 				Random random = this.silverfish.getRNG();
-				BlockPos blockpos = new BlockPos(this.silverfish);
+				BlockPos blockpos = new BlockPos(this.silverfish.func_233580_cy_());
 
 				for (int i = 0; i <= 5 && i >= -5; i = i <= 0 ? 1 - i : 0 - i) {
 					for (int j = 0; j <= 10 && j >= -10; j = j <= 0 ? 1 - j : 0 - j) {

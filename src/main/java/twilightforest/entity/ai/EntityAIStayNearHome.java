@@ -3,7 +3,7 @@ package twilightforest.entity.ai;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 
 import java.util.EnumSet;
 
@@ -29,8 +29,8 @@ public class EntityAIStayNearHome extends Goal {
 
 	@Override
 	public void startExecuting() {
-		if (this.entity.getDistanceSq(new Vec3d(this.entity.getHomePosition())) > 256.0D) {
-			Vec3d vec3 = RandomPositionGenerator.findRandomTargetBlockTowards(this.entity, 14, 3, new Vec3d(this.entity.getHomePosition().getX() + 0.5D, this.entity.getHomePosition().getY(), this.entity.getHomePosition().getZ() + 0.5D));
+		if (this.entity.getDistanceSq(new Vector3d(this.entity.getHomePosition())) > 256.0D) {
+			Vector3d vec3 = RandomPositionGenerator.findRandomTargetBlockTowards(this.entity, 14, 3, new Vector3d(this.entity.getHomePosition().getX() + 0.5D, this.entity.getHomePosition().getY(), this.entity.getHomePosition().getZ() + 0.5D));
 
 			if (vec3 != null) {
 				this.entity.getNavigator().tryMoveToXYZ(vec3.x, vec3.y, vec3.z, speed);

@@ -2,9 +2,6 @@ package twilightforest.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.material.MaterialColor;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.particles.RedstoneParticleData;
 import net.minecraft.state.BooleanProperty;
@@ -14,7 +11,6 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.tileentity.*;
@@ -108,12 +104,6 @@ public class BlockTFGhastTrap extends Block {
 				worldIn.addParticle(RedstoneParticleData.REDSTONE_DUST, d1, d2, d3, 0.0D, 0.0D, 0.0D);
 			}
 		}
-	}
-
-	@Override
-	@Deprecated
-	public int getLightValue(BlockState state) {
-		return state.get(ACTIVE) ? super.getLightValue(state) : 0;
 	}
 
 	@Override

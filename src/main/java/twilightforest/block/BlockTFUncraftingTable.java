@@ -30,7 +30,7 @@ public class BlockTFUncraftingTable extends Block {
 
 	@Override
 	@Deprecated
-	public ActionResultType onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
 		if (!world.isRemote) {
 			player.openContainer(state.getContainer(world, pos));
 			player.addStat(Stats.INTERACT_WITH_CRAFTING_TABLE);

@@ -23,7 +23,7 @@ public class TFClientProxy extends TFCommonProxy {
 
 	private boolean isDangerOverlayShown;
 
-	public static MusicTicker.MusicType TFMUSICTYPE;
+//	public static MusicTicker.MusicType TFMUSICTYPE;
 
 	@Override
 	public void init() {

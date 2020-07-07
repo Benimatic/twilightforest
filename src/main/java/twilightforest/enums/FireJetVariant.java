@@ -11,11 +11,11 @@ public enum FireJetVariant implements IStringSerializable {
 
 	@Override
 	public String toString() {
-		return getName();
+		return func_176610_l();
 	}
 
 	@Override
-	public String getName() {
+	public String func_176610_l() {
 		return name().toLowerCase(Locale.ROOT);
 	}
 }

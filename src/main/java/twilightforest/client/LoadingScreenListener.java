@@ -2,7 +2,6 @@ package twilightforest.client;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.DownloadTerrainScreen;
-import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.GuiOpenEvent;

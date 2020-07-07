@@ -6,6 +6,8 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
@@ -26,11 +28,12 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
 import twilightforest.loot.TFTreasure;
@@ -53,7 +56,7 @@ import java.util.List;
 public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 
 	private static final DataParameter<Boolean> FLAG_CHARGING = EntityDataManager.createKey(EntityTFKnightPhantom.class, DataSerializers.BOOLEAN);
-	private static final AttributeModifier CHARGING_MODIFIER = new AttributeModifier("Charging attack boost", 7, AttributeModifier.Operation.ADDITION).setSaved(false);
+	private static final AttributeModifier CHARGING_MODIFIER = new AttributeModifier("Charging attack boost", 7, AttributeModifier.Operation.ADDITION);
 
 	private int number;
 	private int ticksProgress;
@@ -63,7 +66,7 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 	public EntityTFKnightPhantom(EntityType<? extends EntityTFKnightPhantom> type, World world) {
 		super(type, world);
 		noClip = true;
-		isImmuneToFire();
+		func_230279_az_();
 		currentFormation = Formation.HOVER;
 		experienceValue = 93;
 		moveController = new NoClipMoveHelper(this);
@@ -101,12 +104,10 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 		targetSelector.addGoal(0, new TFNearestPlayerGoal(this));
 	}
 
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(35.0D);
-		getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
-		getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
+	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return MobEntity.func_233666_p_()
+				.func_233815_a_(Attributes.field_233818_a_, 35.0D)
+				.func_233815_a_(Attributes.field_233823_f_, 1.0D);
 	}
 
 	public Formation getCurrentFormation() {
@@ -152,8 +153,8 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 			for (int i = 0; i < 4; ++i) {
 				Item particleID = rand.nextBoolean() ? TFItems.phantom_helmet.get() : TFItems.knightmetal_sword.get();
 
-				world.addParticle(new ItemParticleData(ParticleTypes.ITEM, new ItemStack(particleID)), getX() + (rand.nextFloat() - 0.5D) * getWidth(), getY() + rand.nextFloat() * (getHeight() - 0.75D) + 0.5D, getZ() + (rand.nextFloat() - 0.5D) * getWidth(), 0, -0.1, 0);
-				world.addParticle(ParticleTypes.SMOKE, getX() + (rand.nextFloat() - 0.5D) * getWidth(), getY() + rand.nextFloat() * (getHeight() - 0.75D) + 0.5D, getZ() + (rand.nextFloat() - 0.5D) * getWidth(), 0, 0.1, 0);
+				world.addParticle(new ItemParticleData(ParticleTypes.ITEM, new ItemStack(particleID)), getPosX() + (rand.nextFloat() - 0.5D) * getWidth(), getPosY() + rand.nextFloat() * (getHeight() - 0.75D) + 0.5D, getPosZ() + (rand.nextFloat() - 0.5D) * getWidth(), 0, -0.1, 0);
+				world.addParticle(ParticleTypes.SMOKE, getPosX() + (rand.nextFloat() - 0.5D) * getWidth(), getPosY() + rand.nextFloat() * (getHeight() - 0.75D) + 0.5D, getPosZ() + (rand.nextFloat() - 0.5D) * getWidth(), 0, 0.1, 0);
 			}
 		}
 	}
@@ -166,7 +167,7 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 			double d0 = rand.nextGaussian() * 0.02D;
 			double d1 = rand.nextGaussian() * 0.02D;
 			double d2 = rand.nextGaussian() * 0.02D;
-			world.addParticle(ParticleTypes.EXPLOSION, getX() + (double) (rand.nextFloat() * getWidth() * 2.0F) - (double) getWidth(), getY() + (double) (rand.nextFloat() * getHeight()), getZ() + (double) (rand.nextFloat() * getWidth() * 2.0F) - (double) getWidth(), d0, d1, d2);
+			world.addParticle(ParticleTypes.EXPLOSION, getPosX() + (double) (rand.nextFloat() * getWidth() * 2.0F) - (double) getWidth(), getPosY() + (double) (rand.nextFloat() * getHeight()), getPosZ() + (double) (rand.nextFloat() * getWidth() * 2.0F) - (double) getWidth(), d0, d1, d2);
 		}
 	}
 
@@ -177,10 +178,10 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 
 		if (!world.isRemote && getNearbyKnights().isEmpty()) {
 
-			BlockPos treasurePos = hasHome() ? getHomePosition().down() : new BlockPos(this);
+			BlockPos treasurePos = hasHome() ? getHomePosition().down() : new BlockPos(this.func_233580_cy_());
 
 			// make treasure for killing the last knight
-			TFTreasure.stronghold_boss.generateChest(world, treasurePos, false);
+			TFTreasure.stronghold_boss.generateChest((ServerWorld)world, treasurePos, false);
 
 			// mark the stronghold as defeated
 			TFGenerationSettings.markStructureConquered(world, treasurePos, TFFeature.KNIGHT_STRONGHOLD);
@@ -199,7 +200,7 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 	// [VanillaCopy] Exact copy of EntityMob.attackEntityAsMob
 	@Override
 	public boolean attackEntityAsMob(Entity entityIn) {
-		float f = (float) this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getValue();
+		float f = (float) this.getAttribute(Attributes.field_233823_f_).getValue();
 		int i = 0;
 
 		if (entityIn instanceof LivingEntity) {
@@ -211,8 +212,8 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 
 		if (flag) {
 			if (i > 0 && entityIn instanceof LivingEntity) {
-				((LivingEntity) entityIn).knockBack(this, (float) i * 0.5F, (double) MathHelper.sin(this.rotationYaw * 0.017453292F), (double) (-MathHelper.cos(this.rotationYaw * 0.017453292F)));
-				setMotion(new Vec3d(
+				((LivingEntity) entityIn).func_233627_a_((float) i * 0.5F, (double) MathHelper.sin(this.rotationYaw * 0.017453292F), (double) (-MathHelper.cos(this.rotationYaw * 0.017453292F)));
+				setMotion(new Vector3d(
 						getMotion().getX() * 0.6D,
 						getMotion().getY(),
 						getMotion().getZ() * 0.6D));
@@ -251,12 +252,12 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 	}
 
 	@Override
-	public void knockBack(Entity entity, float damage, double xRatio, double zRatio) {
+	public void func_233627_a_(float damage, double xRatio, double zRatio) {
 		isAirBorne = true;
 		float f = MathHelper.sqrt(xRatio * xRatio + zRatio * zRatio);
 		float distance = 0.2F;
-		setMotion(new Vec3d(getMotion().getX() / 2.0D, getMotion().getY() / 2.0D, getMotion().getZ() / 2.0D));
-		setMotion(new Vec3d(
+		setMotion(new Vector3d(getMotion().getX() / 2.0D, getMotion().getY() / 2.0D, getMotion().getZ() / 2.0D));
+		setMotion(new Vector3d(
 				getMotion().getX() - xRatio / (double) f * (double) distance,
 				getMotion().getY() + (double) distance,
 				getMotion().getZ() - zRatio / (double) f * (double) distance));
@@ -267,7 +268,7 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 	}
 
 	public List<EntityTFKnightPhantom> getNearbyKnights() {
-		return world.getEntitiesWithinAABB(EntityTFKnightPhantom.class, new AxisAlignedBB(getX(), getY(), getZ(), getX() + 1, getY() + 1, getZ() + 1).grow(32.0D, 8.0D, 32.0D), LivingEntity::isAlive);
+		return world.getEntitiesWithinAABB(EntityTFKnightPhantom.class, new AxisAlignedBB(getPosX(), getPosY(), getPosZ(), getPosX() + 1, getPosY() + 1, getPosZ() + 1).grow(32.0D, 8.0D, 32.0D), LivingEntity::isAlive);
 	}
 
 	private void updateMyNumber() {
@@ -309,11 +310,11 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 		dataManager.set(FLAG_CHARGING, flag);
 		if (!world.isRemote) {
 			if (flag) {
-				if (!getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).hasModifier(CHARGING_MODIFIER)) {
-					getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).applyModifier(CHARGING_MODIFIER);
+				if (!getAttribute(Attributes.field_233823_f_).hasModifier(CHARGING_MODIFIER)) {
+					getAttribute(Attributes.field_233823_f_).func_233767_b_(CHARGING_MODIFIER);
 				}
 			} else {
-				getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).removeModifier(CHARGING_MODIFIER);
+				getAttribute(Attributes.field_233823_f_).removeModifier(CHARGING_MODIFIER);
 			}
 		}
 	}
@@ -469,7 +470,7 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 
 	@Override
 	public boolean isWithinHomeDistanceCurrentPosition() {
-		return this.isWithinHomeDistanceFromPosition(new BlockPos(this));
+		return this.isWithinHomeDistanceFromPosition(new BlockPos(this.func_233580_cy_()));
 	}
 
 	@Override

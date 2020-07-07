@@ -2,8 +2,9 @@ package twilightforest.entity;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.monster.MonsterEntity;
@@ -11,14 +12,17 @@ import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
 
@@ -29,20 +33,14 @@ public class EntityTFHostileWolf extends WolfEntity implements IMob {
 
 	public EntityTFHostileWolf(EntityType<? extends EntityTFHostileWolf> type, World world) {
 		super(type, world);
-		setAngry(true);
+		func_241359_a_((ServerWorld) world, true);
 		setCollarColor(DyeColor.BLACK);
-		setAttributes(); // Must call this again because EntityWolf calls setTamed(false) which messes with our changes
+		//setAttributes(); // Must call this again because EntityWolf calls setTamed(false) which messes with our changes
 	}
 
-	// Split out from registerAttributes because of above comment
-	protected void setAttributes() {
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
-	}
-
-	@Override
-	protected final void registerAttributes() {
-		super.registerAttributes();
-		setAttributes();
+	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return WolfEntity.func_234233_eS_()
+				.func_233815_a_(Attributes.field_233818_a_, 10.0D);
 	}
 
 	@Override
@@ -63,7 +61,7 @@ public class EntityTFHostileWolf extends WolfEntity implements IMob {
 		// are we near a hedge maze?
 		int chunkX = MathHelper.floor(pos.getX()) >> 4;
 		int chunkZ = MathHelper.floor(pos.getZ()) >> 4;
-		return (TFFeature.getNearestFeature(chunkX, chunkZ, world.getWorld()) == TFFeature.HEDGE_MAZE || MonsterEntity.isValidLightLevel(world, pos, random));
+		return (TFFeature.getNearestFeature(chunkX, chunkZ, (ISeedReader) world.getWorld()) == TFFeature.HEDGE_MAZE || MonsterEntity.isValidLightLevel(world, pos, random));
 				/*&& world.checkNoEntityCollision(this)
 				&& world.getCollisionBoxes(this, getBoundingBox()).size() == 0
 				&& !world.containsAnyLiquid(getBoundingBox());*/
@@ -92,7 +90,7 @@ public class EntityTFHostileWolf extends WolfEntity implements IMob {
 	}
 
 	@Override
-	public boolean processInteract(PlayerEntity player, Hand hand) {
-		return false;
+	public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
+		return ActionResultType.PASS;
 	}
 }

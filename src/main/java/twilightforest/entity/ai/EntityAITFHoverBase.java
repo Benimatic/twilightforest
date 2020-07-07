@@ -5,8 +5,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.util.math.vector.Vector3d;
 import twilightforest.TwilightForestMod;
 
 public abstract class EntityAITFHoverBase<T extends LivingEntity> extends Goal {
@@ -44,9 +44,9 @@ public abstract class EntityAITFHoverBase<T extends LivingEntity> extends Goal {
 		boolean found = false;
 
 		for (int i = 0; i < 100; i++) {
-			hx = target.getX() + (this.attacker.getRNG().nextFloat() - this.attacker.getRNG().nextFloat()) * hoverRadius;
-			hy = target.getY() + hoverHeight;
-			hz = target.getZ() + (this.attacker.getRNG().nextFloat() - this.attacker.getRNG().nextFloat()) * hoverRadius;
+			hx = target.getPosX() + (this.attacker.getRNG().nextFloat() - this.attacker.getRNG().nextFloat()) * hoverRadius;
+			hy = target.getPosY() + hoverHeight;
+			hz = target.getPosZ() + (this.attacker.getRNG().nextFloat() - this.attacker.getRNG().nextFloat()) * hoverRadius;
 
 			if (!isPositionOccupied(hx, hy, hz) && this.canEntitySee(this.attacker, hx, hy, hz) && this.canEntitySee(target, hx, hy, hz)) {
 				found = true;
@@ -66,13 +66,13 @@ public abstract class EntityAITFHoverBase<T extends LivingEntity> extends Goal {
 	protected boolean isPositionOccupied(double hx, double hy, double hz) {
 		float radius = this.attacker.getWidth() / 2F;
 		AxisAlignedBB aabb = new AxisAlignedBB(hx - radius, hy, hz - radius, hx + radius, hy + this.attacker.getHeight(), hz + radius);
-		return !this.attacker.world.checkNoEntityCollision(attacker, VoxelShapes.create(aabb)) || this.attacker.world.getBlockCollisions(attacker, aabb).count() > 0;
+		return !this.attacker.world.checkNoEntityCollision(attacker, VoxelShapes.create(aabb)) || this.attacker.world.getCollisionShapes(attacker, aabb).count() > 0;
 	}
 
 	/**
 	 * Can the specified entity see the specified location?
 	 */
 	protected boolean canEntitySee(Entity entity, double dx, double dy, double dz) {
-		return entity.world.rayTraceBlocks(new RayTraceContext(new Vec3d(entity.getX(), entity.getY() + (double) entity.getEyeHeight(), entity.getZ()), new Vec3d(dx, dy, dz), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, entity)) == null;
+		return entity.world.rayTraceBlocks(new RayTraceContext(new Vector3d(entity.getPosX(), entity.getPosY() + (double) entity.getEyeHeight(), entity.getPosZ()), new Vector3d(dx, dy, dz), RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.NONE, entity)) == null;
 	}
 }

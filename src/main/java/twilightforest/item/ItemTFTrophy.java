@@ -8,7 +8,6 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemUseContext;
-import net.minecraft.item.Rarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
@@ -16,7 +15,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFTrophy;
 import twilightforest.enums.BossVariant;
 
@@ -38,7 +36,7 @@ public class ItemTFTrophy extends Item {
 
 	@Override
 	public ITextComponent getDisplayName(ItemStack stack) {
-		return new TranslationTextComponent(this.getTranslationKey(stack), new TranslationTextComponent("entity.twilightforest." + bossVariant.getName().toLowerCase(Locale.ROOT) + ".name"));
+		return new TranslationTextComponent(this.getTranslationKey(stack), new TranslationTextComponent("entity.twilightforest." + bossVariant.func_176610_l().toLowerCase(Locale.ROOT) + ".name"));
 	}
 
 	// [VanillaCopy] ItemSkull, with own block and no player heads
@@ -61,7 +59,7 @@ public class ItemTFTrophy extends Item {
 			boolean flag = iblockstate.getMaterial().isReplaceable();
 
 			if (!flag) {
-				if (!worldIn.getBlockState(pos).getMaterial().isSolid() && !worldIn.getBlockState(pos).isSideSolidFullSquare(worldIn, pos, facing)) {
+				if (!worldIn.getBlockState(pos).getMaterial().isSolid() && !worldIn.getBlockState(pos).isSolidSide(worldIn, pos, facing)) {
 					return ActionResultType.FAIL;
 				}
 

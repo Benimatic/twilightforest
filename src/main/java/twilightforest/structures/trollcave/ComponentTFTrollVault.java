@@ -3,10 +3,12 @@ package twilightforest.structures.trollcave;
 import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
@@ -37,7 +39,7 @@ public class ComponentTFTrollVault extends StructureTFComponentOld {
 	}
 
 	@Override
-	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// make walls
 		this.fillWithBlocks(world, sbb, 0, 0, 0, 11, 11, 11, TFBlocks.giant_obsidian.get().getDefaultState(), TFBlocks.giant_obsidian.get().getDefaultState(), false);
 
@@ -49,9 +51,9 @@ public class ComponentTFTrollVault extends StructureTFComponentOld {
 
 		// chests
 		this.setBlockState(world, Blocks.CHEST.getDefaultState(), 5, 6, 5, sbb);
-		this.placeTreasureAtCurrentPosition(world.getWorld(), 5, 6, 6, TFTreasure.troll_vault, false, sbb);
+		this.placeTreasureAtCurrentPosition(world, 5, 6, 6, TFTreasure.troll_vault, false, sbb);
 
-		this.placeTreasureAtCurrentPosition(world.getWorld(), 6, 6, 5, TFTreasure.troll_garden, true, sbb);
+		this.placeTreasureAtCurrentPosition(world, 6, 6, 5, TFTreasure.troll_garden, true, sbb);
 		this.setBlockState(world, Blocks.TRAPPED_CHEST.getDefaultState(), 6, 6, 6, sbb);
 
 		return true;

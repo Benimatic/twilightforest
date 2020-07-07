@@ -19,23 +19,23 @@ public class ModelTFApocalypseCube<T extends EntityTFHarbingerCube> extends Quad
 		this.headModel = new ModelRenderer(this, 0, 0);
 
 		body = new ModelRenderer(this, 0, 0);
-		body.addCuboid(-16F, -16F, -16F, 32, 32, 32);
+		body.addBox(-16F, -16F, -16F, 32, 32, 32);
 		body.setRotationPoint(0F, 0F, -2F);
 
         legBackRight = new ModelRenderer(this, 0, 0);
-        legBackRight.addCuboid(-4F, 0F, -4F, 8, 8, 8);
+        legBackRight.addBox(-4F, 0F, -4F, 8, 8, 8);
         legBackRight.setRotationPoint(-6F, 16F, 9F);
 
         legBackLeft = new ModelRenderer(this, 0, 0);
-        legBackLeft.addCuboid(-4F, 0F, -4F, 8, 8, 8);
+        legBackLeft.addBox(-4F, 0F, -4F, 8, 8, 8);
         legBackLeft.setRotationPoint(6F, 16F, 9F);
 
         legFrontRight = new ModelRenderer(this, 0, 0);
-        legFrontRight.addCuboid(-4F, 0F, -4F, 8, 8, 8);
+        legFrontRight.addBox(-4F, 0F, -4F, 8, 8, 8);
         legFrontRight.setRotationPoint(-9F, 16F, -14F);
 
         legFrontLeft = new ModelRenderer(this, 0, 0);
-        legFrontLeft.addCuboid(-4F, 0F, -4F, 8, 8, 8);
+        legFrontLeft.addBox(-4F, 0F, -4F, 8, 8, 8);
         legFrontLeft.setRotationPoint(9F, 16F, -14F);
 	}
 
@@ -45,8 +45,8 @@ public class ModelTFApocalypseCube<T extends EntityTFHarbingerCube> extends Quad
 	 * "far" arms and legs can swing at most.
 	 */
 	@Override
-	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		super.setAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+		super.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
 		this.body.rotateAngleX = 0F;
 	}

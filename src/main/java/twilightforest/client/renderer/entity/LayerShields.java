@@ -4,7 +4,6 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Atlases;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.entity.model.EntityModel;
@@ -16,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.client.model.data.EmptyModelData;
 import org.apache.commons.lang3.ArrayUtils;
 import twilightforest.TwilightForestMod;
@@ -59,9 +59,9 @@ public class LayerShields<T extends LivingEntity, M extends EntityModel<T>> exte
 
 			// perform the rotations, accounting for the fact that baked models are corner-based
 			stack.translate(0.5, 0.5, 0.5);
-			stack.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(rotateAngleZ * (180F / (float) Math.PI)));
-			stack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(rotateAngleY * (180F / (float) Math.PI) + (c * (360F / count))));
-			stack.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(rotateAngleX * (180F / (float) Math.PI)));
+			stack.rotate(Vector3f.ZP.rotationDegrees(rotateAngleZ * (180F / (float) Math.PI)));
+			stack.rotate(Vector3f.YP.rotationDegrees(rotateAngleY * (180F / (float) Math.PI) + (c * (360F / count))));
+			stack.rotate(Vector3f.XP.rotationDegrees(rotateAngleX * (180F / (float) Math.PI)));
 			stack.translate(-0.5, -0.5, -0.5);
 
 			// push the shields outwards from the center of rotation
@@ -70,13 +70,13 @@ public class LayerShields<T extends LivingEntity, M extends EntityModel<T>> exte
 			IBakedModel model = Minecraft.getInstance().getModelManager().getModel(LOC);
 			for (Direction dir : DIRS) {
 				RAND.setSeed(42L);
-				Minecraft.getInstance().getItemRenderer().renderBakedItemQuads(
+				Minecraft.getInstance().getItemRenderer().renderItem(
 						stack,
 						buffer.getBuffer(Atlases.getEntityTranslucent()),
 						model.getQuads(null, dir, RAND, EmptyModelData.INSTANCE),
 						ItemStack.EMPTY,
 						0xF000F0,
-						OverlayTexture.DEFAULT_UV
+						OverlayTexture.NO_OVERLAY
 				);
 			}
 

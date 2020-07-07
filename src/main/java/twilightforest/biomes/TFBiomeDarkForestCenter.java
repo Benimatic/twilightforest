@@ -1,7 +1,6 @@
 package twilightforest.biomes;
 
 import net.minecraft.util.ResourceLocation;
-import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 
 public class TFBiomeDarkForestCenter extends TFBiomeDarkForest {
@@ -11,7 +10,7 @@ public class TFBiomeDarkForestCenter extends TFBiomeDarkForest {
 	}
 
 	@Override
-	public int getGrassColorAt(double x, double z) {
+	public int getGrassColor(double x, double z) {
 		double d0 = INFO_NOISE.noiseAt(x * 0.0225D, z * 0.0225D, false); //TODO: Check
 		return d0 < -0.2D ? 0x667540 : 0x554114;
 	}

@@ -6,10 +6,10 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
@@ -105,23 +105,22 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 	}
 
 	@Override
-	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random random, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
-		return this.addComponentParts(world.getWorld(), generator, random, sbb, false);
+	public boolean func_230383_a_(ISeedReader seed, StructureManager manager, ChunkGenerator generator, Random random, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		return this.addComponentParts(seed, generator, random, sbb, false);
 	}
 
 	@Override
-	public boolean addComponentParts(World world, ChunkGenerator<?> generator, Random random, MutableBoundingBox sbb, boolean drawLeaves) {
-
+	public boolean addComponentParts(ISeedReader seed, ChunkGenerator generator, Random random, MutableBoundingBox sbb, boolean drawLeaves) {
 		BlockPos rSrc = src.add(-boundingBox.minX, -boundingBox.minY, -boundingBox.minZ);
 		BlockPos rDest = dest.add(-boundingBox.minX, -boundingBox.minY, -boundingBox.minZ);
 
 		if (!drawLeaves) {
 			BlockState log = TFBlocks.oak_wood.get().getDefaultState();
-			drawBresehnam(world, sbb, rSrc.getX(), rSrc.getY(), rSrc.getZ(), rDest.getX(), rDest.getY(), rDest.getZ(), log);
-			drawBresehnam(world, sbb, rSrc.getX(), rSrc.getY() + 1, rSrc.getZ(), rDest.getX(), rDest.getY(), rDest.getZ(), log);
+			drawBresehnam(seed, sbb, rSrc.getX(), rSrc.getY(), rSrc.getZ(), rDest.getX(), rDest.getY(), rDest.getZ(), log);
+			drawBresehnam(seed, sbb, rSrc.getX(), rSrc.getY() + 1, rSrc.getZ(), rDest.getX(), rDest.getY(), rDest.getZ(), log);
 		}
 
-		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
+		Random decoRNG = new Random(seed.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
 
 		// and several small branches
 		int numShoots = Math.min(decoRNG.nextInt(3) + 1, (int) (length / 5));
@@ -136,7 +135,7 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 
 			BlockPos bSrc = FeatureUtil.translate(rSrc, length * outVar, angle, tilt);
 
-			drawSmallBranch(world, sbb, bSrc.getX(), bSrc.getY(), bSrc.getZ(), Math.max(length * 0.3F, 2F), angle + angleVar, tilt, drawLeaves);
+			drawSmallBranch(seed, sbb, bSrc.getX(), bSrc.getY(), bSrc.getZ(), Math.max(length * 0.3F, 2F), angle + angleVar, tilt, drawLeaves);
 		}
 
 		// leaves, if we're doing that right now
@@ -147,10 +146,10 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 				double slength = (decoRNG.nextFloat() * 0.6F + 0.2F) * length;
 				BlockPos bdst = FeatureUtil.translate(rSrc, slength, angle, tilt);
 
-				makeLeafBlob(world, sbb, bdst.getX(), bdst.getY(), bdst.getZ(), decoRNG.nextBoolean() ? 2 : 3);
+				makeLeafBlob(seed, sbb, bdst.getX(), bdst.getY(), bdst.getZ(), decoRNG.nextBoolean() ? 2 : 3);
 			}
 
-			makeLeafBlob(world, sbb, rDest.getX(), rDest.getY(), rDest.getZ(), 3);
+			makeLeafBlob(seed, sbb, rDest.getX(), rDest.getY(), rDest.getZ(), 3);
 		}
 
 		return true;
@@ -159,7 +158,7 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 	/**
 	 * Draws a line
 	 */
-	protected void drawBresehnam(World world, MutableBoundingBox sbb, int x1, int y1, int z1, int x2, int y2, int z2, BlockState blockState) {
+	protected void drawBresehnam(ISeedReader world, MutableBoundingBox sbb, int x1, int y1, int z1, int x2, int y2, int z2, BlockState blockState) {
 		BlockPos lineCoords[] = FeatureUtil.getBresehnamArrays(x1, y1, z1, x2, y2, z2);
 
 		for (BlockPos coords : lineCoords) {
@@ -170,7 +169,7 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 	/**
 	 * Make a leaf blob
 	 */
-	protected void makeLeafBlob(World world, MutableBoundingBox sbb, int sx, int sy, int sz, int radius) {
+	protected void makeLeafBlob(ISeedReader world, MutableBoundingBox sbb, int sx, int sy, int sz, int radius) {
 		// then trace out a quadrant
 		for (int dx = 0; dx <= radius; dx++) {
 			for (int dy = 0; dy <= radius; dy++) {
@@ -207,7 +206,7 @@ public class ComponentTFHollowTreeMedBranch extends StructureTFTreeComponent {
 	/**
 	 * This is like the small branch component, but we're just drawing it directly into the world
 	 */
-	protected void drawSmallBranch(World world, MutableBoundingBox sbb, int sx, int sy, int sz, double branchLength, double branchAngle, double branchTilt, boolean drawLeaves) {
+	protected void drawSmallBranch(ISeedReader world, MutableBoundingBox sbb, int sx, int sy, int sz, double branchLength, double branchAngle, double branchTilt, boolean drawLeaves) {
 		// draw a line
 		BlockPos branchDest = FeatureUtil.translate(new BlockPos(sx, sy, sz), branchLength, branchAngle, branchTilt);
 

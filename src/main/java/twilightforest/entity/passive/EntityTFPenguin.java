@@ -2,7 +2,9 @@ package twilightforest.entity.passive;
 
 import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -41,10 +43,9 @@ public class EntityTFPenguin extends EntityTFBird {
 		return stack.getItem() == Items.COD;
 	}
 
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
-		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.2D);
+	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return MobEntity.func_233666_p_()
+				.func_233815_a_(Attributes.field_233818_a_, 10.0D)
+				.func_233815_a_(Attributes.field_233821_d_, 0.2D);
 	}
 }

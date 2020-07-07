@@ -1,16 +1,15 @@
 package twilightforest.entity;
 
 import net.minecraft.block.Blocks;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
@@ -37,27 +36,27 @@ public class EntityTFRisingZombie extends ZombieEntity {
 
 	@Override
 	public void livingTick() {
-		setMotion(new Vec3d(0, 0, 0));
+		setMotion(new Vector3d(0, 0, 0));
 		super.livingTick();
 		if (!world.isRemote && ticksExisted % 130 == 0) {
 			remove();
 			ZombieEntity zombie = new ZombieEntity(world);
-			zombie.setPositionAndUpdate(getX(), getY(), getZ());
-			zombie.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(getMaxHealth());
+			zombie.setPositionAndUpdate(getPosX(), getPosY(), getPosZ());
+			zombie.getAttribute(Attributes.field_233818_a_).setBaseValue(getMaxHealth());
 			zombie.setHealth(getHealth());
 			zombie.setChild(isChild());
 			world.addEntity(zombie);
-			if (rand.nextBoolean() && world.getBlockState(getPosition().down()).getBlock() == Blocks.GRASS)
-				world.setBlockState(getPosition().down(), Blocks.DIRT.getDefaultState());
+			if (rand.nextBoolean() && world.getBlockState(func_233580_cy_().down()).getBlock() == Blocks.GRASS)
+				world.setBlockState(func_233580_cy_().down(), Blocks.DIRT.getDefaultState());
 		}
-		if (world.isRemote && !world.isAirBlock(getPosition().down())) {
+		if (world.isRemote && !world.isAirBlock(func_233580_cy_().down())) {
 			for (int i = 0; i < 5; i++)
-				world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, world.getBlockState(getPosition().down())), getX() + rand.nextGaussian() * 0.01F, getY() + rand.nextGaussian() * 0.01F, getZ() + rand.nextGaussian() * 0.01F, 0, 0, 0);
+				world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, world.getBlockState(func_233580_cy_().down())), getPosX() + rand.nextGaussian() * 0.01F, getPosY() + rand.nextGaussian() * 0.01F, getPosZ() + rand.nextGaussian() * 0.01F, 0, 0, 0);
 		}
 	}
 
 	@Override
-	public void knockBack(Entity entityIn, float strength, double xRatio, double zRatio) {
+	public void func_233627_a_(float strength, double xRatio, double zRatio) {
 		//NO-OP
 	}
 }

@@ -19,8 +19,8 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -54,7 +54,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 		this.entityCollisionReduction = 1F;
 		//this.yOffset = this.height / 2.0F;
 		this.setPosition(x, y, z);
-		this.setMotion(new Vec3d(0, 0, 0));
+		this.setMotion(new Vector3d(0, 0, 0));
 		this.prevPosX = x;
 		this.prevPosY = y;
 		this.prevPosZ = z;
@@ -63,7 +63,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 	}
 
 	private void determineMoveDirection() {
-		BlockPos pos = new BlockPos(this);
+		BlockPos pos = new BlockPos(this.func_233580_cy_());
 
 		Direction[] toCheck;
 
@@ -102,7 +102,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 	}
 
 	@Override
-	public boolean bypassesSteppingEffects() {
+	public boolean isSteppingCarefully() {
 		return false;
 	}
 
@@ -116,16 +116,16 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 		if (this.myState == null || this.myState.getMaterial() == Material.AIR) {
 			this.remove();
 		} else {
-			this.prevPosX = this.getX();
-			this.prevPosY = this.getY();
-			this.prevPosZ = this.getZ();
+			this.prevPosX = this.getPosX();
+			this.prevPosY = this.getPosY();
+			this.prevPosZ = this.getPosZ();
 			++this.slideTime;
 			// start moving after warmup
 			if (this.slideTime > WARMUP_TIME) {
 				final double moveAcceleration = 0.04;
 				Direction moveDirection = dataManager.get(MOVE_DIRECTION);
 				setMotion(this.getMotion().add(moveDirection.getXOffset() * moveAcceleration, moveDirection.getYOffset() * moveAcceleration, moveDirection.getZOffset() * moveAcceleration));
-				this.move(MoverType.SELF, new Vec3d(this.getMotion().getX(), this.getMotion().getY(), this.getMotion().getZ()));
+				this.move(MoverType.SELF, new Vector3d(this.getMotion().getX(), this.getMotion().getY(), this.getMotion().getZ()));
 			}
 			this.getMotion().mul(0.98, 0.98, 0.98);
 
@@ -134,7 +134,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 					playSound(TFSounds.SLIDER, 1.0F, 0.9F + (this.rand.nextFloat() * 0.4F));
 				}
 
-				BlockPos pos = new BlockPos(this);
+				BlockPos pos = new BlockPos(this.func_233580_cy_());
 
 				if (this.slideTime == 1) {
 					if (this.world.getBlockState(pos) != this.myState) {
@@ -146,7 +146,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 				}
 
 				if (this.slideTime == WARMUP_TIME + 40) {
-					this.setMotion(new Vec3d(0, 0, 0));
+					this.setMotion(new Vector3d(0, 0, 0));
 
 					dataManager.set(MOVE_DIRECTION, dataManager.get(MOVE_DIRECTION).getOpposite());
 				}
@@ -178,10 +178,10 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 			if (entity instanceof LivingEntity) {
 				entity.attackEntityFrom(DamageSource.GENERIC, 5);
 
-				double kx = (this.getX() - entity.getX()) * 2.0;
-				double kz = (this.getZ() - entity.getZ()) * 2.0;
+				double kx = (this.getPosX() - entity.getPosX()) * 2.0;
+				double kz = (this.getPosZ() - entity.getPosZ()) * 2.0;
 
-				((LivingEntity) entity).knockBack(this, 2, kx, kz);
+				((LivingEntity) entity).func_233627_a_(2, kx, kz);
 			}
 		}
 	}

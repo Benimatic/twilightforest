@@ -70,7 +70,7 @@ public class BlockTFExperiment115 extends Block {
 
 	@Override
 	@Deprecated
-	public ActionResultType onUse(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		int bitesTaken = state.get(BITES_TAKEN);
 		ItemStack stack = player.getHeldItem(hand);
 

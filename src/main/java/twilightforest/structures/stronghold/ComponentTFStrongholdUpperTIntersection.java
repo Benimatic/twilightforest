@@ -3,10 +3,12 @@ package twilightforest.structures.stronghold;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
@@ -41,20 +43,20 @@ public class ComponentTFStrongholdUpperTIntersection extends StructureTFStrongho
 	}
 
 	@Override
-	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		if (this.isLiquidInStructureBoundingBox(world, sbb)) {
 			return false;
 		} else {
-			placeUpperStrongholdWalls(world.getWorld(), sbb, 0, 0, 0, 4, 4, 4, rand, deco.randomBlocks);
+			placeUpperStrongholdWalls(world, sbb, 0, 0, 0, 4, 4, 4, rand, deco.randomBlocks);
 
 			// entrance doorway
-			placeSmallDoorwayAt(world.getWorld(), 2, 2, 1, 0, sbb);
+			placeSmallDoorwayAt(world, 2, 2, 1, 0, sbb);
 
 			// left turn doorway
-			placeSmallDoorwayAt(world.getWorld(), 3, 4, 1, 2, sbb);
+			placeSmallDoorwayAt(world, 3, 4, 1, 2, sbb);
 
 			// right turn doorway
-			placeSmallDoorwayAt(world.getWorld(), 1, 0, 1, 2, sbb);
+			placeSmallDoorwayAt(world, 1, 0, 1, 2, sbb);
 
 			return true;
 		}

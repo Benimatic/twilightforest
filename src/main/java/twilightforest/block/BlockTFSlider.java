@@ -37,7 +37,7 @@ public class BlockTFSlider extends RotatedPillarBlock {
 	private static final VoxelShape X_BB = VoxelShapes.create(new AxisAlignedBB(0, 0.3125, 0.3125, 1F, 0.6875, 0.6875));
 
 	protected BlockTFSlider() {
-		super(Properties.create(Material.IRON, MaterialColor.DIRT).hardnessAndResistance(2.0F, 10.0F).tickRandomly().nonOpaque());
+		super(Properties.create(Material.IRON, MaterialColor.DIRT).hardnessAndResistance(2.0F, 10.0F).tickRandomly().notSolid());
 		//this.setCreativeTab(TFItems.creativeTab); TODO 1.14
 		this.setDefaultState(stateContainer.getBaseState().with(AXIS, Direction.Axis.Y).with(DELAY, 0));
 	}
@@ -64,7 +64,7 @@ public class BlockTFSlider extends RotatedPillarBlock {
 
 	@Override
 	@Deprecated
-	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		if (!world.isRemote && this.isConnectedInRange(world, pos)) {
 			//world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, TwilightForestMod.ID + ":random.creakstart", 0.75F, 1.5F);
 
@@ -124,10 +124,10 @@ public class BlockTFSlider extends RotatedPillarBlock {
 	public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entity) {
 		entity.attackEntityFrom(DamageSource.GENERIC, BLOCK_DAMAGE);
 		if (entity instanceof LivingEntity) {
-			double kx = (pos.getX() + 0.5 - entity.getX()) * 2.0;
-			double kz = (pos.getZ() + 0.5 - entity.getZ()) * 2.0;
+			double kx = (pos.getX() + 0.5 - entity.getPosX()) * 2.0;
+			double kz = (pos.getZ() + 0.5 - entity.getPosZ()) * 2.0;
 
-			((LivingEntity) entity).knockBack(null, 2, kx, kz); //TODO: Can't be null
+			((LivingEntity) entity).func_233627_a_(2, kx, kz);
 		}
 	}
 }

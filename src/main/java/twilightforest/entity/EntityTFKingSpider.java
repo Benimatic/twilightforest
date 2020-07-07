@@ -3,8 +3,9 @@ package twilightforest.entity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.monster.SpiderEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.world.DifficultyInstance;
@@ -25,12 +26,11 @@ public class EntityTFKingSpider extends SpiderEntity {
 		//this.goalSelector.addGoal(1, new EntityAITFChargeAttack(this, 0.4F));
 	}
 
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
-		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.35D);
-		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6.0D);
+	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return SpiderEntity.func_234305_eI_()
+				.func_233815_a_(Attributes.field_233818_a_, 30.0D)
+				.func_233815_a_(Attributes.field_233821_d_, 0.35D)
+				.func_233815_a_(Attributes.field_233823_f_, 6.0D);
 	}
 
 	//TODO: Moved to renderer?
@@ -52,7 +52,7 @@ public class EntityTFKingSpider extends SpiderEntity {
 
 		// will always have a dryad riding the spider or whatever is riding the spider
 		EntityTFSkeletonDruid druid = TFEntities.skeleton_druid.create(world);
-		druid.setLocationAndAngles(this.getX(), this.getY(), this.getZ(), this.rotationYaw, 0.0F);
+		druid.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), this.rotationYaw, 0.0F);
 		druid.onInitialSpawn(worldIn, difficulty, SpawnReason.JOCKEY, null, null);
 		this.world.addEntity(druid);
 		Entity lastRider = this;

@@ -91,7 +91,7 @@ public class ItemTFLampOfCinders extends Item {
 		int range = 4;
 
 		if (!world.isRemote) {
-			world.playSound(null, living.getX(), living.getY(), living.getZ(), SoundEvents.ENTITY_GHAST_SHOOT, living.getSoundCategory(), 1.5F, 0.8F);
+			world.playSound(null, living.getPosX(), living.getPosY(), living.getPosZ(), SoundEvents.ENTITY_GHAST_SHOOT, living.getSoundCategory(), 1.5F, 0.8F);
 
 			// set nearby thorns to burnt
 			for (int dx = -range; dx <= range; dx++) {

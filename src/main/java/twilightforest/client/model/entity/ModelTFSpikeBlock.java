@@ -13,12 +13,12 @@ public class ModelTFSpikeBlock extends SegmentedModel<EntityTFSpikeBlock> {
 	public ModelTFSpikeBlock() {
 
 		block = new ModelRenderer(this, 32, 16);
-		block.addCuboid(-4F, -8F, -4F, 8, 8, 8, 0F);
+		block.addBox(-4F, -8F, -4F, 8, 8, 8, 0F);
 		block.setRotationPoint(0F, 0F, 0F);
 
 		for (int i = 0; i < spikes.length; i++) {
 			spikes[i] = new ModelRenderer(this, 56, 16);
-			spikes[i].addCuboid(-1F, -1F, -1F, 2, 2, 2, 0F);
+			spikes[i].addBox(-1F, -1F, -1F, 2, 2, 2, 0F);
 			block.addChild(spikes[i]);
 		}
 
@@ -127,7 +127,7 @@ public class ModelTFSpikeBlock extends SegmentedModel<EntityTFSpikeBlock> {
 	}
 
 	@Override
-	public void setAngles(EntityTFSpikeBlock entity, float v, float v1, float v2, float v3, float v4) {
+	public void setRotationAngles(EntityTFSpikeBlock entity, float v, float v1, float v2, float v3, float v4) {
 
 	}
 

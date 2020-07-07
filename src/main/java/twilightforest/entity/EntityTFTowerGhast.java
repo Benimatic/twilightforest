@@ -2,8 +2,9 @@ package twilightforest.entity;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.monster.GhastEntity;
@@ -15,11 +16,12 @@ import net.minecraft.particles.RedstoneParticleData;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import twilightforest.TFFeature;
 import twilightforest.entity.ai.TFNearestPlayerGoal;
 import twilightforest.entity.boss.EntityTFUrGhast;
@@ -76,9 +78,9 @@ public class EntityTFTowerGhast extends GhastEntity {
 			if (!entitymovehelper.isUpdating()) {
 				return parentEntity.getAttackTarget() == null;
 			} else {
-				double d0 = entitymovehelper.getX() - this.parentEntity.getX();
-				double d1 = entitymovehelper.getY() - this.parentEntity.getY();
-				double d2 = entitymovehelper.getZ() - this.parentEntity.getZ();
+				double d0 = entitymovehelper.getX() - this.parentEntity.getPosX();
+				double d1 = entitymovehelper.getY() - this.parentEntity.getPosY();
+				double d2 = entitymovehelper.getZ() - this.parentEntity.getPosZ();
 				double d3 = d0 * d0 + d1 * d1 + d2 * d2;
 				return parentEntity.getAttackTarget() == null && (d3 < 1.0D || d3 > 3600.0D);
 			}
@@ -92,9 +94,9 @@ public class EntityTFTowerGhast extends GhastEntity {
 		@Override
 		public void startExecuting() {
 			Random random = this.parentEntity.getRNG();
-			double d0 = this.parentEntity.getX() + (double) ((random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
-			double d1 = this.parentEntity.getY() + (double) ((random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
-			double d2 = this.parentEntity.getZ() + (double) ((random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
+			double d0 = this.parentEntity.getPosX() + (double) ((random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
+			double d1 = this.parentEntity.getPosY() + (double) ((random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
+			double d2 = this.parentEntity.getPosZ() + (double) ((random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
 			this.parentEntity.getMoveHelper().setMoveTo(d0, d1, d2, 1.0D);
 		}
 	}
@@ -116,9 +118,9 @@ public class EntityTFTowerGhast extends GhastEntity {
 			if (!entitymovehelper.isUpdating()) {
 				return !this.parentEntity.isWithinHomeDistanceCurrentPosition();
 			} else {
-				double d0 = entitymovehelper.getX() - this.parentEntity.getX();
-				double d1 = entitymovehelper.getY() - this.parentEntity.getY();
-				double d2 = entitymovehelper.getZ() - this.parentEntity.getZ();
+				double d0 = entitymovehelper.getX() - this.parentEntity.getPosX();
+				double d1 = entitymovehelper.getY() - this.parentEntity.getPosY();
+				double d2 = entitymovehelper.getZ() - this.parentEntity.getPosZ();
 				double d3 = d0 * d0 + d1 * d1 + d2 * d2;
 				return (d3 < 1.0D || d3 > 3600.0D)
 						&& !this.parentEntity.isWithinHomeDistanceCurrentPosition();
@@ -135,17 +137,17 @@ public class EntityTFTowerGhast extends GhastEntity {
 		@Override
 		public void startExecuting() {
 			Random random = this.parentEntity.getRNG();
-			double d0 = this.parentEntity.getX() + (double) ((random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
-			double d1 = this.parentEntity.getY() + (double) ((random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
-			double d2 = this.parentEntity.getZ() + (double) ((random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
+			double d0 = this.parentEntity.getPosX() + (double) ((random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
+			double d1 = this.parentEntity.getPosY() + (double) ((random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
+			double d2 = this.parentEntity.getPosZ() + (double) ((random.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
 			this.parentEntity.getMoveHelper().setMoveTo(d0, d1, d2, 1.0D);
 
-			if (this.parentEntity.getDistanceSq(new Vec3d(this.parentEntity.getHomePosition())) > 256.0D) {
-				Vec3d vecToHome = new Vec3d(this.parentEntity.getHomePosition()).subtract(this.parentEntity.getPositionVector()).normalize();
+			if (this.parentEntity.getDistanceSq(new Vector3d(this.parentEntity.getHomePosition())) > 256.0D) {
+				Vector3d vecToHome = new Vector3d(this.parentEntity.getHomePosition()).subtract(this.parentEntity.getPositionVec()).normalize();
 
-				double targetX = this.parentEntity.getX() + vecToHome.x * parentEntity.wanderFactor + (double) ((this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
-				double targetY = this.parentEntity.getY() + vecToHome.y * parentEntity.wanderFactor + (double) ((this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
-				double targetZ = this.parentEntity.getZ() + vecToHome.z * parentEntity.wanderFactor + (double) ((this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
+				double targetX = this.parentEntity.getPosX() + vecToHome.x * parentEntity.wanderFactor + (double) ((this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
+				double targetY = this.parentEntity.getPosY() + vecToHome.y * parentEntity.wanderFactor + (double) ((this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
+				double targetZ = this.parentEntity.getPosZ() + vecToHome.z * parentEntity.wanderFactor + (double) ((this.parentEntity.rand.nextFloat() * 2.0F - 1.0F) * parentEntity.wanderFactor);
 
 				this.parentEntity.getMoveHelper().setMoveTo(targetX, targetY, targetZ, 1.0D);
 			} else {
@@ -213,11 +215,10 @@ public class EntityTFTowerGhast extends GhastEntity {
 		}
 	}
 
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
-		this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(64.0D);
+	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return GhastEntity.func_234290_eH_()
+				.func_233815_a_(Attributes.field_233818_a_, 30.0D)
+				.func_233815_a_(Attributes.field_233819_b_, 64.0D);
 	}
 
 	@Override
@@ -243,7 +244,7 @@ public class EntityTFTowerGhast extends GhastEntity {
 		}
 
 		if (this.rand.nextBoolean()) {
-			this.world.addParticle(RedstoneParticleData.REDSTONE_DUST, this.getX() + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(), this.getY() + this.rand.nextDouble() * (double) this.getHeight() - 0.25D, this.getZ() + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(), 0, 0, 0);
+			this.world.addParticle(RedstoneParticleData.REDSTONE_DUST, this.getPosX() + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(), this.getPosY() + this.rand.nextDouble() * (double) this.getHeight() - 0.25D, this.getPosZ() + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(), 0, 0, 0);
 		}
 
 		super.livingTick();
@@ -290,16 +291,16 @@ public class EntityTFTowerGhast extends GhastEntity {
 	}
 
 	protected void spitFireball() {
-		Vec3d vec3d = this.getLook(1.0F);
-		double d2 = getAttackTarget().getX() - (this.getX() + vec3d.x * 4.0D);
-		double d3 = getAttackTarget().getBoundingBox().minY + (double) (getAttackTarget().getHeight() / 2.0F) - (0.5D + this.getY() + (double) (this.getHeight() / 2.0F));
-		double d4 = getAttackTarget().getZ() - (this.getZ() + vec3d.z * 4.0D);
+		Vector3d vec3d = this.getLook(1.0F);
+		double d2 = getAttackTarget().getPosX() - (this.getPosX() + vec3d.x * 4.0D);
+		double d3 = getAttackTarget().getBoundingBox().minY + (double) (getAttackTarget().getHeight() / 2.0F) - (0.5D + this.getPosY() + (double) (this.getHeight() / 2.0F));
+		double d4 = getAttackTarget().getPosZ() - (this.getPosZ() + vec3d.z * 4.0D);
 		FireballEntity entitylargefireball = new FireballEntity(world, this, d2, d3, d4);
 		entitylargefireball.explosionPower = this.getFireballStrength();
-//		entitylargefireball.getX() = this.getX() + vec3d.x * 4.0D;
+//		entitylargefireball.getPosX() = this.getPosX() + vec3d.x * 4.0D;
 //		entitylargefireball.getY() = this.getY() + (double) (this.getHeight() / 2.0F) + 0.5D;
-//		entitylargefireball.getZ() = this.getZ() + vec3d.z * 4.0D;
-		entitylargefireball.setPos(this.getX() + vec3d.x * 4.0D, this.getY() + (double) (this.getHeight() / 2.0F) + 0.5D, this.getZ() + vec3d.z * 4.0D);
+//		entitylargefireball.getPosZ() = this.getPosZ() + vec3d.z * 4.0D;
+		entitylargefireball.setPosition(this.getPosX() + vec3d.x * 4.0D, this.getPosY() + (double) (this.getHeight() / 2.0F) + 0.5D, this.getPosZ() + vec3d.z * 4.0D);
 		world.addEntity(entitylargefireball);
 
 		// when we attack, there is a 1-in-6 chance we decide to stop attacking
@@ -318,10 +319,10 @@ public class EntityTFTowerGhast extends GhastEntity {
 
 	private void findHome() {
 		if (!this.hasHome()) {
-			int chunkX = MathHelper.floor(this.getX()) >> 4;
-			int chunkZ = MathHelper.floor(this.getZ()) >> 4;
+			int chunkX = MathHelper.floor(this.getPosX()) >> 4;
+			int chunkZ = MathHelper.floor(this.getPosZ()) >> 4;
 
-			TFFeature nearFeature = TFFeature.getFeatureForRegion(chunkX, chunkZ, this.world);
+			TFFeature nearFeature = TFFeature.getFeatureForRegion(chunkX, chunkZ, (ServerWorld) this.world);
 
 			if (nearFeature != TFFeature.DARK_TOWER) {
 				this.detachHome();
@@ -343,7 +344,7 @@ public class EntityTFTowerGhast extends GhastEntity {
 
 	@Override
 	public boolean isWithinHomeDistanceCurrentPosition() {
-		return this.isWithinHomeDistanceFromPosition(new BlockPos(this));
+		return this.isWithinHomeDistanceFromPosition(func_233580_cy_());
 	}
 
 	@Override

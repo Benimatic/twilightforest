@@ -3,12 +3,12 @@ package twilightforest.util;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.util.math.Vec3i;
+import net.minecraft.util.math.vector.Vector3i;
 
 import javax.annotation.Nullable;
 
 public class StructureBoundingBoxUtils {
-	public static Vec3i getCenter(MutableBoundingBox sbb) {
+	public static Vector3i getCenter(MutableBoundingBox sbb) {
 		return new BlockPos(sbb.minX + (sbb.maxX - sbb.minX + 1) / 2, sbb.minY + (sbb.maxY - sbb.minY + 1) / 2, sbb.minZ + (sbb.maxZ - sbb.minZ + 1) / 2);
 	}
 
@@ -27,6 +27,7 @@ public class StructureBoundingBoxUtils {
 						Math.min(sbbIn.maxZ, sbbMask.maxZ));
 	}
 
+	//TODO: Method unused
 	public static AxisAlignedBB toAABB(MutableBoundingBox sbb) {
 		return new AxisAlignedBB(sbb.minX, sbb.minY, sbb.minZ, sbb.maxX + 1, sbb.maxY + 1, sbb.maxZ + 1);
 	}

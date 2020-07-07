@@ -4,8 +4,10 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.Pose;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
@@ -32,11 +34,10 @@ public class EntityStableIceCore extends EntityTFIceMob implements IRangedAttack
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
 	}
 
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23000000417232513D);
-		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
+	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return MonsterEntity.func_234295_eP_()
+				.func_233815_a_(Attributes.field_233821_d_, 0.23000000417232513D)
+				.func_233815_a_(Attributes.field_233823_f_, 3.0D);
 	}
 
 	@Override
@@ -69,10 +70,10 @@ public class EntityStableIceCore extends EntityTFIceMob implements IRangedAttack
 		EntityTFIceSnowball snowball = TFEntities.ice_snowball.create(this.world);
 
 		// [VanillaCopy] Adapted from EntitySnowman
-		double d0 = target.getY() + (double) target.getEyeHeight() - 1.4;
-		double d1 = target.getX() - this.getX();
-		double d2 = d0 - snowball.getY();
-		double d3 = target.getZ() - this.getZ();
+		double d0 = target.getPosY() + (double) target.getEyeHeight() - 1.4;
+		double d1 = target.getPosX() - this.getPosX();
+		double d2 = d0 - snowball.getPosY();
+		double d3 = target.getPosZ() - this.getPosZ();
 		float f = MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.2F;
 		snowball.shoot(d1, d2 + (double) f, d3, 1.6F, 0.0F);
 

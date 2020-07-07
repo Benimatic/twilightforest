@@ -28,7 +28,7 @@ public class EntityTFMoonwormShot extends EntityTFThrowable {
 
 	public EntityTFMoonwormShot(EntityType<? extends EntityTFMoonwormShot> type, World world, LivingEntity thrower) {
 		super(type, world, thrower);
-		shoot(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 1.5F, 1.0F);
+		func_234612_a_(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 1.5F, 1.0F);
 	}
 
 	@Override
@@ -76,7 +76,7 @@ public class EntityTFMoonwormShot extends EntityTFThrowable {
 	public void handleStatusUpdate(byte id) {
 		if (id == 3) {
 			for (int i = 0; i < 8; ++i) {
-				this.world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, TFBlocks.moonworm.get().getDefaultState()), false, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
+				this.world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, TFBlocks.moonworm.get().getDefaultState()), false, this.getPosX(), this.getPosY(), this.getPosZ(), 0.0D, 0.0D, 0.0D);
 			}
 		} else {
 			super.handleStatusUpdate(id);

@@ -29,12 +29,12 @@ public class ItemTFEnderBow extends BowItem {
 			LivingEntity living = (LivingEntity) ((EntityRayTraceResult) evt.getRayTraceResult()).getEntity();
 
 			if (arrow.getPersistentData().contains(KEY)) {
-				double sourceX = player.getX(), sourceY = player.getY(), sourceZ = player.getZ();
+				double sourceX = player.getPosX(), sourceY = player.getPosY(), sourceZ = player.getPosZ();
 				float sourceYaw = player.rotationYaw, sourcePitch = player.rotationPitch;
 
 				player.rotationYaw = living.rotationYaw;
 				player.rotationPitch = living.rotationPitch;
-				player.setPositionAndUpdate(living.getX(), living.getY(), living.getZ());
+				player.setPositionAndUpdate(living.getPosX(), living.getPosY(), living.getPosZ());
 				player.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, 1.0F, 1.0F);
 
 				living.rotationYaw = sourceYaw;
@@ -46,7 +46,7 @@ public class ItemTFEnderBow extends BowItem {
 	}
 
 	@Override
-	public AbstractArrowEntity customeArrow(AbstractArrowEntity arrow) {
+	public AbstractArrowEntity customArrow(AbstractArrowEntity arrow) {
 		arrow.getPersistentData().putBoolean(KEY, true);
 		return arrow;
 	}

@@ -4,9 +4,6 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.potion.Effects;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -58,14 +55,14 @@ public class EntityTFLichMinion extends ZombieEntity {
 	}
 
 	private void findNewMaster() {
-		List<EntityTFLich> nearbyLiches = world.getEntitiesWithinAABB(EntityTFLich.class, new AxisAlignedBB(getX(), getY(), getZ(), getX() + 1, getY() + 1, getZ() + 1).grow(32.0D, 16.0D, 32.0D));
+		List<EntityTFLich> nearbyLiches = world.getEntitiesWithinAABB(EntityTFLich.class, new AxisAlignedBB(getPosX(), getPosY(), getPosZ(), getPosX() + 1, getPosY() + 1, getPosZ() + 1).grow(32.0D, 16.0D, 32.0D));
 
 		for (EntityTFLich nearbyLich : nearbyLiches) {
 			if (!nearbyLich.isShadowClone() && nearbyLich.wantsNewMinion(this)) {
 				this.master = nearbyLich;
 
 				// animate our new linkage!
-				master.makeBlackMagicTrail(getX(), getY() + this.getEyeHeight(), getZ(), master.getX(), master.getY() + master.getEyeHeight(), master.getZ());
+				master.makeBlackMagicTrail(getPosX(), getPosY() + this.getEyeHeight(), getPosZ(), master.getPosX(), master.getPosY() + master.getEyeHeight(), master.getPosZ());
 
 				// become angry at our masters target
 				setAttackTarget(master.getAttackTarget());

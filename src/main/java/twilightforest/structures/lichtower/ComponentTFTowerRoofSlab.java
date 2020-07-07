@@ -3,12 +3,13 @@ package twilightforest.structures.lichtower;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 
@@ -41,11 +42,11 @@ public class ComponentTFTowerRoofSlab extends ComponentTFTowerRoof {
 	 * Makes a flat, pyramid-shaped roof
 	 */
 	@Override
-	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
-		return makePyramidCap(world.getWorld(), Blocks.BIRCH_SLAB.getDefaultState(), Blocks.BIRCH_PLANKS.getDefaultState(), sbb);
+	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		return makePyramidCap(world, Blocks.BIRCH_SLAB.getDefaultState(), Blocks.BIRCH_PLANKS.getDefaultState(), sbb);
 	}
 
-	protected boolean makePyramidCap(World world, BlockState slabType, BlockState woodType, MutableBoundingBox sbb) {
+	protected boolean makePyramidCap(ISeedReader world, BlockState slabType, BlockState woodType, MutableBoundingBox sbb) {
 		for (int y = 0; y <= height; y++) {
 			int min = 2 * y;
 			int max = size - (2 * y) - 1;
@@ -63,7 +64,7 @@ public class ComponentTFTowerRoofSlab extends ComponentTFTowerRoof {
 		return true;
 	}
 
-	protected boolean makeConnectedCap(World world, BlockState slabType, BlockState woodType, MutableBoundingBox sbb) {
+	protected boolean makeConnectedCap(ISeedReader world, BlockState slabType, BlockState woodType, MutableBoundingBox sbb) {
 		for (int y = 0; y < height; y++) {
 			int min = 2 * y;
 			int max = size - (2 * y) - 1;

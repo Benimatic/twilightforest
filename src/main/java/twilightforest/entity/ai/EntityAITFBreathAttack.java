@@ -6,7 +6,7 @@ import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import twilightforest.entity.IBreathAttacker;
 
 import java.util.EnumSet;
@@ -43,9 +43,9 @@ public class EntityAITFBreathAttack<T extends MobEntity & IBreathAttacker> exten
 		if (this.attackTarget == null || this.entityHost.getDistance(attackTarget) > this.breathRange || !this.entityHost.getEntitySenses().canSee(attackTarget)) {
 			return false;
 		} else {
-			breathX = attackTarget.getX();
-			breathY = attackTarget.getY() + attackTarget.getEyeHeight();
-			breathZ = attackTarget.getZ();
+			breathX = attackTarget.getPosX();
+			breathY = attackTarget.getPosY() + attackTarget.getEyeHeight();
+			breathZ = attackTarget.getPosZ();
 
 			return this.entityHost.getRNG().nextFloat() < this.attackChance;
 		}
@@ -106,9 +106,9 @@ public class EntityAITFBreathAttack<T extends MobEntity & IBreathAttacker> exten
 		Entity pointedEntity = null;
 		double range = 30.0D;
 		double offset = 3.0D;
-		Vec3d srcVec = new Vec3d(this.entityHost.getX(), this.entityHost.getY() + 0.25, this.entityHost.getZ());
-		Vec3d lookVec = this.entityHost.getLook(1.0F);
-		Vec3d destVec = srcVec.add(lookVec.x * range, lookVec.y * range, lookVec.z * range);
+		Vector3d srcVec = new Vector3d(this.entityHost.getPosX(), this.entityHost.getPosY() + 0.25, this.entityHost.getPosZ());
+		Vector3d lookVec = this.entityHost.getLook(1.0F);
+		Vector3d destVec = srcVec.add(lookVec.x * range, lookVec.y * range, lookVec.z * range);
 		float var9 = 0.5F;
 		List<Entity> possibleList = this.entityHost.world.getEntitiesWithinAABBExcludingEntity(this.entityHost, this.entityHost.getBoundingBox().offset(lookVec.x * offset, lookVec.y * offset, lookVec.z * offset).grow(var9, var9, var9));
 		double hitDist = 0;
@@ -117,7 +117,7 @@ public class EntityAITFBreathAttack<T extends MobEntity & IBreathAttacker> exten
 			if (possibleEntity.canBeCollidedWith() && possibleEntity != this.entityHost) {
 				float borderSize = possibleEntity.getCollisionBorderSize();
 				AxisAlignedBB collisionBB = possibleEntity.getBoundingBox().grow((double) borderSize, (double) borderSize, (double) borderSize);
-				Optional<Vec3d> interceptPos = collisionBB.rayTrace(srcVec, destVec);
+				Optional<Vector3d> interceptPos = collisionBB.rayTrace(srcVec, destVec);
 
 				if (collisionBB.contains(srcVec)) {
 					if (0.0D < hitDist || hitDist == 0.0D) {
@@ -141,9 +141,9 @@ public class EntityAITFBreathAttack<T extends MobEntity & IBreathAttacker> exten
 	 * Face the head towards a specific Vector
 	 */
 	public void faceVec(double x, double y, double z, float yawConstraint, float pitchConstraint) {
-		double xOffset = x - entityHost.getX();
-		double zOffset = z - entityHost.getZ();
-		double yOffset = (entityHost.getY() + 0.25) - y;
+		double xOffset = x - entityHost.getPosX();
+		double zOffset = z - entityHost.getPosZ();
+		double yOffset = (entityHost.getPosY() + 0.25) - y;
 
 		double distance = MathHelper.sqrt(xOffset * xOffset + zOffset * zOffset);
 		float xyAngle = (float) ((Math.atan2(zOffset, xOffset) * 180D) / Math.PI) - 90F;

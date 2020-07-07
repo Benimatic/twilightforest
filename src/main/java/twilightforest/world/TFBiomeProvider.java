@@ -1,6 +1,8 @@
 package twilightforest.world;
 
-import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableList;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.gen.IExtendedNoiseRandom;
@@ -20,14 +22,19 @@ import twilightforest.world.layer.GenLayerTFRiverMix;
 import twilightforest.world.layer.GenLayerTFStream;
 import twilightforest.world.layer.GenLayerTFThornBorder;
 
-import java.util.Set;
+import java.util.List;
 import java.util.function.LongFunction;
 
 public class TFBiomeProvider extends BiomeProvider {
 
+	public static final Codec<TFBiomeProvider> tfBiomeProviderCodec = RecordCodecBuilder.create((instance) ->
+			instance.group(Codec.LONG.fieldOf("seed").stable().forGetter((obj) -> obj.seed))
+					.apply(instance, instance.stable(TFBiomeProvider::new)));
+
 	private final Layer genBiomes;
 	private final TFBiomeCache mapCache;
-	private static final Set<Biome> BIOMES = ImmutableSet.of( //TODO: Can we do this more efficiently?
+	private final long seed;
+	private static final List<Biome> BIOMES = ImmutableList.of( //TODO: Can we do this more efficiently?
 			TFBiomes.tfLake.get(),
 			TFBiomes.twilightForest.get(),
 			TFBiomes.denseTwilightForest.get(),
@@ -50,8 +57,9 @@ public class TFBiomeProvider extends BiomeProvider {
 			TFBiomes.spookyForest.get()
 	);
 
-	public TFBiomeProvider(TFBiomeProviderSettings world) {
+	public TFBiomeProvider(long seed) {
 		super(BIOMES);
+		this.seed = seed;
 		getBiomesToSpawnIn().clear();
 		getBiomesToSpawnIn().add(TFBiomes.twilightForest.get());
 		getBiomesToSpawnIn().add(TFBiomes.denseTwilightForest.get());
@@ -59,7 +67,7 @@ public class TFBiomeProvider extends BiomeProvider {
 		getBiomesToSpawnIn().add(TFBiomes.tfSwamp.get());
 		getBiomesToSpawnIn().add(TFBiomes.mushrooms.get());
 
-		genBiomes = makeLayers(world.getSeed());
+		genBiomes = makeLayers(seed);
 		mapCache = new TFBiomeCache(this, 512, true);
 	}
 
@@ -131,8 +139,18 @@ public class TFBiomeProvider extends BiomeProvider {
 	}
 
 	@Override
-	public Biome getBiomeForNoiseGen(int x, int y, int z) {
+	public Biome getNoiseBiome(int x, int y, int z) {
 		return this.genBiomes.func_215738_a(x, z);
+	}
+
+	@Override
+	protected Codec<? extends BiomeProvider> func_230319_a_() {
+		return tfBiomeProviderCodec;
+	}
+
+	@Override
+	public BiomeProvider func_230320_a_(long l) {
+		return new TFBiomeProvider(l);
 	}
 
 //	@Override

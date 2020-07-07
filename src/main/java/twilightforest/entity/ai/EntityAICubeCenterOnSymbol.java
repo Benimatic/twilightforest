@@ -60,9 +60,9 @@ public class EntityAICubeCenterOnSymbol extends Goal {
 	}
 
 	private double distanceFromSymbol() {
-		double dx = this.xPosition - this.myCube.getX() + 0.5F;
-		double dy = this.yPosition - this.myCube.getY();
-		double dz = this.zPosition - this.myCube.getZ() + 0.5F;
+		double dx = this.xPosition - this.myCube.getPosX() + 0.5F;
+		double dy = this.yPosition - this.myCube.getPosY();
+		double dz = this.zPosition - this.myCube.getPosZ() + 0.5F;
 		return Math.sqrt(dx * dx + dy * dy + dz * dz);
 	}
 

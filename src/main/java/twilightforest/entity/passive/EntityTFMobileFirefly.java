@@ -3,15 +3,17 @@ package twilightforest.entity.passive;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.passive.AmbientEntity;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import twilightforest.client.particle.PinnedFireflyData;
@@ -54,21 +56,20 @@ public class EntityTFMobileFirefly extends AmbientEntity {
 	protected void collideWithEntity(Entity entity) {
 	}
 
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(6.0D);
+	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return MobEntity.func_233666_p_()
+				.func_233815_a_(Attributes.field_233818_a_, 6.0D);
 	}
 
 	@Override
 	public void tick() {
 		super.tick();
 
-		Vec3d motion = getMotion();
+		Vector3d motion = getMotion();
 		this.setMotion(motion.x, motion.y * 0.6000000238418579D, motion.z);
 
 		if (world.isRemote && ticksExisted % 30 == 0) {
-			world.addParticle(new PinnedFireflyData(getEntityId()), getX(), getY(), getZ(), 0, 0, 0);
+			world.addParticle(new PinnedFireflyData(getEntityId()), getPosX(), getPosY(), getPosZ(), 0, 0, 0);
 		}
 	}
 
@@ -82,14 +83,14 @@ public class EntityTFMobileFirefly extends AmbientEntity {
 		}
 
 		// TODO: True adds 0.5
-		if (this.spawnPosition == null || this.rand.nextInt(30) == 0 || this.spawnPosition.distanceSq((double) ((int) this.getX()), (double) ((int) this.getY()), (double) ((int) this.getZ()), false) < 4.0D) {
-			this.spawnPosition = new BlockPos((int) this.getX() + this.rand.nextInt(7) - this.rand.nextInt(7), (int) this.getY() + this.rand.nextInt(6) - 2, (int) this.getZ() + this.rand.nextInt(7) - this.rand.nextInt(7));
+		if (this.spawnPosition == null || this.rand.nextInt(30) == 0 || this.spawnPosition.distanceSq((double) ((int) this.getPosX()), (double) ((int) this.getPosY()), (double) ((int) this.getPosZ()), false) < 4.0D) {
+			this.spawnPosition = new BlockPos((int) this.getPosX() + this.rand.nextInt(7) - this.rand.nextInt(7), (int) this.getPosY() + this.rand.nextInt(6) - 2, (int) this.getPosZ() + this.rand.nextInt(7) - this.rand.nextInt(7));
 		}
 
-		double d0 = (double) this.spawnPosition.getX() + 0.5D - this.getX();
-		double d1 = (double) this.spawnPosition.getY() + 0.1D - this.getY();
-		double d2 = (double) this.spawnPosition.getZ() + 0.5D - this.getZ();
-		this.setMotion(this.getMotion().add(new Vec3d(
+		double d0 = (double) this.spawnPosition.getX() + 0.5D - this.getPosX();
+		double d1 = (double) this.spawnPosition.getY() + 0.1D - this.getPosY();
+		double d2 = (double) this.spawnPosition.getZ() + 0.5D - this.getPosZ();
+		this.setMotion(this.getMotion().add(new Vector3d(
 				(Math.signum(d0) * 0.5D - this.getMotion().getX()) * 0.10000000149011612D,
 				(Math.signum(d1) * 0.699999988079071D - this.getMotion().getY()) * 0.10000000149011612D,
 				(Math.signum(d2) * 0.5D - this.getMotion().getZ()) * 0.10000000149011612D
@@ -102,12 +103,12 @@ public class EntityTFMobileFirefly extends AmbientEntity {
 	}
 
 	@Override
-	public boolean bypassesSteppingEffects() {
+	public boolean isSteppingCarefully() {
 		return false;
 	}
 
 	@Override
-	public boolean handleFallDamage(float dist, float mult) {
+	public boolean onLivingFall(float dist, float mult) {
 		return false;
 	}
 

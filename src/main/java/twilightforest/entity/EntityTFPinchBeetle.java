@@ -5,7 +5,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.Pose;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -13,7 +14,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import twilightforest.entity.ai.EntityAITFChargeAttack;
 
@@ -35,13 +36,12 @@ public class EntityTFPinchBeetle extends MonsterEntity implements IHostileMount 
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
 	}
 
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(40.0D);
-		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
-		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
-		this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(2.0D);
+	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return MonsterEntity.func_234295_eP_()
+				.func_233815_a_(Attributes.field_233818_a_, 40.0D)
+				.func_233815_a_(Attributes.field_233821_d_, 0.23D)
+				.func_233815_a_(Attributes.field_233823_f_, 4.0D)
+				.func_233815_a_(Attributes.field_233826_i_, 2.0D);
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public class EntityTFPinchBeetle extends MonsterEntity implements IHostileMount 
 			this.getLookController().setLookPositionWithEntity(getPassengers().get(0), 100F, 100F);
 
 			// push out of user in wall
-			Vec3d riderPos = this.getRiderPosition();
+			Vector3d riderPos = this.getRiderPosition();
 			this.pushOutOfBlocks(riderPos.x, riderPos.y, riderPos.z);
 		}
 	}
@@ -95,7 +95,7 @@ public class EntityTFPinchBeetle extends MonsterEntity implements IHostileMount 
 	@Override
 	public void updatePassenger(Entity passenger) {
 		if (!this.getPassengers().isEmpty()) {
-			Vec3d riderPos = this.getRiderPosition();
+			Vector3d riderPos = this.getRiderPosition();
 
 			this.getPassengers().get(0).setPosition(riderPos.x, riderPos.y, riderPos.z);
 		}
@@ -106,16 +106,16 @@ public class EntityTFPinchBeetle extends MonsterEntity implements IHostileMount 
 		return 0.75D;
 	}
 
-	private Vec3d getRiderPosition() {
+	private Vector3d getRiderPosition() {
 		if (!this.getPassengers().isEmpty()) {
 			float distance = 0.9F;
 
 			double dx = Math.cos((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
 			double dz = Math.sin((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
 
-			return new Vec3d(this.getX() + dx, this.getY() + this.getMountedYOffset() + this.getPassengers().get(0).getYOffset(), this.getZ() + dz);
+			return new Vector3d(this.getPosX() + dx, this.getPosY() + this.getMountedYOffset() + this.getPassengers().get(0).getYOffset(), this.getPosZ() + dz);
 		} else {
-			return new Vec3d(this.getX(), this.getY(), this.getZ());
+			return new Vector3d(this.getPosX(), this.getPosY(), this.getPosZ());
 		}
 	}
 

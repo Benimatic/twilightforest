@@ -16,7 +16,7 @@ public class ModelTFWraith extends BipedModel<EntityTFWraith> {
 
 		float f = 0.0F;
 		dress = new ModelRenderer(this, 40, 16);
-		dress.addCuboid(-4F, 12.0F, -2F, 8, 12, 4, f);
+		dress.addBox(-4F, 12.0F, -2F, 8, 12, 4, f);
 		dress.setRotationPoint(0.0F, 0.0F, 0.0F);
 	}
 
@@ -36,8 +36,8 @@ public class ModelTFWraith extends BipedModel<EntityTFWraith> {
 	}
 
 	@Override
-	public void setAngles(EntityTFWraith entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		super.setAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+	public void setRotationAngles(EntityTFWraith entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+		super.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
 		float var8 = MathHelper.sin(this.swingProgress * (float) Math.PI);
 		float var9 = MathHelper.sin((1.0F - (1.0F - this.swingProgress) * (1.0F - this.swingProgress)) * (float) Math.PI);

@@ -1,16 +1,12 @@
 package twilightforest.entity.ai;
 
 import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.EntityPredicate;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.pathfinding.FlyingPathNavigator;
 import net.minecraft.pathfinding.GroundPathNavigator;
-import net.minecraft.util.math.AxisAlignedBB;
 
 import java.util.Comparator;
 import java.util.EnumSet;
@@ -20,6 +16,7 @@ import java.util.List;
 public class EntityAITFFindLoose extends Goal {
 	protected final CreatureEntity creature;
 	private final double speed;
+	//TODO: Lots of unused
 	private double targetX;
 	private double targetY;
 	private double targetZ;
@@ -63,9 +60,9 @@ public class EntityAITFFindLoose extends Goal {
 
 	@Override
 	public void startExecuting() {
-		this.targetX = this.closestItem.getX();
-		this.targetY = this.closestItem.getY();
-		this.targetZ = this.closestItem.getZ();
+		this.targetX = this.closestItem.getPosX();
+		this.targetY = this.closestItem.getPosY();
+		this.targetZ = this.closestItem.getPosZ();
 		this.isRunning = true;
 	}
 

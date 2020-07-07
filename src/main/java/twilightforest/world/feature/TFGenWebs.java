@@ -1,21 +1,20 @@
 package twilightforest.world.feature;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 
 import java.util.Random;
-import java.util.function.Function;
 
 public class TFGenWebs extends Feature<NoFeatureConfig> {
 
-	public TFGenWebs(Function<Dynamic<?>, NoFeatureConfig> config) {
+	public TFGenWebs(Codec<NoFeatureConfig> config) {
 		super(config);
 	}
 
@@ -24,8 +23,8 @@ public class TFGenWebs extends Feature<NoFeatureConfig> {
 	}
 
 	@Override
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random random, BlockPos pos, NoFeatureConfig config) {
-		while (pos.getY() > generator.getSeaLevel() && world.isAirBlock(pos))
+	public boolean func_230362_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
+		while (pos.getY() > generator.getGroundHeight() && world.isAirBlock(pos))
 			pos = pos.down();
 
 		if (!isValidMaterial(world.getBlockState(pos).getMaterial()))
@@ -37,7 +36,7 @@ public class TFGenWebs extends Feature<NoFeatureConfig> {
 				return true;
 			}
 			pos = pos.down();
-		} while (pos.getY() > generator.getSeaLevel() && isValidMaterial(world.getBlockState(pos).getMaterial()));
+		} while (pos.getY() > generator.getGroundHeight() && isValidMaterial(world.getBlockState(pos).getMaterial()));
 
 		return false;
 	}

@@ -22,7 +22,7 @@ public class RenderTFHarbingerCube<T extends EntityTFHarbingerCube> extends MobR
 	}
 
 	@Override
-	protected void scale(T entity, MatrixStack stack, float partialTicks) {
+	protected void preRenderCallback(T entity, MatrixStack stack, float partialTicks) {
 		float scale = 1.0F;
 		stack.scale(scale, scale, scale);
 	}

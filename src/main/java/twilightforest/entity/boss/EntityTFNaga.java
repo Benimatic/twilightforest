@@ -5,6 +5,8 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
@@ -20,7 +22,7 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.Difficulty;
@@ -62,8 +64,8 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 
 	private final ServerBossInfo bossInfo = new ServerBossInfo(getDisplayName(), BossInfo.Color.GREEN, BossInfo.Overlay.NOTCHED_10);
 
-	private final AttributeModifier slowSpeed = new AttributeModifier("Naga Slow Speed", 0.25F, AttributeModifier.Operation.ADDITION).setSaved(false);
-	private final AttributeModifier fastSpeed = new AttributeModifier("Naga Fast Speed", 0.50F, AttributeModifier.Operation.ADDITION).setSaved(false);
+	private final AttributeModifier slowSpeed = new AttributeModifier("Naga Slow Speed", 0.25F, AttributeModifier.Operation.ADDITION);
+	private final AttributeModifier fastSpeed = new AttributeModifier("Naga Fast Speed", 0.50F, AttributeModifier.Operation.ADDITION);
 
 	private static final DataParameter<Boolean> DATA_DAZE = EntityDataManager.createKey(EntityTFNaga.class, DataSerializers.BOOLEAN);
 
@@ -132,7 +134,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 			}
 
 			@Override
-			protected Vec3d getPosition() {
+			protected Vector3d getPosition() {
 				return RandomPositionGenerator.findRandomTarget(this.creature, 30, 7);
 			}
 		});
@@ -410,13 +412,12 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 		}
 	}
 
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(getMaxHealthPerDifficulty());
-		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(DEFAULT_SPEED);
-		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D);
-		this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(80.0D);
+	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return MonsterEntity.func_234295_eP_()
+				.func_233815_a_(Attributes.field_233818_a_, getMaxHealthPerDifficulty()) //TODO: We're static now
+				.func_233815_a_(Attributes.field_233821_d_, DEFAULT_SPEED)
+				.func_233815_a_(Attributes.field_233823_f_, 5.0D)
+				.func_233815_a_(Attributes.field_233819_b_, 80.0D);
 	}
 
 	/**
@@ -438,12 +439,12 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 			double newSpeed = DEFAULT_SPEED - newSegments * (-0.2F / 12F);
 			if (newSpeed < 0)
 				newSpeed = 0;
-			this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(newSpeed);
+			this.getAttribute(Attributes.field_233821_d_).setBaseValue(newSpeed);
 		}
 	}
 
 	@Override
-	public boolean bypassesSteppingEffects() {
+	public boolean isSteppingCarefully() {
 		return false;
 	}
 
@@ -459,7 +460,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 				double d = rand.nextGaussian() * 0.02D;
 				double d1 = rand.nextGaussian() * 0.02D;
 				double d2 = rand.nextGaussian() * 0.02D;
-				world.addParticle((rand.nextBoolean() ? ParticleTypes.EXPLOSION_EMITTER : ParticleTypes.EXPLOSION), (getX() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), getY() + rand.nextFloat() * getHeight(), (getZ() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), d, d1, d2);
+				world.addParticle((rand.nextBoolean() ? ParticleTypes.EXPLOSION_EMITTER : ParticleTypes.EXPLOSION), (getPosX() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), getPosY() + rand.nextFloat() * getHeight(), (getPosZ() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), d, d1, d2);
 			}
 		}
 
@@ -498,9 +499,9 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 		// if we are very close to the path point, go to the next point, unless the path is finished
 		// TODO 1.10 this runs after the path navigator runs, is that okay?
 		double d = getWidth() * 4.0F;
-		Vec3d vec3d = hasPath() ? getNavigator().getPath().getPosition(this) : null;
+		Vector3d vec3d = hasPath() ? getNavigator().getPath().getPosition(this) : null;
 
-		while (vec3d != null && vec3d.squareDistanceTo(getX(), vec3d.y, getZ()) < d * d) {
+		while (vec3d != null && vec3d.squareDistanceTo(getPosX(), vec3d.y, getPosZ()) < d * d) {
 			getNavigator().getPath().incrementPathIndex();
 
 			if (getNavigator().getPath().isFinished()) {
@@ -563,8 +564,8 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 		int targetY = (int) getAttackTarget().getBoundingBox().minY;
 
 		if (targetY > floor) {
-			int dx = (int) getAttackTarget().getX() + rand.nextInt(range) - rand.nextInt(range);
-			int dz = (int) getAttackTarget().getZ() + rand.nextInt(range) - rand.nextInt(range);
+			int dx = (int) getAttackTarget().getPosX() + rand.nextInt(range) - rand.nextInt(range);
+			int dz = (int) getAttackTarget().getPosZ() + rand.nextInt(range) - rand.nextInt(range);
 			int dy = targetY - rand.nextInt(range) + rand.nextInt(range > 1 ? range - 1 : range);
 
 			if (dy <= floor) {
@@ -583,7 +584,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 					double d1 = rand.nextGaussian() * 0.02D;
 					double d2 = rand.nextGaussian() * 0.02D;
 
-					world.addParticle(ParticleTypes.CRIT, (getX() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), getY() + rand.nextFloat() * getHeight(), (getZ() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), d, d1, d2);
+					world.addParticle(ParticleTypes.CRIT, (getPosX() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), getPosY() + rand.nextFloat() * getHeight(), (getPosZ() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), d, d1, d2);
 				}
 			}
 		}
@@ -593,26 +594,26 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 	 * Sets the naga to move slowly, such as when he is intimidating the player
 	 */
 	private void goSlow() {
-		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(slowSpeed); // if we apply this twice, we crash, but we can always remove it
-		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(fastSpeed);
-		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).applyModifier(slowSpeed);
+		this.getAttribute(Attributes.field_233821_d_).removeModifier(slowSpeed); // if we apply this twice, we crash, but we can always remove it
+		this.getAttribute(Attributes.field_233821_d_).removeModifier(fastSpeed);
+		this.getAttribute(Attributes.field_233821_d_).func_233767_b_(slowSpeed);
 	}
 
 	/**
 	 * Normal speed, like when he is circling
 	 */
 	private void goNormal() {
-		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(slowSpeed);
-		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(fastSpeed);
+		this.getAttribute(Attributes.field_233821_d_).removeModifier(slowSpeed);
+		this.getAttribute(Attributes.field_233821_d_).removeModifier(fastSpeed);
 	}
 
 	/**
 	 * Fast, like when he is charging
 	 */
 	private void goFast() {
-		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(slowSpeed);
-		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(fastSpeed);
-		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).applyModifier(fastSpeed);
+		this.getAttribute(Attributes.field_233821_d_).removeModifier(slowSpeed);
+		this.getAttribute(Attributes.field_233821_d_).removeModifier(fastSpeed);
+		this.getAttribute(Attributes.field_233821_d_).func_233767_b_(fastSpeed);
 	}
 
 	@Override
@@ -627,8 +628,8 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 		LivingEntity toCircle = getAttackTarget();
 
 		// compute angle
-		double vecx = getX() - toCircle.getX();
-		double vecz = getZ() - toCircle.getZ();
+		double vecx = getPosX() - toCircle.getPosX();
+		double vecz = getPosZ() - toCircle.getPosZ();
 		float rangle = (float) (Math.atan2(vecz, vecx));
 
 		// add a little, so he circles (clockwise)
@@ -638,10 +639,10 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 		double dx = MathHelper.cos(rangle) * radius;
 		double dz = MathHelper.sin(rangle) * radius;
 
-		double dy = Math.min(getBoundingBox().minY, toCircle.getY());
+		double dy = Math.min(getBoundingBox().minY, toCircle.getPosY());
 
 		// add that to the target entity's position, and we have our destination
-		return new BlockPos(toCircle.getX() + dx, dy, toCircle.getZ() + dz);
+		return new BlockPos(toCircle.getPosX() + dx, dy, toCircle.getPosZ() + dz);
 	}
 
 	@Override
@@ -664,13 +665,13 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 	@Override
 	public boolean attackEntityAsMob(Entity toAttack) {
 		if (movementAI.movementState == MovementState.CHARGE && toAttack instanceof LivingEntity && ((LivingEntity) toAttack).isActiveItemStackBlocking()) {
-			Vec3d motion = this.getMotion();
+			Vector3d motion = this.getMotion();
 			toAttack.addVelocity(motion.x * 1.25D, 0.5D, motion.z * 1.25D);
 			this.setMotion(motion.x * -1.5D, motion.y + 0.5D, motion.z * -1.5D);
 			if (toAttack instanceof ServerPlayerEntity)
 				TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) toAttack), new PacketThrowPlayer((float) toAttack.getMotion().getX(), (float) toAttack.getMotion().getY(), (float) toAttack.getMotion().getZ()));
 			attackEntityFrom(DamageSource.GENERIC, 4F);
-			world.playSound(null, toAttack.getPosition(), SoundEvents.ITEM_SHIELD_BLOCK, SoundCategory.PLAYERS, 1.0F, 0.8F + this.world.rand.nextFloat() * 0.4F);
+			world.playSound(null, toAttack.func_233580_cy_(), SoundEvents.ITEM_SHIELD_BLOCK, SoundCategory.PLAYERS, 1.0F, 0.8F + this.world.rand.nextFloat() * 0.4F);
 			movementAI.doDaze();
 			return false;
 		}
@@ -736,22 +737,22 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 	}
 
 	private boolean isEntityWithinHomeArea(Entity entity) {
-		return isWithinHomeDistanceFromPosition(new BlockPos(entity));
+		return isWithinHomeDistanceFromPosition(entity.func_233580_cy_());
 	}
 
 	private void activateBodySegments() {
 		for (int i = 0; i < currentSegmentCount; i++) {
 			EntityTFNagaSegment segment = bodySegments[i];
 			segment.activate();
-			segment.setLocationAndAngles(getX() + 0.1 * i, getY() + 0.5D, getZ() + 0.1 * i, rand.nextFloat() * 360F, 0.0F);
+			segment.setLocationAndAngles(getPosX() + 0.1 * i, getPosY() + 0.5D, getPosZ() + 0.1 * i, rand.nextFloat() * 360F, 0.0F);
 			for (int j = 0; j < 20; j++) {
 				double d0 = this.rand.nextGaussian() * 0.02D;
 				double d1 = this.rand.nextGaussian() * 0.02D;
 				double d2 = this.rand.nextGaussian() * 0.02D;
 				this.world.addParticle(ParticleTypes.EXPLOSION,
-						segment.getX() + (double) (this.rand.nextFloat() * segment.getWidth() * 2.0F) - (double) segment.getWidth() - d0 * 10.0D,
-						segment.getY() + (double) (this.rand.nextFloat() * segment.getHeight()) - d1 * 10.0D,
-						segment.getZ() + (double) (this.rand.nextFloat() * segment.getWidth() * 2.0F) - (double) segment.getWidth() - d2 * 10.0D,
+						segment.getPosX() + (double) (this.rand.nextFloat() * segment.getWidth() * 2.0F) - (double) segment.getWidth() - d0 * 10.0D,
+						segment.getPosY() + (double) (this.rand.nextFloat() * segment.getHeight()) - d1 * 10.0D,
+						segment.getPosZ() + (double) (this.rand.nextFloat() * segment.getWidth() * 2.0F) - (double) segment.getWidth() - d2 * 10.0D,
 						d0, d1, d2);
 			}
 		}
@@ -763,9 +764,9 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 	private void moveSegments() {
 		for (int i = 0; i < this.bodySegments.length; i++) {
 			Entity leader = i == 0 ? this : this.bodySegments[i - 1];
-			double followX = leader.getX();
-			double followY = leader.getY();
-			double followZ = leader.getZ();
+			double followX = leader.getPosX();
+			double followY = leader.getPosY();
+			double followZ = leader.getPosZ();
 
 			// also weight the position so that the segments straighten out a little bit, and the front ones straighten more
 			float angle = (((leader.rotationYaw + 180) * 3.141593F) / 180F);
@@ -777,7 +778,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 			double idealZ = MathHelper.cos(angle) * straightenForce;
 
 
-			Vec3d diff = new Vec3d(bodySegments[i].getX() - followX, bodySegments[i].getY() - followY, bodySegments[i].getZ() - followZ);
+			Vector3d diff = new Vector3d(bodySegments[i].getPosX() - followX, bodySegments[i].getPosY() - followY, bodySegments[i].getPosZ() - followZ);
 			diff = diff.normalize();
 
 			// weight so segments drift towards their ideal position
@@ -833,7 +834,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 		super.onDeath(cause);
 		// mark the courtyard as defeated
 		if (!world.isRemote) {
-			TFGenerationSettings.markStructureConquered(world, new BlockPos(this), TFFeature.NAGA_COURTYARD);
+			TFGenerationSettings.markStructureConquered(world, new BlockPos(this.func_233580_cy_()), TFFeature.NAGA_COURTYARD);
 		}
 	}
 

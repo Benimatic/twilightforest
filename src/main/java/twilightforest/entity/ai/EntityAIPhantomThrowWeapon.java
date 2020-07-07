@@ -38,13 +38,13 @@ public class EntityAIPhantomThrowWeapon extends Goal {
 
 	private void launchAxeAt(Entity targetedEntity) {
 		float bodyFacingAngle = ((boss.renderYawOffset * 3.141593F) / 180F);
-		double sx = boss.getX() + (MathHelper.cos(bodyFacingAngle) * 1);
-		double sy = boss.getY() + (boss.getHeight() * 0.82);
-		double sz = boss.getZ() + (MathHelper.sin(bodyFacingAngle) * 1);
+		double sx = boss.getPosX() + (MathHelper.cos(bodyFacingAngle) * 1);
+		double sy = boss.getPosY() + (boss.getHeight() * 0.82);
+		double sz = boss.getPosZ() + (MathHelper.sin(bodyFacingAngle) * 1);
 
-		double tx = targetedEntity.getX() - sx;
-		double ty = (targetedEntity.getBoundingBox().minY + (double) (targetedEntity.getHeight() / 2.0F)) - (boss.getY() + boss.getHeight() / 2.0F);
-		double tz = targetedEntity.getZ() - sz;
+		double tx = targetedEntity.getPosX() - sx;
+		double ty = (targetedEntity.getBoundingBox().minY + (double) (targetedEntity.getHeight() / 2.0F)) - (boss.getPosY() + boss.getHeight() / 2.0F);
+		double tz = targetedEntity.getPosZ() - sz;
 
 		boss.playSound(SoundEvents.ENTITY_SNOWBALL_THROW, 1.0F, (boss.getRNG().nextFloat() - boss.getRNG().nextFloat()) * 0.2F + 0.4F);
 		EntityTFThrownWep projectile = new EntityTFThrownWep(TFEntities.thrown_wep, boss.world, boss).setItem(new ItemStack(TFItems.knightmetal_axe.get()));
@@ -64,9 +64,9 @@ public class EntityAIPhantomThrowWeapon extends Goal {
 		for (int i = 0; i < 8; i++) {
 			float throwAngle = i * 3.14159165F / 4F;
 
-			double sx = boss.getX() + (MathHelper.cos(throwAngle) * 1);
-			double sy = boss.getY() + (boss.getHeight() * 0.82);
-			double sz = boss.getZ() + (MathHelper.sin(throwAngle) * 1);
+			double sx = boss.getPosX() + (MathHelper.cos(throwAngle) * 1);
+			double sy = boss.getPosY() + (boss.getHeight() * 0.82);
+			double sz = boss.getPosZ() + (MathHelper.sin(throwAngle) * 1);
 
 			double vx = MathHelper.cos(throwAngle);
 			double vy = 0;

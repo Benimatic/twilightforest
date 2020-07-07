@@ -2,6 +2,7 @@ package twilightforest.client.particle;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.*;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.particles.BasicParticleType;
@@ -17,7 +18,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class ParticleGhastTear extends SpriteTexturedParticle {
 
-	ParticleGhastTear(World world, double x, double y, double z, Item item) {
+	ParticleGhastTear(ClientWorld world, double x, double y, double z, Item item) {
 		super(world, x, y, z, 0.0D, 0.0D, 0.0D);
 		this.sprite = Minecraft.getInstance().getItemRenderer().getItemModelMesher().getParticleIcon(item);
 		this.particleRed = this.particleGreen = this.particleBlue = 1.0F;
@@ -55,7 +56,7 @@ public class ParticleGhastTear extends SpriteTexturedParticle {
 	@OnlyIn(Dist.CLIENT)
 	public static class Factory implements IParticleFactory<BasicParticleType> {
 		@Override
-		public Particle makeParticle(BasicParticleType typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+		public Particle makeParticle(BasicParticleType typeIn, ClientWorld worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
 			return new ParticleGhastTear(worldIn, x, y, z, Items.GHAST_TEAR);
 		}
 	}

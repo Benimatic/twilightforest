@@ -4,7 +4,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -20,7 +21,7 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.Difficulty;
@@ -72,7 +73,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 
 		this.setCurrentPhase(Phase.SUMMON);
 
-		this.isImmuneToFire();
+		this.func_230279_az_();
 		this.experienceValue = 317;
 	}
 
@@ -95,13 +96,12 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 		return false;
 	}
 
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23000000417232513D);
-		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(7.0D);
-		this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(40.0D);
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(200.0D);
+	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return MonsterEntity.func_234295_eP_()
+				.func_233815_a_(Attributes.field_233821_d_, 0.23000000417232513D)
+				.func_233815_a_(Attributes.field_233823_f_, 7.0D)
+				.func_233815_a_(Attributes.field_233819_b_, 40.0D)
+				.func_233815_a_(Attributes.field_233818_a_, 200.0D);
 	}
 
 	@Override
@@ -159,12 +159,12 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 
 		// when ice beaming, spew particles
 		if (isBreathing() && this.isAlive()) {
-			Vec3d look = this.getLookVec();
+			Vector3d look = this.getLookVec();
 
 			double dist = 0.5;
-			double px = this.getX() + look.x * dist;
-			double py = this.getY() + 1.7F + look.y * dist;
-			double pz = this.getZ() + look.z * dist;
+			double px = this.getPosX() + look.x * dist;
+			double py = this.getPosY() + 1.7F + look.y * dist;
+			double pz = this.getPosZ() + look.z * dist;
 
 			for (int i = 0; i < 10; i++) {
 				double dx = look.x;
@@ -197,13 +197,13 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 
 			if (i < this.iceArray.length - 1) {
 				// set block position
-				Vec3d blockPos = this.getIceShieldPosition(i);
+				Vector3d blockPos = this.getIceShieldPosition(i);
 
 				this.iceArray[i].setPosition(blockPos.x, blockPos.y, blockPos.z);
 				this.iceArray[i].rotationYaw = this.getIceShieldAngle(i);
 			} else {
 				// last block beneath
-				this.iceArray[i].setPosition(this.getX(), this.getY() - 1, this.getZ());
+				this.iceArray[i].setPosition(this.getPosX(), this.getPosY() - 1, this.getPosZ());
 				this.iceArray[i].rotationYaw = this.getIceShieldAngle(i);
 			}
 
@@ -219,7 +219,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 				double d = rand.nextGaussian() * 0.02D;
 				double d1 = rand.nextGaussian() * 0.02D;
 				double d2 = rand.nextGaussian() * 0.02D;
-				world.addParticle(rand.nextBoolean() ? ParticleTypes.EXPLOSION_EMITTER : ParticleTypes.EXPLOSION, (getX() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), getY() + rand.nextFloat() * getHeight(), (getZ() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), d, d1, d2);
+				world.addParticle(rand.nextBoolean() ? ParticleTypes.EXPLOSION_EMITTER : ParticleTypes.EXPLOSION, (getPosX() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), getPosY() + rand.nextFloat() * getHeight(), (getPosZ() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(), d, d1, d2);
 			}
 		}
 	}
@@ -246,7 +246,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 		super.onDeath(cause);
 		// mark the tower as defeated
 		if (!world.isRemote) {
-			TFGenerationSettings.markStructureConquered(world, new BlockPos(this), TFFeature.ICE_TOWER);
+			TFGenerationSettings.markStructureConquered(world, this.func_233580_cy_(), TFFeature.ICE_TOWER);
 		}
 	}
 
@@ -267,7 +267,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 		if (collided != this) {
 			collided.applyEntityCollision(collider);
 			if (collided instanceof LivingEntity && super.attackEntityAsMob(collided)) {
-				Vec3d motion = collided.getMotion();
+				Vector3d motion = collided.getMotion();
 				collided.setMotion(motion.x, motion.y + 0.4, motion.z);
 				this.playSound(SoundEvents.ENTITY_IRON_GOLEM_ATTACK, 1.0F, 1.0F);
 			}
@@ -302,7 +302,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 
 	}
 
-	private Vec3d getIceShieldPosition(int idx) {
+	private Vector3d getIceShieldPosition(int idx) {
 		return this.getIceShieldPosition(getIceShieldAngle(idx), 1F);
 	}
 
@@ -310,11 +310,11 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 		return 60F * idx + (this.ticksExisted * 5F);
 	}
 
-	private Vec3d getIceShieldPosition(float angle, float distance) {
+	private Vector3d getIceShieldPosition(float angle, float distance) {
 		double dx = Math.cos((angle) * Math.PI / 180.0D) * distance;
 		double dz = Math.sin((angle) * Math.PI / 180.0D) * distance;
 
-		return new Vec3d(this.getX() + dx, this.getY() + this.getShieldYOffset(), this.getZ() + dz);
+		return new Vector3d(this.getPosX() + dx, this.getPosY() + this.getShieldYOffset(), this.getPosZ() + dz);
 	}
 
 	private double getShieldYOffset() {
@@ -322,7 +322,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 	}
 
 	@Override
-	public boolean handleFallDamage(float distance, float damageMultiplier) {
+	public boolean onLivingFall(float distance, float damageMultiplier) {
 		return false;
 	}
 
@@ -395,7 +395,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 
 	public void summonMinionAt(LivingEntity targetedEntity) {
 		EntityTFIceCrystal minion = new EntityTFIceCrystal(world);
-		minion.setPositionAndRotation(getX(), getY(), getZ(), 0, 0);
+		minion.setPositionAndRotation(getPosX(), getPosY(), getPosZ(), 0, 0);
 
 		world.addEntity(minion);
 
@@ -409,9 +409,9 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 				attemptY = home.getY() + rand.nextGaussian() * 2D;
 				attemptZ = home.getZ() + rand.nextGaussian() * 7D;
 			} else {
-				attemptX = targetedEntity.getX() + rand.nextGaussian() * 16D;
-				attemptY = targetedEntity.getY() + rand.nextGaussian() * 8D;
-				attemptZ = targetedEntity.getZ() + rand.nextGaussian() * 16D;
+				attemptX = targetedEntity.getPosX() + rand.nextGaussian() * 16D;
+				attemptY = targetedEntity.getPosY() + rand.nextGaussian() * 8D;
+				attemptZ = targetedEntity.getPosZ() + rand.nextGaussian() * 16D;
 			}
 			if (minion.attemptTeleport(attemptX, attemptY, attemptZ, true)) {
 				break;
@@ -425,7 +425,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 	}
 
 	public int countMyMinions() {
-		return world.getEntitiesWithinAABB(EntityTFIceCrystal.class, new AxisAlignedBB(getX(), getY(), getZ(), getX() + 1, getY() + 1, getZ() + 1).grow(32.0D, 16.0D, 32.0D)).size();
+		return world.getEntitiesWithinAABB(EntityTFIceCrystal.class, new AxisAlignedBB(getPosX(), getPosY(), getPosZ(), getPosX() + 1, getPosY() + 1, getPosZ() + 1).grow(32.0D, 16.0D, 32.0D)).size();
 	}
 
 	public void incrementSuccessfulDrops() {

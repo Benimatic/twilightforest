@@ -3,13 +3,8 @@ package twilightforest.block;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.Particle;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -51,7 +46,7 @@ public class BlockTFPlant extends BushBlock {
 		case FALLEN_LEAVES:
 		case MUSHGLOOM:
 		case MOSSPATCH:
-			return soil.isSideSolidFullSquare(world, pos, Direction.UP);
+			return soil.isSolidSide(world, pos, Direction.UP);
 		default:
 			return (world.getLight(pos) >= 3 || world.canBlockSeeSky(pos)) && soil.canSustainPlant(world, pos.down(), Direction.UP, this);
 		}
@@ -120,12 +115,12 @@ public class BlockTFPlant extends BushBlock {
 			switch (plantVariant) {
 				case MOSSPATCH:
 				case MUSHGLOOM:
-					return PlantType.Cave;
+					return PlantType.CAVE;
 				default:
-					return PlantType.Plains;
+					return PlantType.PLAINS;
 			}
 		}
-		return PlantType.Plains;
+		return PlantType.PLAINS;
 	}
 
 	@Override

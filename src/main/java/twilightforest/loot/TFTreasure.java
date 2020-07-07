@@ -1,13 +1,15 @@
 package twilightforest.loot;
 
 import net.minecraft.block.Blocks;
+import net.minecraft.loot.conditions.LootConditionManager;
+import net.minecraft.loot.functions.LootFunctionManager;
 import net.minecraft.tileentity.ChestTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.conditions.LootConditionManager;
-import net.minecraft.world.storage.loot.functions.LootFunctionManager;
+import net.minecraft.world.server.ServerWorld;
 import twilightforest.TwilightForestMod;
 
 public class TFTreasure {
@@ -38,6 +40,7 @@ public class TFTreasure {
 	public static final TFTreasure troll_vault = new TFTreasure("troll_vault");
 	public static final TFTreasure graveyard = new TFTreasure("graveyard");
 
+	//TODO: Register these
 	public static void init() {
 		LootFunctionManager.registerFunction(new LootFunctionEnchant.Serializer());
 		LootFunctionManager.registerFunction(new LootFunctionModItemSwap.Serializer());
@@ -56,11 +59,11 @@ public class TFTreasure {
 		world.setBlockState(pos, trapped ? Blocks.TRAPPED_CHEST.getDefaultState() : Blocks.CHEST.getDefaultState(), 2);
 		TileEntity te = world.getTileEntity(pos);
 		if (te instanceof ChestTileEntity) {
-			((ChestTileEntity) te).setLootTable(lootTable, world.getSeed() * pos.getX() + pos.getY() ^ pos.getZ());
+			((ChestTileEntity) te).setLootTable(lootTable, ((ISeedReader)world).getSeed() * pos.getX() + pos.getY() ^ pos.getZ());
 		}
 	}
 
-	public void generateChestContents(World world, BlockPos pos) {
+	public void generateChestContents(ISeedReader world, BlockPos pos) {
 		TileEntity te = world.getTileEntity(pos);
 		if (te instanceof ChestTileEntity)
 			((ChestTileEntity) te).setLootTable(lootTable, world.getSeed() * pos.getX() + pos.getY() ^ pos.getZ());

@@ -1,20 +1,19 @@
 package twilightforest.world.feature;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.passive.EntityTFRaven;
 import twilightforest.util.FeatureUtil;
 
 import java.util.Random;
-import java.util.function.Function;
 
 /**
  * A 2x2 monolith of obsidian
@@ -23,12 +22,12 @@ import java.util.function.Function;
  */
 public class TFGenMonolith extends Feature<NoFeatureConfig> {
 
-	public TFGenMonolith(Function<Dynamic<?>, NoFeatureConfig> configIn) {
+	public TFGenMonolith(Codec<NoFeatureConfig> configIn) {
 		super(configIn);
 	}
 
 	@Override
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+	public boolean func_230362_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
 		int ht = rand.nextInt(10) + 10;
 		int dir = rand.nextInt(4);
 		int h0, h1, h2, h3;

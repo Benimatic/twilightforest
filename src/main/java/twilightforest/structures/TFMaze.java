@@ -4,9 +4,10 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.World;
+import net.minecraft.world.ISeedReader;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.server.ServerWorld;
 import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomeDecorator;
 import twilightforest.block.TFBlocks;
@@ -187,7 +188,7 @@ public class TFMaze {
 	 * Copies the maze into the world by placing walls.
 	 * TODO: Unused. Remove?
 	 */
-	public void copyToWorld(World world, int dx, int dy, int dz) {
+	public void copyToWorld(ISeedReader world, StructureManager manager, ChunkGenerator generator, int dx, int dy, int dz) {
 		worldX = dx;
 		worldY = dy;
 		worldZ = dz;
@@ -201,7 +202,7 @@ public class TFMaze {
 					if (isEven(x) && isEven(z)) {
 						if (type == 4 && shouldTree(x, z)) {
 							// occasionally make a tree 
-							TFBiomeFeatures.CANOPY_TREE.get().configure(TFBiomeDecorator.CANOPY_TREE_CONFIG).place(world, ((ServerWorld) world).getChunkProvider().getChunkGenerator(), rand, new BlockPos(mdx, dy, mdz));
+							TFBiomeFeatures.CANOPY_TREE.get().withConfiguration(TFBiomeDecorator.CANOPY_TREE_CONFIG).func_236265_a_(world, manager, generator, rand, new BlockPos(mdx, dy, mdz));
 						} else {
 							// make a block!
 							for (int y = 0; y < head; y++) {
@@ -258,7 +259,7 @@ public class TFMaze {
 	 * Copies the maze into the world by carving out empty spaces.
 	 * TODO: Unused. Remove?
 	 */
-	public void carveToWorld(World world, int dx, int dy, int dz) {
+	public void carveToWorld(ISeedReader world, int dx, int dy, int dz) {
 		worldX = dx;
 		worldY = dy;
 		worldZ = dz;
@@ -309,7 +310,7 @@ public class TFMaze {
 	/**
 	 * Copy the maze into a StructureTFComponentOld
 	 */
-	public void copyToStructure(World world, int dx, int dy, int dz, StructureTFComponentOld component, MutableBoundingBox sbb) {
+	public void copyToStructure(ISeedReader world, StructureManager manager, ChunkGenerator generator, int dx, int dy, int dz, StructureTFComponentOld component, MutableBoundingBox sbb) {
 		for (int x = 0; x < rawWidth; x++) {
 			for (int z = 0; z < rawDepth; z++) {
 				// only draw walls.  if the data is 0 the there's a wall
@@ -326,7 +327,7 @@ public class TFMaze {
 						if (type == 4 && shouldTree(x, z)) {
 							// occasionally make a tree 
 //							(new TFGenCanopyTree()).generate(world, rand, mdx, dy, mdz);
-							putCanopyTree(world, mdx, dy, mdz, component, sbb);
+							putCanopyTree(world, manager, generator, mdx, dy, mdz, component, sbb);
 						} else {
 							// make a block!
 							for (int even = 0; even < evenBias; even++) {
@@ -427,7 +428,7 @@ public class TFMaze {
 		}
 	}
 
-	private void makeWallThing(World world, int dy, StructureTFComponentOld component, MutableBoundingBox sbb, int mdx, int mdz, int even, int odd) {
+	private void makeWallThing(ISeedReader world, int dy, StructureTFComponentOld component, MutableBoundingBox sbb, int mdx, int mdz, int even, int odd) {
 		for (int y = 0; y < head; y++) {
 			putHeadBlock(world, mdx + even, dy + tall + y, mdz + odd, component, sbb);
 		}
@@ -442,21 +443,21 @@ public class TFMaze {
 	/**
 	 * Puts a wall block in the structure, if pillar blocks are properly specified
 	 */
-	private void putPillarBlock(World world, int x, int y, int z, StructureTFComponentOld component, MutableBoundingBox sbb) {
+	private void putPillarBlock(ISeedReader world, int x, int y, int z, StructureTFComponentOld component, MutableBoundingBox sbb) {
 		component.setBlockState(world, pillarBlockState, x, y, z, sbb);
 	}
 
 	/**
 	 * Puts a wall block in the world, at the specified world coordinates.
 	 */
-	private void putWallBlock(World world, int x, int y, int z) {
+	private void putWallBlock(ISeedReader world, int x, int y, int z) {
 		world.setBlockState(new BlockPos(x, y, z), wallBlockState, 2);
 	}
 
 	/**
 	 * Puts a wall block in the structure, at the specified structure coordinates.
 	 */
-	private void putWallBlock(World world, int x, int y, int z, StructureTFComponentOld component, MutableBoundingBox sbb) {
+	private void putWallBlock(ISeedReader world, int x, int y, int z, StructureTFComponentOld component, MutableBoundingBox sbb) {
 		if (wallBlocks != null) {
 			wallBlocks.selectBlocks(rand, x, y, z, true);
 			component.setBlockState(world, wallBlocks.getBlockState(), x, y, z, sbb);
@@ -468,7 +469,7 @@ public class TFMaze {
 	/**
 	 * Puts a wall block in the structure, at the specified structure coordinates.
 	 */
-	private void putDoorBlock(World world, int x, int y, int z, StructureTFComponentOld component, MutableBoundingBox sbb) {
+	private void putDoorBlock(ISeedReader world, int x, int y, int z, StructureTFComponentOld component, MutableBoundingBox sbb) {
 		component.setBlockState(world, doorBlockState, x, y, z, sbb);
 	}
 
@@ -476,41 +477,41 @@ public class TFMaze {
 	 * Carves a block into the world.
 	 * TODO: check what's there?  maybe only certain blocks?
 	 */
-	private void carveBlock(World world, int x, int y, int z) {
+	private void carveBlock(ISeedReader world, int x, int y, int z) {
 		world.setBlockState(new BlockPos(x, y, z), Blocks.AIR.getDefaultState(), 2);
 	}
 
-	private void putHeadBlock(World world, int x, int y, int z) {
+	private void putHeadBlock(ISeedReader world, int x, int y, int z) {
 		world.setBlockState(new BlockPos(x, y, z), headBlockState, 2);
 	}
 
-	private void putHeadBlock(World world, int x, int y, int z, StructureTFComponentOld component, MutableBoundingBox sbb) {
+	private void putHeadBlock(ISeedReader world, int x, int y, int z, StructureTFComponentOld component, MutableBoundingBox sbb) {
 		component.setBlockState(world, headBlockState, x, y, z, sbb);
 	}
 
 	/**
 	 * Puts a root block in the world, at the specified world coordinates.
 	 */
-	private void putRootBlock(World world, int x, int y, int z) {
+	private void putRootBlock(ISeedReader world, int x, int y, int z) {
 		world.setBlockState(new BlockPos(x, y, z), rootBlockState, 2);
 	}
 
 	/**
 	 * Puts a root block in the structure, at the specified structure coordinates.
 	 */
-	private void putRootBlock(World world, int x, int y, int z, StructureTFComponentOld component, MutableBoundingBox sbb) {
+	private void putRootBlock(ISeedReader world, int x, int y, int z, StructureTFComponentOld component, MutableBoundingBox sbb) {
 		component.setBlockState(world, rootBlockState, x, y, z, sbb);
 	}
 
 	/**
 	 * Puts a canopy tree in the world at the specified structure coordinates.
 	 */
-	private void putCanopyTree(World world, int x, int y, int z, StructureTFComponentOld component, MutableBoundingBox sbb) {
+	private void putCanopyTree(ISeedReader world, StructureManager manager, ChunkGenerator generator, int x, int y, int z, StructureTFComponentOld component, MutableBoundingBox sbb) {
 		BlockPos pos = component.getBlockPosWithOffset(x, y, z);
 
 		// only place it if we're actually generating the chunk the tree is in (or at least the middle of the tree)
 		if (sbb.isVecInside(pos)) {
-			TFBiomeFeatures.CANOPY_TREE.get().configure(TFBiomeDecorator.CANOPY_TREE_CONFIG).place(world, ((ServerWorld) world).getChunkProvider().getChunkGenerator(), rand, pos);
+			TFBiomeFeatures.CANOPY_TREE.get().withConfiguration(TFBiomeDecorator.CANOPY_TREE_CONFIG).func_236265_a_(world, manager, generator, rand, pos);
 		}
 	}
 
@@ -521,7 +522,7 @@ public class TFMaze {
 	/**
 	 * Called after copyToWorld.  Places torches in the maze as appropriate
 	 */
-	private void placeTorches(World world) {
+	private void placeTorches(ISeedReader world) {
 
 		int torchHeight = 1;
 

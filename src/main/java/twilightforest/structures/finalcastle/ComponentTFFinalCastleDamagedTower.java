@@ -5,10 +5,10 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
@@ -65,9 +65,8 @@ public class ComponentTFFinalCastleDamagedTower extends ComponentTFFinalCastleMa
 	}
 
 	@Override
-	public boolean generate(IWorld worldIn, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
-		super.generate(worldIn, generator, rand, sbb, chunkPosIn);
-		World world = worldIn.getWorld();
+	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		super.func_230383_a_(world, manager, generator, rand, sbb, chunkPosIn, blockPos);
 		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
 
 		this.destroyTower(world, decoRNG, sbb);
@@ -75,7 +74,7 @@ public class ComponentTFFinalCastleDamagedTower extends ComponentTFFinalCastleMa
 		return true;
 	}
 
-	public void destroyTower(World world, Random rand, MutableBoundingBox sbb) {
+	public void destroyTower(ISeedReader world, Random rand, MutableBoundingBox sbb) {
 
 		// make list of destroyed areas
 		ArrayList<DestroyArea> areas = makeInitialDestroyList(rand);
@@ -124,7 +123,7 @@ public class ComponentTFFinalCastleDamagedTower extends ComponentTFFinalCastleMa
 		return areas;
 	}
 
-	protected void determineBlockDestroyed(World world, ArrayList<DestroyArea> areas, int y, int x, int z) {
+	protected void determineBlockDestroyed(ISeedReader world, ArrayList<DestroyArea> areas, int y, int x, int z) {
 		BlockPos pos = new BlockPos(x, y, z);
 		for (DestroyArea dArea : areas) {
 			if (dArea != null && dArea.isVecInside(pos)) {

@@ -2,8 +2,6 @@ package twilightforest.enums;
 
 import net.minecraft.util.Direction;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
 
 import java.util.Locale;
 
@@ -22,7 +20,7 @@ public enum NagastoneVariant implements IStringSerializable {
 	SOLID; // This can act as null
 
 	@Override
-	public String getName() {
+	public String func_176610_l() {
 		return name().toLowerCase(Locale.ROOT);
 	}
 

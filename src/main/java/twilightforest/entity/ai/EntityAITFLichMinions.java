@@ -7,7 +7,7 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import twilightforest.entity.boss.EntityTFLich;
 import twilightforest.entity.boss.EntityTFLichMinion;
 import twilightforest.item.TFItems;
@@ -87,7 +87,7 @@ public class EntityAITFLichMinions extends Goal {
 	private void spawnMinionAt() {
 		// find a good spot
 		LivingEntity targetedEntity = lich.getAttackTarget();
-		Vec3d minionSpot = lich.findVecInLOSOf(targetedEntity);
+		Vector3d minionSpot = lich.findVecInLOSOf(targetedEntity);
 
 		if (minionSpot != null) {
 			// put a clone there
@@ -102,7 +102,7 @@ public class EntityAITFLichMinions extends Goal {
 			minion.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 1.0F, ((lich.getRNG().nextFloat() - lich.getRNG().nextFloat()) * 0.7F + 1.0F) * 2.0F);
 
 			// make sparkles leading to it
-			lich.makeBlackMagicTrail(lich.getX(), lich.getY() + lich.getEyeHeight(), lich.getZ(), minionSpot.x, minionSpot.y + minion.getHeight() / 2.0, minionSpot.z);
+			lich.makeBlackMagicTrail(lich.getPosX(), lich.getPosY() + lich.getEyeHeight(), lich.getPosZ(), minionSpot.x, minionSpot.y + minion.getHeight() / 2.0, minionSpot.z);
 		}
 	}
 

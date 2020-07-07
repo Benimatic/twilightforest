@@ -7,7 +7,7 @@ import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
@@ -49,7 +49,7 @@ public abstract class EntityTFBird extends AnimalEntity {
 
 		// don't fall as fast
 		if (!this.onGround && this.getMotion().getY() < 0.0D) {
-			this.setMotion(new Vec3d(getMotion().getX(), getMotion().getY() * 0.6D, getMotion().getZ()));
+			this.setMotion(new Vector3d(getMotion().getX(), getMotion().getY() * 0.6D, getMotion().getZ()));
 		}
 
 		this.flapLength += this.flapSpeed * 2.0F;
@@ -67,12 +67,12 @@ public abstract class EntityTFBird extends AnimalEntity {
 	}
 
 	@Override
-	public boolean handleFallDamage(float dist, float damageMultiplier) {
+	public boolean onLivingFall(float dist, float damageMultiplier) {
 		return false;
 	}
 
 	@Override
-	public boolean bypassesSteppingEffects() {
+	public boolean isSteppingCarefully() {
 		return false;
 	}
 

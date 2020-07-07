@@ -15,12 +15,14 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.DefaultBiomeFeatures;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import net.minecraft.world.server.ServerWorld;
@@ -251,21 +253,20 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 	}
 
 	@Override
-	public boolean generate(IWorld worldIn, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
-		World world = worldIn.getWorld();
-		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
+	public boolean func_230383_a_(ISeedReader seed, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		Random decoRNG = new Random(seed.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
 
 		// make walls
-		makeEncasedWalls(world, rand, sbb, 0, 0, 0, size - 1, height - 1, size - 1);
+		makeEncasedWalls(seed, rand, sbb, 0, 0, 0, size - 1, height - 1, size - 1);
 
 		// clear inside
-		fillWithAir(world, sbb, 1, 1, 1, size - 2, height - 2, size - 2);
+		fillWithAir(seed, sbb, 1, 1, 1, size - 2, height - 2, size - 2);
 
 		if (this.getComponentType() == 0) {
 			// deco to ground
 			for (int x = 0; x < this.size; x++) {
 				for (int z = 0; z < this.size; z++) {
-					this.setBlockState(world, deco.accentState, x, -1, z, sbb);
+					this.setBlockState(seed, deco.accentState, x, -1, z, sbb);
 				}
 			}
 		}
@@ -293,31 +294,31 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		int topFloorsStartY = height - (bottomFloors * 5 + 1);
 
 		// add bottom and top floors
-		addThreeQuarterFloors(world, decoRNG, sbb, 0, bottomFloors * 5);
+		addThreeQuarterFloors(seed, manager, generator, decoRNG, sbb, 0, bottomFloors * 5);
 		if (this.getComponentType() < 2) {
-			addThreeQuarterFloors(world, decoRNG, sbb, topFloorsStartY, height - 1);
+			addThreeQuarterFloors(seed, manager, generator, decoRNG, sbb, topFloorsStartY, height - 1);
 		} else {
-			addThreeQuarterFloorsDecorateBoss(world, decoRNG, sbb, topFloorsStartY, height - 1);
+			addThreeQuarterFloorsDecorateBoss(seed, decoRNG, sbb, topFloorsStartY, height - 1);
 			// boss destruction
 
-			destroyTower(world, decoRNG, 12, height + 4, 3, 4, sbb);
-			destroyTower(world, decoRNG, 3, height + 4, 12, 4, sbb);
-			destroyTower(world, decoRNG, 3, height + 4, 3, 4, sbb);
-			destroyTower(world, decoRNG, 12, height + 4, 12, 4, sbb);
-			destroyTower(world, decoRNG, 8, height + 4, 8, 5, sbb);
+			destroyTower(seed, decoRNG, 12, height + 4, 3, 4, sbb);
+			destroyTower(seed, decoRNG, 3, height + 4, 12, 4, sbb);
+			destroyTower(seed, decoRNG, 3, height + 4, 3, 4, sbb);
+			destroyTower(seed, decoRNG, 12, height + 4, 12, 4, sbb);
+			destroyTower(seed, decoRNG, 8, height + 4, 8, 5, sbb);
 
 			// make spawner where it will hopefully last
-			decorateBossSpawner(world, decoRNG, sbb, Rotation.NONE, height - 6);
+			decorateBossSpawner(seed, decoRNG, sbb, Rotation.NONE, height - 6);
 		}
 
 		if (beamMaze) {
-			addTimberMaze(world, decoRNG, sbb, (bottomFloors * 5), topFloorsStartY);
+			addTimberMaze(seed, decoRNG, sbb, (bottomFloors * 5), topFloorsStartY);
 		} else {
-			addBuilderPlatforms(world, decoRNG, sbb, (bottomFloors * 5), topFloorsStartY);
+			addBuilderPlatforms(seed, decoRNG, sbb, (bottomFloors * 5), topFloorsStartY);
 		}
 
 		// openings
-		makeOpenings(world, sbb);
+		makeOpenings(seed, sbb);
 
 		return true;
 	}
@@ -325,7 +326,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 	/**
 	 * Add a bunch of 3/4 floors
 	 */
-	protected void addThreeQuarterFloors(World world, Random decoRNG, MutableBoundingBox sbb, int bottom, int top) {
+	protected void addThreeQuarterFloors(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random decoRNG, MutableBoundingBox sbb, int bottom, int top) {
 
 		int spacing = 5;
 		Rotation rotation = RotationUtil.ROTATIONS[(this.boundingBox.minY + bottom) % 4];
@@ -349,7 +350,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 			}
 
 			if (!isTopFloor || isTowerTopFloor) {
-				decorateFloor(world, decoRNG, sbb, rotation, y, isBottomFloor, isTopFloor);
+				decorateFloor(world, manager, generator, decoRNG, sbb, rotation, y, isBottomFloor, isTopFloor);
 			}
 
 			rotation = rotation.add(Rotation.COUNTERCLOCKWISE_90);
@@ -359,7 +360,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 	/**
 	 * Add a bunch of 3/4 floors
 	 */
-	protected void addThreeQuarterFloorsDecorateBoss(World world, Random decoRNG, MutableBoundingBox sbb, int bottom, int top) {
+	protected void addThreeQuarterFloorsDecorateBoss(ISeedReader world, Random decoRNG, MutableBoundingBox sbb, int bottom, int top) {
 		int spacing = 5;
 		Rotation rotation = RotationUtil.ROTATIONS[(this.boundingBox.minY + bottom) % 4];
 		if (bottom == 0) {
@@ -385,7 +386,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		}
 	}
 
-	private void decorateFloor(World world, Random decoRNG, MutableBoundingBox sbb, Rotation rotation, int y, boolean isBottom, boolean isTop) {
+	private void decorateFloor(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random decoRNG, MutableBoundingBox sbb, Rotation rotation, int y, boolean isBottom, boolean isTop) {
 		// pick an appropriate decoration and use it
 
 		if (isTop) {
@@ -427,7 +428,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 				default:
 				case 0:
 				case 1:
-					decorateReappearingMaze(world, decoRNG, sbb, rotation, y);
+					decorateReappearingMaze(world, manager, generator, decoRNG, sbb, rotation, y);
 					break;
 				case 2:
 					decorateUnbuilderMaze(world, decoRNG, sbb, rotation, y);
@@ -458,7 +459,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 	 *
 	 * @param isTowerTopFloor
 	 */
-	protected void makeThreeQuarterFloor(World world, MutableBoundingBox sbb, Rotation rotation, int y, boolean isBottom, boolean isTowerTopFloor) {
+	protected void makeThreeQuarterFloor(ISeedReader world, MutableBoundingBox sbb, Rotation rotation, int y, boolean isBottom, boolean isTowerTopFloor) {
 		int half = size / 2;
 		// fill the floor
 		this.fillBlocksRotated(world, sbb, half + 1, y, 1, size - 2, y, half + 1, deco.blockState, rotation);
@@ -506,7 +507,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 //		}
 //	}
 
-	protected void makeLargeStairsUp(World world, MutableBoundingBox sbb, Rotation rotation, int y) {
+	protected void makeLargeStairsUp(ISeedReader world, MutableBoundingBox sbb, Rotation rotation, int y) {
 		// stairs!
 		//this.fillAirRotated(world, sbb, x, y, 1, x, y + 1, 2, rotation);
 
@@ -530,7 +531,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		}
 	}
 
-	private void decorateReappearingMaze(World world, Random decoRNG, MutableBoundingBox sbb, Rotation rotation, int y) {
+	private void decorateReappearingMaze(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random decoRNG, MutableBoundingBox sbb, Rotation rotation, int y) {
 		// make maze object
 		int mazeSize = 6;
 		TFMaze maze = new TFMaze(mazeSize, mazeSize);
@@ -628,7 +629,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		maze.head = 1;
 		maze.oddBias = 2;
 
-		maze.copyToStructure(world, 0, y + 1, 0, this, sbb);
+		maze.copyToStructure(world, manager, generator, 0, y + 1, 0, this, sbb);
 
 		decorateMazeDeadEnds(world, decoRNG, maze, y, rotation, sbb);
 	}
@@ -636,7 +637,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 	/**
 	 * Find dead ends and put something there
 	 */
-	protected void decorateMazeDeadEnds(World world, Random decoRNG, TFMaze maze, int y, Rotation rotation, MutableBoundingBox sbb) {
+	protected void decorateMazeDeadEnds(ISeedReader world, Random decoRNG, TFMaze maze, int y, Rotation rotation, MutableBoundingBox sbb) {
 		for (int x = 0; x < maze.width; x++) {
 			for (int z = 0; z < maze.depth; z++) {
 				// dead ends
@@ -658,9 +659,9 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 
 	/**
 	 * Decorate a specific maze dead end
-	 * TODO: Parameters "maze" and "rotation" are unused. Remove?
+	 * TODO: Parameters "decoRNG", "maze" and "rotation" are unused. Remove?
 	 */
-	private void decorateDeadEnd(World world, Random decoRNG, TFMaze maze, int mx, int y, int mz, int facing, Rotation rotation, MutableBoundingBox sbb) {
+	private void decorateDeadEnd(ISeedReader world, Random decoRNG, TFMaze maze, int mx, int y, int mz, int facing, Rotation rotation, MutableBoundingBox sbb) {
 		int x = mx * 3 + 1;
 		int z = mz * 3 + 1;
 
@@ -692,7 +693,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		}
 	}
 
-	private void decorateUnbuilderMaze(World world, Random decoRNG, MutableBoundingBox sbb, Rotation rotation, int y) {
+	private void decorateUnbuilderMaze(ISeedReader world, Random decoRNG, MutableBoundingBox sbb, Rotation rotation, int y) {
 
 		// fill in posts
 		for (int x = size / 2; x < size - 1; x++) {
@@ -729,7 +730,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		setBlockStateRotated(world, antiBuilderBlockState, 5, y + 3, 13, rotation, sbb);
 	}
 
-	private void decorateLounge(World world, Random decoRNG, MutableBoundingBox sbb, Rotation rotation, int y) {
+	private void decorateLounge(ISeedReader world, Random decoRNG, MutableBoundingBox sbb, Rotation rotation, int y) {
 		//  brewing area in corner - walls
 		this.fillBlocksRotated(world, sbb, 17, y + 1, 1, 17, y + 4, 6, deco.pillarState, rotation);
 		this.fillBlocksRotated(world, sbb, 12, y + 1, 1, 17, y + 4, 1, deco.pillarState, rotation);
@@ -782,19 +783,19 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		placeTreePlanter(world, decoRNG.nextInt(5), 6, y + 1, 12, rotation, sbb);
 	}
 
-	private void makeDispenserPillar(World world, StructureTFDecorator forgeDeco, int x, int y, int z, Direction stairMeta, Rotation rotation, MutableBoundingBox sbb) {
+	private void makeDispenserPillar(ISeedReader world, StructureTFDecorator forgeDeco, int x, int y, int z, Direction stairMeta, Rotation rotation, MutableBoundingBox sbb) {
 		this.setBlockStateRotated(world, getStairState(forgeDeco.stairState, stairMeta, rotation, true), x, y + 2, z, rotation, sbb);
 		this.setBlockStateRotated(world, Blocks.DISPENSER.getDefaultState().with(DispenserBlock.FACING, stairMeta), x, y + 3, z, rotation, sbb);
 		this.setBlockStateRotated(world, getStairState(forgeDeco.stairState, stairMeta, rotation, false), x, y + 4, z, rotation, sbb);
 	}
 
 	//TODO: Parameter "rand" is unused. Remove?
-	private void decorateBossSpawner(World world, Random rand, MutableBoundingBox sbb, Rotation rotation, int y) {
+	private void decorateBossSpawner(ISeedReader world, Random rand, MutableBoundingBox sbb, Rotation rotation, int y) {
 		this.setBlockStateRotated(world, TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.UR_GHAST), 9, y + 4, 9, rotation, sbb);
 	}
 
 	//TODO: Parameter "decoRNG" is unused. Remove?
-	private void decorateExperiment(World world, Random decoRNG, MutableBoundingBox sbb, Rotation rotation, int y) {
+	private void decorateExperiment(ISeedReader world, Random decoRNG, MutableBoundingBox sbb, Rotation rotation, int y) {
 		final BlockState obsidian = Blocks.OBSIDIAN.getDefaultState();
 		final BlockState netherrack = Blocks.NETHERRACK.getDefaultState();
 		final BlockState redstone = Blocks.REDSTONE_BLOCK.getDefaultState();
@@ -905,14 +906,14 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 	}
 
 	//TODO: Parameter "forgeDeco" is unused. Remove?
-	private void makeWoodPillar(World world, StructureTFDecorator forgeDeco, int x, int y, int z, Rotation rotation, MutableBoundingBox sbb) {
+	private void makeWoodPillar(ISeedReader world, StructureTFDecorator forgeDeco, int x, int y, int z, Rotation rotation, MutableBoundingBox sbb) {
 		final BlockState log = TFBlocks.dark_log.get().getDefaultState();
 		this.setBlockStateRotated(world, log, x, y + 2, z, rotation, sbb);
 		this.setBlockStateRotated(world, log, x, y + 3, z, rotation, sbb);
 		this.setBlockStateRotated(world, log, x, y + 4, z, rotation, sbb);
 	}
 
-	private void placeItemFrameRotated(World world, int x, int y, int z, Rotation rotation, Direction direction, ItemStack itemStack, MutableBoundingBox sbb) {
+	private void placeItemFrameRotated(ISeedReader world, int x, int y, int z, Rotation rotation, Direction direction, ItemStack itemStack, MutableBoundingBox sbb) {
 
 		int dx = getXWithOffsetRotated(x, z, rotation);
 		int dy = getYWithOffset(y);
@@ -920,7 +921,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		Direction facing = this.rotation.add(rotation).rotate(direction).getOpposite();
 		final BlockPos pos = new BlockPos(dx, dy, dz).offset(facing);
 		if (sbb.isVecInside(pos)) {
-			ItemFrameEntity frame = new ItemFrameEntity(world, pos, facing);
+			ItemFrameEntity frame = new ItemFrameEntity(world.getWorld(), pos, facing);
 			if (!itemStack.isEmpty()) {
 				frame.setDisplayedItem(itemStack);
 			}
@@ -931,7 +932,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 	}
 
 	//TODO: Parameter "decoRNG" is unused. Remove?
-	private void decorateAquarium(World world, Random decoRNG, MutableBoundingBox sbb, Rotation rotation, int y) {
+	private void decorateAquarium(ISeedReader world, Random decoRNG, MutableBoundingBox sbb, Rotation rotation, int y) {
 		// main aquarium
 		makePillarFrame(world, sbb, this.deco, rotation, 12, y, 3, 4, 4, 13, false);
 		this.fillBlocksRotated(world, sbb, 13, y + 4, 4, 14, y + 4, 14, Blocks.WATER.getDefaultState(), rotation);
@@ -942,7 +943,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		this.fillBlocksRotated(world, sbb, 7, y + 4, 13, 8, y + 5, 14, Blocks.WATER.getDefaultState(), rotation);
 	}
 
-	private void decorateForge(World world, Random decoRNG, MutableBoundingBox sbb, Rotation rotation, int y) {
+	private void decorateForge(ISeedReader world, Random decoRNG, MutableBoundingBox sbb, Rotation rotation, int y) {
 //		StructureTFDecorator forgeDeco = new StructureTFDecorator();
 //		forgeDeco = Blocks.COBBLESTONE;
 //		forgeDeco.pillarID = Blocks.STONE_BRICKS;
@@ -1000,7 +1001,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 	}
 
 	//TODO: Parameter "forgeDeco" is unused. Remove?
-	private void makeFurnacePillar(World world, StructureTFDecorator forgeDeco, Random rand, int x, int y, int z, Direction direction, Rotation rotation, MutableBoundingBox sbb) {
+	private void makeFurnacePillar(ISeedReader world, StructureTFDecorator forgeDeco, Random rand, int x, int y, int z, Direction direction, Rotation rotation, MutableBoundingBox sbb) {
 
 		this.setBlockStateRotated(world, getStairState(deco.stairState, direction, rotation, true), x, y + 2, z, rotation, sbb);
 		this.setBlockStateRotated(world, Blocks.FURNACE.getDefaultState().with(FurnaceBlock.FACING, direction), x, y + 3, z, rotation, sbb);
@@ -1026,14 +1027,14 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 	}
 
 	//TODO: Parameter "stairDirection" is unused. Remove?
-	private void makeStonePillar(World world, StructureTFDecorator forgeDeco, int x, int y, int z, Direction stairDirection, Rotation rotation, MutableBoundingBox sbb) {
+	private void makeStonePillar(ISeedReader world, StructureTFDecorator forgeDeco, int x, int y, int z, Direction stairDirection, Rotation rotation, MutableBoundingBox sbb) {
 		for (int py = 1; py <= 4; py++) {
 			this.setBlockStateRotated(world, forgeDeco.pillarState, x, y + py, z, rotation, sbb);
 		}
 		// we used to have caps here, but the code was too complex to be worthwhile
 	}
 
-	private void makeFirePit(World world, StructureTFDecorator myDeco, int x, int y, int z, Rotation rotation, MutableBoundingBox sbb) {
+	private void makeFirePit(ISeedReader world, StructureTFDecorator myDeco, int x, int y, int z, Rotation rotation, MutableBoundingBox sbb) {
 		setBlockStateRotated(world, getStairState(deco.stairState, Direction.WEST, rotation, false), x - 1, y, z + 0, rotation, sbb);
 		setBlockStateRotated(world, getStairState(deco.stairState, Direction.EAST, rotation, false), x + 1, y, z + 0, rotation, sbb);
 		setBlockStateRotated(world, getStairState(deco.stairState, Direction.SOUTH, rotation, false), x + 0, y, z + 1, rotation, sbb);
@@ -1047,7 +1048,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		setBlockStateRotated(world, Blocks.FIRE.getDefaultState(), x, y + 1, z, rotation, sbb);
 	}
 
-	private void decorateNetherwart(World world, Random decoRNG, MutableBoundingBox sbb, Rotation rotation, int y, boolean isTop) {
+	private void decorateNetherwart(ISeedReader world, Random decoRNG, MutableBoundingBox sbb, Rotation rotation, int y, boolean isTop) {
 //		StructureTFDecorator netherDeco = new StructureTFDecorator();
 //		netherDeco = Blocks.NETHERBRICK;
 //		netherDeco.pillarID = Blocks.NETHERBRICK;
@@ -1079,7 +1080,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		destroyTower(world, decoRNG, 12, y, 3, 2, sbb);
 	}
 
-	private void decorateBotanical(World world, Random decoRNG, MutableBoundingBox sbb, Rotation rotation, int y) {
+	private void decorateBotanical(ISeedReader world, Random decoRNG, MutableBoundingBox sbb, Rotation rotation, int y) {
 		// main part
 		makePillarFrame(world, sbb, this.deco, rotation, 12, y, 12, 4, 4, 4, true);
 		this.fillBlocksRotated(world, sbb, 13, y + 1, 13, 14, y + 1, 14, deco.blockState, rotation);
@@ -1127,7 +1128,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		placeTreePlanter(world, decoRNG.nextInt(5), 6, y + 1, 12, rotation, sbb);
 	}
 
-	private void placeTreePlanter(World world, int treeNum, int x, int y, int z, Rotation rotation, MutableBoundingBox sbb) {
+	private void placeTreePlanter(ISeedReader world, int treeNum, int x, int y, int z, Rotation rotation, MutableBoundingBox sbb) {
 		setBlockStateRotated(world, deco.pillarState, x + 1, y, z + 1, rotation, sbb);
 		setBlockStateRotated(world, deco.pillarState, x + 1, y, z - 1, rotation, sbb);
 		setBlockStateRotated(world, deco.pillarState, x - 1, y, z + 1, rotation, sbb);
@@ -1149,26 +1150,26 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 				case 0:
 				default:
 					// oak tree
-					treeGen = Feature.NORMAL_TREE.configure(DefaultBiomeFeatures.OAK_TREE_CONFIG);
+					treeGen = Feature.field_236291_c_.withConfiguration(DefaultBiomeFeatures.OAK_TREE_CONFIG);
 					break;
 				case 1:
 					// jungle tree
-					treeGen = Feature.NORMAL_TREE.configure(DefaultBiomeFeatures.JUNGLE_TREE_CONFIG); //TODO: This probably needs to be shorter. Default's max height is 8. Original value 3
+					treeGen = Feature.field_236291_c_.withConfiguration(DefaultBiomeFeatures.JUNGLE_TREE_CONFIG); //TODO: This probably needs to be shorter. Default's max height is 8. Original value 3
 					break;
 				case 2:
 					// birch
-					treeGen = Feature.NORMAL_TREE.configure(DefaultBiomeFeatures.BIRCH_TREE_CONFIG);
+					treeGen = Feature.field_236291_c_.withConfiguration(DefaultBiomeFeatures.BIRCH_TREE_CONFIG);
 					break;
 				case 3:
-					treeGen = Feature.NORMAL_TREE.configure(TFBiomeDecorator.OAK_TREE);
+					treeGen = Feature.field_236291_c_.withConfiguration(TFBiomeDecorator.OAK_TREE);
 					break;
 				case 4:
-					treeGen = Feature.NORMAL_TREE.configure(TFBiomeDecorator.RAINBOAK_TREE);
+					treeGen = Feature.field_236291_c_.withConfiguration(TFBiomeDecorator.RAINBOAK_TREE);
 					break;
 			}
 
 			for (int i = 0; i < 100; i++) {
-				if (treeGen.place(world, ((ServerWorld) world).getChunkProvider().getChunkGenerator(), world.rand, new BlockPos(dx, dy, dz))) {
+				if (treeGen.func_236265_a_(world, ((ServerWorld) world).func_241112_a_(), ((ServerWorld) world).getChunkProvider().getChunkGenerator(), world.getRandom(), new BlockPos(dx, dy, dz))) {
 					break;
 				}
 			}
@@ -1176,14 +1177,14 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 	}
 
 	//TODO: Each flower has their own block. Flatten
-	private void placeRandomPlant(World world, Random decoRNG, int x, int y, int z, Rotation rotation, MutableBoundingBox sbb) {
+	private void placeRandomPlant(ISeedReader world, Random decoRNG, int x, int y, int z, Rotation rotation, MutableBoundingBox sbb) {
 		int potMeta = decoRNG.nextInt(15); // this seems to be the only way to set the flower pre-placement
 		final BlockState flowerPotState = Blocks.FLOWER_POT.getDefaultState()/*.with(FlowerPotBlock.LEGACY_DATA, potMeta)*/;
 		setBlockStateRotated(world, flowerPotState, x, y, z, rotation, sbb);
 	}
 
 	//TODO: Parameter "decoRNG" is unused. Remove?
-	private void makeBottomEntrance(World world, Random decoRNG, MutableBoundingBox sbb, Rotation rotation, int y) {
+	private void makeBottomEntrance(ISeedReader world, Random decoRNG, MutableBoundingBox sbb, Rotation rotation, int y) {
 		makeFirePit(world, this.deco, 13, y + 1, 3, rotation, sbb);
 		makeFirePit(world, this.deco, 3, y + 1, 13, rotation, sbb);
 		makeFirePit(world, this.deco, 13, y + 1, 13, rotation, sbb);
@@ -1194,7 +1195,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 	/**
 	 * Add a bunch of timber beams
 	 */
-	protected void addTimberMaze(World world, Random rand, MutableBoundingBox sbb, int bottom, int top) {
+	protected void addTimberMaze(ISeedReader world, Random rand, MutableBoundingBox sbb, int bottom, int top) {
 
 		int spacing = 5;
 		Rotation floorside = Rotation.NONE;
@@ -1214,11 +1215,11 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 	 *
 	 * @param top
 	 */
-	protected void makeTimberBeams(World world, Random rand, MutableBoundingBox sbb, Rotation rotation, int y, boolean isBottom, boolean isTop, int top) {
+	protected void makeTimberBeams(ISeedReader world, Random rand, MutableBoundingBox sbb, Rotation rotation, int y, boolean isBottom, boolean isTop, int top) {
 		BlockState beamID = TFBlocks.oak_log.get().getDefaultState();
-		BlockState beamStateNS = beamID.with(LogBlock.AXIS, Direction.Axis.Z);
-		BlockState beamStateUD = beamID.with(LogBlock.AXIS, Direction.Axis.Y);
-		BlockState beamStateEW = beamID.with(LogBlock.AXIS, Direction.Axis.X);
+		BlockState beamStateNS = beamID.with(RotatedPillarBlock.AXIS, Direction.Axis.Z);
+		BlockState beamStateUD = beamID.with(RotatedPillarBlock.AXIS, Direction.Axis.Y);
+		BlockState beamStateEW = beamID.with(RotatedPillarBlock.AXIS, Direction.Axis.X);
 
 		// three beams going n/s
 		for (int z = 1; z < size - 1; z++) {
@@ -1299,7 +1300,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 	 * Make a mini ghast spawner and then set the spawn range and max entities for that spawner
 	 * TODO: Parameter "rand" is unused. Remove?
 	 */
-	private void makeMiniGhastSpawner(World world, Random rand, int y, int sx, int sz, MutableBoundingBox sbb) {
+	private void makeMiniGhastSpawner(ISeedReader world, Random rand, int y, int sx, int sz, MutableBoundingBox sbb) {
 		MobSpawnerTileEntity spawner = setSpawner(world, sx, y + 2, sz, sbb, TFEntities.mini_ghast);
 
 		if (spawner != null) {
@@ -1311,14 +1312,14 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 			tags.putShort("MaxNearbyEntities", (short) 2);//(short) (world.difficultySetting));
 			tags.putShort("SpawnCount", (short) 1);
 
-			spawner.read(tags);
+			spawner.func_230337_a_(spawner.getBlockState(), tags);
 		}
 	}
 
 	/**
 	 * Add a bunch of platforms accessible with the block builder
 	 */
-	protected void addBuilderPlatforms(World world, Random rand, MutableBoundingBox sbb, int bottom, int top) {
+	protected void addBuilderPlatforms(ISeedReader world, Random rand, MutableBoundingBox sbb, int bottom, int top) {
 
 		int spacing = 5;
 		Rotation floorside = Rotation.NONE;
@@ -1350,7 +1351,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 	 * Make platform with a block builder
 	 * TODO: Parameters "bottom" and "top" are unused. Remove?
 	 */
-	protected void makeBuilderPlatforms(World world, Random rand, MutableBoundingBox sbb, Rotation rotation, int y, boolean bottom, boolean top) {
+	protected void makeBuilderPlatforms(ISeedReader world, Random rand, MutableBoundingBox sbb, Rotation rotation, int y, boolean bottom, boolean top) {
 		int z = size / 2 + rand.nextInt(5) - rand.nextInt(5);
 
 		// bottom platform
@@ -1384,7 +1385,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 	 * Add the top floating platform in the builder platforms area
 	 * TODO: Parameter "bottom" is unused. Remove?
 	 */
-	private void addTopBuilderPlatform(World world, Random rand, int bottom, int top, int spacing, MutableBoundingBox sbb) {
+	private void addTopBuilderPlatform(ISeedReader world, Random rand, int bottom, int top, int spacing, MutableBoundingBox sbb) {
 		Rotation rotation = RotationUtil.ROTATIONS[(this.boundingBox.minY + top + 1) % 4];
 
 		// platform
@@ -1403,7 +1404,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		setBlockStateRotated(world, getLeverState(Blocks.LEVER.getDefaultState(), AttachFace.FLOOR, rand.nextBoolean() ? Direction.EAST : Direction.NORTH, false), 7, top - spacing + 1, 11, rotation, sbb);
 	}
 
-	private void makeBuilderPlatform(World world, Random rand, Rotation rotation, int y, int z, boolean hole, MutableBoundingBox sbb) {
+	private void makeBuilderPlatform(ISeedReader world, Random rand, Rotation rotation, int y, int z, boolean hole, MutableBoundingBox sbb) {
 		// top platform
 		setBlockStateRotated(world, deco.accentState, 1, y, z - 1, rotation, sbb);
 		if (!hole) {
@@ -1423,7 +1424,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 	/**
 	 * Make a cluster of redstone lamps w/ switches as decoration for the empty areas in towers
 	 */
-	private void makeLampCluster(World world, Random rand, int sx, int y, int sz, Rotation rotation, MutableBoundingBox sbb) {
+	private void makeLampCluster(ISeedReader world, Random rand, int sx, int y, int sz, Rotation rotation, MutableBoundingBox sbb) {
 		int radius = 4;
 
 		// make lamps

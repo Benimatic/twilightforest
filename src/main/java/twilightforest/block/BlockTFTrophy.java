@@ -77,7 +77,7 @@ public class BlockTFTrophy extends SkullBlock /*implements IInfusionStabiliser*/
 
 	@Override
 	@Deprecated
-	public ActionResultType onUse(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand handIn, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand handIn, BlockRayTraceResult hit) {
 		TileEntity te = worldIn.getTileEntity(pos);
 		if (te instanceof TileEntityTFTrophy) {
 			SoundEvent sound = null;

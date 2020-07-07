@@ -2,6 +2,8 @@ package twilightforest.entity;
 
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -17,7 +19,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -29,8 +31,8 @@ public class EntityTFGoblinKnightUpper extends MonsterEntity {
 
 	private static final int SHIELD_DAMAGE_THRESHOLD = 10;
 	private static final DataParameter<Byte> DATA_EQUIP = EntityDataManager.createKey(EntityTFGoblinKnightUpper.class, DataSerializers.BYTE);
-	private static final AttributeModifier ARMOR_MODIFIER = new AttributeModifier("Armor boost", 20, AttributeModifier.Operation.ADDITION).setSaved(false);
-	private static final AttributeModifier DAMAGE_MODIFIER = new AttributeModifier("Heavy spear attack boost", 12, AttributeModifier.Operation.ADDITION).setSaved(false);
+	private static final AttributeModifier ARMOR_MODIFIER = new AttributeModifier("Armor boost", 20, AttributeModifier.Operation.ADDITION);
+	private static final AttributeModifier DAMAGE_MODIFIER = new AttributeModifier("Heavy spear attack boost", 12, AttributeModifier.Operation.ADDITION);
 	public static final int HEAVY_SPEAR_TIMER_START = 60;
 
 	private int shieldHits = 0;
@@ -55,12 +57,11 @@ public class EntityTFGoblinKnightUpper extends MonsterEntity {
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, false));
 	}
 
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
-		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
-		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(8.0D);
+	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return MonsterEntity.func_234295_eP_()
+				.func_233815_a_(Attributes.field_233818_a_, 30.0D)
+				.func_233815_a_(Attributes.field_233821_d_, 0.28D)
+				.func_233815_a_(Attributes.field_233823_f_, 8.0D);
 	}
 
 	@Override
@@ -79,11 +80,11 @@ public class EntityTFGoblinKnightUpper extends MonsterEntity {
 
 		if (!world.isRemote) {
 			if (flag) {
-				if (!getAttribute(SharedMonsterAttributes.ARMOR).hasModifier(ARMOR_MODIFIER)) {
-					getAttribute(SharedMonsterAttributes.ARMOR).applyModifier(ARMOR_MODIFIER);
+				if (!getAttribute(Attributes.field_233826_i_).hasModifier(ARMOR_MODIFIER)) {
+					getAttribute(Attributes.field_233826_i_).func_233767_b_(ARMOR_MODIFIER);
 				}
 			} else {
-				getAttribute(SharedMonsterAttributes.ARMOR).removeModifier(ARMOR_MODIFIER);
+				getAttribute(Attributes.field_233826_i_).removeModifier(ARMOR_MODIFIER);
 			}
 		}
 	}
@@ -135,23 +136,23 @@ public class EntityTFGoblinKnightUpper extends MonsterEntity {
 			}
 
 			if (heavySpearTimer > 0) {
-				if (!getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).hasModifier(DAMAGE_MODIFIER)) {
-					getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).applyModifier(DAMAGE_MODIFIER);
+				if (!getAttribute(Attributes.field_233823_f_).hasModifier(DAMAGE_MODIFIER)) {
+					getAttribute(Attributes.field_233823_f_).func_233767_b_(DAMAGE_MODIFIER);
 				}
 			} else {
-				getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).removeModifier(DAMAGE_MODIFIER.getID());
+				getAttribute(Attributes.field_233823_f_).removeModifier(DAMAGE_MODIFIER.getID());
 			}
 		}
 	}
 
 	public void landHeavySpearAttack() {
 		// find vector in front of us
-		Vec3d vector = this.getLookVec();
+		Vector3d vector = this.getLookVec();
 
 		double dist = 1.25;
-		double px = this.getX() + vector.x * dist;
+		double px = this.getPosX() + vector.x * dist;
 		double py = this.getBoundingBox().minY - 0.75;
-		double pz = this.getZ() + vector.z * dist;
+		double pz = this.getPosZ() + vector.z * dist;
 
 
 		for (int i = 0; i < 50; i++) {
@@ -224,8 +225,8 @@ public class EntityTFGoblinKnightUpper extends MonsterEntity {
 		Entity attacker = damageSource.getTrueSource();
 
 		if (attacker != null) {
-			double dx = this.getX() - attacker.getX();
-			double dz = this.getZ() - attacker.getZ();
+			double dx = this.getPosX() - attacker.getPosX();
+			double dz = this.getPosZ() - attacker.getPosZ();
 			float angle = (float) ((Math.atan2(dz, dx) * 180D) / Math.PI) - 90F;
 
 			float difference = MathHelper.abs((this.renderYawOffset - angle) % 360);
@@ -270,14 +271,14 @@ public class EntityTFGoblinKnightUpper extends MonsterEntity {
 		LivingEntity toKnockback = (getRidingEntity() instanceof LivingEntity) ? (LivingEntity) getRidingEntity() : this;
 
 		if (source.getTrueSource() != null) {
-			double d0 = source.getTrueSource().getX() - this.getX();
+			double d0 = source.getTrueSource().getPosX() - this.getPosX();
 			double d1;
 
-			for (d1 = source.getTrueSource().getZ() - this.getZ(); d0 * d0 + d1 * d1 < 1.0E-4D; d1 = (Math.random() - Math.random()) * 0.01D) {
+			for (d1 = source.getTrueSource().getPosZ() - this.getPosZ(); d0 * d0 + d1 * d1 < 1.0E-4D; d1 = (Math.random() - Math.random()) * 0.01D) {
 				d0 = (Math.random() - Math.random()) * 0.01D;
 			}
 
-			toKnockback.knockBack(source.getTrueSource(), 0, d0 / 4D, d1 / 4D);
+			toKnockback.func_233627_a_(0, d0 / 4D, d1 / 4D);
 
 			// also set revenge target
 			if (source.getTrueSource() instanceof LivingEntity) {

@@ -13,7 +13,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.entity.projectile.EntityTFTwilightWandBolt;
-import twilightforest.entity.TFEntities;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -29,7 +28,7 @@ public class ItemTFTwilightWand extends Item {
 		ItemStack stack = player.getHeldItem(hand);
 
 		if (stack.getDamage() == stack.getMaxDamage() - 1) {
-			return ActionResult.fail(player.getHeldItem(hand));
+			return ActionResult.resultFail(player.getHeldItem(hand));
 		} else {
 			player.playSound(SoundEvents.ENTITY_GHAST_SHOOT, 1.0F, (world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F + 1.0F);
 
@@ -38,7 +37,7 @@ public class ItemTFTwilightWand extends Item {
 				stack.damageItem(1, player, (user) -> user.sendBreakAnimation(hand));
 			}
 
-			return ActionResult.success(player.getHeldItem(hand));
+			return ActionResult.resultSuccess(player.getHeldItem(hand));
 		}
 	}
 

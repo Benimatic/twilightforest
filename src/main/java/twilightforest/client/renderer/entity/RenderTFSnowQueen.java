@@ -23,7 +23,7 @@ public class RenderTFSnowQueen extends BipedRenderer<EntityTFSnowQueen, ModelTFS
 	}
 
 	@Override
-	protected void scale(EntityTFSnowQueen queen, MatrixStack stack, float partialTicks) {
+	protected void preRenderCallback(EntityTFSnowQueen queen, MatrixStack stack, float partialTicks) {
 		float scale = 1.2F;
 		stack.scale(scale, scale, scale);
 	}

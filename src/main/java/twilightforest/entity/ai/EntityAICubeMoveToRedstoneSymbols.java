@@ -50,7 +50,7 @@ public class EntityAICubeMoveToRedstoneSymbols extends Goal {
 	 * Search the area for a redstone circle (8 redstone dust around a blank square)
 	 */
 	private BlockPos searchForRedstoneSymbol(EntityTFRovingCube myCube2, int xzRange, int yRange) {
-		BlockPos curPos = new BlockPos(myCube2);
+		BlockPos curPos = new BlockPos(myCube2.func_233580_cy_());
 
 		for (int x = -xzRange; x < xzRange; x++) {
 			for (int z = -xzRange; z < xzRange; z++) {

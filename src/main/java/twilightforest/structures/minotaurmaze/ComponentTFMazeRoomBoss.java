@@ -4,11 +4,12 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.BlockTFBossSpawner;
@@ -29,8 +30,7 @@ public class ComponentTFMazeRoomBoss extends ComponentTFMazeRoom {
 	}
 
 	@Override
-	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
-		World worldIn = world.getWorld();
+	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// doorways
 		if (this.getBlockStateFromPos(world, 7, 1, 0, sbb).getBlock() == Blocks.AIR) {
 			fillWithBlocks(world, sbb, 6, 1, 0, 9, 4, 0, Blocks.OAK_FENCE.getDefaultState(), AIR, false);
@@ -76,25 +76,25 @@ public class ComponentTFMazeRoomBoss extends ComponentTFMazeRoom {
 		fillWithBlocks(world, sbb, 1, 2, 1, 1, 3, 4, redMushroom, AIR, false);
 		fillWithBlocks(world, sbb, 2, 2, 1, 4, 3, 1, redMushroom, AIR, false);
 		fillWithBlocks(world, sbb, 1, 4, 1, 3, 4, 3, redMushroom, AIR, false);
-		placeTreasureAtCurrentPosition(worldIn, 3, 2, 3, TFTreasure.labyrinth_room, sbb);
+		placeTreasureAtCurrentPosition(world, 3, 2, 3, TFTreasure.labyrinth_room, sbb);
 
 		fillWithBlocks(world, sbb, 12, 1, 12, 14, 1, 14, redMushroom, AIR, false);
 		fillWithBlocks(world, sbb, 14, 2, 11, 14, 3, 14, redMushroom, AIR, false);
 		fillWithBlocks(world, sbb, 11, 2, 14, 14, 3, 14, redMushroom, AIR, false);
 		fillWithBlocks(world, sbb, 12, 4, 12, 14, 4, 14, redMushroom, AIR, false);
-		placeTreasureAtCurrentPosition(worldIn, 12, 2, 12, TFTreasure.labyrinth_room, sbb);
+		placeTreasureAtCurrentPosition(world, 12, 2, 12, TFTreasure.labyrinth_room, sbb);
 
 		fillWithBlocks(world, sbb, 1, 1, 12, 3, 1, 14, redMushroom, AIR, false);
 		fillWithBlocks(world, sbb, 1, 2, 11, 1, 3, 14, redMushroom, AIR, false);
 		fillWithBlocks(world, sbb, 2, 2, 14, 4, 3, 14, redMushroom, AIR, false);
 		fillWithBlocks(world, sbb, 1, 4, 12, 3, 4, 14, redMushroom, AIR, false);
-		placeTreasureAtCurrentPosition(worldIn, 3, 2, 12, TFTreasure.labyrinth_room, sbb);
+		placeTreasureAtCurrentPosition(world, 3, 2, 12, TFTreasure.labyrinth_room, sbb);
 
 		fillWithBlocks(world, sbb, 12, 1, 1, 14, 1, 3, brownMushroom, AIR, false);
 		fillWithBlocks(world, sbb, 11, 2, 1, 14, 3, 1, brownMushroom, AIR, false);
 		fillWithBlocks(world, sbb, 14, 2, 2, 14, 3, 4, brownMushroom, AIR, false);
 		fillWithBlocks(world, sbb, 12, 4, 1, 14, 4, 3, brownMushroom, AIR, false);
-		placeTreasureAtCurrentPosition(worldIn, 12, 2, 3, TFTreasure.labyrinth_room, sbb);
+		placeTreasureAtCurrentPosition(world, 12, 2, 3, TFTreasure.labyrinth_room, sbb);
 
 		// a few more ceilingshrooms
 		fillWithBlocks(world, sbb, 5, 4, 5, 7, 5, 7, brownMushroom, AIR, false);
@@ -102,7 +102,7 @@ public class ComponentTFMazeRoomBoss extends ComponentTFMazeRoom {
 
 		// the moo-cen-mino-shrom-taur!
 		final BlockState taurSpawner = TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.MINOSHROOM);
-		setBlockStateRotated(worldIn, taurSpawner, 7, 1, 7, Rotation.NONE, sbb);
+		setBlockStateRotated(world, taurSpawner, 7, 1, 7, Rotation.NONE, sbb);
 
 		return true;
 	}

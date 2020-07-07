@@ -31,7 +31,7 @@ public class BlockTFCinderFurnace extends Block {
 	private static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
 
 	BlockTFCinderFurnace() {
-		super(Properties.create(Material.WOOD).hardnessAndResistance(7.0F).lightValue(15));
+		super(Properties.create(Material.WOOD).hardnessAndResistance(7.0F).func_235838_a_((state) -> 15));
 		this.setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH).with(LIT, false));
 	}
 
@@ -67,7 +67,7 @@ public class BlockTFCinderFurnace extends Block {
 
 	@Override
 	@Deprecated
-	public ActionResultType onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
 		if (!world.isRemote && world.getTileEntity(pos) instanceof TileEntityTFCinderFurnace) {
 			player.openContainer((TileEntityTFCinderFurnace) world.getTileEntity(pos));
 		}

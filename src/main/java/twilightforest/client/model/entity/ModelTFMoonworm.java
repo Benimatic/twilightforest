@@ -29,23 +29,23 @@ public class ModelTFMoonworm extends Model {
 		textureHeight = 32;
 
 		shape1 = new ModelRenderer(this, 0, 4);
-		shape1.addCuboid(-1F, -1F, -1F, 4, 2, 2);
+		shape1.addBox(-1F, -1F, -1F, 4, 2, 2);
 		shape1.setRotationPoint(-1F, 7F, 3F);
 
 		shape2 = new ModelRenderer(this, 0, 8);
-		shape2.addCuboid(-1F, -1F, -1F, 2, 2, 4);
+		shape2.addBox(-1F, -1F, -1F, 2, 2, 4);
 		shape2.setRotationPoint(3F, 7F, 0F);
 
 		shape3 = new ModelRenderer(this, 0, 14);
-		shape3.addCuboid(-1F, -1F, -1F, 2, 2, 2);
+		shape3.addBox(-1F, -1F, -1F, 2, 2, 2);
 		shape3.setRotationPoint(2F, 7F, -2F);
 
 		head = new ModelRenderer(this, 0, 0);
-		head.addCuboid(-1F, -1F, -1F, 2, 2, 2);
+		head.addBox(-1F, -1F, -1F, 2, 2, 2);
 		head.setRotationPoint(-3F, 7F, 2F);
 	}
 
-	public void setAngles(@Nullable TileEntityTFMoonwormTicking moonworm, float partialTime) {
+	public void setRotationAngles(@Nullable TileEntityTFMoonwormTicking moonworm, float partialTime) {
 		head.rotationPointY = 7F;
 		shape1.rotationPointY = 7F;
 		shape2.rotationPointY = 7F;

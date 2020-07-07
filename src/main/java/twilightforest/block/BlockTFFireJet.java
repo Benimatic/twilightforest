@@ -33,12 +33,6 @@ public class BlockTFFireJet extends Block {
 		builder.add(STATE);
 	}
 
-	@Override
-	@Deprecated
-	public int getLightValue(BlockState state) {
-		return state.get(STATE) != FireJetVariant.FLAME ? 0 : super.getLightValue(state);
-	}
-
 	@Nullable
 	@Override
 	public PathNodeType getAiPathNodeType(BlockState state, IBlockReader world, BlockPos pos, @Nullable MobEntity entity) {

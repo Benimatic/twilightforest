@@ -4,6 +4,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
@@ -129,7 +130,7 @@ public class ComponentTFMushroomTowerMain extends ComponentTFMushroomTowerWing {
 	 * Make an opening in this tower for a door.  This now only makes one opening, so you need two
 	 */
 	@Override
-	protected void makeDoorOpening(World world, int dx, int dy, int dz, MutableBoundingBox sbb) {
+	protected void makeDoorOpening(ISeedReader world, int dx, int dy, int dz, MutableBoundingBox sbb) {
 		super.makeDoorOpening(world, dx, dy, dz, sbb);
 
 		// try to remove blocks inside this door

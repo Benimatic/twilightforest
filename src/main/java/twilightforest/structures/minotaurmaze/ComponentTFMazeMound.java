@@ -6,10 +6,10 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.Heightmap;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import net.minecraft.world.server.ServerWorld;
@@ -51,10 +51,10 @@ public class ComponentTFMazeMound extends StructureTFComponentOld {
 	}
 
 	@Override
-	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 
 		if (this.averageGroundLevel < 0) {
-			this.averageGroundLevel = this.getAverageGroundLevel(world.getWorld(), sbb);
+			this.averageGroundLevel = this.getAverageGroundLevel(world, sbb);
 
 			if (this.averageGroundLevel < 0) {
 				return true;
@@ -101,7 +101,7 @@ public class ComponentTFMazeMound extends StructureTFComponentOld {
 	 * levels in the BB's horizontal rectangle).
 	 */
 	@Override
-	protected int getAverageGroundLevel(World world, MutableBoundingBox boundingBox) {
+	protected int getAverageGroundLevel(ISeedReader world, MutableBoundingBox boundingBox) {
 		int totalHeight = 0;
 		int totalMeasures = 0;
 

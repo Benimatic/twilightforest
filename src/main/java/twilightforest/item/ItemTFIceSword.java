@@ -22,7 +22,7 @@ public class ItemTFIceSword extends SwordItem {
 			if (!target.world.isRemote) {
 				target.addPotionEffect(new EffectInstance(TFPotions.frosty.get(), 20 * 10, 2));
 			} else {
-				target.world.addParticle(TFParticleType.SNOW.get(), target.getX(), target.getY() + target.getHeight() * 0.5, target.getZ(), target.getWidth() * 0.5, target.getHeight() * 0.5, target.getWidth() * 0.5);
+				target.world.addParticle(TFParticleType.SNOW.get(), target.getPosX(), target.getPosY() + target.getHeight() * 0.5, target.getPosZ(), target.getWidth() * 0.5, target.getHeight() * 0.5, target.getWidth() * 0.5);
 			}
 		}
 

@@ -9,12 +9,10 @@ import net.minecraft.client.renderer.entity.IEntityRenderer;
 import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraft.client.renderer.model.Model;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ModelTFSlimeBeetle;
 import twilightforest.entity.EntityTFSlimeBeetle;
-import twilightforest.entity.boss.EntityTFHydraHead;
 
 public class RenderTFSlimeBeetle extends MobRenderer<EntityTFSlimeBeetle, ModelTFSlimeBeetle> {
 
@@ -42,9 +40,9 @@ public class RenderTFSlimeBeetle extends MobRenderer<EntityTFSlimeBeetle, ModelT
 			if (!entity.isInvisible()) {
 				innerModel.setModelAttributes(getEntityModel());
 				innerModel.setLivingAnimations(entity, limbSwing, limbSwingAmount, partialTicks);
-				innerModel.setAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+				innerModel.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 				IVertexBuilder buffer = buffers.getBuffer(RenderType.getEntityTranslucent(getTexture(entity)));
-				innerModel.render(ms, buffer, light, LivingRenderer.getOverlay(entity, 0), 1, 1, 1, 1);
+				innerModel.render(ms, buffer, light, LivingRenderer.getPackedOverlay(entity, 0), 1, 1, 1, 1);
 			}
 		}
 	}

@@ -3,10 +3,12 @@ package twilightforest.structures.stronghold;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
@@ -41,8 +43,8 @@ public class ComponentTFStrongholdLeftTurn extends StructureTFStrongholdComponen
 	}
 
 	@Override
-	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
-		placeStrongholdWalls(world.getWorld(), sbb, 0, 0, 0, 8, 6, 8, rand, deco.randomBlocks);
+	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		placeStrongholdWalls(world, sbb, 0, 0, 0, 8, 6, 8, rand, deco.randomBlocks);
 
 		// clear inside
 		fillWithAir(world, sbb, 1, 1, 1, 7, 5, 7);
@@ -54,10 +56,10 @@ public class ComponentTFStrongholdLeftTurn extends StructureTFStrongholdComponen
 //		placeDoorwayAt(world, rand, 1, 8, 1, 4, sbb);
 
 		// statue
-		placeCornerStatue(world.getWorld(), 2, 1, 6, 1, sbb);
+		placeCornerStatue(world, 2, 1, 6, 1, sbb);
 
 		// doors
-		placeDoors(world.getWorld(), rand, sbb);
+		placeDoors(world, rand, sbb);
 
 		return true;
 	}

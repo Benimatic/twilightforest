@@ -13,6 +13,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import twilightforest.TFFeature;
 
 import java.util.Random;
@@ -54,7 +55,7 @@ public class EntityTFHedgeSpider extends SpiderEntity {
 		int chunkX = MathHelper.floor(pos.getX()) >> 4;
 		int chunkZ = MathHelper.floor(pos.getZ()) >> 4;
 		// We're allowed to spawn in bright light only in hedge mazes.
-		return TFFeature.getNearestFeature(chunkX, chunkZ, world.getWorld()) == TFFeature.HEDGE_MAZE
+		return TFFeature.getNearestFeature(chunkX, chunkZ, (ServerWorld) world) == TFFeature.HEDGE_MAZE
 				|| MonsterEntity.isValidLightLevel(world, pos, random);
 	}
 

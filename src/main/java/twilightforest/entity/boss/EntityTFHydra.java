@@ -1,6 +1,8 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.PlayerEntity;
@@ -84,7 +86,7 @@ public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 		partArray = parts.toArray(new Entity[0]);
 
 		this.ignoreFrustumCheck = true;
-		this.isImmuneToFire();
+		this.func_230279_az_();
 		this.experienceValue = 511;
 
 		setSpawnHeads(true);
@@ -96,11 +98,10 @@ public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 		this.bossInfo.setName(this.getDisplayName());
 	}
 
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(MAX_HEALTH);
-		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
+	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return MobEntity.func_233666_p_()
+				.func_233815_a_(Attributes.field_233818_a_, MAX_HEALTH)
+				.func_233815_a_(Attributes.field_233821_d_, 0.28D);
 	}
 
 	@Override
@@ -118,7 +119,7 @@ public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 	@Override
 	public void checkDespawn() {
 		if (world.getDifficulty() == Difficulty.PEACEFUL) {
-			world.setBlockState(getPosition().add(0, 2, 0), TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.HYDRA));
+			world.setBlockState(func_233580_cy_().add(0, 2, 0), TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.HYDRA));
 			remove();
 			for (HydraHeadContainer container : hc) {
 				if (container.headEntity != null) {
@@ -171,7 +172,7 @@ public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 			if (!world.isRemote && shouldSpawnHeads()) {
 				for (int i = 0; i < numHeads; i++) {
 					hc[i].headEntity = new EntityTFHydraHead(this, "head" + i, 3F, 3F);
-					hc[i].headEntity.setPosition(this.getX(), this.getY(), this.getZ());
+					hc[i].headEntity.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
 					hc[i].setHeadPosition();
 					world.addEntity(hc[i].headEntity);
 				}
@@ -214,14 +215,14 @@ public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 		// body goes behind the actual position of the hydra
 		angle = (((renderYawOffset + 180) * 3.141593F) / 180F);
 
-		dx = getX() - MathHelper.sin(angle) * 3.0;
-		dy = getY() + 0.1;
-		dz = getZ() + MathHelper.cos(angle) * 3.0;
+		dx = getPosX() - MathHelper.sin(angle) * 3.0;
+		dy = getPosY() + 0.1;
+		dz = getPosZ() + MathHelper.cos(angle) * 3.0;
 		body.setPosition(dx, dy, dz);
 
-		dx = getX() - MathHelper.sin(angle) * 10.5;
-		dy = getY() + 0.1;
-		dz = getZ() + MathHelper.cos(angle) * 10.5;
+		dx = getPosX() - MathHelper.sin(angle) * 10.5;
+		dy = getPosY() + 0.1;
+		dz = getPosZ() + MathHelper.cos(angle) * 10.5;
 		tail.setPosition(dx, dy, dz);
 
 		// destroy blocks
@@ -517,14 +518,14 @@ public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 	 * Square of distance between two entities with y not a factor, just x and z
 	 */
 	private double distanceSqXZ(Entity headEntity, Entity target) {
-		double distX = headEntity.getX() - target.getX();
-		double distZ = headEntity.getZ() - target.getZ();
+		double distX = headEntity.getPosX() - target.getPosX();
+		double distZ = headEntity.getPosZ() - target.getPosZ();
 		return distX * distX + distZ * distZ;
 	}
 
 	@Nullable
 	private LivingEntity findSecondaryTarget(double range) {
-		return this.world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(this.getX(), this.getY(), this.getZ(), this.getX() + 1, this.getY() + 1, this.getZ() + 1).grow(range, range, range))
+		return this.world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(this.getPosX(), this.getPosY(), this.getPosZ(), this.getPosX() + 1, this.getPosY() + 1, this.getPosZ() + 1).grow(range, range, range))
 				.stream()
 				.filter(e -> !(e instanceof EntityTFHydra || e instanceof EntityTFHydraPart))
 				.filter(e -> e != getAttackTarget() && !isAnyHeadTargeting(e) && getEntitySenses().canSee(e))
@@ -548,8 +549,8 @@ public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 
 		for (Entity entity : entities) {
 			if (entity instanceof LivingEntity) {
-				double d2 = entity.getX() - d0;
-				double d3 = entity.getZ() - d1;
+				double d2 = entity.getPosX() - d0;
+				double d3 = entity.getPosZ() - d1;
 				double d4 = d2 * d2 + d3 * d3;
 				entity.addVelocity(d2 / d4 * 4.0D, 0.20000000298023224D, d3 / d4 * 4.0D);
 			}
@@ -685,7 +686,8 @@ public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 	protected void collideWithEntity(Entity entity) {}
 
 	@Override
-	public void knockBack(Entity entity, float strength, double xRatio, double zRatio) {}
+	public void func_233627_a_(float strength, double xRatio, double zRatio) {
+	}
 
 	@Override
 	protected SoundEvent getAmbientSound() {
@@ -712,7 +714,7 @@ public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 		super.onDeath(cause);
 		// mark the lair as defeated
 		if (!world.isRemote) {
-			TFGenerationSettings.markStructureConquered(world, new BlockPos(this), TFFeature.HYDRA_LAIR);
+			TFGenerationSettings.markStructureConquered(world, new BlockPos(this.func_233580_cy_()), TFFeature.HYDRA_LAIR);
 		}
 	}
 
@@ -759,7 +761,7 @@ public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 				while (i > 0) {
 					int j = ExperienceOrbEntity.getXPSplit(i);
 					i -= j;
-					this.world.addEntity(new ExperienceOrbEntity(this.world, this.getX(), this.getY(), this.getZ(), j));
+					this.world.addEntity(new ExperienceOrbEntity(this.world, this.getPosX(), this.getPosY(), this.getPosZ(), j));
 				}
 			}
 
@@ -771,9 +773,9 @@ public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 			double vy = this.rand.nextGaussian() * 0.02D;
 			double vz = this.rand.nextGaussian() * 0.02D;
 			this.world.addParticle((rand.nextInt(2) == 0 ? ParticleTypes.EXPLOSION_EMITTER : ParticleTypes.EXPLOSION),
-					this.getX() + this.rand.nextFloat() * this.body.getWidth() * 2.0F - this.body.getWidth(),
-					this.getY() + this.rand.nextFloat() * this.body.getHeight(),
-					this.getZ() + this.rand.nextFloat() * this.body.getWidth() * 2.0F - this.body.getWidth(),
+					this.getPosX() + this.rand.nextFloat() * this.body.getWidth() * 2.0F - this.body.getWidth(),
+					this.getPosY() + this.rand.nextFloat() * this.body.getHeight(),
+					this.getPosZ() + this.rand.nextFloat() * this.body.getWidth() * 2.0F - this.body.getWidth(),
 					vx, vy, vz
 			);
 		}

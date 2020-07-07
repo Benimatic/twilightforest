@@ -48,7 +48,7 @@ public abstract class StructureStartTFAbstract extends StructureStart {
     }
 
 	@Override
-	public void init(ChunkGenerator<?> generator, TemplateManager manager, int chunkX, int chunkZ, Biome biome) {
+	public void init(ChunkGenerator generator, TemplateManager manager, int chunkX, int chunkZ, Biome biome) {
 		int x = (chunkX << 4) + 8;
 		int z = (chunkZ << 4) + 8;
 		int y = TFWorld.SEALEVEL + 1; //TODO: maybe a biome-specific altitude for some of them?

@@ -1,36 +1,35 @@
 package twilightforest.world.feature;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.minecraft.block.BushBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import twilightforest.block.TFBlocks;
 
 import java.util.Random;
-import java.util.function.Function;
 
 public class TFGenFallenLeaves extends Feature<NoFeatureConfig> {
 
-	public TFGenFallenLeaves(Function<Dynamic<?>, NoFeatureConfig> config) {
+	public TFGenFallenLeaves(Codec<NoFeatureConfig> config) {
 		super(config);
 	}
 
 	private final BlockState state = TFBlocks.fallen_leaves.get().getDefaultState();
 
 	@Override
-	public boolean place(IWorld worldIn, ChunkGenerator< ? extends GenerationSettings> generator, Random rand, BlockPos position, NoFeatureConfig config) {
+	public boolean func_230362_a_(ISeedReader worldIn, StructureManager manager, ChunkGenerator generator, Random rand, BlockPos position, NoFeatureConfig config) {
 		do {
 			BlockState state = worldIn.getBlockState(position.down());
 			if (worldIn.isAirBlock(position) && (state.getMaterial() == Material.ORGANIC || state.getMaterial() == Material.EARTH))
 				break;
 			position = position.down();
-		} while (position.getY() > generator.getSeaLevel());
+		} while (position.getY() > generator.getGroundHeight());
 
 		for (int x = 0; x < 5; x++)
 			for (int z = 0; z < 5; z++) {

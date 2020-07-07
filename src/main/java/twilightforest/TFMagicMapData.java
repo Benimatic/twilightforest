@@ -1,15 +1,10 @@
 package twilightforest;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.MapData;
 import net.minecraft.world.storage.MapDecoration;
 import net.minecraftforge.api.distmarker.Dist;
@@ -59,7 +54,7 @@ public class TFMagicMapData extends MapData {
 			int worldX = (coord.getX() << this.scale - 1) + this.xCenter;
 			int worldZ = (coord.getY() << this.scale - 1) + this.zCenter;
 
-			int trueId = TFFeature.getFeatureID(worldX, worldZ, world);
+			int trueId = TFFeature.getFeatureID(worldX, worldZ, (ServerWorld) world);
 			if (coord.featureId != trueId) {
 				toRemove.add(coord);
 				toAdd.add(new TFMapDecoration(trueId, coord.getX(), coord.getY(), coord.getRotation()));
@@ -107,13 +102,14 @@ public class TFMagicMapData extends MapData {
 		this.zCenter = roundZ * mapSize;
 	}
 
+	//PORT NOTE: World.field_234918_g_ = "overworld"
 	// [VanillaCopy] Adapted from World.getMapData
 	@Nullable
 	public static TFMagicMapData getMagicMapData(World world, String name) {
 		if (world.isRemote) {
 			return CLIENT_DATA.getOrDefault(world, Collections.emptyMap()).get(name);
 		} else {
-			return world.getServer().getWorld(DimensionType.OVERWORLD).getSavedData().get(() -> new TFMagicMapData(name), name);
+			return world.getServer().getWorld(World.field_234918_g_).getSavedData().get(() -> new TFMagicMapData(name), name);
 		}
 	}
 
@@ -122,7 +118,7 @@ public class TFMagicMapData extends MapData {
 		if (world.isRemote) {
 			CLIENT_DATA.computeIfAbsent(world, k -> new HashMap<>()).put(data.getName(), data);
 		} else {
-			world.getServer().getWorld(DimensionType.OVERWORLD).getSavedData().set(data);
+			world.getServer().getWorld(World.field_234918_g_).getSavedData().set(data);
 		}
 	}
 

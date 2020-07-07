@@ -14,52 +14,52 @@ public class ModelTFGoblinKnightLower extends BipedModel<EntityTFGoblinKnightLow
 	public ModelTFGoblinKnightLower() {
 		super(0.0F, 0.0F, 128, 64);
 
-		this.isSneaking = false;
+		this.isSneak = false;
 		this.textureWidth = 128;
 		this.textureHeight = 64;
 
 //FIXME: AtomicBlom: Replace with something like LayerCape
 /*
 		this.bipedCloak = new ModelRenderer(this, 0, 0);
-        this.bipedCloak.addCuboid(-5.0F, 0.0F, -1.0F, 10, 16, 1);
+        this.bipedCloak.addBox(-5.0F, 0.0F, -1.0F, 10, 16, 1);
 */
 //FIXME: AtomicBlom replace with some variant of LayerDeadmau5Head
 /*
         this.bipedEars = new ModelRenderer(this, 24, 0);
-        this.bipedEars.addCuboid(-3.0F, -6.0F, -1.0F, 6, 6, 1);
+        this.bipedEars.addBox(-3.0F, -6.0F, -1.0F, 6, 6, 1);
 */
 
 		this.bipedHead = new ModelRenderer(this, 0, 32);
-		this.bipedHead.addCuboid(-2.5F, -5.0F, -3.5F, 5, 5, 5);
+		this.bipedHead.addBox(-2.5F, -5.0F, -3.5F, 5, 5, 5);
 		this.bipedHead.setRotationPoint(0.0F, 10.0F, 1.0F);
 
 		this.bipedHeadwear = new ModelRenderer(this, 0, 0);
-		this.bipedHeadwear.addCuboid(0, 0, 0, 0, 0, 0);
+		this.bipedHeadwear.addBox(0, 0, 0, 0, 0, 0);
 
 		this.bipedBody = new ModelRenderer(this, 16, 48);
-		this.bipedBody.addCuboid(-3.5F, 0.0F, -2.0F, 7, 8, 4);
+		this.bipedBody.addBox(-3.5F, 0.0F, -2.0F, 7, 8, 4);
 		this.bipedBody.setRotationPoint(0.0F, 8.0F, 0.0F);
 
 		this.bipedRightArm = new ModelRenderer(this, 40, 48);
-		this.bipedRightArm.addCuboid(-2.0F, -2.0F, -1.5F, 2, 8, 3);
+		this.bipedRightArm.addBox(-2.0F, -2.0F, -1.5F, 2, 8, 3);
 		this.bipedRightArm.setRotationPoint(-3.5F, 10.0F, 0.0F);
 
 		this.bipedLeftArm = new ModelRenderer(this, 40, 48);
 		this.bipedLeftArm.mirror = true;
-		this.bipedLeftArm.addCuboid(0.0F, -2.0F, -1.5F, 2, 8, 3);
+		this.bipedLeftArm.addBox(0.0F, -2.0F, -1.5F, 2, 8, 3);
 		this.bipedLeftArm.setRotationPoint(3.5F, 10.0F, 0.0F);
 
 		this.bipedRightLeg = new ModelRenderer(this, 0, 48);
-		this.bipedRightLeg.addCuboid(-3.0F, 0.0F, -2.0F, 4, 8, 4);
+		this.bipedRightLeg.addBox(-3.0F, 0.0F, -2.0F, 4, 8, 4);
 		this.bipedRightLeg.setRotationPoint(-2.5F, 16.0F, 0.0F);
 
 		this.bipedLeftLeg = new ModelRenderer(this, 0, 48);
 		this.bipedLeftLeg.mirror = true;
-		this.bipedLeftLeg.addCuboid(-1.0F, 0.0F, -2.0F, 4, 8, 4);
+		this.bipedLeftLeg.addBox(-1.0F, 0.0F, -2.0F, 4, 8, 4);
 		this.bipedLeftLeg.setRotationPoint(2.5F, 16.0F, 0.0F);
 
 		this.tunic = new ModelRenderer(this, 64, 19);
-		this.tunic.addCuboid(-6.0F, 0.0F, -3.0F, 12, 9, 6);
+		this.tunic.addBox(-6.0F, 0.0F, -3.0F, 12, 9, 6);
 		this.tunic.setRotationPoint(0F, 7.5F, 0.0F);
 	}
 
@@ -73,7 +73,7 @@ public class ModelTFGoblinKnightLower extends BipedModel<EntityTFGoblinKnightLow
 	}
 
 	@Override
-	public void setAngles(EntityTFGoblinKnightLower entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setRotationAngles(EntityTFGoblinKnightLower entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.bipedHead.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 		this.bipedHead.rotateAngleX = headPitch / (180F / (float) Math.PI);
 		this.bipedHeadwear.rotateAngleY = this.bipedHead.rotateAngleY;

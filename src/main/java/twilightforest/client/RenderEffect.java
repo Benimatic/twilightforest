@@ -1,20 +1,11 @@
 package twilightforest.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.block.Blocks;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
 import org.lwjgl.opengl.GL11;
 import twilightforest.capabilities.CapabilityList;
-import twilightforest.client.renderer.entity.LayerShields;
 import twilightforest.entity.boss.EntityTFLich;
-import twilightforest.potions.PotionFrosted;
-
-import java.util.Random;
 
 public enum RenderEffect {
 

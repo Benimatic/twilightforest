@@ -12,7 +12,7 @@ public class ModelTFArmor extends BipedModel {
 	}
 
 	@Override
-	public void setAngles(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setRotationAngles(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		// [VanillaCopy] ModelArmorStandArmor
 		// this prevents helmets from always facing south, and the armor "breathing" on the stand
 		if (entityIn instanceof ArmorStandEntity) {
@@ -40,7 +40,7 @@ public class ModelTFArmor extends BipedModel {
 			this.bipedRightLeg.setRotationPoint(-1.9F, 11.0F, 0.0F);
 			this.bipedHeadwear.copyModelAngles(this.bipedHead);
 		} else
-			super.setAngles((LivingEntity) entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+			super.setRotationAngles((LivingEntity) entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 		// TF - Defer to super otherwise
 	}
 }

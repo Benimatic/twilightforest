@@ -1,30 +1,29 @@
 package twilightforest.world.feature;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.feature.BlockStateFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 
 import java.util.Random;
-import java.util.function.Function;
 
 public class TFGenLampposts extends Feature<BlockStateFeatureConfig> {
 
 	private static final Rotation[] ROTATIONS = Rotation.values();
 	//private final BlockState lamp;
 
-	public TFGenLampposts(Function<Dynamic<?>, BlockStateFeatureConfig> configIn) {
+	public TFGenLampposts(Codec<BlockStateFeatureConfig> configIn) {
 		super(configIn);
 	}
 
 	@Override
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, BlockStateFeatureConfig config) {
+	public boolean func_230362_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateFeatureConfig config) {
 		// we should start on a grass block
 		if (world.getBlockState(pos.down()).getBlock() != Blocks.GRASS) {
 			return false;

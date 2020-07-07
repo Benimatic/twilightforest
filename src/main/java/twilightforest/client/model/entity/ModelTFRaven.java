@@ -31,66 +31,66 @@ public class ModelTFRaven extends SegmentedModel<EntityTFRaven> {
 		textureHeight = 32;
 
 		head = new ModelRenderer(this, 0, 0);
-		head.addCuboid(-1.5F, -1.5F, -3F, 3, 3, 3);
+		head.addBox(-1.5F, -1.5F, -3F, 3, 3, 3);
 		head.setRotationPoint(0F, 18F, 0F);
 		head.setTextureSize(32, 32);
 		head.mirror = true;
 		setRotation(head, 0F, 0F, 0F);
 
 		beak1 = new ModelRenderer(this, 12, 0);
-		beak1.addCuboid(-0.5F, -1F, -2F, 1, 1, 2);
+		beak1.addBox(-0.5F, -1F, -2F, 1, 1, 2);
 		beak1.setRotationPoint(0F, 0F, -2.5F);
 		beak1.rotateAngleX = 0.2617994F;
 		head.addChild(beak1);
 
 		beak2 = new ModelRenderer(this, 12, 0);
-		beak2.addCuboid(-0.5F, 0F, -2F, 1, 1, 2);
+		beak2.addBox(-0.5F, 0F, -2F, 1, 1, 2);
 		beak2.setRotationPoint(0F, 0F, -2.5F);
 		beak2.rotateAngleX = -0.2617994F;
 		head.addChild(beak2);
 
 		body = new ModelRenderer(this, 0, 6);
-		body.addCuboid(-1.5F, 0F, -1F, 3, 4, 6);
+		body.addBox(-1.5F, 0F, -1F, 3, 4, 6);
 		body.setRotationPoint(0F, 17F, 1F);
 		body.setTextureSize(32, 32);
 		setRotation(body, -0.5235988F, 0F, 0F);
 
 		rightarm = new ModelRenderer(this, 0, 16);
-		rightarm.addCuboid(-1F, 0F, -1.5F, 1, 3, 6);
+		rightarm.addBox(-1F, 0F, -1.5F, 1, 3, 6);
 		rightarm.setRotationPoint(-1.5F, 18F, 1F);
 		rightarm.setTextureSize(32, 32);
 
 		leftarm = new ModelRenderer(this, 0, 16);
-		leftarm.addCuboid(0F, 0F, -1.5F, 1, 3, 6);
+		leftarm.addBox(0F, 0F, -1.5F, 1, 3, 6);
 		leftarm.setRotationPoint(1.5F, 18F, 1F);
 		leftarm.setTextureSize(32, 32);
 
 		rightleg = new ModelRenderer(this, 14, 16);
-		rightleg.addCuboid(0F, 0F, 0F, 1, 2, 1);
+		rightleg.addBox(0F, 0F, 0F, 1, 2, 1);
 		rightleg.setRotationPoint(-1.5F, 21F, 1F);
 		rightleg.setTextureSize(32, 32);
 
 		rightfoot = new ModelRenderer(this, 14, 20);
-		rightfoot.addCuboid(0F, -1F, -2F, 1, 1, 2);
+		rightfoot.addBox(0F, -1F, -2F, 1, 1, 2);
 		rightfoot.setRotationPoint(0F, 2F, 1F);
 		rightfoot.setTextureSize(32, 32);
 		setRotation(rightfoot, 0.5235988F, 0F, 0F);
 		rightleg.addChild(rightfoot);
 
 		leftleg = new ModelRenderer(this, 14, 16);
-		leftleg.addCuboid(0F, 0F, 0F, 1, 2, 1);
+		leftleg.addBox(0F, 0F, 0F, 1, 2, 1);
 		leftleg.setRotationPoint(0.5F, 21F, 1F);
 		leftleg.setTextureSize(32, 32);
 
 		leftfoot = new ModelRenderer(this, 14, 20);
-		leftfoot.addCuboid(0F, -1F, -2F, 1, 1, 2);
+		leftfoot.addBox(0F, -1F, -2F, 1, 1, 2);
 		leftfoot.setRotationPoint(0F, 2F, 1F);
 		leftfoot.setTextureSize(32, 32);
 		setRotation(leftfoot, 0.5235988F, 0F, 0F);
 		leftleg.addChild(leftfoot);
 
 		tail = new ModelRenderer(this, 0, 25);
-		tail.addCuboid(-1.5F, -0.5F, 0F, 3, 1, 3);
+		tail.addBox(-1.5F, -0.5F, 0F, 3, 1, 3);
 		tail.setRotationPoint(0F, 21F, 4F);
 		tail.setTextureSize(32, 32);
 		setRotation(tail, -0.5235988F, 0F, 0F);
@@ -123,7 +123,7 @@ public class ModelTFRaven extends SegmentedModel<EntityTFRaven> {
 
 
 	@Override
-	public void setAngles(EntityTFRaven entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setRotationAngles(EntityTFRaven entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		head.rotateAngleX = headPitch / (180F / (float) Math.PI);
 		head.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 		head.rotateAngleZ = netHeadYaw > 5 ? -0.2617994F : 0;

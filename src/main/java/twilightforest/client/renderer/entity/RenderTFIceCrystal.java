@@ -18,7 +18,7 @@ public class RenderTFIceCrystal extends MobRenderer<EntityTFIceCrystal, ModelTFI
 	}
 
 	@Override
-	protected void scale(EntityTFIceCrystal entity, MatrixStack stack, float partialTicks) {
+	protected void preRenderCallback(EntityTFIceCrystal entity, MatrixStack stack, float partialTicks) {
 		float bounce = entity.ticksExisted + partialTicks;
 		stack.translate(0F, MathHelper.sin((bounce) * 0.2F) * 0.15F, 0F);
 	}

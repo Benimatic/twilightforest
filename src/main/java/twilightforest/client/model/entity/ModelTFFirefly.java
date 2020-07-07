@@ -8,19 +8,19 @@ import net.minecraft.entity.Entity;
 public class ModelTFFirefly extends SegmentedModel {
 	public ModelTFFirefly() {
 		legs = new ModelRenderer(this, 0, 21);
-		legs.addCuboid(-4F, 7.9F, -5F, 8, 1, 10, 0F);
+		legs.addBox(-4F, 7.9F, -5F, 8, 1, 10, 0F);
 		//legs.setRotationPoint(0F, 16F, 0F);
 
 		fatbody = new ModelRenderer(this, 0, 11);
-		fatbody.addCuboid(-2F, 6F, -4F, 4, 2, 6, 0F);
+		fatbody.addBox(-2F, 6F, -4F, 4, 2, 6, 0F);
 		//fatbody.setRotationPoint(0F, 16F, 0F);
 
 		skinnybody = new ModelRenderer(this, 0, 0);
-		skinnybody.addCuboid(-1F, 7F, -5F, 2, 1, 8, 0F);
+		skinnybody.addBox(-1F, 7F, -5F, 2, 1, 8, 0F);
 		//skinnybody.setRotationPoint(0F, 16F, 0F);
 
 		glow = new ModelRenderer(this, 20, 0);
-		glow.addCuboid(-5F, 5.9F, -9F, 10, 0, 10, 0F);
+		glow.addBox(-5F, 5.9F, -9F, 10, 0, 10, 0F);
 		//glow.setRotationPoint(0F, 16F, 0F);
 
 	}
@@ -35,7 +35,7 @@ public class ModelTFFirefly extends SegmentedModel {
 	}
 
 	@Override
-	public void setAngles(Entity entity, float v, float v1, float v2, float v3, float v4) {
+	public void setRotationAngles(Entity entity, float v, float v1, float v2, float v3, float v4) {
 		//super.setRotationAngles(f, f1, f2, f3, f4, f5);
 	}
 

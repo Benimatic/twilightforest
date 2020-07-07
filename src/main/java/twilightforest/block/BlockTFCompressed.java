@@ -49,7 +49,7 @@ public class BlockTFCompressed extends Block {
 
 	@Override
 	public void onEntityWalk(World worldIn, BlockPos pos, Entity entityIn) {
-		if ((!entityIn.isImmuneToFire())
+		if ((!entityIn.func_230279_az_())
 				&& entityIn instanceof LivingEntity
 				&& (!EnchantmentHelper.hasFrostWalker((LivingEntity) entityIn))
 				&& this == TFBlocks.fiery_block.get()) {
@@ -62,14 +62,14 @@ public class BlockTFCompressed extends Block {
 	@Override
 	public void onFallenUpon(World worldIn, BlockPos pos, Entity entityIn, float fallDistance) {
 		if (this == TFBlocks.steeleaf_block.get()) {
-			entityIn.handleFallDamage(fallDistance, 0.75F);
+			entityIn.onLivingFall(fallDistance, 0.75F);
 		} else if (this == TFBlocks.arctic_fur_block.get()) {
-			entityIn.handleFallDamage(fallDistance, 0.1F);
+			entityIn.onLivingFall(fallDistance, 0.1F);
 		}
 	}
 
 	@Override
-	public boolean isFireSource(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
+	public boolean isFireSource(BlockState state, IWorldReader world, BlockPos pos, Direction side) {
 		return this == TFBlocks.fiery_block.get();
 	}
 

@@ -6,7 +6,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
@@ -31,7 +31,7 @@ public class EntityTFUrGhastFireball extends FireballEntity implements ITFProjec
 				}
 
 				boolean flag = ForgeEventFactory.getMobGriefingEvent(this.world, this.shootingEntity);
-				this.world.createExplosion(null, this.getX(), this.getY(), this.getZ(), (float) this.explosionPower, flag, flag ? Explosion.Mode.BREAK : Explosion.Mode.NONE);
+				this.world.createExplosion(null, this.getPosX(), this.getPosY(), this.getPosZ(), (float) this.explosionPower, flag, flag ? Explosion.Mode.BREAK : Explosion.Mode.NONE);
 				this.remove();
 			}
 		}
@@ -39,7 +39,7 @@ public class EntityTFUrGhastFireball extends FireballEntity implements ITFProjec
 
 	@Override
 	public void shoot(double x, double y, double z, float scale, float dist) {
-		Vec3d vec3d = (new Vec3d(x, y, z))
+		Vector3d vec3d = (new Vector3d(x, y, z))
 				.normalize()
 				.add(this.rand.nextGaussian() * (double) 0.0075F * (double) dist, this.rand.nextGaussian() * (double) 0.0075F * (double) dist, this.rand.nextGaussian() * (double) 0.0075F * (double) dist)
 				.scale((double) scale);

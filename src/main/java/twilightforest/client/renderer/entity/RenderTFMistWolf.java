@@ -2,10 +2,8 @@ package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.WolfRenderer;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
@@ -20,9 +18,8 @@ public class RenderTFMistWolf extends WolfRenderer {
 		this.shadowSize = 1.0F;
 	}
 
-	//TODO: Yes, I know, I shoved everything from preRenderCallback into here. Might want to check this
 	@Override
-	protected void scale(WolfEntity entity, MatrixStack stack, float partialTicks) {
+	protected void preRenderCallback(WolfEntity entity, MatrixStack stack, float partialTicks) {
 		float wolfScale = 1.9F;
 		stack.scale(wolfScale, wolfScale, wolfScale);
 

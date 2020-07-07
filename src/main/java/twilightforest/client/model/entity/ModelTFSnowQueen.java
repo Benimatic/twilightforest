@@ -26,44 +26,44 @@ public class ModelTFSnowQueen extends BipedModel<EntityTFSnowQueen> {
 
 		// dress
 		this.bipedBody = new ModelRenderer(this, 32, 0);
-		this.bipedBody.addCuboid(-4.0F, 0.0F, -2.0F, 8, 23, 4, par1);
+		this.bipedBody.addBox(-4.0F, 0.0F, -2.0F, 8, 23, 4, par1);
 		this.bipedBody.setRotationPoint(0.0F, 0.0F + par2, 0.0F);
 
 		// shrink
 		this.bipedRightArm = new ModelRenderer(this, 16, 16);
-		this.bipedRightArm.addCuboid(-2.0F, -2.0F, -1.5F, 3, 12, 3, par1);
+		this.bipedRightArm.addBox(-2.0F, -2.0F, -1.5F, 3, 12, 3, par1);
 		this.bipedRightArm.setRotationPoint(-5.0F, 2.0F + par2, 0.0F);
 		this.bipedLeftArm = new ModelRenderer(this, 16, 16);
 		this.bipedLeftArm.mirror = true;
-		this.bipedLeftArm.addCuboid(-1.0F, -2.0F, -1.3F, 3, 12, 3, par1);
+		this.bipedLeftArm.addBox(-1.0F, -2.0F, -1.3F, 3, 12, 3, par1);
 		this.bipedLeftArm.setRotationPoint(5.0F, 2.0F + par2, 0.0F);
 		this.bipedRightLeg = new ModelRenderer(this, 0, 16);
-		this.bipedRightLeg.addCuboid(-1.5F, 0.0F, -1.5F, 3, 12, 3, par1);
+		this.bipedRightLeg.addBox(-1.5F, 0.0F, -1.5F, 3, 12, 3, par1);
 		this.bipedRightLeg.setRotationPoint(-1.9F, 12.0F + par2, 0.0F);
 		this.bipedLeftLeg = new ModelRenderer(this, 0, 16);
 		this.bipedLeftLeg.mirror = true;
-		this.bipedLeftLeg.addCuboid(-1.5F, 0.0F, -1.5F, 3, 12, 3, par1);
+		this.bipedLeftLeg.addBox(-1.5F, 0.0F, -1.5F, 3, 12, 3, par1);
 		this.bipedLeftLeg.setRotationPoint(1.9F, 12.0F + par2, 0.0F);
 	}
 
 	private ModelRenderer makeSideCrown(float spikeDepth, float crownX, float angle) {
 		ModelRenderer crownSide = new ModelRenderer(this, 28, 28);
-		crownSide.addCuboid(-3.5F, -0.5F, -0.5F, 7, 1, 1);
+		crownSide.addBox(-3.5F, -0.5F, -0.5F, 7, 1, 1);
 		crownSide.setRotationPoint(crownX, -6.0F, 0.0F);
 		crownSide.rotateAngleY = 3.14159F / 2.0F;
 
 		ModelRenderer spike4 = new ModelRenderer(this, 48, 27);
-		spike4.addCuboid(-0.5F, -3.5F, spikeDepth, 1, 4, 1);
+		spike4.addBox(-0.5F, -3.5F, spikeDepth, 1, 4, 1);
 		spike4.rotateAngleX = angle * 1.5F / 180F * 3.14159F;
 
 		ModelRenderer spike3l = new ModelRenderer(this, 52, 28);
-		spike3l.addCuboid(-0.5F, -2.5F, spikeDepth, 1, 3, 1);
+		spike3l.addBox(-0.5F, -2.5F, spikeDepth, 1, 3, 1);
 		spike3l.setRotationPoint(-2.5F, 0.0F, 0.0F);
 		spike3l.rotateAngleX = angle / 180F * 3.14159F;
 		spike3l.rotateAngleZ = -10F / 180F * 3.14159F;
 
 		ModelRenderer spike3r = new ModelRenderer(this, 52, 28);
-		spike3r.addCuboid(-0.5F, -2.5F, spikeDepth, 1, 3, 1);
+		spike3r.addBox(-0.5F, -2.5F, spikeDepth, 1, 3, 1);
 		spike3r.setRotationPoint(2.5F, 0.0F, 0.0F);
 		spike3r.rotateAngleX = angle / 180F * 3.14159F;
 		spike3r.rotateAngleZ = 10F / 180F * 3.14159F;
@@ -76,21 +76,21 @@ public class ModelTFSnowQueen extends BipedModel<EntityTFSnowQueen> {
 
 	private ModelRenderer makeFrontCrown(float spikeDepth, float crownZ, float angle) {
 		ModelRenderer crownFront = new ModelRenderer(this, 28, 30);
-		crownFront.addCuboid(-4.5F, -0.5F, -0.5F, 9, 1, 1);
+		crownFront.addBox(-4.5F, -0.5F, -0.5F, 9, 1, 1);
 		crownFront.setRotationPoint(0.0F, -6.0F, crownZ);
 
 		ModelRenderer spike4 = new ModelRenderer(this, 48, 27);
-		spike4.addCuboid(-0.5F, -3.5F, spikeDepth, 1, 4, 1);
+		spike4.addBox(-0.5F, -3.5F, spikeDepth, 1, 4, 1);
 		spike4.rotateAngleX = angle * 1.5F / 180F * 3.14159F;
 
 		ModelRenderer spike3l = new ModelRenderer(this, 52, 28);
-		spike3l.addCuboid(-0.5F, -2.5F, spikeDepth, 1, 3, 1);
+		spike3l.addBox(-0.5F, -2.5F, spikeDepth, 1, 3, 1);
 		spike3l.setRotationPoint(-2.5F, 0.0F, 0.0F);
 		spike3l.rotateAngleX = angle / 180F * 3.14159F;
 		spike3l.rotateAngleZ = -10F / 180F * 3.14159F;
 
 		ModelRenderer spike3r = new ModelRenderer(this, 52, 28);
-		spike3r.addCuboid(-0.5F, -2.5F, spikeDepth, 1, 3, 1);
+		spike3r.addBox(-0.5F, -2.5F, spikeDepth, 1, 3, 1);
 		spike3r.setRotationPoint(2.5F, 0.0F, 0.0F);
 		spike3r.rotateAngleX = angle / 180F * 3.14159F;
 		spike3r.rotateAngleZ = 10F / 180F * 3.14159F;
@@ -102,8 +102,8 @@ public class ModelTFSnowQueen extends BipedModel<EntityTFSnowQueen> {
 	}
 
 	@Override
-	public void setAngles(EntityTFSnowQueen entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		super.setAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+	public void setRotationAngles(EntityTFSnowQueen entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+		super.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
 		// in beam phase, arms forwards
 		if (entity.getCurrentPhase() == Phase.BEAM) {

@@ -60,9 +60,9 @@ public class EntityTFFallingIce extends FallingBlockEntity {
 
 	private void makeTrail() {
 		for (int i = 0; i < 2; i++) {
-			double dx = this.getX() + 2F * (rand.nextFloat() - rand.nextFloat());
-			double dy = this.getY() - 3F + 3F * (rand.nextFloat() - rand.nextFloat());
-			double dz = this.getZ() + 2F * (rand.nextFloat() - rand.nextFloat());
+			double dx = this.getPosX() + 2F * (rand.nextFloat() - rand.nextFloat());
+			double dy = this.getPosY() - 3F + 3F * (rand.nextFloat() - rand.nextFloat());
+			double dz = this.getPosZ() + 2F * (rand.nextFloat() - rand.nextFloat());
 
 			world.addParticle(TFParticleType.SNOW_WARNING.get(), dx, dy, dz, 0, -1, 0);
 		}
@@ -70,7 +70,7 @@ public class EntityTFFallingIce extends FallingBlockEntity {
 
 	// [VanillaCopy] Like super, but without anvil cases and with extra stuff
 	@Override
-	public boolean handleFallDamage(float distance, float multiplier) {
+	public boolean onLivingFall(float distance, float multiplier) {
 		if (this.hurtEntities) {
 			int i = MathHelper.ceil(distance - 1.0F);
 
@@ -88,14 +88,14 @@ public class EntityTFFallingIce extends FallingBlockEntity {
 
 		BlockState stateId = Blocks.PACKED_ICE.getDefaultState();
 		for (int i = 0; i < 200; i++) {
-			double dx = this.getX() + 3F * (rand.nextFloat() - rand.nextFloat());
-			double dy = this.getY() + 2 + 3F * (rand.nextFloat() - rand.nextFloat());
-			double dz = this.getZ() + 3F * (rand.nextFloat() - rand.nextFloat());
+			double dx = this.getPosX() + 3F * (rand.nextFloat() - rand.nextFloat());
+			double dy = this.getPosY() + 2 + 3F * (rand.nextFloat() - rand.nextFloat());
+			double dz = this.getPosZ() + 3F * (rand.nextFloat() - rand.nextFloat());
 
 			this.world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, stateId), dx, dy, dz, 0, 0, 0);
 		}
 
-		this.playSound(Blocks.PACKED_ICE.getSoundType(Blocks.PACKED_ICE.getDefaultState(), world, getPosition(), null).getBreakSound(), 3F, 0.5F);
+		this.playSound(Blocks.PACKED_ICE.getSoundType(Blocks.PACKED_ICE.getDefaultState(), world, func_233580_cy_(), null).getBreakSound(), 3F, 0.5F);
 		return false;
 	}
 

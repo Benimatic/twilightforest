@@ -4,10 +4,12 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFConfig;
@@ -291,7 +293,7 @@ public class ComponentTFMinotaurMaze extends StructureTFComponentOld {
 	}
 
 	@Override
-	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 
 		BlockState bedrock = Blocks.BEDROCK.getDefaultState();
 		BlockState stone = Blocks.STONE.getDefaultState();
@@ -321,7 +323,7 @@ public class ComponentTFMinotaurMaze extends StructureTFComponentOld {
 		maze.roots = 1;
 		maze.oddBias = 4;
 
-		maze.copyToStructure(world.getWorld(), 1, 2, 1, this, sbb);
+		maze.copyToStructure(world, manager, generator, 1, 2, 1, this, sbb);
 
 		return true;
 	}

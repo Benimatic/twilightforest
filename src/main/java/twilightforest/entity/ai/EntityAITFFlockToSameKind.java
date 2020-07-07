@@ -3,7 +3,7 @@ package twilightforest.entity.ai;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ public class EntityAITFFlockToSameKind extends Goal {
 	 * The child that is following its parent.
 	 */
 	private MobEntity flockCreature;
-	private Vec3d flockPosition;
+	private Vector3d flockPosition;
 	double speed;
 	private int moveTimer;
 
@@ -41,9 +41,9 @@ public class EntityAITFFlockToSameKind extends Goal {
 
 		for (LivingEntity flocker : flockList) {
 			flocknum++;
-			flockX += flocker.getX();
-			flockY += flocker.getY();
-			flockZ += flocker.getZ();
+			flockX += flocker.getPosX();
+			flockY += flocker.getPosY();
+			flockZ += flocker.getPosZ();
 		}
 
 		flockX /= flocknum;
@@ -54,7 +54,7 @@ public class EntityAITFFlockToSameKind extends Goal {
 		if (flockCreature.getDistanceSq(flockX, flockY, flockZ) < MIN_DIST) {
 			return false;
 		} else {
-			this.flockPosition = new Vec3d(flockX, flockY, flockZ);
+			this.flockPosition = new Vector3d(flockX, flockY, flockZ);
 			return true;
 		}
 	}

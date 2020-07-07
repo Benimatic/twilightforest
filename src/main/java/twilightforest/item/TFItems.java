@@ -27,7 +27,7 @@ public class TFItems {
 
 	static final UUID GIANT_REACH_MODIFIER = UUID.fromString("7f10172d-de69-49d7-81bd-9594286a6827");
 
-	public static final DeferredRegister<Item> ITEMS = new DeferredRegister<>(ForgeRegistries.ITEMS, TwilightForestMod.ID);
+	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, TwilightForestMod.ID);
 
 	public static final RegistryObject<Item> naga_scale = ITEMS.register("naga_scale", () -> new Item(defaultBuilder().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> naga_chestplate = ITEMS.register("naga_chestplate", () -> new ItemTFNagaArmor(TwilightArmorMaterial.ARMOR_NAGA, EquipmentSlotType.CHEST, defaultBuilder().rarity(Rarity.UNCOMMON)));

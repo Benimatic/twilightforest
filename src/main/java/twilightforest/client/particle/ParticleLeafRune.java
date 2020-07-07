@@ -1,6 +1,7 @@
 package twilightforest.client.particle;
 
 import net.minecraft.client.particle.*;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -8,7 +9,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ParticleLeafRune extends SpriteTexturedParticle {
 
-	ParticleLeafRune(World world, double x, double y, double z, double velX, double velY, double velZ) {
+	ParticleLeafRune(ClientWorld world, double x, double y, double z, double velX, double velY, double velZ) {
 		super(world, x, y, z, velX, velY, velZ);
 		// super applies jittering, reset it
 		this.motionX = velX;
@@ -34,7 +35,7 @@ public class ParticleLeafRune extends SpriteTexturedParticle {
 		}
 
 		@Override
-		public Particle makeParticle(BasicParticleType typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+		public Particle makeParticle(BasicParticleType typeIn, ClientWorld worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
 			ParticleLeafRune particle = new ParticleLeafRune(worldIn, x, y, z, xSpeed, ySpeed, zSpeed);
 			particle.selectSpriteRandomly(this.spriteSet);
 			return particle;

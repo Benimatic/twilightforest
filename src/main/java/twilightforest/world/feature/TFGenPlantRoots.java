@@ -1,28 +1,25 @@
 package twilightforest.world.feature;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
-import twilightforest.enums.PlantVariant;
 
 import java.util.Random;
-import java.util.function.Function;
 
 public class TFGenPlantRoots extends Feature<NoFeatureConfig> {
 
-	public TFGenPlantRoots(Function<Dynamic<?>, NoFeatureConfig> config) {
+	public TFGenPlantRoots(Codec<NoFeatureConfig> config) {
 		super(config);
 	}
 
 	@Override
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random random, BlockPos pos, NoFeatureConfig config) {
+	public boolean func_230362_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
 		int copyX = pos.getX();
 		int copyZ = pos.getZ();
 

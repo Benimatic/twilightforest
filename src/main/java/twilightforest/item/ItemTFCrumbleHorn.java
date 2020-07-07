@@ -9,14 +9,13 @@ import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.item.UseAction;
-import net.minecraft.item.Rarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
 import org.apache.commons.lang3.tuple.Pair;
@@ -92,7 +91,7 @@ public class ItemTFCrumbleHorn extends Item {
 				stack.damageItem(crumbled, living, (user) -> user.sendBreakAnimation(living.getActiveHand()));
 			}
 
-			living.world.playSound(null, living.getX(), living.getY(), living.getZ(), SoundEvents.ENTITY_SHEEP_AMBIENT, living.getSoundCategory(), 1.0F, 0.8F);
+			living.world.playSound(null, living.getPosX(), living.getPosY(), living.getPosZ(), SoundEvents.ENTITY_SHEEP_AMBIENT, living.getSoundCategory(), 1.0F, 0.8F);
 		}
 	}
 
@@ -121,9 +120,9 @@ public class ItemTFCrumbleHorn extends Item {
 		final double range = 3.0D;
 		final double radius = 2.0D;
 
-		Vec3d srcVec = new Vec3d(living.getX(), living.getY() + living.getEyeHeight(), living.getZ());
-		Vec3d lookVec = living.getLookVec().scale(range);
-		Vec3d destVec = srcVec.add(lookVec);
+		Vector3d srcVec = new Vector3d(living.getPosX(), living.getPosY() + living.getEyeHeight(), living.getPosZ());
+		Vector3d lookVec = living.getLookVec().scale(range);
+		Vector3d destVec = srcVec.add(lookVec);
 
 		AxisAlignedBB crumbleBox = new AxisAlignedBB(destVec.x - radius, destVec.y - radius, destVec.z - radius, destVec.x + radius, destVec.y + radius, destVec.z + radius);
 

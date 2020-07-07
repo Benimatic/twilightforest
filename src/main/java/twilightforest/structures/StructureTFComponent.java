@@ -9,6 +9,7 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
@@ -60,17 +61,17 @@ public abstract class StructureTFComponent extends StructurePiece {
 	}
 
 	@SuppressWarnings({"SameParameterValue", "unused"})
-	protected void setDebugEntity(World world, int x, int y, int z, MutableBoundingBox sbb, String s) {
+	protected void setDebugEntity(ISeedReader world, int x, int y, int z, MutableBoundingBox sbb, String s) {
 		setInvisibleTextEntity(world, x, y, z, sbb, s, shouldDebug(), 0f);
 	}
 
 	@SuppressWarnings({"SameParameterValue", "unused"})
-	protected void setInvisibleTextEntity(World world, int x, int y, int z, MutableBoundingBox sbb, String s, boolean forcePlace, float additionalYOffset) {
+	protected void setInvisibleTextEntity(ISeedReader world, int x, int y, int z, MutableBoundingBox sbb, String s, boolean forcePlace, float additionalYOffset) {
 		if (forcePlace) {
 			final BlockPos pos = new BlockPos(this.getXWithOffset(x, z), this.getYWithOffset(y), this.getZWithOffset(x, z));
 
 			if (sbb.isVecInside(pos)) {
-				final ArmorStandEntity armorStand = new ArmorStandEntity(EntityType.ARMOR_STAND, world);
+				final ArmorStandEntity armorStand = new ArmorStandEntity(EntityType.ARMOR_STAND, world.getWorld());
 				armorStand.setCustomName(new StringTextComponent(s));
 				armorStand.setLocationAndAngles(pos.getX() + 0.5, pos.getY() + additionalYOffset, pos.getZ() + 0.5, 0, 0);
 				armorStand.setInvulnerable(true);

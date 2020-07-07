@@ -11,7 +11,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -91,15 +90,15 @@ public class TFTickHandler {
 		ChunkGeneratorTFBase chunkGenerator = TFGenerationSettings.getChunkGenerator(world);
 		if (chunkGenerator == null) return false;
 
-		int px = MathHelper.floor(player.getX());
-		int pz = MathHelper.floor(player.getZ());
+		int px = MathHelper.floor(player.getPosX());
+		int pz = MathHelper.floor(player.getPosZ());
 
 //		MutableBoundingBox fullSBB = chunkGenerator.getFullSBBNear(px, pz, 100);
 //		if (fullSBB != null) {
 //
 //			Vec3i center = StructureBoundingBoxUtils.getCenter(fullSBB);
 //
-//			TFFeature nearFeature = TFFeature.getFeatureForRegionPos(center.getX(), center.getZ(), world);
+//			TFFeature nearFeature = TFFeature.getFeatureForRegionPos(center.getPosX()(), center.getPosZ()(), world);
 //
 //			if (!nearFeature.hasProtectionAura || nearFeature.doesPlayerHaveRequiredAdvancements(player)) {
 //				sendAllClearPacket(world, player);
@@ -121,7 +120,7 @@ public class TFTickHandler {
 
 			for (ItemEntity entityItem : itemList) {
 				if (TFConfig.portalIngredient.test(entityItem.getItem())) {
-					BlockPos pos = entityItem.getPosition();
+					BlockPos pos = entityItem.func_233580_cy_(); //getPosition?
 					BlockState state = world.getBlockState(pos);
 					if (TFBlocks.twilight_portal.get().canFormPortal(state)) {
 						Random rand = new Random();
@@ -130,7 +129,7 @@ public class TFTickHandler {
 							double vy = rand.nextGaussian() * 0.02D;
 							double vz = rand.nextGaussian() * 0.02D;
 
-							world.addParticle(ParticleTypes.EFFECT, entityItem.getX(), entityItem.getY() + 0.2, entityItem.getZ(), vx, vy, vz);
+							world.addParticle(ParticleTypes.EFFECT, entityItem.getPosX(), entityItem.getPosY() + 0.2, entityItem.getPosZ(), vx, vy, vz);
 						}
 
 						if (TFBlocks.twilight_portal.get().tryToCreatePortal(world, pos, entityItem, player)) {
@@ -147,7 +146,7 @@ public class TFTickHandler {
 	 * Check what biome the player is in, and see if current progression allows that biome.  If not, take appropriate action
 	 */
 	private static void checkBiomeForProgression(PlayerEntity player, World world) {
-		Biome currentBiome = world.getBiome(new BlockPos(player));
+		Biome currentBiome = world.getBiome(player.func_233580_cy_());
 		if (currentBiome instanceof TFBiomeBase) {
 			TFBiomeBase tfBiome = (TFBiomeBase) currentBiome;
 			if (!tfBiome.doesPlayerHaveRequiredAdvancements(player)) {

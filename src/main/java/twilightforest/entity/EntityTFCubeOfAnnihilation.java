@@ -11,6 +11,7 @@ import net.minecraft.tags.Tag;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.*;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.PacketDistributor;
 import twilightforest.network.TFPacketHandler;
@@ -29,13 +30,13 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 
 	public EntityTFCubeOfAnnihilation(EntityType<? extends EntityTFCubeOfAnnihilation> type, World world) {
 		super(type, world);
-		this.isImmuneToFire();
+		this.func_230279_az_();
 	}
 
 	public EntityTFCubeOfAnnihilation(EntityType<? extends EntityTFCubeOfAnnihilation> type, World world, LivingEntity thrower) {
 		super(type, thrower, world);
-		this.isImmuneToFire();
-		this.shoot(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 1.5F, 1F);
+		this.func_230279_az_();
+		this.func_234612_a_(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 1.5F, 1F);
 	}
 
 	@Override
@@ -114,7 +115,7 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 			}
 
 			// always head towards either the point or towards the player
-			Vec3d destPoint = new Vec3d(this.getThrower().getX(), this.getThrower().getY() + this.getThrower().getEyeHeight(), this.getThrower().getZ());
+			Vector3d destPoint = new Vector3d(this.getThrower().getX(), this.getThrower().getY() + this.getThrower().getEyeHeight(), this.getThrower().getZ());
 
 			if (this.isReturning()) {
 				// if we are returning, and are near enough to the player, then we are done
@@ -128,7 +129,7 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 			}
 
 			// set motions
-			Vec3d velocity = new Vec3d(this.getX() - destPoint.x, (this.getY() + this.getHeight() / 2F) - destPoint.y, this.getZ() - destPoint.z);
+			Vector3d velocity = new Vector3d(this.getPosX() - destPoint.x, (this.getPosY() + this.getHeight() / 2F) - destPoint.y, this.getPosZ() - destPoint.z);
 
 			addVelocity(-velocity.x, -velocity.y, -velocity.z);
 
@@ -139,7 +140,7 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 
 
 			if (currentSpeed > maxSpeed) {
-				this.setMotion(new Vec3d(
+				this.setMotion(new Vector3d(
 						this.getMotion().getX() / currentSpeed / maxSpeed,
 						this.getMotion().getY() / currentSpeed / maxSpeed,
 						this.getMotion().getZ() / currentSpeed / maxSpeed));

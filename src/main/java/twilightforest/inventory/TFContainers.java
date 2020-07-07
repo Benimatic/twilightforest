@@ -12,7 +12,7 @@ import twilightforest.client.GuiTFGoblinCrafting;
 
 public class TFContainers {
 
-	public static final DeferredRegister<ContainerType<?>> CONTAINERS = new DeferredRegister<>(ForgeRegistries.CONTAINERS, TwilightForestMod.ID);
+	public static final DeferredRegister<ContainerType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, TwilightForestMod.ID);
 
 	public static final RegistryObject<ContainerType<ContainerTFUncrafting>> UNCRAFTING = CONTAINERS.register("uncrafting",
 			() -> new ContainerType<>(ContainerTFUncrafting::fromNetwork));

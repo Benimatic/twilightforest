@@ -22,9 +22,9 @@ public class EntityTFSnowQueenIceShield extends MultiPartEntityPart {
 
 		this.ticksExisted++;
 
-		lastTickPosX = getX();
-		lastTickPosY = getY();
-		lastTickPosZ = getZ();
+		lastTickPosX = getPosX();
+		lastTickPosY = getPosY();
+		lastTickPosZ = getPosZ();
 
 		for (; rotationYaw - prevRotationYaw < -180F; prevRotationYaw -= 360F) {
 		}

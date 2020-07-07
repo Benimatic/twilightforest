@@ -5,19 +5,16 @@ import net.minecraft.entity.IRendersAsItem;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.item.Item;
-import net.minecraft.network.IPacket;
 import net.minecraft.particles.IParticleData;
 import net.minecraft.particles.ItemParticleData;
 import net.minecraft.util.DamageSource;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.network.NetworkHooks;
 import twilightforest.entity.TFEntities;
 
 public class EntityTFTwilightWandBolt extends EntityTFThrowable implements IRendersAsItem {
@@ -28,7 +25,7 @@ public class EntityTFTwilightWandBolt extends EntityTFThrowable implements IRend
 
 	public EntityTFTwilightWandBolt(World world, LivingEntity thrower) {
 		super(TFEntities.wand_bolt, world, thrower);
-		shoot(thrower, thrower.rotationPitch, thrower.rotationYaw, 0, 1.5F, 1.0F);
+		func_234612_a_(thrower, thrower.rotationPitch, thrower.rotationYaw, 0, 1.5F, 1.0F);
 	}
 
 	@Override
@@ -39,9 +36,9 @@ public class EntityTFTwilightWandBolt extends EntityTFThrowable implements IRend
 
 	private void makeTrail() {
 		for (int i = 0; i < 5; i++) {
-			double dx = getX() + 0.5 * (rand.nextDouble() - rand.nextDouble());
-			double dy = getY() + 0.5 * (rand.nextDouble() - rand.nextDouble());
-			double dz = getZ() + 0.5 * (rand.nextDouble() - rand.nextDouble());
+			double dx = getPosX() + 0.5 * (rand.nextDouble() - rand.nextDouble());
+			double dy = getPosY() + 0.5 * (rand.nextDouble() - rand.nextDouble());
+			double dz = getPosZ() + 0.5 * (rand.nextDouble() - rand.nextDouble());
 
 			double s1 = ((rand.nextFloat() * 0.5F) + 0.5F) * 0.17F;  // color
 			double s2 = ((rand.nextFloat() * 0.5F) + 0.5F) * 0.80F;  // color
@@ -62,7 +59,7 @@ public class EntityTFTwilightWandBolt extends EntityTFThrowable implements IRend
 		if (id == 3) {
 			IParticleData particle = new ItemParticleData(ParticleTypes.ITEM, new ItemStack(Items.ENDER_PEARL));
 			for (int i = 0; i < 8; i++) {
-				this.world.addParticle(particle, false, this.getX(), this.getY(), this.getZ(), rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
+				this.world.addParticle(particle, false, this.getPosX(), this.getPosY(), this.getPosZ(), rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
 			}
 		} else {
 			super.handleStatusUpdate(id);
@@ -88,7 +85,7 @@ public class EntityTFTwilightWandBolt extends EntityTFThrowable implements IRend
 		super.attackEntityFrom(source, amount);
 
 		if (!this.world.isRemote && source.getTrueSource() != null) {
-			Vec3d vec3d = source.getTrueSource().getLookVec();
+			Vector3d vec3d = source.getTrueSource().getLookVec();
 			// reflect faster and more accurately
 			this.shoot(vec3d.x, vec3d.y, vec3d.z, 1.5F, 0.1F);
 

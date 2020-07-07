@@ -87,9 +87,9 @@ public class EntityAITFHoverThenDrop extends EntityAITFHoverBase<EntityTFSnowQue
 		if (this.hoverTimer < this.maxHoverTime) {
 
 			// check if we are at our waypoint target
-			double offsetX = this.hoverPosX - this.attacker.getX();
-			double offsetY = this.hoverPosY - this.attacker.getY();
-			double offsetZ = this.hoverPosZ - this.attacker.getZ();
+			double offsetX = this.hoverPosX - this.attacker.getPosX();
+			double offsetY = this.hoverPosY - this.attacker.getPosY();
+			double offsetZ = this.hoverPosZ - this.attacker.getPosZ();
 
 			double distanceDesired = offsetX * offsetX + offsetY * offsetY + offsetZ * offsetZ;
 
@@ -115,7 +115,7 @@ public class EntityAITFHoverThenDrop extends EntityAITFHoverBase<EntityTFSnowQue
 			// drop!
 			this.dropTimer++;
 
-			if (this.attacker.getY() > this.dropY) {
+			if (this.attacker.getPosY() > this.dropY) {
 				this.attacker.destroyBlocksInAABB(this.attacker.getBoundingBox().grow(1, 0.5F, 1));
 			}
 		}
@@ -124,7 +124,7 @@ public class EntityAITFHoverThenDrop extends EntityAITFHoverBase<EntityTFSnowQue
 	@Override
 	protected void makeNewHoverSpot(LivingEntity target) {
 		super.makeNewHoverSpot(target);
-		this.dropY = target.getY() - 1F;
+		this.dropY = target.getPosY() - 1F;
 		this.seekTimer = 0;
 	}
 }

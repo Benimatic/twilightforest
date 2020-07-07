@@ -91,7 +91,7 @@ public class BlockTFTowerDevice extends Block {
 	}
 
 	@Override
-	public ActionResultType onUse(World world, BlockPos pos, BlockState state, PlayerEntity player, Hand hand, Direction side, float hitX, float hitY, float hitZ) {
+	public ActionResultType onBlockActivated(World world, BlockPos pos, BlockState state, PlayerEntity player, Hand hand, Direction side, float hitX, float hitY, float hitZ) {
 
 		TowerDeviceVariant variant = state.getValue(VARIANT);
 

@@ -5,10 +5,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -29,8 +26,8 @@ public class ItemTFOreMeter extends Item {
 	@Nonnull
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, @Nonnull Hand hand) {
-		int useX = MathHelper.floor(player.getX());
-		int useZ = MathHelper.floor(player.getZ());
+		int useX = MathHelper.floor(player.getPosX());
+		int useZ = MathHelper.floor(player.getPosZ());
 
 		if (!world.isRemote) {
 			countOreInArea(player, world, useX, useZ, 3);
@@ -84,16 +81,16 @@ public class ItemTFOreMeter extends Item {
 
 		total = countStone + countDirt + countGravel + countCoal + countIron + countGold + countDiamond + countLapis + countRedstone + countRoots + countOreRoots;
 
-		player.sendMessage(new TranslationTextComponent(getTranslationKey()).appendText("!"));
-		player.sendMessage(new TranslationTextComponent(TwilightForestMod.ID + ".ore_meter.range", radius, chunkX, chunkZ));
-		player.sendMessage(new TranslationTextComponent(Blocks.COAL_ORE.getTranslationKey()).appendText(" - " + countCoal + " " + percent(countCoal, total)));
-		player.sendMessage(new TranslationTextComponent(Blocks.IRON_ORE.getTranslationKey()).appendText(" - " + countIron + " " + percent(countIron, total)));
-		player.sendMessage(new TranslationTextComponent(Blocks.GOLD_ORE.getTranslationKey()).appendText(" - " + countGold + " " + percent(countGold, total)));
-		player.sendMessage(new TranslationTextComponent(Blocks.DIAMOND_ORE.getTranslationKey()).appendText(" - " + countDiamond + " " + percent(countDiamond, total) + ", ").appendSibling(new TranslationTextComponent(TwilightForestMod.ID + ".ore_meter.exposed", countExposedDiamond)));
-		player.sendMessage(new TranslationTextComponent(Blocks.LAPIS_ORE.getTranslationKey()).appendText(" - " + countLapis + " " + percent(countLapis, total)));
-		player.sendMessage(new TranslationTextComponent(Blocks.REDSTONE_ORE.getTranslationKey()).appendText(" - " + countRedstone + " " + percent(countRedstone, total)));
-		player.sendMessage(new TranslationTextComponent(TFBlocks.root.get().getTranslationKey()).appendText(" - " + countRoots + " " + percent(countRoots, total)));
-		player.sendMessage(new TranslationTextComponent(TFBlocks.liveroot_block.get().getTranslationKey()).appendText(" - " + countOreRoots + " " + percent(countOreRoots, total)));
+		player.sendMessage(new TranslationTextComponent(getTranslationKey()).func_240702_b_("!"), Util.field_240973_b_);
+		player.sendMessage(new TranslationTextComponent(TwilightForestMod.ID + ".ore_meter.range", radius, chunkX, chunkZ), Util.field_240973_b_);
+		player.sendMessage(new TranslationTextComponent(Blocks.COAL_ORE.getTranslationKey()).func_240702_b_(" - " + countCoal + " " + percent(countCoal, total)), Util.field_240973_b_);
+		player.sendMessage(new TranslationTextComponent(Blocks.IRON_ORE.getTranslationKey()).func_240702_b_(" - " + countIron + " " + percent(countIron, total)), Util.field_240973_b_);
+		player.sendMessage(new TranslationTextComponent(Blocks.GOLD_ORE.getTranslationKey()).func_240702_b_(" - " + countGold + " " + percent(countGold, total)), Util.field_240973_b_);
+		player.sendMessage(new TranslationTextComponent(Blocks.DIAMOND_ORE.getTranslationKey()).func_240702_b_(" - " + countDiamond + " " + percent(countDiamond, total) + ", ").func_230529_a_(new TranslationTextComponent(TwilightForestMod.ID + ".ore_meter.exposed", countExposedDiamond)), Util.field_240973_b_);
+		player.sendMessage(new TranslationTextComponent(Blocks.LAPIS_ORE.getTranslationKey()).func_240702_b_(" - " + countLapis + " " + percent(countLapis, total)), Util.field_240973_b_);
+		player.sendMessage(new TranslationTextComponent(Blocks.REDSTONE_ORE.getTranslationKey()).func_240702_b_(" - " + countRedstone + " " + percent(countRedstone, total)), Util.field_240973_b_);
+		player.sendMessage(new TranslationTextComponent(TFBlocks.root.get().getTranslationKey()).func_240702_b_(" - " + countRoots + " " + percent(countRoots, total)), Util.field_240973_b_);
+		player.sendMessage(new TranslationTextComponent(TFBlocks.liveroot_block.get().getTranslationKey()).func_240702_b_(" - " + countOreRoots + " " + percent(countOreRoots, total)), Util.field_240973_b_);
 	}
 
 	private String percent(int count, int total) {

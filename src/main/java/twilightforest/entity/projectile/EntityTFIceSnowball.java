@@ -38,9 +38,9 @@ public class EntityTFIceSnowball extends EntityTFThrowable implements IRendersAs
 
 	public void makeTrail() {
 		for (int i = 0; i < 2; i++) {
-			double dx = getX() + 0.5 * (rand.nextDouble() - rand.nextDouble());
-			double dy = getY() + 0.5 * (rand.nextDouble() - rand.nextDouble());
-			double dz = getZ() + 0.5 * (rand.nextDouble() - rand.nextDouble());
+			double dx = getPosX() + 0.5 * (rand.nextDouble() - rand.nextDouble());
+			double dy = getPosY() + 0.5 * (rand.nextDouble() - rand.nextDouble());
+			double dz = getPosZ() + 0.5 * (rand.nextDouble() - rand.nextDouble());
 			world.addParticle(ParticleTypes.ITEM_SNOWBALL, dx, dy, dz, 0.0D, 0.0D, 0.0D);
 		}
 	}
@@ -57,7 +57,7 @@ public class EntityTFIceSnowball extends EntityTFThrowable implements IRendersAs
 	public void handleStatusUpdate(byte id) {
 		if (id == 3) {
 			for (int j = 0; j < 8; ++j) {
-				this.world.addParticle(ParticleTypes.ITEM_SNOWBALL, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
+				this.world.addParticle(ParticleTypes.ITEM_SNOWBALL, this.getPosX(), this.getPosY(), this.getPosZ(), 0.0D, 0.0D, 0.0D);
 			}
 		} else {
 			super.handleStatusUpdate(id);

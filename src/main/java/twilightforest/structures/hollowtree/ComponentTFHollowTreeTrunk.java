@@ -9,9 +9,9 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
@@ -179,15 +179,15 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 	}
 
 	@Override
-	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random random, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
-		return this.addComponentParts(world.getWorld(), generator, random, sbb, false);
+	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random random, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		return this.addComponentParts(world, generator, random, sbb, false);
 	}
 
 	/**
 	 * Generate the tree trunk
 	 */
 	@Override
-	public boolean addComponentParts(World world, ChunkGenerator<?> generator, Random random, MutableBoundingBox sbb, boolean drawLeaves) {
+	public boolean addComponentParts(ISeedReader world, ChunkGenerator generator, Random random, MutableBoundingBox sbb, boolean drawLeaves) {
 
 		// offset bounding box to average ground level
 		if (this.groundLevel < 0) {
@@ -243,7 +243,7 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 	/**
 	 * Add a random insect
 	 */
-	protected void addInsect(World world, int fHeight, double fAngle, Random random, MutableBoundingBox sbb) {
+	protected void addInsect(ISeedReader world, int fHeight, double fAngle, Random random, MutableBoundingBox sbb) {
 		BlockPos bugSpot = FeatureUtil.translate(new BlockPos(this.radius + 1, fHeight, this.radius + 1), this.radius + 1, fAngle, 0.5);
 
 		fAngle = fAngle % 1.0;
@@ -266,7 +266,7 @@ public class ComponentTFHollowTreeTrunk extends StructureTFTreeComponent {
 	/**
 	 * Add an insect if we can at the position specified
 	 */
-	private void addInsect(World world, BlockState blockState, int posX, int posY, int posZ, MutableBoundingBox sbb) {
+	private void addInsect(ISeedReader world, BlockState blockState, int posX, int posY, int posZ, MutableBoundingBox sbb) {
 		final BlockPos pos = getBlockPosWithOffset(posX, posY, posZ);
 		BlockState whatsThere = world.getBlockState(pos);
 

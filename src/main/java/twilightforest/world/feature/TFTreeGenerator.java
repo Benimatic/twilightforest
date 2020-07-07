@@ -2,6 +2,7 @@ package twilightforest.world.feature;
 
 import com.google.common.collect.Sets;
 import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.minecraft.block.Block;
 import net.minecraft.block.DirectionalBlock;
 import net.minecraft.block.material.Material;
@@ -15,6 +16,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.IWorldGenerationReader;
 import net.minecraft.world.gen.feature.AbstractTreeFeature;
 import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
+import net.minecraft.world.gen.feature.TreeFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.FeatureUtil;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
@@ -23,7 +25,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.function.Function;
 
-public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends AbstractTreeFeature<T> {
+public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends TreeFeature<T> {
 
 //	protected BlockState treeState = TFBlocks.twilight_log.getDefaultState();
 //	protected BlockState branchState = TFBlocks.twilight_log.getDefaultState().with(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE).with(BlockTFLog.VARIANT, WoodVariant.DARK);
@@ -40,7 +42,7 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Abs
 //		super(notify);
 //	}
 
-	public TFTreeGenerator(Function<Dynamic<?>, T> configIn) {
+	public TFTreeGenerator(Codec<T> configIn) {
 		super(configIn);
 	}
 

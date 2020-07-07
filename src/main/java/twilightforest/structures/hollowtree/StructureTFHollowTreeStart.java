@@ -2,10 +2,12 @@ package twilightforest.structures.hollowtree;
 
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.IFeatureConfig;
 import net.minecraft.world.gen.feature.structure.Structure;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.structure.StructureStart;
 import net.minecraft.world.gen.feature.template.TemplateManager;
@@ -21,7 +23,7 @@ public class StructureTFHollowTreeStart extends StructureStart {
 	}
 
 	@Override
-	public void init(ChunkGenerator<?> generator, TemplateManager manager, int chunkX, int chunkZ, Biome biome) {
+	public void func_230364_a_(ChunkGenerator cgenerator, TemplateManager manager, int chunkX, int chunkZ, Biome biome, IFeatureConfig config) { //init
 		int x = (chunkX << 4) + 8;
 		int z = (chunkZ << 4) + 8;
 		int y = TFGenerationSettings.SEALEVEL + 1;
@@ -36,18 +38,18 @@ public class StructureTFHollowTreeStart extends StructureStart {
 	 * Do everything except leaves before we do leaves.
 	 */
 	@Override
-	public void generateStructure(IWorld worldIn, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos pos) {
+	public void func_230366_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos pos) { //generateStructure
 		// first wood
 		for (StructurePiece sc : components) {
 			if (sc.getBoundingBox().intersectsWith(sbb) && sc instanceof StructureTFTreeComponent) {
-				((StructureTFTreeComponent)sc).addComponentParts(worldIn.getWorld(), generator, rand, sbb, false);
+				((StructureTFTreeComponent)sc).addComponentParts(world, generator, rand, sbb, false);
 			}
 		}
 
 		// now leaves
 		for (StructurePiece sc : components) {
 			if (sc.getBoundingBox().intersectsWith(sbb) && sc instanceof StructureTFTreeComponent) {
-				((StructureTFTreeComponent)sc).addComponentParts(worldIn.getWorld(), generator, rand, sbb, true);
+				((StructureTFTreeComponent)sc).addComponentParts(world, generator, rand, sbb, true);
 			}
 		}
 	}

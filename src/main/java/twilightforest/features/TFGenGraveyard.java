@@ -3,6 +3,7 @@ package twilightforest.features;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.math.StatsAccumulator;
 import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
@@ -16,16 +17,14 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.world.*;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.TemplateStructurePiece;
 import net.minecraft.world.gen.feature.template.IStructureProcessorType;
 import net.minecraft.world.gen.feature.template.PlacementSettings;
@@ -52,7 +51,7 @@ public class TFGenGraveyard extends Feature<NoFeatureConfig> {
 	private static final ResourceLocation TRAP = TwilightForestMod.prefix("landscape/graveyard/grave_trap");
 	private static final ImmutableSet<Material> MATERIAL_WHITELIST = ImmutableSet.of(Material.EARTH, Material.ORGANIC, Material.LEAVES, Material.WOOD, Material.PLANTS, Material.ROCK);
 
-	public TFGenGraveyard(Function<Dynamic<?>, NoFeatureConfig> config) {
+	public TFGenGraveyard(Codec<NoFeatureConfig> config) {
 		super(config);
 	}
 
@@ -116,7 +115,7 @@ public class TFGenGraveyard extends Feature<NoFeatureConfig> {
 	}
 
 	@Override
-	public boolean place(IWorld worldIn, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+	public boolean func_230362_a_(ISeedReader worldIn, StructureManager manager, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
 		int flags = 0b10100;
 		World world = worldIn.getWorld();
 		//Random random = world.getChunk(pos).getRandomWithSeed(987234911L);

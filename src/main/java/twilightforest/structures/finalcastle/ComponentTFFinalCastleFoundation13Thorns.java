@@ -4,11 +4,12 @@ import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.BlockTFThorns;
@@ -36,18 +37,18 @@ public class ComponentTFFinalCastleFoundation13Thorns extends ComponentTFFinalCa
 	}
 
 	@Override
-	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// thorns
 		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
 
 		for (Rotation i : RotationUtil.ROTATIONS) {
-			this.makeThornVine(world.getWorld(), decoRNG, i, sbb);
+			this.makeThornVine(world, decoRNG, i, sbb);
 		}
 
 		return true;
 	}
 
-	private void makeThornVine(World world, Random decoRNG, Rotation rotation, MutableBoundingBox sbb) {
+	private void makeThornVine(ISeedReader world, Random decoRNG, Rotation rotation, MutableBoundingBox sbb) {
 
 		int x = 3 + decoRNG.nextInt(13);
 		int z = 3 + decoRNG.nextInt(13);
@@ -99,7 +100,7 @@ public class ComponentTFFinalCastleFoundation13Thorns extends ComponentTFFinalCa
 		}
 	}
 
-	private void makeThornBranch(World world, int x, int y, int z, Rotation rotation, MutableBoundingBox sbb) {
+	private void makeThornBranch(ISeedReader world, int x, int y, int z, Rotation rotation, MutableBoundingBox sbb) {
 		Random rand = new Random(world.getSeed() + (x * 321534781) ^ (y * 756839) + z);
 
 		// pick a direction

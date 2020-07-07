@@ -115,7 +115,7 @@ public class ItemTFMoonwormQueen extends Item {
 			if (fired) {
 				stack.damageItem(2, living, (user) -> user.sendBreakAnimation(living.getActiveHand()));
 
-				world.playSound(null, living.getX(), living.getY(), living.getZ(), SoundEvents.BLOCK_SLIME_BLOCK_HIT, living instanceof PlayerEntity ? SoundCategory.PLAYERS : SoundCategory.NEUTRAL, 1, 1);
+				world.playSound(null, living.getPosX(), living.getPosY(), living.getPosZ(), SoundEvents.BLOCK_SLIME_BLOCK_HIT, living instanceof PlayerEntity ? SoundCategory.PLAYERS : SoundCategory.NEUTRAL, 1, 1);
 			}
 		}
 

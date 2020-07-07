@@ -39,12 +39,12 @@ public class RenderTFHydraMortar extends EntityRenderer<EntityTFHydraMortar> {
 
 		float alpha = (1.0F - (mortar.fuse - partialTicks + 1.0F) / 100.0F) * 0.8F;
 
-		IVertexBuilder builder = buffers.getBuffer(mortarModel.getLayer(textureLoc));
-		mortarModel.render(stack, builder, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 0.075F);
+		IVertexBuilder builder = buffers.getBuffer(mortarModel.getRenderType(textureLoc));
+		mortarModel.render(stack, builder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 0.075F);
 
 		if (mortar.fuse / 5 % 2 == 0) {
 			builder = buffers.getBuffer(RenderType.getEntityTranslucent(textureLoc));
-			mortarModel.render(stack, builder, light, OverlayTexture.packUv(OverlayTexture.getU(1), 10), 1.0F, 1.0F, 1.0F, alpha);
+			mortarModel.render(stack, builder, light, OverlayTexture.getPackedUV(OverlayTexture.getU(1), 10), 1.0F, 1.0F, 1.0F, alpha);
 		}
 
 		stack.pop();

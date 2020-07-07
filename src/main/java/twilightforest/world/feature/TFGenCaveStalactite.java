@@ -1,15 +1,16 @@
 package twilightforest.world.feature;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.WeightedRandom;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import twilightforest.IMCHandler;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
@@ -19,20 +20,12 @@ import twilightforest.world.feature.config.CaveStalactiteConfig;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.function.Function;
 
 public class TFGenCaveStalactite extends Feature<CaveStalactiteConfig> {
 
 	private static final List<StalactiteEntry> largeHillStalactites = new ArrayList<>();
 	private static final List<StalactiteEntry> mediumHillStalactites = new ArrayList<>();
 	private static final List<StalactiteEntry> smallHillStalactites = new ArrayList<>();
-
-	public BlockState blockState;
-	public boolean hang;
-	//TODO: Moved to CaveStalactiteConfig
-//	public float sizeFactor;
-//	public int maxLength;
-//	public int minHeight;
 
 	/**
 	 * Initializes a stalactite builder.  Actually also makes stalagmites
@@ -62,7 +55,7 @@ public class TFGenCaveStalactite extends Feature<CaveStalactiteConfig> {
 //		this.hang = true;
 //	}
 
-	public TFGenCaveStalactite(Function<Dynamic<?>, CaveStalactiteConfig> configIn) {
+	public TFGenCaveStalactite(Codec<CaveStalactiteConfig> configIn) {
 		super(configIn);
 	}
 
@@ -91,11 +84,11 @@ public class TFGenCaveStalactite extends Feature<CaveStalactiteConfig> {
 	 * This will return false if it can't find a valid ceiling and floor, or if there are other errors.
 	 */
 	@Override
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random random, BlockPos pos, CaveStalactiteConfig config) {
+	public boolean func_230362_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random random, BlockPos pos, CaveStalactiteConfig config) {
 		int ceiling = Integer.MAX_VALUE;
 		int floor = -1;
 
-		BlockPos.Mutable iterPos = new BlockPos.Mutable(pos);
+		BlockPos.Mutable iterPos = new BlockPos.Mutable(pos.getX(), pos.getY(), pos.getZ());
 		// find a ceiling
 		for (int ty = pos.getY(); ty < TFGenerationSettings.CHUNKHEIGHT; ty++) {
 			iterPos.setY(ty);
@@ -179,7 +172,7 @@ public class TFGenCaveStalactite extends Feature<CaveStalactiteConfig> {
 				}
 
 				for (int dy = 0; dy != (spikeLength * dir); dy += dir) {
-					setBlockState(world, pos.add(dx, dy, dz), config.blockState);
+					func_230367_a_(world, pos.add(dx, dy, dz), config.blockState); //setBlockState
 				}
 			}
 		}

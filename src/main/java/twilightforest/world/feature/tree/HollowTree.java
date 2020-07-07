@@ -11,6 +11,6 @@ public class HollowTree extends TFTree {
 
 	@Override
 	public ConfiguredFeature<TFTreeFeatureConfig, ?> createTreeFeature(Random rand) {
-		return TFBiomeFeatures.HOLLOW_TREE.get().configure(TFBiomeDecorator.HOLLOW_TREE);
+		return TFBiomeFeatures.HOLLOW_TREE.get().withConfiguration(TFBiomeDecorator.HOLLOW_TREE);
 	}
 }

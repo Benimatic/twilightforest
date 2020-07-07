@@ -16,19 +16,19 @@ public class ModelTFCubeOfAnnihilation extends SegmentedModel<EntityTFCubeOfAnni
 		textureWidth = 64;
 		textureHeight = 64;
 		box = new ModelRenderer(this, 0, 0);
-		box.addCuboid(-8F, -8F, -8F, 16, 16, 16, 0F);
+		box.addBox(-8F, -8F, -8F, 16, 16, 16, 0F);
 		box.setRotationPoint(0F, 0F, 0F);
 
 		boxX = new ModelRenderer(this, 0, 32);
-		boxX.addCuboid(-8F, -8F, -8F, 16, 16, 16, 0F);
+		boxX.addBox(-8F, -8F, -8F, 16, 16, 16, 0F);
 		boxX.setRotationPoint(0F, 0F, 0F);
 
 		boxY = new ModelRenderer(this, 0, 32);
-		boxY.addCuboid(-8F, -8F, -8F, 16, 16, 16, 0F);
+		boxY.addBox(-8F, -8F, -8F, 16, 16, 16, 0F);
 		boxY.setRotationPoint(0F, 0F, 0F);
 
 		boxZ = new ModelRenderer(this, 0, 32);
-		boxZ.addCuboid(-8F, -8F, -8F, 16, 16, 16, 0F);
+		boxZ.addBox(-8F, -8F, -8F, 16, 16, 16, 0F);
 		boxZ.setRotationPoint(0F, 0F, 0F);
 	}
 
@@ -48,7 +48,7 @@ public class ModelTFCubeOfAnnihilation extends SegmentedModel<EntityTFCubeOfAnni
 	}
 
 	@Override
-	public void setAngles(EntityTFCubeOfAnnihilation entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setRotationAngles(EntityTFCubeOfAnnihilation entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		boxX.rotateAngleX = (float) Math.sin((entity.ticksExisted + headPitch)) / 5F;
 		boxY.rotateAngleY = (float) Math.sin((entity.ticksExisted + headPitch)) / 5F;
 		boxZ.rotateAngleZ = (float) Math.sin((entity.ticksExisted + headPitch)) / 5F;

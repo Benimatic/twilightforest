@@ -13,9 +13,9 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
@@ -160,8 +160,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 	}
 
 	@Override
-	public boolean generate(IWorld worldIn, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
-		World world = worldIn.getWorld();
+	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// make walls
 		fillWithRandomizedBlocks(world, sbb, 0, 0, 0, size - 1, height - 1, size - 1, false, rand, StructureTFComponentOld.getStrongholdStones());
 
@@ -210,7 +209,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 	/**
 	 * Make 1-2 platforms joining the stairways
 	 */
-	protected void makeStairwayCrossings(World world, Random rand, MutableBoundingBox sbb) {
+	protected void makeStairwayCrossings(ISeedReader world, Random rand, MutableBoundingBox sbb) {
 		int flights = (this.highestOpening / 5) - 2;
 
 		for (int i = 2 + rand.nextInt(2); i < flights; i += 1 + rand.nextInt(5)) {
@@ -218,7 +217,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		}
 	}
 
-	protected void makeStairCrossing(World world, Random rand, int flight, MutableBoundingBox sbb) {
+	protected void makeStairCrossing(ISeedReader world, Random rand, int flight, MutableBoundingBox sbb) {
 		Direction temp = this.getCoordBaseMode();
 		if (flight % 2 == 0) {
 			this.setCoordBaseMode(getStructureRelativeRotation(Rotation.CLOCKWISE_90));
@@ -283,7 +282,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 	/**
 	 * Make a neat little room for the lich to fight in
 	 */
-	protected void makeLichRoom(World world, Random rand, MutableBoundingBox sbb) {
+	protected void makeLichRoom(ISeedReader world, Random rand, MutableBoundingBox sbb) {
 		// figure out where the stairs end
 		int floorLevel = 2 + (this.highestOpening / 5) * 5;
 		// we need a floor
@@ -303,7 +302,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 		setBlockState(world, TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.LICH), size / 2, floorLevel + 2, size / 2, sbb);
 	}
 
-	protected void makeTowerPaintings(World world, Random rand, MutableBoundingBox sbb) {
+	protected void makeTowerPaintings(ISeedReader world, Random rand, MutableBoundingBox sbb) {
 		int howMany = 10;
 
 		// do wall 0.
@@ -328,7 +327,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 	/**
 	 * Make the floor for the liches room
 	 */
-	protected void makeLichFloor(World world, int floorLevel, Rotation rotation, MutableBoundingBox sbb) {
+	protected void makeLichFloor(ISeedReader world, int floorLevel, Rotation rotation, MutableBoundingBox sbb) {
 		Direction temp = this.getCoordBaseMode();
 		this.setCoordBaseMode(getStructureRelativeRotation(rotation));
 
@@ -385,7 +384,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 	/**
 	 * Make a fancy chandelier for the lich's room
 	 */
-	protected void decorateLichChandelier(World world, int floorLevel, MutableBoundingBox sbb) {
+	protected void decorateLichChandelier(ISeedReader world, int floorLevel, MutableBoundingBox sbb) {
 		int cx = size / 2;
 		int cy = floorLevel + 4;
 		int cz = size / 2;
@@ -431,7 +430,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 	/**
 	 * Cover the walls in the lich's room with paintings.  How is this going to work, chunk by chunk?
 	 */
-	protected void decoratePaintings(World world, Random rand, int floorLevel, MutableBoundingBox sbb) {
+	protected void decoratePaintings(ISeedReader world, Random rand, int floorLevel, MutableBoundingBox sbb) {
 		int howMany = 100;
 
 		for (final Direction horizontal : Direction.Plane.HORIZONTAL) {
@@ -445,7 +444,7 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 	/**
 	 * Put torches on each wall
 	 */
-	protected void decorateTorches(World world, Random rand, int floorLevel, MutableBoundingBox sbb) {
+	protected void decorateTorches(ISeedReader world, Random rand, int floorLevel, MutableBoundingBox sbb) {
 		generateTorchesOnWall(world, rand, floorLevel, Direction.SOUTH, sbb);
 		generateTorchesOnWall(world, rand, floorLevel, Direction.EAST, sbb);
 		generateTorchesOnWall(world, rand, floorLevel, Direction.NORTH, sbb);
@@ -455,14 +454,14 @@ public class ComponentTFTowerMain extends ComponentTFTowerWing {
 	/**
 	 * Place up to 5 torches (with fence holders) on the wall, checking that they don't overlap any paintings or other torches
 	 */
-	protected void generateTorchesOnWall(World world, Random rand,
+	protected void generateTorchesOnWall(ISeedReader world, Random rand,
 										 int floorLevel, Direction direction, MutableBoundingBox sbb) {
 		for (int i = 0; i < 5; i++) {
 			// get some random coordinates on the wall in the chunk
 			BlockPos wCoords = getRandomWallSpot(rand, floorLevel, direction, sbb);
 
 			// offset to see where the fence should be
-			BlockPos.Mutable tCoords = new BlockPos.Mutable(wCoords);
+			BlockPos.Mutable tCoords = new BlockPos.Mutable(wCoords.getX(), wCoords.getY(), wCoords.getZ());
 
 			// is there a painting or another torch there?
 			AxisAlignedBB torchBox = new AxisAlignedBB(tCoords.getX(), tCoords.getY(), tCoords.getZ(), tCoords.getX() + 1.0, tCoords.getY() + 2.0, tCoords.getZ() + 1.0);

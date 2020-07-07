@@ -1,39 +1,38 @@
 package twilightforest.world.feature;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.LeavesBlock;
-import net.minecraft.block.LogBlock;
+import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.FeatureUtil;
 
 import java.util.Random;
-import java.util.function.Function;
 
 public class TFGenFallenHollowLog extends Feature<NoFeatureConfig> {
 
 	final BlockState mossPatch = TFBlocks.moss_patch.get().getDefaultState();
 	final BlockState oakLeaves = TFBlocks.oak_leaves.get().getDefaultState().with(LeavesBlock.PERSISTENT, true);
-	final BlockState oakLogWithZAxis = TFBlocks.oak_log.get().getDefaultState().with(LogBlock.AXIS, Direction.Axis.Z);
-	final BlockState oakLogWithXAxis = TFBlocks.oak_log.get().getDefaultState().with(LogBlock.AXIS, Direction.Axis.X);
+	final BlockState oakLogWithZAxis = TFBlocks.oak_log.get().getDefaultState().with(RotatedPillarBlock.AXIS, Direction.Axis.Z);
+	final BlockState oakLogWithXAxis = TFBlocks.oak_log.get().getDefaultState().with(RotatedPillarBlock.AXIS, Direction.Axis.X);
 	final BlockState dirt = Blocks.DIRT.getDefaultState();
 	final BlockState firefly = TFBlocks.firefly.get().getDefaultState();
 
-	public TFGenFallenHollowLog(Function<Dynamic<?>, NoFeatureConfig> configIn) {
+	public TFGenFallenHollowLog(Codec<NoFeatureConfig> configIn) {
 		super(configIn);
 	}
 
 	@Override
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+	public boolean func_230362_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
 		return rand.nextBoolean() ? makeLog4Z(world.getWorld(), rand, pos) : makeLog4X(world.getWorld(), rand, pos);
 	}
 

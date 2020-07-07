@@ -2,6 +2,7 @@ package twilightforest.network;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.world.Dimension;
 import net.minecraft.world.dimension.Dimension;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraftforge.client.IRenderHandler;

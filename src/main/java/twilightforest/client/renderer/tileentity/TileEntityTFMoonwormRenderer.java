@@ -5,12 +5,12 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.block.DirectionalBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Vector3f;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.BugModelAnimationHelper;
 import twilightforest.client.model.entity.ModelTFMoonworm;
@@ -51,14 +51,14 @@ public class TileEntityTFMoonwormRenderer extends TileEntityRenderer<TileEntityT
 			rotX = 180F;
 		}
 		ms.translate(0.5, 0.5, 0.5);
-		ms.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(rotX));
-		ms.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(rotZ));
-		ms.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(yaw));
+		ms.rotate(Vector3f.XP.rotationDegrees(rotX));
+		ms.rotate(Vector3f.ZP.rotationDegrees(rotZ));
+		ms.rotate(Vector3f.YP.rotationDegrees(yaw));
 		ms.scale(1f, -1f, -1f);
 
-		IVertexBuilder builder = buffer.getBuffer(moonwormModel.getLayer(textureLoc));
-		moonwormModel.setAngles((TileEntityTFMoonwormTicking) te, partialTicks);
-		moonwormModel.render(ms, builder, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
+		IVertexBuilder builder = buffer.getBuffer(moonwormModel.getRenderType(textureLoc));
+		moonwormModel.setRotationAngles((TileEntityTFMoonwormTicking) te, partialTicks);
+		moonwormModel.render(ms, builder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 
 		ms.pop();
 	}

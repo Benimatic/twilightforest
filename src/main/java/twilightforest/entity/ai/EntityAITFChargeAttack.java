@@ -7,7 +7,7 @@ import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.entity.ITFCharger;
 import twilightforest.util.EntityUtil;
@@ -56,7 +56,7 @@ public class EntityAITFChargeAttack extends Goal {
 			} else if (!this.charger.onGround) {
 				return false;
 			} else {
-				Vec3d chargePos = findChargePoint(charger, chargeTarget, 2.1);
+				Vector3d chargePos = findChargePoint(charger, chargeTarget, 2.1);
 				boolean canSeeTargetFromDest = charger.getEntitySenses().canSee(chargeTarget);
 				if (!canSeeTargetFromDest) {
 					return false;
@@ -127,7 +127,7 @@ public class EntityAITFChargeAttack extends Goal {
 		// attack the target when we get in range
 		double rangeSq = this.charger.getWidth() * 2.1F * this.charger.getWidth() * 2.1F;
 
-		if (this.charger.getDistanceSq(this.chargeTarget.getX(), this.chargeTarget.getBoundingBox().minY, this.chargeTarget.getZ()) <= rangeSq) {
+		if (this.charger.getDistanceSq(this.chargeTarget.getPosX(), this.chargeTarget.getBoundingBox().minY, this.chargeTarget.getPosZ()) <= rangeSq) {
 			if (!this.hasAttacked) {
 				this.hasAttacked = true;
 				this.charger.attackEntityAsMob(this.chargeTarget);
@@ -152,11 +152,11 @@ public class EntityAITFChargeAttack extends Goal {
 	/**
 	 * Finds a point that is overshoot blocks "beyond" the target from our position.
 	 */
-	protected Vec3d findChargePoint(Entity attacker, Entity target, double overshoot) {
+	protected Vector3d findChargePoint(Entity attacker, Entity target, double overshoot) {
 
 		// compute angle
-		double vecx = target.getX() - attacker.getX();
-		double vecz = target.getZ() - attacker.getZ();
+		double vecx = target.getPosX() - attacker.getPosX();
+		double vecz = target.getPosZ() - attacker.getPosZ();
 		float rangle = (float) (Math.atan2(vecz, vecx));
 
 		double distance = MathHelper.sqrt(vecx * vecx + vecz * vecz);
@@ -166,7 +166,7 @@ public class EntityAITFChargeAttack extends Goal {
 		double dz = MathHelper.sin(rangle) * (distance + overshoot);
 
 		// add that to the target entity's position, and we have our destination
-		return new Vec3d(attacker.getX() + dx, target.getY(), attacker.getZ() + dz);
+		return new Vector3d(attacker.getPosX() + dx, target.getPosY(), attacker.getPosZ() + dz);
 	}
 
 

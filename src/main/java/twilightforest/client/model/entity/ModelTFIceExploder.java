@@ -24,7 +24,7 @@ public class ModelTFIceExploder<T extends EntityTFIceMob> extends BipedModel<T> 
 		float par1 = 0F;
 		float par2 = 0F;
 		this.bipedHead = new ModelRenderer(this, 0, 0);
-		this.bipedHead.addCuboid(-4.0F, 0.0F, -4.0F, 8, 8, 8, par1);
+		this.bipedHead.addBox(-4.0F, 0.0F, -4.0F, 8, 8, 8, par1);
 		this.bipedHead.setRotationPoint(0.0F, 0.0F + par2, 0.0F);
 
 		// delete all other body parts
@@ -42,11 +42,11 @@ public class ModelTFIceExploder<T extends EntityTFIceMob> extends BipedModel<T> 
 
 			int spikeLength = i % 2 == 0 ? 6 : 8;
 
-			this.spikes[i].addCuboid(-1.0F, 6.0F, -1.0F, 2, spikeLength, 2, par1);
+			this.spikes[i].addBox(-1.0F, 6.0F, -1.0F, 2, spikeLength, 2, par1);
 			this.spikes[i].setRotationPoint(0.0F, 4.0F + par2, 0.0F);
 
 			ModelRenderer cube = new ModelRenderer(this, 8, 16);
-			cube.addCuboid(-1.5F, -1.5F, -1.5F, 3, 3, 3);
+			cube.addBox(-1.5F, -1.5F, -1.5F, 3, 3, 3);
 			cube.setRotationPoint(0.0F, 8F, 0.0F);
 
 			cube.rotateAngleZ = (float) (Math.PI / 4F);

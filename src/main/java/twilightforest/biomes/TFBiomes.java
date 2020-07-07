@@ -10,7 +10,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.world.surfacebuilders.TFSurfaceBuilders;
 
 public class TFBiomes {
-	public static final DeferredRegister<Biome> BIOMES = new DeferredRegister<>(ForgeRegistries.BIOMES, TwilightForestMod.ID);
+	public static final DeferredRegister<Biome> BIOMES = DeferredRegister.create(ForgeRegistries.BIOMES, TwilightForestMod.ID);
 
 	// todo 1.15 values marked "pick" are placeholders and need to be decided
 	public static final RegistryObject<Biome> tfLake = BIOMES.register("twilight_lake", () ->

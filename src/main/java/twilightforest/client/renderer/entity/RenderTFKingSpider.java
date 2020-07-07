@@ -21,7 +21,7 @@ public class RenderTFKingSpider extends SpiderRenderer<EntityTFKingSpider> {
 	}
 
 	@Override
-	protected void scale(EntityTFKingSpider entity, MatrixStack stack, float partialTicks) {
+	protected void preRenderCallback(EntityTFKingSpider entity, MatrixStack stack, float partialTicks) {
 		float scale = 1.9F;
 		stack.scale(scale, scale, scale);
 	}

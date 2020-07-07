@@ -17,7 +17,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import twilightforest.util.WorldUtil;
 
@@ -46,7 +46,7 @@ public class ItemTFPeacockFan extends Item {
 			// jump if the player is in the air
 			//TODO: only one extra jump per jump
 			if (!player.onGround && !player.isPotionActive(Effects.JUMP_BOOST)) {
-				player.setMotion(new Vec3d(
+				player.setMotion(new Vector3d(
 						player.getMotion().getX() * 3F,
 						1.5F,
 						player.getMotion().getZ() * 3F
@@ -54,7 +54,7 @@ public class ItemTFPeacockFan extends Item {
 				player.fallDistance = 0.0F;
 			} else {
 				AxisAlignedBB fanBox = getEffectAABB(player);
-				Vec3d lookVec = player.getLookVec();
+				Vector3d lookVec = player.getLookVec();
 
 				// particle effect
 				for (int i = 0; i < 30; i++) {
@@ -96,7 +96,7 @@ public class ItemTFPeacockFan extends Item {
 	}
 
 	private void fanEntitiesInAABB(World world, PlayerEntity player, AxisAlignedBB fanBox) {
-		Vec3d moveVec = player.getLookVec().scale(2);
+		Vector3d moveVec = player.getLookVec().scale(2);
 
 		for (Entity entity : world.getEntitiesWithinAABB(Entity.class, fanBox)) {
 			if (entity.canBePushed() || entity instanceof ItemEntity) {
@@ -109,9 +109,9 @@ public class ItemTFPeacockFan extends Item {
 	private AxisAlignedBB getEffectAABB(PlayerEntity player) {
 		double range = 3.0D;
 		double radius = 2.0D;
-		Vec3d srcVec = new Vec3d(player.getX(), player.getY() + player.getEyeHeight(), player.getZ());
-		Vec3d lookVec = player.getLookVec().scale(range);
-		Vec3d destVec = srcVec.add(lookVec.x, lookVec.y, lookVec.z);
+		Vector3d srcVec = new Vector3d(player.getPosX(), player.getPosY() + player.getEyeHeight(), player.getPosZ());
+		Vector3d lookVec = player.getLookVec().scale(range);
+		Vector3d destVec = srcVec.add(lookVec.x, lookVec.y, lookVec.z);
 
 		return new AxisAlignedBB(destVec.x - radius, destVec.y - radius, destVec.z - radius, destVec.x + radius, destVec.y + radius, destVec.z + radius);
 	}

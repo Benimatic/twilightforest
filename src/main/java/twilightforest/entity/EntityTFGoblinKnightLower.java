@@ -3,6 +3,8 @@ package twilightforest.entity;
 import net.minecraft.entity.*;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -24,7 +26,7 @@ import javax.annotation.Nullable;
 public class EntityTFGoblinKnightLower extends MonsterEntity {
 
 	private static final DataParameter<Boolean> ARMOR = EntityDataManager.createKey(EntityTFGoblinKnightLower.class, DataSerializers.BOOLEAN);
-	private static final AttributeModifier ARMOR_MODIFIER = new AttributeModifier("Armor boost", 17, AttributeModifier.Operation.ADDITION).setSaved(false);
+	private static final AttributeModifier ARMOR_MODIFIER = new AttributeModifier("Armor boost", 17, AttributeModifier.Operation.ADDITION);
 
 	public EntityTFGoblinKnightLower(EntityType<? extends EntityTFGoblinKnightLower> type, World world) {
 		super(type, world);
@@ -43,12 +45,11 @@ public class EntityTFGoblinKnightLower extends MonsterEntity {
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, false));
 	}
 
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
-		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
-		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
+	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return MonsterEntity.func_234295_eP_()
+				.func_233815_a_(Attributes.field_233818_a_, 20.0D)
+				.func_233815_a_(Attributes.field_233821_d_, 0.28D)
+				.func_233815_a_(Attributes.field_233823_f_, 4.0D);
 	}
 
 	@Override
@@ -66,11 +67,11 @@ public class EntityTFGoblinKnightLower extends MonsterEntity {
 
 		if (!world.isRemote) {
 			if (flag) {
-				if (!getAttribute(SharedMonsterAttributes.ARMOR).hasModifier(ARMOR_MODIFIER)) {
-					getAttribute(SharedMonsterAttributes.ARMOR).applyModifier(ARMOR_MODIFIER);
+				if (!getAttribute(Attributes.field_233826_i_).hasModifier(ARMOR_MODIFIER)) {
+					getAttribute(Attributes.field_233826_i_).func_233767_b_(ARMOR_MODIFIER);
 				}
 			} else {
-				getAttribute(SharedMonsterAttributes.ARMOR).removeModifier(ARMOR_MODIFIER);
+				getAttribute(Attributes.field_233826_i_).removeModifier(ARMOR_MODIFIER);
 			}
 		}
 	}
@@ -93,7 +94,7 @@ public class EntityTFGoblinKnightLower extends MonsterEntity {
 		livingData = super.onInitialSpawn(worldIn, difficulty, reason, livingData, dataTag);
 
 		EntityTFGoblinKnightUpper upper = new EntityTFGoblinKnightUpper(TFEntities.goblin_knight_upper, this.world);
-		upper.setLocationAndAngles(this.getX(), this.getY(), this.getZ(), this.rotationYaw, 0.0F);
+		upper.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), this.rotationYaw, 0.0F);
 		upper.onInitialSpawn(worldIn, difficulty, SpawnReason.NATURAL, livingData, dataTag); //TODO: verify
 		this.world.addEntity(upper);
 		upper.startRiding(this);
@@ -141,8 +142,8 @@ public class EntityTFGoblinKnightLower extends MonsterEntity {
 		if (attacker != null) {
 			// determine angle
 
-			double dx = this.getX() - attacker.getX();
-			double dz = this.getZ() - attacker.getZ();
+			double dx = this.getPosX() - attacker.getPosX();
+			double dz = this.getPosZ() - attacker.getPosZ();
 			float angle = (float) ((Math.atan2(dz, dx) * 180D) / Math.PI) - 90F;
 
 			float difference = MathHelper.abs((this.renderYawOffset - angle) % 360);

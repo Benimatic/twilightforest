@@ -1,6 +1,7 @@
 package twilightforest.client.particle;
 
 import net.minecraft.client.particle.*;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -11,7 +12,7 @@ public class ParticleIceBeam extends SpriteTexturedParticle {
 
 	float initialParticleScale;
 
-	ParticleIceBeam(World world, double x, double y, double z, double vx, double vy, double vz, float scale) {
+	ParticleIceBeam(ClientWorld world, double x, double y, double z, double vx, double vy, double vz, float scale) {
 		super(world, x, y, z, 0.0D, 0.0D, 0.0D);
 		this.motionX *= 0.10000000149011612D;
 		this.motionY *= 0.10000000149011612D;
@@ -69,7 +70,7 @@ public class ParticleIceBeam extends SpriteTexturedParticle {
 		}
 
 		@Override
-		public Particle makeParticle(BasicParticleType typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+		public Particle makeParticle(BasicParticleType typeIn, ClientWorld worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
 			ParticleIceBeam particle = new ParticleIceBeam(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, 0.75F);
 			particle.selectSpriteRandomly(this.spriteSet);
 			return particle;

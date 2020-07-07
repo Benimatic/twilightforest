@@ -3,11 +3,12 @@ package twilightforest.entity.boss;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.*;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Difficulty;
 import twilightforest.TFSounds;
 import twilightforest.client.particle.TFParticleType;
@@ -396,7 +397,7 @@ public class HydraHeadContainer {
 
 		} else {
 			this.headEntity.deathTime = 0;
-			this.headEntity.setHealth((float) this.headEntity.getAttribute(SharedMonsterAttributes.MAX_HEALTH).getBaseValue());
+			this.headEntity.setHealth((float) this.headEntity.getAttribute(Attributes.field_233818_a_).getBaseValue());
 		}
 	}
 
@@ -405,7 +406,7 @@ public class HydraHeadContainer {
 			double vx = part.getRNG().nextGaussian() * 0.02D;
 			double vy = part.getRNG().nextGaussian() * 0.02D;
 			double vz = part.getRNG().nextGaussian() * 0.02D;
-			part.world.addParticle((part.getRNG().nextInt(5) == 0 || large ? ParticleTypes.EXPLOSION_EMITTER : ParticleTypes.EXPLOSION), part.getX() + part.getRNG().nextFloat() * part.getWidth() * 2.0F - part.getWidth(), part.getY() + part.getRNG().nextFloat() * part.getHeight(), part.getZ() + part.getRNG().nextFloat() * part.getWidth() * 2.0F - part.getWidth(), vx, vy, vz);
+			part.world.addParticle((part.getRNG().nextInt(5) == 0 || large ? ParticleTypes.EXPLOSION_EMITTER : ParticleTypes.EXPLOSION), part.getPosX() + part.getRNG().nextFloat() * part.getWidth() * 2.0F - part.getWidth(), part.getPosY() + part.getRNG().nextFloat() * part.getHeight(), part.getPosZ() + part.getRNG().nextFloat() * part.getWidth() * 2.0F - part.getWidth(), vx, vy, vz);
 		}
 	}
 
@@ -466,11 +467,11 @@ public class HydraHeadContainer {
 			}
 
 			// make the target vector be a point off in the distance in the direction we're already facing
-			Vec3d look = this.headEntity.getLookVec();
+			Vector3d look = this.headEntity.getLookVec();
 			double distance = 16.0D;
-			this.targetX = headEntity.getX() + look.x * distance;
-			this.targetY = headEntity.getY() + 1.5 + look.y * distance;
-			this.targetZ = headEntity.getZ() + look.z * distance;
+			this.targetX = headEntity.getPosX() + look.x * distance;
+			this.targetY = headEntity.getPosY() + 1.5 + look.y * distance;
+			this.targetZ = headEntity.getPosZ() + look.z * distance;
 
 		} else if (this.currentState == State.BITING || this.currentState == State.BITE_ENDING) {
 			this.faceEntity(targetEntity, 5F, hydra.getVerticalFaceSpeed());
@@ -501,7 +502,7 @@ public class HydraHeadContainer {
 
 	private void moveTargetCoordsTowardsTargetEntity(double distance) {
 		if (this.targetEntity != null) {
-			Vec3d vect = new Vec3d(this.targetEntity.getX() - this.targetX, this.targetEntity.getY() - this.targetY, this.targetEntity.getZ() - this.targetZ);
+			Vector3d vect = new Vector3d(this.targetEntity.getPosX() - this.targetX, this.targetEntity.getPosY() - this.targetY, this.targetEntity.getPosZ() - this.targetZ);
 
 			vect = vect.normalize();
 
@@ -512,12 +513,12 @@ public class HydraHeadContainer {
 	}
 
 	private void addMouthParticles() {
-		Vec3d vector = headEntity.getLookVec();
+		Vector3d vector = headEntity.getLookVec();
 
 		double dist = 3.5;
-		double px = headEntity.getX() + vector.x * dist;
-		double py = headEntity.getY() + 1 + vector.y * dist;
-		double pz = headEntity.getZ() + vector.z * dist;
+		double px = headEntity.getPosX() + vector.x * dist;
+		double py = headEntity.getPosY() + 1 + vector.y * dist;
+		double pz = headEntity.getPosZ() + vector.z * dist;
 
 		if (headEntity.getState() == State.FLAME_BEGINNING) {
 			headEntity.world.addParticle(ParticleTypes.FLAME, px + headEntity.getRNG().nextDouble() - 0.5, py + headEntity.getRNG().nextDouble() - 0.5, pz + headEntity.getRNG().nextDouble() - 0.5, 0, 0, 0);
@@ -525,7 +526,7 @@ public class HydraHeadContainer {
 		}
 
 		if (headEntity.getState() == State.FLAMING) {
-			Vec3d look = headEntity.getLookVec();
+			Vector3d look = headEntity.getLookVec();
 			for (int i = 0; i < 5; i++) {
 				double dx = look.x;
 				double dy = look.y;
@@ -570,46 +571,46 @@ public class HydraHeadContainer {
 
 	private void setNeckPosition() {
 		// set neck positions
-		Vec3d vector = null;
+		Vector3d vector = null;
 		float neckRotation = 0;
 
 		if (headNum == 0) {
-			vector = new Vec3d(0, 3, -1);
+			vector = new Vector3d(0, 3, -1);
 			neckRotation = 0;
 		}
 		if (headNum == 1) {
-			vector = new Vec3d(-1, 3, 3);
+			vector = new Vector3d(-1, 3, 3);
 			neckRotation = 90;
 		}
 		if (headNum == 2) {
-			vector = new Vec3d(1, 3, 3);
+			vector = new Vector3d(1, 3, 3);
 			neckRotation = -90;
 		}
 		if (headNum == 3) {
-			vector = new Vec3d(-1, 3, 3);
+			vector = new Vector3d(-1, 3, 3);
 			neckRotation = 135;
 		}
 		if (headNum == 4) {
-			vector = new Vec3d(1, 3, 3);
+			vector = new Vector3d(1, 3, 3);
 			neckRotation = -135;
 		}
 
 		if (headNum == 5) {
-			vector = new Vec3d(-1, 3, 5);
+			vector = new Vector3d(-1, 3, 5);
 			neckRotation = 135;
 		}
 		if (headNum == 6) {
-			vector = new Vec3d(1, 3, 5);
+			vector = new Vector3d(1, 3, 5);
 			neckRotation = -135;
 		}
 
 		vector = vector.rotateYaw((-(hydra.renderYawOffset + neckRotation) * 3.141593F) / 180F);
-		setNeckPosition(hydra.getX() + vector.x, hydra.getY() + vector.y, hydra.getZ() + vector.z, hydra.renderYawOffset, 0);
+		setNeckPosition(hydra.getPosX() + vector.x, hydra.getPosY() + vector.y, hydra.getPosZ() + vector.z, hydra.renderYawOffset, 0);
 	}
 
 	protected void setHeadPosition() {
 		// set head positions
-		Vec3d vector;
+		Vector3d vector;
 		double dx, dy, dz;
 
 		// head1 is above
@@ -632,13 +633,13 @@ public class HydraHeadContainer {
 			xSwing = ySwing = 0;
 		}
 
-		vector = new Vec3d(0, 0, neckLength); // -53 = 3.3125
+		vector = new Vector3d(0, 0, neckLength); // -53 = 3.3125
 		vector = vector.rotatePitch((xRotation * 3.141593F + xSwing) / 180F);
 		vector = vector.rotateYaw((-(hydra.renderYawOffset + yRotation + ySwing) * 3.141593F) / 180F);
 
-		dx = hydra.getX() + vector.x;
-		dy = hydra.getY() + vector.y + 3;
-		dz = hydra.getZ() + vector.z;
+		dx = hydra.getPosX() + vector.x;
+		dy = hydra.getPosY() + vector.y + 3;
+		dz = hydra.getPosZ() + vector.z;
 
 		headEntity.setPosition(dx, dy, dz);
 		headEntity.setMouthOpen(getCurrentMouthOpen());
@@ -659,7 +660,7 @@ public class HydraHeadContainer {
 					mortar.setToBlasting();
 				}
 
-				headEntity.world.playEvent(1016, new BlockPos(headEntity), 0);
+				headEntity.world.playEvent(1016, new BlockPos(headEntity.func_233580_cy_()), 0);
 
 				headEntity.world.addEntity(mortar);
 			}
@@ -683,7 +684,7 @@ public class HydraHeadContainer {
 				if (target instanceof EntityTFHydraPart || target instanceof MultiPartEntityPart) {
 					// stop hurting yourself!
 					this.endCurrentAction();
-				} else if (!target.isImmuneToFire() && target.attackEntityFrom(DamageSource.IN_FIRE, FLAME_DAMAGE)) {
+				} else if (!target.func_230279_az_() && target.attackEntityFrom(DamageSource.IN_FIRE, FLAME_DAMAGE)) {
 					target.setFire(FLAME_BURN_FACTOR);
 				}
 			}
@@ -705,14 +706,14 @@ public class HydraHeadContainer {
 	private Entity getHeadLookTarget() {
 		Entity pointedEntity = null;
 		double range = 30.0D;
-		Vec3d srcVec = new Vec3d(headEntity.getX(), headEntity.getY() + 1.0, headEntity.getZ());
-		Vec3d lookVec = headEntity.getLook(1.0F);
+		Vector3d srcVec = new Vector3d(headEntity.getPosX(), headEntity.getPosY() + 1.0, headEntity.getPosZ());
+		Vector3d lookVec = headEntity.getLook(1.0F);
 		BlockRayTraceResult raytrace = headEntity.world.rayTraceBlocks(new RayTraceContext(srcVec, srcVec.add(lookVec.x * range, lookVec.y * range, lookVec.z * range), RayTraceContext.BlockMode.OUTLINE, RayTraceContext.FluidMode.ANY, headEntity));
 		BlockPos hitpos = raytrace != null ? raytrace.getPos() : null;
-		double rx = hitpos == null ? range : Math.min(range, Math.abs(headEntity.getX() - hitpos.getX()));
-		double ry = hitpos == null ? range : Math.min(range, Math.abs(headEntity.getY() - hitpos.getY()));
-		double rz = hitpos == null ? range : Math.min(range, Math.abs(headEntity.getZ() - hitpos.getZ()));
-		Vec3d destVec = srcVec.add(lookVec.x * range, lookVec.y * range, lookVec.z * range);
+		double rx = hitpos == null ? range : Math.min(range, Math.abs(headEntity.getPosX() - hitpos.getX()));
+		double ry = hitpos == null ? range : Math.min(range, Math.abs(headEntity.getPosY() - hitpos.getY()));
+		double rz = hitpos == null ? range : Math.min(range, Math.abs(headEntity.getPosZ() - hitpos.getZ()));
+		Vector3d destVec = srcVec.add(lookVec.x * range, lookVec.y * range, lookVec.z * range);
 		float var9 = 3.0F;
 		List<Entity> possibleList = headEntity.world.getEntitiesWithinAABBExcludingEntity(headEntity, headEntity.getBoundingBox().offset(lookVec.x * rx, lookVec.y * ry, lookVec.z * rz).grow(var9, var9, var9));
 		double hitDist = 0;
@@ -721,7 +722,7 @@ public class HydraHeadContainer {
 			if (possibleEntity.canBeCollidedWith() && possibleEntity != headEntity && possibleEntity != necka && possibleEntity != neckb && possibleEntity != neckc) {
 				float borderSize = possibleEntity.getCollisionBorderSize();
 				AxisAlignedBB collisionBB = possibleEntity.getBoundingBox().grow((double) borderSize, (double) borderSize, (double) borderSize);
-				Optional<Vec3d> interceptPos = collisionBB.rayTrace(srcVec, destVec);
+				Optional<Vector3d> interceptPos = collisionBB.rayTrace(srcVec, destVec);
 
 				if (collisionBB.contains(srcVec)) {
 					if (0.0D < hitDist || hitDist == 0.0D) {
@@ -754,7 +755,7 @@ public class HydraHeadContainer {
 	 */
 	@Nullable
 	private EntityTFHydraHead findNearbyHead(String string) {
-		List<EntityTFHydraHead> nearbyHeads = hydra.world.getEntitiesWithinAABB(EntityTFHydraHead.class, new AxisAlignedBB(hydra.getX(), hydra.getY(), hydra.getZ(), hydra.getX() + 1, hydra.getY() + 1, hydra.getZ() + 1).grow(16.0D, 16.0D, 16.0D));
+		List<EntityTFHydraHead> nearbyHeads = hydra.world.getEntitiesWithinAABB(EntityTFHydraHead.class, new AxisAlignedBB(hydra.getPosX(), hydra.getPosY(), hydra.getPosZ(), hydra.getPosX() + 1, hydra.getPosY() + 1, hydra.getPosZ() + 1).grow(16.0D, 16.0D, 16.0D));
 
 		for (EntityTFHydraHead nearbyHead : nearbyHeads) {
 			if (nearbyHead.getPartName().equals(string)) {
@@ -803,9 +804,9 @@ public class HydraHeadContainer {
 	 */
 	protected void setNeckPosition(double startX, double startY, double startZ, float startYaw, float startPitch) {
 
-		double endX = headEntity.getX();
-		double endY = headEntity.getY();
-		double endZ = headEntity.getZ();
+		double endX = headEntity.getPosX();
+		double endY = headEntity.getPosY();
+		double endZ = headEntity.getPosZ();
 		float endYaw = headEntity.rotationYaw;
 		float endPitch = headEntity.rotationPitch;
 
@@ -821,13 +822,13 @@ public class HydraHeadContainer {
 		// translate the end position back 1 unit
 		if (endPitch > 0) {
 			// if we are looking down, don't raise the first neck position, it looks weird
-			Vec3d vector = new Vec3d(0, 0, -1.0).rotateYaw((-endYaw * 3.141593F) / 180F);
+			Vector3d vector = new Vector3d(0, 0, -1.0).rotateYaw((-endYaw * 3.141593F) / 180F);
 			endX += vector.x;
 			endY += vector.y;
 			endZ += vector.z;
 		} else {
 			// but if we are looking up, lower it or it goes through the crest
-			Vec3d vector = headEntity.getLookVec();
+			Vector3d vector = headEntity.getLookVec();
 			float dist = 1.0f;
 
 			endX -= vector.x * dist;
@@ -868,9 +869,9 @@ public class HydraHeadContainer {
 		float angle = (((hydra.rotationYaw) * 3.141593F) / 180F);
 		float distance = 30.0F;
 
-		double dx = hydra.getX() - MathHelper.sin(angle) * distance;
-		double dy = hydra.getY() + 3.0;
-		double dz = hydra.getZ() + MathHelper.cos(angle) * distance;
+		double dx = hydra.getPosX() - MathHelper.sin(angle) * distance;
+		double dy = hydra.getPosY() + 3.0;
+		double dz = hydra.getPosZ() + MathHelper.cos(angle) * distance;
 
 		faceVec(dx, dy, dz, yawConstraint, pitchConstraint);
 	}
@@ -879,23 +880,23 @@ public class HydraHeadContainer {
 		double yTarget;
 		if (entity instanceof LivingEntity) {
 			LivingEntity entityliving = (LivingEntity) entity;
-			yTarget = entityliving.getY() + entityliving.getEyeHeight();
+			yTarget = entityliving.getPosY() + entityliving.getEyeHeight();
 		} else {
 			yTarget = (entity.getBoundingBox().minY + entity.getBoundingBox().maxY) / 2D;
 		}
 
-		faceVec(entity.getX(), yTarget, entity.getZ(), yawConstraint, pitchConstraint);
+		faceVec(entity.getPosX(), yTarget, entity.getPosZ(), yawConstraint, pitchConstraint);
 
 		// let's just set the target vector here
-		this.targetX = entity.getX();
-		this.targetY = entity.getY();
-		this.targetZ = entity.getZ();
+		this.targetX = entity.getPosX();
+		this.targetY = entity.getPosY();
+		this.targetZ = entity.getPosZ();
 	}
 
 	private void faceVec(double x, double y, double z, float yawConstraint, float pitchConstraint) {
-		double xOffset = x - headEntity.getX();
-		double zOffset = z - headEntity.getZ();
-		double yOffset = (headEntity.getY() + 1.0) - y;
+		double xOffset = x - headEntity.getPosX();
+		double zOffset = z - headEntity.getPosZ();
+		double yOffset = (headEntity.getPosY() + 1.0) - y;
 
 		double distance = MathHelper.sqrt(xOffset * xOffset + zOffset * zOffset);
 		float xyAngle = (float) ((Math.atan2(zOffset, xOffset) * 180D) / Math.PI) - 90F;

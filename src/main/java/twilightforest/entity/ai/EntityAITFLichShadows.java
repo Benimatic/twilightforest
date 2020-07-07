@@ -4,7 +4,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import twilightforest.entity.boss.EntityTFLich;
 import twilightforest.item.TFItems;
 
@@ -86,7 +86,7 @@ public class EntityAITFLichShadows extends Goal {
 		LivingEntity targetedEntity = lich.getAttackTarget();
 
 		// find a good spot
-		Vec3d cloneSpot = lich.findVecInLOSOf(targetedEntity);
+		Vector3d cloneSpot = lich.findVecInLOSOf(targetedEntity);
 
 		if (cloneSpot != null) {
 			// put a clone there
@@ -98,7 +98,7 @@ public class EntityAITFLichShadows extends Goal {
 			newClone.setAttackCooldown(60 + lich.getRNG().nextInt(3) - lich.getRNG().nextInt(3));
 
 			// make sparkles leading to it
-			lich.makeTeleportTrail(lich.getX(), lich.getY(), lich.getZ(), cloneSpot.x, cloneSpot.y, cloneSpot.z);
+			lich.makeTeleportTrail(lich.getPosX(), lich.getPosY(), lich.getPosZ(), cloneSpot.x, cloneSpot.y, cloneSpot.z);
 		}
 	}
 
@@ -117,7 +117,7 @@ public class EntityAITFLichShadows extends Goal {
 				lich.setMaster(nearbyLich);
 
 				// animate our new linkage!
-				lich.makeTeleportTrail(lich.getX(), lich.getY(), lich.getZ(), nearbyLich.getX(), nearbyLich.getY(), nearbyLich.getZ());
+				lich.makeTeleportTrail(lich.getPosX(), lich.getPosY(), lich.getPosZ(), nearbyLich.getPosX(), nearbyLich.getPosY(), nearbyLich.getPosZ());
 
 				lich.setAttackTarget(nearbyLich.getAttackTarget());
 				break;

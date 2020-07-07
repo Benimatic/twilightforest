@@ -11,10 +11,11 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
@@ -264,8 +265,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 	}
 
 	@Override
-	public boolean generate(IWorld worldIn, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
-		World world = worldIn.getWorld();
+	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
 
 		// make walls
@@ -316,7 +316,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 	/**
 	 * Add a destruction burst
 	 */
-	protected void destroyTower(World world, Random decoRNG, int x, int y, int z, int amount, MutableBoundingBox sbb) {
+	protected void destroyTower(ISeedReader world, Random decoRNG, int x, int y, int z, int amount, MutableBoundingBox sbb) {
 		//makeNetherburst(world, decoRNG, 16, 100, 40, x, y, z, 0, sbb);
 
 		int initialRadius = decoRNG.nextInt(amount) + amount;
@@ -333,7 +333,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 		}
 	}
 
-	private void netherTransformBlob(World world, Random inRand, int sx, int sy, int sz, int rad, MutableBoundingBox sbb) {
+	private void netherTransformBlob(ISeedReader world, Random inRand, int sx, int sy, int sz, int rad, MutableBoundingBox sbb) {
 
 		Random rand = new Random(inRand.nextLong());
 
@@ -369,7 +369,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 		}
 	}
 
-	private void testAndChangeToNetherrack(World world, Random rand, int x, int y, int z, MutableBoundingBox sbb) {
+	private void testAndChangeToNetherrack(ISeedReader world, Random rand, int x, int y, int z, MutableBoundingBox sbb) {
 		if (this.getBlockStateFromPos(world, x, y, z, sbb).getBlock() != Blocks.AIR) {
 			this.setBlockState(world, Blocks.NETHERRACK.getDefaultState(), x, y, z, sbb);
 
@@ -382,7 +382,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 	/**
 	 * Draw a giant blob of whatevs (okay, it's going to be leaves).
 	 */
-	private void drawBlob(World world, int sx, int sy, int sz, int rad, BlockState state, MutableBoundingBox sbb) {
+	private void drawBlob(ISeedReader world, int sx, int sy, int sz, int rad, BlockState state, MutableBoundingBox sbb) {
 		// then trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++) {
 			for (byte dy = 0; dy <= rad; dy++) {
@@ -417,7 +417,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 	/**
 	 * Add a bunch of random half floors
 	 */
-	private void addHalfFloors(World world, Random rand, MutableBoundingBox sbb, int bottom, int top) {
+	private void addHalfFloors(ISeedReader world, Random rand, MutableBoundingBox sbb, int bottom, int top) {
 
 		int spacing = 4;//this.size > 9 ? 4 : 3;
 		Rotation rotation = RotationUtil.ROTATIONS[(this.boundingBox.minY + bottom) % 3];
@@ -483,7 +483,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 	 * Dark tower half floors
 	 * TODO: Parameter "spacing" is unused. Remove?
 	 */
-	protected void makeHalfFloor(World world, MutableBoundingBox sbb, Rotation rotation, int y, int spacing) {
+	protected void makeHalfFloor(ISeedReader world, MutableBoundingBox sbb, Rotation rotation, int y, int spacing) {
 		this.fillBlocksRotated(world, sbb, size / 2, y, 1, size - 2, y, size - 2, deco.blockState, rotation);
 		this.fillBlocksRotated(world, sbb, size / 2 - 1, y, 1, size / 2 - 1, y, size - 2, deco.accentState, rotation);
 	}
@@ -492,7 +492,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 	 * Dark tower full floors
 	 * TODO: Parameters "rotation" and "spacing" are unused. Remove?
 	 */
-	protected void makeFullFloor(World world, MutableBoundingBox sbb, Rotation rotation, int y, int spacing) {
+	protected void makeFullFloor(ISeedReader world, MutableBoundingBox sbb, Rotation rotation, int y, int spacing) {
 		// half floor
 		this.fillWithBlocks(world, sbb, 1, y, 1, size - 2, y, size - 2, deco.blockState, Blocks.AIR.getDefaultState(), false);
 		this.fillWithBlocks(world, sbb, size / 2, y, 1, size / 2, y, size - 2, deco.accentState, Blocks.AIR.getDefaultState(), true);
@@ -503,7 +503,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 	 *
 	 * @param myDeco
 	 */
-	protected void decorateTreasureRoom(World world, MutableBoundingBox sbb, Rotation rotation, int y, int spacing, StructureTFDecorator myDeco) {
+	protected void decorateTreasureRoom(ISeedReader world, MutableBoundingBox sbb, Rotation rotation, int y, int spacing, StructureTFDecorator myDeco) {
 		//treasure chest!
 		int x = this.size / 2;
 		int z = this.size / 2;
@@ -515,7 +515,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 		placeTreasureAtCurrentPosition(world, x, y + 2, z, this.isKeyTower() ? TFTreasure.darktower_key : TFTreasure.darktower_cache, sbb);
 	}
 
-	private void decorateSpawner(World world, Random rand, MutableBoundingBox sbb, Rotation rotation, int y) {
+	private void decorateSpawner(ISeedReader world, Random rand, MutableBoundingBox sbb, Rotation rotation, int y) {
 		int x = this.size > 9 ? 4 : 3;
 		int z = this.size > 9 ? 5 : 4;
 
@@ -536,7 +536,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 	 * A lounge with a couch and table
 	 * TODO: Parameter "rand" is unused. Remove?
 	 */
-	private void decorateLounge(World world, Random rand, MutableBoundingBox sbb, Rotation rotation, int y) {
+	private void decorateLounge(ISeedReader world, Random rand, MutableBoundingBox sbb, Rotation rotation, int y) {
 		int cx = this.size > 9 ? 9 : 7;
 		int cz = this.size > 9 ? 4 : 3;
 
@@ -555,7 +555,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 	 * Decorate with a pressure plate triggered reappearing floor.  Only suitable for small towers
 	 * TODO: Parameter "rand" is unused. Remove?
 	 */
-	private void decorateReappearingFloor(World world, Random rand, MutableBoundingBox sbb, Rotation rotation, int y) {
+	private void decorateReappearingFloor(ISeedReader world, Random rand, MutableBoundingBox sbb, Rotation rotation, int y) {
 		final BlockState inactiveReappearing = TFBlocks.reappearing_block.get().getDefaultState();
 		final BlockState woodenPressurePlate = Blocks.OAK_PRESSURE_PLATE.getDefaultState();
 		// floor
@@ -569,7 +569,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 	 * Decorate with a redstone device that turns a lamp on or off
 	 * TODO: Parameter "rand" is unused. Remove?
 	 */
-	private void decorateExperimentLamp(World world, Random rand, MutableBoundingBox sbb, Rotation rotation, int y) {
+	private void decorateExperimentLamp(ISeedReader world, Random rand, MutableBoundingBox sbb, Rotation rotation, int y) {
 
 		int cx = this.size > 9 ? 5 : 3;
 		int cz = this.size > 9 ? 5 : 4;
@@ -635,7 +635,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 	 * Decorate with a redstone device that pulses a block back and forth
 	 * TODO: Parameter "rand" is unused. Remove?
 	 */
-	private void decorateExperimentPulser(World world, Random rand, MutableBoundingBox sbb, Rotation rotation, int y) {
+	private void decorateExperimentPulser(ISeedReader world, Random rand, MutableBoundingBox sbb, Rotation rotation, int y) {
 
 		int cx = this.size > 9 ? 6 : 5;
 		int cz = this.size > 9 ? 4 : 3;
@@ -659,7 +659,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 	 * Decorate with some bookshelves
 	 * TODO: Parameter "rand" is unused. Remove?
 	 */
-	private void decorateLibrary(World world, Random rand, MutableBoundingBox sbb, Rotation rotation, int y) {
+	private void decorateLibrary(ISeedReader world, Random rand, MutableBoundingBox sbb, Rotation rotation, int y) {
 		int bx = this.size > 9 ? 4 : 3;
 		int bz = this.size > 9 ? 3 : 2;
 
@@ -670,7 +670,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 		makeSmallBookshelf(world, sbb, rotation, y, bx, bz);
 	}
 
-	protected void makeSmallBookshelf(World world, MutableBoundingBox sbb, Rotation rotation, int y, int bx, int bz) {
+	protected void makeSmallBookshelf(ISeedReader world, MutableBoundingBox sbb, Rotation rotation, int y, int bx, int bz) {
 		setBlockStateRotated(world, getStairState(deco.stairState, Direction.NORTH, rotation, false), bx, y + 1, bz + 0, rotation, sbb);
 		setBlockStateRotated(world, getStairState(deco.stairState, Direction.NORTH, rotation, true), bx, y + 2, bz + 0, rotation, sbb);
 		setBlockStateRotated(world, getStairState(deco.stairState, Direction.SOUTH, rotation, false), bx, y + 1, bz + 3, rotation, sbb);
@@ -686,7 +686,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 	 * A chest with an extremely simple puzzle
 	 * TODO: Parameter "rand" is unused. Remove?
 	 */
-	private void decoratePuzzleChest(World world, Random rand, MutableBoundingBox sbb, Rotation rotation, int y) {
+	private void decoratePuzzleChest(ISeedReader world, Random rand, MutableBoundingBox sbb, Rotation rotation, int y) {
 		int x = this.size > 9 ? 4 : 3;
 		int z = this.size > 9 ? 5 : 4;
 		// pillar frameframe
@@ -714,14 +714,14 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 	/**
 	 * Make a 3x3x3 pillar frame
 	 */
-	protected void makePillarFrame(World world, MutableBoundingBox sbb, StructureTFDecorator myDeco, Rotation rotation, int x, int y, int z, boolean fenced) {
+	protected void makePillarFrame(ISeedReader world, MutableBoundingBox sbb, StructureTFDecorator myDeco, Rotation rotation, int x, int y, int z, boolean fenced) {
 		makePillarFrame(world, sbb, myDeco, rotation, x, y, z, 3, 3, 3, fenced);
 	}
 
 	/**
 	 * Place one of the architectural features that I frequently overuse in my structures
 	 */
-	protected void makePillarFrame(World world, MutableBoundingBox sbb, StructureTFDecorator myDeco, Rotation rotation, int x, int y, int z, int width, int height, int length, boolean fenced) {
+	protected void makePillarFrame(ISeedReader world, MutableBoundingBox sbb, StructureTFDecorator myDeco, Rotation rotation, int x, int y, int z, int width, int height, int length, boolean fenced) {
 		// fill in posts
 		for (int dx = 0; dx < width; dx++) {
 			for (int dz = 0; dz < length; dz++) {
@@ -761,7 +761,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 	/**
 	 * Dark tower half floors
 	 */
-	protected void addStairsDown(World world, MutableBoundingBox sbb, Rotation rotation, int y, int sz, int spacing) {
+	protected void addStairsDown(ISeedReader world, MutableBoundingBox sbb, Rotation rotation, int y, int sz, int spacing) {
 		// stairs
 		for (int i = 0; i < spacing; i++) {
 			int sx = size - 3 - i;
@@ -779,7 +779,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 	/**
 	 * Add a bunch of timber beams
 	 */
-	protected void addSmallTimberBeams(World world, Random rand, MutableBoundingBox sbb, int bottom, int top) {
+	protected void addSmallTimberBeams(ISeedReader world, Random rand, MutableBoundingBox sbb, int bottom, int top) {
 
 		int spacing = 4;
 		Rotation rotation = Rotation.NONE;
@@ -810,11 +810,11 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 	 * Make a mostly soid timber floor
 	 * TODO: Parameters "rand" and "spacing" is unused. Remove?
 	 */
-	protected void makeTimberFloor(World world, Random rand, MutableBoundingBox sbb, Rotation rotation, int y, int spacing) {
+	protected void makeTimberFloor(ISeedReader world, Random rand, MutableBoundingBox sbb, Rotation rotation, int y, int spacing) {
 		BlockState beamID = TFBlocks.dark_log.get().getDefaultState();
-		BlockState beamStateNS = beamID.with(LogBlock.AXIS, Direction.Axis.Z);
-		BlockState beamStateUD = beamID.with(LogBlock.AXIS, Direction.Axis.Y);
-		BlockState beamStateEW = beamID.with(LogBlock.AXIS, Direction.Axis.X);
+		BlockState beamStateNS = beamID.with(RotatedPillarBlock.AXIS, Direction.Axis.Z);
+		BlockState beamStateUD = beamID.with(RotatedPillarBlock.AXIS, Direction.Axis.Y);
+		BlockState beamStateEW = beamID.with(RotatedPillarBlock.AXIS, Direction.Axis.X);
 
 		for (int z = 1; z < size - 1; z++) {
 			for (int x = 1; x < size - 1; x++) {
@@ -844,11 +844,11 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 	 * Make a lattice of log blocks
 	 * TODO: Parameter "top" is unused. Remove?
 	 */
-	protected void makeSmallTimberBeams(World world, Random rand, MutableBoundingBox sbb, Rotation rotation, int y, boolean bottom, boolean top) {
+	protected void makeSmallTimberBeams(ISeedReader world, Random rand, MutableBoundingBox sbb, Rotation rotation, int y, boolean bottom, boolean top) {
 		BlockState beamID = TFBlocks.dark_log.get().getDefaultState();
-		BlockState beamStateNS = beamID.with(LogBlock.AXIS, Direction.Axis.X);
-		BlockState beamStateUD = beamID.with(LogBlock.AXIS, Direction.Axis.Y);
-		BlockState beamStateEW = beamID.with(LogBlock.AXIS, Direction.Axis.Z);
+		BlockState beamStateNS = beamID.with(RotatedPillarBlock.AXIS, Direction.Axis.X);
+		BlockState beamStateUD = beamID.with(RotatedPillarBlock.AXIS, Direction.Axis.Y);
+		BlockState beamStateEW = beamID.with(RotatedPillarBlock.AXIS, Direction.Axis.Z);
 
 		/*int beamMetaNS = ((this.coordBaseMode + rotation) % 2 == 0) ? 4 : 8;
 		int beamMetaEW = (beamMetaNS == 4) ? 8 : 4;
@@ -959,7 +959,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 	/**
 	 * Utility function for beam maze that checks if we should build a beam all the way down -- is there a valid spot to end it?
 	 */
-	protected boolean checkPost(World world, int x, int y, int z, Rotation rotation, MutableBoundingBox sbb) {
+	protected boolean checkPost(ISeedReader world, int x, int y, int z, Rotation rotation, MutableBoundingBox sbb) {
 		int worldX = this.getXWithOffsetRotated(x, z, rotation);
 		int worldY = this.getYWithOffset(y);
 		int worldZ = this.getZWithOffsetRotated(x, z, rotation);
@@ -974,7 +974,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 	 *
 	 * @param rand
 	 */
-	protected void makeEncasedWalls(World world, Random rand, MutableBoundingBox sbb, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
+	protected void makeEncasedWalls(ISeedReader world, Random rand, MutableBoundingBox sbb, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
 
 		for (int x = minX; x <= maxX; x++) {
 			for (int y = minY; y <= maxY; y++) {
@@ -1085,7 +1085,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 	 * Iterate through the openings on our list and add them to the tower
 	 */
 	@Override
-	protected void makeOpenings(World world, MutableBoundingBox sbb) {
+	protected void makeOpenings(ISeedReader world, MutableBoundingBox sbb) {
 		for (int i = 0; i < openings.size(); i++) {
 			BlockPos doorCoords = openings.get(i);
 
@@ -1115,7 +1115,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 	 * Make an opening in this tower for a door.
 	 */
 	@Override
-	protected void makeDoorOpening(World world, int dx, int dy, int dz, MutableBoundingBox sbb) {
+	protected void makeDoorOpening(ISeedReader world, int dx, int dy, int dz, MutableBoundingBox sbb) {
 		// nullify sky light
 //		nullifySkyLightAtCurrentPosition(world, dx - 3, dy - 1, dz - 3, dx + 3, dy + 3, dz + 3);
 
@@ -1135,7 +1135,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 	/**
 	 * Make a 3x3 tower door that reappears
 	 */
-	protected void makeReappearingDoorOpening(World world, int dx, int dy, int dz, MutableBoundingBox sbb) {
+	protected void makeReappearingDoorOpening(ISeedReader world, int dx, int dy, int dz, MutableBoundingBox sbb) {
 		// nullify sky light
 //		nullifySkyLightAtCurrentPosition(world, dx - 3, dy - 1, dz - 3, dx + 3, dy + 3, dz + 3);
 
@@ -1155,7 +1155,7 @@ public class ComponentTFDarkTowerWing extends ComponentTFTowerWing {
 	/**
 	 * Make a 3x3 tower door that is locked
 	 */
-	protected void makeLockedDoorOpening(World world, int dx, int dy, int dz, MutableBoundingBox sbb) {
+	protected void makeLockedDoorOpening(ISeedReader world, int dx, int dy, int dz, MutableBoundingBox sbb) {
 		// nullify sky light
 //		nullifySkyLightAtCurrentPosition(world, dx - 3, dy - 1, dz - 3, dx + 3, dy + 3, dz + 3);
 

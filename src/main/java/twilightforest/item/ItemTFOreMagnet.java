@@ -18,7 +18,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -100,7 +100,7 @@ public class ItemTFOreMagnet extends Item {
 
 			if (moved > 0) {
 				stack.damageItem(moved, living, (user) -> user.sendBreakAnimation(living.getActiveHand()));
-				world.playSound(null, living.getX(), living.getY(), living.getZ(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, living.getSoundCategory(), 1.0F, 1.0F);
+				world.playSound(null, living.getPosX(), living.getPosY(), living.getPosZ(), SoundEvents.ENTITY_ENDERMAN_TELEPORT, living.getSoundCategory(), 1.0F, 1.0F);
 			}
 		}
 	}
@@ -128,9 +128,9 @@ public class ItemTFOreMagnet extends Item {
 
 		// find vector 32 blocks from look
 		double range = 32.0D;
-		Vec3d srcVec = new Vec3d(living.getX(), living.getY() + living.getEyeHeight(), living.getZ());
-		Vec3d lookVec = getOffsetLook(living, yawOffset, pitchOffset);
-		Vec3d destVec = srcVec.add(lookVec.x * range, lookVec.y * range, lookVec.z * range);
+		Vector3d srcVec = new Vector3d(living.getPosX(), living.getPosY() + living.getEyeHeight(), living.getPosZ());
+		Vector3d lookVec = getOffsetLook(living, yawOffset, pitchOffset);
+		Vector3d destVec = srcVec.add(lookVec.x * range, lookVec.y * range, lookVec.z * range);
 
 		return doMagnet(world, new BlockPos(srcVec), new BlockPos(destVec));
 	}
@@ -197,12 +197,12 @@ public class ItemTFOreMagnet extends Item {
 	 * Get the player look vector, but offset by the specified parameters.  We use to scan the area around where the player is looking
 	 * in the likely case there's no ore in the exact look direction.
 	 */
-	private Vec3d getOffsetLook(LivingEntity living, float yawOffset, float pitchOffset) {
+	private Vector3d getOffsetLook(LivingEntity living, float yawOffset, float pitchOffset) {
 		float var2 = MathHelper.cos(-(living.rotationYaw + yawOffset) * 0.017453292F - (float) Math.PI);
 		float var3 = MathHelper.sin(-(living.rotationYaw + yawOffset) * 0.017453292F - (float) Math.PI);
 		float var4 = -MathHelper.cos(-(living.rotationPitch + pitchOffset) * 0.017453292F);
 		float var5 = MathHelper.sin(-(living.rotationPitch + pitchOffset) * 0.017453292F);
-		return new Vec3d(var3 * var4, var5, var2 * var4);
+		return new Vector3d(var3 * var4, var5, var2 * var4);
 	}
 
 	private static boolean isReplaceable(World world, BlockState state, BlockPos pos) {

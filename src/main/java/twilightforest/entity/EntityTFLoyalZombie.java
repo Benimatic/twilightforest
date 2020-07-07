@@ -1,12 +1,9 @@
 package twilightforest.entity;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.AgeableEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.CreatureAttribute;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.monster.GhastEntity;
@@ -47,12 +44,11 @@ public class EntityTFLoyalZombie extends TameableEntity {
 		return null;
 	}
 
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(40.0D);
-		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
-		this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(3.0D);
+	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return MobEntity.func_233666_p_()
+				.func_233815_a_(Attributes.field_233818_a_, 40.0D)
+				.func_233815_a_(Attributes.field_233821_d_, 0.3D)
+				.func_233815_a_(Attributes.field_233826_i_, 3.0D);
 	}
 
 	@Override

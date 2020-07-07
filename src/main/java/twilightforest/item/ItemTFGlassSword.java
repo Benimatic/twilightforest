@@ -19,8 +19,8 @@ public class ItemTFGlassSword extends SwordItem {
 
 	@Override
 	public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-		attacker.world.playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), Blocks.GLASS.getDefaultState().getSoundType().getBreakSound(), attacker.getSoundCategory(), 1F, 0.5F);
-		target.world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, Blocks.WHITE_STAINED_GLASS.getDefaultState()), target.getX(), target.getY(), target.getZ(), 1, 1, 1);
+		attacker.world.playSound(null, attacker.getPosX(), attacker.getPosY(), attacker.getPosZ(), Blocks.GLASS.getDefaultState().getSoundType().getBreakSound(), attacker.getSoundCategory(), 1F, 0.5F);
+		target.world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, Blocks.WHITE_STAINED_GLASS.getDefaultState()), target.getPosX(), target.getPosY(), target.getPosZ(), 1, 1, 1);
 		stack.damageItem(stack.getMaxDamage() + 1, attacker, (user) -> user.sendBreakAnimation(Hand.MAIN_HAND));
 		return true;
 	}

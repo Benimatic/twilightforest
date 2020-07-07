@@ -1,12 +1,12 @@
 package twilightforest.entity;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.IRangedAttackMob;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -16,7 +16,6 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.Hand;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -27,7 +26,7 @@ import twilightforest.util.WorldUtil;
 public class EntityTFTroll extends MonsterEntity implements IRangedAttackMob {
 
 	private static final DataParameter<Boolean> ROCK_FLAG = EntityDataManager.createKey(EntityTFTroll.class, DataSerializers.BOOLEAN);
-	private static final AttributeModifier ROCK_MODIFIER = new AttributeModifier("Rock follow boost", 24, AttributeModifier.Operation.ADDITION).setSaved(false);
+	private static final AttributeModifier ROCK_MODIFIER = new AttributeModifier("Rock follow boost", 24, AttributeModifier.Operation.ADDITION);
 
 	private RangedAttackGoal aiArrowAttack;
 	private MeleeAttackGoal aiAttackOnCollide;
@@ -55,12 +54,11 @@ public class EntityTFTroll extends MonsterEntity implements IRangedAttackMob {
 		}
 	}
 
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
-		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
-		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(7.0D);
+	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return MonsterEntity.func_234295_eP_()
+				.func_233815_a_(Attributes.field_233818_a_, 30.0D)
+				.func_233815_a_(Attributes.field_233821_d_, 0.28D)
+				.func_233815_a_(Attributes.field_233823_f_, 7.0D);
 	}
 
 	@Override
@@ -78,11 +76,11 @@ public class EntityTFTroll extends MonsterEntity implements IRangedAttackMob {
 
 		if (!world.isRemote) {
 			if (rock) {
-				if (!getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).hasModifier(ROCK_MODIFIER)) {
-					this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).applyModifier(ROCK_MODIFIER);
+				if (!getAttribute(Attributes.field_233819_b_).hasModifier(ROCK_MODIFIER)) {
+					this.getAttribute(Attributes.field_233819_b_).func_233767_b_(ROCK_MODIFIER);
 				}
 			} else {
-				this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).removeModifier(ROCK_MODIFIER);
+				this.getAttribute(Attributes.field_233819_b_).removeModifier(ROCK_MODIFIER);
 			}
 			this.setCombatTask();
 		}
@@ -128,7 +126,7 @@ public class EntityTFTroll extends MonsterEntity implements IRangedAttackMob {
 
 	private void ripenTrollBerNearby(int offset) {
 		int range = 12;
-		for (BlockPos pos : WorldUtil.getAllAround(new BlockPos(this), range)) {
+		for (BlockPos pos : WorldUtil.getAllAround(new BlockPos(this.func_233580_cy_()), range)) {
 			ripenBer(offset, pos);
 		}
 	}
@@ -146,9 +144,9 @@ public class EntityTFTroll extends MonsterEntity implements IRangedAttackMob {
 			EntityTFIceBomb ice = new EntityTFIceBomb(TFEntities.thrown_ice, this.world, this);
 
 			// [VanillaCopy] Part of EntitySkeleton.attackEntityWithRangedAttack
-			double d0 = target.getX() - this.getX();
-			double d1 = target.getBoundingBox().minY + (double) (target.getHeight() / 3.0F) - ice.getY();
-			double d2 = target.getZ() - this.getZ();
+			double d0 = target.getPosX() - this.getPosX();
+			double d1 = target.getBoundingBox().minY + (double) (target.getHeight() / 3.0F) - ice.getPosY();
+			double d2 = target.getPosZ() - this.getPosZ();
 			double d3 = (double) MathHelper.sqrt(d0 * d0 + d2 * d2);
 			ice.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float) (14 - this.world.getDifficulty().getId() * 4));
 

@@ -49,158 +49,158 @@ public class ModelTFHydra extends SegmentedModel<EntityTFHydra> {
 
 		body = new ModelRenderer(this/*, "body"*/);
 		body.setRotationPoint(0F, -12F, 0F);
-		body.setTextureOffset(0, 0).addCuboid(-48F, 0F, 0F, 96, 96, 40);
+		body.setTextureOffset(0, 0).addBox(-48F, 0F, 0F, 96, 96, 40);
 		setRotation(body, 1.22173F, 0F, 0F);
 
 		leg1 = new ModelRenderer(this/*, "leg"*/);
 		leg1.setRotationPoint(48F, -24F, 0F);
-		leg1.setTextureOffset(0, 136).addCuboid(-16F, 0F, -16F, 32, 48, 32);
-		leg1.setTextureOffset(184, 200).addCuboid(-20F, 40F, -20F, 8, 8, 8);
-		leg1.setTextureOffset(184, 200).addCuboid(-4F, 40F, -22F, 8, 8, 8);
-		leg1.setTextureOffset(184, 200).addCuboid(12F, 40F, -20F, 8, 8, 8);
+		leg1.setTextureOffset(0, 136).addBox(-16F, 0F, -16F, 32, 48, 32);
+		leg1.setTextureOffset(184, 200).addBox(-20F, 40F, -20F, 8, 8, 8);
+		leg1.setTextureOffset(184, 200).addBox(-4F, 40F, -22F, 8, 8, 8);
+		leg1.setTextureOffset(184, 200).addBox(12F, 40F, -20F, 8, 8, 8);
 
 		leg2 = new ModelRenderer(this/*, "leg"*/);
 		leg2.setRotationPoint(-48F, -24F, 0F);
 		leg2.mirror = true;
-		leg2.setTextureOffset(0, 136).addCuboid(-16F, 0F, -16F, 32, 48, 32);
-		leg2.setTextureOffset(184, 200).addCuboid(-20F, 40F, -20F, 8, 8, 8);
-		leg2.setTextureOffset(184, 200).addCuboid(-4F, 40F, -22F, 8, 8, 8);
-		leg2.setTextureOffset(184, 200).addCuboid(12F, 40F, -20F, 8, 8, 8);
+		leg2.setTextureOffset(0, 136).addBox(-16F, 0F, -16F, 32, 48, 32);
+		leg2.setTextureOffset(184, 200).addBox(-20F, 40F, -20F, 8, 8, 8);
+		leg2.setTextureOffset(184, 200).addBox(-4F, 40F, -22F, 8, 8, 8);
+		leg2.setTextureOffset(184, 200).addBox(12F, 40F, -20F, 8, 8, 8);
 
 		tail1 = new ModelRenderer(this/*, "tail"*/);
 		tail1.setRotationPoint(0F, 6F, 108F);
-		tail1.setTextureOffset(128, 136).addCuboid(-16F, -16F, -16F, 32, 32, 32);
-		tail1.setTextureOffset(128, 200).addCuboid(-2F, -28F, -11F, 4, 24, 24);
+		tail1.setTextureOffset(128, 136).addBox(-16F, -16F, -16F, 32, 32, 32);
+		tail1.setTextureOffset(128, 200).addBox(-2F, -28F, -11F, 4, 24, 24);
 
 		tail2 = new ModelRenderer(this/*, "tail"*/);
-		tail2.setTextureOffset(128, 136).addCuboid(-16F, -16F, -16F, 32, 32, 32);
-		tail2.setTextureOffset(128, 200).addCuboid(-2F, -28F, -11F, 4, 24, 24);
+		tail2.setTextureOffset(128, 136).addBox(-16F, -16F, -16F, 32, 32, 32);
+		tail2.setTextureOffset(128, 200).addBox(-2F, -28F, -11F, 4, 24, 24);
 		tail2.setRotationPoint(0F, 7F, 142F);
 
 		tail3 = new ModelRenderer(this/*, "tail"*/);
-		tail3.setTextureOffset(128, 136).addCuboid(-16F, -16F, -16F, 32, 32, 32);
-		tail3.setTextureOffset(128, 200).addCuboid(-2F, -28F, -11F, 4, 24, 24);
+		tail3.setTextureOffset(128, 136).addBox(-16F, -16F, -16F, 32, 32, 32);
+		tail3.setTextureOffset(128, 200).addBox(-2F, -28F, -11F, 4, 24, 24);
 		tail3.setRotationPoint(0F, 8F, 176F);
 
 		tail4 = new ModelRenderer(this/*, "tail"*/);
-		tail4.setTextureOffset(128, 136).addCuboid(-16F, -16F, -16F, 32, 32, 32);
-		tail4.setTextureOffset(128, 200).addCuboid(-2F, -28F, -11F, 4, 24, 24);
+		tail4.setTextureOffset(128, 136).addBox(-16F, -16F, -16F, 32, 32, 32);
+		tail4.setTextureOffset(128, 200).addBox(-2F, -28F, -11F, 4, 24, 24);
 		tail4.setRotationPoint(0F, 8F, 210F);
 
 
 		neck1a = new ModelRenderer(this/*, "neck"*/);
-		neck1a.setTextureOffset(128, 136).addCuboid(-16F, -16F, -16F, 32, 32, 32);
-		neck1a.setTextureOffset(128, 200).addCuboid(-2F, -23F, 0F, 4, 24, 24);
+		neck1a.setTextureOffset(128, 136).addBox(-16F, -16F, -16F, 32, 32, 32);
+		neck1a.setTextureOffset(128, 200).addBox(-2F, -23F, 0F, 4, 24, 24);
 		neck1a.setRotationPoint(0F, -48F, 16F);
 
 		neck1b = new ModelRenderer(this/*, "neck"*/);
-		neck1b.setTextureOffset(128, 136).addCuboid(-16F, -16F, -16F, 32, 32, 32);
-		neck1b.setTextureOffset(128, 200).addCuboid(-2F, -23F, 0F, 4, 24, 24);
+		neck1b.setTextureOffset(128, 136).addBox(-16F, -16F, -16F, 32, 32, 32);
+		neck1b.setTextureOffset(128, 200).addBox(-2F, -23F, 0F, 4, 24, 24);
 		neck1b.setRotationPoint(0F, -68F, 0F);
 
 		neck1c = new ModelRenderer(this/*, "neck"*/);
-		neck1c.setTextureOffset(128, 136).addCuboid(-16F, -16F, -16F, 32, 32, 32);
-		neck1c.setTextureOffset(128, 200).addCuboid(-2F, -23F, 0F, 4, 24, 24);
+		neck1c.setTextureOffset(128, 136).addBox(-16F, -16F, -16F, 32, 32, 32);
+		neck1c.setTextureOffset(128, 200).addBox(-2F, -23F, 0F, 4, 24, 24);
 		neck1c.setRotationPoint(0F, -93F, -14F);
 
 		neck1d = new ModelRenderer(this/*, "neck"*/);
-		neck1d.setTextureOffset(128, 136).addCuboid(-16F, -16F, -16F, 32, 32, 32);
-		neck1d.setTextureOffset(128, 200).addCuboid(-2F, -23F, 0F, 4, 24, 24);
+		neck1d.setTextureOffset(128, 136).addBox(-16F, -16F, -16F, 32, 32, 32);
+		neck1d.setTextureOffset(128, 200).addBox(-2F, -23F, 0F, 4, 24, 24);
 		neck1d.setRotationPoint(0F, -116F, -37F);
 
 		head1 = new ModelRenderer(this/*, "head"*/);
-		head1.setTextureOffset(272, 0).addCuboid(-16F, -14F, -32F, 32, 24, 32);
-		head1.setTextureOffset(272, 56).addCuboid(-15F, -2F, -56F, 30, 12, 24);
-		head1.setTextureOffset(128, 200).addCuboid(-2F, -30F, -12F, 4, 24, 24);
+		head1.setTextureOffset(272, 0).addBox(-16F, -14F, -32F, 32, 24, 32);
+		head1.setTextureOffset(272, 56).addBox(-15F, -2F, -56F, 30, 12, 24);
+		head1.setTextureOffset(128, 200).addBox(-2F, -30F, -12F, 4, 24, 24);
 		head1.setRotationPoint(0F, -128F, -53F);
 
 		jaw1 = new ModelRenderer(this/*, "jaw"*/);
 		jaw1.setRotationPoint(0F, 10F, -4F);
-		jaw1.setTextureOffset(272, 92).addCuboid(-15F, 0F, -48F, 30, 8, 48);
+		jaw1.setTextureOffset(272, 92).addBox(-15F, 0F, -48F, 30, 8, 48);
 		setRotation(jaw1, 0F, 0F, 0F);
 		head1.addChild(jaw1);
 
 		frill1 = new ModelRenderer(this/*, "frill"*/);
 		frill1.setRotationPoint(0F, 0F, -10F);
-		frill1.setTextureOffset(272, 200).addCuboid(-24F, -40.0F, 0F, 48, 48, 4);
+		frill1.setTextureOffset(272, 200).addBox(-24F, -40.0F, 0F, 48, 48, 4);
 		setRotation(frill1, -0.5235988F, 0F, 0F);
 		head1.addChild(frill1);
 
 
 		neck2a = new ModelRenderer(this/*, "neck"*/);
-		neck2a.setTextureOffset(128, 136).addCuboid(-16F, -16F, -16F, 32, 32, 32);
-		neck2a.setTextureOffset(128, 200).addCuboid(-2F, -23F, 0F, 4, 24, 24);
+		neck2a.setTextureOffset(128, 136).addBox(-16F, -16F, -16F, 32, 32, 32);
+		neck2a.setTextureOffset(128, 200).addBox(-2F, -23F, 0F, 4, 24, 24);
 		neck2a.setRotationPoint(48F, -48F, 16F);
 
 		neck2b = new ModelRenderer(this/*, "neck"*/);
-		neck2b.setTextureOffset(128, 136).addCuboid(-16F, -16F, -16F, 32, 32, 32);
-		neck2b.setTextureOffset(128, 200).addCuboid(-2F, -23F, 0F, 4, 24, 24);
+		neck2b.setTextureOffset(128, 136).addBox(-16F, -16F, -16F, 32, 32, 32);
+		neck2b.setTextureOffset(128, 200).addBox(-2F, -23F, 0F, 4, 24, 24);
 		neck2b.setRotationPoint(71F, -68F, 0F);
 
 		neck2c = new ModelRenderer(this/*, "neck"*/);
-		neck2c.setTextureOffset(128, 136).addCuboid(-16F, -16F, -16F, 32, 32, 32);
-		neck2c.setTextureOffset(128, 200).addCuboid(-2F, -23F, 0F, 4, 24, 24);
+		neck2c.setTextureOffset(128, 136).addBox(-16F, -16F, -16F, 32, 32, 32);
+		neck2c.setTextureOffset(128, 200).addBox(-2F, -23F, 0F, 4, 24, 24);
 		neck2c.setRotationPoint(96F, -93F, -14F);
 
 		neck2d = new ModelRenderer(this/*, "neck"*/);
-		neck2d.setTextureOffset(128, 136).addCuboid(-16F, -16F, -16F, 32, 32, 32);
-		neck2d.setTextureOffset(128, 200).addCuboid(-2F, -23F, 0F, 4, 24, 24);
+		neck2d.setTextureOffset(128, 136).addBox(-16F, -16F, -16F, 32, 32, 32);
+		neck2d.setTextureOffset(128, 200).addBox(-2F, -23F, 0F, 4, 24, 24);
 		neck2d.setRotationPoint(108F, -116F, -37F);
 
 		head2 = new ModelRenderer(this/*, "head"*/);
-		head2.setTextureOffset(272, 0).addCuboid(-16F, -14F, -32F, 32, 24, 32);
-		head2.setTextureOffset(272, 56).addCuboid(-15F, -2F, -56F, 30, 12, 24);
-		head2.setTextureOffset(128, 200).addCuboid(-2F, -30F, -12F, 4, 24, 24);
+		head2.setTextureOffset(272, 0).addBox(-16F, -14F, -32F, 32, 24, 32);
+		head2.setTextureOffset(272, 56).addBox(-15F, -2F, -56F, 30, 12, 24);
+		head2.setTextureOffset(128, 200).addBox(-2F, -30F, -12F, 4, 24, 24);
 		head2.setRotationPoint(108F, -128F, -53F);
 
 		jaw2 = new ModelRenderer(this/*, "jaw"*/);
 		jaw2.setRotationPoint(0F, 10F, -4F);
-		jaw2.setTextureOffset(272, 92).addCuboid(-15F, 0F, -48F, 30, 8, 48);
+		jaw2.setTextureOffset(272, 92).addBox(-15F, 0F, -48F, 30, 8, 48);
 		setRotation(jaw2, 0F, 0F, 0F);
 		head2.addChild(jaw2);
 
 		frill2 = new ModelRenderer(this/*, "frill"*/);
 		frill2.setRotationPoint(0F, 0F, -10F);
-		frill2.setTextureOffset(272, 200).addCuboid(-24F, -40.0F, 0F, 48, 48, 4);
+		frill2.setTextureOffset(272, 200).addBox(-24F, -40.0F, 0F, 48, 48, 4);
 		setRotation(frill2, -0.5235988F, 0F, 0F);
 		head2.addChild(frill2);
 
 
 		neck3a = new ModelRenderer(this/*, "neck"*/);
-		neck3a.setTextureOffset(128, 136).addCuboid(-16F, -16F, -16F, 32, 32, 31);
-		neck3a.setTextureOffset(128, 200).addCuboid(-2F, -23F, 0F, 4, 24, 24);
+		neck3a.setTextureOffset(128, 136).addBox(-16F, -16F, -16F, 32, 32, 31);
+		neck3a.setTextureOffset(128, 200).addBox(-2F, -23F, 0F, 4, 24, 24);
 		neck3a.setRotationPoint(-48F, -48F, 16F);
 
 		neck3b = new ModelRenderer(this/*, "neck"*/);
-		neck3b.setTextureOffset(128, 136).addCuboid(-16F, -16F, -16F, 32, 32, 32);
-		neck3b.setTextureOffset(128, 200).addCuboid(-2F, -23F, 0F, 4, 24, 24);
+		neck3b.setTextureOffset(128, 136).addBox(-16F, -16F, -16F, 32, 32, 32);
+		neck3b.setTextureOffset(128, 200).addBox(-2F, -23F, 0F, 4, 24, 24);
 		neck3b.setRotationPoint(-71F, -43F, 0F);
 
 		neck3c = new ModelRenderer(this/*, "neck"*/);
-		neck3c.setTextureOffset(128, 136).addCuboid(-16F, -16F, -16F, 32, 32, 32);
-		neck3c.setTextureOffset(128, 200).addCuboid(-2F, -23F, 0F, 4, 24, 24);
+		neck3c.setTextureOffset(128, 136).addBox(-16F, -16F, -16F, 32, 32, 32);
+		neck3c.setTextureOffset(128, 200).addBox(-2F, -23F, 0F, 4, 24, 24);
 		neck3c.setRotationPoint(-96F, -33F, -14F);
 
 		neck3d = new ModelRenderer(this/*, "neck"*/);
-		neck3d.setTextureOffset(128, 136).addCuboid(-16F, -16F, -16F, 32, 32, 32);
-		neck3d.setTextureOffset(128, 200).addCuboid(-2F, -23F, 0F, 4, 24, 24);
+		neck3d.setTextureOffset(128, 136).addBox(-16F, -16F, -16F, 32, 32, 32);
+		neck3d.setTextureOffset(128, 200).addBox(-2F, -23F, 0F, 4, 24, 24);
 		neck3d.setRotationPoint(-108F, -24F, -37F);
 
 		head3 = new ModelRenderer(this/*, "head"*/);
-		head3.setTextureOffset(272, 0).addCuboid(-16F, -14F, -32F, 32, 24, 32);
-		head3.setTextureOffset(272, 56).addCuboid(-15F, -2F, -56F, 30, 12, 24);
-		head3.setTextureOffset(128, 200).addCuboid(-2F, -30F, -12F, 4, 24, 24);
+		head3.setTextureOffset(272, 0).addBox(-16F, -14F, -32F, 32, 24, 32);
+		head3.setTextureOffset(272, 56).addBox(-15F, -2F, -56F, 30, 12, 24);
+		head3.setTextureOffset(128, 200).addBox(-2F, -30F, -12F, 4, 24, 24);
 		head3.setRotationPoint(-108F, -24F, -53F);
 
 		jaw3 = new ModelRenderer(this/*, "jaw"*/);
 		jaw3.setRotationPoint(0F, 10F, -4F);
-		jaw3.setTextureOffset(272, 92).addCuboid(-15F, 0F, -48F, 30, 8, 48);
+		jaw3.setTextureOffset(272, 92).addBox(-15F, 0F, -48F, 30, 8, 48);
 		setRotation(jaw3, 0.125F, 0F, 0F);
 		head3.addChild(jaw3);
 
 		frill3 = new ModelRenderer(this/*, "frill"*/);
 		frill3.setRotationPoint(0F, 0F, -10F);
-		frill3.setTextureOffset(272, 200).addCuboid(-24F, -40.0F, 0F, 48, 48, 4);
+		frill3.setTextureOffset(272, 200).addBox(-24F, -40.0F, 0F, 48, 48, 4);
 		setRotation(frill3, -0.5235988F, 0F, 0F);
 		head3.addChild(frill3);
 	}
@@ -247,7 +247,7 @@ public class ModelTFHydra extends SegmentedModel<EntityTFHydra> {
 	}
 
 	@Override
-	public void setAngles(EntityTFHydra entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setRotationAngles(EntityTFHydra entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		//super.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
 
 		leg1.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;

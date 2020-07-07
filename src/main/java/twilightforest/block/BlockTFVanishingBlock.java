@@ -51,7 +51,7 @@ public class BlockTFVanishingBlock extends Block {
 	}
 
 	private boolean isVanished(BlockState state) {
-		return state.has(VANISHED) && state.get(VANISHED);
+		return state.func_235901_b_(VANISHED) && state.get(VANISHED); //has?
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class BlockTFVanishingBlock extends Block {
 
 	@Override
 	@Deprecated
-	public ActionResultType onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+	public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
 		if (!isVanished(state) && !state.get(ACTIVE)) {
 			if (areBlocksLocked(world, pos)) {
 				world.playSound(null, pos, SoundEvents.BLOCK_WOODEN_BUTTON_CLICK_OFF, SoundCategory.BLOCKS, 1.0F, 0.3F);
@@ -80,8 +80,8 @@ public class BlockTFVanishingBlock extends Block {
 	}
 
 	@Override
-	public float getExplosionResistance(BlockState state, IWorldReader world, BlockPos pos, @Nullable Entity exploder, Explosion explosion) {
-		return !state.get(ACTIVE) ? 6000F : super.getExplosionResistance(state, world, pos, exploder, explosion);
+	public float getExplosionResistance(BlockState state, IBlockReader world, BlockPos pos, Explosion explosion) {
+		return !state.get(ACTIVE) ? 6000F : super.getExplosionResistance(state, world, pos, explosion);
 	}
 
 	@Override
@@ -131,7 +131,7 @@ public class BlockTFVanishingBlock extends Block {
 
 	@Override
 	@Deprecated
-	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		if (world.isRemote) {
 			return;
 		}
@@ -146,7 +146,7 @@ public class BlockTFVanishingBlock extends Block {
 			world.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 0.3F, 0.6F);
 		} else {
 			if (state.get(ACTIVE)) {
-				if (state.has(VANISHED)) {
+				if (state.func_235901_b_(VANISHED)) {
 					world.setBlockState(pos, state.with(ACTIVE, false).with(VANISHED, true));
 					world.getPendingBlockTicks().scheduleTick(pos, this, 80);
 				} else {
@@ -219,11 +219,5 @@ public class BlockTFVanishingBlock extends Block {
 			world.setBlockState(pos, state.with(ACTIVE, true));
 			world.getPendingBlockTicks().scheduleTick(pos, state.getBlock(), 2 + world.rand.nextInt(5));
 		}
-	}
-
-	@Override
-	@Deprecated
-	public int getLightValue(BlockState state) {
-		return state.get(ACTIVE) ? super.getLightValue(state) : 0;
 	}
 }

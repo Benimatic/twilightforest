@@ -15,7 +15,7 @@ public class ChunkGeneratorTwilightVoid extends ChunkGeneratorTFBase {
 	}
 
 	@Override
-	public void decorate(WorldGenRegion region) {
+	public void func_230354_a_(WorldGenRegion region) { //decorate?
 		int x = region.getMainChunkX();
 		int z = region.getMainChunkZ();
 

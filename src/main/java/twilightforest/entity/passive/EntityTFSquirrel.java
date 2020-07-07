@@ -2,6 +2,8 @@ package twilightforest.entity.passive;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -36,15 +38,14 @@ public class EntityTFSquirrel extends AnimalEntity {
 		this.goalSelector.addGoal(8, new LookRandomlyGoal(this));
 	}
 
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(1.0D);
-		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
+	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return MobEntity.func_233666_p_()
+				.func_233815_a_(Attributes.field_233818_a_, 1.0D)
+				.func_233815_a_(Attributes.field_233821_d_, 0.3D);
 	}
 
 	@Override
-	public boolean handleFallDamage(float distance, float multiplier) {
+	public boolean onLivingFall(float distance, float multiplier) {
 		return false;
 	}
 

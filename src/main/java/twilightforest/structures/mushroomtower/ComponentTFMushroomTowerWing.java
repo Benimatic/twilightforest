@@ -4,12 +4,13 @@ import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
@@ -334,28 +335,27 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 	}
 
 	@Override
-	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
-		World worldIn = world.getWorld();
+	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
 
 //		// clear inside
 //		fillWithAir(world, sbb, 1, 1, 1, size - 2, height - 2, size - 2);
 
-		makeTrunk(worldIn, sbb);
+		makeTrunk(world, sbb);
 
 		// make floors
-		makeFloorsForTower(worldIn, sbb);
+		makeFloorsForTower(world, sbb);
 
 		// nullify sky light
-//		this.nullifySkyLightForBoundingBox(worldIn);
+//		this.nullifySkyLightForBoundingBox(world);
 
 		// openings
-		makeOpenings(worldIn, sbb);
+		makeOpenings(world, sbb);
 
 		return true;
 	}
 
-	private void makeTrunk(World world, MutableBoundingBox sbb) {
+	private void makeTrunk(ISeedReader world, MutableBoundingBox sbb) {
 		int diameter = this.size / 2;
 		int hollow = (int) (diameter * 0.8);
 
@@ -396,7 +396,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 		}
 	}
 
-	private void makeFloorsForTower(World world, MutableBoundingBox sbb) {
+	private void makeFloorsForTower(ISeedReader world, MutableBoundingBox sbb) {
 		int floors = this.height / FLOOR_HEIGHT;
 
 		int ladderDir = 3;
@@ -412,7 +412,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 		}
 	}
 
-	private void placeFloor(World world, int dy, MutableBoundingBox sbb) {
+	private void placeFloor(ISeedReader world, int dy, MutableBoundingBox sbb) {
 		int diameter = this.size / 2;
 		int hollow = (int) (diameter * 0.8);
 
@@ -440,7 +440,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 	 * Make an opening in this tower for a door.  This now only makes one opening, so you need two
 	 */
 	@Override
-	protected void makeDoorOpening(World world, int dx, int dy, int dz, MutableBoundingBox sbb) {
+	protected void makeDoorOpening(ISeedReader world, int dx, int dy, int dz, MutableBoundingBox sbb) {
 		super.makeDoorOpening(world, dx, dy, dz, sbb);
 
 		if (getBlockStateFromPos(world, dx, dy + 2, dz, sbb).getBlock() != Blocks.AIR) {
@@ -458,7 +458,7 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 	 * @param ladderDownDir
 	 */
 	@Override
-	protected void decorateFloor(World world, Random rand, int floor, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, MutableBoundingBox sbb) {
+	protected void decorateFloor(ISeedReader world, Random rand, int floor, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, MutableBoundingBox sbb) {
 		//decorateWraparoundWallSteps(world, rand, bottom, top, ladderUpDir, ladderDownDir, sbb);
 	}
 }

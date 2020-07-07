@@ -1,6 +1,7 @@
 package twilightforest.client.particle;
 
 import net.minecraft.client.particle.*;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -16,11 +17,11 @@ public class ParticleGhastTrap extends SpriteTexturedParticle {
 	private final double originY;
 	private final double originZ;
 
-	ParticleGhastTrap(World world, double x, double y, double z, double vx, double vy, double vz) {
+	ParticleGhastTrap(ClientWorld world, double x, double y, double z, double vx, double vy, double vz) {
 		this(world, x, y, z, 3.0F, vx, vy, vz);
 	}
 
-	ParticleGhastTrap(World world, double x, double y, double z, float scale, double mx, double my, double mz) {
+	ParticleGhastTrap(ClientWorld world, double x, double y, double z, float scale, double mx, double my, double mz) {
 		super(world, x + mx, y + my, z + mz, mx, my, mz);
 		this.motionX = mx;
 		this.motionY = my;
@@ -80,7 +81,7 @@ public class ParticleGhastTrap extends SpriteTexturedParticle {
 		}
 
 		@Override
-		public Particle makeParticle(BasicParticleType typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+		public Particle makeParticle(BasicParticleType typeIn, ClientWorld worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
 			ParticleGhastTrap particle = new ParticleGhastTrap(worldIn, x, y, z, xSpeed, ySpeed, zSpeed);
 			particle.selectSpriteWithAge(this.spriteSet);
 			return particle;

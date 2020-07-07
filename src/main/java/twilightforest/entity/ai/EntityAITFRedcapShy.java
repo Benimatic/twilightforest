@@ -3,7 +3,7 @@ package twilightforest.entity.ai;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import twilightforest.entity.EntityTFRedcap;
 
 import java.util.EnumSet;
@@ -38,7 +38,7 @@ public class EntityAITFRedcapShy extends EntityAITFRedcapBase {
 			return false;
 		} else {
 			this.entityTarget = attackTarget;
-			Vec3d avoidPos = findCirclePoint(redcap, entityTarget, 5, lefty ? 1 : -1);
+			Vector3d avoidPos = findCirclePoint(redcap, entityTarget, 5, lefty ? 1 : -1);
 
 			this.targetX = avoidPos.x;
 			this.targetY = avoidPos.y;
@@ -82,10 +82,10 @@ public class EntityAITFRedcapShy extends EntityAITFRedcapBase {
 		this.redcap.getNavigator().clearPath();
 	}
 
-	private Vec3d findCirclePoint(Entity circler, Entity toCircle, double radius, double rotation) {
+	private Vector3d findCirclePoint(Entity circler, Entity toCircle, double radius, double rotation) {
 		// compute angle
-		double vecx = circler.getX() - toCircle.getX();
-		double vecz = circler.getZ() - toCircle.getZ();
+		double vecx = circler.getPosX() - toCircle.getPosX();
+		double vecz = circler.getPosZ() - toCircle.getPosZ();
 		float rangle = (float) (Math.atan2(vecz, vecx));
 
 		// add a little, so he circles
@@ -96,6 +96,6 @@ public class EntityAITFRedcapShy extends EntityAITFRedcapBase {
 		double dz = MathHelper.sin(rangle) * radius;
 
 		// add that to the target entity's position, and we have our destination
-		return new Vec3d(toCircle.getX() + dx, circler.getBoundingBox().minY, toCircle.getZ() + dz);
+		return new Vector3d(toCircle.getPosX() + dx, circler.getBoundingBox().minY, toCircle.getPosZ() + dz);
 	}
 }

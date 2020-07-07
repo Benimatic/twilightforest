@@ -48,9 +48,9 @@ public class EntityTFSkeletonDruid extends SkeletonEntity {
 			EntityTFNatureBolt natureBolt = new EntityTFNatureBolt(this.world, this);
 			playSound(SoundEvents.ENTITY_GHAST_SHOOT, 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
 
-			double tx = attackTarget.getX() - this.getX();
-			double ty = attackTarget.getY() + attackTarget.getEyeHeight() - 2.699999988079071D - this.getY();
-			double tz = attackTarget.getZ() - this.getZ();
+			double tx = attackTarget.getPosX() - this.getPosX();
+			double ty = attackTarget.getPosY() + attackTarget.getEyeHeight() - 2.699999988079071D - this.getPosY();
+			double tz = attackTarget.getPosZ() - this.getPosZ();
 			float heightOffset = MathHelper.sqrt(tx * tx + tz * tz) * 0.2F;
 			natureBolt.shoot(tx, ty + heightOffset, tz, 0.6F, 6.0F);
 			this.world.addEntity(natureBolt);
@@ -65,7 +65,7 @@ public class EntityTFSkeletonDruid extends SkeletonEntity {
 
 	// [VanillaCopy] of super. Edits noted.
 	public static boolean isValidLightLevel(IWorld world, BlockPos pos, Random random) {
-		if (world.getLightLevel(LightType.SKY, pos) > random.nextInt(32)) {
+		if (world.getLightFor(LightType.SKY, pos) > random.nextInt(32)) {
 			return false;
 		} else {
 			int i = world.getLight(pos);

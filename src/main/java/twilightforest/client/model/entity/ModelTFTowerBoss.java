@@ -26,7 +26,7 @@ public class ModelTFTowerBoss extends ModelTFGhast<EntityTFUrGhast> {
 
 		int length = 5;
 
-		this.tentacles[num].addCuboid(-1.5F, 0.0F, -1.5F, 3, length, 3);
+		this.tentacles[num].addBox(-1.5F, 0.0F, -1.5F, 3, length, 3);
 
 		if (num == 0) {
 			this.tentacles[num].rotationPointX = 4.5F;
@@ -88,7 +88,7 @@ public class ModelTFTowerBoss extends ModelTFGhast<EntityTFUrGhast> {
 
 			this.subTentacles[num][i] = new ModelRenderer(this, num % 4, (i * 5) - 1);
 
-			this.subTentacles[num][i].addCuboid(-1.5F, -0.5F, -1.5F, 3, length, 3);
+			this.subTentacles[num][i].addBox(-1.5F, -0.5F, -1.5F, 3, length, 3);
 			this.subTentacles[num][i].rotationPointX = 0;
 			this.subTentacles[num][i].rotationPointZ = 0;
 			this.subTentacles[num][i].rotationPointY = length;
@@ -112,8 +112,8 @@ public class ModelTFTowerBoss extends ModelTFGhast<EntityTFUrGhast> {
 	}
 
 	@Override
-	public void setAngles(EntityTFUrGhast entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		super.setAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+	public void setRotationAngles(EntityTFUrGhast entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+		super.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
 		// wave tentacles
 		for (int i = 0; i < this.subTentacles.length; ++i) {

@@ -1,7 +1,8 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -44,12 +45,11 @@ public class EntityTFKobold extends MonsterEntity {
 		dataManager.register(PANICKED, false);
 	}
 
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(13.0D);
-		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.28D);
-		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
+	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return MonsterEntity.func_234295_eP_()
+				.func_233815_a_(Attributes.field_233818_a_, 13.0D)
+				.func_233815_a_(Attributes.field_233821_d_, 0.28D)
+				.func_233815_a_(Attributes.field_233823_f_, 4.0D);
 	}
 
 	@Override
@@ -81,7 +81,7 @@ public class EntityTFKobold extends MonsterEntity {
 
 		if (world.isRemote && isPanicked()) {
 			for (int i = 0; i < 2; i++) {
-				this.world.addParticle(ParticleTypes.SPLASH, this.getX() + (this.rand.nextDouble() - 0.5D) * this.getWidth() * 0.5, this.getY() + this.getEyeHeight(), this.getZ() + (this.rand.nextDouble() - 0.5D) * this.getWidth() * 0.5, 0, 0, 0);
+				this.world.addParticle(ParticleTypes.SPLASH, this.getPosX() + (this.rand.nextDouble() - 0.5D) * this.getWidth() * 0.5, this.getPosY() + this.getEyeHeight(), this.getPosZ() + (this.rand.nextDouble() - 0.5D) * this.getWidth() * 0.5, 0, 0, 0);
 			}
 		}
 	}

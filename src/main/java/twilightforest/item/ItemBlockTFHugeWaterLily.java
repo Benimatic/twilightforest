@@ -2,13 +2,12 @@ package twilightforest.item;
 
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
-import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.item.LilyPadItem;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.*;
@@ -31,29 +30,29 @@ public class ItemBlockTFHugeWaterLily extends LilyPadItem {
 		ItemStack itemstack = player.getHeldItem(hand);
 		RayTraceResult raytraceresult = rayTrace(world, player, RayTraceContext.FluidMode.SOURCE_ONLY);
 		if (raytraceresult.getType() == RayTraceResult.Type.MISS) {
-			return ActionResult.pass(itemstack);
+			return ActionResult.resultPass(itemstack);
 		} else {
 			if (raytraceresult.getType() == RayTraceResult.Type.BLOCK) {
 				BlockRayTraceResult blockraytraceresult = (BlockRayTraceResult)raytraceresult;
 				BlockPos blockpos = blockraytraceresult.getPos();
 				Direction direction = blockraytraceresult.getFace();
 				if (!world.isBlockModifiable(player, blockpos) || !player.canPlayerEdit(blockpos.offset(direction), direction, itemstack)) {
-					return ActionResult.fail(itemstack);
+					return ActionResult.resultFail(itemstack);
 				}
 
 				BlockPos blockpos1 = blockpos.up();
 				BlockState blockstate = world.getBlockState(blockpos);
 				Material material = blockstate.getMaterial();
-				IFluidState ifluidstate = world.getFluidState(blockpos);
+				FluidState ifluidstate = world.getFluidState(blockpos);
 				if ((ifluidstate.getFluid() == Fluids.WATER || material == Material.ICE) && world.isAirBlock(blockpos1)) {
 
 					// special case for handling block placement with water lilies
-					net.minecraftforge.common.util.BlockSnapshot blocksnapshot = net.minecraftforge.common.util.BlockSnapshot.getBlockSnapshot(world, blockpos1);
+					net.minecraftforge.common.util.BlockSnapshot blocksnapshot = net.minecraftforge.common.util.BlockSnapshot.create(world, blockpos1);
 					// TF - getBlock() instead of hardcoded lilypad
 					world.setBlockState(blockpos1, getBlock().getDefaultState(), 11);
 					if (net.minecraftforge.event.ForgeEventFactory.onBlockPlace(player, blocksnapshot, net.minecraft.util.Direction.UP)) {
 						blocksnapshot.restore(true, false);
-						return ActionResult.fail(itemstack);
+						return ActionResult.resultFail(itemstack);
 					}
 
 					if (player instanceof ServerPlayerEntity) {
@@ -66,11 +65,11 @@ public class ItemBlockTFHugeWaterLily extends LilyPadItem {
 
 					player.addStat(Stats.ITEM_USED.get(this));
 					world.playSound(player, blockpos, SoundEvents.BLOCK_LILY_PAD_PLACE, SoundCategory.BLOCKS, 1.0F, 1.0F);
-					return ActionResult.success(itemstack);
+					return ActionResult.resultSuccess(itemstack);
 				}
 			}
 
-			return ActionResult.fail(itemstack);
+			return ActionResult.resultFail(itemstack);
 		}
 	}
 }

@@ -1,18 +1,26 @@
 package twilightforest.world.feature.config;
 
-import com.google.common.collect.ImmutableMap;
-import com.mojang.datafixers.Dynamic;
-import com.mojang.datafixers.types.DynamicOps;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.world.gen.feature.IFeatureConfig;
 
 public class CaveStalactiteConfig implements IFeatureConfig {
-	public BlockState blockState;
-	public float sizeFactor;
-	public int maxLength;
-	public int minHeight;
-	public boolean hang;
+
+	public static final Codec<CaveStalactiteConfig> caveStalactiteCodec = RecordCodecBuilder.create((instance) ->
+			instance.group(
+					BlockState.field_235877_b_.fieldOf("state").forGetter((obj) -> obj.blockState),
+					Codec.FLOAT.fieldOf("size_factor").withDefault(0.0F).forGetter((obj) -> obj.sizeFactor),
+					Codec.INT.fieldOf("max_length").withDefault(-1).forGetter((obj) -> obj.maxLength),
+					Codec.INT.fieldOf("min_height").withDefault(-1).forGetter((obj) -> obj.minHeight),
+					Codec.BOOL.fieldOf("hanging").withDefault(false).forGetter((obj) -> obj.hang))
+					.apply(instance, CaveStalactiteConfig::new));
+
+	public final BlockState blockState;
+	public final float sizeFactor;
+	public final int maxLength;
+	public final int minHeight;
+	public final boolean hang;
 
 	public CaveStalactiteConfig(BlockState state, float size, int length, int height, boolean hang) {
 		this.blockState = state;
@@ -20,25 +28,5 @@ public class CaveStalactiteConfig implements IFeatureConfig {
 		this.maxLength = length;
 		this.minHeight = height;
 		this.hang = hang;
-	}
-
-	@Override
-	public <T> Dynamic<T> serialize(DynamicOps<T> dynOps) {
-		return new Dynamic<>(dynOps, dynOps.createMap(ImmutableMap.of(
-				dynOps.createString("state"), BlockState.serialize(dynOps, this.blockState).getValue(),
-				dynOps.createString("size_factor"), dynOps.createFloat(this.sizeFactor),
-				dynOps.createString("max_length"), dynOps.createInt(this.maxLength),
-				dynOps.createString("min_height"), dynOps.createInt(this.minHeight),
-				dynOps.createString("hanging"), dynOps.createBoolean(this.hang))
-		));
-	}
-
-	public static <T> CaveStalactiteConfig deserialize(Dynamic<T> config) {
-		BlockState blockstate = config.get("state").map(BlockState::deserialize).orElse(Blocks.AIR.getDefaultState());
-		float size = config.get("size_factor").asFloat(0);
-		int length = config.get("max_length").asInt(-1);
-		int height = config.get("min_height").asInt(-1);
-		boolean hang = config.get("hanging").asBoolean(false);
-		return new CaveStalactiteConfig(blockstate, size, length, height, hang);
 	}
 }

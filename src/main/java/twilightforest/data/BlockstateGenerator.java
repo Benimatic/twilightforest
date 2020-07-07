@@ -562,7 +562,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 		);
 	}
 
-	private void logWoodSapling(LogBlock log, Block wood, Block sapling) {
+	private void logWoodSapling(RotatedPillarBlock log, Block wood, Block sapling) {
 		logBlock(log);
 		ResourceLocation sideTex = blockTexture(log);
 		simpleBlock(wood, models().cubeAll(wood.getRegistryName().getPath(), sideTex));

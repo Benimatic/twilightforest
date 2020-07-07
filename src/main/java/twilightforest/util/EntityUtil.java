@@ -5,7 +5,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.*;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.ForgeEventFactory;
 
 import javax.annotation.Nullable;
@@ -29,9 +31,9 @@ public class EntityUtil {
 	 * [VanillaCopy] Entity.pick
 	 */
 	public static BlockRayTraceResult rayTrace(Entity entity, double range) {
-		Vec3d position = entity.getEyePosition(1.0F);
-		Vec3d look = entity.getLook(1.0F);
-		Vec3d dest = position.add(look.x * range, look.y * range, look.z * range);
+		Vector3d position = entity.getEyePosition(1.0F);
+		Vector3d look = entity.getLook(1.0F);
+		Vector3d dest = position.add(look.x * range, look.y * range, look.z * range);
 		return entity.world.rayTraceBlocks(new RayTraceContext(position, dest, RayTraceContext.BlockMode.OUTLINE, RayTraceContext.FluidMode.NONE, entity));
 	}
 
@@ -40,7 +42,7 @@ public class EntityUtil {
 	}
 
 	public static BlockRayTraceResult rayTrace(PlayerEntity player, @Nullable DoubleUnaryOperator modifier) {
-		double range = player.getAttribute(PlayerEntity.REACH_DISTANCE).getValue();
+		double range = player.getAttribute(ForgeMod.REACH_DISTANCE.get()).getValue();
 		return rayTrace(player, modifier == null ? range : modifier.applyAsDouble(range));
 	}
 }

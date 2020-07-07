@@ -28,7 +28,7 @@ public class EntityTFBighorn extends SheepEntity {
 	static {
 		Map<DyeColor, ResourceLocation> map = new EnumMap<>(DyeColor.class);
 		for (DyeColor color : DyeColor.values()) {
-			map.put(color, TwilightForestMod.prefix("entities/bighorn_sheep/" + color.getName()));
+			map.put(color, TwilightForestMod.prefix("entities/bighorn_sheep/" + color.func_176610_l()));
 		}
 		COLORED_LOOT_TABLES = Collections.unmodifiableMap(map);
 	}

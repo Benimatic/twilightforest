@@ -1,41 +1,42 @@
 package twilightforest.world.feature;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import twilightforest.loot.TFTreasure;
 import twilightforest.util.FeatureUtil;
 
 import java.util.Random;
-import java.util.function.Function;
 
 public class TFGenWell extends Feature<NoFeatureConfig> {
 
-	public TFGenWell(Function<Dynamic<?>, NoFeatureConfig> configIn) {
+	public TFGenWell(Codec<NoFeatureConfig> configIn) {
 		super(configIn);
 	}
 
 	@Override
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+	public boolean func_230362_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
 		if (rand.nextInt(4) == 0) {
 			return generate4x4Well(world.getWorld(), rand, pos);
 		} else {
-			return generate3x3Well(world.getWorld(), rand, pos);
+			return generate3x3Well(world, rand, pos);
 		}
 	}
 
 	/**
 	 * make a cute little well
 	 */
-	public boolean generate3x3Well(World world, Random rand, BlockPos pos) {
+	public boolean generate3x3Well(ISeedReader seed, Random rand, BlockPos pos) {
+		World world = seed.getWorld();
+
 		if (!FeatureUtil.isAreaSuitable(world, rand, pos, 3, 4, 3)) {
 			return false;
 		}
@@ -98,7 +99,7 @@ public class TFGenWell extends Feature<NoFeatureConfig> {
 				world.setBlockState(pos.add(3, dy, 1), Blocks.AIR.getDefaultState());
 
 				//TODO: unique treasure table that is themed for underwater well exploration
-				TFTreasure.basement.generateChest(world, pos.add(3, dy, 1), false);
+				TFTreasure.basement.generateChest(seed.getWorld(), pos.add(3, dy, 1), false);
 
 				// set flag so we only get one chest
 				madeTreasure = true;

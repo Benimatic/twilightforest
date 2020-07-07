@@ -9,7 +9,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
@@ -35,10 +34,10 @@ public class BlockTFBuilder extends Block {
 		builder.add(STATE);
 	}
 
-	@Override
-	public int tickRate(IWorldReader world) {
-		return 15;
-	}
+//	@Override
+//	public int tickRate(IWorldReader world) {
+//		return 15;
+//	}
 
 	@Override
 	@Deprecated
@@ -77,7 +76,7 @@ public class BlockTFBuilder extends Block {
 
 	@Override
 	@Deprecated
-	public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+	public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		TowerDeviceVariant variant = state.get(STATE);
 
 		if (variant == TowerDeviceVariant.BUILDER_ACTIVE && world.isBlockPowered(pos)) {
@@ -175,12 +174,6 @@ public class BlockTFBuilder extends Block {
 //
 //		return 15;
 //	}
-
-	@Override
-	@Deprecated
-	public int getLightValue(BlockState state) {
-		return state.get(STATE) == TowerDeviceVariant.BUILDER_ACTIVE ? 4 : 0;
-	}
 
 	@Override
 	public boolean hasTileEntity(BlockState state) {

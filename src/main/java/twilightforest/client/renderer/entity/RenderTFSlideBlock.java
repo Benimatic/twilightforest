@@ -37,7 +37,7 @@ public class RenderTFSlideBlock extends EntityRenderer<EntityTFSlideBlock> {
 			if (iblockstate.getRenderType() == BlockRenderType.MODEL) {
 				World world = entity.world;
 
-				if (iblockstate != world.getBlockState(new BlockPos(entity)) && iblockstate.getRenderType() != BlockRenderType.INVISIBLE) {
+				if (iblockstate != world.getBlockState(entity.func_233580_cy_()) && iblockstate.getRenderType() != BlockRenderType.INVISIBLE) {
 //					this.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
 					stack.push();
 					RenderSystem.disableLighting();
@@ -50,7 +50,7 @@ public class RenderTFSlideBlock extends EntityRenderer<EntityTFSlideBlock> {
 //					}
 
 					bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
-					BlockPos blockpos = new BlockPos(entity.getX(), entity.getBoundingBox().maxY, entity.getZ());
+					BlockPos blockpos = new BlockPos(entity.getPosX(), entity.getBoundingBox().maxY, entity.getPosZ());
 
 					// spin
 					if (iblockstate.getProperties().contains(RotatedPillarBlock.AXIS)) {

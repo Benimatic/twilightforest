@@ -7,12 +7,13 @@ import net.minecraft.item.FilledMapItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.play.server.SMapDataPacket;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.MapData;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.network.NetworkDirection;
@@ -52,7 +53,7 @@ public class ItemTFMagicMap extends FilledMapItem {
 
 	public static ItemStack setupNewMap(World world, int worldX, int worldZ, byte scale, boolean trackingPosition, boolean unlimitedTracking) {
 		ItemStack itemstack = new ItemStack(TFItems.magic_map.get());
-		createMapData(itemstack, world, worldX, worldZ, scale, trackingPosition, unlimitedTracking, world.dimension.getType());
+		createMapData(itemstack, world, worldX, worldZ, scale, trackingPosition, unlimitedTracking, world.func_234923_W_());
 		return itemstack;
 	}
 
@@ -66,16 +67,16 @@ public class ItemTFMagicMap extends FilledMapItem {
 	protected TFMagicMapData getCustomMapData(ItemStack stack, World world) {
 		TFMagicMapData mapdata = getData(stack, world);
 		if (mapdata == null && !world.isRemote) {
-			mapdata = ItemTFMagicMap.createMapData(stack, world, world.getWorldInfo().getSpawnX(), world.getWorldInfo().getSpawnZ(), 3, false, false, world.dimension.getType());
+			mapdata = ItemTFMagicMap.createMapData(stack, world, world.getWorldInfo().getSpawnX(), world.getWorldInfo().getSpawnZ(), 3, false, false, world.func_234923_W_());
 		}
 
 		return mapdata;
 	}
 
-	private static TFMagicMapData createMapData(ItemStack stack, World world, int x, int z, int scale, boolean trackingPosition, boolean unlimitedTracking, DimensionType dimension) {
+	private static TFMagicMapData createMapData(ItemStack stack, World world, int x, int z, int scale, boolean trackingPosition, boolean unlimitedTracking, RegistryKey<World> dimension) {
 		int i = world.getNextMapId();
 		TFMagicMapData mapdata = new TFMagicMapData(getMapName(i));
-		mapdata.func_212440_a(x, z, scale, trackingPosition, unlimitedTracking, dimension);
+		mapdata.func_237241_a_(x, z, scale, trackingPosition, unlimitedTracking, dimension);
 		TFMagicMapData.registerMagicMapData(world, mapdata); // call our own register method
 		stack.getOrCreateTag().putInt("map", i);
 		return mapdata;
@@ -87,13 +88,13 @@ public class ItemTFMagicMap extends FilledMapItem {
 
 	@Override
 	public void updateMapData(World world, Entity viewer, MapData data) {
-		if (world.dimension.getType() == data.dimension && viewer instanceof PlayerEntity) {
+		if (world.func_234923_W_() == data.dimension && viewer instanceof PlayerEntity) {
 			int biomesPerPixel = 4;
 			int blocksPerPixel = 16; // don't even bother with the scale, just hardcode it
 			int centerX = data.xCenter;
 			int centerZ = data.zCenter;
-			int viewerX = MathHelper.floor(viewer.getX() - (double) centerX) / blocksPerPixel + 64;
-			int viewerZ = MathHelper.floor(viewer.getZ() - (double) centerZ) / blocksPerPixel + 64;
+			int viewerX = MathHelper.floor(viewer.getPosX() - (double) centerX) / blocksPerPixel + 64;
+			int viewerZ = MathHelper.floor(viewer.getPosZ() - (double) centerZ) / blocksPerPixel + 64;
 			int viewRadiusPixels = 512 / blocksPerPixel;
 
 			// use the generation map, which is larger scale than the other biome map
@@ -135,10 +136,10 @@ public class ItemTFMagicMap extends FilledMapItem {
 							// look for TF features
 							int worldX = (centerX / blocksPerPixel + xPixel - 64) * blocksPerPixel;
 							int worldZ = (centerZ / blocksPerPixel + zPixel - 64) * blocksPerPixel;
-							if (TFFeature.isInFeatureChunk(world, worldX, worldZ)) {
+							if (TFFeature.isInFeatureChunk(worldX, worldZ)) {
 								byte mapX = (byte) ((worldX - centerX) / (float) blocksPerPixel * 2F);
 								byte mapZ = (byte) ((worldZ - centerZ) / (float) blocksPerPixel * 2F);
-								TFFeature feature = TFFeature.getFeatureAt(worldX, worldZ, world);
+								TFFeature feature = TFFeature.getFeatureAt(worldX, worldZ, (ServerWorld) world);
 								TFMagicMapData tfData = (TFMagicMapData) data;
 								tfData.tfDecorations.add(new TFMagicMapData.TFMapDecoration(feature.ordinal(), mapX, mapZ, (byte) 8));
 								//TwilightForestMod.LOGGER.info("Found feature at {}, {}. Placing it on the map at {}, {}", worldX, worldZ, mapX, mapZ);

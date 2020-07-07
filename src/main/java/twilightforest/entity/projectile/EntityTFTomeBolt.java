@@ -41,9 +41,9 @@ public class EntityTFTomeBolt extends EntityTFThrowable implements IRendersAsIte
 
 	private void makeTrail() {
 		for (int i = 0; i < 5; i++) {
-			double dx = getX() + 0.5 * (rand.nextDouble() - rand.nextDouble());
-			double dy = getY() + 0.5 * (rand.nextDouble() - rand.nextDouble());
-			double dz = getZ() + 0.5 * (rand.nextDouble() - rand.nextDouble());
+			double dx = getPosX() + 0.5 * (rand.nextDouble() - rand.nextDouble());
+			double dy = getPosY() + 0.5 * (rand.nextDouble() - rand.nextDouble());
+			double dz = getPosZ() + 0.5 * (rand.nextDouble() - rand.nextDouble());
 			world.addParticle(ParticleTypes.CRIT, dx, dy, dz, 0.0D, 0.0D, 0.0D);
 		}
 	}
@@ -54,7 +54,7 @@ public class EntityTFTomeBolt extends EntityTFThrowable implements IRendersAsIte
 		if (id == 3) {
 			IParticleData particle = new ItemParticleData(ParticleTypes.ITEM, new ItemStack(Items.PAPER));
 			for (int i = 0; i < 8; ++i) {
-				this.world.addParticle(particle, false, this.getX(), this.getY(), this.getZ(), rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
+				this.world.addParticle(particle, false, this.getPosX(), this.getPosY(), this.getPosZ(), rand.nextGaussian() * 0.05D, rand.nextDouble() * 0.2D, rand.nextGaussian() * 0.05D);
 			}
 		} else {
 			super.handleStatusUpdate(id);

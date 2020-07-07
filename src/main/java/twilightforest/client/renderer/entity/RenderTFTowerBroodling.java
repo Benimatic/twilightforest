@@ -21,7 +21,7 @@ public class RenderTFTowerBroodling<T extends EntityTFTowerBroodling> extends Sp
 	}
 
 	@Override
-	protected void scale(T entity, MatrixStack stack, float partialTicks) {
+	protected void preRenderCallback(T entity, MatrixStack stack, float partialTicks) {
 		float scale = 0.7F;
 		stack.scale(scale, scale, scale);
 	}

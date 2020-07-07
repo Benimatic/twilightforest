@@ -19,18 +19,18 @@ public class ModelTFKnightPhantom2 extends BipedModel<EntityTFKnightPhantom> {
 		super(scale);
 
 		this.bipedRightArm = new ModelRenderer(this, 40, 16);
-		this.bipedRightArm.addCuboid(-1.0F, -2.0F, -1.0F, 2, 12, 2, scale);
+		this.bipedRightArm.addBox(-1.0F, -2.0F, -1.0F, 2, 12, 2, scale);
 		this.bipedRightArm.setRotationPoint(-5.0F, 2.0F, 0.0F);
 		this.bipedLeftArm = new ModelRenderer(this, 40, 16);
 		this.bipedLeftArm.mirror = true;
-		this.bipedLeftArm.addCuboid(-1.0F, -2.0F, -1.0F, 2, 12, 2, scale);
+		this.bipedLeftArm.addBox(-1.0F, -2.0F, -1.0F, 2, 12, 2, scale);
 		this.bipedLeftArm.setRotationPoint(5.0F, 2.0F, 0.0F);
 		this.bipedRightLeg = new ModelRenderer(this, 0, 16);
-		this.bipedRightLeg.addCuboid(-1.0F, 0.0F, -1.0F, 2, 12, 2, scale);
+		this.bipedRightLeg.addBox(-1.0F, 0.0F, -1.0F, 2, 12, 2, scale);
 		this.bipedRightLeg.setRotationPoint(-2.0F, 12.0F, 0.0F);
 		this.bipedLeftLeg = new ModelRenderer(this, 0, 16);
 		this.bipedLeftLeg.mirror = true;
-		this.bipedLeftLeg.addCuboid(-1.0F, 0.0F, -1.0F, 2, 12, 2, scale);
+		this.bipedLeftLeg.addBox(-1.0F, 0.0F, -1.0F, 2, 12, 2, scale);
 		this.bipedLeftLeg.setRotationPoint(2.0F, 12.0F, 0.0F);
 	}
 
@@ -46,10 +46,10 @@ public class ModelTFKnightPhantom2 extends BipedModel<EntityTFKnightPhantom> {
 	}
 
 	@Override
-	public void setAngles(EntityTFKnightPhantom entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setRotationAngles(EntityTFKnightPhantom entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.knight = entity;
 
-		super.setAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+		super.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 		this.bipedLeftLeg.rotateAngleX = 0;
 		this.bipedLeftLeg.rotateAngleY = 0;
 		this.bipedLeftLeg.rotateAngleZ = 0;

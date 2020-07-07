@@ -2,8 +2,9 @@ package twilightforest.entity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -14,7 +15,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import twilightforest.biomes.TFBiomes;
@@ -44,11 +45,10 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf implements IBreathAt
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
 	}
 
-	@Override
-	protected void setAttributes() {
-		super.setAttributes();
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
-		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6);
+	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return EntityTFHostileWolf.registerAttributes()
+				.func_233815_a_(Attributes.field_233818_a_, 30.0D)
+				.func_233815_a_(Attributes.field_233823_f_, 6);
 	}
 
 	@Override
@@ -71,12 +71,12 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf implements IBreathAt
 
 	private void spawnBreathParticles() {
 
-		Vec3d look = this.getLookVec();
+		Vector3d look = this.getLookVec();
 
 		final double dist = 0.5;
-		double px = this.getX() + look.x * dist;
-		double py = this.getY() + 1.25 + look.y * dist;
-		double pz = this.getZ() + look.z * dist;
+		double px = this.getPosX() + look.x * dist;
+		double py = this.getPosY() + 1.25 + look.y * dist;
+		double pz = this.getPosZ() + look.z * dist;
 
 		for (int i = 0; i < 10; i++) {
 			double dx = look.x;

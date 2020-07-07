@@ -1,17 +1,16 @@
 package twilightforest.world.feature;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.SphereReplaceConfig;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 
 import java.util.Random;
-import java.util.function.Function;
 
 /**
  * This is a copypasta of the sand/gravel/clay generator that produces mycelium blobs for mushroom biomes
@@ -23,7 +22,7 @@ public class TFGenMyceliumBlob extends Feature<SphereReplaceConfig> {
 //	private final BlockState myceliumState;
 //	private final int numberOfBlocks;
 
-	public TFGenMyceliumBlob(Function<Dynamic<?>, SphereReplaceConfig> configIn) {
+	public TFGenMyceliumBlob(Codec<SphereReplaceConfig> configIn) {
 		super(configIn);
 	}
 
@@ -38,7 +37,7 @@ public class TFGenMyceliumBlob extends Feature<SphereReplaceConfig> {
 
 
 	@Override
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random random, BlockPos pos, SphereReplaceConfig config) {
+	public boolean func_230362_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random random, BlockPos pos, SphereReplaceConfig config) {
 //        if (world.getBlock(i, j, k).getMaterial() != Material.WATER)
 //        {
 //            return false;

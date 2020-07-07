@@ -1,19 +1,16 @@
 package twilightforest.block;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.LogBlock;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.material.MaterialColor;
+import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 
-public class BlockTFLog extends LogBlock {
+public class BlockTFLog extends RotatedPillarBlock {
 
-	protected BlockTFLog(MaterialColor topColor, Block.Properties props) {
-		super(topColor, props);
+	protected BlockTFLog(Block.Properties props) {
+		super(props);
 	}
 
 	@Override

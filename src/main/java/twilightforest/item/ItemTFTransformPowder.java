@@ -11,8 +11,7 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 import twilightforest.TwilightForestMod;
@@ -32,7 +31,7 @@ public class ItemTFTransformPowder extends Item {
 	}
 
 	public void initTransformations() {
-		addTwoWayTransformation(TFEntities.minotaur,       EntityType.ZOMBIE_PIGMAN);
+		addTwoWayTransformation(TFEntities.minotaur,       EntityType.ZOMBIE_PIGMAN); //Self: I hate you, Mojang
 		addTwoWayTransformation(TFEntities.deer,           EntityType.COW);
 		addTwoWayTransformation(TFEntities.bighorn_sheep,  EntityType.SHEEP);
 		addTwoWayTransformation(TFEntities.wild_boar,      EntityType.PIG);
@@ -54,24 +53,24 @@ public class ItemTFTransformPowder extends Item {
 	}
 
 	@Override
-	public boolean itemInteractionForEntity(ItemStack stack, PlayerEntity player, LivingEntity target, Hand hand) {
+	public ActionResultType itemInteractionForEntity(ItemStack stack, PlayerEntity player, LivingEntity target, Hand hand) {
 		if (!target.isAlive()) {
-			return false;
+			return ActionResultType.PASS;
 		}
 
 		EntityType<?> type = transformMap.get(target.getType());
 		if (type == null) {
-			return false;
+			return ActionResultType.PASS;
 		}
 
 		Entity newEntity = type.create(player.world);
 		if (newEntity == null) {
-			return false;
+			return ActionResultType.PASS;
 		}
 
-		newEntity.setLocationAndAngles(target.getX(), target.getY(), target.getZ(), target.rotationYaw, target.rotationPitch);
+		newEntity.setLocationAndAngles(target.getPosX(), target.getPosY(), target.getPosZ(), target.rotationYaw, target.rotationPitch);
 		if (newEntity instanceof MobEntity) {
-			((MobEntity) newEntity).onInitialSpawn(target.world, target.world.getDifficultyForLocation(new BlockPos(target)), SpawnReason.CONVERSION, null, null);
+			((MobEntity) newEntity).onInitialSpawn(target.world, target.world.getDifficultyForLocation(target.func_233580_cy_()), SpawnReason.CONVERSION, null, null);
 		}
 
 		try { // try copying what can be copied
@@ -92,7 +91,7 @@ public class ItemTFTransformPowder extends Item {
 		}
 		target.playSound(SoundEvents.ENTITY_ZOMBIE_VILLAGER_CURE, 1.0F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F);
 
-		return true;
+		return ActionResultType.SUCCESS;
 	}
 
 	@Nonnull
@@ -117,9 +116,9 @@ public class ItemTFTransformPowder extends Item {
 	private AxisAlignedBB getEffectAABB(PlayerEntity player) {
 		double range = 2.0D;
 		double radius = 1.0D;
-		Vec3d srcVec = new Vec3d(player.getX(), player.getY() + player.getEyeHeight(), player.getZ());
-		Vec3d lookVec = player.getLookVec();
-		Vec3d destVec = srcVec.add(lookVec.x * range, lookVec.y * range, lookVec.z * range);
+		Vector3d srcVec = new Vector3d(player.getPosX(), player.getPosY() + player.getEyeHeight(), player.getPosZ());
+		Vector3d lookVec = player.getLookVec();
+		Vector3d destVec = srcVec.add(lookVec.x * range, lookVec.y * range, lookVec.z * range);
 
 		return new AxisAlignedBB(destVec.x - radius, destVec.y - radius, destVec.z - radius, destVec.x + radius, destVec.y + radius, destVec.z + radius);
 	}

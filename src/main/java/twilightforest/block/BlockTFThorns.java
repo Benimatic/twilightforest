@@ -6,9 +6,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.IFluidState;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.state.IProperty;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -60,7 +59,7 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar {
 	}
 
 	@Override
-	public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, IFluidState fluid) {
+	public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest, FluidState fluid) {
 		if (!player.abilities.isCreativeMode) {
 			if (!world.isRemote) {
 				// grow more
@@ -98,9 +97,9 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar {
 		}
 
 		// also try three random directions
-		growThorns(world, pos, Direction.random(world.rand));
-		growThorns(world, pos, Direction.random(world.rand));
-		growThorns(world, pos, Direction.random(world.rand));
+		growThorns(world, pos, Direction.func_239631_a_(world.rand));
+		growThorns(world, pos, Direction.func_239631_a_(world.rand));
+		growThorns(world, pos, Direction.func_239631_a_(world.rand));
 	}
 
 	/**

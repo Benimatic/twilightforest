@@ -1,6 +1,6 @@
 package twilightforest.world.surfacebuilders;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -13,11 +13,10 @@ import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFGenerationSettings;
 
 import java.util.Random;
-import java.util.function.Function;
 
 public class TFDefaultSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig> {
 
-	public TFDefaultSurfaceBuilder(Function<Dynamic<?>, ? extends SurfaceBuilderConfig> config) {
+	public TFDefaultSurfaceBuilder(Codec<SurfaceBuilderConfig> config) {
 		super(config);
 	}
 

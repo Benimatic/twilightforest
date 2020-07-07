@@ -6,11 +6,12 @@ import net.minecraft.block.CarvedPumpkinBlock;
 import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
@@ -41,7 +42,7 @@ public class ComponentTFHedgeMaze extends StructureTFComponentOld {
 	}
 
 	@Override
-	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 
 		TFMaze maze = new TFMaze(MSIZE, MSIZE);
 
@@ -99,9 +100,9 @@ public class ComponentTFHedgeMaze extends StructureTFComponentOld {
 
 		maze.add4Exits();
 
-		maze.copyToStructure(world.getWorld(), 1, FLOOR_LEVEL, 1, this, sbb);
+		maze.copyToStructure(world, manager, generator, 1, FLOOR_LEVEL, 1, this, sbb);
 
-		decorate3x3Rooms(world.getWorld(), rcoords, sbb);
+		decorate3x3Rooms(world, rcoords, sbb);
 
 		return true;
 	}
@@ -130,7 +131,7 @@ public class ComponentTFHedgeMaze extends StructureTFComponentOld {
 		return false;
 	}
 
-	private void decorate3x3Rooms(World world, int[] rcoords, MutableBoundingBox sbb) {
+	private void decorate3x3Rooms(ISeedReader world, int[] rcoords, MutableBoundingBox sbb) {
 		for (int i = 0; i < rcoords.length / 2; i++) {
 			int dx = rcoords[i * 2];
 			int dz = rcoords[i * 2 + 1];
@@ -146,7 +147,7 @@ public class ComponentTFHedgeMaze extends StructureTFComponentOld {
 	/**
 	 * Decorates a room in the maze.  Makes assumptions that the room is 3x3 cells and thus 11x11 blocks large.
 	 */
-	private void decorate3x3Room(World world, int x, int z, MutableBoundingBox sbb) {
+	private void decorate3x3Room(ISeedReader world, int x, int z, MutableBoundingBox sbb) {
 		// make a new RNG for this room!
 		Random roomRNG = new Random(world.getSeed() ^ x + z);
 
@@ -169,7 +170,7 @@ public class ComponentTFHedgeMaze extends StructureTFComponentOld {
 	/**
 	 * Place a spawner within diameter / 2 squares of the specified x and z coordinates
 	 */
-	private void roomSpawner(World world, Random rand, int x, int z, int diameter, MutableBoundingBox sbb) {
+	private void roomSpawner(ISeedReader world, Random rand, int x, int z, int diameter, MutableBoundingBox sbb) {
 		int rx = x + rand.nextInt(diameter) - (diameter / 2);
 		int rz = z + rand.nextInt(diameter) - (diameter / 2);
 
@@ -193,7 +194,7 @@ public class ComponentTFHedgeMaze extends StructureTFComponentOld {
 	/**
 	 * Place a treasure chest within diameter / 2 squares of the specified x and z coordinates
 	 */
-	private void roomTreasure(World world, Random rand, int x, int z, int diameter, MutableBoundingBox sbb) {
+	private void roomTreasure(ISeedReader world, Random rand, int x, int z, int diameter, MutableBoundingBox sbb) {
 		int rx = x + rand.nextInt(diameter) - (diameter / 2);
 		int rz = z + rand.nextInt(diameter) - (diameter / 2);
 
@@ -203,7 +204,7 @@ public class ComponentTFHedgeMaze extends StructureTFComponentOld {
 	/**
 	 * Place a lit pumpkin lantern within diameter / 2 squares of the specified x and z coordinates
 	 */
-	private void roomJackO(World world, Random rand, int x, int z, int diameter, MutableBoundingBox sbb) {
+	private void roomJackO(ISeedReader world, Random rand, int x, int z, int diameter, MutableBoundingBox sbb) {
 		int rx = x + rand.nextInt(diameter) - (diameter / 2);
 		int rz = z + rand.nextInt(diameter) - (diameter / 2);
 

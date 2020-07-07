@@ -20,7 +20,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
-import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
@@ -43,7 +42,6 @@ import twilightforest.loot.TFTreasure;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.potions.TFPotions;
 import twilightforest.tileentity.TFTileEntities;
-import twilightforest.world.TFDimensions;
 import twilightforest.world.feature.TFBiomeFeatures;
 import twilightforest.world.feature.TFGenCaveStalactite;
 
@@ -60,7 +58,7 @@ public class TwilightForestMod {
 	// odd one out, as armor textures are a stringy mess at present
 	public static final String ARMOR_DIR = ID + ":textures/armor/";
 
-	public static final GameRules.RuleKey<GameRules.BooleanValue> ENFORCED_PROGRESSION_RULE = GameRules.register("tfEnforcedProgression", GameRules.BooleanValue.create(true));
+	public static final GameRules.RuleKey<GameRules.BooleanValue> ENFORCED_PROGRESSION_RULE = GameRules.func_234903_a_("tfEnforcedProgression", GameRules.Category.UPDATES, GameRules.BooleanValue.create(true)); //Putting it in UPDATES since other world stuff is here
 
 	public static final Logger LOGGER = LogManager.getLogger(ID);
 
@@ -94,9 +92,9 @@ public class TwilightForestMod {
 		TFBiomeFeatures.FEATURES.register(modbus);
 		TFContainers.CONTAINERS.register(modbus);
 		TFEnchantments.ENCHANTMENTS.register(modbus);
-		TFDimensions.BIOME_PROVIDER_TYPES.register(modbus);
-		TFDimensions.CHUNK_GENERATOR_TYPES.register(modbus);
-		TFDimensions.MOD_DIMENSIONS.register(modbus);
+//		TFDimensions.BIOME_PROVIDER_TYPES.register(modbus);
+//		TFDimensions.CHUNK_GENERATOR_TYPES.register(modbus);
+//		TFDimensions.MOD_DIMENSIONS.register(modbus);
 
 		if (ModList.get().isLoaded("sponge")) {
 			LOGGER.info("It looks like you have Sponge installed! You may notice Hydras spawning incorrectly with floating heads.\n" +

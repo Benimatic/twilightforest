@@ -1,8 +1,7 @@
 package twilightforest.entity.projectile;
 
-import net.minecraft.entity.IProjectile;
-
 /**
  * Marker interface for our projectiles, used for parrying.
+ * TODO: Extended interface is removed
  */
-public interface ITFProjectile extends IProjectile {}
+public interface ITFProjectile /*extends IProjectile*/ {}

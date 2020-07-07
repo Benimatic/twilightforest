@@ -125,8 +125,8 @@ public enum Diagonals implements IStringSerializable {
     }
 
     @Override
-    public String getName() {
-        return name().toLowerCase(Locale.ROOT);
+    public String func_176610_l() {
+		return name().toLowerCase(Locale.ROOT);
     }
 
     public boolean isTop() {

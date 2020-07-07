@@ -62,7 +62,7 @@ public class TFBiomeSwamp extends TFBiomeBase {
 	}
 
 	@Override
-	public int getGrassColorAt(double p_225528_1_, double p_225528_3_) {
+	public int getGrassColor(double x, double z) {
 		double temperature = (double) MathHelper.clamp(this.getDefaultTemperature(), 0.0F, 1.0F);
 		double humidity = (double) MathHelper.clamp(this.getDownfall(), 0.0F, 1.0F);
 		return ((GrassColors.get(temperature, humidity) & 0xFEFEFE) + 0x4E0E4E) / 2;

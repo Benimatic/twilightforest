@@ -37,7 +37,7 @@ public class ItemTFZombieWand extends Item {
 		ItemStack stack = player.getHeldItem(hand);
 
 		if (stack.getDamage() == stack.getMaxDamage() - 1) {
-			return ActionResult.fail(stack);
+			return ActionResult.resultFail(stack);
 		}
 
 		if (!world.isRemote) {
@@ -57,7 +57,7 @@ public class ItemTFZombieWand extends Item {
 			}
 		}
 
-		return ActionResult.success(stack);
+		return ActionResult.resultFail(stack);
 	}
 
 	@Override

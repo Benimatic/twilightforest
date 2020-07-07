@@ -1,7 +1,8 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.DifficultyInstance;
@@ -29,10 +30,9 @@ public class EntityTFRedcapSapper extends EntityTFRedcap {
 		this.goalSelector.addGoal(4, new EntityAITFRedcapPlantTNT(this));
 	}
 
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
-		this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(2.0D);
+	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return EntityTFRedcap.registerAttributes()
+				.func_233815_a_(Attributes.field_233818_a_, 30.0D)
+				.func_233815_a_(Attributes.field_233826_i_, 2.0D);
 	}
 }

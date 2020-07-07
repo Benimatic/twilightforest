@@ -4,13 +4,18 @@ import com.google.common.collect.ImmutableList;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.loot.LootContext;
+import net.minecraft.loot.LootParameterSets;
+import net.minecraft.loot.LootParameters;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.SoundEvents;
@@ -26,9 +31,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.LootParameterSets;
-import net.minecraft.world.storage.loot.LootParameters;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.TFFeature;
@@ -69,11 +71,10 @@ public class EntityTFQuestRam extends AnimalEntity {
 		return null;
 	}
 
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(70.0D);
-		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23);
+	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return MobEntity.func_233666_p_()
+				.func_233815_a_(Attributes.field_233818_a_, 70.0D)
+				.func_233815_a_(Attributes.field_233821_d_, 0.23);
 	}
 
 	@Override
@@ -89,16 +90,16 @@ public class EntityTFQuestRam extends AnimalEntity {
 			this.randomTickDivider = 70 + this.rand.nextInt(50);
 
 			// check if we're near a quest grove and if so, set that as home
-			int chunkX = MathHelper.floor(this.getX()) / 16;
-			int chunkZ = MathHelper.floor(this.getZ()) / 16;
+			int chunkX = MathHelper.floor(this.getPosX()) / 16;
+			int chunkZ = MathHelper.floor(this.getPosZ()) / 16;
 
-			TFFeature nearFeature = TFFeature.getNearestFeature(chunkX, chunkZ, this.world);
+			TFFeature nearFeature = TFFeature.getNearestFeature(chunkX, chunkZ, (ServerWorld) this.world);
 
 			if (nearFeature != TFFeature.QUEST_GROVE) {
 				this.detachHome();
 			} else {
 				// set our home position to the center of the quest grove
-				BlockPos cc = TFFeature.getNearestCenterXYZ(MathHelper.floor(this.getX()), MathHelper.floor(this.getZ()));
+				BlockPos cc = TFFeature.getNearestCenterXYZ(MathHelper.floor(this.getPosX()), MathHelper.floor(this.getPosZ()));
 				this.setHomePosAndDistance(cc, 13);
 			}
 
@@ -123,7 +124,7 @@ public class EntityTFQuestRam extends AnimalEntity {
 	}
 
 	@Override
-	public boolean processInteract(PlayerEntity player, @Nonnull Hand hand) {
+	public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
 		ItemStack currentItem = player.getHeldItem(hand);
 
 		if (tryAccept(currentItem)) {
@@ -131,9 +132,9 @@ public class EntityTFQuestRam extends AnimalEntity {
 				currentItem.shrink(1);
 			}
 
-			return true;
+			return ActionResultType.SUCCESS;
 		} else {
-			return super.processInteract(player, hand);
+			return super.func_230254_b_(player, hand);
 		}
 	}
 
@@ -220,7 +221,7 @@ public class EntityTFQuestRam extends AnimalEntity {
 		float blue = colorVal[2];
 
 		for (int i = 0; i < iterations; i++) {
-			this.world.addParticle(ParticleTypes.ENTITY_EFFECT, this.getX() + (this.rand.nextDouble() - 0.5D) * this.getWidth() * 1.5, this.getY() + this.rand.nextDouble() * this.getHeight() * 1.5, this.getZ() + (this.rand.nextDouble() - 0.5D) * this.getWidth() * 1.5, red, green, blue);
+			this.world.addParticle(ParticleTypes.ENTITY_EFFECT, this.getPosX() + (this.rand.nextDouble() - 0.5D) * this.getWidth() * 1.5, this.getPosY() + this.rand.nextDouble() * this.getHeight() * 1.5, this.getPosZ() + (this.rand.nextDouble() - 0.5D) * this.getWidth() * 1.5, red, green, blue);
 		}
 
 		playAmbientSound();

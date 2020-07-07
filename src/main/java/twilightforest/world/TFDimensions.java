@@ -1,39 +1,28 @@
 package twilightforest.world;
 
-import io.netty.buffer.Unpooled;
-import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.biome.provider.BiomeProviderType;
-import net.minecraft.world.dimension.DimensionType;
-import net.minecraft.world.gen.ChunkGeneratorType;
-import net.minecraftforge.common.DimensionManager;
+import net.minecraft.util.registry.Registry;
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.ModDimension;
-import net.minecraftforge.event.world.RegisterDimensionsEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class TFDimensions {
 
-	public static final DeferredRegister<BiomeProviderType<?, ?>> BIOME_PROVIDER_TYPES = new DeferredRegister<>(ForgeRegistries.BIOME_PROVIDER_TYPES, TwilightForestMod.ID);
-	public static final DeferredRegister<ChunkGeneratorType<?, ?>> CHUNK_GENERATOR_TYPES = new DeferredRegister<>(ForgeRegistries.CHUNK_GENERATOR_TYPES, TwilightForestMod.ID);
-	public static final DeferredRegister<ModDimension> MOD_DIMENSIONS = new DeferredRegister<>(ForgeRegistries.MOD_DIMENSIONS, TwilightForestMod.ID);
+//	public static final DeferredRegister<BiomeProviderType<?, ?>> BIOME_PROVIDER_TYPES = new DeferredRegister<>(ForgeRegistries.BIOME_PROVIDER_TYPES, TwilightForestMod.ID);
+//	public static final DeferredRegister<ChunkGeneratorType<?, ?>> CHUNK_GENERATOR_TYPES = new DeferredRegister<>(ForgeRegistries.CHUNK_GENERATOR_TYPES, TwilightForestMod.ID);
+//	public static final DeferredRegister<ModDimension> MOD_DIMENSIONS = new DeferredRegister<>(ForgeRegistries.MOD_DIMENSIONS, TwilightForestMod.ID);
 
-	public static final RegistryObject<BiomeProviderType<TFBiomeProviderSettings, TFBiomeProvider>> TF_BIOME_PROVIDER = BIOME_PROVIDER_TYPES.register(
-			"tf_biome_provider", () -> new BiomeProviderType<>(TFBiomeProvider::new, TFBiomeProviderSettings::new));
+//	public static final RegistryObject<BiomeProviderType<TFBiomeProviderSettings, TFBiomeProvider>> TF_BIOME_PROVIDER = BIOME_PROVIDER_TYPES.register(
+//			"tf_biome_provider", () -> new BiomeProviderType<>(TFBiomeProvider::new, TFBiomeProviderSettings::new));
 
-	public static final RegistryObject<ChunkGeneratorType<TFGenerationSettings, ChunkGeneratorTwilightForest>> TF_CHUNK_GEN = CHUNK_GENERATOR_TYPES.register(
-			"tf_chunk_gen", () -> new ChunkGeneratorType<>(ChunkGeneratorTwilightForest::new, true, TFGenerationSettings::new));
-	public static final RegistryObject<ChunkGeneratorType<TFGenerationSettings, ChunkGeneratorTwilightVoid>> SKYLIGHT_GEN = CHUNK_GENERATOR_TYPES.register(
-			"tf_chunk_gen_void", () -> new ChunkGeneratorType<>(ChunkGeneratorTwilightVoid::new, true, TFGenerationSettings::new));
+//	public static final RegistryObject<ChunkGeneratorType<TFGenerationSettings, ChunkGeneratorTwilightForest>> TF_CHUNK_GEN = CHUNK_GENERATOR_TYPES.register(
+//			"tf_chunk_gen", () -> new ChunkGeneratorType<>(ChunkGeneratorTwilightForest::new, true, TFGenerationSettings::new));
+//	public static final RegistryObject<ChunkGeneratorType<TFGenerationSettings, ChunkGeneratorTwilightVoid>> SKYLIGHT_GEN = CHUNK_GENERATOR_TYPES.register(
+//			"tf_chunk_gen_void", () -> new ChunkGeneratorType<>(ChunkGeneratorTwilightVoid::new, true, TFGenerationSettings::new));
 
-	private static final RegistryObject<ModDimension> MOD_DIMENSION = MOD_DIMENSIONS.register("twilight_forest", () -> ModDimension.withFactory(TwilightForestDimension::new));
+//	private static final RegistryObject<ModDimension> MOD_DIMENSION = MOD_DIMENSIONS.register("twilight_forest", () -> ModDimension.withFactory(TwilightForestDimension::new));
 
 	public static DimensionType twilightForestDimension;
 
@@ -52,10 +41,16 @@ public class TFDimensions {
 		}
 	}
 
-	@SubscribeEvent
-	public static void registerModDimension(final RegisterDimensionsEvent e) {
-		ResourceLocation tf = new ResourceLocation(TwilightForestMod.ID, "twilight_forest");
-		twilightForestDimension = DimensionManager.registerOrGetDimension(tf, MOD_DIMENSION.get(), new PacketBuffer(Unpooled.buffer()), true);
-		DimensionManager.keepLoaded(twilightForestDimension, false);
+	public static void init() {
+		Registry.register(Registry.field_239689_aA_, "twilightforest:tf_biome_provider", TFBiomeProvider.tfBiomeProviderCodec);
+		Registry.register(Registry.field_239690_aB_, "twilightforest:tf_chunk_gen", ChunkGeneratorTwilightForest.field_236079_d_);
+		Registry.register(Registry.field_239690_aB_, "twilightforest:tf_chunk_gen", ChunkGeneratorTwilightVoid.field_236079_d_);
 	}
+
+//	@SubscribeEvent
+//	public static void registerModDimension(final RegisterDimensionsEvent e) {
+//		ResourceLocation tf = new ResourceLocation(TwilightForestMod.ID, "twilight_forest");
+//		twilightForestDimension = DimensionManager.registerOrGetDimension(tf, MOD_DIMENSION.get(), new PacketBuffer(Unpooled.buffer()), true);
+//		DimensionManager.keepLoaded(twilightForestDimension, false);
+//	}
 }

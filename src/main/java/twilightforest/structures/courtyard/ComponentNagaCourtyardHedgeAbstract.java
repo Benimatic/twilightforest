@@ -4,11 +4,14 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.template.IntegrityProcessor;
 import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.gen.feature.template.TemplateManager;
@@ -45,7 +48,7 @@ public abstract class ComponentNagaCourtyardHedgeAbstract extends StructureTFCom
     }
 
 	@Override
-	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random randomIn, MutableBoundingBox structureBoundingBox, ChunkPos chunkPosIn) {
+	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random randomIn, MutableBoundingBox structureBoundingBox, ChunkPos chunkPosIn, BlockPos blockPos) {
 		placeSettings.setBoundingBox(structureBoundingBox).addProcessor(new CourtyardStairsTemplateProcessor(0.2F));
 		TEMPLATE.addBlocksToWorld(world, rotatedPosition, placeSettings, 18);
 		templateBig.addBlocksToWorld(world, rotatedPosition, placeSettings.copy().addProcessor(new IntegrityProcessor(ComponentNagaCourtyardMain.HEDGE_FLOOF)), 18);

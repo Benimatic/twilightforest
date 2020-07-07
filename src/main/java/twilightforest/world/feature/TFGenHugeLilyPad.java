@@ -1,19 +1,19 @@
 package twilightforest.world.feature;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import twilightforest.block.TFBlocks;
 
 import java.util.Random;
-import java.util.function.Function;
 
 import static twilightforest.block.BlockTFHugeLilyPad.FACING;
 import static twilightforest.block.BlockTFHugeLilyPad.PIECE;
@@ -29,12 +29,12 @@ import static twilightforest.enums.HugeLilypadPiece.SW;
  */
 public class TFGenHugeLilyPad extends Feature<NoFeatureConfig> {
 
-	public TFGenHugeLilyPad(Function<Dynamic<?>, NoFeatureConfig> config) {
+	public TFGenHugeLilyPad(Codec<NoFeatureConfig> config) {
 		super(config);
 	}
 
 	@Override
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random random, BlockPos pos, NoFeatureConfig config) {
+	public boolean func_230362_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
 		for (int i = 0; i < 10; i++) {
 			BlockPos dPos = pos.add(
 					random.nextInt(8) - random.nextInt(8),

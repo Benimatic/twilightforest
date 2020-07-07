@@ -2,7 +2,7 @@ package twilightforest.entity.ai;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.SoundEvents;
@@ -81,7 +81,7 @@ public class EntityAITFGroundAttack extends Goal {
 			this.attacker.setGroundAttackCharge(false);
 			this.attacker.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 2, 1F + this.attacker.getRNG().nextFloat() * 0.1F);
 
-			AxisAlignedBB selection = new AxisAlignedBB(this.attacker.getPosition().getX() - 7.5F, this.attacker.getPosition().getY(), this.attacker.getPosition().getZ() - 7.5F, this.attacker.getPosition().getX() + 7.5F, this.attacker.getPosition().getY() + 3.0F, this.attacker.getPosition().getZ() + 7.5F);
+			AxisAlignedBB selection = new AxisAlignedBB(this.attacker.func_233580_cy_().getX() - 7.5F, this.attacker.func_233580_cy_().getY(), this.attacker.func_233580_cy_().getZ() - 7.5F, this.attacker.func_233580_cy_().getX() + 7.5F, this.attacker.func_233580_cy_().getY() + 3.0F, this.attacker.func_233580_cy_().getZ() + 7.5F);
 
 			List<Entity> hit = attacker.world.getEntitiesWithinAABB(Entity.class, selection);
 			for (Entity entity : hit) {
@@ -96,7 +96,7 @@ public class EntityAITFGroundAttack extends Goal {
 					if (entity.onGround) {
 						entity.addVelocity(0, 0.23, 0);
 
-						entity.attackEntityFrom(DamageSource.causeMobDamage(this.attacker).setDamageBypassesArmor(), (float) (this.attacker.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getValue() * 0.5F));
+						entity.attackEntityFrom(DamageSource.causeMobDamage(this.attacker).setDamageBypassesArmor(), (float) (this.attacker.getAttribute(Attributes.field_233823_f_).getValue() * 0.5F));
 					}
 				}
 			}

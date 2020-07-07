@@ -2,7 +2,6 @@ package twilightforest.entity;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.monster.MonsterEntity;
@@ -20,7 +19,7 @@ import java.util.Random;
 
 public class EntityTFMazeSlime extends SlimeEntity {
 
-	private static final AttributeModifier DOUBLE_HEALTH = new AttributeModifier("Maze slime double health", 1, AttributeModifier.Operation.MULTIPLY_BASE).setSaved(false);
+	private static final AttributeModifier DOUBLE_HEALTH = new AttributeModifier("Maze slime double health", 1, AttributeModifier.Operation.MULTIPLY_BASE);
 
 	public EntityTFMazeSlime(EntityType<? extends EntityTFMazeSlime> type, World world) {
 		super(type, world);
@@ -42,11 +41,12 @@ public class EntityTFMazeSlime extends SlimeEntity {
 		return world.getDifficulty() != Difficulty.PEACEFUL && canSpawnOn(entity, world, reason, pos, random) && MonsterEntity.isValidLightLevel(world, pos, random);
 	}
 
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).applyModifier(DOUBLE_HEALTH);
-	}
+	//TODO: Apply elsewhere
+//	@Override
+//	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+//		return MonsterEntity.func_234295_eP_()
+//		this.getAttribute(Attributes.field_233818_a_).applyModifier(DOUBLE_HEALTH);
+//	}
 
 	@Override
 	protected boolean canDamagePlayer() {
@@ -69,8 +69,8 @@ public class EntityTFMazeSlime extends SlimeEntity {
 			float f3 = MathHelper.cos(f) * (float) i * 0.5F * f1;
 			World world = this.world;
 			// ParticleTypes ParticleTypes = this.getParticleType();
-			double d0 = this.getX() + (double) f2;
-			double d1 = this.getZ() + (double) f3;
+			double d0 = this.getPosX() + (double) f2;
+			double d1 = this.getPosZ() + (double) f3;
 			BlockState state = TFBlocks.maze_stone_brick.get().getDefaultState();
 			world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, state), d0, this.getBoundingBox().minY, d1, 0.0D, 0.0D, 0.0D);
 		}

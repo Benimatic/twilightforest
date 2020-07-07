@@ -13,7 +13,7 @@ public class ItemTFSeekerBow extends BowItem {
 	}
 
 	@Override
-	public AbstractArrowEntity customeArrow(AbstractArrowEntity arrow) {
+	public AbstractArrowEntity customArrow(AbstractArrowEntity arrow) {
 		if (arrow.getShooter() instanceof LivingEntity) {
 			return new EntitySeekerArrow(TFEntities.seeker_arrow, arrow.world, (LivingEntity) arrow.getShooter());
 		}

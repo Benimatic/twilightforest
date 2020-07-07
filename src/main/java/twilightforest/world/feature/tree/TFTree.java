@@ -4,10 +4,10 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.trees.Tree;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.gen.feature.TreeFeatureConfig;
+import net.minecraft.world.server.ServerWorld;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
 import javax.annotation.Nullable;
@@ -20,21 +20,21 @@ public abstract class TFTree extends Tree {
 
 	@Nullable
 	@Override
-	protected ConfiguredFeature<TreeFeatureConfig, ?> createTreeFeature(Random random, boolean b) {
+	protected ConfiguredFeature<BaseTreeFeatureConfig, ?> getTreeFeature(Random random, boolean b) {
 		return null;
 	}
 
 	public abstract ConfiguredFeature<TFTreeFeatureConfig, ?> createTreeFeature(Random rand);
 
 	@Override
-	public boolean generate(IWorld world, ChunkGenerator<?> generator, BlockPos pos, BlockState state, Random rand) {
+	public boolean func_230339_a_(ServerWorld world, ChunkGenerator generator, BlockPos pos, BlockState state, Random rand) {
 		ConfiguredFeature<TFTreeFeatureConfig, ?> feature = this.createTreeFeature(rand);
 		if (feature == null) {
 			return false;
 		} else {
 			world.setBlockState(pos, Blocks.AIR.getDefaultState(), 4);
-			feature.config.func_227373_a_();
-			if (feature.place(world, generator, rand, pos)) {
+			feature.config.forcePlacement();
+			if (feature.func_236265_a_(world, world.func_241112_a_(), generator, rand, pos)) {
 				return true;
 			} else {
 				world.setBlockState(pos, state, 4);

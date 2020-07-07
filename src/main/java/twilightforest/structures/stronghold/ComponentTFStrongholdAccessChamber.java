@@ -5,10 +5,12 @@ import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
@@ -48,14 +50,14 @@ public class ComponentTFStrongholdAccessChamber extends StructureTFStrongholdCom
 	}
 
 	@Override
-	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		fillWithRandomizedBlocks(world, sbb, 0, 0, 0, 8, 4, 8, true, rand, deco.randomBlocks);
 
 		// doors
-		placeSmallDoorwayAt(world.getWorld(), 0, 4, 1, 8, sbb);
-		placeSmallDoorwayAt(world.getWorld(), 1, 0, 1, 4, sbb);
-		placeSmallDoorwayAt(world.getWorld(), 2, 4, 1, 0, sbb);
-		placeSmallDoorwayAt(world.getWorld(), 3, 8, 1, 4, sbb);
+		placeSmallDoorwayAt(world, 0, 4, 1, 8, sbb);
+		placeSmallDoorwayAt(world, 1, 0, 1, 4, sbb);
+		placeSmallDoorwayAt(world, 2, 4, 1, 0, sbb);
+		placeSmallDoorwayAt(world, 3, 8, 1, 4, sbb);
 
 		// shaft down
 		final BlockState defaultState = Blocks.MOSSY_STONE_BRICKS.getDefaultState();

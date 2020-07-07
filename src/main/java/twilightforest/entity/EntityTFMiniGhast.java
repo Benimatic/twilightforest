@@ -2,13 +2,15 @@ package twilightforest.entity;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
@@ -29,11 +31,10 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast {
 		return 16;
 	}
 
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.isMinion ? 6 : 10);
-		this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(16.0D);
+	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return EntityTFTowerGhast.registerAttributes()
+				.func_233815_a_(Attributes.field_233818_a_, this.isMinion ? 6 : 10) //TODO
+				.func_233815_a_(Attributes.field_233819_b_, 16.0D);
 	}
 
 	@Override
@@ -50,8 +51,8 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast {
 		} else if (living.getDistance(this) <= 3.5F) {
 			return living.canEntityBeSeen(this);
 		} else {
-			Vec3d vec3d = living.getLook(1.0F).normalize();
-			Vec3d vec3d1 = new Vec3d(this.getX() - living.getX(), this.getBoundingBox().minY + (double) this.getEyeHeight() - (living.getY() + (double) living.getEyeHeight()), this.getZ() - living.getZ());
+			Vector3d vec3d = living.getLook(1.0F).normalize();
+			Vector3d vec3d1 = new Vector3d(this.getPosX() - living.getPosX(), this.getBoundingBox().minY + (double) this.getEyeHeight() - (living.getPosY() + (double) living.getEyeHeight()), this.getPosZ() - living.getPosZ());
 			double d0 = vec3d1.length();
 			vec3d1 = vec3d1.normalize();
 			double d1 = vec3d.dotProduct(vec3d1);
@@ -68,7 +69,7 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast {
 		this.wanderFactor = 0.005F;
 		this.isMinion = true;
 
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(6);
+		this.getAttribute(Attributes.field_233818_a_).setBaseValue(6);
 		this.setHealth(6);
 	}
 

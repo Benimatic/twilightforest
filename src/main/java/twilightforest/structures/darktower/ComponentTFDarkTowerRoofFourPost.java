@@ -1,11 +1,12 @@
 package twilightforest.structures.darktower;
 
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
@@ -23,9 +24,8 @@ public class ComponentTFDarkTowerRoofFourPost extends ComponentTFDarkTowerRoof {
 	}
 
 	@Override
-	public boolean generate(IWorld worldIn, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
-		super.generate(worldIn, generator, rand, sbb, chunkPosIn);
-		World world = worldIn.getWorld();
+	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+		super.func_230383_a_(world, manager, generator, rand, sbb, chunkPosIn, blockPos);
 
 		makeSmallAntenna(world, sbb, 4, size - 2, size - 2);
 		makeSmallAntenna(world, sbb, 5, 1, size - 2);
@@ -35,7 +35,7 @@ public class ComponentTFDarkTowerRoofFourPost extends ComponentTFDarkTowerRoof {
 		return true;
 	}
 
-	private void makeSmallAntenna(World world, MutableBoundingBox sbb, int height, int x, int z) {
+	private void makeSmallAntenna(ISeedReader world, MutableBoundingBox sbb, int height, int x, int z) {
 		// antenna
 		for (int y = 1; y < height; y++) {
 			setBlockState(world, deco.blockState, x, y, z, sbb);

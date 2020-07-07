@@ -7,7 +7,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.World;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
@@ -81,11 +81,11 @@ public class ComponentTFIceTowerEntrance extends ComponentTFIceTowerWing {
 	 * No floors
 	 */
 	@Override
-	protected void makeFloorsForTower(World world, Random rand, MutableBoundingBox sbb) {
+	protected void makeFloorsForTower(ISeedReader world, Random rand, MutableBoundingBox sbb) {
 		decoratePillarsCornersHigh(world, rand, 0, 11, Rotation.NONE, sbb);
 	}
 
-	protected void decoratePillarsCornersHigh(World world, Random rand, int bottom, int top, Rotation rotation, MutableBoundingBox sbb) {
+	protected void decoratePillarsCornersHigh(ISeedReader world, Random rand, int bottom, int top, Rotation rotation, MutableBoundingBox sbb) {
 		final BlockState pillarXAxis = deco.pillarState.with(RotatedPillarBlock.AXIS, Direction.Axis.X);
 		final BlockState pillarZAxis = deco.pillarState.with(RotatedPillarBlock.AXIS, Direction.Axis.Z);
 		this.fillBlocksRotated(world, sbb, 3, bottom + 5, 1, 3, bottom + 5, 9, pillarZAxis, rotation);

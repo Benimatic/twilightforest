@@ -29,7 +29,7 @@ public class ItemTFShieldWand extends Item {
 		ItemStack stack = player.getHeldItem(hand);
 
 		if (stack.getDamage() == stack.getMaxDamage() - 1) {
-			return ActionResult.fail(stack);
+			return ActionResult.resultFail(stack);
 		}
 
 		if (!world.isRemote) {
@@ -42,7 +42,7 @@ public class ItemTFShieldWand extends Item {
 		if (!player.isCreative())
 			player.getCooldownTracker().setCooldown(this, 1200);
 
-		return ActionResult.success(stack);
+		return ActionResult.resultSuccess(stack);
 	}
 
 	@Override

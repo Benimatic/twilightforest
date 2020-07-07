@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -28,7 +29,7 @@ public class ItemTFCubeOfAnnihilation extends Item {
 		this.addPropertyOverride(TwilightForestMod.prefix("thrown"), new IItemPropertyGetter() {
 			@OnlyIn(Dist.CLIENT)
 			@Override
-			public float call(ItemStack stack, @Nullable World worldIn, @Nullable LivingEntity entityIn) {
+			public float call(ItemStack stack, @Nullable ClientWorld worldIn, @Nullable LivingEntity entityIn) {
 				return getThrownUuid(stack) != null ? 1 : 0;
 			}
 		});

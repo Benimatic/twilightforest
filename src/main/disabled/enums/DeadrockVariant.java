@@ -10,7 +10,7 @@ public enum DeadrockVariant implements IStringSerializable {
 	SOLID;
 
 	@Override
-	public String getName() {
+	public String func_176610_l() {
 		return name().toLowerCase(Locale.ROOT);
 	}
 }

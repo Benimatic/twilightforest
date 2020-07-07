@@ -6,7 +6,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -23,7 +24,7 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.Difficulty;
@@ -102,13 +103,12 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 		dataManager.register(TIRED_FLAG, (byte) 0);
 	}
 
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(200.0D);
-		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.38D);
-		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
-		this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(40.0D);
+	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return MonsterEntity.func_234295_eP_()
+				.func_233815_a_(Attributes.field_233818_a_, 200.0D)
+				.func_233815_a_(Attributes.field_233821_d_, 0.38D)
+				.func_233815_a_(Attributes.field_233823_f_, 1.0D)
+				.func_233815_a_(Attributes.field_233819_b_, 40.0D);
 	}
 
 	@Override
@@ -148,7 +148,7 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 
 			if (this.isTired()) {
 				for (int i = 0; i < 20; i++) {
-					this.world.addParticle(ParticleTypes.SPLASH, this.getX() + (this.rand.nextDouble() - 0.5D) * this.getWidth() * 0.5, this.getY() + this.getEyeHeight(), this.getZ() + (this.rand.nextDouble() - 0.5D) * this.getWidth() * 0.5, (rand.nextFloat() - 0.5F) * 0.75F, 0, (rand.nextFloat() - 0.5F) * 0.75F);
+					this.world.addParticle(ParticleTypes.SPLASH, this.getPosX() + (this.rand.nextDouble() - 0.5D) * this.getWidth() * 0.5, this.getPosY() + this.getEyeHeight(), this.getPosZ() + (this.rand.nextDouble() - 0.5D) * this.getWidth() * 0.5, (rand.nextFloat() - 0.5F) * 0.75F, 0, (rand.nextFloat() - 0.5F) * 0.75F);
 				}
 			}
 		}
@@ -208,7 +208,7 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 
 	@Override
 	public void updatePassenger(Entity passenger) {
-		Vec3d riderPos = this.getRiderPosition();
+		Vector3d riderPos = this.getRiderPosition();
 		passenger.setPosition(riderPos.x, riderPos.y, riderPos.z);
 	}
 
@@ -220,16 +220,16 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 	/**
 	 * Used to both get a rider position and to push out of blocks
 	 */
-	private Vec3d getRiderPosition() {
+	private Vector3d getRiderPosition() {
 		if (isBeingRidden()) {
 			float distance = 0.4F;
 
 			double dx = Math.cos((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
 			double dz = Math.sin((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
 
-			return new Vec3d(this.getX() + dx, this.getY() + this.getMountedYOffset() + this.getPassengers().get(0).getYOffset(), this.getZ() + dz);
+			return new Vector3d(this.getPosX() + dx, this.getPosY() + this.getMountedYOffset() + this.getPassengers().get(0).getYOffset(), this.getPosZ() + dz);
 		} else {
-			return new Vec3d(this.getX(), this.getY(), this.getZ());
+			return new Vector3d(this.getPosX(), this.getPosY(), this.getPosZ());
 		}
 	}
 
@@ -255,9 +255,9 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 
 	private void makeRandomBlockFall(int range) {
 		// find a block nearby
-		int bx = MathHelper.floor(this.getX()) + this.getRNG().nextInt(range) - this.getRNG().nextInt(range);
-		int bz = MathHelper.floor(this.getZ()) + this.getRNG().nextInt(range) - this.getRNG().nextInt(range);
-		int by = MathHelper.floor(this.getY() + this.getEyeHeight());
+		int bx = MathHelper.floor(this.getPosX()) + this.getRNG().nextInt(range) - this.getRNG().nextInt(range);
+		int bz = MathHelper.floor(this.getPosZ()) + this.getRNG().nextInt(range) - this.getRNG().nextInt(range);
+		int by = MathHelper.floor(this.getPosY() + this.getEyeHeight());
 
 		makeBlockFallAbove(new BlockPos(bx, bz, by));
 	}
@@ -281,9 +281,9 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 	public void makeBlockAboveTargetFall() {
 		if (this.getAttackTarget() != null) {
 
-			int bx = MathHelper.floor(this.getAttackTarget().getX());
-			int bz = MathHelper.floor(this.getAttackTarget().getZ());
-			int by = MathHelper.floor(this.getAttackTarget().getY() + this.getAttackTarget().getEyeHeight());
+			int bx = MathHelper.floor(this.getAttackTarget().getPosX());
+			int bz = MathHelper.floor(this.getAttackTarget().getPosZ());
+			int by = MathHelper.floor(this.getAttackTarget().getPosY() + this.getAttackTarget().getEyeHeight());
 
 			makeBlockFallAbove(new BlockPos(bx, bz, by));
 		}
@@ -304,9 +304,9 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 			EntityTFIceBomb ice = new EntityTFIceBomb(TFEntities.thrown_ice, this.world, this);
 
 			// [VanillaCopy] Part of EntitySkeleton.attackEntityWithRangedAttack
-			double d0 = target.getX() - this.getX();
-			double d1 = target.getBoundingBox().minY + (double) (target.getHeight() / 3.0F) - ice.getY();
-			double d2 = target.getZ() - this.getZ();
+			double d0 = target.getPosX() - this.getPosX();
+			double d1 = target.getBoundingBox().minY + (double) (target.getHeight() / 3.0F) - ice.getPosY();
+			double d2 = target.getPosZ() - this.getPosZ();
 			double d3 = (double) MathHelper.sqrt(d0 * d0 + d2 * d2);
 			ice.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float) (14 - this.world.getDifficulty().getId() * 4));
 
@@ -354,7 +354,7 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 	}
 
 	@Override
-	public boolean handleFallDamage(float distance, float multiplier) {
+	public boolean onLivingFall(float distance, float multiplier) {
 
 		if (!this.world.isRemote && isRampaging()) {
 			this.playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
@@ -362,7 +362,7 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 		}
 
 		//TODO: Return value?
-		return super.handleFallDamage(distance, multiplier);
+		return super.onLivingFall(distance, multiplier);
 	}
 
 	private void hitNearbyEntities() {
@@ -378,7 +378,7 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 		super.onDeath(cause);
 		// mark the lair as defeated
 		if (!world.isRemote) {
-			TFGenerationSettings.markStructureConquered(world, new BlockPos(this), TFFeature.YETI_CAVE);
+			TFGenerationSettings.markStructureConquered(world, new BlockPos(this.func_233580_cy_()), TFFeature.YETI_CAVE);
 		}
 	}
 

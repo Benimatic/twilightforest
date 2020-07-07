@@ -2,6 +2,8 @@ package twilightforest.entity;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -13,7 +15,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import twilightforest.entity.ai.EntityAITFBreathAttack;
 
@@ -25,7 +27,7 @@ public class EntityTFFireBeetle extends MonsterEntity implements IBreathAttacker
 
 	public EntityTFFireBeetle(EntityType<? extends EntityTFFireBeetle> type, World world) {
 		super(type, world);
-		this.isImmuneToFire();
+		this.func_230279_az_();
 	}
 
 	@Override
@@ -46,12 +48,11 @@ public class EntityTFFireBeetle extends MonsterEntity implements IBreathAttacker
 		dataManager.register(BREATHING, false);
 	}
 
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(25.0D);
-		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
-		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
+	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return MonsterEntity.func_234295_eP_()
+				.func_233815_a_(Attributes.field_233818_a_, 25.0D)
+				.func_233815_a_(Attributes.field_233821_d_, 0.23D)
+				.func_233815_a_(Attributes.field_233823_f_, 4.0D);
 	}
 
 	@Override
@@ -85,12 +86,12 @@ public class EntityTFFireBeetle extends MonsterEntity implements IBreathAttacker
 
 		// when breathing fire, spew particles
 		if (isBreathing()) {
-			Vec3d look = this.getLookVec();
+			Vector3d look = this.getLookVec();
 
 			double dist = 0.9;
-			double px = this.getX() + look.x * dist;
-			double py = this.getY() + 0.25 + look.y * dist;
-			double pz = this.getZ() + look.z * dist;
+			double px = this.getPosX() + look.x * dist;
+			double py = this.getPosY() + 0.25 + look.y * dist;
+			double pz = this.getPosZ() + look.z * dist;
 
 			for (int i = 0; i < 2; i++) {
 				double dx = look.x;
@@ -141,7 +142,7 @@ public class EntityTFFireBeetle extends MonsterEntity implements IBreathAttacker
 
 	@Override
 	public void doBreathAttack(Entity target) {
-		if (!target.isImmuneToFire() && target.attackEntityFrom(DamageSource.IN_FIRE, BREATH_DAMAGE)) {
+		if (!target.func_230279_az_() && target.attackEntityFrom(DamageSource.IN_FIRE, BREATH_DAMAGE)) {
 			target.setFire(BREATH_DURATION);
 		}
 	}

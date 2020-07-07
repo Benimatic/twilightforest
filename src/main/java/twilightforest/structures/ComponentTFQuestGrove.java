@@ -13,9 +13,9 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.entity.TFEntities;
@@ -48,10 +48,10 @@ public class ComponentTFQuestGrove extends StructureTFComponentOld {
 	}
 
 	@Override
-	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		for (Direction e : Direction.Plane.HORIZONTAL) {
 			// make the rings
-			makeWallSide(world.getWorld(), rand, e, sbb);
+			makeWallSide(world, rand, e, sbb);
 		}
 
 		// a small platform
@@ -124,7 +124,7 @@ public class ComponentTFQuestGrove extends StructureTFComponentOld {
 	}
 
 	//TODO: Parameter "rand" is unused. Remove?
-	private void makeWallSide(World world, Random rand, Direction direction, MutableBoundingBox sbb) {
+	private void makeWallSide(ISeedReader world, Random rand, Direction direction, MutableBoundingBox sbb) {
 		Direction temp = this.getCoordBaseMode();
 		this.setCoordBaseMode(direction);
 
@@ -180,7 +180,7 @@ public class ComponentTFQuestGrove extends StructureTFComponentOld {
 		this.setCoordBaseMode(temp);
 	}
 
-	private void placeOuterArch(World world, int ox, int oy, MutableBoundingBox sbb) {
+	private void placeOuterArch(ISeedReader world, int ox, int oy, MutableBoundingBox sbb) {
 		for (int x = 0; x < 5; x++) {
 			for (int y = 0; y < 6; y++) {
 				if (x == 0 || x == 4 || y == 0 || y == 5) {

@@ -17,9 +17,9 @@ public class NoClipMoveHelper extends MovementController {
 	@Override
 	public void tick() {
 		if (this.action == MovementController.Action.MOVE_TO) {
-			double dx = this.getX() - this.parentEntity.getX();
-			double dy = this.getY() - this.parentEntity.getY();
-			double dz = this.getZ() - this.parentEntity.getZ();
+			double dx = this.getX() - this.parentEntity.getPosX();
+			double dy = this.getY() - this.parentEntity.getPosY();
+			double dz = this.getZ() - this.parentEntity.getPosZ();
 			double dist = dx * dx + dy * dy + dz * dz;
 
 			if (this.courseChangeCooldown-- <= 0) {

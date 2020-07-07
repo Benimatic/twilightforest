@@ -1,19 +1,18 @@
 package twilightforest.world.feature;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import twilightforest.util.FeatureUtil;
 
 import java.util.Random;
-import java.util.function.Function;
 
 /**
  * Several ruin types that look like the quest grove
@@ -25,12 +24,12 @@ public class TFGenGroveRuins extends Feature<NoFeatureConfig> {
 	private static final BlockState MOSSY_STONEBRICK = Blocks.MOSSY_STONE_BRICKS.getDefaultState();
 	private static final BlockState CHISELED_STONEBRICK = Blocks.CHISELED_STONE_BRICKS.getDefaultState();
 
-	public TFGenGroveRuins(Function<Dynamic<?>, NoFeatureConfig> configIn) {
+	public TFGenGroveRuins(Codec<NoFeatureConfig> configIn) {
 		super(configIn);
 	}
 
 	@Override
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+	public boolean func_230362_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
 		if (rand.nextBoolean()) {
 			return generateLargeArch(world.getWorld(), rand, pos);
 		} else {

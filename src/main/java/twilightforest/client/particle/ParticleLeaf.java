@@ -3,9 +3,10 @@ package twilightforest.client.particle;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.renderer.ActiveRenderInfo;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -13,15 +14,15 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class ParticleLeaf extends SpriteTexturedParticle {
 
-	private final Vec3d target;
+	private final Vector3d target;
 
-	ParticleLeaf(World world, double x, double y, double z, double vx, double vy, double vz) {
+	ParticleLeaf(ClientWorld world, double x, double y, double z, double vx, double vy, double vz) {
 		this(world, x, y, z, vx, vy, vz, 1.0F);
 	}
 
-	ParticleLeaf(World world, double x, double y, double z, double vx, double vy, double vz, float scale) {
+	ParticleLeaf(ClientWorld world, double x, double y, double z, double vx, double vy, double vz, float scale) {
 		super(world, x, y, z, 0.0D, 0.0D, 0.0D);
-		target = new Vec3d(x, y, z);
+		target = new Vector3d(x, y, z);
 		this.motionX *= 0.10000000149011612D;
 		this.motionY *= 0.10000000149011612D;
 		this.motionZ *= 0.10000000149011612D;
@@ -73,9 +74,9 @@ public class ParticleLeaf extends SpriteTexturedParticle {
 	}
 
 	@Override
-	public void buildGeometry(IVertexBuilder buffer, ActiveRenderInfo entity, float partialTicks) {
+	public void renderParticle(IVertexBuilder buffer, ActiveRenderInfo entity, float partialTicks) {
 		particleAlpha = Math.min(MathHelper.clamp(age, 0, 20) / 20F, MathHelper.clamp(maxAge - age, 0, 20) / 20F);
-		super.buildGeometry(buffer, entity, partialTicks);
+		super.renderParticle(buffer, entity, partialTicks);
 	}
 
 	@Override
@@ -92,7 +93,7 @@ public class ParticleLeaf extends SpriteTexturedParticle {
 		}
 
 		@Override
-		public Particle makeParticle(LeafParticleData data, World world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+		public Particle makeParticle(LeafParticleData data, ClientWorld world, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
 			ParticleLeaf particle = new ParticleLeaf(world, x, y, z, xSpeed, ySpeed, zSpeed);
 			particle.setColor(data.r / 255F, data.g / 255F, data.b / 255F);
 			particle.selectSpriteRandomly(this.spriteSet);

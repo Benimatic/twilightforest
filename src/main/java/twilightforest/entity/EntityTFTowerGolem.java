@@ -4,7 +4,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -40,13 +41,12 @@ public class EntityTFTowerGolem extends MonsterEntity {
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
 	}
 
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(40.0D);
-		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
-		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(9.0D);
-		this.getAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(2.0D);
+	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return MonsterEntity.func_234295_eP_()
+				.func_233815_a_(Attributes.field_233818_a_, 40.0D)
+				.func_233815_a_(Attributes.field_233821_d_, 0.25D)
+				.func_233815_a_(Attributes.field_233823_f_, 9.0D)
+				.func_233815_a_(Attributes.field_233826_i_, 2.0D);
 	}
 
 	@Override
@@ -87,19 +87,19 @@ public class EntityTFTowerGolem extends MonsterEntity {
 
 		// [VanillaCopy] last half of EntityIronGolem.onLivingUpdate
 		if (this.getMotion().getX() * this.getMotion().getX() + this.getMotion().getZ() * this.getMotion().getZ() > 2.500000277905201E-7D && this.rand.nextInt(5) == 0) {
-			int i = MathHelper.floor(this.getX());
-			int j = MathHelper.floor(this.getY() - 0.20000000298023224D);
-			int k = MathHelper.floor(this.getZ());
+			int i = MathHelper.floor(this.getPosX());
+			int j = MathHelper.floor(this.getPosY() - 0.20000000298023224D);
+			int k = MathHelper.floor(this.getPosZ());
 			BlockState iblockstate = this.world.getBlockState(new BlockPos(i, j, k));
 
 			if (iblockstate.getMaterial() != Material.AIR) {
-				this.world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, iblockstate), this.getX() + ((double) this.rand.nextFloat() - 0.5D) * (double) this.getWidth(), this.getBoundingBox().minY + 0.1D, this.getZ() + ((double) this.rand.nextFloat() - 0.5D) * (double) this.getWidth(), 4.0D * ((double) this.rand.nextFloat() - 0.5D), 0.5D, ((double) this.rand.nextFloat() - 0.5D) * 4.0D);
+				this.world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, iblockstate), this.getPosX() + ((double) this.rand.nextFloat() - 0.5D) * (double) this.getWidth(), this.getBoundingBox().minY + 0.1D, this.getPosZ() + ((double) this.rand.nextFloat() - 0.5D) * (double) this.getWidth(), 4.0D * ((double) this.rand.nextFloat() - 0.5D), 0.5D, ((double) this.rand.nextFloat() - 0.5D) * 4.0D);
 			}
 		}
 		// End copy
 
 		if (this.rand.nextBoolean()) {
-			this.world.addParticle(new RedstoneParticleData(1.0F, 0.0F, 0.0F, 1.0F), this.getX() + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(), this.getY() + this.rand.nextDouble() * (double) this.getHeight() - 0.25D, this.getZ() + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(), 0, 0, 0);
+			this.world.addParticle(new RedstoneParticleData(1.0F, 0.0F, 0.0F, 1.0F), this.getPosX() + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(), this.getPosY() + this.rand.nextDouble() * (double) this.getHeight() - 0.25D, this.getPosZ() + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(), 0, 0, 0);
 		}
 	}
 

@@ -33,7 +33,7 @@ public class TFGenerationSettings extends GenerationSettings {
 	@Nullable
 	public static ChunkGeneratorTFBase getChunkGenerator(World world) {
 		if (world instanceof ServerWorld) {
-			ChunkGenerator<?> chunkGenerator = ((ServerWorld) world).getChunkProvider().generator;
+			ChunkGenerator chunkGenerator = ((ServerWorld) world).getChunkProvider().generator;
 			return chunkGenerator instanceof ChunkGeneratorTFBase ? (ChunkGeneratorTFBase) chunkGenerator : null;
 		}
 		return null;

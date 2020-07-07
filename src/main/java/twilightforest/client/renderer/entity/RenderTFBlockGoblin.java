@@ -5,9 +5,8 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.culling.ClippingHelperImpl;
+import net.minecraft.client.renderer.culling.ClippingHelper;
 import net.minecraft.client.renderer.entity.BipedRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.model.Model;
@@ -16,7 +15,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3f;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ModelTFBlockGoblin;
 import twilightforest.client.model.entity.ModelTFGoblinChain;
@@ -40,19 +40,19 @@ public class RenderTFBlockGoblin<T extends EntityTFBlockGoblin, M extends ModelT
 
 		stack.push();
 
-		double blockInX = (goblin.block.getX() - goblin.getX());
-		double blockInY = (goblin.block.getY() - goblin.getY());
-		double blockInZ = (goblin.block.getZ() - goblin.getZ());
+		double blockInX = (goblin.block.getPosX() - goblin.getPosX());
+		double blockInY = (goblin.block.getPosY() - goblin.getPosY());
+		double blockInZ = (goblin.block.getPosZ() - goblin.getPosZ());
 
-		IVertexBuilder ivertexbuilder = buffer.getBuffer(this.model.getLayer(textureLoc));
+		IVertexBuilder ivertexbuilder = buffer.getBuffer(this.model.getRenderType(textureLoc));
 		stack.translate(blockInX, blockInY, blockInZ);
 
 		float pitch = goblin.prevRotationPitch + (goblin.rotationPitch - goblin.prevRotationPitch) * partialTicks;
-		stack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180 - MathHelper.wrapDegrees(yaw)));
-		stack.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(pitch));
+		stack.rotate(Vector3f.YP.rotationDegrees(180 - MathHelper.wrapDegrees(yaw)));
+		stack.rotate(Vector3f.XP.rotationDegrees(pitch));
 
 		stack.scale(-1.0F, -1.0F, 1.0F);
-		this.model.render(stack, ivertexbuilder, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
+		this.model.render(stack, ivertexbuilder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 		stack.pop();
 		
 		//when you allowed debugBoundingBox, you can see Hitbox
@@ -70,20 +70,20 @@ public class RenderTFBlockGoblin<T extends EntityTFBlockGoblin, M extends ModelT
 
 	private void renderChain(T goblin, Entity chain, float yaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int light) {
 		if (chain != null) {
-			double chainInX = (chain.getX() - goblin.getX());
-			double chainInY = (chain.getY() - goblin.getY());
-			double chainInZ = (chain.getZ() - goblin.getZ());
+			double chainInX = (chain.getPosX() - goblin.getPosX());
+			double chainInY = (chain.getPosY() - goblin.getPosY());
+			double chainInZ = (chain.getPosZ() - goblin.getPosZ());
 
 			stack.push();
-			IVertexBuilder ivertexbuilder = buffer.getBuffer(this.chainModel.getLayer(textureLoc));
+			IVertexBuilder ivertexbuilder = buffer.getBuffer(this.chainModel.getRenderType(textureLoc));
 
 			stack.translate(chainInX, chainInY, chainInZ);
 			float pitch = chain.prevRotationPitch + (chain.rotationPitch - chain.prevRotationPitch) * partialTicks;
-			stack.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180 - MathHelper.wrapDegrees(yaw)));
-			stack.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(pitch));
+			stack.rotate(Vector3f.YP.rotationDegrees(180 - MathHelper.wrapDegrees(yaw)));
+			stack.rotate(Vector3f.XP.rotationDegrees(pitch));
 
 			stack.scale(-1.0F, -1.0F, 1.0F);
-			this.chainModel.render(stack, ivertexbuilder, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
+			this.chainModel.render(stack, ivertexbuilder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 			stack.pop();
 
 			//when you allowed debugBoundingBox, you can see Hitbox
@@ -97,28 +97,28 @@ public class RenderTFBlockGoblin<T extends EntityTFBlockGoblin, M extends ModelT
 	}
 
 	private void renderMultiBoundingBox(MatrixStack stack, IVertexBuilder builder, Entity entity, float red, float grean, float blue) {
-		AxisAlignedBB axisalignedbb = entity.getBoundingBox().offset(-entity.getX(), -entity.getY(), -entity.getZ());
-		WorldRenderer.drawBox(stack, builder, axisalignedbb, red, grean, blue, 1.0F);
+		AxisAlignedBB axisalignedbb = entity.getBoundingBox().offset(-entity.getPosX(), -entity.getPosY(), -entity.getPosZ());
+		WorldRenderer.drawBoundingBox(stack, builder, axisalignedbb, red, grean, blue, 1.0F);
 	}
 
 	@Override
-	public boolean shouldRender(T entity, ClippingHelperImpl clippingHelper, double p_225626_3_, double p_225626_5_, double p_225626_7_) {
-		if (super.shouldRender(entity, clippingHelper, p_225626_3_, p_225626_5_, p_225626_7_)) {
+	public boolean shouldRender(T entity, ClippingHelper clippingHelper, double camX, double camY, double camZ) {
+		if (super.shouldRender(entity, clippingHelper, camX, camY, camZ)) {
 			return true;
 		} else {
 
-			Vec3d vec3d = this.getPosition(entity.block, (double) entity.block.getHeight() * 0.5D, 1.0F);
-			Vec3d vec3d1 = this.getPosition(entity.block, (double) entity.block.getEyeHeight(), 1.0F);
+			Vector3d vec3d = this.getPosition(entity.block, (double) entity.block.getHeight() * 0.5D, 1.0F);
+			Vector3d vec3d1 = this.getPosition(entity.block, (double) entity.block.getEyeHeight(), 1.0F);
 			return clippingHelper.isVisible(new AxisAlignedBB(vec3d1.x, vec3d1.y, vec3d1.z, vec3d.x, vec3d.y, vec3d.z));
 		}
 	}
 
-	private Vec3d getPosition(Entity p_177110_1_, double p_177110_2_, float p_177110_4_) {
+	private Vector3d getPosition(Entity entity, double p_177110_2_, float p_177110_4_) {
 		// [VanillaCopy] From GuardianRenderer
-		double d0 = MathHelper.lerp((double) p_177110_4_, p_177110_1_.lastTickPosX, p_177110_1_.getX());
-		double d1 = MathHelper.lerp((double) p_177110_4_, p_177110_1_.lastTickPosY, p_177110_1_.getY()) + p_177110_2_;
-		double d2 = MathHelper.lerp((double) p_177110_4_, p_177110_1_.lastTickPosZ, p_177110_1_.getZ());
-		return new Vec3d(d0, d1, d2);
+		double d0 = MathHelper.lerp((double) p_177110_4_, entity.lastTickPosX, entity.getPosX());
+		double d1 = MathHelper.lerp((double) p_177110_4_, entity.lastTickPosY, entity.getPosY()) + p_177110_2_;
+		double d2 = MathHelper.lerp((double) p_177110_4_, entity.lastTickPosZ, entity.getPosZ());
+		return new Vector3d(d0, d1, d2);
 	}
 
 	@Override

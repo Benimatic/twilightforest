@@ -29,35 +29,35 @@ public class ModelTFPenguin extends AgeableModel<EntityTFPenguin> {
 		textureHeight = 32;
 
 		body = new ModelRenderer(this, 32, 0);
-		body.addCuboid(-4F, 0F, -4F, 8, 9, 8);
+		body.addBox(-4F, 0F, -4F, 8, 9, 8);
 		body.setRotationPoint(0F, 14F, 0F);
 
 		rightarm = new ModelRenderer(this, 34, 18);
-		rightarm.addCuboid(-1F, -1F, -2F, 1, 8, 4);
+		rightarm.addBox(-1F, -1F, -2F, 1, 8, 4);
 		rightarm.setRotationPoint(-4F, 15F, 0F);
 
 		leftarm = new ModelRenderer(this, 24, 18);
-		leftarm.addCuboid(0F, -1F, -2F, 1, 8, 4);
+		leftarm.addBox(0F, -1F, -2F, 1, 8, 4);
 		leftarm.setRotationPoint(4F, 15F, 0F);
 
 		leftarm.mirror = true;
 
 		rightleg = new ModelRenderer(this, 0, 16);
-		rightleg.addCuboid(-2F, 0F, -5F, 4, 1, 8);
+		rightleg.addBox(-2F, 0F, -5F, 4, 1, 8);
 		rightleg.setRotationPoint(-2F, 23F, 0F);
 		rightleg.setTextureSize(64, 32);
 
 		leftleg = new ModelRenderer(this, 0, 16);
-		leftleg.addCuboid(-2F, 0F, -5F, 4, 1, 8);
+		leftleg.addBox(-2F, 0F, -5F, 4, 1, 8);
 		leftleg.setRotationPoint(2F, 23F, 0F);
 
 
 		head = new ModelRenderer(this, 0, 0);
-		head.addCuboid(-3.5F, -4F, -3.5F, 7, 5, 7);
+		head.addBox(-3.5F, -4F, -3.5F, 7, 5, 7);
 		head.setRotationPoint(0F, 13F, 0F);
 
 		beak = new ModelRenderer(this, 0, 13);
-		beak.addCuboid(-1F, 0F, -1F, 2, 1, 2);
+		beak.addBox(-1F, 0F, -1F, 2, 1, 2);
 		beak.setRotationPoint(0F, -1F, -4F);
 
 		head.addChild(beak);
@@ -102,7 +102,7 @@ public class ModelTFPenguin extends AgeableModel<EntityTFPenguin> {
 	}
 
 	@Override
-	public void setAngles(EntityTFPenguin entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setRotationAngles(EntityTFPenguin entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		head.rotateAngleX = headPitch / (180F / (float) Math.PI);
 		head.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 

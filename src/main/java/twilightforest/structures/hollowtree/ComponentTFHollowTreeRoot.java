@@ -6,7 +6,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.World;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
@@ -30,7 +30,7 @@ public class ComponentTFHollowTreeRoot extends ComponentTFHollowTreeMedBranch {
 	}
 
 	@Override
-	public boolean addComponentParts(World world, ChunkGenerator<?> generator, Random random, MutableBoundingBox sbb, boolean drawLeaves) {
+	public boolean addComponentParts(ISeedReader world, ChunkGenerator generator, Random random, MutableBoundingBox sbb, boolean drawLeaves) {
 		if (!drawLeaves) {
 			// offset bounding box to average ground level
 			if (this.groundLevel < 0) {
@@ -58,7 +58,7 @@ public class ComponentTFHollowTreeRoot extends ComponentTFHollowTreeMedBranch {
 	/**
 	 * Draws a line
 	 */
-	protected void drawRootLine(World world, MutableBoundingBox sbb, int x1, int y1, int z1, int x2, int y2, int z2, BlockState blockValue) {
+	protected void drawRootLine(ISeedReader world, MutableBoundingBox sbb, int x1, int y1, int z1, int x2, int y2, int z2, BlockState blockValue) {
 		BlockPos lineCoords[] = FeatureUtil.getBresehnamArrays(x1, y1, z1, x2, y2, z2);
 
 		for (BlockPos coords : lineCoords) {

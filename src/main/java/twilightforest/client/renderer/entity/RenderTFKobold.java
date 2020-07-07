@@ -3,16 +3,15 @@ package twilightforest.client.renderer.entity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
-import net.minecraft.client.renderer.entity.layers.HeldItemLayer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.entity.model.IHasArm;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.HandSide;
+import net.minecraft.util.math.vector.Vector3f;
 import twilightforest.client.model.entity.ModelTFKobold;
 import twilightforest.entity.EntityTFKobold;
 
@@ -56,12 +55,12 @@ public class RenderTFKobold extends RenderTFBiped<EntityTFKobold, ModelTFKobold>
 		private void renderItem(LivingEntity entity, ItemStack stack, ItemCameraTransforms.TransformType transform, HandSide handSide, MatrixStack ms, IRenderTypeBuffer buffers, int light) {
 			if (!stack.isEmpty()) {
 				ms.push();
-				((IHasArm)this.getEntityModel()).setArmAngle(handSide, ms);
-				ms.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(-90.0F));
-				ms.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180.0F));
+				((IHasArm)this.getEntityModel()).translateHand(handSide, ms);
+				ms.rotate(Vector3f.XP.rotationDegrees(-90.0F));
+				ms.rotate(Vector3f.YP.rotationDegrees(180.0F));
 				boolean flag = handSide == HandSide.LEFT;
 				ms.translate((double)((float)(flag ? -1 : 1) / 16.0F), 0.125D, -0.625D);
-				Minecraft.getInstance().getFirstPersonRenderer().renderItem(entity, stack, transform, flag, ms, buffers, light);
+				Minecraft.getInstance().getFirstPersonRenderer().renderItemSide(entity, stack, transform, flag, ms, buffers, light);
 				ms.pop();
 			}
 		}

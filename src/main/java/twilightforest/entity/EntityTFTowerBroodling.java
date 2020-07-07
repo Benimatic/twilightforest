@@ -1,8 +1,9 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.world.World;
 
 public class EntityTFTowerBroodling extends EntityTFSwarmSpider {
@@ -16,20 +17,19 @@ public class EntityTFTowerBroodling extends EntityTFSwarmSpider {
 		experienceValue = 3;
 	}
 
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(7.0D);
-		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
+	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return EntityTFSwarmSpider.registerAttributes()
+				.func_233815_a_(Attributes.field_233818_a_, 7.0D)
+				.func_233815_a_(Attributes.field_233823_f_, 4.0D);
 	}
 
 	@Override
 	protected boolean spawnAnother() {
 		EntityTFSwarmSpider another = new EntityTFTowerBroodling(TFEntities.tower_broodling, world, false);
 
-		double sx = getX() + (rand.nextBoolean() ? 0.9 : -0.9);
-		double sy = getY();
-		double sz = getZ() + (rand.nextBoolean() ? 0.9 : -0.9);
+		double sx = getPosX() + (rand.nextBoolean() ? 0.9 : -0.9);
+		double sy = getPosY();
+		double sz = getPosZ() + (rand.nextBoolean() ? 0.9 : -0.9);
 		another.setLocationAndAngles(sx, sy, sz, rand.nextFloat() * 360F, 0.0F);
 		if (!another.canSpawn(world, SpawnReason.MOB_SUMMONED)) {
 			another.remove();

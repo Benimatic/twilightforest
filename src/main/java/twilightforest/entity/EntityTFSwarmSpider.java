@@ -1,6 +1,8 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 import net.minecraft.entity.monster.MonsterEntity;
@@ -12,6 +14,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import twilightforest.TFFeature;
 
 import java.util.Random;
@@ -31,11 +34,10 @@ public class EntityTFSwarmSpider extends SpiderEntity {
 		experienceValue = 2;
 	}
 
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(3.0D);
-		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
+	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return SpiderEntity.func_234305_eI_()
+				.func_233815_a_(Attributes.field_233818_a_, 3.0D)
+				.func_233815_a_(Attributes.field_233823_f_, 1.0D);
 	}
 
 	@Override
@@ -95,9 +97,9 @@ public class EntityTFSwarmSpider extends SpiderEntity {
 	protected boolean spawnAnother() {
 		EntityTFSwarmSpider another = new EntityTFSwarmSpider(TFEntities.swarm_spider, world, false);
 
-		double sx = getX() + (rand.nextBoolean() ? 0.9 : -0.9);
-		double sy = getY();
-		double sz = getZ() + (rand.nextBoolean() ? 0.9 : -0.9);
+		double sx = getPosX() + (rand.nextBoolean() ? 0.9 : -0.9);
+		double sy = getPosY();
+		double sz = getPosZ() + (rand.nextBoolean() ? 0.9 : -0.9);
 		another.setLocationAndAngles(sx, sy, sz, rand.nextFloat() * 360F, 0.0F);
 		if (!another.canSpawn(world, SpawnReason.MOB_SUMMONED)) {
 			another.remove();
@@ -117,7 +119,7 @@ public class EntityTFSwarmSpider extends SpiderEntity {
 		int chunkX = MathHelper.floor(pos.getX()) >> 4;
 		int chunkZ = MathHelper.floor(pos.getZ()) >> 4;
 		// We're allowed to spawn in bright light only in hedge mazes.
-		return TFFeature.getNearestFeature(chunkX, chunkZ, world.getWorld()) == TFFeature.HEDGE_MAZE || MonsterEntity.isValidLightLevel(world, pos, random);
+		return TFFeature.getNearestFeature(chunkX, chunkZ, (ServerWorld) world) == TFFeature.HEDGE_MAZE || MonsterEntity.isValidLightLevel(world, pos, random);
 	}
 
 	public boolean shouldSpawnMore() {

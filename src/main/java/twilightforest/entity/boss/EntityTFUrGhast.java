@@ -1,11 +1,11 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.effect.LightningBoltEntity;
@@ -19,15 +19,13 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
-import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerBossInfo;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraft.world.storage.WorldInfo;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFBossSpawner;
@@ -77,11 +75,10 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		this.bossInfo.setName(this.getDisplayName());
 	}
 
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(250);
-		this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(128.0D);
+	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return EntityTFTowerGhast.registerAttributes()
+				.func_233815_a_(Attributes.field_233818_a_, 250)
+				.func_233815_a_(Attributes.field_233819_b_, 128.0D);
 	}
 
 	@Override
@@ -118,9 +115,9 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 			if (!entitymovehelper.isUpdating()) {
 				return true;
 			} else {
-				double d0 = entitymovehelper.getX() - this.taskOwner.getX();
-				double d1 = entitymovehelper.getY() - this.taskOwner.getY();
-				double d2 = entitymovehelper.getZ() - this.taskOwner.getZ();
+				double d0 = entitymovehelper.getX() - this.taskOwner.getPosX();
+				double d1 = entitymovehelper.getY() - this.taskOwner.getPosY();
+				double d2 = entitymovehelper.getZ() - this.taskOwner.getPosZ();
 				double d3 = d0 * d0 + d1 * d1 + d2 * d2;
 				return d3 < 1.0D || d3 > 3600.0D;
 			}
@@ -160,7 +157,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 
 		private List<BlockPos> createPath() {
 			List<BlockPos> potentialPoints = new ArrayList<>();
-			BlockPos pos = new BlockPos(this.taskOwner);
+			BlockPos pos = new BlockPos(this.taskOwner.func_233580_cy_());
 
 			if (!this.taskOwner.noTrapMode) {
 				// make a copy of the trap locations list
@@ -209,9 +206,9 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		} else {
 			if (this.isInTantrum()) {
 				world.addParticle(TFParticleType.BOSS_TEAR.get(),
-						this.getX() + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(),
-						this.getY() + this.rand.nextDouble() * (double) this.getHeight() - 0.25D,
-						this.getZ() + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(),
+						this.getPosX() + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(),
+						this.getPosY() + this.rand.nextDouble() * (double) this.getHeight() - 0.25D,
+						this.getPosZ() + (this.rand.nextDouble() - 0.5D) * (double) this.getWidth(),
 						0, 0, 0
 				);
 			}
@@ -225,9 +222,9 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 					double d2 = rand.nextGaussian() * 0.02D;
 
 					world.addParticle(rand.nextBoolean() ? ParticleTypes.EXPLOSION_EMITTER : ParticleTypes.EXPLOSION,
-							(getX() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(),
-							getY() + rand.nextFloat() * getHeight(),
-							(getZ() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(),
+							(getPosX() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(),
+							getPosY() + rand.nextFloat() * getHeight(),
+							(getPosZ() + rand.nextFloat() * getWidth() * 2.0F) - getWidth(),
 							d, d1, d2
 					);
 				}
@@ -241,7 +238,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 	}
 
 	@Override
-	public void knockBack(Entity entityIn, float strength, double xRatio, double zRatio) {
+	public void func_233627_a_(float strength, double xRatio, double zRatio) {
 		// Don't take knockback
 	}
 
@@ -404,7 +401,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		AxisAlignedBB below = this.getBoundingBox().offset(0, -16, 0).grow(0, 16, 0);
 
 		for (PlayerEntity player : world.getEntitiesWithinAABB(PlayerEntity.class, below)) {
-			if (world.canBlockSeeSky(new BlockPos(player))) {
+			if (world.canBlockSeeSky(player.func_233580_cy_())) {
 				player.attackEntityFrom(DamageSource.ANVIL, 3);
 			}
 		}
@@ -436,28 +433,28 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 
 	@Override
 	protected void spitFireball() {
-		double offsetX = this.getAttackTarget().getX() - this.getX();
-		double offsetY = this.getAttackTarget().getBoundingBox().minY + (double) (this.getAttackTarget().getHeight() / 2.0F) - (this.getY() + (double) (this.getHeight() / 2.0F));
-		double offsetZ = this.getAttackTarget().getZ() - this.getZ();
+		double offsetX = this.getAttackTarget().getPosX() - this.getPosX();
+		double offsetY = this.getAttackTarget().getBoundingBox().minY + (double) (this.getAttackTarget().getHeight() / 2.0F) - (this.getPosY() + (double) (this.getHeight() / 2.0F));
+		double offsetZ = this.getAttackTarget().getPosZ() - this.getPosZ();
 
 		EntityTFUrGhastFireball entityFireball = new EntityTFUrGhastFireball(this.world, this, offsetX, offsetY, offsetZ);
 		entityFireball.explosionPower = 1;
 		double shotSpawnDistance = 8.5D;
-		Vec3d lookVec = this.getLook(1.0F);
-		entityFireball.setPos(
-				this.getX() + lookVec.x * shotSpawnDistance,
-				this.getY() + (double) (this.getHeight() / 2.0F) + lookVec.y * shotSpawnDistance,
-				this.getZ() + lookVec.z * shotSpawnDistance
+		Vector3d lookVec = this.getLook(1.0F);
+		entityFireball.setPosition(
+				this.getPosX() + lookVec.x * shotSpawnDistance,
+				this.getPosY() + (double) (this.getHeight() / 2.0F) + lookVec.y * shotSpawnDistance,
+				this.getPosZ() + lookVec.z * shotSpawnDistance
 		);
 		this.world.addEntity(entityFireball);
 
 		for (int i = 0; i < 2; i++) {
 			entityFireball = new EntityTFUrGhastFireball(this.world, this, offsetX + (rand.nextFloat() - rand.nextFloat()) * 8, offsetY, offsetZ + (rand.nextFloat() - rand.nextFloat()) * 8);
 			entityFireball.explosionPower = 1;
-			entityFireball.setPos(
-					this.getX() + lookVec.x * shotSpawnDistance,
-					this.getY() + (double) (this.getHeight() / 2.0F) + lookVec.y * shotSpawnDistance,
-					this.getZ() + lookVec.z * shotSpawnDistance
+			entityFireball.setPosition(
+					this.getPosX() + lookVec.x * shotSpawnDistance,
+					this.getPosY() + (double) (this.getHeight() / 2.0F) + lookVec.y * shotSpawnDistance,
+					this.getPosZ() + lookVec.z * shotSpawnDistance
 			);
 			this.world.addEntity(entityFireball);
 		}
@@ -470,7 +467,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		int scanRangeXZ = 48;
 		int scanRangeY = 32;
 
-		scanForTraps(scanRangeXZ, scanRangeY, new BlockPos(this));
+		scanForTraps(scanRangeXZ, scanRangeY, func_233580_cy_());
 
 		if (trapLocations.size() > 0) {
 			// average the location of the traps we've found, and scan again from there
@@ -570,7 +567,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 	protected void onDeathUpdate() {
 		super.onDeathUpdate();
 		if (this.deathTime == 20 && !world.isRemote) {
-			TFTreasure.darktower_boss.generateChest(world, findChestCoords(), false);
+			TFTreasure.darktower_boss.generateChest((ServerWorld)world, findChestCoords(), false);
 		}
 	}
 
@@ -601,7 +598,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 
 			return new BlockPos(ax, ay + 2, az);
 		} else {
-			return new BlockPos(this);
+			return new BlockPos(this.func_233580_cy_());
 		}
 	}
 

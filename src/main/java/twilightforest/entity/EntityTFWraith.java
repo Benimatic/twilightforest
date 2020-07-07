@@ -2,6 +2,8 @@ package twilightforest.entity;
 
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.monster.IMob;
@@ -62,7 +64,7 @@ public class EntityTFWraith extends FlyingEntity implements IMob {
 		public void startExecuting() {
 			LivingEntity target = taskOwner.getAttackTarget();
 			if (target != null)
-				taskOwner.getMoveHelper().setMoveTo(target.getX(), target.getY(), target.getZ(), 0.5F);
+				taskOwner.getMoveHelper().setMoveTo(target.getPosX(), target.getPosY(), target.getPosZ(), 0.5F);
 		}
 	}
 
@@ -119,9 +121,9 @@ public class EntityTFWraith extends FlyingEntity implements IMob {
 			if (parentEntity.getAttackTarget() != null)
 				return false;
 			MovementController entitymovehelper = this.parentEntity.getMoveHelper();
-			double d0 = entitymovehelper.getX() - this.parentEntity.getX();
-			double d1 = entitymovehelper.getY() - this.parentEntity.getY();
-			double d2 = entitymovehelper.getZ() - this.parentEntity.getZ();
+			double d0 = entitymovehelper.getX() - this.parentEntity.getPosX();
+			double d1 = entitymovehelper.getY() - this.parentEntity.getPosY();
+			double d2 = entitymovehelper.getZ() - this.parentEntity.getPosZ();
 			double d3 = d0 * d0 + d1 * d1 + d2 * d2;
 			return d3 < 1.0D || d3 > 3600.0D;
 		}
@@ -134,9 +136,9 @@ public class EntityTFWraith extends FlyingEntity implements IMob {
 		@Override
 		public void startExecuting() {
 			Random random = this.parentEntity.getRNG();
-			double d0 = this.parentEntity.getX() + (double) ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
-			double d1 = this.parentEntity.getY() + (double) ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
-			double d2 = this.parentEntity.getZ() + (double) ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+			double d0 = this.parentEntity.getPosX() + (double) ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+			double d1 = this.parentEntity.getPosY() + (double) ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+			double d2 = this.parentEntity.getPosZ() + (double) ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
 			this.parentEntity.getMoveHelper().setMoveTo(d0, d1, d2, 0.5D);
 		}
 	}
@@ -164,8 +166,8 @@ public class EntityTFWraith extends FlyingEntity implements IMob {
 				LivingEntity entitylivingbase = this.parentEntity.getAttackTarget();
 
 				if (entitylivingbase.getDistanceSq(this.parentEntity) < 4096.0D) {
-					double d1 = entitylivingbase.getX() - this.parentEntity.getX();
-					double d2 = entitylivingbase.getZ() - this.parentEntity.getZ();
+					double d1 = entitylivingbase.getPosX() - this.parentEntity.getPosX();
+					double d2 = entitylivingbase.getPosZ() - this.parentEntity.getPosZ();
 					this.parentEntity.rotationYaw = -((float) MathHelper.atan2(d1, d2)) * (180F / (float) Math.PI);
 					this.parentEntity.renderYawOffset = this.parentEntity.rotationYaw;
 				}
@@ -173,26 +175,22 @@ public class EntityTFWraith extends FlyingEntity implements IMob {
 		}
 	}
 
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
-		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.5D);
-
-		// need to initialize damage since we're not an EntityMob
-		this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
-		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D);
+	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return MobEntity.func_233666_p_()
+				.func_233815_a_(Attributes.field_233818_a_, 20.0D)
+				.func_233815_a_(Attributes.field_233821_d_, 0.5D)
+				.func_233815_a_(Attributes.field_233823_f_, 5.0D);
 	}
 
 	@Override
-	public boolean bypassesSteppingEffects() {
+	public boolean isSteppingCarefully() {
 		return false;
 	}
 
 	// [VanillaCopy] EntityMob.attackEntityAsMob. This whole inheritance hierarchy makes me sad.
 	@Override
 	public boolean attackEntityAsMob(Entity entityIn) {
-		float f = (float) this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getValue();
+		float f = (float) this.getAttribute(Attributes.field_233823_f_).getValue();
 		int i = 0;
 
 		if (entityIn instanceof LivingEntity) {
@@ -204,7 +202,7 @@ public class EntityTFWraith extends FlyingEntity implements IMob {
 
 		if (flag) {
 			if (i > 0 && entityIn instanceof LivingEntity) {
-				((LivingEntity) entityIn).knockBack(this, (float) i * 0.5F, (double) MathHelper.sin(this.rotationYaw * 0.017453292F), (double) (-MathHelper.cos(this.rotationYaw * 0.017453292F)));
+				((LivingEntity) entityIn).func_233627_a_((float) i * 0.5F, (double) MathHelper.sin(this.rotationYaw * 0.017453292F), (double) (-MathHelper.cos(this.rotationYaw * 0.017453292F)));
 				this.setMotion(getMotion().getX() * 0.6D, getMotion().getY(), getMotion().getZ() * 0.6D);
 			}
 

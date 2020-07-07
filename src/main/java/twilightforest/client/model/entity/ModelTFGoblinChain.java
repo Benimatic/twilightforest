@@ -11,7 +11,7 @@ public class ModelTFGoblinChain extends SegmentedModel<Entity> {
 	public ModelTFGoblinChain() {
 
 		chain = new ModelRenderer(this, 56, 16);
-		chain.addCuboid(-1F, -1F, -1F, 2, 2, 2, 0F);
+		chain.addBox(-1F, -1F, -1F, 2, 2, 2, 0F);
 		chain.setRotationPoint(0F, 0F, 0F);
 
 	}
@@ -22,5 +22,5 @@ public class ModelTFGoblinChain extends SegmentedModel<Entity> {
 	}
 
 	@Override
-	public void setAngles(Entity entity, float v, float v1, float v2, float v3, float v4) { }
+	public void setRotationAngles(Entity entity, float v, float v1, float v2, float v3, float v4) { }
 }

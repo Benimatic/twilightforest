@@ -15,7 +15,7 @@ import twilightforest.TwilightForestMod;
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TFParticleType {
 
-	public static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES = new DeferredRegister<>(ForgeRegistries.PARTICLE_TYPES, TwilightForestMod.ID);
+	public static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, TwilightForestMod.ID);
 
 	public static final RegistryObject<BasicParticleType> LARGE_FLAME = PARTICLE_TYPES.register("large_flame", () -> new BasicParticleType(false));
 	public static final RegistryObject<BasicParticleType> LEAF_RUNE = PARTICLE_TYPES.register("leaf_rune", () -> new BasicParticleType(false));

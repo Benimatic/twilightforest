@@ -1,20 +1,20 @@
 package twilightforest.world.feature;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import twilightforest.block.TFBlocks;
 
 import java.util.Random;
-import java.util.function.Function;
 
 public class TFGenThorns extends Feature<NoFeatureConfig> {
 
@@ -23,12 +23,12 @@ public class TFGenThorns extends Feature<NoFeatureConfig> {
 	private static final int CHANCE_OF_LEAF = 3;
 	private static final int CHANCE_LEAF_IS_ROSE = 50;
 
-	public TFGenThorns(Function<Dynamic<?>, NoFeatureConfig> config) {
+	public TFGenThorns(Codec<NoFeatureConfig> config) {
 		super(config);
 	}
 
 	@Override
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+	public boolean func_230362_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
 
 		// make a 3-5 long stack going up
 		int nextLength = 2 + rand.nextInt(4);
@@ -39,13 +39,13 @@ public class TFGenThorns extends Feature<NoFeatureConfig> {
 		return true;
 	}
 
-	private void placeThorns(IWorld world, Random rand, BlockPos pos, int length, Direction dir, int maxLength, BlockPos oPos) {
+	private void placeThorns(ISeedReader world, Random rand, BlockPos pos, int length, Direction dir, int maxLength, BlockPos oPos) {
 		boolean complete = false;
 		for (int i = 0; i < length; i++) {
 			BlockPos dPos = pos.offset(dir, i);
 
 			if (Math.abs(dPos.getX() - oPos.getX()) < MAX_SPREAD && Math.abs(dPos.getZ() - oPos.getZ()) < MAX_SPREAD && canPlaceThorns(world, dPos)) {
-				this.setBlockState(world, dPos, TFBlocks.brown_thorns.get().getDefaultState().with(RotatedPillarBlock.AXIS, dir.getAxis()));
+				world.setBlockState(dPos, TFBlocks.brown_thorns.get().getDefaultState().with(RotatedPillarBlock.AXIS, dir.getAxis()), 3);
 
 				// did we make it to the end?
 				if (i == length - 1) {
@@ -54,10 +54,10 @@ public class TFGenThorns extends Feature<NoFeatureConfig> {
 					if (rand.nextInt(CHANCE_OF_LEAF) == 0 && world.isAirBlock(dPos.offset(dir))) {
 						if (rand.nextInt(CHANCE_LEAF_IS_ROSE) > 0) {
 							// leaf
-							this.setBlockState(world, dPos.offset(dir), TFBlocks.thorn_leaves.get().getDefaultState()/*.with(LeavesBlock.CHECK_DECAY, false)*/);
+							world.setBlockState(dPos.offset(dir), TFBlocks.thorn_leaves.get().getDefaultState(), 3/*.with(LeavesBlock.CHECK_DECAY, false)*/);
 						} else {
 							// rose
-							this.setBlockState(world, dPos.offset(dir), TFBlocks.thorn_rose.get().getDefaultState());
+							world.setBlockState(dPos.offset(dir), TFBlocks.thorn_rose.get().getDefaultState(), 3);
 						}
 					}
 				}
@@ -69,7 +69,7 @@ public class TFGenThorns extends Feature<NoFeatureConfig> {
 		// add another off the end
 		if (complete && maxLength > 1) {
 
-			Direction nextDir = Direction.random(rand);
+			Direction nextDir = Direction.func_239631_a_(rand);
 
 			BlockPos nextPos = pos.offset(dir, length - 1).offset(nextDir);
 			int nextLength = 1 + rand.nextInt(maxLength);
@@ -82,7 +82,7 @@ public class TFGenThorns extends Feature<NoFeatureConfig> {
 
 			int middle = rand.nextInt(length);
 
-			Direction nextDir = Direction.random(rand);
+			Direction nextDir = Direction.func_239631_a_(rand);
 
 			BlockPos nextPos = pos.offset(dir, middle).offset(nextDir);
 			int nextLength = 1 + rand.nextInt(maxLength);
@@ -95,12 +95,12 @@ public class TFGenThorns extends Feature<NoFeatureConfig> {
 
 			int middle = rand.nextInt(length);
 
-			Direction nextDir = Direction.random(rand);
+			Direction nextDir = Direction.func_239631_a_(rand);
 
 			BlockPos nextPos = pos.offset(dir, middle).offset(nextDir);
 
 			if (world.isAirBlock(nextPos)) {
-				this.setBlockState(world, nextPos, TFBlocks.thorn_leaves.get().getDefaultState()/*.with(LeavesBlock.CHECK_DECAY, false)*/);
+				world.setBlockState(nextPos, TFBlocks.thorn_leaves.get().getDefaultState(), 3/*.with(LeavesBlock.CHECK_DECAY, false)*/);
 			}
 		}
 	}

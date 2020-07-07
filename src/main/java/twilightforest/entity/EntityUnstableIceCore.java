@@ -6,8 +6,10 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.Pose;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.DyeColor;
 import net.minecraft.util.DamageSource;
@@ -39,11 +41,10 @@ public class EntityUnstableIceCore extends EntityTFIceMob {
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
 	}
 
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23000000417232513D);
-		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
+	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return MonsterEntity.func_234295_eP_()
+				.func_233815_a_(Attributes.field_233821_d_, 0.23000000417232513D)
+				.func_233815_a_(Attributes.field_233823_f_, 3.0D);
 	}
 
 	@Override
@@ -74,7 +75,7 @@ public class EntityUnstableIceCore extends EntityTFIceMob {
 		{
 			if (!world.isRemote) {
 				boolean mobGriefing = ForgeEventFactory.getMobGriefingEvent(world, this);
-				this.world.createExplosion(this, this.getX(), this.getY(), this.getZ(), EntityUnstableIceCore.EXPLOSION_RADIUS, mobGriefing ? Explosion.Mode.BREAK : Explosion.Mode.DESTROY);
+				this.world.createExplosion(this, this.getPosX(), this.getPosY(), this.getPosZ(), EntityUnstableIceCore.EXPLOSION_RADIUS, mobGriefing ? Explosion.Mode.BREAK : Explosion.Mode.DESTROY);
 
 				if (mobGriefing) {
 					this.transformBlocks();
@@ -90,7 +91,7 @@ public class EntityUnstableIceCore extends EntityTFIceMob {
 	private void transformBlocks() {
 		int range = 4;
 
-		BlockPos pos = new BlockPos(this);
+		BlockPos pos = new BlockPos(this.func_233580_cy_());
 
 		for (int dx = -range; dx <= range; dx++) {
 			for (int dy = -range; dy <= range; dy++) {

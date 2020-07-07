@@ -3,14 +3,13 @@ package twilightforest.loot;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
+import net.minecraft.loot.LootContext;
+import net.minecraft.loot.conditions.ILootCondition;
 import net.minecraft.util.JSONUtils;
-import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.conditions.ILootCondition;
 import net.minecraftforge.fml.ModList;
 import twilightforest.TwilightForestMod;
 
 import javax.annotation.Nonnull;
-import java.util.Random;
 
 // Loot condition for checking if a mod exists.
 public class LootConditionModExists implements ILootCondition {

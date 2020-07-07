@@ -1,8 +1,8 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.util.math.vector.Vector3f;
 import twilightforest.client.model.entity.ModelTFGoblinKnightUpper;
 import twilightforest.entity.EntityTFGoblinKnightUpper;
 
@@ -12,11 +12,11 @@ public class RenderTFGoblinKnightUpper extends RenderTFBiped<EntityTFGoblinKnigh
 	}
 
 	@Override
-	protected void setupTransforms(EntityTFGoblinKnightUpper upperKnight, MatrixStack stack, float ageInTicks, float rotationYaw, float partialTicks) {
-		super.setupTransforms(upperKnight, stack, ageInTicks, rotationYaw, partialTicks);
+	protected void applyRotations(EntityTFGoblinKnightUpper upperKnight, MatrixStack stack, float ageInTicks, float rotationYaw, float partialTicks) {
+		super.applyRotations(upperKnight, stack, ageInTicks, rotationYaw, partialTicks);
 
 		if (upperKnight.heavySpearTimer > 0) {
-			stack.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(getPitchForAttack((60 - upperKnight.heavySpearTimer) + partialTicks)));
+			stack.rotate(Vector3f.XP.rotationDegrees(getPitchForAttack((60 - upperKnight.heavySpearTimer) + partialTicks)));
 		}
 	}
 

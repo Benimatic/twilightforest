@@ -3,7 +3,8 @@ package twilightforest.entity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.item.DyeColor;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
@@ -16,11 +17,10 @@ public class EntityTFMistWolf extends EntityTFHostileWolf {
 		setCollarColor(DyeColor.GRAY);
 	}
 
-	@Override
-	protected void setAttributes() {
-		super.setAttributes();
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
-		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(6);
+	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return EntityTFHostileWolf.registerAttributes()
+				.func_233815_a_(Attributes.field_233818_a_, 30.0D)
+				.func_233815_a_(Attributes.field_233823_f_, 6);
 	}
 
 	@Override

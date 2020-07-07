@@ -3,7 +3,8 @@ package twilightforest.entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -42,11 +43,10 @@ public class EntityTFAdherent extends MonsterEntity implements IRangedAttackMob,
 		dataManager.register(CHARGE_FLAG, false);
 	}
 
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
-		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
+	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return MonsterEntity.func_234295_eP_()
+				.func_233815_a_(Attributes.field_233818_a_, 20.0D)
+				.func_233815_a_(Attributes.field_233821_d_, 0.25D);
 	}
 
 	@Override
@@ -55,10 +55,10 @@ public class EntityTFAdherent extends MonsterEntity implements IRangedAttackMob,
 		playSound(SoundEvents.ENTITY_GHAST_SHOOT, 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
 
 		// [VanillaCopy] adapted from EntitySnowman, with lower velocity and inaccuracy calculation
-		double d0 = attackTarget.getY() + (double) attackTarget.getEyeHeight() - 1.100000023841858D;
-		double d1 = attackTarget.getX() - this.getX();
-		double d2 = d0 - natureBolt.getY();
-		double d3 = attackTarget.getZ() - this.getZ();
+		double d0 = attackTarget.getPosY() + (double) attackTarget.getEyeHeight() - 1.100000023841858D;
+		double d1 = attackTarget.getPosX() - this.getPosX();
+		double d2 = d0 - natureBolt.getPosY();
+		double d3 = attackTarget.getPosZ() - this.getPosZ();
 		float f = MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.2F;
 		natureBolt.shoot(d1, d2 + (double) f, d3, 0.6F, 10 - this.world.getDifficulty().getId() * 4);
 

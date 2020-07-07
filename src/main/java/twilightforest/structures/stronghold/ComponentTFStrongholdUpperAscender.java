@@ -5,11 +5,12 @@ import net.minecraft.block.StairsBlock;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
@@ -63,8 +64,7 @@ public class ComponentTFStrongholdUpperAscender extends StructureTFStrongholdCom
 	}
 
 	@Override
-	public boolean generate(IWorld worldIn, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
-		World world = worldIn.getWorld();
+	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		if (this.isLiquidInStructureBoundingBox(world, sbb)) {
 			return false;
 		} else {
@@ -99,7 +99,7 @@ public class ComponentTFStrongholdUpperAscender extends StructureTFStrongholdCom
 	/**
 	 * Check if we can find at least one wall, and if so, generate stairs
 	 */
-	private void makeStairsAt(World world, int y, int z, Direction facing, MutableBoundingBox sbb) {
+	private void makeStairsAt(ISeedReader world, int y, int z, Direction facing, MutableBoundingBox sbb) {
 		// check walls
 		if (this.getBlockStateFromPos(world, 0, y, z, sbb).getBlock() != Blocks.AIR || this.getBlockStateFromPos(world, 4, y, z, sbb).getBlock() != Blocks.AIR) {
 			for (int x = 1; x < 4; x++) {
@@ -111,7 +111,7 @@ public class ComponentTFStrongholdUpperAscender extends StructureTFStrongholdCom
 	/**
 	 * Check if we can find at least one wall, and if so, generate blocks
 	 */
-	private void makePlatformAt(World world, int y, int z, MutableBoundingBox sbb) {
+	private void makePlatformAt(ISeedReader world, int y, int z, MutableBoundingBox sbb) {
 		// check walls
 		if (this.getBlockStateFromPos(world, 0, y, z, sbb).getBlock() != Blocks.AIR || this.getBlockStateFromPos(world, 4, y, z, sbb).getBlock() != Blocks.AIR) {
 			for (int x = 1; x < 4; x++) {

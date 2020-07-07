@@ -1,5 +1,6 @@
 package twilightforest.client.renderer;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
@@ -10,15 +11,16 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.vertex.VertexBuffer;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.SkyRenderHandler;
 
 import java.util.Random;
 
 @OnlyIn(Dist.CLIENT)
-public class TFSkyRenderer implements IRenderHandler {
+public class TFSkyRenderer implements SkyRenderHandler {
 
 	private boolean vboEnabled;
 	private int starGLCallList;
@@ -32,7 +34,7 @@ public class TFSkyRenderer implements IRenderHandler {
 	// [VanillaCopy] RenderGlobal.renderSky's overworld branch, without sun/moon/sunrise/sunset, and using our own stars at full brightness
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void render(int ticks, float partialTicks, ClientWorld world, Minecraft mc) {
+	public void render(int ticks, float partialTicks, MatrixStack ms, ClientWorld world, Minecraft mc) {
 
 		// [VanillaCopy] Excerpt from RenderGlobal.loadRenderers as we don't get a callback
 		generateStars();
@@ -46,7 +48,7 @@ public class TFSkyRenderer implements IRenderHandler {
 		//int pass = GameRenderer.anaglyphEnable ? GameRenderer.anaglyphField : 2;
 
 		RenderSystem.disableTexture();
-		Vec3d vec3d = world.func_228318_a_(mc.gameRenderer.getActiveRenderInfo().getBlockPos(), partialTicks);
+		Vector3d vec3d = world.getSkyColor(mc.gameRenderer.getActiveRenderInfo().getBlockPos(), partialTicks);
 		float f = (float) vec3d.x;
 		float f1 = (float) vec3d.y;
 		float f2 = (float) vec3d.z;
@@ -91,7 +93,7 @@ public class TFSkyRenderer implements IRenderHandler {
 
 		RenderSystem.enableTexture();
 		RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-		RenderSystem.pushMatrix();
+		ms.push();
 		float f16 = 1.0F - world.getRainStrength(partialTicks);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, f16);
 		RenderSystem.rotatef(-90.0F, 0.0F, 1.0F, 0.0F);
@@ -124,13 +126,13 @@ public class TFSkyRenderer implements IRenderHandler {
 		RenderSystem.disableBlend();
 		RenderSystem.enableAlphaTest();
 		RenderSystem.enableFog();
-		RenderSystem.popMatrix();
+		ms.pop();
 		RenderSystem.disableTexture();
 		RenderSystem.color3f(0.0F, 0.0F, 0.0F);
 		double d0 = mc.player.getEyePosition(partialTicks).y - world.getSeaLevel();
 
 		if (d0 < 0.0D) {
-			RenderSystem.pushMatrix();
+			ms.push();
 			RenderSystem.translatef(0.0F, 12.0F, 0.0F);
 
 			//TODO
@@ -150,26 +152,26 @@ public class TFSkyRenderer implements IRenderHandler {
 			float f19 = -((float) (d0 + 65.0D));
 			float f20 = -1.0F;
 			bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
-			bufferbuilder.vertex(-1.0D, (double) f19, 1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.vertex(1.0D, (double) f19, 1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.vertex(1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.vertex(-1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.vertex(-1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.vertex(1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.vertex(1.0D, (double) f19, -1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.vertex(-1.0D, (double) f19, -1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.vertex(1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.vertex(1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.vertex(1.0D, (double) f19, 1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.vertex(1.0D, (double) f19, -1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.vertex(-1.0D, (double) f19, -1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.vertex(-1.0D, (double) f19, 1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.vertex(-1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.vertex(-1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.vertex(-1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.vertex(-1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.vertex(1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.vertex(1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.pos(-1.0D, (double) f19, 1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.pos(1.0D, (double) f19, 1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.pos(1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.pos(-1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.pos(-1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.pos(1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.pos(1.0D, (double) f19, -1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.pos(-1.0D, (double) f19, -1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.pos(1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.pos(1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.pos(1.0D, (double) f19, 1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.pos(1.0D, (double) f19, -1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.pos(-1.0D, (double) f19, -1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.pos(-1.0D, (double) f19, 1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.pos(-1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.pos(-1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.pos(-1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.pos(-1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.pos(1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.pos(1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
 			tessellator.draw();
 		}
 
@@ -179,10 +181,10 @@ public class TFSkyRenderer implements IRenderHandler {
 			RenderSystem.color3f(f, f1, f2);
 		}
 
-		RenderSystem.pushMatrix();
+		ms.push();
 		RenderSystem.translatef(0.0F, -((float) (d0 - 16.0D)), 0.0F);
 		//RenderSystem.callList(rg.glSkyList2);
-		RenderSystem.popMatrix();
+		ms.pop();
 		RenderSystem.enableTexture();
 		RenderSystem.depthMask(true);
 	}
@@ -263,7 +265,7 @@ public class TFSkyRenderer implements IRenderHandler {
 					double d24 = 0.0D * d12 - d21 * d13;
 					double d25 = d24 * d9 - d22 * d10;
 					double d26 = d22 * d9 + d24 * d10;
-					bufferBuilder.vertex(d5 + d25, d6 + d23, d7 + d26).endVertex();
+					bufferBuilder.pos(d5 + d25, d6 + d23, d7 + d26).endVertex();
 				}
 			}
 		}

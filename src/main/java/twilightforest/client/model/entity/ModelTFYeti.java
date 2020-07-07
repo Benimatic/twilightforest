@@ -20,52 +20,52 @@ public class ModelTFYeti<T extends EntityTFYeti> extends BipedModel<T> {
 //		this.textureHeight = 64;
 
 		this.bipedHead = new ModelRenderer(this, 0, 0);
-		this.bipedHead.addCuboid(-4.0F, -8.0F, -4.0F, 0, 0, 0);
+		this.bipedHead.addBox(-4.0F, -8.0F, -4.0F, 0, 0, 0);
 		this.bipedHeadwear = new ModelRenderer(this, 32, 0);
-		this.bipedHeadwear.addCuboid(-4.0F, -8.0F, -4.0F, 0, 0, 0);
+		this.bipedHeadwear.addBox(-4.0F, -8.0F, -4.0F, 0, 0, 0);
 
 		this.bipedBody = new ModelRenderer(this, 32, 0);
-		this.bipedBody.addCuboid(-10.0F, 0.0F, -6.0F, 20, 26, 12);
+		this.bipedBody.addBox(-10.0F, 0.0F, -6.0F, 20, 26, 12);
 		this.bipedBody.setRotationPoint(0.0F, -14.0F, 0.0F);
 
 		this.mouth = new ModelRenderer(this, 96, 6);
-		this.mouth.addCuboid(-7.0F, -5.0F, -0.5F, 14, 10, 1);
+		this.mouth.addBox(-7.0F, -5.0F, -0.5F, 14, 10, 1);
 		this.mouth.setRotationPoint(0.0F, 12.0F, -6.0F);
 		this.bipedBody.addChild(mouth);
 
 		this.rightEye = new ModelRenderer(this, 96, 0);
-		this.rightEye.addCuboid(-2.5F, -2.5F, -0.5F, 5, 5, 1);
+		this.rightEye.addBox(-2.5F, -2.5F, -0.5F, 5, 5, 1);
 		this.rightEye.setRotationPoint(-5.5F, 4.5F, -6.0F);
 		this.bipedBody.addChild(rightEye);
 
 		this.leftEye = new ModelRenderer(this, 96, 0);
-		this.leftEye.addCuboid(-2.5F, -2.5F, -0.5F, 5, 5, 1);
+		this.leftEye.addBox(-2.5F, -2.5F, -0.5F, 5, 5, 1);
 		this.leftEye.setRotationPoint(5.5F, 4.5F, -6.0F);
 		this.bipedBody.addChild(leftEye);
 
 		this.angryRightEye = new ModelRenderer(this, 109, 0);
-		this.angryRightEye.addCuboid(-2.5F, -2.5F, -0.5F, 5, 5, 1);
+		this.angryRightEye.addBox(-2.5F, -2.5F, -0.5F, 5, 5, 1);
 		this.angryRightEye.setRotationPoint(5.5F, 4.5F, -6.0F);
 		this.bipedBody.addChild(angryRightEye);
 
 		this.angryLeftEye = new ModelRenderer(this, 109, 0);
-		this.angryLeftEye.addCuboid(-2.5F, -2.5F, -0.5F, 5, 5, 1);
+		this.angryLeftEye.addBox(-2.5F, -2.5F, -0.5F, 5, 5, 1);
 		this.angryLeftEye.setRotationPoint(-5.5F, 4.5F, -6.0F);
 		this.bipedBody.addChild(angryLeftEye);
 
 		this.bipedRightArm = new ModelRenderer(this, 0, 0);
-		this.bipedRightArm.addCuboid(-5.0F, -2.0F, -3.0F, 6, 16, 6);
+		this.bipedRightArm.addBox(-5.0F, -2.0F, -3.0F, 6, 16, 6);
 		this.bipedRightArm.setRotationPoint(-11.0F, -4.0F, 0.0F);
 		this.bipedLeftArm = new ModelRenderer(this, 0, 0);
 		this.bipedLeftArm.mirror = true;
-		this.bipedLeftArm.addCuboid(-1.0F, -2.0F, -3.0F, 6, 16, 6);
+		this.bipedLeftArm.addBox(-1.0F, -2.0F, -3.0F, 6, 16, 6);
 		this.bipedLeftArm.setRotationPoint(11.0F, -4.0F, 0.0F);
 		this.bipedRightLeg = new ModelRenderer(this, 0, 22);
-		this.bipedRightLeg.addCuboid(-4.0F, 0.0F, -4.0F, 8, 12, 8);
+		this.bipedRightLeg.addBox(-4.0F, 0.0F, -4.0F, 8, 12, 8);
 		this.bipedRightLeg.setRotationPoint(-6.0F, 12.0F, 0.0F);
 		this.bipedLeftLeg = new ModelRenderer(this, 0, 22);
 		this.bipedLeftLeg.mirror = true;
-		this.bipedLeftLeg.addCuboid(-4.0F, 0.0F, -4.0F, 8, 12, 8);
+		this.bipedLeftLeg.addBox(-4.0F, 0.0F, -4.0F, 8, 12, 8);
 		this.bipedLeftLeg.setRotationPoint(6.0F, 12.0F, 0.0F);
 	}
 
@@ -75,7 +75,7 @@ public class ModelTFYeti<T extends EntityTFYeti> extends BipedModel<T> {
 	 * "far" arms and legs can swing at most.
 	 */
 	@Override
-	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.bipedHead.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 		this.bipedHead.rotateAngleX = headPitch / (180F / (float) Math.PI);
 		this.bipedHeadwear.rotateAngleY = this.bipedHead.rotateAngleY;

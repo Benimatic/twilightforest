@@ -87,7 +87,7 @@ public class TFBiomeDecorator {
 	public static final OreFeatureConfig DIAMOND_ORE_CONFIG = (new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, Blocks.DIAMOND_ORE.getDefaultState(), 8));
 	public static final OreFeatureConfig LAPIS_ORE_CONFIG = (new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, Blocks.LAPIS_ORE.getDefaultState(), 7));
 	public static final CaveStalactiteConfig OUTSIDE_STALAG_CONFIG = (new CaveStalactiteConfig(Blocks.STONE.getDefaultState(), 1.0F, -1, -1, false));
-	public static final TreeFeatureConfig OAK_TREE = (new TreeFeatureConfig.Builder(new SimpleBlockStateProvider(OAK_LOG), new SimpleBlockStateProvider(OAK_LEAVES), new BlobFoliagePlacer(2, 0))).baseHeight(4).heightRandA(2).foliageHeight(3).setSapling(TFBlocks.oak_sapling.get()).build();
+	public static final BaseTreeFeatureConfig OAK_TREE = (new BaseTreeFeatureConfig.Builder(new SimpleBlockStateProvider(OAK_LOG), new SimpleBlockStateProvider(OAK_LEAVES), new BlobFoliagePlacer(2, 0))).baseHeight(4).heightRandA(2).foliageHeight(3).setSapling(TFBlocks.oak_sapling.get()).build();
 	public static final TFTreeFeatureConfig CANOPY_TREE_CONFIG = (new TFTreeFeatureConfig.Builder(new SimpleBlockStateProvider(CANOPY_LOG), new SimpleBlockStateProvider(CANOPY_LEAVES), new SimpleBlockStateProvider(CANOPY_WOOD), new SimpleBlockStateProvider(ROOTS)).chanceFirstFive(3).chanceSecondFive(8).setSapling(TFBlocks.canopy_sapling.get())).build();
 	public static final TFTreeFeatureConfig CANOPY_TREE_DEAD_CONFIG = (new TFTreeFeatureConfig.Builder(new SimpleBlockStateProvider(CANOPY_LOG), new SimpleBlockStateProvider(CANOPY_LEAVES), new SimpleBlockStateProvider(CANOPY_WOOD), new SimpleBlockStateProvider(ROOTS)).chanceFirstFive(3).chanceSecondFive(8).noLeaves().setSapling(TFBlocks.canopy_sapling.get())).build();
 	public static final TFTreeFeatureConfig CANOPY_OAK_CONFIG = (new TFTreeFeatureConfig.Builder(new SimpleBlockStateProvider(OAK_LOG), new SimpleBlockStateProvider(OAK_LEAVES), new SimpleBlockStateProvider(OAK_WOOD), new SimpleBlockStateProvider(ROOTS)).setSapling(TFBlocks.oak_sapling.get())).build();
@@ -100,274 +100,274 @@ public class TFBiomeDecorator {
 	public static final TFTreeFeatureConfig SORT_TREE = (new TFTreeFeatureConfig.Builder(new SimpleBlockStateProvider(SORT_LOG), new SimpleBlockStateProvider(SORT_LEAVES), new SimpleBlockStateProvider(SORT_WOOD), new SimpleBlockStateProvider(ROOTS)).setSapling(TFBlocks.sorting_sapling.get())).build();
 	public static final TFTreeFeatureConfig HOLLOW_TREE = (new TFTreeFeatureConfig.Builder(new SimpleBlockStateProvider(OAK_LOG), new SimpleBlockStateProvider(OAK_LEAVES), new SimpleBlockStateProvider(OAK_WOOD), new SimpleBlockStateProvider(ROOTS)).setSapling(TFBlocks.hollow_oak_sapling.get())).build();
 	public static final TFTreeFeatureConfig WINTER_TREE = (new TFTreeFeatureConfig.Builder(new SimpleBlockStateProvider(SPRUCE_LOG), new SimpleBlockStateProvider(SPRUCE_LEAVES), new SimpleBlockStateProvider(SPRUCE_WOOD), new SimpleBlockStateProvider(ROOTS)).setSapling((IPlantable)Blocks.SPRUCE_SAPLING)).build();
-	public static final TreeFeatureConfig RAINBOAK_TREE = (new TreeFeatureConfig.Builder(new SimpleBlockStateProvider(OAK_LOG), new SimpleBlockStateProvider(RAINBOW_LEAVES), new BlobFoliagePlacer(2, 0))).baseHeight(4).heightRandA(2).foliageHeight(3).setSapling(TFBlocks.rainboak_sapling.get()).build();
-	public static final TreeFeatureConfig FANCY_RAINBOAK_TREE = (new TreeFeatureConfig.Builder(new SimpleBlockStateProvider(OAK_LOG), new SimpleBlockStateProvider(RAINBOW_LEAVES), new BlobFoliagePlacer(0, 0))).setSapling(TFBlocks.rainboak_sapling.get()).build();
+	public static final BaseTreeFeatureConfig RAINBOAK_TREE = (new BaseTreeFeatureConfig.Builder(new SimpleBlockStateProvider(OAK_LOG), new SimpleBlockStateProvider(RAINBOW_LEAVES), new BlobFoliagePlacer(2, 0))).baseHeight(4).heightRandA(2).foliageHeight(3).setSapling(TFBlocks.rainboak_sapling.get()).build();
+	public static final BaseTreeFeatureConfig FANCY_RAINBOAK_TREE = (new BaseTreeFeatureConfig.Builder(new SimpleBlockStateProvider(OAK_LOG), new SimpleBlockStateProvider(RAINBOW_LEAVES), new BlobFoliagePlacer(0, 0))).setSapling(TFBlocks.rainboak_sapling.get()).build();
 	public static final BaseTreeFeatureConfig DARK_FOREST_BUSH_CONFIG = (new BaseTreeFeatureConfig.Builder(new SimpleBlockStateProvider(Blocks.JUNGLE_LOG.getDefaultState()), new SimpleBlockStateProvider(Blocks.OAK_LEAVES.getDefaultState()))).build();
 	public static final BaseTreeFeatureConfig OAK_BUSH_CONFIG = (new BaseTreeFeatureConfig.Builder(new SimpleBlockStateProvider(Blocks.OAK_LOG.getDefaultState()), new SimpleBlockStateProvider(Blocks.OAK_LEAVES.getDefaultState()))).build();
 	public static final BlockClusterFeatureConfig MUSHGLOOM_CONFIG = (new BlockClusterFeatureConfig.Builder(new SimpleBlockStateProvider(MUSHGLOOM), new SimpleBlockPlacer())).tries(32).build();
 	public static final BlockClusterFeatureConfig DEAD_BUSH_CONFIG = (new BlockClusterFeatureConfig.Builder(new SimpleBlockStateProvider(DEAD_BUSH), new SimpleBlockPlacer())).tries(8).build();
 	public static final BlockClusterFeatureConfig FOREST_GRASS_CONFIG = (new BlockClusterFeatureConfig.Builder(new SimpleBlockStateProvider(FOREST_GRASS), new SimpleBlockPlacer())).tries(32).build();
-	public static final BlockClusterFeatureConfig TWILIGHT_VARIANT_GRASS_CONFIG = (new BlockClusterFeatureConfig.Builder((new WeightedBlockStateProvider()).addState(GRASS, 1).addState(MAYAPPLE, 3).addState(FERN, 2), new SimpleBlockPlacer())).tries(64).build();
-	public static final BlockClusterFeatureConfig SAVANNAH_GRASS_CONFIG = (new BlockClusterFeatureConfig.Builder((new WeightedBlockStateProvider()).addState(GRASS, 1).addState(MAYAPPLE, 10).addState(FERN, 10), new SimpleBlockPlacer())).tries(64).build();
-	public static final BlockClusterFeatureConfig SWAMP_GRASS_CONFIG = (new BlockClusterFeatureConfig.Builder((new WeightedBlockStateProvider()).addState(GRASS, 1).addState(MAYAPPLE, 4).addState(FERN, 4), new SimpleBlockPlacer())).tries(64).build();
-	public static final BlockClusterFeatureConfig ENCHANTED_GRASS_CONFIG = (new BlockClusterFeatureConfig.Builder((new WeightedBlockStateProvider()).addState(GRASS, 1).addState(FIDDLEHEAD, 3).addState(FERN, 2), new SimpleBlockPlacer())).tries(64).build();
-	public static final MultipleRandomFeatureConfig NORMAL_TREES_CONFIG = (new MultipleRandomFeatureConfig(ImmutableList.of(Feature.NORMAL_TREE.configure(DefaultBiomeFeatures.BIRCH_TREE_CONFIG).withChance(0.2F), Feature.FANCY_TREE.configure(DefaultBiomeFeatures.FANCY_TREE_CONFIG).withChance(0.1F)), Feature.NORMAL_TREE.configure(DefaultBiomeFeatures.OAK_TREE_CONFIG)));
-	public static final MultipleRandomFeatureConfig VARIANT_TREES_CONFIG = (new MultipleRandomFeatureConfig(ImmutableList.of(Feature.JUNGLE_GROUND_BUSH.configure(OAK_BUSH_CONFIG).withChance(0.2F), Feature.FANCY_TREE.configure(DefaultBiomeFeatures.FANCY_TREE_CONFIG).withChance(0.1F)), Feature.NORMAL_TREE.configure(DefaultBiomeFeatures.OAK_TREE_CONFIG)));
-	public static final MultipleRandomFeatureConfig DARK_FOREST_TREES_CONFIG = (new MultipleRandomFeatureConfig(ImmutableList.of(Feature.JUNGLE_GROUND_BUSH.configure(DARK_FOREST_BUSH_CONFIG).withChance(0.2F), Feature.NORMAL_TREE.configure(DefaultBiomeFeatures.BIRCH_TREE_CONFIG).withChance(0.25F)), Feature.NORMAL_TREE.configure(DefaultBiomeFeatures.OAK_TREE_CONFIG)));
-	public static final MultipleRandomFeatureConfig SWAMP_TREES_CONFIG = (new MultipleRandomFeatureConfig(ImmutableList.of(Feature.JUNGLE_GROUND_BUSH.configure(DARK_FOREST_BUSH_CONFIG).withChance(0.35F)), Feature.NORMAL_TREE.configure(DefaultBiomeFeatures.SWAMP_TREE_CONFIG)));
-	public static final MultipleRandomFeatureConfig GLACIER_TREES_CONFIG = (new MultipleRandomFeatureConfig(ImmutableList.of(Feature.NORMAL_TREE.configure(DefaultBiomeFeatures.PINE_TREE_CONFIG).withChance(0.35F)), Feature.NORMAL_TREE.configure(DefaultBiomeFeatures.SPRUCE_TREE_CONFIG)));
-	public static final MultipleRandomFeatureConfig HIGHLANDS_TREES_CONFIG = (new MultipleRandomFeatureConfig(ImmutableList.of(Feature.NORMAL_TREE.configure(DefaultBiomeFeatures.SPRUCE_TREE_CONFIG).withChance(0.25F), Feature.NORMAL_TREE.configure(DefaultBiomeFeatures.PINE_TREE_CONFIG).withChance(0.1F), Feature.MEGA_SPRUCE_TREE.configure(DefaultBiomeFeatures.MEGA_SPRUCE_TREE_CONFIG).withChance(0.35F), Feature.MEGA_SPRUCE_TREE.configure(DefaultBiomeFeatures.MEGA_PINE_TREE_CONFIG).withChance(0.07F)), Feature.NORMAL_TREE.configure(DefaultBiomeFeatures.BIRCH_TREE_CONFIG)));
-	public static final MultipleRandomFeatureConfig SAVANNAH_TREES_CONFIG = (new MultipleRandomFeatureConfig(ImmutableList.of(Feature.FANCY_TREE.configure(DefaultBiomeFeatures.FANCY_TREE_CONFIG).withChance(0.1F)), Feature.NORMAL_TREE.configure(DefaultBiomeFeatures.OAK_TREE_CONFIG)));
-	public static final MultipleRandomFeatureConfig SNOWY_TREES_CONFIG = (new MultipleRandomFeatureConfig(ImmutableList.of(Feature.NORMAL_TREE.configure(DefaultBiomeFeatures.PINE_TREE_CONFIG).withChance(0.35F), TFBiomeFeatures.LARGE_WINTER_TREE.get().configure(WINTER_TREE).withChance(0.125F)), Feature.NORMAL_TREE.configure(DefaultBiomeFeatures.SPRUCE_TREE_CONFIG)));
-	public static final MultipleRandomFeatureConfig ENCHANTED_TREES_CONFIG = (new MultipleRandomFeatureConfig(ImmutableList.of(Feature.NORMAL_TREE.configure(RAINBOAK_TREE).withChance(0.06F), Feature.FANCY_TREE.configure(FANCY_RAINBOAK_TREE).withChance(0.02F), Feature.NORMAL_TREE.configure(DefaultBiomeFeatures.BIRCH_TREE_CONFIG).withChance(0.2F), Feature.FANCY_TREE.configure(DefaultBiomeFeatures.FANCY_TREE_CONFIG).withChance(0.1F)), Feature.NORMAL_TREE.configure(DefaultBiomeFeatures.OAK_TREE_CONFIG)));
+	public static final BlockClusterFeatureConfig TWILIGHT_VARIANT_GRASS_CONFIG = (new BlockClusterFeatureConfig.Builder((new WeightedBlockStateProvider()).addWeightedBlockstate(GRASS, 1).addWeightedBlockstate(MAYAPPLE, 3).addWeightedBlockstate(FERN, 2), new SimpleBlockPlacer())).tries(64).build();
+	public static final BlockClusterFeatureConfig SAVANNAH_GRASS_CONFIG = (new BlockClusterFeatureConfig.Builder((new WeightedBlockStateProvider()).addWeightedBlockstate(GRASS, 1).addWeightedBlockstate(MAYAPPLE, 10).addWeightedBlockstate(FERN, 10), new SimpleBlockPlacer())).tries(64).build();
+	public static final BlockClusterFeatureConfig SWAMP_GRASS_CONFIG = (new BlockClusterFeatureConfig.Builder((new WeightedBlockStateProvider()).addWeightedBlockstate(GRASS, 1).addWeightedBlockstate(MAYAPPLE, 4).addWeightedBlockstate(FERN, 4), new SimpleBlockPlacer())).tries(64).build();
+	public static final BlockClusterFeatureConfig ENCHANTED_GRASS_CONFIG = (new BlockClusterFeatureConfig.Builder((new WeightedBlockStateProvider()).addWeightedBlockstate(GRASS, 1).addWeightedBlockstate(FIDDLEHEAD, 3).addWeightedBlockstate(FERN, 2), new SimpleBlockPlacer())).tries(64).build();
+	public static final MultipleRandomFeatureConfig NORMAL_TREES_CONFIG = (new MultipleRandomFeatureConfig(ImmutableList.of(Feature.field_236291_c_.withConfiguration(DefaultBiomeFeatures.BIRCH_TREE_CONFIG).withChance(0.2F), Feature.field_236291_c_.withConfiguration(DefaultBiomeFeatures.FANCY_TREE_CONFIG).withChance(0.1F)), Feature.field_236291_c_.withConfiguration(DefaultBiomeFeatures.OAK_TREE_CONFIG)));
+	public static final MultipleRandomFeatureConfig VARIANT_TREES_CONFIG = (new MultipleRandomFeatureConfig(ImmutableList.of(Feature.field_236291_c_.withConfiguration(OAK_BUSH_CONFIG).withChance(0.2F), Feature.field_236291_c_.withConfiguration(DefaultBiomeFeatures.FANCY_TREE_CONFIG).withChance(0.1F)), Feature.field_236291_c_.withConfiguration(DefaultBiomeFeatures.OAK_TREE_CONFIG)));
+	public static final MultipleRandomFeatureConfig DARK_FOREST_TREES_CONFIG = (new MultipleRandomFeatureConfig(ImmutableList.of(Feature.field_236291_c_.withConfiguration(DARK_FOREST_BUSH_CONFIG).withChance(0.2F), Feature.field_236291_c_.withConfiguration(DefaultBiomeFeatures.BIRCH_TREE_CONFIG).withChance(0.25F)), Feature.field_236291_c_.withConfiguration(DefaultBiomeFeatures.OAK_TREE_CONFIG)));
+	public static final MultipleRandomFeatureConfig SWAMP_TREES_CONFIG = (new MultipleRandomFeatureConfig(ImmutableList.of(Feature.field_236291_c_.withConfiguration(DARK_FOREST_BUSH_CONFIG).withChance(0.35F)), Feature.field_236291_c_.withConfiguration(DefaultBiomeFeatures.SWAMP_TREE_CONFIG)));
+	public static final MultipleRandomFeatureConfig GLACIER_TREES_CONFIG = (new MultipleRandomFeatureConfig(ImmutableList.of(Feature.field_236291_c_.withConfiguration(DefaultBiomeFeatures.PINE_TREE_CONFIG).withChance(0.35F)), Feature.field_236291_c_.withConfiguration(DefaultBiomeFeatures.SPRUCE_TREE_CONFIG)));
+	public static final MultipleRandomFeatureConfig HIGHLANDS_TREES_CONFIG = (new MultipleRandomFeatureConfig(ImmutableList.of(Feature.field_236291_c_.withConfiguration(DefaultBiomeFeatures.SPRUCE_TREE_CONFIG).withChance(0.25F), Feature.field_236291_c_.withConfiguration(DefaultBiomeFeatures.PINE_TREE_CONFIG).withChance(0.1F), Feature.field_236291_c_.withConfiguration(DefaultBiomeFeatures.MEGA_SPRUCE_TREE_CONFIG).withChance(0.35F), Feature.field_236291_c_.withConfiguration(DefaultBiomeFeatures.MEGA_PINE_TREE_CONFIG).withChance(0.07F)), Feature.field_236291_c_.withConfiguration(DefaultBiomeFeatures.BIRCH_TREE_CONFIG)));
+	public static final MultipleRandomFeatureConfig SAVANNAH_TREES_CONFIG = (new MultipleRandomFeatureConfig(ImmutableList.of(Feature.field_236291_c_.withConfiguration(DefaultBiomeFeatures.FANCY_TREE_CONFIG).withChance(0.1F)), Feature.field_236291_c_.withConfiguration(DefaultBiomeFeatures.OAK_TREE_CONFIG)));
+	public static final MultipleRandomFeatureConfig SNOWY_TREES_CONFIG = (new MultipleRandomFeatureConfig(ImmutableList.of(Feature.field_236291_c_.withConfiguration(DefaultBiomeFeatures.PINE_TREE_CONFIG).withChance(0.35F), TFBiomeFeatures.LARGE_WINTER_TREE.get().withConfiguration(WINTER_TREE).withChance(0.125F)), Feature.field_236291_c_.withConfiguration(DefaultBiomeFeatures.SPRUCE_TREE_CONFIG)));
+	public static final MultipleRandomFeatureConfig ENCHANTED_TREES_CONFIG = (new MultipleRandomFeatureConfig(ImmutableList.of(Feature.field_236291_c_.withConfiguration(RAINBOAK_TREE).withChance(0.06F), Feature.field_236291_c_.withConfiguration(FANCY_RAINBOAK_TREE).withChance(0.02F), Feature.field_236291_c_.withConfiguration(DefaultBiomeFeatures.BIRCH_TREE_CONFIG).withChance(0.2F), Feature.field_236291_c_.withConfiguration(DefaultBiomeFeatures.FANCY_TREE_CONFIG).withChance(0.1F)), Feature.field_236291_c_.withConfiguration(DefaultBiomeFeatures.OAK_TREE_CONFIG)));
 
 	//TODO: These are using floats of a weighted config. THIS WILL BREAK GENERATION CHANCES. THIS NEEDS TO BE A FLOAT CHANCE. REMOVE floatValue() ON CHANGE
 	public static final MultipleRandomFeatureConfig RUINS_CONFIG = (new MultipleRandomFeatureConfig(ImmutableList.of(
-			TFBiomeFeatures.STONE_CIRCLE.get().configure(IFeatureConfig.NO_FEATURE_CONFIG).withChance(weights.stoneCircleWeight.get().floatValue()),
-			TFBiomeFeatures.WELL.get().configure(IFeatureConfig.NO_FEATURE_CONFIG).withChance(weights.wellWeight.get().floatValue()),
-			TFBiomeFeatures.OUTSIDE_STALAGMITE.get().configure(OUTSIDE_STALAG_CONFIG).withChance(weights.stalagmiteWeight.get().floatValue()),
-			TFBiomeFeatures.FOUNDATION.get().configure(IFeatureConfig.NO_FEATURE_CONFIG).withChance(weights.foundationWeight.get().floatValue()),
-			TFBiomeFeatures.MONOLITH.get().configure(IFeatureConfig.NO_FEATURE_CONFIG).withChance(weights.monolithWeight.get().floatValue()),
-			TFBiomeFeatures.GROVE_RUINS.get().configure(IFeatureConfig.NO_FEATURE_CONFIG).withChance(weights.groveRuinsWeight.get().floatValue()),
-			TFBiomeFeatures.HOLLOW_STUMP.get().configure(HOLLOW_TREE).withChance(weights.hollowStumpWeight.get().floatValue()),
-			TFBiomeFeatures.FALLEN_HOLLOW_LOG.get().configure(IFeatureConfig.NO_FEATURE_CONFIG).withChance(weights.fallenHollowLogWeight.get().floatValue()),
-			TFBiomeFeatures.FALLEN_SMALL_LOG.get().configure(IFeatureConfig.NO_FEATURE_CONFIG).withChance(weights.fallenSmallLogWeight.get().floatValue()),
-			TFBiomeFeatures.DRUID_HUT.get().configure(IFeatureConfig.NO_FEATURE_CONFIG).withChance(weights.druidHutWeight.get().floatValue())
-	), Feature.field_227245_q_.configure(IFeatureConfig.NO_FEATURE_CONFIG)));
+			TFBiomeFeatures.STONE_CIRCLE.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withChance(weights.stoneCircleWeight.get().floatValue()),
+			TFBiomeFeatures.WELL.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withChance(weights.wellWeight.get().floatValue()),
+			TFBiomeFeatures.OUTSIDE_STALAGMITE.get().withConfiguration(OUTSIDE_STALAG_CONFIG).withChance(weights.stalagmiteWeight.get().floatValue()),
+			TFBiomeFeatures.FOUNDATION.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withChance(weights.foundationWeight.get().floatValue()),
+			TFBiomeFeatures.MONOLITH.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withChance(weights.monolithWeight.get().floatValue()),
+			TFBiomeFeatures.GROVE_RUINS.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withChance(weights.groveRuinsWeight.get().floatValue()),
+			TFBiomeFeatures.HOLLOW_STUMP.get().withConfiguration(HOLLOW_TREE).withChance(weights.hollowStumpWeight.get().floatValue()),
+			TFBiomeFeatures.FALLEN_HOLLOW_LOG.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withChance(weights.fallenHollowLogWeight.get().floatValue()),
+			TFBiomeFeatures.FALLEN_SMALL_LOG.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withChance(weights.fallenSmallLogWeight.get().floatValue()),
+			TFBiomeFeatures.DRUID_HUT.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withChance(weights.druidHutWeight.get().floatValue())
+	), Feature.NO_OP.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG)));
 
 	//Carvers and terrain modification
 	public static void addLakes(Biome biome) {
-		biome.addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, Feature.LAKE.configure(new BlockStateFeatureConfig(WATER)).createDecoratedFeature(Placement.WATER_LAKE.configure(new ChanceConfig(4))));
-		biome.addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, Feature.LAKE.configure(new BlockStateFeatureConfig(LAVA)).createDecoratedFeature(Placement.LAVA_LAKE.configure(new ChanceConfig(320))));
+		biome.addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, Feature.LAKE.withConfiguration(new BlockStateFeatureConfig(WATER)).withPlacement(Placement.WATER_LAKE.configure(new ChanceConfig(4))));
+		biome.addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, Feature.LAKE.withConfiguration(new BlockStateFeatureConfig(LAVA)).withPlacement(Placement.LAVA_LAKE.configure(new ChanceConfig(320))));
 	}
 
 	public static void addExtraPoolsWater(Biome biome, int count) {
-		biome.addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, Feature.LAKE.configure(new BlockStateFeatureConfig(WATER)).createDecoratedFeature(Placement.WATER_LAKE.configure(new ChanceConfig(count))));
+		biome.addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, Feature.LAKE.withConfiguration(new BlockStateFeatureConfig(WATER)).withPlacement(Placement.WATER_LAKE.configure(new ChanceConfig(count))));
 	}
 
 	public static void addExtraPoolsLava(Biome biome, float chance) {
 		if (random.nextFloat() < chance)
-			biome.addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, Feature.LAKE.configure(new BlockStateFeatureConfig(LAVA)).createDecoratedFeature(Placement.LAVA_LAKE.configure(new ChanceConfig(1))));
+			biome.addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, Feature.LAKE.withConfiguration(new BlockStateFeatureConfig(LAVA)).withPlacement(Placement.LAVA_LAKE.configure(new ChanceConfig(1))));
 	}
 
 	public static void addSprings(Biome biome) {
-		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.SPRING_FEATURE.configure(DefaultBiomeFeatures.WATER_SPRING_CONFIG).createDecoratedFeature(Placement.COUNT_BIASED_RANGE.configure(new CountRangeConfig(50, 8, 8, 256))));
+		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.SPRING_FEATURE.withConfiguration(DefaultBiomeFeatures.WATER_SPRING_CONFIG).withPlacement(Placement.COUNT_BIASED_RANGE.configure(new CountRangeConfig(50, 8, 8, 256))));
 	}
 
 	//Ores
 	public static void addWoodRoots(Biome biome) {
-		biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, TFBiomeFeatures.WOOD_ROOTS.get().configure(IFeatureConfig.NO_FEATURE_CONFIG).createDecoratedFeature(Placement.COUNT_HEIGHTMAP_DOUBLE.configure(new FrequencyConfig(20))));
+		biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, TFBiomeFeatures.WOOD_ROOTS.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.COUNT_HEIGHTMAP_DOUBLE.configure(new FrequencyConfig(20))));
 	}
 
 	public static void addOres(Biome biome) {
-		biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.configure(DIRT_ORE_CONFIG).createDecoratedFeature(Placement.COUNT_RANGE.configure(new CountRangeConfig(10, 0, 0, 256))));
-		biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.configure(GRAVEL_ORE_CONFIG).createDecoratedFeature(Placement.COUNT_RANGE.configure(new CountRangeConfig(8, 0, 0, 256))));
-		biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.configure(GRANITE_ORE_CONFIG).createDecoratedFeature(Placement.COUNT_RANGE.configure(new CountRangeConfig(10, 0, 0, 80))));
-		biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.configure(DIORITE_ORE_CONFIG).createDecoratedFeature(Placement.COUNT_RANGE.configure(new CountRangeConfig(10, 0, 0, 80))));
-		biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.configure(ANDESITE_ORE_CONFIG).createDecoratedFeature(Placement.COUNT_RANGE.configure(new CountRangeConfig(10, 0, 0, 80))));
-		biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.configure(COAL_ORE_CONFIG).createDecoratedFeature(Placement.COUNT_RANGE.configure(new CountRangeConfig(20, 0, 0, 128))));
-		biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.configure(IRON_ORE_CONFIG).createDecoratedFeature(Placement.COUNT_RANGE.configure(new CountRangeConfig(20, 0, 0, 64))));
-		biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.configure(GOLD_ORE_CONFIG).createDecoratedFeature(Placement.COUNT_RANGE.configure(new CountRangeConfig(2, 0, 0, 32))));
-		biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.configure(REDSTONE_ORE_CONFIG).createDecoratedFeature(Placement.COUNT_RANGE.configure(new CountRangeConfig(8, 0, 0, 16))));
-		biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.configure(DIAMOND_ORE_CONFIG).createDecoratedFeature(Placement.COUNT_RANGE.configure(new CountRangeConfig(1, 0, 0, 16))));
-		biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.configure(LAPIS_ORE_CONFIG).createDecoratedFeature(Placement.COUNT_DEPTH_AVERAGE.configure(new DepthAverageConfig(1, 16, 16))));
+		biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.withConfiguration(DIRT_ORE_CONFIG).withPlacement(Placement.COUNT_RANGE.configure(new CountRangeConfig(10, 0, 0, 256))));
+		biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.withConfiguration(GRAVEL_ORE_CONFIG).withPlacement(Placement.COUNT_RANGE.configure(new CountRangeConfig(8, 0, 0, 256))));
+		biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.withConfiguration(GRANITE_ORE_CONFIG).withPlacement(Placement.COUNT_RANGE.configure(new CountRangeConfig(10, 0, 0, 80))));
+		biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.withConfiguration(DIORITE_ORE_CONFIG).withPlacement(Placement.COUNT_RANGE.configure(new CountRangeConfig(10, 0, 0, 80))));
+		biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.withConfiguration(ANDESITE_ORE_CONFIG).withPlacement(Placement.COUNT_RANGE.configure(new CountRangeConfig(10, 0, 0, 80))));
+		biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.withConfiguration(COAL_ORE_CONFIG).withPlacement(Placement.COUNT_RANGE.configure(new CountRangeConfig(20, 0, 0, 128))));
+		biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.withConfiguration(IRON_ORE_CONFIG).withPlacement(Placement.COUNT_RANGE.configure(new CountRangeConfig(20, 0, 0, 64))));
+		biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.withConfiguration(GOLD_ORE_CONFIG).withPlacement(Placement.COUNT_RANGE.configure(new CountRangeConfig(2, 0, 0, 32))));
+		biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.withConfiguration(REDSTONE_ORE_CONFIG).withPlacement(Placement.COUNT_RANGE.configure(new CountRangeConfig(8, 0, 0, 16))));
+		biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.withConfiguration(DIAMOND_ORE_CONFIG).withPlacement(Placement.COUNT_RANGE.configure(new CountRangeConfig(1, 0, 0, 16))));
+		biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.ORE.withConfiguration(LAPIS_ORE_CONFIG).withPlacement(Placement.COUNT_DEPTH_AVERAGE.configure(new DepthAverageConfig(1, 16, 16))));
 	}
 
 	//Canopies, trees, and anything resembling a forest thing
 	public static void addCanopy(Biome biome) {
-		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TFBiomeFeatures.CANOPY_TREE.get().configure(CANOPY_TREE_CONFIG).createDecoratedFeature(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(TFConfig.COMMON_CONFIG.PERFORMANCE.canopyCoverage.get().intValue(), 0.1F, 1))));
+		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TFBiomeFeatures.CANOPY_TREE.get().withConfiguration(CANOPY_TREE_CONFIG).withPlacement(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(TFConfig.COMMON_CONFIG.PERFORMANCE.canopyCoverage.get().intValue(), 0.1F, 1))));
 	}
 
 	public static void addCanopyDead(Biome biome) {
-		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TFBiomeFeatures.CANOPY_TREE.get().configure(CANOPY_TREE_DEAD_CONFIG).createDecoratedFeature(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(2, 0.1F, 1))));
+		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TFBiomeFeatures.CANOPY_TREE.get().withConfiguration(CANOPY_TREE_DEAD_CONFIG).withPlacement(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(2, 0.1F, 1))));
 	}
 
 	public static void addCanopyAlt(Biome biome, float chance) {
 		if (random.nextFloat() < chance) {
-			biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TFBiomeFeatures.CANOPY_MUSHROOM.get().configure(IFeatureConfig.NO_FEATURE_CONFIG).createDecoratedFeature(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(TFConfig.COMMON_CONFIG.PERFORMANCE.canopyCoverage.get().intValue(), 0.1F, 1))));
+			biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TFBiomeFeatures.CANOPY_MUSHROOM.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(TFConfig.COMMON_CONFIG.PERFORMANCE.canopyCoverage.get().intValue(), 0.1F, 1))));
 		} else {
-			biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TFBiomeFeatures.CANOPY_TREE.get().configure(CANOPY_TREE_CONFIG).createDecoratedFeature(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(TFConfig.COMMON_CONFIG.PERFORMANCE.canopyCoverage.get().intValue(), 0.1F, 1))));
+			biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TFBiomeFeatures.CANOPY_TREE.get().withConfiguration(CANOPY_TREE_CONFIG).withPlacement(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(TFConfig.COMMON_CONFIG.PERFORMANCE.canopyCoverage.get().intValue(), 0.1F, 1))));
 		}
 	}
 
 	public static void addCanopySavannah(Biome biome) {
 		if (random.nextFloat() > 0.8F) {
-			biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TFBiomeFeatures.CANOPY_OAK.get().configure(CANOPY_OAK_CONFIG).createDecoratedFeature(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(TFConfig.COMMON_CONFIG.PERFORMANCE.canopyCoverage.get().intValue(), 0.1F, 1))));
+			biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TFBiomeFeatures.CANOPY_OAK.get().withConfiguration(CANOPY_OAK_CONFIG).withPlacement(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(TFConfig.COMMON_CONFIG.PERFORMANCE.canopyCoverage.get().intValue(), 0.1F, 1))));
 		}
 	}
 
 	public static void addMultipleTrees(Biome biome, MultipleRandomFeatureConfig trees, int count) {
-		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_SELECTOR.configure(trees).createDecoratedFeature(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(count, 0.1F, 1))));
+		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_SELECTOR.withConfiguration(trees).withPlacement(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(count, 0.1F, 1))));
 	}
 
 	public static void addHugeMushrooms(Biome biome, int count) {
-		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_BOOLEAN_SELECTOR.configure(new TwoFeatureChoiceConfig(Feature.HUGE_RED_MUSHROOM.configure(DefaultBiomeFeatures.HUGE_RED_MUSHROOM_CONFIG), Feature.HUGE_BROWN_MUSHROOM.configure(DefaultBiomeFeatures.HUGE_BROWN_MUSHROOM_CONFIG))).createDecoratedFeature(Placement.COUNT_HEIGHTMAP.configure(new FrequencyConfig(count))));
+		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_BOOLEAN_SELECTOR.withConfiguration(new TwoFeatureChoiceConfig(Feature.HUGE_RED_MUSHROOM.withConfiguration(DefaultBiomeFeatures.HUGE_RED_MUSHROOM_CONFIG), Feature.HUGE_BROWN_MUSHROOM.withConfiguration(DefaultBiomeFeatures.HUGE_BROWN_MUSHROOM_CONFIG))).withPlacement(Placement.COUNT_HEIGHTMAP.configure(new FrequencyConfig(count))));
 	}
 
 	public static void addMangroves(Biome biome, int count) {
-		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TFBiomeFeatures.MANGROVE_TREE.get().configure(MANGROVE_TREE).createDecoratedFeature(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(count, 0.1F, 1))));
+		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TFBiomeFeatures.MANGROVE_TREE.get().withConfiguration(MANGROVE_TREE).withPlacement(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(count, 0.1F, 1))));
 	}
 
 	public static void addDarkTrees(Biome biome) {
-		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TFBiomeFeatures.DARK_CANOPY_TREE.get().configure(DARK_OAK_TREE).createDecoratedFeature(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(5, 0.5F, 1))));
+		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TFBiomeFeatures.DARK_CANOPY_TREE.get().withConfiguration(DARK_OAK_TREE).withPlacement(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(5, 0.5F, 1))));
 	}
 
 	//Grass and plants
 	public static void addPlantRoots(Biome biome) {
-		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TFBiomeFeatures.PLANT_ROOTS.get().configure(IFeatureConfig.NO_FEATURE_CONFIG).createDecoratedFeature(Placement.COUNT_HEIGHTMAP_DOUBLE.configure(new FrequencyConfig(12))));
+		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TFBiomeFeatures.PLANT_ROOTS.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.COUNT_HEIGHTMAP_DOUBLE.configure(new FrequencyConfig(12))));
 	}
 
 	public static void addGrass(Biome biome, int count) {
-		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.field_227248_z_.configure(DefaultBiomeFeatures.GRASS_CONFIG).createDecoratedFeature(Placement.COUNT_HEIGHTMAP_DOUBLE.configure(new FrequencyConfig(count))));
+		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_PATCH.withConfiguration(DefaultBiomeFeatures.GRASS_CONFIG).withPlacement(Placement.COUNT_HEIGHTMAP_DOUBLE.configure(new FrequencyConfig(count))));
 	}
 
 	public static void addGrassWithFern(Biome biome, int count) {
-		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.field_227248_z_.configure(DefaultBiomeFeatures.LUSH_GRASS_CONFIG).createDecoratedFeature(Placement.COUNT_HEIGHTMAP_DOUBLE.configure(new FrequencyConfig(count))));
+		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_PATCH.withConfiguration(DefaultBiomeFeatures.LUSH_GRASS_CONFIG).withPlacement(Placement.COUNT_HEIGHTMAP_DOUBLE.configure(new FrequencyConfig(count))));
 	}
 
 	public static void addFernWithGrass(Biome biome, int count) {
-		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.field_227248_z_.configure(DefaultBiomeFeatures.TAIGA_GRASS_CONFIG).createDecoratedFeature(Placement.COUNT_HEIGHTMAP_DOUBLE.configure(new FrequencyConfig(count))));
+		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_PATCH.withConfiguration(DefaultBiomeFeatures.TAIGA_GRASS_CONFIG).withPlacement(Placement.COUNT_HEIGHTMAP_DOUBLE.configure(new FrequencyConfig(count))));
 	}
 
 	public static void addTwilightGrass(Biome biome, BlockClusterFeatureConfig config, int count) {
-		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.field_227248_z_.configure(config).createDecoratedFeature(Placement.COUNT_HEIGHTMAP_DOUBLE.configure(new FrequencyConfig(count))));
+		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_PATCH.withConfiguration(config).withPlacement(Placement.COUNT_HEIGHTMAP_DOUBLE.configure(new FrequencyConfig(count))));
 	}
 
 	public static void addTallGrass(Biome biome, int count) {
-		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.field_227248_z_.configure(DefaultBiomeFeatures.TALL_GRASS_CONFIG).createDecoratedFeature(Placement.COUNT_HEIGHTMAP_32.configure(new FrequencyConfig(count))));
+		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_PATCH.withConfiguration(DefaultBiomeFeatures.TALL_GRASS_CONFIG).withPlacement(Placement.COUNT_HEIGHTMAP_32.configure(new FrequencyConfig(count))));
 	}
 
 	public static void addTallFerns(Biome biome, int count) {
-		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.field_227248_z_.configure(DefaultBiomeFeatures.LARGE_FERN_CONFIG).createDecoratedFeature(Placement.COUNT_HEIGHTMAP_32.configure(new FrequencyConfig(count))));
+		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_PATCH.withConfiguration(DefaultBiomeFeatures.LARGE_FERN_CONFIG).withPlacement(Placement.COUNT_HEIGHTMAP_32.configure(new FrequencyConfig(count))));
 	}
 
 	public static void addFlowers(Biome biome, int count) {
-		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.field_227248_z_.configure(DefaultBiomeFeatures.DEFAULT_FLOWER_CONFIG).createDecoratedFeature(Placement.COUNT_HEIGHTMAP_32.configure(new FrequencyConfig(count))));
+		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_PATCH.withConfiguration(DefaultBiomeFeatures.DEFAULT_FLOWER_CONFIG).withPlacement(Placement.COUNT_HEIGHTMAP_32.configure(new FrequencyConfig(count))));
 	}
 
 	public static void addFlowersMore(Biome biome) {
-		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.FLOWER.configure(DefaultBiomeFeatures.FOREST_FLOWER_CONFIG).createDecoratedFeature(Placement.COUNT_HEIGHTMAP_32.configure(new FrequencyConfig(8))));
+		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.FLOWER.withConfiguration(DefaultBiomeFeatures.FOREST_FLOWER_CONFIG).withPlacement(Placement.COUNT_HEIGHTMAP_32.configure(new FrequencyConfig(8))));
 	}
 
 	public static void addTallFlowers(Biome biome) {
-		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_RANDOM_SELECTOR.configure(new MultipleWithChanceRandomFeatureConfig(ImmutableList.of(Feature.field_227248_z_.configure(DefaultBiomeFeatures.LILAC_CONFIG), Feature.field_227248_z_.configure(DefaultBiomeFeatures.ROSE_BUSH_CONFIG), Feature.field_227248_z_.configure(DefaultBiomeFeatures.PEONY_CONFIG)), 0)).createDecoratedFeature(Placement.COUNT_HEIGHTMAP_32.configure(new FrequencyConfig(2))));
+		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_RANDOM_SELECTOR.withConfiguration(new MultipleWithChanceRandomFeatureConfig(ImmutableList.of(Feature.RANDOM_PATCH.withConfiguration(DefaultBiomeFeatures.LILAC_CONFIG), Feature.RANDOM_PATCH.withConfiguration(DefaultBiomeFeatures.ROSE_BUSH_CONFIG), Feature.RANDOM_PATCH.withConfiguration(DefaultBiomeFeatures.PEONY_CONFIG)), 0)).withPlacement(Placement.COUNT_HEIGHTMAP_32.configure(new FrequencyConfig(2))));
 	}
 
 	public static void addHugeLilyPads(Biome biome) {
-		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TFBiomeFeatures.HUGE_LILY_PAD.get().configure(IFeatureConfig.NO_FEATURE_CONFIG).createDecoratedFeature(Placement.COUNT_HEIGHTMAP.configure(new FrequencyConfig(5))));
+		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TFBiomeFeatures.HUGE_LILY_PAD.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.COUNT_HEIGHTMAP.configure(new FrequencyConfig(5))));
 	}
 
 	public static void addHugeWaterLiles(Biome biome) {
-		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TFBiomeFeatures.HUGE_WATER_LILY.get().configure(IFeatureConfig.NO_FEATURE_CONFIG).createDecoratedFeature(Placement.COUNT_HEIGHTMAP.configure(new FrequencyConfig(5))));
+		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TFBiomeFeatures.HUGE_WATER_LILY.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.COUNT_HEIGHTMAP.configure(new FrequencyConfig(5))));
 	}
 
 	public static void addMushgloom(Biome biome, int count) {
-		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.field_227248_z_.configure(MUSHGLOOM_CONFIG).createDecoratedFeature(Placement.CHANCE_HEIGHTMAP.configure(new ChanceConfig(count))));
+		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_PATCH.withConfiguration(MUSHGLOOM_CONFIG).withPlacement(Placement.CHANCE_HEIGHTMAP.configure(new ChanceConfig(count))));
 	}
 
 	public static void addPumpkins(Biome biome, int count) {
-		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.field_227248_z_.configure(DefaultBiomeFeatures.PUMPKIN_PATCH_CONFIG).createDecoratedFeature(Placement.CHANCE_HEIGHTMAP.configure(new ChanceConfig(count))));
+		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_PATCH.withConfiguration(DefaultBiomeFeatures.PUMPKIN_PATCH_CONFIG).withPlacement(Placement.CHANCE_HEIGHTMAP.configure(new ChanceConfig(count))));
 	}
 
 	public static void addMushrooms(Biome biome) {
-		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.field_227248_z_.configure(DefaultBiomeFeatures.BROWN_MUSHROOM_CONFIG).createDecoratedFeature(Placement.CHANCE_HEIGHTMAP_DOUBLE.configure(new ChanceConfig(4))));
-		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.field_227248_z_.configure(DefaultBiomeFeatures.RED_MUSHROOM_CONFIG).createDecoratedFeature(Placement.CHANCE_HEIGHTMAP_DOUBLE.configure(new ChanceConfig(8))));
+		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_PATCH.withConfiguration(DefaultBiomeFeatures.BROWN_MUSHROOM_CONFIG).withPlacement(Placement.CHANCE_HEIGHTMAP_DOUBLE.configure(new ChanceConfig(4))));
+		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_PATCH.withConfiguration(DefaultBiomeFeatures.RED_MUSHROOM_CONFIG).withPlacement(Placement.CHANCE_HEIGHTMAP_DOUBLE.configure(new ChanceConfig(8))));
 	}
 
 	public static void addMushroomsSometimes(Biome biome) {
-		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.field_227248_z_.configure(DefaultBiomeFeatures.BROWN_MUSHROOM_CONFIG).createDecoratedFeature(Placement.CHANCE_HEIGHTMAP_DOUBLE.configure(new ChanceConfig(2))));
-		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.field_227248_z_.configure(DefaultBiomeFeatures.RED_MUSHROOM_CONFIG).createDecoratedFeature(Placement.CHANCE_HEIGHTMAP_DOUBLE.configure(new ChanceConfig(6))));
+		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_PATCH.withConfiguration(DefaultBiomeFeatures.BROWN_MUSHROOM_CONFIG).withPlacement(Placement.CHANCE_HEIGHTMAP_DOUBLE.configure(new ChanceConfig(2))));
+		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_PATCH.withConfiguration(DefaultBiomeFeatures.RED_MUSHROOM_CONFIG).withPlacement(Placement.CHANCE_HEIGHTMAP_DOUBLE.configure(new ChanceConfig(6))));
 	}
 
 	public static void addMushroomsCommon(Biome biome) {
-		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.field_227248_z_.configure(DefaultBiomeFeatures.BROWN_MUSHROOM_CONFIG).createDecoratedFeature(Placement.CHANCE_HEIGHTMAP_DOUBLE.configure(new ChanceConfig(1))));
-		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.field_227248_z_.configure(DefaultBiomeFeatures.RED_MUSHROOM_CONFIG).createDecoratedFeature(Placement.CHANCE_HEIGHTMAP_DOUBLE.configure(new ChanceConfig(4))));
+		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_PATCH.withConfiguration(DefaultBiomeFeatures.BROWN_MUSHROOM_CONFIG).withPlacement(Placement.CHANCE_HEIGHTMAP_DOUBLE.configure(new ChanceConfig(1))));
+		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_PATCH.withConfiguration(DefaultBiomeFeatures.RED_MUSHROOM_CONFIG).withPlacement(Placement.CHANCE_HEIGHTMAP_DOUBLE.configure(new ChanceConfig(4))));
 	}
 
 	public static void addMushroomsDark(Biome biome) {
 		if (random.nextInt(8) == 0)
-			biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.field_227248_z_.configure(DefaultBiomeFeatures.BROWN_MUSHROOM_CONFIG).createDecoratedFeature(Placement.COUNT_HEIGHTMAP.configure(new FrequencyConfig(2))));
+			biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_PATCH.withConfiguration(DefaultBiomeFeatures.BROWN_MUSHROOM_CONFIG).withPlacement(Placement.COUNT_HEIGHTMAP.configure(new FrequencyConfig(2))));
 		if (random.nextInt(16) == 0)
-			biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.field_227248_z_.configure(DefaultBiomeFeatures.RED_MUSHROOM_CONFIG).createDecoratedFeature(Placement.COUNT_HEIGHTMAP.configure(new FrequencyConfig(2))));
+			biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_PATCH.withConfiguration(DefaultBiomeFeatures.RED_MUSHROOM_CONFIG).withPlacement(Placement.COUNT_HEIGHTMAP.configure(new FrequencyConfig(2))));
 		if (random.nextInt(24) == 0)
-			biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.field_227248_z_.configure(MUSHGLOOM_CONFIG).createDecoratedFeature(Placement.COUNT_HEIGHTMAP.configure(new FrequencyConfig(2))));
+			biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_PATCH.withConfiguration(MUSHGLOOM_CONFIG).withPlacement(Placement.COUNT_HEIGHTMAP.configure(new FrequencyConfig(2))));
 	}
 
 	public static void addVines(Biome biome, int count) {
-		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.VINES.configure(IFeatureConfig.NO_FEATURE_CONFIG).createDecoratedFeature(Placement.COUNT_HEIGHT_64.configure(new FrequencyConfig(count))));
+		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.VINES.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.COUNT_HEIGHT_64.configure(new FrequencyConfig(count))));
 	}
 
 	public static void addDeadBushes(Biome biome, int count) {
-		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.field_227248_z_.configure(DEAD_BUSH_CONFIG).createDecoratedFeature(Placement.CHANCE_HEIGHTMAP.configure(new ChanceConfig(count))));
+		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_PATCH.withConfiguration(DEAD_BUSH_CONFIG).withPlacement(Placement.CHANCE_HEIGHTMAP.configure(new ChanceConfig(count))));
 	}
 
 	public static void addReeds(Biome biome, int count) {
-		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.field_227248_z_.configure(DefaultBiomeFeatures.SUGAR_CANE_CONFIG).createDecoratedFeature(Placement.COUNT_HEIGHTMAP_DOUBLE.configure(new FrequencyConfig(count))));
+		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_PATCH.withConfiguration(DefaultBiomeFeatures.SUGAR_CANE_CONFIG).withPlacement(Placement.COUNT_HEIGHTMAP_DOUBLE.configure(new FrequencyConfig(count))));
 	}
 
 	public static void addWaterlilies(Biome biome, int count) {
-		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.field_227248_z_.configure(DefaultBiomeFeatures.LILY_PAD_CONFIG).createDecoratedFeature(Placement.COUNT_HEIGHTMAP_DOUBLE.configure(new FrequencyConfig(count))));
+		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_PATCH.withConfiguration(DefaultBiomeFeatures.LILY_PAD_CONFIG).withPlacement(Placement.COUNT_HEIGHTMAP_DOUBLE.configure(new FrequencyConfig(count))));
 	}
 
 	public static void addTorchberries(Biome biome) {
-		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TFBiomeFeatures.TORCH_BERRIES.get().configure(IFeatureConfig.NO_FEATURE_CONFIG).createDecoratedFeature(Placement.COUNT_HEIGHTMAP_DOUBLE.configure(new FrequencyConfig(3))));
+		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TFBiomeFeatures.TORCH_BERRIES.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.COUNT_HEIGHTMAP_DOUBLE.configure(new FrequencyConfig(3))));
 	}
 
 	public static void addForestGrass(Biome biome, int count) {
-		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.field_227248_z_.configure(FOREST_GRASS_CONFIG).createDecoratedFeature(Placement.COUNT_HEIGHTMAP.configure(new FrequencyConfig(count))));
+		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_PATCH.withConfiguration(FOREST_GRASS_CONFIG).withPlacement(Placement.COUNT_HEIGHTMAP.configure(new FrequencyConfig(count))));
 	}
 
 	//Other Features
 	public static void addRuins(Biome biome) {
-		biome.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, Feature.RANDOM_SELECTOR.configure(RUINS_CONFIG).createDecoratedFeature(Placement.CHANCE_HEIGHTMAP.configure(new ChanceConfig(6))));
+		biome.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, Feature.RANDOM_SELECTOR.withConfiguration(RUINS_CONFIG).withPlacement(Placement.CHANCE_HEIGHTMAP.configure(new ChanceConfig(6))));
 	}
 
 	public static void addHangingLamps(Biome biome) {
-		biome.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, TFBiomeFeatures.HANGING_LAMPS.get().configure(IFeatureConfig.NO_FEATURE_CONFIG).createDecoratedFeature(Placement.COUNT_HEIGHTMAP.configure(new FrequencyConfig(1))));
+		biome.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, TFBiomeFeatures.HANGING_LAMPS.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.COUNT_HEIGHTMAP.configure(new FrequencyConfig(1))));
 	}
 
 	public static void addLamppost(Biome biome, BlockState state, int chance) {
-		biome.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, TFBiomeFeatures.LAMPPOSTS.get().configure(new BlockStateFeatureConfig(state)).createDecoratedFeature(Placement.COUNT_HEIGHTMAP.configure(new FrequencyConfig(chance))));
+		biome.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, TFBiomeFeatures.LAMPPOSTS.get().withConfiguration(new BlockStateFeatureConfig(state)).withPlacement(Placement.COUNT_HEIGHTMAP.configure(new FrequencyConfig(chance))));
 	}
 
 	public static void addPenguins(Biome biome) {
-		biome.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, TFBiomeFeatures.PENGUINS.get().configure(IFeatureConfig.NO_FEATURE_CONFIG).createDecoratedFeature(Placement.COUNT_HEIGHTMAP.configure(new FrequencyConfig(4))));
+		biome.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, TFBiomeFeatures.PENGUINS.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.COUNT_HEIGHTMAP.configure(new FrequencyConfig(4))));
 	}
 
 	public static void addTrollRoots(Biome biome) {
-		biome.addFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, TFBiomeFeatures.TROLL_ROOTS.get().configure(IFeatureConfig.NO_FEATURE_CONFIG).createDecoratedFeature(Placement.CHANCE_HEIGHTMAP_DOUBLE.configure(new ChanceConfig(24))));
+		biome.addFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, TFBiomeFeatures.TROLL_ROOTS.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.CHANCE_HEIGHTMAP_DOUBLE.configure(new ChanceConfig(24))));
 	}
 
 	public static void addWebs(Biome biome) {
-		biome.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, TFBiomeFeatures.WEBS.get().configure(IFeatureConfig.NO_FEATURE_CONFIG).createDecoratedFeature(Placement.COUNT_HEIGHTMAP.configure(new FrequencyConfig(1))));
+		biome.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, TFBiomeFeatures.WEBS.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.COUNT_HEIGHTMAP.configure(new FrequencyConfig(1))));
 	}
 
 	public static void addFallenLeaves(Biome biome) {
-		biome.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, TFBiomeFeatures.FALLEN_LEAVES.get().configure(IFeatureConfig.NO_FEATURE_CONFIG).createDecoratedFeature(Placement.COUNT_HEIGHTMAP.configure(new FrequencyConfig(1))));
+		biome.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, TFBiomeFeatures.FALLEN_LEAVES.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.COUNT_HEIGHTMAP.configure(new FrequencyConfig(1))));
 	}
 
 	public static void addGraveyards(Biome biome) {
-		biome.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, TFBiomeFeatures.GRAVEYARD.get().configure(IFeatureConfig.NO_FEATURE_CONFIG).createDecoratedFeature(Placement.CHANCE_HEIGHTMAP.configure(new ChanceConfig(16))));
+		biome.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, TFBiomeFeatures.GRAVEYARD.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.CHANCE_HEIGHTMAP.configure(new ChanceConfig(16))));
 	}
 
 	public static void addThorns(Biome biome) {
-		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TFBiomeFeatures.THORNS.get().configure(IFeatureConfig.NO_FEATURE_CONFIG).createDecoratedFeature(Placement.COUNT_HEIGHTMAP.configure(new FrequencyConfig(64))));
+		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TFBiomeFeatures.THORNS.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.COUNT_HEIGHTMAP.configure(new FrequencyConfig(64))));
 	}
 
 	public static void addMyceliumBlobs(Biome biome, int count) {
-		biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, TFBiomeFeatures.MYCELIUM_BLOB.get().configure(new SphereReplaceConfig(Blocks.MYCELIUM.getDefaultState(), 5, 1, Lists.newArrayList(Blocks.GRASS_BLOCK.getDefaultState()))).createDecoratedFeature(Placement.COUNT_TOP_SOLID.configure(new FrequencyConfig(count))));
+		biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, TFBiomeFeatures.MYCELIUM_BLOB.get().withConfiguration(new SphereReplaceConfig(Blocks.MYCELIUM.getDefaultState(), 5, 1, Lists.newArrayList(Blocks.GRASS_BLOCK.getDefaultState()))).withPlacement(Placement.COUNT_TOP_SOLID.configure(new FrequencyConfig(count))));
 	}
 
 	public static void addJetsAndSmokers(Biome biome) {
-		biome.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, TFBiomeFeatures.FIRE_JET.get().configure(new BlockStateFeatureConfig(FIRE_JET)).createDecoratedFeature(Placement.COUNT_TOP_SOLID.configure(new FrequencyConfig(1))));
-		biome.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, TFBiomeFeatures.FIRE_JET.get().configure(new BlockStateFeatureConfig(SMOKER)).createDecoratedFeature(Placement.COUNT_TOP_SOLID.configure(new FrequencyConfig(4))));
+		biome.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, TFBiomeFeatures.FIRE_JET.get().withConfiguration(new BlockStateFeatureConfig(FIRE_JET)).withPlacement(Placement.COUNT_TOP_SOLID.configure(new FrequencyConfig(1))));
+		biome.addFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, TFBiomeFeatures.FIRE_JET.get().withConfiguration(new BlockStateFeatureConfig(SMOKER)).withPlacement(Placement.COUNT_TOP_SOLID.configure(new FrequencyConfig(4))));
 	}
 
 	public static void addMossyBoulders(Biome biome) {
-		biome.addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, Feature.FOREST_ROCK.configure(new BlockBlobConfig(Blocks.MOSSY_COBBLESTONE.getDefaultState(), 0)).createDecoratedFeature(Placement.FOREST_ROCK.configure(new FrequencyConfig(2))));
+		biome.addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, Feature.FOREST_ROCK.withConfiguration(new BlockBlobConfig(Blocks.MOSSY_COBBLESTONE.getDefaultState(), 0)).withPlacement(Placement.FOREST_ROCK.configure(new FrequencyConfig(2))));
 	}
 
 	public static void addClayDisks(Biome biome, int count) {
-		biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.DISK.configure(new SphereReplaceConfig(Blocks.CLAY.getDefaultState(), 4, 1, Lists.newArrayList(Blocks.DIRT.getDefaultState(), Blocks.CLAY.getDefaultState()))).createDecoratedFeature(Placement.COUNT_TOP_SOLID.configure(new FrequencyConfig(count))));
+		biome.addFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Feature.DISK.withConfiguration(new SphereReplaceConfig(Blocks.CLAY.getDefaultState(), 4, 1, Lists.newArrayList(Blocks.DIRT.getDefaultState(), Blocks.CLAY.getDefaultState()))).withPlacement(Placement.COUNT_TOP_SOLID.configure(new FrequencyConfig(count))));
 	}
 }

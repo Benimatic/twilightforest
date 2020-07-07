@@ -5,17 +5,14 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkHooks;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class EntitySeekerArrow extends EntityTFArrow {
@@ -50,15 +47,15 @@ public class EntitySeekerArrow extends EntityTFArrow {
 
 			if (world.isRemote && !inGround) {
 				for (int i = 0; i < 4; ++i) {
-					this.world.addParticle(ParticleTypes.WITCH, this.getX() + this.getMotion().getX() * (double) i / 4.0D, this.getY() + this.getMotion().getY() * (double) i / 4.0D, this.getZ() + this.getMotion().getZ() * (double) i / 4.0D, -this.getMotion().getX(), -this.getMotion().getY() + 0.2D, -this.getMotion().getZ());
+					this.world.addParticle(ParticleTypes.WITCH, this.getPosX() + this.getMotion().getX() * (double) i / 4.0D, this.getPosY() + this.getMotion().getY() * (double) i / 4.0D, this.getPosZ() + this.getMotion().getZ() * (double) i / 4.0D, -this.getMotion().getX(), -this.getMotion().getY() + 0.2D, -this.getMotion().getZ());
 				}
 			}
 
 			Entity target = getTarget();
 			if (target != null) {
 
-				Vec3d targetVec = getVectorToTarget(target).scale(seekFactor);
-				Vec3d courseVec = getMotionVec();
+				Vector3d targetVec = getVectorToTarget(target).scale(seekFactor);
+				Vector3d courseVec = getMotionVec();
 
 				// vector lengths
 				double courseLen = courseVec.length();
@@ -70,7 +67,7 @@ public class EntitySeekerArrow extends EntityTFArrow {
 				if (dotProduct > seekThreshold) {
 
 					// add vector to target, scale to match current velocity
-					Vec3d newMotion = courseVec.scale(courseLen / totalLen).add(targetVec.scale(targetLen / totalLen));
+					Vector3d newMotion = courseVec.scale(courseLen / totalLen).add(targetVec.scale(targetLen / totalLen));
 
 					this.setMotion(newMotion.add(0, 0.045F, 0));
 
@@ -94,11 +91,11 @@ public class EntitySeekerArrow extends EntityTFArrow {
 		}
 
 		if (target == null) {
-			AxisAlignedBB positionBB = new AxisAlignedBB(getX(), getY(), getZ(), getX(), getY(), getZ());
+			AxisAlignedBB positionBB = new AxisAlignedBB(getPosX(), getPosY(), getPosZ(), getPosX(), getPosY(), getPosZ());
 			AxisAlignedBB targetBB = positionBB;
 
 			// add two possible courses to our selection box
-			Vec3d courseVec = getMotionVec().scale(seekDistance).rotateYaw((float) seekAngle);
+			Vector3d courseVec = getMotionVec().scale(seekDistance).rotateYaw((float) seekAngle);
 			targetBB = targetBB.union(positionBB.offset(courseVec));
 
 			courseVec = getMotionVec().scale(seekDistance).rotateYaw((float) -seekAngle);
@@ -119,8 +116,8 @@ public class EntitySeekerArrow extends EntityTFArrow {
 					continue;
 				}
 
-				Vec3d motionVec = getMotionVec().normalize();
-				Vec3d targetVec = getVectorToTarget(living).normalize();
+				Vector3d motionVec = getMotionVec().normalize();
+				Vector3d targetVec = getVectorToTarget(living).normalize();
 
 				double dot = motionVec.dotProduct(targetVec);
 
@@ -136,12 +133,12 @@ public class EntitySeekerArrow extends EntityTFArrow {
 		}
 	}
 
-	private Vec3d getMotionVec() {
-		return new Vec3d(this.getMotion().getX(), this.getMotion().getY(), this.getMotion().getZ());
+	private Vector3d getMotionVec() {
+		return new Vector3d(this.getMotion().getX(), this.getMotion().getY(), this.getMotion().getZ());
 	}
 
-	private Vec3d getVectorToTarget(Entity target) {
-		return new Vec3d(target.getX() - this.getX(), (target.getY() + (double) target.getEyeHeight()) - this.getY(), target.getZ() - this.getZ());
+	private Vector3d getVectorToTarget(Entity target) {
+		return new Vector3d(target.getPosX() - this.getPosX(), (target.getPosY() + (double) target.getEyeHeight()) - this.getPosY(), target.getPosZ() - this.getPosZ());
 	}
 
 	@Nullable

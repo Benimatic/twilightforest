@@ -33,14 +33,14 @@ public class EntityIceArrow extends EntityTFArrow {
 		if (world.isRemote && !inGround) {
 			BlockState stateId = Blocks.SNOW.getDefaultState();
 			for (int i = 0; i < 4; ++i) {
-				this.world.addParticle(new BlockParticleData(ParticleTypes.FALLING_DUST, stateId), this.getX() + this.getMotion().getX() * (double) i / 4.0D, this.getY() + this.getMotion().getY() * (double) i / 4.0D, this.getZ() + this.getMotion().getZ() * (double) i / 4.0D, -this.getMotion().getX(), -this.getMotion().getY() + 0.2D, -this.getMotion().getZ());
+				this.world.addParticle(new BlockParticleData(ParticleTypes.FALLING_DUST, stateId), this.getPosX() + this.getMotion().getX() * (double) i / 4.0D, this.getPosY() + this.getMotion().getY() * (double) i / 4.0D, this.getPosZ() + this.getMotion().getZ() * (double) i / 4.0D, -this.getMotion().getX(), -this.getMotion().getY() + 0.2D, -this.getMotion().getZ());
 			}
 		}
 	}
 
 	@Override
-	protected void onHit(RayTraceResult ray) {
-		super.onHit(ray);
+	protected void onImpact(RayTraceResult ray) {
+		super.onImpact(ray);
 		if (ray instanceof EntityRayTraceResult) {
 			if (!world.isRemote && ((EntityRayTraceResult)ray).getEntity() instanceof LivingEntity) {
 				int chillLevel = 2;

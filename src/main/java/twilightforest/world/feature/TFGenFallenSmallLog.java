@@ -1,30 +1,29 @@
 package twilightforest.world.feature;
 
-import com.mojang.datafixers.Dynamic;
-import net.minecraft.block.LogBlock;
+import com.mojang.serialization.Codec;
+import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.FeatureUtil;
 
 import java.util.Random;
-import java.util.function.Function;
 
 public class TFGenFallenSmallLog extends Feature<NoFeatureConfig> {
 
-	public TFGenFallenSmallLog(Function<Dynamic<?>, NoFeatureConfig> configIn) {
+	public TFGenFallenSmallLog(Codec<NoFeatureConfig> configIn) {
 		super(configIn);
 	}
 
 	@Override
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+	public boolean func_230362_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
 		// determine direction
 		boolean goingX = rand.nextBoolean();
 
@@ -78,8 +77,8 @@ public class TFGenFallenSmallLog extends Feature<NoFeatureConfig> {
 
 		// make log
 		if (goingX) {
-			logState = logState.with(LogBlock.AXIS, Direction.Axis.X);
-			branchState = logState.with(LogBlock.AXIS, Direction.Axis.Z);
+			logState = logState.with(RotatedPillarBlock.AXIS, Direction.Axis.X);
+			branchState = logState.with(RotatedPillarBlock.AXIS, Direction.Axis.Z);
 
 			for (int lx = 0; lx < length; lx++) {
 				world.setBlockState(pos.add(lx, 0, 1), logState, 3);
@@ -88,8 +87,8 @@ public class TFGenFallenSmallLog extends Feature<NoFeatureConfig> {
 				}
 			}
 		} else {
-			logState = logState.with(LogBlock.AXIS, Direction.Axis.Z);
-			branchState = logState.with(LogBlock.AXIS, Direction.Axis.X);
+			logState = logState.with(RotatedPillarBlock.AXIS, Direction.Axis.Z);
+			branchState = logState.with(RotatedPillarBlock.AXIS, Direction.Axis.X);
 
 			for (int lz = 0; lz < length; lz++) {
 				world.setBlockState(pos.add(1, 0, lz), logState, 3);

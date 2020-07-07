@@ -4,11 +4,12 @@ import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
@@ -65,8 +66,7 @@ public class ComponentTFDarkTowerBossTrap extends ComponentTFDarkTowerWing {
 	}
 
 	@Override
-	public boolean generate(IWorld worldIn, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
-		World world = worldIn.getWorld();
+	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
 
 		// make walls
@@ -109,7 +109,7 @@ public class ComponentTFDarkTowerBossTrap extends ComponentTFDarkTowerWing {
 	 * Add specific boss trap floors
 	 * TODO: Parameter "rand" is unused. Remove?
 	 */
-	protected void addBossTrapFloors(World world, Random rand, MutableBoundingBox sbb, int bottom, int top) {
+	protected void addBossTrapFloors(ISeedReader world, Random rand, MutableBoundingBox sbb, int bottom, int top) {
 
 		makeFullFloor(world, sbb, Rotation.COUNTERCLOCKWISE_90, 4, 4);
 

@@ -37,7 +37,7 @@ public class BlockTFUberousSoil extends Block implements IGrowable {
 		if (direction != Direction.UP)
 			return false;
 		PlantType plantType = plantable.getPlantType(world, pos.offset(direction));
-		return plantType == PlantType.Crop || plantType == PlantType.Plains || plantType == PlantType.Cave;
+		return plantType == PlantType.CROP || plantType == PlantType.PLAINS || plantType == PlantType.CAVE;
 	}
 
 	@Override
@@ -53,9 +53,9 @@ public class BlockTFUberousSoil extends Block implements IGrowable {
 		if (above.getBlock() instanceof IPlantable) {
 			IPlantable plant = (IPlantable) above.getBlock();
 			// revert to farmland or grass
-			if (plant.getPlantType(world, pos.up()) == PlantType.Crop) {
+			if (plant.getPlantType(world, pos.up()) == PlantType.CROP) {
 				world.setBlockState(pos, Blocks.FARMLAND.getDefaultState().with(FarmlandBlock.MOISTURE, 2));
-			} else if (plant.getPlantType(world, pos.up()) == PlantType.Plains) {
+			} else if (plant.getPlantType(world, pos.up()) == PlantType.PLAINS) {
 				world.setBlockState(pos, Blocks.GRASS.getDefaultState());
 			} else {
 				world.setBlockState(pos, Blocks.DIRT.getDefaultState());

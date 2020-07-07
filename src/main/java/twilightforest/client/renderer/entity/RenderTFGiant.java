@@ -41,7 +41,7 @@ public class RenderTFGiant<T extends EntityTFGiantMiner> extends BipedRenderer<T
 	}
 
 	@Override
-	public void scale(T entitylivingbaseIn, MatrixStack stack, float partialTickTime) {
+	public void preRenderCallback(T entitylivingbaseIn, MatrixStack stack, float partialTickTime) {
 		float scale = 4.0F;
 		stack.scale(scale, scale, scale);
 	}

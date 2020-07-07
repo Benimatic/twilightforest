@@ -1,6 +1,8 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -22,7 +24,7 @@ public class EntityTFHydraPart extends MobEntity {
 
 	public EntityTFHydraPart(EntityTFHydra parent, World world, float width, float height) {
 		super(TFEntities.hydra, world);
-		isImmuneToFire();
+		func_230279_az_();
 		this.hydra = parent;
 		this.size = EntitySize.flexible(width, height);
 		this.recalculateSize();
@@ -73,14 +75,14 @@ public class EntityTFHydraPart extends MobEntity {
 
 		super.baseTick();
 
-		lastTickPosX = getX();
-		lastTickPosY = getY();
-		lastTickPosZ = getZ();
+		lastTickPosX = getPosX();
+		lastTickPosY = getPosY();
+		lastTickPosZ = getPosZ();
 
 		if (this.newPosRotationIncrements > 0) {
-			double x = this.getX() + (this.interpTargetX - this.getX()) / this.newPosRotationIncrements;
-			double y = this.getY() + (this.interpTargetY - this.getY()) / this.newPosRotationIncrements;
-			double z = this.getZ() + (this.interpTargetZ - this.getZ()) / this.newPosRotationIncrements;
+			double x = this.getPosX() + (this.interpTargetX - this.getPosX()) / this.newPosRotationIncrements;
+			double y = this.getPosY() + (this.interpTargetY - this.getPosY()) / this.newPosRotationIncrements;
+			double z = this.getPosZ() + (this.interpTargetZ - this.getPosZ()) / this.newPosRotationIncrements;
 			double yawDelta = MathHelper.wrapDegrees(this.interpTargetYaw - this.rotationYaw);
 			this.rotationYaw = (float) (this.rotationYaw + yawDelta / this.newPosRotationIncrements);
 			this.rotationPitch = (float) (this.rotationPitch + (this.interpTargetPitch - this.rotationPitch) / this.newPosRotationIncrements);
@@ -105,10 +107,9 @@ public class EntityTFHydraPart extends MobEntity {
 		while (rotationYawHead - prevRotationYawHead >= 180F) prevRotationYawHead += 360F;
 	}
 
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(1000D);
+	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return MobEntity.func_233666_p_()
+				.func_233815_a_(Attributes.field_233818_a_, 1000D);
 	}
 
 	@Override

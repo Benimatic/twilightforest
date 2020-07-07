@@ -26,7 +26,7 @@ public class CenterCommand {
 
         BlockPos cc = TFFeature.getNearestCenterXYZ(dx >> 4, dz >> 4);
 
-        boolean fc = TFFeature.isInFeatureChunk(source.getWorld(), dx, dz);
+        boolean fc = TFFeature.isInFeatureChunk(dx, dz);
         source.sendFeedback(new TranslationTextComponent("commands.tffeature.center", cc), false);
         source.sendFeedback(new TranslationTextComponent("commands.tffeature.chunk", fc), false);
         return Command.SINGLE_SUCCESS;

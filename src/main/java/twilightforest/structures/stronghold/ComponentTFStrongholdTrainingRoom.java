@@ -5,11 +5,12 @@ import net.minecraft.block.CarvedPumpkinBlock;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
@@ -41,8 +42,7 @@ public class ComponentTFStrongholdTrainingRoom extends StructureTFStrongholdComp
 	}
 
 	@Override
-	public boolean generate(IWorld worldIn, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
-		World world = worldIn.getWorld();
+	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		placeStrongholdWalls(world, sbb, 0, 0, 0, 17, 6, 17, rand, deco.randomBlocks);
 
 		// statues
@@ -79,7 +79,7 @@ public class ComponentTFStrongholdTrainingRoom extends StructureTFStrongholdComp
 		return true;
 	}
 
-	private void placeTrainingDummy(World world, MutableBoundingBox sbb, Rotation rotation) {
+	private void placeTrainingDummy(ISeedReader world, MutableBoundingBox sbb, Rotation rotation) {
 		this.fillBlocksRotated(world, sbb, 5, 0, 5, 7, 0, 7, Blocks.SAND.getDefaultState(), rotation);
 		this.setBlockStateRotated(world, deco.fenceState, 6, 1, 6, rotation, sbb);
 		this.setBlockStateRotated(world, Blocks.BIRCH_PLANKS.getDefaultState(), 6, 2, 6, rotation, sbb);

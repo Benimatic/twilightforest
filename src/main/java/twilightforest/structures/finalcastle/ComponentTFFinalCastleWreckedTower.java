@@ -4,7 +4,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
@@ -56,7 +56,7 @@ public class ComponentTFFinalCastleWreckedTower extends ComponentTFFinalCastleDa
 	}
 
 	@Override
-	protected void determineBlockDestroyed(World world, ArrayList<DestroyArea> areas, int y, int x, int z) {
+	protected void determineBlockDestroyed(ISeedReader world, ArrayList<DestroyArea> areas, int y, int x, int z) {
 		boolean isInside = false;
 
 		BlockPos pos = new BlockPos(x, y, z);

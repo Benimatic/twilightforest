@@ -1,6 +1,7 @@
 package twilightforest.client.particle;
 
 import net.minecraft.client.particle.*;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -11,11 +12,11 @@ public class ParticleSnow extends SpriteTexturedParticle {
 
 	float initialParticleScale;
 
-	ParticleSnow(World world, double x, double y, double z, double vx, double vy, double vz) {
+	ParticleSnow(ClientWorld world, double x, double y, double z, double vx, double vy, double vz) {
 		this(world, x, y, z, vx, vy, vz, 1.0F);
 	}
 
-	ParticleSnow(World world, double x, double y, double z, double vx, double vy, double vz, float scale) {
+	ParticleSnow(ClientWorld world, double x, double y, double z, double vx, double vy, double vz, float scale) {
 		super(world, x, y, z, 0.0D, 0.0D, 0.0D);
 		this.motionX *= 0.10000000149011612D;
 		this.motionY *= 0.10000000149011612D;
@@ -74,7 +75,7 @@ public class ParticleSnow extends SpriteTexturedParticle {
 		}
 
 		@Override
-		public Particle makeParticle(BasicParticleType typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+		public Particle makeParticle(BasicParticleType typeIn, ClientWorld worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
 			ParticleSnow particle = new ParticleSnow(worldIn, x, y, z, xSpeed, ySpeed, zSpeed);
 			particle.selectSpriteRandomly(this.spriteSet);
 			return particle;

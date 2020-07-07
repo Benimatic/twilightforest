@@ -101,7 +101,7 @@ public abstract class BlockTFCritter extends DirectionalBlock {
 		Direction facing = state.get(DirectionalBlock.FACING);
 		BlockPos restingPos = pos.offset(facing.getOpposite());
 		BlockState restingOn = world.getBlockState(restingPos);
-		return restingOn.isSideSolidFullSquare(world, restingPos, facing);
+		return restingOn.isSolidSide(world, restingPos, facing);
 	}
 
 	@Override

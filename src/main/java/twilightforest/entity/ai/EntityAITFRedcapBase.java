@@ -22,8 +22,8 @@ public abstract class EntityAITFRedcapBase extends Goal {
 	 */
 	public boolean isTargetLookingAtMe(LivingEntity attackTarget) {
 		// find angle of approach
-		double dx = redcap.getX() - attackTarget.getX();
-		double dz = redcap.getZ() - attackTarget.getZ();
+		double dx = redcap.getPosX() - attackTarget.getPosX();
+		double dz = redcap.getPosZ() - attackTarget.getPosZ();
 		float angle = (float) ((Math.atan2(dz, dx) * 180D) / Math.PI) - 90F;
 
 		float difference = MathHelper.abs((attackTarget.rotationYaw - angle) % 360);
@@ -32,7 +32,7 @@ public abstract class EntityAITFRedcapBase extends Goal {
 	}
 
 	public BlockPos findBlockTNTNearby(int range) {
-		BlockPos entityPos = new BlockPos(redcap);
+		BlockPos entityPos = new BlockPos(redcap.func_233580_cy_());
 
 		for (int x = -range; x <= range; x++) {
 			for (int y = -range; y <= range; y++) {

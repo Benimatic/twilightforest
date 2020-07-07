@@ -50,6 +50,7 @@ public class ItemTFMagicBeans extends Item {
 		}
 	}
 
+	//TODO: We can't call by Dimension
 	@SuppressWarnings("RedundantCast")
 	private float getCloudHeight(World world) {
 		if (world.dimension instanceof TwilightForestDimension) {

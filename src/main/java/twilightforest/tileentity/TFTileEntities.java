@@ -16,7 +16,7 @@ import twilightforest.tileentity.spawner.*;
 
 public class TFTileEntities {
 
-	public static final DeferredRegister<TileEntityType<?>> TILE_ENTITIES = new DeferredRegister<>(ForgeRegistries.TILE_ENTITIES, TwilightForestMod.ID);
+	public static final DeferredRegister<TileEntityType<?>> TILE_ENTITIES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, TwilightForestMod.ID);
 
 	public static final RegistryObject<TileEntityType<TileEntityTFAntibuilder>> ANTIBUILDER               = TILE_ENTITIES.register("antibuilder", () ->
 			TileEntityType.Builder.create(TileEntityTFAntibuilder::new, TFBlocks.antibuilder.get()).build(null));

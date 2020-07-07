@@ -17,31 +17,31 @@ public class ModelTFHydraHead extends SegmentedModel<EntityTFHydraHead> {
 		textureHeight = 256;
 
 		head = new ModelRenderer(this/*, "head"*/);
-		head.setTextureOffset(272, 0).addCuboid(-16F, -14F, -32F, 32, 24, 32);
-		head.setTextureOffset(272, 56).addCuboid(-15F, -2F, -56F, 30, 12, 24);
-		head.setTextureOffset(272, 132).addCuboid(-15F, 10F, -20F, 30, 8, 16);
-		head.setTextureOffset(128, 200).addCuboid(-2F, -30F, -12F, 4, 24, 24);
-		head.setTextureOffset(272, 156).addCuboid(-12F, 10, -49F, 2, 5, 2);
-		head.setTextureOffset(272, 156).addCuboid(10F, 10, -49F, 2, 5, 2);
-		head.setTextureOffset(280, 156).addCuboid(-8F, 9, -49F, 16, 2, 2);
-		head.setTextureOffset(280, 160).addCuboid(-10F, 9, -45F, 2, 2, 16);
-		head.setTextureOffset(280, 160).addCuboid(8F, 9, -45F, 2, 2, 16);
+		head.setTextureOffset(272, 0).addBox(-16F, -14F, -32F, 32, 24, 32);
+		head.setTextureOffset(272, 56).addBox(-15F, -2F, -56F, 30, 12, 24);
+		head.setTextureOffset(272, 132).addBox(-15F, 10F, -20F, 30, 8, 16);
+		head.setTextureOffset(128, 200).addBox(-2F, -30F, -12F, 4, 24, 24);
+		head.setTextureOffset(272, 156).addBox(-12F, 10, -49F, 2, 5, 2);
+		head.setTextureOffset(272, 156).addBox(10F, 10, -49F, 2, 5, 2);
+		head.setTextureOffset(280, 156).addBox(-8F, 9, -49F, 16, 2, 2);
+		head.setTextureOffset(280, 160).addBox(-10F, 9, -45F, 2, 2, 16);
+		head.setTextureOffset(280, 160).addBox(8F, 9, -45F, 2, 2, 16);
 		head.setRotationPoint(0F, 0F, 0F);
 
 		jaw = new ModelRenderer(this/*, "jaw"*/);
 		jaw.setRotationPoint(0F, 10F, -20F);
-		jaw.setTextureOffset(272, 92).addCuboid(-15F, 0F, -32F, 30, 8, 32);
-		jaw.setTextureOffset(272, 156).addCuboid(-10F, -5, -29F, 2, 5, 2);
-		jaw.setTextureOffset(272, 156).addCuboid(8F, -5, -29F, 2, 5, 2);
-		jaw.setTextureOffset(280, 156).addCuboid(-8F, -1, -29F, 16, 2, 2);
-		jaw.setTextureOffset(280, 160).addCuboid(-10F, -1, -25F, 2, 2, 16);
-		jaw.setTextureOffset(280, 160).addCuboid(8F, -1, -25F, 2, 2, 16);
+		jaw.setTextureOffset(272, 92).addBox(-15F, 0F, -32F, 30, 8, 32);
+		jaw.setTextureOffset(272, 156).addBox(-10F, -5, -29F, 2, 5, 2);
+		jaw.setTextureOffset(272, 156).addBox(8F, -5, -29F, 2, 5, 2);
+		jaw.setTextureOffset(280, 156).addBox(-8F, -1, -29F, 16, 2, 2);
+		jaw.setTextureOffset(280, 160).addBox(-10F, -1, -25F, 2, 2, 16);
+		jaw.setTextureOffset(280, 160).addBox(8F, -1, -25F, 2, 2, 16);
 		setRotation(jaw, 0F, 0F, 0F);
 		head.addChild(jaw);
 
 		frill = new ModelRenderer(this/*, "frill"*/);
 		frill.setRotationPoint(0F, 0F, -14F);
-		frill.setTextureOffset(272, 200).addCuboid(-24F, -40.0F, 0F, 48, 48, 4);
+		frill.setTextureOffset(272, 200).addBox(-24F, -40.0F, 0F, 48, 48, 4);
 		setRotation(frill, -0.5235988F, 0F, 0F);
 		head.addChild(frill);
 	}
@@ -71,7 +71,7 @@ public class ModelTFHydraHead extends SegmentedModel<EntityTFHydraHead> {
 //	}
 
 	@Override
-	public void setAngles(EntityTFHydraHead entity, float v, float v1, float v2, float v3, float v4) { }
+	public void setRotationAngles(EntityTFHydraHead entity, float v, float v1, float v2, float v3, float v4) { }
 
 	@Override
 	public void setLivingAnimations(EntityTFHydraHead entity, float limbSwing, float limbSwingAmount, float partialTicks) {

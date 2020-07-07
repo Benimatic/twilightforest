@@ -5,8 +5,10 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.Pose;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -19,8 +21,8 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3i;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
 import twilightforest.entity.ai.EntityAITFBirdFly;
@@ -58,11 +60,10 @@ public class EntityTFTinyBird extends EntityTFBird {
 		dataManager.register(DATA_BIRDFLAGS, (byte) 0);
 	}
 
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(1.0D);
-		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.20000001192092896D);
+	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return MobEntity.func_233666_p_()
+				.func_233815_a_(Attributes.field_233818_a_, 1.0D)
+				.func_233815_a_(Attributes.field_233821_d_, 0.20000001192092896D);
 	}
 
 	@Override
@@ -149,9 +150,9 @@ public class EntityTFTinyBird extends EntityTFBird {
 		if (this.isBirdLanded()) {
 			this.currentFlightTime = 0;
 
-			if (isSpooked() || isInWater() || world.containsAnyLiquid(getBoundingBox()) || (this.rand.nextInt(200) == 0 && !isLandableBlock(new BlockPos(getX(), getY() - 1, getZ())))) {
+			if (isSpooked() || isInWater() || world.containsAnyLiquid(getBoundingBox()) || (this.rand.nextInt(200) == 0 && !isLandableBlock(new BlockPos(getPosX(), getPosY() - 1, getPosZ())))) {
 				this.setIsBirdLanded(false);
-				this.world.playEvent(1025, new BlockPos(this), 0);
+				this.world.playEvent(1025, new BlockPos(this.func_233580_cy_()), 0);
 				this.setMotion(this.getMotion().getX(), 0.4F, this.getMotion().getZ());
 			}
 		} else {
@@ -167,20 +168,20 @@ public class EntityTFTinyBird extends EntityTFBird {
 				this.setMotion(this.getMotion().getX(), 0.1F, this.getMotion().getZ());
 			}
 
-			if (this.spawnPosition == null || this.rand.nextInt(30) == 0 || this.spawnPosition.distanceSq(new Vec3i(((int) this.getX()), ((int) this.getY()), ((int) this.getZ()))) < 4.0D) {
+			if (this.spawnPosition == null || this.rand.nextInt(30) == 0 || this.spawnPosition.distanceSq(new Vector3i(((int) this.getPosX()), ((int) this.getPosY()), ((int) this.getPosZ()))) < 4.0D) {
 				// TF - modify shift factor of Y
 				int yTarget = this.currentFlightTime < 100 ? 2 : 4;
-				this.spawnPosition = new BlockPos((int) this.getX() + this.rand.nextInt(7) - this.rand.nextInt(7), (int) this.getY() + this.rand.nextInt(6) - yTarget, (int) this.getZ() + this.rand.nextInt(7) - this.rand.nextInt(7));
+				this.spawnPosition = new BlockPos((int) this.getPosX() + this.rand.nextInt(7) - this.rand.nextInt(7), (int) this.getPosY() + this.rand.nextInt(6) - yTarget, (int) this.getPosZ() + this.rand.nextInt(7) - this.rand.nextInt(7));
 			}
 
-			double d0 = (double) this.spawnPosition.getX() + 0.5D - this.getX();
-			double d1 = (double) this.spawnPosition.getY() + 0.1D - this.getY();
-			double d2 = (double) this.spawnPosition.getZ() + 0.5D - this.getZ();
+			double d0 = (double) this.spawnPosition.getX() + 0.5D - this.getPosX();
+			double d1 = (double) this.spawnPosition.getY() + 0.1D - this.getPosY();
+			double d2 = (double) this.spawnPosition.getZ() + 0.5D - this.getPosZ();
 
 //			this.motionX += (Math.signum(d0) * 0.5D - this.motionX) * 0.10000000149011612D;
 //			this.motionY += (Math.signum(d1) * 0.699999988079071D - this.motionY) * 0.10000000149011612D;
 //			this.motionZ += (Math.signum(d2) * 0.5D - this.motionZ) * 0.10000000149011612D;
-			this.getMotion().add(new Vec3d(
+			this.getMotion().add(new Vector3d(
 					(Math.signum(d0) * 0.5D - this.getMotion().getX()) * 0.10000000149011612D,
 					(Math.signum(d1) * 0.699999988079071D - this.getMotion().getY()) * 0.10000000149011612D,
 					(Math.signum(d2) * 0.5D - this.getMotion().getZ()) * 0.10000000149011612D
@@ -192,7 +193,7 @@ public class EntityTFTinyBird extends EntityTFBird {
 			this.rotationYaw += f1;
 
 			// TF - change chance 100 -> 10; change check to isLandable
-			if (this.rand.nextInt(100) == 0 && isLandableBlock(new BlockPos(getX(), getY() - 1, getZ()))) //this.world.getBlockState(blockpos1).isNormalCube())
+			if (this.rand.nextInt(100) == 0 && isLandableBlock(new BlockPos(getPosX(), getPosY() - 1, getPosZ()))) //this.world.getBlockState(blockpos1).isNormalCube())
 			{
 				// this.setIsBatHanging(true); TF - land the bird
 				setIsBirdLanded(true);
@@ -214,7 +215,7 @@ public class EntityTFTinyBird extends EntityTFBird {
 		BlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 		return !block.isAir(state, world, pos)
-				&& (block.isIn(BlockTags.LEAVES) || state.isSideSolidFullSquare(world, pos, Direction.UP));
+				&& (block.isIn(BlockTags.LEAVES) || state.isSolidSide(world, pos, Direction.UP));
 	}
 
 	@Override

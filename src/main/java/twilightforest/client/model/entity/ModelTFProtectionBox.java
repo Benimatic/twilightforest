@@ -20,7 +20,7 @@ public class ModelTFProtectionBox<T extends EntityTFProtectionBox> extends Segme
 		textureWidth = 16;
 		textureHeight = 16;
 		box = new ModelRenderer(this, 0, 0);
-		box.addCuboid(0F, 0F, 0F, 16, 16, 16, 0F);
+		box.addBox(0F, 0F, 0F, 16, 16, 16, 0F);
 		box.setRotationPoint(0F, 0F, 0F);
 	}
 
@@ -45,7 +45,7 @@ public class ModelTFProtectionBox<T extends EntityTFProtectionBox> extends Segme
 	}
 
 	@Override
-	public void setAngles(T entity, float v, float v1, float v2, float v3, float v4) {
+	public void setRotationAngles(T entity, float v, float v1, float v2, float v3, float v4) {
 
 	}
 
@@ -56,7 +56,7 @@ public class ModelTFProtectionBox<T extends EntityTFProtectionBox> extends Segme
 
 	private void resizeBoxElement(int pixelsX, int pixelsY, int pixelsZ) {
 		box = new ModelRenderer(this, 0, 0);
-		box.addCuboid(-1F, -1F, -1F, pixelsX, pixelsY, pixelsZ, 0F);
+		box.addBox(-1F, -1F, -1F, pixelsX, pixelsY, pixelsZ, 0F);
 		box.setRotationPoint(0F, 0F, 0F);
 
 		this.lastPixelsX = pixelsX;

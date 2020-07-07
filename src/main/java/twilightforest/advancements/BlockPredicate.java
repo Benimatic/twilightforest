@@ -8,6 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.state.IProperty;
+import net.minecraft.state.Property;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.JSONUtils;
@@ -48,7 +49,7 @@ public class BlockPredicate {
             for (JsonElement propertyRawGroup : JSONUtils.getJsonArray(json, "properties")) {
                 JsonObject propertyGroup = propertyRawGroup.getAsJsonObject();
 
-                IProperty<?> propertyKey = container.getProperty(JSONUtils.getString(propertyGroup, "property"));
+                Property<?> propertyKey = container.getProperty(JSONUtils.getString(propertyGroup, "property"));
 
                 if (propertyKey != null)
                     createPropertyPredicateAndAddToSet(
@@ -67,7 +68,7 @@ public class BlockPredicate {
 
     private static <T extends Comparable<T>> void createPropertyPredicateAndAddToSet(
             HashSet<PropertyPredicate<?>> predicateSet,
-            IProperty<T> key,
+            Property<T> key,
             String value,
             String comparisonType) {
 
@@ -102,11 +103,11 @@ public class BlockPredicate {
     }
 
     private static class PropertyPredicate<T extends Comparable<T>> {
-        private final IProperty<T> property;
+        private final Property<T> property;
         private final T value;
         private ComparisonType comparisonType;
 
-        private PropertyPredicate(IProperty<T> key, T value, ComparisonType comparisonType) {
+        private PropertyPredicate(Property<T> key, T value, ComparisonType comparisonType) {
             this.property = key;
             this.value = value;
             this.comparisonType = comparisonType;

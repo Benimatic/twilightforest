@@ -25,7 +25,7 @@ public class ModelTFYetiArmor extends ModelTFArmor {
 
 		//bigger head
 		this.bipedHead = new ModelRenderer(this, 0, 0);
-		this.bipedHead.addCuboid(-4.5F, -7.5F, -4.0F, 9, 8, 8, expand);
+		this.bipedHead.addBox(-4.5F, -7.5F, -4.0F, 9, 8, 8, expand);
 		this.bipedHead.setRotationPoint(0.0F, 0.0F + expand, 0.0F);
 
 		// add horns
@@ -36,50 +36,50 @@ public class ModelTFYetiArmor extends ModelTFArmor {
 
 		// change leg texture
 		this.bipedRightLeg = new ModelRenderer(this, 40, 0);
-		this.bipedRightLeg.addCuboid(-2.0F, 0.0F, -2.0F, 4, 12, 4, expand);
+		this.bipedRightLeg.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, expand);
 		this.bipedRightLeg.setRotationPoint(-1.9F, 12.0F + 0.0F, 0.0F);
 
 		this.bipedLeftLeg = new ModelRenderer(this, 40, 0);
 		this.bipedLeftLeg.mirror = true;
-		this.bipedLeftLeg.addCuboid(-2.0F, 0.0F, -2.0F, 4, 12, 4, expand);
+		this.bipedLeftLeg.addBox(-2.0F, 0.0F, -2.0F, 4, 12, 4, expand);
 		this.bipedLeftLeg.setRotationPoint(1.9F, 12.0F + 0.0F, 0.0F);
 
 		this.rightRuff = new ModelRenderer(this, 40, 22);
-		this.rightRuff.addCuboid(-2.5F, 0.0F, -2.5F, 5, 2, 5, expand);
+		this.rightRuff.addBox(-2.5F, 0.0F, -2.5F, 5, 2, 5, expand);
 		this.rightRuff.setRotationPoint(0.0F, 6.0F, 0.0F);
 		this.bipedRightLeg.addChild(rightRuff);
 
 		this.leftRuff = new ModelRenderer(this, 40, 22);
-		this.leftRuff.addCuboid(-2.5F, 0.0F, -2.5F, 5, 2, 5, expand);
+		this.leftRuff.addBox(-2.5F, 0.0F, -2.5F, 5, 2, 5, expand);
 		this.leftRuff.setRotationPoint(0.0F, 6.0F, 0.0F);
 		this.bipedLeftLeg.addChild(leftRuff);
 
 		this.rightToe = new ModelRenderer(this, 40, 17);
-		this.rightToe.addCuboid(-2.0F, 0.0F, -1.0F, 4, 2, 1, expand);
+		this.rightToe.addBox(-2.0F, 0.0F, -1.0F, 4, 2, 1, expand);
 		this.rightToe.setRotationPoint(0.0F, 10.0F, -2.0F);
 		this.bipedRightLeg.addChild(rightToe);
 
 		this.leftToe = new ModelRenderer(this, 40, 17);
-		this.leftToe.addCuboid(-2.0F, 0.0F, -1.0F, 4, 2, 1, expand);
+		this.leftToe.addBox(-2.0F, 0.0F, -1.0F, 4, 2, 1, expand);
 		this.leftToe.setRotationPoint(0.0F, 10.0F, -2.0F);
 		this.bipedLeftLeg.addChild(leftToe);
 
 		// stuff for chest and legs
 		this.bipedBody = new ModelRenderer(this, 0, 0);
-		this.bipedBody.addCuboid(-4.0F, 0.0F, -2.0F, 8, 11, 4, expand);
+		this.bipedBody.addBox(-4.0F, 0.0F, -2.0F, 8, 11, 4, expand);
 		this.bipedBody.setRotationPoint(0.0F, 0.0F + 0.0f, 0.0F);
 
 		this.bipedLegBody = new ModelRenderer(this, 40, 16);
-		this.bipedLegBody.addCuboid(-4.0F, 0.0F, -2.0F, 8, 12, 4, expand);
+		this.bipedLegBody.addBox(-4.0F, 0.0F, -2.0F, 8, 12, 4, expand);
 		this.bipedLegBody.setRotationPoint(0.0F, 0.0F + 0.0f, 0.0F);
 
 		this.bipedRightArm = new ModelRenderer(this, 0, 16);
-		this.bipedRightArm.addCuboid(-3.0F, -2.0F, -2.0F, 4, 10, 4, expand);
+		this.bipedRightArm.addBox(-3.0F, -2.0F, -2.0F, 4, 10, 4, expand);
 		this.bipedRightArm.setRotationPoint(-5.0F, 2.0F + 0.0f, 0.0F);
 
 		this.bipedLeftArm = new ModelRenderer(this, 0, 16);
 		this.bipedLeftArm.mirror = true;
-		this.bipedLeftArm.addCuboid(-1.0F, -2.0F, -2.0F, 4, 10, 4, expand);
+		this.bipedLeftArm.addBox(-1.0F, -2.0F, -2.0F, 4, 10, 4, expand);
 		this.bipedLeftArm.setRotationPoint(5.0F, 2.0F + 0.0f, 0.0F);
 
 	}
@@ -94,14 +94,14 @@ public class ModelTFYetiArmor extends ModelTFArmor {
 		ModelRenderer horn1b;
 
 		horn1a = new ModelRenderer(this, 0, 19);
-		horn1a.addCuboid(-3.0F, -1.5F, -1.5F, 3, 3, 3);
+		horn1a.addBox(-3.0F, -1.5F, -1.5F, 3, 3, 3);
 		horn1a.setRotationPoint(-4.5F, height, -1.0F);
 		horn1a.rotateAngleY = -30F / (180F / (float) Math.PI);
 		horn1a.rotateAngleZ = zangle / (180F / (float) Math.PI);
 		this.bipedHead.addChild(horn1a);
 
 		horn1b = new ModelRenderer(this, 0, 26);
-		horn1b.addCuboid(-4.0F, -1.0F, -1.0F, 5, 2, 2);
+		horn1b.addBox(-4.0F, -1.0F, -1.0F, 5, 2, 2);
 		horn1b.setRotationPoint(-3.0F, 0.0F, 0.0F);
 		horn1b.rotateAngleY = -20F / (180F / (float) Math.PI);
 		horn1b.rotateAngleZ = zangle / (180F / (float) Math.PI);
@@ -111,14 +111,14 @@ public class ModelTFYetiArmor extends ModelTFArmor {
 		ModelRenderer horn2b;
 
 		horn2a = new ModelRenderer(this, 0, 19);
-		horn2a.addCuboid(0.0F, -1.5F, -1.5F, 3, 3, 3);
+		horn2a.addBox(0.0F, -1.5F, -1.5F, 3, 3, 3);
 		horn2a.setRotationPoint(4.5F, height, -1.0F);
 		horn2a.rotateAngleY = 30F / (180F / (float) Math.PI);
 		horn2a.rotateAngleZ = -zangle / (180F / (float) Math.PI);
 		this.bipedHead.addChild(horn2a);
 
 		horn2b = new ModelRenderer(this, 0, 26);
-		horn2b.addCuboid(-1.0F, -1.0F, -1.0F, 5, 2, 2);
+		horn2b.addBox(-1.0F, -1.0F, -1.0F, 5, 2, 2);
 		horn2b.setRotationPoint(3.0F, 0.0F, 0.0F);
 		horn2b.rotateAngleY = 20F / (180F / (float) Math.PI);
 		horn2b.rotateAngleZ = -zangle / (180F / (float) Math.PI);

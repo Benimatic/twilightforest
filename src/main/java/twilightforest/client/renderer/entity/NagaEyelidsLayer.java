@@ -26,7 +26,7 @@ public class NagaEyelidsLayer<T extends EntityTFNaga, M extends ModelTFNaga<T>> 
 	public void render(MatrixStack stack, IRenderTypeBuffer buffer, int i, T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 		if(entitylivingbaseIn.isDazed()) {
 			IVertexBuilder vertex = buffer.getBuffer(RenderType.getEntityCutoutNoCull(textureLocDazed));
-			this.getEntityModel().render(stack, vertex, i, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
+			this.getEntityModel().render(stack, vertex, i, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 		}
 	}
 }

@@ -7,13 +7,13 @@ import net.minecraft.block.DirectionalBlock;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderState;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Vector3f;
 import org.lwjgl.opengl.GL11;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.BugModelAnimationHelper;
@@ -42,8 +42,8 @@ public class TileEntityTFFireflyRenderer extends TileEntityRenderer<TileEntityTF
 		RenderState.CullState disableCull = new RenderState.CullState(false);
 		RenderState.LightmapState enableLightmap = new RenderState.LightmapState(true);
 
-		RenderType.State rendertype$state = RenderType.State.builder().texture(new RenderState.TextureState(textureLoc, false, false)).transparency(transparencyState).diffuseLighting(enableDiffuse).alpha(noAlphaTest).cull(disableCull).lightmap(enableLightmap).build(false);
-		GLOW_LAYER = RenderType.of(TwilightForestMod.ID + ":firefly_glow", DefaultVertexFormats.POSITION_COLOR_TEXTURE_LIGHT, GL11.GL_QUADS, 256, true, true, rendertype$state);
+		RenderType.State rendertype$state = RenderType.State.getBuilder().texture(new RenderState.TextureState(textureLoc, false, false)).transparency(transparencyState).diffuseLighting(enableDiffuse).alpha(noAlphaTest).cull(disableCull).lightmap(enableLightmap).build(false);
+		GLOW_LAYER = RenderType.makeType(TwilightForestMod.ID + ":firefly_glow", DefaultVertexFormats.POSITION_COLOR_TEX_LIGHTMAP, GL11.GL_QUADS, 256, true, true, rendertype$state);
 	}
 
 	public TileEntityTFFireflyRenderer(TileEntityRendererDispatcher dispatch) {
@@ -73,18 +73,18 @@ public class TileEntityTFFireflyRenderer extends TileEntityRenderer<TileEntityTF
 		} else if (facing == Direction.DOWN) {
 			rotX = 180F;
 		}
-		ms.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(rotX));
-		ms.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(rotZ));
-		ms.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(yaw));
+		ms.rotate(Vector3f.XP.rotationDegrees(rotX));
+		ms.rotate(Vector3f.ZP.rotationDegrees(rotZ));
+		ms.rotate(Vector3f.YP.rotationDegrees(yaw));
 
 		ms.push();
 		ms.scale(1f, -1f, -1f);
 
 		IVertexBuilder builder = buffer.getBuffer(RenderType.getEntityCutout(textureLoc));
-		fireflyModel.render(ms, builder, light, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
+		fireflyModel.render(ms, builder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 
 		builder = buffer.getBuffer(GLOW_LAYER);
-		fireflyModel.glow.render(ms, builder, 0xF000F0, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, glow);
+		fireflyModel.glow.render(ms, builder, 0xF000F0, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, glow);
 
 		ms.pop();
 		ms.pop();

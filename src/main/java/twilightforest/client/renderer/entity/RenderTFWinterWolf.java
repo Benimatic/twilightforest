@@ -18,7 +18,7 @@ public class RenderTFWinterWolf extends WolfRenderer {
 	}
 
 	@Override
-	protected void scale(WolfEntity entity, MatrixStack stack, float partialTicks) {
+	protected void preRenderCallback(WolfEntity entity, MatrixStack stack, float partialTicks) {
 		float wolfScale = 1.9F;
 		stack.scale(wolfScale, wolfScale, wolfScale);
 

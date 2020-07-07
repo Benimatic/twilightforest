@@ -9,13 +9,13 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.SphereReplaceConfig;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import net.minecraft.world.server.ServerWorld;
@@ -37,7 +37,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 	protected int size;
 	protected int height;
 
-	public static final ConfiguredFeature<?,?> uberousGen = TFBiomeFeatures.MYCELIUM_BLOB.get().configure(new SphereReplaceConfig(TFBlocks.uberous_soil.get().getDefaultState(), 4, 1, Lists.newArrayList(Blocks.GRASS_BLOCK.getDefaultState())));
+	public static final ConfiguredFeature<?,?> uberousGen = TFBiomeFeatures.MYCELIUM_BLOB.get().withConfiguration(new SphereReplaceConfig(TFBlocks.uberous_soil.get().getDefaultState(), 4, 1, Lists.newArrayList(Blocks.GRASS_BLOCK.getDefaultState())));
 
 	public ComponentTFTrollCaveMain(TemplateManager manager, CompoundNBT nbt) {
 		super(TFTrollCavePieces.TFTCMai, nbt);
@@ -117,27 +117,27 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 	}
 
 	@Override
-	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		Random decoRNG = new Random(world.getSeed() + (this.boundingBox.minX * 321534781) ^ (this.boundingBox.minZ * 756839));
 
 		// clear inside
-		hollowCaveMiddle(world.getWorld(), sbb, rand, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1);
+		hollowCaveMiddle(world, sbb, rand, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1);
 
 		// stone stalactites!
 		for (int i = 0; i < 128; i++) {
 			BlockPos dest = getCoordsInCave(decoRNG);
-			generateBlockStalactite(world.getWorld(), decoRNG, Blocks.STONE, 0.7F, true, dest.getX(), 3, dest.getZ(), sbb);
+			generateBlockStalactite(world, manager, decoRNG, Blocks.STONE, 0.7F, true, dest.getX(), 3, dest.getZ(), sbb);
 		}
 		// stone stalagmites!
 		for (int i = 0; i < 32; i++) {
 			BlockPos dest = getCoordsInCave(decoRNG);
-			generateBlockStalactite(world.getWorld(), decoRNG, Blocks.STONE, 0.5F, false, dest.getX(), 3, dest.getZ(), sbb);
+			generateBlockStalactite(world, manager, decoRNG, Blocks.STONE, 0.5F, false, dest.getX(), 3, dest.getZ(), sbb);
 		}
 
 		// uberous!
 		for (int i = 0; i < 32; i++) {
 			BlockPos dest = getCoordsInCave(decoRNG);
-			generateAtSurface(world.getWorld(), uberousGen, decoRNG, dest.getX(), 60, dest.getZ(), sbb);
+			generateAtSurface(world, manager, generator, uberousGen, decoRNG, dest.getX(), 60, dest.getZ(), sbb);
 		}
 
 		return true;
@@ -147,7 +147,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 		return new BlockPos(rand.nextInt(this.size - 1), rand.nextInt(this.height - 1), rand.nextInt(this.size - 1));
 	}
 
-	protected void hollowCaveMiddle(World world, MutableBoundingBox boundingBox, Random rand, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
+	protected void hollowCaveMiddle(ISeedReader world, MutableBoundingBox boundingBox, Random rand, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
 		int threshold = this.size / 5;
 
 		for (int y = minY; y <= maxY; ++y) {
@@ -228,7 +228,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 	/**
 	 * Make a random stone stalactite
 	 */
-	protected void generateBlockStalactite(World world, Random rand, Block blockToGenerate, float length, boolean up, int x, int y, int z, MutableBoundingBox sbb) {
+	protected void generateBlockStalactite(ISeedReader world, StructureManager manager, Random rand, Block blockToGenerate, float length, boolean up, int x, int y, int z, MutableBoundingBox sbb) {
 		// are the coordinates in our bounding box?
 		int dx = getXWithOffset(x, z);
 		int dy = getYWithOffset(y);
@@ -236,14 +236,14 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 
 		BlockPos pos = new BlockPos(dx, dy, dz);
 		if (sbb.isVecInside(pos)) {
-			TFBiomeFeatures.CAVE_STALACTITE.get().configure(new CaveStalactiteConfig(blockToGenerate.getDefaultState(), length, -1, -1, up)).place(world, ((ServerWorld) world).getChunkProvider().getChunkGenerator(), rand, pos);
+			TFBiomeFeatures.CAVE_STALACTITE.get().withConfiguration(new CaveStalactiteConfig(blockToGenerate.getDefaultState(), length, -1, -1, up)).func_236265_a_(world, manager, ((ServerWorld) world).getChunkProvider().getChunkGenerator(), rand, pos);
 		}
 	}
 
 	/**
 	 * Use the generator at the surface above specified coords
 	 */
-	protected void generateAtSurface(World world, ConfiguredFeature<?,?> generator, Random rand, int x, int y, int z, MutableBoundingBox sbb) {
+	protected void generateAtSurface(ISeedReader world, StructureManager manager, ChunkGenerator generator, ConfiguredFeature<?,?> feature, Random rand, int x, int y, int z, MutableBoundingBox sbb) {
 		// are the coordinates in our bounding box?
 		int dx = getXWithOffset(x, z);
 		int dy = y;
@@ -260,11 +260,11 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 				}
 			}
 
-			generator.place(world, ((ServerWorld) world).getChunkProvider().getChunkGenerator(), rand, pos.toImmutable());
+			feature.func_236265_a_(world, manager, generator, rand, pos.toImmutable());
 		}
 	}
 
-	protected void makeTreasureCrate(World world, MutableBoundingBox sbb) {
+	protected void makeTreasureCrate(ISeedReader world, MutableBoundingBox sbb) {
 		// treasure!
 		int mid = this.size / 2;
 		this.fillWithBlocks(world, sbb, mid - 2, 0, mid - 2, mid + 1, 3, mid + 1, Blocks.OBSIDIAN.getDefaultState(), Blocks.OBSIDIAN.getDefaultState(), false);

@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import twilightforest.entity.EntityTFMosquitoSwarm;
 
 import java.util.Random;
@@ -23,36 +23,36 @@ public class ModelTFMosquitoSwarm extends SegmentedModel<EntityTFMosquitoSwarm> 
 
 	public ModelTFMosquitoSwarm() {
 		core = new ModelRenderer(this, rand.nextInt(28), rand.nextInt(28));
-		core.addCuboid(-4F, 0.0F, -2F, 1, 1, 1);
+		core.addBox(-4F, 0.0F, -2F, 1, 1, 1);
 		core.setRotationPoint(0.0F, -4.0F, 0.0F);
 
 		node1 = new ModelRenderer(this, rand.nextInt(28), rand.nextInt(28));
-		node1.addCuboid(-5.5F, -5F, -13F, 1, 1, 1);
+		node1.addBox(-5.5F, -5F, -13F, 1, 1, 1);
 		node1.setRotationPoint(2F, -1F, -6F);
 		core.addChild(node1);
 
 		node2 = new ModelRenderer(this, rand.nextInt(28), rand.nextInt(28));
-		node2.addCuboid(-5.5F, -13F, -5F, 1, 1, 1);
+		node2.addBox(-5.5F, -13F, -5F, 1, 1, 1);
 		node2.setRotationPoint(0F, -7F, -1F);
 		core.addChild(node2);
 
 		node3 = new ModelRenderer(this, rand.nextInt(28), rand.nextInt(28));
-		node3.addCuboid(-13F, -5F, -5F, 1, 1, 1);
+		node3.addBox(-13F, -5F, -5F, 1, 1, 1);
 		node3.setRotationPoint(5F, -2F, -1F);
 		core.addChild(node3);
 
 		node4 = new ModelRenderer(this, rand.nextInt(28), rand.nextInt(28));
-		node4.addCuboid(-5.5F, -5F, -13F, 1, 1, 1);
+		node4.addBox(-5.5F, -5F, -13F, 1, 1, 1);
 		node4.setRotationPoint(2F, -1F, -6F);
 		core.addChild(node4);
 
 		node5 = new ModelRenderer(this, rand.nextInt(28), rand.nextInt(28));
-		node5.addCuboid(-5.5F, -13F, -5F, 1, 1, 1);
+		node5.addBox(-5.5F, -13F, -5F, 1, 1, 1);
 		node5.setRotationPoint(0F, -7F, -1F);
 		core.addChild(node5);
 
 		node6 = new ModelRenderer(this, rand.nextInt(28), rand.nextInt(28));
-		node6.addCuboid(-13F, -5F, -5F, 1, 1, 1);
+		node6.addBox(-13F, -5F, -5F, 1, 1, 1);
 		node6.setRotationPoint(5F, -2F, -1F);
 		core.addChild(node6);
 
@@ -84,7 +84,7 @@ public class ModelTFMosquitoSwarm extends SegmentedModel<EntityTFMosquitoSwarm> 
 		int bugs = 16;
 
 		for (int i = 0; i < bugs; i++) {
-			Vec3d vec = new Vec3d(11, 0, 0);
+			Vector3d vec = new Vector3d(11, 0, 0);
 			float rotateY = ((i * (360F / bugs)) * 3.141593F) / 180F;
 			vec.rotateYaw(rotateY);
 			ModelRenderer bug = new ModelRenderer(this, rand.nextInt(28), rand.nextInt(28));
@@ -93,7 +93,7 @@ public class ModelTFMosquitoSwarm extends SegmentedModel<EntityTFMosquitoSwarm> 
 			float bugY = (rand.nextFloat() - rand.nextFloat()) * 4.0f;
 			float bugZ = (rand.nextFloat() - rand.nextFloat()) * 4.0f;
 
-			bug.addCuboid(bugX, bugY, bugZ, 1, 1, 1);
+			bug.addBox(bugX, bugY, bugZ, 1, 1, 1);
 
 			bug.setRotationPoint((float) vec.x, (float) vec.y, (float) vec.z);
 			bug.rotateAngleY = rotateY;
@@ -102,7 +102,7 @@ public class ModelTFMosquitoSwarm extends SegmentedModel<EntityTFMosquitoSwarm> 
 	}
 
 	@Override
-	public void setAngles(EntityTFMosquitoSwarm entity, float v, float v1, float v2, float v3, float v4) { }
+	public void setRotationAngles(EntityTFMosquitoSwarm entity, float v, float v1, float v2, float v3, float v4) { }
 
 	@Override
 	public void setLivingAnimations(EntityTFMosquitoSwarm entity, float limbSwing, float limbSwingAmount, float partialTicks) {

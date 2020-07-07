@@ -1,7 +1,8 @@
 package twilightforest.entity;
 
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.world.World;
 import twilightforest.client.particle.TFParticleType;
@@ -32,12 +33,11 @@ public class EntityTFRovingCube extends MonsterEntity {
 		this.goalSelector.addGoal(1, new EntityAICubeCenterOnSymbol(this, 1.0D));
 	}
 
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
-		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23000000417232513D);
-		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D);
+	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return MonsterEntity.func_234295_eP_()
+				.func_233815_a_(Attributes.field_233818_a_, 10.0D)
+				.func_233815_a_(Attributes.field_233821_d_, 0.23000000417232513D)
+				.func_233815_a_(Attributes.field_233823_f_, 5.0D);
 	}
 
 	@Override

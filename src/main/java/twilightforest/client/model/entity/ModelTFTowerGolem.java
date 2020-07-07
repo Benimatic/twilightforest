@@ -33,54 +33,54 @@ public class ModelTFTowerGolem<T extends EntityTFTowerGolem> extends SegmentedMo
 
 		head = new ModelRenderer(this, 0, 0);
 		head.setRotationPoint(0F, -11F, -2F);
-		head.setTextureOffset(0, 0).addCuboid(-3.5F, -10F, -3F, 7, 8, 6); // head
-		head.setTextureOffset(0, 14).addCuboid(-4F, -6F, -3.5F, 8, 4, 6); // jaw
+		head.setTextureOffset(0, 0).addBox(-3.5F, -10F, -3F, 7, 8, 6); // head
+		head.setTextureOffset(0, 14).addBox(-4F, -6F, -3.5F, 8, 4, 6); // jaw
 
 		body = new ModelRenderer(this, 0, 26);
-		body.addCuboid(-8F, 0F, -5F, 16, 10, 10);
+		body.addBox(-8F, 0F, -5F, 16, 10, 10);
 		body.setRotationPoint(0F, -13F, 0F);
 
 		ribs = new ModelRenderer(this, 0, 46);
-		ribs.addCuboid(-5F, 0F, -3F, 10, 6, 6);
+		ribs.addBox(-5F, 0F, -3F, 10, 6, 6);
 		ribs.setRotationPoint(0F, -3F, 0F);
 
 		rightarm = new ModelRenderer(this, 52, 0);
 		rightarm.setRotationPoint(-8F, -12F, 0F);
-		rightarm.setTextureOffset(52, 0).addCuboid(-5F, -2F, -1.5F, 3, 14, 3); // arm
-		rightarm.setTextureOffset(52, 17).addCuboid(-7F, 12F, -3F, 6, 12, 6); // fist
-		rightarm.setTextureOffset(52, 36).addCuboid(-7F, -3F, -3.5F, 7, 2, 7); // shoulder top
-		rightarm.setTextureOffset(52, 45).addCuboid(-7F, -1F, -3.5F, 7, 5, 2); // shoulder front
-		rightarm.setTextureOffset(52, 45).addCuboid(-7F, -1F, 1.5F, 7, 5, 2); // shoulder back
-		rightarm.setTextureOffset(52, 54).addCuboid(-2F, -1F, -2F, 2, 5, 3); // shoulder inner
+		rightarm.setTextureOffset(52, 0).addBox(-5F, -2F, -1.5F, 3, 14, 3); // arm
+		rightarm.setTextureOffset(52, 17).addBox(-7F, 12F, -3F, 6, 12, 6); // fist
+		rightarm.setTextureOffset(52, 36).addBox(-7F, -3F, -3.5F, 7, 2, 7); // shoulder top
+		rightarm.setTextureOffset(52, 45).addBox(-7F, -1F, -3.5F, 7, 5, 2); // shoulder front
+		rightarm.setTextureOffset(52, 45).addBox(-7F, -1F, 1.5F, 7, 5, 2); // shoulder back
+		rightarm.setTextureOffset(52, 54).addBox(-2F, -1F, -2F, 2, 5, 3); // shoulder inner
 
 		leftarm = new ModelRenderer(this, 52, 0);
 		leftarm.mirror = true;
 		leftarm.setRotationPoint(8F, -12F, 0F);
-		leftarm.setTextureOffset(52, 0).addCuboid(2F, -2F, -1.5F, 3, 14, 3); // arm
-		leftarm.setTextureOffset(52, 17).addCuboid(1F, 12F, -3F, 6, 12, 6); // fist
-		leftarm.setTextureOffset(52, 36).addCuboid(0F, -3F, -3.5F, 7, 2, 7); // shoulder top
-		leftarm.setTextureOffset(52, 45).addCuboid(0F, -1F, -3.5F, 7, 5, 2); // shoulder front
-		leftarm.setTextureOffset(52, 45).addCuboid(0F, -1F, 1.5F, 7, 5, 2); // shoulder back
-		leftarm.setTextureOffset(52, 54).addCuboid(0F, -1F, -2F, 2, 5, 3); // shoulder inner
+		leftarm.setTextureOffset(52, 0).addBox(2F, -2F, -1.5F, 3, 14, 3); // arm
+		leftarm.setTextureOffset(52, 17).addBox(1F, 12F, -3F, 6, 12, 6); // fist
+		leftarm.setTextureOffset(52, 36).addBox(0F, -3F, -3.5F, 7, 2, 7); // shoulder top
+		leftarm.setTextureOffset(52, 45).addBox(0F, -1F, -3.5F, 7, 5, 2); // shoulder front
+		leftarm.setTextureOffset(52, 45).addBox(0F, -1F, 1.5F, 7, 5, 2); // shoulder back
+		leftarm.setTextureOffset(52, 54).addBox(0F, -1F, -2F, 2, 5, 3); // shoulder inner
 
 		hips = new ModelRenderer(this, 84, 25);
-		hips.addCuboid(-5F, 0F, -2F, 10, 3, 4);
+		hips.addBox(-5F, 0F, -2F, 10, 3, 4);
 		hips.setRotationPoint(0F, 1F, 0F);
 
 		spine = new ModelRenderer(this, 84, 18);
-		spine.addCuboid(-1.5F, 0F, -1.5F, 3, 4, 3);
+		spine.addBox(-1.5F, 0F, -1.5F, 3, 4, 3);
 		spine.setRotationPoint(0F, -3F, 0F);
 
 		leftleg = new ModelRenderer(this, 84, 32);
 		leftleg.mirror = true;
 		leftleg.setRotationPoint(1F, 2F, 0F);
-		leftleg.setTextureOffset(84, 32).addCuboid(0F, 0F, -1.5F, 3, 8, 3);
-		leftleg.setTextureOffset(84, 43).addCuboid(-0.5F, 8F, -4F, 6, 14, 7);
+		leftleg.setTextureOffset(84, 32).addBox(0F, 0F, -1.5F, 3, 8, 3);
+		leftleg.setTextureOffset(84, 43).addBox(-0.5F, 8F, -4F, 6, 14, 7);
 
 		rightleg = new ModelRenderer(this, 84, 32);
 		rightleg.setRotationPoint(-1F, 2F, 0F);
-		rightleg.setTextureOffset(84, 32).addCuboid(-3F, 0F, -1.5F, 3, 8, 3);
-		rightleg.setTextureOffset(84, 43).addCuboid(-5.5F, 8F, -4F, 6, 14, 7);
+		rightleg.setTextureOffset(84, 32).addBox(-3F, 0F, -1.5F, 3, 8, 3);
+		rightleg.setTextureOffset(84, 43).addBox(-5.5F, 8F, -4F, 6, 14, 7);
 	}
 
 //	@Override
@@ -110,7 +110,7 @@ public class ModelTFTowerGolem<T extends EntityTFTowerGolem> extends SegmentedMo
 	 * "far" arms and legs can swing at most.
 	 */
 	@Override
-	public void setAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.head.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
 		this.head.rotateAngleX = headPitch / (180F / (float) Math.PI);
 		this.leftleg.rotateAngleX = -1.5F * this.func_78172_a(limbSwing, 13.0F) * limbSwingAmount;

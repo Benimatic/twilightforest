@@ -2,10 +2,12 @@ package twilightforest.structures.minotaurmaze;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
@@ -27,7 +29,7 @@ public class ComponentTFMazeRoomVault extends ComponentTFMazeRoom {
 	}
 
 	@Override
-	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		// fill room with bricks
 		fillWithBlocks(world, sbb, 0, 1, 0, 15, 4, 15, TFBlocks.maze_stone_decorative.get().getDefaultState(), AIR, false);
 		fillWithBlocks(world, sbb, 0, 2, 0, 15, 3, 15, TFBlocks.maze_stone_brick.get().getDefaultState(), AIR, false);
@@ -54,13 +56,13 @@ public class ComponentTFMazeRoomVault extends ComponentTFMazeRoom {
 
 		// LEWTZ!
 		this.setBlockState(world, Blocks.CHEST.getDefaultState(), 7, 2, 6, sbb);
-		this.placeTreasureAtCurrentPosition(world.getWorld(), 8, 2, 6, TFTreasure.labyrinth_vault, sbb);
+		this.placeTreasureAtCurrentPosition(world, 8, 2, 6, TFTreasure.labyrinth_vault, sbb);
 		this.setBlockState(world, Blocks.CHEST.getDefaultState(), 8, 2, 9, sbb);
-		this.placeTreasureAtCurrentPosition(world.getWorld(), 7, 2, 9, TFTreasure.labyrinth_vault, sbb);
+		this.placeTreasureAtCurrentPosition(world, 7, 2, 9, TFTreasure.labyrinth_vault, sbb);
 		this.setBlockState(world, Blocks.CHEST.getDefaultState(), 6, 2, 7, sbb);
-		this.placeTreasureAtCurrentPosition(world.getWorld(), 6, 2, 8, TFTreasure.labyrinth_vault, sbb);
+		this.placeTreasureAtCurrentPosition(world, 6, 2, 8, TFTreasure.labyrinth_vault, sbb);
 		this.setBlockState(world, Blocks.CHEST.getDefaultState(), 9, 2, 8, sbb);
-		this.placeTreasureAtCurrentPosition(world.getWorld(), 9, 2, 7, TFTreasure.labyrinth_vault, sbb);
+		this.placeTreasureAtCurrentPosition(world, 9, 2, 7, TFTreasure.labyrinth_vault, sbb);
 
 		// mazebreaker!
 

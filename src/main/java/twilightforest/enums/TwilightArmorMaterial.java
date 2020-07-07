@@ -75,4 +75,9 @@ public enum TwilightArmorMaterial implements IArmorMaterial {
 	public Ingredient getRepairMaterial() {
 		return repairMaterial.get();
 	}
+
+	@Override
+	public float func_230304_f_() {
+		return 0.0F; //Determines knockback resistance. Discuss use in other sets
+	}
 }

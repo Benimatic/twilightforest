@@ -6,7 +6,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -22,6 +22,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ITag;
 import net.minecraft.tags.Tag;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.NonNullList;
@@ -29,9 +30,10 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -184,14 +186,13 @@ public class TFEventListener {
 
 		// enderbow teleports
 
-
 		// Smashing!
 		ItemStack stack = living.getItemStackFromSlot(EquipmentSlotType.HEAD);
 		Block block = Block.getBlockFromItem(stack.getItem());
 		if (block instanceof BlockTFCritter) {
 			BlockTFCritter poorBug = (BlockTFCritter) block;
 			living.setItemStackToSlot(EquipmentSlotType.HEAD, poorBug.getSquishResult());
-			living.world.playSound(null, living.getX(), living.getY(), living.getZ(), poorBug.getSoundType(poorBug.getDefaultState()).getBreakSound(), living.getSoundCategory(), 1, 1);
+			living.world.playSound(null, living.getPosX(), living.getPosY(), living.getPosZ(), poorBug.getSoundType(poorBug.getDefaultState()).getBreakSound(), living.getSoundCategory(), 1, 1);
 		}
 	}
 
@@ -215,7 +216,7 @@ public class TFEventListener {
 			}
 
 			if (charm2) {
-				living.setHealth((float) living.getAttribute(SharedMonsterAttributes.MAX_HEALTH).getBaseValue());
+				living.setHealth((float) living.getAttribute(Attributes.field_233818_a_).getBaseValue()); //Max Health
 
 				living.addPotionEffect(new EffectInstance(Effects.REGENERATION, 600, 3));
 				living.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 600, 0));
@@ -230,7 +231,7 @@ public class TFEventListener {
 			effect2.offset = (float) Math.PI;
 			living.world.addEntity(effect2);
 
-			living.world.playSound(null, living.getX(), living.getY(), living.getZ(), SoundEvents.ITEM_TOTEM_USE, living.getSoundCategory(), 1, 1);
+			living.world.playSound(null, living.getPosX(), living.getPosY(), living.getPosZ(), SoundEvents.ITEM_TOTEM_USE, living.getSoundCategory(), 1, 1);
 
 			event.setCanceled(true);
 		}
@@ -392,7 +393,7 @@ public class TFEventListener {
 				effect2.offset = (float) Math.PI;
 				player.world.addEntity(effect2);
 
-				player.world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, player.getSoundCategory(), 1.5F, 1.0F);
+				player.world.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), SoundEvents.ENTITY_ZOMBIE_VILLAGER_CONVERTED, player.getSoundCategory(), 1.5F, 1.0F);
 			}
 		}
 
@@ -531,7 +532,7 @@ public class TFEventListener {
 		}
 	}
 
-	public static final Tag<Block> PROTECTED_INTERACTION = new BlockTags.Wrapper(TwilightForestMod.prefix("protected_interaction"));
+	public static final ITag.INamedTag<Block> PROTECTED_INTERACTION = BlockTags.makeWrapperTag(TwilightForestMod.prefix("protected_interaction").toString());
 
 	/**
 	 * Stop the player from interacting with blocks that could produce treasure or open doors in a protected area
@@ -560,7 +561,7 @@ public class TFEventListener {
 
 		if (chunkGenerator != null/* && chunkGenerator.isBlockInStructureBB(pos)*/) {
 			// what feature is nearby?  is it one the player has not unlocked?
-			TFFeature nearbyFeature = TFFeature.getFeatureAt(pos.getX(), pos.getZ(), world);
+			TFFeature nearbyFeature = TFFeature.getFeatureAt(pos.getX(), pos.getZ(), (ServerWorld) world);
 
 			if (!nearbyFeature.doesPlayerHaveRequiredAdvancements(player)/* && chunkGenerator.isBlockProtected(pos)*/) {
 
@@ -578,7 +579,7 @@ public class TFEventListener {
 	}
 
 	private static void sendAreaProtectionPacket(World world, BlockPos pos, MutableBoundingBox sbb) {
-		PacketDistributor.TargetPoint targetPoint = new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), 64, world.getDimension().getType());
+		PacketDistributor.TargetPoint targetPoint = new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), 64, world.func_234923_W_());
 		TFPacketHandler.CHANNEL.send(PacketDistributor.NEAR.with(() -> targetPoint), new PacketAreaProtection(sbb, pos));
 	}
 
@@ -587,7 +588,7 @@ public class TFEventListener {
 		LivingEntity living = event.getEntityLiving();
 		// cancel attacks in protected areas
 		if (!living.world.isRemote && living instanceof IMob && event.getSource().getTrueSource() instanceof PlayerEntity
-				&& isAreaProtected(living.world, (PlayerEntity) event.getSource().getTrueSource(), new BlockPos(living))) {
+				&& isAreaProtected(living.world, (PlayerEntity) event.getSource().getTrueSource(), new BlockPos(living.func_233580_cy_()))) {
 
 			event.setCanceled(true);
 			return;
@@ -743,11 +744,11 @@ public class TFEventListener {
 
 					if (entityBlocking.canBlockDamageSource(new DamageSource("parry_this") {
 						@Override
-						public Vec3d getDamageLocation() {
-							return projectile.getPositionVector();
+						public Vector3d getDamageLocation() {
+							return projectile.getPositionVec();
 						}
 					}) && (entityBlocking.getActiveItemStack().getItem().getUseDuration(entityBlocking.getActiveItemStack()) - entityBlocking.getItemInUseCount()) <= TFConfig.COMMON_CONFIG.SHIELD_INTERACTIONS.shieldParryTicksArrow.get()) {
-						Vec3d playerVec3 = entityBlocking.getLookVec();
+						Vector3d playerVec3 = entityBlocking.getLookVec();
 
 						projectile.shoot(playerVec3.x, playerVec3.y, playerVec3.z, 1.1F, 0.1F);  // reflect faster and more accurately
 
@@ -776,16 +777,16 @@ public class TFEventListener {
 
 					if (entityBlocking.canBlockDamageSource(new DamageSource("parry_this") {
 						@Override
-						public Vec3d getDamageLocation() {
-							return projectile.getPositionVector();
+						public Vector3d getDamageLocation() {
+							return projectile.getPositionVec();
 						}
 					}) && (entityBlocking.getActiveItemStack().getItem().getUseDuration(entityBlocking.getActiveItemStack()) - entityBlocking.getItemInUseCount()) <= TFConfig.COMMON_CONFIG.SHIELD_INTERACTIONS.shieldParryTicksFireball.get()) {
-						Vec3d playerVec3 = entityBlocking.getLookVec();
+						Vector3d playerVec3 = entityBlocking.getLookVec();
 
 //					projectile.motionX = playerVec3.x;
 //					projectile.motionY = playerVec3.y;
 //					projectile.motionZ = playerVec3.z;
-						projectile.setMotion(new Vec3d(playerVec3.x, playerVec3.y, playerVec3.z));
+						projectile.setMotion(new Vector3d(playerVec3.x, playerVec3.y, playerVec3.z));
 						projectile.accelerationX = projectile.getMotion().getX() * 0.1D;
 						projectile.accelerationY = projectile.getMotion().getY() * 0.1D;
 						projectile.accelerationZ = projectile.getMotion().getZ() * 0.1D;
@@ -816,11 +817,11 @@ public class TFEventListener {
 
 					if (entityBlocking.canBlockDamageSource(new DamageSource("parry_this") {
 						@Override
-						public Vec3d getDamageLocation() {
-							return projectile.getPositionVector();
+						public Vector3d getDamageLocation() {
+							return projectile.getPositionVec();
 						}
 					}) && (entityBlocking.getActiveItemStack().getItem().getUseDuration(entityBlocking.getActiveItemStack()) - entityBlocking.getItemInUseCount()) <= TFConfig.COMMON_CONFIG.SHIELD_INTERACTIONS.shieldParryTicksThrowable.get()) {
-						Vec3d playerVec3 = entityBlocking.getLookVec();
+						Vector3d playerVec3 = entityBlocking.getLookVec();
 
 						projectile.shoot(playerVec3.x, playerVec3.y, playerVec3.z, 1.1F, 0.1F);  // reflect faster and more accurately
 

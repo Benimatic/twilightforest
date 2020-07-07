@@ -2,7 +2,8 @@ package twilightforest.entity.boss;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
@@ -61,10 +62,9 @@ public class EntityTFMinoshroom extends EntityTFMinotaur {
 		dataManager.set(GROUND_ATTACK, flag);
 	}
 
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(120.0D);
+	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return EntityTFMinotaur.registerAttributes()
+				.func_233815_a_(Attributes.field_233818_a_, 120.0D);
 	}
 
 	@Override
@@ -78,12 +78,12 @@ public class EntityTFMinoshroom extends EntityTFMinotaur {
 			} else {
 				this.clientSideChargeAnimation = MathHelper.clamp(this.clientSideChargeAnimation - 1.0F, 0.0F, 6.0F);
 				if (groundSmashState) {
-					BlockState block = world.getBlockState(getPosition().down());
+					BlockState block = world.getBlockState(func_233580_cy_().down());
 
 					for (int i = 0; i < 80; i++) {
-						double cx = getPosition().getX() + world.rand.nextFloat() * 10F - 5F;
+						double cx = func_233580_cy_().getX() + world.rand.nextFloat() * 10F - 5F;
 						double cy = getBoundingBox().minY + 0.1F + world.rand.nextFloat() * 0.3F;
-						double cz = getPosition().getZ() + world.rand.nextFloat() * 10F - 5F;
+						double cz = func_233580_cy_().getZ() + world.rand.nextFloat() * 10F - 5F;
 
 						world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, block), cx, cy, cz, 0D, 0D, 0D);
 					}
@@ -112,7 +112,7 @@ public class EntityTFMinoshroom extends EntityTFMinotaur {
 	public void onDeath(DamageSource cause) {
 		super.onDeath(cause);
 		if (!world.isRemote) {
-			TFGenerationSettings.markStructureConquered(world, new BlockPos(this), TFFeature.LABYRINTH);
+			TFGenerationSettings.markStructureConquered(world, new BlockPos(this.func_233580_cy_()), TFFeature.LABYRINTH);
 		}
 	}
 

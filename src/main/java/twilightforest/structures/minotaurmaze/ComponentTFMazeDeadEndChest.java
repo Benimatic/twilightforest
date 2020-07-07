@@ -3,11 +3,13 @@ package twilightforest.structures.minotaurmaze;
 import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
@@ -33,7 +35,7 @@ public class ComponentTFMazeDeadEndChest extends ComponentTFMazeDeadEnd {
 	}
 
 	@Override
-	public boolean generate(IWorld world, ChunkGenerator<?> generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn) {
+	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
 		//super.addComponentParts(world, rand, sbb, chunkPosIn);
 
 		// dais
@@ -44,7 +46,7 @@ public class ComponentTFMazeDeadEndChest extends ComponentTFMazeDeadEnd {
 
 		// chest
 		this.setBlockState(world, Blocks.CHEST.getDefaultState(), 2, 2, 4, sbb);
-		this.placeTreasureAtCurrentPosition(world.getWorld(), 3, 2, 4, TFTreasure.labyrinth_deadend, sbb);
+		this.placeTreasureAtCurrentPosition(world, 3, 2, 4, TFTreasure.labyrinth_deadend, sbb);
 
 //		// torches
 //		this.setBlockState(world, Blocks.TORCH, 0, 1, 3, 4, sbb);

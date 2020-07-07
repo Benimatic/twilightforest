@@ -4,11 +4,11 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.block.DirectionalBlock;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Vector3f;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.BugModelAnimationHelper;
 import twilightforest.client.model.entity.ModelTFCicada;
@@ -48,13 +48,13 @@ public class TileEntityTFCicadaRenderer extends TileEntityRenderer<TileEntityTFC
 			rotX = 180F;
 		}
 		ms.translate(0.5, 0.5, 0.5);
-		ms.multiply(Vector3f.POSITIVE_X.getDegreesQuaternion(rotX));
-		ms.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(rotZ));
-		ms.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(yaw));
+		ms.rotate(Vector3f.XP.rotationDegrees(rotX));
+		ms.rotate(Vector3f.ZP.rotationDegrees(rotZ));
+		ms.rotate(Vector3f.YP.rotationDegrees(yaw));
 
 		ms.push();
 		ms.scale(-1f, -1f, -1f);
-		IVertexBuilder vertex = buffers.getBuffer(cicadaModel.getLayer(textureLoc));
+		IVertexBuilder vertex = buffers.getBuffer(cicadaModel.getRenderType(textureLoc));
 		cicadaModel.render(ms, vertex, light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
 		ms.pop();
 		ms.pop();

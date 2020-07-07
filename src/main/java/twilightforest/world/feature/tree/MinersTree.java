@@ -11,6 +11,6 @@ public class MinersTree extends TFTree {
 
 	@Override
 	public ConfiguredFeature<TFTreeFeatureConfig, ?> createTreeFeature(Random rand) {
-		return TFBiomeFeatures.MINERS_TREE.get().configure(TFBiomeDecorator.MINING_TREE);
+		return TFBiomeFeatures.MINERS_TREE.get().withConfiguration(TFBiomeDecorator.MINING_TREE);
 	}
 }

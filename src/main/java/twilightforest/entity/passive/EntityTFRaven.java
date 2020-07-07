@@ -2,15 +2,14 @@ package twilightforest.entity.passive;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.Pose;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
-import twilightforest.TwilightForestMod;
 
 public class EntityTFRaven extends EntityTFTinyBird {
 
@@ -31,11 +30,10 @@ public class EntityTFRaven extends EntityTFTinyBird {
 		this.goalSelector.addGoal(7, new LookRandomlyGoal(this));
 	}
 
-	@Override
-	protected void registerAttributes() {
-		super.registerAttributes();
-		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
-		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.2);
+	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return EntityTFTinyBird.registerAttributes()
+				.func_233815_a_(Attributes.field_233818_a_, 10.0D)
+				.func_233815_a_(Attributes.field_233821_d_, 0.2);
 	}
 
 	@Override

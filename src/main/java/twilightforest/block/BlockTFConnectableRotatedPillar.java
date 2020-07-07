@@ -34,7 +34,7 @@ public abstract class BlockTFConnectableRotatedPillar extends RotatedPillarBlock
     }
 
     BlockTFConnectableRotatedPillar(Properties props, double width, double height) {
-        super(props.nonOpaque());
+        super(props.notSolid());
 
         if (width >= 16d) {
             this.boundingBoxWidthLower = 0d;

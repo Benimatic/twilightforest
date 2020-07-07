@@ -13,7 +13,7 @@ public class RenderTFIceShooter extends RenderTFBiped<EntityStableIceCore, Model
 	}
 
 	@Override
-	protected void scale(EntityStableIceCore entity, MatrixStack stack, float partialTicks) {
+	protected void preRenderCallback(EntityStableIceCore entity, MatrixStack stack, float partialTicks) {
 		float bounce = entity.ticksExisted + partialTicks;
 		stack.translate(0F, MathHelper.sin((bounce) * 0.2F) * 0.15F, 0F);
 	}

@@ -12,7 +12,7 @@ public class RenderAdherent extends RenderTFBiped<EntityTFAdherent, ModelTFAdher
 	}
 
 	@Override
-	protected void scale(EntityTFAdherent e, MatrixStack ms, float partialTicks) {
+	protected void preRenderCallback(EntityTFAdherent e, MatrixStack ms, float partialTicks) {
 		float bounce = e.ticksExisted + partialTicks;
 		ms.translate(0F, -0.125F - MathHelper.sin((bounce) * 0.133F) * 0.1F, 0F);
 	}

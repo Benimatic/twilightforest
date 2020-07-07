@@ -6,7 +6,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.Hand;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.fml.network.PacketDistributor;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.network.PacketThrowPlayer;
@@ -61,8 +61,8 @@ public class EntityAITFThrowRider extends MeleeAttackGoal {
 			Entity rider = attacker.getPassengers().get(0);
 			rider.stopRiding();
 
-			Vec3d throwVec = attacker.getLookVec().scale(2);
-			throwVec = new Vec3d(throwVec.x, 0.9, throwVec.z);
+			Vector3d throwVec = attacker.getLookVec().scale(2);
+			throwVec = new Vector3d(throwVec.x, 0.9, throwVec.z);
 
 			rider.addVelocity(throwVec.x, throwVec.y, throwVec.z);
 

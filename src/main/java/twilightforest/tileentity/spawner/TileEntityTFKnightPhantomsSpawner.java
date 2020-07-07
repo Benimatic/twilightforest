@@ -24,7 +24,7 @@ public class TileEntityTFKnightPhantomsSpawner extends TileEntityTFBossSpawner<E
 	@Override
 	public boolean anyPlayerInRange() {
 		PlayerEntity closestPlayer = world.getClosestPlayer(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, getRange(), false);
-		return closestPlayer != null && closestPlayer.getY() > pos.getY() - 2;
+		return closestPlayer != null && closestPlayer.getPosY() > pos.getY() - 2;
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class TileEntityTFKnightPhantomsSpawner extends TileEntityTFBossSpawner<E
 			double rz = pos.getZ() + 0.5D + Math.sin(angle * Math.PI / 180.0D) * distance;
 
 			myCreature.setLocationAndAngles(rx, ry, rz, world.rand.nextFloat() * 360F, 0.0F);
-			myCreature.onInitialSpawn(world, world.getDifficultyForLocation(new BlockPos(myCreature)), SpawnReason.SPAWNER, null, null);
+			myCreature.onInitialSpawn(world, world.getDifficultyForLocation(new BlockPos(myCreature.func_233580_cy_())), SpawnReason.SPAWNER, null, null);
 
 			if(i == 5 && world.getDifficulty() == Difficulty.HARD){
 				myCreature.setItemStackToSlot(EquipmentSlotType.OFFHAND,new ItemStack(TFItems.knightmetal_shield.get()));

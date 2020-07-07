@@ -24,11 +24,11 @@ public class ItemTFFierySword extends SwordItem {
 	public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 		boolean result = super.hitEntity(stack, target, attacker);
 
-		if (result && !target.world.isRemote && !target.isImmuneToFire()) {
+		if (result && !target.world.isRemote && !target.func_230279_az_()) {
 			for (int var1 = 0; var1 < 20; ++var1) {
-				double px = target.getX() + random.nextFloat() * target.getWidth() * 2.0F - target.getWidth();
-				double py = target.getY() + random.nextFloat() * target.getHeight();
-				double pz = target.getZ() + random.nextFloat() * target.getWidth() * 2.0F - target.getWidth();
+				double px = target.getPosX() + random.nextFloat() * target.getWidth() * 2.0F - target.getWidth();
+				double py = target.getPosY() + random.nextFloat() * target.getHeight();
+				double pz = target.getPosZ() + random.nextFloat() * target.getWidth() * 2.0F - target.getWidth();
 				target.world.addParticle(ParticleTypes.FLAME, px, py, pz, 0.02, 0.02, 0.02);
 			}
 		}

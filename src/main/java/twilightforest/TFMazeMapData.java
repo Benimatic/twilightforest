@@ -3,7 +3,7 @@ package twilightforest;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.MapData;
 import twilightforest.world.TFGenerationSettings;
 
@@ -40,20 +40,21 @@ public class TFMazeMapData extends MapData {
 		this.yCenter = y;
 
 		// when we are in a labyrinth, snap to the LABYRINTH
-		if (TFGenerationSettings.isTwilightForest(world) && TFFeature.getFeatureForRegion(x >> 4, z >> 4, world) == TFFeature.LABYRINTH) {
+		if (TFGenerationSettings.isTwilightForest(world) && TFFeature.getFeatureForRegion(x >> 4, z >> 4, (ServerWorld) world) == TFFeature.LABYRINTH) {
 			BlockPos mc = TFFeature.getNearestCenterXYZ(x >> 4, z >> 4);
 			this.xCenter = mc.getX();
 			this.zCenter = mc.getZ();
 		}
 	}
 
+	//PORT NOTE: World.field_234918_g_ = "overworld"
 	// [VanillaCopy] Adapted from World.getMapData
 	@Nullable
 	public static TFMazeMapData getMazeMapData(World world, String name) {
 		if (world.isRemote) {
 			return CLIENT_DATA.getOrDefault(world, Collections.emptyMap()).get(name);
 		} else {
-			return world.getServer().getWorld(DimensionType.OVERWORLD).getSavedData().get(() -> new TFMazeMapData(name), name);
+			return world.getServer().getWorld(World.field_234918_g_).getSavedData().get(() -> new TFMazeMapData(name), name);
 		}
 	}
 
@@ -62,7 +63,7 @@ public class TFMazeMapData extends MapData {
 		if (world.isRemote) {
 			CLIENT_DATA.computeIfAbsent(world, k -> new HashMap<>()).put(data.getName(), data);
 		} else {
-			world.getServer().getWorld(DimensionType.OVERWORLD).getSavedData().set(data);
+			world.getServer().getWorld(World.field_234918_g_).getSavedData().set(data);
 		}
 	}
 }

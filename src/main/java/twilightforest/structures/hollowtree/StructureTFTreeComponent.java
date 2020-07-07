@@ -4,6 +4,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
@@ -24,7 +25,7 @@ public abstract class StructureTFTreeComponent extends StructureTFComponentOld {
 		super(type, feature, i);
 	}
 
-	public abstract boolean addComponentParts(World world, ChunkGenerator<?> generator, Random random, MutableBoundingBox sbb, boolean drawLeaves);
+	public abstract boolean addComponentParts(ISeedReader seed, ChunkGenerator generator, Random random, MutableBoundingBox sbb, boolean drawLeaves);
 
 	/**
 	 * Checks a potential branch bounding box to see if it intersects a leaf dungeon
@@ -42,7 +43,7 @@ public abstract class StructureTFTreeComponent extends StructureTFComponentOld {
 	/**
 	 * Puts a block only if leaves can go there.
 	 */
-	protected void placeLeafBlock(World world, BlockState blockState, int x, int y, int z, MutableBoundingBox sbb) {
+	protected void placeLeafBlock(ISeedReader world, BlockState blockState, int x, int y, int z, MutableBoundingBox sbb) {
 		final BlockPos pos = getBlockPosWithOffset(x, y, z);
 
 		if (sbb.isVecInside(pos)) {
