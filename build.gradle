@@ -154,6 +154,10 @@ repositories {
         name 'tterrag\'s Maven' // CTM
         url 'https://maven.tterrag.com/'
     }
+    maven {
+        // Temporary mappings
+        url 'https://www.dogforce-games.com/maven/'
+    }
     /*maven {
         name 'Jared\'s Maven' // Immersive Engineering + Patchouli
         url 'https://blamejared.com/maven'
@@ -170,17 +174,17 @@ repositories {
 
 dependencies {
     // progwml6
-    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
+    /*compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
 
-    /*deobfCompile "slimeknights.mantle:Mantle:${minecraft_sub_version}-${mantle_version}"
+    deobfCompile "slimeknights.mantle:Mantle:${minecraft_sub_version}-${mantle_version}"
     deobfCompile "slimeknights:TConstruct:${minecraft_version}-${tcon_version}"
-    */
+
 
     // tterrag
     runtimeOnly fg.deobf("team.chisel.ctm:CTM:MC${minecraft_version}-${ctm_version}")
     // deobfCompile "team.chisel:Chisel:MC${minecraft_version}-${chisel_version}"
-
+    */
     /*
     // blamejared
     deobfCompile "blusunrize:ImmersiveEngineering:${immersive_engineering_version}"
