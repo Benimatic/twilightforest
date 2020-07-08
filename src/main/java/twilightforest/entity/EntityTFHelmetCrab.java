@@ -33,12 +33,12 @@ public class EntityTFHelmetCrab extends MonsterEntity {
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
 	}
 
-	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MonsterEntity.func_234295_eP_()
-				.func_233815_a_(Attributes.field_233818_a_, 13.0D)
-				.func_233815_a_(Attributes.field_233821_d_, 0.28D)
-				.func_233815_a_(Attributes.field_233823_f_, 3.0D)
-				.func_233815_a_(Attributes.field_233826_i_, 6.0D);
+				.func_233815_a_(Attributes.MAX_HEALTH, 13.0D)
+				.func_233815_a_(Attributes.MOVEMENT_SPEED, 0.28D)
+				.func_233815_a_(Attributes.ATTACK_DAMAGE, 3.0D)
+				.func_233815_a_(Attributes.ARMOR, 6.0D);
 	}
 
 	@Override

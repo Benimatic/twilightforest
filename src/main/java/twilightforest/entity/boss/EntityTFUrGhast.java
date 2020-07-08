@@ -75,10 +75,10 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		this.bossInfo.setName(this.getDisplayName());
 	}
 
-	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return EntityTFTowerGhast.registerAttributes()
-				.func_233815_a_(Attributes.field_233818_a_, 250)
-				.func_233815_a_(Attributes.field_233819_b_, 128.0D);
+				.func_233815_a_(Attributes.MAX_HEALTH, 250)
+				.func_233815_a_(Attributes.FOLLOW_RANGE, 128.0D);
 	}
 
 	@Override
@@ -238,7 +238,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 	}
 
 	@Override
-	public void func_233627_a_(float strength, double xRatio, double zRatio) {
+	public void applyKnockback(float strength, double xRatio, double zRatio) {
 		// Don't take knockback
 	}
 

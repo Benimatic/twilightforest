@@ -38,9 +38,9 @@ public class EntityTFHostileWolf extends WolfEntity implements IMob {
 		//setAttributes(); // Must call this again because EntityWolf calls setTamed(false) which messes with our changes
 	}
 
-	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return WolfEntity.func_234233_eS_()
-				.func_233815_a_(Attributes.field_233818_a_, 10.0D);
+				.func_233815_a_(Attributes.MAX_HEALTH, 10.0D);
 	}
 
 	@Override

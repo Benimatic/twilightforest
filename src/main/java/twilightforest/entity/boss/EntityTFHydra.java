@@ -98,10 +98,10 @@ public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 		this.bossInfo.setName(this.getDisplayName());
 	}
 
-	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MobEntity.func_233666_p_()
-				.func_233815_a_(Attributes.field_233818_a_, MAX_HEALTH)
-				.func_233815_a_(Attributes.field_233821_d_, 0.28D);
+				.func_233815_a_(Attributes.MAX_HEALTH, MAX_HEALTH)
+				.func_233815_a_(Attributes.MOVEMENT_SPEED, 0.28D);
 	}
 
 	@Override
@@ -686,7 +686,7 @@ public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 	protected void collideWithEntity(Entity entity) {}
 
 	@Override
-	public void func_233627_a_(float strength, double xRatio, double zRatio) {
+	public void applyKnockback(float strength, double xRatio, double zRatio) {
 	}
 
 	@Override

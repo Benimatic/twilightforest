@@ -103,12 +103,12 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 		dataManager.register(TIRED_FLAG, (byte) 0);
 	}
 
-	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MonsterEntity.func_234295_eP_()
-				.func_233815_a_(Attributes.field_233818_a_, 200.0D)
-				.func_233815_a_(Attributes.field_233821_d_, 0.38D)
-				.func_233815_a_(Attributes.field_233823_f_, 1.0D)
-				.func_233815_a_(Attributes.field_233819_b_, 40.0D);
+				.func_233815_a_(Attributes.MAX_HEALTH, 200.0D)
+				.func_233815_a_(Attributes.MOVEMENT_SPEED, 0.38D)
+				.func_233815_a_(Attributes.ATTACK_DAMAGE, 1.0D)
+				.func_233815_a_(Attributes.FOLLOW_RANGE, 40.0D);
 	}
 
 	@Override

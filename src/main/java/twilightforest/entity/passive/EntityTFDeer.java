@@ -35,10 +35,10 @@ public class EntityTFDeer extends AnimalEntity {
 		goalSelector.addGoal(7, new LookRandomlyGoal(this));
 	}
 
-	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MobEntity.func_233666_p_()
-				.func_233815_a_(Attributes.field_233818_a_, 10.0)
-				.func_233815_a_(Attributes.field_233821_d_, 0.2);
+				.func_233815_a_(Attributes.MAX_HEALTH, 10.0)
+				.func_233815_a_(Attributes.MOVEMENT_SPEED, 0.2);
 	}
 
 	@Override

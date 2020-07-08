@@ -186,7 +186,7 @@ public class ItemTFScepterLifeDrain extends Item {
 	}
 
 	private float getMaxHealth(LivingEntity target) {
-		return (float) target.getAttribute(Attributes.field_233818_a_).getBaseValue();
+		return (float) target.getAttribute(Attributes.MAX_HEALTH).getBaseValue();
 	}
 
 	private void makeRedMagicTrail(World world, double srcX, double srcY, double srcZ, double destX, double destY, double destZ) {

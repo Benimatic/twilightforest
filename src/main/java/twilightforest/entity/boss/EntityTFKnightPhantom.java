@@ -104,10 +104,10 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 		targetSelector.addGoal(0, new TFNearestPlayerGoal(this));
 	}
 
-	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MobEntity.func_233666_p_()
-				.func_233815_a_(Attributes.field_233818_a_, 35.0D)
-				.func_233815_a_(Attributes.field_233823_f_, 1.0D);
+				.func_233815_a_(Attributes.MAX_HEALTH, 35.0D)
+				.func_233815_a_(Attributes.ATTACK_DAMAGE, 1.0D);
 	}
 
 	public Formation getCurrentFormation() {
@@ -200,7 +200,7 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 	// [VanillaCopy] Exact copy of EntityMob.attackEntityAsMob
 	@Override
 	public boolean attackEntityAsMob(Entity entityIn) {
-		float f = (float) this.getAttribute(Attributes.field_233823_f_).getValue();
+		float f = (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getValue();
 		int i = 0;
 
 		if (entityIn instanceof LivingEntity) {
@@ -212,7 +212,7 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 
 		if (flag) {
 			if (i > 0 && entityIn instanceof LivingEntity) {
-				((LivingEntity) entityIn).func_233627_a_((float) i * 0.5F, (double) MathHelper.sin(this.rotationYaw * 0.017453292F), (double) (-MathHelper.cos(this.rotationYaw * 0.017453292F)));
+				((LivingEntity) entityIn).applyKnockback((float) i * 0.5F, (double) MathHelper.sin(this.rotationYaw * 0.017453292F), (double) (-MathHelper.cos(this.rotationYaw * 0.017453292F)));
 				setMotion(new Vector3d(
 						getMotion().getX() * 0.6D,
 						getMotion().getY(),
@@ -252,7 +252,7 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 	}
 
 	@Override
-	public void func_233627_a_(float damage, double xRatio, double zRatio) {
+	public void applyKnockback(float damage, double xRatio, double zRatio) {
 		isAirBorne = true;
 		float f = MathHelper.sqrt(xRatio * xRatio + zRatio * zRatio);
 		float distance = 0.2F;
@@ -310,11 +310,11 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 		dataManager.set(FLAG_CHARGING, flag);
 		if (!world.isRemote) {
 			if (flag) {
-				if (!getAttribute(Attributes.field_233823_f_).hasModifier(CHARGING_MODIFIER)) {
-					getAttribute(Attributes.field_233823_f_).func_233767_b_(CHARGING_MODIFIER);
+				if (!getAttribute(Attributes.ATTACK_DAMAGE).hasModifier(CHARGING_MODIFIER)) {
+					getAttribute(Attributes.ATTACK_DAMAGE).func_233767_b_(CHARGING_MODIFIER);
 				}
 			} else {
-				getAttribute(Attributes.field_233823_f_).removeModifier(CHARGING_MODIFIER);
+				getAttribute(Attributes.ATTACK_DAMAGE).removeModifier(CHARGING_MODIFIER);
 			}
 		}
 	}

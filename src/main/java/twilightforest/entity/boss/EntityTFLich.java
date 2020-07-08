@@ -133,11 +133,11 @@ public class EntityTFLich extends MonsterEntity {
 		dataManager.register(DATA_ATTACKTYPE, (byte) 0);
 	}
 
-	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MonsterEntity.func_234295_eP_()
-				.func_233815_a_(Attributes.field_233818_a_, MAX_HEALTH)
-				.func_233815_a_(Attributes.field_233823_f_, 6.0D)
-				.func_233815_a_(Attributes.field_233821_d_, 0.45000001788139344D); // Same speed as an angry enderman
+				.func_233815_a_(Attributes.MAX_HEALTH, MAX_HEALTH)
+				.func_233815_a_(Attributes.ATTACK_DAMAGE, 6.0D)
+				.func_233815_a_(Attributes.MOVEMENT_SPEED, 0.45000001788139344D); // Same speed as an angry enderman
 	}
 
 	@Override

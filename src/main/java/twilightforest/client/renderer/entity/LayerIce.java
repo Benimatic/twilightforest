@@ -25,7 +25,7 @@ public class LayerIce<T extends LivingEntity, M extends EntityModel<T>> extends 
 
 	@Override
 	public void render(MatrixStack stack, IRenderTypeBuffer buffer, int light, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-		if (entity.getAttribute(Attributes.field_233821_d_).getModifier(PotionFrosted.MODIFIER_UUID) == null) { //Movement speed
+		if (entity.getAttribute(Attributes.MOVEMENT_SPEED).getModifier(PotionFrosted.MODIFIER_UUID) == null) { //Movement speed
 			return;
 		}
 

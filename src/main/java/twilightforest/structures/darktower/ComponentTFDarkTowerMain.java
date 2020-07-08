@@ -1312,7 +1312,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 			tags.putShort("MaxNearbyEntities", (short) 2);//(short) (world.difficultySetting));
 			tags.putShort("SpawnCount", (short) 1);
 
-			spawner.func_230337_a_(spawner.getBlockState(), tags);
+			spawner.read(spawner.getBlockState(), tags);
 		}
 	}
 

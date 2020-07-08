@@ -69,7 +69,7 @@ public class TFBiomeFeatures {
 	public static final RegistryObject<Feature<SphereReplaceConfig>> MYCELIUM_BLOB = FEATURES.register("mycelium_blob", () ->
 			new TFGenMyceliumBlob(SphereReplaceConfig.field_236516_a_));
 	public static final RegistryObject<Feature<CaveStalactiteConfig>> OUTSIDE_STALAGMITE = FEATURES.register("outside_stalagmite", () ->
-			new TFGenOutsideStalagmite(CaveStalactiteConfig::deserialize));
+			new TFGenOutsideStalagmite(CaveStalactiteConfig.caveStalactiteCodec));
 	public static final RegistryObject<Feature<NoFeatureConfig>> PENGUINS = FEATURES.register("penguins", () ->
 			new TFGenPenguins(NoFeatureConfig.field_236558_a_));
 	public static final RegistryObject<Feature<NoFeatureConfig>> PLANT_ROOTS = FEATURES.register("plant_roots", () ->

@@ -412,12 +412,12 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 		}
 	}
 
-	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MonsterEntity.func_234295_eP_()
-				.func_233815_a_(Attributes.field_233818_a_, getMaxHealthPerDifficulty()) //TODO: We're static now
-				.func_233815_a_(Attributes.field_233821_d_, DEFAULT_SPEED)
-				.func_233815_a_(Attributes.field_233823_f_, 5.0D)
-				.func_233815_a_(Attributes.field_233819_b_, 80.0D);
+				.func_233815_a_(Attributes.MAX_HEALTH, getMaxHealthPerDifficulty()) //TODO: We're static now
+				.func_233815_a_(Attributes.MOVEMENT_SPEED, DEFAULT_SPEED)
+				.func_233815_a_(Attributes.ATTACK_DAMAGE, 5.0D)
+				.func_233815_a_(Attributes.FOLLOW_RANGE, 80.0D);
 	}
 
 	/**
@@ -439,7 +439,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 			double newSpeed = DEFAULT_SPEED - newSegments * (-0.2F / 12F);
 			if (newSpeed < 0)
 				newSpeed = 0;
-			this.getAttribute(Attributes.field_233821_d_).setBaseValue(newSpeed);
+			this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(newSpeed);
 		}
 	}
 
@@ -594,26 +594,26 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 	 * Sets the naga to move slowly, such as when he is intimidating the player
 	 */
 	private void goSlow() {
-		this.getAttribute(Attributes.field_233821_d_).removeModifier(slowSpeed); // if we apply this twice, we crash, but we can always remove it
-		this.getAttribute(Attributes.field_233821_d_).removeModifier(fastSpeed);
-		this.getAttribute(Attributes.field_233821_d_).func_233767_b_(slowSpeed);
+		this.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(slowSpeed); // if we apply this twice, we crash, but we can always remove it
+		this.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(fastSpeed);
+		this.getAttribute(Attributes.MOVEMENT_SPEED).func_233767_b_(slowSpeed);
 	}
 
 	/**
 	 * Normal speed, like when he is circling
 	 */
 	private void goNormal() {
-		this.getAttribute(Attributes.field_233821_d_).removeModifier(slowSpeed);
-		this.getAttribute(Attributes.field_233821_d_).removeModifier(fastSpeed);
+		this.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(slowSpeed);
+		this.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(fastSpeed);
 	}
 
 	/**
 	 * Fast, like when he is charging
 	 */
 	private void goFast() {
-		this.getAttribute(Attributes.field_233821_d_).removeModifier(slowSpeed);
-		this.getAttribute(Attributes.field_233821_d_).removeModifier(fastSpeed);
-		this.getAttribute(Attributes.field_233821_d_).func_233767_b_(fastSpeed);
+		this.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(slowSpeed);
+		this.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(fastSpeed);
+		this.getAttribute(Attributes.MOVEMENT_SPEED).func_233767_b_(fastSpeed);
 	}
 
 	@Override

@@ -54,11 +54,11 @@ public class EntityTFTroll extends MonsterEntity implements IRangedAttackMob {
 		}
 	}
 
-	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MonsterEntity.func_234295_eP_()
-				.func_233815_a_(Attributes.field_233818_a_, 30.0D)
-				.func_233815_a_(Attributes.field_233821_d_, 0.28D)
-				.func_233815_a_(Attributes.field_233823_f_, 7.0D);
+				.func_233815_a_(Attributes.MAX_HEALTH, 30.0D)
+				.func_233815_a_(Attributes.MOVEMENT_SPEED, 0.28D)
+				.func_233815_a_(Attributes.ATTACK_DAMAGE, 7.0D);
 	}
 
 	@Override
@@ -76,11 +76,11 @@ public class EntityTFTroll extends MonsterEntity implements IRangedAttackMob {
 
 		if (!world.isRemote) {
 			if (rock) {
-				if (!getAttribute(Attributes.field_233819_b_).hasModifier(ROCK_MODIFIER)) {
-					this.getAttribute(Attributes.field_233819_b_).func_233767_b_(ROCK_MODIFIER);
+				if (!getAttribute(Attributes.FOLLOW_RANGE).hasModifier(ROCK_MODIFIER)) {
+					this.getAttribute(Attributes.FOLLOW_RANGE).func_233767_b_(ROCK_MODIFIER);
 				}
 			} else {
-				this.getAttribute(Attributes.field_233819_b_).removeModifier(ROCK_MODIFIER);
+				this.getAttribute(Attributes.FOLLOW_RANGE).removeModifier(ROCK_MODIFIER);
 			}
 			this.setCombatTask();
 		}

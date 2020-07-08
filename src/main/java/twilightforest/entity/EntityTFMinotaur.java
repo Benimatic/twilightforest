@@ -47,10 +47,10 @@ public class EntityTFMinotaur extends MonsterEntity implements ITFCharger {
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, false));
 	}
 
-	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MonsterEntity.func_234295_eP_()
-				.func_233815_a_(Attributes.field_233818_a_, 30.0D)
-				.func_233815_a_(Attributes.field_233821_d_, 0.25D);
+				.func_233815_a_(Attributes.MAX_HEALTH, 30.0D)
+				.func_233815_a_(Attributes.MOVEMENT_SPEED, 0.25D);
 	}
 
 	@Override

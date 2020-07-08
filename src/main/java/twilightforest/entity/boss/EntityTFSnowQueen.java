@@ -96,12 +96,12 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 		return false;
 	}
 
-	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MonsterEntity.func_234295_eP_()
-				.func_233815_a_(Attributes.field_233821_d_, 0.23000000417232513D)
-				.func_233815_a_(Attributes.field_233823_f_, 7.0D)
-				.func_233815_a_(Attributes.field_233819_b_, 40.0D)
-				.func_233815_a_(Attributes.field_233818_a_, 200.0D);
+				.func_233815_a_(Attributes.MOVEMENT_SPEED, 0.23000000417232513D)
+				.func_233815_a_(Attributes.ATTACK_DAMAGE, 7.0D)
+				.func_233815_a_(Attributes.FOLLOW_RANGE, 40.0D)
+				.func_233815_a_(Attributes.MAX_HEALTH, 200.0D);
 	}
 
 	@Override

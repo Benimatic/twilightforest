@@ -42,7 +42,7 @@ public class EntityTFRisingZombie extends ZombieEntity {
 			remove();
 			ZombieEntity zombie = new ZombieEntity(world);
 			zombie.setPositionAndUpdate(getPosX(), getPosY(), getPosZ());
-			zombie.getAttribute(Attributes.field_233818_a_).setBaseValue(getMaxHealth());
+			zombie.getAttribute(Attributes.MAX_HEALTH).setBaseValue(getMaxHealth());
 			zombie.setHealth(getHealth());
 			zombie.setChild(isChild());
 			world.addEntity(zombie);
@@ -56,7 +56,7 @@ public class EntityTFRisingZombie extends ZombieEntity {
 	}
 
 	@Override
-	public void func_233627_a_(float strength, double xRatio, double zRatio) {
+	public void applyKnockback(float strength, double xRatio, double zRatio) {
 		//NO-OP
 	}
 }

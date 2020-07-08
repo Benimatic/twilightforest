@@ -216,7 +216,7 @@ public class TFEventListener {
 			}
 
 			if (charm2) {
-				living.setHealth((float) living.getAttribute(Attributes.field_233818_a_).getBaseValue()); //Max Health
+				living.setHealth((float) living.getAttribute(Attributes.MAX_HEALTH).getBaseValue()); //Max Health
 
 				living.addPotionEffect(new EffectInstance(Effects.REGENERATION, 600, 3));
 				living.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 600, 0));

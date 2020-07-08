@@ -10,7 +10,7 @@ public enum TowerDeviceVariant implements IStringSerializable {
 	BUILDER_TIMEOUT;
 
 	@Override
-	public String func_176610_l() {
+	public String getString() {
 		return name().toLowerCase(Locale.ROOT);
 	}
 }

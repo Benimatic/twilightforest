@@ -39,8 +39,8 @@ public class BlockTFLockedVanishing extends BlockTFVanishingBlock {
 	}
 
 	@Override
-	public float getExplosionResistance(BlockState state, IWorldReader world, BlockPos pos, @Nullable Entity exploder, Explosion explosion) {
-		return state.get(LOCKED) ? 6000000.0F : super.getExplosionResistance(state, world, pos, exploder, explosion);
+	public float getExplosionResistance(BlockState state, IBlockReader world, BlockPos pos, Explosion explosion) {
+		return state.get(LOCKED) ? 6000000.0F : super.getExplosionResistance(state, world, pos, explosion);
 	}
 
 	@Override

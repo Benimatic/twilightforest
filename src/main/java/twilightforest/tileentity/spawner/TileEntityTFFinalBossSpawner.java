@@ -16,7 +16,7 @@ public class TileEntityTFFinalBossSpawner extends TileEntityTFBossSpawner<Entity
 	protected void initializeCreature(EntityTFKobold myCreature) {
 		super.initializeCreature(myCreature);
 		myCreature.setCustomName(new StringTextComponent("Final Boss"));
-		myCreature.getAttribute(Attributes.field_233818_a_).setBaseValue(1024);
+		myCreature.getAttribute(Attributes.MAX_HEALTH).setBaseValue(1024);
 		myCreature.setHealth(myCreature.getMaxHealth());
 	}
 }

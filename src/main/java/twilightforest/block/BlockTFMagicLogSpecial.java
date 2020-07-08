@@ -35,7 +35,7 @@ public class BlockTFMagicLogSpecial extends RotatedPillarBlock {
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
 	protected BlockTFMagicLogSpecial(AbstractBlock.Properties props, MagicWoodVariant variant) {
-		super(props.hardnessAndResistance(2.0F).sound(SoundType.WOOD).func_235838_a_((state) -> 15));
+		super(props.hardnessAndResistance(2.0F).sound(SoundType.WOOD).setLightLevel((state) -> 15));
 
 		magicWoodVariant = variant;
 		setDefaultState(stateContainer.getBaseState().with(ACTIVE, false));

@@ -107,9 +107,9 @@ public class EntityTFHydraPart extends MobEntity {
 		while (rotationYawHead - prevRotationYawHead >= 180F) prevRotationYawHead += 360F;
 	}
 
-	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MobEntity.func_233666_p_()
-				.func_233815_a_(Attributes.field_233818_a_, 1000D);
+				.func_233815_a_(Attributes.MAX_HEALTH, 1000D);
 	}
 
 	@Override

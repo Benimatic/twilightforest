@@ -11,7 +11,7 @@ public enum HugeLilypadPiece implements IStringSerializable {
 	SW;
 
 	@Override
-	public String func_176610_l() {
+	public String getString() {
 		return name().toLowerCase(Locale.ROOT);
 	}
 }

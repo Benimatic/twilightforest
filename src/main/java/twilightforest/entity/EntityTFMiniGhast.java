@@ -31,10 +31,10 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast {
 		return 16;
 	}
 
-	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return EntityTFTowerGhast.registerAttributes()
-				.func_233815_a_(Attributes.field_233818_a_, this.isMinion ? 6 : 10) //TODO
-				.func_233815_a_(Attributes.field_233819_b_, 16.0D);
+				.func_233815_a_(Attributes.MAX_HEALTH, this.isMinion ? 6 : 10) //TODO
+				.func_233815_a_(Attributes.FOLLOW_RANGE, 16.0D);
 	}
 
 	@Override
@@ -69,7 +69,7 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast {
 		this.wanderFactor = 0.005F;
 		this.isMinion = true;
 
-		this.getAttribute(Attributes.field_233818_a_).setBaseValue(6);
+		this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(6);
 		this.setHealth(6);
 	}
 

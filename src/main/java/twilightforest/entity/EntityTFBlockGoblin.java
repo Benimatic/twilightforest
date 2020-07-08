@@ -73,12 +73,12 @@ public class EntityTFBlockGoblin extends MonsterEntity implements IEntityMultiPa
 		dataManager.register(IS_THROWING, false);
 	}
 
-	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MonsterEntity.func_234295_eP_()
-				.func_233815_a_(Attributes.field_233818_a_, 20.0D)
-				.func_233815_a_(Attributes.field_233821_d_, 0.28D)
-				.func_233815_a_(Attributes.field_233823_f_, 8.0D)
-				.func_233815_a_(Attributes.field_233826_i_, 11.0D);
+				.func_233815_a_(Attributes.MAX_HEALTH, 20.0D)
+				.func_233815_a_(Attributes.MOVEMENT_SPEED, 0.28D)
+				.func_233815_a_(Attributes.ATTACK_DAMAGE, 8.0D)
+				.func_233815_a_(Attributes.ARMOR, 11.0D);
 	}
 
     @Override

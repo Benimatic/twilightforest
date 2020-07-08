@@ -71,10 +71,10 @@ public class EntityTFQuestRam extends AnimalEntity {
 		return null;
 	}
 
-	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MobEntity.func_233666_p_()
-				.func_233815_a_(Attributes.field_233818_a_, 70.0D)
-				.func_233815_a_(Attributes.field_233821_d_, 0.23);
+				.func_233815_a_(Attributes.MAX_HEALTH, 70.0D)
+				.func_233815_a_(Attributes.MOVEMENT_SPEED, 0.23);
 	}
 
 	@Override

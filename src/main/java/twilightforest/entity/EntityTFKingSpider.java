@@ -26,11 +26,11 @@ public class EntityTFKingSpider extends SpiderEntity {
 		//this.goalSelector.addGoal(1, new EntityAITFChargeAttack(this, 0.4F));
 	}
 
-	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return SpiderEntity.func_234305_eI_()
-				.func_233815_a_(Attributes.field_233818_a_, 30.0D)
-				.func_233815_a_(Attributes.field_233821_d_, 0.35D)
-				.func_233815_a_(Attributes.field_233823_f_, 6.0D);
+				.func_233815_a_(Attributes.MAX_HEALTH, 30.0D)
+				.func_233815_a_(Attributes.MOVEMENT_SPEED, 0.35D)
+				.func_233815_a_(Attributes.ATTACK_DAMAGE, 6.0D);
 	}
 
 	//TODO: Moved to renderer?

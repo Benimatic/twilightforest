@@ -215,10 +215,10 @@ public class EntityTFTowerGhast extends GhastEntity {
 		}
 	}
 
-	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return GhastEntity.func_234290_eH_()
-				.func_233815_a_(Attributes.field_233818_a_, 30.0D)
-				.func_233815_a_(Attributes.field_233819_b_, 64.0D);
+				.func_233815_a_(Attributes.MAX_HEALTH, 30.0D)
+				.func_233815_a_(Attributes.FOLLOW_RANGE, 64.0D);
 	}
 
 	@Override

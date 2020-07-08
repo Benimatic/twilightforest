@@ -60,7 +60,7 @@ public class EntityTFHydraMortar extends ThrowableEntity {
 
 		this.pushOutOfBlocks(this.getPosX(), (this.getBoundingBox().minY + this.getBoundingBox().maxY) / 2.0D, this.getPosZ());
 
-		if (this.onGround) {
+		if (this.func_233570_aj_()) {
 //			this.motionX *= 0.9D;
 //			this.motionY *= 0.9D;
 //			this.motionZ *= 0.9D;

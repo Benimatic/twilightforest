@@ -45,10 +45,10 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf implements IBreathAt
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
 	}
 
-	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return EntityTFHostileWolf.registerAttributes()
-				.func_233815_a_(Attributes.field_233818_a_, 30.0D)
-				.func_233815_a_(Attributes.field_233823_f_, 6);
+				.func_233815_a_(Attributes.MAX_HEALTH, 30.0D)
+				.func_233815_a_(Attributes.ATTACK_DAMAGE, 6);
 	}
 
 	@Override

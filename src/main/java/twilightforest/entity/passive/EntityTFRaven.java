@@ -30,10 +30,10 @@ public class EntityTFRaven extends EntityTFTinyBird {
 		this.goalSelector.addGoal(7, new LookRandomlyGoal(this));
 	}
 
-	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return EntityTFTinyBird.registerAttributes()
-				.func_233815_a_(Attributes.field_233818_a_, 10.0D)
-				.func_233815_a_(Attributes.field_233821_d_, 0.2);
+				.func_233815_a_(Attributes.MAX_HEALTH, 10.0D)
+				.func_233815_a_(Attributes.MOVEMENT_SPEED, 0.2);
 	}
 
 	@Override

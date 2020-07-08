@@ -7,7 +7,6 @@ import net.minecraft.advancements.criterion.NBTPredicate;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.state.IProperty;
 import net.minecraft.state.Property;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
@@ -114,7 +113,7 @@ public class BlockPredicate {
         }
 
         private boolean test(BlockState state) {
-            return state.getProperties().contains(property) && comparisonType.test(value, state.get(property));
+            return state.func_235904_r_().contains(property) && comparisonType.test(value, state.get(property));
         }
 
         private enum ComparisonType {

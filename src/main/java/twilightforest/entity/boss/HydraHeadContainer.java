@@ -397,7 +397,7 @@ public class HydraHeadContainer {
 
 		} else {
 			this.headEntity.deathTime = 0;
-			this.headEntity.setHealth((float) this.headEntity.getAttribute(Attributes.field_233818_a_).getBaseValue());
+			this.headEntity.setHealth((float) this.headEntity.getAttribute(Attributes.MAX_HEALTH).getBaseValue());
 		}
 	}
 

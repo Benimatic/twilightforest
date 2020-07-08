@@ -45,11 +45,11 @@ public class EntityTFGoblinKnightLower extends MonsterEntity {
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, false));
 	}
 
-	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MonsterEntity.func_234295_eP_()
-				.func_233815_a_(Attributes.field_233818_a_, 20.0D)
-				.func_233815_a_(Attributes.field_233821_d_, 0.28D)
-				.func_233815_a_(Attributes.field_233823_f_, 4.0D);
+				.func_233815_a_(Attributes.MAX_HEALTH, 20.0D)
+				.func_233815_a_(Attributes.MOVEMENT_SPEED, 0.28D)
+				.func_233815_a_(Attributes.ATTACK_DAMAGE, 4.0D);
 	}
 
 	@Override
@@ -67,11 +67,11 @@ public class EntityTFGoblinKnightLower extends MonsterEntity {
 
 		if (!world.isRemote) {
 			if (flag) {
-				if (!getAttribute(Attributes.field_233826_i_).hasModifier(ARMOR_MODIFIER)) {
-					getAttribute(Attributes.field_233826_i_).func_233767_b_(ARMOR_MODIFIER);
+				if (!getAttribute(Attributes.ARMOR).hasModifier(ARMOR_MODIFIER)) {
+					getAttribute(Attributes.ARMOR).func_233767_b_(ARMOR_MODIFIER);
 				}
 			} else {
-				getAttribute(Attributes.field_233826_i_).removeModifier(ARMOR_MODIFIER);
+				getAttribute(Attributes.ARMOR).removeModifier(ARMOR_MODIFIER);
 			}
 		}
 	}

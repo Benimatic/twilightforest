@@ -62,9 +62,9 @@ public class EntityTFMinoshroom extends EntityTFMinotaur {
 		dataManager.set(GROUND_ATTACK, flag);
 	}
 
-	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return EntityTFMinotaur.registerAttributes()
-				.func_233815_a_(Attributes.field_233818_a_, 120.0D);
+				.func_233815_a_(Attributes.MAX_HEALTH, 120.0D);
 	}
 
 	@Override

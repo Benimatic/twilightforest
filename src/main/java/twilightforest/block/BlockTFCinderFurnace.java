@@ -31,7 +31,7 @@ public class BlockTFCinderFurnace extends Block {
 	private static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
 
 	BlockTFCinderFurnace() {
-		super(Properties.create(Material.WOOD).hardnessAndResistance(7.0F).func_235838_a_((state) -> 15));
+		super(Properties.create(Material.WOOD).hardnessAndResistance(7.0F).setLightLevel((state) -> 15));
 		this.setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH).with(LIT, false));
 	}
 

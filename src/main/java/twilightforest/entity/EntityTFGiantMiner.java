@@ -42,12 +42,12 @@ public class EntityTFGiantMiner extends MonsterEntity {
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
 	}
 
-	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MonsterEntity.func_234295_eP_()
-				.func_233815_a_(Attributes.field_233818_a_, 80.0D)
-				.func_233815_a_(Attributes.field_233821_d_, 0.23D)
-				.func_233815_a_(Attributes.field_233823_f_, 2.0D)
-				.func_233815_a_(Attributes.field_233819_b_, 40.0D);
+				.func_233815_a_(Attributes.MAX_HEALTH, 80.0D)
+				.func_233815_a_(Attributes.MOVEMENT_SPEED, 0.23D)
+				.func_233815_a_(Attributes.ATTACK_DAMAGE, 2.0D)
+				.func_233815_a_(Attributes.FOLLOW_RANGE, 40.0D);
 	}
 
 	@Nullable

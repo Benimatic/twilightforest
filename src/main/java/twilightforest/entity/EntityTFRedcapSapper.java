@@ -30,9 +30,9 @@ public class EntityTFRedcapSapper extends EntityTFRedcap {
 		this.goalSelector.addGoal(4, new EntityAITFRedcapPlantTNT(this));
 	}
 
-	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return EntityTFRedcap.registerAttributes()
-				.func_233815_a_(Attributes.field_233818_a_, 30.0D)
-				.func_233815_a_(Attributes.field_233826_i_, 2.0D);
+				.func_233815_a_(Attributes.MAX_HEALTH, 30.0D)
+				.func_233815_a_(Attributes.ARMOR, 2.0D);
 	}
 }

@@ -17,10 +17,10 @@ public class EntityTFTowerBroodling extends EntityTFSwarmSpider {
 		experienceValue = 3;
 	}
 
-	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return EntityTFSwarmSpider.registerAttributes()
-				.func_233815_a_(Attributes.field_233818_a_, 7.0D)
-				.func_233815_a_(Attributes.field_233823_f_, 4.0D);
+				.func_233815_a_(Attributes.MAX_HEALTH, 7.0D)
+				.func_233815_a_(Attributes.ATTACK_DAMAGE, 4.0D);
 	}
 
 	@Override

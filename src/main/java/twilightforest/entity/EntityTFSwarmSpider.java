@@ -34,10 +34,10 @@ public class EntityTFSwarmSpider extends SpiderEntity {
 		experienceValue = 2;
 	}
 
-	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return SpiderEntity.func_234305_eI_()
-				.func_233815_a_(Attributes.field_233818_a_, 3.0D)
-				.func_233815_a_(Attributes.field_233823_f_, 1.0D);
+				.func_233815_a_(Attributes.MAX_HEALTH, 3.0D)
+				.func_233815_a_(Attributes.ATTACK_DAMAGE, 1.0D);
 	}
 
 	@Override

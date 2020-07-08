@@ -44,11 +44,11 @@ public class EntityTFLoyalZombie extends TameableEntity {
 		return null;
 	}
 
-	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MobEntity.func_233666_p_()
-				.func_233815_a_(Attributes.field_233818_a_, 40.0D)
-				.func_233815_a_(Attributes.field_233821_d_, 0.3D)
-				.func_233815_a_(Attributes.field_233826_i_, 3.0D);
+				.func_233815_a_(Attributes.MAX_HEALTH, 40.0D)
+				.func_233815_a_(Attributes.MOVEMENT_SPEED, 0.3D)
+				.func_233815_a_(Attributes.ARMOR, 3.0D);
 	}
 
 	@Override

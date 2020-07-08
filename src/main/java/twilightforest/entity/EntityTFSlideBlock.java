@@ -181,7 +181,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 				double kx = (this.getPosX() - entity.getPosX()) * 2.0;
 				double kz = (this.getPosZ() - entity.getPosZ()) * 2.0;
 
-				((LivingEntity) entity).func_233627_a_(2, kx, kz);
+				((LivingEntity) entity).applyKnockback(2, kx, kz);
 			}
 		}
 	}

@@ -57,11 +57,11 @@ public class EntityTFGoblinKnightUpper extends MonsterEntity {
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, false));
 	}
 
-	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MonsterEntity.func_234295_eP_()
-				.func_233815_a_(Attributes.field_233818_a_, 30.0D)
-				.func_233815_a_(Attributes.field_233821_d_, 0.28D)
-				.func_233815_a_(Attributes.field_233823_f_, 8.0D);
+				.func_233815_a_(Attributes.MAX_HEALTH, 30.0D)
+				.func_233815_a_(Attributes.MOVEMENT_SPEED, 0.28D)
+				.func_233815_a_(Attributes.ATTACK_DAMAGE, 8.0D);
 	}
 
 	@Override
@@ -80,11 +80,11 @@ public class EntityTFGoblinKnightUpper extends MonsterEntity {
 
 		if (!world.isRemote) {
 			if (flag) {
-				if (!getAttribute(Attributes.field_233826_i_).hasModifier(ARMOR_MODIFIER)) {
-					getAttribute(Attributes.field_233826_i_).func_233767_b_(ARMOR_MODIFIER);
+				if (!getAttribute(Attributes.ARMOR).hasModifier(ARMOR_MODIFIER)) {
+					getAttribute(Attributes.ARMOR).func_233767_b_(ARMOR_MODIFIER);
 				}
 			} else {
-				getAttribute(Attributes.field_233826_i_).removeModifier(ARMOR_MODIFIER);
+				getAttribute(Attributes.ARMOR).removeModifier(ARMOR_MODIFIER);
 			}
 		}
 	}
@@ -136,11 +136,11 @@ public class EntityTFGoblinKnightUpper extends MonsterEntity {
 			}
 
 			if (heavySpearTimer > 0) {
-				if (!getAttribute(Attributes.field_233823_f_).hasModifier(DAMAGE_MODIFIER)) {
-					getAttribute(Attributes.field_233823_f_).func_233767_b_(DAMAGE_MODIFIER);
+				if (!getAttribute(Attributes.ATTACK_DAMAGE).hasModifier(DAMAGE_MODIFIER)) {
+					getAttribute(Attributes.ATTACK_DAMAGE).func_233767_b_(DAMAGE_MODIFIER);
 				}
 			} else {
-				getAttribute(Attributes.field_233823_f_).removeModifier(DAMAGE_MODIFIER.getID());
+				getAttribute(Attributes.ATTACK_DAMAGE).removeModifier(DAMAGE_MODIFIER.getID());
 			}
 		}
 	}
@@ -278,7 +278,7 @@ public class EntityTFGoblinKnightUpper extends MonsterEntity {
 				d0 = (Math.random() - Math.random()) * 0.01D;
 			}
 
-			toKnockback.func_233627_a_(0, d0 / 4D, d1 / 4D);
+			toKnockback.applyKnockback(0, d0 / 4D, d1 / 4D);
 
 			// also set revenge target
 			if (source.getTrueSource() instanceof LivingEntity) {

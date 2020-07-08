@@ -127,7 +127,7 @@ public class BlockTFSlider extends RotatedPillarBlock {
 			double kx = (pos.getX() + 0.5 - entity.getPosX()) * 2.0;
 			double kz = (pos.getZ() + 0.5 - entity.getPosZ()) * 2.0;
 
-			((LivingEntity) entity).func_233627_a_(2, kx, kz);
+			((LivingEntity) entity).applyKnockback(2, kx, kz);
 		}
 	}
 }

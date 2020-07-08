@@ -36,7 +36,7 @@ public class ItemTFTrophy extends Item {
 
 	@Override
 	public ITextComponent getDisplayName(ItemStack stack) {
-		return new TranslationTextComponent(this.getTranslationKey(stack), new TranslationTextComponent("entity.twilightforest." + bossVariant.func_176610_l().toLowerCase(Locale.ROOT) + ".name"));
+		return new TranslationTextComponent(this.getTranslationKey(stack), new TranslationTextComponent("entity.twilightforest." + bossVariant.getString().toLowerCase(Locale.ROOT) + ".name"));
 	}
 
 	// [VanillaCopy] ItemSkull, with own block and no player heads

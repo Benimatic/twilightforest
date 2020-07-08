@@ -175,11 +175,11 @@ public class EntityTFWraith extends FlyingEntity implements IMob {
 		}
 	}
 
-	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MobEntity.func_233666_p_()
-				.func_233815_a_(Attributes.field_233818_a_, 20.0D)
-				.func_233815_a_(Attributes.field_233821_d_, 0.5D)
-				.func_233815_a_(Attributes.field_233823_f_, 5.0D);
+				.func_233815_a_(Attributes.MAX_HEALTH, 20.0D)
+				.func_233815_a_(Attributes.MOVEMENT_SPEED, 0.5D)
+				.func_233815_a_(Attributes.ATTACK_DAMAGE, 5.0D);
 	}
 
 	@Override
@@ -190,7 +190,7 @@ public class EntityTFWraith extends FlyingEntity implements IMob {
 	// [VanillaCopy] EntityMob.attackEntityAsMob. This whole inheritance hierarchy makes me sad.
 	@Override
 	public boolean attackEntityAsMob(Entity entityIn) {
-		float f = (float) this.getAttribute(Attributes.field_233823_f_).getValue();
+		float f = (float) this.getAttribute(Attributes.ATTACK_DAMAGE).getValue();
 		int i = 0;
 
 		if (entityIn instanceof LivingEntity) {
@@ -202,7 +202,7 @@ public class EntityTFWraith extends FlyingEntity implements IMob {
 
 		if (flag) {
 			if (i > 0 && entityIn instanceof LivingEntity) {
-				((LivingEntity) entityIn).func_233627_a_((float) i * 0.5F, (double) MathHelper.sin(this.rotationYaw * 0.017453292F), (double) (-MathHelper.cos(this.rotationYaw * 0.017453292F)));
+				((LivingEntity) entityIn).applyKnockback((float) i * 0.5F, (double) MathHelper.sin(this.rotationYaw * 0.017453292F), (double) (-MathHelper.cos(this.rotationYaw * 0.017453292F)));
 				this.setMotion(getMotion().getX() * 0.6D, getMotion().getY(), getMotion().getZ() * 0.6D);
 			}
 

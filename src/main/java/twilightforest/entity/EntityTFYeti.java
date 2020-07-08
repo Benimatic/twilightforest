@@ -63,12 +63,12 @@ public class EntityTFYeti extends MonsterEntity implements IHostileMount {
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
 	}
 
-	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
+	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MonsterEntity.func_234295_eP_()
-				.func_233815_a_(Attributes.field_233818_a_, 20.0D)
-				.func_233815_a_(Attributes.field_233821_d_, 0.38D)
-				.func_233815_a_(Attributes.field_233823_f_, 0.0D)
-				.func_233815_a_(Attributes.field_233819_b_, 4.0D);
+				.func_233815_a_(Attributes.MAX_HEALTH, 20.0D)
+				.func_233815_a_(Attributes.MOVEMENT_SPEED, 0.38D)
+				.func_233815_a_(Attributes.ATTACK_DAMAGE, 0.0D)
+				.func_233815_a_(Attributes.FOLLOW_RANGE, 4.0D);
 	}
 
 	@Override
@@ -117,11 +117,11 @@ public class EntityTFYeti extends MonsterEntity implements IHostileMount {
 
 		if (!world.isRemote) {
 			if (anger) {
-				if (!getAttribute(Attributes.field_233819_b_).hasModifier(ANGRY_MODIFIER)) {
-					this.getAttribute(Attributes.field_233819_b_).func_233767_b_(ANGRY_MODIFIER);
+				if (!getAttribute(Attributes.FOLLOW_RANGE).hasModifier(ANGRY_MODIFIER)) {
+					this.getAttribute(Attributes.FOLLOW_RANGE).func_233767_b_(ANGRY_MODIFIER);
 				}
 			} else {
-				this.getAttribute(Attributes.field_233819_b_).removeModifier(ANGRY_MODIFIER);
+				this.getAttribute(Attributes.FOLLOW_RANGE).removeModifier(ANGRY_MODIFIER);
 			}
 		}
 	}
