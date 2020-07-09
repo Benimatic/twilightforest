@@ -1,9 +1,17 @@
 package twilightforest.item;
 
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -13,6 +21,7 @@ import twilightforest.enums.BossVariant;
 import twilightforest.enums.TwilightArmorMaterial;
 import twilightforest.enums.TwilightItemTier;
 
+import javax.annotation.Nullable;
 import java.util.UUID;
 
 public class TFItems {
@@ -149,7 +158,7 @@ public class TFItems {
 	public static final RegistryObject<Item> block_and_chain = ITEMS.register("block_and_chain", () -> new ItemTFChainBlock(defaultBuilder().maxDamage(99)));
 	public static final RegistryObject<Item> cube_talisman = ITEMS.register("cube_talisman", () -> new Item(defaultBuilder().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> cube_of_annihilation = ITEMS.register("cube_of_annihilation", () -> new ItemTFCubeOfAnnihilation(unstackable().rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<Item> moon_dial = ITEMS.register("moon_dial", () -> new ItemTFMoonDial(defaultBuilder()));
+	public static final RegistryObject<Item> moon_dial = ITEMS.register("moon_dial", () -> new Item(defaultBuilder()));
 
 	public static ItemGroup creativeTab = new ItemGroup(TwilightForestMod.ID) {
 		@Override
@@ -164,5 +173,68 @@ public class TFItems {
 
 	public static Item.Properties unstackable() {
 		return defaultBuilder().maxStackSize(1);
+	}
+
+	public static void addItemModelProperties() {
+		ItemModelsProperties.func_239418_a_(cube_of_annihilation.get(), TwilightForestMod.prefix("thrown"), (stack, world, entity) ->
+				ItemTFCubeOfAnnihilation.getThrownUuid(stack) != null ? 1 : 0);
+		ItemModelsProperties.func_239418_a_(moon_dial.get(), new ResourceLocation("phase"), new IItemPropertyGetter() {
+			@Override
+			public float call(ItemStack stack, @Nullable ClientWorld world, @Nullable LivingEntity entityBase) {
+				boolean flag = entityBase != null;
+				Entity entity = flag ? entityBase : stack.getItemFrame();
+
+				if (world == null && entity != null) world = (ClientWorld) entity.world;
+
+				return world == null ? 0.0F : (float) (world.func_230315_m_().func_236043_f_() ? MathHelper.frac(world.getMoonPhase() / 8.0f) : this.wobble(world, Math.random()));
+			}
+
+			@OnlyIn(Dist.CLIENT)
+			double rotation;
+			@OnlyIn(Dist.CLIENT)
+			double rota;
+			@OnlyIn(Dist.CLIENT)
+			long lastUpdateTick;
+
+			@OnlyIn(Dist.CLIENT)
+			private double wobble(World world, double rotation) {
+				if (world.getGameTime() != this.lastUpdateTick) {
+					this.lastUpdateTick = world.getGameTime();
+					double delta = rotation - this.rotation;
+					delta = MathHelper.positiveModulo(delta + 0.5D, 1.0D) - 0.5D;
+					this.rota += delta * 0.1D;
+					this.rota *= 0.9D;
+					this.rotation = MathHelper.positiveModulo(this.rotation + this.rota, 1.0D);
+				}
+
+				return this.rotation;
+			}
+		});
+		ItemModelsProperties.func_239418_a_(moonworm_queen.get(), TwilightForestMod.prefix("alt"), (stack, world, entity) -> {
+			if (entity != null && entity.getActiveItemStack() == stack) {
+				int useTime = stack.getUseDuration() - entity.getItemInUseCount();
+				if (useTime >= ItemTFMoonwormQueen.FIRING_TIME && (useTime >>> 1) % 2 == 0) {
+					return 1;
+				}
+			}
+
+			return 0;
+		});
+		ItemModelsProperties.func_239418_a_(ore_magnet.get(), new ResourceLocation("pull"), (stack, world, entity) -> {
+			if (entity == null) {
+				return 0.0F;
+			} else {
+				ItemStack itemstack = entity.getActiveItemStack();
+				return !itemstack.isEmpty() ? (float) (stack.getUseDuration() - entity.getItemInUseCount()) / 20.0F : 0.0F;
+			}
+		});
+		ItemModelsProperties.func_239418_a_(ore_magnet.get(), new ResourceLocation("pulling"), (stack, world, entity) ->
+				entity != null && entity.isHandActive() && entity.getActiveItemStack() == stack ? 1.0F : 0.0F);
+		ItemModelsProperties.func_239418_a_(block_and_chain.get(), TwilightForestMod.prefix("thrown"), (stack, world, entity) ->
+				ItemTFChainBlock.getThrownUuid(stack) != null ? 1 : 0);
+		ItemModelsProperties.func_239418_a_(experiment_115.get(), ItemTFExperiment115.THINK, (stack, world, entity) ->
+				stack.hasTag() && stack.getTag().contains("think") ? 1 : 0);
+		ItemModelsProperties.func_239418_a_(experiment_115.get(), ItemTFExperiment115.FULL, (stack, world, entity) ->
+				stack.hasTag() && stack.getTag().contains("full") ? 1 : 0);
 	}
 }

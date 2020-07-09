@@ -4,7 +4,6 @@ import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.*;
@@ -17,8 +16,6 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.world.World;
 import twilightforest.block.TFBlocks;
 
-import javax.annotation.Nullable;
-
 import static twilightforest.TwilightForestMod.prefix;
 
 public class ItemTFExperiment115 extends BlockItem {
@@ -27,8 +24,6 @@ public class ItemTFExperiment115 extends BlockItem {
 
 	public ItemTFExperiment115(Block block, Properties props) {
 		super(block, props);
-		addPropertyOverride(THINK, (stack, world, entity) -> stack.hasTag() && stack.getTag().contains("think") ? 1 : 0);
-		addPropertyOverride(FULL, (stack, world, entity) -> stack.hasTag() && stack.getTag().contains("full") ? 1 : 0);
 	}
 
 	@Override

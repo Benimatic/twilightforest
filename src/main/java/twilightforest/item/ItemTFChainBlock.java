@@ -8,7 +8,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.UseAction;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolItem;
 import net.minecraft.nbt.CompoundNBT;
@@ -17,10 +16,7 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolType;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFChainBlock;
 import twilightforest.entity.TFEntities;
 import twilightforest.enums.TwilightItemTier;
@@ -34,14 +30,6 @@ public class ItemTFChainBlock extends ToolItem {
 
 	protected ItemTFChainBlock(Properties props) {
 		super(6, -3.0F, TwilightItemTier.TOOL_KNIGHTLY, Sets.newHashSet(Blocks.STONE), props);
-
-		this.addPropertyOverride(TwilightForestMod.prefix("thrown"), new IItemPropertyGetter() {
-			@OnlyIn(Dist.CLIENT)
-			@Override
-			public float call(ItemStack stack, @Nullable World worldIn, @Nullable LivingEntity entityIn) {
-				return getThrownUuid(stack) != null ? 1 : 0;
-			}
-		});
 	}
 
 	@Override
@@ -74,7 +62,7 @@ public class ItemTFChainBlock extends ToolItem {
 	}
 
 	@Nullable
-	private static UUID getThrownUuid(ItemStack stack) {
+	protected static UUID getThrownUuid(ItemStack stack) {
 		if (stack.hasTag() && stack.getTag().hasUniqueId(THROWN_UUID_KEY)) {
 			return stack.getTag().getUniqueId(THROWN_UUID_KEY);
 		}

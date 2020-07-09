@@ -1,6 +1,5 @@
 package twilightforest.item;
 
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -11,9 +10,6 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.EntityTFCubeOfAnnihilation;
 import twilightforest.entity.TFEntities;
 
@@ -26,13 +22,6 @@ public class ItemTFCubeOfAnnihilation extends Item {
 
 	protected ItemTFCubeOfAnnihilation(Properties props) {
 		super(props);
-		this.addPropertyOverride(TwilightForestMod.prefix("thrown"), new IItemPropertyGetter() {
-			@OnlyIn(Dist.CLIENT)
-			@Override
-			public float call(ItemStack stack, @Nullable ClientWorld worldIn, @Nullable LivingEntity entityIn) {
-				return getThrownUuid(stack) != null ? 1 : 0;
-			}
-		});
 	}
 
 	@Override
@@ -61,7 +50,7 @@ public class ItemTFCubeOfAnnihilation extends Item {
 	}
 
 	@Nullable
-	private static UUID getThrownUuid(ItemStack stack) {
+	protected static UUID getThrownUuid(ItemStack stack) {
 		if (stack.hasTag() && stack.getTag().hasUniqueId(THROWN_UUID_KEY)) {
 			return stack.getTag().getUniqueId(THROWN_UUID_KEY);
 		}

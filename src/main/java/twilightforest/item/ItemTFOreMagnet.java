@@ -9,25 +9,20 @@ import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.item.UseAction;
-import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.Tags;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.FeatureUtil;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,26 +32,6 @@ public class ItemTFOreMagnet extends Item {
 
 	protected ItemTFOreMagnet(Properties props) {
 		super(props);
-		// [VanillaCopy] ItemBow with our item
-		this.addPropertyOverride(new ResourceLocation("pull"), new IItemPropertyGetter() {
-			@Override
-			@OnlyIn(Dist.CLIENT)
-			public float call(ItemStack stack, @Nullable World worldIn, @Nullable LivingEntity entityIn) {
-				if (entityIn == null) {
-					return 0.0F;
-				} else {
-					ItemStack itemstack = entityIn.getActiveItemStack();
-					return !itemstack.isEmpty() && itemstack.getItem() == TFItems.ore_magnet.get() ? (float) (stack.getUseDuration() - entityIn.getItemInUseCount()) / 20.0F : 0.0F;
-				}
-			}
-		});
-		this.addPropertyOverride(new ResourceLocation("pulling"), new IItemPropertyGetter() {
-			@Override
-			@OnlyIn(Dist.CLIENT)
-			public float call(ItemStack stack, @Nullable World worldIn, @Nullable LivingEntity entityIn) {
-				return entityIn != null && entityIn.isHandActive() && entityIn.getActiveItemStack() == stack ? 1.0F : 0.0F;
-			}
-		});
 	}
 
 	@Nonnull

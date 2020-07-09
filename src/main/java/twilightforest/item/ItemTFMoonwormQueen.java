@@ -15,36 +15,18 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.projectile.EntityTFMoonwormShot;
 import twilightforest.entity.TFEntities;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class ItemTFMoonwormQueen extends Item {
 
-	private static final int FIRING_TIME = 12;
+	protected static final int FIRING_TIME = 12;
 
 	protected ItemTFMoonwormQueen(Properties props) {
 		super(props);
-		addPropertyOverride(TwilightForestMod.prefix("alt"), new IItemPropertyGetter() {
-			@OnlyIn(Dist.CLIENT)
-			@Override
-			public float call(@Nonnull ItemStack stack, @Nullable World worldIn, @Nullable LivingEntity entityIn) {
-				if (entityIn != null && entityIn.getActiveItemStack() == stack) {
-					int useTime = stack.getUseDuration() - entityIn.getItemInUseCount();
-					if (useTime >= FIRING_TIME && (useTime >>> 1) % 2 == 0) {
-						return 1;
-					}
-				}
-
-				return 0;
-			}
-		});
 	}
 
 	@Override
