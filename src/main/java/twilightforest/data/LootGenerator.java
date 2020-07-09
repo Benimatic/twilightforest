@@ -25,7 +25,7 @@ public class LootGenerator extends LootTableProvider {
 	@Override
 	protected void validate(Map<ResourceLocation, LootTable> map, ValidationTracker validationtracker) {
 		// [VanillaCopy] super, but remove call that checks that all vanilla tables are accounted for, because we aren't vanilla.
-		map.forEach((id, builder) -> LootTableManager.check(validationtracker, id, builder));
+		map.forEach((id, builder) -> LootTableManager.func_227508_a_(validationtracker, id, builder));
 	}
 
 	@Override

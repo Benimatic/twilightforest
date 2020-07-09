@@ -1,6 +1,8 @@
 package twilightforest.biomes;
 
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeAmbience;
+import net.minecraft.world.biome.MoodSoundAmbience;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.fml.RegistryObject;
@@ -13,14 +15,27 @@ public class TFBiomes {
 	public static final DeferredRegister<Biome> BIOMES = DeferredRegister.create(ForgeRegistries.BIOMES, TwilightForestMod.ID);
 
 	// todo 1.15 values marked "pick" are placeholders and need to be decided
+	//
+	/*NOTE:
+	func_235239_a_ = Fog (from TwilightForestDimension: 0xc0ffd8)
+	func_235246_b_ = Water
+	func_235248_c_ = Water Fog
+	func_235243_a_ = Ambience (Default: Caves)
+	func_235238_a_ = build()
+	TODO: Mood and Loops?
+	 */
 	public static final RegistryObject<Biome> tfLake = BIOMES.register("twilight_lake", () ->
 			new TFBiomeTwilightLake(
 					new Biome.Builder()
 							.surfaceBuilder(TFSurfaceBuilders.DEFAULT_TF, SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG)
 							.precipitation(Biome.RainType.RAIN)
 							.category(Biome.Category.OCEAN)
-							.waterColor(0x3F76E4) // todo 1.15 pick
-							.waterFogColor(0x050533) // todo 1.15 pick
+							.func_235097_a_((new BiomeAmbience.Builder())
+									.func_235246_b_(0xC0FFD8) // todo 1.15 pick
+									.func_235248_c_(0x3F76E4) // todo 1.15 pick
+									.func_235239_a_(0xC0FFD8) // todo 1.15 pick
+									.func_235243_a_(MoodSoundAmbience.field_235027_b_)
+									.func_235238_a_())
 							.temperature(0.66F)
 							.downfall(1)
 							.depth(-1.8F)
@@ -36,8 +51,12 @@ public class TFBiomes {
 							.scale(0.2F)
 							.temperature(0.5F)
 							.downfall(0.5F)
-							.waterColor(0x3F76E4) // todo 1.15 pick
-							.waterFogColor(0x050533) // todo 1.15 pick
+							.func_235097_a_((new BiomeAmbience.Builder())
+									.func_235246_b_(0x3F76E4) // todo 1.15 pick
+									.func_235248_c_(0x050533) // todo 1.15 pick
+									.func_235239_a_(0xC0FFD8) // todo 1.15 pick
+									.func_235243_a_(MoodSoundAmbience.field_235027_b_)
+									.func_235238_a_())
 			));
 	public static final RegistryObject<Biome> denseTwilightForest = BIOMES.register("dense_twilight_forest", () ->
 			new TFBiomeTwilightForestVariant(
@@ -45,8 +64,12 @@ public class TFBiomes {
 							.surfaceBuilder(TFSurfaceBuilders.DEFAULT_TF, SurfaceBuilder.GRASS_DIRT_GRAVEL_CONFIG)
 							.precipitation(Biome.RainType.RAIN)
 							.category(Biome.Category.FOREST)
-							.waterFogColor(0x050533) // todo 1.15 pick
-							.waterColor(0x005522)
+							.func_235097_a_((new BiomeAmbience.Builder())
+									.func_235246_b_(0x005522) // todo 1.15 pick
+									.func_235248_c_(0x050533) // todo 1.15 pick
+									.func_235239_a_(0xC0FFD8) // todo 1.15 pick
+									.func_235243_a_(MoodSoundAmbience.field_235027_b_)
+									.func_235238_a_())
 							.temperature(0.7F)
 							.downfall(0.8F)
 							.depth(0.2F)
@@ -62,8 +85,12 @@ public class TFBiomes {
 							.downfall(0.7F)
 							.depth(3.5F)
 							.scale(0.05F)
-							.waterColor(0x3F76E4) // todo 1.15 pick
-							.waterFogColor(0x050533) // todo 1.15 pick
+							.func_235097_a_((new BiomeAmbience.Builder())
+									.func_235246_b_(0x3F76E4) // todo 1.15 pick
+									.func_235248_c_(0x050533) // todo 1.15 pick
+									.func_235239_a_(0xC0FFD8) // todo 1.15 pick
+									.func_235243_a_(MoodSoundAmbience.field_235027_b_)
+									.func_235238_a_())
 			));
 	public static final RegistryObject<Biome> mushrooms = BIOMES.register("mushroom_forest", () ->
 			new TFBiomeMushrooms(
@@ -75,8 +102,12 @@ public class TFBiomes {
 							.scale(0.2F)
 							.temperature(0.8F)
 							.downfall(0.8F)
-							.waterColor(0x3F76E4) // todo 1.15 pick
-							.waterFogColor(0x050533) // todo 1.15 pick
+							.func_235097_a_((new BiomeAmbience.Builder())
+									.func_235246_b_(0x3F76E4) // todo 1.15 pick
+									.func_235248_c_(0x050533) // todo 1.15 pick
+									.func_235239_a_(0xC0FFD8) // todo 1.15 pick
+									.func_235243_a_(MoodSoundAmbience.field_235027_b_)
+									.func_235238_a_())
 			));
 	public static final RegistryObject<Biome> tfSwamp = BIOMES.register("twilight_swamp", () ->
 			new TFBiomeSwamp(
@@ -88,8 +119,12 @@ public class TFBiomes {
 							.downfall(0.9F)
 							.depth(-0.125F)
 							.scale(0.125F)
-							.waterColor(0xE0FFAE)
-							.waterFogColor(0x050533) // todo 1.15 pick
+							.func_235097_a_((new BiomeAmbience.Builder())
+									.func_235246_b_(0xE0FFAE) // todo 1.15 pick
+									.func_235248_c_(0x050533) // todo 1.15 pick
+									.func_235239_a_(0xC0FFD8) // todo 1.15 pick
+									.func_235243_a_(MoodSoundAmbience.field_235027_b_)
+									.func_235238_a_())
 			));
 	public static final RegistryObject<Biome> stream = BIOMES.register("twilight_stream", () ->
 			new TFBiomeStream(
@@ -101,8 +136,12 @@ public class TFBiomes {
 							.downfall(0.1F)
 							.depth(-0.5F)
 							.scale(0)
-							.waterColor(0x3F76E4) // todo 1.15 pick
-							.waterFogColor(0x050533) // todo 1.15 pick
+							.func_235097_a_((new BiomeAmbience.Builder())
+									.func_235246_b_(0x3F76E4) // todo 1.15 pick
+									.func_235248_c_(0x050533) // todo 1.15 pick
+									.func_235239_a_(0xC0FFD8) // todo 1.15 pick
+									.func_235243_a_(MoodSoundAmbience.field_235027_b_)
+									.func_235238_a_())
 			));
 	public static final RegistryObject<Biome> snowy_forest = BIOMES.register("snowy_forest", () ->
 			new TFBiomeSnow(
@@ -114,8 +153,12 @@ public class TFBiomes {
 							.depth(0.2F)
 							.scale(0.2F)
 							.precipitation(Biome.RainType.SNOW)
-							.waterColor(0x3F76E4) // todo 1.15 pick
-							.waterFogColor(0x050533) // todo 1.15 pick
+							.func_235097_a_((new BiomeAmbience.Builder())
+									.func_235246_b_(0x3F76E4) // todo 1.15 pick
+									.func_235248_c_(0x050533) // todo 1.15 pick
+									.func_235239_a_(0xC0FFD8) // todo 1.15 pick
+									.func_235243_a_(MoodSoundAmbience.field_235027_b_)
+									.func_235238_a_())
 			));
 	public static final RegistryObject<Biome> glacier = BIOMES.register("twilight_glacier", () ->
 			new TFBiomeGlacier(
@@ -127,8 +170,12 @@ public class TFBiomes {
 							.precipitation(Biome.RainType.SNOW)
 							.depth(0.1F)
 							.scale(0.2F)
-							.waterColor(0x3F76E4) // todo 1.15 pick
-							.waterFogColor(0x050533) // todo 1.15 pick
+							.func_235097_a_((new BiomeAmbience.Builder())
+									.func_235246_b_(0x3F76E4) // todo 1.15 pick
+									.func_235248_c_(0x050533) // todo 1.15 pick
+									.func_235239_a_(0xC0FFD8) // todo 1.15 pick
+									.func_235243_a_(MoodSoundAmbience.field_235027_b_)
+									.func_235238_a_())
 			));
 	public static final RegistryObject<Biome> clearing = BIOMES.register("twilight_clearing", () ->
 			new TFBiomeClearing(
@@ -140,8 +187,12 @@ public class TFBiomes {
 							.downfall(0.4F)
 							.depth(0.125F)
 							.scale(0.05F)
-							.waterColor(0x3F76E4) // todo 1.15 pick
-							.waterFogColor(0x050533) // todo 1.15 pick
+							.func_235097_a_((new BiomeAmbience.Builder())
+									.func_235246_b_(0x3F76E4) // todo 1.15 pick
+									.func_235248_c_(0x050533) // todo 1.15 pick
+									.func_235239_a_(0xC0FFD8) // todo 1.15 pick
+									.func_235243_a_(MoodSoundAmbience.field_235027_b_)
+									.func_235238_a_())
 			));
 	public static final RegistryObject<Biome> oakSavanna = BIOMES.register("oak_savannah", () ->
 			new TFBiomeOakSavanna(
@@ -153,8 +204,12 @@ public class TFBiomes {
 							.downfall(0)
 							.depth(0.2F)
 							.scale(0.2F)
-							.waterColor(0x3F76E4) // todo 1.15 pick
-							.waterFogColor(0x050533) // todo 1.15 pick
+							.func_235097_a_((new BiomeAmbience.Builder())
+									.func_235246_b_(0x3F76E4) // todo 1.15 pick
+									.func_235248_c_(0x050533) // todo 1.15 pick
+									.func_235239_a_(0xC0FFD8) // todo 1.15 pick
+									.func_235243_a_(MoodSoundAmbience.field_235027_b_)
+									.func_235238_a_())
 			));
 	public static final RegistryObject<Biome> fireflyForest = BIOMES.register("firefly_forest", () ->
 			new TFBiomeFireflyForest(
@@ -166,8 +221,12 @@ public class TFBiomes {
 							.downfall(1)
 							.depth(0.125F)
 							.scale(0.05F)
-							.waterColor(0x3F76E4) // todo 1.15 pick
-							.waterFogColor(0x050533) // todo 1.15 pick
+							.func_235097_a_((new BiomeAmbience.Builder())
+									.func_235246_b_(0x3F76E4) // todo 1.15 pick
+									.func_235248_c_(0x050533) // todo 1.15 pick
+									.func_235239_a_(0xC0FFD8) // todo 1.15 pick
+									.func_235243_a_(MoodSoundAmbience.field_235027_b_)
+									.func_235238_a_())
 			));
 	public static final RegistryObject<Biome> deepMushrooms = BIOMES.register("deep_mushroom_forest", () ->
 			new TFBiomeDeepMushrooms(
@@ -179,8 +238,12 @@ public class TFBiomes {
 							.downfall(1)
 							.depth(0.125F)
 							.scale(0.05F)
-							.waterColor(0x3F76E4) // todo 1.15 pick
-							.waterFogColor(0x050533) // todo 1.15 pick
+							.func_235097_a_((new BiomeAmbience.Builder())
+									.func_235246_b_(0x3F76E4) // todo 1.15 pick
+									.func_235248_c_(0x050533) // todo 1.15 pick
+									.func_235239_a_(0xC0FFD8) // todo 1.15 pick
+									.func_235243_a_(MoodSoundAmbience.field_235027_b_)
+									.func_235238_a_())
 			));
 	public static final RegistryObject<Biome> darkForest = BIOMES.register("dark_forest", () ->
 			new TFBiomeDarkForest(
@@ -192,8 +255,12 @@ public class TFBiomes {
 							.downfall(0.8F)
 							.depth(0.125F)
 							.scale(0.05F)
-							.waterColor(0x3F76E4) // todo 1.15 pick
-							.waterFogColor(0x050533) // todo 1.15 pick
+							.func_235097_a_((new BiomeAmbience.Builder())
+									.func_235246_b_(0x3F76E4) // todo 1.15 pick
+									.func_235248_c_(0x050533) // todo 1.15 pick
+									.func_235239_a_(0xC0FFD8) // todo 1.15 pick
+									.func_235243_a_(MoodSoundAmbience.field_235027_b_)
+									.func_235238_a_())
 			));
 	public static final RegistryObject<Biome> enchantedForest = BIOMES.register("enchanted_forest", () ->
 			new TFBiomeEnchantedForest(
@@ -205,8 +272,12 @@ public class TFBiomes {
 							.scale(0.2F)
 							.temperature(0.5F)
 							.downfall(0.5F)
-							.waterColor(0x3F76E4) // todo 1.15 pick
-							.waterFogColor(0x050533) // todo 1.15 pick
+							.func_235097_a_((new BiomeAmbience.Builder())
+									.func_235246_b_(0x3F76E4) // todo 1.15 pick
+									.func_235248_c_(0x050533) // todo 1.15 pick
+									.func_235239_a_(0xC0FFD8) // todo 1.15 pick
+									.func_235243_a_(MoodSoundAmbience.field_235027_b_)
+									.func_235238_a_())
 			));
 	public static final RegistryObject<Biome> fireSwamp = BIOMES.register("fire_swamp", () ->
 			new TFBiomeFireSwamp(
@@ -216,10 +287,14 @@ public class TFBiomes {
 							.category(Biome.Category.SWAMP)
 							.temperature(1)
 							.downfall(0.4F)
-							.waterColor(0x6C2C2C)
+							.func_235097_a_((new BiomeAmbience.Builder())
+									.func_235246_b_(0x6C2C2C)
+									.func_235248_c_(0x050533) // todo 1.15 pick
+									.func_235239_a_(0xC0FFD8) // todo 1.15 pick
+									.func_235243_a_(MoodSoundAmbience.field_235027_b_)
+									.func_235238_a_())
 							.depth(0.1F)
 							.scale(0.2F)
-							.waterFogColor(0x050533) // todo 1.15 pick
 			));
 	public static final RegistryObject<Biome> darkForestCenter = BIOMES.register("dark_forest_center", () ->
 			new TFBiomeDarkForestCenter(
@@ -231,8 +306,12 @@ public class TFBiomes {
 							.scale(0.05F)
 							.temperature(0.5F)
 							.downfall(0.5F)
-							.waterColor(0x3F76E4) // todo 1.15 pick
-							.waterFogColor(0x050533) // todo 1.15 pick
+							.func_235097_a_((new BiomeAmbience.Builder())
+									.func_235246_b_(0x3F76E4) // todo 1.15 pick
+									.func_235248_c_(0x050533) // todo 1.15 pick
+									.func_235239_a_(0xC0FFD8) // todo 1.15 pick
+									.func_235243_a_(MoodSoundAmbience.field_235027_b_)
+									.func_235238_a_())
 			));
 	public static final RegistryObject<Biome> highlandsCenter = BIOMES.register("highlands_center", () ->
 			new TFBiomeFinalPlateau(
@@ -244,8 +323,12 @@ public class TFBiomes {
 							.downfall(0.2F)
 							.depth(10.5F)
 							.scale(0.025F)
-							.waterColor(0x3F76E4) // todo 1.15 pick
-							.waterFogColor(0x050533) // todo 1.15 pick
+							.func_235097_a_((new BiomeAmbience.Builder())
+									.func_235246_b_(0x3F76E4) // todo 1.15 pick
+									.func_235248_c_(0x050533) // todo 1.15 pick
+									.func_235239_a_(0xC0FFD8) // todo 1.15 pick
+									.func_235243_a_(MoodSoundAmbience.field_235027_b_)
+									.func_235238_a_())
 			));
 	public static final RegistryObject<Biome> thornlands = BIOMES.register("thornlands", () ->
 			new TFBiomeThornlands(
@@ -257,8 +340,12 @@ public class TFBiomes {
 							.downfall(0.2F)
 							.depth(6)
 							.scale(0.1F)
-							.waterColor(0x3F76E4) // todo 1.15 pick
-							.waterFogColor(0x050533) // todo 1.15 pick
+							.func_235097_a_((new BiomeAmbience.Builder())
+									.func_235246_b_(0x3F76E4) // todo 1.15 pick
+									.func_235248_c_(0x050533) // todo 1.15 pick
+									.func_235239_a_(0xC0FFD8) // todo 1.15 pick
+									.func_235243_a_(MoodSoundAmbience.field_235027_b_)
+									.func_235238_a_())
 			));
 	public static final RegistryObject<Biome> spookyForest = BIOMES.register("spooky_forest", () ->
 			new TFBiomeSpookyForest(
@@ -270,8 +357,12 @@ public class TFBiomes {
 							.downfall(1)
 							.depth(0.125F)
 							.scale(0.05F)
-							.waterColor(0XFA9111)
-							.waterFogColor(0x050533) // todo 1.15 pick
+							.func_235097_a_((new BiomeAmbience.Builder())
+									.func_235246_b_(0XFA9111)
+									.func_235248_c_(0x050533) // todo 1.15 pick
+									.func_235239_a_(0xC0FFD8) // todo 1.15 pick
+									.func_235243_a_(MoodSoundAmbience.field_235027_b_)
+									.func_235238_a_())
 			));
 
 	public static final BiomeDictionary.Type TWILIGHT = BiomeDictionary.Type.getType("TWILIGHT");

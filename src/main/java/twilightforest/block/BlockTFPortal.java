@@ -4,6 +4,7 @@ import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -125,8 +126,10 @@ public class BlockTFPortal extends BreakableBlock {
 	}
 
 	private static void causeLightning(World world, BlockPos pos, boolean fake) {
-		LightningBoltEntity bolt = new LightningBoltEntity(world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, fake);
-		((ServerWorld) world).addLightningBolt(bolt);
+		LightningBoltEntity bolt = new LightningBoltEntity(EntityType.LIGHTNING_BOLT, world);
+		bolt.setPosition(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
+		bolt.func_233623_a_(fake);
+		world.addEntity(bolt);
 
 		if (fake) {
 			double range = 3.0D;

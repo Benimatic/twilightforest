@@ -269,7 +269,7 @@ public class EntityAITFPhantomUpdateFormationAndMove extends Goal {
 
 	private Vector3d getAttackPlayerPosition() {
 		if (boss.isSwordKnight()) {
-			return new Vector3d(boss.getChargePos());
+			return Vector3d.func_237492_c_(boss.getChargePos());
 		} else {
 			return getHoverPosition(CIRCLE_LARGE_RADIUS);
 		}

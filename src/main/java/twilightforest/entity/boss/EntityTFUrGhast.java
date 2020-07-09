@@ -26,6 +26,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerBossInfo;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.storage.ServerWorldInfo;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFBossSpawner;
@@ -298,7 +299,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		// start raining
 		int rainTime = 300 * 20;
 
-		WorldInfo worldInfo = world.getServer().getWorld(DimensionType.OVERWORLD).getWorldInfo(); // grab the overworld to set weather properly
+		ServerWorldInfo worldInfo = (ServerWorldInfo) world.getServer().getWorld(World.field_234918_g_).getWorldInfo(); // grab the overworld to set weather properly
 
 		worldInfo.setClearWeatherTime(0);
 		worldInfo.setRainTime(rainTime);
@@ -337,7 +338,10 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		int rangeY = 8;
 
 		// lightning strike
-		((ServerWorld)this.world).addLightningBolt(new LightningBoltEntity(world, x, y + 4, z, true));
+		LightningBoltEntity bolt = new LightningBoltEntity(EntityType.LIGHTNING_BOLT, world);
+		bolt.setPosition(x, y + 4, z);
+		bolt.func_233623_a_(true);
+		this.world.addEntity(bolt);
 
 		for (int i = 0; i < tries; i++) {
 			EntityTFMiniGhast minion = new EntityTFMiniGhast(TFEntities.mini_ghast, world);
