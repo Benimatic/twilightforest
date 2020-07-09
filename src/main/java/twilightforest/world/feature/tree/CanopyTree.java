@@ -11,6 +11,6 @@ public class CanopyTree extends TFTree {
 
 	@Override
 	public ConfiguredFeature<TFTreeFeatureConfig, ?> createTreeFeature(Random rand) {
-		return TFBiomeFeatures.CANOPY_TREE.get().configure(TFBiomeDecorator.CANOPY_TREE_CONFIG);
+		return TFBiomeFeatures.CANOPY_TREE.get().withConfiguration(TFBiomeDecorator.CANOPY_TREE_CONFIG);
 	}
 }

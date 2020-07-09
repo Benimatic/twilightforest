@@ -1,31 +1,35 @@
 package twilightforest.world.feature;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.mojang.datafixers.Dynamic;
 import com.mojang.serialization.Codec;
 import net.minecraft.block.Block;
 import net.minecraft.block.DirectionalBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.util.math.shapes.BitSetVoxelShapePart;
+import net.minecraft.util.math.shapes.VoxelShapePart;
+import net.minecraft.world.*;
+import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.IWorldGenerationReader;
-import net.minecraft.world.gen.feature.AbstractTreeFeature;
 import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
+import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.TreeFeature;
+import net.minecraft.world.gen.feature.structure.StructureManager;
+import net.minecraft.world.gen.feature.template.Template;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.FeatureUtil;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
-import java.util.function.Function;
 
-public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends TreeFeature<T> {
+public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Feature<T> {
 
 //	protected BlockState treeState = TFBlocks.twilight_log.getDefaultState();
 //	protected BlockState branchState = TFBlocks.twilight_log.getDefaultState().with(BlockTFLog.LOG_AXIS, BlockLog.EnumAxis.NONE).with(BlockTFLog.VARIANT, WoodVariant.DARK);
@@ -58,11 +62,90 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Tre
 //	}
 
 	//TODO: Check the logic here
-	@Override
 	protected boolean generate(IWorldGenerationReader world, Random random, BlockPos pos, Set<BlockPos> logpos, Set<BlockPos> leavespos, MutableBoundingBox mbb, T config) {
 		Set<BlockPos> branchSet = Sets.newHashSet();
 		Set<BlockPos> rootSet = Sets.newHashSet();
 		return generate(world, random, pos, logpos, leavespos, branchSet, rootSet, mbb, config);
+	}
+
+	//AbstractTreeFeature.place from 1.15, modified for us
+	@Override
+	public boolean func_230362_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random random, BlockPos pos, T config) {
+		Set<BlockPos> logs = Sets.newHashSet();
+		Set<BlockPos> leaves = Sets.newHashSet();
+		MutableBoundingBox mutableboundingbox = MutableBoundingBox.getNewBoundingBox();
+		boolean flag = this.generate(world, random, pos, logs, leaves, mutableboundingbox, config);
+		if (mutableboundingbox.minX <= mutableboundingbox.maxX && flag && !logs.isEmpty()) {
+			VoxelShapePart voxelshapepart = this.getVoxelShapePart(world, mutableboundingbox, logs);
+			Template.func_222857_a(world, 3, voxelshapepart, mutableboundingbox.minX, mutableboundingbox.minY, mutableboundingbox.minZ);
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	//TreeFeature.func_227214_a_ copy, modified to remove decorations
+	private VoxelShapePart getVoxelShapePart(IWorld world, MutableBoundingBox mbb, Set<BlockPos> logPos) {
+		List<Set<BlockPos>> list = Lists.newArrayList();
+		VoxelShapePart voxelshapepart = new BitSetVoxelShapePart(mbb.getXSize(), mbb.getYSize(), mbb.getZSize());
+
+		for(int j = 0; j < 6; ++j) {
+			list.add(Sets.newHashSet());
+		}
+
+		BlockPos.Mutable mutable = new BlockPos.Mutable();
+
+		for(BlockPos logBP : Lists.newArrayList(logPos)) {
+			if (mbb.isVecInside(logBP)) {
+				voxelshapepart.setFilled(logBP.getX() - mbb.minX, logBP.getY() - mbb.minY, logBP.getZ() - mbb.minZ, true, true);
+			}
+
+			for(Direction direction : Direction.values()) {
+				mutable.func_239622_a_(logBP, direction);
+				if (!logPos.contains(mutable)) {
+					BlockState blockstate = world.getBlockState(mutable);
+					if (blockstate.func_235901_b_(BlockStateProperties.DISTANCE_1_7)) {
+						list.get(0).add(mutable.toImmutable());
+						TreeFeature.func_236408_b_(world, mutable, blockstate.with(BlockStateProperties.DISTANCE_1_7, 1));
+						if (mbb.isVecInside(mutable)) {
+							voxelshapepart.setFilled(mutable.getX() - mbb.minX, mutable.getY() - mbb.minY, mutable.getZ() - mbb.minZ, true, true);
+						}
+					}
+				}
+			}
+		}
+
+		for(int l = 1; l < 6; ++l) {
+			Set<BlockPos> set = list.get(l - 1);
+			Set<BlockPos> set1 = list.get(l);
+
+			for(BlockPos blockpos2 : set) {
+				if (mbb.isVecInside(blockpos2)) {
+					voxelshapepart.setFilled(blockpos2.getX() - mbb.minX, blockpos2.getY() - mbb.minY, blockpos2.getZ() - mbb.minZ, true, true);
+				}
+
+				for(Direction direction1 : Direction.values()) {
+					mutable.func_239622_a_(blockpos2, direction1);
+					if (!set.contains(mutable) && !set1.contains(mutable)) {
+						BlockState blockstate1 = world.getBlockState(mutable);
+						if (blockstate1.func_235901_b_(BlockStateProperties.DISTANCE_1_7)) {
+							int k = blockstate1.get(BlockStateProperties.DISTANCE_1_7);
+							if (k > l + 1) {
+								BlockState blockstate2 = blockstate1.with(BlockStateProperties.DISTANCE_1_7, l + 1);
+								TreeFeature.func_236408_b_(world, mutable, blockstate2);
+								if (mbb.isVecInside(mutable)) {
+									voxelshapepart.setFilled(mutable.getX() - mbb.minX, mutable.getY() - mbb.minY, mutable.getZ() - mbb.minZ, true, true);
+								}
+
+								set1.add(mutable.toImmutable());
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return voxelshapepart;
 	}
 
 	/**
@@ -70,13 +153,35 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Tre
 	 */
 	protected abstract boolean generate(IWorldGenerationReader world, Random random, BlockPos pos, Set<BlockPos> logpos, Set<BlockPos> leavespos, Set<BlockPos> branchpos, Set<BlockPos> rootpos, MutableBoundingBox mbb, T config);
 
-	public boolean setBranchBlockState(IWorldGenerationReader world, Random random, BlockPos pos, Set<BlockPos> branchpos, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
-		if (!isAirOrLeaves(world, pos) && !isTallPlants(world, pos) && !isWater(world, pos)) {
-			return false;
+	//AbstractTrunkPlancer.func_236911_a_ copy
+	protected boolean setLogBlockState(IWorldGenerationReader world, Random random, BlockPos pos, Set<BlockPos> logPos, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
+		if (TreeFeature.func_236404_a_(world, pos)) {
+			this.setBlockState(world, pos, config.trunkProvider.getBlockState(random, pos), mbb);
+			logPos.add(pos.toImmutable());
+			return true;
 		} else {
+			return false;
+		}
+	}
+
+	//We aren't actually using this, but it is here just in case
+	protected boolean setLeavesBlockState(IWorldGenerationReader world, Random random, BlockPos pos, Set<BlockPos> leavesPos, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
+		if (TreeFeature.func_236404_a_(world, pos)) {
+			this.setBlockState(world, pos, config.leavesProvider.getBlockState(random, pos), mbb);
+			leavesPos.add(pos.toImmutable());
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean setBranchBlockState(IWorldGenerationReader world, Random random, BlockPos pos, Set<BlockPos> branchpos, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
+		if (TreeFeature.func_236404_a_(world, pos)) {
 			this.setBlockState(world, pos, config.branchProvider.getBlockState(random, pos), mbb);
 			branchpos.add(pos.toImmutable());
 			return true;
+		} else {
+			return false;
 		}
 	}
 
@@ -90,6 +195,11 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Tre
 		} else {
 			return false;
 		}
+	}
+
+	protected final void setBlockState(IWorldWriter world, BlockPos pos, BlockState state, MutableBoundingBox mbb) {
+		world.setBlockState(pos, state, 19);
+		mbb.expandTo(new MutableBoundingBox(pos, pos));
 	}
 
 	/**

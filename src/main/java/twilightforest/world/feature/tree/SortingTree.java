@@ -11,6 +11,6 @@ public class SortingTree extends TFTree {
 
 	@Override
 	public ConfiguredFeature<TFTreeFeatureConfig, ?> createTreeFeature(Random rand) {
-		return TFBiomeFeatures.SORTING_TREE.get().configure(TFBiomeDecorator.SORT_TREE);
+		return TFBiomeFeatures.SORTING_TREE.get().withConfiguration(TFBiomeDecorator.SORT_TREE);
 	}
 }

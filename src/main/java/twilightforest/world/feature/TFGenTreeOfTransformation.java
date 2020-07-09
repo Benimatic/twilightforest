@@ -1,6 +1,6 @@
 package twilightforest.world.feature;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.gen.IWorldGenerationReader;
@@ -9,7 +9,6 @@ import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
 import java.util.Random;
 import java.util.Set;
-import java.util.function.Function;
 
 public class TFGenTreeOfTransformation extends TFGenCanopyTree {
 
@@ -29,7 +28,7 @@ public class TFGenTreeOfTransformation extends TFGenCanopyTree {
 //		this.chanceAddSecondFive = Integer.MAX_VALUE;
 //	}
 
-	public TFGenTreeOfTransformation(Function<Dynamic<?>, TFTreeFeatureConfig> config) {
+	public TFGenTreeOfTransformation(Codec<TFTreeFeatureConfig> config) {
 		super(config);
 	}
 

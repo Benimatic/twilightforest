@@ -1,6 +1,6 @@
 package twilightforest.world.feature;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -13,11 +13,10 @@ import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
 import java.util.Random;
 import java.util.Set;
-import java.util.function.Function;
 
 public class TFGenTreeOfTime extends TFGenHollowTree {
 
-	public TFGenTreeOfTime(Function<Dynamic<?>, TFTreeFeatureConfig> config) {
+	public TFGenTreeOfTime(Codec<TFTreeFeatureConfig> config) {
 		super(config);
 	}
 
@@ -42,7 +41,7 @@ public class TFGenTreeOfTime extends TFGenHollowTree {
 
 		// check if we're on dirt or grass
 		BlockState state = world.getBlockState(pos.down());
-		if (!state.getBlock().canSustainPlant(state, world, pos.down(), Direction.UP, config.getSapling())) {
+		if (!state.getBlock().canSustainPlant(state, world, pos.down(), Direction.UP, config.getSapling(random, pos))) {
 			return false;
 		}
 

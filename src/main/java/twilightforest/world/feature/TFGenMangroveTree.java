@@ -1,7 +1,7 @@
 package twilightforest.world.feature;
 
 import com.google.common.collect.Lists;
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
@@ -13,7 +13,6 @@ import twilightforest.world.feature.config.TFTreeFeatureConfig;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-import java.util.function.Function;
 
 public class TFGenMangroveTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 
@@ -35,7 +34,7 @@ public class TFGenMangroveTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 //		rootState = TFBlocks.root.getDefaultState();
 //	}
 
-	public TFGenMangroveTree(Function<Dynamic<?>, TFTreeFeatureConfig> config) {
+	public TFGenMangroveTree(Codec<TFTreeFeatureConfig> config) {
 		super(config);
 	}
 

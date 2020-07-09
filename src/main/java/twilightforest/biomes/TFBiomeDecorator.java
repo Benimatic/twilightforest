@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.SaplingBlock;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.DefaultBiomeFeatures;
 import net.minecraft.world.gen.GenerationStage;
@@ -12,14 +13,18 @@ import net.minecraft.world.gen.blockstateprovider.SimpleBlockStateProvider;
 import net.minecraft.world.gen.blockstateprovider.WeightedBlockStateProvider;
 import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.foliageplacer.BlobFoliagePlacer;
+import net.minecraft.world.gen.foliageplacer.BushFoliagePlacer;
+import net.minecraft.world.gen.foliageplacer.FancyFoliagePlacer;
 import net.minecraft.world.gen.placement.*;
-import net.minecraftforge.common.IPlantable;
+import net.minecraft.world.gen.trunkplacer.FancyTrunkPlacer;
+import net.minecraft.world.gen.trunkplacer.StraightTrunkPlacer;
 import twilightforest.TFConfig;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.feature.*;
 import twilightforest.world.feature.config.CaveStalactiteConfig;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
+import java.util.OptionalInt;
 import java.util.Random;
 
 public class TFBiomeDecorator {
@@ -87,7 +92,7 @@ public class TFBiomeDecorator {
 	public static final OreFeatureConfig DIAMOND_ORE_CONFIG = (new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, Blocks.DIAMOND_ORE.getDefaultState(), 8));
 	public static final OreFeatureConfig LAPIS_ORE_CONFIG = (new OreFeatureConfig(OreFeatureConfig.FillerBlockType.NATURAL_STONE, Blocks.LAPIS_ORE.getDefaultState(), 7));
 	public static final CaveStalactiteConfig OUTSIDE_STALAG_CONFIG = (new CaveStalactiteConfig(Blocks.STONE.getDefaultState(), 1.0F, -1, -1, false));
-	public static final BaseTreeFeatureConfig OAK_TREE = (new BaseTreeFeatureConfig.Builder(new SimpleBlockStateProvider(OAK_LOG), new SimpleBlockStateProvider(OAK_LEAVES), new BlobFoliagePlacer(2, 0))).baseHeight(4).heightRandA(2).foliageHeight(3).setSapling(TFBlocks.oak_sapling.get()).build();
+	public static final BaseTreeFeatureConfig OAK_TREE = (new BaseTreeFeatureConfig.Builder(new SimpleBlockStateProvider(OAK_LOG), new SimpleBlockStateProvider(OAK_LEAVES), new BlobFoliagePlacer(2, 0, 0, 0, 3), new StraightTrunkPlacer(4, 2, 0), new TwoLayerFeature(1, 0, 1)))/*.setSapling(TFBlocks.oak_sapling.get())*/.build();
 	public static final TFTreeFeatureConfig CANOPY_TREE_CONFIG = (new TFTreeFeatureConfig.Builder(new SimpleBlockStateProvider(CANOPY_LOG), new SimpleBlockStateProvider(CANOPY_LEAVES), new SimpleBlockStateProvider(CANOPY_WOOD), new SimpleBlockStateProvider(ROOTS)).chanceFirstFive(3).chanceSecondFive(8).setSapling(TFBlocks.canopy_sapling.get())).build();
 	public static final TFTreeFeatureConfig CANOPY_TREE_DEAD_CONFIG = (new TFTreeFeatureConfig.Builder(new SimpleBlockStateProvider(CANOPY_LOG), new SimpleBlockStateProvider(CANOPY_LEAVES), new SimpleBlockStateProvider(CANOPY_WOOD), new SimpleBlockStateProvider(ROOTS)).chanceFirstFive(3).chanceSecondFive(8).noLeaves().setSapling(TFBlocks.canopy_sapling.get())).build();
 	public static final TFTreeFeatureConfig CANOPY_OAK_CONFIG = (new TFTreeFeatureConfig.Builder(new SimpleBlockStateProvider(OAK_LOG), new SimpleBlockStateProvider(OAK_LEAVES), new SimpleBlockStateProvider(OAK_WOOD), new SimpleBlockStateProvider(ROOTS)).setSapling(TFBlocks.oak_sapling.get())).build();
@@ -95,15 +100,15 @@ public class TFBiomeDecorator {
 	public static final TFTreeFeatureConfig MANGROVE_TREE_NO_WATER = (new TFTreeFeatureConfig.Builder(new SimpleBlockStateProvider(MANGROVE_LOG), new SimpleBlockStateProvider(MANGROVE_LEAVES), new SimpleBlockStateProvider(MANGROVE_WOOD), new SimpleBlockStateProvider(ROOTS)).setSapling(TFBlocks.mangrove_sapling.get())).build();
 	public static final TFTreeFeatureConfig DARK_OAK_TREE = (new TFTreeFeatureConfig.Builder(new SimpleBlockStateProvider(DARKWOOD_LOG), new SimpleBlockStateProvider(DARKWOOD_LEAVES), new SimpleBlockStateProvider(DARKWOOD_WOOD), new SimpleBlockStateProvider(ROOTS)).setSapling(TFBlocks.darkwood_sapling.get())).build();
 	public static final TFTreeFeatureConfig TIME_TREE = (new TFTreeFeatureConfig.Builder(new SimpleBlockStateProvider(TIME_LOG), new SimpleBlockStateProvider(TIME_LEAVES), new SimpleBlockStateProvider(TIME_WOOD), new SimpleBlockStateProvider(ROOTS)).setSapling(TFBlocks.time_sapling.get())).build();
-	public static final TFTreeFeatureConfig TRANSFORM_TREE = (new TFTreeFeatureConfig.Builder(new SimpleBlockStateProvider(TRANSFORM_LOG), new SimpleBlockStateProvider(TRANSFORM_LEAVES), new SimpleBlockStateProvider(TRANSFORM_WOOD), new SimpleBlockStateProvider(ROOTS)).baseHeight(11).chanceFirstFive(Integer.MAX_VALUE).chanceSecondFive(Integer.MAX_VALUE).setSapling(TFBlocks.transformation_sapling.get())).build();
+	public static final TFTreeFeatureConfig TRANSFORM_TREE = (new TFTreeFeatureConfig.Builder(new SimpleBlockStateProvider(TRANSFORM_LOG), new SimpleBlockStateProvider(TRANSFORM_LEAVES), new SimpleBlockStateProvider(TRANSFORM_WOOD), new SimpleBlockStateProvider(ROOTS)).minHeight(11).chanceFirstFive(Integer.MAX_VALUE).chanceSecondFive(Integer.MAX_VALUE).setSapling(TFBlocks.transformation_sapling.get())).build();
 	public static final TFTreeFeatureConfig MINING_TREE = (new TFTreeFeatureConfig.Builder(new SimpleBlockStateProvider(MINING_LOG), new SimpleBlockStateProvider(MINING_LEAVES), new SimpleBlockStateProvider(MINING_WOOD), new SimpleBlockStateProvider(ROOTS)).setSapling(TFBlocks.mining_sapling.get())).build();
 	public static final TFTreeFeatureConfig SORT_TREE = (new TFTreeFeatureConfig.Builder(new SimpleBlockStateProvider(SORT_LOG), new SimpleBlockStateProvider(SORT_LEAVES), new SimpleBlockStateProvider(SORT_WOOD), new SimpleBlockStateProvider(ROOTS)).setSapling(TFBlocks.sorting_sapling.get())).build();
 	public static final TFTreeFeatureConfig HOLLOW_TREE = (new TFTreeFeatureConfig.Builder(new SimpleBlockStateProvider(OAK_LOG), new SimpleBlockStateProvider(OAK_LEAVES), new SimpleBlockStateProvider(OAK_WOOD), new SimpleBlockStateProvider(ROOTS)).setSapling(TFBlocks.hollow_oak_sapling.get())).build();
-	public static final TFTreeFeatureConfig WINTER_TREE = (new TFTreeFeatureConfig.Builder(new SimpleBlockStateProvider(SPRUCE_LOG), new SimpleBlockStateProvider(SPRUCE_LEAVES), new SimpleBlockStateProvider(SPRUCE_WOOD), new SimpleBlockStateProvider(ROOTS)).setSapling((IPlantable)Blocks.SPRUCE_SAPLING)).build();
-	public static final BaseTreeFeatureConfig RAINBOAK_TREE = (new BaseTreeFeatureConfig.Builder(new SimpleBlockStateProvider(OAK_LOG), new SimpleBlockStateProvider(RAINBOW_LEAVES), new BlobFoliagePlacer(2, 0))).baseHeight(4).heightRandA(2).foliageHeight(3).setSapling(TFBlocks.rainboak_sapling.get()).build();
-	public static final BaseTreeFeatureConfig FANCY_RAINBOAK_TREE = (new BaseTreeFeatureConfig.Builder(new SimpleBlockStateProvider(OAK_LOG), new SimpleBlockStateProvider(RAINBOW_LEAVES), new BlobFoliagePlacer(0, 0))).setSapling(TFBlocks.rainboak_sapling.get()).build();
-	public static final BaseTreeFeatureConfig DARK_FOREST_BUSH_CONFIG = (new BaseTreeFeatureConfig.Builder(new SimpleBlockStateProvider(Blocks.JUNGLE_LOG.getDefaultState()), new SimpleBlockStateProvider(Blocks.OAK_LEAVES.getDefaultState()))).build();
-	public static final BaseTreeFeatureConfig OAK_BUSH_CONFIG = (new BaseTreeFeatureConfig.Builder(new SimpleBlockStateProvider(Blocks.OAK_LOG.getDefaultState()), new SimpleBlockStateProvider(Blocks.OAK_LEAVES.getDefaultState()))).build();
+	public static final TFTreeFeatureConfig WINTER_TREE = (new TFTreeFeatureConfig.Builder(new SimpleBlockStateProvider(SPRUCE_LOG), new SimpleBlockStateProvider(SPRUCE_LEAVES), new SimpleBlockStateProvider(SPRUCE_WOOD), new SimpleBlockStateProvider(ROOTS)).setSapling((SaplingBlock)Blocks.SPRUCE_SAPLING)).build();
+	public static final BaseTreeFeatureConfig RAINBOAK_TREE = (new BaseTreeFeatureConfig.Builder(new SimpleBlockStateProvider(OAK_LOG), new SimpleBlockStateProvider(RAINBOW_LEAVES), new BlobFoliagePlacer(2, 0, 0, 0, 3), new StraightTrunkPlacer(4, 2, 0), new TwoLayerFeature(1, 0, 1)))/*.setSapling(TFBlocks.rainboak_sapling.get())*/.build();
+	public static final BaseTreeFeatureConfig FANCY_RAINBOAK_TREE = (new BaseTreeFeatureConfig.Builder(new SimpleBlockStateProvider(OAK_LOG), new SimpleBlockStateProvider(RAINBOW_LEAVES), new FancyFoliagePlacer(2, 0, 4, 0, 4), new FancyTrunkPlacer(3, 11, 0), new TwoLayerFeature(0, 0, 0, OptionalInt.of(4))))/*.setSapling(TFBlocks.rainboak_sapling.get())*/.build();
+	public static final BaseTreeFeatureConfig DARK_FOREST_BUSH_CONFIG = (new BaseTreeFeatureConfig.Builder(new SimpleBlockStateProvider(Blocks.JUNGLE_LOG.getDefaultState()), new SimpleBlockStateProvider(Blocks.OAK_LEAVES.getDefaultState()), new BushFoliagePlacer(2, 0, 1, 0, 2), new StraightTrunkPlacer(1, 0, 0), new TwoLayerFeature(0, 0, 0))).build();
+	public static final BaseTreeFeatureConfig OAK_BUSH_CONFIG = (new BaseTreeFeatureConfig.Builder(new SimpleBlockStateProvider(Blocks.OAK_LOG.getDefaultState()), new SimpleBlockStateProvider(Blocks.OAK_LEAVES.getDefaultState()), new BushFoliagePlacer(2, 0, 1, 0, 2), new StraightTrunkPlacer(1, 0, 0), new TwoLayerFeature(0, 0, 0))).build();
 	public static final BlockClusterFeatureConfig MUSHGLOOM_CONFIG = (new BlockClusterFeatureConfig.Builder(new SimpleBlockStateProvider(MUSHGLOOM), new SimpleBlockPlacer())).tries(32).build();
 	public static final BlockClusterFeatureConfig DEAD_BUSH_CONFIG = (new BlockClusterFeatureConfig.Builder(new SimpleBlockStateProvider(DEAD_BUSH), new SimpleBlockPlacer())).tries(8).build();
 	public static final BlockClusterFeatureConfig FOREST_GRASS_CONFIG = (new BlockClusterFeatureConfig.Builder(new SimpleBlockStateProvider(FOREST_GRASS), new SimpleBlockPlacer())).tries(32).build();
@@ -201,7 +206,7 @@ public class TFBiomeDecorator {
 	}
 
 	public static void addHugeMushrooms(Biome biome, int count) {
-		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_BOOLEAN_SELECTOR.withConfiguration(new TwoFeatureChoiceConfig(Feature.HUGE_RED_MUSHROOM.withConfiguration(DefaultBiomeFeatures.HUGE_RED_MUSHROOM_CONFIG), Feature.HUGE_BROWN_MUSHROOM.withConfiguration(DefaultBiomeFeatures.HUGE_BROWN_MUSHROOM_CONFIG))).withPlacement(Placement.COUNT_HEIGHTMAP.configure(new FrequencyConfig(count))));
+		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_BOOLEAN_SELECTOR.withConfiguration(new TwoFeatureChoiceConfig(Feature.HUGE_RED_MUSHROOM.withConfiguration(DefaultBiomeFeatures.BIG_RED_MUSHROOM), Feature.HUGE_BROWN_MUSHROOM.withConfiguration(DefaultBiomeFeatures.BIG_BROWN_MUSHROOM))).withPlacement(Placement.COUNT_HEIGHTMAP.configure(new FrequencyConfig(count))));
 	}
 
 	public static void addMangroves(Biome biome, int count) {

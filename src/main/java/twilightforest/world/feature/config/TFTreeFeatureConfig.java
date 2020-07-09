@@ -1,101 +1,88 @@
 package twilightforest.world.feature.config;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.mojang.datafixers.Dynamic;
-import com.mojang.datafixers.types.DynamicOps;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.SaplingBlock;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.gen.blockstateprovider.BlockStateProvider;
-import net.minecraft.world.gen.blockstateprovider.BlockStateProviderType;
-import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
-import net.minecraft.world.gen.treedecorator.TreeDecorator;
+import net.minecraft.world.gen.blockstateprovider.SimpleBlockStateProvider;
+import net.minecraft.world.gen.feature.IFeatureConfig;
 import net.minecraftforge.common.IPlantable;
 
-import java.util.List;
+import java.util.Random;
 
 /**
  * Follows similar structure to HugeTreeFeatureConfig
  */
-public class TFTreeFeatureConfig extends BaseTreeFeatureConfig {
+public class TFTreeFeatureConfig implements IFeatureConfig {
+	public static final Codec<TFTreeFeatureConfig> codecTFTreeConfig = RecordCodecBuilder.create((instance) ->
+			instance.group(
+					BlockStateProvider.field_236796_a_.fieldOf("trunk_provider").forGetter((obj) -> obj.trunkProvider),
+					BlockStateProvider.field_236796_a_.fieldOf("leaves_provider").forGetter((obj) -> obj.leavesProvider),
+					BlockStateProvider.field_236796_a_.fieldOf("branch_provider").forGetter((obj) -> obj.branchProvider),
+					BlockStateProvider.field_236796_a_.fieldOf("roots_provider").forGetter((obj) -> obj.rootsProvider),
+					Codec.INT.fieldOf("minimum_size").withDefault(20).forGetter((obj) -> obj.minHeight),
+					Codec.INT.fieldOf("add_first_five_chance").withDefault(-1).forGetter((obj) -> obj.chanceAddFiveFirst),
+					Codec.INT.fieldOf("add_second_five_chance").withDefault(-1).forGetter((obj) -> obj.chanceAddFiveSecond),
+					Codec.BOOL.fieldOf("has_leaves").withDefault(true).forGetter((obj) -> obj.hasLeaves),
+					Codec.BOOL.fieldOf("check_water").withDefault(false).forGetter((obj) -> obj.checkWater),
+					BlockStateProvider.field_236796_a_.fieldOf("sapling").withDefault(new SimpleBlockStateProvider(Blocks.OAK_SAPLING.getDefaultState())).forGetter((obj) -> obj.sapling))
+					.apply(instance, TFTreeFeatureConfig::new));
+
+	public final BlockStateProvider trunkProvider;
+	public final BlockStateProvider leavesProvider;
 	public final BlockStateProvider branchProvider;
 	public final BlockStateProvider rootsProvider;
+	public final int minHeight;
 	public final int chanceAddFiveFirst;
 	public final int chanceAddFiveSecond;
 	public final boolean hasLeaves;
 	public final boolean checkWater;
+	public final BlockStateProvider sapling;
+	public transient boolean forcePlacement;
 
-	public TFTreeFeatureConfig(BlockStateProvider trunk, BlockStateProvider leaves, BlockStateProvider branch, BlockStateProvider roots, List<TreeDecorator> decorators, int height, int chanceFiveFirst, int chanceFiveSecond, boolean hasLeaves, boolean checkWater) {
-		super (trunk, leaves, decorators, height);
+	public TFTreeFeatureConfig(BlockStateProvider trunk, BlockStateProvider leaves, BlockStateProvider branch, BlockStateProvider roots, int height, int chanceFiveFirst, int chanceFiveSecond, boolean hasLeaves, boolean checkWater, BlockStateProvider sapling) {
+		this.trunkProvider = trunk;
+		this.leavesProvider = leaves;
 		this.branchProvider = branch;
 		this.rootsProvider = roots;
+		this.minHeight = height;
 		this.chanceAddFiveFirst = chanceFiveFirst;
 		this.chanceAddFiveSecond = chanceFiveSecond;
 		this.hasLeaves = hasLeaves;
 		this.checkWater = checkWater;
+		this.sapling = sapling;
 	}
 
-	@Override
-	protected TFTreeFeatureConfig setSapling(IPlantable sapling) {
-		super.setSapling(sapling);
-		return this;
+	public void forcePlacement() {
+		this.forcePlacement = true;
 	}
 
-	@Override
-	public <T> Dynamic<T> serialize(DynamicOps<T> dynOps) {
-		ImmutableMap.Builder<T, T> builder = ImmutableMap.builder();
-
-		builder.put(dynOps.createString("branch_provider"), this.branchProvider.serialize(dynOps))
-				.put(dynOps.createString("roots_provider"), this.rootsProvider.serialize(dynOps))
-				.put(dynOps.createString("add_first_five_chance"), dynOps.createInt(chanceAddFiveFirst))
-				.put(dynOps.createString("add_second_five_chance"), dynOps.createInt(chanceAddFiveSecond))
-				.put(dynOps.createString("has_leaves"), dynOps.createBoolean(hasLeaves))
-				.put(dynOps.createString("check_water"), dynOps.createBoolean(checkWater));
-		Dynamic<T> dynamic = new Dynamic<>(dynOps, dynOps.createMap(builder.build()));
-		return dynamic.merge(super.serialize(dynOps));
+	public IPlantable getSapling(Random rand, BlockPos pos) {
+		return (IPlantable) sapling.getBlockState(rand, pos).getBlock();
 	}
 
-	public static <T> TFTreeFeatureConfig deserialize(Dynamic<T> data) {
-		BlockStateProviderType<?> branchState = Registry.field_229387_t_.getOrDefault(new ResourceLocation(data.get("branch_provider").get("type").asString().orElseThrow(RuntimeException::new)));
-		BlockStateProviderType<?> rootsState = Registry.field_229387_t_.getOrDefault(new ResourceLocation(data.get("roots_provider").get("type").asString().orElseThrow(RuntimeException::new)));
-		int chanceFiveFirst = data.get("add_first_five_chance").asInt(-1);
-		int chanceFiveSecond = data.get("add_second_five_chance").asInt(-1);
-		boolean genLeaves = data.get("has_leaves").asBoolean(true);
-		boolean checkWater = data.get("check_water").asBoolean(false);
-
-		BaseTreeFeatureConfig config = BaseTreeFeatureConfig.deserialize(data);
-		return new TFTreeFeatureConfig(
-				config.trunkProvider,
-				config.leavesProvider,
-				branchState.deserialize(data.get("branch_provider").orElseEmptyMap()),
-				rootsState.deserialize(data.get("roots_provider").orElseEmptyMap()),
-				config.decorators,
-				config.baseHeight,
-				chanceFiveFirst,
-				chanceFiveSecond,
-				genLeaves,
-				checkWater
-		);
-	}
-
-	public static class Builder extends BaseTreeFeatureConfig.Builder {
+	public static class Builder {
+		private BlockStateProvider trunkProvider;
+		private BlockStateProvider leavesProvider;
 		private BlockStateProvider branchProvider;
 		private BlockStateProvider rootsProvider;
-		private List<TreeDecorator> decorators = ImmutableList.of();
 		private int baseHeight;
 		private int chanceFirstFive;
 		private int chanceSecondFive;
-		private boolean hasLeaves = true;
-		private boolean checkWater = false;
+		private boolean hasLeaves;
+		private boolean checkWater;
+		private BlockStateProvider sapling;
 
 		public Builder(BlockStateProvider trunk, BlockStateProvider leaves, BlockStateProvider branch, BlockStateProvider roots) {
-			super(trunk, leaves);
+			this.trunkProvider = trunk;
+			this.leavesProvider = leaves;
 			this.branchProvider = branch;
 			this.rootsProvider = roots;
 		}
 
-		@Override
-		public TFTreeFeatureConfig.Builder baseHeight(int height) {
+		public TFTreeFeatureConfig.Builder minHeight(int height) {
 			this.baseHeight = height;
 			return this;
 		}
@@ -120,15 +107,13 @@ public class TFTreeFeatureConfig extends BaseTreeFeatureConfig {
 			return this;
 		}
 
-		@Override
-		public TFTreeFeatureConfig.Builder setSapling(IPlantable sapling) {
-			super.setSapling(sapling);
+		public TFTreeFeatureConfig.Builder setSapling(SaplingBlock plant) {
+			this.sapling = new SimpleBlockStateProvider(plant.getDefaultState());
 			return this;
 		}
 
-		@Override
 		public TFTreeFeatureConfig build() {
-			return new TFTreeFeatureConfig(trunkProvider, leavesProvider, branchProvider, rootsProvider, decorators, baseHeight, chanceFirstFive, chanceSecondFive, hasLeaves, checkWater);
+			return new TFTreeFeatureConfig(trunkProvider, leavesProvider, branchProvider, rootsProvider, baseHeight, chanceFirstFive, chanceSecondFive, hasLeaves, checkWater, sapling);
 		}
 	}
 }

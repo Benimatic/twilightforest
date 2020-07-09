@@ -1,7 +1,7 @@
 package twilightforest.world.feature;
 
 import com.google.common.collect.Lists;
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -15,13 +15,12 @@ import twilightforest.world.feature.config.TFTreeFeatureConfig;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-import java.util.function.Function;
 
 public class TFGenCanopyOak extends TFGenCanopyTree {
 
 	private final List<BlockPos> leaves = Lists.newArrayList();
 
-	public TFGenCanopyOak(Function<Dynamic<?>, TFTreeFeatureConfig> config) {
+	public TFGenCanopyOak(Codec<TFTreeFeatureConfig> config) {
 		super(config);
 	}
 
@@ -30,7 +29,7 @@ public class TFGenCanopyOak extends TFGenCanopyTree {
 		World world = (World)worldIn;
 
 		// determine a height
-		int treeHeight = minHeight;
+		int treeHeight = config.minHeight;
 		if (random.nextInt(config.chanceAddFiveFirst) == 0) {
 			treeHeight += random.nextInt(5);
 
@@ -45,7 +44,7 @@ public class TFGenCanopyOak extends TFGenCanopyTree {
 
 		// check if we're on dirt or grass
 		BlockState state = world.getBlockState(pos.down());
-		if (!state.getBlock().canSustainPlant(state, world, pos.down(), Direction.UP, config.getSapling())) {
+		if (!state.getBlock().canSustainPlant(state, world, pos.down(), Direction.UP, config.getSapling(random, pos))) {
 			return false;
 		}
 

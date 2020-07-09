@@ -1,6 +1,6 @@
 package twilightforest.world.feature;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -13,7 +13,6 @@ import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
 import java.util.Random;
 import java.util.Set;
-import java.util.function.Function;
 
 /**
  * Makes large trees with flat leaf ovals that provide a canopy for the forest
@@ -22,7 +21,7 @@ import java.util.function.Function;
  */
 public class TFGenDarkCanopyTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 
-	public TFGenDarkCanopyTree(Function<Dynamic<?>, TFTreeFeatureConfig> config) {
+	public TFGenDarkCanopyTree(Codec<TFTreeFeatureConfig> config) {
 		super(config);
 	}
 

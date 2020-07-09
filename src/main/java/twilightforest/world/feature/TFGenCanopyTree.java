@@ -1,7 +1,7 @@
 package twilightforest.world.feature;
 
 import com.google.common.collect.Lists;
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -15,7 +15,6 @@ import twilightforest.world.feature.config.TFTreeFeatureConfig;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-import java.util.function.Function;
 
 /**
  * Makes large trees with flat leaf ovals that provide a canopy for the forest
@@ -24,11 +23,11 @@ import java.util.function.Function;
  */
 public class TFGenCanopyTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 
-	protected int minHeight = 20;
+//	protected int minHeight = 20;
 
 	private List<BlockPos> leaves = Lists.newArrayList();
 
-	public TFGenCanopyTree(Function<Dynamic<?>, TFTreeFeatureConfig> config) {
+	public TFGenCanopyTree(Codec<TFTreeFeatureConfig> config) {
 		super(config);
 	}
 
@@ -37,7 +36,7 @@ public class TFGenCanopyTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 		World world = (World)worldIn;
 
 		// determine a height
-		int treeHeight = minHeight;
+		int treeHeight = config.minHeight;
 		if (random.nextInt(config.chanceAddFiveFirst) == 0) {
 			treeHeight += random.nextInt(5);
 
@@ -52,7 +51,7 @@ public class TFGenCanopyTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 
 		// check if we're on dirt or grass
 		BlockState state = world.getBlockState(pos.down());
-		if (!state.getBlock().canSustainPlant(state, world, pos.down(), Direction.UP, config.getSapling())) {
+		if (!state.getBlock().canSustainPlant(state, world, pos.down(), Direction.UP, config.getSapling(random, pos))) {
 			return false;
 		}
 

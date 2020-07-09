@@ -1,30 +1,29 @@
 package twilightforest.world.feature;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.FeatureUtil;
 import twilightforest.world.TFGenerationSettings;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
 import java.util.Random;
-import java.util.function.Function;
 
 public class TFGenSortingTree extends Feature<TFTreeFeatureConfig> {
 
-	public TFGenSortingTree(Function<Dynamic<?>, TFTreeFeatureConfig> config) {
+	public TFGenSortingTree(Codec<TFTreeFeatureConfig> config) {
 		super(config);
 	}
 
 	@Override
-	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> generator, Random rand, BlockPos pos, TFTreeFeatureConfig config) {
+	public boolean func_230362_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, BlockPos pos, TFTreeFeatureConfig config) {
 		// check soil
 		Material materialUnder = world.getBlockState(pos.down()).getMaterial();
 		if ((materialUnder != Material.ORGANIC && materialUnder != Material.EARTH) || pos.getY() >= TFGenerationSettings.MAXHEIGHT - 12) {

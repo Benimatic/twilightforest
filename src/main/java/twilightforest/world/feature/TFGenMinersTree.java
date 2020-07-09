@@ -1,6 +1,6 @@
 package twilightforest.world.feature;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -14,11 +14,10 @@ import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
 import java.util.Random;
 import java.util.Set;
-import java.util.function.Function;
 
 public class TFGenMinersTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 
-	public TFGenMinersTree(Function<Dynamic<?>, TFTreeFeatureConfig> config) {
+	public TFGenMinersTree(Codec<TFTreeFeatureConfig> config) {
 		super(config);
 	}
 
@@ -32,7 +31,7 @@ public class TFGenMinersTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 
 		// check soil
 		BlockState state = world.getBlockState(pos.down());
-		if (!state.getBlock().canSustainPlant(state, world, pos.down(), Direction.UP, config.getSapling())) {
+		if (!state.getBlock().canSustainPlant(state, world, pos.down(), Direction.UP, config.getSapling(rand, pos))) {
 			return false;
 		}
 
@@ -56,7 +55,7 @@ public class TFGenMinersTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 
 		// place minewood core
 		world.setBlockState(pos.up(), TFBlocks.mining_log_core.get().getDefaultState());
-		world.getPendingBlockTicks().scheduleTick(pos.up(), TFBlocks.mining_log_core.get(), TFBlocks.mining_log_core.get().tickRate(world));
+		world.getPendingBlockTicks().scheduleTick(pos.up(), TFBlocks.mining_log_core.get(), 20);
 
 		// root bulb
 		if (FeatureUtil.hasAirAround(world, pos.down())) {

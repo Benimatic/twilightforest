@@ -11,6 +11,6 @@ public class TransformationTree extends TFTree {
 
 	@Override
 	public ConfiguredFeature<TFTreeFeatureConfig, ?> createTreeFeature(Random rand) {
-		return TFBiomeFeatures.TREE_OF_TRANSFORMATION.get().configure(TFBiomeDecorator.TRANSFORM_TREE);
+		return TFBiomeFeatures.TREE_OF_TRANSFORMATION.get().withConfiguration(TFBiomeDecorator.TRANSFORM_TREE);
 	}
 }

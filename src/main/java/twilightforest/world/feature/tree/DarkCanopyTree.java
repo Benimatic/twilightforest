@@ -11,6 +11,6 @@ public class DarkCanopyTree extends TFTree {
 
 	@Override
 	public ConfiguredFeature<TFTreeFeatureConfig, ?> createTreeFeature(Random rand) {
-		return TFBiomeFeatures.DARK_CANOPY_TREE.get().configure(TFBiomeDecorator.DARK_OAK_TREE);
+		return TFBiomeFeatures.DARK_CANOPY_TREE.get().withConfiguration(TFBiomeDecorator.DARK_OAK_TREE);
 	}
 }

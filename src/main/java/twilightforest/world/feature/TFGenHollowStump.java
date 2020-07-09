@@ -1,6 +1,6 @@
 package twilightforest.world.feature;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
@@ -10,7 +10,6 @@ import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
 import java.util.Random;
 import java.util.Set;
-import java.util.function.Function;
 
 /**
  * A stump from a hollow tree
@@ -19,7 +18,7 @@ import java.util.function.Function;
  */
 public class TFGenHollowStump extends TFGenHollowTree {
 
-	public TFGenHollowStump(Function<Dynamic<?>, TFTreeFeatureConfig> config) {
+	public TFGenHollowStump(Codec<TFTreeFeatureConfig> config) {
 		super(config);
 	}
 
