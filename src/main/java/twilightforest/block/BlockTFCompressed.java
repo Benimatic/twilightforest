@@ -21,11 +21,6 @@ public class BlockTFCompressed extends Block {
 	}
 
 	@Override
-	public boolean hasEmissiveLighting(BlockState state) {
-		return this == TFBlocks.fiery_block.get();
-	}
-
-	@Override
 	@Deprecated
 	public float getAmbientOcclusionLightValue(BlockState state, IBlockReader worldIn, BlockPos pos) {
 		if (this == TFBlocks.fiery_block.get()) {

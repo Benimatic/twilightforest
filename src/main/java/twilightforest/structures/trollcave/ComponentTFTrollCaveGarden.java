@@ -28,8 +28,8 @@ public class ComponentTFTrollCaveGarden extends ComponentTFTrollCaveMain {
 
 	private ConfiguredFeature<?,?> myceliumBlobGen = TFBiomeFeatures.MYCELIUM_BLOB.get().withConfiguration(new SphereReplaceConfig(Blocks.MYCELIUM.getDefaultState(), 5, 1, Lists.newArrayList(Blocks.GRASS_BLOCK.getDefaultState())));
 	private ConfiguredFeature<?,?> dirtGen = TFBiomeFeatures.MYCELIUM_BLOB.get().withConfiguration(new SphereReplaceConfig(Blocks.DIRT.getDefaultState(), 5, 1, Lists.newArrayList(Blocks.GRASS_BLOCK.getDefaultState())));
-	private ConfiguredFeature<?,?> bigRedMushroomGen = Feature.HUGE_RED_MUSHROOM.withConfiguration(DefaultBiomeFeatures.HUGE_RED_MUSHROOM_CONFIG);
-	private ConfiguredFeature<?,?> bigBrownMushroomGen = Feature.HUGE_BROWN_MUSHROOM.withConfiguration(DefaultBiomeFeatures.HUGE_BROWN_MUSHROOM_CONFIG);
+	private ConfiguredFeature<?,?> bigRedMushroomGen = Feature.HUGE_RED_MUSHROOM.withConfiguration(DefaultBiomeFeatures.BIG_RED_MUSHROOM);
+	private ConfiguredFeature<?,?> bigBrownMushroomGen = Feature.HUGE_BROWN_MUSHROOM.withConfiguration(DefaultBiomeFeatures.BIG_BROWN_MUSHROOM);
 	private ConfiguredFeature<?,?> bigMushgloomGen = TFBiomeFeatures.BIG_MUSHGLOOM.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
 
 	public ComponentTFTrollCaveGarden(TemplateManager manager, CompoundNBT nbt) {

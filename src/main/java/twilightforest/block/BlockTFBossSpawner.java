@@ -1,7 +1,6 @@
 package twilightforest.block;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.state.EnumProperty;
@@ -41,7 +40,7 @@ public class BlockTFBossSpawner extends Block {
 
 	@Override
 	public boolean canEntityDestroy(BlockState state, IBlockReader world, BlockPos pos, Entity entity) {
-		return blockHardness >= 0f;
+		return state.getBlockHardness(world, pos) >= 0f;
 	}
 
 	//TODO: Find out what this does now

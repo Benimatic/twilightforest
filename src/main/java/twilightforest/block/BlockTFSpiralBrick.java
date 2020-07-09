@@ -13,7 +13,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import twilightforest.enums.Diagonals;
 
@@ -147,11 +146,12 @@ public class BlockTFSpiralBrick extends Block {
 //        return true;
 //    }
 
-	@Nullable
-	@Override
-	public Direction[] getValidRotations(BlockState state, IBlockReader world, BlockPos pos) {
-		return Direction.values();
-	}
+	//TODO: Does not exist
+//	@Nullable
+//	@Override
+//	public Direction[] getValidRotations(BlockState state, IBlockReader world, BlockPos pos) {
+//		return Direction.values();
+//	}
 
 	//TODO: Check this
 //	@Override

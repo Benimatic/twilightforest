@@ -1,25 +1,16 @@
 package twilightforest.world;
 
-import com.mojang.datafixers.Dynamic;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import com.mojang.serialization.Codec;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeManager;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.structure.Structure;
 import twilightforest.TFConfig;
-import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
-import twilightforest.biomes.TFBiomes;
 import twilightforest.structures.hollowtree.StructureTFHollowTreeStart;
 
-import javax.annotation.Nullable;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class MapGenTFHollowTree extends Structure<NoFeatureConfig> {
 
@@ -38,7 +29,7 @@ public class MapGenTFHollowTree extends Structure<NoFeatureConfig> {
 //			() -> TFBiomes.fireSwamp
 //	);
 
-	public MapGenTFHollowTree(Function<Dynamic<?>, NoFeatureConfig> config) {
+	public MapGenTFHollowTree(Codec<NoFeatureConfig> config) {
 		super(config);
 	}
 

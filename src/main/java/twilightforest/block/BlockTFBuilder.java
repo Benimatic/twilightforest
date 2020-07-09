@@ -158,7 +158,7 @@ public class BlockTFBuilder extends Block {
 		if (state.getBlock() == TFBlocks.built_block.get() && !state.get(BlockTFBuiltTranslucent.ACTIVE)) {
 			world.setBlockState(pos, state.with(BlockTFBuiltTranslucent.ACTIVE, true));
 			world.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 0.3F, 0.6F);
-			world.getPendingBlockTicks().scheduleTick(pos, state.getBlock(), state.getBlock().tickRate(world));
+			world.getPendingBlockTicks().scheduleTick(pos, state.getBlock(), /*state.getBlock().tickRate(world)*/ 15); //TODO: Potentially incorrect, but we aren't allowed block tick rates
 		}
 	}
 
