@@ -71,7 +71,7 @@ public class EntityTFTwilightWandBolt extends EntityTFThrowable implements IRend
 		if (!this.world.isRemote) {
 			if (result instanceof EntityRayTraceResult) {
 				if (((EntityRayTraceResult)result).getEntity() instanceof LivingEntity) {
-					((EntityRayTraceResult)result).getEntity().attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), 6);
+					((EntityRayTraceResult)result).getEntity().attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.func_234616_v_()), 6);
 				}
 			}
 

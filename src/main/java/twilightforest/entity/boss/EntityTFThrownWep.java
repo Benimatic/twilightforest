@@ -70,13 +70,13 @@ public class EntityTFThrownWep extends EntityTFThrowable {
 	@Override
 	protected void onImpact(RayTraceResult result) {
 		if (result instanceof EntityRayTraceResult) {
-			if (((EntityRayTraceResult)result).getEntity() instanceof EntityTFKnightPhantom || ((EntityRayTraceResult)result).getEntity() == this.getThrower()) {
+			if (((EntityRayTraceResult)result).getEntity() instanceof EntityTFKnightPhantom || ((EntityRayTraceResult)result).getEntity() == this.func_234616_v_()) {
 				return;
 			}
 
 			if (!world.isRemote) {
 				if (((EntityRayTraceResult)result).getEntity() != null) {
-					((EntityRayTraceResult)result).getEntity().attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), projectileDamage);
+					((EntityRayTraceResult)result).getEntity().attackEntityFrom(DamageSource.causeThrownDamage(this, this.func_234616_v_()), projectileDamage);
 				}
 				world.setEntityState(this, (byte) 3);
 				remove();

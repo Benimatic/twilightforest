@@ -83,15 +83,15 @@ public class EntityTFHydraMortar extends ThrowableEntity {
 				// we hit the ground
 				this.setMotion(this.getMotion().getX(), 0.0D, this.getMotion().getZ());
 				this.onGround = true;
-			} else if (!world.isRemote && ((EntityRayTraceResult)ray).getEntity() != getThrower() && !isPartOfHydra(((EntityRayTraceResult)ray).getEntity())) {
+			} else if (!world.isRemote && ((EntityRayTraceResult)ray).getEntity() != func_234616_v_() && !isPartOfHydra(((EntityRayTraceResult)ray).getEntity())) {
 				detonate();
 			}
 		}
 	}
 
 	private boolean isPartOfHydra(Entity entity) {
-		if (getThrower() instanceof EntityTFHydraPart) {
-			EntityTFHydra hydra = ((EntityTFHydraPart) getThrower()).hydra;
+		if (func_234616_v_() instanceof EntityTFHydraPart) {
+			EntityTFHydra hydra = ((EntityTFHydraPart) func_234616_v_()).hydra;
 			if (hydra == null || hydra.getParts() == null)
 				return false;
 			if (entity == hydra)
@@ -123,7 +123,7 @@ public class EntityTFHydraMortar extends ThrowableEntity {
 		Explosion.Mode flag1 = flag ? Explosion.Mode.BREAK : Explosion.Mode.NONE;
 		this.world.createExplosion(this, this.getPosX(), this.getPosY(), this.getPosZ(), explosionPower, flag, flag1);
 
-		DamageSource src = new IndirectEntityDamageSource("onFire", this, getThrower()).setFireDamage().setProjectile();
+		DamageSource src = new IndirectEntityDamageSource("onFire", this, func_234616_v_()).setFireDamage().setProjectile();
 
 		for (Entity nearby : this.world.getEntitiesWithinAABBExcludingEntity(this, this.getBoundingBox().grow(1.0D, 1.0D, 1.0D))) {
 			if (nearby.attackEntityFrom(src, DIRECT_DAMAGE) && !nearby.func_230279_az_()) {

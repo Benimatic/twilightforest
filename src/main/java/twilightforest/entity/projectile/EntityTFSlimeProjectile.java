@@ -68,7 +68,7 @@ public class EntityTFSlimeProjectile extends EntityTFThrowable implements IRende
 		// only damage living things
 		if (target instanceof EntityRayTraceResult) {
 			if (!world.isRemote && ((EntityRayTraceResult)target).getEntity() instanceof LivingEntity) {
-				((EntityRayTraceResult)target).getEntity().attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 8);
+				((EntityRayTraceResult)target).getEntity().attackEntityFrom(DamageSource.causeThrownDamage(this, this.func_234616_v_()), 8);
 				// TODO: damage armor?
 			}
 		}

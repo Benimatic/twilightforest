@@ -130,7 +130,7 @@ public class EntityTFIceBomb extends EntityTFThrowable {
 		List<LivingEntity> nearby = this.world.getEntitiesWithinAABB(LivingEntity.class, this.getBoundingBox().grow(3, 2, 3));
 
 		for (LivingEntity entity : nearby) {
-			if (entity != this.getThrower()) {
+			if (entity != this.func_234616_v_()) {
 				if (entity instanceof EntityTFYeti) {
 					// TODO: make "frozen yeti" entity?
 					BlockPos pos = new BlockPos(entity.lastTickPosX, entity.lastTickPosY, entity.lastTickPosZ);

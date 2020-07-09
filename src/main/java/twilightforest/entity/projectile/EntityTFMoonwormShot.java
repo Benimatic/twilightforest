@@ -101,7 +101,7 @@ public class EntityTFMoonwormShot extends EntityTFThrowable {
 
 			if (ray instanceof EntityRayTraceResult) {
 				if (((EntityRayTraceResult)ray).getEntity() != null) {
-					((EntityRayTraceResult)ray).getEntity().attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 0);
+					((EntityRayTraceResult)ray).getEntity().attackEntityFrom(DamageSource.causeThrownDamage(this, this.func_234616_v_()), 0);
 				}
 			}
 

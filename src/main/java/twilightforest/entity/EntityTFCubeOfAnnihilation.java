@@ -68,7 +68,7 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 	}
 
 	private DamageSource getDamageSource() {
-		LivingEntity thrower = this.getThrower();
+		LivingEntity thrower = (LivingEntity) this.func_234616_v_();
 		if (thrower instanceof PlayerEntity) {
 			return DamageSource.causePlayerDamage((PlayerEntity) thrower);
 		} else if (thrower != null) {
@@ -109,23 +109,23 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 		super.tick();
 
 		if (!this.world.isRemote) {
-			if (this.getThrower() == null) {
+			if (this.func_234616_v_() == null) {
 				this.remove();
 				return;
 			}
 
 			// always head towards either the point or towards the player
-			Vector3d destPoint = new Vector3d(this.getThrower().getX(), this.getThrower().getY() + this.getThrower().getEyeHeight(), this.getThrower().getZ());
+			Vector3d destPoint = new Vector3d(this.func_234616_v_().getPosX(), this.func_234616_v_().getPosY() + this.func_234616_v_().getEyeHeight(), this.func_234616_v_().getPosZ());
 
 			if (this.isReturning()) {
 				// if we are returning, and are near enough to the player, then we are done
 				List<LivingEntity> list = this.world.getEntitiesWithinAABB(LivingEntity.class, this.getBoundingBox().offset(this.getMotion().getX(), this.getMotion().getY(), this.getMotion().getZ()).grow(1.0D, 1.0D, 1.0D));
 
-				if (list.contains(this.getThrower())) {
+				if (list.contains(this.func_234616_v_())) {
 					this.remove();
 				}
 			} else {
-				destPoint = destPoint.add(getThrower().getLookVec().scale(16F));
+				destPoint = destPoint.add(func_234616_v_().getLookVec().scale(16F));
 			}
 
 			// set motions
@@ -160,17 +160,17 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 	@Override
 	public void remove() {
 		super.remove();
-		LivingEntity thrower = this.getThrower();
+		LivingEntity thrower = (LivingEntity) this.func_234616_v_();
 		if (thrower != null && thrower.getActiveItemStack().getItem() == TFItems.cube_of_annihilation.get()) {
 			thrower.resetActiveHand();
 		}
 	}
 
 	private boolean isReturning() {
-		if (this.hasHitObstacle || this.getThrower() == null || !(this.getThrower() instanceof PlayerEntity)) {
+		if (this.hasHitObstacle || this.func_234616_v_() == null || !(this.func_234616_v_() instanceof PlayerEntity)) {
 			return true;
 		} else {
-			PlayerEntity player = (PlayerEntity) this.getThrower();
+			PlayerEntity player = (PlayerEntity) this.func_234616_v_();
 			return !player.isHandActive();
 		}
 	}

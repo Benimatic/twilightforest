@@ -22,10 +22,10 @@ public class ItemTFEnderBow extends BowItem {
 	@SubscribeEvent
 	public static void onHit(ProjectileImpactEvent.Arrow evt) {
 		AbstractArrowEntity arrow = evt.getArrow();
-		if (arrow.getShooter() instanceof PlayerEntity
+		if (arrow.func_234616_v_() instanceof PlayerEntity
 						&& evt.getRayTraceResult() instanceof EntityRayTraceResult
 						&& ((EntityRayTraceResult) evt.getRayTraceResult()).getEntity() instanceof LivingEntity) {
-			PlayerEntity player = (PlayerEntity) arrow.getShooter();
+			PlayerEntity player = (PlayerEntity) arrow.func_234616_v_();
 			LivingEntity living = (LivingEntity) ((EntityRayTraceResult) evt.getRayTraceResult()).getEntity();
 
 			if (arrow.getPersistentData().contains(KEY)) {

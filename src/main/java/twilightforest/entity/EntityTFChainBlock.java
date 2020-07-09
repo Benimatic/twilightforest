@@ -75,7 +75,7 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 			EntityRayTraceResult entityRay = (EntityRayTraceResult) ray;
 
 			// only hit living things
-			if (entityRay.getEntity() instanceof LivingEntity && entityRay.getEntity() != this.getThrower()) {
+			if (entityRay.getEntity() instanceof LivingEntity && entityRay.getEntity() != this.func_234616_v_()) {
 				if (entityRay.getEntity().attackEntityFrom(this.getDamageSource(), 10)) {
 					// age when we hit a monster so that we go back to the player faster
 					this.ticksExisted += 60;
@@ -149,7 +149,7 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 	}
 
 	private DamageSource getDamageSource() {
-		LivingEntity thrower = this.getThrower();
+		LivingEntity thrower = (LivingEntity) this.func_234616_v_();
 		if (thrower instanceof PlayerEntity) {
 			return DamageSource.causePlayerDamage((PlayerEntity) thrower);
 		} else if (thrower != null) {
@@ -169,8 +169,8 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 			if (!block.isAir(state, world, pos) && block.getExplosionResistance(state, world, pos, null) < 7F
 					&& state.getBlockHardness(world, pos) >= 0 && block.canEntityDestroy(state, world, pos, this)) {
 
-				if (getThrower() instanceof PlayerEntity) {
-					PlayerEntity player = (PlayerEntity) getThrower();
+				if (func_234616_v_() instanceof PlayerEntity) {
+					PlayerEntity player = (PlayerEntity) func_234616_v_();
 
 					if (block.canHarvestBlock(state, world, pos, player)) {
 						block.harvestBlock(world, player, pos, state, world.getTileEntity(pos), player.getHeldItem(hand));
@@ -195,13 +195,13 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 			chain5.tick();
 
 			// set chain positions
-			if (this.getThrower() != null) {
+			if (this.func_234616_v_() != null) {
 				// interpolate chain position
-				Vector3d handVec = this.getThrower().getLookVec().rotateYaw(hand == Hand.MAIN_HAND ? -0.4F : 0.4F);
+				Vector3d handVec = this.func_234616_v_().getLookVec().rotateYaw(hand == Hand.MAIN_HAND ? -0.4F : 0.4F);
 
-				double sx = this.getThrower().getX() + handVec.x;
-				double sy = this.getThrower().getY() + handVec.y - 0.4F + this.getThrower().getEyeHeight();
-				double sz = this.getThrower().getZ() + handVec.z;
+				double sx = this.func_234616_v_().getPosX() + handVec.x;
+				double sy = this.func_234616_v_().getPosY() + handVec.y - 0.4F + this.func_234616_v_().getEyeHeight();
+				double sz = this.func_234616_v_().getPosZ() + handVec.z;
 
 				double ox = sx - this.getPosX();
 				double oy = sy - this.getPosY() - 0.25F;
@@ -214,10 +214,10 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 				this.chain5.setPosition(sx - ox * 0.85, sy - oy * 0.85, sz - oz * 0.85);
 			}
 		} else {
-			if (getThrower() == null) {
+			if (func_234616_v_() == null) {
 				remove();
 			} else {
-				double distToPlayer = this.getDistance(this.getThrower());
+				double distToPlayer = this.getDistance(this.func_234616_v_());
 				// return if far enough away
 				if (!this.isReturning && distToPlayer > MAX_CHAIN) {
 					this.isReturning = true;
@@ -229,7 +229,7 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 						this.remove();
 					}
 
-					LivingEntity returnTo = this.getThrower();
+					LivingEntity returnTo = (LivingEntity) this.func_234616_v_();
 
 					Vector3d back = new Vector3d(returnTo.getPosX(), returnTo.getPosY() + returnTo.getEyeHeight(), returnTo.getPosZ()).subtract(this.getPositionVec()).normalize();
 					float age = Math.min(this.ticksExisted * 0.03F, 1.0F);
@@ -255,7 +255,7 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 	@Override
 	public void remove() {
 		super.remove();
-		LivingEntity thrower = this.getThrower();
+		LivingEntity thrower = (LivingEntity) this.func_234616_v_();
 		if (thrower != null && thrower.getActiveItemStack().getItem() == TFItems.block_and_chain.get()) {
 			thrower.resetActiveHand();
 		}
@@ -278,7 +278,7 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 
 	@Override
 	public void writeSpawnData(PacketBuffer buffer) {
-		buffer.writeInt(getThrower() != null ? getThrower().getEntityId() : -1);
+		buffer.writeInt(func_234616_v_() != null ? func_234616_v_().getEntityId() : -1);
 		buffer.writeBoolean(hand == Hand.MAIN_HAND);
 	}
 

@@ -85,10 +85,10 @@ public class EntityTFNatureBolt extends EntityTFThrowable implements ITFProjecti
 			}
 
 			if (ray instanceof EntityRayTraceResult) {
-				Entity owner = getThrower();
+				Entity owner = func_234616_v_();
 				Entity entityHit = ((EntityRayTraceResult) ray).getEntity();
 				if (entityHit instanceof LivingEntity && (owner == null || (entityHit != owner && entityHit != owner.getRidingEntity()))) {
-					if (entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), 2)
+					if (entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.func_234616_v_()), 2)
 							&& world.getDifficulty() != Difficulty.PEACEFUL) {
 						int poisonTime = world.getDifficulty() == Difficulty.HARD ? 7 : 3;
 						((LivingEntity) entityHit).addPotionEffect(new EffectInstance(Effects.POISON, poisonTime * 20, 0));

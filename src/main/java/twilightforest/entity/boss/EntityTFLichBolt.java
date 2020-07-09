@@ -106,7 +106,7 @@ public class EntityTFLichBolt extends EntityTFThrowable implements IRendersAsIte
 
 			if (!this.world.isRemote) {
 				if (entityHit instanceof LivingEntity) {
-					entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.getThrower()), 6);
+					entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.func_234616_v_()), 6);
 				}
 				this.world.setEntityState(this, (byte) 3);
 				this.remove();
