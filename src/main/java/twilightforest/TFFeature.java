@@ -23,7 +23,6 @@ import twilightforest.entity.*;
 import twilightforest.structures.*;
 import twilightforest.util.IntPair;
 import twilightforest.util.PlayerHelper;
-import twilightforest.world.TFGenerationSettings;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -458,7 +457,7 @@ public enum TFFeature {
 	}
 
 	public static int getFeatureID(int mapX, int mapZ, ISeedReader world) {
-		return getFeatureAt(mapX, mapZ, world).ordinal();
+		return getFeatureAt(mapX, mapZ, (ServerWorld) world).ordinal();
 	}
 
 	public static TFFeature getFeatureAt(int mapX, int mapZ, ServerWorld world) {
@@ -539,7 +538,7 @@ public enum TFFeature {
 	 */
 	public static TFFeature getFeatureDirectlyAt(int chunkX, int chunkZ, ISeedReader world) {
 		if (isInFeatureChunk(chunkX << 4, chunkZ << 4)) {
-			return getFeatureAt(chunkX << 4, chunkZ << 4, world);
+			return getFeatureAt(chunkX << 4, chunkZ << 4, (ServerWorld) world);
 		}
 		return NOTHING;
 	}
@@ -701,7 +700,7 @@ public enum TFFeature {
 						random.nextInt();
 
 						// Check changed for TFFeature
-						if (getFeatureAt(l1 << 4, i2 << 4, worldIn) == feature) {
+						if (getFeatureAt(l1 << 4, i2 << 4, (ServerWorld) worldIn.getWorld()) == feature) {
 							if (!findUnexplored || !worldIn.chunkExists(l1, i2)) {
 								return new BlockPos((l1 << 4) + 8, 64, (i2 << 4) + 8);
 							}
@@ -728,7 +727,7 @@ public enum TFFeature {
 		int featureX = Math.round(chunkX / 16F) * 16;
 		int featureZ = Math.round(chunkZ / 16F) * 16;
 
-		return generateFeature(featureX, featureZ, world);
+		return generateFeature(featureX, featureZ, (ServerWorld) world.getWorld());
 	}
 
 	/**

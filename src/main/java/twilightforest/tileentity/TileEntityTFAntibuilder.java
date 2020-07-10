@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.particles.RedstoneParticleData;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ITag;
 import net.minecraft.tags.Tag;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -15,7 +16,7 @@ import java.util.Random;
 import static twilightforest.TwilightForestMod.prefix;
 
 public class TileEntityTFAntibuilder extends TileEntity implements ITickableTileEntity {
-	private static final Tag<Block> BLACKLIST = new BlockTags.Wrapper(prefix("antibuilder_blacklist"));
+	private static final ITag.INamedTag<Block> BLACKLIST = BlockTags.makeWrapperTag(prefix("antibuilder_blacklist").toString());
 	private static final int REVERT_CHANCE = 10;
 
 	private static final int RADIUS = 4;

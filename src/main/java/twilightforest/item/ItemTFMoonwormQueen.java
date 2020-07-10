@@ -55,7 +55,7 @@ public class ItemTFMoonwormQueen extends Item {
 
 		ItemStack itemstack = player.getHeldItem(context.getHand());
 
-		if (itemstack.getDamage() < itemstack.getMaxDamage() && player.canPlayerEdit(pos, context.getFace(), itemstack) && worldIn.canPlace(TFBlocks.moonworm.get().getDefaultState(), pos, ISelectionContext.dummy())) {
+		if (itemstack.getDamage() < itemstack.getMaxDamage() && player.canPlayerEdit(pos, context.getFace(), itemstack) && worldIn.func_226663_a_(TFBlocks.moonworm.get().getDefaultState(), pos, ISelectionContext.dummy())) {
 			BlockState iblockstate1 = TFBlocks.moonworm.get().getStateForPlacement(blockItemUseContext);
 
 			if (placeMoonwormAt(itemstack, player, worldIn, pos, iblockstate1)) {

@@ -1,10 +1,11 @@
 package twilightforest.world;
 
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraft.world.DimensionType;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Mod;
-import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
@@ -24,22 +25,24 @@ public class TFDimensions {
 
 //	private static final RegistryObject<ModDimension> MOD_DIMENSION = MOD_DIMENSIONS.register("twilight_forest", () -> ModDimension.withFactory(TwilightForestDimension::new));
 
-	public static DimensionType twilightForestDimension;
+	public static DimensionType twilight_forest_dimension; //TODO: Add value
+	public static final RegistryKey<DimensionType> twilight_forest = RegistryKey.func_240903_a_(Registry.DIMENSION_TYPE_KEY, new ResourceLocation("twilight_forest"));
+	public static final RegistryKey<World> twilight_forest_world = RegistryKey.func_240903_a_(Registry.WORLD_KEY, new ResourceLocation("twilight_forest"));
 
-	//TODO: Does this actually work? This is a bunch of shambles
-	public static void checkOriginDimension() {
-		ResourceLocation tfDim = new ResourceLocation(TwilightForestMod.ID, "twilight_forest");
-		ForgeConfigSpec.ConfigValue<String> originDim = TFConfig.COMMON_CONFIG.originDimension;
-		ResourceLocation dimRL = new ResourceLocation(originDim.get());
-
-		if (DimensionType.byName(dimRL) == null) {
-			TwilightForestMod.LOGGER.warn("Detected that the configured origin dimension ID ({}) is not registered. Defaulting to the overworld.", originDim.get());
-			originDim.set("minecraft:overworld");
-		} else if (dimRL.equals(tfDim)) {
-			TwilightForestMod.LOGGER.warn("Detected that the configured origin dimension ID ({}) is already used for the Twilight Forest. Defaulting to the overworld.", originDim.get());
-			originDim.set("minecraft:overworld");
-		}
-	}
+	//TODO: Do we even need this anymore? Unless someone uses our exact mod id and registry name, this shouldn't be a problem
+//	public static void checkOriginDimension() {
+//		ResourceLocation tfDim = new ResourceLocation(TwilightForestMod.ID, "twilight_forest");
+//		ForgeConfigSpec.ConfigValue<String> originDim = TFConfig.COMMON_CONFIG.originDimension;
+//		ResourceLocation dimRL = new ResourceLocation(originDim.get());
+//
+//		if (DimensionType.byName(dimRL) == null) {
+//			TwilightForestMod.LOGGER.warn("Detected that the configured origin dimension ID ({}) is not registered. Defaulting to the overworld.", originDim.get());
+//			originDim.set("minecraft:overworld");
+//		} else if (dimRL.equals(tfDim)) {
+//			TwilightForestMod.LOGGER.warn("Detected that the configured origin dimension ID ({}) is already used for the Twilight Forest. Defaulting to the overworld.", originDim.get());
+//			originDim.set("minecraft:overworld");
+//		}
+//	}
 
 	public static void init() {
 		Registry.register(Registry.field_239689_aA_, "twilightforest:tf_biome_provider", TFBiomeProvider.tfBiomeProviderCodec);

@@ -25,7 +25,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -215,8 +214,8 @@ public class BlockTFPortal extends BreakableBlock {
 	}
 
 	private static DimensionType getDestination(Entity entity) {
-		return entity.dimension != TFDimensions.twilightForestDimension
-				? TFDimensions.twilightForestDimension : DimensionType.byName(new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()));
+		return entity.dimension != TFDimensions.twilight_forest_dimension
+				? TFDimensions.twilight_forest_dimension : DimensionType.byName(new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()));
 	}
 
 	public static void attemptSendPlayer(Entity entity, boolean forcedEntry) {
@@ -240,10 +239,10 @@ public class BlockTFPortal extends BreakableBlock {
 
 		entity.changeDimension(destination, TFTeleporter.getTeleporterForDim(entity.getServer(), destination));
 
-		if (destination == TFDimensions.twilightForestDimension && entity instanceof ServerPlayerEntity) {
+		if (destination == TFDimensions.twilight_forest_dimension && entity instanceof ServerPlayerEntity) {
 			ServerPlayerEntity playerMP = (ServerPlayerEntity) entity;
 			// set respawn point for TF dimension to near the arrival portal
-			playerMP.setSpawnPoint(new BlockPos(playerMP), true, false, TFDimensions.twilightForestDimension);
+			playerMP.setSpawnPoint(new BlockPos(playerMP), true, false, TFDimensions.twilight_forest_dimension);
 		}
 	}
 
