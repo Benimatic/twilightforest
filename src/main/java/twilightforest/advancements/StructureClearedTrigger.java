@@ -2,12 +2,13 @@ package twilightforest.advancements;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.ICriterionTrigger;
 import net.minecraft.advancements.PlayerAdvancements;
 import net.minecraft.advancements.criterion.CriterionInstance;
+import net.minecraft.advancements.criterion.EntityPredicate;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.loot.ConditionArrayParser;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
@@ -50,9 +51,10 @@ public class StructureClearedTrigger implements ICriterionTrigger<StructureClear
 	}
 
 	@Override
-	public StructureClearedTrigger.Instance deserializeInstance(JsonObject json, JsonDeserializationContext context) {
+	public Instance func_230307_a_(JsonObject json, ConditionArrayParser condition) {
+		EntityPredicate.AndPredicate player = EntityPredicate.AndPredicate.func_234587_a_(json, "player", condition);
 		String structureName = JSONUtils.getString(json, "structure");
-		return new StructureClearedTrigger.Instance(structureName);
+		return new StructureClearedTrigger.Instance(player, structureName);
 	}
 
 	public void trigger(ServerPlayerEntity player, String structureName) {
@@ -66,8 +68,8 @@ public class StructureClearedTrigger implements ICriterionTrigger<StructureClear
 
 		private final String structureName;
 
-		public Instance(String structureName) {
-			super(StructureClearedTrigger.ID);
+		public Instance(EntityPredicate.AndPredicate player, String structureName) {
+			super(StructureClearedTrigger.ID, player);
 			this.structureName = structureName;
 		}
 

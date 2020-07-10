@@ -2,13 +2,14 @@ package twilightforest.advancements;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.ICriterionTrigger;
 import net.minecraft.advancements.PlayerAdvancements;
 import net.minecraft.advancements.criterion.CriterionInstance;
+import net.minecraft.advancements.criterion.EntityPredicate;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.loot.ConditionArrayParser;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
@@ -51,9 +52,10 @@ public class HasAdvancementTrigger implements ICriterionTrigger<HasAdvancementTr
 	}
 
 	@Override
-	public Instance deserializeInstance(JsonObject json, JsonDeserializationContext context) {
+	public Instance func_230307_a_(JsonObject json, ConditionArrayParser condition) {
+		EntityPredicate.AndPredicate player = EntityPredicate.AndPredicate.func_234587_a_(json, "player", condition);
 		ResourceLocation advancementId = new ResourceLocation(JSONUtils.getString(json, "advancement"));
-		return new HasAdvancementTrigger.Instance(advancementId);
+		return new HasAdvancementTrigger.Instance(player, advancementId);
 	}
 
 	public void trigger(ServerPlayerEntity player, Advancement advancement) {
@@ -67,8 +69,8 @@ public class HasAdvancementTrigger implements ICriterionTrigger<HasAdvancementTr
 
 		private final ResourceLocation advancementLocation;
 
-		Instance(ResourceLocation advancementLocation) {
-			super(HasAdvancementTrigger.ID);
+		Instance(EntityPredicate.AndPredicate player, ResourceLocation advancementLocation) {
+			super(HasAdvancementTrigger.ID, player);
 			this.advancementLocation = advancementLocation;
 		}
 

@@ -2,14 +2,15 @@ package twilightforest.advancements;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.ICriterionTrigger;
 import net.minecraft.advancements.PlayerAdvancements;
 import net.minecraft.advancements.criterion.CriterionInstance;
+import net.minecraft.advancements.criterion.EntityPredicate;
 import net.minecraft.advancements.criterion.ItemPredicate;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.ConditionArrayParser;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -56,10 +57,11 @@ public class ItemUseTrigger implements ICriterionTrigger<ItemUseTrigger.Instance
     }
 
     @Override
-    public Instance deserializeInstance(JsonObject json, JsonDeserializationContext context) {
-        ItemPredicate item = ItemPredicate.deserialize(json.get("item"));
-        BlockPredicate block = BlockPredicate.deserialize(json.get("block"));
-        return new ItemUseTrigger.Instance(item, block);
+    public Instance func_230307_a_(JsonObject json, ConditionArrayParser condition) {
+		EntityPredicate.AndPredicate player = EntityPredicate.AndPredicate.func_234587_a_(json, "player", condition);
+		ItemPredicate item = ItemPredicate.deserialize(json.get("item"));
+		BlockPredicate block = BlockPredicate.deserialize(json.get("block"));
+		return new ItemUseTrigger.Instance(player, item, block);
     }
 
     public void trigger(ServerPlayerEntity player, ItemStack item, World world, BlockPos pos) {
@@ -74,8 +76,8 @@ public class ItemUseTrigger implements ICriterionTrigger<ItemUseTrigger.Instance
         private final ItemPredicate item;
         private final BlockPredicate block;
 
-        public Instance(ItemPredicate item, BlockPredicate block) {
-            super(ItemUseTrigger.ID);
+        public Instance(EntityPredicate.AndPredicate player, ItemPredicate item, BlockPredicate block) {
+            super(ItemUseTrigger.ID, player);
             this.item = item;
             this.block = block;
         }

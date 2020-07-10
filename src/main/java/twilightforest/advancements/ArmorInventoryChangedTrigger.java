@@ -2,14 +2,15 @@ package twilightforest.advancements;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.ICriterionTrigger;
 import net.minecraft.advancements.PlayerAdvancements;
 import net.minecraft.advancements.criterion.CriterionInstance;
+import net.minecraft.advancements.criterion.EntityPredicate;
 import net.minecraft.advancements.criterion.ItemPredicate;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.ConditionArrayParser;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 
@@ -51,10 +52,11 @@ public class ArmorInventoryChangedTrigger implements ICriterionTrigger<ArmorInve
 	}
 
 	@Override
-	public Instance deserializeInstance(JsonObject json, JsonDeserializationContext context) {
+	public Instance func_230307_a_(JsonObject json, ConditionArrayParser condition) {
+		EntityPredicate.AndPredicate player = EntityPredicate.AndPredicate.func_234587_a_(json, "player", condition);
 		ItemPredicate from = ItemPredicate.deserialize(json.get("from"));
 		ItemPredicate to = ItemPredicate.deserialize(json.get("to"));
-		return new Instance(from, to);
+		return new Instance(player, from, to);
 	}
 
 	public void trigger(ServerPlayerEntity player, ItemStack from, ItemStack to) {
@@ -69,8 +71,8 @@ public class ArmorInventoryChangedTrigger implements ICriterionTrigger<ArmorInve
 		private final ItemPredicate from;
 		private final ItemPredicate to;
 
-		public Instance(ItemPredicate from, ItemPredicate to) {
-			super(ArmorInventoryChangedTrigger.ID);
+		public Instance(EntityPredicate.AndPredicate player, ItemPredicate from, ItemPredicate to) {
+			super(ArmorInventoryChangedTrigger.ID, player);
 			this.from = from;
 			this.to = to;
 		}

@@ -3,12 +3,13 @@ package twilightforest.advancements;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.ICriterionTrigger;
 import net.minecraft.advancements.PlayerAdvancements;
 import net.minecraft.advancements.criterion.CriterionInstance;
+import net.minecraft.advancements.criterion.EntityPredicate;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.loot.ConditionArrayParser;
 import net.minecraft.util.ResourceLocation;
 import twilightforest.TwilightForestMod;
 
@@ -47,12 +48,13 @@ public class TrophyPedestalTrigger implements ICriterionTrigger<TrophyPedestalTr
         this.listeners.remove(playerAdvancementsIn);
     }
 
-    @Override
-    public TrophyPedestalTrigger.Instance deserializeInstance(JsonObject json, JsonDeserializationContext context) {
-        return new TrophyPedestalTrigger.Instance();
-    }
+	@Override
+	public TrophyPedestalTrigger.Instance func_230307_a_(JsonObject json, ConditionArrayParser condition) {
+		EntityPredicate.AndPredicate player = EntityPredicate.AndPredicate.func_234587_a_(json, "player", condition);
+		return new TrophyPedestalTrigger.Instance(player);
+	}
 
-    public void trigger(ServerPlayerEntity player) {
+	public void trigger(ServerPlayerEntity player) {
         TrophyPedestalTrigger.Listeners listeners = this.listeners.get(player.getAdvancements());
         if (listeners != null) {
             listeners.trigger();
@@ -61,8 +63,8 @@ public class TrophyPedestalTrigger implements ICriterionTrigger<TrophyPedestalTr
 
     public static class Instance extends CriterionInstance {
 
-        public Instance() {
-            super(TrophyPedestalTrigger.ID);
+        public Instance(EntityPredicate.AndPredicate player) {
+            super(TrophyPedestalTrigger.ID, player);
         }
     }
 
