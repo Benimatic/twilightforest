@@ -13,6 +13,7 @@ import net.minecraft.item.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootFunction;
+import net.minecraft.loot.LootFunctionType;
 import net.minecraft.loot.conditions.ILootCondition;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
@@ -21,7 +22,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IRegistryDelegate;
-import twilightforest.TwilightForestMod;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,6 +34,11 @@ public class LootFunctionEnchant extends LootFunction {
 	protected LootFunctionEnchant(ILootCondition[] conditions, Map<IRegistryDelegate<Enchantment>, Short> enchantments) {
 		super(conditions);
 		this.enchantments = enchantments;
+	}
+
+	@Override
+	public LootFunctionType func_230425_b_() {
+		return TFTreasure.ENCHANT;
 	}
 
 	@Override
@@ -78,12 +83,8 @@ public class LootFunctionEnchant extends LootFunction {
 
 	public static class Serializer extends LootFunction.Serializer<LootFunctionEnchant> {
 
-		protected Serializer() {
-			super(TwilightForestMod.prefix("enchant"), LootFunctionEnchant.class);
-		}
-
 		@Override
-		public void serialize(JsonObject object, LootFunctionEnchant function, JsonSerializationContext ctx) {
+		public void func_230424_a_(JsonObject object, LootFunctionEnchant function, JsonSerializationContext ctx) {
 			if (!function.enchantments.isEmpty()) {
 				JsonObject obj = new JsonObject();
 

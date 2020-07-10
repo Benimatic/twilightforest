@@ -3,13 +3,12 @@ package twilightforest.loot;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
+import net.minecraft.loot.ILootSerializer;
+import net.minecraft.loot.LootConditionType;
 import net.minecraft.loot.LootContext;
 import net.minecraft.loot.conditions.ILootCondition;
 import net.minecraft.util.JSONUtils;
 import net.minecraftforge.fml.ModList;
-import twilightforest.TwilightForestMod;
-
-import javax.annotation.Nonnull;
 
 // Loot condition for checking if a mod exists.
 public class LootConditionModExists implements ILootCondition {
@@ -23,25 +22,25 @@ public class LootConditionModExists implements ILootCondition {
     }
 
     @Override
+    public LootConditionType func_230419_b_() {
+        return TFTreasure.MOD_EXISTS;
+    }
+
+    @Override
     public boolean test(LootContext context) {
         return exists;
     }
 
-    public static class Serializer extends ILootCondition.AbstractSerializer<LootConditionModExists> {
+    public static class Serializer implements ILootSerializer<LootConditionModExists> {
 
-        protected Serializer() {
-            super(TwilightForestMod.prefix("mod_exists"), LootConditionModExists.class);
-        }
+		@Override
+		public void func_230424_a_(JsonObject json, LootConditionModExists value, JsonSerializationContext context) {
+			json.addProperty("mod_id", value.modID);
+		}
 
-        @Override
-        public void serialize(@Nonnull JsonObject json, @Nonnull LootConditionModExists value, @Nonnull JsonSerializationContext context) {
-            json.addProperty("mod_id", value.modID);
-        }
-
-        @Nonnull
-        @Override
-        public LootConditionModExists deserialize(@Nonnull JsonObject json, @Nonnull JsonDeserializationContext context) {
-            return new LootConditionModExists(JSONUtils.getString(json, "mod_id"));
-        }
-    }
+		@Override
+		public LootConditionModExists func_230423_a_(JsonObject json, JsonDeserializationContext context) {
+			return new LootConditionModExists(JSONUtils.getString(json, "mod_id"));
+		}
+	}
 }

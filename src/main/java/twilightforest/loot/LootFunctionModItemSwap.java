@@ -8,9 +8,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootFunction;
+import net.minecraft.loot.LootFunctionType;
 import net.minecraft.loot.conditions.ILootCondition;
 import net.minecraft.util.JSONUtils;
-import twilightforest.TwilightForestMod;
 
 // Loot condition for checking that if a mod exists, then swap original item with its deserialized item.
 public class LootFunctionModItemSwap extends LootFunction {
@@ -25,6 +25,11 @@ public class LootFunctionModItemSwap extends LootFunction {
     }
 
     @Override
+    public LootFunctionType func_230425_b_() {
+        return TFTreasure.ITEM_OR_DEFAULT;
+    }
+
+    @Override
     public ItemStack doApply(ItemStack stack, LootContext context) {
         ItemStack newStack = new ItemStack(item, stack.getCount());
 
@@ -35,20 +40,15 @@ public class LootFunctionModItemSwap extends LootFunction {
 
     public static class Serializer extends LootFunction.Serializer<LootFunctionModItemSwap> {
 
-        protected Serializer() {
-            super(TwilightForestMod.prefix("item_or_default"), LootFunctionModItemSwap.class);
-        }
+		@Override
+		public void func_230424_a_(JsonObject object, LootFunctionModItemSwap function, JsonSerializationContext serializationContext) {
+			if (function.success)
+				object.addProperty("item", function.item.getRegistryName().toString());
+			else
+				object.addProperty("default", function.item.getRegistryName().toString());
+		}
 
-        @Override
-        public void serialize(JsonObject object, LootFunctionModItemSwap function, JsonSerializationContext serializationContext) {
-            if (function.success)
-                object.addProperty("item", function.item.getRegistryName().toString());
-            else
-
-                object.addProperty("default", function.item.getRegistryName().toString());
-        }
-
-        @Override
+		@Override
         public LootFunctionModItemSwap deserialize(JsonObject object, JsonDeserializationContext deserializationContext, ILootCondition[] conditionsIn) {
             Item item;
             boolean success;

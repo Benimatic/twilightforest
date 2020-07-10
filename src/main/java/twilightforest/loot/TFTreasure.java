@@ -1,15 +1,15 @@
 package twilightforest.loot;
 
 import net.minecraft.block.Blocks;
-import net.minecraft.loot.conditions.LootConditionManager;
-import net.minecraft.loot.functions.LootFunctionManager;
+import net.minecraft.loot.LootConditionType;
+import net.minecraft.loot.LootFunctionType;
 import net.minecraft.tileentity.ChestTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
 import twilightforest.TwilightForestMod;
 
 public class TFTreasure {
@@ -40,14 +40,11 @@ public class TFTreasure {
 	public static final TFTreasure troll_vault = new TFTreasure("troll_vault");
 	public static final TFTreasure graveyard = new TFTreasure("graveyard");
 
-	//TODO: Register these
-	public static void init() {
-		LootFunctionManager.registerFunction(new LootFunctionEnchant.Serializer());
-		LootFunctionManager.registerFunction(new LootFunctionModItemSwap.Serializer());
+	public static final LootFunctionType ENCHANT = registerFunction("enchant", new LootFunctionType(new LootFunctionEnchant.Serializer()));
+	public static final LootFunctionType ITEM_OR_DEFAULT = registerFunction("item_or_default", new LootFunctionType(new LootFunctionModItemSwap.Serializer()));
 
-		LootConditionManager.registerCondition(new LootConditionIsMinion.Serializer());
-		LootConditionManager.registerCondition(new LootConditionModExists.Serializer());
-	}
+	public static final LootConditionType IS_MINION = registerCondition("is_minion", new LootConditionType(new LootConditionIsMinion.Serializer()));
+	public static final LootConditionType MOD_EXISTS = registerCondition("mod_exists", new LootConditionType(new LootConditionModExists.Serializer()));
 
 	private final ResourceLocation lootTable;
 
@@ -67,5 +64,13 @@ public class TFTreasure {
 		TileEntity te = world.getTileEntity(pos);
 		if (te instanceof ChestTileEntity)
 			((ChestTileEntity) te).setLootTable(lootTable, world.getSeed() * pos.getX() + pos.getY() ^ pos.getZ());
+	}
+
+	private static LootFunctionType registerFunction(String name, LootFunctionType function) {
+		return Registry.register(Registry.field_239694_aZ_, TwilightForestMod.prefix(name), function); //ILootFunction registry
+	}
+
+	private static LootConditionType registerCondition(String name, LootConditionType condition) {
+		return Registry.register(Registry.field_239704_ba_, TwilightForestMod.prefix(name), condition); //ILootCondition registry
 	}
 }
