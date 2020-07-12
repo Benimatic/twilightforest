@@ -11,7 +11,7 @@ public enum LeavesVariant implements IStringSerializable {
 	RAINBOAK;
 
 	@Override
-	public String func_176610_l() {
+	public String getString() {
 		return name().toLowerCase(Locale.ROOT);
 	}
 }

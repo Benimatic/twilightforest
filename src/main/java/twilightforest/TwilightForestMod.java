@@ -42,6 +42,7 @@ import twilightforest.loot.TFTreasure;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.potions.TFPotions;
 import twilightforest.tileentity.TFTileEntities;
+import twilightforest.world.TFDimensions;
 import twilightforest.world.feature.TFBiomeFeatures;
 import twilightforest.world.feature.TFGenCaveStalactite;
 
@@ -127,6 +128,7 @@ public class TwilightForestMod {
 		TFFeature.init();
 		TFBiomes.addBiomeTypes();
 		TFBiomes.addBiomeFeatures();
+		TFDimensions.init();
 
 		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
 			try {
