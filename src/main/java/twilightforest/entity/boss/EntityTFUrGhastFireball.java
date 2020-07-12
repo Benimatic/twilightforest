@@ -1,5 +1,6 @@
 package twilightforest.entity.boss;
 
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.DamagingProjectileEntity;
 import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.util.DamageSource;
@@ -26,11 +27,11 @@ public class EntityTFUrGhastFireball extends FireballEntity implements ITFProjec
 			if (!this.world.isRemote && !(((EntityRayTraceResult) result).getEntity() instanceof DamagingProjectileEntity)) {
 				if (((EntityRayTraceResult) result).getEntity() != null) {
 					// TF - up damage by 10
-					((EntityRayTraceResult) result).getEntity().attackEntityFrom(DamageSource.causeFireballDamage(this, this.shootingEntity), 16.0F);
-					this.applyEnchantments(this.shootingEntity, ((EntityRayTraceResult) result).getEntity());
+					((EntityRayTraceResult) result).getEntity().attackEntityFrom(DamageSource.func_233547_a_(this, this.func_234616_v_()), 16.0F);
+					this.applyEnchantments((LivingEntity)this.func_234616_v_(), ((EntityRayTraceResult) result).getEntity());
 				}
 
-				boolean flag = ForgeEventFactory.getMobGriefingEvent(this.world, this.shootingEntity);
+				boolean flag = ForgeEventFactory.getMobGriefingEvent(this.world, this.func_234616_v_());
 				this.world.createExplosion(null, this.getPosX(), this.getPosY(), this.getPosZ(), (float) this.explosionPower, flag, flag ? Explosion.Mode.BREAK : Explosion.Mode.NONE);
 				this.remove();
 			}

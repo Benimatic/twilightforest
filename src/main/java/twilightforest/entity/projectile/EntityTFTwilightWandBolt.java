@@ -90,7 +90,7 @@ public class EntityTFTwilightWandBolt extends EntityTFThrowable implements IRend
 			this.shoot(vec3d.x, vec3d.y, vec3d.z, 1.5F, 0.1F);
 
 			if (source.getImmediateSource() instanceof LivingEntity) {
-				this.owner = (LivingEntity) source.getImmediateSource();
+				this.setShooter(source.getImmediateSource());
 			}
 			return true;
 		}

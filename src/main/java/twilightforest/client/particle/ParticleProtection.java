@@ -6,14 +6,11 @@ import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.SuspendedTownParticle;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particles.BasicParticleType;
-import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ParticleProtection extends SuspendedTownParticle {
 
 	ParticleProtection(ClientWorld world, double x, double y, double z, double velX, double velY, double velZ) {
-		super(world, x, y, z, velX, velY, velZ); //TODO: Private
+		super(world, x, y, z, velX, velY, velZ);
 	}
 
 	@Override

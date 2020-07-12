@@ -301,7 +301,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 
 		ServerWorldInfo worldInfo = (ServerWorldInfo) world.getServer().getWorld(World.field_234918_g_).getWorldInfo(); // grab the overworld to set weather properly
 
-		worldInfo.setClearWeatherTime(0);
+//		worldInfo.setClearWeatherTime(0); TODO
 		worldInfo.setRainTime(rainTime);
 		worldInfo.setThunderTime(rainTime);
 		worldInfo.setRaining(true);

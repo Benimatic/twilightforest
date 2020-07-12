@@ -40,7 +40,6 @@ import twilightforest.structures.TFStructureProcessors;
 
 import javax.annotation.Nullable;
 import java.util.Random;
-import java.util.function.Function;
 
 public class GenDruidHut extends Feature<NoFeatureConfig> {
 
@@ -49,11 +48,11 @@ public class GenDruidHut extends Feature<NoFeatureConfig> {
 	}
 
 	@Override // Loosely based on WorldGenFossils
-	public boolean func_230362_a_(ISeedReader seed, StructureManager manager, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+	public boolean func_230362_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
 		//Random random = world.getChunk(pos).getRandomWithSeed(987234911L);
-		Random random = seed.getRandom();
+		Random random = world.getRandom();
 
-		TemplateManager templatemanager = ((ServerWorld)world).getSaveHandler().getStructureTemplateManager();
+		TemplateManager templatemanager = ((ServerWorld)world).getServer().func_240792_aT_();
 		Template template = templatemanager.getTemplate(HutType.values()[random.nextInt(HutType.size)].RL);
 
 		Rotation[] rotations = Rotation.values();
@@ -71,21 +70,22 @@ public class GenDruidHut extends Feature<NoFeatureConfig> {
 		BlockPos transformedSize = template.transformedSize(rotation);
 		int dx = random.nextInt(17 - transformedSize.getX());
 		int dz = random.nextInt(17 - transformedSize.getZ());
+		posSnap.add(dx, 0, dz);
 
-		BlockPos.Mutable startPos = new BlockPos.Mutable(posSnap.add(dx, 0, dz));
+		BlockPos.Mutable startPos = new BlockPos.Mutable(posSnap.getX(), posSnap.getY(), posSnap.getZ());
 
 		if (!offsetToAverageGroundLevel(world.getWorld(), startPos, transformedSize)) {
 			return false;
 		}
 
 		BlockPos placementPos = template.getZeroPositionWithTransform(startPos, mirror, rotation);
-		template.addBlocksToWorld(world, placementPos, placementsettings.addProcessor(new HutTemplateProcessor(0.2F)), 20);
+		template.func_237146_a_(world, placementPos, placementPos, placementsettings.addProcessor(new HutTemplateProcessor(0.2F)), random, 20);
 
 		if (random.nextBoolean()) {
 			template = templatemanager.getTemplate(BasementType.values()[random.nextInt(BasementType.size)].getBasement(random.nextBoolean()));
 			placementPos = placementPos.down(12).offset(rotation.rotate(mirror.mirror(Direction.NORTH)), 1).offset(rotation.rotate(mirror.mirror(Direction.EAST)), 1);
 
-			template.addBlocksToWorld(world, placementPos, placementsettings.addProcessor(new HutTemplateProcessor(0.2F)), 20);
+			template.func_237146_a_(world, placementPos, placementPos, placementsettings.addProcessor(new HutTemplateProcessor(0.2F)), random, 20);
 		}
 
 		return true;
@@ -196,7 +196,7 @@ public class GenDruidHut extends Feature<NoFeatureConfig> {
 					}
 
 					if (world.setBlockState(blockPos, chest, 16 | 2)) {
-						TFTreasure.basement.generateChestContents(world.getWorld(), blockPos);
+						TFTreasure.basement.generateChestContents((ISeedReader)world, blockPos);
 					}
 				}
 			}
@@ -252,13 +252,11 @@ public class GenDruidHut extends Feature<NoFeatureConfig> {
 
     public static class HutTemplateProcessor extends RandomizedTemplateProcessor {
 
-        public HutTemplateProcessor(float integrity) {
+		public static final Codec<HutTemplateProcessor> codecHutProcessor = Codec.FLOAT.fieldOf("integrity").withDefault(1.0F).xmap(HutTemplateProcessor::new, (obj) -> obj.integrity).codec();
+
+		public HutTemplateProcessor(float integrity) {
             super(integrity);
         }
-
-        public HutTemplateProcessor(Dynamic<?> dynamic) {
-        	super(dynamic.get("integrity").asFloat(1.0F));
-		}
 
 		@Override
 		protected IStructureProcessorType getType() {
@@ -267,7 +265,7 @@ public class GenDruidHut extends Feature<NoFeatureConfig> {
 
 		@Nullable
 		@Override
-		public Template.BlockInfo process(IWorldReader worldIn, BlockPos pos, Template.BlockInfo p_215194_3_, Template.BlockInfo blockInfo, PlacementSettings settings, @Nullable Template template) {
+		public Template.BlockInfo process(IWorldReader worldIn, BlockPos pos, BlockPos piecepos, Template.BlockInfo p_215194_3_, Template.BlockInfo blockInfo, PlacementSettings settings, @Nullable Template template) {
 			//if (!shouldPlaceBlock()) return null;
 
 			Random random = settings.getRandom(pos);

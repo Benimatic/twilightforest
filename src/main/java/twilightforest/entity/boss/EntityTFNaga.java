@@ -414,7 +414,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MonsterEntity.func_234295_eP_()
-				.func_233815_a_(Attributes.MAX_HEALTH, getMaxHealthPerDifficulty()) //TODO: We're static now
+				.func_233815_a_(Attributes.MAX_HEALTH, /*getMaxHealthPerDifficulty()*/ 200) //TODO: We're static now
 				.func_233815_a_(Attributes.MOVEMENT_SPEED, DEFAULT_SPEED)
 				.func_233815_a_(Attributes.ATTACK_DAMAGE, 5.0D)
 				.func_233815_a_(Attributes.FOLLOW_RANGE, 80.0D);

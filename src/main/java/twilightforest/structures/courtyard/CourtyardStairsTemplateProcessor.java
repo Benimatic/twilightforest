@@ -1,6 +1,6 @@
 package twilightforest.structures.courtyard;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
@@ -18,13 +18,11 @@ import java.util.Random;
 
 public class CourtyardStairsTemplateProcessor extends RandomizedTemplateProcessor {
 
+	public static final Codec<CourtyardStairsTemplateProcessor> codecStairsProcessor = Codec.FLOAT.fieldOf("integrity").withDefault(1.0F).xmap(CourtyardStairsTemplateProcessor::new, (obj) -> obj.integrity).codec();
+
     public CourtyardStairsTemplateProcessor(float integrity) {
         super(integrity);
     }
-
-	public CourtyardStairsTemplateProcessor(Dynamic<?> dynamic) {
-    	this(dynamic.get("integrity").asFloat(1.0F));
-	}
 
 	@Override
 	protected IStructureProcessorType getType() {
@@ -33,10 +31,10 @@ public class CourtyardStairsTemplateProcessor extends RandomizedTemplateProcesso
 
 	@Nullable
 	@Override
-	public Template.BlockInfo process(IWorldReader worldReaderIn, BlockPos pos, Template.BlockInfo p_215194_3_, Template.BlockInfo blockInfo, PlacementSettings placementSettingsIn, @Nullable Template template) {
+	public Template.BlockInfo process(IWorldReader worldReaderIn, BlockPos pos, BlockPos piecepos, Template.BlockInfo p_215194_3_, Template.BlockInfo blockInfo, PlacementSettings placementSettingsIn, @Nullable Template template) {
 		Random random = placementSettingsIn.getRandom(pos);
 
-    	if (shouldPlaceBlock(random)) {
+		if (shouldPlaceBlock(random)) {
 			BlockState state = blockInfo.state;
 			Block block = state.getBlock();
 

@@ -1,18 +1,19 @@
 package twilightforest.world;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.provider.BiomeProvider;
-import net.minecraft.world.chunk.ChunkPrimer;
-import net.minecraft.world.gen.OctavesNoiseGenerator;
-import net.minecraft.world.gen.WorldGenRegion;
+import net.minecraft.world.chunk.IChunk;
+import net.minecraft.world.gen.*;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import twilightforest.TFConfig;
-import twilightforest.TFFeature;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.IntPair;
@@ -20,47 +21,89 @@ import twilightforest.util.IntPair;
 // TODO: doc out all the vanilla copying
 public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 
-	private final OctavesNoiseGenerator noiseGen4;
+	public static final Codec<ChunkGeneratorTwilightForest> codecTFChunk = RecordCodecBuilder.create((instance) ->
+			instance.group(
+					BiomeProvider.field_235202_a_.fieldOf("biome_source").forGetter((obj) -> obj.biomeProvider),
+					Codec.LONG.fieldOf("seed").stable().forGetter((obj) -> obj.seed),
+					DimensionSettings.field_236098_b_.fieldOf("settings").forGetter((obj) -> obj.dimensionSettings))
+					.apply(instance, instance.stable(ChunkGeneratorTwilightForest::new)));
+
+//	private final OctavesNoiseGenerator noiseGen4;
 	//private final OctavesNoiseGenerator scaleNoise;
 	//private final OctavesNoiseGenerator forestNoise;
 
-	public ChunkGeneratorTwilightForest(IWorld world, BiomeProvider seed, TFGenerationSettings settings) {
-		super(world, seed, settings, true);
-		this.noiseGen4 = new OctavesNoiseGenerator(this.randomSeed, 4, 0);
+	private final long seed;
+	protected final DimensionSettings dimensionSettings;
+
+	public ChunkGeneratorTwilightForest(BiomeProvider provider, long seed, DimensionSettings settings) {
+		super(provider, settings.func_236108_a_(), true);
+		this.dimensionSettings = settings;
+		this.seed = seed;
+//		this.noiseGen4 = new OctavesNoiseGenerator(this.randomSeed, 4, 0);
 		//this.scaleNoise = new OctavesNoiseGenerator(rand, 10);
 		//this.forestNoise = new OctavesNoiseGenerator(rand, 8);
 	}
 
 	@Override
-	public void decorate(WorldGenRegion region) {
-		super.decorate(region);
-		int x = region.getMainChunkX();
-		int z = region.getMainChunkZ();
-
-		randomSeed.setSeed(getSeed());
-
-		ChunkBitArray data = new ChunkBitArray();
-		//func_222529_a(x, z, data);
-		squishTerrain(data);
-
-		ChunkPrimer primer = new DirectChunkPrimer(new ChunkPos(x, z));
-		initPrimer(region, data);
-
-		// Dark Forest canopy uses the different scaled biomesForGeneration value already set in setBlocksInChunk
-		addDarkForestCanopy2(x, z, region);
-
-		// now we reload the biome array so that it's scaled 1:1 with blocks on the ground
-		//this.biomesForGeneration = world.getDimension().getBiomeProvider().getBiomes(biomesForGeneration, x * 16, z * 16, 16, 16);
-
-		addGlaciers(region, this.biomeProvider.getBiomeForNoiseGen(x, getSeaLevel(), z));
-		deformTerrainForFeature(x, z, region);
-		//replaceBiomeBlocks(x, z, primer, biomesForGeneration);
-
-//		generateFeatures(x, z, primer); TODO: Should be moved to Biome Decorator
-//		hollowTreeGenerator.generate(world, x, z, primer); TODO: Should be handled via Biome Decorator
-
-		makeChunk(x, z, primer);
+	protected Codec<? extends ChunkGenerator> func_230347_a_() {
+		return null;
 	}
+
+	@Override
+	public ChunkGenerator func_230349_a_(long l) {
+		return null;
+	}
+
+	@Override
+	public void generateSurface(WorldGenRegion worldGenRegion, IChunk iChunk) {
+
+	}
+
+	@Override
+	public void func_230352_b_(IWorld iWorld, StructureManager structureManager, IChunk iChunk) {
+
+	}
+
+	@Override
+	public int func_222529_a(int i, int i1, Heightmap.Type type) {
+		return 0;
+	}
+
+	@Override
+	public IBlockReader func_230348_a_(int i, int i1) {
+		return null;
+	}
+
+//	@Override
+//	public void decorate(WorldGenRegion region) {
+//		super.decorate(region);
+//		int x = region.getMainChunkX();
+//		int z = region.getMainChunkZ();
+//
+//		randomSeed.setSeed(getSeed());
+//
+//		ChunkBitArray data = new ChunkBitArray();
+//		//func_222529_a(x, z, data);
+//		squishTerrain(data);
+//
+//		ChunkPrimer primer = new DirectChunkPrimer(new ChunkPos(x, z));
+//		initPrimer(region, data);
+//
+//		// Dark Forest canopy uses the different scaled biomesForGeneration value already set in setBlocksInChunk
+//		addDarkForestCanopy2(x, z, region);
+//
+//		// now we reload the biome array so that it's scaled 1:1 with blocks on the ground
+//		//this.biomesForGeneration = world.getDimension().getBiomeProvider().getBiomes(biomesForGeneration, x * 16, z * 16, 16, 16);
+//
+//		addGlaciers(region, this.biomeProvider.getBiomeForNoiseGen(x, getSeaLevel(), z));
+//		deformTerrainForFeature(x, z, region);
+//		//replaceBiomeBlocks(x, z, primer, biomesForGeneration);
+//
+////		generateFeatures(x, z, primer); TODO: Should be moved to Biome Decorator
+////		hollowTreeGenerator.generate(world, x, z, primer); TODO: Should be handled via Biome Decorator
+//
+//		makeChunk(x, z, primer);
+//	}
 
 	protected void initPrimer(WorldGenRegion primer, ChunkBitArray data) {
 		for (int x = 0; x < 16; x++) {
@@ -68,9 +111,9 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 				for (int y = 0; y < 256; y++) {
 					boolean solid = data.get(getIndex(x, y, z));
 					if (y < TFGenerationSettings.SEALEVEL && !solid) {
-						primer.setBlockState(new BlockPos(x, y, z), settings.getDefaultBlock(), 3);
+//						primer.setBlockState(new BlockPos(x, y, z), settings.getDefaultBlock(), 3);
 					} else if (solid) {
-						primer.setBlockState(new BlockPos(x, y, z), settings.getDefaultFluid(), 3);
+//						primer.setBlockState(new BlockPos(x, y, z), settings.getDefaultFluid(), 3);
 					}
 				}
 			}
@@ -123,12 +166,12 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 
 				for (int bx = -1; bx <= 1; bx++) {
 					for (int bz = -1; bz <= 1; bz++) {
-						Biome biome = getBiomeProvider().getBiomeForNoiseGen(chunkX, getSeaLevel(), chunkZ);
-
-						if (biome == TFBiomes.darkForest.get() || biome == TFBiomes.darkForestCenter.get()) {
-							thicks[x + z * 5]++;
-							biomeFound = true;
-						}
+//						Biome biome = getBiomeProvider().getBiomeForNoiseGen(chunkX, getSeaLevel(), chunkZ);
+//
+//						if (biome == TFBiomes.darkForest.get() || biome == TFBiomes.darkForestCenter.get()) {
+//							thicks[x + z * 5]++;
+//							biomeFound = true;
+//						}
 					}
 				}
 			}
@@ -137,7 +180,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 		if (!biomeFound) return;
 
 		IntPair nearCenter = new IntPair();
-		TFFeature nearFeature = TFFeature.getNearestFeature(chunkX, chunkZ, world.getWorld(), nearCenter);
+//		TFFeature nearFeature = TFFeature.getNearestFeature(chunkX, chunkZ, world.getWorld(), nearCenter);
 
 		double d = 0.03125D;
 		//depthBuffer = noiseGen4.generateNoiseOctaves(depthBuffer, chunkX * 16, chunkZ * 16, 0, 16, 16, 1, d * 2D, d * 2D, d * 2D);
@@ -163,19 +206,19 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 				//int thickness = thicks[qz + (qz) * 5];
 
 				// make sure we're not too close to the tower
-				if (nearFeature == TFFeature.DARK_TOWER) {
-
-					int hx = nearCenter.x;
-					int hz = nearCenter.z;
-
-					int dx = x - hx;
-					int dz = z - hz;
-					int dist = (int) Math.sqrt(dx * dx + dz * dz);
-
-					if (dist < 24) {
-						thickness -= (24 - dist);
-					}
-				}
+//				if (nearFeature == TFFeature.DARK_TOWER) {
+//
+//					int hx = nearCenter.x;
+//					int hz = nearCenter.z;
+//
+//					int dx = x - hx;
+//					int dz = z - hz;
+//					int dist = (int) Math.sqrt(dx * dx + dz * dz);
+//
+//					if (dist < 24) {
+//						thickness -= (24 - dist);
+//					}
+//				}
 
 				if (thickness > 1) {
 					// find the (current) top block

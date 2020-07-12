@@ -1,17 +1,51 @@
 package twilightforest.world;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.World;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.chunk.ChunkPrimer;
+import net.minecraft.world.chunk.IChunk;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.DimensionSettings;
+import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.WorldGenRegion;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 
 public class ChunkGeneratorTwilightVoid extends ChunkGeneratorTFBase {
 
-	//private final boolean generateHollowTrees = TFConfig.COMMON_CONFIG.DIMENSION.skylightOaks.get();
+	public static final Codec<ChunkGeneratorTwilightVoid> codecVoidChunk = RecordCodecBuilder.create((instance) ->
+			instance.group(
+					BiomeProvider.field_235202_a_.fieldOf("biome_source").forGetter((obj) -> obj.biomeProvider),
+					Codec.LONG.fieldOf("seed").stable().forGetter((obj) -> obj.seed),
+					DimensionSettings.field_236098_b_.fieldOf("settings").forGetter((obj) -> obj.dimensionSettings))
+					.apply(instance, instance.stable(ChunkGeneratorTwilightVoid::new)));
 
-	public ChunkGeneratorTwilightVoid(World world, BiomeProvider provider, TFGenerationSettings settings) {
-		super(world, provider, settings, false);
+	//private final boolean generateHollowTrees = TFConfig.COMMON_CONFIG.DIMENSION.skylightOaks.get();
+	private final long seed;
+	protected final DimensionSettings dimensionSettings;
+
+	public ChunkGeneratorTwilightVoid(BiomeProvider provider, long seed, DimensionSettings settings) {
+		super(provider, settings.func_236108_a_(), false);
+		this.seed = seed;
+		this.dimensionSettings = settings;
+	}
+
+	@Override
+	protected Codec<? extends ChunkGenerator> func_230347_a_() {
+		return null;
+	}
+
+	@Override
+	public ChunkGenerator func_230349_a_(long l) {
+		return null;
+	}
+
+	@Override
+	public void generateSurface(WorldGenRegion worldGenRegion, IChunk iChunk) {
+
 	}
 
 	@Override
@@ -40,7 +74,22 @@ public class ChunkGeneratorTwilightVoid extends ChunkGeneratorTFBase {
 //			hollowTreeGenerator.generate(world, x, z, primer);
 //		}
 
-		makeChunk(x, z, primer);
+//		makeChunk(x, z, primer);
+	}
+
+	@Override
+	public void func_230352_b_(IWorld iWorld, StructureManager structureManager, IChunk iChunk) {
+
+	}
+
+	@Override
+	public int func_222529_a(int i, int i1, Heightmap.Type type) {
+		return 0;
+	}
+
+	@Override
+	public IBlockReader func_230348_a_(int i, int i1) {
+		return null;
 	}
 
 	/*@Override

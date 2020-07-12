@@ -50,8 +50,8 @@ public abstract class ComponentNagaCourtyardHedgeAbstract extends StructureTFCom
 	@Override
 	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random randomIn, MutableBoundingBox structureBoundingBox, ChunkPos chunkPosIn, BlockPos blockPos) {
 		placeSettings.setBoundingBox(structureBoundingBox).addProcessor(new CourtyardStairsTemplateProcessor(0.2F));
-		TEMPLATE.addBlocksToWorld(world, rotatedPosition, placeSettings, 18);
-		templateBig.addBlocksToWorld(world, rotatedPosition, placeSettings.copy().addProcessor(new IntegrityProcessor(ComponentNagaCourtyardMain.HEDGE_FLOOF)), 18);
+		TEMPLATE.func_237146_a_(world, rotatedPosition, rotatedPosition, placeSettings, randomIn, 18);
+		templateBig.func_237146_a_(world, rotatedPosition, rotatedPosition, placeSettings.copy().addProcessor(new IntegrityProcessor(ComponentNagaCourtyardMain.HEDGE_FLOOF)), randomIn, 18);
 		return true;
 	}
 }

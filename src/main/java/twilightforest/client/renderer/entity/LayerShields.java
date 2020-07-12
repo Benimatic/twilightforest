@@ -70,9 +70,9 @@ public class LayerShields<T extends LivingEntity, M extends EntityModel<T>> exte
 			IBakedModel model = Minecraft.getInstance().getModelManager().getModel(LOC);
 			for (Direction dir : DIRS) {
 				RAND.setSeed(42L);
-				Minecraft.getInstance().getItemRenderer().renderItem(
+				Minecraft.getInstance().getItemRenderer().renderQuads(
 						stack,
-						buffer.getBuffer(Atlases.getEntityTranslucent()),
+						buffer.getBuffer(Atlases.getTranslucentCullBlockType()),
 						model.getQuads(null, dir, RAND, EmptyModelData.INSTANCE),
 						ItemStack.EMPTY,
 						0xF000F0,

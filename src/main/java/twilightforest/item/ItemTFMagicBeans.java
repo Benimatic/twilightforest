@@ -2,6 +2,7 @@ package twilightforest.item;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
@@ -14,7 +15,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.TFBlocks;
-import twilightforest.world.TwilightForestDimension;
+import twilightforest.world.TFDimensions;
 
 import javax.annotation.Nonnull;
 
@@ -50,12 +51,11 @@ public class ItemTFMagicBeans extends Item {
 		}
 	}
 
-	//TODO: We can't call by Dimension
 	@SuppressWarnings("RedundantCast")
 	private float getCloudHeight(World world) {
-		if (world.dimension instanceof TwilightForestDimension) {
+		if (world.func_234923_W_() == TFDimensions.twilight_forest_world) {
 			// WorldProviderTwilightForest has this method on both server and client
-			return ((TwilightForestDimension) world.dimension).getCloudHeight(); // cast needed so the bytecode targets the derived method not the stripped super method
+			return ((ClientWorld)world).func_239132_a_().func_239213_a_();
 		} else {
 			// otherwise, world.dimension.getCloudHeight() is client only. guess 128
 			return 128;

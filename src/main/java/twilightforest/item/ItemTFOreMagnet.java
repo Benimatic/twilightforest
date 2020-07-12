@@ -2,7 +2,6 @@ package twilightforest.item;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.pattern.BlockMatcher;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.block.Blocks;
@@ -186,7 +185,7 @@ public class ItemTFOreMagnet extends Item {
 	    if (block == Blocks.DIRT
                 || block == Blocks.GRASS
                 || block == Blocks.GRAVEL
-                || (block != Blocks.AIR && block.isReplaceableOreGen(state, world, pos, BlockMatcher.forBlock(Blocks.STONE)))) {
+                || (block != Blocks.AIR && block == Blocks.STONE/*block.isReplaceableOreGen(state, world, pos, BlockMatcher.forBlock(Blocks.STONE))*/)) { //TODO: method does not exist
 			return true;
 		}
 
@@ -197,7 +196,7 @@ public class ItemTFOreMagnet extends Item {
 		if (state.getBlock() == Blocks.NETHERRACK) {
 			return true;
 		}
-		if (state.getBlock() != Blocks.AIR && state.getBlock().isReplaceableOreGen(state, world, pos, BlockMatcher.forBlock(Blocks.NETHERRACK))) {
+		if (state.getBlock() != Blocks.AIR && state.getBlock() == Blocks.NETHERRACK/*state.getBlock().isReplaceableOreGen(state, world, pos, BlockMatcher.forBlock(Blocks.NETHERRACK))*/) {
 			return true;
 		}
 

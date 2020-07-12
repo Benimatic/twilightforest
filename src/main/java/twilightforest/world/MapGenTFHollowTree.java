@@ -38,10 +38,10 @@ public class MapGenTFHollowTree extends Structure<NoFeatureConfig> {
 		return TwilightForestMod.ID + ":TFHollowTree";
 	}
 
-	@Override
-	public int getSize() {
-		return 3; //idk, most structures use this. Might be bigger.
-	}
+//	@Override
+//	public int getSize() {
+//		return 3;
+//	}
 
 //	@Nullable
 //	@Override
@@ -50,7 +50,7 @@ public class MapGenTFHollowTree extends Structure<NoFeatureConfig> {
 //		return findNearestStructurePosBySpacing(worldIn, this, pos, 20, 11, 10387313, true, 100, findUnexplored);
 //	}
 
-	@Override
+//	@Override
 	public boolean shouldStartAt(BiomeManager manager, ChunkGenerator generator, Random rand, int chunkX, int chunkZ, Biome biome) {
 		return rand.nextInt(TFConfig.COMMON_CONFIG.PERFORMANCE.twilightOakChance.get()) == 0
 				/*&& TFFeature.getNearestFeature(chunkX, chunkZ, world).areChunkDecorationsEnabled*/

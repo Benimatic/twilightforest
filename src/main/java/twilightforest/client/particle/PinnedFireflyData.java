@@ -2,11 +2,13 @@ package twilightforest.client.particle;
 
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.serialization.Codec;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.particles.IParticleData;
 import net.minecraft.particles.ParticleType;
 
 public class PinnedFireflyData implements IParticleData {
+
 	public final int follow;
 
 	public PinnedFireflyData(int follow) {
@@ -16,6 +18,10 @@ public class PinnedFireflyData implements IParticleData {
 	@Override
 	public ParticleType<?> getType() {
 		return TFParticleType.FIREFLY_PINNED.get();
+	}
+
+	public static Codec<PinnedFireflyData> codecFirefly() {
+		return Codec.INT.xmap(PinnedFireflyData::new, (obj) -> obj.follow);
 	}
 
 	@Override

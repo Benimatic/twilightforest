@@ -1,5 +1,6 @@
 package twilightforest.client;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
@@ -13,6 +14,7 @@ import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.inventory.ContainerTFUncrafting;
@@ -70,41 +72,43 @@ public class GuiTFGoblinCrafting extends ContainerScreen<ContainerTFUncrafting> 
 	}
 
 	@Override
-	public void render(int mouseX, int mouseY, float partialTicks) {
-		renderBackground();
-		super.render(mouseX, mouseY, partialTicks);
-		renderHoveredToolTip(mouseX, mouseY);
+	public void render(MatrixStack ms, int mouseX, int mouseY, float partialTicks) {
+		renderBackground(ms);
+		super.render(ms, mouseX, mouseY, partialTicks);
+		func_230450_a_(ms, partialTicks, mouseX, mouseY); //renderHoveredToolTip
 	}
 
+	//drawGuiContainerForegroundLayer
 	@Override
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		this.font.drawString(I18n.format(TFBlocks.uncrafting_table.get().getTranslationKey()), 8, 6, 4210752);
-		this.font.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
+	protected void func_230451_b_(MatrixStack ms, int mouseX, int mouseY) {
+		this.font.drawString(ms, I18n.format(TFBlocks.uncrafting_table.get().getTranslationKey()), 8, 6, 4210752);
+		this.font.drawString(ms, I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 
+	//drawGuiContainerBackgroundLayer
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+	protected void func_230450_a_(MatrixStack ms, float partialTicks, int mouseX, int mouseY) {
 		RenderSystem.color4f(1, 1, 1, 1);
 		this.minecraft.getTextureManager().bindTexture(textureLoc);
 		int frameX = (this.width - this.xSize) / 2;
 		int frameY = (this.height - this.ySize) / 2;
-		this.blit(frameX, frameY, 0, 0, this.xSize, this.ySize);
+		this.blit(ms, frameX, frameY, 0, 0, this.xSize, this.ySize);
 
 		ContainerTFUncrafting tfContainer = this.container;
 
 		// show uncrafting ingredients as background
-		RenderSystem.pushMatrix();
-		RenderSystem.translatef(guiLeft, guiTop, 0);
+		ms.push();
+		ms.translate(guiLeft, guiTop, 0);
 
 		for (int i = 0; i < 9; i++) {
 			Slot uncrafting = tfContainer.getSlot(2 + i);
 			Slot assembly = tfContainer.getSlot(11 + i);
 
 			if (uncrafting.getHasStack()) {
-				drawSlotAsBackground(uncrafting, assembly);
+				drawSlotAsBackground(ms, uncrafting, assembly);
 			}
 		}
-		RenderSystem.popMatrix();
+		ms.pop();
 
 		// show the costs if there are any
 		FontRenderer fontRendererObj = this.minecraft.fontRenderer;
@@ -115,11 +119,11 @@ public class GuiTFGoblinCrafting extends ContainerScreen<ContainerTFUncrafting> 
 			if (this.minecraft.player.experienceLevel < costVal && !this.minecraft.player.abilities.isCreativeMode) {
 				int color = 0xA00000;
 				String cost = "" + costVal;
-				fontRendererObj.drawStringWithShadow(cost, frameX + 48 - fontRendererObj.getStringWidth(cost), frameY + 38, color);
+				fontRendererObj.drawStringWithShadow(ms, cost, frameX + 48 - fontRendererObj.getStringWidth(cost), frameY + 38, color);
 			} else {
 				int color = 0x80FF20;
 				String cost = "" + costVal;
-				fontRendererObj.drawStringWithShadow(cost, frameX + 48 - fontRendererObj.getStringWidth(cost), frameY + 38, color);
+				fontRendererObj.drawStringWithShadow(ms, cost, frameX + 48 - fontRendererObj.getStringWidth(cost), frameY + 38, color);
 			}
 		}
 
@@ -128,17 +132,16 @@ public class GuiTFGoblinCrafting extends ContainerScreen<ContainerTFUncrafting> 
 			if (this.minecraft.player.experienceLevel < costVal && !this.minecraft.player.abilities.isCreativeMode) {
 				int color = 0xA00000;
 				String cost = "" + costVal;
-				fontRendererObj.drawStringWithShadow(cost, frameX + 130 - fontRendererObj.getStringWidth(cost), frameY + 38, color);
+				fontRendererObj.drawStringWithShadow(ms, cost, frameX + 130 - fontRendererObj.getStringWidth(cost), frameY + 38, color);
 			} else {
 				int color = 0x80FF20;
 				String cost = "" + costVal;
-				fontRendererObj.drawStringWithShadow(cost, frameX + 130 - fontRendererObj.getStringWidth(cost), frameY + 38, color);
+				fontRendererObj.drawStringWithShadow(ms, cost, frameX + 130 - fontRendererObj.getStringWidth(cost), frameY + 38, color);
 			}
 		}
-
 	}
 
-	private void drawSlotAsBackground(Slot backgroundSlot, Slot appearSlot) {
+	private void drawSlotAsBackground(MatrixStack ms, Slot backgroundSlot, Slot appearSlot) {
 
 		int screenX = appearSlot.xPos;
 		int screenY = appearSlot.yPos;
@@ -153,7 +156,7 @@ public class GuiTFGoblinCrafting extends ContainerScreen<ContainerTFUncrafting> 
 		// draw 50% gray rectangle over the item
 		RenderSystem.disableLighting();
 		RenderSystem.disableDepthTest();
-		AbstractGui.fill(screenX, screenY, screenX + 16, screenY + 16, itemBroken ? 0x80FF8b8b : 0x9f8b8b8b);
+		AbstractGui.fill(ms, screenX, screenY, screenX + 16, screenY + 16, itemBroken ? 0x80FF8b8b : 0x9f8b8b8b);
 		RenderSystem.enableLighting();
 		RenderSystem.enableDepthTest();
 
@@ -164,12 +167,12 @@ public class GuiTFGoblinCrafting extends ContainerScreen<ContainerTFUncrafting> 
 		private final boolean up;
 
 		CycleButton(int x, int y, boolean up, IPressable onClick) {
-			super(x, y, 14, 9, "", onClick);
+			super(x, y, 14, 9, StringTextComponent.EMPTY, onClick);
 			this.up = up;
 		}
 
 		@Override
-		public void renderButton(int mouseX, int mouseY, float partialTicks) {
+		public void renderButton(MatrixStack ms, int mouseX, int mouseY, float partialTicks) {
 			if (this.visible) {
 				Minecraft.getInstance().getTextureManager().bindTexture(GuiTFGoblinCrafting.textureLoc);
 				RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -183,7 +186,7 @@ public class GuiTFGoblinCrafting extends ContainerScreen<ContainerTFUncrafting> 
 				// what's up
 				if (!this.up) textureY += this.height;
 
-				this.blit(this.x, this.y, textureX, textureY, this.width, this.height);
+				this.blit(ms, this.x, this.y, textureX, textureY, this.width, this.height);
 			}
 		}
 	}
@@ -213,12 +216,12 @@ public class GuiTFGoblinCrafting extends ContainerScreen<ContainerTFUncrafting> 
 		private final boolean up;
 
 		CycleButtonMini(int x, int y, boolean up, IPressable onClick) {
-			super(x, y, 8, 6, "", onClick);
+			super(x, y, 8, 6, StringTextComponent.EMPTY, onClick);
 			this.up = up;
 		}
 
 		@Override
-		public void renderButton(int mouseX, int mouseY, float partialTicks) {
+		public void renderButton(MatrixStack ms, int mouseX, int mouseY, float partialTicks) {
 			if (this.visible) {
 				Minecraft.getInstance().getTextureManager().bindTexture(GuiTFGoblinCrafting.textureLoc);
 				RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -232,7 +235,7 @@ public class GuiTFGoblinCrafting extends ContainerScreen<ContainerTFUncrafting> 
 				// what's up
 				if (!this.up) textureY += this.height;
 
-				this.blit(this.x, this.y, textureX, textureY, this.width, this.height);
+				this.blit(ms, this.x, this.y, textureX, textureY, this.width, this.height);
 			}
 		}
 

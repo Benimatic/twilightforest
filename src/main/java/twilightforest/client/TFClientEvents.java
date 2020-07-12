@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -20,7 +21,6 @@ import net.minecraftforge.fml.common.Mod;
 import twilightforest.TFConfig;
 import twilightforest.TFEventListener;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.client.renderer.entity.LayerShields;
 import twilightforest.world.TFGenerationSettings;
 
@@ -148,7 +148,7 @@ public class TFClientEvents {
 
 			if (minecraft.player != null && TFEventListener.isRidingUnfriendly(minecraft.player)) {
 				if (minecraft.ingameGUI != null) {
-					minecraft.ingameGUI.setOverlayMessage("", false);
+					minecraft.ingameGUI.setOverlayMessage(StringTextComponent.EMPTY, false);
 				}
 			}
 		}
@@ -170,9 +170,9 @@ public class TFClientEvents {
 
 		BugModelAnimationHelper.animate();
 
-		if (!mc.isGamePaused() && mc.world != null && mc.world.dimension.getWeatherRenderer() instanceof TFWeatherRenderer) {
-			((TFWeatherRenderer) mc.world.dimension.getWeatherRenderer()).tick();
-		}
+//		if (!mc.isGamePaused() && mc.world != null && mc.world.dimension.getWeatherRenderer() instanceof TFWeatherRenderer) {
+//			((TFWeatherRenderer) mc.world.dimension.getWeatherRenderer()).tick();
+//		}
 	}
 
 	public static int time = 0;

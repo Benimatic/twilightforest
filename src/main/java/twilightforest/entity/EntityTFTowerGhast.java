@@ -314,7 +314,7 @@ public class EntityTFTowerGhast extends GhastEntity {
 	}
 
 	public boolean isNotColliding(IWorldReader world) {
-		return world.intersectsEntities(this) && !world.containsAnyLiquid(this.getBoundingBox());
+		return world.checkNoEntityCollision(this) && !world.containsAnyLiquid(this.getBoundingBox()); //TODO: Verify
 	}
 
 	private void findHome() {

@@ -45,9 +45,9 @@ public class TFDimensions {
 //	}
 
 	public static void init() {
-		Registry.register(Registry.field_239689_aA_, "twilightforest:tf_biome_provider", TFBiomeProvider.tfBiomeProviderCodec);
-		Registry.register(Registry.field_239690_aB_, "twilightforest:tf_chunk_gen", ChunkGeneratorTwilightForest.field_236079_d_);
-		Registry.register(Registry.field_239690_aB_, "twilightforest:tf_chunk_gen", ChunkGeneratorTwilightVoid.field_236079_d_);
+		Registry.register(Registry.field_239689_aA_, TwilightForestMod.prefix("twilight_forest"), TFBiomeProvider.tfBiomeProviderCodec);
+		Registry.register(Registry.field_239690_aB_, TwilightForestMod.prefix("twilight_forest"), ChunkGeneratorTwilightForest.codecTFChunk);
+		Registry.register(Registry.field_239690_aB_, TwilightForestMod.prefix("skylight_forest"), ChunkGeneratorTwilightVoid.codecVoidChunk);
 	}
 
 //	@SubscribeEvent

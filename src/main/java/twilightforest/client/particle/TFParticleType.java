@@ -1,5 +1,6 @@
 package twilightforest.client.particle;
 
+import com.mojang.serialization.Codec;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.particles.BasicParticleType;
@@ -29,8 +30,18 @@ public class TFParticleType {
 	public static final RegistryObject<BasicParticleType> ANNIHILATE = PARTICLE_TYPES.register("annihilate", () -> new BasicParticleType(false));
 	public static final RegistryObject<BasicParticleType> HUGE_SMOKE = PARTICLE_TYPES.register("huge_smoke", () -> new BasicParticleType(false));
 	public static final RegistryObject<BasicParticleType> FIREFLY = PARTICLE_TYPES.register("firefly", () -> new BasicParticleType(false));
-	public static final RegistryObject<ParticleType<PinnedFireflyData>> FIREFLY_PINNED = PARTICLE_TYPES.register("firefly_pinned", () -> new ParticleType<>(false, new PinnedFireflyData.Deserializer()));
-	public static final RegistryObject<ParticleType<LeafParticleData>> FALLEN_LEAF = PARTICLE_TYPES.register("fallen_leaf", () -> new ParticleType<>(false, new LeafParticleData.Deserializer()));
+	public static final RegistryObject<ParticleType<PinnedFireflyData>> FIREFLY_PINNED = PARTICLE_TYPES.register("firefly_pinned", () -> new ParticleType<PinnedFireflyData>(false, new PinnedFireflyData.Deserializer()) {
+		@Override
+		public Codec<PinnedFireflyData> func_230522_e_() {
+			return PinnedFireflyData.codecFirefly();
+		}
+	});
+	public static final RegistryObject<ParticleType<LeafParticleData>> FALLEN_LEAF = PARTICLE_TYPES.register("fallen_leaf", () -> new ParticleType<LeafParticleData>(false, new LeafParticleData.Deserializer()) {
+		@Override
+		public Codec<LeafParticleData> func_230522_e_() {
+			return LeafParticleData.codecLeaf();
+		}
+	});
 
 	@SubscribeEvent
 	public static void registerFactories(ParticleFactoryRegisterEvent event) {

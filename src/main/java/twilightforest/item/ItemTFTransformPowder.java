@@ -31,7 +31,7 @@ public class ItemTFTransformPowder extends Item {
 	}
 
 	public void initTransformations() {
-		addTwoWayTransformation(TFEntities.minotaur,       EntityType.ZOMBIE_PIGMAN); //Self: I hate you, Mojang
+		addTwoWayTransformation(TFEntities.minotaur,       EntityType.ZOMBIFIED_PIGLIN);
 		addTwoWayTransformation(TFEntities.deer,           EntityType.COW);
 		addTwoWayTransformation(TFEntities.bighorn_sheep,  EntityType.SHEEP);
 		addTwoWayTransformation(TFEntities.wild_boar,      EntityType.PIG);

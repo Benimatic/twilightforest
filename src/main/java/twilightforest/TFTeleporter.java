@@ -12,9 +12,11 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.block.Blocks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Direction;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.DimensionType;
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
@@ -39,7 +41,7 @@ public class TFTeleporter extends Teleporter {
 	private final Object2LongMap<ColumnPos> columnMap = new Object2LongOpenHashMap<>();
 
 	//TODO: There's no such thing as an array of custom teleporters
-	public static TFTeleporter getTeleporterForDim(MinecraftServer server, DimensionType dim) {
+	public static TFTeleporter getTeleporterForDim(MinecraftServer server, RegistryKey<World> dim) {
 		ServerWorld ws = server.getWorld(dim);
 
 //		for (Teleporter t : ws.customTeleporters) {
@@ -276,7 +278,7 @@ public class TFTeleporter extends Teleporter {
 	}
 
 	private int getScanHeight(int x, int z) {
-		int worldHeight = world.getActualHeight() - 1;
+		int worldHeight = world.getHeight() - 1;
 		int chunkHeight = world.getChunk(x >> 4, z >> 4).getTopFilledSegment() + 15;
 		return Math.min(worldHeight, chunkHeight);
 	}
@@ -365,7 +367,7 @@ public class TFTeleporter extends Teleporter {
 	}
 
 	private double getYFactor() {
-		return world.dimension.getType() == DimensionType.byName(new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get())) ? 2.0 : 0.5;
+		return world.func_234922_V_() == DimensionType.field_235999_c_/*DimensionType.byName(new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()))*/ ? 2.0 : 0.5; //TODO
 	}
 
 	@Nullable

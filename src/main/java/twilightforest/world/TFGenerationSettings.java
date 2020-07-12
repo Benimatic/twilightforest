@@ -4,13 +4,11 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.block.Blocks;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.server.ServerWorld;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
@@ -19,13 +17,13 @@ import twilightforest.biomes.TFBiomeBase;
 import javax.annotation.Nullable;
 import java.util.function.Predicate;
 
-public class TFGenerationSettings extends GenerationSettings {
+public class TFGenerationSettings /*extends GenerationSettings*/ {
 
 	public static final int SEALEVEL = 31;
 	public static final int CHUNKHEIGHT = 256; // more like world generation height
 	public static final int MAXHEIGHT = 256; // actual max height
 
-	@Override
+//	@Override
 	public int getBedrockFloorHeight() {
 		return 0;
 	}
@@ -40,16 +38,16 @@ public class TFGenerationSettings extends GenerationSettings {
 	}
 
 	public static boolean isTwilightForest(World world) {
-		return world.dimension instanceof TwilightForestDimension;
+		return world.func_234923_W_() == TFDimensions.twilight_forest_world;
 	}
 
-	public static CompoundNBT getDimensionData(World world) {
-		return world.getWorldInfo().getDimensionData(TFDimensions.twilightForestDimension);
-	}
+//	public static CompoundNBT getDimensionData(World world) {
+//		return world.getWorldInfo().getDimensionData(TFDimensions.twilightForestDimension);
+//	}
 
-	public static void setDimensionData(World world, CompoundNBT data) {
-		world.getWorldInfo().setDimensionData(TFDimensions.twilightForestDimension, data);
-	}
+//	public static void setDimensionData(World world, CompoundNBT data) {
+//		world.getWorldInfo().setDimensionData(TFDimensions.twilightForestDimension, data);
+//	}
 
 	public static boolean isProgressionEnforced(World world) {
 		return world.getGameRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE);
@@ -64,7 +62,7 @@ public class TFGenerationSettings extends GenerationSettings {
 
 	public static void markStructureConquered(World world, BlockPos pos, TFFeature feature) {
 		ChunkGeneratorTFBase generator = getChunkGenerator(world);
-		if (generator != null && TFFeature.getFeatureAt(pos.getX(), pos.getZ(), world) == feature) {
+		if (generator != null && TFFeature.getFeatureAt(pos.getX(), pos.getZ(), (ServerWorld) world) == feature) {
 			//generator.setStructureConquered(pos, true);
 		}
 	}

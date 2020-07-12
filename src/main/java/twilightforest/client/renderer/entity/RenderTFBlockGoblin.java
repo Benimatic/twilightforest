@@ -109,7 +109,7 @@ public class RenderTFBlockGoblin<T extends EntityTFBlockGoblin, M extends ModelT
 
 			Vector3d vec3d = this.getPosition(entity.block, (double) entity.block.getHeight() * 0.5D, 1.0F);
 			Vector3d vec3d1 = this.getPosition(entity.block, (double) entity.block.getEyeHeight(), 1.0F);
-			return clippingHelper.isVisible(new AxisAlignedBB(vec3d1.x, vec3d1.y, vec3d1.z, vec3d.x, vec3d.y, vec3d.z));
+			return clippingHelper.isBoundingBoxInFrustum(new AxisAlignedBB(vec3d1.x, vec3d1.y, vec3d1.z, vec3d.x, vec3d.y, vec3d.z));
 		}
 	}
 

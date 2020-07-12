@@ -151,12 +151,12 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 					dataManager.set(MOVE_DIRECTION, dataManager.get(MOVE_DIRECTION).getOpposite());
 				}
 
-				if (this.collided) {
+				if (this.collidedVertically || this.collidedHorizontally) {
 					this.setMotion(this.getMotion().mul(0.699999988079071D, 0.699999988079071D, 0.699999988079071D));
 
 					this.remove();
 
-					if (this.world.canPlace(myState, pos, ISelectionContext.dummy())) {
+					if (this.world.func_226663_a_(myState, pos, ISelectionContext.dummy())) {
 						world.setBlockState(pos, myState);
 					} else {
 						// TODO: This and the below item might not be correctly reflecting the state

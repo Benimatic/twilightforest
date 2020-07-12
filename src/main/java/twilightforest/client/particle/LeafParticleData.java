@@ -2,6 +2,8 @@ package twilightforest.client.particle;
 
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.particles.IParticleData;
 import net.minecraft.particles.ParticleType;
@@ -23,6 +25,14 @@ public class LeafParticleData implements IParticleData {
 	@Override
 	public ParticleType<?> getType() {
 		return TFParticleType.FALLEN_LEAF.get();
+	}
+
+	public static Codec<LeafParticleData> codecLeaf() {
+		return RecordCodecBuilder.create((instance) -> instance.group(
+				Codec.INT.fieldOf("r").forGetter((obj) -> obj.r),
+				Codec.INT.fieldOf("g").forGetter((obj) -> obj.g),
+				Codec.INT.fieldOf("b").forGetter((obj) -> obj.b))
+				.apply(instance, LeafParticleData::new));
 	}
 
 	@Override

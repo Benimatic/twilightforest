@@ -54,7 +54,7 @@ public class TFEntities {
 		Material material = state.getMaterial();
 		BlockPos up = pos.up();
 
-		return (material == Material.ICE || material == Material.PACKED_ICE) && block != Blocks.BEDROCK && block != Blocks.BARRIER && WorldEntitySpawner.isSpawnableSpace(world, pos, world.getBlockState(pos), world.getFluidState(pos)) && WorldEntitySpawner.isSpawnableSpace(world, up, world.getBlockState(up), world.getFluidState(up));
+		return (material == Material.ICE || material == Material.PACKED_ICE) && block != Blocks.BEDROCK && block != Blocks.BARRIER && WorldEntitySpawner.func_234968_a_(world, pos, world.getBlockState(pos), world.getFluidState(pos), entityType) && WorldEntitySpawner.func_234968_a_(world, up, world.getBlockState(up), world.getFluidState(up), entityType);
 	});
 
 	private static final List<EntityType<?>> ALL = new ArrayList<>();

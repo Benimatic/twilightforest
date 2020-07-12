@@ -1,6 +1,6 @@
 package twilightforest.structures.courtyard;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.minecraft.block.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorldReader;
@@ -17,13 +17,11 @@ import java.util.Random;
 
 public class CourtyardWallTemplateProcessor extends RandomizedTemplateProcessor {
 
-    public CourtyardWallTemplateProcessor(float integrity) {
+	public static final Codec<CourtyardWallTemplateProcessor> codecWallProcessor = Codec.FLOAT.fieldOf("integrity").withDefault(1.0F).xmap(CourtyardWallTemplateProcessor::new, (obj) -> obj.integrity).codec();
+
+	public CourtyardWallTemplateProcessor(float integrity) {
         super(integrity);
     }
-
-	public CourtyardWallTemplateProcessor(Dynamic<?> dynamic) {
-    	this(dynamic.get("integrity").asFloat(1.0F));
-	}
 
 	@Override
 	protected IStructureProcessorType getType() {
@@ -31,11 +29,11 @@ public class CourtyardWallTemplateProcessor extends RandomizedTemplateProcessor 
 	}
 
 	@Nullable
-    @Override
-    public Template.BlockInfo process(IWorldReader worldIn, BlockPos pos, Template.BlockInfo p_215194_3_, Template.BlockInfo blockInfo, PlacementSettings placementSettingsIn, @Nullable Template template) {
+	@Override
+	public Template.BlockInfo process(IWorldReader worldIn, BlockPos pos, BlockPos piecepos, Template.BlockInfo p_215194_3_, Template.BlockInfo blockInfo, PlacementSettings placementSettingsIn, @Nullable Template template) {
 		Random random = placementSettingsIn.getRandom(pos);
 
-    	if (shouldPlaceBlock(random)) {
+		if (shouldPlaceBlock(random)) {
 			BlockState state = blockInfo.state;
 			Block block = state.getBlock();
 
@@ -61,5 +59,5 @@ public class CourtyardWallTemplateProcessor extends RandomizedTemplateProcessor 
 		}
 
 		return null;
-    }
+	}
 }

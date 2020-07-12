@@ -7,7 +7,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.ITag;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.*;
@@ -25,7 +25,7 @@ import static twilightforest.TwilightForestMod.prefix;
 
 public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 
-	private static final Tag<Block> WHITELIST = new BlockTags.Wrapper(prefix("annihilation_whitelist"));
+	private static final ITag.INamedTag<Block> WHITELIST = BlockTags.makeWrapperTag(prefix("annihilation_whitelist").toString());
 	private boolean hasHitObstacle = false;
 
 	public EntityTFCubeOfAnnihilation(EntityType<? extends EntityTFCubeOfAnnihilation> type, World world) {

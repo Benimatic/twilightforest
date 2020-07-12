@@ -1,6 +1,6 @@
 package twilightforest.structures.courtyard;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.state.properties.SlabType;
@@ -19,13 +19,11 @@ import java.util.Random;
 
 public class CourtyardTerraceTemplateProcessor extends RandomizedTemplateProcessor {
 
+	public static final Codec<CourtyardTerraceTemplateProcessor> codecTerraceProcessor = Codec.FLOAT.fieldOf("integrity").withDefault(1.0F).xmap(CourtyardTerraceTemplateProcessor::new, (obj) -> obj.integrity).codec();
+
     public CourtyardTerraceTemplateProcessor(float integrity) {
         super(integrity);
     }
-
-	public CourtyardTerraceTemplateProcessor(Dynamic<?> dynamic) {
-    	this(dynamic.get("integrity").asFloat(1.0F));
-	}
 
 	@Override
 	protected IStructureProcessorType getType() {
@@ -35,7 +33,7 @@ public class CourtyardTerraceTemplateProcessor extends RandomizedTemplateProcess
 	//TODO: Check me
     @Nullable
     @Override
-    public Template.BlockInfo process(IWorldReader world, BlockPos piecepos, BlockPos pos, Template.BlockInfo oldinfo, Template.BlockInfo newinfo, PlacementSettings settings, @Nullable Template template) {
+    public Template.BlockInfo process(IWorldReader world, BlockPos pos, BlockPos piecepos, Template.BlockInfo oldinfo, Template.BlockInfo newinfo, PlacementSettings settings, @Nullable Template template) {
         Random random = settings.getRandom(pos);
 
         if (!shouldPlaceBlock(random))

@@ -76,7 +76,7 @@ public class GuiTwilightForestLoading extends Screen {
 		}
 
 		FontRenderer fontRenderer = minecraft.fontRenderer;
-		MainWindow resolution = minecraft.getWindow();
+		MainWindow resolution = minecraft.getMainWindow();
 
 		drawBackground(resolution.getScaledWidth(), resolution.getScaledHeight());
 

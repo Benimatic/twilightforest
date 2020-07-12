@@ -2,7 +2,6 @@ package twilightforest.features;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.math.StatsAccumulator;
-import com.mojang.datafixers.Dynamic;
 import com.mojang.serialization.Codec;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.block.material.Material;
@@ -19,7 +18,6 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.*;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.GenerationSettings;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
@@ -55,7 +53,7 @@ public class TFGenGraveyard extends Feature<NoFeatureConfig> {
 		super(config);
 	}
 
-	private static boolean offsetToAverageGroundLevel(World world, BlockPos.Mutable startPos, BlockPos size) {
+	private static boolean offsetToAverageGroundLevel(ISeedReader world, BlockPos.Mutable startPos, BlockPos size) {
 		StatsAccumulator heights = new StatsAccumulator();
 
 		for (int dx = 0; dx < size.getX(); dx++) {
@@ -115,13 +113,12 @@ public class TFGenGraveyard extends Feature<NoFeatureConfig> {
 	}
 
 	@Override
-	public boolean func_230362_a_(ISeedReader worldIn, StructureManager manager, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+	public boolean func_230362_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
 		int flags = 0b10100;
-		World world = worldIn.getWorld();
 		//Random random = world.getChunk(pos).getRandomWithSeed(987234911L);
 		Random random = world.getRandom();
 
-		TemplateManager templatemanager = ((ServerWorld) world).getSaveHandler().getStructureTemplateManager();
+		TemplateManager templatemanager = ((ServerWorld) world).getServer().func_240792_aT_();
 		Template base = templatemanager.getTemplate(GRAVEYARD);
 		List<Pair<GraveType, Template>> graves = new ArrayList<>();
 		Template trap = templatemanager.getTemplate(TRAP);
@@ -143,7 +140,7 @@ public class TFGenGraveyard extends Feature<NoFeatureConfig> {
 		PlacementSettings placementsettings = (new PlacementSettings()).setMirror(mirror).setRotation(rotation).setBoundingBox(structureboundingbox).setRandom(random);
 
 		BlockPos posSnap = chunkpos.getBlock(8, pos.getY() - 1, 8);
-		BlockPos.Mutable startPos = new BlockPos.Mutable(posSnap);
+		BlockPos.Mutable startPos = new BlockPos.Mutable(posSnap.getX(), posSnap.getY(), posSnap.getZ());
 
 		if (!offsetToAverageGroundLevel(world, startPos, transformedSize)) {
 			return false;
@@ -153,7 +150,7 @@ public class TFGenGraveyard extends Feature<NoFeatureConfig> {
 		BlockPos size = transformedSize.add(-1, 0, -1);
 		BlockPos graveSize = transformedGraveSize.add(-1, 0, -1);
 
-		base.addBlocksToWorld(worldIn, placementPos, placementsettings.addProcessor(new WebTemplateProcessor(0.2F)), flags);
+		base.func_237146_a_(world, placementPos, placementPos, placementsettings.addProcessor(new WebTemplateProcessor(0.2F)), random, flags);
 
 		BlockPos start = startPos.add(1, 1, 0);
 		BlockPos end = start.add(size.getX(), 0, size.getZ());
@@ -184,14 +181,15 @@ public class TFGenGraveyard extends Feature<NoFeatureConfig> {
 					continue;
 				BlockPos placement = fixed.add(x, -2, z);
 				Pair<GraveType, Template> grave = graves.get(rand.nextInt(graves.size()));
-				grave.getValue().addBlocksToWorld(world, placement, placementsettings, flags);
+				grave.getValue().func_237146_a_(world.getWorld(), placement, placement, placementsettings, random, flags);
 				if (grave.getKey() == GraveType.Full) {
 					if (random.nextBoolean()) {
 						if (random.nextInt(3) == 0)
-							trap.addBlocksToWorld(world, placement.add(new BlockPos(mirror == Mirror.FRONT_BACK ? 1 : -1, 0, mirror == Mirror.LEFT_RIGHT ? 1 : -1).rotate(rotation)), placementsettings, flags);
+							placement.add(new BlockPos(mirror == Mirror.FRONT_BACK ? 1 : -1, 0, mirror == Mirror.LEFT_RIGHT ? 1 : -1).rotate(rotation));
+							trap.func_237146_a_(world, placement, placement, placementsettings, random, flags);
 						if (world.setBlockState(placement.add(chestloc), Blocks.TRAPPED_CHEST.getDefaultState().with(ChestBlock.FACING, Direction.WEST).rotate(rotation).mirror(mirror), flags))
 							TFTreasure.graveyard.generateChestContents(world, placement.add(chestloc));
-						EntityTFWraith wraith = new EntityTFWraith(TFEntities.wraith, world);
+						EntityTFWraith wraith = new EntityTFWraith(TFEntities.wraith, world.getWorld());
 						wraith.setPositionAndUpdate(placement.getX(), placement.getY(), placement.getZ());
 						world.addEntity(wraith);
 					}
@@ -239,12 +237,10 @@ public class TFGenGraveyard extends Feature<NoFeatureConfig> {
 
 	public static class WebTemplateProcessor extends RandomizedTemplateProcessor {
 
+		public static final Codec<WebTemplateProcessor> codecWebProcessor = Codec.FLOAT.fieldOf("integrity").withDefault(1.0F).xmap(WebTemplateProcessor::new, (obj) -> obj.integrity).codec();
+
 		public WebTemplateProcessor(float integrity) {
 			super(integrity);
-		}
-
-		public WebTemplateProcessor(Dynamic<?> dynamic) {
-			this(dynamic.get("integrity").asFloat(1.0F));
 		}
 
 		@Override
@@ -254,7 +250,7 @@ public class TFGenGraveyard extends Feature<NoFeatureConfig> {
 
 		@Nullable
 		@Override
-		public Template.BlockInfo process(IWorldReader worldIn, BlockPos pos, Template.BlockInfo p_process_3_, Template.BlockInfo blockInfo, PlacementSettings settings, @Nullable Template template) {
+		public Template.BlockInfo process(IWorldReader worldIn, BlockPos pos, BlockPos piecepos, Template.BlockInfo p_process_3_, Template.BlockInfo blockInfo, PlacementSettings settings, @Nullable Template template) {
 			return blockInfo.state.getBlock() == Blocks.GRASS ? blockInfo : settings.getRandom(pos).nextInt(5) == 0 ? new Template.BlockInfo(pos, Blocks.COBWEB.getDefaultState(), null) : blockInfo;
 		}
 	}

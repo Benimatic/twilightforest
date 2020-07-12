@@ -776,7 +776,7 @@ public enum TFFeature {
 			ccx = (regionX * 16 + (16 - centerX) - 8) * 16 + 9;
 		}
 
-		return new BlockPos(ccx, TFGenerationSettings.SEALEVEL, ccz);//  Math.abs(chunkX % 16) == centerX && Math.abs(chunkZ % 16) == centerZ;
+		return new BlockPos(ccx, 31, ccz);//  Math.abs(chunkX % 16) == centerX && Math.abs(chunkZ % 16) == centerZ; FIXME (set sea level hard)
 	}
 
 	/**

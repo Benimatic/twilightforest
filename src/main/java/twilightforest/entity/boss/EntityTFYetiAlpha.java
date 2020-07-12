@@ -126,7 +126,7 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 		if (!world.isRemote) {
 			bossInfo.setPercent(getHealth() / getMaxHealth());
 
-			if (this.collided) {
+			if (this.collidedHorizontally || this.collidedVertically) { //collided does not exist, but this is an equal?
 				this.collisionCounter++;
 			}
 

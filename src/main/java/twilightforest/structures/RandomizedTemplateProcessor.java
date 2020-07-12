@@ -1,11 +1,7 @@
 package twilightforest.structures;
 
-import com.google.common.collect.ImmutableMap;
-import com.mojang.datafixers.Dynamic;
-import com.mojang.datafixers.types.DynamicOps;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.state.IProperty;
 import net.minecraft.state.Property;
 import net.minecraft.world.gen.feature.template.StructureProcessor;
 
@@ -13,17 +9,11 @@ import java.util.Random;
 
 public abstract class RandomizedTemplateProcessor extends StructureProcessor {
 
-    private final float integrity;
+    protected final float integrity;
 
     public RandomizedTemplateProcessor(float integrity) {
         this.integrity = integrity;
     }
-
-	@Override
-	protected <T> Dynamic<T> serialize0(DynamicOps<T> dynOps) {
-		return new Dynamic<>(dynOps, dynOps.createMap(ImmutableMap.of(
-				dynOps.createString("integrity"), dynOps.createFloat(this.integrity))));
-	}
 
 	protected boolean shouldPlaceBlock(Random random) {
         return integrity >= 1.0F || random.nextFloat() > integrity;

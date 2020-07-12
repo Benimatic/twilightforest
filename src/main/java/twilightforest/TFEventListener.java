@@ -621,7 +621,7 @@ public class TFEventListener {
 	@SubscribeEvent
 	public static void playerPortals(PlayerEvent.PlayerChangedDimensionEvent event) {
 		if (!event.getPlayer().world.isRemote && event.getPlayer() instanceof ServerPlayerEntity) {
-			if (event.getTo() == TFDimensions.twilight_forest_dimension) {
+			if (event.getTo() == TFDimensions.twilight_forest_world) {
 				sendEnforcedProgressionStatus((ServerPlayerEntity) event.getPlayer(), TFGenerationSettings.isProgressionEnforced(event.getPlayer().world));
 			}
 			updateCapabilities((ServerPlayerEntity) event.getPlayer(), event.getPlayer());
@@ -656,7 +656,7 @@ public class TFEventListener {
 	public static void onClientConnect(PlayerEvent.PlayerLoggedInEvent event) {
 		// This event is only ever fired on the server side
 		ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
-		sendSkylightEnabled(player, TwilightForestDimension.isSkylightEnabled(TFGenerationSettings.getDimensionData(player.world)));
+//		sendSkylightEnabled(player, TwilightForestDimension.isSkylightEnabled(TFGenerationSettings.getDimensionData(player.world)));
 	}
 
 	@SubscribeEvent
@@ -751,7 +751,7 @@ public class TFEventListener {
 
 						projectile.shoot(playerVec3.x, playerVec3.y, playerVec3.z, 1.1F, 0.1F);  // reflect faster and more accurately
 
-						projectile.shootingEntity = entityBlocking.getUniqueID();
+						projectile.setShooter(entityBlocking); //TODO: Verify
 
 						event.setCanceled(true);
 					}
@@ -790,7 +790,7 @@ public class TFEventListener {
 						projectile.accelerationY = projectile.getMotion().getY() * 0.1D;
 						projectile.accelerationZ = projectile.getMotion().getZ() * 0.1D;
 
-						projectile.shootingEntity = entityBlocking;
+						projectile.setShooter(entityBlocking); //TODO: Verify
 
 						event.setCanceled(true);
 					}
@@ -824,7 +824,7 @@ public class TFEventListener {
 
 						projectile.shoot(playerVec3.x, playerVec3.y, playerVec3.z, 1.1F, 0.1F);  // reflect faster and more accurately
 
-						projectile.owner = entityBlocking;
+						projectile.setShooter(entityBlocking); //TODO: Verify
 
 						event.setCanceled(true);
 					}

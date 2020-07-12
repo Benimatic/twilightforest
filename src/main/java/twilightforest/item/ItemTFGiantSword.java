@@ -22,15 +22,16 @@ public class ItemTFGiantSword extends SwordItem {
 		return material.getItem() == TFItems.ironwood_ingot.get() || super.getIsRepairable(stack, material);
 	}
 
-	@Override
-	@Nonnull
-	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType equipmentSlot) {
-		Multimap<Attribute, AttributeModifier> multimap = super.getAttributeModifiers(equipmentSlot);
-
-		if (equipmentSlot == EquipmentSlotType.MAINHAND) {
-			multimap.put(ForgeMod.REACH_DISTANCE.get(), new AttributeModifier(TFItems.GIANT_REACH_MODIFIER, "Weapon modifier", 2.5, AttributeModifier.Operation.ADDITION));
-		}
-
-		return multimap;
-	}
+	//TODO: ImmutableMap. This is unviable
+//	@Override
+//	@Nonnull
+//	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType equipmentSlot) {
+//		Multimap<Attribute, AttributeModifier> multimap = super.getAttributeModifiers(equipmentSlot);
+//
+//		if (equipmentSlot == EquipmentSlotType.MAINHAND) {
+//			multimap.put(ForgeMod.REACH_DISTANCE.get(), new AttributeModifier(TFItems.GIANT_REACH_MODIFIER, "Weapon modifier", 2.5, AttributeModifier.Operation.ADDITION));
+//		}
+//
+//		return multimap;
+//	}
 }

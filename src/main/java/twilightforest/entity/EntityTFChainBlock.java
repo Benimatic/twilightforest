@@ -286,7 +286,7 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 	public void readSpawnData(PacketBuffer additionalData) {
 		Entity e = world.getEntityByID(additionalData.readInt());
 		if (e instanceof LivingEntity) {
-			owner = (LivingEntity) e;
+			setShooter(e);
 		}
 		hand = additionalData.readBoolean() ? Hand.MAIN_HAND : Hand.OFF_HAND;
 	}

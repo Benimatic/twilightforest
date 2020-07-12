@@ -38,10 +38,10 @@ public class RenderTFSlimeBeetle extends MobRenderer<EntityTFSlimeBeetle, ModelT
 		@Override
 		public void render(MatrixStack ms, IRenderTypeBuffer buffers, int light, EntityTFSlimeBeetle entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 			if (!entity.isInvisible()) {
-				innerModel.setModelAttributes(getEntityModel());
+				innerModel.copyModelAttributesTo(getEntityModel());
 				innerModel.setLivingAnimations(entity, limbSwing, limbSwingAmount, partialTicks);
 				innerModel.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-				IVertexBuilder buffer = buffers.getBuffer(RenderType.getEntityTranslucent(getTexture(entity)));
+				IVertexBuilder buffer = buffers.getBuffer(RenderType.getEntityTranslucent(getEntityTexture(entity)));
 				innerModel.render(ms, buffer, light, LivingRenderer.getPackedOverlay(entity, 0), 1, 1, 1, 1);
 			}
 		}

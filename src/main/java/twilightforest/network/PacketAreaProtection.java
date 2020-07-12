@@ -70,7 +70,7 @@ public class PacketAreaProtection {
 
 		static void addProtectionBox(ClientWorld world, MutableBoundingBox sbb) {
 
-			for (Entity entity : world.globalEntities) {
+			for (Entity entity : world.getAllEntities()) {
 				if (entity instanceof EntityTFProtectionBox) {
 					EntityTFProtectionBox protectionBox = (EntityTFProtectionBox) entity;
 					if (protectionBox.matches(sbb)) {
@@ -80,7 +80,7 @@ public class PacketAreaProtection {
 				}
 			}
 
-			world.globalEntities.add(new EntityTFProtectionBox(world, sbb));
+			world.addEntity(new EntityTFProtectionBox(world, sbb));
 		}
 	}
 }

@@ -11,20 +11,18 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.Direction;
+import net.minecraft.util.*;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.DimensionType;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -213,9 +211,9 @@ public class BlockTFPortal extends BreakableBlock {
 		}
 	}
 
-	private static DimensionType getDestination(Entity entity) {
-		return entity.dimension != TFDimensions.twilight_forest_dimension
-				? TFDimensions.twilight_forest_dimension : DimensionType.byName(new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()));
+	private static RegistryKey<World> getDestination(Entity entity) {
+		return entity.getEntityWorld().func_234923_W_() != TFDimensions.twilight_forest_world
+				? TFDimensions.twilight_forest_world : World.field_234918_g_ /*DimensionType.byName(new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()))*/;
 	}
 
 	public static void attemptSendPlayer(Entity entity, boolean forcedEntry) {
@@ -235,14 +233,15 @@ public class BlockTFPortal extends BreakableBlock {
 		// set a cooldown before this can run again
 		entity.timeUntilPortal = 10;
 
-		DimensionType destination = getDestination(entity);
+		RegistryKey<World> destination = getDestination(entity);
+		ServerWorld serverWorld = entity.getEntityWorld().getServer().getWorld(destination);
 
-		entity.changeDimension(destination, TFTeleporter.getTeleporterForDim(entity.getServer(), destination));
+		entity.changeDimension(serverWorld, TFTeleporter.getTeleporterForDim(entity.getServer(), destination));
 
-		if (destination == TFDimensions.twilight_forest_dimension && entity instanceof ServerPlayerEntity) {
+		if (destination == TFDimensions.twilight_forest_world && entity instanceof ServerPlayerEntity) {
 			ServerPlayerEntity playerMP = (ServerPlayerEntity) entity;
 			// set respawn point for TF dimension to near the arrival portal
-			playerMP.setSpawnPoint(new BlockPos(playerMP), true, false, TFDimensions.twilight_forest_dimension);
+			playerMP.func_241153_a_(destination, playerMP.func_233580_cy_(), true, false);
 		}
 	}
 

@@ -50,8 +50,8 @@ public class ComponentNagaCourtyardWallAbstract extends StructureTFComponentTemp
 	@Override
 	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random random, MutableBoundingBox structureBoundingBox, ChunkPos chunkPosIn, BlockPos blockPos) {
 		placeSettings.setBoundingBox(structureBoundingBox);
-		TEMPLATE.addBlocksToWorld(world, rotatedPosition, placeSettings.addProcessor(new CourtyardWallTemplateProcessor(0.2F)).addProcessor(new IntegrityProcessor(ComponentNagaCourtyardMain.WALL_INTEGRITY)), 18);
-		decayTemplate.addBlocksToWorld(world, rotatedPosition, placeSettings.addProcessor(new MossyCobbleTemplateProcessor(0.2F)).addProcessor(new IntegrityProcessor(ComponentNagaCourtyardMain.WALL_DECAY)), 18);
+		TEMPLATE.func_237146_a_(world, rotatedPosition, rotatedPosition, placeSettings.addProcessor(new CourtyardWallTemplateProcessor(0.2F)).addProcessor(new IntegrityProcessor(ComponentNagaCourtyardMain.WALL_INTEGRITY)), random, 18);
+		decayTemplate.func_237146_a_(world, rotatedPosition, rotatedPosition, placeSettings.addProcessor(new MossyCobbleTemplateProcessor(0.2F)).addProcessor(new IntegrityProcessor(ComponentNagaCourtyardMain.WALL_DECAY)), random, 18);
 		return true;
 	}
 }

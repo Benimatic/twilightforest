@@ -1,6 +1,6 @@
 package twilightforest.structures;
 
-import com.mojang.datafixers.Dynamic;
+import com.mojang.serialization.Codec;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -15,13 +15,11 @@ import java.util.Random;
 
 public class MossyCobbleTemplateProcessor extends RandomizedTemplateProcessor {
 
-    public MossyCobbleTemplateProcessor(float integrity) {
+	public static final Codec<MossyCobbleTemplateProcessor> codecMossyProcessor = Codec.FLOAT.fieldOf("integrity").withDefault(1.0F).xmap(MossyCobbleTemplateProcessor::new, (obj) -> obj.integrity).codec();
+
+	public MossyCobbleTemplateProcessor(float integrity) {
         super(integrity);
     }
-
-	public MossyCobbleTemplateProcessor(Dynamic<?> dynamic) {
-    	this(dynamic.get("integrity").asFloat(1.0F));
-	}
 
 	@Override
 	protected IStructureProcessorType getType() {
@@ -29,11 +27,11 @@ public class MossyCobbleTemplateProcessor extends RandomizedTemplateProcessor {
 	}
 
 	@Nullable
-    @Override
-    public Template.BlockInfo process(IWorldReader worldReaderIn, BlockPos pos, Template.BlockInfo p_215194_3_, Template.BlockInfo blockInfo, PlacementSettings placementSettingsIn, @Nullable Template template) {
+	@Override
+	public Template.BlockInfo process(IWorldReader worldReaderIn, BlockPos pos, BlockPos piecepos, Template.BlockInfo p_215194_3_, Template.BlockInfo blockInfo, PlacementSettings placementSettingsIn, @Nullable Template template) {
 		Random random = placementSettingsIn.getRandom(pos);
 
-    	if (shouldPlaceBlock(random)) {
+		if (shouldPlaceBlock(random)) {
 			BlockState state = blockInfo.state;
 			Block block = state.getBlock();
 
@@ -47,5 +45,5 @@ public class MossyCobbleTemplateProcessor extends RandomizedTemplateProcessor {
 		}
 
 		return null;
-    }
+	}
 }

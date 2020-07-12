@@ -148,7 +148,7 @@ public class EntityTFHydraMortar extends ThrowableEntity {
 			}
 
 			if (source.getTrueSource() instanceof LivingEntity) {
-				this.owner = (LivingEntity) source.getTrueSource();
+				this.setShooter(source.getTrueSource()); //TODO: Verify
 			}
 			return true;
 		} else {
