@@ -8,8 +8,17 @@ pool:
 
 variables:
   revision: $[counter('release-number', 0)]
+  artifactName: 'Release'
+  GRADLE_USER_HOME: $(Pipeline.Workspace)/.gradle
 
 steps:
+- task: Cache@2
+  inputs:
+    key: 'gradle | "$(Agent.OS)" | build.gradle | gradle.properties | src/main/resources/META-INF/accesstransformer.cfg'
+    restoreKeys: gradle
+    path: $(GRADLE_USER_HOME)
+  displayName: Gradle build cache
+
 - powershell: |
     (Get-Content ./gradle.properties).Split([Environment]::NewLine) | % {
         $kvp = $_.Split('=')
@@ -19,25 +28,13 @@ steps:
             Write-Host "##vso[task.setvariable variable=javaprops_$key]$value"
         }
     }
-
-- powershell: |
-    $var = (gci env:*).GetEnumerator() | Sort-Object Name
-    $out = ""
-    Foreach ($v in $var) {$out = $out + "`t{0,-28} = {1,-28}`n" -f $v.Name, $v.Value}
-
-    $fileName = "$env:BUILD_ARTIFACTSTAGINGDIRECTORY/variables.md"
-    write-output "dump variables on $fileName"
-
-    set-content $fileName $out
-
-    write-output "##vso[task.addattachment type=Distributedtask.Core.Summary;name=Environment Variables;]$fileName"
-  displayName: Dump Variables
-  condition: eq(variables['system.debug'], 'true')
+  displayName: Create Azure DevOps variables from gradle properties file
 
 - task: Gradle@2
+  displayName: Create Release Build
   inputs:
     workingDirectory: ''
-    options: '-PCIRevision=$(javaprops_mod_version).$(revision) -PCIType=RELEASE'
+    options: '--build-cache -PCIRevision=$(javaprops_mod_version).$(revision) -PCIType=RELEASE'
     gradleWrapperFile: 'gradlew'
     gradleOptions: '-Xmx3072m'
     javaHomeOption: 'JDKVersion'
@@ -47,46 +44,96 @@ steps:
     testResultsFiles: '**/TEST-*.xml'
     tasks: 'build'
 
+- script: |
+    # stop the Gradle daemon to ensure no files are left open (impacting the save cache operation later)
+    ./gradlew --stop
+  displayName: Kill Daemon
+
 - task: CopyFiles@2
+  displayName: Copy Release build to artifact staging
   inputs:
     sourceFolder: './build/libs/'
     contents: 'twilightforest-*-universal.jar'
-    targetFolder: $(build.artifactStagingDirectory)/release
-  condition: and(succeeded(), eq(variables['CreateArtifacts'], 'True'))
-
-- task: Gradle@2
-  inputs:
-    workingDirectory: ''
-    gradleWrapperFile: 'gradlew'
-    gradleOptions: '-Xmx3072m'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.8'
-    jdkArchitectureOption: 'x64'
-    publishJUnitResults: false
-    tasks: 'clean'
-  condition: and(succeeded(), eq(variables['CreateArtifacts'], 'True'))
-
-- task: Gradle@2
-  inputs:
-    workingDirectory: ''
-    options: '-PCIRevision=$(javaprops_mod_version).$(revision)-beta -PCIType=BETA'
-    gradleWrapperFile: 'gradlew'
-    gradleOptions: '-Xmx3072m'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.8'
-    jdkArchitectureOption: 'x64'
-    publishJUnitResults: false
-    testResultsFiles: '**/TEST-*.xml'
-    tasks: 'build'
-  condition: and(succeeded(), eq(variables['CreateArtifacts'], 'True'))
-
-- task: CopyFiles@2
-  inputs:
-    sourceFolder: './build/libs/'
-    contents: 'twilightforest-*-beta-universal.jar'
-    targetFolder: $(build.artifactStagingDirectory)/beta
+    targetFolder: $(build.artifactStagingDirectory)
   condition: and(succeeded(), eq(variables['CreateArtifacts'], 'True'))
 
 - task: PublishBuildArtifacts@1
-  displayName: 'Publish Build Artifacts to VSTS'
+  displayName: 'Publish Build Artifacts to Azure DevOps'
   condition: and(succeeded(), eq(variables['CreateArtifacts'], 'True'))
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: '$(artifactName)'
+    publishLocation: 'Container'
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Build.ArtifactStagingDirectory)'
+    artifact: '$(artifactName)2'
+    publishLocation: 'pipeline'
+
+- powershell: |
+    $response = Invoke-RestMethod -Uri "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)$env:SYSTEM_TEAMPROJECTID/_apis/build/builds/$($env:BUILD_BUILDID)/artifacts?artifactName=Release&api-version=4.1"
+    $Container = $response.resource.data.TrimStart("#/")
+    $downloadUrl = "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)_apis/resources/Containers/$($Container)?itemPath=$($Env:ARTIFACTNAME)%2Ftwilightforest-$($env:JAVAPROPS_MINECRAFT_VERSION)-$($env:JAVAPROPS_MOD_VERSION).$($env:REVISION)-universal.jar"
+    $jobResult = (Get-Culture).TextInfo.ToTitleCase(${env:agent.jobstatus})
+    $Colour = 65280
+    if ($jobResult -ne "Succeeded") {
+      $Colour = 16711680
+    }
+    Write-Host "##vso[task.setvariable variable=DiscordMessageColour]$Colour"
+
+    $json = [Ordered]@{
+        title = "Build $jobResult"
+        url = "$($env:SYSTEM_TEAMFOUNDATIONSERVERURI)Twilight%20Forest/_build/results?buildId=$($Env:BUILD_BUILDID)&view=results"
+        color = $Colour
+        fields = (
+            [Ordered]@{
+                name = "Author"
+                value = "$($env:BUILD_SOURCEVERSIONAUTHOR)"
+            },
+            [Ordered]@{
+                name = "Minecraft Version"
+                value = "$($env:JAVAPROPS_MINECRAFT_VERSION)"
+            },
+            [Ordered]@{
+                name = "Mod Version"
+                value = "$($env:JAVAPROPS_MOD_VERSION).$($env:REVISION)"
+            },
+            [Ordered]@{
+                name = "Commit"
+                value = "[$(($env:BUILD_SOURCEVERSION).Substring(0, 6))]$($env:BUILD_REPOSITORY_URI)/commit/$($env:BUILD_SOURCEVERSION)"
+            },
+            [Ordered]@{
+                name = "Direct Download"
+                value = "$downloadUrl"
+            }
+        )
+    }
+    Write-Host "##vso[task.setvariable variable=DiscordMessage]$($json | ConvertTo-Json -Compress)"
+
+    $uri = "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)$env:SYSTEM_TEAMPROJECTID/_apis/pipelines/$($env:SYSTEM_DEFINITIONID)/runs/$($env:BUILD_BUILDID)/artifacts?artifactName=$($Env:releaseName)2&api-version=6.0-preview.1"
+    $headers = @{ Authorization = "Bearer $env:SYSTEM_ACCESSTOKEN" }
+    $response = Invoke-RestMethod -Uri $uri -Headers $headers
+    $response | ConvertTo-Json -Compress
+  displayName: Format discord message
+  condition: always()
+  env:
+    SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+
+#- task: ado-discord-webhook@1
+#  displayName: Announce Build to discord
+#  inputs:
+#    channelId: '$(DiscordChannelID)'
+#    webhookKey: '$(DiscordChannelSecret)'
+#    messageType: 'embeds'
+#    embeds: |
+#      [$(DiscordMessage)]
+#  condition: and(always(), eq(variables['CreateArtifacts'], 'True'))
+
+- powershell: |
+    (gci env:*).GetEnumerator() | Sort-Object Name | ForEach-Object {
+      $nameAsCapitalSnakeCase = $_.Name
+      Write-Output "$nameAsCapitalSnakeCase = $($_.Value)"
+    }
+  displayName: Dump Variables
+  #condition: eq(variables['system.debug'], 'true')
