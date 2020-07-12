@@ -280,7 +280,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 
 			SignTileEntity teSign = (SignTileEntity) world.getTileEntity(pos);
 			if (teSign != null) {
-				int min = Math.min(text.length, teSign.signText.length); //TODO: Aight, who private this?
+				int min = Math.min(text.length, 4); //TODO: Aight, who private this? Honestly it's pretty safe to assume this is 4 anyway
 
 				for (int i = 0; i < min; i++) {
 					teSign.setText(i, new StringTextComponent(text[i]));

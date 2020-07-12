@@ -9,7 +9,7 @@ public class ModelTFTinyFirefly<T extends EntityTFMobileFirefly> extends Segment
 
 	public ModelTFTinyFirefly() {
 		glow1 = new ModelRenderer(this, 20, 0);
-		glow1.addCuboid(-5F, -5F, 0F, 10, 10, 0, 0F);
+		glow1.addBox(-5F, -5F, 0F, 10, 10, 0, 0F);
 	}
 
 	@Override
@@ -18,7 +18,9 @@ public class ModelTFTinyFirefly<T extends EntityTFMobileFirefly> extends Segment
 	}
 
 	@Override
-	public void setAngles(T entity, float v, float v1, float v2, float v3, float v4) { }
+	public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+
+	}
 
 	//fields
 	public ModelRenderer glow1;
