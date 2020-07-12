@@ -1,12 +1,20 @@
 package twilightforest.world;
 
+import net.minecraft.block.Blocks;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.DimensionSettings;
+import net.minecraft.world.gen.settings.DimensionStructuresSettings;
+import net.minecraft.world.gen.settings.NoiseSettings;
+import net.minecraft.world.gen.settings.ScalingSettings;
+import net.minecraft.world.gen.settings.SlideSettings;
 import net.minecraftforge.fml.common.Mod;
 import twilightforest.TwilightForestMod;
+
+import java.util.Optional;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class TFDimensions {
@@ -29,6 +37,22 @@ public class TFDimensions {
 	public static final RegistryKey<DimensionType> twilight_forest = RegistryKey.func_240903_a_(Registry.DIMENSION_TYPE_KEY, new ResourceLocation("twilight_forest"));
 	public static final RegistryKey<World> twilight_forest_world = RegistryKey.func_240903_a_(Registry.WORLD_KEY, new ResourceLocation("twilight_forest"));
 
+	public static final DimensionSettings.Preset tf_preset = new DimensionSettings.Preset("twilight_forest", (preset) -> new DimensionSettings(
+			new DimensionStructuresSettings(false), new NoiseSettings(
+					256, //functional height
+					new ScalingSettings(0.9999999814507745D, 0.9999999814507745D, 80.0D, 160.0D), //sampling. 2nd and 4th are Y noise. TODO: Modify for us?
+					new SlideSettings(-10, 3, 0), //top slide
+					new SlideSettings(-30, 0, 0), //bottom slide
+					1, //size_horizontal
+					2, //size_vertical TODO: Modify?
+					1.0D, //density_factor
+					-0.46875D, //density_offset
+					true, //simplex noise
+					true, //random density offset
+					false, //island noise override
+					false //amplified TODO: Should we allow it?
+			), Blocks.STONE.getDefaultState(), Blocks.WATER.getDefaultState(), -10, 0, 31, false, Optional.of(preset)));
+
 	//TODO: Do we even need this anymore? Unless someone uses our exact mod id and registry name, this shouldn't be a problem
 //	public static void checkOriginDimension() {
 //		ResourceLocation tfDim = new ResourceLocation(TwilightForestMod.ID, "twilight_forest");
@@ -49,11 +73,4 @@ public class TFDimensions {
 		Registry.register(Registry.field_239690_aB_, TwilightForestMod.prefix("twilight_forest"), ChunkGeneratorTwilightForest.codecTFChunk);
 		Registry.register(Registry.field_239690_aB_, TwilightForestMod.prefix("skylight_forest"), ChunkGeneratorTwilightVoid.codecVoidChunk);
 	}
-
-//	@SubscribeEvent
-//	public static void registerModDimension(final RegisterDimensionsEvent e) {
-//		ResourceLocation tf = new ResourceLocation(TwilightForestMod.ID, "twilight_forest");
-//		twilightForestDimension = DimensionManager.registerOrGetDimension(tf, MOD_DIMENSION.get(), new PacketBuffer(Unpooled.buffer()), true);
-//		DimensionManager.keepLoaded(twilightForestDimension, false);
-//	}
 }

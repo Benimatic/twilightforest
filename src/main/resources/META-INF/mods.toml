@@ -1,5 +1,5 @@
 modLoader="javafml" #mandatory
-loaderVersion="[30,)"
+loaderVersion="[32,)"
 issueTrackerURL="https://github.com/TeamTwilight/twilightforest/issues" #optional
 displayURL="https://www.curseforge.com/minecraft/mc-mods/the-twilight-forest" #optional
 updateJSONURL="https://raw.githubusercontent.com/TeamTwilight/twilightforest/1.15.x/update.json"
@@ -17,6 +17,6 @@ An enchanted forest dimension.'''
 [[dependencies.twilightforest]]
     modId="forge"
     mandatory=true
-    versionRange="[30.0.35,)"
+    versionRange="[32,)"
     ordering="NONE"
     side="BOTH"
