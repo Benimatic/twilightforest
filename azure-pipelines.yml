@@ -69,7 +69,7 @@ steps:
     $rawpath = "pipelineartifact://teamtwilight/projectId/1ef09d39-06cf-41fa-ad98-7258b70c2a72/buildId/$($Env:BUILD_BUILDID)/artifactName/Release"
     $path = [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($rawpath))
     $jar = "twilightforest-$($env:JAVAPROPS_MINECRAFT_VERSION)-$($env:JAVAPROPS_MOD_VERSION).$($env:REVISION)-universal.jar"
-    $downloadUrl = "https://artprodcus3.artifacts.visualstudio.com/Abaabfa6c-deea-4587-ba05-c308c2597b7a/1ef09d39-06cf-41fa-ad98-7258b70c2a72/_apis/artifact/$($path)/content?format=file&subPath=%2F$($jar)"
+    $downloadUrl = "https://artprodcus3.artifacts.visualstudio.com/Abaabfa6c-deea-4587-ba05-c308c2597b7a/1ef09d39-06cf-41fa-ad98-7258b70c2a72/_apis/artifact/$($path)0/content?format=file&subPath=%2F$($jar)"
     $jobResult = (Get-Culture).TextInfo.ToTitleCase(${env:agent.jobstatus})
     $Colour = 65280
     if ($jobResult -ne "Succeeded") {
