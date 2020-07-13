@@ -57,22 +57,19 @@ steps:
     targetFolder: $(build.artifactStagingDirectory)
   condition: and(succeeded(), eq(variables['CreateArtifacts'], 'True'))
 
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Build Artifacts to Azure DevOps'
+- task: PublishPipelineArtifact@1
+  displayName: 'Publish Artifacts'
   condition: and(succeeded(), eq(variables['CreateArtifacts'], 'True'))
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: '$(artifactName)'
-    publishLocation: 'Container'
-
-- task: PublishPipelineArtifact@1
-  inputs:
     targetPath: '$(Build.ArtifactStagingDirectory)'
-    artifact: '$(artifactName)2'
+    artifact: '$(artifactName)'
     publishLocation: 'pipeline'
 
 - powershell: |
-    $response = Invoke-RestMethod -Uri "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)$env:SYSTEM_TEAMPROJECTID/_apis/build/builds/$($env:BUILD_BUILDID)/artifacts?artifactName=Release&api-version=4.1"
+    $uri = "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)$env:SYSTEM_TEAMPROJECTID/_apis/build/builds/$($env:BUILD_BUILDID)/artifacts?artifactName=Release&api-version=4.1"
+    $response = Invoke-RestMethod -Uri "$uri" -Headers @{
+      Authorization = "Bearer $env:SYSTEM_ACCESSTOKEN"
+    }
     $Container = $response.resource.data.TrimStart("#/")
     $downloadUrl = "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)_apis/resources/Containers/$($Container)?itemPath=$($Env:ARTIFACTNAME)%2Ftwilightforest-$($env:JAVAPROPS_MINECRAFT_VERSION)-$($env:JAVAPROPS_MOD_VERSION).$($env:REVISION)-universal.jar"
     $jobResult = (Get-Culture).TextInfo.ToTitleCase(${env:agent.jobstatus})
@@ -102,16 +99,12 @@ steps:
             [Ordered]@{
                 name = "Commit"
                 value = "[$(($env:BUILD_SOURCEVERSION).Substring(0, 6))]$($env:BUILD_REPOSITORY_URI)/commit/$($env:BUILD_SOURCEVERSION)"
-            },
-            [Ordered]@{
-                name = "Direct Download"
-                value = "$downloadUrl"
             }
         )
     }
     Write-Host "##vso[task.setvariable variable=DiscordMessage]$($json | ConvertTo-Json -Compress)"
 
-    $uri = "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)$env:SYSTEM_TEAMPROJECTID/_apis/pipelines/$($env:SYSTEM_DEFINITIONID)/runs/$($env:BUILD_BUILDID)/artifacts?artifactName=$($Env:releaseName)2&api-version=6.0-preview.1"
+    $uri = "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)$env:SYSTEM_TEAMPROJECTID/_apis/pipelines/$($env:SYSTEM_DEFINITIONID)/runs/$($env:BUILD_BUILDID)/artifacts?artifactName=$($Env:releaseName)&api-version=6.0-preview.1"
     $headers = @{ Authorization = "Bearer $env:SYSTEM_ACCESSTOKEN" }
     $response = Invoke-RestMethod -Uri $uri -Headers $headers
     $response | ConvertTo-Json -Compress
@@ -120,15 +113,15 @@ steps:
   env:
     SYSTEM_ACCESSTOKEN: $(System.AccessToken)
 
-#- task: ado-discord-webhook@1
-#  displayName: Announce Build to discord
-#  inputs:
-#    channelId: '$(DiscordChannelID)'
-#    webhookKey: '$(DiscordChannelSecret)'
-#    messageType: 'embeds'
-#    embeds: |
-#      [$(DiscordMessage)]
-#  condition: and(always(), eq(variables['CreateArtifacts'], 'True'))
+- task: ado-discord-webhook@1
+  displayName: Announce Build to discord
+  inputs:
+    channelId: '$(DiscordChannelID)'
+    webhookKey: '$(DiscordChannelSecret)'
+    messageType: 'embeds'
+    embeds: |
+      [$(DiscordMessage)]
+  condition: and(always(), eq(variables['CreateArtifacts'], 'True'))
 
 - powershell: |
     (gci env:*).GetEnumerator() | Sort-Object Name | ForEach-Object {
