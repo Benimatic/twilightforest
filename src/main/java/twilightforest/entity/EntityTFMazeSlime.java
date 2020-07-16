@@ -4,6 +4,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.monster.SlimeEntity;
 import net.minecraft.particles.BlockParticleData;
@@ -41,12 +43,10 @@ public class EntityTFMazeSlime extends SlimeEntity {
 		return world.getDifficulty() != Difficulty.PEACEFUL && canSpawnOn(entity, world, reason, pos, random) && MonsterEntity.isValidLightLevel(world, pos, random);
 	}
 
-	//TODO: Apply elsewhere
-//	@Override
-//	protected static AttributeModifierMap.MutableAttribute registerAttributes() {
-//		return MonsterEntity.func_234295_eP_()
-//		this.getAttribute(Attributes.field_233818_a_).applyModifier(DOUBLE_HEALTH);
-//	}
+	public static AttributeModifierMap.MutableAttribute registerAttributes() {
+		return MonsterEntity.func_234295_eP_()
+				.func_233814_a_(Attributes.MAX_HEALTH)/*.applyModifier(DOUBLE_HEALTH) TODO: Move to initial spawn?*/;
+	}
 
 	@Override
 	protected boolean canDamagePlayer() {

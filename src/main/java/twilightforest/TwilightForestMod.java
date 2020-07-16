@@ -138,6 +138,7 @@ public class TwilightForestMod {
 		TFBiomes.addBiomeTypes();
 		TFBiomes.addBiomeFeatures();
 		TFDimensions.init();
+		TFEntities.addEntityAttributes();
 
 		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
 			try {

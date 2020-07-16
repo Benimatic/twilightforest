@@ -14,8 +14,13 @@ import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.monster.SpiderEntity;
+import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.passive.PigEntity;
+import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.util.ResourceLocation;
@@ -304,12 +309,77 @@ public class TFEntities {
 		EntitySpawnPlacementRegistry.register(castle_guardian, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MobEntity::canSpawnOn);
 	}
 
+	public static void addEntityAttributes() {
+		GlobalEntityTypeAttributes.put(wild_boar, PigEntity.func_234215_eI_().func_233813_a_());
+		GlobalEntityTypeAttributes.put(bighorn_sheep, SheepEntity.func_234225_eI_().func_233813_a_());
+		GlobalEntityTypeAttributes.put(deer, EntityTFDeer.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(redcap, EntityTFRedcap.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(swarm_spider, EntityTFSwarmSpider.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(naga, EntityTFNaga.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(skeleton_druid, MonsterEntity.func_234295_eP_().func_233813_a_());
+		GlobalEntityTypeAttributes.put(hostile_wolf, EntityTFHostileWolf.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(wraith, EntityTFWraith.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(hedge_spider, SpiderEntity.func_234305_eI_().func_233813_a_());
+		GlobalEntityTypeAttributes.put(hydra, EntityTFHydra.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(lich, EntityTFLich.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(penguin, EntityTFPenguin.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(lich_minion, ZombieEntity.func_234342_eQ_().func_233813_a_());
+		GlobalEntityTypeAttributes.put(loyal_zombie, EntityTFLoyalZombie.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(tiny_bird, EntityTFTinyBird.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(squirrel, EntityTFSquirrel.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(bunny, EntityTFBunny.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(raven, EntityTFRaven.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(quest_ram, EntityTFQuestRam.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(kobold, EntityTFKobold.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(mosquito_swarm, EntityTFMosquitoSwarm.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(death_tome, EntityTFDeathTome.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(minotaur, EntityTFMinotaur.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(minoshroom, EntityTFMinoshroom.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(fire_beetle, EntityTFFireBeetle.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(slime_beetle, EntityTFSlimeBeetle.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(pinch_beetle, EntityTFPinchBeetle.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(maze_slime, EntityTFMazeSlime.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(redcap_sapper, EntityTFRedcapSapper.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(mist_wolf, EntityTFMistWolf.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(king_spider, EntityTFKingSpider.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(firefly, EntityTFMobileFirefly.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(mini_ghast, EntityTFMiniGhast.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(tower_ghast, EntityTFTowerGhast.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(tower_golem, EntityTFTowerGolem.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(tower_termite, EntityTFTowerTermite.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(tower_broodling, EntityTFTowerBroodling.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(ur_ghast, EntityTFUrGhast.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(blockchain_goblin, EntityTFBlockGoblin.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(goblin_knight_upper, EntityTFGoblinKnightUpper.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(goblin_knight_lower, EntityTFGoblinKnightLower.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(helmet_crab, EntityTFHelmetCrab.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(knight_phantom, EntityTFKnightPhantom.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(yeti, EntityTFYeti.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(yeti_alpha, EntityTFYetiAlpha.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(winter_wolf, EntityTFWinterWolf.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(snow_guardian, EntityTFSnowGuardian.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(stable_ice_core, EntityStableIceCore.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(unstable_ice_core, EntityUnstableIceCore.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(snow_queen, EntityTFSnowQueen.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(troll, EntityTFTroll.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(giant_miner, EntityTFGiantMiner.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(armored_giant, EntityTFGiantMiner.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(ice_crystal, EntityTFIceCrystal.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(harbinger_cube, EntityTFHarbingerCube.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(adherent, EntityTFAdherent.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(roving_cube, EntityTFRovingCube.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(castle_guardian, MobEntity.func_233666_p_().func_233813_a_());
+
+		GlobalEntityTypeAttributes.put(hydra_head, EntityTFHydraPart.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(boggard, EntityTFBoggard.registerAttributes().func_233813_a_());
+		GlobalEntityTypeAttributes.put(rising_zombie, ZombieEntity.func_234342_eQ_().func_233813_a_());
+	}
+
 	@OnlyIn(Dist.CLIENT)
 	public static void registerEntityRenderer() {
 		RenderingRegistry.registerEntityRenderingHandler(wild_boar, m -> new RenderTFBoar(m, new ModelTFBoar()));
 		RenderingRegistry.registerEntityRenderingHandler(bighorn_sheep, m -> new RenderTFBighorn(m, new ModelTFBighorn(), new ModelTFBighornFur(), 0.7F));
 		RenderingRegistry.registerEntityRenderingHandler(deer, m -> new RenderTFGenericMob<>(m, new ModelTFDeer(), 0.7F, "wilddeer.png"));
-
 		RenderingRegistry.registerEntityRenderingHandler(redcap, m -> new RenderTFBiped<>(m, new ModelTFRedcap<>(), new ModelTFRedcap<>(), new ModelTFRedcap<>(), 0.4F, "redcap.png"));
 		RenderingRegistry.registerEntityRenderingHandler(skeleton_druid, m -> new RenderTFBiped<>(m, new ModelTFSkeletonDruid(), new ModelTFSkeletonDruid(), new ModelTFSkeletonDruid(), 0.5F, "skeletondruid.png"));
 		RenderingRegistry.registerEntityRenderingHandler(hostile_wolf, WolfRenderer::new);
@@ -374,7 +444,6 @@ public class TFEntities {
 		RenderingRegistry.registerEntityRenderingHandler(adherent, RenderAdherent::new);
 		RenderingRegistry.registerEntityRenderingHandler(roving_cube, RenderTFRovingCube::new);
 		RenderingRegistry.registerEntityRenderingHandler(rising_zombie, m -> new RenderTFBiped<>(m, new ModelTFRisingZombie(false), new ModelTFRisingZombie(true), new ModelTFRisingZombie(true), 0.5F, "textures/entity/zombie/zombie.png"));
-
 		RenderingRegistry.registerEntityRenderingHandler(castle_guardian, m -> new RenderTFCastleGuardian(m, new ModelTFCastleGuardian(), 2.0F, "finalcastle/castle_guardian.png"));
 
 		// projectiles
