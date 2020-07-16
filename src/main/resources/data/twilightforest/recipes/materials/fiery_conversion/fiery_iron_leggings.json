@@ -36,5 +36,5 @@
       "item": "minecraft:iron_leggings"
     }
   ],
-  "type": "forge:ore_shapeless"
+  "type": "minecraft:crafting_shapeless"
 }

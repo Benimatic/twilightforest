@@ -7,34 +7,34 @@
   "ingredients": [
     [
       {
-        "item": "minecraft:nagastone_stairs_mossy_left"
+        "item": "twilightforest:nagastone_stairs_mossy_left"
       },
       {
-        "item": "minecraft:nagastone_stairs_mossy_right"
+        "item": "twilightforest:nagastone_stairs_mossy_right"
       }
     ],
     [
       {
-        "item": "minecraft:nagastone_stairs_mossy_left"
+        "item": "twilightforest:nagastone_stairs_mossy_left"
       },
       {
-        "item": "minecraft:nagastone_stairs_mossy_right"
+        "item": "twilightforest:nagastone_stairs_mossy_right"
       }
     ],
     [
       {
-        "item": "minecraft:nagastone_stairs_mossy_left"
+        "item": "twilightforest:nagastone_stairs_mossy_left"
       },
       {
-        "item": "minecraft:nagastone_stairs_mossy_right"
+        "item": "twilightforest:nagastone_stairs_mossy_right"
       }
     ],
     [
       {
-        "item": "minecraft:nagastone_stairs_mossy_left"
+        "item": "twilightforest:nagastone_stairs_mossy_left"
       },
       {
-        "item": "minecraft:nagastone_stairs_mossy_right"
+        "item": "twilightforest:nagastone_stairs_mossy_right"
       }
     ]
   ],

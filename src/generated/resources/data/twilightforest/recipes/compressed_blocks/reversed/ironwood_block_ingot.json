@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "twilightforest:ironwood_ingots"
+    }
+  ],
+  "result": {
+    "item": "twilightforest:ironwood_ingot",
+    "count": 9
+  }
+}

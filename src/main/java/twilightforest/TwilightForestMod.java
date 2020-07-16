@@ -3,12 +3,15 @@ package twilightforest;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.item.Rarity;
+import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.GameRules;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -38,7 +41,7 @@ import twilightforest.enchantment.TFEnchantments;
 import twilightforest.entity.TFEntities;
 import twilightforest.inventory.TFContainers;
 import twilightforest.item.*;
-import twilightforest.loot.TFTreasure;
+import twilightforest.item.recipe.UncraftingEnabledCondition;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.potions.TFPotions;
 import twilightforest.tileentity.TFTileEntities;
@@ -118,6 +121,12 @@ public class TwilightForestMod {
 		} else {
 			LOGGER.warn("Skipping compatibility!");
 		}
+	}
+
+	@SubscribeEvent
+	public static void registerSerializers(RegistryEvent.Register<IRecipeSerializer<?>> evt) {
+		//How do I add a condition serializer as fast as possible? An event that fires really early
+		CraftingHelper.register(new UncraftingEnabledCondition.Serializer());
 	}
 
 	@SubscribeEvent

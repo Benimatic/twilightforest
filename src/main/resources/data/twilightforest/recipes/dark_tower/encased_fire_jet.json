@@ -1,13 +1,13 @@
 {
   "result": {
-    "item": "twilightforest:fire_jet_encased"
+    "item": "twilightforest:encased_fire_jet"
   },
   "pattern": [
     "ere",
     "rjr",
     "lll"
   ],
-  "type": "forge:ore_shaped",
+  "type": "minecraft:crafting_shaped",
   "key": {
     "r": {
       "tag": "forge:dusts/redstone"

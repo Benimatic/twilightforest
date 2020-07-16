@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "twilightforest:arctic_fur"
+    }
+  ],
+  "result": {
+    "item": "twilightforest:arctic_fur",
+    "count": 9
+  }
+}

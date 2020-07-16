@@ -7,14 +7,14 @@
       "item": "twilightforest:maze_map_empty"
     },
     {
-      "item": "forge:storage_blocks/gold"
+      "tag": "forge:storage_blocks/gold"
     },
     {
-      "item": "forge:storage_blocks/diamond"
+      "tag": "forge:storage_blocks/diamond"
     },
     {
-      "item": "forge:storage_blocks/iron"
+      "tag": "forge:storage_blocks/iron"
     }
   ],
-  "type": "forge:ore_shapeless"
+  "type": "minecraft:crafting_shapeless"
 }

@@ -8,7 +8,7 @@
     "rgr",
     "brb"
   ],
-  "type": "forge:ore_shaped",
+  "type": "minecraft:crafting_shaped",
   "key": {
     "b": {
       "item": "twilightforest:borer_essence"

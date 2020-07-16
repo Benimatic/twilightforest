@@ -40,5 +40,5 @@
       "item": "minecraft:iron_chestplate"
     }
   ],
-  "type": "forge:ore_shapeless"
+  "type": "minecraft:crafting_shapeless"
 }
