@@ -81,5 +81,10 @@ public class RenderLayerRegistration {
 		RenderTypeLookup.setRenderLayer(TFBlocks.built_block.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.antibuilt_block.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.reactor_debris.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.force_field_pink.get(), translucent);
+		RenderTypeLookup.setRenderLayer(TFBlocks.force_field_blue.get(), translucent);
+		RenderTypeLookup.setRenderLayer(TFBlocks.force_field_green.get(), translucent);
+		RenderTypeLookup.setRenderLayer(TFBlocks.force_field_purple.get(), translucent);
+		RenderTypeLookup.setRenderLayer(TFBlocks.force_field_orange.get(), translucent);
 	}
 }

@@ -330,6 +330,7 @@ public class TFBlocks {
 						castle_pillar_encased, castle_pillar_encased_tile, castle_pillar_bold, castle_pillar_bold_tile,
 						castle_stairs_brick, castle_stairs_worn, castle_stairs_cracked, castle_stairs_mossy, castle_stairs_encased, castle_stairs_bold,
 						castle_rune_brick_yellow, castle_rune_brick_purple, castle_rune_brick_pink, castle_rune_brick_blue,
+						force_field_pink, force_field_blue, force_field_green, force_field_purple, force_field_orange,
 						cinder_furnace, cinder_log, cinder_wood,
 						castle_door_yellow, castle_door_purple, castle_door_pink, castle_door_blue,
 						twilight_portal_miniature_structure, naga_courtyard_miniature_structure, lich_tower_miniature_structure,

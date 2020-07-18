@@ -1,5 +1,6 @@
 package twilightforest.data;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.*;
 import net.minecraft.data.DataGenerator;
@@ -7,6 +8,7 @@ import net.minecraft.state.properties.*;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.*;
+import net.minecraftforge.fml.RegistryObject;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
 import twilightforest.enums.FireJetVariant;
@@ -240,6 +242,40 @@ public class BlockstateGenerator extends BlockStateProvider {
 		simpleBlock(TFBlocks.lapis_block.get(), lapisModels);
 		registerWoodBlocks();
 		registerNagastone();
+		registerForceFields();
+	}
+
+	//TODO: Absolutely not a 100% reflection of what existed
+	private void registerForceFields() {
+		ImmutableList<RegistryObject<Block>> forceFields = ImmutableList.of(TFBlocks.force_field_pink, TFBlocks.force_field_blue, TFBlocks.force_field_green, TFBlocks.force_field_purple, TFBlocks.force_field_orange);
+
+		for (RegistryObject<Block> block : forceFields) {
+			ModelFile post = models().withExistingParent(block.getId().getPath() + "_post", prefix("block/util/pane/post"))
+					.texture("pane", prefix("block/forcefield_white"))
+					.texture("edge", "#pane");
+			ModelFile side = models().withExistingParent(block.getId().getPath() + "_side", prefix("block/util/pane/side"))
+					.texture("pane", TwilightForestMod.prefix("block/forcefield_white"))
+					.texture("edge", "#pane");
+			ModelFile noside = models().withExistingParent(block.getId().getPath() + "_noside", prefix("block/util/pane/noside"))
+					.texture("pane", TwilightForestMod.prefix("block/forcefield_white"));
+			ModelFile sidealt = models().withExistingParent(block.getId().getPath() + "_side_alt", prefix("block/util/pane/side_alt"))
+					.texture("pane", TwilightForestMod.prefix("block/forcefield_white"))
+					.texture("edge", "#pane");
+			ModelFile nosidealt = models().withExistingParent(block.getId().getPath() + "_noside_alt", prefix("block/util/pane/noside_alt"))
+					.texture("pane", TwilightForestMod.prefix("block/forcefield_white"));
+
+			getMultipartBuilder(block.get())
+					.part().modelFile(post).addModel().end()
+					.part().modelFile(side).addModel().condition(SixWayBlock.NORTH, true).end()
+					.part().modelFile(side).rotationY(90).addModel().condition(SixWayBlock.EAST, true).end()
+					.part().modelFile(sidealt).addModel().condition(SixWayBlock.SOUTH, true).end()
+					.part().modelFile(sidealt).rotationY(90).addModel().condition(SixWayBlock.WEST, true).end()
+					.part().modelFile(noside).addModel().condition(SixWayBlock.NORTH, false).end()
+					.part().modelFile(noside).rotationY(90).addModel().condition(SixWayBlock.EAST, false).end()
+					.part().modelFile(nosidealt).addModel().condition(SixWayBlock.SOUTH, false).end()
+					.part().modelFile(nosidealt).rotationY(90).addModel().condition(SixWayBlock.WEST, false).end();
+		}
+
 	}
 
 	private void registerNagastone() {
