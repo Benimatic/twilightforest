@@ -35,7 +35,7 @@
                   ]
                 }
               ],
-              "name": "twilightforest:oak_leaves"
+              "name": "twilightforest:twilight_oak_leaves"
             },
             {
               "type": "minecraft:item",
@@ -54,7 +54,7 @@
                   ]
                 }
               ],
-              "name": "twilightforest:oak_sapling"
+              "name": "twilightforest:twilight_oak_sapling"
             }
           ]
         }

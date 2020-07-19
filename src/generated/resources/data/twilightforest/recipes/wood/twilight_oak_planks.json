@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "twilightforest:oak_log"
+      "item": "twilightforest:twilight_oak_log"
     }
   ],
   "result": {

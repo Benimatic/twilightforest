@@ -10,7 +10,7 @@
       },
       {
         "type": "item",
-        "name": "twilightforest:oak_sapling",
+        "name": "twilightforest:twilight_oak_sapling",
         "functions": [
           { "function": "set_count", "count": { "min": 1, "max": 4 } }
         ]

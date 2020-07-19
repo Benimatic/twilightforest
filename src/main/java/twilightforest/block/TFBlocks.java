@@ -33,15 +33,15 @@ import java.util.List;
 public class TFBlocks {
 	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, TwilightForestMod.ID);
 
-	public static final RegistryObject<RotatedPillarBlock> oak_log       = BLOCKS.register("oak_log", () -> new BlockTFLog(logProperties(MaterialColor.WOOD, MaterialColor.OBSIDIAN).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
+	public static final RegistryObject<RotatedPillarBlock> oak_log       = BLOCKS.register("twilight_oak_log", () -> new BlockTFLog(logProperties(MaterialColor.WOOD, MaterialColor.OBSIDIAN).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<RotatedPillarBlock> canopy_log    = BLOCKS.register("canopy_log", () -> new BlockTFLog(logProperties(MaterialColor.OBSIDIAN, MaterialColor.BROWN).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<RotatedPillarBlock> mangrove_log  = BLOCKS.register("mangrove_log", () -> new BlockTFLog(logProperties(MaterialColor.WOOD, MaterialColor.OBSIDIAN).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<RotatedPillarBlock> dark_log      = BLOCKS.register("dark_log", () -> new BlockTFLog(logProperties(MaterialColor.ADOBE, MaterialColor.STONE).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<Block> oak_wood                   = BLOCKS.register("oak_wood", () -> new BlockFlammable(5, 5, Block.Properties.create(Material.WOOD, MaterialColor.WOOD).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
+	public static final RegistryObject<Block> oak_wood                   = BLOCKS.register("twilight_oak_wood", () -> new BlockFlammable(5, 5, Block.Properties.create(Material.WOOD, MaterialColor.WOOD).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<Block> canopy_wood                = BLOCKS.register("canopy_wood", () -> new BlockFlammable(5, 5, Block.Properties.create(Material.WOOD, MaterialColor.OBSIDIAN).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<Block> mangrove_wood              = BLOCKS.register("mangrove_wood", () -> new BlockFlammable(5, 5, Block.Properties.create(Material.WOOD, MaterialColor.DIRT).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<Block> dark_wood                  = BLOCKS.register("dark_wood", () -> new BlockFlammable(5, 5, Block.Properties.create(Material.WOOD, MaterialColor.ADOBE).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<Block> oak_leaves                 = BLOCKS.register("oak_leaves", () -> new BlockTFLeaves(Block.Properties.create(Material.LEAVES).hardnessAndResistance(0.2F).tickRandomly().notSolid().sound(SoundType.PLANT)));
+	public static final RegistryObject<Block> oak_leaves                 = BLOCKS.register("twilight_oak_leaves", () -> new BlockTFLeaves(Block.Properties.create(Material.LEAVES).hardnessAndResistance(0.2F).tickRandomly().notSolid().sound(SoundType.PLANT)));
 	public static final RegistryObject<Block> canopy_leaves              = BLOCKS.register("canopy_leaves", () -> new BlockTFLeaves(Block.Properties.create(Material.LEAVES).hardnessAndResistance(0.2F).tickRandomly().notSolid().sound(SoundType.PLANT)));
 	public static final RegistryObject<Block> mangrove_leaves            = BLOCKS.register("mangrove_leaves", () -> new BlockTFLeaves(Block.Properties.create(Material.LEAVES).hardnessAndResistance(0.2F).tickRandomly().notSolid().sound(SoundType.PLANT)));
 	public static final RegistryObject<Block> dark_leaves                = BLOCKS.register("dark_leaves", () -> new BlockTFDarkLeaves(Block.Properties.create(Material.LEAVES).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.PLANT)));
@@ -75,7 +75,7 @@ public class TFBlocks {
 	public static final RegistryObject<Block> encased_fire_jet           = BLOCKS.register("encased_fire_jet", () -> new BlockTFEncasedFireJet(Block.Properties.create(Material.WOOD, MaterialColor.SAND).hardnessAndResistance(1.5F, 0.0F).sound(SoundType.WOOD).setLightLevel((state) -> 15)));
 	public static final RegistryObject<Block> naga_stone_head            = BLOCKS.register("naga_stone_head", () -> new BlockTFHorizontal(Block.Properties.create(Material.ROCK).hardnessAndResistance(1.5F, 10.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> naga_stone                 = BLOCKS.register("naga_stone", () -> new BlockTFNagastone(Block.Properties.create(Material.ROCK).hardnessAndResistance(1.5F, 10.0F).sound(SoundType.STONE)));
-	public static final RegistryObject<SaplingBlock> oak_sapling            = BLOCKS.register("oak_sapling", () -> new BlockTFSapling(new SmallOakTree()));
+	public static final RegistryObject<SaplingBlock> oak_sapling            = BLOCKS.register("twilight_oak_sapling", () -> new BlockTFSapling(new SmallOakTree()));
 	public static final RegistryObject<SaplingBlock> canopy_sapling         = BLOCKS.register("canopy_sapling", () -> new BlockTFSapling(new CanopyTree()));
 	public static final RegistryObject<SaplingBlock> mangrove_sapling       = BLOCKS.register("mangrove_sapling", () -> new BlockTFSapling(new MangroveTree()));
 	public static final RegistryObject<SaplingBlock> darkwood_sapling       = BLOCKS.register("darkwood_sapling", () -> new BlockTFSapling(new DarkCanopyTree()));

@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "twilightforest:block/oak_log"
+    "all": "twilightforest:block/twilight_oak_log"
   }
 }

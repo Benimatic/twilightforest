@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "twilightforest:oak_log"
+          "name": "twilightforest:twilight_oak_log"
         }
       ],
       "conditions": [
