@@ -1,5 +1,6 @@
 package twilightforest.data;
 
+import net.minecraft.data.BlockTagsProvider;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
@@ -11,8 +12,9 @@ public class DataGenerators {
 	public static void gatherData(GatherDataEvent evt) {
 		evt.getGenerator().addProvider(new BlockstateGenerator(evt.getGenerator(), evt.getExistingFileHelper()));
 		evt.getGenerator().addProvider(new ItemModelGenerator(evt.getGenerator(), evt.getExistingFileHelper()));
-		evt.getGenerator().addProvider(new BlockTagGenerator(evt.getGenerator()));
-		evt.getGenerator().addProvider(new ItemTagGenerator(evt.getGenerator(), new BlockTagGenerator(evt.getGenerator()))); //eeh?
+		BlockTagsProvider blocktags = new BlockTagGenerator(evt.getGenerator());
+		evt.getGenerator().addProvider(blocktags);
+		evt.getGenerator().addProvider(new ItemTagGenerator(evt.getGenerator(), blocktags));
 		evt.getGenerator().addProvider(new LootGenerator(evt.getGenerator()));
 		evt.getGenerator().addProvider(new StonecuttingGenerator(evt.getGenerator()));
 		evt.getGenerator().addProvider(new CraftingGenerator(evt.getGenerator()));
