@@ -3,7 +3,6 @@
   "replace": false,
   "values": [
     "minecraft:bedrock",
-    "minecraft:flowing_water",
     "minecraft:redstone_lamp",
     "minecraft:tnt",
     "minecraft:water"

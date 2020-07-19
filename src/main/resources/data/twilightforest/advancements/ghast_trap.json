@@ -1,8 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "twilightforest:tower_device",
-      "data": 10
+      "item": "twilightforest:ghast_trap"
     },
     "title": {
       "translate": "advancement.twilightforest.ghast_trap"
