@@ -28,7 +28,7 @@ public class ChunkGeneratorTwilightVoid extends ChunkGeneratorTFBase {
 	protected final DimensionSettings dimensionSettings;
 
 	public ChunkGeneratorTwilightVoid(BiomeProvider provider, long seed, DimensionSettings settings) {
-		super(provider, settings.func_236108_a_(), false);
+		super(provider, seed, settings, false);
 		this.seed = seed;
 		this.dimensionSettings = settings;
 	}

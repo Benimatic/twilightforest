@@ -12,24 +12,43 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.provider.BiomeProvider;
+import net.minecraft.world.biome.provider.EndBiomeProvider;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.ChunkSection;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.DimensionSettings;
+import net.minecraft.world.gen.INoiseGenerator;
+import net.minecraft.world.gen.ImprovedNoiseGenerator;
+import net.minecraft.world.gen.OctavesNoiseGenerator;
+import net.minecraft.world.gen.PerlinNoiseGenerator;
+import net.minecraft.world.gen.SimplexNoiseGenerator;
 import net.minecraft.world.gen.WorldGenRegion;
 import net.minecraft.world.gen.settings.DimensionStructuresSettings;
+import net.minecraft.world.gen.settings.NoiseSettings;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.spawner.WorldEntitySpawner;
 import twilightforest.TFFeature;
 import twilightforest.util.IntPair;
 
 import javax.annotation.Nullable;
+import java.util.stream.IntStream;
 
 // TODO: doc out all the vanilla copying
 // Actually, figure out how to get this back up again
 public abstract class ChunkGeneratorTFBase extends ChunkGenerator {
 
-	private static final float[] field_222576_h = Util.make(new float[25], (afloat) -> {
+	protected static final float[] field_222561_h = Util.make(new float[13824], (p_236094_0_) -> {
+		for(int i = 0; i < 24; ++i) {
+			for(int j = 0; j < 24; ++j) {
+				for(int k = 0; k < 24; ++k) {
+					p_236094_0_[i * 24 * 24 + j * 24 + k] = (float)func_222554_b(j - 12, k - 12, i - 12);
+				}
+			}
+		}
+
+	});
+	protected static final float[] field_236081_j_ = Util.make(new float[25], (afloat) -> {
 		for(int i = -2; i <= 2; ++i) {
 			for(int j = -2; j <= 2; ++j) {
 				float f = 10.0F / MathHelper.sqrt((float)(i * i + j * j) + 0.2F);
@@ -38,20 +57,78 @@ public abstract class ChunkGeneratorTFBase extends ChunkGenerator {
 		}
 
 	});
+
+	private static double func_222554_b(int p_222554_0_, int p_222554_1_, int p_222554_2_) {
+		double d0 = p_222554_0_ * p_222554_0_ + p_222554_2_ * p_222554_2_;
+		double d1 = (double)p_222554_1_ + 0.5D;
+		double d2 = d1 * d1;
+		double d3 = Math.pow(Math.E, -(d2 / 16.0D + d0 / 16.0D));
+		double d4 = -d1 * MathHelper.fastInvSqrt(d2 / 2.0D + d0 / 2.0D) / 2.0D;
+		return d4 * d3;
+	}
+
 //	private final OctavesNoiseGenerator depthNoise;
 //	private final boolean isAmplified;
 	private boolean shouldGenerateBedrock = true;
+	protected final DimensionSettings dimensionSettings;
+
+	protected final long seed;
+
+	protected final int verticalNoiseGranularity;
+	protected final int horizontalNoiseGranularity;
+	protected final int noiseSizeX;
+	protected final int noiseSizeY;
+	protected final int noiseSizeZ;
+	protected final SharedSeedRandom randomSeed;
+	protected final OctavesNoiseGenerator field_222568_o; //private final OctavesNoiseGenerator noiseGen4;
+	protected final OctavesNoiseGenerator field_222569_p; //private final OctavesNoiseGenerator scaleNoise;
+	protected final OctavesNoiseGenerator field_222570_q; //private final OctavesNoiseGenerator forestNoise;
+	protected final INoiseGenerator surfaceDepthNoise;
+	@Nullable
+	protected final SimplexNoiseGenerator field_236083_v_;
+	protected final OctavesNoiseGenerator field_236082_u_;
+	protected final BlockState defaultBlock;
+	protected final BlockState defaultFluid;
+	protected final int field_236085_x_;
 //	protected final Map<TFFeature, MapGenTFMajorFeature> featureGenerators = new EnumMap<>(TFFeature.class);
 //	protected final MapGenTFMajorFeature nothingGenerator = new MapGenTFMajorFeature();
 
-	public ChunkGeneratorTFBase(BiomeProvider provider, DimensionStructuresSettings settings, boolean shouldGenerateBedrock) {
-		this(provider, settings);
+	public ChunkGeneratorTFBase(BiomeProvider provider, long seed, DimensionSettings settings, boolean shouldGenerateBedrock) {
+		this(provider, seed, settings);
 
 		this.shouldGenerateBedrock = shouldGenerateBedrock;
 	}
 
-	public ChunkGeneratorTFBase(BiomeProvider provider, DimensionStructuresSettings settings) {
-		super(provider, settings);
+	public ChunkGeneratorTFBase(BiomeProvider provider, long seed, DimensionSettings settings) {
+		super(provider, settings.func_236108_a_());
+		this.seed = seed;
+		this.dimensionSettings = settings;
+		NoiseSettings noisesettings = settings.func_236113_b_();
+		this.field_236085_x_ = noisesettings.func_236169_a_();
+		this.verticalNoiseGranularity = noisesettings.func_236175_f_() * 4;
+		this.horizontalNoiseGranularity = noisesettings.func_236174_e_() * 4;
+		this.defaultBlock = settings.func_236115_c_();
+		this.defaultFluid = settings.func_236116_d_();
+		this.noiseSizeX = 16 / this.horizontalNoiseGranularity;
+		this.noiseSizeY = noisesettings.func_236169_a_() / this.verticalNoiseGranularity;
+		this.noiseSizeZ = 16 / this.horizontalNoiseGranularity;
+		this.randomSeed = new SharedSeedRandom(seed);
+		this.field_222568_o = new OctavesNoiseGenerator(this.randomSeed, IntStream.rangeClosed(-15, 0));
+		this.field_222569_p = new OctavesNoiseGenerator(this.randomSeed, IntStream.rangeClosed(-15, 0));
+		this.field_222570_q = new OctavesNoiseGenerator(this.randomSeed, IntStream.rangeClosed(-7, 0));
+		//this.noiseGen4 = new OctavesNoiseGenerator(this.randomSeed, 4, 0);
+		//this.scaleNoise = new OctavesNoiseGenerator(rand, 10);
+		//this.forestNoise = new OctavesNoiseGenerator(rand, 8);
+		this.surfaceDepthNoise = noisesettings.func_236178_i_() ? new PerlinNoiseGenerator(this.randomSeed, IntStream.rangeClosed(-3, 0)) : new OctavesNoiseGenerator(this.randomSeed, IntStream.rangeClosed(-3, 0));
+		this.randomSeed.skip(2620);
+		this.field_236082_u_ = new OctavesNoiseGenerator(this.randomSeed, IntStream.rangeClosed(-15, 0));
+		if (noisesettings.func_236180_k_()) {
+			SharedSeedRandom sharedseedrandom = new SharedSeedRandom(seed);
+			sharedseedrandom.skip(17292);
+			this.field_236083_v_ = new SimplexNoiseGenerator(sharedseedrandom);
+		} else {
+			this.field_236083_v_ = null;
+		}
 //		this.randomSeed.skip(2620);
 //		this.depthNoise = new OctavesNoiseGenerator(this.randomSeed, 15, 0);
 //		this.isAmplified = world.getWorldInfo().getGenerator() == WorldType.AMPLIFIED;
@@ -68,14 +145,148 @@ public abstract class ChunkGeneratorTFBase extends ChunkGenerator {
 	}
 
 //	@Override
-	protected void fillNoiseColumn(double[] noiseY, int noiseX, int noiseZ) {
-		double d0 = (double)684.412F;
+	protected void fillNoiseColumn(double[] noiseColumn, int noiseX, int noiseZ) {
+		/*double d0 = (double)684.412F;
 		double d1 = (double)684.412F;
 		double d2 = 8.555149841308594D;
 		double d3 = 4.277574920654297D;
 		int i = -10;
-		int j = 3;
+		int j = 3;*/
 //		this.func_222546_a(noiseY, noiseX, noiseZ, d0, d1, d2, d3, j, i);
+		NoiseSettings noisesettings = this.dimensionSettings.func_236113_b_();
+		double d0;
+		double d1;
+		if (this.field_236083_v_ != null) {
+			d0 = (double)(EndBiomeProvider.func_235317_a_(this.field_236083_v_, noiseX, noiseZ) - 8.0F);
+			if (d0 > 0.0D) {
+				d1 = 0.25D;
+			} else {
+				d1 = 1.0D;
+			}
+		} else {
+			float f = 0.0F;
+			float f1 = 0.0F;
+			float f2 = 0.0F;
+			int i = 2;
+			int j = this.func_230356_f_();
+			float f3 = this.biomeProvider.getNoiseBiome(noiseX, j, noiseZ).getDepth();
+
+			for(int k = -2; k <= 2; ++k) {
+				for(int l = -2; l <= 2; ++l) {
+					Biome biome = this.biomeProvider.getNoiseBiome(noiseX + k, j, noiseZ + l);
+					float f4 = biome.getDepth();
+					float f5 = biome.getScale();
+					float f6;
+					float f7;
+					if (noisesettings.func_236181_l_() && f4 > 0.0F) {
+						f6 = 1.0F + f4 * 2.0F;
+						f7 = 1.0F + f5 * 4.0F;
+					} else {
+						f6 = f4;
+						f7 = f5;
+					}
+
+					float f8 = f4 > f3 ? 0.5F : 1.0F;
+					float f9 = f8 * field_236081_j_[k + 2 + (l + 2) * 5] / (f6 + 2.0F);
+					f += f7 * f9;
+					f1 += f6 * f9;
+					f2 += f9;
+				}
+			}
+
+			float f10 = f1 / f2;
+			float f11 = f / f2;
+			double d16 = (double)(f10 * 0.5F - 0.125F);
+			double d18 = (double)(f11 * 0.9F + 0.1F);
+			d0 = d16 * 0.265625D;
+			d1 = 96.0D / d18;
+		}
+
+		double d12 = 684.412D * noisesettings.func_236171_b_().func_236151_a_();
+		double d13 = 684.412D * noisesettings.func_236171_b_().func_236153_b_();
+		double d14 = d12 / noisesettings.func_236171_b_().func_236154_c_();
+		double d15 = d13 / noisesettings.func_236171_b_().func_236155_d_();
+		double d17 = (double)noisesettings.func_236172_c_().func_236186_a_();
+		double d19 = (double)noisesettings.func_236172_c_().func_236188_b_();
+		double d20 = (double)noisesettings.func_236172_c_().func_236189_c_();
+		double d21 = (double)noisesettings.func_236173_d_().func_236186_a_();
+		double d2 = (double)noisesettings.func_236173_d_().func_236188_b_();
+		double d3 = (double)noisesettings.func_236173_d_().func_236189_c_();
+		double d4 = noisesettings.func_236179_j_() ? this.func_236095_c_(noiseX, noiseZ) : 0.0D;
+		double d5 = noisesettings.func_236176_g_();
+		double d6 = noisesettings.func_236177_h_();
+
+		for(int i1 = 0; i1 <= this.noiseSizeY; ++i1) {
+			double d7 = this.func_222552_a(noiseX, i1, noiseZ, d12, d13, d14, d15);
+			double d8 = 1.0D - (double)i1 * 2.0D / (double)this.noiseSizeY + d4;
+			double d9 = d8 * d5 + d6;
+			double d10 = (d9 + d0) * d1;
+			if (d10 > 0.0D) {
+				d7 = d7 + d10 * 4.0D;
+			} else {
+				d7 = d7 + d10;
+			}
+
+			if (d19 > 0.0D) {
+				double d11 = ((double)(this.noiseSizeY - i1) - d20) / d19;
+				d7 = MathHelper.clampedLerp(d17, d7, d11);
+			}
+
+			if (d2 > 0.0D) {
+				double d22 = ((double)i1 - d3) / d2;
+				d7 = MathHelper.clampedLerp(d21, d7, d22);
+			}
+
+			noiseColumn[i1] = d7;
+		}
+	}
+
+	private double func_222552_a(int p_222552_1_, int p_222552_2_, int p_222552_3_, double p_222552_4_, double p_222552_6_, double p_222552_8_, double p_222552_10_) {
+		double d0 = 0.0D;
+		double d1 = 0.0D;
+		double d2 = 0.0D;
+		boolean flag = true;
+		double d3 = 1.0D;
+
+		for(int i = 0; i < 16; ++i) {
+			double d4 = OctavesNoiseGenerator.maintainPrecision((double)p_222552_1_ * p_222552_4_ * d3);
+			double d5 = OctavesNoiseGenerator.maintainPrecision((double)p_222552_2_ * p_222552_6_ * d3);
+			double d6 = OctavesNoiseGenerator.maintainPrecision((double)p_222552_3_ * p_222552_4_ * d3);
+			double d7 = p_222552_6_ * d3;
+			ImprovedNoiseGenerator improvednoisegenerator = this.field_222568_o.getOctave(i);
+			if (improvednoisegenerator != null) {
+				d0 += improvednoisegenerator.func_215456_a(d4, d5, d6, d7, (double)p_222552_2_ * d7) / d3;
+			}
+
+			ImprovedNoiseGenerator improvednoisegenerator1 = this.field_222569_p.getOctave(i);
+			if (improvednoisegenerator1 != null) {
+				d1 += improvednoisegenerator1.func_215456_a(d4, d5, d6, d7, (double)p_222552_2_ * d7) / d3;
+			}
+
+			if (i < 8) {
+				ImprovedNoiseGenerator improvednoisegenerator2 = this.field_222570_q.getOctave(i);
+				if (improvednoisegenerator2 != null) {
+					d2 += improvednoisegenerator2.func_215456_a(OctavesNoiseGenerator.maintainPrecision((double)p_222552_1_ * p_222552_8_ * d3), OctavesNoiseGenerator.maintainPrecision((double)p_222552_2_ * p_222552_10_ * d3), OctavesNoiseGenerator.maintainPrecision((double)p_222552_3_ * p_222552_8_ * d3), p_222552_10_ * d3, (double)p_222552_2_ * p_222552_10_ * d3) / d3;
+				}
+			}
+
+			d3 /= 2.0D;
+		}
+
+		return MathHelper.clampedLerp(d0 / 512.0D, d1 / 512.0D, (d2 / 10.0D + 1.0D) / 2.0D);
+	}
+
+	private double func_236095_c_(int p_236095_1_, int p_236095_2_) {
+		double d0 = this.field_236082_u_.getValue((double)(p_236095_1_ * 200), 10.0D, (double)(p_236095_2_ * 200), 1.0D, 0.0D, true);
+		double d1;
+		if (d0 < 0.0D) {
+			d1 = -d0 * 0.3D;
+		} else {
+			d1 = d0;
+		}
+
+		double d2 = d1 * 24.575625D - 2.0D;
+		return d2 < 0.0D ? d2 * 0.009486607142857142D : Math.min(d2, 1.0D) * 0.006640625D;
 	}
 
 //	@Override

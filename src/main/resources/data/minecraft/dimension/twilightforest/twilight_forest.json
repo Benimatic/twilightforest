@@ -56,8 +56,8 @@
 	  }
 	},
 	"biome_source": {
-	  "type": "twilightforest:twilight_forest",
-	  "seed": 0
+	  "type": "minecraft:fixed",
+	  "biome": "twilightforest:twilight_forest"
 	}
   }
 }
