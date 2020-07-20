@@ -462,7 +462,7 @@ public class TFTeleporter extends Teleporter {
 		}
 
 		// grass all around it
-		BlockState grass = Blocks.GRASS.getDefaultState();
+		BlockState grass = Blocks.GRASS_BLOCK.getDefaultState();
 
 		world.setBlockState(pos.west().north(), grass);
 		world.setBlockState(pos.north(), grass);
