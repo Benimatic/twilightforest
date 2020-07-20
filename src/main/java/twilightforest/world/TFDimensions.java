@@ -34,8 +34,8 @@ public class TFDimensions {
 //	private static final RegistryObject<ModDimension> MOD_DIMENSION = MOD_DIMENSIONS.register("twilight_forest", () -> ModDimension.withFactory(TwilightForestDimension::new));
 
 	public static DimensionType twilight_forest_dimension; //TODO: Add value
-	public static final RegistryKey<DimensionType> twilight_forest = RegistryKey.func_240903_a_(Registry.DIMENSION_TYPE_KEY, new ResourceLocation("twilight_forest"));
-	public static final RegistryKey<World> twilight_forest_world = RegistryKey.func_240903_a_(Registry.WORLD_KEY, new ResourceLocation("twilight_forest"));
+	public static final RegistryKey<DimensionType> twilight_forest = RegistryKey.func_240903_a_(Registry.DIMENSION_TYPE_KEY, TwilightForestMod.prefix("twilight_forest"));
+	public static final RegistryKey<World> twilight_forest_world = RegistryKey.func_240903_a_(Registry.WORLD_KEY, TwilightForestMod.prefix("twilight_forest"));
 
 	//TODO: Do we even need this anymore? Unless someone uses our exact mod id and registry name, this shouldn't be a problem
 //	public static void checkOriginDimension() {

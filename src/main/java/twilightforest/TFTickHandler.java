@@ -5,6 +5,7 @@ import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.MutableBoundingBox;
@@ -111,8 +112,8 @@ public class TFTickHandler {
 	}
 
 	private static void checkForPortalCreation(PlayerEntity player, World world, float rangeToCheck) {
-		if (/*world.func_234923_W_() == DimensionType.byName(new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get())) //TODO: How do we dynamically check RegistryKey by name?
-				||*/ world.func_234923_W_() == TFDimensions.twilight_forest_world
+		if (world.func_234923_W_().func_240901_a_().equals(new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()))
+				|| world.func_234923_W_() == TFDimensions.twilight_forest_world
 				|| TFConfig.COMMON_CONFIG.allowPortalsInOtherDimensions.get()) {
 
 			List<ItemEntity> itemList = world.getEntitiesWithinAABB(ItemEntity.class, player.getBoundingBox().grow(rangeToCheck));

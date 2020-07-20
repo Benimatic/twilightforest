@@ -236,6 +236,9 @@ public class BlockTFPortal extends BreakableBlock {
 		RegistryKey<World> destination = getDestination(entity);
 		ServerWorld serverWorld = entity.getEntityWorld().getServer().getWorld(destination);
 
+		if(serverWorld == null)
+			return;
+
 		entity.changeDimension(serverWorld, TFTeleporter.getTeleporterForDim(entity.getServer(), destination));
 
 		if (destination == TFDimensions.twilight_forest_world && entity instanceof ServerPlayerEntity) {
