@@ -12,6 +12,7 @@ import twilightforest.block.TFBlocks;
 import twilightforest.client.renderer.tileentity.TileEntityTFCicadaRenderer;
 import twilightforest.client.renderer.tileentity.TileEntityTFFireflyRenderer;
 import twilightforest.client.renderer.tileentity.TileEntityTFMoonwormRenderer;
+import twilightforest.client.renderer.tileentity.TileEntityTFTrophyRenderer;
 import twilightforest.tileentity.spawner.*;
 
 public class TFTileEntities {
@@ -70,6 +71,6 @@ public class TFTileEntities {
 //		ClientRegistry.bindTileEntityRenderer(TileEntityTFLichSpawner.class, new TileEntityMobSpawnerRenderer());
 //		ClientRegistry.bindTileEntityRenderer(TileEntityTFHydraSpawner.class, new TileEntityMobSpawnerRenderer());
 		ClientRegistry.bindTileEntityRenderer(MOONWORM.get(), TileEntityTFMoonwormRenderer::new);
-//		ClientRegistry.bindTileEntityRenderer(TROPHY.get(), TileEntityTFTrophyRenderer::new);
+		ClientRegistry.bindTileEntityRenderer(TROPHY.get(), TileEntityTFTrophyRenderer::new);
 	}
 }

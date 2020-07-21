@@ -3,24 +3,24 @@ package twilightforest.client.renderer.tileentity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.event.ModelBakeEvent;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.BlockTFTrophy;
 import twilightforest.client.model.item.BuiltInItemModel;
 import twilightforest.enums.BossVariant;
 import twilightforest.client.TFClientEvents;
@@ -111,16 +111,18 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 	public void render(TileEntityTFTrophy trophy, float partialTime, MatrixStack matrix, IRenderTypeBuffer buffer, int light, int overlay) {
 		matrix.push();
 		RenderSystem.disableCull();
+		BlockState blockstate = trophy.getBlockState();
+		BossVariant variant = ((BlockTFTrophy)blockstate.getBlock()).getVariant(); //TODO: Add check to make sure we cast to BlockTFTrophy?
 
 		if (trophy == null) {
 			if (transform == ItemCameraTransforms.TransformType.GUI) {
-				String modelName = BossVariant.getVariant(stack.getMetadata()).getTrophyType().getModelName();
+				String modelName = variant.getTrophyType().getModelName();
 				ModelResourceLocation trophyModelLocation = new ModelResourceLocation(TwilightForestMod.ID + ":" + modelName, "inventory");
-				IBakedModel trophyModel = Minecraft.getInstance().getItemRenderer().getItemModelMesher().getModelManager().getModel(trophyModelLocation);
+				//IBakedModel trophyModel = Minecraft.getInstance().getItemRenderer().getItemModelMesher().getModelManager().getModel(trophyModelLocation);
 
 				RenderSystem.disableLighting();
 				matrix.translate(0.5F, 0.5F, -1.5F);
-				Minecraft.getInstance().getItemRenderer().renderItem(stack, ForgeHooksClient.handleCameraTransforms(matrix, trophyModel, transform, false));
+				Minecraft.getInstance().getItemRenderer().renderItem(stack, transform, light, OverlayTexture.NO_OVERLAY, matrix, buffer);
 				RenderSystem.enableLighting();
 				matrix.translate(-0.5F, 0.0F, 1.5F);
 
@@ -141,7 +143,7 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 				matrix.scale(0.5F, 0.5F, 0.5F);
 
 			} else if (transform == ItemCameraTransforms.TransformType.HEAD) {
-				if (BossVariant.getVariant(stack.getMetadata()) == BossVariant.QUEST_RAM) {
+				if (variant == BossVariant.QUEST_RAM) {
 					matrix.scale(3F, 3F, 3F);
 					matrix.translate(-0.33F, -0.13F, -0.33F);
 				} else {
@@ -153,11 +155,11 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 
 		//int meta = trophy != null ? trophy.getBlockMetadata() & 7 : stack.getMetadata() & 7;
 
-		float rotation = trophy != null ? (float) (trophy.getSkullRotation() * 360) / 16.0F : 0.0F;
+		float rotation = /*trophy != null ? (float) (trophy.getSkullRotation() * 360) / 16.0F :*/ 0.0F;
 		boolean onGround = true;
 
-		// wall mounted?
-		if (trophy != null && trophy.getBlockMetadata() != 1) {
+		// wall mounted? FIXME: Very legacy stuffs. We'll have to look into making at Trophies have two classes similar to SkullBlock and WallSkullBlock
+		/*if (trophy != null && trophy.getBlockMetadata() != 1) {
 			switch (trophy.getBlockMetadata() & 7) {
 				case 2:
 					onGround = false;
@@ -175,13 +177,13 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 					onGround = false;
 					rotation = 90.0F;
 			}
-		} else if (trophy == null && transform == ItemCameraTransforms.TransformType.GUI) {
+		} else*/ if (trophy == null && transform == ItemCameraTransforms.TransformType.GUI) {
 			rotation = TFConfig.CLIENT_CONFIG.rotateTrophyHeadsGui.get() ? TFClientEvents.rotationTicker : 135;
 		}
 
-		matrix.translate((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
+		matrix.translate(0.5F, 0.5F, 0.5F);
 
-		switch (BossVariant.getVariant(trophy != null ? trophy.getSkullType() : stack.getMetadata())) {
+		switch (variant) {
 			case HYDRA:
 				if (trophy == null) {
 					matrix.translate(0.0F, -0.25F, transform == ItemCameraTransforms.TransformType.HEAD ? -0.125F : 0.0F);

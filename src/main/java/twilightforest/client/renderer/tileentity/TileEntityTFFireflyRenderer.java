@@ -73,6 +73,7 @@ public class TileEntityTFFireflyRenderer extends TileEntityRenderer<TileEntityTF
 		} else if (facing == Direction.DOWN) {
 			rotX = 180F;
 		}
+		ms.translate(0.5, 0.5, 0.5);
 		ms.rotate(Vector3f.XP.rotationDegrees(rotX));
 		ms.rotate(Vector3f.ZP.rotationDegrees(rotZ));
 		ms.rotate(Vector3f.YP.rotationDegrees(yaw));

@@ -52,11 +52,11 @@ public class TileEntityTFCicadaRenderer extends TileEntityRenderer<TileEntityTFC
 		ms.rotate(Vector3f.ZP.rotationDegrees(rotZ));
 		ms.rotate(Vector3f.YP.rotationDegrees(yaw));
 
-		ms.push();
+		//ms.push();
 		ms.scale(-1f, -1f, -1f);
 		IVertexBuilder vertex = buffers.getBuffer(cicadaModel.getRenderType(textureLoc));
 		cicadaModel.render(ms, vertex, light, overlay, 1.0F, 1.0F, 1.0F, 1.0F);
 		ms.pop();
-		ms.pop();
+		//ms.pop();
 	}
 }

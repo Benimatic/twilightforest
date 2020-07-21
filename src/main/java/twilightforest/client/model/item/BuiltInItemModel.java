@@ -69,6 +69,11 @@ public abstract class BuiltInItemModel implements IBakedModel {
 	}
 
 	@Override
+	public boolean func_230044_c_() {
+		return true; //FIXME
+	}
+
+	@Override
 	public ItemOverrideList getOverrides() {
 		return overrides;
 	}

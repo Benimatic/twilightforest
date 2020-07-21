@@ -123,7 +123,11 @@ public class BlockTFTrophy extends SkullBlock /*implements IInfusionStabiliser*/
 		return new TileEntityTFTrophy();
 	}
 
-//	@Override
+	public BossVariant getVariant() {
+		return variant;
+	}
+
+	//	@Override
 //	public ItemStack getItem(World world, BlockPos pos, BlockState state) {
 //		TileEntity te = world.getTileEntity(pos);
 //		if (te instanceof TileEntityTFTrophy) {

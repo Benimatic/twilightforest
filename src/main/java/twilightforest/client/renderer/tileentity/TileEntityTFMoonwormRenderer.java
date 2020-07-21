@@ -57,7 +57,7 @@ public class TileEntityTFMoonwormRenderer extends TileEntityRenderer<TileEntityT
 		ms.scale(1f, -1f, -1f);
 
 		IVertexBuilder builder = buffer.getBuffer(moonwormModel.getRenderType(textureLoc));
-		moonwormModel.setRotationAngles((TileEntityTFMoonwormTicking) te, partialTicks);
+		moonwormModel.setRotationAngles(te, partialTicks);
 		moonwormModel.render(ms, builder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 
 		ms.pop();
