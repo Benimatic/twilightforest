@@ -25,5 +25,8 @@ public class ItemTagGenerator extends ItemTagsProvider {
 		this.func_240521_a_(BlockTags.WOODEN_PRESSURE_PLATES, ItemTags.WOODEN_PRESSURE_PLATES);
 		this.func_240521_a_(BlockTags.WOODEN_TRAPDOORS, ItemTags.WOODEN_TRAPDOORS);
 		this.func_240521_a_(BlockTags.LEAVES, ItemTags.LEAVES);
+		this.func_240521_a_(BlockTags.LOGS, ItemTags.LOGS);
+		this.func_240521_a_(BlockTags.PLANKS, ItemTags.PLANKS);
+		this.func_240521_a_(BlockTags.SAPLINGS, ItemTags.SAPLINGS);
 	}
 }

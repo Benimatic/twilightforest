@@ -1,11 +1,6 @@
 {
   "replace": false,
   "values": [
-    "twilightforest:tower_wood",
-    "twilightforest:tower_wood_encased",
-    "twilightforest:tower_wood_cracked",
-    "twilightforest:tower_wood_mossy",
-    "twilightforest:tower_wood_infested",
     "twilightforest:twilight_oak_planks",
     "twilightforest:canopy_planks",
     "twilightforest:mangrove_planks",
@@ -13,6 +8,11 @@
     "twilightforest:time_planks",
     "twilightforest:trans_planks",
     "twilightforest:mine_planks",
-    "twilightforest:sort_planks"
+    "twilightforest:sort_planks",
+    "twilightforest:tower_wood",
+    "twilightforest:tower_wood_encased",
+    "twilightforest:tower_wood_cracked",
+    "twilightforest:tower_wood_mossy",
+    "twilightforest:tower_wood_infested"
   ]
 }

@@ -51,5 +51,16 @@ public class BlockTagGenerator extends BlockTagsProvider {
 						.func_240534_a_(TFBlocks.rainboak_leaves.get(), TFBlocks.oak_leaves.get(), TFBlocks.canopy_leaves.get(), TFBlocks.mangrove_leaves.get(), TFBlocks.dark_leaves.get())
 						.func_240534_a_(TFBlocks.time_leaves.get(), TFBlocks.transformation_leaves.get(), TFBlocks.mining_leaves.get(), TFBlocks.sorting_leaves.get())
 						.func_240534_a_(TFBlocks.thorn_leaves.get(), TFBlocks.beanstalk_leaves.get(), TFBlocks.giant_leaves.get());
+		func_240522_a_(BlockTags.LOGS)
+						.func_240534_a_(TFBlocks.oak_log.get(), TFBlocks.canopy_log.get(), TFBlocks.mangrove_log.get(), TFBlocks.dark_log.get())
+						.func_240534_a_(TFBlocks.time_log.get(), TFBlocks.transformation_log.get(), TFBlocks.mining_log.get(), TFBlocks.sorting_log.get());
+		func_240522_a_(BlockTags.PLANKS)
+						.func_240534_a_(TFBlocks.twilight_oak_planks.get(), TFBlocks.canopy_planks.get(), TFBlocks.mangrove_planks.get(), TFBlocks.dark_planks.get())
+						.func_240534_a_(TFBlocks.time_planks.get(), TFBlocks.trans_planks.get(), TFBlocks.mine_planks.get(), TFBlocks.sort_planks.get())
+						.func_240534_a_(TFBlocks.tower_wood.get(), TFBlocks.tower_wood_encased.get(), TFBlocks.tower_wood_cracked.get(), TFBlocks.tower_wood_mossy.get(), TFBlocks.tower_wood_infested.get());
+		func_240522_a_(BlockTags.SAPLINGS)
+						.func_240534_a_(TFBlocks.oak_sapling.get(), TFBlocks.canopy_sapling.get(), TFBlocks.mangrove_sapling.get(), TFBlocks.darkwood_sapling.get())
+						.func_240534_a_(TFBlocks.time_sapling.get(), TFBlocks.transformation_sapling.get(), TFBlocks.mining_sapling.get(), TFBlocks.sorting_sapling.get())
+						.func_240534_a_(TFBlocks.hollow_oak_sapling.get(), TFBlocks.rainboak_sapling.get());
 	}
 }
