@@ -24,7 +24,7 @@ public class EntityTFHydraPart extends MobEntity {
 
 	public EntityTFHydraPart(EntityTFHydra parent, World world, float width, float height) {
 		super(TFEntities.hydra, world);
-		func_230279_az_();
+		isImmuneToFire();
 		this.hydra = parent;
 		this.size = EntitySize.flexible(width, height);
 		this.recalculateSize();

@@ -67,10 +67,10 @@ public class TFTreasure {
 	}
 
 	private static LootFunctionType registerFunction(String name, LootFunctionType function) {
-		return Registry.register(Registry.field_239694_aZ_, TwilightForestMod.prefix(name), function); //ILootFunction registry
+		return Registry.register(Registry.LOOT_FUNCTION_TYPE, TwilightForestMod.prefix(name), function); //ILootFunction registry
 	}
 
 	private static LootConditionType registerCondition(String name, LootConditionType condition) {
-		return Registry.register(Registry.field_239704_ba_, TwilightForestMod.prefix(name), condition); //ILootCondition registry
+		return Registry.register(Registry.LOOT_CONDITION_TYPE, TwilightForestMod.prefix(name), condition); //ILootCondition registry
 	}
 }
