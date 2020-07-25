@@ -60,10 +60,10 @@ public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 	public final int numHeads = 7;
 	public final HydraHeadContainer[] hc = new HydraHeadContainer[numHeads];
 
-	public final MultiPartEntityPart body = new MultiPartEntityPart<>(this, "body", 4F, 4F);
-	private final MultiPartEntityPart leftLeg = new MultiPartEntityPart<>(this, "leg", 2F, 3F);
-	private final MultiPartEntityPart rightLeg = new MultiPartEntityPart<>(this, "leg", 2F, 3F);
-	private final MultiPartEntityPart tail = new MultiPartEntityPart<>(this, "tail", 4F, 4F);
+	public final EntityTFHydraSmallPart body;
+	private final EntityTFHydraSmallPart leftLeg;
+	private final EntityTFHydraSmallPart rightLeg;
+	private final EntityTFHydraSmallPart tail;
 	private final ServerBossInfo bossInfo = new ServerBossInfo(getDisplayName(), BossInfo.Color.BLUE, BossInfo.Overlay.PROGRESS);
 	private float randomYawVelocity = 0f;
 
@@ -73,6 +73,12 @@ public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 		super(type, world);
 
 		List<Entity> parts = new ArrayList<>();
+
+		body = new EntityTFHydraSmallPart(world, 4F, 4F);
+		leftLeg = new EntityTFHydraSmallPart(world, 2F, 3F);
+		rightLeg = new EntityTFHydraSmallPart(world, 2F, 3F);
+		tail = new EntityTFHydraSmallPart(world, 4F, 4F);
+
 		parts.add(body);
 		parts.add(leftLeg);
 		parts.add(rightLeg);
@@ -175,6 +181,16 @@ public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 					hc[i].headEntity.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
 					hc[i].setHeadPosition();
 					world.addEntity(hc[i].headEntity);
+
+					world.addEntity(hc[i].necka);
+					hc[i].setNeckPosition();
+					world.addEntity(hc[i].neckb);
+					hc[i].setNeckPosition();
+					world.addEntity(hc[i].neckc);
+					hc[i].setNeckPosition();
+					world.addEntity(hc[i].neckd);
+					hc[i].setNeckPosition();
+					world.addEntity(hc[i].necke);
 				}
 
 				setSpawnHeads(false);

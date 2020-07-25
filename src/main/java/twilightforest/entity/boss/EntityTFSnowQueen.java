@@ -27,6 +27,7 @@ import net.minecraft.world.BossInfo;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerBossInfo;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
@@ -36,6 +37,7 @@ import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.IBreathAttacker;
 import twilightforest.entity.IEntityMultiPart;
 import twilightforest.entity.MultiPartEntityPart;
+import twilightforest.entity.TFEntities;
 import twilightforest.entity.ai.EntityAITFHoverBeam;
 import twilightforest.entity.ai.EntityAITFHoverSummon;
 import twilightforest.entity.ai.EntityAITFHoverThenDrop;
@@ -57,7 +59,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 
 	public enum Phase {SUMMON, DROP, BEAM}
 
-	public final Entity[] iceArray = new Entity[7];
+	public final EntityTFSnowQueenIceShield[] iceArray = new EntityTFSnowQueenIceShield[7];
 
 	private int summonsRemaining = 0;
 	private int successfulDrops;
@@ -68,7 +70,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 		super(type, world);
 
 		for (int i = 0; i < this.iceArray.length; i++) {
-			this.iceArray[i] = new EntityTFSnowQueenIceShield(this);
+			this.iceArray[i] = TFEntities.snow_queen_ice_shield.create(world);
 		}
 
 		this.setCurrentPhase(Phase.SUMMON);
@@ -190,6 +192,17 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 	@Override
 	public void tick() {
 		super.tick();
+
+		if (this.world instanceof ServerWorld && isAlive()) {
+			ServerWorld serverWorld = (ServerWorld) this.world;
+			for (EntityTFSnowQueenIceShield segment : iceArray) {
+				if (!segment.isAddedToWorld()) {
+					segment.setParentUUID(this.getUniqueID());
+					segment.setParentId(this.getEntityId());
+					serverWorld.addEntity(segment);
+				}
+			}
+		}
 
 		for (int i = 0; i < this.iceArray.length; i++) {
 
