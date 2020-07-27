@@ -1,11 +1,10 @@
 {
-
   "itemGroup.twilightforest": "Twilight Forest",
 
-  "_comment": "ADVANCEMENTS",
+  // ADVANCEMENTS
   "advancement.twilightforest.root.desc": "Enter the mysterious magical woodlands: the Twilight Forest.",
 
-  "_comment": "General progression",
+  // General progression
   "advancement.twilightforest.hedge": "Bug Stomper",
   "advancement.twilightforest.hedge.desc": "Defeat a spider in a %s.",
 
@@ -19,7 +18,7 @@
   "advancement.twilightforest.quest_ram": "Consummate Baaahs",
   "advancement.twilightforest.quest_ram.desc": "Give the %s what it is missing.",
 
-  "_comment": "Map",
+  // Map
   "advancement.twilightforest.magic_map_focus": "With Fire It Writes",
   "advancement.twilightforest.magic_map_focus.desc": "Craft the %s with a %s, %s, and %s.",
   "advancement.twilightforest.magic_map": "I Can See Forever",
@@ -29,7 +28,7 @@
   "advancement.twilightforest.ore_map": "How Can That Be Worth It?",
   "advancement.twilightforest.ore_map.desc": "Craft the %s.",
 
-  "_comment": "Mainline beginning progression",
+  // Mainline beginning progression
   "advancement.twilightforest.twilight_hunter": "The Silence of the Forest",
   "advancement.twilightforest.twilight_hunter.desc": "Hunt some of the local wildlife.",
 
@@ -43,7 +42,7 @@
   "advancement.twilightforest.lich_scepters": "By Our Powers Combined!",
   "advancement.twilightforest.lich_scepters.desc": "Acquire all four scepters of power.",
 
-  "_comment": "Swamp Progression",
+  // Swamp Progression
   "advancement.twilightforest.progress_labyrinth": "Mighty Stroganoff",
   "advancement.twilightforest.progress_labyrinth.desc": "The meat & mushroom stew pleasantly warms you, enough so that that you feel you're acclimatised enough to venture into the Fire Swamp.",
   "advancement.twilightforest.kill_hydra": "Hydra Slayer",
@@ -53,7 +52,7 @@
   "advancement.twilightforest.hydra_chop": "Hydra Chop, Baby!",
   "advancement.twilightforest.hydra_chop.desc": "Chow down on some overpowered %s meat when your food bar is empty.",
 
-  "_comment": "Dark Forest Progression",
+  // Dark Forest Progression
   "advancement.twilightforest.progress_trophy_pedestal": "Trophied Champion",
   "advancement.twilightforest.progress_trophy_pedestal.desc": "Claim your title by placing a trophy on the pedestal in the dark forest ruins.",
   "advancement.twilightforest.progress_knights": "Carminite Acclimation",
@@ -68,7 +67,7 @@
   "advancement.twilightforest.experiment_115_2": "Making a note: Huge Success!",
   "advancement.twilightforest.experiment_115_2.desc": "It's so delicious and moist!",
 
-  "_comment": "Snow Forest Progression",
+  // Snow Forest Progression
   "advancement.twilightforest.progress_yeti": "Alpha Fur",
   "advancement.twilightforest.progress_yeti.desc": "Line your garments with the soft fur from the %s, keeping you safe from the Glacier's cold.",
   "advancement.twilightforest.progress_glacier": "Clear Skies",
@@ -76,14 +75,14 @@
   "advancement.twilightforest.arctic_dyed": "Getting in Fashion",
   "advancement.twilightforest.arctic_dyed.desc": "Dye all four pieces of Arctic Armor.",
 
-  "_comment": "Mid-way Misc. Stuff",
+  // Mid-way Misc. Stuff
   "advancement.twilightforest.glass_sword": "One Hit Wonder",
   "advancement.twilightforest.glass_sword.desc": "Hope you made good use of that.",
 
   "advancement.twilightforest.fiery_set": "Gallons of Blood and Tears",
   "advancement.twilightforest.fiery_set.desc": "Wield a fiery tool or weapon while wearing at least one piece of fiery armor.",
 
-  "_comment": "Highlands",
+  // Highlands
   "advancement.twilightforest.progress_merge": "Ultimate Showdown",
   "advancement.twilightforest.progress_merge.desc": "Slay the %s, %s, and %s to clear the acid rain and embolden yourself for the Highlands.",
   "advancement.twilightforest.progress_troll": "I Wish For More Burning",
@@ -93,7 +92,7 @@
   "advancement.twilightforest.progress_castle": "So Castle Very Wow [NYI]",
   "advancement.twilightforest.progress_castle.desc": "What could even be in that castle?!?",
 
-  "_comment": "Collections",
+  // Collections
   "advancement.twilightforest.twilight_dining": "We Dine At Eternal Sundown",
   "advancement.twilightforest.twilight_dining.desc": "Eat ALL of the Food exclusive to the Twilight Forest.",
   "advancement.twilightforest.experiment_115_3": "Eating 115 Everyday, 115 Years, Forever",
@@ -107,7 +106,7 @@
   "twilightforest.ore_meter.exposed": "Exposed: %s",
   "twilightforest.scepter_charges": "%d charges left",
 
-  "_comment": "Commands",
+  // Commands
   "commands.tffeature.usage": "/tffeature <info|reactivate|conquer|center>",
   "commands.tffeature.not_in_twilight_forest": "You are not in the Twilight Forest dimension",
   "commands.tffeature.nearest": "The nearest feature is %s",
@@ -120,7 +119,10 @@
   "commands.tffeature.structure.conquer.update": "Structure conquer flag was %s, changing to %s",
   "commands.tffeature.locate.usage": "/tffeature locate <feature>",
 
-  "_comment": "Blocks",
+  // Gamerules
+  "gamerule.tfEnforcedProgression": "Twilight Forest Progression",
+
+  // Blocks
   "block.twilightforest.oak_log": "Twilight Oak Wood",
   "block.twilightforest.canopy_log": "Canopy Tree Wood",
   "block.twilightforest.mangrove_log": "Mangrove Wood",
@@ -406,7 +408,7 @@
   "block.twilightforest.sort_trapdoor": "Sortingwood Trapdoor",
   "block.twilightforest.sort_door": "Sortingwood Door",
 
-  "_comment": "Structures",
+  // Structures
   "structure.twilight_portal": "Twilight Portal",
   "structure.hedge_maze": "Hedge Maze",
   "structure.hollow_hill": "Hollow Hill",
@@ -423,7 +425,7 @@
   "structure.troll_cave_and_cloud_castle": "Troll Cave and House in the Clouds",
   "structure.final_castle": "Final Castle",
 
-  "_comment": "Items",
+  // Items
   "item.twilightforest.boarkchop": "Boarkchop",
   "item.twilightforest.naga_scale": "Naga Scale",
   "item.twilightforest.naga_chestplate": "Naga Scale Tunic",
@@ -567,7 +569,7 @@
 
   "item.twilightforest.arctic_armor.tooltip": "Dyeable like Leather Armor",
 
-  "_comment": "Entities",
+  // Entities
   "entity.twilightforest.wild_boar": "Wild Boar",
   "entity.twilightforest.bighorn_sheep": "Bighorn Sheep",
   "entity.twilightforest.deer": "Wild Deer",
@@ -640,7 +642,7 @@
   "twilightforest.loading.title.enter": "Whisking you off to the Twilight Forest...",
   "twilightforest.loading.title.leave": "Whisking you from the Twilight Forest...",
 
-  "_comment": "Config",
+  // Config
   "twilightforest.config.dimension": "Dimension Settings",
   "twilightforest.config.dimension.tooltip": "You won't be able to change these settings without some kind of relaunch.",
   "twilightforest.config.dimension_id": "Dimension ID",
@@ -759,7 +761,7 @@
   "twilightforest.config.loading_icon_tilt_pushback": "Icon Tilt Offset",
   "twilightforest.config.loading_icon_tilt_pushback.tooltip": "Pushback value to re-center the wobble of loading icon.",
 
-  "_comment": "Books",
+  // Books
   "twilightforest.book.lichtower.1": "\u00A78[[An explorer's notebook, gnawed on by monsters]]\u00A70\n\n_I have begun examining the strange aura surrounding this tower. The bricks of the tower are protected by a curse, stronger than any I've seen before. The magic from the curse",
   "twilightforest.book.lichtower.2": "is boiling off into the surrounding area.\n\n_In my homeland I would have many options for dealing with this magic, but here my supplies are limited. I shall have to research...",
   "twilightforest.book.lichtower.3": "\u00A78[[Many entries later]]\u00A70\n\n_A breakthrough! In my journeys I sighted a huge snake-like monster in a decorated courtyard. Nearby, I picked up a worn down, discarded green scale.\n\n_The magic in the scale seems to have the",
@@ -801,13 +803,13 @@
   "twilightforest.book.unknown.1": "\u00A78[[This book shows signs of having been copied many times]]\u00A70\n\n_I cannot explain the field surrounding this structure, but the magic is powerful. If this curse is like the others, then the answer to unlocking it lies elsewhere. Perhaps there is",
   "twilightforest.book.unknown.2": "something I have left undone, or some monster I have yet to defeat. I will have to turn back. I will return to this place later, to see if anything has changed.",
 
-  "_comment": "Fluid",
+  // Fluid
 
   "fluid.fierymetal": "Molten Fiery",
   "fluid.knightmetal": "Molten Knightmetal",
   "fluid.fiery_essence": "Fiery Essence",
 
-  "_comment": "TCon",
+  // TCon
 
   "material.nagascale": "Naga Scale",
   "material.steeleaf": "Steeleaf",
@@ -828,7 +830,7 @@
   "modifier.veiled": "Veiled",
   "modifier.veiled.desc": "§oLike a Specter!§r\nProjectile will be invisible.",
 
-  "_comment": "Immersive Engineering",
+  // Immersive Engineering
   "item.tf_Engineering_Shader": "Twilit Shader: %s",
   "item.tf_Engineering_Shader_Bag": "Twilit %s Shader Bag",
 

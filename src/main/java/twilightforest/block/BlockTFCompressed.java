@@ -36,12 +36,6 @@ public class BlockTFCompressed extends Block {
 		return state.getBlock() == TFBlocks.arctic_fur_block.get() && player.getHeldItemMainhand().getItem() instanceof ShearsItem ? 0.2F : super.getPlayerRelativeBlockHardness(state, player, worldIn, pos);
 	}
 
-	//TODO 1.16: Move to supports_beacon Tag
-	@Override
-	public boolean isBeaconBase(BlockState state, IWorldReader world, BlockPos pos, BlockPos beacon) {
-		return true;
-	}
-
 	@Override
 	public void onEntityWalk(World worldIn, BlockPos pos, Entity entityIn) {
 		if ((!entityIn.isImmuneToFire())

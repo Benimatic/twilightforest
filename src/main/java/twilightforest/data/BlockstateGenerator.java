@@ -725,16 +725,15 @@ public class BlockstateGenerator extends BlockStateProvider {
 						.weight(10).modelFile(post1).nextModel()
 						.weight(1).modelFile(post2).nextModel()
 						.weight(1).modelFile(post3).addModel().end();
-		SixWayBlock.FACING_TO_PROPERTY_MAP.entrySet().forEach(e -> {
-			Direction dir = e.getKey();
+		SixWayBlock.FACING_TO_PROPERTY_MAP.forEach((dir, value) -> {
 			if (dir.getAxis().isHorizontal()) {
 				builder.part()
-								.weight(10).modelFile(side0).rotationY((((int) dir.getHorizontalAngle()) + 180) % 360).uvLock(true).nextModel()
-								.weight(10).modelFile(side1).rotationY((((int) dir.getHorizontalAngle()) + 180) % 360).uvLock(true).nextModel()
-								.weight(1).modelFile(side2).rotationY((((int) dir.getHorizontalAngle()) + 180) % 360).uvLock(true).nextModel()
-								.weight(1).modelFile(side3).rotationY((((int) dir.getHorizontalAngle()) + 180) % 360).uvLock(true)
-								.addModel()
-								.condition(e.getValue(), true);
+						.weight(10).modelFile(side0).rotationY((((int) dir.getHorizontalAngle()) + 180) % 360).uvLock(true).nextModel()
+						.weight(10).modelFile(side1).rotationY((((int) dir.getHorizontalAngle()) + 180) % 360).uvLock(true).nextModel()
+						.weight(1).modelFile(side2).rotationY((((int) dir.getHorizontalAngle()) + 180) % 360).uvLock(true).nextModel()
+						.weight(1).modelFile(side3).rotationY((((int) dir.getHorizontalAngle()) + 180) % 360).uvLock(true)
+						.addModel()
+						.condition(value, true);
 			}
 		});
 	}
@@ -1195,7 +1194,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 		ModelFile pillarModel = models().withExistingParent(TFBlocks.aurora_pillar.getId().getPath(), prefix("block/util/tinted_cube_column"))
 						.texture("end", prefix("block/" + TFBlocks.aurora_pillar.getId().getPath() + "_top"))
 						.texture("side", blockTexture(TFBlocks.aurora_pillar.get()));
-		axisBlock(TFBlocks.aurora_pillar.get(), pillarModel);
+		axisBlock(TFBlocks.aurora_pillar.get(), pillarModel.getLocation());
 
 		ModelFile slabModel = models().withExistingParent(TFBlocks.aurora_slab.getId().getPath(), prefix("block/util/tinted_slab"))
 						.texture("bottom", prefix("block/" + TFBlocks.aurora_pillar.getId().getPath() + "_top"))

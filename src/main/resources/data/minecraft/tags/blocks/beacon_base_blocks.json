@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "twilightforest:knightmetal_block",
+    "twilightforest:ironwood_block",
+    "twilightforest:fiery_block",
+    "twilightforest:steeleaf_block",
+    "twilightforest:arctic_fur_block",
+    "twilightforest:carminite_block"
+  ]
+}
