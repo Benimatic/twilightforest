@@ -9,6 +9,21 @@ import twilightforest.TwilightForestMod;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class TFDimensions {
+	public static DimensionType twilight_forest_dimension; //TODO: Add value
+	public static final RegistryKey<DimensionType> twilight_forest = RegistryKey.func_240903_a_(Registry.DIMENSION_TYPE_KEY, TwilightForestMod.prefix(TwilightForestMod.ID));
+	public static final RegistryKey<World> twilight_forest_world = RegistryKey.func_240903_a_(Registry.WORLD_KEY, TwilightForestMod.prefix(TwilightForestMod.ID)); // Yes, this floor is floor
+
+	public static void init() {
+		Registry.register(Registry.BIOME_PROVIDER_CODEC, TwilightForestMod.prefix("biome_distributor"), TFBiomeProvider.tfBiomeProviderCodec);
+		// TODO legacy Registry.register(Registry.BIOME_PROVIDER_CODEC, TwilightForestMod.prefix("grid"), TFBiomeProvider.$);
+
+		// For now use minecraft:noise until we need to terraform for features
+		Registry.register(Registry.CHUNK_GENERATOR_CODEC, TwilightForestMod.prefix("featured_noise"), ChunkGeneratorTwilightForest.codecTFChunk);
+		// TODO Do we even need this? Or can we fold it into the featured_noise because its elasticity to handle skyworld generation
+		Registry.register(Registry.CHUNK_GENERATOR_CODEC, TwilightForestMod.prefix("sky_noise"), ChunkGeneratorTwilightVoid.codecVoidChunk);
+	}
+
+	// FIXME Can we delete this below?
 
 //	public static final DeferredRegister<BiomeProviderType<?, ?>> BIOME_PROVIDER_TYPES = new DeferredRegister<>(ForgeRegistries.BIOME_PROVIDER_TYPES, TwilightForestMod.ID);
 //	public static final DeferredRegister<ChunkGeneratorType<?, ?>> CHUNK_GENERATOR_TYPES = new DeferredRegister<>(ForgeRegistries.CHUNK_GENERATOR_TYPES, TwilightForestMod.ID);
@@ -24,9 +39,6 @@ public class TFDimensions {
 
 //	private static final RegistryObject<ModDimension> MOD_DIMENSION = MOD_DIMENSIONS.register("twilight_forest", () -> ModDimension.withFactory(TwilightForestDimension::new));
 
-	public static DimensionType twilight_forest_dimension; //TODO: Add value
-	public static final RegistryKey<DimensionType> twilight_forest = RegistryKey.func_240903_a_(Registry.DIMENSION_TYPE_KEY, TwilightForestMod.prefix("twilight_forest"));
-	public static final RegistryKey<World> twilight_forest_world = RegistryKey.func_240903_a_(Registry.WORLD_KEY, TwilightForestMod.prefix("twilight_forest"));
 
 	//TODO: Do we even need this anymore? Unless someone uses our exact mod id and registry name, this shouldn't be a problem
 //	public static void checkOriginDimension() {
@@ -43,9 +55,4 @@ public class TFDimensions {
 //		}
 //	}
 
-	public static void init() {
-		Registry.register(Registry.BIOME_PROVIDER_CODEC, TwilightForestMod.prefix("twilight_forest"), TFBiomeProvider.tfBiomeProviderCodec);
-		Registry.register(Registry.CHUNK_GENERATOR_CODEC, TwilightForestMod.prefix("twilight_forest"), ChunkGeneratorTwilightForest.codecTFChunk);
-		Registry.register(Registry.CHUNK_GENERATOR_CODEC, TwilightForestMod.prefix("skylight_forest"), ChunkGeneratorTwilightVoid.codecVoidChunk);
-	}
 }

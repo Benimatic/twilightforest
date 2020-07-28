@@ -1,0 +1,53 @@
+{
+	"type": "twilightforest:twilightforest",
+	"generator": {
+		"type": "minecraft:noise",
+		"seed": 0,
+		"settings": {
+			"bedrock_roof_position": -1,
+			"bedrock_floor_position": 1,
+			"sea_level": 31,
+			// Undocumented, this setting will make it so that mobs will not spawn during world generation
+			// TODO disable in the future
+			"disable_mob_generation": true,
+			"structures": {
+				"stronghold": { "distance": 0,  "count": 0,  "spread": 0 },
+				"structures": {}
+			},
+			"noise": {
+				"height": 256, // TODO We should probably somehow lower the groundlevel without changing this value
+				"sampling": {
+					"xz_scale": 0.9999999814507745,
+					"y_scale": 0.9999999814507745,
+					"xz_factor": 80.0,
+					"y_factor": 160.0
+				},
+				"top_slide": {
+					"target": -10,
+					"size": 3,
+					"offset": 0
+				},
+				"bottom_slide": {
+					"target": -30,
+					"size": 0,
+					"offset": 0
+				},
+				"size_horizontal": 1,
+				"size_vertical": 2,
+				"density_factor": 1.0,
+				"density_offset": -0.46875,
+				"simplex_surface_noise": false,
+				"random_density_offset": true,
+				"island_noise_override": false,
+				"amplified": false
+			},
+			"default_block": { "Name": "minecraft:stone" },
+			"default_fluid": { "Name": "minecraft:water", "Properties": { "level": "0" }} // For some reason the Properties is required...
+		},
+		"biome_source": {
+			"type": "minecraft:checkerboard",
+			// Neither of these biomes will hang the game for now
+			"biomes": ["twilightforest:twilight_forest", "twilightforest:twilight_lake" ]
+		}
+	}
+}
