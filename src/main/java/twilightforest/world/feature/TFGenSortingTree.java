@@ -5,6 +5,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
@@ -36,8 +37,8 @@ public class TFGenSortingTree extends Feature<TFTreeFeatureConfig> {
 		}
 
 		// leaves
-		putLeaves(world.getWorld(), rand, pos.up(2), false, config);
-		putLeaves(world.getWorld(), rand, pos.up(3), false, config);
+		putLeaves(world, rand, pos.up(2), false, config);
+		putLeaves(world, rand, pos.up(3), false, config);
 
 		// sorting engine
 		world.setBlockState(pos.up(), TFBlocks.sorting_log_core.get().getDefaultState(), 3);
@@ -45,7 +46,7 @@ public class TFGenSortingTree extends Feature<TFTreeFeatureConfig> {
 		return true;
 	}
 
-	private void putLeaves(World world, Random rand, BlockPos pos, boolean bushy, TFTreeFeatureConfig config) {
+	private void putLeaves(IWorld world, Random rand, BlockPos pos, boolean bushy, TFTreeFeatureConfig config) {
 		for (int lx = -1; lx <= 1; lx++) {
 			for (int ly = -1; ly <= 1; ly++) {
 				for (int lz = -1; lz <= 1; lz++) {
@@ -58,11 +59,11 @@ public class TFGenSortingTree extends Feature<TFTreeFeatureConfig> {
 		}
 	}
 
-	public void putLeafBlock(World world, BlockPos pos, BlockState state) {
+	public void putLeafBlock(IWorld world, BlockPos pos, BlockState state) {
 		BlockState whatsThere = world.getBlockState(pos);
 
 		if (whatsThere.getBlock().canBeReplacedByLeaves(whatsThere, world, pos) && whatsThere.getBlock() != state.getBlock()) {
-			world.setBlockState(pos, state);
+			world.setBlockState(pos, state, 3);
 		}
 	}
 }

@@ -3,6 +3,7 @@ package twilightforest.world.feature;
 import com.mojang.serialization.Codec;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.IWorldGenerationReader;
 import twilightforest.util.FeatureUtil;
@@ -23,8 +24,7 @@ public class TFGenHollowStump extends TFGenHollowTree {
 	}
 
 	@Override
-	public boolean generate(IWorldGenerationReader worldIn, Random rand, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
-		World world = (World) worldIn;
+	public boolean generate(IWorld world, Random rand, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		int radius = rand.nextInt(2) + 2;
 
 		if (!FeatureUtil.isAreaSuitable(world, rand, pos.add(-radius, 0, -radius), 2 * radius, 6, 2 * radius)) {
@@ -43,7 +43,7 @@ public class TFGenHollowStump extends TFGenHollowTree {
 	}
 
 	@Override
-	protected void buildTrunk(World world, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> branch, Set<BlockPos> root, int diameter, int maxHeight, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
+	protected void buildTrunk(IWorld world, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> branch, Set<BlockPos> root, int diameter, int maxHeight, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 
 		int hollow = diameter / 2;
 

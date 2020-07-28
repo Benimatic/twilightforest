@@ -5,6 +5,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.IWorldGenerationReader;
 import twilightforest.block.TFBlocks;
@@ -22,9 +23,7 @@ public class TFGenMinersTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 	}
 
 	@Override
-	protected boolean generate(IWorldGenerationReader worldIn, Random rand, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
-		World world = (World)worldIn;
-
+	protected boolean generate(IWorld world, Random rand, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		if (pos.getY() >= TFGenerationSettings.MAXHEIGHT - 12) {
 			return false;
 		}
@@ -54,7 +53,7 @@ public class TFGenMinersTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 		putBranchWithLeaves(world, rand, pos.add(0, 6, -5), leaves, branch, false, mbb, config);
 
 		// place minewood core
-		world.setBlockState(pos.up(), TFBlocks.mining_log_core.get().getDefaultState());
+		world.setBlockState(pos.up(), TFBlocks.mining_log_core.get().getDefaultState(), 3);
 		world.getPendingBlockTicks().scheduleTick(pos.up(), TFBlocks.mining_log_core.get(), 20);
 
 		// root bulb
@@ -74,7 +73,7 @@ public class TFGenMinersTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 		return true;
 	}
 
-	protected void putBranchWithLeaves(World world, Random rand, BlockPos pos, Set<BlockPos> leaves, Set<BlockPos> branch, boolean bushy, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
+	protected void putBranchWithLeaves(IWorld world, Random rand, BlockPos pos, Set<BlockPos> leaves, Set<BlockPos> branch, boolean bushy, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		setBranchBlockState(world, rand, pos, branch, mbb, config);
 
 		for (int lx = -1; lx <= 1; lx++) {

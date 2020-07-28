@@ -39,7 +39,7 @@ public class FeatureUtil {
 	 * Draws a line from {x1, y1, z1} to {x2, y2, z2}
 	 * This takes all variables for setting Branch
 	 */
-	public static void drawBresehnamBranch(TFTreeGenerator generator, World world, Random random, BlockPos from, BlockPos to, Set<BlockPos> state, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
+	public static void drawBresehnamBranch(TFTreeGenerator generator, IWorld world, Random random, BlockPos from, BlockPos to, Set<BlockPos> state, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		for (BlockPos pixel : getBresehnamArrays(from, to)) {
 			generator.setBranchBlockState(world, random, pixel, state, mbb, config);
 			//world.setBlockState(pixel, state);
@@ -50,9 +50,9 @@ public class FeatureUtil {
 	 * Draws a line from {x1, y1, z1} to {x2, y2, z2}
 	 * This just takes a BlockState, used to set Trunk
 	 */
-	public static void drawBresehnamTree(World world, BlockPos from, BlockPos to, BlockState state, Set<BlockPos> treepos) {
+	public static void drawBresehnamTree(IWorld world, BlockPos from, BlockPos to, BlockState state, Set<BlockPos> treepos) {
 		for (BlockPos pixel : getBresehnamArrays(from, to)) {
-			world.setBlockState(pixel, state);
+			world.setBlockState(pixel, state, 3);
 			treepos.add(pixel.toImmutable());
 		}
 	}
@@ -150,7 +150,7 @@ public class FeatureUtil {
 	/**
 	 * Draw a flat blob (circle) of leaves
 	 */
-	public static void makeLeafCircle(World world, BlockPos pos, int rad, BlockState state, Set<BlockPos> leaves, boolean useHack) {
+	public static void makeLeafCircle(IWorld world, BlockPos pos, int rad, BlockState state, Set<BlockPos> leaves, boolean useHack) {
 		// trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++) {
 			for (byte dz = 0; dz <= rad; dz++) {
@@ -176,11 +176,11 @@ public class FeatureUtil {
 	/**
 	 * Put a leaf only in spots where leaves can go!
 	 */
-	public static void putLeafBlock(World world, BlockPos pos, BlockState state, Set<BlockPos> leavespos) {
+	public static void putLeafBlock(IWorld world, BlockPos pos, BlockState state, Set<BlockPos> leavespos) {
 		BlockState whatsThere = world.getBlockState(pos);
 
 		if (whatsThere.canBeReplacedByLeaves(world, pos) && whatsThere.getBlock() != state.getBlock()) {
-			world.setBlockState(pos, state);
+			world.setBlockState(pos, state, 3);
 			leavespos.add(pos.toImmutable());
 		}
 	}
@@ -189,7 +189,8 @@ public class FeatureUtil {
 	 * Draw a flat blob (circle) of leaves.  This one makes it offset to surround a 2x2 area instead of a 1 block area
 	 */
 	// TODO: Parameter "useHack" is unused. Is it worth keeping? -Androsa
-	public static void makeLeafCircle2(World world, BlockPos pos, int rad, BlockState state, Set<BlockPos> leaves,  boolean useHack) {
+	// FIXME Probably nuke method once 1.16.2 comes
+	public static void makeLeafCircle2(IWorld world, BlockPos pos, int rad, BlockState state, Set<BlockPos> leaves,  boolean useHack) {
 		// trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++) {
 			for (byte dz = 0; dz <= rad; dz++) {
@@ -257,7 +258,7 @@ public class FeatureUtil {
 	/**
 	 * Draw a giant blob of whatevs.
 	 */
-	public static void drawBlob(World world, BlockPos pos, int rad, BlockState state) {
+	public static void drawBlob(IWorld world, BlockPos pos, int rad, BlockState state) {
 		// then trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++) {
 			for (byte dy = 0; dy <= rad; dy++) {
@@ -276,14 +277,14 @@ public class FeatureUtil {
 					// if we're inside the blob, fill it
 					if (dist <= rad) {
 						// do eight at a time for easiness!
-						world.setBlockState(pos.add(+dx, +dy, +dz), state);
-						world.setBlockState(pos.add(+dx, +dy, -dz), state);
-						world.setBlockState(pos.add(-dx, +dy, +dz), state);
-						world.setBlockState(pos.add(-dx, +dy, -dz), state);
-						world.setBlockState(pos.add(+dx, -dy, +dz), state);
-						world.setBlockState(pos.add(+dx, -dy, -dz), state);
-						world.setBlockState(pos.add(-dx, -dy, +dz), state);
-						world.setBlockState(pos.add(-dx, -dy, -dz), state);
+						world.setBlockState(pos.add(+dx, +dy, +dz), state, 3);
+						world.setBlockState(pos.add(+dx, +dy, -dz), state, 3);
+						world.setBlockState(pos.add(-dx, +dy, +dz), state, 3);
+						world.setBlockState(pos.add(-dx, +dy, -dz), state, 3);
+						world.setBlockState(pos.add(+dx, -dy, +dz), state, 3);
+						world.setBlockState(pos.add(+dx, -dy, -dz), state, 3);
+						world.setBlockState(pos.add(-dx, -dy, +dz), state, 3);
+						world.setBlockState(pos.add(-dx, -dy, -dz), state, 3);
 					}
 				}
 			}
@@ -293,7 +294,7 @@ public class FeatureUtil {
 	/**
 	 * Draw a giant blob of leaves.
 	 */
-	public static void drawLeafBlob(World world, BlockPos pos, int rad, BlockState state, Set<BlockPos> leaves) {
+	public static void drawLeafBlob(IWorld world, BlockPos pos, int rad, BlockState state, Set<BlockPos> leaves) {
 		// then trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++) {
 			for (byte dy = 0; dy <= rad; dy++) {
@@ -341,7 +342,7 @@ public class FeatureUtil {
 	/**
 	 * Does the block have at least 1 air block adjacent
 	 */
-	public static boolean hasAirAround(World world, BlockPos pos) {
+	public static boolean hasAirAround(IWorld world, BlockPos pos) {
 		for (Direction e : Direction.values()) {
 			if (e == Direction.DOWN)
 				continue; // todo 1.9 was in old logic

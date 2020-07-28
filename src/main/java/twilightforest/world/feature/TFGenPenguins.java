@@ -22,7 +22,7 @@ public class TFGenPenguins extends Feature<NoFeatureConfig> {
 	@Override
 	public boolean func_230362_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
 
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 3; i++) { // FIXME This is terrible, this should be done at entity spawning stage not feature generation
 			BlockPos dPos = pos.add(
 					rand.nextInt(8) - rand.nextInt(8),
 					0,

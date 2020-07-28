@@ -6,6 +6,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
@@ -41,25 +42,25 @@ public class TFGenBigMushgloom extends Feature<NoFeatureConfig> {
 			world.setBlockState(pos.up(dy), Blocks.MUSHROOM_STEM.getDefaultState(), 3);
 		}
 
-		makeMushroomCap(world.getWorld(), pos.up(height - 2));
+		makeMushroomCap(world, pos.up(height - 2));
 		if (rand.nextBoolean()) {
-			makeMushroomCap(world.getWorld(), pos.up(height - 1));
+			makeMushroomCap(world, pos.up(height - 1));
 		}
 
 		return true;
 	}
 
-	private void makeMushroomCap(World world, BlockPos pos) {
+	private void makeMushroomCap(IWorld world, BlockPos pos) {
 		BlockState defState = TFBlocks.huge_mushgloom.get().getDefaultState();
-		world.setBlockState(pos.add(-1, 0, -1), MushroomUtil.getState(MushroomUtil.Type.NORTH_WEST, defState));
-		world.setBlockState(pos.add(0, 0, -1), MushroomUtil.getState(MushroomUtil.Type.NORTH, defState));
-		world.setBlockState(pos.add(1, 0, -1), MushroomUtil.getState(MushroomUtil.Type.NORTH_EAST, defState));
-		world.setBlockState(pos.add(-1, 0, 0), MushroomUtil.getState(MushroomUtil.Type.WEST, defState));
-		world.setBlockState(pos, MushroomUtil.getState(MushroomUtil.Type.CENTER, defState));
-		world.setBlockState(pos.add(1, 0, 0), MushroomUtil.getState(MushroomUtil.Type.EAST, defState));
-		world.setBlockState(pos.add(-1, 0, 1), MushroomUtil.getState(MushroomUtil.Type.SOUTH_WEST, defState));
-		world.setBlockState(pos.add(0, 0, 1), MushroomUtil.getState(MushroomUtil.Type.SOUTH, defState));
-		world.setBlockState(pos.add(1, 0, 1), MushroomUtil.getState(MushroomUtil.Type.SOUTH_EAST, defState));
+		world.setBlockState(pos.add(-1, 0, -1), MushroomUtil.getState(MushroomUtil.Type.NORTH_WEST, defState), 3);
+		world.setBlockState(pos.add(0, 0, -1), MushroomUtil.getState(MushroomUtil.Type.NORTH, defState), 3);
+		world.setBlockState(pos.add(1, 0, -1), MushroomUtil.getState(MushroomUtil.Type.NORTH_EAST, defState), 3);
+		world.setBlockState(pos.add(-1, 0, 0), MushroomUtil.getState(MushroomUtil.Type.WEST, defState), 3);
+		world.setBlockState(pos, MushroomUtil.getState(MushroomUtil.Type.CENTER, defState), 3);
+		world.setBlockState(pos.add(1, 0, 0), MushroomUtil.getState(MushroomUtil.Type.EAST, defState), 3);
+		world.setBlockState(pos.add(-1, 0, 1), MushroomUtil.getState(MushroomUtil.Type.SOUTH_WEST, defState), 3);
+		world.setBlockState(pos.add(0, 0, 1), MushroomUtil.getState(MushroomUtil.Type.SOUTH, defState), 3);
+		world.setBlockState(pos.add(1, 0, 1), MushroomUtil.getState(MushroomUtil.Type.SOUTH_EAST, defState), 3);
 //		world.setBlockState(pos.add(-1, 0, -1), defState.with(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.NORTH_WEST));
 //		world.setBlockState(pos.add(0, 0, -1), defState.with(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.NORTH));
 //		world.setBlockState(pos.add(1, 0, -1), defState.with(BlockTFHugeGloomBlock.VARIANT, BlockHugeMushroom.EnumType.NORTH_EAST));

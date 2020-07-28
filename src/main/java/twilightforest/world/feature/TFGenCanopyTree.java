@@ -6,6 +6,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.ISeedReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.IWorldGenerationReader;
 import twilightforest.util.FeatureUtil;
@@ -32,9 +34,7 @@ public class TFGenCanopyTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 	}
 
 	@Override
-	protected boolean generate(IWorldGenerationReader worldIn, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
-		World world = (World)worldIn;
-
+	protected boolean generate(IWorld world, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		// determine a height
 		int treeHeight = config.minHeight;
 		if (random.nextInt(config.chanceAddFiveFirst) == 0) {
@@ -49,7 +49,6 @@ public class TFGenCanopyTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 			return false;
 		}
 
-		// check if we're on dirt or grass
 		BlockState state = world.getBlockState(pos.down());
 		if (!state.getBlock().canSustainPlant(state, world, pos.down(), Direction.UP, config.getSapling(random, pos))) {
 			return false;
@@ -95,7 +94,7 @@ public class TFGenCanopyTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 //		return generate(world, random, pos, true);
 //	}
 
-	private void makeLeafBlob(World world, Random random, BlockPos leafPos, Set<BlockPos> setLeaves, TFTreeFeatureConfig config) {
+	private void makeLeafBlob(IWorld world, Random random, BlockPos leafPos, Set<BlockPos> setLeaves, TFTreeFeatureConfig config) {
 		FeatureUtil.makeLeafCircle(world, leafPos.down(), 3, config.leavesProvider.getBlockState(random, leafPos.down()), setLeaves, true);
 		FeatureUtil.makeLeafCircle(world, leafPos, 4, config.leavesProvider.getBlockState(random, leafPos), setLeaves, true);
 		FeatureUtil.makeLeafCircle(world, leafPos.up(), 2, config.leavesProvider.getBlockState(random, leafPos.up()), setLeaves, true);
@@ -104,7 +103,7 @@ public class TFGenCanopyTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 	/**
 	 * Build a branch with a flat blob of leaves at the end.
 	 */
-	void buildBranch(World world, BlockPos pos, Set<BlockPos> logpos, Set<BlockPos> branchpos, int height, double length, double angle, double tilt, boolean trunk, Random treeRNG, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
+	void buildBranch(IWorld world, BlockPos pos, Set<BlockPos> logpos, Set<BlockPos> branchpos, int height, double length, double angle, double tilt, boolean trunk, Random treeRNG, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		BlockPos src = pos.up(height);
 		BlockPos dest = FeatureUtil.translate(src, length, angle, tilt);
 

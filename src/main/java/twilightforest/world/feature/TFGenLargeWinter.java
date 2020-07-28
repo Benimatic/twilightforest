@@ -6,6 +6,7 @@ import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.IWorldGenerationReader;
 import twilightforest.util.FeatureUtil;
@@ -22,9 +23,7 @@ public class TFGenLargeWinter extends TFTreeGenerator<TFTreeFeatureConfig> {
 	}
 
 	@Override
-	protected boolean generate(IWorldGenerationReader worldIn, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
-		World world = (World)worldIn;
-
+	protected boolean generate(IWorld world, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		// determine a height
 		int treeHeight = 35;
 		if (random.nextInt(3) == 0) {
@@ -61,7 +60,7 @@ public class TFGenLargeWinter extends TFTreeGenerator<TFTreeFeatureConfig> {
 		return true;
 	}
 
-	private void makeLeaves(World world, Random random, BlockPos pos, int treeHeight, Set<BlockPos> trunk, Set<BlockPos> leaves, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
+	private void makeLeaves(IWorld world, Random random, BlockPos pos, int treeHeight, Set<BlockPos> trunk, Set<BlockPos> leaves, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		int offGround = 3;
 		int leafType = 1;
 
@@ -74,7 +73,7 @@ public class TFGenLargeWinter extends TFTreeGenerator<TFTreeFeatureConfig> {
 		}
 	}
 
-	private void makePineBranches(World world, Random rand, BlockPos pos, Set<BlockPos> trunk, int radius, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
+	private void makePineBranches(IWorld world, Random rand, BlockPos pos, Set<BlockPos> trunk, int radius, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		int branchLength = radius > 4 ? radius - 1 : radius - 2;
 
 		switch (pos.getY() % 2) {
@@ -115,7 +114,7 @@ public class TFGenLargeWinter extends TFTreeGenerator<TFTreeFeatureConfig> {
 		}
 	}
 
-	private void buildTrunk(World world, Random rand, BlockPos pos, Set<BlockPos> trunk, int treeHeight, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
+	private void buildTrunk(IWorld world, Random rand, BlockPos pos, Set<BlockPos> trunk, int treeHeight, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		for (int dy = 0; dy < treeHeight; dy++) {
 			this.setLogBlockState(world, rand, pos.add(0, dy, 0), trunk, mbb, config);
 			this.setLogBlockState(world, rand, pos.add(1, dy, 0), trunk, mbb, config);

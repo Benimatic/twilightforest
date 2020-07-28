@@ -5,6 +5,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.IWorldGenerationReader;
 import twilightforest.util.FeatureUtil;
@@ -26,9 +27,7 @@ public class TFGenDarkCanopyTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 	}
 
 	@Override
-	protected boolean generate(IWorldGenerationReader worldIn, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
-		World world = (World)worldIn;
-
+	protected boolean generate(IWorld world, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		// if we are given leaves as a starting position, seek dirt or grass underneath
 		boolean foundDirt = false;
 		Material materialUnder;
@@ -89,7 +88,7 @@ public class TFGenDarkCanopyTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 	/**
 	 * Build a branch with a flat blob of leaves at the end.
 	 */
-	private void buildBranch(World world, BlockPos pos, Set<BlockPos> leaves, Set<BlockPos> branch, int height, double length, double angle, double tilt, Random random, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
+	private void buildBranch(IWorld world, BlockPos pos, Set<BlockPos> leaves, Set<BlockPos> branch, int height, double length, double angle, double tilt, Random random, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		BlockPos src = pos.up(height);
 		BlockPos dest = FeatureUtil.translate(src, length, angle, tilt);
 
@@ -103,7 +102,7 @@ public class TFGenDarkCanopyTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 	/**
 	 * Make our leaf pattern
 	 */
-	private void leafAround(World world, Random random, BlockPos pos, Set<BlockPos> leaves, TFTreeFeatureConfig config) {
+	private void leafAround(IWorld world, Random random, BlockPos pos, Set<BlockPos> leaves, TFTreeFeatureConfig config) {
 		int leafSize = 4;
 
 		// only leaf if there are no leaves by where we are thinking of leafing

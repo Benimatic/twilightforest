@@ -9,6 +9,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.ISeedReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
 
@@ -60,7 +61,7 @@ public class TFTreasure {
 		MOD_EXISTS = registerCondition("mod_exists", new LootConditionType(new LootConditionModExists.Serializer()));
 	}
 
-	public void generateChest(World world, BlockPos pos, boolean trapped) {
+	public void generateChest(IWorld world, BlockPos pos, boolean trapped) {
 		world.setBlockState(pos, trapped ? Blocks.TRAPPED_CHEST.getDefaultState() : Blocks.CHEST.getDefaultState(), 2);
 		TileEntity te = world.getTileEntity(pos);
 		if (te instanceof ChestTileEntity) {

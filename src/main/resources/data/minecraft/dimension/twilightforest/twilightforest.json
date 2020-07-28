@@ -15,7 +15,7 @@
 				"structures": {}
 			},
 			"noise": {
-				"height": 256, // TODO We should probably somehow lower the groundlevel without changing this value
+				"height": 128, // TODO We should probably somehow lower the groundlevel without changing this value
 				"sampling": {
 					"xz_scale": 0.9999999814507745,
 					"y_scale": 0.9999999814507745,
@@ -47,7 +47,31 @@
 		"biome_source": {
 			"type": "minecraft:checkerboard",
 			// Neither of these biomes will hang the game for now
-			"biomes": ["twilightforest:twilight_forest", "twilightforest:twilight_lake" ]
+			"biomes": [
+				"twilightforest:twilight_lake",
+				"twilightforest:twilight_stream",
+				"twilightforest:twilight_forest",
+				"twilightforest:dense_twilight_forest",
+				"twilightforest:mushroom_forest",
+				"twilightforest:deep_mushroom_forest",
+				"twilightforest:twilight_clearing",
+				"twilightforest:oak_savannah",
+				"twilightforest:firefly_forest",
+				"twilightforest:enchanted_forest",
+
+				"twilightforest:twilight_swamp",
+				"twilightforest:fire_swamp",
+
+				"twilightforest:dark_forest",
+				"twilightforest:dark_forest_center",
+
+				"twilightforest:snowy_forest",
+				"twilightforest:twilight_glacier",
+
+				"twilightforest:twilight_highlands",
+				"twilightforest:thornlands",
+				"twilightforest:highlands_center"
+			]
 		}
 	}
 }

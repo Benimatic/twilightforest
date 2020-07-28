@@ -61,7 +61,7 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 //	}
 
 	//TODO: Check the logic here
-	protected boolean generate(IWorldGenerationReader world, Random random, BlockPos pos, Set<BlockPos> logpos, Set<BlockPos> leavespos, MutableBoundingBox mbb, T config) {
+	protected boolean generate(IWorld world, Random random, BlockPos pos, Set<BlockPos> logpos, Set<BlockPos> leavespos, MutableBoundingBox mbb, T config) {
 		Set<BlockPos> branchSet = Sets.newHashSet();
 		Set<BlockPos> rootSet = Sets.newHashSet();
 		return generate(world, random, pos, logpos, leavespos, branchSet, rootSet, mbb, config);
@@ -150,10 +150,10 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 	/**
 	 * This works akin to the AbstractTreeFeature.generate, but put our branches and roots here
 	 */
-	protected abstract boolean generate(IWorldGenerationReader world, Random random, BlockPos pos, Set<BlockPos> logpos, Set<BlockPos> leavespos, Set<BlockPos> branchpos, Set<BlockPos> rootpos, MutableBoundingBox mbb, T config);
+	protected abstract boolean generate(IWorld world, Random random, BlockPos pos, Set<BlockPos> logpos, Set<BlockPos> leavespos, Set<BlockPos> branchpos, Set<BlockPos> rootpos, MutableBoundingBox mbb, T config);
 
 	//AbstractTrunkPlancer.func_236911_a_ copy
-	protected boolean setLogBlockState(IWorldGenerationReader world, Random random, BlockPos pos, Set<BlockPos> logPos, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
+	protected boolean setLogBlockState(IWorld world, Random random, BlockPos pos, Set<BlockPos> logPos, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		if (TreeFeature.isReplaceableAt(world, pos)) {
 			this.setBlockState(world, pos, config.trunkProvider.getBlockState(random, pos), mbb);
 			logPos.add(pos.toImmutable());
@@ -164,7 +164,7 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 	}
 
 	//We aren't actually using this, but it is here just in case
-	protected boolean setLeavesBlockState(IWorldGenerationReader world, Random random, BlockPos pos, Set<BlockPos> leavesPos, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
+	protected boolean setLeavesBlockState(IWorld world, Random random, BlockPos pos, Set<BlockPos> leavesPos, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		if (TreeFeature.isReplaceableAt(world, pos)) {
 			this.setBlockState(world, pos, config.leavesProvider.getBlockState(random, pos), mbb);
 			leavesPos.add(pos.toImmutable());
@@ -174,7 +174,7 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 		}
 	}
 
-	public boolean setBranchBlockState(IWorldGenerationReader world, Random random, BlockPos pos, Set<BlockPos> branchpos, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
+	public boolean setBranchBlockState(IWorld world, Random random, BlockPos pos, Set<BlockPos> branchpos, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		if (TreeFeature.isReplaceableAt(world, pos)) {
 			this.setBlockState(world, pos, config.branchProvider.getBlockState(random, pos), mbb);
 			branchpos.add(pos.toImmutable());
@@ -184,10 +184,10 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 		}
 	}
 
-	protected boolean setRootsBlockState(IWorldGenerationReader world, Random random, BlockPos pos, Set<BlockPos> branchpos, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
+	protected boolean setRootsBlockState(IWorld world, Random random, BlockPos pos, Set<BlockPos> branchpos, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		// XXX: This was originally an IWorld in AbstractTreeFeature.place, so it should be ok to cast it back.
 		// If you're here investigating after it blew up, then the above assumption is no longer true.
-		if (canRootGrowIn((IWorld) world, pos)) {
+		if (canRootGrowIn(world, pos)) {
 			this.setBlockState(world, pos, config.rootsProvider.getBlockState(random, pos), mbb);
 			branchpos.add(pos.toImmutable());
 			return true;
@@ -204,7 +204,7 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 	/**
 	 * Build a root, but don't let it stick out too far into thin air because that's weird
 	 */
-	protected void buildRoot(World world, Random rand, BlockPos pos, Set<BlockPos> setpos, double offset, int b, MutableBoundingBox mbb, T config) {
+	protected void buildRoot(IWorld world, Random rand, BlockPos pos, Set<BlockPos> setpos, double offset, int b, MutableBoundingBox mbb, T config) {
 		BlockPos dest = FeatureUtil.translate(pos.down(b + 2), 5, 0.3 * b + offset, 0.8);
 
 		// go through block by block and stop drawing when we head too far into open air
@@ -236,7 +236,7 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 	 * @param height how far up the tree
 	 * @param angle  from 0 - 1 rotation around the tree
 	 */
-	protected void addFirefly(World world, BlockPos pos, int height, double angle) {
+	protected void addFirefly(IWorld world, BlockPos pos, int height, double angle) {
 		int iAngle = (int) (angle * 4.0);
 		if (iAngle == 0) {
 			setIfEmpty(world, pos.add( 1, height,  0), TFBlocks.firefly.get().getDefaultState().with(DirectionalBlock.FACING, Direction.EAST));
@@ -249,9 +249,9 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 		}
 	}
 
-	private void setIfEmpty(World world, BlockPos pos, BlockState state) {
+	private void setIfEmpty(IWorld world, BlockPos pos, BlockState state) {
 		if (world.isAirBlock(pos)) {
-			world.setBlockState(pos, state);
+			world.setBlockState(pos, state,3);
 		}
 	}
 }

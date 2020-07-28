@@ -4,7 +4,7 @@
   "shrunk": false,
   "has_skylight": true,
   "has_ceiling": false,
-  "ambient_light": 0.25,
+  "ambient_light": 0.1,
   "fixed_time": 13000, // TODO Kill the celestial bodies
   "piglin_safe": false,
   "bed_works": true,

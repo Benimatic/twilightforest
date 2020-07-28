@@ -5,6 +5,7 @@ import net.minecraft.block.*;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
@@ -60,13 +61,13 @@ public class TFGenCanopyMushroom extends Feature<NoFeatureConfig> {
 		leafState = baseState.with(HugeMushroomBlock.DOWN, false).with(HugeMushroomBlock.NORTH, false).with(HugeMushroomBlock.SOUTH, false).with(HugeMushroomBlock.EAST, false).with(HugeMushroomBlock.WEST, false);
 
 		//okay build a tree!  Go up to the height
-		buildBranch(world.getWorld(), pos, 0, treeHeight, 0, 0, true, random);
+		buildBranch(world, pos, 0, treeHeight, 0, 0, true, random);
 
 		// make 3-4 branches
 		int numBranches = 3 + random.nextInt(2);
 		double offset = random.nextDouble();
 		for (int b = 0; b < numBranches; b++) {
-			buildBranch(world.getWorld(), pos, treeHeight - 5 + b, 9, 0.3 * b + offset, 0.2, false, random);
+			buildBranch(world, pos, treeHeight - 5 + b, 9, 0.3 * b + offset, 0.2, false, random);
 		}
 
 		return true;
@@ -80,7 +81,7 @@ public class TFGenCanopyMushroom extends Feature<NoFeatureConfig> {
 	 * @param angle
 	 * @param tilt
 	 */
-	private void buildBranch(World world, BlockPos pos, int height, double length, double angle, double tilt, boolean trunk, Random treeRNG) {
+	private void buildBranch(IWorld world, BlockPos pos, int height, double length, double angle, double tilt, boolean trunk, Random treeRNG) {
 		BlockPos src = pos.up(height);
 		BlockPos dest = FeatureUtil.translate(src, length, angle, tilt);
 
@@ -109,7 +110,7 @@ public class TFGenCanopyMushroom extends Feature<NoFeatureConfig> {
 	 * <p>
 	 * This assumes that the baseState you've passed in is the center variant
 	 */
-	private void drawMushroomCircle(World world, BlockPos pos, int rad, BlockState baseState) {
+	private void drawMushroomCircle(IWorld world, BlockPos pos, int rad, BlockState baseState) {
 		// trace out a quadrant
 		for (byte dx = 0; dx <= rad; dx++) {
 			for (byte dz = 0; dz <= rad; dz++) {
@@ -124,39 +125,39 @@ public class TFGenCanopyMushroom extends Feature<NoFeatureConfig> {
 				if (dx == 0) {
 					// two!
 					if (dz < rad) {
-						world.setBlockState(pos.add(0, 0, dz), baseState);
-						world.setBlockState(pos.add(0, 0, -dz), baseState);
+						world.setBlockState(pos.add(0, 0, dz), baseState, 3);
+						world.setBlockState(pos.add(0, 0, -dz), baseState, 3);
 					} else {
-						world.setBlockState(pos.add(0, 0, dz), MushroomUtil.getState(MushroomUtil.Type.SOUTH, baseState));
-						world.setBlockState(pos.add(0, 0, -dz), MushroomUtil.getState(MushroomUtil.Type.NORTH, baseState));
+						world.setBlockState(pos.add(0, 0, dz), MushroomUtil.getState(MushroomUtil.Type.SOUTH, baseState), 3);
+						world.setBlockState(pos.add(0, 0, -dz), MushroomUtil.getState(MushroomUtil.Type.NORTH, baseState), 3);
 					}
 				} else if (dz == 0) {
 					// two!
 					if (dx < rad) {
-						world.setBlockState(pos.add(dx, 0, 0), baseState);
-						world.setBlockState(pos.add(-dx, 0, 0), baseState);
+						world.setBlockState(pos.add(dx, 0, 0), baseState, 3);
+						world.setBlockState(pos.add(-dx, 0, 0), baseState, 3);
 					} else {
-						world.setBlockState(pos.add(dx, 0, 0), MushroomUtil.getState(MushroomUtil.Type.EAST, baseState));
-						world.setBlockState(pos.add(-dx, 0, 0), MushroomUtil.getState(MushroomUtil.Type.WEST, baseState));
+						world.setBlockState(pos.add(dx, 0, 0), MushroomUtil.getState(MushroomUtil.Type.EAST, baseState), 3);
+						world.setBlockState(pos.add(-dx, 0, 0), MushroomUtil.getState(MushroomUtil.Type.WEST, baseState), 3);
 					}
 				} else if (dist < rad) {
 					// do four at a time for easiness!
-					world.setBlockState(pos.add(dx, 0, dz), baseState);
-					world.setBlockState(pos.add(dx, 0, -dz), baseState);
-					world.setBlockState(pos.add(-dx, 0, dz), baseState);
-					world.setBlockState(pos.add(-dx, 0, -dz), baseState);
+					world.setBlockState(pos.add(dx, 0, dz), baseState, 3);
+					world.setBlockState(pos.add(dx, 0, -dz), baseState, 3);
+					world.setBlockState(pos.add(-dx, 0, dz), baseState, 3);
+					world.setBlockState(pos.add(-dx, 0, -dz), baseState, 3);
 				} else if (dist == rad) {
 					// do four at a time for easiness!
-					world.setBlockState(pos.add(dx, 0, dz), MushroomUtil.getState(MushroomUtil.Type.SOUTH_EAST, baseState));
-					world.setBlockState(pos.add(dx, 0, -dz), MushroomUtil.getState(MushroomUtil.Type.NORTH_EAST, baseState));
-					world.setBlockState(pos.add(-dx, 0, dz), MushroomUtil.getState(MushroomUtil.Type.SOUTH_WEST, baseState));
-					world.setBlockState(pos.add(-dx, 0, -dz), MushroomUtil.getState(MushroomUtil.Type.NORTH_WEST, baseState));
+					world.setBlockState(pos.add(dx, 0, dz), MushroomUtil.getState(MushroomUtil.Type.SOUTH_EAST, baseState), 3);
+					world.setBlockState(pos.add(dx, 0, -dz), MushroomUtil.getState(MushroomUtil.Type.NORTH_EAST, baseState), 3);
+					world.setBlockState(pos.add(-dx, 0, dz), MushroomUtil.getState(MushroomUtil.Type.SOUTH_WEST, baseState), 3);
+					world.setBlockState(pos.add(-dx, 0, -dz), MushroomUtil.getState(MushroomUtil.Type.NORTH_WEST, baseState), 3);
 				}
 			}
 		}
 	}
 
-	protected void addFirefly(World world, BlockPos pos, int height, double angle) {
+	protected void addFirefly(IWorld world, BlockPos pos, int height, double angle) {
 		int iAngle = (int) (angle * 4.0);
 		if (iAngle == 0) {
 			setIfEmpty(world, pos.add( 1, height,  0), TFBlocks.firefly.get().getDefaultState().with(DirectionalBlock.FACING, Direction.EAST));
@@ -169,18 +170,18 @@ public class TFGenCanopyMushroom extends Feature<NoFeatureConfig> {
 		}
 	}
 
-	private void setIfEmpty(World world, BlockPos pos, BlockState state) {
+	private void setIfEmpty(IWorld world, BlockPos pos, BlockState state) {
 		if (world.isAirBlock(pos)) {
-			world.setBlockState(pos, state);
+			world.setBlockState(pos, state, 3);
 		}
 	}
 
 	/**
 	 * Copied over from FeatureUtil, as this is the only place this will ever be used for now
 	 */
-	public static void drawBresehnam(World world, BlockPos from, BlockPos to, BlockState state) {
+	public static void drawBresehnam(IWorld world, BlockPos from, BlockPos to, BlockState state) {
 		for (BlockPos pixel : FeatureUtil.getBresehnamArrays(from, to)) {
-			world.setBlockState(pixel, state);
+			world.setBlockState(pixel, state, 3);
 		}
 	}
 }

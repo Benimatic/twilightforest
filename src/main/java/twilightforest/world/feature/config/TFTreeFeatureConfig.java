@@ -23,8 +23,8 @@ public class TFTreeFeatureConfig implements IFeatureConfig {
 					BlockStateProvider.field_236796_a_.fieldOf("branch_provider").forGetter((obj) -> obj.branchProvider),
 					BlockStateProvider.field_236796_a_.fieldOf("roots_provider").forGetter((obj) -> obj.rootsProvider),
 					Codec.INT.fieldOf("minimum_size").withDefault(20).forGetter((obj) -> obj.minHeight),
-					Codec.INT.fieldOf("add_first_five_chance").withDefault(-1).forGetter((obj) -> obj.chanceAddFiveFirst),
-					Codec.INT.fieldOf("add_second_five_chance").withDefault(-1).forGetter((obj) -> obj.chanceAddFiveSecond),
+					Codec.INT.fieldOf("add_first_five_chance").withDefault(1).forGetter((obj) -> obj.chanceAddFiveFirst),
+					Codec.INT.fieldOf("add_second_five_chance").withDefault(1).forGetter((obj) -> obj.chanceAddFiveSecond),
 					Codec.BOOL.fieldOf("has_leaves").withDefault(true).forGetter((obj) -> obj.hasLeaves),
 					Codec.BOOL.fieldOf("check_water").withDefault(false).forGetter((obj) -> obj.checkWater),
 					BlockStateProvider.field_236796_a_.fieldOf("sapling").withDefault(new SimpleBlockStateProvider(Blocks.OAK_SAPLING.getDefaultState())).forGetter((obj) -> obj.sapling))

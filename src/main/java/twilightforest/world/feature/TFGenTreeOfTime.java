@@ -5,6 +5,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.IWorldGenerationReader;
 import twilightforest.block.TFBlocks;
@@ -29,8 +30,7 @@ public class TFGenTreeOfTime extends TFGenHollowTree {
 //	}
 
 	@Override
-	public boolean generate(IWorldGenerationReader worldIn, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
-		World world = (World)worldIn;
+	public boolean generate(IWorld world, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		int height = 8;
 		int diameter = 1;
 
@@ -60,7 +60,7 @@ public class TFGenTreeOfTime extends TFGenHollowTree {
 		buildBranchRing(world, random, pos, leaves, branch, diameter, 1, 2, 18, 0.9D, 3, 5, 3, false, mbb, config);
 
 		// add clock block
-		world.setBlockState(pos.add(-1, 2, 0), TFBlocks.time_log_core.get().getDefaultState());
+		world.setBlockState(pos.add(-1, 2, 0), TFBlocks.time_log_core.get().getDefaultState(), 3);
 
 		return true;
 	}
@@ -69,7 +69,7 @@ public class TFGenTreeOfTime extends TFGenHollowTree {
 	 * Build the crown of the tree. This builds a smaller crown, since the large
 	 * ones were causing some performance issues
 	 */
-	protected void buildTinyCrown(World world, Random random, BlockPos pos, Set<BlockPos> leaves, Set<BlockPos> branch, int diameter, int height, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
+	protected void buildTinyCrown(IWorld world, Random random, BlockPos pos, Set<BlockPos> leaves, Set<BlockPos> branch, int diameter, int height, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		int crownRadius = 4;
 		int bvar = 1;
 
