@@ -19,19 +19,19 @@ public class GenLayerTFBiomes implements IAreaTransformer0 {
 
 	private static final int RARE_BIOME_CHANCE = 15;
 
-	protected static final List<Supplier<Supplier<Biome>>> commonBiomes = Arrays.asList(
-			() -> TFBiomes.twilightForest,
-			() -> TFBiomes.denseTwilightForest,
-			() -> TFBiomes.mushrooms,
-			() -> TFBiomes.oakSavanna,
-			() -> TFBiomes.fireflyForest
+	protected static final List<Supplier<Biome>> commonBiomes = Arrays.asList(
+			TFBiomes.twilightForest,
+			TFBiomes.denseTwilightForest,
+			TFBiomes.mushrooms,
+			TFBiomes.oakSavanna,
+			TFBiomes.fireflyForest
 	);
-	protected static final List<Supplier<Supplier<Biome>>> rareBiomes = Arrays.asList(
-			() -> TFBiomes.tfLake,
-			() -> TFBiomes.deepMushrooms,
-			() -> TFBiomes.enchantedForest,
-			() -> TFBiomes.clearing,
-			() -> TFBiomes.spookyForest
+	protected static final List<Supplier<Biome>> rareBiomes = Arrays.asList(
+			TFBiomes.tfLake,
+			TFBiomes.deepMushrooms,
+			TFBiomes.enchantedForest,
+			TFBiomes.clearing,
+			TFBiomes.spookyForest
 	);
 
 //	public GenLayerTFBiomes(long l, Layer genlayer) {
@@ -82,7 +82,7 @@ public class GenLayerTFBiomes implements IAreaTransformer0 {
 //			}
 //		}
 
-	private Biome getRandomBiome(INoiseRandom random, List<Supplier<Supplier<Biome>>> biomes) {
-		return biomes.get(random.random(biomes.size())).get().get();
+	private Biome getRandomBiome(INoiseRandom random, List<Supplier<Biome>> biomes) {
+		return biomes.get(random.random(biomes.size())).get();
 	}
 }
