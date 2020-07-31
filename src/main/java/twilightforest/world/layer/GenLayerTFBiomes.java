@@ -19,7 +19,7 @@ public class GenLayerTFBiomes implements IAreaTransformer0 {
 	private static final int RARE_BIOME_CHANCE = 15;
 
 	protected static final List<Supplier<Biome>> commonBiomes = ImmutableList.of(
-			TFBiomes.twilightForest,
+			//TFBiomes.twilightForest, FIXME Nothing generates
 			TFBiomes.denseTwilightForest,
 			TFBiomes.mushrooms,
 			TFBiomes.oakSavanna,
@@ -33,21 +33,6 @@ public class GenLayerTFBiomes implements IAreaTransformer0 {
 			TFBiomes.spookyForest
 	);
 
-	private static final List<Supplier<Biome>> BIOMES = ImmutableList.of( //TODO: Can we do this more efficiently?
-			TFBiomes.clearing,
-			TFBiomes.oakSavanna,
-			TFBiomes.twilightForest,
-			TFBiomes.denseTwilightForest,
-			TFBiomes.fireflyForest,
-			TFBiomes.mushrooms,
-			TFBiomes.deepMushrooms,
-			TFBiomes.enchantedForest,
-
-			TFBiomes.fireSwamp,
-			TFBiomes.darkForestCenter,
-			TFBiomes.glacier,
-			TFBiomes.highlandsCenter
-	);
 
 	public GenLayerTFBiomes() { }
 

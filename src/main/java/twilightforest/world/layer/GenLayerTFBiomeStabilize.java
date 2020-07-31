@@ -76,11 +76,11 @@ public enum GenLayerTFBiomeStabilize implements IAreaTransformer1 {
 //            	}
 //            	else
 		if (dx <= centerX + 1 && dx >= centerX - 1 && dz <= centerZ + 1 && dz >= centerZ - 1) {
-			return centerX + 1 + (centerZ + 1) * dz;
+			return iArea.getValue(centerX + 1, centerZ + 1);
 //            		output[dx + dz * width] = Biome.desert.biomeID;
 //            		output[dx + dz * width] = input[dx + 1 + (dz + 1) * nwidth];
 		} else {
-			return dx + 1 + (dz + 1) * dz;
+			return iArea.getValue(dx, dz);
 		}
 	}
 }

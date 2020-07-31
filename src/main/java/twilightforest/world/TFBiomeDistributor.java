@@ -69,24 +69,28 @@ public class TFBiomeDistributor extends BiomeProvider {
         LongFunction<LazyAreaLayerContext> seed = (context) -> new LazyAreaLayerContext(25, rawSeed, context);
 
         IAreaFactory<LazyArea> biomes = new GenLayerTFBiomes().apply(seed.apply(1L));
+
+        biomes = ZoomLayer.NORMAL.apply(seed.apply(1000L), biomes);
+
         biomes = GenLayerTFKeyBiomes.INSTANCE.apply(seed.apply(1000L), biomes);
         biomes = GenLayerTFCompanionBiomes.INSTANCE.apply(seed.apply(1000L), biomes);
 
-        biomes = ZoomLayer.NORMAL.apply(seed.apply(1000L), biomes);
         biomes = ZoomLayer.NORMAL.apply(seed.apply(1001), biomes);
 
-        //biomes = GenLayerTFBiomeStabilize.INSTANCE.apply(seed.apply(700L), biomes);
+        biomes = GenLayerTFBiomeStabilize.INSTANCE.apply(seed.apply(700L), biomes);
 
         biomes = GenLayerTFThornBorder.INSTANCE.apply(seed.apply(500L), biomes);
 
         biomes = ZoomLayer.NORMAL.apply(seed.apply(1002), biomes);
         biomes = ZoomLayer.NORMAL.apply(seed.apply(1003), biomes);
-        //biomes = ZoomLayer.NORMAL.apply(seed.apply(1004), biomes);
-        //biomes = ZoomLayer.NORMAL.apply(seed.apply(1005), biomes);
+        biomes = ZoomLayer.NORMAL.apply(seed.apply(1004), biomes);
+        biomes = ZoomLayer.NORMAL.apply(seed.apply(1005), biomes);
 
         IAreaFactory<LazyArea> riverLayer = GenLayerTFStream.INSTANCE.apply(seed.apply(1L), biomes);
         riverLayer = SmoothLayer.INSTANCE.apply(seed.apply(7000L), riverLayer);
         biomes = GenLayerTFRiverMix.INSTANCE.apply(seed.apply(100L), biomes, riverLayer);
+
+        biomes = ZoomLayer.NORMAL.apply(seed.apply(1006), biomes);
 
         return new Layer(biomes);
     }

@@ -19,24 +19,10 @@ public enum GenLayerTFStream implements ICastleTransformer {
 
 	@Override
 	public int apply(INoiseRandom iNoiseRandom, int up, int left, int down, int right, int mid) {
-		if (shouldStream(mid, left, down, right, up)) {
+		if (shouldStream(mid, left) || shouldStream(mid, right) || shouldStream(mid, down) || shouldStream(mid, up)) {
 			return Registry.BIOME.getId(TFBiomes.stream.get());
 		} else {
-			return -1;
-		}
-	}
-
-	boolean shouldStream(int mid, int left, int down, int right, int up) {
-		if (shouldStream(mid, left)) {
-			return true;
-		} else if (shouldStream(mid, right)) {
-			return true;
-		} else if (shouldStream(mid, down)) {
-			return true;
-		} else if (shouldStream(mid, up)) {
-			return true;
-		} else {
-			return false;
+			return mid;
 		}
 	}
 
@@ -44,6 +30,7 @@ public enum GenLayerTFStream implements ICastleTransformer {
 		if (id1 == id2) {
 			return false;
 		}
+
 		if (id1 == -id2) {
 			return false;
 		}
@@ -51,57 +38,16 @@ public enum GenLayerTFStream implements ICastleTransformer {
 		Biome biome1 = Registry.BIOME.getByValue(id1);
 		Biome biome2 = Registry.BIOME.getByValue(id2);
 
-		// glacier and snow have no border
-		if (biome1 == TFBiomes.glacier.get() && biome2 == TFBiomes.snowy_forest.get()) {
-			return false;
-		}
-		if (biome1 == TFBiomes.snowy_forest.get() && biome2 == TFBiomes.glacier.get()) {
-			return false;
-		}
-		// mushrooms
-		if (biome1 == TFBiomes.deepMushrooms.get() && biome2 == TFBiomes.mushrooms.get()) {
-			return false;
-		}
-		if (biome1 == TFBiomes.mushrooms.get() && biome2 == TFBiomes.deepMushrooms.get()) {
-			return false;
-		}
-		// fire swamp
-		if (biome1 == TFBiomes.tfSwamp.get() && biome2 == TFBiomes.fireSwamp.get()) {
-			return false;
-		}
-		if (biome1 == TFBiomes.fireSwamp.get() && biome2 == TFBiomes.tfSwamp.get()) {
-			return false;
-		}
-		// highlands
-		if (biome1 == TFBiomes.highlands.get() && biome2 == TFBiomes.highlandsCenter.get()) {
-			return false;
-		}
-		if (biome1 == TFBiomes.highlandsCenter.get() && biome2 == TFBiomes.highlands.get()) {
-			return false;
-		}
-		// dark forest
-		if (biome1 == TFBiomes.darkForest.get() && biome2 == TFBiomes.darkForestCenter.get()) {
-			return false;
-		}
-		if (biome1 == TFBiomes.darkForestCenter.get() && biome2 == TFBiomes.darkForest.get()) {
-			return false;
-		}
-		// no lake border
-		if (biome1 == TFBiomes.tfLake.get() || biome2 == TFBiomes.tfLake.get()) {
-			return false;
-		}
-		// clearing
-		if (biome1 == TFBiomes.clearing.get() || biome2 == TFBiomes.oakSavanna.get()) {
-			return false;
-		}
-		if (biome1 == TFBiomes.oakSavanna.get() || biome2 == TFBiomes.clearing.get()) {
-			return false;
-		}
-		// thorns need no stream
-		if (biome1 == TFBiomes.thornlands.get() || biome2 == TFBiomes.thornlands.get()) {
-			return false;
-		}
+		return !((biome1 == TFBiomes.tfLake.get() || biome2 == TFBiomes.tfLake.get())
+				|| (biome1 == TFBiomes.thornlands.get() || biome2 == TFBiomes.thornlands.get())
+				|| testEitherBiome(biome1, biome2, TFBiomes.snowy_forest.get(), TFBiomes.glacier.get())
+				|| testEitherBiome(biome1, biome2, TFBiomes.mushrooms.get(), TFBiomes.deepMushrooms.get())
+				|| testEitherBiome(biome1, biome2, TFBiomes.tfSwamp.get(), TFBiomes.fireSwamp.get())
+				|| testEitherBiome(biome1, biome2, TFBiomes.darkForest.get(), TFBiomes.darkForestCenter.get())
+				|| testEitherBiome(biome1, biome2, TFBiomes.highlands.get(), TFBiomes.highlandsCenter.get()));
+	}
 
-		return true;
+	private boolean testEitherBiome(Biome test1, Biome test2, Biome predicate1, Biome predicate2) {
+		return (test1 == predicate1 && test2 == predicate2) || (test2 == predicate1 && test1 == predicate2);
 	}
 }
