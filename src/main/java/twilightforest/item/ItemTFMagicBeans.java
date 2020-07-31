@@ -53,7 +53,7 @@ public class ItemTFMagicBeans extends Item {
 
 	@SuppressWarnings("RedundantCast")
 	private float getCloudHeight(World world) {
-		if (world.func_234923_W_() == TFDimensions.twilight_forest_world) {
+		if (world.func_234923_W_() == TFDimensions.twilightForest) {
 			// WorldProviderTwilightForest has this method on both server and client
 			return ((ClientWorld)world).func_239132_a_().func_239213_a_();
 		} else {

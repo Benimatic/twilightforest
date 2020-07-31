@@ -76,7 +76,6 @@ import twilightforest.util.TFItemStackUtils;
 import twilightforest.world.ChunkGeneratorTFBase;
 import twilightforest.world.TFDimensions;
 import twilightforest.world.TFGenerationSettings;
-import twilightforest.world.TwilightForestDimension;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -621,7 +620,7 @@ public class TFEventListener {
 	@SubscribeEvent
 	public static void playerPortals(PlayerEvent.PlayerChangedDimensionEvent event) {
 		if (!event.getPlayer().world.isRemote && event.getPlayer() instanceof ServerPlayerEntity) {
-			if (event.getTo() == TFDimensions.twilight_forest_world) {
+			if (event.getTo() == TFDimensions.twilightForest) {
 				sendEnforcedProgressionStatus((ServerPlayerEntity) event.getPlayer(), TFGenerationSettings.isProgressionEnforced(event.getPlayer().world));
 			}
 			updateCapabilities((ServerPlayerEntity) event.getPlayer(), event.getPlayer());
@@ -657,11 +656,6 @@ public class TFEventListener {
 		// This event is only ever fired on the server side
 		ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
 //		sendSkylightEnabled(player, TwilightForestDimension.isSkylightEnabled(TFGenerationSettings.getDimensionData(player.world)));
-	}
-
-	@SubscribeEvent
-	public static void onServerDisconnect(PlayerEvent.PlayerLoggedOutEvent event) {
-		TwilightForestDimension.syncFromConfig();
 	}
 
 	/**

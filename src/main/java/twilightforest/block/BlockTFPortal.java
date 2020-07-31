@@ -19,7 +19,6 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.DimensionType;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -212,8 +211,8 @@ public class BlockTFPortal extends BreakableBlock {
 	}
 
 	private static RegistryKey<World> getDestination(Entity entity) {
-		return entity.getEntityWorld().func_234923_W_() != TFDimensions.twilight_forest_world
-				? TFDimensions.twilight_forest_world : World.field_234918_g_ /*DimensionType.byName(new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()))*/;
+		return entity.getEntityWorld().func_234923_W_() != TFDimensions.twilightForest
+				? TFDimensions.twilightForest : World.field_234918_g_ /*DimensionType.byName(new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()))*/;
 	}
 
 	public static void attemptSendPlayer(Entity entity, boolean forcedEntry) {
@@ -241,7 +240,7 @@ public class BlockTFPortal extends BreakableBlock {
 
 		entity.changeDimension(serverWorld, TFTeleporter.getTeleporterForDim(entity.getServer(), destination));
 
-		if (destination == TFDimensions.twilight_forest_world && entity instanceof ServerPlayerEntity) {
+		if (destination == TFDimensions.twilightForest && entity instanceof ServerPlayerEntity) {
 			ServerPlayerEntity playerMP = (ServerPlayerEntity) entity;
 			// set respawn point for TF dimension to near the arrival portal
 			playerMP.func_241153_a_(destination, playerMP.func_233580_cy_(), true, false);

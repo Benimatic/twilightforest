@@ -27,7 +27,7 @@ public class LoadingScreenListener {
 	@SubscribeEvent
 	public void onOpenGui(GuiOpenEvent event) {
 		if (event.getGui() instanceof DownloadTerrainScreen && client.player != null) {
-			RegistryKey<World> tfDimension = TFDimensions.twilight_forest_world;
+			RegistryKey<World> tfDimension = TFDimensions.twilightForest;
 			if (client.player.getEntityWorld().func_234923_W_() == tfDimension || lastDimension == tfDimension) {
 				GuiTwilightForestLoading guiLoading = new GuiTwilightForestLoading();
 				guiLoading.setEntering(client.player.getEntityWorld().func_234923_W_() == tfDimension);
