@@ -128,8 +128,8 @@ public class TFBiomes {
 							.precipitation(Biome.RainType.RAIN)
 							.category(Biome.Category.RIVER)
 							.temperature(0.5F)
-							.downfall(0.1F)
-							.depth(-0.5F)
+							.downfall(0.5F)
+							.depth(-0.7F)
 							.scale(0)
 							.func_235097_a_((new BiomeAmbience.Builder())
 									.setWaterColor(0x3F76E4) // todo 1.15 pick

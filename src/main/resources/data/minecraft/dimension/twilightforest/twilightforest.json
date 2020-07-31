@@ -5,17 +5,17 @@
 		"seed": 0,
 		"settings": {
 			"bedrock_roof_position": -1,
-			"bedrock_floor_position": 1,
+			"bedrock_floor_position": 0,
 			"sea_level": 31,
-			// Undocumented, this setting will make it so that mobs will not spawn during world generation
-			// TODO disable in the future
+			// Undocumented - this setting will make it so that mobs will not spawn during world generation TODO disable in the future
 			"disable_mob_generation": true,
 			"structures": {
 				"stronghold": { "distance": 0,  "count": 0,  "spread": 0 },
-				"structures": {}
+				"structures": {
+				}
 			},
 			"noise": {
-				"height": 128, // TODO We should probably somehow lower the groundlevel without changing this value
+				"height": 128, // This allows us to shorten the world so we can cram more stuff upwards
 				"sampling": {
 					"xz_scale": 0.9999999814507745,
 					"y_scale": 0.9999999814507745,
@@ -45,33 +45,8 @@
 			"default_fluid": { "Name": "minecraft:water", "Properties": { "level": "0" }} // For some reason the Properties is required...
 		},
 		"biome_source": {
-			"type": "minecraft:checkerboard",
-			// Neither of these biomes will hang the game for now
-			"biomes": [
-				"twilightforest:twilight_lake",
-				"twilightforest:twilight_stream",
-				"twilightforest:twilight_forest",
-				"twilightforest:dense_twilight_forest",
-				"twilightforest:mushroom_forest",
-				"twilightforest:deep_mushroom_forest",
-				"twilightforest:twilight_clearing",
-				"twilightforest:oak_savannah",
-				"twilightforest:firefly_forest",
-				"twilightforest:enchanted_forest",
-
-				"twilightforest:twilight_swamp",
-				"twilightforest:fire_swamp",
-
-				"twilightforest:dark_forest",
-				"twilightforest:dark_forest_center",
-
-				"twilightforest:snowy_forest",
-				"twilightforest:twilight_glacier",
-
-				"twilightforest:twilight_highlands",
-				"twilightforest:thornlands",
-				"twilightforest:highlands_center"
-			]
+			"type": "twilightforest:biome_distributor",
+			"seed": 0
 		}
 	}
 }

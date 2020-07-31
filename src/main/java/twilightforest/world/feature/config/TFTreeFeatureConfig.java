@@ -48,8 +48,9 @@ public class TFTreeFeatureConfig implements IFeatureConfig {
 		this.branchProvider = branch;
 		this.rootsProvider = roots;
 		this.minHeight = height;
-		this.chanceAddFiveFirst = chanceFiveFirst;
-		this.chanceAddFiveSecond = chanceFiveSecond;
+		// For some dumb reason this keeps getting -1 so you get `Math.max(x, 0)` for punishment
+		this.chanceAddFiveFirst = Math.max(chanceFiveFirst, 1);
+		this.chanceAddFiveSecond = Math.max(chanceFiveSecond, 1);
 		this.hasLeaves = hasLeaves;
 		this.checkWater = checkWater;
 		this.sapling = sapling;

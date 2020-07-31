@@ -190,6 +190,40 @@ public class ItemTFMagicMap extends FilledMapItem {
 		BIOME_COLORS.put(biome.get().getRegistryName(), color);
 	}
 
+	public static int getBiomeColor(Biome biome) {
+		if (BIOME_COLORS.isEmpty()) {
+			setupBiomeColors();
+		}
+
+		MapColorBrightness c = BIOME_COLORS.get(biome.getRegistryName());
+
+		return c != null ? getMapColor(c) : 0xFF000000;
+	}
+
+	public static int getMapColor(MapColorBrightness mcb) {
+		int i = 220;
+		if (mcb.color.colorIndex == 3) {
+			i = 135;
+		}
+
+		if (mcb.color.colorIndex == 2) {
+			i = 255;
+		}
+
+		if (mcb.color.colorIndex == 1) {
+			i = 220;
+		}
+
+		if (mcb.color.colorIndex == 0) {
+			i = 180;
+		}
+
+		int j = (mcb.color.colorValue >> 16 & 255) * i / 255;
+		int k = (mcb.color.colorValue >> 8 & 255) * i / 255;
+		int l = (mcb.color.colorValue & 255) * i / 255;
+		return -16777216 | l << 16 | k << 8 | j;
+	}
+
 	@Override
 	public void onCreated(ItemStack stack, World world, PlayerEntity player) {
 		// disable zooming

@@ -20,5 +20,7 @@ public class TFCommand {
         LiteralCommandNode<CommandSource> node = dispatcher.register(builder);
         dispatcher.register(Commands.literal("tf").redirect(node));
         dispatcher.register(Commands.literal("tffeature").redirect(node));
+
+        dispatcher.register(MapBiomesCommand.register());
     }
 }

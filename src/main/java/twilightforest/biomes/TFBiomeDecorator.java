@@ -151,8 +151,7 @@ public class TFBiomeDecorator {
 	}
 
 	public static void addExtraPoolsLava(Biome biome, float chance) {
-		if (random.nextFloat() < chance)
-			biome.addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, Feature.LAKE.withConfiguration(new BlockStateFeatureConfig(LAVA)).withPlacement(Placement.LAVA_LAKE.configure(new ChanceConfig(1))));
+		biome.addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, Feature.LAKE.withConfiguration(new BlockStateFeatureConfig(LAVA)).withPlacement(Placement.LAVA_LAKE.configure(new ChanceConfig(40))));
 	}
 
 	public static void addSprings(Biome biome) {
