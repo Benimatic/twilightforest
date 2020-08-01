@@ -9,7 +9,6 @@ import twilightforest.TwilightForestMod;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class TFDimensions {
-	public static DimensionType twilight_forest_dimension; //TODO: Add value
 	public static final RegistryKey<DimensionType> twilightForestType = RegistryKey.func_240903_a_(Registry.DIMENSION_TYPE_KEY, TwilightForestMod.prefix(TwilightForestMod.ID));
 	public static final RegistryKey<World> twilightForest = RegistryKey.func_240903_a_(Registry.WORLD_KEY, TwilightForestMod.prefix(TwilightForestMod.ID)); // Yes, this floor is floor
 

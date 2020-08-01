@@ -2,6 +2,7 @@ package twilightforest;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.LivingRenderer;
+import net.minecraft.client.world.DimensionRenderInfo;
 import net.minecraft.item.Rarity;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.util.ResourceLocation;
@@ -30,8 +31,8 @@ import twilightforest.advancements.TFAdvancements;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.block.TFBlocks;
 import twilightforest.capabilities.CapabilityList;
-import twilightforest.client.LoadingScreenListener;
 import twilightforest.client.RenderLayerRegistration;
+import twilightforest.client.TwilightForestRenderInfo;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.client.renderer.entity.LayerIce;
 import twilightforest.client.renderer.entity.LayerShields;
@@ -103,10 +104,9 @@ public class TwilightForestMod {
 		// TODO: move these to proper spots
 		// WorldProviderTwilightForest.syncFromConfig();
 
-
-		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
+		if (false/*TFConfig.COMMON_CONFIG.doCompat.get()*/) {
 			try {
-				// TFCompat.preInitCompat(); TODO
+				// TFCompat.preInitCompat(); FIXME We will just log the fact no compat is initializing, for now
 			} catch (Exception e) {
 				TFConfig.COMMON_CONFIG.doCompat.set(false);
 				LOGGER.error("Had an error loading preInit compatibility!");
@@ -168,11 +168,14 @@ public class TwilightForestMod {
 		ItemTFYetiArmor.initArmorModel();
 		ItemTFArcticArmor.initArmorModel();
 		ItemTFFieryArmor.initArmorModel();
-		MinecraftForge.EVENT_BUS.register(new LoadingScreenListener());
+		// FIXME MinecraftForge.EVENT_BUS.register(new LoadingScreenListener());
 		DistExecutor.runWhenOn(Dist.CLIENT, () -> RenderLayerRegistration::init);
 		DistExecutor.runWhenOn(Dist.CLIENT, () -> TFEntities::registerEntityRenderer);
 		DistExecutor.runWhenOn(Dist.CLIENT, () -> TFTileEntities::registerTileEntityRenders);
 		DistExecutor.runWhenOn(Dist.CLIENT, () -> TFContainers::renderScreens);
+
+		TwilightForestRenderInfo renderInfo = new TwilightForestRenderInfo(128.0F, false, DimensionRenderInfo.FogType.NORMAL, false, false);
+		DimensionRenderInfo.field_239208_a_.put(TFDimensions.twilightForestType, renderInfo);
 	}
 
 	@SubscribeEvent
