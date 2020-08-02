@@ -145,7 +145,7 @@ public class BlockTFPortal extends BreakableBlock {
 
 		boolean isPoolProbablyEnclosed = true;
 
-		for (int i = 0; i < Direction.Plane.values().length && portalSize.intValue() <= MAX_PORTAL_SIZE; i++) {
+		for (int i = 0; i < 4 /* FIXME Screw it, 4. Thanks Mojang /* Direction.Plane.HORIZONTAL .length*/ && portalSize.intValue() <= MAX_PORTAL_SIZE; i++) {
 			BlockPos positionCheck = pos.offset(Direction.byHorizontalIndex(i));
 
 			if (!blocksChecked.containsKey(positionCheck)) {

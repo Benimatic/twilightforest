@@ -120,7 +120,7 @@ public class TFTickHandler {
 
 			for (ItemEntity entityItem : itemList) {
 				if (TFConfig.portalIngredient.test(entityItem.getItem())) {
-					BlockPos pos = entityItem.func_233580_cy_(); //getPosition?
+					BlockPos pos = new BlockPos(entityItem.getPositionVec().subtract(0, -0.1d, 0)); //TODO Quick fix, find if there's a more performant fix than this
 					BlockState state = world.getBlockState(pos);
 					if (TFBlocks.twilight_portal.get().canFormPortal(state)) {
 						Random rand = new Random();
