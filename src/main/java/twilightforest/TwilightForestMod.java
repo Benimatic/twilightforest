@@ -174,7 +174,7 @@ public class TwilightForestMod {
 		DistExecutor.runWhenOn(Dist.CLIENT, () -> TFTileEntities::registerTileEntityRenders);
 		DistExecutor.runWhenOn(Dist.CLIENT, () -> TFContainers::renderScreens);
 
-		TwilightForestRenderInfo renderInfo = new TwilightForestRenderInfo(128.0F, false, DimensionRenderInfo.FogType.NORMAL, false, false);
+		TwilightForestRenderInfo renderInfo = new TwilightForestRenderInfo(128.0F, false, DimensionRenderInfo.FogType.NONE, false, false);
 		DimensionRenderInfo.field_239208_a_.put(TFDimensions.twilightForestType, renderInfo);
 	}
 
