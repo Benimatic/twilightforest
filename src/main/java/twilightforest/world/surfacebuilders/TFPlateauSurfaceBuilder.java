@@ -29,61 +29,60 @@ public class TFPlateauSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig
 	// Copy of super's generateBiomeTerrain, relevant edits noted.
 	//protected void genTwilightBiomeTerrain(World world, Random rand, ChunkPrimer primer, int x, int z, double noiseVal) {
 	protected void genTwilightBiomeTerrain(Random rand, IChunk primer, Biome biome, int x, int z, int startHeight, double noiseVal, BlockState defaultBlock, BlockState defaultFluid, BlockState top, BlockState middle, BlockState bottom, int sealevel) {
-		int i = TFGenerationSettings.SEALEVEL; // TF - set sea level to 31 //TODO: Sea level is now handled by seaLevel
-		BlockState iblockstate = top;
-		BlockState iblockstate1 = middle;
+		BlockState topState = top;
+		BlockState middleState = middle;
 		BlockState stoneReplacement = TFBlocks.deadrock.get().getDefaultState();
-		int j = -1;
-		int k = (int) (noiseVal / 3.0D + 3.0D + rand.nextDouble() * 0.25D);
-		int l = x & 15;
-		int i1 = z & 15;
-		BlockPos.Mutable blockpos$mutableblockpos = new BlockPos.Mutable();
+		int generatedDirtDepth = -1;
+		int dirtDepth = (int) (noiseVal / 3.0D + 3.0D + rand.nextDouble() * 0.25D);
+		int localX = x & 15;
+		int localZ = z & 15;
+		BlockPos.Mutable mutable = new BlockPos.Mutable();
 		boolean generateBedrock = /*shouldGenerateBedrock(world);*/ true; // TF - conditional bedrock gen //TODO 1.15: World is not a valid argument. Set to true for now
 
-		for (int j1 = startHeight; j1 >= 0; --j1) { //Author's note: beginning value was 255. It is now startHeight
-			blockpos$mutableblockpos.setPos(i1, j1, l);
+		for (int y = startHeight; y >= 0; --y) { //Author's note: beginning value was 255. It is now startHeight
+			mutable.setPos(localX, y, localZ);
 			// TF - conditional bedrock gen
-			if (generateBedrock && j1 <= rand.nextInt(5)) {
-				primer.setBlockState(blockpos$mutableblockpos, Blocks.BEDROCK.getDefaultState(), false);
+			if (generateBedrock && y <= rand.nextInt(5)) {
+				primer.setBlockState(mutable, Blocks.BEDROCK.getDefaultState(), false);
 			} else {
-				BlockState iblockstate2 = primer.getBlockState(blockpos$mutableblockpos);
+				BlockState stateHere = primer.getBlockState(mutable);
 
 				// TF - use block check for air
-				if (iblockstate2.getBlock() == Blocks.AIR) {
-					// j = -1; TF - commented out? todo 1.9
-				} else if (iblockstate2.getBlock() == Blocks.STONE) {
-					if (j == -1) {
-						if (k <= 0) {
-							iblockstate = AIR;
-							iblockstate1 = defaultBlock;
-						} else if (j1 >= sealevel - 4 && j1 <= sealevel + 1) {
-							iblockstate = top;
-							iblockstate1 = middle;
+				if (stateHere.getBlock() == Blocks.AIR) {
+					// generatedDirtDepth = -1; TF - commented out? todo 1.9
+				} else if (stateHere.getBlock() == Blocks.STONE) {
+					if (generatedDirtDepth == -1) {
+						if (dirtDepth <= 0) {
+							topState = AIR;
+							middleState = defaultBlock;
+						} else if (y >= sealevel - 4 && y <= sealevel + 1) {
+							topState = top;
+							middleState = middle;
 						}
 
 						// TF - use block check for air
-						if (j1 < sealevel && (iblockstate == null || iblockstate.getBlock() == Blocks.AIR)) {
-							if (biome.getTemperature(blockpos$mutableblockpos.setPos(x, j1, z)) < 0.15F) {
-								iblockstate = Blocks.ICE.getDefaultState();
+						if (y < sealevel && (topState == null || topState.getBlock() == Blocks.AIR)) {
+							if (biome.getTemperature(mutable.setPos(x, y, z)) < 0.15F) {
+								topState = Blocks.ICE.getDefaultState();
 							} else {
-								iblockstate = defaultFluid;
+								topState = defaultFluid;
 							}
-							blockpos$mutableblockpos.setPos(i1, j1, l);
+							mutable.setPos(localZ, y, localX);
 						}
 
-						j = k;
+						generatedDirtDepth = dirtDepth;
 
-						if (j1 >= sealevel - 1) {
-							primer.setBlockState(blockpos$mutableblockpos, iblockstate, false);
-						} else if (j1 < sealevel - 7 - k) {
-							iblockstate = AIR;
-							iblockstate1 = defaultBlock;
-							primer.setBlockState(blockpos$mutableblockpos, bottom, false);
+						if (y >= sealevel - 1) {
+							primer.setBlockState(mutable, topState, false);
+						} else if (y < sealevel - 7 - dirtDepth) {
+							topState = AIR;
+							middleState = defaultBlock;
+							primer.setBlockState(mutable, bottom, false);
 						} else {
-							primer.setBlockState(blockpos$mutableblockpos, iblockstate1, false);
+							primer.setBlockState(mutable, middleState, false);
 						}
 					}
-					primer.setBlockState(blockpos$mutableblockpos, stoneReplacement, false);
+					primer.setBlockState(mutable, stoneReplacement, false);
 				}
 			}
 		}
