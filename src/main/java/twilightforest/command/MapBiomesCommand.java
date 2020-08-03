@@ -4,21 +4,20 @@ package twilightforest.command;
  * Thank you @SuperCoder79 (from Twitter) for sharing the original code! Code sourced from a LGPL project
  */
 
-
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
-import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.biome.Biome;
+import twilightforest.biomes.TFBiomes;
 import twilightforest.item.ItemTFMagicMap;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -26,39 +25,40 @@ import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Supplier;
 
 public class MapBiomesCommand {
-    private static Object2IntMap<Supplier<Biome>> BIOME2COLOR = new Object2IntOpenHashMap<>();
     private static final DecimalFormat numberFormat = new DecimalFormat("#.00");
 
-    //tatic {
-    //   List<Supplier<Biome>> BIOMES = ImmutableList.of( //TODO: Can we do this more efficiently?
-    //           TFBiomes.clearing,
-    //           TFBiomes.oakSavanna,
-    //           TFBiomes.twilightForest,
-    //           TFBiomes.denseTwilightForest,
-    //           TFBiomes.fireflyForest,
-    //           TFBiomes.mushrooms,
-    //           TFBiomes.deepMushrooms,
-    //           TFBiomes.enchantedForest,
-    //           TFBiomes.tfSwamp,
-    //           TFBiomes.fireSwamp,
-    //           TFBiomes.darkForest,
-    //           TFBiomes.darkForestCenter,
-    //           TFBiomes.snowy_forest,
-    //           TFBiomes.glacier,
-    //           TFBiomes.highlands,
-    //           TFBiomes.thornlands,
-    //           TFBiomes.highlandsCenter
-    //   );
+    private static final HashMap<Biome, Color> BIOME2COLOR = new HashMap<>();
 
-    //   BIOME2COLOR = BIOMES.stream().collect(toMap(
-    //           x->x,
-    //           x->x.get().hashCode() | 0xFF_00_00_00,
-    //           (a, b)->b, Object2IntOpenHashMap::new
-    //   ));
-    //
+    private static void init() {
+        if (!BIOME2COLOR.isEmpty())
+            return;
+
+        BIOME2COLOR.put(TFBiomes.stream             .get(), new Color(0, 0x66, 255));
+        BIOME2COLOR.put(TFBiomes.tfLake             .get(), new Color(0, 0x44, 255));
+        BIOME2COLOR.put(TFBiomes.clearing           .get(), new Color(180, 220, 100));
+        BIOME2COLOR.put(TFBiomes.oakSavanna         .get(), new Color(250, 240, 150));
+        BIOME2COLOR.put(TFBiomes.twilightForest     .get(), new Color(100, 128, 100));
+        BIOME2COLOR.put(TFBiomes.denseTwilightForest.get(), new Color(50, 100, 50));
+        BIOME2COLOR.put(TFBiomes.fireflyForest      .get(), new Color(150, 255, 0));
+        BIOME2COLOR.put(TFBiomes.enchantedForest    .get(), new Color(255, 100, 255));
+        BIOME2COLOR.put(TFBiomes.mushrooms          .get(), new Color(255, 100, 80));
+        BIOME2COLOR.put(TFBiomes.deepMushrooms      .get(), new Color(200, 80, 80));
+
+        BIOME2COLOR.put(TFBiomes.tfSwamp            .get(), new Color(128, 0, 0));
+        BIOME2COLOR.put(TFBiomes.fireSwamp          .get(), new Color(128, 0x22, 0));
+
+        BIOME2COLOR.put(TFBiomes.darkForest         .get(), new Color(0, 60, 0));
+        BIOME2COLOR.put(TFBiomes.darkForestCenter   .get(), new Color(0, 80, 0));
+
+        BIOME2COLOR.put(TFBiomes.snowy_forest       .get(), new Color(220, 240, 240));
+        BIOME2COLOR.put(TFBiomes.glacier            .get(), new Color(180, 255, 255));
+
+        BIOME2COLOR.put(TFBiomes.highlands          .get(), new Color(100, 65, 0));
+        BIOME2COLOR.put(TFBiomes.thornlands         .get(), new Color(128, 100, 90));
+        BIOME2COLOR.put(TFBiomes.highlandsCenter    .get(), new Color(128, 128, 128));
+    }
 
     public static LiteralArgumentBuilder<CommandSource> register() {
         // TODO elevate command perm
@@ -66,23 +66,26 @@ public class MapBiomesCommand {
     }
 
     private static int execute(CommandContext<CommandSource> source) {
+        init();
+
         //setup image
         Map<Biome, Integer> biomeCount = new HashMap<>();
-        BufferedImage img = new BufferedImage(2048, 2048, BufferedImage.TYPE_INT_RGB);
+        BufferedImage img = new BufferedImage(4096, 4096, BufferedImage.TYPE_INT_RGB);
 
         int progressUpdate = img.getHeight() / 8;
 
         for (int x = 0; x < img.getHeight(); x++) {
             for (int z = 0; z < img.getWidth(); z++) {
-                Biome b = source.getSource().getWorld().getNoiseBiome(x - 1024, 0, z - 1024);
-                Integer color = BIOME2COLOR.get(b.delegate);
+                Biome b = source.getSource().getWorld().getNoiseBiome(x - 2048, 0, z - 2048);
+                Color color = BIOME2COLOR.get(b);
 
-                if ( color == null || (color & 0xFFFFFF) == 0) {
-                    BIOME2COLOR.put(b.delegate, color = (ItemTFMagicMap.getBiomeColor(b) | 0xFF000000));
-                }
+                if (color == null) {
+                    int colorInt = ItemTFMagicMap.getBiomeColor(b);
 
-                if ((color & 0xFFFFFF) == 0) {
-                    BIOME2COLOR.put(b.delegate, color = (ItemTFMagicMap.getBiomeColor(b) | 0xFF000000));
+                    if (colorInt == 0)
+                        colorInt = b.getGrassColor(0, 0);
+
+                    BIOME2COLOR.put(b, color = new Color(colorInt | 0xFF000000));
                 }
 
                 if (!biomeCount.containsKey(b)) {
@@ -92,7 +95,7 @@ public class MapBiomesCommand {
                 }
 
                 //set the color
-                img.setRGB(x, z, color);
+                img.setRGB(x, z, color.getRGB());
             }
 
             //send a progress update to let people know the server isn't dying

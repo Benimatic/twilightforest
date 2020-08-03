@@ -38,13 +38,15 @@ public class GenLayerTFBiomes implements IAreaTransformer0 {
 
 	@Override
 	public int apply(INoiseRandom iNoiseRandom, int x, int y) {
-		if (iNoiseRandom.random(RARE_BIOME_CHANCE) == 0) {
+		return Registry.BIOME.getId(getRandomBiome(iNoiseRandom, commonBiomes));
+
+		/*if (iNoiseRandom.random(RARE_BIOME_CHANCE) == 0) {
 			// make rare biome
 			return Registry.BIOME.getId(getRandomBiome(iNoiseRandom, rareBiomes));
 		} else {
 			// make common biome
 			return Registry.BIOME.getId(getRandomBiome(iNoiseRandom, commonBiomes));
-		}
+		}*/
 	}
 
 	private Biome getRandomBiome(INoiseRandom random, List<Supplier<Biome>> biomes) {

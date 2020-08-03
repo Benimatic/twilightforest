@@ -187,6 +187,7 @@ public class TFBiomeDecorator {
 	}
 
 	public static void addCanopyAlt(Biome biome, float chance) {
+		// FIXME the chance here is being used to conditionally register the decorator
 		if (random.nextFloat() < chance) {
 			biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TFBiomeFeatures.CANOPY_MUSHROOM.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(TFConfig.COMMON_CONFIG.PERFORMANCE.canopyCoverage.get().intValue(), 0.1F, 1))));
 		} else {
@@ -195,9 +196,7 @@ public class TFBiomeDecorator {
 	}
 
 	public static void addCanopySavannah(Biome biome) {
-		if (random.nextFloat() > 0.8F) {
-			biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TFBiomeFeatures.CANOPY_OAK.get().withConfiguration(CANOPY_OAK_CONFIG).withPlacement(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(TFConfig.COMMON_CONFIG.PERFORMANCE.canopyCoverage.get().intValue(), 0.1F, 1))));
-		}
+		biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TFBiomeFeatures.CANOPY_OAK.get().withConfiguration(CANOPY_OAK_CONFIG).withPlacement(Placement.COUNT_EXTRA_HEIGHTMAP.configure(new AtSurfaceWithExtraConfig(TFConfig.COMMON_CONFIG.PERFORMANCE.canopyCoverage.get().intValue(), 0.1F, 1))));
 	}
 
 	public static void addMultipleTrees(Biome biome, MultipleRandomFeatureConfig trees, int count) {
@@ -289,6 +288,7 @@ public class TFBiomeDecorator {
 	}
 
 	public static void addMushroomsDark(Biome biome) {
+		// FIXME the random here is being used to conditionally register the decorator
 		if (random.nextInt(8) == 0)
 			biome.addFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Feature.RANDOM_PATCH.withConfiguration(DefaultBiomeFeatures.BROWN_MUSHROOM_CONFIG).withPlacement(Placement.COUNT_HEIGHTMAP.configure(new FrequencyConfig(2))));
 		if (random.nextInt(16) == 0)
