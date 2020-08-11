@@ -1,16 +1,12 @@
 package twilightforest.data;
 
 import com.google.gson.JsonObject;
-import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.*;
-import net.minecraft.item.Item;
 import net.minecraft.item.Items;
+import net.minecraft.item.crafting.CookingRecipeSerializer;
+import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.tags.ITag;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.util.IItemProvider;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.ConditionalRecipe;
 import twilightforest.TwilightForestMod;
@@ -20,23 +16,8 @@ import twilightforest.item.recipe.UncraftingEnabledCondition;
 
 import java.nio.file.Path;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public class CraftingGenerator extends CraftingShapes {
-	// TODO these should be moved to ItemTagGenerator
-	public static final ITag.INamedTag<Item> ARCTIC_FUR = ItemTags.makeWrapperTag(TwilightForestMod.prefix("arctic_fur").toString());
-	public static final ITag.INamedTag<Item> CARMINITE = ItemTags.makeWrapperTag(TwilightForestMod.prefix("carminite").toString());
-	public static final ITag.INamedTag<Item> FIERY_INGOTS = ItemTags.makeWrapperTag(TwilightForestMod.prefix("fiery_ingots").toString());
-	public static final ITag.INamedTag<Item> IRONWOOD_INGOTS = ItemTags.makeWrapperTag(TwilightForestMod.prefix("ironwood_ingots").toString());
-	public static final ITag.INamedTag<Item> KNIGHTMETAL_INGOTS = ItemTags.makeWrapperTag(TwilightForestMod.prefix("knightmetal_ingots").toString());
-	public static final ITag.INamedTag<Item> STEELEAF_INGOTS = ItemTags.makeWrapperTag(TwilightForestMod.prefix("steeleaf_ingots").toString());
-	public static final ITag.INamedTag<Item> ARCTIC_FUR_BLOCKS = ItemTags.makeWrapperTag(TwilightForestMod.prefix("arctic_fur").toString());
-	public static final ITag.INamedTag<Item> CARMINITE_BLOCKS = ItemTags.makeWrapperTag(TwilightForestMod.prefix("carminite").toString());
-	public static final ITag.INamedTag<Item> FIERY_BLOCKS = ItemTags.makeWrapperTag(TwilightForestMod.prefix("fiery_ingots").toString());
-	public static final ITag.INamedTag<Item> IRONWOOD_BLOCKS = ItemTags.makeWrapperTag(TwilightForestMod.prefix("ironwood_ingots").toString());
-	public static final ITag.INamedTag<Item> KNIGHTMETAL_BLOCKS = ItemTags.makeWrapperTag(TwilightForestMod.prefix("knightmetal_ingots").toString());
-	public static final ITag.INamedTag<Item> STEELEAF_BLOCKS = ItemTags.makeWrapperTag(TwilightForestMod.prefix("steeleaf_ingots").toString());
-
 	public CraftingGenerator(DataGenerator generator) {
 		super(generator);
 	}
@@ -52,8 +33,9 @@ public class CraftingGenerator extends CraftingShapes {
 		// The Recipe Builder currently doesn't support enchantment-resulting recipes, those must be manually created.
 		blockCompressionRecipes(consumer);
 		equipmentRecipes(consumer);
-		mapRecipes(consumer);
+		emptyMapRecipes(consumer);
 		woodRecipes(consumer);
+		fieryConversions(consumer);
 
 		nagastoneRecipes(consumer);
 		castleRecipes(consumer);
@@ -106,45 +88,95 @@ public class CraftingGenerator extends CraftingShapes {
 				.build(consumer, TwilightForestMod.prefix("uncrafting_table"));
 
 		// Patchouli books would also go here, except they also must craft-result with NBT data.
+
+		cookingRecipes(consumer, "smelted", IRecipeSerializer.SMELTING, 200);
+		cookingRecipes(consumer, "smoked", IRecipeSerializer.SMOKING, 100);
+		cookingRecipes(consumer, "campfired", IRecipeSerializer.CAMPFIRE_COOKING, 600);
+
+		ingotRecipes(consumer, "smelted", IRecipeSerializer.SMELTING, 200);
+		ingotRecipes(consumer, "blasted", IRecipeSerializer.BLASTING, 100);
+
+		ShapelessRecipeBuilder.shapelessRecipe(TFItems.armor_shard_cluster.get())
+				.addIngredient(Ingredient.fromItems(TFItems.armor_shard.get()))
+				.addIngredient(Ingredient.fromItems(TFItems.armor_shard.get()))
+				.addIngredient(Ingredient.fromItems(TFItems.armor_shard.get()))
+				.addIngredient(Ingredient.fromItems(TFItems.armor_shard.get()))
+				.addIngredient(Ingredient.fromItems(TFItems.armor_shard.get()))
+				.addIngredient(Ingredient.fromItems(TFItems.armor_shard.get()))
+				.addIngredient(Ingredient.fromItems(TFItems.armor_shard.get()))
+				.addIngredient(Ingredient.fromItems(TFItems.armor_shard.get()))
+				.addIngredient(Ingredient.fromItems(TFItems.armor_shard.get()))
+				.addCriterion("has_item", hasItem(TFItems.armor_shard.get()))
+				.build(consumer, TwilightForestMod.prefix("material/" + TFItems.armor_shard_cluster.getId().getPath()));
+
+		ShapelessRecipeBuilder.shapelessRecipe(TFItems.carminite.get())
+				.addIngredient(Ingredient.fromItems(TFItems.borer_essence.get()))
+				.addIngredient(Tags.Items.DUSTS_REDSTONE)
+				.addIngredient(Tags.Items.DUSTS_REDSTONE)
+				.addIngredient(Tags.Items.DUSTS_REDSTONE)
+				.addIngredient(Tags.Items.DUSTS_REDSTONE)
+				.addIngredient(Tags.Items.DUSTS_GLOWSTONE)
+				.addIngredient(Tags.Items.DUSTS_GLOWSTONE)
+				.addIngredient(Tags.Items.DUSTS_GLOWSTONE)
+				.addIngredient(Tags.Items.DUSTS_GLOWSTONE)
+				.addCriterion("has_item", hasItem(TFItems.borer_essence.get()))
+				.build(consumer, TwilightForestMod.prefix("material/" + TFItems.carminite.getId().getPath()));
+
+		ShapelessRecipeBuilder.shapelessRecipe(TFItems.ironwood_raw.get())
+				.addIngredient(Ingredient.fromItems(TFItems.liveroot.get()))
+				.addIngredient(Tags.Items.INGOTS_IRON)
+				.addIngredient(Tags.Items.NUGGETS_GOLD)
+				.addCriterion("has_item", hasItem(TFItems.liveroot.get()))
+				.build(consumer, TwilightForestMod.prefix("material/" + TFItems.ironwood_raw.getId().getPath()));
 	}
 
 	private void equipmentRecipes(Consumer<IFinishedRecipe> consumer) {
-		bootsItem(consumer, "arctic_boots", TFItems.arctic_boots, ARCTIC_FUR);
-		chestplateItem(consumer, "arctic_chestplate", TFItems.arctic_chestplate, ARCTIC_FUR);
-		helmetItem(consumer, "arctic_helmet", TFItems.arctic_helmet, ARCTIC_FUR);
-		leggingsItem(consumer, "arctic_leggings", TFItems.arctic_leggings, ARCTIC_FUR);
+		bootsItem(consumer, "arctic_boots", TFItems.arctic_boots, ItemTagGenerator.ARCTIC_FUR);
+		chestplateItem(consumer, "arctic_chestplate", TFItems.arctic_chestplate, ItemTagGenerator.ARCTIC_FUR);
+		helmetItem(consumer, "arctic_helmet", TFItems.arctic_helmet, ItemTagGenerator.ARCTIC_FUR);
+		leggingsItem(consumer, "arctic_leggings", TFItems.arctic_leggings, ItemTagGenerator.ARCTIC_FUR);
 
-		bootsItem(consumer, "fiery_boots", TFItems.fiery_boots, FIERY_INGOTS);
-		chestplateItem(consumer, "fiery_chestplate", TFItems.fiery_chestplate, FIERY_INGOTS);
-		helmetItem(consumer, "fiery_helmet", TFItems.fiery_helmet, FIERY_INGOTS);
-		leggingsItem(consumer, "fiery_leggings", TFItems.fiery_leggings, FIERY_INGOTS);
-		pickaxeItem(consumer, "fiery_pickaxe", TFItems.fiery_pickaxe, FIERY_INGOTS, Tags.Items.RODS_BLAZE);
+		bootsItem(consumer, "fiery_boots", TFItems.fiery_boots, ItemTagGenerator.FIERY_INGOTS);
+		chestplateItem(consumer, "fiery_chestplate", TFItems.fiery_chestplate, ItemTagGenerator.FIERY_INGOTS);
+		helmetItem(consumer, "fiery_helmet", TFItems.fiery_helmet, ItemTagGenerator.FIERY_INGOTS);
+		leggingsItem(consumer, "fiery_leggings", TFItems.fiery_leggings, ItemTagGenerator.FIERY_INGOTS);
+		pickaxeItem(consumer, "fiery_pickaxe", TFItems.fiery_pickaxe, ItemTagGenerator.FIERY_INGOTS, Tags.Items.RODS_BLAZE);
 		// Sword has Fire Aspect; manual
 
-		bootsItem(consumer, "knightmetal_boots", TFItems.knightmetal_boots, KNIGHTMETAL_INGOTS);
-		chestplateItem(consumer, "knightmetal_chestplate", TFItems.knightmetal_chestplate, KNIGHTMETAL_INGOTS);
-		helmetItem(consumer, "knightmetal_helmet", TFItems.knightmetal_helmet, KNIGHTMETAL_INGOTS);
-		leggingsItem(consumer, "knightmetal_leggings", TFItems.knightmetal_leggings, KNIGHTMETAL_INGOTS);
-		pickaxeItem(consumer, "knightmetal_pickaxe", TFItems.knightmetal_pickaxe, KNIGHTMETAL_INGOTS, Tags.Items.RODS_WOODEN);
-		swordItem(consumer, "knightmetal_sword", TFItems.knightmetal_sword, KNIGHTMETAL_INGOTS, Tags.Items.RODS_WOODEN);
+		bootsItem(consumer, "knightmetal_boots", TFItems.knightmetal_boots, ItemTagGenerator.KNIGHTMETAL_INGOTS);
+		chestplateItem(consumer, "knightmetal_chestplate", TFItems.knightmetal_chestplate, ItemTagGenerator.KNIGHTMETAL_INGOTS);
+		helmetItem(consumer, "knightmetal_helmet", TFItems.knightmetal_helmet, ItemTagGenerator.KNIGHTMETAL_INGOTS);
+		leggingsItem(consumer, "knightmetal_leggings", TFItems.knightmetal_leggings, ItemTagGenerator.KNIGHTMETAL_INGOTS);
+		pickaxeItem(consumer, "knightmetal_pickaxe", TFItems.knightmetal_pickaxe, ItemTagGenerator.KNIGHTMETAL_INGOTS, Tags.Items.RODS_WOODEN);
+		swordItem(consumer, "knightmetal_sword", TFItems.knightmetal_sword, ItemTagGenerator.KNIGHTMETAL_INGOTS, Tags.Items.RODS_WOODEN);
+
+		ShapelessRecipeBuilder.shapelessRecipe(TFItems.block_and_chain.get())
+				.addIngredient(ItemTagGenerator.STORAGE_BLOCKS_KNIGHTMETAL)
+				.addIngredient(ItemTagGenerator.KNIGHTMETAL_INGOTS)
+				.addIngredient(ItemTagGenerator.KNIGHTMETAL_INGOTS)
+				.addIngredient(ItemTagGenerator.KNIGHTMETAL_INGOTS)
+				.addIngredient(Ingredient.fromItems(TFItems.knightmetal_ring.get()))
+				.addCriterion("has_item", hasItem(TFBlocks.knightmetal_block.get()))
+				.build(consumer, locEquip(TFItems.block_and_chain.getId().getPath()));
 	}
 
 	private void blockCompressionRecipes(Consumer<IFinishedRecipe> consumer) {
-		reverseCompressBlock(consumer, "arctic_block_to_item", TFItems.arctic_fur, ARCTIC_FUR_BLOCKS);
-		reverseCompressBlock(consumer, "carminite_block_to_item", TFItems.carminite, CARMINITE_BLOCKS);
-		reverseCompressBlock(consumer, "fiery_block_to_ingot", TFItems.fiery_ingot, FIERY_BLOCKS);
-		reverseCompressBlock(consumer, "ironwood_block_ingot", TFItems.ironwood_ingot, IRONWOOD_BLOCKS);
-		reverseCompressBlock(consumer, "knightmetal_block_ingot", TFItems.knightmetal_ingot, KNIGHTMETAL_BLOCKS);
-		reverseCompressBlock(consumer, "steeleaf_block_ingot", TFItems.steeleaf_ingot, STEELEAF_BLOCKS);
-		compressedBlock(consumer, "arctic_block", TFBlocks.arctic_fur_block, ARCTIC_FUR);
-		compressedBlock(consumer, "carminite_block", TFBlocks.carminite_block, CARMINITE);
-		compressedBlock(consumer, "fiery_block", TFBlocks.fiery_block, FIERY_INGOTS);
-		compressedBlock(consumer, "ironwood_block", TFBlocks.ironwood_block, IRONWOOD_INGOTS);
-		compressedBlock(consumer, "knightmetal_block", TFBlocks.knightmetal_block, KNIGHTMETAL_INGOTS);
-		compressedBlock(consumer, "steeleaf_block", TFBlocks.steeleaf_block, STEELEAF_INGOTS);
+		reverseCompressBlock(consumer, "arctic_block_to_item", TFItems.arctic_fur, ItemTagGenerator.STORAGE_BLOCKS_ARCTIC_FUR);
+		reverseCompressBlock(consumer, "carminite_block_to_item", TFItems.carminite, ItemTagGenerator.STORAGE_BLOCKS_CARMINITE);
+		reverseCompressBlock(consumer, "fiery_block_to_ingot", TFItems.fiery_ingot, ItemTagGenerator.STORAGE_BLOCKS_FIERY);
+		reverseCompressBlock(consumer, "ironwood_block_ingot", TFItems.ironwood_ingot, ItemTagGenerator.STORAGE_BLOCKS_IRONWOOD);
+		reverseCompressBlock(consumer, "knightmetal_block_ingot", TFItems.knightmetal_ingot,ItemTagGenerator.STORAGE_BLOCKS_KNIGHTMETAL);
+		reverseCompressBlock(consumer, "steeleaf_block_ingot", TFItems.steeleaf_ingot, ItemTagGenerator.STORAGE_BLOCKS_STEELEAF);
+
+		compressedBlock(consumer, "arctic_block", TFBlocks.arctic_fur_block, ItemTagGenerator.ARCTIC_FUR);
+		compressedBlock(consumer, "carminite_block", TFBlocks.carminite_block, ItemTagGenerator.CARMINITE_GEMS);
+		compressedBlock(consumer, "fiery_block", TFBlocks.fiery_block, ItemTagGenerator.FIERY_INGOTS);
+		compressedBlock(consumer, "ironwood_block", TFBlocks.ironwood_block, ItemTagGenerator.IRONWOOD_INGOTS);
+		compressedBlock(consumer, "knightmetal_block", TFBlocks.knightmetal_block, ItemTagGenerator.KNIGHTMETAL_INGOTS);
+		compressedBlock(consumer, "steeleaf_block", TFBlocks.steeleaf_block, ItemTagGenerator.STEELEAF_INGOTS);
 	}
 
-	private void mapRecipes(Consumer<IFinishedRecipe> consumer) {
+	private void emptyMapRecipes(Consumer<IFinishedRecipe> consumer) {
 		ShapelessRecipeBuilder.shapelessRecipe(TFItems.magic_map_focus.get())
 				.addIngredient(TFItems.raven_feather.get())
 				.addIngredient(TFItems.torchberries.get())
@@ -263,12 +295,47 @@ public class CraftingGenerator extends CraftingShapes {
 	}
 
 	private void nagastoneRecipes(Consumer<IFinishedRecipe> consumer) {
+		ShapedRecipeBuilder.shapedRecipe(TFBlocks.spiral_bricks.get(), 8)
+				.patternLine("BSS")
+				.patternLine("BSS")
+				.patternLine("BBB")
+				.key('B', Ingredient.fromItems(Blocks.STONE_BRICKS, Blocks.MOSSY_STONE_BRICKS, Blocks.CRACKED_STONE_BRICKS, Blocks.CHISELED_STONE_BRICKS))//Ingredient.merge(ImmutableList.of(Ingredient.fromTag(Tags.Items.STONE), Ingredient.fromItems(Blocks.STONE_BRICKS, Blocks.MOSSY_STONE_BRICKS, Blocks.CRACKED_STONE_BRICKS, Blocks.CHISELED_STONE_BRICKS))))
+				.key('S', Ingredient.fromItems(Blocks.STONE_SLAB, Blocks.STONE_BRICK_SLAB))
+				.addCriterion("has_item", hasItem(TFBlocks.spiral_bricks.get()))
+				.build(consumer, locNaga("nagastone_spiral"));
+
 		stairsBlock(consumer, locNaga("nagastone_stairs_left"), TFBlocks.nagastone_stairs_left, TFBlocks.etched_nagastone.get());
 		stairsRightBlock(consumer, locNaga("nagastone_stairs_right"), TFBlocks.nagastone_stairs_right, TFBlocks.etched_nagastone.get());
+
+		ShapelessRecipeBuilder.shapelessRecipe(TFBlocks.etched_nagastone.get(), 3)
+				.addIngredient(Ingredient.fromItems(TFBlocks.nagastone_stairs_left.get(), TFBlocks.nagastone_stairs_right.get()))
+				.addIngredient(Ingredient.fromItems(TFBlocks.nagastone_stairs_left.get(), TFBlocks.nagastone_stairs_right.get()))
+				.addIngredient(Ingredient.fromItems(TFBlocks.nagastone_stairs_left.get(), TFBlocks.nagastone_stairs_right.get()))
+				.addIngredient(Ingredient.fromItems(TFBlocks.nagastone_stairs_left.get(), TFBlocks.nagastone_stairs_right.get()))
+				.addCriterion("has_item", hasItem(TFBlocks.etched_nagastone.get()))
+				.build(consumer, locNaga("nagastone_stairs_reverse"));
+
 		stairsBlock(consumer, locNaga("nagastone_stairs_left_mossy"), TFBlocks.nagastone_stairs_mossy_left, TFBlocks.etched_nagastone_mossy.get());
 		stairsRightBlock(consumer, locNaga("nagastone_stairs_right_mossy"), TFBlocks.nagastone_stairs_mossy_right, TFBlocks.etched_nagastone_mossy.get());
+
+		ShapelessRecipeBuilder.shapelessRecipe(TFBlocks.etched_nagastone_mossy.get(), 3)
+				.addIngredient(Ingredient.fromItems(TFBlocks.nagastone_stairs_mossy_left.get(), TFBlocks.nagastone_stairs_mossy_right.get()))
+				.addIngredient(Ingredient.fromItems(TFBlocks.nagastone_stairs_mossy_left.get(), TFBlocks.nagastone_stairs_mossy_right.get()))
+				.addIngredient(Ingredient.fromItems(TFBlocks.nagastone_stairs_mossy_left.get(), TFBlocks.nagastone_stairs_mossy_right.get()))
+				.addIngredient(Ingredient.fromItems(TFBlocks.nagastone_stairs_mossy_left.get(), TFBlocks.nagastone_stairs_mossy_right.get()))
+				.addCriterion("has_item", hasItem(TFBlocks.etched_nagastone_mossy.get()))
+				.build(consumer, locNaga("nagastone_stairs_mossy_reverse"));
+
 		stairsBlock(consumer, locNaga("nagastone_stairs_left_weathered"), TFBlocks.nagastone_stairs_weathered_left, TFBlocks.etched_nagastone_weathered.get());
 		stairsRightBlock(consumer, locNaga("nagastone_stairs_right_weathered"), TFBlocks.nagastone_stairs_weathered_right, TFBlocks.etched_nagastone_weathered.get());
+
+		ShapelessRecipeBuilder.shapelessRecipe(TFBlocks.etched_nagastone_weathered.get(), 3)
+				.addIngredient(Ingredient.fromItems(TFBlocks.nagastone_stairs_weathered_left.get(), TFBlocks.nagastone_stairs_weathered_right.get()))
+				.addIngredient(Ingredient.fromItems(TFBlocks.nagastone_stairs_weathered_left.get(), TFBlocks.nagastone_stairs_weathered_right.get()))
+				.addIngredient(Ingredient.fromItems(TFBlocks.nagastone_stairs_weathered_left.get(), TFBlocks.nagastone_stairs_weathered_right.get()))
+				.addIngredient(Ingredient.fromItems(TFBlocks.nagastone_stairs_weathered_left.get(), TFBlocks.nagastone_stairs_weathered_right.get()))
+				.addCriterion("has_item", hasItem(TFBlocks.etched_nagastone_weathered.get()))
+				.build(consumer, locNaga("nagastone_stairs_weathered_reverse"));
 	}
 
 	private void castleRecipes(Consumer<IFinishedRecipe> consumer) {
@@ -295,5 +362,73 @@ public class CraftingGenerator extends CraftingShapes {
 		reverseStairsBlock(consumer, locCastle("castleblock_stairs_mossy_reverse"), TFBlocks.castle_brick_mossy, TFBlocks.castle_stairs_mossy.get());
 		stairsBlock(consumer, locCastle("castleblock_stairs_worn"), TFBlocks.castle_stairs_worn, TFBlocks.castle_brick_worn.get());
 		reverseStairsBlock(consumer, locCastle("castleblock_stairs_worn_reverse"), TFBlocks.castle_brick_worn, TFBlocks.castle_stairs_worn.get());
+	}
+
+	private void fieryConversions(Consumer<IFinishedRecipe> consumer) {
+		SmithingRecipeBuilder.func_240502_a_(Ingredient.fromItems(Items.IRON_INGOT), Ingredient.fromTag(ItemTagGenerator.FIERY_VIAL), TFItems.fiery_ingot.get()).func_240503_a_("has_item", hasItem(TFItems.fiery_ingot.get())).func_240505_a_(consumer, TwilightForestMod.prefix("material/fiery_iron_ingot"));
+
+		ShapelessRecipeBuilder.shapelessRecipe(TFItems.fiery_helmet.get())
+				.addIngredient(Ingredient.fromItems(Items.IRON_HELMET))
+				.addIngredient(ItemTagGenerator.FIERY_VIAL)
+				.addIngredient(ItemTagGenerator.FIERY_VIAL)
+				.addIngredient(ItemTagGenerator.FIERY_VIAL)
+				.addIngredient(ItemTagGenerator.FIERY_VIAL)
+				.addIngredient(ItemTagGenerator.FIERY_VIAL)
+				.addCriterion("has_item", hasItem(TFItems.fiery_helmet.get()))
+				.build(consumer, TwilightForestMod.prefix("equipment/fiery_iron_helmet"));
+
+		ShapelessRecipeBuilder.shapelessRecipe(TFItems.fiery_chestplate.get())
+				.addIngredient(Ingredient.fromItems(Items.IRON_CHESTPLATE))
+				.addIngredient(ItemTagGenerator.FIERY_VIAL)
+				.addIngredient(ItemTagGenerator.FIERY_VIAL)
+				.addIngredient(ItemTagGenerator.FIERY_VIAL)
+				.addIngredient(ItemTagGenerator.FIERY_VIAL)
+				.addIngredient(ItemTagGenerator.FIERY_VIAL)
+				.addIngredient(ItemTagGenerator.FIERY_VIAL)
+				.addIngredient(ItemTagGenerator.FIERY_VIAL)
+				.addIngredient(ItemTagGenerator.FIERY_VIAL)
+				.addCriterion("has_item", hasItem(TFItems.fiery_chestplate.get()))
+				.build(consumer, TwilightForestMod.prefix("equipment/fiery_iron_chestplate"));
+
+		ShapelessRecipeBuilder.shapelessRecipe(TFItems.fiery_leggings.get())
+				.addIngredient(Ingredient.fromItems(Items.IRON_LEGGINGS))
+				.addIngredient(ItemTagGenerator.FIERY_VIAL)
+				.addIngredient(ItemTagGenerator.FIERY_VIAL)
+				.addIngredient(ItemTagGenerator.FIERY_VIAL)
+				.addIngredient(ItemTagGenerator.FIERY_VIAL)
+				.addIngredient(ItemTagGenerator.FIERY_VIAL)
+				.addIngredient(ItemTagGenerator.FIERY_VIAL)
+				.addIngredient(ItemTagGenerator.FIERY_VIAL)
+				.addCriterion("has_item", hasItem(TFItems.fiery_leggings.get()))
+				.build(consumer, TwilightForestMod.prefix("equipment/fiery_iron_leggings"));
+
+		ShapelessRecipeBuilder.shapelessRecipe(TFItems.fiery_boots.get())
+				.addIngredient(Ingredient.fromItems(Items.IRON_BOOTS))
+				.addIngredient(ItemTagGenerator.FIERY_VIAL)
+				.addIngredient(ItemTagGenerator.FIERY_VIAL)
+				.addIngredient(ItemTagGenerator.FIERY_VIAL)
+				.addIngredient(ItemTagGenerator.FIERY_VIAL)
+				.addCriterion("has_item", hasItem(TFItems.fiery_boots.get()))
+				.build(consumer, TwilightForestMod.prefix("equipment/fiery_iron_boots"));
+
+		ShapelessRecipeBuilder.shapelessRecipe(TFItems.fiery_pickaxe.get())
+				.addIngredient(Ingredient.fromItems(Items.IRON_PICKAXE))
+				.addIngredient(ItemTagGenerator.FIERY_VIAL)
+				.addIngredient(ItemTagGenerator.FIERY_VIAL)
+				.addIngredient(ItemTagGenerator.FIERY_VIAL)
+				.addIngredient(Tags.Items.RODS_BLAZE)
+				.addIngredient(Tags.Items.RODS_BLAZE)
+				.addCriterion("has_item", hasItem(TFItems.fiery_pickaxe.get()))
+				.build(consumer, TwilightForestMod.prefix("equipment/fiery_iron_pickaxe"));
+	}
+
+	private void cookingRecipes(Consumer<IFinishedRecipe> consumer, String processName, CookingRecipeSerializer<?> process, int smeltingTime) {
+		CookingRecipeBuilder.cookingRecipe(Ingredient.fromItems(TFItems.raw_meef.get()), TFItems.cooked_meef.get(), 0.3f, smeltingTime, process).addCriterion("has_food", hasItem(TFItems.raw_meef.get())).build(consumer, TwilightForestMod.prefix("food/" + processName + "_meef").toString());
+		CookingRecipeBuilder.cookingRecipe(Ingredient.fromItems(TFItems.raw_venison.get()), TFItems.cooked_venison.get(), 0.3f, smeltingTime, process).addCriterion("has_food", hasItem(TFItems.raw_venison.get())).build(consumer, TwilightForestMod.prefix("food/" + processName + "_venison").toString());
+	}
+
+	private void ingotRecipes(Consumer<IFinishedRecipe> consumer, String processName, CookingRecipeSerializer<?> process, int smeltingTime) {
+		CookingRecipeBuilder.cookingRecipe(Ingredient.fromItems(TFItems.armor_shard_cluster.get()), TFItems.knightmetal_ingot.get(), 1.0f, smeltingTime, process).addCriterion("has_item", hasItem(TFItems.armor_shard_cluster.get())).build(consumer, TwilightForestMod.prefix( "material/" + processName + "_knightmetal_ingot").toString());
+		CookingRecipeBuilder.cookingRecipe(Ingredient.fromItems(TFItems.ironwood_raw.get()), TFItems.ironwood_ingot.get(), 1.0f, smeltingTime, process).addCriterion("has_item", hasItem(TFItems.ironwood_raw.get())).build(consumer, TwilightForestMod.prefix("material/" + processName + "_ironwood_ingot").toString());
 	}
 }

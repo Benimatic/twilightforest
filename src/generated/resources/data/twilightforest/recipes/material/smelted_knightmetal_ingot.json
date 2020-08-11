@@ -1,7 +1,7 @@
 {
   "type": "minecraft:smelting",
   "ingredient": {
-    "tag": "twilightforest:knightmetal_ores"
+    "item": "twilightforest:armor_shard_cluster"
   },
   "result": "twilightforest:knightmetal_ingot",
   "experience": 1.0,

@@ -1,9 +1,5 @@
 {
-  "result": {
-    "item": "twilightforest:etched_nagastone",
-    "count": 3
-  },
-  "group": "nagastone_stairs_reverse",
+  "type": "minecraft:crafting_shapeless",
   "ingredients": [
     [
       {
@@ -38,5 +34,8 @@
       }
     ]
   ],
-  "type": "minecraft:crafting_shapeless"
+  "result": {
+    "item": "twilightforest:etched_nagastone",
+    "count": 3
+  }
 }

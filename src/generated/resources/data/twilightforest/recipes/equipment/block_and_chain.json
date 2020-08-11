@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "twilightforest:storage_blocks/knightmetal"
+    },
+    {
+      "tag": "twilightforest:ingots/knightmetal"
+    },
+    {
+      "tag": "twilightforest:ingots/knightmetal"
+    },
+    {
+      "tag": "twilightforest:ingots/knightmetal"
+    },
+    {
+      "item": "twilightforest:knightmetal_ring"
+    }
+  ],
+  "result": {
+    "item": "twilightforest:block_and_chain"
+  }
+}
