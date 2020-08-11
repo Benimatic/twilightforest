@@ -46,9 +46,9 @@ public class EntityTFLoyalZombie extends TameableEntity {
 
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MobEntity.func_233666_p_()
-				.func_233815_a_(Attributes.MAX_HEALTH, 40.0D)
-				.func_233815_a_(Attributes.MOVEMENT_SPEED, 0.3D)
-				.func_233815_a_(Attributes.ARMOR, 3.0D);
+				.createMutableAttribute(Attributes.MAX_HEALTH, 40.0D)
+				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.3D)
+				.createMutableAttribute(Attributes.ARMOR, 3.0D);
 	}
 
 	@Override

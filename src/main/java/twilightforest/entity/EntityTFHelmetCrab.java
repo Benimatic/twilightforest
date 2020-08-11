@@ -35,10 +35,10 @@ public class EntityTFHelmetCrab extends MonsterEntity {
 
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MonsterEntity.func_234295_eP_()
-				.func_233815_a_(Attributes.MAX_HEALTH, 13.0D)
-				.func_233815_a_(Attributes.MOVEMENT_SPEED, 0.28D)
-				.func_233815_a_(Attributes.ATTACK_DAMAGE, 3.0D)
-				.func_233815_a_(Attributes.ARMOR, 6.0D);
+				.createMutableAttribute(Attributes.MAX_HEALTH, 13.0D)
+				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.28D)
+				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 3.0D)
+				.createMutableAttribute(Attributes.ARMOR, 6.0D);
 	}
 
 	@Override

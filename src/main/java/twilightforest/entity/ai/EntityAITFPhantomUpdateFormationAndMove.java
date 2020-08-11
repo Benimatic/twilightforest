@@ -38,7 +38,7 @@ public class EntityAITFPhantomUpdateFormationAndMove extends Goal {
 	public Vector3d getDestination() {
 
 		if (!boss.hasHome())
-			boss.setHomePosAndDistance(boss.func_233580_cy_(), 20);
+			boss.setHomePosAndDistance(boss.getPosition(), 20);
 
 		switch (boss.getCurrentFormation()) {
 			case LARGE_CLOCKWISE:

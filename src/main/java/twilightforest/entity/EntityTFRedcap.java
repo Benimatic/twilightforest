@@ -56,8 +56,8 @@ public class EntityTFRedcap extends MonsterEntity {
 
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MonsterEntity.func_234295_eP_()
-				.func_233815_a_(Attributes.MAX_HEALTH, 20.0D)
-				.func_233815_a_(Attributes.MOVEMENT_SPEED, 0.28D);
+				.createMutableAttribute(Attributes.MAX_HEALTH, 20.0D)
+				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.28D);
 	}
 
 	@Override

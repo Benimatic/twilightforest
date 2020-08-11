@@ -44,10 +44,10 @@ public class EntityTFGiantMiner extends MonsterEntity {
 
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MonsterEntity.func_234295_eP_()
-				.func_233815_a_(Attributes.MAX_HEALTH, 80.0D)
-				.func_233815_a_(Attributes.MOVEMENT_SPEED, 0.23D)
-				.func_233815_a_(Attributes.ATTACK_DAMAGE, 2.0D)
-				.func_233815_a_(Attributes.FOLLOW_RANGE, 40.0D);
+				.createMutableAttribute(Attributes.MAX_HEALTH, 80.0D)
+				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.23D)
+				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 2.0D)
+				.createMutableAttribute(Attributes.FOLLOW_RANGE, 40.0D);
 	}
 
 	@Nullable

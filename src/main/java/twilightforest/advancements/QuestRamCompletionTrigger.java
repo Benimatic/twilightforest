@@ -49,7 +49,7 @@ public class QuestRamCompletionTrigger implements ICriterionTrigger<QuestRamComp
     }
 
     @Override
-    public Instance func_230307_a_(JsonObject json, ConditionArrayParser condition) {
+    public Instance deserialize(JsonObject json, ConditionArrayParser condition) {
 		EntityPredicate.AndPredicate player = EntityPredicate.AndPredicate.deserializeJSONObject(json, "player", condition);
 		return new QuestRamCompletionTrigger.Instance(player);
     }

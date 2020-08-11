@@ -106,8 +106,8 @@ public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MobEntity.func_233666_p_()
-				.func_233815_a_(Attributes.MAX_HEALTH, MAX_HEALTH)
-				.func_233815_a_(Attributes.MOVEMENT_SPEED, 0.28D);
+				.createMutableAttribute(Attributes.MAX_HEALTH, MAX_HEALTH)
+				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.28D);
 	}
 
 	@Override
@@ -125,7 +125,7 @@ public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 	@Override
 	public void checkDespawn() {
 		if (world.getDifficulty() == Difficulty.PEACEFUL) {
-			world.setBlockState(func_233580_cy_().add(0, 2, 0), TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.HYDRA));
+			world.setBlockState(getPosition().add(0, 2, 0), TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.HYDRA));
 			remove();
 			for (HydraHeadContainer container : hc) {
 				if (container.headEntity != null) {
@@ -730,7 +730,7 @@ public class EntityTFHydra extends MobEntity implements IEntityMultiPart, IMob {
 		super.onDeath(cause);
 		// mark the lair as defeated
 		if (!world.isRemote) {
-			TFGenerationSettings.markStructureConquered(world, new BlockPos(this.func_233580_cy_()), TFFeature.HYDRA_LAIR);
+			TFGenerationSettings.markStructureConquered(world, new BlockPos(this.getPosition()), TFFeature.HYDRA_LAIR);
 		}
 	}
 

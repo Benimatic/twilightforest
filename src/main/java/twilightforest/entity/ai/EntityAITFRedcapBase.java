@@ -32,7 +32,7 @@ public abstract class EntityAITFRedcapBase extends Goal {
 	}
 
 	public BlockPos findBlockTNTNearby(int range) {
-		BlockPos entityPos = new BlockPos(redcap.func_233580_cy_());
+		BlockPos entityPos = new BlockPos(redcap.getPosition());
 
 		for (int x = -range; x <= range; x++) {
 			for (int y = -range; y <= range; y++) {

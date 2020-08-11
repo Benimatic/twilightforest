@@ -62,8 +62,8 @@ public class EntityTFTinyBird extends EntityTFBird {
 
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MobEntity.func_233666_p_()
-				.func_233815_a_(Attributes.MAX_HEALTH, 1.0D)
-				.func_233815_a_(Attributes.MOVEMENT_SPEED, 0.20000001192092896D);
+				.createMutableAttribute(Attributes.MAX_HEALTH, 1.0D)
+				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.20000001192092896D);
 	}
 
 	@Override
@@ -152,7 +152,7 @@ public class EntityTFTinyBird extends EntityTFBird {
 
 			if (isSpooked() || isInWater() || world.containsAnyLiquid(getBoundingBox()) || (this.rand.nextInt(200) == 0 && !isLandableBlock(new BlockPos(getPosX(), getPosY() - 1, getPosZ())))) {
 				this.setIsBirdLanded(false);
-				this.world.playEvent(1025, new BlockPos(this.func_233580_cy_()), 0);
+				this.world.playEvent(1025, new BlockPos(this.getPosition()), 0);
 				this.setMotion(this.getMotion().getX(), 0.4F, this.getMotion().getZ());
 			}
 		} else {

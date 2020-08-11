@@ -49,7 +49,7 @@ public class ActivateGhastTrapTrigger implements ICriterionTrigger<ActivateGhast
     }
 
     @Override
-    public Instance func_230307_a_(JsonObject json, ConditionArrayParser condition) {
+    public Instance deserialize(JsonObject json, ConditionArrayParser condition) {
         EntityPredicate.AndPredicate player = EntityPredicate.AndPredicate.deserializeJSONObject(json, "player", condition);
         return new ActivateGhastTrapTrigger.Instance(player);
     }

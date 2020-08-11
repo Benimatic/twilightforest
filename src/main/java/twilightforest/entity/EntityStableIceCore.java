@@ -36,8 +36,8 @@ public class EntityStableIceCore extends EntityTFIceMob implements IRangedAttack
 
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MonsterEntity.func_234295_eP_()
-				.func_233815_a_(Attributes.MOVEMENT_SPEED, 0.23000000417232513D)
-				.func_233815_a_(Attributes.ATTACK_DAMAGE, 3.0D);
+				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.23000000417232513D)
+				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 3.0D);
 	}
 
 	@Override

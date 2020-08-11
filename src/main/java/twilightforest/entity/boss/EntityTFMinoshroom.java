@@ -64,7 +64,7 @@ public class EntityTFMinoshroom extends EntityTFMinotaur {
 
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return EntityTFMinotaur.registerAttributes()
-				.func_233815_a_(Attributes.MAX_HEALTH, 120.0D);
+				.createMutableAttribute(Attributes.MAX_HEALTH, 120.0D);
 	}
 
 	@Override
@@ -78,12 +78,12 @@ public class EntityTFMinoshroom extends EntityTFMinotaur {
 			} else {
 				this.clientSideChargeAnimation = MathHelper.clamp(this.clientSideChargeAnimation - 1.0F, 0.0F, 6.0F);
 				if (groundSmashState) {
-					BlockState block = world.getBlockState(func_233580_cy_().down());
+					BlockState block = world.getBlockState(getPosition().down());
 
 					for (int i = 0; i < 80; i++) {
-						double cx = func_233580_cy_().getX() + world.rand.nextFloat() * 10F - 5F;
+						double cx = getPosition().getX() + world.rand.nextFloat() * 10F - 5F;
 						double cy = getBoundingBox().minY + 0.1F + world.rand.nextFloat() * 0.3F;
-						double cz = func_233580_cy_().getZ() + world.rand.nextFloat() * 10F - 5F;
+						double cz = getPosition().getZ() + world.rand.nextFloat() * 10F - 5F;
 
 						world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, block), cx, cy, cz, 0D, 0D, 0D);
 					}
@@ -112,7 +112,7 @@ public class EntityTFMinoshroom extends EntityTFMinotaur {
 	public void onDeath(DamageSource cause) {
 		super.onDeath(cause);
 		if (!world.isRemote) {
-			TFGenerationSettings.markStructureConquered(world, new BlockPos(this.func_233580_cy_()), TFFeature.LABYRINTH);
+			TFGenerationSettings.markStructureConquered(world, new BlockPos(this.getPosition()), TFFeature.LABYRINTH);
 		}
 	}
 

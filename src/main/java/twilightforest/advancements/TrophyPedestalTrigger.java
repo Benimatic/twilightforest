@@ -49,7 +49,7 @@ public class TrophyPedestalTrigger implements ICriterionTrigger<TrophyPedestalTr
     }
 
 	@Override
-	public TrophyPedestalTrigger.Instance func_230307_a_(JsonObject json, ConditionArrayParser condition) {
+	public TrophyPedestalTrigger.Instance deserialize(JsonObject json, ConditionArrayParser condition) {
 		EntityPredicate.AndPredicate player = EntityPredicate.AndPredicate.deserializeJSONObject(json, "player", condition);
 		return new TrophyPedestalTrigger.Instance(player);
 	}

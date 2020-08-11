@@ -63,7 +63,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 	}
 
 	private void determineMoveDirection() {
-		BlockPos pos = new BlockPos(this.func_233580_cy_());
+		BlockPos pos = new BlockPos(this.getPosition());
 
 		Direction[] toCheck;
 
@@ -134,7 +134,7 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 					playSound(TFSounds.SLIDER, 1.0F, 0.9F + (this.rand.nextFloat() * 0.4F));
 				}
 
-				BlockPos pos = new BlockPos(this.func_233580_cy_());
+				BlockPos pos = new BlockPos(this.getPosition());
 
 				if (this.slideTime == 1) {
 					if (this.world.getBlockState(pos) != this.myState) {

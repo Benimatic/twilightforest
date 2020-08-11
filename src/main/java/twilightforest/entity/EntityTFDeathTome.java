@@ -44,9 +44,9 @@ public class EntityTFDeathTome extends MonsterEntity implements IRangedAttackMob
 
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MonsterEntity.func_234295_eP_()
-				.func_233815_a_(Attributes.MAX_HEALTH, 30.0D)
-				.func_233815_a_(Attributes.MOVEMENT_SPEED, 0.25D)
-				.func_233815_a_(Attributes.ATTACK_DAMAGE, 4);
+				.createMutableAttribute(Attributes.MAX_HEALTH, 30.0D)
+				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25D)
+				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 4);
 	}
 
 	@Override

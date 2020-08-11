@@ -75,19 +75,17 @@ public class GuiTFGoblinCrafting extends ContainerScreen<ContainerTFUncrafting> 
 	public void render(MatrixStack ms, int mouseX, int mouseY, float partialTicks) {
 		renderBackground(ms);
 		super.render(ms, mouseX, mouseY, partialTicks);
-		func_230450_a_(ms, partialTicks, mouseX, mouseY); //renderHoveredToolTip
+		func_230459_a_(ms, mouseX, mouseY); //renderHoveredToolTip
 	}
 
-	//drawGuiContainerForegroundLayer
 	@Override
-	protected void func_230451_b_(MatrixStack ms, int mouseX, int mouseY) {
+	protected void drawGuiContainerForegroundLayer(MatrixStack ms, int mouseX, int mouseY) {
 		this.font.drawString(ms, I18n.format(TFBlocks.uncrafting_table.get().getTranslationKey()), 8, 6, 4210752);
 		this.font.drawString(ms, I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 
-	//drawGuiContainerBackgroundLayer
 	@Override
-	protected void func_230450_a_(MatrixStack ms, float partialTicks, int mouseX, int mouseY) {
+	protected void drawGuiContainerBackgroundLayer(MatrixStack ms, float partialTicks, int mouseX, int mouseY) {
 		RenderSystem.color4f(1, 1, 1, 1);
 		this.minecraft.getTextureManager().bindTexture(textureLoc);
 		int frameX = (this.width - this.xSize) / 2;

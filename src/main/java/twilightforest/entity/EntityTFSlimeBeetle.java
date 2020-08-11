@@ -40,9 +40,9 @@ public class EntityTFSlimeBeetle extends MonsterEntity implements IRangedAttackM
 
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MonsterEntity.func_234295_eP_()
-				.func_233815_a_(Attributes.MAX_HEALTH, 25.0D)
-				.func_233815_a_(Attributes.MOVEMENT_SPEED, 0.23D)
-				.func_233815_a_(Attributes.ATTACK_DAMAGE, 4);
+				.createMutableAttribute(Attributes.MAX_HEALTH, 25.0D)
+				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.23D)
+				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 4);
 	}
 
 	@Override

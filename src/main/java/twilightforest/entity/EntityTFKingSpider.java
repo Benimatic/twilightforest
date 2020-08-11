@@ -28,9 +28,9 @@ public class EntityTFKingSpider extends SpiderEntity {
 
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return SpiderEntity.func_234305_eI_()
-				.func_233815_a_(Attributes.MAX_HEALTH, 30.0D)
-				.func_233815_a_(Attributes.MOVEMENT_SPEED, 0.35D)
-				.func_233815_a_(Attributes.ATTACK_DAMAGE, 6.0D);
+				.createMutableAttribute(Attributes.MAX_HEALTH, 30.0D)
+				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.35D)
+				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 6.0D);
 	}
 
 	//TODO: Moved to renderer?

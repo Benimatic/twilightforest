@@ -415,10 +415,10 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MonsterEntity.func_234295_eP_()
-				.func_233815_a_(Attributes.MAX_HEALTH, /*getMaxHealthPerDifficulty()*/ 200) //TODO: We're static now
-				.func_233815_a_(Attributes.MOVEMENT_SPEED, DEFAULT_SPEED)
-				.func_233815_a_(Attributes.ATTACK_DAMAGE, 5.0D)
-				.func_233815_a_(Attributes.FOLLOW_RANGE, 80.0D);
+				.createMutableAttribute(Attributes.MAX_HEALTH, /*getMaxHealthPerDifficulty()*/ 200) //TODO: We're static now
+				.createMutableAttribute(Attributes.MOVEMENT_SPEED, DEFAULT_SPEED)
+				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 5.0D)
+				.createMutableAttribute(Attributes.FOLLOW_RANGE, 80.0D);
 	}
 
 	/**
@@ -600,7 +600,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 	private void goSlow() {
 		this.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(slowSpeed); // if we apply this twice, we crash, but we can always remove it
 		this.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(fastSpeed);
-		this.getAttribute(Attributes.MOVEMENT_SPEED).func_233767_b_(slowSpeed);
+		this.getAttribute(Attributes.MOVEMENT_SPEED).applyNonPersistentModifier(slowSpeed);
 	}
 
 	/**
@@ -617,7 +617,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 	private void goFast() {
 		this.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(slowSpeed);
 		this.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(fastSpeed);
-		this.getAttribute(Attributes.MOVEMENT_SPEED).func_233767_b_(fastSpeed);
+		this.getAttribute(Attributes.MOVEMENT_SPEED).applyNonPersistentModifier(fastSpeed);
 	}
 
 	@Override
@@ -675,7 +675,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 			if (toAttack instanceof ServerPlayerEntity)
 				TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) toAttack), new PacketThrowPlayer((float) toAttack.getMotion().getX(), (float) toAttack.getMotion().getY(), (float) toAttack.getMotion().getZ()));
 			attackEntityFrom(DamageSource.GENERIC, 4F);
-			world.playSound(null, toAttack.func_233580_cy_(), SoundEvents.ITEM_SHIELD_BLOCK, SoundCategory.PLAYERS, 1.0F, 0.8F + this.world.rand.nextFloat() * 0.4F);
+			world.playSound(null, toAttack.getPosition(), SoundEvents.ITEM_SHIELD_BLOCK, SoundCategory.PLAYERS, 1.0F, 0.8F + this.world.rand.nextFloat() * 0.4F);
 			movementAI.doDaze();
 			return false;
 		}
@@ -739,7 +739,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 	}
 
 	private boolean isEntityWithinHomeArea(Entity entity) {
-		return isWithinHomeDistanceFromPosition(entity.func_233580_cy_());
+		return isWithinHomeDistanceFromPosition(entity.getPosition());
 	}
 
 	private void activateBodySegments() {
@@ -836,7 +836,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 		super.onDeath(cause);
 		// mark the courtyard as defeated
 		if (!world.isRemote) {
-			TFGenerationSettings.markStructureConquered(world, new BlockPos(this.func_233580_cy_()), TFFeature.NAGA_COURTYARD);
+			TFGenerationSettings.markStructureConquered(world, new BlockPos(this.getPosition()), TFFeature.NAGA_COURTYARD);
 		}
 	}
 

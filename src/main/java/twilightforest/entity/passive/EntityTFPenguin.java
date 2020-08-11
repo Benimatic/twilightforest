@@ -45,7 +45,7 @@ public class EntityTFPenguin extends EntityTFBird {
 
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MobEntity.func_233666_p_()
-				.func_233815_a_(Attributes.MAX_HEALTH, 10.0D)
-				.func_233815_a_(Attributes.MOVEMENT_SPEED, 0.2D);
+				.createMutableAttribute(Attributes.MAX_HEALTH, 10.0D)
+				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.2D);
 	}
 }

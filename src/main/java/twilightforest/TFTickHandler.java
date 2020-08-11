@@ -146,7 +146,7 @@ public class TFTickHandler {
 	 * Check what biome the player is in, and see if current progression allows that biome.  If not, take appropriate action
 	 */
 	private static void checkBiomeForProgression(PlayerEntity player, World world) {
-		Biome currentBiome = world.getBiome(player.func_233580_cy_());
+		Biome currentBiome = world.getBiome(player.getPosition());
 		if (currentBiome instanceof TFBiomeBase) {
 			TFBiomeBase tfBiome = (TFBiomeBase) currentBiome;
 			if (!tfBiome.doesPlayerHaveRequiredAdvancements(player)) {

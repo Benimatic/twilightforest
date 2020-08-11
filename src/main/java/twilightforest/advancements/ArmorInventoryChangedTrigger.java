@@ -52,7 +52,7 @@ public class ArmorInventoryChangedTrigger implements ICriterionTrigger<ArmorInve
 	}
 
 	@Override
-	public Instance func_230307_a_(JsonObject json, ConditionArrayParser condition) {
+	public Instance deserialize(JsonObject json, ConditionArrayParser condition) {
 		EntityPredicate.AndPredicate player = EntityPredicate.AndPredicate.deserializeJSONObject(json, "player", condition);
 		ItemPredicate from = ItemPredicate.deserialize(json.get("from"));
 		ItemPredicate to = ItemPredicate.deserialize(json.get("to"));

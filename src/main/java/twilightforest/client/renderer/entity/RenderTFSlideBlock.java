@@ -37,7 +37,7 @@ public class RenderTFSlideBlock extends EntityRenderer<EntityTFSlideBlock> {
 			if (iblockstate.getRenderType() == BlockRenderType.MODEL) {
 				World world = entity.world;
 
-				if (iblockstate != world.getBlockState(entity.func_233580_cy_()) && iblockstate.getRenderType() != BlockRenderType.INVISIBLE) {
+				if (iblockstate != world.getBlockState(entity.getPosition()) && iblockstate.getRenderType() != BlockRenderType.INVISIBLE) {
 //					this.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
 					stack.push();
 					RenderSystem.disableLighting();

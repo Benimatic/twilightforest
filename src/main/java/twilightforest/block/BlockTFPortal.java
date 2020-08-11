@@ -124,7 +124,7 @@ public class BlockTFPortal extends BreakableBlock {
 	private static void causeLightning(World world, BlockPos pos, boolean fake) {
 		LightningBoltEntity bolt = new LightningBoltEntity(EntityType.LIGHTNING_BOLT, world);
 		bolt.setPosition(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
-		bolt.func_233623_a_(fake);
+		bolt.setEffectOnly(fake);
 		world.addEntity(bolt);
 
 		if (fake) {
@@ -243,7 +243,7 @@ public class BlockTFPortal extends BreakableBlock {
 		if (destination == TFDimensions.twilightForest && entity instanceof ServerPlayerEntity) {
 			ServerPlayerEntity playerMP = (ServerPlayerEntity) entity;
 			// set respawn point for TF dimension to near the arrival portal
-			playerMP.func_241153_a_(destination, playerMP.func_233580_cy_(), true, false);
+			playerMP.func_241153_a_(destination, playerMP.getPosition(), true, false);
 		}
 	}
 

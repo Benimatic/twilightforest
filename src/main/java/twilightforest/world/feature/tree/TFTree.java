@@ -27,7 +27,7 @@ public abstract class TFTree extends Tree {
 	public abstract ConfiguredFeature<TFTreeFeatureConfig, ?> createTreeFeature(Random rand);
 
 	@Override
-	public boolean func_230339_a_(ServerWorld world, ChunkGenerator generator, BlockPos pos, BlockState state, Random rand) {
+	public boolean attemptGrowTree(ServerWorld world, ChunkGenerator generator, BlockPos pos, BlockState state, Random rand) {
 		ConfiguredFeature<TFTreeFeatureConfig, ?> feature = this.createTreeFeature(rand);
 		if (feature == null) {
 			return false;

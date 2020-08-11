@@ -81,7 +81,7 @@ public class EntityAITFGroundAttack extends Goal {
 			this.attacker.setGroundAttackCharge(false);
 			this.attacker.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 2, 1F + this.attacker.getRNG().nextFloat() * 0.1F);
 
-			AxisAlignedBB selection = new AxisAlignedBB(this.attacker.func_233580_cy_().getX() - 7.5F, this.attacker.func_233580_cy_().getY(), this.attacker.func_233580_cy_().getZ() - 7.5F, this.attacker.func_233580_cy_().getX() + 7.5F, this.attacker.func_233580_cy_().getY() + 3.0F, this.attacker.func_233580_cy_().getZ() + 7.5F);
+			AxisAlignedBB selection = new AxisAlignedBB(this.attacker.getPosition().getX() - 7.5F, this.attacker.getPosition().getY(), this.attacker.getPosition().getZ() - 7.5F, this.attacker.getPosition().getX() + 7.5F, this.attacker.getPosition().getY() + 3.0F, this.attacker.getPosition().getZ() + 7.5F);
 
 			List<Entity> hit = attacker.world.getEntitiesWithinAABB(Entity.class, selection);
 			for (Entity entity : hit) {

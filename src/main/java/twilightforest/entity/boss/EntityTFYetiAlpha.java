@@ -105,10 +105,10 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MonsterEntity.func_234295_eP_()
-				.func_233815_a_(Attributes.MAX_HEALTH, 200.0D)
-				.func_233815_a_(Attributes.MOVEMENT_SPEED, 0.38D)
-				.func_233815_a_(Attributes.ATTACK_DAMAGE, 1.0D)
-				.func_233815_a_(Attributes.FOLLOW_RANGE, 40.0D);
+				.createMutableAttribute(Attributes.MAX_HEALTH, 200.0D)
+				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.38D)
+				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 1.0D)
+				.createMutableAttribute(Attributes.FOLLOW_RANGE, 40.0D);
 	}
 
 	@Override
@@ -378,7 +378,7 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 		super.onDeath(cause);
 		// mark the lair as defeated
 		if (!world.isRemote) {
-			TFGenerationSettings.markStructureConquered(world, new BlockPos(this.func_233580_cy_()), TFFeature.YETI_CAVE);
+			TFGenerationSettings.markStructureConquered(world, new BlockPos(this.getPosition()), TFFeature.YETI_CAVE);
 		}
 	}
 

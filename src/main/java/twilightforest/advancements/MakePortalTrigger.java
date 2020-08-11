@@ -48,7 +48,7 @@ public class MakePortalTrigger implements ICriterionTrigger<MakePortalTrigger.In
     }
 
     @Override
-    public Instance func_230307_a_(JsonObject json, ConditionArrayParser condition) {
+    public Instance deserialize(JsonObject json, ConditionArrayParser condition) {
 		EntityPredicate.AndPredicate player = EntityPredicate.AndPredicate.deserializeJSONObject(json, "player", condition);
 		return new MakePortalTrigger.Instance(player);
     }

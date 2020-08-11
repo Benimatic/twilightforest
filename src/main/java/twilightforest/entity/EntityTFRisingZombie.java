@@ -46,12 +46,12 @@ public class EntityTFRisingZombie extends ZombieEntity {
 			zombie.setHealth(getHealth());
 			zombie.setChild(isChild());
 			world.addEntity(zombie);
-			if (rand.nextBoolean() && world.getBlockState(func_233580_cy_().down()).getBlock() == Blocks.GRASS)
-				world.setBlockState(func_233580_cy_().down(), Blocks.DIRT.getDefaultState());
+			if (rand.nextBoolean() && world.getBlockState(getPosition().down()).getBlock() == Blocks.GRASS)
+				world.setBlockState(getPosition().down(), Blocks.DIRT.getDefaultState());
 		}
-		if (world.isRemote && !world.isAirBlock(func_233580_cy_().down())) {
+		if (world.isRemote && !world.isAirBlock(getPosition().down())) {
 			for (int i = 0; i < 5; i++)
-				world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, world.getBlockState(func_233580_cy_().down())), getPosX() + rand.nextGaussian() * 0.01F, getPosY() + rand.nextGaussian() * 0.01F, getPosZ() + rand.nextGaussian() * 0.01F, 0, 0, 0);
+				world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, world.getBlockState(getPosition().down())), getPosX() + rand.nextGaussian() * 0.01F, getPosY() + rand.nextGaussian() * 0.01F, getPosZ() + rand.nextGaussian() * 0.01F, 0, 0, 0);
 		}
 	}
 

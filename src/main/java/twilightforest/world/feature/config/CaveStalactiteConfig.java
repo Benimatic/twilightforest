@@ -9,7 +9,7 @@ public class CaveStalactiteConfig implements IFeatureConfig {
 
 	public static final Codec<CaveStalactiteConfig> caveStalactiteCodec = RecordCodecBuilder.create((instance) ->
 			instance.group(
-					BlockState.field_235877_b_.fieldOf("state").forGetter((obj) -> obj.blockState),
+					BlockState.BLOCKSTATE_CODEC.fieldOf("state").forGetter((obj) -> obj.blockState),
 					Codec.FLOAT.fieldOf("size_factor").withDefault(0.0F).forGetter((obj) -> obj.sizeFactor),
 					Codec.INT.fieldOf("max_length").withDefault(-1).forGetter((obj) -> obj.maxLength),
 					Codec.INT.fieldOf("min_height").withDefault(-1).forGetter((obj) -> obj.minHeight),

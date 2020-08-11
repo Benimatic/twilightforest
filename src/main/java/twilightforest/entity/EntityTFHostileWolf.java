@@ -39,7 +39,7 @@ public class EntityTFHostileWolf extends WolfEntity implements IMob {
 
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return WolfEntity.func_234233_eS_()
-				.func_233815_a_(Attributes.MAX_HEALTH, 10.0D);
+				.createMutableAttribute(Attributes.MAX_HEALTH, 10.0D);
 	}
 
 	@Override

@@ -19,8 +19,8 @@ public class EntityTFMistWolf extends EntityTFHostileWolf {
 
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return EntityTFHostileWolf.registerAttributes()
-				.func_233815_a_(Attributes.MAX_HEALTH, 30.0D)
-				.func_233815_a_(Attributes.ATTACK_DAMAGE, 6);
+				.createMutableAttribute(Attributes.MAX_HEALTH, 30.0D)
+				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 6);
 	}
 
 	@Override

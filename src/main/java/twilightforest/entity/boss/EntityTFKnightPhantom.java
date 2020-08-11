@@ -106,8 +106,8 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MobEntity.func_233666_p_()
-				.func_233815_a_(Attributes.MAX_HEALTH, 35.0D)
-				.func_233815_a_(Attributes.ATTACK_DAMAGE, 1.0D);
+				.createMutableAttribute(Attributes.MAX_HEALTH, 35.0D)
+				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 1.0D);
 	}
 
 	public Formation getCurrentFormation() {
@@ -178,7 +178,7 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 
 		if (!world.isRemote && getNearbyKnights().isEmpty()) {
 
-			BlockPos treasurePos = hasHome() ? getHomePosition().down() : new BlockPos(this.func_233580_cy_());
+			BlockPos treasurePos = hasHome() ? getHomePosition().down() : new BlockPos(this.getPosition());
 
 			// make treasure for killing the last knight
 			TFTreasure.stronghold_boss.generateChest((ServerWorld)world, treasurePos, false);
@@ -311,7 +311,7 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 		if (!world.isRemote) {
 			if (flag) {
 				if (!getAttribute(Attributes.ATTACK_DAMAGE).hasModifier(CHARGING_MODIFIER)) {
-					getAttribute(Attributes.ATTACK_DAMAGE).func_233767_b_(CHARGING_MODIFIER);
+					getAttribute(Attributes.ATTACK_DAMAGE).applyNonPersistentModifier(CHARGING_MODIFIER);
 				}
 			} else {
 				getAttribute(Attributes.ATTACK_DAMAGE).removeModifier(CHARGING_MODIFIER);
@@ -470,7 +470,7 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 
 	@Override
 	public boolean isWithinHomeDistanceCurrentPosition() {
-		return this.isWithinHomeDistanceFromPosition(new BlockPos(this.func_233580_cy_()));
+		return this.isWithinHomeDistanceFromPosition(new BlockPos(this.getPosition()));
 	}
 
 	@Override

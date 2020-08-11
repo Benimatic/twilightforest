@@ -73,7 +73,7 @@ public class TFTeleporter extends Teleporter {
 		Vector3d vec3d = entity.getLastPortalVec();
 		Direction direction = entity.getTeleportDirection();
 		//TODO: Need to use ours.
-		boolean flag = this.placeInExistingPortal(entity, entity.func_233580_cy_(), entity.getMotion(), direction, vec3d.x, vec3d.y, entity instanceof PlayerEntity);
+		boolean flag = this.placeInExistingPortal(entity, entity.getPosition(), entity.getMotion(), direction, vec3d.x, vec3d.y, entity instanceof PlayerEntity);
 		if (flag) {
 			return false;
 		} else {
@@ -90,7 +90,7 @@ public class TFTeleporter extends Teleporter {
 		// if we're in enforced progression mode, check the biomes for safety
 		boolean checkProgression = TFGenerationSettings.isProgressionEnforced(world);
 
-		BlockPos pos = entity.func_233580_cy_();
+		BlockPos pos = entity.getPosition();
 		if (isSafeAround(pos, entity, checkProgression)) {
 			return;
 		}

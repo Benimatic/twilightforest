@@ -32,7 +32,7 @@ public class EntityTFRedcapSapper extends EntityTFRedcap {
 
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return EntityTFRedcap.registerAttributes()
-				.func_233815_a_(Attributes.MAX_HEALTH, 30.0D)
-				.func_233815_a_(Attributes.ARMOR, 2.0D);
+				.createMutableAttribute(Attributes.MAX_HEALTH, 30.0D)
+				.createMutableAttribute(Attributes.ARMOR, 2.0D);
 	}
 }

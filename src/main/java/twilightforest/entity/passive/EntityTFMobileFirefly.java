@@ -58,7 +58,7 @@ public class EntityTFMobileFirefly extends AmbientEntity {
 
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MobEntity.func_233666_p_()
-				.func_233815_a_(Attributes.MAX_HEALTH, 6.0D);
+				.createMutableAttribute(Attributes.MAX_HEALTH, 6.0D);
 	}
 
 	@Override

@@ -36,8 +36,8 @@ public class EntityTFSwarmSpider extends SpiderEntity {
 
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return SpiderEntity.func_234305_eI_()
-				.func_233815_a_(Attributes.MAX_HEALTH, 3.0D)
-				.func_233815_a_(Attributes.ATTACK_DAMAGE, 1.0D);
+				.createMutableAttribute(Attributes.MAX_HEALTH, 3.0D)
+				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 1.0D);
 	}
 
 	@Override

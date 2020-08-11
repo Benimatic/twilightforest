@@ -100,10 +100,10 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MonsterEntity.func_234295_eP_()
-				.func_233815_a_(Attributes.MOVEMENT_SPEED, 0.23000000417232513D)
-				.func_233815_a_(Attributes.ATTACK_DAMAGE, 7.0D)
-				.func_233815_a_(Attributes.FOLLOW_RANGE, 40.0D)
-				.func_233815_a_(Attributes.MAX_HEALTH, 200.0D);
+				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.23000000417232513D)
+				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 7.0D)
+				.createMutableAttribute(Attributes.FOLLOW_RANGE, 40.0D)
+				.createMutableAttribute(Attributes.MAX_HEALTH, 200.0D);
 	}
 
 	@Override
@@ -256,7 +256,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 		super.onDeath(cause);
 		// mark the tower as defeated
 		if (!world.isRemote) {
-			TFGenerationSettings.markStructureConquered(world, this.func_233580_cy_(), TFFeature.ICE_TOWER);
+			TFGenerationSettings.markStructureConquered(world, this.getPosition(), TFFeature.ICE_TOWER);
 		}
 	}
 

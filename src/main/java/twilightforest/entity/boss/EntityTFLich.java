@@ -135,9 +135,9 @@ public class EntityTFLich extends MonsterEntity {
 
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MonsterEntity.func_234295_eP_()
-				.func_233815_a_(Attributes.MAX_HEALTH, MAX_HEALTH)
-				.func_233815_a_(Attributes.ATTACK_DAMAGE, 6.0D)
-				.func_233815_a_(Attributes.MOVEMENT_SPEED, 0.45000001788139344D); // Same speed as an angry enderman
+				.createMutableAttribute(Attributes.MAX_HEALTH, MAX_HEALTH)
+				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 6.0D)
+				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.45000001788139344D); // Same speed as an angry enderman
 	}
 
 	@Override
@@ -601,7 +601,7 @@ public class EntityTFLich extends MonsterEntity {
 		super.onDeath(cause);
 		// mark the tower as defeated
 		if (!world.isRemote && !this.isShadowClone()) {
-			TFGenerationSettings.markStructureConquered(world, new BlockPos(this.func_233580_cy_()), TFFeature.LICH_TOWER);
+			TFGenerationSettings.markStructureConquered(world, new BlockPos(this.getPosition()), TFFeature.LICH_TOWER);
 		}
 	}
 

@@ -27,7 +27,7 @@ public class EntityAITFRedcapPlantTNT extends EntityAITFRedcapBase {
 
 	@Override
 	public void startExecuting() {
-		BlockPos entityPos = new BlockPos(redcap.func_233580_cy_());
+		BlockPos entityPos = new BlockPos(redcap.getPosition());
 
 		this.redcap.setItemStackToSlot(EquipmentSlotType.MAINHAND, redcap.heldTNT);
 

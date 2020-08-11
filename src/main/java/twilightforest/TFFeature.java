@@ -816,7 +816,7 @@ public enum TFFeature {
 	 * Try to spawn a hint monster near the specified player
 	 */
 	public void trySpawnHintMonster(World world, PlayerEntity player) {
-		this.trySpawnHintMonster(world, player, player.func_233580_cy_());
+		this.trySpawnHintMonster(world, player, player.getPosition());
 	}
 
 	/**

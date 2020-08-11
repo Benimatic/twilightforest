@@ -78,8 +78,8 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return EntityTFTowerGhast.registerAttributes()
-				.func_233815_a_(Attributes.MAX_HEALTH, 250)
-				.func_233815_a_(Attributes.FOLLOW_RANGE, 128.0D);
+				.createMutableAttribute(Attributes.MAX_HEALTH, 250)
+				.createMutableAttribute(Attributes.FOLLOW_RANGE, 128.0D);
 	}
 
 	@Override
@@ -158,7 +158,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 
 		private List<BlockPos> createPath() {
 			List<BlockPos> potentialPoints = new ArrayList<>();
-			BlockPos pos = new BlockPos(this.taskOwner.func_233580_cy_());
+			BlockPos pos = new BlockPos(this.taskOwner.getPosition());
 
 			if (!this.taskOwner.noTrapMode) {
 				// make a copy of the trap locations list
@@ -340,7 +340,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		// lightning strike
 		LightningBoltEntity bolt = new LightningBoltEntity(EntityType.LIGHTNING_BOLT, world);
 		bolt.setPosition(x, y + 4, z);
-		bolt.func_233623_a_(true);
+		bolt.setEffectOnly(true);
 		this.world.addEntity(bolt);
 
 		for (int i = 0; i < tries; i++) {
@@ -405,7 +405,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		AxisAlignedBB below = this.getBoundingBox().offset(0, -16, 0).grow(0, 16, 0);
 
 		for (PlayerEntity player : world.getEntitiesWithinAABB(PlayerEntity.class, below)) {
-			if (world.canBlockSeeSky(player.func_233580_cy_())) {
+			if (world.canBlockSeeSky(player.getPosition())) {
 				player.attackEntityFrom(DamageSource.ANVIL, 3);
 			}
 		}
@@ -471,7 +471,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 		int scanRangeXZ = 48;
 		int scanRangeY = 32;
 
-		scanForTraps(scanRangeXZ, scanRangeY, func_233580_cy_());
+		scanForTraps(scanRangeXZ, scanRangeY, getPosition());
 
 		if (trapLocations.size() > 0) {
 			// average the location of the traps we've found, and scan again from there
@@ -602,7 +602,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 
 			return new BlockPos(ax, ay + 2, az);
 		} else {
-			return new BlockPos(this.func_233580_cy_());
+			return new BlockPos(this.getPosition());
 		}
 	}
 

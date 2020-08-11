@@ -59,9 +59,9 @@ public class EntityTFGoblinKnightUpper extends MonsterEntity {
 
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MonsterEntity.func_234295_eP_()
-				.func_233815_a_(Attributes.MAX_HEALTH, 30.0D)
-				.func_233815_a_(Attributes.MOVEMENT_SPEED, 0.28D)
-				.func_233815_a_(Attributes.ATTACK_DAMAGE, 8.0D);
+				.createMutableAttribute(Attributes.MAX_HEALTH, 30.0D)
+				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.28D)
+				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 8.0D);
 	}
 
 	@Override
@@ -81,7 +81,7 @@ public class EntityTFGoblinKnightUpper extends MonsterEntity {
 		if (!world.isRemote) {
 			if (flag) {
 				if (!getAttribute(Attributes.ARMOR).hasModifier(ARMOR_MODIFIER)) {
-					getAttribute(Attributes.ARMOR).func_233767_b_(ARMOR_MODIFIER);
+					getAttribute(Attributes.ARMOR).applyNonPersistentModifier(ARMOR_MODIFIER);
 				}
 			} else {
 				getAttribute(Attributes.ARMOR).removeModifier(ARMOR_MODIFIER);
@@ -137,7 +137,7 @@ public class EntityTFGoblinKnightUpper extends MonsterEntity {
 
 			if (heavySpearTimer > 0) {
 				if (!getAttribute(Attributes.ATTACK_DAMAGE).hasModifier(DAMAGE_MODIFIER)) {
-					getAttribute(Attributes.ATTACK_DAMAGE).func_233767_b_(DAMAGE_MODIFIER);
+					getAttribute(Attributes.ATTACK_DAMAGE).applyNonPersistentModifier(DAMAGE_MODIFIER);
 				}
 			} else {
 				getAttribute(Attributes.ATTACK_DAMAGE).removeModifier(DAMAGE_MODIFIER.getID());

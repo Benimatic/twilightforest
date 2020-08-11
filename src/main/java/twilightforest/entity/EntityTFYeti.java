@@ -65,10 +65,10 @@ public class EntityTFYeti extends MonsterEntity implements IHostileMount {
 
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MonsterEntity.func_234295_eP_()
-				.func_233815_a_(Attributes.MAX_HEALTH, 20.0D)
-				.func_233815_a_(Attributes.MOVEMENT_SPEED, 0.38D)
-				.func_233815_a_(Attributes.ATTACK_DAMAGE, 0.0D)
-				.func_233815_a_(Attributes.FOLLOW_RANGE, 4.0D);
+				.createMutableAttribute(Attributes.MAX_HEALTH, 20.0D)
+				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.38D)
+				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 0.0D)
+				.createMutableAttribute(Attributes.FOLLOW_RANGE, 4.0D);
 	}
 
 	@Override
@@ -118,7 +118,7 @@ public class EntityTFYeti extends MonsterEntity implements IHostileMount {
 		if (!world.isRemote) {
 			if (anger) {
 				if (!getAttribute(Attributes.FOLLOW_RANGE).hasModifier(ANGRY_MODIFIER)) {
-					this.getAttribute(Attributes.FOLLOW_RANGE).func_233767_b_(ANGRY_MODIFIER);
+					this.getAttribute(Attributes.FOLLOW_RANGE).applyNonPersistentModifier(ANGRY_MODIFIER);
 				}
 			} else {
 				this.getAttribute(Attributes.FOLLOW_RANGE).removeModifier(ANGRY_MODIFIER);

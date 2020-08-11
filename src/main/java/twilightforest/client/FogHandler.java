@@ -73,6 +73,6 @@ public class FogHandler {
 	}
 
 	private static boolean isSpooky() {
-		return Minecraft.getInstance().world != null && Minecraft.getInstance().player != null && Minecraft.getInstance().world.getBiome(Minecraft.getInstance().player.func_233580_cy_()) == TFBiomes.spookyForest.get();
+		return Minecraft.getInstance().world != null && Minecraft.getInstance().player != null && Minecraft.getInstance().world.getBiome(Minecraft.getInstance().player.getPosition()) == TFBiomes.spookyForest.get();
 	}
 }

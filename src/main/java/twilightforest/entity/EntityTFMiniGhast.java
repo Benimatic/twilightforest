@@ -33,8 +33,8 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast {
 
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return EntityTFTowerGhast.registerAttributes()
-				.func_233815_a_(Attributes.MAX_HEALTH,/* this.isMinion ? 6 :*/ 10) //TODO
-				.func_233815_a_(Attributes.FOLLOW_RANGE, 16.0D);
+				.createMutableAttribute(Attributes.MAX_HEALTH,/* this.isMinion ? 6 :*/ 10) //TODO
+				.createMutableAttribute(Attributes.FOLLOW_RANGE, 16.0D);
 	}
 
 	@Override

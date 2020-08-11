@@ -31,7 +31,7 @@ public class RenderTFThrownIce extends EntityRenderer<EntityTFIceBomb> {
 		BlockState blockstate = entity.getBlockState();
 		if (blockstate.getRenderType() == BlockRenderType.MODEL) {
 			World world = entity.getEntityWorld();
-			if (blockstate != world.getBlockState(entity.func_233580_cy_()) && blockstate.getRenderType() != BlockRenderType.INVISIBLE) {
+			if (blockstate != world.getBlockState(entity.getPosition()) && blockstate.getRenderType() != BlockRenderType.INVISIBLE) {
 				ms.push();
 				BlockPos blockpos = new BlockPos(entity.getPosX(), entity.getBoundingBox().maxY, entity.getPosZ());
 				ms.translate(-0.5D, 0.0D, -0.5D);

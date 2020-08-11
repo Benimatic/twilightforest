@@ -89,7 +89,7 @@ public class EntityTFIceBomb extends EntityTFThrowable {
 			makeIceZone();
 
 			if (!world.isRemote && this.zoneTimer <= 0) {
-				world.playEvent(2001, new BlockPos(this.func_233580_cy_()), Block.getStateId(Blocks.ICE.getDefaultState()));
+				world.playEvent(2001, new BlockPos(this.getPosition()), Block.getStateId(Blocks.ICE.getDefaultState()));
 				remove();
 			}
 		} else {

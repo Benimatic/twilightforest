@@ -56,9 +56,9 @@ public class EntityTFTroll extends MonsterEntity implements IRangedAttackMob {
 
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MonsterEntity.func_234295_eP_()
-				.func_233815_a_(Attributes.MAX_HEALTH, 30.0D)
-				.func_233815_a_(Attributes.MOVEMENT_SPEED, 0.28D)
-				.func_233815_a_(Attributes.ATTACK_DAMAGE, 7.0D);
+				.createMutableAttribute(Attributes.MAX_HEALTH, 30.0D)
+				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.28D)
+				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 7.0D);
 	}
 
 	@Override
@@ -77,7 +77,7 @@ public class EntityTFTroll extends MonsterEntity implements IRangedAttackMob {
 		if (!world.isRemote) {
 			if (rock) {
 				if (!getAttribute(Attributes.FOLLOW_RANGE).hasModifier(ROCK_MODIFIER)) {
-					this.getAttribute(Attributes.FOLLOW_RANGE).func_233767_b_(ROCK_MODIFIER);
+					this.getAttribute(Attributes.FOLLOW_RANGE).applyNonPersistentModifier(ROCK_MODIFIER);
 				}
 			} else {
 				this.getAttribute(Attributes.FOLLOW_RANGE).removeModifier(ROCK_MODIFIER);
@@ -126,7 +126,7 @@ public class EntityTFTroll extends MonsterEntity implements IRangedAttackMob {
 
 	private void ripenTrollBerNearby(int offset) {
 		int range = 12;
-		for (BlockPos pos : WorldUtil.getAllAround(new BlockPos(this.func_233580_cy_()), range)) {
+		for (BlockPos pos : WorldUtil.getAllAround(new BlockPos(this.getPosition()), range)) {
 			ripenBer(offset, pos);
 		}
 	}

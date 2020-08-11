@@ -182,7 +182,7 @@ public class BlockTFMagicLogSpecial extends RotatedPillarBlock {
 
 			Block block = world.getBlockState(iterPos).getBlock();
 			if (block instanceof ChestBlock) {
-				chestInventory = ChestBlock.func_226916_a_((ChestBlock) block, block.getDefaultState(), world, iterPos, true);
+				chestInventory = ChestBlock.getChestInventory((ChestBlock) block, block.getDefaultState(), world, iterPos, true);
 			}
 
 			TileEntity te = world.getTileEntity(iterPos);

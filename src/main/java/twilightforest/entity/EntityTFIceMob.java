@@ -30,13 +30,13 @@ public abstract class EntityTFIceMob extends MonsterEntity {
 				float pz = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.3F;
 
 				world.addParticle(TFParticleType.SNOW_GUARDIAN.get(), this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
-				if (this.world.getBiome(this.func_233580_cy_()).getTemperature(this.func_233580_cy_()) > 1.0F || this.isBurning()) {
+				if (this.world.getBiome(this.getPosition()).getTemperature(this.getPosition()) > 1.0F || this.isBurning()) {
 					this.world.addParticle(ParticleTypes.CLOUD, this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0.1F, 0);
 					this.world.addParticle(ParticleTypes.DRIPPING_WATER, this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
 				}
 			}
 		}
-		if (this.world.getBiome(this.func_233580_cy_()).getTemperature(this.func_233580_cy_()) > 1.0F && this.ticksExisted % 20 == 0) {
+		if (this.world.getBiome(this.getPosition()).getTemperature(this.getPosition()) > 1.0F && this.ticksExisted % 20 == 0) {
 			//BURN!!!
 			this.attackEntityFrom(DamageSource.ON_FIRE, 1.0F);
 		}

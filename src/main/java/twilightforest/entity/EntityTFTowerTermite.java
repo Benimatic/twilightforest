@@ -43,10 +43,10 @@ public class EntityTFTowerTermite extends MonsterEntity {
 
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MonsterEntity.func_234295_eP_()
-				.func_233815_a_(Attributes.MAX_HEALTH, 15.0D)
-				.func_233815_a_(Attributes.MOVEMENT_SPEED, 0.27D)
-				.func_233815_a_(Attributes.ATTACK_DAMAGE, 5.0D)
-				.func_233815_a_(Attributes.FOLLOW_RANGE, 8.0D);
+				.createMutableAttribute(Attributes.MAX_HEALTH, 15.0D)
+				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.27D)
+				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 5.0D)
+				.createMutableAttribute(Attributes.FOLLOW_RANGE, 8.0D);
 	}
 
 	@Override
@@ -205,7 +205,7 @@ public class EntityTFTowerTermite extends MonsterEntity {
 
 				World world = this.silverfish.world;
 				Random random = this.silverfish.getRNG();
-				BlockPos blockpos = new BlockPos(this.silverfish.func_233580_cy_());
+				BlockPos blockpos = new BlockPos(this.silverfish.getPosition());
 
 				for (int i = 0; i <= 5 && i >= -5; i = i <= 0 ? 1 - i : 0 - i) {
 					for (int j = 0; j <= 10 && j >= -10; j = j <= 0 ? 1 - j : 0 - j) {

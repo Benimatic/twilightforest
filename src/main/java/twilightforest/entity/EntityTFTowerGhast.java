@@ -217,8 +217,8 @@ public class EntityTFTowerGhast extends GhastEntity {
 
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return GhastEntity.func_234290_eH_()
-				.func_233815_a_(Attributes.MAX_HEALTH, 30.0D)
-				.func_233815_a_(Attributes.FOLLOW_RANGE, 64.0D);
+				.createMutableAttribute(Attributes.MAX_HEALTH, 30.0D)
+				.createMutableAttribute(Attributes.FOLLOW_RANGE, 64.0D);
 	}
 
 	@Override
@@ -344,7 +344,7 @@ public class EntityTFTowerGhast extends GhastEntity {
 
 	@Override
 	public boolean isWithinHomeDistanceCurrentPosition() {
-		return this.isWithinHomeDistanceFromPosition(func_233580_cy_());
+		return this.isWithinHomeDistanceFromPosition(getPosition());
 	}
 
 	@Override

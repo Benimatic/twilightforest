@@ -177,9 +177,9 @@ public class EntityTFWraith extends FlyingEntity implements IMob {
 
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MobEntity.func_233666_p_()
-				.func_233815_a_(Attributes.MAX_HEALTH, 20.0D)
-				.func_233815_a_(Attributes.MOVEMENT_SPEED, 0.5D)
-				.func_233815_a_(Attributes.ATTACK_DAMAGE, 5.0D);
+				.createMutableAttribute(Attributes.MAX_HEALTH, 20.0D)
+				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.5D)
+				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 5.0D);
 	}
 
 	@Override

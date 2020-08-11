@@ -70,7 +70,7 @@ public class ItemTFTransformPowder extends Item {
 
 		newEntity.setLocationAndAngles(target.getPosX(), target.getPosY(), target.getPosZ(), target.rotationYaw, target.rotationPitch);
 		if (newEntity instanceof MobEntity) {
-			((MobEntity) newEntity).onInitialSpawn(target.world, target.world.getDifficultyForLocation(target.func_233580_cy_()), SpawnReason.CONVERSION, null, null);
+			((MobEntity) newEntity).onInitialSpawn(target.world, target.world.getDifficultyForLocation(target.getPosition()), SpawnReason.CONVERSION, null, null);
 		}
 
 		try { // try copying what can be copied

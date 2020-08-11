@@ -47,9 +47,9 @@ public class EntityTFGoblinKnightLower extends MonsterEntity {
 
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MonsterEntity.func_234295_eP_()
-				.func_233815_a_(Attributes.MAX_HEALTH, 20.0D)
-				.func_233815_a_(Attributes.MOVEMENT_SPEED, 0.28D)
-				.func_233815_a_(Attributes.ATTACK_DAMAGE, 4.0D);
+				.createMutableAttribute(Attributes.MAX_HEALTH, 20.0D)
+				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.28D)
+				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 4.0D);
 	}
 
 	@Override
@@ -68,7 +68,7 @@ public class EntityTFGoblinKnightLower extends MonsterEntity {
 		if (!world.isRemote) {
 			if (flag) {
 				if (!getAttribute(Attributes.ARMOR).hasModifier(ARMOR_MODIFIER)) {
-					getAttribute(Attributes.ARMOR).func_233767_b_(ARMOR_MODIFIER);
+					getAttribute(Attributes.ARMOR).applyNonPersistentModifier(ARMOR_MODIFIER);
 				}
 			} else {
 				getAttribute(Attributes.ARMOR).removeModifier(ARMOR_MODIFIER);

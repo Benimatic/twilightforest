@@ -77,7 +77,7 @@ public enum TwilightArmorMaterial implements IArmorMaterial {
 	}
 
 	@Override
-	public float func_230304_f_() {
-		return 0.0F; //Determines knockback resistance. Discuss use in other sets
+	public float getKnockbackResistance() {
+		return 0.0F; //Discuss use in other sets
 	}
 }

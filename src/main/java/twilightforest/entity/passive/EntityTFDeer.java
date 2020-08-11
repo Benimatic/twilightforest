@@ -37,8 +37,8 @@ public class EntityTFDeer extends AnimalEntity {
 
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MobEntity.func_233666_p_()
-				.func_233815_a_(Attributes.MAX_HEALTH, 10.0)
-				.func_233815_a_(Attributes.MOVEMENT_SPEED, 0.2);
+				.createMutableAttribute(Attributes.MAX_HEALTH, 10.0)
+				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.2);
 	}
 
 	@Override

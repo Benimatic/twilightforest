@@ -19,8 +19,8 @@ public class EntityTFTowerBroodling extends EntityTFSwarmSpider {
 
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return EntityTFSwarmSpider.registerAttributes()
-				.func_233815_a_(Attributes.MAX_HEALTH, 7.0D)
-				.func_233815_a_(Attributes.ATTACK_DAMAGE, 4.0D);
+				.createMutableAttribute(Attributes.MAX_HEALTH, 7.0D)
+				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 4.0D);
 	}
 
 	@Override

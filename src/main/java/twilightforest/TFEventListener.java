@@ -586,7 +586,7 @@ public class TFEventListener {
 		LivingEntity living = event.getEntityLiving();
 		// cancel attacks in protected areas
 		if (!living.world.isRemote && living instanceof IMob && event.getSource().getTrueSource() instanceof PlayerEntity
-				&& isAreaProtected(living.world, (PlayerEntity) event.getSource().getTrueSource(), new BlockPos(living.func_233580_cy_()))) {
+				&& isAreaProtected(living.world, (PlayerEntity) event.getSource().getTrueSource(), new BlockPos(living.getPosition()))) {
 
 			event.setCanceled(true);
 			return;

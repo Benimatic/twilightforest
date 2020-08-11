@@ -45,7 +45,7 @@ public class EntityTFMazeSlime extends SlimeEntity {
 
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MonsterEntity.func_234295_eP_()
-				.func_233814_a_(Attributes.MAX_HEALTH)/*.applyModifier(DOUBLE_HEALTH) TODO: Move to initial spawn?*/;
+				.createMutableAttribute(Attributes.MAX_HEALTH)/*.applyModifier(DOUBLE_HEALTH) TODO: Move to initial spawn?*/;
 	}
 
 	@Override
