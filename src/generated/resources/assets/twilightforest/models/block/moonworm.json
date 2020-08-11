@@ -1,6 +1,6 @@
 {
-  "parent": "builtin/entity",
+  "parent": "minecraft:builtin/entity",
   "textures": {
-    "particle": "block/slime_block"
+    "particle": "minecraft:block/slime_block"
   }
 }

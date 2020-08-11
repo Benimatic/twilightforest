@@ -1,6 +1,6 @@
 {
   "parent": "twilightforest:block/util/giant_block",
   "textures": {
-    "all": "block/oak_leaves"
+    "all": "minecraft:block/oak_leaves"
   }
 }

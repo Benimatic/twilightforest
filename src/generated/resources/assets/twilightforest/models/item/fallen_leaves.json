@@ -1,6 +1,6 @@
 {
-  "parent": "item/generated",
+  "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "block/spruce_leaves"
+    "layer0": "minecraft:block/spruce_leaves"
   }
 }

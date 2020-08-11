@@ -1,5 +1,5 @@
 {
-  "parent": "block/door_bottom_rh",
+  "parent": "minecraft:block/door_bottom_rh",
   "textures": {
     "bottom": "twilightforest:block/wood/door/darkwood_lower",
     "top": "twilightforest:block/wood/door/darkwood_upper"

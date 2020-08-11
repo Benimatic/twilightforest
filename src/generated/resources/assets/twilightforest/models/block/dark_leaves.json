@@ -1,5 +1,5 @@
 {
-  "parent": "block/leaves",
+  "parent": "minecraft:block/leaves",
   "textures": {
     "all": "twilightforest:block/darkwood_leaves"
   }

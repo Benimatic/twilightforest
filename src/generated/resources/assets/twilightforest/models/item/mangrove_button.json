@@ -1,5 +1,5 @@
 {
-  "parent": "block/button_inventory",
+  "parent": "minecraft:block/button_inventory",
   "textures": {
     "texture": "twilightforest:block/wood/planks_mangrove_0"
   }

@@ -1,5 +1,5 @@
 {
-  "parent": "block/pressure_plate_down",
+  "parent": "minecraft:block/pressure_plate_down",
   "textures": {
     "texture": "twilightforest:block/wood/planks_canopy_3"
   }

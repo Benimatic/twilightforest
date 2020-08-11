@@ -1,5 +1,5 @@
 {
-  "parent": "block/stairs",
+  "parent": "minecraft:block/stairs",
   "textures": {
     "side": "twilightforest:block/etched_nagastone_left",
     "bottom": "twilightforest:block/stone_tiles",

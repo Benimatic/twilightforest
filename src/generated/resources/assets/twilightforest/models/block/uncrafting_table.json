@@ -3,7 +3,7 @@
   "textures": {
     "top": "twilightforest:block/uncrafting_top",
     "glow": "twilightforest:block/uncrafting_glow",
-    "bottom": "block/jungle_planks",
+    "bottom": "minecraft:block/jungle_planks",
     "side": "twilightforest:block/uncrafting_side"
   }
 }

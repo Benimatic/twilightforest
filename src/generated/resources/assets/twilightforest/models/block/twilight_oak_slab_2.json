@@ -1,5 +1,5 @@
 {
-  "parent": "block/slab",
+  "parent": "minecraft:block/slab",
   "textures": {
     "side": "twilightforest:block/wood/planks_twilight_oak_2",
     "bottom": "twilightforest:block/wood/planks_twilight_oak_2",

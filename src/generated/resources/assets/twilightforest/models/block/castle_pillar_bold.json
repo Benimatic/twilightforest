@@ -1,5 +1,5 @@
 {
-  "parent": "block/cube_column",
+  "parent": "minecraft:block/cube_column",
   "textures": {
     "side": "twilightforest:block/castle_pillar_bold_side",
     "end": "twilightforest:block/castle_pillar_bold_end"

@@ -1,5 +1,5 @@
 {
-  "parent": "block/template_trapdoor_open",
+  "parent": "minecraft:block/template_trapdoor_open",
   "textures": {
     "texture": "twilightforest:block/wood/trapdoor/mangrove_trapdoor"
   }

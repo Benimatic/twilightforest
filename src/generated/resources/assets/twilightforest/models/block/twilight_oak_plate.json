@@ -1,5 +1,5 @@
 {
-  "parent": "block/pressure_plate_up",
+  "parent": "minecraft:block/pressure_plate_up",
   "textures": {
     "texture": "twilightforest:block/wood/planks_twilight_oak_0"
   }
