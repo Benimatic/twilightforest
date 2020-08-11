@@ -1194,7 +1194,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 		ModelFile pillarModel = models().withExistingParent(TFBlocks.aurora_pillar.getId().getPath(), prefix("block/util/tinted_cube_column"))
 						.texture("end", prefix("block/" + TFBlocks.aurora_pillar.getId().getPath() + "_top"))
 						.texture("side", blockTexture(TFBlocks.aurora_pillar.get()));
-		axisBlock(TFBlocks.aurora_pillar.get(), pillarModel.getLocation());
+		axisBlock(TFBlocks.aurora_pillar.get(), pillarModel, pillarModel);
 
 		ModelFile slabModel = models().withExistingParent(TFBlocks.aurora_slab.getId().getPath(), prefix("block/util/tinted_slab"))
 						.texture("bottom", prefix("block/" + TFBlocks.aurora_pillar.getId().getPath() + "_top"))
