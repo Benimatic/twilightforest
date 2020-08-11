@@ -1,7 +1,5 @@
 {
-  "result": {
-    "item": "twilightforest:firefly_jar"
-  },
+  "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
       "item": "twilightforest:firefly"
@@ -10,5 +8,7 @@
       "item": "minecraft:glass_bottle"
     }
   ],
-  "type": "minecraft:crafting_shapeless"
+  "result": {
+    "item": "twilightforest:firefly_jar"
+  }
 }

@@ -1,7 +1,5 @@
 {
-  "result": {
-    "item": "twilightforest:magic_map_focus"
-  },
+  "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
       "item": "twilightforest:raven_feather"
@@ -13,5 +11,7 @@
       "tag": "forge:dusts/glowstone"
     }
   ],
-  "type": "minecraft:crafting_shapeless"
+  "result": {
+    "item": "twilightforest:magic_map_focus"
+  }
 }

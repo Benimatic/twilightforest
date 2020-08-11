@@ -1,7 +1,9 @@
 package twilightforest.data;
 
+import net.minecraft.block.Block;
 import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.TagsProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraftforge.common.Tags;
 import twilightforest.block.TFBlocks;
@@ -62,5 +64,18 @@ public class BlockTagGenerator extends BlockTagsProvider {
 						.add(TFBlocks.oak_sapling.get(), TFBlocks.canopy_sapling.get(), TFBlocks.mangrove_sapling.get(), TFBlocks.darkwood_sapling.get())
 						.add(TFBlocks.time_sapling.get(), TFBlocks.transformation_sapling.get(), TFBlocks.mining_sapling.get(), TFBlocks.sorting_sapling.get())
 						.add(TFBlocks.hollow_oak_sapling.get(), TFBlocks.rainboak_sapling.get());
+
+		getTag("minecraft:beacon_base_blocks").add(
+				TFBlocks.knightmetal_block.get(),
+				TFBlocks.ironwood_block.get(),
+				TFBlocks.fiery_block.get(),
+				TFBlocks.steeleaf_block.get(),
+				TFBlocks.arctic_fur_block.get(),
+				TFBlocks.carminite_block.get()
+		);
+	}
+
+	private TagsProvider.Builder<Block> getTag(String name) {
+		return getOrCreateBuilder(BlockTags.makeWrapperTag(name));
 	}
 }

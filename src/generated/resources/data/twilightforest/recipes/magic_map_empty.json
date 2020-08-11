@@ -1,19 +1,19 @@
 {
-  "result": {
-    "item": "twilightforest:magic_map_empty"
-  },
+  "type": "minecraft:crafting_shaped",
   "pattern": [
     "###",
-    "#X#",
+    "#•#",
     "###"
   ],
-  "type": "minecraft:crafting_shaped",
   "key": {
     "#": {
       "tag": "forge:paper"
     },
-    "X": {
+    "•": {
       "item": "twilightforest:magic_map_focus"
     }
+  },
+  "result": {
+    "item": "twilightforest:magic_map_empty"
   }
 }
