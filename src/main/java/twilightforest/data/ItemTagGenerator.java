@@ -57,6 +57,16 @@ public class ItemTagGenerator extends ItemTagsProvider {
 		this.copy(BlockTags.PLANKS, ItemTags.PLANKS);
 		this.copy(BlockTags.SAPLINGS, ItemTags.SAPLINGS);
 
+		this.copy(BlockTagGenerator.STORAGE_BLOCKS_ARCTIC_FUR, ItemTagGenerator.STORAGE_BLOCKS_ARCTIC_FUR);
+		this.copy(BlockTagGenerator.STORAGE_BLOCKS_CARMINITE, ItemTagGenerator.STORAGE_BLOCKS_CARMINITE);
+		this.copy(BlockTagGenerator.STORAGE_BLOCKS_FIERY, ItemTagGenerator.STORAGE_BLOCKS_FIERY);
+		this.copy(BlockTagGenerator.STORAGE_BLOCKS_IRONWOOD, ItemTagGenerator.STORAGE_BLOCKS_IRONWOOD);
+		this.copy(BlockTagGenerator.STORAGE_BLOCKS_KNIGHTMETAL, ItemTagGenerator.STORAGE_BLOCKS_KNIGHTMETAL);
+		this.copy(BlockTagGenerator.STORAGE_BLOCKS_STEELEAF, ItemTagGenerator.STORAGE_BLOCKS_STEELEAF);
+
+		this.copy(BlockTagGenerator.ORES_IRONWOOD, ItemTagGenerator.ORES_IRONWOOD);
+		this.copy(BlockTagGenerator.ORES_KNIGHTMETAL, ItemTagGenerator.ORES_KNIGHTMETAL);
+
 		getTag("forge:paper").add(Items.PAPER);
 		getTag("forge:feather").add(TFItems.raven_feather.get());
 
@@ -68,13 +78,6 @@ public class ItemTagGenerator extends ItemTagsProvider {
 		getTag(TwilightForestMod.prefix("ingots/ironwood").toString()).add(TFItems.ironwood_ingot.get());
 		getTag(TwilightForestMod.prefix("ingots/knightmetal").toString()).add(TFItems.knightmetal_ingot.get());
 		getTag(TwilightForestMod.prefix("ingots/steeleaf").toString()).add(TFItems.steeleaf_ingot.get());
-
-		getTag(TwilightForestMod.prefix("storage_blocks/arctic_fur").toString()).add(TFBlocks.arctic_fur_block.get().asItem());
-		getTag(TwilightForestMod.prefix("storage_blocks/carminite").toString()).add(TFBlocks.carminite_block.get().asItem());
-		getTag(TwilightForestMod.prefix("storage_blocks/fiery").toString()).add(TFBlocks.fiery_block.get().asItem());
-		getTag(TwilightForestMod.prefix("storage_blocks/ironwood").toString()).add(TFBlocks.ironwood_block.get().asItem());
-		getTag(TwilightForestMod.prefix("storage_blocks/knightmetal").toString()).add(TFBlocks.knightmetal_block.get().asItem());
-		getTag(TwilightForestMod.prefix("storage_blocks/steeleaf").toString()).add(TFBlocks.steeleaf_block.get().asItem());
 
 		getTag(TwilightForestMod.prefix("ores/ironwood").toString()).add(TFItems.ironwood_raw.get());
 		getTag(TwilightForestMod.prefix("ores/knightmetal").toString()).add(TFItems.armor_shard_cluster.get());

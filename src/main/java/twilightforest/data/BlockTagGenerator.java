@@ -4,11 +4,26 @@ import net.minecraft.block.Block;
 import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.TagsProvider;
+import net.minecraft.item.Item;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ITag;
 import net.minecraft.tags.BlockTags;
 import net.minecraftforge.common.Tags;
+import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 
 public class BlockTagGenerator extends BlockTagsProvider {
+
+	public static final ITag.INamedTag<Block> STORAGE_BLOCKS_ARCTIC_FUR = BlockTags.makeWrapperTag(TwilightForestMod.prefix("storage_blocks/arctic_fur").toString());
+	public static final ITag.INamedTag<Block> STORAGE_BLOCKS_CARMINITE = BlockTags.makeWrapperTag(TwilightForestMod.prefix("storage_blocks/carminite").toString());
+	public static final ITag.INamedTag<Block> STORAGE_BLOCKS_FIERY = BlockTags.makeWrapperTag(TwilightForestMod.prefix("storage_blocks/fiery").toString());
+	public static final ITag.INamedTag<Block> STORAGE_BLOCKS_IRONWOOD = BlockTags.makeWrapperTag(TwilightForestMod.prefix("storage_blocks/ironwood").toString());
+	public static final ITag.INamedTag<Block> STORAGE_BLOCKS_KNIGHTMETAL = BlockTags.makeWrapperTag(TwilightForestMod.prefix("storage_blocks/knightmetal").toString());
+	public static final ITag.INamedTag<Block> STORAGE_BLOCKS_STEELEAF = BlockTags.makeWrapperTag(TwilightForestMod.prefix("storage_blocks/steeleaf").toString());
+
+	public static final ITag.INamedTag<Block> ORES_IRONWOOD = BlockTags.makeWrapperTag(TwilightForestMod.prefix("ores/ironwood").toString());
+	public static final ITag.INamedTag<Block> ORES_KNIGHTMETAL = BlockTags.makeWrapperTag(TwilightForestMod.prefix("ores/knightmetal").toString());
+
 	public BlockTagGenerator(DataGenerator generator) {
 		super(generator);
 	}
@@ -73,6 +88,13 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				TFBlocks.arctic_fur_block.get(),
 				TFBlocks.carminite_block.get()
 		);
+
+		getTag(TwilightForestMod.prefix("storage_blocks/arctic_fur").toString()).add(TFBlocks.arctic_fur_block.get());
+		getTag(TwilightForestMod.prefix("storage_blocks/carminite").toString()).add(TFBlocks.carminite_block.get());
+		getTag(TwilightForestMod.prefix("storage_blocks/fiery").toString()).add(TFBlocks.fiery_block.get());
+		getTag(TwilightForestMod.prefix("storage_blocks/ironwood").toString()).add(TFBlocks.ironwood_block.get());
+		getTag(TwilightForestMod.prefix("storage_blocks/knightmetal").toString()).add(TFBlocks.knightmetal_block.get());
+		getTag(TwilightForestMod.prefix("storage_blocks/steeleaf").toString()).add(TFBlocks.steeleaf_block.get());
 	}
 
 	private TagsProvider.Builder<Block> getTag(String name) {
