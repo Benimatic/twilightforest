@@ -141,6 +141,9 @@ public class TFBiomeDecorator {
 	), Feature.NO_OP.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG)));
 
 	//Carvers and terrain modification
+	public static void addCarvers(Biome biome) {
+		biome.addCarver(GenerationStage.Carving.AIR, Biome.createCarver(TFBiomeFeatures.TF_CAVES.get(), new ProbabilityConfig(0.15F)));
+	}
 	public static void addLakes(Biome biome) {
 		biome.addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, Feature.LAKE.withConfiguration(new BlockStateFeatureConfig(WATER)).withPlacement(Placement.WATER_LAKE.configure(new ChanceConfig(4))));
 		biome.addFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, Feature.LAKE.withConfiguration(new BlockStateFeatureConfig(LAVA)).withPlacement(Placement.LAVA_LAKE.configure(new ChanceConfig(320))));

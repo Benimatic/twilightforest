@@ -1,15 +1,14 @@
 package twilightforest.world.feature;
 
-import net.minecraft.world.gen.feature.BlockStateFeatureConfig;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraft.world.gen.feature.SphereReplaceConfig;
+import net.minecraft.world.gen.carver.WorldCarver;
+import net.minecraft.world.gen.feature.*;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.features.GenDruidHut;
 import twilightforest.features.TFGenGraveyard;
+import twilightforest.world.TFCavesCarver;
 import twilightforest.world.feature.config.CaveStalactiteConfig;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
@@ -17,6 +16,7 @@ import twilightforest.world.feature.config.TFTreeFeatureConfig;
 public class TFBiomeFeatures {
 
 	public static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(ForgeRegistries.FEATURES, TwilightForestMod.ID);
+	public static final DeferredRegister<WorldCarver<?>> WORLD_CARVERS = DeferredRegister.create(ForgeRegistries.WORLD_CARVERS, TwilightForestMod.ID);
 
 	public static final RegistryObject<Feature<NoFeatureConfig>> BIG_MUSHGLOOM = FEATURES.register("big_mushgloom", () ->
 			new TFGenBigMushgloom(NoFeatureConfig.field_236558_a_));
@@ -94,4 +94,7 @@ public class TFBiomeFeatures {
 			new TFGenWell(NoFeatureConfig.field_236558_a_));
 	public static final RegistryObject<Feature<NoFeatureConfig>> WOOD_ROOTS = FEATURES.register("wood_roots", () ->
 			new TFGenWoodRoots(NoFeatureConfig.field_236558_a_));
+
+	public static final RegistryObject<WorldCarver<ProbabilityConfig>> TF_CAVES = WORLD_CARVERS.register("tf_caves",  () ->
+			new TFCavesCarver(ProbabilityConfig.field_236576_b_, 256));
 }

@@ -28,8 +28,7 @@ public class TFBiomeBase extends Biome {
 	}
 
 	public void addFeatures() {
-		//TODO: This is just vanilla's; porting the current cave and ravine generators is not worth it, and should probably just copy-paste
-		DefaultBiomeFeatures.addCarvers(this);
+		TFBiomeDecorator.addCarvers(this);
 	}
 
 	public void addSpawns() {
