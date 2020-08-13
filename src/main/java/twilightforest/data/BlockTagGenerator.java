@@ -4,15 +4,14 @@ import net.minecraft.block.Block;
 import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.TagsProvider;
-import net.minecraft.item.Item;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ITag;
-import net.minecraft.tags.BlockTags;
 import net.minecraftforge.common.Tags;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 
 public class BlockTagGenerator extends BlockTagsProvider {
+	public static final ITag.INamedTag<Block> TOWERWOOD = BlockTags.makeWrapperTag(TwilightForestMod.prefix("towerwood").toString());
 
 	public static final ITag.INamedTag<Block> STORAGE_BLOCKS_ARCTIC_FUR = BlockTags.makeWrapperTag(TwilightForestMod.prefix("storage_blocks/arctic_fur").toString());
 	public static final ITag.INamedTag<Block> STORAGE_BLOCKS_CARMINITE = BlockTags.makeWrapperTag(TwilightForestMod.prefix("storage_blocks/carminite").toString());
@@ -89,12 +88,17 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				TFBlocks.carminite_block.get()
 		);
 
+		getTag(TwilightForestMod.prefix("towerwood").toString()).add(TFBlocks.tower_wood.get(), TFBlocks.tower_wood_mossy.get(), TFBlocks.tower_wood_cracked.get(), TFBlocks.tower_wood_infested.get());
+
 		getTag(TwilightForestMod.prefix("storage_blocks/arctic_fur").toString()).add(TFBlocks.arctic_fur_block.get());
 		getTag(TwilightForestMod.prefix("storage_blocks/carminite").toString()).add(TFBlocks.carminite_block.get());
 		getTag(TwilightForestMod.prefix("storage_blocks/fiery").toString()).add(TFBlocks.fiery_block.get());
 		getTag(TwilightForestMod.prefix("storage_blocks/ironwood").toString()).add(TFBlocks.ironwood_block.get());
 		getTag(TwilightForestMod.prefix("storage_blocks/knightmetal").toString()).add(TFBlocks.knightmetal_block.get());
 		getTag(TwilightForestMod.prefix("storage_blocks/steeleaf").toString()).add(TFBlocks.steeleaf_block.get());
+
+		getTag(TwilightForestMod.prefix("ores/ironwood").toString());
+		getTag(TwilightForestMod.prefix("ores/knightmetal").toString());
 	}
 
 	private TagsProvider.Builder<Block> getTag(String name) {

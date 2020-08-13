@@ -1,5 +1,6 @@
 package twilightforest.data;
 
+import net.minecraft.block.Block;
 import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.ItemTagsProvider;
@@ -16,6 +17,8 @@ import twilightforest.item.TFItems;
 
 public class ItemTagGenerator extends ItemTagsProvider {
 	public static final ITag.INamedTag<Item> PAPER = ItemTags.makeWrapperTag("forge:paper");
+
+	public static final ITag.INamedTag<Item> TOWERWOOD = ItemTags.makeWrapperTag(TwilightForestMod.prefix("towerwood").toString());
 
 	public static final ITag.INamedTag<Item> FIERY_VIAL = ItemTags.makeWrapperTag(TwilightForestMod.prefix("fiery_vial").toString());
 
@@ -67,10 +70,12 @@ public class ItemTagGenerator extends ItemTagsProvider {
 		this.copy(BlockTagGenerator.ORES_IRONWOOD, ItemTagGenerator.ORES_IRONWOOD);
 		this.copy(BlockTagGenerator.ORES_KNIGHTMETAL, ItemTagGenerator.ORES_KNIGHTMETAL);
 
+		this.copy(BlockTagGenerator.TOWERWOOD, ItemTagGenerator.TOWERWOOD);
+
 		getTag("forge:paper").add(Items.PAPER);
 		getTag("forge:feather").add(TFItems.raven_feather.get());
 
-		getTag(TwilightForestMod.prefix("fiery_vial").toString()).add(TFItems.fiery_blood.get()).add(TFItems.fiery_tears.get());
+		getTag(TwilightForestMod.prefix("fiery_vial").toString()).add(TFItems.fiery_blood.get(), TFItems.fiery_tears.get());
 
 		getTag(TwilightForestMod.prefix("arctic_fur").toString()).add(TFItems.arctic_fur.get());
 		getTag(TwilightForestMod.prefix("gems/carminite").toString()).add(TFItems.carminite.get());

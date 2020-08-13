@@ -1,25 +1,25 @@
 {
-  "result": {
-    "item": "twilightforest:encased_fire_jet"
-  },
-  "pattern": [
-    "ere",
-    "rjr",
-    "lll"
-  ],
   "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#∴#",
+    "∴^∴",
+    "uuu"
+  ],
   "key": {
-    "r": {
+    "∴": {
       "tag": "forge:dusts/redstone"
     },
-    "e": {
+    "#": {
       "item": "twilightforest:tower_wood_encased"
     },
-    "j": {
+    "^": {
       "item": "twilightforest:fire_jet"
     },
-    "l": {
+    "u": {
       "item": "minecraft:lava_bucket"
     }
+  },
+  "result": {
+    "item": "twilightforest:encased_fire_jet"
   }
 }

@@ -1,12 +1,15 @@
 package twilightforest.data;
 
+import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonObject;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.*;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.CookingRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.ConditionalRecipe;
 import twilightforest.TwilightForestMod;
@@ -16,6 +19,7 @@ import twilightforest.item.recipe.UncraftingEnabledCondition;
 
 import java.nio.file.Path;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class CraftingGenerator extends CraftingShapes {
 	public CraftingGenerator(DataGenerator generator) {
@@ -38,6 +42,7 @@ public class CraftingGenerator extends CraftingShapes {
 		fieryConversions(consumer);
 
 		nagastoneRecipes(consumer);
+		darkTowerRecipes(consumer);
 		castleRecipes(consumer);
 
 		slabBlock(consumer, "aurora_slab", TFBlocks.aurora_slab, TFBlocks.aurora_block);
@@ -111,14 +116,14 @@ public class CraftingGenerator extends CraftingShapes {
 
 		ShapelessRecipeBuilder.shapelessRecipe(TFItems.carminite.get())
 				.addIngredient(Ingredient.fromItems(TFItems.borer_essence.get()))
+				.addIngredient(Ingredient.fromItems(TFItems.borer_essence.get()))
+				.addIngredient(Ingredient.fromItems(TFItems.borer_essence.get()))
+				.addIngredient(Ingredient.fromItems(TFItems.borer_essence.get()))
+				.addIngredient(Ingredient.fromItems(Items.GHAST_TEAR))
 				.addIngredient(Tags.Items.DUSTS_REDSTONE)
 				.addIngredient(Tags.Items.DUSTS_REDSTONE)
 				.addIngredient(Tags.Items.DUSTS_REDSTONE)
 				.addIngredient(Tags.Items.DUSTS_REDSTONE)
-				.addIngredient(Tags.Items.DUSTS_GLOWSTONE)
-				.addIngredient(Tags.Items.DUSTS_GLOWSTONE)
-				.addIngredient(Tags.Items.DUSTS_GLOWSTONE)
-				.addIngredient(Tags.Items.DUSTS_GLOWSTONE)
 				.addCriterion("has_item", hasItem(TFItems.borer_essence.get()))
 				.build(consumer, TwilightForestMod.prefix("material/" + TFItems.carminite.getId().getPath()));
 
@@ -128,6 +133,84 @@ public class CraftingGenerator extends CraftingShapes {
 				.addIngredient(Tags.Items.NUGGETS_GOLD)
 				.addCriterion("has_item", hasItem(TFItems.liveroot.get()))
 				.build(consumer, TwilightForestMod.prefix("material/" + TFItems.ironwood_raw.getId().getPath()));
+	}
+
+	private void darkTowerRecipes(Consumer<IFinishedRecipe> consumer) {
+		ShapedRecipeBuilder.shapedRecipe(TFBlocks.encased_fire_jet.get())
+				.patternLine("#∴#")
+				.patternLine("∴^∴")
+				.patternLine("uuu")
+				.key('∴', Tags.Items.DUSTS_REDSTONE)
+				.key('#', Ingredient.fromItems(TFBlocks.tower_wood_encased.get()))
+				.key('^', Ingredient.fromItems(TFBlocks.fire_jet.get()))
+				.key('u', Ingredient.fromItems(Items.LAVA_BUCKET))
+				.addCriterion("has_item", hasItem(TFBlocks.fire_jet.get()))
+				.build(consumer);
+
+		ShapedRecipeBuilder.shapedRecipe(TFBlocks.encased_smoker.get())
+				.patternLine("#∴#")
+				.patternLine("∴^∴")
+				.patternLine("#∴#")
+				.key('∴', Tags.Items.DUSTS_REDSTONE)
+				.key('#', Ingredient.fromItems(TFBlocks.tower_wood_encased.get()))
+				.key('^', Ingredient.fromItems(TFBlocks.smoker.get()))
+				.addCriterion("has_item", hasItem(TFBlocks.smoker.get()))
+				.build(consumer);
+
+		ShapedRecipeBuilder.shapedRecipe(TFBlocks.carminite_builder.get())
+				.patternLine("#6#")
+				.patternLine("6o6")
+				.patternLine("#6#")
+				.key('6', ItemTagGenerator.CARMINITE_GEMS)
+				.key('#', Ingredient.fromItems(TFBlocks.tower_wood_encased.get()))
+				.key('o', Ingredient.fromItems(Blocks.DISPENSER))
+				.addCriterion("has_item", hasItem(TFItems.carminite.get()))
+				.build(consumer);
+
+		ShapedRecipeBuilder.shapedRecipe(TFBlocks.carminite_reactor.get())
+				.patternLine("#6#")
+				.patternLine("6%6")
+				.patternLine("#6#")
+				.key('6', ItemTagGenerator.CARMINITE_GEMS)
+				.key('#', Ingredient.fromItems(TFBlocks.tower_wood_encased.get()))
+				.key('%', Tags.Items.ORES_REDSTONE)
+				.addCriterion("has_item", hasItem(TFBlocks.carminite_reactor.get()))
+				.build(consumer);
+
+		ShapedRecipeBuilder.shapedRecipe(TFBlocks.reappearing_block.get(), 2)
+				.patternLine("#∴#")
+				.patternLine("∴6∴")
+				.patternLine("#∴#")
+				.key('∴', Tags.Items.DUSTS_REDSTONE)
+				.key('#', Ingredient.fromItems(TFBlocks.tower_wood_encased.get()))
+				.key('6', ItemTagGenerator.CARMINITE_GEMS)
+				.addCriterion("has_item", hasItem(TFBlocks.reappearing_block.get()))
+				.build(consumer);
+
+		ShapedRecipeBuilder.shapedRecipe(TFBlocks.vanishing_block.get(), 8)
+				.patternLine("#w#")
+				.patternLine("w6w")
+				.patternLine("#w#")
+				.key('w', ItemTagGenerator.TOWERWOOD)
+				.key('#', Ingredient.fromItems(TFBlocks.tower_wood_encased.get()))
+				.key('6', ItemTagGenerator.CARMINITE_GEMS)
+				.addCriterion("has_item", hasItem(TFBlocks.reappearing_block.get()))
+				.build(consumer);
+
+		ShapedRecipeBuilder.shapedRecipe(TFBlocks.tower_wood.get(), 4)
+				.patternLine("##")
+				.patternLine("##")
+				.key('#', Ingredient.fromItems(TFBlocks.dark_log.get()))
+				.addCriterion("has_item", hasItem(TFBlocks.tower_wood.get()))
+				.build(consumer);
+
+		ShapedRecipeBuilder.shapedRecipe(TFBlocks.tower_wood_encased.get(), 3)
+				.patternLine("#")
+				.patternLine("#")
+				.patternLine("#")
+				.key('#', ItemTagGenerator.TOWERWOOD)
+				.addCriterion("has_item", hasItem(TFBlocks.tower_wood_encased.get()))
+				.build(consumer);
 	}
 
 	private void equipmentRecipes(Consumer<IFinishedRecipe> consumer) {
@@ -149,6 +232,7 @@ public class CraftingGenerator extends CraftingShapes {
 		leggingsItem(consumer, "knightmetal_leggings", TFItems.knightmetal_leggings, ItemTagGenerator.KNIGHTMETAL_INGOTS);
 		pickaxeItem(consumer, "knightmetal_pickaxe", TFItems.knightmetal_pickaxe, ItemTagGenerator.KNIGHTMETAL_INGOTS, Tags.Items.RODS_WOODEN);
 		swordItem(consumer, "knightmetal_sword", TFItems.knightmetal_sword, ItemTagGenerator.KNIGHTMETAL_INGOTS, Tags.Items.RODS_WOODEN);
+		axeItem(consumer, "knightmetal_axe", TFItems.knightmetal_axe, ItemTagGenerator.KNIGHTMETAL_INGOTS, Tags.Items.RODS_WOODEN);
 
 		ShapelessRecipeBuilder.shapelessRecipe(TFItems.block_and_chain.get())
 				.addIngredient(ItemTagGenerator.STORAGE_BLOCKS_KNIGHTMETAL)
@@ -158,6 +242,65 @@ public class CraftingGenerator extends CraftingShapes {
 				.addIngredient(Ingredient.fromItems(TFItems.knightmetal_ring.get()))
 				.addCriterion("has_item", hasItem(TFBlocks.knightmetal_block.get()))
 				.build(consumer, locEquip(TFItems.block_and_chain.getId().getPath()));
+
+		ShapedRecipeBuilder.shapedRecipe(TFItems.knightmetal_ring.get())
+				.patternLine(" - ")
+				.patternLine("- -")
+				.patternLine(" - ")
+				.key('-', ItemTagGenerator.KNIGHTMETAL_INGOTS)
+				.addCriterion("has_item", hasItem(TFItems.knightmetal_ingot.get()))
+				.build(consumer, locEquip(TFItems.knightmetal_ring.getId().getPath()));
+
+		ShapedRecipeBuilder.shapedRecipe(TFItems.knightmetal_shield.get())
+				.patternLine("-#")
+				.patternLine("-o")
+				.patternLine("-#")
+				.key('-', ItemTagGenerator.KNIGHTMETAL_INGOTS)
+				.key('#', ItemTagGenerator.TOWERWOOD)
+				.key('o', Ingredient.fromItems(TFItems.knightmetal_ring.get()))
+				.addCriterion("has_item", hasItem(TFItems.knightmetal_ingot.get()))
+				.build(consumer, locEquip(TFItems.knightmetal_shield.getId().getPath()));
+
+		ShapelessRecipeBuilder.shapelessRecipe(TFItems.lifedrain_scepter.get())
+				.addIngredient(itemWithNBT(TFItems.lifedrain_scepter, nbt -> nbt.putInt("Damage", TFItems.lifedrain_scepter.get().getMaxDamage())))
+				.addIngredient(Ingredient.fromItems(Items.FERMENTED_SPIDER_EYE))
+				.addCriterion("has_item", hasItem(TFItems.lifedrain_scepter.get()))
+				.build(consumer, locEquip(TFItems.lifedrain_scepter.getId().getPath()));
+
+		ShapelessRecipeBuilder.shapelessRecipe(TFItems.shield_scepter.get())
+				.addIngredient(itemWithNBT(TFItems.shield_scepter, nbt -> nbt.putInt("Damage", TFItems.shield_scepter.get().getMaxDamage())))
+				.addIngredient(Ingredient.fromItems(Items.GOLDEN_APPLE))
+				.addCriterion("has_item", hasItem(TFItems.shield_scepter.get()))
+				.build(consumer, locEquip(TFItems.shield_scepter.getId().getPath()));
+
+		ShapelessRecipeBuilder.shapelessRecipe(TFItems.twilight_scepter.get())
+				.addIngredient(itemWithNBT(TFItems.twilight_scepter, nbt -> nbt.putInt("Damage", TFItems.twilight_scepter.get().getMaxDamage())))
+				.addIngredient(Tags.Items.ENDER_PEARLS)
+				.addCriterion("has_item", hasItem(TFItems.twilight_scepter.get()))
+				.build(consumer, locEquip(TFItems.twilight_scepter.getId().getPath()));
+
+		ShapelessRecipeBuilder.shapelessRecipe(TFItems.zombie_scepter.get())
+				.addIngredient(multipleIngredients(
+						itemWithNBT(Items.POTION, nbt -> nbt.putString("Potion", "minecraft:strength")),
+						itemWithNBT(Items.POTION, nbt -> nbt.putString("Potion", "minecraft:strong_strength")),
+						itemWithNBT(Items.POTION, nbt -> nbt.putString("Potion", "minecraft:long_strength"))
+				))
+				.addIngredient(itemWithNBT(TFItems.zombie_scepter, nbt -> nbt.putInt("Damage", TFItems.zombie_scepter.get().getMaxDamage())))
+				.addIngredient(Ingredient.fromItems(Items.ROTTEN_FLESH))
+				.addCriterion("has_item", hasItem(TFItems.zombie_scepter.get()))
+				.build(consumer, locEquip(TFItems.zombie_scepter.getId().getPath()));
+
+		// Testing
+		//ShapelessRecipeBuilder.shapelessRecipe(TFItems.zombie_scepter.get())
+		//		.addIngredient(multipleIngredients(
+		//				Ingredient.fromTag(Tags.Items.GEMS_DIAMOND),
+		//				Ingredient.fromItems(Items.BEDROCK)
+		//		))
+		//		.addIngredient(itemWithNBT(TFItems.zombie_scepter, nbt -> nbt.putInt("Damage", TFItems.zombie_scepter.get().getMaxDamage())))
+		//		.addIngredient(Ingredient.fromItems(Items.ROTTEN_FLESH))
+		//		.addIngredient(Tags.Items.GEMS_EMERALD)
+		//		.addCriterion("has_item", hasItem(TFItems.zombie_scepter.get()))
+		//		.build(consumer, locEquip(TFItems.zombie_scepter.getId().getPath() + "_rv"));
 	}
 
 	private void blockCompressionRecipes(Consumer<IFinishedRecipe> consumer) {
