@@ -1,6 +1,8 @@
 {
+  "name": "The Twilight Forest",
   "ultrawarm": false,
   "natural": true,
+  "coordinate_scale": 0.125,
   "shrunk": false,
   "has_skylight": true,
   "has_ceiling": false,
