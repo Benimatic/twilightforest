@@ -2,13 +2,20 @@
   // https://minecraft.gamepedia.com/Custom_world_generation#Biome
   "precipitation": "rain",
   "category": "forest",
-  "depth": 1,
-  "scale": 1,
+  "depth": 0.1,
+  "scale": 0.2,
   "temperature": 0,
   "temperature_modifier": "none",
   "downfall": 0.5,
-  "effects": {},
-  "surfacebuilder": "twilightforest:test",
+  "effects": {
+    "fog_color": 12648408,
+    "water_color": 4159204,
+    "water_fog_color": 329011,
+    "sky_color": 0,
+    "foliage_color": 0,
+    "grass_color": 0
+  },
+  "surface_builder": "twilightforest:test",
   "carvers": {
     "air": [ ],
     "liquid": [ "twilightforest:test" ]
@@ -16,24 +23,24 @@
   "features": [],
   "starts": [],
   "spawners": {
-    "monster": {
+    "monster": [
 
-    },
-    "creature": {
+    ],
+    "creature": [
 
-    },
-    "ambient": {
+    ],
+    "ambient": [
 
-    },
-    "water_creature": {
+    ],
+    "water_creature": [
 
-    },
-    "water_ambient": {
+    ],
+    "water_ambient": [
 
-    },
-    "misc": {
+    ],
+    "misc": [
 
-    }
+    ]
   },
   "player_spawn_friendly": false,
   "creature_spawn_probability": 0.5,

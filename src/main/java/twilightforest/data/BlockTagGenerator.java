@@ -79,7 +79,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 						.add(TFBlocks.time_sapling.get(), TFBlocks.transformation_sapling.get(), TFBlocks.mining_sapling.get(), TFBlocks.sorting_sapling.get())
 						.add(TFBlocks.hollow_oak_sapling.get(), TFBlocks.rainboak_sapling.get());
 
-		getTag("minecraft:beacon_base_blocks").add(
+		getOrCreateBuilder(BlockTags.BEACON_BASE_BLOCKS).add(
 				TFBlocks.knightmetal_block.get(),
 				TFBlocks.ironwood_block.get(),
 				TFBlocks.fiery_block.get(),
@@ -88,20 +88,16 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				TFBlocks.carminite_block.get()
 		);
 
-		getTag(TwilightForestMod.prefix("towerwood").toString()).add(TFBlocks.tower_wood.get(), TFBlocks.tower_wood_mossy.get(), TFBlocks.tower_wood_cracked.get(), TFBlocks.tower_wood_infested.get());
+		getOrCreateBuilder(TOWERWOOD).add(TFBlocks.tower_wood.get(), TFBlocks.tower_wood_mossy.get(), TFBlocks.tower_wood_cracked.get(), TFBlocks.tower_wood_infested.get());
 
-		getTag(TwilightForestMod.prefix("storage_blocks/arctic_fur").toString()).add(TFBlocks.arctic_fur_block.get());
-		getTag(TwilightForestMod.prefix("storage_blocks/carminite").toString()).add(TFBlocks.carminite_block.get());
-		getTag(TwilightForestMod.prefix("storage_blocks/fiery").toString()).add(TFBlocks.fiery_block.get());
-		getTag(TwilightForestMod.prefix("storage_blocks/ironwood").toString()).add(TFBlocks.ironwood_block.get());
-		getTag(TwilightForestMod.prefix("storage_blocks/knightmetal").toString()).add(TFBlocks.knightmetal_block.get());
-		getTag(TwilightForestMod.prefix("storage_blocks/steeleaf").toString()).add(TFBlocks.steeleaf_block.get());
+		getOrCreateBuilder(STORAGE_BLOCKS_ARCTIC_FUR).add(TFBlocks.arctic_fur_block.get());
+		getOrCreateBuilder(STORAGE_BLOCKS_CARMINITE).add(TFBlocks.carminite_block.get());
+		getOrCreateBuilder(STORAGE_BLOCKS_FIERY).add(TFBlocks.fiery_block.get());
+		getOrCreateBuilder(STORAGE_BLOCKS_IRONWOOD).add(TFBlocks.ironwood_block.get());
+		getOrCreateBuilder(STORAGE_BLOCKS_KNIGHTMETAL).add(TFBlocks.knightmetal_block.get());
+		getOrCreateBuilder(STORAGE_BLOCKS_STEELEAF).add(TFBlocks.steeleaf_block.get());
 
-		getTag(TwilightForestMod.prefix("ores/ironwood").toString());
-		getTag(TwilightForestMod.prefix("ores/knightmetal").toString());
-	}
-
-	private TagsProvider.Builder<Block> getTag(String name) {
-		return getOrCreateBuilder(BlockTags.makeWrapperTag(name));
+		getOrCreateBuilder(ORES_IRONWOOD);
+		getOrCreateBuilder(ORES_KNIGHTMETAL);
 	}
 }

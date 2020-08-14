@@ -17,6 +17,7 @@ import twilightforest.item.TFItems;
 
 public class ItemTagGenerator extends ItemTagsProvider {
 	public static final ITag.INamedTag<Item> PAPER = ItemTags.makeWrapperTag("forge:paper");
+	public static final ITag.INamedTag<Item> FEATHER = ItemTags.makeWrapperTag("forge:feather");
 
 	public static final ITag.INamedTag<Item> TOWERWOOD = ItemTags.makeWrapperTag(TwilightForestMod.prefix("towerwood").toString());
 
@@ -72,23 +73,19 @@ public class ItemTagGenerator extends ItemTagsProvider {
 
 		this.copy(BlockTagGenerator.TOWERWOOD, ItemTagGenerator.TOWERWOOD);
 
-		getTag("forge:paper").add(Items.PAPER);
-		getTag("forge:feather").add(TFItems.raven_feather.get());
+		getOrCreateBuilder(PAPER).add(Items.PAPER);
+		getOrCreateBuilder(FEATHER).add(Items.FEATHER).add(TFItems.raven_feather.get());
 
-		getTag(TwilightForestMod.prefix("fiery_vial").toString()).add(TFItems.fiery_blood.get(), TFItems.fiery_tears.get());
+		getOrCreateBuilder(FIERY_VIAL).add(TFItems.fiery_blood.get(), TFItems.fiery_tears.get());
 
-		getTag(TwilightForestMod.prefix("arctic_fur").toString()).add(TFItems.arctic_fur.get());
-		getTag(TwilightForestMod.prefix("gems/carminite").toString()).add(TFItems.carminite.get());
-		getTag(TwilightForestMod.prefix("ingots/fiery").toString()).add(TFItems.fiery_ingot.get());
-		getTag(TwilightForestMod.prefix("ingots/ironwood").toString()).add(TFItems.ironwood_ingot.get());
-		getTag(TwilightForestMod.prefix("ingots/knightmetal").toString()).add(TFItems.knightmetal_ingot.get());
-		getTag(TwilightForestMod.prefix("ingots/steeleaf").toString()).add(TFItems.steeleaf_ingot.get());
+		getOrCreateBuilder(ARCTIC_FUR).add(TFItems.arctic_fur.get());
+		getOrCreateBuilder(CARMINITE_GEMS).add(TFItems.carminite.get());
+		getOrCreateBuilder(FIERY_INGOTS).add(TFItems.fiery_ingot.get());
+		getOrCreateBuilder(IRONWOOD_INGOTS).add(TFItems.ironwood_ingot.get());
+		getOrCreateBuilder(KNIGHTMETAL_INGOTS).add(TFItems.knightmetal_ingot.get());
+		getOrCreateBuilder(STEELEAF_INGOTS).add(TFItems.steeleaf_ingot.get());
 
-		getTag(TwilightForestMod.prefix("ores/ironwood").toString()).add(TFItems.ironwood_raw.get());
-		getTag(TwilightForestMod.prefix("ores/knightmetal").toString()).add(TFItems.armor_shard_cluster.get());
-	}
-
-	private TagsProvider.Builder<Item> getTag(String name) {
-		return getOrCreateBuilder(ItemTags.makeWrapperTag(name));
+		getOrCreateBuilder(ORES_IRONWOOD).add(TFItems.ironwood_raw.get());
+		getOrCreateBuilder(ORES_KNIGHTMETAL).add(TFItems.armor_shard_cluster.get());
 	}
 }
