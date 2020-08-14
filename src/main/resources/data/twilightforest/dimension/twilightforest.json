@@ -1,4 +1,5 @@
 {
+	// https://minecraft.gamepedia.com/Custom_dimension
 	"type": "twilightforest:twilightforest",
 	"generator": {
 		"type": "minecraft:noise",
@@ -7,8 +8,7 @@
 			"bedrock_roof_position": -1,
 			"bedrock_floor_position": 0,
 			"sea_level": 31,
-			// Undocumented - this setting will make it so that mobs will not spawn during world generation TODO disable in the future
-			"disable_mob_generation": true,
+			"disable_mob_generation": false,
 			"structures": {
 				"stronghold": { "distance": 0,  "count": 0,  "spread": 0 },
 				"structures": {
@@ -46,8 +46,7 @@
 		},
 		"biome_source": {
 			"type": "minecraft:checkerboard",
-			// Neither of these biomes will hang the game for now
-			"biomes": [ "minecraft:plains", "minecraft:desert" ]
+			"biomes": [ "minecraft:plains", "minecraft:desert", "twilightforest:test" ]
 		}
 	}
 }
