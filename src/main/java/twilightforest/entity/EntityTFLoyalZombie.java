@@ -18,6 +18,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 public class EntityTFLoyalZombie extends TameableEntity {
 
@@ -40,7 +41,7 @@ public class EntityTFLoyalZombie extends TameableEntity {
 	}
 
 	@Override
-	public AnimalEntity createChild(AgeableEntity entityanimal) {
+	public AnimalEntity func_241840_a(ServerWorld world, AgeableEntity entityanimal) {
 		return null;
 	}
 

@@ -24,7 +24,7 @@ public class TFGenSortingTree extends Feature<TFTreeFeatureConfig> {
 	}
 
 	@Override
-	public boolean func_230362_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, BlockPos pos, TFTreeFeatureConfig config) {
+	public boolean func_241855_a(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, TFTreeFeatureConfig config) {
 		// check soil
 		Material materialUnder = world.getBlockState(pos.down()).getMaterial();
 		if ((materialUnder != Material.ORGANIC && materialUnder != Material.EARTH) || pos.getY() >= TFGenerationSettings.MAXHEIGHT - 12) {

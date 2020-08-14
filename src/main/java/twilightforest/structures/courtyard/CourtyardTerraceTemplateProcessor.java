@@ -19,7 +19,7 @@ import java.util.Random;
 
 public class CourtyardTerraceTemplateProcessor extends RandomizedTemplateProcessor {
 
-	public static final Codec<CourtyardTerraceTemplateProcessor> codecTerraceProcessor = Codec.FLOAT.fieldOf("integrity").withDefault(1.0F).xmap(CourtyardTerraceTemplateProcessor::new, (obj) -> obj.integrity).codec();
+	public static final Codec<CourtyardTerraceTemplateProcessor> codecTerraceProcessor = Codec.FLOAT.fieldOf("integrity").orElse(1.0F).xmap(CourtyardTerraceTemplateProcessor::new, (obj) -> obj.integrity).codec();
 
     public CourtyardTerraceTemplateProcessor(float integrity) {
         super(integrity);

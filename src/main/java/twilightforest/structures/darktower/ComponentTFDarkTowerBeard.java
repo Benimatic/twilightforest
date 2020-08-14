@@ -64,7 +64,7 @@ public class ComponentTFDarkTowerBeard extends StructureTFComponentOld {
 	}
 
 	//TODO: Parameter "minY" is unused. Remove?
-	protected void makeDarkBeard(IWorld world, MutableBoundingBox sbb, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
+	protected void makeDarkBeard(ISeedReader world, MutableBoundingBox sbb, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
 		BlockState frameState = TFBlocks.tower_wood_encased.get().getDefaultState();
 
 		for (int x = minX; x <= maxX; x++) {

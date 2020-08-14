@@ -15,7 +15,7 @@ public class RenderTFSky {
 	 */
 	public static void render() {
 		ClientWorld world = Minecraft.getInstance().world;
-		if(world != null && world.func_234922_V_().func_240901_a_().equals(TFDimensions.twilightForestType.func_240901_a_())) {
+		if(world != null && world.func_234923_W_().func_240901_a_().equals(TFDimensions.twilightForestType.func_240901_a_())) {
 
 		}
 	}

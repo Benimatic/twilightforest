@@ -17,7 +17,7 @@ import java.util.Random;
 
 public class CourtyardWallTemplateProcessor extends RandomizedTemplateProcessor {
 
-	public static final Codec<CourtyardWallTemplateProcessor> codecWallProcessor = Codec.FLOAT.fieldOf("integrity").withDefault(1.0F).xmap(CourtyardWallTemplateProcessor::new, (obj) -> obj.integrity).codec();
+	public static final Codec<CourtyardWallTemplateProcessor> codecWallProcessor = Codec.FLOAT.fieldOf("integrity").orElse(1.0F).xmap(CourtyardWallTemplateProcessor::new, (obj) -> obj.integrity).codec();
 
 	public CourtyardWallTemplateProcessor(float integrity) {
         super(integrity);

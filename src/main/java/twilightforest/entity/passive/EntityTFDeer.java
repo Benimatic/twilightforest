@@ -13,8 +13,11 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import twilightforest.TFSounds;
 import twilightforest.entity.TFEntities;
+
+import javax.annotation.Nullable;
 
 public class EntityTFDeer extends AnimalEntity {
 
@@ -66,7 +69,7 @@ public class EntityTFDeer extends AnimalEntity {
     }
 
 	@Override
-	public EntityTFDeer createChild(AgeableEntity mate) {
+	public EntityTFDeer func_241840_a(ServerWorld p_241840_1_, AgeableEntity mate) {
 		return TFEntities.deer.create(world);
 	}
 

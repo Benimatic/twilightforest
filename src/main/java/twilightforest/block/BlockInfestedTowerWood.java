@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import twilightforest.entity.EntityTFTowerTermite;
 import twilightforest.entity.TFEntities;
 
@@ -18,7 +19,7 @@ public class BlockInfestedTowerWood extends BlockFlammable {
 
 	@Override
 	@Deprecated
-	public void spawnAdditionalDrops(BlockState state, World world, BlockPos pos, ItemStack stack) {
+	public void spawnAdditionalDrops(BlockState state, ServerWorld world, BlockPos pos, ItemStack stack) {
 		super.spawnAdditionalDrops(state, world, pos, stack);
 		if (!world.isRemote && world.getGameRules().getBoolean(GameRules.DO_TILE_DROPS) && EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, stack) == 0) {
 			EntityTFTowerTermite termite = new EntityTFTowerTermite(TFEntities.tower_termite, world);

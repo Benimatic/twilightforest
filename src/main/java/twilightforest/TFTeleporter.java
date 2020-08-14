@@ -16,6 +16,7 @@ import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.World;
@@ -68,6 +69,7 @@ public class TFTeleporter extends Teleporter {
 //		}
 //	}
 
+	/* FIXME
 	@Override
 	public boolean placeInPortal(Entity entity, float facing) {
 		Vector3d vec3d = entity.getLastPortalVec();
@@ -84,7 +86,7 @@ public class TFTeleporter extends Teleporter {
 //			entity.positAfterTeleport(vec3d1.x, vec3d1.y, vec3d1.z);
 			return true;
 		}
-	}
+	}*/
 
 	private void moveToSafeCoords(Entity entity) {
 		// if we're in enforced progression mode, check the biomes for safety
@@ -121,9 +123,10 @@ public class TFTeleporter extends Teleporter {
 		int attempts = range / 8;
 		for (int i = 0; i < attempts; i++) {
 			BlockPos dPos = new BlockPos(
-					pos.getX() + random.nextInt(range) - random.nextInt(range),
+					// TODO Should we be having randomized attempts
+					pos.getX() /*+ random.nextInt(range) - random.nextInt(range)*/,
 					100,
-					pos.getZ() + random.nextInt(range) - random.nextInt(range)
+					pos.getZ() /*+ random.nextInt(range) - random.nextInt(range)*/
 			);
 
 			if (isSafeAround(dPos, entity, checkProgression)) {
@@ -254,7 +257,7 @@ public class TFTeleporter extends Teleporter {
 
 			// TF - replace with our own placement logic
 			BlockPos[] portalBorder = getBoundaryPositions(blockpos).toArray(new BlockPos[0]);
-			BlockPos borderPos = portalBorder[random.nextInt(portalBorder.length)];
+			BlockPos borderPos = portalBorder[0/*random.nextInt(portalBorder.length)*/];
 
 			double portalX = borderPos.getX() + 0.5;
 			double portalY = borderPos.getY() + 1.0;
@@ -311,6 +314,7 @@ public class TFTeleporter extends Teleporter {
 		return isPortal(world.getBlockState(pos));
 	}
 
+	/* FIXME
 	@Override
 	public boolean makePortal(Entity entity) {
 
@@ -352,7 +356,7 @@ public class TFTeleporter extends Teleporter {
 		cachePortalCoords(entity, makePortalAt(world, new BlockPos(entity.getPosX(), (entity.getPosY() * yFactor) - 1.0, entity.getPosZ())));
 
 		return false;
-	}
+	}*/
 
 	private void loadSurroundingArea(Entity entity) {
 
@@ -367,7 +371,8 @@ public class TFTeleporter extends Teleporter {
 	}
 
 	private double getYFactor() {
-		return world.func_234922_V_() == DimensionType.OVERWORLD/*DimensionType.byName(new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()))*/ ? 2.0 : 0.5; //TODO
+		// FIXME This function has been bandaided twice over. This needs to be properly addressed
+		return DimensionType.OVERWORLD.getRegistryName().equals(world.func_230315_m_().func_242725_p()) /*world.func_230315_m_() == DimensionType.OVERWORLD*//*DimensionType.byName(new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()))*/ ? 2.0 : 0.5; //TODO
 	}
 
 	@Nullable
@@ -534,11 +539,13 @@ public class TFTeleporter extends Teleporter {
 	public Entity placeEntity(Entity entity, ServerWorld currentWorld, ServerWorld destWorld, float yaw, Function<Boolean, Entity> repositionEntity) {
 		Entity newEntity = repositionEntity.apply(false); //Must be false or we fall on vanilla
 
-		if (!placeInPortal(newEntity, newEntity.rotationYaw)) {
+		// FIXME We're probably going to get players killed here LOL
+		// TODO But seriously, we should actually rewrite this whole class again because Thanks Mojang for constantly rewriting it
+		//if (!placeInPortal(newEntity, newEntity.rotationYaw)) {
 			moveToSafeCoords(entity);
-			makePortal(newEntity);
-			placeInPortal(newEntity, newEntity.rotationYaw);
-		}
+		//	makePortal(newEntity);
+		//	placeInPortal(newEntity, newEntity.rotationYaw);
+		//}
 
 		return newEntity;
 	}

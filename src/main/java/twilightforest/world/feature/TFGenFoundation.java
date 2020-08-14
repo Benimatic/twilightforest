@@ -20,7 +20,7 @@ public class TFGenFoundation extends Feature<NoFeatureConfig> {
 	}
 
 	@Override
-	public boolean func_230362_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+	public boolean func_241855_a(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
 		int sx = 5 + rand.nextInt(5);
 		int sz = 5 + rand.nextInt(5);
 

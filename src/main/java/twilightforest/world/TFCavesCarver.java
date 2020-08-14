@@ -12,7 +12,6 @@ import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.carver.WorldCarver;
 import net.minecraft.world.gen.feature.ProbabilityConfig;
 import org.apache.commons.lang3.mutable.MutableBoolean;
-import twilightforest.biomes.TFBiomeHighlands;
 
 import java.util.BitSet;
 import java.util.Random;
@@ -36,7 +35,7 @@ public class TFCavesCarver extends WorldCarver<ProbabilityConfig> {
 	public boolean carveRegion(IChunk chunkIn, Function<BlockPos, Biome> biomePos, Random rand, int seaLevel, int offsetX, int offsetZ, int chunkX, int chunkZ, BitSet mask, ProbabilityConfig config) {
 		int size = (this.func_222704_c() * 2 - 1) * 16;
 		int maxcaves = rand.nextInt(rand.nextInt(rand.nextInt(40) + 1) + 1);
-		boolean isHighlands = biomePos.apply(new BlockPos(offsetX * 16, 0, offsetZ * 16)) instanceof TFBiomeHighlands;
+		boolean isHighlands = false; //FIXME biomePos.apply(new BlockPos(offsetX * 16, 0, offsetZ * 16)) instanceof TFBiomeHighlands;
 
 		for(int k = 0; k < maxcaves; ++k) {
 			double randX = (double)(offsetX * 16 + rand.nextInt(16));
@@ -186,7 +185,7 @@ public class TFCavesCarver extends WorldCarver<ProbabilityConfig> {
 					if (bool.isTrue()) {
 						mutableDown.func_239622_a_(mutable, Direction.DOWN);
 						if (chunk.getBlockState(mutableDown).isIn(Blocks.DIRT)) {
-							chunk.setBlockState(mutableDown, biomePos.apply(mutable).getSurfaceBuilderConfig().getTop(), false);
+							// FIXME chunk.setBlockState(mutableDown, biomePos.apply(mutable).getSurfaceBuilderConfig().getTop(), false);
 						}
 					}
 				}

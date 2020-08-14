@@ -13,6 +13,7 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import twilightforest.block.TFBlocks;
@@ -39,7 +40,7 @@ public class EntityTFMazeSlime extends SlimeEntity {
 		this.experienceValue += 3;
 	}
 
-	public static boolean getCanSpawnHere(EntityType<EntityTFMazeSlime> entity, IWorld world, SpawnReason reason, BlockPos pos, Random random) {
+	public static boolean getCanSpawnHere(EntityType<EntityTFMazeSlime> entity, IServerWorld world, SpawnReason reason, BlockPos pos, Random random) {
 		return world.getDifficulty() != Difficulty.PEACEFUL && canSpawnOn(entity, world, reason, pos, random) && MonsterEntity.isValidLightLevel(world, pos, random);
 	}
 

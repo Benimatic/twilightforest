@@ -19,6 +19,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import twilightforest.entity.ai.EntityAITFChargeAttack;
@@ -61,7 +62,7 @@ public class EntityTFMinotaur extends MonsterEntity implements ITFCharger {
 
 	@Nullable
 	@Override
-	public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficulty, SpawnReason reason, @Nullable ILivingEntityData livingdata, @Nullable CompoundNBT dataTag) {
+	public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficulty, SpawnReason reason, @Nullable ILivingEntityData livingdata, @Nullable CompoundNBT dataTag) {
 		ILivingEntityData data = super.onInitialSpawn(worldIn, difficulty, reason, livingdata, dataTag);
 		this.setEquipmentBasedOnDifficulty(difficulty);
 		this.setEnchantmentBasedOnDifficulty(difficulty);

@@ -13,14 +13,15 @@ public enum GenLayerTFCompanionBiomes implements ICastleTransformer {
 
 	@Override
 	public int apply(INoiseRandom noise, int up, int left, int down, int right, int center) {
-		int fireSwamp        = Registry.BIOME.getId(TFBiomes.fireSwamp.get());
-		int swamp            = Registry.BIOME.getId(TFBiomes.tfSwamp.get());
-		int glacier          = Registry.BIOME.getId(TFBiomes.glacier.get());
-		int snowyForest      = Registry.BIOME.getId(TFBiomes.snowy_forest.get());
-		int darkForestCenter = Registry.BIOME.getId(TFBiomes.darkForestCenter.get());
-		int darkForest       = Registry.BIOME.getId(TFBiomes.darkForest.get());
-		int highlandsCenter  = Registry.BIOME.getId(TFBiomes.highlandsCenter.get());
-		int highlands        = Registry.BIOME.getId(TFBiomes.highlands.get());
+		// FIXME oh god
+		int fireSwamp        = 0;//Registry.BIOME.getId(TFBiomes.fireSwamp.get());
+		int swamp            = 0;//Registry.BIOME.getId(TFBiomes.tfSwamp.get());
+		int glacier          = 0;//Registry.BIOME.getId(TFBiomes.glacier.get());
+		int snowyForest      = 0;//Registry.BIOME.getId(TFBiomes.snowy_forest.get());
+		int darkForestCenter = 0;//Registry.BIOME.getId(TFBiomes.darkForestCenter.get());
+		int darkForest       = 0;//Registry.BIOME.getId(TFBiomes.darkForest.get());
+		int highlandsCenter  = 0;//Registry.BIOME.getId(TFBiomes.highlandsCenter.get());
+		int highlands        = 0;//Registry.BIOME.getId(TFBiomes.highlands.get());
 
 		if (isKey(fireSwamp, center, right, left, up, down)) {
 			return swamp;

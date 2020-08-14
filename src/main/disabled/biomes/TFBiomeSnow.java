@@ -5,7 +5,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFEntities;
 import twilightforest.potions.TFPotions;

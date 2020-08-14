@@ -22,7 +22,7 @@ public class TFGenOutsideStalagmite extends TFGenCaveStalactite {
 	}
 
 	@Override
-	public boolean func_230362_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, BlockPos pos, CaveStalactiteConfig config) {
+	public boolean func_241855_a(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, CaveStalactiteConfig config) {
 		int length = rand.nextInt(10) + 5;
 
 		if (!FeatureUtil.isAreaSuitable(world, rand, pos, 1, length, 1)) {

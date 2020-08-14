@@ -3,7 +3,9 @@ package twilightforest.world;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.util.registry.WorldGenRegistries;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeRegistry;
 import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.gen.IExtendedNoiseRandom;
 import net.minecraft.world.gen.LazyAreaLayerContext;
@@ -17,7 +19,6 @@ import twilightforest.biomes.TFBiomes;
 import twilightforest.world.layer.GenLayerTFBiomeStabilize;
 import twilightforest.world.layer.GenLayerTFBiomes;
 import twilightforest.world.layer.GenLayerTFCompanionBiomes;
-import twilightforest.world.layer.GenLayerTFKeyBiomes;
 import twilightforest.world.layer.GenLayerTFRiverMix;
 import twilightforest.world.layer.GenLayerTFStream;
 import twilightforest.world.layer.GenLayerTFThornBorder;
@@ -35,37 +36,37 @@ public class TFBiomeProvider extends BiomeProvider {
 	private final TFBiomeCache mapCache;
 	private final long seed;
 	private static final List<Biome> BIOMES = ImmutableList.of( //TODO: Can we do this more efficiently?
-			TFBiomes.tfLake.get(),
-			TFBiomes.twilightForest.get(),
-			TFBiomes.denseTwilightForest.get(),
-			TFBiomes.highlands.get(),
-			TFBiomes.mushrooms.get(),
-			TFBiomes.tfSwamp.get(),
-			TFBiomes.stream.get(),
-			TFBiomes.snowy_forest.get(),
-			TFBiomes.glacier.get(),
-			TFBiomes.clearing.get(),
-			TFBiomes.oakSavanna.get(),
-			TFBiomes.fireflyForest.get(),
-			TFBiomes.deepMushrooms.get(),
-			TFBiomes.darkForest.get(),
-			TFBiomes.enchantedForest.get(),
-			TFBiomes.fireSwamp.get(),
-			TFBiomes.darkForestCenter.get(),
-			TFBiomes.highlandsCenter.get(),
-			TFBiomes.thornlands.get(),
-			TFBiomes.spookyForest.get()
+			//TFBiomes.tfLake.get(),
+			//TFBiomes.twilightForest.get(),
+			//TFBiomes.denseTwilightForest.get(),
+			//TFBiomes.highlands.get(),
+			//TFBiomes.mushrooms.get(),
+			//TFBiomes.tfSwamp.get(),
+			//TFBiomes.stream.get(),
+			//TFBiomes.snowy_forest.get(),
+			//TFBiomes.glacier.get(),
+			//TFBiomes.clearing.get(),
+			//TFBiomes.oakSavanna.get(),
+			//TFBiomes.fireflyForest.get(),
+			//TFBiomes.deepMushrooms.get(),
+			//TFBiomes.darkForest.get(),
+			//TFBiomes.enchantedForest.get(),
+			//TFBiomes.fireSwamp.get(),
+			//TFBiomes.darkForestCenter.get(),
+			//TFBiomes.highlandsCenter.get(),
+			//TFBiomes.thornlands.get(),
+			//TFBiomes.spookyForest.get()
 	);
 
 	public TFBiomeProvider(long seed) {
 		super(BIOMES);
 		this.seed = seed;
-		getBiomesToSpawnIn().clear();
-		getBiomesToSpawnIn().add(TFBiomes.twilightForest.get());
-		getBiomesToSpawnIn().add(TFBiomes.denseTwilightForest.get());
-		getBiomesToSpawnIn().add(TFBiomes.clearing.get());
-		getBiomesToSpawnIn().add(TFBiomes.tfSwamp.get());
-		getBiomesToSpawnIn().add(TFBiomes.mushrooms.get());
+		//getBiomesToSpawnIn().clear();
+		//getBiomesToSpawnIn().add(TFBiomes.twilightForest.get());
+		//getBiomesToSpawnIn().add(TFBiomes.denseTwilightForest.get());
+		//getBiomesToSpawnIn().add(TFBiomes.clearing.get());
+		//getBiomesToSpawnIn().add(TFBiomes.tfSwamp.get());
+		//getBiomesToSpawnIn().add(TFBiomes.mushrooms.get());
 
 		genBiomes = makeLayers(seed);
 		mapCache = new TFBiomeCache(this, 512, true);
@@ -73,7 +74,7 @@ public class TFBiomeProvider extends BiomeProvider {
 
 	private static <T extends IArea, C extends IExtendedNoiseRandom<T>> IAreaFactory<T> makeLayers(LongFunction<C> seed) {
 		IAreaFactory<T> biomes = new GenLayerTFBiomes().apply(seed.apply(1L));
-		biomes = GenLayerTFKeyBiomes.INSTANCE.apply(seed.apply(1000L), biomes);
+		//biomes = GenLayerTFKeyBiomes.INSTANCE.apply(seed.apply(1000L), biomes);
 		biomes = GenLayerTFCompanionBiomes.INSTANCE.apply(seed.apply(1000L), biomes);
 
 		biomes = ZoomLayer.NORMAL.apply(seed.apply(1000L), biomes);
@@ -102,7 +103,7 @@ public class TFBiomeProvider extends BiomeProvider {
 
 	@Override
 	public Biome getNoiseBiome(int x, int y, int z) {
-		return this.genBiomes.func_215738_a(x, z);
+		return WorldGenRegistries.field_243657_i.getByValue(0); // TODO This is absolutely terrible and needs -actual- bandaiding desperately
 	}
 
 	@Override

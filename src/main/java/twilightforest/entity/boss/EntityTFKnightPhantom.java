@@ -29,10 +29,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.Difficulty;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.*;
 import net.minecraft.world.server.ServerWorld;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
@@ -74,7 +71,7 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 
 	@Nullable
 	@Override
-	public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficulty, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+	public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficulty, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
 		ILivingEntityData data = super.onInitialSpawn(worldIn, difficulty, reason, spawnDataIn, dataTag);
 		setEquipmentBasedOnDifficulty(difficulty);
 		setEnchantmentBasedOnDifficulty(difficulty);

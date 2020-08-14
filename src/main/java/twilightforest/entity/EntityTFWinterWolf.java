@@ -16,6 +16,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import twilightforest.biomes.TFBiomes;
@@ -122,7 +123,7 @@ public class EntityTFWinterWolf extends EntityTFHostileWolf implements IBreathAt
 		target.attackEntityFrom(DamageSource.causeMobDamage(this), BREATH_DAMAGE);
 	}
 
-	public static boolean canSpawnHere(EntityType<? extends EntityTFWinterWolf> entity, IWorld world, SpawnReason reason, BlockPos pos, Random random) {
-		return world.getBiome(pos) == TFBiomes.snowy_forest.get() || MonsterEntity.isValidLightLevel(world, pos, random);
+	public static boolean canSpawnHere(EntityType<? extends EntityTFWinterWolf> entity, IServerWorld world, SpawnReason reason, BlockPos pos, Random random) {
+		return /* FIXME world.getBiome(pos) == TFBiomes.snowy_forest.get() ||*/ MonsterEntity.isValidLightLevel(world, pos, random);
 	}
 }

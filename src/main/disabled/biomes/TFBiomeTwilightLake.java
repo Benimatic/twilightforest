@@ -2,7 +2,6 @@ package twilightforest.biomes;
 
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
-import twilightforest.TFFeature;
 
 public class TFBiomeTwilightLake extends TFBiomeBase {
 

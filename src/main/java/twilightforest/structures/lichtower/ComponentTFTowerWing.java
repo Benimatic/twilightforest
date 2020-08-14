@@ -399,7 +399,7 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 	 *
 	 * @param numMarkers How many markers to make
 	 */
-	protected void makeOpeningMarkers(World world, Random rand, int numMarkers, MutableBoundingBox sbb) {
+	protected void makeOpeningMarkers(ISeedReader world, Random rand, int numMarkers, MutableBoundingBox sbb) {
 		if (size > 4) {
 			final BlockState woolWhite = Blocks.WHITE_WOOL.getDefaultState();
 			final BlockState woolOrange = Blocks.ORANGE_WOOL.getDefaultState();
@@ -887,7 +887,7 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 	 * <p>
 	 * This is not called at the moment, since I added monsters and the monsters set off the trap.  Perhaps I need a better way of activating it.
 	 */
-	protected void decorateTrap(World world, Random rand, int bottom, int top, int ladderUpDir, int ladderDownDir, MutableBoundingBox sbb) {
+	protected void decorateTrap(ISeedReader world, Random rand, int bottom, int top, int ladderUpDir, int ladderDownDir, MutableBoundingBox sbb) {
 		for (int dx = 2; dx <= size - 3; dx++) {
 			for (int dz = 2; dz <= size - 3; dz++) {
 				if (dx == 2 || dx == size - 3 || dz == 2 || dz == size - 3) {

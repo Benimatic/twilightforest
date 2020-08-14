@@ -35,7 +35,7 @@ public class ComponentTFTowerBeardAttached extends ComponentTFTowerBeard {
 		return makeAttachedBeard(world.getWorld(), rand, sbb);
 	}
 
-	private boolean makeAttachedBeard(World world, Random rand, MutableBoundingBox sbb) {
+	private boolean makeAttachedBeard(ISeedReader world, Random rand, MutableBoundingBox sbb) {
 		for (int y = 0; y <= height; y++) {
 			int min = y + 1;
 			int max = size - y;

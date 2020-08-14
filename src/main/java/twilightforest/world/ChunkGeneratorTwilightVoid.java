@@ -16,12 +16,12 @@ import net.minecraft.world.gen.feature.structure.StructureManager;
 
 public class ChunkGeneratorTwilightVoid extends ChunkGeneratorTFBase {
 
-	public static final Codec<ChunkGeneratorTwilightVoid> codecVoidChunk = RecordCodecBuilder.create((instance) ->
+	public static final Codec<ChunkGeneratorTwilightVoid> codecVoidChunk = null; /* FIXME RecordCodecBuilder.create((instance) ->
 			instance.group(
 					BiomeProvider.PROVIDER_CODEC.fieldOf("biome_source").forGetter((obj) -> obj.biomeProvider),
 					Codec.LONG.fieldOf("seed").stable().forGetter((obj) -> obj.seed),
 					DimensionSettings.field_236098_b_.fieldOf("settings").forGetter((obj) -> obj.dimensionSettings))
-					.apply(instance, instance.stable(ChunkGeneratorTwilightVoid::new)));
+					.apply(instance, instance.stable(ChunkGeneratorTwilightVoid::new)));*/
 
 	//private final boolean generateHollowTrees = TFConfig.COMMON_CONFIG.DIMENSION.skylightOaks.get();
 	private final long seed;

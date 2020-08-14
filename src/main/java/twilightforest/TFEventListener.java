@@ -31,6 +31,7 @@ import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.GameRules;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
@@ -457,13 +458,13 @@ public class TFEventListener {
 	 */
 	@SubscribeEvent
 	public static void breakBlock(BreakEvent event) {
-
-		World world = event.getWorld().getWorld();
 		PlayerEntity player = event.getPlayer();
 		BlockPos pos = event.getPos();
 		BlockState state = event.getState();
 
-		if (world.isRemote) return;
+		if (!(event.getWorld() instanceof World) || ((World) event.getWorld()).isRemote) return;
+
+		World world = (World) event.getWorld();
 
 		if (isBlockProtectedFromBreaking(world, pos) && isAreaProtected(world, player, pos)) {
 			event.setCanceled(true);
@@ -663,9 +664,9 @@ public class TFEventListener {
 	 */
 	@SubscribeEvent
 	public static void worldLoaded(WorldEvent.Load event) {
-		World world = event.getWorld().getWorld();
+		IWorld world = event.getWorld();
 
-		if (!world.isRemote() && world.getGameRules().get(TwilightForestMod.ENFORCED_PROGRESSION_RULE).get()) {
+		if (!world.isRemote() && world instanceof World && ((World) world).getGameRules().get(TwilightForestMod.ENFORCED_PROGRESSION_RULE).get()) {
 			TwilightForestMod.LOGGER.info("Loaded a world with the {} game rule not defined. Defining it.", TwilightForestMod.ENFORCED_PROGRESSION_RULE);
 			//world.getGameRules().addGameRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE, String.valueOf(TFConfig.COMMON_CONFIG.progressionRuleDefault), GameRules.ValueType.BOOLEAN_VALUE);
 		}

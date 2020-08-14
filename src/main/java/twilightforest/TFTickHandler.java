@@ -16,7 +16,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.network.PacketDistributor;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.biomes.TFBiomeBase;
 import twilightforest.block.TFBlocks;
 import twilightforest.network.PacketStructureProtection;
 import twilightforest.network.PacketStructureProtectionClear;
@@ -146,12 +145,13 @@ public class TFTickHandler {
 	 * Check what biome the player is in, and see if current progression allows that biome.  If not, take appropriate action
 	 */
 	private static void checkBiomeForProgression(PlayerEntity player, World world) {
+		/* FIXME
 		Biome currentBiome = world.getBiome(player.getPosition());
 		if (currentBiome instanceof TFBiomeBase) {
 			TFBiomeBase tfBiome = (TFBiomeBase) currentBiome;
 			if (!tfBiome.doesPlayerHaveRequiredAdvancements(player)) {
 				tfBiome.enforceProgression(player, world);
 			}
-		}
+		}*/
 	}
 }

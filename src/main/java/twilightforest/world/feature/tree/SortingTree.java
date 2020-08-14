@@ -1,7 +1,6 @@
 package twilightforest.world.feature.tree;
 
 import net.minecraft.world.gen.feature.ConfiguredFeature;
-import twilightforest.biomes.TFBiomeDecorator;
 import twilightforest.world.feature.TFBiomeFeatures;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
@@ -11,6 +10,6 @@ public class SortingTree extends TFTree {
 
 	@Override
 	public ConfiguredFeature<TFTreeFeatureConfig, ?> createTreeFeature(Random rand) {
-		return TFBiomeFeatures.SORTING_TREE.get().withConfiguration(TFBiomeDecorator.SORT_TREE);
+		return null;// FIXME  TFBiomeFeatures.SORTING_TREE.get().withConfiguration(TFBiomeDecorator.SORT_TREE);
 	}
 }

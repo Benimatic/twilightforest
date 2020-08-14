@@ -6,6 +6,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.IServerWorld;
 
 public abstract class TileEntityTFBossSpawner<T extends MobEntity> extends TileEntity implements ITickableTileEntity {
 
@@ -47,11 +48,14 @@ public abstract class TileEntityTFBossSpawner<T extends MobEntity> extends TileE
 	}
 
 	protected boolean spawnMyBoss() {
+		if (!(world instanceof IServerWorld))
+			return false; // FIXME Dirty fix! Make a better fix! Check out how Vanilla Mob Spawners handle this!
+
 		// create creature
 		T myCreature = makeMyCreature();
 
 		myCreature.moveToBlockPosAndAngles(pos, world.rand.nextFloat() * 360F, 0.0F);
-		myCreature.onInitialSpawn(world, world.getDifficultyForLocation(pos), SpawnReason.SPAWNER, null, null);
+		myCreature.onInitialSpawn((IServerWorld) world, world.getDifficultyForLocation(pos), SpawnReason.SPAWNER, null, null);
 
 		// set creature's home to this
 		initializeCreature(myCreature);

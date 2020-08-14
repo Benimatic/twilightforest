@@ -19,13 +19,14 @@ public enum GenLayerTFStream implements ICastleTransformer {
 
 	@Override
 	public int apply(INoiseRandom iNoiseRandom, int up, int left, int down, int right, int mid) {
-		if (shouldStream(mid, left) || shouldStream(mid, right) || shouldStream(mid, down) || shouldStream(mid, up)) {
+		/*if (shouldStream(mid, left) || shouldStream(mid, right) || shouldStream(mid, down) || shouldStream(mid, up)) {
 			return Registry.BIOME.getId(TFBiomes.stream.get());
-		} else {
+		} else*/ {
 			return mid;
 		}
 	}
 
+	/* FIXME
 	boolean shouldStream(int id1, int id2) {
 		if (id1 == id2) {
 			return false;
@@ -49,5 +50,5 @@ public enum GenLayerTFStream implements ICastleTransformer {
 
 	private boolean testEitherBiome(Biome test1, Biome test2, Biome predicate1, Biome predicate2) {
 		return (test1 == predicate1 && test2 == predicate2) || (test2 == predicate1 && test1 == predicate2);
-	}
+	}*/
 }

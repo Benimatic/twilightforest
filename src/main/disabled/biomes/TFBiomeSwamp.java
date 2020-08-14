@@ -10,7 +10,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.FoliageColors;
 import net.minecraft.world.GrassColors;
 import net.minecraft.world.World;
-import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFEntities;
 

@@ -3,7 +3,6 @@ package twilightforest.biomes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 
 public class TFBiomeFireSwamp extends TFBiomeBase {

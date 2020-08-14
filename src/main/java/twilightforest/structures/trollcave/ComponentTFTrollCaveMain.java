@@ -13,6 +13,7 @@ import net.minecraft.world.ISeedReader;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
+import net.minecraft.world.gen.feature.FeatureSpread;
 import net.minecraft.world.gen.feature.SphereReplaceConfig;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructureManager;
@@ -37,7 +38,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 	protected int size;
 	protected int height;
 
-	public static final ConfiguredFeature<?,?> uberousGen = TFBiomeFeatures.MYCELIUM_BLOB.get().withConfiguration(new SphereReplaceConfig(TFBlocks.uberous_soil.get().getDefaultState(), 4, 1, Lists.newArrayList(Blocks.GRASS_BLOCK.getDefaultState())));
+	public static final ConfiguredFeature<?,?> uberousGen = TFBiomeFeatures.MYCELIUM_BLOB.get().withConfiguration(new SphereReplaceConfig(TFBlocks.uberous_soil.get().getDefaultState(), FeatureSpread.func_242252_a(4), 1, Lists.newArrayList(Blocks.GRASS_BLOCK.getDefaultState())));
 
 	public ComponentTFTrollCaveMain(TemplateManager manager, CompoundNBT nbt) {
 		super(TFTrollCavePieces.TFTCMai, nbt);
@@ -223,7 +224,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 		return new BlockPos(x, y, z);
 	}
 
-	protected static final Predicate<Biome> highlands = biome -> biome == TFBiomes.highlands.get();
+	protected static final Predicate<Biome> highlands = biome -> false; // FIXME biome == TFBiomes.highlands.get();
 
 	/**
 	 * Make a random stone stalactite
@@ -236,7 +237,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 
 		BlockPos pos = new BlockPos(dx, dy, dz);
 		if (sbb.isVecInside(pos)) {
-			TFBiomeFeatures.CAVE_STALACTITE.get().withConfiguration(new CaveStalactiteConfig(blockToGenerate.getDefaultState(), length, -1, -1, up)).func_236265_a_(world, manager, ((ServerWorld) world).getChunkProvider().getChunkGenerator(), rand, pos);
+			TFBiomeFeatures.CAVE_STALACTITE.get().withConfiguration(new CaveStalactiteConfig(blockToGenerate.getDefaultState(), length, -1, -1, up)).func_242765_a(world, ((ServerWorld) world).getChunkProvider().getChunkGenerator(), rand, pos);
 		}
 	}
 
@@ -260,7 +261,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 				}
 			}
 
-			feature.func_236265_a_(world, manager, generator, rand, pos.toImmutable());
+			feature.func_242765_a(world, generator, rand, pos.toImmutable());
 		}
 	}
 

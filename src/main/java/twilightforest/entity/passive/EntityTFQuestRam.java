@@ -67,7 +67,7 @@ public class EntityTFQuestRam extends AnimalEntity {
 
 	@Nullable
 	@Override
-	public AnimalEntity createChild(@Nonnull AgeableEntity mate) {
+	public AnimalEntity func_241840_a(ServerWorld world, AgeableEntity mate) {
 		return null;
 	}
 

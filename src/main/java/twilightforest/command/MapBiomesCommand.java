@@ -13,6 +13,7 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.item.ItemTFMagicMap;
 
@@ -35,6 +36,7 @@ public class MapBiomesCommand {
         if (!BIOME2COLOR.isEmpty())
             return;
 
+        /* FIXME
         BIOME2COLOR.put(TFBiomes.stream             .get(), new Color(0, 0x66, 255));
         BIOME2COLOR.put(TFBiomes.tfLake             .get(), new Color(0, 0x44, 255));
         BIOME2COLOR.put(TFBiomes.clearing           .get(), new Color(180, 220, 100));
@@ -57,7 +59,7 @@ public class MapBiomesCommand {
 
         BIOME2COLOR.put(TFBiomes.highlands          .get(), new Color(100, 65, 0));
         BIOME2COLOR.put(TFBiomes.thornlands         .get(), new Color(128, 100, 90));
-        BIOME2COLOR.put(TFBiomes.highlandsCenter    .get(), new Color(128, 128, 128));
+        BIOME2COLOR.put(TFBiomes.highlandsCenter    .get(), new Color(128, 128, 128));*/
     }
 
     public static LiteralArgumentBuilder<CommandSource> register() {
@@ -66,6 +68,9 @@ public class MapBiomesCommand {
     }
 
     private static int execute(CommandContext<CommandSource> source) {
+        if (FMLEnvironment.dist.isDedicatedServer())
+            return -1;
+
         init();
 
         //setup image
@@ -106,7 +111,7 @@ public class MapBiomesCommand {
 
         source.getSource().sendFeedback(new StringTextComponent("Approximate biome-block counts within an 2048x2048 region"), true);
         int totalCount = biomeCount.values().stream().mapToInt(i -> i).sum();
-        biomeCount.forEach((biome, integer) -> source.getSource().sendFeedback(new StringTextComponent(biome.getTranslationKey()).appendString(": " + (integer) + TextFormatting.GRAY + " (" + numberFormat.format(((double) integer / totalCount) * 100) + "%)"), true));
+        biomeCount.forEach((biome, integer) -> source.getSource().sendFeedback(new StringTextComponent(biome.toString()).appendString(": " + (integer) + TextFormatting.GRAY + " (" + numberFormat.format(((double) integer / totalCount) * 100) + "%)"), true));
 
         //save the biome map
         Path p = Paths.get("biomemap.png");
@@ -116,6 +121,8 @@ public class MapBiomesCommand {
             e.printStackTrace();
             return 0;
         }
+
+        source.getSource().sendFeedback(new StringTextComponent("Image saved!"), true);
 
         return Command.SINGLE_SUCCESS;
     }

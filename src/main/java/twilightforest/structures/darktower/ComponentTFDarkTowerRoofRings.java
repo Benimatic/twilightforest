@@ -46,7 +46,7 @@ public class ComponentTFDarkTowerRoofRings extends ComponentTFDarkTowerRoof {
 		return true;
 	}
 
-	protected void makeARing(World world, int y, MutableBoundingBox sbb) {
+	protected void makeARing(ISeedReader world, int y, MutableBoundingBox sbb) {
 		setBlockState(world, deco.accentState, size / 2 - 2, y, size / 2 + 1, sbb);
 		setBlockState(world, deco.accentState, size / 2 - 2, y, size / 2 + 0, sbb);
 		setBlockState(world, deco.accentState, size / 2 - 2, y, size / 2 - 1, sbb);

@@ -15,7 +15,7 @@ import java.util.Random;
 
 public class MossyCobbleTemplateProcessor extends RandomizedTemplateProcessor {
 
-	public static final Codec<MossyCobbleTemplateProcessor> codecMossyProcessor = Codec.FLOAT.fieldOf("integrity").withDefault(1.0F).xmap(MossyCobbleTemplateProcessor::new, (obj) -> obj.integrity).codec();
+	public static final Codec<MossyCobbleTemplateProcessor> codecMossyProcessor = Codec.FLOAT.fieldOf("integrity").orElse(1.0F).xmap(MossyCobbleTemplateProcessor::new, (obj) -> obj.integrity).codec();
 
 	public MossyCobbleTemplateProcessor(float integrity) {
         super(integrity);

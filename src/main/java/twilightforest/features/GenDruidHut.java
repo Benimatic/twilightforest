@@ -15,10 +15,7 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.world.*;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
@@ -47,8 +44,8 @@ public class GenDruidHut extends Feature<NoFeatureConfig> {
 		super(config);
 	}
 
-	@Override // Loosely based on WorldGenFossils
-	public boolean func_230362_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+	// FIXME See if we can move this over to purely-datadriven @Override // Loosely based on WorldGenFossils
+	public boolean func_241855_a(ISeedReader world,  ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
 		//Random random = world.getChunk(pos).getRandomWithSeed(987234911L);
 		Random random = world.getRandom();
 
@@ -65,7 +62,7 @@ public class GenDruidHut extends Feature<NoFeatureConfig> {
 		MutableBoundingBox structureboundingbox = new MutableBoundingBox(chunkpos.getXStart() + 8, 0, chunkpos.getZStart() + 8, chunkpos.getXEnd() + 8, 255, chunkpos.getZEnd() + 8);
 		PlacementSettings placementsettings = (new PlacementSettings()).setMirror(mirror).setRotation(rotation).setBoundingBox(structureboundingbox).setRandom(random);
 
-		BlockPos posSnap = chunkpos.getBlock(8, pos.getY() - 1, 8);
+		BlockPos posSnap = chunkpos.asBlockPos(); // Verify this is correct. Originally chunkpos.getBlock(8, pos.getY() - 1, 8);
 
 		BlockPos transformedSize = template.transformedSize(rotation);
 		int dx = random.nextInt(17 - transformedSize.getX());
@@ -153,9 +150,8 @@ public class GenDruidHut extends Feature<NoFeatureConfig> {
 			public Piece(IStructurePieceType p_i51338_1_, int p_i51338_2_) {
 				super(p_i51338_1_, p_i51338_2_);
 			}
-
 			@Override
-			protected void handleDataMarker(String s, BlockPos blockPos, IWorld world, Random random, MutableBoundingBox mutableBoundingBox) {
+			protected void handleDataMarker(String s, BlockPos blockPos, IServerWorld world, Random random, MutableBoundingBox mutableBoundingBox) {
    		        /*
    		        `spawner` will place a Druid spawner.
 
@@ -251,8 +247,7 @@ public class GenDruidHut extends Feature<NoFeatureConfig> {
     }
 
     public static class HutTemplateProcessor extends RandomizedTemplateProcessor {
-
-		public static final Codec<HutTemplateProcessor> codecHutProcessor = Codec.FLOAT.fieldOf("integrity").withDefault(1.0F).xmap(HutTemplateProcessor::new, (obj) -> obj.integrity).codec();
+		public static final Codec<HutTemplateProcessor> codecHutProcessor = Codec.FLOAT.fieldOf("integrity").orElse(1.0F).xmap(HutTemplateProcessor::new, (obj) -> obj.integrity).codec();
 
 		public HutTemplateProcessor(float integrity) {
             super(integrity);

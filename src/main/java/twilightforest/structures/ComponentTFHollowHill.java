@@ -152,7 +152,7 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 
 			// make the actual stalactite
 			CaveStalactiteConfig stalag = TFGenCaveStalactite.makeRandomOreStalactite(stalRNG, hillSize);
-			TFBiomeFeatures.CAVE_STALACTITE.get().withConfiguration(stalag).func_236265_a_(world, manager, ((ServerWorld)world).getChunkProvider().getChunkGenerator(), stalRNG, pos);
+			TFBiomeFeatures.CAVE_STALACTITE.get().withConfiguration(stalag).func_242765_a(world, ((ServerWorld)world).getChunkProvider().getChunkGenerator(), stalRNG, pos);
 		}
 	}
 
@@ -175,7 +175,7 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 			}
 
 			// make the actual stalactite
-			TFBiomeFeatures.CAVE_STALACTITE.get().withConfiguration(new CaveStalactiteConfig(blockToGenerate.getDefaultState(), length, -1, -1, up)).func_236265_a_(world, manager, ((ServerWorld)world).getChunkProvider().getChunkGenerator(), stalRNG, pos);
+			TFBiomeFeatures.CAVE_STALACTITE.get().withConfiguration(new CaveStalactiteConfig(blockToGenerate.getDefaultState(), length, -1, -1, up)).func_242765_a(world, ((ServerWorld)world).getChunkProvider().getChunkGenerator(), stalRNG, pos);
 		}
 	}
 

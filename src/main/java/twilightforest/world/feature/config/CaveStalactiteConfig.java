@@ -10,10 +10,10 @@ public class CaveStalactiteConfig implements IFeatureConfig {
 	public static final Codec<CaveStalactiteConfig> caveStalactiteCodec = RecordCodecBuilder.create((instance) ->
 			instance.group(
 					BlockState.BLOCKSTATE_CODEC.fieldOf("state").forGetter((obj) -> obj.blockState),
-					Codec.FLOAT.fieldOf("size_factor").withDefault(0.0F).forGetter((obj) -> obj.sizeFactor),
-					Codec.INT.fieldOf("max_length").withDefault(-1).forGetter((obj) -> obj.maxLength),
-					Codec.INT.fieldOf("min_height").withDefault(-1).forGetter((obj) -> obj.minHeight),
-					Codec.BOOL.fieldOf("hanging").withDefault(false).forGetter((obj) -> obj.hang))
+					Codec.FLOAT.fieldOf("size_factor").orElse(0.0F).forGetter((obj) -> obj.sizeFactor),
+					Codec.INT.fieldOf("max_length").orElse(-1).forGetter((obj) -> obj.maxLength),
+					Codec.INT.fieldOf("min_height").orElse(-1).forGetter((obj) -> obj.minHeight),
+					Codec.BOOL.fieldOf("hanging").orElse(false).forGetter((obj) -> obj.hang))
 					.apply(instance, CaveStalactiteConfig::new));
 
 	public final BlockState blockState;

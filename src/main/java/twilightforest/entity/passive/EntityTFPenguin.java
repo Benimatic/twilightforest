@@ -12,10 +12,10 @@ import net.minecraft.item.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import twilightforest.entity.TFEntities;
 
 public class EntityTFPenguin extends EntityTFBird {
-
 	public EntityTFPenguin(EntityType<? extends EntityTFPenguin> type, World world) {
 		super(type, world);
 	}
@@ -34,7 +34,7 @@ public class EntityTFPenguin extends EntityTFBird {
 	}
 
 	@Override
-	public AnimalEntity createChild(AgeableEntity entityanimal) {
+	public AnimalEntity func_241840_a(ServerWorld world, AgeableEntity entityanimal) {
 		return TFEntities.penguin.create(world);
 	}
 

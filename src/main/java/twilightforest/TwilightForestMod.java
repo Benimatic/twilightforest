@@ -91,7 +91,7 @@ public class TwilightForestMod {
 		TFBlocks.BLOCKS.register(modbus);
 		TFItems.ITEMS.register(modbus);
 		TFPotions.POTIONS.register(modbus);
-		TFBiomes.BIOMES.register(modbus);
+		//TFBiomes.BIOMES.register(modbus);
 		TFTileEntities.TILE_ENTITIES.register(modbus);
 		TFParticleType.PARTICLE_TYPES.register(modbus);
 		TFBiomeFeatures.FEATURES.register(modbus);
@@ -131,8 +131,9 @@ public class TwilightForestMod {
 		TFPacketHandler.init();
 		TFAdvancements.init();
 		TFFeature.init();
+		/* FIXME
 		TFBiomes.addBiomeTypes();
-		TFBiomes.addBiomeFeatures();
+		TFBiomes.addBiomeFeatures();*/
 		TFDimensions.init();
 		TFEntities.addEntityAttributes();
 
@@ -176,7 +177,7 @@ public class TwilightForestMod {
 		DistExecutor.runWhenOn(Dist.CLIENT, () -> TFContainers::renderScreens);
 
 		TwilightForestRenderInfo renderInfo = new TwilightForestRenderInfo(128.0F, false, DimensionRenderInfo.FogType.NONE, false, false);
-		DimensionRenderInfo.field_239208_a_.put(TFDimensions.twilightForestType, renderInfo);
+		DimensionRenderInfo.field_239208_a_.put(TFDimensions.twilightForestType.getRegistryName(), renderInfo);
 	}
 
 	@SubscribeEvent

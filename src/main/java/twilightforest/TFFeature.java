@@ -383,9 +383,9 @@ public enum TFFeature {
 	public boolean areChunkDecorationsEnabled;
 	public boolean isStructureEnabled;
 	public boolean isTerrainAltered;
-	private List<List<Biome.SpawnListEntry>> spawnableMonsterLists;
-	private List<Biome.SpawnListEntry> ambientCreatureList;
-	private List<Biome.SpawnListEntry> waterCreatureList;
+	// FIXME private List<List<Biome.SpawnListEntry>> spawnableMonsterLists;
+	// FIXME private List<Biome.SpawnListEntry> ambientCreatureList;
+	// FIXME private List<Biome.SpawnListEntry> waterCreatureList;
 	private final ResourceLocation[] requiredAdvancements;
 	public boolean hasProtectionAura;
 
@@ -403,12 +403,12 @@ public enum TFFeature {
 		this.areChunkDecorationsEnabled = false;
 		this.isStructureEnabled = true;
 		this.isTerrainAltered = false;
-		this.spawnableMonsterLists = new ArrayList<>();
-		this.ambientCreatureList = new ArrayList<>();
-		this.waterCreatureList = new ArrayList<>();
+		// this.spawnableMonsterLists = new ArrayList<>();
+		// this.ambientCreatureList = new ArrayList<>();
+		// this.waterCreatureList = new ArrayList<>();
 		this.hasProtectionAura = true;
 
-		ambientCreatureList.add(new Biome.SpawnListEntry(EntityType.BAT, 10, 8, 8));
+		//ambientCreatureList.add(new Biome.SpawnListEntry(EntityType.BAT, 10, 8, 8));
 
 		this.requiredAdvancements = requiredAdvancements;
 
@@ -513,6 +513,7 @@ public enum TFFeature {
 	 * Add a monster to a specific spawn list
 	 */
 	public TFFeature addMonster(int listIndex, EntityType<? extends LivingEntity> monsterClass, int weight, int minGroup, int maxGroup) {
+		/* FIXME
 		List<Biome.SpawnListEntry> monsterList;
 		if (this.spawnableMonsterLists.size() > listIndex) {
 			monsterList = this.spawnableMonsterLists.get(listIndex);
@@ -521,7 +522,7 @@ public enum TFFeature {
 			this.spawnableMonsterLists.add(listIndex, monsterList);
 		}
 
-		monsterList.add(new Biome.SpawnListEntry(monsterClass, weight, minGroup, maxGroup));
+		monsterList.add(new Biome.SpawnListEntry(monsterClass, weight, minGroup, maxGroup));*/
 		return this;
 	}
 
@@ -529,7 +530,8 @@ public enum TFFeature {
 	 * Add a water creature
 	 */
 	public TFFeature addWaterCreature(EntityType<? extends LivingEntity> monsterClass, int weight, int minGroup, int maxGroup) {
-		this.waterCreatureList.add(new Biome.SpawnListEntry(monsterClass, weight, minGroup, maxGroup));
+		// FIXME
+		// this.waterCreatureList.add(new Biome.SpawnListEntry(monsterClass, weight, minGroup, maxGroup));
 		return this;
 	}
 
@@ -782,6 +784,7 @@ public enum TFFeature {
 	/**
 	 * Returns a list of hostile monsters.  Are we ever going to need passive or water creatures?
 	 */
+	/* FIXME
 	public List<Biome.SpawnListEntry> getSpawnableList(EntityClassification creatureType) {
 		switch (creatureType) {
 			case MONSTER:
@@ -793,11 +796,12 @@ public enum TFFeature {
 			default:
 				return new ArrayList<>();
 		}
-	}
+	}*/
 
 	/**
 	 * Returns a list of hostile monsters in the specified indexed category
 	 */
+	/* FIXME
 	public List<Biome.SpawnListEntry> getSpawnableList(EntityClassification creatureType, int index) {
 		if (creatureType != EntityClassification.MONSTER) {
 			return getSpawnableList(creatureType);
@@ -806,7 +810,7 @@ public enum TFFeature {
 			return this.spawnableMonsterLists.get(index);
 		}
 		return new ArrayList<>();
-	}
+	}*/
 
 	public boolean doesPlayerHaveRequiredAdvancements(PlayerEntity player) {
 		return PlayerHelper.doesPlayerHaveRequiredAdvancements(player, requiredAdvancements);

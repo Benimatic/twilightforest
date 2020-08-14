@@ -12,6 +12,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 
 import twilightforest.TwilightForestMod;
@@ -69,8 +70,9 @@ public class ItemTFTransformPowder extends Item {
 		}
 
 		newEntity.setLocationAndAngles(target.getPosX(), target.getPosY(), target.getPosZ(), target.rotationYaw, target.rotationPitch);
-		if (newEntity instanceof MobEntity) {
-			((MobEntity) newEntity).onInitialSpawn(target.world, target.world.getDifficultyForLocation(target.getPosition()), SpawnReason.CONVERSION, null, null);
+		if (newEntity instanceof MobEntity && target.world instanceof IServerWorld) {
+			IServerWorld world = (IServerWorld) target.world;
+			((MobEntity) newEntity).onInitialSpawn(world, target.world.getDifficultyForLocation(target.getPosition()), SpawnReason.CONVERSION, null, null);
 		}
 
 		try { // try copying what can be copied

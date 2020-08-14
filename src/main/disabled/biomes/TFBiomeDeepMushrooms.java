@@ -1,7 +1,5 @@
 package twilightforest.biomes;
 
-import twilightforest.TFFeature;
-
 public class TFBiomeDeepMushrooms extends TFBiomeBase {
 
 	public TFBiomeDeepMushrooms(Builder props) {

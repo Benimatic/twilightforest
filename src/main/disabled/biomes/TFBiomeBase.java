@@ -6,7 +6,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.DefaultBiomeFeatures;
 import twilightforest.TFFeature;
 import twilightforest.entity.TFEntities;
 import twilightforest.util.PlayerHelper;

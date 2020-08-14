@@ -9,8 +9,10 @@ import net.minecraft.item.DyeColor;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFEntities;
 
@@ -53,18 +55,23 @@ public class EntityTFBighorn extends SheepEntity {
 				: DyeColor.byId(random.nextInt(16));
 	}
 
-    @Nullable
+	@Nullable
     @Override
-    public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficulty, SpawnReason reason, @Nullable ILivingEntityData livingdata, @Nullable CompoundNBT dataTag) {
+    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficulty, SpawnReason reason, @Nullable ILivingEntityData livingdata, @Nullable CompoundNBT dataTag) {
         livingdata = super.onInitialSpawn(worldIn, difficulty, reason, livingdata, dataTag);
         this.setFleeceColor(getRandomFleeceColor(this.world.rand));
         return livingdata;
     }
 
     @Override
-	public SheepEntity createChild(AgeableEntity ageable) {
+	public SheepEntity func_241840_a(ServerWorld world, AgeableEntity ageable) {
+		if (!(ageable instanceof EntityTFBighorn)) {
+			TwilightForestMod.LOGGER.error("Code was called to breed a Bighorn with a non Bighorn! Cancelling!");
+			return null;
+		}
+
 		EntityTFBighorn otherParent = (EntityTFBighorn) ageable;
-		EntityTFBighorn babySheep = new EntityTFBighorn(TFEntities.bighorn_sheep, world);
+		EntityTFBighorn babySheep = TFEntities.bighorn_sheep.create(world);
 		babySheep.setFleeceColor(getDyeColorMixFromParents(this, otherParent));
 		return babySheep;
 	}

@@ -9,6 +9,7 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.monster.SpiderEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
@@ -47,7 +48,7 @@ public class EntityTFKingSpider extends SpiderEntity {
 
 	@Nullable
 	@Override
-	public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficulty, SpawnReason reason, @Nullable ILivingEntityData livingData, @Nullable CompoundNBT dataTag) {
+	public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficulty, SpawnReason reason, @Nullable ILivingEntityData livingData, @Nullable CompoundNBT dataTag) {
 		livingData = super.onInitialSpawn(worldIn, difficulty, reason, livingData, dataTag);
 
 		// will always have a dryad riding the spider or whatever is riding the spider

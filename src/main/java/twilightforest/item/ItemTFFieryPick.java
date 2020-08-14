@@ -36,14 +36,18 @@ public class ItemTFFieryPick extends PickaxeItem {
 	@SubscribeEvent
 	public static void onDrops(BlockEvent.HarvestDropsEvent event) {
 		if (event.getHarvester() != null && event.getHarvester().getHeldItemMainhand().getItem() == TFItems.fiery_pickaxe.get()
-				&& event.getState().getBlock().canHarvestBlock(event.getState(), event.getWorld(), event.getPos(), event.getHarvester())) {
+				&& event.getState().getBlock().canHarvestBlock(event.getState(), event.getWorld(), event.getPos(), event.getHarvester())
+				&& event.getWorld() instanceof World) {
 
 			List<ItemStack> removeThese = new ArrayList<>();
 			List<ItemStack> addThese = new ArrayList<>();
 
+			World world = ((World) event.getWorld());
+
 			//TODO 1.14: Furnace recipes are now handled differently. Verify
+			//TODO figure out how we want to handle alt furnace recipes (Furnace vs Blasting/Smoking/Campfire)
 			for (ItemStack input : event.getDrops()) {
-				IRecipe<?> irecipe = event.getWorld().getWorld().getRecipeManager().getRecipe(IRecipeType.SMELTING, new Inventory(input), event.getWorld().getWorld()).orElse(null);
+				IRecipe<?> irecipe = world.getRecipeManager().getRecipe(IRecipeType.SMELTING, new Inventory(input), world).orElse(null);
 				ItemStack result = irecipe.getRecipeOutput();
 				if (!result.isEmpty()) {
 
@@ -71,11 +75,11 @@ public class ItemTFFieryPick extends PickaxeItem {
 					while (i > 0) {
 						int k = ExperienceOrbEntity.getXPSplit(i);
 						i -= k;
-						event.getHarvester().world.addEntity(new ExperienceOrbEntity(event.getWorld().getWorld(), event.getHarvester().getPosX(), event.getHarvester().getPosY() + 0.5D, event.getHarvester().getPosZ(), k));
+						event.getHarvester().world.addEntity(new ExperienceOrbEntity(world, event.getHarvester().getPosX(), event.getHarvester().getPosY() + 0.5D, event.getHarvester().getPosZ(), k));
 					}
 
 					BlockPos pos = event.getPos();
-					event.getWorld().getWorld().addParticle(ParticleTypes.FLAME, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 0.5, 0.5, 0.5);
+					world.addParticle(ParticleTypes.FLAME, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 0.5, 0.5, 0.5);
 				}
 			}
 

@@ -17,6 +17,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
@@ -275,7 +276,7 @@ public class EntityTFWraith extends FlyingEntity implements IMob {
 		return TFSounds.WRAITH;
 	}
 
-	public static boolean getCanSpawnHere(EntityType<? extends EntityTFWraith> entity, IWorld world, SpawnReason reason, BlockPos pos, Random random) {
+	public static boolean getCanSpawnHere(EntityType<? extends EntityTFWraith> entity, IServerWorld world, SpawnReason reason, BlockPos pos, Random random) {
 		return world.getDifficulty() != Difficulty.PEACEFUL && MonsterEntity.isValidLightLevel(world, pos, random) && canSpawnOn(entity, world, reason, pos, random);
 	}
 }

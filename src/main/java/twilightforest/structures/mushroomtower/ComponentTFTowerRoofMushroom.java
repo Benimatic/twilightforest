@@ -69,7 +69,7 @@ public class ComponentTFTowerRoofMushroom extends ComponentTFTowerRoof {
 		return true;
 	}
 
-	private void makeCircle(World world, int y, int radius, int hollow, MutableBoundingBox sbb) {
+	private void makeCircle(ISeedReader world, int y, int radius, int hollow, MutableBoundingBox sbb) {
 
 		int cx = size / 2;
 		int cz = size / 2;

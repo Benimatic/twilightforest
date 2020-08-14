@@ -9,7 +9,6 @@ import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.server.ServerWorld;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
-import twilightforest.biomes.TFBiomeBase;
 
 import javax.annotation.Nullable;
 
@@ -37,9 +36,12 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 	}
 
 	public static boolean isBiomeSafeFor(Biome biome, Entity entity) {
+		/* FIXME
 		if (biome instanceof TFBiomeBase && entity instanceof PlayerEntity) {
 			return ((TFBiomeBase) biome).doesPlayerHaveRequiredAdvancements((PlayerEntity) entity);
 		}
+		return true;*/
+
 		return true;
 	}
 

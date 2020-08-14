@@ -75,10 +75,11 @@ public class EntityTFMosquitoSwarm extends MonsterEntity {
 	}
 
 	public static boolean canSpawn(EntityType<? extends MonsterEntity> type, IWorld world, SpawnReason reason, BlockPos pos, Random rand) {
+		/* FIXME
 		if (world.getBiome(pos) == TFBiomes.tfSwamp.get()) {
 			// no light level check
 			return world.getDifficulty() != Difficulty.PEACEFUL && MonsterEntity.canSpawnOn(type, world, reason, pos, rand);
-		} else {
+		} else*/ {
 			return MonsterEntity.canMonsterSpawn(type, world, reason, pos, rand);
 		}
 	}

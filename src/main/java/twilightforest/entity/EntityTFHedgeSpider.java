@@ -11,6 +11,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -51,7 +52,7 @@ public class EntityTFHedgeSpider extends SpiderEntity {
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
 	}
 
-	public static boolean isValidLightLevel(IWorld world, BlockPos pos, Random random) {
+	public static boolean isValidLightLevel(IServerWorld world, BlockPos pos, Random random) {
 		int chunkX = MathHelper.floor(pos.getX()) >> 4;
 		int chunkZ = MathHelper.floor(pos.getZ()) >> 4;
 		// We're allowed to spawn in bright light only in hedge mazes.
@@ -59,7 +60,7 @@ public class EntityTFHedgeSpider extends SpiderEntity {
 				|| MonsterEntity.isValidLightLevel(world, pos, random);
 	}
 
-	public static boolean canSpawn(EntityType<EntityTFHedgeSpider> entity, IWorld world, SpawnReason reason, BlockPos pos, Random random) {
+	public static boolean canSpawn(EntityType<EntityTFHedgeSpider> entity, IServerWorld world, SpawnReason reason, BlockPos pos, Random random) {
 		return world.getDifficulty() != Difficulty.PEACEFUL &&
 				isValidLightLevel(world, pos, random);
 	}

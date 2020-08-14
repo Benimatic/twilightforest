@@ -18,7 +18,7 @@ import java.util.Random;
 
 public class CourtyardStairsTemplateProcessor extends RandomizedTemplateProcessor {
 
-	public static final Codec<CourtyardStairsTemplateProcessor> codecStairsProcessor = Codec.FLOAT.fieldOf("integrity").withDefault(1.0F).xmap(CourtyardStairsTemplateProcessor::new, (obj) -> obj.integrity).codec();
+	public static final Codec<CourtyardStairsTemplateProcessor> codecStairsProcessor = Codec.FLOAT.fieldOf("integrity").orElse(1.0F).xmap(CourtyardStairsTemplateProcessor::new, (obj) -> obj.integrity).codec();
 
     public CourtyardStairsTemplateProcessor(float integrity) {
         super(integrity);

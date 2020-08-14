@@ -47,7 +47,7 @@ public class ItemBlockTFHugeWaterLily extends LilyPadItem {
 				if ((ifluidstate.getFluid() == Fluids.WATER || material == Material.ICE) && world.isAirBlock(blockpos1)) {
 
 					// special case for handling block placement with water lilies
-					net.minecraftforge.common.util.BlockSnapshot blocksnapshot = net.minecraftforge.common.util.BlockSnapshot.create(world, blockpos1);
+					net.minecraftforge.common.util.BlockSnapshot blocksnapshot = net.minecraftforge.common.util.BlockSnapshot.create(world.func_234923_W_(), world, blockpos1);
 					// TF - getBlock() instead of hardcoded lilypad
 					world.setBlockState(blockpos1, getBlock().getDefaultState(), 11);
 					if (net.minecraftforge.event.ForgeEventFactory.onBlockPlace(player, blocksnapshot, net.minecraft.util.Direction.UP)) {

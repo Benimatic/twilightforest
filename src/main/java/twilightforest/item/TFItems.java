@@ -186,7 +186,7 @@ public class TFItems {
 
 				if (world == null && entity != null) world = (ClientWorld) entity.world;
 
-				return world == null ? 0.0F : (float) (world.func_230315_m_().func_236043_f_() ? MathHelper.frac(world.getMoonPhase() / 8.0f) : this.wobble(world, Math.random()));
+				return world == null ? 0.0F : (float) (world.func_230315_m_().func_236043_f_() ? MathHelper.frac(world.func_242414_af() / 8.0f) : this.wobble(world, Math.random()));
 			}
 
 			@OnlyIn(Dist.CLIENT)

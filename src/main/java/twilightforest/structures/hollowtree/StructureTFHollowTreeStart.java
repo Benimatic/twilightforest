@@ -2,6 +2,7 @@ package twilightforest.structures.hollowtree;
 
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.util.registry.DynamicRegistries;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkGenerator;
@@ -23,7 +24,7 @@ public class StructureTFHollowTreeStart extends StructureStart<NoFeatureConfig> 
 	}
 
 	@Override
-	public void func_230364_a_(ChunkGenerator cgenerator, TemplateManager manager, int chunkX, int chunkZ, Biome biome, NoFeatureConfig config) { //init
+	public void func_230364_a_(DynamicRegistries dynamicRegistries, ChunkGenerator cgenerator, TemplateManager manager, int chunkX, int chunkZ, Biome biome, NoFeatureConfig config) { //init
 		int x = (chunkX << 4) + 8;
 		int z = (chunkZ << 4) + 8;
 		int y = TFGenerationSettings.SEALEVEL + 1;

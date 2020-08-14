@@ -44,10 +44,11 @@ public class EntityTFCastleGuardian extends CreatureEntity { // Not exactly livi
         return p_110146_2_;
     }
 
+    /* FIXME
     @Override
     public AxisAlignedBB getCollisionBoundingBox() {
         return this.getBoundingBox();
-    }
+    }*/
 
     @Override
     public boolean canBeCollidedWith() {

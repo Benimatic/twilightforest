@@ -11,6 +11,7 @@ import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nullable;
 
@@ -79,7 +80,7 @@ public class EntityTFSquirrel extends AnimalEntity {
 
 	@Nullable
 	@Override
-	public AgeableEntity createChild(AgeableEntity ageableEntity) {
+	public AgeableEntity func_241840_a(ServerWorld world, AgeableEntity ageableEntity) {
 		return null;
 	}
 }

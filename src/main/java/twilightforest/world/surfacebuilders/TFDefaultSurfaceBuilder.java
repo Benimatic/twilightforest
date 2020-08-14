@@ -51,7 +51,7 @@ public class TFDefaultSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig
 				} else if (stateHere.getBlock() == Blocks.STONE) {
 					if (generatedDirtDepth == -1) {
 						if (dirtDepth <= 0) {
-							topState = AIR;
+							topState = Blocks.AIR.getDefaultState(); // FIXME Properly address if this is the right blockstate to equate to
 							middleState = defaultBlock;
 						} else if (y >= sealevel - 4 && y <= sealevel + 1) {
 							topState = top;
@@ -73,7 +73,7 @@ public class TFDefaultSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig
 						if (y >= sealevel - 1) {
 							primer.setBlockState(mutable, topState, false);
 						} else if (y < sealevel - 7 - dirtDepth) {
-							topState = AIR;
+							topState = Blocks.AIR.getDefaultState(); // FIXME Properly address if this is the right blockstate to equate to
 							middleState = defaultBlock;
 							primer.setBlockState(mutable, bottom, false);
 						} else {
@@ -85,7 +85,7 @@ public class TFDefaultSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig
 
 						if (generatedDirtDepth == 0 && middleState.getBlock() == Blocks.SAND) {
 							generatedDirtDepth = rand.nextInt(4) + Math.max(0, y - 63);
-							middleState = middleState == RED_SAND ? Blocks.RED_SANDSTONE.getDefaultState() : Blocks.SANDSTONE.getDefaultState();
+							middleState = middleState == Blocks.RED_SAND.getDefaultState() ? Blocks.RED_SANDSTONE.getDefaultState() : Blocks.SANDSTONE.getDefaultState();
 						}
 					}
 				}

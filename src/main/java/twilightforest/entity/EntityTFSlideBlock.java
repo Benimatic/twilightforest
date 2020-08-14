@@ -186,10 +186,11 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 		}
 	}
 
+	/* FIXME
 	@Override
 	public AxisAlignedBB getCollisionBox(Entity entity) {
 		return null;
-	}
+	}*/
 
 	@Override
 	@OnlyIn(Dist.CLIENT)

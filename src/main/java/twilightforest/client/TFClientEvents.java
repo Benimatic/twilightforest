@@ -115,7 +115,7 @@ public class TFClientEvents {
 		if (!TFConfig.CLIENT_CONFIG.firstPersonEffects.get()) return;
 
 		GameSettings settings = Minecraft.getInstance().gameSettings;
-		if (settings.thirdPersonView != 0 || settings.hideGUI) return;
+		if (/*FIXME settings.thirdPersonView != 0 ||*/ settings.hideGUI) return;
 
 		Entity entity = Minecraft.getInstance().getRenderViewEntity();
 		if (entity instanceof LivingEntity) {

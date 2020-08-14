@@ -41,12 +41,12 @@ import java.util.function.Predicate;
 // TODO: doc out all the vanilla copying
 public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 
-	public static final Codec<ChunkGeneratorTwilightForest> codecTFChunk = RecordCodecBuilder.create((instance) ->
+	public static final Codec<ChunkGeneratorTwilightForest> codecTFChunk = null; /* FIXME RecordCodecBuilder.create((instance) ->
 			instance.group(
 					BiomeProvider.PROVIDER_CODEC.fieldOf("biome_source").forGetter((obj) -> obj.biomeProvider),
 					Codec.LONG.fieldOf("seed").stable().forGetter((obj) -> obj.seed),
 					DimensionSettings.field_236098_b_.fieldOf("settings").forGetter((obj) -> obj.dimensionSettings))
-					.apply(instance, instance.stable(ChunkGeneratorTwilightForest::new)));
+					.apply(instance, instance.stable(ChunkGeneratorTwilightForest::new))); */
 
 	public ChunkGeneratorTwilightForest(BiomeProvider provider, long seed, DimensionSettings settings) {
 		super(provider, seed, settings, true);
@@ -405,7 +405,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 		for (int z = 0; z < 16; z++) {
 			for (int x = 0; x < 16; x++) {
 
-				if (biome != TFBiomes.glacier.get()) continue;
+				// FIXME if (biome != TFBiomes.glacier.get()) continue;
 
 				// find the (current) top block
 				int gBase = -1;

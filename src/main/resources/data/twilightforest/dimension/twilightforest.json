@@ -45,8 +45,9 @@
 			"default_fluid": { "Name": "minecraft:water", "Properties": { "level": "0" }} // For some reason the Properties is required...
 		},
 		"biome_source": {
-			"type": "twilightforest:biome_distributor",
-			"seed": 0
+			"type": "minecraft:checkerboard",
+			// Neither of these biomes will hang the game for now
+			"biomes": [ "minecraft:plains", "minecraft:desert" ]
 		}
 	}
 }

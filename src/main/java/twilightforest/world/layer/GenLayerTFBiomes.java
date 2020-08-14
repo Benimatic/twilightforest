@@ -2,6 +2,7 @@ package twilightforest.world.layer;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.WorldGenRegistries;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.INoiseRandom;
 import net.minecraft.world.gen.layer.traits.IAreaTransformer0;
@@ -20,17 +21,17 @@ public class GenLayerTFBiomes implements IAreaTransformer0 {
 
 	protected static final List<Supplier<Biome>> commonBiomes = ImmutableList.of(
 			//TFBiomes.twilightForest, FIXME Nothing generates
-			TFBiomes.denseTwilightForest,
-			TFBiomes.mushrooms,
-			TFBiomes.oakSavanna,
-			TFBiomes.fireflyForest
+			//TFBiomes.denseTwilightForest,
+			//TFBiomes.mushrooms,
+			//TFBiomes.oakSavanna,
+			//TFBiomes.fireflyForest
 	);
 	protected static final List<Supplier<Biome>> rareBiomes = ImmutableList.of(
-			TFBiomes.tfLake,
-			TFBiomes.deepMushrooms,
-			TFBiomes.enchantedForest,
-			TFBiomes.clearing,
-			TFBiomes.spookyForest
+			//TFBiomes.tfLake,
+			//TFBiomes.deepMushrooms,
+			//TFBiomes.enchantedForest,
+			//TFBiomes.clearing,
+			//TFBiomes.spookyForest
 	);
 
 
@@ -38,7 +39,7 @@ public class GenLayerTFBiomes implements IAreaTransformer0 {
 
 	@Override
 	public int apply(INoiseRandom iNoiseRandom, int x, int y) {
-		return Registry.BIOME.getId(getRandomBiome(iNoiseRandom, commonBiomes));
+		return 0; //getRandomBiome(iNoiseRandom, commonBiomes));
 
 		/*if (iNoiseRandom.random(RARE_BIOME_CHANCE) == 0) {
 			// make rare biome

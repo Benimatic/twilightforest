@@ -177,9 +177,10 @@ public class EntityTFYeti extends MonsterEntity implements IHostileMount {
 	}
 
 	public static boolean yetiSnowyForestSpawnHandler(EntityType<? extends EntityTFYeti> entityType, IWorld world, SpawnReason p_223324_2_, BlockPos pos, Random random) {
+		/* FIXME
 		if (world.getBiome(new BlockPos(pos)) == TFBiomes.snowy_forest.get()) {
 			return canSpawnOn(entityType, world, p_223324_2_, pos, random);
-		} else {
+		} else*/ {
 			// normal EntityMob spawn check, checks light level
 			return normalYetiSpawnHandler(entityType, world, p_223324_2_, pos, random);
 		}
@@ -190,11 +191,12 @@ public class EntityTFYeti extends MonsterEntity implements IHostileMount {
 	}
 
 	public static boolean isValidLightLevel(IWorld world, BlockPos blockPos, Random random) {
+		/* FIXME
 		if (world.getLightFor(LightType.SKY, blockPos) > random.nextInt(32)) {
 			return world.getBiome(blockPos) == TFBiomes.snowy_forest.get();
-		} else {
-			int i = world.getWorld().isThundering() ? world.getNeighborAwareLightSubtracted(blockPos, 10) : world.getLight(blockPos);
-			return i <= random.nextInt(8) || world.getBiome(blockPos) == TFBiomes.snowy_forest.get();
+		} else*/ {
+			int i = /*world.isThundering() ? world.getNeighborAwareLightSubtracted(blockPos, 10) :*/ world.getLight(blockPos);
+			return i <= random.nextInt(8) /*|| world.getBiome(blockPos) == TFBiomes.snowy_forest.get()*/;
 		}
 	}
 

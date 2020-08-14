@@ -18,10 +18,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.Difficulty;
-import net.minecraft.world.ISeedReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.*;
 import net.minecraft.world.server.ServerWorld;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
@@ -64,11 +61,11 @@ public class EntityTFHostileWolf extends WolfEntity implements IMob {
 		}
 	}
 
-	public static boolean getCanSpawnHere(EntityType<? extends EntityTFHostileWolf> type, IWorld world, SpawnReason reason, BlockPos pos, Random random) {
+	public static boolean getCanSpawnHere(EntityType<? extends EntityTFHostileWolf> type, IServerWorld world, SpawnReason reason, BlockPos pos, Random random) {
 		// are we near a hedge maze?
 		int chunkX = MathHelper.floor(pos.getX()) >> 4;
 		int chunkZ = MathHelper.floor(pos.getZ()) >> 4;
-		return (TFFeature.getNearestFeature(chunkX, chunkZ, (ISeedReader) world.getWorld()) == TFFeature.HEDGE_MAZE || MonsterEntity.isValidLightLevel(world, pos, random));
+		return (TFFeature.getNearestFeature(chunkX, chunkZ, world.getWorld()) == TFFeature.HEDGE_MAZE || MonsterEntity.isValidLightLevel(world, pos, random));
 				/*&& world.checkNoEntityCollision(this)
 				&& world.getCollisionBoxes(this, getBoundingBox()).size() == 0
 				&& !world.containsAnyLiquid(getBoundingBox());*/

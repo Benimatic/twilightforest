@@ -5,6 +5,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.PigEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFEntities;
 
@@ -27,7 +28,7 @@ public class EntityTFBoar extends PigEntity {
 	}
 
 	@Override
-	public PigEntity createChild(AgeableEntity entityanimal) {
-		return new EntityTFBoar(TFEntities.wild_boar, world);
+	public PigEntity func_241840_a(ServerWorld world, AgeableEntity entityanimal) {
+		return TFEntities.wild_boar.create(world);
 	}
 }

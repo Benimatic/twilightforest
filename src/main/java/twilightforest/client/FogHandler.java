@@ -20,7 +20,7 @@ public class FogHandler {
 
 	@SubscribeEvent
 	public static void fogColors(EntityViewRenderEvent.FogColors event) {
-		boolean flag = isSpooky();
+		boolean flag = false; //FIXME isSpooky();
 		if (flag || spoopColor > 0F) {
 			final float[] realColors = {event.getRed(), event.getGreen(), event.getBlue()};
 			final float[] lerpColors = {106F / 255F, 60F / 255F, 153F / 255F};
@@ -44,7 +44,7 @@ public class FogHandler {
 
 	@SubscribeEvent
 	public static void fog(EntityViewRenderEvent.RenderFogEvent event) {
-		boolean flag = isSpooky();
+		boolean flag = false; //FIXME isSpooky();
 		if (flag || spoopFog < 1F) {
 			float f = 48F;
 			f = f >= event.getFarPlaneDistance() ? event.getFarPlaneDistance() : (float) MathHelper.clampedLerp(f, event.getFarPlaneDistance(), spoopFog);
@@ -72,7 +72,8 @@ public class FogHandler {
 		}
 	}
 
+	/* FIXME
 	private static boolean isSpooky() {
 		return Minecraft.getInstance().world != null && Minecraft.getInstance().player != null && Minecraft.getInstance().world.getBiome(Minecraft.getInstance().player.getPosition()) == TFBiomes.spookyForest.get();
-	}
+	}*/
 }

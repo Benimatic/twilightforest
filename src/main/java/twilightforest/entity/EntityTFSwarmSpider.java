@@ -12,6 +12,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -111,11 +112,11 @@ public class EntityTFSwarmSpider extends SpiderEntity {
 		return true;
 	}
 
-	public static boolean getCanSpawnHere(EntityType<? extends EntityTFSwarmSpider> entity, IWorld world, SpawnReason reason, BlockPos pos, Random random) {
+	public static boolean getCanSpawnHere(EntityType<? extends EntityTFSwarmSpider> entity, IServerWorld world, SpawnReason reason, BlockPos pos, Random random) {
 		return world.getDifficulty() != Difficulty.PEACEFUL && isValidLightLevel(world, pos, random) && canSpawnOn(entity, world, reason, pos, random);
 	}
 
-	public static boolean isValidLightLevel(IWorld world, BlockPos pos, Random random) {
+	public static boolean isValidLightLevel(IServerWorld world, BlockPos pos, Random random) {
 		int chunkX = MathHelper.floor(pos.getX()) >> 4;
 		int chunkZ = MathHelper.floor(pos.getZ()) >> 4;
 		// We're allowed to spawn in bright light only in hedge mazes.

@@ -126,7 +126,7 @@ public class BlockTFMagicLogSpecial extends RotatedPillarBlock {
 	 * TODO: also change entities
 	 */
 	private void doTreeOfTransformationEffect(World world, BlockPos pos, Random rand) {
-
+		/* FIXME
 		Biome targetBiome = TFBiomes.enchantedForest.get();
 
 		for (int i = 0; i < 16; i++) {
@@ -144,7 +144,7 @@ public class BlockTFMagicLogSpecial extends RotatedPillarBlock {
 				sendChangedBiome(chunkAt, dPos, targetBiome);
 			}
 			break;
-		}
+		}*/
 	}
 
 	/**

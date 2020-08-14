@@ -10,10 +10,7 @@ import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.biome.DefaultBiomeFeatures;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.IFeatureConfig;
-import net.minecraft.world.gen.feature.SphereReplaceConfig;
+import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
@@ -26,10 +23,10 @@ import java.util.Random;
 
 public class ComponentTFTrollCaveGarden extends ComponentTFTrollCaveMain {
 
-	private ConfiguredFeature<?,?> myceliumBlobGen = TFBiomeFeatures.MYCELIUM_BLOB.get().withConfiguration(new SphereReplaceConfig(Blocks.MYCELIUM.getDefaultState(), 5, 1, Lists.newArrayList(Blocks.GRASS_BLOCK.getDefaultState())));
-	private ConfiguredFeature<?,?> dirtGen = TFBiomeFeatures.MYCELIUM_BLOB.get().withConfiguration(new SphereReplaceConfig(Blocks.DIRT.getDefaultState(), 5, 1, Lists.newArrayList(Blocks.GRASS_BLOCK.getDefaultState())));
-	private ConfiguredFeature<?,?> bigRedMushroomGen = Feature.HUGE_RED_MUSHROOM.withConfiguration(DefaultBiomeFeatures.BIG_RED_MUSHROOM);
-	private ConfiguredFeature<?,?> bigBrownMushroomGen = Feature.HUGE_BROWN_MUSHROOM.withConfiguration(DefaultBiomeFeatures.BIG_BROWN_MUSHROOM);
+	private ConfiguredFeature<?,?> myceliumBlobGen = TFBiomeFeatures.MYCELIUM_BLOB.get().withConfiguration(new SphereReplaceConfig(Blocks.MYCELIUM.getDefaultState(), FeatureSpread.func_242252_a(5), 1, Lists.newArrayList(Blocks.GRASS_BLOCK.getDefaultState())));
+	private ConfiguredFeature<?,?> dirtGen = TFBiomeFeatures.MYCELIUM_BLOB.get().withConfiguration(new SphereReplaceConfig(Blocks.DIRT.getDefaultState(), FeatureSpread.func_242252_a(5), 1, Lists.newArrayList(Blocks.GRASS_BLOCK.getDefaultState())));
+	//private ConfiguredFeature<?,?> bigRedMushroomGen = Feature.HUGE_RED_MUSHROOM.withConfiguration(DefaultBiomeFeatures.BIG_RED_MUSHROOM);
+	//private ConfiguredFeature<?,?> bigBrownMushroomGen = Feature.HUGE_BROWN_MUSHROOM.withConfiguration(DefaultBiomeFeatures.BIG_BROWN_MUSHROOM);
 	private ConfiguredFeature<?,?> bigMushgloomGen = TFBiomeFeatures.BIG_MUSHGLOOM.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
 
 	public ComponentTFTrollCaveGarden(TemplateManager manager, CompoundNBT nbt) {
@@ -94,7 +91,7 @@ public class ComponentTFTrollCaveGarden extends ComponentTFTrollCaveMain {
 		// mushrooms!
 		for (int i = 0; i < 64; i++) {
 			BlockPos dest = getCoordsInCave(decoRNG);
-			generate(world, manager, generator, rand.nextBoolean() ? bigBrownMushroomGen : bigRedMushroomGen, decoRNG, dest.getX(), 1, dest.getZ(), sbb);
+			//FIXME generate(world, manager, generator, rand.nextBoolean() ? bigBrownMushroomGen : bigRedMushroomGen, decoRNG, dest.getX(), 1, dest.getZ(), sbb);
 		}
 
 		// stone stalactites!
@@ -114,7 +111,7 @@ public class ComponentTFTrollCaveGarden extends ComponentTFTrollCaveMain {
 
 		BlockPos pos = new BlockPos(dx, dy, dz);
 		if (sbb.isVecInside(pos)) {
-			feature.func_236265_a_(world, manager, generator, rand, pos);
+			feature.func_242765_a(world, generator, rand, pos);
 		}
 	}
 }

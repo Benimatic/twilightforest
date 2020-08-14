@@ -28,7 +28,7 @@ public class TFGenThorns extends Feature<NoFeatureConfig> {
 	}
 
 	@Override
-	public boolean func_230362_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+	public boolean func_241855_a(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
 
 		// make a 3-5 long stack going up
 		int nextLength = 2 + rand.nextInt(4);

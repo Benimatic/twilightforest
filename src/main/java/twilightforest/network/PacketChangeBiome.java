@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.WorldGenRegistries;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
@@ -12,13 +13,12 @@ import net.minecraftforge.fml.network.NetworkEvent;
 import java.util.function.Supplier;
 
 public class PacketChangeBiome {
-
 	private final BlockPos pos;
 	private final int biomeId;
 
 	public PacketChangeBiome(BlockPos pos, Biome biome) {
 		this.pos = pos;
-		this.biomeId = Registry.BIOME.getId(biome);
+		this.biomeId = WorldGenRegistries.field_243657_i.getId(biome);
 	}
 
 	public PacketChangeBiome(PacketBuffer buf) {

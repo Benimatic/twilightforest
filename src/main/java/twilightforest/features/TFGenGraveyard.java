@@ -44,7 +44,6 @@ import java.util.Random;
 import java.util.function.Function;
 
 public class TFGenGraveyard extends Feature<NoFeatureConfig> {
-
 	private static final ResourceLocation GRAVEYARD = TwilightForestMod.prefix("landscape/graveyard/graveyard");
 	private static final ResourceLocation TRAP = TwilightForestMod.prefix("landscape/graveyard/grave_trap");
 	private static final ImmutableSet<Material> MATERIAL_WHITELIST = ImmutableSet.of(Material.EARTH, Material.ORGANIC, Material.LEAVES, Material.WOOD, Material.PLANTS, Material.ROCK);
@@ -113,7 +112,7 @@ public class TFGenGraveyard extends Feature<NoFeatureConfig> {
 	}
 
 	@Override
-	public boolean func_230362_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+	public boolean func_241855_a(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
 		// FIXME Use StructureManager
 		if (!(world instanceof ServerWorld))
 			return false;
@@ -144,7 +143,7 @@ public class TFGenGraveyard extends Feature<NoFeatureConfig> {
 		MutableBoundingBox structureboundingbox = new MutableBoundingBox(chunkpos.getXStart() + 8, 0, chunkpos.getZStart() + 8, chunkendpos.getXEnd() + 8, 255, chunkendpos.getZEnd() + 8);
 		PlacementSettings placementsettings = (new PlacementSettings()).setMirror(mirror).setRotation(rotation).setBoundingBox(structureboundingbox).setRandom(random);
 
-		BlockPos posSnap = chunkpos.getBlock(8, pos.getY() - 1, 8);
+		BlockPos posSnap = chunkpos.asBlockPos(); // Verify this is correct. Originally chunkpos.getBlock(8, pos.getY() - 1, 8);
 		BlockPos.Mutable startPos = new BlockPos.Mutable(posSnap.getX(), posSnap.getY(), posSnap.getZ());
 
 		if (!offsetToAverageGroundLevel(world, startPos, transformedSize)) {
@@ -211,7 +210,7 @@ public class TFGenGraveyard extends Feature<NoFeatureConfig> {
 		}
 
 		@Override
-		protected void handleDataMarker(String s, BlockPos p, IWorld world, Random random, MutableBoundingBox mbb) {
+		protected void handleDataMarker(String s, BlockPos p, IServerWorld world, Random random, MutableBoundingBox mbb) {
 			if ("spawner".equals(s))
 				if (random.nextInt(4) == 0) {
 					if (world.setBlockState(p, Blocks.SPAWNER.getDefaultState(), 3)) {
@@ -242,7 +241,7 @@ public class TFGenGraveyard extends Feature<NoFeatureConfig> {
 
 	public static class WebTemplateProcessor extends RandomizedTemplateProcessor {
 
-		public static final Codec<WebTemplateProcessor> codecWebProcessor = Codec.FLOAT.fieldOf("integrity").withDefault(1.0F).xmap(WebTemplateProcessor::new, (obj) -> obj.integrity).codec();
+		public static final Codec<WebTemplateProcessor> codecWebProcessor = Codec.FLOAT.fieldOf("integrity").orElse(1.0F).xmap(WebTemplateProcessor::new, (obj) -> obj.integrity).codec();
 
 		public WebTemplateProcessor(float integrity) {
 			super(integrity);

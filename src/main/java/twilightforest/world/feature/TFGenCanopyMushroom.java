@@ -35,7 +35,7 @@ public class TFGenCanopyMushroom extends Feature<NoFeatureConfig> {
 	}
 
 	@Override
-	public boolean func_230362_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
+	public boolean func_241855_a(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
 		// determine a height
 		int treeHeight = 12;
 		if (random.nextInt(3) == 0) {

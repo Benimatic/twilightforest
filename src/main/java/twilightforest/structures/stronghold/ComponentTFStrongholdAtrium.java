@@ -18,7 +18,6 @@ import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import net.minecraft.world.server.ServerWorld;
 import twilightforest.TFFeature;
-import twilightforest.biomes.TFBiomeDecorator;
 
 import java.util.List;
 import java.util.Random;
@@ -146,6 +145,7 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 	}
 
 	private void spawnATree(ISeedReader world, StructureManager manager, int treeNum, int x, int y, int z, MutableBoundingBox sbb) {
+		/* FIXME
 		BlockPos pos = getBlockPosWithOffset(x, y, z);
 
 		if (sbb.isVecInside(pos)) {
@@ -181,7 +181,7 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 					break;
 				}
 			}
-		}
+		}*/
 	}
 
 	private void placeBalconyPillar(ISeedReader world, MutableBoundingBox sbb, Rotation rotation) {

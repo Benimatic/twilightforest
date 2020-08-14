@@ -1,5 +1,3 @@
-package twilightforest.world.layer;
-
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.IExtendedNoiseRandom;
@@ -32,6 +30,7 @@ public enum GenLayerTFKeyBiomes implements IAreaTransformer1 {
 	//TODO: This logic is butchered to hell and back
 	@Override
 	public int apply(IExtendedNoiseRandom<?> random, IArea iArea, int x, int z) {
+		/* FIXME
 		int dx = getOffsetX(x);
 		int dz = getOffsetZ(z);
 		// get offsets
@@ -56,7 +55,7 @@ public enum GenLayerTFKeyBiomes implements IAreaTransformer1 {
 				}
 			}
 
-		} else {
+		} else*/ {
 			return iArea.getValue(x, z);
 		}
 	}
@@ -64,6 +63,7 @@ public enum GenLayerTFKeyBiomes implements IAreaTransformer1 {
 	/**
 	 * Determine which map "region" the specified points are in.  Assign the 0-3 of the index to the key biomes based on that region.
 	 */
+	/* FIXME
 	private Supplier<Biome> getKeyBiomeFor(IExtendedNoiseRandom<?> random, int mapX, int mapZ, int index) {
 		int regionX = (mapX + 4) >> 3;
 		int regionZ = (mapZ + 4) >> 3;
@@ -84,5 +84,5 @@ public enum GenLayerTFKeyBiomes implements IAreaTransformer1 {
 			case 3:
 				return TFBiomes.highlandsCenter;
 		}
-	}
+	}*/
 }

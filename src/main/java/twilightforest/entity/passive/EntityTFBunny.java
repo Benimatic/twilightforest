@@ -16,6 +16,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nullable;
 
@@ -53,7 +54,7 @@ public class EntityTFBunny extends AnimalEntity {
 
 	@Nullable
 	@Override
-	public AgeableEntity createChild(AgeableEntity ageableEntity) {
+	public AgeableEntity func_241840_a(ServerWorld world, AgeableEntity ageableEntity) {
 		return null;
 	}
 

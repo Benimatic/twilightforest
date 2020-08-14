@@ -16,8 +16,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.ISeedReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
 import net.minecraft.world.biome.DefaultBiomeFeatures;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
@@ -28,7 +26,6 @@ import net.minecraft.world.gen.feature.template.TemplateManager;
 import net.minecraft.world.server.ServerWorld;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
-import twilightforest.biomes.TFBiomeDecorator;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFEntities;
@@ -1129,6 +1126,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 	}
 
 	private void placeTreePlanter(ISeedReader world, int treeNum, int x, int y, int z, Rotation rotation, MutableBoundingBox sbb) {
+		/* FIXME
 		setBlockStateRotated(world, deco.pillarState, x + 1, y, z + 1, rotation, sbb);
 		setBlockStateRotated(world, deco.pillarState, x + 1, y, z - 1, rotation, sbb);
 		setBlockStateRotated(world, deco.pillarState, x - 1, y, z + 1, rotation, sbb);
@@ -1173,7 +1171,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 					break;
 				}
 			}
-		}
+		}*/
 	}
 
 	//TODO: Each flower has their own block. Flatten

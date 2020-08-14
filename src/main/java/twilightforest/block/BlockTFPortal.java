@@ -127,13 +127,13 @@ public class BlockTFPortal extends BreakableBlock {
 		bolt.setEffectOnly(fake);
 		world.addEntity(bolt);
 
-		if (fake) {
+		if (fake && world instanceof ServerWorld) {
 			double range = 3.0D;
 			List<Entity> list = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos).grow(range));
 
 			for (Entity victim : list) {
 				if (!ForgeEventFactory.onEntityStruckByLightning(victim, bolt)) {
-					victim.onStruckByLightning(bolt);
+					victim.func_241841_a((ServerWorld) world, bolt);
 				}
 			}
 		}
@@ -225,12 +225,12 @@ public class BlockTFPortal extends BreakableBlock {
 			return;
 		}
 
-		if (!forcedEntry && entity.timeUntilPortal > 0) {
+		if (!forcedEntry && entity.portalCounter > 0) {
 			return;
 		}
 
 		// set a cooldown before this can run again
-		entity.timeUntilPortal = 10;
+		entity.portalCounter = 10;
 
 		RegistryKey<World> destination = getDestination(entity);
 		ServerWorld serverWorld = entity.getEntityWorld().getServer().getWorld(destination);
@@ -243,7 +243,7 @@ public class BlockTFPortal extends BreakableBlock {
 		if (destination == TFDimensions.twilightForest && entity instanceof ServerPlayerEntity) {
 			ServerPlayerEntity playerMP = (ServerPlayerEntity) entity;
 			// set respawn point for TF dimension to near the arrival portal
-			playerMP.func_241153_a_(destination, playerMP.getPosition(), true, false);
+			playerMP.func_242111_a(destination, playerMP.getPosition(), playerMP.rotationYaw, true, false);
 		}
 	}
 

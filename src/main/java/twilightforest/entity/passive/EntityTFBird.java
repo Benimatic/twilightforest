@@ -9,6 +9,7 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nonnull;
 
@@ -77,7 +78,7 @@ public abstract class EntityTFBird extends AnimalEntity {
 	}
 
 	@Override
-	public AnimalEntity createChild(AgeableEntity entityanimal) {
+	public AnimalEntity func_241840_a(ServerWorld world, AgeableEntity entityanimal) {
 		return null;
 	}
 

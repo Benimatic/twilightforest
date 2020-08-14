@@ -37,12 +37,12 @@ public class TFGenMyceliumBlob extends Feature<SphereReplaceConfig> {
 
 
 	@Override
-	public boolean func_230362_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random random, BlockPos pos, SphereReplaceConfig config) {
+	public boolean func_241855_a(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, SphereReplaceConfig config) {
 //        if (world.getBlock(i, j, k).getMaterial() != Material.WATER)
 //        {
 //            return false;
 //        }
-		int range = random.nextInt(config.radius - 2) + 2;
+		int range = config.radius.func_242259_a(random) + 2; // TODO Verify that this works correctly! //random.nextInt(config.radius.func_242259_a(random) - 2) + 2;
 		int yRange = 1;
 		for (int dx = pos.getX() - range; dx <= pos.getX() + range; dx++) {
 			for (int dz = pos.getZ() - range; dz <= pos.getZ() + range; dz++) {

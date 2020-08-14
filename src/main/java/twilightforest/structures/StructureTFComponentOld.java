@@ -221,6 +221,11 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	 *
 	 */
 	protected void placeTripwire(World world, int x, int y, int z, int size, Direction facing, MutableBoundingBox sbb) {
+		if (!(world instanceof ISeedReader))
+			return;
+
+		// FIXME this is terrible to cast but this compiles for now. This whole class will be shredded eventually, for Structure Templates
+		ISeedReader seedReader = (ISeedReader) world;
 
 		int dx = facing.getXOffset();
 		int dz = facing.getZOffset();
@@ -229,13 +234,13 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 
 		// add tripwire hooks
 		BlockState tripwireHook = Blocks.TRIPWIRE_HOOK.getDefaultState();
-		setBlockState(world, tripwireHook.with(TripWireHookBlock.FACING, facing.getOpposite()), x, y, z, sbb);
-		setBlockState(world, tripwireHook.with(TripWireHookBlock.FACING, facing), x + dx * size, y, z + dz * size, sbb);
+		setBlockState(seedReader, tripwireHook.with(TripWireHookBlock.FACING, facing.getOpposite()), x, y, z, sbb);
+		setBlockState(seedReader, tripwireHook.with(TripWireHookBlock.FACING, facing), x + dx * size, y, z + dz * size, sbb);
 
 		// add string
 		BlockState tripwire = Blocks.TRIPWIRE.getDefaultState();
 		for (int i = 1; i < size; i++) {
-			setBlockState(world, tripwire, x + dx * i, y, z + dz * i, sbb);
+			setBlockState(seedReader, tripwire, x + dx * i, y, z + dz * i, sbb);
 		}
 
 		world.captureBlockSnapshots = false;
@@ -443,7 +448,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	}
 
 	@Override
-	protected void setBlockState(IWorld worldIn, BlockState blockstateIn, int x, int y, int z, MutableBoundingBox sbb) {
+	protected void setBlockState(ISeedReader worldIn, BlockState blockstateIn, int x, int y, int z, MutableBoundingBox sbb) {
 		// Making public
 		super.setBlockState(worldIn, blockstateIn, x, y, z, sbb);
 	}

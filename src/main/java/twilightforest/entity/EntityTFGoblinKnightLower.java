@@ -17,6 +17,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import twilightforest.entity.ai.EntityAITFRiderSpearAttack;
@@ -90,7 +91,7 @@ public class EntityTFGoblinKnightLower extends MonsterEntity {
 
 	@Nullable
 	@Override
-	public ILivingEntityData onInitialSpawn(IWorld worldIn, DifficultyInstance difficulty, SpawnReason reason, @Nullable ILivingEntityData livingData, @Nullable CompoundNBT dataTag) {
+	public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficulty, SpawnReason reason, @Nullable ILivingEntityData livingData, @Nullable CompoundNBT dataTag) {
 		livingData = super.onInitialSpawn(worldIn, difficulty, reason, livingData, dataTag);
 
 		EntityTFGoblinKnightUpper upper = new EntityTFGoblinKnightUpper(TFEntities.goblin_knight_upper, this.world);

@@ -12,6 +12,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
@@ -61,7 +62,7 @@ public class EntityTFMiniGhast extends EntityTFTowerGhast {
 	}
 
 	//This does not factor into whether the entity is a Minion or not. However, since it is spawned via MOB_SUMMONED, it will always spawn if that is the SpawnReason
-	public static boolean canSpawnHere(EntityType<EntityTFMiniGhast> entity, IWorld world, SpawnReason reason, BlockPos pos, Random random) {
+	public static boolean canSpawnHere(EntityType<EntityTFMiniGhast> entity, IServerWorld world, SpawnReason reason, BlockPos pos, Random random) {
 		return world.getDifficulty() != Difficulty.PEACEFUL && (reason == SpawnReason.MOB_SUMMONED || MonsterEntity.isValidLightLevel(world, pos, random)) && canSpawnOn(entity, world, reason, pos, random);
 	}
 

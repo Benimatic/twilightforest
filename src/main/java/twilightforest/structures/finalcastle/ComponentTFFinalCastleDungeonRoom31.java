@@ -195,8 +195,8 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 		return true;
 	}
 
-	protected static final Predicate<Biome> plateauBiomes = biome ->
-			biome == TFBiomes.highlandsCenter.get() || biome == TFBiomes.thornlands.get();
+	protected static final Predicate<Biome> plateauBiomes = biome -> false; /* FIXME or remove
+			biome == TFBiomes.highlandsCenter.get() || biome == TFBiomes.thornlands.get()*/;
 
 	protected BlockState getRuneColor(BlockState forceFieldColor) {
 		return forceFieldColor == TFBlocks.force_field_blue.get().getDefaultState() ? TFBlocks.castle_rune_brick_blue.get().getDefaultState() : TFBlocks.castle_rune_brick_yellow.get().getDefaultState();

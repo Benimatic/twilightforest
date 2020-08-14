@@ -1,5 +1,3 @@
-package twilightforest.biomes;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import net.minecraft.block.BlockState;

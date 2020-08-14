@@ -6,6 +6,7 @@ updateJSONURL="https://raw.githubusercontent.com/TeamTwilight/twilightforest/1.1
 logoFile="logo.png" #optional
 credits="By Benimatic (Ben Mazur)" #optional
 authors="Benimatic, AtomicBlom, Drullkus, Killer_Demon, quadraxis, Tamaized, williewillus" #optional
+license="GNU LESSER GENERAL PUBLIC LICENSE Version 2.1"
 
 [[mods]]
 modId="twilightforest"

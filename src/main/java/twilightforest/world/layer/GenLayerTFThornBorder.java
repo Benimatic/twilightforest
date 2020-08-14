@@ -11,14 +11,14 @@ public enum GenLayerTFThornBorder implements IThornsTransformer {
 
 	@Override
 	public int apply(INoiseRandom noise, int up, int left, int down, int right, int center, int nw, int sw, int se, int ne) {
-		int highlandsCenter = Registry.BIOME.getId(TFBiomes.highlandsCenter.get());
+		/*int highlandsCenter = Registry.BIOME.getId(TFBiomes.highlandsCenter.get());
 		int thornlands      = Registry.BIOME.getId(TFBiomes.thornlands.get());
 
 		if (onBorder(highlandsCenter, center, right, left, up, down)) {
 			return thornlands;
 		} else if (onBorder(highlandsCenter, center, ne, nw, se, sw)) {
 			return thornlands;
-		} else {
+		} else*/ {
 			return center;
 		}
 	}

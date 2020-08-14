@@ -8,6 +8,7 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.IServerWorld;
 import twilightforest.entity.boss.EntityTFLich;
 import twilightforest.entity.boss.EntityTFLichMinion;
 import twilightforest.item.TFItems;
@@ -89,11 +90,11 @@ public class EntityAITFLichMinions extends Goal {
 		LivingEntity targetedEntity = lich.getAttackTarget();
 		Vector3d minionSpot = lich.findVecInLOSOf(targetedEntity);
 
-		if (minionSpot != null) {
+		if (minionSpot != null && lich.world instanceof IServerWorld) {
 			// put a clone there
 			EntityTFLichMinion minion = new EntityTFLichMinion(lich.world, lich);
 			minion.setPosition(minionSpot.x, minionSpot.y, minionSpot.z);
-			minion.onInitialSpawn(lich.world, lich.world.getDifficultyForLocation(new BlockPos(minionSpot)), SpawnReason.MOB_SUMMONED, null, null);
+			minion.onInitialSpawn((IServerWorld) lich.world, lich.world.getDifficultyForLocation(new BlockPos(minionSpot)), SpawnReason.MOB_SUMMONED, null, null);
 			lich.world.addEntity(minion);
 
 			minion.setAttackTarget(targetedEntity);
