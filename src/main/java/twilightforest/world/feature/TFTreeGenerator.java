@@ -84,7 +84,7 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 	}
 
 	//TreeFeature.func_227214_a_ copy, modified to remove decorations
-	private VoxelShapePart getVoxelShapePart(IWorld world, MutableBoundingBox mbb, Set<BlockPos> logPos) {
+	private VoxelShapePart getVoxelShapePart(IWorld world, MutableBoundingBox mbb, Set<BlockPos> logPosSet) {
 		List<Set<BlockPos>> list = Lists.newArrayList();
 		VoxelShapePart voxelshapepart = new BitSetVoxelShapePart(mbb.getXSize(), mbb.getYSize(), mbb.getZSize());
 
@@ -94,14 +94,14 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 
 		BlockPos.Mutable mutable = new BlockPos.Mutable();
 
-		for(BlockPos logBP : Lists.newArrayList(logPos)) {
-			if (mbb.isVecInside(logBP)) {
-				voxelshapepart.setFilled(logBP.getX() - mbb.minX, logBP.getY() - mbb.minY, logBP.getZ() - mbb.minZ, true, true);
+		for(BlockPos logPos : Lists.newArrayList(logPosSet)) {
+			if (mbb.isVecInside(logPos)) {
+				voxelshapepart.setFilled(logPos.getX() - mbb.minX, logPos.getY() - mbb.minY, logPos.getZ() - mbb.minZ, true, true);
 			}
 
 			for(Direction direction : Direction.values()) {
-				mutable.func_239622_a_(logBP, direction);
-				if (!logPos.contains(mutable)) {
+				mutable.setAndMove(logPos, direction);
+				if (!logPosSet.contains(mutable)) {
 					BlockState blockstate = world.getBlockState(mutable);
 					if (blockstate.hasProperty(BlockStateProperties.DISTANCE_1_7)) {
 						list.get(0).add(mutable.toImmutable());
@@ -124,7 +124,7 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 				}
 
 				for(Direction direction1 : Direction.values()) {
-					mutable.func_239622_a_(blockpos2, direction1);
+					mutable.setAndMove(blockpos2, direction1);
 					if (!set.contains(mutable) && !set1.contains(mutable)) {
 						BlockState blockstate1 = world.getBlockState(mutable);
 						if (blockstate1.hasProperty(BlockStateProperties.DISTANCE_1_7)) {

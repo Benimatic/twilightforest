@@ -54,7 +54,7 @@ public class ItemTFMagicMap extends FilledMapItem {
 
 	public static ItemStack setupNewMap(World world, int worldX, int worldZ, byte scale, boolean trackingPosition, boolean unlimitedTracking) {
 		ItemStack itemstack = new ItemStack(TFItems.magic_map.get());
-		createMapData(itemstack, world, worldX, worldZ, scale, trackingPosition, unlimitedTracking, world.func_234923_W_());
+		createMapData(itemstack, world, worldX, worldZ, scale, trackingPosition, unlimitedTracking, world.getDimensionKey());
 		return itemstack;
 	}
 
@@ -68,7 +68,7 @@ public class ItemTFMagicMap extends FilledMapItem {
 	protected TFMagicMapData getCustomMapData(ItemStack stack, World world) {
 		TFMagicMapData mapdata = getData(stack, world);
 		if (mapdata == null && !world.isRemote) {
-			mapdata = ItemTFMagicMap.createMapData(stack, world, world.getWorldInfo().getSpawnX(), world.getWorldInfo().getSpawnZ(), 3, false, false, world.func_234923_W_());
+			mapdata = ItemTFMagicMap.createMapData(stack, world, world.getWorldInfo().getSpawnX(), world.getWorldInfo().getSpawnZ(), 3, false, false, world.getDimensionKey());
 		}
 
 		return mapdata;
@@ -77,7 +77,7 @@ public class ItemTFMagicMap extends FilledMapItem {
 	private static TFMagicMapData createMapData(ItemStack stack, World world, int x, int z, int scale, boolean trackingPosition, boolean unlimitedTracking, RegistryKey<World> dimension) {
 		int i = world.getNextMapId();
 		TFMagicMapData mapdata = new TFMagicMapData(getMapName(i));
-		mapdata.func_237241_a_(x, z, scale, trackingPosition, unlimitedTracking, dimension);
+		mapdata.initData(x, z, scale, trackingPosition, unlimitedTracking, dimension);
 		TFMagicMapData.registerMagicMapData(world, mapdata); // call our own register method
 		stack.getOrCreateTag().putInt("map", i);
 		return mapdata;
@@ -89,7 +89,7 @@ public class ItemTFMagicMap extends FilledMapItem {
 
 	@Override
 	public void updateMapData(World world, Entity viewer, MapData data) {
-		if (world.func_234923_W_() == data.dimension && viewer instanceof PlayerEntity) {
+		if (world.getDimensionKey() == data.dimension && viewer instanceof PlayerEntity) {
 			int biomesPerPixel = 4;
 			int blocksPerPixel = 16; // don't even bother with the scale, just hardcode it
 			int centerX = data.xCenter;

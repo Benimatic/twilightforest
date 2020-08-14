@@ -578,7 +578,7 @@ public class TFEventListener {
 	}
 
 	private static void sendAreaProtectionPacket(World world, BlockPos pos, MutableBoundingBox sbb) {
-		PacketDistributor.TargetPoint targetPoint = new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), 64, world.func_234923_W_());
+		PacketDistributor.TargetPoint targetPoint = new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), 64, world.getDimensionKey());
 		TFPacketHandler.CHANNEL.send(PacketDistributor.NEAR.with(() -> targetPoint), new PacketAreaProtection(sbb, pos));
 	}
 

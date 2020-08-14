@@ -170,7 +170,7 @@ public class TFCavesCarver extends WorldCarver<ProbabilityConfig> {
 			mask.set(i);
 			mutable.setPos(randX, posY, randZ);
 			BlockState state = chunk.getBlockState(mutable);
-			BlockState stateUp = chunk.getBlockState(mutableUp.func_239622_a_(mutable, Direction.UP));
+			BlockState stateUp = chunk.getBlockState(mutableUp.setAndMove(mutable, Direction.UP));
 			if (state.isIn(Blocks.GRASS_BLOCK) || state.isIn(Blocks.MYCELIUM)) {
 				bool.setTrue();
 			}
@@ -183,7 +183,7 @@ public class TFCavesCarver extends WorldCarver<ProbabilityConfig> {
 				} else {
 					chunk.setBlockState(mutable, CAVE_AIR, false);
 					if (bool.isTrue()) {
-						mutableDown.func_239622_a_(mutable, Direction.DOWN);
+						mutableDown.setAndMove(mutable, Direction.DOWN);
 						if (chunk.getBlockState(mutableDown).isIn(Blocks.DIRT)) {
 							// FIXME chunk.setBlockState(mutableDown, biomePos.apply(mutable).getSurfaceBuilderConfig().getTop(), false);
 						}

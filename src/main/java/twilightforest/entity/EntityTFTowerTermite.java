@@ -123,7 +123,7 @@ public class EntityTFTowerTermite extends MonsterEntity {
 				Random random = this.creature.getRNG();
 
 				if (random.nextInt(10) == 0 && ForgeEventFactory.getMobGriefingEvent(this.creature.world, this.creature)) {
-					this.facing = Direction.func_239631_a_(random);
+					this.facing = Direction.getRandomDirection(random);
 					BlockPos blockpos = (new BlockPos(this.creature.getPosX(), this.creature.getPosY() + 0.5D, this.creature.getPosZ())).offset(this.facing);
 					BlockState iblockstate = this.creature.world.getBlockState(blockpos);
 

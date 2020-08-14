@@ -43,7 +43,7 @@ public class ItemTFMazeMap extends FilledMapItem {
 	// [VanillaCopy] super with own item and methods, plus y and mapOres
 	public static ItemStack setupNewMap(World world, int worldX, int worldZ, byte scale, boolean trackingPosition, boolean unlimitedTracking, int worldY, boolean mapOres) {
 		ItemStack itemstack = new ItemStack(mapOres ? TFItems.ore_map.get() : TFItems.maze_map.get());
-		createMapData(itemstack, world, worldX, worldZ, scale, trackingPosition, unlimitedTracking, world.func_234923_W_(), worldY);
+		createMapData(itemstack, world, worldX, worldZ, scale, trackingPosition, unlimitedTracking, world.getDimensionKey(), worldY);
 		return itemstack;
 	}
 
@@ -57,7 +57,7 @@ public class ItemTFMazeMap extends FilledMapItem {
 	protected TFMazeMapData getCustomMapData(ItemStack stack, World world) {
 		TFMazeMapData mapdata = getData(stack, world);
 		if (mapdata == null && !world.isRemote) {
-			mapdata = ItemTFMazeMap.createMapData(stack, world, world.getWorldInfo().getSpawnX(), world.getWorldInfo().getSpawnZ(), 0, false, false, world.func_234923_W_(), world.getWorldInfo().getSpawnY());
+			mapdata = ItemTFMazeMap.createMapData(stack, world, world.getWorldInfo().getSpawnX(), world.getWorldInfo().getSpawnZ(), 0, false, false, world.getDimensionKey(), world.getWorldInfo().getSpawnY());
 		}
 
 		return mapdata;
@@ -67,7 +67,7 @@ public class ItemTFMazeMap extends FilledMapItem {
 	private static TFMazeMapData createMapData(ItemStack stack, World world, int x, int z, int scale, boolean trackingPosition, boolean unlimitedTracking, RegistryKey<World> dimension, int y) {
 		int i = world.getNextMapId();
 		TFMazeMapData mapdata = new TFMazeMapData(getMapName(i));
-		mapdata.func_237241_a_(x, z, scale, trackingPosition, unlimitedTracking, dimension);
+		mapdata.initData(x, z, scale, trackingPosition, unlimitedTracking, dimension);
 		mapdata.calculateMapCenter(world, x, y, z, scale); // call our own map center calculation
 		TFMazeMapData.registerMazeMapData(world, mapdata); // call our own register method
 		stack.getOrCreateTag().putInt("map", i);
@@ -82,7 +82,7 @@ public class ItemTFMazeMap extends FilledMapItem {
 	@SuppressWarnings("unused")
 	@Override
 	public void updateMapData(World world, Entity viewer, MapData data) {
-		if (world.func_234923_W_() == data.dimension && viewer instanceof PlayerEntity) {
+		if (world.getDimensionKey() == data.dimension && viewer instanceof PlayerEntity) {
 			int blocksPerPixel = 1 << data.scale;
 			int centerX = data.xCenter;
 			int centerZ = data.zCenter;

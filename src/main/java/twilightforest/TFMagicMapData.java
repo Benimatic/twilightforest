@@ -102,14 +102,13 @@ public class TFMagicMapData extends MapData {
 		this.zCenter = roundZ * mapSize;
 	}
 
-	//PORT NOTE: World.field_234918_g_ = "overworld"
 	// [VanillaCopy] Adapted from World.getMapData
 	@Nullable
 	public static TFMagicMapData getMagicMapData(World world, String name) {
 		if (world.isRemote) {
 			return CLIENT_DATA.getOrDefault(world, Collections.emptyMap()).get(name);
 		} else {
-			return world.getServer().getWorld(World.field_234918_g_).getSavedData().get(() -> new TFMagicMapData(name), name);
+			return world.getServer().getWorld(World.OVERWORLD).getSavedData().get(() -> new TFMagicMapData(name), name);
 		}
 	}
 
@@ -118,7 +117,7 @@ public class TFMagicMapData extends MapData {
 		if (world.isRemote) {
 			CLIENT_DATA.computeIfAbsent(world, k -> new HashMap<>()).put(data.getName(), data);
 		} else {
-			world.getServer().getWorld(World.field_234918_g_).getSavedData().set(data);
+			world.getServer().getWorld(World.OVERWORLD).getSavedData().set(data);
 		}
 	}
 

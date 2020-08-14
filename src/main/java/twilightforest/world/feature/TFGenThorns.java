@@ -69,7 +69,7 @@ public class TFGenThorns extends Feature<NoFeatureConfig> {
 		// add another off the end
 		if (complete && maxLength > 1) {
 
-			Direction nextDir = Direction.func_239631_a_(rand);
+			Direction nextDir = Direction.getRandomDirection(rand);
 
 			BlockPos nextPos = pos.offset(dir, length - 1).offset(nextDir);
 			int nextLength = 1 + rand.nextInt(maxLength);
@@ -82,7 +82,7 @@ public class TFGenThorns extends Feature<NoFeatureConfig> {
 
 			int middle = rand.nextInt(length);
 
-			Direction nextDir = Direction.func_239631_a_(rand);
+			Direction nextDir = Direction.getRandomDirection(rand);
 
 			BlockPos nextPos = pos.offset(dir, middle).offset(nextDir);
 			int nextLength = 1 + rand.nextInt(maxLength);
@@ -95,7 +95,7 @@ public class TFGenThorns extends Feature<NoFeatureConfig> {
 
 			int middle = rand.nextInt(length);
 
-			Direction nextDir = Direction.func_239631_a_(rand);
+			Direction nextDir = Direction.getRandomDirection(rand);
 
 			BlockPos nextPos = pos.offset(dir, middle).offset(nextDir);
 

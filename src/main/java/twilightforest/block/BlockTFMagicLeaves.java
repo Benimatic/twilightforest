@@ -35,7 +35,7 @@ public class BlockTFMagicLeaves extends LeavesBlock {
 	private void sparkleRunes(World world, BlockPos pos, Random rand) {
 		double offset = 0.0625D;
 
-		Direction side = Direction.func_239631_a_(rand); //random?
+		Direction side = Direction.getRandomDirection(rand); //random?
 		double rx = pos.getX() + rand.nextFloat();
 		double ry = pos.getY() + rand.nextFloat();
 		double rz = pos.getZ() + rand.nextFloat();

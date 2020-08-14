@@ -100,7 +100,7 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 	}
 
 	private void sendAnnihilateBlockPacket(World world, BlockPos pos) {
-		PacketDistributor.TargetPoint targetPoint = new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), 64, world.func_234923_W_());
+		PacketDistributor.TargetPoint targetPoint = new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), 64, world.getDimensionKey());
 		TFPacketHandler.CHANNEL.send(PacketDistributor.NEAR.with(() -> targetPoint), new PacketAnnihilateBlock(pos));
 	}
 

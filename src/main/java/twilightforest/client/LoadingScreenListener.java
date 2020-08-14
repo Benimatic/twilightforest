@@ -15,12 +15,12 @@ import twilightforest.world.TFDimensions;
 public class LoadingScreenListener {
 
 	private final Minecraft client = Minecraft.getInstance();
-	private RegistryKey<World> lastDimension = World.field_234918_g_; //overworld
+	private RegistryKey<World> lastDimension = World.OVERWORLD; //overworld
 
 	@SubscribeEvent
 	public void onPlayerTick(TickEvent.PlayerTickEvent event) {
 		if (event.phase == TickEvent.Phase.END && event.player == client.player) {
-			lastDimension = event.player.getEntityWorld().func_234923_W_();
+			lastDimension = event.player.getEntityWorld().getDimensionKey();
 		}
 	}
 
@@ -28,9 +28,9 @@ public class LoadingScreenListener {
 	public void onOpenGui(GuiOpenEvent event) {
 		if (event.getGui() instanceof DownloadTerrainScreen && client.player != null) {
 			RegistryKey<World> tfDimension = TFDimensions.twilightForest;
-			if (client.player.getEntityWorld().func_234923_W_() == tfDimension || lastDimension == tfDimension) {
+			if (client.player.getEntityWorld().getDimensionKey() == tfDimension || lastDimension == tfDimension) {
 				GuiTwilightForestLoading guiLoading = new GuiTwilightForestLoading();
-				guiLoading.setEntering(client.player.getEntityWorld().func_234923_W_() == tfDimension);
+				guiLoading.setEntering(client.player.getEntityWorld().getDimensionKey() == tfDimension);
 				event.setGui(guiLoading);
 			}
 		}

@@ -97,9 +97,9 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar {
 		}
 
 		// also try three random directions
-		growThorns(world, pos, Direction.func_239631_a_(world.rand));
-		growThorns(world, pos, Direction.func_239631_a_(world.rand));
-		growThorns(world, pos, Direction.func_239631_a_(world.rand));
+		growThorns(world, pos, Direction.getRandomDirection(world.rand));
+		growThorns(world, pos, Direction.getRandomDirection(world.rand));
+		growThorns(world, pos, Direction.getRandomDirection(world.rand));
 	}
 
 	/**

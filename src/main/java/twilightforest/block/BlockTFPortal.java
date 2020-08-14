@@ -211,8 +211,8 @@ public class BlockTFPortal extends BreakableBlock {
 	}
 
 	private static RegistryKey<World> getDestination(Entity entity) {
-		return entity.getEntityWorld().func_234923_W_() != TFDimensions.twilightForest
-				? TFDimensions.twilightForest : World.field_234918_g_ /*DimensionType.byName(new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()))*/;
+		return entity.getEntityWorld().getDimensionKey() != TFDimensions.twilightForest
+				? TFDimensions.twilightForest : World.OVERWORLD /*DimensionType.byName(new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()))*/;
 	}
 
 	public static void attemptSendPlayer(Entity entity, boolean forcedEntry) {

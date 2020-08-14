@@ -59,7 +59,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 
 	@Override
 	public ChunkGenerator func_230349_a_(long l) {
-		return new ChunkGeneratorTwilightForest(this.biomeProvider.func_230320_a_(l), l, this.dimensionSettings);
+		return new ChunkGeneratorTwilightForest(this.biomeProvider.getBiomeProvider(l), l, this.dimensionSettings);
 	}
 
 	@Override

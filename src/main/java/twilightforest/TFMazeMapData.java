@@ -47,14 +47,13 @@ public class TFMazeMapData extends MapData {
 		}
 	}
 
-	//PORT NOTE: World.field_234918_g_ = "overworld"
 	// [VanillaCopy] Adapted from World.getMapData
 	@Nullable
 	public static TFMazeMapData getMazeMapData(World world, String name) {
 		if (world.isRemote) {
 			return CLIENT_DATA.getOrDefault(world, Collections.emptyMap()).get(name);
 		} else {
-			return world.getServer().getWorld(World.field_234918_g_).getSavedData().get(() -> new TFMazeMapData(name), name);
+			return world.getServer().getWorld(World.OVERWORLD).getSavedData().get(() -> new TFMazeMapData(name), name);
 		}
 	}
 
@@ -63,7 +62,7 @@ public class TFMazeMapData extends MapData {
 		if (world.isRemote) {
 			CLIENT_DATA.computeIfAbsent(world, k -> new HashMap<>()).put(data.getName(), data);
 		} else {
-			world.getServer().getWorld(World.field_234918_g_).getSavedData().set(data);
+			world.getServer().getWorld(World.OVERWORLD).getSavedData().set(data);
 		}
 	}
 }

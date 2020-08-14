@@ -75,7 +75,7 @@ public class GuiTFGoblinCrafting extends ContainerScreen<ContainerTFUncrafting> 
 	public void render(MatrixStack ms, int mouseX, int mouseY, float partialTicks) {
 		renderBackground(ms);
 		super.render(ms, mouseX, mouseY, partialTicks);
-		func_230459_a_(ms, mouseX, mouseY); //renderHoveredToolTip
+		renderHoveredTooltip(ms, mouseX, mouseY); //renderHoveredToolTip
 	}
 
 	@Override

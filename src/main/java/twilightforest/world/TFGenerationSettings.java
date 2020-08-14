@@ -28,7 +28,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 	}
 
 	public static boolean isTwilightForest(World world) {
-		return world.func_234923_W_() == TFDimensions.twilightForest;
+		return world.getDimensionKey() == TFDimensions.twilightForest;
 	}
 
 	public static boolean isProgressionEnforced(World world) {

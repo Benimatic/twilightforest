@@ -102,12 +102,12 @@ public class TFBiomeDistributor extends BiomeProvider {
     }
 
     @Override
-    protected Codec<? extends BiomeProvider> func_230319_a_() {
+    protected Codec<? extends BiomeProvider> getBiomeProviderCodec() {
         return tfBiomeProviderCodec;
     }
 
     @Override
-    public BiomeProvider func_230320_a_(long seed) {
+    public BiomeProvider getBiomeProvider(long seed) {
         return new TFBiomeDistributor(seed);
     }
 
