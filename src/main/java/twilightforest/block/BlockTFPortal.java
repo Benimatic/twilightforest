@@ -27,10 +27,10 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.apache.commons.lang3.mutable.MutableInt;
 import twilightforest.TFConfig;
-import twilightforest.TFTeleporter;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.TFDimensions;
 import twilightforest.world.TFGenerationSettings;
+import twilightforest.world.TFTeleporter;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -90,9 +90,8 @@ public class BlockTFPortal extends BreakableBlock {
 			if (recursivelyValidatePortal(world, pos, blocksChecked, size, state) && size.intValue() >= MIN_PORTAL_SIZE) {
 
 				if (TFConfig.COMMON_CONFIG.checkPortalDestination.get()) {
-					TFTeleporter teleporter = TFTeleporter.getTeleporterForDim(catalyst.getServer(), getDestination(catalyst));
 					boolean checkProgression = TFGenerationSettings.isProgressionEnforced(catalyst.world);
-					if (!teleporter.isSafeAround(pos, catalyst, checkProgression)) {
+					if (!TFTeleporter.isSafeAround(world, pos, catalyst, checkProgression)) {
 						// TODO: "failure" effect - particles?
 						if (player != null) {
 							player.sendStatusMessage(new TranslationTextComponent(TwilightForestMod.ID + ".twilight_portal.unsafe"), true);
@@ -211,7 +210,7 @@ public class BlockTFPortal extends BreakableBlock {
 	}
 
 	private static RegistryKey<World> getDestination(Entity entity) {
-		return entity.getEntityWorld().getDimensionKey() != TFDimensions.twilightForest
+		return !entity.getEntityWorld().getDimensionKey().func_240901_a_().equals(TFDimensions.twilightForest.func_240901_a_())
 				? TFDimensions.twilightForest : World.OVERWORLD /*DimensionType.byName(new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()))*/;
 	}
 
@@ -238,7 +237,7 @@ public class BlockTFPortal extends BreakableBlock {
 		if(serverWorld == null)
 			return;
 
-		entity.changeDimension(serverWorld, TFTeleporter.getTeleporterForDim(entity.getServer(), destination));
+		entity.changeDimension(serverWorld, new TFTeleporter());
 
 		if (destination == TFDimensions.twilightForest && entity instanceof ServerPlayerEntity) {
 			ServerPlayerEntity playerMP = (ServerPlayerEntity) entity;
