@@ -3,6 +3,7 @@ package twilightforest.block;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
+import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.TallBlockItem;
@@ -26,6 +27,7 @@ import twilightforest.world.feature.tree.*;
 import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 @SuppressWarnings({"WeakerAccess", "unused"})
 @Nonnull
@@ -366,12 +368,25 @@ public class TFBlocks {
 			r.register(new TallBlockItem(b, TFItems.defaultBuilder()).setRegistryName(b.getRegistryName()));
 		}
 
-		r.register(new BlockItem(firefly.get(), TFItems.defaultBuilder().setISTER(() -> () -> new ISTER(TFTileEntities.FIREFLY.getId())))
-						.setRegistryName(firefly.getId()));
-		r.register(new BlockItem(moonworm.get(), TFItems.defaultBuilder().setISTER(() -> () -> new ISTER(TFTileEntities.MOONWORM.getId())))
-						.setRegistryName(moonworm.getId()));
-		r.register(new BlockItem(cicada.get(), TFItems.defaultBuilder().setISTER(() -> () -> new ISTER(TFTileEntities.CICADA.getId())))
-						.setRegistryName(cicada.getId()));
+		// FIXME: using anon classes currently to get around the classloader as a bandaid fix
+		r.register(new BlockItem(firefly.get(), TFItems.defaultBuilder().setISTER(() -> new Callable<ItemStackTileEntityRenderer>() {
+			@Override
+			public ItemStackTileEntityRenderer call() {
+				return new ISTER(TFTileEntities.FIREFLY.getId());
+			}
+		})).setRegistryName(firefly.getId()));
+		r.register(new BlockItem(moonworm.get(), TFItems.defaultBuilder().setISTER(() -> new Callable<ItemStackTileEntityRenderer>() {
+			@Override
+			public ItemStackTileEntityRenderer call() {
+				return new ISTER(TFTileEntities.MOONWORM.getId());
+			}
+		})).setRegistryName(moonworm.getId()));
+		r.register(new BlockItem(cicada.get(), TFItems.defaultBuilder().setISTER(() -> new Callable<ItemStackTileEntityRenderer>() {
+			@Override
+			public ItemStackTileEntityRenderer call() {
+				return new ISTER(TFTileEntities.CICADA.getId());
+			}
+		})).setRegistryName(cicada.getId()));
 		r.register(new ItemBlockTFHugeLilyPad(huge_lilypad.get(), TFItems.defaultBuilder())
 						.setRegistryName(huge_lilypad.getId()));
 		r.register(new ItemBlockTFHugeWaterLily(huge_waterlily.get(), TFItems.defaultBuilder())

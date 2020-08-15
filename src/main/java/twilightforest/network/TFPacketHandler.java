@@ -1,8 +1,11 @@
 package twilightforest.network;
 
+import net.minecraftforge.fml.network.NetworkEvent;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 import twilightforest.TwilightForestMod;
+
+import java.util.function.Supplier;
 
 public class TFPacketHandler {
 	private static final String PROTOCOL_VERSION = "1";
@@ -17,7 +20,12 @@ public class TFPacketHandler {
 	public static void init() {
 		int id = 0;
 		CHANNEL.messageBuilder(PacketAnnihilateBlock.class, id++).encoder(PacketAnnihilateBlock::encode).decoder(PacketAnnihilateBlock::new).consumer(PacketAnnihilateBlock.Handler::onMessage).add();
-		CHANNEL.messageBuilder(PacketAreaProtection.class, id++).encoder(PacketAreaProtection::encode).decoder(PacketAreaProtection::new).consumer(PacketAreaProtection.Handler::onMessage).add();
+		CHANNEL.messageBuilder(PacketAreaProtection.class, id++).encoder(PacketAreaProtection::encode).decoder(PacketAreaProtection::new).consumer(new SimpleChannel.MessageBuilder.ToBooleanBiFunction<PacketAreaProtection, Supplier<NetworkEvent.Context>>() {
+			@Override
+			public boolean applyAsBool(PacketAreaProtection message, Supplier<NetworkEvent.Context> ctx) {
+				return PacketAreaProtection.Handler.onMessage(message, ctx);
+			}
+		}).add();
 		CHANNEL.messageBuilder(PacketChangeBiome.class, id++).encoder(PacketChangeBiome::encode).decoder(PacketChangeBiome::new).consumer(PacketChangeBiome.Handler::onMessage).add();
 		CHANNEL.messageBuilder(PacketEnforceProgressionStatus.class, id++).encoder(PacketEnforceProgressionStatus::encode).decoder(PacketEnforceProgressionStatus::new).consumer(PacketEnforceProgressionStatus.Handler::onMessage).add();
 		CHANNEL.messageBuilder(PacketStructureProtection.class, id++).encoder(PacketStructureProtection::encode).decoder(PacketStructureProtection::new).consumer(PacketStructureProtection.Handler::onMessage).add();

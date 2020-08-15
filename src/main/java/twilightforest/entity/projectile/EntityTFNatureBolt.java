@@ -25,6 +25,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.entity.TFEntities;
 
+@OnlyIn(value = Dist.CLIENT, _interface = IRendersAsItem.class)
 public class EntityTFNatureBolt extends EntityTFThrowable implements ITFProjectile, IRendersAsItem {
 
 	public EntityTFNatureBolt(EntityType<? extends EntityTFNatureBolt> type, World world) {

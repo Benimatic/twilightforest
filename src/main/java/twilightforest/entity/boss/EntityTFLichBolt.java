@@ -17,6 +17,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.entity.projectile.EntityTFThrowable;
 
+@OnlyIn(value = Dist.CLIENT, _interface = IRendersAsItem.class)
 public class EntityTFLichBolt extends EntityTFThrowable implements IRendersAsItem {
 
 	@SuppressWarnings("unused")

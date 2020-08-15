@@ -48,8 +48,8 @@ public class PacketAreaProtection {
 				@Override
 				public void run() {
 
-					World world = Minecraft.getInstance().world;
-					addProtectionBox((ClientWorld) world, message.sbb);
+					ClientWorld world = Minecraft.getInstance().world;
+					addProtectionBox(world, message.sbb);
 
 					for (int i = 0; i < 20; i++) {
 

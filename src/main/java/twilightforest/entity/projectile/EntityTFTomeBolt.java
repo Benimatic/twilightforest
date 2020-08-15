@@ -18,6 +18,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+@OnlyIn(value = Dist.CLIENT, _interface = IRendersAsItem.class)
 public class EntityTFTomeBolt extends EntityTFThrowable implements IRendersAsItem {
 
 	public EntityTFTomeBolt(EntityType<? extends EntityTFTomeBolt> type, World world, LivingEntity thrower) {

@@ -13,6 +13,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+@OnlyIn(value = Dist.CLIENT, _interface = IRendersAsItem.class)
 public class EntityTFIceSnowball extends EntityTFThrowable implements IRendersAsItem {
 
 	private static final int DAMAGE = 8;

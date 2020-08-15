@@ -17,6 +17,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.entity.TFEntities;
 
+@OnlyIn(value = Dist.CLIENT, _interface = IRendersAsItem.class)
 public class EntityTFTwilightWandBolt extends EntityTFThrowable implements IRendersAsItem {
 
 	public EntityTFTwilightWandBolt(EntityType<? extends EntityTFTwilightWandBolt> type, World world) {

@@ -161,37 +161,6 @@ public class TwilightForestMod {
 		TFGenCaveStalactite.loadStalactites();
 	}
 
-	@SubscribeEvent
-	public static void clientSetup(FMLClientSetupEvent evt) {
-		TFItems.addItemModelProperties();
-
-		ItemTFKnightlyArmor.initArmorModel();
-		ItemTFPhantomArmor.initArmorModel();
-		ItemTFYetiArmor.initArmorModel();
-		ItemTFArcticArmor.initArmorModel();
-		ItemTFFieryArmor.initArmorModel();
-		// FIXME MinecraftForge.EVENT_BUS.register(new LoadingScreenListener());
-		DistExecutor.runWhenOn(Dist.CLIENT, () -> RenderLayerRegistration::init);
-		DistExecutor.runWhenOn(Dist.CLIENT, () -> TFEntities::registerEntityRenderer);
-		DistExecutor.runWhenOn(Dist.CLIENT, () -> TFTileEntities::registerTileEntityRenders);
-		DistExecutor.runWhenOn(Dist.CLIENT, () -> TFContainers::renderScreens);
-
-		TwilightForestRenderInfo renderInfo = new TwilightForestRenderInfo(128.0F, false, DimensionRenderInfo.FogType.NONE, false, false);
-		DimensionRenderInfo.field_239208_a_.put(TFDimensions.twilightForestType.getRegistryName(), renderInfo);
-	}
-
-	@SubscribeEvent
-	public static void loadComplete(FMLLoadCompleteEvent evt) {
-		DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
-			Minecraft.getInstance().getRenderManager().renderers.values().forEach(r -> {
-				if (r instanceof LivingRenderer) {
-					((LivingRenderer) r).addLayer(new LayerShields((LivingRenderer) r));
-					((LivingRenderer) r).addLayer(new LayerIce((LivingRenderer) r));
-				}
-			});
-		});
-	}
-
 	public void startServer(FMLServerAboutToStartEvent event) {
 		TFCommand.register(event.getServer().getCommandManager().getDispatcher());
 	}

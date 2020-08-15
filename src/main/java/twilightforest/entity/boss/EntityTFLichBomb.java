@@ -11,8 +11,11 @@ import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.entity.projectile.EntityTFThrowable;
 
+@OnlyIn(value = Dist.CLIENT, _interface = IRendersAsItem.class)
 public class EntityTFLichBomb extends EntityTFThrowable implements IRendersAsItem {
 
 	public EntityTFLichBomb(EntityType<? extends EntityTFLichBomb> type, World world) {

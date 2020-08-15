@@ -175,6 +175,7 @@ public class TFItems {
 		return defaultBuilder().maxStackSize(1);
 	}
 
+	@OnlyIn(Dist.CLIENT)
 	public static void addItemModelProperties() {
 		ItemModelsProperties.func_239418_a_(cube_of_annihilation.get(), TwilightForestMod.prefix("thrown"), (stack, world, entity) ->
 				ItemTFCubeOfAnnihilation.getThrownUuid(stack) != null ? 1 : 0);
