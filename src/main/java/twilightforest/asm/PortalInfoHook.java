@@ -17,12 +17,12 @@ public class PortalInfoHook {
 	 * First [ARETURN] (return null)
 	 */
 	public static PortalInfo portalInfo(Entity entity, ServerWorld world) {
-		if (checkDimType(entity.world) || checkDimType(world))
+		if (checkDim(entity.world) || checkDim(world))
 			return TFTeleporter.reposition(entity, world);
 		return null;
 	}
 
-	private static boolean checkDimType(World world) {
+	private static boolean checkDim(World world) {
 		return world.getDimensionKey().func_240901_a_().equals(TFDimensions.twilightForest.func_240901_a_());
 	}
 }
