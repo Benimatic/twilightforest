@@ -168,7 +168,8 @@ public class TFTeleporter implements ITeleporter {
 	private static void checkAdjacent(ServerWorld world, BlockPos pos, Set<BlockPos> checked, Set<BlockPos> result) {
 		for (Direction facing : Direction.Plane.HORIZONTAL) {
 			BlockPos offset = pos.offset(facing);
-			if (!checked.add(offset)) continue;
+			if (!checked.add(offset))
+				continue;
 			if (isPortalAt(world, offset)) {
 				checkAdjacent(world, offset, checked, result);
 			} else {
@@ -249,26 +250,13 @@ public class TFTeleporter implements ITeleporter {
 		return TFGenerationSettings.isBiomeSafeFor(world.getBiome(pos), entity);
 	}
 
-	static class PortalPosition {
-		public final BlockPos pos;
-		long lastUpdateTime;
-
-		PortalPosition(BlockPos pos, long time) {
-			this.pos = pos;
-			this.lastUpdateTime = time;
-		}
-	}
-
 	@Nullable
 	private static BlockPos findSafeCoords(ServerWorld world, int range, BlockPos pos, Entity entity, boolean checkProgression) {
 		int attempts = range / 8;
 		for (int i = 0; i < attempts; i++) {
 			BlockPos dPos = new BlockPos(
 					// TODO Should we be having randomized attempts
-					pos.getX() /*+ random.nextInt(range) - random.nextInt(range)*/,
-					100,
-					pos.getZ() /*+ random.nextInt(range) - random.nextInt(range)*/
-			);
+					pos.getX() /*+ random.nextInt(range) - random.nextInt(range)*/, 100, pos.getZ() /*+ random.nextInt(range) - random.nextInt(range)*/);
 
 			if (isSafeAround(world, dPos, entity, checkProgression)) {
 				return dPos;
@@ -390,8 +378,7 @@ public class TFTeleporter implements ITeleporter {
 				for (int potentialY = 0; potentialY < 4; potentialY++) {
 					BlockPos tPos = pos.add(potentialX - 1, potentialY, potentialZ - 1);
 					Material material = world.getBlockState(tPos).getMaterial();
-					if (potentialY == 0 && material != Material.ORGANIC
-							|| potentialY >= 1 && !material.isReplaceable()) {
+					if (potentialY == 0 && material != Material.ORGANIC || potentialY >= 1 && !material.isReplaceable()) {
 						return false;
 					}
 				}
@@ -483,8 +470,7 @@ public class TFTeleporter implements ITeleporter {
 				for (int potentialY = 0; potentialY < 4; potentialY++) {
 					BlockPos tPos = pos.add(potentialX - 1, potentialY, potentialZ - 1);
 					Material material = world.getBlockState(tPos).getMaterial();
-					if (potentialY == 0 && !material.isSolid() && !material.isLiquid()
-							|| potentialY >= 1 && !material.isReplaceable()) {
+					if (potentialY == 0 && !material.isSolid() && !material.isLiquid() || potentialY >= 1 && !material.isReplaceable()) {
 						return false;
 					}
 				}
@@ -505,6 +491,16 @@ public class TFTeleporter implements ITeleporter {
 	public Entity placeEntity(Entity entity, ServerWorld currentWorld, ServerWorld destWorld, float yaw, Function<Boolean, Entity> repositionEntity) {
 		entity.fallDistance = 0;
 		return repositionEntity.apply(false);
+	}
+
+	static class PortalPosition {
+		public final BlockPos pos;
+		long lastUpdateTime;
+
+		PortalPosition(BlockPos pos, long time) {
+			this.pos = pos;
+			this.lastUpdateTime = time;
+		}
 	}
 
 }
