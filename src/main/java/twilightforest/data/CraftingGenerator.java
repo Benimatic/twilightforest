@@ -1,15 +1,12 @@
 package twilightforest.data;
 
-import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonObject;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.*;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.CookingRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.ConditionalRecipe;
 import twilightforest.TwilightForestMod;
@@ -19,9 +16,8 @@ import twilightforest.item.recipe.UncraftingEnabledCondition;
 
 import java.nio.file.Path;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
-public class CraftingGenerator extends CraftingShapes {
+public class CraftingGenerator extends CraftingDataHelper {
 	public CraftingGenerator(DataGenerator generator) {
 		super(generator);
 	}

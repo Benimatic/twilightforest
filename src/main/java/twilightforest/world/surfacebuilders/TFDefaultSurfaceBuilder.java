@@ -14,8 +14,8 @@ import twilightforest.world.TFGenerationSettings;
 
 import java.util.Random;
 
+// TODO Do we even need this anymore? Json worldgen lets us redefine sealevel now
 public class TFDefaultSurfaceBuilder extends SurfaceBuilder<SurfaceBuilderConfig> {
-
 	public TFDefaultSurfaceBuilder(Codec<SurfaceBuilderConfig> config) {
 		super(config);
 	}

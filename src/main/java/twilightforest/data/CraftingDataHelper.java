@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public abstract class CraftingShapes extends RecipeProvider {
-	public CraftingShapes(DataGenerator generator) {
+public abstract class CraftingDataHelper extends RecipeProvider {
+	public CraftingDataHelper(DataGenerator generator) {
 		super(generator);
 	}
 
