@@ -6,10 +6,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.IWorldGenerationReader;
 import twilightforest.util.FeatureUtil;
 import twilightforest.world.TFGenerationSettings;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
@@ -111,9 +108,10 @@ public class TFGenCanopyTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 		if (world.isAreaLoaded(dest, 5)) {
 
 			if (trunk) {
-				FeatureUtil.drawBresehnamTree(world, src, dest, config.trunkProvider.getBlockState(treeRNG, src), logpos);
+				// Oooouch! This is EXTREMELY expensive for a straight trunk! D:
+				FeatureUtil.drawBresenhamTree(world, src, dest, config.trunkProvider.getBlockState(treeRNG, src), logpos);
 			} else {
-				FeatureUtil.drawBresehnamBranch(this, world, treeRNG, src, dest, branchpos, mbb, config);
+				FeatureUtil.drawBresenhamBranch(this, world, treeRNG, src, dest, branchpos, mbb, config);
 			}
 
 			// seems to help lighting to place this firefly now

@@ -6,8 +6,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.IWorldGenerationReader;
 import twilightforest.util.FeatureUtil;
 import twilightforest.world.TFGenerationSettings;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
@@ -58,7 +56,7 @@ public class TFGenDarkCanopyTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 		int treeHeight = 6 + random.nextInt(5);
 
 		//okay build a tree!  trunk here
-		FeatureUtil.drawBresehnamTree(world, pos, pos.up(treeHeight), config.trunkProvider.getBlockState(random, pos), trunk);
+		FeatureUtil.drawBresenhamTree(world, pos, pos.up(treeHeight), config.trunkProvider.getBlockState(random, pos), trunk);
 		leafAround(world, random, pos.up(treeHeight), leaves, config);
 
 		// make 4 branches
@@ -94,7 +92,7 @@ public class TFGenDarkCanopyTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 
 		// only actually draw the branch if it's not going to load new chunks
 		if (world.isAreaLoaded(dest, 6)) {
-			FeatureUtil.drawBresehnamBranch(this, world, random, src, dest, branch, mbb, config);
+			FeatureUtil.drawBresenhamBranch(this, world, random, src, dest, branch, mbb, config);
 			leafAround(world, random, dest, leaves, config);
 		}
 	}

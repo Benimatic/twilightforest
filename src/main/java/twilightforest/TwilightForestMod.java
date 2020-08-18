@@ -49,6 +49,7 @@ import twilightforest.tileentity.TFTileEntities;
 import twilightforest.world.TFDimensions;
 import twilightforest.world.feature.TFBiomeFeatures;
 import twilightforest.world.feature.TFGenCaveStalactite;
+import twilightforest.world.newfeature.TFFeatures;
 
 @Mod(TwilightForestMod.ID)
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -101,6 +102,7 @@ public class TwilightForestMod {
 //		TFDimensions.BIOME_PROVIDER_TYPES.register(modbus);
 //		TFDimensions.CHUNK_GENERATOR_TYPES.register(modbus);
 //		TFDimensions.MOD_DIMENSIONS.register(modbus);
+		new TFFeatures(); // TODO make deferred registry once available
 
 		// TODO: move these to proper spots
 		// WorldProviderTwilightForest.syncFromConfig();

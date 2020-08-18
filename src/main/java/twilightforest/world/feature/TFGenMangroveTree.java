@@ -6,8 +6,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.IWorldGenerationReader;
 import twilightforest.util.FeatureUtil;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
@@ -103,9 +101,9 @@ public class TFGenMangroveTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 		if (world.isAreaLoaded(dest, bSize + 1)) {
 
 			if (trunk) {
-				FeatureUtil.drawBresehnamTree(world, src, dest, config.trunkProvider.getBlockState(random, src), log);
+				FeatureUtil.drawBresenhamTree(world, src, dest, config.trunkProvider.getBlockState(random, src), log);
 			} else {
-				FeatureUtil.drawBresehnamBranch(this, world, random, src, dest, branch, mbb, config);
+				FeatureUtil.drawBresenhamBranch(this, world, random, src, dest, branch, mbb, config);
 			}
 
 			// we only need these side blocks if the size is > 2
@@ -132,7 +130,7 @@ public class TFGenMangroveTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 
 		// only actually draw the root if it's not going to load new chunks
 		if (world.isAreaLoaded(dest, 1)) {
-			BlockPos[] lineArray = FeatureUtil.getBresehnamArrays(src, dest);
+			BlockPos[] lineArray = FeatureUtil.getBresenhamArrays(src, dest);
 			boolean stillAboveGround = true;
 			for (BlockPos coord : lineArray) {
 				if (stillAboveGround && FeatureUtil.hasAirAround(world, coord)) {

@@ -8,8 +8,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.world.gen.IWorldGenerationReader;
 import net.minecraft.world.gen.blockstateprovider.BlockStateProvider;
+import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
+import net.minecraft.world.gen.feature.TreeFeature;
+import net.minecraft.world.gen.trunkplacer.AbstractTrunkPlacer;
 import twilightforest.world.feature.TFTreeGenerator;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
@@ -17,6 +20,84 @@ import java.util.Random;
 import java.util.Set;
 
 public class FeatureUtil {
+	public static void putLeafBlock(IWorldGenerationReader world, Random random, BlockPos pos, BlockStateProvider state, Set<BlockPos> leavesPos) {
+		if (/*leavesPos.contains(pos) ||*/ !TreeFeature.isReplaceableAt(world, pos))
+			return;
+
+		world.setBlockState(pos, state.getBlockState(random, pos), 3);
+		leavesPos.add(pos.toImmutable());
+	}
+
+	// TODO phase out other leaf circle algorithms
+	public static void makeLeafCircle(IWorldGenerationReader world, Random random, BlockPos centerPos, float radius, BlockStateProvider state, Set<BlockPos> leaves) {
+		// Normally, I'd use mutable pos here but there are multiple bits of logic down the line that force
+		// the pos to be immutable causing multiple same BlockPos instances to exist.
+		float radiusSquared = radius * radius;
+		putLeafBlock(world, random, centerPos, state, leaves);
+
+		// trace out a quadrant
+		for (int x = 0; x <= radius; x++) {
+			for (int z = 1; z <= radius; z++) {
+				// if we're inside the blob, fill it
+				if (x * x + z * z <= radiusSquared) {
+					// do four at a time for easiness!
+					putLeafBlock(world, random, centerPos.add(  x, 0,  z), state, leaves);
+					putLeafBlock(world, random, centerPos.add( -x, 0, -z), state, leaves);
+					putLeafBlock(world, random, centerPos.add( -z, 0,  x), state, leaves);
+					putLeafBlock(world, random, centerPos.add(  z, 0, -x), state, leaves);
+					// Confused how this circle pixel-filling algorithm works exactly? https://www.desmos.com/calculator/psqynhk21k
+				}
+			}
+		}
+	}
+
+	public static void makeLeafSpheroid(IWorldGenerationReader world, Random random, BlockPos centerPos, float vRadius, float hRadius, BlockStateProvider state, Set<BlockPos> leaves) {
+		float vRadiusSquared = vRadius * vRadius;
+		float hRadiusSquared = hRadius * hRadius;
+		float radius = vRadiusSquared * hRadiusSquared;
+		putLeafBlock(world, random, centerPos, state, leaves);
+
+		for (int y = 0; y <= hRadius; y++) {
+			if (y > hRadius) continue;
+
+			putLeafBlock(world, random, centerPos.add( 0,  y, 0), state, leaves);
+			putLeafBlock(world, random, centerPos.add( 0,  y, 0), state, leaves);
+			putLeafBlock(world, random, centerPos.add( 0,  y, 0), state, leaves);
+			putLeafBlock(world, random, centerPos.add( 0,  y, 0), state, leaves);
+
+			putLeafBlock(world, random, centerPos.add( 0, -y, 0), state, leaves);
+			putLeafBlock(world, random, centerPos.add( 0, -y, 0), state, leaves);
+			putLeafBlock(world, random, centerPos.add( 0, -y, 0), state, leaves);
+			putLeafBlock(world, random, centerPos.add( 0, -y, 0), state, leaves);
+		}
+
+		for (int x = 0; x <= vRadius; x++) {
+			for (int z = 1; z <= vRadius; z++) {
+				if (x * x + z * z > vRadiusSquared) continue;
+
+				putLeafBlock(world, random, centerPos.add(  x, 0,  z), state, leaves);
+				putLeafBlock(world, random, centerPos.add( -x, 0, -z), state, leaves);
+				putLeafBlock(world, random, centerPos.add( -z, 0,  x), state, leaves);
+				putLeafBlock(world, random, centerPos.add(  z, 0, -x), state, leaves);
+
+				for (int y = 0; y <= hRadius; y++) {
+					if (((x * x + z * z) * hRadiusSquared) + ((y * y) * vRadiusSquared) > radius) continue;
+
+					putLeafBlock(world, random, centerPos.add(  x,  y,  z), state, leaves);
+					putLeafBlock(world, random, centerPos.add( -x,  y, -z), state, leaves);
+					putLeafBlock(world, random, centerPos.add( -z,  y,  x), state, leaves);
+					putLeafBlock(world, random, centerPos.add(  z,  y, -x), state, leaves);
+
+					putLeafBlock(world, random, centerPos.add(  x, -y,  z), state, leaves);
+					putLeafBlock(world, random, centerPos.add( -x, -y, -z), state, leaves);
+					putLeafBlock(world, random, centerPos.add( -z, -y,  x), state, leaves);
+					putLeafBlock(world, random, centerPos.add(  z, -y, -x), state, leaves);
+				}
+			}
+		}
+	}
+
+	// ===== Pre-1.16.2 below =========================================================================================
 
 	/**
 	 * Moves distance along the vector.
@@ -39,8 +120,8 @@ public class FeatureUtil {
 	 * Draws a line from {x1, y1, z1} to {x2, y2, z2}
 	 * This takes all variables for setting Branch
 	 */
-	public static void drawBresehnamBranch(TFTreeGenerator generator, IWorld world, Random random, BlockPos from, BlockPos to, Set<BlockPos> state, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
-		for (BlockPos pixel : getBresehnamArrays(from, to)) {
+	public static void drawBresenhamBranch(TFTreeGenerator generator, IWorld world, Random random, BlockPos from, BlockPos to, Set<BlockPos> state, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
+		for (BlockPos pixel : getBresenhamArrays(from, to)) {
 			generator.setBranchBlockState(world, random, pixel, state, mbb, config);
 			//world.setBlockState(pixel, state);
 		}
@@ -50,8 +131,8 @@ public class FeatureUtil {
 	 * Draws a line from {x1, y1, z1} to {x2, y2, z2}
 	 * This just takes a BlockState, used to set Trunk
 	 */
-	public static void drawBresehnamTree(IWorld world, BlockPos from, BlockPos to, BlockState state, Set<BlockPos> treepos) {
-		for (BlockPos pixel : getBresehnamArrays(from, to)) {
+	public static void drawBresenhamTree(IWorld world, BlockPos from, BlockPos to, BlockState state, Set<BlockPos> treepos) {
+		for (BlockPos pixel : getBresenhamArrays(from, to)) {
 			world.setBlockState(pixel, state, 3);
 			treepos.add(pixel.toImmutable());
 		}
@@ -60,15 +141,15 @@ public class FeatureUtil {
 	/**
 	 * Get an array of values that represent a line from point A to point B
 	 */
-	public static BlockPos[] getBresehnamArrays(BlockPos src, BlockPos dest) {
-		return getBresehnamArrays(src.getX(), src.getY(), src.getZ(), dest.getX(), dest.getY(), dest.getZ());
+	public static BlockPos[] getBresenhamArrays(BlockPos src, BlockPos dest) {
+		return getBresenhamArrays(src.getX(), src.getY(), src.getZ(), dest.getX(), dest.getY(), dest.getZ());
 	}
 
 	/**
 	 * Get an array of values that represent a line from point A to point B
 	 * todo 1.9 lazify this into an iterable?
 	 */
-	public static BlockPos[] getBresehnamArrays(int x1, int y1, int z1, int x2, int y2, int z2) {
+	public static BlockPos[] getBresenhamArrays(int x1, int y1, int z1, int x2, int y2, int z2) {
 		int i, dx, dy, dz, absDx, absDy, absDz, x_inc, y_inc, z_inc, err_1, err_2, doubleAbsDx, doubleAbsDy, doubleAbsDz;
 
 		BlockPos pixel = new BlockPos(x1, y1, z1);
@@ -156,7 +237,7 @@ public class FeatureUtil {
 			for (byte dz = 0; dz <= rad; dz++) {
 				int dist = Math.max(dx, dz) + (Math.min(dx, dz) >> 1);
 
-				//hack!  I keep getting failing leaves at a certain position.
+				// hack! I keep getting failing leaves at a certain position.
 				if (useHack && dx == 3 && dz == 3) {
 					dist = 6;
 				}

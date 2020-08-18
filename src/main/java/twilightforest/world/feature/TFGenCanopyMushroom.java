@@ -6,11 +6,9 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraft.world.gen.feature.structure.StructureManager;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.FeatureUtil;
 import twilightforest.util.MushroomUtil;
@@ -180,7 +178,7 @@ public class TFGenCanopyMushroom extends Feature<NoFeatureConfig> {
 	 * Copied over from FeatureUtil, as this is the only place this will ever be used for now
 	 */
 	public static void drawBresehnam(IWorld world, BlockPos from, BlockPos to, BlockState state) {
-		for (BlockPos pixel : FeatureUtil.getBresehnamArrays(from, to)) {
+		for (BlockPos pixel : FeatureUtil.getBresenhamArrays(from, to)) {
 			world.setBlockState(pixel, state, 3);
 		}
 	}

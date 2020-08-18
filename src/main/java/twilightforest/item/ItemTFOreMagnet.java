@@ -112,7 +112,7 @@ public class ItemTFOreMagnet extends Item {
 	public static int doMagnet(World world, BlockPos usePos, BlockPos destPos) {
 		int blocksMoved = 0;
 		// get blocks in line from src to dest
-		BlockPos[] lineArray = FeatureUtil.getBresehnamArrays(usePos, destPos);
+		BlockPos[] lineArray = FeatureUtil.getBresenhamArrays(usePos, destPos);
 
 		// find some ore?
 		BlockState foundState = Blocks.AIR.getDefaultState();

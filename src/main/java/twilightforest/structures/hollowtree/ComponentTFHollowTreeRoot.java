@@ -59,7 +59,7 @@ public class ComponentTFHollowTreeRoot extends ComponentTFHollowTreeMedBranch {
 	 * Draws a line
 	 */
 	protected void drawRootLine(ISeedReader world, MutableBoundingBox sbb, int x1, int y1, int z1, int x2, int y2, int z2, BlockState blockValue) {
-		BlockPos lineCoords[] = FeatureUtil.getBresehnamArrays(x1, y1, z1, x2, y2, z2);
+		BlockPos lineCoords[] = FeatureUtil.getBresenhamArrays(x1, y1, z1, x2, y2, z2);
 
 		for (BlockPos coords : lineCoords) {
 			BlockState block = this.getBlockStateFromPos(world, coords.getX(), coords.getY(), coords.getZ(), sbb);

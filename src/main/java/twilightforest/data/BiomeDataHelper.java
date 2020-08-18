@@ -8,13 +8,19 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DirectoryCache;
 import net.minecraft.data.IDataProvider;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.WorldGenRegistries;
 import net.minecraft.world.biome.*;
+import net.minecraft.world.gen.feature.ConfiguredFeature;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.IFeatureConfig;
 import net.minecraft.world.gen.surfacebuilders.ConfiguredSurfaceBuilders;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -38,7 +44,7 @@ public abstract class BiomeDataHelper extends BiomeProvider {
                 if (jsonOptional.isPresent()) {
                     IDataProvider.save(field_244196_c, directoryCache, jsonOptional.get(), filePath);
 
-                    System.out.print("\"" + biomeKeyPair.getKey() + "\", ");
+                    System.out.print("\n\"" + biomeKeyPair.getKey() + "\", ");
                 } else {
                     field_244195_b.error("Couldn't serialize biome {}", filePath);
                 }
@@ -65,20 +71,30 @@ public abstract class BiomeDataHelper extends BiomeProvider {
                 .setMoodSound(MoodSoundAmbience.field_235027_b_); // This sets cave sounds, we should probably change it
     }
 
+    protected static BiomeGenerationSettings.Builder modify(BiomeGenerationSettings.Builder builder, Consumer<BiomeGenerationSettings.Builder> consumer) {
+        consumer.accept(builder);
+        return builder;
+    }
+
     protected static BiomeGenerationSettings.Builder defaultGenSettingBuilder() {
         BiomeGenerationSettings.Builder biomeGenerationSettings = (new BiomeGenerationSettings.Builder())
                 .func_242517_a(ConfiguredSurfaceBuilders.field_244178_j); // GRASS_DIRT_GRAVEL_CONFIG
 
+        // TODO Re-enable, currently disabled so it's just easier to read the jsons
         DefaultBiomeFeatures.func_243748_i(biomeGenerationSettings); // Dirt / AltStones
         DefaultBiomeFeatures.func_243750_j(biomeGenerationSettings); // Ores
+        DefaultBiomeFeatures.func_243742_f(biomeGenerationSettings); // Lava and Water lakes
+        DefaultBiomeFeatures.func_243755_o(biomeGenerationSettings); // Clay disks
+        DefaultBiomeFeatures.func_243704_R(biomeGenerationSettings); // Plain grass
+        DefaultBiomeFeatures.func_243711_Y(biomeGenerationSettings); // Tall grass
         return biomeGenerationSettings;
     }
 
-    protected static Biome.Builder defaultBiomeBuilder() {
-        return defaultBiomeBuilder(defaultAmbientBuilder(), new MobSpawnInfo.Builder(), defaultGenSettingBuilder());
+    protected static Biome.Builder biomeWithDefaults() {
+        return biomeWithDefaults(defaultAmbientBuilder(), new MobSpawnInfo.Builder(), defaultGenSettingBuilder());
     }
 
-    protected static Biome.Builder defaultBiomeBuilder(BiomeAmbience.Builder biomeAmbience, MobSpawnInfo.Builder mobSpawnInfo, BiomeGenerationSettings.Builder biomeGenerationSettings) {
+    protected static Biome.Builder biomeWithDefaults(BiomeAmbience.Builder biomeAmbience, MobSpawnInfo.Builder mobSpawnInfo, BiomeGenerationSettings.Builder biomeGenerationSettings) {
         return (new Biome.Builder())
                 .precipitation(Biome.RainType.RAIN)
                 .category(Biome.Category.FOREST)
@@ -90,5 +106,9 @@ public abstract class BiomeDataHelper extends BiomeProvider {
                 .func_242458_a(mobSpawnInfo.func_242577_b())
                 .func_242457_a(biomeGenerationSettings.func_242508_a())
                 .func_242456_a(Biome.TemperatureModifier.NONE);
+    }
+
+    protected static <FC extends IFeatureConfig, F extends Feature<FC>> ConfiguredFeature<FC, F> registerFeature(ResourceLocation rl, ConfiguredFeature<FC, F> feature) {
+        return Registry.register(WorldGenRegistries.field_243653_e, rl, feature);
     }
 }

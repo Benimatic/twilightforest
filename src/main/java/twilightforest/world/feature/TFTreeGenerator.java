@@ -15,10 +15,8 @@ import net.minecraft.util.math.shapes.BitSetVoxelShapePart;
 import net.minecraft.util.math.shapes.VoxelShapePart;
 import net.minecraft.world.*;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.IWorldGenerationReader;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.TreeFeature;
-import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.template.Template;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.FeatureUtil;
@@ -208,7 +206,7 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 		BlockPos dest = FeatureUtil.translate(pos.down(b + 2), 5, 0.3 * b + offset, 0.8);
 
 		// go through block by block and stop drawing when we head too far into open air
-		BlockPos[] lineArray = FeatureUtil.getBresehnamArrays(pos.down(), dest);
+		BlockPos[] lineArray = FeatureUtil.getBresenhamArrays(pos.down(), dest);
 		for (BlockPos coord : lineArray) {
 			this.setRootsBlockState(world, rand, coord, setpos, mbb, config);
 		}

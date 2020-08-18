@@ -1,5 +1,5 @@
 {
-  "scale": 0.2,
+  "scale": 0.05,
   "effects": {
     "mood_sound": {
       "sound": "minecraft:ambient.cave",
@@ -9,8 +9,8 @@
     },
     "sky_color": 2105930,
     "fog_color": 12648408,
-    "water_color": 4159204,
-    "water_fog_color": 329011
+    "water_color": 12648408,
+    "water_fog_color": 4159204
   },
   "surface_builder": {
     "config": {
@@ -934,6 +934,351 @@
           }
         },
         "type": "minecraft:decorated"
+      },
+      {
+        "config": {
+          "feature": {
+            "config": {
+              "feature": {
+                "config": {
+                  "can_replace": false,
+                  "project": false,
+                  "need_water": false,
+                  "xspread": 7,
+                  "yspread": 3,
+                  "zspread": 7,
+                  "whitelist": [],
+                  "blacklist": [],
+                  "tries": 64,
+                  "state_provider": {
+                    "state": {
+                      "Name": "minecraft:brown_mushroom"
+                    },
+                    "type": "minecraft:simple_state_provider"
+                  },
+                  "block_placer": {
+                    "type": "minecraft:simple_block_placer"
+                  }
+                },
+                "type": "minecraft:random_patch"
+              },
+              "decorator": {
+                "config": {
+                  "outer": {
+                    "config": {},
+                    "type": "minecraft:square"
+                  },
+                  "inner": {
+                    "config": {},
+                    "type": "minecraft:heightmap_spread_double"
+                  }
+                },
+                "type": "minecraft:decorated"
+              }
+            },
+            "type": "minecraft:decorated"
+          },
+          "decorator": {
+            "config": {
+              "chance": 4
+            },
+            "type": "minecraft:chance"
+          }
+        },
+        "type": "minecraft:decorated"
+      },
+      {
+        "config": {
+          "feature": {
+            "config": {
+              "feature": {
+                "config": {
+                  "can_replace": false,
+                  "project": false,
+                  "need_water": false,
+                  "xspread": 7,
+                  "yspread": 3,
+                  "zspread": 7,
+                  "whitelist": [],
+                  "blacklist": [],
+                  "tries": 64,
+                  "state_provider": {
+                    "state": {
+                      "Name": "minecraft:red_mushroom"
+                    },
+                    "type": "minecraft:simple_state_provider"
+                  },
+                  "block_placer": {
+                    "type": "minecraft:simple_block_placer"
+                  }
+                },
+                "type": "minecraft:random_patch"
+              },
+              "decorator": {
+                "config": {
+                  "outer": {
+                    "config": {},
+                    "type": "minecraft:square"
+                  },
+                  "inner": {
+                    "config": {},
+                    "type": "minecraft:heightmap_spread_double"
+                  }
+                },
+                "type": "minecraft:decorated"
+              }
+            },
+            "type": "minecraft:decorated"
+          },
+          "decorator": {
+            "config": {
+              "chance": 8
+            },
+            "type": "minecraft:chance"
+          }
+        },
+        "type": "minecraft:decorated"
+      },
+      {
+        "config": {
+          "feature": {
+            "config": {
+              "feature_true": {
+                "config": {
+                  "cap_provider": {
+                    "state": {
+                      "Properties": {
+                        "west": "true",
+                        "up": "true",
+                        "south": "true",
+                        "north": "true",
+                        "east": "true",
+                        "down": "false"
+                      },
+                      "Name": "minecraft:red_mushroom_block"
+                    },
+                    "type": "minecraft:simple_state_provider"
+                  },
+                  "stem_provider": {
+                    "state": {
+                      "Properties": {
+                        "west": "true",
+                        "up": "false",
+                        "south": "true",
+                        "north": "true",
+                        "east": "true",
+                        "down": "false"
+                      },
+                      "Name": "minecraft:mushroom_stem"
+                    },
+                    "type": "minecraft:simple_state_provider"
+                  },
+                  "foliage_radius": 2
+                },
+                "type": "minecraft:huge_red_mushroom"
+              },
+              "feature_false": {
+                "config": {
+                  "cap_provider": {
+                    "state": {
+                      "Properties": {
+                        "west": "true",
+                        "up": "true",
+                        "south": "true",
+                        "north": "true",
+                        "east": "true",
+                        "down": "false"
+                      },
+                      "Name": "minecraft:brown_mushroom_block"
+                    },
+                    "type": "minecraft:simple_state_provider"
+                  },
+                  "stem_provider": {
+                    "state": {
+                      "Properties": {
+                        "west": "true",
+                        "up": "false",
+                        "south": "true",
+                        "north": "true",
+                        "east": "true",
+                        "down": "false"
+                      },
+                      "Name": "minecraft:mushroom_stem"
+                    },
+                    "type": "minecraft:simple_state_provider"
+                  },
+                  "foliage_radius": 3
+                },
+                "type": "minecraft:huge_brown_mushroom"
+              }
+            },
+            "type": "minecraft:random_boolean_selector"
+          },
+          "decorator": {
+            "config": {
+              "outer": {
+                "config": {},
+                "type": "minecraft:square"
+              },
+              "inner": {
+                "config": {},
+                "type": "minecraft:heightmap"
+              }
+            },
+            "type": "minecraft:decorated"
+          }
+        },
+        "type": "minecraft:decorated"
+      },
+      {
+        "config": {
+          "feature": {
+            "config": {
+              "feature": {
+                "config": {
+                  "can_replace": false,
+                  "project": false,
+                  "need_water": false,
+                  "xspread": 7,
+                  "yspread": 3,
+                  "zspread": 7,
+                  "whitelist": [],
+                  "blacklist": [],
+                  "tries": 64,
+                  "state_provider": {
+                    "state": {
+                      "Name": "minecraft:brown_mushroom"
+                    },
+                    "type": "minecraft:simple_state_provider"
+                  },
+                  "block_placer": {
+                    "type": "minecraft:simple_block_placer"
+                  }
+                },
+                "type": "minecraft:random_patch"
+              },
+              "decorator": {
+                "config": {
+                  "chance": 4
+                },
+                "type": "minecraft:chance"
+              }
+            },
+            "type": "minecraft:decorated"
+          },
+          "decorator": {
+            "config": {
+              "outer": {
+                "config": {},
+                "type": "minecraft:square"
+              },
+              "inner": {
+                "config": {},
+                "type": "minecraft:heightmap"
+              }
+            },
+            "type": "minecraft:decorated"
+          }
+        },
+        "type": "minecraft:decorated"
+      },
+      {
+        "config": {
+          "feature": {
+            "config": {
+              "feature": {
+                "config": {
+                  "can_replace": false,
+                  "project": false,
+                  "need_water": false,
+                  "xspread": 7,
+                  "yspread": 3,
+                  "zspread": 7,
+                  "whitelist": [],
+                  "blacklist": [],
+                  "tries": 64,
+                  "state_provider": {
+                    "state": {
+                      "Name": "minecraft:red_mushroom"
+                    },
+                    "type": "minecraft:simple_state_provider"
+                  },
+                  "block_placer": {
+                    "type": "minecraft:simple_block_placer"
+                  }
+                },
+                "type": "minecraft:random_patch"
+              },
+              "decorator": {
+                "config": {
+                  "chance": 8
+                },
+                "type": "minecraft:chance"
+              }
+            },
+            "type": "minecraft:decorated"
+          },
+          "decorator": {
+            "config": {
+              "outer": {
+                "config": {},
+                "type": "minecraft:square"
+              },
+              "inner": {
+                "config": {},
+                "type": "minecraft:heightmap_spread_double"
+              }
+            },
+            "type": "minecraft:decorated"
+          }
+        },
+        "type": "minecraft:decorated"
+      },
+      {
+        "config": {
+          "max_water_depth": 0,
+          "ignore_vines": true,
+          "heightmap": "OCEAN_FLOOR",
+          "minimum_size": {
+            "limit": 1,
+            "lower_size": 0,
+            "upper_size": 1,
+            "type": "minecraft:two_layers_feature_size"
+          },
+          "decorators": [],
+          "trunk_provider": {
+            "state": {
+              "Properties": {
+                "axis": "y"
+              },
+              "Name": "twilightforest:twilight_oak_log"
+            },
+            "type": "minecraft:simple_state_provider"
+          },
+          "leaves_provider": {
+            "state": {
+              "Properties": {
+                "persistent": "false",
+                "distance": "7"
+              },
+              "Name": "twilightforest:twilight_oak_leaves"
+            },
+            "type": "minecraft:simple_state_provider"
+          },
+          "foliage_placer": {
+            "radius": 2,
+            "offset": 0,
+            "height": 3,
+            "type": "minecraft:blob_foliage_placer"
+          },
+          "trunk_placer": {
+            "base_height": 4,
+            "height_rand_a": 2,
+            "height_rand_b": 0,
+            "type": "minecraft:straight_trunk_placer"
+          }
+        },
+        "type": "minecraft:tree"
       }
     ]
   ],
@@ -949,8 +1294,8 @@
   "spawn_costs": {},
   "player_spawn_friendly": false,
   "precipitation": "rain",
-  "temperature": 0.9,
-  "downfall": 0.0,
-  "category": "savanna",
-  "depth": 0.2
+  "temperature": 0.8,
+  "downfall": 1.0,
+  "category": "forest",
+  "depth": 0.125
 }

@@ -9,8 +9,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.IWorldGenerationReader;
 import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
 import twilightforest.block.TFBlocks;
@@ -276,7 +274,7 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 	protected void makeMedBranch(IWorld world, Random random, BlockPos src, Set<BlockPos> leaves, Set<BlockPos> branch, double length, double angle, double tilt, boolean leafy, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		BlockPos dest = FeatureUtil.translate(src, length, angle, tilt);
 
-		FeatureUtil.drawBresehnamBranch(this, world, random, src, dest, branch, mbb, config);
+		FeatureUtil.drawBresenhamBranch(this, world, random, src, dest, branch, mbb, config);
 
 		// with leaves!
 
@@ -322,7 +320,7 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 	protected void makeSmallBranch(IWorld world, Random random, BlockPos src, Set<BlockPos> leaves, Set<BlockPos> branch, double length, double angle, double tilt, boolean leafy, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		BlockPos dest = FeatureUtil.translate(src, length, angle, tilt);
 
-		FeatureUtil.drawBresehnamBranch(this, world, random, src, dest, branch, mbb, config);
+		FeatureUtil.drawBresenhamBranch(this, world, random, src, dest, branch, mbb, config);
 
 		if (leafy) {
 			byte leafRad = (byte) (random.nextInt(2) + 1);
@@ -345,7 +343,7 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 		BlockPos src = FeatureUtil.translate(pos.up(branchHeight), diameter, angle, 0.5);
 		BlockPos dest = FeatureUtil.translate(src, length, angle, tilt);
 
-		BlockPos[] lineArray = FeatureUtil.getBresehnamArrays(src, dest);
+		BlockPos[] lineArray = FeatureUtil.getBresenhamArrays(src, dest);
 		boolean stillAboveGround = true;
 		for (BlockPos coord : lineArray) {
 			if (stillAboveGround && FeatureUtil.hasAirAround(world, coord)) {
@@ -368,7 +366,7 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 		BlockPos dest = FeatureUtil.translate(src, length, angle, tilt);
 
 		// draw the main branch
-		FeatureUtil.drawBresehnamBranch(this, world, random, src, dest, branch, mbb, config);
+		FeatureUtil.drawBresenhamBranch(this, world, random, src, dest, branch, mbb, config);
 
 		// reinforce it
 		//drawBresehnam(src[0], src[1] + 1, src[2], dest[0], dest[1], dest[2], treeBlock, true);
@@ -377,7 +375,7 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 			int vx = (i & 2) == 0 ? 1 : 0;
 			int vy = (i & 1) == 0 ? 1 : -1;
 			int vz = (i & 2) == 0 ? 0 : 1;
-			FeatureUtil.drawBresehnamBranch(this, world, random, src.add(vx, vy, vz), dest, branch, mbb, config);
+			FeatureUtil.drawBresenhamBranch(this, world, random, src.add(vx, vy, vz), dest, branch, mbb, config);
 		}
 
 		if (leafy) {
