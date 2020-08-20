@@ -8,10 +8,15 @@
 			"bedrock_roof_position": -1,
 			"bedrock_floor_position": 0,
 			"sea_level": 31,
-			"disable_mob_generation": false,
+			"disable_mob_generation": true,
 			"structures": {
 				"stronghold": { "distance": 0,  "count": 0,  "spread": 0 },
 				"structures": {
+					"ruined_portal": {
+						"spacing": 40,
+						"separation": 15,
+						"salt": 420
+					}
 				}
 			},
 			"noise": {

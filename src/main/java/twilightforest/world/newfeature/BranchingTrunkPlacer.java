@@ -38,7 +38,7 @@ public class BranchingTrunkPlacer extends AbstractTrunkPlacer {
 
     @Override
     protected TrunkPlacerType<?> func_230381_a_() {
-        return TwilightFeatures.Types.TRUNK_BRANCHING;
+        return TwilightFeatures.TRUNK_BRANCHING;
     }
 
     @Override

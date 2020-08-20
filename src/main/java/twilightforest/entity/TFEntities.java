@@ -96,7 +96,7 @@ public class TFEntities {
 	public static final EntityType<EntityTFRedcapSapper> redcap_sapper = make(TFEntityNames.REDCAP_SAPPER, EntityTFRedcapSapper::new, EntityClassification.MONSTER, 0.9F, 1.4F);
 	public static final EntityType<EntityTFMistWolf> mist_wolf = make(TFEntityNames.MIST_WOLF, EntityTFMistWolf::new, EntityClassification.MONSTER, 1.4F, 1.9F);
 	public static final EntityType<EntityTFKingSpider> king_spider = make(TFEntityNames.KING_SPIDER, EntityTFKingSpider::new, EntityClassification.MONSTER, 1.6F, 1.6F);
-	public static final EntityType<EntityTFMobileFirefly> firefly = make(TFEntityNames.FIREFLY, EntityTFMobileFirefly::new, EntityClassification.AMBIENT, 0.5F, 0.5F);
+	//public static final EntityType<EntityTFMobileFirefly> firefly = make(TFEntityNames.FIREFLY, EntityTFMobileFirefly::new, EntityClassification.AMBIENT, 0.5F, 0.5F);
 	public static final EntityType<EntityTFMiniGhast> mini_ghast = make(TFEntityNames.MINI_GHAST, EntityTFMiniGhast::new, EntityClassification.MONSTER, 1.1F, 1.5F);
 	public static final EntityType<EntityTFTowerGhast> tower_ghast = make(TFEntityNames.TOWER_GHAST, EntityTFTowerGhast::new, EntityClassification.MONSTER, 4.0F, 6.0F);
 	public static final EntityType<EntityTFTowerGolem> tower_golem = make(TFEntityNames.TOWER_GOLEM, EntityTFTowerGolem::new, EntityClassification.MONSTER, 1.4F, 2.9F);
@@ -122,7 +122,7 @@ public class TFEntities {
 	public static final EntityType<EntityTFHarbingerCube> harbinger_cube = make(TFEntityNames.HARBINGER_CUBE, EntityTFHarbingerCube::new, EntityClassification.MONSTER, 1.9F, 2.4F);
 	public static final EntityType<EntityTFAdherent> adherent = make(TFEntityNames.ADHERENT, EntityTFAdherent::new, EntityClassification.MONSTER, 0.8F, 2.2F);
 	public static final EntityType<EntityTFRovingCube> roving_cube = make(TFEntityNames.ROVING_CUBE, EntityTFRovingCube::new, EntityClassification.MONSTER, 1.2F, 2.1F);
-	public static final EntityType<EntityTFCastleGuardian> castle_guardian = make(TFEntityNames.CASTLE_GUARDIAN, EntityTFCastleGuardian::new, EntityClassification.MONSTER, 1.8F, 2.4F);
+	//public static final EntityType<EntityTFCastleGuardian> castle_guardian = make(TFEntityNames.CASTLE_GUARDIAN, EntityTFCastleGuardian::new, EntityClassification.MONSTER, 1.8F, 2.4F);
 
 	public static final EntityType<EntityTFNagaSegment> naga_segment = build(TFEntityNames.NAGA_SEGMENT, makeCastedBuilder(EntityTFNagaSegment.class, EntityTFNagaSegment::new, EntityClassification.MISC).size(1.8F, 1.8F).setTrackingRange(150).setShouldReceiveVelocityUpdates(false).setUpdateInterval(2));
 	public static final EntityType<EntityTFSnowQueenIceShield> snow_queen_ice_shield = build(TFEntityNames.SNOW_QUEEN_ICE_SHIELD, makeCastedBuilder(EntityTFSnowQueenIceShield.class, EntityTFSnowQueenIceShield::new, EntityClassification.MISC).size(0.75F, 0.75F).setTrackingRange(150).setShouldReceiveVelocityUpdates(false));
@@ -149,7 +149,7 @@ public class TFEntities {
 	public static final EntityType<EntityTFChainBlock> chain_block = build(TFEntityNames.CHAIN_BLOCK, makeCastedBuilder(EntityTFChainBlock.class, EntityTFChainBlock::new, EntityClassification.MISC).size(0.6F, 0.6F).setUpdateInterval(1));
 	public static final EntityType<EntityTFCubeOfAnnihilation> cube_of_annihilation = build(TFEntityNames.CUBE_OF_ANNIHILATION, makeCastedBuilder(EntityTFCubeOfAnnihilation.class, EntityTFCubeOfAnnihilation::new, EntityClassification.MISC).size(1F, 1F).setUpdateInterval(1));
 	public static final EntityType<EntityTFSlideBlock> slider = build(TFEntityNames.SLIDER, makeCastedBuilder(EntityTFSlideBlock.class, EntityTFSlideBlock::new, EntityClassification.MISC).size(0.98F, 0.98F).setUpdateInterval(1));
-	public static final EntityType<EntityTFBoggard> boggard = make(TFEntityNames.BOGGARD, EntityTFBoggard::new, EntityClassification.MONSTER, 0.8F, 1.1F);
+	//public static final EntityType<EntityTFBoggard> boggard = make(TFEntityNames.BOGGARD, EntityTFBoggard::new, EntityClassification.MONSTER, 0.8F, 1.1F);
 	public static final EntityType<EntityTFRisingZombie> rising_zombie = make(TFEntityNames.RISING_ZOMBIE, EntityTFRisingZombie::new, EntityClassification.MONSTER, 0.6F, 1.95F);
 	public static final EntityType<EntityTFProtectionBox> protection_box = build(TFEntityNames.PROTECTION_BOX, makeCastedBuilder(EntityTFProtectionBox.class, EntityTFProtectionBox::new, EntityClassification.MISC).disableSerialization().disableSummoning().size(0, 0));
 
@@ -219,7 +219,7 @@ public class TFEntities {
 		r.register(spawnEgg(redcap_sapper, 0x575d21, 0xab1e14));
 		r.register(spawnEgg(mist_wolf, 0x3a1411, 0xe2c88a));
 		r.register(spawnEgg(king_spider, 0x2c1a0e, 0xffc017));
-		r.register(spawnEgg(firefly, 0xa4d316, 0xbaee02));
+		//r.register(spawnEgg(firefly, 0xa4d316, 0xbaee02));
 		r.register(spawnEgg(mini_ghast, 0xbcbcbc, 0xa74343));
 		r.register(spawnEgg(tower_ghast, 0xbcbcbc, 0xb77878));
 		r.register(spawnEgg(tower_golem, 0x6b3d20, 0xe2ddda));
@@ -277,7 +277,7 @@ public class TFEntities {
 		EntitySpawnPlacementRegistry.register(slime_beetle, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::canMonsterSpawn);
 		EntitySpawnPlacementRegistry.register(pinch_beetle, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::canMonsterSpawn);
 		EntitySpawnPlacementRegistry.register(mist_wolf, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityTFHostileWolf::getCanSpawnHere);
-		EntitySpawnPlacementRegistry.register(firefly, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityTFMobileFirefly::getCanSpawnHere);
+		//EntitySpawnPlacementRegistry.register(firefly, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityTFMobileFirefly::getCanSpawnHere);
 		EntitySpawnPlacementRegistry.register(mini_ghast, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityTFMiniGhast::canSpawnHere);
 		EntitySpawnPlacementRegistry.register(tower_golem, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::canMonsterSpawn);
 		EntitySpawnPlacementRegistry.register(tower_termite, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::canMonsterSpawn);
@@ -311,7 +311,7 @@ public class TFEntities {
 		EntitySpawnPlacementRegistry.register(roving_cube, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::canMonsterSpawn);
 		EntitySpawnPlacementRegistry.register(rising_zombie, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MobEntity::canSpawnOn);
 
-		EntitySpawnPlacementRegistry.register(castle_guardian, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MobEntity::canSpawnOn);
+		//EntitySpawnPlacementRegistry.register(castle_guardian, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MobEntity::canSpawnOn);
 	}
 
 	public static void addEntityAttributes() {
@@ -347,7 +347,7 @@ public class TFEntities {
 		GlobalEntityTypeAttributes.put(redcap_sapper, EntityTFRedcapSapper.registerAttributes().create());
 		GlobalEntityTypeAttributes.put(mist_wolf, EntityTFMistWolf.registerAttributes().create());
 		GlobalEntityTypeAttributes.put(king_spider, EntityTFKingSpider.registerAttributes().create());
-		GlobalEntityTypeAttributes.put(firefly, EntityTFMobileFirefly.registerAttributes().create());
+		//GlobalEntityTypeAttributes.put(firefly, EntityTFMobileFirefly.registerAttributes().create());
 		GlobalEntityTypeAttributes.put(mini_ghast, EntityTFMiniGhast.registerAttributes().create());
 		GlobalEntityTypeAttributes.put(tower_ghast, EntityTFTowerGhast.registerAttributes().create());
 		GlobalEntityTypeAttributes.put(tower_golem, EntityTFTowerGolem.registerAttributes().create());
@@ -373,11 +373,11 @@ public class TFEntities {
 		GlobalEntityTypeAttributes.put(harbinger_cube, EntityTFHarbingerCube.registerAttributes().create());
 		GlobalEntityTypeAttributes.put(adherent, EntityTFAdherent.registerAttributes().create());
 		GlobalEntityTypeAttributes.put(roving_cube, EntityTFRovingCube.registerAttributes().create());
-		GlobalEntityTypeAttributes.put(castle_guardian, MobEntity.func_233666_p_().create());
+		//GlobalEntityTypeAttributes.put(castle_guardian, MobEntity.func_233666_p_().create());
 
 		GlobalEntityTypeAttributes.put(hydra_head, EntityTFHydraPart.registerAttributes().create());
 		GlobalEntityTypeAttributes.put(hydra_neck, EntityTFHydraPart.registerAttributes().create());
-		GlobalEntityTypeAttributes.put(boggard, EntityTFBoggard.registerAttributes().create());
+		//GlobalEntityTypeAttributes.put(boggard, EntityTFBoggard.registerAttributes().create());
 		GlobalEntityTypeAttributes.put(rising_zombie, ZombieEntity.func_234342_eQ_().create());
 	}
 
@@ -401,7 +401,7 @@ public class TFEntities {
 		RenderingRegistry.registerEntityRenderingHandler(raven, m -> new RenderTFBird<>(m, new ModelTFRaven(), 1.0F, "raven.png"));
 		RenderingRegistry.registerEntityRenderingHandler(quest_ram, manager -> new RenderTFQuestRam(manager, new ModelTFQuestRam()));
 		RenderingRegistry.registerEntityRenderingHandler(kobold, m -> new RenderTFKobold(m, new ModelTFKobold(), 0.4F, "kobold.png"));
-		RenderingRegistry.registerEntityRenderingHandler(boggard, m -> new RenderTFBiped<>(m, new BipedModel<>(0), 0.625F, "kobold.png"));
+		//RenderingRegistry.registerEntityRenderingHandler(boggard, m -> new RenderTFBiped<>(m, new BipedModel<>(0), 0.625F, "kobold.png"));
 		RenderingRegistry.registerEntityRenderingHandler(mosquito_swarm, m -> new RenderTFGenericMob<>(m, new ModelTFMosquitoSwarm(), 0.0F, "mosquitoswarm.png"));
 		RenderingRegistry.registerEntityRenderingHandler(death_tome, m -> new RenderTFGenericMob<>(m, new ModelTFDeathTome(), 0.3F, "textures/entity/enchanting_table_book.png"));
 		RenderingRegistry.registerEntityRenderingHandler(minotaur, m -> new RenderTFBiped<>(m, new ModelTFMinotaur(), 0.625F, "minotaur.png"));
@@ -410,7 +410,7 @@ public class TFEntities {
 		RenderingRegistry.registerEntityRenderingHandler(slime_beetle, m -> new RenderTFSlimeBeetle(m, new ModelTFSlimeBeetle(), 0.6F));
 		RenderingRegistry.registerEntityRenderingHandler(pinch_beetle, m -> new RenderTFGenericMob<>(m, new ModelTFPinchBeetle(), 0.6F, "pinchbeetle.png"));
 		RenderingRegistry.registerEntityRenderingHandler(mist_wolf, RenderTFMistWolf::new);
-		RenderingRegistry.registerEntityRenderingHandler(firefly, RenderNoop<EntityTFMobileFirefly>::new);
+		//RenderingRegistry.registerEntityRenderingHandler(firefly, RenderNoop<EntityTFMobileFirefly>::new);
 		RenderingRegistry.registerEntityRenderingHandler(mini_ghast, m -> new RenderTFGhast<>(m, new ModelTFGhast<>(), 0.625F));
 		RenderingRegistry.registerEntityRenderingHandler(tower_golem, m -> new RenderTFTowerGolem<>(m, new ModelTFTowerGolem<>(), 0.75F));
 		RenderingRegistry.registerEntityRenderingHandler(tower_termite, m -> new RenderTFGenericMob<>(m, new SilverfishModel<>(), 0.3F, "towertermite.png"));
@@ -450,7 +450,7 @@ public class TFEntities {
 		RenderingRegistry.registerEntityRenderingHandler(adherent, RenderAdherent::new);
 		RenderingRegistry.registerEntityRenderingHandler(roving_cube, RenderTFRovingCube::new);
 		RenderingRegistry.registerEntityRenderingHandler(rising_zombie, m -> new RenderTFBiped<>(m, new ModelTFRisingZombie(false), new ModelTFRisingZombie(true), new ModelTFRisingZombie(true), 0.5F, "textures/entity/zombie/zombie.png"));
-		RenderingRegistry.registerEntityRenderingHandler(castle_guardian, m -> new RenderTFCastleGuardian(m, new ModelTFCastleGuardian(), 2.0F, "finalcastle/castle_guardian.png"));
+		//RenderingRegistry.registerEntityRenderingHandler(castle_guardian, m -> new RenderTFCastleGuardian(m, new ModelTFCastleGuardian(), 2.0F, "finalcastle/castle_guardian.png"));
 
 		// projectiles
 		RenderingRegistry.registerEntityRenderingHandler(nature_bolt, m -> new SpriteRenderer<>(m, Minecraft.getInstance().getItemRenderer()));

@@ -7,6 +7,8 @@ import net.minecraft.data.BiomeProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DirectoryCache;
 import net.minecraft.data.IDataProvider;
+import net.minecraft.entity.EntityClassification;
+import net.minecraft.entity.EntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.WorldGenRegistries;
@@ -15,6 +17,7 @@ import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.IFeatureConfig;
 import net.minecraft.world.gen.surfacebuilders.ConfiguredSurfaceBuilders;
+import twilightforest.entity.TFEntities;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -88,6 +91,48 @@ public abstract class BiomeDataHelper extends BiomeProvider {
         DefaultBiomeFeatures.func_243704_R(biomeGenerationSettings); // Plain grass
         DefaultBiomeFeatures.func_243711_Y(biomeGenerationSettings); // Tall grass
         return biomeGenerationSettings;
+    }
+
+    protected static MobSpawnInfo.Builder defaultMobSpawning() {
+        MobSpawnInfo.Builder spawnInfo = new MobSpawnInfo.Builder();
+
+        spawnInfo.func_242572_a(0.75f); // Spawns passive mobs as long as random value is less than this
+
+        // TODO why is mob spawning in overdrive?!
+        spawnInfo.func_242575_a(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(TFEntities.bighorn_sheep, 2, 1, 1)); // 4, 4));
+        spawnInfo.func_242575_a(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(TFEntities.wild_boar, 2, 1, 1)); // 4, 4));
+        spawnInfo.func_242575_a(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(EntityType.CHICKEN, 2, 1, 1)); // 4, 4));
+        spawnInfo.func_242575_a(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(TFEntities.deer, 2, 1, 1)); // 4, 5));
+        spawnInfo.func_242575_a(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(EntityType.WOLF, 2, 1, 1)); // 4, 4));
+
+        // TODO make Monsters spawn underground only somehow - These are originally underground spawns
+        spawnInfo.func_242575_a(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.SPIDER, 1, 1, 1)); //EntityType.SPIDER, 10, 4, 4));
+        spawnInfo.func_242575_a(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.ZOMBIE, 1, 1, 1)); //EntityType.ZOMBIE, 10, 4, 4));
+        spawnInfo.func_242575_a(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.SKELETON, 1, 1, 1)); //EntityType.SKELETON, 10, 4, 4));
+        spawnInfo.func_242575_a(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.CREEPER, 1, 1, 1)); //EntityType.CREEPER, 1, 4, 4));
+        spawnInfo.func_242575_a(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.SLIME, 1, 1, 1)); //EntityType.SLIME, 10, 4, 4));
+        spawnInfo.func_242575_a(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.ENDERMAN, 1, 1, 1)); //EntityType.ENDERMAN, 1, 1, 4));
+        spawnInfo.func_242575_a(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(TFEntities.kobold, 10, 1, 8)); //TFEntities.kobold, 10, 4, 8));
+
+        spawnInfo.func_242575_a(EntityClassification.AMBIENT, new MobSpawnInfo.Spawners(EntityType.BAT, 1, 1, 1)); //10, 8, 8));
+
+        spawnInfo.func_242573_a(TFEntities.bighorn_sheep, 1, 2);
+        spawnInfo.func_242573_a(TFEntities.wild_boar, 1, 2);
+        spawnInfo.func_242573_a(EntityType.CHICKEN, 1, 2);
+        spawnInfo.func_242573_a(TFEntities.deer, 1, 2);
+        spawnInfo.func_242573_a(EntityType.WOLF, 1, 2);
+
+        spawnInfo.func_242573_a(EntityType.SPIDER, 1, 2);
+        spawnInfo.func_242573_a(EntityType.ZOMBIE, 1, 2);
+        spawnInfo.func_242573_a(EntityType.SKELETON, 1, 2);
+        spawnInfo.func_242573_a(EntityType.CREEPER, 1, 2);
+        spawnInfo.func_242573_a(EntityType.SLIME, 1, 2);
+        spawnInfo.func_242573_a(EntityType.ENDERMAN, 1, 2);
+        spawnInfo.func_242573_a(TFEntities.kobold, 1, 2);
+
+        spawnInfo.func_242573_a(EntityType.BAT, 1, 2);
+
+        return spawnInfo;
     }
 
     protected static Biome.Builder biomeWithDefaults() {

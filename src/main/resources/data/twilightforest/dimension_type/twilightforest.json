@@ -12,7 +12,7 @@
   "fixed_time": 13000, // TODO Kill the celestial bodies
   "piglin_safe": false,
   "bed_works": true,
-  "respawn_anchor_works": false,
+  "respawn_anchor_works": true,
   "has_raids": false,
   "logical_height": 256,
   "infiniburn": "minecraft:infiniburn_overworld"
