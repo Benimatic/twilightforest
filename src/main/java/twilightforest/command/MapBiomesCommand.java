@@ -64,7 +64,7 @@ public class MapBiomesCommand {
 
     public static LiteralArgumentBuilder<CommandSource> register() {
         // TODO elevate command perm
-        return Commands.literal("biomepng").executes(MapBiomesCommand::execute);
+        return Commands.literal("biomepng").requires(cs -> cs.hasPermissionLevel(2)).executes(MapBiomesCommand::execute);
     }
 
     private static int execute(CommandContext<CommandSource> source) {

@@ -99,11 +99,11 @@ public abstract class BiomeDataHelper extends BiomeProvider {
         spawnInfo.func_242572_a(0.75f); // Spawns passive mobs as long as random value is less than this
 
         // TODO why is mob spawning in overdrive?!
-        spawnInfo.func_242575_a(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(TFEntities.bighorn_sheep, 2, 1, 1)); // 4, 4));
-        spawnInfo.func_242575_a(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(TFEntities.wild_boar, 2, 1, 1)); // 4, 4));
-        spawnInfo.func_242575_a(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(EntityType.CHICKEN, 2, 1, 1)); // 4, 4));
-        spawnInfo.func_242575_a(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(TFEntities.deer, 2, 1, 1)); // 4, 5));
-        spawnInfo.func_242575_a(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(EntityType.WOLF, 2, 1, 1)); // 4, 4));
+        spawnInfo.func_242575_a(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(TFEntities.bighorn_sheep, 2, 4, 4));
+        spawnInfo.func_242575_a(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(TFEntities.wild_boar, 2, 4, 4));
+        spawnInfo.func_242575_a(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(EntityType.CHICKEN, 2, 4, 4));
+        spawnInfo.func_242575_a(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(TFEntities.deer, 2, 4, 5));
+        spawnInfo.func_242575_a(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(EntityType.WOLF, 2, 4, 4));
 
         // TODO make Monsters spawn underground only somehow - These are originally underground spawns
         spawnInfo.func_242575_a(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.SPIDER, 1, 1, 1)); //EntityType.SPIDER, 10, 4, 4));
@@ -116,11 +116,11 @@ public abstract class BiomeDataHelper extends BiomeProvider {
 
         spawnInfo.func_242575_a(EntityClassification.AMBIENT, new MobSpawnInfo.Spawners(EntityType.BAT, 1, 1, 1)); //10, 8, 8));
 
-        spawnInfo.func_242573_a(TFEntities.bighorn_sheep, 1, 2);
-        spawnInfo.func_242573_a(TFEntities.wild_boar, 1, 2);
-        spawnInfo.func_242573_a(EntityType.CHICKEN, 1, 2);
-        spawnInfo.func_242573_a(TFEntities.deer, 1, 2);
-        spawnInfo.func_242573_a(EntityType.WOLF, 1, 2);
+        //spawnInfo.func_242573_a(TFEntities.bighorn_sheep, 1, 2);
+        //spawnInfo.func_242573_a(TFEntities.wild_boar, 1, 2);
+        //spawnInfo.func_242573_a(EntityType.CHICKEN, 1, 2);
+        //spawnInfo.func_242573_a(TFEntities.deer, 1, 2);
+        //spawnInfo.func_242573_a(EntityType.WOLF, 1, 2);
 
         spawnInfo.func_242573_a(EntityType.SPIDER, 1, 2);
         spawnInfo.func_242573_a(EntityType.ZOMBIE, 1, 2);
@@ -130,7 +130,7 @@ public abstract class BiomeDataHelper extends BiomeProvider {
         spawnInfo.func_242573_a(EntityType.ENDERMAN, 1, 2);
         spawnInfo.func_242573_a(TFEntities.kobold, 1, 2);
 
-        spawnInfo.func_242573_a(EntityType.BAT, 1, 2);
+        //spawnInfo.func_242573_a(EntityType.BAT, 1, 2);
 
         return spawnInfo;
     }

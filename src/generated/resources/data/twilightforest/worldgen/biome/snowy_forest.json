@@ -1180,32 +1180,32 @@
       {
         "type": "twilightforest:bighorn_sheep",
         "weight": 2,
-        "minCount": 1,
-        "maxCount": 1
+        "minCount": 4,
+        "maxCount": 4
       },
       {
         "type": "twilightforest:wild_boar",
         "weight": 2,
-        "minCount": 1,
-        "maxCount": 1
+        "minCount": 4,
+        "maxCount": 4
       },
       {
         "type": "minecraft:chicken",
         "weight": 2,
-        "minCount": 1,
-        "maxCount": 1
+        "minCount": 4,
+        "maxCount": 4
       },
       {
         "type": "twilightforest:deer",
         "weight": 2,
-        "minCount": 1,
-        "maxCount": 1
+        "minCount": 4,
+        "maxCount": 5
       },
       {
         "type": "minecraft:wolf",
         "weight": 2,
-        "minCount": 1,
-        "maxCount": 1
+        "minCount": 4,
+        "maxCount": 4
       }
     ],
     "ambient": [
@@ -1221,26 +1221,6 @@
     "misc": []
   },
   "spawn_costs": {
-    "twilightforest:bighorn_sheep": {
-      "energy_budget": 2.0,
-      "charge": 1.0
-    },
-    "twilightforest:wild_boar": {
-      "energy_budget": 2.0,
-      "charge": 1.0
-    },
-    "minecraft:chicken": {
-      "energy_budget": 2.0,
-      "charge": 1.0
-    },
-    "twilightforest:deer": {
-      "energy_budget": 2.0,
-      "charge": 1.0
-    },
-    "minecraft:wolf": {
-      "energy_budget": 2.0,
-      "charge": 1.0
-    },
     "minecraft:spider": {
       "energy_budget": 2.0,
       "charge": 1.0
@@ -1266,10 +1246,6 @@
       "charge": 1.0
     },
     "twilightforest:kobold": {
-      "energy_budget": 2.0,
-      "charge": 1.0
-    },
-    "minecraft:bat": {
       "energy_budget": 2.0,
       "charge": 1.0
     }
