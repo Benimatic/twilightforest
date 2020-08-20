@@ -212,6 +212,7 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 		}
 	}
 
+	// TODO should move to FeatureUtil
 	public static boolean canRootGrowIn(IWorldReader world, BlockPos pos) {
 		BlockState blockState = world.getBlockState(pos);
 		Block blockID = blockState.getBlock();

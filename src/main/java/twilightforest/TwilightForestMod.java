@@ -1,41 +1,29 @@
 package twilightforest;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.LivingRenderer;
-import net.minecraft.client.world.DimensionRenderInfo;
 import net.minecraft.item.Rarity;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.GameRules;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.biomes.TFBiomes;
 import twilightforest.block.TFBlocks;
 import twilightforest.capabilities.CapabilityList;
-import twilightforest.client.RenderLayerRegistration;
-import twilightforest.client.TwilightForestRenderInfo;
 import twilightforest.client.particle.TFParticleType;
-import twilightforest.client.renderer.entity.LayerIce;
-import twilightforest.client.renderer.entity.LayerShields;
 import twilightforest.command.TFCommand;
 import twilightforest.enchantment.TFEnchantments;
 import twilightforest.entity.TFEntities;
@@ -49,7 +37,7 @@ import twilightforest.tileentity.TFTileEntities;
 import twilightforest.world.TFDimensions;
 import twilightforest.world.feature.TFBiomeFeatures;
 import twilightforest.world.feature.TFGenCaveStalactite;
-import twilightforest.world.newfeature.TFFeatures;
+import twilightforest.world.newfeature.TwilightFeatures;
 
 @Mod(TwilightForestMod.ID)
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -102,7 +90,7 @@ public class TwilightForestMod {
 //		TFDimensions.BIOME_PROVIDER_TYPES.register(modbus);
 //		TFDimensions.CHUNK_GENERATOR_TYPES.register(modbus);
 //		TFDimensions.MOD_DIMENSIONS.register(modbus);
-		new TFFeatures(); // TODO make deferred registry once available
+		new TwilightFeatures(); // TODO make deferred registry once available
 
 		// TODO: move these to proper spots
 		// WorldProviderTwilightForest.syncFromConfig();

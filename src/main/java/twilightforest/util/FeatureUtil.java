@@ -423,12 +423,11 @@ public class FeatureUtil {
 	/**
 	 * Does the block have at least 1 air block adjacent
 	 */
+	private static final Direction[] directionsExceptDown = new Direction[]{Direction.UP, Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST};
+
 	public static boolean hasAirAround(IWorld world, BlockPos pos) {
-		for (Direction e : Direction.values()) {
-			if (e == Direction.DOWN)
-				continue; // todo 1.9 was in old logic
-			if (world.isBlockLoaded(pos.offset(e))
-					&& world.isAirBlock(pos.offset(e))) {
+		for (Direction e : directionsExceptDown) {
+			if (world.isAirBlock(pos.offset(e))) {
 				return true;
 			}
 		}

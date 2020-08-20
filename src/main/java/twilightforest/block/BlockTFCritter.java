@@ -7,6 +7,7 @@ import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -114,4 +115,9 @@ public abstract class BlockTFCritter extends DirectionalBlock {
 	public abstract TileEntity createTileEntity(BlockState state, IBlockReader world);
 
 	public abstract ItemStack getSquishResult(); // oh no!
+
+	@Override
+	public BlockState rotate(BlockState state, Rotation rot) {
+		return state.with(FACING, rot.rotate(state.get(FACING)));
+	}
 }

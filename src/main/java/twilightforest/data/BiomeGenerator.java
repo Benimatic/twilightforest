@@ -1,65 +1,22 @@
 package twilightforest.data;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import net.minecraft.block.Blocks;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.biome.*;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeGenerationSettings;
+import net.minecraft.world.biome.DefaultBiomeFeatures;
+import net.minecraft.world.biome.MobSpawnInfo;
 import net.minecraft.world.gen.GenerationStage;
-import net.minecraft.world.gen.Heightmap;
-import net.minecraft.world.gen.blockstateprovider.SimpleBlockStateProvider;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.foliageplacer.AcaciaFoliagePlacer;
-import net.minecraft.world.gen.foliageplacer.BlobFoliagePlacer;
-import net.minecraft.world.gen.surfacebuilders.ConfiguredSurfaceBuilders;
-import net.minecraft.world.gen.trunkplacer.DarkOakTrunkPlacer;
-import net.minecraft.world.gen.trunkplacer.ForkyTrunkPlacer;
-import net.minecraft.world.gen.trunkplacer.StraightTrunkPlacer;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.TFBlocks;
-import twilightforest.world.newfeature.BranchingTrunkPlacer;
-import twilightforest.world.newfeature.FireflyTreeDecorator;
-import twilightforest.world.newfeature.LeafSpheroidFoliagePlacer;
-import twilightforest.world.newfeature.TFFeatures;
+import twilightforest.world.newfeature.TwilightFeatures;
 
 import java.util.Map;
-import java.util.OptionalInt;
 
-public class BiomeGenerator extends BiomeDataHelper {
+public final class BiomeGenerator extends BiomeDataHelper {
     public BiomeGenerator(DataGenerator generator) {
         super(generator);
     }
-
-    private final static ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> twilightOakTree = registerFeature(TwilightForestMod.prefix("twilight_oak"),
-            Feature.field_236291_c_.withConfiguration((new BaseTreeFeatureConfig.Builder(
-                    new SimpleBlockStateProvider(TFBlocks.oak_log.get().getDefaultState()),
-                    new SimpleBlockStateProvider(TFBlocks.oak_leaves.get().getDefaultState()),
-                    new BlobFoliagePlacer(FeatureSpread.func_242252_a(2), FeatureSpread.func_242252_a(0), 3),
-                    new StraightTrunkPlacer(4, 2, 0),
-                    new TwoLayerFeature(1, 0, 1)
-            )).setIgnoreVines().func_236703_a_(ImmutableList.of()).build())
-    );
-
-    private final static ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> canopyTree = registerFeature(TwilightForestMod.prefix("canopy_tree"),
-            Feature.field_236291_c_.withConfiguration((new BaseTreeFeatureConfig.Builder(
-                    new SimpleBlockStateProvider(TFBlocks.canopy_log.get().getDefaultState()),
-                    new SimpleBlockStateProvider(TFBlocks.canopy_leaves.get().getDefaultState()),
-                    new LeafSpheroidFoliagePlacer(4.5f, FeatureSpread.func_242252_a(0), 1.5f),
-                    new BranchingTrunkPlacer(20, 5, 5, 3, 1),
-                    new TwoLayerFeature(1, 0, 1)
-            )).func_236703_a_(ImmutableList.of(new FireflyTreeDecorator(1, 1.0f))).setIgnoreVines().build())
-    );
-
-    private final static ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> rainbOakTree = registerFeature(TwilightForestMod.prefix("rainbow_oak"),
-            Feature.field_236291_c_.withConfiguration((new BaseTreeFeatureConfig.Builder(
-                    new SimpleBlockStateProvider(TFBlocks.oak_log.get().getDefaultState()),
-                    new SimpleBlockStateProvider(TFBlocks.rainboak_leaves.get().getDefaultState()),
-                    new BlobFoliagePlacer(FeatureSpread.func_242252_a(2), FeatureSpread.func_242252_a(0), 3),
-                    new StraightTrunkPlacer(4, 2, 0),
-                    new TwoLayerFeature(1, 0, 1)
-            )).setIgnoreVines().build())
-    );
 
     @Override
     protected Map<ResourceLocation, Biome> generateBiomes() {
@@ -67,7 +24,7 @@ public class BiomeGenerator extends BiomeDataHelper {
         // defaultBiomeBuilder() returns a Biome.Builder and Biome.Builder#func_242455_a() builds it
 
         biomes.put(TwilightForestMod.prefix("forest"),
-                biomeWithDefaults(defaultAmbientBuilder(), new MobSpawnInfo.Builder(), modify(defaultGenSettingBuilder(), b -> b.func_242513_a(GenerationStage.Decoration.VEGETAL_DECORATION, canopyTree)))
+                biomeWithDefaults(defaultAmbientBuilder(), new MobSpawnInfo.Builder(), modify(defaultGenSettingBuilder(), b -> b.func_242513_a(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredTrees.CANOPY_TREE)))
                         .func_242455_a()
         );
         // Default values
@@ -76,7 +33,7 @@ public class BiomeGenerator extends BiomeDataHelper {
         // temperature(0.5F)
         // downfall(0.5F)
 
-        int iter = -1;
+        /*int iter = -1;
 
         biomes.put(TwilightForestMod.prefix("" + ++iter),
                 biomeWithDefaults(defaultAmbientBuilder(), new MobSpawnInfo.Builder(), modify((new BiomeGenerationSettings.Builder()).func_242517_a(ConfiguredSurfaceBuilders.field_244178_j), b -> b.func_242513_a(GenerationStage.Decoration.VEGETAL_DECORATION,
@@ -86,8 +43,20 @@ public class BiomeGenerator extends BiomeDataHelper {
                                 new LeafSpheroidFoliagePlacer(4.5f, FeatureSpread.func_242252_a(0), 1.5f),
                                 new BranchingTrunkPlacer(20, 5, 5, 3, 1),
                                 new TwoLayerFeature(1, 0, 1)
-                        ).func_236703_a_(ImmutableList.of(new FireflyTreeDecorator(1, 1.0f))).func_236701_a_(Integer.MAX_VALUE).func_236702_a_(Heightmap.Type.MOTION_BLOCKING).setIgnoreVines().build()))))
-                        .func_242455_a()
+                        )
+                                .func_236703_a_(ImmutableList.of(
+                                        new FireflyTreeDecorator(1, 1.0f),
+                                        new TreeRootsDecorator(3, 1, (new WeightedBlockStateProvider())
+                                                .addWeightedBlockstate(TFBlocks.root.get().getDefaultState(), 4)
+                                                .addWeightedBlockstate(TFBlocks.liveroot_block.get().getDefaultState(), 1))
+                                        )
+                                )
+                                .func_236701_a_(Integer.MAX_VALUE)
+                                .func_236702_a_(Heightmap.Type.MOTION_BLOCKING)
+                                .setIgnoreVines()
+                                .build()))
+                        )
+                ).func_242455_a()
         );//*/
 
         biomes.put(TwilightForestMod.prefix("dense_forest"),
@@ -139,7 +108,7 @@ public class BiomeGenerator extends BiomeDataHelper {
 
         // TODO add towering mushrooms
 
-        modify(mushroomBiome, builder -> builder.func_242513_a(GenerationStage.Decoration.VEGETAL_DECORATION, twilightOakTree));
+        modify(mushroomBiome, builder -> builder.func_242513_a(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredTrees.TWILIGHT_OAK));
 
         biomes.put(TwilightForestMod.prefix("dense_mushroom_forest"),
                 biomeWithDefaults(defaultAmbientBuilder().setWaterColor(0xC0FFD8).setWaterFogColor(0x3F76E4), new MobSpawnInfo.Builder(), mushroomBiome)
@@ -159,7 +128,7 @@ public class BiomeGenerator extends BiomeDataHelper {
         );
 
         biomes.put(TwilightForestMod.prefix("enchanted_forest"),
-                biomeWithDefaults(defaultAmbientBuilder(), new MobSpawnInfo.Builder(), modify(defaultGenSettingBuilder(), c -> c.func_242513_a(GenerationStage.Decoration.VEGETAL_DECORATION, rainbOakTree)))
+                biomeWithDefaults(defaultAmbientBuilder(), new MobSpawnInfo.Builder(), modify(defaultGenSettingBuilder(), c -> c.func_242513_a(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredTrees.RAINBOAK_TREE)))
                         .func_242455_a()
         );
 
@@ -181,8 +150,10 @@ public class BiomeGenerator extends BiomeDataHelper {
                         .func_242455_a()
         );
 
+        BiomeGenerationSettings.Builder swampGenerationBuilder = modify(defaultGenSettingBuilder(), b -> b.func_242513_a(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredTrees.MANGROVE_TREE));
+
         biomes.put(TwilightForestMod.prefix("swamp"),
-                biomeWithDefaults(defaultAmbientBuilder().setWaterColor(0xE0FFAE), new MobSpawnInfo.Builder(), defaultGenSettingBuilder())
+                biomeWithDefaults(defaultAmbientBuilder().setWaterColor(0xE0FFAE), new MobSpawnInfo.Builder(), swampGenerationBuilder)
                         .category(Biome.Category.SWAMP)
                         .temperature(0.8F)
                         .downfall(0.9F)
@@ -192,7 +163,7 @@ public class BiomeGenerator extends BiomeDataHelper {
         );
 
         biomes.put(TwilightForestMod.prefix("fire_swamp"),
-                biomeWithDefaults(defaultAmbientBuilder().setWaterColor(0x6C2C2C), new MobSpawnInfo.Builder(), defaultGenSettingBuilder())
+                biomeWithDefaults(defaultAmbientBuilder().setWaterColor(0x6C2C2C), new MobSpawnInfo.Builder(), swampGenerationBuilder)
                         .category(Biome.Category.SWAMP)
                         .temperature(1)
                         .downfall(0.4F)

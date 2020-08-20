@@ -20,22 +20,25 @@ public class BranchingTrunkPlacer extends AbstractTrunkPlacer {
     public static final Codec<BranchingTrunkPlacer> CODEC = RecordCodecBuilder.create((instance) ->
             func_236915_a_(instance).and(instance.group(
                     Codec.intRange(0, 16).fieldOf("base_branch_count").forGetter(o -> o.branches),
-                    Codec.intRange(0, 16).fieldOf("additional_random_branches").forGetter(o -> o.addExtraBranches))
-            ).apply(instance, BranchingTrunkPlacer::new)
+                    Codec.intRange(0, 16).fieldOf("additional_random_branches").forGetter(o -> o.addExtraBranches),
+                    Codec.intRange(0, 24).fieldOf("branch_downwards_offset").forGetter(o -> o.branchDownwardsOffset)
+            )).apply(instance, BranchingTrunkPlacer::new)
     );
 
-    private int branches;
-    private int addExtraBranches;
+    private final int branches;
+    private final int addExtraBranches;
+    private final int branchDownwardsOffset;
 
-    public BranchingTrunkPlacer(int baseHeight, int randomHeightA, int randomHeightB, int branches, int addExtraBranches) {
+    public BranchingTrunkPlacer(int baseHeight, int randomHeightA, int randomHeightB, int branches, int addExtraBranches, int branchDownwardsOffset) {
         super(baseHeight, randomHeightA, randomHeightB);
         this.branches = branches;
         this.addExtraBranches = addExtraBranches;
+        this.branchDownwardsOffset = branchDownwardsOffset;
     }
 
     @Override
     protected TrunkPlacerType<?> func_230381_a_() {
-        return TFFeatures.TRUNK_BRANCHING;
+        return TwilightFeatures.Types.TRUNK_BRANCHING;
     }
 
     @Override
@@ -54,7 +57,7 @@ public class BranchingTrunkPlacer extends AbstractTrunkPlacer {
         int numBranches = branches + random.nextInt(addExtraBranches + 1);
         float offset = random.nextFloat();
         for (int b = 0; b < numBranches; b++) {
-            buildBranch(world, startPos, trunkBlocks, leafBlocks, height - 10 + b, 9, 0.3 * b + offset, 0.2, random, mutableBoundingBox, baseTreeFeatureConfig);
+            buildBranch(world, startPos, trunkBlocks, leafBlocks, height - branchDownwardsOffset + b, 9, 0.3 * b + offset, 0.2, random, mutableBoundingBox, baseTreeFeatureConfig);
         }
 
         return leafBlocks;

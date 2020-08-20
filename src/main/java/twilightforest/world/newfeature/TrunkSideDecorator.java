@@ -3,38 +3,41 @@ package twilightforest.world.newfeature;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.Direction;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.ISeedReader;
+import net.minecraft.world.gen.blockstateprovider.BlockStateProvider;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.treedecorator.TreeDecorator;
 import net.minecraft.world.gen.treedecorator.TreeDecoratorType;
-import twilightforest.block.BlockTFFirefly;
-import twilightforest.block.TFBlocks;
 
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-public class FireflyTreeDecorator extends TreeDecorator {
-    public static final Codec<FireflyTreeDecorator> CODEC = RecordCodecBuilder.create(
+public class TrunkSideDecorator extends TreeDecorator {
+    public static final Codec<TrunkSideDecorator> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
                     Codec.intRange(0, 64).fieldOf("placement_count").forGetter(o -> o.count),
-                    Codec.floatRange(0f, 1f).fieldOf("probability_of_placement").forGetter(o -> o.probability)
-            ).apply(instance, FireflyTreeDecorator::new)
+                    Codec.floatRange(0f, 1f).fieldOf("probability_of_placement").forGetter(o -> o.probability),
+                    BlockStateProvider.field_236796_a_.fieldOf("deco_provider").forGetter(o -> o.decoration)
+            ).apply(instance, TrunkSideDecorator::new)
     );
 
-    private int count;
-    private float probability;
+    private final int count;
+    private final float probability;
+    private final BlockStateProvider decoration;
 
-    public FireflyTreeDecorator(int count, float probability) {
+    public TrunkSideDecorator(int count, float probability, BlockStateProvider decorator) {
         this.count = count;
         this.probability = probability;
+        this.decoration = decorator;
     }
 
     @Override
     protected TreeDecoratorType<?> func_230380_a_() {
-        return TFFeatures.FIREFLY;
+        return TwilightFeatures.Types.TRUNKSIDE_DECORATOR;
     }
 
     @Override
@@ -44,11 +47,11 @@ public class FireflyTreeDecorator extends TreeDecorator {
         for (int attempt = 0; attempt < count; attempt++) {
             if (random.nextFloat() >= probability) continue;
 
-            Direction dir = Direction.getRandomDirection(random);
-            BlockPos pos = trunkBlocks.get(random.nextInt(blockCount)).offset(dir);
+            Rotation rot = Rotation.randomRotation(random);
+            BlockPos pos = trunkBlocks.get(random.nextInt(blockCount)).offset(rot.rotate(Direction.NORTH));
 
-            if (Feature.func_236297_b_(world, pos))
-                func_227423_a_(world, pos, TFBlocks.firefly.get().getDefaultState().with(BlockTFFirefly.FACING, dir), decorations, mutableBoundingBox);
+            if (Feature.func_236297_b_(world, pos)) // Checks if block is air
+                func_227423_a_(world, pos, decoration.getBlockState(random, pos).rotate(rot), decorations, mutableBoundingBox);
         }
     }
 }

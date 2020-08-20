@@ -950,7 +950,39 @@
             {
               "placement_count": 1,
               "probability_of_placement": 1.0,
-              "type": "twilightforest:firefly"
+              "deco_provider": {
+                "state": {
+                  "Properties": {
+                    "facing": "north"
+                  },
+                  "Name": "twilightforest:firefly"
+                },
+                "type": "minecraft:simple_state_provider"
+              },
+              "type": "twilightforest:trunkside_decorator"
+            },
+            {
+              "root_length": 5,
+              "ground_roots_provider": {
+                "entries": [
+                  {
+                    "weight": 4,
+                    "data": {
+                      "Name": "twilightforest:root"
+                    }
+                  },
+                  {
+                    "weight": 1,
+                    "data": {
+                      "Name": "twilightforest:liveroot_block"
+                    }
+                  }
+                ],
+                "type": "minecraft:weighted_state_provider"
+              },
+              "base_strand_count": 3,
+              "additional_random_strands": 1,
+              "type": "twilightforest:tree_roots"
             }
           ],
           "trunk_provider": {
@@ -979,11 +1011,12 @@
             "type": "twilightforest:spheroid_foliage_placer"
           },
           "trunk_placer": {
-            "height_rand_b": 5,
             "base_branch_count": 3,
             "additional_random_branches": 1,
+            "branch_downwards_offset": 10,
             "base_height": 20,
             "height_rand_a": 5,
+            "height_rand_b": 5,
             "type": "twilightforest:branching_trunk_placer"
           }
         },

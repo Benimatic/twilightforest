@@ -107,8 +107,4 @@ public abstract class BiomeDataHelper extends BiomeProvider {
                 .func_242457_a(biomeGenerationSettings.func_242508_a())
                 .func_242456_a(Biome.TemperatureModifier.NONE);
     }
-
-    protected static <FC extends IFeatureConfig, F extends Feature<FC>> ConfiguredFeature<FC, F> registerFeature(ResourceLocation rl, ConfiguredFeature<FC, F> feature) {
-        return Registry.register(WorldGenRegistries.field_243653_e, rl, feature);
-    }
 }
