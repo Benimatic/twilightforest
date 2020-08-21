@@ -33,7 +33,7 @@ public class ItemTFFieryPick extends PickaxeItem {
 		super(toolMaterial, 1, -2.8F, props);
 	}
 
-	@SubscribeEvent
+	/*@SubscribeEvent FIXME Re-implement with IGlobalLootModifier
 	public static void onDrops(BlockEvent.HarvestDropsEvent event) {
 		if (event.getHarvester() != null && event.getHarvester().getHeldItemMainhand().getItem() == TFItems.fiery_pickaxe.get()
 				&& event.getState().getBlock().canHarvestBlock(event.getState(), event.getWorld(), event.getPos(), event.getHarvester())
@@ -53,7 +53,7 @@ public class ItemTFFieryPick extends PickaxeItem {
 
 					int combinedCount = input.getCount() * result.getCount();
 
-					addThese.addAll(TFItemStackUtils.splitToSize(new ItemStack(result.getItem(), combinedCount/*, result.getItemDamage()*/)));
+					addThese.addAll(TFItemStackUtils.splitToSize(new ItemStack(result.getItem(), combinedCount*//*, result.getItemDamage()*//*)));
 					removeThese.add(input);
 
 					// [VanillaCopy] SlotFurnaceOutput.onCrafting
@@ -86,7 +86,7 @@ public class ItemTFFieryPick extends PickaxeItem {
 			event.getDrops().removeAll(removeThese);
 			event.getDrops().addAll(addThese);
 		}
-	}
+	}*/
 
 	@Override
 	public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {

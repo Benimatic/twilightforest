@@ -44,7 +44,6 @@ import net.minecraftforge.event.entity.player.AdvancementEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
-import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -126,7 +125,7 @@ public class TFEventListener {
 	/**
 	 * Also check if we need to transform 64 cobbles into a giant cobble
 	 */
-	@SubscribeEvent
+	/*@SubscribeEvent FIXME Manipulate the drop with IGlobalLootModifier
 	public static void harvestDrops(HarvestDropsEvent event) {
 		// this flag is set in reaction to the breakBlock event, but we need to remove the drops in this event
 		if (shouldMakeGiantCobble && event.getDrops().size() > 0) {
@@ -144,7 +143,7 @@ public class TFEventListener {
 				}
 			}
 		}
-	}
+	}*/
 
 	@SubscribeEvent
 	public static void entityHurts(LivingHurtEvent event) {
