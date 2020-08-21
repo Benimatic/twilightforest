@@ -126,8 +126,8 @@ public final class TwilightFeatures {
         public static final BaseTreeFeatureConfig DARKWOOD_TREE = new BaseTreeFeatureConfig.Builder(
                 new SimpleBlockStateProvider(BlockStates.DARKWOOD_LOG),
                 new SimpleBlockStateProvider(BlockStates.DARKWOOD_LEAVES),
-                new LeafSpheroidFoliagePlacer(4.5f, 2.4f, FeatureSpread.func_242252_a(0), 1, 0, 0.45f),
-                new BranchingTrunkPlacer(6, 5, 0, 4, 1, 5, 12),
+                new LeafSpheroidFoliagePlacer(4.5f, 2.25f, FeatureSpread.func_242252_a(0), 1, 0, 0.45f),
+                new BranchingTrunkPlacer(6, 5, 0, 4, 1, 6, 10),
                 new TwoLayerFeature(1, 0, 1)
         )
                 .func_236703_a_(ImmutableList.of(Decorators.LIVING_ROOTS))
@@ -217,7 +217,7 @@ public final class TwilightFeatures {
 
         public static final ConfiguredFeature<?, ?> DEFAULT_TWILIGHT_TREES = registerFeature(TwilightForestMod.prefix("twilight_trees"),
                 Feature.RANDOM_SELECTOR
-                        .withConfiguration(new MultipleRandomFeatureConfig(ImmutableList.of(TWILIGHT_OAK.withChance(0.3f), CANOPY_TREE.withChance(0.3f), MANGROVE_TREE.withChance(0.3f), RAINBOAK_TREE.withChance(0.05f)), TWILIGHT_OAK))
+                        .withConfiguration(new MultipleRandomFeatureConfig(ImmutableList.of(TWILIGHT_OAK.withChance(0.23f), CANOPY_TREE.withChance(0.23f), MANGROVE_TREE.withChance(0.23f), DARKWOOD_TREE.withChance(0.23f)), RAINBOAK_TREE))
                         .withPlacement(Features.Placements.field_244001_l)
                         //.withPlacement(Placement.field_242902_f.configure(new AtSurfaceWithExtraConfig(0, 0.1f, 1)))
         );

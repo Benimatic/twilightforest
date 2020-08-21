@@ -991,15 +991,15 @@
             "random_add_vertical": 0,
             "vertical_filler_bias": 0.45,
             "horizontal_radius": 4.5,
-            "vertical_radius": 2.4,
+            "vertical_radius": 2.25,
             "offset": 0,
             "type": "twilightforest:spheroid_foliage_placer"
           },
           "trunk_placer": {
             "base_branch_count": 4,
             "additional_random_branches": 1,
-            "branch_start_offset_down": 5,
-            "branch_length": 12,
+            "branch_start_offset_down": 6,
+            "branch_length": 10,
             "base_height": 6,
             "height_rand_a": 5,
             "height_rand_b": 0,
