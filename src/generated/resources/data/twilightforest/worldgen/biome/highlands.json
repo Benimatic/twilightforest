@@ -1084,17 +1084,19 @@
                         "type": "minecraft:simple_state_provider"
                       },
                       "foliage_placer": {
-                        "vertical_radius": 1.5,
                         "random_add_horizontal": 1,
                         "random_add_vertical": 0,
+                        "vertical_filler_bias": -0.25,
                         "horizontal_radius": 4.5,
+                        "vertical_radius": 1.5,
                         "offset": 0,
                         "type": "twilightforest:spheroid_foliage_placer"
                       },
                       "trunk_placer": {
                         "base_branch_count": 3,
                         "additional_random_branches": 1,
-                        "branch_downwards_offset": 10,
+                        "branch_start_offset_down": 10,
+                        "branch_length": 9,
                         "base_height": 20,
                         "height_rand_a": 5,
                         "height_rand_b": 5,
@@ -1182,10 +1184,11 @@
                         "type": "minecraft:simple_state_provider"
                       },
                       "foliage_placer": {
-                        "vertical_radius": 1.5,
                         "random_add_horizontal": 2,
                         "random_add_vertical": 0,
+                        "vertical_filler_bias": -0.25,
                         "horizontal_radius": 2.5,
+                        "vertical_radius": 1.5,
                         "offset": 0,
                         "type": "twilightforest:spheroid_foliage_placer"
                       },
@@ -1194,7 +1197,8 @@
                         "trunk_placer": {
                           "base_branch_count": 1,
                           "additional_random_branches": 2,
-                          "branch_downwards_offset": 6,
+                          "branch_start_offset_down": 6,
+                          "branch_length": 7,
                           "base_height": 6,
                           "height_rand_a": 4,
                           "height_rand_b": 0,

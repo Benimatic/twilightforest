@@ -937,438 +937,76 @@
       },
       {
         "config": {
-          "feature": {
-            "config": {
-              "features": [
-                {
-                  "feature": {
-                    "config": {
-                      "max_water_depth": 0,
-                      "ignore_vines": true,
-                      "heightmap": "OCEAN_FLOOR",
-                      "minimum_size": {
-                        "limit": 1,
-                        "lower_size": 0,
-                        "upper_size": 1,
-                        "type": "minecraft:two_layers_feature_size"
-                      },
-                      "decorators": [
-                        {
-                          "root_length": 5,
-                          "ground_roots_provider": {
-                            "entries": [
-                              {
-                                "weight": 4,
-                                "data": {
-                                  "Name": "twilightforest:root"
-                                }
-                              },
-                              {
-                                "weight": 1,
-                                "data": {
-                                  "Name": "twilightforest:liveroot_block"
-                                }
-                              }
-                            ],
-                            "type": "minecraft:weighted_state_provider"
-                          },
-                          "base_strand_count": 3,
-                          "additional_random_strands": 1,
-                          "type": "twilightforest:tree_roots"
-                        }
-                      ],
-                      "trunk_provider": {
-                        "state": {
-                          "Properties": {
-                            "axis": "y"
-                          },
-                          "Name": "twilightforest:twilight_oak_log"
-                        },
-                        "type": "minecraft:simple_state_provider"
-                      },
-                      "leaves_provider": {
-                        "state": {
-                          "Properties": {
-                            "persistent": "false",
-                            "distance": "7"
-                          },
-                          "Name": "twilightforest:twilight_oak_leaves"
-                        },
-                        "type": "minecraft:simple_state_provider"
-                      },
-                      "foliage_placer": {
-                        "radius": 2,
-                        "offset": 0,
-                        "height": 3,
-                        "type": "minecraft:blob_foliage_placer"
-                      },
-                      "trunk_placer": {
-                        "base_height": 4,
-                        "height_rand_a": 2,
-                        "height_rand_b": 0,
-                        "type": "minecraft:straight_trunk_placer"
-                      }
-                    },
-                    "type": "minecraft:tree"
-                  },
-                  "chance": 0.3
-                },
-                {
-                  "feature": {
-                    "config": {
-                      "max_water_depth": 0,
-                      "ignore_vines": true,
-                      "heightmap": "OCEAN_FLOOR",
-                      "minimum_size": {
-                        "limit": 1,
-                        "lower_size": 0,
-                        "upper_size": 1,
-                        "type": "minecraft:two_layers_feature_size"
-                      },
-                      "decorators": [
-                        {
-                          "placement_count": 1,
-                          "probability_of_placement": 1.0,
-                          "deco_provider": {
-                            "state": {
-                              "Properties": {
-                                "facing": "north"
-                              },
-                              "Name": "twilightforest:firefly"
-                            },
-                            "type": "minecraft:simple_state_provider"
-                          },
-                          "type": "twilightforest:trunkside_decorator"
-                        },
-                        {
-                          "root_length": 5,
-                          "ground_roots_provider": {
-                            "entries": [
-                              {
-                                "weight": 4,
-                                "data": {
-                                  "Name": "twilightforest:root"
-                                }
-                              },
-                              {
-                                "weight": 1,
-                                "data": {
-                                  "Name": "twilightforest:liveroot_block"
-                                }
-                              }
-                            ],
-                            "type": "minecraft:weighted_state_provider"
-                          },
-                          "base_strand_count": 3,
-                          "additional_random_strands": 1,
-                          "type": "twilightforest:tree_roots"
-                        }
-                      ],
-                      "trunk_provider": {
-                        "state": {
-                          "Properties": {
-                            "axis": "y"
-                          },
-                          "Name": "twilightforest:canopy_log"
-                        },
-                        "type": "minecraft:simple_state_provider"
-                      },
-                      "leaves_provider": {
-                        "state": {
-                          "Properties": {
-                            "persistent": "false",
-                            "distance": "7"
-                          },
-                          "Name": "twilightforest:canopy_leaves"
-                        },
-                        "type": "minecraft:simple_state_provider"
-                      },
-                      "foliage_placer": {
-                        "vertical_radius": 1.5,
-                        "random_add_horizontal": 1,
-                        "random_add_vertical": 0,
-                        "horizontal_radius": 4.5,
-                        "offset": 0,
-                        "type": "twilightforest:spheroid_foliage_placer"
-                      },
-                      "trunk_placer": {
-                        "base_branch_count": 3,
-                        "additional_random_branches": 1,
-                        "branch_downwards_offset": 10,
-                        "base_height": 20,
-                        "height_rand_a": 5,
-                        "height_rand_b": 5,
-                        "type": "twilightforest:branching_trunk_placer"
-                      }
-                    },
-                    "type": "minecraft:tree"
-                  },
-                  "chance": 0.3
-                },
-                {
-                  "feature": {
-                    "config": {
-                      "max_water_depth": 0,
-                      "ignore_vines": true,
-                      "heightmap": "OCEAN_FLOOR",
-                      "minimum_size": {
-                        "limit": 1,
-                        "lower_size": 0,
-                        "upper_size": 1,
-                        "type": "minecraft:two_layers_feature_size"
-                      },
-                      "decorators": [
-                        {
-                          "placement_count": 1,
-                          "probability_of_placement": 1.0,
-                          "deco_provider": {
-                            "state": {
-                              "Properties": {
-                                "facing": "north"
-                              },
-                              "Name": "twilightforest:firefly"
-                            },
-                            "type": "minecraft:simple_state_provider"
-                          },
-                          "type": "twilightforest:trunkside_decorator"
-                        },
-                        {
-                          "root_length": 12,
-                          "air_roots_provider": {
-                            "state": {
-                              "Name": "twilightforest:mangrove_wood"
-                            },
-                            "type": "minecraft:simple_state_provider"
-                          },
-                          "ground_roots_provider": {
-                            "entries": [
-                              {
-                                "weight": 4,
-                                "data": {
-                                  "Name": "twilightforest:root"
-                                }
-                              },
-                              {
-                                "weight": 1,
-                                "data": {
-                                  "Name": "twilightforest:liveroot_block"
-                                }
-                              }
-                            ],
-                            "type": "minecraft:weighted_state_provider"
-                          },
-                          "base_strand_count": 3,
-                          "additional_random_strands": 1,
-                          "type": "twilightforest:tree_roots"
-                        }
-                      ],
-                      "trunk_provider": {
-                        "state": {
-                          "Properties": {
-                            "axis": "y"
-                          },
-                          "Name": "twilightforest:mangrove_log"
-                        },
-                        "type": "minecraft:simple_state_provider"
-                      },
-                      "leaves_provider": {
-                        "state": {
-                          "Properties": {
-                            "persistent": "false",
-                            "distance": "7"
-                          },
-                          "Name": "twilightforest:mangrove_leaves"
-                        },
-                        "type": "minecraft:simple_state_provider"
-                      },
-                      "foliage_placer": {
-                        "vertical_radius": 1.5,
-                        "random_add_horizontal": 2,
-                        "random_add_vertical": 0,
-                        "horizontal_radius": 2.5,
-                        "offset": 0,
-                        "type": "twilightforest:spheroid_foliage_placer"
-                      },
-                      "trunk_placer": {
-                        "offset_up": 5,
-                        "trunk_placer": {
-                          "base_branch_count": 1,
-                          "additional_random_branches": 2,
-                          "branch_downwards_offset": 6,
-                          "base_height": 6,
-                          "height_rand_a": 4,
-                          "height_rand_b": 0,
-                          "type": "twilightforest:branching_trunk_placer"
-                        },
-                        "type": "twilightforest:trunk_mover_upper"
-                      }
-                    },
-                    "type": "minecraft:tree"
-                  },
-                  "chance": 0.3
-                },
-                {
-                  "feature": {
-                    "config": {
-                      "max_water_depth": 0,
-                      "ignore_vines": true,
-                      "heightmap": "OCEAN_FLOOR",
-                      "minimum_size": {
-                        "limit": 1,
-                        "lower_size": 0,
-                        "upper_size": 1,
-                        "type": "minecraft:two_layers_feature_size"
-                      },
-                      "decorators": [
-                        {
-                          "root_length": 5,
-                          "ground_roots_provider": {
-                            "entries": [
-                              {
-                                "weight": 4,
-                                "data": {
-                                  "Name": "twilightforest:root"
-                                }
-                              },
-                              {
-                                "weight": 1,
-                                "data": {
-                                  "Name": "twilightforest:liveroot_block"
-                                }
-                              }
-                            ],
-                            "type": "minecraft:weighted_state_provider"
-                          },
-                          "base_strand_count": 3,
-                          "additional_random_strands": 1,
-                          "type": "twilightforest:tree_roots"
-                        }
-                      ],
-                      "trunk_provider": {
-                        "state": {
-                          "Properties": {
-                            "axis": "y"
-                          },
-                          "Name": "twilightforest:twilight_oak_log"
-                        },
-                        "type": "minecraft:simple_state_provider"
-                      },
-                      "leaves_provider": {
-                        "state": {
-                          "Properties": {
-                            "persistent": "false",
-                            "distance": "7"
-                          },
-                          "Name": "twilightforest:rainboak_leaves"
-                        },
-                        "type": "minecraft:simple_state_provider"
-                      },
-                      "foliage_placer": {
-                        "radius": 2,
-                        "offset": 0,
-                        "height": 3,
-                        "type": "minecraft:blob_foliage_placer"
-                      },
-                      "trunk_placer": {
-                        "base_height": 4,
-                        "height_rand_a": 2,
-                        "height_rand_b": 0,
-                        "type": "minecraft:straight_trunk_placer"
-                      }
-                    },
-                    "type": "minecraft:tree"
-                  },
-                  "chance": 0.05
-                }
-              ],
-              "default": {
-                "config": {
-                  "max_water_depth": 0,
-                  "ignore_vines": true,
-                  "heightmap": "OCEAN_FLOOR",
-                  "minimum_size": {
-                    "limit": 1,
-                    "lower_size": 0,
-                    "upper_size": 1,
-                    "type": "minecraft:two_layers_feature_size"
-                  },
-                  "decorators": [
-                    {
-                      "root_length": 5,
-                      "ground_roots_provider": {
-                        "entries": [
-                          {
-                            "weight": 4,
-                            "data": {
-                              "Name": "twilightforest:root"
-                            }
-                          },
-                          {
-                            "weight": 1,
-                            "data": {
-                              "Name": "twilightforest:liveroot_block"
-                            }
-                          }
-                        ],
-                        "type": "minecraft:weighted_state_provider"
-                      },
-                      "base_strand_count": 3,
-                      "additional_random_strands": 1,
-                      "type": "twilightforest:tree_roots"
-                    }
-                  ],
-                  "trunk_provider": {
-                    "state": {
-                      "Properties": {
-                        "axis": "y"
-                      },
-                      "Name": "twilightforest:twilight_oak_log"
-                    },
-                    "type": "minecraft:simple_state_provider"
-                  },
-                  "leaves_provider": {
-                    "state": {
-                      "Properties": {
-                        "persistent": "false",
-                        "distance": "7"
-                      },
-                      "Name": "twilightforest:twilight_oak_leaves"
-                    },
-                    "type": "minecraft:simple_state_provider"
-                  },
-                  "foliage_placer": {
-                    "radius": 2,
-                    "offset": 0,
-                    "height": 3,
-                    "type": "minecraft:blob_foliage_placer"
-                  },
-                  "trunk_placer": {
-                    "base_height": 4,
-                    "height_rand_a": 2,
-                    "height_rand_b": 0,
-                    "type": "minecraft:straight_trunk_placer"
-                  }
-                },
-                "type": "minecraft:tree"
-              }
-            },
-            "type": "minecraft:random_selector"
+          "max_water_depth": 0,
+          "ignore_vines": true,
+          "heightmap": "OCEAN_FLOOR",
+          "minimum_size": {
+            "limit": 1,
+            "lower_size": 0,
+            "upper_size": 1,
+            "type": "minecraft:two_layers_feature_size"
           },
-          "decorator": {
-            "config": {
-              "outer": {
-                "config": {},
-                "type": "minecraft:square"
+          "decorators": [
+            {
+              "root_length": 5,
+              "ground_roots_provider": {
+                "entries": [
+                  {
+                    "weight": 4,
+                    "data": {
+                      "Name": "twilightforest:root"
+                    }
+                  },
+                  {
+                    "weight": 1,
+                    "data": {
+                      "Name": "twilightforest:liveroot_block"
+                    }
+                  }
+                ],
+                "type": "minecraft:weighted_state_provider"
               },
-              "inner": {
-                "config": {},
-                "type": "minecraft:heightmap"
-              }
+              "base_strand_count": 3,
+              "additional_random_strands": 1,
+              "type": "twilightforest:tree_roots"
+            }
+          ],
+          "trunk_provider": {
+            "state": {
+              "Properties": {
+                "axis": "y"
+              },
+              "Name": "twilightforest:dark_log"
             },
-            "type": "minecraft:decorated"
+            "type": "minecraft:simple_state_provider"
+          },
+          "leaves_provider": {
+            "state": {
+              "Name": "twilightforest:dark_leaves"
+            },
+            "type": "minecraft:simple_state_provider"
+          },
+          "foliage_placer": {
+            "random_add_horizontal": 1,
+            "random_add_vertical": 0,
+            "vertical_filler_bias": 0.45,
+            "horizontal_radius": 4.5,
+            "vertical_radius": 2.4,
+            "offset": 0,
+            "type": "twilightforest:spheroid_foliage_placer"
+          },
+          "trunk_placer": {
+            "base_branch_count": 4,
+            "additional_random_branches": 1,
+            "branch_start_offset_down": 5,
+            "branch_length": 12,
+            "base_height": 6,
+            "height_rand_a": 5,
+            "height_rand_b": 0,
+            "type": "twilightforest:branching_trunk_placer"
           }
         },
-        "type": "minecraft:decorated"
+        "type": "minecraft:tree"
       }
     ]
   ],

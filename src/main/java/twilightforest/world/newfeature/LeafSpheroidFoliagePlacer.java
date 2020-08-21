@@ -18,10 +18,11 @@ public class LeafSpheroidFoliagePlacer extends FoliagePlacer {
     public static final Codec<LeafSpheroidFoliagePlacer> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
                     Codec.floatRange(0, 16f).fieldOf("horizontal_radius").forGetter(o -> o.horizontalRadius),
-                    FeatureSpread.func_242254_a(0, 8, 8).fieldOf("offset").forGetter(obj -> obj.field_236750_g_),
                     Codec.floatRange(0, 16f).fieldOf("vertical_radius").forGetter(o -> o.verticalRadius),
+                    FeatureSpread.func_242254_a(0, 8, 8).fieldOf("offset").forGetter(obj -> obj.field_236750_g_),
                     Codec.intRange(0, 16).fieldOf("random_add_horizontal").orElse(0).forGetter(o -> o.randomHorizontal),
-                    Codec.intRange(0, 16).fieldOf("random_add_vertical").orElse(0).forGetter(o -> o.randomVertical)
+                    Codec.intRange(0, 16).fieldOf("random_add_vertical").orElse(0).forGetter(o -> o.randomVertical),
+                    Codec.floatRange(-0.5f, 0.5f).fieldOf("vertical_filler_bias").orElse(0f).forGetter(o -> o.verticalBias)
             ).apply(instance, LeafSpheroidFoliagePlacer::new)
     );
 
@@ -29,17 +30,19 @@ public class LeafSpheroidFoliagePlacer extends FoliagePlacer {
     // n+0.5 numbers seem to work best but messing with it is encouraged to find best results
     private final float horizontalRadius;
     private final float verticalRadius;
+    private final float verticalBias;
 
     private final int randomHorizontal;
     private final int randomVertical;
 
-    public LeafSpheroidFoliagePlacer(float horizontalRadius, FeatureSpread yOffset, float verticalRadius, int randomHorizontal, int randomVertical) {
+    public LeafSpheroidFoliagePlacer(float horizontalRadius, float verticalRadius, FeatureSpread yOffset, int randomHorizontal, int randomVertical, float verticalBias) {
         super(FeatureSpread.func_242252_a((int) horizontalRadius), yOffset);
 
         this.horizontalRadius = horizontalRadius;
         this.verticalRadius = verticalRadius;
         this.randomHorizontal = randomHorizontal;
         this.randomVertical = randomVertical;
+        this.verticalBias = verticalBias;
     }
 
     @Override
@@ -52,7 +55,7 @@ public class LeafSpheroidFoliagePlacer extends FoliagePlacer {
         BlockPos center = foliage.func_236763_a_().up(offset); // foliage.getCenter
 
         //FeatureUtil.makeLeafCircle(world, random, center, radius, baseTreeFeatureConfig.leavesProvider, set);
-        FeatureUtil.makeLeafSpheroid(world, random, center, horizontalRadius + random.nextInt(randomHorizontal + 1), verticalRadius + random.nextInt(randomVertical + 1), baseTreeFeatureConfig.leavesProvider, set);
+        FeatureUtil.makeLeafSpheroid(world, random, center, horizontalRadius + random.nextInt(randomHorizontal + 1), verticalRadius + random.nextInt(randomVertical + 1), verticalBias, baseTreeFeatureConfig.leavesProvider, set);
     }
 
     @Override // foliage Height

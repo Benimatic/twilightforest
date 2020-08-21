@@ -51,10 +51,10 @@ public class FeatureUtil {
 		}
 	}
 
-	public static void makeLeafSpheroid(IWorldGenerationReader world, Random random, BlockPos centerPos, float vRadius, float hRadius, BlockStateProvider state, Set<BlockPos> leaves) {
+	public static void makeLeafSpheroid(IWorldGenerationReader world, Random random, BlockPos centerPos, float vRadius, float hRadius, float verticalBias, BlockStateProvider state, Set<BlockPos> leaves) {
 		float vRadiusSquared = vRadius * vRadius;
 		float hRadiusSquared = hRadius * hRadius;
-		float radius = vRadiusSquared * hRadiusSquared;
+		float superRadiusSquared = vRadiusSquared * hRadiusSquared;
 		putLeafBlock(world, random, centerPos, state, leaves);
 
 		for (int y = 0; y <= hRadius; y++) {
@@ -81,17 +81,21 @@ public class FeatureUtil {
 				putLeafBlock(world, random, centerPos.add(  z, 0, -x), state, leaves);
 
 				for (int y = 0; y <= hRadius; y++) {
-					if (((x * x + z * z) * hRadiusSquared) + ((y * y) * vRadiusSquared) > radius) continue;
+					float xySquare = ((x * x + z * z) * hRadiusSquared);
 
-					putLeafBlock(world, random, centerPos.add(  x,  y,  z), state, leaves);
-					putLeafBlock(world, random, centerPos.add( -x,  y, -z), state, leaves);
-					putLeafBlock(world, random, centerPos.add( -z,  y,  x), state, leaves);
-					putLeafBlock(world, random, centerPos.add(  z,  y, -x), state, leaves);
+					if (xySquare + ((((float) y - verticalBias) * ((float) y - verticalBias)) * vRadiusSquared) <= superRadiusSquared) {
+						putLeafBlock(world, random, centerPos.add(  x,  y,  z), state, leaves);
+						putLeafBlock(world, random, centerPos.add( -x,  y, -z), state, leaves);
+						putLeafBlock(world, random, centerPos.add( -z,  y,  x), state, leaves);
+						putLeafBlock(world, random, centerPos.add(  z,  y, -x), state, leaves);
+					}
 
-					putLeafBlock(world, random, centerPos.add(  x, -y,  z), state, leaves);
-					putLeafBlock(world, random, centerPos.add( -x, -y, -z), state, leaves);
-					putLeafBlock(world, random, centerPos.add( -z, -y,  x), state, leaves);
-					putLeafBlock(world, random, centerPos.add(  z, -y, -x), state, leaves);
+					if (xySquare + ((((float) y + verticalBias) * ((float) y + verticalBias)) * vRadiusSquared) <= superRadiusSquared) {
+						putLeafBlock(world, random, centerPos.add(  x, -y,  z), state, leaves);
+						putLeafBlock(world, random, centerPos.add( -x, -y, -z), state, leaves);
+						putLeafBlock(world, random, centerPos.add( -z, -y,  x), state, leaves);
+						putLeafBlock(world, random, centerPos.add(  z, -y, -x), state, leaves);
+					}
 				}
 			}
 		}

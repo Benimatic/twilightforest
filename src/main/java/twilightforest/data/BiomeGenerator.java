@@ -143,8 +143,10 @@ public final class BiomeGenerator extends BiomeDataHelper {
                         .func_242455_a()
         );
 
+        BiomeGenerationSettings.Builder darkForestGenerationBuilder = modify(defaultGenSettingBuilder(), b -> b.func_242513_a(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredFeatures.DARKWOOD_TREE));
+
         biomes.put(TwilightForestMod.prefix("dark_forest"),
-                biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), defaultBiomeGenerationSettings)
+                biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), darkForestGenerationBuilder)
                         .temperature(0.7F)
                         .downfall(0.8F)
                         .depth(0.125F)
@@ -153,7 +155,7 @@ public final class BiomeGenerator extends BiomeDataHelper {
         );
 
         biomes.put(TwilightForestMod.prefix("dark_forest_center"),
-                biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), defaultBiomeGenerationSettings)
+                biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), darkForestGenerationBuilder)
                         .depth(0.125F)
                         .scale(0.05F)
                         .func_242455_a()
