@@ -134,7 +134,7 @@ dependencies {
 
     // tterrag
     deobfCompile "team.chisel.ctm:CTM:MC${minecraft_version}-${ctm_version}"
-    deobfCompile "team.chisel:Chisel:MC${minecraft_version}-${chisel_version}"
+    //deobfCompile "team.chisel:Chisel:MC${minecraft_version}-${chisel_version}"
 
     // blamejared
     deobfCompile "blusunrize:ImmersiveEngineering:${immersive_engineering_version}"

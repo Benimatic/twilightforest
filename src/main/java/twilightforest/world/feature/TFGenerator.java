@@ -48,8 +48,15 @@ public abstract class TFGenerator extends WorldGenerator implements IBlockSettab
 	 * Draws a line from {x1, y1, z1} to {x2, y2, z2}
 	 */
 	protected static void drawBresehnam(IBlockSettable generator, World world, BlockPos from, BlockPos to, IBlockState state) {
-		for (BlockPos pixel : getBresehnamArrays(from, to)) {
-			generator.setBlockAndNotify(world, pixel, state);
+		if (from.getX() == to.getX() && from.getZ() == to.getZ()) {
+			int l = Math.max(from.getY(), to.getY());
+			for (int i = Math.min(from.getY(), to.getY()); i < l; i++) {
+				generator.setBlockAndNotify(world, from.up(i - from.getY()), state);
+			}
+		} else {
+			for (BlockPos pixel : getBresehnamArrays(from, to)) {
+				generator.setBlockAndNotify(world, pixel, state);
+			}
 		}
 	}
 

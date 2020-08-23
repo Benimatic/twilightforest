@@ -88,7 +88,7 @@ public enum TFCompat {
             NBTTagCompound nbt = new NBTTagCompound();
             nbt.setString("group", group);
             nbt.setTag("stack", stack.serializeNBT());
-            FMLInterModComms.sendMessage(team.chisel.api.ChiselAPIProps.MOD_ID, team.chisel.api.IMC.ADD_VARIATION_V2.toString(), nbt);
+            FMLInterModComms.sendMessage("chisel", "add_variation", nbt);
         }
     },
     FORESTRY("Forestry"),
