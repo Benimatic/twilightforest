@@ -15,6 +15,7 @@ public class TwilightForestRenderInfo extends DimensionRenderInfo {
     private final float[] fourBeanDip = new float[4];
 
     @Nullable
+    @Override
     public float[] func_230492_a_(float daycycle, float partialTicks) { // Fog color
         // TODO Vanilla copy, I just name a few stuff. Decide if we want to keep and cook our own thing, or we ditch it
         float f1 = MathHelper.cos(daycycle * ((float)Math.PI * 2F)) - 0.0F;

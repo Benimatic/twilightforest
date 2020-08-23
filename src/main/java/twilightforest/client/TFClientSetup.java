@@ -8,6 +8,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
+import twilightforest.TwilightForestMod;
 import twilightforest.client.renderer.entity.LayerIce;
 import twilightforest.client.renderer.entity.LayerShields;
 import twilightforest.entity.TFEntities;
@@ -40,10 +41,10 @@ public class TFClientSetup {
 		TFContainers.renderScreens();
 
 		TwilightForestRenderInfo renderInfo = new TwilightForestRenderInfo(128.0F, false, DimensionRenderInfo.FogType.NONE, false, false);
-		DimensionRenderInfo.field_239208_a_.put(TFDimensions.twilightForestType.getRegistryName(), renderInfo);
+		DimensionRenderInfo.field_239208_a_.put(TwilightForestMod.prefix("renderer"), renderInfo);
 	}
 
-	@SubscribeEvent
+	@SubscribeEvent // FIXME there's a few IDE warnings, find out what this is all about
 	public static void loadComplete(FMLLoadCompleteEvent evt) {
 		Minecraft.getInstance().getRenderManager().renderers.values().forEach(r -> {
 			if (r instanceof LivingRenderer) {
