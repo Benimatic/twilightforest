@@ -46,8 +46,8 @@ public class ItemTagGenerator extends ItemTagsProvider {
 
 	@Override
 	protected void registerTags() {
-		this.copy(Tags.Blocks.FENCES_WOODEN, Tags.Items.FENCES_WOODEN);
-		this.copy(Tags.Blocks.FENCE_GATES_WOODEN, Tags.Items.FENCE_GATES_WOODEN);
+		this.copy(BlockTags.WOODEN_FENCES, Tags.Items.FENCES_WOODEN);
+		this.copy(BlockTags.FENCE_GATES, Tags.Items.FENCE_GATES_WOODEN);
 		this.copy(BlockTags.WOODEN_DOORS, ItemTags.WOODEN_DOORS);
 		this.copy(BlockTags.WOODEN_SLABS, ItemTags.WOODEN_SLABS);
 		this.copy(BlockTags.WOODEN_STAIRS, ItemTags.WOODEN_STAIRS);
