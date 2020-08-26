@@ -33,7 +33,7 @@ public class TrunkRiser extends AbstractTrunkPlacer {
     }
 
     @Override
-    protected TrunkPlacerType<?> func_230381_a_() {
+    protected TrunkPlacerType<TrunkRiser> func_230381_a_() {
         return TwilightFeatures.TRUNK_RISER;
     }
 

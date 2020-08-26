@@ -67,7 +67,7 @@ public class TreeRootsDecorator extends TreeDecorator {
     }
 
     @Override
-    protected TreeDecoratorType<?> func_230380_a_() {
+    protected TreeDecoratorType<TreeRootsDecorator> func_230380_a_() {
         return TwilightFeatures.TREE_ROOTS;
     }
 

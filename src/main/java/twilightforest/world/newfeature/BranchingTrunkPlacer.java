@@ -17,7 +17,7 @@ import java.util.Random;
 import java.util.Set;
 
 public class BranchingTrunkPlacer extends AbstractTrunkPlacer {
-    public static final Codec<BranchingTrunkPlacer> CODEC = RecordCodecBuilder.create((instance) ->
+    public static final Codec<BranchingTrunkPlacer> CODEC = RecordCodecBuilder.create(instance ->
             func_236915_a_(instance).and(instance.group(
                     Codec.intRange(0, 16).fieldOf("base_branch_count").forGetter(o -> o.branches),
                     Codec.intRange(0, 16).fieldOf("additional_random_branches").forGetter(o -> o.addExtraBranches),
@@ -40,7 +40,7 @@ public class BranchingTrunkPlacer extends AbstractTrunkPlacer {
     }
 
     @Override
-    protected TrunkPlacerType<?> func_230381_a_() {
+    protected TrunkPlacerType<BranchingTrunkPlacer> func_230381_a_() {
         return TwilightFeatures.TRUNK_BRANCHING;
     }
 

@@ -385,7 +385,7 @@ public class FeatureUtil {
 			for (byte dy = 0; dy <= rad; dy++) {
 				for (byte dz = 0; dz <= rad; dz++) {
 					// determine how far we are from the center.
-					int dist = 0;
+					int dist;
 					if (dx >= dy && dx >= dz) {
 						dist = dx + (Math.max(dy, dz) >> 1) + (Math.min(dy, dz) >> 2);
 					} else if (dy >= dx && dy >= dz) {

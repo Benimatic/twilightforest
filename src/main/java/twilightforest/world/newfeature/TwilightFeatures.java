@@ -3,6 +3,8 @@ package twilightforest.world.newfeature;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.VineBlock;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
@@ -14,19 +16,27 @@ import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.foliageplacer.BlobFoliagePlacer;
 import net.minecraft.world.gen.foliageplacer.FoliagePlacer;
 import net.minecraft.world.gen.foliageplacer.FoliagePlacerType;
+import net.minecraft.world.gen.placement.AtSurfaceWithExtraConfig;
+import net.minecraft.world.gen.placement.Placement;
 import net.minecraft.world.gen.treedecorator.TreeDecorator;
 import net.minecraft.world.gen.treedecorator.TreeDecoratorType;
 import net.minecraft.world.gen.trunkplacer.AbstractTrunkPlacer;
 import net.minecraft.world.gen.trunkplacer.StraightTrunkPlacer;
 import net.minecraft.world.gen.trunkplacer.TrunkPlacerType;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.BlockTFCicada;
 import twilightforest.block.BlockTFFirefly;
 import twilightforest.block.TFBlocks;
+import twilightforest.world.feature.TFBiomeFeatures;
+import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
 public final class TwilightFeatures {
-    public static final FoliagePlacerType<LeafSpheroidFoliagePlacer> FOLIAGE_SPHEROID = registerFoliage(TwilightForestMod.prefix("spheroid_foliage_placer"), LeafSpheroidFoliagePlacer.CODEC);
     public static final TrunkPlacerType<BranchingTrunkPlacer> TRUNK_BRANCHING = registerTrunk(TwilightForestMod.prefix("branching_trunk_placer"), BranchingTrunkPlacer.CODEC);
     public static final TrunkPlacerType<TrunkRiser> TRUNK_RISER = registerTrunk(TwilightForestMod.prefix("trunk_mover_upper"), TrunkRiser.CODEC);
+    public static final TrunkPlacerType<HollowTrunkPlacer> HOLLOW_TRUNK = registerTrunk(TwilightForestMod.prefix("hollow_trunk_placer"), HollowTrunkPlacer.CODEC);
+
+    public static final FoliagePlacerType<LeafSpheroidFoliagePlacer> FOLIAGE_SPHEROID = registerFoliage(TwilightForestMod.prefix("spheroid_foliage_placer"), LeafSpheroidFoliagePlacer.CODEC);
+
     public static final TreeDecoratorType<TrunkSideDecorator> TRUNKSIDE_DECORATOR = registerTreeFeature(TwilightForestMod.prefix("trunkside_decorator"), TrunkSideDecorator.CODEC);
     public static final TreeDecoratorType<TreeRootsDecorator> TREE_ROOTS = registerTreeFeature(TwilightForestMod.prefix("tree_roots"), TreeRootsDecorator.CODEC);
 
@@ -134,11 +144,12 @@ public final class TwilightFeatures {
                 .setIgnoreVines()
                 .build();
 
+        // Requires Hollowtree gen
         public static final BaseTreeFeatureConfig TIME_TREE = new BaseTreeFeatureConfig.Builder(
                 new SimpleBlockStateProvider(BlockStates.TIME_LOG),
                 new SimpleBlockStateProvider(BlockStates.TIME_LEAVES),
-                new LeafSpheroidFoliagePlacer(4.5f, 1.5f, FeatureSpread.func_242252_a(0), 1, 0, 0f),
-                new BranchingTrunkPlacer(20, 5, 5, 3, 1, 10, 16),
+                new LeafSpheroidFoliagePlacer(4.5f, 1.5f, FeatureSpread.func_242252_a(0), 1, 0, -0.25f),
+                new BranchingTrunkPlacer(20, 5, 5, 3, 1, 10, 9),
                 new TwoLayerFeature(1, 0, 1)
         )
                 .setIgnoreVines()
@@ -147,28 +158,27 @@ public final class TwilightFeatures {
         public static final BaseTreeFeatureConfig TRANSFORM_TREE = new BaseTreeFeatureConfig.Builder(
                 new SimpleBlockStateProvider(BlockStates.TRANSFORM_LOG),
                 new SimpleBlockStateProvider(BlockStates.TRANSFORM_LEAVES),
-                new LeafSpheroidFoliagePlacer(4.5f, 1.5f, FeatureSpread.func_242252_a(0), 1, 0, 0f),
-                new BranchingTrunkPlacer(20, 5, 5, 3, 1, 10, 16),
+                new LeafSpheroidFoliagePlacer(4.5f, 1.5f, FeatureSpread.func_242252_a(0), 1, 0, -0.25f),
+                new BranchingTrunkPlacer(20, 5, 5, 3, 1, 10, 9),
                 new TwoLayerFeature(1, 0, 1)
         )
                 .setIgnoreVines()
                 .build();
 
-        public static final BaseTreeFeatureConfig MINING_TREE = new BaseTreeFeatureConfig.Builder(
+        public static final TFTreeFeatureConfig MINING_TREE = new TFTreeFeatureConfig.Builder(
                 new SimpleBlockStateProvider(BlockStates.MINING_LOG),
                 new SimpleBlockStateProvider(BlockStates.MINING_LEAVES),
-                new LeafSpheroidFoliagePlacer(4.5f, 1.5f, FeatureSpread.func_242252_a(0), 1, 0, 0f),
-                new BranchingTrunkPlacer(20, 5, 5, 3, 1, 10, 16),
-                new TwoLayerFeature(1, 0, 1)
+                new SimpleBlockStateProvider(BlockStates.MINING_WOOD),
+                new SimpleBlockStateProvider(BlockStates.ROOTS)
         )
-                .setIgnoreVines()
+                .setSapling(TFBlocks.mining_sapling.get())
                 .build();
 
         public static final BaseTreeFeatureConfig SORT_TREE = new BaseTreeFeatureConfig.Builder(
                 new SimpleBlockStateProvider(BlockStates.SORT_LOG),
                 new SimpleBlockStateProvider(BlockStates.SORT_LEAVES),
-                new LeafSpheroidFoliagePlacer(4.5f, 1.5f, FeatureSpread.func_242252_a(0), 1, 0, 0f),
-                new BranchingTrunkPlacer(20, 5, 5, 3, 1, 10, 16),
+                new LeafSpheroidFoliagePlacer(1.5f, 2.25f, FeatureSpread.func_242252_a(0), 1, 0, 0.5f),
+                new StraightTrunkPlacer(3, 0, 0),
                 new TwoLayerFeature(1, 0, 1)
         )
                 .setIgnoreVines()
@@ -178,9 +188,13 @@ public final class TwilightFeatures {
                 new SimpleBlockStateProvider(BlockStates.OAK_LOG),
                 new SimpleBlockStateProvider(BlockStates.OAK_LEAVES),
                 new LeafSpheroidFoliagePlacer(4.5f, 1.5f, FeatureSpread.func_242252_a(0), 1, 0, 0f),
-                new BranchingTrunkPlacer(20, 5, 5, 3, 1, 10, 16),
-                new TwoLayerFeature(1, 0, 1)
+                new HollowTrunkPlacer(20, 4, 4, 1.5f, 3, new BranchesConfiguration(4, 10d), new SimpleBlockStateProvider(Blocks.VINE.getDefaultState().with(VineBlock.EAST, true))),
+                new TwoLayerFeature(20, 4,  12)
         )
+                .func_236703_a_(ImmutableList.of(
+                        new TrunkSideDecorator(16, 0.75f, new SimpleBlockStateProvider(TFBlocks.firefly.get().getDefaultState().with(BlockTFFirefly.FACING, Direction.NORTH))),
+                        new TrunkSideDecorator(16, 0.75f, new SimpleBlockStateProvider(TFBlocks.cicada.get().getDefaultState().with(BlockTFCicada.FACING, Direction.NORTH)))
+                ))
                 .setIgnoreVines()
                 .build();
 
@@ -209,17 +223,32 @@ public final class TwilightFeatures {
     }
 
     public static final class ConfiguredFeatures {
-        public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> TWILIGHT_OAK = registerFeature(TwilightForestMod.prefix("twilight_oak"), Feature.field_236291_c_.withConfiguration(TreeConfigurations.TWILIGHT_OAK));
-        public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> CANOPY_TREE = registerFeature(TwilightForestMod.prefix("canopy_tree"), Feature.field_236291_c_.withConfiguration(TreeConfigurations.CANOPY_TREE));
-        public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> MANGROVE_TREE = registerFeature(TwilightForestMod.prefix("mangrove_tree"), Feature.field_236291_c_.withConfiguration(TreeConfigurations.MANGROVE_TREE));
-        public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> DARKWOOD_TREE = registerFeature(TwilightForestMod.prefix("darkwood_tree"), Feature.field_236291_c_.withConfiguration(TreeConfigurations.DARKWOOD_TREE));
-        public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> RAINBOAK_TREE = registerFeature(TwilightForestMod.prefix("rainbow_oak"), Feature.field_236291_c_.withConfiguration(TreeConfigurations.RAINBOAK_TREE));
+        public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> TWILIGHT_OAK = registerWorldFeature(TwilightForestMod.prefix("twilight_oak"), Feature.field_236291_c_.withConfiguration(TreeConfigurations.TWILIGHT_OAK));
+        public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> CANOPY_TREE = registerWorldFeature(TwilightForestMod.prefix("canopy_tree"), Feature.field_236291_c_.withConfiguration(TreeConfigurations.CANOPY_TREE));
+        public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> MANGROVE_TREE = registerWorldFeature(TwilightForestMod.prefix("mangrove_tree"), Feature.field_236291_c_.withConfiguration(TreeConfigurations.MANGROVE_TREE));
+        public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> DARKWOOD_TREE = registerWorldFeature(TwilightForestMod.prefix("darkwood_tree"), Feature.field_236291_c_.withConfiguration(TreeConfigurations.DARKWOOD_TREE));
+        public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> TIME_TREE = registerWorldFeature(TwilightForestMod.prefix("time_tree"), Feature.field_236291_c_.withConfiguration(TreeConfigurations.TIME_TREE));
+        public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> TRANSFORM_TREE = registerWorldFeature(TwilightForestMod.prefix("transform_tree"), Feature.field_236291_c_.withConfiguration(TreeConfigurations.TRANSFORM_TREE));
+        public static final ConfiguredFeature<TFTreeFeatureConfig  , ? extends Feature<?>> MINING_TREE = registerWorldFeature(TwilightForestMod.prefix("mining_tree"), TFBiomeFeatures.MINERS_TREE.get().withConfiguration(TreeConfigurations.MINING_TREE));
+        public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> SORT_TREE = registerWorldFeature(TwilightForestMod.prefix("sort_tree"), Feature.field_236291_c_.withConfiguration(TreeConfigurations.SORT_TREE));
+        public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> HOLLOW_TREE = registerWorldFeature(TwilightForestMod.prefix("hollow_tree"), Feature.field_236291_c_.withConfiguration(TreeConfigurations.HOLLOW_TREE));
+        public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> RAINBOAK_TREE = registerWorldFeature(TwilightForestMod.prefix("rainbow_oak"), Feature.field_236291_c_.withConfiguration(TreeConfigurations.RAINBOAK_TREE));
 
-        public static final ConfiguredFeature<?, ?> DEFAULT_TWILIGHT_TREES = registerFeature(TwilightForestMod.prefix("twilight_trees"),
+        public static final ConfiguredFeature<?, ?> DEFAULT_TWILIGHT_TREES = registerWorldFeature(TwilightForestMod.prefix("twilight_trees"),
                 Feature.RANDOM_SELECTOR
-                        .withConfiguration(new MultipleRandomFeatureConfig(ImmutableList.of(TWILIGHT_OAK.withChance(0.23f), CANOPY_TREE.withChance(0.23f), MANGROVE_TREE.withChance(0.23f), DARKWOOD_TREE.withChance(0.23f)), RAINBOAK_TREE))
+                        .withConfiguration(new MultipleRandomFeatureConfig(ImmutableList.of(
+                                TWILIGHT_OAK.withChance(0.05f),
+                                CANOPY_TREE.withChance(0.05f),
+                                MANGROVE_TREE.withChance(0.05f),
+                                DARKWOOD_TREE.withChance(0.05f),
+                                TIME_TREE.withChance(0.05f),
+                                TRANSFORM_TREE.withChance(0.05f),
+                                MINING_TREE.withChance(0.05f),
+                                SORT_TREE.withChance(0.05f),
+                                HOLLOW_TREE.withChance(0.4f)
+                        ), RAINBOAK_TREE))
                         .withPlacement(Features.Placements.field_244001_l)
-                        //.withPlacement(Placement.field_242902_f.configure(new AtSurfaceWithExtraConfig(0, 0.1f, 1)))
+                        .withPlacement(Placement.field_242902_f.configure(new AtSurfaceWithExtraConfig(1, 0.5f, 1)))
         );
     }
 
@@ -237,7 +266,11 @@ public final class TwilightFeatures {
         return Registry.register(Registry.TREE_DECORATOR_TYPE, name, new TreeDecoratorType<>(codec));
     }
 
-    protected static <FC extends IFeatureConfig, F extends Feature<FC>> ConfiguredFeature<FC, F> registerFeature(ResourceLocation rl, ConfiguredFeature<FC, F> feature) {
+    protected static <FC extends IFeatureConfig, F extends Feature<FC>> ConfiguredFeature<FC, F> registerWorldFeature(ResourceLocation rl, ConfiguredFeature<FC, F> feature) {
         return Registry.register(WorldGenRegistries.field_243653_e, rl, feature);
+    }
+
+    private static <C extends IFeatureConfig, F extends Feature<C>> F registerFeatureCodec(String key, F value) {
+        return Registry.register(Registry.FEATURE, key, value);
     }
 }

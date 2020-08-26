@@ -150,7 +150,7 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 	 */
 	protected abstract boolean generate(IWorld world, Random random, BlockPos pos, Set<BlockPos> logpos, Set<BlockPos> leavespos, Set<BlockPos> branchpos, Set<BlockPos> rootpos, MutableBoundingBox mbb, T config);
 
-	//AbstractTrunkPlancer.func_236911_a_ copy
+	//AbstractTrunkPlacer.func_236911_a_ copy - Use that one instead when extending that Abstract
 	protected boolean setLogBlockState(IWorld world, Random random, BlockPos pos, Set<BlockPos> logPos, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
 		if (TreeFeature.isReplaceableAt(world, pos)) {
 			this.setBlockState(world, pos, config.trunkProvider.getBlockState(random, pos), mbb);
