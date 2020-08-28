@@ -9,6 +9,8 @@ import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.*;
@@ -71,7 +73,13 @@ public class BlockTFPortal extends BreakableBlock {
 		return state.get(DISALLOW_RETURN) ? AABB : VoxelShapes.empty();
 	}
 
-//	@Override
+	@Override
+	public FluidState getFluidState(BlockState state) {
+		// The portal itself is kind of technically water, and this checks the checkbox in Sugar Cane logic to not destroy itself when portal is made.
+		return Fluids.WATER.getFlowingFluidState(1, false); // 1 is minimum value. Minecraft wiki at time of this writing has the values backwards.
+	}
+
+	//	@Override
 //	@Deprecated
 //	public void addCollisionBoxToList(BlockState state, World world, BlockPos pos, AxisAlignedBB entityBB, List<AxisAlignedBB> blockBBs, @Nullable Entity entity, boolean isActualState) {
 //		addCollisionBoxToList(pos, entityBB, blockBBs, entity instanceof EntityItem ? AABB_ITEM : state.getCollisionBoundingBox(world, pos));
