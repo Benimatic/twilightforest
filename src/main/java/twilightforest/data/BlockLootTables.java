@@ -50,8 +50,8 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.cicada.get());
 		registerDropSelfLootTable(TFBlocks.moonworm.get());
 		registerDropSelfLootTable(TFBlocks.trophy_pedestal.get());
-		registerDropSelfLootTable(TFBlocks.terrorcotta_circle.get());
-		registerDropSelfLootTable(TFBlocks.terrorcotta_diagonal.get());
+		//registerDropSelfLootTable(TFBlocks.terrorcotta_circle.get());
+		//registerDropSelfLootTable(TFBlocks.terrorcotta_diagonal.get());
 		registerDropSelfLootTable(TFBlocks.aurora_block.get());
 		registerDropSelfLootTable(TFBlocks.aurora_pillar.get());
 		registerLootTable(TFBlocks.aurora_slab.get(), droppingSlab(TFBlocks.aurora_slab.get()));
@@ -162,7 +162,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.nagastone_stairs_weathered_right.get());
 		registerDropSelfLootTable(TFBlocks.iron_ladder.get());
 		registerDropSelfLootTable(TFBlocks.stone_twist.get());
-		registerDropSelfLootTable(TFBlocks.lapis_block.get());
+		//registerDropSelfLootTable(TFBlocks.lapis_block.get());
 		registerDropSelfLootTable(TFBlocks.oak_log.get());
 		registerDropSelfLootTable(TFBlocks.oak_wood.get());
 		registerDropSelfLootTable(TFBlocks.oak_sapling.get());

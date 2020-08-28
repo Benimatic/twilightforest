@@ -44,8 +44,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlockModel(TFBlocks.fake_diamond.get(), new ResourceLocation("block/diamond_block"));
 		toBlock(TFBlocks.stronghold_shield.get());
 		toBlock(TFBlocks.trophy_pedestal.get());
-		toBlock(TFBlocks.terrorcotta_circle.get());
-		toBlock(TFBlocks.terrorcotta_diagonal.get());
+		//toBlock(TFBlocks.terrorcotta_circle.get());
+		//toBlock(TFBlocks.terrorcotta_diagonal.get());
 		toBlockModel(TFBlocks.aurora_block.get(), prefix("block/aurora_block_0"));
 		toBlock(TFBlocks.aurora_pillar.get());
 		toBlock(TFBlocks.aurora_slab.get());
@@ -168,7 +168,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.nagastone_stairs_weathered_left.get());
 		toBlock(TFBlocks.nagastone_stairs_weathered_right.get());
 		toBlock(TFBlocks.stone_twist.get());
-		toBlock(TFBlocks.lapis_block.get());
+		//toBlock(TFBlocks.lapis_block.get());
 		toBlock(TFBlocks.oak_log.get());
 		toBlock(TFBlocks.oak_wood.get());
 		toBlock(TFBlocks.oak_leaves.get());

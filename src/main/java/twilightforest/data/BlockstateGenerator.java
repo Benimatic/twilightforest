@@ -90,7 +90,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 							.condition(BlockTFLadderBars.FACING, d).condition(BlockTFLadderBars.RIGHT, true).end();
 		}
 
-		terrorcotta();
+		//terrorcotta();
 		towerBlocks();
 
 		simpleBlock(TFBlocks.fake_gold.get(), models().getExistingFile(new ResourceLocation("block/gold_block")));
@@ -232,14 +232,14 @@ public class BlockstateGenerator extends BlockStateProvider {
 		registerSmokersAndJets();
 		simpleBlock(TFBlocks.stone_twist.get(), models().cubeColumn(TFBlocks.stone_twist.getId().getPath(), prefix("block/stone_twist/twist_end"), prefix("block/stone_twist/twist_side")));
 		ConfiguredModel[] lapisModels = new ConfiguredModel[4];
-		for (int i = 0; i < 4; i++) {
-			String modelName = TFBlocks.lapis_block.getId().getPath();
-			if (i != 0) {
-				modelName += "_" + i;
-			}
-			lapisModels[i] = new ConfiguredModel(models().cubeAll(modelName, prefix("block/lapis_shale_" + i)));
-		}
-		simpleBlock(TFBlocks.lapis_block.get(), lapisModels);
+		//for (int i = 0; i < 4; i++) {
+		//	String modelName = TFBlocks.lapis_block.getId().getPath();
+		//	if (i != 0) {
+		//		modelName += "_" + i;
+		//	}
+		//	lapisModels[i] = new ConfiguredModel(models().cubeAll(modelName, prefix("block/lapis_shale_" + i)));
+		//}
+		//simpleBlock(TFBlocks.lapis_block.get(), lapisModels);
 		registerWoodBlocks();
 		registerNagastone();
 		registerForceFields();
@@ -871,7 +871,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 						}, StairsBlock.WATERLOGGED);
 	}
 
-	private void terrorcotta() {
+	/*private void terrorcotta() {
 		ModelFile terrorcottaNorth = models().withExistingParent(TFBlocks.terrorcotta_circle.getId().getPath(), prefix("block/util/terracotta"))
 						.texture("down", prefix("block/terrorcotta_b"))
 						.texture("up", prefix("block/terrorcotta_a"))
@@ -928,7 +928,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 						.with(BlockTFDiagonal.IS_ROTATED, false).setModels(ConfiguredModel.builder().modelFile(terrorcottaDiagonal).build());
 		getVariantBuilder(TFBlocks.terrorcotta_diagonal.get()).partialState()
 						.with(BlockTFDiagonal.IS_ROTATED, true).setModels(ConfiguredModel.builder().modelFile(terrorcottaDiagonalRotated).uvLock(true).rotationY(90).build());
-	}
+	}*/
 
 	private void towerBlocks() {
 		ResourceLocation cube3 = prefix("block/util/cube_all_3_layer");
