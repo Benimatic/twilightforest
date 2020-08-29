@@ -5,12 +5,14 @@ import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.GameRules;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -28,7 +30,7 @@ import twilightforest.command.TFCommand;
 import twilightforest.enchantment.TFEnchantments;
 import twilightforest.entity.TFEntities;
 import twilightforest.inventory.TFContainers;
-import twilightforest.item.*;
+import twilightforest.item.TFItems;
 import twilightforest.item.recipe.UncraftingEnabledCondition;
 import twilightforest.loot.TFTreasure;
 import twilightforest.network.TFPacketHandler;
@@ -63,6 +65,8 @@ public class TwilightForestMod {
 	// public static TFCommonProxy proxy;
 
 	public TwilightForestMod() {
+		DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> (DistExecutor.SafeRunnable) twilightforest.client.TFClientSetup::addLegacyPack);
+
 		{
 			final Pair<TFConfig.Common, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(TFConfig.Common::new);
 			ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, specPair.getRight());
