@@ -26,6 +26,7 @@ import net.minecraft.world.gen.trunkplacer.TrunkPlacerType;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFCicada;
 import twilightforest.block.BlockTFFirefly;
+import twilightforest.block.BlockTFMagicLog;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.feature.TFBiomeFeatures;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
@@ -109,7 +110,7 @@ public final class TwilightFeatures {
                 new SimpleBlockStateProvider(BlockStates.CANOPY_LOG),
                 new SimpleBlockStateProvider(BlockStates.CANOPY_LEAVES),
                 new LeafSpheroidFoliagePlacer(4.5f, 1.5f, FeatureSpread.func_242252_a(0), 1, 0, -0.25f),
-                new BranchingTrunkPlacer(20, 5, 5, 3, 1, 10, 9),
+                new BranchingTrunkPlacer(20, 5, 5, 3, new BranchesConfiguration(3, 1, 9, 1, 0.3, 0.2)),
                 new TwoLayerFeature(1, 0, 1)
         )
                 .func_236703_a_(ImmutableList.of(Decorators.FIREFLY, Decorators.LIVING_ROOTS))
@@ -120,7 +121,7 @@ public final class TwilightFeatures {
                 new SimpleBlockStateProvider(BlockStates.MANGROVE_LOG),
                 new SimpleBlockStateProvider(BlockStates.MANGROVE_LEAVES),
                 new LeafSpheroidFoliagePlacer(2.5f, 1.5f, FeatureSpread.func_242252_a(0), 2, 0, -0.25f),
-                new TrunkRiser(5, new BranchingTrunkPlacer(6, 4, 0, 1, 2, 6, 7)),
+                new TrunkRiser(5, new BranchingTrunkPlacer(6, 4, 0, 1, new BranchesConfiguration(0, 3, 6, 2, 0.3, 0.25))),
                 new TwoLayerFeature(1, 0, 1)
         )
                 .func_236703_a_(ImmutableList.of(
@@ -137,7 +138,7 @@ public final class TwilightFeatures {
                 new SimpleBlockStateProvider(BlockStates.DARKWOOD_LOG),
                 new SimpleBlockStateProvider(BlockStates.DARKWOOD_LEAVES),
                 new LeafSpheroidFoliagePlacer(4.5f, 2.25f, FeatureSpread.func_242252_a(0), 1, 0, 0.45f),
-                new BranchingTrunkPlacer(6, 5, 0, 4, 1, 6, 10),
+                new BranchingTrunkPlacer(6, 5, 0, 4, new BranchesConfiguration(4, 0, 10, 4, 0.23, 0.23)),
                 new TwoLayerFeature(1, 0, 1)
         )
                 .func_236703_a_(ImmutableList.of(Decorators.LIVING_ROOTS))
@@ -149,7 +150,7 @@ public final class TwilightFeatures {
                 new SimpleBlockStateProvider(BlockStates.TIME_LOG),
                 new SimpleBlockStateProvider(BlockStates.TIME_LEAVES),
                 new LeafSpheroidFoliagePlacer(4.5f, 1.5f, FeatureSpread.func_242252_a(0), 1, 0, -0.25f),
-                new BranchingTrunkPlacer(20, 5, 5, 3, 1, 10, 9),
+                new BranchingTrunkPlacer(20, 5, 5, 3, new BranchesConfiguration(3, 1, 9, 1, 0.3, 0.2)),
                 new TwoLayerFeature(1, 0, 1)
         )
                 .setIgnoreVines()
@@ -159,7 +160,7 @@ public final class TwilightFeatures {
                 new SimpleBlockStateProvider(BlockStates.TRANSFORM_LOG),
                 new SimpleBlockStateProvider(BlockStates.TRANSFORM_LEAVES),
                 new LeafSpheroidFoliagePlacer(4.5f, 1.5f, FeatureSpread.func_242252_a(0), 1, 0, -0.25f),
-                new BranchingTrunkPlacer(20, 5, 5, 3, 1, 10, 9),
+                new BranchingTrunkPlacer(20, 5, 5, 3, new BranchesConfiguration(3, 1, 9, 1, 0.3, 0.2)),
                 new TwoLayerFeature(1, 0, 1)
         )
                 .setIgnoreVines()
@@ -187,7 +188,7 @@ public final class TwilightFeatures {
         public static final BaseTreeFeatureConfig HOLLOW_TREE = new BaseTreeFeatureConfig.Builder(
                 new SimpleBlockStateProvider(BlockStates.OAK_LOG),
                 new SimpleBlockStateProvider(BlockStates.OAK_LEAVES),
-                new LeafSpheroidFoliagePlacer(4.5f, 1.5f, FeatureSpread.func_242252_a(0), 1, 0, 0f),
+                new LeafSpheroidFoliagePlacer(1.5f, 1.25f, FeatureSpread.func_242252_a(0), 1, 0, 0f),
                 new HollowTrunkPlacer(20, 4, 4, 1.5f, 3, new BranchesConfiguration(4, 10d), new SimpleBlockStateProvider(Blocks.VINE.getDefaultState().with(VineBlock.EAST, true))),
                 new TwoLayerFeature(20, 4,  12)
         )
@@ -202,7 +203,7 @@ public final class TwilightFeatures {
                 new SimpleBlockStateProvider(BlockStates.SPRUCE_LOG),
                 new SimpleBlockStateProvider(BlockStates.SPRUCE_LEAVES),
                 new LeafSpheroidFoliagePlacer(4.5f, 1.5f, FeatureSpread.func_242252_a(0), 1, 0, 0f),
-                new BranchingTrunkPlacer(20, 5, 5, 3, 1, 10, 16),
+                new BranchingTrunkPlacer(20, 5, 5, 3, new BranchesConfiguration(3, 1, 9, 1, 0.3, 0.2)),
                 new TwoLayerFeature(1, 0, 1)
         )
                 .setIgnoreVines()

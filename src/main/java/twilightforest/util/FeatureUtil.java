@@ -1,8 +1,10 @@
 package twilightforest.util;
 
+import net.minecraft.block.AirBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
@@ -51,14 +53,14 @@ public class FeatureUtil {
 		}
 	}
 
-	public static void makeLeafSpheroid(IWorldGenerationReader world, Random random, BlockPos centerPos, float vRadius, float hRadius, float verticalBias, BlockStateProvider state, Set<BlockPos> leaves) {
-		float vRadiusSquared = vRadius * vRadius;
-		float hRadiusSquared = hRadius * hRadius;
-		float superRadiusSquared = vRadiusSquared * hRadiusSquared;
+	public static void makeLeafSpheroid(IWorldGenerationReader world, Random random, BlockPos centerPos, float xzRadius, float yRadius, float verticalBias, BlockStateProvider state, Set<BlockPos> leaves) {
+		float xzRadiusSquared = xzRadius * xzRadius;
+		float yRadiusSquared = yRadius * yRadius;
+		float superRadiusSquared = xzRadiusSquared * yRadiusSquared;
 		putLeafBlock(world, random, centerPos, state, leaves);
 
-		for (int y = 0; y <= hRadius; y++) {
-			if (y > hRadius) continue;
+		for (int y = 0; y <= yRadius; y++) {
+			if (y > yRadius) continue;
 
 			putLeafBlock(world, random, centerPos.add( 0,  y, 0), state, leaves);
 			putLeafBlock(world, random, centerPos.add( 0,  y, 0), state, leaves);
@@ -71,26 +73,26 @@ public class FeatureUtil {
 			putLeafBlock(world, random, centerPos.add( 0, -y, 0), state, leaves);
 		}
 
-		for (int x = 0; x <= vRadius; x++) {
-			for (int z = 1; z <= vRadius; z++) {
-				if (x * x + z * z > vRadiusSquared) continue;
+		for (int x = 0; x <= xzRadius; x++) {
+			for (int z = 1; z <= xzRadius; z++) {
+				if (x * x + z * z > xzRadiusSquared) continue;
 
 				putLeafBlock(world, random, centerPos.add(  x, 0,  z), state, leaves);
 				putLeafBlock(world, random, centerPos.add( -x, 0, -z), state, leaves);
 				putLeafBlock(world, random, centerPos.add( -z, 0,  x), state, leaves);
 				putLeafBlock(world, random, centerPos.add(  z, 0, -x), state, leaves);
 
-				for (int y = 0; y <= hRadius; y++) {
-					float xySquare = ((x * x + z * z) * hRadiusSquared);
+				for (int y = 1; y <= yRadius; y++) {
+					float xzSquare = ((x * x + z * z) * yRadiusSquared);
 
-					if (xySquare + ((((float) y - verticalBias) * ((float) y - verticalBias)) * vRadiusSquared) <= superRadiusSquared) {
+					if (xzSquare + ((((float) y - verticalBias) * ((float) y - verticalBias)) * xzRadiusSquared) <= superRadiusSquared) {
 						putLeafBlock(world, random, centerPos.add(  x,  y,  z), state, leaves);
 						putLeafBlock(world, random, centerPos.add( -x,  y, -z), state, leaves);
 						putLeafBlock(world, random, centerPos.add( -z,  y,  x), state, leaves);
 						putLeafBlock(world, random, centerPos.add(  z,  y, -x), state, leaves);
 					}
 
-					if (xySquare + ((((float) y + verticalBias) * ((float) y + verticalBias)) * vRadiusSquared) <= superRadiusSquared) {
+					if (xzSquare + ((((float) y + verticalBias) * ((float) y + verticalBias)) * xzRadiusSquared) <= superRadiusSquared) {
 						putLeafBlock(world, random, centerPos.add(  x, -y,  z), state, leaves);
 						putLeafBlock(world, random, centerPos.add( -x, -y, -z), state, leaves);
 						putLeafBlock(world, random, centerPos.add( -z, -y,  x), state, leaves);
@@ -98,6 +100,73 @@ public class FeatureUtil {
 					}
 				}
 			}
+		}
+	}
+
+	public static void makeLeafSpheroid(IWorldGenerationReader world, Random random, BlockPos centerPos, float radius, BlockStateProvider state, Set<BlockPos> leaves) {
+		float radiusSquared = radius * radius;
+		putLeafBlock(world, random, centerPos, state, leaves);
+
+		for (int y = 0; y <= radius; y++) {
+			if (y > radius) continue;
+
+			putLeafBlock(world, random, centerPos.add( 0,  y, 0), state, leaves);
+			putLeafBlock(world, random, centerPos.add( 0,  y, 0), state, leaves);
+			putLeafBlock(world, random, centerPos.add( 0,  y, 0), state, leaves);
+			putLeafBlock(world, random, centerPos.add( 0,  y, 0), state, leaves);
+
+			putLeafBlock(world, random, centerPos.add( 0, -y, 0), state, leaves);
+			putLeafBlock(world, random, centerPos.add( 0, -y, 0), state, leaves);
+			putLeafBlock(world, random, centerPos.add( 0, -y, 0), state, leaves);
+			putLeafBlock(world, random, centerPos.add( 0, -y, 0), state, leaves);
+		}
+
+		for (int x = 0; x <= radius; x++) {
+			for (int z = 1; z <= radius; z++) {
+				float xzSquare = x * x + z * z;
+
+				if (xzSquare > radiusSquared) continue;
+
+				putLeafBlock(world, random, centerPos.add(  x, 0,  z), state, leaves);
+				putLeafBlock(world, random, centerPos.add( -x, 0, -z), state, leaves);
+				putLeafBlock(world, random, centerPos.add( -z, 0,  x), state, leaves);
+				putLeafBlock(world, random, centerPos.add(  z, 0, -x), state, leaves);
+
+				for (int y = 1; y <= radius; y++) {
+
+					if (xzSquare + y * y <= radius * radius) {
+						putLeafBlock(world, random, centerPos.add(  x,  y,  z), state, leaves);
+						putLeafBlock(world, random, centerPos.add( -x,  y, -z), state, leaves);
+						putLeafBlock(world, random, centerPos.add( -z,  y,  x), state, leaves);
+						putLeafBlock(world, random, centerPos.add(  z,  y, -x), state, leaves);
+
+						putLeafBlock(world, random, centerPos.add(  x, -y,  z), state, leaves);
+						putLeafBlock(world, random, centerPos.add( -x, -y, -z), state, leaves);
+						putLeafBlock(world, random, centerPos.add( -z, -y,  x), state, leaves);
+						putLeafBlock(world, random, centerPos.add(  z, -y, -x), state, leaves);
+					}
+				}
+			}
+		}
+	}
+
+	public static boolean hasAirAround(IWorldGenerationReader world, BlockPos pos) {
+		for (Direction e : directionsExceptDown) {
+			if (world.hasBlockState(pos, b -> b.getBlock() instanceof AirBlock)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Draws a line from {x1, y1, z1} to {x2, y2, z2}
+	 * This takes all variables for setting Branch
+	 */
+	public static void drawBresenhamBranch(IWorldGenerationReader world, Random random, BlockPos from, BlockPos to, Set<BlockPos> state, MutableBoundingBox mbb, BaseTreeFeatureConfig config) {
+		for (BlockPos pixel : getBresenhamArrays(from, to)) {
+			AbstractTrunkPlacer.func_236911_a_(world, random, pixel, state, mbb, config);
 		}
 	}
 

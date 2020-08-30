@@ -1022,13 +1022,18 @@
           "trunk_placer": {
             "offset_up": 5,
             "trunk_placer": {
-              "base_branch_count": 1,
-              "additional_random_branches": 2,
-              "branch_start_offset_down": 6,
-              "branch_length": 7,
+              "height_rand_b": 0,
+              "branch_start_offset_down": 1,
+              "branch_config": {
+                "random_add_length": 2.0,
+                "spacing_yaw": 0.3,
+                "downwards_pitch": 0.25,
+                "count_minimum": 0,
+                "random_add_count": 3,
+                "length": 6.0
+              },
               "base_height": 6,
               "height_rand_a": 4,
-              "height_rand_b": 0,
               "type": "twilightforest:branching_trunk_placer"
             },
             "type": "twilightforest:trunk_mover_upper"

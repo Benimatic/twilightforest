@@ -19,24 +19,18 @@ import java.util.Set;
 public class BranchingTrunkPlacer extends AbstractTrunkPlacer {
     public static final Codec<BranchingTrunkPlacer> CODEC = RecordCodecBuilder.create(instance ->
             func_236915_a_(instance).and(instance.group(
-                    Codec.intRange(0, 16).fieldOf("base_branch_count").forGetter(o -> o.branches),
-                    Codec.intRange(0, 16).fieldOf("additional_random_branches").forGetter(o -> o.addExtraBranches),
-                    Codec.intRange(0, 24).fieldOf("branch_start_offset_down").forGetter(o -> o.branchStartDownwardsOffset),
-                    Codec.intRange(0, 16).fieldOf("branch_length").forGetter(o -> o.branchLength)
+                    Codec.intRange(0, 24).fieldOf("branch_start_offset_down").forGetter(o -> o.branchDownwardOffset),
+                    BranchesConfiguration.CODEC.fieldOf("branch_config").forGetter(o -> o.branchesConfiguration)
             )).apply(instance, BranchingTrunkPlacer::new)
     );
 
-    private final int branches;
-    private final int addExtraBranches;
-    private final int branchStartDownwardsOffset;
-    private final int branchLength;
+    private final int branchDownwardOffset;
+    private final BranchesConfiguration branchesConfiguration;
 
-    public BranchingTrunkPlacer(int baseHeight, int randomHeightA, int randomHeightB, int branches, int addExtraBranches, int branchDownwardsOffset, int branchLength) {
+    public BranchingTrunkPlacer(int baseHeight, int randomHeightA, int randomHeightB, int branchDownwardOffset, BranchesConfiguration branchesConfiguration) {
         super(baseHeight, randomHeightA, randomHeightB);
-        this.branches = branches;
-        this.addExtraBranches = addExtraBranches;
-        this.branchStartDownwardsOffset = branchDownwardsOffset;
-        this.branchLength = branchLength;
+        this.branchDownwardOffset = branchDownwardOffset;
+        this.branchesConfiguration = branchesConfiguration;
     }
 
     @Override
@@ -55,12 +49,12 @@ public class BranchingTrunkPlacer extends AbstractTrunkPlacer {
             }
         }
 
-        leafBlocks.add(new FoliagePlacer.Foliage(startPos.up(height), 1, false));
+        leafBlocks.add(new FoliagePlacer.Foliage(startPos.up(height), 0, false));
 
-        int numBranches = branches + random.nextInt(addExtraBranches + 1);
+        int numBranches = branchesConfiguration.branchCount + random.nextInt(branchesConfiguration.randomAddBranches + 1);
         float offset = random.nextFloat();
         for (int b = 0; b < numBranches; b++) {
-            buildBranch(world, startPos, trunkBlocks, leafBlocks, height - branchStartDownwardsOffset + b, branchLength, 0.3 * b + offset, 0.2, random, mutableBoundingBox, baseTreeFeatureConfig);
+            buildBranch(world, startPos, trunkBlocks, leafBlocks, height - branchDownwardOffset + b, branchesConfiguration.branchCount, branchesConfiguration.spacingYaw * b + offset, branchesConfiguration.downwardsPitch, random, mutableBoundingBox, baseTreeFeatureConfig);
         }
 
         return leafBlocks;

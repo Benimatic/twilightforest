@@ -55,7 +55,7 @@ public class LeafSpheroidFoliagePlacer extends FoliagePlacer {
         BlockPos center = foliage.func_236763_a_().up(offset); // foliage.getCenter
 
         //FeatureUtil.makeLeafCircle(world, random, center, radius, baseTreeFeatureConfig.leavesProvider, set);
-        FeatureUtil.makeLeafSpheroid(world, random, center, horizontalRadius + random.nextInt(randomHorizontal + 1), verticalRadius + random.nextInt(randomVertical + 1), verticalBias, baseTreeFeatureConfig.leavesProvider, set);
+        FeatureUtil.makeLeafSpheroid(world, random, center, foliage.func_236764_b_() + horizontalRadius + random.nextInt(randomHorizontal + 1), foliage.func_236764_b_() + verticalRadius + random.nextInt(randomVertical + 1), verticalBias, baseTreeFeatureConfig.leavesProvider, set);
     }
 
     @Override // foliage Height

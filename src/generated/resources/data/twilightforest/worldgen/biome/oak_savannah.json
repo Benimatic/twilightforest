@@ -1095,13 +1095,18 @@
                             "type": "twilightforest:spheroid_foliage_placer"
                           },
                           "trunk_placer": {
-                            "base_branch_count": 3,
-                            "additional_random_branches": 1,
-                            "branch_start_offset_down": 10,
-                            "branch_length": 9,
+                            "height_rand_b": 5,
+                            "branch_start_offset_down": 3,
+                            "branch_config": {
+                              "random_add_length": 1.0,
+                              "spacing_yaw": 0.3,
+                              "downwards_pitch": 0.2,
+                              "count_minimum": 3,
+                              "random_add_count": 1,
+                              "length": 9.0
+                            },
                             "base_height": 20,
                             "height_rand_a": 5,
-                            "height_rand_b": 5,
                             "type": "twilightforest:branching_trunk_placer"
                           }
                         },
@@ -1197,13 +1202,18 @@
                           "trunk_placer": {
                             "offset_up": 5,
                             "trunk_placer": {
-                              "base_branch_count": 1,
-                              "additional_random_branches": 2,
-                              "branch_start_offset_down": 6,
-                              "branch_length": 7,
+                              "height_rand_b": 0,
+                              "branch_start_offset_down": 1,
+                              "branch_config": {
+                                "random_add_length": 2.0,
+                                "spacing_yaw": 0.3,
+                                "downwards_pitch": 0.25,
+                                "count_minimum": 0,
+                                "random_add_count": 3,
+                                "length": 6.0
+                              },
                               "base_height": 6,
                               "height_rand_a": 4,
-                              "height_rand_b": 0,
                               "type": "twilightforest:branching_trunk_placer"
                             },
                             "type": "twilightforest:trunk_mover_upper"
@@ -1275,13 +1285,18 @@
                             "type": "twilightforest:spheroid_foliage_placer"
                           },
                           "trunk_placer": {
-                            "base_branch_count": 4,
-                            "additional_random_branches": 1,
-                            "branch_start_offset_down": 6,
-                            "branch_length": 10,
+                            "height_rand_b": 0,
+                            "branch_start_offset_down": 4,
+                            "branch_config": {
+                              "random_add_length": 4.0,
+                              "spacing_yaw": 0.23,
+                              "downwards_pitch": 0.23,
+                              "count_minimum": 4,
+                              "random_add_count": 0,
+                              "length": 10.0
+                            },
                             "base_height": 6,
                             "height_rand_a": 5,
-                            "height_rand_b": 0,
                             "type": "twilightforest:branching_trunk_placer"
                           }
                         },
@@ -1331,13 +1346,18 @@
                             "type": "twilightforest:spheroid_foliage_placer"
                           },
                           "trunk_placer": {
-                            "base_branch_count": 3,
-                            "additional_random_branches": 1,
-                            "branch_start_offset_down": 10,
-                            "branch_length": 9,
+                            "height_rand_b": 5,
+                            "branch_start_offset_down": 3,
+                            "branch_config": {
+                              "random_add_length": 1.0,
+                              "spacing_yaw": 0.3,
+                              "downwards_pitch": 0.2,
+                              "count_minimum": 3,
+                              "random_add_count": 1,
+                              "length": 9.0
+                            },
                             "base_height": 20,
                             "height_rand_a": 5,
-                            "height_rand_b": 5,
                             "type": "twilightforest:branching_trunk_placer"
                           }
                         },
@@ -1387,13 +1407,18 @@
                             "type": "twilightforest:spheroid_foliage_placer"
                           },
                           "trunk_placer": {
-                            "base_branch_count": 3,
-                            "additional_random_branches": 1,
-                            "branch_start_offset_down": 10,
-                            "branch_length": 9,
+                            "height_rand_b": 5,
+                            "branch_start_offset_down": 3,
+                            "branch_config": {
+                              "random_add_length": 1.0,
+                              "spacing_yaw": 0.3,
+                              "downwards_pitch": 0.2,
+                              "count_minimum": 3,
+                              "random_add_count": 1,
+                              "length": 9.0
+                            },
                             "base_height": 20,
                             "height_rand_a": 5,
-                            "height_rand_b": 5,
                             "type": "twilightforest:branching_trunk_placer"
                           }
                         },
@@ -1571,8 +1596,8 @@
                             "random_add_horizontal": 1,
                             "random_add_vertical": 0,
                             "vertical_filler_bias": 0.0,
-                            "horizontal_radius": 4.5,
-                            "vertical_radius": 1.5,
+                            "horizontal_radius": 1.5,
+                            "vertical_radius": 1.25,
                             "offset": 0,
                             "type": "twilightforest:spheroid_foliage_placer"
                           },
