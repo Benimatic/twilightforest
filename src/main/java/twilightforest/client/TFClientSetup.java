@@ -31,52 +31,57 @@ import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TFClientSetup {
-	@SubscribeEvent
-	public static void clientSetup(FMLClientSetupEvent evt) {
-		TFItems.addItemModelProperties();
+    @SubscribeEvent
+    public static void clientSetup(FMLClientSetupEvent evt) {
+        TFItems.addItemModelProperties();
 
-		ItemTFKnightlyArmor.initArmorModel();
-		ItemTFPhantomArmor.initArmorModel();
-		ItemTFYetiArmor.initArmorModel();
-		ItemTFArcticArmor.initArmorModel();
-		ItemTFFieryArmor.initArmorModel();
-		// FIXME MinecraftForge.EVENT_BUS.register(new LoadingScreenListener());
-		RenderLayerRegistration.init();
-		TFEntities.registerEntityRenderer();
-		TFTileEntities.registerTileEntityRenders();
-		TFContainers.renderScreens();
+        ItemTFKnightlyArmor.initArmorModel();
+        ItemTFPhantomArmor.initArmorModel();
+        ItemTFYetiArmor.initArmorModel();
+        ItemTFArcticArmor.initArmorModel();
+        ItemTFFieryArmor.initArmorModel();
+        // FIXME MinecraftForge.EVENT_BUS.register(new LoadingScreenListener());
+        RenderLayerRegistration.init();
+        TFEntities.registerEntityRenderer();
+        TFTileEntities.registerTileEntityRenders();
+        TFContainers.renderScreens();
 
-		TwilightForestRenderInfo renderInfo = new TwilightForestRenderInfo(128.0F, false, DimensionRenderInfo.FogType.NONE, false, false);
-		DimensionRenderInfo.field_239208_a_.put(TwilightForestMod.prefix("renderer"), renderInfo);
-	}
+        TwilightForestRenderInfo renderInfo = new TwilightForestRenderInfo(128.0F, false, DimensionRenderInfo.FogType.NONE, false, false);
+        DimensionRenderInfo.field_239208_a_.put(TwilightForestMod.prefix("renderer"), renderInfo);
+    }
 
-	public static void addLegacyPack() {
-		Minecraft.getInstance().getResourcePackList().addPackFinder(
-				(consumer, iFactory) -> consumer.accept(
-						ResourcePackInfo.createResourcePack(
-								TwilightForestMod.prefix("classic_textures").toString(),
-								false,
-								() -> new TwilightLegacyPack(
-										ModList
-												.get()
-												.getModFileById(TwilightForestMod.ID)
-												.getFile()
-								),
-								iFactory,
-								ResourcePackInfo.Priority.TOP,
-								iTextComponent -> iTextComponent
-						)
-				)
-		);
-	}
+    public static void addLegacyPack() {
+        //noinspection ConstantConditions
+        if (Minecraft.getInstance() == null)
+            // Normally Minecraft Client is never null except when generating through runData
+            return;
 
-	@SubscribeEvent // FIXME there's a few IDE warnings, find out what this is all about
-	public static void loadComplete(FMLLoadCompleteEvent evt) {
-		Minecraft.getInstance().getRenderManager().renderers.values().forEach(r -> {
-			if (r instanceof LivingRenderer) {
-				((LivingRenderer) r).addLayer(new LayerShields((LivingRenderer) r));
-				((LivingRenderer) r).addLayer(new LayerIce((LivingRenderer) r));
-			}
-		});
-	}
+        Minecraft.getInstance().getResourcePackList().addPackFinder(
+                (consumer, iFactory) -> consumer.accept(
+                        ResourcePackInfo.createResourcePack(
+                                TwilightForestMod.prefix("classic_textures").toString(),
+                                false,
+                                () -> new TwilightLegacyPack(
+                                        ModList
+                                                .get()
+                                                .getModFileById(TwilightForestMod.ID)
+                                                .getFile()
+                                ),
+                                iFactory,
+                                ResourcePackInfo.Priority.TOP,
+                                iTextComponent -> iTextComponent
+                        )
+                )
+        );
+    }
+
+    @SubscribeEvent // FIXME there's a few IDE warnings, find out what this is all about
+    public static void loadComplete(FMLLoadCompleteEvent evt) {
+        Minecraft.getInstance().getRenderManager().renderers.values().forEach(r -> {
+            if (r instanceof LivingRenderer) {
+                ((LivingRenderer) r).addLayer(new LayerShields((LivingRenderer) r));
+                ((LivingRenderer) r).addLayer(new LayerIce((LivingRenderer) r));
+            }
+        });
+    }
 }
