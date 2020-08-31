@@ -887,20 +887,6 @@
               },
               "decorators": [
                 {
-                  "placement_count": 1,
-                  "probability_of_placement": 1.0,
-                  "deco_provider": {
-                    "state": {
-                      "Properties": {
-                        "facing": "north"
-                      },
-                      "Name": "twilightforest:firefly"
-                    },
-                    "type": "minecraft:simple_state_provider"
-                  },
-                  "type": "twilightforest:trunkside_decorator"
-                },
-                {
                   "root_length": 5,
                   "ground_roots_provider": {
                     "entries": [
@@ -922,6 +908,85 @@
                   "base_strand_count": 3,
                   "additional_random_strands": 1,
                   "type": "twilightforest:tree_roots"
+                },
+                {
+                  "placement_count": 1,
+                  "probability_of_placement": 1.0,
+                  "deco_provider": {
+                    "state": {
+                      "Properties": {
+                        "facing": "north"
+                      },
+                      "Name": "twilightforest:firefly"
+                    },
+                    "type": "minecraft:simple_state_provider"
+                  },
+                  "type": "twilightforest:trunkside_decorator"
+                },
+                {
+                  "placement_count": 3,
+                  "probability_of_placement": 0.4,
+                  "deco_provider": {
+                    "state": {
+                      "Properties": {
+                        "facing": "north"
+                      },
+                      "Name": "twilightforest:firefly"
+                    },
+                    "type": "minecraft:simple_state_provider"
+                  },
+                  "type": "twilightforest:trunkside_decorator"
+                },
+                {
+                  "base_length": 5,
+                  "random_add_length": 15,
+                  "rope_provider": {
+                    "state": {
+                      "Properties": {
+                        "west": "false",
+                        "waterlogged": "false",
+                        "south": "false",
+                        "north": "false",
+                        "east": "false"
+                      },
+                      "Name": "twilightforest:canopy_fence"
+                    },
+                    "type": "minecraft:simple_state_provider"
+                  },
+                  "baggage_provider": {
+                    "state": {
+                      "Name": "twilightforest:firefly_jar"
+                    },
+                    "type": "minecraft:simple_state_provider"
+                  },
+                  "attempts_minimum": 1,
+                  "random_add_attempts": 2,
+                  "minimum_length": 2,
+                  "type": "twilightforest:dangle_from_tree_decorator"
+                },
+                {
+                  "base_length": 5,
+                  "random_add_length": 15,
+                  "rope_provider": {
+                    "state": {
+                      "Properties": {
+                        "waterlogged": "false",
+                        "axis": "y"
+                      },
+                      "Name": "minecraft:chain"
+                    },
+                    "type": "minecraft:simple_state_provider"
+                  },
+                  "baggage_provider": {
+                    "state": {
+                      "Name": "twilightforest:firefly_jar"
+                    },
+                    "type": "minecraft:simple_state_provider"
+                  },
+                  "attempts_minimum": 0,
+                  "random_add_attempts": 1,
+                  "minimum_length": 2,
+                  "type": "twilightforest:dangle_from_tree_decorator"
                 }
               ],
               "trunk_provider": {

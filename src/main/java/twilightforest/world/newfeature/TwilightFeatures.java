@@ -2,10 +2,7 @@ package twilightforest.world.newfeature;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.HugeMushroomBlock;
-import net.minecraft.block.LeavesBlock;
+import net.minecraft.block.*;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
@@ -39,6 +36,7 @@ public final class TwilightFeatures {
 
     public static final TreeDecoratorType<TrunkSideDecorator> TRUNKSIDE_DECORATOR = registerTreeFeature(TwilightForestMod.prefix("trunkside_decorator"), TrunkSideDecorator.CODEC);
     public static final TreeDecoratorType<TreeRootsDecorator> TREE_ROOTS = registerTreeFeature(TwilightForestMod.prefix("tree_roots"), TreeRootsDecorator.CODEC);
+    public static final TreeDecoratorType<DangleFromTreeDecorator> DANGLING_DECORATOR = registerTreeFeature(TwilightForestMod.prefix("dangle_from_tree_decorator"), DangleFromTreeDecorator.CODEC);
 
     public static final class BlockStates {
         //Blockstates
@@ -122,6 +120,43 @@ public final class TwilightFeatures {
                 .setIgnoreVines()
                 .build();
 
+        public static final BaseTreeFeatureConfig CANOPY_TREE_FIREFLY = new BaseTreeFeatureConfig.Builder(
+                new SimpleBlockStateProvider(BlockStates.CANOPY_LOG),
+                new SimpleBlockStateProvider(BlockStates.CANOPY_LEAVES),
+                new LeafSpheroidFoliagePlacer(4.5f, 1.5f, FeatureSpread.func_242252_a(0), 1, 0, -0.25f),
+                new BranchingTrunkPlacer(20, 5, 5, 7, new BranchesConfiguration(3, 1, 10, 1, 0.3, 0.2), false),
+                new TwoLayerFeature(20, 0, canopyDistancing)
+        )
+                .func_236703_a_(ImmutableList.of(
+                        Decorators.LIVING_ROOTS,
+                        Decorators.FIREFLY,
+                        new TrunkSideDecorator( // A few more Fireflies!
+                                3,
+                                0.4f,
+                                new SimpleBlockStateProvider(TFBlocks.firefly.get().getDefaultState().with(BlockTFFirefly.FACING, Direction.NORTH))
+                        ),
+                        new DangleFromTreeDecorator(
+                                1,
+                                2,
+                                2,
+                                5,
+                                15,
+                                new SimpleBlockStateProvider(TFBlocks.canopy_fence.get().getDefaultState()),
+                                new SimpleBlockStateProvider(TFBlocks.firefly_jar.get().getDefaultState())
+                        ),
+                        new DangleFromTreeDecorator(
+                                0,
+                                1,
+                                2,
+                                5,
+                                15,
+                                new SimpleBlockStateProvider(Blocks.CHAIN.getDefaultState()),
+                                new SimpleBlockStateProvider(TFBlocks.firefly_jar.get().getDefaultState())
+                        )
+                ))
+                .setIgnoreVines()
+                .build();
+
         public static final BaseTreeFeatureConfig CANOPY_TREE_DEAD = new BaseTreeFeatureConfig.Builder(
                 new SimpleBlockStateProvider(BlockStates.CANOPY_LOG),
                 new SimpleBlockStateProvider(BlockStates.AIR),
@@ -154,10 +189,21 @@ public final class TwilightFeatures {
                 new SimpleBlockStateProvider(BlockStates.DARKWOOD_LOG),
                 new SimpleBlockStateProvider(BlockStates.DARKWOOD_LEAVES),
                 new LeafSpheroidFoliagePlacer(4.5f, 2.25f, FeatureSpread.func_242252_a(0), 1, 0, 0.45f),
-                new BranchingTrunkPlacer(6, 5, 0, 5, new BranchesConfiguration(4, 0, 10, 4, 0.23, 0.23), false),
+                new BranchingTrunkPlacer(6, 3, 3, 5, new BranchesConfiguration(4, 0, 10, 4, 0.23, 0.23), false),
                 new TwoLayerFeature(1, 0, 1)
         )
-                .func_236703_a_(ImmutableList.of(Decorators.LIVING_ROOTS))
+                .func_236703_a_(ImmutableList.of(
+                        Decorators.LIVING_ROOTS,
+                        new DangleFromTreeDecorator(
+                                0,
+                                1,
+                                2,
+                                4,
+                                2,
+                                new SimpleBlockStateProvider(Blocks.CHAIN.getDefaultState()),
+                                new SimpleBlockStateProvider(Blocks.LANTERN.getDefaultState().with(LanternBlock.HANGING, true))
+                        )
+                ))
                 .setIgnoreVines()
                 .build();
 
@@ -258,6 +304,7 @@ public final class TwilightFeatures {
     public static final class ConfiguredFeatures {
         public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> TWILIGHT_OAK = registerWorldFeature(TwilightForestMod.prefix("twilight_oak"), Feature.field_236291_c_.withConfiguration(TreeConfigurations.TWILIGHT_OAK));
         public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> CANOPY_TREE = registerWorldFeature(TwilightForestMod.prefix("canopy_tree"), Feature.field_236291_c_.withConfiguration(TreeConfigurations.CANOPY_TREE));
+        public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> CANOPY_TREE_FIREFLY = registerWorldFeature(TwilightForestMod.prefix("canopy_tree_firefly"), Feature.field_236291_c_.withConfiguration(TreeConfigurations.CANOPY_TREE_FIREFLY));
         public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> CANOPY_TREE_DEAD = registerWorldFeature(TwilightForestMod.prefix("canopy_tree_dead"), Feature.field_236291_c_.withConfiguration(TreeConfigurations.CANOPY_TREE_DEAD));
         public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> MANGROVE_TREE = registerWorldFeature(TwilightForestMod.prefix("mangrove_tree"), Feature.field_236291_c_.withConfiguration(TreeConfigurations.MANGROVE_TREE));
         public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> DARKWOOD_TREE = registerWorldFeature(TwilightForestMod.prefix("darkwood_tree"), Feature.field_236291_c_.withConfiguration(TreeConfigurations.DARKWOOD_TREE));
@@ -268,7 +315,7 @@ public final class TwilightFeatures {
         public static final ConfiguredFeature<TFTreeFeatureConfig  , ? extends Feature<?>> HOLLOW_TREE = registerWorldFeature(TwilightForestMod.prefix("hollow_tree"), TFBiomeFeatures.HOLLOW_TREE.get().withConfiguration(TreeConfigurations.HOLLOW_TREE));
         public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> RAINBOAK_TREE = registerWorldFeature(TwilightForestMod.prefix("rainbow_oak"), Feature.field_236291_c_.withConfiguration(TreeConfigurations.RAINBOAK_TREE));
         public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> MUSHROOM_BROWN = registerWorldFeature(TwilightForestMod.prefix("canopy_mushroom_brown"), Feature.field_236291_c_.withConfiguration(TreeConfigurations.MUSHROOM_BROWN));
-        public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> MUSHROOM_RED = registerWorldFeature(TwilightForestMod.prefix("canopy_mushroom_brown"), Feature.field_236291_c_.withConfiguration(TreeConfigurations.MUSHROOM_RED));
+        public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> MUSHROOM_RED = registerWorldFeature(TwilightForestMod.prefix("canopy_mushroom_red"), Feature.field_236291_c_.withConfiguration(TreeConfigurations.MUSHROOM_RED));
 
         public static final ConfiguredFeature<?, ?> DEFAULT_TWILIGHT_TREES = registerWorldFeature(TwilightForestMod.prefix("twilight_trees"),
                 Feature.RANDOM_SELECTOR

@@ -41,7 +41,7 @@ public final class BiomeGenerator extends BiomeDataHelper {
         );
 
         biomes.put(TwilightForestMod.prefix("firefly_forest"),
-                biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), addCanopy(defaultGenSettingBuilder()))
+                biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), addCanopyFirefly(defaultGenSettingBuilder()))
                         .downfall(1)
                         .depth(0.125F)
                         .scale(0.05F)

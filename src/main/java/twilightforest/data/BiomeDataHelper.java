@@ -50,6 +50,11 @@ public abstract class BiomeDataHelper extends BiomeProvider {
 
         return biome;
     }
+    public static BiomeGenerationSettings.Builder addCanopyFirefly(BiomeGenerationSettings.Builder biome) {
+        biome.func_242513_a(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredFeatures.CANOPY_TREE_FIREFLY.withPlacement(Placement.field_242902_f.configure(new AtSurfaceWithExtraConfig(8, 0.1F, 1)).func_242728_a()));
+
+        return biome;
+    }
 
     public static BiomeGenerationSettings.Builder addCanopyDead(BiomeGenerationSettings.Builder biome) {
         biome.func_242513_a(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredFeatures.CANOPY_TREE_DEAD.withPlacement(Placement.field_242902_f.configure(new AtSurfaceWithExtraConfig(8, 0.1F, 1)).func_242728_a()));

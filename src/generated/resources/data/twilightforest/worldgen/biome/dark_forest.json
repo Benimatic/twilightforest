@@ -908,6 +908,34 @@
                   "base_strand_count": 3,
                   "additional_random_strands": 1,
                   "type": "twilightforest:tree_roots"
+                },
+                {
+                  "base_length": 4,
+                  "random_add_length": 2,
+                  "rope_provider": {
+                    "state": {
+                      "Properties": {
+                        "waterlogged": "false",
+                        "axis": "y"
+                      },
+                      "Name": "minecraft:chain"
+                    },
+                    "type": "minecraft:simple_state_provider"
+                  },
+                  "baggage_provider": {
+                    "state": {
+                      "Properties": {
+                        "waterlogged": "false",
+                        "hanging": "true"
+                      },
+                      "Name": "minecraft:lantern"
+                    },
+                    "type": "minecraft:simple_state_provider"
+                  },
+                  "attempts_minimum": 0,
+                  "random_add_attempts": 1,
+                  "minimum_length": 2,
+                  "type": "twilightforest:dangle_from_tree_decorator"
                 }
               ],
               "trunk_provider": {
@@ -946,8 +974,8 @@
                 },
                 "perpendicular_branches": false,
                 "base_height": 6,
-                "height_rand_a": 5,
-                "height_rand_b": 0,
+                "height_rand_a": 3,
+                "height_rand_b": 3,
                 "type": "twilightforest:branching_trunk_placer"
               }
             },
