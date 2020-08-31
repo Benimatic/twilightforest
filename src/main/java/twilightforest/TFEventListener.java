@@ -5,6 +5,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.monster.IMob;
@@ -33,6 +34,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerChunkProvider;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -97,6 +99,20 @@ public class TFEventListener {
 	private static boolean isBreakingWithGiantPick = false;
 	private static boolean shouldMakeGiantCobble = false;
 	private static int amountOfCobbleToReplace = 0;
+
+	@SubscribeEvent
+	public static void onMobSpawn(WorldEvent.PotentialSpawns event) {
+		if (event.getType() == EntityClassification.MONSTER &&
+
+				event.getWorld() instanceof ServerWorld &&
+
+				event.getWorld().getChunkProvider() instanceof ServerChunkProvider &&
+
+				((ServerWorld) event.getWorld()).getDimensionKey().func_240901_a_().equals(TFDimensions.twilightForest.func_240901_a_()) &&
+
+				event.getPos().getY() >= ((ServerChunkProvider) event.getWorld().getChunkProvider()).getChunkGenerator().func_230356_f_())
+			event.setCanceled(true);
+	}
 
 	@SubscribeEvent
 	public static void onCrafting(PlayerEvent.ItemCraftedEvent event) {
