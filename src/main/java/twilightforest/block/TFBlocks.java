@@ -79,7 +79,7 @@ public class TFBlocks {
 	public static final RegistryObject<Block> naga_stone                 = BLOCKS.register("naga_stone", () -> new BlockTFNagastone(Block.Properties.create(Material.ROCK).hardnessAndResistance(1.5F, 10.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<SaplingBlock> oak_sapling            = BLOCKS.register("twilight_oak_sapling", () -> new BlockTFSapling(new SmallOakTree()));
 	public static final RegistryObject<SaplingBlock> canopy_sapling         = BLOCKS.register("canopy_sapling", () -> new BlockTFSapling(new CanopyTree()));
-	public static final RegistryObject<SaplingBlock> mangrove_sapling       = BLOCKS.register("mangrove_sapling", () -> new BlockTFSapling(new MangroveTree()));
+	public static final RegistryObject<SaplingBlock> mangrove_sapling       = BLOCKS.register("mangrove_sapling", () -> new BlockMangroveSapling(new MangroveTree()));
 	public static final RegistryObject<SaplingBlock> darkwood_sapling       = BLOCKS.register("darkwood_sapling", () -> new BlockTFSapling(new DarkCanopyTree()));
 	public static final RegistryObject<SaplingBlock> hollow_oak_sapling     = BLOCKS.register("hollow_oak_sapling", () -> new BlockTFSapling(new HollowTree()));
 	public static final RegistryObject<SaplingBlock> time_sapling           = BLOCKS.register("time_sapling", () -> new BlockTFSapling(new TimeTree()));
