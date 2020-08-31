@@ -28,12 +28,12 @@ public final class BiomeGenerator extends BiomeDataHelper {
         defaultBiomeGenerationSettings.func_242513_a(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredFeatures.DEFAULT_TWILIGHT_TREES);
 
         biomes.put(TwilightForestMod.prefix("forest"),
-                biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), defaultBiomeGenerationSettings)
+                biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), addCanopy(defaultGenSettingBuilder()))
                         .func_242455_a()
         );
 
         biomes.put(TwilightForestMod.prefix("dense_forest"),
-                biomeWithDefaults(defaultAmbientBuilder().setWaterColor(0x005522), defaultMobSpawning(), defaultBiomeGenerationSettings)
+                biomeWithDefaults(defaultAmbientBuilder().setWaterColor(0x005522), defaultMobSpawning(), addCanopy(addCanopy(defaultGenSettingBuilder())))
                         .temperature(0.7F)
                         .downfall(0.8F)
                         .depth(0.2F)
@@ -41,7 +41,7 @@ public final class BiomeGenerator extends BiomeDataHelper {
         );
 
         biomes.put(TwilightForestMod.prefix("firefly_forest"),
-                biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), defaultBiomeGenerationSettings)
+                biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), addCanopy(defaultGenSettingBuilder()))
                         .downfall(1)
                         .depth(0.125F)
                         .scale(0.05F)
@@ -67,24 +67,15 @@ public final class BiomeGenerator extends BiomeDataHelper {
                         .func_242455_a()
         );
 
-        BiomeGenerationSettings.Builder mushroomBiome = defaultGenSettingBuilder();
-
-        DefaultBiomeFeatures.func_243712_Z(mushroomBiome); // Add small mushrooms
-        DefaultBiomeFeatures.func_243703_Q(mushroomBiome); // Add large mushrooms
-
         biomes.put(TwilightForestMod.prefix("mushroom_forest"),
-                biomeWithDefaults(defaultAmbientBuilder().setWaterColor(0xC0FFD8).setWaterFogColor(0x3F76E4), defaultMobSpawning(), mushroomBiome)
+                biomeWithDefaults(defaultAmbientBuilder().setWaterColor(0xC0FFD8).setWaterFogColor(0x3F76E4), defaultMobSpawning(), addMushroomCanopy(defaultGenSettingBuilder(), 0.2f))
                         .temperature(0.8F)
                         .downfall(0.8F)
                         .func_242455_a()
         );
 
-        // TODO add towering mushrooms
-
-        modify(mushroomBiome, builder -> builder.func_242513_a(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredFeatures.TWILIGHT_OAK));
-
         biomes.put(TwilightForestMod.prefix("dense_mushroom_forest"),
-                biomeWithDefaults(defaultAmbientBuilder().setWaterColor(0xC0FFD8).setWaterFogColor(0x3F76E4), defaultMobSpawning(), mushroomBiome)
+                biomeWithDefaults(defaultAmbientBuilder().setWaterColor(0xC0FFD8).setWaterFogColor(0x3F76E4), defaultMobSpawning(), addMushroomCanopy(defaultGenSettingBuilder(), 0.9f))
                         .temperature(0.8F)
                         .downfall(1)
                         .depth(0.125F)
@@ -101,7 +92,7 @@ public final class BiomeGenerator extends BiomeDataHelper {
         );
 
         biomes.put(TwilightForestMod.prefix("enchanted_forest"),
-                biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), modify(defaultGenSettingBuilder(), c -> c.func_242513_a(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredFeatures.RAINBOAK_TREE)))
+                biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), modify(defaultGenSettingBuilder(), c -> c.func_242513_a(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredFeatures.RAINBOAK_TREE.func_242728_a())))
                         .func_242455_a()
         );
 
@@ -123,7 +114,7 @@ public final class BiomeGenerator extends BiomeDataHelper {
                         .func_242455_a()
         );
 
-        BiomeGenerationSettings.Builder swampGenerationBuilder = modify(defaultGenSettingBuilder(), b -> b.func_242513_a(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredFeatures.MANGROVE_TREE));
+        BiomeGenerationSettings.Builder swampGenerationBuilder = modify(defaultGenSettingBuilder(), b -> b.func_242513_a(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredFeatures.MANGROVE_TREE.func_242728_a()));
 
         biomes.put(TwilightForestMod.prefix("swamp"),
                 biomeWithDefaults(defaultAmbientBuilder().setWaterColor(0xE0FFAE), defaultMobSpawning(), swampGenerationBuilder)
@@ -143,7 +134,7 @@ public final class BiomeGenerator extends BiomeDataHelper {
                         .func_242455_a()
         );
 
-        BiomeGenerationSettings.Builder darkForestGenerationBuilder = modify(defaultGenSettingBuilder(), b -> b.func_242513_a(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredFeatures.DARKWOOD_TREE));
+        BiomeGenerationSettings.Builder darkForestGenerationBuilder = modify(defaultGenSettingBuilder(), b -> b.func_242513_a(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredFeatures.DARKWOOD_TREE.func_242728_a()));
 
         biomes.put(TwilightForestMod.prefix("dark_forest"),
                 biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), darkForestGenerationBuilder)

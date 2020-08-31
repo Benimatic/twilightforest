@@ -20,17 +20,20 @@ public class BranchingTrunkPlacer extends AbstractTrunkPlacer {
     public static final Codec<BranchingTrunkPlacer> CODEC = RecordCodecBuilder.create(instance ->
             func_236915_a_(instance).and(instance.group(
                     Codec.intRange(0, 24).fieldOf("branch_start_offset_down").forGetter(o -> o.branchDownwardOffset),
-                    BranchesConfiguration.CODEC.fieldOf("branch_config").forGetter(o -> o.branchesConfiguration)
+                    BranchesConfiguration.CODEC.fieldOf("branch_config").forGetter(o -> o.branchesConfiguration),
+                    Codec.BOOL.fieldOf("perpendicular_branches").forGetter(o -> o.perpendicularBranches)
             )).apply(instance, BranchingTrunkPlacer::new)
     );
 
     private final int branchDownwardOffset;
     private final BranchesConfiguration branchesConfiguration;
+    private final boolean perpendicularBranches;
 
-    public BranchingTrunkPlacer(int baseHeight, int randomHeightA, int randomHeightB, int branchDownwardOffset, BranchesConfiguration branchesConfiguration) {
+    public BranchingTrunkPlacer(int baseHeight, int randomHeightA, int randomHeightB, int branchDownwardOffset, BranchesConfiguration branchesConfiguration, boolean perpendicularBranches) {
         super(baseHeight, randomHeightA, randomHeightB);
         this.branchDownwardOffset = branchDownwardOffset;
         this.branchesConfiguration = branchesConfiguration;
+        this.perpendicularBranches = perpendicularBranches;
     }
 
     @Override
@@ -42,7 +45,7 @@ public class BranchingTrunkPlacer extends AbstractTrunkPlacer {
     public List<FoliagePlacer.Foliage> func_230382_a_(IWorldGenerationReader world, Random random, int height, BlockPos startPos, Set<BlockPos> trunkBlocks, MutableBoundingBox mutableBoundingBox, BaseTreeFeatureConfig baseTreeFeatureConfig) {
         List<FoliagePlacer.Foliage> leafBlocks = Lists.newArrayList();
 
-        for (int y = 0; y < height; y++) { // Keep building upwards until we cannot, and then adjust height if we run into something
+        for (int y = 0; y <= height; y++) { // Keep building upwards until we cannot, and then adjust height if we run into something
             if (!func_236911_a_(world, random, startPos.up(y), trunkBlocks, mutableBoundingBox, baseTreeFeatureConfig)) {
                 height = y;
                 break;
@@ -54,18 +57,28 @@ public class BranchingTrunkPlacer extends AbstractTrunkPlacer {
         int numBranches = branchesConfiguration.branchCount + random.nextInt(branchesConfiguration.randomAddBranches + 1);
         float offset = random.nextFloat();
         for (int b = 0; b < numBranches; b++) {
-            buildBranch(world, startPos, trunkBlocks, leafBlocks, height - branchDownwardOffset + b, branchesConfiguration.branchCount, branchesConfiguration.spacingYaw * b + offset, branchesConfiguration.downwardsPitch, random, mutableBoundingBox, baseTreeFeatureConfig);
+            buildBranch(world, startPos, trunkBlocks, leafBlocks, height - branchDownwardOffset + b, branchesConfiguration.length, branchesConfiguration.spacingYaw * b + offset, branchesConfiguration.downwardsPitch, random, mutableBoundingBox, baseTreeFeatureConfig, perpendicularBranches);
         }
 
         return leafBlocks;
     }
 
 
-    private static void buildBranch(IWorldGenerationReader world, BlockPos pos, Set<BlockPos> trunkBlocks, List<FoliagePlacer.Foliage> leafBlocks, int height, double length, double angle, double tilt, Random treeRNG, MutableBoundingBox mbb, BaseTreeFeatureConfig config) {
+    private static void buildBranch(IWorldGenerationReader world, BlockPos pos, Set<BlockPos> trunkBlocks, List<FoliagePlacer.Foliage> leafBlocks, int height, double length, double angle, double tilt, Random treeRNG, MutableBoundingBox mbb, BaseTreeFeatureConfig config, boolean perpendicularBranches) {
         BlockPos src = pos.up(height);
         BlockPos dest = FeatureUtil.translate(src, length, angle, tilt);
 
-        drawBresenhamBranch(world, treeRNG, src, dest, trunkBlocks, mbb, config);
+        if (perpendicularBranches) {
+            drawBresenhamBranch(world, treeRNG, src, new BlockPos(dest.getX(), src.getY(), dest.getZ()), trunkBlocks, mbb, config);
+
+            int max = Math.max(src.getY(), dest.getY());
+
+            for (int i = Math.min(src.getY(), dest.getY()); i < max + 1; i++) {
+                func_236911_a_(world, treeRNG, new BlockPos(dest.getX(), i, dest.getZ()), trunkBlocks, mbb, config);
+            }
+        } else {
+            drawBresenhamBranch(world, treeRNG, src, dest, trunkBlocks, mbb, config);
+        }
 
         func_236911_a_(world, treeRNG, dest.east(), trunkBlocks, mbb, config);
         func_236911_a_(world, treeRNG, dest.west(), trunkBlocks, mbb, config);

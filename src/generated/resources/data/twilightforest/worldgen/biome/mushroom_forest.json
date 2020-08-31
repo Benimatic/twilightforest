@@ -607,153 +607,6 @@
           }
         },
         "type": "minecraft:decorated"
-      }
-    ],
-    [],
-    [
-      {
-        "config": {
-          "feature": {
-            "config": {
-              "feature": {
-                "config": {
-                  "features": [
-                    {
-                      "feature": {
-                        "config": {
-                          "max_water_depth": 0,
-                          "ignore_vines": true,
-                          "heightmap": "MOTION_BLOCKING",
-                          "minimum_size": {
-                            "limit": 0,
-                            "lower_size": 0,
-                            "upper_size": 0,
-                            "min_clipped_height": 4,
-                            "type": "minecraft:two_layers_feature_size"
-                          },
-                          "decorators": [
-                            {
-                              "probability": 0.05,
-                              "type": "minecraft:beehive"
-                            }
-                          ],
-                          "trunk_provider": {
-                            "state": {
-                              "Properties": {
-                                "axis": "y"
-                              },
-                              "Name": "minecraft:oak_log"
-                            },
-                            "type": "minecraft:simple_state_provider"
-                          },
-                          "leaves_provider": {
-                            "state": {
-                              "Properties": {
-                                "persistent": "false",
-                                "distance": "7"
-                              },
-                              "Name": "minecraft:oak_leaves"
-                            },
-                            "type": "minecraft:simple_state_provider"
-                          },
-                          "foliage_placer": {
-                            "radius": 2,
-                            "offset": 4,
-                            "height": 4,
-                            "type": "minecraft:fancy_foliage_placer"
-                          },
-                          "trunk_placer": {
-                            "base_height": 3,
-                            "height_rand_a": 11,
-                            "height_rand_b": 0,
-                            "type": "minecraft:fancy_trunk_placer"
-                          }
-                        },
-                        "type": "minecraft:tree"
-                      },
-                      "chance": 0.33333334
-                    }
-                  ],
-                  "default": {
-                    "config": {
-                      "max_water_depth": 0,
-                      "ignore_vines": true,
-                      "heightmap": "OCEAN_FLOOR",
-                      "minimum_size": {
-                        "limit": 1,
-                        "lower_size": 0,
-                        "upper_size": 1,
-                        "type": "minecraft:two_layers_feature_size"
-                      },
-                      "decorators": [
-                        {
-                          "probability": 0.05,
-                          "type": "minecraft:beehive"
-                        }
-                      ],
-                      "trunk_provider": {
-                        "state": {
-                          "Properties": {
-                            "axis": "y"
-                          },
-                          "Name": "minecraft:oak_log"
-                        },
-                        "type": "minecraft:simple_state_provider"
-                      },
-                      "leaves_provider": {
-                        "state": {
-                          "Properties": {
-                            "persistent": "false",
-                            "distance": "7"
-                          },
-                          "Name": "minecraft:oak_leaves"
-                        },
-                        "type": "minecraft:simple_state_provider"
-                      },
-                      "foliage_placer": {
-                        "radius": 2,
-                        "offset": 0,
-                        "height": 3,
-                        "type": "minecraft:blob_foliage_placer"
-                      },
-                      "trunk_placer": {
-                        "base_height": 4,
-                        "height_rand_a": 2,
-                        "height_rand_b": 0,
-                        "type": "minecraft:straight_trunk_placer"
-                      }
-                    },
-                    "type": "minecraft:tree"
-                  }
-                },
-                "type": "minecraft:random_selector"
-              },
-              "decorator": {
-                "config": {
-                  "outer": {
-                    "config": {},
-                    "type": "minecraft:square"
-                  },
-                  "inner": {
-                    "config": {},
-                    "type": "minecraft:heightmap"
-                  }
-                },
-                "type": "minecraft:decorated"
-              }
-            },
-            "type": "minecraft:decorated"
-          },
-          "decorator": {
-            "config": {
-              "count": 0,
-              "extra_chance": 0.05,
-              "extra_count": 1
-            },
-            "type": "minecraft:count_extra"
-          }
-        },
-        "type": "minecraft:decorated"
       },
       {
         "config": {
@@ -762,37 +615,16 @@
               "feature": {
                 "config": {
                   "feature": {
-                    "config": {
-                      "feature": {
-                        "config": {
-                          "can_replace": false,
-                          "project": true,
-                          "need_water": false,
-                          "xspread": 7,
-                          "yspread": 3,
-                          "zspread": 7,
-                          "whitelist": [],
-                          "blacklist": [],
-                          "tries": 64,
-                          "state_provider": {
-                            "type": "minecraft:plain_flower_provider"
-                          },
-                          "block_placer": {
-                            "type": "minecraft:simple_block_placer"
-                          }
-                        },
-                        "type": "minecraft:flower"
-                      },
-                      "decorator": {
-                        "config": {},
-                        "type": "minecraft:spread_32_above"
-                      }
-                    },
-                    "type": "minecraft:decorated"
+                    "config": {},
+                    "type": "twilightforest:wood_roots"
                   },
                   "decorator": {
-                    "config": {},
-                    "type": "minecraft:heightmap"
+                    "config": {
+                      "bottom_offset": 0,
+                      "top_offset": 0,
+                      "maximum": 30
+                    },
+                    "type": "minecraft:range"
                   }
                 },
                 "type": "minecraft:decorated"
@@ -806,15 +638,16 @@
           },
           "decorator": {
             "config": {
-              "noise_level": -0.8,
-              "below_noise": 15,
-              "above_noise": 4
+              "count": 20
             },
-            "type": "minecraft:count_noise"
+            "type": "minecraft:count"
           }
         },
         "type": "minecraft:decorated"
-      },
+      }
+    ],
+    [],
+    [
       {
         "config": {
           "feature": {
@@ -860,11 +693,9 @@
           },
           "decorator": {
             "config": {
-              "noise_level": -0.8,
-              "below_noise": 5,
-              "above_noise": 10
+              "count": 2
             },
-            "type": "minecraft:count_noise"
+            "type": "minecraft:count"
           }
         },
         "type": "minecraft:decorated"
@@ -931,6 +762,112 @@
               "above_noise": 7
             },
             "type": "minecraft:count_noise"
+          }
+        },
+        "type": "minecraft:decorated"
+      },
+      {
+        "config": {
+          "feature": {
+            "config": {
+              "feature": {
+                "config": {
+                  "feature": {
+                    "config": {
+                      "rock_count": 4,
+                      "hole_count": 1,
+                      "valid_blocks": [
+                        "minecraft:stone",
+                        "minecraft:granite",
+                        "minecraft:diorite",
+                        "minecraft:andesite"
+                      ],
+                      "state": {
+                        "Properties": {
+                          "falling": "true"
+                        },
+                        "Name": "minecraft:water"
+                      },
+                      "requires_block_below": true
+                    },
+                    "type": "minecraft:spring_feature"
+                  },
+                  "decorator": {
+                    "config": {
+                      "bottom_offset": 8,
+                      "top_offset": 8,
+                      "maximum": 256
+                    },
+                    "type": "minecraft:range_biased"
+                  }
+                },
+                "type": "minecraft:decorated"
+              },
+              "decorator": {
+                "config": {},
+                "type": "minecraft:square"
+              }
+            },
+            "type": "minecraft:decorated"
+          },
+          "decorator": {
+            "config": {
+              "count": 50
+            },
+            "type": "minecraft:count"
+          }
+        },
+        "type": "minecraft:decorated"
+      },
+      {
+        "config": {
+          "feature": {
+            "config": {
+              "feature": {
+                "config": {
+                  "feature": {
+                    "config": {
+                      "rock_count": 4,
+                      "hole_count": 1,
+                      "valid_blocks": [
+                        "minecraft:stone",
+                        "minecraft:granite",
+                        "minecraft:diorite",
+                        "minecraft:andesite"
+                      ],
+                      "state": {
+                        "Properties": {
+                          "falling": "true"
+                        },
+                        "Name": "minecraft:lava"
+                      },
+                      "requires_block_below": true
+                    },
+                    "type": "minecraft:spring_feature"
+                  },
+                  "decorator": {
+                    "config": {
+                      "bottom_offset": 8,
+                      "top_offset": 16,
+                      "maximum": 256
+                    },
+                    "type": "minecraft:range_very_biased"
+                  }
+                },
+                "type": "minecraft:decorated"
+              },
+              "decorator": {
+                "config": {},
+                "type": "minecraft:square"
+              }
+            },
+            "type": "minecraft:decorated"
+          },
+          "decorator": {
+            "config": {
+              "count": 20
+            },
+            "type": "minecraft:count"
           }
         },
         "type": "minecraft:decorated"
@@ -1233,130 +1170,429 @@
           }
         },
         "type": "minecraft:decorated"
+      },
+      {
+        "config": {
+          "feature": {
+            "config": {
+              "feature": {
+                "config": {
+                  "feature": {
+                    "config": {
+                      "features": [
+                        {
+                          "feature": {
+                            "config": {
+                              "max_water_depth": 0,
+                              "ignore_vines": true,
+                              "heightmap": "OCEAN_FLOOR",
+                              "minimum_size": {
+                                "limit": 11,
+                                "lower_size": 0,
+                                "upper_size": 5,
+                                "type": "minecraft:two_layers_feature_size"
+                              },
+                              "decorators": [
+                                {
+                                  "placement_count": 1,
+                                  "probability_of_placement": 1.0,
+                                  "deco_provider": {
+                                    "state": {
+                                      "Properties": {
+                                        "facing": "north"
+                                      },
+                                      "Name": "twilightforest:firefly"
+                                    },
+                                    "type": "minecraft:simple_state_provider"
+                                  },
+                                  "type": "twilightforest:trunkside_decorator"
+                                }
+                              ],
+                              "trunk_provider": {
+                                "state": {
+                                  "Properties": {
+                                    "west": "true",
+                                    "up": "true",
+                                    "south": "true",
+                                    "north": "true",
+                                    "east": "true",
+                                    "down": "true"
+                                  },
+                                  "Name": "minecraft:mushroom_stem"
+                                },
+                                "type": "minecraft:simple_state_provider"
+                              },
+                              "leaves_provider": {
+                                "state": {
+                                  "Properties": {
+                                    "west": "true",
+                                    "up": "true",
+                                    "south": "true",
+                                    "north": "true",
+                                    "east": "true",
+                                    "down": "false"
+                                  },
+                                  "Name": "minecraft:brown_mushroom_block"
+                                },
+                                "type": "minecraft:simple_state_provider"
+                              },
+                              "foliage_placer": {
+                                "random_add_horizontal": 1,
+                                "random_add_vertical": 0,
+                                "vertical_filler_bias": 0.0,
+                                "horizontal_radius": 4.25,
+                                "vertical_radius": 0.0,
+                                "offset": 1,
+                                "type": "twilightforest:spheroid_foliage_placer"
+                              },
+                              "trunk_placer": {
+                                "branch_start_offset_down": 6,
+                                "branch_config": {
+                                  "random_add_length": 1.0,
+                                  "spacing_yaw": 0.3,
+                                  "downwards_pitch": 0.2,
+                                  "count_minimum": 3,
+                                  "random_add_count": 1,
+                                  "length": 9.0
+                                },
+                                "perpendicular_branches": true,
+                                "base_height": 12,
+                                "height_rand_a": 5,
+                                "height_rand_b": 5,
+                                "type": "twilightforest:branching_trunk_placer"
+                              }
+                            },
+                            "type": "minecraft:tree"
+                          },
+                          "chance": 0.15
+                        },
+                        {
+                          "feature": {
+                            "config": {
+                              "max_water_depth": 0,
+                              "ignore_vines": true,
+                              "heightmap": "OCEAN_FLOOR",
+                              "minimum_size": {
+                                "limit": 11,
+                                "lower_size": 0,
+                                "upper_size": 5,
+                                "type": "minecraft:two_layers_feature_size"
+                              },
+                              "decorators": [
+                                {
+                                  "placement_count": 1,
+                                  "probability_of_placement": 1.0,
+                                  "deco_provider": {
+                                    "state": {
+                                      "Properties": {
+                                        "facing": "north"
+                                      },
+                                      "Name": "twilightforest:firefly"
+                                    },
+                                    "type": "minecraft:simple_state_provider"
+                                  },
+                                  "type": "twilightforest:trunkside_decorator"
+                                }
+                              ],
+                              "trunk_provider": {
+                                "state": {
+                                  "Properties": {
+                                    "west": "true",
+                                    "up": "true",
+                                    "south": "true",
+                                    "north": "true",
+                                    "east": "true",
+                                    "down": "true"
+                                  },
+                                  "Name": "minecraft:mushroom_stem"
+                                },
+                                "type": "minecraft:simple_state_provider"
+                              },
+                              "leaves_provider": {
+                                "state": {
+                                  "Properties": {
+                                    "west": "true",
+                                    "up": "true",
+                                    "south": "true",
+                                    "north": "true",
+                                    "east": "true",
+                                    "down": "false"
+                                  },
+                                  "Name": "minecraft:red_mushroom_block"
+                                },
+                                "type": "minecraft:simple_state_provider"
+                              },
+                              "foliage_placer": {
+                                "random_add_horizontal": 0,
+                                "random_add_vertical": 0,
+                                "vertical_filler_bias": -0.45,
+                                "horizontal_radius": 4.25,
+                                "vertical_radius": 1.75,
+                                "offset": 1,
+                                "type": "twilightforest:spheroid_foliage_placer"
+                              },
+                              "trunk_placer": {
+                                "branch_start_offset_down": 6,
+                                "branch_config": {
+                                  "random_add_length": 1.0,
+                                  "spacing_yaw": 0.3,
+                                  "downwards_pitch": 0.2,
+                                  "count_minimum": 3,
+                                  "random_add_count": 1,
+                                  "length": 9.0
+                                },
+                                "perpendicular_branches": true,
+                                "base_height": 12,
+                                "height_rand_a": 5,
+                                "height_rand_b": 5,
+                                "type": "twilightforest:branching_trunk_placer"
+                              }
+                            },
+                            "type": "minecraft:tree"
+                          },
+                          "chance": 0.05
+                        }
+                      ],
+                      "default": {
+                        "config": {
+                          "max_water_depth": 0,
+                          "ignore_vines": true,
+                          "heightmap": "OCEAN_FLOOR",
+                          "minimum_size": {
+                            "limit": 20,
+                            "lower_size": 0,
+                            "upper_size": 5,
+                            "type": "minecraft:two_layers_feature_size"
+                          },
+                          "decorators": [
+                            {
+                              "placement_count": 1,
+                              "probability_of_placement": 1.0,
+                              "deco_provider": {
+                                "state": {
+                                  "Properties": {
+                                    "facing": "north"
+                                  },
+                                  "Name": "twilightforest:firefly"
+                                },
+                                "type": "minecraft:simple_state_provider"
+                              },
+                              "type": "twilightforest:trunkside_decorator"
+                            },
+                            {
+                              "root_length": 5,
+                              "ground_roots_provider": {
+                                "entries": [
+                                  {
+                                    "weight": 6,
+                                    "data": {
+                                      "Name": "twilightforest:root"
+                                    }
+                                  },
+                                  {
+                                    "weight": 1,
+                                    "data": {
+                                      "Name": "twilightforest:liveroot_block"
+                                    }
+                                  }
+                                ],
+                                "type": "minecraft:weighted_state_provider"
+                              },
+                              "base_strand_count": 3,
+                              "additional_random_strands": 1,
+                              "type": "twilightforest:tree_roots"
+                            }
+                          ],
+                          "trunk_provider": {
+                            "state": {
+                              "Properties": {
+                                "axis": "y"
+                              },
+                              "Name": "twilightforest:canopy_log"
+                            },
+                            "type": "minecraft:simple_state_provider"
+                          },
+                          "leaves_provider": {
+                            "state": {
+                              "Properties": {
+                                "persistent": "false",
+                                "distance": "7"
+                              },
+                              "Name": "twilightforest:canopy_leaves"
+                            },
+                            "type": "minecraft:simple_state_provider"
+                          },
+                          "foliage_placer": {
+                            "random_add_horizontal": 1,
+                            "random_add_vertical": 0,
+                            "vertical_filler_bias": -0.25,
+                            "horizontal_radius": 4.5,
+                            "vertical_radius": 1.5,
+                            "offset": 0,
+                            "type": "twilightforest:spheroid_foliage_placer"
+                          },
+                          "trunk_placer": {
+                            "branch_start_offset_down": 7,
+                            "branch_config": {
+                              "random_add_length": 1.0,
+                              "spacing_yaw": 0.3,
+                              "downwards_pitch": 0.2,
+                              "count_minimum": 3,
+                              "random_add_count": 1,
+                              "length": 10.0
+                            },
+                            "perpendicular_branches": false,
+                            "base_height": 20,
+                            "height_rand_a": 5,
+                            "height_rand_b": 5,
+                            "type": "twilightforest:branching_trunk_placer"
+                          }
+                        },
+                        "type": "minecraft:tree"
+                      }
+                    },
+                    "type": "minecraft:random_selector"
+                  },
+                  "decorator": {
+                    "config": {},
+                    "type": "minecraft:heightmap_world_surface"
+                  }
+                },
+                "type": "minecraft:decorated"
+              },
+              "decorator": {
+                "config": {},
+                "type": "minecraft:square"
+              }
+            },
+            "type": "minecraft:decorated"
+          },
+          "decorator": {
+            "config": {
+              "count": 8
+            },
+            "type": "minecraft:count"
+          }
+        },
+        "type": "minecraft:decorated"
       }
     ]
   ],
   "starts": [],
-  "creature_spawn_probability": 0.75,
   "spawners": {
     "monster": [
       {
         "type": "minecraft:spider",
-        "weight": 1,
-        "minCount": 1,
-        "maxCount": 1
+        "weight": 10,
+        "minCount": 4,
+        "maxCount": 4
       },
       {
         "type": "minecraft:zombie",
-        "weight": 1,
-        "minCount": 1,
-        "maxCount": 1
+        "weight": 10,
+        "minCount": 4,
+        "maxCount": 4
       },
       {
         "type": "minecraft:skeleton",
-        "weight": 1,
-        "minCount": 1,
-        "maxCount": 1
+        "weight": 10,
+        "minCount": 4,
+        "maxCount": 4
       },
       {
         "type": "minecraft:creeper",
         "weight": 1,
-        "minCount": 1,
-        "maxCount": 1
+        "minCount": 4,
+        "maxCount": 4
       },
       {
         "type": "minecraft:slime",
-        "weight": 1,
-        "minCount": 1,
-        "maxCount": 1
+        "weight": 10,
+        "minCount": 4,
+        "maxCount": 4
       },
       {
         "type": "minecraft:enderman",
         "weight": 1,
         "minCount": 1,
-        "maxCount": 1
+        "maxCount": 4
       },
       {
         "type": "twilightforest:kobold",
         "weight": 10,
-        "minCount": 1,
+        "minCount": 4,
         "maxCount": 8
       }
     ],
     "creature": [
       {
         "type": "twilightforest:bighorn_sheep",
-        "weight": 2,
+        "weight": 12,
         "minCount": 4,
         "maxCount": 4
       },
       {
         "type": "twilightforest:wild_boar",
-        "weight": 2,
+        "weight": 10,
         "minCount": 4,
         "maxCount": 4
       },
       {
         "type": "minecraft:chicken",
-        "weight": 2,
+        "weight": 10,
         "minCount": 4,
         "maxCount": 4
       },
       {
         "type": "twilightforest:deer",
-        "weight": 2,
+        "weight": 15,
         "minCount": 4,
         "maxCount": 5
       },
       {
         "type": "minecraft:wolf",
-        "weight": 2,
+        "weight": 5,
         "minCount": 4,
         "maxCount": 4
+      },
+      {
+        "type": "twilightforest:tiny_bird",
+        "weight": 15,
+        "minCount": 4,
+        "maxCount": 8
+      },
+      {
+        "type": "twilightforest:squirrel",
+        "weight": 10,
+        "minCount": 2,
+        "maxCount": 4
+      },
+      {
+        "type": "twilightforest:bunny",
+        "weight": 10,
+        "minCount": 4,
+        "maxCount": 5
+      },
+      {
+        "type": "twilightforest:raven",
+        "weight": 10,
+        "minCount": 1,
+        "maxCount": 2
       }
     ],
     "ambient": [
       {
         "type": "minecraft:bat",
-        "weight": 1,
-        "minCount": 1,
-        "maxCount": 1
+        "weight": 10,
+        "minCount": 8,
+        "maxCount": 8
       }
     ],
     "water_creature": [],
     "water_ambient": [],
     "misc": []
   },
-  "spawn_costs": {
-    "minecraft:spider": {
-      "energy_budget": 2.0,
-      "charge": 1.0
-    },
-    "minecraft:zombie": {
-      "energy_budget": 2.0,
-      "charge": 1.0
-    },
-    "minecraft:skeleton": {
-      "energy_budget": 2.0,
-      "charge": 1.0
-    },
-    "minecraft:creeper": {
-      "energy_budget": 2.0,
-      "charge": 1.0
-    },
-    "minecraft:slime": {
-      "energy_budget": 2.0,
-      "charge": 1.0
-    },
-    "minecraft:enderman": {
-      "energy_budget": 2.0,
-      "charge": 1.0
-    },
-    "twilightforest:kobold": {
-      "energy_budget": 2.0,
-      "charge": 1.0
-    }
-  },
+  "spawn_costs": {},
   "player_spawn_friendly": false,
   "precipitation": "rain",
   "temperature": 0.8,
