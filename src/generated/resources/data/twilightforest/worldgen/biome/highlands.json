@@ -1285,7 +1285,7 @@
                           "leaves_provider": {
                             "state": {
                               "Properties": {
-                                "persistent": "false",
+                                "persistent": "true",
                                 "distance": "7"
                               },
                               "Name": "twilightforest:twilight_oak_leaves"

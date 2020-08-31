@@ -5,6 +5,7 @@ import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.HugeMushroomBlock;
+import net.minecraft.block.LeavesBlock;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
@@ -201,7 +202,7 @@ public final class TwilightFeatures {
 
         public static final TFTreeFeatureConfig HOLLOW_TREE = new TFTreeFeatureConfig.Builder(
                 new SimpleBlockStateProvider(BlockStates.OAK_LOG),
-                new SimpleBlockStateProvider(BlockStates.OAK_LEAVES),
+                new SimpleBlockStateProvider(BlockStates.OAK_LEAVES.with(LeavesBlock.PERSISTENT, true)), // FIXME Figure out cause of actual issue but for now this stays persistent
                 new SimpleBlockStateProvider(BlockStates.OAK_WOOD),
                 new SimpleBlockStateProvider(BlockStates.ROOTS)
         )
