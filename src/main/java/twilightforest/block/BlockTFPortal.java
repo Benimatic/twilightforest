@@ -9,6 +9,7 @@ import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.state.BooleanProperty;
@@ -22,6 +23,7 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.ForgeEventFactory;
@@ -40,7 +42,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class BlockTFPortal extends BreakableBlock {
+// KelpBlock seems to use ILiquidContainer as it's a block that permanently has water, so I suppose in best practices we also use this interface as well?
+public class BlockTFPortal extends BreakableBlock implements ILiquidContainer {
 
 	public static final BooleanProperty DISALLOW_RETURN = BooleanProperty.create("is_one_way");
 
@@ -285,5 +288,15 @@ public class BlockTFPortal extends BreakableBlock {
 
 			worldIn.addParticle(ParticleTypes.PORTAL, xPos, yPos, zPos, xSpeed, ySpeed, zSpeed);
 		}
+	}
+
+	@Override
+	public boolean canContainFluid(IBlockReader iBlockReader, BlockPos blockPos, BlockState blockState, Fluid fluid) {
+		return false;
+	}
+
+	@Override
+	public boolean receiveFluid(IWorld iWorld, BlockPos blockPos, BlockState blockState, FluidState fluidState) {
+		return false;
 	}
 }
