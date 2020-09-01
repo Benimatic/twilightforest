@@ -27,6 +27,9 @@ import twilightforest.block.TFBlocks;
 import twilightforest.world.feature.TFBiomeFeatures;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public final class TwilightFeatures {
     public static final TrunkPlacerType<BranchingTrunkPlacer> TRUNK_BRANCHING = registerTrunk(TwilightForestMod.prefix("branching_trunk_placer"), BranchingTrunkPlacer.CODEC);
     public static final TrunkPlacerType<TrunkRiser> TRUNK_RISER = registerTrunk(TwilightForestMod.prefix("trunk_mover_upper"), TrunkRiser.CODEC);
@@ -246,9 +249,18 @@ public final class TwilightFeatures {
                 .setIgnoreVines()
                 .build();
 
+        public static final TFTreeFeatureConfig DENSE_OAK = new TFTreeFeatureConfig.Builder(
+                new SimpleBlockStateProvider(BlockStates.OAK_LOG),
+                new SimpleBlockStateProvider(BlockStates.OAK_LEAVES),
+                new SimpleBlockStateProvider(BlockStates.OAK_WOOD),
+                new SimpleBlockStateProvider(BlockStates.ROOTS)
+        )
+                .setSapling(TFBlocks.oak_sapling.get())
+                .build();
+
         public static final TFTreeFeatureConfig HOLLOW_TREE = new TFTreeFeatureConfig.Builder(
                 new SimpleBlockStateProvider(BlockStates.OAK_LOG),
-                new SimpleBlockStateProvider(BlockStates.OAK_LEAVES.with(LeavesBlock.PERSISTENT, true)), // FIXME Figure out cause of actual issue but for now this stays persistent
+                new SimpleBlockStateProvider(BlockStates.OAK_LEAVES),
                 new SimpleBlockStateProvider(BlockStates.OAK_WOOD),
                 new SimpleBlockStateProvider(BlockStates.ROOTS)
         )
@@ -312,24 +324,18 @@ public final class TwilightFeatures {
         public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> TRANSFORM_TREE = registerWorldFeature(TwilightForestMod.prefix("transform_tree"), Feature.field_236291_c_.withConfiguration(TreeConfigurations.TRANSFORM_TREE));
         public static final ConfiguredFeature<TFTreeFeatureConfig  , ? extends Feature<?>> MINING_TREE = registerWorldFeature(TwilightForestMod.prefix("mining_tree"), TFBiomeFeatures.MINERS_TREE.get().withConfiguration(TreeConfigurations.MINING_TREE));
         public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> SORT_TREE = registerWorldFeature(TwilightForestMod.prefix("sort_tree"), Feature.field_236291_c_.withConfiguration(TreeConfigurations.SORT_TREE));
+        public static final ConfiguredFeature<TFTreeFeatureConfig  , ? extends Feature<?>> DENSE_OAK_TREE = registerWorldFeature(TwilightForestMod.prefix("dense_oak_tree"), TFBiomeFeatures.CANOPY_OAK.get().withConfiguration(TreeConfigurations.DENSE_OAK));
         public static final ConfiguredFeature<TFTreeFeatureConfig  , ? extends Feature<?>> HOLLOW_TREE = registerWorldFeature(TwilightForestMod.prefix("hollow_tree"), TFBiomeFeatures.HOLLOW_TREE.get().withConfiguration(TreeConfigurations.HOLLOW_TREE));
         public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> RAINBOAK_TREE = registerWorldFeature(TwilightForestMod.prefix("rainbow_oak"), Feature.field_236291_c_.withConfiguration(TreeConfigurations.RAINBOAK_TREE));
         public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> MUSHROOM_BROWN = registerWorldFeature(TwilightForestMod.prefix("canopy_mushroom_brown"), Feature.field_236291_c_.withConfiguration(TreeConfigurations.MUSHROOM_BROWN));
         public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> MUSHROOM_RED = registerWorldFeature(TwilightForestMod.prefix("canopy_mushroom_red"), Feature.field_236291_c_.withConfiguration(TreeConfigurations.MUSHROOM_RED));
 
+        private static final List<ConfiguredFeature<? extends IFeatureConfig, ? extends Feature<?>>> trees = ImmutableList.of(TWILIGHT_OAK, CANOPY_TREE, MANGROVE_TREE, DARKWOOD_TREE, DENSE_OAK_TREE, HOLLOW_TREE);
+        private static final List<ConfiguredRandomFeatureList> configuredTreeList = trees.stream().map(configuredFeature -> configuredFeature.withChance(1f / (trees.size() + 0.5f))).collect(Collectors.toCollection(ImmutableList::of));
+
         public static final ConfiguredFeature<?, ?> DEFAULT_TWILIGHT_TREES = registerWorldFeature(TwilightForestMod.prefix("twilight_trees"),
                 Feature.RANDOM_SELECTOR
-                        .withConfiguration(new MultipleRandomFeatureConfig(ImmutableList.of(
-                                TWILIGHT_OAK.withChance(0.18f),
-                                CANOPY_TREE.withChance(0.18f),
-                                MANGROVE_TREE.withChance(0.18f),
-                                DARKWOOD_TREE.withChance(0.18f),
-                                //TIME_TREE.withChance(0.05f),
-                                //TRANSFORM_TREE.withChance(0.05f),
-                                //MINING_TREE.withChance(0.05f),
-                                //SORT_TREE.withChance(0.05f),
-                                HOLLOW_TREE.withChance(0.25f)
-                        ), RAINBOAK_TREE))
+                        .withConfiguration(new MultipleRandomFeatureConfig(configuredTreeList, RAINBOAK_TREE))
                         .withPlacement(Features.Placements.field_244001_l)
                         .withPlacement(Placement.field_242902_f.configure(new AtSurfaceWithExtraConfig(1, 0.5f, 1)))
         );
