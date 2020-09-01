@@ -1,10 +1,8 @@
 package twilightforest.data;
 
-import net.minecraft.block.Block;
 import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.ItemTagsProvider;
-import net.minecraft.data.TagsProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.tags.BlockTags;
@@ -12,10 +10,20 @@ import net.minecraft.tags.ITag;
 import net.minecraft.tags.ItemTags;
 import net.minecraftforge.common.Tags;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.TFBlocks;
 import twilightforest.item.TFItems;
 
 public class ItemTagGenerator extends ItemTagsProvider {
+	public static final ITag.INamedTag<Item> TWILIGHT_OAK_LOGS = ItemTags.makeWrapperTag(TwilightForestMod.prefix("twilight_oak_logs").toString());
+	public static final ITag.INamedTag<Item> CANOPY_LOGS = ItemTags.makeWrapperTag(TwilightForestMod.prefix("canopy_logs").toString());
+	public static final ITag.INamedTag<Item> MANGROVE_LOGS = ItemTags.makeWrapperTag(TwilightForestMod.prefix("mangrove_logs").toString());
+	public static final ITag.INamedTag<Item> DARKWOOD_LOGS = ItemTags.makeWrapperTag(TwilightForestMod.prefix("darkwood_logs").toString());
+	public static final ITag.INamedTag<Item> TIME_LOGS = ItemTags.makeWrapperTag(TwilightForestMod.prefix("timewood_logs").toString());
+	public static final ITag.INamedTag<Item> TRANSFORMATION_LOGS = ItemTags.makeWrapperTag(TwilightForestMod.prefix("transwood_logs").toString());
+	public static final ITag.INamedTag<Item> MINING_LOGS = ItemTags.makeWrapperTag(TwilightForestMod.prefix("mining_logs").toString());
+	public static final ITag.INamedTag<Item> SORTING_LOGS = ItemTags.makeWrapperTag(TwilightForestMod.prefix("sortwood_logs").toString());
+
+	public static final ITag.INamedTag<Item> TWILIGHT_LOGS = ItemTags.makeWrapperTag(TwilightForestMod.prefix("logs").toString());
+
 	public static final ITag.INamedTag<Item> PAPER = ItemTags.makeWrapperTag("forge:paper");
 	public static final ITag.INamedTag<Item> FEATHER = ItemTags.makeWrapperTag("forge:feather");
 
@@ -46,20 +54,38 @@ public class ItemTagGenerator extends ItemTagsProvider {
 
 	@Override
 	protected void registerTags() {
-		this.copy(BlockTags.WOODEN_FENCES, Tags.Items.FENCES_WOODEN);
-		this.copy(BlockTags.FENCE_GATES, Tags.Items.FENCE_GATES_WOODEN);
-		this.copy(BlockTags.WOODEN_DOORS, ItemTags.WOODEN_DOORS);
+		this.copy(BlockTagGenerator.TWILIGHT_OAK_LOGS, ItemTagGenerator.TWILIGHT_OAK_LOGS);
+		this.copy(BlockTagGenerator.CANOPY_LOGS, ItemTagGenerator.CANOPY_LOGS);
+		this.copy(BlockTagGenerator.MANGROVE_LOGS, ItemTagGenerator.MANGROVE_LOGS);
+		this.copy(BlockTagGenerator.DARKWOOD_LOGS, ItemTagGenerator.DARKWOOD_LOGS);
+		this.copy(BlockTagGenerator.TIME_LOGS, ItemTagGenerator.TIME_LOGS);
+		this.copy(BlockTagGenerator.TRANSFORMATION_LOGS, ItemTagGenerator.TRANSFORMATION_LOGS);
+		this.copy(BlockTagGenerator.MINING_LOGS, ItemTagGenerator.MINING_LOGS);
+		this.copy(BlockTagGenerator.SORTING_LOGS, ItemTagGenerator.SORTING_LOGS);
+
+		this.copy(BlockTagGenerator.TWILIGHT_LOGS, ItemTagGenerator.TWILIGHT_LOGS);
+		this.copy(BlockTags.LOGS, ItemTags.LOGS);
+
+		this.copy(BlockTags.SAPLINGS, ItemTags.SAPLINGS);
+		this.copy(BlockTags.LEAVES, ItemTags.LEAVES);
+
+		this.copy(BlockTags.PLANKS, ItemTags.PLANKS);
+
+		this.copy(BlockTags.WOODEN_FENCES, ItemTags.WOODEN_FENCES);
+		//this.copy(BlockTags.FENCE_GATES, ItemTags.FENCE_GATES); There is no item version of this vanilla block tag for Fence Gates
+		this.copy(Tags.Blocks.FENCES_WOODEN, Tags.Items.FENCES_WOODEN);
+		this.copy(Tags.Blocks.FENCE_GATES, Tags.Items.FENCE_GATES_WOODEN);
+
 		this.copy(BlockTags.WOODEN_SLABS, ItemTags.WOODEN_SLABS);
-		this.copy(BlockTags.WOODEN_STAIRS, ItemTags.WOODEN_STAIRS);
 		this.copy(BlockTags.SLABS, ItemTags.SLABS);
+		this.copy(BlockTags.WOODEN_STAIRS, ItemTags.WOODEN_STAIRS);
 		this.copy(BlockTags.STAIRS, ItemTags.STAIRS);
+
 		this.copy(BlockTags.WOODEN_BUTTONS, ItemTags.WOODEN_BUTTONS);
 		this.copy(BlockTags.WOODEN_PRESSURE_PLATES, ItemTags.WOODEN_PRESSURE_PLATES);
+
 		this.copy(BlockTags.WOODEN_TRAPDOORS, ItemTags.WOODEN_TRAPDOORS);
-		this.copy(BlockTags.LEAVES, ItemTags.LEAVES);
-		this.copy(BlockTags.LOGS, ItemTags.LOGS);
-		this.copy(BlockTags.PLANKS, ItemTags.PLANKS);
-		this.copy(BlockTags.SAPLINGS, ItemTags.SAPLINGS);
+		this.copy(BlockTags.WOODEN_DOORS, ItemTags.WOODEN_DOORS);
 
 		this.copy(BlockTagGenerator.STORAGE_BLOCKS_ARCTIC_FUR, ItemTagGenerator.STORAGE_BLOCKS_ARCTIC_FUR);
 		this.copy(BlockTagGenerator.STORAGE_BLOCKS_CARMINITE, ItemTagGenerator.STORAGE_BLOCKS_CARMINITE);

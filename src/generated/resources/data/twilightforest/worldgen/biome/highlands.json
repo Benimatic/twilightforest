@@ -950,7 +950,7 @@
                         },
                         "type": "minecraft:tree"
                       },
-                      "chance": 0.18
+                      "chance": 0.18181819
                     },
                     {
                       "feature": {
@@ -1050,7 +1050,7 @@
                         },
                         "type": "minecraft:tree"
                       },
-                      "chance": 0.18
+                      "chance": 0.18181819
                     },
                     {
                       "feature": {
@@ -1160,7 +1160,7 @@
                         },
                         "type": "minecraft:tree"
                       },
-                      "chance": 0.18
+                      "chance": 0.18181819
                     },
                     {
                       "feature": {
@@ -1270,7 +1270,7 @@
                         },
                         "type": "minecraft:tree"
                       },
-                      "chance": 0.18
+                      "chance": 0.18181819
                     },
                     {
                       "feature": {
@@ -1313,7 +1313,7 @@
                           "leaves_provider": {
                             "state": {
                               "Properties": {
-                                "persistent": "true",
+                                "persistent": "false",
                                 "distance": "7"
                               },
                               "Name": "twilightforest:twilight_oak_leaves"
@@ -1323,7 +1323,7 @@
                         },
                         "type": "twilightforest:hollow_tree"
                       },
-                      "chance": 0.25
+                      "chance": 0.18181819
                     }
                   ],
                   "default": {

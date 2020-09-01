@@ -27,6 +27,8 @@ import twilightforest.block.TFBlocks;
 import twilightforest.world.feature.TFBiomeFeatures;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -330,12 +332,10 @@ public final class TwilightFeatures {
         public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> MUSHROOM_BROWN = registerWorldFeature(TwilightForestMod.prefix("canopy_mushroom_brown"), Feature.field_236291_c_.withConfiguration(TreeConfigurations.MUSHROOM_BROWN));
         public static final ConfiguredFeature<BaseTreeFeatureConfig, ? extends Feature<?>> MUSHROOM_RED = registerWorldFeature(TwilightForestMod.prefix("canopy_mushroom_red"), Feature.field_236291_c_.withConfiguration(TreeConfigurations.MUSHROOM_RED));
 
-        private static final List<ConfiguredFeature<? extends IFeatureConfig, ? extends Feature<?>>> trees = ImmutableList.of(TWILIGHT_OAK, CANOPY_TREE, MANGROVE_TREE, DARKWOOD_TREE, DENSE_OAK_TREE, HOLLOW_TREE);
-        private static final List<ConfiguredRandomFeatureList> configuredTreeList = trees.stream().map(configuredFeature -> configuredFeature.withChance(1f / (trees.size() + 0.5f))).collect(Collectors.toCollection(ImmutableList::of));
-
-        public static final ConfiguredFeature<?, ?> DEFAULT_TWILIGHT_TREES = registerWorldFeature(TwilightForestMod.prefix("twilight_trees"),
+        private static final List<ConfiguredFeature<? extends IFeatureConfig, ? extends Feature<?>>> trees = ImmutableList.of(TWILIGHT_OAK, CANOPY_TREE, MANGROVE_TREE, DARKWOOD_TREE, /*FIXME DENSE_OAK_TREE,*/ HOLLOW_TREE);
+        public static final ConfiguredFeature<?, ?> DEFAULT_TWILIGHT_TREES = registerWorldFeature(TwilightForestMod.prefix("placeholder_tree_filler"),
                 Feature.RANDOM_SELECTOR
-                        .withConfiguration(new MultipleRandomFeatureConfig(configuredTreeList, RAINBOAK_TREE))
+                        .withConfiguration(new MultipleRandomFeatureConfig(trees.stream().map(configuredFeature -> configuredFeature.withChance(1f / (trees.size() + 0.5f))).collect(ImmutableList.toImmutableList()), RAINBOAK_TREE))
                         .withPlacement(Features.Placements.field_244001_l)
                         .withPlacement(Placement.field_242902_f.configure(new AtSurfaceWithExtraConfig(1, 0.5f, 1)))
         );
