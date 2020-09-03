@@ -83,7 +83,7 @@ public class TFTeleporter implements ITeleporter {
 
 						// skip chunks that aren't generated
 						ChunkPos chunkPos = new ChunkPos(pos.add(i1, 0, j1));
-						if (!world.getChunkProvider().isChunkLoaded(chunkPos)) {
+						if (!world.getChunkProvider().chunkManager.func_241090_h_(chunkPos)) {
 							continue;
 						}
 
