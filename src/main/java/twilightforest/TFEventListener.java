@@ -31,6 +31,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.GameRuleChangeEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -220,9 +221,8 @@ public class TFEventListener {
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void charmOfLife(LivingDeathEvent event) {
-
 		EntityLivingBase living = event.getEntityLiving();
-		if (living.world.isRemote) return;
+		if (living.world.isRemote || !(living instanceof EntityPlayer) || living instanceof FakePlayer) return;
 
 		boolean charm1 = false;
 		boolean charm2 = TFItemStackUtils.consumeInventoryItem(living, s -> s.getItem() == TFItems.charm_of_life_2, 1);
@@ -261,13 +261,11 @@ public class TFEventListener {
 
 	@SubscribeEvent(priority = EventPriority.HIGH)
 	public static void charmOfKeeping(LivingDeathEvent event) {
-
 		EntityLivingBase living = event.getEntityLiving();
-		if (living.world.isRemote) return;
 
-		if (living instanceof EntityPlayer && !living.world.getGameRules().getBoolean("keepInventory")) {
-			keepItems((EntityPlayer) living);
-		}
+		if (living.world.isRemote || !(living instanceof EntityPlayer) || living instanceof FakePlayer || living.world.getGameRules().getBoolean("keepInventory")) return;
+
+		keepItems((EntityPlayer) living);
 	}
 
 	private static void keepItems(EntityPlayer player) {
