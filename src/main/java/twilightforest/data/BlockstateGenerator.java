@@ -8,6 +8,7 @@ import net.minecraft.state.properties.*;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.*;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.fml.RegistryObject;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;

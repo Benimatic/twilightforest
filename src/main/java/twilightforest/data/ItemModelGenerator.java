@@ -6,12 +6,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
-import net.minecraftforge.client.model.generators.*;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.client.model.generators.ItemModelBuilder;
+import net.minecraftforge.client.model.generators.ItemModelProvider;
+import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.item.ItemTFExperiment115;
-import twilightforest.item.TFItems;
 
 import static twilightforest.TwilightForestMod.prefix;
 
