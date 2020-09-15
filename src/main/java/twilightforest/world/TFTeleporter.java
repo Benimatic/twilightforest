@@ -497,6 +497,13 @@ public class TFTeleporter implements ITeleporter {
 		return repositionEntity.apply(false);
 	}
 
+	@Override
+	public boolean isVanilla() {
+		// Broken by https://github.com/MinecraftForge/MinecraftForge/pull/7296 apparently
+		// TODO Remove when https://github.com/MinecraftForge/MinecraftForge/pull/7317 gets merged
+		return true;
+	}
+
 	static class PortalPosition {
 		public final BlockPos pos;
 		long lastUpdateTime;
@@ -506,5 +513,4 @@ public class TFTeleporter implements ITeleporter {
 			this.lastUpdateTime = time;
 		}
 	}
-
 }

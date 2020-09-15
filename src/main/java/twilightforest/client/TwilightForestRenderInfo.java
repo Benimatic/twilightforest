@@ -34,8 +34,8 @@ public class TwilightForestRenderInfo extends DimensionRenderInfo {
     }
 
     @Override
-    public Vector3d func_230494_a_(Vector3d biomeColor, float daylight) {
-        return biomeColor.mul(daylight * 0.94F + 0.06F, (daylight * 0.94F + 0.06F), (daylight * 0.91F + 0.09F));
+    public Vector3d func_230494_a_(Vector3d biomeFogColor, float daylight) { // For modifying biome fog color with daycycle
+        return biomeFogColor;//biomeFogColor.mul(daylight * 0.94F + 0.06F, (daylight * 0.94F + 0.06F), (daylight * 0.91F + 0.09F));
     }
 
     @Override
