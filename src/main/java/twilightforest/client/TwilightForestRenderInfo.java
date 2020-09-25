@@ -3,6 +3,10 @@ package twilightforest.client;
 import net.minecraft.client.world.DimensionRenderInfo;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraftforge.client.ISkyRenderHandler;
+import net.minecraftforge.client.IWeatherRenderHandler;
+import twilightforest.client.renderer.TFSkyRenderer;
+import twilightforest.client.renderer.TFWeatherRenderer;
 
 import javax.annotation.Nullable;
 
@@ -35,7 +39,7 @@ public class TwilightForestRenderInfo extends DimensionRenderInfo {
 
     @Override
     public Vector3d func_230494_a_(Vector3d biomeFogColor, float daylight) { // For modifying biome fog color with daycycle
-        return biomeFogColor;//biomeFogColor.mul(daylight * 0.94F + 0.06F, (daylight * 0.94F + 0.06F), (daylight * 0.91F + 0.09F));
+        return /*biomeFogColor;*/biomeFogColor.mul(daylight * 0.94F + 0.06F, (daylight * 0.94F + 0.06F), (daylight * 0.91F + 0.09F));
     }
 
     @Override
@@ -52,5 +56,17 @@ public class TwilightForestRenderInfo extends DimensionRenderInfo {
 
         // FIXME Make the fog on these biomes much much darker, maybe pitch black even. Do we keep this harsher fog underground too?
         return biome == TFBiomes.darkForest.get() || biome == TFBiomes.darkForestCenter.get();*/
+    }
+
+    @Nullable
+    @Override
+    public ISkyRenderHandler getSkyRenderHandler() {
+        return new TFSkyRenderer();
+    }
+
+    @Nullable
+    @Override
+    public IWeatherRenderHandler getWeatherRenderHandler() {
+        return new TFWeatherRenderer();
     }
 }
