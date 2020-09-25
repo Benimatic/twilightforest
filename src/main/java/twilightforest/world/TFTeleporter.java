@@ -62,7 +62,7 @@ public class TFTeleporter implements ITeleporter {
 		if (!isPlayer && columnMap.containsKey(columnPos)) {
 			return null;
 		} else {
-			PortalPosition portalPosition = destinationCoordinateCache.containsKey(world.getDimensionKey().func_240901_a_()) ? destinationCoordinateCache.get(world.getDimensionKey().func_240901_a_()).get(columnPos) : null;
+			PortalPosition portalPosition = destinationCoordinateCache.containsKey(world.getDimensionKey().getLocation()) ? destinationCoordinateCache.get(world.getDimensionKey().getLocation()).get(columnPos) : null;
 			if (portalPosition != null) {
 				blockpos = portalPosition.pos;
 				portalPosition.lastUpdateTime = world.getGameTime();
@@ -129,8 +129,8 @@ public class TFTeleporter implements ITeleporter {
 			return null;
 		} else {
 			if (flag) {
-				destinationCoordinateCache.putIfAbsent(world.getDimensionKey().func_240901_a_(), Maps.newHashMapWithExpectedSize(4096));
-				destinationCoordinateCache.get(world.getDimensionKey().func_240901_a_()).put(columnPos, new PortalPosition(blockpos, world.getGameTime()));
+				destinationCoordinateCache.putIfAbsent(world.getDimensionKey().getLocation(), Maps.newHashMapWithExpectedSize(4096));
+				destinationCoordinateCache.get(world.getDimensionKey().getLocation()).put(columnPos, new PortalPosition(blockpos, world.getGameTime()));
 				world.getChunkProvider().registerTicket(TicketType.PORTAL, new ChunkPos(blockpos), 3, new BlockPos(columnPos.x, blockpos.getY(), columnPos.z));
 			}
 
@@ -367,13 +367,13 @@ public class TFTeleporter implements ITeleporter {
 	}
 
 	private static double getYFactor(ServerWorld world) {
-		return world.getDimensionKey().func_240901_a_().equals(World.OVERWORLD.func_240901_a_()) ? 2.0 : 0.5;
+		return world.getDimensionKey().getLocation().equals(World.OVERWORLD.getLocation()) ? 2.0 : 0.5;
 	}
 
 	private static void cachePortalCoords(ServerWorld world, Vector3d loc, BlockPos pos) {
 		int x = MathHelper.floor(loc.x), z = MathHelper.floor(loc.z);
-		destinationCoordinateCache.putIfAbsent(world.getDimensionKey().func_240901_a_(), Maps.newHashMapWithExpectedSize(4096));
-		destinationCoordinateCache.get(world.getDimensionKey().func_240901_a_()).put(new ColumnPos(x, z), new PortalPosition(pos, world.getGameTime()));
+		destinationCoordinateCache.putIfAbsent(world.getDimensionKey().getLocation(), Maps.newHashMapWithExpectedSize(4096));
+		destinationCoordinateCache.get(world.getDimensionKey().getLocation()).put(new ColumnPos(x, z), new PortalPosition(pos, world.getGameTime()));
 	}
 
 	private static boolean isIdealForPortal(ServerWorld world, BlockPos pos) {

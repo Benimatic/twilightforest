@@ -111,7 +111,7 @@ public class TFEventListener {
 
 				event.getWorld().getChunkProvider() instanceof ServerChunkProvider &&
 
-				((ServerWorld) event.getWorld()).getDimensionKey().func_240901_a_().equals(TFDimensions.twilightForest.func_240901_a_()) &&
+				((ServerWorld) event.getWorld()).getDimensionKey().getLocation().equals(TFDimensions.twilightForest.getLocation()) &&
 
 				event.getPos().getY() >= ((ServerChunkProvider) event.getWorld().getChunkProvider()).getChunkGenerator().func_230356_f_())
 			event.setCanceled(true);
@@ -243,7 +243,7 @@ public class TFEventListener {
 			if (pos.getY() < 2) {
 				pos.setY(2);
 			} else {
-				int logicalHeight = player.getEntityWorld().func_230315_m_().func_241513_m_();
+				int logicalHeight = player.getEntityWorld().getDimensionType().getLogicalHeight();
 
 				if (pos.getY() > logicalHeight) {
 					pos.setY(logicalHeight - 1);

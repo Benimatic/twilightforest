@@ -95,7 +95,7 @@ public class TFWeatherRenderer implements IWeatherRenderHandler {
 				i1 = 10;
 			}
 
-			RenderSystem.depthMask(Minecraft.func_238218_y_()); //fabulous
+			RenderSystem.depthMask(Minecraft.isFabulousGraphicsEnabled());
 			int j1 = -1;
 			float f1 = (float) this.rendererUpdateCount + partialTicks;
 			RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -230,7 +230,7 @@ public class TFWeatherRenderer implements IWeatherRenderHandler {
 				range = 10;
 			}
 
-			RenderSystem.depthMask(Minecraft.func_238218_y_()); //fabulous
+			RenderSystem.depthMask(Minecraft.isFabulousGraphicsEnabled());
 
 			RenderType currentType = null;
 			float combinedTicks = (float) this.rendererUpdateCount + partialTicks;
@@ -413,7 +413,7 @@ public class TFWeatherRenderer implements IWeatherRenderHandler {
 				i1 = 10;
 			}
 
-			RenderSystem.depthMask(Minecraft.func_238218_y_()); //fabulous
+			RenderSystem.depthMask(Minecraft.isFabulousGraphicsEnabled());
 			int j1 = -1;
 			RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 			BlockPos.Mutable blockpos$mutableblockpos = new BlockPos.Mutable();
