@@ -1,160 +1,130 @@
 package twilightforest.item;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.block.BlockRotatedPillar;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import twilightforest.TFAchievementPage;
-import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
+import javax.annotation.Nonnull;
 
 public class ItemTFLampOfCinders extends ItemTF {
-
 	private static final int FIRING_TIME = 12;
 
-	public ItemTFLampOfCinders() {
-		super();
+	ItemTFLampOfCinders(EnumRarity rarity) {
+		super(rarity);
 		this.setCreativeTab(TFItems.creativeTab);
 		this.maxStackSize = 1;
-        this.setMaxDamage(1024);
+		this.setMaxDamage(1024);
 	}
-	
-	/**
-	 * Properly register icon source
-	 */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":" + this.getUnlocalizedName().substring(5));
-    }
-    
+
+	@Nonnull
 	@Override
-	public ItemStack onItemRightClick(ItemStack par1ItemStack, World world, EntityPlayer player) {
-		if (par1ItemStack.getItemDamage() < this.getMaxDamage()) 
-		{
-			player.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
-		}
-		else 
-		{
-			player.stopUsingItem();
-		}
-		return par1ItemStack;
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand) {
+		player.setActiveHand(hand);
+		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 	}
-	
-	
-    /**
-     * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
-     * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
-     */
+
+	@Nonnull
 	@Override
-	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
-	{
-        if (burnBlock(player, world, x, y, z)) {
-    		world.playSoundAtEntity(player, this.getSound(), 0.5F, 1.5F);
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+		if (burnBlock(world, pos)) {
+			if (player instanceof EntityPlayerMP)
+				CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP) player, pos, player.getHeldItem(hand));
 
-    		// spawn flame particles
-    		for (int i = 0; i < 10; i++) {
-    			float dx =  x + 0.5F + (itemRand.nextFloat() - itemRand.nextFloat()) * 0.75F;
-    			float dy =  y + 0.5F + (itemRand.nextFloat() - itemRand.nextFloat()) * 0.75F;
-    			float dz =  z + 0.5F + (itemRand.nextFloat() - itemRand.nextFloat()) * 0.75F;
-    			
-                world.spawnParticle("smoke", dx, dy, dz, 0.0D, 0.0D, 0.0D);
-                world.spawnParticle("flame", dx, dy, dz, 0.0D, 0.0D, 0.0D);
-    		}
-    		
-        	return true;
-        } else {
-        	return false;
-        }
-        
+			player.playSound(SoundEvents.ENTITY_GHAST_SHOOT, 0.5F, 1.5F);
+
+			// spawn flame particles
+			for (int i = 0; i < 10; i++) {
+				float dx = pos.getX() + 0.5F + (itemRand.nextFloat() - itemRand.nextFloat()) * 0.75F;
+				float dy = pos.getY() + 0.5F + (itemRand.nextFloat() - itemRand.nextFloat()) * 0.75F;
+				float dz = pos.getZ() + 0.5F + (itemRand.nextFloat() - itemRand.nextFloat()) * 0.75F;
+
+				world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, dx, dy, dz, 0.0D, 0.0D, 0.0D);
+				world.spawnParticle(EnumParticleTypes.FLAME, dx, dy, dz, 0.0D, 0.0D, 0.0D);
+			}
+
+			return EnumActionResult.SUCCESS;
+		} else {
+			return EnumActionResult.PASS;
+		}
 	}
 
-	private boolean burnBlock(EntityPlayer player, World world, int x, int y, int z) {
-		Block block = world.getBlock(x, y, z);
-        if (block == TFBlocks.thorns) {
-        	world.setBlock(x, y, z, TFBlocks.burntThorns, world.getBlockMetadata(x, y, z) & 12, 2);
-        	return true;
-        } else {
-        	return false;
-        }
+	private boolean burnBlock(World world, BlockPos pos) {
+		IBlockState state = world.getBlockState(pos);
+		if (state.getBlock() == TFBlocks.thorns) {
+			world.setBlockState(pos, TFBlocks.burnt_thorns.getDefaultState().withProperty(BlockRotatedPillar.AXIS, state.getValue(BlockRotatedPillar.AXIS)));
+			return true;
+		} else {
+			return false;
+		}
 	}
-	
-	
-    /**
-     * called when the player releases the use item button. Args: itemstack, world, entityplayer, itemInUseCount
-     */
-    @Override
-    public void onPlayerStoppedUsing(ItemStack par1ItemStack, World world, EntityPlayer player, int useRemaining)
-    {
-    	int useTime = this.getMaxItemUseDuration(par1ItemStack) - useRemaining;
 
+	@Override
+	public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase living, int useRemaining) {
+		int useTime = this.getMaxItemUseDuration(stack) - useRemaining;
 
-    	if (useTime > FIRING_TIME && (par1ItemStack.getItemDamage() + 1) < this.getMaxDamage()) 
-    	{
-    		doBurnEffect(world, player);
-    		
-    		// trigger achievement
-    		player.triggerAchievement(TFAchievementPage.twilightProgressTroll);
-    	}
+		if (useTime > FIRING_TIME && (stack.getItemDamage() + 1) < this.getMaxDamage(stack)) {
+			doBurnEffect(world, living);
+		}
+	}
 
-    }
-
-	private void doBurnEffect(World world, EntityPlayer player) {
-		int px = MathHelper.floor_double(player.lastTickPosX);
-		int py = MathHelper.floor_double(player.lastTickPosY + player.getEyeHeight());
-		int pz = MathHelper.floor_double(player.lastTickPosZ);
+	private void doBurnEffect(World world, EntityLivingBase living) {
+		BlockPos pos = new BlockPos(
+				MathHelper.floor(living.lastTickPosX),
+				MathHelper.floor(living.lastTickPosY + living.getEyeHeight()),
+				MathHelper.floor(living.lastTickPosZ)
+		);
 
 		int range = 4;
-		
+
 		if (!world.isRemote) {
-			world.playSoundAtEntity(player, this.getSound(), 1.5F, 0.8F);
+			world.playSound(null, living.posX, living.posY, living.posZ, SoundEvents.ENTITY_GHAST_SHOOT, living.getSoundCategory(), 1.5F, 0.8F);
 
 			// set nearby thorns to burnt
-			for (int dx = -range; dx <=range; dx++) {
-				for (int dy = -range; dy <=range; dy++) {
-					for (int dz = -range; dz <=range; dz++) {
-						this.burnBlock(player, world, px + dx, py + dy, pz + dz);
+			for (int dx = -range; dx <= range; dx++) {
+				for (int dy = -range; dy <= range; dy++) {
+					for (int dz = -range; dz <= range; dz++) {
+						this.burnBlock(world, pos.add(dx, dy, dz));
 					}
 				}
 			}
 		}
 
-		for (int i = 0; i < 6; i++) {
-			int rx = px + itemRand.nextInt(range) - itemRand.nextInt(range);
-			int ry = py + itemRand.nextInt(2);
-			int rz = pz + itemRand.nextInt(range) - itemRand.nextInt(range);
+		if (living instanceof EntityPlayer) {
+			for (int i = 0; i < 6; i++) {
+				BlockPos rPos = pos.add(
+						itemRand.nextInt(range) - itemRand.nextInt(range),
+						itemRand.nextInt(2),
+						itemRand.nextInt(range) - itemRand.nextInt(range)
+				);
 
-			world.playAuxSFXAtEntity(player, 2004, rx, ry, rz, 0);
+				world.playEvent((EntityPlayer) living, 2004, rPos, 0);
+			}
 		}
 	}
 
-	
-	public String getSound()
-	{
-		return "mob.ghast.fireball";
+	@Override
+	public EnumAction getItemUseAction(ItemStack stack) {
+		return EnumAction.BOW;
 	}
-	
-    /**
-     * returns the action that specifies what animation to play when the items is being used
-     */
-    @Override
-	public EnumAction getItemUseAction(ItemStack par1ItemStack)
-    {
-        return EnumAction.bow;
-    }
-    
-    /**
-     * How long it takes to use or consume an item
-     */
-    @Override
-	public int getMaxItemUseDuration(ItemStack par1ItemStack)
-    {
-        return 72000;
-    }
+
+	@Override
+	public int getMaxItemUseDuration(ItemStack stack) {
+		return 72000;
+	}
 }

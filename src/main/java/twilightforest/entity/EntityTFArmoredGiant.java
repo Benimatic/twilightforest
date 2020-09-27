@@ -1,26 +1,33 @@
 package twilightforest.entity;
 
-import twilightforest.item.TFItems;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
+import twilightforest.TwilightForestMod;
 
 public class EntityTFArmoredGiant extends EntityTFGiantMiner {
 
-	public EntityTFArmoredGiant(World par1World) {
-		super(par1World);
-		
-        this.setCurrentItemOrArmor(0, new ItemStack(Items.stone_sword));
-        this.setCurrentItemOrArmor(1, new ItemStack(Items.iron_helmet));
-        this.setCurrentItemOrArmor(2, new ItemStack(Items.iron_chestplate));
-        this.setCurrentItemOrArmor(3, new ItemStack(Items.iron_leggings));
-        this.setCurrentItemOrArmor(4, new ItemStack(Items.iron_boots));
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/armored_giant");
 
+	public EntityTFArmoredGiant(World world) {
+		super(world);
 	}
 
-    protected Item getDropItem()
-    {
-        return TFItems.giantSword;
-    }
+	@Override
+	protected void setEquipmentBasedOnDifficulty(DifficultyInstance difficulty) {
+		super.setEquipmentBasedOnDifficulty(difficulty);
+		this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.STONE_SWORD));
+		this.setItemStackToSlot(EntityEquipmentSlot.HEAD, new ItemStack(Items.IRON_HELMET));
+		this.setItemStackToSlot(EntityEquipmentSlot.CHEST, new ItemStack(Items.IRON_CHESTPLATE));
+		this.setItemStackToSlot(EntityEquipmentSlot.LEGS, new ItemStack(Items.IRON_LEGGINGS));
+		this.setItemStackToSlot(EntityEquipmentSlot.FEET, new ItemStack(Items.IRON_BOOTS));
+	}
+
+	@Override
+	public ResourceLocation getLootTable() {
+		return LOOT_TABLE;
+	}
 }

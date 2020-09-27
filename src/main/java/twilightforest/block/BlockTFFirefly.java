@@ -1,80 +1,45 @@
 package twilightforest.block;
 
-import java.util.Random;
-
+import net.minecraft.block.BlockDirectional;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.StateMap;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.EnumSkyBlock;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import twilightforest.tileentity.TileEntityTFFirefly;
+import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.TwilightForestMod;
+import twilightforest.client.ModelRegisterCallback;
+import twilightforest.tileentity.critters.TileEntityTFFireflyTicking;
 
-public class BlockTFFirefly extends BlockTFCritter {
+public class BlockTFFirefly extends BlockTFCritter implements ModelRegisterCallback {
 
-	
-	public static int sprFirefly = 4;
-	
-	public static Random rand = new Random();
-	
 	protected BlockTFFirefly() {
-		super();
-		this.setLightLevel(0.9375F);
-	}
-    
-    /**
-     * How often do we check for incorrect lighting on fireflies, etc.
-     */
-    public int tickRate()
-    {
-        return 50 + rand.nextInt(50);
-    }
-    
-    /**
-     * Get a light value for this block, normal ranges are between 0 and 15
-     * 
-     * @param world The current world
-     * @param x X Position
-     * @param y Y position
-     * @param z Z position
-     * @return The light value
-     */
-	@Override
-	public int getLightValue(IBlockAccess world, int x, int y, int z) {
-    	return 15; 
+		this.setLightLevel(1.0F);
 	}
 
-
 	@Override
-	public TileEntity createTileEntity(World world, int metadata) {
-		return new TileEntityTFFirefly();
+	public TileEntity createTileEntity(World world, IBlockState state) {
+		return TwilightForestMod.proxy.getNewFireflyTE();
 	}
-	
-	
-    /**
-     * Called whenever the block is added into the world. Args: world, x, y, z
-     */
-	@Override
-    public void onBlockAdded(World world, int x, int y, int z)
-    {
-		super.onBlockAdded(world, x, y, z);
-//		if (!world.isRemote)
-//		{
-//			world.scheduleBlockUpdate(x, y, z, blockID, tickRate());
-//		}
-    }
 
-    /**
-     * Ticks the block if it's been scheduled
-     * Check the lighting and make the world relight it if it's incorrect.
-     */
-    @Override
-    public void updateTick(World world, int x, int y, int z, Random random)
-    {
-    	if (!world.isRemote && world.getBlockLightValue(x, y, z) < 12) {
-			//world.updateLightByType(EnumSkyBlock.Block, x, y, z);
-			world.markBlockForUpdate(x, y, z); // do we need this now?
-			//System.out.println("Updating firefly light value");
-			// do another update to check that we got it right
-			world.scheduleBlockUpdate(x, y, z, this, tickRate());
-		}
+	@Override
+	public ItemStack getSquishResult() {
+		return new ItemStack(Items.GLOWSTONE_DUST);
+	}
+
+	//Atomic: Forge would like to get rid of registerTESRItemStack, but there's no alternative yet (as at 1.11)
+	@SuppressWarnings("deprecation")
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void registerModel() {
+		ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(BlockDirectional.FACING).build());
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
+		ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(this), 0, TileEntityTFFireflyTicking.class);
 	}
 }

@@ -1,0 +1,84 @@
+{
+  "display": {
+    "icon": {
+      "item": "twilightforest:fiery_sword"
+    },
+    "title": {
+      "translate": "advancement.twilightforest.fiery_set"
+    },
+    "description": {
+      "translate": "advancement.twilightforest.fiery_set.desc"
+    },
+    "frame": "challenge"
+  },
+  "parent": "twilightforest:progress_hydra",
+  "criteria": {
+    "sword": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "twilightforest:fiery_sword"
+          }
+        ]
+      }
+    },
+    "pick": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "twilightforest:fiery_pickaxe"
+          }
+        ]
+      }
+    },
+    "head": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "twilightforest:fiery_helmet"
+          }
+        ]
+      }
+    },
+    "chest": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "twilightforest:fiery_chestplate"
+          }
+        ]
+      }
+    },
+    "legs": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "twilightforest:fiery_leggings"
+          }
+        ]
+      }
+    },
+    "feet": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "twilightforest:fiery_boots"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [ "sword", "pick" ],
+    [ "head", "chest", "legs", "feet" ]
+  ],
+  "rewards": {
+    "experience": 75
+  }
+}

@@ -1,13 +1,16 @@
 package twilightforest.structures.hollowtree;
 
-import java.util.List;
-import java.util.Random;
-
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.block.BlockLog;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
+import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
+
+import java.util.Random;
+
+import static net.minecraft.block.BlockLog.LOG_AXIS;
 
 
 public class ComponentTFHollowTreeSmallBranch extends
@@ -17,43 +20,30 @@ public class ComponentTFHollowTreeSmallBranch extends
 		super();
 	}
 
-	protected ComponentTFHollowTreeSmallBranch(int i, int sx, int sy, int sz,
-			double length, double angle, double tilt, boolean leafy) {
-		super(i, sx, sy, sz, length, angle, tilt, leafy);
+	protected ComponentTFHollowTreeSmallBranch(TFFeature feature, int i, int sx, int sy, int sz, double length, double angle, double tilt, boolean leafy) {
+		super(feature, i, sx, sy, sz, length, angle, tilt, leafy);
 	}
-	
-	/**
-	 * Add a leaf ball to the end
-	 */
-	@Override
-	public void buildComponent(StructureComponent structurecomponent, List list, Random rand) {
-//		int index = getComponentType();
-//		
-//		if (leafy) {
-//			int leafRad = rand.nextInt(2) + 1;
-//			ComponentTFLeafSphere leafBlob = new ComponentTFLeafSphere(index + 1, dest.posX, dest.posY, dest.posZ, leafRad);
-//	        list.add(leafBlob);
-//	        leafBlob.buildComponent(this, list, rand); // doesn't really need to be here for leaves.
-//		}
 
+	@Override
+	public boolean addComponentParts(World world, Random random, StructureBoundingBox sbb)
+	{
+		return this.addComponentParts(world, random, sbb, false);
 	}
-	
-	@Override
-	public boolean addComponentParts(World world, Random random, StructureBoundingBox sbb) {
-		
-		ChunkCoordinates rSrc = new ChunkCoordinates(src.posX - boundingBox.minX, src.posY - boundingBox.minY, src.posZ - boundingBox.minZ);
-		ChunkCoordinates rDest = new ChunkCoordinates(dest.posX - boundingBox.minX, dest.posY - boundingBox.minY, dest.posZ - boundingBox.minZ);
 
-		drawBresehnam(world, sbb, rSrc.posX, rSrc.posY, rSrc.posZ, rDest.posX, rDest.posY, rDest.posZ, TFBlocks.log, 12);
-		
-		// with leaves!
-		if (leafy) {
+	@Override
+	public boolean addComponentParts(World world, Random random, StructureBoundingBox sbb, boolean drawLeaves) {
+
+		BlockPos rSrc = src.add(-boundingBox.minX, -boundingBox.minY, -boundingBox.minZ);
+		BlockPos rDest = dest.add(-boundingBox.minX, -boundingBox.minY, -boundingBox.minZ);
+
+		if (!drawLeaves)
+		{
+			IBlockState log = TFBlocks.twilight_log.getDefaultState().withProperty(LOG_AXIS, BlockLog.EnumAxis.NONE);
+			drawBresehnam(world, sbb, rSrc.getX(), rSrc.getY(), rSrc.getZ(), rDest.getX(), rDest.getY(), rDest.getZ(), log);
+		} else {
 			int leafRad = random.nextInt(2) + 1;
-			makeLeafBlob(world, sbb, rDest.posX, rDest.posY, rDest.posZ, leafRad);		
-
+			makeLeafBlob(world, sbb, rDest.getX(), rDest.getY(), rDest.getZ(), leafRad);
 		}
-
-
 		return true;
 	}
 

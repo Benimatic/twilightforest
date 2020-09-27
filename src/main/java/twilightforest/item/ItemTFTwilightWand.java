@@ -1,117 +1,58 @@
 package twilightforest.item;
 
-import java.util.List;
-
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumAction;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.entity.EntityTFTwilightWandBolt;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class ItemTFTwilightWand extends ItemTF {
 
-	protected ItemTFTwilightWand() {
-		super();
-        this.maxStackSize = 1;
-        this.setMaxDamage(99);
+	protected ItemTFTwilightWand(EnumRarity rarity) {
+		super(rarity);
+		this.maxStackSize = 1;
+		this.setMaxDamage(99);
 		this.setCreativeTab(TFItems.creativeTab);
-
 	}
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack par1ItemStack, World worldObj, EntityPlayer player) {
-		if (par1ItemStack.getItemDamage() < this.getMaxDamage()) 
-		{
-			player.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
-		}
-		else 
-		{
-			player.stopUsingItem();
-		}
-		
-		return par1ItemStack;
-	}
-	
-    /**
-     * Called each tick while using an item.
-     * @param stack The Item being used
-     * @param player The Player using the item
-     * @param count The amount of time in tick the item has been used for continuously
-     */
-    @Override
-	public void onUsingTick(ItemStack stack, EntityPlayer player, int count) {
-		if (stack.getItemDamage() >= this.getMaxDamage()) {
-			// do not use
-			player.stopUsingItem();
-			return;
-		}
-    	
-    	if (count % 6 == 0) {
-    		World worldObj = player.worldObj;
-	    	
-			worldObj.playSoundAtEntity(player, "mob.ghast.fireball", 1.0F, (worldObj.rand.nextFloat() - worldObj.rand.nextFloat()) * 0.2F + 1.0F);
-			
-			if (!worldObj.isRemote) {
-				worldObj.spawnEntityInWorld(new EntityTFTwilightWandBolt(worldObj, player));
-				
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+		ItemStack stack = player.getHeldItem(hand);
+
+		if (stack.getItemDamage() == stack.getMaxDamage()) {
+			return ActionResult.newResult(EnumActionResult.FAIL, player.getHeldItem(hand));
+		} else {
+			player.playSound(SoundEvents.ENTITY_GHAST_SHOOT, 1.0F, (world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F + 1.0F);
+
+			if (!world.isRemote) {
+				world.spawnEntity(new EntityTFTwilightWandBolt(world, player));
 				stack.damageItem(1, player);
 			}
-    	}
 
-
+			return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
+		}
 	}
 
-	/**
-     * How long it takes to use or consume an item
-     */
-    @Override
-	public int getMaxItemUseDuration(ItemStack par1ItemStack)
-    {
-        return 72000;
-    }
-    
-    /**
-     * returns the action that specifies what animation to play when the items is being used
-     */
-    @Override
-	public EnumAction getItemUseAction(ItemStack par1ItemStack)
-    {
-        return EnumAction.bow;
-    }
-    
-    /**
-     * Return an item rarity from EnumRarity
-     */    
-    @Override
-	public EnumRarity getRarity(ItemStack par1ItemStack) {
-    	return EnumRarity.rare;
+	@Override
+	public float getXpRepairRatio(ItemStack stack) {
+		return 1f;
 	}
 
-    /**
-     * Display charges left in tooltip
-     */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
-		par3List.add((par1ItemStack.getMaxDamage() -  par1ItemStack.getItemDamage()) + " charges left");
+	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flags) {
+		super.addInformation(stack, world, tooltip, flags);
+		tooltip.add(I18n.format("twilightforest.scepter_charges", stack.getMaxDamage() - stack.getItemDamage()));
 	}
-	
-	/**
-	 * Properly register icon source
-	 */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":" + this.getUnlocalizedName().substring(5));
-    }
 }

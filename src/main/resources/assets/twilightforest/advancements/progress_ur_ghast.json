@@ -1,0 +1,63 @@
+{
+  "display": {
+    "icon": {
+      "item": "twilightforest:trophy",
+      "data": 3
+    },
+    "title": {
+      "translate": "advancement.twilightforest.progress_ur_ghast"
+    },
+    "description": {
+      "translate": "advancement.twilightforest.progress_ur_ghast.desc",
+      "with": [
+        { "translate": "entity.twilightforest.ur_ghast.name" }
+      ]
+    },
+    "frame": "goal"
+  },
+  "parent": "twilightforest:ghast_trap",
+  "criteria": {
+    "ghast": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "twilightforest:ur_ghast"
+        }
+      }
+    },
+    "trophy": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "twilightforest:trophy",
+            "data": 3
+          }
+        ]
+      }
+    },
+    "tear": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "twilightforest:fiery_tears"
+          }
+        ]
+      }
+    },
+    "previous_progression": {
+      "trigger": "twilightforest:has_advancement",
+      "conditions": {
+        "advancement": "twilightforest:progress_knights"
+      }
+    }
+  },
+  "requirements": [
+    [ "ghast", "trophy", "tear" ],
+    [ "previous_progression" ]
+  ],
+  "rewards": {
+    "function": "twilightforest:give_3_shields"
+  }
+}

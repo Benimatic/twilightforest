@@ -1,0 +1,15 @@
+{
+  "result": {
+    "item": "twilightforest:fiery_ingot"
+  },
+  "ingredients": [
+    [
+      { "item": "twilightforest:fiery_blood" },
+      { "item": "twilightforest:fiery_tears" }
+    ],
+    {
+      "item": "#INGOTIRON"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

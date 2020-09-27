@@ -1,128 +1,83 @@
 package twilightforest.block;
 
-import java.util.List;
-import java.util.Random;
-
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import twilightforest.TwilightForestMod;
+import net.minecraft.util.NonNullList;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.enums.RootVariant;
+import twilightforest.client.ModelRegisterCallback;
+import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockTFRoots extends Block {
-	
-	public static IIcon spRootSide;
-    public static IIcon spOreRootSide;
+import java.util.Random;
 
-    
-    public static final int ROOT_META = 0;
-    public static final int OREROOT_META = 1;
+public class BlockTFRoots extends Block implements ModelRegisterCallback {
+
+	public static final IProperty<RootVariant> VARIANT = PropertyEnum.create("variant", RootVariant.class);
 
 	public BlockTFRoots() {
-		super(Material.wood);
+		super(Material.WOOD);
 		this.setCreativeTab(TFItems.creativeTab);
-        this.setHardness(2.0F);
-        this.setStepSound(Block.soundTypeWood);
+		this.setHardness(2.0F);
+		this.setSoundType(SoundType.WOOD);
 	}
 
-	
-    /**
-     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-     */
-    @Override
-	public IIcon getIcon(int side, int meta)
-    {
-    	if (meta == 1) {
-    		return spOreRootSide;
-    	}
-    	else {
-    		return spRootSide;
-    	}
-    }
-    
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister par1IconRegister)
-	{
-		BlockTFRoots.spRootSide = par1IconRegister.registerIcon(TwilightForestMod.ID + ":rootblock");
-		BlockTFRoots.spOreRootSide = par1IconRegister.registerIcon(TwilightForestMod.ID + ":oreroots");
+	public BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, VARIANT);
 	}
-	
-    /**
-     * Returns the ID of the items to drop on destruction.
-     */
-    @Override
-    public Item getItemDropped(int meta, Random random, int j)
-    {
-    	switch (meta) {
-    	case ROOT_META :
-    		// roots drop sticks
-    		return Items.stick;
-    	case OREROOT_META :
-    		// oreroots drop liveroot
-    		return TFItems.liveRoot;
-    	default:
-    		return Item.getItemFromBlock(this);
-    	}
-    }
-    
 
- 	/**
-     * Determines the damage on the item the block drops. Used in cloth and wood.
-     */
-    @Override
-	public int damageDropped(int meta)
-    {
-    	switch (meta) {
-    	case ROOT_META :
-    		// roots drop sticks, no meta
-    		return 0;
-    	case OREROOT_META :
-    		// oreroots drop liveroot, no meta
-    		return 0;
-    	default:
-    		// set log flag on wood blocks
-    		return meta | 8;
-    	}
-    }
-    
-    /**
-     * Metadata and fortune sensitive version, this replaces the old (int meta, Random rand)
-     * version in 1.1. 
-     * 
-     * @param meta Blocks Metadata
-     * @param fortune Current item fortune level
-     * @param random Random number generator
-     * @return The number of items to drop
-     */
-    @Override
-	public int quantityDropped(int meta, int fortune, Random random) {
-    	switch (meta) {
-    	case ROOT_META :
-    		// roots drop several sticks
-    		return 3 + random.nextInt(2);
-    	default:
-    		return super.quantityDropped(meta, fortune, random);
-    	}
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		return state.getValue(VARIANT).ordinal();
 	}
-    
 
-    /**
-     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     */
-    @Override
+	@Override
+	@Deprecated
+	public IBlockState getStateFromMeta(int meta) {
+		return getDefaultState().withProperty(VARIANT, RootVariant.values()[meta]);
+	}
+
+	@Override
+	public Item getItemDropped(IBlockState state, Random random, int j) {
+		switch (state.getValue(VARIANT)) {
+			default:
+			case ROOT:
+				return Items.STICK;
+			case LIVEROOT:
+				return TFItems.liveroot;
+		}
+	}
+
+	@Override
+	public int quantityDropped(IBlockState state, int fortune, Random random) {
+		if (state.getValue(VARIANT) == RootVariant.ROOT) {
+			return 3 + random.nextInt(2);
+		} else {
+			return super.quantityDropped(state, fortune, random);
+		}
+	}
+
+	@Override
+	public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> list) {
+		list.add(new ItemStack(this, 1, 0));
+		list.add(new ItemStack(this, 1, 1));
+	}
+
 	@SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
-    {
-        par3List.add(new ItemStack(par1, 1, 0));
-        par3List.add(new ItemStack(par1, 1, 1));
-    }
+	@Override
+	public void registerModel() {
+		ModelUtils.registerToStateSingleVariant(this, VARIANT);
+	}
 
 }

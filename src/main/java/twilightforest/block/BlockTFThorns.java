@@ -1,293 +1,232 @@
 package twilightforest.block;
 
-import java.util.List;
-import java.util.Random;
-
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRotatedPillar;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.EnumPushReaction;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.pathfinding.PathNodeType;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import twilightforest.TwilightForestMod;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.enums.Leaves3Variant;
+import twilightforest.enums.ThornVariant;
+import twilightforest.client.ModelRegisterCallback;
+import twilightforest.client.ModelUtils;
 import twilightforest.item.TFItems;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import twilightforest.util.WorldUtil;
 
-public class BlockTFThorns extends BlockRotatedPillar {
+import java.util.Random;
 
-    private static final float THORN_DAMAGE = 4.0F;
-    
-    private String[] names;
-	private IIcon sideIcons[];
-	private IIcon topIcons[];
+public class BlockTFThorns extends BlockTFConnectableRotatedPillar implements ModelRegisterCallback {
 
-	protected BlockTFThorns() {
-		super(Material.wood);
-		
-		this.setNames(new String[] {"brown", "green"});
-		
+	public static final IProperty<ThornVariant> VARIANT = PropertyEnum.create("variant", ThornVariant.class);
+
+	private static final float THORN_DAMAGE = 4.0F;
+
+	BlockTFThorns() {
+		super(Material.WOOD, MapColor.OBSIDIAN, 10);
 		this.setHardness(50.0F);
 		this.setResistance(2000.0F);
-		this.setStepSound(soundTypeWood);
+		this.setSoundType(SoundType.WOOD);
 		this.setCreativeTab(TFItems.creativeTab);
-	}
-	
-    /**
-     * The type of render function that is called for this block
-     */
-    @Override
-	public int getRenderType()
-    {
-    	return TwilightForestMod.proxy.getThornsBlockRenderID();
-    }
-    
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
-    public boolean renderAsNormalBlock()
-    {
-        return false;
-    }
 
-    /**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
-    public boolean isOpaqueCube()
-    {
-        return false;
-    }
-    
-    /**
-     * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
-     * cleared to be reused)
-     */
-    @Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
-    {
-    	int meta = world.getBlockMetadata(x, y, z);
-    	
-    	int rotation = meta & 12;
-		float pixel = 0.0625F;
-
-    	switch (rotation) {
-    	case 0:
-    	default:
-        	return AxisAlignedBB.getBoundingBox(x + pixel * 3F, y, z + pixel * 3F, x + 1F - pixel * 3F, y + 1F, z + 1F - pixel * 3F);
-    	case 4:
-        	return AxisAlignedBB.getBoundingBox(x, y + pixel * 3F, z + pixel * 3F, x + 1F, y + 1F - pixel * 3F, z + 1F - pixel * 3F);
-    	case 8:
-        	return AxisAlignedBB.getBoundingBox(x + pixel * 3F, y + pixel * 3F, z, x + 1F - pixel * 3F, y + 1F - pixel * 3F, z + 1F);
-    	}
-
-    }
-
-    /**
-     * Returns the bounding box of the wired rectangular prism to render.
-     */
-    @SideOnly(Side.CLIENT)
-    public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z)
-    {
-        return this.getCollisionBoundingBoxFromPool(world, x, y, z);
-    }
-    
-
-    /**
-     * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
-     */
-    public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity)
-    {
-    	entity.attackEntityFrom(DamageSource.cactus, THORN_DAMAGE);
-    }
-    
-    /**
-     * When we are chopped, things get bad
-     */
-    public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
-    	int meta = world.getBlockMetadata(x, y, z);
-    	if (!player.capabilities.isCreativeMode) {
-    		if (!world.isRemote) {
-    			// grow back
-    			world.setBlock(x, y, z, this, (meta & 12) | 1, 2);
-    			// grow more
-    			this.doThornBurst(world, x, y, z, meta);
-    		}
-    	} else {
-            world.setBlockToAir(x, y, z);
-    	}
-    	
-    	return true;
-    }
-    
-    /**
-     * Returns the mobility information of the block, 0 = free, 1 = can't push but can move over, 2 = total immobility
-     * and stop pistons
-     */
-    public int getMobilityFlag()
-    {
-        return 2;
-    }
-
-    /**
-     * Grow thorns out of both the ends, then maybe in another direction too
-     */
-    private void doThornBurst(World world, int x, int y, int z, int meta) {
-		int rotation = meta & 12;
-		
-		switch (rotation) {
-		case 0:
-			growThorns(world, x, y, z, ForgeDirection.UP);
-			growThorns(world, x, y, z, ForgeDirection.DOWN);
-			break;
-		case 4:
-			growThorns(world, x, y, z, ForgeDirection.EAST);
-			growThorns(world, x, y, z, ForgeDirection.WEST);
-			break;
-		case 8:
-			growThorns(world, x, y, z, ForgeDirection.NORTH);
-			growThorns(world, x, y, z, ForgeDirection.SOUTH);
-			break;
+		if (hasVariant()) {
+			this.setDefaultState(this.getDefaultState().withProperty(VARIANT, ThornVariant.BROWN));
 		}
-		
-		// also try three random directions
-		growThorns(world, x, y, z, ForgeDirection.VALID_DIRECTIONS[world.rand.nextInt(ForgeDirection.VALID_DIRECTIONS.length)]);
-		growThorns(world, x, y, z, ForgeDirection.VALID_DIRECTIONS[world.rand.nextInt(ForgeDirection.VALID_DIRECTIONS.length)]);
-		growThorns(world, x, y, z, ForgeDirection.VALID_DIRECTIONS[world.rand.nextInt(ForgeDirection.VALID_DIRECTIONS.length)]);
-
 	}
 
-    /**
-     * grow several green thorns in the specified direction
-     */
-	private void growThorns(World world, int x, int y, int z, ForgeDirection dir) {
+	@Override
+	protected IProperty[] getAdditionalProperties() {
+		return new IProperty[]{VARIANT};
+	}
+
+	protected boolean hasVariant() {
+		return true;
+	}
+
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		return hasVariant() ? super.getMetaFromState(state) | state.getValue(VARIANT).ordinal() : super.getMetaFromState(state);
+	}
+
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+		return hasVariant() ? super.getStateFromMeta(meta).withProperty(VARIANT, ThornVariant.values()[meta & 0b11]) : super.getStateFromMeta(meta);
+	}
+
+	@Override
+	public MapColor getMapColor(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return state.getValue(VARIANT) == ThornVariant.GREEN ? MapColor.FOLIAGE : super.getMapColor(state, world, pos);
+	}
+
+	@Override
+	protected boolean canConnectTo(IBlockState state, IBlockState otherState, IBlockAccess world, BlockPos pos, EnumFacing connectTo) {
+		return (otherState.getBlock() instanceof BlockTFThorns
+				|| otherState.getBlock() == TFBlocks.thorn_rose
+				||(otherState.getBlock() == TFBlocks.twilight_leaves_3 && otherState.getValue(BlockTFLeaves3.VARIANT) == Leaves3Variant.THORN)
+				|| otherState.getMaterial() == Material.GRASS
+				|| otherState.getMaterial() == Material.GROUND)
+				|| super.canConnectTo(state, otherState, world, pos, connectTo);
+	}
+
+	@Override
+	public int damageDropped(IBlockState state) {
+		return hasVariant() ? state.getValue(VARIANT).ordinal() : 0;
+	}
+
+	@Override
+	public PathNodeType getAiPathNodeType(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return PathNodeType.DAMAGE_CACTUS;
+	}
+
+	@Override
+	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
+		entity.attackEntityFrom(DamageSource.CACTUS, THORN_DAMAGE);
+	}
+
+	@Override
+	public void onEntityWalk(World world, BlockPos pos, Entity entity) {
+		IBlockState state = world.getBlockState(pos);
+
+		if (state.getBlock() instanceof BlockTFThorns && state.getValue(AXIS) == EnumFacing.Axis.Y)
+			onEntityCollision(world, pos, state, entity);
+
+		super.onEntityWalk(world, pos, entity);
+	}
+
+	@Override
+	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean harvest) {
+		if (!player.capabilities.isCreativeMode) {
+			if (!world.isRemote) {
+				// grow back
+				world.setBlockState(pos, state, 2);
+				// grow more
+				this.doThornBurst(world, pos, state);
+			}
+		} else {
+			world.setBlockToAir(pos);
+		}
+
+		return true;
+	}
+
+	@Override
+	@Deprecated
+	public EnumPushReaction getPushReaction(IBlockState state) {
+		return EnumPushReaction.BLOCK;
+	}
+
+	/**
+	 * Grow thorns out of both the ends, then maybe in another direction too
+	 */
+	private void doThornBurst(World world, BlockPos pos, IBlockState state) {
+		switch (state.getValue(AXIS)) {
+			case Y:
+				growThorns(world, pos, EnumFacing.UP);
+				growThorns(world, pos, EnumFacing.DOWN);
+				break;
+			case X:
+				growThorns(world, pos, EnumFacing.EAST);
+				growThorns(world, pos, EnumFacing.WEST);
+				break;
+			case Z:
+				growThorns(world, pos, EnumFacing.NORTH);
+				growThorns(world, pos, EnumFacing.SOUTH);
+				break;
+		}
+
+		// also try three random directions
+		growThorns(world, pos, EnumFacing.random(world.rand));
+		growThorns(world, pos, EnumFacing.random(world.rand));
+		growThorns(world, pos, EnumFacing.random(world.rand));
+	}
+
+	/**
+	 * grow several green thorns in the specified direction
+	 */
+	private void growThorns(World world, BlockPos pos, EnumFacing dir) {
 		int length = 1 + world.rand.nextInt(3);
-		
+
 		for (int i = 1; i < length; i++) {
-			int dx = x + (dir.offsetX * i);
-			int dy = y + (dir.offsetY * i);
-			int dz = z + (dir.offsetZ * i);
- 
-			if (world.isAirBlock(dx, dy, dz)) {
-				world.setBlock(dx, dy, dz, this, getMetaFor(dir) | 1, 2);
+			BlockPos dPos = pos.offset(dir, i);
+
+			if (world.isAirBlock(dPos)) {
+				world.setBlockState(dPos, getDefaultState().withProperty(AXIS, dir.getAxis()).withProperty(VARIANT, ThornVariant.GREEN), 2);
 			} else {
 				break;
 			}
 		}
 	}
 
-	/**
-	 * Get the meta we need to place a new block in the specified direction
-	 * @param dir
-	 * @return
-	 */
-	public static int getMetaFor(ForgeDirection dir) {
-		switch (dir) {
-		case UNKNOWN:
-		default:
-		case UP:
-		case DOWN:
-			return 0;
-		case EAST:
-		case WEST:
-			return 4;
-		case NORTH:
-		case SOUTH:
-			return 8;
+	@Override
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		int range = 4;
+		int exRange = range + 1;
+
+		if (world.isAreaLoaded(pos, exRange)) {
+			for (BlockPos pos_ : WorldUtil.getAllAround(pos, range)) {
+				IBlockState state_ = world.getBlockState(pos_);
+				if (state_.getBlock().isLeaves(state_, world, pos_)) {
+					state.getBlock().beginLeavesDecay(state_, world, pos_);
+				}
+			}
 		}
 	}
-	
-	/**
-	 * Like logs, we start leaf decay when broken
-	 */
-    public void breakBlock(World world, int x, int y, int z, Block logBlock, int metadata)
-    {
-        byte range = 4;
-        int exRange = range + 1;
 
-        if (world.checkChunksExist(x - exRange, y - exRange, z - exRange, x + exRange, y + exRange, z + exRange))
-        {
-            for (int dx = -range; dx <= range; ++dx)
-            {
-                for (int dy = -range; dy <= range; ++dy)
-                {
-                    for (int dz = -range; dz <= range; ++dz)
-                    {
-                        Block block = world.getBlock(x + dx, y + dy, z + dz);
-                        if (block.isLeaves(world, x + dx, y + dy, z + dz))
-                        {
-                            block.beginLeavesDecay(world, x + dx, y + dy, z + dz);
-                        }
-                    }
-                }
-            }
-        }
-    }
-	
-	/**
-     * Returns the quantity of items to drop on block destruction.
-     */
-    public int quantityDropped(Random p_149745_1_)
-    {
-        return 0;
-    }
-
-    @SideOnly(Side.CLIENT)
 	@Override
-	protected IIcon getSideIcon(int meta) {
-		return this.sideIcons[meta & 3];
+	public int quantityDropped(Random random) {
+		return 0;
 	}
 
-    @SideOnly(Side.CLIENT)
-    protected IIcon getTopIcon(int meta)
-    {
-        return this.topIcons[meta & 3];
-    }
-	
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister iconRegister)
-    {
-    	this.sideIcons = new IIcon[getNames().length]; 
-    	this.topIcons = new IIcon[getNames().length];
-    	
-    	for (int i = 0; i < getNames().length; i++) {
-    		this.sideIcons[i] = iconRegister.registerIcon(TwilightForestMod.ID + ":" + getNames()[i] + "_thorns_side");
-    		this.topIcons[i] = iconRegister.registerIcon(TwilightForestMod.ID + ":" + getNames()[i] + "_thorns_top");
-    	}
-    }
-    
-    @Override
-    public boolean canSustainLeaves(IBlockAccess world, int x, int y, int z)
-    {
-        return true;
-    }
-    
-	/**
-     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
-    {
-    	for (int i = 0; i < getNames().length; i++) {
-            par3List.add(new ItemStack(par1, 1, i));
-    	}
-    }
-
-	public String[] getNames() {
-		return names;
+	public boolean canSustainLeaves(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return true;
 	}
 
-	public void setNames(String[] names) {
-		this.names = names;
+	@Override
+	public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> list) {
+		int n = hasVariant() ? ThornVariant.values().length : 1;
+		for (int i = 0; i < n; i++) {
+			list.add(new ItemStack(this, 1, i));
+		}
+	}
+
+	@Override
+	public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing face) {
+		return face.getAxis() != state.getValue(AXIS) ? BlockFaceShape.MIDDLE_POLE_THICK : BlockFaceShape.CENTER_BIG;
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public BlockRenderLayer getRenderLayer() {
+		return BlockRenderLayer.CUTOUT;
+	}
+
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void registerModel() {
+		ModelUtils.registerToStateSingleVariant(this, VARIANT);
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	@Deprecated
+	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+		return (blockAccess.getBlockState(pos.offset(side)).getBlock() instanceof BlockTFThorns || super.shouldSideBeRendered(blockState, blockAccess, pos, side));
 	}
 }

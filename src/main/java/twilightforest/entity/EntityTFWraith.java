@@ -1,337 +1,315 @@
 package twilightforest.entity;
 
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityFlying;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.item.ItemAxe;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
-import twilightforest.TFAchievementPage;
-import twilightforest.TFFeature;
+import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
+import twilightforest.entity.ai.EntityAITFFindEntityNearestPlayer;
 
+import java.util.Random;
 
 public class EntityTFWraith extends EntityFlying implements IMob {
 
-    public EntityTFWraith(World world)
-    {
-        super(world);
-    }
-    
-    public EntityTFWraith(World world, double x, double y, double z)
-    {
-        this(world);
-        this.setPosition(x, y, z);
-    }
-    
-	/**
-	 * Set monster attributes
-	 */
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/wraith");
+
+	public EntityTFWraith(World world) {
+		super(world);
+		moveHelper = new NoClipMoveHelper(this);
+		noClip = true;
+	}
+
 	@Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.5D); // movement speed
-        
-        // need to initialize damage since we're not an EntityMob
-        this.getAttributeMap().registerAttribute(SharedMonsterAttributes.attackDamage);
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(5.0D); // attack damage
-    }
+	protected void initEntityAI() {
+		this.tasks.addTask(4, new AIAttack(this));
+		this.tasks.addTask(5, new AIFlyTowardsTarget(this));
+		this.tasks.addTask(6, new AIRandomFly(this));
+		this.tasks.addTask(7, new AILookAround(this));
+		this.targetTasks.addTask(1, new EntityAITFFindEntityNearestPlayer(this));
+	}
 
-    @Override
-	public void onLivingUpdate()
-    {
-        if(worldObj.isDaytime())
-        {
-            float f = getBrightness(1.0F);
-            if(f > 0.5F && worldObj.canBlockSeeTheSky(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ)) && rand.nextFloat() * 30F < (f - 0.4F) * 2.0F)
-            {
-//                fire = 300;
-            }
-        }
-        super.onLivingUpdate();
-    }
-    
-    /**
-     * Supress walking sounds
-     */
-    @Override
-    public boolean canTriggerWalking()
-    {
-        return false;
-    }
-    
-    /**
-     * Adapted from the ghast code.  The ghost wanders randomly until it targets a player, at which point it moves towards the player.
-     * 
-     * TODO: pathfinding!
-     */
-    @Override
-	protected void updateEntityActionState()
-    {
-        if(!worldObj.isRemote && worldObj.difficultySetting == EnumDifficulty.PEACEFUL)
-        {
-        	setDead();
-        }
-        despawnEntity();
-        prevAttackCounter = attackCounter;
-        double d = waypointX - posX;
-        double d1 = waypointY - posY;
-        double d2 = waypointZ - posZ;
-        double d3 = MathHelper.sqrt_double(d * d + d1 * d1 + d2 * d2);
-        if(d3 < 1.0D || d3 > 60D)
-        {
-            waypointX = posX + (rand.nextFloat() * 2.0F - 1.0F) * 16F;
-            waypointY = posY + (rand.nextFloat() * 2.0F - 1.0F) * 16F;
-            waypointZ = posZ + (rand.nextFloat() * 2.0F - 1.0F) * 16F;
-        }
-        if(courseChangeCooldown-- <= 0)
-        {
-            courseChangeCooldown += rand.nextInt(5) + 2;
-            if(isCourseTraversable(waypointX, waypointY, waypointZ, d3))
-            {
-                motionX += (d / d3) * 0.10000000000000001D;
-                motionY += (d1 / d3) * 0.10000000000000001D;
-                motionZ += (d2 / d3) * 0.10000000000000001D;
-            } else
-            {
-                waypointX = posX;
-                waypointY = posY;
-                waypointZ = posZ;
-                
-                // clear target?
-                targetedEntity = null;
-            }
-        }
-        if(targetedEntity != null && targetedEntity.isDead)
-        {
-            targetedEntity = null;
-        }
-        if(targetedEntity == null || aggroCooldown-- <= 0)
-        {
-            targetedEntity = findPlayerToAttack();
-            if(targetedEntity != null)
-            {
-                aggroCooldown = 20;
-            }
-        } else {
-             float f1 = targetedEntity.getDistanceToEntity(this);
-             if(canEntityBeSeen(targetedEntity))
-             {
-                 attackEntity(targetedEntity, f1);
-             } else
-             {
-                 attackBlockedEntity(targetedEntity, f1);
-             }
-        }
-        double d4 = 64D;
-        if(targetedEntity != null && targetedEntity.getDistanceSqToEntity(this) < d4 * d4)
-        {
-            double d5 = targetedEntity.posX - posX;
-            //double d6 = (targetedEntity.boundingBox.minY + (double)(targetedEntity.height / 2.0F)) - (posY + height / 2.0F);
-            double d7 = targetedEntity.posZ - posZ;
-            renderYawOffset = rotationYaw = (-(float)Math.atan2(d5, d7) * 180F) / 3.141593F;
-            if(canEntityBeSeen(targetedEntity))
-            {
-                if(attackCounter == 10)
-                {
-                    //worldObj.playSoundAtEntity(this, "mob.ghast.charge", getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
-                }
-                attackCounter++;
-                if(attackCounter == 20)
-                {
-                    waypointX = targetedEntity.posX;
-                    waypointY = targetedEntity.posY - targetedEntity.height + 0.5;
-                    waypointZ = targetedEntity.posZ;
-                	
-                	
-                    attackCounter = -40;
-                }
-            } else
-            if(attackCounter > 0)
-            {
-                attackCounter--;
-            }
-        } else
-        {
-            renderYawOffset = rotationYaw = (-(float)Math.atan2(motionX, motionZ) * 180F) / 3.141593F;
-            if(attackCounter > 0)
-            {
-                attackCounter--;
-            }
-        }
-    }
-    
-    protected void attackEntity(Entity entity, float f)
-    {
-        if(attackTime <= 0 && f < 2.0F && entity.boundingBox.maxY > boundingBox.minY && entity.boundingBox.minY < boundingBox.maxY)
-        {
-            attackTime = 20;
-            
-            float damage = (float)this.getEntityAttribute(SharedMonsterAttributes.attackDamage).getBaseValue();
+	static class AIFlyTowardsTarget extends EntityAIBase {
+		private final EntityTFWraith taskOwner;
 
-            entity.attackEntityFrom(DamageSource.causeMobDamage(this), damage);
-        }
-    }
-    
-    protected void attackBlockedEntity(Entity entity, float f)
-    {
-    }
+		AIFlyTowardsTarget(EntityTFWraith wraith) {
+			this.taskOwner = wraith;
+			this.setMutexBits(1);
+		}
 
-    
-    /**
-     * Adapted from EntityMob
-     * @return
-     */
- 
-    @Override
-	public boolean attackEntityFrom(DamageSource damagesource, float i)
-    {
-        if(super.attackEntityFrom(damagesource, i))
-        {
-            Entity entity = damagesource.getEntity();
-            if(riddenByEntity == entity || ridingEntity == entity)
-            {
-                return true;
-            }
-            if(entity != this)
-            {
-                targetedEntity = entity;
-            }
-            return true;
-        } else
-        {
-            return false;
-        }
-    }
-    
-    /**
-     * Copied from EntityMob
-     * @return
-     */
-    protected Entity findPlayerToAttack()
-    {
-        EntityPlayer entityplayer = worldObj.getClosestVulnerablePlayerToEntity(this, 16D);
-        if(entityplayer != null && canEntityBeSeen(entityplayer))
-        {
-            return entityplayer;
-        } else
-        {
-            return null;
-        }
-    }
+		@Override
+		public boolean shouldExecute() {
+			return taskOwner.getAttackTarget() != null;
+		}
 
-    private boolean isCourseTraversable(double d, double d1, double d2, double d3)
-    {
-        double d4 = (waypointX - posX) / d3;
-        double d5 = (waypointY - posY) / d3;
-        double d6 = (waypointZ - posZ) / d3;
-        AxisAlignedBB axisalignedbb = boundingBox.copy();
-        for(int i = 1; i < d3; i++)
-        {
-            axisalignedbb.offset(d4, d5, d6);
-            if(worldObj.getCollidingBoundingBoxes(this, axisalignedbb).size() > 0)
-            {
-                return false;
-            }
-        }
+		@Override
+		public boolean shouldContinueExecuting() {
+			return false;
+		}
 
-        return true;
-    }
+		@Override
+		public void startExecuting() {
+			EntityLivingBase target = taskOwner.getAttackTarget();
+			if (target != null)
+				taskOwner.getMoveHelper().setMoveTo(target.posX, target.posY, target.posZ, 0.5F);
+		}
+	}
 
-    @Override
-	protected String getLivingSound()
-    {
-        return TwilightForestMod.ID + ":mob.wraith.wraith";
-    }
+	// Similar to EntityAIAttackMelee but simpler (no pathfinding)
+	static class AIAttack extends EntityAIBase {
+		private final EntityTFWraith taskOwner;
+		private int attackTick = 20;
 
-    @Override
-	protected String getHurtSound()
-    {
-        return TwilightForestMod.ID + ":mob.wraith.wraith";
-    }
+		AIAttack(EntityTFWraith taskOwner) {
+			this.taskOwner = taskOwner;
+		}
 
-    @Override
-	protected String getDeathSound()
-    {
-        return TwilightForestMod.ID + ":mob.wraith.wraith";
-    }
+		@Override
+		public boolean shouldExecute() {
+			EntityLivingBase target = taskOwner.getAttackTarget();
 
-    @Override
-	protected Item getDropItem()
-    {
-        return Items.glowstone_dust;
-    }
-    
-    public int courseChangeCooldown;
-    public double waypointX;
-    public double waypointY;
-    public double waypointZ;
-    private Entity targetedEntity;
-    private int aggroCooldown;
-    public int prevAttackCounter;
-    public int attackCounter;
-    
-    /**
-     * Trigger achievement when killed
-     */
-	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
-			((EntityPlayer)par1DamageSource.getSourceOfDamage()).triggerAchievement(TFAchievementPage.twilightHunter);
-			// are we in a level 3 hill?
-			int chunkX = MathHelper.floor_double(posX) >> 4;
-			int chunkZ = MathHelper.floor_double(posZ) >> 4;
-			if (TFFeature.getNearestFeature(chunkX, chunkZ, worldObj) == TFFeature.hill3) {
-				// award level 3 hill cheevo
-				((EntityPlayer)par1DamageSource.getSourceOfDamage()).triggerAchievement(TFAchievementPage.twilightHill3);
+			return target != null
+					&& target.getEntityBoundingBox().maxY > taskOwner.getEntityBoundingBox().minY
+					&& target.getEntityBoundingBox().minY < taskOwner.getEntityBoundingBox().maxY
+					&& taskOwner.getDistanceSq(target) <= 4.0D;
+		}
+
+		@Override
+		public void updateTask() {
+			if (attackTick > 0) {
+				attackTick--;
+			}
+		}
+
+		@Override
+		public void resetTask() {
+			attackTick = 20;
+		}
+
+		@Override
+		public void startExecuting() {
+			if (taskOwner.getAttackTarget() != null)
+				taskOwner.attackEntityAsMob(taskOwner.getAttackTarget());
+			attackTick = 20;
+		}
+	}
+
+	// [VanillaCopy] EntityGhast.AIRandomFly
+	static class AIRandomFly extends EntityAIBase {
+		private final EntityTFWraith parentEntity;
+
+		public AIRandomFly(EntityTFWraith wraith) {
+			this.parentEntity = wraith;
+			this.setMutexBits(1);
+		}
+
+		@Override
+		public boolean shouldExecute() {
+			if (parentEntity.getAttackTarget() != null)
+				return false;
+			EntityMoveHelper entitymovehelper = this.parentEntity.getMoveHelper();
+			double d0 = entitymovehelper.getX() - this.parentEntity.posX;
+			double d1 = entitymovehelper.getY() - this.parentEntity.posY;
+			double d2 = entitymovehelper.getZ() - this.parentEntity.posZ;
+			double d3 = d0 * d0 + d1 * d1 + d2 * d2;
+			return d3 < 1.0D || d3 > 3600.0D;
+		}
+
+		@Override
+		public boolean shouldContinueExecuting() {
+			return false;
+		}
+
+		@Override
+		public void startExecuting() {
+			Random random = this.parentEntity.getRNG();
+			double d0 = this.parentEntity.posX + (double) ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+			double d1 = this.parentEntity.posY + (double) ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+			double d2 = this.parentEntity.posZ + (double) ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+			this.parentEntity.getMoveHelper().setMoveTo(d0, d1, d2, 0.5D);
+		}
+	}
+
+	// [VanillaCopy] EntityGhast.AILookAround
+	public static class AILookAround extends EntityAIBase {
+		private final EntityTFWraith parentEntity;
+
+		public AILookAround(EntityTFWraith wraith) {
+			this.parentEntity = wraith;
+			this.setMutexBits(2);
+		}
+
+		@Override
+		public boolean shouldExecute() {
+			return true;
+		}
+
+		@Override
+		public void updateTask() {
+			if (this.parentEntity.getAttackTarget() == null) {
+				this.parentEntity.rotationYaw = -((float) MathHelper.atan2(this.parentEntity.motionX, this.parentEntity.motionZ)) * (180F / (float) Math.PI);
+				this.parentEntity.renderYawOffset = this.parentEntity.rotationYaw;
+			} else {
+				EntityLivingBase entitylivingbase = this.parentEntity.getAttackTarget();
+
+				if (entitylivingbase.getDistanceSq(this.parentEntity) < 4096.0D) {
+					double d1 = entitylivingbase.posX - this.parentEntity.posX;
+					double d2 = entitylivingbase.posZ - this.parentEntity.posZ;
+					this.parentEntity.rotationYaw = -((float) MathHelper.atan2(d1, d2)) * (180F / (float) Math.PI);
+					this.parentEntity.renderYawOffset = this.parentEntity.rotationYaw;
+				}
 			}
 		}
 	}
-	
-    /**
-     * Checks to make sure the light is not too bright where the mob is spawning
-     */
-    protected boolean isValidLightLevel()
-    {
-        int i = MathHelper.floor_double(this.posX);
-        int j = MathHelper.floor_double(this.boundingBox.minY);
-        int k = MathHelper.floor_double(this.posZ);
 
-        if (this.worldObj.getSavedLightValue(EnumSkyBlock.Sky, i, j, k) > this.rand.nextInt(32))
-        {
-            return false;
-        }
-        else
-        {
-            int l = this.worldObj.getBlockLightValue(i, j, k);
+	@Override
+	protected void applyEntityAttributes() {
+		super.applyEntityAttributes();
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.5D);
 
-            if (this.worldObj.isThundering())
-            {
-                int i1 = this.worldObj.skylightSubtracted;
-                this.worldObj.skylightSubtracted = 10;
-                l = this.worldObj.getBlockLightValue(i, j, k);
-                this.worldObj.skylightSubtracted = i1;
-            }
+		// need to initialize damage since we're not an EntityMob
+		this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
+		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D);
+	}
 
-            return l <= this.rand.nextInt(8);
-        }
-    }
+	@Override
+	public boolean canTriggerWalking() {
+		return false;
+	}
 
-    /**
-     * Checks if the entity's current position is a valid location to spawn this entity.
-     */
-    public boolean getCanSpawnHere()
-    {
-        return this.worldObj.difficultySetting != EnumDifficulty.PEACEFUL && this.isValidLightLevel() && super.getCanSpawnHere();
-    }
+	// [VanillaCopy] EntityMob.attackEntityAsMob. This whole inheritance hierarchy makes me sad.
+	@Override
+	public boolean attackEntityAsMob(Entity entityIn) {
+		float f = (float) this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
+		int i = 0;
+
+		if (entityIn instanceof EntityLivingBase) {
+			f += EnchantmentHelper.getModifierForCreature(this.getHeldItemMainhand(), ((EntityLivingBase) entityIn).getCreatureAttribute());
+			i += EnchantmentHelper.getKnockbackModifier(this);
+		}
+
+		boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), f);
+
+		if (flag) {
+			if (i > 0 && entityIn instanceof EntityLivingBase) {
+				((EntityLivingBase) entityIn).knockBack(this, (float) i * 0.5F, (double) MathHelper.sin(this.rotationYaw * 0.017453292F), (double) (-MathHelper.cos(this.rotationYaw * 0.017453292F)));
+				this.motionX *= 0.6D;
+				this.motionZ *= 0.6D;
+			}
+
+			int j = EnchantmentHelper.getFireAspectModifier(this);
+
+			if (j > 0) {
+				entityIn.setFire(j * 4);
+			}
+
+			if (entityIn instanceof EntityPlayer) {
+				EntityPlayer entityplayer = (EntityPlayer) entityIn;
+				ItemStack itemstack = this.getHeldItemMainhand();
+				ItemStack itemstack1 = entityplayer.isHandActive() ? entityplayer.getActiveItemStack() : ItemStack.EMPTY;
+
+				if (!itemstack.isEmpty() && !itemstack1.isEmpty() && itemstack.getItem() instanceof ItemAxe && itemstack1.getItem() == Items.SHIELD) {
+					float f1 = 0.25F + (float) EnchantmentHelper.getEfficiencyModifier(this) * 0.05F;
+
+					if (this.rand.nextFloat() < f1) {
+						entityplayer.getCooldownTracker().setCooldown(Items.SHIELD, 100);
+						this.world.setEntityState(entityplayer, (byte) 30);
+					}
+				}
+			}
+
+			this.applyEnchantments(this, entityIn);
+		}
+
+		return flag;
+	}
+
+	private void despawnIfPeaceful() {
+		if (!world.isRemote && world.getDifficulty() == EnumDifficulty.PEACEFUL)
+			setDead();
+	}
+
+	@Override
+	public void onLivingUpdate() {
+		super.onLivingUpdate();
+		despawnIfPeaceful();
+	}
+
+	@Override
+	public boolean attackEntityFrom(DamageSource source, float amount) {
+		if (super.attackEntityFrom(source, amount)) {
+			Entity entity = source.getTrueSource();
+			if (getRidingEntity() == entity || getPassengers().contains(entity)) {
+				return true;
+			}
+			if (entity != this && entity instanceof EntityLivingBase) {
+				setAttackTarget((EntityLivingBase) entity);
+			}
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return TFSounds.WRAITH;
+	}
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource source) {
+		return TFSounds.WRAITH;
+	}
+
+	@Override
+	protected SoundEvent getDeathSound() {
+		return TFSounds.WRAITH;
+	}
+
+	@Override
+	public ResourceLocation getLootTable() {
+		return LOOT_TABLE;
+	}
+
+	// [VanillaCopy] Direct copy of EntityMob.isValidLightLevel
+	protected boolean isValidLightLevel() {
+		BlockPos blockpos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
+
+		if (this.world.getLightFor(EnumSkyBlock.SKY, blockpos) > this.rand.nextInt(32)) {
+			return false;
+		} else {
+			int i = this.world.getLightFromNeighbors(blockpos);
+
+			if (this.world.isThundering()) {
+				int j = this.world.getSkylightSubtracted();
+				this.world.setSkylightSubtracted(10);
+				i = this.world.getLightFromNeighbors(blockpos);
+				this.world.setSkylightSubtracted(j);
+			}
+
+			return i <= this.rand.nextInt(8);
+		}
+	}
+
+	@Override
+	public boolean getCanSpawnHere() {
+		return this.world.getDifficulty() != EnumDifficulty.PEACEFUL && this.isValidLightLevel() && super.getCanSpawnHere();
+	}
 }

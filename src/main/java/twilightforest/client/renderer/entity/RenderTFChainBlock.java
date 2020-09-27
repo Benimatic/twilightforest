@@ -1,75 +1,53 @@
 package twilightforest.client.renderer.entity;
 
 import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.opengl.GL11;
-
+import net.minecraft.util.math.MathHelper;
 import twilightforest.TwilightForestMod;
-import twilightforest.entity.EntityTFBlockGoblin;
 import twilightforest.entity.EntityTFChainBlock;
 
-public class RenderTFChainBlock extends Render {
+public class RenderTFChainBlock extends Render<EntityTFChainBlock> {
 
-	private ModelBase model;
-    private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "blockgoblin.png");
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("blockgoblin.png");
+	private final ModelBase model;
 
-	public RenderTFChainBlock(ModelBase modelTFSpikeBlock, float f) {
+	public RenderTFChainBlock(RenderManager manager, ModelBase modelTFSpikeBlock) {
+		super(manager);
 		this.model = modelTFSpikeBlock;
 	}
 
-    /**
-     * The render method used in RenderBoat that renders the boat model.
-     */
-    public void renderSpikeBlock(EntityTFChainBlock par1Entity, double par2, double par4, double par6, float par8, float time)
-    {
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float)par2, (float)par4, (float)par6);
+	@Override
+	public void doRender(EntityTFChainBlock chainBlock, double x, double y, double z, float yaw, float partialTicks) {
+		super.doRender(chainBlock, x, y, z, yaw, partialTicks);
 
-        this.bindEntityTexture(par1Entity);
+		GlStateManager.pushMatrix();
+		GlStateManager.translate(x, y, z);
 
-        GL11.glScalef(-1.0F, -1.0F, 1.0F);
-        
-        
-        GL11.glRotatef(MathHelper.wrapAngleTo180_float((float)par4), 1, 0, 1);
-        GL11.glRotatef(MathHelper.wrapAngleTo180_float(((float)par2 + (float)par6) * 11F), 0, 1, 0);
-//        GL11.glRotatef(MathHelper.wrapAngleTo180_float((float)par8), 0, 0, 1);
-        
+		this.bindEntityTexture(chainBlock);
 
-        
-        this.model.render(par1Entity, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
-        GL11.glPopMatrix();
-    }
+		GlStateManager.scale(-1.0F, -1.0F, 1.0F);
 
-    /**
-     * Actually renders the given argument. This is a synthetic bridge method, always casting down its argument and then
-     * handing it off to a worker function which does the actual work. In all probabilty, the class Render is generic
-     * (Render<T extends Entity) and this method has signature public void doRender(T entity, double d, double d1,
-     * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
-     */
-    public void doRender(Entity par1Entity, double par2, double par4, double par6, float par8, float par9)
-    {
-        EntityTFChainBlock chainBlock = (EntityTFChainBlock)par1Entity;
 
-        this.renderSpikeBlock(chainBlock, par2, par4, par6, par8, par9);
-                
-		RenderManager.instance.renderEntitySimple(chainBlock.chain1, par9);
-		RenderManager.instance.renderEntitySimple(chainBlock.chain2, par9);
-		RenderManager.instance.renderEntitySimple(chainBlock.chain3, par9);
-		RenderManager.instance.renderEntitySimple(chainBlock.chain4, par9);
-		RenderManager.instance.renderEntitySimple(chainBlock.chain5, par9);
-    }
+		GlStateManager.rotate(MathHelper.wrapDegrees((float) y), 1, 0, 1);
+		GlStateManager.rotate(MathHelper.wrapDegrees(((float) x + (float) z) * 11F), 0, 1, 0);
+//        GlStateManager.rotate(MathHelper.wrapDegrees((float)yaw), 0, 0, 1);
 
-    
-	/**
-	 * Return our specific texture
-	 */
-    protected ResourceLocation getEntityTexture(Entity par1Entity)
-    {
-        return textureLoc;
-    }
+
+		this.model.render(chainBlock, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+		GlStateManager.popMatrix();
+
+		renderManager.renderEntityStatic(chainBlock.chain1, partialTicks, false);
+		renderManager.renderEntityStatic(chainBlock.chain2, partialTicks, false);
+		renderManager.renderEntityStatic(chainBlock.chain3, partialTicks, false);
+		renderManager.renderEntityStatic(chainBlock.chain4, partialTicks, false);
+		renderManager.renderEntityStatic(chainBlock.chain5, partialTicks, false);
+	}
+
+	@Override
+	protected ResourceLocation getEntityTexture(EntityTFChainBlock entity) {
+		return textureLoc;
+	}
 }

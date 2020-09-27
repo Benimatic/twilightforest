@@ -1,60 +1,74 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BlockRendererDispatcher;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.MathHelper;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-
 import org.lwjgl.opengl.GL11;
-
 import twilightforest.entity.boss.EntityTFIceBomb;
 
-public class RenderTFThrownIce extends Render {
+// [VanillaCopy] direct of RenderFallingBlock because of generic type restrictions
+public class RenderTFThrownIce extends Render<EntityTFIceBomb> {
 
-    private final RenderBlocks renderBlocks = new RenderBlocks();
-
-	@Override
-	public void doRender(Entity var1, double var2, double var4, double var6, float var8, float var9) {
-        this.doRender((EntityTFIceBomb)var1, var2, var4, var6, var8, var9);
+	public RenderTFThrownIce(RenderManager manager) {
+		super(manager);
+		this.shadowSize = 0.5F;
 	}
-	
-    /**
-     * Actually renders the given argument. This is a synthetic bridge method, always casting down its argument and then
-     * handing it off to a worker function which does the actual work. In all probabilty, the class Render is generic
-     * (Render<T extends Entity) and this method has signature public void func_76986_a(T entity, double d, double d1,
-     * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
-     */
-    public void doRender(EntityTFIceBomb entity, double x, double y, double z, float p_147918_8_, float p_147918_9_)
-    {
-        World world = entity.worldObj;
-        Block block = entity.getBlock();
-        int i = MathHelper.floor_double(entity.posX);
-        int j = MathHelper.floor_double(entity.posY);
-        int k = MathHelper.floor_double(entity.posZ);
-
-        if (block != null && block != world.getBlock(i, j, k))
-        {
-        	GL11.glPushMatrix();
-        	GL11.glTranslatef((float)x, (float)y, (float)z);
-        	this.bindEntityTexture(entity);
-        	GL11.glDisable(GL11.GL_LIGHTING);
-
-        	this.renderBlocks.setRenderBoundsFromBlock(block);
-        	this.renderBlocks.renderBlockSandFalling(block, world, i, j, k, 0);
-
-        	GL11.glEnable(GL11.GL_LIGHTING);
-        	GL11.glPopMatrix();
-        }
-    }
 
 	@Override
-	protected ResourceLocation getEntityTexture(Entity var1) {
-        return TextureMap.locationBlocksTexture;
+	public void doRender(EntityTFIceBomb entity, double x, double y, double z, float entityYaw, float partialTicks) {
+		if (entity.getBlock() != null) {
+			IBlockState iblockstate = entity.getBlock();
 
+			if (iblockstate.getRenderType() == EnumBlockRenderType.MODEL) {
+				World world = entity.world;
+
+				if (iblockstate != world.getBlockState(new BlockPos(entity)) && iblockstate.getRenderType() != EnumBlockRenderType.INVISIBLE) {
+					this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+					GlStateManager.pushMatrix();
+					GlStateManager.disableLighting();
+					Tessellator tessellator = Tessellator.getInstance();
+					BufferBuilder bufferbuilder = tessellator.getBuffer();
+
+					if (this.renderOutlines) {
+						GlStateManager.enableColorMaterial();
+						GlStateManager.enableOutlineMode(this.getTeamColor(entity));
+					}
+
+					bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
+					BlockPos blockpos = new BlockPos(entity.posX, entity.getEntityBoundingBox().maxY, entity.posZ);
+					GlStateManager.translate((float) (x - (double) blockpos.getX() - 0.5D), (float) (y - (double) blockpos.getY()), (float) (z - (double) blockpos.getZ() - 0.5D));
+					BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
+					blockrendererdispatcher.getBlockModelRenderer().renderModel(world, blockrendererdispatcher.getModelForState(iblockstate), iblockstate, blockpos, bufferbuilder, false, MathHelper.getPositionRandom(BlockPos.ORIGIN));
+					tessellator.draw();
+
+					if (this.renderOutlines) {
+						GlStateManager.disableOutlineMode();
+						GlStateManager.disableColorMaterial();
+					}
+
+					GlStateManager.enableLighting();
+					GlStateManager.popMatrix();
+					super.doRender(entity, x, y, z, entityYaw, partialTicks);
+				}
+			}
+		}
+	}
+
+	@Override
+	protected ResourceLocation getEntityTexture(EntityTFIceBomb entity) {
+		return TextureMap.LOCATION_BLOCKS_TEXTURE;
 	}
 
 }

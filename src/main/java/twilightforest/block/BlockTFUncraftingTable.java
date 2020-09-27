@@ -1,68 +1,48 @@
 package twilightforest.block;
 
-import java.util.List;
-
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+import net.minecraft.stats.StatList;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockTFUncraftingTable extends Block {
-	
-	public static IIcon tinkerTop;
-	public static IIcon tinkerSide;
-	
+public class BlockTFUncraftingTable extends Block implements ModelRegisterCallback {
+
 	protected BlockTFUncraftingTable() {
-		super(Material.wood);
+		super(Material.WOOD);
 		this.setHardness(2.5F);
-		this.setStepSound(Block.soundTypeWood);
+		this.setSoundType(SoundType.WOOD);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
+	@Override
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+		if (world.isRemote) return true;
 
-    /**
-     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-     */
-    @Override
-	public IIcon getIcon(int side, int meta)
-    {
-    	return side == 1 ? tinkerTop : tinkerSide;
-    }
-    
-    @Override
-	@SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
-    	tinkerTop = par1IconRegister.registerIcon(TwilightForestMod.ID + ":uncrafting_top");
-    	tinkerSide = par1IconRegister.registerIcon(TwilightForestMod.ID + ":uncrafting_side");
-    }
-
-    /**
-     * Called when the block is clicked by a player. Args: x, y, z, entityPlayer
-     */
-    @Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
-    	player.openGui(TwilightForestMod.instance, 1, world, x, y, z);
-    	return true;
+		player.openGui(TwilightForestMod.instance, 1, world, pos.getX(), pos.getY(), pos.getZ());
+		player.addStat(StatList.CRAFTING_TABLE_INTERACTION);
+		return true;
 	}
 
-    /**
-     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     */
-    @Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
-    {
-        par3List.add(new ItemStack(par1, 1, 0));
-    }
-
-
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void registerModel() {
+		ModelResourceLocation mrl = new ModelResourceLocation(this.getRegistryName(), Loader.isModLoaded("ctm") ? "ctm" : "normal");
+		ModelLoader.setCustomStateMapper(this, new SingleStateMapper(mrl));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, mrl);
+	}
 }

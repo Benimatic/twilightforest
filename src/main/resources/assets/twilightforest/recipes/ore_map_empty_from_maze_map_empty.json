@@ -1,0 +1,20 @@
+{
+  "result": {
+    "item": "twilightforest:ore_map_empty"
+  },
+  "ingredients": [
+    {
+      "item": "twilightforest:maze_map_empty"
+    },
+    {
+      "item": "#BLOCKGOLD"
+    },
+    {
+      "item": "#BLOCKDIAMOND"
+    },
+    {
+      "item": "#BLOCKIRON"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

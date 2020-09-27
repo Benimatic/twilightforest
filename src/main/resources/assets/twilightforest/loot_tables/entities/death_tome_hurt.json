@@ -1,0 +1,17 @@
+{
+  "pools": [
+    {
+      "name": "main",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "empty"
+        },
+        {
+          "type": "item",
+          "name": "minecraft:paper"
+        }
+      ]
+    }
+  ]
+}

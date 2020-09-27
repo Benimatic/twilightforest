@@ -1,15 +1,17 @@
 package twilightforest.entity;
 
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.ai.EntityAICubeCenterOnSymbol;
 import twilightforest.entity.ai.EntityAICubeMoveToRedstoneSymbols;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIWander;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.world.World;
 
-public class EntityTFRovingCube  extends EntityMob {
-	
+public class EntityTFRovingCube extends EntityMob {
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/roving_cube");
 	// data needed for cube AI
 
 	// last circle visited
@@ -24,48 +26,40 @@ public class EntityTFRovingCube  extends EntityMob {
 
 	public EntityTFRovingCube(World world) {
 		super(world);
-        setSize(1.2F, 2.1F);
-        
-        this.tasks.addTask(0, new EntityAICubeMoveToRedstoneSymbols(this, 1.0D));
-        this.tasks.addTask(1, new EntityAICubeCenterOnSymbol(this, 1.0D));
-
+		setSize(1.2F, 2.1F);
 	}
 
-	protected void applyEntityAttributes()
-	{
+	@Override
+	protected void initEntityAI() {
+		this.tasks.addTask(0, new EntityAICubeMoveToRedstoneSymbols(this, 1.0D));
+		this.tasks.addTask(1, new EntityAICubeCenterOnSymbol(this, 1.0D));
+	}
+
+	@Override
+	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(10.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23000000417232513D);
-		this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(5.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23000000417232513D);
+		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D);
 	}
 
+	@Override
+	public void onLivingUpdate() {
+		super.onLivingUpdate();
 
-	/**
-	 * Returns true if the newer Entity AI code should be run
-	 */
-	protected boolean isAIEnabled()
-	{
-		return true;
+		if (this.world.isRemote) {
+			for (int i = 0; i < 3; i++) {
+				float px = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.75F;
+				float py = this.getEyeHeight() - 0.25F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.75F;
+				float pz = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.75F;
+
+				TwilightForestMod.proxy.spawnParticle(TFParticleType.ANNIHILATE, this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
+			}
+		}
 	}
 
-    
-    /**
-     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
-     * use this to react to sunlight and start to burn.
-     */
-    public void onLivingUpdate()
-    {
-    	super.onLivingUpdate();
-    	// make annihilation particles
-    	for (int i = 0; i < 3; i++) {
-	    	float px = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.75F;
-	    	float py = this.getEyeHeight() - 0.25F + (this.rand.nextFloat() - this.rand.nextFloat()) * 0.75F;
-	    	float pz = (this.rand.nextFloat() - this.rand.nextFloat()) * 0.75F;
-	    	
-			TwilightForestMod.proxy.spawnParticle(this.worldObj, "annihilate", this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
-    	}
-
-    }
-
-
+	@Override
+	protected ResourceLocation getLootTable() {
+		return LOOT_TABLE;
+	}
 }

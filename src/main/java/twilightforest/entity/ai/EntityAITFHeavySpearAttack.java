@@ -5,29 +5,23 @@ import twilightforest.entity.EntityTFGoblinKnightUpper;
 
 public class EntityAITFHeavySpearAttack extends EntityAIBase {
 
-    private EntityTFGoblinKnightUpper entity;
+	private EntityTFGoblinKnightUpper entity;
 
-    public EntityAITFHeavySpearAttack(EntityTFGoblinKnightUpper par1EntityCreature)
-    {
-        this.entity = par1EntityCreature;
-        this.setMutexBits(7);
-    }
-	
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
+	public EntityAITFHeavySpearAttack(EntityTFGoblinKnightUpper upperKnight) {
+		this.entity = upperKnight;
+		this.setMutexBits(3); // Prevent moving
+	}
+
+	@Override
+	public void updateTask() {
+		if (entity.heavySpearTimer == 25) {
+			entity.landHeavySpearAttack();
+		}
+	}
+
 	@Override
 	public boolean shouldExecute() {
-       return entity.heavySpearTimer > 0 && entity.heavySpearTimer < 50;
+		return entity.heavySpearTimer > 0 && entity.heavySpearTimer < EntityTFGoblinKnightUpper.HEAVY_SPEAR_TIMER_START;
 	}
-	
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
-    @Override
-	public boolean continueExecuting()
-    {
-        return entity.heavySpearTimer > 0 && entity.heavySpearTimer < 50;
-    }
 
 }

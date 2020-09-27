@@ -1,143 +1,129 @@
 package twilightforest.block;
 
-import java.util.Random;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import twilightforest.TwilightForestMod;
-import twilightforest.item.TFItems;
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.IIcon;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.client.ModelRegisterCallback;
+import twilightforest.item.TFItems;
 
-public class BlockTFTrollSteinn extends Block {
+import java.util.Random;
+
+public class BlockTFTrollSteinn extends Block implements ModelRegisterCallback {
+
+	static final IProperty<Boolean> DOWN_LIT  = PropertyBool.create("down");
+	static final IProperty<Boolean> UP_LIT    = PropertyBool.create("up");
+	static final IProperty<Boolean> NORTH_LIT = PropertyBool.create("north");
+	static final IProperty<Boolean> SOUTH_LIT = PropertyBool.create("south");
+	static final IProperty<Boolean> WEST_LIT  = PropertyBool.create("west");
+	static final IProperty<Boolean> EAST_LIT  = PropertyBool.create("east");
 
 	private static final int LIGHT_THRESHHOLD = 7;
-	private IIcon blockIconLight;
 
-	protected BlockTFTrollSteinn() {
-		super(Material.rock);
+	BlockTFTrollSteinn() {
+		super(Material.ROCK);
 
-        this.setHardness(2F);
-        this.setResistance(15F);
-        this.setStepSound(Block.soundTypeStone);
+		this.setHardness(2F);
+		this.setResistance(15F);
+		this.setSoundType(SoundType.STONE);
 		this.setCreativeTab(TFItems.creativeTab);
-        this.setBlockTextureName(TwilightForestMod.ID + ":trollsteinn");
+		this.setDefaultState(blockState.getBaseState()
+				.withProperty(DOWN_LIT, false).withProperty(UP_LIT, false)
+				.withProperty(NORTH_LIT, false).withProperty(SOUTH_LIT, false)
+				.withProperty(WEST_LIT, false).withProperty(EAST_LIT, false));
 	}
-
-
-    /**
-     * A randomly called display update to be able to add particles or other items for display
-     */
-    @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
-        if (rand.nextInt(2) == 0) {
-            this.sparkle(world, x, y, z, rand);
-        }
-    }
-
-    private void sparkle(World world, int x, int y, int z, Random rand) {
-        Random random = rand;
-        double pixel = 0.0625D;
-        int threshhold = LIGHT_THRESHHOLD;
-
-        for (int side = 0; side < 6; ++side)
-        {
-            double rx = (double)((float)x + random.nextFloat());
-            double ry = (double)((float)y + random.nextFloat());
-            double rz = (double)((float)z + random.nextFloat());
-
-			if (side == 0 && !world.getBlock(x, y - 1, z).isOpaqueCube() && world.getBlockLightValue(x, y - 1, z) <= threshhold)
-            {
-                ry = (double)(y + 0) - pixel;
-            }
-
-            if (side == 1 && !world.getBlock(x, y + 1, z).isOpaqueCube() && world.getBlockLightValue(x, y + 1, z) <= threshhold)
-            {
-                ry = (double)(y + 1) + pixel;
-            }
-
-            if (side == 2 && !world.getBlock(x, y, z + 1).isOpaqueCube() && world.getBlockLightValue(x, y, z + 1) <= threshhold)
-            {
-                rz = (double)(z + 1) + pixel;
-            }
-
-            if (side == 3 && !world.getBlock(x, y, z - 1).isOpaqueCube() && world.getBlockLightValue(x, y, z - 1) <= threshhold)
-            {
-                rz = (double)(z + 0) - pixel;
-            }
-
-            if (side == 4 && !world.getBlock(x + 1, y, z).isOpaqueCube() && world.getBlockLightValue(x + 1, y, z) <= threshhold)
-            {
-                rx = (double)(x + 1) + pixel;
-            }
-
-            if (side == 5 && !world.getBlock(x - 1, y, z).isOpaqueCube() && world.getBlockLightValue(x - 1, y, z) <= threshhold)
-            {
-                rx = (double)(x + 0) - pixel;
-            }
-
-            if (rx < (double)x || rx > (double)(x + 1) || ry < 0.0D || ry > (double)(y + 1) || rz < (double)z || rz > (double)(z + 1))
-            {
-                world.spawnParticle("reddust", rx, ry, rz, 0.25D, -1.0D, 0.5D);
-            }
-        }
-    }
-
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
-        
-		// check brightness for the side
-		if (side == 0 && isBlockLit(world, x, y - 1, z)) {
-            return this.blockIconLight;
-        }
-
-        if (side == 1 && isBlockLit(world, x, y + 1, z)) {
-            return this.blockIconLight;
-        }
-
-        if (side == 2 && isBlockLit(world, x, y, z - 1)) {
-            return this.blockIconLight;
-        }
-
-        if (side == 3 && isBlockLit(world, x, y, z + 1)) {
-            return this.blockIconLight;
-        }
-
-        if (side == 4 && isBlockLit(world, x - 1, y, z)) {
-            return this.blockIconLight;
-        }
-
-        if (side == 5 && isBlockLit(world, x + 1, y, z)) {
-            return this.blockIconLight;
-        }
-    	
-        return this.getIcon(side, world.getBlockMetadata(x, y, z));
-    }
-	
-    private boolean isBlockLit(IBlockAccess world, int x, int y, int z) {
-        int threshhold = LIGHT_THRESHHOLD << 4;
-
-        if (world.getBlock(x, y, z).isOpaqueCube()) {
-    		return false;
-        } else {
-        	int light = world.getLightBrightnessForSkyBlocks(x, y, z, 0);
-            int sky = light % 65536;
-            int block = light / 65536;
-        	
-        	return sky > threshhold || block > threshhold;
-        }
-	}
-
 
 	@Override
+	public BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, DOWN_LIT, UP_LIT, NORTH_LIT, SOUTH_LIT, WEST_LIT, EAST_LIT);
+	}
+
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		return 0;
+	}
+
+	@Override
+	@Deprecated
+	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
+		if (!(world instanceof World)) return this.getDefaultState();
+
+		for (SideProps side : SideProps.values())
+			state = state.withProperty(side.prop, ((World) world).getLight(pos.offset(side.facing)) > LIGHT_THRESHHOLD);
+
+		return state;
+	}
+
 	@SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister) {
-        this.blockIcon = par1IconRegister.registerIcon(this.getTextureName());
-        this.blockIconLight = par1IconRegister.registerIcon(this.getTextureName() + "_light");
-    }
+	@Override
+	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
+		if (rand.nextInt(2) == 0) this.sparkle(world, pos);
+	}
+
+	// [VanillaCopy] Based on BlockRedstoneOre.spawnParticles
+	private void sparkle(World world, BlockPos pos) {
+		Random random = world.rand;
+		int threshhold = LIGHT_THRESHHOLD;
+
+		for (EnumFacing side : EnumFacing.VALUES) {
+			double rx = (double) ((float) pos.getX() + random.nextFloat());
+			double ry = (double) ((float) pos.getY() + random.nextFloat());
+			double rz = (double) ((float) pos.getZ() + random.nextFloat());
+
+			if (side == EnumFacing.DOWN && !world.getBlockState(pos.down()).isOpaqueCube() && world.getLight(pos.down()) <= threshhold) {
+				ry = (double)pos.getY() - 0.0625D;
+			}
+
+			if (side == EnumFacing.UP && !world.getBlockState(pos.up()).isOpaqueCube() && world.getLight(pos.up()) <= threshhold) {
+				ry = (double)pos.getY() + 0.0625D + 1.0D;
+			}
+
+			if (side == EnumFacing.NORTH && !world.getBlockState(pos.north()).isOpaqueCube() && world.getLight(pos.north()) <= threshhold) {
+				rz = (double)pos.getZ() - 0.0625D;
+			}
+
+			if (side == EnumFacing.SOUTH && !world.getBlockState(pos.south()).isOpaqueCube() && world.getLight(pos.south()) <= threshhold) {
+				rz = (double)pos.getZ() + 0.0625D + 1.0D;
+			}
+
+			if (side == EnumFacing.WEST && !world.getBlockState(pos.west()).isOpaqueCube() && world.getLight(pos.west()) <= threshhold) {
+				rx = (double)pos.getX() - 0.0625D;
+			}
+
+			if (side == EnumFacing.EAST && !world.getBlockState(pos.east()).isOpaqueCube() && world.getLight(pos.east()) <= threshhold) {
+				rx = (double)pos.getX() + 0.0625D + 1.0D;
+			}
+
+			if (rx < (double) pos.getX() || rx > (double) (pos.getX() + 1) || ry < 0.0D || ry > (double) (pos.getY() + 1) || rz < (double) pos.getZ() || rz > (double) (pos.getZ() + 1)) {
+				world.spawnParticle(EnumParticleTypes.REDSTONE, rx, ry, rz, 0.25D, -1.0D, 0.5D);
+			}
+		}
+	}
+
+	private enum SideProps {
+		UP(UP_LIT, EnumFacing.UP),
+		DOWN(DOWN_LIT, EnumFacing.DOWN),
+		NORTH(NORTH_LIT, EnumFacing.NORTH),
+		SOUTH(SOUTH_LIT, EnumFacing.SOUTH),
+		WEST(WEST_LIT, EnumFacing.WEST),
+		EAST(EAST_LIT, EnumFacing.EAST);
+
+		private final IProperty<Boolean> prop;
+		private final EnumFacing facing;
+
+		SideProps(IProperty<Boolean> prop, EnumFacing faceing) {
+			this.prop = prop;
+			this.facing = faceing;
+		}
+	}
 }

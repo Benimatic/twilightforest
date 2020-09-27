@@ -1,599 +1,446 @@
 package twilightforest.entity.boss;
 
-import java.util.ArrayList;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIArrowAttack;
+import net.minecraft.entity.ai.EntityAIAttackRanged;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.ai.EntityAIWander;
+import net.minecraft.entity.ai.EntityAISwimming;
+import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.BossInfo;
+import net.minecraft.world.BossInfoServer;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
-import twilightforest.TFAchievementPage;
+import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.TFFeature;
+import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.BlockTFBossSpawner;
+import twilightforest.block.TFBlocks;
+import twilightforest.client.particle.TFParticleType;
+import twilightforest.entity.IHostileMount;
 import twilightforest.entity.ai.EntityAIStayNearHome;
 import twilightforest.entity.ai.EntityAITFThrowRider;
 import twilightforest.entity.ai.EntityAITFYetiRampage;
 import twilightforest.entity.ai.EntityAITFYetiTired;
-import twilightforest.item.TFItems;
-import twilightforest.world.ChunkProviderTwilightForest;
-import twilightforest.world.TFWorldChunkManager;
-import twilightforest.world.WorldProviderTwilightForest;
+import twilightforest.enums.BossVariant;
+import twilightforest.util.EntityUtil;
+import twilightforest.util.WorldUtil;
+import twilightforest.world.TFWorld;
 
-public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob
-{
+import javax.annotation.Nullable;
 
-	
-    private static final int RAMPAGE_FLAG = 16;
-	private static final int TIRED_FLAG = 17;
+public class EntityTFYetiAlpha extends EntityMob implements IRangedAttackMob, IHostileMount {
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/yeti_alpha");
+	private static final DataParameter<Byte> RAMPAGE_FLAG = EntityDataManager.createKey(EntityTFYetiAlpha.class, DataSerializers.BYTE);
+	private static final DataParameter<Byte> TIRED_FLAG = EntityDataManager.createKey(EntityTFYetiAlpha.class, DataSerializers.BYTE);
+	private final BossInfoServer bossInfo = new BossInfoServer(getDisplayName(), BossInfo.Color.WHITE, BossInfo.Overlay.PROGRESS);
 	private int collisionCounter;
 	private boolean canRampage;
 
+	public EntityTFYetiAlpha(World world) {
+		super(world);
+		this.setSize(3.8F, 5.0F);
+		this.experienceValue = 317;
+	}
 
-
-	public EntityTFYetiAlpha(World par1World)
-    {
-        super(par1World);
-        this.setSize(3.8F, 5.0F);
-
-        
-        this.getNavigator().setAvoidsWater(true);
-		this.tasks.addTask(1, new EntityAITFYetiTired(this, 100));
-		this.tasks.addTask(2, new EntityAITFThrowRider(this, 1.0F));
-		this.tasks.addTask(3, new EntityAIStayNearHome(this, 2.0F));
-		this.tasks.addTask(4, new EntityAITFYetiRampage(this, 10, 180));
-
-		this.tasks.addTask(5, new EntityAIArrowAttack(this, 1.0D, 40, 40, 40.0F));
-        this.tasks.addTask(6, new EntityAIWander(this, 2.0F));
-        this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.tasks.addTask(8, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, false));
-        
-        this.experienceValue = 317;
-
-    }
-	
-
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
-    @Override
-	protected boolean isAIEnabled()
-    {
-        return true;
-    }
-    
-	
-    protected void entityInit()
-    {
-        super.entityInit();
-        this.dataWatcher.addObject(RAMPAGE_FLAG, Byte.valueOf((byte)0));
-        this.dataWatcher.addObject(TIRED_FLAG, Byte.valueOf((byte)0));
-    }
-    
-	/**
-	 * Set monster attributes
-	 */
 	@Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(200.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.38D); // movement speed
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(1.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(40.0D);
-    }
+	protected void initEntityAI() {
+		this.tasks.addTask(0, new EntityAISwimming(this));
+		this.tasks.addTask(1, new EntityAITFYetiTired(this, 100));
+		this.tasks.addTask(2, new EntityAIStayNearHome(this, 2.0F));
+		this.tasks.addTask(3, new EntityAITFYetiRampage(this, 10, 180));
+		this.tasks.addTask(4, new EntityAIAttackRanged(this, 1.0D, 40, 40, 40.0F){
+			@Override
+			public boolean shouldExecute() {
+				return getRNG().nextInt(50) > 0 && getAttackTarget() != null && getDistanceSq(getAttackTarget()) >= 16D && super.shouldExecute(); // Give us a chance to move to the next AI
+			}
+		});
+		this.tasks.addTask(4, new EntityAITFThrowRider(this, 1.0D, false) {
+			@Override
+			protected void checkAndPerformAttack(EntityLivingBase p_190102_1_, double p_190102_2_) {
+				super.checkAndPerformAttack(p_190102_1_, p_190102_2_);
+				if (!getPassengers().isEmpty())
+					playSound(TFSounds.ALPHAYETI_GRAB, 4F, 0.75F + getRNG().nextFloat() * 0.25F);
+			}
 
-    /**
-     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
-     * use this to react to sunlight and start to burn.
-     */
-    @Override
-	public void onLivingUpdate()
-    {
-    	if (this.riddenByEntity != null)
-    	{
-    		
-            // stop player sneaking so that they can't dismount!
-            if (this.riddenByEntity.isSneaking())
-            {
-            	//System.out.println("Pinch beetle sneaking detected!");
-            	
-            	this.riddenByEntity.setSneaking(false);
-            }
-    	}
-    	else
-    	{
+			@Override
+			public void resetTask() {
+				if (!getPassengers().isEmpty())
+					playSound(TFSounds.ALPHAYETI_THROW, 4F, 0.75F + getRNG().nextFloat() * 0.25F);
+				super.resetTask();
+			}
+		});
+		this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 2.0D));
+		this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+		this.tasks.addTask(7, new EntityAILookIdle(this));
+		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
+		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+	}
 
-    	}
-    	
-    	super.onLivingUpdate();
+	@Override
+	protected void entityInit() {
+		super.entityInit();
+		dataManager.register(RAMPAGE_FLAG, (byte) 0);
+		dataManager.register(TIRED_FLAG, (byte) 0);
+	}
 
-    	// look at things we are holding
-    	if (this.riddenByEntity != null)
-    	{
-            this.getLookHelper().setLookPositionWithEntity(riddenByEntity, 100F, 100F);
-    	}
-    	
-    	if (this.isCollided) {
-    		this.collisionCounter++;
-    	}
-    	
-    	if (this.collisionCounter >= 15) {
-    		if (!this.worldObj.isRemote) {
-    			this.destroyBlocksInAABB(this.boundingBox);
-    		}
-    		this.collisionCounter = 0;
-    	}
-    	
-    	// add rampage snow effects
-    	if (this.isRampaging()) {
-    		
-    		float rotation = this.ticksExisted / 10F;
-    		
-    		
-    		for (int i = 0; i < 20; i++) {
-    			addSnowEffect(rotation + (i * 50), i + rotation);
-    		}
+	@Override
+	protected void applyEntityAttributes() {
+		super.applyEntityAttributes();
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(200.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.38D);
+		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(40.0D);
+	}
 
-    		// also swing limbs
-			this.limbSwingAmount += 0.6;
-    	}
-    	
-    	//when tired, spawn tears/sweat
-    	if (this.isTired())
-    	{
-    		for (int i = 0; i < 20; i++)
-    		{
-    			this.worldObj.spawnParticle("splash", this.posX + (this.rand.nextDouble() - 0.5D) * this.width * 0.5, this.posY + this.getEyeHeight(), this.posZ + (this.rand.nextDouble() - 0.5D) * this.width * 0.5, (rand.nextFloat() - 0.5F) * 0.75F, 0, (rand.nextFloat() - 0.5F) * 0.75F);
-    		}
-    	}
+	@Override
+	public void onLivingUpdate() {
+		if (!this.getPassengers().isEmpty() && this.getPassengers().get(0).isSneaking()) {
+			this.getPassengers().get(0).setSneaking(false);
+		}
 
-    }
+		super.onLivingUpdate();
 
+		if (this.isBeingRidden()) {
+			this.getLookHelper().setLookPositionWithEntity(getPassengers().get(0), 100F, 100F);
+		}
+
+		if (!world.isRemote) {
+			bossInfo.setPercent(getHealth() / getMaxHealth());
+
+			if (this.collided) {
+				this.collisionCounter++;
+			}
+
+			if (this.collisionCounter >= 15) {
+				this.destroyBlocksInAABB(this.getEntityBoundingBox());
+				this.collisionCounter = 0;
+			}
+		} else {
+			if (this.isRampaging()) {
+				float rotation = this.ticksExisted / 10F;
+
+				for (int i = 0; i < 20; i++) {
+					addSnowEffect(rotation + (i * 50), i + rotation);
+				}
+
+				// also swing limbs
+				this.limbSwingAmount += 0.6;
+			}
+
+			if (this.isTired()) {
+				for (int i = 0; i < 20; i++) {
+					this.world.spawnParticle(EnumParticleTypes.WATER_SPLASH, this.posX + (this.rand.nextDouble() - 0.5D) * this.width * 0.5, this.posY + this.getEyeHeight(), this.posZ + (this.rand.nextDouble() - 0.5D) * this.width * 0.5, (rand.nextFloat() - 0.5F) * 0.75F, 0, (rand.nextFloat() - 0.5F) * 0.75F);
+				}
+			}
+		}
+	}
 
 	private void addSnowEffect(float rotation, float hgt) {
 		double px = 3F * Math.cos(rotation);
 		double py = hgt % 5F;
 		double pz = 3F * Math.sin(rotation);
-		
-		TwilightForestMod.proxy.spawnParticle(this.worldObj, "snowstuff", this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
-	}
-    
 
-	/**
-     * Called when a player interacts with a mob. e.g. gets milk from a cow, gets into the saddle on a pig.
-     */
-    @Override
-	public boolean interact(EntityPlayer par1EntityPlayer)
-    {
-        if (super.interact(par1EntityPlayer))
-        {
-            return true;
-        }
-        else if (!this.worldObj.isRemote && (this.riddenByEntity == null || this.riddenByEntity == par1EntityPlayer))
-        {
-            par1EntityPlayer.mountEntity(this);
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-	
-	/**
-	 * Pick up things we attack!
-	 */
-    @Override
-	public boolean attackEntityAsMob(Entity par1Entity) 
-    {
-    	if (this.riddenByEntity == null && par1Entity.ridingEntity == null)
-    	{
-    		par1Entity.mountEntity(this);
-    	}
-    	
-		return super.attackEntityAsMob(par1Entity);
-	}
-    
-    
-    /**
-     * Called when the entity is attacked.
-     */
-    public boolean attackEntityFrom(DamageSource par1DamageSource, float par2)
-    {
-    	// no arrow damage when in ranged mode
-    	if (!this.canRampage && !this.isTired() && par1DamageSource.isProjectile()) {
-    		return false;
-    	}
-    	
-        boolean success = super.attackEntityFrom(par1DamageSource, par2);
-        
-        this.canRampage = true;
-        
-        return success;
-    }
-    
-    /**
-     * Drop 0-2 items of this living's type. @param par1 - Whether this entity has recently been hit by a player. @param
-     * par2 - Level of Looting used to kill this mob.
-     */
-    @Override
-    protected void dropFewItems(boolean flag, int looting) {
-    	Item fur = getDropItem();
-    	if(fur != null)
-    	{
-    		int drops = 6 + rand.nextInt(6 + looting);
-    		for(int d = 0; d < drops; d++)
-    		{
-    			this.dropItem(fur, 1);
-    		}
-
-    	}
-    	
-    	Item bombs = TFItems.iceBomb;
-		int drops = 6 + rand.nextInt(6 + looting);
-		for(int d = 0; d < drops; d++)
-		{
-			this.dropItem(bombs, 1);
-		}
-
-    }
-    
-    @Override
-	protected Item getDropItem()
-    {
-        return TFItems.alphaFur;
-    }
-    
-    /**
-     * Put the player out in front of where we are
-     */
-    @Override
-	public void updateRiderPosition()
-    {
-        if (this.riddenByEntity != null)
-        {
-        	Vec3 riderPos = this.getRiderPosition();
-        	
-            this.riddenByEntity.setPosition(riderPos.xCoord, riderPos.yCoord, riderPos.zCoord);
-        }
-    }
-    
-    /**
-     * Returns the Y offset from the entity's position for any entity riding this one.
-     */
-    @Override
-	public double getMountedYOffset()
-    {
-        return 5.75D;
-    }
-    
-    /**
-     * Used to both get a rider position and to push out of blocks
-     */
-    public Vec3 getRiderPosition()
-    {
-    	if (this.riddenByEntity != null)
-    	{
-    		float distance = 0.4F;
-
-    		double var1 = Math.cos((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
-    		double var3 = Math.sin((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
-
-    		return Vec3.createVectorHelper(this.posX + var1, this.posY + this.getMountedYOffset() + this.riddenByEntity.getYOffset(), this.posZ + var3);
-    	}
-    	else
-    	{
-    		return Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
-    	}
-    }
-    
-    /**
-     * If a rider of this entity can interact with this entity. Should return true on the
-     * ridden entity if so.
-     *
-     * @return if the entity can be interacted with from a rider
-     */
-    public boolean canRiderInteract()
-    {
-        return true;
-    }
-    
-	/**
-     * Destroys all blocks that aren't associated with 'The End' inside the given bounding box.
-     */
-    public boolean destroyBlocksInAABB(AxisAlignedBB par1AxisAlignedBB)
-    {
-    	//System.out.println("Destroying blocks in " + par1AxisAlignedBB);
-    	
-        int minX = MathHelper.floor_double(par1AxisAlignedBB.minX);
-        int minY = MathHelper.floor_double(par1AxisAlignedBB.minY);
-        int minZ = MathHelper.floor_double(par1AxisAlignedBB.minZ);
-        int maxX = MathHelper.floor_double(par1AxisAlignedBB.maxX);
-        int maxY = MathHelper.floor_double(par1AxisAlignedBB.maxY);
-        int maxZ = MathHelper.floor_double(par1AxisAlignedBB.maxZ);
-        boolean wasBlocked = false;
-        for (int dx = minX; dx <= maxX; ++dx)
-        {
-            for (int dy = minY; dy <= maxY; ++dy)
-            {
-                for (int dz = minZ; dz <= maxZ; ++dz)
-                {
-                    Block currentID = this.worldObj.getBlock(dx, dy, dz);
-                    
-                    if (currentID != Blocks.air)
-                    {
-                    	int currentMeta = this.worldObj.getBlockMetadata(dx, dy, dz);
-                    	
-                    	if (currentID != Blocks.obsidian && currentID != Blocks.end_stone && currentID != Blocks.bedrock)
-                        {
-                            this.worldObj.setBlock(dx, dy, dz, Blocks.air, 0, 2);
-                            
-                            // here, this effect will have to do
-                			worldObj.playAuxSFX(2001, dx, dy, dz, Block.getIdFromBlock(currentID) + (currentMeta << 12));
-                        }
-                        else
-                        {
-                            wasBlocked = true;
-                        }
-                    }
-                }
-            }
-        }
-
-        return wasBlocked;
-    }
-
-
-
-    public void makeRandomBlockFall() {
-    	// begin turning blocks into falling blocks
-    	makeRandomBlockFall(30);
-    }
-
-
-	private void makeRandomBlockFall(int range) {
-		// find a block nearby
-    	int bx = MathHelper.floor_double(this.posX) + this.getRNG().nextInt(range) - this.getRNG().nextInt(range);
-    	int bz = MathHelper.floor_double(this.posZ) + this.getRNG().nextInt(range) - this.getRNG().nextInt(range);
-    	int by = MathHelper.floor_double(this.posY + this.getEyeHeight());
-
-    	makeBlockFallAbove(bx, bz, by);
+		TwilightForestMod.proxy.spawnParticle(TFParticleType.SNOW, this.lastTickPosX + px, this.lastTickPosY + py, this.lastTickPosZ + pz, 0, 0, 0);
 	}
 
-
-	private void makeBlockFallAbove(int bx, int bz, int by) {
-		if (worldObj.isAirBlock(bx, by, bz)) {
-    		for (int i = 1; i < 30; i++) {
-    	    	if (!worldObj.isAirBlock(bx, by + i, bz)) {
-    	    		makeBlockFall(bx, by + i, bz);
-    	    		break;
-    	    	}
-    		}
-    	}
-	}
-
-
-	public void makeNearbyBlockFall() {
-    	makeRandomBlockFall(15);
-	}
-
-
-	public void makeBlockAboveTargetFall() {
-		if (this.getAttackTarget() != null) {
-		
-			int bx = MathHelper.floor_double(this.getAttackTarget().posX);
-			int bz = MathHelper.floor_double(this.getAttackTarget().posZ);
-			int by = MathHelper.floor_double(this.getAttackTarget().posY + this.getAttackTarget().getEyeHeight());
-
-			makeBlockFallAbove(bx, bz, by);
-		}
-
-	}
-
-
-	private void makeBlockFall(int bx, int by, int bz) {
-		//worldObj.setBlock(bx, by, bz, Blocks.gravel);
-		
-		//EntityFallingBlock sand;
-		
-        Block currentID = this.worldObj.getBlock(bx, by, bz);
-    	int currentMeta = this.worldObj.getBlockMetadata(bx, by, bz);
-    	
-    	// just set it to ice for now
-		worldObj.setBlock(bx, by, bz, Blocks.packed_ice);
-
-		worldObj.playAuxSFX(2001, bx, by, bz, Block.getIdFromBlock(currentID) + (currentMeta << 12));
-
-		
-		EntityTFFallingIce ice = new EntityTFFallingIce(worldObj, bx, by - 3, bz);
-		worldObj.spawnEntityInWorld(ice);
-
-
-	}
-
-
-
-    /**
-     * Attack the specified entity using a ranged attack.
-     */
-    public void attackEntityWithRangedAttack(EntityLivingBase target, float par2)
-    {
-    	if (!this.canRampage) {
-
-    		EntityTFIceBomb ice = new EntityTFIceBomb(this.worldObj, this);
-
-    		double d0 = target.posX - this.posX;
-    		double d1 = target.posY + (double)target.getEyeHeight() - 1.100000023841858D - target.posY;
-    		double d2 = target.posZ - this.posZ;
-    		float f1 = MathHelper.sqrt_double(d0 * d0 + d2 * d2) * 0.2F;
-    		ice.setThrowableHeading(d0, d1 + (double)f1, d2, 0.75F, 12.0F);
-
-    		this.playSound("random.bow", 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-    		this.worldObj.spawnEntityInWorld(ice);
-    	}
-    }
-    
-    public boolean canDespawn() {
-    	return false;
-    }
-    
-    public boolean canRampage() {
-    	return this.canRampage;
-    }
-
-    /**
-     * Set whether this yeti is currently in rampage mode.
-     */
-    public void setRampaging(boolean par1)
-    {
-        this.getDataWatcher().updateObject(RAMPAGE_FLAG, Byte.valueOf((byte)(par1 ? 1 : 0)));
-    }
-
-    /**
-     * Return whether this yeti is currently in rampage mode.
-     */
-    public boolean isRampaging()
-    {
-        return this.getDataWatcher().getWatchableObjectByte(RAMPAGE_FLAG) == 1;
-    }
-
-    /**
-     * Set whether this yeti is currently tired.
-     */
-    public void setTired(boolean par1)
-    {
-        this.getDataWatcher().updateObject(TIRED_FLAG, Byte.valueOf((byte)(par1 ? 1 : 0)));
-        this.canRampage = false;
-    }
-
-    /**
-     * Return whether this yeti is currently tired.
-     */
-    public boolean isTired()
-    {
-        return this.getDataWatcher().getWatchableObjectByte(TIRED_FLAG) == 1;
-    }
-    
-    /**
-     * Called when the mob is falling. Calculates and applies fall damage.
-     */
-    protected void fall(float par1)
-    {
-        super.fall(par1);
-        
-        if (this.isRampaging()) {
-        	// make jump effects
-			this.playSound("random.bow", 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-			
-            int i = MathHelper.floor_double(this.posX);
-            int j = MathHelper.floor_double(this.posY - 0.20000000298023224D - (double)this.yOffset);
-            int k = MathHelper.floor_double(this.posZ);			
-
-            this.worldObj.playAuxSFX(2006, i, j, k, 20);
-            this.worldObj.playAuxSFX(2006, i, j, k, 30);
-            
-            // hit everything around
-            if (!this.worldObj.isRemote) {
-            	hitNearbyEntities();
-            }
-            
-        }
-    }
-
-
-	@SuppressWarnings("unchecked")
-	private void hitNearbyEntities() {
-		ArrayList<Entity> nearby = new ArrayList<Entity>(this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(5, 0, 5)));
-		
-		for (Entity entity : nearby) {
-			if (entity instanceof EntityLivingBase) {
-				
-				boolean hit = entity.attackEntityFrom(DamageSource.causeMobDamage(this), 5F);
-				
-		        if (hit)
-		        {
-		        	entity.motionY += 0.4000000059604645D;
-		        }
-			}
-		}
-	}
-
-	
-    /**
-     * Trigger achievement when killed
-     */
 	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
-			((EntityPlayer)par1DamageSource.getSourceOfDamage()).triggerAchievement(TFAchievementPage.twilightHunter);
-			((EntityPlayer)par1DamageSource.getSourceOfDamage()).triggerAchievement(TFAchievementPage.twilightProgressYeti);
-		}
-		
-		// mark the lair as defeated
-		if (!worldObj.isRemote) {
-			int dx = MathHelper.floor_double(this.posX);
-			int dy = MathHelper.floor_double(this.posY);
-			int dz = MathHelper.floor_double(this.posZ);
-			
-			if (worldObj.provider instanceof WorldProviderTwilightForest){
-				ChunkProviderTwilightForest chunkProvider = ((WorldProviderTwilightForest)worldObj.provider).getChunkProvider();
-				TFFeature nearbyFeature = ((TFWorldChunkManager)worldObj.provider.worldChunkMgr).getFeatureAt(dx, dz, worldObj);
+	public void setAttackTarget(@Nullable EntityLivingBase entity) {
+		if (entity != null && entity != getAttackTarget())
+			playSound(TFSounds.ALPHAYETI_ALERT, 4F, 0.5F + getRNG().nextFloat() * 0.5F);
+		super.setAttackTarget(entity);
+	}
 
-				if (nearbyFeature == TFFeature.yetiCave) {
-					chunkProvider.setStructureConquered(dx, dy, dz, true);
+	@Override
+	public boolean attackEntityFrom(DamageSource source, float amount) {
+		// no arrow damage when in ranged mode
+		if (!this.canRampage && !this.isTired() && source.isProjectile()) {
+			return false;
+		}
+
+		this.canRampage = true;
+		return super.attackEntityFrom(source, amount);
+	}
+
+	@Nullable
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return TFSounds.ALPHAYETI_GROWL;
+	}
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+		return TFSounds.ALPHAYETI_HURT;
+	}
+
+	@Override
+	protected SoundEvent getDeathSound() {
+		return TFSounds.ALPHAYETI_DIE;
+	}
+
+	@Override
+	protected float getSoundPitch() {
+		return 0.5F + getRNG().nextFloat() * 0.5F;
+	}
+
+	@Override
+	protected float getSoundVolume() {
+		return 4F;
+	}
+
+	@Override
+	public ResourceLocation getLootTable() {
+		return LOOT_TABLE;
+	}
+
+	@Override
+	public void updatePassenger(Entity passenger) {
+		Vec3d riderPos = this.getRiderPosition();
+		passenger.setPosition(riderPos.x, riderPos.y, riderPos.z);
+	}
+
+	@Override
+	public double getMountedYOffset() {
+		return 5.75D;
+	}
+
+	/**
+	 * Used to both get a rider position and to push out of blocks
+	 */
+	private Vec3d getRiderPosition() {
+		if (isBeingRidden()) {
+			float distance = 0.4F;
+
+			double dx = Math.cos((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
+			double dz = Math.sin((this.rotationYaw + 90) * Math.PI / 180.0D) * distance;
+
+			return new Vec3d(this.posX + dx, this.posY + this.getMountedYOffset() + this.getPassengers().get(0).getYOffset(), this.posZ + dz);
+		} else {
+			return new Vec3d(this.posX, this.posY, this.posZ);
+		}
+	}
+
+	@Override
+	public boolean canRiderInteract() {
+		return true;
+	}
+
+	public void destroyBlocksInAABB(AxisAlignedBB box) {
+		if (ForgeEventFactory.getMobGriefingEvent(world, this)) {
+			for (BlockPos pos : WorldUtil.getAllInBB(box)) {
+				if (EntityUtil.canDestroyBlock(world, pos, this)) {
+					world.destroyBlock(pos, false);
 				}
 			}
 		}
 	}
-	
-    @Override
-	public void writeEntityToNBT(NBTTagCompound nbttagcompound)
-    {
-    	ChunkCoordinates home = this.getHomePosition();
-        nbttagcompound.setTag("Home", newDoubleNBTList(new double[] {
-        		home.posX, home.posY, home.posZ
-            }));
-        nbttagcompound.setBoolean("HasHome", this.hasHome());
-        super.writeEntityToNBT(nbttagcompound);
-    }
 
-    @Override
-	public void readEntityFromNBT(NBTTagCompound nbttagcompound)
-    {
-        super.readEntityFromNBT(nbttagcompound);
-        if (nbttagcompound.hasKey("Home", 9))
-        {
-            NBTTagList nbttaglist = nbttagcompound.getTagList("Home", 6);
-            int hx = (int) nbttaglist.func_150309_d(0);
-            int hy = (int) nbttaglist.func_150309_d(1);
-            int hz = (int) nbttaglist.func_150309_d(2);
-            this.setHomeArea(hx, hy, hz, 30);
-        }
-        if (!nbttagcompound.getBoolean("HasHome"))
-        {
-        	this.detachHome();
-        }
-     }
+	public void makeRandomBlockFall() {
+		// begin turning blocks into falling blocks
+		makeRandomBlockFall(30);
+	}
 
+	private void makeRandomBlockFall(int range) {
+		// find a block nearby
+		int bx = MathHelper.floor(this.posX) + this.getRNG().nextInt(range) - this.getRNG().nextInt(range);
+		int bz = MathHelper.floor(this.posZ) + this.getRNG().nextInt(range) - this.getRNG().nextInt(range);
+		int by = MathHelper.floor(this.posY + this.getEyeHeight());
+
+		makeBlockFallAbove(new BlockPos(bx, bz, by));
+	}
+
+	private void makeBlockFallAbove(BlockPos pos) {
+		if (world.isAirBlock(pos)) {
+			for (int i = 1; i < 30; i++) {
+				BlockPos up = pos.up(i);
+				if (!world.isAirBlock(up)) {
+					makeBlockFall(up);
+					break;
+				}
+			}
+		}
+	}
+
+	public void makeNearbyBlockFall() {
+		makeRandomBlockFall(15);
+	}
+
+	public void makeBlockAboveTargetFall() {
+		if (this.getAttackTarget() != null) {
+
+			int bx = MathHelper.floor(this.getAttackTarget().posX);
+			int bz = MathHelper.floor(this.getAttackTarget().posZ);
+			int by = MathHelper.floor(this.getAttackTarget().posY + this.getAttackTarget().getEyeHeight());
+
+			makeBlockFallAbove(new BlockPos(bx, bz, by));
+		}
+
+	}
+
+	private void makeBlockFall(BlockPos pos) {
+		world.setBlockState(pos, Blocks.PACKED_ICE.getDefaultState());
+		world.playEvent(2001, pos, Block.getStateId(Blocks.PACKED_ICE.getDefaultState()));
+
+		EntityTFFallingIce ice = new EntityTFFallingIce(world, pos.getX(), pos.getY() - 3, pos.getZ());
+		world.spawnEntity(ice);
+	}
+
+	@Override
+	public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
+		if (!this.canRampage) {
+			EntityTFIceBomb ice = new EntityTFIceBomb(this.world, this);
+
+			// [VanillaCopy] Part of EntitySkeleton.attackEntityWithRangedAttack
+			double d0 = target.posX - this.posX;
+			double d1 = target.getEntityBoundingBox().minY + (double) (target.height / 3.0F) - ice.posY;
+			double d2 = target.posZ - this.posZ;
+			double d3 = (double) MathHelper.sqrt(d0 * d0 + d2 * d2);
+			ice.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float) (14 - this.world.getDifficulty().getId() * 4));
+
+			this.playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+			this.world.spawnEntity(ice);
+		}
+	}
+
+	@Override
+	public void setSwingingArms(boolean swingingArms) {} // todo 1.12
+
+	@Override
+	public boolean canDespawn() {
+		return false;
+	}
+
+	@Override
+	protected void despawnEntity() {
+		if (world.getDifficulty() == EnumDifficulty.PEACEFUL) {
+			if (hasHome()) {
+				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.getDefaultState().withProperty(BlockTFBossSpawner.VARIANT, BossVariant.ALPHA_YETI));
+			}
+			setDead();
+		} else {
+			super.despawnEntity();
+		}
+	}
+
+	public boolean canRampage() {
+		return this.canRampage;
+	}
+
+	public void setRampaging(boolean rampaging) {
+		dataManager.set(RAMPAGE_FLAG, (byte) (rampaging ? 1 : 0));
+	}
+
+	public boolean isRampaging() {
+		return dataManager.get(RAMPAGE_FLAG) == 1;
+	}
+
+	public void setTired(boolean tired) {
+		dataManager.set(TIRED_FLAG, (byte) (tired ? 1 : 0));
+		this.canRampage = false;
+	}
+
+	public boolean isTired() {
+		return dataManager.get(TIRED_FLAG) == 1;
+	}
+
+	@Override
+	public void fall(float distance, float multiplier) {
+		super.fall(distance, multiplier);
+
+		if (!this.world.isRemote && isRampaging()) {
+			this.playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+			hitNearbyEntities();
+		}
+	}
+
+	private void hitNearbyEntities() {
+		for (EntityLivingBase entity : this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox().grow(5, 0, 5))) {
+			if (entity != this && entity.attackEntityFrom(DamageSource.causeMobDamage(this), 5F)) {
+				entity.motionY += 0.4;
+			}
+		}
+	}
+
+	@Override
+	public void onDeath(DamageSource cause) {
+		super.onDeath(cause);
+		// mark the lair as defeated
+		if (!world.isRemote) {
+			TFWorld.markStructureConquered(world, new BlockPos(this), TFFeature.YETI_CAVE);
+		}
+	}
+
+	@Override
+	public void setCustomNameTag(String name) {
+		super.setCustomNameTag(name);
+		this.bossInfo.setName(this.getDisplayName());
+	}
+
+	@Override
+	public void addTrackingPlayer(EntityPlayerMP player) {
+		super.addTrackingPlayer(player);
+		this.bossInfo.addPlayer(player);
+	}
+
+	@Override
+	public void removeTrackingPlayer(EntityPlayerMP player) {
+		super.removeTrackingPlayer(player);
+		this.bossInfo.removePlayer(player);
+	}
+
+	@Override
+	public void writeEntityToNBT(NBTTagCompound compound) {
+		BlockPos home = this.getHomePosition();
+		compound.setTag("Home", newDoubleNBTList(home.getX(), home.getY(), home.getZ()));
+		compound.setBoolean("HasHome", this.hasHome());
+		super.writeEntityToNBT(compound);
+	}
+
+	@Override
+	public void readEntityFromNBT(NBTTagCompound compound) {
+		super.readEntityFromNBT(compound);
+		if (compound.hasKey("Home", 9)) {
+			NBTTagList nbttaglist = compound.getTagList("Home", 6);
+			int hx = (int) nbttaglist.getDoubleAt(0);
+			int hy = (int) nbttaglist.getDoubleAt(1);
+			int hz = (int) nbttaglist.getDoubleAt(2);
+			this.setHomePosAndDistance(new BlockPos(hx, hy, hz), 30);
+		}
+		if (!compound.getBoolean("HasHome")) {
+			this.detachHome();
+		}
+		if (this.hasCustomName()) {
+			this.bossInfo.setName(this.getDisplayName());
+		}
+	}
+
+	@Override
+	public boolean isNonBoss() {
+		return false;
+	}
 }

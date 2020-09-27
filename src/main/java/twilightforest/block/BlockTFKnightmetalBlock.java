@@ -1,90 +1,67 @@
 package twilightforest.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockCompressed;
-import net.minecraft.block.material.MapColor;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 
-public class BlockTFKnightmetalBlock extends BlockCompressed {
+public class BlockTFKnightmetalBlock extends Block implements ModelRegisterCallback {
 
+	private static final AxisAlignedBB AABB = new AxisAlignedBB(1 / 16F, 1 / 16F, 1 / 16F, 15 / 16F, 15 / 16F, 15 / 16F);
 	private static final float BLOCK_DAMAGE = 4;
 
 	public BlockTFKnightmetalBlock() {
-		super(MapColor.ironColor);
+		super(Material.IRON);
 		this.setHardness(5.0F);
 		this.setResistance(41.0F);
-		this.setStepSound(Block.soundTypeMetal);
-		this.setBlockTextureName(TwilightForestMod.ID + ":knightmetal_block");
+		this.setSoundType(SoundType.METAL);
 		this.setCreativeTab(TFItems.creativeTab);
-
 	}
-	
-    /**
-     * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
-     * cleared to be reused)
-     */
+
 	@Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
-	{
-		float f = 1F / 16F;
-		return AxisAlignedBB.getBoundingBox(x + f, y + f, z + f, x + 1 - f, y + 1 - f, z + 1 - f);
-
+	@Deprecated
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return AABB;
 	}
-	
-    /**
-     * Triggered whenever an entity collides with this block (enters into the block). Args: world, x, y, z, entity
-     */
-    public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity)
-    {
-    	entity.attackEntityFrom(DamageSource.cactus, BLOCK_DAMAGE);
-    }
 
-    /**
-     * If this block doesn't render as an ordinary block it will return False (examples: signs, buttons, stairs, etc)
-     */
-    @Override
-	public boolean renderAsNormalBlock()
-    {
-        return false;
-    }
-    
+	@Override
+	public PathNodeType getAiPathNodeType(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return PathNodeType.DAMAGE_CACTUS;
+	}
 
-	/**
-     * Is this block (a) opaque and (b) a full 1m cube?  This determines whether or not to render the shared face of two
-     * adjacent blocks and also whether the player can attach torches, redstone wire, etc to this block.
-     */
-    @Override
-	public boolean isOpaqueCube()
-    {
-        return false;
-    }
+	@Override
+	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
+		entity.attackEntityFrom(DamageSource.CACTUS, BLOCK_DAMAGE);
+	}
 
-    
-    /**
-     * The type of render function that is called for this block
-     */
-    @Override
-	public int getRenderType()
-    {
-    	return TwilightForestMod.proxy.getKnightmetalBlockRenderID();
-    }
+	@Override
+	@Deprecated
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
 
-    /**
-     * Returns true if the given side of this block type should be rendered, if the adjacent block is at the given
-     * coordinates.  Args: blockAccess, x, y, z, side
-     */
-    @Override
+	@Override
+	@Deprecated
+	public boolean isFullCube(IBlockState state) {
+		return false;
+	}
+
+	@Override
 	@SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
-    {
-        return true;
-    }
+	@Deprecated
+	public boolean shouldSideBeRendered(IBlockState state, IBlockAccess access, BlockPos pos, EnumFacing side) {
+		return !access.getBlockState(pos.offset(side)).doesSideBlockRendering(access, pos.offset(side), side.getOpposite());
+	}
 }

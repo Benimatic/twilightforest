@@ -1,0 +1,21 @@
+{
+  "result": {
+    "item": "twilightforest:nagastone_stairs",
+    "data": 0,
+    "count": 8
+  },
+  "group": "nagastone_stairs_left",
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": [
+      {
+        "item": "twilightforest:etched_nagastone"
+      }
+    ]
+  }
+}

@@ -1,58 +1,35 @@
 package twilightforest.client.renderer.entity;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.boss.BossStatus;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.Vec3d;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.boss.EntityTFNaga;
 
+public class RenderTFNaga extends RenderLiving<EntityTFNaga> {
 
-public class RenderTFNaga extends RenderLiving {
-	
-    private static final ResourceLocation textureLoc = new ResourceLocation(TwilightForestMod.MODEL_DIR + "nagahead.png");
-	
-	public RenderTFNaga(ModelBase modelbase, float f) {
-		super(modelbase, f);
+	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("nagahead.png");
+
+	public RenderTFNaga(RenderManager manager, ModelBase modelbase, float shadowSize) {
+		super(manager, modelbase, shadowSize);
+		this.addLayer(new NagaEyelidsLayer(this));
 	}
 
-    /**
-     * Actually renders the given argument. This is a synthetic bridge method, always casting down its argument and then
-     * handing it off to a worker function which does the actual work. In all probabilty, the class Render is generic
-     * (Render<T extends Entity) and this method has signature public void doRender(T entity, double d, double d1,
-     * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
-     */
 	@Override
-	public void doRender(Entity entity, double d, double d1, double d2, float f, float f1) {
-		super.doRender(entity, d, d1, d2, f, f1);
-		// we also render segments here, and don't need to do this for them
-//		if (entity instanceof EntityTFNagaOld)
-//		{
-//	        BossStatus.setBossStatus((EntityTFNagaOld)entity, false);
-//		}
-		
-		if (entity instanceof EntityTFNaga && ((EntityTFNaga)entity).getParts() != null)
-		{
-			EntityTFNaga naga = (EntityTFNaga)entity;
-			
-			for (int i = 0; i < naga.getParts().length; i++) {
-				if (!naga.getParts()[i].isDead){
-					RenderManager.instance.renderEntitySimple(naga.getParts()[i], f1);
-				}
-			}
-			
-	        BossStatus.setBossStatus(naga, false);
-
+	public void doRender(EntityTFNaga entity, double x, double y, double z, float entityYaw, float partialTicks) {
+		super.doRender(entity, x, y, z, entityYaw, partialTicks);
+		if (!Minecraft.getMinecraft().isGamePaused() && entity.isDazed()) {
+			Vec3d pos = new Vec3d(entity.posX, entity.posY + 3.15D, entity.posZ).add(new Vec3d(1.5D, 0, 0).rotateYaw((float) Math.toRadians(entity.getRNG().nextInt(360))));
+			Minecraft.getMinecraft().world.spawnParticle(EnumParticleTypes.CRIT, pos.x, pos.y, pos.z, 0, 0, 0);
 		}
 	}
 
-	/**
-	 * Return our specific texture
-	 */
-    protected ResourceLocation getEntityTexture(Entity par1Entity)
-    {
-        return textureLoc;
-    }
+	@Override
+	protected ResourceLocation getEntityTexture(EntityTFNaga entity) {
+		return textureLoc;
+	}
 }

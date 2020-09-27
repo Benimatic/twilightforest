@@ -1,217 +1,138 @@
 package twilightforest.item;
 
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
+import net.minecraft.item.EnumRarity;
+import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.EntityTFMoonwormShot;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemTFMoonwormQueen extends ItemTF
-{
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+public class ItemTFMoonwormQueen extends ItemTF {
 
 	private static final int FIRING_TIME = 12;
-	
-	private IIcon[] icons;
-	private String[] iconNames = new String[] {"moonwormQueen", "moonwormQueenAlt"};
 
-	protected ItemTFMoonwormQueen() {
-		super();
-		this.setCreativeTab(TFItems.creativeTab);
+	protected ItemTFMoonwormQueen(EnumRarity rarity) {
+		super(rarity);
 		this.maxStackSize = 1;
-        this.setMaxDamage(256);
+		this.setMaxDamage(256);
+		addPropertyOverride(TwilightForestMod.prefix("alt"), new IItemPropertyGetter() {
+			@SideOnly(Side.CLIENT)
+			@Override
+			public float apply(@Nonnull ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn) {
+				if (entityIn != null && entityIn.getActiveItemStack() == stack) {
+					int useTime = stack.getMaxItemUseDuration() - entityIn.getItemInUseCount();
+					if (useTime >= FIRING_TIME && (useTime >>> 1) % 2 == 0) {
+						return 1;
+					}
+				}
+
+				return 0;
+			}
+		});
 	}
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack par1ItemStack, World world, EntityPlayer player) {
-		if (par1ItemStack.getItemDamage() < this.getMaxDamage()) 
-		{
-			player.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+		ItemStack stack = player.getHeldItem(hand);
+		if (stack.getItemDamage() >= stack.getMaxDamage() - 1) {
+			return ActionResult.newResult(EnumActionResult.FAIL, stack);
+		} else {
+			player.setActiveHand(hand);
+			return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 		}
-		else 
-		{
-			player.stopUsingItem();
-		}
-		return par1ItemStack;
 	}
 
-    /**
-     * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
-     * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
-     */
+	//	[VanillaCopy] ItemBlock.onItemUse, harcoding the block
 	@Override
-	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
-	{
-		// adjust x, y, z for which block we're placing onto
-        Block currentBlockID = world.getBlock(x, y, z);
-        
-        if (currentBlockID == TFBlocks.moonworm)
-        {
-        	return false;
-        }
+	public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		IBlockState iblockstate = worldIn.getBlockState(pos);
+		Block block = iblockstate.getBlock();
 
-        // don't wear item out, leave it at 0 uses left so that it can be recharged
-		if (par1ItemStack != null && par1ItemStack.getItemDamage() == this.getMaxDamage()) 
-		{
-			return false;
+		if (!block.isReplaceable(worldIn, pos)) {
+			pos = pos.offset(facing);
 		}
-        
-        if (currentBlockID == Blocks.snow)
-        {
-            side = 1;
-        }
-        else if (currentBlockID != Blocks.vine && currentBlockID != Blocks.tallgrass && currentBlockID != Blocks.deadbush
-                && (currentBlockID == Blocks.air || !currentBlockID.isReplaceable(world, x, y, z)))
-        {
-            if (side == 0)
-            {
-                --y;
-            }
 
-            if (side == 1)
-            {
-                ++y;
-            }
+		ItemStack itemstack = player.getHeldItem(hand);
 
-            if (side == 2)
-            {
-                --z;
-            }
+		if (itemstack.getItemDamage() < itemstack.getMaxDamage() && player.canPlayerEdit(pos, facing, itemstack) && worldIn.mayPlace(TFBlocks.moonworm, pos, false, facing, (Entity) null)) {
+			int i = this.getMetadata(itemstack.getMetadata());
+			IBlockState iblockstate1 = TFBlocks.moonworm.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, i, player, hand);
 
-            if (side == 3)
-            {
-                ++z;
-            }
-
-            if (side == 4)
-            {
-                --x;
-            }
-
-            if (side == 5)
-            {
-                ++x;
-            }
-        }
-        
-        // try to place firefly
-		if (world.canPlaceEntityOnSide(TFBlocks.moonworm, x, y, z, false, side, player, par1ItemStack))
-		{
-	        int placementMeta = TFBlocks.moonworm.onBlockPlaced(world, x, y, z, side, hitX, hitY, hitZ, 0);
-			if (world.setBlock(x, y, z, TFBlocks.moonworm, placementMeta, 3))
-			{
-				if (world.getBlock(x, y, z) == TFBlocks.moonworm)
-				{
-					//((BlockTFMoonworm) TFBlocks.moonworm).updateBlockMetadata(world, x, y, z, side, hitX, hitY, hitZ);
-					TFBlocks.moonworm.onBlockPlacedBy(world, x, y, z, player, par1ItemStack);
-				}
-
-				world.playSoundEffect((double)(x + 0.5F), (double)(y + 0.5F), (double)(z + 0.5F), this.getSound(), TFBlocks.moonworm.stepSound.getVolume() / 2.0F, TFBlocks.moonworm.stepSound.getPitch() * 0.8F);
-				
-				if (par1ItemStack != null)
-				{
-	    			par1ItemStack.damageItem(1, player);
-					player.stopUsingItem();
-				}
+			if (placeMoonwormAt(itemstack, player, worldIn, pos, facing, hitX, hitY, hitZ, iblockstate1)) {
+				SoundType soundtype = worldIn.getBlockState(pos).getBlock().getSoundType(worldIn.getBlockState(pos), worldIn, pos, player);
+				worldIn.playSound(player, pos, soundtype.getPlaceSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
+				// TF - damage stack instead of shrinking
+				itemstack.damageItem(1, player);
+				player.resetActiveHand();
 			}
 
-
-			return true;
-		}
-		else
-		{
-			return false;
+			return EnumActionResult.SUCCESS;
+		} else {
+			return EnumActionResult.FAIL;
 		}
 	}
-	
-	public String getSound()
-	{
-		return "mob.slime.big";
+
+	//	[VanillaCopy] ItemBlock.placeBlockAt
+	private boolean placeMoonwormAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState state) {
+		if (!world.setBlockState(pos, state, 11)) return false;
+
+		IBlockState real = world.getBlockState(pos);
+		if (real.getBlock() == TFBlocks.moonworm) {
+			TFBlocks.moonworm.onBlockPlacedBy(world, pos, state, player, stack);
+			if (player instanceof EntityPlayerMP) {
+				CriteriaTriggers.PLACED_BLOCK.trigger((EntityPlayerMP) player, pos, stack);
+			}
+		}
+
+		return true;
 	}
 
-    /**
-     * called when the player releases the use item button. Args: itemstack, world, entityplayer, itemInUseCount
-     */
-    @Override
-	public void onPlayerStoppedUsing(ItemStack par1ItemStack, World world, EntityPlayer player, int useRemaining)
-    {
-    	int useTime = this.getMaxItemUseDuration(par1ItemStack) - useRemaining;
+	@Override
+	public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase living, int useRemaining) {
+		int useTime = this.getMaxItemUseDuration(stack) - useRemaining;
 
+		if (!world.isRemote && useTime > FIRING_TIME && (stack.getItemDamage() + 1) < stack.getMaxDamage()) {
+			boolean fired = world.spawnEntity(new EntityTFMoonwormShot(world, living));
 
-    	if (!world.isRemote && useTime > FIRING_TIME && (par1ItemStack.getItemDamage() + 1) < this.getMaxDamage()) 
-    	{
-    		boolean fired = world.spawnEntityInWorld(new EntityTFMoonwormShot(world, player));
+			if (fired) {
+				stack.damageItem(2, living);
 
-    		if (fired)
-    		{
-    			par1ItemStack.damageItem(2, player);
+				world.playSound(null, living.posX, living.posY, living.posZ, SoundEvents.BLOCK_SLIME_HIT, living instanceof EntityPlayer ? SoundCategory.PLAYERS : SoundCategory.NEUTRAL, 1, 1);
+			}
+		}
 
-    			world.playSoundAtEntity(player, this.getSound(), 1.0F, 1.0F);
-    		}
-    	}
+	}
 
-    }
-	
-    /**
-     * Player, Render pass, and item usage sensitive version of getIconIndex.
-     *   
-     * @param stack The item stack to get the icon for. (Usually this, and usingItem will be the same if usingItem is not null)
-     * @param renderPass The pass to get the icon for, 0 is default.
-     * @param player The player holding the item
-     * @param usingItem The item the player is actively using. Can be null if not using anything.
-     * @param useRemaining The ticks remaining for the active item.
-     * @return The icon index
-     */
-    @Override
-    public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
-    	if (usingItem != null && usingItem.getItem() == this)
-    	{
-    		int useTime = usingItem.getMaxItemUseDuration() - useRemaining;
-    		if (useTime >= FIRING_TIME) 
-    		{
-    			return (useTime >> 1) % 2 == 0 ? this.icons[0] : this.icons[1];
-    		}
-    	}
-    	return this.icons[0];
+	@Nonnull
+	@Override
+	public EnumAction getItemUseAction(ItemStack stack) {
+		return EnumAction.BOW;
+	}
 
-    }
-    
-    
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-        super.registerIcons(par1IconRegister);
-        this.icons = new IIcon[iconNames.length];
-
-        for (int i = 0; i < this.iconNames.length; ++i)
-        {
-            this.icons[i] = par1IconRegister.registerIcon(TwilightForestMod.ID + ":" + iconNames[i]);
-        }
-    }
-
-	/**
-     * returns the action that specifies what animation to play when the items is being used
-     */
-    @Override
-	public EnumAction getItemUseAction(ItemStack par1ItemStack)
-    {
-        return EnumAction.bow;
-    }
-    
-    /**
-     * How long it takes to use or consume an item
-     */
-    @Override
-	public int getMaxItemUseDuration(ItemStack par1ItemStack)
-    {
-        return 72000;
-    }
-
+	@Override
+	public int getMaxItemUseDuration(ItemStack stack) {
+		return 72000;
+	}
 }

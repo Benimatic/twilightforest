@@ -1,114 +1,89 @@
-/**
- * 
- */
 package twilightforest.biomes;
 
-import java.util.Random;
-
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.stats.Achievement;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import net.minecraft.world.gen.feature.WorldGenTaiga1;
 import net.minecraft.world.gen.feature.WorldGenTaiga2;
-import twilightforest.TFAchievementPage;
+import net.minecraft.world.gen.feature.WorldGenerator;
 import twilightforest.TFFeature;
-import twilightforest.world.TFGenPenguins;
+import twilightforest.TwilightForestMod;
+import twilightforest.entity.passive.EntityTFPenguin;
+import twilightforest.potions.TFPotions;
+import twilightforest.world.feature.TFGenPenguins;
 import twilightforest.world.TFWorld;
 
-
+import java.util.Random;
 
 /**
  * @author Ben
- *
  */
 public class TFBiomeGlacier extends TFBiomeBase {
 
-	/**
-	 * @param i
-	 */
-	@SuppressWarnings("unchecked")
-	public TFBiomeGlacier(int i) {
-		super(i);
-		
+	public TFBiomeGlacier(BiomeProperties props) {
+		super(props);
+
 		getTFBiomeDecorator().setTreesPerChunk(1);
 		getTFBiomeDecorator().setGrassPerChunk(0);
+		getTFBiomeDecorator().hasCanopy = false;
 
-        this.temperature = 0.0F;
-        this.rainfall = 0.1F;
-        getTFBiomeDecorator().canopyPerChunk = -999;
-		
-        spawnableCreatureList.add(new SpawnListEntry(twilightforest.entity.passive.EntityTFPenguin.class, 10, 4, 4));
-
+		spawnableCreatureList.clear();
+		spawnableCreatureList.add(new SpawnListEntry(EntityTFPenguin.class, 10, 4, 4));
 	}
-	
-	
-    public WorldGenAbstractTree func_150567_a(Random random)
-    {
-        if(random.nextInt(3) == 0)
-        {
-            return new WorldGenTaiga1();
-        } else
-        {
-            return new WorldGenTaiga2(true);
-        }
-    }
 
-    /**
-     * Let it snow!
-     */
-    @Override
-    public boolean getEnableSnow()
-    {
-        return true;
-    }
-    
-    /**
-     * Required for actual snow?
-     */
-    @Override
-    public boolean canSpawnLightningBolt()
-    {
-    	return false;
-    }
-    
-    /**
-     * Decorate this biome.  Weeeee should generate penguins
-     */
-    @Override
-    public void decorate(World par1World, Random par2Random, int par3, int par4)
-    {
-        super.decorate(par1World, par2Random, par3, par4);
-        TFGenPenguins penguins = new TFGenPenguins();
+	@Override
+	public WorldGenAbstractTree getRandomTreeFeature(Random random) {
+		if (random.nextInt(3) == 0) {
+			return new WorldGenTaiga1();
+		} else {
+			return new WorldGenTaiga2(true);
+		}
+	}
 
-        if (par2Random.nextInt(4) == 0)
-        {
-            int j = par3 + par2Random.nextInt(16) + 8;
-            byte byte0 = (byte) TFWorld.SEALEVEL;
-            int k = par4 + par2Random.nextInt(16) + 8;
-            penguins.generate(par1World, par2Random, j, byte0, k);
-        }
-    }
-
-	/**
-	 * If there is a required achievement to be here, return it, otherwise return null
-	 */
-	protected Achievement getRequiredAchievement() {
-		return TFAchievementPage.twilightProgressUrghast;
+	@Override
+	public boolean getEnableSnow() {
+		return true;
 	}
 
 	/**
-	 * Do something bad to a player in the wrong biome.
+	 * Required for actual snow?
 	 */
-	public void enforceProgession(EntityPlayer player, World world) {
-		if (!world.isRemote && world.getWorldTime() % 60 == 0) {
-			player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 100, 3));
+	@Override
+	public boolean canRain() {
+		return false;
+	}
+
+	@Override
+	public void decorate(World world, Random random, BlockPos pos) {
+		super.decorate(world, random, pos);
+
+		WorldGenerator penguins = new TFGenPenguins();
+		if (random.nextInt(4) == 0) {
+			int x = pos.getX() + random.nextInt(16) + 8;
+			int y = TFWorld.SEALEVEL;
+			int z = pos.getZ() + random.nextInt(16) + 8;
+			penguins.generate(world, random, new BlockPos(x, y, z));
 		}
-		// hint monster?
-		if (world.rand.nextInt(4) == 0) {
-			TFFeature.iceTower.trySpawnHintMonster(world, player);
+	}
+
+	@Override
+	protected ResourceLocation[] getRequiredAdvancements() {
+		return new ResourceLocation[]{ TwilightForestMod.prefix("progress_yeti") };
+	}
+
+	@Override
+	public void enforceProgression(EntityPlayer player, World world) {
+		if (!world.isRemote && player.ticksExisted % 60 == 0) {
+			player.addPotionEffect(new PotionEffect(TFPotions.frosty, 100, 3));
 		}
+		trySpawnHintMonster(player, world);
+	}
+
+	@Override
+	protected TFFeature getContainedFeature() {
+		return TFFeature.ICE_TOWER;
 	}
 }

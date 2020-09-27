@@ -1,93 +1,53 @@
 package twilightforest.item;
 
-import java.util.List;
-
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFRoots;
 import twilightforest.block.TFBlocks;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import twilightforest.enums.RootVariant;
 
-
+import javax.annotation.Nonnull;
+import java.util.IdentityHashMap;
+import java.util.Map;
 
 public class ItemTFOreMeter extends ItemTF {
 
 	protected ItemTFOreMeter() {
-		super();
 		this.setCreativeTab(TFItems.creativeTab);
 	}
-	
-	
 
+	@Nonnull
 	@Override
-	public ItemStack onItemRightClick(ItemStack par1ItemStack, World world, EntityPlayer player) {
-		
-		int useX = MathHelper.floor_double(player.posX);
-		int useZ = MathHelper.floor_double(player.posZ);
-		
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand) {
+		int useX = MathHelper.floor(player.posX);
+		int useZ = MathHelper.floor(player.posZ);
+
 		if (!world.isRemote) {
 			countOreInArea(player, world, useX, useZ, 3);
 		}
-		
-//		player.addChatMessage("func_72971_b = " + player.worldObj.func_72971_b(1.0f));
-//		player.addChatMessage("calculateSkylightSubtracted = " + player.worldObj.calculateSkylightSubtracted(1.0f));
 
-//		player.addChatMessage("player health =" + player.getHealth());
-
-		
-		return super.onItemRightClick(par1ItemStack, world, player);
+		return ActionResult.newResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 	}
 
-	private void countOreInChunk(EntityPlayer player, World world, int useX, int useZ) {
-		int chunkX = useX >> 4;
-		int chunkZ = useZ >> 4;
-
-		int countStone = countBlockInChunk(world, Blocks.stone, chunkX, chunkZ);
-		int countDirt = countBlockInChunk(world, Blocks.dirt, chunkX, chunkZ);
-		int countGravel = countBlockInChunk(world, Blocks.gravel, chunkX, chunkZ);
-		
-		int countCoal = countBlockInChunk(world, Blocks.coal_ore, chunkX, chunkZ);
-		int countIron = countBlockInChunk(world, Blocks.iron_ore, chunkX, chunkZ);
-		int countGold = countBlockInChunk(world, Blocks.gold_ore, chunkX, chunkZ);
-		int countDiamond = countBlockInChunk(world, Blocks.diamond_ore, chunkX, chunkZ);
-		int countLapis = countBlockInChunk(world, Blocks.lapis_ore, chunkX, chunkZ);
-		int countRedstone = countBlockInChunk(world, Blocks.redstone_ore, chunkX, chunkZ);
-		
-		int countRoots = countBlockInChunk(world, TFBlocks.root, BlockTFRoots.ROOT_META, chunkX, chunkZ);
-		int countOreRoots = countBlockInChunk(world, TFBlocks.root, BlockTFRoots.OREROOT_META, chunkX, chunkZ);
-		
-		int total = countStone + countDirt + countGravel + countCoal + countIron + countGold + countDiamond + countLapis + countRedstone + countRoots + countOreRoots;
-		
-		
-//		player.addChatMessage("Ore Meter!");
-//		player.addChatMessage("Metering chunk  [" + chunkX + ", " + chunkZ + "]");
-//		player.addChatMessage("Coal - " + countCoal + " " + percent(countCoal, total));
-//		player.addChatMessage("Iron - " + countIron + " " + percent(countIron, total));
-//		player.addChatMessage("Gold - " + countGold + " " + percent(countGold, total));
-//		player.addChatMessage("Diamond - " + countDiamond + " " + percent(countDiamond, total));
-//		player.addChatMessage("Lapis - " + countLapis + " " + percent(countLapis, total));
-//		player.addChatMessage("Redstone - " + countRedstone + " " + percent(countRedstone, total));
-//		player.addChatMessage("Roots - " + countRoots + " " + percent(countRoots, total));
-//		player.addChatMessage("Ore Roots - " + countOreRoots + " " + percent(countOreRoots, total));
-	}
-	
 	private void countOreInArea(EntityPlayer player, World world, int useX, int useZ, int radius) {
 		int chunkX = useX >> 4;
 		int chunkZ = useZ >> 4;
-		
 
 		int countStone = 0;
 		int countDirt = 0;
 		int countGravel = 0;
-		
+
 		int countCoal = 0;
 		int countIron = 0;
 		int countGold = 0;
@@ -101,125 +61,71 @@ public class ItemTFOreMeter extends ItemTF {
 
 		int total = 0;
 
-
+		ScanResult dummy = new ScanResult();
 		for (int cx = chunkX - radius; cx <= chunkX + radius; cx++) {
 			for (int cz = chunkZ - radius; cz <= chunkZ + radius; cz++) {
+				Map<IBlockState, ScanResult> results = countBlocksInChunk(world, chunkX, chunkZ);
 
-				countStone += countBlockInChunk(world, Blocks.stone, cx, cz);
-				countDirt += countBlockInChunk(world, Blocks.dirt, cx, cz);
-				countGravel += countBlockInChunk(world, Blocks.gravel, cx, cz);
+				countStone += results.entrySet().stream().filter(e -> e.getKey().getBlock() == Blocks.STONE).mapToInt(e -> e.getValue().count).sum();
+				countDirt += results.entrySet().stream().filter(e -> e.getKey().getBlock() == Blocks.DIRT).mapToInt(e -> e.getValue().count).sum();
+				countGravel += results.getOrDefault(Blocks.GRAVEL.getDefaultState(), dummy).count;
 
-				countCoal += countBlockInChunk(world, Blocks.coal_ore, cx, cz);
-				countIron += countBlockInChunk(world, Blocks.iron_ore, cx, cz);
-				countGold += countBlockInChunk(world, Blocks.gold_ore, cx, cz);
-				countDiamond += countBlockInChunk(world, Blocks.diamond_ore, cx, cz);
-				countLapis += countBlockInChunk(world, Blocks.lapis_ore, cx, cz);
-				countRedstone += countBlockInChunk(world, Blocks.redstone_ore, cx, cz);
-				countExposedDiamond += countExposedBlockInChunk(world, Blocks.diamond_ore, cx, cz);
+				countCoal += results.getOrDefault(Blocks.COAL_ORE.getDefaultState(), dummy).count;
+				countIron += results.getOrDefault(Blocks.IRON_ORE.getDefaultState(), dummy).count;
+				countGold += results.getOrDefault(Blocks.GOLD_ORE.getDefaultState(), dummy).count;
+				countDiamond += results.getOrDefault(Blocks.DIAMOND_ORE.getDefaultState(), dummy).count;
+				countLapis += results.getOrDefault(Blocks.LAPIS_ORE.getDefaultState(), dummy).count;
+				countRedstone += results.getOrDefault(Blocks.REDSTONE_ORE.getDefaultState(), dummy).count + results.getOrDefault(Blocks.LIT_REDSTONE_ORE.getDefaultState(), dummy).count;
+				countExposedDiamond += results.getOrDefault(Blocks.DIAMOND_ORE.getDefaultState(), dummy).exposedCount;
 
-				
-				countRoots += countBlockInChunk(world, TFBlocks.root, BlockTFRoots.ROOT_META, cx, cz);
-				countOreRoots += countBlockInChunk(world, TFBlocks.root, BlockTFRoots.OREROOT_META, cx, cz);
-
-
+				countRoots += results.getOrDefault(TFBlocks.root.getDefaultState().withProperty(BlockTFRoots.VARIANT, RootVariant.ROOT), dummy).count;
+				countOreRoots += results.getOrDefault(TFBlocks.root.getDefaultState().withProperty(BlockTFRoots.VARIANT, RootVariant.LIVEROOT), dummy).count;
 			}
 		}
 
 		total = countStone + countDirt + countGravel + countCoal + countIron + countGold + countDiamond + countLapis + countRedstone + countRoots + countOreRoots;
 
-
-//		player.addChatMessage("Ore Meter!");
-//		player.addChatMessage("Metering chunks in radius " + radius + " around chunk [" + chunkX + ", " + chunkZ + "]");
-//		player.addChatMessage("Coal - " + countCoal + " " + percent(countCoal, total));
-//		player.addChatMessage("Iron - " + countIron + " " + percent(countIron, total));
-//		player.addChatMessage("Gold - " + countGold + " " + percent(countGold, total));
-//		player.addChatMessage("Diamond - " + countDiamond + " " + percent(countDiamond, total) + ", exposed - " + countExposedDiamond);
-//		player.addChatMessage("Lapis - " + countLapis + " " + percent(countLapis, total));
-//		player.addChatMessage("Redstone - " + countRedstone + " " + percent(countRedstone, total));
-//		player.addChatMessage("Roots - " + countRoots + " " + percent(countRoots, total));
-//		player.addChatMessage("Ore Roots - " + countOreRoots + " " + percent(countOreRoots, total));
-	}
-	
-	public float percent(int count, int total) {
-		return (float)count / (float)total * 100F;
-	}
-	
-	public int countBlockInChunk(World world, Block stone, int cx, int cz) {
-
-		Chunk chunk = world.getChunkFromChunkCoords(cx, cz);
-		
-		int count = 0;
-		
-		for (int x = 0; x < 16; x++) {
-			for (int z = 0; z < 16; z++) {
-				for (int y = 0; y < 256; y++) {
-					if (chunk.getBlock(x, y, z) == stone) {
-						count++;
-					}
-				}
-			}
-		}
-		
-		return count;
-	}	
-	
-	public int countBlockInChunk(World world, Block blockID, int meta, int cx, int cz) {
-
-		Chunk chunk = world.getChunkFromChunkCoords(cx, cz);
-		
-		int count = 0;
-		
-		for (int x = 0; x < 16; x++) {
-			for (int z = 0; z < 16; z++) {
-				for (int y = 0; y < 256; y++) {
-					if (chunk.getBlock(x, y, z) == blockID && chunk.getBlockMetadata(x, y, z) == meta) {
-						count++;
-					}
-				}
-			}
-		}
-		
-		return count;
+		player.sendMessage(new TextComponentTranslation(getTranslationKey() + ".name").appendText("!"));
+		player.sendMessage(new TextComponentTranslation(TwilightForestMod.ID + ".ore_meter.range", radius, chunkX, chunkZ));
+		player.sendMessage(new TextComponentTranslation(Blocks.COAL_ORE.getTranslationKey() + ".name").appendText(" - " + countCoal + " " + percent(countCoal, total)));
+		player.sendMessage(new TextComponentTranslation(Blocks.IRON_ORE.getTranslationKey() + ".name").appendText(" - " + countIron + " " + percent(countIron, total)));
+		player.sendMessage(new TextComponentTranslation(Blocks.GOLD_ORE.getTranslationKey() + ".name").appendText(" - " + countGold + " " + percent(countGold, total)));
+		player.sendMessage(new TextComponentTranslation(Blocks.DIAMOND_ORE.getTranslationKey() + ".name").appendText(" - " + countDiamond + " " + percent(countDiamond, total) + ", ").appendSibling(new TextComponentTranslation(TwilightForestMod.ID + ".ore_meter.exposed", countExposedDiamond)));
+		player.sendMessage(new TextComponentTranslation(Blocks.LAPIS_ORE.getTranslationKey() + ".name").appendText(" - " + countLapis + " " + percent(countLapis, total)));
+		player.sendMessage(new TextComponentTranslation(Blocks.REDSTONE_ORE.getTranslationKey() + ".name").appendText(" - " + countRedstone + " " + percent(countRedstone, total)));
+		player.sendMessage(new TextComponentTranslation(new ItemStack(TFBlocks.root).getTranslationKey() + ".name").appendText(" - " + countRoots + " " + percent(countRoots, total)));
+		player.sendMessage(new TextComponentTranslation(new ItemStack(TFBlocks.root, 1, 1).getTranslationKey() + ".name").appendText(" - " + countOreRoots + " " + percent(countOreRoots, total)));
 	}
 
-	private int countExposedBlockInChunk(World world, Block blockID, int cx, int cz) {
-		
-		int count = 0;
+	private String percent(int count, int total) {
+		return Float.toString((float) count / (float) total * 100F) + "%";
+	}
 
+	private Map<IBlockState, ScanResult> countBlocksInChunk(World world, int cx, int cz) {
+		Map<IBlockState, ScanResult> ret = new IdentityHashMap<>();
+		BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
 		for (int x = cx << 4; x < (cx << 4) + 16; x++) {
 			for (int z = cz << 4; z < (cz << 4) + 16; z++) {
 				for (int y = 0; y < 256; y++) {
-					if (world.getBlock(x, y, z) == blockID) {
-						// check if exposed
-						if (world.isAirBlock(x + 1, y, z) || world.isAirBlock(x - 1, y, z)
-								||world.isAirBlock(x, y + 1, z) || world.isAirBlock(x, y - 1, z)
-								||world.isAirBlock(x, y + 1, z) || world.isAirBlock(x, y - 1, z))
-						{
-							count++;
+					IBlockState state = world.getBlockState(pos.setPos(x, y, z));
+					ScanResult res = ret.computeIfAbsent(state, s -> new ScanResult());
+					res.count++;
+
+					for (EnumFacing e : EnumFacing.VALUES) {
+						if (world.isAirBlock(pos.setPos(x, y, z).move(e))) {
+							res.exposedCount++;
+							break;
 						}
 					}
 				}
 			}
 		}
-		
-		return count;
 
+		return ret;
 	}
 
-
-
-	@Override
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
+	private static class ScanResult {
+		int count;
+		int exposedCount;
 	}
-	
-	/**
-	 * Properly register icon source
-	 */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":" + this.getUnlocalizedName().substring(5));
-    }
 }

@@ -1,90 +1,68 @@
 package twilightforest.biomes;
 
-import java.util.Random;
-
-import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockDoublePlant;
+import net.minecraft.block.BlockLeaves;
+import net.minecraft.block.BlockTallGrass;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenAbstractTree;
-import net.minecraft.world.gen.feature.WorldGenBigTree;
-import net.minecraft.world.gen.feature.WorldGenShrub;
-import net.minecraft.world.gen.feature.WorldGenTallGrass;
-import net.minecraft.world.gen.feature.WorldGenerator;
+import net.minecraft.world.gen.feature.*;
+import twilightforest.block.BlockTFLeaves;
+import twilightforest.block.BlockTFLog;
 import twilightforest.block.BlockTFPlant;
 import twilightforest.block.TFBlocks;
+import twilightforest.enums.LeavesVariant;
+import twilightforest.enums.PlantVariant;
+import twilightforest.enums.WoodVariant;
+import twilightforest.world.feature.TFGenTallGrass;
 
+import java.util.Random;
 
 public class TFBiomeTwilightForestVariant extends TFBiomeBase {
 
-	public TFBiomeTwilightForestVariant(int i) {
-		super(i);
-		
-		this.temperature = 0.7F;
-		this.rainfall = 0.8F;
-		
-//		this.rootHeight = 0.15F;
-//		this.heightVariation = 0.4F;
-		
+	public TFBiomeTwilightForestVariant(BiomeProperties props) {
+		super(props);
+
 		getTFBiomeDecorator().setTreesPerChunk(25);
 		getTFBiomeDecorator().setGrassPerChunk(15);
 		getTFBiomeDecorator().setFlowersPerChunk(8);
 	}
 
-	
-    /**
-     * Occasional shrub, no birches
-     */
-    public WorldGenAbstractTree func_150567_a(Random random)
-    {
-        if(random.nextInt(5) == 0)
-        {
-        	return new WorldGenShrub(3, 0);
-        }
-        else if(random.nextInt(10) == 0)
-        {
-            return new WorldGenBigTree(false);
-        } 
-        else
-        {
-            return worldGeneratorTrees;
-        }
-    }
-	
-    /**
-     * EVEN MOAR FERNZ!
-     */
-    public WorldGenerator getRandomWorldGenForGrass(Random par1Random)
-    {
-        if (par1Random.nextInt(4) != 0)
-        {
-            return new WorldGenTallGrass(Blocks.tallgrass, 2);
-        }
-        else if (par1Random.nextBoolean())
-        {
-            return new WorldGenTallGrass(TFBlocks.plant, BlockTFPlant.META_MAYAPPLE);
-        }
-        else
-        {
-            return new WorldGenTallGrass(Blocks.tallgrass, 1);
-        }
-    }
-    
-    /**
-     * Add tall ferns
-     */
-    public void decorate(World par1World, Random par2Random, int par3, int par4)
-    {
-        genTallFlowers.func_150548_a(3);
+	@Override
+	public WorldGenAbstractTree getRandomTreeFeature(Random random) {
+		if (random.nextInt(5) == 0) {
+			return new WorldGenShrub(
+					TFBlocks.twilight_log.getDefaultState().withProperty(BlockTFLog.VARIANT, WoodVariant.OAK),
+					TFBlocks.twilight_leaves.getDefaultState().withProperty(BlockTFLeaves.VARIANT, LeavesVariant.OAK).withProperty(BlockLeaves.CHECK_DECAY, false)
+			);
+		} else if (random.nextInt(10) == 0) {
+			return new WorldGenBigTree(false);
+		} else {
+			return TREE_FEATURE;
+		}
+	}
 
-        for (int i = 0; i < 7; ++i)
-        {
-            int rx = par3 + par2Random.nextInt(16) + 8;
-            int rz = par4 + par2Random.nextInt(16) + 8;
-            int ry = par2Random.nextInt(par1World.getHeightValue(rx, rz) + 32);
-            genTallFlowers.generate(par1World, par2Random, rx, ry, rz);
-        }
+	@Override
+	public WorldGenerator getRandomWorldGenForGrass(Random random) {
+		if (random.nextInt(4) != 0) {
+			return new WorldGenTallGrass(BlockTallGrass.EnumType.FERN);
+		} else if (random.nextBoolean()) {
+			return new TFGenTallGrass(TFBlocks.twilight_plant.getDefaultState().withProperty(BlockTFPlant.VARIANT, PlantVariant.MAYAPPLE));
+		} else {
+			return new WorldGenTallGrass(BlockTallGrass.EnumType.GRASS);
+		}
+	}
 
-        super.decorate(par1World, par2Random, par3, par4);
-    }
+	@Override
+	public void decorate(World world, Random random, BlockPos pos) {
 
+		DOUBLE_PLANT_GENERATOR.setPlantType(BlockDoublePlant.EnumPlantType.FERN);
+		for (int i = 0; i < 7; ++i) {
+			int rx = pos.getX() + random.nextInt(16) + 8;
+			int rz = pos.getZ() + random.nextInt(16) + 8;
+			int ry = random.nextInt(world.getHeight(rx, rz) + 32);
+			DOUBLE_PLANT_GENERATOR.generate(world, random, new BlockPos(rx, ry, rz));
+		}
 
+		super.decorate(world, random, pos);
+	}
 }

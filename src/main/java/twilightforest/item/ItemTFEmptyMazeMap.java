@@ -1,88 +1,39 @@
 package twilightforest.item;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemMapBase;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.MathHelper;
+import net.minecraft.stats.StatList;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
-import twilightforest.TFAchievementPage;
-import twilightforest.TFFeature;
-import twilightforest.TFMazeMapData;
-import twilightforest.TwilightForestMod;
-import twilightforest.world.WorldProviderTwilightForest;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import twilightforest.client.ModelRegisterCallback;
 
-public class ItemTFEmptyMazeMap extends ItemMapBase
-{
-	boolean mapOres; 
-	
-    protected ItemTFEmptyMazeMap(boolean mapOres)
-    {
-        super();
+public class ItemTFEmptyMazeMap extends ItemMapBase implements ModelRegisterCallback {
+	boolean mapOres;
+
+	protected ItemTFEmptyMazeMap(boolean mapOres) {
 		this.setCreativeTab(TFItems.creativeTab);
-        this.mapOres = mapOres;
-    }
+		this.mapOres = mapOres;
+	}
 
-    /**
-     * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
-     */
-    @Override
-	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
-    {
-        ItemStack mapItem = new ItemStack(mapOres ? TFItems.oreMap : TFItems.mazeMap, 1, par2World.getUniqueDataId(ItemTFMazeMap.STR_ID));
-        String var5 = "mazemap_" + mapItem.getItemDamage();
-        TFMazeMapData mapData = new TFMazeMapData(var5);
-        par2World.setItemData(var5, mapData);
-        mapData.scale = 0;
-        int step = 128 * (1 << mapData.scale);
-        // need to fix center for feature offset
-        if (par2World.provider instanceof WorldProviderTwilightForest && TFFeature.getFeatureForRegion(MathHelper.floor_double(par3EntityPlayer.posX) >> 4, MathHelper.floor_double(par3EntityPlayer.posZ) >> 4, par2World) == TFFeature.labyrinth) {
-        	ChunkCoordinates mc = TFFeature.getNearestCenterXYZ(MathHelper.floor_double(par3EntityPlayer.posX) >> 4, MathHelper.floor_double(par3EntityPlayer.posZ) >> 4, par2World);
-            mapData.xCenter = mc.posX;
-            mapData.zCenter = mc.posZ;
-            mapData.yCenter = MathHelper.floor_double(par3EntityPlayer.posY);
-        } else {
-            mapData.xCenter = (int)(Math.round(par3EntityPlayer.posX / step) * step) + 10; // mazes are offset slightly
-            mapData.zCenter = (int)(Math.round(par3EntityPlayer.posZ / step) * step) + 10; // mazes are offset slightly
-            mapData.yCenter = MathHelper.floor_double(par3EntityPlayer.posY);
-        }
-        mapData.dimension = par2World.provider.dimensionId;
-        mapData.markDirty();
-        --par1ItemStack.stackSize;
-        
-        //cheevos
-    	if (mapItem.getItem() == TFItems.mazeMap) {
-    		par3EntityPlayer.triggerAchievement(TFAchievementPage.twilightMazeMap);
-    	}
-    	if (mapItem.getItem() == TFItems.oreMap) {
-    		par3EntityPlayer.triggerAchievement(TFAchievementPage.twilightOreMap);
-    	}		
+	// [VanillaCopy] ItemEmptyMap.onItemRightClick calling own setup method
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+		ItemStack itemstack = ItemTFMazeMap.setupNewMap(worldIn, playerIn.posX, playerIn.posZ, (byte) 0, true, false, playerIn.posY, this.mapOres);
+		ItemStack itemstack1 = playerIn.getHeldItem(handIn);
+		itemstack1.shrink(1);
 
-        if (par1ItemStack.stackSize <= 0)
-        {
-            return mapItem;
-        }
-        else
-        {
-            if (!par3EntityPlayer.inventory.addItemStackToInventory(mapItem.copy()))
-            {
-                par3EntityPlayer.dropPlayerItemWithRandomChoice(mapItem, false);
-            }
+		if (itemstack1.isEmpty()) {
+			return new ActionResult<>(EnumActionResult.SUCCESS, itemstack);
+		} else {
+			if (!playerIn.inventory.addItemStackToInventory(itemstack.copy())) {
+				playerIn.dropItem(itemstack, false);
+			}
 
-            return par1ItemStack;
-        }
-    }
-    
-	/**
-	 * Properly register icon source
-	 */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":" + this.getUnlocalizedName().substring(5));
-    }
+			playerIn.addStat(StatList.getObjectUseStats(this));
+			return new ActionResult<>(EnumActionResult.SUCCESS, itemstack1);
+		}
+	}
 }

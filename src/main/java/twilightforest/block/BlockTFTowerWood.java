@@ -1,226 +1,126 @@
 package twilightforest.block;
 
-import java.util.List;
-import java.util.Random;
-
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import twilightforest.TwilightForestMod;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.enums.TowerWoodVariant;
+import twilightforest.client.ModelRegisterCallback;
+import twilightforest.client.ModelUtils;
 import twilightforest.entity.EntityTFTowerTermite;
 import twilightforest.item.TFItems;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-
+import java.util.Random;
 
 /**
- * 
  * Tower wood is a type of plank block that forms the walls of Dark Towers
- * 
- * @author Ben
  *
+ * @author Ben
  */
-public class BlockTFTowerWood extends Block {
-	
-	private static IIcon TEX_PLAIN;
-	private static IIcon TEX_ENCASED;
-	private static IIcon TEX_CRACKED;
-	private static IIcon TEX_MOSSY;
-	private static IIcon TEX_INFESTED;
-	
-	public static final int META_INFESTED = 4;
+public class BlockTFTowerWood extends Block implements ModelRegisterCallback {
 
-	
-    public BlockTFTowerWood()
-    {
-        super(Material.wood);
-        this.setHardness(40F);
-        this.setResistance(10F);
-        this.setStepSound(Block.soundTypeWood);
+	public static final IProperty<TowerWoodVariant> VARIANT = PropertyEnum.create("variant", TowerWoodVariant.class);
+
+	public BlockTFTowerWood() {
+		super(Material.WOOD, MapColor.ADOBE);
+		this.setHardness(40F);
+		this.setResistance(10F);
+		this.setSoundType(SoundType.WOOD);
 		this.setCreativeTab(TFItems.creativeTab);
+		this.setDefaultState(blockState.getBaseState().withProperty(VARIANT, TowerWoodVariant.PLAIN));
+	}
 
-    }
-    
-    /**
-     * Returns a integer with hex for 0xrrggbb with this color multiplied against the blocks color. Note only called
-     * when first determining what to render.
-     */
-    @Override
-	public int colorMultiplier(IBlockAccess par1IBlockAccess, int x, int y, int z)
-    {
-    	int meta = par1IBlockAccess.getBlockMetadata(x, y, z);
-
-    	if (meta == 0 || meta == 2 || meta == 3 || meta == META_INFESTED) 
-    	{
-       		// stripes!
-        	int value = x * 31 + y * 15 + z * 33;
-        	if ((value & 256) != 0)
-        	{
-        		value = 255 - (value & 255);
-        	}
-        	value &= 255;
-        	value = value >> 1;
-        	value |= 128;
-        	
-        	return value << 16 | value << 8 | value;
-    	}
-    	else
-    	{ 
-    		return 16777215;
-    	}
-    }
-
-    /**
-     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-     */
 	@Override
-	public IIcon getIcon(int side, int meta) {
-		switch (meta)
-		{
-		case 0:
-		default:
-			return TEX_PLAIN;
-		case 1:
-			return TEX_ENCASED;
-		case 2:
-			return TEX_CRACKED;
-		case 3:
-			return TEX_MOSSY;
-		case META_INFESTED:
-			return TEX_INFESTED;
+	public BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, VARIANT);
+	}
+
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		return state.getValue(VARIANT).ordinal();
+	}
+
+	@Override
+	@Deprecated
+	public IBlockState getStateFromMeta(int meta) {
+		return getDefaultState().withProperty(VARIANT, TowerWoodVariant.values()[meta]);
+	}
+
+	@Override
+	public MapColor getMapColor(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return state.getValue(VARIANT) == TowerWoodVariant.ENCASED ? MapColor.SAND : super.getMapColor(state, world, pos);
+	}
+
+	@Override
+	public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> list) {
+		for (TowerWoodVariant variant : TowerWoodVariant.values()) {
+			list.add(new ItemStack(this, 1, variant.ordinal()));
 		}
 	}
-	
-    @Override
-	@SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister par1IconRegister)
-    {
-        BlockTFTowerWood.TEX_PLAIN = par1IconRegister.registerIcon(TwilightForestMod.ID + ":towerwood_planks");
-        BlockTFTowerWood.TEX_ENCASED = par1IconRegister.registerIcon(TwilightForestMod.ID + ":towerwood_encased");
-        BlockTFTowerWood.TEX_CRACKED = par1IconRegister.registerIcon(TwilightForestMod.ID + ":towerwood_cracked");
-        BlockTFTowerWood.TEX_MOSSY = par1IconRegister.registerIcon(TwilightForestMod.ID + ":towerwood_mossy");
-        BlockTFTowerWood.TEX_INFESTED = par1IconRegister.registerIcon(TwilightForestMod.ID + ":towerwood_infested");
-    }
-	
- 	/**
-     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     */
-    @Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
-    {
-        par3List.add(new ItemStack(par1, 1, 0));
-        par3List.add(new ItemStack(par1, 1, 1));
-        par3List.add(new ItemStack(par1, 1, 2));
-        par3List.add(new ItemStack(par1, 1, 3));
-        par3List.add(new ItemStack(par1, 1, META_INFESTED));
-    }
-    
-    /**
-     * Determines the damage on the item the block drops. Used in cloth and wood.
-     */
-    @Override
-	public int damageDropped(int meta) {
-    	return meta;
-	}
-    
-    /**
-     * Metadata and fortune sensitive version, this replaces the old (int meta, Random rand)
-     * version in 1.1.
-     *
-     * @param meta Blocks Metadata
-     * @param fortune Current item fortune level
-     * @param random Random number generator
-     * @return The number of items to drop
-     */
-    @Override
-	public int quantityDropped(int meta, int fortune, Random random)
-    {
-    	if (meta == META_INFESTED)
-    	{
-    		return 0;
-    	}
-    	else
-    	{
-    		return super.quantityDropped(meta, fortune, random);
-    	}
-    }
-    
-    /**
-     * Returns the block hardness at a location. Args: world, x, y, z
-     */
-    @Override
-	public float getBlockHardness(World world, int x, int y, int z)
-    {
-    	// infested block is not very hard
-    	int meta = world.getBlockMetadata(x, y, z);
-    	
-    	if (meta == META_INFESTED)
-    	{
-    		return 0.75F;
-    	}
-    	else
-    	{
-    		return super.getBlockHardness(world, x, y, z);
-    	}
-    }
-    
-    /**
-     * Called right before the block is destroyed by a player.  Args: world, x, y, z, metaData
-     */
-    @Override
-	public void dropBlockAsItemWithChance(World par1World, int x, int y, int z, int meta, float chance, int something)
-    {
-        if (!par1World.isRemote && meta == META_INFESTED)
-        {
-            EntityTFTowerTermite termite = new EntityTFTowerTermite(par1World);
-            termite.setLocationAndAngles(x + 0.5D, y, z + 0.5D, 0.0F, 0.0F);
-            par1World.spawnEntityInWorld(termite);
-            termite.spawnExplosionParticle();
-        }
 
-        super.dropBlockAsItemWithChance(par1World, x, y, z, meta, chance, something);
-    }
-
-    /**
-     * Chance that fire will spread and consume this block.
-     * 300 being a 100% chance, 0, being a 0% chance.
-     * 
-     * @param world The current world
-     * @param x The blocks X position
-     * @param y The blocks Y position
-     * @param z The blocks Z position
-     * @param metadata The blocks current metadata
-     * @param face The face that the fire is coming from
-     * @return A number ranging from 0 to 300 relating used to determine if the block will be consumed by fire
-     */
-    @Override
-    public int getFlammability(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
-    	return 1;
-    }
-
-    /**
-     * Called when fire is updating on a neighbor block.
-     * The higher the number returned, the faster fire will spread around this block.
-     * 
-     * @param world The current world
-     * @param x The blocks X position
-     * @param y The blocks Y position
-     * @param z The blocks Z position
-     * @param metadata The blocks current metadata
-     * @param face The face that the fire is coming from
-     * @return A number that is used to determine the speed of fire growth around the block
-     */
 	@Override
-	public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+	public int damageDropped(IBlockState state) {
+		return getMetaFromState(state);
+	}
+
+	@Override
+	public int quantityDropped(IBlockState state, int fortune, Random random) {
+		if (state.getValue(VARIANT) == TowerWoodVariant.INFESTED) {
+			return 0;
+		} else {
+			return super.quantityDropped(state, fortune, random);
+		}
+	}
+
+	@Override
+	@Deprecated
+	public float getBlockHardness(IBlockState state, World world, BlockPos pos) {
+		if (state.getValue(VARIANT) == TowerWoodVariant.INFESTED) {
+			return 0.75F;
+		} else {
+			return super.getBlockHardness(state, world, pos);
+		}
+	}
+
+	@Override
+	public void dropBlockAsItemWithChance(World world, BlockPos pos, IBlockState state, float chance, int fortune) {
+		if (!world.isRemote && state.getValue(VARIANT) == TowerWoodVariant.INFESTED) {
+			EntityTFTowerTermite termite = new EntityTFTowerTermite(world);
+			termite.setLocationAndAngles(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, 0.0F, 0.0F);
+			world.spawnEntity(termite);
+			termite.spawnExplosionParticle();
+		}
+
+		super.dropBlockAsItemWithChance(world, pos, state, chance, fortune);
+	}
+
+	@Override
+	public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing side) {
+		return 1;
+	}
+
+	@Override
+	public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing side) {
 		return 0;
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void registerModel() {
+		ModelUtils.registerToStateSingleVariant(this, VARIANT);
 	}
 
 }

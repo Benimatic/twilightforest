@@ -1,132 +1,123 @@
 package twilightforest.entity;
 
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
-import twilightforest.TFAchievementPage;
 import twilightforest.TFFeature;
+import twilightforest.TFSounds;
+import twilightforest.TwilightForestMod;
 
+import javax.annotation.Nullable;
 
 public class EntityTFHostileWolf extends EntityWolf implements IMob {
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/hostile_wolf");
 
 	public EntityTFHostileWolf(World world) {
 		super(world);
 		setAngry(true);
-		
-        this.targetTasks.addTask(4, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
+		setCollarColor(EnumDyeColor.BLACK);
+		setAttributes(); // Must call this again because EntityWolf calls setTamed(false) which messes with our changes
 	}
-	
-    public EntityTFHostileWolf(World world, double x, double y, double z)
-    {
-        this(world);
-        this.setPosition(x, y, z);
-    }
-    
 
-	/**
-	 * Set monster attributes
-	 */
+	// Split out from applyEntityAttributes because of above comment
+	protected void setAttributes() {
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
+	}
+
 	@Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(10.0D); // max health
-    }
+	protected final void applyEntityAttributes() {
+		super.applyEntityAttributes();
+		setAttributes();
+	}
 
-    @Override
-	public void onUpdate()
-    {
-        super.onUpdate();
-        if(!worldObj.isRemote && worldObj.difficultySetting == EnumDifficulty.PEACEFUL)
-        {
-        	setDead();
-        }
-    }
-
-    /**
-     * Trigger achievement when killed
-     */
 	@Override
-	public void onDeath(DamageSource par1DamageSource) {
-		super.onDeath(par1DamageSource);
-		if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
-			((EntityPlayer)par1DamageSource.getSourceOfDamage()).triggerAchievement(TFAchievementPage.twilightHunter);
+	protected void initEntityAI() {
+		super.initEntityAI();
+		this.targetTasks.addTask(4, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+	}
+
+	@Override
+	public void onUpdate() {
+		super.onUpdate();
+		if (!world.isRemote && world.getDifficulty() == EnumDifficulty.PEACEFUL) {
+			setDead();
 		}
 	}
-	
-    /**
-     * Checks if the entity's current position is a valid location to spawn this entity.
-     */
-    @Override
-	public boolean getCanSpawnHere()
-    {
+
+	@Override
+	public boolean getCanSpawnHere() {
 		// are we near a hedge maze?
-		int chunkX = MathHelper.floor_double(posX) >> 4;
-		int chunkZ = MathHelper.floor_double(posZ) >> 4;
-		if (TFFeature.getNearestFeature(chunkX, chunkZ, worldObj) == TFFeature.hedgeMaze) {
-			// don't check light level
-	        return worldObj.checkNoEntityCollision(boundingBox) && worldObj.getCollidingBoundingBoxes(this, boundingBox).size() == 0 && !worldObj.isAnyLiquid(boundingBox);
+		int chunkX = MathHelper.floor(posX) >> 4;
+		int chunkZ = MathHelper.floor(posZ) >> 4;
+		return (TFFeature.getNearestFeature(chunkX, chunkZ, world) == TFFeature.HEDGE_MAZE || isValidLightLevel())
+				&& world.checkNoEntityCollision(getEntityBoundingBox())
+				&& world.getCollisionBoxes(this, getEntityBoundingBox()).size() == 0
+				&& !world.containsAnyLiquid(getEntityBoundingBox());
+	}
+
+	// [VanillaCopy] Direct copy of EntityMob.isValidLightLevel
+	protected boolean isValidLightLevel() {
+		BlockPos blockpos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
+
+		if (this.world.getLightFor(EnumSkyBlock.SKY, blockpos) > this.rand.nextInt(32)) {
+			return false;
+		} else {
+			int i = this.world.getLightFromNeighbors(blockpos);
+
+			if (this.world.isThundering()) {
+				int j = this.world.getSkylightSubtracted();
+				this.world.setSkylightSubtracted(10);
+				i = this.world.getLightFromNeighbors(blockpos);
+				this.world.setSkylightSubtracted(j);
+			}
+
+			return i <= this.rand.nextInt(8);
 		}
-		else {
-			return isValidLightLevel() && worldObj.checkNoEntityCollision(boundingBox) && worldObj.getCollidingBoundingBoxes(this, boundingBox).size() == 0 && !worldObj.isAnyLiquid(boundingBox);
-		}
-    }
-    
-    /**
-     * Checks to make sure the light is not too bright where the mob is spawning
-     * Copied from EntityMob
-     */
-    protected boolean isValidLightLevel()
-    {
-        int var1 = MathHelper.floor_double(this.posX);
-        int var2 = MathHelper.floor_double(this.boundingBox.minY);
-        int var3 = MathHelper.floor_double(this.posZ);
+	}
 
-        if (this.worldObj.getSavedLightValue(EnumSkyBlock.Sky, var1, var2, var3) > this.rand.nextInt(32))
-        {
-            return false;
-        }
-        else
-        {
-            int var4 = this.worldObj.getBlockLightValue(var1, var2, var3);
+	@Override
+	public void setAttackTarget(@Nullable EntityLivingBase entity) {
+		if (entity != null && entity != getAttackTarget())
+			playSound(TFSounds.MISTWOLF_TARGET, 4F, getSoundPitch());
+		super.setAttackTarget(entity);
+	}
 
-            if (this.worldObj.isThundering())
-            {
-                int var5 = this.worldObj.skylightSubtracted;
-                this.worldObj.skylightSubtracted = 10;
-                var4 = this.worldObj.getBlockLightValue(var1, var2, var3);
-                this.worldObj.skylightSubtracted = var5;
-            }
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return TFSounds.MISTWOLF_IDLE;
+	}
 
-            return var4 <= this.rand.nextInt(8);
-        }
-    }
+	@Override
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+		return TFSounds.MISTWOLF_HURT;
+	}
 
-    /**
-     * Checks if the parameter is an item which this animal can be fed to breed it (wheat, carrots or seeds depending on
-     * the animal type)
-     */
-    @Override
-	public boolean isBreedingItem(ItemStack par1ItemStack)
-    {
-    	return false;
-    }
+	@Override
+	public boolean isBreedingItem(ItemStack stack) {
+		return false;
+	}
 
-    /**
-     * Called when a player interacts with a mob. e.g. gets milk from a cow, gets into the saddle on a pig.
-     */
-    @Override
-	public boolean interact(EntityPlayer par1EntityPlayer)
-    {
-    	return false;
-    }
+	@Override
+	public boolean processInteract(EntityPlayer player, EnumHand hand) {
+		return false;
+	}
 
+	@Override
+	protected ResourceLocation getLootTable() {
+		return LOOT_TABLE;
+	}
 }

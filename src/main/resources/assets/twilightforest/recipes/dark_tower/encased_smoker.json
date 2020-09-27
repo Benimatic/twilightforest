@@ -1,0 +1,25 @@
+{
+  "result": {
+    "item": "twilightforest:fire_jet",
+    "data": 1
+  },
+  "pattern": [
+    "ere",
+    "rsr",
+    "ere"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "r": {
+      "item": "#DUSTREDSTONE"
+    },
+    "s": {
+      "item": "twilightforest:fire_jet",
+      "data": 0
+    },
+    "e": {
+      "item": "twilightforest:tower_wood",
+      "data": 1
+    }
+  }
+}

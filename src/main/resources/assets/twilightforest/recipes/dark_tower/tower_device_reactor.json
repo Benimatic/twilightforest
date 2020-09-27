@@ -1,0 +1,24 @@
+{
+  "result": {
+    "item": "twilightforest:tower_device",
+    "data": 12
+  },
+  "pattern": [
+    "ece",
+    "coc",
+    "ece"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "c": {
+      "item": "twilightforest:carminite"
+    },
+    "e": {
+      "item": "twilightforest:tower_wood",
+      "data": 1
+    },
+    "o": {
+      "item": "#OREREDSTONE"
+    }
+  }
+}

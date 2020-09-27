@@ -1,0 +1,8 @@
+{
+  "forge_marker": 1,
+  "defaults": { "textures": { "side": "minecraft:blocks/log_oak", "end": "minecraft:blocks/log_oak_top" } },
+  "variants": {
+    "inventory": [{ "model": "cube_column" }],
+    "normal": [{ "model": "twilightforest:util/giant_column" }]
+  }
+}

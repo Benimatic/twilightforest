@@ -1,48 +1,60 @@
 package twilightforest.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockBush;
-import net.minecraft.block.material.Material;
+import net.minecraft.block.*;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.item.Item;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import twilightforest.client.ModelRegisterCallback;
 import twilightforest.item.TFItems;
 
-public class BlockTFHugeWaterLily extends BlockBush {
+public class BlockTFHugeWaterLily extends BlockLilyPad implements ModelRegisterCallback {
+
+	private static final AxisAlignedBB AABB = new AxisAlignedBB(0.1, 0.1, 0.1, 0.9, 0.9, 0.9);
 
 	protected BlockTFHugeWaterLily() {
-		super(Material.plants);
-		
-		this.setStepSound(soundTypeGrass);
+		this.setSoundType(SoundType.PLANT);
 		this.setCreativeTab(TFItems.creativeTab);
-		
-        float radius = 0.4F;
-        this.setBlockBounds(0.5F - radius, 0.5F - radius, 0.5F - radius, 0.5F + radius, .5F + radius, 0.5F + radius);
-	}
-	
-    /**
-     * Returns a bounding box from the pool of bounding boxes (this means this box can change after the pool has been
-     * cleared to be reused)
-     */
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
-    {
-        return null;
-    }
-
-    /**
-     * Can this block stay at this position.  Similar to canPlaceBlockAt except gets checked often with plants.
-     */
-	public boolean canBlockStay(World world, int x, int y, int z) {
-		return world.getBlock(x, y - 1, z).getMaterial() == Material.water && world.getBlockMetadata(x, y - 1, z) == 0;
 	}
 
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return AABB;
+	}
 
-    /**
-     * is the block grass, dirt or farmland
-     */
-    protected boolean canPlaceBlockOn(Block p_149854_1_)
-    {
-        return p_149854_1_ == Blocks.water;
-    }
+	/*@Override
+	public boolean canBlockStay(World world, BlockPos pos, IBlockState state) {
+		IBlockState down = world.getBlockState(pos.down());
+		Block b = down.getBlock();
+		IProperty<Integer> levelProp = b instanceof BlockLiquid || b instanceof BlockFluidBase
+				? BlockLiquid.LEVEL
+				: null;
+
+		return down.getMaterial() == Material.WATER
+				&& (levelProp == null || down.getValue(levelProp) == 0);
+	}*/
+
+	@Override
+	protected boolean canSustainBush(IBlockState state) {
+		return state.getBlock() == Blocks.WATER;
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public BlockRenderLayer getRenderLayer() {
+		return BlockRenderLayer.CUTOUT;
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void registerModel() {
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
+	}
 }

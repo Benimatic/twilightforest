@@ -1,151 +1,72 @@
 package twilightforest.entity;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIAttackRanged;
 import net.minecraft.entity.ai.EntityAIAvoidEntity;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWander;
+import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
+import net.minecraft.entity.projectile.EntityThrowable;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import twilightforest.TFAchievementPage;
-import twilightforest.entity.ai.EntityAITFMagicAttack;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import twilightforest.TwilightForestMod;
 
-public class EntityTFSlimeBeetle extends EntityMob
-{
+public class EntityTFSlimeBeetle extends EntityMob implements IRangedAttackMob {
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/slime_beetle");
 
 	public EntityTFSlimeBeetle(World world) {
 		super(world);
-		//texture = TwilightForestMod.MODEL_DIR + "slimebeetle.png";
-		//moveSpeed = 0.23F;
 		setSize(0.9F, 1.75F);
+	}
 
+	@Override
+	protected void initEntityAI() {
 		this.tasks.addTask(0, new EntityAISwimming(this));
-		//this.tasks.addTask(2, new EntityAITFFireBreath(this, this.moveSpeed, 5F, 30, 0.1F));
-        this.tasks.addTask(2, new EntityAIAvoidEntity(this, EntityPlayer.class, 3.0F, 1.25F, 2.0F));
-		this.tasks.addTask(3, new EntityAITFMagicAttack(this, 1.0F, EntityAITFMagicAttack.SLIME, 30));
-		//this.tasks.addTask(4, new EntityAIAttackOnCollide(this, EntityPlayer.class, this.moveSpeed, false));
-		this.tasks.addTask(6, new EntityAIWander(this, 1.0D));
+		this.tasks.addTask(2, new EntityAIAvoidEntity<>(this, EntityPlayer.class, 3.0F, 1.25F, 2.0F));
+		this.tasks.addTask(3, new EntityAIAttackRanged(this, 1, 30, 10));
+		this.tasks.addTask(6, new EntityAIWanderAvoidWater(this, 1.0D));
 		this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
 		this.tasks.addTask(8, new EntityAILookIdle(this));
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
-
+		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
 	}
 
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
-    @Override
-	protected boolean isAIEnabled()
-    {
-        return true;
-    }
-
-	/**
-	 * Set monster attributes
-	 */
 	@Override
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(25.0D); // max health
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23D); // movement speed
-    }
-
-	
-    /**
-     * Returns the sound this mob makes while it's alive.
-     */
-    @Override
-	protected String getLivingSound()
-    {
-        return null;
-    }
-
-    /**
-     * Returns the sound this mob makes when it is hurt.
-     */
-    @Override
-	protected String getHurtSound()
-    {
-        return "mob.spider.say";
-    }
-
-    /**
-     * Returns the sound this mob makes on death.
-     */
-    @Override
-	protected String getDeathSound()
-    {
-        return "mob.spider.death";
-    }
-
-    /**
-     * Plays step sound at given x, y, z for the entity
-     */
-    @Override
-	protected void func_145780_a(int var1, int var2, int var3, Block var4)
-    {
-        this.worldObj.playSoundAtEntity(this, "mob.spider.step", 0.15F, 1.0F);
-    }
-
-    /**
-     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
-     * use this to react to sunlight and start to burn.
-     */
-    @Override
-	public void onLivingUpdate()
-    {
-    	super.onLivingUpdate();
-
-//    	// dribble slime particles out of mouth
-//    	Vec3 look = this.getLookVec();
-//
-//    	double dist = 0.9;
-//    	double px = this.posX + look.xCoord * dist;
-//    	double py = this.posY + 0.25 + look.yCoord * dist;
-//    	double pz = this.posZ + look.zCoord * dist;
-//
-//		worldObj.spawnParticle("slime", px, py, pz, 0, 0, 0);
-
-    }
-    
-    /**
-     * Trigger achievement when killed
-     */
-    @Override
-    public void onDeath(DamageSource par1DamageSource) {
-    	super.onDeath(par1DamageSource);
-    	if (par1DamageSource.getSourceOfDamage() instanceof EntityPlayer) {
-    		((EntityPlayer)par1DamageSource.getSourceOfDamage()).triggerAchievement(TFAchievementPage.twilightHunter);
-    	}
-    }
-
-    /**
-     * Attack strength
-     */
-    public int getAttackStrength(Entity par1Entity)
-    {
-        return 4;
-    }
+	protected void applyEntityAttributes() {
+		super.applyEntityAttributes();
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(25.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
+		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4);
+	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public float getShadowSize() 
-	{
-		return 1.1F;
+	protected SoundEvent getHurtSound(DamageSource source) {
+		return SoundEvents.ENTITY_SPIDER_HURT;
+	}
+
+	@Override
+	protected SoundEvent getDeathSound() {
+		return SoundEvents.ENTITY_SPIDER_DEATH;
+	}
+
+	@Override
+	protected void playStepSound(BlockPos pos, Block block) {
+		playSound(SoundEvents.ENTITY_SPIDER_STEP, 0.15F, 1.0F);
 	}
 
 	@Override
@@ -153,19 +74,28 @@ public class EntityTFSlimeBeetle extends EntityMob
 		return 0.25F;
 	}
 
-    /**
-     * Get this Entity's EnumCreatureAttribute
-     */
-    @Override
-	public EnumCreatureAttribute getCreatureAttribute()
-    {
-        return EnumCreatureAttribute.ARTHROPOD;
-    }
-    
-    @Override
-	protected Item getDropItem()
-    {
-        return Items.slime_ball;
-    }
-	
+	@Override
+	public EnumCreatureAttribute getCreatureAttribute() {
+		return EnumCreatureAttribute.ARTHROPOD;
+	}
+
+	@Override
+	public ResourceLocation getLootTable() {
+		return LOOT_TABLE;
+	}
+
+	@Override
+	public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
+		EntityThrowable projectile = new EntityTFSlimeProjectile(this.world, this);
+		playSound(SoundEvents.ENTITY_SMALL_SLIME_SQUISH, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+		double tx = target.posX - this.posX;
+		double ty = target.posY + target.getEyeHeight() - 1.100000023841858D - projectile.posY;
+		double tz = target.posZ - this.posZ;
+		float heightOffset = MathHelper.sqrt(tx * tx + tz * tz) * 0.2F;
+		projectile.shoot(tx, ty + heightOffset, tz, 0.6F, 6.0F);
+		this.world.spawnEntity(projectile);
+	}
+
+	@Override
+	public void setSwingingArms(boolean swingingArms) {}
 }

@@ -1,0 +1,57 @@
+{
+  "name": "Trophies",
+  "icon": "twilightforest:trophy_pedestal",
+  "category": "treasures",
+  "advancement": "twilightforest:alt/treasures/trophies",
+  "sortnum": 2310,
+  "pages": [
+    {
+      "type": "text",
+      "text": "Trophy Info"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:progress_trophy_pedestal",
+      "text": "things and stuff"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:quest_ram",
+      "text": "The ram — grateful for the feast — has bestowed the gift of a... replica of its head. Sometimes, it's better to not look into these kind of things. The trophy can be placed to showcase your appreciation of fine dining wool and even worn as a helm, truly a satisfying reward for a job well done... Probably."
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:progress_naga",
+      "text": "things and stuff"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:progress_lich",
+      "text": "things and stuff"
+    }, {
+      "type": "spotlight",
+      "title": "Minoshroom Trophy",
+      "item": "twilightforest:trophy:6",
+      "advancement": "twilightforest:progress_labyrinth",
+      "text": "The trophy of the Minoshroom, bestowed to those who have bested the beast of the Labyrinth. Though iron-plated, it is still worth the well-fought battle of the brawn, or brain versus brawn, however the Minoshroom was slain."
+    }, {
+      "type": "spotlight",
+      "title": "Hydra Trophy",
+      "item": "twilightforest:trophy:2",
+      "advancement": "twilightforest:progress_hydra",
+      "text": "A trophy depicting one of the many heads of the Hydra. Though slaying a head only creates more, this reward from a heated battle is proof that a beast with regenerating heads can be slain. Seems like the mouth opens when there's no solid surface beneath the Trophy."
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:progress_knights",
+      "text": "things and stuff"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:progress_ur_ghast",
+      "text": "things and stuff"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:progress_yeti",
+      "text": "things and stuff"
+    }, {
+      "type": "text",
+      "advancement": "twilightforest:progress_glacier",
+      "text": "things and stuff"
+    }
+  ]
+}

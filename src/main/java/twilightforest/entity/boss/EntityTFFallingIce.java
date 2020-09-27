@@ -1,224 +1,122 @@
 package twilightforest.entity.boss;
 
-import java.util.ArrayList;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityFallingBlock;
 import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TwilightForestMod;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import twilightforest.client.particle.TFParticleType;
 
-public class EntityTFFallingIce extends Entity {
+import java.util.List;
+
+public class EntityTFFallingIce extends EntityFallingBlock {
 
 	private static final int HANG_TIME = 100;
-	private int fallTime;
-	private float hurtAmount;
-	private int hurtMax;
-	
-	public EntityTFFallingIce(World par1World) {
-		super(par1World);
-        this.setSize(2.98F, 2.98F);
-        
-        this.hurtAmount = 10;
-        this.hurtMax = 30;
+
+	public EntityTFFallingIce(World world) {
+		super(world, 0, 0, 0, Blocks.PACKED_ICE.getDefaultState()); // set falling tile on client to prevent crash
+		this.setSize(2.98F, 2.98F);
 	}
 
-	public EntityTFFallingIce(World par1World, int x, int y, int z) {
-		this(par1World);
-
-        this.preventEntitySpawning = true;
-
-        this.setPosition(x, y, z);
-        this.motionX = 0.0D;
-        this.motionY = 0.0D;
-        this.motionZ = 0.0D;
-        this.prevPosX = x;
-        this.prevPosY = y;
-        this.prevPosZ = z;
+	public EntityTFFallingIce(World world, int x, int y, int z) {
+		super(world, x, y, z, Blocks.PACKED_ICE.getDefaultState());
+		this.setSize(2.98F, 2.98F);
+		this.fallHurtAmount = 10.0F;
+		this.fallHurtMax = 30;
+		this.setHurtEntities(true);
 	}
-	
-	  /**
-     * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
-     * prevent them from trampling crops
-     */
-    protected boolean canTriggerWalking()
-    {
-        return false;
-    }
 
-    protected void entityInit() {}
+	@Override
+	public void onUpdate() {
+		if (fallTime > HANG_TIME) {
+			setNoGravity(true);
+		}
 
-    /**
-     * Returns true if other Entities should be prevented from moving through this Entity.
-     */
-    public boolean canBeCollidedWith()
-    {
-    	return !this.isDead;
-    }
+		super.onUpdate();
 
-    /**
-     * Called to update the entity's position/logic.
-     */
-    @SuppressWarnings("unchecked")
-	public void onUpdate()
-    {
-    	this.prevPosX = this.posX;
-    	this.prevPosY = this.posY;
-    	this.prevPosZ = this.posZ;
-    	
-    	++this.fallTime;
-    	
-    	if (this.fallTime > HANG_TIME) {
-    		this.motionY -= 0.03999999910593033D;
-    	}
-    	
-    	this.moveEntity(this.motionX, this.motionY, this.motionZ);
-    	this.motionX *= 0.9800000190734863D;
-    	this.motionY *= 0.9800000190734863D;
-    	this.motionZ *= 0.9800000190734863D;
+		// kill other nearby blocks if they are not as old as this one
+		if (!this.world.isRemote) {
+			List<EntityTFFallingIce> nearby = this.world.getEntitiesWithinAABB(EntityTFFallingIce.class, this.getEntityBoundingBox());
 
-    	if (!this.worldObj.isRemote)
-    	{
-    		//int y = MathHelper.floor_double(this.posY);
+			for (EntityTFFallingIce entity : nearby) {
+				if (entity != this) {
+					if (entity.fallTime < this.fallTime) {
+						entity.setDead();
+					}
+				}
+			}
 
-    		if (this.onGround)
-    		{
-    			this.motionX *= 0.699999988079071D;
-    			this.motionZ *= 0.699999988079071D;
-    			this.motionY *= -0.5D;
+			destroyIceInAABB(this.getEntityBoundingBox().grow(0.5, 0, 0.5));
+		} else {
+			makeTrail();
+		}
+	}
 
-    			this.setDead();
-    		}
-//    		else if (this.fallTime > 100 && !this.worldObj.isRemote && (y < 1 || y > 256) || this.fallTime > 600)
-//    		{
-//    			// something's wrong
-//    			this.setDead();
-//    		}
-    	}
-    	
-    	// kill other nearby blocks if they are not as old as this one
-    	if (!this.worldObj.isRemote) {
-    		ArrayList<Entity> nearby = new ArrayList<Entity>(this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox));
-
-    		for (Entity entity : nearby) {
-    			if (entity instanceof EntityTFFallingIce) {
-    				EntityTFFallingIce otherIce = (EntityTFFallingIce)entity;
-    				
-    				if (otherIce.getFallTime() < this.fallTime) {
-    					otherIce.setDead();
-    				}
-    			}
-    		}
-    		
-    		destroyIceInAABB(this.boundingBox.expand(0.5, 0, 0.5));
-    	}
-    	
-    	makeTrail();
-    }
-    
-	public void makeTrail() {
+	private void makeTrail() {
 		for (int i = 0; i < 2; i++) {
-			double dx = this.posX + 2F * (rand.nextFloat() - rand.nextFloat()); 
-			double dy = this.posY - 3F + 3F * (rand.nextFloat() - rand.nextFloat()); 
-			double dz = this.posZ + 2F * (rand.nextFloat() - rand.nextFloat()); 
+			double dx = this.posX + 2F * (rand.nextFloat() - rand.nextFloat());
+			double dy = this.posY - 3F + 3F * (rand.nextFloat() - rand.nextFloat());
+			double dz = this.posZ + 2F * (rand.nextFloat() - rand.nextFloat());
 
-			TwilightForestMod.proxy.spawnParticle(this.worldObj, "snowwarning", dx, dy, dz, 0, -1, 0);
-			
-			//System.out.println("Trail! " + this.worldObj);
+			TwilightForestMod.proxy.spawnParticle(TFParticleType.SNOW_WARNING, dx, dy, dz, 0, -1, 0);
 		}
 	}
 
-    /**
-     * Called when the mob is falling. Calculates and applies fall damage.
-     */
-    @SuppressWarnings({ "unchecked" })
-    protected void fall(float par1)
-    {
-    	int distance = MathHelper.ceiling_float_int(par1 - 1.0F);
+	// [VanillaCopy] Like super, but without anvil cases and with extra stuff
+	@Override
+	public void fall(float distance, float multiplier) {
+		if (this.hurtEntities) {
+			int i = MathHelper.ceil(distance - 1.0F);
 
-    	if (distance > 0)
-    	{
-    		ArrayList<Entity> nearby = new ArrayList<Entity>(this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(2, 0, 2)));
-    		DamageSource damagesource = DamageSource.fallingBlock;
-    		for (Entity entity : nearby) {
-    			if (!(entity instanceof EntityTFYetiAlpha)) {
-    				entity.attackEntityFrom(damagesource, (float)Math.min(MathHelper.floor_float((float)distance * this.hurtAmount), this.hurtMax));
-    			}
-    		}
-    	}
-    	
+			if (i > 0) {
+				List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox());
+				DamageSource damagesource = DamageSource.FALLING_BLOCK;
+
+				for (Entity entity : list) {
+					if (!(entity instanceof EntityTFYetiAlpha)) {
+						entity.attackEntityFrom(damagesource, (float) Math.min(MathHelper.floor((float) i * this.fallHurtAmount), this.fallHurtMax));
+					}
+				}
+			}
+		}
+
+		int stateId = Block.getStateId(Blocks.PACKED_ICE.getDefaultState());
 		for (int i = 0; i < 200; i++) {
-			double dx = this.posX + 3F * (rand.nextFloat() - rand.nextFloat()); 
-			double dy = this.posY + 2 + 3F * (rand.nextFloat() - rand.nextFloat()); 
+			double dx = this.posX + 3F * (rand.nextFloat() - rand.nextFloat());
+			double dy = this.posY + 2 + 3F * (rand.nextFloat() - rand.nextFloat());
 			double dz = this.posZ + 3F * (rand.nextFloat() - rand.nextFloat());
-			
-			this.worldObj.spawnParticle("blockcrack_" + Block.getIdFromBlock(Blocks.packed_ice) + "_0", dx, dy, dz, 0, 0, 0);
+
+			this.world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, dx, dy, dz, 0, 0, 0, stateId);
 		}
-		
-		this.playSound(Blocks.anvil.stepSound.getBreakSound(), 3F, 0.5F);
-		this.playSound(Blocks.packed_ice.stepSound.getBreakSound(), 3F, 0.5F);
-    }
-    
-	/**
-     * Destroys all blocks that aren't associated with 'The End' inside the given bounding box.
-     */
-    public void destroyIceInAABB(AxisAlignedBB par1AxisAlignedBB)
-    {
-    	//System.out.println("Destroying blocks in " + par1AxisAlignedBB);
 
-    	int minX = MathHelper.floor_double(par1AxisAlignedBB.minX);
-    	int minY = MathHelper.floor_double(par1AxisAlignedBB.minY);
-    	int minZ = MathHelper.floor_double(par1AxisAlignedBB.minZ);
-    	int maxX = MathHelper.floor_double(par1AxisAlignedBB.maxX);
-    	int maxY = MathHelper.floor_double(par1AxisAlignedBB.maxY);
-    	int maxZ = MathHelper.floor_double(par1AxisAlignedBB.maxZ);
-
-    	for (int dx = minX; dx <= maxX; ++dx) {
-    		for (int dy = minY; dy <= maxY; ++dy) {
-    			for (int dz = minZ; dz <= maxZ; ++dz) {
-    				Block block = this.worldObj.getBlock(dx, dy, dz);
-
-    				if (block == Blocks.ice || block == Blocks.packed_ice || block == Blocks.stone) {
-    					this.worldObj.setBlock(dx, dy, dz, Blocks.air, 0, 3);
-    				}
-    			}
-    		}
-    	}
-    }
-
-
-	@Override
-	protected void readEntityFromNBT(NBTTagCompound var1) {
-		// TODO Auto-generated method stub
-		
+		this.playSound(Blocks.PACKED_ICE.getSoundType(Blocks.PACKED_ICE.getDefaultState(), world, getPosition(), null).getBreakSound(), 3F, 0.5F);
 	}
 
-	@Override
-	protected void writeEntityToNBT(NBTTagCompound var1) {
-		// TODO Auto-generated method stub
-		
+	private void destroyIceInAABB(AxisAlignedBB aabb) {
+		int minX = MathHelper.floor(aabb.minX);
+		int minY = MathHelper.floor(aabb.minY);
+		int minZ = MathHelper.floor(aabb.minZ);
+		int maxX = MathHelper.floor(aabb.maxX);
+		int maxY = MathHelper.floor(aabb.maxY);
+		int maxZ = MathHelper.floor(aabb.maxZ);
+
+		for (int dx = minX; dx <= maxX; ++dx) {
+			for (int dy = minY; dy <= maxY; ++dy) {
+				for (int dz = minZ; dz <= maxZ; ++dz) {
+					BlockPos pos = new BlockPos(dx, dy, dz);
+					Block block = this.world.getBlockState(pos).getBlock();
+
+					if (block == Blocks.ICE || block == Blocks.PACKED_ICE || block == Blocks.STONE) {
+						this.world.destroyBlock(pos, false);
+					}
+				}
+			}
+		}
 	}
-	
-    /**
-     * Return whether this entity should be rendered as on fire.
-     */
-    @SideOnly(Side.CLIENT)
-    public boolean canRenderOnFire()
-    {
-        return false;
-    }
-    
-    public Block getBlock() {
-    	return Blocks.packed_ice;
-    }
-    
-    public int getFallTime() {
-    	return this.fallTime;
-    }
 }

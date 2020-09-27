@@ -1,69 +1,52 @@
 package twilightforest.item;
 
-import twilightforest.TwilightForestMod;
 import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.NonNullList;
+import twilightforest.client.ModelRegisterCallback;
+import twilightforest.util.ParticleHelper;
 
-public class ItemTFGlassSword extends ItemSword {
+import javax.annotation.Nonnull;
 
-	public ItemTFGlassSword(Item.ToolMaterial par2EnumToolMaterial) {
-		super(par2EnumToolMaterial);
+public class ItemTFGlassSword extends ItemSword implements ModelRegisterCallback {
+
+	public ItemTFGlassSword(Item.ToolMaterial toolMaterial) {
+		super(toolMaterial);
 		this.setCreativeTab(TFItems.creativeTab);
-		this.setTextureName(TwilightForestMod.ID + ":glassSword");
 	}
 
-    /**
-     * Return whether this item is repairable in an anvil.
-     */
-    @Override
-	public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
-        return false;
-    }
-    
-    /**
-     * Current implementations of this method in child classes do not use the entry argument beside ev. They just raise
-     * the damage on the stack.
-     */
-    @Override
-	public boolean hitEntity(ItemStack par1ItemStack, EntityLivingBase par2EntityLiving, EntityLivingBase par3EntityLiving) {
-		boolean result = super.hitEntity(par1ItemStack, par2EntityLiving, par3EntityLiving);
-		if (result) {
-	    	par1ItemStack.damageItem(1000, par3EntityLiving);
+	@Override
+	public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
+		attacker.world.playSound(null, attacker.posX, attacker.posY, attacker.posZ, Blocks.GLASS.getSoundType().getBreakSound(), attacker.getSoundCategory(), 1F, 0.5F);
+		ParticleHelper.spawnParticles(target, EnumParticleTypes.BLOCK_CRACK, 20, 0.0, Block.getStateId(Blocks.STAINED_GLASS.getDefaultState()));
+		stack.damageItem(stack.getMaxDamage() + 1, attacker);
+		return true;
+	}
+
+	@Nonnull
+	@Override
+	public EnumRarity getRarity(ItemStack stack) {
+		return EnumRarity.RARE;
+	}
+
+	@Override
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+		super.getSubItems(tab, items);
+
+		if (isInCreativeTab(tab)) {
+			ItemStack stack = new ItemStack(this);
+			NBTTagCompound tags = new NBTTagCompound();
+			tags.setBoolean("Unbreakable", true);
+			stack.setTagCompound(tags);
+			items.add(stack);
 		}
-		
-		return result;
 	}
-    
-    /**
-     * Called when the player Left Clicks (attacks) an entity.
-     * Processed before damage is done, if return value is true further processing is canceled
-     * and the entity is not attacked.
-     *
-     * @param stack The Item being used
-     * @param player The player that is attacking
-     * @param entity The entity being attacked
-     * @return True to cancel the rest of the interaction.
-     */
-    public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity)
-    {
-    	if (player.worldObj.isRemote) {
-			// snow animation!
-	        for (int var1 = 0; var1 < 20; ++var1) {
-	    		double px = entity.posX + itemRand.nextFloat() * entity.width * 2.0F - entity.width;
-				double py = entity.posY + itemRand.nextFloat() * entity.height;
-				double pz = entity.posZ + itemRand.nextFloat() * entity.width * 2.0F - entity.width;
-				entity.worldObj.spawnParticle("blockcrack_" + Block.getIdFromBlock(Blocks.stained_glass) + "_" + 0, px, py, pz, 0, 0, 0);
-	        }
-	        
-	        player.playSound(Blocks.glass.stepSound.getBreakSound(), 1F, 0.5F);
-    	}
-        return false;
-    }
-
 }

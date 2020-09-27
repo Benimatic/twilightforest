@@ -1,30 +1,20 @@
 package twilightforest.structures.darktower;
 
 import net.minecraft.init.Blocks;
+import twilightforest.block.BlockTFTowerWood;
 import twilightforest.block.TFBlocks;
+import twilightforest.enums.TowerWoodVariant;
 import twilightforest.structures.StructureTFDecorator;
 
-public class StructureDecoratorDarkTower extends StructureTFDecorator 
-{
+public class StructureDecoratorDarkTower extends StructureTFDecorator {
 
-	public StructureDecoratorDarkTower() 
-	{
-		this.blockID = TFBlocks.towerWood;
-		this.blockMeta = 0;
-		
-		this.accentID = TFBlocks.towerWood;
-		this.accentMeta = 1;
-		
-		this.fenceID = Blocks.fence;
-		
-		this.stairID = Blocks.spruce_stairs;
-		
-		this.pillarID = TFBlocks.towerWood;
-		this.pillarMeta = 1;
-		
-		this.platformID = TFBlocks.towerWood;;
-		this.platformMeta = 1;
-
+	public StructureDecoratorDarkTower() {
+		this.blockState = TFBlocks.tower_wood.getDefaultState();
+		this.accentState = TFBlocks.tower_wood.getDefaultState().withProperty(BlockTFTowerWood.VARIANT, TowerWoodVariant.ENCASED);
+		this.fenceState = Blocks.OAK_FENCE.getDefaultState();
+		this.stairState = Blocks.SPRUCE_STAIRS.getDefaultState();
+		this.pillarState = TFBlocks.tower_wood.getDefaultState().withProperty(BlockTFTowerWood.VARIANT, TowerWoodVariant.ENCASED);
+		this.platformState = TFBlocks.tower_wood.getDefaultState().withProperty(BlockTFTowerWood.VARIANT, TowerWoodVariant.ENCASED);
 		this.randomBlocks = new StructureTFTowerWoods();
 	}
 

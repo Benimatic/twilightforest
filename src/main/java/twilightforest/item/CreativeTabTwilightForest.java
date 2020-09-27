@@ -1,22 +1,17 @@
 package twilightforest.item;
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import twilightforest.block.TFBlocks;
 
-public class CreativeTabTwilightForest extends CreativeTabs 
-{
+public class CreativeTabTwilightForest extends CreativeTabs {
 
 	public CreativeTabTwilightForest(String label) {
 		super(label);
 	}
-	
-    /**
-     * Get the ItemStack that will be rendered to the tab.
-     */
+
 	@Override
-    public Item getTabIconItem()
-    {
-        return Item.getItemFromBlock(TFBlocks.fireflyJar);
-    }
+	public ItemStack createIcon() {
+		return new ItemStack(TFBlocks.miniature_structure);
+	}
 }

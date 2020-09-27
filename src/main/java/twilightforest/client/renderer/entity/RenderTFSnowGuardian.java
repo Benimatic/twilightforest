@@ -1,26 +1,22 @@
 package twilightforest.client.renderer.entity;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.MathHelper;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
+import net.minecraft.util.math.MathHelper;
+import twilightforest.client.model.entity.ModelTFSnowGuardian;
+import twilightforest.entity.EntityTFSnowGuardian;
 
-import org.lwjgl.opengl.GL11;
+public class RenderTFSnowGuardian extends RenderTFBiped<EntityTFSnowGuardian> {
 
-import twilightforest.client.model.ModelTFSnowGuardian;
-
-public class RenderTFSnowGuardian extends RenderTFBiped {
-
-	public RenderTFSnowGuardian() {
-		super(new ModelTFSnowGuardian(), 1.0F, "textures/entity/zombie/zombie.png");
+	public RenderTFSnowGuardian(RenderManager manager) {
+		super(manager, new ModelTFSnowGuardian(), 0.25F, "textures/entity/zombie/zombie.png");
+		this.addLayer(new LayerBipedArmor(this));
 	}
 
-    /**
-     * Allows the render to do any OpenGL state modifications necessary before the model is rendered. Args:
-     * entityLiving, partialTickTime
-     */
-    protected void preRenderCallback(EntityLivingBase par1EntityLivingBase, float partialTick)
-    {
-		float bounce = par1EntityLivingBase.ticksExisted + partialTick;
-		
-		GL11.glTranslatef(0F, MathHelper.sin((bounce) * 0.2F) * 0.15F, 0F);
-    }
+	@Override
+	protected void preRenderCallback(EntityTFSnowGuardian entity, float partialTicks) {
+		float bounce = entity.ticksExisted + partialTicks;
+		GlStateManager.translate(0F, MathHelper.sin((bounce) * 0.2F) * 0.15F, 0F);
+	}
 }

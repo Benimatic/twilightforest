@@ -1,171 +1,162 @@
 package twilightforest;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapData;
-import twilightforest.world.TFWorldChunkManager;
+import net.minecraft.world.storage.MapDecoration;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-public class TFMagicMapData extends MapData
-{
+public class TFMagicMapData extends MapData {
 
-    private static final int FEATURE_DATA_BYTE = 18;
-	public List<MapCoord> featuresVisibleOnMap = new ArrayList<MapCoord>();
-	
-    public TFMagicMapData(String par1Str)
-    {
-        super(par1Str);
-    }
-    
-    /**
-     * reads in data from the NBTTagCompound into this MapDataBase
-     */
+	public final Set<TFMapDecoration> tfDecorations = new HashSet<>();
+
+	public TFMagicMapData(String name) {
+		super(name);
+	}
+
 	@Override
-	public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
-		super.readFromNBT(par1NBTTagCompound);
-		
-		byte[] featureStorage = par1NBTTagCompound.getByteArray("features");
+	public void readFromNBT(NBTTagCompound cmp) {
+		super.readFromNBT(cmp);
+
+		byte[] featureStorage = cmp.getByteArray("features");
 		if (featureStorage.length > 0) {
-			this.updateMPMapData(featureStorage);
+			this.deserializeFeatures(featureStorage);
 		}
-//		else {
-//			System.out.println("Can't find feature storage for " + this.mapName);
-//		}
 	}
 
-    /**
-     * write data to NBTTagCompound from this MapDataBase, similar to Entities and TileEntities
-     */
 	@Override
-	public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
-		super.writeToNBT(par1NBTTagCompound);
-		
-		if (this.featuresVisibleOnMap.size() > 0) {
-			byte[] featureStorage = makeFeatureStorageArray();
-			par1NBTTagCompound.setByteArray("features", featureStorage);
+	public NBTTagCompound writeToNBT(NBTTagCompound cmp) {
+		cmp = super.writeToNBT(cmp);
+
+		if (this.tfDecorations.size() > 0) {
+			cmp.setByteArray("features", serializeFeatures());
 		}
 
+		return cmp;
 	}
-
 
 	/**
-     * Adds a twilight forest feature to the map.
-     */
-    public void addFeatureToMap(TFFeature feature, int x, int z) {
-        byte relativeX = (byte) ((x - this.xCenter) >> this.scale);
-        byte relativeZ = (byte) ((z - this.zCenter) >> this.scale);
-        byte rangeX = 64;
-        byte rangeY = 64;
+	 * Checks existing features against the feature cache changes wrong ones
+	 */
+	public void checkExistingFeatures(World world) {
+		List<TFMapDecoration> toRemove = new ArrayList<>();
+		List<TFMapDecoration> toAdd = new ArrayList<>();
 
-        if (relativeX >= (-rangeX) && relativeZ >= (-rangeY) && relativeX <= rangeX && relativeZ <= rangeY)
-        {
-            byte markerIcon = (byte) feature.featureID;
-            byte mapX = (byte)(relativeX << 1);
-            byte mapZ = (byte)(relativeZ << 1);
-            byte mapRotation = 8;
+		for (TFMapDecoration coord : tfDecorations) {
+			int worldX = (coord.getX() << this.scale - 1) + this.xCenter;
+			int worldZ = (coord.getY() << this.scale - 1) + this.zCenter;
 
-            boolean featureFound = false;
-            
-            // look for a feature already at those coordinates
-            for (MapCoord existingCoord : featuresVisibleOnMap) {
-            	if (existingCoord.centerX == mapX && existingCoord.centerZ == mapZ) {
-            		featureFound = true;
-            	}
-            }
-            
-            // if we didn't find it, add it
-            if (!featureFound)
-            {
-                this.featuresVisibleOnMap.add(new MapCoord(markerIcon, mapX, mapZ, mapRotation));
-            }
-        }
-    }
-    
-    /**
-     * Checks existing features against the feature cache and removes/changes wrong ones.  Does not add features.
-     */
-    public void checkExistingFeatures(World world)
-    {
-    	ArrayList<MapCoord> toRemove = null;
+			int trueId = TFFeature.getFeatureID(worldX, worldZ, world);
+			if (coord.featureId != trueId) {
+				toRemove.add(coord);
+				toAdd.add(new TFMapDecoration(trueId, coord.getX(), coord.getY(), coord.getRotation()));
+			}
+		}
 
-            for (MapCoord coord : featuresVisibleOnMap) 
-            {
+		tfDecorations.removeAll(toRemove);
+		tfDecorations.addAll(toAdd);
+	}
 
-            	//System.out.printf("Existing feature at %d, %d.\n", coord.centerX,  coord.centerZ);
-            	
-            	int worldX = (coord.centerX << this.scale - 1) + this.xCenter;
-            	int worldZ = (coord.centerZ << this.scale - 1) + this.zCenter;
+	public void deserializeFeatures(byte[] arr) {
+		this.tfDecorations.clear();
 
-         		if (world != null && world.getWorldChunkManager() instanceof TFWorldChunkManager)
-        		{
-        			TFWorldChunkManager tfManager  = (TFWorldChunkManager) world.getWorldChunkManager();
-        			coord.iconSize = (byte) tfManager.getFeatureID(worldX, worldZ, world);
-        			
-        			if (coord.iconSize == 0)
-        			{
-        				if (toRemove == null)
-        				{
-        					toRemove = new ArrayList<MapCoord>();
-        				}
-        				toRemove.add(coord);
-        				
-        				//System.out.println("Removing bad mapcoord " + coord + " from " + worldX + ", " + worldZ);
-        			}
-        		}
-            }
-            
-            if (toRemove != null)
-            {
-            	featuresVisibleOnMap.removeAll(toRemove);
-            }
-    }
+		for (int i = 0; i < arr.length / 3; ++i) {
+			byte featureId = arr[i * 3];
+			byte mapX = arr[i * 3 + 1];
+			byte mapZ = arr[i * 3 + 2];
+			byte mapRotation = 8;
+			this.tfDecorations.add(new TFMapDecoration(featureId, mapX, mapZ, mapRotation));
+		}
+	}
 
-    /**
-     * Updates the client's map with information from other players in MP
-     */
-    @Override
-    public void updateMPMapData(byte[] par1ArrayOfByte)
-    {
-        if (par1ArrayOfByte[0] == FEATURE_DATA_BYTE)
-        {
-    		// this is feature data, we can handle that directly
-            this.featuresVisibleOnMap.clear();
+	public byte[] serializeFeatures() {
+		byte[] storage = new byte[this.tfDecorations.size() * 3];
 
-            for (int i = 0; i < (par1ArrayOfByte.length - 1) / 3; ++i)
-            {
-                byte markerIcon = par1ArrayOfByte[i * 3 + 1];
-                byte mapX = par1ArrayOfByte[i * 3 + 2];
-                byte mapZ = par1ArrayOfByte[i * 3 + 3];
-                byte mapRotation = 8;
-                this.featuresVisibleOnMap.add(new MapCoord(markerIcon, mapX, mapZ, mapRotation));
-            }
-        }
-        else
-        {
-            super.updateMPMapData(par1ArrayOfByte);
-        }
-    }
-    
-    /**
-     * This makes a byte array that we store our feature data in to send with map update packets
-     */
-    public byte[] makeFeatureStorageArray()
-    {
-        byte[] storage = new byte[this.featuresVisibleOnMap.size() * 3 + 1];
-        storage[0] = FEATURE_DATA_BYTE;
+		int i = 0;
+		for (TFMapDecoration featureCoord : tfDecorations) {
+			storage[i * 3] = (byte) featureCoord.featureId;
+			storage[i * 3 + 1] = featureCoord.getX();
+			storage[i * 3 + 2] = featureCoord.getY();
+			i++;
+		}
 
-        for (int i = 0; i < featuresVisibleOnMap.size(); ++i)
-        {
-            MapCoord featureCoord = this.featuresVisibleOnMap.get(i);
-            storage[i * 3 + 1] = (featureCoord.iconSize);
-            storage[i * 3 + 2] = featureCoord.centerX;
-            storage[i * 3 + 3] = featureCoord.centerZ;
-        }
-        
-        return storage;
-    }
+		return storage;
+	}
 
+	// VanillaCopy of super, but adjust origin
+	@Override
+	public void calculateMapCenter(double x, double z, int mapScale) {
+		// magic maps are offset by 1024 from normal maps so that 0,0 is in the middle of the map containing those coords
+		int mapSize = 128 * (1 << mapScale);
+		int roundX = (int) Math.round(x / mapSize);
+		int roundZ = (int) Math.round(z / mapSize);
+		this.xCenter = roundX * mapSize;
+		this.zCenter = roundZ * mapSize;
+	}
+
+	public static class TFMapDecoration extends MapDecoration {
+
+		private static final ResourceLocation MAP_ICONS = TwilightForestMod.prefix("textures/gui/mapicons.png");
+
+		final int featureId;
+
+		public TFMapDecoration(int featureId, byte xIn, byte yIn, byte rotationIn) {
+			super(Type.TARGET_X, xIn, yIn, rotationIn);
+			this.featureId = featureId;
+		}
+
+		@Override
+		@SideOnly(Side.CLIENT)
+		public boolean render(int idx) {
+			if (TFFeature.getFeatureByID(featureId).isStructureEnabled) {
+				Minecraft.getMinecraft().renderEngine.bindTexture(MAP_ICONS);
+				GlStateManager.pushMatrix();
+				GlStateManager.translate(0.0F + getX() / 2.0F + 64.0F, 0.0F + getY() / 2.0F + 64.0F, -0.02F);
+				GlStateManager.rotate((float) (getRotation() * 360) / 16.0F, 0.0F, 0.0F, 1.0F);
+				GlStateManager.scale(4.0F, 4.0F, 3.0F);
+				GlStateManager.translate(-0.125F, 0.125F, 0.0F);
+				float f1 = (float) (featureId % 8) / 8.0F;
+				float f2 = (float) (featureId / 8) / 8.0F;
+				float f3 = (float) (featureId % 8 + 1) / 8.0F;
+				float f4 = (float) (featureId / 8 + 1) / 8.0F;
+				Tessellator tessellator = Tessellator.getInstance();
+				BufferBuilder bufferbuilder = tessellator.getBuffer();
+				bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
+				bufferbuilder.pos(-1.0D, 1.0D, (float) idx * -0.001F).tex((double) f1, (double) f2).endVertex();
+				bufferbuilder.pos(1.0D, 1.0D, (float) idx * -0.001F).tex((double) f3, (double) f2).endVertex();
+				bufferbuilder.pos(1.0D, -1.0D, (float) idx * -0.001F).tex((double) f3, (double) f4).endVertex();
+				bufferbuilder.pos(-1.0D, -1.0D, (float) idx * -0.001F).tex((double) f1, (double) f4).endVertex();
+				tessellator.draw();
+				GlStateManager.popMatrix();
+			}
+			return true;
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (super.equals(o) && o instanceof TFMapDecoration) {
+				TFMapDecoration other = (TFMapDecoration) o;
+				return this.featureId == other.featureId;
+			}
+
+			return false;
+		}
+
+		@Override
+		public int hashCode() {
+			return super.hashCode() * 31 + featureId;
+		}
+	}
 }

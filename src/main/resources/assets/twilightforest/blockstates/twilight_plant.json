@@ -1,0 +1,71 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "cross",
+    "transform": "forge:default-item"
+  },
+  "variants": {
+    "inventory_mosspatch":     [{ "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/patch/moss"                                                    }}],
+    "inventory_mayapple":      [{ "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/mayapple"                                                      }}],
+    "inventory_cloverpatch":   [{ "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/patch/clover"                                                  }}],
+    "inventory_fiddlehead":    [{ "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/fiddlehead"                                                    }}],
+    "inventory_mushgloom":     [{ "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/mushgloom", "layer1": "twilightforest:blocks/mushgloom_head"   }}],
+    "inventory_forestgrass":   [{ "model": "builtin/generated", "textures": { "layer0": "minecraft:blocks/tallgrass"                                                          }}],
+    "inventory_deadbush":      [{ "model": "builtin/generated", "textures": { "layer0": "minecraft:blocks/deadbush"                                                           }}],
+    "inventory_torchberry":    [{ "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/torchberry", "layer1": "twilightforest:blocks/torchberry_glow" }}],
+    "inventory_root_strand":   [{ "model": "builtin/generated", "textures": { "layer0": "twilightforest:blocks/rootstrand"                                                    }}],
+	"inventory_fallen_leaves": [{ "model": "builtin/generated", "textures": { "layer0": "blocks/leaves_spruce"                                         				          }}],
+    "variant=mosspatch": [
+      { "model": "twilightforest:mosspatch" }
+    ],
+    "variant=mayapple": [{ "model": "twilightforest:mayapple" }],
+    "variant=cloverpatch": [{
+        "model": "twilightforest:util/flat_tex", "textures": {
+          "particle": "twilightforest:blocks/cloverpatch",
+          "texture":  "twilightforest:blocks/patch/clover_0",
+          "ctm":      "twilightforest:blocks/patch/clover_0_ctm"
+      }}, {
+        "model": "twilightforest:util/flat_tex", "textures": {
+          "particle": "twilightforest:blocks/cloverpatch",
+          "texture":  "twilightforest:blocks/patch/clover_1",
+          "ctm":      "twilightforest:blocks/patch/clover_1_ctm"
+      }}, {
+        "model": "twilightforest:util/flat_tex", "textures": {
+          "particle": "twilightforest:blocks/cloverpatch",
+          "texture":  "twilightforest:blocks/patch/clover_2",
+          "ctm":      "twilightforest:blocks/patch/clover_2_ctm"
+      }}, {
+        "model": "twilightforest:util/flat_tex", "textures": {
+          "particle": "twilightforest:blocks/cloverpatch",
+          "texture":  "twilightforest:blocks/patch/clover_3",
+          "ctm":      "twilightforest:blocks/patch/clover_3_ctm"
+      }}
+    ],
+    "variant=fiddlehead": [{
+      "model": "tinted_cross",
+      "textures": { "cross":"twilightforest:blocks/fiddlehead" }
+    }],
+    "variant=mushgloom": [{
+        "model": "twilightforest:util/cross_2_layer",
+        "textures": { "cross":"twilightforest:blocks/mushgloom", "cross2":"twilightforest:blocks/mushgloom_head" },
+        "uvlock": true
+    }],
+    "variant=forestgrass": [{ "model": "tall_grass" }],
+    "variant=deadbush": [{ "model": "dead_bush" }],
+    "variant=torchberry": [{
+      "model": "twilightforest:util/cross_2_layer",
+      "textures": { "cross":"twilightforest:blocks/torchberry", "cross2":"twilightforest:blocks/torchberry_glow" },
+      "uvlock": true
+    }],
+    "variant=root_strand": [{
+      "model": "crop",
+      "textures": { "crop":"twilightforest:blocks/rootstrand" },
+      "transform": {
+        "translation": [ 0, 0.0625, 0 ]
+      }
+    }],
+	"variant=fallen_leaves": [
+	  { "model": "twilightforest:fallenleaves" }
+	]
+  }
+}

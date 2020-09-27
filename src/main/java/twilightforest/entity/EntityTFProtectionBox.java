@@ -3,85 +3,77 @@ package twilightforest.entity;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityTFProtectionBox extends Entity {
 
-	public int lifeTime;
-	public int sizeX;
-	public int sizeY;
-	public int sizeZ;
+	public int lifeTime = 60;
 
-	public EntityTFProtectionBox(World worldObj, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
-		super(worldObj);
-		
-		this.setLocationAndAngles(minX, minY, minZ, 0.0F, 0.0F);
-		
-		sizeX = Math.abs(maxX - minX) + 1;
-		sizeY = Math.abs(maxY - minY) + 1;
-		sizeZ = Math.abs(maxZ - minZ) + 1;
-		
+	public final int sizeX;
+	public final int sizeY;
+	public final int sizeZ;
+
+	private final StructureBoundingBox sbb;
+
+	public EntityTFProtectionBox(World world, StructureBoundingBox sbb) {
+		super(world);
+
+		this.sbb = new StructureBoundingBox(sbb);
+
+		this.setLocationAndAngles(sbb.minX, sbb.minY, sbb.minZ, 0.0F, 0.0F);
+
+		sizeX = sbb.getXSize();
+		sizeY = sbb.getYSize();
+		sizeZ = sbb.getZSize();
+
 		this.setSize(Math.max(sizeX, sizeZ), sizeY);
-		
-		this.lifeTime = 60;
-		
-		//System.out.println("Made new box");
-
-	}
-
-    @Override
-	public void onUpdate()
-    {
-        super.onUpdate();
-        
-        if (lifeTime <= 1) {
-        	setDead();
-        } else {
-        	lifeTime--;
-        }
-
-    }
-    
-    /**
-     * Gets how bright this entity is.
-     */
-    public float getBrightness(float par1)
-    {
-        return 1.0F;
-    }
-
-    @SideOnly(Side.CLIENT)
-    public int getBrightnessForRender(float par1)
-    {
-        return 15728880;
-    }
-    
-	@Override
-	protected void entityInit() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound var1) {
-		// TODO Auto-generated method stub
-		
+	public void onUpdate() {
+		super.onUpdate();
+
+		if (lifeTime <= 1) {
+			setDead();
+		} else {
+			lifeTime--;
+		}
+	}
+
+	public boolean matches(StructureBoundingBox sbb) {
+		return this.sbb.minX == sbb.minX && this.sbb.minY == sbb.minY && this.sbb.minZ == sbb.minZ
+				&& this.sbb.maxX == sbb.maxX && this.sbb.maxY == sbb.maxY && this.sbb.maxZ == sbb.maxZ;
+	}
+
+	public void resetLifetime() {
+		lifeTime = 60;
 	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound var1) {
-		// TODO Auto-generated method stub
-		
+	public float getBrightness() {
+		return 1.0F;
 	}
-	
-    /**
-     * Return whether this entity should be rendered as on fire.
-     */
-    @SideOnly(Side.CLIENT)
-    public boolean canRenderOnFire()
-    {
-        return false;
-    }
 
+	@SideOnly(Side.CLIENT)
+	@Override
+	public int getBrightnessForRender() {
+		return 15728880;
+	}
+
+	@Override
+	protected void entityInit() {}
+
+	@Override
+	protected void readEntityFromNBT(NBTTagCompound compound) {}
+
+	@Override
+	protected void writeEntityToNBT(NBTTagCompound compound) {}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public boolean canRenderOnFire() {
+		return false;
+	}
 }

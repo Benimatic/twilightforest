@@ -1,127 +1,73 @@
 package twilightforest.item;
 
-import java.util.List;
-
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumAction;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import twilightforest.entity.EntityTFLoyalZombie;
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import twilightforest.util.EntityUtil;
 
-
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class ItemTFZombieWand extends ItemTF {
 
-	protected ItemTFZombieWand() {
-		super();
-        this.maxStackSize = 1;
-        this.setMaxDamage(9);
+	protected ItemTFZombieWand(EnumRarity rarity) {
+		super(rarity);
+		this.maxStackSize = 1;
+		this.setMaxDamage(9);
 		this.setCreativeTab(TFItems.creativeTab);
 	}
 
+	@Nonnull
 	@Override
-	public ItemStack onItemRightClick(ItemStack par1ItemStack, World worldObj, EntityPlayer player) {
-		
-		if (par1ItemStack.getItemDamage() < this.getMaxDamage()) {
-			player.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
-			
-			if (!worldObj.isRemote) {
-				// what block is the player pointing at?
-				MovingObjectPosition mop = getPlayerPointVec(worldObj, player, 20.0F);
-				
-				if (mop != null) {
-					// make a zombie there
-					EntityTFLoyalZombie zombie = new EntityTFLoyalZombie(worldObj);
-					zombie.setPositionAndRotation(mop.hitVec.xCoord, mop.hitVec.yCoord, mop.hitVec.zCoord, 1.0F, 1.0F);  /// NPE here needs to be fixed
-					zombie.setTamed(true);
-					try {
-						zombie.func_152115_b(player.getUniqueID().toString());
-						//zombie.setOwner(player.getCommandSenderName());
-					} catch (NoSuchMethodError ex) {
-						// ignore?
-						FMLLog.warning("[TwilightForest] Could not determine player name for loyal zombie, ignoring error.");
-					}
-					zombie.addPotionEffect(new PotionEffect(Potion.damageBoost.id, 1200, 1));
-					worldObj.spawnEntityInWorld(zombie);
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, @Nonnull EnumHand hand) {
 
-					par1ItemStack.damageItem(1, player);
-				}
+		ItemStack stack = player.getHeldItem(hand);
+
+		if (stack.getItemDamage() == stack.getMaxDamage()) {
+			return ActionResult.newResult(EnumActionResult.FAIL, stack);
+		}
+
+		if (!world.isRemote) {
+			// what block is the player pointing at?
+			RayTraceResult ray = EntityUtil.rayTrace(player, 20.0);
+
+			if (ray != null && ray.hitVec != null) {
+				EntityTFLoyalZombie zombie = new EntityTFLoyalZombie(world);
+				zombie.setPositionAndRotation(ray.hitVec.x, ray.hitVec.y, ray.hitVec.z, 1.0F, 1.0F);
+				zombie.setTamed(true);
+				zombie.setOwnerId(player.getUniqueID());
+				zombie.addPotionEffect(new PotionEffect(MobEffects.STRENGTH, 1200, 1));
+				world.spawnEntity(zombie);
+
+				stack.damageItem(1, player);
 			}
 		}
-		else {
-			player.stopUsingItem();
-		}
-		
-		return par1ItemStack;
-	}
-	
-	/**
-	 * What block is the player pointing the wand at?
-	 * 
-	 * This very similar to player.rayTrace, but that method is not available on the server.
-	 * 
-	 * @return
-	 */
-	private MovingObjectPosition getPlayerPointVec(World worldObj, EntityPlayer player, float range) {
-        Vec3 position = Vec3.createVectorHelper(player.posX, player.posY + player.getEyeHeight(), player.posZ);
-        Vec3 look = player.getLook(1.0F);
-        Vec3 dest = position.addVector(look.xCoord * range, look.yCoord * range, look.zCoord * range);
-        return worldObj.rayTraceBlocks(position, dest);
+
+		return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
 	}
 
-
-    /**
-     * How long it takes to use or consume an item
-     */
-    @Override
-	public int getMaxItemUseDuration(ItemStack par1ItemStack)
-    {
-        return 30;
-    }
-    
-    /**
-     * returns the action that specifies what animation to play when the items is being used
-     */
-    @Override
-	public EnumAction getItemUseAction(ItemStack par1ItemStack)
-    {
-        return EnumAction.bow;
-    }
-    
-    /**
-     * Return an item rarity from EnumRarity
-     */    
-    @Override
-	public EnumRarity getRarity(ItemStack par1ItemStack) {
-    	return EnumRarity.rare;
-	}
-    
-    /**
-     * Display charges left in tooltip
-     */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-		par3List.add((par1ItemStack.getMaxDamage() -  par1ItemStack.getItemDamage()) + " charges left");
+	public float getXpRepairRatio(ItemStack stack) {
+		return 0.1f;
 	}
 
-	/**
-	 * Properly register icon source
-	 */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":" + this.getUnlocalizedName().substring(5));
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flags) {
+		super.addInformation(stack, world, tooltip, flags);
+		tooltip.add(I18n.format("twilightforest.scepter_charges", stack.getMaxDamage() - stack.getItemDamage()));
+	}
 }

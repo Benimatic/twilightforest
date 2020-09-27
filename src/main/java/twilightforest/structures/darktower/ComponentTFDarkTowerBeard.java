@@ -1,17 +1,21 @@
 package twilightforest.structures.darktower;
 
-import java.util.Random;
-
-import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.world.gen.structure.template.TemplateManager;
+import twilightforest.TFFeature;
+import twilightforest.block.BlockTFTowerWood;
 import twilightforest.block.TFBlocks;
-import twilightforest.structures.StructureTFComponent;
+import twilightforest.enums.TowerWoodVariant;
+import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.structures.lichtower.ComponentTFTowerWing;
 
+import java.util.Random;
 
-public class ComponentTFDarkTowerBeard extends StructureTFComponent {
+
+public class ComponentTFDarkTowerBeard extends StructureTFComponentOld {
 
 	protected int size;
 	protected int height;
@@ -20,37 +24,31 @@ public class ComponentTFDarkTowerBeard extends StructureTFComponent {
 		super();
 	}
 
-	public ComponentTFDarkTowerBeard(int i, ComponentTFTowerWing wing) {
-		super(i);
-		
+	public ComponentTFDarkTowerBeard(TFFeature feature, int i, ComponentTFTowerWing wing) {
+		super(feature, i);
+
 		this.setCoordBaseMode(wing.getCoordBaseMode());
 		this.size = wing.size;
 		this.height = size / 2;
-		
+
 		// just hang out at the very bottom of the tower
 		this.boundingBox = new StructureBoundingBox(wing.getBoundingBox().minX, wing.getBoundingBox().minY - this.height, wing.getBoundingBox().minZ, wing.getBoundingBox().maxX, wing.getBoundingBox().minY, wing.getBoundingBox().maxZ);
 
 	}
-	
-	/**
-	 * Save to NBT
-	 */
+
 	@Override
-	protected void func_143012_a(NBTTagCompound par1NBTTagCompound) {
-		super.func_143012_a(par1NBTTagCompound);
-		
-        par1NBTTagCompound.setInteger("beardSize", this.size);
-        par1NBTTagCompound.setInteger("beardHeight", this.height);
+	protected void writeStructureToNBT(NBTTagCompound tagCompound) {
+		super.writeStructureToNBT(tagCompound);
+
+		tagCompound.setInteger("beardSize", this.size);
+		tagCompound.setInteger("beardHeight", this.height);
 	}
-	
-	/**
-	 * Load from NBT
-	 */
+
 	@Override
-	protected void func_143011_b(NBTTagCompound par1NBTTagCompound) {
-		super.func_143011_b(par1NBTTagCompound);
-        this.size = par1NBTTagCompound.getInteger("beardSize");
-        this.height = par1NBTTagCompound.getInteger("beardHeight");
+	protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager templateManager) {
+		super.readStructureFromNBT(tagCompound, templateManager);
+		this.size = tagCompound.getInteger("beardSize");
+		this.height = tagCompound.getInteger("beardHeight");
 	}
 
 
@@ -58,41 +56,32 @@ public class ComponentTFDarkTowerBeard extends StructureTFComponent {
 	 * Makes a dark tower type beard
 	 */
 	@Override
-	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) 
-	{
+	public boolean addComponentParts(World world, Random rand, StructureBoundingBox sbb) {
 		makeDarkBeard(world, sbb, 0, 0, 0, size - 1, height - 1, size - 1);
-		
-        return true;
+
+		return true;
 	}
 
-	
-	protected void makeDarkBeard(World world, StructureBoundingBox sbb, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) 
-	{
-		Block frameID = TFBlocks.towerWood;
-		int frameMeta = 1;
-		
-		for (int x = minX; x <= maxX; x++)
-		{
-			for (int z = minZ; z <= maxZ; z++)
-			{
-				if (x == minX || x == maxX || z == minZ || z == maxZ)
-				{
-					int length = Math.min(Math.abs(x - height) - 1, Math.abs(z - height) - 1) ;
-					
-					if (length == height - 1)
-					{
-						length ++;
+
+	protected void makeDarkBeard(World world, StructureBoundingBox sbb, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
+		IBlockState frameState = TFBlocks.tower_wood.getDefaultState().withProperty(BlockTFTowerWood.VARIANT, TowerWoodVariant.ENCASED);
+
+		for (int x = minX; x <= maxX; x++) {
+			for (int z = minZ; z <= maxZ; z++) {
+				if (x == minX || x == maxX || z == minZ || z == maxZ) {
+					int length = Math.min(Math.abs(x - height) - 1, Math.abs(z - height) - 1);
+
+					if (length == height - 1) {
+						length++;
 					}
-					
-					if (length == -1)
-					{
+
+					if (length == -1) {
 						length = 1;
 					}
-					
-					for (int y = maxY; y >= height - length; y--)
-					{
+
+					for (int y = maxY; y >= height - length; y--) {
 						// wall
-						this.placeBlockAtCurrentPosition(world, frameID, frameMeta, x, y, z, sbb);
+						this.setBlockState(world, frameState, x, y, z, sbb);
 					}
 				}
 			}

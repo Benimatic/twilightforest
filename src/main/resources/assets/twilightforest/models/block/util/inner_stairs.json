@@ -1,0 +1,7 @@
+{
+    "parent": "block/inner_stairs",
+    "textures": {
+        "bottom": "#end",
+        "top": "#half"
+    }
+}

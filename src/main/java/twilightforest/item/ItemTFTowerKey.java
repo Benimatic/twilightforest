@@ -1,46 +1,37 @@
 package twilightforest.item;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.EnumRarity;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFTowerDevice;
 import twilightforest.block.TFBlocks;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import twilightforest.enums.TowerDeviceVariant;
 
-public class ItemTFTowerKey extends ItemTF 
-{
+import javax.annotation.Nonnull;
 
-	protected ItemTFTowerKey() {
-		super();
+public class ItemTFTowerKey extends ItemTF {
+	ItemTFTowerKey(EnumRarity rarity) {
+		super(rarity);
 	}
 
-	/**
-	 * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
-	 * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
-	 */
-	public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int side, float fx, float fy, float fz)
-	{
-		if (!world.isRemote && world.getBlock(x, y, z) == TFBlocks.towerDevice && world.getBlockMetadata(x, y, z) == BlockTFTowerDevice.META_VANISH_LOCKED)
-		{
-			BlockTFTowerDevice.unlockBlock(world, x, y, z);
-			--itemStack.stackSize;
+	@Nonnull
+	@Override
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float fx, float fy, float fz) {
+		IBlockState state = world.getBlockState(pos);
+		if (state.getBlock() == TFBlocks.tower_device && state.getValue(BlockTFTowerDevice.VARIANT) == TowerDeviceVariant.VANISH_LOCKED) {
+			if (!world.isRemote) {
+				BlockTFTowerDevice.unlockBlock(world, pos);
+				player.getHeldItem(hand).shrink(1);
+			}
 
-			return true;
+			return EnumActionResult.SUCCESS;
 		}
 
-		return false;
+		return EnumActionResult.PASS;
 	}
-
-	/**
-	 * Properly register icon source
-	 */
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-        this.itemIcon = par1IconRegister.registerIcon(TwilightForestMod.ID + ":" + this.getUnlocalizedName().substring(5));
-    }
 }

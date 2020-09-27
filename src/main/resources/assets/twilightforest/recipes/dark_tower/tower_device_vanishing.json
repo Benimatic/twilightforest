@@ -1,0 +1,26 @@
+{
+  "result": {
+    "item": "twilightforest:tower_device",
+    "data": 2,
+    "count": 8
+  },
+  "pattern": [
+    "ewe",
+    "wcw",
+    "ewe"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "c": {
+      "item": "twilightforest:carminite"
+    },
+    "e": {
+      "item": "twilightforest:tower_wood",
+      "data": 1
+    },
+    "w": {
+      "item": "twilightforest:tower_wood",
+      "data": 0
+    }
+  }
+}

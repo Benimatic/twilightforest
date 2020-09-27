@@ -1,133 +1,94 @@
 package twilightforest.entity.boss;
 
-import twilightforest.TwilightForestMod;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
+import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWander;
+import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
+import twilightforest.TFSounds;
+import twilightforest.TwilightForestMod;
+import twilightforest.entity.EntityTFIceMob;
 
-public class EntityTFIceCrystal extends EntityMob {
+public class EntityTFIceCrystal extends EntityTFIceMob {
+
+	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/ice_crystal");
 
 	private int crystalAge;
-	public int maxCrystalAge;
+	private int maxCrystalAge = -1;
 
+	public EntityTFIceCrystal(World world) {
+		super(world);
+		this.setSize(0.6F, 1.8F);
 
-	public EntityTFIceCrystal(World par1World) {
-		super(par1World);
-		
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
-        this.tasks.addTask(2, new EntityAIWander(this, 1.0D));
-        this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.tasks.addTask(3, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
-        this.setSize(0.6F, 1.8F);
-        
-        this.maxCrystalAge = -1;
-        
-        //this.setCurrentItemOrArmor(0, new ItemStack(TFItems.iceSword));
-
+		//this.setCurrentItemOrArmor(0, new ItemStack(TFItems.iceSword));
 	}
 
+	@Override
+	protected void initEntityAI() {
+		this.tasks.addTask(0, new EntityAISwimming(this));
+		this.tasks.addTask(1, new EntityAIAttackMelee(this, 1.0D, false));
+		this.tasks.addTask(2, new EntityAIWanderAvoidWater(this, 1.0D));
+		this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+		this.tasks.addTask(3, new EntityAILookIdle(this));
+		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
+		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+	}
 
-    protected void applyEntityAttributes()
-    {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(10.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.23000000417232513D);
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(5.0D);
-    }
-    
+	@Override
+	protected void applyEntityAttributes() {
+		super.applyEntityAttributes();
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.23D);
+		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(5.0D);
+	}
 
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
-    protected boolean isAIEnabled()
-    {
-        return true;
-    }
-    
-    /**
-     * Returns the item ID for the item the mob drops on death.
-     */
-    protected Item getDropItem()
-    {
-        return Items.snowball;
-    }
+	@Override
+	public ResourceLocation getLootTable() {
+		return LOOT_TABLE;
+	}
 
-    /**
-     * Will return how many at most can spawn in a chunk at once.
-     */
-    public int getMaxSpawnedInChunk()
-    {
-    	return 8;
-    }
+	@Override
+	public int getMaxSpawnedInChunk() {
+		return 8;
+	}
 
-    @Override
-    protected String getLivingSound()
-    {
-    	return TwilightForestMod.ID + ":mob.ice.noise";
-    }
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return TFSounds.ICE_AMBIENT;
+	}
 
-    /**
-     * Returns the sound this mob makes when it is hurt.
-     */
-    protected String getHurtSound()
-    {
-    	return TwilightForestMod.ID + ":mob.ice.hurt";
-    }
+	@Override
+	protected SoundEvent getHurtSound(DamageSource source) {
+		return TFSounds.ICE_HURT;
+	}
 
-    /**
-     * Returns the sound this mob makes on death.
-     */
-    protected String getDeathSound()
-    {
-    	return TwilightForestMod.ID + ":mob.ice.death";
-    }
+	@Override
+	protected SoundEvent getDeathSound() {
+		return TFSounds.ICE_DEATH;
+	}
 
+	public void setToDieIn30Seconds() {
+		this.maxCrystalAge = 600;
+	}
 
-    /**
-     * Used by the snow queen when she summons crystals
-     */
-    public void setToDieIn30Seconds() {
-    	this.maxCrystalAge = 600;
-    }
-    
-//
-//    /**
-//     * Get this Entity's EnumCreatureAttribute
-//     */
-//    public EnumCreatureAttribute getCreatureAttribute()
-//    {
-//        return EnumCreatureAttribute.UNDEAD;
-//    }
+	@Override
+	public void onLivingUpdate() {
+		super.onLivingUpdate();
 
-    
-    /**
-     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
-     * use this to react to sunlight and start to burn.
-     */
-    public void onLivingUpdate()
-    {
-        super.onLivingUpdate();
-        
-        this.crystalAge++;
-        
-        //System.out.println("I am a skeleton and my age is " + this.skeletonAge);
-        
-        // die after 30 seconds
-        if (this.maxCrystalAge > 0 && this.crystalAge >= this.maxCrystalAge && !this.worldObj.isRemote) {
-        	this.setDead();
-        }
-    }
+		if (!world.isRemote) {
+			this.crystalAge++;
+			if (this.maxCrystalAge > 0 && this.crystalAge >= this.maxCrystalAge) {
+				this.setDead();
+			}
+		}
+	}
+
 }
