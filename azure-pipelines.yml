@@ -119,11 +119,3 @@ steps:
     embeds: |
       [$(DiscordMessage)]
   condition: and(always(), eq(variables['CreateArtifacts'], 'True'))
-
-- powershell: |
-    (gci env:*).GetEnumerator() | Sort-Object Name | ForEach-Object {
-      $nameAsCapitalSnakeCase = $_.Name
-      Write-Output "$nameAsCapitalSnakeCase = $($_.Value)"
-    }
-  displayName: Dump Variables
-  #condition: eq(variables['system.debug'], 'true')
