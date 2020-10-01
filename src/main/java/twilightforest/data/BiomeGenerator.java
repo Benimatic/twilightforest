@@ -127,7 +127,7 @@ public final class BiomeGenerator extends BiomeDataHelper {
         );
 
         biomes.put(TwilightForestMod.prefix("fire_swamp"),
-                biomeWithDefaults(defaultAmbientBuilder().setWaterColor(0x6C2C2C), defaultMobSpawning(), swampGenerationBuilder)
+                biomeWithDefaults(whiteAshParticles(defaultAmbientBuilder().setWaterColor(0x6C2C2C)), defaultMobSpawning(), swampGenerationBuilder)
                         .category(Biome.Category.SWAMP)
                         .temperature(1)
                         .downfall(0.4F)

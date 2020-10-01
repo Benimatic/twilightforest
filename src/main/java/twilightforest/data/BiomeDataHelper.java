@@ -10,6 +10,7 @@ import net.minecraft.data.DirectoryCache;
 import net.minecraft.data.IDataProvider;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.*;
 import net.minecraft.world.gen.GenerationStage;
@@ -28,9 +29,9 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Map;
 import java.util.Optional;
+import java.util.StringJoiner;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 @SuppressWarnings("UnusedReturnValue")
 public abstract class BiomeDataHelper extends BiomeProvider {
@@ -80,6 +81,11 @@ public abstract class BiomeDataHelper extends BiomeProvider {
         return biome;
     }
 
+    public static BiomeAmbience.Builder whiteAshParticles(BiomeAmbience.Builder builder) {
+        builder.setParticle(new ParticleEffectAmbience(ParticleTypes.WHITE_ASH, 0.2f));
+        return builder;
+    }
+
     protected static BiomeGenerationSettings.Builder modify(BiomeGenerationSettings.Builder builder, Consumer<BiomeGenerationSettings.Builder> consumer) {
         consumer.accept(builder);
         return builder;
@@ -88,7 +94,7 @@ public abstract class BiomeDataHelper extends BiomeProvider {
     // Defaults
 
     protected static BiomeAmbience.Builder defaultAmbientBuilder() {
-        return (new BiomeAmbience.Builder())
+        return new BiomeAmbience.Builder()
                 .setFogColor(0xC0FFD8) // TODO Change based on Biome. Not previously done before
                 .setWaterColor(0x3F76E4)
                 .setWaterFogColor(0x050533)
@@ -97,7 +103,7 @@ public abstract class BiomeDataHelper extends BiomeProvider {
     }
 
     protected static BiomeGenerationSettings.Builder defaultGenSettingBuilder() {
-        BiomeGenerationSettings.Builder biome = (new BiomeGenerationSettings.Builder())
+        BiomeGenerationSettings.Builder biome = new BiomeGenerationSettings.Builder()
                 .withSurfaceBuilder(ConfiguredSurfaceBuilders.field_244178_j); // GRASS_DIRT_GRAVEL_CONFIG
 
         // TODO Re-enable, currently disabled so it's just easier to read the jsons
@@ -132,15 +138,15 @@ public abstract class BiomeDataHelper extends BiomeProvider {
         spawnInfo.withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(TFEntities.raven, 10, 1, 2));
 
         // TODO make Monsters spawn underground only somehow - These are originally underground spawns
-        spawnInfo.withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.SPIDER, 10, 4, 4));
-        spawnInfo.withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.ZOMBIE, 10, 4, 4));
-        spawnInfo.withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.SKELETON, 10, 4, 4));
-        spawnInfo.withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.CREEPER, 1, 4, 4));
-        spawnInfo.withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.SLIME, 10, 4, 4));
-        spawnInfo.withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.ENDERMAN, 1, 1, 4));
-        spawnInfo.withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(TFEntities.kobold, 10, 4, 8));
+        spawnInfo.withSpawner(EntityClassification. MONSTER, new MobSpawnInfo.Spawners(EntityType.SPIDER, 10, 4, 4));
+        spawnInfo.withSpawner(EntityClassification. MONSTER, new MobSpawnInfo.Spawners(EntityType.ZOMBIE, 10, 4, 4));
+        spawnInfo.withSpawner(EntityClassification. MONSTER, new MobSpawnInfo.Spawners(EntityType.SKELETON, 10, 4, 4));
+        spawnInfo.withSpawner(EntityClassification. MONSTER, new MobSpawnInfo.Spawners(EntityType.CREEPER, 1, 4, 4));
+        spawnInfo.withSpawner(EntityClassification. MONSTER, new MobSpawnInfo.Spawners(EntityType.SLIME, 10, 4, 4));
+        spawnInfo.withSpawner(EntityClassification. MONSTER, new MobSpawnInfo.Spawners(EntityType.ENDERMAN, 1, 1, 4));
+        spawnInfo.withSpawner(EntityClassification. MONSTER, new MobSpawnInfo.Spawners(TFEntities.kobold, 10, 4, 8));
 
-        spawnInfo.withSpawner(EntityClassification.AMBIENT, new MobSpawnInfo.Spawners(EntityType.BAT, 10, 8, 8));
+        spawnInfo.withSpawner(EntityClassification. AMBIENT, new MobSpawnInfo.Spawners(EntityType.BAT, 10, 8, 8));
 
         return spawnInfo;
     }
@@ -150,7 +156,7 @@ public abstract class BiomeDataHelper extends BiomeProvider {
     }
 
     protected static Biome.Builder biomeWithDefaults(BiomeAmbience.Builder biomeAmbience, MobSpawnInfo.Builder mobSpawnInfo, BiomeGenerationSettings.Builder biomeGenerationSettings) {
-        return (new Biome.Builder())
+        return new Biome.Builder()
                 .precipitation(Biome.RainType.RAIN)
                 .category(Biome.Category.FOREST)
                 .depth(0.1F)
@@ -164,23 +170,26 @@ public abstract class BiomeDataHelper extends BiomeProvider {
     }
 
     // Main methods
-
-    /** Vanillacopy net.minecraft.data.BiomeProvider */
+    /** Vanillacopy net.minecraft.data.BiomeProvider
+     * Biome itself is used instead of a Biome Supplier (Biome.BIOME_CODEC -> Biome.CODEC) */
     @Override
     public void act(final DirectoryCache directoryCache) {
         final Path outputPath = this.generator.getOutputFolder();
 
+        final StringJoiner biomeTable = new StringJoiner(",\n");
+
         for (Map.Entry<ResourceLocation, Biome> biomeKeyPair : generateBiomes().entrySet()) {
-            Path filePath = makePath(outputPath, biomeKeyPair.getKey());
-            Function<Supplier<Biome>, DataResult<JsonElement>> serializer = JsonOps.INSTANCE.withEncoder(Biome.BIOME_CODEC);
+            final Path filePath = makePath(outputPath, biomeKeyPair.getKey());
+            final Biome biome = biomeKeyPair.getValue();
+            biome.setRegistryName(biomeKeyPair.getKey());
+            final Function<Biome, DataResult<JsonElement>> serializer = JsonOps.INSTANCE.withEncoder(Biome.CODEC);
 
             try {
-                Optional<JsonElement> jsonOptional = serializer.apply(biomeKeyPair::getValue).result();
-
+                final Optional<JsonElement> jsonOptional = serializer.apply(biome).result();
                 if (jsonOptional.isPresent()) {
                     IDataProvider.save(GSON, directoryCache, jsonOptional.get(), filePath);
 
-                    System.out.print("\n\"" + biomeKeyPair.getKey() + "\", ");
+                    biomeTable.add(biomeKeyPair.getKey().toString());
                 } else {
                     LOGGER.error("Couldn't serialize biome {}", filePath);
                 }
@@ -189,7 +198,7 @@ public abstract class BiomeDataHelper extends BiomeProvider {
             }
         }
 
-        System.out.print("\nTF Biome generation finished execution!\n");
+        System.out.println("TF Biome generation finished execution!\n" + biomeTable.toString());
     }
 
     protected static Path makePath(Path path, ResourceLocation resc) {
