@@ -32,7 +32,6 @@ public class TFSkyRenderer implements ISkyRenderHandler {
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void render(int ticks, float partialTicks, MatrixStack ms, ClientWorld world, Minecraft mc) {
-
 		// [VanillaCopy] Excerpt from RenderGlobal.loadRenderers as we don't get a callback
 		//TODO: Since loadRenderers doesn't appear to exist, might remove this block
 //		generateStars();
@@ -89,15 +88,15 @@ public class TFSkyRenderer implements ISkyRenderHandler {
 		RenderSystem.disableTexture();
 		float f15 = 1.0F; // TF - stars are always bright
 
-		if (f15 > 0.0F) {
-			RenderSystem.color4f(f15, f15, f15, f15);
+		//if (f15 > 0.0F) { Always true
+		RenderSystem.color4f(f15, f15, f15, f15);
 
-			this.starVBO.bindBuffer();
-			this.vertexBufferFormat.setupBufferState(0L);
-			this.starVBO.draw(ms.getLast().getMatrix(), 7);
-			VertexBuffer.unbindBuffer();
-			this.vertexBufferFormat.clearBufferState();
-		}
+		this.starVBO.bindBuffer();
+		this.vertexBufferFormat.setupBufferState(0L);
+		this.starVBO.draw(ms.getLast().getMatrix(), 7);
+		VertexBuffer.unbindBuffer();
+		this.vertexBufferFormat.clearBufferState();
+		//}
 
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem.disableBlend();
@@ -106,7 +105,8 @@ public class TFSkyRenderer implements ISkyRenderHandler {
 		ms.pop();
 		RenderSystem.disableTexture();
 		RenderSystem.color3f(0.0F, 0.0F, 0.0F);
-		double d0 = mc.player.getEyePosition(partialTicks).y - world.getWorldInfo().getVoidFogHeight();
+		/** world.getWorldInfo().getVoidFogHeight() -> 27, because the sea level for TF is lower */
+		double d0 = mc.player.getEyePosition(partialTicks).y - 30;
 
 		if (d0 < 0.0D) {
 			ms.push();
@@ -123,20 +123,20 @@ public class TFSkyRenderer implements ISkyRenderHandler {
 			float f19 = -((float) (d0 + 65.0D));
 //			float f20 = -1.0F;
 			bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
-			bufferbuilder.pos(-1.0D, (double) f19, 1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(1.0D, (double) f19, 1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.pos(-1.0D, f19, 1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.pos(1.0D, f19, 1.0D).color(0, 0, 0, 255).endVertex();
 			bufferbuilder.pos(1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
 			bufferbuilder.pos(-1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
 			bufferbuilder.pos(-1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
 			bufferbuilder.pos(1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(1.0D, (double) f19, -1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(-1.0D, (double) f19, -1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.pos(1.0D, f19, -1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.pos(-1.0D, f19, -1.0D).color(0, 0, 0, 255).endVertex();
 			bufferbuilder.pos(1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
 			bufferbuilder.pos(1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(1.0D, (double) f19, 1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(1.0D, (double) f19, -1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(-1.0D, (double) f19, -1.0D).color(0, 0, 0, 255).endVertex();
-			bufferbuilder.pos(-1.0D, (double) f19, 1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.pos(1.0D, f19, 1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.pos(1.0D, f19, -1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.pos(-1.0D, f19, -1.0D).color(0, 0, 0, 255).endVertex();
+			bufferbuilder.pos(-1.0D, f19, 1.0D).color(0, 0, 0, 255).endVertex();
 			bufferbuilder.pos(-1.0D, -1.0D, 1.0D).color(0, 0, 0, 255).endVertex();
 			bufferbuilder.pos(-1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
 			bufferbuilder.pos(-1.0D, -1.0D, -1.0D).color(0, 0, 0, 255).endVertex();
@@ -185,10 +185,10 @@ public class TFSkyRenderer implements ISkyRenderHandler {
 
 		// TF - 1500 -> 3000
 		for (int i = 0; i < 3000; ++i) {
-			double d0 = (double) (random.nextFloat() * 2.0F - 1.0F);
-			double d1 = (double) (random.nextFloat() * 2.0F - 1.0F);
-			double d2 = (double) (random.nextFloat() * 2.0F - 1.0F);
-			double d3 = (double) (0.15F + random.nextFloat() * 0.1F);
+			double d0 = random.nextFloat() * 2.0F - 1.0F;
+			double d1 = random.nextFloat() * 2.0F - 1.0F;
+			double d2 = random.nextFloat() * 2.0F - 1.0F;
+			double d3 = 0.15F + random.nextFloat() * 0.1F;
 			double d4 = d0 * d0 + d1 * d1 + d2 * d2;
 
 			if (d4 < 1.0D && d4 > 0.01D) {

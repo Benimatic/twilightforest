@@ -16,7 +16,7 @@ public class TwilightForestRenderInfo extends DimensionRenderInfo {
     }
 
     // { red, green, blue, interpolation from white } DO NOT INLINE VARIABLE it avoids spamming array creation each render tick
-    private final float[] fourBeanDip = new float[4];
+    //private final float[] fourBeanDip = new float[4];
 
     @Nullable
     @Override
