@@ -9,7 +9,7 @@ import net.minecraft.world.biome.DefaultBiomeFeatures;
 import net.minecraft.world.biome.MobSpawnInfo;
 import net.minecraft.world.gen.GenerationStage;
 import twilightforest.TwilightForestMod;
-import twilightforest.world.newfeature.TwilightFeatures;
+import twilightforest.features.TwilightFeatures;
 
 import java.util.Map;
 

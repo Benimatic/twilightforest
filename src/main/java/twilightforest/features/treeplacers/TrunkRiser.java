@@ -1,4 +1,4 @@
-package twilightforest.world.newfeature;
+package twilightforest.features.treeplacers;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -9,6 +9,7 @@ import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
 import net.minecraft.world.gen.foliageplacer.FoliagePlacer;
 import net.minecraft.world.gen.trunkplacer.AbstractTrunkPlacer;
 import net.minecraft.world.gen.trunkplacer.TrunkPlacerType;
+import twilightforest.features.TwilightFeatures;
 
 import java.util.List;
 import java.util.Random;

@@ -1,4 +1,4 @@
-package twilightforest.features;
+package twilightforest.features.structures;
 
 import com.google.common.math.StatsAccumulator;
 

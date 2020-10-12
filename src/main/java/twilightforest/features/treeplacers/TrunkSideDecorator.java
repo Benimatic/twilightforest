@@ -1,4 +1,4 @@
-package twilightforest.world.newfeature;
+package twilightforest.features.treeplacers;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -11,6 +11,7 @@ import net.minecraft.world.gen.blockstateprovider.BlockStateProvider;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.treedecorator.TreeDecorator;
 import net.minecraft.world.gen.treedecorator.TreeDecoratorType;
+import twilightforest.features.TwilightFeatures;
 
 import java.util.List;
 import java.util.Random;

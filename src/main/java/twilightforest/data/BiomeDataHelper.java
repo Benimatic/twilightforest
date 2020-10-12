@@ -23,7 +23,7 @@ import net.minecraft.world.gen.placement.Placement;
 import net.minecraft.world.gen.surfacebuilders.ConfiguredSurfaceBuilders;
 import twilightforest.entity.TFEntities;
 import twilightforest.world.feature.TFBiomeFeatures;
-import twilightforest.world.newfeature.TwilightFeatures;
+import twilightforest.features.TwilightFeatures;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -32,6 +32,7 @@ import java.util.Optional;
 import java.util.StringJoiner;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 @SuppressWarnings("UnusedReturnValue")
 public abstract class BiomeDataHelper extends BiomeProvider {
@@ -182,10 +183,10 @@ public abstract class BiomeDataHelper extends BiomeProvider {
             final Path filePath = makePath(outputPath, biomeKeyPair.getKey());
             final Biome biome = biomeKeyPair.getValue();
             biome.setRegistryName(biomeKeyPair.getKey());
-            final Function<Biome, DataResult<JsonElement>> serializer = JsonOps.INSTANCE.withEncoder(Biome.CODEC);
+            final Function<Supplier<Biome>, DataResult<JsonElement>> serializer = JsonOps.INSTANCE.withEncoder(Biome.BIOME_CODEC);
 
             try {
-                final Optional<JsonElement> jsonOptional = serializer.apply(biome).result();
+                final Optional<JsonElement> jsonOptional = serializer.apply(() -> biome).result();
                 if (jsonOptional.isPresent()) {
                     IDataProvider.save(GSON, directoryCache, jsonOptional.get(), filePath);
 

@@ -1,4 +1,4 @@
-package twilightforest.world.newfeature;
+package twilightforest.features;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
@@ -24,6 +24,7 @@ import net.minecraft.world.gen.trunkplacer.TrunkPlacerType;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFFirefly;
 import twilightforest.block.TFBlocks;
+import twilightforest.features.treeplacers.*;
 import twilightforest.world.feature.TFBiomeFeatures;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
@@ -133,6 +134,7 @@ public final class TwilightFeatures {
                         Decorators.LIVING_ROOTS,
                         Decorators.FIREFLY,
                         new TrunkSideDecorator( // A few more Fireflies!
+
                                 3,
                                 0.4f,
                                 new SimpleBlockStateProvider(TFBlocks.firefly.get().getDefaultState().with(BlockTFFirefly.FACING, Direction.NORTH))

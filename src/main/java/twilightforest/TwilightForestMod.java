@@ -39,7 +39,7 @@ import twilightforest.tileentity.TFTileEntities;
 import twilightforest.world.TFDimensions;
 import twilightforest.world.feature.TFBiomeFeatures;
 import twilightforest.world.feature.TFGenCaveStalactite;
-import twilightforest.world.newfeature.TwilightFeatures;
+import twilightforest.features.TwilightFeatures;
 
 @Mod(TwilightForestMod.ID)
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
