@@ -4,6 +4,7 @@ import net.minecraft.block.PortalInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import twilightforest.TFConfig;
 import twilightforest.world.TFDimensions;
 import twilightforest.world.TFTeleporter;
 
@@ -23,6 +24,6 @@ public class PortalInfoHook {
 	}
 
 	private static boolean checkDim(World world) {
-		return world.getDimensionKey().getLocation().equals(TFDimensions.twilightForest.getLocation());
+		return world.getDimensionKey().getLocation().toString().equals(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get());
 	}
 }

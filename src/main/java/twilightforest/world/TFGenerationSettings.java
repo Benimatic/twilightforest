@@ -7,6 +7,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.server.ServerWorld;
+import twilightforest.TFConfig;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 
@@ -28,7 +29,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 	}
 
 	public static boolean isTwilightForest(World world) {
-		return world.getDimensionKey() == TFDimensions.twilightForest;
+		return world.getDimensionKey().getLocation().toString().equals(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get());
 	}
 
 	public static boolean isProgressionEnforced(World world) {

@@ -269,7 +269,6 @@ public class TFTeleporter implements ITeleporter {
 	}
 
 	private static void makePortal(Entity entity, ServerWorld world, Vector3d pos) {
-
 		// ensure area is populated first
 		loadSurroundingArea(world, pos);
 

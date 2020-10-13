@@ -47,6 +47,11 @@ public class TFConfig {
 						worldRestart().
 						comment("If true, giant Twilight Oaks will also spawn in void worlds").
 						define("skylightOaks", true);
+				DIMENSION.twilightForestID = builder.
+						translation(config + "twilight_dimension_id").
+						worldRestart().
+						comment("Destination dimension for Twilight Portals and some other logic as well").
+						define("twilightDimensionID", "twilightforest:twilightforest");
 				builder.
 						comment("Weights for various small features").
 						push("World-Gen Weights");
@@ -243,6 +248,7 @@ public class TFConfig {
 			public ForgeConfigSpec.BooleanValue newPlayersSpawnInTF;
 			public ForgeConfigSpec.BooleanValue skylightForest;
 			public ForgeConfigSpec.BooleanValue skylightOaks;
+			public ForgeConfigSpec.ConfigValue<String> twilightForestID;
 
 			public WorldGenWeights worldGenWeights = new WorldGenWeights();
 

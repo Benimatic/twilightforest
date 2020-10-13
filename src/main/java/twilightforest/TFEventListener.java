@@ -105,15 +105,11 @@ public class TFEventListener {
 
 	@SubscribeEvent
 	public static void onMobSpawn(WorldEvent.PotentialSpawns event) {
-		if (event.getType() == EntityClassification.MONSTER &&
-
-				event.getWorld() instanceof ServerWorld &&
-
-				event.getWorld().getChunkProvider() instanceof ServerChunkProvider &&
-
-				((ServerWorld) event.getWorld()).getDimensionKey().getLocation().equals(TFDimensions.twilightForest.getLocation()) &&
-
-				event.getPos().getY() >= ((ServerChunkProvider) event.getWorld().getChunkProvider()).getChunkGenerator().func_230356_f_())
+		if (event.getType() == EntityClassification.MONSTER
+				&& event.getWorld() instanceof ServerWorld
+				&& event.getWorld().getChunkProvider() instanceof ServerChunkProvider
+				&& ((ServerWorld) event.getWorld()).getDimensionKey().getLocation().toString().equals(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get())
+				&& event.getPos().getY() >= ((ServerChunkProvider) event.getWorld().getChunkProvider()).getChunkGenerator().func_230356_f_())
 			event.setCanceled(true);
 	}
 
@@ -686,9 +682,10 @@ public class TFEventListener {
 	@SubscribeEvent
 	public static void playerPortals(PlayerEvent.PlayerChangedDimensionEvent event) {
 		if (!event.getPlayer().world.isRemote && event.getPlayer() instanceof ServerPlayerEntity) {
-			if (event.getTo() == TFDimensions.twilightForest) {
+			if (event.getTo().getLocation().toString().equals(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get())) {
 				sendEnforcedProgressionStatus((ServerPlayerEntity) event.getPlayer(), TFGenerationSettings.isProgressionEnforced(event.getPlayer().world));
 			}
+
 			updateCapabilities((ServerPlayerEntity) event.getPlayer(), event.getPlayer());
 		}
 	}

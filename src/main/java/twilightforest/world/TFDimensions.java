@@ -1,16 +1,18 @@
 package twilightforest.world;
 
 import net.minecraft.util.RegistryKey;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Mod;
+import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class TFDimensions {
 	public static final RegistryKey<DimensionType> twilightForestType = RegistryKey.getOrCreateKey(Registry.DIMENSION_TYPE_KEY, TwilightForestMod.prefix(TwilightForestMod.ID));
-	public static final RegistryKey<World> twilightForest = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, TwilightForestMod.prefix(TwilightForestMod.ID)); // Yes, this floor is floor
+	public static final RegistryKey<World> twilightForest = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get()));
 
 	public static void init() {
 		//Registry.register(Registry.BIOME_PROVIDER_CODEC, TwilightForestMod.prefix("biome_distributor"), TFBiomeDistributor.tfBiomeProviderCodec);

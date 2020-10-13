@@ -21,6 +21,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
@@ -221,8 +222,10 @@ public class BlockTFPortal extends BreakableBlock implements ILiquidContainer {
 	}
 
 	private static RegistryKey<World> getDestination(Entity entity) {
-		return !entity.getEntityWorld().getDimensionKey().getLocation().equals(TFDimensions.twilightForest.getLocation())
-				? TFDimensions.twilightForest : World.OVERWORLD /*DimensionType.byName(new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()))*/;
+		RegistryKey<World> twilightForest = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get()));
+
+		return !entity.getEntityWorld().getDimensionKey().getLocation().equals(twilightForest.getLocation())
+				? twilightForest : RegistryKey.getOrCreateKey(Registry.WORLD_KEY, new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()));
 	}
 
 	public static void attemptSendPlayer(Entity entity, boolean forcedEntry) {
@@ -250,11 +253,12 @@ public class BlockTFPortal extends BreakableBlock implements ILiquidContainer {
 
 		entity.changeDimension(serverWorld, new TFTeleporter());
 
-		if (destination == TFDimensions.twilightForest && entity instanceof ServerPlayerEntity) {
+		// No more setting spawn point
+		/*if (destination == TFDimensions.twilightForest && entity instanceof ServerPlayerEntity) {
 			ServerPlayerEntity playerMP = (ServerPlayerEntity) entity;
 			// set respawn point for TF dimension to near the arrival portal
 			playerMP.func_242111_a(destination, playerMP.getPosition(), playerMP.rotationYaw, true, false);
-		}
+		}*/
 	}
 
 	// Full [VanillaCopy] of BlockPortal.randomDisplayTick
