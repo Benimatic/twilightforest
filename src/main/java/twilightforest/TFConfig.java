@@ -186,10 +186,10 @@ public class TFConfig {
 					translation(config + "portals").
 					comment("Disable Twilight Forest portal creation entirely. Provided for server operators looking to restrict action to the dimension.").
 					define("disablePortalCreation", false);
-			portalCreationItems = builder.
-					translation(config + "portal_creator").
-					comment("Registry String IDs of items used to create the Twilight Forest Portal. (domain:regname).").
-					define("portalCreationItems", Collections.singletonList("minecraft:diamond"));
+			//portalCreationItems = builder.
+			//		translation(config + "portal_creator").
+			//		comment("Registry String IDs of items used to create the Twilight Forest Portal. (domain:regname).").
+			//		define("portalCreationItems", Collections.singletonList("minecraft:diamond"));
 			checkPortalDestination = builder.
 					translation(config + "check_portal_destination").
 					comment("Determines if new portals should be pre-checked for safety. If enabled, portals will fail to form rather than redirect to a safe alternate destination." +

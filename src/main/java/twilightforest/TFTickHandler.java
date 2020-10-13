@@ -17,6 +17,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.network.PacketDistributor;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.TFBlocks;
+import twilightforest.data.ItemTagGenerator;
 import twilightforest.network.PacketStructureProtection;
 import twilightforest.network.PacketStructureProtectionClear;
 import twilightforest.network.TFPacketHandler;
@@ -118,7 +119,7 @@ public class TFTickHandler {
 			List<ItemEntity> itemList = world.getEntitiesWithinAABB(ItemEntity.class, player.getBoundingBox().grow(rangeToCheck));
 
 			for (ItemEntity entityItem : itemList) {
-				if (TFConfig.portalIngredient.test(entityItem.getItem())) {
+				if (ItemTagGenerator.PORTAL_ACTIVATOR.contains(entityItem.getItem().getItem())) {
 					BlockPos pos = new BlockPos(entityItem.getPositionVec().subtract(0, -0.1d, 0)); //TODO Quick fix, find if there's a more performant fix than this
 					BlockState state = world.getBlockState(pos);
 					if (TFBlocks.twilight_portal.get().canFormPortal(state)) {

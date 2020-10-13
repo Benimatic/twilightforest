@@ -33,6 +33,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.apache.commons.lang3.mutable.MutableInt;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
+import twilightforest.data.BlockTagGenerator;
 import twilightforest.world.TFDimensions;
 import twilightforest.world.TFGenerationSettings;
 import twilightforest.world.TFTeleporter;
@@ -151,7 +152,6 @@ public class BlockTFPortal extends BreakableBlock implements ILiquidContainer {
 	}
 
 	private static boolean recursivelyValidatePortal(World world, BlockPos pos, Map<BlockPos, Boolean> blocksChecked, MutableInt portalSize, BlockState requiredState) {
-
 		if (portalSize.incrementAndGet() > MAX_PORTAL_SIZE) return false;
 
 		boolean isPoolProbablyEnclosed = true;
@@ -168,7 +168,7 @@ public class BlockTFPortal extends BreakableBlock implements ILiquidContainer {
 						isPoolProbablyEnclosed = recursivelyValidatePortal(world, positionCheck, blocksChecked, portalSize, requiredState);
 					}
 
-				} else if (isGrassOrDirt(state) && isNatureBlock(world.getBlockState(positionCheck.up())) || state.getBlock() == TFBlocks.uberous_soil.get()) {
+				} else if (isGrassOrDirt(state) && isNatureBlock(world.getBlockState(positionCheck.up()))) {
 					blocksChecked.put(positionCheck, false);
 
 				} else return false;
@@ -179,13 +179,11 @@ public class BlockTFPortal extends BreakableBlock implements ILiquidContainer {
 	}
 
 	private static boolean isNatureBlock(BlockState state) {
-		Material mat = state.getMaterial();
-		return mat == Material.PLANTS || mat == Material.TALL_PLANTS || mat == Material.LEAVES;
+		return BlockTagGenerator.PORTAL_DECO.contains(state.getBlock());
 	}
 
 	private static boolean isGrassOrDirt(BlockState state) {
-		Material mat = state.getMaterial();
-		return state.isSolid() && (mat == Material.ORGANIC || mat == Material.EARTH);
+		return BlockTagGenerator.PORTAL_EDGE.contains(state.getBlock());
 	}
 
 	@Override
@@ -229,7 +227,6 @@ public class BlockTFPortal extends BreakableBlock implements ILiquidContainer {
 	}
 
 	public static void attemptSendPlayer(Entity entity, boolean forcedEntry) {
-
 		if (!entity.isAlive() || entity.world.isRemote) {
 			return;
 		}
