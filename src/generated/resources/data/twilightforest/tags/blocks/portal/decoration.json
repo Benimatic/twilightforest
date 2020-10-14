@@ -1,22 +1,11 @@
 {
   "replace": false,
   "values": [
-    {
-      "id": "#minecraft:flowers",
-      "required": false
-    },
-    {
-      "id": "#minecraft:leaves",
-      "required": false
-    },
-    {
-      "id": "#minecraft:saplings",
-      "required": false
-    },
-    {
-      "id": "#minecraft:crops",
-      "required": false
-    },
+    "#minecraft:flowers",
+    "#minecraft:leaves",
+    "#minecraft:saplings",
+    "#minecraft:crops",
+    "minecraft:bamboo",
     "minecraft:grass",
     "minecraft:fern",
     "minecraft:dead_bush",

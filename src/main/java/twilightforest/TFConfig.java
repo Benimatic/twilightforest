@@ -479,14 +479,13 @@ public class TFConfig {
 	}
 
 	public static void build() {
-		buildPortalIngredient();
+		//buildPortalIngredient();
 		CLIENT_CONFIG.LOADING_SCREEN.loadLoadingScreenIcons();
 	}
 
-	public static Ingredient portalIngredient;
+	/*public static Ingredient portalIngredient;
 
 	private static void buildPortalIngredient() {
-
 		List<ItemStack> stacks = new ArrayList<>();
 
 		for (String s : COMMON_CONFIG.portalCreationItems.get()) {
@@ -498,7 +497,7 @@ public class TFConfig {
 		}
 
 		portalIngredient = Ingredient.fromStacks(stacks.toArray(new ItemStack[0]));
-	}
+	}*/
 
 	private static Optional<ItemStack> parseItemStack(String string) {
 		ResourceLocation id = ResourceLocation.tryCreate(string);

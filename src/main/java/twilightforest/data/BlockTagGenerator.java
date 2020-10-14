@@ -9,6 +9,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ITag;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
@@ -43,8 +44,8 @@ public class BlockTagGenerator extends BlockTagsProvider {
 	public static final ITag.INamedTag<Block> PORTAL_EDGE = BlockTags.makeWrapperTag(TwilightForestMod.prefix("portal/edge").toString());
 	public static final ITag.INamedTag<Block> PORTAL_DECO = BlockTags.makeWrapperTag(TwilightForestMod.prefix("portal/decoration").toString());
 
-	public BlockTagGenerator(DataGenerator generator) {
-		super(generator);
+	public BlockTagGenerator(DataGenerator generator, ExistingFileHelper exFileHelper) {
+		super(generator, TwilightForestMod.ID, exFileHelper);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -151,11 +152,12 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		getOrCreateBuilder(ORES_IRONWOOD);
 		getOrCreateBuilder(ORES_KNIGHTMETAL);
 
-		getOrCreateBuilder(PORTAL_EDGE).add(getAllFilteredBlocks(b -> /*b.material == Material.ORGANIC ||*/ b.material == Material.EARTH));
+		getOrCreateBuilder(PORTAL_EDGE).add(Blocks.GRASS_BLOCK, Blocks.MYCELIUM).add(getAllFilteredBlocks(b -> /*b.material == Material.ORGANIC ||*/ b.material == Material.EARTH));
 		getOrCreateBuilder(PORTAL_DECO)
 				// FIXME Somehow Minecraft's BlockTags do not exist when this executes so we will do these as optionals instead
-				.addOptionalTag(BlockTags.FLOWERS.getName()).addOptionalTag(BlockTags.LEAVES.getName()).addOptionalTag(BlockTags.SAPLINGS.getName()).addOptionalTag(BlockTags.CROPS.getName())
-				//.add(Blocks.BAMBOO, Blocks.BAMBOO_SAPLING, Blocks.SUGAR_CANE, Blocks.SWEET_BERRY_BUSH)
+				//.addOptionalTag(BlockTags.FLOWERS.getName()).addOptionalTag(BlockTags.LEAVES.getName()).addOptionalTag(BlockTags.SAPLINGS.getName()).addOptionalTag(BlockTags.CROPS.getName())
+				.addTags(BlockTags.FLOWERS, BlockTags.LEAVES, BlockTags.SAPLINGS, BlockTags.CROPS)
+				.add(Blocks.BAMBOO)
 				.add(getAllFilteredBlocks(b -> (
 						b.material == Material.PLANTS || b.material == Material.TALL_PLANTS || b.material == Material.LEAVES)
 								&& isExcludedFromTagBuilder(b, null)

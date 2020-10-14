@@ -9,6 +9,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ITag;
 import net.minecraft.tags.ItemTags;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.item.TFItems;
 
@@ -50,8 +51,8 @@ public class ItemTagGenerator extends ItemTagsProvider {
 
 	public static final ITag.INamedTag<Item> PORTAL_ACTIVATOR = ItemTags.makeWrapperTag(TwilightForestMod.prefix("portal/activator").toString());
 
-	public ItemTagGenerator(DataGenerator generator, BlockTagsProvider blockprovider) {
-		super(generator, blockprovider);
+	public ItemTagGenerator(DataGenerator generator, BlockTagsProvider blockprovider, ExistingFileHelper exFileHelper) {
+		super(generator, blockprovider, TwilightForestMod.ID, exFileHelper);
 	}
 
 	@Override
