@@ -81,7 +81,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 				int l1 = l + j1;
 				int i2 = iChunk.getTopBlockY(Heightmap.Type.WORLD_SURFACE_WG, i1, j1) + 1;
 				double d1 = this.surfaceDepthNoise.noiseAt((double)k1 * 0.0625D, (double)l1 * 0.0625D, 0.0625D, (double)i1 * 0.0625D) * 15.0D;
-				worldGenRegion.getBiome(blockpos$mutable.setPos(k + i1, i2, l + j1)).buildSurface(sharedseedrandom, iChunk, k1, l1, i2, d1, this.defaultBlock, this.defaultFluid, this.func_230356_f_(), worldGenRegion.getSeed());
+				worldGenRegion.getBiome(blockpos$mutable.setPos(k + i1, i2, l + j1)).buildSurface(sharedseedrandom, iChunk, k1, l1, i2, d1, this.defaultBlock, this.defaultFluid, this.getSeaLevel(), worldGenRegion.getSeed());
 			}
 		}
 
@@ -341,7 +341,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
 		BlockState blockstate;
 		if (p_236086_1_ > 0.0D) {
 			blockstate = this.defaultBlock;
-		} else if (p_236086_3_ < this.func_230356_f_()) {
+		} else if (p_236086_3_ < this.getSeaLevel()) {
 			blockstate = this.defaultFluid;
 		} else {
 			blockstate = Blocks.AIR.getDefaultState();

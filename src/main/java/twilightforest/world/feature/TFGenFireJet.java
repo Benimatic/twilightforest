@@ -19,7 +19,7 @@ public class TFGenFireJet extends Feature<BlockStateFeatureConfig> {
 	}
 
 	@Override
-	public boolean func_241855_a(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateFeatureConfig config) {
+	public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateFeatureConfig config) {
 		for (int i = 0; i < 4; ++i) {
 			BlockPos dPos = pos.add(
 					rand.nextInt(8) - rand.nextInt(8),

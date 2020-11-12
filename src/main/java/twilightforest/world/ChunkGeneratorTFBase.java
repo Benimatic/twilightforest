@@ -168,7 +168,7 @@ public abstract class ChunkGeneratorTFBase extends ChunkGenerator {
 			float f1 = 0.0F;
 			float f2 = 0.0F;
 			int i = 2;
-			int j = this.func_230356_f_();
+			int j = this.getSeaLevel();
 			float f3 = this.biomeProvider.getNoiseBiome(noiseX, j, noiseZ).getDepth();
 
 			for(int k = -2; k <= 2; ++k) {

@@ -92,7 +92,7 @@ public final class BiomeGenerator extends BiomeDataHelper {
         );
 
         biomes.put(TwilightForestMod.prefix("enchanted_forest"),
-                biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), modify(defaultGenSettingBuilder(), c -> c.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredFeatures.RAINBOAK_TREE.func_242728_a())))
+                biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), modify(defaultGenSettingBuilder(), c -> c.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredFeatures.RAINBOAK_TREE.square())))
                         .build()
         );
 
@@ -114,7 +114,7 @@ public final class BiomeGenerator extends BiomeDataHelper {
                         .build()
         );
 
-        BiomeGenerationSettings.Builder swampGenerationBuilder = modify(defaultGenSettingBuilder(), b -> b.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredFeatures.MANGROVE_TREE.func_242728_a()));
+        BiomeGenerationSettings.Builder swampGenerationBuilder = modify(defaultGenSettingBuilder(), b -> b.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredFeatures.MANGROVE_TREE.square()));
 
         biomes.put(TwilightForestMod.prefix("swamp"),
                 biomeWithDefaults(defaultAmbientBuilder().setWaterColor(0xE0FFAE), defaultMobSpawning(), swampGenerationBuilder)
@@ -134,7 +134,7 @@ public final class BiomeGenerator extends BiomeDataHelper {
                         .build()
         );
 
-        BiomeGenerationSettings.Builder darkForestGenerationBuilder = modify(defaultGenSettingBuilder(), b -> b.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredFeatures.DARKWOOD_TREE.func_242728_a()));
+        BiomeGenerationSettings.Builder darkForestGenerationBuilder = modify(defaultGenSettingBuilder(), b -> b.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredFeatures.DARKWOOD_TREE.square()));
 
         biomes.put(TwilightForestMod.prefix("dark_forest"),
                 biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), darkForestGenerationBuilder)

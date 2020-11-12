@@ -25,7 +25,7 @@ public class TFGenHugeWaterLily extends Feature<NoFeatureConfig> {
 	}
 
 	@Override
-	public boolean func_241855_a(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
+	public boolean generate(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, NoFeatureConfig config) {
 		for (int i = 0; i < 4; i++) {
 			BlockPos pos_ = pos.add(
 					random.nextInt(8) - random.nextInt(8),

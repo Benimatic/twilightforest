@@ -20,7 +20,7 @@ public class TFGenPenguins extends Feature<NoFeatureConfig> {
 	}
 
 	@Override
-	public boolean func_241855_a(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+	public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
 
 		for (int i = 0; i < 3; i++) { // FIXME This is terrible, this should be done at entity spawning stage not feature generation
 			BlockPos dPos = pos.add(

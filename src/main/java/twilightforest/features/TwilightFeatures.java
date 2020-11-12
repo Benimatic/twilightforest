@@ -108,7 +108,7 @@ public final class TwilightFeatures {
                 new StraightTrunkPlacer(4, 2, 0),
                 new TwoLayerFeature(1, 0, 1)
         )
-                .func_236703_a_(ImmutableList.of(Decorators.LIVING_ROOTS))
+                .setDecorators(ImmutableList.of(Decorators.LIVING_ROOTS))
                 .setIgnoreVines()
                 .build();
 
@@ -119,7 +119,7 @@ public final class TwilightFeatures {
                 new BranchingTrunkPlacer(20, 5, 5, 7, new BranchesConfiguration(3, 1, 10, 1, 0.3, 0.2), false),
                 new TwoLayerFeature(20, 0, canopyDistancing)
         )
-                .func_236703_a_(ImmutableList.of(Decorators.FIREFLY, Decorators.LIVING_ROOTS))
+                .setDecorators(ImmutableList.of(Decorators.FIREFLY, Decorators.LIVING_ROOTS))
                 .setIgnoreVines()
                 .build();
 
@@ -130,7 +130,7 @@ public final class TwilightFeatures {
                 new BranchingTrunkPlacer(20, 5, 5, 7, new BranchesConfiguration(3, 1, 10, 1, 0.3, 0.2), false),
                 new TwoLayerFeature(20, 0, canopyDistancing)
         )
-                .func_236703_a_(ImmutableList.of(
+                .setDecorators(ImmutableList.of(
                         Decorators.LIVING_ROOTS,
                         Decorators.FIREFLY,
                         new TrunkSideDecorator( // A few more Fireflies!
@@ -168,7 +168,7 @@ public final class TwilightFeatures {
                 new BranchingTrunkPlacer(20, 5, 5, 7, new BranchesConfiguration(3, 1, 10, 1, 0.3, 0.2), false),
                 new TwoLayerFeature(20, 0, canopyDistancing)
         )
-                .func_236703_a_(ImmutableList.of(Decorators.FIREFLY, Decorators.LIVING_ROOTS))
+                .setDecorators(ImmutableList.of(Decorators.FIREFLY, Decorators.LIVING_ROOTS))
                 .setIgnoreVines()
                 .build();
 
@@ -179,7 +179,7 @@ public final class TwilightFeatures {
                 new TrunkRiser(5, new BranchingTrunkPlacer(6, 4, 0, 1, new BranchesConfiguration(0, 3, 6, 2, 0.3, 0.25), false)),
                 new TwoLayerFeature(1, 0, 1)
         )
-                .func_236703_a_(ImmutableList.of(
+                .setDecorators(ImmutableList.of(
                         Decorators.FIREFLY,
                         new TreeRootsDecorator(3, 1, 12, new SimpleBlockStateProvider(BlockStates.MANGROVE_WOOD), (new WeightedBlockStateProvider())
                                 .addWeightedBlockstate(BlockStates.ROOTS, 4)
@@ -196,7 +196,7 @@ public final class TwilightFeatures {
                 new BranchingTrunkPlacer(6, 3, 3, 5, new BranchesConfiguration(4, 0, 10, 4, 0.23, 0.23), false),
                 new TwoLayerFeature(1, 0, 1)
         )
-                .func_236703_a_(ImmutableList.of(
+                .setDecorators(ImmutableList.of(
                         Decorators.LIVING_ROOTS,
                         new DangleFromTreeDecorator(
                                 0,
@@ -285,7 +285,7 @@ public final class TwilightFeatures {
                 new StraightTrunkPlacer(4, 2, 0),
                 new TwoLayerFeature(1, 0, 1)
         )
-                .func_236703_a_(ImmutableList.of(Decorators.LIVING_ROOTS))
+                .setDecorators(ImmutableList.of(Decorators.LIVING_ROOTS))
                 .setIgnoreVines()
                 .build();
 
@@ -296,7 +296,7 @@ public final class TwilightFeatures {
                 new BranchingTrunkPlacer(12, 5, 5, 6, new BranchesConfiguration(3, 1, 9, 1, 0.3, 0.2), true),
                 new TwoLayerFeature(11, 0, canopyDistancing)
         )
-                .func_236703_a_(ImmutableList.of(Decorators.FIREFLY))
+                .setDecorators(ImmutableList.of(Decorators.FIREFLY))
                 .setIgnoreVines()
                 .build();
 
@@ -307,7 +307,7 @@ public final class TwilightFeatures {
                 new BranchingTrunkPlacer(12, 5, 5, 6, new BranchesConfiguration(3, 1, 9, 1, 0.3, 0.2), true),
                 new TwoLayerFeature(11, 0, canopyDistancing)
         )
-                .func_236703_a_(ImmutableList.of(Decorators.FIREFLY))
+                .setDecorators(ImmutableList.of(Decorators.FIREFLY))
                 .setIgnoreVines()
                 .build();
 
@@ -336,7 +336,7 @@ public final class TwilightFeatures {
                 Feature.RANDOM_SELECTOR
                         .withConfiguration(new MultipleRandomFeatureConfig(trees.stream().map(configuredFeature -> configuredFeature.withChance(1f / (trees.size() + 0.5f))).collect(ImmutableList.toImmutableList()), RAINBOAK_TREE))
                         .withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
-                        .withPlacement(Placement.field_242902_f.configure(new AtSurfaceWithExtraConfig(1, 0.5f, 1)))
+                        .withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(1, 0.5f, 1)))
         );
     }
 

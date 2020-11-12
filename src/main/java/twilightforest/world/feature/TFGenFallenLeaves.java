@@ -23,7 +23,7 @@ public class TFGenFallenLeaves extends Feature<NoFeatureConfig> {
 	private final BlockState state = TFBlocks.fallen_leaves.get().getDefaultState();
 
 	@Override
-	public boolean func_241855_a(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos position, NoFeatureConfig config) {
+	public boolean generate(ISeedReader worldIn, ChunkGenerator generator, Random rand, BlockPos position, NoFeatureConfig config) {
 		do {
 			BlockState state = worldIn.getBlockState(position.down());
 			if (worldIn.isAirBlock(position) && (state.getMaterial() == Material.ORGANIC || state.getMaterial() == Material.EARTH))

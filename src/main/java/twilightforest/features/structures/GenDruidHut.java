@@ -45,11 +45,11 @@ public class GenDruidHut extends Feature<NoFeatureConfig> {
 	}
 
 	// FIXME See if we can move this over to purely-datadriven @Override // Loosely based on WorldGenFossils
-	public boolean func_241855_a(ISeedReader world,  ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+	public boolean generate(ISeedReader world,  ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
 		//Random random = world.getChunk(pos).getRandomWithSeed(987234911L);
 		Random random = world.getRandom();
 
-		TemplateManager templatemanager = ((ServerWorld)world).getServer().func_240792_aT_();
+		TemplateManager templatemanager = ((ServerWorld)world).getServer().getTemplateManager();
 		Template template = templatemanager.getTemplate(HutType.values()[random.nextInt(HutType.size)].RL);
 
 		Rotation[] rotations = Rotation.values();

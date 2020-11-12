@@ -109,7 +109,7 @@ public class TFEventListener {
 				&& event.getWorld() instanceof ServerWorld
 				&& event.getWorld().getChunkProvider() instanceof ServerChunkProvider
 				&& ((ServerWorld) event.getWorld()).getDimensionKey().getLocation().toString().equals(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get())
-				&& event.getPos().getY() >= ((ServerChunkProvider) event.getWorld().getChunkProvider()).getChunkGenerator().func_230356_f_())
+				&& event.getPos().getY() >= ((ServerChunkProvider) event.getWorld().getChunkProvider()).getChunkGenerator().getSeaLevel())
 			event.setCanceled(true);
 	}
 

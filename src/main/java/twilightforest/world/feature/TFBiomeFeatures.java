@@ -96,5 +96,5 @@ public class TFBiomeFeatures {
 			new TFGenWoodRoots(NoFeatureConfig.field_236558_a_));
 
 	public static final RegistryObject<WorldCarver<ProbabilityConfig>> TF_CAVES = WORLD_CARVERS.register("tf_caves",  () ->
-			new TFCavesCarver(ProbabilityConfig.field_236576_b_, 256));
+			new TFCavesCarver(ProbabilityConfig.CODEC, 256));
 }

@@ -111,7 +111,7 @@ public class ComponentTFTrollCaveGarden extends ComponentTFTrollCaveMain {
 
 		BlockPos pos = new BlockPos(dx, dy, dz);
 		if (sbb.isVecInside(pos)) {
-			feature.func_242765_a(world, generator, rand, pos);
+			feature.generate(world, generator, rand, pos);
 		}
 	}
 }

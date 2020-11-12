@@ -237,7 +237,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 
 		BlockPos pos = new BlockPos(dx, dy, dz);
 		if (sbb.isVecInside(pos)) {
-			TFBiomeFeatures.CAVE_STALACTITE.get().withConfiguration(new CaveStalactiteConfig(blockToGenerate.getDefaultState(), length, -1, -1, up)).func_242765_a(world, ((ServerWorld) world).getChunkProvider().getChunkGenerator(), rand, pos);
+			TFBiomeFeatures.CAVE_STALACTITE.get().withConfiguration(new CaveStalactiteConfig(blockToGenerate.getDefaultState(), length, -1, -1, up)).generate(world, ((ServerWorld) world).getChunkProvider().getChunkGenerator(), rand, pos);
 		}
 	}
 
@@ -261,7 +261,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 				}
 			}
 
-			feature.func_242765_a(world, generator, rand, pos.toImmutable());
+			feature.generate(world, generator, rand, pos.toImmutable());
 		}
 	}
 

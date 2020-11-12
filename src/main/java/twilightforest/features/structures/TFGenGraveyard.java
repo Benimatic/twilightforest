@@ -112,7 +112,7 @@ public class TFGenGraveyard extends Feature<NoFeatureConfig> {
 	}
 
 	@Override
-	public boolean func_241855_a(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+	public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
 		// FIXME Use StructureManager
 		if (!(world instanceof ServerWorld))
 			return false;
@@ -122,7 +122,7 @@ public class TFGenGraveyard extends Feature<NoFeatureConfig> {
 		Random random = world.getRandom();
 
 		// Previously there was untested casting here. Bad bad bad!
-		TemplateManager templatemanager = ((ServerWorld) world).getServer().func_240792_aT_();
+		TemplateManager templatemanager = ((ServerWorld) world).getServer().getTemplateManager();
 		Template base = templatemanager.getTemplate(GRAVEYARD);
 		List<Pair<GraveType, Template>> graves = new ArrayList<>();
 		Template trap = templatemanager.getTemplate(TRAP);

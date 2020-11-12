@@ -37,7 +37,7 @@ public class TFGenMyceliumBlob extends Feature<SphereReplaceConfig> {
 
 
 	@Override
-	public boolean func_241855_a(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, SphereReplaceConfig config) {
+	public boolean generate(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, SphereReplaceConfig config) {
 //        if (world.getBlock(i, j, k).getMaterial() != Material.WATER)
 //        {
 //            return false;

@@ -83,7 +83,7 @@ public class TFGenCaveStalactite extends Feature<CaveStalactiteConfig> {
 	 * This will return false if it can't find a valid ceiling and floor, or if there are other errors.
 	 */
 	@Override
-	public boolean func_241855_a(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, CaveStalactiteConfig config) {
+	public boolean generate(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, CaveStalactiteConfig config) {
 		int ceiling = Integer.MAX_VALUE;
 		int floor = -1;
 

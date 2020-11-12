@@ -41,25 +41,25 @@ public abstract class BiomeDataHelper extends BiomeProvider {
     }
 
     public static BiomeGenerationSettings.Builder addWoodRoots(BiomeGenerationSettings.Builder biome) {
-        biome.withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, TFBiomeFeatures.WOOD_ROOTS.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).func_242733_d(30).func_242728_a().func_242731_b(20));
+        biome.withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, TFBiomeFeatures.WOOD_ROOTS.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).range(30).square().func_242731_b(20));
 
         return biome;
     }
 
     //Canopies, trees, and anything resembling a forest thing
     public static BiomeGenerationSettings.Builder addCanopy(BiomeGenerationSettings.Builder biome) {
-        biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredFeatures.CANOPY_TREE.withPlacement(Placement.field_242902_f.configure(new AtSurfaceWithExtraConfig(8, 0.1F, 1)).func_242728_a()));
+        biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredFeatures.CANOPY_TREE.withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(8, 0.1F, 1)).square()));
 
         return biome;
     }
     public static BiomeGenerationSettings.Builder addCanopyFirefly(BiomeGenerationSettings.Builder biome) {
-        biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredFeatures.CANOPY_TREE_FIREFLY.withPlacement(Placement.field_242902_f.configure(new AtSurfaceWithExtraConfig(8, 0.1F, 1)).func_242728_a()));
+        biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredFeatures.CANOPY_TREE_FIREFLY.withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(8, 0.1F, 1)).square()));
 
         return biome;
     }
 
     public static BiomeGenerationSettings.Builder addCanopyDead(BiomeGenerationSettings.Builder biome) {
-        biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredFeatures.CANOPY_TREE_DEAD.withPlacement(Placement.field_242902_f.configure(new AtSurfaceWithExtraConfig(8, 0.1F, 1)).func_242728_a()));
+        biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredFeatures.CANOPY_TREE_DEAD.withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(8, 0.1F, 1)).square()));
 
         return biome;
     }
@@ -75,7 +75,7 @@ public abstract class BiomeDataHelper extends BiomeProvider {
                         TwilightFeatures.ConfiguredFeatures.MUSHROOM_RED.withChance(mushroomChance * 0.25f)
                 ), TwilightFeatures.ConfiguredFeatures.CANOPY_TREE))
                         .withPlacement(Features.Placements.BAMBOO_PLACEMENT) //TODO?
-                        .func_242728_a()
+                        .square()
                         .func_242731_b(8)
         );
 
