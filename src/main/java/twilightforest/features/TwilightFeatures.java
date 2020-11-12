@@ -21,6 +21,9 @@ import net.minecraft.world.gen.treedecorator.TreeDecoratorType;
 import net.minecraft.world.gen.trunkplacer.AbstractTrunkPlacer;
 import net.minecraft.world.gen.trunkplacer.StraightTrunkPlacer;
 import net.minecraft.world.gen.trunkplacer.TrunkPlacerType;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFFirefly;
 import twilightforest.block.TFBlocks;
@@ -28,9 +31,15 @@ import twilightforest.features.treeplacers.*;
 import twilightforest.world.feature.TFBiomeFeatures;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
 
+import java.util.ArrayList;
 import java.util.List;
 
+@Mod.EventBusSubscriber(modid = TwilightForestMod.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class TwilightFeatures {
+
+    private static final List<FoliagePlacerType<?>> FOLIAGE_PLACER_TYPES = new ArrayList<>();
+    private static final List<TreeDecoratorType<?>> TREE_DECORATOR_TYPES = new ArrayList<>();
+
     public static final TrunkPlacerType<BranchingTrunkPlacer> TRUNK_BRANCHING = registerTrunk(TwilightForestMod.prefix("branching_trunk_placer"), BranchingTrunkPlacer.CODEC);
     public static final TrunkPlacerType<TrunkRiser> TRUNK_RISER = registerTrunk(TwilightForestMod.prefix("trunk_mover_upper"), TrunkRiser.CODEC);
     public static final TrunkPlacerType<HollowTrunkPlacer> HOLLOW_TRUNK = registerTrunk(TwilightForestMod.prefix("hollow_trunk_placer"), HollowTrunkPlacer.CODEC);
@@ -341,7 +350,10 @@ public final class TwilightFeatures {
     }
 
     private static <P extends FoliagePlacer> FoliagePlacerType<P> registerFoliage(ResourceLocation name, Codec<P> codec) {
-        return Registry.register(Registry.FOLIAGE_PLACER_TYPE, name, new FoliagePlacerType<>(codec));
+        FoliagePlacerType<P> type = new FoliagePlacerType<>(codec);
+        type.setRegistryName(name);
+        FOLIAGE_PLACER_TYPES.add(type);
+        return type;
     }
 
     private static <P extends AbstractTrunkPlacer> TrunkPlacerType<P> registerTrunk(ResourceLocation name, Codec<P> codec) {
@@ -351,14 +363,23 @@ public final class TwilightFeatures {
 
     private static <P extends TreeDecorator> TreeDecoratorType<P> registerTreeFeature(ResourceLocation name, Codec<P> codec) {
         // TRUNK_REPLACER is wrong, it only places, not replacing
-        return Registry.register(Registry.TREE_DECORATOR_TYPE, name, new TreeDecoratorType<>(codec));
+        TreeDecoratorType<P> type = new TreeDecoratorType<>(codec);
+        type.setRegistryName(name);
+        TREE_DECORATOR_TYPES.add(type);
+        return type;
     }
 
     protected static <FC extends IFeatureConfig, F extends Feature<FC>> ConfiguredFeature<FC, F> registerWorldFeature(ResourceLocation rl, ConfiguredFeature<FC, F> feature) {
         return Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, rl, feature);
     }
 
-    private static <C extends IFeatureConfig, F extends Feature<C>> F registerFeatureCodec(String key, F value) {
-        return Registry.register(Registry.FEATURE, key, value);
+    @SubscribeEvent
+    public static void registerFoliagePlacers(RegistryEvent.Register<FoliagePlacerType<?>> evt) {
+        evt.getRegistry().registerAll(FOLIAGE_PLACER_TYPES.toArray(new FoliagePlacerType<?>[0]));
+    }
+    
+    @SubscribeEvent
+    public static void registerTreeDecorators(RegistryEvent.Register<TreeDecoratorType<?>> evt) {
+        evt.getRegistry().registerAll(TREE_DECORATOR_TYPES.toArray(new TreeDecoratorType<?>[0]));
     }
 }
