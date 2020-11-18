@@ -11,6 +11,7 @@ import net.minecraft.data.IDataProvider;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.*;
 import net.minecraft.world.gen.GenerationStage;
@@ -179,10 +180,10 @@ public abstract class BiomeDataHelper extends BiomeProvider {
 
         final StringJoiner biomeTable = new StringJoiner(",\n");
 
-        for (Map.Entry<ResourceLocation, Biome> biomeKeyPair : generateBiomes().entrySet()) {
-            final Path filePath = makePath(outputPath, biomeKeyPair.getKey());
+        for (Map.Entry<RegistryKey<Biome>, Biome> biomeKeyPair : generateBiomes().entrySet()) {
+            final Path filePath = makePath(outputPath, biomeKeyPair.getKey().getLocation());
             final Biome biome = biomeKeyPair.getValue();
-            biome.setRegistryName(biomeKeyPair.getKey());
+            biome.setRegistryName(biomeKeyPair.getKey().getLocation());
             final Function<Supplier<Biome>, DataResult<JsonElement>> serializer = JsonOps.INSTANCE.withEncoder(Biome.BIOME_CODEC);
 
             try {
@@ -206,5 +207,5 @@ public abstract class BiomeDataHelper extends BiomeProvider {
         return path.resolve("data/" + resc.getNamespace() + "/worldgen/biome/" + resc.getPath() + ".json");
     }
 
-    protected abstract Map<ResourceLocation, Biome> generateBiomes();
+    protected abstract Map<RegistryKey<Biome>, Biome> generateBiomes();
 }

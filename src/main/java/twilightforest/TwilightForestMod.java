@@ -23,6 +23,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import twilightforest.advancements.TFAdvancements;
+import twilightforest.biomes.TFBiomes;
 import twilightforest.block.TFBlocks;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.client.particle.TFParticleType;
@@ -125,9 +126,7 @@ public class TwilightForestMod {
 		TFPacketHandler.init();
 		TFAdvancements.init();
 		TFFeature.init();
-		/* FIXME
 		TFBiomes.addBiomeTypes();
-		TFBiomes.addBiomeFeatures();*/
 		TFDimensions.init();
 		TFEntities.addEntityAttributes();
 
