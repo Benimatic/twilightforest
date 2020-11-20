@@ -97,12 +97,14 @@ steps:
             [Ordered]@{
                 name = "Commit"
                 value = "[$(($env:BUILD_SOURCEVERSION).Substring(0, 6))]$($env:BUILD_REPOSITORY_URI)/commit/$($env:BUILD_SOURCEVERSION)"
-            },
-            [Ordered]@{
-                name = "Download"
-                value = "$downloadUrl"
             }
         )
+    }
+    if ($jobResult -eq "Succeeded") {
+        $json["fields"] += [Ordered]@{
+            name = "Download"
+            value = "$downloadUrl"
+        }
     }
     Write-Host "##vso[task.setvariable variable=DiscordMessage]$($json | ConvertTo-Json -Compress)"
   displayName: Format discord message
