@@ -28,6 +28,7 @@ import twilightforest.network.TFPacketHandler;
 import javax.annotation.Nullable;
 
 // [VanillaCopy] super everything, but with appropriate redirections to our own datastructures. finer details noted
+// FIXME: Map does not display data. Investigate
 public class ItemTFMazeMap extends FilledMapItem {
 
 	public static final String STR_ID = "mazemap";

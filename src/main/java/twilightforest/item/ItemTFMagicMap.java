@@ -8,7 +8,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.play.server.SMapDataPacket;
 import net.minecraft.util.RegistryKey;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.registry.WorldGenRegistries;
@@ -16,7 +15,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.MapData;
-import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.network.NetworkDirection;
 import twilightforest.TFFeature;
 import twilightforest.TFMagicMapData;
@@ -27,11 +25,13 @@ import twilightforest.network.TFPacketHandler;
 import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 // [VanillaCopy] super everything, but with appropriate redirections to our own datastructures. finer details noted
+// FIXME: Maps are empty. Anything could be the cause, so the comment sits here
 public class ItemTFMagicMap extends FilledMapItem {
 	public static final String STR_ID = "magicmap";
-	private static final Map<ResourceLocation, MapColorBrightness> BIOME_COLORS = new HashMap<>();
+	private static final Map<RegistryKey<Biome>, MapColorBrightness> BIOME_COLORS = new HashMap<>();
 
 	protected ItemTFMagicMap(Properties props) {
 		super(props);
@@ -104,6 +104,12 @@ public class ItemTFMagicMap extends FilledMapItem {
 //			Biome[] biomes = world.getBiomeAccess().getBiomesForGeneration((Biome[]) null, startX, startZ, 128 * biomesPerPixel, 128 * biomesPerPixel);
 			Biome[] biomes = new Biome[128 * biomesPerPixel * 128 * biomesPerPixel];
 
+			for(int l = 0; l < 128 * biomesPerPixel; ++l) {
+				for(int i1 = 0; i1 < 128 * biomesPerPixel; ++i1) {
+					biomes[l * 128 * biomesPerPixel + i1] = world.getBiome(new BlockPos((centerX / biomesPerPixel - 64) * biomesPerPixel + i1, 0, (centerZ / biomesPerPixel - 64) * biomesPerPixel + l));
+				}
+			}
+
 			for (int xPixel = viewerX - viewRadiusPixels + 1; xPixel < viewerX + viewRadiusPixels; ++xPixel) {
 				for (int zPixel = viewerZ - viewRadiusPixels - 1; zPixel < viewerZ + viewRadiusPixels; ++zPixel) {
 					if (xPixel >= 0 && zPixel >= 0 && xPixel < 128 && zPixel < 128) {
@@ -116,10 +122,9 @@ public class ItemTFMagicMap extends FilledMapItem {
 						// make streams more visible
 						Biome overBiome = biomes[xPixel * biomesPerPixel + zPixel * biomesPerPixel * 128 * biomesPerPixel + 1];
 						Biome downBiome = biomes[xPixel * biomesPerPixel + (zPixel * biomesPerPixel + 1) * 128 * biomesPerPixel];
-						/* FIXME
-						if (overBiome == TFBiomes.stream.get() || downBiome == TFBiomes.stream.get()) {
-							biome = TFBiomes.stream.get();
-						}*/
+						if (overBiome == WorldGenRegistries.BIOME.getValueForKey(TFBiomes.stream) || downBiome == WorldGenRegistries.BIOME.getValueForKey(TFBiomes.stream)) {
+							biome = WorldGenRegistries.BIOME.getValueForKey(TFBiomes.stream);
+						}
 
 						MapColorBrightness colorBrightness = this.getMapColorPerBiome(world, biome);
 
@@ -157,18 +162,17 @@ public class ItemTFMagicMap extends FilledMapItem {
 		if (BIOME_COLORS.isEmpty()) {
 			setupBiomeColors();
 		}
-		MapColorBrightness color = BIOME_COLORS.get(WorldGenRegistries.BIOME.getKey(biome));
-		if (color != null) {
-			return color;
-		} else {
-			//FIXME return new MapColorBrightness(biome.getSurfaceBuilderConfig().getTop().getMaterialColor(world, BlockPos.ZERO));
+		Optional<RegistryKey<Biome>> key = WorldGenRegistries.BIOME.getOptionalKey(biome);
+		if (key.isPresent()) {
+			MapColorBrightness color = BIOME_COLORS.get(key);
+			if (color != null) {
+				return color;
+			}
 		}
-
-		return color;
+		return new MapColorBrightness(biome.getGenerationSettings().getSurfaceBuilderConfig().getTop().getMaterialColor(world, BlockPos.ZERO));
 	}
 
 	private static void setupBiomeColors() {
-		/* FIXME arrrrgh!
 		putBiomeColor(TFBiomes.twilightForest, new MapColorBrightness(MaterialColor.FOLIAGE, 1));
 		putBiomeColor(TFBiomes.denseTwilightForest, new MapColorBrightness(MaterialColor.FOLIAGE, 0));
 		putBiomeColor(TFBiomes.tfLake, new MapColorBrightness(MaterialColor.WATER, 3));
@@ -179,7 +183,7 @@ public class ItemTFMagicMap extends FilledMapItem {
 		putBiomeColor(TFBiomes.oakSavanna, new MapColorBrightness(MaterialColor.GRASS, 0));
 		putBiomeColor(TFBiomes.highlands, new MapColorBrightness(MaterialColor.DIRT, 0));
 		putBiomeColor(TFBiomes.thornlands, new MapColorBrightness(MaterialColor.WOOD, 3));
-		putBiomeColor(TFBiomes.highlandsCenter, new MapColorBrightness(MaterialColor.LIGHT_GRAY, 2));
+		putBiomeColor(TFBiomes.finalPlateau, new MapColorBrightness(MaterialColor.LIGHT_GRAY, 2));
 		putBiomeColor(TFBiomes.fireflyForest, new MapColorBrightness(MaterialColor.EMERALD, 1));
 		putBiomeColor(TFBiomes.darkForest, new MapColorBrightness(MaterialColor.GREEN, 3));
 		putBiomeColor(TFBiomes.darkForestCenter, new MapColorBrightness(MaterialColor.ADOBE, 3));
@@ -188,7 +192,11 @@ public class ItemTFMagicMap extends FilledMapItem {
 		putBiomeColor(TFBiomes.mushrooms, new MapColorBrightness(MaterialColor.ADOBE, 0));
 		putBiomeColor(TFBiomes.deepMushrooms, new MapColorBrightness(MaterialColor.PINK, 0));
 		putBiomeColor(TFBiomes.enchantedForest, new MapColorBrightness(MaterialColor.LIME, 2));
-		putBiomeColor(TFBiomes.spookyForest, new MapColorBrightness(MaterialColor.PURPLE, 0));*/
+		putBiomeColor(TFBiomes.spookyForest, new MapColorBrightness(MaterialColor.PURPLE, 0));
+	}
+
+	private static void putBiomeColor(RegistryKey<Biome> biome, MapColorBrightness color) {
+		BIOME_COLORS.put(biome, color);
 	}
 
 	public static int getBiomeColor(Biome biome) {
