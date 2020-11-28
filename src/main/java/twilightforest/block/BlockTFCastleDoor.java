@@ -45,13 +45,6 @@ public class BlockTFCastleDoor extends Block {
 //		return state.get(VANISHED) ? Material.GLASS : super.getMaterial(state);
 //	}
 
-	//TODO: Move to unmapped method
-//	@Override
-//	@Deprecated
-//	public MaterialColor getMaterialColor(BlockState state, IBlockReader worldIn, BlockPos pos) {
-//		return state.get(VANISHED) ? MaterialColor.AIR : super.getMaterialColor(state, worldIn, pos);
-//	}
-
 	@Override
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
 		super.fillStateContainer(builder);
