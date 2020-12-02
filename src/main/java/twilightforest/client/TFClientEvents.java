@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.texture.AtlasTexture;
+import net.minecraft.client.settings.PointOfView;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.text.StringTextComponent;
@@ -115,7 +116,7 @@ public class TFClientEvents {
 		if (!TFConfig.CLIENT_CONFIG.firstPersonEffects.get()) return;
 
 		GameSettings settings = Minecraft.getInstance().gameSettings;
-		if (/*FIXME settings.thirdPersonView != 0 ||*/ settings.hideGUI) return;
+		if (settings.getPointOfView() != PointOfView.FIRST_PERSON || settings.hideGUI) return;
 
 		Entity entity = Minecraft.getInstance().getRenderViewEntity();
 		if (entity instanceof LivingEntity) {

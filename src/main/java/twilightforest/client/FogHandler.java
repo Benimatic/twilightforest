@@ -3,6 +3,7 @@ package twilightforest.client;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
@@ -60,18 +61,15 @@ public class FogHandler {
 
 			RenderSystem.fogMode(GlStateManager.FogMode.LINEAR);
 
-			//FIXME
-//			if (event.getFogMode() == -1) {
-//				RenderSystem.fogStart(0.0F);
-//				RenderSystem.fogEnd(f);
-//			} else {
-//				RenderSystem.fogStart(f * 0.75F);
-//				RenderSystem.fogEnd(f);
-//			}
-//
-//			if (GLContext.getCapabilities().GL_NV_fog_distance) {
-//				RenderSystem.fogi(0x855a, 0x855b);
-//			}
+			if (event.getType() == FogRenderer.FogType.FOG_SKY) {
+				RenderSystem.fogStart(0.0F);
+				RenderSystem.fogEnd(f);
+			} else {
+				RenderSystem.fogStart(f * 0.75F);
+				RenderSystem.fogEnd(f);
+			}
+
+			RenderSystem.setupNvFogDistance();
 		}
 	}
 
