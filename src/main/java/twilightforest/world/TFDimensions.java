@@ -11,6 +11,7 @@ import twilightforest.TwilightForestMod;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class TFDimensions {
+	public static long seed;
 	public static final RegistryKey<DimensionType> twilightForestType = RegistryKey.getOrCreateKey(Registry.DIMENSION_TYPE_KEY, TwilightForestMod.prefix(TwilightForestMod.ID));
 	public static final RegistryKey<World> twilightForest = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get()));
 
