@@ -91,7 +91,7 @@ public class TFBiomeProvider extends BiomeProvider {
 	private static <T extends IArea, C extends IExtendedNoiseRandom<T>> IAreaFactory<T> makeLayers(LongFunction<C> seed, Registry<Biome> registry) {
 		IAreaFactory<T> biomes = GenLayerTFBiomes.INSTANCE.setup(registry).apply(seed.apply(1L));
 		biomes = GenLayerTFKeyBiomes.INSTANCE.setup(registry).apply(seed.apply(1000L), biomes);
-		biomes = GenLayerTFCompanionBiomes.INSTANCE.apply(seed.apply(1000L), biomes);
+		biomes = GenLayerTFCompanionBiomes.INSTANCE.setup(registry).apply(seed.apply(1000L), biomes);
 
 		biomes = ZoomLayer.NORMAL.apply(seed.apply(1000L), biomes);
 		biomes = ZoomLayer.NORMAL.apply(seed.apply(1001), biomes);
