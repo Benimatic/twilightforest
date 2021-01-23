@@ -17,7 +17,8 @@ public class TFDimensions {
 
 	public static void init() {
 		//Registry.register(Registry.BIOME_PROVIDER_CODEC, TwilightForestMod.prefix("biome_distributor"), TFBiomeDistributor.tfBiomeProviderCodec);
-		// TODO legacy Registry.register(Registry.BIOME_PROVIDER_CODEC, TwilightForestMod.prefix("grid"), TFBiomeProvider.$);
+		// TODO legacy
+		Registry.register(Registry.BIOME_PROVIDER_CODEC, TwilightForestMod.prefix("grid"), TFBiomeProvider.tfBiomeProviderCodec);
 
 		// For now use minecraft:noise until we need to terraform for features
 		//Registry.register(Registry.CHUNK_GENERATOR_CODEC, TwilightForestMod.prefix("featured_noise"), ChunkGeneratorTwilightForest.codecTFChunk);

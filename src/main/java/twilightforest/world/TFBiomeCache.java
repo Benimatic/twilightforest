@@ -31,13 +31,14 @@ public class TFBiomeCache {
 
 	private final class Entry {
 
-		final Biome[] biomes = new Biome[gridSize * gridSize];
+		final Biome biome;
 		final int x, z;
 		long lastAccessTime;
 
 		Entry(int x, int z) {
 			this.x = x;
 			this.z = z;
+			biome = provider.getNoiseBiome(fromGrid(x), 0, fromGrid(z), false);
 //			provider.getBiomesForGeneration(biomes, fromGrid(x), fromGrid(z), gridSize, gridSize, false);
 		}
 	}
@@ -61,8 +62,8 @@ public class TFBiomeCache {
 		return entry;
 	}
 
-	public Biome[] getBiomes(int x, int z) {
-		return getEntry(x, z).biomes;
+	public Biome getBiome(int x, int z) {
+		return getEntry(x, z).biome;
 	}
 
 	public void cleanup() {
@@ -89,8 +90,8 @@ public class TFBiomeCache {
 		}
 	}
 
-	public boolean isGridAligned(int x, int z, int width, int height) {
-		return width == gridSize && height == gridSize && gridOffset(x) == 0 && gridOffset(z) == 0;
+	public boolean isGridAligned(int x, int z/*int width, int height*/) {
+		return /*width == gridSize && height == gridSize && */gridOffset(x) == 0 && gridOffset(z) == 0;
 	}
 
 	private int gridOffset(int n) {
