@@ -37,11 +37,13 @@ public final class BiomeGenerator extends BiomeDataHelper {
                         .temperature(0.7F)
                         .downfall(0.8F)
                         .depth(0.2F)
+						.scale(0.2F)
                         .build()
         );
 
         biomes.put(TFBiomes.fireflyForest,
                 biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), addCanopyFirefly(defaultGenSettingBuilder()))
+						.temperature(0.5F)
                         .downfall(1)
                         .depth(0.125F)
                         .scale(0.05F)
@@ -64,18 +66,19 @@ public final class BiomeGenerator extends BiomeDataHelper {
                         .temperature(0.9F)
                         .downfall(0)
                         .depth(0.2F)
+						.scale(0.2F)
                         .build()
         );
 
         biomes.put(TFBiomes.mushrooms,
-                biomeWithDefaults(defaultAmbientBuilder().setWaterColor(0xC0FFD8).setWaterFogColor(0x3F76E4), defaultMobSpawning(), addMushroomCanopy(defaultGenSettingBuilder(), 0.2f))
+                biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), addMushroomCanopy(defaultGenSettingBuilder(), 0.2f))
                         .temperature(0.8F)
                         .downfall(0.8F)
                         .build()
         );
 
         biomes.put(TFBiomes.deepMushrooms,
-                biomeWithDefaults(defaultAmbientBuilder().setWaterColor(0xC0FFD8).setWaterFogColor(0x3F76E4), defaultMobSpawning(), addMushroomCanopy(defaultGenSettingBuilder(), 0.9f))
+                biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), addMushroomCanopy(defaultGenSettingBuilder(), 0.9f))
                         .temperature(0.8F)
                         .downfall(1)
                         .depth(0.125F)
@@ -84,28 +87,31 @@ public final class BiomeGenerator extends BiomeDataHelper {
         );
 
         biomes.put(TFBiomes.spookyForest,
-                biomeWithDefaults(defaultAmbientBuilder().setWaterColor(0xFA9111), defaultMobSpawning(), defaultBiomeGenerationSettings)
+                biomeWithDefaults(defaultAmbientBuilder().withGrassColor(0xC45123).withFoliageColor(0xFF8501).setWaterColor(0xFA9111), defaultMobSpawning(), defaultBiomeGenerationSettings)
+						.temperature(0.5F)
                         .downfall(1)
                         .depth(0.125F)
                         .scale(0.05F)
                         .build()
         );
 
-        biomes.put(TFBiomes.enchantedForest,
-                biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), modify(defaultGenSettingBuilder(), c -> c.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredFeatures.RAINBOAK_TREE.square())))
+        biomes.put(TFBiomes.enchantedForest, // FIXME: colors
+                biomeWithDefaults(defaultAmbientBuilder().withFoliageColor(0x0000FF).withGrassColor(0x0000FF), defaultMobSpawning(), modify(defaultGenSettingBuilder(), c -> c.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredFeatures.RAINBOAK_TREE.square())))
                         .build()
         );
 
         biomes.put(TFBiomes.stream,
                 biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), defaultBiomeGenerationSettings)
                         .category(Biome.Category.RIVER)
-                        .depth(-0.7F)
+						.temperature(0.5F)
+						.downfall(0.1F)
+                        .depth(-0.5F)
                         .scale(0)
                         .build()
         );
 
         biomes.put(TFBiomes.tfLake,
-                biomeWithDefaults(defaultAmbientBuilder().setWaterColor(0xC0FFD8).setWaterFogColor(0x3F76E4), defaultMobSpawning(), defaultBiomeGenerationSettings)
+                biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), defaultBiomeGenerationSettings)
                         .category(Biome.Category.OCEAN)
                         .temperature(0.66F)
                         .downfall(1)
@@ -117,7 +123,7 @@ public final class BiomeGenerator extends BiomeDataHelper {
         BiomeGenerationSettings.Builder swampGenerationBuilder = modify(defaultGenSettingBuilder(), b -> b.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredFeatures.MANGROVE_TREE.square()));
 
         biomes.put(TFBiomes.tfSwamp,
-                biomeWithDefaults(defaultAmbientBuilder().setWaterColor(0xE0FFAE), defaultMobSpawning(), swampGenerationBuilder)
+                biomeWithDefaults(defaultAmbientBuilder().withGrassColor(0x5C694E).withFoliageColor(0x496137).setWaterColor(0xE0FFAE), defaultMobSpawning(), swampGenerationBuilder)
                         .category(Biome.Category.SWAMP)
                         .temperature(0.8F)
                         .downfall(0.9F)
@@ -127,17 +133,19 @@ public final class BiomeGenerator extends BiomeDataHelper {
         );
 
         biomes.put(TFBiomes.fireSwamp,
-                biomeWithDefaults(whiteAshParticles(defaultAmbientBuilder().setWaterColor(0x6C2C2C)), defaultMobSpawning(), swampGenerationBuilder)
+                biomeWithDefaults(whiteAshParticles(defaultAmbientBuilder().withGrassColor(0x572E23).withFoliageColor(0x64260F).setWaterColor(0x6C2C2C)), defaultMobSpawning(), swampGenerationBuilder)
                         .category(Biome.Category.SWAMP)
                         .temperature(1)
                         .downfall(0.4F)
+						.depth(0.1F)
+						.scale(0.2F)
                         .build()
         );
 
         BiomeGenerationSettings.Builder darkForestGenerationBuilder = modify(defaultGenSettingBuilder(), b -> b.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredFeatures.DARKWOOD_TREE.square()));
 
         biomes.put(TFBiomes.darkForest,
-                biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), darkForestGenerationBuilder)
+                biomeWithDefaults(defaultAmbientBuilder().withGrassColor(0x4B6754).withFoliageColor(0x3B5E3F), defaultMobSpawning(), darkForestGenerationBuilder)
                         .temperature(0.7F)
                         .downfall(0.8F)
                         .depth(0.125F)
@@ -145,8 +153,8 @@ public final class BiomeGenerator extends BiomeDataHelper {
                         .build()
         );
 
-        biomes.put(TFBiomes.darkForestCenter,
-                biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), darkForestGenerationBuilder)
+        biomes.put(TFBiomes.darkForestCenter, // FIXME: colors
+                biomeWithDefaults(defaultAmbientBuilder().withGrassColor(0x667540).withFoliageColor(0xF9821E), defaultMobSpawning(), darkForestGenerationBuilder)
                         .depth(0.125F)
                         .scale(0.05F)
                         .build()
@@ -157,6 +165,7 @@ public final class BiomeGenerator extends BiomeDataHelper {
                         .temperature(0.09F)
                         .downfall(0.9F)
                         .depth(0.2F)
+						.scale(0.2F)
                         .precipitation(Biome.RainType.SNOW)
                         .build()
         );
@@ -164,7 +173,7 @@ public final class BiomeGenerator extends BiomeDataHelper {
         biomes.put(TFBiomes.glacier,
                 biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), defaultGenSettingBuilder())
                         .category(Biome.Category.ICY)
-                        .temperature(0)
+                        .temperature(0.8F)
                         .downfall(0.1F)
                         .precipitation(Biome.RainType.SNOW)
                         .build()
@@ -185,7 +194,7 @@ public final class BiomeGenerator extends BiomeDataHelper {
                         .category(Biome.Category.NONE)
                         .temperature(0.3F)
                         .downfall(0.2F)
-                        .depth(6)
+                        .depth(6F)
                         .scale(0.1F)
                         .build()
         );
