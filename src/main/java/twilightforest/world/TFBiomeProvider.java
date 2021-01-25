@@ -44,7 +44,6 @@ public class TFBiomeProvider extends BiomeProvider {
 
 	private final Registry<Biome> registry;
 	private final Layer genBiomes;
-	private final TFBiomeCache mapCache;
 	private final long seed;
 	private static final List<RegistryKey<Biome>> BIOMES = ImmutableList.of( //TODO: Can we do this more efficiently?
 			TFBiomes.tfLake,
@@ -81,7 +80,6 @@ public class TFBiomeProvider extends BiomeProvider {
 
 		registry = reg;
 		genBiomes = makeLayers(seed, reg);
-		mapCache = new TFBiomeCache(this, 512, true);
 	}
 
 	public static int getBiomeId(RegistryKey<Biome> biome, Registry<Biome> registry) {
@@ -137,34 +135,7 @@ public class TFBiomeProvider extends BiomeProvider {
 
 	@Override
 	public Biome getNoiseBiome(int x, int y, int z) {
-		return getNoiseBiome(x, y, z, true);
-	}
-
-	public Biome getNoiseBiome(int x, int y, int z, boolean useCache) {
-		// for grid-centred magic maps, get from map cache
-				if (useCache && mapCache.isGridAligned(x, z)) {
-					return mapCache.getBiome(x, z);
-				}
 		return genBiomes.func_242936_a(registry, x, z);
 	}
 
-//	@Override
-//	public Biome[] getBiomesForGeneration(Biome[] biomes, int x, int z, int width, int height) {
-//		return getBiomesForGeneration(biomes, x, z, width, height, true);
-//	}
-
-//	public Biome[] getBiomesForGeneration(Biome[] biomes, int x, int z, int width, int height, boolean useCache) {
-//		// for grid-centred magic maps, get from map cache
-//		if (useCache && mapCache.isGridAligned(x, z, width, height)) {
-//			Biome[] cached = mapCache.getBiomes(x, z);
-//			return Arrays.copyOf(cached, cached.length);
-//		}
-//		return super.getBiomesForGeneration(biomes, x, z, width, height);
-//	}
-
-//	@Override
-//	public void cleanupCache() {
-//		mapCache.cleanup();
-//		super.cleanupCache();
-//	}
 }
