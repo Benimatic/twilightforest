@@ -38,31 +38,23 @@ public enum GenLayerTFKeyBiomes implements IAreaTransformer1 {
 		return z | 3;
 	}
 
-	//TODO: This logic is butchered to hell and back
 	@Override
 	public int apply(IExtendedNoiseRandom<?> random, IArea iArea, int x, int z) {
-
-		int dx = getOffsetX(x);
-		int dz = getOffsetZ(z);
-		// get offsets
-		//initChunkSeed(((dx + x) | 3), ((dz + z) | 3));
-
-		int ox = random.random(3) + 1;
-		int oz = random.random(3) + 1;
-
-		if (((dx + x) & 3) == ox && ((dz + z) & 3) == oz) {
+		int ox = (x % 1000) & 3;
+		int oz = (z % 1000) & 3;
+		if ((x & ox) == 3 && (z & oz) == 3) {
 			// determine which of the 4
-			if (((dx + x) & 4) == 0) {
-				if (((dz + z) & 4) == 0) {
-					return getKeyBiomeFor(random, dx + x, dz + z, 0);
+			if ((x & 4) == 0) {
+				if ((z & 4) == 0) {
+					return getKeyBiomeFor(random, x, z, 0);
 				} else {
-					return getKeyBiomeFor(random, dx + x, dz + z, 1);
+					return getKeyBiomeFor(random, x, z, 1);
 				}
 			} else {
-				if (((dz + z) & 4) == 0) {
-					return getKeyBiomeFor(random, dx + x, dz + z, 2);
+				if ((z & 4) == 0) {
+					return getKeyBiomeFor(random, x, z, 2);
 				} else {
-					return getKeyBiomeFor(random, dx + x, dz + z, 3);
+					return getKeyBiomeFor(random, x, z, 3);
 				}
 			}
 

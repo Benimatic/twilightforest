@@ -80,7 +80,7 @@ public enum GenLayerTFBiomeStabilize implements IAreaTransformer1 {
 //            		output[dx + dz * width] = Biome.desert.biomeID;
 //            		output[dx + dz * width] = input[dx + 1 + (dz + 1) * nwidth];
 		} else {
-			return iArea.getValue(dx, dz);
+			return iArea.getValue(dx + 1, dz + 1);
 		}
 	}
 }

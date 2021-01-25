@@ -4,13 +4,9 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.RegistryKey;
-import net.minecraft.util.SharedConstants;
-import net.minecraft.util.Util;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryLookupCodec;
-import net.minecraft.util.registry.WorldGenRegistries;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeRegistry;
 import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.gen.IExtendedNoiseRandom;
 import net.minecraft.world.gen.LazyAreaLayerContext;
@@ -20,8 +16,6 @@ import net.minecraft.world.gen.area.LazyArea;
 import net.minecraft.world.gen.layer.Layer;
 import net.minecraft.world.gen.layer.SmoothLayer;
 import net.minecraft.world.gen.layer.ZoomLayer;
-import net.minecraftforge.fml.RegistryObject;
-import twilightforest.TwilightForestMod;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.world.layer.GenLayerTFBiomeStabilize;
 import twilightforest.world.layer.GenLayerTFBiomes;
@@ -31,10 +25,8 @@ import twilightforest.world.layer.GenLayerTFRiverMix;
 import twilightforest.world.layer.GenLayerTFStream;
 import twilightforest.world.layer.GenLayerTFThornBorder;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.LongFunction;
-import java.util.function.Supplier;
 
 public class TFBiomeProvider extends BiomeProvider {
 	public static final Codec<TFBiomeProvider> tfBiomeProviderCodec = RecordCodecBuilder.create((instance) ->
@@ -92,7 +84,7 @@ public class TFBiomeProvider extends BiomeProvider {
 		biomes = GenLayerTFCompanionBiomes.INSTANCE.setup(registry).apply(seed.apply(1000L), biomes);
 
 		biomes = ZoomLayer.NORMAL.apply(seed.apply(1000L), biomes);
-		biomes = ZoomLayer.NORMAL.apply(seed.apply(1001), biomes);
+		biomes = ZoomLayer.NORMAL.apply(seed.apply(1001L), biomes);
 
 		biomes = GenLayerTFBiomeStabilize.INSTANCE.apply(seed.apply(700L), biomes);
 
@@ -109,9 +101,42 @@ public class TFBiomeProvider extends BiomeProvider {
 
 		return biomes;
 	}
-
+	
 	public static Layer makeLayers(long seed, Registry<Biome> registry) {
 		IAreaFactory<LazyArea> areaFactory = makeLayers((context) -> new LazyAreaLayerContext(25, seed, context), registry);
+		// Debug code to render an image of the biome layout within the ide
+		/*final Map<Integer, Integer> remapColors = new HashMap<>();
+		remapColors.put(getBiomeId(TFBiomes.tfLake, registry), 0x0000FF);
+		remapColors.put(getBiomeId(TFBiomes.twilightForest, registry), 0x00FF00);
+		remapColors.put(getBiomeId(TFBiomes.denseTwilightForest, registry), 0x00AA00);
+		remapColors.put(getBiomeId(TFBiomes.highlands, registry), 0xCC6900);
+		remapColors.put(getBiomeId(TFBiomes.mushrooms, registry), 0xcc008b);
+		remapColors.put(getBiomeId(TFBiomes.tfSwamp, registry), 0x00ccbb);
+		remapColors.put(getBiomeId(TFBiomes.stream, registry), 0x0000FF);
+		remapColors.put(getBiomeId(TFBiomes.snowy_forest, registry), 0xFFFFFF);
+		remapColors.put(getBiomeId(TFBiomes.glacier, registry), 0x82bff5);
+		remapColors.put(getBiomeId(TFBiomes.clearing, registry), 0x84f582);
+		remapColors.put(getBiomeId(TFBiomes.oakSavanna, registry), 0xeff582);
+		remapColors.put(getBiomeId(TFBiomes.fireflyForest, registry), 0x58fc66);
+		remapColors.put(getBiomeId(TFBiomes.deepMushrooms, registry), 0xb830b8);
+		remapColors.put(getBiomeId(TFBiomes.darkForest, registry), 0x193d0d);
+		remapColors.put(getBiomeId(TFBiomes.enchantedForest, registry), 0x00FFFF);
+		remapColors.put(getBiomeId(TFBiomes.fireSwamp, registry), 0xFF0000);
+		remapColors.put(getBiomeId(TFBiomes.darkForestCenter, registry), 0xFFFF00);
+		remapColors.put(getBiomeId(TFBiomes.finalPlateau, registry), 0x000000);
+		remapColors.put(getBiomeId(TFBiomes.thornlands, registry), 0x3d250d);
+		remapColors.put(getBiomeId(TFBiomes.spookyForest, registry), 0x7700FF);
+		BufferedImage image = new BufferedImage(2048, 2048, BufferedImage.TYPE_INT_RGB);
+		Graphics2D display = image.createGraphics();
+		LazyArea area = areaFactory.make();
+		for (int x = 0; x < image.getWidth(); x++) {
+			for (int z = 0; z < image.getHeight(); z++) {
+				int c = area.getValue(x, z);
+				display.setColor(new Color(remapColors.getOrDefault(c, c)));
+				display.drawRect(x, z, 1, 1);
+			}
+		}
+		System.out.println("breakpoint");*/
 		return new Layer(areaFactory) {
 			public Biome func_242936_a(Registry<Biome> p_242936_1_, int p_242936_2_, int p_242936_3_) {
 				int i = this.field_215742_b.getValue(p_242936_2_, p_242936_3_);
