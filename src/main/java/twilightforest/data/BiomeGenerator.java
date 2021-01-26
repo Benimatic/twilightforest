@@ -105,7 +105,7 @@ public final class BiomeGenerator extends BiomeDataHelper {
                         .category(Biome.Category.RIVER)
 						.temperature(0.5F)
 						.downfall(0.1F)
-                        .depth(-0.5F)
+                        .depth(-0.8F)
                         .scale(0)
                         .build()
         );
@@ -127,8 +127,8 @@ public final class BiomeGenerator extends BiomeDataHelper {
                         .category(Biome.Category.SWAMP)
                         .temperature(0.8F)
                         .downfall(0.9F)
-                        .depth(-0.125F)
-                        .scale(0.125F)
+                        .depth(-0.25F)
+                        .scale(0.25F)
                         .build()
         );
 

@@ -1110,6 +1110,6 @@
   "temperature": 0.8,
   "downfall": 0.9,
   "category": "swamp",
-  "depth": -0.125,
-  "scale": 0.125
+  "depth": -0.25,
+  "scale": 0.25
 }
