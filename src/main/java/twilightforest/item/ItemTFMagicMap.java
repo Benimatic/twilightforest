@@ -104,10 +104,9 @@ public class ItemTFMagicMap extends FilledMapItem {
 //			Biome[] biomes = world.getBiomeAccess().getBiomesForGeneration((Biome[]) null, startX, startZ, 128 * biomesPerPixel, 128 * biomesPerPixel);
 			Biome[] biomes = new Biome[128 * biomesPerPixel * 128 * biomesPerPixel];
 
-			// FIXME: this math is completely wrong
 			for(int l = 0; l < 128 * biomesPerPixel; ++l) {
 				for(int i1 = 0; i1 < 128 * biomesPerPixel; ++i1) {
-					biomes[l * 128 * biomesPerPixel + i1] = world.getBiome(new BlockPos((centerX / biomesPerPixel - 64) * biomesPerPixel + i1, 0, (centerZ / biomesPerPixel - 64) * biomesPerPixel + l));
+					biomes[l * 128 * biomesPerPixel + i1] = world.getBiome(new BlockPos(startX * biomesPerPixel + i1 * biomesPerPixel, 0, startZ * biomesPerPixel + l * biomesPerPixel));
 				}
 			}
 
@@ -123,7 +122,7 @@ public class ItemTFMagicMap extends FilledMapItem {
 						// make streams more visible
 						Biome overBiome = biomes[xPixel * biomesPerPixel + zPixel * biomesPerPixel * 128 * biomesPerPixel + 1];
 						Biome downBiome = biomes[xPixel * biomesPerPixel + (zPixel * biomesPerPixel + 1) * 128 * biomesPerPixel];
-						biome = overBiome != null && TFBiomes.stream.getRegistryName().equals(overBiome.getRegistryName()) ? overBiome :  downBiome != null && TFBiomes.stream.getRegistryName().equals(downBiome.getRegistryName()) ? downBiome : biome;
+						biome = overBiome != null && TFBiomes.stream.getLocation().equals(overBiome.getRegistryName()) ? overBiome : downBiome != null && TFBiomes.stream.getLocation().equals(downBiome.getRegistryName()) ? downBiome : biome;
 
 						MapColorBrightness colorBrightness = this.getMapColorPerBiome(world, biome);
 
