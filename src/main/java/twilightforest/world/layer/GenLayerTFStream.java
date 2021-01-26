@@ -42,16 +42,21 @@ public enum GenLayerTFStream implements ICastleTransformer {
 		final int tfLake = TFBiomeProvider.getBiomeId(TFBiomes.tfLake, registry);
 		final int thornlands = TFBiomeProvider.getBiomeId(TFBiomes.thornlands, registry);
 		
-		return !((biome1 == tfLake || biome2 == tfLake)
-				|| (biome1 == thornlands || biome2 == thornlands)
-				|| testEitherBiome(biome1, biome2, TFBiomeProvider.getBiomeId(TFBiomes.snowy_forest, registry), TFBiomeProvider.getBiomeId(TFBiomes.glacier, registry))
-				|| testEitherBiome(biome1, biome2, TFBiomeProvider.getBiomeId(TFBiomes.mushrooms, registry), TFBiomeProvider.getBiomeId(TFBiomes.deepMushrooms, registry))
-				|| testEitherBiome(biome1, biome2, TFBiomeProvider.getBiomeId(TFBiomes.tfSwamp, registry), TFBiomeProvider.getBiomeId(TFBiomes.fireSwamp, registry))
-				|| testEitherBiome(biome1, biome2, TFBiomeProvider.getBiomeId(TFBiomes.darkForest, registry), TFBiomeProvider.getBiomeId(TFBiomes.darkForestCenter, registry))
-				|| testEitherBiome(biome1, biome2, TFBiomeProvider.getBiomeId(TFBiomes.highlands, registry), TFBiomeProvider.getBiomeId(TFBiomes.finalPlateau, registry)));
+		return !(testEitherBiomeOR(biome1, biome2, tfLake, tfLake)
+				|| testEitherBiomeOR(biome1, biome2, thornlands, thornlands)
+				|| testEitherBiomeOR(biome1, biome2, TFBiomeProvider.getBiomeId(TFBiomes.clearing, registry), TFBiomeProvider.getBiomeId(TFBiomes.oakSavanna, registry))
+				|| testEitherBiomeAND(biome1, biome2, TFBiomeProvider.getBiomeId(TFBiomes.snowy_forest, registry), TFBiomeProvider.getBiomeId(TFBiomes.glacier, registry))
+				|| testEitherBiomeAND(biome1, biome2, TFBiomeProvider.getBiomeId(TFBiomes.mushrooms, registry), TFBiomeProvider.getBiomeId(TFBiomes.deepMushrooms, registry))
+				|| testEitherBiomeAND(biome1, biome2, TFBiomeProvider.getBiomeId(TFBiomes.tfSwamp, registry), TFBiomeProvider.getBiomeId(TFBiomes.fireSwamp, registry))
+				|| testEitherBiomeAND(biome1, biome2, TFBiomeProvider.getBiomeId(TFBiomes.darkForest, registry), TFBiomeProvider.getBiomeId(TFBiomes.darkForestCenter, registry))
+				|| testEitherBiomeAND(biome1, biome2, TFBiomeProvider.getBiomeId(TFBiomes.highlands, registry), TFBiomeProvider.getBiomeId(TFBiomes.finalPlateau, registry)));
 	}
 
-	private boolean testEitherBiome(int test1, int test2, int predicate1, int predicate2) {
+	private boolean testEitherBiomeAND(int test1, int test2, int predicate1, int predicate2) {
 		return (test1 == predicate1 && test2 == predicate2) || (test2 == predicate1 && test1 == predicate2);
+	}
+
+	private boolean testEitherBiomeOR(int test1, int test2, int predicate1, int predicate2) {
+		return (test1 == predicate1 || test2 == predicate2) || (test2 == predicate1 || test1 == predicate2);
 	}
 }
