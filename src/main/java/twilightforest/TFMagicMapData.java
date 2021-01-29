@@ -1,5 +1,10 @@
 package twilightforest;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -135,7 +140,7 @@ public class TFMagicMapData extends MapData {
 		@Override
 		@OnlyIn(Dist.CLIENT)
 		public boolean render(int idx) {
-			/* todo 1.15 forge needs to pass in the ms and buffers
+			// TODO: Forge needs to pass in the ms and buffers, but for now this works
 			if (TFFeature.getFeatureByID(featureId).isStructureEnabled) {
 				Minecraft.getInstance().textureManager.bindTexture(MAP_ICONS);
 				RenderSystem.pushMatrix();
@@ -150,15 +155,14 @@ public class TFMagicMapData extends MapData {
 				Tessellator tessellator = Tessellator.getInstance();
 				BufferBuilder bufferbuilder = tessellator.getBuffer();
 				bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-				bufferbuilder.vertex(-1.0D, 1.0D, (float) idx * -0.001F).texture(f1, f2).endVertex();
-				bufferbuilder.vertex(1.0D, 1.0D, (float) idx * -0.001F).texture(f3, f2).endVertex();
-				bufferbuilder.vertex(1.0D, -1.0D, (float) idx * -0.001F).texture(f3, f4).endVertex();
-				bufferbuilder.vertex(-1.0D, -1.0D, (float) idx * -0.001F).texture(f1, f4).endVertex();
+				bufferbuilder.pos(-1.0D, 1.0D, (float) idx * -0.001F).tex(f1, f2).endVertex();
+				bufferbuilder.pos(1.0D, 1.0D, (float) idx * -0.001F).tex(f3, f2).endVertex();
+				bufferbuilder.pos(1.0D, -1.0D, (float) idx * -0.001F).tex(f3, f4).endVertex();
+				bufferbuilder.pos(-1.0D, -1.0D, (float) idx * -0.001F).tex(f1, f4).endVertex();
 				tessellator.draw();
 				RenderSystem.popMatrix();
 			}
-			 */
-			return true;
+			return false;
 		}
 
 		@Override

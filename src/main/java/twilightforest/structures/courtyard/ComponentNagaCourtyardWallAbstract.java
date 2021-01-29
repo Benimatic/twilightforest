@@ -42,7 +42,7 @@ public class ComponentNagaCourtyardWallAbstract extends StructureTFComponentTemp
     }
 
     @Override
-    protected void loadTemplates(TemplateManager templateManager, MinecraftServer server) {
+    protected void loadTemplates(TemplateManager templateManager) {
         TEMPLATE = templateManager.getTemplate(WALL);
         decayTemplate = templateManager.getTemplate(WALL_DECAYED);
     }

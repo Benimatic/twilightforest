@@ -33,7 +33,7 @@ public class ComponentNagaCourtyardPath extends StructureTFComponentTemplate {
     }
 
     @Override
-    protected void loadTemplates(TemplateManager templateManager, MinecraftServer server) {
+    protected void loadTemplates(TemplateManager templateManager) {
         TEMPLATE = templateManager.getTemplate(PATH);
     }
 

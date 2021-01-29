@@ -42,7 +42,7 @@ public abstract class ComponentNagaCourtyardHedgeAbstract extends StructureTFCom
     }
 
     @Override
-    protected void loadTemplates(TemplateManager templateManager, MinecraftServer server) {
+    protected void loadTemplates(TemplateManager templateManager) {
         TEMPLATE = templateManager.getTemplate(HEDGE);
         templateBig = templateManager.getTemplate(HEDGE_BIG);
     }

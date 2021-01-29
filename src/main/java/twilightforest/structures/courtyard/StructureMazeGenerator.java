@@ -631,8 +631,9 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
 	protected void readAdditional(CompoundNBT tagCompound) {
 		super.readAdditional(tagCompound);
 
-		this.widthInCellCount = tagCompound.getInt("mazeWidth");
-		this.heightInCellCount = tagCompound.getInt("mazeHeight");
+		// FIXME: nothing is being saved, we're getting default values
+		this.widthInCellCount = ComponentNagaCourtyardMain.ROW_OF_CELLS;//tagCompound.getInt("mazeWidth");
+		this.heightInCellCount = ComponentNagaCourtyardMain.ROW_OF_CELLS;//tagCompound.getInt("mazeHeight");
 
 		maze = new int[this.widthInCellCount-1][this.heightInCellCount-1];
 

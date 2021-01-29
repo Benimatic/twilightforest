@@ -549,17 +549,24 @@ public enum TFFeature {
 	 * either generating this chunk for the first time, or using the magic map to forecast beyond the edge of the world.
 	 */
 	public static TFFeature generateFeature(int chunkX, int chunkZ, ServerWorld world) {
-		// FIXME Remove block comment start-marker to enable debug
-		/*if (true) {
-			return NAGA_COURTYARD;
-		}//*/
-
 		// set the chunkX and chunkZ to the center of the biome
 		chunkX = Math.round(chunkX / 16F) * 16;
 		chunkZ = Math.round(chunkZ / 16F) * 16;
 
 		// what biome is at the center of the chunk?
 		Biome biomeAt = world.getBiome(new BlockPos((chunkX << 4) + 8, 0, (chunkZ << 4) + 8));
+		return generateFeature(chunkX, chunkZ, biomeAt, world.getSeed());
+	}
+
+	public static TFFeature generateFeature(int chunkX, int chunkZ, Biome biome, long seed) {
+		// FIXME Remove block comment start-marker to enable debug
+		/*if (true) {
+			return NAGA_COURTYARD;
+		}//*/
+
+		// set the chunkX and chunkZ to the center of the biome in case they arent already
+		chunkX = Math.round(chunkX / 16F) * 16;
+		chunkZ = Math.round(chunkZ / 16F) * 16;
 
 		// does the biome have a feature?
 		//TODO: Collaterally blocked out due to null registry objects
@@ -585,7 +592,7 @@ public enum TFFeature {
 
 		// get random value
 		// okay, well that takes care of most special cases
-		switch (new Random(world.getSeed() + chunkX * 25117 + chunkZ * 151121).nextInt(16)) {
+		switch (new Random(seed + chunkX * 25117 + chunkZ * 151121).nextInt(16)) {
 			default:
 			case 0:
 			case 1:

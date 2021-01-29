@@ -51,13 +51,13 @@ public abstract class StructureTFComponentTemplate extends StructureTFComponent 
         this.boundingBox = new MutableBoundingBox(x, y, z, x, y, z);
     }
 
-    public final void setup(TemplateManager templateManager, MinecraftServer server) {
-        loadTemplates(templateManager, server);
+    public final void setup(TemplateManager templateManager) {
+        loadTemplates(templateManager);
         setModifiedTemplatePositionFromRotation();
         setBoundingBoxFromTemplate(rotatedPosition);
     }
 
-    protected abstract void loadTemplates(TemplateManager templateManager, MinecraftServer server);
+    protected abstract void loadTemplates(TemplateManager templateManager);
 
     //TODO: See super
 //    @Override
