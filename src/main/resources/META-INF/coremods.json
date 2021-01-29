@@ -1,3 +1,4 @@
 {
-  "seed": "META-INF/asm/seed.js"
+  "seed": "META-INF/asm/seed.js",
+  "maprendercontext": "META-INF/asm/maprendercontext.js"
 }

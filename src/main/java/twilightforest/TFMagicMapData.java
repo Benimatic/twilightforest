@@ -1,12 +1,19 @@
 package twilightforest;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.MapItemRenderer;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -128,7 +135,11 @@ public class TFMagicMapData extends MapData {
 
 	public static class TFMapDecoration extends MapDecoration {
 
-		private static final ResourceLocation MAP_ICONS = TwilightForestMod.prefix("textures/gui/mapicons.png");
+		private static final RenderType MAP_ICONS = RenderType.getText(TwilightForestMod.prefix("textures/gui/mapicons.png"));
+
+		public static MatrixStack stack;
+		public static IRenderTypeBuffer buffer;
+		public static int light;
 
 		final int featureId;
 
@@ -142,27 +153,24 @@ public class TFMagicMapData extends MapData {
 		public boolean render(int idx) {
 			// TODO: Forge needs to pass in the ms and buffers, but for now this works
 			if (TFFeature.getFeatureByID(featureId).isStructureEnabled) {
-				Minecraft.getInstance().textureManager.bindTexture(MAP_ICONS);
-				RenderSystem.pushMatrix();
-				RenderSystem.translatef(0.0F + getX() / 2.0F + 64.0F, 0.0F + getY() / 2.0F + 64.0F, -0.02F);
-				RenderSystem.rotatef((float) (getRotation() * 360) / 16.0F, 0.0F, 0.0F, 1.0F);
-				RenderSystem.scalef(4.0F, 4.0F, 3.0F);
-				RenderSystem.translatef(-0.125F, 0.125F, 0.0F);
+				stack.push();
+				stack.translate(0.0F + getX() / 2.0F + 64.0F, 0.0F + getY() / 2.0F + 64.0F, -0.02F);
+				stack.rotate(Vector3f.ZP.rotationDegrees((float)(getRotation() * 360) / 16.0F));
+				stack.scale(4.0F, 4.0F, 3.0F);
+				stack.translate(-0.125D, 0.125D, 0.0D);
 				float f1 = (float) (featureId % 8) / 8.0F;
 				float f2 = (float) (featureId / 8) / 8.0F;
 				float f3 = (float) (featureId % 8 + 1) / 8.0F;
 				float f4 = (float) (featureId / 8 + 1) / 8.0F;
-				Tessellator tessellator = Tessellator.getInstance();
-				BufferBuilder bufferbuilder = tessellator.getBuffer();
-				bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-				bufferbuilder.pos(-1.0D, 1.0D, (float) idx * -0.001F).tex(f1, f2).endVertex();
-				bufferbuilder.pos(1.0D, 1.0D, (float) idx * -0.001F).tex(f3, f2).endVertex();
-				bufferbuilder.pos(1.0D, -1.0D, (float) idx * -0.001F).tex(f3, f4).endVertex();
-				bufferbuilder.pos(-1.0D, -1.0D, (float) idx * -0.001F).tex(f1, f4).endVertex();
-				tessellator.draw();
-				RenderSystem.popMatrix();
+				Matrix4f matrix4f1 = stack.getLast().getMatrix();
+				IVertexBuilder ivertexbuilder1 = buffer.getBuffer(MAP_ICONS);
+				ivertexbuilder1.pos(matrix4f1, -1.0F, 1.0F, (float)idx * -0.001F).color(255, 255, 255, 255).tex(f1, f2).lightmap(light).endVertex();
+				ivertexbuilder1.pos(matrix4f1, 1.0F, 1.0F, (float)idx * -0.001F).color(255, 255, 255, 255).tex(f3, f2).lightmap(light).endVertex();
+				ivertexbuilder1.pos(matrix4f1, 1.0F, -1.0F, (float)idx * -0.001F).color(255, 255, 255, 255).tex(f3, f4).lightmap(light).endVertex();
+				ivertexbuilder1.pos(matrix4f1, -1.0F, -1.0F, (float)idx * -0.001F).color(255, 255, 255, 255).tex(f1, f4).lightmap(light).endVertex();
+				stack.pop();
 			}
-			return false;
+			return true;
 		}
 
 		@Override
