@@ -40,21 +40,21 @@ public enum GenLayerTFKeyBiomes implements IAreaTransformer1 {
 
 	@Override
 	public int apply(IExtendedNoiseRandom<?> random, IArea iArea, int x, int z) {
-		int ox = (x % 1000) & 3;
-		int oz = (z % 1000) & 3;
-		if ((x & ox) == 3 && (z & oz) == 3) {
+		int ox = 2; // TODO: 1-3 value rng per 2048x2048 area
+		int oz = 2;
+		if ((x & 3) == ox && (z & 3) == oz) {
 			// determine which of the 4
 			if ((x & 4) == 0) {
 				if ((z & 4) == 0) {
-					return getKeyBiomeFor(random, x, z, 0);
+					return getKeyBiomeFor(x, z, 0);
 				} else {
-					return getKeyBiomeFor(random, x, z, 1);
+					return getKeyBiomeFor(x, z, 1);
 				}
 			} else {
 				if ((z & 4) == 0) {
-					return getKeyBiomeFor(random, x, z, 2);
+					return getKeyBiomeFor(x, z, 2);
 				} else {
-					return getKeyBiomeFor(random, x, z, 3);
+					return getKeyBiomeFor(x, z, 3);
 				}
 			}
 
@@ -66,16 +66,10 @@ public enum GenLayerTFKeyBiomes implements IAreaTransformer1 {
 	/**
 	 * Determine which map "region" the specified points are in.  Assign the 0-3 of the index to the key biomes based on that region.
 	 */
-	private int getKeyBiomeFor(IExtendedNoiseRandom<?> random, int mapX, int mapZ, int index) {
-		int regionX = (mapX + 4) >> 3;
-		int regionZ = (mapZ + 4) >> 3;
-
-		//this.initChunkSeed(regionX, regionZ);
-		int offset = random.random(4);
-
+	private int getKeyBiomeFor(int mapX, int mapZ, int index) {
 		// do we need to shuffle this better?
 		// the current version just "rotates" the 4 key biomes
-		switch ((index + offset) & 0b11) {
+		switch ((index) & 0b11) {
 			case 0:
 			default:
 				return TFBiomeProvider.getBiomeId(TFBiomes.glacier, registry);

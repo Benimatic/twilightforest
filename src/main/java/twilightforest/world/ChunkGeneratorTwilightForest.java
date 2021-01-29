@@ -30,7 +30,6 @@ import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFConfig;
-import twilightforest.biomes.TFBiomes;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.IntPair;
 
