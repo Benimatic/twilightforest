@@ -18,6 +18,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.server.ServerWorld;
+import twilightforest.biomes.TFBiomes;
 import twilightforest.entity.*;
 import twilightforest.structures.*;
 import twilightforest.util.IntPair;
@@ -363,6 +364,20 @@ public enum TFFeature {
 //		}
 	};
 
+	private static final Map<ResourceLocation, TFFeature> BIOME_FEATURES = new HashMap<ResourceLocation, TFFeature>(){{
+		put(TFBiomes.darkForest.getLocation(), KNIGHT_STRONGHOLD);
+		put(TFBiomes.darkForestCenter.getLocation(), DARK_TOWER);
+		put(TFBiomes.deepMushrooms.getLocation(), MUSHROOM_TOWER);
+		put(TFBiomes.enchantedForest.getLocation(), QUEST_GROVE);
+		put(TFBiomes.finalPlateau.getLocation(), FINAL_CASTLE);
+		put(TFBiomes.fireSwamp.getLocation(), HYDRA_LAIR);
+		put(TFBiomes.glacier.getLocation(), ICE_TOWER);
+		put(TFBiomes.highlands.getLocation(), TROLL_CAVE);
+		put(TFBiomes.snowy_forest.getLocation(), YETI_CAVE);
+		put(TFBiomes.tfSwamp.getLocation(), LABYRINTH);
+		put(TFBiomes.tfLake.getLocation(), QUEST_ISLAND);
+	}};
+
 	//IStructurePieceTypes that can be referred to
 	//TODO: StructureStarts do not have their own piece. These are just here for reference's sake
 //	public static final IStructurePieceType TFHillS = registerPiece("TFHillS", StructureStartHollowHill::new);
@@ -569,13 +584,9 @@ public enum TFFeature {
 		chunkZ = Math.round(chunkZ / 16F) * 16;
 
 		// does the biome have a feature?
-		//TODO: Collaterally blocked out due to null registry objects
-//		if (biomeAt instanceof TFBiomeBase) {
-//			TFFeature biomeFeature = ((TFBiomeBase) biomeAt).containedFeature;
-//			if (biomeFeature != NOTHING) {
-//				return biomeFeature;
-//			}
-//		}
+		TFFeature biomeFeature = BIOME_FEATURES.get(biome.getRegistryName());
+		if(biomeFeature != null)
+			return biomeFeature;
 
 		int regionOffsetX = Math.abs((chunkX + 64 >> 4) % 8);
 		int regionOffsetZ = Math.abs((chunkZ + 64 >> 4) % 8);
