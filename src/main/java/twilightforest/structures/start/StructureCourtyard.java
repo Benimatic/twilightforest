@@ -40,7 +40,7 @@ public class StructureCourtyard extends Structure<NoFeatureConfig> {
 
 	@Override
 	protected boolean func_230363_a_(ChunkGenerator generator, BiomeProvider provider, long seed, SharedSeedRandom random, int chunkX, int chunkZ, Biome biome, ChunkPos structurePos, NoFeatureConfig config) {
-		return TFFeature.isInFeatureChunk(chunkX, chunkZ) && TFFeature.generateFeature(chunkX, chunkZ, biome, seed) == TFFeature.NAGA_COURTYARD;
+		return TFFeature.isInFeatureChunk(chunkX << 4, chunkZ << 4) && TFFeature.generateFeature(chunkX, chunkZ, biome, seed) == TFFeature.NAGA_COURTYARD;
 	}
 
 	public static class Start extends StructureStart<NoFeatureConfig> {

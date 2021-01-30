@@ -21,13 +21,11 @@ public abstract class ComponentNagaCourtyardTerraceAbstract extends StructureTFC
 
     private final ResourceLocation TERRACE;
 
-    @SuppressWarnings({"WeakerAccess", "unused"})
-    public ComponentNagaCourtyardTerraceAbstract(IStructurePieceType piece, CompoundNBT nbt, ResourceLocation terrace) {
-        super(piece, nbt);
+    public ComponentNagaCourtyardTerraceAbstract(TemplateManager manager, IStructurePieceType piece, CompoundNBT nbt, ResourceLocation terrace) {
+        super(manager, piece, nbt);
         TERRACE = terrace;
     }
 
-    @SuppressWarnings("WeakerAccess")
     public ComponentNagaCourtyardTerraceAbstract(IStructurePieceType type, TFFeature feature, int i, int x, int y, int z, Rotation rotation, ResourceLocation terrace) {
         super(type, feature, i, x, y, z, rotation);
         TERRACE = terrace;

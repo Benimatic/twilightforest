@@ -16,6 +16,7 @@ import net.minecraft.world.gen.settings.StructureSeparationSettings;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.world.WorldEvent;
+import twilightforest.structures.courtyard.NagaCourtyardPieces;
 import twilightforest.structures.start.StructureCourtyard;
 import twilightforest.world.TFDimensions;
 
@@ -31,7 +32,8 @@ public class TFStructures {
 
 	public static void register(RegistryEvent.Register<Structure<?>> event) {
 		SEPARATION_SETTINGS.clear();
-		register(event, NAGA_COURTYARD, CONFIGURED_NAGA_COURTYARD, StructureCourtyard.NAME, 8, 16);
+		new NagaCourtyardPieces();
+		register(event, NAGA_COURTYARD, CONFIGURED_NAGA_COURTYARD, StructureCourtyard.NAME, 1, 2);
 	}
 
 	private static void register(RegistryEvent.Register<Structure<?>> event, Structure<?> structure, StructureFeature<?, ?> config, ResourceLocation name, int min, int max) {

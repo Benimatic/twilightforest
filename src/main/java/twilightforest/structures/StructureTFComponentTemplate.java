@@ -24,10 +24,11 @@ public abstract class StructureTFComponentTemplate extends StructureTFComponent 
     protected BlockPos rotatedPosition;
     protected Template TEMPLATE;
 
-    public StructureTFComponentTemplate(IStructurePieceType piece, CompoundNBT nbt) {
+    public StructureTFComponentTemplate(TemplateManager manager, IStructurePieceType piece, CompoundNBT nbt) {
         super(piece, nbt);
         this.rotation = Rotation.NONE;
         this.mirror = Mirror.NONE;
+        loadTemplates(manager);
     }
 
     public StructureTFComponentTemplate(IStructurePieceType type, TFFeature feature, int i, int x, int y, int z, Rotation rotation) {

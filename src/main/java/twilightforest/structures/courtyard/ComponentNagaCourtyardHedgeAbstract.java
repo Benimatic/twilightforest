@@ -27,9 +27,8 @@ public abstract class ComponentNagaCourtyardHedgeAbstract extends StructureTFCom
 
     private Template templateBig;
 
-    @SuppressWarnings({"WeakerAccess", "unused"})
-    public ComponentNagaCourtyardHedgeAbstract(IStructurePieceType piece, CompoundNBT nbt, ResourceLocation hedge, ResourceLocation hedgeBig) {
-        super(piece, nbt);
+    public ComponentNagaCourtyardHedgeAbstract(TemplateManager manager, IStructurePieceType piece, CompoundNBT nbt, ResourceLocation hedge, ResourceLocation hedgeBig) {
+        super(manager, piece, nbt);
         this.HEDGE = hedge;
         this.HEDGE_BIG = hedgeBig;
     }
