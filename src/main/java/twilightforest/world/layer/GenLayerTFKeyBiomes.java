@@ -41,23 +41,24 @@ public enum GenLayerTFKeyBiomes implements IAreaTransformer1 {
 
 	@Override
 	public int apply(IExtendedNoiseRandom<?> random, IArea iArea, int x, int z) {
+		RANDOM.setSeed(TFDimensions.seed + (x & -4) * 25117 + (z & -4) * 151121);
+		int ox = RANDOM.nextInt(2) + 1;
+		int oz = RANDOM.nextInt(2) + 1;
 		RANDOM.setSeed(TFDimensions.seed + (x / 8) * 25117 + (z / 8) * 151121);
-		int ox = RANDOM.nextInt(3) + 1;
-		int oz = RANDOM.nextInt(3) + 1;
 		int offset = RANDOM.nextInt(3);
 		if ((x & 3) == ox && (z & 3) == oz) {
 			// determine which of the 4
 			if ((x & 4) == 0) {
 				if ((z & 4) == 0) {
-					return getKeyBiomeFor(x, z, offset);
+					return getKeyBiomeFor(offset);
 				} else {
-					return getKeyBiomeFor(x, z, offset + 1);
+					return getKeyBiomeFor(offset + 1);
 				}
 			} else {
 				if ((z & 4) == 0) {
-					return getKeyBiomeFor(x, z, offset + 2);
+					return getKeyBiomeFor(offset + 2);
 				} else {
-					return getKeyBiomeFor(x, z, offset + 3);
+					return getKeyBiomeFor(offset + 3);
 				}
 			}
 
@@ -69,7 +70,7 @@ public enum GenLayerTFKeyBiomes implements IAreaTransformer1 {
 	/**
 	 * Determine which map "region" the specified points are in.  Assign the 0-3 of the index to the key biomes based on that region.
 	 */
-	private int getKeyBiomeFor(int mapX, int mapZ, int index) {
+	private int getKeyBiomeFor(int index) {
 		// do we need to shuffle this better?
 		// the current version just "rotates" the 4 key biomes
 		switch ((index) & 0b11) {

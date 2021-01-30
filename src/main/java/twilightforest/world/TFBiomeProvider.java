@@ -131,7 +131,7 @@ public class TFBiomeProvider extends BiomeProvider {
 		remapColors.put(getBiomeId(TFBiomes.finalPlateau, registry), 0x000000);
 		remapColors.put(getBiomeId(TFBiomes.thornlands, registry), 0x3d250d);
 		remapColors.put(getBiomeId(TFBiomes.spookyForest, registry), 0x7700FF);
-		BufferedImage image = new BufferedImage(1024, 1024, BufferedImage.TYPE_INT_RGB);
+		BufferedImage image = new BufferedImage(2048, 2048, BufferedImage.TYPE_INT_RGB);
 		Graphics2D display = image.createGraphics();
 		LazyArea area = areaFactory.make();
 		for (int x = 0; x < image.getWidth(); x++) {
@@ -141,7 +141,7 @@ public class TFBiomeProvider extends BiomeProvider {
 				display.drawRect(x, z, 1, 1);
 			}
 		}
-		System.out.println("breakpoint");*/
+ 		System.out.println("breakpoint");*/
 		return new Layer(areaFactory) {
 			public Biome func_242936_a(Registry<Biome> p_242936_1_, int p_242936_2_, int p_242936_3_) {
 				int i = this.field_215742_b.getValue(p_242936_2_, p_242936_3_);
