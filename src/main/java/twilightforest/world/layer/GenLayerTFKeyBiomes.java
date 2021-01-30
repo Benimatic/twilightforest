@@ -1,6 +1,5 @@
 package twilightforest.world.layer;
 
-import net.minecraft.util.RegistryKey;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.IExtendedNoiseRandom;
@@ -8,8 +7,9 @@ import net.minecraft.world.gen.area.IArea;
 import net.minecraft.world.gen.layer.traits.IAreaTransformer1;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.world.TFBiomeProvider;
+import twilightforest.world.TFDimensions;
 
-import java.util.function.Supplier;
+import java.util.Random;
 
 /**
  * Puts key biomes in the proper positions
@@ -20,6 +20,7 @@ public enum GenLayerTFKeyBiomes implements IAreaTransformer1 {
 	INSTANCE;
 
 	private Registry<Biome> registry;
+	private static final Random RANDOM = new Random();
 
 	GenLayerTFKeyBiomes() { }
 
@@ -40,21 +41,23 @@ public enum GenLayerTFKeyBiomes implements IAreaTransformer1 {
 
 	@Override
 	public int apply(IExtendedNoiseRandom<?> random, IArea iArea, int x, int z) {
-		int ox = 2; // TODO: 1-3 value rng per 2048x2048 area
-		int oz = 2;
+		RANDOM.setSeed(TFDimensions.seed + (x / 8) * 25117 + (z / 8) * 151121);
+		int ox = RANDOM.nextInt(3) + 1;
+		int oz = RANDOM.nextInt(3) + 1;
+		int offset = RANDOM.nextInt(3);
 		if ((x & 3) == ox && (z & 3) == oz) {
 			// determine which of the 4
 			if ((x & 4) == 0) {
 				if ((z & 4) == 0) {
-					return getKeyBiomeFor(x, z, 0);
+					return getKeyBiomeFor(x, z, offset);
 				} else {
-					return getKeyBiomeFor(x, z, 1);
+					return getKeyBiomeFor(x, z, offset + 1);
 				}
 			} else {
 				if ((z & 4) == 0) {
-					return getKeyBiomeFor(x, z, 2);
+					return getKeyBiomeFor(x, z, offset + 2);
 				} else {
-					return getKeyBiomeFor(x, z, 3);
+					return getKeyBiomeFor(x, z, offset + 3);
 				}
 			}
 

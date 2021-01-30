@@ -25,7 +25,12 @@ import twilightforest.world.layer.GenLayerTFRiverMix;
 import twilightforest.world.layer.GenLayerTFStream;
 import twilightforest.world.layer.GenLayerTFThornBorder;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.LongFunction;
 
 public class TFBiomeProvider extends BiomeProvider {
@@ -126,7 +131,7 @@ public class TFBiomeProvider extends BiomeProvider {
 		remapColors.put(getBiomeId(TFBiomes.finalPlateau, registry), 0x000000);
 		remapColors.put(getBiomeId(TFBiomes.thornlands, registry), 0x3d250d);
 		remapColors.put(getBiomeId(TFBiomes.spookyForest, registry), 0x7700FF);
-		BufferedImage image = new BufferedImage(2048, 2048, BufferedImage.TYPE_INT_RGB);
+		BufferedImage image = new BufferedImage(1024, 1024, BufferedImage.TYPE_INT_RGB);
 		Graphics2D display = image.createGraphics();
 		LazyArea area = areaFactory.make();
 		for (int x = 0; x < image.getWidth(); x++) {
