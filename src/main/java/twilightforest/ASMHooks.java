@@ -26,9 +26,9 @@ public class ASMHooks {
 	 * [BEFORE FIRST ISTORE]
 	 */
 	public static void mapRenderContext(MatrixStack stack, IRenderTypeBuffer buffer, int light) {
-		TFMagicMapData.TFMapDecoration.stack = stack;
-		TFMagicMapData.TFMapDecoration.buffer = buffer;
-		TFMagicMapData.TFMapDecoration.light = light;
+		TFMagicMapData.TFMapDecoration.RenderContext.stack = stack;
+		TFMagicMapData.TFMapDecoration.RenderContext.buffer = buffer;
+		TFMagicMapData.TFMapDecoration.RenderContext.light = light;
 	}
 
 }

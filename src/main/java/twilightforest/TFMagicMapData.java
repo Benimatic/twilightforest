@@ -135,11 +135,14 @@ public class TFMagicMapData extends MapData {
 
 	public static class TFMapDecoration extends MapDecoration {
 
-		private static final RenderType MAP_ICONS = RenderType.getText(TwilightForestMod.prefix("textures/gui/mapicons.png"));
 
-		public static MatrixStack stack;
-		public static IRenderTypeBuffer buffer;
-		public static int light;
+		@OnlyIn(Dist.CLIENT)
+		public static class RenderContext {
+			private static final RenderType MAP_ICONS = RenderType.getText(TwilightForestMod.prefix("textures/gui/mapicons.png"));
+			public static MatrixStack stack;
+			public static IRenderTypeBuffer buffer;
+			public static int light;
+		}
 
 		final int featureId;
 
@@ -153,22 +156,22 @@ public class TFMagicMapData extends MapData {
 		public boolean render(int idx) {
 			// TODO: Forge needs to pass in the ms and buffers, but for now this works
 			if (TFFeature.getFeatureByID(featureId).isStructureEnabled) {
-				stack.push();
-				stack.translate(0.0F + getX() / 2.0F + 64.0F, 0.0F + getY() / 2.0F + 64.0F, -0.02F);
-				stack.rotate(Vector3f.ZP.rotationDegrees((float)(getRotation() * 360) / 16.0F));
-				stack.scale(4.0F, 4.0F, 3.0F);
-				stack.translate(-0.125D, 0.125D, 0.0D);
+				RenderContext.stack.push();
+				RenderContext.stack.translate(0.0F + getX() / 2.0F + 64.0F, 0.0F + getY() / 2.0F + 64.0F, -0.02F);
+				RenderContext.stack.rotate(Vector3f.ZP.rotationDegrees((float)(getRotation() * 360) / 16.0F));
+				RenderContext.stack.scale(4.0F, 4.0F, 3.0F);
+				RenderContext.stack.translate(-0.125D, 0.125D, 0.0D);
 				float f1 = (float) (featureId % 8) / 8.0F;
 				float f2 = (float) (featureId / 8) / 8.0F;
 				float f3 = (float) (featureId % 8 + 1) / 8.0F;
 				float f4 = (float) (featureId / 8 + 1) / 8.0F;
-				Matrix4f matrix4f1 = stack.getLast().getMatrix();
-				IVertexBuilder ivertexbuilder1 = buffer.getBuffer(MAP_ICONS);
-				ivertexbuilder1.pos(matrix4f1, -1.0F, 1.0F, (float)idx * -0.001F).color(255, 255, 255, 255).tex(f1, f2).lightmap(light).endVertex();
-				ivertexbuilder1.pos(matrix4f1, 1.0F, 1.0F, (float)idx * -0.001F).color(255, 255, 255, 255).tex(f3, f2).lightmap(light).endVertex();
-				ivertexbuilder1.pos(matrix4f1, 1.0F, -1.0F, (float)idx * -0.001F).color(255, 255, 255, 255).tex(f3, f4).lightmap(light).endVertex();
-				ivertexbuilder1.pos(matrix4f1, -1.0F, -1.0F, (float)idx * -0.001F).color(255, 255, 255, 255).tex(f1, f4).lightmap(light).endVertex();
-				stack.pop();
+				Matrix4f matrix4f1 = RenderContext.stack.getLast().getMatrix();
+				IVertexBuilder ivertexbuilder1 = RenderContext.buffer.getBuffer(RenderContext.MAP_ICONS);
+				ivertexbuilder1.pos(matrix4f1, -1.0F, 1.0F, (float)idx * -0.001F).color(255, 255, 255, 255).tex(f1, f2).lightmap(RenderContext.light).endVertex();
+				ivertexbuilder1.pos(matrix4f1, 1.0F, 1.0F, (float)idx * -0.001F).color(255, 255, 255, 255).tex(f3, f2).lightmap(RenderContext.light).endVertex();
+				ivertexbuilder1.pos(matrix4f1, 1.0F, -1.0F, (float)idx * -0.001F).color(255, 255, 255, 255).tex(f3, f4).lightmap(RenderContext.light).endVertex();
+				ivertexbuilder1.pos(matrix4f1, -1.0F, -1.0F, (float)idx * -0.001F).color(255, 255, 255, 255).tex(f1, f4).lightmap(RenderContext.light).endVertex();
+				RenderContext.stack.pop();
 			}
 			return true;
 		}
