@@ -1430,7 +1430,15 @@
   "starts": [
     {
       "config": {},
+      "type": "twilightforest:hedgemaze"
+    },
+    {
+      "config": {},
       "type": "twilightforest:courtyard"
+    },
+    {
+      "config": {},
+      "type": "twilightforest:hedgemaze"
     },
     {
       "config": {},

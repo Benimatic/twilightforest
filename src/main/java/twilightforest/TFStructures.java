@@ -18,6 +18,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import twilightforest.structures.courtyard.NagaCourtyardPieces;
 import twilightforest.structures.start.StructureCourtyard;
+import twilightforest.structures.start.StructureHedgeMaze;
 import twilightforest.world.TFDimensions;
 
 import java.util.HashMap;
@@ -27,12 +28,16 @@ public class TFStructures {
 
 	private static final Map<Structure<?>, StructureSeparationSettings> SEPARATION_SETTINGS = new HashMap<>();
 
+	public static final Structure<NoFeatureConfig> HEDGE_MAZE = new StructureHedgeMaze(NoFeatureConfig.field_236558_a_);
+	public static final StructureFeature<?, ?> CONFIGURED_HEDGE_MAZE = HEDGE_MAZE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
 	public static final Structure<NoFeatureConfig> NAGA_COURTYARD = new StructureCourtyard(NoFeatureConfig.field_236558_a_);
 	public static final StructureFeature<?, ?> CONFIGURED_NAGA_COURTYARD = NAGA_COURTYARD.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
 
 	public static void register(RegistryEvent.Register<Structure<?>> event) {
 		SEPARATION_SETTINGS.clear();
+		TFFeature.init();
 		new NagaCourtyardPieces();
+		register(event, HEDGE_MAZE, CONFIGURED_HEDGE_MAZE, StructureHedgeMaze.NAME, 1, 2);
 		register(event, NAGA_COURTYARD, CONFIGURED_NAGA_COURTYARD, StructureCourtyard.NAME, 1, 2);
 	}
 

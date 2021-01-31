@@ -8,7 +8,6 @@ import net.minecraft.world.biome.BiomeGenerationSettings;
 import net.minecraft.world.biome.DefaultBiomeFeatures;
 import net.minecraft.world.biome.MobSpawnInfo;
 import net.minecraft.world.gen.GenerationStage;
-import twilightforest.TFStructures;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.features.TwilightFeatures;
 
@@ -29,14 +28,12 @@ public final class BiomeGenerator extends BiomeDataHelper {
         defaultBiomeGenerationSettings.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredFeatures.DEFAULT_TWILIGHT_TREES);
 
         biomes.put(TFBiomes.twilightForest,
-                biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), addCanopy(defaultGenSettingBuilder()
-						.withStructure(TFStructures.CONFIGURED_NAGA_COURTYARD)))
+                biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), addCanopy(defaultStructures(defaultGenSettingBuilder())))
                         .build()
         );
 
         biomes.put(TFBiomes.denseTwilightForest,
-                biomeWithDefaults(defaultAmbientBuilder().setWaterColor(0x005522), defaultMobSpawning(), addCanopy(addCanopy(defaultGenSettingBuilder()
-						.withStructure(TFStructures.CONFIGURED_NAGA_COURTYARD))))
+                biomeWithDefaults(defaultAmbientBuilder().setWaterColor(0x005522), defaultMobSpawning(), addCanopy(addCanopy(defaultStructures(defaultGenSettingBuilder()))))
                         .temperature(0.7F)
                         .downfall(0.8F)
                         .depth(0.2F)
@@ -45,8 +42,7 @@ public final class BiomeGenerator extends BiomeDataHelper {
         );
 
         biomes.put(TFBiomes.fireflyForest,
-                biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), addCanopyFirefly(defaultGenSettingBuilder()
-						.withStructure(TFStructures.CONFIGURED_NAGA_COURTYARD)))
+                biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), addCanopyFirefly(defaultStructures(defaultGenSettingBuilder())))
 						.temperature(0.5F)
                         .downfall(1)
                         .depth(0.125F)
@@ -55,8 +51,7 @@ public final class BiomeGenerator extends BiomeDataHelper {
         );
 
         biomes.put(TFBiomes.clearing,
-                biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), defaultGenSettingBuilder()
-						.withStructure(TFStructures.CONFIGURED_NAGA_COURTYARD))
+                biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), defaultStructures(defaultGenSettingBuilder()))
                         .category(Biome.Category.PLAINS)
                         .temperature(0.8F)
                         .downfall(0.4F)
@@ -66,8 +61,7 @@ public final class BiomeGenerator extends BiomeDataHelper {
         );
 
         biomes.put(TFBiomes.oakSavanna,
-                biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), modify(defaultBiomeGenerationSettings, c -> c
-						.withStructure(TFStructures.CONFIGURED_NAGA_COURTYARD)))
+                biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), modify(defaultBiomeGenerationSettings, BiomeDataHelper::defaultStructures))
                         .category(Biome.Category.SAVANNA)
                         .temperature(0.9F)
                         .downfall(0)
@@ -77,16 +71,14 @@ public final class BiomeGenerator extends BiomeDataHelper {
         );
 
         biomes.put(TFBiomes.mushrooms,
-                biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), addMushroomCanopy(defaultGenSettingBuilder()
-						.withStructure(TFStructures.CONFIGURED_NAGA_COURTYARD), 0.2f))
+                biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), addMushroomCanopy(defaultStructures(defaultGenSettingBuilder()), 0.2f))
                         .temperature(0.8F)
                         .downfall(0.8F)
                         .build()
         );
 
         biomes.put(TFBiomes.deepMushrooms,
-                biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), addMushroomCanopy(defaultGenSettingBuilder()
-						.withStructure(TFStructures.CONFIGURED_NAGA_COURTYARD), 0.9f))
+                biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), addMushroomCanopy(defaultStructures(defaultGenSettingBuilder()), 0.9f))
                         .temperature(0.8F)
                         .downfall(1)
                         .depth(0.125F)
@@ -95,8 +87,7 @@ public final class BiomeGenerator extends BiomeDataHelper {
         );
 
         biomes.put(TFBiomes.spookyForest,
-                biomeWithDefaults(defaultAmbientBuilder().withGrassColor(0xC45123).withFoliageColor(0xFF8501).setWaterColor(0xFA9111), defaultMobSpawning(), modify(defaultBiomeGenerationSettings, c -> c
-						.withStructure(TFStructures.CONFIGURED_NAGA_COURTYARD)))
+                biomeWithDefaults(defaultAmbientBuilder().withGrassColor(0xC45123).withFoliageColor(0xFF8501).setWaterColor(0xFA9111), defaultMobSpawning(), modify(defaultBiomeGenerationSettings, BiomeDataHelper::defaultStructures))
 						.temperature(0.5F)
                         .downfall(1)
                         .depth(0.125F)

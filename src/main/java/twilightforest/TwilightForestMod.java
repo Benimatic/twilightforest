@@ -128,7 +128,6 @@ public class TwilightForestMod {
 		CapabilityList.registerCapabilities();
 		TFPacketHandler.init();
 		TFAdvancements.init();
-		TFFeature.init();
 		TFBiomes.addBiomeTypes();
 		TFDimensions.init();
 		TFEntities.addEntityAttributes();

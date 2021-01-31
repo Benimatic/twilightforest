@@ -22,6 +22,7 @@ import net.minecraft.world.gen.feature.MultipleRandomFeatureConfig;
 import net.minecraft.world.gen.placement.AtSurfaceWithExtraConfig;
 import net.minecraft.world.gen.placement.Placement;
 import net.minecraft.world.gen.surfacebuilders.ConfiguredSurfaceBuilders;
+import twilightforest.TFStructures;
 import twilightforest.entity.TFEntities;
 import twilightforest.world.feature.TFBiomeFeatures;
 import twilightforest.features.TwilightFeatures;
@@ -46,6 +47,12 @@ public abstract class BiomeDataHelper extends BiomeProvider {
 
         return biome;
     }
+
+    public static BiomeGenerationSettings.Builder defaultStructures(BiomeGenerationSettings.Builder biome) {
+    	return biome.
+				withStructure(TFStructures.CONFIGURED_HEDGE_MAZE).
+				withStructure(TFStructures.CONFIGURED_NAGA_COURTYARD);
+	}
 
     //Canopies, trees, and anything resembling a forest thing
     public static BiomeGenerationSettings.Builder addCanopy(BiomeGenerationSettings.Builder biome) {
