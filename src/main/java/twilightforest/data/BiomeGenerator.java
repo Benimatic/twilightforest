@@ -9,7 +9,7 @@ import net.minecraft.world.biome.DefaultBiomeFeatures;
 import net.minecraft.world.biome.MobSpawnInfo;
 import net.minecraft.world.gen.GenerationStage;
 import twilightforest.biomes.TFBiomes;
-import twilightforest.features.TwilightFeatures;
+import twilightforest.worldgen.ConfiguredFeatures;
 
 import java.util.Map;
 
@@ -25,7 +25,7 @@ public final class BiomeGenerator extends BiomeDataHelper {
 
         BiomeGenerationSettings.Builder defaultBiomeGenerationSettings = defaultGenSettingBuilder();
 
-        defaultBiomeGenerationSettings.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredFeatures.DEFAULT_TWILIGHT_TREES);
+        defaultBiomeGenerationSettings.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DEFAULT_TWILIGHT_TREES);
 
         biomes.put(TFBiomes.twilightForest,
                 biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), addCanopy(defaultStructures(defaultGenSettingBuilder())))
@@ -97,7 +97,7 @@ public final class BiomeGenerator extends BiomeDataHelper {
 
         biomes.put(TFBiomes.enchantedForest, // FIXME: colors
                 biomeWithDefaults(defaultAmbientBuilder().withFoliageColor(0x00FFFF).withGrassColor(0x00FFFF), defaultMobSpawning(), modify(defaultGenSettingBuilder(), c -> c
-						.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredFeatures.RAINBOAK_TREE.square())))
+						.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.RAINBOAK_TREE.square())))
                         .build()
         );
 
@@ -121,7 +121,7 @@ public final class BiomeGenerator extends BiomeDataHelper {
                         .build()
         );
 
-        BiomeGenerationSettings.Builder swampGenerationBuilder = modify(defaultGenSettingBuilder(), b -> b.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredFeatures.MANGROVE_TREE.square()));
+        BiomeGenerationSettings.Builder swampGenerationBuilder = modify(defaultGenSettingBuilder(), b -> b.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.MANGROVE_TREE.square()));
 
         biomes.put(TFBiomes.tfSwamp,
                 biomeWithDefaults(defaultAmbientBuilder().withGrassColor(0x5C694E).withFoliageColor(0x496137).setWaterColor(0xE0FFAE), defaultMobSpawning(), swampGenerationBuilder)
@@ -143,7 +143,7 @@ public final class BiomeGenerator extends BiomeDataHelper {
                         .build()
         );
 
-        BiomeGenerationSettings.Builder darkForestGenerationBuilder = modify(defaultGenSettingBuilder(), b -> b.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, TwilightFeatures.ConfiguredFeatures.DARKWOOD_TREE.square()));
+        BiomeGenerationSettings.Builder darkForestGenerationBuilder = modify(defaultGenSettingBuilder(), b -> b.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARKWOOD_TREE.square()));
 
         biomes.put(TFBiomes.darkForest,
                 biomeWithDefaults(defaultAmbientBuilder().withGrassColor(0x4B6754).withFoliageColor(0x3B5E3F), defaultMobSpawning(), darkForestGenerationBuilder)
