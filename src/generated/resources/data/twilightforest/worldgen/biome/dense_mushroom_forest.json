@@ -1483,6 +1483,10 @@
     {
       "config": {},
       "type": "twilightforest:courtyard"
+    },
+    {
+      "config": {},
+      "type": "twilightforest:lichtower"
     }
   ],
   "spawners": {

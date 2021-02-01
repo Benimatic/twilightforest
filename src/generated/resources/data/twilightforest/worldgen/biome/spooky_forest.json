@@ -1438,11 +1438,19 @@
     },
     {
       "config": {},
+      "type": "twilightforest:lichtower"
+    },
+    {
+      "config": {},
       "type": "twilightforest:hedgemaze"
     },
     {
       "config": {},
       "type": "twilightforest:courtyard"
+    },
+    {
+      "config": {},
+      "type": "twilightforest:lichtower"
     }
   ],
   "spawners": {

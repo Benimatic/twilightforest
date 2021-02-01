@@ -17,10 +17,13 @@ import net.minecraft.world.ISeedReader;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
+import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.server.ServerWorld;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.entity.*;
 import twilightforest.structures.*;
+import twilightforest.structures.courtyard.ComponentNagaCourtyardMain;
+import twilightforest.structures.lichtower.ComponentTFTowerMain;
 import twilightforest.util.IntPair;
 import twilightforest.util.PlayerHelper;
 
@@ -96,21 +99,19 @@ public enum TFFeature {
 		{
 			this.enableTerrainAlterations();
 		}
-
-//		@Override
-//		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-//			return new StructureStartHedgeMaze(world, this, rand, chunkX, chunkZ);
-//		}
+		@Override
+		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
+			return new ComponentTFHedgeMaze(this, rand, 0, x, y, z);
+		}
 	},
 	NAGA_COURTYARD ( 3, "naga_courtyard", true ) {
 		{
 			this.enableTerrainAlterations();
 		}
-
-//		@Override
-//		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-//			return new StructureStartCourtyard(world, this, rand, chunkX, chunkZ);
-//		}
+		@Override
+		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
+			return new ComponentNagaCourtyardMain(this, rand, 0, x, y, z);
+		}
 	},
 	LICH_TOWER ( 1, "lich_tower", true, TwilightForestMod.prefix("progress_naga") ) {
 		{
@@ -132,10 +133,10 @@ public enum TFFeature {
 			book.setTagInfo("title", StringNBT.valueOf("Notes on a Pointy Tower"));
 		}
 
-//		@Override
-//		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-//			return new StructureStartLichTower(world, this, rand, chunkX, chunkZ);
-//		}
+		@Override
+		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
+			return new ComponentTFTowerMain(this, rand, 0, x, y, z);
+		}
 	},
 	ICE_TOWER ( 2, "ice_tower", true, TwilightForestMod.prefix("progress_yeti") ) {
 		{
@@ -913,9 +914,10 @@ public enum TFFeature {
 		book.setTagInfo("title", StringNBT.valueOf("Notes on the Unexplained"));
 	}
 
-//	public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-//		return new StructureStartNothing(world, rand, chunkX, chunkZ);
-//	}
+	@Nullable
+	public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
+		return null;
+	}
 
 	private static void addTranslatedPages(ListNBT bookPages, String translationKey, int pageCount) {
 		for (int i = 1; i <= pageCount; i++) {

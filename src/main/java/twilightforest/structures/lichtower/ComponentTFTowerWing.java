@@ -15,13 +15,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.ISeedReader;
-import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TFFeature;
 import twilightforest.block.BlockTFCastleBlock;
@@ -1344,10 +1342,11 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 		setBlockState(world, plant, cx, 2, cz, sbb);
 		final BlockPos pos = getBlockPosWithOffset(cx, 2, cz);
 
-		if(isTree) //grow tree
-			((SaplingBlock) Blocks.OAK_SAPLING).grow((ServerWorld)world, world.getRandom(), pos, plant);
+		// FIXME: we CANNOT use world.getWorld in structure generation, we CANNOT cast to ServerWorld either. Saplings require a ServerWorld.....
+		/*if(isTree) //grow tree
+			((SaplingBlock) Blocks.OAK_SAPLING).grow(world, world.getRandom(), pos, plant);
 		else //grow sapling
-			plant.getBlock().randomTick(plant, (ServerWorld)world, pos, world.getRandom());
+			plant.getBlock().randomTick(plant, world, pos, world.getRandom());*/
 
 
 		// otherwise, place the block into a flowerpot
@@ -1953,7 +1952,8 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 	 * Makes paintings of the minimum size or larger on the specified wall
 	 */
 	protected void generatePaintingsOnWall(ISeedReader world, Random rand, int howMany, int floorLevel, Direction direction, int minSize, MutableBoundingBox sbb) {
-		for (int i = 0; i < howMany; i++) {
+		//FIXME: disable for now
+		/*for (int i = 0; i < howMany; i++) {
 			// get some random coordinates on the wall in the chunk
 			BlockPos pCoords = getRandomWallSpot(rand, floorLevel, direction, sbb);
 
@@ -1968,7 +1968,7 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 				// place the painting
 				world.addEntity(painting);
 			}
-		}
+		}*/
 	}
 
 	/**
