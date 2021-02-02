@@ -1,6 +1,10 @@
 package twilightforest.block;
 
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.ContainerBlock;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.material.PushReaction;
@@ -28,89 +32,87 @@ import twilightforest.tileentity.TileEntityKeepsakeCasket;
 import javax.annotation.Nullable;
 
 public class BlockKeepsakeCasket extends ContainerBlock implements BlockLoggingEnum.IMultiLoggable {
-    protected BlockKeepsakeCasket() {
-        super(Block.Properties.create(Material.IRON, MaterialColor.BLACK).setRequiresTool().hardnessAndResistance(50.0F, 1200.0F).sound(SoundType.NETHERITE));
-    }
+	protected BlockKeepsakeCasket() {
+		super(Block.Properties.create(Material.IRON, MaterialColor.BLACK).setRequiresTool().hardnessAndResistance(50.0F, 1200.0F).sound(SoundType.NETHERITE));
+	}
 
-    @Override
+	@Override
 	public BlockRenderType getRenderType(BlockState state) {
-        return state.get(BlockLoggingEnum.MULTILOGGED) == BlockLoggingEnum.OBSIDIAN ? BlockRenderType.MODEL : BlockRenderType.INVISIBLE;
-    }
+		return state.get(BlockLoggingEnum.MULTILOGGED) == BlockLoggingEnum.OBSIDIAN ? BlockRenderType.MODEL : BlockRenderType.INVISIBLE;
+	}
 
-    @Nullable
-    @Override
-    public TileEntity createNewTileEntity(IBlockReader worldIn) {
-        return new TileEntityKeepsakeCasket();
-    }
+	@Nullable
+	@Override
+	public TileEntity createNewTileEntity(IBlockReader worldIn) {
+		return new TileEntityKeepsakeCasket();
+	}
 
-    @Override
-    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
-        if (!state.isIn(newState.getBlock())) {
-            TileEntity tileentity = worldIn.getTileEntity(pos);
-            if (tileentity instanceof IInventory) {
-                InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory)tileentity);
-                worldIn.updateComparatorOutputLevel(pos, this);
-            }
+	@Override
+	public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (!state.isIn(newState.getBlock())) {
+			TileEntity tileentity = worldIn.getTileEntity(pos);
+			if (tileentity instanceof IInventory) {
+				InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory) tileentity);
+				worldIn.updateComparatorOutputLevel(pos, this);
+			}
 
-            super.onReplaced(state, worldIn, pos, newState, isMoving);
-        }
-    }
+			super.onReplaced(state, worldIn, pos, newState, isMoving);
+		}
+	}
 
-    @Override
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        if (worldIn.isRemote) {
-            return ActionResultType.SUCCESS;
-        } else {
-            INamedContainerProvider inamedcontainerprovider = this.getContainer(state, worldIn, pos);
+	@Override
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+		if (worldIn.isRemote) {
+			return ActionResultType.SUCCESS;
+		} else {
+			INamedContainerProvider inamedcontainerprovider = this.getContainer(state, worldIn, pos);
 
-            if (inamedcontainerprovider != null) {
-                player.openContainer(inamedcontainerprovider);
-            }
+			if (inamedcontainerprovider != null) {
+				player.openContainer(inamedcontainerprovider);
+			}
 
-            return ActionResultType.CONSUME;
-        }
-    }
+			return ActionResultType.CONSUME;
+		}
+	}
 
-    @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-        if (stack.hasDisplayName()) {
-            TileEntity tileentity = worldIn.getTileEntity(pos);
-            if (tileentity instanceof TileEntityKeepsakeCasket) {
-                ((TileEntityKeepsakeCasket)tileentity).setCustomName(stack.getDisplayName());
-            }
-        }
-    }
+	@Override
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		if (stack.hasDisplayName()) {
+			TileEntity tileentity = worldIn.getTileEntity(pos);
+			if (tileentity instanceof TileEntityKeepsakeCasket) {
+				((TileEntityKeepsakeCasket) tileentity).setCustomName(stack.getDisplayName());
+			}
+		}
+	}
 
-    @Override
+	@Override
 	public PushReaction getPushReaction(BlockState state) {
-        return PushReaction.BLOCK;
-    }
+		return PushReaction.BLOCK;
+	}
 
-    @Override
+	@Override
 	public boolean hasComparatorInputOverride(BlockState state) {
-        return true;
-    }
+		return true;
+	}
 
-    @Override
+	@Override
 	public int getComparatorInputOverride(BlockState blockState, World worldIn, BlockPos pos) {
-        return Container.calcRedstone(worldIn.getTileEntity(pos));
-    }
+		return Container.calcRedstone(worldIn.getTileEntity(pos));
+	}
 
-    @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-        builder.add(BlockLoggingEnum.MULTILOGGED, BlockStateProperties.HORIZONTAL_FACING);
-    }
+	@Override
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+		builder.add(BlockLoggingEnum.MULTILOGGED, BlockStateProperties.HORIZONTAL_FACING);
+	}
 
-    @Nullable
-    @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context) {
-        return super.getStateForPlacement(context)
-                .with(BlockStateProperties.HORIZONTAL_FACING, context.getPlacementHorizontalFacing().getOpposite())
-                .with(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.getFromFluid(context.getWorld().getFluidState(context.getPos()).getFluid()));
-    }
+	@Nullable
+	@Override
+	public BlockState getStateForPlacement(BlockItemUseContext context) {
+		return super.getStateForPlacement(context).with(BlockStateProperties.HORIZONTAL_FACING, context.getPlacementHorizontalFacing().getOpposite()).with(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.getFromFluid(context.getWorld().getFluidState(context.getPos()).getFluid()));
+	}
 
-    @Override
-    public FluidState getFluidState(BlockState state) {
-        return state.get(BlockLoggingEnum.MULTILOGGED).getFluid().getDefaultState();
-    }
+	@Override
+	public FluidState getFluidState(BlockState state) {
+		return state.get(BlockLoggingEnum.MULTILOGGED).getFluid().getDefaultState();
+	}
 }
