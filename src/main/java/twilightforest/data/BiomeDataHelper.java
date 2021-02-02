@@ -52,6 +52,9 @@ public abstract class BiomeDataHelper extends BiomeProvider {
     public static BiomeGenerationSettings.Builder defaultStructures(BiomeGenerationSettings.Builder biome) {
     	return biome.
 				withStructure(TFStructures.CONFIGURED_HEDGE_MAZE).
+				withStructure(TFStructures.CONFIGURED_HALLOW_HILL_SMALL).
+				withStructure(TFStructures.CONFIGURED_HALLOW_HILL_MEDIUM).
+				withStructure(TFStructures.CONFIGURED_HALLOW_HILL_LARGE).
 				withStructure(TFStructures.CONFIGURED_NAGA_COURTYARD).
 				withStructure(TFStructures.CONFIGURED_LICH_TOWER);
 	}

@@ -22,6 +22,7 @@ import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TFFeature;
+import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFCastleBlock;
 import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
@@ -2061,7 +2062,7 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 		}
 
 		// I guess we didn't get one
-		//TwilightForestMod.LOGGER.info("getRandomWallSpot - We didn't find a valid random spot on the wall.");
+		TwilightForestMod.LOGGER.info("ComponentTFTowerWing#getRandomWallSpot - We didn't find a valid random spot on the wall.");
 		return null;
 	}
 

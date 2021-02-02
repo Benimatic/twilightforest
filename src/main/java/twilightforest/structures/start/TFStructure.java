@@ -19,6 +19,8 @@ import net.minecraft.world.gen.feature.structure.StructureStart;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentTemplate;
+import twilightforest.world.TFDimensions;
+import twilightforest.world.TFGenerationSettings;
 
 import java.util.Random;
 
@@ -62,7 +64,8 @@ public class TFStructure<C extends IFeatureConfig> extends Structure<C> {
 		public void func_230364_a_(DynamicRegistries p_230364_1_, ChunkGenerator p_230364_2_, TemplateManager p_230364_3_, int p_230364_4_, int p_230364_5_, Biome p_230364_6_, C p_230364_7_) {
 			int x = (p_230364_4_ << 4);
 			int z = (p_230364_5_ << 4);
-			int y = p_230364_2_.getHeight(p_230364_4_, p_230364_5_, Heightmap.Type.WORLD_SURFACE_WG);
+			// TODO: This is hardcoded for now, Structure Starts happen before Real Noise Generation. Our Generator Feature Transformations must happen after Noise Gen. Order of OPs issue...
+			int y = TFGenerationSettings.SEALEVEL + 1;//p_230364_2_.getHeight(p_230364_4_, p_230364_5_, Heightmap.Type.WORLD_SURFACE_WG);
 			StructurePiece start = feature.provideStructureStart(rand, x, y, z);
 			if(start == null)
 				return;

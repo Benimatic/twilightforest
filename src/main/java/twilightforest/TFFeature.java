@@ -47,10 +47,10 @@ public enum TFFeature {
 					.addMonster(TFEntities.kobold, 10, 4, 8);
 		}
 
-//		@Override
-//		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-//			return new StructureStartHollowHill(world, this, rand, chunkX, chunkZ);
-//		}
+		@Override
+		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
+			return new ComponentTFHollowHill(TFFeature.TFHill, this, rand, 0, size, x, y, z);
+		}
 	},
 	MEDIUM_HILL ( 2, "medium_hollow_hill", true ) {
 		{
@@ -68,10 +68,10 @@ public enum TFFeature {
 					.addMonster(EntityType.WITCH, 1, 1, 1);
 		}
 
-//		@Override
-//		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-//			return new StructureStartHollowHill(world, this, rand, chunkX, chunkZ);
-//		}
+		@Override
+		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
+			return new ComponentTFHollowHill(TFFeature.TFHill, this, rand, 0, size, x, y, z);
+		}
 	},
 	LARGE_HILL ( 3, "large_hollow_hill", true ) {
 		{
@@ -90,10 +90,10 @@ public enum TFFeature {
 					.addMonster(EntityType.WITCH, 1, 1, 1);
 		}
 
-//		@Override
-//		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-//			return new StructureStartHollowHill(world, this, rand, chunkX, chunkZ);
-//		}
+		@Override
+		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
+			return new ComponentTFHollowHill(TFFeature.TFHill, this, rand, 0, size, x, y, z);
+		}
 	},
 	HEDGE_MAZE ( 2, "hedge_maze", true ) {
 		{
@@ -472,10 +472,10 @@ public enum TFFeature {
 	}
 
 	public static int getFeatureID(int mapX, int mapZ, ISeedReader world) {
-		return getFeatureAt(mapX, mapZ, (ServerWorld) world).ordinal();
+		return getFeatureAt(mapX, mapZ, world).ordinal();
 	}
 
-	public static TFFeature getFeatureAt(int mapX, int mapZ, ServerWorld world) {
+	public static TFFeature getFeatureAt(int mapX, int mapZ, ISeedReader world) {
 		return generateFeature(mapX >> 4, mapZ >> 4, world);
 	}
 
@@ -555,7 +555,7 @@ public enum TFFeature {
 	 */
 	public static TFFeature getFeatureDirectlyAt(int chunkX, int chunkZ, ISeedReader world) {
 		if (isInFeatureChunk(chunkX << 4, chunkZ << 4)) {
-			return getFeatureAt(chunkX << 4, chunkZ << 4, (ServerWorld) world);
+			return getFeatureAt(chunkX << 4, chunkZ << 4, world);
 		}
 		return NOTHING;
 	}
@@ -564,7 +564,7 @@ public enum TFFeature {
 	 * What feature would go in this chunk.  Called when we know there is a feature, but there is no cache data,
 	 * either generating this chunk for the first time, or using the magic map to forecast beyond the edge of the world.
 	 */
-	public static TFFeature generateFeature(int chunkX, int chunkZ, ServerWorld world) {
+	public static TFFeature generateFeature(int chunkX, int chunkZ, ISeedReader world) {
 		// set the chunkX and chunkZ to the center of the biome
 		chunkX = Math.round(chunkX / 16F) * 16;
 		chunkZ = Math.round(chunkZ / 16F) * 16;

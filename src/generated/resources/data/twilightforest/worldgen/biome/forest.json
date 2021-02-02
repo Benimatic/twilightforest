@@ -997,6 +997,18 @@
     },
     {
       "config": {},
+      "type": "twilightforest:hallowhillsmall"
+    },
+    {
+      "config": {},
+      "type": "twilightforest:hallowhillmedium"
+    },
+    {
+      "config": {},
+      "type": "twilightforest:hallowhilllarge"
+    },
+    {
+      "config": {},
       "type": "twilightforest:courtyard"
     },
     {
