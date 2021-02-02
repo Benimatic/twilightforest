@@ -166,10 +166,11 @@ public enum TFFeature {
 			this.enableTerrainAlterations();
 		}
 
-//		@Override
-//		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-//			return new StructureStartQuestGrove(world, this, rand, chunkX, chunkZ);
-//		}
+		@Override
+		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
+			return new ComponentTFQuestGrove(this, rand, 0, x, y, z);
+		}
+
 	},
 	DRUID_GROVE    ( 1, "druid_grove"   , false ) { { this.disableStructure(); } },
 	FLOATING_RUINS ( 3, "floating_ruins", false ) { { this.disableStructure(); } },

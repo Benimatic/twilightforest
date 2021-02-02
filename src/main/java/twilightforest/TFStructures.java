@@ -28,6 +28,8 @@ public class TFStructures {
 
 	public static final Structure<NoFeatureConfig> HEDGE_MAZE = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.HEDGE_MAZE);
 	public static final StructureFeature<?, ?> CONFIGURED_HEDGE_MAZE = HEDGE_MAZE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
+	public static final Structure<NoFeatureConfig> QUEST_GROVE = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.QUEST_GROVE);
+	public static final StructureFeature<?, ?> CONFIGURED_QUEST_GROVE = QUEST_GROVE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
 	public static final Structure<NoFeatureConfig> HALLOW_HILL_SMALL = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.SMALL_HILL);
 	public static final StructureFeature<?, ?> CONFIGURED_HALLOW_HILL_SMALL = HALLOW_HILL_SMALL.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
 	public static final Structure<NoFeatureConfig> HALLOW_HILL_MEDIUM = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.MEDIUM_HILL);
@@ -45,6 +47,7 @@ public class TFStructures {
 		new NagaCourtyardPieces();
 		new TFLichTowerPieces();
 		register(event, HEDGE_MAZE, CONFIGURED_HEDGE_MAZE, TwilightForestMod.prefix("hedgemaze"), 1, 2);
+		register(event, QUEST_GROVE, CONFIGURED_QUEST_GROVE, TwilightForestMod.prefix("questgrove"), 1, 2);
 		register(event, HALLOW_HILL_SMALL, CONFIGURED_HALLOW_HILL_SMALL, TwilightForestMod.prefix("hallowhillsmall"), 1, 2);
 		register(event, HALLOW_HILL_MEDIUM, CONFIGURED_HALLOW_HILL_MEDIUM, TwilightForestMod.prefix("hallowhillmedium"), 1, 2);
 		register(event, HALLOW_HILL_LARGE, CONFIGURED_HALLOW_HILL_LARGE, TwilightForestMod.prefix("hallowhilllarge"), 1, 2);

@@ -8,6 +8,7 @@ import net.minecraft.world.biome.BiomeGenerationSettings;
 import net.minecraft.world.biome.DefaultBiomeFeatures;
 import net.minecraft.world.biome.MobSpawnInfo;
 import net.minecraft.world.gen.GenerationStage;
+import twilightforest.TFStructures;
 import twilightforest.biomes.TFBiomes;
 import twilightforest.worldgen.ConfiguredFeatures;
 
@@ -97,7 +98,8 @@ public final class BiomeGenerator extends BiomeDataHelper {
 
         biomes.put(TFBiomes.enchantedForest, // FIXME: colors
                 biomeWithDefaults(defaultAmbientBuilder().withFoliageColor(0x00FFFF).withGrassColor(0x00FFFF), defaultMobSpawning(), modify(defaultGenSettingBuilder(), c -> c
-						.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.RAINBOAK_TREE.square())))
+						.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.RAINBOAK_TREE.square())
+						.withStructure(TFStructures.CONFIGURED_QUEST_GROVE)))
                         .build()
         );
 

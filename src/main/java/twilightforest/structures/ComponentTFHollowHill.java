@@ -36,6 +36,7 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 
 	public ComponentTFHollowHill(IStructurePieceType piece, CompoundNBT nbt) {
 		super(piece, nbt);
+		this.setCoordBaseMode(Direction.SOUTH);
 		hillSize = nbt.getInt("hillSize");
 		this.radius = ((hillSize * 2 + 1) * 8) - 6;
 	}

@@ -36,12 +36,12 @@ public class ComponentTFQuestGrove extends StructureTFComponentOld {
 
 	public ComponentTFQuestGrove(TemplateManager manager, CompoundNBT nbt) {
 		super(TFFeature.TFQuest1, nbt);
+		this.setCoordBaseMode(Direction.SOUTH);
 	}
 
 	//TODO: Parameter "rand" is unused. Remove?
 	public ComponentTFQuestGrove(TFFeature feature, Random rand, int i, int x, int y, int z) {
 		super(TFFeature.TFQuest1, feature, i);
-
 		this.setCoordBaseMode(Direction.SOUTH);
 
 		// the maze is 25 x 25 for now
