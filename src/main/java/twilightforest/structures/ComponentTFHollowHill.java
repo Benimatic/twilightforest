@@ -31,11 +31,13 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 	int radius;
 
 	public ComponentTFHollowHill(TemplateManager manager, CompoundNBT nbt) {
-		super(TFFeature.TFHill, nbt);
+		this(TFFeature.TFHill, nbt);
 	}
 
 	public ComponentTFHollowHill(IStructurePieceType piece, CompoundNBT nbt) {
 		super(piece, nbt);
+		hillSize = nbt.getInt("hillSize");
+		this.radius = ((hillSize * 2 + 1) * 8) - 6;
 	}
 
 	//TODO: Parameter "rand" is unused. Remove?
@@ -62,9 +64,7 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {
 		super.readAdditional(tagCompound);
-		// FIXME: nbt is never written to
-//		this.hillSize = tagCompound.getInt("hillSize");
-//		this.radius = ((hillSize * 2 + 1) * 8) - 6;
+		tagCompound.putInt("hillSize", hillSize);
 	}
 
 	/**

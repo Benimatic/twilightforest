@@ -3,8 +3,8 @@ package twilightforest.world;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.biome.provider.BiomeProvider;
-import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.DimensionSettings;
 import net.minecraft.world.gen.NoiseChunkGenerator;
 import net.minecraft.world.gen.WorldGenRegion;
@@ -59,10 +59,10 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator {
 		}
 	}
 
-	protected final void deformTerrainForFeature(WorldGenRegion primer, IChunk chunk) {
+	protected final void deformTerrainForFeature(WorldGenRegion primer) {
 
 		IntPair nearCenter = new IntPair();
-		TFFeature nearFeature = TFFeature.getNearestFeature(chunk.getPos().x, chunk.getPos().z, primer, nearCenter);
+		TFFeature nearFeature = TFFeature.getNearestFeature(getPos(primer).x, getPos(primer).z, primer, nearCenter);
 
 		if (!nearFeature.isTerrainAltered) {
 			return;
@@ -73,7 +73,7 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator {
 
 		if (nearFeature == TFFeature.TROLL_CAVE) {
 			// troll cloud, more like
-			deformTerrainForTrollCloud2(primer, nearFeature, chunk, hx, hz);
+			deformTerrainForTrollCloud2(primer, nearFeature, hx, hz);
 		}
 
 		for (int x = 0; x < 16; x++) {
@@ -88,18 +88,18 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator {
 					int dist = (int) Math.sqrt(dx * dx + dz * dz);
 					int hheight = (int) (Math.cos((float) dist / (float) hdiam * Math.PI) * ((float) hdiam / 3F));
 
-					raiseHills(primer, nearFeature, hdiam, chunk, x, z, dx, dz, hheight);
+					raiseHills(primer, nearFeature, hdiam, x, z, dx, dz, hheight);
 
 				} else if (nearFeature == TFFeature.HEDGE_MAZE || nearFeature == TFFeature.NAGA_COURTYARD || nearFeature == TFFeature.QUEST_GROVE) {
 					// hedge mazes, naga arena
-					flattenTerrainForFeature(primer, nearFeature, chunk, x, z, dx, dz);
+					flattenTerrainForFeature(primer, nearFeature, x, z, dx, dz);
 
 				} else if (nearFeature == TFFeature.YETI_CAVE) {
 					// yeti lairs are square
-					deformTerrainForYetiLair(primer, nearFeature, chunk, x, z, dx, dz);
+					deformTerrainForYetiLair(primer, nearFeature, x, z, dx, dz);
 
 				} else if (nearFeature == TFFeature.TROLL_CAVE) {
-					deformTerrainForTrollCaves(primer, nearFeature, chunk, x, z, dx, dz);
+					deformTerrainForTrollCaves(primer, nearFeature, x, z, dx, dz);
 				}
 			}
 		}
@@ -107,18 +107,18 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator {
 		// done!
 	}
 
-	protected void deformTerrainForTrollCaves(WorldGenRegion primer, TFFeature nearFeature, IChunk chunk, int x, int z, int dx, int dz) {}
+	protected void deformTerrainForTrollCaves(WorldGenRegion primer, TFFeature nearFeature, int x, int z, int dx, int dz) {}
 
 	//TODO: Parameter "nearFeature" is unused. Remove?
-	private void deformTerrainForTrollCloud2(WorldGenRegion primer, TFFeature nearFeature, IChunk chunk, int hx, int hz) {
+	private void deformTerrainForTrollCloud2(WorldGenRegion primer, TFFeature nearFeature, int hx, int hz) {
 		for (int bx = 0; bx < 4; bx++) {
 			for (int bz = 0; bz < 4; bz++) {
 				int dx = (bx * 4) - hx - 2;
 				int dz = (bz * 4) - hz - 2;
 
 				// generate several centers for other clouds
-				int regionX = (chunk.getPos().x + 8) >> 4;
-				int regionZ = (chunk.getPos().z + 8) >> 4;
+				int regionX = (getPos(primer).x + 8) >> 4;
+				int regionZ = (getPos(primer).z + 8) >> 4;
 
 				long seed = (long) (regionX * 3129871) ^ (long) regionZ * 116129781L;
 				seed = seed * seed * 42317861L + seed * 7L;
@@ -169,14 +169,14 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator {
 
 						if (dist < 7 || cv < 0.05F) {
 
-							primer.setBlockState(withY(chunk.getPos().asBlockPos().add(lx, 0, lz), y), TFBlocks.wispy_cloud.get().getDefaultState(), 3);
+							primer.setBlockState(withY(getPos(primer).asBlockPos().add(lx, 0, lz), y), TFBlocks.wispy_cloud.get().getDefaultState(), 3);
 							for (int d = 1; d < depth; d++) {
-								primer.setBlockState(withY(chunk.getPos().asBlockPos().add(lx, 0, lz), y - d), TFBlocks.fluffy_cloud.get().getDefaultState(), 3);
+								primer.setBlockState(withY(getPos(primer).asBlockPos().add(lx, 0, lz), y - d), TFBlocks.fluffy_cloud.get().getDefaultState(), 3);
 							}
-							primer.setBlockState(withY(chunk.getPos().asBlockPos().add(lx, 0, lz), y - depth), TFBlocks.wispy_cloud.get().getDefaultState(), 3);
+							primer.setBlockState(withY(getPos(primer).asBlockPos().add(lx, 0, lz), y - depth), TFBlocks.wispy_cloud.get().getDefaultState(), 3);
 						} else if (dist < 8 || cv < 1F) {
 							for (int d = 1; d < depth; d++) {
-								primer.setBlockState(withY(chunk.getPos().asBlockPos().add(lx, 0, lz), y - d), TFBlocks.fluffy_cloud.get().getDefaultState(), 3);
+								primer.setBlockState(withY(getPos(primer).asBlockPos().add(lx, 0, lz), y - d), TFBlocks.fluffy_cloud.get().getDefaultState(), 3);
 							}
 						}
 					}
@@ -188,7 +188,7 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator {
 	/**
 	 * Raises up and hollows out the hollow hills.
 	 */
-	private void raiseHills(WorldGenRegion primer, TFFeature nearFeature, int hdiam, IChunk chunk, int x, int z, int dx, int dz, int hillHeight) {
+	private void raiseHills(WorldGenRegion primer, TFFeature nearFeature, int hdiam, int x, int z, int dx, int dz, int hillHeight) {
 
 		int oldGround = -1;
 		int newGround = -1;
@@ -196,7 +196,7 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator {
 
 		// raise the hill
 		for (int y = TFGenerationSettings.SEALEVEL; y < TFGenerationSettings.CHUNKHEIGHT; y++) {
-			Block currentTerrain = primer.getBlockState(withY(chunk.getPos().asBlockPos().add(x, 0, z), y)).getBlock();
+			Block currentTerrain = primer.getBlockState(withY(getPos(primer).asBlockPos().add(x, 0, z), y)).getBlock();
 			if (currentTerrain != Blocks.STONE) {
 				// we found the top of the stone layer
 				oldGround = y;
@@ -208,7 +208,7 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator {
 
 		if (foundGroundLevel) {
 			for (int y = oldGround; y <= newGround; y++) {
-				primer.setBlockState(withY(chunk.getPos().asBlockPos().add(x, 0, z), y), Blocks.STONE.getDefaultState(), 3);
+				primer.setBlockState(withY(getPos(primer).asBlockPos().add(x, 0, z), y), Blocks.STONE.getDefaultState(), 3);
 			}
 		}
 
@@ -230,7 +230,7 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator {
 		}
 
 		// hollow out the hollow parts
-		int hollowFloor = TFGenerationSettings.SEALEVEL - 3 - (hollow / 8);
+		int hollowFloor = TFGenerationSettings.SEALEVEL - 5 - (hollow / 8);
 		if (nearFeature == TFFeature.HYDRA_LAIR) {
 			// different floor
 			hollowFloor = TFGenerationSettings.SEALEVEL;
@@ -239,18 +239,18 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator {
 		if (hillHeight > 0) {
 			// put a base on hills that go over open space or water
 			for (int y = 0; y < TFGenerationSettings.SEALEVEL; y++) {
-				if (primer.getBlockState(withY(chunk.getPos().asBlockPos().add(x, 0, z), y)).getBlock() != Blocks.STONE) {
-					primer.setBlockState(withY(chunk.getPos().asBlockPos().add(x, 0, z), y), Blocks.STONE.getDefaultState(), 3);
+				if (primer.getBlockState(withY(getPos(primer).asBlockPos().add(x, 0, z), y)).getBlock() != Blocks.STONE) {
+					primer.setBlockState(withY(getPos(primer).asBlockPos().add(x, 0, z), y), Blocks.STONE.getDefaultState(), 3);
 				}
 			}
 		}
 
 		for (int y = hollowFloor + 1; y < hollowFloor + hollow; y++) {
-			primer.setBlockState(withY(chunk.getPos().asBlockPos().add(x, 0, z), y), Blocks.AIR.getDefaultState(), 3);
+			primer.setBlockState(withY(getPos(primer).asBlockPos().add(x, 0, z), y), Blocks.AIR.getDefaultState(), 3);
 		}
 	}
 
-	private void flattenTerrainForFeature(WorldGenRegion primer, TFFeature nearFeature, IChunk chunk, int x, int z, int dx, int dz) {
+	private void flattenTerrainForFeature(WorldGenRegion primer, TFFeature nearFeature, int x, int z, int dx, int dz) {
 
 		float squishFactor = 0f;
 		int mazeHeight = TFGenerationSettings.SEALEVEL + 1;
@@ -271,7 +271,7 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator {
 		if (squishFactor > 0f) {
 			// blend the old terrain height to arena height
 			for (int y = 0; y <= 127; y++) {
-				Block currentTerrain = primer.getBlockState(withY(chunk.getPos().asBlockPos().add(x, 0, z), y)).getBlock();
+				Block currentTerrain = primer.getBlockState(withY(getPos(primer).asBlockPos().add(x, 0, z), y)).getBlock();
 				// we're still in ground
 				if (currentTerrain != Blocks.STONE) {
 					// we found the lowest chunk of earth
@@ -283,20 +283,20 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator {
 
 		// sets the ground level to the maze height
 		for (int y = 0; y < mazeHeight; y++) {
-			Block b = primer.getBlockState(withY(chunk.getPos().asBlockPos().add(x, 0, z), y)).getBlock();
+			Block b = primer.getBlockState(withY(getPos(primer).asBlockPos().add(x, 0, z), y)).getBlock();
 			if (b == Blocks.AIR || b == Blocks.WATER) {
-				primer.setBlockState(withY(chunk.getPos().asBlockPos().add(x, 0, z), y), Blocks.STONE.getDefaultState(), 3);
+				primer.setBlockState(withY(getPos(primer).asBlockPos().add(x, 0, z), y), Blocks.STONE.getDefaultState(), 3);
 			}
 		}
 		for (int y = mazeHeight; y <= 127; y++) {
-			Block b = primer.getBlockState(withY(chunk.getPos().asBlockPos().add(x, 0, z), y)).getBlock();
+			Block b = primer.getBlockState(withY(getPos(primer).asBlockPos().add(x, 0, z), y)).getBlock();
 			if (b != Blocks.AIR && b != Blocks.WATER) {
-				primer.setBlockState(withY(chunk.getPos().asBlockPos().add(x, 0, z), y), Blocks.AIR.getDefaultState(), 3);
+				primer.setBlockState(withY(getPos(primer).asBlockPos().add(x, 0, z), y), Blocks.AIR.getDefaultState(), 3);
 			}
 		}
 	}
 
-	private void deformTerrainForYetiLair(WorldGenRegion primer, TFFeature nearFeature, IChunk chunk, int x, int z, int dx, int dz) {
+	private void deformTerrainForYetiLair(WorldGenRegion primer, TFFeature nearFeature, int x, int z, int dx, int dz) {
 
 		float squishFactor = 0f;
 		int topHeight = TFGenerationSettings.SEALEVEL + 24;
@@ -339,7 +339,7 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator {
 		if (squishFactor > 0f) {
 			// blend the old terrain height to arena height
 			for (int y = 0; y <= 127; y++) {
-				Block currentTerrain = primer.getBlockState(withY(chunk.getPos().asBlockPos().add(x, 0, z), y)).getBlock();
+				Block currentTerrain = primer.getBlockState(withY(getPos(primer).asBlockPos().add(x, 0, z), y)).getBlock();
 				if (currentTerrain != Blocks.STONE) {
 					// we found the lowest chunk of earth
 					topHeight += ((y - topHeight) * squishFactor);
@@ -353,25 +353,29 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator {
 
 		// add stone
 		for (int y = 0; y < topHeight; y++) {
-			Block b = primer.getBlockState(withY(chunk.getPos().asBlockPos().add(x, 0, z), y)).getBlock();
+			Block b = primer.getBlockState(withY(getPos(primer).asBlockPos().add(x, 0, z), y)).getBlock();
 			if (b == Blocks.AIR || b == Blocks.WATER) {
-				primer.setBlockState(withY(chunk.getPos().asBlockPos().add(x, 0, z), y), Blocks.STONE.getDefaultState(), 3);
+				primer.setBlockState(withY(getPos(primer).asBlockPos().add(x, 0, z), y), Blocks.STONE.getDefaultState(), 3);
 			}
 		}
 
 		// hollow out inside
 		for (int y = hollowFloor + 1; y < hollowCeiling; ++y) {
-			primer.setBlockState(withY(chunk.getPos().asBlockPos().add(x, 0, z), y), Blocks.AIR.getDefaultState(), 3);
+			primer.setBlockState(withY(getPos(primer).asBlockPos().add(x, 0, z), y), Blocks.AIR.getDefaultState(), 3);
 		}
 
 		// ice floor
 		if (hollowFloor < hollowCeiling && hollowFloor < TFGenerationSettings.SEALEVEL + 3) {
-			primer.setBlockState(withY(chunk.getPos().asBlockPos().add(x, 0, z), hollowFloor), Blocks.PACKED_ICE.getDefaultState(), 3);
+			primer.setBlockState(withY(getPos(primer).asBlockPos().add(x, 0, z), hollowFloor), Blocks.PACKED_ICE.getDefaultState(), 3);
 		}
 	}
 
 	public final boolean shouldGenerateBedrock() {
 		return shouldGenerateBedrock;
+	}
+	
+	protected final ChunkPos getPos(WorldGenRegion primer) {
+		return new ChunkPos(primer.getMainChunkX(), primer.getMainChunkZ());
 	}
 
 	protected final BlockPos withY(BlockPos old, int y) {
