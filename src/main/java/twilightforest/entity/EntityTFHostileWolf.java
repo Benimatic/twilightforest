@@ -53,6 +53,7 @@ public class EntityTFHostileWolf extends WolfEntity implements IMob {
 		}
 	}
 
+	@Override
 	public void livingTick() {
 		super.livingTick();
 
@@ -86,6 +87,11 @@ public class EntityTFHostileWolf extends WolfEntity implements IMob {
 	@Override
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
 		return TFSounds.HOSTILE_WOLF_HURT;
+	}
+	
+	@Override
+	protected SoundEvent getDeathSound() {
+	      return TFSounds.HOSTILE_WOLF_DEATH;
 	}
 
 	@Override

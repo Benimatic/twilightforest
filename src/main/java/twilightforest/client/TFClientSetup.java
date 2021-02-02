@@ -3,15 +3,15 @@ package twilightforest.client;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.world.DimensionRenderInfo;
+import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.resources.*;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
-import net.minecraftforge.fml.loading.FMLPaths;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.renderer.entity.LayerIce;
 import twilightforest.client.renderer.entity.LayerShields;
@@ -24,10 +24,6 @@ import twilightforest.item.ItemTFPhantomArmor;
 import twilightforest.item.ItemTFYetiArmor;
 import twilightforest.item.TFItems;
 import twilightforest.tileentity.TFTileEntities;
-import twilightforest.world.TFDimensions;
-
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TFClientSetup {
@@ -48,6 +44,56 @@ public class TFClientSetup {
 
         TwilightForestRenderInfo renderInfo = new TwilightForestRenderInfo(128.0F, false, DimensionRenderInfo.FogType.NONE, false, false);
         DimensionRenderInfo.field_239208_a_.put(TwilightForestMod.prefix("renderer"), renderInfo);
+        
+        //[VanillaCopy] Allows bows to use animations when being fired
+        ItemModelsProperties.registerProperty(TFItems.ender_bow.get(), new ResourceLocation("pull"), (stack, world, entity) -> {
+            if (entity == null) {
+               return 0.0F;
+            } else {
+               return entity.getActiveItemStack() != stack ? 0.0F : (stack.getUseDuration() - entity.getItemInUseCount()) / 20.0F;
+            }
+         });
+        
+        ItemModelsProperties.registerProperty(TFItems.ender_bow.get(), new ResourceLocation("pulling"), (stack, world, entity) -> {
+            return entity != null && entity.isHandActive() && entity.getActiveItemStack() == stack ? 1.0F : 0.0F;
+         });
+        
+        ItemModelsProperties.registerProperty(TFItems.ice_bow.get(), new ResourceLocation("pull"), (stack, world, entity) -> {
+            if (entity == null) {
+               return 0.0F;
+            } else {
+               return entity.getActiveItemStack() != stack ? 0.0F : (stack.getUseDuration() - entity.getItemInUseCount()) / 20.0F;
+            }
+         });
+        
+        ItemModelsProperties.registerProperty(TFItems.ice_bow.get(), new ResourceLocation("pulling"), (stack, world, entity) -> {
+            return entity != null && entity.isHandActive() && entity.getActiveItemStack() == stack ? 1.0F : 0.0F;
+         });
+        
+        ItemModelsProperties.registerProperty(TFItems.seeker_bow.get(), new ResourceLocation("pull"), (stack, world, entity) -> {
+            if (entity == null) {
+               return 0.0F;
+            } else {
+               return entity.getActiveItemStack() != stack ? 0.0F : (stack.getUseDuration() - entity.getItemInUseCount()) / 20.0F;
+            }
+         });
+        
+        ItemModelsProperties.registerProperty(TFItems.seeker_bow.get(), new ResourceLocation("pulling"), (stack, world, entity) -> {
+            return entity != null && entity.isHandActive() && entity.getActiveItemStack() == stack ? 1.0F : 0.0F;
+         });
+        
+        ItemModelsProperties.registerProperty(TFItems.triple_bow.get(), new ResourceLocation("pull"), (stack, world, entity) -> {
+            if (entity == null) {
+               return 0.0F;
+            } else {
+               return entity.getActiveItemStack() != stack ? 0.0F : (stack.getUseDuration() - entity.getItemInUseCount()) / 20.0F;
+            }
+         });
+        
+        ItemModelsProperties.registerProperty(TFItems.triple_bow.get(), new ResourceLocation("pulling"), (stack, world, entity) -> {
+            return entity != null && entity.isHandActive() && entity.getActiveItemStack() == stack ? 1.0F : 0.0F;
+         });
+       
     }
 
     public static void addLegacyPack() {
