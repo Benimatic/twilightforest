@@ -1,6 +1,9 @@
 package twilightforest.structures.courtyard;
 
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.INBT;
+import net.minecraft.nbt.IntNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
@@ -20,6 +23,20 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
 
     public StructureMazeGenerator(IStructurePieceType piece, CompoundNBT nbt) {
         super(piece, nbt);
+
+		this.widthInCellCount = nbt.getInt("mazeWidth");
+		this.heightInCellCount = nbt.getInt("mazeHeight");
+
+		maze = new int[this.widthInCellCount-1][this.heightInCellCount-1];
+
+		ListNBT mazeX = nbt.getList("maze", 9);
+
+		for (int x = 0; x < widthInCellCount-1; x++) {
+			INBT mazeY = mazeX.get(x);
+
+			if (mazeY instanceof ListNBT)
+				for (int y = 0; y < heightInCellCount - 1; y++) maze[x][y] = ((ListNBT) mazeY).getInt(y);
+		}
     }
 
     StructureMazeGenerator(IStructurePieceType type, TFFeature feature, Random rand, int i, int widthInCellCount, int heightInCellCount) {
@@ -604,43 +621,22 @@ public abstract class StructureMazeGenerator extends StructureTFComponent {
         }
     }
 
-    //TODO: See super
-//    @Override
-//    protected void writeStructureToNBT(CompoundNBT tagCompound) {
-//        super.writeStructureToNBT(tagCompound);
-//
-//        ListNBT mazeX = new ListNBT();
-//
-//        for (int x = 0; x < widthInCellCount-1; x++) {
-//            ListNBT mazeY = new ListNBT();
-//
-//            for (int y = 0; y < heightInCellCount-1; y++) mazeY.add(IntNBT.of(maze[x][y]));
-//
-//            mazeX.add(mazeY);
-//        }
-//
-//        tagCompound.putInt("mazeWidth", widthInCellCount);
-//        tagCompound.putInt("mazeHeight", heightInCellCount);
-//        tagCompound.put("maze", mazeX);
-//    }
-
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {
 		super.readAdditional(tagCompound);
+		ListNBT mazeX = new ListNBT();
 
-		// FIXME: nothing is being saved, we're getting default values
-		/*this.widthInCellCount = tagCompound.getInt("mazeWidth");
-		this.heightInCellCount = tagCompound.getInt("mazeHeight");
+		for (int x = 0; x < widthInCellCount - 1; x++) {
+			ListNBT mazeY = new ListNBT();
 
-		maze = new int[this.widthInCellCount-1][this.heightInCellCount-1];
+			for (int y = 0; y < heightInCellCount - 1; y++)
+				mazeY.add(IntNBT.valueOf(maze[x][y]));
 
-		ListNBT mazeX = tagCompound.getList("maze", 9);
+			mazeX.add(mazeY);
+		}
 
-		for (int x = 0; x < widthInCellCount-1; x++) {
-			INBT mazeY = mazeX.get(x);
-
-			if (mazeY instanceof ListNBT)
-				for (int y = 0; y < heightInCellCount - 1; y++) maze[x][y] = ((ListNBT) mazeY).getInt(y);
-		}*/
+		tagCompound.putInt("mazeWidth", widthInCellCount);
+		tagCompound.putInt("mazeHeight", heightInCellCount);
+		tagCompound.put("maze", mazeX);
 	}
 }

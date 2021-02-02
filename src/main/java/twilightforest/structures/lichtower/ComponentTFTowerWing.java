@@ -1,6 +1,11 @@
 package twilightforest.structures.lichtower;
 
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.LadderBlock;
+import net.minecraft.block.StairsBlock;
+import net.minecraft.block.VineBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.HangingEntity;
@@ -39,11 +44,23 @@ import java.util.Random;
 public class ComponentTFTowerWing extends StructureTFComponentOld {
 
 	public ComponentTFTowerWing(TemplateManager manager, CompoundNBT nbt) {
-		super(TFLichTowerPieces.TFLTWin, nbt);
+		this(TFLichTowerPieces.TFLTWin, nbt);
 	}
 
 	public ComponentTFTowerWing(IStructurePieceType piece, CompoundNBT nbt) {
 		super(piece, nbt);
+
+		this.size = nbt.getInt("towerSize");
+		this.height = nbt.getInt("towerHeight");
+
+		this.readOpeningsFromArray(nbt.getIntArray("doorInts"));
+
+		this.highestOpening = nbt.getInt("highestOpening");
+		// too lazy to do this as a loop
+		this.openingTowards[0] = nbt.getBoolean("openingTowards0");
+		this.openingTowards[1] = nbt.getBoolean("openingTowards1");
+		this.openingTowards[2] = nbt.getBoolean("openingTowards2");
+		this.openingTowards[3] = nbt.getBoolean("openingTowards3");
 	}
 
 	public int size;
@@ -71,23 +88,6 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, size - 1, direction);
 	}
 
-	//TODO: See super
-//	@Override
-//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-//		super.writeStructureToNBT(tagCompound);
-//
-//		tagCompound.putInt("towerSize", this.size);
-//		tagCompound.putInt("towerHeight", this.height);
-//
-//		tagCompound.putIntArray("doorInts", this.getDoorsAsIntArray());
-//
-//		tagCompound.putInt("highestOpening", this.highestOpening);
-//		tagCompound.putBoolean("openingTowards0", this.openingTowards[0]);
-//		tagCompound.putBoolean("openingTowards1", this.openingTowards[1]);
-//		tagCompound.putBoolean("openingTowards2", this.openingTowards[2]);
-//		tagCompound.putBoolean("openingTowards3", this.openingTowards[3]);
-//	}
-
 	/**
 	 * Turn the openings array into an array of ints.
 	 */
@@ -107,17 +107,16 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 	protected void readAdditional(CompoundNBT tagCompound) {
 		super.readAdditional(tagCompound);
 
-		this.size = tagCompound.getInt("towerSize");
-		this.height = tagCompound.getInt("towerHeight");
+		tagCompound.putInt("towerSize", this.size);
+		tagCompound.putInt("towerHeight", this.height);
 
-		this.readOpeningsFromArray(tagCompound.getIntArray("doorInts"));
+		tagCompound.putIntArray("doorInts", this.getDoorsAsIntArray());
 
-		this.highestOpening = tagCompound.getInt("highestOpening");
-		// too lazy to do this as a loop
-		this.openingTowards[0] = tagCompound.getBoolean("openingTowards0");
-		this.openingTowards[1] = tagCompound.getBoolean("openingTowards1");
-		this.openingTowards[2] = tagCompound.getBoolean("openingTowards2");
-		this.openingTowards[3] = tagCompound.getBoolean("openingTowards3");
+		tagCompound.putInt("highestOpening", this.highestOpening);
+		tagCompound.putBoolean("openingTowards0", this.openingTowards[0]);
+		tagCompound.putBoolean("openingTowards1", this.openingTowards[1]);
+		tagCompound.putBoolean("openingTowards2", this.openingTowards[2]);
+		tagCompound.putBoolean("openingTowards3", this.openingTowards[3]);
 	}
 
 	/**
