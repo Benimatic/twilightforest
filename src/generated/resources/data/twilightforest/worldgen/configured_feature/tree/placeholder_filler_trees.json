@@ -6,27 +6,27 @@
           "config": {
             "features": [
               {
-                "feature": "twilightforest:twilight_oak",
+                "feature": "twilightforest:tree/base/twilight_oak",
                 "chance": 0.18181819
               },
               {
-                "feature": "twilightforest:canopy_tree",
+                "feature": "twilightforest:tree/base/canopy_tree",
                 "chance": 0.18181819
               },
               {
-                "feature": "twilightforest:mangrove_tree",
+                "feature": "twilightforest:tree/base/mangrove_tree",
                 "chance": 0.18181819
               },
               {
-                "feature": "twilightforest:darkwood_tree",
+                "feature": "twilightforest:tree/base/darkwood_tree",
                 "chance": 0.18181819
               },
               {
-                "feature": "twilightforest:hollow_tree",
+                "feature": "twilightforest:tree/base/hollow_tree",
                 "chance": 0.18181819
               }
             ],
-            "default": "twilightforest:rainbow_oak"
+            "default": "twilightforest:tree/base/rainbow_oak"
           },
           "type": "minecraft:random_selector"
         },
