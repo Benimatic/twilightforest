@@ -153,7 +153,8 @@ public final class BiomeMaker extends BiomeHelper {
 		Supplier<BiomeGenerationSettings.Builder> darkForestGenerationBuilder = () -> modify(defaultGenSettingBuilder(), b -> b.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARKWOOD_TREE.square()));
 
 		biomes.put(TFBiomes.darkForest,
-				biomeWithDefaults(defaultAmbientBuilder().withGrassColor(0x4B6754).withFoliageColor(0x3B5E3F), defaultMobSpawning(), darkForestGenerationBuilder.get())
+				biomeWithDefaults(defaultAmbientBuilder().withGrassColor(0x4B6754).withFoliageColor(0x3B5E3F), defaultMobSpawning(), darkForestGenerationBuilder.get()
+						.withStructure(TFStructures.CONFIGURED_KNIGHT_STRONGHOLD))
 						.temperature(0.7F)
 						.downfall(0.8F)
 						.depth(0.125F)

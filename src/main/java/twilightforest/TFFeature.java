@@ -27,6 +27,7 @@ import twilightforest.structures.courtyard.ComponentNagaCourtyardMain;
 import twilightforest.structures.lichtower.ComponentTFTowerMain;
 import twilightforest.structures.minotaurmaze.ComponentTFMazeRuins;
 import twilightforest.structures.mushroomtower.ComponentTFMushroomTowerMain;
+import twilightforest.structures.stronghold.ComponentTFStrongholdEntrance;
 import twilightforest.util.IntPair;
 import twilightforest.util.PlayerHelper;
 
@@ -286,10 +287,15 @@ public enum TFFeature {
 			book.setTagInfo("title", StringNBT.valueOf("Notes on a Stronghold"));
 		}
 
-//		@Override
-//		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-//			return new StructureStartKnightStronghold(world, this, rand, chunkX, chunkZ);
-//		}
+		@Override
+		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
+			return new ComponentTFStrongholdEntrance(this, 0, x, y, z);
+		}
+
+		@Override
+		public GenerationStage.Decoration getDecorationStage() {
+			return GenerationStage.Decoration.UNDERGROUND_STRUCTURES;
+		}
 	},
 	WORLD_TREE ( 3, "world_tree", false ) { { this.disableStructure(); } },
 	YETI_CAVE  ( 2, "yeti_lairs", true , TwilightForestMod.prefix("progress_lich") ) {

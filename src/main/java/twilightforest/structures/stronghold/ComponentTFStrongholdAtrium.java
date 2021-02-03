@@ -28,30 +28,17 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 
 	public ComponentTFStrongholdAtrium(TemplateManager manager, CompoundNBT nbt) {
 		super(TFStrongholdPieces.TFSAt, nbt);
+		this.enterBottom = nbt.getBoolean("enterBottom");
 	}
 
 	public ComponentTFStrongholdAtrium(TFFeature feature, int i, Direction facing, int x, int y, int z) {
 		super(TFStrongholdPieces.TFSAt, feature, i, facing, x, y, z);
 	}
 
-	/**
-	 * Save to NBT
-	 * TODO: See super
-	 */
-//	@Override
-//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-//		super.writeStructureToNBT(tagCompound);
-//
-//		tagCompound.putBoolean("enterBottom", this.enterBottom);
-//	}
-
-	/**
-	 * Load from NBT
-	 */
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {
 		super.readAdditional(tagCompound);
-		this.enterBottom = tagCompound.getBoolean("enterBottom");
+		tagCompound.putBoolean("enterBottom", this.enterBottom);
 	}
 
 	@Override
@@ -130,7 +117,7 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 		this.fillWithBlocks(world, sbb, 7, 0, 7, 10, 0, 10, grass, AIR, false);
 
 		// tree
-		this.spawnATree(world, manager, rand.nextInt(5), 8, 1, 8, sbb);
+		this.spawnATree(world, generator, manager, rand.nextInt(5), 8, 1, 8, sbb);
 
 		// statues
 		placeCornerStatue(world, 2, 8, 2, 0, sbb);
@@ -144,7 +131,7 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 		return true;
 	}
 
-	private void spawnATree(ISeedReader world, StructureManager manager, int treeNum, int x, int y, int z, MutableBoundingBox sbb) {
+	private void spawnATree(ISeedReader world, ChunkGenerator generator, StructureManager manager, int treeNum, int x, int y, int z, MutableBoundingBox sbb) {
 		BlockPos pos = getBlockPosWithOffset(x, y, z);
 
 		if (sbb.isVecInside(pos)) {
@@ -176,7 +163,7 @@ public class ComponentTFStrongholdAtrium extends StructureTFStrongholdComponent 
 			}
 
 			for (int i = 0; i < 100; i++) {
-				if (treeGen.generate(world, ((ServerWorld) world).getChunkProvider().getChunkGenerator(), world.getRandom(), pos)) {
+				if (treeGen.generate(world, generator, world.getRandom(), pos)) {
 					break;
 				}
 			}

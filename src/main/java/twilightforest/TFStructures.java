@@ -19,6 +19,7 @@ import twilightforest.structures.lichtower.TFLichTowerPieces;
 import twilightforest.structures.minotaurmaze.TFMinotaurMazePieces;
 import twilightforest.structures.mushroomtower.TFMushroomTowerPieces;
 import twilightforest.structures.start.TFStructure;
+import twilightforest.structures.stronghold.TFStrongholdPieces;
 import twilightforest.world.TFDimensions;
 
 import java.util.HashMap;
@@ -58,6 +59,9 @@ public class TFStructures {
 	public static final Structure<NoFeatureConfig> HYDRA_LAIR = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.HYDRA_LAIR, true);
 	public static final StructureFeature<?, ?> CONFIGURED_HYDRA_LAIR = HYDRA_LAIR.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
 
+	public static final Structure<NoFeatureConfig> KNIGHT_STRONGHOLD = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.KNIGHT_STRONGHOLD, true);
+	public static final StructureFeature<?, ?> CONFIGURED_KNIGHT_STRONGHOLD = KNIGHT_STRONGHOLD.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
+
 	public static void register(RegistryEvent.Register<Structure<?>> event) {
 		SEPARATION_SETTINGS.clear();
 		TFFeature.init();
@@ -65,6 +69,7 @@ public class TFStructures {
 		new NagaCourtyardPieces();
 		new TFLichTowerPieces();
 		new TFMinotaurMazePieces();
+		new TFStrongholdPieces();
 		register(event, HEDGE_MAZE, CONFIGURED_HEDGE_MAZE, TwilightForestMod.prefix("hedgemaze"), 1, 2);
 		register(event, QUEST_GROVE, CONFIGURED_QUEST_GROVE, TwilightForestMod.prefix("questgrove"), 1, 2);
 		register(event, MUSHROOM_TOWER, CONFIGURED_MUSHROOM_TOWER, TwilightForestMod.prefix("mushroomtower"), 1, 2);
@@ -75,6 +80,7 @@ public class TFStructures {
 		register(event, LICH_TOWER, CONFIGURED_LICH_TOWER, TwilightForestMod.prefix("lichtower"), 1, 2);
 		register(event, LABYRINTH, CONFIGURED_LABYRINTH, TwilightForestMod.prefix("labyrinth"), 1, 2);
 		register(event, HYDRA_LAIR, CONFIGURED_HYDRA_LAIR, TwilightForestMod.prefix("hydralair"), 1, 2);
+		register(event, KNIGHT_STRONGHOLD, CONFIGURED_KNIGHT_STRONGHOLD, TwilightForestMod.prefix("knightstronghold"), 1, 2);
 	}
 
 	private static void register(RegistryEvent.Register<Structure<?>> event, Structure<?> structure, StructureFeature<?, ?> config, ResourceLocation name, int min, int max) {

@@ -23,6 +23,10 @@ public class ComponentTFStrongholdEntrance extends StructureTFStrongholdComponen
 
 	public ComponentTFStrongholdEntrance(TemplateManager manager, CompoundNBT nbt) {
 		super(TFStrongholdPieces.TFSEnter, nbt);
+
+		this.deco = new StructureTFDecoratorStronghold();
+
+		lowerPieces = new TFStrongholdPieces();
 	}
 
 	public ComponentTFStrongholdEntrance(TFFeature feature, int i, int x, int y, int z) {

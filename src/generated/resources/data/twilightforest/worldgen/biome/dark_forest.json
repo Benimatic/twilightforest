@@ -989,7 +989,12 @@
       }
     ]
   ],
-  "starts": [],
+  "starts": [
+    {
+      "config": {},
+      "type": "twilightforest:knightstronghold"
+    }
+  ],
   "spawners": {
     "monster": [
       {
