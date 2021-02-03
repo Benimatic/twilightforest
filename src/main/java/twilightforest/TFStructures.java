@@ -39,14 +39,14 @@ public class TFStructures {
 	public static final Structure<NoFeatureConfig> MUSHROOM_TOWER = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.MUSHROOM_TOWER);
 	public static final StructureFeature<?, ?> CONFIGURED_MUSHROOM_TOWER = MUSHROOM_TOWER.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
 
-	public static final Structure<NoFeatureConfig> HALLOW_HILL_SMALL = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.SMALL_HILL);
-	public static final StructureFeature<?, ?> CONFIGURED_HALLOW_HILL_SMALL = HALLOW_HILL_SMALL.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
+	public static final Structure<NoFeatureConfig> HOLLOW_HILL_SMALL = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.SMALL_HILL);
+	public static final StructureFeature<?, ?> CONFIGURED_HOLLOW_HILL_SMALL = HOLLOW_HILL_SMALL.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
 
-	public static final Structure<NoFeatureConfig> HALLOW_HILL_MEDIUM = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.MEDIUM_HILL);
-	public static final StructureFeature<?, ?> CONFIGURED_HALLOW_HILL_MEDIUM = HALLOW_HILL_MEDIUM.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
+	public static final Structure<NoFeatureConfig> HOLLOW_HILL_MEDIUM = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.MEDIUM_HILL);
+	public static final StructureFeature<?, ?> CONFIGURED_HOLLOW_HILL_MEDIUM = HOLLOW_HILL_MEDIUM.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
 
-	public static final Structure<NoFeatureConfig> HALLOW_HILL_LARGE = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.LARGE_HILL);
-	public static final StructureFeature<?, ?> CONFIGURED_HALLOW_HILL_LARGE = HALLOW_HILL_LARGE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
+	public static final Structure<NoFeatureConfig> HOLLOW_HILL_LARGE = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.LARGE_HILL);
+	public static final StructureFeature<?, ?> CONFIGURED_HOLLOW_HILL_LARGE = HOLLOW_HILL_LARGE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
 
 	public static final Structure<NoFeatureConfig> NAGA_COURTYARD = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.NAGA_COURTYARD, true);
 	public static final StructureFeature<?, ?> CONFIGURED_NAGA_COURTYARD = NAGA_COURTYARD.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
@@ -78,9 +78,9 @@ public class TFStructures {
 		register(event, HEDGE_MAZE, CONFIGURED_HEDGE_MAZE, TwilightForestMod.prefix("hedgemaze"), 1, 2);
 		register(event, QUEST_GROVE, CONFIGURED_QUEST_GROVE, TwilightForestMod.prefix("questgrove"), 1, 2);
 		register(event, MUSHROOM_TOWER, CONFIGURED_MUSHROOM_TOWER, TwilightForestMod.prefix("mushroomtower"), 1, 2);
-		register(event, HALLOW_HILL_SMALL, CONFIGURED_HALLOW_HILL_SMALL, TwilightForestMod.prefix("hallowhillsmall"), 1, 2);
-		register(event, HALLOW_HILL_MEDIUM, CONFIGURED_HALLOW_HILL_MEDIUM, TwilightForestMod.prefix("hallowhillmedium"), 1, 2);
-		register(event, HALLOW_HILL_LARGE, CONFIGURED_HALLOW_HILL_LARGE, TwilightForestMod.prefix("hallowhilllarge"), 1, 2);
+		register(event, HOLLOW_HILL_SMALL, CONFIGURED_HOLLOW_HILL_SMALL, TwilightForestMod.prefix("hollowhillsmall"), 1, 2);
+		register(event, HOLLOW_HILL_MEDIUM, CONFIGURED_HOLLOW_HILL_MEDIUM, TwilightForestMod.prefix("hollowhillmedium"), 1, 2);
+		register(event, HOLLOW_HILL_LARGE, CONFIGURED_HOLLOW_HILL_LARGE, TwilightForestMod.prefix("hollowhilllarge"), 1, 2);
 		register(event, NAGA_COURTYARD, CONFIGURED_NAGA_COURTYARD, TwilightForestMod.prefix("courtyard"), 1, 2);
 		register(event, LICH_TOWER, CONFIGURED_LICH_TOWER, TwilightForestMod.prefix("lichtower"), 1, 2);
 		register(event, LABYRINTH, CONFIGURED_LABYRINTH, TwilightForestMod.prefix("labyrinth"), 1, 2);
