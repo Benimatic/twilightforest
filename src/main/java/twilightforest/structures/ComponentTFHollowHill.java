@@ -10,12 +10,9 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.WorldGenRegion;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.template.TemplateManager;
-import net.minecraft.world.server.ServerChunkProvider;
-import net.minecraft.world.server.ServerWorld;
 import twilightforest.TFFeature;
 import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
@@ -36,7 +33,6 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 
 	public ComponentTFHollowHill(IStructurePieceType piece, CompoundNBT nbt) {
 		super(piece, nbt);
-		this.setCoordBaseMode(Direction.SOUTH);
 		hillSize = nbt.getInt("hillSize");
 		this.radius = ((hillSize * 2 + 1) * 8) - 6;
 	}
@@ -102,17 +98,17 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 		// ore or glowing stalactites! (smaller, less plentiful)
 		for (int i = 0; i < sn; i++) {
 			int[] dest = getCoordsInHill2D(rand);
-			generateOreStalactite(world, manager, dest[0], 1, dest[1], sbb);
+			generateOreStalactite(world, generator, manager, dest[0], 1, dest[1], sbb);
 		}
 		// stone stalactites!
 		for (int i = 0; i < sn; i++) {
 			int[] dest = getCoordsInHill2D(rand);
-			generateBlockStalactite(world, manager, Blocks.STONE, 1.0F, true, dest[0], 1, dest[1], sbb);
+			generateBlockStalactite(world, generator, manager, Blocks.STONE, 1.0F, true, dest[0], 1, dest[1], sbb);
 		}
 		// stone stalagmites!
 		for (int i = 0; i < sn; i++) {
 			int[] dest = getCoordsInHill2D(rand);
-			generateBlockStalactite(world, manager, Blocks.STONE, 0.9F, false, dest[0], 1, dest[1], sbb);
+			generateBlockStalactite(world, generator, manager, Blocks.STONE, 0.9F, false, dest[0], 1, dest[1], sbb);
 		}
 
 		// level 3 hills get 2 mid-air wraith spawners
@@ -144,7 +140,7 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 	/**
 	 * Generate a random ore stalactite
 	 */
-	protected void generateOreStalactite(ISeedReader world, StructureManager manager, int x, int y, int z, MutableBoundingBox sbb) {
+	protected void generateOreStalactite(ISeedReader world, ChunkGenerator generator, StructureManager manager, int x, int y, int z, MutableBoundingBox sbb) {
 		// are the coordinates in our bounding box?
 		int dx = getXWithOffset(x, z);
 		int dy = getYWithOffset(y);
@@ -157,14 +153,14 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 
 			// make the actual stalactite
 			CaveStalactiteConfig stalag = TFGenCaveStalactite.makeRandomOreStalactite(stalRNG, hillSize);
-			TFBiomeFeatures.CAVE_STALACTITE.get().withConfiguration(stalag).generate(world, ((ServerChunkProvider)world.getChunkProvider()).getChunkGenerator(), stalRNG, pos);
+			TFBiomeFeatures.CAVE_STALACTITE.get().withConfiguration(stalag).generate(world, generator, stalRNG, pos);
 		}
 	}
 
 	/**
 	 * Make a random stone stalactite
 	 */
-	protected void generateBlockStalactite(ISeedReader world, StructureManager manager, Block blockToGenerate, float length, boolean up, int x, int y, int z, MutableBoundingBox sbb) {
+	protected void generateBlockStalactite(ISeedReader world, ChunkGenerator generator, StructureManager manager, Block blockToGenerate, float length, boolean up, int x, int y, int z, MutableBoundingBox sbb) {
 		// are the coordinates in our bounding box?
 		int dx = getXWithOffset(x, z);
 		int dy = getYWithOffset(y);
@@ -180,7 +176,7 @@ public class ComponentTFHollowHill extends StructureTFComponentOld {
 			}
 
 			// make the actual stalactite
-			TFBiomeFeatures.CAVE_STALACTITE.get().withConfiguration(new CaveStalactiteConfig(blockToGenerate.getDefaultState(), length, -1, -1, up)).generate(world, ((ServerChunkProvider)world.getChunkProvider()).getChunkGenerator(), stalRNG, pos);
+			TFBiomeFeatures.CAVE_STALACTITE.get().withConfiguration(new CaveStalactiteConfig(blockToGenerate.getDefaultState(), length, -1, -1, up)).generate(world, generator, stalRNG, pos);
 		}
 	}
 

@@ -27,7 +27,6 @@ public class ComponentNagaCourtyardMain extends StructureMazeGenerator {
 
 	public ComponentNagaCourtyardMain(TemplateManager manager, CompoundNBT nbt) {
 		super(NagaCourtyardPieces.TFNCMn, nbt);
-		this.setCoordBaseMode(Direction.NORTH);
 	}
 
 	public ComponentNagaCourtyardMain(TFFeature feature, Random rand, int i, int x, int y, int z) {

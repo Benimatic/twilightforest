@@ -36,9 +36,8 @@ public abstract class StructureTFComponent extends StructurePiece {
 	}
 
 	public StructureTFComponent(IStructurePieceType type, TFFeature feature, int i) {
-		super(type, i);
+		this(type, i);
 		this.feature = feature;
-		this.rotation = Rotation.NONE;
 	}
 
 	public TFFeature getFeatureType() {
@@ -74,7 +73,8 @@ public abstract class StructureTFComponent extends StructurePiece {
 			final BlockPos pos = new BlockPos(this.getXWithOffset(x, z), this.getYWithOffset(y), this.getZWithOffset(x, z));
 
 			if (sbb.isVecInside(pos)) {
-				final ArmorStandEntity armorStand = new ArmorStandEntity(EntityType.ARMOR_STAND, world.getWorld());
+				// FIXME
+				/*final ArmorStandEntity armorStand = new ArmorStandEntity(EntityType.ARMOR_STAND, world);
 				armorStand.setCustomName(new StringTextComponent(s));
 				armorStand.setLocationAndAngles(pos.getX() + 0.5, pos.getY() + additionalYOffset, pos.getZ() + 0.5, 0, 0);
 				armorStand.setInvulnerable(true);
@@ -84,7 +84,7 @@ public abstract class StructureTFComponent extends StructurePiece {
 				armorStand.setNoGravity(true);
 				// set marker flag
 				armorStand.getDataManager().set(ArmorStandEntity.STATUS, (byte) (armorStand.getDataManager().get(ArmorStandEntity.STATUS) | 16));
-				world.addEntity(armorStand);
+				world.addEntity(armorStand);*/
 			}
 		}
 	}

@@ -36,7 +36,6 @@ public class ComponentTFQuestGrove extends StructureTFComponentOld {
 
 	public ComponentTFQuestGrove(TemplateManager manager, CompoundNBT nbt) {
 		super(TFFeature.TFQuest1, nbt);
-		this.setCoordBaseMode(Direction.SOUTH);
 	}
 
 	//TODO: Parameter "rand" is unused. Remove?

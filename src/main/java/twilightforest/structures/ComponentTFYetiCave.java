@@ -68,17 +68,17 @@ public class ComponentTFYetiCave extends ComponentTFHollowHill {
 		// stone stalactites!
 		for (int i = 0; i < sn; i++) {
 			int[] dest = getCoordsInHill2D(rand);
-			generateBlockStalactite(world, manager, Blocks.STONE, 1.0F, true, dest[0], 1, dest[1], sbb);
+			generateBlockStalactite(world, generator, manager, Blocks.STONE, 1.0F, true, dest[0], 1, dest[1], sbb);
 		}
 		// ice stalactites!
 		for (int i = 0; i < sn; i++) {
 			int[] dest = getCoordsInHill2D(rand);
-			generateBlockStalactite(world, manager, Blocks.ICE, 1.0F, true, dest[0], 1, dest[1], sbb);
+			generateBlockStalactite(world, generator, manager, Blocks.ICE, 1.0F, true, dest[0], 1, dest[1], sbb);
 		}
 		// packed ice stalactites!
 		for (int i = 0; i < sn; i++) {
 			int[] dest = getCoordsInHill2D(rand);
-			generateBlockStalactite(world, manager, Blocks.PACKED_ICE, 0.9F, true, dest[0], 1, dest[1], sbb);
+			generateBlockStalactite(world, generator, manager, Blocks.PACKED_ICE, 0.9F, true, dest[0], 1, dest[1], sbb);
 		}
 
 		// spawn alpha yeti

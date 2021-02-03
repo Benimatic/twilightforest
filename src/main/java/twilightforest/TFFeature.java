@@ -16,6 +16,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.server.ServerWorld;
@@ -24,6 +25,7 @@ import twilightforest.entity.*;
 import twilightforest.structures.*;
 import twilightforest.structures.courtyard.ComponentNagaCourtyardMain;
 import twilightforest.structures.lichtower.ComponentTFTowerMain;
+import twilightforest.structures.minotaurmaze.ComponentTFMazeRuins;
 import twilightforest.structures.mushroomtower.ComponentTFMushroomTowerMain;
 import twilightforest.util.IntPair;
 import twilightforest.util.PlayerHelper;
@@ -219,10 +221,15 @@ public enum TFFeature {
 			book.setTagInfo("title", StringNBT.valueOf("Notes on a Swampy Labyrinth"));
 		}
 
-//		@Override
-//		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-//			return new StructureStartLabyrinth(world, this, rand, chunkX, chunkZ);
-//		}
+		@Override
+		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
+			return new ComponentTFMazeRuins(this, 0, x, y, z);
+		}
+
+		@Override
+		public GenerationStage.Decoration getDecorationStage() {
+			return GenerationStage.Decoration.UNDERGROUND_STRUCTURES;
+		}
 	},
 	DARK_TOWER ( 1, "dark_tower", true, TwilightForestMod.prefix("progress_knights") ) {
 		{
@@ -913,6 +920,10 @@ public enum TFFeature {
 	@Nullable
 	public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
 		return null;
+	}
+
+	public GenerationStage.Decoration getDecorationStage() {
+		return GenerationStage.Decoration.SURFACE_STRUCTURES;
 	}
 
 	private static void addTranslatedPages(ListNBT bookPages, String translationKey, int pageCount) {

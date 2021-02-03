@@ -11,6 +11,7 @@ import twilightforest.TFStructures;
 import twilightforest.biomes.TFBiomes;
 
 import java.util.Map;
+import java.util.function.Supplier;
 
 public final class BiomeMaker extends BiomeHelper {
 	public static Map<RegistryKey<Biome>, Biome> generateBiomes() {
@@ -123,10 +124,11 @@ public final class BiomeMaker extends BiomeHelper {
 	}
 
 	private static void swampBiomes(ImmutableMap.Builder<RegistryKey<Biome>, Biome> biomes) {
-		BiomeGenerationSettings.Builder swampGenerationBuilder = modify(defaultGenSettingBuilder(), b -> b.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.MANGROVE_TREE.square()));
+		Supplier<BiomeGenerationSettings.Builder> swampGenerationBuilder = () -> modify(defaultGenSettingBuilder(), b -> b.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.MANGROVE_TREE.square()));
 
 		biomes.put(TFBiomes.tfSwamp,
-				biomeWithDefaults(defaultAmbientBuilder().withGrassColor(0x5C694E).withFoliageColor(0x496137).setWaterColor(0xE0FFAE), defaultMobSpawning(), swampGenerationBuilder)
+				biomeWithDefaults(defaultAmbientBuilder().withGrassColor(0x5C694E).withFoliageColor(0x496137).setWaterColor(0xE0FFAE), defaultMobSpawning(), swampGenerationBuilder.get()
+						.withStructure(TFStructures.CONFIGURED_LABYRINTH))
 						.category(Biome.Category.SWAMP)
 						.temperature(0.8F)
 						.downfall(0.9F)
@@ -136,7 +138,7 @@ public final class BiomeMaker extends BiomeHelper {
 		);
 
 		biomes.put(TFBiomes.fireSwamp,
-				biomeWithDefaults(whiteAshParticles(defaultAmbientBuilder().withGrassColor(0x572E23).withFoliageColor(0x64260F).setWaterColor(0x6C2C2C)), defaultMobSpawning(), swampGenerationBuilder)
+				biomeWithDefaults(whiteAshParticles(defaultAmbientBuilder().withGrassColor(0x572E23).withFoliageColor(0x64260F).setWaterColor(0x6C2C2C)), defaultMobSpawning(), swampGenerationBuilder.get())
 						.category(Biome.Category.SWAMP)
 						.temperature(1)
 						.downfall(0.4F)
@@ -147,10 +149,10 @@ public final class BiomeMaker extends BiomeHelper {
 	}
 
 	private static void darkForestBiomes(ImmutableMap.Builder<RegistryKey<Biome>, Biome> biomes) {
-		BiomeGenerationSettings.Builder darkForestGenerationBuilder = modify(defaultGenSettingBuilder(), b -> b.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARKWOOD_TREE.square()));
+		Supplier<BiomeGenerationSettings.Builder> darkForestGenerationBuilder = () -> modify(defaultGenSettingBuilder(), b -> b.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARKWOOD_TREE.square()));
 
 		biomes.put(TFBiomes.darkForest,
-				biomeWithDefaults(defaultAmbientBuilder().withGrassColor(0x4B6754).withFoliageColor(0x3B5E3F), defaultMobSpawning(), darkForestGenerationBuilder)
+				biomeWithDefaults(defaultAmbientBuilder().withGrassColor(0x4B6754).withFoliageColor(0x3B5E3F), defaultMobSpawning(), darkForestGenerationBuilder.get())
 						.temperature(0.7F)
 						.downfall(0.8F)
 						.depth(0.125F)
@@ -159,7 +161,7 @@ public final class BiomeMaker extends BiomeHelper {
 		);
 
 		biomes.put(TFBiomes.darkForestCenter, // FIXME: colors
-				biomeWithDefaults(defaultAmbientBuilder().withGrassColor(0x667540).withFoliageColor(0xF9821E), defaultMobSpawning(), darkForestGenerationBuilder)
+				biomeWithDefaults(defaultAmbientBuilder().withGrassColor(0x667540).withFoliageColor(0xF9821E), defaultMobSpawning(), darkForestGenerationBuilder.get())
 						.depth(0.125F)
 						.scale(0.05F)
 						.build()

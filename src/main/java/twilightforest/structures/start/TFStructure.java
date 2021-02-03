@@ -41,7 +41,7 @@ public class TFStructure<C extends IFeatureConfig> extends Structure<C> {
 
 	@Override
 	public GenerationStage.Decoration getDecorationStage() {
-		return GenerationStage.Decoration.SURFACE_STRUCTURES;
+		return feature.getDecorationStage();
 	}
 
 	@Override

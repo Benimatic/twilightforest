@@ -12,6 +12,7 @@ import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.server.ServerChunkProvider;
 import net.minecraft.world.server.ServerWorld;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
@@ -38,7 +39,7 @@ public class ComponentTFMazeUpperEntrance extends StructureTFComponentOld {
 	 */
 	@Override
 	public void buildComponent(StructurePiece structurecomponent, List<StructurePiece> list, Random random) {
-		;
+		// NO-OP
 	}
 
 	@Override
@@ -85,7 +86,7 @@ public class ComponentTFMazeUpperEntrance extends StructureTFComponentOld {
 	 * levels in the BB's horizontal rectangle).
 	 */
 	@Override
-	protected int getAverageGroundLevel(ISeedReader world, MutableBoundingBox boundingBox) {
+	protected int getAverageGroundLevel(ISeedReader world, ChunkGenerator generator, MutableBoundingBox boundingBox) {
 		int yTotal = 0;
 		int count = 0;
 
@@ -95,7 +96,7 @@ public class ComponentTFMazeUpperEntrance extends StructureTFComponentOld {
 
 				if (boundingBox.isVecInside(pos)) {
 					final BlockPos topPos = world.getHeight(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, pos);
-					yTotal += Math.max(topPos.getY(), ((ServerWorld) world).getChunkProvider().getChunkGenerator().getGroundHeight());
+					yTotal += Math.max(topPos.getY(), generator.getGroundHeight());
 					++count;
 				}
 			}

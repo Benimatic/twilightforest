@@ -16,10 +16,10 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.BlockSnapshot;
 import twilightforest.TFFeature;
 import twilightforest.loot.TFTreasure;
@@ -208,7 +208,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 		int dz = getZWithOffsetRotated(x, z, rotation);
 		BlockPos pos = new BlockPos(dx, dy, dz);
 		if (sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST)) {
-			treasureType.generateChest(world.getWorld(), pos, trapped);
+			treasureType.generateChest(world, pos, trapped);
 		}
 	}
 
@@ -219,43 +219,40 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	 * scan unloaded chunks looking for connections.
 	 *
 	 */
-	protected void placeTripwire(World world, int x, int y, int z, int size, Direction facing, MutableBoundingBox sbb) {
-		if (!(world instanceof ISeedReader))
-			return;
+	protected void placeTripwire(ISeedReader world, int x, int y, int z, int size, Direction facing, MutableBoundingBox sbb) {
 
-		// FIXME this is terrible to cast but this compiles for now. This whole class will be shredded eventually, for Structure Templates
-		ISeedReader seedReader = (ISeedReader) world;
+		// FIXME: not sure if this capture crap is still needed
 
 		int dx = facing.getXOffset();
 		int dz = facing.getZOffset();
 
-		world.captureBlockSnapshots = true;
+//		world.captureBlockSnapshots = true;
 
 		// add tripwire hooks
 		BlockState tripwireHook = Blocks.TRIPWIRE_HOOK.getDefaultState();
-		setBlockState(seedReader, tripwireHook.with(TripWireHookBlock.FACING, facing.getOpposite()), x, y, z, sbb);
-		setBlockState(seedReader, tripwireHook.with(TripWireHookBlock.FACING, facing), x + dx * size, y, z + dz * size, sbb);
+		setBlockState(world, tripwireHook.with(TripWireHookBlock.FACING, facing.getOpposite()), x, y, z, sbb);
+		setBlockState(world, tripwireHook.with(TripWireHookBlock.FACING, facing), x + dx * size, y, z + dz * size, sbb);
 
 		// add string
 		BlockState tripwire = Blocks.TRIPWIRE.getDefaultState();
 		for (int i = 1; i < size; i++) {
-			setBlockState(seedReader, tripwire, x + dx * i, y, z + dz * i, sbb);
+			setBlockState(world, tripwire, x + dx * i, y, z + dz * i, sbb);
 		}
 
-		world.captureBlockSnapshots = false;
+//		world.captureBlockSnapshots = false;
 
-		@SuppressWarnings("unchecked")
-		List<BlockSnapshot> blockSnapshots = (List<BlockSnapshot>) world.capturedBlockSnapshots.clone();
-		world.capturedBlockSnapshots.clear();
+//		@SuppressWarnings("unchecked")
+//		List<BlockSnapshot> blockSnapshots = (List<BlockSnapshot>) world.capturedBlockSnapshots.clone();
+//		world.capturedBlockSnapshots.clear();
 
-		for (BlockSnapshot snap : blockSnapshots) {
-			int updateFlag = snap.getFlag();
-			BlockState oldBlock = snap.getReplacedBlock();
-			BlockState newBlock = world.getBlockState(snap.getPos());
-
-			newBlock.getBlock().onBlockAdded(oldBlock, world, snap.getPos(), newBlock, false);
-			world.markAndNotifyBlock(snap.getPos(), null, oldBlock, newBlock, updateFlag, 512 /*Placeholder*/);
-		}
+//		for (BlockSnapshot snap : blockSnapshots) {
+//			int updateFlag = snap.getFlag();
+//			BlockState oldBlock = snap.getReplacedBlock();
+//			BlockState newBlock = world.getBlockState(snap.getPos());
+//
+//			newBlock.getBlock().onBlockAdded(oldBlock, world, snap.getPos(), newBlock, false);
+//			world.markAndNotifyBlock(snap.getPos(), null, oldBlock, newBlock, updateFlag, 512 /*Placeholder*/);
+//		}
 	}
 
 	protected void placeSignAtCurrentPosition(ISeedReader world, int x, int y, int z, String string0, String string1, MutableBoundingBox sbb) {
@@ -556,7 +553,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	 * <p>
 	 * This is basically copied from ComponentVillage
 	 */
-	protected int getAverageGroundLevel(ISeedReader world, MutableBoundingBox sbb) {
+	protected int getAverageGroundLevel(ISeedReader world, ChunkGenerator generator, MutableBoundingBox sbb) {
 		int totalHeight = 0;
 		int heightCount = 0;
 
@@ -564,7 +561,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 			for (int by = this.boundingBox.minX; by <= this.boundingBox.maxX; ++by) {
 				BlockPos pos = new BlockPos(by, 64, bz);
 				if (sbb.isVecInside(pos)) {
-					totalHeight += Math.max(world.getHeight(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, pos).getY(), ((ServerWorld) world).getChunkProvider().getChunkGenerator().getGroundHeight());
+					totalHeight += Math.max(world.getHeight(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, pos).getY(), generator.getGroundHeight());
 					++heightCount;
 				}
 			}
