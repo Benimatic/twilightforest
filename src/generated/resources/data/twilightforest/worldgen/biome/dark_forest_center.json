@@ -58,7 +58,12 @@
       }
     ]
   ],
-  "starts": [],
+  "starts": [
+    {
+      "config": {},
+      "type": "twilightforest:darktower"
+    }
+  ],
   "spawners": {
     "monster": [
       {

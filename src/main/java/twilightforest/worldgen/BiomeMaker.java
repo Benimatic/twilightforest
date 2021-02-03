@@ -166,7 +166,8 @@ public final class BiomeMaker extends BiomeHelper {
 		);
 
 		biomes.put(TFBiomes.darkForestCenter, // FIXME: colors
-				biomeWithDefaults(defaultAmbientBuilder().withGrassColor(0x667540).withFoliageColor(0xF9821E), defaultMobSpawning(), darkForestGenerationBuilder.get())
+				biomeWithDefaults(defaultAmbientBuilder().withGrassColor(0x667540).withFoliageColor(0xF9821E), defaultMobSpawning(), darkForestGenerationBuilder.get()
+						.withStructure(TFStructures.CONFIGURED_DARK_TOWER))
 						.depth(0.125F)
 						.scale(0.05F)
 						.build()
