@@ -23,7 +23,6 @@ import java.util.function.Supplier;
 
 // TODO: doc out all the vanilla copying
 public class ChunkGeneratorTwilightForest extends ChunkGeneratorTFBase {
-
 	public static final Codec<ChunkGeneratorTwilightForest> codecTFChunk = RecordCodecBuilder.create((instance) ->
 			instance.group(
 					BiomeProvider.CODEC.fieldOf("biome_source").forGetter(ChunkGenerator::getBiomeProvider),

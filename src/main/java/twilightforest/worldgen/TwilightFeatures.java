@@ -33,7 +33,6 @@ import java.util.List;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class TwilightFeatures {
-
     private static final List<FoliagePlacerType<?>> FOLIAGE_PLACER_TYPES = new ArrayList<>();
     private static final List<TreeDecoratorType<?>> TREE_DECORATOR_TYPES = new ArrayList<>();
 

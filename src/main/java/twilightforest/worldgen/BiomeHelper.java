@@ -1,19 +1,9 @@
-package twilightforest.data;
+package twilightforest.worldgen;
 
 import com.google.common.collect.ImmutableList;
-import com.google.gson.JsonElement;
-import com.mojang.serialization.DataResult;
-import com.mojang.serialization.JsonOps;
-import net.minecraft.data.BiomeProvider;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.DirectoryCache;
-import net.minecraft.data.IDataProvider;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.DynamicRegistries;
 import net.minecraft.world.biome.*;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.Feature;
@@ -26,24 +16,12 @@ import net.minecraft.world.gen.surfacebuilders.ConfiguredSurfaceBuilders;
 import twilightforest.TFStructures;
 import twilightforest.entity.TFEntities;
 import twilightforest.world.feature.TFBiomeFeatures;
-import twilightforest.worldgen.ConfiguredFeatures;
 
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.Map;
-import java.util.Optional;
-import java.util.StringJoiner;
 import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 @SuppressWarnings("UnusedReturnValue")
-public abstract class BiomeDataHelper extends BiomeProvider {
-    public BiomeDataHelper(DataGenerator generator) {
-        super(generator);
-    }
-
-    public static BiomeGenerationSettings.Builder addWoodRoots(BiomeGenerationSettings.Builder biome) {
+public abstract class BiomeHelper {
+    public static BiomeGenerationSettings.Builder withWoodRoots(BiomeGenerationSettings.Builder biome) {
         biome.withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, TFBiomeFeatures.WOOD_ROOTS.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).range(30).square().func_242731_b(20));
 
         return biome;
@@ -116,6 +94,10 @@ public abstract class BiomeDataHelper extends BiomeProvider {
                 .setMoodSound(MoodSoundAmbience.DEFAULT_CAVE); // We should probably change it
     }
 
+    protected static BiomeGenerationSettings.Builder withWildcardTrees(BiomeGenerationSettings.Builder builder) {
+        return builder.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DEFAULT_TWILIGHT_TREES);
+    }
+
     protected static BiomeGenerationSettings.Builder defaultGenSettingBuilder() {
         BiomeGenerationSettings.Builder biome = new BiomeGenerationSettings.Builder()
                 .withSurfaceBuilder(ConfiguredSurfaceBuilders.field_244178_j); // GRASS_DIRT_GRAVEL_CONFIG
@@ -130,7 +112,7 @@ public abstract class BiomeDataHelper extends BiomeProvider {
 
         DefaultBiomeFeatures.withLavaAndWaterSprings(biome);
 
-        addWoodRoots(biome);
+        withWoodRoots(biome);
 
         return biome;
     }
@@ -182,44 +164,4 @@ public abstract class BiomeDataHelper extends BiomeProvider {
                 .withGenerationSettings(biomeGenerationSettings.build())
                 .withTemperatureModifier(Biome.TemperatureModifier.NONE);
     }
-
-    // Main methods
-    /** Vanillacopy net.minecraft.data.BiomeProvider
-     * Biome itself is used instead of a Biome Supplier (Biome.BIOME_CODEC -> Biome.CODEC) */
-    @Override
-    public void act(final DirectoryCache directoryCache) {
-        final Path outputPath = this.generator.getOutputFolder();
-
-        final StringJoiner biomeTable = new StringJoiner(",\n");
-
-
-
-        for (Map.Entry<RegistryKey<Biome>, Biome> biomeKeyPair : generateBiomes().entrySet()) {
-            final Path filePath = makePath(outputPath, biomeKeyPair.getKey().getLocation());
-            final Biome biome = biomeKeyPair.getValue();
-            biome.setRegistryName(biomeKeyPair.getKey().getLocation());
-            final Function<Supplier<Biome>, DataResult<JsonElement>> serializer = JsonOps.INSTANCE.withEncoder(Biome.BIOME_CODEC);
-
-            try {
-                final Optional<JsonElement> jsonOptional = serializer.apply(() -> biome).result();
-                if (jsonOptional.isPresent()) {
-                    IDataProvider.save(GSON, directoryCache, jsonOptional.get(), filePath);
-
-                    biomeTable.add(biomeKeyPair.getKey().toString());
-                } else {
-                    LOGGER.error("Couldn't serialize biome {}", filePath);
-                }
-            } catch (IOException e) {
-                LOGGER.error("Couldn't save biome {}", filePath, e);
-            }
-        }
-
-        System.out.println("TF Biome generation finished execution!\n" + biomeTable.toString());
-    }
-
-    protected static Path makePath(Path path, ResourceLocation resc) {
-        return path.resolve("data/" + resc.getNamespace() + "/worldgen/biome/" + resc.getPath() + ".json");
-    }
-
-    protected abstract Map<RegistryKey<Biome>, Biome> generateBiomes();
 }

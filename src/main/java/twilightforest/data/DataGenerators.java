@@ -18,6 +18,6 @@ public class DataGenerators {
 		evt.getGenerator().addProvider(new LootGenerator(evt.getGenerator()));
 		evt.getGenerator().addProvider(new StonecuttingGenerator(evt.getGenerator()));
 		evt.getGenerator().addProvider(new CraftingGenerator(evt.getGenerator()));
-		evt.getGenerator().addProvider(new BiomeGenerator(evt.getGenerator()));
+		evt.getGenerator().addProvider(new TwilightWorldDataCompiler(evt.getGenerator()));
 	}
 }
