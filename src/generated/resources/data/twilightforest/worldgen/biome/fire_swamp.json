@@ -995,7 +995,12 @@
       }
     ]
   ],
-  "starts": [],
+  "starts": [
+    {
+      "config": {},
+      "type": "twilightforest:hydralair"
+    }
+  ],
   "spawners": {
     "monster": [
       {

@@ -55,6 +55,9 @@ public class TFStructures {
 	public static final Structure<NoFeatureConfig> LABYRINTH = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.LABYRINTH, true);
 	public static final StructureFeature<?, ?> CONFIGURED_LABYRINTH = LABYRINTH.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
 
+	public static final Structure<NoFeatureConfig> HYDRA_LAIR = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.HYDRA_LAIR, true);
+	public static final StructureFeature<?, ?> CONFIGURED_HYDRA_LAIR = HYDRA_LAIR.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
+
 	public static void register(RegistryEvent.Register<Structure<?>> event) {
 		SEPARATION_SETTINGS.clear();
 		TFFeature.init();
@@ -71,6 +74,7 @@ public class TFStructures {
 		register(event, NAGA_COURTYARD, CONFIGURED_NAGA_COURTYARD, TwilightForestMod.prefix("courtyard"), 1, 2);
 		register(event, LICH_TOWER, CONFIGURED_LICH_TOWER, TwilightForestMod.prefix("lichtower"), 1, 2);
 		register(event, LABYRINTH, CONFIGURED_LABYRINTH, TwilightForestMod.prefix("labyrinth"), 1, 2);
+		register(event, HYDRA_LAIR, CONFIGURED_HYDRA_LAIR, TwilightForestMod.prefix("hydralair"), 1, 2);
 	}
 
 	private static void register(RegistryEvent.Register<Structure<?>> event, Structure<?> structure, StructureFeature<?, ?> config, ResourceLocation name, int min, int max) {

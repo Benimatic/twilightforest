@@ -138,7 +138,8 @@ public final class BiomeMaker extends BiomeHelper {
 		);
 
 		biomes.put(TFBiomes.fireSwamp,
-				biomeWithDefaults(whiteAshParticles(defaultAmbientBuilder().withGrassColor(0x572E23).withFoliageColor(0x64260F).setWaterColor(0x6C2C2C)), defaultMobSpawning(), swampGenerationBuilder.get())
+				biomeWithDefaults(whiteAshParticles(defaultAmbientBuilder().withGrassColor(0x572E23).withFoliageColor(0x64260F).setWaterColor(0x6C2C2C)), defaultMobSpawning(), swampGenerationBuilder.get()
+						.withStructure(TFStructures.CONFIGURED_HYDRA_LAIR))
 						.category(Biome.Category.SWAMP)
 						.temperature(1)
 						.downfall(0.4F)

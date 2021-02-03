@@ -30,7 +30,7 @@ public class ComponentTFHydraLair extends ComponentTFHollowHill {
 
 	@Override
 	public void buildComponent(StructurePiece structurecomponent, List<StructurePiece> list, Random random) {
-		;
+		// NO-OP
 	}
 
 	@Override

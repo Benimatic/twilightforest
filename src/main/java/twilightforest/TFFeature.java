@@ -192,10 +192,10 @@ public enum TFFeature {
 			book.setTagInfo("title", StringNBT.valueOf("Notes on the Fire Swamp"));
 		}
 
-//		@Override
-//		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-//			return new StructureStartHydraLair(world, this, rand, chunkX, chunkZ);
-//		}
+		@Override
+		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
+			return new ComponentTFHydraLair(this, rand, 0, x, y, z);
+		}
 	},
 	LABYRINTH ( 3, "labyrinth", true, TwilightForestMod.prefix("progress_lich") ) {
 		{
