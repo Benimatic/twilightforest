@@ -24,6 +24,9 @@ public abstract class StructureTFComponent extends StructurePiece {
 
 	public StructureTFComponent(IStructurePieceType piece, CompoundNBT nbt) {
 		super(piece, nbt);
+		this.spawnListIndex = nbt.getInt("si");
+		this.deco = StructureTFDecorator.getDecoFor(nbt.getString("deco"));
+		this.rotation = Rotation.values()[nbt.getInt("rot") % Rotation.values().length];
 		this.rotation = Rotation.NONE;
 	}
 
@@ -102,20 +105,11 @@ public abstract class StructureTFComponent extends StructurePiece {
 		}
 	}
 
-	//TODO: I do not think we need to write. As far as I can see, readAdditional does this itself
-	//TODO: However, the NBT does need to be set in the constructor. Just in the ctors with (TemplateManager, CompoundNBT)
-//	@Override
-//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-//		tagCompound.putInt("si", this.spawnListIndex);
-//		tagCompound.putString("deco", StructureTFDecorator.getDecoString(this.deco));
-//		tagCompound.putInt("rot", this.rotation.ordinal());
-//	}
-
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {
-		this.spawnListIndex = tagCompound.getInt("si");
-		this.deco = StructureTFDecorator.getDecoFor(tagCompound.getString("deco"));
-		this.rotation = Rotation.values()[tagCompound.getInt("rot") % Rotation.values().length];
+		tagCompound.putInt("si", this.spawnListIndex);
+		tagCompound.putString("deco", StructureTFDecorator.getDecoString(this.deco));
+		tagCompound.putInt("rot", this.rotation.ordinal());
 	}
 
 	/**

@@ -26,11 +26,13 @@ public class ComponentTFMushroomTowerBridge extends ComponentTFMushroomTowerWing
 	int dHeight;
 
 	public ComponentTFMushroomTowerBridge(TemplateManager manager, CompoundNBT nbt) {
-		super(TFMushroomTowerPieces.TFMTBri, nbt);
+		this(TFMushroomTowerPieces.TFMTBri, nbt);
 	}
 
 	public ComponentTFMushroomTowerBridge(IStructurePieceType piece, CompoundNBT nbt) {
 		super(piece, nbt);
+		this.dSize = nbt.getInt("destSize");
+		this.dHeight = nbt.getInt("destHeight");
 	}
 
 	protected ComponentTFMushroomTowerBridge(IStructurePieceType piece, TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
@@ -42,26 +44,11 @@ public class ComponentTFMushroomTowerBridge extends ComponentTFMushroomTowerWing
 		this.dHeight = pHeight;
 	}
 
-	/**
-	 * Save to NBT
-	 * TODO: See super
-	 */
-//	@Override
-//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-//		super.writeStructureToNBT(tagCompound);
-//
-//		tagCompound.putInt("destSize", this.dSize);
-//		tagCompound.putInt("destHeight", this.dHeight);
-//	}
-
-	/**
-	 * Load from NBT
-	 */
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {
 		super.readAdditional(tagCompound);
-		this.dSize = tagCompound.getInt("destSize");
-		this.dHeight = tagCompound.getInt("destHeight");
+		tagCompound.putInt("destSize", this.dSize);
+		tagCompound.putInt("destHeight", this.dHeight);
 	}
 
 	@Override

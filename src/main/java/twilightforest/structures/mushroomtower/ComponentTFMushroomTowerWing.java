@@ -33,37 +33,25 @@ public class ComponentTFMushroomTowerWing extends ComponentTFTowerWing {
 	public boolean isAscender = false;
 
 	public ComponentTFMushroomTowerWing(TemplateManager manager, CompoundNBT nbt) {
-		super(TFMushroomTowerPieces.TFMTWin, nbt);
+		this(TFMushroomTowerPieces.TFMTWin, nbt);
 	}
 
 	public ComponentTFMushroomTowerWing(IStructurePieceType piece, CompoundNBT nbt) {
 		super(piece, nbt);
+		this.hasBase = nbt.getBoolean("hasBase");
+		this.isAscender = nbt.getBoolean("isAscender");
 	}
 
 	protected ComponentTFMushroomTowerWing(IStructurePieceType piece, TFFeature feature, int i, int x, int y, int z, int pSize, int pHeight, Direction direction) {
 		super(piece, feature, i, x, y, z, pSize, pHeight, direction);
 	}
 
-	/**
-	 * Save to NBT
-	 * TODO: See super
-	 */
-//	@Override
-//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-//		super.writeStructureToNBT(tagCompound);
-//
-//		tagCompound.putBoolean("hasBase", this.hasBase);
-//		tagCompound.putBoolean("isAscender", this.isAscender);
-//	}
-
-	/**
-	 * Load from NBT
-	 */
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {
 		super.readAdditional(tagCompound);
-		this.hasBase = tagCompound.getBoolean("hasBase");
-		this.isAscender = tagCompound.getBoolean("isAscender");
+
+		tagCompound.putBoolean("hasBase", this.hasBase);
+		tagCompound.putBoolean("isAscender", this.isAscender);
 	}
 
 	@Override

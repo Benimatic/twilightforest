@@ -1478,6 +1478,10 @@
   "starts": [
     {
       "config": {},
+      "type": "twilightforest:mushroomtower"
+    },
+    {
+      "config": {},
       "type": "twilightforest:hedgemaze"
     },
     {

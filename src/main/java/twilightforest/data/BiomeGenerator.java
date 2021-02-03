@@ -10,6 +10,7 @@ import net.minecraft.world.biome.MobSpawnInfo;
 import net.minecraft.world.gen.GenerationStage;
 import twilightforest.TFStructures;
 import twilightforest.biomes.TFBiomes;
+import twilightforest.structures.start.TFStructure;
 import twilightforest.worldgen.ConfiguredFeatures;
 
 import java.util.Map;
@@ -79,7 +80,7 @@ public final class BiomeGenerator extends BiomeDataHelper {
         );
 
         biomes.put(TFBiomes.deepMushrooms,
-                biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), addMushroomCanopy(defaultStructures(defaultGenSettingBuilder()), 0.9f))
+                biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), addMushroomCanopy(defaultStructures(defaultGenSettingBuilder().withStructure(TFStructures.CONFIGURED_MUSHROOM_TOWER)), 0.9f))
                         .temperature(0.8F)
                         .downfall(1)
                         .depth(0.125F)
