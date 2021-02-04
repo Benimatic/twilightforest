@@ -230,7 +230,7 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator {
 		}
 
 		// hollow out the hollow parts
-		int hollowFloor = TFGenerationSettings.SEALEVEL - 3 - (hollow / 8);
+		int hollowFloor = TFGenerationSettings.SEALEVEL - 5 - (hollow / 8);
 		if (nearFeature == TFFeature.HYDRA_LAIR) {
 			// different floor
 			hollowFloor = TFGenerationSettings.SEALEVEL;

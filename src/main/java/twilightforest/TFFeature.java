@@ -40,7 +40,7 @@ import java.util.*;
 public enum TFFeature {
 
 	NOTHING    ( 0, "no_feature"       , false) { { this.enableDecorations().disableStructure(); } },
-	SMALL_HILL ( true, 1, "small_hollow_hill", true ) {
+	SMALL_HILL ( 1, "small_hollow_hill", true ) {
 		{
 			this.enableDecorations().enableTerrainAlterations();
 
@@ -53,10 +53,10 @@ public enum TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
-			return new ComponentTFHollowHill(TFFeature.TFHill, this, rand, 0, size, x, y - size - 1, z);
+			return new ComponentTFHollowHill(TFFeature.TFHill, this, rand, 0, size, x, y, z);
 		}
 	},
-	MEDIUM_HILL ( true, 2, "medium_hollow_hill", true ) {
+	MEDIUM_HILL ( 2, "medium_hollow_hill", true ) {
 		{
 			this.enableDecorations().enableTerrainAlterations();
 
@@ -74,10 +74,10 @@ public enum TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
-			return new ComponentTFHollowHill(TFFeature.TFHill, this, rand, 0, size, x, y - size - 1, z);
+			return new ComponentTFHollowHill(TFFeature.TFHill, this, rand, 0, size, x, y, z);
 		}
 	},
-	LARGE_HILL ( true, 3, "large_hollow_hill", true ) {
+	LARGE_HILL ( 3, "large_hollow_hill", true ) {
 		{
 			this.enableDecorations().enableTerrainAlterations();
 
@@ -96,7 +96,7 @@ public enum TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
-			return new ComponentTFHollowHill(TFFeature.TFHill, this, rand, 0, size, x, y - size - 1, z);
+			return new ComponentTFHollowHill(TFFeature.TFHill, this, rand, 0, size, x, y, z);
 		}
 	},
 	HEDGE_MAZE ( 2, "hedge_maze", true ) {
