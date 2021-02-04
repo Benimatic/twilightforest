@@ -40,7 +40,7 @@ import java.util.*;
 public enum TFFeature {
 
 	NOTHING    ( 0, "no_feature"       , false) { { this.enableDecorations().disableStructure(); } },
-	SMALL_HILL ( 1, "small_hollow_hill", true ) {
+	SMALL_HILL ( true, 1, "small_hollow_hill", true ) {
 		{
 			this.enableDecorations().enableTerrainAlterations();
 
@@ -56,7 +56,7 @@ public enum TFFeature {
 			return new ComponentTFHollowHill(TFFeature.TFHill, this, rand, 0, size, x, y, z);
 		}
 	},
-	MEDIUM_HILL ( 2, "medium_hollow_hill", true ) {
+	MEDIUM_HILL ( true, 2, "medium_hollow_hill", true ) {
 		{
 			this.enableDecorations().enableTerrainAlterations();
 
@@ -77,7 +77,7 @@ public enum TFFeature {
 			return new ComponentTFHollowHill(TFFeature.TFHill, this, rand, 0, size, x, y, z);
 		}
 	},
-	LARGE_HILL ( 3, "large_hollow_hill", true ) {
+	LARGE_HILL ( true, 3, "large_hollow_hill", true ) {
 		{
 			this.enableDecorations().enableTerrainAlterations();
 
@@ -315,10 +315,10 @@ public enum TFFeature {
 			book.setTagInfo("title" , StringNBT.valueOf("Notes on an Icy Cave"));
 		}
 
-//		@Override
-//		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-//			return new StructureStartYetiCave(world, this, rand, chunkX, chunkZ);
-//		}
+		@Override
+		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
+			return new ComponentTFYetiCave(this, rand, 0, x, y, z);
+		}
 	},
 	// TODO split cloud giants from this
 	TROLL_CAVE ( 4, "troll_lairs", true, TwilightForestMod.prefix("progress_merge") ) {

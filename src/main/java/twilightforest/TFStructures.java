@@ -51,20 +51,23 @@ public class TFStructures {
 	public static final Structure<NoFeatureConfig> NAGA_COURTYARD = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.NAGA_COURTYARD, true);
 	public static final StructureFeature<?, ?> CONFIGURED_NAGA_COURTYARD = NAGA_COURTYARD.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
 
-	public static final Structure<NoFeatureConfig> LICH_TOWER = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.LICH_TOWER, true);
+	public static final Structure<NoFeatureConfig> LICH_TOWER = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.LICH_TOWER);
 	public static final StructureFeature<?, ?> CONFIGURED_LICH_TOWER = LICH_TOWER.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
 
-	public static final Structure<NoFeatureConfig> LABYRINTH = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.LABYRINTH, true);
+	public static final Structure<NoFeatureConfig> LABYRINTH = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.LABYRINTH);
 	public static final StructureFeature<?, ?> CONFIGURED_LABYRINTH = LABYRINTH.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
 
-	public static final Structure<NoFeatureConfig> HYDRA_LAIR = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.HYDRA_LAIR, true);
+	public static final Structure<NoFeatureConfig> HYDRA_LAIR = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.HYDRA_LAIR);
 	public static final StructureFeature<?, ?> CONFIGURED_HYDRA_LAIR = HYDRA_LAIR.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
 
-	public static final Structure<NoFeatureConfig> KNIGHT_STRONGHOLD = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.KNIGHT_STRONGHOLD, true);
+	public static final Structure<NoFeatureConfig> KNIGHT_STRONGHOLD = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.KNIGHT_STRONGHOLD);
 	public static final StructureFeature<?, ?> CONFIGURED_KNIGHT_STRONGHOLD = KNIGHT_STRONGHOLD.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
 
-	public static final Structure<NoFeatureConfig> DARK_TOWER = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.DARK_TOWER, true);
+	public static final Structure<NoFeatureConfig> DARK_TOWER = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.DARK_TOWER);
 	public static final StructureFeature<?, ?> CONFIGURED_DARK_TOWER = DARK_TOWER.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
+
+	public static final Structure<NoFeatureConfig> YETI_CAVE = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.YETI_CAVE);
+	public static final StructureFeature<?, ?> CONFIGURED_YETI_CAVE = YETI_CAVE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
 
 	public static void register(RegistryEvent.Register<Structure<?>> event) {
 		SEPARATION_SETTINGS.clear();
@@ -87,6 +90,7 @@ public class TFStructures {
 		register(event, HYDRA_LAIR, CONFIGURED_HYDRA_LAIR, TwilightForestMod.prefix("hydralair"), 1, 2);
 		register(event, KNIGHT_STRONGHOLD, CONFIGURED_KNIGHT_STRONGHOLD, TwilightForestMod.prefix("knightstronghold"), 1, 2);
 		register(event, DARK_TOWER, CONFIGURED_DARK_TOWER, TwilightForestMod.prefix("darktower"), 1, 2);
+		register(event, YETI_CAVE, CONFIGURED_YETI_CAVE, TwilightForestMod.prefix("yeticave"), 1, 2);
 	}
 
 	private static void register(RegistryEvent.Register<Structure<?>> event, Structure<?> structure, StructureFeature<?, ?> config, ResourceLocation name, int min, int max) {

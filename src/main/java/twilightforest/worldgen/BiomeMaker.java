@@ -176,7 +176,8 @@ public final class BiomeMaker extends BiomeHelper {
 
 	private static void snowRegionBiomes(ImmutableMap.Builder<RegistryKey<Biome>, Biome> biomes) {
 		biomes.put(TFBiomes.snowy_forest,
-				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), modify(defaultGenSettingBuilder(), DefaultBiomeFeatures::withMountainEdgeTrees))
+				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), modify(defaultGenSettingBuilder()
+						.withStructure(TFStructures.CONFIGURED_YETI_CAVE), DefaultBiomeFeatures::withMountainEdgeTrees))
 						.temperature(0.09F)
 						.downfall(0.9F)
 						.depth(0.2F)
