@@ -53,7 +53,7 @@ public enum TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
-			return new ComponentTFHollowHill(TFFeature.TFHill, this, rand, 0, size, x, y, z);
+			return new ComponentTFHollowHill(TFFeature.TFHill, this, rand, 0, size, x, y - size - 1, z);
 		}
 	},
 	MEDIUM_HILL ( true, 2, "medium_hollow_hill", true ) {
@@ -74,7 +74,7 @@ public enum TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
-			return new ComponentTFHollowHill(TFFeature.TFHill, this, rand, 0, size, x, y, z);
+			return new ComponentTFHollowHill(TFFeature.TFHill, this, rand, 0, size, x, y - size - 1, z);
 		}
 	},
 	LARGE_HILL ( true, 3, "large_hollow_hill", true ) {
@@ -96,7 +96,7 @@ public enum TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
-			return new ComponentTFHollowHill(TFFeature.TFHill, this, rand, 0, size, x, y, z);
+			return new ComponentTFHollowHill(TFFeature.TFHill, this, rand, 0, size, x, y - size - 1, z);
 		}
 	},
 	HEDGE_MAZE ( 2, "hedge_maze", true ) {
