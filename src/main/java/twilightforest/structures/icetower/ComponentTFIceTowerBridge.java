@@ -29,7 +29,7 @@ public class ComponentTFIceTowerBridge extends StructureTFComponentOld {
 		this.length = length;
 		this.setCoordBaseMode(direction);
 
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, length, 6, 5, direction);
+		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, length, 6, 5, direction);
 	}
 
 	//TODO: See super

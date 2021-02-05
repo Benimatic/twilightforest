@@ -36,7 +36,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 		this.size = caveSize;
 		this.height = caveHeight;
 		this.setCoordBaseMode(direction);
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, size - 1, direction);
+		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, size - 1, height - 1, size - 1, direction);
 	}
 
 	//TODO: See super

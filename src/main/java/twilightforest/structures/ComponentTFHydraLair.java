@@ -25,7 +25,7 @@ public class ComponentTFHydraLair extends ComponentTFHollowHill {
 	}
 
 	public ComponentTFHydraLair(TFFeature feature, Random rand, int i, int x, int y, int z) {
-		super(TFFeature.TFHydra, feature, rand, i, 2, x, y + 5, z);
+		super(TFFeature.TFHydra, feature, rand, i, 2, x, y + 2, z);
 	}
 
 	@Override

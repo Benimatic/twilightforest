@@ -62,7 +62,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 		this.height = 20;
 
 		int radius = this.size / 2;
-		this.boundingBox = StructureTFComponentOld.getComponentToAddBoundingBox(x, y, z, -radius, -this.height, -radius, this.size, this.height, this.size, Direction.SOUTH);
+		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -radius, -this.height, -radius, this.size, this.height, this.size, Direction.SOUTH);
 	}
 
 	//TODO: See super

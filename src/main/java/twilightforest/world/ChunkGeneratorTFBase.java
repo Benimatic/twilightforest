@@ -253,7 +253,7 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator {
 	private void flattenTerrainForFeature(WorldGenRegion primer, TFFeature nearFeature, int x, int z, int dx, int dz) {
 
 		float squishFactor = 0f;
-		int mazeHeight = TFGenerationSettings.SEALEVEL - 1;
+		int mazeHeight = TFGenerationSettings.SEALEVEL + 1;
 		final int FEATURE_BOUNDARY = (nearFeature.size * 2 + 1) * 8 - 8;
 
 		if (dx <= -FEATURE_BOUNDARY) {

@@ -8,8 +8,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.StringNBT;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -40,7 +42,7 @@ import java.util.*;
 public enum TFFeature {
 
 	NOTHING    ( 0, "no_feature"       , false) { { this.enableDecorations().disableStructure(); } },
-	SMALL_HILL ( 1, "small_hollow_hill", true ) {
+	SMALL_HILL ( 1, "small_hollow_hill", true, true ) {
 		{
 			this.enableDecorations().enableTerrainAlterations();
 
@@ -53,10 +55,10 @@ public enum TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
-			return new ComponentTFHollowHill(TFFeature.TFHill, this, rand, 0, size, x, y, z);
+			return new ComponentTFHollowHill(TFFeature.TFHill, this, rand, 0, size, x, y - 2, z);
 		}
 	},
-	MEDIUM_HILL ( 2, "medium_hollow_hill", true ) {
+	MEDIUM_HILL ( 2, "medium_hollow_hill", true, true ) {
 		{
 			this.enableDecorations().enableTerrainAlterations();
 
@@ -74,10 +76,10 @@ public enum TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
-			return new ComponentTFHollowHill(TFFeature.TFHill, this, rand, 0, size, x, y, z);
+			return new ComponentTFHollowHill(TFFeature.TFHill, this, rand, 0, size, x, y - 5, z);
 		}
 	},
-	LARGE_HILL ( 3, "large_hollow_hill", true ) {
+	LARGE_HILL ( 3, "large_hollow_hill", true, true ) {
 		{
 			this.enableDecorations().enableTerrainAlterations();
 
@@ -96,7 +98,7 @@ public enum TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
-			return new ComponentTFHollowHill(TFFeature.TFHill, this, rand, 0, size, x, y, z);
+			return new ComponentTFHollowHill(TFFeature.TFHill, this, rand, 0, size, x, y - 5, z);
 		}
 	},
 	HEDGE_MAZE ( 2, "hedge_maze", true ) {
@@ -178,7 +180,7 @@ public enum TFFeature {
 	},
 	DRUID_GROVE    ( 1, "druid_grove"   , false ) { { this.disableStructure(); } },
 	FLOATING_RUINS ( 3, "floating_ruins", false ) { { this.disableStructure(); } },
-	HYDRA_LAIR     ( 2, "hydra_lair"    , true , TwilightForestMod.prefix("progress_labyrinth") ) {
+	HYDRA_LAIR     ( 2, "hydra_lair"    , true, true, TwilightForestMod.prefix("progress_labyrinth") ) {
 		{
 			this.enableTerrainAlterations();
 		}
@@ -232,7 +234,7 @@ public enum TFFeature {
 			return GenerationStage.Decoration.UNDERGROUND_STRUCTURES;
 		}
 	},
-	DARK_TOWER ( true, 1, "dark_tower", true, TwilightForestMod.prefix("progress_knights") ) {
+	DARK_TOWER ( 1, "dark_tower", true, TwilightForestMod.prefix("progress_knights") ) {
 		{
 			this.addMonster(TFEntities.tower_golem, 10, 4, 4)
 					.addMonster(EntityType.SKELETON, 10, 4, 4)
@@ -298,7 +300,7 @@ public enum TFFeature {
 		}
 	},
 	WORLD_TREE ( 3, "world_tree", false ) { { this.disableStructure(); } },
-	YETI_CAVE  ( 2, "yeti_lairs", true , TwilightForestMod.prefix("progress_lich") ) {
+	YETI_CAVE  ( 2, "yeti_lairs", true, true, TwilightForestMod.prefix("progress_lich") ) {
 		{
 			this.enableDecorations().enableTerrainAlterations();
 
@@ -401,10 +403,10 @@ public enum TFFeature {
 	public static final IStructurePieceType TFHydra = registerPiece("TFHydra", ComponentTFHydraLair::new);
 	public static final IStructurePieceType TFYeti = registerPiece("TFYeti", ComponentTFYetiCave::new);
 
-	public final boolean useSurfaceHeight;
 	public final int size;
 	public final String name;
 	private final boolean shouldHaveFeatureGenerator;
+	public final boolean centerBounds;
 	public boolean areChunkDecorationsEnabled;
 	public boolean isStructureEnabled;
 	public boolean isTerrainAltered;
@@ -423,11 +425,10 @@ public enum TFFeature {
 	private static final int maxSize = Arrays.stream(VALUES).mapToInt(v -> v.size).max().orElse(0);
 
 	TFFeature(int size, String name, boolean featureGenerator, ResourceLocation... requiredAdvancements) {
-		this(false, size, name, featureGenerator, requiredAdvancements);
+		this(size, name, featureGenerator, false, requiredAdvancements);
 	}
 
-	TFFeature(boolean useSurfaceHeight, int size, String name, boolean featureGenerator, ResourceLocation... requiredAdvancements) {
-		this.useSurfaceHeight = useSurfaceHeight;
+	TFFeature(int size, String name, boolean featureGenerator, boolean centerBounds, ResourceLocation... requiredAdvancements) {
 		this.size = size;
 		this.name = name;
 		this.areChunkDecorationsEnabled = false;
@@ -443,6 +444,7 @@ public enum TFFeature {
 		this.requiredAdvancements = requiredAdvancements;
 
 		shouldHaveFeatureGenerator = featureGenerator;
+		this.centerBounds = centerBounds;
 	}
 
 	static void init() {}
@@ -946,5 +948,29 @@ public enum TFFeature {
 
 	public static IStructurePieceType registerPiece(String name, IStructurePieceType piece) {
 		return Registry.register(Registry.STRUCTURE_PIECE, TwilightForestMod.prefix(name.toLowerCase(Locale.ROOT)), piece);
+	}
+
+	public final MutableBoundingBox getComponentToAddBoundingBox(int x, int y, int z, int minX, int minY, int minZ, int maxX, int maxY, int maxZ, @Nullable Direction dir) {
+		if(centerBounds) {
+			x += (maxX + minX) / 4;
+			y += (maxY + minY) / 4;
+			z += (maxZ + minZ) / 4;
+		}
+		switch (dir) {
+			default:
+				return new MutableBoundingBox(x + minX, y + minY, z + minZ, x + maxX + minX, y + maxY + minY, z + maxZ + minZ);
+
+			case SOUTH: // '\0'
+				return new MutableBoundingBox(x + minX, y + minY, z + minZ, x + maxX + minX, y + maxY + minY, z + maxZ + minZ);
+
+			case WEST: // '\001'
+				return new MutableBoundingBox(x - maxZ + minZ, y + minY, z + minX, x + minZ, y + maxY + minY, z + maxX + minX);
+
+			case NORTH: // '\002'
+				return new MutableBoundingBox(x - maxX - minX, y + minY, z - maxZ - minZ, x - minX, y + maxY + minY, z - minZ);
+
+			case EAST: // '\003'
+				return new MutableBoundingBox(x + minZ, y + minY, z - maxX, x + maxZ + minZ, y + maxY + minY, z + minX);
+		}
 	}
 }
