@@ -16,6 +16,7 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import twilightforest.structures.courtyard.NagaCourtyardPieces;
 import twilightforest.structures.darktower.TFDarkTowerPieces;
+import twilightforest.structures.icetower.TFIceTowerPieces;
 import twilightforest.structures.lichtower.TFLichTowerPieces;
 import twilightforest.structures.minotaurmaze.TFMinotaurMazePieces;
 import twilightforest.structures.mushroomtower.TFMushroomTowerPieces;
@@ -69,6 +70,9 @@ public class TFStructures {
 	public static final Structure<NoFeatureConfig> YETI_CAVE = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.YETI_CAVE);
 	public static final StructureFeature<?, ?> CONFIGURED_YETI_CAVE = YETI_CAVE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
 
+	public static final Structure<NoFeatureConfig> AURORA_PALACE = new TFStructure<>(NoFeatureConfig.field_236558_a_, TFFeature.ICE_TOWER);
+	public static final StructureFeature<?, ?> CONFIGURED_AURORA_PALACE = AURORA_PALACE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
+
 	public static void register(RegistryEvent.Register<Structure<?>> event) {
 		SEPARATION_SETTINGS.clear();
 		TFFeature.init();
@@ -78,6 +82,7 @@ public class TFStructures {
 		new TFMinotaurMazePieces();
 		new TFStrongholdPieces();
 		new TFDarkTowerPieces();
+		new TFIceTowerPieces();
 		register(event, HEDGE_MAZE, CONFIGURED_HEDGE_MAZE, TwilightForestMod.prefix("hedgemaze"), 1, 2);
 		register(event, QUEST_GROVE, CONFIGURED_QUEST_GROVE, TwilightForestMod.prefix("questgrove"), 1, 2);
 		register(event, MUSHROOM_TOWER, CONFIGURED_MUSHROOM_TOWER, TwilightForestMod.prefix("mushroomtower"), 1, 2);
@@ -91,6 +96,7 @@ public class TFStructures {
 		register(event, KNIGHT_STRONGHOLD, CONFIGURED_KNIGHT_STRONGHOLD, TwilightForestMod.prefix("knightstronghold"), 1, 2);
 		register(event, DARK_TOWER, CONFIGURED_DARK_TOWER, TwilightForestMod.prefix("darktower"), 1, 2);
 		register(event, YETI_CAVE, CONFIGURED_YETI_CAVE, TwilightForestMod.prefix("yeticave"), 1, 2);
+		register(event, AURORA_PALACE, CONFIGURED_AURORA_PALACE, TwilightForestMod.prefix("aurorapalace"), 1, 2);
 	}
 
 	private static void register(RegistryEvent.Register<Structure<?>> event, Structure<?> structure, StructureFeature<?, ?> config, ResourceLocation name, int min, int max) {

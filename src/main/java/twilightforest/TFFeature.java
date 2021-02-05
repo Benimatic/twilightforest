@@ -26,6 +26,7 @@ import twilightforest.entity.*;
 import twilightforest.structures.*;
 import twilightforest.structures.courtyard.ComponentNagaCourtyardMain;
 import twilightforest.structures.darktower.ComponentTFDarkTowerMain;
+import twilightforest.structures.icetower.ComponentTFIceTowerMain;
 import twilightforest.structures.lichtower.ComponentTFTowerMain;
 import twilightforest.structures.minotaurmaze.ComponentTFMazeRuins;
 import twilightforest.structures.mushroomtower.ComponentTFMushroomTowerMain;
@@ -161,10 +162,10 @@ public enum TFFeature {
 			book.setTagInfo("title", StringNBT.valueOf("Notes on Auroral Fortification"));
 		}
 
-//		@Override
-//		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-//			return new StructureStartAuroraPalace(world, this, rand, chunkX, chunkZ);
-//		}
+		@Override
+		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
+			return new ComponentTFIceTowerMain(this, rand, 0, x, y, z);
+		}
 	},
 	QUEST_ISLAND ( 1, "quest_island", false ) { { this.disableStructure(); } },
 	QUEST_GROVE  ( 1, "quest_grove" , true  ) {

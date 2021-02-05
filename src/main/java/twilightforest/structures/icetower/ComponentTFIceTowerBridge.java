@@ -22,6 +22,7 @@ public class ComponentTFIceTowerBridge extends StructureTFComponentOld {
 
 	public ComponentTFIceTowerBridge(TemplateManager manager, CompoundNBT nbt) {
 		super(TFIceTowerPieces.TFITBri, nbt);
+		this.length = nbt.getInt("bridgeLength");
 	}
 
 	public ComponentTFIceTowerBridge(TFFeature feature, int index, int x, int y, int z, int length, Direction direction) {
@@ -32,18 +33,10 @@ public class ComponentTFIceTowerBridge extends StructureTFComponentOld {
 		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, 0, 0, 0, length, 6, 5, direction);
 	}
 
-	//TODO: See super
-//	@Override
-//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-//		super.writeStructureToNBT(tagCompound);
-//
-//		tagCompound.putInt("bridgeLength", this.length);
-//	}
-
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {
 		super.readAdditional(tagCompound);
-		this.length = tagCompound.getInt("bridgeLength");
+		tagCompound.putInt("bridgeLength", this.length);
 	}
 
 	@Override

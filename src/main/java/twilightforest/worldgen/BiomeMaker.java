@@ -178,7 +178,8 @@ public final class BiomeMaker extends BiomeHelper {
 		);
 
 		biomes.put(TFBiomes.glacier,
-				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), defaultGenSettingBuilder())
+				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), defaultGenSettingBuilder()
+						.withStructure(TFStructures.CONFIGURED_AURORA_PALACE))
 						.category(Biome.Category.ICY)
 						.temperature(0.8F)
 						.downfall(0.1F)
