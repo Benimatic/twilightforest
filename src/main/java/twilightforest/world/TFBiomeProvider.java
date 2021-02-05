@@ -16,7 +16,7 @@ import net.minecraft.world.gen.area.LazyArea;
 import net.minecraft.world.gen.layer.Layer;
 import net.minecraft.world.gen.layer.SmoothLayer;
 import net.minecraft.world.gen.layer.ZoomLayer;
-import twilightforest.biomes.TFBiomes;
+import twilightforest.worldgen.biomes.BiomeKeys;
 import twilightforest.world.layer.GenLayerTFBiomeStabilize;
 import twilightforest.world.layer.GenLayerTFBiomes;
 import twilightforest.world.layer.GenLayerTFCompanionBiomes;
@@ -25,8 +25,8 @@ import twilightforest.world.layer.GenLayerTFRiverMix;
 import twilightforest.world.layer.GenLayerTFStream;
 import twilightforest.world.layer.GenLayerTFThornBorder;
 
-import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.LongFunction;
 
 public class TFBiomeProvider extends BiomeProvider {
@@ -39,26 +39,26 @@ public class TFBiomeProvider extends BiomeProvider {
 	private final Layer genBiomes;
 	private final long seed;
 	private static final List<RegistryKey<Biome>> BIOMES = ImmutableList.of( //TODO: Can we do this more efficiently?
-			TFBiomes.tfLake,
-			TFBiomes.twilightForest,
-			TFBiomes.denseTwilightForest,
-			TFBiomes.highlands,
-			TFBiomes.mushrooms,
-			TFBiomes.tfSwamp,
-			TFBiomes.stream,
-			TFBiomes.snowy_forest,
-			TFBiomes.glacier,
-			TFBiomes.clearing,
-			TFBiomes.oakSavanna,
-			TFBiomes.fireflyForest,
-			TFBiomes.deepMushrooms,
-			TFBiomes.darkForest,
-			TFBiomes.enchantedForest,
-			TFBiomes.fireSwamp,
-			TFBiomes.darkForestCenter,
-			TFBiomes.finalPlateau,
-			TFBiomes.thornlands,
-			TFBiomes.spookyForest
+			BiomeKeys.LAKE,
+			BiomeKeys.FOREST,
+			BiomeKeys.DENSE_FOREST,
+			BiomeKeys.HIGHLANDS,
+			BiomeKeys.MUSHROOM_FOREST,
+			BiomeKeys.SWAMP,
+			BiomeKeys.STREAM,
+			BiomeKeys.SNOWY_FOREST,
+			BiomeKeys.GLACIER,
+			BiomeKeys.CLEARING,
+			BiomeKeys.OAK_SAVANNAH,
+			BiomeKeys.FIREFLY_FOREST,
+			BiomeKeys.DENSE_MUSHROOM_FOREST,
+			BiomeKeys.DARK_FOREST,
+			BiomeKeys.ENCHANTED_FOREST,
+			BiomeKeys.FIRE_SWAMP,
+			BiomeKeys.DARK_FOREST_CENTER,
+			BiomeKeys.FINAL_PLATEAU,
+			BiomeKeys.THORNLANDS,
+			BiomeKeys.SPOOKY_FOREST
 	);
 
 	public TFBiomeProvider(long seed, Registry<Biome> reg) { // FIXME Why do we pass in a Registry?

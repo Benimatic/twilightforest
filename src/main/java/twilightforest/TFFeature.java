@@ -21,7 +21,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
-import twilightforest.biomes.TFBiomes;
+import twilightforest.worldgen.biomes.BiomeKeys;
 import twilightforest.entity.*;
 import twilightforest.structures.*;
 import twilightforest.structures.courtyard.ComponentNagaCourtyardMain;
@@ -392,17 +392,17 @@ public enum TFFeature {
 	};
 
 	private static final Map<ResourceLocation, TFFeature> BIOME_FEATURES = new HashMap<ResourceLocation, TFFeature>(){{
-		put(TFBiomes.darkForest.getLocation(), KNIGHT_STRONGHOLD);
-		put(TFBiomes.darkForestCenter.getLocation(), DARK_TOWER);
-		put(TFBiomes.deepMushrooms.getLocation(), MUSHROOM_TOWER);
-		put(TFBiomes.enchantedForest.getLocation(), QUEST_GROVE);
-		put(TFBiomes.finalPlateau.getLocation(), FINAL_CASTLE);
-		put(TFBiomes.fireSwamp.getLocation(), HYDRA_LAIR);
-		put(TFBiomes.glacier.getLocation(), ICE_TOWER);
-		put(TFBiomes.highlands.getLocation(), TROLL_CAVE);
-		put(TFBiomes.snowy_forest.getLocation(), YETI_CAVE);
-		put(TFBiomes.tfSwamp.getLocation(), LABYRINTH);
-		put(TFBiomes.tfLake.getLocation(), QUEST_ISLAND);
+		put(BiomeKeys.DARK_FOREST.getLocation(), KNIGHT_STRONGHOLD);
+		put(BiomeKeys.DARK_FOREST_CENTER.getLocation(), DARK_TOWER);
+		put(BiomeKeys.DENSE_MUSHROOM_FOREST.getLocation(), MUSHROOM_TOWER);
+		put(BiomeKeys.ENCHANTED_FOREST.getLocation(), QUEST_GROVE);
+		put(BiomeKeys.FINAL_PLATEAU.getLocation(), FINAL_CASTLE);
+		put(BiomeKeys.FIRE_SWAMP.getLocation(), HYDRA_LAIR);
+		put(BiomeKeys.GLACIER.getLocation(), ICE_TOWER);
+		put(BiomeKeys.HIGHLANDS.getLocation(), TROLL_CAVE);
+		put(BiomeKeys.SNOWY_FOREST.getLocation(), YETI_CAVE);
+		put(BiomeKeys.SWAMP.getLocation(), LABYRINTH);
+		put(BiomeKeys.LAKE.getLocation(), QUEST_ISLAND);
 	}};
 
 	//IStructurePieceTypes that can be referred to
