@@ -61,8 +61,15 @@ public class TFBiomeProvider extends BiomeProvider {
 			BiomeKeys.SPOOKY_FOREST
 	);
 
-	public TFBiomeProvider(long seed, Registry<Biome> reg) { // FIXME Why do we pass in a Registry?
-		super(BIOMES.stream().filter(key -> reg.containsKey(key.getLocation())).map(key -> () -> reg.getValueForKey(key)));
+	public TFBiomeProvider(long seed, Registry<Biome> registryIn) {
+		super(BIOMES
+				.stream()
+				.map(RegistryKey::getLocation)
+				.map(registryIn::getOptional)
+				.filter(Optional::isPresent)
+				.map(opt -> opt::get)
+		);
+
 		this.seed = seed;
 		//getBiomesToSpawnIn().clear();
 		//getBiomesToSpawnIn().add(TFBiomes.twilightForest.get());
@@ -71,8 +78,8 @@ public class TFBiomeProvider extends BiomeProvider {
 		//getBiomesToSpawnIn().add(TFBiomes.tfSwamp.get());
 		//getBiomesToSpawnIn().add(TFBiomes.mushrooms.get());
 
-		registry = reg;
-		genBiomes = makeLayers(seed, reg);
+		registry = registryIn;
+		genBiomes = makeLayers(seed, registryIn);
 	}
 
 	public static int getBiomeId(RegistryKey<Biome> biome, Registry<Biome> registry) {
