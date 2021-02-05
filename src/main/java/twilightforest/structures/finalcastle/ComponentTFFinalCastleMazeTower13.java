@@ -2,6 +2,7 @@ package twilightforest.structures.finalcastle;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
@@ -32,10 +33,11 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 
 	public ComponentTFFinalCastleMazeTower13(IStructurePieceType piece, CompoundNBT nbt) {
 		super(piece, nbt);
+		color = NBTUtil.readBlockState(nbt.getCompound("color"));
 	}
 
 	public ComponentTFFinalCastleMazeTower13(TemplateManager manager, CompoundNBT nbt) {
-		super(TFFinalCastlePieces.TFFCSiTo, nbt);
+		this(TFFinalCastlePieces.TFFCSiTo, nbt);
 	}
 
 	public ComponentTFFinalCastleMazeTower13(IStructurePieceType piece, TFFeature feature, Random rand, int i, int x, int y, int z, BlockState color, Direction direction) {
@@ -66,6 +68,12 @@ public class ComponentTFFinalCastleMazeTower13 extends ComponentTFTowerWing {
 
 		// we should have a door where we started
 		addOpening(0, entranceFloor * 8 + 1, size / 2, Rotation.CLOCKWISE_180);
+	}
+
+	@Override
+	protected void readAdditional(CompoundNBT tagCompound) {
+		super.readAdditional(tagCompound);
+		tagCompound.put("color", NBTUtil.writeBlockState(color));
 	}
 
 	//TODO: Parameter "rand" is unused. Remove?

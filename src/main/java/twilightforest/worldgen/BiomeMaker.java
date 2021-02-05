@@ -211,7 +211,8 @@ public final class BiomeMaker extends BiomeHelper {
 		);
 
 		biomes.put(TFBiomes.finalPlateau,
-				biomeWithDefaults(defaultAmbientBuilder(), new MobSpawnInfo.Builder(), defaultGenSettingBuilder())
+				biomeWithDefaults(defaultAmbientBuilder(), new MobSpawnInfo.Builder(), defaultGenSettingBuilder()
+						.withStructure(TFStructures.CONFIGURED_FINAL_CASTLE))
 						.category(Biome.Category.MESA)
 						.temperature(0.3F)
 						.downfall(0.2F)

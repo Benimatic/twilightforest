@@ -30,7 +30,7 @@ public class ComponentTFFinalCastleDungeonRoom31 extends ComponentTFTowerWing {
 	public int level; // this is not serialized, since it's only used during build, which should be all one step
 
 	public ComponentTFFinalCastleDungeonRoom31(TemplateManager manager, CompoundNBT nbt) {
-		super(TFFinalCastlePieces.TFFCDunR31, nbt);
+		this(TFFinalCastlePieces.TFFCDunR31, nbt);
 	}
 
 	public ComponentTFFinalCastleDungeonRoom31(IStructurePieceType piece, CompoundNBT nbt) {

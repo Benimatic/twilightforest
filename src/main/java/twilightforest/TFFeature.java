@@ -26,6 +26,7 @@ import twilightforest.entity.*;
 import twilightforest.structures.*;
 import twilightforest.structures.courtyard.ComponentNagaCourtyardMain;
 import twilightforest.structures.darktower.ComponentTFDarkTowerMain;
+import twilightforest.structures.finalcastle.ComponentTFFinalCastleMain;
 import twilightforest.structures.icetower.ComponentTFIceTowerMain;
 import twilightforest.structures.lichtower.ComponentTFTowerMain;
 import twilightforest.structures.minotaurmaze.ComponentTFMazeRuins;
@@ -377,10 +378,10 @@ public enum TFFeature {
 					.addMonster(3, EntityType.BLAZE, 10, 1, 1);
 		}
 
-//		@Override
-//		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-//			return new StructureStartFinalCastle(world, this, rand, chunkX, chunkZ);
-//		}
+		@Override
+		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
+			return new ComponentTFFinalCastleMain(this, rand, 0, x, y, z);
+		}
 	},
 	MUSHROOM_TOWER ( 2, "mushroom_tower", true ) {
 
