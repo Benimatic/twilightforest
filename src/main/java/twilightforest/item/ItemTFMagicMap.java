@@ -189,7 +189,7 @@ public class ItemTFMagicMap extends FilledMapItem {
 		putBiomeColor(TFBiomes.glacier, new MapColorBrightness(MaterialColor.ICE, 1));
 		putBiomeColor(TFBiomes.mushrooms, new MapColorBrightness(MaterialColor.ADOBE, 0));
 		putBiomeColor(TFBiomes.deepMushrooms, new MapColorBrightness(MaterialColor.PINK, 0));
-		putBiomeColor(TFBiomes.enchantedForest, new MapColorBrightness(MaterialColor.LIME, 2));
+		putBiomeColor(TFBiomes.enchantedForest, new MapColorBrightness(MaterialColor.CYAN, 2));
 		putBiomeColor(TFBiomes.spookyForest, new MapColorBrightness(MaterialColor.PURPLE, 0));
 	}
 
