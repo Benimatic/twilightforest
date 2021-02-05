@@ -25,14 +25,15 @@ import twilightforest.world.layer.GenLayerTFRiverMix;
 import twilightforest.world.layer.GenLayerTFStream;
 import twilightforest.world.layer.GenLayerTFThornBorder;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.LongFunction;
 
 public class TFBiomeProvider extends BiomeProvider {
-	public static final Codec<TFBiomeProvider> tfBiomeProviderCodec = RecordCodecBuilder.create((instance) ->
-			instance.group(Codec.LONG.fieldOf("seed").stable().orElseGet(() -> TFDimensions.seed).forGetter((obj) -> obj.seed),
-					RegistryLookupCodec.getLookUpCodec(Registry.BIOME_KEY).forGetter(provider -> provider.registry))
-					.apply(instance, instance.stable(TFBiomeProvider::new)));
+	public static final Codec<TFBiomeProvider> tfBiomeProviderCodec = RecordCodecBuilder.create((instance) -> instance.group(
+			Codec.LONG.fieldOf("seed").stable().orElseGet(() -> TFDimensions.seed).forGetter((obj) -> obj.seed),
+			RegistryLookupCodec.getLookUpCodec(Registry.BIOME_KEY).forGetter(provider -> provider.registry)
+	).apply(instance, instance.stable(TFBiomeProvider::new)));
 
 	private final Registry<Biome> registry;
 	private final Layer genBiomes;
@@ -60,8 +61,8 @@ public class TFBiomeProvider extends BiomeProvider {
 			TFBiomes.spookyForest
 	);
 
-	public TFBiomeProvider(long seed, Registry<Biome> reg) {
-		super(BIOMES.stream().map(key -> () -> reg.getValueForKey(key)));
+	public TFBiomeProvider(long seed, Registry<Biome> reg) { // FIXME Why do we pass in a Registry?
+		super(BIOMES.stream().filter(key -> reg.containsKey(key.getLocation())).map(key -> () -> reg.getValueForKey(key)));
 		this.seed = seed;
 		//getBiomesToSpawnIn().clear();
 		//getBiomesToSpawnIn().add(TFBiomes.twilightForest.get());

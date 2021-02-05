@@ -3,6 +3,7 @@ package twilightforest.data;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.JsonOps;
+import com.mojang.serialization.Lifecycle;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.DataGenerator;
@@ -10,6 +11,7 @@ import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.DynamicRegistries;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.SimpleRegistry;
 import net.minecraft.world.Dimension;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.biome.Biome;
@@ -25,12 +27,16 @@ import net.minecraft.world.gen.settings.NoiseSettings;
 import net.minecraft.world.gen.settings.ScalingSettings;
 import net.minecraft.world.gen.settings.SlideSettings;
 import twilightforest.TwilightForestMod;
+import twilightforest.world.ChunkGeneratorTwilightForest;
+import twilightforest.world.TFBiomeProvider;
+import twilightforest.world.TFDimensions;
 import twilightforest.worldgen.BiomeMaker;
 
 import java.lang.reflect.Constructor;
 import java.util.Map;
 import java.util.Optional;
 import java.util.OptionalLong;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -41,7 +47,17 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 
 	@Override
 	protected Map<ResourceLocation, Dimension> getDimensions() {
-		return ImmutableMap.of(new ResourceLocation(TwilightForestMod.ID, "test_compiled_world"), makeTwilightForest());
+		return ImmutableMap.of(new ResourceLocation(TwilightForestMod.ID, "twilightforest"), makeTwilightForest());
+	}
+
+	@Override
+	protected Map<ResourceLocation, Biome> getBiomes() {
+		return BiomeMaker
+				.generateBiomes()
+				.entrySet()
+				.stream()
+				.peek(registryKeyBiomeEntry -> registryKeyBiomeEntry.getValue().setRegistryName(registryKeyBiomeEntry.getKey().getLocation()))
+				.collect(Collectors.toMap(entry -> entry.getKey().getLocation(), Map.Entry::getValue));
 	}
 
 	private Dimension makeTwilightForest() {
@@ -78,7 +94,7 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 		);
 
 		NoiseSettings noiseSettings = new NoiseSettings(
-				128,
+				128, // Noise Height - This allows us to shorten the world so we can cram more stuff upwards
 				new ScalingSettings(0.9999999814507745D, 0.9999999814507745D, 80.0D, 160.0D),
 				new SlideSettings(-10, 3, 0),
 				new SlideSettings(-30, 0, 0),
@@ -103,9 +119,10 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 				false
 		);
 
-		getOrCreateInRegistry(dynamicRegistries.getRegistry(Registry.NOISE_SETTINGS_KEY), RegistryKey.getOrCreateKey(Registry.NOISE_SETTINGS_KEY, new ResourceLocation(TwilightForestMod.ID, "forest_noise")), dimensionSettings::get);
+		getOrCreateInRegistry(dynamicRegistries.getRegistry(Registry.NOISE_SETTINGS_KEY), RegistryKey.getOrCreateKey(Registry.NOISE_SETTINGS_KEY, new ResourceLocation(TwilightForestMod.ID, "forest_noise_config")), dimensionSettings::get);
 
-		ChunkGenerator chunkGenerator = new NoiseChunkGenerator(biomeProvider, 0L, dimensionSettings::get);
+		TFDimensions.init();
+		ChunkGeneratorTwilightForest chunkGenerator = new ChunkGeneratorTwilightForest(new TFBiomeProvider(0L, new SimpleRegistry<>(Registry.BIOME_KEY, Lifecycle.experimental())), 0L, dimensionSettings::get);
 
 		return new Dimension(twilightType::get, chunkGenerator);
 	}

@@ -13,6 +13,7 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.WorldGenRegistries;
 import net.minecraft.util.registry.WorldGenSettingsExport;
 import net.minecraft.world.Dimension;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.registries.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -63,9 +64,12 @@ public abstract class WorldDataCompilerAndOps<Format> extends WorldGenSettingsEx
         this.directoryCache = directoryCache;
 
         getDimensions().forEach((rl, dimension) -> serialize(generator.getOutputFolder(), directoryCache, this, Registry.DIMENSION_KEY, rl, dimension, Dimension.CODEC));
+        getBiomes().forEach((rl, dimension) -> serialize(generator.getOutputFolder(), directoryCache, this, Registry.BIOME_KEY, rl, dimension, Biome.CODEC));
     }
 
+    // TODO there's likely a better way of doing this
     protected abstract Map<ResourceLocation, Dimension> getDimensions();
+    protected abstract Map<ResourceLocation, Biome> getBiomes();
 
     private final HashSet<Object> objectsSerializationCache = new HashSet<>();
 
