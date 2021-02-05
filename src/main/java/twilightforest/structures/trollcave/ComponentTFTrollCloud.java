@@ -22,6 +22,8 @@ public class ComponentTFTrollCloud extends StructureTFComponentOld {
 
 	public ComponentTFTrollCloud(TemplateManager manager, CompoundNBT nbt) {
 		super(TFTrollCavePieces.TFTCloud, nbt);
+		this.size = nbt.getInt("size");
+		this.height = nbt.getInt("height");
 	}
 
 	public ComponentTFTrollCloud(TFFeature feature, int index, int x, int y, int z) {
@@ -35,20 +37,11 @@ public class ComponentTFTrollCloud extends StructureTFComponentOld {
 		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -radius, -this.height, -radius, this.size, this.height, this.size, Direction.SOUTH);
 	}
 
-	//TODO: See super
-//	@Override
-//	protected void writeStructureToNBT(CompoundNBT tagCompound) {
-//		super.writeStructureToNBT(tagCompound);
-//
-//		tagCompound.putInt("size", this.size);
-//		tagCompound.putInt("height", this.height);
-//	}
-
 	@Override
 	protected void readAdditional(CompoundNBT tagCompound) {
 		super.readAdditional(tagCompound);
-		this.size = tagCompound.getInt("size");
-		this.height = tagCompound.getInt("height");
+		tagCompound.putInt("size", this.size);
+		tagCompound.putInt("height", this.height);
 	}
 
 	@Override

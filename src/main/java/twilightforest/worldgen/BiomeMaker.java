@@ -190,7 +190,8 @@ public final class BiomeMaker extends BiomeHelper {
 
 	private static void highlandsBiomes(ImmutableMap.Builder<RegistryKey<Biome>, Biome> biomes) {
 		biomes.put(TFBiomes.highlands,
-				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), addWildcardTrees(defaultGenSettingBuilder()))
+				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), addWildcardTrees(defaultGenSettingBuilder()
+						.withStructure(TFStructures.CONFIGURED_TROLL_CAVE)))
 						.category(Biome.Category.MESA)
 						.temperature(0.4F)
 						.downfall(0.7F)

@@ -31,6 +31,8 @@ import twilightforest.structures.lichtower.ComponentTFTowerMain;
 import twilightforest.structures.minotaurmaze.ComponentTFMazeRuins;
 import twilightforest.structures.mushroomtower.ComponentTFMushroomTowerMain;
 import twilightforest.structures.stronghold.ComponentTFStrongholdEntrance;
+import twilightforest.structures.trollcave.ComponentTFTrollCaveMain;
+import twilightforest.structures.trollcave.TFTrollCavePieces;
 import twilightforest.util.IntPair;
 import twilightforest.util.PlayerHelper;
 
@@ -347,10 +349,15 @@ public enum TFFeature {
 			book.setTagInfo("title", StringNBT.valueOf("Notes on the Highlands"));
 		}
 
-//		@Override
-//		public StructureStartTFAbstract provideStructureStart(World world, Random rand, int chunkX, int chunkZ) {
-//			return new StructureStartTrollCave(world, this, rand, chunkX, chunkZ);
-//		}
+		@Override
+		public GenerationStage.Decoration getDecorationStage() {
+			return GenerationStage.Decoration.UNDERGROUND_STRUCTURES;
+		}
+
+		@Override
+		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
+			return new ComponentTFTrollCaveMain(TFTrollCavePieces.TFTCMai, this, 0, x, y, z);
+		}
 	},
 	FINAL_CASTLE ( 4, "final_castle", true, TwilightForestMod.prefix("progress_troll") ) {
 		{
