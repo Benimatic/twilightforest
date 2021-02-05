@@ -12,8 +12,6 @@ import net.minecraft.util.registry.DynamicRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.WorldGenRegistries;
 import net.minecraft.util.registry.WorldGenSettingsExport;
-import net.minecraft.world.Dimension;
-import net.minecraft.world.biome.Biome;
 import net.minecraftforge.registries.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,7 +23,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
@@ -41,7 +38,7 @@ public abstract class WorldDataCompilerAndOps<Format> extends WorldGenSettingsEx
     private DirectoryCache directoryCache;
 
     public WorldDataCompilerAndOps(DataGenerator generator, DynamicOps<Format> ops, Function<Format, String> fileContentWriter, DynamicRegistries dynamicRegistries) {
-        super(ops, null);
+        super(ops, dynamicRegistries);
         this.generator = generator;
         this.fileContentWriter = fileContentWriter;
         this.dynamicRegistries = dynamicRegistries;
@@ -60,21 +57,17 @@ public abstract class WorldDataCompilerAndOps<Format> extends WorldGenSettingsEx
     }
 
     @Override
-    public void act(final DirectoryCache directoryCache) {
+    public final void act(final DirectoryCache directoryCache) {
         this.directoryCache = directoryCache;
 
-        getDimensions().forEach((rl, dimension) -> serialize(generator.getOutputFolder(), directoryCache, this, Registry.DIMENSION_KEY, rl, dimension, Dimension.CODEC));
-        getBiomes().forEach((rl, dimension) -> serialize(generator.getOutputFolder(), directoryCache, this, Registry.BIOME_KEY, rl, dimension, Biome.CODEC));
+        generate(directoryCache);
     }
 
-    // TODO there's likely a better way of doing this
-    protected abstract Map<ResourceLocation, Dimension> getDimensions();
-    protected abstract Map<ResourceLocation, Biome> getBiomes();
+    public abstract void generate(final DirectoryCache directoryCache);
 
     private final HashSet<Object> objectsSerializationCache = new HashSet<>();
 
-    @SuppressWarnings("SameParameterValue")
-    private <Resource> void serialize(Path root, DirectoryCache directoryCache, DynamicOps<Format> ops, RegistryKey<? extends Registry<Resource>> resourceType, ResourceLocation resourceLocation, Resource resource, Encoder<Resource> encoder) {
+    public <Resource> void serialize(RegistryKey<? extends Registry<Resource>> resourceType, ResourceLocation resourceLocation, Resource resource, Encoder<Resource> encoder) {
         if (objectsSerializationCache.contains(resource)) {
             LOGGER.debug("Avoiding duplicate serialization with " + resourceLocation);
 
@@ -83,11 +76,11 @@ public abstract class WorldDataCompilerAndOps<Format> extends WorldGenSettingsEx
 
         objectsSerializationCache.add(resource);
 
-        Optional<Format> output = ops.withEncoder(encoder).apply(resource).resultOrPartial(error -> LOGGER.error("Object [" + resourceType.getRegistryName() + "] " + resourceLocation + " not serialized within recursive serialization: " + error));
+        Optional<Format> output = this.withEncoder(encoder).apply(resource).resultOrPartial(error -> LOGGER.error("Object [" + resourceType.getRegistryName() + "] " + resourceLocation + " not serialized within recursive serialization: " + error));
 
         if (output.isPresent()) {
             try {
-                save(directoryCache, output.get(), makePath(root, resourceType, resourceLocation));
+                save(directoryCache, output.get(), makePath(generator.getOutputFolder(), resourceType, resourceLocation));
             } catch (IOException e) {
                 LOGGER.error("Could not save resource `" + resourceLocation + "` (Resource Type `" + resourceType.getLocation() + "`)", e);
             }
@@ -176,7 +169,7 @@ public abstract class WorldDataCompilerAndOps<Format> extends WorldGenSettingsEx
         // Four freaking registry locations to check... Let's see if we won a prize
         if (instanceKey.isPresent()) {
             if (TwilightForestMod.ID.equals(instanceKey.get().getNamespace())) // This avoids generating anything that belongs to Minecraft
-                serialize(generator.getOutputFolder(), directoryCache, this, registryKey, instanceKey.get(), resource, codec);
+                serialize(registryKey, instanceKey.get(), resource, codec);
 
             return ResourceLocation.CODEC.encode(instanceKey.get(), this.ops, dynamic);
         }

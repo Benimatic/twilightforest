@@ -7,6 +7,7 @@ import com.mojang.serialization.Lifecycle;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.DirectoryCache;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.DynamicRegistries;
@@ -36,6 +37,7 @@ import java.lang.reflect.Constructor;
 import java.util.Map;
 import java.util.Optional;
 import java.util.OptionalLong;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -46,12 +48,18 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 	}
 
 	@Override
-	protected Map<ResourceLocation, Dimension> getDimensions() {
-		return ImmutableMap.of(new ResourceLocation(TwilightForestMod.ID, "twilightforest"), makeTwilightForest());
+	public void generate(DirectoryCache directoryCache) {
+		getDimensions().forEach((rl, dimension) -> serialize(Registry.DIMENSION_KEY, rl, dimension, Dimension.CODEC));
+		getBiomes().forEach((rl, biome) -> serialize(Registry.BIOME_KEY, rl, biome, Biome.CODEC));
 	}
 
-	@Override
-	protected Map<ResourceLocation, Biome> getBiomes() {
+	private Map<ResourceLocation, Dimension> getDimensions() {
+		return ImmutableMap.of(
+				new ResourceLocation(TwilightForestMod.ID, "twilightforest"), makeTwilightForest()
+		);
+	}
+
+	private Map<ResourceLocation, Biome> getBiomes() {
 		return BiomeMaker
 				.generateBiomes()
 				.entrySet()
@@ -80,18 +88,8 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 				0f // Wish this could be set to -0.05 since it'll make the world truly blacked out if an area is not sky-lit (see: Dark Forests) Sadly this also messes up night vision so it gets 0
 		);
 
+		// Register the type in the local datagen registry. Hacky.
 		getOrCreateInRegistry(dynamicRegistries.getRegistry(Registry.DIMENSION_TYPE_KEY), RegistryKey.getOrCreateKey(Registry.DIMENSION_TYPE_KEY, new ResourceLocation(TwilightForestMod.ID, "forest_type")), twilightType::get);
-
-		BiomeProvider biomeProvider = new CheckerboardBiomeProvider(
-				BiomeMaker
-						.generateBiomes()
-						.entrySet()
-						.stream()
-						.peek(registryKeyBiomeEntry -> registryKeyBiomeEntry.getValue().setRegistryName(registryKeyBiomeEntry.getKey().getLocation()))
-						.map(p -> (Supplier<Biome>) p::getValue)
-						.collect(Collectors.toList()),
-				1
-		);
 
 		NoiseSettings noiseSettings = new NoiseSettings(
 				128, // Noise Height - This allows us to shorten the world so we can cram more stuff upwards
@@ -119,6 +117,7 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 				false
 		);
 
+		// Register the dimension noise settings in the local datagen registry. Hacky.
 		getOrCreateInRegistry(dynamicRegistries.getRegistry(Registry.NOISE_SETTINGS_KEY), RegistryKey.getOrCreateKey(Registry.NOISE_SETTINGS_KEY, new ResourceLocation(TwilightForestMod.ID, "forest_noise_config")), dimensionSettings::get);
 
 		TFDimensions.init();
@@ -126,6 +125,8 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 
 		return new Dimension(twilightType::get, chunkGenerator);
 	}
+
+	// Otherwise an AT increases runtime overhead, so we use reflection here instead since dataGen won't run on regular minecraft runtime, so we instead have faux-constructors here
 
 	@SuppressWarnings("SameParameterValue")
 	private static Optional<DimensionSettings> makeDimensionSettings(DimensionStructuresSettings structures, NoiseSettings noise, BlockState defaultBlock, BlockState defaultFluid, int bedrockRoofPosition, int bedrockFloorPosition, int seaLevel, boolean disableMobGeneration) {
