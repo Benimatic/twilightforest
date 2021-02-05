@@ -253,7 +253,7 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator {
 	private void flattenTerrainForFeature(WorldGenRegion primer, TFFeature nearFeature, int x, int z, int dx, int dz) {
 
 		float squishFactor = 0f;
-		int mazeHeight = TFGenerationSettings.SEALEVEL + 1;
+		int mazeHeight = TFGenerationSettings.SEALEVEL - 1;
 		final int FEATURE_BOUNDARY = (nearFeature.size * 2 + 1) * 8 - 8;
 
 		if (dx <= -FEATURE_BOUNDARY) {
@@ -334,7 +334,7 @@ public abstract class ChunkGeneratorTFBase extends NoiseChunkGenerator {
 		hollowCeiling = Math.min(hollowCeiling, TFGenerationSettings.SEALEVEL + 16);
 
 		// floor, also with slight slope
-		int hollowFloor = TFGenerationSettings.SEALEVEL - 1 + (offset / 6);
+		int hollowFloor = TFGenerationSettings.SEALEVEL - 4 + (offset / 6);
 
 		if (squishFactor > 0f) {
 			// blend the old terrain height to arena height
