@@ -8,18 +8,15 @@
     "zspread": 7,
     "whitelist": [],
     "blacklist": [],
-    "tries": 128,
+    "tries": 8,
     "state_provider": {
       "state": {
-        "Properties": {
-          "half": "lower"
-        },
-        "Name": "minecraft:tall_grass"
+        "Name": "twilightforest:mushgloom"
       },
       "type": "minecraft:simple_state_provider"
     },
     "block_placer": {
-      "type": "minecraft:double_plant_placer"
+      "type": "minecraft:simple_block_placer"
     }
   },
   "type": "minecraft:random_patch"

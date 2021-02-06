@@ -65,8 +65,11 @@ public final class BlockConstants {
     public static final BlockState MYCELIUM = Blocks.MYCELIUM.getDefaultState();
     public static final BlockState STONE = Blocks.STONE.getDefaultState();
     public static final BlockState GRASS_BLOCK = Blocks.GRASS_BLOCK.getDefaultState();
+    public static final BlockState PODZOL = Blocks.PODZOL.getDefaultState();
+    public static final BlockState COARSE_DIRT = Blocks.COARSE_DIRT.getDefaultState();
     public static final BlockState FIREFLY_JAR = TFBlocks.firefly_jar.get().getDefaultState();
     public static final BlockState JACK_O_LANTERN = Blocks.JACK_O_LANTERN.getDefaultState();
+    public static final BlockState DEADROCK = TFBlocks.deadrock.get().getDefaultState();
     public static final BlockState MUSHROOM_STEM = Blocks.MUSHROOM_STEM.getDefaultState();//.with(HugeMushroomBlock.UP, true).with(HugeMushroomBlock.DOWN, false).with(HugeMushroomBlock.NORTH, true).with(HugeMushroomBlock.SOUTH, true).with(HugeMushroomBlock.WEST, true).with(HugeMushroomBlock.EAST, true);
     public static final BlockState MUSHROOM_CAP_RED = Blocks.RED_MUSHROOM_BLOCK.getDefaultState().with(HugeMushroomBlock.DOWN, false);//.with(HugeMushroomBlock.UP, true).with(HugeMushroomBlock.NORTH, true).with(HugeMushroomBlock.SOUTH, true).with(HugeMushroomBlock.WEST, true).with(HugeMushroomBlock.EAST, true);
     public static final BlockState MUSHROOM_CAP_BROWN = Blocks.BROWN_MUSHROOM_BLOCK.getDefaultState().with(HugeMushroomBlock.DOWN, false);//.with(HugeMushroomBlock.UP, true).with(HugeMushroomBlock.NORTH, true).with(HugeMushroomBlock.SOUTH, true).with(HugeMushroomBlock.WEST, true).with(HugeMushroomBlock.EAST, true);

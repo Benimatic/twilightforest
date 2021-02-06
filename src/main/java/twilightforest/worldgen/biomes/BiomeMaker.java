@@ -3,7 +3,6 @@ package twilightforest.worldgen.biomes;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.DefaultBiomeFeatures;
 import net.minecraft.world.biome.MobSpawnInfo;
 import twilightforest.TFStructures;
 
@@ -125,7 +124,7 @@ public final class BiomeMaker extends BiomeHelper {
 
 	private static void swampBiomes(ImmutableMap.Builder<RegistryKey<Biome>, Biome> biomes) {
 		biomes.put(BiomeKeys.SWAMP,
-				biomeWithDefaults(defaultAmbientBuilder().withGrassColor(0x5C694E).withFoliageColor(0x496137).setWaterColor(0xE0FFAE), defaultMobSpawning(), addMangroveTrees(defaultGenSettingBuilder()).withStructure(TFStructures.CONFIGURED_LABYRINTH))
+				biomeWithDefaults(defaultAmbientBuilder().withGrassColor(0x5C694E).withFoliageColor(0x496137).setWaterColor(0xE0FFAE), defaultMobSpawning(), swampGen(defaultGenSettingBuilder()).withStructure(TFStructures.CONFIGURED_LABYRINTH))
 						.category(Biome.Category.SWAMP)
 						.temperature(0.8F)
 						.downfall(0.9F)
@@ -135,7 +134,7 @@ public final class BiomeMaker extends BiomeHelper {
 		);
 
 		biomes.put(BiomeKeys.FIRE_SWAMP,
-				biomeWithDefaults(whiteAshParticles(defaultAmbientBuilder().withGrassColor(0x572E23).withFoliageColor(0x64260F).setWaterColor(0x6C2C2C)), defaultMobSpawning(), addMangroveTrees(defaultGenSettingBuilder()).withStructure(TFStructures.CONFIGURED_HYDRA_LAIR))
+				biomeWithDefaults(whiteAshParticles(defaultAmbientBuilder().withGrassColor(0x572E23).withFoliageColor(0x64260F).setWaterColor(0x6C2C2C)), defaultMobSpawning(), fireSwampGen(defaultGenSettingBuilder()).withStructure(TFStructures.CONFIGURED_HYDRA_LAIR))
 						.category(Biome.Category.SWAMP)
 						.temperature(1)
 						.downfall(0.4F)
@@ -147,7 +146,7 @@ public final class BiomeMaker extends BiomeHelper {
 
 	private static void darkForestBiomes(ImmutableMap.Builder<RegistryKey<Biome>, Biome> biomes) {
 		biomes.put(BiomeKeys.DARK_FOREST,
-				biomeWithDefaults(defaultAmbientBuilder().withGrassColor(0x4B6754).withFoliageColor(0x3B5E3F), defaultMobSpawning(), addDarkwoodLanternTrees(defaultGenSettingBuilder()).withStructure(TFStructures.CONFIGURED_KNIGHT_STRONGHOLD))
+				biomeWithDefaults(defaultAmbientBuilder().withGrassColor(0x4B6754).withFoliageColor(0x3B5E3F), defaultMobSpawning(), darkForestGen().withStructure(TFStructures.CONFIGURED_KNIGHT_STRONGHOLD))
 						.temperature(0.7F)
 						.downfall(0.8F)
 						.depth(0.125F)
@@ -156,8 +155,7 @@ public final class BiomeMaker extends BiomeHelper {
 		);
 
 		biomes.put(BiomeKeys.DARK_FOREST_CENTER, // FIXME: colors
-				biomeWithDefaults(defaultAmbientBuilder().withGrassColor(0x667540).withFoliageColor(0xF9821E), defaultMobSpawning(), addDarkwoodTrees(defaultGenSettingBuilder())
-						.withStructure(TFStructures.CONFIGURED_DARK_TOWER))
+				biomeWithDefaults(defaultAmbientBuilder().withGrassColor(0x667540).withFoliageColor(0xF9821E), defaultMobSpawning(), darkForestCenterGen().withStructure(TFStructures.CONFIGURED_DARK_TOWER))
 						.depth(0.125F)
 						.scale(0.05F)
 						.build()
@@ -166,18 +164,18 @@ public final class BiomeMaker extends BiomeHelper {
 
 	private static void snowRegionBiomes(ImmutableMap.Builder<RegistryKey<Biome>, Biome> biomes) {
 		biomes.put(BiomeKeys.SNOWY_FOREST,
-				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), modify(defaultGenSettingBuilder(), DefaultBiomeFeatures::withMountainEdgeTrees).withStructure(TFStructures.CONFIGURED_YETI_CAVE))
+				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), snowyForestGen(defaultGenSettingBuilder()).withStructure(TFStructures.CONFIGURED_YETI_CAVE))
 
+						.precipitation(Biome.RainType.SNOW)
 						.temperature(0.09F)
 						.downfall(0.9F)
 						.depth(0.2F)
 						.scale(0.2F)
-						.precipitation(Biome.RainType.SNOW)
 						.build()
 		);
 
 		biomes.put(BiomeKeys.GLACIER,
-				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), defaultGenSettingBuilder().withStructure(TFStructures.CONFIGURED_AURORA_PALACE))
+				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), glacierGen().withStructure(TFStructures.CONFIGURED_AURORA_PALACE))
 						.category(Biome.Category.ICY)
 						.temperature(0.8F)
 						.downfall(0.1F)
@@ -188,7 +186,7 @@ public final class BiomeMaker extends BiomeHelper {
 
 	private static void highlandsBiomes(ImmutableMap.Builder<RegistryKey<Biome>, Biome> biomes) {
 		biomes.put(BiomeKeys.HIGHLANDS,
-				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), addWildcardTrees(defaultGenSettingBuilder().withStructure(TFStructures.CONFIGURED_TROLL_CAVE)))
+				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), highlandsGen(defaultGenSettingBuilder().withStructure(TFStructures.CONFIGURED_TROLL_CAVE)))
 						.category(Biome.Category.MESA)
 						.temperature(0.4F)
 						.downfall(0.7F)
@@ -198,7 +196,7 @@ public final class BiomeMaker extends BiomeHelper {
 		);
 
 		biomes.put(BiomeKeys.THORNLANDS,
-				biomeWithDefaults(defaultAmbientBuilder(), new MobSpawnInfo.Builder(), defaultGenSettingBuilder())
+				biomeWithDefaults(defaultAmbientBuilder(), new MobSpawnInfo.Builder(), thornlandsGen(defaultGenSettingBuilder()))
 						.category(Biome.Category.NONE)
 						.temperature(0.3F)
 						.downfall(0.2F)
