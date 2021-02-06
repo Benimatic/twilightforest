@@ -829,7 +829,9 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 	/**
 	 * Place a library treasure chest somewhere in the library
 	 */
+	@SuppressWarnings("fallthrough")
 	protected void decorateLibraryTreasure(ISeedReader world, Random rand, int bottom, int top, Rotation ladderUpDir, Rotation ladderDownDir, MutableBoundingBox sbb) {
+		// FIXME: case 3 gets slightly higher chance than others
 		switch (rand.nextInt(4)) {
 			case 0:
 			default:

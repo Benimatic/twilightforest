@@ -385,8 +385,10 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		}
 	}
 
+	@SuppressWarnings("fallthrough")
 	private void decorateFloor(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random decoRNG, MutableBoundingBox sbb, Rotation rotation, int y, boolean isBottom, boolean isTop) {
 		// pick an appropriate decoration and use it
+		// FIXME: if minY <= 64, some cases gets double weight
 
 		if (isTop) {
 			// there are a limited amount that can go at the top
