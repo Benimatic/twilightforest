@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.Lifecycle;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DirectoryCache;
@@ -17,7 +16,6 @@ import net.minecraft.world.Dimension;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.FuzzedBiomeMagnifier;
-import net.minecraft.world.biome.IBiomeMagnifier;
 import net.minecraft.world.gen.DimensionSettings;
 import net.minecraft.world.gen.settings.DimensionStructuresSettings;
 import net.minecraft.world.gen.settings.NoiseSettings;
@@ -27,7 +25,6 @@ import twilightforest.TwilightForestMod;
 import twilightforest.world.*;
 import twilightforest.worldgen.biomes.BiomeMaker;
 
-import java.lang.reflect.Constructor;
 import java.util.Map;
 import java.util.Optional;
 import java.util.OptionalLong;
@@ -71,15 +68,17 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 				false
 		);
 
+		// https://misode.github.io/worldgen/noise-settings/
+		// So far this looks great! We just need to raise the island levels to sea level. Otherwise is generates flat-flakey islands that really show the roots on dirt bottoms from trees
 		NoiseSettings skyNoiseSettings = new NoiseSettings(
-				128, // Noise Height - This allows us to shorten the world so we can cram more stuff upwards
-				new ScalingSettings(0.9999999814507745D, 0.9999999814507745D, 80.0D, 160.0D),
-				new SlideSettings(-3000, 64,  -46),
+				128,
+				new ScalingSettings(3.0D, 1.0D, 256.0D, 16.0D),
+				new SlideSettings(-3000, 92, -66),
 				new SlideSettings(-30, 7, 1),
-				1,
 				2,
-				1.0D,
-				-0.46875D,
+				1,
+				0.3D,
+				-0.2D,
 				false,
 				true,
 				false,
@@ -120,7 +119,7 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 				256,
 				FuzzedBiomeMagnifier.INSTANCE,
 				new ResourceLocation("infiniburn_overworld"),
-				new ResourceLocation(TwilightForestMod.ID, "renderer"), // DimensionRenderInfo
+				TwilightForestMod.prefix("renderer"), // DimensionRenderInfo
 				0f // Wish this could be set to -0.05 since it'll make the world truly blacked out if an area is not sky-lit (see: Dark Forests) Sadly this also messes up night vision so it gets 0
 		);
 
@@ -128,8 +127,10 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 		getOrCreateInRegistry(dynamicRegistries.getRegistry(Registry.DIMENSION_TYPE_KEY), RegistryKey.getOrCreateKey(Registry.DIMENSION_TYPE_KEY, new ResourceLocation(TwilightForestMod.ID, "forest_type")), twilightType::get);
 
 		return ImmutableMap.of(
+				// TODO add underscore to twilightforest
 				TwilightForestMod.prefix("twilightforest"), new Dimension(twilightType::get, forestChunkGen),
-				TwilightForestMod.prefix("skyblock"), new Dimension(twilightType::get, skyChunkGen)
+				TwilightForestMod.prefix("skylight_forest"), new Dimension(twilightType::get, skyChunkGen)
+				// TODO add *actual* twilightforest:void world without islands
 		);
 	}
 
@@ -140,80 +141,5 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 				.stream()
 				.peek(registryKeyBiomeEntry -> registryKeyBiomeEntry.getValue().setRegistryName(registryKeyBiomeEntry.getKey().getLocation()))
 				.collect(Collectors.toMap(entry -> entry.getKey().getLocation(), Map.Entry::getValue));
-	}
-
-	// Otherwise an AT increases runtime overhead, so we use reflection here instead since dataGen won't run on regular minecraft runtime, so we instead have faux-constructors here
-
-	@SuppressWarnings("SameParameterValue")
-	private static Optional<DimensionSettings> makeDimensionSettings(DimensionStructuresSettings structures, NoiseSettings noise, BlockState defaultBlock, BlockState defaultFluid, int bedrockRoofPosition, int bedrockFloorPosition, int seaLevel, boolean disableMobGeneration) {
-		try {
-			Constructor<DimensionSettings> ctor = DimensionSettings.class.getDeclaredConstructor(
-					DimensionStructuresSettings.class,
-					NoiseSettings.class,
-					BlockState.class,
-					BlockState.class,
-					int.class,
-					int.class,
-					int.class,
-					boolean.class
-			);
-
-			ctor.setAccessible(true);
-
-			return Optional.of(ctor.newInstance(structures, noise, defaultBlock, defaultFluid, bedrockRoofPosition, bedrockFloorPosition, seaLevel, disableMobGeneration));
-		} catch (Exception e) {
-			LOGGER.error("Error constructing `DimensionSettings`!", e);
-
-			return Optional.empty();
-		}
-	}
-
-	@SuppressWarnings("SameParameterValue")
-	private static Optional<DimensionType> makeDimensionType(
-			OptionalLong fixedTime,
-			boolean hasSkyLight,
-			boolean hasCeiling,
-			boolean ultrawarm,
-			boolean natural,
-			double coordinateScale,
-			boolean hasDragonFight,
-			boolean piglinSafe,
-			boolean bedWorks,
-			boolean respawnAnchorWorks,
-			boolean hasRaids,
-			int logicalHeight,
-			IBiomeMagnifier magnifier,
-			ResourceLocation infiniburn,
-			ResourceLocation effects,
-			float ambientLight
-	) {
-		try {
-			Constructor<DimensionType> ctor = DimensionType.class.getDeclaredConstructor(
-					OptionalLong.class,
-					boolean.class,
-					boolean.class,
-					boolean.class,
-					boolean.class,
-					double.class,
-					boolean.class,
-					boolean.class,
-					boolean.class,
-					boolean.class,
-					boolean.class,
-					int.class,
-					IBiomeMagnifier.class,
-					ResourceLocation.class,
-					ResourceLocation.class,
-					float.class
-			);
-
-			ctor.setAccessible(true);
-
-			return Optional.of(ctor.newInstance(fixedTime, hasSkyLight, hasCeiling, ultrawarm, natural, coordinateScale, hasDragonFight, piglinSafe, bedWorks, respawnAnchorWorks, hasRaids, logicalHeight, magnifier, infiniburn, effects, ambientLight));
-		} catch (Exception e) {
-			LOGGER.error("Error constructing `DimensionType`!", e);
-
-			return Optional.empty();
-		}
 	}
 }

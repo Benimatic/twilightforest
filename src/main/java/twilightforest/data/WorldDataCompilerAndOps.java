@@ -3,6 +3,7 @@ package twilightforest.data;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mojang.serialization.*;
+import net.minecraft.block.BlockState;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DirectoryCache;
 import net.minecraft.data.IDataProvider;
@@ -12,6 +13,11 @@ import net.minecraft.util.registry.DynamicRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.WorldGenRegistries;
 import net.minecraft.util.registry.WorldGenSettingsExport;
+import net.minecraft.world.DimensionType;
+import net.minecraft.world.biome.IBiomeMagnifier;
+import net.minecraft.world.gen.DimensionSettings;
+import net.minecraft.world.gen.settings.DimensionStructuresSettings;
+import net.minecraft.world.gen.settings.NoiseSettings;
 import net.minecraftforge.registries.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,11 +26,13 @@ import twilightforest.TwilightForestMod;
 import javax.annotation.Nullable;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.OptionalLong;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -182,5 +190,80 @@ public abstract class WorldDataCompilerAndOps<Format> extends WorldGenSettingsEx
     @Override
     public String getName() {
         return "Twilight World";
+    }
+
+    // Otherwise an AT increases runtime overhead, so we use reflection here instead since dataGen won't run on regular minecraft runtime, so we instead have faux-constructors here
+
+    @SuppressWarnings("SameParameterValue")
+    protected static Optional<DimensionSettings> makeDimensionSettings(DimensionStructuresSettings structures, NoiseSettings noise, BlockState defaultBlock, BlockState defaultFluid, int bedrockRoofPosition, int bedrockFloorPosition, int seaLevel, boolean disableMobGeneration) {
+        try {
+            Constructor<DimensionSettings> ctor = DimensionSettings.class.getDeclaredConstructor(
+                    DimensionStructuresSettings.class,
+                    NoiseSettings.class,
+                    BlockState.class,
+                    BlockState.class,
+                    int.class,
+                    int.class,
+                    int.class,
+                    boolean.class
+            );
+
+            ctor.setAccessible(true);
+
+            return Optional.of(ctor.newInstance(structures, noise, defaultBlock, defaultFluid, bedrockRoofPosition, bedrockFloorPosition, seaLevel, disableMobGeneration));
+        } catch (Exception e) {
+            LOGGER.error("Error constructing `DimensionSettings`!", e);
+
+            return Optional.empty();
+        }
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    protected static Optional<DimensionType> makeDimensionType(
+            OptionalLong fixedTime,
+            boolean hasSkyLight,
+            boolean hasCeiling,
+            boolean ultrawarm,
+            boolean natural,
+            double coordinateScale,
+            boolean hasDragonFight,
+            boolean piglinSafe,
+            boolean bedWorks,
+            boolean respawnAnchorWorks,
+            boolean hasRaids,
+            int logicalHeight,
+            IBiomeMagnifier magnifier,
+            ResourceLocation infiniburn,
+            ResourceLocation effects,
+            float ambientLight
+    ) {
+        try {
+            Constructor<DimensionType> ctor = DimensionType.class.getDeclaredConstructor(
+                    OptionalLong.class,
+                    boolean.class,
+                    boolean.class,
+                    boolean.class,
+                    boolean.class,
+                    double.class,
+                    boolean.class,
+                    boolean.class,
+                    boolean.class,
+                    boolean.class,
+                    boolean.class,
+                    int.class,
+                    IBiomeMagnifier.class,
+                    ResourceLocation.class,
+                    ResourceLocation.class,
+                    float.class
+            );
+
+            ctor.setAccessible(true);
+
+            return Optional.of(ctor.newInstance(fixedTime, hasSkyLight, hasCeiling, ultrawarm, natural, coordinateScale, hasDragonFight, piglinSafe, bedWorks, respawnAnchorWorks, hasRaids, logicalHeight, magnifier, infiniburn, effects, ambientLight));
+        } catch (Exception e) {
+            LOGGER.error("Error constructing `DimensionType`!", e);
+
+            return Optional.empty();
+        }
     }
 }
