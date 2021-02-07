@@ -388,14 +388,9 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseChunkGenerator {
 
 	@Override
 	public List<MobSpawnInfo.Spawners> func_230353_a_(Biome p_230353_1_, StructureManager p_230353_2_, EntityClassification p_230353_3_, BlockPos p_230353_4_) {
-		if (p_230353_3_ == EntityClassification.MONSTER) {
-			List<MobSpawnInfo.Spawners> featureSpawn = TFFeature.generateFeature(p_230353_4_.getX() >> 4, p_230353_4_.getZ() >> 4, p_230353_1_, seed).getMonsterSpawnList();
-			if (featureSpawn.size() > 0)
-				return featureSpawn;
-			if (p_230353_4_.getY() > TFGenerationSettings.SEALEVEL)
-				return ImmutableList.of();
-		}
-		return super.func_230353_a_(p_230353_1_, p_230353_2_, p_230353_3_, p_230353_4_);
+		List<MobSpawnInfo.Spawners> spawns = net.minecraftforge.common.world.StructureSpawnManager.getStructureSpawns(p_230353_2_, p_230353_3_, p_230353_4_);
+		if (spawns != null) return spawns;
+		return p_230353_3_ == EntityClassification.MONSTER && p_230353_4_.getY() > TFGenerationSettings.SEALEVEL ? ImmutableList.of() : super.func_230353_a_(p_230353_1_, p_230353_2_, p_230353_3_, p_230353_4_);
 	}
 
 	//	public void setStructureConquered(BlockPos pos, boolean flag) {

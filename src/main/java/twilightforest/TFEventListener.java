@@ -102,16 +102,6 @@ public class TFEventListener {
 	private static int amountOfCobbleToReplace = 0;
 
 	@SubscribeEvent
-	public static void onMobSpawn(WorldEvent.PotentialSpawns event) {
-		if (event.getType() == EntityClassification.MONSTER
-				&& event.getWorld() instanceof ServerWorld
-				&& event.getWorld().getChunkProvider() instanceof ServerChunkProvider
-				&& ((ServerWorld) event.getWorld()).getChunkProvider().generator instanceof ChunkGeneratorTwilightBase
-				&& event.getPos().getY() >= ((ServerChunkProvider) event.getWorld().getChunkProvider()).getChunkGenerator().getSeaLevel())
-			event.setCanceled(true);
-	}
-
-	@SubscribeEvent
 	public static void onCrafting(PlayerEvent.ItemCraftedEvent event) {
 		ItemStack itemStack = event.getCrafting();
 		PlayerEntity player = event.getPlayer();

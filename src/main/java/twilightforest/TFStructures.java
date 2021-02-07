@@ -1,6 +1,7 @@
 package twilightforest;
 
 import com.google.common.collect.ImmutableMap;
+import net.minecraft.entity.EntityClassification;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.WorldGenRegistries;
@@ -13,6 +14,7 @@ import net.minecraft.world.gen.settings.DimensionStructuresSettings;
 import net.minecraft.world.gen.settings.StructureSeparationSettings;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.world.StructureSpawnListGatherEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import twilightforest.structures.courtyard.NagaCourtyardPieces;
 import twilightforest.structures.darktower.TFDarkTowerPieces;
@@ -124,11 +126,16 @@ public class TFStructures {
 	}
 
 	public static void load(WorldEvent.Load event) {
-		if(event.getWorld() instanceof ServerWorld && ((ServerWorld) event.getWorld()).getChunkProvider().generator instanceof ChunkGeneratorTwilightBase){
+		if(event.getWorld() instanceof ServerWorld && ((ServerWorld) event.getWorld()).getChunkProvider().generator instanceof ChunkGeneratorTwilightBase) {
 			ServerWorld serverWorld = (ServerWorld)event.getWorld();
 			Map<Structure<?>, StructureSeparationSettings> tempMap = new HashMap<>(serverWorld.getChunkProvider().generator.func_235957_b_().func_236195_a_());
 			tempMap.putAll(SEPARATION_SETTINGS);
 			serverWorld.getChunkProvider().generator.func_235957_b_().field_236193_d_ = tempMap;
 		}
+	}
+
+	public static void fillSpawnInfo(StructureSpawnListGatherEvent event) {
+		if (event.getStructure() instanceof TFStructure)
+			event.getStructure().getSpawnList().forEach(spawn -> event.addEntitySpawn(EntityClassification.MONSTER, spawn));
 	}
 }

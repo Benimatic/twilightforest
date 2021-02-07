@@ -7,6 +7,7 @@ import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.util.registry.DynamicRegistries;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.MobSpawnInfo;
 import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.GenerationStage;
@@ -22,6 +23,7 @@ import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentTemplate;
 import twilightforest.world.TFGenerationSettings;
 
+import java.util.List;
 import java.util.Random;
 
 public class TFStructure<C extends IFeatureConfig> extends Structure<C> {
@@ -37,6 +39,11 @@ public class TFStructure<C extends IFeatureConfig> extends Structure<C> {
 		super(codec);
 		this.feature = feature;
 		this.template = template;
+	}
+
+	@Override
+	public List<MobSpawnInfo.Spawners> getSpawnList() {
+		return feature.getMonsterSpawnList();
 	}
 
 	@Override
