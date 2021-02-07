@@ -389,6 +389,24 @@ public class CraftingGenerator extends CraftingDataHelper {
 		planksBlock(consumer, "time", TFBlocks.time_planks, TFBlocks.time_log);
 		planksBlock(consumer, "trans", TFBlocks.trans_planks, TFBlocks.transformation_log);
 		planksBlock(consumer, "twilight_oak", TFBlocks.twilight_oak_planks, TFBlocks.oak_log);
+		
+		planksBlock(consumer, "canopy_from_wood", TFBlocks.canopy_planks, TFBlocks.canopy_wood);
+		planksBlock(consumer, "darkwood_from_wood", TFBlocks.dark_planks, TFBlocks.dark_wood);
+		planksBlock(consumer, "mangrove_from_wood", TFBlocks.mangrove_planks, TFBlocks.mangrove_wood);
+		planksBlock(consumer, "mine_from_wood", TFBlocks.mine_planks, TFBlocks.mining_wood);
+		planksBlock(consumer, "sort_from_wood", TFBlocks.sort_planks, TFBlocks.sorting_wood);
+		planksBlock(consumer, "time_from_wood", TFBlocks.time_planks, TFBlocks.time_wood);
+		planksBlock(consumer, "trans_from_wood", TFBlocks.trans_planks, TFBlocks.transformation_wood);
+		planksBlock(consumer, "twilight_oak_from_wood", TFBlocks.twilight_oak_planks, TFBlocks.oak_wood);
+		
+		woodBlock(consumer, "canopy", TFBlocks.canopy_wood, TFBlocks.canopy_log);
+		woodBlock(consumer, "darkwood", TFBlocks.dark_wood, TFBlocks.dark_log);
+		woodBlock(consumer, "mangrove", TFBlocks.mangrove_wood, TFBlocks.mangrove_log);
+		woodBlock(consumer, "mine", TFBlocks.mining_wood, TFBlocks.mining_log);
+		woodBlock(consumer, "sort", TFBlocks.sorting_wood, TFBlocks.sorting_log);
+		woodBlock(consumer, "time", TFBlocks.time_wood, TFBlocks.time_log);
+		woodBlock(consumer, "trans", TFBlocks.transformation_wood, TFBlocks.transformation_log);
+		woodBlock(consumer, "twilight_oak", TFBlocks.oak_wood, TFBlocks.oak_log);
 
 		plateBlock(consumer, "canopy", TFBlocks.canopy_plate, TFBlocks.canopy_planks);
 		plateBlock(consumer, "darkwood", TFBlocks.dark_plate, TFBlocks.dark_planks);
