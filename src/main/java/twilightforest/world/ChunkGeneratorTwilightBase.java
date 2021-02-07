@@ -1,17 +1,23 @@
 package twilightforest.world;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.EntityClassification;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.MobSpawnInfo;
 import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.gen.DimensionSettings;
 import net.minecraft.world.gen.NoiseChunkGenerator;
 import net.minecraft.world.gen.WorldGenRegion;
+import net.minecraft.world.gen.feature.structure.StructureManager;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
 import twilightforest.util.IntPair;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 // TODO: doc out all the vanilla copying
@@ -380,7 +386,19 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseChunkGenerator {
 		return new BlockPos(old.getX(), y, old.getZ());
 	}
 
-//	public void setStructureConquered(BlockPos pos, boolean flag) {
+	@Override
+	public List<MobSpawnInfo.Spawners> func_230353_a_(Biome p_230353_1_, StructureManager p_230353_2_, EntityClassification p_230353_3_, BlockPos p_230353_4_) {
+		if (p_230353_3_ == EntityClassification.MONSTER) {
+			List<MobSpawnInfo.Spawners> featureSpawn = TFFeature.generateFeature(p_230353_4_.getX() >> 4, p_230353_4_.getZ() >> 4, p_230353_1_, seed).getMonsterSpawnList();
+			if (featureSpawn.size() > 0)
+				return featureSpawn;
+			if (p_230353_4_.getY() > TFGenerationSettings.SEALEVEL)
+				return ImmutableList.of();
+		}
+		return super.func_230353_a_(p_230353_1_, p_230353_2_, p_230353_3_, p_230353_4_);
+	}
+
+	//	public void setStructureConquered(BlockPos pos, boolean flag) {
 //		getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world.getWorld())).setStructureConquered(pos, flag);
 //	}
 //

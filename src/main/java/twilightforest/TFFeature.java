@@ -1,5 +1,6 @@
 package twilightforest;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -19,6 +20,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.MobSpawnInfo;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
@@ -426,6 +428,8 @@ public enum TFFeature {
 	private final ResourceLocation[] requiredAdvancements;
 	public boolean hasProtectionAura;
 
+	private final List<MobSpawnInfo.Spawners> monsterSpawnList = new ArrayList<>();
+
 	private long lastSpawnedHintMonsterTime;
 
 	private static final String BOOK_AUTHOR = "A Forgotten Explorer";
@@ -555,17 +559,12 @@ public enum TFFeature {
 	 * Add a monster to a specific spawn list
 	 */
 	public TFFeature addMonster(int listIndex, EntityType<? extends LivingEntity> monsterClass, int weight, int minGroup, int maxGroup) {
-		/* FIXME
-		List<Biome.SpawnListEntry> monsterList;
-		if (this.spawnableMonsterLists.size() > listIndex) {
-			monsterList = this.spawnableMonsterLists.get(listIndex);
-		} else {
-			monsterList = new ArrayList<>();
-			this.spawnableMonsterLists.add(listIndex, monsterList);
-		}
-
-		monsterList.add(new Biome.SpawnListEntry(monsterClass, weight, minGroup, maxGroup));*/
+		monsterSpawnList.add(new MobSpawnInfo.Spawners(monsterClass, weight, minGroup, maxGroup));
 		return this;
+	}
+
+	public List<MobSpawnInfo.Spawners> getMonsterSpawnList() {
+		return ImmutableList.copyOf(monsterSpawnList);
 	}
 
 	/**
