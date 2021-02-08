@@ -1,10 +1,18 @@
 package twilightforest.structures;
 
+import java.util.Set;
+
+import com.google.common.collect.ImmutableSet;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.entity.passive.SheepEntity;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.item.DyeColor;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
@@ -14,6 +22,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFFeature;
+import twilightforest.block.TFBlocks;
 import twilightforest.util.ColorUtil;
 
 public abstract class StructureTFComponent extends StructurePiece {
@@ -21,6 +30,37 @@ public abstract class StructureTFComponent extends StructurePiece {
 	public StructureTFDecorator deco = null;
 	public int spawnListIndex = 0;
 	protected TFFeature feature = TFFeature.NOTHING;
+	private static final Set<Block> BLOCKS_NEEDING_POSTPROCESSING = ImmutableSet.<Block>builder()
+			.add(Blocks.NETHER_BRICK_FENCE)
+			.add(Blocks.TORCH)
+			.add(Blocks.WALL_TORCH)
+			.add(Blocks.OAK_FENCE)
+			.add(Blocks.SPRUCE_FENCE)
+			.add(Blocks.DARK_OAK_FENCE)
+			.add(Blocks.ACACIA_FENCE)
+			.add(Blocks.BIRCH_FENCE)
+			.add(Blocks.JUNGLE_FENCE)
+			.add(Blocks.LADDER)
+			.add(Blocks.IRON_BARS)
+			.add(Blocks.GLASS_PANE)
+			.add(Blocks.OAK_STAIRS)
+			.add(Blocks.BIRCH_STAIRS)
+			.add(Blocks.COBBLESTONE_WALL)
+			.add(Blocks.RED_MUSHROOM_BLOCK)
+			.add(Blocks.BROWN_MUSHROOM_BLOCK)
+			.add(Blocks.CHEST)
+			.add(Blocks.TRAPPED_CHEST)
+			.add(Blocks.STONE_BRICK_STAIRS)
+			.add(TFBlocks.castle_stairs_brick.get())
+			.add(TFBlocks.force_field_blue.get())
+			.add(TFBlocks.force_field_green.get())
+			.add(TFBlocks.force_field_pink.get())
+			.add(TFBlocks.force_field_purple.get())
+			.add(TFBlocks.force_field_orange.get())
+			.add(TFBlocks.brown_thorns.get())
+			.add(TFBlocks.green_thorns.get())
+			.build();
+
 
 	public StructureTFComponent(IStructurePieceType piece, CompoundNBT nbt) {
 		super(piece, nbt);
@@ -88,6 +128,32 @@ public abstract class StructureTFComponent extends StructurePiece {
 			}
 		}
 	}
+	
+	@Override
+	protected void setBlockState(ISeedReader worldIn, BlockState blockstateIn, int x, int y, int z, MutableBoundingBox boundingboxIn) {
+	      BlockPos blockpos = new BlockPos(this.getXWithOffset(x, z), this.getYWithOffset(y), this.getZWithOffset(x, z));
+
+	      if (boundingboxIn.isVecInside(blockpos)) {
+	          if (this.mirror != Mirror.NONE) {
+	             blockstateIn = blockstateIn.mirror(this.mirror);
+	          }
+
+	          if (this.rotation != Rotation.NONE) {
+	             blockstateIn = blockstateIn.rotate(this.rotation);
+	          }
+
+	          worldIn.setBlockState(blockpos, blockstateIn, 2);
+	          FluidState fluidstate = worldIn.getFluidState(blockpos);
+	          if (!fluidstate.isEmpty()) {
+	             worldIn.getPendingFluidTicks().scheduleTick(blockpos, fluidstate.getFluid(), 0);
+	          }
+
+	          if (BLOCKS_NEEDING_POSTPROCESSING.contains(blockstateIn.getBlock())) {
+	             worldIn.getChunk(blockpos).markBlockForPostprocessing(blockpos);
+	          }
+
+	       }
+	   }
 
 	@SuppressWarnings({"SameParameterValue", "unused"})
 	protected void setDebugEntity(World world, BlockPos blockpos, String s) {
