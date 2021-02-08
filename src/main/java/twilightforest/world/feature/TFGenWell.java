@@ -77,7 +77,7 @@ public class TFGenWell extends Feature<NoFeatureConfig> {
 		for (int dy = -1; dy >= -20; dy--) {
 			Block dblock = world.getBlockState(pos.add(1, dy, 1)).getBlock();
 			// we only drill through dirt, grass, gravel and stone
-			if (dblock != Blocks.DIRT && dblock != Blocks.GRASS && dblock != Blocks.GRAVEL && dblock != Blocks.STONE) {
+			if (dblock != Blocks.DIRT && dblock != Blocks.GRASS_BLOCK && dblock != Blocks.GRAVEL && dblock != Blocks.STONE) {
 				break;
 			}
 			// we also need a solid block under where we're digging
@@ -168,7 +168,7 @@ public class TFGenWell extends Feature<NoFeatureConfig> {
 					Block dblock = dState.getBlock();
 
 					// we only drill through dirt, grass, gravel and stone
-					if (dblock != Blocks.DIRT && dblock != Blocks.GRASS && dblock != Blocks.GRAVEL && dblock != Blocks.STONE) {
+					if (dblock != Blocks.DIRT && dblock != Blocks.GRASS_BLOCK && dblock != Blocks.GRAVEL && dblock != Blocks.STONE) {
 						break;
 					}
 					// we also need a solid block under where we're digging

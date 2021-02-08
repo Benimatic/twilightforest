@@ -23,7 +23,7 @@ public class TFGenLampposts extends Feature<BlockStateFeatureConfig> {
 	@Override
 	public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, BlockStateFeatureConfig config) {
 		// we should start on a grass block
-		if (world.getBlockState(pos.down()).getBlock() != Blocks.GRASS) {
+		if (world.getBlockState(pos.down()).getBlock() != Blocks.GRASS_BLOCK) {
 			return false;
 		}
 

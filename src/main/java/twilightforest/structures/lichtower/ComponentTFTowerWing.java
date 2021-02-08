@@ -1334,7 +1334,7 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 
 
 		// place a cute planted thing
-		setBlockState(world, Blocks.GRASS.getDefaultState(), cx, 1, cz, sbb);
+		setBlockState(world, Blocks.GRASS_BLOCK.getDefaultState(), cx, 1, cz, sbb);
 
 		int i = rand.nextInt(6);
 		boolean isTree = i > 4;

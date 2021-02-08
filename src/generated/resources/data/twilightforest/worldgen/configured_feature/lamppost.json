@@ -6,31 +6,42 @@
           "config": {
             "feature": {
               "config": {
-                "state": {
-                  "Name": "twilightforest:firefly_jar"
+                "feature": {
+                  "config": {
+                    "state": {
+                      "Name": "twilightforest:firefly_jar"
+                    }
+                  },
+                  "type": "twilightforest:lampposts"
+                },
+                "decorator": {
+                  "config": {},
+                  "type": "minecraft:heightmap_world_surface"
                 }
               },
-              "type": "twilightforest:lampposts"
+              "type": "minecraft:decorated"
             },
             "decorator": {
               "config": {},
-              "type": "minecraft:heightmap_world_surface"
+              "type": "minecraft:square"
             }
           },
           "type": "minecraft:decorated"
         },
         "decorator": {
-          "config": {},
-          "type": "minecraft:square"
+          "config": {
+            "count": 1
+          },
+          "type": "minecraft:count"
         }
       },
       "type": "minecraft:decorated"
     },
     "decorator": {
       "config": {
-        "count": 1
+        "chance": 50
       },
-      "type": "minecraft:count"
+      "type": "minecraft:chance"
     }
   },
   "type": "minecraft:decorated"

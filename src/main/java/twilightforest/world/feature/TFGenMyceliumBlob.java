@@ -52,7 +52,7 @@ public class TFGenMyceliumBlob extends Feature<SphereReplaceConfig> {
 				for (int dy = pos.getY() - yRange; dy <= pos.getY() + yRange; dy++) {
 					BlockPos dPos = new BlockPos(dx, dy, dz);
 					Block blockThere = world.getBlockState(dPos).getBlock();
-					if (blockThere == Blocks.DIRT || blockThere == Blocks.GRASS || blockThere == Blocks.STONE) {
+					if (blockThere == Blocks.DIRT || blockThere == Blocks.GRASS_BLOCK || blockThere == Blocks.STONE) {
 						world.setBlockState(dPos, config.state, 16 | 2);
 					}
 				}

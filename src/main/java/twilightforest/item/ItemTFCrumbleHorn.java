@@ -52,7 +52,7 @@ public class ItemTFCrumbleHorn extends Item {
 		addCrumble(() -> Blocks.COBBLESTONE, () -> Blocks.GRAVEL.getDefaultState());
 		addCrumble(() -> Blocks.SANDSTONE, () -> Blocks.SAND.getDefaultState());
 		addCrumble(() -> Blocks.RED_SANDSTONE, () -> Blocks.RED_SAND.getDefaultState());
-		addCrumble(() -> Blocks.GRASS, () -> Blocks.DIRT.getDefaultState());
+		addCrumble(() -> Blocks.GRASS_BLOCK, () -> Blocks.DIRT.getDefaultState());
 		addCrumble(() -> Blocks.MYCELIUM, () -> Blocks.DIRT.getDefaultState());
 		addHarvest(() -> Blocks.GRAVEL);
 		addHarvest(() -> Blocks.DIRT);

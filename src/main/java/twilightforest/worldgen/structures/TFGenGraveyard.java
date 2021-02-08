@@ -253,7 +253,7 @@ public class TFGenGraveyard extends Feature<NoFeatureConfig> {
 		@Nullable
 		@Override
 		public Template.BlockInfo process(IWorldReader worldIn, BlockPos pos, BlockPos piecepos, Template.BlockInfo p_process_3_, Template.BlockInfo blockInfo, PlacementSettings settings, @Nullable Template template) {
-			return blockInfo.state.getBlock() == Blocks.GRASS ? blockInfo : settings.getRandom(pos).nextInt(5) == 0 ? new Template.BlockInfo(pos, Blocks.COBWEB.getDefaultState(), null) : blockInfo;
+			return blockInfo.state.getBlock() == Blocks.GRASS_BLOCK ? blockInfo : settings.getRandom(pos).nextInt(5) == 0 ? new Template.BlockInfo(pos, Blocks.COBWEB.getDefaultState(), null) : blockInfo;
 		}
 	}
 }

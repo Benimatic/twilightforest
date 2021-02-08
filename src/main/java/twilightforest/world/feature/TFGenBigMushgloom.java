@@ -31,7 +31,7 @@ public class TFGenBigMushgloom extends Feature<NoFeatureConfig> {
 		}
 
 		Block blockUnder = world.getBlockState(pos.down()).getBlock();
-		if (blockUnder != Blocks.DIRT && blockUnder != Blocks.GRASS && blockUnder != Blocks.MYCELIUM) {
+		if (blockUnder != Blocks.DIRT && blockUnder != Blocks.GRASS_BLOCK && blockUnder != Blocks.MYCELIUM) {
 			return false;
 		}
 

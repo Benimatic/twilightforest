@@ -46,7 +46,7 @@ public class EntityTFRisingZombie extends ZombieEntity {
 			zombie.setHealth(getHealth());
 			zombie.setChild(isChild());
 			world.addEntity(zombie);
-			if (rand.nextBoolean() && world.getBlockState(getPosition().down()).getBlock() == Blocks.GRASS)
+			if (rand.nextBoolean() && world.getBlockState(getPosition().down()).getBlock() == Blocks.GRASS_BLOCK)
 				world.setBlockState(getPosition().down(), Blocks.DIRT.getDefaultState());
 		}
 		if (world.isRemote && !world.isAirBlock(getPosition().down())) {

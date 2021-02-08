@@ -183,7 +183,7 @@ public class ItemTFOreMagnet extends Item {
         Block block = state.getBlock();
 
 	    if (block == Blocks.DIRT
-                || block == Blocks.GRASS
+                || block == Blocks.GRASS_BLOCK
                 || block == Blocks.GRAVEL
                 || (block != Blocks.AIR && block == Blocks.STONE/*block.isReplaceableOreGen(state, world, pos, BlockMatcher.forBlock(Blocks.STONE))*/)) { //TODO: method does not exist
 			return true;
