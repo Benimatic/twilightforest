@@ -2,6 +2,7 @@ package twilightforest.worldgen;
 
 import com.google.common.collect.ImmutableList;
 
+import net.minecraft.client.audio.BackgroundMusicSelector;
 import net.minecraft.world.gen.blockplacer.DoublePlantBlockPlacer;
 import net.minecraft.world.gen.blockplacer.SimpleBlockPlacer;
 import net.minecraft.world.gen.blockstateprovider.SimpleBlockStateProvider;
@@ -10,6 +11,7 @@ import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.placement.AtSurfaceWithExtraConfig;
 import net.minecraft.world.gen.placement.ConfiguredPlacement;
 import net.minecraft.world.gen.placement.Placement;
+import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.feature.TFBiomeFeatures;
 import twilightforest.world.feature.config.CaveStalactiteConfig;
@@ -204,4 +206,6 @@ public final class ConfiguredFeatures {
     public static final ConfiguredFeature<?, ?> GRASS_PLACER = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("grass_placer"), Feature.SIMPLE_RANDOM_SELECTOR.withConfiguration(new SingleRandomFeature(OTHER_GRASS)).func_242730_a(FeatureSpread.func_242253_a(-1, 4)).withPlacement(Features.Placements.VEGETATION_PLACEMENT).withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT).square().func_242731_b(30).chance(5));
     public static final ConfiguredFeature<?, ?> FOREST_GRASS_PLACER = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("forest_grass_placer"), Feature.SIMPLE_RANDOM_SELECTOR.withConfiguration(new SingleRandomFeature(FOREST_GRASS)).func_242730_a(FeatureSpread.func_242253_a(-1, 4)).withPlacement(Features.Placements.VEGETATION_PLACEMENT).withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT).square().func_242731_b(30).chance(5));
     public static final ConfiguredFeature<?, ?> FLOWER_PLACER = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("flower_placer"), Feature.FLOWER.withConfiguration(SMALL_FLOWER_CONFIG).withPlacement(Features.Placements.VEGETATION_PLACEMENT).withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT).func_242731_b(25).chance(15));
+
+    public static final BackgroundMusicSelector TFMUSICTYPE = new BackgroundMusicSelector(TFSounds.MUSIC, 1200, 12000, true);
 }

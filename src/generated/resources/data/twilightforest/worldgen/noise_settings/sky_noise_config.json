@@ -7,8 +7,8 @@
     "structures": {}
   },
   "noise": {
-    "density_factor": 0.0,
-    "density_offset": 0.0,
+    "density_factor": 0.3,
+    "density_offset": -0.2,
     "simplex_surface_noise": true,
     "bottom_slide": {
       "target": -30,
@@ -19,15 +19,15 @@
     "size_vertical": 1,
     "height": 128,
     "sampling": {
-      "xz_scale": 2.0,
+      "xz_scale": 3.0,
       "y_scale": 1.0,
-      "xz_factor": 80.0,
-      "y_factor": 160.0
+      "xz_factor": 256.0,
+      "y_factor": 16.0
     },
     "top_slide": {
       "target": -3000,
-      "size": 64,
-      "offset": -46
+      "size": 92,
+      "offset": -66
     }
   },
   "default_block": {

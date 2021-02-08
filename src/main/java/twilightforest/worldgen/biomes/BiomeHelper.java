@@ -7,6 +7,7 @@ import net.minecraft.world.biome.*;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.Features;
 import net.minecraft.world.gen.surfacebuilders.ConfiguredSurfaceBuilders;
+import twilightforest.TFSounds;
 import twilightforest.TFStructures;
 import twilightforest.entity.TFEntities;
 import twilightforest.worldgen.ConfiguredFeatures;
@@ -382,7 +383,9 @@ public abstract class BiomeHelper {
                 .setWaterColor(0x3F76E4)
                 .setWaterFogColor(0x050533)
                 .withSkyColor(0x20224A) //TODO Change based on Biome. Not previously done before
-                .setMoodSound(MoodSoundAmbience.DEFAULT_CAVE); // We should probably change it
+                .setMoodSound(MoodSoundAmbience.DEFAULT_CAVE) // We should probably change it
+                .setMusic(ConfiguredFeatures.TFMUSICTYPE);
+        
     }
 
     public static BiomeGenerationSettings.Builder addWildcardTrees(BiomeGenerationSettings.Builder builder) {
