@@ -49,9 +49,17 @@
   "starts": [
     "twilightforest:configured_finalcastle"
   ],
+  "creature_spawn_probability": 0.3,
   "spawners": {
     "monster": [],
-    "creature": [],
+    "creature": [
+      {
+        "type": "twilightforest:raven",
+        "weight": 10,
+        "minCount": 4,
+        "maxCount": 4
+      }
+    ],
     "ambient": [],
     "water_creature": [],
     "water_ambient": [],

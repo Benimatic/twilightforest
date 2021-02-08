@@ -440,6 +440,78 @@ public abstract class BiomeHelper {
 
         return spawnInfo;
     }
+    
+    public static MobSpawnInfo.Builder penguinSpawning() {
+        MobSpawnInfo.Builder spawnInfo = new MobSpawnInfo.Builder();
+
+        spawnInfo.withCreatureSpawnProbability(0.2f);
+        
+        spawnInfo.withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(TFEntities.penguin, 10, 4, 4));
+        
+        return spawnInfo;
+    }
+    
+    public static MobSpawnInfo.Builder darkForestSpawning() {
+        MobSpawnInfo.Builder spawnInfo = new MobSpawnInfo.Builder();
+
+        spawnInfo.withCreatureSpawnProbability(0.1f);
+        
+        spawnInfo.withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(EntityType.ENDERMAN, 1, 1, 4));
+        spawnInfo.withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(EntityType.ZOMBIE, 5, 1, 4));
+        spawnInfo.withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(EntityType.SKELETON, 5, 1, 4));
+        spawnInfo.withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(TFEntities.mist_wolf, 10, 1, 4));
+        spawnInfo.withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(TFEntities.skeleton_druid, 10, 1, 4));
+        spawnInfo.withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(TFEntities.king_spider, 10, 1, 4));
+        spawnInfo.withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(TFEntities.kobold, 10, 1, 4));
+        spawnInfo.withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(EntityType.WITCH, 1, 1, 1));
+        
+        return spawnInfo;
+    }
+    
+    public static MobSpawnInfo.Builder winterWolfSpawning() {
+        MobSpawnInfo.Builder spawnInfo = new MobSpawnInfo.Builder();
+
+        spawnInfo.withCreatureSpawnProbability(0.1f);
+        
+        spawnInfo.withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(TFEntities.winter_wolf, 5, 1, 4));
+        
+        return spawnInfo;
+    }
+    
+    public static MobSpawnInfo.Builder ravenSpawning() {
+        MobSpawnInfo.Builder spawnInfo = new MobSpawnInfo.Builder();
+
+        spawnInfo.withCreatureSpawnProbability(0.3f);
+        
+        spawnInfo.withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(TFEntities.raven, 10, 4, 4));
+        
+        return spawnInfo;
+    }
+    
+    public static MobSpawnInfo.Builder swampSpawning() {
+        MobSpawnInfo.Builder spawnInfo = new MobSpawnInfo.Builder();
+
+        spawnInfo.withCreatureSpawnProbability(0.2f);
+        
+        spawnInfo.withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.CREEPER, 10, 4, 4));
+        spawnInfo.withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(EntityType.ZOMBIE, 10, 4, 4));
+        spawnInfo.withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(TFEntities.mosquito_swarm, 10, 1, 1));
+		
+        return spawnInfo;
+    }
+    
+    public static MobSpawnInfo.Builder spookSpawning() {
+        MobSpawnInfo.Builder spawnInfo = new MobSpawnInfo.Builder();
+
+        spawnInfo.withCreatureSpawnProbability(0.4f);
+        
+        spawnInfo.withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(EntityType.SPIDER, 50, 1, 4));
+        spawnInfo.withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(EntityType.SKELETON, 20, 1, 4));
+        spawnInfo.withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(TFEntities.skeleton_druid, 5, 1, 1));
+        spawnInfo.withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(EntityType.BAT, 20, 8, 8));
+
+        return spawnInfo;
+    }
 
     public static Biome.Builder biomeWithDefaults() {
         return biomeWithDefaults(defaultAmbientBuilder(), new MobSpawnInfo.Builder(), defaultGenSettingBuilder());

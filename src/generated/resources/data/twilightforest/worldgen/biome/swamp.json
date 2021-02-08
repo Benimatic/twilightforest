@@ -62,10 +62,11 @@
   "starts": [
     "twilightforest:configured_labyrinth"
   ],
+  "creature_spawn_probability": 0.2,
   "spawners": {
     "monster": [
       {
-        "type": "minecraft:spider",
+        "type": "minecraft:creeper",
         "weight": 10,
         "minCount": 4,
         "maxCount": 4
@@ -75,102 +76,17 @@
         "weight": 10,
         "minCount": 4,
         "maxCount": 4
-      },
-      {
-        "type": "minecraft:skeleton",
-        "weight": 10,
-        "minCount": 4,
-        "maxCount": 4
-      },
-      {
-        "type": "minecraft:creeper",
-        "weight": 1,
-        "minCount": 4,
-        "maxCount": 4
-      },
-      {
-        "type": "minecraft:slime",
-        "weight": 10,
-        "minCount": 4,
-        "maxCount": 4
-      },
-      {
-        "type": "minecraft:enderman",
-        "weight": 1,
-        "minCount": 1,
-        "maxCount": 4
-      },
-      {
-        "type": "twilightforest:kobold",
-        "weight": 10,
-        "minCount": 4,
-        "maxCount": 8
       }
     ],
     "creature": [
       {
-        "type": "twilightforest:bighorn_sheep",
-        "weight": 12,
-        "minCount": 4,
-        "maxCount": 4
-      },
-      {
-        "type": "twilightforest:wild_boar",
-        "weight": 10,
-        "minCount": 4,
-        "maxCount": 4
-      },
-      {
-        "type": "minecraft:chicken",
-        "weight": 10,
-        "minCount": 4,
-        "maxCount": 4
-      },
-      {
-        "type": "twilightforest:deer",
-        "weight": 15,
-        "minCount": 4,
-        "maxCount": 5
-      },
-      {
-        "type": "minecraft:wolf",
-        "weight": 5,
-        "minCount": 4,
-        "maxCount": 4
-      },
-      {
-        "type": "twilightforest:tiny_bird",
-        "weight": 15,
-        "minCount": 4,
-        "maxCount": 8
-      },
-      {
-        "type": "twilightforest:squirrel",
-        "weight": 10,
-        "minCount": 2,
-        "maxCount": 4
-      },
-      {
-        "type": "twilightforest:bunny",
-        "weight": 10,
-        "minCount": 4,
-        "maxCount": 5
-      },
-      {
-        "type": "twilightforest:raven",
+        "type": "twilightforest:mosquito_swarm",
         "weight": 10,
         "minCount": 1,
-        "maxCount": 2
+        "maxCount": 1
       }
     ],
-    "ambient": [
-      {
-        "type": "minecraft:bat",
-        "weight": 10,
-        "minCount": 8,
-        "maxCount": 8
-      }
-    ],
+    "ambient": [],
     "water_creature": [],
     "water_ambient": [],
     "misc": []
