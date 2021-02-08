@@ -157,6 +157,11 @@ public class TwilightForestMod {
 
 		TFConfig.build();
 		TFGenCaveStalactite.loadStalactites();
+		
+		evt.enqueueWork(() -> {
+			TFBlocks.tfCompostables();
+			}
+		);
 	}
 
 	public void startServer(FMLServerAboutToStartEvent event) {

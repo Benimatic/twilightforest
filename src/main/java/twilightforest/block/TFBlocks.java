@@ -406,4 +406,43 @@ public class TFBlocks {
 		return AbstractBlock.Properties.create(Material.WOOD, (state) ->
 				state.get(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? top : side);
 	}
+	
+	public static void tfCompostables() {
+		ComposterBlock.registerCompostable(0.1F, fallen_leaves.get());
+		ComposterBlock.registerCompostable(0.3F, canopy_leaves.get());
+		ComposterBlock.registerCompostable(0.3F, clover_patch.get());
+		ComposterBlock.registerCompostable(0.3F, dark_leaves.get());
+		ComposterBlock.registerCompostable(0.3F, fiddlehead.get());
+		ComposterBlock.registerCompostable(0.3F, hedge.get());
+		ComposterBlock.registerCompostable(0.3F, mangrove_leaves.get());
+		ComposterBlock.registerCompostable(0.3F, mayapple.get());
+		ComposterBlock.registerCompostable(0.3F, mining_leaves.get());
+		ComposterBlock.registerCompostable(0.3F, oak_leaves.get());
+		ComposterBlock.registerCompostable(0.3F, rainboak_leaves.get());
+		ComposterBlock.registerCompostable(0.3F, root_strand.get());
+		ComposterBlock.registerCompostable(0.3F, sorting_leaves.get());
+		ComposterBlock.registerCompostable(0.3F, thorn_leaves.get());
+		ComposterBlock.registerCompostable(0.3F, time_leaves.get());
+		ComposterBlock.registerCompostable(0.3F, transformation_leaves.get());
+		ComposterBlock.registerCompostable(0.5F, beanstalk_leaves.get());
+		ComposterBlock.registerCompostable(0.5F, moss_patch.get());
+		ComposterBlock.registerCompostable(0.5F, root.get());
+		ComposterBlock.registerCompostable(0.5F, thorn_rose.get());
+		ComposterBlock.registerCompostable(0.5F, trollvidr.get());
+		ComposterBlock.registerCompostable(0.65F, huge_mushgloom_stem.get());
+		ComposterBlock.registerCompostable(0.65F, huge_waterlily.get());
+		ComposterBlock.registerCompostable(0.65F, liveroot_block.get());
+		ComposterBlock.registerCompostable(0.65F, mushgloom.get());
+		ComposterBlock.registerCompostable(0.65F, uberous_soil.get());
+		ComposterBlock.registerCompostable(0.65F, unripe_trollber.get());
+		ComposterBlock.registerCompostable(0.85F, huge_lilypad.get());
+		ComposterBlock.registerCompostable(0.85F, huge_mushgloom.get());
+		
+		//eh, we'll do items here too
+		ComposterBlock.registerCompostable(0.3F, TFItems.torchberries.get());
+		ComposterBlock.registerCompostable(0.5F, TFItems.liveroot.get());
+		ComposterBlock.registerCompostable(0.65F, TFItems.maze_wafer.get());
+		ComposterBlock.registerCompostable(0.85F, TFItems.experiment_115.get());
+		ComposterBlock.registerCompostable(0.85F, TFItems.magic_beans.get());
+	}
 }
