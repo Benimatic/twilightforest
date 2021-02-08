@@ -17,12 +17,14 @@ import net.minecraft.world.DimensionType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.FuzzedBiomeMagnifier;
 import net.minecraft.world.gen.DimensionSettings;
+import net.minecraft.world.gen.NoiseChunkGenerator;
 import net.minecraft.world.gen.settings.DimensionStructuresSettings;
 import net.minecraft.world.gen.settings.NoiseSettings;
 import net.minecraft.world.gen.settings.ScalingSettings;
 import net.minecraft.world.gen.settings.SlideSettings;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.*;
+import twilightforest.worldgen.ConfiguredSurfaceBuilders;
 import twilightforest.worldgen.biomes.BiomeMaker;
 
 import java.util.Map;
@@ -37,72 +39,70 @@ public class TwilightWorldDataCompiler extends WorldDataCompilerAndOps<JsonEleme
 
 	@Override
 	public void generate(DirectoryCache directoryCache) {
-		getDimensions().forEach((rl, dimension) -> serialize(Registry.DIMENSION_KEY, rl, dimension, Dimension.CODEC));
+		ConfiguredSurfaceBuilders.registerConfigurations(dynamicRegistries.getRegistry(Registry.CONFIGURED_SURFACE_BUILDER_KEY));
+
 		getBiomes().forEach((rl, biome) -> serialize(Registry.BIOME_KEY, rl, biome, Biome.CODEC));
+		getDimensions().forEach((rl, dimension) -> serialize(Registry.DIMENSION_KEY, rl, dimension, Dimension.CODEC));
 	}
 
 	private Map<ResourceLocation, Dimension> getDimensions() {
-		NoiseSettings forestNoiseSettings = new NoiseSettings(
-				128, // Noise Height - This allows us to shorten the world so we can cram more stuff upwards
-				new ScalingSettings(0.9999999814507745D, 0.9999999814507745D, 80.0D, 160.0D),
-				new SlideSettings(-10, 3, 0),
-				new SlideSettings(-30, 0, 0),
-				1,
-				2,
-				1.0D,
-				-0.46875D,
-				false,
-				true,
-				false,
-				false
-		);
-
 		Optional<DimensionSettings> forestDimensionSettings = makeDimensionSettings(
 				new DimensionStructuresSettings(Optional.empty(), ImmutableMap.of()),
-				forestNoiseSettings,
+				new NoiseSettings(
+						128, // Noise Height - This allows us to shorten the world so we can cram more stuff upwards
+						new ScalingSettings(0.9999999814507745D, 0.9999999814507745D, 80.0D, 160.0D),
+						new SlideSettings(-10, 3, 0),
+						new SlideSettings(-30, 0, 0),
+						1,
+						2,
+						1.0D,
+						-0.46875D,
+						false,
+						true,
+						false,
+						false
+				),
 				Blocks.STONE.getDefaultState(),
 				Blocks.WATER.getDefaultState(),
-				-10,
+				-20,
 				0,
 				31,
 				false
 		);
 
-		// https://misode.github.io/worldgen/noise-settings/
-		// So far this looks great! We just need to raise the island levels to sea level. Otherwise is generates flat-flakey islands that really show the roots on dirt bottoms from trees
-		NoiseSettings skyNoiseSettings = new NoiseSettings(
-				128,
-				new ScalingSettings(3.0D, 1.0D, 256.0D, 16.0D),
-				new SlideSettings(-3000, 92, -66),
-				new SlideSettings(-30, 7, 1),
-				2,
-				1,
-				0.3D,
-				-0.2D,
-				false,
-				true,
-				false,
-				false
-		);
-
 		Optional<DimensionSettings> skyDimensionSettings = makeDimensionSettings(
 				new DimensionStructuresSettings(Optional.empty(), ImmutableMap.of()),
-				skyNoiseSettings,
+				// https://misode.github.io/worldgen/noise-settings/
+				// So far this looks great! We just need to raise the island levels to sea level. Otherwise is generates flat-flakey islands that really show the roots on dirt bottoms from trees
+				new NoiseSettings(
+						128, // height
+						new ScalingSettings(3.0D, 1.0D, 256.0D, 16.0D), // sampling
+						new SlideSettings(-3000, 92, -66), // top_slide
+						new SlideSettings(-30, 7, 1), // bottom_slide
+						2, // size_horizontal
+						1, // size_vertical
+						0.3D, // density_factor
+						-0.2D, // density_offset
+						true, // simplex_surface_noise
+						false, // random_density_offset
+						false, // island_noise_override
+						false  // amplified
+				),
 				Blocks.STONE.getDefaultState(),
 				Blocks.WATER.getDefaultState(),
-				-10,
-				-10,
+				-20,
+				-20,
 				0,
 				false
 		);
 
-		// Register the dimension noise settings in the local datagen registry. Hacky.
+		// Register the dimension noise settings in the local datagen registry.
 		getOrCreateInRegistry(dynamicRegistries.getRegistry(Registry.NOISE_SETTINGS_KEY), RegistryKey.getOrCreateKey(Registry.NOISE_SETTINGS_KEY, TwilightForestMod.prefix("forest_noise_config")), forestDimensionSettings::get);
 		getOrCreateInRegistry(dynamicRegistries.getRegistry(Registry.NOISE_SETTINGS_KEY), RegistryKey.getOrCreateKey(Registry.NOISE_SETTINGS_KEY, TwilightForestMod.prefix("sky_noise_config")), skyDimensionSettings::get);
 
 		TFDimensions.init();
 		ChunkGeneratorTwilightBase forestChunkGen = new ChunkGeneratorTwilightForest(new TFBiomeProvider(0L, new SimpleRegistry<>(Registry.BIOME_KEY, Lifecycle.experimental())), 0L, forestDimensionSettings::get);
-		ChunkGeneratorTwilightBase skyChunkGen = new ChunkGeneratorTwilightForest(new TFBiomeProvider(0L, new SimpleRegistry<>(Registry.BIOME_KEY, Lifecycle.experimental())), 0L, skyDimensionSettings::get);
+		NoiseChunkGenerator skyChunkGen = new NoiseChunkGenerator(new TFBiomeProvider(0L, new SimpleRegistry<>(Registry.BIOME_KEY, Lifecycle.experimental())), 0L, skyDimensionSettings::get);
 
 		Optional<DimensionType> twilightType = makeDimensionType(
 				OptionalLong.of(13000L), // TODO Kill the celestial bodies

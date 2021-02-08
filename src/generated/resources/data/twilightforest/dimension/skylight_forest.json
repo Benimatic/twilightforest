@@ -7,6 +7,6 @@
     },
     "seed": 0,
     "settings": "twilightforest:sky_noise_config",
-    "type": "twilightforest:featured_noise"
+    "type": "minecraft:noise"
   }
 }

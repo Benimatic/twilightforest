@@ -154,9 +154,7 @@ public abstract class BiomeHelper {
 	}
 	
 	public static BiomeGenerationSettings.Builder thornlandsGen(BiomeGenerationSettings.Builder biome) {
-		//TODO: figure out surface builders. for some reason the datagen doesnt like this
-//		BiomeGenerationSettings.Builder biome = new BiomeGenerationSettings.Builder()
-//		.withSurfaceBuilder(TFSurfaceBuilders.PLATEAU.func_242929_a(ConfiguredFeatures.DEADROCK_CONFIG));
+		biome.withSurfaceBuilder(twilightforest.worldgen.ConfiguredSurfaceBuilders.CONFIGURED_PLATEAU);
 		
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.RANDOM_COMMON_FEATURE);
 		
@@ -168,8 +166,7 @@ public abstract class BiomeHelper {
 	}
 	
 	public static BiomeGenerationSettings.Builder highlandsGen(BiomeGenerationSettings.Builder biome) {
-//		BiomeGenerationSettings.Builder biome = new BiomeGenerationSettings.Builder()
-//		.withSurfaceBuilder(TFSurfaceBuilders.HIGHLANDS.func_242929_a(ConfiguredFeatures.HIGHLANDS_CONFIG));
+		biome.withSurfaceBuilder(twilightforest.worldgen.ConfiguredSurfaceBuilders.CONFIGURED_HIGHLANDS);
 		
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.RANDOM_COMMON_FEATURE);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.MEGA_SPRUCE);

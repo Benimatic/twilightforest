@@ -38,7 +38,7 @@ import java.util.function.Supplier;
 
 public abstract class WorldDataCompilerAndOps<Format> extends WorldGenSettingsExport<Format> implements IDataProvider {
     protected static final Logger LOGGER = LogManager.getLogger();
-    protected static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().create();
+    protected static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().create(); // Todo registerTypeAdapter for custom printing
     protected final DataGenerator generator;
     private final Function<Format, String> fileContentWriter;
     protected final DynamicRegistries dynamicRegistries;
@@ -84,7 +84,11 @@ public abstract class WorldDataCompilerAndOps<Format> extends WorldGenSettingsEx
 
         objectsSerializationCache.add(resource);
 
-        Optional<Format> output = this.withEncoder(encoder).apply(resource).resultOrPartial(error -> LOGGER.error("Object [" + resourceType.getRegistryName() + "] " + resourceLocation + " not serialized within recursive serialization: " + error));
+        Optional<Format> output = this
+                .withEncoder(encoder)
+                .apply(resource)
+                .setLifecycle(Lifecycle.experimental())
+                .resultOrPartial(error -> LOGGER.error("Object [" + resourceType.getRegistryName() + "] " + resourceLocation + " not serialized within recursive serialization: " + error));
 
         if (output.isPresent()) {
             try {
@@ -139,17 +143,24 @@ public abstract class WorldDataCompilerAndOps<Format> extends WorldGenSettingsEx
         return Optional.empty();
     }
 
-    @Override
-    protected <Resource> DataResult<Format> encode(Resource resource, Format dynamic, RegistryKey<? extends Registry<Resource>> registryKey, Codec<Resource> codec) {
+    private <Resource> Optional<ResourceLocation> rummageForResourceLocation(Resource resource, RegistryKey<? extends Registry<Resource>> registryKey) {
         Optional<ResourceLocation> instanceKey = Optional.empty();
 
-        // Check "Local" Registry
-        try {
-            Registry<Resource> dynRegistry = dynamicRegistries.getRegistry(registryKey);
+        // Ask the object itself if it has a key first
+        if (resource instanceof IForgeRegistryEntry) {
+            instanceKey = Optional.ofNullable(((IForgeRegistryEntry<?>) resource).getRegistryName());
+        }
 
-            instanceKey = dynRegistry != null ? dynRegistry.getOptionalKey(resource).map(RegistryKey::getLocation) : Optional.empty();
-        } catch (Throwable t) {
-            // Registry not supported, skip
+        // Check "Local" Registry
+        if (!instanceKey.isPresent()) {
+            try {
+                Registry<Resource> dynRegistry = dynamicRegistries.getRegistry(registryKey);
+
+                //noinspection ConstantConditions
+                instanceKey = dynRegistry != null ? dynRegistry.getOptionalKey(resource).map(RegistryKey::getLocation) : Optional.empty();
+            } catch (Throwable t) {
+                // Registry not supported, skip
+            }
         }
 
         // Check Vanilla Worldgen Registries
@@ -175,7 +186,14 @@ public abstract class WorldDataCompilerAndOps<Format> extends WorldGenSettingsEx
             instanceKey = getFromForgeRegistryIllegally(registryKey, resource);
         }
 
-        // Four freaking registry locations to check... Let's see if we won a prize
+        return instanceKey;
+    }
+
+    @Override
+    protected <Resource> DataResult<Format> encode(Resource resource, Format dynamic, RegistryKey<? extends Registry<Resource>> registryKey, Codec<Resource> codec) {
+        Optional<ResourceLocation> instanceKey = rummageForResourceLocation(resource, registryKey);
+
+        // five freaking locations to check... Let's see if we won a prize
         if (instanceKey.isPresent()) {
             if (TwilightForestMod.ID.equals(instanceKey.get().getNamespace())) // This avoids generating anything that belongs to Minecraft
                 serialize(registryKey, instanceKey.get(), resource, codec);
@@ -192,8 +210,7 @@ public abstract class WorldDataCompilerAndOps<Format> extends WorldGenSettingsEx
         return "Twilight World";
     }
 
-    // Otherwise an AT increases runtime overhead, so we use reflection here instead since dataGen won't run on regular minecraft runtime, so we instead have faux-constructors here
-
+    // Otherwise using an AT increases runtime overhead, so we use reflection here instead since dataGen won't run on regular minecraft runtime, so we instead have faux-constructors here
     @SuppressWarnings("SameParameterValue")
     protected static Optional<DimensionSettings> makeDimensionSettings(DimensionStructuresSettings structures, NoiseSettings noise, BlockState defaultBlock, BlockState defaultFluid, int bedrockRoofPosition, int bedrockFloorPosition, int seaLevel, boolean disableMobGeneration) {
         try {
