@@ -7,52 +7,8 @@
             "feature": {
               "config": {
                 "feature": {
-                  "config": {
-                    "feature": {
-                      "config": {
-                        "feature": {
-                          "config": {},
-                          "type": "twilightforest:thorns"
-                        },
-                        "decorator": {
-                          "config": {
-                            "bottom_offset": 0,
-                            "top_offset": 0,
-                            "maximum": 124
-                          },
-                          "type": "minecraft:range"
-                        }
-                      },
-                      "type": "minecraft:decorated"
-                    },
-                    "decorator": {
-                      "config": {
-                        "outer": {
-                          "config": {
-                            "bottom_offset": 0,
-                            "top_offset": 0,
-                            "maximum": 124
-                          },
-                          "type": "minecraft:range"
-                        },
-                        "inner": {
-                          "config": {
-                            "outer": {
-                              "config": {},
-                              "type": "minecraft:square"
-                            },
-                            "inner": {
-                              "config": {},
-                              "type": "minecraft:heightmap"
-                            }
-                          },
-                          "type": "minecraft:decorated"
-                        }
-                      },
-                      "type": "minecraft:decorated"
-                    }
-                  },
-                  "type": "minecraft:decorated"
+                  "config": {},
+                  "type": "twilightforest:thorns"
                 },
                 "decorator": {
                   "config": {
@@ -67,19 +23,23 @@
             },
             "decorator": {
               "config": {
-                "count": 125
+                "outer": {
+                  "config": {},
+                  "type": "minecraft:square"
+                },
+                "inner": {
+                  "config": {},
+                  "type": "minecraft:heightmap"
+                }
               },
-              "type": "minecraft:count"
+              "type": "minecraft:decorated"
             }
           },
           "type": "minecraft:decorated"
         },
         "decorator": {
           "config": {
-            "count": {
-              "base": 0,
-              "spread": 125
-            }
+            "count": 115
           },
           "type": "minecraft:count"
         }
@@ -88,11 +48,12 @@
     },
     "decorator": {
       "config": {
-        "bottom_offset": 0,
-        "top_offset": 0,
-        "maximum": 124
+        "count": {
+          "base": 0,
+          "spread": 115
+        }
       },
-      "type": "minecraft:range"
+      "type": "minecraft:count"
     }
   },
   "type": "minecraft:decorated"
