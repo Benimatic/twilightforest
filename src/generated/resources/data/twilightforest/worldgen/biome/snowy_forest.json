@@ -16,40 +16,30 @@
   "features": [
     [],
     [
-      "minecraft:lake_water",
-      "minecraft:lake_lava"
+      "minecraft:lake_water"
     ],
     [],
     [],
     [],
     [],
     [
-      "minecraft:ore_dirt",
-      "minecraft:ore_gravel",
-      "minecraft:ore_granite",
-      "minecraft:ore_diorite",
-      "minecraft:ore_andesite",
       "minecraft:ore_coal",
       "minecraft:ore_iron",
       "minecraft:ore_gold",
       "minecraft:ore_redstone",
       "minecraft:ore_diamond",
-      "minecraft:ore_lapis",
-      "minecraft:disk_clay",
-      "twilightforest:ore/wood_roots_spread"
+      "minecraft:ore_lapis"
     ],
     [],
     [
-      "minecraft:patch_grass_forest",
-      "minecraft:patch_tall_grass",
-      "minecraft:spring_water",
-      "minecraft:spring_lava",
-      "twilightforest:grass_placer",
       "twilightforest:random_common",
       "twilightforest:small_log",
       "minecraft:spruce_snowy",
       "minecraft:trees_giant_spruce",
       "minecraft:pile_snow"
+    ],
+    [
+      "minecraft:freeze_top_layer"
     ]
   ],
   "starts": [

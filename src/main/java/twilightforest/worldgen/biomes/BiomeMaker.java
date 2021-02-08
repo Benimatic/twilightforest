@@ -25,12 +25,12 @@ public final class BiomeMaker extends BiomeHelper {
 
 	private static void commonBiomes(ImmutableMap.Builder<RegistryKey<Biome>, Biome> biomes) {
 		biomes.put(BiomeKeys.FOREST,
-				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), twilightForestGen(defaultGenSettingBuilder()))
+				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning().isValidSpawnBiomeForPlayer(), twilightForestGen(defaultGenSettingBuilder()))
 						.build()
 		);
 
 		biomes.put(BiomeKeys.DENSE_FOREST,
-				biomeWithDefaults(defaultAmbientBuilder().setWaterColor(0x005522), defaultMobSpawning(), denseForestGen(defaultGenSettingBuilder()))
+				biomeWithDefaults(defaultAmbientBuilder().setWaterColor(0x005522), defaultMobSpawning().isValidSpawnBiomeForPlayer(), denseForestGen(defaultGenSettingBuilder()))
 						.temperature(0.7F)
 						.downfall(0.8F)
 						.depth(0.2F)
@@ -39,7 +39,7 @@ public final class BiomeMaker extends BiomeHelper {
 		);
 
 		biomes.put(BiomeKeys.FIREFLY_FOREST,
-				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), fireflyForestGen(defaultGenSettingBuilder()))
+				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning().isValidSpawnBiomeForPlayer(), fireflyForestGen(defaultGenSettingBuilder()))
 						.temperature(0.5F)
 						.downfall(1)
 						.depth(0.125F)
@@ -48,7 +48,7 @@ public final class BiomeMaker extends BiomeHelper {
 		);
 
 		biomes.put(BiomeKeys.CLEARING,
-				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), addDefaultStructures(defaultGenSettingBuilder()))
+				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning().isValidSpawnBiomeForPlayer(), addDefaultStructures(defaultGenSettingBuilder()))
 						.category(Biome.Category.PLAINS)
 						.temperature(0.8F)
 						.downfall(0.4F)
@@ -58,7 +58,7 @@ public final class BiomeMaker extends BiomeHelper {
 		);
 
 		biomes.put(BiomeKeys.OAK_SAVANNAH,
-				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), oakSavannaGen(defaultGenSettingBuilder()))
+				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning().isValidSpawnBiomeForPlayer(), oakSavannaGen(defaultGenSettingBuilder()))
 						.category(Biome.Category.SAVANNA)
 						.temperature(0.9F)
 						.downfall(0)
@@ -70,14 +70,14 @@ public final class BiomeMaker extends BiomeHelper {
 
 	private static void mushroomBiomes(ImmutableMap.Builder<RegistryKey<Biome>, Biome> biomes) {
 		biomes.put(BiomeKeys.MUSHROOM_FOREST,
-				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), mushroomForestGen(defaultGenSettingBuilder()))
+				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning().isValidSpawnBiomeForPlayer(), mushroomForestGen(defaultGenSettingBuilder()))
 						.temperature(0.8F)
 						.downfall(0.8F)
 						.build()
 		);
 
 		biomes.put(BiomeKeys.DENSE_MUSHROOM_FOREST,
-				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), denseMushroomForestGen(defaultGenSettingBuilder().withStructure(TFStructures.CONFIGURED_MUSHROOM_TOWER)))
+				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning().isValidSpawnBiomeForPlayer(), denseMushroomForestGen(defaultGenSettingBuilder().withStructure(TFStructures.CONFIGURED_MUSHROOM_TOWER)))
 						.temperature(0.8F)
 						.downfall(1)
 						.depth(0.125F)

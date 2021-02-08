@@ -50,7 +50,6 @@
       "twilightforest:random_fallen",
       "twilightforest:random_water",
       "twilightforest:lamppost",
-      "twilightforest:fallen_leaves",
       "twilightforest:well",
       "twilightforest:tree/firefly_canopy_trees",
       "twilightforest:tree/twilight_oak_trees",
@@ -179,7 +178,7 @@
     "misc": []
   },
   "spawn_costs": {},
-  "player_spawn_friendly": false,
+  "player_spawn_friendly": true,
   "forge:registry_name": "twilightforest:firefly_forest",
   "precipitation": "rain",
   "temperature": 0.5,

@@ -175,7 +175,7 @@
     "misc": []
   },
   "spawn_costs": {},
-  "player_spawn_friendly": false,
+  "player_spawn_friendly": true,
   "forge:registry_name": "twilightforest:oak_savannah",
   "precipitation": "rain",
   "temperature": 0.9,

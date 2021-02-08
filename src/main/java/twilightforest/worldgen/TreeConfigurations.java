@@ -17,6 +17,7 @@ import net.minecraft.world.gen.feature.Features;
 import net.minecraft.world.gen.feature.TwoLayerFeature;
 import net.minecraft.world.gen.foliageplacer.BlobFoliagePlacer;
 import net.minecraft.world.gen.foliageplacer.FancyFoliagePlacer;
+import net.minecraft.world.gen.treedecorator.LeaveVineTreeDecorator;
 import net.minecraft.world.gen.trunkplacer.FancyTrunkPlacer;
 import net.minecraft.world.gen.trunkplacer.StraightTrunkPlacer;
 import twilightforest.block.BlockTFFirefly;
@@ -36,7 +37,16 @@ public final class TreeConfigurations {
             new TwoLayerFeature(1, 0, 1)
     )
             .setDecorators(ImmutableList.of(TreeDecorators.LIVING_ROOTS))
-            .setIgnoreVines()
+            .build();
+    
+    public static final BaseTreeFeatureConfig SWAMPY_OAK = new BaseTreeFeatureConfig.Builder(
+            new SimpleBlockStateProvider(BlockConstants.OAK_LOG),
+            new SimpleBlockStateProvider(BlockConstants.OAK_LEAVES),
+            new BlobFoliagePlacer(FeatureSpread.func_242252_a(2), FeatureSpread.func_242252_a(0), 3),
+            new StraightTrunkPlacer(4, 2, 0),
+            new TwoLayerFeature(1, 0, 1)
+    )
+            .setDecorators(ImmutableList.of(TreeDecorators.LIVING_ROOTS, LeaveVineTreeDecorator.field_236871_b_))
             .build();
 
     public static final BaseTreeFeatureConfig CANOPY_TREE = new BaseTreeFeatureConfig.Builder(
@@ -110,10 +120,10 @@ public final class TreeConfigurations {
                     TreeDecorators.FIREFLY,
                     new TreeRootsDecorator(3, 1, 12, new SimpleBlockStateProvider(BlockConstants.MANGROVE_WOOD), (new WeightedBlockStateProvider())
                             .addWeightedBlockstate(BlockConstants.ROOTS, 4)
-                            .addWeightedBlockstate(TFBlocks.liveroot_block.get().getDefaultState(), 1))
+                            .addWeightedBlockstate(TFBlocks.liveroot_block.get().getDefaultState(), 1)),
+                    LeaveVineTreeDecorator.field_236871_b_
                     )
             )
-            .setIgnoreVines()
             .build();
 
     private static final SimpleBlockStateProvider DARKWOOD_LEAVES_PROVIDER = new SimpleBlockStateProvider(BlockConstants.DARKWOOD_LEAVES);
@@ -248,7 +258,6 @@ public final class TreeConfigurations {
             new TwoLayerFeature(1, 0, 1)
     )
             .setDecorators(ImmutableList.of(TreeDecorators.LIVING_ROOTS))
-            .setIgnoreVines()
             .build();
 
     public static final BaseTreeFeatureConfig LARGE_RAINBOAK_TREE =  new BaseTreeFeatureConfig.Builder(
@@ -258,8 +267,7 @@ public final class TreeConfigurations {
     		new FancyTrunkPlacer(3, 11, 0), 
     		new TwoLayerFeature(0, 0, 0, OptionalInt.of(4))
 	)
-			.setIgnoreVines()
-			.func_236702_a_(Heightmap.Type.MOTION_BLOCKING)
+    		.setDecorators(ImmutableList.of(TreeDecorators.LIVING_ROOTS))
 			.build();
     
     public static final BaseTreeFeatureConfig MUSHROOM_BROWN = new BaseTreeFeatureConfig.Builder(

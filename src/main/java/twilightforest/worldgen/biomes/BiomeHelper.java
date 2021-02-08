@@ -22,7 +22,6 @@ public abstract class BiomeHelper {
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.RANDOM_COMMON_FEATURE);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.RANDOM_FALLEN_FEATURE);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.RANDOM_WATER_FEATURE);
-		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.FALLEN_LEAVES);
 		
 		//biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DRUID_HUT);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.WELL);
@@ -41,7 +40,6 @@ public abstract class BiomeHelper {
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.RANDOM_COMMON_FEATURE);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.RANDOM_FALLEN_FEATURE);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.RANDOM_WATER_FEATURE);
-		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.FALLEN_LEAVES);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.JUNGLE_BUSH);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.JUNGLE_BUSH);
 
@@ -64,7 +62,6 @@ public abstract class BiomeHelper {
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.RANDOM_FALLEN_FEATURE);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.RANDOM_WATER_FEATURE);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.LAMPPOST);
-		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.FALLEN_LEAVES);
 		
 		//biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DRUID_HUT);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.WELL);
@@ -112,6 +109,7 @@ public abstract class BiomeHelper {
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.GRASS_PLACER);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.SMALL_LOG);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.WEBS);
+		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.FALLEN_LEAVES);
 		
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.GRAVEYARD);
 		addDeadCanopyTrees(biome);
@@ -164,10 +162,8 @@ public abstract class BiomeHelper {
 		
 		//biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DRUID_HUT);
 		
-		//TODO: Thorns are configured, but thanks to the memory leak, it tanks computers HARD. Re-enable when the leak is patched
-//		addThorns(biome);
+		addThorns(biome);
 		
-
 		return biome;
 	}
 	
@@ -199,7 +195,7 @@ public abstract class BiomeHelper {
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.WELL);
 		
 		addMangroveTrees(biome);
-		addTwilightOakTrees(biome);
+		addSwampOakTrees(biome);
 		addHollowOakTrees(biome);
 		
 		return biome;
@@ -213,7 +209,7 @@ public abstract class BiomeHelper {
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.PATCH_SUGAR_CANE_SWAMP);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.VINES);
 
-		addTwilightOakTrees(biome);
+		addSwampOakTrees(biome);
 		addHollowOakTrees(biome);
 		
 		return biome;
@@ -249,13 +245,18 @@ public abstract class BiomeHelper {
 		return biome;
 	}
 	
-	public static BiomeGenerationSettings.Builder snowyForestGen(BiomeGenerationSettings.Builder biome) {
-		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.GRASS_PLACER);
+	public static BiomeGenerationSettings.Builder snowyForestGen() {
+		BiomeGenerationSettings.Builder biome = new BiomeGenerationSettings.Builder()
+				.withSurfaceBuilder(ConfiguredSurfaceBuilders.field_244178_j);
+		biome.withFeature(GenerationStage.Decoration.LAKES, Features.LAKE_WATER);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.RANDOM_COMMON_FEATURE);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.SMALL_LOG);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.SPRUCE_SNOWY);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.TREES_GIANT_SPRUCE);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.PILE_SNOW);
+		
+		DefaultBiomeFeatures.withOverworldOres(biome);
+		DefaultBiomeFeatures.withFrozenTopLayer(biome);
 		
 		return biome;
 	}
@@ -355,6 +356,12 @@ public abstract class BiomeHelper {
     
     public static BiomeGenerationSettings.Builder addRareOakTrees(BiomeGenerationSettings.Builder biome) {
         biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.OAK_TREES_SPARSE);
+
+        return biome;
+    }
+    
+    public static BiomeGenerationSettings.Builder addSwampOakTrees(BiomeGenerationSettings.Builder biome) {
+        biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.SWAMPY_OAK_TREES);
 
         return biome;
     }

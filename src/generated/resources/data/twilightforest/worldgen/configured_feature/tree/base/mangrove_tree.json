@@ -1,7 +1,7 @@
 {
   "config": {
     "max_water_depth": 6,
-    "ignore_vines": true,
+    "ignore_vines": false,
     "heightmap": "OCEAN_FLOOR",
     "minimum_size": {
       "limit": 1,
@@ -52,6 +52,9 @@
         "base_strand_count": 3,
         "additional_random_strands": 1,
         "type": "twilightforest:tree_roots"
+      },
+      {
+        "type": "minecraft:leave_vine"
       }
     ],
     "trunk_provider": {

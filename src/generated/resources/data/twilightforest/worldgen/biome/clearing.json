@@ -168,7 +168,7 @@
     "misc": []
   },
   "spawn_costs": {},
-  "player_spawn_friendly": false,
+  "player_spawn_friendly": true,
   "forge:registry_name": "twilightforest:clearing",
   "precipitation": "rain",
   "temperature": 0.8,
