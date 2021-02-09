@@ -11,6 +11,7 @@ public class BlockTFLeaves3 extends LeavesBlock {
 
 	protected BlockTFLeaves3(Properties props) {
 		super(props);
+		this.setDefaultState(this.stateContainer.getBaseState().with(DISTANCE, Integer.valueOf(1)).with(PERSISTENT, Boolean.valueOf(true)));
 	}
 
 	@Override

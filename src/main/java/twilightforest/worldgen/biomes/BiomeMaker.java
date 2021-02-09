@@ -205,7 +205,7 @@ public final class BiomeMaker extends BiomeHelper {
 		);
 
 		biomes.put(BiomeKeys.FINAL_PLATEAU,
-				biomeWithDefaults(defaultAmbientBuilder(), ravenSpawning(), defaultGenSettingBuilder().withStructure(TFStructures.CONFIGURED_FINAL_CASTLE))
+				biomeWithDefaults(defaultAmbientBuilder(), ravenSpawning(), defaultGenSettingBuilder().withSurfaceBuilder(twilightforest.worldgen.ConfiguredSurfaceBuilders.CONFIGURED_PLATEAU).withStructure(TFStructures.CONFIGURED_FINAL_CASTLE))
 						.category(Biome.Category.MESA)
 						.temperature(0.3F)
 						.downfall(0.2F)

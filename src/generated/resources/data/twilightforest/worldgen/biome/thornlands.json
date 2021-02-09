@@ -50,8 +50,7 @@
       "minecraft:patch_tall_grass",
       "minecraft:spring_water",
       "minecraft:spring_lava",
-      "twilightforest:random_common",
-      "twilightforest:thorns"
+      "twilightforest:random_common"
     ]
   ],
   "starts": [],

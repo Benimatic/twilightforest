@@ -161,7 +161,8 @@ public abstract class BiomeHelper {
 		
 		//biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DRUID_HUT);
 		
-		addThorns(biome);
+		//TODO: actually fix thorns so they arent so laggy
+		//addThorns(biome);
 		
 		return biome;
 	}
