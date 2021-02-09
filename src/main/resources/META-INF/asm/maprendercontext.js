@@ -4,7 +4,7 @@ function initializeCoreMod() {
             'target': {
                 'type': 'METHOD',
                 'class': 'net.minecraft.client.gui.MapItemRenderer$Instance',
-                'methodName': 'func_228089_a_',
+                'methodName': Java.type("net.minecraftforge.coremod.api.ASMAPI").mapMethod('func_228089_a_'),
                 'methodDesc': '(Lcom/mojang/blaze3d/matrix/MatrixStack;Lnet/minecraft/client/renderer/IRenderTypeBuffer;ZI)V'
             },
             'transformer': function (methodNode) {
