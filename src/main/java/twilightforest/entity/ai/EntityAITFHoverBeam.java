@@ -163,7 +163,7 @@ public class EntityAITFHoverBeam extends EntityAITFHoverBase<EntityTFSnowQueen> 
 						attacker.doBreathAttack(possibleEntity);
 						hitDist = 0.0D;
 					}
-				} else if (interceptPos != null) {
+				} else if (interceptPos.isPresent()) {
 					double possibleDist = srcVec.distanceTo(interceptPos.get());
 
 					if (possibleDist < hitDist || hitDist == 0.0D) {
