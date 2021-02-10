@@ -20,7 +20,7 @@ import twilightforest.TFSounds;
 import twilightforest.item.TFItems;
 import twilightforest.util.WorldUtil;
 
-public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiPart, IEntityAdditionalSpawnData {
+public class EntityTFChainBlock extends ThrowableEntity implements IEntityAdditionalSpawnData {
 
 	private static final int MAX_SMASH = 12;
 	private static final int MAX_CHAIN = 16;
@@ -37,29 +37,29 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 	public final EntityTFGoblinChain chain3;
 	public final EntityTFGoblinChain chain4;
 	public final EntityTFGoblinChain chain5;
-	private Entity[] partsArray;
+	private EntityTFBlockGoblin.MultipartGenericsAreDumb[] partsArray;
 
 	public EntityTFChainBlock(EntityType<? extends EntityTFChainBlock> type, World world) {
 		super(type, world);
 
-		chain1 = new EntityTFGoblinChain(world, this);
-		chain2 = new EntityTFGoblinChain(world, this);
-		chain3 = new EntityTFGoblinChain(world, this);
-		chain4 = new EntityTFGoblinChain(world, this);
-		chain5 = new EntityTFGoblinChain(world, this);
-		partsArray =  new Entity[]{ chain1, chain2, chain3, chain4, chain5 };
+		chain1 = new EntityTFGoblinChain(this);
+		chain2 = new EntityTFGoblinChain(this);
+		chain3 = new EntityTFGoblinChain(this);
+		chain4 = new EntityTFGoblinChain(this);
+		chain5 = new EntityTFGoblinChain(this);
+		partsArray =  new EntityTFBlockGoblin.MultipartGenericsAreDumb[]{ chain1, chain2, chain3, chain4, chain5 };
 	}
 
 	public EntityTFChainBlock(EntityType<? extends EntityTFChainBlock> type, World world, LivingEntity thrower, Hand hand) {
 		super(type, thrower, world);
 		this.isReturning = false;
 		this.hand = hand;
-		chain1 = new EntityTFGoblinChain(world, this);
-		chain2 = new EntityTFGoblinChain(world, this);
-		chain3 = new EntityTFGoblinChain(world, this);
-		chain4 = new EntityTFGoblinChain(world, this);
-		chain5 = new EntityTFGoblinChain(world, this);
-		partsArray =  new Entity[]{ chain1, chain2, chain3, chain4, chain5 };
+		chain1 = new EntityTFGoblinChain(this);
+		chain2 = new EntityTFGoblinChain(this);
+		chain3 = new EntityTFGoblinChain(this);
+		chain4 = new EntityTFGoblinChain(this);
+		chain5 = new EntityTFGoblinChain(this);
+		partsArray =  new EntityTFBlockGoblin.MultipartGenericsAreDumb[]{ chain1, chain2, chain3, chain4, chain5 };
 		this.func_234612_a_(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 1.5F, 1F);
 	}
 
@@ -275,17 +275,7 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityMultiP
 	}
 
 	@Override
-	public World getWorld() {
-		return this.world;
-	}
-
-	@Override
-	public boolean attackEntityFromPart(MultiPartEntityPart part, DamageSource source, float damage) {
-		return false;
-	}
-
-	@Override
-	public Entity[] getParts() {
+	public EntityTFBlockGoblin.MultipartGenericsAreDumb[] getParts() {
 		return partsArray;
 	}
 

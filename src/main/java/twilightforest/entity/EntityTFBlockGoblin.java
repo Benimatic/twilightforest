@@ -20,13 +20,14 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
+import net.minecraftforge.entity.PartEntity;
 import twilightforest.TFSounds;
 import twilightforest.entity.ai.EntityAIThrowSpikeBlock;
 
 import java.util.List;
 import java.util.UUID;
 
-public class EntityTFBlockGoblin extends MonsterEntity implements IEntityMultiPart {
+public class EntityTFBlockGoblin extends MonsterEntity {
 	private static final UUID MODIFIER_UUID = UUID.fromString("5CD17E52-A79A-43D3-A529-90FDE04B181E");
 	private static final AttributeModifier MODIFIER = new AttributeModifier(MODIFIER_UUID, "speedPenalty", -0.25D, AttributeModifier.Operation.ADDITION);
 
@@ -45,16 +46,23 @@ public class EntityTFBlockGoblin extends MonsterEntity implements IEntityMultiPa
 	public final EntityTFGoblinChain chain2;
 	public final EntityTFGoblinChain chain3;
 
-	private Entity[] partsArray;
+	private MultipartGenericsAreDumb[] partsArray;
 
 	public EntityTFBlockGoblin(EntityType<? extends EntityTFBlockGoblin> type, World world) {
 		super(type, world);
 
-		chain1 = new EntityTFGoblinChain(world, this);
-		chain2 = new EntityTFGoblinChain(world, this);
-		chain3 = new EntityTFGoblinChain(world, this);
+		chain1 = new EntityTFGoblinChain(this);
+		chain2 = new EntityTFGoblinChain(this);
+		chain3 = new EntityTFGoblinChain(this);
 
-		partsArray = new Entity[]{block, chain1, chain2, chain3};
+		partsArray = new MultipartGenericsAreDumb[]{block, chain1, chain2, chain3};
+	}
+
+	static abstract class MultipartGenericsAreDumb extends PartEntity<Entity> {
+
+		public MultipartGenericsAreDumb(Entity parent) {
+			super(parent);
+		}
 	}
 
 	@Override
@@ -308,21 +316,11 @@ public class EntityTFBlockGoblin extends MonsterEntity implements IEntityMultiPa
 		}
 	}
 
-	@Override
-	public World getWorld() {
-		return this.world;
-	}
-
-	@Override
-	public boolean attackEntityFromPart(MultiPartEntityPart part, DamageSource source, float damage) {
-		return false;
-	}
-
 	/**
 	 * We need to do this for the bounding boxes on the parts to become active
 	 */
 	@Override
-	public Entity[] getParts() {
+	public MultipartGenericsAreDumb[] getParts() {
 		return partsArray;
 	}
 }

@@ -30,14 +30,13 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerBossInfo;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.network.PacketDistributor;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
 import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
-import twilightforest.entity.IEntityMultiPart;
-import twilightforest.entity.MultiPartEntityPart;
 import twilightforest.entity.TFEntities;
 import twilightforest.enums.BossVariant;
 import twilightforest.network.PacketThrowPlayer;
@@ -48,7 +47,7 @@ import twilightforest.world.TFGenerationSettings;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 
-public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
+public class EntityTFNaga extends MonsterEntity {
 
 	private static final int TICKS_BEFORE_HEALING = 600;
 	private static final int MAX_SEGMENTS = 12;
@@ -78,7 +77,7 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 		this.ignoreFrustumCheck = true;
 
 		for (int i = 0; i < bodySegments.length; i++) {
-			bodySegments[i] = TFEntities.naga_segment.create(world).init(this);
+			bodySegments[i] = new EntityTFNagaSegment(this);
 		}
 
 		this.goNormal();
@@ -476,19 +475,6 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 
 		super.tick();
 
-		// update bodySegments parts
-		if (this.world instanceof ServerWorld && isAlive()) {
-			ServerWorld serverWorld = (ServerWorld) this.world;
-			for (EntityTFNagaSegment segment : bodySegments) {
-				if (!segment.isAddedToWorld()) {
-					segment.setParentUUID(this.getUniqueID());
-					segment.setParentId(this.getEntityId());
-					serverWorld.addEntity(segment);
-				}
-
-			}
-		}
-
 		moveSegments();
 	}
 
@@ -840,18 +826,9 @@ public class EntityTFNaga extends MonsterEntity implements IEntityMultiPart {
 		}
 	}
 
+	@Nullable
 	@Override
-	public World getWorld() {
-		return this.world;
-	}
-
-	@Override
-	public boolean attackEntityFromPart(MultiPartEntityPart part, DamageSource src, float damage) {
-		return attackEntityFrom(src, damage);
-	}
-
-	@Override
-	public Entity[] getParts() {
+	public PartEntity<?>[] getParts() {
 		return bodySegments;
 	}
 

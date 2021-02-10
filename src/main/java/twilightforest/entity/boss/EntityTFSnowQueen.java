@@ -27,6 +27,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerBossInfo;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.event.ForgeEventFactory;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
@@ -34,8 +35,6 @@ import twilightforest.block.BlockTFBossSpawner;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.IBreathAttacker;
-import twilightforest.entity.IEntityMultiPart;
-import twilightforest.entity.MultiPartEntityPart;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.ai.EntityAITFHoverBeam;
 import twilightforest.entity.ai.EntityAITFHoverSummon;
@@ -47,7 +46,7 @@ import twilightforest.world.TFGenerationSettings;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart, IBreathAttacker {
+public class EntityTFSnowQueen extends MonsterEntity implements IBreathAttacker {
 
 	private static final int MAX_SUMMONS = 6;
 	private static final DataParameter<Boolean> BEAM_FLAG = EntityDataManager.createKey(EntityTFSnowQueen.class, DataSerializers.BOOLEAN);
@@ -69,7 +68,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 		super(type, world);
 
 		for (int i = 0; i < this.iceArray.length; i++) {
-			this.iceArray[i] = TFEntities.snow_queen_ice_shield.create(world);
+			this.iceArray[i] = new EntityTFSnowQueenIceShield(this);
 		}
 
 		this.setCurrentPhase(Phase.SUMMON);
@@ -191,17 +190,6 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 	@Override
 	public void tick() {
 		super.tick();
-
-		if (this.world instanceof ServerWorld && isAlive()) {
-			ServerWorld serverWorld = (ServerWorld) this.world;
-			for (EntityTFSnowQueenIceShield segment : iceArray) {
-				if (!segment.isAddedToWorld()) {
-					segment.setParentUUID(this.getUniqueID());
-					segment.setParentId(this.getEntityId());
-					serverWorld.addEntity(segment);
-				}
-			}
-		}
 
 		for (int i = 0; i < this.iceArray.length; i++) {
 			if (i < this.iceArray.length - 1) {
@@ -335,21 +323,12 @@ public class EntityTFSnowQueen extends MonsterEntity implements IEntityMultiPart
 		return false;
 	}
 
-	@Override
-	public World getWorld() {
-		return this.world;
-	}
-
-	@Override
-	public boolean attackEntityFromPart(MultiPartEntityPart part, DamageSource source, float damage) {
-		return false;
-	}
-
 	/**
 	 * We need to do this for the bounding boxes on the parts to become active
 	 */
+	@Nullable
 	@Override
-	public Entity[] getParts() {
+	public PartEntity<?>[] getParts() {
 		return iceArray;
 	}
 
