@@ -1,11 +1,13 @@
 package twilightforest.entity.boss;
 
-import net.minecraft.entity.EntityType;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.world.World;
-import twilightforest.entity.TFEntities;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import twilightforest.client.renderer.entity.RenderTFHydraHead;
 
 public class EntityTFHydraHead extends EntityTFHydraPart {
 
@@ -13,7 +15,13 @@ public class EntityTFHydraHead extends EntityTFHydraPart {
 	private static final DataParameter<Byte> DATA_STATE = EntityDataManager.createKey(EntityTFHydraHead.class, DataSerializers.BYTE);
 
 	public EntityTFHydraHead(EntityTFHydra hydra) {
-		super(hydra, 3F, 3F);
+		super(hydra, 4F, 4F);
+	}
+
+	@Override
+	@OnlyIn(Dist.CLIENT)
+	public EntityRenderer<?> renderer(EntityRendererManager manager) {
+		return new RenderTFHydraHead(manager);
 	}
 
 	@Override

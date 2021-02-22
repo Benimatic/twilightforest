@@ -11,7 +11,11 @@ import net.minecraft.network.IPacket;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.EntityRayTraceResult;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
@@ -201,6 +205,7 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityAdditi
 		super.tick();
 
 		if (world.isRemote) {
+
 			chain1.tick();
 			chain2.tick();
 			chain3.tick();
@@ -274,10 +279,15 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityAdditi
 		}
 	}
 
+	/*@Override
+	public boolean isMultipartEntity() {
+		return false;
+	}
+
 	@Override
 	public EntityTFBlockGoblin.MultipartGenericsAreDumb[] getParts() {
 		return partsArray;
-	}
+	}*/
 
 	@Override
 	public void writeSpawnData(PacketBuffer buffer) {
