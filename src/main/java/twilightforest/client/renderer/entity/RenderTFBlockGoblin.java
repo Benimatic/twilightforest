@@ -19,6 +19,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ModelTFBlockGoblin;
+import twilightforest.client.model.entity.ModelTFGoblinChain;
 import twilightforest.client.model.entity.ModelTFSpikeBlock;
 import twilightforest.entity.EntityTFBlockGoblin;
 
@@ -27,6 +28,7 @@ public class RenderTFBlockGoblin<T extends EntityTFBlockGoblin, M extends ModelT
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("blockgoblin.png");
 
 	private final Model model = new ModelTFSpikeBlock();
+	private final Model chainModel = new ModelTFGoblinChain();
 
 	public RenderTFBlockGoblin(EntityRendererManager manager, M model, float shadowSize) {
 		super(manager, model, shadowSize);
@@ -52,6 +54,10 @@ public class RenderTFBlockGoblin<T extends EntityTFBlockGoblin, M extends ModelT
 		stack.scale(-1.0F, -1.0F, 1.0F);
 		this.model.render(stack, ivertexbuilder, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 		stack.pop();
+
+		RenderTFChainBlock.renderChain(goblin, goblin.chain1, yaw, partialTicks, stack, buffer, light, chainModel);
+		RenderTFChainBlock.renderChain(goblin, goblin.chain2, yaw, partialTicks, stack, buffer, light, chainModel);
+		RenderTFChainBlock.renderChain(goblin, goblin.chain3, yaw, partialTicks, stack, buffer, light, chainModel);
 		
 		//when you allowed debugBoundingBox, you can see Hitbox
 		if (this.renderManager.isDebugBoundingBox() && !goblin.block.isInvisible() && !Minecraft.getInstance().isReducedDebug()) {

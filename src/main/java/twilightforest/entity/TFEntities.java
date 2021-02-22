@@ -433,7 +433,7 @@ public class TFEntities {
 		RenderingRegistry.registerEntityRenderingHandler(giant_miner, RenderTFGiant::new);
 		RenderingRegistry.registerEntityRenderingHandler(armored_giant, RenderTFGiant::new);
 		RenderingRegistry.registerEntityRenderingHandler(ice_crystal, RenderTFIceCrystal::new);
-		RenderingRegistry.registerEntityRenderingHandler(chain_block, m -> new RenderTFChainBlock(m, new ModelTFSpikeBlock()));
+		RenderingRegistry.registerEntityRenderingHandler(chain_block, RenderTFChainBlock::new);
 		RenderingRegistry.registerEntityRenderingHandler(cube_of_annihilation, RenderTFCubeOfAnnihilation::new);
 		RenderingRegistry.registerEntityRenderingHandler(harbinger_cube, RenderTFHarbingerCube::new);
 		RenderingRegistry.registerEntityRenderingHandler(adherent, RenderAdherent::new);
