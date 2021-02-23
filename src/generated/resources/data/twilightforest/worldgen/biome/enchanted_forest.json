@@ -23,10 +23,7 @@
   "carvers": {},
   "features": [
     [],
-    [
-      "minecraft:lake_water",
-      "minecraft:lake_lava"
-    ],
+    [],
     [],
     [],
     [],
@@ -56,7 +53,6 @@
       "twilightforest:forest_grass_placer",
       "twilightforest:random_common",
       "twilightforest:random_fallen",
-      "twilightforest:random_water",
       "minecraft:vines",
       "twilightforest:well",
       "twilightforest:tree/rainbow_oak_trees",

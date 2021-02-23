@@ -21,10 +21,7 @@
   "carvers": {},
   "features": [
     [],
-    [
-      "minecraft:lake_water",
-      "minecraft:lake_lava"
-    ],
+    [],
     [],
     [],
     [],
@@ -54,8 +51,10 @@
       "twilightforest:forest_grass_placer",
       "twilightforest:random_common",
       "twilightforest:random_fallen",
-      "twilightforest:random_water",
       "twilightforest:lamppost",
+      "twilightforest:mushgloom_cluster",
+      "minecraft:patch_pumpkin",
+      "minecraft:forest_flower_vegetation_common",
       "twilightforest:well",
       "twilightforest:tree/firefly_canopy_trees",
       "twilightforest:tree/twilight_oak_trees",

@@ -21,10 +21,7 @@
   "carvers": {},
   "features": [
     [],
-    [
-      "minecraft:lake_water",
-      "minecraft:lake_lava"
-    ],
+    [],
     [],
     [],
     [],
@@ -50,7 +47,8 @@
       "minecraft:patch_tall_grass",
       "minecraft:spring_water",
       "minecraft:spring_lava",
-      "twilightforest:random_common"
+      "twilightforest:random_common",
+      "twilightforest:thorns"
     ]
   ],
   "starts": [],

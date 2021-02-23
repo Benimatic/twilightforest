@@ -33,11 +33,13 @@
     [
       "twilightforest:forest_grass_placer",
       "twilightforest:flower_placer",
-      "twilightforest:random_water",
       "twilightforest:mushgloom_cluster",
       "minecraft:patch_brown_mushroom",
-      "minecraft:patch_red_mushroom",
       "twilightforest:small_log",
+      "minecraft:patch_dead_bush",
+      "minecraft:jungle_bush",
+      "minecraft:oak",
+      "minecraft:patch_pumpkin",
       "twilightforest:tree/darkwood_lantern_trees"
     ]
   ],

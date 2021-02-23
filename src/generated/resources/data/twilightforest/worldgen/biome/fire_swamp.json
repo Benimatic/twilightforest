@@ -29,10 +29,7 @@
   "carvers": {},
   "features": [
     [],
-    [
-      "minecraft:lake_water",
-      "minecraft:lake_lava"
-    ],
+    [],
     [],
     [],
     [],
@@ -64,6 +61,7 @@
       "twilightforest:fire_jet",
       "minecraft:patch_sugar_cane_swamp",
       "minecraft:vines",
+      "minecraft:brown_mushroom_swamp",
       "twilightforest:tree/swampy_oak_trees",
       "twilightforest:tree/hollow_oak_trees"
     ]

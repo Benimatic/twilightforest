@@ -21,10 +21,7 @@
   "carvers": {},
   "features": [
     [],
-    [
-      "minecraft:lake_water",
-      "minecraft:lake_lava"
-    ],
+    [],
     [],
     [],
     [],
@@ -55,7 +52,6 @@
       "twilightforest:mycelium_blob",
       "twilightforest:random_common",
       "twilightforest:random_fallen",
-      "twilightforest:random_water",
       "twilightforest:well",
       "twilightforest:tree/twilight_oak_trees",
       "twilightforest:tree/hollow_oak_trees",

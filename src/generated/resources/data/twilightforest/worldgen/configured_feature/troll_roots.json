@@ -1,0 +1,24 @@
+{
+  "config": {
+    "feature": {
+      "config": {
+        "feature": {
+          "config": {},
+          "type": "twilightforest:troll_roots"
+        },
+        "decorator": {
+          "config": {},
+          "type": "minecraft:square"
+        }
+      },
+      "type": "minecraft:decorated"
+    },
+    "decorator": {
+      "config": {
+        "count": 4
+      },
+      "type": "minecraft:count"
+    }
+  },
+  "type": "minecraft:decorated"
+}
