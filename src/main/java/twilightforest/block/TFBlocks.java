@@ -250,6 +250,24 @@ public class TFBlocks {
 	//public static final RegistryObject<Block> lapis_block                = BLOCKS.register("lapis_block", () -> new Block(Block.Properties.create(Material.IRON).hardnessAndResistance(3.0F, 5.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<BlockKeepsakeCasket> keepsake_casket = BLOCKS.register("keepsake_casket", () -> new BlockKeepsakeCasket());
 
+	//Pot all the things!
+	public static final RegistryObject<FlowerPotBlock> potted_twilight_oak_sapling = BLOCKS.register("potted_twilight_oak_sapling", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, oak_sapling, AbstractBlock.Properties.from(Blocks.FLOWER_POT)));
+	public static final RegistryObject<FlowerPotBlock> potted_canopy_sapling = BLOCKS.register("potted_canopy_sapling", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, canopy_sapling, AbstractBlock.Properties.from(Blocks.FLOWER_POT)));
+	public static final RegistryObject<FlowerPotBlock> potted_mangrove_sapling = BLOCKS.register("potted_mangrove_sapling", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, mangrove_sapling, AbstractBlock.Properties.from(Blocks.FLOWER_POT)));
+	public static final RegistryObject<FlowerPotBlock> potted_darkwood_sapling = BLOCKS.register("potted_darkwood_sapling", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, darkwood_sapling, AbstractBlock.Properties.from(Blocks.FLOWER_POT)));
+	public static final RegistryObject<FlowerPotBlock> potted_hollow_oak_sapling = BLOCKS.register("potted_hollow_oak_sapling", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, hollow_oak_sapling, AbstractBlock.Properties.from(Blocks.FLOWER_POT)));
+	public static final RegistryObject<FlowerPotBlock> potted_rainboak_sapling = BLOCKS.register("potted_rainboak_sapling", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, rainboak_sapling, AbstractBlock.Properties.from(Blocks.FLOWER_POT)));
+	public static final RegistryObject<FlowerPotBlock> potted_time_sapling = BLOCKS.register("potted_time_sapling", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, time_sapling, AbstractBlock.Properties.from(Blocks.FLOWER_POT)));
+	public static final RegistryObject<FlowerPotBlock> potted_trans_sapling = BLOCKS.register("potted_trans_sapling", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, transformation_sapling, AbstractBlock.Properties.from(Blocks.FLOWER_POT)));
+	public static final RegistryObject<FlowerPotBlock> potted_mine_sapling = BLOCKS.register("potted_mine_sapling", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, mining_sapling, AbstractBlock.Properties.from(Blocks.FLOWER_POT)));
+	public static final RegistryObject<FlowerPotBlock> potted_sort_sapling = BLOCKS.register("potted_sort_sapling", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, sorting_sapling, AbstractBlock.Properties.from(Blocks.FLOWER_POT)));
+	public static final RegistryObject<FlowerPotBlock> potted_mayapple = BLOCKS.register("potted_mayapple", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, mayapple, AbstractBlock.Properties.from(Blocks.FLOWER_POT)));
+	public static final RegistryObject<FlowerPotBlock> potted_fiddlehead = BLOCKS.register("potted_fiddlehead", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, fiddlehead, AbstractBlock.Properties.from(Blocks.FLOWER_POT)));
+	public static final RegistryObject<FlowerPotBlock> potted_mushgloom = BLOCKS.register("potted_mushgloom", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, mushgloom, AbstractBlock.Properties.from(Blocks.FLOWER_POT)));
+	public static final RegistryObject<FlowerPotBlock> potted_thorn = BLOCKS.register("potted_thorn", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, brown_thorns, AbstractBlock.Properties.from(Blocks.FLOWER_POT)));
+	public static final RegistryObject<FlowerPotBlock> potted_green_thorn = BLOCKS.register("potted_green_thorn", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, green_thorns, AbstractBlock.Properties.from(Blocks.FLOWER_POT)));
+	public static final RegistryObject<FlowerPotBlock> potted_dead_thorn = BLOCKS.register("potted_dead_thorn", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, burnt_thorns, AbstractBlock.Properties.from(Blocks.FLOWER_POT)));
+
 	// TODO chests? boats?
 	public static final RegistryObject<Block> twilight_oak_planks           = BLOCKS.register("twilight_oak_planks", () -> new Block(Block.Properties.create(Material.WOOD, MaterialColor.WOOD).hardnessAndResistance(2.0F, 5.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<StairsBlock> twilight_oak_stairs     = BLOCKS.register("twilight_oak_stairs", () -> new BlockTFStairs(twilight_oak_planks.get().getDefaultState()));
@@ -444,5 +462,26 @@ public class TFBlocks {
 		ComposterBlock.registerCompostable(0.65F, TFItems.maze_wafer.get());
 		ComposterBlock.registerCompostable(0.85F, TFItems.experiment_115.get());
 		ComposterBlock.registerCompostable(0.85F, TFItems.magic_beans.get());
+	}
+
+	public static void TFPots() {
+		FlowerPotBlock pot = (FlowerPotBlock) Blocks.FLOWER_POT;
+
+		pot.addPlant(oak_sapling.getId(), potted_twilight_oak_sapling);
+		pot.addPlant(canopy_sapling.getId(), potted_canopy_sapling);
+		pot.addPlant(mangrove_sapling.getId(), potted_mangrove_sapling);
+		pot.addPlant(darkwood_sapling.getId(), potted_darkwood_sapling);
+		pot.addPlant(hollow_oak_sapling.getId(), potted_hollow_oak_sapling);
+		pot.addPlant(rainboak_sapling.getId(), potted_rainboak_sapling);
+		pot.addPlant(time_sapling.getId(), potted_time_sapling);
+		pot.addPlant(transformation_sapling.getId(), potted_trans_sapling);
+		pot.addPlant(mining_sapling.getId(), potted_mine_sapling);
+		pot.addPlant(sorting_sapling.getId(), potted_sort_sapling);
+		pot.addPlant(mayapple.getId(), potted_mayapple);
+		pot.addPlant(fiddlehead.getId(), potted_fiddlehead);
+		pot.addPlant(mushgloom.getId(), potted_mushgloom);
+		pot.addPlant(brown_thorns.getId(), potted_thorn);
+		pot.addPlant(green_thorns.getId(), potted_green_thorn);
+		pot.addPlant(burnt_thorns.getId(), potted_dead_thorn);
 	}
 }

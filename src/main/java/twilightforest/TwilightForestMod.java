@@ -162,6 +162,7 @@ public class TwilightForestMod {
 		
 		evt.enqueueWork(() -> {
 			TFBlocks.tfCompostables();
+			TFBlocks.TFPots();
 			}
 		);
 	}

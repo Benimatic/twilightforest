@@ -95,5 +95,21 @@ public class RenderLayerRegistration {
 		RenderTypeLookup.setRenderLayer(TFBlocks.antibuilder.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.carminite_reactor.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.ghast_trap.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.potted_twilight_oak_sapling.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.potted_canopy_sapling.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.potted_mangrove_sapling.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.potted_darkwood_sapling.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.potted_hollow_oak_sapling.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.potted_rainboak_sapling.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.potted_time_sapling.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.potted_trans_sapling.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.potted_mine_sapling.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.potted_sort_sapling.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.potted_mayapple.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.potted_fiddlehead.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.potted_mushgloom.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.potted_thorn.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.potted_green_thorn.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.potted_dead_thorn.get(), cutout);
 	}
 }

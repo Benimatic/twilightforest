@@ -180,6 +180,22 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.stone_twist.get());
 		//registerDropSelfLootTable(TFBlocks.lapis_block.get());
 		registerLootTable(TFBlocks.keepsake_casket.get(), droppingWithName(TFBlocks.keepsake_casket.get()));
+		registerFlowerPot(TFBlocks.potted_twilight_oak_sapling.get());
+		registerFlowerPot(TFBlocks.potted_canopy_sapling.get());
+		registerFlowerPot(TFBlocks.potted_mangrove_sapling.get());
+		registerFlowerPot(TFBlocks.potted_darkwood_sapling.get());
+		registerFlowerPot(TFBlocks.potted_hollow_oak_sapling.get());
+		registerFlowerPot(TFBlocks.potted_rainboak_sapling.get());
+		registerFlowerPot(TFBlocks.potted_time_sapling.get());
+		registerFlowerPot(TFBlocks.potted_trans_sapling.get());
+		registerFlowerPot(TFBlocks.potted_mine_sapling.get());
+		registerFlowerPot(TFBlocks.potted_sort_sapling.get());
+		registerFlowerPot(TFBlocks.potted_mayapple.get());
+		registerFlowerPot(TFBlocks.potted_fiddlehead.get());
+		registerFlowerPot(TFBlocks.potted_mushgloom.get());
+		registerFlowerPot(TFBlocks.potted_thorn.get());
+		registerFlowerPot(TFBlocks.potted_green_thorn.get());
+		registerFlowerPot(TFBlocks.potted_dead_thorn.get());
 
 		registerDropSelfLootTable(TFBlocks.oak_log.get());
 		registerDropSelfLootTable(TFBlocks.oak_wood.get());

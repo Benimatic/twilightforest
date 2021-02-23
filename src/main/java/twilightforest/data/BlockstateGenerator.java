@@ -262,6 +262,23 @@ public class BlockstateGenerator extends BlockStateProvider {
 		registerWoodBlocks();
 		registerNagastone();
 		registerForceFields();
+		simpleBlock(TFBlocks.potted_twilight_oak_sapling.get(), models().getExistingFile(prefix("block/potted_twilight_oak_sapling")));
+		simpleBlock(TFBlocks.potted_canopy_sapling.get(), models().getExistingFile(prefix("block/potted_canopy_sapling")));
+		simpleBlock(TFBlocks.potted_mangrove_sapling.get(), models().getExistingFile(prefix("block/potted_mangrove_sapling")));
+		simpleBlock(TFBlocks.potted_darkwood_sapling.get(), models().getExistingFile(prefix("block/potted_darkwood_sapling")));
+		simpleBlock(TFBlocks.potted_hollow_oak_sapling.get(), models().getExistingFile(prefix("block/potted_hollow_oak_sapling")));
+		simpleBlock(TFBlocks.potted_rainboak_sapling.get(), models().getExistingFile(prefix("block/potted_rainboak_sapling")));
+		simpleBlock(TFBlocks.potted_time_sapling.get(), models().getExistingFile(prefix("block/potted_time_sapling")));
+		simpleBlock(TFBlocks.potted_trans_sapling.get(), models().getExistingFile(prefix("block/potted_trans_sapling")));
+		simpleBlock(TFBlocks.potted_mine_sapling.get(), models().getExistingFile(prefix("block/potted_mine_sapling")));
+		simpleBlock(TFBlocks.potted_sort_sapling.get(), models().getExistingFile(prefix("block/potted_sort_sapling")));
+		simpleBlock(TFBlocks.potted_mayapple.get(), models().getExistingFile(prefix("block/potted_mayapple")));
+		simpleBlock(TFBlocks.potted_fiddlehead.get(), models().getExistingFile(prefix("block/potted_fiddlehead")));
+		simpleBlock(TFBlocks.potted_mushgloom.get(), models().getExistingFile(prefix("block/potted_mushgloom")));
+		simpleBlock(TFBlocks.potted_thorn.get(), models().getExistingFile(prefix("block/potted_thorn")));
+		simpleBlock(TFBlocks.potted_green_thorn.get(), models().getExistingFile(prefix("block/potted_green_thorn")));
+		simpleBlock(TFBlocks.potted_dead_thorn.get(), models().getExistingFile(prefix("block/potted_dead_thorn")));
+
 	}
 
 	//TODO: Absolutely not a 100% reflection of what existed
