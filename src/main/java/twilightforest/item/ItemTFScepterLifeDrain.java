@@ -38,8 +38,14 @@ public class ItemTFScepterLifeDrain extends Item {
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-		player.setActiveHand(hand);
-		return ActionResult.resultSuccess(player.getHeldItem(hand));
+		ItemStack stack = player.getHeldItem(hand);
+
+		if (stack.getDamage() == stack.getMaxDamage() - 1) {
+			return ActionResult.resultFail(player.getHeldItem(hand));
+		} else {
+			player.setActiveHand(hand);
+			return ActionResult.resultSuccess(player.getHeldItem(hand));
+		}
 	}
 
 	@Override
@@ -109,7 +115,7 @@ public class ItemTFScepterLifeDrain extends Item {
 	public void onUsingTick(ItemStack stack, LivingEntity living, int count) {
 		World world = living.world;
 
-		if (stack.getDamage() >= this.getMaxDamage(stack)) {
+		if (stack.getDamage() == this.getMaxDamage(stack) - 1) {
 			// do not use
 			living.resetActiveHand();
 			return;
