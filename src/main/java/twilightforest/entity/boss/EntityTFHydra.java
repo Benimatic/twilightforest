@@ -13,6 +13,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -285,7 +286,7 @@ public class EntityTFHydra extends MobEntity implements IMob {
 		if (rand.nextFloat() < 0.7F) {
 			PlayerEntity entityplayer1 = world.getClosestPlayer(this, f);
 
-			if (entityplayer1 != null) {
+			if (entityplayer1 != null && !entityplayer1.isCreative()) {
 				setAttackTarget(entityplayer1);
 				numTicksToChaseTarget = 100 + rand.nextInt(20);
 			} else {
@@ -501,7 +502,7 @@ public class EntityTFHydra extends MobEntity implements IMob {
 		return this.world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(this.getPosX(), this.getPosY(), this.getPosZ(), this.getPosX() + 1, this.getPosY() + 1, this.getPosZ() + 1).grow(range, range, range))
 				.stream()
 				.filter(e -> !(e instanceof EntityTFHydra))
-				.filter(e -> e != getAttackTarget() && !isAnyHeadTargeting(e) && getEntitySenses().canSee(e))
+				.filter(e -> e != getAttackTarget() && !isAnyHeadTargeting(e) && getEntitySenses().canSee(e) && EntityPredicates.CAN_HOSTILE_AI_TARGET.test(e))
 				.min(Comparator.comparingDouble(this::getDistanceSq)).orElse(null);
 	}
 

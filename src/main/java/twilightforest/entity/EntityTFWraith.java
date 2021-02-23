@@ -251,7 +251,7 @@ public class EntityTFWraith extends FlyingEntity implements IMob {
 			if (getRidingEntity() == entity || getPassengers().contains(entity)) {
 				return true;
 			}
-			if (entity != this && entity instanceof LivingEntity) {
+			if (entity != this && entity instanceof LivingEntity && !source.isCreativePlayer()) {
 				setAttackTarget((LivingEntity) entity);
 			}
 			return true;

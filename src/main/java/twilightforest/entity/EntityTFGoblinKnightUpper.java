@@ -15,6 +15,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -131,6 +132,10 @@ public class EntityTFGoblinKnightUpper extends MonsterEntity {
 				this.setAttackTarget(((MobEntity) this.getRidingEntity()).getAttackTarget());
 			}
 
+			if(getAttackTarget() instanceof PlayerEntity && ((PlayerEntity)getAttackTarget()).abilities.disableDamage) {
+				this.setAttackTarget(null);
+			}
+
 			if (!isPassenger() && this.hasShield()) {
 				this.breakShield();
 			}
@@ -224,7 +229,7 @@ public class EntityTFGoblinKnightUpper extends MonsterEntity {
 
 		Entity attacker = damageSource.getTrueSource();
 
-		if (attacker != null) {
+		if (attacker != null && !damageSource.isCreativePlayer()) {
 			double dx = this.getPosX() - attacker.getPosX();
 			double dz = this.getPosZ() - attacker.getPosZ();
 			float angle = (float) ((Math.atan2(dz, dx) * 180D) / Math.PI) - 90F;

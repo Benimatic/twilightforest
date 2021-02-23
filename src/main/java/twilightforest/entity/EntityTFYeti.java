@@ -101,7 +101,7 @@ public class EntityTFYeti extends MonsterEntity implements IHostileMount {
 
 	@Override
 	public boolean attackEntityFrom(DamageSource source, float amount) {
-		if (source.getTrueSource() != null) {
+		if (source.getTrueSource() != null && !source.isCreativePlayer()) {
 			// become angry
 			this.setAngry(true);
 		}
