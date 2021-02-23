@@ -17,6 +17,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
 import twilightforest.entity.ai.EntityAITFChargeAttack;
+import twilightforest.util.TFDamageSources;
 
 public class EntityTFPinchBeetle extends MonsterEntity implements IHostileMount {
 
@@ -83,7 +84,7 @@ public class EntityTFPinchBeetle extends MonsterEntity implements IHostileMount 
 		if (this.getPassengers().isEmpty() && !entity.isPassenger()) {
 			entity.startRiding(this);
 		}
-
+		entity.attackEntityFrom(TFDamageSources.CLAMPED(this), (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
 		return super.attackEntityAsMob(entity);
 	}
 

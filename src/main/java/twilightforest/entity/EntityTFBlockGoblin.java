@@ -23,6 +23,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.entity.PartEntity;
 import twilightforest.TFSounds;
 import twilightforest.entity.ai.EntityAIThrowSpikeBlock;
+import twilightforest.util.TFDamageSources;
 
 import java.util.List;
 import java.util.UUID;
@@ -148,6 +149,7 @@ public class EntityTFBlockGoblin extends MonsterEntity {
 	@Override
 	public boolean attackEntityAsMob(Entity entity) {
 		swingArm(Hand.MAIN_HAND);
+		entity.attackEntityFrom(TFDamageSources.SPIKED(this.block, this), (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
 		return false;
 	}
 

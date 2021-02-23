@@ -25,6 +25,7 @@ import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.NetworkHooks;
 import twilightforest.TFSounds;
 import twilightforest.item.TFItems;
+import twilightforest.util.TFDamageSources;
 import twilightforest.util.WorldUtil;
 
 public class EntityTFChainBlock extends ThrowableEntity implements IEntityAdditionalSpawnData {
@@ -104,7 +105,7 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityAdditi
 
 			// only hit living things
 			if (entityRay.getEntity() instanceof LivingEntity && entityRay.getEntity() != this.func_234616_v_()) {
-				if (entityRay.getEntity().attackEntityFrom(this.getDamageSource(), 10)) {
+				if (entityRay.getEntity().attackEntityFrom(TFDamageSources.SPIKED(this, (LivingEntity)this.func_234616_v_()), 10)) {
 					// age when we hit a monster so that we go back to the player faster
 					this.ticksExisted += 60;
 				}

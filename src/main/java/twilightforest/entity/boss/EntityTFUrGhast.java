@@ -41,6 +41,7 @@ import twilightforest.entity.NoClipMoveHelper;
 import twilightforest.entity.TFEntities;
 import twilightforest.enums.BossVariant;
 import twilightforest.loot.TFTreasure;
+import twilightforest.util.TFDamageSources;
 import twilightforest.world.TFGenerationSettings;
 
 import javax.annotation.Nullable;
@@ -423,7 +424,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 
 		for (PlayerEntity player : world.getEntitiesWithinAABB(PlayerEntity.class, below)) {
 			if (world.canBlockSeeSky(player.getPosition())) {
-				player.attackEntityFrom(DamageSource.ANVIL, 3);
+				player.attackEntityFrom(TFDamageSources.GHAST_TEAR, 3);
 			}
 		}
 

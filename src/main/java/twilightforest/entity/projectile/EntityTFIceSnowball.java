@@ -69,7 +69,7 @@ public class EntityTFIceSnowball extends EntityTFThrowable implements IRendersAs
 	protected void onImpact(RayTraceResult result) {
 		if (result instanceof EntityRayTraceResult) {
 			if (!world.isRemote && ((EntityRayTraceResult)result).getEntity() instanceof LivingEntity) {
-				((EntityRayTraceResult)result).getEntity().attackEntityFrom(DamageSource.causeThrownDamage(this, this.func_234616_v_()), DAMAGE);
+				((EntityRayTraceResult)result).getEntity().attackEntityFrom(TFDamageSources.SNOWBALL_FIGHT(this, (LivingEntity)this.func_234616_v_()), DAMAGE);
 				// TODO: damage armor?
 			}
 		}

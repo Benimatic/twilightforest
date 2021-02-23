@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 import twilightforest.entity.projectile.EntityTFThrowable;
 import twilightforest.entity.EntityTFYeti;
 import twilightforest.potions.TFPotions;
+import twilightforest.util.TFDamageSources;
 
 import java.util.List;
 
@@ -139,7 +140,7 @@ public class EntityTFIceBomb extends EntityTFThrowable {
 
 					entity.remove();
 				} else {
-					entity.attackEntityFrom(DamageSource.MAGIC, 1);
+					entity.attackEntityFrom(TFDamageSources.FROZEN(this, (LivingEntity)this.func_234616_v_()), 1);
 					entity.addPotionEffect(new EffectInstance(TFPotions.frosty.get(), 20 * 5, 2));
 				}
 			}

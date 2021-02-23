@@ -12,6 +12,7 @@ import twilightforest.block.BlockTFFireJet;
 import twilightforest.block.TFBlocks;
 import twilightforest.enums.FireJetVariant;
 import twilightforest.client.particle.TFParticleType;
+import twilightforest.util.TFDamageSources;
 
 import java.util.List;
 
@@ -100,7 +101,7 @@ public class TileEntityTFFlameJet extends TileEntity implements ITickableTileEnt
 				// fire!
 				for (Entity entity : entitiesInRange) {
 					if (!entity.isImmuneToFire()) {
-						entity.attackEntityFrom(DamageSource.IN_FIRE, 2);
+						entity.attackEntityFrom(TFDamageSources.FIRE_JET, 2);
 						entity.setFire(15);
 					}
 				}

@@ -18,6 +18,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
 import twilightforest.entity.ai.EntityAITFBreathAttack;
+import twilightforest.util.TFDamageSources;
 
 public class EntityTFFireBeetle extends MonsterEntity implements IBreathAttacker {
 
@@ -142,8 +143,16 @@ public class EntityTFFireBeetle extends MonsterEntity implements IBreathAttacker
 
 	@Override
 	public void doBreathAttack(Entity target) {
-		if (!target.isImmuneToFire() && target.attackEntityFrom(DamageSource.IN_FIRE, BREATH_DAMAGE)) {
+		if (!target.isImmuneToFire() && target.attackEntityFrom(TFDamageSources.TORCHED(this), BREATH_DAMAGE)) {
 			target.setFire(BREATH_DURATION);
 		}
+	}
+
+	@Override
+	public boolean attackEntityAsMob(Entity entityIn) {
+		if (isBreathing()) {
+			entityIn.attackEntityFrom(TFDamageSources.TORCHED(this), BREATH_DAMAGE);
+		}
+		return super.attackEntityAsMob(entityIn);
 	}
 }

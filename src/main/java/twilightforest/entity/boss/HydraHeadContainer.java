@@ -11,6 +11,7 @@ import net.minecraft.world.Difficulty;
 import twilightforest.TFSounds;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.entity.TFEntities;
+import twilightforest.util.TFDamageSources;
 
 import javax.annotation.Nullable;
 import java.util.EnumMap;
@@ -673,7 +674,7 @@ public class HydraHeadContainer {
 			for (Entity nearby : nearbyList) {
 				if (nearby instanceof LivingEntity && nearby != hydra) {
 					// bite it!
-					nearby.attackEntityFrom(DamageSource.causeMobDamage(hydra), BITE_DAMAGE);
+					nearby.attackEntityFrom(TFDamageSources.HYDRA_BITE, BITE_DAMAGE);
 				}
 			}
 		}
@@ -685,7 +686,7 @@ public class HydraHeadContainer {
 				/*if (target instanceof EntityTFHydraPart || target instanceof MultiPartEntityPart) {
 					// stop hurting yourself!
 					this.endCurrentAction();
-				} else */if (!target.isImmuneToFire() && target.attackEntityFrom(DamageSource.IN_FIRE, FLAME_DAMAGE)) {
+				} else */if (!target.isImmuneToFire() && target.attackEntityFrom(TFDamageSources.HYDRA_FIRE, FLAME_DAMAGE)) {
 					target.setFire(FLAME_BURN_FACTOR);
 				}
 			}

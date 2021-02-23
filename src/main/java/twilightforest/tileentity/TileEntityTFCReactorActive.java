@@ -8,10 +8,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
+import net.minecraft.world.ExplosionContext;
 import twilightforest.TFSounds;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.EntityTFMiniGhast;
+import twilightforest.util.TFDamageSources;
 
 import java.util.Random;
 
@@ -134,7 +136,7 @@ public class TileEntityTFCReactorActive extends TileEntity implements ITickableT
 				}
 
 				// deactivate & explode
-				world.createExplosion(null, this.pos.getX(), this.pos.getY(), this.pos.getZ(), 2.0F, Explosion.Mode.BREAK);
+				world.createExplosion(null, TFDamageSources.REACTOR, (ExplosionContext)null, this.pos.getX(), this.pos.getY(), this.pos.getZ(), 2.0F, true, Explosion.Mode.BREAK);
 				world.removeBlock(pos, false);
 			}
 

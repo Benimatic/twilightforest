@@ -40,6 +40,7 @@ import twilightforest.entity.ai.EntityAITFHoverBeam;
 import twilightforest.entity.ai.EntityAITFHoverSummon;
 import twilightforest.entity.ai.EntityAITFHoverThenDrop;
 import twilightforest.enums.BossVariant;
+import twilightforest.util.TFDamageSources;
 import twilightforest.util.WorldUtil;
 import twilightforest.world.TFGenerationSettings;
 
@@ -288,7 +289,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IBreathAttacker 
 
 	@Override
 	public boolean attackEntityFrom(DamageSource source, float damage) {
-		boolean result = super.attackEntityFrom(source, damage);
+		boolean result = super.attackEntityFrom(TFDamageSources.SQUISH, damage);
 
 		if (result && this.getCurrentPhase() == Phase.BEAM) {
 			this.damageWhileBeaming += damage;
@@ -412,7 +413,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IBreathAttacker 
 
 	@Override
 	public void doBreathAttack(Entity target) {
-		target.attackEntityFrom(DamageSource.causeMobDamage(this), BREATH_DAMAGE);
+		target.attackEntityFrom(TFDamageSources.CHILLING_BREATH, BREATH_DAMAGE);
 		// TODO: slow target?
 	}
 

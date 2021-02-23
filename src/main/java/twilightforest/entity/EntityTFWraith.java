@@ -21,6 +21,7 @@ import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
 import twilightforest.entity.ai.TFNearestPlayerGoal;
+import twilightforest.util.TFDamageSources;
 
 import java.util.EnumSet;
 import java.util.Random;
@@ -198,7 +199,7 @@ public class EntityTFWraith extends FlyingEntity implements IMob {
 			i += EnchantmentHelper.getKnockbackModifier(this);
 		}
 
-		boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), f);
+		boolean flag = entityIn.attackEntityFrom(TFDamageSources.HAUNT(this), f);
 
 		if (flag) {
 			if (i > 0 && entityIn instanceof LivingEntity) {

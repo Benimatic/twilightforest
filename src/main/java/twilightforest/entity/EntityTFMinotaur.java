@@ -24,6 +24,7 @@ import twilightforest.TFSounds;
 import twilightforest.entity.ai.EntityAITFChargeAttack;
 import twilightforest.entity.boss.EntityTFMinoshroom;
 import twilightforest.item.TFItems;
+import twilightforest.util.TFDamageSources;
 
 import javax.annotation.Nullable;
 
@@ -94,9 +95,10 @@ public class EntityTFMinotaur extends MonsterEntity implements ITFCharger {
 
 	@Override
 	public boolean attackEntityAsMob(Entity entity) {
+		entity.attackEntityFrom(TFDamageSources.AXING(this), (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
 		boolean success = super.attackEntityAsMob(entity);
-
 		if (success && this.isCharging()) {
+			entity.attackEntityFrom(TFDamageSources.AXING(this), (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
 			entity.addVelocity(0, 0.4, 0);
 			playSound(TFSounds.MINOTAUR_ATTACK, 1.0F, 1.0F);
 		}
