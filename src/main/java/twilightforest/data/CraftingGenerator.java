@@ -597,8 +597,8 @@ public class CraftingGenerator extends CraftingDataHelper {
 
 	private void ingotRecipes(Consumer<IFinishedRecipe> consumer, String processName, CookingRecipeSerializer<?> process, int smeltingTime) {
 		CookingRecipeBuilder.cookingRecipe(Ingredient.fromItems(TFItems.armor_shard_cluster.get()), TFItems.knightmetal_ingot.get(), 1.0f, smeltingTime, process).addCriterion("has_item", hasItem(TFItems.armor_shard_cluster.get())).build(consumer, TwilightForestMod.prefix( "material/" + processName + "_knightmetal_ingot").toString());
-		CookingRecipeBuilder.cookingRecipe(Ingredient.fromItems(TFItems.ironwood_raw.get()), TFItems.ironwood_ingot.get(), 1.0f, smeltingTime, process).addCriterion("has_item", hasItem(TFItems.ironwood_raw.get())).build(consumer, TwilightForestMod.prefix("material/" + processName + "_ironwood_ingot").toString());
 	}
+	
 	private void crackedWoodRecipes(Consumer<IFinishedRecipe> consumer, String processName, CookingRecipeSerializer<?> process, int smeltingTime) {
 		CookingRecipeBuilder.cookingRecipe(Ingredient.fromItems(TFBlocks.tower_wood.get()), TFBlocks.tower_wood_cracked.get(), 0.3f, smeltingTime, process).addCriterion("has_item", hasItem(TFBlocks.tower_wood.get())).build(consumer, TwilightForestMod.prefix("wood/" + processName + "_cracked_towerwood").toString());
 	}

@@ -3,7 +3,10 @@
   "ingredient": {
     "item": "twilightforest:ironwood_raw"
   },
-  "result": "twilightforest:ironwood_ingot",
-  "experience": 1.0,
+  "result": {
+    "item": "twilightforest:ironwood_ingot",
+    "count": 2
+  },
+  "experience": 0.7,
   "cookingtime": 200
 }
