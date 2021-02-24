@@ -18,6 +18,7 @@ import net.minecraft.world.World;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
+import twilightforest.util.PlayerHelper;
 import twilightforest.world.TFGenerationSettings;
 
 //TODO 1.14: Thaumcraft is dead
@@ -63,7 +64,7 @@ public class BlockTFTrophyPedestal extends Block /*implements IInfusionStabilise
 	}
 
 	private boolean isTrophyOnTop(World world, BlockPos pos) {
-		return world.getBlockState(pos.up()).getBlock() instanceof BlockTFTrophy;
+		return world.getBlockState(pos.up()).getBlock() instanceof BlockTFAbstractTrophy;
 	}
 
 	private void warnIneligiblePlayers(World world, BlockPos pos) {
@@ -82,8 +83,7 @@ public class BlockTFTrophyPedestal extends Block /*implements IInfusionStabilise
 	}
 
 	private boolean isPlayerEligible(PlayerEntity player) {
-		//return TwilightForestMod.proxy.doesPlayerHaveAdvancement(player, TwilightForestMod.prefix("progress_lich"));
-		return false; //TODO PLACEHOLDER
+		return PlayerHelper.doesPlayerHaveRequiredAdvancements(player, TwilightForestMod.prefix("progress_lich"));
 	}
 
 	private void doPedestalEffect(World world, BlockPos pos, BlockState state) {
