@@ -58,7 +58,7 @@ public abstract class EntityTFHydraPart extends TFPartEntity<EntityTFHydra> {
 
 	@Override
 	public boolean attackEntityFrom(DamageSource source, float amount) {
-		return getParent() != null && source.isCreativePlayer() && getParent().attackEntityFromPart(this, source, amount);
+		return getParent() != null && getParent().attackEntityFromPart(this, source, amount);
 	}
 
 	@Override
