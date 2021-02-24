@@ -31,30 +31,30 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 	
 	public static class DummyTile extends TileEntityTFTrophy {}
 
-	private final ModelTFHydraHeadTrophy hydraHead = new ModelTFHydraHeadTrophy();
+	private static final ModelTFHydraHeadTrophy hydraHead = new ModelTFHydraHeadTrophy();
 	private static final ResourceLocation textureLocHydra = TwilightForestMod.getModelTexture("hydra4.png");
 
-	private final ModelTFNagaHead nagaHead = new ModelTFNagaHead();
+	private static final ModelTFNagaHead nagaHead = new ModelTFNagaHead();
 	private static final ResourceLocation textureLocNaga = TwilightForestMod.getModelTexture("nagahead.png");
 
-	private final ModelTFLichHead lichHead = new ModelTFLichHead();
+	private static final ModelTFLichHead lichHead = new ModelTFLichHead();
 	private static final ResourceLocation textureLocLich = TwilightForestMod.getModelTexture("twilightlich64.png");
 
-	private final ModelTFUrGhastHead ghastHead = new ModelTFUrGhastHead();
+	private static final ModelTFUrGhastHead ghastHead = new ModelTFUrGhastHead();
 	private static final ResourceLocation textureLocUrGhast = TwilightForestMod.getModelTexture("towerboss.png");
 
-	private final ModelTFSnowQueenHead waifuHead = new ModelTFSnowQueenHead();
+	private static final ModelTFSnowQueenHead waifuHead = new ModelTFSnowQueenHead();
 	private static final ResourceLocation textureLocSnowQueen = TwilightForestMod.getModelTexture("snowqueen.png");
 
-	private final ModelTFMinoshroomHead minoshroomHead = new ModelTFMinoshroomHead();
+	private static final ModelTFMinoshroomHead minoshroomHead = new ModelTFMinoshroomHead();
 	private static final ResourceLocation textureLocMinoshroom = TwilightForestMod.getModelTexture("minoshroomtaur.png");
 
-	private final ModelTFKnightPhantomHead phantomHead = new ModelTFKnightPhantomHead();
+	private static final ModelTFKnightPhantomHead phantomHead = new ModelTFKnightPhantomHead();
 	private static final ResourceLocation textureLocKnightPhantom = TwilightForestMod.getModelTexture("phantomskeleton.png");
-	private final ModelTFPhantomArmorHead phantomArmorModel = new ModelTFPhantomArmorHead();
+	private static final ModelTFPhantomArmorHead phantomArmorModel = new ModelTFPhantomArmorHead();
 	private static final ResourceLocation textureLocKnightPhantomArmor = new ResourceLocation(TwilightForestMod.ARMOR_DIR + "phantom_1.png");
 
-	private final ModelTFQuestRamHead ramHead = new ModelTFQuestRamHead();
+	private static final ModelTFQuestRamHead ramHead = new ModelTFQuestRamHead();
 	private static final ResourceLocation textureLocQuestRam = TwilightForestMod.getModelTexture("questram.png");
 	private static final ResourceLocation textureLocQuestRamLines = TwilightForestMod.getModelTexture("questram_lines.png");
 
@@ -113,13 +113,13 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 		}
 		if (((BlockTFAbstractTrophy) blockstate.getBlock()).getVariant() == BossVariant.UR_GHAST && flag) {
 			ghastHead.setTranslate(matrixStackIn, 0F, .5F, 0F);
-		} else if (((BlockTFAbstractTrophy) blockstate.getBlock()).getVariant() == BossVariant.UR_GHAST && flag == false) {
+		} else if (((BlockTFAbstractTrophy) blockstate.getBlock()).getVariant() == BossVariant.UR_GHAST && !flag) {
 			ghastHead.setTranslate(matrixStackIn, 0F, 1F, 0F);
 		}
 		render(direction, f1, ((BlockTFAbstractTrophy) blockstate.getBlock()).getVariant(), f, matrixStackIn, bufferIn, combinedLightIn);
 	}
 
-	public void render(@Nullable Direction directionIn, float y, BossVariant variant, float animationProgress, MatrixStack matrixStackIn, IRenderTypeBuffer buffer, int combinedLight) {
+	public static void render(@Nullable Direction directionIn, float y, BossVariant variant, float animationProgress, MatrixStack matrixStackIn, IRenderTypeBuffer buffer, int combinedLight) {
 		matrixStackIn.push();
 		if (directionIn == null) {
 			matrixStackIn.translate(0.5D, 0.0D, 0.5D);

@@ -1,6 +1,8 @@
 package twilightforest.item;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
 import net.minecraft.item.WallOrFloorItem;
 import net.minecraft.item.ItemStack;
@@ -8,20 +10,24 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import twilightforest.enums.BossVariant;
 
+import javax.annotation.Nullable;
 import java.util.Locale;
 
 public class ItemTFTrophy extends WallOrFloorItem {
 
-	private final BossVariant bossVariant;
-
-	public ItemTFTrophy(Block floorBlockIn, Block wallBlockIn, Item.Properties builder, BossVariant variant) {
+	public ItemTFTrophy(Block floorBlockIn, Block wallBlockIn, Item.Properties builder) {
 		super(floorBlockIn, wallBlockIn, builder);
-		bossVariant = variant;
 	}
 
 	@Override
-	public ITextComponent getDisplayName(ItemStack stack) {
-		return new TranslationTextComponent(this.getTranslationKey(stack), new TranslationTextComponent("entity.twilightforest." + bossVariant.getString().toLowerCase(Locale.ROOT) + ".name"));
+	public boolean canEquip(ItemStack stack, EquipmentSlotType armorType, Entity entity) {
+		return armorType == EquipmentSlotType.HEAD;
+	}
+
+	@Override
+	@Nullable
+	public EquipmentSlotType getEquipmentSlot(ItemStack stack) {
+		return EquipmentSlotType.HEAD;
 	}
 
 

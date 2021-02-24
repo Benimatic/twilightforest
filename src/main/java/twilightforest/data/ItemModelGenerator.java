@@ -29,10 +29,6 @@ public class ItemModelGenerator extends ItemModelProvider {
 				getBuilder(i.getRegistryName().getPath())
 								.parent(getExistingFile(new ResourceLocation("item/template_spawn_egg")));
 			}
-			if (i instanceof ItemTFTrophy && i.getRegistryName().getNamespace().equals(TwilightForestMod.ID)) {
-				getBuilder(i.getRegistryName().getPath())
-				.parent(getExistingFile(new ResourceLocation("item/template_skull")));
-}
 		}
 		toBlock(TFBlocks.tower_wood.get());
 		toBlock(TFBlocks.tower_wood_encased.get());

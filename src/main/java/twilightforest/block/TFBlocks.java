@@ -18,9 +18,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ISTER;
 import twilightforest.enums.*;
-import twilightforest.item.ItemBlockTFHugeLilyPad;
-import twilightforest.item.ItemBlockTFHugeWaterLily;
-import twilightforest.item.TFItems;
+import twilightforest.item.*;
 import twilightforest.tileentity.TFTileEntities;
 import twilightforest.world.feature.tree.*;
 
@@ -396,24 +394,34 @@ public class TFBlocks {
 		}
 
 		// FIXME: using anon classes currently to get around the classloader as a bandaid fix
-		r.register(new BlockItem(firefly.get(), TFItems.defaultBuilder().setISTER(() -> new Callable<ItemStackTileEntityRenderer>() {
+		r.register(new ItemBlockWearable(firefly.get(), TFItems.defaultBuilder().setISTER(() -> new Callable<ItemStackTileEntityRenderer>() {
 			@Override
 			public ItemStackTileEntityRenderer call() {
 				return new ISTER(TFTileEntities.FIREFLY.getId());
 			}
 		})).setRegistryName(firefly.getId()));
-		r.register(new BlockItem(moonworm.get(), TFItems.defaultBuilder().setISTER(() -> new Callable<ItemStackTileEntityRenderer>() {
+		r.register(new ItemBlockWearable(moonworm.get(), TFItems.defaultBuilder().setISTER(() -> new Callable<ItemStackTileEntityRenderer>() {
 			@Override
 			public ItemStackTileEntityRenderer call() {
 				return new ISTER(TFTileEntities.MOONWORM.getId());
 			}
 		})).setRegistryName(moonworm.getId()));
-		r.register(new BlockItem(cicada.get(), TFItems.defaultBuilder().setISTER(() -> new Callable<ItemStackTileEntityRenderer>() {
+		r.register(new ItemBlockWearable(cicada.get(), TFItems.defaultBuilder().setISTER(() -> new Callable<ItemStackTileEntityRenderer>() {
 			@Override
 			public ItemStackTileEntityRenderer call() {
 				return new ISTER(TFTileEntities.CICADA.getId());
 			}
 		})).setRegistryName(cicada.getId()));
+
+		r.register(new ItemTFTrophy(naga_trophy.get(), naga_wall_trophy.get(), TFItems.defaultBuilder().rarity(TwilightForestMod.getRarity()).setISTER(() -> (Callable<ItemStackTileEntityRenderer>) () -> new ISTER(TFTileEntities.TROPHY.getId()))).setRegistryName(naga_trophy.getId()));
+		r.register(new ItemTFTrophy(lich_trophy.get(), lich_wall_trophy.get(), TFItems.defaultBuilder().rarity(TwilightForestMod.getRarity()).setISTER(() -> (Callable<ItemStackTileEntityRenderer>) () -> new ISTER(TFTileEntities.TROPHY.getId()))).setRegistryName(lich_trophy.getId()));
+		r.register(new ItemTFTrophy(minoshroom_trophy.get(), minoshroom_wall_trophy.get(), TFItems.defaultBuilder().rarity(TwilightForestMod.getRarity()).setISTER(() -> (Callable<ItemStackTileEntityRenderer>) () -> new ISTER(TFTileEntities.TROPHY.getId()))).setRegistryName(minoshroom_trophy.getId()));
+		r.register(new ItemTFTrophy(hydra_trophy.get(), hydra_wall_trophy.get(), TFItems.defaultBuilder().rarity(TwilightForestMod.getRarity()).setISTER(() -> (Callable<ItemStackTileEntityRenderer>) () -> new ISTER(TFTileEntities.TROPHY.getId()))).setRegistryName(hydra_trophy.getId()));
+		r.register(new ItemTFTrophy(knight_phantom_trophy.get(), knight_phantom_wall_trophy.get(), TFItems.defaultBuilder().rarity(TwilightForestMod.getRarity()).setISTER(() -> (Callable<ItemStackTileEntityRenderer>) () -> new ISTER(TFTileEntities.TROPHY.getId()))).setRegistryName(knight_phantom_trophy.getId()));
+		r.register(new ItemTFTrophy(ur_ghast_trophy.get(), ur_ghast_wall_trophy.get(), TFItems.defaultBuilder().rarity(TwilightForestMod.getRarity()).setISTER(() -> (Callable<ItemStackTileEntityRenderer>) () -> new ISTER(TFTileEntities.TROPHY.getId()))).setRegistryName(ur_ghast_trophy.getId()));
+		r.register(new ItemTFTrophy(snow_queen_trophy.get(), snow_queen_wall_trophy.get(), TFItems.defaultBuilder().rarity(TwilightForestMod.getRarity()).setISTER(() -> (Callable<ItemStackTileEntityRenderer>) () -> new ISTER(TFTileEntities.TROPHY.getId()))).setRegistryName(snow_queen_trophy.getId()));
+		r.register(new ItemTFTrophy(quest_ram_trophy.get(), quest_ram_wall_trophy.get(), TFItems.defaultBuilder().rarity(TwilightForestMod.getRarity()).setISTER(() -> (Callable<ItemStackTileEntityRenderer>) () -> new ISTER(TFTileEntities.TROPHY.getId()))).setRegistryName(quest_ram_trophy.getId()));
+
 		r.register(new ItemBlockTFHugeLilyPad(huge_lilypad.get(), TFItems.defaultBuilder())
 						.setRegistryName(huge_lilypad.getId()));
 		r.register(new ItemBlockTFHugeWaterLily(huge_waterlily.get(), TFItems.defaultBuilder())
