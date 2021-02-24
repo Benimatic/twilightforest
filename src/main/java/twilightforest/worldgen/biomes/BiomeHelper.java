@@ -369,9 +369,6 @@ public abstract class BiomeHelper {
 
 		return biome;
 	}
-    
-
-    }
 
     public static BiomeAmbience.Builder whiteAshParticles(BiomeAmbience.Builder builder) {
         builder.setParticle(new ParticleEffectAmbience(ParticleTypes.WHITE_ASH, 0.2f));
