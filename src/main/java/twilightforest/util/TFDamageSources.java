@@ -10,8 +10,8 @@ public class TFDamageSources {
     public static final DamageSource GHAST_TEAR = new DamageSource("ghastTear"); //ur-ghast
     public static final DamageSource HYDRA_BITE = new DamageSource("hydraBite"); //hydra
     public static final DamageSource HYDRA_FIRE = new DamageSource("hydraFire"); //hydra
-    public static final DamageSource LICH_BOLT = new DamageSource("lichBolt"); //lich
-    public static final DamageSource LICH_BOMB = new DamageSource("lichBomb"); //lich
+    public static final DamageSource LICH_BOLT = new DamageSource("lichBolt").setDamageBypassesArmor().setMagicDamage(); //lich
+    public static final DamageSource LICH_BOMB = new DamageSource("lichBomb").setMagicDamage(); //lich
     public static final DamageSource CHILLING_BREATH = new DamageSource("chillingBreath"); //snow queen
     public static final DamageSource SQUISH = new DamageSource("squish"); //snow queen
     public static final DamageSource THROWN_AXE = new DamageSource("thrownAxe");
