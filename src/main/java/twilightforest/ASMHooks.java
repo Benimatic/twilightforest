@@ -35,7 +35,7 @@ import java.util.function.Predicate;
 @SuppressWarnings({"JavadocReference", "unused", "RedundantSuppression"})
 public class ASMHooks {
 
-	public static World world;
+	public static volatile World world;
 
 	/**
 	 * Injection Point:<br>
@@ -74,7 +74,7 @@ public class ASMHooks {
 	 * {@link net.minecraft.world.World#getEntitiesInAABBexcluding }<br>
 	 * [BEFORE ARETURN]
 	 */
-	public static List<Entity> multipartHitbox(List<Entity> list, World world, @Nullable Entity entityIn, AxisAlignedBB boundingBox, @Nullable Predicate<? super Entity> predicate) {
+	public static synchronized List<Entity> multipartHitbox(List<Entity> list, World world, @Nullable Entity entityIn, AxisAlignedBB boundingBox, @Nullable Predicate<? super Entity> predicate) {
 		ASMHooks.world = world;
 		Iterable<Entity> loaded = DistExecutor.safeRunForDist(() -> TFClientProxy::getEntityListForASM, () -> TFCommonProxy::getEntityListForASM);
 		ASMHooks.world = null;
