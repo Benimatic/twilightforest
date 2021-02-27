@@ -1,11 +1,7 @@
 package twilightforest.world;
 
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Mod;
-import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
@@ -15,9 +11,9 @@ public class TFDimensions {
 	//public static final RegistryKey<World> twilightForest = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get()));
 
 	public static void init() {
-		//Registry.register(Registry.BIOME_PROVIDER_CODEC, TwilightForestMod.prefix("biome_distributor"), TFBiomeDistributor.tfBiomeProviderCodec);
+		Registry.register(Registry.BIOME_PROVIDER_CODEC, TwilightForestMod.prefix("smart_distribution"), TFBiomeDistributor.TF_CODEC);
 		// TODO legacy
-		Registry.register(Registry.BIOME_PROVIDER_CODEC, TwilightForestMod.prefix("grid"), TFBiomeProvider.TF_BIOME_PROVIDER_CODEC);
+		Registry.register(Registry.BIOME_PROVIDER_CODEC, TwilightForestMod.prefix("grid"), TFBiomeProvider.TF_CODEC);
 
 		// For now use minecraft:noise until we need to terraform for features
 		Registry.register(Registry.CHUNK_GENERATOR_CODEC, TwilightForestMod.prefix("featured_noise"), ChunkGeneratorTwilightForest.CODEC);

@@ -9,7 +9,9 @@ import twilightforest.TFStructures;
 import java.util.Map;
 
 public final class BiomeMaker extends BiomeHelper {
-	public static Map<RegistryKey<Biome>, Biome> generateBiomes() {
+	public static final Map<RegistryKey<Biome>, Biome> BIOMES = generateBiomes();
+
+	private static Map<RegistryKey<Biome>, Biome> generateBiomes() {
 		final ImmutableMap.Builder<RegistryKey<Biome>, Biome> biomes = ImmutableMap.builder();
 
 		commonBiomes(biomes);

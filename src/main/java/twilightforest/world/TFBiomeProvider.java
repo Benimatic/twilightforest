@@ -30,7 +30,7 @@ import java.util.Optional;
 import java.util.function.LongFunction;
 
 public class TFBiomeProvider extends BiomeProvider {
-	public static final Codec<TFBiomeProvider> TF_BIOME_PROVIDER_CODEC = RecordCodecBuilder.create((instance) -> instance.group(
+	public static final Codec<TFBiomeProvider> TF_CODEC = RecordCodecBuilder.create((instance) -> instance.group(
 			Codec.LONG.fieldOf("seed").stable().orElseGet(() -> TFDimensions.seed).forGetter((obj) -> obj.seed),
 			RegistryLookupCodec.getLookUpCodec(Registry.BIOME_KEY).forGetter(provider -> provider.registry)
 	).apply(instance, instance.stable(TFBiomeProvider::new)));
@@ -160,7 +160,7 @@ public class TFBiomeProvider extends BiomeProvider {
 
 	@Override
 	protected Codec<? extends BiomeProvider> getBiomeProviderCodec() {
-		return TF_BIOME_PROVIDER_CODEC;
+		return TF_CODEC;
 	}
 
 	@Override
