@@ -26,7 +26,7 @@ public class ItemTFMinotaurAxe extends AxeItem {
 	private static final int BONUS_CHARGING_DAMAGE = 7;
 
 	protected ItemTFMinotaurAxe(IItemTier material, Properties props) {
-		super(material, 6F + material.getAttackDamage(), material.getEfficiency() * 0.05f - 3.4f, props);
+		super(material, 6F, material.getEfficiency() * 0.05f - 3.4f, props);
 	}
 
 	@SubscribeEvent
