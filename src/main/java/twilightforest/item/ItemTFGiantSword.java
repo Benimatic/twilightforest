@@ -7,7 +7,7 @@ import net.minecraft.item.SwordItem;
 public class ItemTFGiantSword extends SwordItem {
 
 	public ItemTFGiantSword(IItemTier material, Properties props) {
-		super(material, 10 + (int)material.getAttackDamage(), -3.5F, props);
+		super(material, 10, -3.5F, props);
 	}
 
 	@Override
