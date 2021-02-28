@@ -247,7 +247,6 @@ public class TileEntityTFAntibuilder extends TileEntity implements ITickableTile
 	}
 
 	private boolean isUnrevertable(BlockState stateThere, BlockState replaceWith) {
-		// todo 1.15 (!) add tower devices to the blacklist
 		return BLACKLIST.contains(stateThere.getBlock()) || BLACKLIST.contains(replaceWith.getBlock());
 	}
 
