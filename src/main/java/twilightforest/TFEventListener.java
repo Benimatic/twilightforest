@@ -467,8 +467,7 @@ public class TFEventListener {
 		PlayerInventory keepInventory = playerKeepsMap.remove(player.getUniqueID());
 		if (keepInventory != null) {
 			TwilightForestMod.LOGGER.warn("Dropping inventory items previously held in reserve for player {}", player.getName());
-			//TODO: Field is final
-//			keepInventory.player = player;
+			keepInventory.player = player;
 			keepInventory.dropAllItems();
 		}
 		//TODO: Baubles is dead
