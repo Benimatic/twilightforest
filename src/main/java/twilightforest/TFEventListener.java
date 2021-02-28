@@ -188,12 +188,14 @@ public class TFEventListener {
 		// enderbow teleports
 
 		// Smashing!
-		ItemStack stack = living.getItemStackFromSlot(EquipmentSlotType.HEAD);
-		Block block = Block.getBlockFromItem(stack.getItem());
-		if (block instanceof BlockTFCritter) {
-			BlockTFCritter poorBug = (BlockTFCritter) block;
-			living.setItemStackToSlot(EquipmentSlotType.HEAD, poorBug.getSquishResult());
-			living.world.playSound(null, living.getPosX(), living.getPosY(), living.getPosZ(), poorBug.getSoundType(poorBug.getDefaultState()).getBreakSound(), living.getSoundCategory(), 1, 1);
+		if (damageSource != DamageSource.FALL && damageSource != DamageSource.DROWN && damageSource != DamageSource.SWEET_BERRY_BUSH) {
+			ItemStack stack = living.getItemStackFromSlot(EquipmentSlotType.HEAD);
+			Block block = Block.getBlockFromItem(stack.getItem());
+			if (block instanceof BlockTFCritter) {
+				BlockTFCritter poorBug = (BlockTFCritter) block;
+				living.setItemStackToSlot(EquipmentSlotType.HEAD, poorBug.getSquishResult());
+				living.world.playSound(null, living.getPosX(), living.getPosY(), living.getPosZ(), TFSounds.BUG_SQUISH, living.getSoundCategory(), 1, 1);
+			}
 		}
 	}
 

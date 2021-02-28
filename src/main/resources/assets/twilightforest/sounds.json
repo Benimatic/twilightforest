@@ -194,6 +194,7 @@
   "entity.tome.parrot": { "subtitle": "subtitles.entity.tome.parrot", "sounds": [ { "type": "event", "name": "twilightforest:entity.tome.idle", "volume": 0.6, "pitch": 1.8 } ] },
   "entity.wraith.parrot": { "subtitle": "subtitles.entity.wraith.parrot", "sounds": [ { "type": "event", "name": "twilightforest:entity.wraith.ambient", "volume": 0.6, "pitch": 1.8 } ] },
 
+  "block.bug.squish": { "subtitle": "subtitles.block.bug.squish", "sounds": ["mob/slime/small1", "mob/slime/small2", "mob/slime/small3", "mob/slime/small4", "mob/slime/small5"] },
   "block.builder.on": { "subtitle": "subtitles.block.builder.on", "sounds": ["random/click"] },
   "block.builder.off": { "subtitle": "subtitles.block.builder.off", "sounds": ["random/click"] },
   "block.builder.replace": { "subtitle": "subtitles.block.builder.replace", "sounds": ["random/pop"] },

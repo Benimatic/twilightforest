@@ -866,6 +866,7 @@
   "subtitles.entity.tome.parrot": "Parrot makes book noises",
   "subtitles.entity.wraith.parrot": "Parrot gasps",
 
+  "subtitles.block.bug.squish": "Bug gets squished :(",
   "subtitles.block.builder.on": "Builder activates",
   "subtitles.block.builder.off": "Builder deactivates",
   "subtitles.block.builder.replace": "Builder replaces block",

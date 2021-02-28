@@ -39,6 +39,7 @@ public final class TFSounds {
 	public static final SoundEvent BUILDER_OFF = createEvent("block.builder.off");
 	public static final SoundEvent BUILDER_ON = createEvent("block.builder.on");
 	public static final SoundEvent BUILDER_REPLACE = createEvent("block.builder.replace");
+	public static final SoundEvent BUG_SQUISH = createEvent("block.bug.squish");
 	public static final SoundEvent CARMINITE_GOLEM_ATTACK = createEvent("entity.carminitegolem.attack");
 	public static final SoundEvent CARMINITE_GOLEM_DEATH = createEvent("entity.carminitegolem.death");
 	public static final SoundEvent CARMINITE_GOLEM_HURT = createEvent("entity.carminitegolem.hurt");

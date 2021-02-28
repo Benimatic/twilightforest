@@ -16,6 +16,7 @@
         "deco_provider": {
           "state": {
             "Properties": {
+              "waterlogged": "false",
               "facing": "north"
             },
             "Name": "twilightforest:firefly"
