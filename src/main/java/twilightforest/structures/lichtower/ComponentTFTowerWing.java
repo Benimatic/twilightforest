@@ -171,7 +171,7 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 			// I think there are very few circumstances where we can make a wing and not a bridge
 		}
 
-		ComponentTFTowerWing wing = new ComponentTFTowerWing(getStructurePieceType(), getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
+		ComponentTFTowerWing wing = new ComponentTFTowerWing(TFLichTowerPieces.TFLTWin, getFeatureType(), index, dx[0], dx[1], dx[2], wingSize, wingHeight, direction);
 		// check to see if it intersects something already there
 		StructurePiece intersect = StructurePiece.findIntersecting(list, wing.boundingBox);
 		if (intersect == null || intersect == this) {
