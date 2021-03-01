@@ -128,6 +128,7 @@ public abstract class BlockTFCritter extends DirectionalBlock implements IWaterL
 			ItemEntity squish = new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ());
 			squish.entityDropItem(this.getSquishResult().getStack());
 		}
+		super.onReplaced(state, worldIn, pos, newState, isMoving);
 	}
 
 	@Override
