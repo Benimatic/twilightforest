@@ -26,7 +26,7 @@ import java.util.Random;
 
 public class BlockTFPlant extends BushBlock {
 	private static final VoxelShape MAYAPPLE_SHAPE = makeCuboidShape(4, 0, 4, 13, 6, 13);
-	private static final VoxelShape FALLEN_LEAVES_SHAPE = makeCuboidShape(0, 0, 0, 1, 1, 1);
+	private static final VoxelShape FALLEN_LEAVES_SHAPE = makeCuboidShape(0, 0, 0, 16, 1, 16);
 
 	public final PlantVariant plantVariant;
 
