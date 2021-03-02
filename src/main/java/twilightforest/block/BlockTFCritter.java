@@ -25,6 +25,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
+import twilightforest.entity.projectile.EntityTFMoonwormShot;
 
 import javax.annotation.Nullable;
 
@@ -133,7 +134,7 @@ public abstract class BlockTFCritter extends DirectionalBlock implements IWaterL
 
 	@Override
 	public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
-		if (entityIn instanceof ProjectileEntity) {
+		if (entityIn instanceof ProjectileEntity && !(entityIn instanceof EntityTFMoonwormShot)) {
 			worldIn.setBlockState(pos, state.get(WATERLOGGED) ? Blocks.WATER.getDefaultState() : Blocks.AIR.getDefaultState());
 			ItemEntity squish = new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ());
 			squish.entityDropItem(this.getSquishResult().getStack());

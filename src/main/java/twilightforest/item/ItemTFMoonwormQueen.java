@@ -1,6 +1,7 @@
 package twilightforest.item;
 
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
@@ -22,12 +23,12 @@ import twilightforest.entity.TFEntities;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class ItemTFMoonwormQueen extends Item {
+public class ItemTFMoonwormQueen extends BlockItem {
 
 	protected static final int FIRING_TIME = 12;
 
-	protected ItemTFMoonwormQueen(Properties props) {
-		super(props);
+	protected ItemTFMoonwormQueen(Block block, Properties props) {
+		super(block, props);
 	}
 
 	@Override
@@ -59,7 +60,7 @@ public class ItemTFMoonwormQueen extends Item {
 		if (itemstack.getDamage() < itemstack.getMaxDamage() && player.canPlayerEdit(pos, context.getFace(), itemstack) && worldIn.placedBlockCollides(TFBlocks.moonworm.get().getDefaultState(), pos, ISelectionContext.dummy())) {
 			BlockState iblockstate1 = TFBlocks.moonworm.get().getStateForPlacement(blockItemUseContext);
 
-			if (placeMoonwormAt(itemstack, player, worldIn, pos, iblockstate1)) {
+			if (this.tryPlace(blockItemUseContext).isSuccessOrConsume()) {
 				SoundType soundtype = worldIn.getBlockState(pos).getBlock().getSoundType(worldIn.getBlockState(pos), worldIn, pos, player);
 				worldIn.playSound(player, pos, soundtype.getPlaceSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
 				// TF - damage stack instead of shrinking
@@ -71,21 +72,6 @@ public class ItemTFMoonwormQueen extends Item {
 		} else {
 			return ActionResultType.FAIL;
 		}
-	}
-
-	//	[VanillaCopy] ItemBlock.placeBlockAt
-	private boolean placeMoonwormAt(ItemStack stack, PlayerEntity player, World world, BlockPos pos, @Nullable BlockState state) {
-		if (state == null || !world.setBlockState(pos, state, 11)) return false;
-
-		BlockState real = world.getBlockState(pos);
-		if (real.getBlock() == TFBlocks.moonworm.get()) {
-			TFBlocks.moonworm.get().onBlockPlacedBy(world, pos, state, player, stack);
-			if (player instanceof ServerPlayerEntity) {
-				CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayerEntity) player, pos, stack);
-			}
-		}
-
-		return true;
 	}
 
 	@Override
