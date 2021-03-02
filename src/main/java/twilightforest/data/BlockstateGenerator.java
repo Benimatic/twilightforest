@@ -249,7 +249,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 						.texture("bottom", new ResourceLocation("block/jungle_planks"))
 						.texture("side", prefix("block/uncrafting_side")));
 		registerSmokersAndJets();
-		simpleBlock(TFBlocks.stone_twist.get(), models().cubeColumn(TFBlocks.stone_twist.getId().getPath(), prefix("block/stone_twist/twist_end"), prefix("block/stone_twist/twist_side")));
+		axisBlock(TFBlocks.stone_twist.get(), prefix("block/stone_twist/twist_side"), prefix("block/stone_twist/twist_end"));
 		ConfiguredModel[] lapisModels = new ConfiguredModel[4];
 		//for (int i = 0; i < 4; i++) {
 		//	String modelName = TFBlocks.lapis_block.getId().getPath();

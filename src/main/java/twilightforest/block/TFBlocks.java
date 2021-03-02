@@ -243,7 +243,7 @@ public class TFBlocks {
 	public static final RegistryObject<Block> iron_ladder                = BLOCKS.register("iron_ladder", () -> new BlockTFLadderBars(Block.Properties.create(Material.MISCELLANEOUS).hardnessAndResistance(5.0F, 10.0F).sound(SoundType.METAL).notSolid()));
 	//public static final RegistryObject<Block> terrorcotta_circle         = BLOCKS.register("terrorcotta_circle", () -> new BlockTFHorizontal(Block.Properties.create(Material.ROCK, MaterialColor.SAND).hardnessAndResistance(1.7F).sound(SoundType.STONE)));
 	//public static final RegistryObject<Block> terrorcotta_diagonal       = BLOCKS.register("terrorcotta_diagonal", () -> new BlockTFDiagonal(Block.Properties.create(Material.ROCK, MaterialColor.SAND).hardnessAndResistance(1.7F).sound(SoundType.STONE)));
-	public static final RegistryObject<Block> stone_twist                = BLOCKS.register("stone_twist", () -> new RotatedPillarBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(1.5F, 10.0F)));
+	public static final RegistryObject<RotatedPillarBlock> stone_twist   = BLOCKS.register("stone_twist", () -> new RotatedPillarBlock(Block.Properties.create(Material.ROCK).hardnessAndResistance(1.5F, 10.0F)));
 //	public static final RegistryObject<Block> stone_twist_thin           = BLOCKS.register("stone_twist_thin", () -> new BlockTFWallPillar(Material.ROCK, 12, 16));
 	//public static final RegistryObject<Block> lapis_block                = BLOCKS.register("lapis_block", () -> new Block(Block.Properties.create(Material.IRON).hardnessAndResistance(3.0F, 5.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<BlockKeepsakeCasket> keepsake_casket = BLOCKS.register("keepsake_casket", () -> new BlockKeepsakeCasket());
