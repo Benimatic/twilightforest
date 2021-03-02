@@ -60,7 +60,7 @@ public class ItemTFMoonwormQueen extends Item {
 		if (itemstack.getDamage() < itemstack.getMaxDamage() && player.canPlayerEdit(pos, context.getFace(), itemstack) && worldIn.placedBlockCollides(TFBlocks.moonworm.get().getDefaultState(), pos, ISelectionContext.dummy())) {
 			BlockState iblockstate1 = TFBlocks.moonworm.get().getStateForPlacement(blockItemUseContext);
 
-			if (this.tryPlace(blockItemUseContext).isSuccessOrConsume()) {
+			if (this.tryPlace(blockItemUseContext).isSuccess()) {
 				SoundType soundtype = worldIn.getBlockState(pos).getBlock().getSoundType(worldIn.getBlockState(pos), worldIn, pos, player);
 				worldIn.playSound(player, pos, soundtype.getPlaceSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
 				// TF - damage stack instead of shrinking
@@ -138,7 +138,7 @@ public class ItemTFMoonwormQueen extends Item {
 						itemstack.shrink(1);
 					}
 
-					return ActionResultType.func_233537_a_(world.isRemote);
+					return ActionResultType.SUCCESS;
 				}
 			}
 		}
