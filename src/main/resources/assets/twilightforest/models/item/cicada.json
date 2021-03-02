@@ -7,9 +7,9 @@
       "scale":[ 1.1, 1.1, 1.1 ]
     },
     "ground": {
-      "rotation": [ 180, 180, 0 ],
+      "rotation": [ 270, 180, 0 ],
       "translation": [ 0, 3, 0 ],
-      "scale":[ 0.75, 0.75, 0.75 ]
+      "scale":[ 0.5, 0.5, 0.5 ]
     },
     "head": {
       "rotation": [ 90, 0, 180 ],
