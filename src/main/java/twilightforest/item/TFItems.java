@@ -102,7 +102,7 @@ public class TFItems {
 	public static final RegistryObject<Item> ore_magnet = ITEMS.register("ore_magnet", () -> new ItemTFOreMagnet(defaultBuilder().maxDamage(12)));
 	public static final RegistryObject<Item> crumble_horn = ITEMS.register("crumble_horn", () -> new ItemTFCrumbleHorn(defaultBuilder().maxDamage(1024).rarity(Rarity.RARE)));
 	public static final RegistryObject<Item> peacock_fan = ITEMS.register("peacock_fan", () -> new ItemTFPeacockFan(defaultBuilder().maxDamage(1024).rarity(Rarity.RARE)));
-	public static final RegistryObject<Item> moonworm_queen = ITEMS.register("moonworm_queen", () -> new ItemTFMoonwormQueen(TFBlocks.moonworm.get(), defaultBuilder().setNoRepair().maxDamage(256).rarity(Rarity.RARE)));
+	public static final RegistryObject<Item> moonworm_queen = ITEMS.register("moonworm_queen", () -> new ItemTFMoonwormQueen(defaultBuilder().setNoRepair().maxDamage(256).rarity(Rarity.RARE)));
 	public static final RegistryObject<Item> charm_of_life_1 = ITEMS.register("charm_of_life_1", () -> new ItemCharmBaubleable(defaultBuilder().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> charm_of_life_2 = ITEMS.register("charm_of_life_2", () -> new ItemCharmBaubleable(defaultBuilder().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> charm_of_keeping_1 = ITEMS.register("charm_of_keeping_1", () -> new ItemCharmBaubleable(defaultBuilder().rarity(Rarity.UNCOMMON)));
