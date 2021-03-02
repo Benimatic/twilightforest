@@ -117,8 +117,8 @@ public final class TFSounds {
 	public static final SoundEvent MAZE_SLIME_DEATH_SMALL = createEvent("entity.mazeslimesmall.death");
 	public static final SoundEvent MAZE_SLIME_HURT = createEvent("entity.mazeslime.hurt");
 	public static final SoundEvent MAZE_SLIME_HURT_SMALL = createEvent("entity.mazeslimesmall.hurt");
-	public static final SoundEvent MAZE_SLIME_SQUISH = createEvent("entity.mazeslime.ambient");
-	public static final SoundEvent MAZE_SLIME_SQUISH_SMALL = createEvent("entity.mazeslimesmall.ambient");
+	public static final SoundEvent MAZE_SLIME_SQUISH = createEvent("entity.mazeslime.squish");
+	public static final SoundEvent MAZE_SLIME_SQUISH_SMALL = createEvent("entity.mazeslimesmall.squish");
 	public static final SoundEvent MINION_AMBIENT = createEvent("entity.minion.ambient");
 	public static final SoundEvent MINION_DEATH = createEvent("entity.minion.death");
 	public static final SoundEvent MINION_HURT = createEvent("entity.minion.hurt");
