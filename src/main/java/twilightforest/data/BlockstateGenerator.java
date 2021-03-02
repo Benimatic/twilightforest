@@ -676,7 +676,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 		woodGate(gate, plankTexName);
 		woodPlate(plate, plankTexName);
 		doorBlock(door, prefix("block/wood/door/" + variant + "_lower"), prefix("block/wood/door/" + variant + "_upper"));
-		trapdoorBlock(trapdoor, prefix("block/wood/trapdoor/" + variant + "_trapdoor"), false);
+		trapdoorBlock(trapdoor, prefix("block/wood/trapdoor/" + variant + "_trapdoor"), true);
 	}
 
 	private void woodGate(Block gate, String texName) {

@@ -17,11 +17,17 @@ public class RenderLayerRegistration {
 		RenderTypeLookup.setRenderLayer(TFBlocks.transformation_leaves.get(), cutoutMipped);
 		RenderTypeLookup.setRenderLayer(TFBlocks.mining_leaves.get(), cutoutMipped);
 		RenderTypeLookup.setRenderLayer(TFBlocks.sorting_leaves.get(), cutoutMipped);
+		RenderTypeLookup.setRenderLayer(TFBlocks.time_door.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.sort_door.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.time_trapdoor.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.sort_trapdoor.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.twilight_portal.get(), translucent);
 		RenderTypeLookup.setRenderLayer(TFBlocks.auroralized_glass.get(), translucent);
 		RenderTypeLookup.setRenderLayer(TFBlocks.thorn_rose.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.fiery_block.get(), translucent);
 		RenderTypeLookup.setRenderLayer(TFBlocks.thorn_leaves.get(), cutoutMipped);
 		RenderTypeLookup.setRenderLayer(TFBlocks.beanstalk_leaves.get(), cutoutMipped);
+		RenderTypeLookup.setRenderLayer(TFBlocks.giant_leaves.get(), cutoutMipped);
 		RenderTypeLookup.setRenderLayer(TFBlocks.experiment_115.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.wispy_cloud.get(), translucent);
 		RenderTypeLookup.setRenderLayer(TFBlocks.uberous_soil.get(), cutout);
