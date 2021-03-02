@@ -1,11 +1,16 @@
 package twilightforest;
 
+import net.minecraft.block.DispenserBlock;
+import net.minecraft.dispenser.IPosition;
+import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.Rarity;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.GameRules;
+import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -25,6 +30,8 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import twilightforest.advancements.TFAdvancements;
+import twilightforest.entity.projectile.EntityTFMoonwormShot;
+import twilightforest.util.MoonwormDispenseBehavior;
 import twilightforest.worldgen.biomes.BiomeKeys;
 import twilightforest.block.TFBlocks;
 import twilightforest.capabilities.CapabilityList;
@@ -163,8 +170,14 @@ public class TwilightForestMod {
 		evt.enqueueWork(() -> {
 			TFBlocks.tfCompostables();
 			TFBlocks.TFPots();
-			}
-		);
+			DispenserBlock.registerDispenseBehavior(TFItems.moonworm_queen.get(), new MoonwormDispenseBehavior() {
+				@Override
+				protected ProjectileEntity getProjectileEntity(World worldIn, IPosition position, ItemStack stackIn) {
+					return new EntityTFMoonwormShot(worldIn, position.getX(), position.getY(), position.getZ());
+
+				}
+			});
+		});
 	}
 
 	public void startServer(FMLServerAboutToStartEvent event) {

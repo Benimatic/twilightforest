@@ -4,8 +4,10 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.DirectionalBlock;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.DirectionalPlaceContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.particles.BlockParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
@@ -17,6 +19,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import twilightforest.block.TFBlocks;
+import twilightforest.entity.TFEntities;
 
 public class EntityTFMoonwormShot extends EntityTFThrowable {
 
@@ -28,6 +31,10 @@ public class EntityTFMoonwormShot extends EntityTFThrowable {
 		super(type, world, thrower);
 		func_234612_a_(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 1.5F, 1.0F);
 	}
+	public EntityTFMoonwormShot(World worldIn, double x, double y, double z) {
+		super(TFEntities.moonworm_shot, worldIn, x, y, z);
+	}
+
 
 	@Override
 	public void tick() {
@@ -93,6 +100,9 @@ public class EntityTFMoonwormShot extends EntityTFThrowable {
 				if (currentState.isReplaceable(context)) {
 					world.setBlockState(pos, TFBlocks.moonworm.get().getDefaultState().with(DirectionalBlock.FACING, ((BlockRayTraceResult) ray).getFace()));
 					// todo sound
+				} else {
+					ItemEntity squish = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ());
+					squish.entityDropItem(Items.LIME_DYE);
 				}
 			}
 
