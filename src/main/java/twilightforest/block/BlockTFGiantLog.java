@@ -7,7 +7,7 @@ import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.Direction;
 
-public class BlockTFGiantLog extends Block {
+public class BlockTFGiantLog extends BlockTFGiantBlock {
 
 	public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.AXIS;
 
