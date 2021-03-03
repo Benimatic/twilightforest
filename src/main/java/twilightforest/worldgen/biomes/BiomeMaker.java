@@ -98,8 +98,8 @@ public final class BiomeMaker extends BiomeHelper {
 						.build()
 		);
 
-		biomes.put(BiomeKeys.ENCHANTED_FOREST, // FIXME: colors
-				biomeWithDefaults(defaultAmbientBuilder().withFoliageColor(0x00FFFF).withGrassColor(0x00FFFF), defaultMobSpawning(), enchantedForestGen(defaultGenSettingBuilder().withStructure(TFStructures.CONFIGURED_QUEST_GROVE)))
+		biomes.put(BiomeKeys.ENCHANTED_FOREST,
+				biomeWithDefaults(defaultAmbientBuilder().withFoliageColor(0x00FFFF).withGrassColor(0x00FFFF).withGrassColorModifier(BiomeGrassColors.ENCHANTED_FOREST), defaultMobSpawning(), enchantedForestGen(defaultGenSettingBuilder().withStructure(TFStructures.CONFIGURED_QUEST_GROVE)))
 						.build()
 		);
 
@@ -126,7 +126,7 @@ public final class BiomeMaker extends BiomeHelper {
 
 	private static void swampBiomes(ImmutableMap.Builder<RegistryKey<Biome>, Biome> biomes) {
 		biomes.put(BiomeKeys.SWAMP,
-				biomeWithDefaults(defaultAmbientBuilder().withGrassColor(0x5C694E).withFoliageColor(0x496137).setWaterColor(0xE0FFAE), swampSpawning(), swampGen(defaultGenSettingBuilder()).withStructure(TFStructures.CONFIGURED_LABYRINTH))
+				biomeWithDefaults(defaultAmbientBuilder().withGrassColor(0x5C694E).withFoliageColor(0x496137).setWaterColor(0xE0FFAE).withGrassColorModifier(BiomeGrassColors.SWAMP), swampSpawning(), swampGen(defaultGenSettingBuilder()).withStructure(TFStructures.CONFIGURED_LABYRINTH))
 						.category(Biome.Category.SWAMP)
 						.temperature(0.8F)
 						.downfall(0.9F)
@@ -148,7 +148,7 @@ public final class BiomeMaker extends BiomeHelper {
 
 	private static void darkForestBiomes(ImmutableMap.Builder<RegistryKey<Biome>, Biome> biomes) {
 		biomes.put(BiomeKeys.DARK_FOREST,
-				biomeWithDefaults(defaultAmbientBuilder().withGrassColor(0x4B6754).withFoliageColor(0x3B5E3F), darkForestSpawning(), darkForestGen().withStructure(TFStructures.CONFIGURED_KNIGHT_STRONGHOLD))
+				biomeWithDefaults(defaultAmbientBuilder().withGrassColor(0x4B6754).withFoliageColor(0x3B5E3F).withGrassColorModifier(BiomeGrassColors.DARK_FOREST), darkForestSpawning(), darkForestGen().withStructure(TFStructures.CONFIGURED_KNIGHT_STRONGHOLD))
 						.temperature(0.7F)
 						.downfall(0.8F)
 						.depth(0.125F)
@@ -157,7 +157,7 @@ public final class BiomeMaker extends BiomeHelper {
 		);
 
 		biomes.put(BiomeKeys.DARK_FOREST_CENTER, // FIXME: colors
-				biomeWithDefaults(defaultAmbientBuilder().withGrassColor(0x667540).withFoliageColor(0xF9821E), new MobSpawnInfo.Builder(), darkForestCenterGen().withStructure(TFStructures.CONFIGURED_DARK_TOWER))
+				biomeWithDefaults(defaultAmbientBuilder().withGrassColor(0x667540).withFoliageColor(0xF9821E).withGrassColorModifier(BiomeGrassColors.DARK_FOREST_CENTER), new MobSpawnInfo.Builder(), darkForestCenterGen().withStructure(TFStructures.CONFIGURED_DARK_TOWER))
 						.depth(0.125F)
 						.scale(0.05F)
 						.build()

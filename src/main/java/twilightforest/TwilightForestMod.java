@@ -32,6 +32,7 @@ import org.apache.logging.log4j.Logger;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.entity.projectile.EntityTFMoonwormShot;
 import twilightforest.util.MoonwormDispenseBehavior;
+import twilightforest.worldgen.biomes.BiomeGrassColors;
 import twilightforest.worldgen.biomes.BiomeKeys;
 import twilightforest.block.TFBlocks;
 import twilightforest.capabilities.CapabilityList;
@@ -110,7 +111,9 @@ public class TwilightForestMod {
 //		TFDimensions.BIOME_PROVIDER_TYPES.register(modbus);
 //		TFDimensions.CHUNK_GENERATOR_TYPES.register(modbus);
 //		TFDimensions.MOD_DIMENSIONS.register(modbus);
-		new TwilightFeatures(); // TODO make deferred registry once available
+		// Poke these so they exist when we need them FIXME this is probably terrible design
+		new TwilightFeatures();
+		new BiomeGrassColors();
 
 		// TODO: move these to proper spots
 		// WorldProviderTwilightForest.syncFromConfig();
