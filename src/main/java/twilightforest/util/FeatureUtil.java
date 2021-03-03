@@ -52,6 +52,7 @@ public class FeatureUtil {
 		}
 	}
 
+	// TODO Determine if we should cut this method
 	public static void makeLeafSpheroid(IWorldGenerationReader world, Random random, BlockPos centerPos, float xzRadius, float yRadius, float verticalBias, BlockStateProvider state, Set<BlockPos> leaves) {
 		float xzRadiusSquared = xzRadius * xzRadius;
 		float yRadiusSquared = yRadius * yRadius;

@@ -58,6 +58,7 @@
       "random_add_horizontal": 0,
       "random_add_vertical": 0,
       "vertical_filler_bias": -0.45,
+      "shag_factor": 0,
       "horizontal_radius": 4.25,
       "vertical_radius": 1.75,
       "offset": 1,
