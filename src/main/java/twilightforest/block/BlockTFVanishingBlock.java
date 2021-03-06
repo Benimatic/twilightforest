@@ -152,7 +152,7 @@ public class BlockTFVanishingBlock extends Block {
 					world.removeBlock(pos, false);
 				}
 
-				world.playSound(null, pos, TFSounds.VANISHING_BLOCK, SoundCategory.BLOCKS, 0.3F, 0.5F);
+				world.playSound(null, pos, state.getBlock() == TFBlocks.reappearing_block.get() ? TFSounds.REAPPEAR_POOF : TFSounds.VANISHING_BLOCK, SoundCategory.BLOCKS, 0.3F, 0.5F);
 
 				for (Direction e : Direction.values()) {
 					activate(world, pos.offset(e));

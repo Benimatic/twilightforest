@@ -161,7 +161,8 @@ public final class TFSounds {
 	public static final SoundEvent RAVEN_CAW = createEvent("entity.raven.caw");
 	public static final SoundEvent RAVEN_SQUAWK = createEvent("entity.raven.squawk");
 	public static final SoundEvent REACTOR_AMBIENT = createEvent("te.reactor.idle");
-	public static final SoundEvent REAPPEAR_BLOCK = createEvent("block.vanish.reappear");
+	public static final SoundEvent REAPPEAR_BLOCK = createEvent("block.reappear.reappear");
+	public static final SoundEvent REAPPEAR_POOF = createEvent("block.reappear.vanish");
 	public static final SoundEvent REDCAP_AMBIENT = createEvent("entity.redcap.ambient");
 	public static final SoundEvent REDCAP_DEATH = createEvent("entity.redcap.death");
 	public static final SoundEvent REDCAP_HURT = createEvent("entity.redcap.hurt");
