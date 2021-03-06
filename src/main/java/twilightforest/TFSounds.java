@@ -144,11 +144,11 @@ public final class TFSounds {
 	public static final SoundEvent NAGA_HURT = createEvent("entity.naga.hurt");
 	public static final SoundEvent NAGA_RATTLE = createEvent("entity.naga.rattle");
 	public static final SoundEvent PEDESTAL_ACTIVATE = createEvent("block.pedestal.activate");
-	public static final SoundEvent PHANTOM_AMBIENT = createEvent("entity.phantom.ambient");
-	public static final SoundEvent PHANTOM_DEATH = createEvent("entity.phantom.death");
-	public static final SoundEvent PHANTOM_HURT = createEvent("entity.phantom.hurt");
-	public static final SoundEvent PHANTOM_THROW_AXE = createEvent("entity.phantom.axe");
-	public static final SoundEvent PHANTOM_THROW_PICK = createEvent("entity.phantom.pick");
+	public static final SoundEvent PHANTOM_AMBIENT = createEvent("entity.kphantom.ambient");
+	public static final SoundEvent PHANTOM_DEATH = createEvent("entity.kphantom.death");
+	public static final SoundEvent PHANTOM_HURT = createEvent("entity.kphantom.hurt");
+	public static final SoundEvent PHANTOM_THROW_AXE = createEvent("entity.kphantom.axe");
+	public static final SoundEvent PHANTOM_THROW_PICK = createEvent("entity.kphantom.pick");
 	public static final SoundEvent PINCH_BEETLE_DEATH = createEvent("entity.pinchbeetle.death");
 	public static final SoundEvent PINCH_BEETLE_HURT = createEvent("entity.pinchbeetle.hurt");
 	public static final SoundEvent PINCH_BEETLE_STEP = createEvent("entity.pinchbeetle.step");
