@@ -3,6 +3,8 @@ package twilightforest.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.particles.RedstoneParticleData;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.*;
@@ -37,13 +39,6 @@ public class BlockTFCastleDoor extends Block {
 		super(props);
 		this.setDefaultState(stateContainer.getBaseState().with(ACTIVE, false).with(VANISHED, false));
 	}
-
-	//TODO: Material cannot be dynamic
-//	@Override
-//	@Deprecated
-//	public Material getMaterial(BlockState state) {
-//		return state.get(VANISHED) ? Material.GLASS : super.getMaterial(state);
-//	}
 
 	@Override
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
@@ -101,16 +96,10 @@ public class BlockTFCastleDoor extends Block {
 		// check if we are in a structure, and if that structure says that we are locked
 		if (!world.isRemote) {
 			ChunkGeneratorTwilightBase generator = TFGenerationSettings.getChunkGenerator(world);
-			return generator != null /*&& generator.isStructureLocked(pos, lockIndex)*/;
+			//return generator != null && generator.isStructureLocked(pos, lockIndex);
 		}
 		return false;
 	}
-
-	//TODO: Does not exist. Must be specified in scheduleTick() directly
-//	@Override
-//	public int tickRate() {
-//		return 5;
-//	}
 
 	@Override
 	@Deprecated
@@ -168,49 +157,49 @@ public class BlockTFCastleDoor extends Block {
 	public void animateTick(BlockState state, World world, BlockPos pos, Random random) {
 		if (state.get(ACTIVE)) {
 			for (int i = 0; i < 1; ++i) {
-				//this.sparkle(world, x, y, z, random);
+				//this.sparkle(world, new BlockPos(pos.getX(), pos.getY(), pos.getZ()), random);
 			}
 		}
 	}
 
 	// [VanillaCopy] BlockRedStoneOre.spawnParticles with own rand
-	//@SuppressWarnings("unused")
-//	private void sparkle(World worldIn, BlockPos pos, Random rand) {
-//		Random random = rand;
-//		double d0 = 0.0625D;
-//
-//		for (int i = 0; i < 6; ++i) {
-//			double d1 = (double) ((float) pos.getX() + random.nextFloat());
-//			double d2 = (double) ((float) pos.getY() + random.nextFloat());
-//			double d3 = (double) ((float) pos.getZ() + random.nextFloat());
-//
-//			if (i == 0 && !worldIn.getBlockState(pos.up()).isOpaqueCube()) {
-//				d2 = (double) pos.getY() + 0.0625D + 1.0D;
-//			}
-//
-//			if (i == 1 && !worldIn.getBlockState(pos.down()).isOpaqueCube()) {
-//				d2 = (double) pos.getY() - 0.0625D;
-//			}
-//
-//			if (i == 2 && !worldIn.getBlockState(pos.south()).isOpaqueCube()) {
-//				d3 = (double) pos.getZ() + 0.0625D + 1.0D;
-//			}
-//
-//			if (i == 3 && !worldIn.getBlockState(pos.north()).isOpaqueCube()) {
-//				d3 = (double) pos.getZ() - 0.0625D;
-//			}
-//
-//			if (i == 4 && !worldIn.getBlockState(pos.east()).isOpaqueCube()) {
-//				d1 = (double) pos.getX() + 0.0625D + 1.0D;
-//			}
-//
-//			if (i == 5 && !worldIn.getBlockState(pos.west()).isOpaqueCube()) {
-//				d1 = (double) pos.getX() - 0.0625D;
-//			}
-//
-//			if (d1 < (double) pos.getX() || d1 > (double) (pos.getX() + 1) || d2 < 0.0D || d2 > (double) (pos.getY() + 1) || d3 < (double) pos.getZ() || d3 > (double) (pos.getZ() + 1)) {
-//				worldIn.spawnParticle(ParticleTypes.REDSTONE, d1, d2, d3, 0.0D, 0.0D, 0.0D, new int[0]);
-//			}
-//		}
-//	}
+	@SuppressWarnings("unused")
+	private void sparkle(World worldIn, BlockPos pos, Random rand) {
+		Random random = rand;
+		double d0 = 0.0625D;
+
+		for (int i = 0; i < 6; ++i) {
+			double d1 = (double) ((float) pos.getX() + random.nextFloat());
+			double d2 = (double) ((float) pos.getY() + random.nextFloat());
+			double d3 = (double) ((float) pos.getZ() + random.nextFloat());
+
+			if (i == 0 && !worldIn.getBlockState(pos.up()).isOpaqueCube(worldIn, pos)) {
+				d2 = (double) pos.getY() + 0.0625D + 1.0D;
+			}
+
+			if (i == 1 && !worldIn.getBlockState(pos.down()).isOpaqueCube(worldIn, pos)) {
+				d2 = (double) pos.getY() - 0.0625D;
+			}
+
+			if (i == 2 && !worldIn.getBlockState(pos.south()).isOpaqueCube(worldIn, pos)) {
+				d3 = (double) pos.getZ() + 0.0625D + 1.0D;
+			}
+
+			if (i == 3 && !worldIn.getBlockState(pos.north()).isOpaqueCube(worldIn, pos)) {
+				d3 = (double) pos.getZ() - 0.0625D;
+			}
+
+			if (i == 4 && !worldIn.getBlockState(pos.east()).isOpaqueCube(worldIn, pos)) {
+				d1 = (double) pos.getX() + 0.0625D + 1.0D;
+			}
+
+			if (i == 5 && !worldIn.getBlockState(pos.west()).isOpaqueCube(worldIn, pos)) {
+				d1 = (double) pos.getX() - 0.0625D;
+			}
+
+			if (d1 < (double) pos.getX() || d1 > (double) (pos.getX() + 1) || d2 < 0.0D || d2 > (double) (pos.getY() + 1) || d3 < (double) pos.getZ() || d3 > (double) (pos.getZ() + 1)) {
+				worldIn.addParticle(RedstoneParticleData.REDSTONE_DUST, false, d1, d2, d3, 0.0D, 0.0D, 0.0D);
+			}
+		}
+	}
 }

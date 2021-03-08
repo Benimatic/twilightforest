@@ -842,7 +842,7 @@
   "subtitles.block.builder.off": "Builder deactivates",
   "subtitles.block.builder.replace": "Builder replaces block",
   "subtitles.block.door.activate": "Castle Door activates",
-  "subtitles.block.door.reappear": "Castle Door reappears",
+  "subtitles.block.door.activate": "Castle Door fails to vanish",
   "subtitles.block.door.vanish": "Castle Door vanishes",
   "subtitles.block.vanish.locked": "Towerwood door fails to vanish",
   "subtitles.block.vanish.unlock": "Towerwood door unlocks",
