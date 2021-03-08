@@ -26,13 +26,12 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar {
 	}
 
 	@Override
-	protected boolean canConnectTo(BlockState state, Direction dirToNeighbor, BlockState neighborState, IWorld world, BlockPos pos, BlockPos neighborPos) {
-		return (neighborState.getBlock() instanceof BlockTFThorns
-						|| neighborState.getBlock() == TFBlocks.thorn_rose.get()
-						|| neighborState.getBlock() == TFBlocks.thorn_leaves.get()
-						|| neighborState.getMaterial() == Material.PLANTS
-						|| neighborState.getMaterial() == Material.EARTH)
-						&& dirToNeighbor.getAxis() != state.get(AXIS);
+	public boolean canConnectTo(BlockState state, boolean solidSide) {
+		return (state.getBlock() instanceof BlockTFThorns
+						|| state.getBlock() == TFBlocks.thorn_rose.get()
+						|| state.getBlock() == TFBlocks.thorn_leaves.get()
+						|| state.getMaterial() == Material.PLANTS
+						|| state.getMaterial() == Material.EARTH);
 	}
 
 	@Nullable
