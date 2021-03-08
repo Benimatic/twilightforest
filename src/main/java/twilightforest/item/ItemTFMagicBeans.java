@@ -33,7 +33,7 @@ public class ItemTFMagicBeans extends Item {
 		Block blockAt = world.getBlockState(pos).getBlock();
 
 		int minY = pos.getY() + 1;
-		int maxY = Math.max(pos.getY() + 100, (int) (getCloudHeight(world) + 25));
+		int maxY = Math.max(pos.getY() + 100, (int) (getCloudHeight(world) + 40));
 		if (pos.getY() < maxY && blockAt == TFBlocks.uberous_soil.get()) {
 			if (!world.isRemote) {
 				ItemStack is = player.getHeldItem(context.getHand());
@@ -52,14 +52,7 @@ public class ItemTFMagicBeans extends Item {
 
 	@SuppressWarnings("RedundantCast")
 	private float getCloudHeight(World world) {
-		if (world.getDimensionKey().getLocation().toString().equals(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get())) {
-			// WorldProviderTwilightForest has this method on both server and client
-			return ((ClientWorld)world).func_239132_a_().func_239213_a_();
-		} else {
-			// otherwise, world.dimension.getCloudHeight() is client only. guess 128
-			// FIXME Isn't cloud height re-added to Dimension Type?
-			return 128;
-		}
+		return 128;
 	}
 
 
