@@ -16,6 +16,7 @@ import twilightforest.block.TFBlocks;
 import twilightforest.util.TFDamageSources;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Random;
 
 public class EntityTFGiantMiner extends MonsterEntity {
@@ -58,6 +59,7 @@ public class EntityTFGiantMiner extends MonsterEntity {
 		ILivingEntityData data = super.onInitialSpawn(worldIn, difficulty, reason, spawnDataIn, dataTag);
 		setEquipmentBasedOnDifficulty(difficulty);
 		setEnchantmentBasedOnDifficulty(difficulty);
+
 		return data;
 	}
 
@@ -71,4 +73,20 @@ public class EntityTFGiantMiner extends MonsterEntity {
 		entityIn.attackEntityFrom(TFDamageSources.ANT(this), (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE));
 		return super.attackEntityAsMob(entityIn);
 	}
+
+	@Override
+	public int getMaxSpawnedInChunk() {
+		return 1;
+	}
+
+	@Override
+	public boolean canSpawn(IWorld worldIn, SpawnReason spawnReasonIn) {
+		List<EntityTFGiantMiner> giantsNearby = worldIn.getEntitiesWithinAABB(EntityTFGiantMiner.class, this.getBoundingBox().grow(50));
+		return giantsNearby.size() < 15;
+	}
+
+	public static boolean canSpawn(EntityType<? extends EntityTFGiantMiner> type, IWorld world, SpawnReason reason, BlockPos pos, Random rand) {
+		return pos.getY() > 60 && (MobEntity.canSpawnOn(type, world, reason, pos, rand) || world.getBlockState(pos).getBlock() == TFBlocks.wispy_cloud.get() || world.getBlockState(pos).getBlock() == TFBlocks.fluffy_cloud.get());
+	}
+
 }

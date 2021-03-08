@@ -35,6 +35,7 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.IForgeRegistry;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.TFBlocks;
 import twilightforest.client.model.entity.*;
 import twilightforest.client.renderer.entity.*;
 import twilightforest.entity.boss.*;
@@ -51,20 +52,24 @@ import java.util.List;
 public class TFEntities {
 
 	public static final EntitySpawnPlacementRegistry.PlacementType ON_ICE = EntitySpawnPlacementRegistry.PlacementType.create("TF_ON_ICE", (world, pos, entityType) -> {
-
 		BlockState state = world.getBlockState(pos.down());
 		Block block = state.getBlock();
 		Material material = state.getMaterial();
 		BlockPos up = pos.up();
-
 		return (material == Material.ICE || material == Material.PACKED_ICE) && block != Blocks.BEDROCK && block != Blocks.BARRIER && WorldEntitySpawner.func_234968_a_(world, pos, world.getBlockState(pos), world.getFluidState(pos), entityType) && WorldEntitySpawner.func_234968_a_(world, up, world.getBlockState(up), world.getFluidState(up), entityType);
+	});
+
+	public static final EntitySpawnPlacementRegistry.PlacementType CLOUDS = EntitySpawnPlacementRegistry.PlacementType.create("CLOUD_DWELLERS", (world, pos, entityType) -> {
+		BlockState state = world.getBlockState(pos.down());
+		Block block = state.getBlock();
+		BlockPos up = pos.up();
+		return (block == TFBlocks.wispy_cloud.get() || block == TFBlocks.wispy_cloud.get()) && block != Blocks.BEDROCK && block != Blocks.BARRIER && WorldEntitySpawner.func_234968_a_(world, pos, world.getBlockState(pos), world.getFluidState(pos), entityType) && WorldEntitySpawner.func_234968_a_(world, up, world.getBlockState(up), world.getFluidState(up), entityType);
 	});
 
 	private static final List<EntityType<?>> ALL = new ArrayList<>();
 	public static final EntityType<EntityTFBoar> wild_boar = make(TFEntityNames.WILD_BOAR, EntityTFBoar::new, EntityClassification.CREATURE, 0.9F, 0.9F);
 	public static final EntityType<EntityTFBighorn> bighorn_sheep = make(TFEntityNames.BIGHORN_SHEEP, EntityTFBighorn::new, EntityClassification.CREATURE, 0.9F, 1.3F);
 	public static final EntityType<EntityTFDeer> deer = make(TFEntityNames.DEER, EntityTFDeer::new, EntityClassification.CREATURE, 0.7F, 1.8F);
-
 	public static final EntityType<EntityTFRedcap> redcap = make(TFEntityNames.REDCAP, EntityTFRedcap::new, EntityClassification.MONSTER, 0.9F, 1.4F);
 	public static final EntityType<EntityTFSwarmSpider> swarm_spider = make(TFEntityNames.SWARM_SPIDER, EntityTFSwarmSpider::new, EntityClassification.MONSTER, 0.8F, 0.4F);
 	public static final EntityType<EntityTFNaga> naga = make(TFEntityNames.NAGA, EntityTFNaga::new, EntityClassification.MONSTER, 1.75f, 3.0f);
@@ -185,7 +190,6 @@ public class TFEntities {
 		r.register(spawnEgg(wild_boar, 0x83653b, 0xffefca));
 		r.register(spawnEgg(bighorn_sheep, 0xdbceaf, 0xd7c771));
 		r.register(spawnEgg(deer, 0x7b4d2e, 0x4b241d));
-
 		r.register(spawnEgg(redcap, 0x3b3a6c, 0xab1e14));
 		r.register(spawnEgg(swarm_spider, 0x32022e, 0x17251e));
 		r.register(spawnEgg(naga, 0xa4d316, 0x1b380b));
@@ -248,13 +252,12 @@ public class TFEntities {
 		EntitySpawnPlacementRegistry.register(wild_boar, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, AnimalEntity::canAnimalSpawn);
 		EntitySpawnPlacementRegistry.register(bighorn_sheep, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, AnimalEntity::canAnimalSpawn);
 		EntitySpawnPlacementRegistry.register(deer, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, AnimalEntity::canAnimalSpawn);
-
 		EntitySpawnPlacementRegistry.register(redcap, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::canMonsterSpawn);
 		EntitySpawnPlacementRegistry.register(skeleton_druid, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityTFSkeletonDruid::skeletonDruidSpawnHandler);
 		EntitySpawnPlacementRegistry.register(wraith, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityTFWraith::getCanSpawnHere);
 		EntitySpawnPlacementRegistry.register(hydra, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MobEntity::canSpawnOn);
 		EntitySpawnPlacementRegistry.register(lich, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MobEntity::canSpawnOn);
-		EntitySpawnPlacementRegistry.register(penguin, ON_ICE, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, AnimalEntity::canAnimalSpawn);
+		EntitySpawnPlacementRegistry.register(penguin, ON_ICE, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityTFPenguin::canSpawn);
 		EntitySpawnPlacementRegistry.register(lich_minion, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MobEntity::canSpawnOn);
 		EntitySpawnPlacementRegistry.register(loyal_zombie, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MobEntity::canSpawnOn);
 		EntitySpawnPlacementRegistry.register(tiny_bird, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, AnimalEntity::canAnimalSpawn);
@@ -296,9 +299,9 @@ public class TFEntities {
 		EntitySpawnPlacementRegistry.register(stable_ice_core, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::canMonsterSpawn);
 		EntitySpawnPlacementRegistry.register(unstable_ice_core, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::canMonsterSpawn);
 		EntitySpawnPlacementRegistry.register(snow_queen, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MobEntity::canSpawnOn);
-		EntitySpawnPlacementRegistry.register(troll, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::canMonsterSpawn);
-		EntitySpawnPlacementRegistry.register(giant_miner, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::canMonsterSpawn);
-		EntitySpawnPlacementRegistry.register(armored_giant, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::canMonsterSpawn);
+		EntitySpawnPlacementRegistry.register(troll, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityTFTroll::canSpawn);
+		EntitySpawnPlacementRegistry.register(giant_miner, CLOUDS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityTFGiantMiner::canSpawn);
+		EntitySpawnPlacementRegistry.register(armored_giant, CLOUDS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, EntityTFGiantMiner::canSpawn);
 		EntitySpawnPlacementRegistry.register(ice_crystal, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MobEntity::canSpawnOn);
 		EntitySpawnPlacementRegistry.register(harbinger_cube, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::canMonsterSpawn);
 		EntitySpawnPlacementRegistry.register(adherent, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MonsterEntity::canMonsterSpawn);

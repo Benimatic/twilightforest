@@ -7,11 +7,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.ISeedReader;
+import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import twilightforest.TFFeature;
+import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.EntityTFArmoredGiant;
 import twilightforest.entity.EntityTFGiantMiner;
@@ -44,7 +46,7 @@ public class ComponentTFCloudCastle extends StructureTFComponentOld {
 		// spawn list!
 		this.spawnListIndex = 1;
 
-		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -8, 0, -8, 16, 16, 16, Direction.SOUTH);
+		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -8, -5, -8, 64, 16, 64, Direction.SOUTH);
 	}
 
 	@Override
@@ -60,64 +62,66 @@ public class ComponentTFCloudCastle extends StructureTFComponentOld {
 		// tree in x direction
 		boolean plus = rand.nextBoolean();
 		int offset = rand.nextInt(5) - rand.nextInt(5);
-		ComponentTFCloudTree treeX = new ComponentTFCloudTree(getFeatureType(), this.getComponentType() + 1, boundingBox.minX + (plus ? 16 : -16), 168, boundingBox.minZ - 8 + (offset * 4));
+		ComponentTFCloudTree treeX = new ComponentTFCloudTree(getFeatureType(), this.getComponentType() + 1, boundingBox.minX + 8 + (plus ? 32 : -16), 168, boundingBox.minZ + (offset * 4));
 		list.add(treeX);
 		treeX.buildComponent(this, list, rand);
 
 		// tree in z direction
 		plus = rand.nextBoolean();
 		offset = rand.nextInt(5) - rand.nextInt(5);
-		ComponentTFCloudTree treeZ = new ComponentTFCloudTree(getFeatureType(), this.getComponentType() + 1, boundingBox.minX - 8 + (offset * 4), 168, boundingBox.minZ + (plus ? 16 : -16));
+		ComponentTFCloudTree treeZ = new ComponentTFCloudTree(getFeatureType(), this.getComponentType() + 1, boundingBox.minX + (offset * 4), 168, boundingBox.minZ + 8 + (plus ? 32 : -16));
 		list.add(treeZ);
 		treeZ.buildComponent(this, list, rand);
+
 	}
 
 	@Override
 	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
+
 		// make haus
-		this.fillWithBlocks(world, sbb, 0, -4, 0, 15, -1, 15, TFBlocks.fluffy_cloud.get().getDefaultState(), TFBlocks.fluffy_cloud.get().getDefaultState(), false);
-		this.fillWithBlocks(world, sbb, 0, 0, 0, 15, 11, 15, TFBlocks.giant_cobblestone.get().getDefaultState(), TFBlocks.giant_cobblestone.get().getDefaultState(), false);
-		this.fillWithBlocks(world, sbb, 0, 12, 0, 15, 15, 15, TFBlocks.giant_log.get().getDefaultState(), TFBlocks.giant_log.get().getDefaultState(), false);
+		this.fillWithBlocks(world, sbb, 8, 0, 8, 23, 3, 23, TFBlocks.fluffy_cloud.get().getDefaultState(), TFBlocks.fluffy_cloud.get().getDefaultState(), false);
+		this.fillWithBlocks(world, sbb, 8, 4, 8, 23, 15, 23, TFBlocks.giant_cobblestone.get().getDefaultState(), TFBlocks.giant_cobblestone.get().getDefaultState(), false);
+		this.fillWithBlocks(world, sbb, 8, 16, 8, 23, 19, 23, TFBlocks.giant_log.get().getDefaultState(), TFBlocks.giant_log.get().getDefaultState(), false);
 
 		// clear inside
-		this.fillWithAir(world, sbb, 4, 0, 4, 11, 11, 11);
+		this.fillWithAir(world, sbb, 12, 4, 12, 19, 15, 19);
 
 		// clear door
-		this.fillWithAir(world, sbb, 0, 0, 4, 4, 7, 7);
+		this.fillWithAir(world, sbb, 8, 4, 12, 12, 11, 15);
 
 		// add giants
 		if (!this.minerPlaced) {
-			int bx = this.getXWithOffset(6, 6);
-			int by = this.getYWithOffset(0);
-			int bz = this.getZWithOffset(6, 6);
+			int bx = this.getXWithOffset(14, 14);
+			int by = this.getYWithOffset(4);
+			int bz = this.getZWithOffset(14, 14);
 			BlockPos pos = new BlockPos(bx, by, bz);
 
 			if (sbb.isVecInside(pos)) {
 				this.minerPlaced = true;
 
-				/* FIXME EntityTFGiantMiner miner = new EntityTFGiantMiner(TFEntities.giant_miner, world);
+				EntityTFGiantMiner miner = new EntityTFGiantMiner(TFEntities.giant_miner, world.getWorld());
 				miner.setPosition(bx, by, bz);
 				miner.enablePersistence();
 				miner.onInitialSpawn(world, world.getDifficultyForLocation(pos), SpawnReason.STRUCTURE, null, null);
 
-				world.addEntity(miner);*/
+				world.addEntity(miner);
 			}
 		}
 		if (!this.warriorPlaced) {
-			int bx = this.getXWithOffset(9, 9);
-			int by = this.getYWithOffset(0);
-			int bz = this.getZWithOffset(9, 9);
+			int bx = this.getXWithOffset(17, 17);
+			int by = this.getYWithOffset(4);
+			int bz = this.getZWithOffset(17, 17);
 			BlockPos pos = new BlockPos(bx, by, bz);
 
 			if (sbb.isVecInside(pos)) {
 				this.warriorPlaced = true;
 
-				/* FIXME EntityTFArmoredGiant warrior = new EntityTFArmoredGiant(TFEntities.armored_giant, world);
+				EntityTFArmoredGiant warrior = new EntityTFArmoredGiant(TFEntities.armored_giant, world.getWorld());
 				warrior.setPosition(bx, by, bz);
 				warrior.enablePersistence();
 				warrior.onInitialSpawn(world, world.getDifficultyForLocation(pos), SpawnReason.STRUCTURE, null, null);
 
-				world.addEntity(warrior);*/
+				world.addEntity(warrior);
 			}
 		}
 
