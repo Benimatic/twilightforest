@@ -3,6 +3,7 @@ package twilightforest.block;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.Block;
 import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.particles.RedstoneParticleData;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.block.BlockState;
@@ -109,7 +110,7 @@ public class BlockTFTrollSteinn extends Block {
 			}
 
 			if (rx < pos.getX() || rx > pos.getX() + 1 || ry < 0.0D || ry > pos.getY() + 1 || rz < pos.getZ() || rz > pos.getZ() + 1) {
-				world.addParticle(RedstoneParticleData.REDSTONE_DUST, rx, ry, rz, 0.25D, -1.0D, 0.5D);
+				world.addParticle(new RedstoneParticleData(0.0F, random.nextFloat(), 1.0F, 1.0F), rx, ry, rz, 0.25D, -1.0D, 0.5D);
 			}
 		}
 	}
