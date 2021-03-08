@@ -91,6 +91,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.castle_brick_cracked.get());
 		registerDropSelfLootTable(TFBlocks.castle_brick_mossy.get());
 		registerDropSelfLootTable(TFBlocks.castle_brick_frame.get());
+		registerDropSelfLootTable(TFBlocks.castle_brick_roof.get());
 		registerDropSelfLootTable(TFBlocks.castle_pillar_encased.get());
 		registerDropSelfLootTable(TFBlocks.castle_pillar_encased_tile.get());
 		registerDropSelfLootTable(TFBlocks.castle_pillar_bold.get());
@@ -152,6 +153,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.encased_fire_jet.get());
 		registerDropSelfLootTable(TFBlocks.naga_stone_head.get());
 		registerDropSelfLootTable(TFBlocks.naga_stone.get());
+		registerDropSelfLootTable(TFBlocks.spiral_bricks.get());
 		registerDropSelfLootTable(TFBlocks.nagastone_pillar.get());
 		registerDropSelfLootTable(TFBlocks.nagastone_pillar_mossy.get());
 		registerDropSelfLootTable(TFBlocks.nagastone_pillar_weathered.get());
