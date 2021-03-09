@@ -39,7 +39,6 @@ import twilightforest.capabilities.CapabilityList;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.command.TFCommand;
 import twilightforest.enchantment.TFEnchantments;
-import twilightforest.entity.TFEntities;
 import twilightforest.inventory.TFContainers;
 import twilightforest.item.TFItems;
 import twilightforest.item.recipe.UncraftingEnabledCondition;
@@ -97,7 +96,7 @@ public class TwilightForestMod {
 		TFBlocks.BLOCKS.register(modbus);
 		TFItems.ITEMS.register(modbus);
 		TFPotions.POTIONS.register(modbus);
-		//TFBiomes.BIOMES.register(modbus);
+		BiomeKeys.BIOMES.register(modbus);
 		modbus.addGenericListener(SoundEvent.class, TFSounds::registerSounds);
 		TFTileEntities.TILE_ENTITIES.register(modbus);
 		TFParticleType.PARTICLE_TYPES.register(modbus);

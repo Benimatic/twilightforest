@@ -3,10 +3,18 @@ package twilightforest.worldgen.biomes;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeAmbience;
+import net.minecraft.world.biome.BiomeGenerationSettings;
+import net.minecraft.world.biome.MobSpawnInfo;
+import net.minecraft.world.gen.surfacebuilders.ConfiguredSurfaceBuilders;
 import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 
 public class BiomeKeys {
+	public static final DeferredRegister<Biome> BIOMES = DeferredRegister.create(ForgeRegistries.BIOMES, TwilightForestMod.ID);
+
 	public static final RegistryKey<Biome> FOREST = makeKey("forest");
 	public static final RegistryKey<Biome> DENSE_FOREST = makeKey("dense_forest");
 	public static final RegistryKey<Biome> FIREFLY_FOREST = makeKey("firefly_forest");
@@ -35,6 +43,18 @@ public class BiomeKeys {
 	public static final RegistryKey<Biome> FINAL_PLATEAU = makeKey("final_plateau");
 
 	private static RegistryKey<Biome> makeKey(String name) {
+		BIOMES.register(name, () -> new Biome.Builder()
+				.precipitation(Biome.RainType.NONE)
+				.category(Biome.Category.NONE)
+				.depth(0)
+				.downfall(0)
+				.scale(0)
+				.temperature(0)
+				.setEffects(new BiomeAmbience.Builder().setFogColor(0).setWaterColor(0).setWaterFogColor(0).withSkyColor(0).build())
+				.withGenerationSettings(new BiomeGenerationSettings.Builder().withSurfaceBuilder(ConfiguredSurfaceBuilders.field_244178_j).build())
+				.withMobSpawnSettings(new MobSpawnInfo.Builder().copy())
+				.withTemperatureModifier(Biome.TemperatureModifier.NONE)
+				.build());
 		return RegistryKey.getOrCreateKey(Registry.BIOME_KEY, TwilightForestMod.prefix(name));
 	}
 
