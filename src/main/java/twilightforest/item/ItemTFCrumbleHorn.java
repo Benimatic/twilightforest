@@ -44,19 +44,32 @@ public class ItemTFCrumbleHorn extends Item {
 	}
 
 	private void addCrumbleTransforms() {
-		addCrumble(() -> Blocks.STONE, () -> Blocks.COBBLESTONE.getDefaultState());
-		addCrumble(() -> Blocks.STONE_BRICKS, () -> Blocks.CRACKED_STONE_BRICKS.getDefaultState());
-		addCrumble(() -> TFBlocks.maze_stone_brick.get(), () -> TFBlocks.maze_stone_cracked.get().getDefaultState());
-		addCrumble(() -> TFBlocks.underbrick.get(), () -> TFBlocks.underbrick_cracked.get().getDefaultState());
-		addCrumble(() -> TFBlocks.tower_wood.get(), () -> TFBlocks.tower_wood_cracked.get().getDefaultState());
-		addCrumble(() -> Blocks.COBBLESTONE, () -> Blocks.GRAVEL.getDefaultState());
-		addCrumble(() -> Blocks.SANDSTONE, () -> Blocks.SAND.getDefaultState());
-		addCrumble(() -> Blocks.RED_SANDSTONE, () -> Blocks.RED_SAND.getDefaultState());
-		addCrumble(() -> Blocks.GRASS_BLOCK, () -> Blocks.DIRT.getDefaultState());
-		addCrumble(() -> Blocks.MYCELIUM, () -> Blocks.DIRT.getDefaultState());
+		addCrumble(() -> Blocks.STONE_BRICKS, Blocks.CRACKED_STONE_BRICKS::getDefaultState);
+		addCrumble(() -> Blocks.POLISHED_BLACKSTONE_BRICKS, Blocks.CRACKED_POLISHED_BLACKSTONE_BRICKS::getDefaultState);
+		addCrumble(() -> Blocks.CRACKED_POLISHED_BLACKSTONE_BRICKS, Blocks.BLACKSTONE::getDefaultState);
+		addCrumble(() -> Blocks.NETHER_BRICKS, Blocks.CRACKED_NETHER_BRICKS::getDefaultState);
+		addCrumble(TFBlocks.maze_stone_brick, () -> TFBlocks.maze_stone_cracked.get().getDefaultState());
+		addCrumble(TFBlocks.underbrick, () -> TFBlocks.underbrick_cracked.get().getDefaultState());
+		addCrumble(TFBlocks.tower_wood, () -> TFBlocks.tower_wood_cracked.get().getDefaultState());
+		addCrumble(TFBlocks.deadrock, () -> TFBlocks.deadrock_cracked.get().getDefaultState());
+		addCrumble(TFBlocks.castle_brick, () -> TFBlocks.castle_brick_cracked.get().getDefaultState());
+		addCrumble(TFBlocks.nagastone_pillar, () -> TFBlocks.nagastone_pillar_weathered.get().getDefaultState());
+		addCrumble(TFBlocks.etched_nagastone, () -> TFBlocks.etched_nagastone_weathered.get().getDefaultState());
+		addCrumble(() -> Blocks.STONE, Blocks.COBBLESTONE::getDefaultState);
+		addCrumble(() -> Blocks.COBBLESTONE, Blocks.GRAVEL::getDefaultState);
+		addCrumble(() -> Blocks.SANDSTONE, Blocks.SAND::getDefaultState);
+		addCrumble(() -> Blocks.RED_SANDSTONE, Blocks.RED_SAND::getDefaultState);
+		addCrumble(() -> Blocks.GRASS_BLOCK, Blocks.DIRT::getDefaultState);
+		addCrumble(() -> Blocks.MYCELIUM, Blocks.DIRT::getDefaultState);
+		addCrumble(() -> Blocks.PODZOL, Blocks.DIRT::getDefaultState);
+		addCrumble(() -> Blocks.COARSE_DIRT, Blocks.DIRT::getDefaultState);
+		addCrumble(() -> Blocks.CRIMSON_NYLIUM, Blocks.NETHERRACK::getDefaultState);
+		addCrumble(() -> Blocks.WARPED_NYLIUM, Blocks.NETHERRACK::getDefaultState);
+		addCrumble(() -> Blocks.QUARTZ_BLOCK, Blocks.SAND::getDefaultState);
 		addHarvest(() -> Blocks.GRAVEL);
 		addHarvest(() -> Blocks.DIRT);
 		addHarvest(() -> Blocks.SAND);
+		addHarvest(() -> Blocks.RED_SAND);
 		addHarvest(() -> Blocks.CLAY);
 	}
 
@@ -177,7 +190,6 @@ public class ItemTFCrumbleHorn extends Item {
 				}
 			}
 		}
-
 		return false;
 	}
 

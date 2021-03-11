@@ -35,6 +35,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.entity.projectile.EntityTFMoonwormShot;
+import twilightforest.dispenser.CrumbleDispenseBehavior;
 import twilightforest.dispenser.FeatherFanDispenseBehavior;
 import twilightforest.dispenser.MoonwormDispenseBehavior;
 import twilightforest.worldgen.biomes.BiomeGrassColors;
@@ -203,6 +204,9 @@ public class TwilightForestMod {
 
 			IDispenseItemBehavior pushmobsbehavior = new FeatherFanDispenseBehavior();
 			DispenserBlock.registerDispenseBehavior(TFItems.peacock_fan.get().asItem(), pushmobsbehavior);
+
+			IDispenseItemBehavior crumblebehavior = new CrumbleDispenseBehavior();
+			DispenserBlock.registerDispenseBehavior(TFItems.crumble_horn.get().asItem(), crumblebehavior);
 				}
 			});
 		});
