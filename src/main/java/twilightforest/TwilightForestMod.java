@@ -35,7 +35,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.entity.projectile.EntityTFMoonwormShot;
-import twilightforest.util.MoonwormDispenseBehavior;
+import twilightforest.dispenser.MoonwormDispenseBehavior;
 import twilightforest.worldgen.biomes.BiomeGrassColors;
 import twilightforest.worldgen.biomes.BiomeKeys;
 import twilightforest.block.TFBlocks;
@@ -179,6 +179,8 @@ public class TwilightForestMod {
 				@Override
 				protected ProjectileEntity getProjectileEntity(World worldIn, IPosition position, ItemStack stackIn) {
 					return new EntityTFMoonwormShot(worldIn, position.getX(), position.getY(), position.getZ());
+				}
+			});
 
 			IDispenseItemBehavior idispenseitembehavior = new OptionalDispenseBehavior() {
 				/**
