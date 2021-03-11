@@ -7,7 +7,8 @@ import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.*;
+import net.minecraft.util.Mirror;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -36,7 +37,7 @@ public class BlockTFTrophy extends BlockTFAbstractTrophy {
 		if (((BlockTFAbstractTrophy) state.getBlock()).getVariant() == BossVariant.UR_GHAST) {
 			return GHAST_SHAPE;
 		}
-			return SHAPE;
+		return SHAPE;
 	}
 
 	@Override
@@ -61,6 +62,6 @@ public class BlockTFTrophy extends BlockTFAbstractTrophy {
 
 	@Override
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		builder.add(ROTATION);
+		builder.add(ROTATION, POWERED);
 	}
 }

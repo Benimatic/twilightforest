@@ -1,8 +1,12 @@
 package twilightforest;
 
 import net.minecraft.block.DispenserBlock;
+import net.minecraft.dispenser.IBlockSource;
+import net.minecraft.dispenser.IDispenseItemBehavior;
 import net.minecraft.dispenser.IPosition;
+import net.minecraft.dispenser.OptionalDispenseBehavior;
 import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Rarity;
 import net.minecraft.item.crafting.IRecipeSerializer;
@@ -176,6 +180,23 @@ public class TwilightForestMod {
 				protected ProjectileEntity getProjectileEntity(World worldIn, IPosition position, ItemStack stackIn) {
 					return new EntityTFMoonwormShot(worldIn, position.getX(), position.getY(), position.getZ());
 
+			IDispenseItemBehavior idispenseitembehavior = new OptionalDispenseBehavior() {
+				/**
+				 * Dispense the specified stack, play the dispense sound and spawn particles.
+				 */
+				protected ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
+					this.setSuccessful(ArmorItem.func_226626_a_(source, stack));
+					return stack;
+				}
+			};
+			DispenserBlock.registerDispenseBehavior(TFBlocks.naga_trophy.get().asItem(), idispenseitembehavior);
+			DispenserBlock.registerDispenseBehavior(TFBlocks.lich_trophy.get().asItem(), idispenseitembehavior);
+			DispenserBlock.registerDispenseBehavior(TFBlocks.minoshroom_trophy.get().asItem(), idispenseitembehavior);
+			DispenserBlock.registerDispenseBehavior(TFBlocks.hydra_trophy.get().asItem(), idispenseitembehavior);
+			DispenserBlock.registerDispenseBehavior(TFBlocks.knight_phantom_trophy.get().asItem(), idispenseitembehavior);
+			DispenserBlock.registerDispenseBehavior(TFBlocks.ur_ghast_trophy.get().asItem(), idispenseitembehavior);
+			DispenserBlock.registerDispenseBehavior(TFBlocks.snow_queen_trophy.get().asItem(), idispenseitembehavior);
+			DispenserBlock.registerDispenseBehavior(TFBlocks.quest_ram_trophy.get().asItem(), idispenseitembehavior);
 				}
 			});
 		});
