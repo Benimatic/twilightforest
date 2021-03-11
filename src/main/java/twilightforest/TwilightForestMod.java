@@ -11,7 +11,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Rarity;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
@@ -39,6 +41,7 @@ import twilightforest.entity.projectile.EntityTFMoonwormShot;
 import twilightforest.dispenser.CrumbleDispenseBehavior;
 import twilightforest.dispenser.FeatherFanDispenseBehavior;
 import twilightforest.dispenser.MoonwormDispenseBehavior;
+import twilightforest.entity.projectile.EntityTFTwilightWandBolt;
 import twilightforest.worldgen.biomes.BiomeGrassColors;
 import twilightforest.worldgen.biomes.BiomeKeys;
 import twilightforest.block.TFBlocks;
@@ -214,8 +217,20 @@ public class TwilightForestMod {
 
 			IDispenseItemBehavior transformbehavior = new TransformationDispenseBehavior();
 			DispenserBlock.registerDispenseBehavior(TFItems.transformation_powder.get().asItem(), transformbehavior);
+
+			DispenserBlock.registerDispenseBehavior(TFItems.twilight_scepter.get(), new MoonwormDispenseBehavior() {
+				@Override
+				protected ProjectileEntity getProjectileEntity(World worldIn, IPosition position, ItemStack stackIn) {
+					return new EntityTFTwilightWandBolt(worldIn, position.getX(), position.getY(), position.getZ());
+				}
+
+				@Override
+				protected void playDispenseSound(IBlockSource source) {
+					BlockPos pos = source.getBlockPos();
+					source.getWorld().playSound(null, pos, TFSounds.SCEPTER_PEARL, SoundCategory.BLOCKS, 1, 1);
 				}
 			});
+
 		});
 	}
 
