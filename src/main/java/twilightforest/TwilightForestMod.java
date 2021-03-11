@@ -34,6 +34,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import twilightforest.advancements.TFAdvancements;
+import twilightforest.dispenser.TransformationDispenseBehavior;
 import twilightforest.entity.projectile.EntityTFMoonwormShot;
 import twilightforest.dispenser.CrumbleDispenseBehavior;
 import twilightforest.dispenser.FeatherFanDispenseBehavior;
@@ -207,6 +208,9 @@ public class TwilightForestMod {
 
 			IDispenseItemBehavior crumblebehavior = new CrumbleDispenseBehavior();
 			DispenserBlock.registerDispenseBehavior(TFItems.crumble_horn.get().asItem(), crumblebehavior);
+
+			IDispenseItemBehavior transformbehavior = new TransformationDispenseBehavior();
+			DispenserBlock.registerDispenseBehavior(TFItems.transformation_powder.get().asItem(), transformbehavior);
 				}
 			});
 		});
