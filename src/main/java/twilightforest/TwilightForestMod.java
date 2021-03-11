@@ -35,6 +35,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.entity.projectile.EntityTFMoonwormShot;
+import twilightforest.dispenser.FeatherFanDispenseBehavior;
 import twilightforest.dispenser.MoonwormDispenseBehavior;
 import twilightforest.worldgen.biomes.BiomeGrassColors;
 import twilightforest.worldgen.biomes.BiomeKeys;
@@ -199,6 +200,9 @@ public class TwilightForestMod {
 			DispenserBlock.registerDispenseBehavior(TFBlocks.ur_ghast_trophy.get().asItem(), idispenseitembehavior);
 			DispenserBlock.registerDispenseBehavior(TFBlocks.snow_queen_trophy.get().asItem(), idispenseitembehavior);
 			DispenserBlock.registerDispenseBehavior(TFBlocks.quest_ram_trophy.get().asItem(), idispenseitembehavior);
+
+			IDispenseItemBehavior pushmobsbehavior = new FeatherFanDispenseBehavior();
+			DispenserBlock.registerDispenseBehavior(TFItems.peacock_fan.get().asItem(), pushmobsbehavior);
 				}
 			});
 		});
