@@ -9,6 +9,8 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
+import twilightforest.block.BlockTFCicada;
+import twilightforest.block.BlockTFCritter;
 import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
 import twilightforest.block.TFBlocks;
@@ -89,7 +91,7 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 		buildTrunk(world, random, pos, trunk, branch, root, diameter, height, mbb, config);
 
 		// fireflies
-		int numFireflies = random.nextInt(3 * diameter) + 5;
+		int numFireflies = random.nextInt(6 * diameter) + 5;
 		for (int i = 0; i <= numFireflies; i++) {
 			int fHeight = (int) (height * random.nextDouble() * 0.9) + (height / 10);
 			double fAngle = random.nextDouble();
@@ -97,8 +99,8 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 		}
 
 		// cicadas
-		numFireflies = random.nextInt(3 * diameter) + 5;
-		for (int i = 0; i <= numFireflies; i++) {
+		int numCicadas = random.nextInt(3 * diameter) + 5;
+		for (int i = 0; i <= numCicadas; i++) {
 			int fHeight = (int) (height * random.nextDouble() * 0.9) + (height / 10);
 			double fAngle = random.nextDouble();
 			addCicada(world, pos, diameter, fHeight, fAngle);
@@ -449,7 +451,7 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 			facing = Direction.WEST;
 		}
 
-		if (TFBlocks.firefly.get().getDefaultState().isValidPosition(world, src)) {
+		if (TFBlocks.firefly.get().getDefaultState().with(DirectionalBlock.FACING, facing).isValidPosition(world, src)) {
 			world.setBlockState(src, TFBlocks.firefly.get().getDefaultState().with(DirectionalBlock.FACING, facing), 3);
 		}
 	}
@@ -470,8 +472,8 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 			facing = Direction.WEST;
 		}
 
-		if (TFBlocks.cicada.get().getDefaultState().isValidPosition(world, src)) {
-			world.setBlockState(src, TFBlocks.cicada.get().getDefaultState().with(DirectionalBlock.FACING, facing),3);
+		if (TFBlocks.cicada.get().getDefaultState().with(DirectionalBlock.FACING, facing).isValidPosition(world, src)) {
+			world.setBlockState(src, TFBlocks.cicada.get().getDefaultState().with(DirectionalBlock.FACING, facing), 3);
 		}
 	}
 }

@@ -202,6 +202,9 @@ public class TwilightForestMod {
 			DispenserBlock.registerDispenseBehavior(TFBlocks.ur_ghast_trophy.get().asItem(), idispenseitembehavior);
 			DispenserBlock.registerDispenseBehavior(TFBlocks.snow_queen_trophy.get().asItem(), idispenseitembehavior);
 			DispenserBlock.registerDispenseBehavior(TFBlocks.quest_ram_trophy.get().asItem(), idispenseitembehavior);
+			DispenserBlock.registerDispenseBehavior(TFBlocks.cicada.get().asItem(), idispenseitembehavior);
+			DispenserBlock.registerDispenseBehavior(TFBlocks.firefly.get().asItem(), idispenseitembehavior);
+			DispenserBlock.registerDispenseBehavior(TFBlocks.moonworm.get().asItem(), idispenseitembehavior);
 
 			IDispenseItemBehavior pushmobsbehavior = new FeatherFanDispenseBehavior();
 			DispenserBlock.registerDispenseBehavior(TFItems.peacock_fan.get().asItem(), pushmobsbehavior);
