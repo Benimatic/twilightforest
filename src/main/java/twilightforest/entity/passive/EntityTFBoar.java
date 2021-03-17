@@ -16,8 +16,6 @@ import twilightforest.entity.TFEntities;
 
 public class EntityTFBoar extends PigEntity {
 
-	public static final ResourceLocation LOOT_TABLE = TwilightForestMod.prefix("entities/boar");
-
 	public EntityTFBoar(EntityType<? extends EntityTFBoar> type, World world) {
 		super(type, world);
 	}
@@ -25,11 +23,6 @@ public class EntityTFBoar extends PigEntity {
 	public EntityTFBoar(World world, double x, double y, double z) {
 		this(TFEntities.wild_boar, world);
 		this.setPosition(x, y, z);
-	}
-
-	@Override
-	public ResourceLocation getLootTable() {
-		return LOOT_TABLE;
 	}
 
 	@Override
