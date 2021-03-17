@@ -17,21 +17,43 @@
     "water_color": 21794,
     "water_fog_color": 329011
   },
-  "surface_builder": "minecraft:grass",
-  "carvers": {},
+  "surface_builder": {
+    "config": {
+      "top_material": {
+        "Properties": {
+          "snowy": "false"
+        },
+        "Name": "minecraft:grass_block"
+      },
+      "under_material": {
+        "Name": "minecraft:dirt"
+      },
+      "underwater_material": {
+        "Name": "minecraft:sand"
+      }
+    },
+    "type": "twilightforest:default"
+  },
+  "carvers": {
+    "air": [
+      {
+        "config": {
+          "probability": 0.03
+        },
+        "type": "twilightforest:tf_caves"
+      }
+    ]
+  },
   "features": [
     [],
     [],
     [],
     [],
-    [],
+    [
+      "twilightforest:well"
+    ],
     [],
     [
-      "minecraft:ore_dirt",
-      "minecraft:ore_gravel",
-      "minecraft:ore_granite",
-      "minecraft:ore_diorite",
-      "minecraft:ore_andesite",
       "minecraft:ore_coal",
       "minecraft:ore_iron",
       "minecraft:ore_gold",
@@ -39,26 +61,42 @@
       "minecraft:ore_diamond",
       "minecraft:ore_lapis",
       "minecraft:disk_clay",
+      "twilightforest:small_andesite",
+      "twilightforest:small_diorite",
+      "twilightforest:small_granite",
       "twilightforest:ore/wood_roots_spread"
     ],
-    [],
+    [
+      "twilightforest:plant_roots",
+      "twilightforest:torch_berries"
+    ],
     [
       "minecraft:patch_grass_forest",
       "minecraft:patch_tall_grass",
+      "minecraft:patch_sugar_cane",
       "minecraft:spring_water",
       "minecraft:spring_lava",
-      "twilightforest:flower_placer",
+      "minecraft:jungle_bush",
+      "minecraft:jungle_bush",
       "twilightforest:forest_grass_placer",
+      "twilightforest:flower_placer",
       "twilightforest:random_common",
       "twilightforest:random_fallen",
-      "minecraft:jungle_bush",
-      "minecraft:jungle_bush",
-      "twilightforest:well",
       "twilightforest:tree/canopy_trees",
       "twilightforest:tree/canopy_trees",
       "twilightforest:tree/twilight_oak_trees",
+      "minecraft:oak",
+      "minecraft:birch",
       "twilightforest:tree/twilight_oak_trees",
-      "twilightforest:tree/hollow_oak_trees"
+      "minecraft:oak",
+      "minecraft:birch",
+      "twilightforest:tree/twilight_oak_trees",
+      "minecraft:oak",
+      "minecraft:birch",
+      "twilightforest:tree/twilight_oak_trees",
+      "minecraft:oak",
+      "minecraft:birch",
+      "twilightforest:tree/hollow_placer"
     ]
   ],
   "starts": [

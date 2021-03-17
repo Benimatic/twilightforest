@@ -1,11 +1,11 @@
 package twilightforest.worldgen.biomes;
 
 import com.google.common.collect.ImmutableMap;
-
 import net.minecraft.util.RegistryKey;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.MobSpawnInfo;
 import twilightforest.TFStructures;
+
 import java.util.Map;
 
 public final class BiomeMaker extends BiomeHelper {
@@ -166,7 +166,7 @@ public final class BiomeMaker extends BiomeHelper {
 
 	private static void snowRegionBiomes(ImmutableMap.Builder<RegistryKey<Biome>, Biome> biomes) {
 		biomes.put(BiomeKeys.SNOWY_FOREST,
-				biomeWithDefaults(defaultAmbientBuilder(), winterWolfSpawning(), snowyForestGen().withStructure(TFStructures.CONFIGURED_YETI_CAVE))
+				biomeWithDefaults(defaultAmbientBuilder(), snowForestSpawning(), snowyForestGen().withStructure(TFStructures.CONFIGURED_YETI_CAVE))
 						.precipitation(Biome.RainType.SNOW)
 						.temperature(0.09F)
 						.downfall(0.9F)
@@ -187,7 +187,7 @@ public final class BiomeMaker extends BiomeHelper {
 
 	private static void highlandsBiomes(ImmutableMap.Builder<RegistryKey<Biome>, Biome> biomes) {
 		biomes.put(BiomeKeys.HIGHLANDS,
-				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), highlandsGen(defaultGenSettingBuilder().withStructure(TFStructures.CONFIGURED_TROLL_CAVE)))
+				biomeWithDefaults(defaultAmbientBuilder(), defaultMobSpawning(), highlandsGen().withStructure(TFStructures.CONFIGURED_TROLL_CAVE))
 						.category(Biome.Category.MESA)
 						.temperature(0.4F)
 						.downfall(0.7F)
@@ -197,7 +197,7 @@ public final class BiomeMaker extends BiomeHelper {
 		);
 
 		biomes.put(BiomeKeys.THORNLANDS,
-				biomeWithDefaults(defaultAmbientBuilder(), new MobSpawnInfo.Builder(), thornlandsGen(defaultGenSettingBuilder()))
+				biomeWithDefaults(defaultAmbientBuilder(), new MobSpawnInfo.Builder(), thornlandsGen())
 						.category(Biome.Category.NONE)
 						.temperature(0.3F)
 						.downfall(0.2F)

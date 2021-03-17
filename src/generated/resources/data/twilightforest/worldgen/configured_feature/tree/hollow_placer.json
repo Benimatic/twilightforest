@@ -6,11 +6,22 @@
           "config": {
             "feature": {
               "config": {
-                "state": {
-                  "Name": "twilightforest:firefly_jar"
+                "features": [
+                  {
+                    "feature": "twilightforest:tree/hollow_oak_trees",
+                    "chance": 0.01
+                  },
+                  {
+                    "feature": "twilightforest:tree/hollow_oak_trees",
+                    "chance": 0.01
+                  }
+                ],
+                "default": {
+                  "config": {},
+                  "type": "minecraft:no_op"
                 }
               },
-              "type": "twilightforest:lampposts"
+              "type": "minecraft:random_selector"
             },
             "decorator": {
               "config": {},
@@ -28,9 +39,9 @@
     },
     "decorator": {
       "config": {
-        "chance": 50
+        "count": 1
       },
-      "type": "minecraft:chance"
+      "type": "minecraft:count"
     }
   },
   "type": "minecraft:decorated"

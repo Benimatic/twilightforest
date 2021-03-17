@@ -19,21 +19,43 @@
     "water_color": 16421137,
     "water_fog_color": 329011
   },
-  "surface_builder": "minecraft:grass",
-  "carvers": {},
+  "surface_builder": {
+    "config": {
+      "top_material": {
+        "Properties": {
+          "snowy": "false"
+        },
+        "Name": "minecraft:grass_block"
+      },
+      "under_material": {
+        "Name": "minecraft:dirt"
+      },
+      "underwater_material": {
+        "Name": "minecraft:sand"
+      }
+    },
+    "type": "twilightforest:default"
+  },
+  "carvers": {
+    "air": [
+      {
+        "config": {
+          "probability": 0.03
+        },
+        "type": "twilightforest:tf_caves"
+      }
+    ]
+  },
   "features": [
     [],
     [],
     [],
     [],
-    [],
+    [
+      "twilightforest:graveyard"
+    ],
     [],
     [
-      "minecraft:ore_dirt",
-      "minecraft:ore_gravel",
-      "minecraft:ore_granite",
-      "minecraft:ore_diorite",
-      "minecraft:ore_andesite",
       "minecraft:ore_coal",
       "minecraft:ore_iron",
       "minecraft:ore_gold",
@@ -41,12 +63,19 @@
       "minecraft:ore_diamond",
       "minecraft:ore_lapis",
       "minecraft:disk_clay",
+      "twilightforest:small_andesite",
+      "twilightforest:small_diorite",
+      "twilightforest:small_granite",
       "twilightforest:ore/wood_roots_spread"
     ],
-    [],
+    [
+      "twilightforest:plant_roots",
+      "twilightforest:torch_berries"
+    ],
     [
       "minecraft:patch_grass_forest",
       "minecraft:patch_tall_grass",
+      "minecraft:patch_sugar_cane",
       "minecraft:spring_water",
       "minecraft:spring_lava",
       "twilightforest:pumpkin_lamppost",
@@ -54,9 +83,15 @@
       "twilightforest:small_log",
       "twilightforest:webs",
       "twilightforest:fallen_leaves",
-      "twilightforest:graveyard",
+      "minecraft:patch_pumpkin",
+      "minecraft:patch_dead_bush",
       "twilightforest:tree/dead_canopy_trees",
-      "twilightforest:tree/twilight_oak_trees"
+      "twilightforest:tree/twilight_oak_trees",
+      "minecraft:oak",
+      "minecraft:birch",
+      "twilightforest:tree/twilight_oak_trees",
+      "minecraft:oak",
+      "minecraft:birch"
     ]
   ],
   "starts": [],

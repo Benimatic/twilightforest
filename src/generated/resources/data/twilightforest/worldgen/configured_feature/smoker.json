@@ -3,10 +3,7 @@
     "feature": {
       "config": {
         "state": {
-          "Properties": {
-            "state": "idle"
-          },
-          "Name": "twilightforest:fire_jet"
+          "Name": "twilightforest:smoker"
         }
       },
       "type": "twilightforest:fire_jet"

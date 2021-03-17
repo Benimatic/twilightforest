@@ -116,7 +116,7 @@ public class TwilightForestMod {
 		TFBiomeFeatures.FEATURES.register(modbus);
 		TFContainers.CONTAINERS.register(modbus);
 		TFEnchantments.ENCHANTMENTS.register(modbus);
-		TFBiomeFeatures.WORLD_CARVERS.register(modbus);
+//		TFBiomeFeatures.WORLD_CARVERS.register(modbus);
 //		TFDimensions.BIOME_PROVIDER_TYPES.register(modbus);
 //		TFDimensions.CHUNK_GENERATOR_TYPES.register(modbus);
 //		TFDimensions.MOD_DIMENSIONS.register(modbus);

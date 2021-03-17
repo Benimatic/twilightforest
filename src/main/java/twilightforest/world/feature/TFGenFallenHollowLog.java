@@ -23,7 +23,7 @@ public class TFGenFallenHollowLog extends Feature<NoFeatureConfig> {
 	final BlockState oakLeaves = TFBlocks.oak_leaves.get().getDefaultState().with(LeavesBlock.PERSISTENT, true);
 	final BlockState oakLogWithZAxis = TFBlocks.oak_log.get().getDefaultState().with(RotatedPillarBlock.AXIS, Direction.Axis.Z);
 	final BlockState oakLogWithXAxis = TFBlocks.oak_log.get().getDefaultState().with(RotatedPillarBlock.AXIS, Direction.Axis.X);
-	final BlockState dirt = Blocks.DIRT.getDefaultState();
+	final BlockState grass = Blocks.GRASS_BLOCK.getDefaultState();
 	final BlockState firefly = TFBlocks.firefly.get().getDefaultState();
 
 	public TFGenFallenHollowLog(Codec<NoFeatureConfig> configIn) {
@@ -65,7 +65,7 @@ public class TFGenFallenHollowLog extends Feature<NoFeatureConfig> {
 					world.setBlockState(pos.add(1, 0, dz + 3), mossPatch, 3);
 				}
 			} else {
-				world.setBlockState(pos.add(1, -1, dz + 3), dirt, 3);
+				world.setBlockState(pos.add(1, -1, dz + 3), grass, 3);
 				world.setBlockState(pos.add(1, 0, dz + 3), mossPatch, 3);
 			}
 			if (rand.nextBoolean()) {
@@ -74,7 +74,7 @@ public class TFGenFallenHollowLog extends Feature<NoFeatureConfig> {
 					world.setBlockState(pos.add(2, 0, dz + 3), mossPatch, 3);
 				}
 			} else {
-				world.setBlockState(pos.add(2, -1, dz + 3), dirt, 3);
+				world.setBlockState(pos.add(2, -1, dz + 3), grass, 3);
 				world.setBlockState(pos.add(2, 0, dz + 3), mossPatch, 3);
 			}
 
@@ -161,7 +161,7 @@ public class TFGenFallenHollowLog extends Feature<NoFeatureConfig> {
 					world.setBlockState(pos.add(dx + 3, 0, 1), mossPatch, 3);
 				}
 			} else {
-				world.setBlockState(pos.add(dx + 3, -1, 1), dirt, 3);
+				world.setBlockState(pos.add(dx + 3, -1, 1), grass, 3);
 				world.setBlockState(pos.add(dx + 3, 0, 1), mossPatch, 3);
 			}
 			if (rand.nextBoolean()) {
@@ -170,7 +170,7 @@ public class TFGenFallenHollowLog extends Feature<NoFeatureConfig> {
 					world.setBlockState(pos.add(dx + 3, 0, 2), mossPatch, 3);
 				}
 			} else {
-				world.setBlockState(pos.add(dx + 3, -1, 2), dirt, 3);
+				world.setBlockState(pos.add(dx + 3, -1, 2), grass, 3);
 				world.setBlockState(pos.add(dx + 3, 0, 2), mossPatch, 3);
 			}
 

@@ -9,23 +9,23 @@
                 "features": [
                   {
                     "feature": "twilightforest:small_log",
-                    "chance": 0.15
+                    "chance": 0.1
                   },
                   {
                     "feature": "twilightforest:grove_ruins",
-                    "chance": 0.15
+                    "chance": 0.05
                   },
                   {
                     "feature": "twilightforest:monolith",
-                    "chance": 0.15
+                    "chance": 0.1
                   },
                   {
                     "feature": "twilightforest:outside_stalagmite",
-                    "chance": 0.15
+                    "chance": 0.12
                   },
                   {
                     "feature": "twilightforest:stone_circle",
-                    "chance": 0.15
+                    "chance": 0.1
                   }
                 ],
                 "default": {

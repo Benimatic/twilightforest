@@ -17,8 +17,30 @@
     "water_color": 4159204,
     "water_fog_color": 329011
   },
-  "surface_builder": "minecraft:grass",
-  "carvers": {},
+  "surface_builder": {
+    "config": {
+      "top_material": {
+        "Name": "minecraft:snow_block"
+      },
+      "under_material": {
+        "Name": "minecraft:snow_block"
+      },
+      "underwater_material": {
+        "Name": "minecraft:packed_ice"
+      }
+    },
+    "type": "minecraft:default"
+  },
+  "carvers": {
+    "air": [
+      {
+        "config": {
+          "probability": 0.03
+        },
+        "type": "twilightforest:tf_caves"
+      }
+    ]
+  },
   "features": [
     [],
     [
@@ -36,15 +58,20 @@
       "minecraft:ore_diamond",
       "minecraft:ore_lapis"
     ],
-    [],
+    [
+      "twilightforest:plant_roots",
+      "twilightforest:torch_berries"
+    ],
     [
       "twilightforest:random_common",
       "twilightforest:small_log",
-      "minecraft:spruce_snowy",
-      "minecraft:trees_giant_spruce",
-      "minecraft:pile_snow"
+      "twilightforest:snow_spruce_snowy",
+      "twilightforest:tree/mega_spruce_no_podzol",
+      "twilightforest:snow_spruce_snowy",
+      "twilightforest:tree/mega_spruce_no_podzol"
     ],
     [
+      "twilightforest:snow_under_trees",
       "minecraft:freeze_top_layer"
     ]
   ],
@@ -58,7 +85,13 @@
         "type": "twilightforest:winter_wolf",
         "weight": 5,
         "minCount": 1,
-        "maxCount": 4
+        "maxCount": 2
+      },
+      {
+        "type": "twilightforest:yeti",
+        "weight": 5,
+        "minCount": 1,
+        "maxCount": 1
       }
     ],
     "ambient": [],

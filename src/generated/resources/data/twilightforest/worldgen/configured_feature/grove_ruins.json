@@ -3,39 +3,28 @@
     "feature": {
       "config": {
         "feature": {
+          "config": {},
+          "type": "twilightforest:grove_ruins"
+        },
+        "decorator": {
           "config": {
-            "feature": {
+            "outer": {
               "config": {},
-              "type": "twilightforest:grove_ruins"
+              "type": "minecraft:square"
             },
-            "decorator": {
-              "config": {
-                "outer": {
-                  "config": {},
-                  "type": "minecraft:square"
-                },
-                "inner": {
-                  "config": {},
-                  "type": "minecraft:heightmap"
-                }
-              },
-              "type": "minecraft:decorated"
+            "inner": {
+              "config": {},
+              "type": "minecraft:heightmap"
             }
           },
           "type": "minecraft:decorated"
-        },
-        "decorator": {
-          "config": {},
-          "type": "minecraft:square"
         }
       },
       "type": "minecraft:decorated"
     },
     "decorator": {
-      "config": {
-        "count": 1
-      },
-      "type": "minecraft:count"
+      "config": {},
+      "type": "minecraft:square"
     }
   },
   "type": "minecraft:decorated"

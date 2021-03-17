@@ -17,22 +17,9 @@ import java.util.Random;
  */
 public class TFGenMyceliumBlob extends Feature<SphereReplaceConfig> {
 
-//	private final BlockState myceliumState;
-//	private final int numberOfBlocks;
-
 	public TFGenMyceliumBlob(Codec<SphereReplaceConfig> configIn) {
 		super(configIn);
 	}
-
-//	public TFGenMyceliumBlob(int i) {
-//		this(Blocks.MYCELIUM, i);
-//	}
-//
-//	public TFGenMyceliumBlob(Block block, int i) {
-//		myceliumState = block.getDefaultState();
-//		numberOfBlocks = i;
-//	}
-
 
 	@Override
 	public boolean generate(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, SphereReplaceConfig config) {
@@ -53,7 +40,7 @@ public class TFGenMyceliumBlob extends Feature<SphereReplaceConfig> {
 					BlockPos dPos = new BlockPos(dx, dy, dz);
 					Block blockThere = world.getBlockState(dPos).getBlock();
 					if (blockThere == Blocks.DIRT || blockThere == Blocks.GRASS_BLOCK || blockThere == Blocks.STONE) {
-						world.setBlockState(dPos, config.state, 16 | 2);
+						world.setBlockState(dPos, Blocks.MYCELIUM.getDefaultState(), 16 | 2);
 					}
 				}
 			}

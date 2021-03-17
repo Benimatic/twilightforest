@@ -9,15 +9,15 @@
                 "features": [
                   {
                     "feature": "twilightforest:foundation",
-                    "chance": 0.25
+                    "chance": 0.1
                   },
                   {
                     "feature": "twilightforest:hollow_log",
-                    "chance": 0.25
+                    "chance": 0.1
                   },
                   {
                     "feature": "twilightforest:hollow_stump",
-                    "chance": 0.25
+                    "chance": 0.12
                   }
                 ],
                 "default": "twilightforest:small_log"

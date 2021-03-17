@@ -18,7 +18,16 @@
     "water_fog_color": 329011
   },
   "surface_builder": "twilightforest:coarse_podzol_highlands",
-  "carvers": {},
+  "carvers": {
+    "air": [
+      {
+        "config": {
+          "probability": 0.03
+        },
+        "type": "twilightforest:highland_caves"
+      }
+    ]
+  },
   "features": [
     [],
     [],
@@ -26,31 +35,16 @@
     [],
     [],
     [],
-    [
-      "minecraft:ore_dirt",
-      "minecraft:ore_gravel",
-      "minecraft:ore_granite",
-      "minecraft:ore_diorite",
-      "minecraft:ore_andesite",
-      "minecraft:ore_coal",
-      "minecraft:ore_iron",
-      "minecraft:ore_gold",
-      "minecraft:ore_redstone",
-      "minecraft:ore_diamond",
-      "minecraft:ore_lapis",
-      "minecraft:disk_clay",
-      "twilightforest:ore/wood_roots_spread"
-    ],
     [],
     [
-      "minecraft:patch_grass_forest",
-      "minecraft:patch_tall_grass",
-      "minecraft:spring_water",
-      "minecraft:spring_lava",
+      "twilightforest:troll_roots"
+    ],
+    [
       "twilightforest:random_common",
-      "twilightforest:troll_roots",
       "minecraft:mega_spruce",
-      "minecraft:trees_giant_spruce",
+      "twilightforest:tree/mega_spruce_no_podzol",
+      "minecraft:spruce",
+      "minecraft:mega_spruce",
       "minecraft:spruce",
       "minecraft:forest_rock",
       "minecraft:patch_grass_taiga"

@@ -20,21 +20,43 @@
     "water_color": 14745518,
     "water_fog_color": 329011
   },
-  "surface_builder": "minecraft:grass",
-  "carvers": {},
+  "surface_builder": {
+    "config": {
+      "top_material": {
+        "Properties": {
+          "snowy": "false"
+        },
+        "Name": "minecraft:grass_block"
+      },
+      "under_material": {
+        "Name": "minecraft:dirt"
+      },
+      "underwater_material": {
+        "Name": "minecraft:sand"
+      }
+    },
+    "type": "twilightforest:default"
+  },
+  "carvers": {
+    "air": [
+      {
+        "config": {
+          "probability": 0.03
+        },
+        "type": "twilightforest:tf_caves"
+      }
+    ]
+  },
   "features": [
     [],
     [],
     [],
     [],
-    [],
+    [
+      "twilightforest:well"
+    ],
     [],
     [
-      "minecraft:ore_dirt",
-      "minecraft:ore_gravel",
-      "minecraft:ore_granite",
-      "minecraft:ore_diorite",
-      "minecraft:ore_andesite",
       "minecraft:ore_coal",
       "minecraft:ore_iron",
       "minecraft:ore_gold",
@@ -42,25 +64,32 @@
       "minecraft:ore_diamond",
       "minecraft:ore_lapis",
       "minecraft:disk_clay",
+      "twilightforest:small_andesite",
+      "twilightforest:small_diorite",
+      "twilightforest:small_granite",
       "twilightforest:ore/wood_roots_spread"
     ],
-    [],
+    [
+      "twilightforest:plant_roots",
+      "twilightforest:torch_berries"
+    ],
     [
       "minecraft:patch_grass_forest",
       "minecraft:patch_tall_grass",
+      "minecraft:patch_sugar_cane",
       "minecraft:spring_water",
       "minecraft:spring_lava",
-      "twilightforest:flower_placer",
-      "twilightforest:grass_placer",
-      "twilightforest:random_common",
-      "twilightforest:random_fallen",
       "twilightforest:random_water",
       "minecraft:patch_sugar_cane_swamp",
       "minecraft:vines",
-      "twilightforest:well",
+      "minecraft:patch_dead_bush",
+      "twilightforest:forest_grass_placer",
+      "twilightforest:flower_placer",
+      "twilightforest:random_common",
+      "twilightforest:random_fallen",
       "twilightforest:tree/mangrove_trees",
       "twilightforest:tree/swampy_oak_trees",
-      "twilightforest:tree/hollow_oak_trees"
+      "twilightforest:tree/hollow_placer"
     ]
   ],
   "starts": [
@@ -68,7 +97,8 @@
   ],
   "creature_spawn_probability": 0.2,
   "spawners": {
-    "monster": [
+    "monster": [],
+    "creature": [
       {
         "type": "minecraft:creeper",
         "weight": 10,
@@ -80,9 +110,7 @@
         "weight": 10,
         "minCount": 4,
         "maxCount": 4
-      }
-    ],
-    "creature": [
+      },
       {
         "type": "twilightforest:mosquito_swarm",
         "weight": 10,

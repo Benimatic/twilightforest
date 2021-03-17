@@ -1,28 +1,28 @@
 package twilightforest.worldgen;
 
-import java.util.OptionalInt;
-
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.LanternBlock;
 import net.minecraft.util.Direction;
-import net.minecraft.world.gen.blockplacer.SimpleBlockPlacer;
 import net.minecraft.world.gen.blockstateprovider.SimpleBlockStateProvider;
 import net.minecraft.world.gen.blockstateprovider.WeightedBlockStateProvider;
 import net.minecraft.world.gen.feature.BaseTreeFeatureConfig;
-import net.minecraft.world.gen.feature.BlockClusterFeatureConfig;
 import net.minecraft.world.gen.feature.FeatureSpread;
 import net.minecraft.world.gen.feature.TwoLayerFeature;
 import net.minecraft.world.gen.foliageplacer.BlobFoliagePlacer;
 import net.minecraft.world.gen.foliageplacer.FancyFoliagePlacer;
+import net.minecraft.world.gen.foliageplacer.MegaPineFoliagePlacer;
 import net.minecraft.world.gen.treedecorator.LeaveVineTreeDecorator;
 import net.minecraft.world.gen.trunkplacer.FancyTrunkPlacer;
+import net.minecraft.world.gen.trunkplacer.GiantTrunkPlacer;
 import net.minecraft.world.gen.trunkplacer.StraightTrunkPlacer;
 import twilightforest.block.BlockTFFirefly;
 import twilightforest.block.BlockTFMagicLog;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
 import twilightforest.worldgen.treeplacers.*;
+
+import java.util.OptionalInt;
 
 public final class TreeConfigurations {
     private static final int canopyDistancing = 5;
@@ -161,6 +161,17 @@ public final class TreeConfigurations {
             .setIgnoreVines()
             .build();
 
+    //[VanillaCopy] of Features.MEGA_SPRUCE, just without all the nasty podzol so it fits better
+    public static final BaseTreeFeatureConfig BIG_SPRUCE = new BaseTreeFeatureConfig.Builder(
+            new SimpleBlockStateProvider(BlockConstants.SPRUCE_LOG),
+            new SimpleBlockStateProvider(BlockConstants.SPRUCE_LEAVES),
+            new MegaPineFoliagePlacer(FeatureSpread.func_242252_a(0),
+                    FeatureSpread.func_242252_a(0),
+                    FeatureSpread.func_242253_a(13, 4)),
+            new GiantTrunkPlacer(13, 2, 14),
+            new TwoLayerFeature(1, 1, 2))
+        .build();
+
     // Requires Hollowtree gen
     public static final TFTreeFeatureConfig TIME_TREE = new TFTreeFeatureConfig.Builder(
             new SimpleBlockStateProvider(BlockConstants.TIME_LOG),
@@ -220,17 +231,6 @@ public final class TreeConfigurations {
             .setSapling(TFBlocks.hollow_oak_sapling.get())
             .build();
 
-    // TODO Do we need this?
-    public static final BaseTreeFeatureConfig WINTER_TREE = new BaseTreeFeatureConfig.Builder(
-            new SimpleBlockStateProvider(BlockConstants.SPRUCE_LOG),
-            new SimpleBlockStateProvider(BlockConstants.SPRUCE_LEAVES),
-            new LeafSpheroidFoliagePlacer(4.5f, 1.5f, FeatureSpread.func_242252_a(0), 1, 0, 0f, 0),
-            new BranchingTrunkPlacer(20, 5, 5, 3, new BranchesConfig(3, 1, 9, 1, 0.3, 0.2), false),
-            new TwoLayerFeature(1, 0, 1)
-    )
-            .setIgnoreVines()
-            .build();
-
     public static final BaseTreeFeatureConfig RAINBOAK_TREE = new BaseTreeFeatureConfig.Builder(
             new SimpleBlockStateProvider(BlockConstants.OAK_LOG),
             new SimpleBlockStateProvider(BlockConstants.RAINBOW_LEAVES),
@@ -274,5 +274,4 @@ public final class TreeConfigurations {
             .setIgnoreVines()
             .build();
 
-    public static final BlockClusterFeatureConfig MUSHGLOOM_CONFIG = (new BlockClusterFeatureConfig.Builder(new SimpleBlockStateProvider(BlockConstants.MUSHGLOOM), new SimpleBlockPlacer())).tries(32).build();
 }

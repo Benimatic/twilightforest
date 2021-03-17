@@ -21,7 +21,16 @@
     "water_fog_color": 329011
   },
   "surface_builder": "minecraft:grass",
-  "carvers": {},
+  "carvers": {
+    "air": [
+      {
+        "config": {
+          "probability": 0.03
+        },
+        "type": "twilightforest:tf_caves"
+      }
+    ]
+  },
   "features": [
     [],
     [],
@@ -30,7 +39,10 @@
     [],
     [],
     [],
-    [],
+    [
+      "twilightforest:plant_roots",
+      "twilightforest:torch_berries"
+    ],
     [
       "twilightforest:forest_grass_placer",
       "twilightforest:flower_placer",

@@ -4,22 +4,7 @@
       "config": {
         "feature": {
           "config": {
-            "feature": {
-              "config": {
-                "features": [
-                  {
-                    "feature": "twilightforest:huge_lily_pad",
-                    "chance": 0.5
-                  },
-                  {
-                    "feature": "twilightforest:huge_water_lily",
-                    "chance": 0.2
-                  }
-                ],
-                "default": "minecraft:patch_waterlilly"
-              },
-              "type": "minecraft:random_selector"
-            },
+            "feature": "twilightforest:tree/base/mega_spruce_no_podzol",
             "decorator": {
               "config": {
                 "outer": {
@@ -27,8 +12,12 @@
                   "type": "minecraft:square"
                 },
                 "inner": {
-                  "config": {},
-                  "type": "minecraft:heightmap"
+                  "config": {
+                    "count": 8,
+                    "extra_chance": 0.4,
+                    "extra_count": 4
+                  },
+                  "type": "minecraft:count_extra"
                 }
               },
               "type": "minecraft:decorated"
@@ -45,7 +34,10 @@
     },
     "decorator": {
       "config": {
-        "count": 5
+        "count": {
+          "base": 0,
+          "spread": 4
+        }
       },
       "type": "minecraft:count"
     }

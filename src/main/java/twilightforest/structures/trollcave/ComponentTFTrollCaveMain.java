@@ -37,7 +37,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 	protected int size;
 	protected int height;
 
-	public static final ConfiguredFeature<?,?> uberousGen = TFBiomeFeatures.MYCELIUM_BLOB.get().withConfiguration(new SphereReplaceConfig(TFBlocks.uberous_soil.get().getDefaultState(), FeatureSpread.func_242252_a(4), 1, Lists.newArrayList(Blocks.GRASS_BLOCK.getDefaultState())));
+	public static final ConfiguredFeature<?,?> uberousGen = TFBiomeFeatures.MYCELIUM_BLOB.get().withConfiguration(new SphereReplaceConfig(TFBlocks.uberous_soil.get().getDefaultState(), FeatureSpread.func_242252_a(4), 1, Lists.newArrayList(Blocks.GRASS_BLOCK.getDefaultState(), Blocks.COARSE_DIRT.getDefaultState(), Blocks.PODZOL.getDefaultState(), Blocks.DIRT.getDefaultState())));
 
 	public ComponentTFTrollCaveMain(TemplateManager manager, CompoundNBT nbt) {
 		this(TFTrollCavePieces.TFTCMai, nbt);

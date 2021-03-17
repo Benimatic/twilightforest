@@ -8,10 +8,10 @@
     "zspread": 7,
     "whitelist": [],
     "blacklist": [],
-    "tries": 8,
+    "tries": 16,
     "state_provider": {
       "state": {
-        "Name": "twilightforest:mushgloom"
+        "Name": "twilightforest:fiddlehead"
       },
       "type": "minecraft:simple_state_provider"
     },

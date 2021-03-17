@@ -6,15 +6,24 @@
           "config": {
             "feature": {
               "config": {
+                "target": {
+                  "tag": "minecraft:base_stone_overworld",
+                  "predicate_type": "minecraft:tag_match"
+                },
                 "state": {
-                  "Name": "twilightforest:firefly_jar"
-                }
+                  "Name": "minecraft:granite"
+                },
+                "size": 16
               },
-              "type": "twilightforest:lampposts"
+              "type": "minecraft:ore"
             },
             "decorator": {
-              "config": {},
-              "type": "minecraft:heightmap_world_surface"
+              "config": {
+                "bottom_offset": 0,
+                "top_offset": 0,
+                "maximum": 60
+              },
+              "type": "minecraft:range"
             }
           },
           "type": "minecraft:decorated"
@@ -28,9 +37,9 @@
     },
     "decorator": {
       "config": {
-        "chance": 50
+        "count": 5
       },
-      "type": "minecraft:chance"
+      "type": "minecraft:count"
     }
   },
   "type": "minecraft:decorated"

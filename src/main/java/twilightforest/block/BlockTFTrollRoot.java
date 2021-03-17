@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -26,7 +27,7 @@ public class BlockTFTrollRoot extends Block {
 		BlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 
-		return state.getMaterial() == Material.ROCK || block == TFBlocks.trollvidr.get() || block == TFBlocks.trollber.get() || block == TFBlocks.unripe_trollber.get();
+		return block.isIn(BlockTags.BASE_STONE_OVERWORLD) || block == TFBlocks.trollvidr.get() || block == TFBlocks.trollber.get() || block == TFBlocks.unripe_trollber.get();
 	}
 
 	@Override
