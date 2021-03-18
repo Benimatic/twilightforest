@@ -49,16 +49,16 @@ public class ItemTFTripleBow extends BowItem {
 						entityarrow.func_234612_a_(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, f * 3.0F, 1.0F);
 
 						// other arrows with slight deviation
-						ArrowEntity entityarrow1 = new ArrowEntity(worldIn, entityLiving);
+						AbstractArrowEntity entityarrow1 = arrowitem.createArrow(worldIn, itemstack, entityplayer);
 						entityarrow1.func_234612_a_(entityLiving, entityLiving.rotationPitch, entityLiving.rotationYaw, 0, f * 2, 1);
 						entityarrow1.setMotion(entityarrow1.getMotion().add(0.0D, 0.0075 * 20F, 0.0D));
-						entityarrow1.setPosition(entityarrow1.getPosX(), entityarrow1.getPosY() + 0.025F, entityarrow1.getPosX());
+						entityarrow1.setPosition(entityarrow1.getPosX(), entityarrow1.getPosY() + 0.025F, entityarrow1.getPosZ());
 						entityarrow1.pickupStatus = ArrowEntity.PickupStatus.CREATIVE_ONLY;
 
-						ArrowEntity entityarrow2 = new ArrowEntity(worldIn, entityLiving);
+						AbstractArrowEntity entityarrow2 = arrowitem.createArrow(worldIn, itemstack, entityplayer);
 						entityarrow2.func_234612_a_(entityLiving, entityLiving.rotationPitch, entityLiving.rotationYaw, 0, f * 2, 1);
 						entityarrow2.setMotion(entityarrow2.getMotion().subtract(0.0D, 0.0075 * 20F, 0.0D));
-						entityarrow2.setPosition(entityarrow2.getPosX(), entityarrow2.getPosY() + 0.025F, entityarrow2.getPosX());
+						entityarrow2.setPosition(entityarrow2.getPosX(), entityarrow2.getPosY() + 0.025F, entityarrow2.getPosZ());
 						entityarrow2.pickupStatus = ArrowEntity.PickupStatus.CREATIVE_ONLY;
 
 						if (f == 1.0F) {
