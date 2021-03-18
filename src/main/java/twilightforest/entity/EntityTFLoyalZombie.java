@@ -124,4 +124,8 @@ public class EntityTFLoyalZombie extends TameableEntity {
 	public CreatureAttribute getCreatureAttribute() {
 		return CreatureAttribute.UNDEAD;
 	}
+
+	@Override
+	protected void dropExperience() {
+	}
 }
