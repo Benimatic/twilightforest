@@ -47,7 +47,7 @@ public class ItemTFShieldWand extends Item {
 
 	@Override
 	public float getXpRepairRatio(ItemStack stack) {
-		return 0.1f;
+		return 1f;
 	}
 
 	@Override
