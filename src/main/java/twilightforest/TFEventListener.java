@@ -311,23 +311,6 @@ public class TFEventListener {
 
 		UUID playerUUID = player.getUniqueID();
 
-		// always keep tower keys
-		for (int i = 0; i < player.inventory.mainInventory.size(); i++) {
-			ItemStack stack = player.inventory.mainInventory.get(i);
-			if (stack.getItem() == TFItems.tower_key.get()) {
-				keepInventory.mainInventory.set(i, stack.copy());
-				player.inventory.mainInventory.set(i, ItemStack.EMPTY);
-			}
-		}
-
-		// Keep phantom equipment
-		for (int i = 0; i < player.inventory.armorInventory.size(); i++) {
-			ItemStack armor = player.inventory.armorInventory.get(i);
-			if (armor.getItem() instanceof ItemTFPhantomArmor) {
-				keepInventory.armorInventory.set(i, armor.copy());
-				player.inventory.armorInventory.set(i, ItemStack.EMPTY);
-			}
-		}
 
 		if (tier1) {
 			keepAllArmor(player, keepInventory);
@@ -361,6 +344,28 @@ public class TFEventListener {
 		/*if (tier1 && TFCompat.BAUBLES.isActivated()) {
 			playerKeepsMapBaubles.put(playerUUID, Baubles.keepBaubles(player));
 		}*/
+
+		// always keep tower keys and held phantom armor
+		for (int i = 0; i < player.inventory.mainInventory.size(); i++) {
+			ItemStack stack = player.inventory.mainInventory.get(i);
+			if (stack.getItem() == TFItems.tower_key.get()) {
+				keepInventory.mainInventory.set(i, stack.copy());
+				player.inventory.mainInventory.set(i, ItemStack.EMPTY);
+			}
+			if (stack.getItem() instanceof ItemTFPhantomArmor) {
+				keepInventory.mainInventory.set(i, stack.copy());
+				player.inventory.mainInventory.set(i, ItemStack.EMPTY);
+			}
+		}
+
+		// Keep phantom equipment
+		for (int i = 0; i < player.inventory.armorInventory.size(); i++) {
+			ItemStack armor = player.inventory.armorInventory.get(i);
+			if (armor.getItem() instanceof ItemTFPhantomArmor) {
+				keepInventory.armorInventory.set(i, armor.copy());
+				player.inventory.armorInventory.set(i, ItemStack.EMPTY);
+			}
+		}
 
 		playerKeepsMap.put(playerUUID, keepInventory);
 	}
