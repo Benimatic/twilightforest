@@ -6,6 +6,7 @@ import net.minecraft.block.TallGrassBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.UseAction;
@@ -37,8 +38,8 @@ public class ItemTFPeacockFan extends Item {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, @Nonnull Hand hand) {
 
-		if (!world.isRemote) {
-			if (!player.isOnGround() && !player.isSwimming() && !player.isCreative()) {
+		if (!world.isRemote && !player.getCooldownTracker().hasCooldown(this)) {
+			if (!player.isOnGround() && !player.isSwimming() && !player.isCreative() && !player.isElytraFlying()) {
 				player.addPotionEffect(new EffectInstance(Effects.JUMP_BOOST, 200, 0, false, false));
 				player.getHeldItem(hand).damageItem(1, player, (user) -> user.sendBreakAnimation(hand));
 			} else {
@@ -48,13 +49,20 @@ public class ItemTFPeacockFan extends Item {
 				}
 			}
 		} else {
-			// jump if the player is in the air
-			//TODO: only one extra jump per jump
-			if (!player.isOnGround() && !player.isPotionActive(Effects.JUMP_BOOST) && !player.isSwimming()) {
+			if(player.isElytraFlying()) {
 				player.setMotion(new Vector3d(
 						player.getMotion().getX() * 3F,
 						1.5F,
 						player.getMotion().getZ() * 3F
+				));
+				player.getCooldownTracker().setCooldown(this, 60);
+			}
+			// jump if the player is in the air
+			if (!player.isOnGround() && !player.isPotionActive(Effects.JUMP_BOOST) && !player.isSwimming() && !launched) {
+				player.setMotion(new Vector3d(
+						player.getMotion().getX() * 1.05F,
+						1.5F,
+						player.getMotion().getZ() * 1.05F
 				));
 				launched = true;
 			} else {
@@ -70,15 +78,19 @@ public class ItemTFPeacockFan extends Item {
 				}
 			}
 			player.playSound(TFSounds.FAN_WOOSH, 1.0F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F);
+			return new ActionResult<>(ActionResultType.SUCCESS, player.getHeldItem(hand));
 		}
 
 		player.setActiveHand(hand);
 
-		return new ActionResult<>(ActionResultType.SUCCESS, player.getHeldItem(hand));
+		return new ActionResult<>(ActionResultType.PASS, player.getHeldItem(hand));
 	}
 
 	@Override
 	public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+		if(entityIn instanceof PlayerEntity && ((PlayerEntity)entityIn).isElytraFlying() && isSelected) {
+			entityIn.fallDistance = 0.0F;
+		}
 		if(entityIn instanceof PlayerEntity && ((PlayerEntity)entityIn).isPotionActive(Effects.JUMP_BOOST)) {
 			entityIn.fallDistance = 0.0F;
 		}
@@ -112,13 +124,18 @@ public class ItemTFPeacockFan extends Item {
 
 	private void fanEntitiesInAABB(World world, PlayerEntity player, AxisAlignedBB fanBox) {
 		Vector3d moveVec = player.getLookVec().scale(2);
+		Item fan = player.getActiveItemStack().getItem();
 
 		for (Entity entity : world.getEntitiesWithinAABB(Entity.class, fanBox)) {
-			if (entity.canBePushed() || entity instanceof ItemEntity) {
+			if (entity.canBePushed() || entity instanceof ItemEntity || entity instanceof ProjectileEntity) {
 				entity.setMotion(moveVec.x, moveVec.y, moveVec.z);
 			}
-		}
 
+			if(entity instanceof PlayerEntity && !entity.isSneaking()) {
+				entity.setMotion(moveVec.x, moveVec.y, moveVec.z);
+				player.getCooldownTracker().setCooldown(fan, 40);
+			}
+		}
 	}
 
 	private AxisAlignedBB getEffectAABB(PlayerEntity player) {
