@@ -85,8 +85,6 @@ public class BlockTFExperiment115 extends Block {
 				return ActionResultType.SUCCESS;
 			}
 		}
-
-		if (stack.isEmpty()) return ActionResultType.SUCCESS;
 		return this.eatCake(worldIn, pos, state, player);
 	}
 
