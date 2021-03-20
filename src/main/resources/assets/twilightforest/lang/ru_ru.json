@@ -119,6 +119,28 @@
   "commands.tffeature.structure.conquer.update": "Structure conquer flag was %s, меняется на %s",
   "commands.tffeature.locate.usage": "/tffeature locate <feature>",
 
+  // Biomes
+  /*"biome.twilightforest.forest": "Twilight Forest",
+  "biome.twilightforest.dense_forest": "Dense Forest",
+  "biome.twilightforest.firefly_forest": "Firefly Forest",
+  "biome.twilightforest.clearing": "Twilight Clearing",
+  "biome.twilightforest.oak_savannah": "Oak Savanna",
+  "biome.twilightforest.stream": "Twilight Stream",
+  "biome.twilightforest.lake": "Twilight Lake",
+  "biome.twilightforest.mushroom_forest": "Mushroom Forest",
+  "biome.twilightforest.dense_mushroom_forest": "Dense Mushroom Forest",
+  "biome.twilightforest.enchanted_forest": "Enchanted Forest",
+  "biome.twilightforest.spooky_forest": "Spooky Forest",
+  "biome.twilightforest.swamp": "Twilight Swamp",
+  "biome.twilightforest.fire_swamp": "Fire Swamp",
+  "biome.twilightforest.dark_forest": "Dark Forest",
+  "biome.twilightforest.dark_forest_center": "Dark Forest Center",
+  "biome.twilightforest.snowy_forest": "Snowy Forest",
+  "biome.twilightforest.glacier": "Twilight Glacier",
+  "biome.twilightforest.highlands": "Twilight Highlands",
+  "biome.twilightforest.thornlands": "Thornlands",
+  "biome.twilightforest.final_plateau": "Final Plateau",*/
+
   "gamerule.tfEnforcedProgression": "Прохождение Сумеречного Леса",
 
   "enchantment.twilightforest.fire_react": "Аура огня",
@@ -727,7 +749,7 @@
   "subtitles.entity.ice.death": "Ледяное ядро погибает",
   "subtitles.entity.ice.hurt": "Ледяное ядро повреждено",
   "subtitles.entity.ice.noise": "Ледяное ядро потрескивает",
-  //"subtitles.entity.icec.shoot": "Ice Core fires snowball",
+  //"subtitles.entity.ice.shoot": "Ice Core fires snowball",
   "subtitles.entity.iceguardian.ambient": "Снежный страж потрескивает",
   "subtitles.entity.iceguardian.death": "Снежный страж погибает",
   "subtitles.entity.iceguardian.hurt": "Снежный страж повреждён",
@@ -922,7 +944,7 @@
   "death.attack.snowballFight": "%1$s lost a snowball fight to %2$s",
   "death.attack.snowballFight.item": "%1$s lost a snowball fight to %2$s using %3$s",*/
 
-  "twilightforest.effect.frosted": "Обморожение",
+  "effect.twilightforest.frosted": "Обморожение",
 
   "twilightforest.misc.wip0": "Этот блок является незавершенной работой и может иметь ошибки или непреднамеренные эффекты, которые могут повредить ваш мир.",
   "twilightforest.misc.wip1": "Используйте с осторожностью.",

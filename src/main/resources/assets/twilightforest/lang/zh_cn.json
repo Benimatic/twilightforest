@@ -122,6 +122,28 @@
   "commands.tffeature.structure.conquer.update": "当前结构征服标记现已从 %s 更改为 %s",
   "commands.tffeature.locate.usage": "/tffeature locate <feature>",
 
+  // Biomes
+  /*"biome.twilightforest.forest": "Twilight Forest",
+  "biome.twilightforest.dense_forest": "Dense Forest",
+  "biome.twilightforest.firefly_forest": "Firefly Forest",
+  "biome.twilightforest.clearing": "Twilight Clearing",
+  "biome.twilightforest.oak_savannah": "Oak Savanna",
+  "biome.twilightforest.stream": "Twilight Stream",
+  "biome.twilightforest.lake": "Twilight Lake",
+  "biome.twilightforest.mushroom_forest": "Mushroom Forest",
+  "biome.twilightforest.dense_mushroom_forest": "Dense Mushroom Forest",
+  "biome.twilightforest.enchanted_forest": "Enchanted Forest",
+  "biome.twilightforest.spooky_forest": "Spooky Forest",
+  "biome.twilightforest.swamp": "Twilight Swamp",
+  "biome.twilightforest.fire_swamp": "Fire Swamp",
+  "biome.twilightforest.dark_forest": "Dark Forest",
+  "biome.twilightforest.dark_forest_center": "Dark Forest Center",
+  "biome.twilightforest.snowy_forest": "Snowy Forest",
+  "biome.twilightforest.glacier": "Twilight Glacier",
+  "biome.twilightforest.highlands": "Twilight Highlands",
+  "biome.twilightforest.thornlands": "Thornlands",
+  "biome.twilightforest.final_plateau": "Final Plateau",*/
+
   "_comment": "Blocks",
   "block.twilightforest.twilight_oak_wood": "暮色橡木",
   "block.twilightforest.canopy_wood": "苍穹木",
@@ -928,7 +950,7 @@
   "death.attack.snowballFight": "%1$s lost a snowball fight to %2$s",
   "death.attack.snowballFight.item": "%1$s lost a snowball fight to %2$s using %3$s",*/
 
-  "twilightforest.effect.frosted": "冻结",
+  "effect.twilightforest.frosted": "冻结",
 
   "twilightforest.misc.wip0": "这个方块仍在制作当中，可能会有能导致存档损坏的 Bug 或不可预料的特性。",
   "twilightforest.misc.wip1": "测试时时刻保持注意。",

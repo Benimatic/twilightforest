@@ -119,13 +119,37 @@
   "commands.tffeature.structure.conquer.update": "Structure conquer flag was %s, changing to %s",
   "commands.tffeature.locate.usage": "/tffeature locate <feature>",
 
+  // Biomes
+  "biome.twilightforest.forest": "Twilight Forest",
+  "biome.twilightforest.dense_forest": "Dense Forest",
+  "biome.twilightforest.firefly_forest": "Firefly Forest",
+  "biome.twilightforest.clearing": "Twilight Clearing",
+  "biome.twilightforest.oak_savannah": "Oak Savanna",
+  "biome.twilightforest.stream": "Twilight Stream",
+  "biome.twilightforest.lake": "Twilight Lake",
+  "biome.twilightforest.mushroom_forest": "Mushroom Forest",
+  "biome.twilightforest.dense_mushroom_forest": "Dense Mushroom Forest",
+  "biome.twilightforest.enchanted_forest": "Enchanted Forest",
+  "biome.twilightforest.spooky_forest": "Spooky Forest",
+  "biome.twilightforest.swamp": "Twilight Swamp",
+  "biome.twilightforest.fire_swamp": "Fire Swamp",
+  "biome.twilightforest.dark_forest": "Dark Forest",
+  "biome.twilightforest.dark_forest_center": "Dark Forest Center",
+  "biome.twilightforest.snowy_forest": "Snowy Forest",
+  "biome.twilightforest.glacier": "Twilight Glacier",
+  "biome.twilightforest.highlands": "Twilight Highlands",
+  "biome.twilightforest.thornlands": "Thornlands",
+  "biome.twilightforest.final_plateau": "Final Plateau",
+
   // Gamerules
   "gamerule.tfEnforcedProgression": "Twilight Forest Progression",
 
-  //Enchantments
-"enchantment.twilightforest.fire_react": "Fire React",
-"enchantment.twilightforest.chill_aura": "Chill Aura",
+  // Enchantments
+  "enchantment.twilightforest.fire_react": "Fire React",
+  "enchantment.twilightforest.chill_aura": "Chill Aura",
 
+  // Effects
+  "effect.twilightforest.frosted": "Frosted",
 
   // Blocks
   "block.twilightforest.twilight_oak_log": "Twilight Oak Log",
@@ -692,6 +716,7 @@
   "entity.twilightforest.castle_guardian": "Castle Guardian [NYI]",
   "entity.twilightforest.roving_cube": "Roving Cube [NYI]",
 
+  // Subtitles
   "subtitles.entity.alphayeti.alert": "Alpha Yeti targets player",
   "subtitles.entity.alphayeti.death": "Alpha Yeti dies",
   "subtitles.entity.alphayeti.grab": "Alpha Yeti grabs player",
@@ -905,6 +930,7 @@
   "subtitles.te.smoker.start": "Smoker starts",
   "subtitles.te.reactor.idle": "Carminite Reactor wooshes",
 
+  // Death Messages
   "death.attack.ghastTear": "%1$s was scalded by fiery tears",
   "death.attack.ghastTear.player": "%1$s was scalded by fiery tears while escaping %2$s",
   "death.attack.hydraFire": "%1$s was roasted alive by the Hydra",
@@ -951,8 +977,7 @@
   "death.attack.snowballFight": "%1$s lost a snowball fight to %2$s",
   "death.attack.snowballFight.item": "%1$s lost a snowball fight to %2$s using %3$s",
 
-  "twilightforest.effect.frosted": "Frosted",
-
+  // Misc
   "twilightforest.misc.wip0": "This block is a work in progress and may have bugs or unintended effects that may damage your world.",
   "twilightforest.misc.wip1": "Use with caution.",
   "twilightforest.misc.nyi": "This block has effects that are not yet implemented.",

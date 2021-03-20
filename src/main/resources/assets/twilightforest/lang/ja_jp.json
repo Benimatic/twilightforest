@@ -106,6 +106,28 @@
   "twilightforest.ore_meter.exposed": "発見: %s",
   "twilightforest.scepter_charges": "残り %d 回",
 
+  // Biomes
+  /*"biome.twilightforest.forest": "Twilight Forest",
+  "biome.twilightforest.dense_forest": "Dense Forest",
+  "biome.twilightforest.firefly_forest": "Firefly Forest",
+  "biome.twilightforest.clearing": "Twilight Clearing",
+  "biome.twilightforest.oak_savannah": "Oak Savanna",
+  "biome.twilightforest.stream": "Twilight Stream",
+  "biome.twilightforest.lake": "Twilight Lake",
+  "biome.twilightforest.mushroom_forest": "Mushroom Forest",
+  "biome.twilightforest.dense_mushroom_forest": "Dense Mushroom Forest",
+  "biome.twilightforest.enchanted_forest": "Enchanted Forest",
+  "biome.twilightforest.spooky_forest": "Spooky Forest",
+  "biome.twilightforest.swamp": "Twilight Swamp",
+  "biome.twilightforest.fire_swamp": "Fire Swamp",
+  "biome.twilightforest.dark_forest": "Dark Forest",
+  "biome.twilightforest.dark_forest_center": "Dark Forest Center",
+  "biome.twilightforest.snowy_forest": "Snowy Forest",
+  "biome.twilightforest.glacier": "Twilight Glacier",
+  "biome.twilightforest.highlands": "Twilight Highlands",
+  "biome.twilightforest.thornlands": "Thornlands",
+  "biome.twilightforest.final_plateau": "Final Plateau",*/
+
   "block.twilightforest.twilight_oak_wood": "トワイライトオークの原木",
   "block.twilightforest.canopy_wood": "林冠木の原木",
   "block.twilightforest.mangrove_wood": "マングローブの原木",
@@ -906,7 +928,7 @@
   "death.attack.snowballFight": "%1$s lost a snowball fight to %2$s",
   "death.attack.snowballFight.item": "%1$s lost a snowball fight to %2$s using %3$s",*/
 
-  "twilightforest.effect.frosted": "凍結",
+  "effect.twilightforest.frosted": "凍結",
 
   "twilightforest.misc.wip0": "このブロックは制作中であり、世界を傷つけたり意図しない影響を与えたりするバグが存在する可能性があります。",
   "twilightforest.misc.wip1": "慎重に使用してください。",
