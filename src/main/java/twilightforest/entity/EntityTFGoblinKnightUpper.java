@@ -223,7 +223,7 @@ public class EntityTFGoblinKnightUpper extends MonsterEntity {
 	@Override
 	public boolean attackEntityFrom(DamageSource damageSource, float amount) {
 		// don't take suffocation damage while riding
-		if (damageSource == DamageSource.IN_WALL && !this.getPassengers().isEmpty()) {
+		if (damageSource == DamageSource.IN_WALL && this.getRidingEntity() != null) {
 			return false;
 		}
 
