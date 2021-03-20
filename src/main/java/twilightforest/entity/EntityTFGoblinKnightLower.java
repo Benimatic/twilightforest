@@ -16,12 +16,14 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityPredicates;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import twilightforest.TFSounds;
 import twilightforest.entity.ai.EntityAITFRiderSpearAttack;
 
 import javax.annotation.Nullable;
@@ -129,6 +131,22 @@ public class EntityTFGoblinKnightLower extends MonsterEntity {
 			return super.attackEntityAsMob(entity);
 		}
 
+	}
+
+	@Nullable
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return this.isBeingRidden() ? TFSounds.GOBLIN_KNIGHT_MUFFLED_AMBIENT : TFSounds.GOBLIN_KNIGHT_AMBIENT;
+	}
+
+	@Override
+	protected SoundEvent getDeathSound() {
+		return this.isBeingRidden() ? TFSounds.GOBLIN_KNIGHT_MUFFLED_DEATH : TFSounds.GOBLIN_KNIGHT_DEATH;
+	}
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+		return this.isBeingRidden() ? TFSounds.GOBLIN_KNIGHT_MUFFLED_HURT : TFSounds.GOBLIN_KNIGHT_HURT;
 	}
 
 	@Override

@@ -65,6 +65,12 @@ public final class TFSounds {
 	public static final SoundEvent GHASTLING_DEATH = createEvent("entity.ghastling.death");
 	public static final SoundEvent GHASTLING_HURT = createEvent("entity.ghastling.hurt");
 	public static final SoundEvent GLASS_SWORD_BREAK = createEvent("item.glasssword.break");
+	public static final SoundEvent GOBLIN_KNIGHT_AMBIENT = createEvent("entity.goblinKnight.ambient");
+	public static final SoundEvent GOBLIN_KNIGHT_DEATH = createEvent("entity.goblinKnight.death");
+	public static final SoundEvent GOBLIN_KNIGHT_HURT = createEvent("entity.goblinKnight.hurt");
+	public static final SoundEvent GOBLIN_KNIGHT_MUFFLED_AMBIENT = createEvent("entity.goblinknight.muffled.ambient");
+	public static final SoundEvent GOBLIN_KNIGHT_MUFFLED_DEATH = createEvent("entity.goblinknight.muffled.death");
+	public static final SoundEvent GOBLIN_KNIGHT_MUFFLED_HURT = createEvent("entity.goblinknight.muffled.hurt");
 	public static final SoundEvent HEDGE_SPIDER_AMBIENT = createEvent("entity.hedgespider.ambient");
 	public static final SoundEvent HEDGE_SPIDER_DEATH = createEvent("entity.hedgespider.death");
 	public static final SoundEvent HEDGE_SPIDER_HURT = createEvent("entity.hedgespider.hurt");
@@ -267,6 +273,8 @@ public final class TFSounds {
 				GHASTGUARD_AMBIENT, GHASTGUARD_DEATH, GHASTGUARD_HURT,
 				GHASTLING_AMBIENT, GHASTLING_DEATH, GHASTLING_HURT,
 				GLASS_SWORD_BREAK,
+				GOBLIN_KNIGHT_AMBIENT, GOBLIN_KNIGHT_DEATH, GOBLIN_KNIGHT_HURT,
+				GOBLIN_KNIGHT_MUFFLED_AMBIENT, GOBLIN_KNIGHT_MUFFLED_DEATH, GOBLIN_KNIGHT_MUFFLED_HURT,
 				HEDGE_SPIDER_AMBIENT, HEDGE_SPIDER_DEATH, HEDGE_SPIDER_HURT, HEDGE_SPIDER_STEP,
 				HELMET_CRAB_DEATH, HELMET_CRAB_HURT, HELMET_CRAB_STEP,
 				HOSTILE_WOLF_DEATH, HOSTILE_WOLF_HURT, HOSTILE_WOLF_IDLE, HOSTILE_WOLF_TARGET,

@@ -14,18 +14,17 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityPredicates;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import twilightforest.TFSounds;
 import twilightforest.entity.ai.EntityAITFHeavySpearAttack;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class EntityTFGoblinKnightUpper extends MonsterEntity {
@@ -120,6 +119,21 @@ public class EntityTFGoblinKnightUpper extends MonsterEntity {
 		if ((world.isRemote || !isAIDisabled()) && heavySpearTimer > 0) {
 			--heavySpearTimer;
 		}
+	}
+
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return TFSounds.GOBLIN_KNIGHT_AMBIENT;
+	}
+
+	@Override
+	protected SoundEvent getDeathSound() {
+		return TFSounds.GOBLIN_KNIGHT_DEATH;
+	}
+
+	@Override
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+		return TFSounds.GOBLIN_KNIGHT_HURT;
 	}
 
 	@Override
