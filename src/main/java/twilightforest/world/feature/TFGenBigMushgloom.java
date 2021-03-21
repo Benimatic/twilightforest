@@ -37,7 +37,7 @@ public class TFGenBigMushgloom extends Feature<NoFeatureConfig> {
 
 		// generate!
 		for (int dy = 0; dy < height - 2; dy++) {
-			world.setBlockState(pos.up(dy), Blocks.MUSHROOM_STEM.getDefaultState(), 3);
+			world.setBlockState(pos.up(dy), TFBlocks.huge_mushgloom_stem.get().getDefaultState(), 3);
 		}
 
 		makeMushroomCap(world, pos.up(height - 2));
