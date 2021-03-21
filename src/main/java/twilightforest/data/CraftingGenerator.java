@@ -336,7 +336,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.build(consumer);
 
 		ShapelessRecipeBuilder.shapelessRecipe(TFItems.ore_map_empty.get())
-				.addIngredient(TFItems.ore_map_empty.get())
+				.addIngredient(TFItems.maze_map_empty.get())
 				.addIngredient(Tags.Items.STORAGE_BLOCKS_DIAMOND)
 				.addIngredient(Tags.Items.STORAGE_BLOCKS_GOLD)
 				.addIngredient(Tags.Items.STORAGE_BLOCKS_IRON)
