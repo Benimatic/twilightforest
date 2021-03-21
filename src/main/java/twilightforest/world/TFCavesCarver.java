@@ -95,7 +95,7 @@ public class TFCavesCarver extends WorldCarver<ProbabilityConfig> {
 		float f1 = 0.0F;
 
 		if (isHighlands && caveRadius < 6F) {
-			caveRadius *= 2.5F;
+			caveRadius *= 2F;
 		}
 
 		for (int j = p_227206_17_; j < p_227206_18_; ++j) {

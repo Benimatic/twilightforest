@@ -57,12 +57,12 @@ public final class BlockConstants {
     public static final BlockState MAYAPPLE = TFBlocks.mayapple.get().getDefaultState();
     public static final BlockState FIDDLEHEAD = TFBlocks.fiddlehead.get().getDefaultState();
     public static final BlockState MUSHGLOOM = TFBlocks.mushgloom.get().getDefaultState();
-    public static final BlockState DEAD_BUSH = Blocks.DEAD_BUSH.getDefaultState();
-    public static final BlockState FOREST_GRASS = Blocks.GRASS.getDefaultState();
     public static final BlockState FIRE_JET = TFBlocks.fire_jet.get().getDefaultState();
     public static final BlockState SMOKER = TFBlocks.smoker.get().getDefaultState();
     public static final BlockState AIR = Blocks.AIR.getDefaultState();
     public static final BlockState MYCELIUM = Blocks.MYCELIUM.getDefaultState();
+    public static final BlockState UBEROUS_SOIL = TFBlocks.uberous_soil.get().getDefaultState();
+    public static final BlockState DIRT = Blocks.DIRT.getDefaultState();
     public static final BlockState STONE = Blocks.STONE.getDefaultState();
     public static final BlockState GRASS_BLOCK = Blocks.GRASS_BLOCK.getDefaultState();
     public static final BlockState PODZOL = Blocks.PODZOL.getDefaultState();

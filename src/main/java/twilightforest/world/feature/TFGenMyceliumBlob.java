@@ -23,11 +23,8 @@ public class TFGenMyceliumBlob extends Feature<SphereReplaceConfig> {
 
 	@Override
 	public boolean generate(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, SphereReplaceConfig config) {
-//        if (world.getBlock(i, j, k).getMaterial() != Material.WATER)
-//        {
-//            return false;
-//        }
-		int range = config.radius.func_242259_a(random) + 2; // TODO Verify that this works correctly! //random.nextInt(config.radius.func_242259_a(random) - 2) + 2;
+
+		int range = config.radius.func_242259_a(random) + 2;
 		int yRange = 1;
 		for (int dx = pos.getX() - range; dx <= pos.getX() + range; dx++) {
 			for (int dz = pos.getZ() - range; dz <= pos.getZ() + range; dz++) {
@@ -38,9 +35,11 @@ public class TFGenMyceliumBlob extends Feature<SphereReplaceConfig> {
 				}
 				for (int dy = pos.getY() - yRange; dy <= pos.getY() + yRange; dy++) {
 					BlockPos dPos = new BlockPos(dx, dy, dz);
+					BlockPos uPos = new BlockPos(dx, dy + 1, dz);
 					Block blockThere = world.getBlockState(dPos).getBlock();
-					if (blockThere == Blocks.DIRT || blockThere == Blocks.GRASS_BLOCK || blockThere == Blocks.STONE) {
-						world.setBlockState(dPos, Blocks.MYCELIUM.getDefaultState(), 16 | 2);
+					Block blockAbove = world.getBlockState(uPos).getBlock();
+					if (blockThere == config.targets && blockAbove == Blocks.AIR) {
+						world.setBlockState(dPos, config.state, 16 | 2);
 					}
 				}
 			}

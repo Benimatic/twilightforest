@@ -148,6 +148,7 @@ public abstract class BiomeHelper {
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.PATCH_GRASS_TAIGA);
 		//biome.withFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, ConfiguredFeatures.DRUID_HUT);
 
+		addSmallStoneClusters(biome);
 		addHighlandCaves(biome);
 
 		return biome;

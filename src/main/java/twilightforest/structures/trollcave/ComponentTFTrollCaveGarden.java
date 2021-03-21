@@ -1,5 +1,6 @@
 package twilightforest.structures.trollcave;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
@@ -13,17 +14,21 @@ import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.gen.placement.NoPlacementConfig;
+import net.minecraft.world.gen.placement.Placement;
 import twilightforest.TFFeature;
 import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.world.feature.TFBiomeFeatures;
+import twilightforest.worldgen.BlockConstants;
+import twilightforest.worldgen.ConfiguredFeatures;
 
 import java.util.List;
 import java.util.Random;
 
 public class ComponentTFTrollCaveGarden extends ComponentTFTrollCaveMain {
 
-	private ConfiguredFeature<?,?> myceliumBlobGen = TFBiomeFeatures.MYCELIUM_BLOB.get().withConfiguration(new SphereReplaceConfig(Blocks.MYCELIUM.getDefaultState(), FeatureSpread.func_242252_a(5), 1, Lists.newArrayList(Blocks.GRASS_BLOCK.getDefaultState())));
-	private ConfiguredFeature<?,?> dirtGen = TFBiomeFeatures.MYCELIUM_BLOB.get().withConfiguration(new SphereReplaceConfig(Blocks.DIRT.getDefaultState(), FeatureSpread.func_242252_a(5), 1, Lists.newArrayList(Blocks.GRASS_BLOCK.getDefaultState())));
+	private ConfiguredFeature<?,?> myceliumBlobGen = TFBiomeFeatures.MYCELIUM_BLOB.get().withConfiguration(new SphereReplaceConfig(BlockConstants.MYCELIUM, FeatureSpread.func_242253_a(4, 2), 3, ImmutableList.of(BlockConstants.GRASS_BLOCK, BlockConstants.STONE, BlockConstants.COARSE_DIRT, BlockConstants.PODZOL))).withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT);
+	private ConfiguredFeature<?,?> dirtGen = TFBiomeFeatures.MYCELIUM_BLOB.get().withConfiguration(new SphereReplaceConfig(BlockConstants.DIRT, FeatureSpread.func_242253_a(4, 2), 3, ImmutableList.of(BlockConstants.GRASS_BLOCK, BlockConstants.STONE, BlockConstants.COARSE_DIRT, BlockConstants.PODZOL))).withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT);
 	private ConfiguredFeature<?,?> bigRedMushroomGen = Features.HUGE_RED_MUSHROOM;
 	private ConfiguredFeature<?,?> bigBrownMushroomGen = Features.HUGE_BROWN_MUSHROOM;
 	private ConfiguredFeature<?,?> bigMushgloomGen = TFBiomeFeatures.BIG_MUSHGLOOM.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
@@ -50,9 +55,9 @@ public class ComponentTFTrollCaveGarden extends ComponentTFTrollCaveMain {
 
 	@Override
 	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		if (this.isBoundingBoxOutsideBiomes(world, sbb, highlands)) {
-			return false;
-		}
+//		if (this.isBoundingBoxOutsideBiomes(world, sbb, highlands)) {
+//			return false;
+//		}
 
 		// clear inside
 		hollowCaveMiddle(world, sbb, rand, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1);

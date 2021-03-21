@@ -35,7 +35,11 @@
     [],
     [],
     [],
-    [],
+    [
+      "twilightforest:small_andesite",
+      "twilightforest:small_diorite",
+      "twilightforest:small_granite"
+    ],
     [
       "twilightforest:troll_roots"
     ],

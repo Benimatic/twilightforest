@@ -1,5 +1,6 @@
 package twilightforest.structures.trollcave;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -12,13 +13,13 @@ import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.gen.feature.FeatureSpread;
-import net.minecraft.world.gen.feature.SphereReplaceConfig;
+import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.gen.placement.NoPlacementConfig;
+import net.minecraft.world.gen.placement.Placement;
 import net.minecraft.world.server.ServerWorld;
 import twilightforest.TFFeature;
 import twilightforest.block.TFBlocks;
@@ -27,6 +28,8 @@ import twilightforest.structures.StructureTFComponentOld;
 import twilightforest.util.RotationUtil;
 import twilightforest.world.feature.TFBiomeFeatures;
 import twilightforest.world.feature.config.CaveStalactiteConfig;
+import twilightforest.worldgen.BlockConstants;
+import twilightforest.worldgen.ConfiguredFeatures;
 
 import java.util.List;
 import java.util.Random;
@@ -37,7 +40,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 	protected int size;
 	protected int height;
 
-	public static final ConfiguredFeature<?,?> uberousGen = TFBiomeFeatures.MYCELIUM_BLOB.get().withConfiguration(new SphereReplaceConfig(TFBlocks.uberous_soil.get().getDefaultState(), FeatureSpread.func_242252_a(4), 1, Lists.newArrayList(Blocks.GRASS_BLOCK.getDefaultState(), Blocks.COARSE_DIRT.getDefaultState(), Blocks.PODZOL.getDefaultState(), Blocks.DIRT.getDefaultState())));
+	public static final ConfiguredFeature<?,?> uberousGen = TFBiomeFeatures.MYCELIUM_BLOB.get().withConfiguration(new SphereReplaceConfig(BlockConstants.UBEROUS_SOIL, FeatureSpread.func_242253_a(4, 2), 3, ImmutableList.of(BlockConstants.GRASS_BLOCK, BlockConstants.STONE, BlockConstants.COARSE_DIRT, BlockConstants.PODZOL))).withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT);
 
 	public ComponentTFTrollCaveMain(TemplateManager manager, CompoundNBT nbt) {
 		this(TFTrollCavePieces.TFTCMai, nbt);

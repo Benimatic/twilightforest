@@ -69,9 +69,9 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 
 	@Override
 	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random rand, MutableBoundingBox sbb, ChunkPos chunkPosIn, BlockPos blockPos) {
-		if (this.isBoundingBoxOutsideBiomes(world, sbb, highlands)) {
-			return false;
-		}
+//		if (this.isBoundingBoxOutsideBiomes(world, sbb, highlands)) {
+//			return false;
+//		}
 
 		// clear inside
 		hollowCaveMiddle(world, sbb, rand, 0, 0, 0, this.size - 1, this.height - 1, this.size - 1);
@@ -140,7 +140,7 @@ public class ComponentTFTrollCaveConnect extends ComponentTFTrollCaveMain {
 			decorateStoneFormation(world, sbb, decoRNG, rotation);
 			decorateStoneFormation(world, sbb, decoRNG, rotation);
 		} else {
-			decorateStoneProjection(world, sbb, decoRNG, rotation);
+			//decorateStoneProjection(world, sbb, decoRNG, rotation);
 		}
 	}
 
