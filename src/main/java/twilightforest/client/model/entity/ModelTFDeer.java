@@ -1,5 +1,7 @@
 package twilightforest.client.model.entity;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.entity.model.QuadrupedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import twilightforest.entity.passive.EntityTFDeer;
@@ -76,4 +78,24 @@ public class ModelTFDeer extends QuadrupedModel<EntityTFDeer> {
 
 	//fields
 	public ModelRenderer neck;
+
+	@Override
+	public void render(MatrixStack stack, IVertexBuilder builder, int light, int overlay, float red, float green, float blue, float scale) {
+		if (isChild) {
+			stack.push();
+			stack.scale(0.75F, 0.75F, 0.75F);
+			stack.translate(0F, 0.95F, 0.15F);
+			this.getHeadParts().forEach((modelRenderer) -> modelRenderer.render(stack, builder, light, overlay, red, green, blue, scale));
+			stack.pop();
+
+			stack.push();
+			stack.scale(0.5F, 0.5F, 0.5F);
+			stack.translate(0F, 1.5F, 0F);
+			this.getBodyParts().forEach((modelRenderer) -> modelRenderer.render(stack, builder, light, overlay, red, green, blue, scale));
+			stack.pop();
+		} else {
+			this.getHeadParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
+			this.getBodyParts().forEach((renderer) -> renderer.render(stack, builder, light, overlay, red, green, blue, scale));
+		}
+	}
 }
