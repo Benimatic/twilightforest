@@ -57,7 +57,7 @@ public class ParticleAnnihilate extends SpriteTexturedParticle {
 
 		this.particleScale *= 0.97D;
 
-		if (this.particleScale < 0.4D) {
+		if (this.particleScale < 0.04F) {
 			this.setExpired();
 		}
 

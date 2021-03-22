@@ -2,12 +2,16 @@ package twilightforest.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.particles.BasicParticleType;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.particles.RedstoneParticleData;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -19,10 +23,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.network.PacketDistributor;
 import twilightforest.TFSounds;
-import twilightforest.network.PacketAnnihilateBlock;
-import twilightforest.network.TFPacketHandler;
+import twilightforest.client.particle.TFParticleType;
 import twilightforest.world.ChunkGeneratorTwilightBase;
 import twilightforest.world.TFGenerationSettings;
 
@@ -116,21 +118,14 @@ public class BlockTFCastleDoor extends Block {
 				world.setBlockState(pos, state.with(VANISHED, true).with(ACTIVE, false));
 				world.getPendingBlockTicks().scheduleTick(pos, this, 80);
 
+				vanishParticles(pos);
 				playVanishSound(world, pos);
-
-				this.sendAnnihilateBlockPacket(world, pos);
-
 				// activate all adjacent inactive doors
 				for (Direction e : Direction.values()) {
 					checkAndActivateCastleDoor(world, pos.offset(e));
 				}
 			}
 		}
-	}
-
-	private void sendAnnihilateBlockPacket(World world, BlockPos pos) {
-		PacketDistributor.TargetPoint targetPoint = new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), 64, world.getDimensionKey()); //RegistryKey<World>
-		TFPacketHandler.CHANNEL.send(PacketDistributor.NEAR.with(() -> targetPoint), new PacketAnnihilateBlock(pos));
 	}
 
 	private static void playVanishSound(World world, BlockPos pos) {
@@ -152,53 +147,25 @@ public class BlockTFCastleDoor extends Block {
 		}
 	}
 
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void animateTick(BlockState state, World world, BlockPos pos, Random random) {
-		if (state.get(ACTIVE)) {
-			for (int i = 0; i < 1; ++i) {
-				//this.sparkle(world, new BlockPos(pos.getX(), pos.getY(), pos.getZ()), random);
-			}
-		}
-	}
+	private void vanishParticles(BlockPos pos) {
+		World world = Minecraft.getInstance().world;
+		Random rand = world.getRandom();
+		if (world.isRemote) {
+			for (int dx = 0; dx < 4; ++dx) {
+				for (int dy = 0; dy < 4; ++dy) {
+					for (int dz = 0; dz < 4; ++dz) {
 
-	// [VanillaCopy] BlockRedStoneOre.spawnParticles with own rand
-	@SuppressWarnings("unused")
-	private void sparkle(World worldIn, BlockPos pos, Random rand) {
-		Random random = rand;
-		double d0 = 0.0625D;
+						double x = pos.getX() + (dx + 0.5D) / 4;
+						double y = pos.getY() + (dy + 0.5D) / 4;
+						double z = pos.getZ() + (dz + 0.5D) / 4;
 
-		for (int i = 0; i < 6; ++i) {
-			double d1 = (double) ((float) pos.getX() + random.nextFloat());
-			double d2 = (double) ((float) pos.getY() + random.nextFloat());
-			double d3 = (double) ((float) pos.getZ() + random.nextFloat());
+						double vx = rand.nextGaussian() * 0.2D;
+						double vy = rand.nextGaussian() * 0.2D;
+						double vz = rand.nextGaussian() * 0.2D;
 
-			if (i == 0 && !worldIn.getBlockState(pos.up()).isOpaqueCube(worldIn, pos)) {
-				d2 = (double) pos.getY() + 0.0625D + 1.0D;
-			}
-
-			if (i == 1 && !worldIn.getBlockState(pos.down()).isOpaqueCube(worldIn, pos)) {
-				d2 = (double) pos.getY() - 0.0625D;
-			}
-
-			if (i == 2 && !worldIn.getBlockState(pos.south()).isOpaqueCube(worldIn, pos)) {
-				d3 = (double) pos.getZ() + 0.0625D + 1.0D;
-			}
-
-			if (i == 3 && !worldIn.getBlockState(pos.north()).isOpaqueCube(worldIn, pos)) {
-				d3 = (double) pos.getZ() - 0.0625D;
-			}
-
-			if (i == 4 && !worldIn.getBlockState(pos.east()).isOpaqueCube(worldIn, pos)) {
-				d1 = (double) pos.getX() + 0.0625D + 1.0D;
-			}
-
-			if (i == 5 && !worldIn.getBlockState(pos.west()).isOpaqueCube(worldIn, pos)) {
-				d1 = (double) pos.getX() - 0.0625D;
-			}
-
-			if (d1 < (double) pos.getX() || d1 > (double) (pos.getX() + 1) || d2 < 0.0D || d2 > (double) (pos.getY() + 1) || d3 < (double) pos.getZ() || d3 > (double) (pos.getZ() + 1)) {
-				worldIn.addParticle(RedstoneParticleData.REDSTONE_DUST, false, d1, d2, d3, 0.0D, 0.0D, 0.0D);
+						world.addParticle(TFParticleType.ANNIHILATE.get(), true, x, y, z, vx, vy, vz);
+					}
+				}
 			}
 		}
 	}
