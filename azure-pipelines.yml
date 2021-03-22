@@ -44,11 +44,6 @@ steps:
     testResultsFiles: '**/TEST-*.xml'
     tasks: 'build'
 
-- script: |
-    # stop the Gradle daemon to ensure no files are left open (impacting the save cache operation later)
-    ./gradlew --stop
-  displayName: Kill Daemon
-
 - task: CopyFiles@2
   displayName: Copy Release build to artifact staging
   inputs:
@@ -125,3 +120,26 @@ steps:
     embeds: |
       [$(DiscordMessage)]
   condition: and(always(), eq(variables['CreateArtifacts'], 'True'))
+
+- task: Gradle@2
+  displayName: Publish to Maven
+  inputs:
+    workingDirectory: ''
+    options: '-PCIRevision=$(javaprops_mod_version).$(revision) -PCIType=RELEASE'
+    gradleWrapperFile: 'gradlew'
+    gradleOptions: '-Xmx3072m'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.8'
+    jdkArchitectureOption: 'x64'
+    publishJUnitResults: false
+    testResultsFiles: '**/TEST-*.xml'
+    tasks: 'publish'
+  condition: and(succeeded(), eq(variables['CreateArtifacts'], 'True'))
+  env:
+    ARTIFACTORY_USER: $(Artifactory.User)
+    ARTIFACTORY_PASS: $(Artifactory.Password)
+
+- script: |
+    # stop the Gradle daemon to ensure no files are left open (impacting the save cache operation later)
+    ./gradlew --stop
+  displayName: Kill Daemon

@@ -204,6 +204,28 @@ dependencies {
     minecraft "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
 }
 
+jar.finalizedBy('reobfJar')
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifact jar
+            setGroupId 'teamtwilight'
+            setArtifactId mod_id
+        }
+    }
+    repositories {
+        maven {
+            url "https://modmaven.dev:443/artifactory/mods"
+            //url "file:///${project.projectDir}/mcmodsrepo"
+            credentials {
+                username System.getenv('ARTIFACTORY_USER')
+                password System.getenv('ARTIFACTORY_PASS')
+            }
+        }
+    }
+}
+
 /*task createPom {
     doLast {
         pom {
