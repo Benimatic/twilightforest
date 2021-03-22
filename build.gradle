@@ -216,7 +216,7 @@ publishing {
     }
     repositories {
         maven {
-            url "https://modmaven.dev:443/artifactory/mods"
+            url "https://modmaven.dev:443/artifactory/local-releases"
             //url "file:///${project.projectDir}/mcmodsrepo"
             credentials {
                 username System.getenv('ARTIFACTORY_USER')
