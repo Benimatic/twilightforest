@@ -64,7 +64,6 @@ public class ItemTFMoonwormQueen extends Item {
 				SoundType soundtype = worldIn.getBlockState(pos).getBlock().getSoundType(worldIn.getBlockState(pos), worldIn, pos, player);
 				worldIn.playSound(player, pos, soundtype.getPlaceSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
 				// TF - damage stack instead of shrinking
-				itemstack.damageItem(1, player, (user) -> user.sendBreakAnimation(context.getHand()));
 				player.resetActiveHand();
 			}
 
@@ -135,7 +134,7 @@ public class ItemTFMoonwormQueen extends Item {
 					SoundType soundtype = blockstate1.getSoundType(world, blockpos, context.getPlayer());
 					world.playSound(playerentity, blockpos, this.getPlaceSound(blockstate1, world, blockpos, context.getPlayer()), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
 					if (playerentity == null || !playerentity.abilities.isCreativeMode) {
-						itemstack.shrink(1);
+						itemstack.damageItem(1, playerentity, (user) -> user.sendBreakAnimation(playerentity.getActiveHand()));
 					}
 
 					return ActionResultType.SUCCESS;
