@@ -4,36 +4,25 @@
       "config": {
         "feature": {
           "config": {
-            "feature": {
-              "config": {
-                "state": {
-                  "Properties": {
-                    "facing": "north"
-                  },
-                  "Name": "minecraft:jack_o_lantern"
-                }
+            "state": {
+              "Properties": {
+                "facing": "north"
               },
-              "type": "twilightforest:lampposts"
-            },
-            "decorator": {
-              "config": {},
-              "type": "minecraft:heightmap_world_surface"
+              "Name": "minecraft:jack_o_lantern"
             }
           },
-          "type": "minecraft:decorated"
+          "type": "twilightforest:lampposts"
         },
         "decorator": {
           "config": {},
-          "type": "minecraft:square"
+          "type": "minecraft:heightmap_world_surface"
         }
       },
       "type": "minecraft:decorated"
     },
     "decorator": {
-      "config": {
-        "chance": 50
-      },
-      "type": "minecraft:chance"
+      "config": {},
+      "type": "minecraft:square"
     }
   },
   "type": "minecraft:decorated"
