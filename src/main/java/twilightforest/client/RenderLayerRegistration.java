@@ -65,6 +65,7 @@ public class RenderLayerRegistration {
 		RenderTypeLookup.setRenderLayer(TFBlocks.trophy_pedestal.get(), translucent);
 		RenderTypeLookup.setRenderLayer(TFBlocks.fiery_block.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.firefly_jar.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.cicada_jar.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.moss_patch.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.mayapple.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.clover_patch.get(), cutout);

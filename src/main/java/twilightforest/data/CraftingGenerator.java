@@ -63,6 +63,12 @@ public class CraftingGenerator extends CraftingDataHelper {
 				.addCriterion("has_item", hasItem(TFBlocks.firefly.get()))
 				.build(consumer);
 
+		ShapelessRecipeBuilder.shapelessRecipe(TFBlocks.cicada_jar.get())
+				.addIngredient(Ingredient.fromItems(TFBlocks.cicada.get()))
+				.addIngredient(Ingredient.fromItems(Items.GLASS_BOTTLE))
+				.addCriterion("has_item", hasItem(TFBlocks.cicada.get()))
+				.build(consumer);
+
 		ShapelessRecipeBuilder.shapelessRecipe(Items.STICK)
 				.addIngredient(Ingredient.fromItems(TFBlocks.root_strand.get()))
 				.addCriterion("has_item", hasItem(TFBlocks.root_strand.get()))

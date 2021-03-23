@@ -240,6 +240,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 						.weight(1).modelFile(models().cubeAll(TFBlocks.hedge.getId().getPath() + "_rose", prefix("block/" + TFBlocks.hedge.getId().getPath() + "_rose"))).build());
 		simpleBlock(TFBlocks.boss_spawner.get(), new ConfiguredModel(models().getExistingFile(new ResourceLocation("block/spawner"))));
 		simpleBlockExisting(TFBlocks.firefly_jar.get());
+		simpleBlockExisting(TFBlocks.cicada_jar.get());
 		registerPlantBlocks();
 		simpleBlock(TFBlocks.root.get());
 		simpleBlock(TFBlocks.liveroot_block.get());

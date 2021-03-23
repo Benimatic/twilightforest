@@ -64,12 +64,12 @@ public class TileEntityTFCReactorActive extends TileEntity implements ITickableT
 					createFakeBlock(pos.add(1, 1, -1), fakeDiamond);
 					createFakeBlock(pos.add(-1, 1, 1), fakeDiamond);
 					createFakeBlock(pos.add(-1, 1, -1), fakeDiamond);
+					createFakeBlock(pos.add(0, 1, 0), fakeDiamond);
 
 					createFakeBlock(pos.add(0, 1, 1), fakeGold);
 					createFakeBlock(pos.add(0, 1, -1), fakeGold);
 					createFakeBlock(pos.add(1, 1, 0), fakeGold);
 					createFakeBlock(pos.add(-1, 1, 0), fakeGold);
-
 
 					createFakeBlock(pos.add(1, 0, 1), fakeGold);
 					createFakeBlock(pos.add(1, 0, -1), fakeGold);
@@ -80,7 +80,7 @@ public class TileEntityTFCReactorActive extends TileEntity implements ITickableT
 					createFakeBlock(pos.add(0, 0, -1), fakeDiamond);
 					createFakeBlock(pos.add(1, 0, 0), fakeDiamond);
 					createFakeBlock(pos.add(-1, 0, 0), fakeDiamond);
-
+					createFakeBlock(pos.add(0, -1, 0), fakeDiamond);
 
 					createFakeBlock(pos.add(1, -1, 1), fakeDiamond);
 					createFakeBlock(pos.add(1, -1, -1), fakeDiamond);

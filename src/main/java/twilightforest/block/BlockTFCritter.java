@@ -3,20 +3,21 @@ package twilightforest.block;
 import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
@@ -28,6 +29,7 @@ import twilightforest.TFSounds;
 import twilightforest.entity.projectile.EntityTFMoonwormShot;
 
 import javax.annotation.Nullable;
+import javax.swing.*;
 
 public abstract class BlockTFCritter extends DirectionalBlock implements IWaterLoggable {
 	private final float WIDTH = getWidth();
@@ -130,6 +132,25 @@ public abstract class BlockTFCritter extends DirectionalBlock implements IWaterL
 			squish.entityDropItem(this.getSquishResult().getStack());
 		}
 		super.onReplaced(state, worldIn, pos, newState, isMoving);
+	}
+
+	@Override
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+		ItemStack stack = player.getHeldItem(handIn);
+		if(stack.getItem() == Items.GLASS_BOTTLE) {
+			if(this == TFBlocks.firefly.get()) {
+				if(!player.isCreative()) stack.shrink(1);
+				player.inventory.addItemStackToInventory(new ItemStack(TFBlocks.firefly_jar.get()));
+				worldIn.setBlockState(pos,state.get(WATERLOGGED) ? Blocks.WATER.getDefaultState() : Blocks.AIR.getDefaultState());
+				return ActionResultType.SUCCESS;
+			} else if(this == TFBlocks.cicada.get()) {
+				if(!player.isCreative()) stack.shrink(1);
+				player.inventory.addItemStackToInventory(new ItemStack(TFBlocks.cicada_jar.get()));
+				worldIn.setBlockState(pos,state.get(WATERLOGGED) ? Blocks.WATER.getDefaultState() : Blocks.AIR.getDefaultState());
+				return ActionResultType.SUCCESS;
+			}
+		}
+		return ActionResultType.PASS;
 	}
 
 	@Override

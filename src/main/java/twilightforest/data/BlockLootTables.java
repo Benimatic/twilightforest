@@ -130,6 +130,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerLootTable(TFBlocks.liveroot_block.get(), droppingWithSilkTouch(TFBlocks.liveroot_block.get(), TFItems.liveroot.get()));
 		registerDropSelfLootTable(TFBlocks.uncrafting_table.get());
 		registerDropSelfLootTable(TFBlocks.firefly_jar.get());
+		registerDropSelfLootTable(TFBlocks.cicada_jar.get());
 		registerLootTable(TFBlocks.moss_patch.get(), onlyWithShears(TFBlocks.moss_patch.get()));
 		registerLootTable(TFBlocks.mayapple.get(), onlyWithShears(TFBlocks.mayapple.get()));
 		registerLootTable(TFBlocks.clover_patch.get(), onlyWithShears(TFBlocks.clover_patch.get()));
