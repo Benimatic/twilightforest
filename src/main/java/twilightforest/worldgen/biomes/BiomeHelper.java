@@ -400,7 +400,7 @@ public abstract class BiomeHelper {
 		MobSpawnInfo.Builder spawnInfo = new MobSpawnInfo.Builder();
 
 		spawnInfo.withCreatureSpawnProbability(0.2f);
-		spawnInfo.withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(TFEntities.penguin, 1, 4, 8));
+		spawnInfo.withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(TFEntities.penguin, 10, 2, 4));
 
 		return spawnInfo;
 	}

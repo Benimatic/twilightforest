@@ -50,9 +50,9 @@
     "creature": [
       {
         "type": "twilightforest:penguin",
-        "weight": 1,
-        "minCount": 4,
-        "maxCount": 8
+        "weight": 10,
+        "minCount": 2,
+        "maxCount": 4
       }
     ],
     "ambient": [],
