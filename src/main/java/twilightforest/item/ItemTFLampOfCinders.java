@@ -11,6 +11,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -51,7 +52,6 @@ public class ItemTFLampOfCinders extends Item {
 				float dx = pos.getX() + 0.5F + (random.nextFloat() - random.nextFloat()) * 0.75F;
 				float dy = pos.getY() + 0.5F + (random.nextFloat() - random.nextFloat()) * 0.75F;
 				float dz = pos.getZ() + 0.5F + (random.nextFloat() - random.nextFloat()) * 0.75F;
-
 				world.addParticle(ParticleTypes.SMOKE, dx, dy, dz, 0.0D, 0.0D, 0.0D);
 				world.addParticle(ParticleTypes.FLAME, dx, dy, dz, 0.0D, 0.0D, 0.0D);
 			}
@@ -112,6 +112,13 @@ public class ItemTFLampOfCinders extends Item {
 				);
 
 				world.playEvent((PlayerEntity) living, 2004, rPos, 0);
+			}
+
+			//burn mobs!
+			for(LivingEntity targets : world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(new BlockPos(living.getPosX(), living.getPosYEye(), living.getPosZ())).grow(4.0D))) {
+				if(!(targets instanceof PlayerEntity)) {
+					targets.setFire(5);
+				}
 			}
 		}
 	}
