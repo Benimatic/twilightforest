@@ -14,6 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import twilightforest.util.TFDamageSources;
 
 import javax.annotation.Nullable;
 
@@ -43,7 +44,7 @@ public class BlockTFThorns extends BlockTFConnectableRotatedPillar {
 	@Override
 	@Deprecated
 	public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entity) {
-		entity.attackEntityFrom(DamageSource.CACTUS, THORN_DAMAGE);
+		entity.attackEntityFrom(TFDamageSources.THORNS, THORN_DAMAGE);
 	}
 
 	@Override

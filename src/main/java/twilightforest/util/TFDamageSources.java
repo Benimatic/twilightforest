@@ -17,6 +17,9 @@ public class TFDamageSources {
     public static final DamageSource THROWN_AXE = new DamageSource("thrownAxe");
     public static final DamageSource THROWN_PICKAXE = new DamageSource("thrownPickaxe");
     public static final DamageSource FINAL_BOSS = new DamageSource("finalBoss"); //placeholder
+    public static final DamageSource THORNS = new DamageSource("thorns");
+    public static final DamageSource KNIGHTMETAL = new DamageSource("knightmetal");
+    public static final DamageSource FIERY = new DamageSource("fiery");
     public static final DamageSource FIRE_JET = new DamageSource("fireJet");
     public static final DamageSource REACTOR = new DamageSource("reactor");
 

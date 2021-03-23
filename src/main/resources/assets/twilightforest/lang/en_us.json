@@ -442,6 +442,10 @@
   "block.twilightforest.sort_trapdoor": "Sortingwood Trapdoor",
   "block.twilightforest.sort_door": "Sortingwood Door",
 
+  "block.steeleaf.tooltip": "Reduces fall damage by 25%",
+  "block.arctic.tooltip": "Reduces fall damage by 90%",
+  "block.knightmetal.tooltip": "Works as a stronger cactus",
+
   // Structures
   "structure.twilight_portal": "Twilight Portal",
   "structure.hedge_maze": "Hedge Maze",
@@ -962,6 +966,12 @@
   "death.attack.fireJet.player": "%1$s accidentally walked into a fire jet while escaping %2$s",
   "death.attack.reactor": "%1$s stood too close to a carminite reactor",
   "death.attack.reactor.player": "%1$s stood too close to a carminite reactor while escaping %2$s",
+  "death.attack.thorns": "%1$s walked into some thorns",
+  "death.attack.thorns.player": "%1$s walked into some thorns while escaping %2$s",
+  "death.attack.knightmetal": "%1$s was spiked by a knightmetal block",
+  "death.attack.knightmetal.player": "%1$s was spiked by a knightmetal block while escaping %2$s",
+  "death.attack.fiery": "%1$s walked onto a fiery block",
+  "death.attack.fiery.player": "%1$s walked onto a fiery block while escaping %2$s",
 
   "death.attack.axing": "%1$s was chopped up by %2$s",
   "death.attack.axing.item": "%1$s was chopped up by %2$s using %3$s",
