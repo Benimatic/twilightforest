@@ -91,6 +91,7 @@ public class BlockTFCastleDoor extends Block {
 		if (originState.getBlock() instanceof BlockTFCastleDoor) {
 			world.setBlockState(pos, originState.with(ACTIVE, true));
 		}
+		vanishParticles(world, pos);
 		world.getPendingBlockTicks().scheduleTick(pos, originState.getBlock(), 2 + world.rand.nextInt(5));
 	}
 
@@ -118,7 +119,6 @@ public class BlockTFCastleDoor extends Block {
 				world.setBlockState(pos, state.with(VANISHED, true).with(ACTIVE, false));
 				world.getPendingBlockTicks().scheduleTick(pos, this, 80);
 
-				vanishParticles(pos);
 				playVanishSound(world, pos);
 				// activate all adjacent inactive doors
 				for (Direction e : Direction.values()) {
@@ -147,24 +147,21 @@ public class BlockTFCastleDoor extends Block {
 		}
 	}
 
-	private void vanishParticles(BlockPos pos) {
-		World world = Minecraft.getInstance().world;
+	private static void vanishParticles(World world, BlockPos pos) {
 		Random rand = world.getRandom();
-		if (world.isRemote) {
-			for (int dx = 0; dx < 4; ++dx) {
-				for (int dy = 0; dy < 4; ++dy) {
-					for (int dz = 0; dz < 4; ++dz) {
+		for (int dx = 0; dx < 4; ++dx) {
+			for (int dy = 0; dy < 4; ++dy) {
+				for (int dz = 0; dz < 4; ++dz) {
 
-						double x = pos.getX() + (dx + 0.5D) / 4;
-						double y = pos.getY() + (dy + 0.5D) / 4;
-						double z = pos.getZ() + (dz + 0.5D) / 4;
+					double x = pos.getX() + (dx + 0.5D) / 4;
+					double y = pos.getY() + (dy + 0.5D) / 4;
+					double z = pos.getZ() + (dz + 0.5D) / 4;
 
-						double vx = rand.nextGaussian() * 0.2D;
-						double vy = rand.nextGaussian() * 0.2D;
-						double vz = rand.nextGaussian() * 0.2D;
+					double vx = rand.nextGaussian() * 0.2D;
+					double vy = rand.nextGaussian() * 0.2D;
+					double vz = rand.nextGaussian() * 0.2D;
 
-						world.addParticle(TFParticleType.ANNIHILATE.get(), true, x, y, z, vx, vy, vz);
-					}
+					world.addParticle(TFParticleType.ANNIHILATE.get(), true, x, y, z, vx, vy, vz);
 				}
 			}
 		}
