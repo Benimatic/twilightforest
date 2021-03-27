@@ -345,9 +345,9 @@
 			"from": [8, 0, 3],
 			"to": [16, 3, 16],
 			"faces": {
-				"east": {"uv": [7.5, 14.5, 14, 16], "texture": "#pattern", "cullface": "west"},
-				"south": {"uv": [8, 0, 16, 3], "texture": "#inner_a", "cullface": "down"},
-				"down": {"uv": [16, 13, 8, 0], "rotation": 180, "texture": "#border", "cullface": "up"}
+				"east": {"uv": [7.5, 14.5, 14, 16], "texture": "#pattern", "cullface": "east"},
+				"south": {"uv": [8, 0, 16, 3], "texture": "#inner_a", "cullface": "south"},
+				"down": {"uv": [16, 13, 8, 0], "rotation": 180, "texture": "#border", "cullface": "down"}
 			}
 		},
 		{
