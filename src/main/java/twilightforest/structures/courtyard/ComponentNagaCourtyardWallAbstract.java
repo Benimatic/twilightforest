@@ -10,6 +10,7 @@ import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructureManager;
+import net.minecraft.world.gen.feature.template.BlockIgnoreStructureProcessor;
 import net.minecraft.world.gen.feature.template.IntegrityProcessor;
 import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.gen.feature.template.TemplateManager;
@@ -46,9 +47,9 @@ public class ComponentNagaCourtyardWallAbstract extends StructureTFComponentTemp
 
 	@Override
 	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random random, MutableBoundingBox structureBoundingBox, ChunkPos chunkPosIn, BlockPos blockPos) {
-		placeSettings.setBoundingBox(structureBoundingBox);
-		TEMPLATE.func_237146_a_(world, rotatedPosition, rotatedPosition, placeSettings.addProcessor(new CourtyardWallTemplateProcessor(0.2F)).addProcessor(new IntegrityProcessor(ComponentNagaCourtyardMain.WALL_INTEGRITY)), random, 18);
-		decayTemplate.func_237146_a_(world, rotatedPosition, rotatedPosition, placeSettings.addProcessor(new MossyCobbleTemplateProcessor(0.2F)).addProcessor(new IntegrityProcessor(ComponentNagaCourtyardMain.WALL_DECAY)), random, 18);
+		placeSettings.setBoundingBox(structureBoundingBox).clearProcessors();
+		TEMPLATE.func_237146_a_(world, rotatedPosition, rotatedPosition, placeSettings.addProcessor(new CourtyardWallTemplateProcessor(0.0F)).addProcessor(new IntegrityProcessor(ComponentNagaCourtyardMain.WALL_INTEGRITY)).addProcessor(BlockIgnoreStructureProcessor.AIR), random, 18);
+		decayTemplate.func_237146_a_(world, rotatedPosition, rotatedPosition, placeSettings.clearProcessors().addProcessor(new MossyCobbleTemplateProcessor(0.0F)).addProcessor(new IntegrityProcessor(ComponentNagaCourtyardMain.WALL_DECAY)), random, 18);
 		return true;
 	}
 }

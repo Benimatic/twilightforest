@@ -37,7 +37,7 @@ public abstract class ComponentNagaCourtyardTerraceAbstract extends StructureTFC
 
 	@Override
 	public boolean func_230383_a_(ISeedReader world, StructureManager manager, ChunkGenerator generator, Random random, MutableBoundingBox structureBoundingBox, ChunkPos chunkPosIn, BlockPos blockPos) {
-		placeSettings.setBoundingBox(structureBoundingBox).addProcessor(new CourtyardTerraceTemplateProcessor(0.2F));
+		placeSettings.setBoundingBox(structureBoundingBox).clearProcessors().addProcessor(new CourtyardTerraceTemplateProcessor(0.0F));
 		TEMPLATE.func_237146_a_(world, rotatedPosition, rotatedPosition, placeSettings, random, 18);
 		return true;
 	}
