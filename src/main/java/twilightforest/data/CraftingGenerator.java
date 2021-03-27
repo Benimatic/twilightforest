@@ -531,7 +531,7 @@ public class CraftingGenerator extends CraftingDataHelper {
 		reverseStairsBlock(consumer, locCastle("castleblock_stairs_mossy_reverse"), TFBlocks.castle_brick_mossy, TFBlocks.castle_stairs_mossy.get());
 		stairsBlock(consumer, locCastle("castleblock_stairs_worn"), TFBlocks.castle_stairs_worn, TFBlocks.castle_brick_worn.get());
 		reverseStairsBlock(consumer, locCastle("castleblock_stairs_worn_reverse"), TFBlocks.castle_brick_worn, TFBlocks.castle_stairs_worn.get());
-		ShapelessRecipeBuilder.shapelessRecipe(TFBlocks.castle_brick_mossy.get(), 3)
+		ShapelessRecipeBuilder.shapelessRecipe(TFBlocks.castle_brick_mossy.get(), 1)
 		.addIngredient(Ingredient.fromItems(Blocks.VINE))
 		.addIngredient(Ingredient.fromItems(TFBlocks.castle_brick.get()))
 		.addCriterion("has_item", hasItem(TFBlocks.castle_brick.get()))
