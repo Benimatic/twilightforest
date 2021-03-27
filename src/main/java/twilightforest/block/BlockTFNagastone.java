@@ -2,6 +2,7 @@ package twilightforest.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.HorizontalBlock;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
@@ -37,7 +38,7 @@ public class BlockTFNagastone extends Block {
 
 		for (Direction side : Direction.values()) {
 			BlockState neighborState = world.getBlockState(pos.offset(side));
-			if (neighborState.getBlock() == this || neighborState.getBlock() == TFBlocks.naga_stone_head.get()) {
+			if (neighborState.getBlock() == this || (neighborState.getBlock() == TFBlocks.naga_stone_head.get() && side == neighborState.get(BlockTFHorizontal.HORIZONTAL_FACING))) {
 				facings[connectionCount++] = side;
 				if (connectionCount >= 2) {
 					break;

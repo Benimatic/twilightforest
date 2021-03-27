@@ -318,7 +318,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 	private void registerNagastone() {
 		// todo 1.15 cleanup: generate these models as well instead of getExistingFile-ing them
 		String baseName = TFBlocks.naga_stone.getId().getPath();
-		ModelFile solid = models().cubeBottomTop(baseName, prefix("block/nagastone_long_side"), prefix("block/nagastone_turn_top"), prefix("block/nagastone_bottom_long"));
+		ModelFile solid = models().cubeBottomTop(baseName, prefix("block/nagastone_long_side"), prefix("block/nagastone_bottom_long"), prefix("block/nagastone_turn_top"));
 		ModelFile down = models().getExistingFile(prefix("block/naga_segment/down"));
 		ModelFile up = models().getExistingFile(prefix("block/naga_segment/up"));
 		ModelFile horizontal = models().getExistingFile(prefix("block/naga_segment/horizontal"));
