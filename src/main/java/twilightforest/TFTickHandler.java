@@ -103,6 +103,10 @@ public class TFTickHandler {
 
 		int px = MathHelper.floor(player.getPosX());
 		int pz = MathHelper.floor(player.getPosZ());
+		int cx1 = MathHelper.floor((px - 100) >> 4);
+		int cx2 = MathHelper.ceil((px + 100) >> 4);
+		int cz1 = MathHelper.floor((pz - 100) >> 4);
+		int cz2 = MathHelper.ceil((pz + 100) >> 4);
 
 		MutableBoundingBox fullSBB = null;
 		TFFeature featureCheck = TFFeature.getFeatureForRegionPos(px, pz, (ServerWorld) world);
@@ -112,11 +116,6 @@ public class TFTickHandler {
 			TFFeature feature = ((TFStructure<?>) structureFeature).getFeature();
 			if(feature != featureCheck)
 				continue;
-			MutableBoundingBox boundingBox = new MutableBoundingBox(px - 100, 0, pz - 100, px + 100, 256, pz + 100);
-			int cx1 = MathHelper.floor(boundingBox.minX >> 4);
-			int cx2 = MathHelper.ceil(boundingBox.maxX >> 4);
-			int cz1 = MathHelper.floor(boundingBox.minZ >> 4);
-			int cz2 = MathHelper.ceil(boundingBox.maxZ >> 4);
 
 			search:
 			for (int x = cx1; x < cx2; ++x) {
