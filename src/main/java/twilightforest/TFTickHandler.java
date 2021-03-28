@@ -7,9 +7,15 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.util.math.SectionPos;
+import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.ChunkStatus;
+import net.minecraft.world.gen.feature.structure.Structure;
+import net.minecraft.world.gen.feature.structure.StructureStart;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -21,10 +27,13 @@ import twilightforest.data.ItemTagGenerator;
 import twilightforest.network.PacketStructureProtection;
 import twilightforest.network.PacketStructureProtectionClear;
 import twilightforest.network.TFPacketHandler;
+import twilightforest.structures.start.TFStructure;
+import twilightforest.util.StructureBoundingBoxUtils;
 import twilightforest.world.ChunkGeneratorTwilightBase;
 import twilightforest.world.TFGenerationSettings;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
@@ -59,7 +68,7 @@ public class TFTickHandler {
 				&& TFGenerationSettings.isTwilightChunk(world)
 				&& !player.isCreative() && !player.isSpectator()) {
 
-			checkBiomeForProgression(player, world);
+			TFGenerationSettings.enforceBiomeProgression(player, world);
 		}
 
 		// check and send nearby forbidden structures, every 100 ticks or so
@@ -95,21 +104,49 @@ public class TFTickHandler {
 		int px = MathHelper.floor(player.getPosX());
 		int pz = MathHelper.floor(player.getPosZ());
 
-//		MutableBoundingBox fullSBB = chunkGenerator.getFullSBBNear(px, pz, 100);
-//		if (fullSBB != null) {
-//
-//			Vec3i center = StructureBoundingBoxUtils.getCenter(fullSBB);
-//
-//			TFFeature nearFeature = TFFeature.getFeatureForRegionPos(center.getPosX()(), center.getPosZ()(), world);
-//
-//			if (!nearFeature.hasProtectionAura || nearFeature.doesPlayerHaveRequiredAdvancements(player)) {
-//				sendAllClearPacket(world, player);
-//				return false;
-//			} else {
-//				sendStructureProtectionPacket(world, player, fullSBB);
-//				return true;
-//			}
-//		}
+		MutableBoundingBox fullSBB = null;
+		TFFeature featureCheck = TFFeature.getFeatureForRegionPos(px, pz, (ServerWorld) world);
+		for (Structure<?> structureFeature : net.minecraftforge.registries.ForgeRegistries.STRUCTURE_FEATURES) {
+			if(!(structureFeature instanceof TFStructure))
+				continue;
+			TFFeature feature = ((TFStructure<?>) structureFeature).getFeature();
+			if(feature != featureCheck)
+				continue;
+			MutableBoundingBox boundingBox = new MutableBoundingBox(px - 100, 0, pz - 100, px + 100, 256, pz + 100);
+			int cx1 = MathHelper.floor(boundingBox.minX >> 4);
+			int cx2 = MathHelper.ceil(boundingBox.maxX >> 4);
+			int cz1 = MathHelper.floor(boundingBox.minZ >> 4);
+			int cz2 = MathHelper.ceil(boundingBox.maxZ >> 4);
+
+			search:
+			for (int x = cx1; x < cx2; ++x) {
+				for (int z = cz1; z < cz2; ++z) {
+					Optional<StructureStart<?>> structure = world.getChunk(x, z, ChunkStatus.STRUCTURE_REFERENCES).func_230346_b_(structureFeature).stream().
+							map((longVal) -> SectionPos.from(new ChunkPos(longVal), 0)).<StructureStart<?>>map((sectionPos) -> world.
+							getChunk(sectionPos.getSectionX(), sectionPos.getSectionZ(), ChunkStatus.STRUCTURE_STARTS).func_230342_a_(structureFeature)).
+							filter((structureStart) -> structureStart != null && structureStart.isValid()).
+							findFirst();
+					if (structure.isPresent()) {
+						fullSBB = structure.get().getBoundingBox();
+						break search;
+					}
+				}
+			}
+		}
+		if (fullSBB != null) {
+
+			Vector3i center = StructureBoundingBoxUtils.getCenter(fullSBB);
+
+			TFFeature nearFeature = TFFeature.getFeatureForRegionPos(center.getX(), center.getZ(), (ServerWorld) world);
+
+			if (!nearFeature.hasProtectionAura || nearFeature.doesPlayerHaveRequiredAdvancements(player)) {
+				sendAllClearPacket(world, player);
+				return false;
+			} else {
+				sendStructureProtectionPacket(world, player, fullSBB);
+				return true;
+			}
+		}
 		return false;
 	}
 
@@ -144,17 +181,4 @@ public class TFTickHandler {
 		}
 	}
 
-	/**
-	 * Check what biome the player is in, and see if current progression allows that biome.  If not, take appropriate action
-	 */
-	private static void checkBiomeForProgression(PlayerEntity player, World world) {
-		/* FIXME
-		Biome currentBiome = world.getBiome(player.getPosition());
-		if (currentBiome instanceof TFBiomeBase) {
-			TFBiomeBase tfBiome = (TFBiomeBase) currentBiome;
-			if (!tfBiome.doesPlayerHaveRequiredAdvancements(player)) {
-				tfBiome.enforceProgression(player, world);
-			}
-		}*/
-	}
 }

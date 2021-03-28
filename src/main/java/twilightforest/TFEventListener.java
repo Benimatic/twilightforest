@@ -5,7 +5,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.monster.IMob;
@@ -35,7 +34,6 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerChunkProvider;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
@@ -82,7 +80,11 @@ import twilightforest.util.TFItemStackUtils;
 import twilightforest.world.ChunkGeneratorTwilightBase;
 import twilightforest.world.TFGenerationSettings;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * So much of the mod logic in this one class
@@ -531,28 +533,28 @@ public class TFEventListener {
 			// check nearby blocks for same block or same drop
 
 			// pre-check for cobble!
-			//TODO: How to figure this out
-//			Item cobbleItem = Item.getItemFromBlock(Blocks.COBBLESTONE);
-//			boolean allCobble = state.getBlock().getItemDropped(state, world.rand, 0) == cobbleItem;
-//
-//			if (allCobble) {
-//				for (BlockPos dPos : BlockTFGiantBlock.getVolume(pos)) {
-//					if (dPos.equals(pos)) continue;
-//					BlockState stateThere = world.getBlockState(dPos);
-//					if (stateThere.getBlock().getItemDropped(stateThere, world.rand, 0) != cobbleItem) {
-//						allCobble = false;
-//						break;
-//					}
-//				}
-//			}
-//
-//			if (allCobble && !player.abilities.isCreativeMode) {
-//				shouldMakeGiantCobble = true;
-//				amountOfCobbleToReplace = 64;
-//			} else {
-//				shouldMakeGiantCobble = false;
-//				amountOfCobbleToReplace = 0;
-//			}
+			Item cobbleItem = Blocks.COBBLESTONE.asItem();
+			boolean allCobble = state.getBlock().asItem() == cobbleItem;
+
+			if (allCobble) {
+				for (BlockPos dPos : BlockTFGiantBlock.getVolume(pos)) {
+					if (dPos.equals(pos))
+						continue;
+					BlockState stateThere = world.getBlockState(dPos);
+					if (stateThere.getBlock().asItem() != cobbleItem) {
+						allCobble = false;
+						break;
+					}
+				}
+			}
+
+			if (allCobble && !player.abilities.isCreativeMode) {
+				shouldMakeGiantCobble = true;
+				amountOfCobbleToReplace = 64;
+			} else {
+				shouldMakeGiantCobble = false;
+				amountOfCobbleToReplace = 0;
+			}
 
 			// break all nearby blocks
 			if (player instanceof ServerPlayerEntity) {

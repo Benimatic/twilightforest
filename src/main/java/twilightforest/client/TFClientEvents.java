@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.settings.PointOfView;
+import net.minecraft.client.world.DimensionRenderInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
@@ -14,6 +15,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.IWeatherRenderHandler;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -29,9 +31,9 @@ import twilightforest.TFEventListener;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.model.item.FullbrightBakedModel;
+import twilightforest.client.renderer.TFWeatherRenderer;
 import twilightforest.client.renderer.entity.LayerShields;
 import twilightforest.item.TFItems;
-import twilightforest.world.TFGenerationSettings;
 
 import java.util.Objects;
 
@@ -202,10 +204,14 @@ public class TFClientEvents {
 		sineTicker = sineTicker + partial;
 
 		BugModelAnimationHelper.animate();
+		DimensionRenderInfo info = DimensionRenderInfo.field_239208_a_.get(TwilightForestMod.prefix("renderer"));
 
-//		if (!mc.isGamePaused() && mc.world != null && mc.world.dimension.getWeatherRenderer() instanceof TFWeatherRenderer) {
-//			((TFWeatherRenderer) mc.world.dimension.getWeatherRenderer()).tick();
-//		}
+		// add weather box if needed
+		if (!mc.isGamePaused() && mc.world != null && info instanceof TwilightForestRenderInfo) {
+			IWeatherRenderHandler weatherRenderer = info.getWeatherRenderHandler();
+			if (weatherRenderer instanceof TFWeatherRenderer)
+				((TFWeatherRenderer) weatherRenderer).tick();
+		}
 	}
 
 	public static int time = 0;

@@ -41,6 +41,10 @@ public class TFStructure<C extends IFeatureConfig> extends Structure<C> {
 		this.template = template;
 	}
 
+	public TFFeature getFeature() {
+		return feature;
+	}
+
 	@Override
 	public List<MobSpawnInfo.Spawners> getSpawnList() {
 		return feature.getMonsterSpawnList();

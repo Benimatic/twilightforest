@@ -393,38 +393,4 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseChunkGenerator {
 		return p_230353_3_ == EntityClassification.MONSTER && p_230353_4_.getY() >= TFGenerationSettings.SEALEVEL ? ImmutableList.of() : super.func_230353_a_(p_230353_1_, p_230353_2_, p_230353_3_, p_230353_4_);
 	}
 
-	//	public void setStructureConquered(BlockPos pos, boolean flag) {
-//		getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world.getWorld())).setStructureConquered(pos, flag);
-//	}
-//
-//	public boolean isStructureLocked(BlockPos pos, int lockIndex) {
-//		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world.getWorld())).isStructureLocked(pos, lockIndex);
-//	}
-//
-//	//TODO: Verify replaced method
-//	public boolean isBlockInStructureBB(BlockPos pos) {
-//		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world.getWorld())).isPositionInStructure(world, pos);
-//	}
-//
-//	@Nullable
-//	public MutableBoundingBox getSBBAt(BlockPos pos) {
-//		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world.getWorld())).getSBBAt(pos);
-//	}
-//
-//	public boolean isBlockProtected(BlockPos pos) {
-//		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world.getWorld())).isBlockProtectedAt(pos);
-//	}
-//
-//	public boolean isStructureConquered(BlockPos pos) {
-//		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(pos.getX(), pos.getZ(), world.getWorld())).isStructureConquered(pos);
-//	}
-//
-//	public boolean isBlockInFullStructure(int x, int z) {
-//		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(x, z, world.getWorld())).isBlockInFullStructure(x, z);
-//	}
-//
-//	@Nullable
-//	public MutableBoundingBox getFullSBBNear(int mapX, int mapZ, int range) {
-//		return getFeatureGenerator(TFFeature.getFeatureForRegionPos(mapX, mapZ, world.getWorld())).getFullSBBNear(mapX, mapZ, range);
-//	}
 }
