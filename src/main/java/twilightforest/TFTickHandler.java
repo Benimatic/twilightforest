@@ -7,15 +7,9 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.util.math.SectionPos;
 import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.ChunkStatus;
-import net.minecraft.world.gen.feature.structure.Structure;
-import net.minecraft.world.gen.feature.structure.StructureStart;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -27,13 +21,11 @@ import twilightforest.data.ItemTagGenerator;
 import twilightforest.network.PacketStructureProtection;
 import twilightforest.network.PacketStructureProtectionClear;
 import twilightforest.network.TFPacketHandler;
-import twilightforest.structures.start.TFStructure;
 import twilightforest.util.StructureBoundingBoxUtils;
 import twilightforest.world.ChunkGeneratorTwilightBase;
 import twilightforest.world.TFGenerationSettings;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
@@ -99,41 +91,12 @@ public class TFTickHandler {
 	private static boolean checkForLockedStructuresSendPacket(PlayerEntity player, World world) {
 
 		ChunkGeneratorTwilightBase chunkGenerator = TFGenerationSettings.getChunkGenerator(world);
-		if (chunkGenerator == null) return false;
+		if (chunkGenerator == null)
+			return false;
 
-		int px = MathHelper.floor(player.getPosX());
-		int pz = MathHelper.floor(player.getPosZ());
-		int cx1 = MathHelper.floor((px - 100) >> 4);
-		int cx2 = MathHelper.ceil((px + 100) >> 4);
-		int cz1 = MathHelper.floor((pz - 100) >> 4);
-		int cz2 = MathHelper.ceil((pz + 100) >> 4);
 
-		MutableBoundingBox fullSBB = null;
-		TFFeature featureCheck = TFFeature.getFeatureForRegionPos(px, pz, (ServerWorld) world);
-		for (Structure<?> structureFeature : net.minecraftforge.registries.ForgeRegistries.STRUCTURE_FEATURES) {
-			if(!(structureFeature instanceof TFStructure))
-				continue;
-			TFFeature feature = ((TFStructure<?>) structureFeature).getFeature();
-			if(feature != featureCheck)
-				continue;
-
-			search:
-			for (int x = cx1; x < cx2; ++x) {
-				for (int z = cz1; z < cz2; ++z) {
-					Optional<StructureStart<?>> structure = world.getChunk(x, z, ChunkStatus.STRUCTURE_REFERENCES).func_230346_b_(structureFeature).stream().
-							map((longVal) -> SectionPos.from(new ChunkPos(longVal), 0)).<StructureStart<?>>map((sectionPos) -> world.
-							getChunk(sectionPos.getSectionX(), sectionPos.getSectionZ(), ChunkStatus.STRUCTURE_STARTS).func_230342_a_(structureFeature)).
-							filter((structureStart) -> structureStart != null && structureStart.isValid()).
-							findFirst();
-					if (structure.isPresent()) {
-						fullSBB = structure.get().getBoundingBox();
-						break search;
-					}
-				}
-			}
-		}
-		if (fullSBB != null) {
-
+		return TFGenerationSettings.locateTFStructureInRange((ServerWorld) world, player.getPosition(), 100).map(structure -> {
+			MutableBoundingBox fullSBB = structure.getBoundingBox();
 			Vector3i center = StructureBoundingBoxUtils.getCenter(fullSBB);
 
 			TFFeature nearFeature = TFFeature.getFeatureForRegionPos(center.getX(), center.getZ(), (ServerWorld) world);
@@ -145,8 +108,7 @@ public class TFTickHandler {
 				sendStructureProtectionPacket(world, player, fullSBB);
 				return true;
 			}
-		}
-		return false;
+		}).orElse(false);
 	}
 
 	private static void checkForPortalCreation(PlayerEntity player, World world, float rangeToCheck) {

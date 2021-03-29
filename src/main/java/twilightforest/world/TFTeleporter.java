@@ -192,6 +192,7 @@ public class TFTeleporter implements ITeleporter {
 
 		BlockPos pos = entity.getPosition();
 		if (isSafeAround(world, pos, entity, checkProgression)) {
+			TwilightForestMod.LOGGER.debug("Portal destination looks safe!");
 			return makePortalInfo(entity, entity.getPositionVec());
 		}
 
@@ -241,12 +242,8 @@ public class TFTeleporter implements ITeleporter {
 
 	private static boolean checkStructure(World world, BlockPos pos) {
 		ChunkGeneratorTwilightBase generator = TFGenerationSettings.getChunkGenerator(world);
-		if (generator != null) {
-			if (!world.isBlockLoaded(pos)) {
-				//generator.recreateStructures(null, pos.getX() >> 4, pos.getZ() >> 4); //TODO: Can we even do this?
-			}
-			//return !generator.isBlockInFullStructure(pos.getX(), pos.getZ());
-		}
+		if (generator != null)
+			return !TFGenerationSettings.locateTFStructureInRange((ServerWorld) world, pos, 1).isPresent();
 		return true;
 	}
 
@@ -257,13 +254,13 @@ public class TFTeleporter implements ITeleporter {
 	@Nullable
 	private static BlockPos findSafeCoords(ServerWorld world, int range, BlockPos pos, Entity entity, boolean checkProgression) {
 		int attempts = range / 8;
-		for (int i = 0; i < attempts; i++) {
-			BlockPos dPos = new BlockPos(
-					// TODO Should we be having randomized attempts
-					pos.getX() /*+ random.nextInt(range) - random.nextInt(range)*/, 100, pos.getZ() /*+ random.nextInt(range) - random.nextInt(range)*/);
+		for (int x = 0; x < attempts; x++) {
+			for (int z = 0; z < attempts; z++) {
+				BlockPos dPos = new BlockPos(pos.getX() + (x * attempts) - (range / 2), 100, pos.getZ() + (z * attempts) - (range / 2));
 
-			if (isSafeAround(world, dPos, entity, checkProgression)) {
-				return dPos;
+				if (isSafeAround(world, dPos, entity, checkProgression)) {
+					return dPos;
+				}
 			}
 		}
 		return null;
@@ -274,7 +271,7 @@ public class TFTeleporter implements ITeleporter {
 		loadSurroundingArea(world, pos);
 
 		BlockPos spot = findPortalCoords(world, pos, blockPos -> isPortalAt(world, blockPos));
-		String name = entity.getName().toString();
+		String name = entity.getName().getString();
 
 		if (spot != null) {
 			TwilightForestMod.LOGGER.debug("Found existing portal for {} at {}", name, spot);
