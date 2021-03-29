@@ -3,11 +3,11 @@ package twilightforest.worldgen.structures;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.math.StatsAccumulator;
 import com.mojang.serialization.Codec;
-import net.minecraft.block.ChestBlock;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.block.ChestBlock;
+import net.minecraft.block.material.Material;
+import net.minecraft.state.properties.StructureMode;
 import net.minecraft.tileentity.MobSpawnerTileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
@@ -16,21 +16,19 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.*;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.ISeedReader;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraft.world.gen.feature.structure.IStructurePieceType;
-import net.minecraft.world.gen.feature.structure.TemplateStructurePiece;
 import net.minecraft.world.gen.feature.template.IStructureProcessorType;
 import net.minecraft.world.gen.feature.template.PlacementSettings;
 import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.gen.feature.template.TemplateManager;
-import net.minecraft.world.server.ServerWorld;
 import org.apache.commons.lang3.tuple.Pair;
 import twilightforest.TwilightForestMod;
-import twilightforest.entity.EntityTFWraith;
 import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
 import twilightforest.structures.RandomizedTemplateProcessor;
@@ -111,21 +109,24 @@ public class TFGenGraveyard extends Feature<NoFeatureConfig> {
 
 	@Override
 	public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
-		// FIXME Use StructureManager
-		if (!(world instanceof ServerWorld))
-			return false;
-
-		int flags = 0b10100;
+		int flags = 16 | 2 | 1;
 		//Random random = world.getChunk(pos).getRandomWithSeed(987234911L);
 		Random random = world.getRandom();
 
-		// Previously there was untested casting here. Bad bad bad!
-		TemplateManager templatemanager = ((ServerWorld) world).getServer().getTemplateManager();
+		TemplateManager templatemanager = world.getWorld().getServer().getTemplateManager();
 		Template base = templatemanager.getTemplate(GRAVEYARD);
+		if (base == null)
+			return false;
 		List<Pair<GraveType, Template>> graves = new ArrayList<>();
 		Template trap = templatemanager.getTemplate(TRAP);
-		for (GraveType type : GraveType.VALUES)
-			graves.add(Pair.of(type, templatemanager.getTemplate(type.RL)));
+		if (trap == null)
+			return false;
+		for (GraveType type : GraveType.VALUES) {
+			Template grave = templatemanager.getTemplate(type.RL);
+			if (grave == null)
+				return false;
+			graves.add(Pair.of(type, grave));
+		}
 
 		Rotation[] rotations = Rotation.values();
 		Rotation rotation = rotations[random.nextInt(rotations.length)];
@@ -141,7 +142,7 @@ public class TFGenGraveyard extends Feature<NoFeatureConfig> {
 		MutableBoundingBox structureboundingbox = new MutableBoundingBox(chunkpos.getXStart() + 8, 0, chunkpos.getZStart() + 8, chunkendpos.getXEnd() + 8, 255, chunkendpos.getZEnd() + 8);
 		PlacementSettings placementsettings = (new PlacementSettings()).setMirror(mirror).setRotation(rotation).setBoundingBox(structureboundingbox).setRandom(random);
 
-		BlockPos posSnap = chunkpos.asBlockPos(); // Verify this is correct. Originally chunkpos.getBlock(8, pos.getY() - 1, 8);
+		BlockPos posSnap = chunkpos.asBlockPos().add(8, pos.getY() - 1, 8); // Verify this is correct. Originally chunkpos.getBlock(8, pos.getY() - 1, 8);
 		BlockPos.Mutable startPos = new BlockPos.Mutable(posSnap.getX(), posSnap.getY(), posSnap.getZ());
 
 		if (!offsetToAverageGroundLevel(world, startPos, transformedSize)) {
@@ -153,6 +154,7 @@ public class TFGenGraveyard extends Feature<NoFeatureConfig> {
 		BlockPos graveSize = transformedGraveSize.add(-1, 0, -1);
 
 		base.func_237146_a_(world, placementPos, placementPos, placementsettings.addProcessor(new WebTemplateProcessor(0.2F)), random, flags);
+		List<Template.BlockInfo> data = new ArrayList<>(base.func_215381_a(placementPos, placementsettings, Blocks.STRUCTURE_BLOCK));
 
 		BlockPos start = startPos.add(1, 1, 0);
 		BlockPos end = start.add(size.getX(), 0, size.getZ());
@@ -183,42 +185,41 @@ public class TFGenGraveyard extends Feature<NoFeatureConfig> {
 					continue;
 				BlockPos placement = fixed.add(x, -2, z);
 				Pair<GraveType, Template> grave = graves.get(rand.nextInt(graves.size()));
-				grave.getValue().func_237146_a_(world.getWorld(), placement, placement, placementsettings, random, flags);
+				grave.getValue().func_237146_a_(world, placement, placement, placementsettings, random, flags);
+				data.addAll(grave.getValue().func_215381_a(placementPos, placementsettings, Blocks.STRUCTURE_BLOCK));
 				if (grave.getKey() == GraveType.Full) {
 					if (random.nextBoolean()) {
 						if (random.nextInt(3) == 0)
 							placement.add(new BlockPos(mirror == Mirror.FRONT_BACK ? 1 : -1, 0, mirror == Mirror.LEFT_RIGHT ? 1 : -1).rotate(rotation));
-							trap.func_237146_a_(world, placement, placement, placementsettings, random, flags);
+						trap.func_237146_a_(world, placement, placement, placementsettings, random, flags);
+						data.addAll(trap.func_215381_a(placementPos, placementsettings, Blocks.STRUCTURE_BLOCK));
 						if (world.setBlockState(placement.add(chestloc), Blocks.TRAPPED_CHEST.getDefaultState().with(ChestBlock.FACING, Direction.WEST).rotate(rotation).mirror(mirror), flags))
 							TFTreasure.graveyard.generateChestContents(world, placement.add(chestloc));
-						EntityTFWraith wraith = new EntityTFWraith(TFEntities.wraith, world.getWorld());
+						/*EntityTFWraith wraith = new EntityTFWraith(TFEntities.wraith, world.getWorld());
 						wraith.setPositionAndUpdate(placement.getX(), placement.getY(), placement.getZ());
-						world.addEntity(wraith);
+						world.addEntity(wraith);*/ // TODO
 					}
 				}
 			}
 
-		return true;
-	}
-
-	public static class Piece extends TemplateStructurePiece {
-
-		public Piece(IStructurePieceType p_i51339_1_, CompoundNBT p_i51339_2_) {
-			super(p_i51339_1_, p_i51339_2_);
-		}
-
-		@Override
-		protected void handleDataMarker(String s, BlockPos p, IServerWorld world, Random random, MutableBoundingBox mbb) {
-			if ("spawner".equals(s))
-				if (random.nextInt(4) == 0) {
-					if (world.setBlockState(p, Blocks.SPAWNER.getDefaultState(), 3)) {
-						MobSpawnerTileEntity ms = (MobSpawnerTileEntity) world.getTileEntity(p);
-						if (ms != null)
-							ms.getSpawnerBaseLogic().setEntityType(TFEntities.rising_zombie);
-					}
-				} else
+		data.forEach(info -> {
+			if (info.nbt != null && StructureMode.valueOf(info.nbt.getString("mode")) == StructureMode.DATA) {
+				String s = info.nbt.getString("metadata");
+				BlockPos p = info.pos;
+				if ("spawner".equals(s)) {
 					world.removeBlock(p, false);
-		}
+					if (random.nextInt(4) == 0) {
+						if (world.setBlockState(p, Blocks.SPAWNER.getDefaultState(), 3)) {
+							MobSpawnerTileEntity ms = (MobSpawnerTileEntity) world.getTileEntity(p);
+							if (ms != null)
+								ms.getSpawnerBaseLogic().setEntityType(TFEntities.rising_zombie);
+						}
+					}
+				}
+			}
+		});
+
+		return true;
 	}
 
 	private enum GraveType {
