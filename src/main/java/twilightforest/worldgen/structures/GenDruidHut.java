@@ -7,6 +7,7 @@ import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.state.properties.StructureMode;
 import net.minecraft.tileentity.MobSpawnerTileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
@@ -20,14 +21,11 @@ import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraft.world.gen.feature.structure.IStructurePieceType;
-import net.minecraft.world.gen.feature.structure.TemplateStructurePiece;
 import net.minecraft.world.gen.feature.template.IStructureProcessorType;
 import net.minecraft.world.gen.feature.template.PlacementSettings;
 import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 
-import net.minecraft.world.server.ServerWorld;
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
@@ -35,6 +33,8 @@ import twilightforest.structures.RandomizedTemplateProcessor;
 import twilightforest.structures.TFStructureProcessors;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class GenDruidHut extends Feature<NoFeatureConfig> {
@@ -44,12 +44,14 @@ public class GenDruidHut extends Feature<NoFeatureConfig> {
 	}
 
 	@Override // Loosely based on WorldGenFossils FIXME See if we can move this over to purely-datadriven
-	public boolean generate(ISeedReader world,  ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
+	public boolean generate(ISeedReader world, ChunkGenerator generator, Random rand, BlockPos pos, NoFeatureConfig config) {
 		//Random random = world.getChunk(pos).getRandomWithSeed(987234911L);
 		Random random = world.getRandom();
 
-		TemplateManager templatemanager = ((ServerWorld)world).getServer().getTemplateManager();
+		TemplateManager templatemanager = world.getWorld().getServer().getTemplateManager();
 		Template template = templatemanager.getTemplate(HutType.values()[random.nextInt(HutType.size)].RL);
+		if(template == null)
+			return false;
 
 		Rotation[] rotations = Rotation.values();
 		Rotation rotation = rotations[random.nextInt(rotations.length)];
@@ -61,7 +63,7 @@ public class GenDruidHut extends Feature<NoFeatureConfig> {
 		MutableBoundingBox structureboundingbox = new MutableBoundingBox(chunkpos.getXStart() + 8, 0, chunkpos.getZStart() + 8, chunkpos.getXEnd() + 8, 255, chunkpos.getZEnd() + 8);
 		PlacementSettings placementsettings = (new PlacementSettings()).setMirror(mirror).setRotation(rotation).setBoundingBox(structureboundingbox).setRandom(random);
 
-		BlockPos posSnap = chunkpos.asBlockPos(); // Verify this is correct. Originally chunkpos.getBlock(8, pos.getY() - 1, 8);
+		BlockPos posSnap = chunkpos.asBlockPos().add(8, pos.getY() - 1, 8); // Verify this is correct. Originally chunkpos.getBlock(8, pos.getY() - 1, 8);
 
 		BlockPos transformedSize = template.transformedSize(rotation);
 		int dx = random.nextInt(17 - transformedSize.getX());
@@ -70,24 +72,80 @@ public class GenDruidHut extends Feature<NoFeatureConfig> {
 
 		BlockPos.Mutable startPos = new BlockPos.Mutable(posSnap.getX(), posSnap.getY(), posSnap.getZ());
 
-		if (!offsetToAverageGroundLevel(world.getWorld(), startPos, transformedSize)) {
+		if (!offsetToAverageGroundLevel(world, startPos, transformedSize)) {
 			return false;
 		}
 
 		BlockPos placementPos = template.getZeroPositionWithTransform(startPos, mirror, rotation);
 		template.func_237146_a_(world, placementPos, placementPos, placementsettings.addProcessor(new HutTemplateProcessor(0.2F)), random, 20);
+		List<Template.BlockInfo> data = new ArrayList<>(template.func_215381_a(placementPos, placementsettings, Blocks.STRUCTURE_BLOCK));
 
 		if (random.nextBoolean()) {
 			template = templatemanager.getTemplate(BasementType.values()[random.nextInt(BasementType.size)].getBasement(random.nextBoolean()));
+			if(template == null)
+				return false;
 			placementPos = placementPos.down(12).offset(rotation.rotate(mirror.mirror(Direction.NORTH)), 1).offset(rotation.rotate(mirror.mirror(Direction.EAST)), 1);
 
 			template.func_237146_a_(world, placementPos, placementPos, placementsettings.addProcessor(new HutTemplateProcessor(0.2F)), random, 20);
+			data.addAll(template.func_215381_a(placementPos, placementsettings, Blocks.STRUCTURE_BLOCK));
 		}
+
+		data.forEach(info -> {
+			if (info.nbt != null && StructureMode.valueOf(info.nbt.getString("mode")) == StructureMode.DATA) {
+				String s = info.nbt.getString("metadata");
+				BlockPos blockPos = info.pos;
+			/*
+   		        `spawner` will place a Druid spawner.
+
+   		        `loot` will place a chest facing the was-North.
+
+   		        `lootT` will place a trapped chest facing the was-North.
+
+   		        `lootW` will place a chest facing the was-West.
+   		        `lootS` will place a chest facing the was-South.
+
+   		        `lootET` will place a trapped chest facing the was-East.
+   		        `lootNT` will place a trapped chest facing the was-North.
+   		         */
+			// removeBlock calls are required due to WorldGenRegion jank with cached TEs, this ensures the correct TE is used
+				if ("spawner".equals(s)) {
+					if (world.removeBlock(blockPos, false) && world.setBlockState(blockPos, Blocks.SPAWNER.getDefaultState(), 16 | 2)) {
+						MobSpawnerTileEntity ms = (MobSpawnerTileEntity) world.getTileEntity(blockPos);
+
+						if (ms != null) {
+							ms.getSpawnerBaseLogic().setEntityType(TFEntities.skeleton_druid);
+						}
+					}
+				} else if (s.startsWith("loot")) {
+					world.removeBlock(blockPos, false);
+					BlockState chest = s.endsWith("T") ? Blocks.TRAPPED_CHEST.getDefaultState() : Blocks.CHEST.getDefaultState();
+
+					switch (s.substring(4, 5)) {
+						case "W":
+							chest = chest.with(HorizontalBlock.HORIZONTAL_FACING, rotation.rotate(mirror.mirror(Direction.WEST)));
+							break;
+						case "E":
+							chest = chest.with(HorizontalBlock.HORIZONTAL_FACING, rotation.rotate(mirror.mirror(Direction.EAST)));
+							break;
+						case "S":
+							chest = chest.with(HorizontalBlock.HORIZONTAL_FACING, rotation.rotate(mirror.mirror(Direction.SOUTH)));
+							break;
+						default:
+							chest = chest.with(HorizontalBlock.HORIZONTAL_FACING, rotation.rotate(mirror.mirror(Direction.NORTH)));
+							break;
+					}
+
+					if (world.setBlockState(blockPos, chest, 16 | 2)) {
+						TFTreasure.basement.generateChestContents(world, blockPos);
+					}
+				}
+			}
+		});
 
 		return true;
 	}
 
-    private static boolean offsetToAverageGroundLevel(World world, BlockPos.Mutable startPos, BlockPos size) {
+    private static boolean offsetToAverageGroundLevel(ISeedReader world, BlockPos.Mutable startPos, BlockPos size) {
         StatsAccumulator heights = new StatsAccumulator();
 
         for (int dx = 0; dx < size.getX(); dx++) {
@@ -141,63 +199,6 @@ public class GenDruidHut extends Feature<NoFeatureConfig> {
         Material material = state.getMaterial();
         return material == Material.WATER || material == Material.LAVA || state.getBlock() == Blocks.BEDROCK;
     }
-
-    public static class DruidHutPieces {
-
-		public static class Piece extends TemplateStructurePiece {
-
-			public Piece(IStructurePieceType p_i51338_1_, int p_i51338_2_) {
-				super(p_i51338_1_, p_i51338_2_);
-			}
-			@Override
-			protected void handleDataMarker(String s, BlockPos blockPos, IServerWorld world, Random random, MutableBoundingBox mutableBoundingBox) {
-   		        /*
-   		        `spawner` will place a Druid spawner.
-
-   		        `loot` will place a chest facing the was-North.
-
-   		        `lootT` will place a trapped chest facing the was-North.
-
-   		        `lootW` will place a chest facing the was-West.
-   		        `lootS` will place a chest facing the was-South.
-
-   		        `lootET` will place a trapped chest facing the was-East.
-   		        `lootNT` will place a trapped chest facing the was-North.
-   		         */
-				if ("spawner".equals(s)) {
-					if (world.setBlockState(blockPos, Blocks.SPAWNER.getDefaultState(), 16 | 2)) {
-						MobSpawnerTileEntity ms = (MobSpawnerTileEntity) world.getTileEntity(blockPos);
-
-						if (ms != null) {
-							ms.getSpawnerBaseLogic().setEntityType(TFEntities.skeleton_druid);
-						}
-					}
-				} else if (s.startsWith("loot")) {
-					BlockState chest = s.endsWith("T") ? Blocks.TRAPPED_CHEST.getDefaultState() : Blocks.CHEST.getDefaultState();
-
-					switch (s.substring(4, 5)) {
-						case "W":
-							chest = chest.with(HorizontalBlock.HORIZONTAL_FACING, rotation.rotate(mirror.mirror(Direction.WEST)));
-							break;
-						case "E":
-							chest = chest.with(HorizontalBlock.HORIZONTAL_FACING, rotation.rotate(mirror.mirror(Direction.EAST)));
-							break;
-						case "S":
-							chest = chest.with(HorizontalBlock.HORIZONTAL_FACING, rotation.rotate(mirror.mirror(Direction.SOUTH)));
-							break;
-						default:
-							chest = chest.with(HorizontalBlock.HORIZONTAL_FACING, rotation.rotate(mirror.mirror(Direction.NORTH)));
-							break;
-					}
-
-					if (world.setBlockState(blockPos, chest, 16 | 2)) {
-						TFTreasure.basement.generateChestContents((ISeedReader)world, blockPos);
-					}
-				}
-			}
-		}
-
-	}
 
     private enum HutType {
 

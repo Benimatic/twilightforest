@@ -1,0 +1,15 @@
+{
+  "config": {
+    "feature": {
+      "config": {},
+      "type": "twilightforest:druid_hut"
+    },
+    "decorator": {
+      "config": {
+        "chance": 10
+      },
+      "type": "minecraft:chance"
+    }
+  },
+  "type": "minecraft:decorated"
+}
