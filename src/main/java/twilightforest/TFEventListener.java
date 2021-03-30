@@ -615,7 +615,7 @@ public class TFEventListener {
 
 		ChunkGeneratorTwilightBase chunkGenerator = TFGenerationSettings.getChunkGenerator(world);
 
-		if (chunkGenerator != null && TFGenerationSettings.locateTFStructureInRange((ServerWorld) world, pos, 0).isPresent()) {
+		if (chunkGenerator != null && TFGenerationSettings.locateTFStructureInRange((ServerWorld) world, pos, 0).map(structure -> structure.getBoundingBox().isVecInside(pos)).orElse(false)) {
 			// what feature is nearby?  is it one the player has not unlocked?
 			TFFeature nearbyFeature = TFFeature.getFeatureAt(pos.getX(), pos.getZ(), (ServerWorld) world);
 
