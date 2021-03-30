@@ -1,7 +1,7 @@
 package twilightforest.enums;
 
 import net.minecraft.block.*;
-import net.minecraft.state.IProperty;
+import net.minecraft.state.Property;
 import net.minecraft.state.properties.SlabType;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
@@ -73,7 +73,7 @@ public enum StructureWoodVariant implements IStringSerializable {
 	}
 
 	@Override
-	public String getName() {
+	public String getString() {
 		return name().toLowerCase(Locale.ROOT);
 	}
 
@@ -148,14 +148,14 @@ public enum StructureWoodVariant implements IStringSerializable {
 		}
 	}
 
-	public static BlockState transferStateKeys(BlockState stateIn, BlockState stateOut, IProperty<?>... properties) {
-		for (IProperty<?> property : properties) {
+	public static BlockState transferStateKeys(BlockState stateIn, BlockState stateOut, Property<?>... properties) {
+		for (Property<?> property : properties) {
 			stateOut = transferStateKey(stateIn, stateOut, property);
 		}
 		return stateOut;
 	}
 
-	public static <T extends Comparable<T>> BlockState transferStateKey(BlockState stateIn, BlockState stateOut, IProperty<T> property) {
+	public static <T extends Comparable<T>> BlockState transferStateKey(BlockState stateIn, BlockState stateOut, Property<T> property) {
 		return stateOut.with(property, stateIn.get(property));
 	}
 

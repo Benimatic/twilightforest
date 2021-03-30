@@ -3,11 +3,13 @@ package twilightforest.worldgen.structures;
 import com.google.common.math.StatsAccumulator;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.state.properties.StructureMode;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tileentity.MobSpawnerTileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
@@ -21,13 +23,11 @@ import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
-import net.minecraft.world.gen.feature.template.IStructureProcessorType;
-import net.minecraft.world.gen.feature.template.PlacementSettings;
-import net.minecraft.world.gen.feature.template.Template;
-import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.gen.feature.template.*;
 
 import twilightforest.TwilightForestMod;
 import twilightforest.entity.TFEntities;
+import twilightforest.enums.StructureWoodVariant;
 import twilightforest.loot.TFTreasure;
 import twilightforest.structures.RandomizedTemplateProcessor;
 import twilightforest.structures.TFStructureProcessors;
@@ -77,7 +77,7 @@ public class GenDruidHut extends Feature<NoFeatureConfig> {
 		}
 
 		BlockPos placementPos = template.getZeroPositionWithTransform(startPos, mirror, rotation);
-		template.func_237146_a_(world, placementPos, placementPos, placementsettings.addProcessor(new HutTemplateProcessor(0.2F)), random, 20);
+		template.func_237146_a_(world, placementPos, placementPos, placementsettings.clearProcessors().addProcessor(new HutTemplateProcessor(0.0F, rand.nextInt(), rand.nextInt(), rand.nextInt())), random, 20);
 		List<Template.BlockInfo> data = new ArrayList<>(template.func_215381_a(placementPos, placementsettings, Blocks.STRUCTURE_BLOCK));
 
 		if (random.nextBoolean()) {
@@ -86,7 +86,7 @@ public class GenDruidHut extends Feature<NoFeatureConfig> {
 				return false;
 			placementPos = placementPos.down(12).offset(rotation.rotate(mirror.mirror(Direction.NORTH)), 1).offset(rotation.rotate(mirror.mirror(Direction.EAST)), 1);
 
-			template.func_237146_a_(world, placementPos, placementPos, placementsettings.addProcessor(new HutTemplateProcessor(0.2F)), random, 20);
+			template.func_237146_a_(world, placementPos, placementPos, placementsettings.clearProcessors().addProcessor(new HutTemplateProcessor(0.0F, rand.nextInt(14), rand.nextInt(14), rand.nextInt(14))), random, 20);
 			data.addAll(template.func_215381_a(placementPos, placementsettings, Blocks.STRUCTURE_BLOCK));
 		}
 
@@ -247,10 +247,27 @@ public class GenDruidHut extends Feature<NoFeatureConfig> {
     }
 
     public static class HutTemplateProcessor extends RandomizedTemplateProcessor {
-		public static final Codec<HutTemplateProcessor> codecHutProcessor = Codec.FLOAT.fieldOf("integrity").orElse(1.0F).xmap(HutTemplateProcessor::new, (obj) -> obj.integrity).codec();
 
-		public HutTemplateProcessor(float integrity) {
+		private final StructureWoodVariant OAK_SWIZZLE;
+		private final StructureWoodVariant SPRUCE_SWIZZLE;
+		private final StructureWoodVariant BIRCH_SWIZZLE;
+		public int dummy = 0;
+		public static final Codec<HutTemplateProcessor> codecHutProcessor = RecordCodecBuilder.create((instance) ->
+				instance.group(
+					Codec.FLOAT.fieldOf("integrity").orElse(1.0F).forGetter((obj) -> obj.integrity),
+					Codec.INT.fieldOf("integrity").orElse(0).forGetter((obj) -> obj.dummy),
+					Codec.INT.fieldOf("integrity").orElse(0).forGetter((obj) -> obj.dummy),
+					Codec.INT.fieldOf("integrity").orElse(0).forGetter((obj) -> obj.dummy))
+				.apply(instance, HutTemplateProcessor::new));
+
+
+
+		public HutTemplateProcessor(float integrity, int oakSwizzle, int spruceSwizzle, int birchSwizzle) {
             super(integrity);
+			int limit = StructureWoodVariant.values().length;
+			this.OAK_SWIZZLE    = StructureWoodVariant.values()[ Math.floorMod(oakSwizzle   , limit) ];
+			this.SPRUCE_SWIZZLE = StructureWoodVariant.values()[ Math.floorMod(spruceSwizzle, limit) ];
+			this.BIRCH_SWIZZLE  = StructureWoodVariant.values()[ Math.floorMod(birchSwizzle , limit) ];
         }
 
 		@Override
@@ -261,20 +278,34 @@ public class GenDruidHut extends Feature<NoFeatureConfig> {
 		@Nullable
 		@Override
 		public Template.BlockInfo process(IWorldReader worldIn, BlockPos pos, BlockPos piecepos, Template.BlockInfo p_215194_3_, Template.BlockInfo blockInfo, PlacementSettings settings, @Nullable Template template) {
-			//if (!shouldPlaceBlock()) return null;
 
 			Random random = settings.getRandom(pos);
+
+			if (!shouldPlaceBlock(random)) return null;
+
 			BlockState state = blockInfo.state;
 			Block block = state.getBlock();
 
 			if (block == Blocks.COBBLESTONE)
-				return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, Blocks.MOSSY_COBBLESTONE.getDefaultState(), null);
+				return random.nextBoolean() ? blockInfo : new Template.BlockInfo(blockInfo.pos, Blocks.MOSSY_COBBLESTONE.getDefaultState(), null);
 
 			if (block == Blocks.COBBLESTONE_WALL)
-				return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, Blocks.MOSSY_COBBLESTONE_WALL.getDefaultState(), null);
+				return random.nextBoolean() ? blockInfo : new Template.BlockInfo(blockInfo.pos, Blocks.MOSSY_COBBLESTONE_WALL.getDefaultState(), null);
 
 			if (block == Blocks.STONE_BRICKS) { // TODO: By default it's not chiseled stone as that's a different block
-				return random.nextBoolean() ? blockInfo : new Template.BlockInfo(pos, random.nextInt(2) == 0 ? Blocks.CRACKED_STONE_BRICKS.getDefaultState() : Blocks.MOSSY_STONE_BRICKS.getDefaultState(), null);
+				return random.nextBoolean() ? blockInfo : new Template.BlockInfo(blockInfo.pos, random.nextInt(2) == 0 ? Blocks.CRACKED_STONE_BRICKS.getDefaultState() : Blocks.MOSSY_STONE_BRICKS.getDefaultState(), null);
+			}
+
+			StructureWoodVariant type = StructureWoodVariant.getVariantFromBlock(block);
+			if (type != null) {
+				switch (type) {
+					case OAK:
+						return new Template.BlockInfo(blockInfo.pos, StructureWoodVariant.modifyBlockWithType(state, OAK_SWIZZLE   ), null);
+					case SPRUCE:
+						return new Template.BlockInfo(blockInfo.pos, StructureWoodVariant.modifyBlockWithType(state, SPRUCE_SWIZZLE), null);
+					case BIRCH:
+						return new Template.BlockInfo(blockInfo.pos, StructureWoodVariant.modifyBlockWithType(state, BIRCH_SWIZZLE ), null);
+				}
 			}
 
 			return blockInfo;
