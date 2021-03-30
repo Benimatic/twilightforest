@@ -21,7 +21,7 @@ public class TFStructureProcessors {
 	public static final IStructureProcessorType<?> COURTYARD_WALL = registerProcessor("courtyard_wall", CourtyardWallTemplateProcessor.codecWallProcessor);
 	public static final IStructureProcessorType<?> MOSSY_COBBLE = registerProcessor("mossy_cobble", MossyCobbleTemplateProcessor.codecMossyProcessor);
 	public static final IStructureProcessorType<?> HUT = registerProcessor("hut", GenDruidHut.HutTemplateProcessor.codecHutProcessor);
-	public static final IStructureProcessorType<?> WEB = registerProcessor("hut", TFGenGraveyard.WebTemplateProcessor.codecWebProcessor);
+	public static final IStructureProcessorType<?> WEB = registerProcessor("web", TFGenGraveyard.WebTemplateProcessor.codecWebProcessor);
 
 	public static <P extends StructureProcessor> IStructureProcessorType<P> registerProcessor(String name, Codec<P> processor) {
 		return Registry.register(Registry.STRUCTURE_PROCESSOR, TwilightForestMod.prefix(name), () -> processor);

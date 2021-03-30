@@ -61,10 +61,9 @@ public final class ConfiguredFeatures {
     public static final ConfiguredFeature<?, ?> MEGA_SPRUCE_TREES = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("tree/mega_spruce_no_podzol"), MEGA_SPRUCE_NO_PODZOL_BASE.withPlacement(DEFAULT_TREE_PLACEMENT).square().func_242732_c(4));
 
     //"structures" that arent actually structures
-    public static final ConfiguredFeature<?, ?> DRUID_HUT = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("druid_hut"), TFBiomeFeatures.DRUID_HUT.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).chance(10));
-    public static final ConfiguredFeature<?, ?> GRAVEYARD = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("graveyard"), TFBiomeFeatures.GRAVEYARD.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
     public static final ConfiguredFeature<?, ?> WELL = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("well"), TFBiomeFeatures.WELL.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).chance(10));
     public static final ConfiguredFeature<?, ?> DRUID_HUT = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("druid_hut"), TFBiomeFeatures.DRUID_HUT.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).chance(50));
+    public static final ConfiguredFeature<?, ?> GRAVEYARD = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("graveyard"), TFBiomeFeatures.GRAVEYARD.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).chance(95).func_242731_b(1).func_242732_c(1));
 
     //all the fun little things you find around the dimension
     public static final ConfiguredFeature<?, ?> BIG_MUSHGLOOM = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("big_mushgloom"), TFBiomeFeatures.BIG_MUSHGLOOM.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT).square());
