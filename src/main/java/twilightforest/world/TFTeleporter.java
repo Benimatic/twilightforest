@@ -243,7 +243,7 @@ public class TFTeleporter implements ITeleporter {
 	private static boolean checkStructure(World world, BlockPos pos) {
 		ChunkGeneratorTwilightBase generator = TFGenerationSettings.getChunkGenerator(world);
 		if (generator != null)
-			return !TFGenerationSettings.locateTFStructureInRange((ServerWorld) world, pos, 1).isPresent();
+			return !TFGenerationSettings.locateTFStructureInRange((ServerWorld) world, pos, 0).isPresent();
 		return true;
 	}
 
