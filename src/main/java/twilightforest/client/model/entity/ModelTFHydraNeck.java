@@ -16,7 +16,7 @@ public class ModelTFHydraNeck extends SegmentedModel<EntityTFHydraNeck> {
 		this.neck = new ModelRenderer(this, 0, 0);
 		this.neck.setRotationPoint(0F, 0F, 0F);
 		this.neck.setTextureOffset(260, 0).addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F, 0.0F, 0.0F, 0.0F);
-		this.neck.addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F, 0.0F, 0.0F, 0.0F);
+		this.neck.setTextureOffset(0, 0).addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F, 0.0F, 0.0F, 0.0F);
 
 	}
 

@@ -39,12 +39,6 @@ public class ModelTFHydraHead extends SegmentedModel<EntityTFHydraHead> {
 		head.addChild(mouth);
 	}
 
-	private void setRotation(ModelRenderer model, float x, float y, float z) {
-		model.rotateAngleX = x;
-		model.rotateAngleY = y;
-		model.rotateAngleZ = z;
-	}
-
 //	@Override
 //	public void render(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 //		super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
@@ -72,16 +66,7 @@ public class ModelTFHydraHead extends SegmentedModel<EntityTFHydraHead> {
 		mouth.rotateAngleX = (float) (mouthOpen * (Math.PI / 3.0));
 	}
 
-	public void openMouthForTrophy(float mouthOpen) {
-		head.rotateAngleY = 0;
-		head.rotateAngleX = 0;
-
-		head.rotateAngleX -= (float) (mouthOpen * (Math.PI / 12.0));
-		mouth.rotateAngleX = (float) (mouthOpen * (Math.PI / 3.0));
-	}
-
 	public float getRotationY(EntityTFHydraPart whichHead, float time) {
-		//float yawOffset = hydra.prevRenderYawOffset + (hydra.renderYawOffset - hydra.prevRenderYawOffset) * time;
 		float yaw = whichHead.prevRotationYaw + (whichHead.rotationYaw - whichHead.prevRotationYaw) * time;
 
 		return yaw / 57.29578F;

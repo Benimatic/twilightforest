@@ -50,7 +50,7 @@ public class ModelTFHydra extends SegmentedModel<EntityTFHydra> {
         this.tail = new ModelRenderer(this, 0, 0);
         this.tail.setRotationPoint(0.0F, 8.0F, 80.0F);
         this.tail.setTextureOffset(260, 0).addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F, 0.0F, 0.0F, 0.0F);
-        this.tail.addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F, 0.0F, 0.0F, 0.0F);
+        this.tail.setTextureOffset(0, 0).addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F, 0.0F, 0.0F, 0.0F);
         this.neck_5 = new ModelRenderer(this, 0, 0);
         this.neck_5.setRotationPoint(-8.0F, -24.0F, -16.0F);
         this.neck_5.setTextureOffset(260, 0).addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F, 0.0F, 0.0F, 0.0F);
@@ -58,7 +58,7 @@ public class ModelTFHydra extends SegmentedModel<EntityTFHydra> {
         this.tail_3 = new ModelRenderer(this, 0, 0);
         this.tail_3.setRotationPoint(0.0F, 0.0F, 32.0F);
         this.tail_3.setTextureOffset(260, 0).addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F, 0.0F, 0.0F, 0.0F);
-        this.tail_3.addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F, 0.0F, 0.0F, 0.0F);
+        this.tail_3.setTextureOffset(0, 0).addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F, 0.0F, 0.0F, 0.0F);
         this.neck_2 = new ModelRenderer(this, 0, 0);
         this.neck_2.setRotationPoint(42.0F, -48.0F, 0.0F);
         this.neck_2.setTextureOffset(260, 0).addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F, 0.0F, 0.0F, 0.0F);
@@ -95,7 +95,7 @@ public class ModelTFHydra extends SegmentedModel<EntityTFHydra> {
         this.tail_2 = new ModelRenderer(this, 0, 0);
         this.tail_2.setRotationPoint(0.0F, 0.0F, 32.0F);
         this.tail_2.setTextureOffset(260, 0).addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F, 0.0F, 0.0F, 0.0F);
-        this.tail_2.addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F, 0.0F, 0.0F, 0.0F);
+        this.tail_2.setTextureOffset(0, 0).addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F, 0.0F, 0.0F, 0.0F);
         this.torso = new ModelRenderer(this, 0, 0);
         this.torso.setRotationPoint(0.0F, -32.0F, 0.0F);
         this.torso.addBox(-45.0F, -12.0F, -20.0F, 90.0F, 96.0F, 40.0F, 0.0F, 0.0F, 0.0F);
@@ -109,7 +109,7 @@ public class ModelTFHydra extends SegmentedModel<EntityTFHydra> {
         this.tail_1 = new ModelRenderer(this, 0, 0);
         this.tail_1.setRotationPoint(0.0F, 0.0F, 32.0F);
         this.tail_1.setTextureOffset(260, 0).addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F, 0.0F, 0.0F, 0.0F);
-        this.tail_1.addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F, 0.0F, 0.0F, 0.0F);
+        this.tail_1.setTextureOffset(0, 0).addBox(-2.0F, -24.0F, 0.0F, 4.0F, 8.0F, 16.0F, 0.0F, 0.0F, 0.0F);
         this.head_2 = new ModelRenderer(this, 0, 0);
         this.head_2.setRotationPoint(8.0F, -24.0F, -16.0F);
         this.head_2.setTextureOffset(260, 64).addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F, 0.0F, 0.0F, 0.0F);
