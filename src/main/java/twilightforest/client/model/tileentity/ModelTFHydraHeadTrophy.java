@@ -8,44 +8,36 @@ import net.minecraft.client.renderer.model.ModelRenderer;
 public class ModelTFHydraHeadTrophy extends ModelTFGenericHead {
 
 	public ModelRenderer head;
-	public ModelRenderer jaw;
-	public ModelRenderer frill;
+	public ModelRenderer plate;
+	public ModelRenderer mouth;
 
 	public ModelTFHydraHeadTrophy() {
 		textureWidth = 512;
 		textureHeight = 256;
 
-		head = new ModelRenderer(this);
-		head.setTextureOffset(272, 0).addBox(-16F, -14F, -16F, 32, 24, 32);
-		head.setTextureOffset(272, 56).addBox(-15F, -2F, -40F, 30, 12, 24);
-		head.setTextureOffset(272, 132).addBox(-15F, 10F, -4F, 30, 8, 16);
-		head.setTextureOffset(128, 200).addBox(-2F, -30F, 4F, 4, 24, 24);
-		head.setTextureOffset(272, 156).addBox(-12F, 10, -33F, 2, 5, 2);
-		head.setTextureOffset(272, 156).addBox(10F, 10, -33F, 2, 5, 2);
-		head.setTextureOffset(280, 156).addBox(-8F, 9, -33F, 16, 2, 2);
-		head.setTextureOffset(280, 160).addBox(-10F, 9, -29F, 2, 2, 16);
-		head.setTextureOffset(280, 160).addBox(8F, 9, -29F, 2, 2, 16);
-		head.setRotationPoint(0F, 0F, 0F);
+		this.head = new ModelRenderer(this, 0, 0);
+		this.head.setRotationPoint(0F, 0F, 0F);
+		this.head.setTextureOffset(260, 64).addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F, 0.0F, 0.0F, 0.0F);
+		this.head.setTextureOffset(236, 128).addBox(-16.0F, -2.0F, -40.0F, 32.0F, 10.0F, 24.0F, 0.0F, 0.0F, 0.0F);
+		this.head.setTextureOffset(356, 70).addBox(-12.0F, 8.0F, -36.0F, 24.0F, 6.0F, 20.0F, 0.0F, 0.0F, 0.0F);
 
-		jaw = new ModelRenderer(this);
-		jaw.setRotationPoint(0F, 10F, -20F);
-		jaw.setTextureOffset(272, 92).addBox(-15F, 0F, -16F, 30, 8, 32);
-		jaw.setTextureOffset(272, 156).addBox(-10F, -5, -13F, 2, 5, 2);
-		jaw.setTextureOffset(272, 156).addBox(8F, -5, -13F, 2, 5, 2);
-		jaw.setTextureOffset(280, 156).addBox(-8F, -1, -13F, 16, 2, 2);
-		jaw.setTextureOffset(280, 160).addBox(-10F, -1, -9F, 2, 2, 16);
-		jaw.setTextureOffset(280, 160).addBox(8F, -1, -9F, 2, 2, 16);
-		setRotation(jaw, 0F, 0F, 0F);
-		head.addChild(jaw);
 
-		frill = new ModelRenderer(this);
-		frill.setRotationPoint(0F, 0F, -14F);
-		frill.setTextureOffset(272, 200).addBox(-24F, -48.0F, 12F, 48, 48, 4);
-		setRotation(frill, -0.5235988F, 0F, 0F);
-		head.addChild(frill);
+		this.plate = new ModelRenderer(this, 0, 0);
+		this.plate.setRotationPoint(0.0F, 0.0F, 0.0F);
+		this.plate.setTextureOffset(388, 0).addBox(-24.0F, -48.0F, 0.0F, 48.0F, 48.0F, 6.0F, 0.0F, 0.0F, 0.0F);
+		this.plate.setTextureOffset(220, 0).addBox(-4.0F, -32.0F, -8.0F, 8.0F, 32.0F, 8.0F, 0.0F, 0.0F, 0.0F);
+		this.setRotateAngle(plate, -0.7853981633974483F, 0.0F, 0.0F);
+
+		head.addChild(plate);
+
+		this.mouth = new ModelRenderer(this, 0, 0);
+		this.mouth.setRotationPoint(0.0F, 10.0F, -14.0F);
+		this.mouth.setTextureOffset(240, 162).addBox(-15.0F, 0.0F, -24.0F, 30.0F, 8.0F, 24.0F, 0.0F, 0.0F, 0.0F);
+
+		head.addChild(mouth);
 	}
 	
-	private void setRotation(ModelRenderer model, float x, float y, float z) {
+	private void setRotateAngle(ModelRenderer model, float x, float y, float z) {
 		model.rotateAngleX = x;
 		model.rotateAngleY = y;
 		model.rotateAngleZ = z;
@@ -63,7 +55,7 @@ public class ModelTFHydraHeadTrophy extends ModelTFGenericHead {
 		head.rotateAngleX = 0;
 
 		head.rotateAngleX -= (float) (mouthOpen * (Math.PI / 12.0));
-		jaw.rotateAngleX = (float) (mouthOpen * (Math.PI / 3.0));
+		mouth.rotateAngleX = (float) (mouthOpen * (Math.PI / 3.0));
 	}
 	
 	@Override

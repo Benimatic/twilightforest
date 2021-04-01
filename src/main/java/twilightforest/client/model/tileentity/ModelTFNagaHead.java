@@ -5,9 +5,11 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 
 import net.minecraft.client.renderer.model.ModelRenderer;
 
+//This model doesnt require a legacy as the tongue will only show up in newer versions
 public class ModelTFNagaHead extends ModelTFGenericHead {
 
 	public final ModelRenderer head;
+	public final ModelRenderer tongue;
 
 	public ModelTFNagaHead() {
 		this.textureWidth = 64;
@@ -15,6 +17,10 @@ public class ModelTFNagaHead extends ModelTFGenericHead {
 		this.head = new ModelRenderer(this, 0, 0);
 		this.head.addBox(-8F, -16F, -8F, 16, 16, 16, 0.0F);
 		this.head.setRotationPoint(0F, -4F, 0F);
+		this.tongue = new ModelRenderer(this, 0, 0);
+		this.tongue.setRotationPoint(0.0F, 0.0F, 0.0F);
+		this.tongue.setTextureOffset(42, 0).addBox(-3.0F, -4.0F, -14.0F, 6.0F, 0.0F, 6.0F, 0.0F, 0.0F, 0.0F);
+		this.head.addChild(this.tongue);
 	}
 
 	@Override

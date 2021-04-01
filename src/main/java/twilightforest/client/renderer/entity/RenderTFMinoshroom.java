@@ -17,6 +17,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ModelTFMinoshroom;
 import twilightforest.entity.boss.EntityTFMinoshroom;
 
+//old renderer had the head mushroom in a different spot - line is commented out
 public class RenderTFMinoshroom extends BipedRenderer<EntityTFMinoshroom, ModelTFMinoshroom> {
 
 	private static final ResourceLocation textureLoc = TwilightForestMod.getModelTexture("minoshroomtaur.png");
@@ -60,7 +61,9 @@ public class RenderTFMinoshroom extends BipedRenderer<EntityTFMinoshroom, ModelT
 				ms.push();
 				this.getEntityModel().bipedHead.translateRotate(ms);
 				// TF - adjust head shroom
-				ms.translate(0.0D, -0.9, 0.05);
+				//old render
+				//ms.translate(0.0D, -0.9, 0.05);
+				ms.translate(0.0D, -1.1, 0.05);
 				ms.rotate(Vector3f.YP.rotationDegrees(-78.0F));
 				ms.scale(-1.0F, -1.0F, 1.0F);
 				ms.translate(-0.5D, -0.5D, -0.5D);

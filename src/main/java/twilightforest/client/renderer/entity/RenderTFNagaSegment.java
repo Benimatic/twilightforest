@@ -1,18 +1,15 @@
 package twilightforest.client.renderer.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.client.renderer.model.Model;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Vector3f;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.model.entity.ModelTFNaga;
 import twilightforest.entity.boss.EntityTFNagaSegment;
 
+//scaling was commented out since textures are bigger now
 public class RenderTFNagaSegment<T extends EntityTFNagaSegment> extends TFPartRenderer<T, ModelTFNaga<T>> {
 	private static final ResourceLocation part_TextureLoc = TwilightForestMod.getModelTexture("nagasegment.png");
 
@@ -36,9 +33,9 @@ public class RenderTFNagaSegment<T extends EntityTFNagaSegment> extends TFPartRe
 			matrixStackIn.rotate(Vector3f.YP.rotationDegrees(yaw2));
 			matrixStackIn.rotate(Vector3f.XP.rotationDegrees(entityIn.rotationPitch));
 
-			//matrixStackIn.scale(-1.0F, -1.0F, 1.0F);
-			matrixStackIn.scale(2.0F, 2.0F, 2.0F);
-			matrixStackIn.translate(0.0D, -1.501F, 0.0D);
+			//matrixStackIn.scale(2.0F, 2.0F, 2.0F);
+			//matrixStackIn.translate(0.0D, -1.501F, 0.0D);
+
 			int light = renderManager.getPackedLight(entityIn.getParent(), partialTicks);
 			super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, light);
 			matrixStackIn.pop();

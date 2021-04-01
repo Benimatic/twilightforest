@@ -68,6 +68,7 @@ public class EntityTFNaga extends MonsterEntity {
 	private final AttributeModifier fastSpeed = new AttributeModifier("Naga Fast Speed", 0.50F, AttributeModifier.Operation.ADDITION);
 
 	private static final DataParameter<Boolean> DATA_DAZE = EntityDataManager.createKey(EntityTFNaga.class, DataSerializers.BOOLEAN);
+	private static final DataParameter<Boolean> DATA_CHARGE = EntityDataManager.createKey(EntityTFNaga.class, DataSerializers.BOOLEAN);
 
 	public EntityTFNaga(EntityType<? extends EntityTFNaga> type, World world) {
 		super(type, world);
@@ -87,6 +88,7 @@ public class EntityTFNaga extends MonsterEntity {
 	protected void registerData() {
 		super.registerData();
 		dataManager.register(DATA_DAZE, false);
+		dataManager.register(DATA_CHARGE, false);
 	}
 
 	public boolean isDazed() {
@@ -95,6 +97,14 @@ public class EntityTFNaga extends MonsterEntity {
 
 	protected void setDazed(boolean daze) {
 		dataManager.set(DATA_DAZE, daze);
+	}
+
+	public boolean isCharging() {
+		return dataManager.get(DATA_CHARGE);
+	}
+
+	protected void setCharging(boolean charge) {
+		dataManager.set(DATA_CHARGE, charge);
 	}
 
 	private float getMaxHealthPerDifficulty() {
@@ -285,6 +295,7 @@ public class EntityTFNaga extends MonsterEntity {
 				case CHARGE: {
 					BlockPos tpoint = taskOwner.findCirclePoint(clockwise, 14, Math.PI);
 					taskOwner.getNavigator().tryMoveToXYZ(tpoint.getX(), tpoint.getY(), tpoint.getZ(), 1); // todo 1.10 check speed
+					taskOwner.setCharging(true);
 					break;
 				}
 				case CIRCLE: {
@@ -308,6 +319,7 @@ public class EntityTFNaga extends MonsterEntity {
 				}
 				case DAZE: {
 					taskOwner.setDazed(true);
+					taskOwner.setCharging(false);
 					break;
 				}
 			}
@@ -320,6 +332,7 @@ public class EntityTFNaga extends MonsterEntity {
 
 		private void transitionState() {
 			taskOwner.setDazed(false);
+			taskOwner.setCharging(false);
 			switch (movementState) {
 				case INTIMIDATE: {
 					clockwise = !clockwise;

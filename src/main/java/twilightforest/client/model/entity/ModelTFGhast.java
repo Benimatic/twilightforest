@@ -12,7 +12,7 @@ import java.util.Random;
 
 @OnlyIn(Dist.CLIENT)
 public class ModelTFGhast<T extends EntityTFTowerGhast> extends SegmentedModel<T> {
-	ModelRenderer body;
+	public ModelRenderer body;
 	protected ModelRenderer[] tentacles = new ModelRenderer[9];
 
 	public ModelTFGhast() {

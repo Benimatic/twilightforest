@@ -8,56 +8,21 @@ import net.minecraft.client.renderer.model.ModelRenderer;
 public class ModelTFMinoshroomHead extends ModelTFGenericHead {
 
 	public ModelRenderer head;
-	public ModelRenderer snout;
-	public ModelRenderer righthorn1;
-	public ModelRenderer righthorn2;
-	public ModelRenderer lefthorn1;
-	public ModelRenderer lefthorn2;
 
 	public ModelTFMinoshroomHead() {
 
-		this.textureWidth = 128;
-		this.textureHeight = 32;
-		
-		this.head = new ModelRenderer(this, 96, 16);
-		this.head.addBox(-4F, -8F, -4F, 8, 8, 8);
-		this.head.setRotationPoint(0F, -4F, -0F);
+		this.textureWidth = 64;
+		this.textureHeight = 64;
 
-		this.righthorn1 = new ModelRenderer(this, 0, 0);
-		this.righthorn1.addBox(-5.5F, -1.5F, -1.5F, 5, 3, 3);
-		this.righthorn1.setRotationPoint(-2.5F, -6.5F, 0.0F);
-		this.righthorn1.rotateAngleY = -25F / (180F / (float) Math.PI);
-		this.righthorn1.rotateAngleZ = 10F / (180F / (float) Math.PI);
+		this.head = new ModelRenderer(this, 0, 0);
+		this.head.setRotationPoint(0.0F, -4.0F, 0.0F);
+		this.head.addBox(-4.0F, -9.0F, -4.0F, 8.0F, 8.0F, 8.0F, 0.0F, 0.0F, 0.0F);
+		this.head.setTextureOffset(0, 16).addBox(-3.0F, -4.0F, -5.0F, 6.0F, 3.0F, 1.0F, 0.0F, 0.0F, 0.0F);
+		this.head.setTextureOffset(32, 0).addBox(-8.0F, -8.0F, -1.0F, 4.0F, 2.0F, 3.0F, 0.0F, 0.0F, 0.0F);
+		this.head.setTextureOffset(32, 5).addBox(-8.0F, -11.0F, -1.0F, 2.0F, 3.0F, 3.0F, 0.0F, 0.0F, 0.0F);
+		this.head.setTextureOffset(46, 0).addBox(4.0F, -8.0F, -1.0F, 4.0F, 2.0F, 3.0F, 0.0F, 0.0F, 0.0F);
+		this.head.setTextureOffset(46, 5).addBox(6.0F, -11.0F, -1.0F, 2.0F, 3.0F, 3.0F, 0.0F, 0.0F, 0.0F);
 
-		this.righthorn2 = new ModelRenderer(this, 16, 0);
-		this.righthorn2.addBox(-3.5F, -1.0F, -1.0F, 3, 2, 2);
-		this.righthorn2.setRotationPoint(-4.5F, 0.0F, 0.0F);
-		this.righthorn2.rotateAngleY = -15F / (180F / (float) Math.PI);
-		this.righthorn2.rotateAngleZ = 45F / (180F / (float) Math.PI);
-
-		this.righthorn1.addChild(righthorn2);
-
-		this.lefthorn1 = new ModelRenderer(this, 0, 0);
-		this.lefthorn1.mirror = true;
-		this.lefthorn1.addBox(0.5F, -1.5F, -1.5F, 5, 3, 3);
-		this.lefthorn1.setRotationPoint(2.5F, -6.5F, 0.0F);
-		this.lefthorn1.rotateAngleY = 25F / (180F / (float) Math.PI);
-		this.lefthorn1.rotateAngleZ = -10F / (180F / (float) Math.PI);
-
-		this.lefthorn2 = new ModelRenderer(this, 16, 0);
-		this.lefthorn2.addBox(0.5F, -1.0F, -1.0F, 3, 2, 2);
-		this.lefthorn2.setRotationPoint(4.5F, 0.0F, 0.0F);
-		this.lefthorn2.rotateAngleY = 15F / (180F / (float) Math.PI);
-		this.lefthorn2.rotateAngleZ = -45F / (180F / (float) Math.PI);
-
-		this.lefthorn1.addChild(lefthorn2);
-
-		this.head.addChild(righthorn1);
-		this.head.addChild(lefthorn1);
-
-		snout = new ModelRenderer(this, 105, 28);
-		snout.addBox(-2, -1, -1, 4, 3, 1);
-		snout.setRotationPoint(0F, -2.0F, -4F);
 	}
 	
 	@Override

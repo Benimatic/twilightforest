@@ -27,6 +27,7 @@ import twilightforest.tileentity.TileEntityTFTrophy;
 
 import javax.annotation.Nullable;
 
+//Legacy lines are commented out and labeled
 public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFTrophy> {
 	
 	public static class DummyTile extends TileEntityTFTrophy {}
@@ -105,10 +106,11 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 		Direction direction = flag ? blockstate.get(BlockTFTrophyWall.FACING) : null;
 		float f1 = 22.5F * (flag ? (2 + direction.getHorizontalIndex()) * 4 : blockstate.get(BlockTFTrophy.ROTATION));
 		if (((BlockTFAbstractTrophy) blockstate.getBlock()).getVariant() == BossVariant.HYDRA && flag) {
-			hydraHead.jaw.setRotationPoint(0F, 15F, -19F);
+			//FIXME: both rotation points are legacy
+			//hydraHead.mouth.setRotationPoint(0F, 15F, -19F);
 			hydraHead.openMouthForTrophy(0.5F);
 		} else {
-			hydraHead.jaw.setRotationPoint(0F, 10F, -20F);
+			//hydraHead.mouth.setRotationPoint(0F, 10F, -20F);
 			hydraHead.openMouthForTrophy(0.0F);
 		}
 		if (((BlockTFAbstractTrophy) blockstate.getBlock()).getVariant() == BossVariant.UR_GHAST && flag) {
@@ -150,20 +152,22 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 			lichHead.head.render(matrixStackIn, lichVertex, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 			break;
 		case UR_GHAST:
-			//matrixStackIn.translate(0.0F, -2.0F, 0.0F);
 			matrixStackIn.scale(0.5F, 0.5F, 0.5F);
 			ghastHead.setRotations(animationProgress * 4.5F, y, 0.0F);
 			IVertexBuilder ghastVertex = buffer.getBuffer(RenderType.getEntityCutoutNoCull(textureLocUrGhast));
 			ghastHead.body.render(matrixStackIn, ghastVertex, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 			break;
 		case SNOW_QUEEN:
-			matrixStackIn.translate(0.0F, .25F, 0.0F);
+			//FIXME: Legacy
+			//matrixStackIn.translate(0.0F, .25F, 0.0F);
 			waifuHead.setRotations(animationProgress * 4.5F, y, 0.0F);
 			IVertexBuilder waifuVertex = buffer.getBuffer(RenderType.getEntityCutoutNoCull(textureLocSnowQueen));
 			waifuHead.head.render(matrixStackIn, waifuVertex, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 			break;
 		case MINOSHROOM:
-			matrixStackIn.translate(0.0F, .25F, 0.0F);
+			//FIXME: Legacy
+			//matrixStackIn.translate(0.0F, .25F, 0.0F);
+			matrixStackIn.translate(0.0F, .3F, 0.0F);
 			minoshroomHead.setRotations(animationProgress * 4.5F, y, 0.0F);
 			IVertexBuilder minoVertex = buffer.getBuffer(RenderType.getEntityCutoutNoCull(textureLocMinoshroom));
 			minoshroomHead.head.render(matrixStackIn, minoVertex, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
@@ -184,7 +188,7 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 			matrixStackIn.scale(.7f, .7f, .7f);
 			ramHead.setRotations(animationProgress * 4.5F, y, 0.0F);
 			IVertexBuilder ramVertex = buffer.getBuffer(RenderType.getEntityCutoutNoCull(textureLocQuestRam));
-			ramHead.head.render(matrixStackIn, ramVertex, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+			ramHead.render(matrixStackIn, ramVertex, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 			break;
 		default:
 			break;

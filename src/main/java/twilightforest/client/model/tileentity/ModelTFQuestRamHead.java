@@ -7,47 +7,28 @@ import net.minecraft.client.renderer.model.ModelRenderer;
 
 public class ModelTFQuestRamHead extends ModelTFGenericHead {
 
-	public ModelRenderer neck;
-	public ModelRenderer nose;
+	public ModelRenderer horns;
 	public ModelRenderer head;
 	
 	public ModelTFQuestRamHead() {
 		textureWidth = 128;
 		textureHeight = 128;
-		
-		neck = new ModelRenderer(this, 66, 37);
-		neck.addBox(-5.5F, -8F, 0F, 11, 14, 12);
-		neck.setRotationPoint(0F, -8F, -7F);
 
-		setRotation(neck, 0.2617994F, 0F, 0F);
-
-		head = new ModelRenderer(this/*, "head"*/);
-		head.setRotationPoint(0F, -4F, -0F);
-
-		head.setTextureOffset(0, 70).addBox(-6F, -4.5F, -7F, 12, 9, 15);
-		head.setTextureOffset(0, 94).addBox(5F, -9F, 1F, 4, 4, 6);
-		head.setTextureOffset(20, 96).addBox(7F, -8F, 6F, 3, 4, 4);
-		head.setTextureOffset(34, 95).addBox(8F, -6F, 8F, 3, 6, 3);
-		head.setTextureOffset(46, 98).addBox(9.5F, -2F, 6F, 3, 3, 3);
-		head.setTextureOffset(58, 95).addBox(11F, 0F, 1F, 3, 3, 6);
-		head.setTextureOffset(76, 95).addBox(12F, -4F, -1F, 3, 6, 3);
-		head.setTextureOffset(88, 97).addBox(13F, -6F, 1F, 3, 3, 4);
-		head.setTextureOffset(0, 94).addBox(-9F, -9F, 1F, 4, 4, 6);
-		head.setTextureOffset(20, 96).addBox(-10F, -8F, 6F, 3, 4, 4);
-		head.setTextureOffset(34, 95).addBox(-11F, -6F, 8F, 3, 6, 3);
-		head.setTextureOffset(46, 98).addBox(-12.5F, -2F, 6F, 3, 3, 3);
-		head.setTextureOffset(58, 95).addBox(-14F, 0F, 1F, 3, 3, 6);
-		head.setTextureOffset(76, 95).addBox(-15F, -4F, -1F, 3, 6, 3);
-		head.setTextureOffset(88, 97).addBox(-16F, -6F, 1F, 3, 3, 4);
-
-		nose = new ModelRenderer(this, 54, 73);
-		nose.addBox(-5.5F, -1F, -6F, 11, 9, 12);
-		nose.setRotationPoint(0F, -7F, -1F);
-		nose.setTextureSize(128, 128);
-		setRotation(nose, 0.5235988F, 0F, 0F);
-		head.addChild(nose);
+		this.head = new ModelRenderer(this, 0, 0);
+		this.head.setRotationPoint(0.0F, -4.0F, 0.0F);
+		this.head.setTextureOffset(74, 70).addBox(-6.0F, -4.0F, -10.0F, 12.0F, 8.0F, 15.0F, 0.0F, 0.0F, 0.0F);
+		this.head.setTextureOffset(42, 71).addBox(-6.0F, -7.0F, -6.0F, 12.0F, 3.0F, 11.0F, 0.0F, 0.0F, 0.0F);
+		this.horns = new ModelRenderer(this, 0, 0);
+		this.horns.setRotationPoint(0.0F, -4.0F, 0.0F);
+		this.horns.setTextureOffset(64, 0).addBox(-9.0F, -6.0F, -1.0F, 4.0F, 10.0F, 10.0F, 0.0F, 0.0F, 0.0F);
+		this.horns.setTextureOffset(48, 0).addBox(-13.0F, -6.0F, 5.0F, 4.0F, 4.0F, 4.0F, 0.0F, 0.0F, 0.0F);
+		this.horns.setTextureOffset(92, 0).addBox(5.0F, -6.0F, -1.0F, 4.0F, 10.0F, 10.0F, 0.0F, 0.0F, 0.0F);
+		this.horns.setTextureOffset(110, 0).addBox(9.0F, -6.0F, 5.0F, 4.0F, 4.0F, 4.0F, 0.0F, 0.0F, 0.0F);
+		this.setRotateAngle(horns, -0.4363323129985824F, 0.0F, 0.0F);
+		this.head.addChild(this.horns);
 	}
-	private void setRotation(ModelRenderer model, float x, float y, float z) {
+
+	private void setRotateAngle(ModelRenderer model, float x, float y, float z) {
 		model.rotateAngleX = x;
 		model.rotateAngleY = y;
 		model.rotateAngleZ = z;
