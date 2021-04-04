@@ -27,8 +27,8 @@ public class TFBiomeFeatures {
 			new TFGenCanopyTree(TFTreeFeatureConfig.codecTFTreeConfig));
 	public static final RegistryObject<Feature<CaveStalactiteConfig>> CAVE_STALACTITE = FEATURES.register("cave_stalactite", () ->
 			new TFGenCaveStalactite(CaveStalactiteConfig.caveStalactiteCodec));
-	public static final RegistryObject<Feature<TFTreeFeatureConfig>> DARK_CANOPY_TREE = FEATURES.register("dark_canopy_tree", () ->
-			new TFGenDarkCanopyTree(TFTreeFeatureConfig.codecTFTreeConfig));
+	public static final RegistryObject<Feature<BaseTreeFeatureConfig>> DARK_CANOPY_TREE = FEATURES.register("dark_canopy_tree", () ->
+			new TFGenDarkCanopyTree(BaseTreeFeatureConfig.CODEC));
 	public static final RegistryObject<Feature<NoFeatureConfig>> DRUID_HUT = FEATURES.register("druid_hut", () ->
 			new GenDruidHut(NoFeatureConfig.field_236558_a_));
 	public static final RegistryObject<Feature<NoFeatureConfig>> FALLEN_HOLLOW_LOG = FEATURES.register("fallen_hollow_log", () ->
@@ -97,4 +97,6 @@ public class TFBiomeFeatures {
 			new SnowUnderTrees(NoFeatureConfig.field_236558_a_));
 	public static final RegistryObject<Feature<BaseTreeFeatureConfig>> SNOW_TREE = FEATURES.register("anywhere_tree", () ->
 			new SnowTreePlacer(BaseTreeFeatureConfig.CODEC));
+	public static final RegistryObject<Feature<BlockClusterFeatureConfig>> DARK_FOREST_PLACER = FEATURES.register("dark_forest_placer", () ->
+			new TFGenDarkForestFeature(BlockClusterFeatureConfig.field_236587_a_));
 }

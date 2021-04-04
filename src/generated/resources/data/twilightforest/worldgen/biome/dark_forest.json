@@ -44,16 +44,18 @@
       "twilightforest:torch_berries"
     ],
     [
-      "twilightforest:forest_grass_placer",
-      "twilightforest:flower_placer",
-      "twilightforest:mushgloom_cluster",
-      "minecraft:patch_brown_mushroom",
-      "twilightforest:small_log",
-      "minecraft:patch_dead_bush",
-      "minecraft:jungle_bush",
-      "minecraft:oak",
-      "minecraft:patch_pumpkin",
-      "twilightforest:tree/darkwood_lantern_trees"
+      "twilightforest:dark_grass",
+      "twilightforest:dark_ferns",
+      "twilightforest:dark_mushglooms",
+      "twilightforest:dark_mushrooms",
+      "twilightforest:dark_pumpkins",
+      "twilightforest:dark_dead_bushes",
+      "twilightforest:tree/jungle_dark_forest_trees",
+      "twilightforest:tree/darkwood_lantern_trees",
+      "twilightforest:tree/darkwood_lantern_trees",
+      "twilightforest:tree/jungle_dark_forest_trees",
+      "twilightforest:tree/oak_dark_forest_trees",
+      "twilightforest:tree/birch_dark_forest_trees"
     ]
   ],
   "starts": [

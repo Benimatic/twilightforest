@@ -1,22 +1,52 @@
 {
   "config": {
-    "feature": "twilightforest:tree/base/darkwood_lantern_tree",
-    "decorator": {
+    "feature": {
       "config": {
-        "outer": {
-          "config": {},
-          "type": "minecraft:square"
-        },
-        "inner": {
+        "feature": {
           "config": {
-            "count": 8,
-            "extra_chance": 0.4,
-            "extra_count": 4
+            "feature": {
+              "config": {
+                "feature": "twilightforest:tree/base/darkwood_lantern_tree",
+                "decorator": {
+                  "config": {
+                    "outer": {
+                      "config": {},
+                      "type": "minecraft:square"
+                    },
+                    "inner": {
+                      "config": {},
+                      "type": "minecraft:heightmap"
+                    }
+                  },
+                  "type": "minecraft:decorated"
+                }
+              },
+              "type": "minecraft:decorated"
+            },
+            "decorator": {
+              "config": {
+                "count": 4
+              },
+              "type": "minecraft:count"
+            }
           },
-          "type": "minecraft:count_extra"
+          "type": "minecraft:decorated"
+        },
+        "decorator": {
+          "config": {
+            "count": {
+              "base": 0,
+              "spread": 2
+            }
+          },
+          "type": "minecraft:count"
         }
       },
       "type": "minecraft:decorated"
+    },
+    "decorator": {
+      "config": {},
+      "type": "minecraft:square"
     }
   },
   "type": "minecraft:decorated"

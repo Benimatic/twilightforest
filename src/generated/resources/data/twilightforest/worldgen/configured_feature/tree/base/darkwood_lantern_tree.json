@@ -88,7 +88,7 @@
       "type": "twilightforest:spheroid_foliage_placer"
     },
     "trunk_placer": {
-      "branch_start_offset_down": 5,
+      "branch_start_offset_down": 4,
       "branch_config": {
         "random_add_length": 4.0,
         "spacing_yaw": 0.23,
@@ -99,10 +99,10 @@
       },
       "perpendicular_branches": false,
       "base_height": 6,
-      "height_rand_a": 3,
-      "height_rand_b": 3,
+      "height_rand_a": 2,
+      "height_rand_b": 2,
       "type": "twilightforest:branching_trunk_placer"
     }
   },
-  "type": "minecraft:tree"
+  "type": "twilightforest:dark_canopy_tree"
 }

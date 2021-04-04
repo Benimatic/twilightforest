@@ -28,8 +28,8 @@ public final class TreeConfigurations {
     private static final int canopyDistancing = 5;
 
     public static final BaseTreeFeatureConfig TWILIGHT_OAK = new BaseTreeFeatureConfig.Builder(
-            new SimpleBlockStateProvider(BlockConstants.OAK_LOG),
-            new SimpleBlockStateProvider(BlockConstants.OAK_LEAVES),
+            new SimpleBlockStateProvider(BlockConstants.TOAK_LOG),
+            new SimpleBlockStateProvider(BlockConstants.TOAK_LEAVES),
             new BlobFoliagePlacer(FeatureSpread.func_242252_a(2), FeatureSpread.func_242252_a(0), 3),
             new StraightTrunkPlacer(4, 2, 0),
             new TwoLayerFeature(1, 0, 1)
@@ -38,8 +38,8 @@ public final class TreeConfigurations {
             .build();
 
     public static final BaseTreeFeatureConfig SWAMPY_OAK = new BaseTreeFeatureConfig.Builder(
-            new SimpleBlockStateProvider(BlockConstants.OAK_LOG),
-            new SimpleBlockStateProvider(BlockConstants.OAK_LEAVES),
+            new SimpleBlockStateProvider(BlockConstants.TOAK_LOG),
+            new SimpleBlockStateProvider(BlockConstants.TOAK_LEAVES),
             new BlobFoliagePlacer(FeatureSpread.func_242252_a(2), FeatureSpread.func_242252_a(0), 3),
             new StraightTrunkPlacer(4, 2, 0),
             new TwoLayerFeature(1, 0, 1)
@@ -132,7 +132,7 @@ public final class TreeConfigurations {
             new SimpleBlockStateProvider(BlockConstants.DARKWOOD_LOG),
             DARKWOOD_LEAVES_PROVIDER,
             new LeafSpheroidFoliagePlacer(4.5f, 2.25f, FeatureSpread.func_242252_a(0), 1, 0, 0.45f, (int) (LEAF_SHAG_FACTOR * 1.5f)),
-            new BranchingTrunkPlacer(6, 3, 3, 5, new BranchesConfig(4, 0, 10, 4, 0.23, 0.23), false),
+            new BranchingTrunkPlacer(6, 2, 2, 4, new BranchesConfig(4, 0, 10, 4, 0.23, 0.23), false),
             new TwoLayerFeature(1, 0, 1)
     )
             .setDecorators(ImmutableList.of(TreeDecorators.LIVING_ROOTS))
@@ -143,7 +143,7 @@ public final class TreeConfigurations {
             new SimpleBlockStateProvider(BlockConstants.DARKWOOD_LOG),
             DARKWOOD_LEAVES_PROVIDER,
             new LeafSpheroidFoliagePlacer(4.5f, 2.25f, FeatureSpread.func_242252_a(0), 1, 0, 0.45f,  (int) (LEAF_SHAG_FACTOR * 1.5f)),
-            new BranchingTrunkPlacer(6, 3, 3, 5, new BranchesConfig(4, 0, 10, 4, 0.23, 0.23), false),
+            new BranchingTrunkPlacer(6, 2, 2, 4, new BranchesConfig(4, 0, 10, 4, 0.23, 0.23), false),
             new TwoLayerFeature(1, 0, 1)
     )
             .setDecorators(ImmutableList.of(
@@ -214,25 +214,25 @@ public final class TreeConfigurations {
             .build();
 
     public static final TFTreeFeatureConfig DENSE_OAK = new TFTreeFeatureConfig.Builder(
-            new SimpleBlockStateProvider(BlockConstants.OAK_LOG),
-            new SimpleBlockStateProvider(BlockConstants.OAK_LEAVES),
-            new SimpleBlockStateProvider(BlockConstants.OAK_WOOD),
+            new SimpleBlockStateProvider(BlockConstants.TOAK_LOG),
+            new SimpleBlockStateProvider(BlockConstants.TOAK_LEAVES),
+            new SimpleBlockStateProvider(BlockConstants.TOAK_WOOD),
             new SimpleBlockStateProvider(BlockConstants.ROOTS)
     )
             .setSapling(TFBlocks.oak_sapling.get())
             .build();
 
     public static final TFTreeFeatureConfig HOLLOW_TREE = new TFTreeFeatureConfig.Builder(
-            new SimpleBlockStateProvider(BlockConstants.OAK_LOG),
-            new SimpleBlockStateProvider(BlockConstants.OAK_LEAVES),
-            new SimpleBlockStateProvider(BlockConstants.OAK_WOOD),
+            new SimpleBlockStateProvider(BlockConstants.TOAK_LOG),
+            new SimpleBlockStateProvider(BlockConstants.TOAK_LEAVES),
+            new SimpleBlockStateProvider(BlockConstants.TOAK_WOOD),
             new SimpleBlockStateProvider(BlockConstants.ROOTS)
     )
             .setSapling(TFBlocks.hollow_oak_sapling.get())
             .build();
 
     public static final BaseTreeFeatureConfig RAINBOAK_TREE = new BaseTreeFeatureConfig.Builder(
-            new SimpleBlockStateProvider(BlockConstants.OAK_LOG),
+            new SimpleBlockStateProvider(BlockConstants.TOAK_LOG),
             new SimpleBlockStateProvider(BlockConstants.RAINBOW_LEAVES),
             new BlobFoliagePlacer(FeatureSpread.func_242252_a(2), FeatureSpread.func_242252_a(0), 3),
             new StraightTrunkPlacer(4, 2, 0),
@@ -242,7 +242,7 @@ public final class TreeConfigurations {
             .build();
 
     public static final BaseTreeFeatureConfig LARGE_RAINBOAK_TREE =  new BaseTreeFeatureConfig.Builder(
-            new SimpleBlockStateProvider(BlockConstants.OAK_LOG),
+            new SimpleBlockStateProvider(BlockConstants.TOAK_LOG),
             new SimpleBlockStateProvider(BlockConstants.RAINBOW_LEAVES),
             new FancyFoliagePlacer(FeatureSpread.func_242252_a(2), FeatureSpread.func_242252_a(4), 4),
             new FancyTrunkPlacer(3, 11, 0),
