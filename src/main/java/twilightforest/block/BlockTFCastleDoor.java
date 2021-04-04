@@ -23,7 +23,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.apache.logging.log4j.core.jmx.Server;
 import twilightforest.TFSounds;
+import twilightforest.client.particle.ParticleAnnihilate;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.world.ChunkGeneratorTwilightBase;
 import twilightforest.world.TFGenerationSettings;
@@ -91,7 +93,6 @@ public class BlockTFCastleDoor extends Block {
 		if (originState.getBlock() instanceof BlockTFCastleDoor) {
 			world.setBlockState(pos, originState.with(ACTIVE, true));
 		}
-		vanishParticles(world, pos);
 		world.getPendingBlockTicks().scheduleTick(pos, originState.getBlock(), 2 + world.rand.nextInt(5));
 	}
 
@@ -120,6 +121,9 @@ public class BlockTFCastleDoor extends Block {
 				world.getPendingBlockTicks().scheduleTick(pos, this, 80);
 
 				playVanishSound(world, pos);
+
+				vanishParticles(world, pos);
+
 				// activate all adjacent inactive doors
 				for (Direction e : Direction.values()) {
 					checkAndActivateCastleDoor(world, pos.offset(e));
@@ -149,19 +153,19 @@ public class BlockTFCastleDoor extends Block {
 
 	private static void vanishParticles(World world, BlockPos pos) {
 		Random rand = world.getRandom();
-		for (int dx = 0; dx < 4; ++dx) {
-			for (int dy = 0; dy < 4; ++dy) {
-				for (int dz = 0; dz < 4; ++dz) {
+		if(world instanceof ServerWorld) {
+			for (int dx = 0; dx < 4; ++dx) {
+				for (int dy = 0; dy < 4; ++dy) {
+					for (int dz = 0; dz < 4; ++dz) {
 
-					double x = pos.getX() + (dx + 0.5D) / 4;
-					double y = pos.getY() + (dy + 0.5D) / 4;
-					double z = pos.getZ() + (dz + 0.5D) / 4;
+						double x = pos.getX() + (dx + 0.5D) / 4;
+						double y = pos.getY() + (dy + 0.5D) / 4;
+						double z = pos.getZ() + (dz + 0.5D) / 4;
 
-					double vx = rand.nextGaussian() * 0.2D;
-					double vy = rand.nextGaussian() * 0.2D;
-					double vz = rand.nextGaussian() * 0.2D;
+						double speed = rand.nextGaussian() * 0.2D;
 
-					world.addParticle(TFParticleType.ANNIHILATE.get(), true, x, y, z, vx, vy, vz);
+						((ServerWorld)world).spawnParticle(TFParticleType.ANNIHILATE.get(), x, y, z, 1, 0, 0, 0, speed);
+					}
 				}
 			}
 		}

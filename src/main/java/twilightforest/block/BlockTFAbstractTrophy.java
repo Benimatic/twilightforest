@@ -23,6 +23,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import twilightforest.TFSounds;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.enums.BossVariant;
@@ -136,75 +137,75 @@ public abstract class BlockTFAbstractTrophy extends ContainerBlock {
 		TileEntity te = world.getTileEntity(pos);
 		if (te instanceof TileEntityTFTrophy) {
 			Random rand = world.getRandom();
-			switch (variant) {
-				case NAGA:
-					for (int daze = 0; daze < 10; daze++) {
-						world.addParticle(ParticleTypes.CRIT,
-								((double)pos.getX() + rand.nextFloat() * 0.5 * 2.0F),
-								(double)pos.getY() + 0.25,
-								((double)pos.getZ() + rand.nextFloat() * 0.5 * 2.0F),
-								rand.nextGaussian() * 0.02D,
-								rand.nextGaussian() * 0.02D,
-								rand.nextGaussian() * 0.02D);
-					}
-					break;
-				case LICH:
-					for (int a = 0; a < 5; a++) {
-						world.addParticle(ParticleTypes.ANGRY_VILLAGER,
-								(double)pos.getX() + rand.nextFloat() * 0.5 * 2.0F,
-								(double)pos.getY() + 0.5 + rand.nextFloat() * 0.25,
-								(double)pos.getZ() + rand.nextFloat() * 0.5 * 2.0F,
-								rand.nextGaussian() * 0.02D, rand.nextGaussian() * 0.02D, rand.nextGaussian() * 0.02D);
-					}
-					break;
-				case MINOSHROOM:
-					for (int g = 0; g < 10; g++) {
-						world.addParticle(new BlockParticleData(ParticleTypes.BLOCK, world.getBlockState(pos.down())),
-								(double)pos.getX() + rand.nextFloat() * 10F - 5F,
-								(double)pos.getY() + 0.1F + rand.nextFloat() * 0.3F,
-								(double)pos.getZ() + rand.nextFloat() * 10F - 5F,
-								0, 0, 0);
-					}
-					break;
-				case KNIGHT_PHANTOM:
-					for (int brek = 0; brek < 10; brek++) {
-						world.addParticle(new ItemParticleData(ParticleTypes.ITEM, new ItemStack(TFItems.knightmetal_sword.get())),
-								pos.getX() + 0.5 + (rand.nextFloat() - 0.5),
-								pos.getY() + rand.nextFloat() + 0.5,
-								pos.getZ() + 0.5 + (rand.nextFloat() - 0.5),
-								0, .25, 0);
-
-					}
-					break;
-				case UR_GHAST:
-					for (int red = 0; red < 10; red++) {
-						world.addParticle(RedstoneParticleData.REDSTONE_DUST,
-								(double)pos.getX() + (rand.nextDouble() * 1) - 0.25,
-								(double)pos.getY() + rand.nextDouble() * 0.5 + 0.5,
-								(double)pos.getZ() + (rand.nextDouble() * 1),
-								0, 0, 0);
-					}
+			if(world instanceof ServerWorld) {
+				switch (variant) {
+					case NAGA:
+						for (int daze = 0; daze < 10; daze++) {
+							((ServerWorld)world).spawnParticle(ParticleTypes.CRIT,
+									((double) pos.getX() + rand.nextFloat() * 0.5 * 2.0F),
+									(double) pos.getY() + 0.25,
+									((double) pos.getZ() + rand.nextFloat() * 0.5 * 2.0F),
+									1, 0, 0, 0, rand.nextGaussian() * 0.02D);
+						}
 						break;
-				case SNOW_QUEEN:
-					for (int b = 0; b < 20; b++) {
-						world.addParticle(TFParticleType.SNOW_WARNING.get(),
-								(double)pos.getX() - 1 + (rand.nextDouble() * 3.25),
-								(double)pos.getY() + 5,
-								(double)pos.getZ() - 1 + (rand.nextDouble() * 3.25),
-								0, 1, 0);
-					}
-					break;
-				case QUEST_RAM:
-					for (int p = 0; p < 10; p++) {
-						world.addParticle(ParticleTypes.ENTITY_EFFECT,
-								(double)pos.getX() + 0.5 + (rand.nextDouble() - 0.5),
-								(double)pos.getY() + (rand.nextDouble() - 0.5),
-								(double)pos.getZ() + 0.5 + (rand.nextDouble() - 0.5),
-								rand.nextFloat(), rand.nextFloat(), rand.nextFloat());
-					}
-					break;
-				default:
-					break;
+					case LICH:
+						for (int a = 0; a < 5; a++) {
+							((ServerWorld)world).spawnParticle(ParticleTypes.ANGRY_VILLAGER,
+									(double) pos.getX() + rand.nextFloat() * 0.5 * 2.0F,
+									(double) pos.getY() + 0.5 + rand.nextFloat() * 0.25,
+									(double) pos.getZ() + rand.nextFloat() * 0.5 * 2.0F, 1,
+									rand.nextGaussian() * 0.02D, rand.nextGaussian() * 0.02D, rand.nextGaussian() * 0.02D, 0);
+						}
+						break;
+					case MINOSHROOM:
+						for (int g = 0; g < 10; g++) {
+							((ServerWorld)world).spawnParticle(new BlockParticleData(ParticleTypes.BLOCK, world.getBlockState(pos.down())),
+									(double) pos.getX() + rand.nextFloat() * 10F - 5F,
+									(double) pos.getY() + 0.1F + rand.nextFloat() * 0.3F,
+									(double) pos.getZ() + rand.nextFloat() * 10F - 5F,
+									1, 0, 0, 0, 0);
+						}
+						break;
+					case KNIGHT_PHANTOM:
+						for (int brek = 0; brek < 10; brek++) {
+							((ServerWorld)world).spawnParticle(new ItemParticleData(ParticleTypes.ITEM, new ItemStack(TFItems.knightmetal_sword.get())),
+									pos.getX() + 0.5 + (rand.nextFloat() - 0.5),
+									pos.getY() + rand.nextFloat() + 0.5,
+									pos.getZ() + 0.5 + (rand.nextFloat() - 0.5),
+									1, 0, .25, 0, 0);
+
+						}
+						break;
+					case UR_GHAST:
+						for (int red = 0; red < 10; red++) {
+							((ServerWorld)world).spawnParticle(RedstoneParticleData.REDSTONE_DUST,
+									(double) pos.getX() + (rand.nextDouble() * 1) - 0.25,
+									(double) pos.getY() + rand.nextDouble() * 0.5 + 0.5,
+									(double) pos.getZ() + (rand.nextDouble() * 1),
+									1, 0, 0, 0, 0);
+						}
+						break;
+					case SNOW_QUEEN:
+						for (int b = 0; b < 20; b++) {
+							((ServerWorld)world).spawnParticle(TFParticleType.SNOW_WARNING.get(),
+									(double) pos.getX() - 1 + (rand.nextDouble() * 3.25),
+									(double) pos.getY() + 5,
+									(double) pos.getZ() - 1 + (rand.nextDouble() * 3.25), 1,
+									0, 1, 0, 0);
+						}
+						break;
+					case QUEST_RAM:
+						for (int p = 0; p < 10; p++) {
+							((ServerWorld)world).spawnParticle(ParticleTypes.ENTITY_EFFECT,
+									(double) pos.getX() + 0.5 + (rand.nextDouble() - 0.5),
+									(double) pos.getY() + (rand.nextDouble() - 0.5),
+									(double) pos.getZ() + 0.5 + (rand.nextDouble() - 0.5), 1,
+									rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), 1);
+						}
+						break;
+					default:
+						break;
+				}
 			}
 		}
 	}
