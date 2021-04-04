@@ -15,8 +15,7 @@ import twilightforest.worldgen.ConfiguredWorldCarvers;
 import java.util.function.Consumer;
 
 public abstract class BiomeHelper {
-    
-	//TODO: uncomment all druid huts when theyre fixed
+
     public static BiomeGenerationSettings.Builder twilightForestGen(BiomeGenerationSettings.Builder biome) {
 
 		addForestVegetation(biome);
@@ -72,7 +71,6 @@ public abstract class BiomeHelper {
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.FIDDLEHEAD);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.VINES);
 
-		biome.withFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, ConfiguredFeatures.WELL);
 		addForestVegetation(biome);
 		addRainbowOaks(biome);
 		addCanopyTrees(biome);
@@ -111,8 +109,6 @@ public abstract class BiomeHelper {
 	
 	public static BiomeGenerationSettings.Builder denseMushroomForestGen(BiomeGenerationSettings.Builder biome) {
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.MYCELIUM_BLOB);
-		biome.withFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, ConfiguredFeatures.DRUID_HUT);
-		biome.withFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, ConfiguredFeatures.WELL);
 
 		addForestVegetation(biome);
 		addTwilightOakTrees(biome);
@@ -127,7 +123,6 @@ public abstract class BiomeHelper {
     	.withSurfaceBuilder(twilightforest.worldgen.ConfiguredSurfaceBuilders.CONFIGURED_PLATEAU);
 
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.RANDOM_COMMON_FEATURE);
-		biome.withFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, ConfiguredFeatures.DRUID_HUT);
 
 		addThorns(biome);
 		
@@ -146,7 +141,6 @@ public abstract class BiomeHelper {
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.SPRUCE);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.FOREST_ROCK);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.PATCH_GRASS_TAIGA);
-		biome.withFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, ConfiguredFeatures.DRUID_HUT);
 
 		addSmallStoneClusters(biome);
 		addHighlandCaves(biome);
@@ -159,8 +153,6 @@ public abstract class BiomeHelper {
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.PATCH_SUGAR_CANE_SWAMP);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.VINES);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.PATCH_DEAD_BUSH);
-		biome.withFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, ConfiguredFeatures.DRUID_HUT);
-		biome.withFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, ConfiguredFeatures.WELL);
 
 		addForestVegetation(biome);
 		addMangroveTrees(biome);
@@ -262,9 +254,7 @@ public abstract class BiomeHelper {
 				withStructure(TFStructures.CONFIGURED_HOLLOW_HILL_MEDIUM).
 				withStructure(TFStructures.CONFIGURED_HOLLOW_HILL_LARGE).
 				withStructure(TFStructures.CONFIGURED_NAGA_COURTYARD).
-				withStructure(TFStructures.CONFIGURED_LICH_TOWER).
-				withFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, ConfiguredFeatures.DRUID_HUT).
-				withFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, ConfiguredFeatures.WELL);
+				withStructure(TFStructures.CONFIGURED_LICH_TOWER);
 	}
     
     public static BiomeGenerationSettings.Builder addThorns(BiomeGenerationSettings.Builder biome) {

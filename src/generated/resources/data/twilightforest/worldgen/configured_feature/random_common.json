@@ -8,7 +8,11 @@
               "config": {
                 "features": [
                   {
-                    "feature": "twilightforest:small_log",
+                    "feature": "twilightforest:well",
+                    "chance": 0.1
+                  },
+                  {
+                    "feature": "twilightforest:druid_hut",
                     "chance": 0.1
                   },
                   {

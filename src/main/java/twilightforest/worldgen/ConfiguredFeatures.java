@@ -1,16 +1,20 @@
 package twilightforest.worldgen;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.audio.BackgroundMusicSelector;
+import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.blockplacer.DoublePlantBlockPlacer;
 import net.minecraft.world.gen.blockplacer.SimpleBlockPlacer;
 import net.minecraft.world.gen.blockstateprovider.SimpleBlockStateProvider;
 import net.minecraft.world.gen.blockstateprovider.WeightedBlockStateProvider;
 import net.minecraft.world.gen.feature.*;
+import net.minecraft.world.gen.foliageplacer.BushFoliagePlacer;
 import net.minecraft.world.gen.placement.AtSurfaceWithExtraConfig;
 import net.minecraft.world.gen.placement.ConfiguredPlacement;
 import net.minecraft.world.gen.placement.Placement;
+import net.minecraft.world.gen.trunkplacer.StraightTrunkPlacer;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.feature.TFBiomeFeatures;
@@ -157,12 +161,13 @@ public final class ConfiguredFeatures {
     //selects a random feature to place down. This makes things more random and rare
     public static final ConfiguredFeature<?, ?> RANDOM_COMMON_FEATURE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("random_common"),
             Feature.RANDOM_SELECTOR.withConfiguration(new MultipleRandomFeatureConfig(ImmutableList.of(
-                    SMALL_LOG.withChance(0.1F),
+                    WELL.withChance(0.1F),
+                    DRUID_HUT.withChance(0.1F),
                     GROVE_RUINS.withChance(0.05F),
                     MONOLITH.withChance(0.1F),
                     OUTSIDE_STALAGMITE.withChance(0.12F),
                     STONE_CIRCLE.withChance(0.1F)
-            ), Feature.NO_OP.withConfiguration(NoFeatureConfig.field_236559_b_)))
+            ), Feature.NO_OP.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG)))
                     .withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
                     .square()
                     .func_242731_b(1)

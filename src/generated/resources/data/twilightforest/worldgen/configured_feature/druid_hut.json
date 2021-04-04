@@ -6,9 +6,16 @@
     },
     "decorator": {
       "config": {
-        "chance": 50
+        "outer": {
+          "config": {},
+          "type": "minecraft:square"
+        },
+        "inner": {
+          "config": {},
+          "type": "minecraft:heightmap"
+        }
       },
-      "type": "minecraft:chance"
+      "type": "minecraft:decorated"
     }
   },
   "type": "minecraft:decorated"

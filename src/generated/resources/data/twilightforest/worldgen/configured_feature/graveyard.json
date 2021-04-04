@@ -1,39 +1,14 @@
 {
   "config": {
     "feature": {
-      "config": {
-        "feature": {
-          "config": {
-            "feature": {
-              "config": {},
-              "type": "twilightforest:graveyard"
-            },
-            "decorator": {
-              "config": {
-                "chance": 95
-              },
-              "type": "minecraft:chance"
-            }
-          },
-          "type": "minecraft:decorated"
-        },
-        "decorator": {
-          "config": {
-            "count": 1
-          },
-          "type": "minecraft:count"
-        }
-      },
-      "type": "minecraft:decorated"
+      "config": {},
+      "type": "twilightforest:graveyard"
     },
     "decorator": {
       "config": {
-        "count": {
-          "base": 0,
-          "spread": 1
-        }
+        "chance": 95
       },
-      "type": "minecraft:count"
+      "type": "minecraft:chance"
     }
   },
   "type": "minecraft:decorated"
