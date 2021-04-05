@@ -78,8 +78,8 @@ public class ASMHooks {
 		ASMHooks.world = world;
 		Iterable<Entity> loaded = DistExecutor.safeRunForDist(() -> TFClientProxy::getEntityListForASM, () -> TFCommonProxy::getEntityListForASM);
 		ASMHooks.world = null;
-		if (loaded != null)
-			loaded.forEach(entity -> {
+		if (loaded != null) {
+			for (Entity entity : loaded) {
 				if (entity.isMultipartEntity() && entity.getParts() != null)
 					for (PartEntity<?> part : entity.getParts()) {
 						if (part instanceof TFPartEntity &&
@@ -93,7 +93,8 @@ public class ASMHooks {
 								!list.contains(part))
 							list.add(part);
 					}
-			});
+			}
+		}
 		return list;
 	}
 
