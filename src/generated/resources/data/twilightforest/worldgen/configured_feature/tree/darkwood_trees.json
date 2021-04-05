@@ -6,7 +6,25 @@
           "config": {
             "feature": {
               "config": {
-                "feature": "twilightforest:tree/base/darkwood_tree",
+                "feature": {
+                  "config": {
+                    "feature": "twilightforest:tree/base/darkwood_tree",
+                    "decorator": {
+                      "config": {
+                        "outer": {
+                          "config": {},
+                          "type": "minecraft:square"
+                        },
+                        "inner": {
+                          "config": {},
+                          "type": "minecraft:heightmap"
+                        }
+                      },
+                      "type": "minecraft:decorated"
+                    }
+                  },
+                  "type": "minecraft:decorated"
+                },
                 "decorator": {
                   "config": {
                     "outer": {
@@ -14,8 +32,12 @@
                       "type": "minecraft:square"
                     },
                     "inner": {
-                      "config": {},
-                      "type": "minecraft:heightmap"
+                      "config": {
+                        "count": 8,
+                        "extra_chance": 0.4,
+                        "extra_count": 4
+                      },
+                      "type": "minecraft:count_extra"
                     }
                   },
                   "type": "minecraft:decorated"
