@@ -64,7 +64,7 @@ public class ASMHooks {
 	 * [AFTER FIRST INVOKEVIRTUAL]
 	 */
 	public static BackgroundMusicSelector music(BackgroundMusicSelector music) {
-		if (Minecraft.getInstance().world != null && Minecraft.getInstance().player != null && (music == BackgroundMusicTracks.CREATIVE_MODE_MUSIC || music == BackgroundMusicTracks.UNDER_WATER_MUSIC) && Minecraft.getInstance().world.getDimensionKey().getLocation().toString().equals(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get()))
+		if (Minecraft.getInstance().world != null && Minecraft.getInstance().player != null && (music == BackgroundMusicTracks.CREATIVE_MODE_MUSIC || music == BackgroundMusicTracks.UNDER_WATER_MUSIC) && Minecraft.getInstance().world.getDimensionKey().getLocation().equals(TFDimensions.twilightForest.getLocation()))
 			return Minecraft.getInstance().world.getBiomeManager().getBiomeAtPosition(Minecraft.getInstance().player.getPosition()).getBackgroundMusic().orElse(BackgroundMusicTracks.WORLD_MUSIC);
 		return music;
 	}

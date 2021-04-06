@@ -33,6 +33,7 @@ import twilightforest.TFConfig;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.data.BlockTagGenerator;
+import twilightforest.world.TFDimensions;
 import twilightforest.world.TFGenerationSettings;
 import twilightforest.world.TFTeleporter;
 
@@ -211,10 +212,8 @@ public class BlockTFPortal extends BreakableBlock implements ILiquidContainer {
 	}
 
 	private static RegistryKey<World> getDestination(Entity entity) {
-		RegistryKey<World> twilightForest = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get()));
-
-		return !entity.getEntityWorld().getDimensionKey().getLocation().equals(twilightForest.getLocation())
-				? twilightForest : RegistryKey.getOrCreateKey(Registry.WORLD_KEY, new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get()));
+		return !entity.getEntityWorld().getDimensionKey().getLocation().equals(TFDimensions.twilightForest.getLocation())
+				? TFDimensions.twilightForest : RegistryKey.getOrCreateKey(Registry.WORLD_KEY, new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get())); // FIXME: cache this for gods sake
 	}
 
 	public static void attemptSendPlayer(Entity entity, boolean forcedEntry) {

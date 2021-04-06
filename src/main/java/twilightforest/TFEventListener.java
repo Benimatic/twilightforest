@@ -78,6 +78,7 @@ import twilightforest.potions.TFPotions;
 import twilightforest.tileentity.TileEntityKeepsakeCasket;
 import twilightforest.util.TFItemStackUtils;
 import twilightforest.world.ChunkGeneratorTwilightBase;
+import twilightforest.world.TFDimensions;
 import twilightforest.world.TFGenerationSettings;
 
 import java.util.ArrayList;
@@ -678,7 +679,7 @@ public class TFEventListener {
 	@SubscribeEvent
 	public static void playerPortals(PlayerEvent.PlayerChangedDimensionEvent event) {
 		if (!event.getPlayer().world.isRemote && event.getPlayer() instanceof ServerPlayerEntity) {
-			if (event.getTo().getLocation().toString().equals(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get())) {
+			if (event.getTo().getLocation().equals(TFDimensions.twilightForest.getLocation())) {
 				sendEnforcedProgressionStatus((ServerPlayerEntity) event.getPlayer(), TFGenerationSettings.isProgressionEnforced(event.getPlayer().world));
 			}
 

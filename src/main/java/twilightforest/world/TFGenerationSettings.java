@@ -155,7 +155,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 	}
 
 	public static boolean isStrictlyTwilightForest(World world) {
-		return world.getDimensionKey().getLocation().toString().equals(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get());
+		return world.getDimensionKey().getLocation().equals(TFDimensions.twilightForest.getLocation());
 	}
 
 	public static boolean isTwilightChunk(ServerWorld world) {

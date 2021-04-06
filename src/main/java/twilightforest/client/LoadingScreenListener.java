@@ -11,7 +11,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import twilightforest.TFConfig;
+import twilightforest.world.TFDimensions;
 
 @OnlyIn(Dist.CLIENT)
 public class LoadingScreenListener {
@@ -29,10 +29,9 @@ public class LoadingScreenListener {
 	@SubscribeEvent
 	public void onOpenGui(GuiOpenEvent event) {
 		if (event.getGui() instanceof DownloadTerrainScreen && client.player != null) {
-			RegistryKey<World> tfDimension = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get()));
-			if (client.player.getEntityWorld().getDimensionKey() == tfDimension || lastDimension == tfDimension) {
+			if (client.player.getEntityWorld().getDimensionKey() == TFDimensions.twilightForest || lastDimension == TFDimensions.twilightForest) {
 				GuiTwilightForestLoading guiLoading = new GuiTwilightForestLoading();
-				guiLoading.setEntering(client.player.getEntityWorld().getDimensionKey() == tfDimension);
+				guiLoading.setEntering(client.player.getEntityWorld().getDimensionKey() == TFDimensions.twilightForest);
 				event.setGui(guiLoading);
 			}
 		}
