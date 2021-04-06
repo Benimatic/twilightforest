@@ -11,7 +11,7 @@ public class TFDamageSources {
     public static final DamageSource HYDRA_BITE = new DamageSource("hydraBite"); //hydra
     public static final DamageSource HYDRA_FIRE = new DamageSource("hydraFire"); //hydra
     public static final DamageSource LICH_BOLT = new DamageSource("lichBolt").setDamageBypassesArmor().setMagicDamage(); //lich
-    public static final DamageSource LICH_BOMB = new DamageSource("lichBomb").setMagicDamage(); //lich
+    public static final DamageSource LICH_BOMB = new DamageSource("lichBomb").setDamageBypassesArmor().setMagicDamage(); //lich
     public static final DamageSource CHILLING_BREATH = new DamageSource("chillingBreath"); //snow queen
     public static final DamageSource SQUISH = new DamageSource("squish"); //snow queen
     public static final DamageSource THROWN_AXE = new DamageSource("thrownAxe");
@@ -48,12 +48,12 @@ public class TFDamageSources {
         return new IndirectEntityDamageSource("spiked", source, mob); //block and chain
     }
     public static DamageSource LEAF_BRAIN(Entity source, LivingEntity mob) {
-        return new IndirectEntityDamageSource("leafBrain", source, mob); //druid
+        return new IndirectEntityDamageSource("leafBrain", source, mob).setDamageBypassesArmor().setMagicDamage(); //druid
     }
     public static DamageSource LOST_WORDS(Entity source, LivingEntity mob) {
-        return new IndirectEntityDamageSource("lostWords", source, mob); //druid
+        return new IndirectEntityDamageSource("lostWords", source, mob).setDamageBypassesArmor().setMagicDamage(); //tome
     }
     public static DamageSource SNOWBALL_FIGHT(Entity source, LivingEntity mob) {
-        return new IndirectEntityDamageSource("snowballFight", source, mob); //druid
+        return new IndirectEntityDamageSource("snowballFight", source, mob); //ice core
     }
 }
