@@ -114,7 +114,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTwilightBase {
 				for (int bx = -1; bx <= 1; bx++) {
 					for (int bz = -1; bz <= 1; bz++) {
 						BlockPos p = getPos(primer).asBlockPos().add(x + bx + 2, 0, z + bz + 2);
-						Biome biome = biomeProvider.getNoiseBiome((p.getX() << 2) + 2, p.getY(), (p.getY() << 2) + 2);
+						Biome biome = biomeProvider.getNoiseBiome((p.getX() << 2) + 2, p.getY(), (p.getZ() << 2) + 2);
 						if (BiomeKeys.DARK_FOREST.getLocation().equals(biome.getRegistryName()) || BiomeKeys.DARK_FOREST_CENTER.getLocation().equals(biome.getRegistryName())) {
 							thicks[x + z * 5]++;
 							biomeFound = true;
