@@ -47,7 +47,7 @@ public class LootFunctionEnchant extends LootFunction {
 			if (stack.getItem() == Items.ENCHANTED_BOOK) {
 				EnchantedBookItem.addEnchantment(stack, new EnchantmentData(e.getKey().get(), e.getValue()));
 			} else {
-				addEnchantment(stack, e.getKey().get(), e.getValue());
+				stack.addEnchantment(e.getKey().get(), e.getValue());
 			}
 		}
 		return stack;
