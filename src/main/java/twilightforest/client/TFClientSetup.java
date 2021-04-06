@@ -1,19 +1,22 @@
 package twilightforest.client;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screen.MainMenuScreen;
 import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.world.DimensionRenderInfo;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemModelsProperties;
-import net.minecraft.resources.*;
+import net.minecraft.resources.ResourcePackInfo;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
+import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.renderer.entity.LayerIce;
 import twilightforest.client.renderer.entity.LayerShields;
@@ -27,8 +30,25 @@ import twilightforest.item.ItemTFYetiArmor;
 import twilightforest.item.TFItems;
 import twilightforest.tileentity.TFTileEntities;
 
-@Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD, modid = TwilightForestMod.ID)
 public class TFClientSetup {
+
+	@Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE, modid = TwilightForestMod.ID)
+	public static class ForgeEvents {
+
+		private static boolean optifineWarningShown = false;
+
+		@SubscribeEvent
+		public static void showOptifineWarning(GuiScreenEvent.InitGuiEvent.Post event) {
+			if (!optifineWarningShown && event.getGui() instanceof MainMenuScreen) {
+				optifineWarningShown = true;
+				if (ModList.get().isLoaded("optifine") && !TFConfig.CLIENT_CONFIG.disableOptifineNagScreen.get())
+					Minecraft.getInstance().displayGuiScreen(new OptifineWarningScreen(event.getGui()));
+			}
+		}
+
+	}
+
     @SubscribeEvent
     public static void clientSetup(FMLClientSetupEvent evt) {
         TFItems.addItemModelProperties();

@@ -1085,6 +1085,9 @@
   "twilightforest.config.uncrafting": "Disable Uncrafting in Uncrafting Table",
   "twilightforest.config.uncrafting.tooltip": "Disable the uncrafting function of the uncrafting table. Provided as an option when interaction with other mods produces exploitable recipes.",
 
+  "twilightforest.config.optifine": "Disable the nag screen when Optifine is installed.",
+  "twilightforest.config.optifine.tooltip": "Disables the nag screen shown on launch when Optifine is installed.",
+
   "twilightforest.config.antibuilder_blacklist": "Antibuilder Blacklist",
   "twilightforest.config.antibuilder_blacklist.tooltip": "Anti-Builder blacklist. (domain:block:meta) meta is optional.",
 
@@ -1213,5 +1216,9 @@
   "twilightforest.shader.auroralized": "Auroralized",
   "twilightforest.shader.snow_queen": "Snow Queen",
 
-  "twilightforest.shader.final_castle": "Final Castle"
+  "twilightforest.shader.final_castle": "Final Castle",
+
+  // Optifine
+  "twilightforest.gui.optifine.title": "WARNING: OPTIFINE DETECTED",
+  "twilightforest.gui.optifine.message": "Before proceeding, please note that Optifine is known to cause crashes, multipart entity visual bugs and many other issues.\n\nBefore reporting a bug please remove Optifine first and check again to see if the bug is still present.\n\nOptifine related issues are not solveable on Twilight Forest's end!"
 }

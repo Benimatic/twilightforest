@@ -351,6 +351,10 @@ public class TFConfig {
 					translation(config + "animate_trophyitem").
 					comment("Rotate trophy heads on item model. Has no performance impact at all. For those who don't like fun.").
 					define("rotateTrophyHeadsGui", true);
+			disableOptifineNagScreen = builder.
+					translation(config + "optifine").
+					comment("Disable the nag screen when Optifine is installed.").
+					define("disableOptifineNagScreen", false);
 			builder.
 					comment("Client only: Controls for the Loading screen").
 					push("Loading Screen");
@@ -419,6 +423,7 @@ public class TFConfig {
 		public ForgeConfigSpec.BooleanValue silentCicadas;
 		public ForgeConfigSpec.BooleanValue firstPersonEffects;
 		public ForgeConfigSpec.BooleanValue rotateTrophyHeadsGui;
+		public ForgeConfigSpec.BooleanValue disableOptifineNagScreen;
 
 		public final LoadingScreen LOADING_SCREEN = new LoadingScreen();
 
