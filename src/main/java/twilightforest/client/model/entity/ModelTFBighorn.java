@@ -48,8 +48,8 @@ public class ModelTFBighorn<T extends EntityTFBighorn> extends SheepModel<T> {
         this.leftHorn.setTextureOffset(20, 15).addBox(2.0F, 0.0F, -11.0F, 2.0F, 3.0F, 2.0F, 0.0F, 0.0F, 0.0F);
         this.setRotateAngle(leftHorn, 0.0F, -0.39269908169872414F, -0.2181661564992912F);
         this.headModel = new ModelRenderer(this, 0, 0);
-        this.headModel.setRotationPoint(0.0F, 7.0F, -6.0F);
-        this.headModel.setTextureOffset(38, 0).addBox(-3.0F, -4.0F, -8.0F, 6.0F, 6.0F, 7.0F, 0.0F, 0.0F, 0.0F);
+        this.headModel.setRotationPoint(0.0F, 5.0F, -8.0F);
+        this.headModel.setTextureOffset(38, 0).addBox(-3.0F, -4.0F, -6.0F, 6.0F, 6.0F, 7.0F, 0.0F, 0.0F, 0.0F);
         this.rightHorn = new ModelRenderer(this, 0, 0);
         this.rightHorn.setRotationPoint(-2.0F, -3.0F, -1.0F);
         this.rightHorn.addBox(-3.0F, -1.0F, -7.0F, 3.0F, 3.0F, 5.0F, 0.0F, 0.0F, 0.0F);
@@ -60,11 +60,30 @@ public class ModelTFBighorn<T extends EntityTFBighorn> extends SheepModel<T> {
         this.headModel.addChild(this.rightHorn);
     }
 
+
+
     @Override
     public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-        ImmutableList.of(this.legBackLeft, this.legBackRight, this.body, this.legFrontLeft, this.legFrontRight, this.headModel).forEach((modelRenderer) -> {
-            modelRenderer.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
-        });
+        if (this.isChild) {
+            matrixStackIn.push();
+            matrixStackIn.translate(0.0, 0.5, 0.25);
+            ImmutableList.of(this.headModel).forEach((modelRenderer) -> {
+                modelRenderer.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+            });
+            matrixStackIn.pop();
+
+            matrixStackIn.push();
+            matrixStackIn.scale(0.5F, 0.5F, 0.5F);
+            matrixStackIn.translate(0.0, 1.5, 0.0);
+            ImmutableList.of(this.legBackLeft, this.legBackRight, this.body, this.legFrontLeft, this.legFrontRight).forEach((modelRenderer) -> {
+                modelRenderer.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+            });
+            matrixStackIn.pop();
+        } else {
+            ImmutableList.of(this.legBackLeft, this.legBackRight, this.body, this.legFrontLeft, this.legFrontRight, this.headModel).forEach((modelRenderer) -> {
+                modelRenderer.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+            });
+        }
     }
 
     /**
