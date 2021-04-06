@@ -5,6 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.provider.BiomeProvider;
@@ -112,7 +113,8 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTwilightBase {
 
 				for (int bx = -1; bx <= 1; bx++) {
 					for (int bz = -1; bz <= 1; bz++) {
-						Biome biome = primer.getBiome(getPos(primer).asBlockPos().add(x + bx + 2, 0, z + bz + 2));
+						BlockPos p = getPos(primer).asBlockPos().add(x + bx + 2, 0, z + bz + 2);
+						Biome biome = biomeProvider.getNoiseBiome((p.getX() << 2) + 2, p.getY(), (p.getY() << 2) + 2);
 						if (BiomeKeys.DARK_FOREST.getLocation().equals(biome.getRegistryName()) || BiomeKeys.DARK_FOREST_CENTER.getLocation().equals(biome.getRegistryName())) {
 							thicks[x + z * 5]++;
 							biomeFound = true;
