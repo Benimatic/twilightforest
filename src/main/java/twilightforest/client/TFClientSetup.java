@@ -33,6 +33,8 @@ import twilightforest.tileentity.TFTileEntities;
 @Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD, modid = TwilightForestMod.ID)
 public class TFClientSetup {
 
+	public static boolean optifinePresent = false;
+
 	@Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE, modid = TwilightForestMod.ID)
 	public static class ForgeEvents {
 
@@ -40,10 +42,9 @@ public class TFClientSetup {
 
 		@SubscribeEvent
 		public static void showOptifineWarning(GuiScreenEvent.InitGuiEvent.Post event) {
-			if (!optifineWarningShown && event.getGui() instanceof MainMenuScreen) {
+			if (optifinePresent && !optifineWarningShown && !TFConfig.CLIENT_CONFIG.disableOptifineNagScreen.get() && event.getGui() instanceof MainMenuScreen) {
 				optifineWarningShown = true;
-				if (ModList.get().isLoaded("optifine") && !TFConfig.CLIENT_CONFIG.disableOptifineNagScreen.get())
-					Minecraft.getInstance().displayGuiScreen(new OptifineWarningScreen(event.getGui()));
+				Minecraft.getInstance().displayGuiScreen(new OptifineWarningScreen(event.getGui()));
 			}
 		}
 
@@ -51,7 +52,13 @@ public class TFClientSetup {
 
     @SubscribeEvent
     public static void clientSetup(FMLClientSetupEvent evt) {
-        TFItems.addItemModelProperties();
+		try {
+			Class.forName("net.optifine.Config");
+			optifinePresent = true;
+		} catch (ClassNotFoundException e) {
+			optifinePresent = false;
+		}
+		TFItems.addItemModelProperties();
 
         ItemTFKnightlyArmor.initArmorModel();
         ItemTFPhantomArmor.initArmorModel();
