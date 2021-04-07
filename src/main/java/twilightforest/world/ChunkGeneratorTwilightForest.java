@@ -105,6 +105,7 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTwilightBase {
 	 * Adds dark forest canopy.  This version uses the "unzoomed" array of biomes used in land generation to determine how many of the nearby blocks are dark forest
 	 */
 	private void addDarkForestCanopy2(WorldGenRegion primer) {
+		BlockPos blockpos = getPos(primer).asBlockPos();
 		int[] thicks = new int[5 * 5];
 		boolean biomeFound = false;
 
@@ -113,8 +114,8 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTwilightBase {
 
 				for (int bx = -1; bx <= 1; bx++) {
 					for (int bz = -1; bz <= 1; bz++) {
-						BlockPos p = getPos(primer).asBlockPos().add(x + bx + 2, 0, z + bz + 2);
-						Biome biome = biomeProvider.getNoiseBiome((p.getX() << 2) + 2, p.getY(), (p.getZ() << 2) + 2);
+						BlockPos p = blockpos.add((x + bx) << 2, 0, (z + bz) << 2);
+						Biome biome = biomeProvider.getNoiseBiome(p.getX() >> 2, 0, p.getZ() >> 2);
 						if (BiomeKeys.DARK_FOREST.getLocation().equals(biome.getRegistryName()) || BiomeKeys.DARK_FOREST_CENTER.getLocation().equals(biome.getRegistryName())) {
 							thicks[x + z * 5]++;
 							biomeFound = true;
@@ -158,8 +159,8 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTwilightBase {
 					int hx = nearCenter.x;
 					int hz = nearCenter.z;
 
-					int rx = getPos(primer).x - hx;
-					int rz = getPos(primer).z - hz;
+					int rx = x - hx;
+					int rz = z - hz;
 					int dist = (int) Math.sqrt(rx * rx + rz * rz);
 
 					if (dist < 24) {
@@ -185,12 +186,13 @@ public class ChunkGeneratorTwilightForest extends ChunkGeneratorTwilightBase {
 					if (topLevel != -1) {
 						// just use the same noise generator as the terrain uses for stones
 						//int noise = Math.min(3, (int) (depthBuffer[z & 15 | (x & 15) << 4] / 1.25f));
+						int noise = Math.min(3, (int) (surfaceDepthNoise.noiseAt((blockpos.getX() + x) * 0.0625D, (blockpos.getZ() + z) * 0.0625D, 0.0625D, x * 0.0625D) * 15F / 1.25F));
 
 						// manipulate top and bottom
 						int treeBottom = topLevel + 12 - (int) (thickness * 0.5F);
 						int treeTop = treeBottom + (int) (thickness * 1.5F);
 
-						//treeBottom -= noise;
+						treeBottom -= noise;
 
 						BlockState darkLeaves = TFBlocks.dark_leaves.get().getDefaultState();
 						for (int y = treeBottom; y < treeTop; y++) {
