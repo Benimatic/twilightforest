@@ -314,7 +314,6 @@ public abstract class BiomeHelper {
     }
 
     public static BiomeGenerationSettings.Builder addDarkwoodTrees(BiomeGenerationSettings.Builder biome) {
-        biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARKWOOD_TREES);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARKWOOD_TREES);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.BUSH_DARK_FOREST_TREES);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.OAK_DARK_FOREST_TREES);
