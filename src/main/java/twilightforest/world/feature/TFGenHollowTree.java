@@ -43,8 +43,8 @@ public class TFGenHollowTree extends TFTreeGenerator<TFTreeFeatureConfig> {
 
 	@Override
 	public boolean generate(IWorld world, Random random, BlockPos pos, Set<BlockPos> trunk, Set<BlockPos> leaves, Set<BlockPos> branch, Set<BlockPos> root, MutableBoundingBox mbb, TFTreeFeatureConfig config) {
-		int height = random.nextInt(64) + 32;
-		int diameter = random.nextInt(4) + 1;
+		int diameter = random.nextInt(3) + 2;
+		int height = random.nextInt(64) + (diameter * 4);
 
 		// do we have enough height?
 		if (pos.getY() < 1 || pos.getY() + height + diameter > TFGenerationSettings.MAXHEIGHT) {

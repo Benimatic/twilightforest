@@ -120,8 +120,8 @@
       {
         "type": "minecraft:bat",
         "weight": 20,
-        "minCount": 8,
-        "maxCount": 8
+        "minCount": 4,
+        "maxCount": 4
       }
     ],
     "ambient": [],

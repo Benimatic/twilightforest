@@ -4,35 +4,35 @@
       "config": {
         "feature": {
           "config": {
-            "feature": {
-              "config": {
-                "features": [
-                  {
-                    "feature": "twilightforest:tree/hollow_oak_trees",
-                    "chance": 0.01
-                  },
-                  {
-                    "feature": "twilightforest:tree/hollow_oak_trees",
-                    "chance": 0.01
-                  }
-                ],
-                "default": {
-                  "config": {},
-                  "type": "minecraft:no_op"
-                }
+            "features": [
+              {
+                "feature": "twilightforest:tree/hollow_oak_trees",
+                "chance": 0.01
               },
-              "type": "minecraft:random_selector"
-            },
-            "decorator": {
+              {
+                "feature": "twilightforest:tree/hollow_oak_trees",
+                "chance": 0.01
+              }
+            ],
+            "default": {
               "config": {},
-              "type": "minecraft:heightmap_world_surface"
+              "type": "minecraft:no_op"
+            }
+          },
+          "type": "minecraft:random_selector"
+        },
+        "decorator": {
+          "config": {
+            "outer": {
+              "config": {},
+              "type": "minecraft:square"
+            },
+            "inner": {
+              "config": {},
+              "type": "minecraft:heightmap"
             }
           },
           "type": "minecraft:decorated"
-        },
-        "decorator": {
-          "config": {},
-          "type": "minecraft:square"
         }
       },
       "type": "minecraft:decorated"

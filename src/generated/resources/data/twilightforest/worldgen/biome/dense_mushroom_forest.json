@@ -139,8 +139,14 @@
       {
         "type": "twilightforest:kobold",
         "weight": 10,
-        "minCount": 4,
-        "maxCount": 8
+        "minCount": 2,
+        "maxCount": 4
+      },
+      {
+        "type": "minecraft:bat",
+        "weight": 10,
+        "minCount": 1,
+        "maxCount": 2
       }
     ],
     "creature": [
@@ -199,14 +205,7 @@
         "maxCount": 2
       }
     ],
-    "ambient": [
-      {
-        "type": "minecraft:bat",
-        "weight": 10,
-        "minCount": 8,
-        "maxCount": 8
-      }
-    ],
+    "ambient": [],
     "water_creature": [],
     "water_ambient": [],
     "misc": []
