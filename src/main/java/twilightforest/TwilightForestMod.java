@@ -100,6 +100,7 @@ public class TwilightForestMod {
 			TFConfig.CLIENT_CONFIG = specPair.getLeft();
 		}
 
+		ASMHooks.registerMultipartEvents(MinecraftForge.EVENT_BUS);
 		MinecraftForge.EVENT_BUS.addListener(this::startServer);
 
 		IEventBus modbus = FMLJavaModLoadingContext.get().getModEventBus();

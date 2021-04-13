@@ -18,9 +18,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.entity.PartEntity;
-import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.EntityLeaveWorldEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.network.PacketDistributor;
-import twilightforest.client.TFClientProxy;
 import twilightforest.entity.TFPartEntity;
 import twilightforest.network.PacketUpdateTFMultipart;
 import twilightforest.network.TFPacketHandler;
@@ -28,9 +29,14 @@ import twilightforest.world.TFDimensions;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.WeakHashMap;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @SuppressWarnings({"JavadocReference", "unused", "RedundantSuppression"})
 public class ASMHooks {
@@ -69,33 +75,54 @@ public class ASMHooks {
 		return music;
 	}
 
+	private static final WeakHashMap<World, List<TFPartEntity<?>>> cache = new WeakHashMap<>();
+
+	public static void registerMultipartEvents(IEventBus bus) {
+		bus.addListener((Consumer<EntityJoinWorldEvent>) event -> {
+			if(event.getEntity().isMultipartEntity())
+			synchronized (cache) {
+				cache.computeIfAbsent(event.getWorld(), (w) -> new ArrayList<>());
+				cache.get(event.getWorld()).addAll(Arrays.stream(Objects.requireNonNull(event.getEntity().getParts())).
+						filter(TFPartEntity.class::isInstance).map(obj -> (TFPartEntity<?>) obj).
+						collect(Collectors.toList()));
+
+			}
+		});
+		bus.addListener((Consumer<EntityLeaveWorldEvent>) event -> {
+			if(event.getEntity().isMultipartEntity())
+			synchronized (cache) {
+				cache.computeIfPresent(event.getWorld(), (world, list) -> {
+					list.removeAll(Arrays.stream(Objects.requireNonNull(event.getEntity().getParts())).
+							filter(TFPartEntity.class::isInstance).map(TFPartEntity.class::cast).
+							collect(Collectors.toList()));
+					return list;
+				});
+			}
+		});
+	}
+
 	/**
 	 * Injection Point:<br>
 	 * {@link net.minecraft.world.World#getEntitiesInAABBexcluding }<br>
 	 * [BEFORE ARETURN]
 	 */
 	public static synchronized List<Entity> multipartHitbox(List<Entity> list, World world, @Nullable Entity entityIn, AxisAlignedBB boundingBox, @Nullable Predicate<? super Entity> predicate) {
-		ASMHooks.world = world;
-		Iterable<Entity> loaded = DistExecutor.safeRunForDist(() -> TFClientProxy::getEntityListForASM, () -> TFCommonProxy::getEntityListForASM);
-		ASMHooks.world = null;
-		if (loaded != null) {
-			for (Entity entity : loaded) {
-				if (entity.isMultipartEntity() && entity.getParts() != null)
-					for (PartEntity<?> part : entity.getParts()) {
-						if (part instanceof TFPartEntity &&
+		synchronized (cache) {
+			List<TFPartEntity<?>> parts = cache.get(world);
+			if(parts != null) {
+				for (TFPartEntity<?> part : parts) {
+					if (part != entityIn &&
 
-								part != entityIn &&
+							part.getBoundingBox().intersects(boundingBox) &&
 
-								part.getBoundingBox().intersects(boundingBox) &&
+							(predicate == null || predicate.test(part)) &&
 
-								(predicate == null || predicate.test(part)) &&
-
-								!list.contains(part))
-							list.add(part);
-					}
+							!list.contains(part))
+						list.add(part);
+				}
 			}
+			return list;
 		}
-		return list;
 	}
 
 	/**
