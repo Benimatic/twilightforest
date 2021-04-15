@@ -6,6 +6,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Items;
 import net.minecraft.particles.ItemParticleData;
 import net.minecraft.potion.Effects;
@@ -40,7 +41,7 @@ public class ItemTFScepterLifeDrain extends Item {
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
 		ItemStack stack = player.getHeldItem(hand);
 
-		if (stack.getDamage() == stack.getMaxDamage() - 1) {
+		if (stack.getDamage() == stack.getMaxDamage()) {
 			return ActionResult.resultFail(player.getHeldItem(hand));
 		} else {
 			player.setActiveHand(hand);
@@ -115,7 +116,7 @@ public class ItemTFScepterLifeDrain extends Item {
 	public void onUsingTick(ItemStack stack, LivingEntity living, int count) {
 		World world = living.world;
 
-		if (stack.getDamage() == this.getMaxDamage(stack) - 1) {
+		if (stack.getDamage() == this.getMaxDamage(stack)) {
 			// do not use
 			living.resetActiveHand();
 			return;
@@ -185,7 +186,7 @@ public class ItemTFScepterLifeDrain extends Item {
 				}
 
 				if (!world.isRemote) {
-					stack.damageItem(1, living, (user) -> user.sendBreakAnimation(living.getActiveHand()));
+					stack.attemptDamageItem(1, random, (ServerPlayerEntity) null);
 				}
 			}
 		}

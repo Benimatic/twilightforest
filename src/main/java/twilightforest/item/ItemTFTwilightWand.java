@@ -2,6 +2,7 @@ package twilightforest.item;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -27,14 +28,14 @@ public class ItemTFTwilightWand extends Item {
 	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
 		ItemStack stack = player.getHeldItem(hand);
 
-		if (stack.getDamage() == stack.getMaxDamage() - 1) {
+		if (stack.getDamage() == stack.getMaxDamage()) {
 			return ActionResult.resultFail(player.getHeldItem(hand));
 		} else {
 			player.playSound(TFSounds.SCEPTER_PEARL, 1.0F, (world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F + 1.0F);
 
 			if (!world.isRemote) {
 				world.addEntity(new EntityTFTwilightWandBolt(world, player));
-				stack.damageItem(1, player, (user) -> user.sendBreakAnimation(hand));
+				stack.attemptDamageItem(1, random, (ServerPlayerEntity) null);
 			}
 
 			return ActionResult.resultSuccess(player.getHeldItem(hand));
