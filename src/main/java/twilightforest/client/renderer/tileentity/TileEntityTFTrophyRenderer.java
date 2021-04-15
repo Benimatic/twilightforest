@@ -20,6 +20,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFAbstractTrophy;
 import twilightforest.block.BlockTFTrophy;
 import twilightforest.block.BlockTFTrophyWall;
+import twilightforest.block.TFBlocks;
 import twilightforest.client.model.item.BuiltInItemModel;
 import twilightforest.client.model.tileentity.*;
 import twilightforest.enums.BossVariant;
@@ -85,7 +86,7 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 
 		@Override
 		protected void setItemStack(ItemStack stack) {
-			TileEntityTFTrophyRenderer.this.stack = stack;
+			TileEntityTFTrophyRenderer.stack = stack;
 		}
 
 		@Override
@@ -94,7 +95,7 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 		}
 	}
 
-	private ItemStack stack = ItemStack.EMPTY;
+	public static ItemStack stack = new ItemStack(TFBlocks.naga_trophy.get());
 	private ItemCameraTransforms.TransformType transform = ItemCameraTransforms.TransformType.NONE;
 
 	@Override

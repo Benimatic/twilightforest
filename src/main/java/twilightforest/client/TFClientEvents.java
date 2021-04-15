@@ -126,6 +126,9 @@ public class TFClientEvents {
 		@SubscribeEvent
 		public static void registerModels(ModelRegistryEvent event) {
 			ModelLoader.addSpecialModel(LayerShields.LOC);
+			ModelLoader.addSpecialModel(new ModelResourceLocation(TwilightForestMod.prefix("trophy"), "inventory"));
+			ModelLoader.addSpecialModel(new ModelResourceLocation(TwilightForestMod.prefix("trophy_minor"), "inventory"));
+			ModelLoader.addSpecialModel(new ModelResourceLocation(TwilightForestMod.prefix("trophy_quest"), "inventory"));
 		}
 	}
 

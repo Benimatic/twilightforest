@@ -19,7 +19,7 @@ public class ModelTFNagaHead extends ModelTFGenericHead {
 		this.head.setRotationPoint(0F, -4F, 0F);
 		this.tongue = new ModelRenderer(this, 0, 0);
 		this.tongue.setRotationPoint(0.0F, 0.0F, 0.0F);
-		this.tongue.setTextureOffset(42, 0).addBox(-3.0F, -4.0F, -14.0F, 6.0F, 0.0F, 6.0F, 0.0F, 0.0F, 0.0F);
+		this.tongue.setTextureOffset(42, 0).addBox(-3.0F, -3.0F, -14.0F, 6.0F, 0.0F, 6.0F, 0.0F, 0.0F, 0.0F);
 		this.head.addChild(this.tongue);
 	}
 
