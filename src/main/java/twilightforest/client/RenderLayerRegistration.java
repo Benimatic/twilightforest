@@ -30,7 +30,7 @@ public class RenderLayerRegistration {
 		RenderTypeLookup.setRenderLayer(TFBlocks.giant_leaves.get(), cutoutMipped);
 		RenderTypeLookup.setRenderLayer(TFBlocks.experiment_115.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.wispy_cloud.get(), translucent);
-		RenderTypeLookup.setRenderLayer(TFBlocks.uberous_soil.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.uberous_soil.get(), translucent);
 		RenderTypeLookup.setRenderLayer(TFBlocks.trollvidr.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.unripe_trollber.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.trollber.get(), cutout);
@@ -74,7 +74,7 @@ public class RenderLayerRegistration {
 		RenderTypeLookup.setRenderLayer(TFBlocks.torchberry_plant.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.root_strand.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.fallen_leaves.get(), cutout);
-		RenderTypeLookup.setRenderLayer(TFBlocks.uncrafting_table.get(), cutout);
+		RenderTypeLookup.setRenderLayer(TFBlocks.uncrafting_table.get(), translucent);
 		RenderTypeLookup.setRenderLayer(TFBlocks.encased_smoker.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.encased_fire_jet.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.oak_sapling.get(), cutout);
