@@ -24,6 +24,8 @@ public class ItemTFFierySword extends SwordItem {
 		boolean result = super.hitEntity(stack, target, attacker);
 
 		if (result && !target.world.isRemote && !target.isImmuneToFire()) {
+			target.setFire(15);
+		} else {
 			for (int var1 = 0; var1 < 20; ++var1) {
 				double px = target.getPosX() + random.nextFloat() * target.getWidth() * 2.0F - target.getWidth();
 				double py = target.getPosY() + random.nextFloat() * target.getHeight();
