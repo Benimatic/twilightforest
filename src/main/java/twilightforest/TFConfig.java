@@ -255,7 +255,7 @@ public class TFConfig {
 
 			public HollowHillStalactites hollowHillStalactites = new HollowHillStalactites();
 
-			public class HollowHillStalactites {
+			public static class HollowHillStalactites {
 
 				public ForgeConfigSpec.ConfigValue<List<? extends String>> largeHill;
 				public ForgeConfigSpec.ConfigValue<List<? extends String>> mediumHill;
@@ -404,16 +404,16 @@ public class TFConfig {
 								"twilightforest:magic_beans",
 								"twilightforest:ironwood_raw",
 								"twilightforest:naga_scale",
-								"twilightforest:experiment_115:2",
-								"twilightforest:miniature_structure",
-								"twilightforest:miniature_structure:6",
+								//TODO "twilightforest:experiment_115:2",
+								"twilightforest:twilight_portal_miniature_structure",
+								"twilightforest:lich_tower_miniature_structure",
 								"twilightforest:knightmetal_block",
-								"twilightforest:tower_device:10",
-								"twilightforest:twilight_sapling:5",
-								"twilightforest:twilight_sapling:6",
-								"twilightforest:twilight_sapling:7",
-								"twilightforest:twilight_sapling:8",
-								"twilightforest:twilight_sapling:9",
+								"twilightforest:ghast_trap",
+								"twilightforest:time_sapling",
+								"twilightforest:transformation_sapling",
+								"twilightforest:mining_sapling",
+								"twilightforest:sorting_sapling",
+								"twilightforest:rainboak_sapling",
 								"twilightforest:borer_essence"
 						), s -> s instanceof String && ResourceLocation.tryCreate((String) s) != null);
 			}

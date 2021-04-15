@@ -11,6 +11,7 @@ import net.minecraft.resources.ResourcePackInfo;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.GuiScreenEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
@@ -65,7 +66,7 @@ public class TFClientSetup {
         ItemTFYetiArmor.initArmorModel();
         ItemTFArcticArmor.initArmorModel();
         ItemTFFieryArmor.initArmorModel();
-        // FIXME MinecraftForge.EVENT_BUS.register(new LoadingScreenListener());
+        MinecraftForge.EVENT_BUS.register(new LoadingScreenListener());
         RenderLayerRegistration.init();
         TFEntities.registerEntityRenderer();
         TFTileEntities.registerTileEntityRenders();
