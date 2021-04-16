@@ -1,5 +1,6 @@
 package twilightforest.structures.lichtower;
 
+import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -18,13 +19,18 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.ISeedReader;
+import net.minecraft.world.chunk.ChunkPrimer;
+import net.minecraft.world.chunk.ChunkStatus;
+import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
@@ -36,12 +42,29 @@ import twilightforest.structures.StructureTFHelper;
 import twilightforest.util.RotationUtil;
 
 import javax.annotation.Nullable;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.reflect.Method;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class ComponentTFTowerWing extends StructureTFComponentOld {
+
+	private static final MethodHandles.Lookup LOOKUP = MethodHandles.lookup();
+	private static final Method HangingEntity_updateFacingWithBoundingBox = ObfuscationReflectionHelper.findMethod(HangingEntity.class, "func_174859_a", Direction.class);
+	private static final MethodHandle handle_HangingEntity_updateFacingWithBoundingBox;
+
+	static {
+		MethodHandle tmp_handle_HangingEntity_updateFacingWithBoundingBox = null;
+		try {
+			tmp_handle_HangingEntity_updateFacingWithBoundingBox = LOOKUP.unreflect(HangingEntity_updateFacingWithBoundingBox);
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		handle_HangingEntity_updateFacingWithBoundingBox = tmp_handle_HangingEntity_updateFacingWithBoundingBox;
+	}
 
 	public ComponentTFTowerWing(TemplateManager manager, CompoundNBT nbt) {
 		this(TFLichTowerPieces.TFLTWin, nbt);
@@ -1954,14 +1977,18 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 	 * Makes paintings of the minimum size or larger on the specified wall
 	 */
 	protected void generatePaintingsOnWall(ISeedReader world, Random rand, int howMany, int floorLevel, Direction direction, int minSize, MutableBoundingBox sbb) {
-		//FIXME: disable for now
-		/*for (int i = 0; i < howMany; i++) {
+		for (int i = 0; i < howMany; i++) {
 			// get some random coordinates on the wall in the chunk
 			BlockPos pCoords = getRandomWallSpot(rand, floorLevel, direction, sbb);
 
 			// initialize a painting object
 			PaintingType art = getPaintingOfSize(rand, minSize);
-			PaintingEntity painting = new PaintingEntity(world.getWorld(), pCoords, direction);
+			PaintingEntity painting = new PaintingEntity(EntityType.PAINTING, world.getWorld());
+			try {
+				handle_HangingEntity_updateFacingWithBoundingBox.invoke(painting, direction);
+			} catch (Throwable throwable) {
+				throwable.printStackTrace();
+			}
 			painting.art = art;
 			painting.setPosition(pCoords.getX(), pCoords.getY(), pCoords.getZ()); // this is done to refresh the bounding box after changing the art
 
@@ -1970,14 +1997,14 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 				// place the painting
 				world.addEntity(painting);
 			}
-		}*/
+		}
 	}
 
 	/**
 	 * At least one of the painting's parameters must be the specified size or greater
 	 */
 	protected PaintingType getPaintingOfSize(Random rand, int minSize) {
-		ArrayList<PaintingType> valid = new ArrayList<PaintingType>();
+		ArrayList<PaintingType> valid = new ArrayList<>();
 
 		for (PaintingType art : ForgeRegistries.PAINTING_TYPES) {
 			if (art.getWidth() >= minSize || art.getHeight() >= minSize) {
@@ -2006,7 +2033,7 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 		if (world.getCollisionShapes(painting, largerBox).findAny().isPresent()) {
 			return false;
 		} else {
-			List<Entity> collidingEntities = world.getEntitiesWithinAABBExcludingEntity(painting, largerBox);
+			List<Entity> collidingEntities = getEntitiesInAABB(world, largerBox);
 
 			for (Entity entityOnList : collidingEntities) {
 				if (entityOnList instanceof HangingEntity) {
@@ -2016,6 +2043,30 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 
 			return true;
 		}
+	}
+
+	private List<Entity> getEntitiesInAABB(ISeedReader world, AxisAlignedBB boundingBox) {
+		List<Entity> list = Lists.newArrayList();
+		int i = MathHelper.floor((boundingBox.minX - 2) / 16.0D);
+		int j = MathHelper.floor((boundingBox.maxX + 2) / 16.0D);
+		int k = MathHelper.floor((boundingBox.minZ - 2) / 16.0D);
+		int l = MathHelper.floor((boundingBox.maxZ + 2) / 16.0D);
+
+		for (int i1 = i; i1 <= j; ++i1) {
+			for (int j1 = k; j1 <= l; ++j1) {
+				IChunk chunk = world.getChunk(i1, j1, ChunkStatus.STRUCTURE_STARTS);
+				if (chunk instanceof ChunkPrimer) {
+					((ChunkPrimer) chunk).getEntities().forEach(nbt -> {
+						Entity entity = EntityType.loadEntityAndExecute(nbt, world.getWorld(), e -> e);
+						if (entity != null && boundingBox.intersects(entity.getBoundingBox())) {
+							list.add(entity);
+						}
+					});
+				}
+			}
+		}
+
+		return list;
 	}
 
 	/**
