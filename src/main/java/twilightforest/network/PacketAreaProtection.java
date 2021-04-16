@@ -72,7 +72,7 @@ public class PacketAreaProtection {
 			for (Entity entity : world.getAllEntities()) {
 				if (entity instanceof EntityTFProtectionBox) {
 					EntityTFProtectionBox protectionBox = (EntityTFProtectionBox) entity;
-					if (protectionBox.matches(sbb)) {
+					if (protectionBox.lifeTime > 0 && protectionBox.matches(sbb)) {
 						protectionBox.resetLifetime();
 						return;
 					}
