@@ -22,6 +22,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -30,7 +31,6 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
@@ -101,7 +101,7 @@ public class TwilightForestMod {
 		}
 
 		ASMHooks.registerMultipartEvents(MinecraftForge.EVENT_BUS);
-		MinecraftForge.EVENT_BUS.addListener(this::startServer);
+		MinecraftForge.EVENT_BUS.addListener(this::registerCommands);
 
 		IEventBus modbus = FMLJavaModLoadingContext.get().getModEventBus();
 		TFBlocks.BLOCKS.register(modbus);
@@ -235,8 +235,8 @@ public class TwilightForestMod {
 		});
 	}
 
-	public void startServer(FMLServerAboutToStartEvent event) {
-		TFCommand.register(event.getServer().getCommandManager().getDispatcher());
+	public void registerCommands(RegisterCommandsEvent event) {
+		TFCommand.register(event.getDispatcher());
 	}
 
 	public static ResourceLocation prefix(String name) {
