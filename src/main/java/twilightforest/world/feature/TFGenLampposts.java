@@ -9,6 +9,8 @@ import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.BlockStateFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
+import twilightforest.block.TFBlocks;
+
 import java.util.Random;
 
 public class TFGenLampposts extends Feature<BlockStateFeatureConfig> {
@@ -40,7 +42,7 @@ public class TFGenLampposts extends Feature<BlockStateFeatureConfig> {
 
 		// generate lamp
 		for (int dy = 0; dy < height; dy++) {
-			world.setBlockState(pos.up(dy), Blocks.OAK_FENCE.getDefaultState(), 16 | 2);
+			world.setBlockState(pos.up(dy), TFBlocks.canopy_fence.get().getDefaultState(), 16 | 2);
 		}
 		world.setBlockState(pos.up(height), config.state.rotate(ROTATIONS[rand.nextInt(ROTATIONS.length)]), 16 | 2);
 		return true;

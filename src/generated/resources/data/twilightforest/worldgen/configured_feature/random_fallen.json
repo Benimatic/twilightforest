@@ -9,18 +9,25 @@
                 "features": [
                   {
                     "feature": "twilightforest:foundation",
-                    "chance": 0.1
+                    "chance": 0.05
                   },
                   {
                     "feature": "twilightforest:hollow_log",
-                    "chance": 0.1
+                    "chance": 0.05
                   },
                   {
                     "feature": "twilightforest:hollow_stump",
-                    "chance": 0.12
+                    "chance": 0.05
+                  },
+                  {
+                    "feature": "twilightforest:small_log",
+                    "chance": 0.1
                   }
                 ],
-                "default": "twilightforest:small_log"
+                "default": {
+                  "config": {},
+                  "type": "minecraft:no_op"
+                }
               },
               "type": "minecraft:random_selector"
             },

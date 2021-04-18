@@ -25,14 +25,16 @@ public class TFGenDarkForestFeature extends Feature<BlockClusterFeatureConfig> {
         boolean foundDirt = false;
         Material materialUnder;
 
-        for (int dy = pos.getY(); dy >= TFGenerationSettings.SEALEVEL; dy--) {
-            materialUnder = reader.getBlockState(new BlockPos(pos.getX(), dy - 1, pos.getZ())).getMaterial();
-            if ((materialUnder == Material.ORGANIC || materialUnder == Material.EARTH) && reader.getBlockState(pos) == Blocks.AIR.getDefaultState()) {
-                foundDirt = true;
-                pos = new BlockPos(pos.getX(), dy, pos.getZ());
-                break;
-            } else if (materialUnder == Material.ROCK || materialUnder == Material.SAND) {
-                break;
+        if(pos.getY() <= 40) {
+            for (int dy = pos.getY(); dy >= TFGenerationSettings.SEALEVEL; dy--) {
+                materialUnder = reader.getBlockState(new BlockPos(pos.getX(), dy - 1, pos.getZ())).getMaterial();
+                if ((materialUnder == Material.ORGANIC || materialUnder == Material.EARTH) && reader.getBlockState(pos) == Blocks.AIR.getDefaultState()) {
+                    foundDirt = true;
+                    pos = new BlockPos(pos.getX(), dy, pos.getZ());
+                    break;
+                } else if (materialUnder == Material.ROCK || materialUnder == Material.SAND) {
+                    break;
+                }
             }
         }
 

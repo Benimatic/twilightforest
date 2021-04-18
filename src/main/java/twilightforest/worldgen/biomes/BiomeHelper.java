@@ -122,7 +122,7 @@ public abstract class BiomeHelper {
 		BiomeGenerationSettings.Builder biome = new BiomeGenerationSettings.Builder()
     	.withSurfaceBuilder(twilightforest.worldgen.ConfiguredSurfaceBuilders.CONFIGURED_PLATEAU);
 
-		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.MONOLITH);
+		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.RANDOM_COMMON_FEATURE);
 
 		addThorns(biome);
 		

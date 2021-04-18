@@ -15,6 +15,7 @@ import net.minecraft.world.gen.placement.AtSurfaceWithExtraConfig;
 import net.minecraft.world.gen.placement.ConfiguredPlacement;
 import net.minecraft.world.gen.placement.Placement;
 import net.minecraft.world.gen.trunkplacer.StraightTrunkPlacer;
+import twilightforest.TFConfig;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.world.feature.TFBiomeFeatures;
@@ -91,7 +92,7 @@ public final class ConfiguredFeatures {
     public static final ConfiguredFeature<?, ?> LAMPPOST = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("lamppost"), TFBiomeFeatures.LAMPPOSTS.get().withConfiguration(new BlockStateFeatureConfig(BlockConstants.FIREFLY_JAR)).withPlacement(Features.Placements.BAMBOO_PLACEMENT).square());
     public static final ConfiguredFeature<?, ?> MONOLITH = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("monolith"), TFBiomeFeatures.MONOLITH.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT).square().func_242731_b(1));
     public static final ConfiguredFeature<?, ?> MUSHGLOOM_CLUSTER = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("mushgloom_cluster"), Feature.RANDOM_PATCH.withConfiguration((new BlockClusterFeatureConfig.Builder(new SimpleBlockStateProvider(BlockConstants.MUSHGLOOM), SimpleBlockPlacer.PLACER)).tries(8).build()));
-    public static final ConfiguredFeature<?, ?> MYCELIUM_BLOB = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("mycelium_blob"), TFBiomeFeatures.MYCELIUM_BLOB.get().withConfiguration(new SphereReplaceConfig(BlockConstants.MYCELIUM, FeatureSpread.func_242253_a(4, 2), 3, ImmutableList.of(BlockConstants.GRASS_BLOCK))));
+    public static final ConfiguredFeature<?, ?> MYCELIUM_BLOB = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("mycelium_blob"), TFBiomeFeatures.MYCELIUM_BLOB.get().withConfiguration(new SphereReplaceConfig(BlockConstants.MYCELIUM, FeatureSpread.func_242253_a(4, 2), 3, ImmutableList.of(BlockConstants.GRASS_BLOCK))).withPlacement(Features.Placements.PATCH_PLACEMENT).square());
     public static final ConfiguredFeature<?, ?> OUTSIDE_STALAGMITE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("outside_stalagmite"), TFBiomeFeatures.OUTSIDE_STALAGMITE.get().withConfiguration(new CaveStalactiteConfig(BlockConstants.STONE, 3, 5, 10, false)).withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT).square());
     public static final ConfiguredFeature<?, ?> PLANT_ROOTS = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("plant_roots"), TFBiomeFeatures.PLANT_ROOTS.get().withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT).square().func_242731_b(4));
     public static final ConfiguredFeature<?, ?> PUMPKIN_LAMPPOST = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("pumpkin_lamppost"), TFBiomeFeatures.LAMPPOSTS.get().withConfiguration(new BlockStateFeatureConfig(BlockConstants.JACK_O_LANTERN)).withPlacement(Features.Placements.BAMBOO_PLACEMENT).square());
@@ -157,26 +158,33 @@ public final class ConfiguredFeatures {
     );
 
     //selects a random feature to place down. This makes things more random and rare
+    //List first
+    private static TFConfig.Common.Dimension.WorldGenWeights weights = TFConfig.COMMON_CONFIG.DIMENSION.worldGenWeights;
+    private static final ImmutableList<Supplier<ConfiguredFeature<?, ?>>> COMMON_FEATURES = ImmutableList.of(
+            () -> DRUID_HUT.chance(weights.druidHutWeight.get() / 4), //make this a higher chance because theyre SUPER rare otherwise
+            () -> WELL.chance(weights.wellWeight.get() / 2),
+            () -> GROVE_RUINS.chance(weights.groveRuinsWeight.get() / 2),
+            () -> MONOLITH.chance(weights.monolithWeight.get() / 2),
+            () -> OUTSIDE_STALAGMITE.chance(weights.stalagmiteWeight.get() / 2),
+            () -> STONE_CIRCLE.chance(weights.stoneCircleWeight.get() / 2),
+            () -> FOUNDATION.chance(weights.foundationWeight.get() / 2),
+            () -> HOLLOW_LOG.chance(weights.fallenHollowLogWeight.get() / 2),
+            () -> HOLLOW_STUMP.chance(weights.hollowStumpWeight.get() / 2),
+            () -> SMALL_LOG.chance(weights.fallenSmallLogWeight.get() / 2));
+
     public static final ConfiguredFeature<?, ?> RANDOM_COMMON_FEATURE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("random_common"),
-            Feature.RANDOM_SELECTOR.withConfiguration(new MultipleRandomFeatureConfig(ImmutableList.of(
-                    WELL.withChance(0.1F),
-                    DRUID_HUT.withChance(0.1F),
-                    GROVE_RUINS.withChance(0.05F),
-                    MONOLITH.withChance(0.1F),
-                    OUTSIDE_STALAGMITE.withChance(0.12F),
-                    STONE_CIRCLE.withChance(0.1F)
-            ), Feature.NO_OP.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG)))
+            Feature.SIMPLE_RANDOM_SELECTOR.withConfiguration(new SingleRandomFeature(COMMON_FEATURES))
                     .withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
                     .square()
-                    .func_242731_b(1)
     );
 
     public static final ConfiguredFeature<?, ?> RANDOM_FALLEN_FEATURE = TwilightFeatures.registerWorldFeature(TwilightForestMod.prefix("random_fallen"),
             Feature.RANDOM_SELECTOR.withConfiguration(new MultipleRandomFeatureConfig(ImmutableList.of(
-                    FOUNDATION.withChance(0.1F),
-                    HOLLOW_LOG.withChance(0.1F),
-                    HOLLOW_STUMP.withChance(0.12F)
-            ), SMALL_LOG))
+                    FOUNDATION.withChance(0.05F),
+                    HOLLOW_LOG.withChance(0.05F),
+                    HOLLOW_STUMP.withChance(0.05F),
+                    SMALL_LOG.withChance(0.1F)
+            ), Feature.NO_OP.withConfiguration(NoFeatureConfig.field_236559_b_)))
                     .withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
                     .square()
                     .func_242731_b(1)
