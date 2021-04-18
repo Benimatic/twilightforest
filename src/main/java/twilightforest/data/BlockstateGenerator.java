@@ -47,6 +47,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 		builtinEntity(TFBlocks.firefly.get(), "minecraft:block/slime_block");
 		builtinEntity(TFBlocks.moonworm.get(), "minecraft:block/slime_block");
 		builtinEntity(TFBlocks.cicada.get(), "minecraft:block/slime_block");
+		builtinEntity(TFBlocks.keepsake_casket.get(), "minecraft:block/chiseled_stone_bricks");
 
 		ModelFile portalModel = models().getExistingFile(prefix("block/twilight_portal"));
 		ModelFile portalOverlayModel = models().getExistingFile(prefix("block/twilight_portal_barrier"));
