@@ -24,7 +24,7 @@ public class BlockTFSpiralBrick extends Block {
     public static final EnumProperty<Direction.Axis> AXIS_FACING = EnumProperty.create("axis", Direction.Axis.class);
 
     public BlockTFSpiralBrick() {
-        super(Properties.create(Material.ROCK, MaterialColor.STONE).hardnessAndResistance(1.5F, 10.0F).sound(SoundType.STONE).notSolid());
+        super(Properties.create(Material.ROCK, MaterialColor.STONE).setRequiresTool().hardnessAndResistance(1.5F, 10.0F).sound(SoundType.STONE).notSolid());
         //TODO: Check if we need thise two
 //        this.setLightOpacity(255);
 //        this.useNeighborBrightness = true;

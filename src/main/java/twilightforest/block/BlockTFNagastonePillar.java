@@ -10,7 +10,7 @@ import net.minecraft.util.Direction;
 public class BlockTFNagastonePillar extends BlockTFDirectionalRotatedPillar {
 
     protected BlockTFNagastonePillar() {
-        super(Properties.create(Material.ROCK).hardnessAndResistance(1.5F, 10.0F).sound(SoundType.STONE));
+        super(Properties.create(Material.ROCK).setRequiresTool().hardnessAndResistance(1.5F, 10.0F).sound(SoundType.STONE));
         this.setDefaultState(this.stateContainer.getBaseState().with(AXIS, Direction.Axis.Y).with(REVERSED, false));
     }
 }

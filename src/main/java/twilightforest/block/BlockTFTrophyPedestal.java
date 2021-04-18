@@ -107,11 +107,10 @@ public class BlockTFTrophyPedestal extends Block /*implements IInfusionStabilise
 					}
 	}
 
-	//TODO: Moved to BlockState
-//	@Override
-//	public float getBlockHardness(BlockState state, IBlockReader world, BlockPos pos) {
-//		return state.get(ACTIVE) ? super.getBlockHardness(state, world, pos) : -1;
-//	}
+	@Override
+	public float getPlayerRelativeBlockHardness(BlockState state, PlayerEntity player, IBlockReader worldIn, BlockPos pos) {
+		return state.get(ACTIVE) ? super.getPlayerRelativeBlockHardness(state, player, worldIn, pos) : -1;
+	}
 
 //	@Override
 //	public boolean canStabaliseInfusion(World world, BlockPos blockPos) {

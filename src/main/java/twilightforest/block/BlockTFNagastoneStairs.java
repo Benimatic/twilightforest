@@ -7,7 +7,7 @@ import net.minecraft.block.BlockState;
 public class BlockTFNagastoneStairs extends StairsBlock {
 
 	BlockTFNagastoneStairs(BlockState state) {
-		super(() -> state, Properties.create(state.getMaterial()).hardnessAndResistance(1.5F, 10.0F).sound(SoundType.STONE));
+		super(() -> state, Properties.create(state.getMaterial()).setRequiresTool().hardnessAndResistance(1.5F, 10.0F).sound(SoundType.STONE));
 	}
 
 	//TODO: Reimplement
