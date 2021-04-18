@@ -125,7 +125,10 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		getOrCreateBuilder(BlockTags.WOODEN_DOORS)
 				.add(TFBlocks.twilight_oak_door.get(), TFBlocks.canopy_door.get(), TFBlocks.mangrove_door.get(), TFBlocks.dark_door.get())
 				.add(TFBlocks.time_door.get(), TFBlocks.trans_door.get(), TFBlocks.mine_door.get(), TFBlocks.sort_door.get());
-
+		getOrCreateBuilder(BlockTags.FLOWER_POTS)
+				.add(TFBlocks.potted_twilight_oak_sapling.get(), TFBlocks.potted_canopy_sapling.get(), TFBlocks.potted_mangrove_sapling.get(), TFBlocks.potted_darkwood_sapling.get(), TFBlocks.potted_rainboak_sapling.get())
+				.add(TFBlocks.potted_hollow_oak_sapling.get(), TFBlocks.potted_time_sapling.get(), TFBlocks.potted_trans_sapling.get(), TFBlocks.potted_mine_sapling.get(), TFBlocks.potted_sort_sapling.get())
+				.add(TFBlocks.potted_mayapple.get(), TFBlocks.potted_fiddlehead.get(), TFBlocks.potted_mushgloom.get(), TFBlocks.potted_thorn.get(), TFBlocks.potted_green_thorn.get(), TFBlocks.potted_dead_thorn.get());
 		getOrCreateBuilder(BlockTags.STRIDER_WARM_BLOCKS).add(TFBlocks.fiery_block.get());
 		getOrCreateBuilder(BlockTags.PORTALS).add(TFBlocks.twilight_portal.get());
 		getOrCreateBuilder(BlockTags.CLIMBABLE).add(TFBlocks.iron_ladder.get());
