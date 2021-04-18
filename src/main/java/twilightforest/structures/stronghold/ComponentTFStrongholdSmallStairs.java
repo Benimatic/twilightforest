@@ -100,7 +100,7 @@ public class ComponentTFStrongholdSmallStairs extends StructureTFStrongholdCompo
 
 		// treasure
 		if (this.hasTreasure) {
-			this.placeTreasureRotated(world, 4, 1, 6, rotation, TFTreasure.stronghold_cache, this.chestTrapped, sbb);
+			this.placeTreasureRotated(world, 4, 1, 6, getCoordBaseMode().getOpposite(), rotation, TFTreasure.stronghold_cache, this.chestTrapped, sbb);
 
 			if (this.chestTrapped) {
 				this.setBlockStateRotated(world, Blocks.TNT.getDefaultState(), 4, 0, 6, rotation, sbb);

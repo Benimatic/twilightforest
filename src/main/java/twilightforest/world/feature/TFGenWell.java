@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
@@ -96,7 +97,7 @@ public class TFGenWell extends Feature<NoFeatureConfig> {
 				world.setBlockState(pos.add(3, dy, 1), Blocks.AIR.getDefaultState(),3);
 
 				//TODO: unique treasure table that is themed for underwater well exploration
-				TFTreasure.basement.generateChest(world, pos.add(3, dy, 1), false);
+				TFTreasure.basement.generateChest(world, pos.add(3, dy, 1), Direction.NORTH, false);
 
 				// set flag so we only get one chest
 				madeTreasure = true;

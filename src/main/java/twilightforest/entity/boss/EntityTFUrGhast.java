@@ -17,6 +17,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Direction;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -589,7 +590,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 	protected void onDeathUpdate() {
 		super.onDeathUpdate();
 		if (this.deathTime == 20 && !world.isRemote) {
-			TFTreasure.darktower_boss.generateChest(world, findChestCoords(), false);
+			TFTreasure.darktower_boss.generateChest(world, findChestCoords(), Direction.NORTH, false);
 		}
 	}
 

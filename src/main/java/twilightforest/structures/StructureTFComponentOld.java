@@ -3,25 +3,27 @@ package twilightforest.structures;
 import net.minecraft.block.*;
 import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.state.properties.ChestType;
 import net.minecraft.state.properties.Half;
 import net.minecraft.state.properties.SlabType;
 import net.minecraft.tileentity.MobSpawnerTileEntity;
 import net.minecraft.tileentity.SignTileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Mirror;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.ISeedReader;
-import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
-import net.minecraftforge.common.util.BlockSnapshot;
 import twilightforest.TFFeature;
+import twilightforest.TwilightForestMod;
 import twilightforest.loot.TFTreasure;
 import twilightforest.util.StructureBoundingBoxUtils;
 
@@ -165,7 +167,7 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 		int dz = getZWithOffset(x, z);
 		BlockPos pos = new BlockPos(dx, dy, dz);
 		if (sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST)) {
-			treasureType.generateChest(world, pos, trapped);
+			treasureType.generateChest(world, pos, getCoordBaseMode(), trapped);
 		}
 	}
 
@@ -174,8 +176,8 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	 *
 	 * @param treasureType
 	 */
-	protected void placeTreasureRotated(ISeedReader world, int x, int y, int z, Rotation rotation, TFTreasure treasureType, MutableBoundingBox sbb) {
-		this.placeTreasureRotated(world, x, y, z, rotation, treasureType, false, sbb);
+	protected void placeTreasureRotated(ISeedReader world, int x, int y, int z, Direction facing, Rotation rotation, TFTreasure treasureType, MutableBoundingBox sbb) {
+		this.placeTreasureRotated(world, x, y, z, facing, rotation, treasureType, false, sbb);
 	}
 
 	/**
@@ -183,14 +185,43 @@ public abstract class StructureTFComponentOld extends StructureTFComponent {
 	 *
 	 * @param treasureType
 	 */
-	protected void placeTreasureRotated(ISeedReader world, int x, int y, int z, Rotation rotation, TFTreasure treasureType, boolean trapped, MutableBoundingBox sbb) {
+	protected void placeTreasureRotated(ISeedReader world, int x, int y, int z, Direction facing, Rotation rotation, TFTreasure treasureType, boolean trapped, MutableBoundingBox sbb) {
+		if(facing == null) {
+			TwilightForestMod.LOGGER.error("Loot Chest at {}, {}, {} has null direction, setting it to north", x, y, z);
+			facing = Direction.NORTH;
+		}
+
 		int dx = getXWithOffsetRotated(x, z, rotation);
 		int dy = getYWithOffset(y);
 		int dz = getZWithOffsetRotated(x, z, rotation);
 		BlockPos pos = new BlockPos(dx, dy, dz);
 		if (sbb.isVecInside(pos) && world.getBlockState(pos).getBlock() != (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST)) {
-			treasureType.generateChest(world, pos, trapped);
+			treasureType.generateChest(world, pos, facing, trapped);
 		}
+	}
+
+	protected void manualTreaurePlacement(ISeedReader world, int x, int y, int z, Direction facing, TFTreasure treasureType, boolean trapped, MutableBoundingBox sbb) {
+		int lootx = getXWithOffset(x, z);
+		int looty = getYWithOffset(y);
+		int lootz = getZWithOffset(x, z);
+		BlockPos lootPos = new BlockPos(lootx, looty, lootz);
+		this.setBlockState(world, (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST).getDefaultState().with(ChestBlock.TYPE, ChestType.LEFT).with(ChestBlock.FACING, facing), x, y, z, sbb);
+		treasureType.generateChestContents(world, lootPos);
+	}
+
+	protected void setDoubleLootChest(ISeedReader world, int x, int y, int z, int otherx, int othery, int otherz, Direction facing, TFTreasure treasureType, MutableBoundingBox sbb, boolean trapped) {
+		if(facing == null) {
+			TwilightForestMod.LOGGER.error("Loot Chest at {}, {}, {} has null direction, setting it to north", x, y, z);
+			facing = Direction.NORTH;
+		}
+
+		int lootx = getXWithOffset(x, z);
+		int looty = getYWithOffset(y);
+		int lootz = getZWithOffset(x, z);
+		BlockPos lootPos = new BlockPos(lootx, looty, lootz);
+		this.setBlockState(world, (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST).getDefaultState().with(ChestBlock.TYPE, ChestType.LEFT).with(ChestBlock.FACING, facing), x, y, z, sbb);
+		this.setBlockState(world, (trapped ? Blocks.TRAPPED_CHEST : Blocks.CHEST).getDefaultState().with(ChestBlock.TYPE, ChestType.RIGHT).with(ChestBlock.FACING, facing), otherx, othery, otherz, sbb);
+		treasureType.generateChestContents(world, lootPos);
 	}
 
 	/**

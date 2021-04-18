@@ -73,8 +73,8 @@ public class ComponentTFStrongholdTreasureRoom extends StructureTFStrongholdComp
 		this.setSpawner(world, 4, 4, 15, sbb, TFEntities.helmet_crab);
 
 		// treasure!
-		this.placeTreasureAtCurrentPosition(world, 2, 4, 13, TFTreasure.stronghold_room, sbb);
-		this.placeTreasureAtCurrentPosition(world, 6, 4, 13, TFTreasure.stronghold_room, sbb);
+		this.manualTreaurePlacement(world, 2, 4, 13, Direction.WEST, TFTreasure.stronghold_room, false, sbb);
+		this.manualTreaurePlacement(world, 6, 4, 13, Direction.EAST, TFTreasure.stronghold_room, false, sbb);
 
 		// doors
 		placeDoors(world, rand, sbb);

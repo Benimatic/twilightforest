@@ -670,26 +670,22 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 			case 0:
 				setBlockState(world, deco.accentState, x + 0, y + 1, z + 1, sbb);
 				setBlockState(world, deco.accentState, x + 1, y + 1, z + 1, sbb);
-				setBlockState(world, Blocks.CHEST.getDefaultState(), x + 0, y + 2, z + 1, sbb);
-				this.placeTreasureAtCurrentPosition(world, x + 1, y + 2, z + 1, TFTreasure.darktower_cache, sbb);
+				this.setDoubleLootChest(world, x, y + 2, z + 1, x + 1, y + 2, z + 1, Direction.SOUTH, TFTreasure.darktower_cache, sbb, false);
 				break;
 			case 1:
 				setBlockState(world, deco.accentState, x + 0, y + 1, z + 0, sbb);
 				setBlockState(world, deco.accentState, x + 0, y + 1, z + 1, sbb);
-				setBlockState(world, Blocks.CHEST.getDefaultState().with(ChestBlock.FACING, Direction.SOUTH), x + 0, y + 2, z + 0, sbb);
-				this.placeTreasureAtCurrentPosition(world, x + 0, y + 2, z + 1, TFTreasure.darktower_cache, sbb);
+				this.setDoubleLootChest(world, x, y + 2, z, x, y + 2, z + 1, Direction.WEST, TFTreasure.darktower_cache, sbb, false);
 				break;
 			case 2:
 				setBlockState(world, deco.accentState, x + 0, y + 1, z + 0, sbb);
 				setBlockState(world, deco.accentState, x + 1, y + 1, z + 0, sbb);
-				setBlockState(world, Blocks.CHEST.getDefaultState().with(ChestBlock.FACING, Direction.SOUTH), x + 0, y + 2, z + 0, sbb);
-				this.placeTreasureAtCurrentPosition(world, x + 1, y + 2, z + 0, TFTreasure.darktower_cache, sbb);
+				this.setDoubleLootChest(world, x + 1, y + 2, z, x, y + 2, z, Direction.NORTH, TFTreasure.darktower_cache, sbb, false);
 				break;
 			case 3:
 				setBlockState(world, deco.accentState, x + 1, y + 1, z + 0, sbb);
 				setBlockState(world, deco.accentState, x + 1, y + 1, z + 1, sbb);
-				setBlockState(world, Blocks.CHEST.getDefaultState().with(ChestBlock.FACING, Direction.SOUTH), x + 1, y + 2, z + 0, sbb);
-				this.placeTreasureAtCurrentPosition(world, x + 1, y + 2, z + 1, TFTreasure.darktower_cache, sbb);
+				this.setDoubleLootChest(world, x + 1, y + 2, z + 1, x + 1, y + 2, z, Direction.EAST, TFTreasure.darktower_cache, sbb, false);
 				break;
 		}
 	}

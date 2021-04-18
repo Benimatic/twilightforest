@@ -8,6 +8,7 @@ import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.state.properties.ChestType;
 import net.minecraft.state.properties.StructureMode;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tileentity.MobSpawnerTileEntity;
@@ -119,6 +120,18 @@ public class GenDruidHut extends Feature<NoFeatureConfig> {
 				} else if (s.startsWith("loot")) {
 					world.removeBlock(blockPos, false);
 					BlockState chest = s.endsWith("T") ? Blocks.TRAPPED_CHEST.getDefaultState() : Blocks.CHEST.getDefaultState();
+
+					switch (s.substring(5, 6)) {
+						case "L":
+							chest = chest.with(ChestBlock.TYPE, mirror != Mirror.NONE ? ChestType.RIGHT : ChestType.LEFT);
+							break;
+						case "R":
+							chest = chest.with(ChestBlock.TYPE, mirror != Mirror.NONE ? ChestType.LEFT : ChestType.RIGHT);
+							break;
+						default:
+							chest = chest.with(ChestBlock.TYPE, ChestType.SINGLE);
+							break;
+					}
 
 					switch (s.substring(4, 5)) {
 						case "W":

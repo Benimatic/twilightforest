@@ -12,6 +12,7 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
 import net.minecraft.particles.ItemParticleData;
+import net.minecraft.util.Direction;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.Item;
@@ -177,7 +178,7 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 			BlockPos treasurePos = hasHome() ? getHomePosition().down() : new BlockPos(this.getPosition());
 
 			// make treasure for killing the last knight
-			TFTreasure.stronghold_boss.generateChest(world, treasurePos, false);
+			TFTreasure.stronghold_boss.generateChest(world, treasurePos, Direction.NORTH, false);
 
 			// mark the stronghold as defeated
 			TFGenerationSettings.markStructureConquered(world, treasurePos, TFFeature.KNIGHT_STRONGHOLD);

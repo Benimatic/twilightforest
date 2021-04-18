@@ -440,7 +440,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 		final BlockState pillarNS = deco.pillarState.with(RotatedPillarBlock.AXIS, Direction.Axis.X);
 		// treasure!
 		if (hasTreasure) {
-			this.placeTreasureRotated(world, 1, bottom + 8, 5, ladderUpDir, TFTreasure.aurora_cache, false, sbb);
+			this.placeTreasureRotated(world, 1, bottom + 8, 5, getCoordBaseMode().getOpposite(), ladderUpDir, TFTreasure.aurora_cache, false, sbb);
 			//int beamMetaNS = ((this.coordBaseMode + ladderUpDir) % 2 == 0) ? 4 : 8;
 			this.setBlockStateRotated(world, pillarNS, 1, bottom + 7, 5, ladderUpDir, sbb);
 		}
@@ -474,7 +474,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 
 		// treasure!
 		if (hasTreasure) {
-			this.placeTreasureRotated(world, 1, bottom + 5, 5, ladderUpDir, TFTreasure.aurora_cache, false, sbb);
+			this.placeTreasureRotated(world, 1, bottom + 5, 5, getCoordBaseMode(), ladderUpDir, TFTreasure.aurora_cache, false, sbb);
 			//int beamMetaNS = ((this.coordBaseMode + ladderUpDir) % 2 == 0) ? 4 : 8;
 			final BlockState pillarNS = deco.pillarState.with(RotatedPillarBlock.AXIS, Direction.Axis.X);
 			this.setBlockStateRotated(world, pillarNS, 1, bottom + 4, 5, ladderUpDir, sbb);
@@ -505,7 +505,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 
 		// treasure!
 		if (hasTreasure) {
-			this.placeTreasureRotated(world, 7, bottom + 6, 1, ladderUpDir, TFTreasure.aurora_cache, false, sbb);
+			this.placeTreasureRotated(world, 7, bottom + 6, 1, getCoordBaseMode(), ladderUpDir, TFTreasure.aurora_cache, false, sbb);
 		}
 	}
 
@@ -548,7 +548,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 
 		// treasure!
 		if (hasTreasure) {
-			this.placeTreasureRotated(world, 3, bottom + 6, 5, ladderDownDir, TFTreasure.aurora_cache, false, sbb);
+			this.placeTreasureRotated(world, 3, bottom + 6, 5, getCoordBaseMode(), ladderDownDir, TFTreasure.aurora_cache, false, sbb);
 		}
 	}
 
@@ -585,7 +585,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 
 		// treasure!
 		if (hasTreasure) {
-			this.placeTreasureRotated(world, 3, bottom + 7, 7, ladderUpDir, TFTreasure.aurora_cache, false, sbb);
+			this.placeTreasureRotated(world, 3, bottom + 7, 7, getCoordBaseMode(), ladderUpDir, TFTreasure.aurora_cache, false, sbb);
 		}
 	}
 
@@ -610,7 +610,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 
 		// treasure!
 		if (hasTreasure) {
-			this.placeTreasureRotated(world, 3, bottom + 5, 2, ladderUpDir, TFTreasure.aurora_cache, false, sbb);
+			this.placeTreasureRotated(world, 3, bottom + 5, 2, getCoordBaseMode(), ladderUpDir, TFTreasure.aurora_cache, false, sbb);
 		}
 	}
 
@@ -642,7 +642,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 
 		// treasure!
 		if (hasTreasure) {
-			this.placeTreasureRotated(world, 3, bottom + 5, 2, ladderUpDir, TFTreasure.aurora_cache, false, sbb);
+			this.placeTreasureRotated(world, 3, bottom + 5, 2, getCoordBaseMode(), ladderUpDir, TFTreasure.aurora_cache, false, sbb);
 		}
 	}
 
@@ -701,7 +701,7 @@ public class ComponentTFIceTowerWing extends ComponentTFTowerWing {
 
 		// treasure!
 		if (hasTreasure) {
-			this.placeTreasureRotated(world, 8, bottom + 8, 7, ladderUpDir, TFTreasure.aurora_cache, false, sbb);
+			this.placeTreasureRotated(world, 8, bottom + 8, 7, getCoordBaseMode(), ladderUpDir, TFTreasure.aurora_cache, false, sbb);
 		}
 	}
 
