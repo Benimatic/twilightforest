@@ -13,7 +13,6 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.item.ItemTFExperiment115;
-import twilightforest.item.ItemTFTrophy;
 
 import static twilightforest.TwilightForestMod.prefix;
 

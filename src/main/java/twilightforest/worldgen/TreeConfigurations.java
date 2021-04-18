@@ -135,7 +135,7 @@ public final class TreeConfigurations {
             new BranchingTrunkPlacer(6, 2, 2, 4, new BranchesConfig(4, 0, 10, 4, 0.23, 0.23), false),
             new TwoLayerFeature(1, 0, 1)
     )
-            .setDecorators(ImmutableList.of(TreeDecorators.LIVING_ROOTS))
+            //.setDecorators(ImmutableList.of(TreeDecorators.LIVING_ROOTS)) //TODO roots grow EVERYWHERE in strongholds, lets disable for now
             .setIgnoreVines()
             .build();
 
