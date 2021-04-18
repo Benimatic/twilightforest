@@ -51,6 +51,8 @@ public abstract class StructureTFComponent extends StructurePiece {
 			.add(Blocks.RED_MUSHROOM_BLOCK)
 			.add(Blocks.BROWN_MUSHROOM_BLOCK)
 			.add(Blocks.REDSTONE_WIRE)
+			.add(Blocks.TRIPWIRE)
+			.add(Blocks.TRIPWIRE_HOOK)
 			.add(Blocks.CHEST)
 			.add(Blocks.TRAPPED_CHEST)
 			.add(Blocks.STONE_BRICK_STAIRS)
@@ -69,8 +71,8 @@ public abstract class StructureTFComponent extends StructurePiece {
 		super(piece, nbt);
 		this.spawnListIndex = nbt.getInt("si");
 		this.deco = StructureTFDecorator.getDecoFor(nbt.getString("deco"));
-		this.rotation = Rotation.values()[nbt.getInt("rot") % Rotation.values().length];
 		this.rotation = Rotation.NONE;
+		this.rotation = Rotation.values()[nbt.getInt("rot") % Rotation.values().length];
 	}
 
 	public StructureTFComponent(IStructurePieceType type, int i) {
@@ -116,18 +118,17 @@ public abstract class StructureTFComponent extends StructurePiece {
 			final BlockPos pos = new BlockPos(this.getXWithOffset(x, z), this.getYWithOffset(y), this.getZWithOffset(x, z));
 
 			if (sbb.isVecInside(pos)) {
-				//FIXME NoSuchMethodError ArmorStandEntity.func_94058_bO() (has to do with the name?)
-				/*final ArmorStandEntity armorStand = new ArmorStandEntity(EntityType.ARMOR_STAND, world.getWorld());
+				final ArmorStandEntity armorStand = new ArmorStandEntity(EntityType.ARMOR_STAND, world.getWorld());
 				armorStand.setCustomName(new StringTextComponent(s));
 				armorStand.setLocationAndAngles(pos.getX() + 0.5, pos.getY() + additionalYOffset, pos.getZ() + 0.5, 0, 0);
 				armorStand.setInvulnerable(true);
 				armorStand.setInvisible(true);
-				armorStand.getAlwaysRenderNameTagForRender();
+				armorStand.setCustomNameVisible(true);
 				armorStand.setSilent(true);
 				armorStand.setNoGravity(true);
 				// set marker flag
 				armorStand.getDataManager().set(ArmorStandEntity.STATUS, (byte) (armorStand.getDataManager().get(ArmorStandEntity.STATUS) | 16));
-				world.addEntity(armorStand);*/
+				world.addEntity(armorStand);
 			}
 		}
 	}

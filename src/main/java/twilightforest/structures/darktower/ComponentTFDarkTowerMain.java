@@ -1,5 +1,6 @@
 package twilightforest.structures.darktower;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.block.*;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.ItemFrameEntity;
@@ -9,6 +10,7 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.properties.AttachFace;
 import net.minecraft.state.properties.SlabType;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tileentity.MobSpawnerTileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
@@ -25,6 +27,7 @@ import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.fml.RegistryObject;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockTFBossSpawner;
@@ -782,7 +785,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 
 	private void makeDispenserPillar(ISeedReader world, StructureTFDecorator forgeDeco, int x, int y, int z, Direction stairMeta, Rotation rotation, MutableBoundingBox sbb) {
 		this.setBlockStateRotated(world, getStairState(forgeDeco.stairState, stairMeta, rotation, true), x, y + 2, z, rotation, sbb);
-		this.setBlockStateRotated(world, Blocks.DISPENSER.getDefaultState().with(DispenserBlock.FACING, stairMeta), x, y + 3, z, rotation, sbb);
+		this.setBlockStateRotated(world, Blocks.DISPENSER.getDefaultState().with(DispenserBlock.FACING, stairMeta.getOpposite()), x, y + 3, z, rotation, sbb);
 		this.setBlockStateRotated(world, getStairState(forgeDeco.stairState, stairMeta, rotation, false), x, y + 4, z, rotation, sbb);
 	}
 
@@ -830,15 +833,15 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		placeItemFrameRotated(world, 14, y + 4, 1, rotation, Direction.SOUTH, new ItemStack(Items.REDSTONE), sbb);
 		placeItemFrameRotated(world, 15, y + 4, 1, rotation, Direction.SOUTH, new ItemStack(TFItems.borer_essence.get()), sbb);
 
-		placeItemFrameRotated(world, 17, y + 2, 3, rotation, WEST, new ItemStack(TFBlocks.tower_wood_encased.get(), 1), sbb);
-		placeItemFrameRotated(world, 17, y + 2, 4, rotation, WEST, new ItemStack(TFBlocks.tower_wood.get(), 1), sbb);
-		placeItemFrameRotated(world, 17, y + 2, 5, rotation, WEST, new ItemStack(TFBlocks.tower_wood_encased.get(), 1), sbb);
-		placeItemFrameRotated(world, 17, y + 3, 3, rotation, WEST, new ItemStack(TFBlocks.tower_wood.get(), 1), sbb);
+		placeItemFrameRotated(world, 17, y + 2, 3, rotation, WEST, new ItemStack(TFBlocks.tower_wood_encased.get()), sbb);
+		placeItemFrameRotated(world, 17, y + 2, 4, rotation, WEST, new ItemStack(TFBlocks.tower_wood.get()), sbb);
+		placeItemFrameRotated(world, 17, y + 2, 5, rotation, WEST, new ItemStack(TFBlocks.tower_wood_encased.get()), sbb);
+		placeItemFrameRotated(world, 17, y + 3, 3, rotation, WEST, new ItemStack(TFBlocks.tower_wood.get()), sbb);
 		placeItemFrameRotated(world, 17, y + 3, 4, rotation, WEST, new ItemStack(TFItems.carminite.get()), sbb);
-		placeItemFrameRotated(world, 17, y + 3, 5, rotation, WEST, new ItemStack(TFBlocks.tower_wood.get(), 1), sbb);
-		placeItemFrameRotated(world, 17, y + 4, 3, rotation, WEST, new ItemStack(TFBlocks.tower_wood_encased.get(), 1), sbb);
-		placeItemFrameRotated(world, 17, y + 4, 4, rotation, WEST, new ItemStack(TFBlocks.tower_wood.get(), 1), sbb);
-		placeItemFrameRotated(world, 17, y + 4, 5, rotation, WEST, new ItemStack(TFBlocks.tower_wood_encased.get(), 1), sbb);
+		placeItemFrameRotated(world, 17, y + 3, 5, rotation, WEST, new ItemStack(TFBlocks.tower_wood.get()), sbb);
+		placeItemFrameRotated(world, 17, y + 4, 3, rotation, WEST, new ItemStack(TFBlocks.tower_wood_encased.get()), sbb);
+		placeItemFrameRotated(world, 17, y + 4, 4, rotation, WEST, new ItemStack(TFBlocks.tower_wood.get()), sbb);
+		placeItemFrameRotated(world, 17, y + 4, 5, rotation, WEST, new ItemStack(TFBlocks.tower_wood_encased.get()), sbb);
 
 		if (y < this.height - 13) {
 			// device bottom
@@ -917,15 +920,14 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		int dz = getZWithOffsetRotated(x, z, rotation);
 		Direction facing = this.rotation.add(rotation).rotate(direction).getOpposite();
 		final BlockPos pos = new BlockPos(dx, dy, dz).offset(facing);
-		/*FIXME if (sbb.isVecInside(pos)) {
-			ItemFrameEntity frame = new ItemFrameEntity(world, pos, facing);
+		if (sbb.isVecInside(pos)) {
+			ItemFrameEntity frame = new ItemFrameEntity(world.getWorld(), pos, facing);
 			if (!itemStack.isEmpty()) {
-				frame.setDisplayedItem(itemStack);
+				frame.setDisplayedItemWithUpdate(itemStack, false);
 			}
-
 			// check if the frame is on a valid surface or not?  The wall may not have been generated yet, on a chunk boundry
 			world.addEntity(frame);
-		}*/
+		}
 	}
 
 	//TODO: Parameter "decoRNG" is unused. Remove?
@@ -986,10 +988,10 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		this.makeStonePillar(world, forgeDeco, 9, y, 17, Direction.NORTH, rotation, sbb);
 
 		// anvils
-		BlockState anvil = Blocks.DAMAGED_ANVIL.getDefaultState()
+		BlockState anvil = BlockTags.ANVIL.getRandomElement(decoRNG).getDefaultState()
 				.with(AnvilBlock.FACING, Direction.Plane.HORIZONTAL.random(decoRNG));
 		this.setBlockStateRotated(world, anvil, 13, y + 2, 5, rotation, sbb);
-		anvil = Blocks.DAMAGED_ANVIL.getDefaultState()
+		anvil = BlockTags.ANVIL.getRandomElement(decoRNG).getDefaultState()
 				.with(AnvilBlock.FACING, Direction.Plane.HORIZONTAL.random(decoRNG));
 		this.setBlockStateRotated(world, anvil, 13, y + 2, 13, rotation, sbb);
 
@@ -1001,7 +1003,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 	private void makeFurnacePillar(ISeedReader world, StructureTFDecorator forgeDeco, Random rand, int x, int y, int z, Direction direction, Rotation rotation, MutableBoundingBox sbb) {
 
 		this.setBlockStateRotated(world, getStairState(deco.stairState, direction, rotation, true), x, y + 2, z, rotation, sbb);
-		this.setBlockStateRotated(world, Blocks.FURNACE.getDefaultState().with(AbstractFurnaceBlock.FACING, direction), x, y + 3, z, rotation, sbb);
+		this.setBlockStateRotated(world, Blocks.FURNACE.getDefaultState().with(AbstractFurnaceBlock.FACING, direction.getOpposite()), x, y + 3, z, rotation, sbb);
 
 		// randomly put some charcoal in the furnace burn slot
 		int amount = rand.nextBoolean() ? rand.nextInt(5) + 4 : 0;
@@ -1097,7 +1099,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		setBlockStateRotated(world, getStairState(deco.stairState, Direction.WEST, rotation, true), 14, y + 1, 4, rotation, sbb);
 
 		//setBlockStateRotated(world, Blocks.CHEST, 0, 13, y + 2, 4, rotation, sbb);
-		placeTreasureRotated(world, 13, y + 2, 4, rotation, TFTreasure.basement, sbb);
+		placeTreasureRotated(world, 13, y + 2, 4, getCoordBaseMode(), rotation, TFTreasure.basement, sbb);
 		setBlockStateRotated(world, Blocks.CRAFTING_TABLE.getDefaultState(), 14, y + 2, 4, rotation, sbb);
 
 		BlockState slab = Blocks.SPRUCE_SLAB.getDefaultState()
@@ -1173,11 +1175,20 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 		}
 	}
 
-	//TODO: Each flower has their own block. Flatten
 	private void placeRandomPlant(ISeedReader world, Random decoRNG, int x, int y, int z, Rotation rotation, MutableBoundingBox sbb) {
-		int potMeta = decoRNG.nextInt(15); // this seems to be the only way to set the flower pre-placement
-		final BlockState flowerPotState = Blocks.FLOWER_POT.getDefaultState()/*.with(FlowerPotBlock.LEGACY_DATA, potMeta)*/;
-		setBlockStateRotated(world, flowerPotState, x, y, z, rotation, sbb);
+		Block flowerPot = BlockTags.FLOWER_POTS.getRandomElement(decoRNG);
+		//dont include special saplings or thorns in our pots
+		List<FlowerPotBlock> blacklistedPots = ImmutableList.of(
+				TFBlocks.potted_hollow_oak_sapling.get(), TFBlocks.potted_time_sapling.get(),
+				TFBlocks.potted_trans_sapling.get(), TFBlocks.potted_mine_sapling.get(),
+				TFBlocks.potted_sort_sapling.get(), TFBlocks.potted_thorn.get(),
+				TFBlocks.potted_dead_thorn.get(), TFBlocks.potted_green_thorn.get());
+		BlockState flowerPotState = flowerPot.getDefaultState();
+		if(!blacklistedPots.contains(flowerPot)) {
+			setBlockStateRotated(world, flowerPotState, x, y, z, rotation, sbb);
+		} else {
+			setBlockStateRotated(world, decoRNG.nextBoolean() ? Blocks.FLOWER_POT.getDefaultState() : Blocks.POTTED_DEAD_BUSH.getDefaultState(), x, y, z, rotation, sbb);
+		}
 	}
 
 	//TODO: Parameter "decoRNG" is unused. Remove?
