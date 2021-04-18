@@ -46,7 +46,7 @@ public class ComponentTFCloudCastle extends StructureTFComponentOld {
 		// spawn list!
 		this.spawnListIndex = 1;
 
-		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -8, -5, -8, 64, 16, 64, Direction.SOUTH);
+		this.boundingBox = feature.getComponentToAddBoundingBox(x, y, z, -8, -4, -8, 64, 16, 64, Direction.SOUTH);
 	}
 
 	@Override
