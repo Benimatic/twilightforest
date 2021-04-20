@@ -275,6 +275,17 @@ public abstract class CraftingDataHelper extends RecipeProvider {
 				.build(consumer, locWood(name + "_wood"));
 	}
 
+	protected final void signBlock(Consumer<IFinishedRecipe> consumer, String name, Supplier<? extends Block> result, Supplier<? extends Block> material) {
+		ShapedRecipeBuilder.shapedRecipe(result.get(), 3)
+				.patternLine("###")
+				.patternLine("###")
+				.patternLine(" - ")
+				.key('#', material.get())
+				.key('-', Tags.Items.RODS_WOODEN)
+				.addCriterion("has_" + result.get().asItem().getRegistryName().getPath(), hasItem(result.get().asItem()))
+				.build(consumer, locWood(name + "_wood"));
+	}
+
 	protected final ResourceLocation locCastle(String name) {
 		return TwilightForestMod.prefix("castleblock/" + name);
 	}

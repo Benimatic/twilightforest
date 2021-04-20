@@ -134,6 +134,25 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		getOrCreateBuilder(BlockTags.CLIMBABLE).add(TFBlocks.iron_ladder.get());
 		getOrCreateBuilder(BlockTags.DRAGON_IMMUNE).add(TFBlocks.giant_obsidian.get());
 
+		getOrCreateBuilder(BlockTags.SIGNS).add(TFBlocks.twilight_oak_sign.get(), TFBlocks.twilight_wall_sign.get(),
+				TFBlocks.canopy_sign.get(), TFBlocks.canopy_wall_sign.get(),
+				TFBlocks.mangrove_sign.get(), TFBlocks.mangrove_wall_sign.get(),
+				TFBlocks.darkwood_sign.get(), TFBlocks.darkwood_wall_sign.get(),
+				TFBlocks.time_sign.get(), TFBlocks.time_wall_sign.get(),
+				TFBlocks.trans_sign.get(), TFBlocks.trans_wall_sign.get(),
+				TFBlocks.mine_sign.get(), TFBlocks.mine_wall_sign.get(),
+				TFBlocks.sort_sign.get(), TFBlocks.sort_wall_sign.get());
+
+		getOrCreateBuilder(BlockTags.STANDING_SIGNS).add(TFBlocks.twilight_oak_sign.get(), TFBlocks.canopy_sign.get(),
+				TFBlocks.mangrove_sign.get(), TFBlocks.darkwood_sign.get(),
+				TFBlocks.time_sign.get(), TFBlocks.trans_sign.get(),
+				TFBlocks.mine_sign.get(), TFBlocks.sort_sign.get());
+
+		getOrCreateBuilder(BlockTags.WALL_SIGNS).add(TFBlocks.twilight_wall_sign.get(), TFBlocks.canopy_wall_sign.get(),
+				TFBlocks.mangrove_wall_sign.get(), TFBlocks.darkwood_wall_sign.get(),
+				TFBlocks.time_wall_sign.get(), TFBlocks.trans_wall_sign.get(),
+				TFBlocks.mine_wall_sign.get(), TFBlocks.sort_wall_sign.get());
+
 		getOrCreateBuilder(TOWERWOOD).add(TFBlocks.tower_wood.get(), TFBlocks.tower_wood_mossy.get(), TFBlocks.tower_wood_cracked.get(), TFBlocks.tower_wood_infested.get());
 
 		getOrCreateBuilder(STORAGE_BLOCKS_ARCTIC_FUR).add(TFBlocks.arctic_fur_block.get());

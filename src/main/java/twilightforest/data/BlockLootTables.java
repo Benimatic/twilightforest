@@ -211,6 +211,8 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.twilight_oak_plate.get());
 		registerLootTable(TFBlocks.twilight_oak_door.get(), droppingWhen(TFBlocks.twilight_oak_door.get(), DoorBlock.HALF, DoubleBlockHalf.LOWER));
 		registerDropSelfLootTable(TFBlocks.twilight_oak_trapdoor.get());
+		registerLootTable(TFBlocks.twilight_oak_sign.get(), dropping(TFBlocks.twilight_oak_sign.get().asItem()));
+		registerLootTable(TFBlocks.twilight_wall_sign.get(), dropping(TFBlocks.twilight_oak_sign.get().asItem()));
 
 		registerDropSelfLootTable(TFBlocks.canopy_log.get());
 		registerDropSelfLootTable(TFBlocks.canopy_wood.get());
@@ -225,6 +227,8 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.canopy_plate.get());
 		registerLootTable(TFBlocks.canopy_door.get(), droppingWhen(TFBlocks.canopy_door.get(), DoorBlock.HALF, DoubleBlockHalf.LOWER));
 		registerDropSelfLootTable(TFBlocks.canopy_trapdoor.get());
+		registerLootTable(TFBlocks.canopy_sign.get(), dropping(TFBlocks.canopy_sign.get().asItem()));
+		registerLootTable(TFBlocks.canopy_wall_sign.get(), dropping(TFBlocks.canopy_sign.get().asItem()));
 
 		registerDropSelfLootTable(TFBlocks.mangrove_log.get());
 		registerDropSelfLootTable(TFBlocks.mangrove_wood.get());
@@ -239,6 +243,8 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.mangrove_plate.get());
 		registerLootTable(TFBlocks.mangrove_door.get(), droppingWhen(TFBlocks.mangrove_door.get(), DoorBlock.HALF, DoubleBlockHalf.LOWER));
 		registerDropSelfLootTable(TFBlocks.mangrove_trapdoor.get());
+		registerLootTable(TFBlocks.mangrove_sign.get(), dropping(TFBlocks.mangrove_sign.get().asItem()));
+		registerLootTable(TFBlocks.mangrove_wall_sign.get(), dropping(TFBlocks.mangrove_sign.get().asItem()));
 
 		registerDropSelfLootTable(TFBlocks.dark_log.get());
 		registerDropSelfLootTable(TFBlocks.dark_wood.get());
@@ -253,6 +259,8 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.dark_plate.get());
 		registerLootTable(TFBlocks.dark_door.get(), droppingWhen(TFBlocks.dark_door.get(), DoorBlock.HALF, DoubleBlockHalf.LOWER));
 		registerDropSelfLootTable(TFBlocks.dark_trapdoor.get());
+		registerLootTable(TFBlocks.darkwood_sign.get(), dropping(TFBlocks.darkwood_sign.get().asItem()));
+		registerLootTable(TFBlocks.darkwood_wall_sign.get(), dropping(TFBlocks.darkwood_sign.get().asItem()));
 
 		registerDropSelfLootTable(TFBlocks.time_log.get());
 		registerDropSelfLootTable(TFBlocks.time_wood.get());
@@ -268,6 +276,8 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.time_plate.get());
 		registerLootTable(TFBlocks.time_door.get(), droppingWhen(TFBlocks.time_door.get(), DoorBlock.HALF, DoubleBlockHalf.LOWER));
 		registerDropSelfLootTable(TFBlocks.time_trapdoor.get());
+		registerLootTable(TFBlocks.time_sign.get(), dropping(TFBlocks.time_sign.get().asItem()));
+		registerLootTable(TFBlocks.time_wall_sign.get(), dropping(TFBlocks.time_sign.get().asItem()));
 
 		registerDropSelfLootTable(TFBlocks.transformation_log.get());
 		registerDropSelfLootTable(TFBlocks.transformation_wood.get());
@@ -283,6 +293,8 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.trans_plate.get());
 		registerLootTable(TFBlocks.trans_door.get(), droppingWhen(TFBlocks.trans_door.get(), DoorBlock.HALF, DoubleBlockHalf.LOWER));
 		registerDropSelfLootTable(TFBlocks.trans_trapdoor.get());
+		registerLootTable(TFBlocks.trans_sign.get(), dropping(TFBlocks.trans_sign.get().asItem()));
+		registerLootTable(TFBlocks.trans_wall_sign.get(), dropping(TFBlocks.trans_sign.get().asItem()));
 
 		registerDropSelfLootTable(TFBlocks.mining_log.get());
 		registerDropSelfLootTable(TFBlocks.mining_wood.get());
@@ -298,6 +310,8 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.mine_plate.get());
 		registerLootTable(TFBlocks.mine_door.get(), droppingWhen(TFBlocks.mine_door.get(), DoorBlock.HALF, DoubleBlockHalf.LOWER));
 		registerDropSelfLootTable(TFBlocks.mine_trapdoor.get());
+		registerLootTable(TFBlocks.mine_sign.get(), dropping(TFBlocks.mine_sign.get().asItem()));
+		registerLootTable(TFBlocks.mine_wall_sign.get(), dropping(TFBlocks.mine_sign.get().asItem()));
 
 		registerDropSelfLootTable(TFBlocks.sorting_log.get());
 		registerDropSelfLootTable(TFBlocks.sorting_wood.get());
@@ -313,6 +327,8 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerDropSelfLootTable(TFBlocks.sort_plate.get());
 		registerLootTable(TFBlocks.sort_door.get(), droppingWhen(TFBlocks.sort_door.get(), DoorBlock.HALF, DoubleBlockHalf.LOWER));
 		registerDropSelfLootTable(TFBlocks.sort_trapdoor.get());
+		registerLootTable(TFBlocks.sort_sign.get(), dropping(TFBlocks.sort_sign.get().asItem()));
+		registerLootTable(TFBlocks.sort_wall_sign.get(), dropping(TFBlocks.sort_sign.get().asItem()));
 
 
 	}

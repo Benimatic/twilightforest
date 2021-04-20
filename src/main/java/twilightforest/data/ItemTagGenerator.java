@@ -11,6 +11,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.TFBlocks;
 import twilightforest.item.TFItems;
 
 public class ItemTagGenerator extends ItemTagsProvider {
@@ -89,6 +90,10 @@ public class ItemTagGenerator extends ItemTagsProvider {
 
 		this.copy(BlockTags.WOODEN_TRAPDOORS, ItemTags.WOODEN_TRAPDOORS);
 		this.copy(BlockTags.WOODEN_DOORS, ItemTags.WOODEN_DOORS);
+		getOrCreateBuilder(ItemTags.SIGNS).add(TFBlocks.twilight_oak_sign.get().asItem(), TFBlocks.canopy_sign.get().asItem(),
+				TFBlocks.mangrove_sign.get().asItem(), TFBlocks.darkwood_sign.get().asItem(),
+				TFBlocks.time_sign.get().asItem(), TFBlocks.trans_sign.get().asItem(),
+				TFBlocks.mine_sign.get().asItem(), TFBlocks.sort_sign.get().asItem());
 
 		this.copy(BlockTagGenerator.STORAGE_BLOCKS_ARCTIC_FUR, STORAGE_BLOCKS_ARCTIC_FUR);
 		this.copy(BlockTagGenerator.STORAGE_BLOCKS_CARMINITE, STORAGE_BLOCKS_CARMINITE);

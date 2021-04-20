@@ -6,8 +6,10 @@ import net.minecraft.block.material.MaterialColor;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.SignItem;
 import net.minecraft.item.TallBlockItem;
 import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -268,6 +270,15 @@ public class TFBlocks {
 	public static final RegistryObject<FlowerPotBlock> potted_green_thorn = BLOCKS.register("potted_green_thorn", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, green_thorns, AbstractBlock.Properties.from(Blocks.FLOWER_POT)));
 	public static final RegistryObject<FlowerPotBlock> potted_dead_thorn = BLOCKS.register("potted_dead_thorn", () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, burnt_thorns, AbstractBlock.Properties.from(Blocks.FLOWER_POT)));
 
+	public static final WoodType TWILIGHT_OAK = WoodType.create(TwilightForestMod.prefix("twilight_oak").toString());
+	public static final WoodType CANOPY = WoodType.create(TwilightForestMod.prefix("canopy").toString());
+	public static final WoodType MANGROVE = WoodType.create(TwilightForestMod.prefix("mangrove").toString());
+	public static final WoodType DARKWOOD = WoodType.create(TwilightForestMod.prefix("darkwood").toString());
+	public static final WoodType TIMEWOOD = WoodType.create(TwilightForestMod.prefix("timewood").toString());
+	public static final WoodType TRANSFORMATION = WoodType.create(TwilightForestMod.prefix("transformation").toString());
+	public static final WoodType MINING = WoodType.create(TwilightForestMod.prefix("mining").toString());
+	public static final WoodType SORTING = WoodType.create(TwilightForestMod.prefix("sorting").toString());
+
 	// TODO chests? boats?
 	public static final RegistryObject<Block> twilight_oak_planks           = BLOCKS.register("twilight_oak_planks", () -> new Block(Block.Properties.create(Material.WOOD, MaterialColor.WOOD).hardnessAndResistance(2.0F, 5.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<StairsBlock> twilight_oak_stairs     = BLOCKS.register("twilight_oak_stairs", () -> new StairsBlock(twilight_oak_planks.get().getDefaultState(), Block.Properties.from(twilight_oak_planks.get())));
@@ -278,6 +289,8 @@ public class TFBlocks {
 	public static final RegistryObject<Block> twilight_oak_plate            = BLOCKS.register("twilight_oak_plate", () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, Block.Properties.from(twilight_oak_planks.get()).doesNotBlockMovement().hardnessAndResistance(0.5F).sound(SoundType.WOOD)));
 	public static final RegistryObject<DoorBlock> twilight_oak_door         = BLOCKS.register("twilight_oak_door", () -> new DoorBlock(Block.Properties.from(twilight_oak_planks.get()).hardnessAndResistance(3.0F).sound(SoundType.WOOD).notSolid()));
 	public static final RegistryObject<TrapDoorBlock> twilight_oak_trapdoor = BLOCKS.register("twilight_oak_trapdoor", () -> new TrapDoorBlock(Block.Properties.from(twilight_oak_planks.get()).hardnessAndResistance(3.0F).sound(SoundType.WOOD).notSolid()));
+	public static final RegistryObject<StandingSignBlock> twilight_oak_sign = BLOCKS.register("twilight_oak_sign", () -> new BlockTFSign(Block.Properties.from(twilight_oak_planks.get()).hardnessAndResistance(3.0F).sound(SoundType.WOOD).notSolid(), TWILIGHT_OAK));
+	public static final RegistryObject<WallSignBlock> twilight_wall_sign    = BLOCKS.register("twilight_wall_sign", () -> new BlockTFWallSign(Block.Properties.from(twilight_oak_planks.get()).hardnessAndResistance(3.0F).sound(SoundType.WOOD).notSolid(), TWILIGHT_OAK));
 	public static final RegistryObject<Block> canopy_planks                 = BLOCKS.register("canopy_planks", () -> new Block(Block.Properties.create(Material.WOOD, MaterialColor.OBSIDIAN).hardnessAndResistance(2.0F, 5.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<StairsBlock> canopy_stairs           = BLOCKS.register("canopy_stairs", () -> new StairsBlock(canopy_planks.get().getDefaultState(), Block.Properties.from(canopy_planks.get())));
 	public static final RegistryObject<Block> canopy_slab                   = BLOCKS.register("canopy_slab", () -> new SlabBlock(Block.Properties.from(canopy_planks.get())));
@@ -287,6 +300,8 @@ public class TFBlocks {
 	public static final RegistryObject<Block> canopy_plate                  = BLOCKS.register("canopy_plate", () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, Block.Properties.from(canopy_planks.get()).doesNotBlockMovement().hardnessAndResistance(0.5F).sound(SoundType.WOOD)));
 	public static final RegistryObject<DoorBlock> canopy_door               = BLOCKS.register("canopy_door", () -> new DoorBlock(Block.Properties.create(Material.WOOD, MaterialColor.OBSIDIAN).hardnessAndResistance(3.0F).sound(SoundType.WOOD).notSolid()));
 	public static final RegistryObject<TrapDoorBlock> canopy_trapdoor       = BLOCKS.register("canopy_trapdoor", () -> new TrapDoorBlock(AbstractBlock.Properties.create(Material.WOOD, MaterialColor.SAND).hardnessAndResistance(3.0F).sound(SoundType.WOOD).notSolid()));
+	public static final RegistryObject<StandingSignBlock> canopy_sign       = BLOCKS.register("canopy_sign", () -> new BlockTFSign(Block.Properties.from(canopy_planks.get()).hardnessAndResistance(3.0F).sound(SoundType.WOOD).notSolid(), CANOPY));
+	public static final RegistryObject<WallSignBlock> canopy_wall_sign      = BLOCKS.register("canopy_wall_sign", () -> new BlockTFWallSign(Block.Properties.from(canopy_planks.get()).hardnessAndResistance(3.0F).sound(SoundType.WOOD).notSolid(), CANOPY));
 	public static final RegistryObject<Block> mangrove_planks               = BLOCKS.register("mangrove_planks", () -> new Block(Block.Properties.create(Material.WOOD, MaterialColor.DIRT).hardnessAndResistance(2.0F, 5.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<StairsBlock> mangrove_stairs         = BLOCKS.register("mangrove_stairs", () -> new StairsBlock(mangrove_planks.get().getDefaultState(), Block.Properties.from(mangrove_planks.get())));
 	public static final RegistryObject<Block> mangrove_slab                 = BLOCKS.register("mangrove_slab", () -> new SlabBlock(Block.Properties.from(mangrove_planks.get()).hardnessAndResistance(2.0F, 5.0F).sound(SoundType.WOOD)));
@@ -296,6 +311,8 @@ public class TFBlocks {
 	public static final RegistryObject<Block> mangrove_plate                = BLOCKS.register("mangrove_plate", () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, Block.Properties.from(mangrove_planks.get()).doesNotBlockMovement().hardnessAndResistance(0.5F).sound(SoundType.WOOD)));
 	public static final RegistryObject<DoorBlock> mangrove_door             = BLOCKS.register("mangrove_door", () -> new DoorBlock(Block.Properties.from(mangrove_planks.get()).hardnessAndResistance(3.0F).sound(SoundType.WOOD).notSolid()));
 	public static final RegistryObject<TrapDoorBlock> mangrove_trapdoor     = BLOCKS.register("mangrove_trapdoor", () -> new TrapDoorBlock(Block.Properties.from(mangrove_planks.get()).hardnessAndResistance(3.0F).sound(SoundType.WOOD).notSolid()));
+	public static final RegistryObject<StandingSignBlock> mangrove_sign     = BLOCKS.register("mangrove_sign", () -> new BlockTFSign(Block.Properties.from(mangrove_planks.get()).hardnessAndResistance(3.0F).sound(SoundType.WOOD).notSolid(), MANGROVE));
+	public static final RegistryObject<WallSignBlock> mangrove_wall_sign    = BLOCKS.register("mangrove_wall_sign", () -> new BlockTFWallSign(Block.Properties.from(mangrove_planks.get()).hardnessAndResistance(3.0F).sound(SoundType.WOOD).notSolid(), MANGROVE));
 	public static final RegistryObject<Block> dark_planks                   = BLOCKS.register("dark_planks", () -> new Block(Block.Properties.create(Material.WOOD, MaterialColor.ADOBE).hardnessAndResistance(2.0F, 5.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<StairsBlock> dark_stairs             = BLOCKS.register("dark_stairs", () -> new StairsBlock(dark_planks.get().getDefaultState(), Block.Properties.from(dark_planks.get())));
 	public static final RegistryObject<Block> dark_slab                     = BLOCKS.register("dark_slab", () -> new SlabBlock(Block.Properties.from(dark_planks.get()).hardnessAndResistance(2.0F, 5.0F).sound(SoundType.WOOD)));
@@ -305,6 +322,8 @@ public class TFBlocks {
 	public static final RegistryObject<Block> dark_plate                    = BLOCKS.register("dark_plate", () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, Block.Properties.from(dark_planks.get()).doesNotBlockMovement().hardnessAndResistance(0.5F).sound(SoundType.WOOD)));
 	public static final RegistryObject<DoorBlock> dark_door                 = BLOCKS.register("dark_door", () -> new DoorBlock(Block.Properties.from(dark_planks.get()).hardnessAndResistance(3.0F).sound(SoundType.WOOD).notSolid()));
 	public static final RegistryObject<TrapDoorBlock> dark_trapdoor         = BLOCKS.register("dark_trapdoor", () -> new TrapDoorBlock(Block.Properties.from(dark_planks.get()).hardnessAndResistance(3.0F).sound(SoundType.WOOD).notSolid()));
+	public static final RegistryObject<StandingSignBlock> darkwood_sign     = BLOCKS.register("darkwood_sign", () -> new BlockTFSign(Block.Properties.from(dark_planks.get()).hardnessAndResistance(3.0F).sound(SoundType.WOOD).notSolid(), DARKWOOD));
+	public static final RegistryObject<WallSignBlock> darkwood_wall_sign    = BLOCKS.register("darkwood_wall_sign", () -> new BlockTFWallSign(Block.Properties.from(dark_planks.get()).hardnessAndResistance(3.0F).sound(SoundType.WOOD).notSolid(), DARKWOOD));
 	public static final RegistryObject<Block> time_planks                   = BLOCKS.register("time_planks", () -> new Block(Block.Properties.create(Material.WOOD, MaterialColor.DIRT).hardnessAndResistance(2.0F, 5.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<StairsBlock> time_stairs             = BLOCKS.register("time_stairs", () -> new StairsBlock(time_planks.get().getDefaultState(), Block.Properties.from(time_planks.get())));
 	public static final RegistryObject<Block> time_slab                     = BLOCKS.register("time_slab", () -> new SlabBlock(Block.Properties.from(time_planks.get()).hardnessAndResistance(2.0F, 5.0F).sound(SoundType.WOOD)));
@@ -314,6 +333,8 @@ public class TFBlocks {
 	public static final RegistryObject<Block> time_plate                    = BLOCKS.register("time_plate", () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, Block.Properties.from(time_planks.get()).doesNotBlockMovement().hardnessAndResistance(0.5F).sound(SoundType.WOOD)));
 	public static final RegistryObject<DoorBlock> time_door                 = BLOCKS.register("time_door", () -> new DoorBlock(Block.Properties.from(time_planks.get()).hardnessAndResistance(3.0F).sound(SoundType.WOOD).notSolid()));
 	public static final RegistryObject<TrapDoorBlock> time_trapdoor         = BLOCKS.register("time_trapdoor", () -> new TrapDoorBlock(Block.Properties.from(time_planks.get()).hardnessAndResistance(3.0F).sound(SoundType.WOOD).notSolid()));
+	public static final RegistryObject<StandingSignBlock> time_sign         = BLOCKS.register("time_sign", () -> new BlockTFSign(Block.Properties.from(time_planks.get()).hardnessAndResistance(3.0F).sound(SoundType.WOOD).notSolid(), TIMEWOOD));
+	public static final RegistryObject<WallSignBlock> time_wall_sign        = BLOCKS.register("time_wall_sign", () -> new BlockTFWallSign(Block.Properties.from(time_planks.get()).hardnessAndResistance(3.0F).sound(SoundType.WOOD).notSolid(), TIMEWOOD));
 	public static final RegistryObject<Block> trans_planks                  = BLOCKS.register("trans_planks", () -> new Block(Block.Properties.create(Material.WOOD, MaterialColor.WOOD).hardnessAndResistance(2.0F, 5.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<StairsBlock> trans_stairs            = BLOCKS.register("trans_stairs", () -> new StairsBlock(trans_planks.get().getDefaultState(), Block.Properties.from(trans_planks.get())));
 	public static final RegistryObject<Block> trans_slab                    = BLOCKS.register("trans_slab", () -> new SlabBlock(Block.Properties.from(trans_planks.get()).hardnessAndResistance(2.0F, 5.0F).sound(SoundType.WOOD)));
@@ -323,6 +344,8 @@ public class TFBlocks {
 	public static final RegistryObject<Block> trans_plate                   = BLOCKS.register("trans_plate", () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, Block.Properties.from(trans_planks.get()).doesNotBlockMovement().hardnessAndResistance(0.5F).sound(SoundType.WOOD)));
 	public static final RegistryObject<DoorBlock> trans_door                = BLOCKS.register("trans_door", () -> new DoorBlock(Block.Properties.from(trans_planks.get()).hardnessAndResistance(3.0F).sound(SoundType.WOOD).notSolid()));
 	public static final RegistryObject<TrapDoorBlock> trans_trapdoor        = BLOCKS.register("trans_trapdoor", () -> new TrapDoorBlock(Block.Properties.from(trans_planks.get()).hardnessAndResistance(3.0F).sound(SoundType.WOOD).notSolid()));
+	public static final RegistryObject<StandingSignBlock> trans_sign        = BLOCKS.register("trans_sign", () -> new BlockTFSign(Block.Properties.from(trans_planks.get()).hardnessAndResistance(3.0F).sound(SoundType.WOOD).notSolid(), TRANSFORMATION));
+	public static final RegistryObject<WallSignBlock> trans_wall_sign       = BLOCKS.register("trans_wall_sign", () -> new BlockTFWallSign(Block.Properties.from(trans_planks.get()).hardnessAndResistance(3.0F).sound(SoundType.WOOD).notSolid(), TRANSFORMATION));
 	public static final RegistryObject<Block> mine_planks                   = BLOCKS.register("mine_planks", () -> new Block(Block.Properties.create(Material.WOOD, MaterialColor.SAND).hardnessAndResistance(2.0F, 5.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<StairsBlock> mine_stairs             = BLOCKS.register("mine_stairs", () -> new StairsBlock(mine_planks.get().getDefaultState(), Block.Properties.from(mine_planks.get())));
 	public static final RegistryObject<Block> mine_slab                     = BLOCKS.register("mine_slab", () -> new SlabBlock(Block.Properties.from(mine_planks.get()).hardnessAndResistance(2.0F, 5.0F).sound(SoundType.WOOD)));
@@ -332,6 +355,8 @@ public class TFBlocks {
 	public static final RegistryObject<Block> mine_plate                    = BLOCKS.register("mine_plate", () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, Block.Properties.from(mine_planks.get()).doesNotBlockMovement().hardnessAndResistance(0.5F).sound(SoundType.WOOD)));
 	public static final RegistryObject<DoorBlock> mine_door                 = BLOCKS.register("mine_door", () -> new DoorBlock(Block.Properties.from(mine_planks.get()).hardnessAndResistance(3.0F).sound(SoundType.WOOD).notSolid()));
 	public static final RegistryObject<TrapDoorBlock> mine_trapdoor         = BLOCKS.register("mine_trapdoor", () -> new TrapDoorBlock(Block.Properties.from(mine_planks.get()).hardnessAndResistance(3.0F).sound(SoundType.WOOD).notSolid()));
+	public static final RegistryObject<StandingSignBlock> mine_sign         = BLOCKS.register("mine_sign", () -> new BlockTFSign(Block.Properties.from(mine_planks.get()).hardnessAndResistance(3.0F).sound(SoundType.WOOD).notSolid(), MINING));
+	public static final RegistryObject<WallSignBlock> mine_wall_sign        = BLOCKS.register("mine_wall_sign", () -> new BlockTFWallSign(Block.Properties.from(mine_planks.get()).hardnessAndResistance(3.0F).sound(SoundType.WOOD).notSolid(), MINING));
 	public static final RegistryObject<Block> sort_planks                   = BLOCKS.register("sort_planks", () -> new Block(Block.Properties.create(Material.WOOD, MaterialColor.OBSIDIAN).hardnessAndResistance(2.0F, 5.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<StairsBlock> sort_stairs             = BLOCKS.register("sort_stairs", () -> new StairsBlock(sort_planks.get().getDefaultState(), Block.Properties.from(sort_planks.get())));
 	public static final RegistryObject<Block> sort_slab                     = BLOCKS.register("sort_slab", () -> new SlabBlock(Block.Properties.from(sort_planks.get()).hardnessAndResistance(2.0F, 5.0F).sound(SoundType.WOOD)));
@@ -341,7 +366,9 @@ public class TFBlocks {
 	public static final RegistryObject<Block> sort_plate                    = BLOCKS.register("sort_plate", () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, Block.Properties.from(sort_planks.get()).doesNotBlockMovement().hardnessAndResistance(0.5F).sound(SoundType.WOOD)));
 	public static final RegistryObject<DoorBlock> sort_door                 = BLOCKS.register("sort_door", () -> new DoorBlock(Block.Properties.from(sort_planks.get()).hardnessAndResistance(3.0F).sound(SoundType.WOOD).notSolid()));
 	public static final RegistryObject<TrapDoorBlock> sort_trapdoor         = BLOCKS.register("sort_trapdoor", () -> new TrapDoorBlock(Block.Properties.from(sort_planks.get()).hardnessAndResistance(3.0F).sound(SoundType.WOOD).notSolid()));
-	
+	public static final RegistryObject<StandingSignBlock> sort_sign         = BLOCKS.register("sort_sign", () -> new BlockTFSign(Block.Properties.from(sort_planks.get()).hardnessAndResistance(3.0F).sound(SoundType.WOOD).notSolid(), SORTING));
+	public static final RegistryObject<WallSignBlock> sort_wall_sign        = BLOCKS.register("sort_wall_sign", () -> new BlockTFWallSign(Block.Properties.from(sort_planks.get()).hardnessAndResistance(3.0F).sound(SoundType.WOOD).notSolid(), SORTING));
+
 	@SubscribeEvent
 	public static void registerItemblocks(RegistryEvent.Register<Item> evt) {
 		IForgeRegistry<Item> r = evt.getRegistry();
@@ -389,6 +416,24 @@ public class TFBlocks {
 		for (RegistryObject<? extends Block> b : standard) {
 			r.register(new BlockItem(b.get(), TFItems.defaultBuilder()).setRegistryName(b.get().getRegistryName()));
 		}
+
+		//I would like to put signs before doors :)
+		r.register(new SignItem(TFItems.defaultBuilder().maxStackSize(16), twilight_oak_sign.get(), twilight_wall_sign.get())
+				.setRegistryName(twilight_oak_sign.getId()));
+		r.register(new SignItem(TFItems.defaultBuilder().maxStackSize(16), canopy_sign.get(), canopy_wall_sign.get())
+				.setRegistryName(canopy_sign.getId()));
+		r.register(new SignItem(TFItems.defaultBuilder().maxStackSize(16), mangrove_sign.get(), mangrove_wall_sign.get())
+				.setRegistryName(mangrove_sign.getId()));
+		r.register(new SignItem(TFItems.defaultBuilder().maxStackSize(16), darkwood_sign.get(), darkwood_wall_sign.get())
+				.setRegistryName(darkwood_sign.getId()));
+		r.register(new SignItem(TFItems.defaultBuilder().maxStackSize(16), time_sign.get(), time_wall_sign.get())
+				.setRegistryName(time_sign.getId()));
+		r.register(new SignItem(TFItems.defaultBuilder().maxStackSize(16), trans_sign.get(), trans_wall_sign.get())
+				.setRegistryName(trans_sign.getId()));
+		r.register(new SignItem(TFItems.defaultBuilder().maxStackSize(16), mine_sign.get(), mine_wall_sign.get())
+				.setRegistryName(mine_sign.getId()));
+		r.register(new SignItem(TFItems.defaultBuilder().maxStackSize(16), sort_sign.get(), sort_wall_sign.get())
+				.setRegistryName(sort_sign.getId()));
 		
 		List<Block> doors = Arrays.asList(twilight_oak_door.get(), canopy_door.get(), mangrove_door.get(), dark_door.get(), time_door.get(), trans_door.get(), mine_door.get(), sort_door.get());
 		for (Block b : doors) {

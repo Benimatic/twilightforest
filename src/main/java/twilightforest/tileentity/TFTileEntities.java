@@ -1,5 +1,6 @@
 package twilightforest.tileentity;
 
+import net.minecraft.client.renderer.tileentity.SignTileEntityRenderer;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -68,6 +69,17 @@ public class TFTileEntities {
 	public static final RegistryObject<TileEntityType<TileEntityKeepsakeCasket>> KEEPSAKE_CASKET          = TILE_ENTITIES.register("keepsake_casket", () ->
 			TileEntityType.Builder.create(TileEntityKeepsakeCasket::new, TFBlocks.keepsake_casket.get()).build(null));
 
+	public static final RegistryObject<TileEntityType<TileEntityTFSign>> TF_SIGN = TILE_ENTITIES.register("tf_sign", () ->
+			TileEntityType.Builder.create(TileEntityTFSign::new,
+					TFBlocks.twilight_oak_sign.get(), TFBlocks.twilight_wall_sign.get(),
+					TFBlocks.canopy_sign.get(), TFBlocks.canopy_wall_sign.get(),
+					TFBlocks.mangrove_sign.get(), TFBlocks.mangrove_wall_sign.get(),
+					TFBlocks.darkwood_sign.get(), TFBlocks.darkwood_wall_sign.get(),
+					TFBlocks.time_sign.get(), TFBlocks.time_wall_sign.get(),
+					TFBlocks.trans_sign.get(), TFBlocks.trans_wall_sign.get(),
+					TFBlocks.mine_sign.get(), TFBlocks.mine_wall_sign.get(),
+					TFBlocks.sort_sign.get(), TFBlocks.sort_wall_sign.get()).build(null));
+
 	@OnlyIn(Dist.CLIENT)
 	public static void registerTileEntityRenders() {
 		// tile entities
@@ -78,5 +90,6 @@ public class TFTileEntities {
 //		ClientRegistry.bindTileEntityRenderer(TileEntityTFHydraSpawner.class, new TileEntityMobSpawnerRenderer());
 		ClientRegistry.bindTileEntityRenderer(MOONWORM.get(), TileEntityTFMoonwormRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(TROPHY.get(), TileEntityTFTrophyRenderer::new);
+		ClientRegistry.bindTileEntityRenderer(TF_SIGN.get(), SignTileEntityRenderer::new);
 	}
 }

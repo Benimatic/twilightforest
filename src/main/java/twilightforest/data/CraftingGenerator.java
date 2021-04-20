@@ -449,6 +449,16 @@ public class CraftingGenerator extends CraftingDataHelper {
 		trapdoorBlock(consumer, "time", TFBlocks.time_trapdoor, TFBlocks.time_planks);
 		trapdoorBlock(consumer, "trans", TFBlocks.trans_trapdoor, TFBlocks.trans_planks);
 		trapdoorBlock(consumer, "twilight_oak", TFBlocks.twilight_oak_trapdoor, TFBlocks.twilight_oak_planks);
+
+		signBlock(consumer, "canopy_sign", TFBlocks.canopy_sign, TFBlocks.canopy_planks);
+		signBlock(consumer, "darkwood_sign", TFBlocks.darkwood_sign, TFBlocks.dark_planks);
+		signBlock(consumer, "mangrove_sign", TFBlocks.mangrove_sign, TFBlocks.mangrove_planks);
+		signBlock(consumer, "mine_sign", TFBlocks.mine_sign, TFBlocks.mine_planks);
+		signBlock(consumer, "sort_sign", TFBlocks.sort_sign, TFBlocks.sort_planks);
+		signBlock(consumer, "time_sign", TFBlocks.time_sign, TFBlocks.time_planks);
+		signBlock(consumer, "trans_sign", TFBlocks.trans_sign, TFBlocks.trans_planks);
+		signBlock(consumer, "twilight_oak_sign", TFBlocks.twilight_oak_sign, TFBlocks.twilight_oak_planks);
+
 	}
 
 	private void nagastoneRecipes(Consumer<IFinishedRecipe> consumer) {

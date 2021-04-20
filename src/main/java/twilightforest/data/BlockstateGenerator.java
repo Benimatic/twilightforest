@@ -281,6 +281,23 @@ public class BlockstateGenerator extends BlockStateProvider {
 		simpleBlock(TFBlocks.potted_green_thorn.get(), models().getExistingFile(prefix("block/potted_green_thorn")));
 		simpleBlock(TFBlocks.potted_dead_thorn.get(), models().getExistingFile(prefix("block/potted_dead_thorn")));
 
+		builtinEntity(TFBlocks.twilight_oak_sign.get(), "twilightforest:block/wood/planks_twilight_oak_0");
+		builtinEntity(TFBlocks.twilight_wall_sign.get(), "twilightforest:block/wood/planks_twilight_oak_0");
+		builtinEntity(TFBlocks.canopy_sign.get(), "twilightforest:block/wood/planks_canopy_0");
+		builtinEntity(TFBlocks.canopy_wall_sign.get(), "twilightforest:block/wood/planks_canopy_0");
+		builtinEntity(TFBlocks.mangrove_sign.get(), "twilightforest:block/wood/planks_mangrove_0");
+		builtinEntity(TFBlocks.mangrove_wall_sign.get(), "twilightforest:block/wood/planks_mangrove_0");
+		builtinEntity(TFBlocks.darkwood_sign.get(), "twilightforest:block/wood/planks_darkwood_0");
+		builtinEntity(TFBlocks.darkwood_wall_sign.get(), "twilightforest:block/wood/planks_darkwood_0");
+		builtinEntity(TFBlocks.time_sign.get(), "twilightforest:block/wood/planks_time_0");
+		builtinEntity(TFBlocks.time_wall_sign.get(), "twilightforest:block/wood/planks_time_0");
+		builtinEntity(TFBlocks.trans_sign.get(), "twilightforest:block/wood/planks_trans_0");
+		builtinEntity(TFBlocks.trans_wall_sign.get(), "twilightforest:block/wood/planks_trans_0");
+		builtinEntity(TFBlocks.mine_sign.get(), "twilightforest:block/wood/planks_mine_0");
+		builtinEntity(TFBlocks.mine_wall_sign.get(), "twilightforest:block/wood/planks_mine_0");
+		builtinEntity(TFBlocks.sort_sign.get(), "twilightforest:block/wood/planks_sort_0");
+		builtinEntity(TFBlocks.sort_wall_sign.get(), "twilightforest:block/wood/planks_sort_0");
+
 	}
 
 	//TODO: Absolutely not a 100% reflection of what existed

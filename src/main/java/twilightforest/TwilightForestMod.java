@@ -1,6 +1,7 @@
 package twilightforest;
 
 import net.minecraft.block.DispenserBlock;
+import net.minecraft.block.WoodType;
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.dispenser.IDispenseItemBehavior;
 import net.minecraft.dispenser.IPosition;
@@ -231,8 +232,15 @@ public class TwilightForestMod {
 					source.getWorld().playSound(null, pos, TFSounds.SCEPTER_PEARL, SoundCategory.BLOCKS, 1, 1);
 				}
 			});
-
 		});
+		WoodType.register(TFBlocks.TWILIGHT_OAK);
+		WoodType.register(TFBlocks.CANOPY);
+		WoodType.register(TFBlocks.MANGROVE);
+		WoodType.register(TFBlocks.DARKWOOD);
+		WoodType.register(TFBlocks.TIMEWOOD);
+		WoodType.register(TFBlocks.TRANSFORMATION);
+		WoodType.register(TFBlocks.MINING);
+		WoodType.register(TFBlocks.SORTING);
 	}
 
 	public void registerCommands(RegisterCommandsEvent event) {

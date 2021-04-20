@@ -2,6 +2,7 @@ package twilightforest.client;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.MainMenuScreen;
+import net.minecraft.client.renderer.Atlases;
 import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.world.DimensionRenderInfo;
@@ -19,6 +20,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.TFBlocks;
 import twilightforest.client.renderer.entity.LayerIce;
 import twilightforest.client.renderer.entity.LayerShields;
 import twilightforest.entity.TFEntities;
@@ -82,11 +84,11 @@ public class TFClientSetup {
             } else {
                return entity.getActiveItemStack() != stack ? 0.0F : (stack.getUseDuration() - entity.getItemInUseCount()) / 20.0F;
             }
-         });
+        });
         
         ItemModelsProperties.registerProperty(TFItems.ender_bow.get(), new ResourceLocation("pulling"), (stack, world, entity) -> {
             return entity != null && entity.isHandActive() && entity.getActiveItemStack() == stack ? 1.0F : 0.0F;
-         });
+        });
         
         ItemModelsProperties.registerProperty(TFItems.ice_bow.get(), new ResourceLocation("pull"), (stack, world, entity) -> {
             if (entity == null) {
@@ -94,11 +96,11 @@ public class TFClientSetup {
             } else {
                return entity.getActiveItemStack() != stack ? 0.0F : (stack.getUseDuration() - entity.getItemInUseCount()) / 20.0F;
             }
-         });
+        });
         
         ItemModelsProperties.registerProperty(TFItems.ice_bow.get(), new ResourceLocation("pulling"), (stack, world, entity) -> {
             return entity != null && entity.isHandActive() && entity.getActiveItemStack() == stack ? 1.0F : 0.0F;
-         });
+        });
         
         ItemModelsProperties.registerProperty(TFItems.seeker_bow.get(), new ResourceLocation("pull"), (stack, world, entity) -> {
             if (entity == null) {
@@ -106,11 +108,11 @@ public class TFClientSetup {
             } else {
                return entity.getActiveItemStack() != stack ? 0.0F : (stack.getUseDuration() - entity.getItemInUseCount()) / 20.0F;
             }
-         });
+        });
         
         ItemModelsProperties.registerProperty(TFItems.seeker_bow.get(), new ResourceLocation("pulling"), (stack, world, entity) -> {
             return entity != null && entity.isHandActive() && entity.getActiveItemStack() == stack ? 1.0F : 0.0F;
-         });
+        });
         
         ItemModelsProperties.registerProperty(TFItems.triple_bow.get(), new ResourceLocation("pull"), (stack, world, entity) -> {
             if (entity == null) {
@@ -118,11 +120,22 @@ public class TFClientSetup {
             } else {
                return entity.getActiveItemStack() != stack ? 0.0F : (stack.getUseDuration() - entity.getItemInUseCount()) / 20.0F;
             }
-         });
+        });
         
         ItemModelsProperties.registerProperty(TFItems.triple_bow.get(), new ResourceLocation("pulling"), (stack, world, entity) -> {
             return entity != null && entity.isHandActive() && entity.getActiveItemStack() == stack ? 1.0F : 0.0F;
-         });
+        });
+
+        evt.enqueueWork(() -> {
+            Atlases.addWoodType(TFBlocks.TWILIGHT_OAK);
+            Atlases.addWoodType(TFBlocks.CANOPY);
+            Atlases.addWoodType(TFBlocks.MANGROVE);
+            Atlases.addWoodType(TFBlocks.DARKWOOD);
+            Atlases.addWoodType(TFBlocks.TIMEWOOD);
+            Atlases.addWoodType(TFBlocks.TRANSFORMATION);
+            Atlases.addWoodType(TFBlocks.MINING);
+            Atlases.addWoodType(TFBlocks.SORTING);
+        });
        
     }
 
