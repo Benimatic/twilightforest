@@ -156,6 +156,7 @@
   "block.twilightforest.hedge": "生垣ブロック",
   //"block.twilightforest.boss_spawner": "Boss Spawner",
   "block.twilightforest.firefly_jar": "瓶詰めホタル",
+  //"block.twilightforest.cicada_jar": "Cicada Jar",
   "block.twilightforest.moss_patch": "苔",
   "block.twilightforest.mayapple": "メイアップル",
   "block.twilightforest.clover_patch": "クローバーパッチ [制作中]",
@@ -319,6 +320,23 @@
   "block.twilightforest.ur_ghast_trophy": "Ur-Ghast Trophy",
   "block.twilightforest.snow_queen_trophy": "Snow Queen Trophy",
   "block.twilightforest.quest_ram_trophy": "Questing Ram Trophy",
+  "block.twilightforest.keepsake_casket": "Keepsake Casket",
+  "block.twilightforest.potted_twilight_oak_sapling": "Potted Sickly Twilight Oak Sapling",
+  "block.twilightforest.potted_canopy_sapling": "Potted Canopy Tree Sapling",
+  "block.twilightforest.potted_mangrove_sapling": "Potted Twilight Mangrove Sapling",
+  "block.twilightforest.potted_darkwood_sapling": "Potted Darkwood Sapling",
+  "block.twilightforest.potted_hollow_oak_sapling": "Potted Robust Twilight Oak Sapling",
+  "block.twilightforest.potted_rainboak_sapling": "Potted Rainbow Oak Sapling",
+  "block.twilightforest.potted_time_sapling": "Potted Tree of Time Sapling",
+  "block.twilightforest.potted_trans_sapling": "Potted Tree of Transformation Sapling",
+  "block.twilightforest.potted_mine_sapling": "Potted Miner's Tree Sapling",
+  "block.twilightforest.potted_sort_sapling": "Potted Sorting Tree Sapling",
+  "block.twilightforest.potted_mayapple": "Potted Mayapple",
+  "block.twilightforest.potted_fiddlehead": "Potted Fiddlehead",
+  "block.twilightforest.potted_mushgloom": "Potted Mushgloom",
+  "block.twilightforest.potted_thorn": "Potted Thorn",
+  "block.twilightforest.potted_green_thorn": "Potted Green Thorn",
+  "block.twilightforest.potted_dead_thorn": "Potted Burnt Thorn",*/
 
   "block.twilightforest.canopy_planks": "Canopy Planks",
   "block.twilightforest.canopy_stairs": "Canopy Stairs",
@@ -415,6 +433,10 @@
   "block.twilightforest.sort_door": "Sortingwood Door",
   "block.twilightforest.sort_sign": "Sortingwood Sign",
   "block.twilightforest.sort_wall_sign": "Sortingwood Wall Sign",*/
+
+  //"block.steeleaf.tooltip": "Reduces fall damage by 25%",
+  //"block.arctic.tooltip": "Reduces fall damage by 90%",
+  //"block.knightmetal.tooltip": "Works as a stronger cactus",
 
   "structure.twilight_portal": "黄昏のポータル",
   "structure.hedge_maze": "生垣迷路",
