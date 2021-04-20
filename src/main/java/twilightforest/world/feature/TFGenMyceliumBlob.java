@@ -2,20 +2,16 @@ package twilightforest.world.feature;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
+import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.AbstractSphereReplaceConfig;
 import net.minecraft.world.gen.feature.SphereReplaceConfig;
+
 import java.util.Random;
 
-/**
- * This is a copypasta of the sand/gravel/clay generator that produces mycelium blobs for mushroom biomes
- *
- * @author Ben
- */
-public class TFGenMyceliumBlob extends Feature<SphereReplaceConfig> {
+public class TFGenMyceliumBlob extends AbstractSphereReplaceConfig {
 
 	public TFGenMyceliumBlob(Codec<SphereReplaceConfig> configIn) {
 		super(configIn);
@@ -24,27 +20,30 @@ public class TFGenMyceliumBlob extends Feature<SphereReplaceConfig> {
 	@Override
 	public boolean generate(ISeedReader world, ChunkGenerator generator, Random random, BlockPos pos, SphereReplaceConfig config) {
 
-		int range = config.radius.func_242259_a(random) + 2;
-		int yRange = 1;
-		for (int dx = pos.getX() - range; dx <= pos.getX() + range; dx++) {
-			for (int dz = pos.getZ() - range; dz <= pos.getZ() + range; dz++) {
-				int l1 = dx - pos.getX();
-				int i2 = dz - pos.getZ();
-				if (l1 * l1 + i2 * i2 > range * range) {
-					continue;
-				}
-				for (int dy = pos.getY() - yRange; dy <= pos.getY() + yRange; dy++) {
-					BlockPos dPos = new BlockPos(dx, dy, dz);
-					BlockPos uPos = new BlockPos(dx, dy + 1, dz);
-					Block blockThere = world.getBlockState(dPos).getBlock();
-					Block blockAbove = world.getBlockState(uPos).getBlock();
-					if (blockThere == config.targets && blockAbove == Blocks.AIR) {
-						world.setBlockState(dPos, config.state, 16 | 2);
+		boolean flag = false;
+		int i = config.radius.func_242259_a(random);
+
+		for(int j = pos.getX() - i; j <= pos.getX() + i; ++j) {
+			for(int k = pos.getZ() - i; k <= pos.getZ() + i; ++k) {
+				int l = j - pos.getX();
+				int i1 = k - pos.getZ();
+				if (l * l + i1 * i1 <= i * i) {
+					for(int j1 = pos.getY() - config.field_242809_d; j1 <= pos.getY() + config.field_242809_d; ++j1) {
+						BlockPos blockpos = new BlockPos(j, j1, k);
+						Block block = world.getBlockState(blockpos).getBlock();
+
+						for(BlockState blockstate : config.targets) {
+							if (blockstate.isIn(block) && world.isAirBlock(pos.up())) {
+								world.setBlockState(blockpos, config.state, 2);
+								flag = true;
+								break;
+							}
+						}
 					}
 				}
 			}
 		}
 
-		return true;
+		return flag;
 	}
 }

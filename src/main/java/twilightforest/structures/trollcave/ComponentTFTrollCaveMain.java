@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
@@ -18,6 +19,7 @@ import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.template.TemplateManager;
+import net.minecraft.world.gen.placement.DepthAverageConfig;
 import net.minecraft.world.gen.placement.NoPlacementConfig;
 import net.minecraft.world.gen.placement.Placement;
 import net.minecraft.world.server.ServerWorld;
@@ -40,7 +42,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 	protected int size;
 	protected int height;
 
-	public static final ConfiguredFeature<?,?> uberousGen = TFBiomeFeatures.MYCELIUM_BLOB.get().withConfiguration(new SphereReplaceConfig(BlockConstants.UBEROUS_SOIL, FeatureSpread.func_242253_a(4, 2), 3, ImmutableList.of(BlockConstants.GRASS_BLOCK, BlockConstants.STONE, BlockConstants.COARSE_DIRT, BlockConstants.PODZOL))).withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT);
+	public static final ConfiguredFeature<?,?> uberousGen = TFBiomeFeatures.MYCELIUM_BLOB.get().withConfiguration(new SphereReplaceConfig(BlockConstants.UBEROUS_SOIL, FeatureSpread.func_242253_a(10, 8), 1, ImmutableList.of(BlockConstants.PODZOL, BlockConstants.COARSE_DIRT, BlockConstants.DIRT))).withPlacement(Placement.DEPTH_AVERAGE.configure(new DepthAverageConfig(60, 10)));
 
 	public ComponentTFTrollCaveMain(TemplateManager manager, CompoundNBT nbt) {
 		this(TFTrollCavePieces.TFTCMai, nbt);
@@ -143,6 +145,10 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 		return new BlockPos(rand.nextInt(this.size - 1), rand.nextInt(this.height - 1), rand.nextInt(this.size - 1));
 	}
 
+	protected BlockPos getCenterBiasedCaveCoords(Random rand) {
+		return new BlockPos(this.size - rand.nextInt(this.size / 2), rand.nextInt(this.height - 1), this.size - rand.nextInt(this.size / 2));
+	}
+
 	protected void hollowCaveMiddle(ISeedReader world, MutableBoundingBox boundingBox, Random rand, int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
 		int threshold = this.size / 5;
 
@@ -158,7 +164,7 @@ public class ComponentTFTrollCaveMain extends StructureTFComponentOld {
 
 					if (dist > threshold) {
 						this.setBlockState(world, Blocks.AIR.getDefaultState(), x, y, z, boundingBox);
-					} else if (dist == threshold && rand.nextInt(4) == 0 && this.getBlockStateFromPos(world, x, y, z, boundingBox).getBlock() == Blocks.STONE) {
+					} else if (dist == threshold && rand.nextInt(4) == 0 && this.getBlockStateFromPos(world, x, y, z, boundingBox).getBlock().isIn(BlockTags.BASE_STONE_OVERWORLD)) {
 						this.setBlockState(world, TFBlocks.trollsteinn.get().getDefaultState(), x, y, z, boundingBox);
 					}
 				}
