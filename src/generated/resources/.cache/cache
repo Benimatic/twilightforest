@@ -1472,6 +1472,7 @@ b0263452ea8a58ec3403a00869f67f2706dc6b67 data/minecraft/tags/blocks/dragon_immun
 e5853a42bab532833b32f26e9ae96a91419ffaf9 data/minecraft/tags/blocks/flower_pots.json
 0924d0684b8acaccb9daa1c4c9cd233b08c11e97 data/minecraft/tags/blocks/leaves.json
 7e0b55c221c967b9b9d96fdc65d02dc6d65d40fe data/minecraft/tags/blocks/logs.json
+13e8b297acb446ab4973b0b0e90ebf3ba946d27a data/minecraft/tags/blocks/logs_that_burn.json
 c4f2826cb96d47f4f256f7f394846f4e0e17aed6 data/minecraft/tags/blocks/planks.json
 ce37cda29197440232b422a9386d0cc6587e5299 data/minecraft/tags/blocks/portals.json
 d63fb4bffb9438cbad8207bf8b29bc523d5806db data/minecraft/tags/blocks/saplings.json
@@ -1490,6 +1491,7 @@ dff03e7943801be09305bd92bd4714211a275e47 data/minecraft/tags/blocks/wooden_stair
 6143aa3040495e5971f91285be1a9dc1c96be9da data/minecraft/tags/blocks/wooden_trapdoors.json
 0924d0684b8acaccb9daa1c4c9cd233b08c11e97 data/minecraft/tags/items/leaves.json
 7e0b55c221c967b9b9d96fdc65d02dc6d65d40fe data/minecraft/tags/items/logs.json
+13e8b297acb446ab4973b0b0e90ebf3ba946d27a data/minecraft/tags/items/logs_that_burn.json
 c4f2826cb96d47f4f256f7f394846f4e0e17aed6 data/minecraft/tags/items/planks.json
 d63fb4bffb9438cbad8207bf8b29bc523d5806db data/minecraft/tags/items/saplings.json
 54627ecdbdb001468b1191df2c1431899dd4143f data/minecraft/tags/items/signs.json
