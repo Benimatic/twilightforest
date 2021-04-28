@@ -1207,6 +1207,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 	}
 	
 	private void thorns() {
+		boolean fixer = Direction.SOUTH.getAxis() == Direction.Axis.Z;
 		ModelFile green = models().withExistingParent(TFBlocks.green_thorns.getId().getPath(), prefix("block/thorns_main"))
 						.texture("side", prefix("block/green_thorns_side"))
 						.texture("end", prefix("block/green_thorns_top"));
@@ -1224,8 +1225,8 @@ public class BlockstateGenerator extends BlockStateProvider {
 						.part().modelFile(greenBottom).rotationX(90).addModel().condition(SixWayBlock.DOWN, true).end()
 						.part().modelFile(greenTop).rotationY(270).addModel().condition(SixWayBlock.EAST, true).end()
 						.part().modelFile(greenBottom).rotationY(270).addModel().condition(SixWayBlock.WEST, true).end()
-						.part().modelFile(greenTop).addModel().condition(SixWayBlock.SOUTH, true).end()
-						.part().modelFile(greenBottom).addModel().condition(SixWayBlock.NORTH, true).end();
+						.part().modelFile(fixer ? greenBottom : greenTop).rotationY(fixer ? 180 : 0).addModel().condition(SixWayBlock.SOUTH, true).end()
+						.part().modelFile(fixer ? greenTop : greenBottom).rotationY(fixer ? 180 : 0).addModel().condition(SixWayBlock.NORTH, true).end();
 
 		ModelFile brown = models().withExistingParent(TFBlocks.brown_thorns.getId().getPath(), prefix("block/thorns_main"))
 						.texture("side", prefix("block/brown_thorns_side"))
@@ -1244,8 +1245,8 @@ public class BlockstateGenerator extends BlockStateProvider {
 						.part().modelFile(brownBottom).rotationX(90).addModel().condition(SixWayBlock.DOWN, true).end()
 						.part().modelFile(brownTop).rotationY(270).addModel().condition(SixWayBlock.EAST, true).end()
 						.part().modelFile(brownBottom).rotationY(270).addModel().condition(SixWayBlock.WEST, true).end()
-						.part().modelFile(brownTop).addModel().condition(SixWayBlock.SOUTH, true).end()
-						.part().modelFile(brownBottom).addModel().condition(SixWayBlock.NORTH, true).end();
+						.part().modelFile(fixer ? brownBottom : brownTop).rotationY(fixer ? 180 : 0).addModel().condition(SixWayBlock.SOUTH, true).end()
+						.part().modelFile(fixer ? brownTop : brownBottom).rotationY(fixer ? 180 : 0).addModel().condition(SixWayBlock.NORTH, true).end();
 
 		ModelFile burnt = models().withExistingParent(TFBlocks.burnt_thorns.getId().getPath(), prefix("block/thorns_main"))
 						.texture("side", prefix("block/burnt_thorns_side"))
@@ -1264,8 +1265,8 @@ public class BlockstateGenerator extends BlockStateProvider {
 						.part().modelFile(burntBottom).rotationX(90).addModel().condition(SixWayBlock.DOWN, true).end()
 						.part().modelFile(burntTop).rotationY(270).addModel().condition(SixWayBlock.EAST, true).end()
 						.part().modelFile(burntBottom).rotationY(270).addModel().condition(SixWayBlock.WEST, true).end()
-						.part().modelFile(burntTop).addModel().condition(SixWayBlock.SOUTH, true).end()
-						.part().modelFile(burntBottom).addModel().condition(SixWayBlock.NORTH, true).end();
+						.part().modelFile(fixer ? burntBottom : burntTop).rotationY(fixer ? 180 : 0).addModel().condition(SixWayBlock.SOUTH, true).end()
+						.part().modelFile(fixer ? burntTop : burntBottom).rotationY(fixer ? 180 : 0).addModel().condition(SixWayBlock.NORTH, true).end();
 	}
 
 	private void auroraBlocks() {
