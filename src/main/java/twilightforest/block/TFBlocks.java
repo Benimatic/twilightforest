@@ -176,7 +176,7 @@ public class TFBlocks {
 	public static final RegistryObject<Block> trollber                    = BLOCKS.register("trollber", () -> new BlockTFTrollRoot(Block.Properties.create(Material.PLANTS).sound(SoundType.PLANT).doesNotBlockMovement().setLightLevel((state) -> 15)));
 	public static final RegistryObject<BlockTFHugeLilyPad> huge_lilypad   = BLOCKS.register("huge_lilypad", () -> new BlockTFHugeLilyPad(Block.Properties.create(Material.PLANTS).sound(SoundType.PLANT)));
 	public static final RegistryObject<Block> huge_waterlily              = BLOCKS.register("huge_waterlily", () -> new BlockTFHugeWaterLily(Block.Properties.create(Material.PLANTS).sound(SoundType.PLANT)));
-//	public static final RegistryObject<Block> slider                      = BLOCKS.register("slider", () -> new BlockTFSlider());
+	public static final RegistryObject<RotatedPillarBlock> slider         = BLOCKS.register("slider", () -> new BlockTFSlider());
 	public static final RegistryObject<Block> castle_brick                = BLOCKS.register("castle_brick", () -> new BlockTFCastleBlock(MaterialColor.QUARTZ));
 	public static final RegistryObject<Block> castle_brick_worn           = BLOCKS.register("castle_brick_worn", () -> new BlockTFCastleBlock(MaterialColor.QUARTZ));
 	public static final RegistryObject<Block> castle_brick_cracked        = BLOCKS.register("castle_brick_cracked", () -> new BlockTFCastleBlock(MaterialColor.QUARTZ));
@@ -382,7 +382,7 @@ public class TFBlocks {
 						deadrock, deadrock_cracked, deadrock_weathered,
 						trollsteinn, wispy_cloud, fluffy_cloud, giant_cobblestone, giant_log, giant_leaves, giant_obsidian,
 						uberous_soil, huge_stalk, huge_mushgloom, huge_mushgloom_stem, trollvidr, unripe_trollber, trollber,
-						castle_brick, castle_brick_worn, castle_brick_cracked, castle_brick_mossy, castle_brick_roof, castle_brick_frame,
+						slider, castle_brick, castle_brick_worn, castle_brick_cracked, castle_brick_mossy, castle_brick_roof, castle_brick_frame,
 						castle_pillar_encased, castle_pillar_encased_tile, castle_pillar_bold, castle_pillar_bold_tile,
 						castle_stairs_brick, castle_stairs_worn, castle_stairs_cracked, castle_stairs_mossy, castle_stairs_encased, castle_stairs_bold,
 						castle_rune_brick_yellow, castle_rune_brick_purple, castle_rune_brick_pink, castle_rune_brick_blue,

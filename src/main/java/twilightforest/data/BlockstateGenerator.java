@@ -129,6 +129,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 
 		trophyPedestal();
 		auroraBlocks();
+		slider();
 		simpleBlock(TFBlocks.underbrick.get());
 		simpleBlock(TFBlocks.underbrick_cracked.get());
 		simpleBlock(TFBlocks.underbrick_mossy.get());
@@ -984,6 +985,41 @@ public class BlockstateGenerator extends BlockStateProvider {
 		getVariantBuilder(TFBlocks.terrorcotta_diagonal.get()).partialState()
 						.with(BlockTFDiagonal.IS_ROTATED, true).setModels(ConfiguredModel.builder().modelFile(terrorcottaDiagonalRotated).uvLock(true).rotationY(90).build());
 	}*/
+
+	private void slider() {
+		ModelFile slider = models().getExistingFile(TwilightForestMod.prefix("block/slider"));
+		ModelFile horizSlider = models().getExistingFile(TwilightForestMod.prefix("block/slider_horiz"));
+		getVariantBuilder(TFBlocks.slider.get()).forAllStates(state -> {
+			switch (state.get(BlockTFSlider.AXIS)) {
+				case X:
+					switch(state.get(BlockTFSlider.DELAY)) {
+						case 0:
+						case 1:
+						case 2:
+						default:
+							return ConfiguredModel.builder().modelFile(horizSlider).rotationX(90).rotationY(90).build();
+					}
+				case Y:
+				default:
+					switch(state.get(BlockTFSlider.DELAY)) {
+						case 0:
+						case 1:
+						case 2:
+						default:
+							return ConfiguredModel.builder().modelFile(slider).build();
+					}
+				case Z:
+					switch(state.get(BlockTFSlider.DELAY)) {
+						case 0:
+						case 1:
+						case 2:
+						default:
+							return ConfiguredModel.builder().modelFile(horizSlider).rotationX(90).build();
+					}
+
+			}
+		});
+	}
 
 	private void towerBlocks() {
 		ResourceLocation cube3 = prefix("block/util/cube_all_3_layer");

@@ -80,6 +80,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		generated(TFBlocks.trollvidr.getId().getPath(), prefix("block/" + TFBlocks.trollvidr.getId().getPath()));
 		generated(TFBlocks.unripe_trollber.getId().getPath(), prefix("block/" + TFBlocks.unripe_trollber.getId().getPath()));
 		generated(TFBlocks.trollber.getId().getPath(), prefix("block/" + TFBlocks.trollber.getId().getPath()));
+		toBlock(TFBlocks.slider.get());
 		generated(TFBlocks.huge_lilypad.getId().getPath(), prefix("block/" + TFBlocks.huge_lilypad.getId().getPath()));
 		generated(TFBlocks.huge_waterlily.getId().getPath(), prefix("block/" + TFBlocks.huge_waterlily.getId().getPath()));
 		toBlock(TFBlocks.castle_brick.get());
