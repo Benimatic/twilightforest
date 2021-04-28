@@ -5,10 +5,10 @@
       "item": "minecraft:vine"
     },
     {
-      "item": "twilightforest:etched_nagastone"
+      "item": "twilightforest:maze_stone_brick"
     }
   ],
   "result": {
-    "item": "twilightforest:etched_nagastone_mossy"
+    "item": "twilightforest:maze_stone_mossy"
   }
 }
