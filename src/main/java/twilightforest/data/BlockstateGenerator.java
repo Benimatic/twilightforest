@@ -321,15 +321,15 @@ public class BlockstateGenerator extends BlockStateProvider {
 					.texture("pane", TwilightForestMod.prefix("block/forcefield_white"));
 
 			getMultipartBuilder(block.get())
-					.part().modelFile(post).addModel().end()
-					.part().modelFile(side).addModel().condition(SixWayBlock.NORTH, true).end()
-					.part().modelFile(side).rotationY(90).addModel().condition(SixWayBlock.EAST, true).end()
-					.part().modelFile(sidealt).addModel().condition(SixWayBlock.SOUTH, true).end()
-					.part().modelFile(sidealt).rotationY(90).addModel().condition(SixWayBlock.WEST, true).end()
-					.part().modelFile(noside).addModel().condition(SixWayBlock.NORTH, false).end()
-					.part().modelFile(noside).rotationY(90).addModel().condition(SixWayBlock.EAST, false).end()
-					.part().modelFile(nosidealt).addModel().condition(SixWayBlock.SOUTH, false).end()
-					.part().modelFile(nosidealt).rotationY(90).addModel().condition(SixWayBlock.WEST, false).end();
+					.part().modelFile(post).uvLock(true).addModel().end()
+					.part().modelFile(side).uvLock(true).addModel().condition(SixWayBlock.NORTH, true).end()
+					.part().modelFile(noside).uvLock(true).addModel().condition(SixWayBlock.NORTH, false).end()
+					.part().modelFile(side).uvLock(true).rotationY(90).addModel().condition(SixWayBlock.EAST, true).end()
+					.part().modelFile(nosidealt).uvLock(true).addModel().condition(SixWayBlock.EAST, false).end()
+					.part().modelFile(sidealt).uvLock(true).addModel().condition(SixWayBlock.SOUTH, true).end()
+					.part().modelFile(nosidealt).uvLock(true).rotationY(90).addModel().condition(SixWayBlock.SOUTH, false).end()
+					.part().modelFile(sidealt).uvLock(true).rotationY(90).addModel().condition(SixWayBlock.WEST, true).end()
+					.part().modelFile(noside).uvLock(true).rotationY(270).addModel().condition(SixWayBlock.WEST, false).end();
 		}
 
 	}
