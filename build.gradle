@@ -160,11 +160,11 @@ repositories {
         // Temporary mappings
         url 'https://www.dogforce-games.com/maven/'
     }
-    /*maven {
-        name 'Jared\'s Maven' // Immersive Engineering + Patchouli
-        url 'https://blamejared.com/maven'
-    }
     maven {
+        name 'Jared\'s Maven' // Immersive Engineering + Patchouli
+        url 'https://maven.blamejared.com/'
+    }
+    /*maven {
         name 'player\'s Maven' // Forestry
         url 'http://maven.ic2.player.to/'
     }
@@ -189,11 +189,12 @@ dependencies {
     runtimeOnly fg.deobf("team.chisel.ctm:CTM:MC${minecraft_version}-${ctm_version}")
     // deobfCompile "team.chisel:Chisel:MC${minecraft_version}-${chisel_version}"
     */
-    /*
-    // blamejared
-    deobfCompile "blusunrize:ImmersiveEngineering:${immersive_engineering_version}"
-    deobfCompile "vazkii.patchouli:Patchouli:${patchouli_version}"
 
+    // blamejared
+    //deobfCompile "blusunrize:ImmersiveEngineering:${immersive_engineering_version}"
+    compileOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
+    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
+    /*
     // player
     deobfCompile "net.sengir.forestry:forestry_${minecraft_version}:${forestry_version}"
 
