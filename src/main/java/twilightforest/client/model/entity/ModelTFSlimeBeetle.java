@@ -33,9 +33,16 @@ public class ModelTFSlimeBeetle extends SegmentedModel<EntityTFSlimeBeetle> {
     public ModelRenderer leftEye;
     public ModelRenderer tailTop;
     public ModelRenderer slime;
+    public ModelRenderer slimeCenter;
 
+    private final boolean translucent;
 
     public ModelTFSlimeBeetle() {
+        this(false);
+    }
+
+    public ModelTFSlimeBeetle(boolean translucent) {
+        this.translucent = translucent;
         this.textureWidth = 64;
         this.textureHeight = 64;
         this.body = new ModelRenderer(this, 0, 0);
@@ -49,10 +56,12 @@ public class ModelTFSlimeBeetle extends SegmentedModel<EntityTFSlimeBeetle> {
         this.tailBottom = new ModelRenderer(this, 0, 0);
         this.tailBottom.setRotationPoint(0.0F, 18.0F, 2.0F);
         this.tailBottom.setTextureOffset(0, 34).addBox(-3.0F, -3.0F, 0.0F, 6.0F, 6.0F, 6.0F, 0.0F, 0.0F, 0.0F);
-        this.slime = new ModelRenderer(this, 0, 0);
-        this.slime.setRotationPoint(0.0F, -6.0F, 2.0F);
-        this.slime.setTextureOffset(16, 40).addBox(-6.0F, -14.0F, -7.0F, 12.0F, 12.0F, 12.0F, 0.0F, 0.0F, 0.0F);
-        this.slime.setTextureOffset(0, 18).addBox(-4.0F, -12.0F, -5.0F, 8.0F, 8.0F, 8.0F, 0.0F, 0.0F, 0.0F);
+        this.slime = new ModelRenderer(this, 16, 40);
+        this.slime.setRotationPoint(0.0F, -8.0F, 2.0F);
+        this.slime.addBox(-6.0F, -12.0F, -7.0F, 12.0F, 12.0F, 12.0F, 0.0F, 0.0F, 0.0F);
+        this.slimeCenter = new ModelRenderer(this, 0, 18);
+        this.slimeCenter.setRotationPoint(0.0F, -9.0F, 2.0F);
+        this.slimeCenter.addBox(-4.0F, -9.0F, -5.0F, 8.0F, 8.0F, 8.0F, 0.0F, 0.0F, 0.0F);
         this.rightEye = new ModelRenderer(this, 0, 0);
         this.rightEye.setRotationPoint(-2.5F, -1.0F, -4.5F);
         this.rightEye.setTextureOffset(0, 12).addBox(-2.0F, -1.0F, -2.0F, 3.0F, 3.0F, 3.0F, 0.0F, 0.0F, 0.0F);
@@ -96,7 +105,7 @@ public class ModelTFSlimeBeetle extends SegmentedModel<EntityTFSlimeBeetle> {
         this.leftLeg1.setRotationPoint(2.0F, 20.0F, -6.0F);
         this.leftLeg1.setTextureOffset(40, 0).addBox(0.0F, -1.0F, -1.0F, 10.0F, 2.0F, 2.0F, 0.0F, 0.0F, 0.0F);
         this.setRotateAngle(leftLeg1, 0.0F, 0.4363323129985824F, 0.4363323129985824F);
-        this.tailTop.addChild(this.slime);
+        this.tailTop.addChild(translucent ? this.slime : this.slimeCenter);
         this.head.addChild(this.rightEye);
         this.head.addChild(this.leftEye);
         this.head.addChild(this.rightAntenna);
@@ -179,6 +188,7 @@ public class ModelTFSlimeBeetle extends SegmentedModel<EntityTFSlimeBeetle> {
         this.tailBottom.rotateAngleX = MathHelper.cos(ageInTicks * 0.3335F) * 0.15F;
         this.tailTop.rotateAngleX = MathHelper.cos(ageInTicks * 0.4445F) * 0.20F;
         this.slime.rotateAngleX = MathHelper.cos(ageInTicks * 0.5555F) * 0.25F;
+        this.slimeCenter.rotateAngleX = MathHelper.cos(ageInTicks * 0.5555F + 0.25F) * 0.25F;
     }
 
     /**
