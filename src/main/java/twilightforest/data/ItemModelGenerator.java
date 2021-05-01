@@ -297,10 +297,10 @@ public class ItemModelGenerator extends ItemModelProvider {
 		singleTex(TFItems.naga_scale);
 		singleTex(TFItems.naga_chestplate);
 		singleTex(TFItems.naga_leggings);
-		singleTex(TFItems.twilight_scepter);
-		singleTex(TFItems.lifedrain_scepter);
-		singleTex(TFItems.zombie_scepter);
-		singleTex(TFItems.shield_scepter);
+		singleTexTool(TFItems.twilight_scepter);
+		singleTexTool(TFItems.lifedrain_scepter);
+		singleTexTool(TFItems.zombie_scepter);
+		singleTexTool(TFItems.shield_scepter);
 		singleTex(TFItems.ore_meter);
 		singleTex(TFItems.magic_map);
 		singleTex(TFItems.maze_map);
@@ -315,11 +315,11 @@ public class ItemModelGenerator extends ItemModelProvider {
 		singleTex(TFItems.ironwood_chestplate);
 		singleTex(TFItems.ironwood_leggings);
 		singleTex(TFItems.ironwood_boots);
-		singleTex(TFItems.ironwood_sword);
-		singleTex(TFItems.ironwood_pickaxe);
-		singleTex(TFItems.ironwood_axe);
-		singleTex(TFItems.ironwood_shovel);
-		singleTex(TFItems.ironwood_hoe);
+		singleTexTool(TFItems.ironwood_sword);
+		singleTexTool(TFItems.ironwood_pickaxe);
+		singleTexTool(TFItems.ironwood_axe);
+		singleTexTool(TFItems.ironwood_shovel);
+		singleTexTool(TFItems.ironwood_hoe);
 		singleTex(TFItems.torchberries);
 		singleTex(TFItems.raw_venison);
 		singleTex(TFItems.cooked_venison);
@@ -331,21 +331,21 @@ public class ItemModelGenerator extends ItemModelProvider {
 		singleTex(TFItems.fiery_chestplate);
 		singleTex(TFItems.fiery_leggings);
 		singleTex(TFItems.fiery_boots);
-		singleTex(TFItems.fiery_sword);
-		singleTex(TFItems.fiery_pickaxe);
+		singleTexTool(TFItems.fiery_sword);
+		singleTexTool(TFItems.fiery_pickaxe);
 		singleTex(TFItems.steeleaf_ingot);
 		singleTex(TFItems.steeleaf_helmet);
 		singleTex(TFItems.steeleaf_chestplate);
 		singleTex(TFItems.steeleaf_leggings);
 		singleTex(TFItems.steeleaf_boots);
-		singleTex(TFItems.steeleaf_sword);
-		singleTex(TFItems.steeleaf_pickaxe);
-		singleTex(TFItems.steeleaf_axe);
-		singleTex(TFItems.steeleaf_shovel);
-		singleTex(TFItems.steeleaf_hoe);
-		singleTex(TFItems.minotaur_axe_gold);
-		singleTex(TFItems.minotaur_axe);
-		singleTex(TFItems.mazebreaker_pickaxe);
+		singleTexTool(TFItems.steeleaf_sword);
+		singleTexTool(TFItems.steeleaf_pickaxe);
+		singleTexTool(TFItems.steeleaf_axe);
+		singleTexTool(TFItems.steeleaf_shovel);
+		singleTexTool(TFItems.steeleaf_hoe);
+		singleTexTool(TFItems.minotaur_axe_gold);
+		singleTexTool(TFItems.minotaur_axe);
+		singleTexTool(TFItems.mazebreaker_pickaxe);
 		singleTex(TFItems.transformation_powder);
 		singleTex(TFItems.raw_meef);
 		singleTex(TFItems.cooked_meef);
@@ -359,10 +359,10 @@ public class ItemModelGenerator extends ItemModelProvider {
 		singleTex(TFItems.ore_magnet)
 				.override().predicate(new ResourceLocation("pulling"), 1).predicate(new ResourceLocation("pull"), (float) 0.5).model(magnetPull1).end()
 				.override().predicate(new ResourceLocation("pulling"), 1).predicate(new ResourceLocation("pull"), 1).model(magnetPull2).end();
-		singleTex(TFItems.crumble_horn);
-		singleTex(TFItems.peacock_fan);
+		singleTexTool(TFItems.crumble_horn);
+		singleTexTool(TFItems.peacock_fan);
 		ModelFile queenAlt =  generated("moonworm_queen_alt", prefix("items/moonworm_queen_alt"));
-		singleTex(TFItems.moonworm_queen).override().predicate(prefix("alt"), 1).model(queenAlt).end();
+		singleTexTool(TFItems.moonworm_queen).override().predicate(prefix("alt"), 1).model(queenAlt).end();
 		singleTex(TFItems.charm_of_keeping_1);
 		singleTex(TFItems.charm_of_keeping_2);
 		singleTex(TFItems.charm_of_keeping_3);
@@ -378,9 +378,9 @@ public class ItemModelGenerator extends ItemModelProvider {
 		singleTex(TFItems.knightmetal_chestplate);
 		singleTex(TFItems.knightmetal_leggings);
 		singleTex(TFItems.knightmetal_boots);
-		singleTex(TFItems.knightmetal_sword);
-		singleTex(TFItems.knightmetal_pickaxe);
-		singleTex(TFItems.knightmetal_axe);
+		singleTexTool(TFItems.knightmetal_sword);
+		singleTexTool(TFItems.knightmetal_pickaxe);
+		singleTexTool(TFItems.knightmetal_axe);
 		singleTex(TFItems.knightmetal_ring);
 		singleTex(TFItems.phantom_helmet);
 		singleTex(TFItems.phantom_chestplate);
@@ -413,8 +413,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		ModelFile enderPulling1 = generated("ender_bow_pulling_1", prefix("items/ender_bow_pulling_1"));
 		ModelFile enderPulling2 = generated("ender_bow_pulling_2", prefix("items/ender_bow_pulling_2"));
 		bowTex(TFItems.ender_bow, enderPulling0, enderPulling1, enderPulling2);
-		generated(TFItems.ice_sword.getId().getPath(), prefix("items/ice_sword_solid"), prefix("items/ice_sword_clear"));
-		generated(TFItems.glass_sword.getId().getPath(), prefix("items/glass_sword_solid"), prefix("items/glass_sword_clear"));
+		tool(TFItems.ice_sword.getId().getPath(), prefix("items/ice_sword_solid"), prefix("items/ice_sword_clear"));
+		tool(TFItems.glass_sword.getId().getPath(), prefix("items/glass_sword_solid"), prefix("items/glass_sword_clear"));
 		ModelFile chainThrown = biggerTexString("block_and_chain_thrown", prefix("items/block_and_chain_thrown"));
 		biggerTex(TFItems.block_and_chain, prefix("items/block_and_chain")).override().predicate(prefix("thrown"), 1).model(chainThrown).end();
 		ModelFile cubeThrown = biggerTexString("cube_of_annihilation_thrown", prefix("items/cube_of_annihilation_thrown"));
@@ -475,6 +475,18 @@ public class ItemModelGenerator extends ItemModelProvider {
 		return builder;
 	}
 
+	private ItemModelBuilder singleTexTool(RegistryObject<Item> item) {
+		return tool(item.getId().getPath(), prefix("items/" + item.getId().getPath()));
+	}
+
+	private ItemModelBuilder tool(String name, ResourceLocation... layers) {
+		ItemModelBuilder builder = withExistingParent(name, "item/handheld");
+		for (int i = 0; i < layers.length; i++) {
+			builder = builder.texture("layer" + i, layers[i]);
+		}
+		return builder;
+	}
+
 	private ItemModelBuilder singleTex(RegistryObject<Item> item) {
 		return generated(item.getId().getPath(), prefix("items/" + item.getId().getPath()));
 	}
@@ -499,15 +511,23 @@ public class ItemModelGenerator extends ItemModelProvider {
 		return generated(item.getId().getPath(), prefix("items/" + item.getId().getPath()), prefix("items/" + item.getId().getPath() + "_0"));
 	}
 
+	private ItemModelBuilder bowItem(String name, ResourceLocation... layers) {
+		ItemModelBuilder builder = withExistingParent(name, "item/bow");
+		for (int i = 0; i < layers.length; i++) {
+			builder = builder.texture("layer" + i, layers[i]);
+		}
+		return builder;
+	}
+
 	private ItemModelBuilder bowTex(RegistryObject<Item> item, ModelFile pull0, ModelFile pull1, ModelFile pull2) {
-		return generated(item.getId().getPath(), prefix("items/" + item.getId().getPath()))
+		return bowItem(item.getId().getPath(), prefix("items/" + item.getId().getPath()))
 				.override().predicate(new ResourceLocation("pulling"), 1).model(pull0).end()
 				.override().predicate(new ResourceLocation("pulling"), 1).predicate(new ResourceLocation("pull"), (float) 0.65).model(pull1).end()
 				.override().predicate(new ResourceLocation("pulling"), 1).predicate(new ResourceLocation("pull"), (float) 0.9).model(pull2).end();
 	}
 
 	private ItemModelBuilder iceBowTex(RegistryObject<Item> item, ModelFile pull0, ModelFile pull1, ModelFile pull2) {
-		return generated(item.getId().getPath(), prefix("items/ice_bow_solid"), prefix("items/ice_bow_clear"))
+		return bowItem(item.getId().getPath(), prefix("items/ice_bow_solid"), prefix("items/ice_bow_clear"))
 				.override().predicate(new ResourceLocation("pulling"), 1).model(pull0).end()
 				.override().predicate(new ResourceLocation("pulling"), 1).predicate(new ResourceLocation("pull"), (float) 0.65).model(pull1).end()
 				.override().predicate(new ResourceLocation("pulling"), 1).predicate(new ResourceLocation("pull"), (float) 0.9).model(pull2).end();
