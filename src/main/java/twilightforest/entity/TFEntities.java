@@ -5,8 +5,10 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.SpriteRenderer;
 import net.minecraft.client.renderer.entity.WolfRenderer;
+import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.entity.model.SilverfishModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
@@ -380,7 +382,7 @@ public class TFEntities {
 		RenderingRegistry.registerEntityRenderingHandler(wild_boar, m -> new RenderTFBoar(m, new ModelTFBoar<>()));
 		RenderingRegistry.registerEntityRenderingHandler(bighorn_sheep, m -> new RenderTFBighorn(m, new ModelTFBighorn<>(), new ModelTFBighornFur(), 0.7F));
 		RenderingRegistry.registerEntityRenderingHandler(deer, m -> new RenderTFGenericMob<>(m, new ModelTFDeer(), 0.7F, "wilddeer.png"));
-		RenderingRegistry.registerEntityRenderingHandler(redcap, m -> new RenderTFRedcap<>(m, new ModelTFRedcap<>(), 0.4F, "redcap.png"));
+		RenderingRegistry.registerEntityRenderingHandler(redcap, m -> new RenderTFBiped<>(m, new ModelTFRedcap<>(0.0F), new BipedModel<>(0.7F), new BipedModel<>(0.7F), 0.4F, "redcap.png"));
 		RenderingRegistry.registerEntityRenderingHandler(skeleton_druid, m -> new RenderTFBiped<>(m, new ModelTFSkeletonDruid(), new ModelTFSkeletonDruid(), new ModelTFSkeletonDruid(), 0.5F, "skeletondruid.png"));
 		RenderingRegistry.registerEntityRenderingHandler(hostile_wolf, WolfRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(wraith, m -> new RenderTFWraith(m, new ModelTFWraith(), 0.5F));
@@ -421,7 +423,7 @@ public class TFEntities {
 		RenderingRegistry.registerEntityRenderingHandler(king_spider, RenderTFKingSpider::new);
 		RenderingRegistry.registerEntityRenderingHandler(tower_broodling, RenderTFTowerBroodling::new);
 		RenderingRegistry.registerEntityRenderingHandler(hedge_spider, RenderTFHedgeSpider::new);
-		RenderingRegistry.registerEntityRenderingHandler(redcap_sapper, m -> new RenderTFRedcap<>(m, new ModelTFRedcap<>(), 0.4F, "redcapsapper.png"));
+		RenderingRegistry.registerEntityRenderingHandler(redcap_sapper, m -> new RenderTFBiped<>(m, new ModelTFRedcap<>(0.0F), new BipedModel<>(0.75F), new BipedModel<>(0.75F), 0.4F, "redcapsapper.png"));
 		RenderingRegistry.registerEntityRenderingHandler(maze_slime, m -> new RenderTFMazeSlime(m, 0.625F));
 		RenderingRegistry.registerEntityRenderingHandler(yeti, m -> new RenderTFBiped<>(m, new ModelTFYeti<>(), 0.625F, "yeti2.png"));
 		RenderingRegistry.registerEntityRenderingHandler(protection_box, RenderTFProtectionBox::new);

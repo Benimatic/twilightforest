@@ -27,9 +27,9 @@ import javax.annotation.Nullable;
 
 public class EntityTFRedcap extends MonsterEntity {
 
-	public ItemStack heldPick = new ItemStack(Items.IRON_PICKAXE, 1);
-	public ItemStack heldTNT = new ItemStack(Blocks.TNT, 1);
-	public ItemStack heldFlint = new ItemStack(Items.FLINT_AND_STEEL, 1);
+	public ItemStack heldPick = new ItemStack(Items.IRON_PICKAXE);
+	public ItemStack heldTNT = new ItemStack(Blocks.TNT);
+	public ItemStack heldFlint = new ItemStack(Items.FLINT_AND_STEEL);
 
 	public EntityTFRedcap(EntityType<? extends EntityTFRedcap> type, World world) {
 		super(type, world);
@@ -44,9 +44,9 @@ public class EntityTFRedcap extends MonsterEntity {
 	protected void registerGoals() {
 		this.goalSelector.addGoal(0, new SwimGoal(this));
 		// This is safe because AvoidEntityGoal doesn't use the LivingEntity interface, only the Entity one
-		@SuppressWarnings({"rawtypes", "unchecked"})
-		AvoidEntityGoal avoidGoal = new AvoidEntityGoal(this, TNTEntity.class, 2.0F, 1.0F, 2.0F);
-		this.goalSelector.addGoal(1, avoidGoal);
+		//FIXME haha nope, it uses LivingEntity now
+		//AvoidEntityGoal avoidGoal = new AvoidEntityGoal(this, TNTEntity.class, 2.0F, 1.0F, 2.0F);
+		//this.goalSelector.addGoal(1, avoidGoal);
 		this.goalSelector.addGoal(2, new EntityAITFRedcapShy(this, 1.0F));
 		this.goalSelector.addGoal(3, new EntityAITFRedcapLightTNT(this, 1.0F)); // light TNT
 		this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0D, false));
