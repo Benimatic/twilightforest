@@ -3,6 +3,7 @@ package twilightforest.entity.passive;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.AgeableEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
@@ -228,6 +229,11 @@ public class EntityTFQuestRam extends AnimalEntity {
 
 	public int countColorsSet() {
 		return Integer.bitCount(getColorFlags());
+	}
+
+	@Override
+	protected boolean canBeRidden(Entity entityIn) {
+		return false;
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package twilightforest.entity.boss;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
@@ -629,6 +630,11 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 	@Override
 	protected boolean shouldAttack(LivingEntity living) {
 		return !this.isInTantrum();
+	}
+
+	@Override
+	protected boolean canBeRidden(Entity entityIn) {
+		return false;
 	}
 
 	@Override

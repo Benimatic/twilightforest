@@ -102,6 +102,12 @@ public class ModelTFPinchBeetle extends SegmentedModel<EntityTFPinchBeetle> {
     }
 
     @Override
+    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        if(this.isSitting) matrixStackIn.translate(0, -0.15F, 0);
+        super.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+    }
+
+    @Override
     public void setRotationAngles(EntityTFPinchBeetle entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.Head.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
         this.Head.rotateAngleX = headPitch / (180F / (float) Math.PI);

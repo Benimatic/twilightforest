@@ -47,6 +47,12 @@ public class ModelTFMinotaur extends BipedModel<EntityTFMinotaur> {
         this.bipedHeadwear = new ModelRenderer(this, 0, 0);
     }
 
+    @Override
+    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        if(this.isSitting) matrixStackIn.translate(0, 0.5F, 0);
+        super.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+    }
+
     /**
      * This is a helper function from Tabula to set the rotation of model parts
      */

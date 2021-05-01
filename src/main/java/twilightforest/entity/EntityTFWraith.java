@@ -262,6 +262,11 @@ public class EntityTFWraith extends FlyingEntity implements IMob {
 	}
 
 	@Override
+	protected boolean canBeRidden(Entity entityIn) {
+		return false;
+	}
+
+	@Override
 	protected SoundEvent getAmbientSound() {
 		return TFSounds.WRAITH_AMBIENT;
 	}

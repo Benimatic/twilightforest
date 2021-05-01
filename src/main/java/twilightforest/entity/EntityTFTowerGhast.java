@@ -1,5 +1,6 @@
 package twilightforest.entity;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
@@ -394,6 +395,11 @@ public class EntityTFTowerGhast extends GhastEntity {
 	@Override
 	public boolean detachHome() {
 		this.maximumHomeDistance = -1.0F;
+		return false;
+	}
+
+	@Override
+	protected boolean canBeRidden(Entity entityIn) {
 		return false;
 	}
 

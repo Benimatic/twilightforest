@@ -426,6 +426,11 @@ public class EntityTFYetiAlpha extends MonsterEntity implements IRangedAttackMob
 	}
 
 	@Override
+	protected boolean canBeRidden(Entity entityIn) {
+		return false;
+	}
+
+	@Override
 	public boolean isNonBoss() {
 		return false;
 	}

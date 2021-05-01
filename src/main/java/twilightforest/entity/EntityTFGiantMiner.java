@@ -89,4 +89,8 @@ public class EntityTFGiantMiner extends MonsterEntity {
 		return pos.getY() > 60 && (MobEntity.canSpawnOn(type, world, reason, pos, rand) || world.getBlockState(pos).getBlock() == TFBlocks.wispy_cloud.get() || world.getBlockState(pos).getBlock() == TFBlocks.fluffy_cloud.get());
 	}
 
+	@Override
+	protected boolean canBeRidden(Entity entityIn) {
+		return false;
+	}
 }

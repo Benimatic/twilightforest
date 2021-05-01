@@ -120,6 +120,15 @@ public class ModelTFSlimeBeetle extends SegmentedModel<EntityTFSlimeBeetle> {
     }
 
     @Override
+    public void render(MatrixStack stack, IVertexBuilder builder, int light, int overlay, float red, float green, float blue, float alpha) {
+        tailBottom.render(stack, builder, light, overlay, red, green, blue, alpha);
+
+        if (!translucent) {
+            getParts().forEach((part) -> part.render(stack, builder, light, overlay, red, green, blue, alpha));
+        }
+    }
+
+    @Override
     public void setRotationAngles(EntityTFSlimeBeetle entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.head.rotateAngleY = netHeadYaw / (180F / (float) Math.PI);
         this.head.rotateAngleX = headPitch / (180F / (float) Math.PI);

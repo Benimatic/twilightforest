@@ -766,6 +766,11 @@ public class EntityTFHydra extends MobEntity implements IMob {
 	}
 
 	@Override
+	protected boolean canBeRidden(Entity entityIn) {
+		return false;
+	}
+
+	@Override
 	public boolean isNonBoss() {
 		return false;
 	}

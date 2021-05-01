@@ -169,6 +169,11 @@ public class EntityTFMinoshroom extends EntityTFMinotaur {
 	}
 
 	@Override
+	protected boolean canBeRidden(Entity entityIn) {
+		return false;
+	}
+
+	@Override
 	public boolean isNonBoss() {
 		return false;
 	}

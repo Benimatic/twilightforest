@@ -232,6 +232,11 @@ public class EntityTFTinyBird extends EntityTFBird {
 	}
 
 	@Override
+	protected boolean canBeRidden(Entity entityIn) {
+		return false;
+	}
+
+	@Override
 	protected void collideWithNearbyEntities() {
 	}
 }

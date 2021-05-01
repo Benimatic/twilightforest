@@ -83,6 +83,11 @@ public abstract class EntityTFHydraPart extends TFPartEntity<EntityTFHydra> {
 	}
 
 	@Override
+	protected boolean canBeRidden(Entity entityIn) {
+		return false;
+	}
+
+	@Override
 	public boolean isNonBoss() {
 		return false;
 	}

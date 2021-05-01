@@ -227,6 +227,11 @@ public class EntityTFSlideBlock extends Entity implements IEntityAdditionalSpawn
 	}
 
 	@Override
+	protected boolean canBeRidden(Entity entityIn) {
+		return false;
+	}
+
+	@Override
 	public IPacket<?> createSpawnPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}

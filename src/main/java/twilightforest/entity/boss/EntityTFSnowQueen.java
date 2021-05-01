@@ -443,6 +443,11 @@ public class EntityTFSnowQueen extends MonsterEntity implements IBreathAttacker 
 	}
 
 	@Override
+	protected boolean canBeRidden(Entity entityIn) {
+		return false;
+	}
+
+	@Override
 	public boolean isNonBoss() {
 		return false;
 	}

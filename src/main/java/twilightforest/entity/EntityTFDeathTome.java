@@ -1,5 +1,6 @@
 package twilightforest.entity;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.IRangedAttackMob;
@@ -75,6 +76,11 @@ public class EntityTFDeathTome extends MonsterEntity implements IRangedAttackMob
 		} else {
 			return false;
 		}
+	}
+
+	@Override
+	protected boolean canBeRidden(Entity entityIn) {
+		return false;
 	}
 
 	@Nullable
