@@ -79,9 +79,10 @@ public class ItemTagGenerator extends ItemTagsProvider {
 		this.copy(BlockTags.PLANKS, ItemTags.PLANKS);
 
 		this.copy(BlockTags.WOODEN_FENCES, ItemTags.WOODEN_FENCES);
-		//this.copy(BlockTags.FENCE_GATES, ItemTags.FENCE_GATES); There is no item version of this vanilla block tag for Fence Gates
+		this.copy(Tags.Blocks.FENCES, Tags.Items.FENCES);
+		this.copy(Tags.Blocks.FENCE_GATES, Tags.Items.FENCE_GATES);
 		this.copy(Tags.Blocks.FENCES_WOODEN, Tags.Items.FENCES_WOODEN);
-		this.copy(Tags.Blocks.FENCE_GATES, Tags.Items.FENCE_GATES_WOODEN);
+		this.copy(Tags.Blocks.FENCE_GATES_WOODEN, Tags.Items.FENCE_GATES_WOODEN);
 
 		this.copy(BlockTags.WOODEN_SLABS, ItemTags.WOODEN_SLABS);
 		this.copy(BlockTags.SLABS, ItemTags.SLABS);

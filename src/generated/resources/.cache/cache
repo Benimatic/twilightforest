@@ -1601,10 +1601,14 @@ f881a67caea421640dfe806c81918f9bc9341541 assets/twilightforest/models/item/wispy
 a1c24201442c5599867d3a66885446bc69c9b4ca assets/twilightforest/models/item/yeti_leggings.json
 98167609bf3898587f7565736a6fc24a7966cacd assets/twilightforest/models/item/yeti_spawn_egg.json
 dbcd1147381acc80cb9da39942354cd0d006c3b1 assets/twilightforest/models/item/zombie_scepter.json
+34355afaa2aff5f9dc56e9f1a07eab82a9ff1b11 data/forge/tags/blocks/fence_gates.json
 34355afaa2aff5f9dc56e9f1a07eab82a9ff1b11 data/forge/tags/blocks/fence_gates/wooden.json
+582f0cd48d428219bf2a684ca764880337688177 data/forge/tags/blocks/fences.json
 582f0cd48d428219bf2a684ca764880337688177 data/forge/tags/blocks/fences/wooden.json
 32955ec8a90528fa21ebd85b7f38e3301698ea2e data/forge/tags/items/feather.json
-74700d556ca80c7a1db5fd4efb09c3ddb26cad66 data/forge/tags/items/fence_gates/wooden.json
+34355afaa2aff5f9dc56e9f1a07eab82a9ff1b11 data/forge/tags/items/fence_gates.json
+34355afaa2aff5f9dc56e9f1a07eab82a9ff1b11 data/forge/tags/items/fence_gates/wooden.json
+582f0cd48d428219bf2a684ca764880337688177 data/forge/tags/items/fences.json
 582f0cd48d428219bf2a684ca764880337688177 data/forge/tags/items/fences/wooden.json
 5b3298d38301dfd4815c4c0a52aabc443c5867eb data/forge/tags/items/paper.json
 81816d7478675dcbc72e5f1d0515916062e197e9 data/minecraft/tags/blocks/beacon_base_blocks.json

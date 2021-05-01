@@ -35,6 +35,7 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -45,6 +46,7 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AdvancementEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.Event;
@@ -199,6 +201,13 @@ public class TFEventListener {
 				living.setItemStackToSlot(EquipmentSlotType.HEAD, poorBug.getSquishResult());
 				living.world.playSound(null, living.getPosX(), living.getPosY(), living.getPosZ(), TFSounds.BUG_SQUISH, living.getSoundCategory(), 1, 1);
 			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void burnStuff(FurnaceFuelBurnTimeEvent evt) {
+		if(evt.getItemStack().getItem().isIn(Tags.Items.FENCES_WOODEN) || evt.getItemStack().getItem().isIn(Tags.Items.FENCE_GATES_WOODEN)) {
+			evt.setBurnTime(300);
 		}
 	}
 
