@@ -1,11 +1,8 @@
 {
-  "result": {
-    "item": "twilightforest:moonworm_queen"
-  },
+  "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "twilightforest:moonworm_queen",
-      "data": 32767
+      "item": "twilightforest:moonworm_queen"
     },
     {
       "item": "twilightforest:torchberries"
@@ -17,5 +14,7 @@
       "item": "twilightforest:torchberries"
     }
   ],
-  "type": "minecraft:crafting_shapeless"
+  "result": {
+    "item": "twilightforest:moonworm_queen"
+  }
 }
