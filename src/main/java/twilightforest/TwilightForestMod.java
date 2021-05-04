@@ -152,8 +152,9 @@ public class TwilightForestMod {
 	}
 
 	@SubscribeEvent
-	public static void registerSmelting(RegistryEvent.Register<GlobalLootModifierSerializer<?>> evt) {
+	public static void registerLootModifiers(RegistryEvent.Register<GlobalLootModifierSerializer<?>> evt) {
 		evt.getRegistry().register(new ItemTFFieryPick.Serializer().setRegistryName(ID + ":fiery_pick_smelting"));
+		evt.getRegistry().register(new TFEventListener.Serializer().setRegistryName(ID + ":giant_block_grouping"));
 	}
 
 	@SubscribeEvent

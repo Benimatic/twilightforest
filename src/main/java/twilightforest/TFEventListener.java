@@ -1,6 +1,7 @@
 package twilightforest;
 
 import com.google.common.collect.ImmutableSet;
+import com.google.gson.JsonObject;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -19,6 +20,8 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.LootContext;
+import net.minecraft.loot.conditions.ILootCondition;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
@@ -27,6 +30,7 @@ import net.minecraft.tags.ITag;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.MutableBoundingBox;
@@ -36,6 +40,8 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
+import net.minecraftforge.common.loot.LootModifier;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -69,6 +75,7 @@ import twilightforest.entity.IHostileMount;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.projectile.ITFProjectile;
 import twilightforest.enums.BlockLoggingEnum;
+import twilightforest.item.ItemTFFieryPick;
 import twilightforest.item.ItemTFPhantomArmor;
 import twilightforest.item.TFItems;
 import twilightforest.network.PacketAreaProtection;
@@ -83,6 +90,7 @@ import twilightforest.world.ChunkGeneratorTwilightBase;
 import twilightforest.world.TFDimensions;
 import twilightforest.world.TFGenerationSettings;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -133,25 +141,47 @@ public class TFEventListener {
 	/**
 	 * Also check if we need to transform 64 cobbles into a giant cobble
 	 */
-	/*@SubscribeEvent FIXME Manipulate the drop with IGlobalLootModifier
-	public static void harvestDrops(HarvestDropsEvent event) {
-		// this flag is set in reaction to the breakBlock event, but we need to remove the drops in this event
-		if (shouldMakeGiantCobble && event.getDrops().size() > 0) {
-			// turn the next 64 cobblestone drops into one giant cobble
-			if (event.getDrops().get(0).getItem() == Item.getItemFromBlock(Blocks.COBBLESTONE)) {
-				event.getDrops().remove(0);
-				if (amountOfCobbleToReplace == 64) {
-					event.getDrops().add(new ItemStack(TFBlocks.giant_cobblestone.get()));
-				}
+	public static class ManipulateDrops extends LootModifier {
 
-				amountOfCobbleToReplace--;
+		protected ManipulateDrops(ILootCondition[] conditionsIn) {
+			super(conditionsIn);
+		}
 
-				if (amountOfCobbleToReplace <= 0) {
-					shouldMakeGiantCobble = false;
+		@Nonnull
+		@Override
+		protected List<ItemStack> doApply(List<ItemStack> generatedLoot, LootContext context) {
+			List<ItemStack> newLoot = new ArrayList<>();
+			boolean flag = false;
+			if (shouldMakeGiantCobble && generatedLoot.size() > 0) {
+				// turn the next 64 cobblestone drops into one giant cobble
+				if (generatedLoot.get(0).getItem() == Item.getItemFromBlock(Blocks.COBBLESTONE)) {
+					generatedLoot.remove(0);
+					if (amountOfCobbleToReplace == 64) {
+						newLoot.add(new ItemStack(TFBlocks.giant_cobblestone.get()));
+						flag = true;
+					}
+					amountOfCobbleToReplace--;
+					if (amountOfCobbleToReplace <= 0) {
+						shouldMakeGiantCobble = false;
+					}
 				}
 			}
+			return flag ? newLoot : generatedLoot;
 		}
-	}*/
+	}
+
+	public static class Serializer extends GlobalLootModifierSerializer<ManipulateDrops> {
+
+		@Override
+		public ManipulateDrops read(ResourceLocation name, JsonObject json, ILootCondition[] conditionsIn) {
+			return new ManipulateDrops(conditionsIn);
+		}
+
+		@Override
+		public JsonObject write(ManipulateDrops instance) {
+			return null;
+		}
+	}
 
 	@SubscribeEvent
 	public static void entityHurts(LivingHurtEvent event) {
