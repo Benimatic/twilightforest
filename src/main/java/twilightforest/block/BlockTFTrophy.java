@@ -27,7 +27,7 @@ public class BlockTFTrophy extends BlockTFAbstractTrophy {
 	private final BossVariant variant;
 
 	public BlockTFTrophy(BossVariant variant) {
-		super(variant, Properties.create(Material.MISCELLANEOUS).hardnessAndResistance(0.0F));
+		super(variant, Properties.create(Material.MISCELLANEOUS).zeroHardnessAndResistance());
 		this.variant = variant;
 		setDefaultState(stateContainer.getBaseState().with(BlockTFTrophy.ROTATION, 0));
 	}
