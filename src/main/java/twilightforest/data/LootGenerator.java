@@ -6,6 +6,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.LootTableProvider;
 import net.minecraft.loot.*;
 import net.minecraft.util.ResourceLocation;
+import twilightforest.loot.TFTreasure;
 
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ public class LootGenerator extends LootTableProvider {
 
 	private final List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootParameterSet>> tables = ImmutableList.of(
 					Pair.of(BlockLootTables::new, LootParameterSets.BLOCK),
+					Pair.of(ChestLootTables::new, LootParameterSets.CHEST),
 					Pair.of(EntityLootTables::new, LootParameterSets.ENTITY)
 	);
 

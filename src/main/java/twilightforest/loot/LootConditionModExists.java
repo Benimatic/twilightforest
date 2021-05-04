@@ -7,6 +7,7 @@ import net.minecraft.loot.ILootSerializer;
 import net.minecraft.loot.LootConditionType;
 import net.minecraft.loot.LootContext;
 import net.minecraft.loot.conditions.ILootCondition;
+import net.minecraft.loot.conditions.RandomChance;
 import net.minecraft.util.JSONUtils;
 import net.minecraftforge.fml.ModList;
 
@@ -29,6 +30,12 @@ public class LootConditionModExists implements ILootCondition {
     @Override
     public boolean test(LootContext context) {
         return exists;
+    }
+
+    public static ILootCondition.IBuilder builder(String modid) {
+        return () -> {
+            return new LootConditionModExists(modid);
+        };
     }
 
     public static class Serializer implements ILootSerializer<LootConditionModExists> {
