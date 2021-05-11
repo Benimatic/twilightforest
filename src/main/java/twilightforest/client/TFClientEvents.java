@@ -129,6 +129,10 @@ public class TFClientEvents {
 			ModelLoader.addSpecialModel(new ModelResourceLocation(TwilightForestMod.prefix("trophy"), "inventory"));
 			ModelLoader.addSpecialModel(new ModelResourceLocation(TwilightForestMod.prefix("trophy_minor"), "inventory"));
 			ModelLoader.addSpecialModel(new ModelResourceLocation(TwilightForestMod.prefix("trophy_quest"), "inventory"));
+
+			ModelLoader.addSpecialModel(TwilightForestMod.prefix("block/casket_obsidian"));
+			ModelLoader.addSpecialModel(TwilightForestMod.prefix("block/casket_stone"));
+			ModelLoader.addSpecialModel(TwilightForestMod.prefix("block/casket_basalt"));
 		}
 	}
 

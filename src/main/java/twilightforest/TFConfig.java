@@ -201,6 +201,11 @@ public class TFConfig {
 					translation(config + "uncrafting").
 					comment("Disable the uncrafting function of the uncrafting table. Provided as an option when interaction with other mods produces exploitable recipes.").
 					define("disableUncrafting", false);
+			casketUUIDLocking = builder.
+					worldRestart().
+					translation(config + "casket_uuid_locking").
+					comment("If true, Keepsake Caskets that are spawned when a player dies will not be accessible by other players. Use this if you dont want people taking from other people's death caskets. NOTE: server operators will still be able to open locked caskets.")
+					.define("uuid_locking", false);
 			builder.
 					comment("We recommend downloading the Shield Parry mod for parrying, but these controls remain for without.").
 					push("Shield Parrying");
@@ -322,6 +327,7 @@ public class TFConfig {
 		public ForgeConfigSpec.BooleanValue shouldReturnPortalBeUsable;
 		public ForgeConfigSpec.BooleanValue progressionRuleDefault;
 		public ForgeConfigSpec.BooleanValue disableUncrafting;
+		public ForgeConfigSpec.BooleanValue casketUUIDLocking;
 
 		public ShieldInteractions SHIELD_INTERACTIONS = new ShieldInteractions();
 

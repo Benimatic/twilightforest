@@ -16,7 +16,8 @@
     "twilightforest:fake_diamond",
     "twilightforest:vanishing_block",
     "twilightforest:locked_vanishing_block",
-    "twilightforest:reappearing_block"
+    "twilightforest:reappearing_block",
+    "twilightforest:keepsake_casket"
   ],
   "optional": [
     "tombmanygraves:grave_block"

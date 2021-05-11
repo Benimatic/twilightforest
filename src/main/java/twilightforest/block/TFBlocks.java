@@ -9,7 +9,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.SignItem;
 import net.minecraft.item.TallBlockItem;
 import net.minecraft.util.Direction;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -20,7 +19,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ISTER;
-import twilightforest.data.BlockTagGenerator;
 import twilightforest.enums.*;
 import twilightforest.item.*;
 import twilightforest.tileentity.TFTileEntities;
@@ -398,7 +396,7 @@ public class TFBlocks {
 						hedge, boss_spawner, root, liveroot_block, uncrafting_table, firefly_jar, cicada_jar, smoker, encased_smoker, fire_jet, encased_fire_jet,
 						naga_stone_head, naga_stone,
 						moss_patch, mayapple, clover_patch, fiddlehead, mushgloom, torchberry_plant, root_strand, fallen_leaves,
-						iron_ladder, /*terrorcotta_circle, terrorcotta_diagonal,*/ stone_twist, /*lapis_block,*/ keepsake_casket,
+						iron_ladder, /*terrorcotta_circle, terrorcotta_diagonal,*/ stone_twist, /*lapis_block,*/
 						oak_leaves, canopy_leaves, mangrove_leaves, dark_leaves, time_leaves, transformation_leaves, mining_leaves, sorting_leaves,
 						rainboak_leaves, rainboak_sapling,
 						oak_log, canopy_log, mangrove_log, dark_log, time_log, transformation_log, mining_log, sorting_log,
@@ -418,6 +416,7 @@ public class TFBlocks {
 			r.register(new BlockItem(b.get(), TFItems.defaultBuilder()).setRegistryName(b.get().getRegistryName()));
 		}
 
+		//FIXME it would be really nice if we could put these items anywhere in the creative tab instead of the end
 		//I would like to put signs before doors :)
 		r.register(new SignItem(TFItems.defaultBuilder().maxStackSize(16), twilight_oak_sign.get(), twilight_wall_sign.get())
 				.setRegistryName(twilight_oak_sign.getId()));
@@ -440,6 +439,13 @@ public class TFBlocks {
 		for (Block b : doors) {
 			r.register(new TallBlockItem(b, TFItems.defaultBuilder()).setRegistryName(b.getRegistryName()));
 		}
+
+		r.register(new BlockItem(keepsake_casket.get(), TFItems.defaultBuilder().setISTER(() -> new Callable<ItemStackTileEntityRenderer>() {
+			@Override
+			public ItemStackTileEntityRenderer call() {
+				return new ISTER(TFTileEntities.KEEPSAKE_CASKET.getId());
+			}
+		})).setRegistryName(keepsake_casket.getId()));
 
 		// FIXME: using anon classes currently to get around the classloader as a bandaid fix
 		r.register(new ItemBlockWearable(firefly.get(), TFItems.defaultBuilder().setISTER(() -> new Callable<ItemStackTileEntityRenderer>() {

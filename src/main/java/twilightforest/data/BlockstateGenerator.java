@@ -47,7 +47,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 		builtinEntity(TFBlocks.firefly.get(), "minecraft:block/slime_block");
 		builtinEntity(TFBlocks.moonworm.get(), "minecraft:block/slime_block");
 		builtinEntity(TFBlocks.cicada.get(), "minecraft:block/slime_block");
-		builtinEntity(TFBlocks.keepsake_casket.get(), "minecraft:block/chiseled_stone_bricks");
+		builtinEntity(TFBlocks.keepsake_casket.get(), "minecraft:block/netherite_block");
 
 		ModelFile portalModel = models().getExistingFile(prefix("block/twilight_portal"));
 		ModelFile portalOverlayModel = models().getExistingFile(prefix("block/twilight_portal_barrier"));
@@ -299,9 +299,9 @@ public class BlockstateGenerator extends BlockStateProvider {
 		builtinEntity(TFBlocks.sort_sign.get(), "twilightforest:block/wood/planks_sort_0");
 		builtinEntity(TFBlocks.sort_wall_sign.get(), "twilightforest:block/wood/planks_sort_0");
 
+		casketStuff();
 	}
 
-	//TODO: Absolutely not a 100% reflection of what existed
 	private void registerForceFields() {
 		ImmutableList<RegistryObject<Block>> forceFields = ImmutableList.of(TFBlocks.force_field_pink, TFBlocks.force_field_blue, TFBlocks.force_field_green, TFBlocks.force_field_purple, TFBlocks.force_field_orange);
 
@@ -442,6 +442,12 @@ public class BlockstateGenerator extends BlockStateProvider {
 						.with(DirectionalBlock.FACING, Direction.WEST).setModels(new ConfiguredModel(west));
 		getVariantBuilder(b).partialState()
 						.with(DirectionalBlock.FACING, Direction.EAST).setModels(new ConfiguredModel(east));
+	}
+
+	private void casketStuff() {
+		models().withExistingParent("casket_obsidian", prefix("block/casket_solid_template")).texture("top", new ResourceLocation("block/obsidian")).texture("side", new ResourceLocation("block/obsidian"));
+		models().withExistingParent("casket_stone", prefix("block/casket_solid_template")).texture("top", new ResourceLocation("block/stone")).texture("side", new ResourceLocation("block/stone"));
+		models().withExistingParent("casket_basalt", prefix("block/casket_solid_template")).texture("top", new ResourceLocation("block/basalt_top")).texture("side", new ResourceLocation("block/basalt_side"));
 	}
 
 	private void registerSmokersAndJets() {

@@ -35,6 +35,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
@@ -63,26 +66,20 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.items.ItemHandlerHelper;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.block.BlockTFCritter;
-import twilightforest.block.BlockTFGiantBlock;
-import twilightforest.block.BlockTFPortal;
-import twilightforest.block.TFBlocks;
+import twilightforest.block.*;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.shield.IShieldCapability;
 import twilightforest.enchantment.TFEnchantment;
 import twilightforest.entity.EntityTFCharmEffect;
+import twilightforest.entity.EntityTFYeti;
 import twilightforest.entity.IHostileMount;
 import twilightforest.entity.TFEntities;
+import twilightforest.entity.boss.EntityTFYetiAlpha;
 import twilightforest.entity.projectile.ITFProjectile;
 import twilightforest.enums.BlockLoggingEnum;
-import twilightforest.item.ItemTFFieryPick;
 import twilightforest.item.ItemTFPhantomArmor;
 import twilightforest.item.TFItems;
-import twilightforest.network.PacketAreaProtection;
-import twilightforest.network.PacketEnforceProgressionStatus;
-import twilightforest.network.PacketSetSkylightEnabled;
-import twilightforest.network.PacketUpdateShield;
-import twilightforest.network.TFPacketHandler;
+import twilightforest.network.*;
 import twilightforest.potions.TFPotions;
 import twilightforest.tileentity.TileEntityKeepsakeCasket;
 import twilightforest.util.TFItemStackUtils;
@@ -91,11 +88,7 @@ import twilightforest.world.TFDimensions;
 import twilightforest.world.TFGenerationSettings;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * So much of the mod logic in this one class
@@ -261,6 +254,7 @@ public class TFEventListener {
 		}
 	}
 
+	private static boolean casketExpiration = false;
 	private static void keepsakeCasket(PlayerEntity player) {
 		boolean casketConsumed = TFItemStackUtils.consumeInventoryItem(player, TFBlocks.keepsake_casket.get().asItem());
 
@@ -282,26 +276,71 @@ public class TFEventListener {
 			BlockPos immutablePos = pos.toImmutable();
 			FluidState fluidState = world.getFluidState(immutablePos);
 
-			if (world.setBlockState(immutablePos, TFBlocks.keepsake_casket.get().getDefaultState().with(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.getFromFluid(fluidState.getFluid())))) {
+			if (world.setBlockState(immutablePos, TFBlocks.keepsake_casket.get().getDefaultState().with(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.getFromFluid(fluidState.getFluid())).with(BlockKeepsakeCasket.BREAKAGE, TFItemStackUtils.damage))) {
 				TileEntity te = world.getTileEntity(immutablePos);
 
 				if (te instanceof TileEntityKeepsakeCasket) {
 					TileEntityKeepsakeCasket casket = (TileEntityKeepsakeCasket) te;
 
+					if (TFConfig.COMMON_CONFIG.casketUUIDLocking.get()) {
+						//make it so only the player who died can open the chest if our config allows us
+						TileEntityKeepsakeCasket.playeruuid = player.getUniqueID();
+					} else {
+						TileEntityKeepsakeCasket.playeruuid = null;
+					}
+
+					//some names are way too long for the casket so we'll cut them down
+					String modifiedName;
+					if (player.getName().getString().length() > 12)
+						modifiedName = player.getName().getString().substring(0, 12);
+					else modifiedName = player.getName().getString();
+					TileEntityKeepsakeCasket.name = modifiedName;
+					casket.setCustomName(new StringTextComponent(modifiedName + "'s " + (world.rand.nextInt(10000) == 0 ? "Costco Casket" : casket.getDisplayName().getString())));
+					int damage = world.getBlockState(immutablePos).get(BlockKeepsakeCasket.BREAKAGE);
+					if (world.rand.nextFloat() <= 0.15F) {
+						if (damage >= 2) {
+							player.inventory.dropAllItems();
+							world.setBlockState(immutablePos, Blocks.AIR.getDefaultState());
+							casketExpiration = true;
+							TwilightForestMod.LOGGER.debug("{}'s Casket damage value was too high, alerting the player and dropping extra items", player.getName().getString());
+						} else {
+							damage = damage + 1;
+							world.setBlockState(immutablePos, TFBlocks.keepsake_casket.get().getDefaultState().with(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.getFromFluid(fluidState.getFluid())).with(BlockKeepsakeCasket.BREAKAGE, damage));
+							TwilightForestMod.LOGGER.debug("{}'s Casket was randomly damaged, applying new damage", player.getName().getString());
+						}
+					}
 					int casketCapacity = casket.getSizeInventory();
 					List<ItemStack> list = new ArrayList<>(casketCapacity);
+					NonNullList<ItemStack> filler = NonNullList.withSize(4, ItemStack.EMPTY);
 
-					list.addAll(player.inventory.armorInventory);
+					// lets add our inventory exactly how it was on us
+					list.addAll(TFItemStackUtils.sortArmorForCasket(player));
 					player.inventory.armorInventory.clear();
+					list.addAll(filler);
 					list.addAll(player.inventory.offHandInventory);
 					player.inventory.offHandInventory.clear();
-					list.addAll(player.inventory.mainInventory);
+					list.addAll(TFItemStackUtils.sortInvForCasket(player));
 					player.inventory.mainInventory.clear();
 
 					casket.setItems(NonNullList.from(ItemStack.EMPTY, list.toArray(new ItemStack[casketCapacity])));
 				}
 			} else {
 				TwilightForestMod.LOGGER.error("Could not place Keepsake Casket at " + pos.toString());
+			}
+		}
+	}
+
+	@SubscribeEvent
+	//if our casket is owned by someone and that player isnt the one breaking it, stop them
+	public static void onCasketBreak(BreakEvent event) {
+		Block block = event.getState().getBlock();
+		PlayerEntity player = event.getPlayer();
+		UUID checker = TileEntityKeepsakeCasket.playeruuid;
+		if(block == TFBlocks.keepsake_casket.get()) {
+			if(checker != null) {
+				if (player.hasPermissionLevel(3) || player.getUniqueID().getMostSignificantBits() != checker.getMostSignificantBits()) {
+					event.setCanceled(true);
+				}
 			}
 		}
 	}
@@ -434,6 +473,9 @@ public class TFEventListener {
 		if (event.isEndConquered()) {
 			updateCapabilities((ServerPlayerEntity) event.getPlayer(), event.getPlayer());
 		} else {
+			if(casketExpiration) {
+				event.getPlayer().sendMessage(new TranslationTextComponent("message.twilightforest.casket.broken").mergeStyle(TextFormatting.DARK_RED), event.getPlayer().getUniqueID());
+			}
 			returnStoredItems(event.getPlayer());
 		}
 	}
@@ -444,7 +486,7 @@ public class TFEventListener {
 	private static void returnStoredItems(PlayerEntity player) {
 		PlayerInventory keepInventory = playerKeepsMap.remove(player.getUniqueID());
 		if (keepInventory != null) {
-			TwilightForestMod.LOGGER.debug("Player {} respawned and received items held in storage", player.getName());
+			TwilightForestMod.LOGGER.debug("Player {} ({}) respawned and received items held in storage", player.getName().getString(), player.getUniqueID());
 
 			NonNullList<ItemStack> displaced = NonNullList.create();
 
@@ -515,7 +557,7 @@ public class TFEventListener {
 	private static void dropStoredItems(PlayerEntity player) {
 		PlayerInventory keepInventory = playerKeepsMap.remove(player.getUniqueID());
 		if (keepInventory != null) {
-			TwilightForestMod.LOGGER.warn("Dropping inventory items previously held in reserve for player {}", player.getName());
+			TwilightForestMod.LOGGER.warn("Dropping inventory items previously held in reserve for player {} ({})", player.getName().getString(), player.getUniqueID());
 			keepInventory.player = player;
 			keepInventory.dropAllItems();
 		}

@@ -21,9 +21,11 @@ import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
+import twilightforest.block.BlockKeepsakeCasket;
 import twilightforest.block.BlockTFAbstractTrophy;
 import twilightforest.client.renderer.tileentity.TileEntityTFTrophyRenderer;
 import twilightforest.enums.BossVariant;
+import twilightforest.tileentity.TileEntityKeepsakeCasket;
 
 public class ISTER extends ItemStackTileEntityRenderer {
 	private final ResourceLocation typeId;
@@ -74,6 +76,8 @@ public class ISTER extends ItemStackTileEntityRenderer {
 					//GlStateManager.rotatef(TFClientEvents.rotationTicker, 0F, 0F, 0F);
 				}
 				TileEntityTFTrophyRenderer.render((Direction) null, 180.0F, ((BlockTFAbstractTrophy) block).getVariant(), 0.0F, ms, buffers, light);
+			} else if (block instanceof BlockKeepsakeCasket) {
+				TileEntityRendererDispatcher.instance.renderItem(new TileEntityKeepsakeCasket(), ms, buffers, light, overlay);
 			} else {
 				TileEntityRenderer<TileEntity> renderer = TileEntityRendererDispatcher.instance.getRenderer(dummy);
 				renderer.render(null, 0, ms, buffers, light, overlay);

@@ -10,10 +10,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
-import twilightforest.client.renderer.tileentity.TileEntityTFCicadaRenderer;
-import twilightforest.client.renderer.tileentity.TileEntityTFFireflyRenderer;
-import twilightforest.client.renderer.tileentity.TileEntityTFMoonwormRenderer;
-import twilightforest.client.renderer.tileentity.TileEntityTFTrophyRenderer;
+import twilightforest.client.renderer.tileentity.*;
 import twilightforest.tileentity.spawner.*;
 
 public class TFTileEntities {
@@ -91,5 +88,6 @@ public class TFTileEntities {
 		ClientRegistry.bindTileEntityRenderer(MOONWORM.get(), TileEntityTFMoonwormRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(TROPHY.get(), TileEntityTFTrophyRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(TF_SIGN.get(), SignTileEntityRenderer::new);
+		ClientRegistry.bindTileEntityRenderer(KEEPSAKE_CASKET.get(), TileEntityTFCasketRenderer::new);
 	}
 }

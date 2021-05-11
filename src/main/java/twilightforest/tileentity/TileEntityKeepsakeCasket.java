@@ -1,6 +1,7 @@
 package twilightforest.tileentity;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.inventory.container.ChestContainer;
@@ -8,14 +9,35 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.IChestLid;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.LockableLootTileEntity;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import twilightforest.TFSounds;
+import twilightforest.block.TFBlocks;
 
-public class TileEntityKeepsakeCasket extends LockableLootTileEntity {
+import javax.annotation.Nullable;
+import java.util.UUID;
+
+//used a fair bit of chest logic in this for the lid
+@OnlyIn(value = Dist.CLIENT, _interface = IChestLid.class)
+public class TileEntityKeepsakeCasket extends LockableLootTileEntity implements IChestLid, ITickableTileEntity {
     private static final int limit = 9 * 5;
     private NonNullList<ItemStack> contents = NonNullList.withSize(limit, ItemStack.EMPTY);
+    @Nullable
+    public static String name;
+    @Nullable
+    public static UUID playeruuid;
+    protected float lidAngle;
+    protected float prevLidAngle;
+    protected int numPlayersUsing;
+    private int ticksSinceSync;
 
     public TileEntityKeepsakeCasket() {
         super(TFTileEntities.KEEPSAKE_CASKET.get());
@@ -65,7 +87,8 @@ public class TileEntityKeepsakeCasket extends LockableLootTileEntity {
         if (!this.checkLootAndWrite(compound)) {
             ItemStackHelper.saveAllItems(compound, this.contents);
         }
-
+        if(playeruuid != null) compound.putUniqueId("deadPlayer", playeruuid);
+        if(name != null) compound.putString("playerName", name);
         return compound;
     }
 
@@ -76,5 +99,103 @@ public class TileEntityKeepsakeCasket extends LockableLootTileEntity {
         if (!this.checkLootAndRead(nbt)) {
             ItemStackHelper.loadAllItems(nbt, this.contents);
         }
+        if(nbt.hasUniqueId("deadPlayer")) playeruuid = nbt.getUniqueId("deadPlayer");
+        if(nbt.hasUniqueId("playerName")) name = nbt.getString("playerName");
+    }
+
+    //[VanillaCopy] of EnderChestTileEntity, with some small adaptations
+    @Override
+    public void tick() {
+        if (++this.ticksSinceSync % 20 * 4 == 0) {
+            this.world.addBlockEvent(this.pos, TFBlocks.keepsake_casket.get(), 1, this.numPlayersUsing);
+        }
+        this.prevLidAngle = this.lidAngle;
+        if (this.numPlayersUsing > 0 && this.lidAngle == 0.0F) {
+            this.world.playSound(null, this.pos, TFSounds.CASKET_OPEN, SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
+        }
+        if (this.numPlayersUsing == 0 && this.lidAngle > 0.0F || this.numPlayersUsing > 0 && this.lidAngle < 1.0F) {
+            float f2 = this.lidAngle;
+
+            if (this.numPlayersUsing > 0) this.lidAngle += 0.025F;
+            else this.lidAngle -= 0.075F;
+
+            if (this.lidAngle > 1.0F) this.lidAngle = 1.0F;
+
+            if (this.lidAngle < 0.4F && f2 >= 0.4F) {
+                this.world.playSound(null, this.pos, TFSounds.CASKET_CLOSE, SoundCategory.BLOCKS, 0.75F, this.world.rand.nextFloat() * 0.1F + 0.9F);
+            }
+            if (this.lidAngle < 0.0F) this.lidAngle = 0.0F;
+        }
+
+    }
+
+    @Override
+    public boolean receiveClientEvent(int id, int type) {
+        if (id == 1) {
+            this.numPlayersUsing = type;
+            return true;
+        } else {
+            return super.receiveClientEvent(id, type);
+        }
+    }
+
+    //if we have a dead player UUID set, then only that player can open the casket
+    @Override
+    public boolean isUsableByPlayer(PlayerEntity user) {
+        if(playeruuid != null) {
+            if(user.hasPermissionLevel(3) || user.getUniqueID().getMostSignificantBits() == playeruuid.getMostSignificantBits()) {
+                return super.isUsableByPlayer(user);
+            } else {
+                return false;
+            }
+        } else {
+            return super.isUsableByPlayer(user);
+        }
+    }
+
+    @Override
+    public boolean canOpen(PlayerEntity user) {
+        if(playeruuid != null) {
+            if(user.hasPermissionLevel(3) || user.getUniqueID().getMostSignificantBits() == playeruuid.getMostSignificantBits()) {
+                return super.canOpen(user);
+            } else {
+                return false;
+            }
+        } else {
+            return super.canOpen(user);
+        }
+    }
+
+    //remove stored player when chest is broken
+    @Override
+    public void remove() {
+        playeruuid = null;
+        this.updateContainingBlockInfo();
+        super.remove();
+    }
+
+    public void openInventory(PlayerEntity player) {
+        if (!player.isSpectator()) {
+            if (this.numPlayersUsing < 0) {
+                this.numPlayersUsing = 0;
+            }
+            ++this.numPlayersUsing;
+            this.world.addBlockEvent(this.pos, TFBlocks.keepsake_casket.get(), 1, this.numPlayersUsing);
+        }
+
+    }
+
+    public void closeInventory(PlayerEntity player) {
+        if (!player.isSpectator()) {
+            --this.numPlayersUsing;
+            this.world.addBlockEvent(this.pos, TFBlocks.keepsake_casket.get(), 1, this.numPlayersUsing);
+        }
+
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public float getLidAngle(float partialTicks) {
+        return MathHelper.lerp(partialTicks, this.prevLidAngle, this.lidAngle);
     }
 }

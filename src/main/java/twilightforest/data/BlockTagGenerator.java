@@ -141,7 +141,8 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		getOrCreateBuilder(BlockTags.STRIDER_WARM_BLOCKS).add(TFBlocks.fiery_block.get());
 		getOrCreateBuilder(BlockTags.PORTALS).add(TFBlocks.twilight_portal.get());
 		getOrCreateBuilder(BlockTags.CLIMBABLE).add(TFBlocks.iron_ladder.get());
-		getOrCreateBuilder(BlockTags.DRAGON_IMMUNE).add(TFBlocks.giant_obsidian.get());
+		getOrCreateBuilder(BlockTags.DRAGON_IMMUNE).add(TFBlocks.giant_obsidian.get(), TFBlocks.keepsake_casket.get());
+		getOrCreateBuilder(BlockTags.WITHER_IMMUNE).add(TFBlocks.keepsake_casket.get());
 
 		getOrCreateBuilder(BlockTags.SIGNS).add(TFBlocks.twilight_oak_sign.get(), TFBlocks.twilight_wall_sign.get(),
 				TFBlocks.canopy_sign.get(), TFBlocks.canopy_wall_sign.get(),
