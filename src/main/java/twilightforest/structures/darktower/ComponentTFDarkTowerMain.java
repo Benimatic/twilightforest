@@ -1178,11 +1178,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 	private void placeRandomPlant(ISeedReader world, Random decoRNG, int x, int y, int z, Rotation rotation, MutableBoundingBox sbb) {
 		Block flowerPot = BlockTags.FLOWER_POTS.getRandomElement(decoRNG);
 		//dont include special saplings or thorns in our pots
-		List<FlowerPotBlock> blacklistedPots = ImmutableList.of(
-				TFBlocks.potted_hollow_oak_sapling.get(), TFBlocks.potted_time_sapling.get(),
-				TFBlocks.potted_trans_sapling.get(), TFBlocks.potted_mine_sapling.get(),
-				TFBlocks.potted_sort_sapling.get(), TFBlocks.potted_thorn.get(),
-				TFBlocks.potted_dead_thorn.get(), TFBlocks.potted_green_thorn.get());
+		List<Block> blacklistedPots = BlockTagGenerator.SPECIAL_POTS.getAllElements();
 		BlockState flowerPotState = flowerPot.getDefaultState();
 		if(!blacklistedPots.contains(flowerPot)) {
 			setBlockStateRotated(world, flowerPotState, x, y, z, rotation, sbb);

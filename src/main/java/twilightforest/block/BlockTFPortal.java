@@ -129,7 +129,7 @@ public class BlockTFPortal extends BreakableBlock implements ILiquidContainer {
 	}
 
 	public boolean canFormPortal(BlockState state) {
-		return state == Blocks.WATER.getDefaultState() || state.getBlock() == this && state.get(DISALLOW_RETURN);
+		return state.getBlock().isIn(BlockTagGenerator.PORTAL_FLUID) || state.getBlock() == this && state.get(DISALLOW_RETURN);
 	}
 
 	private static void causeLightning(World world, BlockPos pos, boolean fake) {

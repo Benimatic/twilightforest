@@ -1,0 +1,15 @@
+{
+  "replace": false,
+  "values": [
+    "#minecraft:buttons",
+    "#forge:chests",
+    "minecraft:lever",
+    "twilightforest:antibuilder",
+    "twilightforest:carminite_builder",
+    "twilightforest:carminite_reactor",
+    "twilightforest:ghast_trap",
+    "twilightforest:vanishing_block",
+    "twilightforest:reappearing_block",
+    "twilightforest:locked_vanishing_block"
+  ]
+}

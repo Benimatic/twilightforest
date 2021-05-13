@@ -2,7 +2,6 @@ package twilightforest.entity;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -11,7 +10,6 @@ import net.minecraft.network.IPacket;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ITag;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MinecraftVersion;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
@@ -19,7 +17,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkHooks;
 import twilightforest.client.particle.TFParticleType;
-import twilightforest.item.ItemTFCubeOfAnnihilation;
+import twilightforest.data.BlockTagGenerator;
 import twilightforest.item.TFItems;
 import twilightforest.util.WorldUtil;
 
@@ -29,7 +27,6 @@ import static twilightforest.TwilightForestMod.prefix;
 
 public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 
-	private static final ITag.INamedTag<Block> WHITELIST = BlockTags.makeWrapperTag(prefix("annihilation_whitelist").toString());
 	private boolean hasHitObstacle = false;
 
 	public EntityTFCubeOfAnnihilation(EntityType<? extends EntityTFCubeOfAnnihilation> type, World world) {
@@ -100,7 +97,7 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 	private boolean canAnnihilate(BlockPos pos, BlockState state) {
 		// whitelist many castle blocks
 		Block block = state.getBlock();
-		return block.isIn(WHITELIST) || block.getExplosionResistance() < 8F && state.getBlockHardness(world, pos) >= 0;
+		return block.isIn(BlockTagGenerator.ANNIHILATION_WHITELIST) || block.getExplosionResistance() < 8F && state.getBlockHardness(world, pos) >= 0;
 	}
 
 	private void annihilateParticles(World world, BlockPos pos) {

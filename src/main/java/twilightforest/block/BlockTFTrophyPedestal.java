@@ -64,7 +64,7 @@ public class BlockTFTrophyPedestal extends Block /*implements IInfusionStabilise
 	}
 
 	private boolean isTrophyOnTop(World world, BlockPos pos) {
-		return world.getBlockState(pos.up()).getBlock() instanceof BlockTFAbstractTrophy;
+		return world.getBlockState(pos.up()).getBlock().isIn(BlockTagGenerator.TROPHIES);
 	}
 
 	private void warnIneligiblePlayers(World world, BlockPos pos) {

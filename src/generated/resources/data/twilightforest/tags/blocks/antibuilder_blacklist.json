@@ -1,5 +1,4 @@
 {
-  "__comment": "Blocks added to this tag cannot be broken nor placed by the antibuilder",
   "replace": false,
   "values": [
     "minecraft:bedrock",
@@ -9,17 +8,18 @@
     "twilightforest:antibuilder",
     "twilightforest:carminite_builder",
     "twilightforest:built_block",
-    "twilightforest:ghast_trap",
-    "twilightforest:carminite_reactor",
     "twilightforest:reactor_debris",
-    "twilightforest:fake_gold",
+    "twilightforest:carminite_reactor",
     "twilightforest:fake_diamond",
+    "twilightforest:fake_gold",
     "twilightforest:vanishing_block",
-    "twilightforest:locked_vanishing_block",
     "twilightforest:reappearing_block",
-    "twilightforest:keepsake_casket"
-  ],
-  "optional": [
-    "tombmanygraves:grave_block"
+    "twilightforest:locked_vanishing_block",
+    "twilightforest:ghast_trap",
+    "twilightforest:keepsake_casket",
+    {
+      "id": "gravestone:gravestone",
+      "required": false
+    }
   ]
 }

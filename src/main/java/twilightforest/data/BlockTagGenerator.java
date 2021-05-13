@@ -8,6 +8,7 @@ import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ITag;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -43,6 +44,20 @@ public class BlockTagGenerator extends BlockTagsProvider {
 
 	public static final ITag.INamedTag<Block> PORTAL_EDGE = BlockTags.makeWrapperTag(TwilightForestMod.prefix("portal/edge").toString());
 	public static final ITag.INamedTag<Block> PORTAL_DECO = BlockTags.makeWrapperTag(TwilightForestMod.prefix("portal/decoration").toString());
+	public static final ITag.INamedTag<Block> PORTAL_FLUID = BlockTags.makeWrapperTag(TwilightForestMod.prefix("portal/fluid").toString());
+
+	public static final ITag.INamedTag<Block> SPECIAL_POTS = BlockTags.makeWrapperTag(TwilightForestMod.prefix("dark_tower_blacklisted_pots").toString());
+	public static final ITag.INamedTag<Block> TROPHIES = BlockTags.makeWrapperTag(TwilightForestMod.prefix("trophies").toString());
+	public static final ITag.INamedTag<Block> FIRE_JET_FUEL = BlockTags.makeWrapperTag(TwilightForestMod.prefix("fire_jet_fuel").toString());
+
+	public static final ITag.INamedTag<Block> OW_ORES = BlockTags.makeWrapperTag(TwilightForestMod.prefix("magnet/replace_ore_with_stone").toString());
+	public static final ITag.INamedTag<Block> NETHER_ORES = BlockTags.makeWrapperTag(TwilightForestMod.prefix("magnet/replace_ore_with_netherrack").toString());
+	public static final ITag.INamedTag<Block> END_ORES = BlockTags.makeWrapperTag(TwilightForestMod.prefix("magnet/replace_ore_with_endstone").toString());
+
+	public static final ITag.INamedTag<Block> ANNIHILATION_WHITELIST = BlockTags.makeWrapperTag(TwilightForestMod.prefix("annihilation_whitelist").toString());
+	public static final ITag.INamedTag<Block> ANTIBUILDER_BLACKLIST = BlockTags.makeWrapperTag(TwilightForestMod.prefix("antibuilder_blacklist").toString());
+	public static final ITag.INamedTag<Block> REACTOR_BLACKLIST = BlockTags.makeWrapperTag(TwilightForestMod.prefix("reactor_blacklist").toString());
+	public static final ITag.INamedTag<Block> PROTECTED_INTERACTION = BlockTags.makeWrapperTag(TwilightForestMod.prefix("protected_interaction").toString());
 
 	public BlockTagGenerator(DataGenerator generator, ExistingFileHelper exFileHelper) {
 		super(generator, TwilightForestMod.ID, exFileHelper);
@@ -186,8 +201,6 @@ public class BlockTagGenerator extends BlockTagsProvider {
 
 		getOrCreateBuilder(PORTAL_EDGE).add(Blocks.GRASS_BLOCK, Blocks.MYCELIUM).add(getAllFilteredBlocks(b -> /*b.material == Material.ORGANIC ||*/ b.material == Material.EARTH));
 		getOrCreateBuilder(PORTAL_DECO)
-				// FIXME Somehow Minecraft's BlockTags do not exist when this executes so we will do these as optionals instead
-				//.addOptionalTag(BlockTags.FLOWERS.getName()).addOptionalTag(BlockTags.LEAVES.getName()).addOptionalTag(BlockTags.SAPLINGS.getName()).addOptionalTag(BlockTags.CROPS.getName())
 				.addTags(BlockTags.FLOWERS, BlockTags.LEAVES, BlockTags.SAPLINGS, BlockTags.CROPS)
 				.add(Blocks.BAMBOO)
 				.add(getAllFilteredBlocks(b -> (
@@ -196,6 +209,48 @@ public class BlockTagGenerator extends BlockTagsProvider {
 								//&& isExcludedFromTagBuilder(b, BlockTags.FLOWERS)
 								//&& isExcludedFromTagBuilder(b, BlockTags.LEAVES)
 				));
+		getOrCreateBuilder(PORTAL_FLUID).add(Blocks.WATER);
+
+		getOrCreateBuilder(SPECIAL_POTS).add(TFBlocks.potted_thorn.get(), TFBlocks.potted_green_thorn.get(), TFBlocks.potted_dead_thorn.get())
+				.add(TFBlocks.potted_hollow_oak_sapling.get(), TFBlocks.potted_time_sapling.get(), TFBlocks.potted_trans_sapling.get())
+				.add(TFBlocks.potted_mine_sapling.get(), TFBlocks.potted_sort_sapling.get());
+
+		getOrCreateBuilder(TROPHIES)
+				.add(TFBlocks.naga_trophy.get(), TFBlocks.naga_wall_trophy.get())
+				.add(TFBlocks.lich_trophy.get(), TFBlocks.lich_wall_trophy.get())
+				.add(TFBlocks.minoshroom_trophy.get(), TFBlocks.minoshroom_wall_trophy.get())
+				.add(TFBlocks.hydra_trophy.get(), TFBlocks.hydra_wall_trophy.get())
+				.add(TFBlocks.knight_phantom_trophy.get(), TFBlocks.knight_phantom_wall_trophy.get())
+				.add(TFBlocks.ur_ghast_trophy.get(), TFBlocks.ur_ghast_wall_trophy.get())
+				.add(TFBlocks.snow_queen_trophy.get(), TFBlocks.snow_queen_wall_trophy.get())
+				.add(TFBlocks.quest_ram_trophy.get(), TFBlocks.quest_ram_wall_trophy.get());
+
+		getOrCreateBuilder(FIRE_JET_FUEL).add(Blocks.LAVA);
+
+		getOrCreateBuilder(OW_ORES).add(Blocks.IRON_ORE, Blocks.GOLD_ORE, Blocks.REDSTONE_ORE, Blocks.LAPIS_ORE, Blocks.DIAMOND_ORE, Blocks.EMERALD_ORE, TFBlocks.liveroot_block.get());
+		getOrCreateBuilder(NETHER_ORES).add(Blocks.NETHER_QUARTZ_ORE, Blocks.NETHER_GOLD_ORE, Blocks.ANCIENT_DEBRIS);
+		getOrCreateBuilder(END_ORES);
+
+		getOrCreateBuilder(ANNIHILATION_WHITELIST).add(TFBlocks.deadrock.get(), TFBlocks.deadrock_cracked.get(), TFBlocks.deadrock_weathered.get())
+				.add(TFBlocks.castle_brick.get(), TFBlocks.castle_brick_cracked.get(), TFBlocks.castle_brick_frame.get(), TFBlocks.castle_brick_mossy.get(), TFBlocks.castle_brick_roof.get(), TFBlocks.castle_brick_worn.get())
+				.add(TFBlocks.castle_rune_brick_blue.get(), TFBlocks.castle_rune_brick_purple.get(), TFBlocks.castle_rune_brick_yellow.get(), TFBlocks.castle_rune_brick_pink.get())
+				.add(TFBlocks.force_field_pink.get(), TFBlocks.force_field_orange.get(), TFBlocks.force_field_green.get(), TFBlocks.force_field_blue.get(), TFBlocks.force_field_purple.get())
+				.add(TFBlocks.brown_thorns.get(), TFBlocks.green_thorns.get());
+
+		getOrCreateBuilder(ANTIBUILDER_BLACKLIST).add(Blocks.BEDROCK, Blocks.REDSTONE_LAMP, Blocks.TNT, Blocks.WATER)
+				.add(TFBlocks.antibuilder.get(), TFBlocks.carminite_builder.get(), TFBlocks.built_block.get())
+				.add(TFBlocks.reactor_debris.get(), TFBlocks.carminite_reactor.get(), TFBlocks.fake_diamond.get(), TFBlocks.fake_gold.get())
+				.add(TFBlocks.vanishing_block.get(), TFBlocks.reappearing_block.get(), TFBlocks.locked_vanishing_block.get(), TFBlocks.ghast_trap.get())
+				.add(TFBlocks.keepsake_casket.get()).addOptional(new ResourceLocation("gravestone:gravestone"));
+
+		getOrCreateBuilder(REACTOR_BLACKLIST).add(Blocks.BARRIER, Blocks.BEDROCK, Blocks.END_PORTAL, Blocks.END_PORTAL_FRAME, Blocks.END_GATEWAY)
+				.add(Blocks.COMMAND_BLOCK, Blocks.CHAIN_COMMAND_BLOCK, Blocks.REPEATING_COMMAND_BLOCK, Blocks.STRUCTURE_BLOCK, Blocks.JIGSAW, Blocks.MOVING_PISTON)
+				.add(TFBlocks.force_field_pink.get(), TFBlocks.force_field_orange.get(), TFBlocks.force_field_green.get(), TFBlocks.force_field_blue.get(), TFBlocks.force_field_purple.get())
+				.add(TFBlocks.vanishing_block.get(), TFBlocks.locked_vanishing_block.get(), TFBlocks.reappearing_block.get(), TFBlocks.keepsake_casket.get());
+
+		getOrCreateBuilder(PROTECTED_INTERACTION).addTags(BlockTags.BUTTONS, Tags.Blocks.CHESTS).add(Blocks.LEVER)
+				.add(TFBlocks.antibuilder.get(), TFBlocks.carminite_builder.get(), TFBlocks.carminite_reactor.get(), TFBlocks.ghast_trap.get())
+				.add(TFBlocks.vanishing_block.get(), TFBlocks.reappearing_block.get(), TFBlocks.locked_vanishing_block.get());
 	}
 
 	private static Block[] getAllFilteredBlocks(Predicate<Block> predicate) {

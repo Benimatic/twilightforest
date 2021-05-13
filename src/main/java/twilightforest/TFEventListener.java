@@ -670,14 +670,12 @@ public class TFEventListener {
 		}
 	}
 
-	public static final ITag.INamedTag<Block> PROTECTED_INTERACTION = BlockTags.makeWrapperTag(TwilightForestMod.prefix("protected_interaction").toString());
-
 	/**
 	 * Stop the player from interacting with blocks that could produce treasure or open doors in a protected area
 	 */
 	private static boolean isBlockProtectedFromInteraction(World world, BlockPos pos) {
 		Block block = world.getBlockState(pos).getBlock();
-		return block.isIn(PROTECTED_INTERACTION);
+		return block.isIn(BlockTagGenerator.PROTECTED_INTERACTION);
 	}
 
 	private static boolean isBlockProtectedFromBreaking(World world, BlockPos pos) {

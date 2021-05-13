@@ -2,12 +2,13 @@ package twilightforest.item;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
-import net.minecraft.item.UseAction;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.UseAction;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -18,7 +19,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.Tags;
 import twilightforest.TFSounds;
-import twilightforest.block.TFBlocks;
+import twilightforest.data.BlockTagGenerator;
 import twilightforest.util.FeatureUtil;
 
 import javax.annotation.Nonnull;
@@ -119,29 +120,24 @@ public class ItemTFOreMagnet extends Item {
 		BlockPos foundPos = null;
         BlockPos basePos = null;
 
-        boolean isNetherrack = false;
-
 		for (BlockPos coord : lineArray) {
 			BlockState searchState = world.getBlockState(coord);
 
-			// keep track of where the dirt/stone we first find is.s
+			// keep track of where the dirt/stone we first find is.
 			if (basePos == null) {
-				if (isReplaceable(world, searchState, coord)) {
-					basePos = coord;
-				} else if (isNetherReplaceable(world, searchState, coord)) {
-					isNetherrack = true;
+				if (isReplaceable(searchState) || isNetherReplaceable(searchState) || isEndReplaceable(searchState)) {
 					basePos = coord;
 				}
 				// This ordering is so that the base pos is found first before we pull ores - pushing ores away is a baaaaad idea!
-			} else if (foundPos == null && searchState.getBlock() != Blocks.AIR && isOre(searchState) && (world.getTileEntity(coord) == null)) {
-                foundState = searchState;
-                foundPos = coord;
-            }
+			} else if (foundPos == null && searchState.getBlock() != Blocks.AIR && (isOre(searchState) || isNetherOre(searchState) || isEndOre(searchState)) && (world.getTileEntity(coord) == null)) {
+				foundState = searchState;
+				foundPos = coord;
+			}
 		}
 
 		if (basePos != null && foundState.getBlock() != Blocks.AIR) {
 			// find the whole vein
-			Set<BlockPos> veinBlocks = new HashSet<BlockPos>();
+			Set<BlockPos> veinBlocks = new HashSet<>();
 			findVein(world, foundPos, foundState, veinBlocks);
 
 			// move it up into minable blocks or dirt
@@ -153,17 +149,22 @@ public class ItemTFOreMagnet extends Item {
 				BlockPos replacePos = coord.add(offX, offY, offZ);
 				BlockState replaceState = world.getBlockState(replacePos);
 
-				if ((isNetherrack ? isNetherReplaceable(world, replaceState, replacePos) : isReplaceable(world, replaceState, replacePos)) || replaceState.getBlock() == Blocks.AIR) {
-					// set vein to stone / netherrack
-					world.setBlockState(coord, isNetherrack ? Blocks.NETHERRACK.getDefaultState() : Blocks.STONE.getDefaultState(), 2);
-
-					// set close to ore material
+				// set vein to stone / netherrack / endstone
+				if (isOre(foundState) && isReplaceable(replaceState)) {
+					world.setBlockState(coord, Blocks.STONE.getDefaultState(), 2);
+					world.setBlockState(replacePos, foundState, 2);
+					blocksMoved++;
+				} else if (isNetherOre(foundState) && isNetherReplaceable(replaceState)) {
+					world.setBlockState(coord, Blocks.NETHERRACK.getDefaultState(), 2);
+					world.setBlockState(replacePos, foundState, 2);
+					blocksMoved++;
+				} else if (isEndOre(foundState) && isEndReplaceable(replaceState)) {
+					world.setBlockState(coord, Blocks.END_STONE.getDefaultState(), 2);
 					world.setBlockState(replacePos, foundState, 2);
 					blocksMoved++;
 				}
 			}
 		}
-
 		return blocksMoved;
 	}
 
@@ -179,39 +180,34 @@ public class ItemTFOreMagnet extends Item {
 		return new Vector3d(var3 * var4, var5, var2 * var4);
 	}
 
-	private static boolean isReplaceable(World world, BlockState state, BlockPos pos) {
+	private static boolean isReplaceable(BlockState state) {
         Block block = state.getBlock();
 
-	    if (block == Blocks.DIRT
-                || block == Blocks.GRASS_BLOCK
-                || block == Blocks.GRAVEL
-                || (block != Blocks.AIR && block == Blocks.STONE/*block.isReplaceableOreGen(state, world, pos, BlockMatcher.forBlock(Blocks.STONE))*/)) { //TODO: method does not exist
-			return true;
-		}
-
-		return false;
+		return (block != Blocks.AIR && block.isIn(BlockTags.BASE_STONE_OVERWORLD))
+				|| block == Blocks.DIRT || block == Blocks.GRASS_BLOCK || block == Blocks.GRAVEL;
 	}
 
-	private static boolean isNetherReplaceable(World world, BlockState state, BlockPos pos) {
-		if (state.getBlock() == Blocks.NETHERRACK) {
-			return true;
-		}
-		if (state.getBlock() != Blocks.AIR && state.getBlock() == Blocks.NETHERRACK/*state.getBlock().isReplaceableOreGen(state, world, pos, BlockMatcher.forBlock(Blocks.NETHERRACK))*/) {
-			return true;
-		}
+	private static boolean isNetherReplaceable(BlockState state) {
+		Block block = state.getBlock();
 
-		return false;
+		return block != Blocks.AIR && block.isIn(BlockTags.BASE_STONE_NETHER);
 	}
 
-	private static boolean findVein(World world, BlockPos here, BlockState oreState, Set<BlockPos> veinBlocks) {
+	private static boolean isEndReplaceable(BlockState state) {
+		Block block = state.getBlock();
+
+		return block != Blocks.AIR && block.isIn(Tags.Blocks.END_STONES);
+	}
+
+	private static void findVein(World world, BlockPos here, BlockState oreState, Set<BlockPos> veinBlocks) {
 		// is this already on the list?
 		if (veinBlocks.contains(here)) {
-			return false;
+			return;
 		}
 
 		// let's limit it to 24 blocks at a time 
 		if (veinBlocks.size() >= 24) {
-			return false;
+			return;
 		}
 
 		// otherwise, check if we're still in the vein
@@ -222,20 +218,21 @@ public class ItemTFOreMagnet extends Item {
 			for (Direction e : Direction.values()) {
 				findVein(world, here.offset(e), oreState, veinBlocks);
 			}
-
-			return true;
-		} else {
-			return false;
 		}
 	}
 
 	private static boolean isOre(BlockState state) {
 		Block block = state.getBlock();
+		return block.isIn(BlockTagGenerator.OW_ORES);
+	}
 
-		if (block == Blocks.COAL_ORE) {
-			return false;
-		}
+	private static boolean isNetherOre(BlockState state) {
+		Block block = state.getBlock();
+		return block.isIn(BlockTagGenerator.NETHER_ORES);
+	}
 
-		return block == TFBlocks.liveroot_block.get() || state.getBlock().isIn(Tags.Blocks.ORES);
+	private static boolean isEndOre(BlockState state) {
+		Block block = state.getBlock();
+		return block.isIn(BlockTagGenerator.END_ORES);
 	}
 }
