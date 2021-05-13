@@ -814,9 +814,9 @@ public class TFEventListener {
 	public static void worldLoaded(WorldEvent.Load event) {
 		IWorld world = event.getWorld();
 
-		if (!world.isRemote() && world instanceof World && ((World) world).getGameRules().get(TwilightForestMod.ENFORCED_PROGRESSION_RULE).get()) {
+		if (!world.isRemote() && world instanceof World && !((World) world).getGameRules().get(TwilightForestMod.ENFORCED_PROGRESSION_RULE).get()) {
 			TwilightForestMod.LOGGER.info("Loaded a world with the {} game rule not defined. Defining it.", TwilightForestMod.ENFORCED_PROGRESSION_RULE);
-			//world.getGameRules().addGameRule(TwilightForestMod.ENFORCED_PROGRESSION_RULE, String.valueOf(TFConfig.COMMON_CONFIG.progressionRuleDefault), GameRules.ValueType.BOOLEAN_VALUE);
+			((World) world).getGameRules().get(TwilightForestMod.ENFORCED_PROGRESSION_RULE).set(TFConfig.COMMON_CONFIG.progressionRuleDefault.get(), ((World) world).getServer());
 		}
 	}
 
