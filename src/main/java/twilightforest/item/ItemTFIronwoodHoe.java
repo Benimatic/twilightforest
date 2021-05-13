@@ -10,7 +10,7 @@ import net.minecraft.util.NonNullList;
 public class ItemTFIronwoodHoe extends HoeItem {
 
 	public ItemTFIronwoodHoe(IItemTier material, Properties props) {
-		super(material, 1, material.getEfficiency(), props);
+		super(material, -2, -1.0F, props);
 	}
 
 	@Override
