@@ -17,7 +17,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
-import twilightforest.enums.BossVariant;
 import twilightforest.enums.TwilightArmorMaterial;
 import twilightforest.enums.TwilightItemTier;
 
@@ -34,7 +33,7 @@ public class TFItems {
 	public static final Food VENISON_COOKED = new Food.Builder().hunger(8).saturation(0.8F).meat().build();
 	public static final Food VENISON_RAW = new Food.Builder().hunger(3).saturation(0.3F).meat().build();
 
-	static final UUID GIANT_REACH_MODIFIER = UUID.fromString("7f10172d-de69-49d7-81bd-9594286a6827");
+	public static final UUID GIANT_REACH_MODIFIER = UUID.fromString("7f10172d-de69-49d7-81bd-9594286a6827");
 
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, TwilightForestMod.ID);
 
@@ -94,7 +93,7 @@ public class TFItems {
 	public static final RegistryObject<Item> transformation_powder = ITEMS.register("transformation_powder", () -> new ItemTFTransformPowder(defaultBuilder()));
 	public static final RegistryObject<Item> raw_meef = ITEMS.register("raw_meef", () -> new Item(defaultBuilder().food(TFItems.MEEF_RAW)));
 	public static final RegistryObject<Item> cooked_meef = ITEMS.register("cooked_meef", () -> new Item(defaultBuilder().food(TFItems.MEEF_COOKED)));
-	public static final RegistryObject<Item> meef_stroganoff = ITEMS.register("meef_stroganoff", () -> new ItemTFSoup(defaultBuilder().food(TFItems.MEEF_STROGANOFF)));
+	public static final RegistryObject<Item> meef_stroganoff = ITEMS.register("meef_stroganoff", () -> new SoupItem(defaultBuilder().food(TFItems.MEEF_STROGANOFF).maxStackSize(1)));
 	public static final RegistryObject<Item> maze_wafer = ITEMS.register("maze_wafer", () -> new Item(defaultBuilder().food(TFItems.MAZE_WAFER)));
 	public static final RegistryObject<Item> magic_map_empty = ITEMS.register("magic_map_empty", () -> new ItemTFEmptyMagicMap(defaultBuilder()));
 	public static final RegistryObject<Item> maze_map_empty = ITEMS.register("maze_map_empty", () -> new ItemTFEmptyMazeMap(false, defaultBuilder()));

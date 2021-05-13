@@ -1036,6 +1036,8 @@
   "death.attack.lostWords.item": "%1$s was at a loss for words after being killed by %2$s using %3$s",
   "death.attack.snowballFight": "%1$s lost a snowball fight to %2$s",
   "death.attack.snowballFight.item": "%1$s lost a snowball fight to %2$s using %3$s",
+  "death.attack.yeeted": "%1$s was yeeted for the last time by %2$s",
+  "death.attack.yeeted.item": "%1$s was yeeted for the last time by %2$s while somehow holding %3$s",
 
   // Misc
   "twilightforest.misc.wip0": "This block is a work in progress and may have bugs or unintended effects that may damage your world.",

@@ -321,7 +321,7 @@ public abstract class ChunkGeneratorTwilightBase extends NoiseChunkGenerator {
 
 		// inner boundary
 		int caveBoundary = (nearFeature.size * 2) * 8 - 8;
-		int hollowCeiling = TFGenerationSettings.SEALEVEL + 16;
+		int hollowCeiling;
 
 		int offset = Math.min(Math.abs(dx), Math.abs(dz));
 		hollowCeiling = (TFGenerationSettings.SEALEVEL + 40) - (offset * 4);

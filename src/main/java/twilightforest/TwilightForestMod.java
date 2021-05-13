@@ -51,7 +51,6 @@ import twilightforest.block.TFBlocks;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.command.TFCommand;
-import twilightforest.enchantment.TFEnchantments;
 import twilightforest.inventory.TFContainers;
 import twilightforest.item.TFItems;
 import twilightforest.item.recipe.UncraftingEnabledCondition;
@@ -85,10 +84,6 @@ public class TwilightForestMod {
 
 	private static final Rarity rarity = Rarity.create("TWILIGHT", TextFormatting.DARK_GREEN);
 
-	// TODO: PROXIES ARE DEAD!
-	// @SidedProxy(clientSide = "twilightforest.client.TFClientProxy", serverSide = "twilightforest.TFCommonProxy")
-	// public static TFCommonProxy proxy;
-
 	public TwilightForestMod() {
 		DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> (DistExecutor.SafeRunnable) twilightforest.client.TFClientSetup::addLegacyPack);
 
@@ -119,17 +114,10 @@ public class TwilightForestMod {
 		MinecraftForge.EVENT_BUS.addListener(TFStructures::fillSpawnInfo);
 		TFBiomeFeatures.FEATURES.register(modbus);
 		TFContainers.CONTAINERS.register(modbus);
-		TFEnchantments.ENCHANTMENTS.register(modbus);
-//		TFBiomeFeatures.WORLD_CARVERS.register(modbus);
-//		TFDimensions.BIOME_PROVIDER_TYPES.register(modbus);
-//		TFDimensions.CHUNK_GENERATOR_TYPES.register(modbus);
-//		TFDimensions.MOD_DIMENSIONS.register(modbus);
+//		TFEnchantments.ENCHANTMENTS.register(modbus);
 		// Poke these so they exist when we need them FIXME this is probably terrible design
 		new TwilightFeatures();
 		new BiomeGrassColors();
-
-		// TODO: move these to proper spots
-		// WorldProviderTwilightForest.syncFromConfig();
 
 		if (false/*TFConfig.COMMON_CONFIG.doCompat.get()*/) {
 			try {

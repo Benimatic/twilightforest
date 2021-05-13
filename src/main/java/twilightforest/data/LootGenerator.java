@@ -6,7 +6,6 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.LootTableProvider;
 import net.minecraft.loot.*;
 import net.minecraft.util.ResourceLocation;
-import twilightforest.loot.TFTreasure;
 
 import java.util.List;
 import java.util.Map;

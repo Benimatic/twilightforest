@@ -105,13 +105,4 @@ public class BlockTFCinderFurnace extends Block {
 		}
 	}
 
-	//	@Override
-//	public Item getItemDropped(BlockState state, Random rand, int fortune) {
-//		return Item.getItemFromBlock(TFBlocks.cinder_furnace);
-//	}
-//
-//	@Override
-//	public ItemStack getPickBlock(BlockState state, RayTraceResult target, World world, BlockPos pos, PlayerEntity player) {
-//		return new ItemStack(Item.getItemFromBlock(TFBlocks.cinder_furnace));
-//	}
 }

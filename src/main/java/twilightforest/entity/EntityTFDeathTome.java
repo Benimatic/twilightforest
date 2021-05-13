@@ -14,12 +14,10 @@ import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootParameterSets;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import twilightforest.TFSounds;
-import twilightforest.TwilightForestMod;
 import twilightforest.entity.projectile.EntityTFTomeBolt;
 import twilightforest.loot.TFTreasure;
 

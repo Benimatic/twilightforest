@@ -2,21 +2,14 @@ package twilightforest.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.PaneBlock;
 import net.minecraft.block.SixWayBlock;
 import net.minecraft.entity.Entity;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Direction;
-import net.minecraft.util.Util;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
-import java.util.Map;
 
 public class BlockTFForceField extends BlockTFConnectableRotatedPillar {
 

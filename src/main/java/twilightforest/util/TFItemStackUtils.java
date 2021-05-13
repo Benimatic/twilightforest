@@ -33,7 +33,7 @@ public class TFItemStackUtils {
 				}
 			}
 
-			//TODO: Baubles is dead (I think)
+			//TODO: Baubles is dead, replace with curios
 			/*if (TFCompat.BAUBLES.isActivated() && living instanceof EntityPlayer) {
 				consumedSome |= Baubles.consumeInventoryItem((EntityPlayer) living, matcher, count);
 			}*/

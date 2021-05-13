@@ -11,7 +11,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
-import net.minecraftforge.common.Tags;
 import twilightforest.TwilightForestMod;
 import twilightforest.util.PlayerHelper;
 

@@ -12,8 +12,6 @@ public class TFClientProxy extends TFCommonProxy {
 
 	private boolean isDangerOverlayShown;
 
-//	public static MusicTicker.MusicType TFMUSICTYPE;
-
 	@Nullable
 	public static Iterable<Entity> getEntityListForASM() {
 		return ASMHooks.world instanceof ServerWorld ? ((ServerWorld) ASMHooks.world).func_241136_z_() : ASMHooks.world instanceof ClientWorld ? ((ClientWorld) ASMHooks.world).getAllEntities() : null;
@@ -21,10 +19,6 @@ public class TFClientProxy extends TFCommonProxy {
 
 	@Override
 	public void init() {
-
-//		MinecraftForge.EVENT_BUS.register(new LoadingScreenListener());
-
-//		TFMUSICTYPE = EnumHelperClient.addMusicType("TFMUSIC", TFSounds.MUSIC, 1200, 12000);
 
 		//ShaderManager.initShaders();
 

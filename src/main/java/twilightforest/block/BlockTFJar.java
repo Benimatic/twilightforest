@@ -26,8 +26,7 @@ import twilightforest.client.particle.TFParticleType;
 
 import java.util.Random;
 
-//@Optional.Interface(modid = "thaumcraft", iface = "thaumcraft.api.crafting.IInfusionStabiliser")
-public class BlockTFJar extends Block /*implements IInfusionStabiliser*/ {
+public class BlockTFJar extends Block {
 
 	private static final VoxelShape AABB = VoxelShapes.create(new AxisAlignedBB(0.1875F, 0.0F, 0.1875F, 0.8125F, 1.0F, 0.8125F));
 
@@ -81,9 +80,4 @@ public class BlockTFJar extends Block /*implements IInfusionStabiliser*/ {
 			}
 		}
 	}
-
-	/*@Override
-	public boolean canStabaliseInfusion(World world, BlockPos blockPos) {
-		return true;
-	}*/
 }

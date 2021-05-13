@@ -9,11 +9,8 @@ import net.minecraft.loot.conditions.KilledByPlayer;
 import net.minecraft.loot.conditions.RandomChance;
 import net.minecraft.loot.conditions.RandomChanceWithLooting;
 import net.minecraft.loot.functions.*;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Util;
-import net.minecraft.util.text.TranslationTextComponent;
 import twilightforest.block.TFBlocks;
 import twilightforest.entity.TFEntities;
 import twilightforest.item.TFItems;
@@ -42,7 +39,6 @@ public class EntityLootTables extends net.minecraft.data.loot.EntityLootTables {
 	protected void addTables() {
 		registerLootTable(TFEntities.adherent, emptyLootTable());
 		registerLootTable(TFEntities.harbinger_cube, emptyLootTable());
-		//registerLootTable(TFEntities.firefly, emptyLootTable());
 		registerLootTable(TFEntities.mosquito_swarm, emptyLootTable());
 		registerLootTable(TFEntities.pinch_beetle, emptyLootTable());
 		registerLootTable(TFEntities.quest_ram, emptyLootTable());

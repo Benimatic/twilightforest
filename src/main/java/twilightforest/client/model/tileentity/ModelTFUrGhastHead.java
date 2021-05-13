@@ -129,7 +129,7 @@ public class ModelTFUrGhastHead extends ModelTFGenericHead {
 
 			float time = ((x * .5F) + (i * 9)) / 2.0F;
 
-			this.subTentacles[i][0].rotateAngleX = (MathHelper.cos(time * 0.6662F) * 1.0F - (float) Math.PI / 3.0F) * wiggle;
+			this.subTentacles[i][0].rotateAngleX = (MathHelper.cos(time * 0.6662F) - (float) Math.PI / 3.0F) * wiggle;
 			this.subTentacles[i][1].rotateAngleX = MathHelper.cos(time * 0.7774F) * 1.2F * wiggle;
 
 			this.subTentacles[i][0].rotateAngleX = 0.1F + MathHelper.cos(time * 0.3335F) * 0.15F;

@@ -62,7 +62,7 @@ public enum TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
-			return new ComponentTFHollowHill(TFFeature.TFHill, this, rand, 0, size, x, y - 2, z);
+			return new ComponentTFHollowHill(TFFeature.TFHill, this, 0, size, x, y - 2, z);
 		}
 	},
 	MEDIUM_HILL ( 2, "medium_hollow_hill", true, true ) {
@@ -83,7 +83,7 @@ public enum TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
-			return new ComponentTFHollowHill(TFFeature.TFHill, this, rand, 0, size, x, y - 5, z);
+			return new ComponentTFHollowHill(TFFeature.TFHill, this, 0, size, x, y - 5, z);
 		}
 	},
 	LARGE_HILL ( 3, "large_hollow_hill", true, true ) {
@@ -105,7 +105,7 @@ public enum TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
-			return new ComponentTFHollowHill(TFFeature.TFHill, this, rand, 0, size, x, y - 5, z);
+			return new ComponentTFHollowHill(TFFeature.TFHill, this, 0, size, x, y - 5, z);
 		}
 	},
 	HEDGE_MAZE ( 2, "hedge_maze", true ) {
@@ -114,7 +114,7 @@ public enum TFFeature {
 		}
 		@Override
 		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
-			return new ComponentTFHedgeMaze(this, rand, 0, x, y, z);
+			return new ComponentTFHedgeMaze(this, 0, x, y, z);
 		}
 	},
 	NAGA_COURTYARD ( 3, "naga_courtyard", true ) {
@@ -181,7 +181,7 @@ public enum TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
-			return new ComponentTFQuestGrove(this, rand, 0, x, y, z);
+			return new ComponentTFQuestGrove(this, 0, x, y, z);
 		}
 
 	},
@@ -417,7 +417,6 @@ public enum TFFeature {
 
 	public final int size;
 	public final String name;
-	private final boolean shouldHaveFeatureGenerator;
 	public final boolean centerBounds;
 	public boolean areChunkDecorationsEnabled;
 	public boolean isStructureEnabled;
@@ -457,7 +456,6 @@ public enum TFFeature {
 
 		this.requiredAdvancements = requiredAdvancements;
 
-		shouldHaveFeatureGenerator = featureGenerator;
 		this.centerBounds = centerBounds;
 	}
 
@@ -966,10 +964,9 @@ public enum TFFeature {
 			z += (maxZ + minZ) / 4;
 		}
 		switch (dir) {
-			default:
-				return new MutableBoundingBox(x + minX, y + minY, z + minZ, x + maxX + minX, y + maxY + minY, z + maxZ + minZ);
 
 			case SOUTH: // '\0'
+			default:
 				return new MutableBoundingBox(x + minX, y + minY, z + minZ, x + maxX + minX, y + maxY + minY, z + maxZ + minZ);
 
 			case WEST: // '\001'

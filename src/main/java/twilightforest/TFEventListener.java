@@ -235,6 +235,11 @@ public class TFEventListener {
 				living.world.playSound(null, living.getPosX(), living.getPosY(), living.getPosZ(), TFSounds.BUG_SQUISH, living.getSoundCategory(), 1, 1);
 			}
 		}
+
+		// lets not make the player take suffocation damage if riding something
+		if (living instanceof PlayerEntity && isRidingUnfriendly(living) && damageSource == DamageSource.IN_WALL) {
+			event.setCanceled(true);
+		}
 	}
 
 	@SubscribeEvent
@@ -431,7 +436,7 @@ public class TFEventListener {
 			keepInventory.setItemStack(new ItemStack(TFItems.charm_of_keeping_1.get()));
 		}
 
-		//TODO: Baubles is dead
+		//TODO: Baubles is dead, replace with curios
 		/*if (tier1 && TFCompat.BAUBLES.isActivated()) {
 			playerKeepsMapBaubles.put(playerUUID, Baubles.keepBaubles(player));
 		}*/
@@ -546,7 +551,7 @@ public class TFEventListener {
 			}
 		}
 
-		//TODO: Baubles is dead
+		//TODO: Baubles is dead, replace with curios
 		/*if (TFCompat.BAUBLES.isActivated()) {
 			NonNullList<ItemStack> baubles = playerKeepsMapBaubles.remove(player.getUniqueID());
 			if (baubles != null) {
@@ -571,7 +576,7 @@ public class TFEventListener {
 			keepInventory.player = player;
 			keepInventory.dropAllItems();
 		}
-		//TODO: Baubles is dead
+		//TODO: Baubles is dead, replace with curios
 		/*if (TFCompat.BAUBLES.isActivated()) {
 			NonNullList<ItemStack> baubles = playerKeepsMapBaubles.remove(player.getUniqueID());
 			if (baubles != null) {
@@ -820,18 +825,6 @@ public class TFEventListener {
 		}
 	}
 
-	/**
-	 * Check if someone's changing the progression game rule
-	 */
-	//TODO gamerule register was changed, so doesn't need this
-	/*@SubscribeEvent
-	public static void gameRuleChanged(GameRuleChangeEvent event) {
-		if (event.getRuleName().equals(TwilightForestMod.ENFORCED_PROGRESSION_RULE)) {
-			boolean isEnforced = event.getRules().getBoolean(TwilightForestMod.ENFORCED_PROGRESSION_RULE);
-			TFPacketHandler.CHANNEL.sendToAll(new PacketEnforceProgressionStatus(isEnforced));
-		}
-	}*/
-
 	// Teleport first-time players to Twilight Forest
 
 	private static final String NBT_TAG_TWILIGHT = "twilightforest_banished";
@@ -925,9 +918,6 @@ public class TFEventListener {
 					}) && (entityBlocking.getActiveItemStack().getItem().getUseDuration(entityBlocking.getActiveItemStack()) - entityBlocking.getItemInUseCount()) <= TFConfig.COMMON_CONFIG.SHIELD_INTERACTIONS.shieldParryTicksFireball.get()) {
 						Vector3d playerVec3 = entityBlocking.getLookVec();
 
-//					projectile.motionX = playerVec3.x;
-//					projectile.motionY = playerVec3.y;
-//					projectile.motionZ = playerVec3.z;
 						projectile.setMotion(new Vector3d(playerVec3.x, playerVec3.y, playerVec3.z));
 						projectile.accelerationX = projectile.getMotion().getX() * 0.1D;
 						projectile.accelerationY = projectile.getMotion().getY() * 0.1D;

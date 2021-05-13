@@ -244,8 +244,6 @@ public class TFConfig {
 			public WorldGenWeights worldGenWeights = new WorldGenWeights();
 
 			public static class WorldGenWeights {
-
-				//TODO: Due to the new way of Feature generation, should these be chances?
 				public ForgeConfigSpec.IntValue stoneCircleWeight;
 				public ForgeConfigSpec.IntValue wellWeight;
 				public ForgeConfigSpec.IntValue stalagmiteWeight;
@@ -410,7 +408,7 @@ public class TFConfig {
 								"twilightforest:magic_beans",
 								"twilightforest:ironwood_raw",
 								"twilightforest:naga_scale",
-								//TODO "twilightforest:experiment_115:2",
+								"twilightforest:experiment_115{think:1}",
 								"twilightforest:twilight_portal_miniature_structure",
 								"twilightforest:lich_tower_miniature_structure",
 								"twilightforest:knightmetal_block",

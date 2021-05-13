@@ -27,17 +27,6 @@ public class BlockTFCicada extends BlockTFCritter {
 		return new ItemStack(Items.GRAY_DYE, 1);
 	}
 
-	//Atomic: Forge would like to get rid of registerTESRItemStack, but there's no alternative yet (as at 1.11)
-	//TODO 1.14: Something may have changed, look into this when we compile
-//	@SuppressWarnings("deprecation")
-//	@OnlyIn(Dist.CLIENT)
-//	@Override
-//	public void registerModel() {
-//		ModelLoader.setCustomStateMapper(this, new StateMap.Builder().ignore(BlockDirectional.FACING).build());
-//		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "inventory"));
-//		ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(this), 0, TileEntityTFCicadaTicking.class);
-//	}
-
 	//TODO: Immersive Engineering is unavailable
 	/*@Override
 	@OnlyIn(Dist.CLIENT)

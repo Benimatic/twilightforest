@@ -82,9 +82,6 @@ public class TFTileEntities {
 		// tile entities
 		ClientRegistry.bindTileEntityRenderer(FIREFLY.get(), TileEntityTFFireflyRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(CICADA.get(), TileEntityTFCicadaRenderer::new);
-//		ClientRegistry.bindTileEntityRenderer(TileEntityTFNagaSpawner.class, new TileEntityMobSpawnerRenderer());
-//		ClientRegistry.bindTileEntityRenderer(TileEntityTFLichSpawner.class, new TileEntityMobSpawnerRenderer());
-//		ClientRegistry.bindTileEntityRenderer(TileEntityTFHydraSpawner.class, new TileEntityMobSpawnerRenderer());
 		ClientRegistry.bindTileEntityRenderer(MOONWORM.get(), TileEntityTFMoonwormRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(TROPHY.get(), TileEntityTFTrophyRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(TF_SIGN.get(), SignTileEntityRenderer::new);

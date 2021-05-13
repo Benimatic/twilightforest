@@ -7,7 +7,6 @@ import net.minecraft.loot.ILootSerializer;
 import net.minecraft.loot.LootConditionType;
 import net.minecraft.loot.LootContext;
 import net.minecraft.loot.conditions.ILootCondition;
-import net.minecraft.loot.conditions.RandomChance;
 import net.minecraft.util.JSONUtils;
 import net.minecraftforge.fml.ModList;
 

@@ -18,12 +18,11 @@ import net.minecraft.world.World;
 import twilightforest.TFSounds;
 import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
+import twilightforest.data.BlockTagGenerator;
 import twilightforest.util.PlayerHelper;
 import twilightforest.world.TFGenerationSettings;
 
-//TODO 1.14: Thaumcraft is dead
-//@Optional.Interface(modid = "thaumcraft", iface = "thaumcraft.api.crafting.IInfusionStabiliser")
-public class BlockTFTrophyPedestal extends Block /*implements IInfusionStabiliser*/ {
+public class BlockTFTrophyPedestal extends Block {
 
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
@@ -111,9 +110,4 @@ public class BlockTFTrophyPedestal extends Block /*implements IInfusionStabilise
 	public float getPlayerRelativeBlockHardness(BlockState state, PlayerEntity player, IBlockReader worldIn, BlockPos pos) {
 		return state.get(ACTIVE) ? super.getPlayerRelativeBlockHardness(state, player, worldIn, pos) : -1;
 	}
-
-//	@Override
-//	public boolean canStabaliseInfusion(World world, BlockPos blockPos) {
-//		return true;
-//	}
 }

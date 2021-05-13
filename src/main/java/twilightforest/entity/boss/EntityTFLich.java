@@ -152,10 +152,6 @@ public class EntityTFLich extends MonsterEntity {
 		this.bossInfo.removePlayer(player);
 	}
 
-//	@Override
-//	public void setInWeb() {
-//	}
-
 	@Override
 	public boolean canDespawn(double p_213397_1_) {
 		return false;
@@ -402,7 +398,7 @@ public class EntityTFLich extends MonsterEntity {
 		return world.getEntitiesWithinAABB(getClass(), new AxisAlignedBB(getPosX(), getPosY(), getPosZ(), getPosX() + 1, getPosY() + 1, getPosZ() + 1).grow(32.0D, 16.0D, 32.0D));
 	}
 
-	public boolean wantsNewMinion(EntityTFLichMinion minion) {
+	public boolean wantsNewMinion() {
 		return countMyMinions() < EntityTFLich.MAX_ACTIVE_MINIONS;
 	}
 

@@ -24,11 +24,8 @@ public class BlockTFTrophy extends BlockTFAbstractTrophy {
 	protected static final VoxelShape SHAPE = Block.makeCuboidShape(4.0D, 0.0D, 4.0D, 12.0D, 8.0D, 12.0D);
 	protected static final VoxelShape GHAST_SHAPE = Block.makeCuboidShape(4.0D, 8.0D, 4.0D, 12.0D, 16.0D, 12.0D);
 
-	private final BossVariant variant;
-
 	public BlockTFTrophy(BossVariant variant) {
 		super(variant, Properties.create(Material.MISCELLANEOUS).zeroHardnessAndResistance());
-		this.variant = variant;
 		setDefaultState(stateContainer.getBaseState().with(BlockTFTrophy.ROTATION, 0));
 	}
 

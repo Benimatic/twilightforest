@@ -21,7 +21,6 @@ import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.feature.structure.StructureStart;
 import net.minecraft.world.server.ServerWorld;
-import twilightforest.TFConfig;
 import twilightforest.TFFeature;
 import twilightforest.TwilightForestMod;
 import twilightforest.potions.TFPotions;

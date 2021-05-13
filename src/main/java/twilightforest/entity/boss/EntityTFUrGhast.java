@@ -28,7 +28,6 @@ import net.minecraft.world.BossInfo;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerBossInfo;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.ServerWorldInfo;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
@@ -321,7 +320,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 
 		ServerWorldInfo worldInfo = (ServerWorldInfo) world.getServer().getWorld(World.OVERWORLD).getWorldInfo(); // grab the overworld to set weather properly
 
-//		worldInfo.setClearWeatherTime(0); TODO
+		worldInfo.setClearWeatherTime(0);
 		worldInfo.setRainTime(rainTime);
 		worldInfo.setThunderTime(rainTime);
 		worldInfo.setRaining(true);

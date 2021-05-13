@@ -31,7 +31,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import twilightforest.TwilightForestMod;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.TFFeature;
 import twilightforest.TFSounds;
@@ -59,7 +58,7 @@ public class EntityTFQuestRam extends AnimalEntity {
 		this.goalSelector.addGoal(0, new SwimGoal(this));
 		this.goalSelector.addGoal(1, new PanicGoal(this, 1.38F));
 		this.goalSelector.addGoal(2, new TemptGoal(this, 1.0F, Ingredient.fromTag(ItemTags.WOOL), false));
-		this.goalSelector.addGoal(3, new EntityAITFEatLoose(this, Ingredient.fromTag(ItemTags.WOOL)));
+		this.goalSelector.addGoal(3, new EntityAITFEatLoose(this));
 		this.goalSelector.addGoal(4, new EntityAITFFindLoose(this, 1.0F, Ingredient.fromTag(ItemTags.WOOL)));
 		this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 1.0F));
 		this.goalSelector.addGoal(6, new LookRandomlyGoal(this));

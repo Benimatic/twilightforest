@@ -5,7 +5,6 @@ import net.minecraft.util.text.StringTextComponent;
 import twilightforest.entity.EntityTFKobold;
 import twilightforest.entity.TFEntities;
 import twilightforest.tileentity.TFTileEntities;
-import twilightforest.util.TFDamageSources;
 
 public class TileEntityTFFinalBossSpawner extends TileEntityTFBossSpawner<EntityTFKobold> {
 
