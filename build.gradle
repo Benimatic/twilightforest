@@ -64,6 +64,7 @@ minecraft {
 
             property 'forge.logging.console.level', 'debug'
             property 'fml.earlyprogresswindow', 'false'
+            property 'mixin.env.disableRefMap', 'true'
 
             mods {
                 twilightforest {
@@ -77,6 +78,7 @@ minecraft {
 
             // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
+            property 'mixin.env.disableRefMap', 'true'
 
             mods {
                 twilightforest {
@@ -86,8 +88,11 @@ minecraft {
         }
 
         data {
-            properties 'fml.earlyprogresswindow': 'false'
             workingDirectory project.file('run')
+
+            properties 'fml.earlyprogresswindow': 'false'
+            property 'mixin.env.disableRefMap', 'true'
+
             mods {
                 twilightforest {
                     source sourceSets.main
