@@ -49,7 +49,7 @@ public class PacketChangeBiome {
 
 					Biome targetBiome = world.func_241828_r().getRegistry(Registry.BIOME_KEY).getOrDefault(message.biomeId);
 
-					for(int dy = 0; dy < 255; dy++) {
+					for (int dy = 0; dy < 255; dy += 4) {
 						int x = (message.pos.getX() >> 2) & HORIZONTAL_MASK;
 						int y = MathHelper.clamp(dy >> 2, 0, VERTICAL_MASK);
 						int z = (message.pos.getZ() >> 2) & HORIZONTAL_MASK;
@@ -57,7 +57,7 @@ public class PacketChangeBiome {
 					}
 
 					world.onChunkLoaded(message.pos.getX() >> 4, message.pos.getZ() >> 4);
-					for(int k = 0; k < 16; ++k)
+					for (int k = 0; k < 16; ++k)
 						world.markSurroundingsForRerender(message.pos.getX() >> 4, k, message.pos.getZ() >> 4);
 
 				}

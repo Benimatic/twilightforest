@@ -154,9 +154,9 @@ public class BlockTFMagicLogSpecial extends RotatedPillarBlock {
 			Chunk chunkAt = world.getChunk(dPos.getX() >> 4, dPos.getZ() >> 4);
 			int x = (dPos.getX() >> 2) & HORIZONTAL_MASK;
 			int z = (dPos.getZ() >> 2) & HORIZONTAL_MASK;
-			if(chunkAt.getBiomes().biomes[z << WIDTH_BITS | x] == targetBiome)
+			if (chunkAt.getBiomes().biomes[z << WIDTH_BITS | x] == targetBiome)
 				continue;
-			for(int dy = 0; dy < 255; dy++) {
+			for (int dy = 0; dy < 255; dy += 4) {
 				int y = MathHelper.clamp(dy >> 2, 0, VERTICAL_MASK);
 				chunkAt.getBiomes().biomes[y << WIDTH_BITS + WIDTH_BITS | z << WIDTH_BITS | x] = targetBiome;
 			}
