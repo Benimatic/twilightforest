@@ -242,6 +242,7 @@
 
   "casket.open": { "subtitle": "subtitles.block.casket.open", "sounds": [ "twilightforest:random/casket/open" ] },
   "casket.close": { "subtitle": "subtitles.block.casket.close", "sounds": [ "twilightforest:random/casket/close" ] },
+  "casket.locked": { "subtitle": "subtitles.block.casket.locked", "sounds": [ "block/wooden_door/close", "block/wooden_door/open" ] },
   "casket.repair": { "subtitle": "subtitles.block.casket.repair", "sounds": [ "twilightforest:random/casket/repair" ] },
 
   "music.bg": { "sounds": [

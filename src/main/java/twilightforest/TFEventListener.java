@@ -309,7 +309,8 @@ public class TFEventListener {
 					if (player.getName().getString().length() > 12)
 						modifiedName = player.getName().getString().substring(0, 12);
 					else modifiedName = player.getName().getString();
-					TileEntityKeepsakeCasket.name = modifiedName;
+					TileEntityKeepsakeCasket.name = player.getName().getString();
+					TileEntityKeepsakeCasket.casketname = modifiedName;
 					casket.setCustomName(new StringTextComponent(modifiedName + "'s " + (world.rand.nextInt(10000) == 0 ? "Costco Casket" : casket.getDisplayName().getString())));
 					int damage = world.getBlockState(immutablePos).get(BlockKeepsakeCasket.BREAKAGE);
 					if (world.rand.nextFloat() <= 0.15F) {
@@ -489,7 +490,7 @@ public class TFEventListener {
 			updateCapabilities((ServerPlayerEntity) event.getPlayer(), event.getPlayer());
 		} else {
 			if(casketExpiration) {
-				event.getPlayer().sendMessage(new TranslationTextComponent("message.twilightforest.casket.broken").mergeStyle(TextFormatting.DARK_RED), event.getPlayer().getUniqueID());
+				event.getPlayer().sendMessage(new TranslationTextComponent("block.twilightforest.casket.broken").mergeStyle(TextFormatting.DARK_RED), event.getPlayer().getUniqueID());
 			}
 			returnStoredItems(event.getPlayer());
 		}

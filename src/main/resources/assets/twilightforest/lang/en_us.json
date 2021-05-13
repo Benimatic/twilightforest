@@ -345,7 +345,11 @@
   "block.twilightforest.ur_ghast_trophy": "Ur-Ghast Trophy",
   "block.twilightforest.snow_queen_trophy": "Snow Queen Trophy",
   "block.twilightforest.quest_ram_trophy": "Questing Ram Trophy",
+
   "block.twilightforest.keepsake_casket": "Keepsake Casket",
+  "block.twilightforest.casket.broken": "Your Keepsake Casket was too damaged to hold any more items. All items that would be stored in your casket were dropped on the ground.",
+  "block.twilightforest.casket.locked": "This Casket can only be opened by %s!",
+
   "block.twilightforest.potted_twilight_oak_sapling": "Potted Sickly Twilight Oak Sapling",
   "block.twilightforest.potted_canopy_sapling": "Potted Canopy Tree Sapling",
   "block.twilightforest.potted_mangrove_sapling": "Potted Twilight Mangrove Sapling",
@@ -957,6 +961,7 @@
   "subtitles.block.casket.open": "Keepsake Casket opens",
   "subtitles.block.casket.close": "Keepsake Casket closes",
   "subtitles.block.casket.repair": "Player repairs casket",
+  "subtitles.block.casket.locked": "Keepsake Casket clicks",
 
   "subtitles.item.blockchain.collide": "Block and Chain hits block",
   "subtitles.item.blockchain.hit": "Block and Chain hits entity",
@@ -1170,8 +1175,6 @@
   "twilightforest.config.loading_icon_tilt_pushback.tooltip": "Pushback value to re-center the wobble of loading icon.",
   "twilightforest.config.casket_uuid_locking": "Keepsake Casket UUID Locking",
   "twilightforest.config.casket_uuid_locking.tooltip": "If true, Keepsake Caskets that are spawned when a player dies will not be accessible by other players. Use this if you dont want people taking from other people's death caskets. NOTE: server operators will still be able to open locked caskets.",
-
-  "message.twilightforest.casket.broken": "Your Keepsake Casket was too damaged to hold any more items. All items that would be stored in your casket were dropped on the ground.",
 
   // Books
   "twilightforest.book.lichtower.1": "\u00A78[[An explorer's notebook, gnawed on by monsters]]\u00A70\n\n_I have begun examining the strange aura surrounding this tower. The bricks of the tower are protected by a curse, stronger than any I've seen before. The magic from the curse",

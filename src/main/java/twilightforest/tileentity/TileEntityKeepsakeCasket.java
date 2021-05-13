@@ -16,6 +16,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -32,6 +33,8 @@ public class TileEntityKeepsakeCasket extends LockableLootTileEntity implements 
     private NonNullList<ItemStack> contents = NonNullList.withSize(limit, ItemStack.EMPTY);
     @Nullable
     public static String name;
+    @Nullable
+    public static String casketname;
     @Nullable
     public static UUID playeruuid;
     protected float lidAngle;
@@ -88,7 +91,7 @@ public class TileEntityKeepsakeCasket extends LockableLootTileEntity implements 
             ItemStackHelper.saveAllItems(compound, this.contents);
         }
         if(playeruuid != null) compound.putUniqueId("deadPlayer", playeruuid);
-        if(name != null) compound.putString("playerName", name);
+        if(casketname != null) compound.putString("playerName", casketname);
         return compound;
     }
 
@@ -100,7 +103,7 @@ public class TileEntityKeepsakeCasket extends LockableLootTileEntity implements 
             ItemStackHelper.loadAllItems(nbt, this.contents);
         }
         if(nbt.hasUniqueId("deadPlayer")) playeruuid = nbt.getUniqueId("deadPlayer");
-        if(nbt.hasUniqueId("playerName")) name = nbt.getString("playerName");
+        if(nbt.hasUniqueId("playerName")) casketname = nbt.getString("playerName");
     }
 
     //[VanillaCopy] of EnderChestTileEntity, with some small adaptations
@@ -159,6 +162,8 @@ public class TileEntityKeepsakeCasket extends LockableLootTileEntity implements 
             if(user.hasPermissionLevel(3) || user.getUniqueID().getMostSignificantBits() == playeruuid.getMostSignificantBits()) {
                 return super.canOpen(user);
             } else {
+                user.playSound(TFSounds.CASKET_LOCKED, SoundCategory.BLOCKS, 0.5F, 0.5F);
+                user.sendStatusMessage(new TranslationTextComponent("block.twilightforest.casket.locked", name).mergeStyle(TextFormatting.RED), true);
                 return false;
             }
         } else {

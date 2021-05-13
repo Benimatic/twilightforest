@@ -250,6 +250,7 @@ public final class TFSounds {
 
 	public static final SoundEvent CASKET_OPEN = createEvent("casket.open");
 	public static final SoundEvent CASKET_CLOSE = createEvent("casket.close");
+	public static final SoundEvent CASKET_LOCKED = createEvent("casket.locked");
 	public static final SoundEvent CASKET_REPAIR = createEvent("casket.repair");
 
 	public static final SoundEvent MUSIC = createEvent("music.bg");
@@ -346,7 +347,7 @@ public final class TFSounds {
 				WRAITH_PARROT,
 				
 				SLIDER,
-				CASKET_CLOSE, CASKET_OPEN, CASKET_REPAIR,
+				CASKET_CLOSE, CASKET_OPEN, CASKET_LOCKED, CASKET_REPAIR,
 				MUSIC
 		);
 
