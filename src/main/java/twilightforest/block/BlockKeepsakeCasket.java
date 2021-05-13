@@ -140,9 +140,9 @@ public class BlockKeepsakeCasket extends ContainerBlock implements BlockLoggingE
 		if (!worldIn.isRemote && !player.isCreative() && worldIn.getGameRules().getBoolean(GameRules.DO_TILE_DROPS)) {
 			TileEntity tile = worldIn.getTileEntity(pos);
 			if (tile instanceof TileEntityKeepsakeCasket) {
-				TileEntityKeepsakeCasket casket = ((TileEntityKeepsakeCasket) tile);
+				TileEntityKeepsakeCasket casket = (TileEntityKeepsakeCasket) tile;
 				ItemStack stack = new ItemStack(this);
-				String nameCheck = new StringTextComponent(TileEntityKeepsakeCasket.name + "'s " + casket.getDisplayName()).getString();
+				String nameCheck = new StringTextComponent(casket.name + "'s " + casket.getDisplayName()).getString();
 				ItemEntity itementity = new ItemEntity(worldIn, pos.getX(), pos.getY(), pos.getZ(), stack);
 				CompoundNBT nbt = new CompoundNBT();
 				nbt.putInt("damage", state.get(BREAKAGE));

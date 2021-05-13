@@ -299,9 +299,9 @@ public class TFEventListener {
 
 					if (TFConfig.COMMON_CONFIG.casketUUIDLocking.get()) {
 						//make it so only the player who died can open the chest if our config allows us
-						TileEntityKeepsakeCasket.playeruuid = player.getUniqueID();
+						casket.playeruuid = player.getUniqueID();
 					} else {
-						TileEntityKeepsakeCasket.playeruuid = null;
+						casket.playeruuid = null;
 					}
 
 					//some names are way too long for the casket so we'll cut them down
@@ -309,8 +309,8 @@ public class TFEventListener {
 					if (player.getName().getString().length() > 12)
 						modifiedName = player.getName().getString().substring(0, 12);
 					else modifiedName = player.getName().getString();
-					TileEntityKeepsakeCasket.name = player.getName().getString();
-					TileEntityKeepsakeCasket.casketname = modifiedName;
+					casket.name = player.getName().getString();
+					casket.casketname = modifiedName;
 					casket.setCustomName(new StringTextComponent(modifiedName + "'s " + (world.rand.nextInt(10000) == 0 ? "Costco Casket" : casket.getDisplayName().getString())));
 					int damage = world.getBlockState(immutablePos).get(BlockKeepsakeCasket.BREAKAGE);
 					if (world.rand.nextFloat() <= 0.15F) {
@@ -351,8 +351,13 @@ public class TFEventListener {
 	public static void onCasketBreak(BreakEvent event) {
 		Block block = event.getState().getBlock();
 		PlayerEntity player = event.getPlayer();
-		UUID checker = TileEntityKeepsakeCasket.playeruuid;
+		TileEntity te = event.getWorld().getTileEntity(event.getPos());
+		UUID checker;
 		if(block == TFBlocks.keepsake_casket.get()) {
+			if(te instanceof TileEntityKeepsakeCasket) {
+				TileEntityKeepsakeCasket casket = (TileEntityKeepsakeCasket) te;
+				 checker = casket.playeruuid;
+			} else checker = null;
 			if(checker != null) {
 				if (player.hasPermissionLevel(3) || player.getUniqueID().getMostSignificantBits() != checker.getMostSignificantBits()) {
 					event.setCanceled(true);

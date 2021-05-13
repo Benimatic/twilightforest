@@ -30,13 +30,13 @@ import java.util.UUID;
 @OnlyIn(value = Dist.CLIENT, _interface = IChestLid.class)
 public class TileEntityKeepsakeCasket extends LockableLootTileEntity implements IChestLid, ITickableTileEntity {
     private static final int limit = 9 * 5;
-    private NonNullList<ItemStack> contents = NonNullList.withSize(limit, ItemStack.EMPTY);
+    public NonNullList<ItemStack> contents = NonNullList.withSize(limit, ItemStack.EMPTY);
     @Nullable
-    public static String name;
+    public String name;
     @Nullable
-    public static String casketname;
+    public String casketname;
     @Nullable
-    public static UUID playeruuid;
+    public UUID playeruuid;
     protected float lidAngle;
     protected float prevLidAngle;
     protected int numPlayersUsing;
