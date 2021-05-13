@@ -66,7 +66,7 @@ public class EntityStableIceCore extends EntityTFIceMob implements IRangedAttack
 
 	@Override
 	public void attackEntityWithRangedAttack(LivingEntity target, float distanceFactor) {
-		EntityTFIceSnowball snowball = TFEntities.ice_snowball.create(this.world);
+		EntityTFIceSnowball snowball = new EntityTFIceSnowball(world, this);
 		snowball.setPosition(this.getPosX(), this.getPosY() + this.getEyeHeight(), this.getPosZ());
 
 		// [VanillaCopy] Adapted from EntitySnowman
