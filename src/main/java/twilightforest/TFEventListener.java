@@ -359,7 +359,7 @@ public class TFEventListener {
 				 checker = casket.playeruuid;
 			} else checker = null;
 			if(checker != null) {
-				if (player.hasPermissionLevel(3) || player.getUniqueID().getMostSignificantBits() != checker.getMostSignificantBits()) {
+				if ((player.getUniqueID().getMostSignificantBits() != checker.getMostSignificantBits() || !player.hasPermissionLevel(3)) && !((TileEntityKeepsakeCasket) te).contents.isEmpty()) {
 					event.setCanceled(true);
 				}
 			}
