@@ -26,8 +26,6 @@ import net.minecraft.loot.conditions.ILootCondition;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.ITag;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.NonNullList;
@@ -42,6 +40,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.feature.structure.StructureStart;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.Tags;
@@ -69,7 +68,11 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.items.ItemHandlerHelper;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.block.*;
+import twilightforest.block.BlockKeepsakeCasket;
+import twilightforest.block.BlockTFCritter;
+import twilightforest.block.BlockTFGiantBlock;
+import twilightforest.block.BlockTFPortal;
+import twilightforest.block.TFBlocks;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.shield.IShieldCapability;
 import twilightforest.data.BlockTagGenerator;
@@ -81,7 +84,11 @@ import twilightforest.entity.projectile.ITFProjectile;
 import twilightforest.enums.BlockLoggingEnum;
 import twilightforest.item.ItemTFPhantomArmor;
 import twilightforest.item.TFItems;
-import twilightforest.network.*;
+import twilightforest.network.PacketAreaProtection;
+import twilightforest.network.PacketEnforceProgressionStatus;
+import twilightforest.network.PacketSetSkylightEnabled;
+import twilightforest.network.PacketUpdateShield;
+import twilightforest.network.TFPacketHandler;
 import twilightforest.potions.TFPotions;
 import twilightforest.tileentity.TileEntityKeepsakeCasket;
 import twilightforest.util.TFItemStackUtils;
@@ -90,7 +97,12 @@ import twilightforest.world.TFDimensions;
 import twilightforest.world.TFGenerationSettings;
 
 import javax.annotation.Nonnull;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * So much of the mod logic in this one class
@@ -716,20 +728,31 @@ public class TFEventListener {
 
 		ChunkGeneratorTwilightBase chunkGenerator = TFGenerationSettings.getChunkGenerator(world);
 
-		if (chunkGenerator != null && TFGenerationSettings.locateTFStructureInRange((ServerWorld) world, pos, 0).map(structure -> structure.getBoundingBox().isVecInside(pos)).orElse(false)) {
-			// what feature is nearby?  is it one the player has not unlocked?
-			TFFeature nearbyFeature = TFFeature.getFeatureAt(pos.getX(), pos.getZ(), (ServerWorld) world);
 
-			if (!nearbyFeature.doesPlayerHaveRequiredAdvancements(player)/* && chunkGenerator.isBlockProtected(pos)*/) {
+		if (chunkGenerator != null) {
+			Optional<StructureStart<?>> struct = TFGenerationSettings.locateTFStructureInRange((ServerWorld) world, pos, 0);
+			if(struct.isPresent()) {
+				StructureStart<?> structure = struct.get();
+				if(structure.getBoundingBox().isVecInside(pos)) {
+					// what feature is nearby?  is it one the player has not unlocked?
+					TFFeature nearbyFeature = TFFeature.getFeatureAt(pos.getX(), pos.getZ(), (ServerWorld) world);
 
-				// send protection packet
-				MutableBoundingBox bb = new MutableBoundingBox(pos, pos.add(16, 16, 16)); // todo 1.15 get from structure
-				sendAreaProtectionPacket(world, pos, bb);
+					if (!nearbyFeature.doesPlayerHaveRequiredAdvancements(player)/* && chunkGenerator.isBlockProtected(pos)*/) {
 
-				// send a hint monster?
-				nearbyFeature.trySpawnHintMonster(world, player, pos);
+						// TODO: This is terrible but *works* for now.. proper solution is to figure out why the stronghold bounding box is going so high
+						if (nearbyFeature == TFFeature.KNIGHT_STRONGHOLD && pos.getY() >= 33)
+							return false;
 
-				return true;
+						// send protection packet
+						MutableBoundingBox bb = structure.getBoundingBox();//new MutableBoundingBox(pos, pos.add(16, 16, 16)); // todo 1.15 get from structure
+						sendAreaProtectionPacket(world, pos, bb);
+
+						// send a hint monster?
+						nearbyFeature.trySpawnHintMonster(world, player, pos);
+
+						return true;
+					}
+				}
 			}
 		}
 		return false;
