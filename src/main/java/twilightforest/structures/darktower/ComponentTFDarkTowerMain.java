@@ -756,7 +756,7 @@ public class ComponentTFDarkTowerMain extends ComponentTFDarkTowerWing {
 	}
 
 	private void decorateBossSpawner(ISeedReader world, MutableBoundingBox sbb, Rotation rotation, int y) {
-		this.setBlockStateRotated(world, TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.UR_GHAST), 9, y + 4, 9, rotation, sbb);
+		this.setBlockStateRotated(world, TFBlocks.boss_spawner_ur_ghast.get().getDefaultState(), 9, y + 4, 9, rotation, sbb);
 	}
 
 	private void decorateExperiment(ISeedReader world, MutableBoundingBox sbb, Rotation rotation, int y) {

@@ -227,7 +227,7 @@ public class EntityTFSnowQueen extends MonsterEntity implements IBreathAttacker 
 	public void checkDespawn() {
 		if (world.getDifficulty() == Difficulty.PEACEFUL) {
 			if (getHomePosition() != BlockPos.ZERO) {
-				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.SNOW_QUEEN));
+				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner_snow_queen.get().getDefaultState());
 			}
 			remove();
 		} else {

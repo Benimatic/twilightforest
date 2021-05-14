@@ -240,7 +240,16 @@ public class BlockstateGenerator extends BlockStateProvider {
 		simpleBlock(TFBlocks.hedge.get(), ConfiguredModel.builder()
 						.weight(10).modelFile(models().cubeAll(TFBlocks.hedge.getId().getPath(), blockTexture(TFBlocks.hedge.get()))).nextModel()
 						.weight(1).modelFile(models().cubeAll(TFBlocks.hedge.getId().getPath() + "_rose", prefix("block/" + TFBlocks.hedge.getId().getPath() + "_rose"))).build());
-		simpleBlock(TFBlocks.boss_spawner.get(), new ConfiguredModel(models().getExistingFile(new ResourceLocation("block/spawner"))));
+		simpleBlock(TFBlocks.boss_spawner_naga.get(), new ConfiguredModel(models().getExistingFile(new ResourceLocation("block/spawner"))));
+		simpleBlock(TFBlocks.boss_spawner_lich.get(), new ConfiguredModel(models().getExistingFile(new ResourceLocation("block/spawner"))));
+		simpleBlock(TFBlocks.boss_spawner_hydra.get(), new ConfiguredModel(models().getExistingFile(new ResourceLocation("block/spawner"))));
+		simpleBlock(TFBlocks.boss_spawner_ur_ghast.get(), new ConfiguredModel(models().getExistingFile(new ResourceLocation("block/spawner"))));
+		simpleBlock(TFBlocks.boss_spawner_knight_phantom.get(), new ConfiguredModel(models().getExistingFile(new ResourceLocation("block/spawner"))));
+		simpleBlock(TFBlocks.boss_spawner_snow_queen.get(), new ConfiguredModel(models().getExistingFile(new ResourceLocation("block/spawner"))));
+		simpleBlock(TFBlocks.boss_spawner_minoshroom.get(), new ConfiguredModel(models().getExistingFile(new ResourceLocation("block/spawner"))));
+		simpleBlock(TFBlocks.boss_spawner_alpha_yeti.get(), new ConfiguredModel(models().getExistingFile(new ResourceLocation("block/spawner"))));
+		simpleBlock(TFBlocks.boss_spawner_quest_ram.get(), new ConfiguredModel(models().getExistingFile(new ResourceLocation("block/spawner"))));
+		simpleBlock(TFBlocks.boss_spawner_final_boss.get(), new ConfiguredModel(models().getExistingFile(new ResourceLocation("block/spawner"))));
 		simpleBlockExisting(TFBlocks.firefly_jar.get());
 		simpleBlockExisting(TFBlocks.cicada_jar.get());
 		registerPlantBlocks();

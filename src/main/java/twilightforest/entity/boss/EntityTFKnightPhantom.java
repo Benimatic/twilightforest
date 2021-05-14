@@ -135,7 +135,7 @@ public class EntityTFKnightPhantom extends FlyingEntity implements IMob {
 	public void checkDespawn() {
 		if (world.getDifficulty() == Difficulty.PEACEFUL) {
 			if (hasHome() && getNumber() == 0) {
-				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.KNIGHT_PHANTOM));
+				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner_knight_phantom.get().getDefaultState());
 			}
 			remove();
 		} else {

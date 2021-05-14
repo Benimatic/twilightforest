@@ -58,7 +58,16 @@ public class TFBlocks {
 	public static final RegistryObject<Block> maze_stone_mosaic          = BLOCKS.register("maze_stone_mosaic", () -> new BlockTFMazestone(Block.Properties.create(Material.ROCK).setRequiresTool().hardnessAndResistance(100.0F, 5.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> maze_stone_border          = BLOCKS.register("maze_stone_border", () -> new BlockTFMazestone(Block.Properties.create(Material.ROCK).setRequiresTool().hardnessAndResistance(100.0F, 5.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<Block> hedge                      = BLOCKS.register("hedge", () -> new BlockTFHedge(Block.Properties.create(Material.CACTUS).harvestTool(ToolType.AXE).hardnessAndResistance(2.0F, 10.0F).sound(SoundType.PLANT)));
-	public static final RegistryObject<Block> boss_spawner               = BLOCKS.register("boss_spawner", () -> new BlockTFBossSpawner(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F).notSolid().noDrops()));
+	public static final RegistryObject<Block> boss_spawner_naga          = BLOCKS.register("boss_spawner_naga", () -> new BlockTFBossSpawner(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F).notSolid().noDrops(), BossVariant.NAGA));
+	public static final RegistryObject<Block> boss_spawner_lich          = BLOCKS.register("boss_spawner_lich", () -> new BlockTFBossSpawner(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F).notSolid().noDrops(), BossVariant.LICH));
+	public static final RegistryObject<Block> boss_spawner_hydra         = BLOCKS.register("boss_spawner_hydra", () -> new BlockTFBossSpawner(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F).notSolid().noDrops(), BossVariant.HYDRA));
+	public static final RegistryObject<Block> boss_spawner_ur_ghast      = BLOCKS.register("boss_spawner_ur_ghast", () -> new BlockTFBossSpawner(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F).notSolid().noDrops(), BossVariant.UR_GHAST));
+	public static final RegistryObject<Block> boss_spawner_knight_phantom = BLOCKS.register("boss_spawner_knight_phantom", () -> new BlockTFBossSpawner(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F).notSolid().noDrops(), BossVariant.KNIGHT_PHANTOM));
+	public static final RegistryObject<Block> boss_spawner_snow_queen    = BLOCKS.register("boss_spawner_snow_queen", () -> new BlockTFBossSpawner(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F).notSolid().noDrops(), BossVariant.SNOW_QUEEN));
+	public static final RegistryObject<Block> boss_spawner_minoshroom    = BLOCKS.register("boss_spawner_minoshroom", () -> new BlockTFBossSpawner(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F).notSolid().noDrops(), BossVariant.MINOSHROOM));
+	public static final RegistryObject<Block> boss_spawner_alpha_yeti    = BLOCKS.register("boss_spawner_alpha_yeti", () -> new BlockTFBossSpawner(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F).notSolid().noDrops(), BossVariant.ALPHA_YETI));
+	public static final RegistryObject<Block> boss_spawner_quest_ram     = BLOCKS.register("boss_spawner_quest_ram", () -> new BlockTFBossSpawner(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F).notSolid().noDrops(), BossVariant.QUEST_RAM));
+	public static final RegistryObject<Block> boss_spawner_final_boss    = BLOCKS.register("boss_spawner_final_boss", () -> new BlockTFBossSpawner(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F).notSolid().noDrops(), BossVariant.FINAL_BOSS));
 	public static final RegistryObject<Block> firefly_jar                = BLOCKS.register("firefly_jar", () -> new BlockTFJar(Block.Properties.create(Material.GLASS).hardnessAndResistance(0.3F, 0.0F).sound(SoundType.WOOD).setLightLevel((state) -> 15).notSolid()));
 	public static final RegistryObject<Block> cicada_jar                 = BLOCKS.register("cicada_jar", () -> new BlockTFJar(Block.Properties.create(Material.GLASS).hardnessAndResistance(0.3F, 0.0F).sound(SoundType.WOOD).notSolid()));
 	public static final RegistryObject<Block> moss_patch                 = BLOCKS.register("moss_patch", () -> new BlockTFPlant(PlantVariant.MOSSPATCH, Block.Properties.create(Material.PLANTS).hardnessAndResistance(0.0F).sound(SoundType.PLANT).doesNotBlockMovement().notSolid()));
@@ -393,7 +402,8 @@ public class TFBlocks {
 						nagastone_pillar, nagastone_pillar_mossy, nagastone_pillar_weathered, etched_nagastone, etched_nagastone_mossy, etched_nagastone_weathered, spiral_bricks,
 						nagastone_stairs_left, nagastone_stairs_right, nagastone_stairs_mossy_left, nagastone_stairs_mossy_right, nagastone_stairs_weathered_left, nagastone_stairs_weathered_right,
 						maze_stone, maze_stone_brick, maze_stone_chiseled, maze_stone_decorative, maze_stone_cracked, maze_stone_mossy, maze_stone_mosaic, maze_stone_border,
-						hedge, boss_spawner, root, liveroot_block, uncrafting_table, firefly_jar, cicada_jar, smoker, encased_smoker, fire_jet, encased_fire_jet,
+						boss_spawner_naga, boss_spawner_lich, boss_spawner_hydra, boss_spawner_ur_ghast, boss_spawner_knight_phantom, boss_spawner_snow_queen, boss_spawner_minoshroom, boss_spawner_alpha_yeti, boss_spawner_quest_ram, boss_spawner_final_boss,
+						hedge, root, liveroot_block, uncrafting_table, firefly_jar, cicada_jar, smoker, encased_smoker, fire_jet, encased_fire_jet,
 						naga_stone_head, naga_stone,
 						moss_patch, mayapple, clover_patch, fiddlehead, mushgloom, torchberry_plant, root_strand, fallen_leaves,
 						iron_ladder, /*terrorcotta_circle, terrorcotta_diagonal,*/ stone_twist, /*lapis_block,*/
@@ -434,7 +444,7 @@ public class TFBlocks {
 				.setRegistryName(mine_sign.getId()));
 		r.register(new SignItem(TFItems.defaultBuilder().maxStackSize(16), sort_sign.get(), sort_wall_sign.get())
 				.setRegistryName(sort_sign.getId()));
-		
+
 		List<Block> doors = Arrays.asList(twilight_oak_door.get(), canopy_door.get(), mangrove_door.get(), dark_door.get(), time_door.get(), trans_door.get(), mine_door.get(), sort_door.get());
 		for (Block b : doors) {
 			r.register(new TallBlockItem(b, TFItems.defaultBuilder()).setRegistryName(b.getRegistryName()));
@@ -526,7 +536,7 @@ public class TFBlocks {
 		return AbstractBlock.Properties.create(Material.WOOD, (state) ->
 				state.get(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? top : side);
 	}
-	
+
 	public static void tfCompostables() {
 		ComposterBlock.registerCompostable(0.1F, fallen_leaves.get());
 		ComposterBlock.registerCompostable(0.3F, canopy_leaves.get());
@@ -569,7 +579,7 @@ public class TFBlocks {
 		ComposterBlock.registerCompostable(0.65F, trollber.get());
 		ComposterBlock.registerCompostable(0.85F, huge_lilypad.get());
 		ComposterBlock.registerCompostable(0.85F, huge_mushgloom.get());
-		
+
 		//eh, we'll do items here too
 		ComposterBlock.registerCompostable(0.3F, TFItems.torchberries.get());
 		ComposterBlock.registerCompostable(0.5F, TFItems.liveroot.get());

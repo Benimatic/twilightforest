@@ -699,7 +699,7 @@ public class EntityTFNaga extends MonsterEntity {
 	public void checkDespawn() {
 		if (world.getDifficulty() == Difficulty.PEACEFUL) {
 			if (getHomePosition() != BlockPos.ZERO) {
-				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.NAGA));
+				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner_naga.get().getDefaultState());
 			}
 			remove();
 		} else {

@@ -161,7 +161,7 @@ public class EntityTFLich extends MonsterEntity {
 	public void checkDespawn() {
 		if (world.getDifficulty() == Difficulty.PEACEFUL && !isShadowClone()) {
 			if (!detachHome()) {
-				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.LICH));
+				world.setBlockState(getHomePosition(), TFBlocks.boss_spawner_lich.get().getDefaultState());
 			}
 			remove();
 		} else {

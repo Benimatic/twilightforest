@@ -96,7 +96,7 @@ public class ComponentTFStrongholdBossRoom extends StructureTFStrongholdComponen
 		this.fillWithBlocks(world, sbb, 12, 1, 3, 14, 4, 3, Blocks.IRON_BARS.getDefaultState(), Blocks.IRON_BARS.getDefaultState(), false);
 
 		//spawner
-		setBlockState(world, TFBlocks.boss_spawner.get().getDefaultState().with(BlockTFBossSpawner.VARIANT, BossVariant.KNIGHT_PHANTOM), 13, 2, 13, sbb);
+		setBlockState(world, TFBlocks.boss_spawner_knight_phantom.get().getDefaultState(), 13, 2, 13, sbb);
 
 		// doors
 		placeDoors(world, sbb);

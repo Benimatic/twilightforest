@@ -143,7 +143,16 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.root.get());
 		toBlock(TFBlocks.liveroot_block.get());
 		toBlock(TFBlocks.uncrafting_table.get());
-		toBlockModel(TFBlocks.boss_spawner.get(), new ResourceLocation("block/spawner"));
+		toBlockModel(TFBlocks.boss_spawner_naga.get(), new ResourceLocation("block/spawner"));
+		toBlockModel(TFBlocks.boss_spawner_lich.get(), new ResourceLocation("block/spawner"));
+		toBlockModel(TFBlocks.boss_spawner_hydra.get(), new ResourceLocation("block/spawner"));
+		toBlockModel(TFBlocks.boss_spawner_ur_ghast.get(), new ResourceLocation("block/spawner"));
+		toBlockModel(TFBlocks.boss_spawner_knight_phantom.get(), new ResourceLocation("block/spawner"));
+		toBlockModel(TFBlocks.boss_spawner_snow_queen.get(), new ResourceLocation("block/spawner"));
+		toBlockModel(TFBlocks.boss_spawner_minoshroom.get(), new ResourceLocation("block/spawner"));
+		toBlockModel(TFBlocks.boss_spawner_alpha_yeti.get(), new ResourceLocation("block/spawner"));
+		toBlockModel(TFBlocks.boss_spawner_quest_ram.get(), new ResourceLocation("block/spawner"));
+		toBlockModel(TFBlocks.boss_spawner_final_boss.get(), new ResourceLocation("block/spawner"));
 		toBlock(TFBlocks.firefly_jar.get());
 		toBlock(TFBlocks.cicada_jar.get());
 		generated(TFBlocks.moss_patch.getId().getPath(), prefix("block/patch/moss"));
