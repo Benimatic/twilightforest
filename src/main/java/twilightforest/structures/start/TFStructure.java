@@ -50,6 +50,11 @@ public class TFStructure<C extends IFeatureConfig> extends Structure<C> {
 	}
 
 	@Override
+	public boolean getDefaultRestrictsSpawnsToInside() {
+		return true;
+	}
+
+	@Override
 	public GenerationStage.Decoration getDecorationStage() {
 		return feature.getDecorationStage();
 	}
