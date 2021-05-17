@@ -105,17 +105,17 @@ public class TFConfig {
 							translation(config + "large_hill").
 							worldRestart().
 							comment("Blocks generating as stalactites in large hills only").
-							define("largeHill", Collections.emptyList());
+							defineList("largeHill", new ArrayList<>(), s -> s instanceof String);
 					DIMENSION.hollowHillStalactites.mediumHill = builder.
 							translation(config + "medium_hill").
 							worldRestart().
 							comment("Blocks generating as stalactites in medium and large hills").
-							define("mediumHill", Collections.emptyList());
+							defineList("mediumHill", new ArrayList<>(), s -> s instanceof String);
 					DIMENSION.hollowHillStalactites.smallHill = builder.
 							translation(config + "small_hill").
 							worldRestart().
 							comment("Blocks generating as stalactites in all hills").
-							define("mediumHill", Collections.emptyList());
+							defineList("smallHill", new ArrayList<>(), s -> s instanceof String);
 					DIMENSION.hollowHillStalactites.useConfigOnly = builder.
 							translation(config + "stalactite_config_only").
 							worldRestart().
