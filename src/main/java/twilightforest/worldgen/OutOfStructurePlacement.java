@@ -23,8 +23,6 @@ public class OutOfStructurePlacement extends Placement<NoPlacementConfig> {
 	@Override
 	public Stream<BlockPos> getPositions(WorldDecoratingHelper worldDecoratingHelper, Random random, NoPlacementConfig noPlacementConfig, BlockPos blockPos) {
 		if (worldDecoratingHelper.chunkGenerator instanceof ChunkGeneratorTwilightBase) {
-			if(blockPos.withinDistance(new BlockPos(281, 32, 60), 30F))
-				System.out.println("ree");
 			Optional<StructureStart<?>> struct = TFGenerationSettings.locateTFStructureInRange(worldDecoratingHelper.field_242889_a, blockPos, 0);
 			if(struct.isPresent()) {
 				StructureStart<?> structure = struct.get();
