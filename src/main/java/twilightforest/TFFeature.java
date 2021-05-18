@@ -771,7 +771,7 @@ public enum TFFeature {
 		int featureX = Math.round(chunkX / 16F) * 16;
 		int featureZ = Math.round(chunkZ / 16F) * 16;
 
-		return generateFeature(featureX, featureZ, world.getWorld());
+		return generateFeature(featureX, featureZ, world);
 	}
 
 	/**

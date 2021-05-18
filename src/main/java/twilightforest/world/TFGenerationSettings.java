@@ -14,6 +14,7 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.SectionPos;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.ISeedReader;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.ChunkStatus;
@@ -179,7 +180,7 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 		}
 	}
 
-	public static Optional<StructureStart<?>> locateTFStructureInRange(ServerWorld world, BlockPos pos, int range) {
+	public static Optional<StructureStart<?>> locateTFStructureInRange(ISeedReader world, BlockPos pos, int range) {
 		int cx1 = MathHelper.floor((pos.getX() - range) >> 4);
 		int cx2 = MathHelper.ceil((pos.getX() + range) >> 4);
 		int cz1 = MathHelper.floor((pos.getZ() - range) >> 4);
