@@ -10,6 +10,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.DoubleSidedInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.ITickableTileEntity;
@@ -303,10 +304,12 @@ public class BlockTFMagicLogSpecial extends RotatedPillarBlock {
 					ItemStack currentItem = chest.getStackInSlot(slotNum);
 
 					if (!currentItem.isEmpty() && currentItem != beingSorted && beingSorted.isItemEqual(currentItem)) {
-						if (currentItem.getCount() <= (beingSorted.getMaxStackSize() - beingSorted.getCount())) {
-							chest.setInventorySlotContents(slotNum, ItemStack.EMPTY);
-							beingSorted.grow(currentItem.getCount());
-							currentItem.setCount(0);
+						if (currentItem.getTag() != null && beingSorted.getTag().equals(currentItem.getTag())) {
+							if (currentItem.getCount() <= (beingSorted.getMaxStackSize() - beingSorted.getCount())) {
+								chest.setInventorySlotContents(slotNum, ItemStack.EMPTY);
+								beingSorted.grow(currentItem.getCount());
+								currentItem.setCount(0);
+							}
 						}
 					}
 				}
