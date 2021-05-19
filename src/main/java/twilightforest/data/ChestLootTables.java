@@ -10,11 +10,13 @@ import net.minecraft.loot.functions.SetNBT;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
+import net.minecraftforge.registries.ForgeRegistries;
+import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.item.TFItems;
-import twilightforest.loot.LootFunctionEnchant;
-import twilightforest.loot.TFTreasure;
+import twilightforest.loot.*;
 
+import java.util.Locale;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -529,8 +531,20 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .addEntry(ItemLootEntry.builder(TFItems.phantom_chestplate.get()).acceptFunction(EnchantWithLevels.func_215895_a(ConstantRange.of(30)))))
                         .addLootPool(LootPool.builder()
                                 .rolls(ConstantRange.of(1))
-                                .addEntry(ItemLootEntry.builder(TFBlocks.knight_phantom_trophy.get().asItem()))));
-                        //knightmetal ingots to shaders
+                                .addEntry(ItemLootEntry.builder(TFBlocks.knight_phantom_trophy.get().asItem())))
+                        .addLootPool(LootPool.builder()
+                                .rolls(ConstantRange.of(1))
+                                .addEntry(ItemLootEntry.builder(TFItems.carminite.get())
+                                        .acceptCondition(LootConditionModExists.builder("immersiveengineering"))
+                                        .acceptFunction(LootFunctionModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")), TFItems.knightmetal_ingot.get()))
+                                        .acceptFunction(SetNBT.builder(Util.make(new CompoundNBT(), (nbt) -> {
+                                            nbt.putString("shader_name", "twilightforest:knight_phantom");
+                                        })))))
+                        .addLootPool(LootPool.builder()
+                                .rolls(ConstantRange.of(1))
+                                .addEntry(ItemLootEntry.builder(TFItems.carminite.get())
+                                        .acceptCondition(LootConditionModExists.builder("immersiveengineering"))
+                                        .acceptFunction(LootFunctionModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader_bag_twilight")), TFItems.knightmetal_ingot.get())))));
 
         register.accept(TFTreasure.darktower_cache.lootTable,
                 LootTable.builder()
@@ -599,13 +613,25 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                         .addLootPool(LootPool.builder()
                                 .rolls(ConstantRange.of(4))
                                 .addEntry(ItemLootEntry.builder(TFItems.carminite.get()).acceptFunction(SetCount.builder(RandomValueRange.of(1, 3)))))
-                             .addLootPool(LootPool.builder()
+                        .addLootPool(LootPool.builder()
                                 .rolls(ConstantRange.of(2))
                                 .addEntry(ItemLootEntry.builder(TFItems.fiery_tears.get()).acceptFunction(SetCount.builder(RandomValueRange.of(1, 5)))))
                         .addLootPool(LootPool.builder()
                                 .rolls(ConstantRange.of(1))
-                                .addEntry(ItemLootEntry.builder(TFBlocks.ur_ghast_trophy.get().asItem()))));
-                        //carminite to shaders
+                                .addEntry(ItemLootEntry.builder(TFBlocks.ur_ghast_trophy.get().asItem())))
+                        .addLootPool(LootPool.builder()
+                                .rolls(ConstantRange.of(1))
+                                .addEntry(ItemLootEntry.builder(TFItems.carminite.get())
+                                        .acceptCondition(LootConditionModExists.builder("immersiveengineering"))
+                                        .acceptFunction(LootFunctionModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")), TFItems.carminite.get()))
+                                        .acceptFunction(SetNBT.builder(Util.make(new CompoundNBT(), (nbt) -> {
+                                            nbt.putString("shader_name", "twilightforest:ur_ghast");
+                                        })))))
+                        .addLootPool(LootPool.builder()
+                                .rolls(ConstantRange.of(1))
+                                .addEntry(ItemLootEntry.builder(TFItems.carminite.get())
+                                        .acceptCondition(LootConditionModExists.builder("immersiveengineering"))
+                                        .acceptFunction(LootFunctionModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader_bag_twilight")), TFItems.carminite.get())))));
 
         register.accept(TFTreasure.aurora_cache.lootTable,
                 LootTable.builder()

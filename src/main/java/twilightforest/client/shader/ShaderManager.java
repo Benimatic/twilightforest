@@ -9,33 +9,29 @@
 
 package twilightforest.client.shader;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.ByteBuffer;
-import java.util.function.IntConsumer;
-
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.resources.IResourceManager;
-import net.minecraft.client.resources.SimpleReloadableResourceManager;
-import net.minecraftforge.client.resource.ISelectiveResourceReloadListener;
-import net.minecraftforge.client.resource.VanillaResourceType;
-
-import org.apache.commons.io.IOUtils;
-import org.lwjgl.BufferUtils;
+import net.minecraft.resources.IResourceManager;
+import net.minecraft.resources.SimpleReloadableResourceManager;
+import net.minecraftforge.resource.ISelectiveResourceReloadListener;
+import net.minecraftforge.resource.VanillaResourceType;
 import org.lwjgl.opengl.*;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.TFClientEvents;
 
 import javax.annotation.Nullable;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.function.IntConsumer;
 
 public final class ShaderManager {
 
     private static ISelectiveResourceReloadListener shaderReloadListener;
 
-    private static final int VERT = OpenGlHelper.arbShaders ? ARBVertexShader.GL_VERTEX_SHADER_ARB : GL20.GL_VERTEX_SHADER;
-    private static final int FRAG = OpenGlHelper.arbShaders ? ARBFragmentShader.GL_FRAGMENT_SHADER_ARB : GL20.GL_FRAGMENT_SHADER;
+    private static final int VERT =  ARBVertexShader.GL_VERTEX_SHADER_ARB;
+    private static final int FRAG =  ARBFragmentShader.GL_FRAGMENT_SHADER_ARB;
 
     private static final String PREFIX = "/assets/twilightforest/shaders/";
 
@@ -59,7 +55,7 @@ public final class ShaderManager {
         public static final ShaderUniform TIME       = ShaderUniform.create("time"      , () -> TFClientEvents.time + Minecraft.getInstance().getRenderPartialTicks());
         public static final ShaderUniform YAW        = ShaderUniform.create("yaw"       , () ->  (Minecraft.getInstance().player.rotationYaw   * 2.0f * TFClientEvents.PI) / 360.0f);
         public static final ShaderUniform PITCH      = ShaderUniform.create("pitch"     , () -> -(Minecraft.getInstance().player.rotationPitch * 2.0f * TFClientEvents.PI) / 360.0f);
-        public static final ShaderUniform RESOLUTION = ShaderUniform.create("resolution", () -> Minecraft.getInstance().displayWidth, () -> Minecraft.getInstance().displayHeight);
+        public static final ShaderUniform RESOLUTION = ShaderUniform.create("resolution", () -> Minecraft.getInstance().getMainWindow().getWidth(), () -> Minecraft.getInstance().getMainWindow().getHeight());
         public static final ShaderUniform ZERO       = ShaderUniform.create("zero"      , 0);
         public static final ShaderUniform ONE        = ShaderUniform.create("one"       , 1);
         public static final ShaderUniform TWO        = ShaderUniform.create("two"       , 2);
@@ -68,19 +64,14 @@ public final class ShaderManager {
         public static final ShaderUniform[] TIME_UNIFORM  = { TIME };
     }
 
-    //@SuppressWarnings("WeakerAccess")
-    //public static Framebuffer bloomFbo;
-
     public static void initShaders() {
         IResourceManager iManager;
 
         if ((iManager = Minecraft.getInstance().getResourceManager()) instanceof SimpleReloadableResourceManager) {
-            ((SimpleReloadableResourceManager) iManager).registerReloadListener(shaderReloadListener = (manager, predicate) -> {
+            ((SimpleReloadableResourceManager) iManager).addReloadListener(shaderReloadListener = (manager, predicate) -> {
                 if (predicate.test(VanillaResourceType.SHADERS)) reloadShaders();
             });
         }
-
-        //bloomFbo = new Framebuffer(MINECRAFT.displayWidth, MINECRAFT.displayHeight, true);
     }
 
     public static ISelectiveResourceReloadListener getShaderReloadListener() {
@@ -103,7 +94,7 @@ public final class ShaderManager {
     }
 
     private static void deleteProgram(int id) {
-        if (id != 0) OpenGlHelper.glDeleteProgram(id);
+        if (id != 0)  ARBShaderObjects.glDeleteObjectARB(id);
     }
 
     private static void initShaderList() {
@@ -124,7 +115,7 @@ public final class ShaderManager {
         if(!useShaders())
             return;
 
-        OpenGlHelper.glUseProgram(shader);
+        ARBShaderObjects.glUseProgramObjectARB(shader);
 
         if(shader != 0 && callback != null) callback.accept(shader);
     }
@@ -133,7 +124,7 @@ public final class ShaderManager {
         if(!useShaders())
             return;
 
-        OpenGlHelper.glUseProgram(shader);
+        ARBShaderObjects.glUseProgramObjectARB(shader);
 
         if(shader != 0) uniform.assignUniform(shader);
     }
@@ -142,7 +133,7 @@ public final class ShaderManager {
         if(!useShaders())
             return;
 
-        OpenGlHelper.glUseProgram(shader);
+        ARBShaderObjects.glUseProgramObjectARB(shader);
 
         if(shader != 0) {
             for (ShaderUniform uniform : uniforms) {
@@ -156,7 +147,7 @@ public final class ShaderManager {
         if(!useShaders())
             return;
 
-        OpenGlHelper.glUseProgram(shader);
+        ARBShaderObjects.glUseProgramObjectARB(shader);
     }
 
     public static void releaseShader() {
@@ -165,7 +156,7 @@ public final class ShaderManager {
 
     @SuppressWarnings("WeakerAccess")
     public static boolean useShaders() {
-        return TFConfig.performance.shadersSupported && OpenGlHelper.shadersSupported;
+        return TFConfig.COMMON_CONFIG.PERFORMANCE.shadersSupported;
     }
 
     // Most of the code taken from the LWJGL wiki
@@ -173,28 +164,32 @@ public final class ShaderManager {
 
     @SuppressWarnings("SameParameterValue")
     private static int createProgram(String vert, String frag) {
-        int program = OpenGlHelper.glCreateProgram();
 
+        int vertId = 0, fragId = 0, program;
+        if(vert != null)
+            vertId = createShader(PREFIX+vert, VERT);
+        if(frag != null)
+            fragId = createShader(PREFIX+frag, FRAG);
+
+        program = ARBShaderObjects.glCreateProgramObjectARB();
         if(program == 0)
             return 0;
+        if(vert != null)
+            ARBShaderObjects.glAttachObjectARB(program, vertId);
+        if(frag != null)
+            ARBShaderObjects.glAttachObjectARB(program, fragId);
 
-        int vertId = createShader(PREFIX + vert, VERT);
-        OpenGlHelper.glAttachShader(program, vertId);
-
-        int fragId = createShader(PREFIX + frag, FRAG);
-        OpenGlHelper.glAttachShader(program, fragId);
-
-        OpenGlHelper.glLinkProgram(program);
-        if (OpenGlHelper.glGetProgrami(program, OpenGlHelper.GL_LINK_STATUS) == GL11.GL_FALSE) {
+        ARBShaderObjects.glLinkProgramARB(program);
+        if (ARBShaderObjects.glGetObjectParameteriARB(program, ARBShaderObjects.GL_OBJECT_LINK_STATUS_ARB) == GL11.GL_FALSE) {
             TwilightForestMod.LOGGER.error("Failed to create shader! (LINK) {} {}", vert, frag);
-            TwilightForestMod.LOGGER.error(getProgramInfoLog(program));
+            TwilightForestMod.LOGGER.error(getInfoLog(program));
             return 0;
         }
 
-        glValidateProgram(program);
-        if (OpenGlHelper.glGetProgrami(program, VALIDATE_STATUS) == GL11.GL_FALSE) {
+        ARBShaderObjects.glValidateProgramARB(program);
+        if (ARBShaderObjects.glGetObjectParameteriARB(program, ARBShaderObjects.GL_OBJECT_VALIDATE_STATUS_ARB) == GL11.GL_FALSE) {
             TwilightForestMod.LOGGER.error("Failed to create shader! (VALIDATE) {} {}", vert, frag);
-            TwilightForestMod.LOGGER.error(getProgramInfoLog(program));
+            TwilightForestMod.LOGGER.error(getInfoLog(program));
             return 0;
         }
 
@@ -204,85 +199,90 @@ public final class ShaderManager {
     private static int createShader(String filename, int shaderType){
         int shader = 0;
         try {
-            shader = OpenGlHelper.glCreateShader(shaderType);
+            shader = ARBShaderObjects.glCreateShaderObjectARB(shaderType);
 
             if(shader == 0)
                 return 0;
 
-            OpenGlHelper.glShaderSource(shader, readFile(filename));
-            OpenGlHelper.glCompileShader(shader);
+             ARBShaderObjects.glShaderSourceARB(shader, readFileAsString(filename));
+             ARBShaderObjects.glCompileShaderARB(shader);
 
-            if (OpenGlHelper.glGetShaderi(shader, OpenGlHelper.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
+            if (ARBShaderObjects.glGetObjectParameteriARB(shader,  ARBShaderObjects.GL_OBJECT_COMPILE_STATUS_ARB) == GL11.GL_FALSE) {
                 TwilightForestMod.LOGGER.error("Failed to create shader! (COMPILE) {}", filename);
-                throw new RuntimeException("Error creating shader: " + getShaderInfoLog(shader));
+                throw new RuntimeException("Error creating shader: " + getInfoLog(shader));
             }
 
             return shader;
 
         } catch (Exception e) {
-            OpenGlHelper.glDeleteShader(shader);
+            ARBShaderObjects.glDeleteObjectARB(shader);
             e.printStackTrace();
             return -1;
         }
     }
 
     // See ShaderLoader.loadShader for buffer management
-    private static ByteBuffer readFile(String path) throws IOException {
-        try (InputStream in = ShaderManager.class.getResourceAsStream(path)) {
-            byte[] bytes = IOUtils.toByteArray(in);
-            return (ByteBuffer) BufferUtils.createByteBuffer(bytes.length).put(bytes).position(0);
+    private static String readFileAsString(String path) throws Exception {
+        StringBuilder source = new StringBuilder();
+        InputStream in = ShaderManager.class.getResourceAsStream(path);
+        Exception exception = null;
+        BufferedReader reader;
+        if(in==null)
+            return "";
+
+        try {
+            reader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
+
+            Exception innerExc = null;
+            try {
+                String line;
+                while((line = reader.readLine())!=null)
+                    source.append(line).append('\n');
+            } catch(Exception exc) {
+                exception = exc;
+            } finally {
+                try {
+                    reader.close();
+                } catch(Exception exc) {
+                    if(innerExc==null)
+                        innerExc = exc;
+                    else exc.printStackTrace();
+                }
+            }
+
+            if(innerExc!=null)
+                throw innerExc;
+        } catch(Exception exc) {
+            exception = exc;
+        } finally {
+            try {
+                in.close();
+            } catch(Exception exc) {
+                if(exception==null)
+                    exception = exc;
+                else exc.printStackTrace();
+            }
+
+            if(exception!=null)
+                throw exception;
         }
+        return source.toString();
     }
 
-    private static String getShaderInfoLog(int shader) {
-        return OpenGlHelper.glGetShaderInfoLog(shader, OpenGlHelper.glGetShaderi(shader, INFO_LOG_LENGTH));
+    private static String getInfoLog(int program) {
+        return  ARBShaderObjects.glGetInfoLogARB(program,  ARBShaderObjects.glGetObjectParameteriARB(program, ARBShaderObjects.GL_OBJECT_INFO_LOG_LENGTH_ARB));
     }
 
-    private static String getProgramInfoLog(int program) {
-        return OpenGlHelper.glGetProgramInfoLog(program, OpenGlHelper.glGetProgrami(program, INFO_LOG_LENGTH));
-    }
-
-    /* Assorted constants/functions missing from OpenGlHelper */
-
-    private static final int INFO_LOG_LENGTH
-            = OpenGlHelper.arbShaders
-            ? ARBShaderObjects.GL_OBJECT_INFO_LOG_LENGTH_ARB
-            : GL20.GL_INFO_LOG_LENGTH;
-
-    private static final int VALIDATE_STATUS
-            = OpenGlHelper.arbShaders
-            ? ARBShaderObjects.GL_OBJECT_VALIDATE_STATUS_ARB
-            : GL20.GL_VALIDATE_STATUS;
-
-    private static void glValidateProgram(int program) {
-        if (OpenGlHelper.arbShaders) {
-            ARBShaderObjects.glValidateProgramARB(program);
-        } else {
-            GL20.glValidateProgram(program);
-        }
-    }
 
     static void glUniform2i(int location, int v0, int v1) {
-        if (OpenGlHelper.arbShaders) {
-            ARBShaderObjects.glUniform2iARB(location, v0, v1);
-        } else {
-            GL20.glUniform2i(location, v0, v1);
-        }
+        ARBShaderObjects.glUniform2iARB(location, v0, v1);
     }
 
     static void glUniform1f(int location, float v0) {
-        if (OpenGlHelper.arbShaders) {
-            ARBShaderObjects.glUniform1fARB(location, v0);
-        } else {
-            GL20.glUniform1f(location, v0);
-        }
+        ARBShaderObjects.glUniform1fARB(location, v0);
     }
 
     static void glUniform2f(int location, float v0, float v1) {
-        if (OpenGlHelper.arbShaders) {
-            ARBShaderObjects.glUniform2fARB(location, v0, v1);
-        } else {
-            GL20.glUniform2f(location, v0, v1);
-        }
+        ARBShaderObjects.glUniform2fARB(location, v0, v1);
     }
 }

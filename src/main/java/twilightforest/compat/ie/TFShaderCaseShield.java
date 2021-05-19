@@ -1,6 +1,7 @@
 package twilightforest.compat.ie;
 
-import blusunrize.immersiveengineering.api.shader.ShaderCaseShield;
+import blusunrize.immersiveengineering.api.shader.ShaderLayer;
+import blusunrize.immersiveengineering.api.shader.impl.ShaderCaseShield;
 import net.minecraft.item.ItemStack;
 
 import java.util.Collection;
@@ -14,7 +15,7 @@ public class TFShaderCaseShield extends ShaderCaseShield {
     }
 
     @Override
-    public boolean renderModelPartForPass(ItemStack shader, ItemStack item, String part, int pass) {
+    public boolean shouldRenderGroupForPass(String part, int pass) {
         return !"flash".equals(part) && !"shock".equals(part) || pass >= STACK_BREAK - 1;
 
     }

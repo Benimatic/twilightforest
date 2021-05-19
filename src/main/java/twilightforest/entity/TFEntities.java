@@ -131,6 +131,7 @@ public class TFEntities {
 	public static final EntityType<EntityTFHydraMortar> hydra_mortar = build(TFEntityNames.HYDRA_MORTAR, makeCastedBuilder(EntityTFHydraMortar.class, EntityTFHydraMortar::new, EntityClassification.MISC).size(0.75F, 0.75F).setTrackingRange(150));
 	public static final EntityType<EntityTFLichBomb> lich_bomb = build(TFEntityNames.LICH_BOMB, makeCastedBuilder(EntityTFLichBomb.class, EntityTFLichBomb::new, EntityClassification.MISC).size(0.25F, 0.25F).setTrackingRange(150));
 	public static final EntityType<EntityTFMoonwormShot> moonworm_shot = build(TFEntityNames.MOONWORM_SHOT, makeCastedBuilder(EntityTFMoonwormShot.class, EntityTFMoonwormShot::new, EntityClassification.MISC).size(0.25F, 0.25F).setTrackingRange(150));
+	public static final EntityType<EntityTFCicadaShot> cicada_shot = build(TFEntityNames.CICADA_SHOT, makeCastedBuilder(EntityTFCicadaShot.class, EntityTFCicadaShot::new, EntityClassification.MISC).size(0.25F, 0.25F).setTrackingRange(150));
 	public static final EntityType<EntityTFSlimeProjectile> slime_blob = build(TFEntityNames.SLIME_BLOB, makeCastedBuilder(EntityTFSlimeProjectile.class, EntityTFSlimeProjectile::new, EntityClassification.MISC).size(0.25F, 0.25F).setTrackingRange(150));
 	public static final EntityType<EntityTFCharmEffect> charm_effect = make(TFEntityNames.CHARM_EFFECT, EntityTFCharmEffect::new, EntityClassification.MISC, 0.25F, 0.25F);
 	public static final EntityType<EntityTFThrownWep> thrown_wep = make(TFEntityNames.THROWN_WEP, EntityTFThrownWep::new, EntityClassification.MISC, 0.5F, 0.5F);
@@ -444,6 +445,7 @@ public class TFEntities {
 		RenderingRegistry.registerEntityRenderingHandler(tome_bolt, m -> new SpriteRenderer<>(m, Minecraft.getInstance().getItemRenderer()));
 		RenderingRegistry.registerEntityRenderingHandler(hydra_mortar, RenderTFHydraMortar::new);
 		RenderingRegistry.registerEntityRenderingHandler(slime_blob, m -> new SpriteRenderer<>(m, Minecraft.getInstance().getItemRenderer()));
+		RenderingRegistry.registerEntityRenderingHandler(cicada_shot, RenderTFCicadaShot::new);
 		RenderingRegistry.registerEntityRenderingHandler(moonworm_shot, RenderTFMoonwormShot::new);
 		RenderingRegistry.registerEntityRenderingHandler(charm_effect, m -> new SpriteRenderer<>(m, Minecraft.getInstance().getItemRenderer()));
 		RenderingRegistry.registerEntityRenderingHandler(lich_bomb, m -> new SpriteRenderer<>(m, Minecraft.getInstance().getItemRenderer()));

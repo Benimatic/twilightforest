@@ -23,7 +23,9 @@ import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.BlockKeepsakeCasket;
 import twilightforest.block.BlockTFAbstractTrophy;
+import twilightforest.client.renderer.ShaderGrabbagStackRenderer;
 import twilightforest.client.renderer.tileentity.TileEntityTFTrophyRenderer;
+import twilightforest.compat.ie.ItemTFShaderGrabbag;
 import twilightforest.tileentity.TileEntityKeepsakeCasket;
 
 public class ISTER extends ItemStackTileEntityRenderer {

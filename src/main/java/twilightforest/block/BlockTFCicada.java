@@ -2,13 +2,22 @@ package twilightforest.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.item.Items;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.ModList;
+import twilightforest.TwilightForestMod;
 import twilightforest.tileentity.TFTileEntities;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class BlockTFCicada extends BlockTFCritter {
 
@@ -27,14 +36,15 @@ public class BlockTFCicada extends BlockTFCritter {
 		return new ItemStack(Items.GRAY_DYE, 1);
 	}
 
-	//TODO: Immersive Engineering is unavailable
-	/*@Override
+	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flag) {
+	public void addInformation(ItemStack stack, IBlockReader world, List<ITextComponent> tooltip, ITooltipFlag flag) {
 		super.addInformation(stack, world, tooltip, flag);
 
-		if (TFCompat.IMMERSIVEENGINEERING.isActivated()) {
-			tooltip.add(TextFormatting.ITALIC.toString() + TwilightForestMod.getRarity().color.toString() + I18n.translateToLocalFormatted("tile.twilightforest.Cicada.desc"));
+		if (ModList.get().isLoaded("immersiveengineering")) {
+			tooltip.add(new TranslationTextComponent("block.twilightforest.cicada.desc")
+					.mergeStyle(TwilightForestMod.getRarity().color)
+					.mergeStyle(TextFormatting.ITALIC));
 		}
-	}*/
+	}
 }

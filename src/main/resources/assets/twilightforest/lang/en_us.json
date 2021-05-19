@@ -118,6 +118,7 @@
   "commands.tffeature.structure.conquer.status": "Structure conquer flag: %s",
   "commands.tffeature.structure.conquer.update": "Structure conquer flag was %s, changing to %s",
   "commands.tffeature.locate.usage": "/tffeature locate <feature>",
+  "commands.tfreload.reload": "Reloading Twilight Forest Shaders!",
 
   // Biomes
   "biome.twilightforest.forest": "Twilight Forest",
@@ -745,6 +746,7 @@
   "entity.twilightforest.ice_snowball": "Ice Snowball",
   "entity.twilightforest.ice_arrow": "Ice Arrow",
   "entity.twilightforest.seeker_arrow": "Seeker Arrow",
+  "entity.twilightforest.cicada_shot": "Cicada",
   "entity.twilightforest.moonworm_shot": "Moonworm",
   "entity.twilightforest.nature_bolt": "Nature Bolt",
   "entity.twilightforest.slime_blob": "Slime Blob",
@@ -1023,6 +1025,8 @@
 
   "death.attack.axing": "%1$s was chopped up by %2$s",
   "death.attack.axing.item": "%1$s was chopped up by %2$s using %3$s",
+  "death.attack.cicada": "%1$s was shot by Cicada",
+  "death.attack.moonworm": "%1$s was shot by Moonworm",
   "death.attack.ant": "%1$s lived the life of an ant thanks to %2$s",
   "death.attack.ant.item": "%1$s lived the life of an ant thanks to %2$s using %3$s",
   "death.attack.haunt": "%1$s joined the %2$s's haunt",
@@ -1246,29 +1250,35 @@
   "modifier.veiled.desc": "§oLike a Specter!§r\nProjectile will be invisible.",
 
   // Immersive Engineering
-  "item.tf_Engineering_Shader": "Twilit Shader: %s",
-  "item.tf_Engineering_Shader_Bag": "Twilit %s Shader Bag",
+  "desc.immersiveengineering.info.shader.rarity.twilight": "Twilight",
 
-  "twilightforest.shader.twilight": "Twilight",
+  "item.twilightforest.shader": "Twilit Shader: %s",
+  "item.twilightforest.shader_bag": "Twilit %s Shader Bag",
 
-  "twilightforest.shader.snakestone": "Snakestone",
-  "twilightforest.shader.naga": "Naga",
-  "twilightforest.shader.lich": "Lich",
-
-  "twilightforest.shader.mazestone": "Mazestone",
-  "twilightforest.shader.minoshroom": "Minoshroom",
-  "twilightforest.shader.hydra": "Hydra",
-
-  "twilightforest.shader.underbrick": "Underbrick",
-  "twilightforest.shader.knight_phantom": "Knight Phantom",
-  "twilightforest.shader.towerwood": "Towerwood",
-  "twilightforest.shader.ur-ghast": "Ur-Ghast",
-
-  "twilightforest.shader.alpha_yeti": "Alpha Yeti",
-  "twilightforest.shader.auroralized": "Auroralized",
-  "twilightforest.shader.snow_queen": "Snow Queen",
-
-  "twilightforest.shader.final_castle": "Final Castle",
+  "item.twilightforest.shader.name.twilight": "Twilight",
+  "item.twilightforest.shader.name.firefly": "Firefly",
+  "item.twilightforest.shader.name.questing_ram": "Questing Ram",
+  "item.twilightforest.shader.name.ironwood": "Ironwood",
+  "item.twilightforest.shader.name.steeleaf": "Steeleaf",
+  "item.twilightforest.shader.name.knightly": "Knightmetal",
+  "item.twilightforest.shader.name.fiery": "Fiery",
+  "item.twilightforest.shader.name.snakestone": "Snakestone",
+  "item.twilightforest.shader.name.naga": "Naga",
+  "item.twilightforest.shader.name.lich": "Lich",
+  "item.twilightforest.shader.name.mazestone": "Mazestone",
+  "item.twilightforest.shader.name.pinch_beetle": "Pinch Beetle",
+  "item.twilightforest.shader.name.minoshroom": "Minoshroom",
+  "item.twilightforest.shader.name.hydra": "Hydra",
+  "item.twilightforest.shader.name.underbrick": "Underbrick",
+  "item.twilightforest.shader.name.knight_phantom": "Knight Phantom",
+  "item.twilightforest.shader.name.towerwood": "Towerwood",
+  "item.twilightforest.shader.name.carminite": "Carminite",
+  "item.twilightforest.shader.name.ur-ghast": "Ur-Ghast",
+  "item.twilightforest.shader.name.alpha_yeti": "Alpha Yeti",
+  "item.twilightforest.shader.name.auroralized": "Auroralized",
+  "item.twilightforest.shader.name.snow_queen": "Snow Queen",
+  "item.twilightforest.shader.name.cube_of_annihilation": "Cube Of Annihilation",
+  "item.twilightforest.shader.name.final_castle": "Final Castle",
 
   // Optifine
   "twilightforest.gui.optifine.title": "WARNING: OPTIFINE DETECTED",

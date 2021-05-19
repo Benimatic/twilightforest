@@ -19,7 +19,7 @@ import java.util.Set;
 
 public class TFTreasure {
 	// For easy testing:
-	// /give @p chest 1 0 {"display":{"Name":"Master Loot Crate"},"BlockEntityTag":{"LootTable":"twilightforest:all_bosses"}}
+	// /give @p chest{BlockEntityTag:{LootTable:"twilightforest:all_bosses",CustomName:'{"text":"Master Loot Crate"}'}} 1
 	private static final Set<ResourceLocation> TF_LOOT_TABLES = Sets.newHashSet();
 	
 	public static final TFTreasure hill1 = new TFTreasure("hill_1");

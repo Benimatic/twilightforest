@@ -18,32 +18,7 @@ public class TFClientProxy extends TFCommonProxy {
 	}
 
 	@Override
-	public void init() {
-
-		//ShaderManager.initShaders();
-
-//		ClientCommandHandler.instance.registerCommand(new CommandBase() {
-//			@Override
-//			public String getName() {
-//				return "tfreload";
-//			}
-//
-//			@Override
-//			public String getUsage(ICommandSender sender) {
-//				return "commands.tffeature.reload";
-//			}
-//
-//			@Override
-//			public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-//				if(FMLCommonHandler.instance().getEffectiveSide().isClient()) {
-//					Minecraft.getInstance().player.sendMessage(new StringTextComponent("Reloading Twilight Forest Shaders!"));
-//					twilightforest.client.shader.ShaderManager.getShaderReloadListener().onResourceManagerReload(net.minecraft.client.Minecraft.getInstance().getResourceManager());
-//					if (TFCompat.IMMERSIVEENGINEERING.isActivated())
-//						twilightforest.compat.ie.IEShaderRegister.initShaders();
-//				}
-//			}
-//		});
-	}
+	public void init() {}
 
 //	public boolean isDangerOverlayShown() {
 //		return isDangerOverlayShown;

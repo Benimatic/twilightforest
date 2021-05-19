@@ -6,6 +6,10 @@
     "#minecraft:saplings",
     "#minecraft:crops",
     "minecraft:bamboo",
+    {
+      "id": "immersiveengineering:hemp",
+      "required": false
+    },
     "minecraft:grass",
     "minecraft:fern",
     "minecraft:dead_bush",
@@ -29,6 +33,7 @@
     "minecraft:weeping_vines_plant",
     "minecraft:twisting_vines",
     "minecraft:twisting_vines_plant",
+    "immersiveengineering:hemp",
     "twilightforest:moss_patch",
     "twilightforest:mayapple",
     "twilightforest:clover_patch",

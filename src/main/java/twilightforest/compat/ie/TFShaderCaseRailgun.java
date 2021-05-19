@@ -1,6 +1,7 @@
 package twilightforest.compat.ie;
 
-import blusunrize.immersiveengineering.api.shader.ShaderCaseRailgun;
+import blusunrize.immersiveengineering.api.shader.ShaderLayer;
+import blusunrize.immersiveengineering.api.shader.impl.ShaderCaseRailgun;
 import net.minecraft.item.ItemStack;
 
 import java.util.Collection;
@@ -15,7 +16,7 @@ public class TFShaderCaseRailgun extends ShaderCaseRailgun {
     }
 
     @Override
-    public boolean renderModelPartForPass(ItemStack shader, ItemStack item, String part, int pass) {
+    public boolean shouldRenderGroupForPass(String part, int pass) {
         if("sled".equals(part) || "wires".equals(part) || "tubes".equals(part))
             return pass >= STACK_BREAK - 1;
 

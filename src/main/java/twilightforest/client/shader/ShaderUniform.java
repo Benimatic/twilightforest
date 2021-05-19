@@ -1,6 +1,6 @@
 package twilightforest.client.shader;
 
-import net.minecraft.client.renderer.OpenGlHelper;
+import org.lwjgl.opengl.ARBShaderObjects;
 
 import java.util.function.IntSupplier;
 
@@ -19,7 +19,7 @@ public abstract class ShaderUniform {
         return new ShaderUniform(name) {
             @Override
             public void assignUniform(int shader) {
-                OpenGlHelper.glUniform1i(OpenGlHelper.glGetUniformLocation(shader, name), value);
+                 ARBShaderObjects.glGetUniformiARB(ARBShaderObjects.glGetUniformLocationARB(shader, name), value);
             }
         };
     }
@@ -28,7 +28,7 @@ public abstract class ShaderUniform {
         return new ShaderUniform(name) {
             @Override
             public void assignUniform(int shader) {
-                OpenGlHelper.glUniform1i(OpenGlHelper.glGetUniformLocation(shader, name), supplier.getAsInt());
+                 ARBShaderObjects.glGetUniformiARB(ARBShaderObjects.glGetUniformLocationARB(shader, name), supplier.getAsInt());
             }
         };
     }
@@ -37,7 +37,7 @@ public abstract class ShaderUniform {
         return new ShaderUniform(name) {
             @Override
             public void assignUniform(int shader) {
-                ShaderManager.glUniform2i(OpenGlHelper.glGetUniformLocation(shader, name), value0, value1);
+                ShaderManager.glUniform2i(ARBShaderObjects.glGetUniformLocationARB(shader, name), value0, value1);
             }
         };
     }
@@ -46,7 +46,7 @@ public abstract class ShaderUniform {
         return new ShaderUniform(name) {
             @Override
             public void assignUniform(int shader) {
-                ShaderManager.glUniform2i(OpenGlHelper.glGetUniformLocation(shader, name), supplier0.getAsInt(), supplier1.getAsInt());
+                ShaderManager.glUniform2i(ARBShaderObjects.glGetUniformLocationARB(shader, name), supplier0.getAsInt(), supplier1.getAsInt());
             }
         };
     }
@@ -55,7 +55,7 @@ public abstract class ShaderUniform {
         return new ShaderUniform(name) {
             @Override
             public void assignUniform(int shader) {
-                ShaderManager.glUniform1f(OpenGlHelper.glGetUniformLocation(shader, name), value);
+                ShaderManager.glUniform1f(ARBShaderObjects.glGetUniformLocationARB(shader, name), value);
             }
         };
     }
@@ -64,7 +64,7 @@ public abstract class ShaderUniform {
         return new ShaderUniform(name) {
             @Override
             public void assignUniform(int shader) {
-                ShaderManager.glUniform1f(OpenGlHelper.glGetUniformLocation(shader, name), supplier.get());
+                ShaderManager.glUniform1f(ARBShaderObjects.glGetUniformLocationARB(shader, name), supplier.get());
             }
         };
     }
@@ -73,7 +73,7 @@ public abstract class ShaderUniform {
         return new ShaderUniform(name) {
             @Override
             public void assignUniform(int shader) {
-                ShaderManager.glUniform2f(OpenGlHelper.glGetUniformLocation(shader, name), value0, value1);
+                ShaderManager.glUniform2f(ARBShaderObjects.glGetUniformLocationARB(shader, name), value0, value1);
             }
         };
     }
@@ -82,7 +82,7 @@ public abstract class ShaderUniform {
         return new ShaderUniform(name) {
             @Override
             public void assignUniform(int shader) {
-                ShaderManager.glUniform2f(OpenGlHelper.glGetUniformLocation(shader, name), supplier0.get(), supplier1.get());
+                ShaderManager.glUniform2f(ARBShaderObjects.glGetUniformLocationARB(shader, name), supplier0.get(), supplier1.get());
             }
         };
     }

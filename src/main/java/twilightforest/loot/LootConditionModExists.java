@@ -32,9 +32,7 @@ public class LootConditionModExists implements ILootCondition {
     }
 
     public static ILootCondition.IBuilder builder(String modid) {
-        return () -> {
-            return new LootConditionModExists(modid);
-        };
+        return () -> new LootConditionModExists(modid);
     }
 
     public static class Serializer implements ILootSerializer<LootConditionModExists> {

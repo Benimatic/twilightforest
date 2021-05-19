@@ -19,6 +19,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ISTER;
+import twilightforest.compat.TFCompat;
 import twilightforest.enums.*;
 import twilightforest.item.*;
 import twilightforest.tileentity.TFTileEntities;
@@ -66,7 +67,6 @@ public class TFBlocks {
 	public static final RegistryObject<Block> boss_spawner_snow_queen    = BLOCKS.register("boss_spawner_snow_queen", () -> new BlockTFBossSpawner(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F).notSolid().noDrops(), BossVariant.SNOW_QUEEN));
 	public static final RegistryObject<Block> boss_spawner_minoshroom    = BLOCKS.register("boss_spawner_minoshroom", () -> new BlockTFBossSpawner(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F).notSolid().noDrops(), BossVariant.MINOSHROOM));
 	public static final RegistryObject<Block> boss_spawner_alpha_yeti    = BLOCKS.register("boss_spawner_alpha_yeti", () -> new BlockTFBossSpawner(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F).notSolid().noDrops(), BossVariant.ALPHA_YETI));
-	public static final RegistryObject<Block> boss_spawner_quest_ram     = BLOCKS.register("boss_spawner_quest_ram", () -> new BlockTFBossSpawner(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F).notSolid().noDrops(), BossVariant.QUEST_RAM));
 	public static final RegistryObject<Block> boss_spawner_final_boss    = BLOCKS.register("boss_spawner_final_boss", () -> new BlockTFBossSpawner(Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F).notSolid().noDrops(), BossVariant.FINAL_BOSS));
 	public static final RegistryObject<Block> firefly_jar                = BLOCKS.register("firefly_jar", () -> new BlockTFJar(Block.Properties.create(Material.GLASS).hardnessAndResistance(0.3F, 0.0F).sound(SoundType.WOOD).setLightLevel((state) -> 15).notSolid()));
 	public static final RegistryObject<Block> cicada_jar                 = BLOCKS.register("cicada_jar", () -> new BlockTFJar(Block.Properties.create(Material.GLASS).hardnessAndResistance(0.3F, 0.0F).sound(SoundType.WOOD).notSolid()));
@@ -402,7 +402,7 @@ public class TFBlocks {
 						nagastone_pillar, nagastone_pillar_mossy, nagastone_pillar_weathered, etched_nagastone, etched_nagastone_mossy, etched_nagastone_weathered, spiral_bricks,
 						nagastone_stairs_left, nagastone_stairs_right, nagastone_stairs_mossy_left, nagastone_stairs_mossy_right, nagastone_stairs_weathered_left, nagastone_stairs_weathered_right,
 						maze_stone, maze_stone_brick, maze_stone_chiseled, maze_stone_decorative, maze_stone_cracked, maze_stone_mossy, maze_stone_mosaic, maze_stone_border,
-						boss_spawner_naga, boss_spawner_lich, boss_spawner_hydra, boss_spawner_ur_ghast, boss_spawner_knight_phantom, boss_spawner_snow_queen, boss_spawner_minoshroom, boss_spawner_alpha_yeti, boss_spawner_quest_ram, boss_spawner_final_boss,
+						boss_spawner_naga, boss_spawner_lich, boss_spawner_hydra, boss_spawner_ur_ghast, boss_spawner_knight_phantom, boss_spawner_snow_queen, boss_spawner_minoshroom, boss_spawner_alpha_yeti, boss_spawner_final_boss,
 						hedge, root, liveroot_block, uncrafting_table, firefly_jar, cicada_jar, smoker, encased_smoker, fire_jet, encased_fire_jet,
 						naga_stone_head, naga_stone,
 						moss_patch, mayapple, clover_patch, fiddlehead, mushgloom, torchberry_plant, root_strand, fallen_leaves,
@@ -425,6 +425,7 @@ public class TFBlocks {
 		for (RegistryObject<? extends Block> b : standard) {
 			r.register(new BlockItem(b.get(), TFItems.defaultBuilder()).setRegistryName(b.get().getRegistryName()));
 		}
+		TFCompat.initCompatItems(evt);
 
 		//FIXME it would be really nice if we could put these items anywhere in the creative tab instead of the end
 		//I would like to put signs before doors :)

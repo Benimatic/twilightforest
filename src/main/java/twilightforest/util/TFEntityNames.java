@@ -108,6 +108,7 @@ public class TFEntityNames {
 	public static final ResourceLocation TOME_BOLT = prefix("tome_bolt");
 	public static final ResourceLocation HYDRA_MORTAR = prefix("hydra_mortar");
 	public static final ResourceLocation LICH_BOMB = prefix("lich_bomb");
+	public static final ResourceLocation CICADA_SHOT = prefix("cicada_shot");
 	public static final ResourceLocation MOONWORM_SHOT = prefix("moonworm_shot");
 	public static final ResourceLocation SLIME_BLOB = prefix("slime_blob");
 	public static final ResourceLocation THROWN_WEP = prefix("thrown_wep");

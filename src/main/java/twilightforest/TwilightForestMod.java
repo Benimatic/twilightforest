@@ -7,9 +7,7 @@ import net.minecraft.dispenser.IDispenseItemBehavior;
 import net.minecraft.dispenser.IPosition;
 import net.minecraft.dispenser.OptionalDispenseBehavior;
 import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Rarity;
+import net.minecraft.item.*;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
@@ -33,11 +31,13 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import twilightforest.advancements.TFAdvancements;
+import twilightforest.compat.TFCompat;
 import twilightforest.dispenser.TransformationDispenseBehavior;
 import twilightforest.entity.projectile.EntityTFMoonwormShot;
 import twilightforest.dispenser.CrumbleDispenseBehavior;
@@ -119,9 +119,9 @@ public class TwilightForestMod {
 		new TwilightFeatures();
 		new BiomeGrassColors();
 
-		if (false/*TFConfig.COMMON_CONFIG.doCompat.get()*/) {
+		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
 			try {
-				// TFCompat.preInitCompat(); FIXME We will just log the fact no compat is initializing, for now
+				TFCompat.preInitCompat();
 			} catch (Exception e) {
 				TFConfig.COMMON_CONFIG.doCompat.set(false);
 				LOGGER.error("Had an error loading preInit compatibility!");
@@ -146,7 +146,13 @@ public class TwilightForestMod {
 	}
 
 	@SubscribeEvent
+	public void sendIMCs(InterModEnqueueEvent evt) {
+		TFCompat.IMCSender();
+	}
+
+	@SubscribeEvent
 	public static void init(FMLCommonSetupEvent evt) {
+
 		CapabilityList.registerCapabilities();
 		TFPacketHandler.init();
 		TFAdvancements.init();
@@ -155,7 +161,7 @@ public class TwilightForestMod {
 
 		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
 			try {
-				// TFCompat.initCompat(); TODO
+				TFCompat.initCompat();
 			} catch (Exception e) {
 				TFConfig.COMMON_CONFIG.doCompat.set(false);
 				LOGGER.error("Had an error loading init compatibility!");
@@ -165,7 +171,7 @@ public class TwilightForestMod {
 
 		if (TFConfig.COMMON_CONFIG.doCompat.get()) {
 			try {
-				// TFCompat.postInitCompat(); TODO
+				TFCompat.postInitCompat();
 			} catch (Exception e) {
 				TFConfig.COMMON_CONFIG.doCompat.set(false);
 				LOGGER.error("Had an error loading postInit compatibility!");

@@ -1,8 +1,7 @@
 package twilightforest.compat.ie;
 
-import blusunrize.immersiveengineering.api.shader.ShaderCase;
-import blusunrize.immersiveengineering.api.shader.ShaderCaseDrill;
-import net.minecraft.item.ItemStack;
+import blusunrize.immersiveengineering.api.shader.ShaderLayer;
+import blusunrize.immersiveengineering.api.shader.impl.ShaderCaseDrill;
 
 import java.util.Collection;
 
@@ -10,13 +9,13 @@ public class TFShaderCaseDrill extends ShaderCaseDrill {
     private final int STACK_BREAK;
     private int headLayers = 1;
 
-    public TFShaderCaseDrill(int stackBreak, Collection<ShaderCase.ShaderLayer> layers) {
+    public TFShaderCaseDrill(int stackBreak, Collection<ShaderLayer> layers) {
         super(layers);
         this.STACK_BREAK = stackBreak;
     }
 
     @Override
-    public boolean renderModelPartForPass(ItemStack shader, ItemStack item, String modelPart, int pass) {
+    public boolean shouldRenderGroupForPass(String modelPart, int pass) {
         if("drill_head".equals(modelPart) || "upgrade_damage0".equals(modelPart) || "upgrade_damage1".equals(modelPart) || "upgrade_damage2".equals(modelPart) || "upgrade_damage3".equals(modelPart) || "upgrade_damage4".equals(modelPart))
             return pass >= STACK_BREAK - 1;
 

@@ -1,6 +1,7 @@
 package twilightforest.compat.ie;
 
-import blusunrize.immersiveengineering.api.shader.ShaderCaseChemthrower;
+import blusunrize.immersiveengineering.api.shader.ShaderLayer;
+import blusunrize.immersiveengineering.api.shader.impl.ShaderCaseChemthrower;
 import net.minecraft.item.ItemStack;
 
 import java.util.Collection;
@@ -14,7 +15,7 @@ public class TFShaderCaseChemthrower extends ShaderCaseChemthrower {
     }
 
     @Override
-    public boolean renderModelPartForPass(ItemStack shader, ItemStack item, String part, int pass) {
+    public boolean shouldRenderGroupForPass(String part, int pass) {
         if ("grip".equals(part))
             return pass == 0;
 

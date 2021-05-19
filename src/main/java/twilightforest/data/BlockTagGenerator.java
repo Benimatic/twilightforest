@@ -200,9 +200,13 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		getOrCreateBuilder(ORES_KNIGHTMETAL);
 
 		getOrCreateBuilder(PORTAL_EDGE).add(Blocks.GRASS_BLOCK, Blocks.MYCELIUM).add(getAllFilteredBlocks(b -> /*b.material == Material.ORGANIC ||*/ b.material == Material.EARTH));
+		//FIXME when mods are loaded into the dev space that have plants they are automatically added to the deco tag.
+		//This can create issues for people who dont play without those mods, because the whole tag will invalidate.
+		//Example: immersive engineering's hemp gets added to the tag
+		//if we could make it so everything that isnt vanilla or TF is added as an optional tag that would be ideal.
 		getOrCreateBuilder(PORTAL_DECO)
 				.addTags(BlockTags.FLOWERS, BlockTags.LEAVES, BlockTags.SAPLINGS, BlockTags.CROPS)
-				.add(Blocks.BAMBOO)
+				.add(Blocks.BAMBOO).addOptional(new ResourceLocation("immersiveengineering:hemp"))
 				.add(getAllFilteredBlocks(b -> (
 						b.material == Material.PLANTS || b.material == Material.TALL_PLANTS || b.material == Material.LEAVES)
 								&& isExcludedFromTagBuilder(b, null)

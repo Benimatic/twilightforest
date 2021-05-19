@@ -464,10 +464,12 @@ public class ItemModelGenerator extends ItemModelProvider {
 				.texture("face", prefix("block/lunchbox_face"))
 				.texture("side", prefix("block/lunchbox_side"));
 
-		withExistingParent("shader_bag", prefix("item/lunchcase"))
-				.texture("missing", prefix("block/fluffy_cloud"))
-				.texture("face", prefix("block/lunchbox_face"))
-				.texture("side", prefix("block/lunchbox_side"));
+		withExistingParent("shader_bag_common", prefix("item/shader"));
+		withExistingParent("shader_bag_uncommon", prefix("item/shader"));
+		withExistingParent("shader_bag_rare", prefix("item/shader"));
+		withExistingParent("shader_bag_epic", prefix("item/shader"));
+		withExistingParent("shader_bag_ie_masterwork", prefix("item/shader"));
+		withExistingParent("shader_bag_twilight", prefix("item/shader"));
 
 		//these models are used as references in other things, they dont have actual items
 		generated("trophy", prefix("items/trophy"));
