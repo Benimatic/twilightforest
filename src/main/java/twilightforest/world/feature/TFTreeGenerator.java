@@ -231,7 +231,6 @@ public abstract class TFTreeGenerator<T extends TFTreeFeatureConfig> extends Fea
 					&& blockID != TFBlocks.boss_spawner_snow_queen.get()
 					&& blockID != TFBlocks.boss_spawner_minoshroom.get()
 					&& blockID != TFBlocks.boss_spawner_alpha_yeti.get()
-					&& blockID != TFBlocks.boss_spawner_quest_ram.get()
 					&& (blockState.getMaterial() == Material.ORGANIC || blockState.getMaterial() == Material.EARTH || blockState.getMaterial() == Material.ROCK || blockState.getMaterial() == Material.WATER);
 		}
 	}

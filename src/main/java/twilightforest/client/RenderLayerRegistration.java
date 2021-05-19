@@ -103,7 +103,6 @@ public class RenderLayerRegistration {
 		RenderTypeLookup.setRenderLayer(TFBlocks.boss_spawner_snow_queen.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.boss_spawner_minoshroom.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.boss_spawner_alpha_yeti.get(), cutout);
-		RenderTypeLookup.setRenderLayer(TFBlocks.boss_spawner_quest_ram.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.boss_spawner_final_boss.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.reappearing_block.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.locked_vanishing_block.get(), cutout);
