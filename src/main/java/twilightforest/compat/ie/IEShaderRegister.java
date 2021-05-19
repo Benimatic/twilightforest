@@ -14,6 +14,8 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.Rarity;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GL11;
 import twilightforest.TwilightForestMod;
@@ -21,7 +23,6 @@ import twilightforest.client.shader.ShaderManager;
 import twilightforest.client.shader.ShaderUniform;
 import twilightforest.item.TFItems;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.BiConsumer;
@@ -218,6 +219,7 @@ public class IEShaderRegister {
 			shaderCallback = shader -> { for(ShaderUniform param: shaderParams) { param.assignUniform(shader); } };
 		}
 
+		@OnlyIn(Dist.CLIENT)
 		@Override
 		public RenderType getRenderType(RenderType baseType) {
 			if(this.render == null) {
