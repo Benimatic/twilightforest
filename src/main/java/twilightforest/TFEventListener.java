@@ -68,11 +68,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.items.ItemHandlerHelper;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.block.BlockKeepsakeCasket;
-import twilightforest.block.BlockTFCritter;
-import twilightforest.block.BlockTFGiantBlock;
-import twilightforest.block.BlockTFPortal;
-import twilightforest.block.TFBlocks;
+import twilightforest.block.*;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.shield.IShieldCapability;
 import twilightforest.data.BlockTagGenerator;
@@ -84,11 +80,7 @@ import twilightforest.entity.projectile.ITFProjectile;
 import twilightforest.enums.BlockLoggingEnum;
 import twilightforest.item.ItemTFPhantomArmor;
 import twilightforest.item.TFItems;
-import twilightforest.network.PacketAreaProtection;
-import twilightforest.network.PacketEnforceProgressionStatus;
-import twilightforest.network.PacketSetSkylightEnabled;
-import twilightforest.network.PacketUpdateShield;
-import twilightforest.network.TFPacketHandler;
+import twilightforest.network.*;
 import twilightforest.potions.TFPotions;
 import twilightforest.tileentity.TileEntityKeepsakeCasket;
 import twilightforest.util.TFItemStackUtils;
@@ -97,12 +89,7 @@ import twilightforest.world.TFDimensions;
 import twilightforest.world.TFGenerationSettings;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * So much of the mod logic in this one class
@@ -371,7 +358,7 @@ public class TFEventListener {
 				 checker = casket.playeruuid;
 			} else checker = null;
 			if(checker != null) {
-				if ((player.getUniqueID().getMostSignificantBits() != checker.getMostSignificantBits() || !player.hasPermissionLevel(3)) && !((TileEntityKeepsakeCasket) te).contents.isEmpty()) {
+				if (!((TileEntityKeepsakeCasket) te).contents.isEmpty() || (player.getUniqueID().getMostSignificantBits() != checker.getMostSignificantBits() || !player.hasPermissionLevel(3))) {
 					event.setCanceled(true);
 				}
 			}
