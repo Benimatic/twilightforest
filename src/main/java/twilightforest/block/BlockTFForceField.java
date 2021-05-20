@@ -2,8 +2,10 @@ package twilightforest.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.PaneBlock;
 import net.minecraft.block.SixWayBlock;
 import net.minecraft.entity.Entity;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -56,5 +58,10 @@ public class BlockTFForceField extends BlockTFConnectableRotatedPillar {
 	@Override
 	public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
 		return true;
+	}
+
+	public boolean canConnectTo(BlockState state, boolean solidSide) {
+		Block block = state.getBlock();
+		return !cannotAttach(block) && solidSide || block instanceof BlockTFForceField || block instanceof PaneBlock || block.isIn(BlockTags.WALLS);
 	}
 }
