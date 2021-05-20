@@ -206,7 +206,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		//if we could make it so everything that isnt vanilla or TF is added as an optional tag that would be ideal.
 		getOrCreateBuilder(PORTAL_DECO)
 				.addTags(BlockTags.FLOWERS, BlockTags.LEAVES, BlockTags.SAPLINGS, BlockTags.CROPS)
-				.add(Blocks.BAMBOO).addOptional(new ResourceLocation("immersiveengineering:hemp"))
+				.add(Blocks.BAMBOO)
 				.add(getAllFilteredBlocks(b -> (
 						b.material == Material.PLANTS || b.material == Material.TALL_PLANTS || b.material == Material.LEAVES)
 								&& isExcludedFromTagBuilder(b, null)
@@ -258,7 +258,8 @@ public class BlockTagGenerator extends BlockTagsProvider {
 	}
 
 	private static Block[] getAllFilteredBlocks(Predicate<Block> predicate) {
-		return ForgeRegistries.BLOCKS.getValues().stream().filter(predicate).toArray(Block[]::new);
+		return ForgeRegistries.BLOCKS.getValues().stream().filter(predicate)
+				.filter(b -> (b.getRegistryName().getNamespace().equals(TwilightForestMod.ID) || b.getRegistryName().getNamespace().equals("minecraft")) && predicate.test(b)).toArray(Block[]::new);
 	}
 
 	//private static final MutableBoolean bool = new MutableBoolean();
