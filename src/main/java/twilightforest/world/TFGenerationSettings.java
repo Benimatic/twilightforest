@@ -196,9 +196,10 @@ public class TFGenerationSettings /*extends GenerationSettings*/ {
 
 			for (int x = cx1; x <= cx2; ++x) {
 				for (int z = cz1; z <= cz2; ++z) {
-					Optional<StructureStart<?>> structure = world.getChunk(x, z, ChunkStatus.STRUCTURE_REFERENCES).func_230346_b_(structureFeature).stream().
+					Optional<StructureStart<?>> structure = world.getChunk(x, z, ChunkStatus.STRUCTURE_STARTS).func_230346_b_(structureFeature).stream().
 							map((longVal) -> SectionPos.from(new ChunkPos(longVal), 0)).<StructureStart<?>>map((sectionPos) -> world.
-							getChunk(sectionPos.getSectionX(), sectionPos.getSectionZ(), ChunkStatus.STRUCTURE_STARTS).func_230342_a_(structureFeature)).
+							chunkExists(sectionPos.getSectionX(), sectionPos.getSectionZ()) ? world.
+							getChunk(sectionPos.getSectionX(), sectionPos.getSectionZ(), ChunkStatus.STRUCTURE_STARTS).func_230342_a_(structureFeature) : null).
 							filter((structureStart) -> structureStart != null && structureStart.isValid()).
 							findFirst();
 					if (structure.isPresent())
