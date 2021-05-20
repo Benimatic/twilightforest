@@ -113,13 +113,14 @@ public class TFClientSetup {
         );
     }
 
-    @SubscribeEvent // FIXME there's a few IDE warnings, find out what this is all about
+    @SubscribeEvent
     public static void loadComplete(FMLLoadCompleteEvent evt) {
         Minecraft.getInstance().getRenderManager().renderers.values().forEach(r -> {
             if (r instanceof LivingRenderer) {
                 attachRenderLayers((LivingRenderer<?, ?>) r);
             }
         });
+        Minecraft.getInstance().getRenderManager().getSkinMap().values().forEach(TFClientSetup::attachRenderLayers);
     }
 
     private static <T extends LivingEntity, M extends EntityModel<T>> void attachRenderLayers(LivingRenderer<T, M> renderer) {
