@@ -107,7 +107,7 @@ public class EntityTFLich extends MonsterEntity {
 		this.goalSelector.addGoal(0, new SwimGoal(this));
 		this.goalSelector.addGoal(1, new EntityAITFLichShadows(this));
 		this.goalSelector.addGoal(2, new EntityAITFLichMinions(this));
-		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, true) {
+		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 0.75D, true) {
 			@Override
 			public boolean shouldExecute() {
 				return getPhase() == 3 && super.shouldExecute();
@@ -136,7 +136,7 @@ public class EntityTFLich extends MonsterEntity {
 	public static AttributeModifierMap.MutableAttribute registerAttributes() {
 		return MonsterEntity.func_234295_eP_()
 				.createMutableAttribute(Attributes.MAX_HEALTH, MAX_HEALTH)
-				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 6.0D)
+				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 3.0D)
 				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.45000001788139344D); // Same speed as an angry enderman
 	}
 
