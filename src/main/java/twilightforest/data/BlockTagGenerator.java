@@ -208,6 +208,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				.addTags(BlockTags.FLOWERS, BlockTags.LEAVES, BlockTags.SAPLINGS, BlockTags.CROPS)
 				.add(Blocks.BAMBOO)
 				.add(getAllFilteredBlocks(b -> (
+								(b.getRegistryName().getNamespace().equals("minecraft") || b.getRegistryName().getNamespace().equals(TwilightForestMod.ID)) &&
 						b.material == Material.PLANTS || b.material == Material.TALL_PLANTS || b.material == Material.LEAVES)
 								&& isExcludedFromTagBuilder(b, null)
 								//&& isExcludedFromTagBuilder(b, BlockTags.FLOWERS)
@@ -258,8 +259,9 @@ public class BlockTagGenerator extends BlockTagsProvider {
 	}
 
 	private static Block[] getAllFilteredBlocks(Predicate<Block> predicate) {
-		return ForgeRegistries.BLOCKS.getValues().stream().filter(predicate)
-				.filter(b -> (b.getRegistryName().getNamespace().equals(TwilightForestMod.ID) || b.getRegistryName().getNamespace().equals("minecraft")) && predicate.test(b)).toArray(Block[]::new);
+		return ForgeRegistries.BLOCKS.getValues().stream()
+				.filter(b -> b.getRegistryName() != null && (b.getRegistryName().getNamespace().equals(TwilightForestMod.ID) || b.getRegistryName().getNamespace().equals("minecraft")) && predicate.test(b))
+				.toArray(Block[]::new);
 	}
 
 	//private static final MutableBoolean bool = new MutableBoolean();
