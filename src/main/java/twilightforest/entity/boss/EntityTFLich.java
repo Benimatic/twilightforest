@@ -179,7 +179,7 @@ public class EntityTFLich extends MonsterEntity {
 	public int getPhase() {
 		if (isShadowClone() || getShieldStrength() > 0) {
 			return 1;
-		} else if (getMinionsToSummon() > 0) {
+		} else if (getMinionsToSummon() > 0 || countMyMinions() > 0) {
 			return 2;
 		} else {
 			return 3;
