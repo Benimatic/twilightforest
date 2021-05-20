@@ -5,8 +5,10 @@ import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
@@ -15,6 +17,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -22,6 +26,8 @@ import twilightforest.entity.EntityTFSlideBlock;
 import twilightforest.entity.TFEntities;
 import twilightforest.util.TFDamageSources;
 
+import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Random;
 
 public class BlockTFSlider extends RotatedPillarBlock {
@@ -129,5 +135,11 @@ public class BlockTFSlider extends RotatedPillarBlock {
 
 			((LivingEntity) entity).applyKnockback(2, kx, kz);
 		}
+	}
+
+	@Override
+	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+		tooltip.add(new TranslationTextComponent("twilightforest.misc.nyi"));
+		super.addInformation(stack, worldIn, tooltip, flagIn);
 	}
 }

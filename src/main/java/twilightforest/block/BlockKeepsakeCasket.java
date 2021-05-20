@@ -5,6 +5,7 @@ import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.material.PushReaction;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -34,7 +35,9 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -44,6 +47,7 @@ import twilightforest.item.TFItems;
 import twilightforest.tileentity.TileEntityKeepsakeCasket;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class BlockKeepsakeCasket extends ContainerBlock implements BlockLoggingEnum.IMultiLoggable {
 
@@ -66,6 +70,13 @@ public class BlockKeepsakeCasket extends ContainerBlock implements BlockLoggingE
 	protected BlockKeepsakeCasket() {
 		super(Block.Properties.create(Material.IRON, MaterialColor.BLACK).notSolid().setRequiresTool().hardnessAndResistance(50.0F, 1200.0F).sound(SoundType.NETHERITE));
 		this.setDefaultState(this.getStateContainer().getBaseState().with(FACING, Direction.NORTH).with(BREAKAGE, 0));
+	}
+
+	@Override
+	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+		tooltip.add(new TranslationTextComponent("twilightforest.misc.wip0"));
+		tooltip.add(new TranslationTextComponent("twilightforest.misc.wip1"));
+		super.addInformation(stack, worldIn, tooltip, flagIn);
 	}
 
 	@Override
