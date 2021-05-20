@@ -118,20 +118,22 @@ public class ItemTFShader extends Item implements IShaderItem {
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World world, List<ITextComponent> list, ITooltipFlag flag) {
         list.add(new TranslationTextComponent(Lib.DESC_INFO + "shader.level").append(ClientUtils.applyFormat(new TranslationTextComponent(Lib.DESC_INFO + "shader.rarity." + this.getRarity(stack).name().toLowerCase(Locale.US)), getRarity(stack).color)));
-        if(!Screen.hasShiftDown())
-            list.add(new TranslationTextComponent(Lib.DESC_INFO + "shader.applyTo").appendString(" ").append(new TranslationTextComponent(Lib.DESC_INFO + "holdShift")));
-        else {
-            list.add(new TranslationTextComponent(Lib.DESC_INFO + "shader.applyTo"));
+        if(ShaderRegistry.shaderRegistry.containsKey(getShaderName(stack))) {
+            if (!Screen.hasShiftDown())
+                list.add(new TranslationTextComponent(Lib.DESC_INFO + "shader.applyTo").appendString(" ").append(new TranslationTextComponent(Lib.DESC_INFO + "holdShift")));
+            else {
+                list.add(new TranslationTextComponent(Lib.DESC_INFO + "shader.applyTo"));
 
-            for (ShaderCase sCase : ShaderRegistry.shaderRegistry.get(getShaderName(stack)).getCases())
-                if (!(sCase instanceof ShaderCaseItem))
-                    list.add(ClientUtils.applyFormat(new TranslationTextComponent(Lib.DESC_INFO + "shader." + sCase.getShaderType()), TextFormatting.DARK_GRAY));
+                for (ShaderCase sCase : ShaderRegistry.shaderRegistry.get(getShaderName(stack)).getCases())
+                    if (!(sCase instanceof ShaderCaseItem))
+                        list.add(ClientUtils.applyFormat(new TranslationTextComponent(Lib.DESC_INFO + "shader." + sCase.getShaderType()), TextFormatting.DARK_GRAY));
+            }
         }
     }
 
     @Override
     public Rarity getRarity(ItemStack stack) {
-        return ShaderRegistry.shaderRegistry.get(getShaderName(stack)).getRarity();
+        return ShaderRegistry.shaderRegistry.containsKey(getShaderName(stack)) ? ShaderRegistry.shaderRegistry.get(getShaderName(stack)).getRarity() : Rarity.COMMON;
     }
 
     public static ResourceLocation getShaderType(ItemStack stack) {
