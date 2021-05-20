@@ -126,6 +126,6 @@ public class ItemTagGenerator extends ItemTagsProvider {
 		getOrCreateBuilder(ORES_IRONWOOD).add(TFItems.ironwood_raw.get());
 		getOrCreateBuilder(ORES_KNIGHTMETAL).add(TFItems.armor_shard_cluster.get());
 
-		getOrCreateBuilder(PORTAL_ACTIVATOR).addTag(Tags.Items.GEMS_DIAMOND);
+		getOrCreateBuilder(PORTAL_ACTIVATOR).addOptionalTag(Tags.Items.GEMS_DIAMOND.getName());
 	}
 }
