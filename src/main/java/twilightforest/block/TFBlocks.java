@@ -256,7 +256,7 @@ public class TFBlocks {
 	//public static final RegistryObject<Block> terrorcotta_circle         = BLOCKS.register("terrorcotta_circle", () -> new BlockTFHorizontal(Block.Properties.create(Material.ROCK, MaterialColor.SAND).setRequiresTool().hardnessAndResistance(1.7F).sound(SoundType.STONE)));
 	//public static final RegistryObject<Block> terrorcotta_diagonal       = BLOCKS.register("terrorcotta_diagonal", () -> new BlockTFDiagonal(Block.Properties.create(Material.ROCK, MaterialColor.SAND).setRequiresTool().hardnessAndResistance(1.7F).sound(SoundType.STONE)));
 	public static final RegistryObject<RotatedPillarBlock> stone_twist   = BLOCKS.register("stone_twist", () -> new RotatedPillarBlock(Block.Properties.create(Material.ROCK).setRequiresTool().hardnessAndResistance(1.5F, 10.0F)));
-//	public static final RegistryObject<Block> stone_twist_thin           = BLOCKS.register("stone_twist_thin", () -> new BlockTFWallPillar(Material.ROCK, 12, 16));
+	public static final RegistryObject<Block> stone_twist_thin           = BLOCKS.register("stone_twist_thin", () -> new BlockTFWallPillar(Material.ROCK, 12, 16));
 	//public static final RegistryObject<Block> lapis_block                = BLOCKS.register("lapis_block", () -> new Block(Block.Properties.create(Material.IRON).setRequiresTool().hardnessAndResistance(3.0F, 5.0F).sound(SoundType.STONE)));
 	public static final RegistryObject<BlockKeepsakeCasket> keepsake_casket = BLOCKS.register("keepsake_casket", BlockKeepsakeCasket::new);
 
@@ -406,7 +406,7 @@ public class TFBlocks {
 						hedge, root, liveroot_block, uncrafting_table, firefly_jar, cicada_jar, smoker, encased_smoker, fire_jet, encased_fire_jet,
 						naga_stone_head, naga_stone,
 						moss_patch, mayapple, clover_patch, fiddlehead, mushgloom, torchberry_plant, root_strand, fallen_leaves,
-						iron_ladder, /*terrorcotta_circle, terrorcotta_diagonal,*/ stone_twist, /*lapis_block,*/
+						iron_ladder, /*terrorcotta_circle, terrorcotta_diagonal,*/ stone_twist, stone_twist_thin, /*lapis_block,*/
 						oak_leaves, canopy_leaves, mangrove_leaves, dark_leaves, time_leaves, transformation_leaves, mining_leaves, sorting_leaves,
 						rainboak_leaves, rainboak_sapling,
 						oak_log, canopy_log, mangrove_log, dark_log, time_log, transformation_log, mining_log, sorting_log,

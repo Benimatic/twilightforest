@@ -180,8 +180,9 @@ public class ItemModelGenerator extends ItemModelProvider {
 		toBlock(TFBlocks.nagastone_stairs_mossy_right.get());
 		toBlock(TFBlocks.nagastone_stairs_weathered_left.get());
 		toBlock(TFBlocks.nagastone_stairs_weathered_right.get());
-		toBlockModel(TFBlocks.spiral_bricks.get(), new ResourceLocation("twilightforest:block/spiral_bricks/x_spiral_bottom_right"));
+		toBlockModel(TFBlocks.spiral_bricks.get(), prefix("block/spiral_bricks/x_spiral_bottom_right"));
 		toBlock(TFBlocks.stone_twist.get());
+		toBlockModel(TFBlocks.stone_twist_thin.get(), prefix("block/pillar/pillar_inventory"));
 		//toBlock(TFBlocks.lapis_block.get());
 		toBlock(TFBlocks.oak_log.get());
 		toBlock(TFBlocks.oak_wood.get());

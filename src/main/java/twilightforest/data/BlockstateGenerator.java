@@ -10,6 +10,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.*;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.fml.RegistryObject;
+import team.chisel.ctm.client.util.Dir;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
 import twilightforest.enums.FireJetVariant;
@@ -308,6 +309,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 		builtinEntity(TFBlocks.sort_wall_sign.get(), "twilightforest:block/wood/planks_sort_0");
 
 		casketStuff();
+		stonePillar();
 	}
 
 	private void registerForceFields() {
@@ -999,6 +1001,28 @@ public class BlockstateGenerator extends BlockStateProvider {
 		getVariantBuilder(TFBlocks.terrorcotta_diagonal.get()).partialState()
 						.with(BlockTFDiagonal.IS_ROTATED, true).setModels(ConfiguredModel.builder().modelFile(terrorcottaDiagonalRotated).uvLock(true).rotationY(90).build());
 	}*/
+
+	private void stonePillar() {
+		ModelFile main_x = models().withExistingParent("pillar_main_x", prefix("block/pillar/pillar_12_ctm")).texture("side_x", prefix("block/stone_twist/twist_x")).texture("side_z", prefix("block/stone_twist/twist_x"));
+		ModelFile bottom_x = models().withExistingParent("pillar_bottom_x", prefix("block/pillar/pillar_bottom")).texture("bottom_x", prefix("block/stone_twist/cap/y_y_bottom")).texture("bottom_z", prefix("block/stone_twist/cap/y_y_bottom")).texture("bottom_cap", prefix("block/stone_twist/cap/end_bottom_x"));
+		ModelFile top_x = models().withExistingParent("pillar_top_x", prefix("block/pillar/pillar_top")).texture("top_x", prefix("block/stone_twist/cap/y_y_top")).texture("top_z", prefix("block/stone_twist/cap/y_y_top")).texture("top_cap", prefix("block/stone_twist/cap/end_top_x"));
+		ModelFile main_y = models().withExistingParent("pillar_main_y", prefix("block/pillar/pillar_12_ctm")).texture("side_x", prefix("block/stone_twist/twist_y")).texture("side_z", prefix("block/stone_twist/twist_y"));
+		ModelFile bottom_y = models().withExistingParent("pillar_bottom_y", prefix("block/pillar/pillar_bottom")).texture("bottom_x", prefix("block/stone_twist/cap/y_y_bottom")).texture("bottom_z", prefix("block/stone_twist/cap/y_y_bottom")).texture("bottom_cap", prefix("block/stone_twist/cap/end_bottom_y"));
+		ModelFile top_y = models().withExistingParent("pillar_top_y", prefix("block/pillar/pillar_top")).texture("top_x", prefix("block/stone_twist/cap/y_y_top")).texture("top_z", prefix("block/stone_twist/cap/y_y_top")).texture("top_cap", prefix("block/stone_twist/cap/end_top_y"));
+		ModelFile main_z = models().withExistingParent("pillar_main_z", prefix("block/pillar/pillar_12_ctm")).texture("side_x", prefix("block/stone_twist/twist_x")).texture("side_z", prefix("block/stone_twist/twist_y"));
+		ModelFile bottom_z = models().withExistingParent("pillar_bottom_z", prefix("block/pillar/pillar_bottom")).texture("bottom_x", prefix("block/stone_twist/cap/y_y_bottom")).texture("bottom_z", prefix("block/stone_twist/cap/y_y_bottom")).texture("bottom_cap", prefix("block/stone_twist/cap/end_bottom_z"));
+		ModelFile top_z = models().withExistingParent("pillar_top_z", prefix("block/pillar/pillar_top")).texture("top_x", prefix("block/stone_twist/cap/y_y_top")).texture("top_z", prefix("block/stone_twist/cap/y_y_top")).texture("top_cap", prefix("block/stone_twist/cap/end_top_z"));
+		getMultipartBuilder(TFBlocks.stone_twist_thin.get())
+				.part().modelFile(main_x).uvLock(true).rotationX(90).rotationY(90).addModel().condition(BlockTFWallPillar.AXIS, Direction.Axis.X).end()
+				.part().modelFile(top_x).rotationX(90).rotationY(90).addModel().condition(BlockTFWallPillar.AXIS, Direction.Axis.X).condition(SixWayBlock.EAST, false).end()
+				.part().modelFile(bottom_x).rotationX(90).rotationY(90).addModel().condition(BlockTFWallPillar.AXIS, Direction.Axis.X).condition(SixWayBlock.WEST, false).end()
+				.part().modelFile(main_y).uvLock(true).addModel().condition(BlockTFWallPillar.AXIS, Direction.Axis.Y).end()
+				.part().modelFile(top_y).addModel().condition(BlockTFWallPillar.AXIS, Direction.Axis.Y).condition(SixWayBlock.UP, false).end()
+				.part().modelFile(bottom_y).addModel().condition(BlockTFWallPillar.AXIS, Direction.Axis.Y).condition(SixWayBlock.DOWN, false).end()
+				.part().modelFile(main_z).uvLock(true).rotationX(90).addModel().condition(BlockTFWallPillar.AXIS, Direction.Axis.Z).end()
+				.part().modelFile(top_z).rotationX(90).addModel().condition(BlockTFWallPillar.AXIS, Direction.Axis.Z).condition(SixWayBlock.NORTH, false).end()
+				.part().modelFile(bottom_z).rotationX(90).addModel().condition(BlockTFWallPillar.AXIS, Direction.Axis.Z).condition(SixWayBlock.SOUTH, false).end();
+	}
 
 	private void slider() {
 		ModelFile slider = models().getExistingFile(TwilightForestMod.prefix("block/slider"));
