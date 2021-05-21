@@ -31,6 +31,8 @@ public class BlockTagGenerator extends BlockTagsProvider {
 	public static final ITag.INamedTag<Block> SORTING_LOGS = BlockTags.makeWrapperTag(TwilightForestMod.prefix("sortwood_logs").toString());
 
 	public static final ITag.INamedTag<Block> TWILIGHT_LOGS = BlockTags.makeWrapperTag(TwilightForestMod.prefix("logs").toString());
+	public static final ITag.INamedTag<Block> TF_FENCES = BlockTags.makeWrapperTag(TwilightForestMod.prefix("fences").toString());
+	public static final ITag.INamedTag<Block> TF_FENCE_GATES = BlockTags.makeWrapperTag(TwilightForestMod.prefix("fence_gates").toString());
 
 	public static final ITag.INamedTag<Block> STORAGE_BLOCKS_ARCTIC_FUR = BlockTags.makeWrapperTag(TwilightForestMod.prefix("storage_blocks/arctic_fur").toString());
 	public static final ITag.INamedTag<Block> STORAGE_BLOCKS_CARMINITE = BlockTags.makeWrapperTag(TwilightForestMod.prefix("storage_blocks/carminite").toString());
@@ -105,6 +107,12 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				.add(TFBlocks.time_planks.get(), TFBlocks.trans_planks.get(), TFBlocks.mine_planks.get(), TFBlocks.sort_planks.get())
 				.add(TFBlocks.tower_wood.get(), TFBlocks.tower_wood_encased.get(), TFBlocks.tower_wood_cracked.get(), TFBlocks.tower_wood_mossy.get(), TFBlocks.tower_wood_infested.get());
 
+		getOrCreateBuilder(TF_FENCES)
+				.add(TFBlocks.twilight_oak_fence.get(), TFBlocks.canopy_fence.get(), TFBlocks.mangrove_fence.get(), TFBlocks.dark_fence.get())
+				.add(TFBlocks.time_fence.get(), TFBlocks.trans_fence.get(), TFBlocks.mine_fence.get(), TFBlocks.sort_fence.get());
+		getOrCreateBuilder(TF_FENCE_GATES)
+				.add(TFBlocks.twilight_oak_gate.get(), TFBlocks.canopy_gate.get(), TFBlocks.mangrove_gate.get(), TFBlocks.dark_gate.get())
+				.add(TFBlocks.time_gate.get(), TFBlocks.trans_gate.get(), TFBlocks.mine_gate.get(), TFBlocks.sort_gate.get());
 		getOrCreateBuilder(BlockTags.WOODEN_FENCES)
 				.add(TFBlocks.twilight_oak_fence.get(), TFBlocks.canopy_fence.get(), TFBlocks.mangrove_fence.get(), TFBlocks.dark_fence.get())
 				.add(TFBlocks.time_fence.get(), TFBlocks.trans_fence.get(), TFBlocks.mine_fence.get(), TFBlocks.sort_fence.get());
@@ -200,10 +208,6 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		getOrCreateBuilder(ORES_KNIGHTMETAL);
 
 		getOrCreateBuilder(PORTAL_EDGE).add(Blocks.GRASS_BLOCK, Blocks.MYCELIUM).add(getAllFilteredBlocks(b -> /*b.material == Material.ORGANIC ||*/ b.material == Material.EARTH));
-		//FIXME when mods are loaded into the dev space that have plants they are automatically added to the deco tag.
-		//This can create issues for people who dont play without those mods, because the whole tag will invalidate.
-		//Example: immersive engineering's hemp gets added to the tag
-		//if we could make it so everything that isnt vanilla or TF is added as an optional tag that would be ideal.
 		getOrCreateBuilder(PORTAL_DECO)
 				.addTags(BlockTags.FLOWERS, BlockTags.LEAVES, BlockTags.SAPLINGS, BlockTags.CROPS)
 				.add(Blocks.BAMBOO)

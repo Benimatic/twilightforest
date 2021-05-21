@@ -72,6 +72,7 @@ import twilightforest.block.*;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.shield.IShieldCapability;
 import twilightforest.data.BlockTagGenerator;
+import twilightforest.data.ItemTagGenerator;
 import twilightforest.enchantment.TFEnchantment;
 import twilightforest.entity.EntityTFCharmEffect;
 import twilightforest.entity.IHostileMount;
@@ -243,7 +244,7 @@ public class TFEventListener {
 
 	@SubscribeEvent
 	public static void burnStuff(FurnaceFuelBurnTimeEvent evt) {
-		if(evt.getItemStack().getItem().isIn(Tags.Items.FENCES_WOODEN) || evt.getItemStack().getItem().isIn(Tags.Items.FENCE_GATES_WOODEN)) {
+		if(evt.getItemStack().getItem().isIn(ItemTagGenerator.TF_FENCES) || evt.getItemStack().getItem().isIn(ItemTagGenerator.TF_FENCE_GATES)) {
 			evt.setBurnTime(300);
 		}
 	}
