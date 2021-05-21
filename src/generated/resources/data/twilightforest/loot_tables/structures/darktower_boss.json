@@ -67,7 +67,7 @@
             },
             {
               "function": "minecraft:set_nbt",
-              "tag": "{shader_name:\"twilightforest:ur_ghast\"}"
+              "tag": "{shader_name:\"twilightforest:ur-ghast\"}"
             }
           ],
           "name": "twilightforest:carminite"

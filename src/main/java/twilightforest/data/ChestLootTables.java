@@ -625,7 +625,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                         .acceptCondition(LootConditionModExists.builder("immersiveengineering"))
                                         .acceptFunction(LootFunctionModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")), TFItems.carminite.get()))
                                         .acceptFunction(SetNBT.builder(Util.make(new CompoundNBT(), (nbt) -> {
-                                            nbt.putString("shader_name", "twilightforest:ur_ghast");
+                                            nbt.putString("shader_name", "twilightforest:ur-ghast");
                                         })))))
                         .addLootPool(LootPool.builder()
                                 .rolls(ConstantRange.of(1))
