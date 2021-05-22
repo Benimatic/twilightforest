@@ -352,8 +352,10 @@ public class TFEventListener {
 				 checker = casket.playeruuid;
 			} else checker = null;
 			if(checker != null) {
-				if (!((TileEntityKeepsakeCasket) te).contents.isEmpty() || (player.getUniqueID().getMostSignificantBits() != checker.getMostSignificantBits() || !player.hasPermissionLevel(3))) {
-					event.setCanceled(true);
+				if (!((TileEntityKeepsakeCasket) te).contents.isEmpty()) {
+					if((player.getUniqueID().getMostSignificantBits() != checker.getMostSignificantBits() || !player.hasPermissionLevel(3))) {
+						event.setCanceled(true);
+					}
 				}
 			}
 		}
