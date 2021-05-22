@@ -850,7 +850,7 @@ public enum TFFeature {
 				return this.getSpawnableMonsterList(0);
 			case AMBIENT:
 				return this.ambientCreatureList;
-			case WATER_AMBIENT:
+			case WATER_CREATURE:
 				return this.waterCreatureList;
 			default:
 				return new ArrayList<>();
