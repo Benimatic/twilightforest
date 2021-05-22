@@ -242,13 +242,6 @@ public class TFEventListener {
 		}
 	}
 
-	@SubscribeEvent
-	public static void burnStuff(FurnaceFuelBurnTimeEvent evt) {
-		if(evt.getItemStack().getItem().isIn(ItemTagGenerator.TF_FENCES) || evt.getItemStack().getItem().isIn(ItemTagGenerator.TF_FENCE_GATES)) {
-			evt.setBurnTime(300);
-		}
-	}
-
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	// For when the player dies
 	public static void applyDeathItems(LivingDeathEvent event) {

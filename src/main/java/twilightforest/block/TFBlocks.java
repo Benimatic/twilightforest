@@ -6,6 +6,7 @@ import net.minecraft.block.material.MaterialColor;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.SignItem;
 import net.minecraft.item.TallBlockItem;
 import net.minecraft.util.Direction;
@@ -20,10 +21,27 @@ import net.minecraftforge.registries.IForgeRegistry;
 import twilightforest.TwilightForestMod;
 import twilightforest.client.ISTER;
 import twilightforest.compat.TFCompat;
-import twilightforest.enums.*;
-import twilightforest.item.*;
+import twilightforest.enums.BossVariant;
+import twilightforest.enums.FireJetVariant;
+import twilightforest.enums.MagicWoodVariant;
+import twilightforest.enums.PlantVariant;
+import twilightforest.enums.TowerDeviceVariant;
+import twilightforest.item.ItemBlockTFHugeLilyPad;
+import twilightforest.item.ItemBlockTFHugeWaterLily;
+import twilightforest.item.ItemBlockWearable;
+import twilightforest.item.ItemTFTrophy;
+import twilightforest.item.TFItems;
 import twilightforest.tileentity.TFTileEntities;
-import twilightforest.world.feature.tree.*;
+import twilightforest.world.feature.tree.CanopyTree;
+import twilightforest.world.feature.tree.DarkCanopyTree;
+import twilightforest.world.feature.tree.HollowTree;
+import twilightforest.world.feature.tree.MangroveTree;
+import twilightforest.world.feature.tree.MinersTree;
+import twilightforest.world.feature.tree.RainboakTree;
+import twilightforest.world.feature.tree.SmallOakTree;
+import twilightforest.world.feature.tree.SortingTree;
+import twilightforest.world.feature.tree.TimeTree;
+import twilightforest.world.feature.tree.TransformationTree;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
@@ -413,18 +431,36 @@ public class TFBlocks {
 						oak_wood, canopy_wood, mangrove_wood, dark_wood, time_wood, transformation_wood, mining_wood, sorting_wood,
 						time_log_core, transformation_log_core, mining_log_core, sorting_log_core,
 						oak_sapling, canopy_sapling, mangrove_sapling, darkwood_sapling, hollow_oak_sapling, time_sapling, transformation_sapling, mining_sapling, sorting_sapling,
-						twilight_oak_planks, twilight_oak_stairs, twilight_oak_slab, twilight_oak_button, twilight_oak_fence, twilight_oak_gate, twilight_oak_plate, twilight_oak_trapdoor,
-						canopy_planks, canopy_stairs, canopy_slab, canopy_button, canopy_fence, canopy_gate, canopy_plate, canopy_trapdoor,
-						mangrove_planks, mangrove_stairs, mangrove_slab, mangrove_button, mangrove_fence, mangrove_gate, mangrove_plate, mangrove_trapdoor,
-						dark_planks, dark_stairs, dark_slab, dark_button, dark_fence, dark_gate, dark_plate, dark_trapdoor,
-						time_planks, time_stairs, time_slab, time_button, time_fence, time_gate, time_plate, time_trapdoor,
-						trans_planks, trans_stairs, trans_slab, trans_button, trans_fence, trans_gate, trans_plate, trans_trapdoor,
-						mine_planks, mine_stairs, mine_slab, mine_button, mine_fence, mine_gate, mine_plate, mine_trapdoor,
-						sort_planks, sort_stairs, sort_slab, sort_button, sort_fence, sort_gate, sort_plate, sort_trapdoor
+						twilight_oak_planks, twilight_oak_stairs, twilight_oak_slab, twilight_oak_button, twilight_oak_plate, twilight_oak_trapdoor,
+						canopy_planks, canopy_stairs, canopy_slab, canopy_button, canopy_plate, canopy_trapdoor,
+						mangrove_planks, mangrove_stairs, mangrove_slab, mangrove_button, mangrove_plate, mangrove_trapdoor,
+						dark_planks, dark_stairs, dark_slab, dark_button, dark_plate, dark_trapdoor,
+						time_planks, time_stairs, time_slab, time_button, time_plate, time_trapdoor,
+						trans_planks, trans_stairs, trans_slab, trans_button, trans_plate, trans_trapdoor,
+						mine_planks, mine_stairs, mine_slab, mine_button, mine_plate, mine_trapdoor,
+						sort_planks, sort_stairs, sort_slab, sort_button, sort_plate, sort_trapdoor
 		);
 		for (RegistryObject<? extends Block> b : standard) {
 			r.register(new BlockItem(b.get(), TFItems.defaultBuilder()).setRegistryName(b.get().getRegistryName()));
 		}
+
+		registerItemBlockWithBurn(r, twilight_oak_fence, 300);
+		registerItemBlockWithBurn(r, twilight_oak_gate, 300);
+		registerItemBlockWithBurn(r, canopy_fence, 300);
+		registerItemBlockWithBurn(r, canopy_gate, 300);
+		registerItemBlockWithBurn(r, mangrove_fence, 300);
+		registerItemBlockWithBurn(r, mangrove_gate, 300);
+		registerItemBlockWithBurn(r, dark_fence, 300);
+		registerItemBlockWithBurn(r, dark_gate, 300);
+		registerItemBlockWithBurn(r, time_fence, 300);
+		registerItemBlockWithBurn(r, time_gate, 300);
+		registerItemBlockWithBurn(r, trans_fence, 300);
+		registerItemBlockWithBurn(r, trans_gate, 300);
+		registerItemBlockWithBurn(r, mine_fence, 300);
+		registerItemBlockWithBurn(r, mine_gate, 300);
+		registerItemBlockWithBurn(r, sort_fence, 300);
+		registerItemBlockWithBurn(r, sort_gate, 300);
+
 		TFCompat.initCompatItems(evt);
 
 		//FIXME it would be really nice if we could put these items anywhere in the creative tab instead of the end
@@ -536,6 +572,15 @@ public class TFBlocks {
 	private static AbstractBlock.Properties logProperties(MaterialColor top, MaterialColor side) {
 		return AbstractBlock.Properties.create(Material.WOOD, (state) ->
 				state.get(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? top : side);
+	}
+	
+	private static void registerItemBlockWithBurn(IForgeRegistry<Item> registry, RegistryObject<Block> block, int burn) {
+		registry.register(new BlockItem(block.get(), TFItems.defaultBuilder()){
+			@Override
+			public int getBurnTime(ItemStack itemStack) {
+				return burn;
+			}
+		}.setRegistryName(block.get().getRegistryName()));
 	}
 
 	public static void tfCompostables() {
