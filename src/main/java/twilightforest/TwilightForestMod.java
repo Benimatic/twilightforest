@@ -111,7 +111,6 @@ public class TwilightForestMod {
 		TFParticleType.PARTICLE_TYPES.register(modbus);
 		modbus.addGenericListener(Structure.class, TFStructures::register);
 		MinecraftForge.EVENT_BUS.addListener(TFStructures::load);
-		MinecraftForge.EVENT_BUS.addListener(TFStructures::fillSpawnInfo);
 		TFBiomeFeatures.FEATURES.register(modbus);
 		TFContainers.CONTAINERS.register(modbus);
 //		TFEnchantments.ENCHANTMENTS.register(modbus);

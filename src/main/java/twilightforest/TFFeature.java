@@ -1,7 +1,7 @@
 package twilightforest;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -421,13 +421,12 @@ public enum TFFeature {
 	public boolean areChunkDecorationsEnabled;
 	public boolean isStructureEnabled;
 	public boolean isTerrainAltered;
-	// FIXME private List<List<Biome.SpawnListEntry>> spawnableMonsterLists;
-	// FIXME private List<Biome.SpawnListEntry> ambientCreatureList;
-	// FIXME private List<Biome.SpawnListEntry> waterCreatureList;
 	private final ResourceLocation[] requiredAdvancements;
 	public boolean hasProtectionAura;
 
-	private final List<MobSpawnInfo.Spawners> monsterSpawnList = new ArrayList<>();
+	private List<List<MobSpawnInfo.Spawners>> spawnableMonsterLists;
+	private List<MobSpawnInfo.Spawners> ambientCreatureList;
+	private List<MobSpawnInfo.Spawners> waterCreatureList;
 
 	private long lastSpawnedHintMonsterTime;
 
@@ -447,12 +446,12 @@ public enum TFFeature {
 		this.areChunkDecorationsEnabled = false;
 		this.isStructureEnabled = true;
 		this.isTerrainAltered = false;
-		// this.spawnableMonsterLists = new ArrayList<>();
-		// this.ambientCreatureList = new ArrayList<>();
-		// this.waterCreatureList = new ArrayList<>();
+		 this.spawnableMonsterLists = new ArrayList<>();
+		 this.ambientCreatureList = new ArrayList<>();
+		 this.waterCreatureList = new ArrayList<>();
 		this.hasProtectionAura = true;
 
-		//ambientCreatureList.add(new Biome.SpawnListEntry(EntityType.BAT, 10, 8, 8));
+		ambientCreatureList.add(new MobSpawnInfo.Spawners(EntityType.BAT, 10, 8, 8));
 
 		this.requiredAdvancements = requiredAdvancements;
 
@@ -557,20 +556,23 @@ public enum TFFeature {
 	 * Add a monster to a specific spawn list
 	 */
 	public TFFeature addMonster(int listIndex, EntityType<? extends LivingEntity> monsterClass, int weight, int minGroup, int maxGroup) {
-		monsterSpawnList.add(new MobSpawnInfo.Spawners(monsterClass, weight, minGroup, maxGroup));
-		return this;
-	}
+		List<MobSpawnInfo.Spawners> monsterList;
+		if (this.spawnableMonsterLists.size() > listIndex) {
+			monsterList = this.spawnableMonsterLists.get(listIndex);
+		} else {
+			monsterList = new ArrayList<>();
+			this.spawnableMonsterLists.add(listIndex, monsterList);
+		}
 
-	public List<MobSpawnInfo.Spawners> getMonsterSpawnList() {
-		return ImmutableList.copyOf(monsterSpawnList);
+		monsterList.add(new MobSpawnInfo.Spawners(monsterClass, weight, minGroup, maxGroup));
+		return this;
 	}
 
 	/**
 	 * Add a water creature
 	 */
 	public TFFeature addWaterCreature(EntityType<? extends LivingEntity> monsterClass, int weight, int minGroup, int maxGroup) {
-		// FIXME
-		// this.waterCreatureList.add(new Biome.SpawnListEntry(monsterClass, weight, minGroup, maxGroup));
+		this.waterCreatureList.add(new MobSpawnInfo.Spawners(monsterClass, weight, minGroup, maxGroup));
 		return this;
 	}
 
@@ -823,36 +825,47 @@ public enum TFFeature {
 		return new BlockPos(ccx, 31, ccz);//  Math.abs(chunkX % 16) == centerX && Math.abs(chunkZ % 16) == centerZ; FIXME (set sea level hard)
 	}
 
+	public List<MobSpawnInfo.Spawners> getCombinedMonsterSpawnableList() {
+		List<MobSpawnInfo.Spawners> list = new ArrayList<>();
+		spawnableMonsterLists.forEach(l -> {
+			if(l != null)
+				list.addAll(l);
+		});
+		return list;
+	}
+
+	public List<MobSpawnInfo.Spawners> getCombinedCreatureSpawnableList() {
+		List<MobSpawnInfo.Spawners> list = new ArrayList<>();
+		list.addAll(ambientCreatureList);
+		list.addAll(waterCreatureList);
+		return list;
+	}
+
 	/**
 	 * Returns a list of hostile monsters.  Are we ever going to need passive or water creatures?
 	 */
-	/* FIXME
-	public List<Biome.SpawnListEntry> getSpawnableList(EntityClassification creatureType) {
+	public List<MobSpawnInfo.Spawners> getSpawnableList(EntityClassification creatureType) {
 		switch (creatureType) {
 			case MONSTER:
-				return this.getSpawnableList(EntityClassification.MONSTER, 0);
+				return this.getSpawnableMonsterList(0);
 			case AMBIENT:
 				return this.ambientCreatureList;
-			case WATER_CREATURE:
+			case WATER_AMBIENT:
 				return this.waterCreatureList;
 			default:
 				return new ArrayList<>();
 		}
-	}*/
+	}
 
 	/**
 	 * Returns a list of hostile monsters in the specified indexed category
 	 */
-	/* FIXME
-	public List<Biome.SpawnListEntry> getSpawnableList(EntityClassification creatureType, int index) {
-		if (creatureType != EntityClassification.MONSTER) {
-			return getSpawnableList(creatureType);
-		}
+	public List<MobSpawnInfo.Spawners> getSpawnableMonsterList(int index) {
 		if (index >= 0 && index < this.spawnableMonsterLists.size()) {
 			return this.spawnableMonsterLists.get(index);
 		}
 		return new ArrayList<>();
-	}*/
+	}
 
 	public boolean doesPlayerHaveRequiredAdvancements(PlayerEntity player) {
 		return PlayerHelper.doesPlayerHaveRequiredAdvancements(player, requiredAdvancements);
