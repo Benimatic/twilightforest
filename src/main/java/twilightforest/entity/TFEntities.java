@@ -123,6 +123,7 @@ public class TFEntities {
 	public static final EntityType<EntityTFAdherent> adherent = make(TFEntityNames.ADHERENT, EntityTFAdherent::new, EntityClassification.MONSTER, 0.8F, 2.2F);
 	public static final EntityType<EntityTFRovingCube> roving_cube = make(TFEntityNames.ROVING_CUBE, EntityTFRovingCube::new, EntityClassification.MONSTER, 1.2F, 2.1F);
 	//public static final EntityType<EntityTFCastleGuardian> castle_guardian = make(TFEntityNames.CASTLE_GUARDIAN, EntityTFCastleGuardian::new, EntityClassification.MONSTER, 1.8F, 2.4F);
+	public static final EntityType<EntityTFPlateauBoss> plateau_boss = make(TFEntityNames.PLATEAU_BOSS, EntityTFPlateauBoss::new, EntityClassification.MONSTER, 1F, 1F);
 
 	public static final EntityType<EntityTFNatureBolt> nature_bolt = build(TFEntityNames.NATURE_BOLT, makeCastedBuilder(EntityTFNatureBolt.class, EntityTFNatureBolt::new, EntityClassification.MISC).size(0.25F, 0.25F).setTrackingRange(150).setUpdateInterval(5));
 	public static final EntityType<EntityTFLichBolt> lich_bolt = build(TFEntityNames.LICH_BOLT, makeCastedBuilder(EntityTFLichBolt.class, EntityTFLichBolt::new, EntityClassification.MISC).size(0.25F, 0.25F).setTrackingRange(150).setUpdateInterval(2));
@@ -367,6 +368,7 @@ public class TFEntities {
 		event.put(adherent, EntityTFAdherent.registerAttributes().create());
 		event.put(roving_cube, EntityTFRovingCube.registerAttributes().create());
 		//event.put(castle_guardian, MobEntity.func_233666_p_().create());
+		event.put(plateau_boss, EntityTFPlateauBoss.registerAttributes().create());
 
 		//event.put(boggard, EntityTFBoggard.registerAttributes().create());
 		event.put(rising_zombie, ZombieEntity.func_234342_eQ_().create());
