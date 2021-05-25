@@ -1,12 +1,11 @@
 {
   "replace": false,
   "values": [
-    "minecraft:iron_ore",
     "minecraft:gold_ore",
-    "minecraft:redstone_ore",
+    "minecraft:iron_ore",
     "minecraft:lapis_ore",
     "minecraft:diamond_ore",
-    "minecraft:emerald_ore",
-    "twilightforest:liveroot_block"
+    "minecraft:redstone_ore",
+    "minecraft:emerald_ore"
   ]
 }

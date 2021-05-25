@@ -7,8 +7,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.network.IPacket;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.ITag;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.*;
@@ -22,8 +20,6 @@ import twilightforest.item.TFItems;
 import twilightforest.util.WorldUtil;
 
 import java.util.Random;
-
-import static twilightforest.TwilightForestMod.prefix;
 
 public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 
@@ -97,7 +93,7 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 	private boolean canAnnihilate(BlockPos pos, BlockState state) {
 		// whitelist many castle blocks
 		Block block = state.getBlock();
-		return block.isIn(BlockTagGenerator.ANNIHILATION_WHITELIST) || block.getExplosionResistance() < 8F && state.getBlockHardness(world, pos) >= 0;
+		return block.isIn(BlockTagGenerator.ANNIHILATION_INCLUSIONS) || block.getExplosionResistance() < 8F && state.getBlockHardness(world, pos) >= 0;
 	}
 
 	private void annihilateParticles(World world, BlockPos pos) {

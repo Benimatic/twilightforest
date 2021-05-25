@@ -15,8 +15,8 @@ public class FluidTagGenerator extends FluidTagsProvider {
     public static final ITag.INamedTag<Fluid> FIRE_JET_FUEL = FluidTags.makeWrapperTag(TwilightForestMod.prefix("fire_jet_fuel").toString());
     public static final ITag.INamedTag<Fluid> PORTAL_FLUID = FluidTags.makeWrapperTag(TwilightForestMod.prefix("portal_fluid").toString());
 
-    public FluidTagGenerator(DataGenerator generatorIn, String modId, @Nullable ExistingFileHelper existingFileHelper) {
-        super(generatorIn, modId, existingFileHelper);
+    public FluidTagGenerator(DataGenerator generatorIn, @Nullable ExistingFileHelper existingFileHelper) {
+        super(generatorIn, TwilightForestMod.ID, existingFileHelper);
     }
 
     @Override

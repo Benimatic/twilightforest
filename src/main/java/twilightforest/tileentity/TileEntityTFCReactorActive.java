@@ -213,7 +213,7 @@ public class TileEntityTFCReactorActive extends TileEntity implements ITickableT
 	private void transformBlock(BlockPos pos, BlockState state, int fuzz, boolean netherTransform) {
 		BlockState stateThere = world.getBlockState(pos);
 
-		if (stateThere.getBlock() != Blocks.AIR && (stateThere.getBlock().isIn(BlockTagGenerator.REACTOR_BLACKLIST) || stateThere.getBlockHardness(world, pos) == -1)) {
+		if (stateThere.getBlock() != Blocks.AIR && (stateThere.getBlock().isIn(BlockTagGenerator.CARMINITE_REACTOR_IMMUNE) || stateThere.getBlockHardness(world, pos) == -1)) {
 			// don't destroy unbreakable stuff
 			return;
 		}
@@ -237,7 +237,7 @@ public class TileEntityTFCReactorActive extends TileEntity implements ITickableT
 	private void createFakeBlock(BlockPos pos, BlockState state) {
 		BlockState stateThere = world.getBlockState(pos);
 
-		if (stateThere.getBlock() != Blocks.AIR && (stateThere.getBlock().isIn(BlockTagGenerator.REACTOR_BLACKLIST) || stateThere.getBlockHardness(world, pos) == -1)) {
+		if (stateThere.getBlock() != Blocks.AIR && (stateThere.getBlock().isIn(BlockTagGenerator.CARMINITE_REACTOR_IMMUNE) || stateThere.getBlockHardness(world, pos) == -1)) {
 			// don't destroy unbreakable stuff
 			return;
 		} else {

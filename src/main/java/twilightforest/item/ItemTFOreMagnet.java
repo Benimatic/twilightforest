@@ -1,5 +1,6 @@
 package twilightforest.item;
 
+import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -9,23 +10,30 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.UseAction;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
+import net.minecraft.tags.ITag;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.event.AddReloadListenerEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import twilightforest.TFSounds;
+import twilightforest.TwilightForestMod;
 import twilightforest.data.BlockTagGenerator;
 import twilightforest.util.FeatureUtil;
 
 import javax.annotation.Nonnull;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
+@Mod.EventBusSubscriber(modid = TwilightForestMod.ID)
 public class ItemTFOreMagnet extends Item {
 
 	private static final float WIGGLE = 10F;
@@ -74,7 +82,7 @@ public class ItemTFOreMagnet extends Item {
 			}
 
 			if (moved > 0) {
-				stack.damageItem(moved, living, (user) -> user.sendBreakAnimation(living.getActiveHand()));
+				stack.damageItem(moved, living, user -> user.sendBreakAnimation(living.getActiveHand()));
 				world.playSound(null, living.getPosX(), living.getPosY(), living.getPosZ(), TFSounds.MAGNET_GRAB, living.getSoundCategory(), 1.0F, 1.0F);
 			}
 		}
@@ -100,7 +108,6 @@ public class ItemTFOreMagnet extends Item {
 	 * Magnet from the player's position and facing to the specified offset
 	 */
 	private int doMagnet(World world, LivingEntity living, float yawOffset, float pitchOffset) {
-
 		// find vector 32 blocks from look
 		double range = 32.0D;
 		Vector3d srcVec = new Vector3d(living.getPosX(), living.getPosY() + living.getEyeHeight(), living.getPosZ());
@@ -111,12 +118,16 @@ public class ItemTFOreMagnet extends Item {
 	}
 
 	public static int doMagnet(World world, BlockPos usePos, BlockPos destPos) {
+		// FIXME Find a better place to invoke this!
+		initOre2BlockMap();
+
 		int blocksMoved = 0;
 		// get blocks in line from src to dest
 		BlockPos[] lineArray = FeatureUtil.getBresenhamArrays(usePos, destPos);
 
 		// find some ore?
-		BlockState foundState = Blocks.AIR.getDefaultState();
+		BlockState attactedOreBlock = Blocks.AIR.getDefaultState();
+		BlockState replacementBlock = Blocks.AIR.getDefaultState();
 		BlockPos foundPos = null;
         BlockPos basePos = null;
 
@@ -125,20 +136,21 @@ public class ItemTFOreMagnet extends Item {
 
 			// keep track of where the dirt/stone we first find is.
 			if (basePos == null) {
-				if (isReplaceable(searchState) || isNetherReplaceable(searchState) || isEndReplaceable(searchState)) {
+				if (isReplaceable(searchState)) {
 					basePos = coord;
 				}
 				// This ordering is so that the base pos is found first before we pull ores - pushing ores away is a baaaaad idea!
-			} else if (foundPos == null && searchState.getBlock() != Blocks.AIR && (isOre(searchState) || isNetherOre(searchState) || isEndOre(searchState)) && (world.getTileEntity(coord) == null)) {
-				foundState = searchState;
+			} else if (foundPos == null && searchState.getBlock() != Blocks.AIR && isOre(searchState.getBlock()) && world.getTileEntity(coord) == null) {
+				attactedOreBlock = searchState;
+				replacementBlock = ORE_TO_BLOCK_REPLACEMENTS.getOrDefault(attactedOreBlock.getBlock(), Blocks.STONE).getDefaultState();
 				foundPos = coord;
 			}
 		}
 
-		if (basePos != null && foundState.getBlock() != Blocks.AIR) {
+		if (basePos != null && foundPos != null && attactedOreBlock.getBlock() != Blocks.AIR) {
 			// find the whole vein
 			Set<BlockPos> veinBlocks = new HashSet<>();
-			findVein(world, foundPos, foundState, veinBlocks);
+			findVein(world, foundPos, attactedOreBlock, veinBlocks);
 
 			// move it up into minable blocks or dirt
 			int offX = basePos.getX() - foundPos.getX();
@@ -149,22 +161,16 @@ public class ItemTFOreMagnet extends Item {
 				BlockPos replacePos = coord.add(offX, offY, offZ);
 				BlockState replaceState = world.getBlockState(replacePos);
 
-				// set vein to stone / netherrack / endstone
-				if (isOre(foundState) && isReplaceable(replaceState)) {
-					world.setBlockState(coord, Blocks.STONE.getDefaultState(), 2);
-					world.setBlockState(replacePos, foundState, 2);
-					blocksMoved++;
-				} else if (isNetherOre(foundState) && isNetherReplaceable(replaceState)) {
-					world.setBlockState(coord, Blocks.NETHERRACK.getDefaultState(), 2);
-					world.setBlockState(replacePos, foundState, 2);
-					blocksMoved++;
-				} else if (isEndOre(foundState) && isEndReplaceable(replaceState)) {
-					world.setBlockState(coord, Blocks.END_STONE.getDefaultState(), 2);
-					world.setBlockState(replacePos, foundState, 2);
+				if (isReplaceable(replaceState) || replaceState.getBlock() instanceof AirBlock) {
+					world.setBlockState(coord, replacementBlock, 2);
+
+					// set close to ore material
+					world.setBlockState(replacePos, attactedOreBlock, 2);
 					blocksMoved++;
 				}
 			}
 		}
+
 		return blocksMoved;
 	}
 
@@ -180,34 +186,22 @@ public class ItemTFOreMagnet extends Item {
 		return new Vector3d(var3 * var4, var5, var2 * var4);
 	}
 
+	@Deprecated
 	private static boolean isReplaceable(BlockState state) {
         Block block = state.getBlock();
 
-		return (block != Blocks.AIR && block.isIn(BlockTags.BASE_STONE_OVERWORLD))
-				|| block == Blocks.DIRT || block == Blocks.GRASS_BLOCK || block == Blocks.GRAVEL;
+		return BlockTagGenerator.ORE_MAGNET_SAFE_REPLACE_BLOCK.contains(block);
 	}
 
-	private static boolean isNetherReplaceable(BlockState state) {
-		Block block = state.getBlock();
-
-		return block != Blocks.AIR && block.isIn(BlockTags.BASE_STONE_NETHER);
-	}
-
-	private static boolean isEndReplaceable(BlockState state) {
-		Block block = state.getBlock();
-
-		return block != Blocks.AIR && block.isIn(Tags.Blocks.END_STONES);
-	}
-
-	private static void findVein(World world, BlockPos here, BlockState oreState, Set<BlockPos> veinBlocks) {
+	private static boolean findVein(World world, BlockPos here, BlockState oreState, Set<BlockPos> veinBlocks) {
 		// is this already on the list?
 		if (veinBlocks.contains(here)) {
-			return;
+			return false;
 		}
 
-		// let's limit it to 24 blocks at a time 
+		// let's limit it to 24 blocks at a time
 		if (veinBlocks.size() >= 24) {
-			return;
+			return false;
 		}
 
 		// otherwise, check if we're still in the vein
@@ -218,21 +212,67 @@ public class ItemTFOreMagnet extends Item {
 			for (Direction e : Direction.values()) {
 				findVein(world, here.offset(e), oreState, veinBlocks);
 			}
+
+			return true;
+		} else {
+			return false;
 		}
 	}
 
-	private static boolean isOre(BlockState state) {
-		Block block = state.getBlock();
-		return block.isIn(BlockTagGenerator.OW_ORES);
+	private static boolean isOre(Block ore) {
+		return ORE_TO_BLOCK_REPLACEMENTS.containsKey(ore);
 	}
 
-	private static boolean isNetherOre(BlockState state) {
-		Block block = state.getBlock();
-		return block.isIn(BlockTagGenerator.NETHER_ORES);
+	// So it looks like we can't really access BlockTag contents until Datapack loading is complete (see `buildOreMagnetCache` method below)
+	// Instead let's opt for only clearing that particular cache on reload, and lazy-init the map when the magnet is used
+
+	// Switch over to ConcurrentHashMap if we run into any concurrency problems
+	private static boolean cacheNeedsBuild = true;
+	private static final HashMap<Block, Block> ORE_TO_BLOCK_REPLACEMENTS = new HashMap<>();
+
+	private static void initOre2BlockMap() {
+		if (!cacheNeedsBuild)
+			return;
+
+		TwilightForestMod.LOGGER.info("GENERATING ORE TO BLOCK MAPPING");
+
+		for (Block blockReplaceOre : BlockTagGenerator.ORE_MAGNET_BLOCK_REPLACE_ORE.getAllElements()) {
+			ResourceLocation rl = blockReplaceOre.getRegistryName();
+			ITag<Block> tag = BlockTags.getCollection().getTagByID(TwilightForestMod.prefix("ore_magnet/" + rl.getNamespace() + "/" + rl.getPath()));
+
+			for (Block oreBlock : tag.getAllElements()) {
+				ORE_TO_BLOCK_REPLACEMENTS.put(oreBlock, blockReplaceOre);
+			}
+		}
+
+		Set<Block> remainingOres = new HashSet<>(Tags.Blocks.ORES.getAllElements());
+		remainingOres.removeAll(ORE_TO_BLOCK_REPLACEMENTS.keySet());
+		remainingOres.removeIf(b -> "minecraft".equals(b.getRegistryName().getNamespace()));
+		if (!remainingOres.isEmpty()) {
+			TwilightForestMod.LOGGER.warn(remainingOres
+					.stream()
+					.peek(ore -> ORE_TO_BLOCK_REPLACEMENTS.put(ore, Blocks.STONE))
+					.map(Block::getRegistryName)
+					.map(ResourceLocation::toString)
+					.collect(Collectors.joining(", ", "Partially supported ores with Ore Magnet, [", "], will relate these to `minecraft:stone`. Mod packers/Mod devs are encouraged to add support for their ores to our ore magnet through block tag jsons"))
+			);
+		} else {
+			// You're probably NEVER going to see this message on a modpack
+			TwilightForestMod.LOGGER.info("No remaining ores to map!");
+		}
+
+		cacheNeedsBuild = false;
 	}
 
-	private static boolean isEndOre(BlockState state) {
-		Block block = state.getBlock();
-		return block.isIn(BlockTagGenerator.END_ORES);
+	@SubscribeEvent
+	public static void buildOreMagnetCache(AddReloadListenerEvent event) {
+		event.addListener((stage, resourceManager, preparationsProfiler, reloadProfiler, backgroundExecutor, gameExecutor) -> {
+			if (!cacheNeedsBuild) {
+				ORE_TO_BLOCK_REPLACEMENTS.clear();
+				cacheNeedsBuild = true;
+			}
+
+			return stage.markCompleteAwaitingOthers(null).thenRun(() -> {}); // Nothing to do here
+		});
 	}
 }

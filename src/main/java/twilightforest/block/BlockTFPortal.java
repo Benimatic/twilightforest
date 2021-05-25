@@ -1,6 +1,7 @@
 package twilightforest.block;
 
 import net.minecraft.block.*;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.effect.LightningBoltEntity;
@@ -121,7 +122,7 @@ public class BlockTFPortal extends BreakableBlock implements ILiquidContainer {
 	}
 
 	public boolean canFormPortal(BlockState state) {
-		return state.getBlock().isIn(BlockTagGenerator.PORTAL_FLUID) || state.getBlock() == this && state.get(DISALLOW_RETURN);
+		return state.getBlock().isIn(BlockTagGenerator.PORTAL_POOL) || state.getBlock() == this && state.get(DISALLOW_RETURN);
 	}
 
 	private static void causeLightning(World world, BlockPos pos, boolean fake) {
@@ -142,7 +143,7 @@ public class BlockTFPortal extends BreakableBlock implements ILiquidContainer {
 		}
 	}
 
-	private static boolean recursivelyValidatePortal(World world, BlockPos pos, Map<BlockPos, Boolean> blocksChecked, MutableInt portalSize, BlockState requiredState) {
+	private static boolean recursivelyValidatePortal(World world, BlockPos pos, Map<BlockPos, Boolean> blocksChecked, MutableInt portalSize, BlockState poolBlock) {
 		if (portalSize.incrementAndGet() > MAX_PORTAL_SIZE) return false;
 
 		boolean isPoolProbablyEnclosed = true;
@@ -153,10 +154,10 @@ public class BlockTFPortal extends BreakableBlock implements ILiquidContainer {
 			if (!blocksChecked.containsKey(positionCheck)) {
 				BlockState state = world.getBlockState(positionCheck);
 
-				if (state == requiredState && world.getBlockState(positionCheck.down()).isSolid()) {
+				if (state == poolBlock && world.getBlockState(positionCheck.down()).isSolid()) {
 					blocksChecked.put(positionCheck, true);
 					if (isPoolProbablyEnclosed) {
-						isPoolProbablyEnclosed = recursivelyValidatePortal(world, positionCheck, blocksChecked, portalSize, requiredState);
+						isPoolProbablyEnclosed = recursivelyValidatePortal(world, positionCheck, blocksChecked, portalSize, poolBlock);
 					}
 
 				} else if (isGrassOrDirt(state) && isNatureBlock(world.getBlockState(positionCheck.up()))) {
@@ -204,8 +205,10 @@ public class BlockTFPortal extends BreakableBlock implements ILiquidContainer {
 	}
 
 	private static RegistryKey<World> getDestination(Entity entity) {
-		return !entity.getEntityWorld().getDimensionKey().getLocation().equals(TFDimensions.twilightForest.getLocation())
-				? TFDimensions.twilightForest : RegistryKey.getOrCreateKey(Registry.WORLD_KEY, new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get())); // FIXME: cache this for gods sake
+		RegistryKey<World> twilightForest = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, new ResourceLocation(TFConfig.COMMON_CONFIG.DIMENSION.twilightForestID.get()));
+
+		return !entity.getEntityWorld().getDimensionKey().getLocation().equals(twilightForest.getLocation())
+				? twilightForest : RegistryKey.getOrCreateKey(Registry.WORLD_KEY, new ResourceLocation(TFConfig.COMMON_CONFIG.originDimension.get())); // FIXME: cache this for gods sake
 	}
 
 	public static void attemptSendPlayer(Entity entity, boolean forcedEntry) {

@@ -40,6 +40,11 @@ public class TFConfig {
 						worldRestart().
 						comment("If true, giant Twilight Oaks will also spawn in void worlds").
 						define("skylightOaks", true);
+				DIMENSION.twilightForestID = builder.
+						translation(config + "twilight_dimension_id").
+						worldRestart().
+						comment("Destination dimension for Twilight Portals and some other logic as well").
+						define("twilightDimensionID", "twilightforest:twilightforest");
 				builder.
 						comment("Weights for various small features").
 						push("World-Gen Weights");
@@ -240,6 +245,10 @@ public class TFConfig {
 			public ForgeConfigSpec.BooleanValue newPlayersSpawnInTF;
 			public ForgeConfigSpec.BooleanValue skylightForest;
 			public ForgeConfigSpec.BooleanValue skylightOaks;
+
+			// Find a different way to validate if a world is passible as a "Twilight Forest" instead of hardcoding Dim ID (Instanceof check for example) before strictly using this
+			// Reason this is needed is so users can reconfig portals to use Skylight Forest or a Void Forest or another dimension entirely
+			public ForgeConfigSpec.ConfigValue<String> twilightForestID;
 
 			public WorldGenWeights worldGenWeights = new WorldGenWeights();
 
