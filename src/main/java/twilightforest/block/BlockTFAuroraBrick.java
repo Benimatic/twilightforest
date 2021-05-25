@@ -22,15 +22,6 @@ public class BlockTFAuroraBrick extends Block {
 		super(props);
 	}
 
-	@Override
-	public float getPlayerRelativeBlockHardness(BlockState state, PlayerEntity player, IBlockReader worldIn, BlockPos pos) {
-		if(PlayerHelper.doesPlayerHaveRequiredAdvancements(player, TwilightForestMod.prefix("progress_glacier"))) {
-			return player.getDigSpeed(Blocks.STONE.getDefaultState(), pos);
-		} else {
-			return super.getPlayerRelativeBlockHardness(state, player, worldIn, pos);
-		}
-	}
-
 	private static float getFractalNoise(int iteration, float size, BlockPos pos) {
 		return iteration == 0 ? 0 : ((SimplexNoise.noise(
 				(pos.getX() + (iteration * size)) / size,
