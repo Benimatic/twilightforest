@@ -1,6 +1,7 @@
 package twilightforest.block;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.IWaterLoggable;
 import net.minecraft.block.RotatedPillarBlock;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.material.Material;
@@ -8,9 +9,14 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -20,6 +26,7 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import twilightforest.entity.EntityTFSlideBlock;
@@ -30,9 +37,10 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-public class BlockTFSlider extends RotatedPillarBlock {
+public class BlockTFSlider extends RotatedPillarBlock implements IWaterLoggable {
 
 	public static final IntegerProperty DELAY = IntegerProperty.create("delay", 0, 3);
+	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
 	private static final int TICK_TIME = 80;
 	private static final int OFFSET_TIME = 20;
@@ -44,13 +52,35 @@ public class BlockTFSlider extends RotatedPillarBlock {
 
 	protected BlockTFSlider() {
 		super(Properties.create(Material.IRON, MaterialColor.DIRT).hardnessAndResistance(2.0F, 10.0F).tickRandomly().notSolid());
-		this.setDefaultState(stateContainer.getBaseState().with(AXIS, Direction.Axis.Y).with(DELAY, 0));
+		this.setDefaultState(stateContainer.getBaseState().with(AXIS, Direction.Axis.Y).with(DELAY, 0).with(WATERLOGGED, false));
+	}
+
+	@Override
+	public FluidState getFluidState(BlockState state) {
+		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+	}
+
+	@Nullable
+	@Override
+	public BlockState getStateForPlacement(BlockItemUseContext context) {
+		FluidState fluidstate = context.getWorld().getFluidState(context.getPos());
+		boolean flag = fluidstate.getFluid() == Fluids.WATER;
+		return super.getStateForPlacement(context).with(WATERLOGGED, Boolean.valueOf(flag));
+	}
+
+	@Override
+	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+		if (stateIn.get(WATERLOGGED)) {
+			worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
+		}
+
+		return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
 	}
 
 	@Override
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
 		super.fillStateContainer(builder);
-		builder.add(DELAY);
+		builder.add(DELAY, WATERLOGGED);
 	}
 
 	@Override
