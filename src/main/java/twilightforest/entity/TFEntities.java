@@ -76,7 +76,7 @@ public class TFEntities {
 	public static final EntityType<EntityTFWraith> wraith = make(TFEntityNames.WRAITH, EntityTFWraith::new, EntityClassification.MONSTER);
 	public static final EntityType<EntityTFHedgeSpider> hedge_spider = make(TFEntityNames.HEDGE_SPIDER, EntityTFHedgeSpider::new, EntityClassification.MONSTER, 1.4F, 0.9F);
 	public static final EntityType<EntityTFHydra> hydra = make(TFEntityNames.HYDRA, EntityTFHydra::new, EntityClassification.MONSTER, 16F, 12F);
-	public static final EntityType<EntityTFLich> lich = make(TFEntityNames.LICH, EntityTFLich::new, EntityClassification.MONSTER, 1.1F, 2.5F);
+	public static final EntityType<EntityTFLich> lich = make(TFEntityNames.LICH, EntityTFLich::new, EntityClassification.MONSTER, 1.1F, 2.1F);
 	public static final EntityType<EntityTFPenguin> penguin = make(TFEntityNames.PENGUIN, EntityTFPenguin::new, EntityClassification.CREATURE, 0.5F, 0.9F);
 	public static final EntityType<EntityTFLichMinion> lich_minion = make(TFEntityNames.LICH_MINION, EntityTFLichMinion::new, EntityClassification.MONSTER, 0.6F, 1.95F);
 	public static final EntityType<EntityTFLoyalZombie> loyal_zombie = make(TFEntityNames.LOYAL_ZOMBIE, EntityTFLoyalZombie::new, EntityClassification.MONSTER);
