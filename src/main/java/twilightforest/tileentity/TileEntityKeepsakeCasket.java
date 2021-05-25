@@ -1,5 +1,6 @@
 package twilightforest.tileentity;
 
+import com.mojang.authlib.GameProfile;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -47,7 +48,17 @@ public class TileEntityKeepsakeCasket extends LockableLootTileEntity implements 
     }
 
     @Override
-    protected NonNullList<ItemStack> getItems() {
+    public boolean isEmpty() {
+        for(ItemStack itemstack : this.contents) {
+            if (!itemstack.isEmpty()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public NonNullList<ItemStack> getItems() {
         return contents;
     }
 
@@ -146,7 +157,7 @@ public class TileEntityKeepsakeCasket extends LockableLootTileEntity implements 
     @Override
     public boolean isUsableByPlayer(PlayerEntity user) {
         if(playeruuid != null) {
-            if(user.hasPermissionLevel(3) || user.getUniqueID().getMostSignificantBits() == playeruuid.getMostSignificantBits()) {
+            if(user.hasPermissionLevel(3) || user.getGameProfile().getId().equals(playeruuid)) {
                 return super.isUsableByPlayer(user);
             } else {
                 return false;
@@ -159,7 +170,7 @@ public class TileEntityKeepsakeCasket extends LockableLootTileEntity implements 
     @Override
     public boolean canOpen(PlayerEntity user) {
         if(playeruuid != null) {
-            if(user.hasPermissionLevel(3) || user.getUniqueID().getMostSignificantBits() == playeruuid.getMostSignificantBits()) {
+            if(user.hasPermissionLevel(3) || user.getGameProfile().getId().equals(playeruuid)) {
                 return super.canOpen(user);
             } else {
                 user.playSound(TFSounds.CASKET_LOCKED, SoundCategory.BLOCKS, 0.5F, 0.5F);

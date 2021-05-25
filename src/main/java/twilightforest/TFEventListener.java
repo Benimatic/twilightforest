@@ -21,6 +21,7 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.loot.LootContext;
 import net.minecraft.loot.conditions.ILootCondition;
 import net.minecraft.nbt.CompoundNBT;
@@ -91,6 +92,7 @@ import twilightforest.world.TFGenerationSettings;
 
 import javax.annotation.Nonnull;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * So much of the mod logic in this one class
@@ -292,7 +294,7 @@ public class TFEventListener {
 
 					if (TFConfig.COMMON_CONFIG.casketUUIDLocking.get()) {
 						//make it so only the player who died can open the chest if our config allows us
-						casket.playeruuid = player.getUniqueID();
+						casket.playeruuid = player.getGameProfile().getId();
 					} else {
 						casket.playeruuid = null;
 					}
@@ -352,8 +354,8 @@ public class TFEventListener {
 				 checker = casket.playeruuid;
 			} else checker = null;
 			if(checker != null) {
-				if (!((TileEntityKeepsakeCasket) te).contents.isEmpty()) {
-					if((player.getUniqueID().getMostSignificantBits() != checker.getMostSignificantBits() || !player.hasPermissionLevel(3))) {
+				if (!((TileEntityKeepsakeCasket) te).isEmpty()) {
+					if(!player.hasPermissionLevel(3) || !player.getGameProfile().getId().equals(checker)) {
 						event.setCanceled(true);
 					}
 				}
