@@ -300,8 +300,8 @@ public class TFBlockItems {
         r.register(new BlockItem(TFBlocks.twilight_oak_stairs.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.twilight_oak_stairs.get().getRegistryName())));
         r.register(new BlockItem(TFBlocks.twilight_oak_slab.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.twilight_oak_slab.get().getRegistryName())));
         r.register(new BlockItem(TFBlocks.twilight_oak_button.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.twilight_oak_button.get().getRegistryName())));
-        r.register(new BlockItem(TFBlocks.twilight_oak_fence.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.twilight_oak_fence.get().getRegistryName())));
-        r.register(new BlockItem(TFBlocks.twilight_oak_gate.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.twilight_oak_gate.get().getRegistryName())));
+        r.register(new ItemTFFurnaceFuel(TFBlocks.twilight_oak_fence.get(), TFItems.defaultBuilder(), 300).setRegistryName(Objects.requireNonNull(TFBlocks.twilight_oak_fence.get().getRegistryName())));
+        r.register(new ItemTFFurnaceFuel(TFBlocks.twilight_oak_gate.get(), TFItems.defaultBuilder(), 300).setRegistryName(Objects.requireNonNull(TFBlocks.twilight_oak_gate.get().getRegistryName())));
         r.register(new BlockItem(TFBlocks.twilight_oak_plate.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.twilight_oak_plate.get().getRegistryName())));
         r.register(new BlockItem(TFBlocks.twilight_oak_trapdoor.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.twilight_oak_trapdoor.get().getRegistryName())));
         r.register(new TallBlockItem(TFBlocks.twilight_oak_door.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.twilight_oak_door.get().getRegistryName())));
@@ -310,8 +310,8 @@ public class TFBlockItems {
         r.register(new BlockItem(TFBlocks.canopy_stairs.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.canopy_stairs.get().getRegistryName())));
         r.register(new BlockItem(TFBlocks.canopy_slab.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.canopy_slab.get().getRegistryName())));
         r.register(new BlockItem(TFBlocks.canopy_button.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.canopy_button.get().getRegistryName())));
-        r.register(new BlockItem(TFBlocks.canopy_fence.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.canopy_fence.get().getRegistryName())));
-        r.register(new BlockItem(TFBlocks.canopy_gate.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.canopy_gate.get().getRegistryName())));
+        r.register(new ItemTFFurnaceFuel(TFBlocks.canopy_fence.get(), TFItems.defaultBuilder(), 300).setRegistryName(Objects.requireNonNull(TFBlocks.canopy_fence.get().getRegistryName())));
+        r.register(new ItemTFFurnaceFuel(TFBlocks.canopy_gate.get(), TFItems.defaultBuilder(), 300).setRegistryName(Objects.requireNonNull(TFBlocks.canopy_gate.get().getRegistryName())));
         r.register(new BlockItem(TFBlocks.canopy_plate.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.canopy_plate.get().getRegistryName())));
         r.register(new BlockItem(TFBlocks.canopy_trapdoor.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.canopy_trapdoor.get().getRegistryName())));
         r.register(new TallBlockItem(TFBlocks.canopy_door.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.canopy_door.get().getRegistryName())));
@@ -320,8 +320,8 @@ public class TFBlockItems {
         r.register(new BlockItem(TFBlocks.mangrove_stairs.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.mangrove_stairs.get().getRegistryName())));
         r.register(new BlockItem(TFBlocks.mangrove_slab.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.mangrove_slab.get().getRegistryName())));
         r.register(new BlockItem(TFBlocks.mangrove_button.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.mangrove_button.get().getRegistryName())));
-        r.register(new BlockItem(TFBlocks.mangrove_fence.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.mangrove_fence.get().getRegistryName())));
-        r.register(new BlockItem(TFBlocks.mangrove_gate.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.mangrove_gate.get().getRegistryName())));
+        r.register(new ItemTFFurnaceFuel(TFBlocks.mangrove_fence.get(), TFItems.defaultBuilder(), 300).setRegistryName(Objects.requireNonNull(TFBlocks.mangrove_fence.get().getRegistryName())));
+        r.register(new ItemTFFurnaceFuel(TFBlocks.mangrove_gate.get(), TFItems.defaultBuilder(), 300).setRegistryName(Objects.requireNonNull(TFBlocks.mangrove_gate.get().getRegistryName())));
         r.register(new BlockItem(TFBlocks.mangrove_plate.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.mangrove_plate.get().getRegistryName())));
         r.register(new BlockItem(TFBlocks.mangrove_trapdoor.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.mangrove_trapdoor.get().getRegistryName())));
         r.register(new TallBlockItem(TFBlocks.mangrove_door.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.mangrove_door.get().getRegistryName())));
@@ -330,8 +330,8 @@ public class TFBlockItems {
         r.register(new BlockItem(TFBlocks.dark_stairs.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.dark_stairs.get().getRegistryName())));
         r.register(new BlockItem(TFBlocks.dark_slab.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.dark_slab.get().getRegistryName())));
         r.register(new BlockItem(TFBlocks.dark_button.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.dark_button.get().getRegistryName())));
-        r.register(new BlockItem(TFBlocks.dark_fence.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.dark_fence.get().getRegistryName())));
-        r.register(new BlockItem(TFBlocks.dark_gate.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.dark_gate.get().getRegistryName())));
+        r.register(new ItemTFFurnaceFuel(TFBlocks.dark_fence.get(), TFItems.defaultBuilder(), 300).setRegistryName(Objects.requireNonNull(TFBlocks.dark_fence.get().getRegistryName())));
+        r.register(new ItemTFFurnaceFuel(TFBlocks.dark_gate.get(), TFItems.defaultBuilder(), 300).setRegistryName(Objects.requireNonNull(TFBlocks.dark_gate.get().getRegistryName())));
         r.register(new BlockItem(TFBlocks.dark_plate.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.dark_plate.get().getRegistryName())));
         r.register(new BlockItem(TFBlocks.dark_trapdoor.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.dark_trapdoor.get().getRegistryName())));
         r.register(new TallBlockItem(TFBlocks.dark_door.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.dark_door.get().getRegistryName())));
@@ -340,8 +340,8 @@ public class TFBlockItems {
         r.register(new BlockItem(TFBlocks.time_stairs.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.time_stairs.get().getRegistryName())));
         r.register(new BlockItem(TFBlocks.time_slab.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.time_slab.get().getRegistryName())));
         r.register(new BlockItem(TFBlocks.time_button.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.time_button.get().getRegistryName())));
-        r.register(new BlockItem(TFBlocks.time_fence.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.time_fence.get().getRegistryName())));
-        r.register(new BlockItem(TFBlocks.time_gate.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.time_gate.get().getRegistryName())));
+        r.register(new ItemTFFurnaceFuel(TFBlocks.time_fence.get(), TFItems.defaultBuilder(), 300).setRegistryName(Objects.requireNonNull(TFBlocks.time_fence.get().getRegistryName())));
+        r.register(new ItemTFFurnaceFuel(TFBlocks.time_gate.get(), TFItems.defaultBuilder(), 300).setRegistryName(Objects.requireNonNull(TFBlocks.time_gate.get().getRegistryName())));
         r.register(new BlockItem(TFBlocks.time_plate.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.time_plate.get().getRegistryName())));
         r.register(new BlockItem(TFBlocks.time_trapdoor.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.time_trapdoor.get().getRegistryName())));
         r.register(new TallBlockItem(TFBlocks.time_door.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.time_door.get().getRegistryName())));
@@ -350,8 +350,8 @@ public class TFBlockItems {
         r.register(new BlockItem(TFBlocks.trans_stairs.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.trans_stairs.get().getRegistryName())));
         r.register(new BlockItem(TFBlocks.trans_slab.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.trans_slab.get().getRegistryName())));
         r.register(new BlockItem(TFBlocks.trans_button.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.trans_button.get().getRegistryName())));
-        r.register(new BlockItem(TFBlocks.trans_fence.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.trans_fence.get().getRegistryName())));
-        r.register(new BlockItem(TFBlocks.trans_gate.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.trans_gate.get().getRegistryName())));
+        r.register(new ItemTFFurnaceFuel(TFBlocks.trans_fence.get(), TFItems.defaultBuilder(), 300).setRegistryName(Objects.requireNonNull(TFBlocks.trans_fence.get().getRegistryName())));
+        r.register(new ItemTFFurnaceFuel(TFBlocks.trans_gate.get(), TFItems.defaultBuilder(), 300).setRegistryName(Objects.requireNonNull(TFBlocks.trans_gate.get().getRegistryName())));
         r.register(new BlockItem(TFBlocks.trans_plate.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.trans_plate.get().getRegistryName())));
         r.register(new BlockItem(TFBlocks.trans_trapdoor.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.trans_trapdoor.get().getRegistryName())));
         r.register(new TallBlockItem(TFBlocks.trans_door.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.trans_door.get().getRegistryName())));
@@ -360,8 +360,8 @@ public class TFBlockItems {
         r.register(new BlockItem(TFBlocks.mine_stairs.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.mine_stairs.get().getRegistryName())));
         r.register(new BlockItem(TFBlocks.mine_slab.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.mine_slab.get().getRegistryName())));
         r.register(new BlockItem(TFBlocks.mine_button.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.mine_button.get().getRegistryName())));
-        r.register(new BlockItem(TFBlocks.mine_fence.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.mine_fence.get().getRegistryName())));
-        r.register(new BlockItem(TFBlocks.mine_gate.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.mine_gate.get().getRegistryName())));
+        r.register(new ItemTFFurnaceFuel(TFBlocks.mine_fence.get(), TFItems.defaultBuilder(), 300).setRegistryName(Objects.requireNonNull(TFBlocks.mine_fence.get().getRegistryName())));
+        r.register(new ItemTFFurnaceFuel(TFBlocks.mine_gate.get(), TFItems.defaultBuilder(), 300).setRegistryName(Objects.requireNonNull(TFBlocks.mine_gate.get().getRegistryName())));
         r.register(new BlockItem(TFBlocks.mine_plate.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.mine_plate.get().getRegistryName())));
         r.register(new BlockItem(TFBlocks.mine_trapdoor.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.mine_trapdoor.get().getRegistryName())));
         r.register(new TallBlockItem(TFBlocks.mine_door.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.mine_door.get().getRegistryName())));
@@ -370,8 +370,8 @@ public class TFBlockItems {
         r.register(new BlockItem(TFBlocks.sort_stairs.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.sort_stairs.get().getRegistryName())));
         r.register(new BlockItem(TFBlocks.sort_slab.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.sort_slab.get().getRegistryName())));
         r.register(new BlockItem(TFBlocks.sort_button.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.sort_button.get().getRegistryName())));
-        r.register(new BlockItem(TFBlocks.sort_fence.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.sort_fence.get().getRegistryName())));
-        r.register(new BlockItem(TFBlocks.sort_gate.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.sort_gate.get().getRegistryName())));
+        r.register(new ItemTFFurnaceFuel(TFBlocks.sort_fence.get(), TFItems.defaultBuilder(), 300).setRegistryName(Objects.requireNonNull(TFBlocks.sort_fence.get().getRegistryName())));
+        r.register(new ItemTFFurnaceFuel(TFBlocks.sort_gate.get(), TFItems.defaultBuilder(), 300).setRegistryName(Objects.requireNonNull(TFBlocks.sort_gate.get().getRegistryName())));
         r.register(new BlockItem(TFBlocks.sort_plate.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.sort_plate.get().getRegistryName())));
         r.register(new BlockItem(TFBlocks.sort_trapdoor.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.sort_trapdoor.get().getRegistryName())));
         r.register(new TallBlockItem(TFBlocks.sort_door.get(), TFItems.defaultBuilder()).setRegistryName(Objects.requireNonNull(TFBlocks.sort_door.get().getRegistryName())));
