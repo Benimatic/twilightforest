@@ -48,7 +48,7 @@ public class TFGenDarkCanopyTree extends Feature<BaseTreeFeatureConfig> {
 		// if we are given leaves as a starting position, seek dirt or grass underneath
 		boolean foundDirt = false;
 		Material materialUnder;
-		for (int dy = pos.getY(); dy >= TFGenerationSettings.SEALEVEL; dy--) {
+		for (int dy = pos.getY(); dy >= 0; dy--) {
 			materialUnder = reader.getBlockState(new BlockPos(pos.getX(), dy - 1, pos.getZ())).getMaterial();
 			if (materialUnder == Material.ORGANIC || materialUnder == Material.EARTH) {
 				// yes!
