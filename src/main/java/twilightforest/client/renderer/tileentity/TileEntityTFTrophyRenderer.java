@@ -73,10 +73,8 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 			//hydraHead.mouth.setRotationPoint(0F, 10F, -20F);
 			hydraHead.openMouthForTrophy(0.0F);
 		}
-		if (((BlockTFAbstractTrophy) blockstate.getBlock()).getVariant() == BossVariant.UR_GHAST && flag) {
-			ghastHead.setTranslate(matrixStackIn, 0F, .5F, 0F);
-		} else if (((BlockTFAbstractTrophy) blockstate.getBlock()).getVariant() == BossVariant.UR_GHAST && !flag) {
-			ghastHead.setTranslate(matrixStackIn, 0F, 1F, 0F);
+		if (((BlockTFAbstractTrophy) blockstate.getBlock()).getVariant() == BossVariant.UR_GHAST) {
+			ghastHead.setTranslate(matrixStackIn, 0F, 1.0F, 0F);
 		}
 		render(direction, f1, ((BlockTFAbstractTrophy) blockstate.getBlock()).getVariant(), f, matrixStackIn, bufferIn, combinedLightIn);
 		matrixStackIn.pop();
@@ -84,7 +82,7 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 
 	public static void render(@Nullable Direction directionIn, float y, BossVariant variant, float animationProgress, MatrixStack matrixStackIn, IRenderTypeBuffer buffer, int combinedLight) {
 		matrixStackIn.push();
-		if (directionIn == null) {
+		if (directionIn == null || variant == BossVariant.UR_GHAST) {
 			matrixStackIn.translate(0.5D, 0.0D, 0.5D);
 		} else {
 			matrixStackIn.translate(0.5F - directionIn.getXOffset() * 0.25F, 0.25D, 0.5F - directionIn.getZOffset() * 0.25F);

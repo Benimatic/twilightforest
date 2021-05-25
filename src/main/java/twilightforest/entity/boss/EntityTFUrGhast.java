@@ -254,7 +254,7 @@ public class EntityTFUrGhast extends EntityTFTowerGhast {
 
 	@Override
 	public boolean isInvulnerableTo(DamageSource src) {
-		return src == DamageSource.IN_WALL || super.isInvulnerableTo(src);
+		return src == DamageSource.IN_WALL || src == DamageSource.IN_FIRE || src == DamageSource.ON_FIRE || super.isInvulnerableTo(src);
 	}
 
 	@Override

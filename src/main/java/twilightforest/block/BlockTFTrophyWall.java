@@ -39,6 +39,9 @@ public class BlockTFTrophyWall extends BlockTFAbstractTrophy {
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+		if (((BlockTFAbstractTrophy) state.getBlock()).getVariant() == BossVariant.UR_GHAST) {
+			return BlockTFTrophy.GHAST_SHAPE;
+		}
 		return SHAPES.get(state.get(FACING));
 	}
 

@@ -22,7 +22,7 @@ public class BlockTFTrophy extends BlockTFAbstractTrophy {
 
 	public static final IntegerProperty ROTATION = BlockStateProperties.ROTATION_0_15;
 	protected static final VoxelShape SHAPE = Block.makeCuboidShape(4.0D, 0.0D, 4.0D, 12.0D, 8.0D, 12.0D);
-	protected static final VoxelShape GHAST_SHAPE = Block.makeCuboidShape(4.0D, 8.0D, 4.0D, 12.0D, 16.0D, 12.0D);
+	public static final VoxelShape GHAST_SHAPE = Block.makeCuboidShape(4.0D, 8.0D, 4.0D, 12.0D, 16.0D, 12.0D);
 
 	public BlockTFTrophy(BossVariant variant) {
 		super(variant, Properties.create(Material.MISCELLANEOUS).zeroHardnessAndResistance());

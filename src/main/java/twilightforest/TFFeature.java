@@ -451,7 +451,7 @@ public enum TFFeature {
 		 this.waterCreatureList = new ArrayList<>();
 		this.hasProtectionAura = true;
 
-		ambientCreatureList.add(new MobSpawnInfo.Spawners(EntityType.BAT, 10, 8, 8));
+		if(!name.equals("hydra_lair")) ambientCreatureList.add(new MobSpawnInfo.Spawners(EntityType.BAT, 10, 8, 8));
 
 		this.requiredAdvancements = requiredAdvancements;
 

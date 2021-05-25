@@ -68,8 +68,8 @@ public class TFItems {
 	public static final RegistryObject<Item> raw_venison = ITEMS.register("raw_venison", () -> new Item(defaultBuilder().food(TFItems.VENISON_RAW)));
 	public static final RegistryObject<Item> cooked_venison = ITEMS.register("cooked_venison", () -> new Item(defaultBuilder().food(TFItems.VENISON_COOKED)));
 	public static final RegistryObject<Item> hydra_chop = ITEMS.register("hydra_chop", () -> new ItemTFHydraChops(defaultBuilder().isImmuneToFire().food(TFItems.HYDRA_CHOP).rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<Item> fiery_blood = ITEMS.register("fiery_blood", () -> new Item(defaultBuilder().isImmuneToFire().rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<Item> fiery_tears = ITEMS.register("fiery_tears", () -> new Item(defaultBuilder().isImmuneToFire().rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<Item> fiery_blood = ITEMS.register("fiery_blood", () -> new Item(defaultBuilder().rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<Item> fiery_tears = ITEMS.register("fiery_tears", () -> new Item(defaultBuilder().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> fiery_ingot = ITEMS.register("fiery_ingot", () -> new Item(defaultBuilder().isImmuneToFire().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> fiery_helmet = ITEMS.register("fiery_helmet", () -> new ItemTFFieryArmor(TwilightArmorMaterial.ARMOR_FIERY, EquipmentSlotType.HEAD, defaultBuilder().isImmuneToFire().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<Item> fiery_chestplate = ITEMS.register("fiery_chestplate", () -> new ItemTFFieryArmor(TwilightArmorMaterial.ARMOR_FIERY, EquipmentSlotType.CHEST, defaultBuilder().isImmuneToFire().rarity(Rarity.UNCOMMON)));
