@@ -63,6 +63,7 @@ public class RenderLayerRegistration {
 //		RenderTypeLookup.setRenderLayer(TFBlocks.troll_cave_cottage_miniature_structure.get(), cutout);
 //		RenderTypeLookup.setRenderLayer(TFBlocks.final_castle_miniature_structure.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.trophy_pedestal.get(), translucent);
+		RenderTypeLookup.setRenderLayer(TFBlocks.stone_twist_thin.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.fiery_block.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.firefly_jar.get(), cutout);
 		RenderTypeLookup.setRenderLayer(TFBlocks.cicada_jar.get(), cutout);

@@ -1,12 +1,15 @@
 package twilightforest.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.PaneBlock;
-import net.minecraft.block.SixWayBlock;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -17,11 +20,13 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
+import net.minecraftforge.common.ToolType;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockTFWallPillar extends BlockTFConnectableRotatedPillar {
+public class BlockTFWallPillar extends BlockTFConnectableRotatedPillar implements IWaterLoggable {
     //nightmares
     private final VoxelShape TOP_X = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 3.0D, 16.0D, 16.0D);
     private final VoxelShape BOTTOM_X = Block.makeCuboidShape(13.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
@@ -44,8 +49,11 @@ public class BlockTFWallPillar extends BlockTFConnectableRotatedPillar {
     private final VoxelShape NO_BOTTOM_Z = VoxelShapes.or(PILLAR_Z, TOP_Z);
     private final VoxelShape FULL_Z = VoxelShapes.or(PILLAR_Z, BOTTOM_Z, TOP_Z);
 
+    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+
     public BlockTFWallPillar(Material material, double width, double height) {
-        super(Properties.create(material).hardnessAndResistance(1.5F, 10.0F), width, height);
+        super(Properties.create(material).hardnessAndResistance(1.5F, 10.0F).setRequiresTool().harvestTool(ToolType.PICKAXE).notSolid(), width, height);
+        this.setDefaultState(getDefaultState().with(WATERLOGGED, false));
     }
 
     @Override
@@ -73,5 +81,33 @@ public class BlockTFWallPillar extends BlockTFConnectableRotatedPillar {
     public boolean canConnectTo(BlockState state, boolean solidSide) {
         Block block = state.getBlock();
         return block instanceof BlockTFWallPillar;
+    }
+
+    @Override
+    public FluidState getFluidState(BlockState state) {
+        return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+    }
+
+    @Nullable
+    @Override
+    public BlockState getStateForPlacement(BlockItemUseContext context) {
+        FluidState fluidstate = context.getWorld().getFluidState(context.getPos());
+        boolean flag = fluidstate.getFluid() == Fluids.WATER;
+        return super.getStateForPlacement(context).with(WATERLOGGED, Boolean.valueOf(flag));
+    }
+
+    @Override
+    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+        if (stateIn.get(WATERLOGGED)) {
+            worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
+        }
+
+        return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+    }
+
+    @Override
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+        super.fillStateContainer(builder);
+        builder.add(WATERLOGGED);
     }
 }
