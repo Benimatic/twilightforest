@@ -3,12 +3,7 @@ package twilightforest.block;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
-import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.SignItem;
-import net.minecraft.item.TallBlockItem;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.event.RegistryEvent;
@@ -17,36 +12,13 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.IForgeRegistry;
 import twilightforest.TwilightForestMod;
-import twilightforest.client.ISTER;
 import twilightforest.compat.TFCompat;
-import twilightforest.enums.BossVariant;
-import twilightforest.enums.FireJetVariant;
-import twilightforest.enums.MagicWoodVariant;
-import twilightforest.enums.PlantVariant;
-import twilightforest.enums.TowerDeviceVariant;
-import twilightforest.item.ItemBlockTFHugeLilyPad;
-import twilightforest.item.ItemBlockTFHugeWaterLily;
-import twilightforest.item.ItemBlockWearable;
-import twilightforest.item.ItemTFTrophy;
+import twilightforest.enums.*;
 import twilightforest.item.TFItems;
-import twilightforest.tileentity.TFTileEntities;
-import twilightforest.world.feature.tree.CanopyTree;
-import twilightforest.world.feature.tree.DarkCanopyTree;
-import twilightforest.world.feature.tree.HollowTree;
-import twilightforest.world.feature.tree.MangroveTree;
-import twilightforest.world.feature.tree.MinersTree;
-import twilightforest.world.feature.tree.RainboakTree;
-import twilightforest.world.feature.tree.SmallOakTree;
-import twilightforest.world.feature.tree.SortingTree;
-import twilightforest.world.feature.tree.TimeTree;
-import twilightforest.world.feature.tree.TransformationTree;
+import twilightforest.world.feature.tree.*;
 
 import javax.annotation.Nonnull;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.Callable;
 
 @SuppressWarnings({"WeakerAccess", "unused"})
 @Nonnull
@@ -169,7 +141,7 @@ public class TFBlocks {
 	public static final RegistryObject<BlockTFTrophyWall> quest_ram_wall_trophy      = BLOCKS.register("quest_ram_wall_trophy", () -> new BlockTFTrophyWall(BossVariant.QUEST_RAM));
 	public static final RegistryObject<Block> stronghold_shield           = BLOCKS.register("stronghold_shield", () -> new BlockTFShield(Block.Properties.create(Material.ROCK).setRequiresTool().harvestTool(ToolType.PICKAXE).hardnessAndResistance(-1.0F, 6000000.0F).sound(SoundType.METAL).noDrops()));
 	public static final RegistryObject<Block> trophy_pedestal             = BLOCKS.register("trophy_pedestal", () -> new BlockTFTrophyPedestal(Block.Properties.create(Material.ROCK).setRequiresTool().harvestTool(ToolType.PICKAXE).hardnessAndResistance(2.0F, 2000.0F).sound(SoundType.STONE)));
-	public static final RegistryObject<Block> aurora_block                = BLOCKS.register("aurora_block", () -> new BlockTFAuroraBrick(Block.Properties.create(Material.PACKED_ICE).hardnessAndResistance(2.0F, 10.0F)));
+	public static final RegistryObject<Block> aurora_block                = BLOCKS.register("aurora_block", () -> new BlockTFAuroraBrick(Block.Properties.create(Material.PACKED_ICE).harvestTool(ToolType.PICKAXE).hardnessAndResistance(10.0F, 10.0F)));
 	public static final RegistryObject<RotatedPillarBlock> aurora_pillar  = BLOCKS.register("aurora_pillar", () -> new RotatedPillarBlock(Block.Properties.create(Material.PACKED_ICE).setRequiresTool().harvestTool(ToolType.PICKAXE).hardnessAndResistance(2.0F, 10.0F)));
 	public static final RegistryObject<Block> aurora_slab                 = BLOCKS.register("aurora_slab", () -> new SlabBlock(Block.Properties.create(Material.PACKED_ICE).setRequiresTool().harvestTool(ToolType.PICKAXE).hardnessAndResistance(2.0F, 10.0F)));
 	public static final RegistryObject<Block> auroralized_glass           = BLOCKS.register("auroralized_glass", () -> new BlockTFAuroralizedGlass(Block.Properties.create(Material.ICE).notSolid()));
@@ -397,190 +369,13 @@ public class TFBlocks {
 
 	@SubscribeEvent
 	public static void registerItemblocks(RegistryEvent.Register<Item> evt) {
-		IForgeRegistry<Item> r = evt.getRegistry();
-		List<RegistryObject<? extends Block>> standard = Arrays.asList(
-						tower_wood, tower_wood_encased, tower_wood_cracked, tower_wood_mossy, tower_wood_infested,
-						reappearing_block, vanishing_block, locked_vanishing_block, carminite_builder, antibuilder, carminite_reactor, ghast_trap,
-						fake_gold, fake_diamond, stronghold_shield, trophy_pedestal,
-						underbrick, underbrick_cracked, underbrick_mossy, underbrick_floor,
-						brown_thorns, green_thorns, burnt_thorns, thorn_rose, thorn_leaves, beanstalk_leaves,
-						aurora_block, aurora_pillar, aurora_slab, auroralized_glass,
-						deadrock, deadrock_cracked, deadrock_weathered,
-						trollsteinn, wispy_cloud, fluffy_cloud, giant_cobblestone, giant_log, giant_leaves, giant_obsidian,
-						uberous_soil, huge_stalk, huge_mushgloom, huge_mushgloom_stem, trollvidr, unripe_trollber, trollber,
-						slider, castle_brick, castle_brick_worn, castle_brick_cracked, castle_brick_mossy, castle_brick_roof, castle_brick_frame,
-						castle_pillar_encased, castle_pillar_encased_tile, castle_pillar_bold, castle_pillar_bold_tile,
-						castle_stairs_brick, castle_stairs_worn, castle_stairs_cracked, castle_stairs_mossy, castle_stairs_encased, castle_stairs_bold,
-						castle_rune_brick_yellow, castle_rune_brick_purple, castle_rune_brick_pink, castle_rune_brick_blue,
-						force_field_pink, force_field_blue, force_field_green, force_field_purple, force_field_orange,
-						cinder_furnace, cinder_log, cinder_wood,
-						castle_door_yellow, castle_door_purple, castle_door_pink, castle_door_blue,
-						twilight_portal_miniature_structure, naga_courtyard_miniature_structure, lich_tower_miniature_structure,
-						knightmetal_block, ironwood_block, fiery_block, steeleaf_block, arctic_fur_block, carminite_block,
-						nagastone_pillar, nagastone_pillar_mossy, nagastone_pillar_weathered, etched_nagastone, etched_nagastone_mossy, etched_nagastone_weathered, spiral_bricks,
-						nagastone_stairs_left, nagastone_stairs_right, nagastone_stairs_mossy_left, nagastone_stairs_mossy_right, nagastone_stairs_weathered_left, nagastone_stairs_weathered_right,
-						maze_stone, maze_stone_brick, maze_stone_chiseled, maze_stone_decorative, maze_stone_cracked, maze_stone_mossy, maze_stone_mosaic, maze_stone_border,
-						boss_spawner_naga, boss_spawner_lich, boss_spawner_hydra, boss_spawner_ur_ghast, boss_spawner_knight_phantom, boss_spawner_snow_queen, boss_spawner_minoshroom, boss_spawner_alpha_yeti, boss_spawner_final_boss,
-						hedge, root, liveroot_block, uncrafting_table, firefly_jar, cicada_jar, smoker, encased_smoker, fire_jet, encased_fire_jet,
-						naga_stone_head, naga_stone,
-						moss_patch, mayapple, clover_patch, fiddlehead, mushgloom, torchberry_plant, root_strand, fallen_leaves,
-						iron_ladder, /*terrorcotta_circle, terrorcotta_diagonal,*/ stone_twist, stone_twist_thin, /*lapis_block,*/
-						oak_leaves, canopy_leaves, mangrove_leaves, dark_leaves, time_leaves, transformation_leaves, mining_leaves, sorting_leaves,
-						rainboak_leaves, rainboak_sapling,
-						oak_log, canopy_log, mangrove_log, dark_log, time_log, transformation_log, mining_log, sorting_log,
-						oak_wood, canopy_wood, mangrove_wood, dark_wood, time_wood, transformation_wood, mining_wood, sorting_wood,
-						time_log_core, transformation_log_core, mining_log_core, sorting_log_core,
-						oak_sapling, canopy_sapling, mangrove_sapling, darkwood_sapling, hollow_oak_sapling, time_sapling, transformation_sapling, mining_sapling, sorting_sapling,
-						twilight_oak_planks, twilight_oak_stairs, twilight_oak_slab, twilight_oak_button, twilight_oak_plate, twilight_oak_trapdoor,
-						canopy_planks, canopy_stairs, canopy_slab, canopy_button, canopy_plate, canopy_trapdoor,
-						mangrove_planks, mangrove_stairs, mangrove_slab, mangrove_button, mangrove_plate, mangrove_trapdoor,
-						dark_planks, dark_stairs, dark_slab, dark_button, dark_plate, dark_trapdoor,
-						time_planks, time_stairs, time_slab, time_button, time_plate, time_trapdoor,
-						trans_planks, trans_stairs, trans_slab, trans_button, trans_plate, trans_trapdoor,
-						mine_planks, mine_stairs, mine_slab, mine_button, mine_plate, mine_trapdoor,
-						sort_planks, sort_stairs, sort_slab, sort_button, sort_plate, sort_trapdoor
-		);
-		for (RegistryObject<? extends Block> b : standard) {
-			r.register(new BlockItem(b.get(), TFItems.defaultBuilder()).setRegistryName(b.get().getRegistryName()));
-		}
-
-		registerItemBlockWithBurn(r, twilight_oak_fence, 300);
-		registerItemBlockWithBurn(r, twilight_oak_gate, 300);
-		registerItemBlockWithBurn(r, canopy_fence, 300);
-		registerItemBlockWithBurn(r, canopy_gate, 300);
-		registerItemBlockWithBurn(r, mangrove_fence, 300);
-		registerItemBlockWithBurn(r, mangrove_gate, 300);
-		registerItemBlockWithBurn(r, dark_fence, 300);
-		registerItemBlockWithBurn(r, dark_gate, 300);
-		registerItemBlockWithBurn(r, time_fence, 300);
-		registerItemBlockWithBurn(r, time_gate, 300);
-		registerItemBlockWithBurn(r, trans_fence, 300);
-		registerItemBlockWithBurn(r, trans_gate, 300);
-		registerItemBlockWithBurn(r, mine_fence, 300);
-		registerItemBlockWithBurn(r, mine_gate, 300);
-		registerItemBlockWithBurn(r, sort_fence, 300);
-		registerItemBlockWithBurn(r, sort_gate, 300);
-
+		TFBlockItems.registerBlockItems(evt);
 		TFCompat.initCompatItems(evt);
-
-		//FIXME it would be really nice if we could put these items anywhere in the creative tab instead of the end
-		//I would like to put signs before doors :)
-		r.register(new SignItem(TFItems.defaultBuilder().maxStackSize(16), twilight_oak_sign.get(), twilight_wall_sign.get())
-				.setRegistryName(twilight_oak_sign.getId()));
-		r.register(new SignItem(TFItems.defaultBuilder().maxStackSize(16), canopy_sign.get(), canopy_wall_sign.get())
-				.setRegistryName(canopy_sign.getId()));
-		r.register(new SignItem(TFItems.defaultBuilder().maxStackSize(16), mangrove_sign.get(), mangrove_wall_sign.get())
-				.setRegistryName(mangrove_sign.getId()));
-		r.register(new SignItem(TFItems.defaultBuilder().maxStackSize(16), darkwood_sign.get(), darkwood_wall_sign.get())
-				.setRegistryName(darkwood_sign.getId()));
-		r.register(new SignItem(TFItems.defaultBuilder().maxStackSize(16), time_sign.get(), time_wall_sign.get())
-				.setRegistryName(time_sign.getId()));
-		r.register(new SignItem(TFItems.defaultBuilder().maxStackSize(16), trans_sign.get(), trans_wall_sign.get())
-				.setRegistryName(trans_sign.getId()));
-		r.register(new SignItem(TFItems.defaultBuilder().maxStackSize(16), mine_sign.get(), mine_wall_sign.get())
-				.setRegistryName(mine_sign.getId()));
-		r.register(new SignItem(TFItems.defaultBuilder().maxStackSize(16), sort_sign.get(), sort_wall_sign.get())
-				.setRegistryName(sort_sign.getId()));
-
-		List<Block> doors = Arrays.asList(twilight_oak_door.get(), canopy_door.get(), mangrove_door.get(), dark_door.get(), time_door.get(), trans_door.get(), mine_door.get(), sort_door.get());
-		for (Block b : doors) {
-			r.register(new TallBlockItem(b, TFItems.defaultBuilder()).setRegistryName(b.getRegistryName()));
-		}
-
-		r.register(new BlockItem(keepsake_casket.get(), TFItems.defaultBuilder().setISTER(() -> new Callable<ItemStackTileEntityRenderer>() {
-			@Override
-			public ItemStackTileEntityRenderer call() {
-				return new ISTER(TFTileEntities.KEEPSAKE_CASKET.getId());
-			}
-		})).setRegistryName(keepsake_casket.getId()));
-
-		// FIXME: using anon classes currently to get around the classloader as a bandaid fix
-		r.register(new ItemBlockWearable(firefly.get(), TFItems.defaultBuilder().setISTER(() -> new Callable<ItemStackTileEntityRenderer>() {
-			@Override
-			public ItemStackTileEntityRenderer call() {
-				return new ISTER(TFTileEntities.FIREFLY.getId());
-			}
-		})).setRegistryName(firefly.getId()));
-		r.register(new ItemBlockWearable(moonworm.get(), TFItems.defaultBuilder().setISTER(() -> new Callable<ItemStackTileEntityRenderer>() {
-			@Override
-			public ItemStackTileEntityRenderer call() {
-				return new ISTER(TFTileEntities.MOONWORM.getId());
-			}
-		})).setRegistryName(moonworm.getId()));
-		r.register(new ItemBlockWearable(cicada.get(), TFItems.defaultBuilder().setISTER(() -> new Callable<ItemStackTileEntityRenderer>() {
-			@Override
-			public ItemStackTileEntityRenderer call() {
-				return new ISTER(TFTileEntities.CICADA.getId());
-			}
-		})).setRegistryName(cicada.getId()));
-
-		r.register(new ItemTFTrophy(naga_trophy.get(), naga_wall_trophy.get(), TFItems.defaultBuilder().rarity(TwilightForestMod.getRarity()).setISTER(() -> new Callable<ItemStackTileEntityRenderer>() {
-			@Override
-			public ItemStackTileEntityRenderer call() {
-				return new ISTER(TFTileEntities.TROPHY.getId());
-			}
-		})).setRegistryName(naga_trophy.getId()));
-		r.register(new ItemTFTrophy(lich_trophy.get(), lich_wall_trophy.get(), TFItems.defaultBuilder().rarity(TwilightForestMod.getRarity()).setISTER(() -> new Callable<ItemStackTileEntityRenderer>() {
-			@Override
-			public ItemStackTileEntityRenderer call() {
-				return new ISTER(TFTileEntities.TROPHY.getId());
-			}
-		})).setRegistryName(lich_trophy.getId()));
-		r.register(new ItemTFTrophy(minoshroom_trophy.get(), minoshroom_wall_trophy.get(), TFItems.defaultBuilder().rarity(TwilightForestMod.getRarity()).setISTER(() -> new Callable<ItemStackTileEntityRenderer>() {
-			@Override
-			public ItemStackTileEntityRenderer call() {
-				return new ISTER(TFTileEntities.TROPHY.getId());
-			}
-		})).setRegistryName(minoshroom_trophy.getId()));
-		r.register(new ItemTFTrophy(hydra_trophy.get(), hydra_wall_trophy.get(), TFItems.defaultBuilder().rarity(TwilightForestMod.getRarity()).setISTER(() -> new Callable<ItemStackTileEntityRenderer>() {
-			@Override
-			public ItemStackTileEntityRenderer call() {
-				return new ISTER(TFTileEntities.TROPHY.getId());
-			}
-		})).setRegistryName(hydra_trophy.getId()));
-		r.register(new ItemTFTrophy(knight_phantom_trophy.get(), knight_phantom_wall_trophy.get(), TFItems.defaultBuilder().rarity(TwilightForestMod.getRarity()).setISTER(() -> new Callable<ItemStackTileEntityRenderer>() {
-			@Override
-			public ItemStackTileEntityRenderer call() {
-				return new ISTER(TFTileEntities.TROPHY.getId());
-			}
-		})).setRegistryName(knight_phantom_trophy.getId()));
-		r.register(new ItemTFTrophy(ur_ghast_trophy.get(), ur_ghast_wall_trophy.get(), TFItems.defaultBuilder().rarity(TwilightForestMod.getRarity()).setISTER(() -> new Callable<ItemStackTileEntityRenderer>() {
-			@Override
-			public ItemStackTileEntityRenderer call() {
-				return new ISTER(TFTileEntities.TROPHY.getId());
-			}
-		})).setRegistryName(ur_ghast_trophy.getId()));
-		r.register(new ItemTFTrophy(snow_queen_trophy.get(), snow_queen_wall_trophy.get(), TFItems.defaultBuilder().rarity(TwilightForestMod.getRarity()).setISTER(() -> new Callable<ItemStackTileEntityRenderer>() {
-			@Override
-			public ItemStackTileEntityRenderer call() {
-				return new ISTER(TFTileEntities.TROPHY.getId());
-			}
-		})).setRegistryName(snow_queen_trophy.getId()));
-		r.register(new ItemTFTrophy(quest_ram_trophy.get(), quest_ram_wall_trophy.get(), TFItems.defaultBuilder().rarity(TwilightForestMod.getRarity()).setISTER(() -> new Callable<ItemStackTileEntityRenderer>() {
-			@Override
-			public ItemStackTileEntityRenderer call() {
-				return new ISTER(TFTileEntities.TROPHY.getId());
-			}
-		})).setRegistryName(quest_ram_trophy.getId()));
-
-		r.register(new ItemBlockTFHugeLilyPad(huge_lilypad.get(), TFItems.defaultBuilder())
-						.setRegistryName(huge_lilypad.getId()));
-		r.register(new ItemBlockTFHugeWaterLily(huge_waterlily.get(), TFItems.defaultBuilder())
-						.setRegistryName(huge_waterlily.getId()));
 	}
 
 	private static AbstractBlock.Properties logProperties(MaterialColor top, MaterialColor side) {
 		return AbstractBlock.Properties.create(Material.WOOD, (state) ->
 				state.get(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? top : side);
-	}
-	
-	private static void registerItemBlockWithBurn(IForgeRegistry<Item> registry, RegistryObject<Block> block, int burn) {
-		registry.register(new BlockItem(block.get(), TFItems.defaultBuilder()){
-			@Override
-			public int getBurnTime(ItemStack itemStack) {
-				return burn;
-			}
-		}.setRegistryName(block.get().getRegistryName()));
 	}
 
 	public static void tfCompostables() {
