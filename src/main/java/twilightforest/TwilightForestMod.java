@@ -7,7 +7,9 @@ import net.minecraft.dispenser.IDispenseItemBehavior;
 import net.minecraft.dispenser.IPosition;
 import net.minecraft.dispenser.OptionalDispenseBehavior;
 import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.item.*;
+import net.minecraft.item.ArmorItem;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Rarity;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
@@ -37,21 +39,19 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import twilightforest.advancements.TFAdvancements;
-import twilightforest.compat.TFCompat;
-import twilightforest.dispenser.TransformationDispenseBehavior;
-import twilightforest.entity.projectile.EntityTFMoonwormShot;
-import twilightforest.dispenser.CrumbleDispenseBehavior;
-import twilightforest.dispenser.FeatherFanDispenseBehavior;
-import twilightforest.dispenser.MoonwormDispenseBehavior;
-import twilightforest.entity.projectile.EntityTFTwilightWandBolt;
-import twilightforest.item.ItemTFFieryPick;
-import twilightforest.worldgen.biomes.BiomeGrassColors;
-import twilightforest.worldgen.biomes.BiomeKeys;
 import twilightforest.block.TFBlocks;
 import twilightforest.capabilities.CapabilityList;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.command.TFCommand;
+import twilightforest.compat.TFCompat;
+import twilightforest.dispenser.CrumbleDispenseBehavior;
+import twilightforest.dispenser.FeatherFanDispenseBehavior;
+import twilightforest.dispenser.MoonwormDispenseBehavior;
+import twilightforest.dispenser.TransformationDispenseBehavior;
+import twilightforest.entity.projectile.EntityTFMoonwormShot;
+import twilightforest.entity.projectile.EntityTFTwilightWandBolt;
 import twilightforest.inventory.TFContainers;
+import twilightforest.item.ItemTFFieryPick;
 import twilightforest.item.TFItems;
 import twilightforest.item.recipe.UncraftingEnabledCondition;
 import twilightforest.loot.TFTreasure;
@@ -62,6 +62,8 @@ import twilightforest.world.TFDimensions;
 import twilightforest.world.feature.TFBiomeFeatures;
 import twilightforest.world.feature.TFGenCaveStalactite;
 import twilightforest.worldgen.TwilightFeatures;
+import twilightforest.worldgen.biomes.BiomeGrassColors;
+import twilightforest.worldgen.biomes.BiomeKeys;
 
 import java.util.Locale;
 
@@ -183,6 +185,7 @@ public class TwilightForestMod {
 		
 		evt.enqueueWork(() -> {
 			TFBlocks.tfCompostables();
+			TFBlocks.TFBurnables();
 			TFBlocks.TFPots();
 			DispenserBlock.registerDispenseBehavior(TFItems.moonworm_queen.get(), new MoonwormDispenseBehavior() {
 				@Override

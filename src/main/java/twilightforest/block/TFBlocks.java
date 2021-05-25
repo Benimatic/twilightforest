@@ -429,6 +429,60 @@ public class TFBlocks {
 		ComposterBlock.registerCompostable(0.85F, TFItems.magic_beans.get());
 	}
 
+	public static void TFBurnables() {
+		FireBlock fireblock = (FireBlock)Blocks.FIRE;
+		fireblock.setFireInfo(root.get(), 5, 20);
+		fireblock.setFireInfo(liveroot_block.get(), 5, 20);
+		fireblock.setFireInfo(oak_wood.get(), 5, 5);
+		fireblock.setFireInfo(twilight_oak_planks.get(), 5, 20);
+		fireblock.setFireInfo(twilight_oak_slab.get(), 5, 20);
+		fireblock.setFireInfo(twilight_oak_stairs.get(), 5, 20);
+		fireblock.setFireInfo(twilight_oak_fence.get(), 5, 20);
+		fireblock.setFireInfo(twilight_oak_gate.get(), 5, 20);
+		fireblock.setFireInfo(canopy_wood.get(), 5, 5);
+		fireblock.setFireInfo(canopy_planks.get(), 5, 20);
+		fireblock.setFireInfo(canopy_slab.get(), 5, 20);
+		fireblock.setFireInfo(canopy_stairs.get(), 5, 20);
+		fireblock.setFireInfo(canopy_fence.get(), 5, 20);
+		fireblock.setFireInfo(canopy_gate.get(), 5, 20);
+		fireblock.setFireInfo(mangrove_wood.get(), 5, 5);
+		fireblock.setFireInfo(mangrove_planks.get(), 5, 20);
+		fireblock.setFireInfo(mangrove_slab.get(), 5, 20);
+		fireblock.setFireInfo(mangrove_stairs.get(), 5, 20);
+		fireblock.setFireInfo(mangrove_fence.get(), 5, 20);
+		fireblock.setFireInfo(mangrove_gate.get(), 5, 20);
+		fireblock.setFireInfo(dark_wood.get(), 5, 5);
+		fireblock.setFireInfo(dark_planks.get(), 5, 20);
+		fireblock.setFireInfo(dark_slab.get(), 5, 20);
+		fireblock.setFireInfo(dark_stairs.get(), 5, 20);
+		fireblock.setFireInfo(dark_fence.get(), 5, 20);
+		fireblock.setFireInfo(dark_gate.get(), 5, 20);
+		fireblock.setFireInfo(time_wood.get(), 5, 5);
+		fireblock.setFireInfo(time_planks.get(), 5, 20);
+		fireblock.setFireInfo(time_slab.get(), 5, 20);
+		fireblock.setFireInfo(time_stairs.get(), 5, 20);
+		fireblock.setFireInfo(time_fence.get(), 5, 20);
+		fireblock.setFireInfo(time_gate.get(), 5, 20);
+		fireblock.setFireInfo(transformation_wood.get(), 5, 5);
+		fireblock.setFireInfo(trans_planks.get(), 5, 20);
+		fireblock.setFireInfo(trans_slab.get(), 5, 20);
+		fireblock.setFireInfo(trans_stairs.get(), 5, 20);
+		fireblock.setFireInfo(trans_fence.get(), 5, 20);
+		fireblock.setFireInfo(trans_gate.get(), 5, 20);
+		fireblock.setFireInfo(mining_wood.get(), 5, 5);
+		fireblock.setFireInfo(mine_planks.get(), 5, 20);
+		fireblock.setFireInfo(mine_slab.get(), 5, 20);
+		fireblock.setFireInfo(mine_stairs.get(), 5, 20);
+		fireblock.setFireInfo(mine_fence.get(), 5, 20);
+		fireblock.setFireInfo(mine_gate.get(), 5, 20);
+		fireblock.setFireInfo(sorting_wood.get(), 5, 5);
+		fireblock.setFireInfo(sort_planks.get(), 5, 20);
+		fireblock.setFireInfo(sort_slab.get(), 5, 20);
+		fireblock.setFireInfo(sort_stairs.get(), 5, 20);
+		fireblock.setFireInfo(sort_fence.get(), 5, 20);
+		fireblock.setFireInfo(sort_gate.get(), 5, 20);
+	}
+
 	public static void TFPots() {
 		FlowerPotBlock pot = (FlowerPotBlock) Blocks.FLOWER_POT;
 
