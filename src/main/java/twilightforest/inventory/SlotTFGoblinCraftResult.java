@@ -3,6 +3,7 @@ package twilightforest.inventory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.CraftingResultSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -29,7 +30,7 @@ public class SlotTFGoblinCraftResult extends CraftingResultSlot {
 		boolean combined = true;
 
 		for (IRecipe<CraftingInventory> recipe : player.world.getRecipeManager().getRecipes(IRecipeType.CRAFTING, this.assemblyMatrix, this.player.world)) {
-			if (ItemStack.areItemStacksEqual(recipe.getRecipeOutput(), stack)) {
+			if (Container.areItemsAndTagsEqual(recipe.getRecipeOutput(), stack)) {
 				combined = false;
 				break;
 			}
@@ -48,6 +49,10 @@ public class SlotTFGoblinCraftResult extends CraftingResultSlot {
 			this.inputSlot.decrStackSize(0, this.uncraftingMatrix.numberOfInputItems);
 		}
 
-		return super.onTake(player, stack);
+		this.onCrafting(stack);
+		for (int i = 0; i < assemblyMatrix.getSizeInventory(); i++) {
+			assemblyMatrix.decrStackSize(i, 1);
+		}
+		return stack;
 	}
 }
