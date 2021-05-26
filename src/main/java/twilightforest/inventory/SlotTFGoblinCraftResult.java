@@ -44,8 +44,8 @@ public class SlotTFGoblinCraftResult extends CraftingResultSlot {
 			// if we are using a combined recipe, wipe the uncrafting matrix and decrement the input appropriately
 			for (int i = 0; i < uncraftingMatrix.getSizeInventory(); i++) {
 				this.uncraftingMatrix.setInventorySlotContents(i, ItemStack.EMPTY);
-				this.inputSlot.decrStackSize(0, this.uncraftingMatrix.numberOfInputItems);
 			}
+			this.inputSlot.decrStackSize(0, this.uncraftingMatrix.numberOfInputItems);
 		}
 
 		return super.onTake(player, stack);
