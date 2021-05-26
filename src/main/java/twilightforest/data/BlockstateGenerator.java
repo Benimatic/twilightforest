@@ -45,9 +45,9 @@ public class BlockstateGenerator extends BlockStateProvider {
 		tintedAndFlipped(TFBlocks.tower_wood_mossy.get());
 		tintedAndFlipped(TFBlocks.tower_wood_infested.get());
 
-		builtinEntity(TFBlocks.firefly.get(), "minecraft:block/slime_block");
-		builtinEntity(TFBlocks.moonworm.get(), "minecraft:block/slime_block");
-		builtinEntity(TFBlocks.cicada.get(), "minecraft:block/slime_block");
+		builtinEntity(TFBlocks.firefly.get(), "twilightforest:block/stone_twist/twist_blank");
+		builtinEntity(TFBlocks.moonworm.get(), "twilightforest:block/stone_twist/twist_blank");
+		builtinEntity(TFBlocks.cicada.get(), "twilightforest:block/stone_twist/twist_blank");
 		builtinEntity(TFBlocks.keepsake_casket.get(), "minecraft:block/netherite_block");
 
 		ModelFile portalModel = models().getExistingFile(prefix("block/twilight_portal"));
