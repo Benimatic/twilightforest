@@ -269,7 +269,7 @@ public abstract class BiomeHelper {
         biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.CANOPY_TREES);
 	}
     public static void addFireflyCanopyTrees(BiomeGenerationSettings.Builder biome) {
-        biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.FIREFLY_CANOPY_TREES);
+        biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.FIREFLY_CANOPY_TREE_MIX);
 	}
 
     public static void addDeadCanopyTrees(BiomeGenerationSettings.Builder biome) {

@@ -75,8 +75,8 @@ public final class TreeConfigurations {
                             new SimpleBlockStateProvider(TFBlocks.firefly.get().getDefaultState().with(BlockTFFirefly.FACING, Direction.NORTH))
                     ),
                     new DangleFromTreeDecorator(
+                            0,
                             1,
-                            2,
                             2,
                             5,
                             15,
