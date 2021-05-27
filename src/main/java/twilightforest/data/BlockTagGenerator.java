@@ -299,6 +299,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
                 .add(Blocks.NETHER_GOLD_ORE, Blocks.NETHER_QUARTZ_ORE);
 
         getOrCreateBuilder(ORE_MAGNET_END_STONE)
+                // Using a Quark ore as an example filler
                 .addOptional(new ResourceLocation("quark", "biotite_ore"));
 
         getOrCreateBuilder(ORE_MAGNET_ROOT)
