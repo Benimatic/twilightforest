@@ -311,7 +311,7 @@ public class TFEntities {
 	@SubscribeEvent
 	public static void addEntityAttributes(EntityAttributeCreationEvent event) {
 		event.put(wild_boar, PigEntity.func_234215_eI_().create());
-		event.put(bighorn_sheep, SheepEntity.func_234225_eI_().create());
+		event.put(bighorn_sheep, SheepEntity.registerAttributes().create());
 		event.put(deer, EntityTFDeer.registerAttributes().create());
 		event.put(redcap, EntityTFRedcap.registerAttributes().create());
 		event.put(swarm_spider, EntityTFSwarmSpider.registerAttributes().create());

@@ -33,7 +33,7 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 	public EntityTFCubeOfAnnihilation(EntityType<? extends EntityTFCubeOfAnnihilation> type, World world, LivingEntity thrower) {
 		super(type, thrower, world);
 		this.isImmuneToFire();
-		this.func_234612_a_(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 1.5F, 1F);
+		this.setDirectionAndMovement(thrower, thrower.rotationPitch, thrower.rotationYaw, 0F, 1.5F, 1F);
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 	}
 
 	private DamageSource getDamageSource() {
-		LivingEntity thrower = (LivingEntity) this.func_234616_v_();
+		LivingEntity thrower = (LivingEntity) this.getShooter();
 		if (thrower instanceof PlayerEntity) {
 			return DamageSource.causePlayerDamage((PlayerEntity) thrower);
 		} else if (thrower != null) {
@@ -121,15 +121,15 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 		super.tick();
 
 		if (!this.world.isRemote) {
-			if (this.func_234616_v_() == null) {
+			if (this.getShooter() == null) {
 				this.remove();
 				return;
 			}
 
 			// always head towards either the point or towards the player
-			Vector3d destPoint = new Vector3d(this.func_234616_v_().getPosX(), this.func_234616_v_().getPosY() + this.func_234616_v_().getEyeHeight(), this.func_234616_v_().getPosZ());
+			Vector3d destPoint = new Vector3d(this.getShooter().getPosX(), this.getShooter().getPosY() + this.getShooter().getEyeHeight(), this.getShooter().getPosZ());
 
-			double distToPlayer = this.getDistance(this.func_234616_v_());
+			double distToPlayer = this.getDistance(this.getShooter());
 
 			if (this.isReturning()) {
 				// if we are returning, and are near enough to the player, then we are done
@@ -137,7 +137,7 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 					this.remove();
 				}
 			} else {
-				destPoint = destPoint.add(func_234616_v_().getLookVec().scale(16F));
+				destPoint = destPoint.add(getShooter().getLookVec().scale(16F));
 			}
 
 			// set motions
@@ -168,17 +168,17 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 	@Override
 	public void remove() {
 		super.remove();
-		LivingEntity thrower = (LivingEntity) this.func_234616_v_();
+		LivingEntity thrower = (LivingEntity) this.getShooter();
 		if (thrower != null && thrower.getActiveItemStack().getItem() == TFItems.cube_of_annihilation.get()) {
 			thrower.resetActiveHand();
 		}
 	}
 
 	private boolean isReturning() {
-		if (this.hasHitObstacle || this.func_234616_v_() == null || !(this.func_234616_v_() instanceof PlayerEntity)) {
+		if (this.hasHitObstacle || this.getShooter() == null || !(this.getShooter() instanceof PlayerEntity)) {
 			return true;
 		} else {
-			PlayerEntity player = (PlayerEntity) this.func_234616_v_();
+			PlayerEntity player = (PlayerEntity) this.getShooter();
 			return !player.isHandActive();
 		}
 	}

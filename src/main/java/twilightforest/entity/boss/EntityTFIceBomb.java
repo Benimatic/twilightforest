@@ -128,7 +128,7 @@ public class EntityTFIceBomb extends EntityTFThrowable {
 		List<LivingEntity> nearby = this.world.getEntitiesWithinAABB(LivingEntity.class, this.getBoundingBox().grow(3, 2, 3));
 
 		for (LivingEntity entity : nearby) {
-			if (entity != this.func_234616_v_()) {
+			if (entity != this.getShooter()) {
 				if (entity instanceof EntityTFYeti) {
 					// TODO: make "frozen yeti" entity?
 					BlockPos pos = new BlockPos(entity.lastTickPosX, entity.lastTickPosY, entity.lastTickPosZ);
@@ -137,7 +137,7 @@ public class EntityTFIceBomb extends EntityTFThrowable {
 
 					entity.remove();
 				} else {
-					entity.attackEntityFrom(TFDamageSources.FROZEN(this, (LivingEntity)this.func_234616_v_()), 1);
+					entity.attackEntityFrom(TFDamageSources.FROZEN(this, (LivingEntity)this.getShooter()), 1);
 					entity.addPotionEffect(new EffectInstance(TFPotions.frosty.get(), 20 * 5, 2));
 				}
 			}

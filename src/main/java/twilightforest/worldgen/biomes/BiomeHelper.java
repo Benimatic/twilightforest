@@ -179,7 +179,7 @@ public abstract class BiomeHelper {
 	
 	public static BiomeGenerationSettings.Builder darkForestGen() {
 		BiomeGenerationSettings.Builder biome = new BiomeGenerationSettings.Builder()
-                .withSurfaceBuilder(ConfiguredSurfaceBuilders.field_244178_j);
+                .withSurfaceBuilder(ConfiguredSurfaceBuilders.GRASS);
 		
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARK_GRASS);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARK_FERNS);
@@ -197,7 +197,7 @@ public abstract class BiomeHelper {
 	
 	public static BiomeGenerationSettings.Builder darkForestCenterGen() {
 		BiomeGenerationSettings.Builder biome = new BiomeGenerationSettings.Builder()
-                .withSurfaceBuilder(ConfiguredSurfaceBuilders.field_244178_j);
+                .withSurfaceBuilder(ConfiguredSurfaceBuilders.GRASS);
 
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARK_GRASS);
 		biome.withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ConfiguredFeatures.DARK_FERNS);
@@ -234,7 +234,7 @@ public abstract class BiomeHelper {
 	
 	public static BiomeGenerationSettings.Builder glacierGen() {
 		BiomeGenerationSettings.Builder biome = new BiomeGenerationSettings.Builder()
-                .withSurfaceBuilder(ConfiguredSurfaceBuilders.field_244178_j);
+                .withSurfaceBuilder(ConfiguredSurfaceBuilders.GRASS);
 		addCaves(biome);
 		return biome;
 	}
@@ -479,7 +479,7 @@ public abstract class BiomeHelper {
                 .temperature(0.5F)
                 .downfall(0.5F)
                 .setEffects(biomeAmbience.build())
-                .withMobSpawnSettings(mobSpawnInfo.copy())
+                .withMobSpawnSettings(mobSpawnInfo.build())
                 .withGenerationSettings(biomeGenerationSettings.build())
                 .withTemperatureModifier(Biome.TemperatureModifier.NONE);
     }

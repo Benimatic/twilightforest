@@ -129,7 +129,7 @@ public class EntitySeekerArrow extends EntityTFArrow {
 					continue;
 				}
 
-				if (func_234616_v_() != null && living instanceof TameableEntity && ((TameableEntity) living).getOwner() == func_234616_v_()) {
+				if (getShooter() != null && living instanceof TameableEntity && ((TameableEntity) living).getOwner() == getShooter()) {
 					continue;
 				}
 

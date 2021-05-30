@@ -137,7 +137,7 @@ public class BlockTFPortal extends BreakableBlock implements ILiquidContainer {
 
 			for (Entity victim : list) {
 				if (!ForgeEventFactory.onEntityStruckByLightning(victim, bolt)) {
-					victim.func_241841_a((ServerWorld) world, bolt);
+					victim.causeLightningStrike((ServerWorld) world, bolt);
 				}
 			}
 		}
@@ -216,7 +216,7 @@ public class BlockTFPortal extends BreakableBlock implements ILiquidContainer {
 			return;
 		}
 
-		if (entity.isPassenger() || entity.isBeingRidden() || !entity.isNonBoss()) {
+		if (entity.isPassenger() || entity.isBeingRidden() || !entity.canChangeDimension()) {
 			return;
 		}
 
