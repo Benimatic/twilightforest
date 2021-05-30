@@ -103,6 +103,7 @@ public class BlockstateGenerator extends BlockStateProvider {
 		simpleBlock(TFBlocks.lich_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
 		simpleBlock(TFBlocks.minoshroom_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
 		simpleBlock(TFBlocks.hydra_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
+		simpleBlock(TFBlocks.yeti_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
 		simpleBlock(TFBlocks.snow_queen_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
 		simpleBlock(TFBlocks.knight_phantom_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
 		simpleBlock(TFBlocks.ur_ghast_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
@@ -111,6 +112,7 @@ public class BlockstateGenerator extends BlockStateProvider {
         simpleBlock(TFBlocks.lich_wall_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
         simpleBlock(TFBlocks.minoshroom_wall_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
         simpleBlock(TFBlocks.hydra_wall_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
+		simpleBlock(TFBlocks.yeti_wall_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
         simpleBlock(TFBlocks.snow_queen_wall_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
         simpleBlock(TFBlocks.knight_phantom_wall_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));
         simpleBlock(TFBlocks.ur_ghast_wall_trophy.get(), models().getExistingFile(new ResourceLocation("block/skull")));

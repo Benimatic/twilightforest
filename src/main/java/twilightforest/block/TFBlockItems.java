@@ -55,6 +55,12 @@ public class TFBlockItems {
                 return new ISTER(TFTileEntities.TROPHY.getId());
             }
         })).setRegistryName(Objects.requireNonNull(TFBlocks.ur_ghast_trophy.get().getRegistryName())));
+        r.register(new ItemTFTrophy(TFBlocks.yeti_trophy.get(), TFBlocks.yeti_wall_trophy.get(), TFItems.defaultBuilder().setISTER(() -> new Callable<ItemStackTileEntityRenderer>() {
+            @Override
+            public ItemStackTileEntityRenderer call() {
+                return new ISTER(TFTileEntities.TROPHY.getId());
+            }
+        })).setRegistryName(Objects.requireNonNull(TFBlocks.yeti_trophy.get().getRegistryName())));
         r.register(new ItemTFTrophy(TFBlocks.snow_queen_trophy.get(), TFBlocks.snow_queen_wall_trophy.get(), TFItems.defaultBuilder().setISTER(() -> new Callable<ItemStackTileEntityRenderer>() {
             @Override
             public ItemStackTileEntityRenderer call() {

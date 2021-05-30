@@ -232,6 +232,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
                 .add(TFBlocks.hydra_trophy.get(), TFBlocks.hydra_wall_trophy.get())
                 .add(TFBlocks.knight_phantom_trophy.get(), TFBlocks.knight_phantom_wall_trophy.get())
                 .add(TFBlocks.ur_ghast_trophy.get(), TFBlocks.ur_ghast_wall_trophy.get())
+                .add(TFBlocks.yeti_trophy.get(), TFBlocks.yeti_wall_trophy.get())
                 .add(TFBlocks.snow_queen_trophy.get(), TFBlocks.snow_queen_wall_trophy.get())
                 .add(TFBlocks.quest_ram_trophy.get(), TFBlocks.quest_ram_wall_trophy.get());
 

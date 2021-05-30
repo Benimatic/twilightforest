@@ -67,6 +67,10 @@ public class ISTER extends ItemStackTileEntityRenderer {
 						case UR_GHAST:
 							ms.translate(0F, -0.65F, 0F);
 							break;
+						case ALPHA_YETI:
+							ms.scale(1.1F, 1.1F, 1.1F);
+							ms.translate(0.0F, 0.1F, 0.0F);
+							break;
 						case QUEST_RAM:
 							ms.scale(1.1f, 1.1f, 1.1f);
 							ms.translate(-0.05F, 0.0F, 0.0F);

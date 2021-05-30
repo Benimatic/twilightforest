@@ -172,6 +172,8 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 		registerLootTable(TFBlocks.knight_phantom_wall_trophy.get(), dropping(TFBlocks.knight_phantom_trophy.get().asItem()));
 		registerLootTable(TFBlocks.ur_ghast_trophy.get(), dropping(TFBlocks.ur_ghast_trophy.get().asItem()));
 		registerLootTable(TFBlocks.ur_ghast_wall_trophy.get(), dropping(TFBlocks.ur_ghast_trophy.get().asItem()));
+		registerLootTable(TFBlocks.yeti_trophy.get(), dropping(TFBlocks.yeti_trophy.get().asItem()));
+		registerLootTable(TFBlocks.yeti_wall_trophy.get(), dropping(TFBlocks.yeti_wall_trophy.get().asItem()));
 		registerLootTable(TFBlocks.snow_queen_trophy.get(), dropping(TFBlocks.snow_queen_trophy.get().asItem()));
 		registerLootTable(TFBlocks.snow_queen_wall_trophy.get(), dropping(TFBlocks.snow_queen_trophy.get().asItem()));
 		registerLootTable(TFBlocks.quest_ram_trophy.get(), dropping(TFBlocks.quest_ram_trophy.get().asItem()));

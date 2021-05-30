@@ -48,6 +48,9 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 	private static final ModelTFPhantomArmorHead phantomArmorModel = new ModelTFPhantomArmorHead();
 	private static final ResourceLocation textureLocKnightPhantomArmor = new ResourceLocation(TwilightForestMod.ARMOR_DIR + "phantom_1.png");
 
+	private static final ModelTFYetiAlphaHead yetiHead = new ModelTFYetiAlphaHead();
+	private static final ResourceLocation textureLocYeti = TwilightForestMod.getModelTexture("yetialpha.png");
+
 	private static final ModelTFQuestRamHead ramHead = new ModelTFQuestRamHead();
 	private static final ResourceLocation textureLocQuestRam = TwilightForestMod.getModelTexture("questram.png");
 	private static final ResourceLocation textureLocQuestRamLines = TwilightForestMod.getModelTexture("questram_lines.png");
@@ -141,6 +144,13 @@ public class TileEntityTFTrophyRenderer extends TileEntityRenderer<TileEntityTFT
 			phantomArmorModel.setRotations(animationProgress * 4.5F, y, 0.0F);
 			IVertexBuilder phantomArmorVertex = buffer.getBuffer(RenderType.getEntityCutoutNoCull(textureLocKnightPhantomArmor));
 			phantomArmorModel.head.render(matrixStackIn, phantomArmorVertex, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 0.0625F);
+			break;
+		case ALPHA_YETI:
+			matrixStackIn.scale(0.2F, 0.2F, 0.2F);
+			matrixStackIn.translate(0.0F, -1.5F, 0.0F);
+			yetiHead.setRotations(animationProgress * 4.5F, y, 0.0F);
+			IVertexBuilder yetiVertex = buffer.getBuffer(RenderType.getEntityCutoutNoCull(textureLocYeti));
+			yetiHead.main.render(matrixStackIn, yetiVertex, combinedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 			break;
 		case QUEST_RAM:
 			matrixStackIn.scale(.7f, .7f, .7f);
