@@ -27,8 +27,8 @@ public class BlockTFTrophy extends BlockTFAbstractTrophy {
 	protected static final VoxelShape YETI_Z_SHAPE = Block.makeCuboidShape(4.5D, 0.0D, 3.25D, 11.5D, 10.0D, 12.75D);
 	protected static final VoxelShape YETI_CORNER_SHAPE = Block.makeCuboidShape(4.5D, 0.0D, 4.5D, 11.5D, 10.0D, 11.5D);
 
-	public BlockTFTrophy(BossVariant variant) {
-		super(variant, Properties.create(Material.MISCELLANEOUS).zeroHardnessAndResistance());
+	public BlockTFTrophy(BossVariant variant, int value) {
+		super(variant, value, Properties.create(Material.MISCELLANEOUS).zeroHardnessAndResistance());
 		setDefaultState(stateContainer.getBaseState().with(BlockTFTrophy.ROTATION, 0));
 	}
 

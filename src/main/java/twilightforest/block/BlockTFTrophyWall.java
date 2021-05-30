@@ -30,7 +30,7 @@ public class BlockTFTrophyWall extends BlockTFAbstractTrophy {
 			.newEnumMap(ImmutableMap.of(Direction.NORTH, Block.makeCuboidShape(3.25D, 4.0D, 8.5D, 12.75D, 14.5D, 16.0D), Direction.SOUTH, Block.makeCuboidShape(3.25D, 4.0D, 0.0D, 12.75D, 14.5D, 7.5D), Direction.EAST, Block.makeCuboidShape(0.0D, 4.0D, 3.25D, 7.5D, 14.5D, 12.75D), Direction.WEST, Block.makeCuboidShape(8.5D, 4.0D, 3.25D, 16.0D, 14.5D, 12.75D)));
 
 	public BlockTFTrophyWall(BossVariant variant) {
-		super(variant, Properties.create(Material.MISCELLANEOUS).zeroHardnessAndResistance());
+		super(variant, 0, Properties.create(Material.MISCELLANEOUS).zeroHardnessAndResistance());
 		this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH));
 	}
 

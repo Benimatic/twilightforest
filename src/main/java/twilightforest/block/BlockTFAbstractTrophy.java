@@ -36,12 +36,18 @@ import java.util.Random;
 public abstract class BlockTFAbstractTrophy extends ContainerBlock {
 
 	private final BossVariant variant;
+	private final int comparatorValue;
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 	
-	protected BlockTFAbstractTrophy(BossVariant variant, AbstractBlock.Properties builder) {
+	protected BlockTFAbstractTrophy(BossVariant variant, int value, AbstractBlock.Properties builder) {
 		super(builder);
 		this.variant = variant;
+		this.comparatorValue = value;
 		setDefaultState(stateContainer.getBaseState().with(POWERED, Boolean.valueOf(false)));
+	}
+
+	public int getComparatorValue() {
+		return comparatorValue;
 	}
 
 	@Override
@@ -106,7 +112,7 @@ public abstract class BlockTFAbstractTrophy extends ContainerBlock {
 					break;
 				case UR_GHAST:
 					sound = TFSounds.URGHAST_AMBIENT;
-					pitch = 0.8F;
+					pitch = 0.6F;
 					break;
 				case SNOW_QUEEN:
 					sound = TFSounds.SNOW_QUEEN_AMBIENT;
