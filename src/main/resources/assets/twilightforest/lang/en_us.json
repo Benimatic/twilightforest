@@ -85,6 +85,12 @@
   // Highlands
   "advancement.twilightforest.progress_merge": "Ultimate Showdown",
   "advancement.twilightforest.progress_merge.desc": "Slay the %s, %s, and %s to clear the acid rain and embolden yourself for the Highlands.",
+  "advancement.twilightforest.troll": "We Do a Little Trolling",
+  "advancement.twilightforest.troll.desc": "Find and kill a %s.",
+  "advancement.twilightforest.beanstalk": "Jack and the Beanstalk",
+  "advancement.twilightforest.beanstalk.desc": "Obtain some %s in the troll caves and use them on the glowing soil beneath the clouds.",
+  "advancement.twilightforest.giants": "I'm on Cloud Nine",
+  "advancement.twilightforest.giants.desc": "Kill a %s in the clouds, retrieve a %s, and return back to the troll caves.",
   "advancement.twilightforest.progress_troll": "I Wish For More Burning",
   "advancement.twilightforest.progress_troll.desc": "Find the %s in the troll caves, and you can burn away the thorn barriers.",
   "advancement.twilightforest.progress_thorns": "Past the Thorns [NYI]",
@@ -353,6 +359,7 @@
   "block.twilightforest.knight_phantom_trophy": "Knight Phantom Trophy",
   "block.twilightforest.lich_trophy": "Lich Trophy",
   "block.twilightforest.ur_ghast_trophy": "Ur-Ghast Trophy",
+  "block.twilightforest.yeti_trophy": "Alpha Yeti Trophy",
   "block.twilightforest.snow_queen_trophy": "Snow Queen Trophy",
   "block.twilightforest.quest_ram_trophy": "Questing Ram Trophy",
 
