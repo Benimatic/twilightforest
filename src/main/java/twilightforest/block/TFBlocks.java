@@ -26,14 +26,14 @@ import javax.annotation.Nonnull;
 public class TFBlocks {
 	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, TwilightForestMod.ID);
 
-	public static final RegistryObject<RotatedPillarBlock> oak_log       = BLOCKS.register("twilight_oak_log", () -> new BlockTFLog(logProperties(MaterialColor.WOOD, MaterialColor.OBSIDIAN).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<RotatedPillarBlock> canopy_log    = BLOCKS.register("canopy_log", () -> new BlockTFLog(logProperties(MaterialColor.OBSIDIAN, MaterialColor.BROWN).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<RotatedPillarBlock> mangrove_log  = BLOCKS.register("mangrove_log", () -> new BlockTFLog(logProperties(MaterialColor.WOOD, MaterialColor.WOOD).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<RotatedPillarBlock> dark_log      = BLOCKS.register("dark_log", () -> new BlockTFLog(logProperties(MaterialColor.BROWN, MaterialColor.STONE).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<Block> oak_wood                   = BLOCKS.register("twilight_oak_wood", () -> new BlockFlammable(5, 5, Block.Properties.create(Material.WOOD, MaterialColor.WOOD).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<Block> canopy_wood                = BLOCKS.register("canopy_wood", () -> new BlockFlammable(5, 5, Block.Properties.create(Material.WOOD, MaterialColor.OBSIDIAN).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<Block> mangrove_wood              = BLOCKS.register("mangrove_wood", () -> new BlockFlammable(5, 5, Block.Properties.create(Material.WOOD, MaterialColor.DIRT).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<Block> dark_wood                  = BLOCKS.register("dark_wood", () -> new BlockFlammable(5, 5, Block.Properties.create(Material.WOOD, MaterialColor.ADOBE).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
+	public static final RegistryObject<RotatedPillarBlock> oak_log                = BLOCKS.register("twilight_oak_log", () -> new BlockTFLog(logProperties(MaterialColor.WOOD, MaterialColor.OBSIDIAN).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
+	public static final RegistryObject<RotatedPillarBlock> canopy_log             = BLOCKS.register("canopy_log", () -> new BlockTFLog(logProperties(MaterialColor.OBSIDIAN, MaterialColor.BROWN).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
+	public static final RegistryObject<RotatedPillarBlock> mangrove_log           = BLOCKS.register("mangrove_log", () -> new BlockTFLog(logProperties(MaterialColor.DIRT, MaterialColor.OBSIDIAN).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
+	public static final RegistryObject<RotatedPillarBlock> dark_log               = BLOCKS.register("dark_log", () -> new BlockTFLog(logProperties(MaterialColor.BROWN, MaterialColor.STONE).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
+	public static final RegistryObject<RotatedPillarBlock> oak_wood               = BLOCKS.register("twilight_oak_wood", () -> new BlockTFLog(logProperties(MaterialColor.OBSIDIAN).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
+	public static final RegistryObject<RotatedPillarBlock> canopy_wood            = BLOCKS.register("canopy_wood", () -> new BlockTFLog(logProperties(MaterialColor.BROWN).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
+	public static final RegistryObject<RotatedPillarBlock> mangrove_wood          = BLOCKS.register("mangrove_wood", () -> new BlockTFLog(logProperties(MaterialColor.OBSIDIAN).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
+	public static final RegistryObject<RotatedPillarBlock> dark_wood              = BLOCKS.register("dark_wood", () -> new BlockTFLog(logProperties(MaterialColor.STONE).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<Block> oak_leaves                 = BLOCKS.register("twilight_oak_leaves", () -> new BlockTFLeaves(Block.Properties.create(Material.LEAVES).hardnessAndResistance(0.2F).tickRandomly().notSolid().sound(SoundType.PLANT).harvestTool(ToolType.HOE)));
 	public static final RegistryObject<Block> canopy_leaves              = BLOCKS.register("canopy_leaves", () -> new BlockTFLeaves(Block.Properties.create(Material.LEAVES).hardnessAndResistance(0.2F).tickRandomly().notSolid().sound(SoundType.PLANT).harvestTool(ToolType.HOE)));
 	public static final RegistryObject<Block> mangrove_leaves            = BLOCKS.register("mangrove_leaves", () -> new BlockTFLeaves(Block.Properties.create(Material.LEAVES).hardnessAndResistance(0.2F).tickRandomly().notSolid().sound(SoundType.PLANT).harvestTool(ToolType.HOE)));
@@ -87,14 +87,14 @@ public class TFBlocks {
 	public static final RegistryObject<SaplingBlock> mining_sapling         = BLOCKS.register("mining_sapling", () -> new SaplingBlock(new MinersTree(), AbstractBlock.Properties.create(Material.PLANTS).hardnessAndResistance(0.0F).sound(SoundType.PLANT).doesNotBlockMovement().tickRandomly()));
 	public static final RegistryObject<SaplingBlock> sorting_sapling        = BLOCKS.register("sorting_sapling", () -> new SaplingBlock(new SortingTree(), AbstractBlock.Properties.create(Material.PLANTS).hardnessAndResistance(0.0F).sound(SoundType.PLANT).doesNotBlockMovement().tickRandomly()));
 	public static final RegistryObject<SaplingBlock> rainboak_sapling       = BLOCKS.register("rainboak_sapling", () -> new SaplingBlock(new RainboakTree(), AbstractBlock.Properties.create(Material.PLANTS).hardnessAndResistance(0.0F).sound(SoundType.PLANT).doesNotBlockMovement().tickRandomly()));
-	public static final RegistryObject<RotatedPillarBlock> time_log           = BLOCKS.register("time_log", () -> new BlockTFLog(logProperties(MaterialColor.DIRT, MaterialColor.OBSIDIAN).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<RotatedPillarBlock> transformation_log = BLOCKS.register("transformation_log", () -> new BlockTFLog(logProperties(MaterialColor.WOOD, MaterialColor.OBSIDIAN).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<RotatedPillarBlock> mining_log         = BLOCKS.register("mining_log", () -> new BlockTFLog(logProperties(MaterialColor.SAND, MaterialColor.QUARTZ).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<RotatedPillarBlock> sorting_log        = BLOCKS.register("sorting_log", () -> new BlockTFLog(logProperties(MaterialColor.OBSIDIAN, MaterialColor.BROWN).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<Block> time_wood                  = BLOCKS.register("time_wood", () -> new Block(Block.Properties.create(Material.WOOD, MaterialColor.DIRT).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<Block> transformation_wood        = BLOCKS.register("transformation_wood", () -> new Block(Block.Properties.create(Material.WOOD, MaterialColor.WOOD).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<Block> mining_wood                = BLOCKS.register("mining_wood", () -> new Block(Block.Properties.create(Material.WOOD, MaterialColor.SAND).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
-	public static final RegistryObject<Block> sorting_wood               = BLOCKS.register("sorting_wood", () -> new Block(Block.Properties.create(Material.WOOD, MaterialColor.OBSIDIAN).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
+	public static final RegistryObject<RotatedPillarBlock> time_log                     = BLOCKS.register("time_log", () -> new BlockTFLog(logProperties(MaterialColor.DIRT, MaterialColor.OBSIDIAN).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
+	public static final RegistryObject<RotatedPillarBlock> transformation_log           = BLOCKS.register("transformation_log", () -> new BlockTFLog(logProperties(MaterialColor.WOOD, MaterialColor.OBSIDIAN).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
+	public static final RegistryObject<RotatedPillarBlock> mining_log                   = BLOCKS.register("mining_log", () -> new BlockTFLog(logProperties(MaterialColor.SAND, MaterialColor.QUARTZ).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
+	public static final RegistryObject<RotatedPillarBlock> sorting_log                  = BLOCKS.register("sorting_log", () -> new BlockTFLog(logProperties(MaterialColor.OBSIDIAN, MaterialColor.BROWN).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
+	public static final RegistryObject<RotatedPillarBlock> time_wood                    = BLOCKS.register("time_wood", () -> new BlockTFLog(logProperties(MaterialColor.DIRT).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
+	public static final RegistryObject<RotatedPillarBlock> transformation_wood          = BLOCKS.register("transformation_wood", () -> new BlockTFLog(logProperties(MaterialColor.WOOD).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
+	public static final RegistryObject<RotatedPillarBlock> mining_wood                  = BLOCKS.register("mining_wood", () -> new BlockTFLog(logProperties(MaterialColor.SAND).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
+	public static final RegistryObject<RotatedPillarBlock> sorting_wood                 = BLOCKS.register("sorting_wood", () -> new BlockTFLog(logProperties(MaterialColor.OBSIDIAN).hardnessAndResistance(2.0F).sound(SoundType.WOOD)));
 	public static final RegistryObject<Block> time_log_core              = BLOCKS.register("time_log_core", () -> new BlockTFMagicLogSpecial(logProperties(MaterialColor.DIRT, MaterialColor.OBSIDIAN), MagicWoodVariant.TIME));
 	public static final RegistryObject<Block> transformation_log_core    = BLOCKS.register("transformation_log_core", () -> new BlockTFMagicLogSpecial(logProperties(MaterialColor.WOOD, MaterialColor.OBSIDIAN), MagicWoodVariant.TRANS));
 	public static final RegistryObject<Block> mining_log_core            = BLOCKS.register("mining_log_core", () -> new BlockTFMagicLogSpecial(logProperties(MaterialColor.SAND, MaterialColor.QUARTZ), MagicWoodVariant.MINE));
@@ -374,6 +374,10 @@ public class TFBlocks {
 	public static void registerItemblocks(RegistryEvent.Register<Item> evt) {
 		TFBlockItems.registerBlockItems(evt);
 		TFCompat.initCompatItems(evt);
+	}
+
+	private static AbstractBlock.Properties logProperties(MaterialColor color) {
+		return logProperties(color, color);
 	}
 
 	private static AbstractBlock.Properties logProperties(MaterialColor top, MaterialColor side) {
