@@ -74,21 +74,21 @@ public class BlockTagGenerator extends BlockTagsProvider {
     @Override
     protected void registerTags() {
         getOrCreateBuilder(TWILIGHT_OAK_LOGS)
-                .add(TFBlocks.oak_log.get(), TFBlocks.oak_wood.get());
+                .add(TFBlocks.oak_log.get(), TFBlocks.stripped_oak_log.get(), TFBlocks.oak_wood.get(), TFBlocks.stripped_oak_wood.get());
         getOrCreateBuilder(CANOPY_LOGS)
-                .add(TFBlocks.canopy_log.get(), TFBlocks.canopy_wood.get());
+                .add(TFBlocks.canopy_log.get(), TFBlocks.stripped_canopy_log.get(), TFBlocks.canopy_wood.get(), TFBlocks.stripped_canopy_wood.get());
         getOrCreateBuilder(MANGROVE_LOGS)
-                .add(TFBlocks.mangrove_log.get(), TFBlocks.mangrove_log.get());
+                .add(TFBlocks.mangrove_log.get(), TFBlocks.stripped_mangrove_log.get(), TFBlocks.mangrove_log.get(), TFBlocks.stripped_mangrove_wood.get());
         getOrCreateBuilder(DARKWOOD_LOGS)
-                .add(TFBlocks.dark_log.get(), TFBlocks.dark_wood.get());
+                .add(TFBlocks.dark_log.get(), TFBlocks.stripped_dark_log.get(), TFBlocks.dark_wood.get(), TFBlocks.stripped_dark_wood.get());
         getOrCreateBuilder(TIME_LOGS)
-                .add(TFBlocks.time_log.get(), TFBlocks.time_wood.get());
+                .add(TFBlocks.time_log.get(), TFBlocks.stripped_time_log.get(), TFBlocks.time_wood.get(), TFBlocks.stripped_time_wood.get());
         getOrCreateBuilder(TRANSFORMATION_LOGS)
-                .add(TFBlocks.transformation_log.get(), TFBlocks.transformation_wood.get());
+                .add(TFBlocks.transformation_log.get(), TFBlocks.stripped_transformation_log.get(), TFBlocks.transformation_wood.get(), TFBlocks.stripped_transformation_wood.get());
         getOrCreateBuilder(MINING_LOGS)
-                .add(TFBlocks.mining_log.get(), TFBlocks.mining_wood.get());
+                .add(TFBlocks.mining_log.get(), TFBlocks.stripped_mining_log.get(), TFBlocks.mining_wood.get(), TFBlocks.stripped_mining_wood.get());
         getOrCreateBuilder(SORTING_LOGS)
-                .add(TFBlocks.sorting_log.get(), TFBlocks.sorting_wood.get());
+                .add(TFBlocks.sorting_log.get(), TFBlocks.stripped_sorting_log.get(), TFBlocks.sorting_wood.get(), TFBlocks.stripped_sorting_wood.get());
 
         getOrCreateBuilder(TF_LOGS)
                 .addTags(TWILIGHT_OAK_LOGS, CANOPY_LOGS, MANGROVE_LOGS, DARKWOOD_LOGS, TIME_LOGS, TRANSFORMATION_LOGS, MINING_LOGS, SORTING_LOGS);
