@@ -27,16 +27,13 @@
       }
     },
     "use_beans": {
-      "trigger": "minecraft:item_used_on_block",
+      "trigger": "twilightforest:on_item_use",
       "conditions": {
-        "location": {
-          "block": {
-            "block": "twilightforest:uberous_soil"
+        "items": [
+          {
+            "item": "twilightforest:magic_beans"
           }
-        },
-        "item": {
-          "item": "twilightforest:magic_beans"
-        }
+        ]
       }
     }
   }
