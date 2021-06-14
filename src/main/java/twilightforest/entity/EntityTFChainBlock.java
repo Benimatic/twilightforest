@@ -20,6 +20,8 @@ import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.NetworkHooks;
 import twilightforest.TFSounds;
@@ -178,7 +180,6 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityAdditi
 
 	private void affectBlocksInAABB(AxisAlignedBB box) {
 		for (BlockPos pos : WorldUtil.getAllInBB(box)) {
-
 			BlockState state = world.getBlockState(pos);
 			Block block = state.getBlock();
 
@@ -188,14 +189,15 @@ public class EntityTFChainBlock extends ThrowableEntity implements IEntityAdditi
 
 				if (getShooter() instanceof PlayerEntity) {
 					PlayerEntity player = (PlayerEntity) getShooter();
+					if (!MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(world, pos, state, player))) {
+						if (block.canHarvestBlock(state, world, pos, player)) {
+							block.harvestBlock(world, player, pos, state, world.getTileEntity(pos), player.getHeldItem(getHand()));
 
-					if (block.canHarvestBlock(state, world, pos, player)) {
-						block.harvestBlock(world, player, pos, state, world.getTileEntity(pos), player.getHeldItem(getHand()));
+							world.destroyBlock(pos, false);
+							this.blocksSmashed++;
+						}
 					}
 				}
-
-				world.destroyBlock(pos, false);
-				this.blocksSmashed++;
 			}
 		}
 	}

@@ -13,6 +13,8 @@ import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.network.NetworkHooks;
 import twilightforest.client.particle.TFParticleType;
 import twilightforest.data.BlockTagGenerator;
@@ -79,12 +81,19 @@ public class EntityTFCubeOfAnnihilation extends ThrowableEntity {
 		for (BlockPos pos : WorldUtil.getAllInBB(box)) {
 			BlockState state = world.getBlockState(pos);
 			if (!state.getBlock().isAir(state, world, pos)) {
-				if (canAnnihilate(pos, state)) {
-					this.world.removeBlock(pos, false);
-					this.playSound(SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, 0.125f, this.rand.nextFloat() * 0.25F + 0.75F);
-					this.annihilateParticles(world, pos);
-				} else {
-					this.hasHitObstacle = true;
+				if (getShooter() instanceof PlayerEntity) {
+					PlayerEntity player = (PlayerEntity) getShooter();
+					if (!MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(world, pos, state, player))) {
+						if (canAnnihilate(pos, state)) {
+							this.world.removeBlock(pos, false);
+							this.playSound(SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, 0.125f, this.rand.nextFloat() * 0.25F + 0.75F);
+							this.annihilateParticles(world, pos);
+						} else {
+							this.hasHitObstacle = true;
+						}
+					} else {
+						this.hasHitObstacle = true;
+					}
 				}
 			}
 		}

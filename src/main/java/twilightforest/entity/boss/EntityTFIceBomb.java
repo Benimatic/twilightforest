@@ -11,6 +11,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.BlockSnapshot;
+import net.minecraftforge.event.world.BlockEvent;
 import twilightforest.entity.projectile.EntityTFThrowable;
 import twilightforest.entity.EntityTFYeti;
 import twilightforest.potions.TFPotions;
@@ -36,8 +39,7 @@ public class EntityTFIceBomb extends EntityTFThrowable {
 		this.setMotion(0.0D, 0.0D, 0.0D);
 		this.hasHit = true;
 
-		if (!world.isRemote)
-			this.doTerrainEffects();
+		this.doTerrainEffects();
 	}
 
 	private void doTerrainEffects() {
@@ -51,7 +53,11 @@ public class EntityTFIceBomb extends EntityTFThrowable {
 		for (int x = -range; x <= range; x++) {
 			for (int y = -range; y <= range; y++) {
 				for (int z = -range; z <= range; z++) {
-					this.doTerrainEffect(new BlockPos(ix + x, iy + y, iz + z));
+					BlockPos pos = new BlockPos(ix + x, iy + y, iz + z);
+					BlockSnapshot blocksnapshot = BlockSnapshot.create(world.getDimensionKey(), world, pos);
+					if (!world.isRemote && !MinecraftForge.EVENT_BUS.post(new BlockEvent.EntityPlaceEvent(blocksnapshot, world.getBlockState(pos), null))) {
+						this.doTerrainEffect(pos);
+					}
 				}
 			}
 		}
