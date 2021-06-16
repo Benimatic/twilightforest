@@ -1953,7 +1953,7 @@ public class ComponentTFTowerWing extends StructureTFComponentOld {
 		}
 	}
 
-	private List<Entity> getEntitiesInAABB(ISeedReader world, AxisAlignedBB boundingBox) {
+	public List<Entity> getEntitiesInAABB(ISeedReader world, AxisAlignedBB boundingBox) {
 		List<Entity> list = Lists.newArrayList();
 		int i = MathHelper.floor((boundingBox.minX - 2) / 16.0D);
 		int j = MathHelper.floor((boundingBox.maxX + 2) / 16.0D);
