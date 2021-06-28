@@ -28,7 +28,7 @@ public class ItemTFEnderBow extends BowItem {
 			PlayerEntity player = (PlayerEntity) arrow.getShooter();
 			LivingEntity living = (LivingEntity) ((EntityRayTraceResult) evt.getRayTraceResult()).getEntity();
 
-			if (arrow.getPersistentData().contains(KEY)) {
+			if (arrow.getPersistentData().contains(KEY) && player.getRidingEntity() == null) {
 				double sourceX = player.getPosX(), sourceY = player.getPosY(), sourceZ = player.getPosZ();
 				float sourceYaw = player.rotationYaw, sourcePitch = player.rotationPitch;
 
