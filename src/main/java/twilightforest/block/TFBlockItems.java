@@ -11,6 +11,7 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.IForgeRegistry;
+import twilightforest.TwilightForestMod;
 import twilightforest.client.ISTER;
 import twilightforest.item.*;
 import twilightforest.tileentity.TFTileEntities;
@@ -353,7 +354,7 @@ public class TFBlockItems {
 	}
 
 	private static <B extends Block, W extends Block> Item trophyBlock(RegistryObject<B> block, RegistryObject<W> wallblock) {
-		return makeBlockItem(new ItemTFTrophy(block.get(), wallblock.get(), TFItems.defaultBuilder().setISTER(() -> new Callable<ItemStackTileEntityRenderer>() {
+		return makeBlockItem(new ItemTFTrophy(block.get(), wallblock.get(), TFItems.defaultBuilder().rarity(TwilightForestMod.getRarity()).setISTER(() -> new Callable<ItemStackTileEntityRenderer>() {
 			@Override
 			public ItemStackTileEntityRenderer call() {
 				return new ISTER(TFTileEntities.TROPHY.getId());
