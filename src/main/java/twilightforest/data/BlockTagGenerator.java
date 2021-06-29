@@ -78,7 +78,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
         getOrCreateBuilder(CANOPY_LOGS)
                 .add(TFBlocks.canopy_log.get(), TFBlocks.stripped_canopy_log.get(), TFBlocks.canopy_wood.get(), TFBlocks.stripped_canopy_wood.get());
         getOrCreateBuilder(MANGROVE_LOGS)
-                .add(TFBlocks.mangrove_log.get(), TFBlocks.stripped_mangrove_log.get(), TFBlocks.mangrove_log.get(), TFBlocks.stripped_mangrove_wood.get());
+                .add(TFBlocks.mangrove_log.get(), TFBlocks.stripped_mangrove_log.get(), TFBlocks.mangrove_wood.get(), TFBlocks.stripped_mangrove_wood.get());
         getOrCreateBuilder(DARKWOOD_LOGS)
                 .add(TFBlocks.dark_log.get(), TFBlocks.stripped_dark_log.get(), TFBlocks.dark_wood.get(), TFBlocks.stripped_dark_wood.get());
         getOrCreateBuilder(TIME_LOGS)

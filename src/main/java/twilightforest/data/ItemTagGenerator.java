@@ -29,7 +29,6 @@ public class ItemTagGenerator extends ItemTagsProvider {
 	public static final ITag.INamedTag<Item> TF_FENCE_GATES = ItemTags.makeWrapperTag(TwilightForestMod.prefix("fence_gates").toString());
 
 	public static final ITag.INamedTag<Item> PAPER = ItemTags.makeWrapperTag("forge:paper");
-	public static final ITag.INamedTag<Item> FEATHER = ItemTags.makeWrapperTag("forge:feather");
 
 	public static final ITag.INamedTag<Item> TOWERWOOD = ItemTags.makeWrapperTag(TwilightForestMod.prefix("towerwood").toString());
 
@@ -116,7 +115,7 @@ public class ItemTagGenerator extends ItemTagsProvider {
 		this.copy(BlockTagGenerator.TOWERWOOD, TOWERWOOD);
 
 		getOrCreateBuilder(PAPER).add(Items.PAPER);
-		getOrCreateBuilder(FEATHER).add(Items.FEATHER).add(TFItems.raven_feather.get());
+		getOrCreateBuilder(Tags.Items.FEATHERS).add(Items.FEATHER).add(TFItems.raven_feather.get());
 
 		getOrCreateBuilder(FIERY_VIAL).add(TFItems.fiery_blood.get(), TFItems.fiery_tears.get());
 

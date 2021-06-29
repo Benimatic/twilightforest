@@ -1714,7 +1714,7 @@ dbcd1147381acc80cb9da39942354cd0d006c3b1 assets/twilightforest/models/item/zombi
 34355afaa2aff5f9dc56e9f1a07eab82a9ff1b11 data/forge/tags/blocks/fence_gates/wooden.json
 582f0cd48d428219bf2a684ca764880337688177 data/forge/tags/blocks/fences.json
 582f0cd48d428219bf2a684ca764880337688177 data/forge/tags/blocks/fences/wooden.json
-32955ec8a90528fa21ebd85b7f38e3301698ea2e data/forge/tags/items/feather.json
+32955ec8a90528fa21ebd85b7f38e3301698ea2e data/forge/tags/items/feathers.json
 34355afaa2aff5f9dc56e9f1a07eab82a9ff1b11 data/forge/tags/items/fence_gates.json
 34355afaa2aff5f9dc56e9f1a07eab82a9ff1b11 data/forge/tags/items/fence_gates/wooden.json
 582f0cd48d428219bf2a684ca764880337688177 data/forge/tags/items/fences.json
@@ -2460,7 +2460,7 @@ b8ed72b1b5823077a702624e72313697bb2f8e1e data/twilightforest/tags/blocks/carmini
 582f0cd48d428219bf2a684ca764880337688177 data/twilightforest/tags/blocks/fences.json
 beb725be018ed98165b5c4c796b463baf18eba68 data/twilightforest/tags/blocks/fire_jet_fuel.json
 a37b73dfad5c44955a5937b4b3a3ffdbb00be92b data/twilightforest/tags/blocks/logs.json
-2069e85980c6ab36edbf9a9886dc241c7a390ef3 data/twilightforest/tags/blocks/mangrove_logs.json
+84260beae7e3103b490b14db8e75029fecccc738 data/twilightforest/tags/blocks/mangrove_logs.json
 42aae51d05e2cf26bc4c7badb73a3f881dfc04f9 data/twilightforest/tags/blocks/mining_logs.json
 49fe7e92dd2516f6c26c247a1b0531ab88ac6ae9 data/twilightforest/tags/blocks/ore_magnet/block_replace_ore.json
 fa3dfadf1018c4f0969214db4e48159d0a9a8f23 data/twilightforest/tags/blocks/ore_magnet/minecraft/end_stone.json
@@ -2500,7 +2500,7 @@ ba9ca0e8321648456a14764449db9a3f12ebeae5 data/twilightforest/tags/items/ingots/i
 fa1b9f2208ed64c8ca46a5748c952d229e9a1708 data/twilightforest/tags/items/ingots/knightmetal.json
 b9e4ec287ffb1f169c4e899eebd503e9341c5606 data/twilightforest/tags/items/ingots/steeleaf.json
 a37b73dfad5c44955a5937b4b3a3ffdbb00be92b data/twilightforest/tags/items/logs.json
-2069e85980c6ab36edbf9a9886dc241c7a390ef3 data/twilightforest/tags/items/mangrove_logs.json
+84260beae7e3103b490b14db8e75029fecccc738 data/twilightforest/tags/items/mangrove_logs.json
 42aae51d05e2cf26bc4c7badb73a3f881dfc04f9 data/twilightforest/tags/items/mining_logs.json
 ca6a8351d4ffbcae63c2b1c4c99ef2710e48ee90 data/twilightforest/tags/items/ores/ironwood.json
 884483260f8042af4375222492ce30aec92b93b8 data/twilightforest/tags/items/ores/knightmetal.json
