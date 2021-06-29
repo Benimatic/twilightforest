@@ -34,15 +34,15 @@ public class BlockTagGenerator extends BlockTagsProvider {
     public static final ITag.INamedTag<Block> TF_FENCES = BlockTags.makeWrapperTag(TwilightForestMod.prefix("fences").toString());
     public static final ITag.INamedTag<Block> TF_FENCE_GATES = BlockTags.makeWrapperTag(TwilightForestMod.prefix("fence_gates").toString());
 
-    public static final ITag.INamedTag<Block> STORAGE_BLOCKS_ARCTIC_FUR = BlockTags.makeWrapperTag(TwilightForestMod.prefix("storage_blocks/arctic_fur").toString());
-    public static final ITag.INamedTag<Block> STORAGE_BLOCKS_CARMINITE = BlockTags.makeWrapperTag(TwilightForestMod.prefix("storage_blocks/carminite").toString());
-    public static final ITag.INamedTag<Block> STORAGE_BLOCKS_FIERY = BlockTags.makeWrapperTag(TwilightForestMod.prefix("storage_blocks/fiery").toString());
-    public static final ITag.INamedTag<Block> STORAGE_BLOCKS_IRONWOOD = BlockTags.makeWrapperTag(TwilightForestMod.prefix("storage_blocks/ironwood").toString());
-    public static final ITag.INamedTag<Block> STORAGE_BLOCKS_KNIGHTMETAL = BlockTags.makeWrapperTag(TwilightForestMod.prefix("storage_blocks/knightmetal").toString());
-    public static final ITag.INamedTag<Block> STORAGE_BLOCKS_STEELEAF = BlockTags.makeWrapperTag(TwilightForestMod.prefix("storage_blocks/steeleaf").toString());
+    public static final ITag.INamedTag<Block> STORAGE_BLOCKS_ARCTIC_FUR = BlockTags.makeWrapperTag("forge:storage_blocks/arctic_fur");
+    public static final ITag.INamedTag<Block> STORAGE_BLOCKS_CARMINITE = BlockTags.makeWrapperTag("forge:storage_blocks/carminite");
+    public static final ITag.INamedTag<Block> STORAGE_BLOCKS_FIERY = BlockTags.makeWrapperTag("forge:storage_blocks/fiery");
+    public static final ITag.INamedTag<Block> STORAGE_BLOCKS_IRONWOOD = BlockTags.makeWrapperTag("forge:storage_blocks/ironwood");
+    public static final ITag.INamedTag<Block> STORAGE_BLOCKS_KNIGHTMETAL = BlockTags.makeWrapperTag("forge:storage_blocks/knightmetal");
+    public static final ITag.INamedTag<Block> STORAGE_BLOCKS_STEELEAF = BlockTags.makeWrapperTag("forge:storage_blocks/steeleaf");
 
-    public static final ITag.INamedTag<Block> ORES_IRONWOOD = BlockTags.makeWrapperTag(TwilightForestMod.prefix("ores/ironwood").toString());
-    public static final ITag.INamedTag<Block> ORES_KNIGHTMETAL = BlockTags.makeWrapperTag(TwilightForestMod.prefix("ores/knightmetal").toString());
+    public static final ITag.INamedTag<Block> ORES_IRONWOOD = BlockTags.makeWrapperTag("forge:ores/ironwood");
+    public static final ITag.INamedTag<Block> ORES_KNIGHTMETAL = BlockTags.makeWrapperTag("forge:ores/knightmetal");
 
     public static final ITag.INamedTag<Block> PORTAL_EDGE = BlockTags.makeWrapperTag(TwilightForestMod.prefix("portal/edge").toString());
     public static final ITag.INamedTag<Block> PORTAL_POOL = BlockTags.makeWrapperTag(TwilightForestMod.prefix("portal/fluid").toString());
@@ -207,6 +207,9 @@ public class BlockTagGenerator extends BlockTagsProvider {
                 STORAGE_BLOCKS_STEELEAF
         );
 
+        getOrCreateBuilder(Tags.Blocks.STORAGE_BLOCKS).addTags(STORAGE_BLOCKS_ARCTIC_FUR, STORAGE_BLOCKS_CARMINITE, STORAGE_BLOCKS_FIERY,  STORAGE_BLOCKS_IRONWOOD, STORAGE_BLOCKS_KNIGHTMETAL, STORAGE_BLOCKS_STEELEAF);
+
+        getOrCreateBuilder(Tags.Blocks.ORES).addTags(ORES_IRONWOOD, ORES_KNIGHTMETAL);
         getOrCreateBuilder(ORES_IRONWOOD);
         getOrCreateBuilder(ORES_KNIGHTMETAL);
 

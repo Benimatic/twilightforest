@@ -35,21 +35,21 @@ public class ItemTagGenerator extends ItemTagsProvider {
 	public static final ITag.INamedTag<Item> FIERY_VIAL = ItemTags.makeWrapperTag(TwilightForestMod.prefix("fiery_vial").toString());
 
 	public static final ITag.INamedTag<Item> ARCTIC_FUR = ItemTags.makeWrapperTag(TwilightForestMod.prefix("arctic_fur").toString());
-	public static final ITag.INamedTag<Item> CARMINITE_GEMS = ItemTags.makeWrapperTag(TwilightForestMod.prefix("gems/carminite").toString());
-	public static final ITag.INamedTag<Item> FIERY_INGOTS = ItemTags.makeWrapperTag(TwilightForestMod.prefix("ingots/fiery").toString());
-	public static final ITag.INamedTag<Item> IRONWOOD_INGOTS = ItemTags.makeWrapperTag(TwilightForestMod.prefix("ingots/ironwood").toString());
-	public static final ITag.INamedTag<Item> KNIGHTMETAL_INGOTS = ItemTags.makeWrapperTag(TwilightForestMod.prefix("ingots/knightmetal").toString());
-	public static final ITag.INamedTag<Item> STEELEAF_INGOTS = ItemTags.makeWrapperTag(TwilightForestMod.prefix("ingots/steeleaf").toString());
+	public static final ITag.INamedTag<Item> CARMINITE_GEMS = ItemTags.makeWrapperTag("forge:gems/carminite");
+	public static final ITag.INamedTag<Item> FIERY_INGOTS = ItemTags.makeWrapperTag("forge:ingots/fiery");
+	public static final ITag.INamedTag<Item> IRONWOOD_INGOTS = ItemTags.makeWrapperTag("forge:ingots/ironwood");
+	public static final ITag.INamedTag<Item> KNIGHTMETAL_INGOTS = ItemTags.makeWrapperTag("forge:ingots/knightmetal");
+	public static final ITag.INamedTag<Item> STEELEAF_INGOTS = ItemTags.makeWrapperTag("forge:ingots/steeleaf");
 
-	public static final ITag.INamedTag<Item> STORAGE_BLOCKS_ARCTIC_FUR = ItemTags.makeWrapperTag(TwilightForestMod.prefix("storage_blocks/arctic_fur").toString());
-	public static final ITag.INamedTag<Item> STORAGE_BLOCKS_CARMINITE = ItemTags.makeWrapperTag(TwilightForestMod.prefix("storage_blocks/carminite").toString());
-	public static final ITag.INamedTag<Item> STORAGE_BLOCKS_FIERY = ItemTags.makeWrapperTag(TwilightForestMod.prefix("storage_blocks/fiery").toString());
-	public static final ITag.INamedTag<Item> STORAGE_BLOCKS_IRONWOOD = ItemTags.makeWrapperTag(TwilightForestMod.prefix("storage_blocks/ironwood").toString());
-	public static final ITag.INamedTag<Item> STORAGE_BLOCKS_KNIGHTMETAL = ItemTags.makeWrapperTag(TwilightForestMod.prefix("storage_blocks/knightmetal").toString());
-	public static final ITag.INamedTag<Item> STORAGE_BLOCKS_STEELEAF = ItemTags.makeWrapperTag(TwilightForestMod.prefix("storage_blocks/steeleaf").toString());
+	public static final ITag.INamedTag<Item> STORAGE_BLOCKS_ARCTIC_FUR = ItemTags.makeWrapperTag("forge:storage_blocks/arctic_fur");
+	public static final ITag.INamedTag<Item> STORAGE_BLOCKS_CARMINITE = ItemTags.makeWrapperTag("forge:storage_blocks/carminite");
+	public static final ITag.INamedTag<Item> STORAGE_BLOCKS_FIERY = ItemTags.makeWrapperTag("forge:storage_blocks/fiery");
+	public static final ITag.INamedTag<Item> STORAGE_BLOCKS_IRONWOOD = ItemTags.makeWrapperTag("forge:storage_blocks/ironwood");
+	public static final ITag.INamedTag<Item> STORAGE_BLOCKS_KNIGHTMETAL = ItemTags.makeWrapperTag("forge:storage_blocks/knightmetal");
+	public static final ITag.INamedTag<Item> STORAGE_BLOCKS_STEELEAF = ItemTags.makeWrapperTag("forge:storage_blocks/steeleaf");
 
-	public static final ITag.INamedTag<Item> ORES_IRONWOOD = ItemTags.makeWrapperTag(TwilightForestMod.prefix("ores/ironwood").toString());
-	public static final ITag.INamedTag<Item> ORES_KNIGHTMETAL = ItemTags.makeWrapperTag(TwilightForestMod.prefix("ores/knightmetal").toString());
+	public static final ITag.INamedTag<Item> ORES_IRONWOOD = ItemTags.makeWrapperTag("forge:ores/ironwood");
+	public static final ITag.INamedTag<Item> ORES_KNIGHTMETAL = ItemTags.makeWrapperTag("forge:ores/knightmetal");
 
 	public static final ITag.INamedTag<Item> PORTAL_ACTIVATOR = ItemTags.makeWrapperTag(TwilightForestMod.prefix("portal/activator").toString());
 
@@ -109,8 +109,15 @@ public class ItemTagGenerator extends ItemTagsProvider {
 		this.copy(BlockTagGenerator.STORAGE_BLOCKS_KNIGHTMETAL, STORAGE_BLOCKS_KNIGHTMETAL);
 		this.copy(BlockTagGenerator.STORAGE_BLOCKS_STEELEAF, STORAGE_BLOCKS_STEELEAF);
 
+		getOrCreateBuilder(Tags.Items.STORAGE_BLOCKS)
+				.addTag(STORAGE_BLOCKS_FIERY).addTag(STORAGE_BLOCKS_ARCTIC_FUR)
+				.addTag(STORAGE_BLOCKS_CARMINITE).addTag(STORAGE_BLOCKS_IRONWOOD)
+				.addTag(STORAGE_BLOCKS_KNIGHTMETAL).addTag(STORAGE_BLOCKS_STEELEAF);
+
 		this.copy(BlockTagGenerator.ORES_IRONWOOD, ORES_IRONWOOD);
 		this.copy(BlockTagGenerator.ORES_KNIGHTMETAL, ORES_KNIGHTMETAL);
+
+		getOrCreateBuilder(Tags.Items.ORES).addTag(ORES_IRONWOOD).addTag(ORES_KNIGHTMETAL);
 
 		this.copy(BlockTagGenerator.TOWERWOOD, TOWERWOOD);
 
@@ -125,6 +132,12 @@ public class ItemTagGenerator extends ItemTagsProvider {
 		getOrCreateBuilder(IRONWOOD_INGOTS).add(TFItems.ironwood_ingot.get());
 		getOrCreateBuilder(KNIGHTMETAL_INGOTS).add(TFItems.knightmetal_ingot.get());
 		getOrCreateBuilder(STEELEAF_INGOTS).add(TFItems.steeleaf_ingot.get());
+
+		getOrCreateBuilder(Tags.Items.GEMS).addTag(CARMINITE_GEMS);
+
+		getOrCreateBuilder(Tags.Items.INGOTS)
+				.addTag(IRONWOOD_INGOTS).addTag(FIERY_INGOTS)
+				.addTag(KNIGHTMETAL_INGOTS).addTag(STEELEAF_INGOTS);
 
 		getOrCreateBuilder(ORES_IRONWOOD).add(TFItems.ironwood_raw.get());
 		getOrCreateBuilder(ORES_KNIGHTMETAL).add(TFItems.armor_shard_cluster.get());
