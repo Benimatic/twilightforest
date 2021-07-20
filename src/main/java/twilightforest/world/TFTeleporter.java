@@ -24,7 +24,7 @@ import net.minecraft.world.server.TicketType;
 import net.minecraftforge.common.util.ITeleporter;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.BlockTFPortal;
+import twilightforest.block.TFPortalBlock;
 import twilightforest.block.TFBlocks;
 
 import javax.annotation.Nullable;
@@ -430,7 +430,7 @@ public class TFTeleporter implements ITeleporter {
 		world.setBlockState(pos.east().south().down(), dirt);
 
 		// portal in it
-		BlockState portal = TFBlocks.twilight_portal.get().getDefaultState().with(BlockTFPortal.DISALLOW_RETURN, (locked || !TFConfig.COMMON_CONFIG.shouldReturnPortalBeUsable.get()));
+		BlockState portal = TFBlocks.twilight_portal.get().getDefaultState().with(TFPortalBlock.DISALLOW_RETURN, (locked || !TFConfig.COMMON_CONFIG.shouldReturnPortalBeUsable.get()));
 
 		world.setBlockState(pos, portal, 2);
 		world.setBlockState(pos.east(), portal, 2);

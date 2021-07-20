@@ -11,7 +11,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.entity.PartEntity;
-import twilightforest.client.renderer.entity.RenderNoop;
+import twilightforest.client.renderer.entity.NoopRenderer;
 
 public abstract class TFPartEntity<T extends Entity> extends PartEntity<T> {
 
@@ -35,7 +35,7 @@ public abstract class TFPartEntity<T extends Entity> extends PartEntity<T> {
 
 	@OnlyIn(Dist.CLIENT)
 	public EntityRenderer<?> renderer(EntityRendererManager manager) {
-		return new RenderNoop<>(manager);
+		return new NoopRenderer<>(manager);
 	}
 
 	@OnlyIn(Dist.CLIENT)

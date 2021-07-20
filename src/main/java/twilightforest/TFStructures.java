@@ -1,7 +1,6 @@
 package twilightforest;
 
 import com.google.common.collect.ImmutableMap;
-import net.minecraft.entity.EntityClassification;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.WorldGenRegistries;
@@ -14,18 +13,17 @@ import net.minecraft.world.gen.settings.DimensionStructuresSettings;
 import net.minecraft.world.gen.settings.StructureSeparationSettings;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.event.world.StructureSpawnListGatherEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import twilightforest.structures.courtyard.NagaCourtyardPieces;
-import twilightforest.structures.darktower.TFDarkTowerPieces;
-import twilightforest.structures.finalcastle.TFFinalCastlePieces;
-import twilightforest.structures.icetower.TFIceTowerPieces;
-import twilightforest.structures.lichtower.TFLichTowerPieces;
-import twilightforest.structures.minotaurmaze.TFMinotaurMazePieces;
-import twilightforest.structures.mushroomtower.TFMushroomTowerPieces;
+import twilightforest.structures.darktower.DarkTowerPieces;
+import twilightforest.structures.finalcastle.FinalCastlePieces;
+import twilightforest.structures.icetower.IceTowerPieces;
+import twilightforest.structures.lichtower.LichTowerPieces;
+import twilightforest.structures.minotaurmaze.MinotaurMazePieces;
+import twilightforest.structures.mushroomtower.MushroomTowerPieces;
 import twilightforest.structures.start.TFStructure;
-import twilightforest.structures.stronghold.TFStrongholdPieces;
-import twilightforest.structures.trollcave.TFTrollCavePieces;
+import twilightforest.structures.stronghold.StrongholdPieces;
+import twilightforest.structures.trollcave.TrollCavePieces;
 import twilightforest.world.ChunkGeneratorTwilightBase;
 
 import java.util.HashMap;
@@ -86,15 +84,15 @@ public class TFStructures {
 	public static void register(RegistryEvent.Register<Structure<?>> event) {
 		SEPARATION_SETTINGS.clear();
 		TFFeature.init();
-		new TFMushroomTowerPieces();
+		new MushroomTowerPieces();
 		new NagaCourtyardPieces();
-		new TFLichTowerPieces();
-		new TFMinotaurMazePieces();
-		new TFStrongholdPieces();
-		new TFDarkTowerPieces();
-		new TFIceTowerPieces();
-		new TFTrollCavePieces();
-		new TFFinalCastlePieces();
+		new LichTowerPieces();
+		new MinotaurMazePieces();
+		new StrongholdPieces();
+		new DarkTowerPieces();
+		new IceTowerPieces();
+		new TrollCavePieces();
+		new FinalCastlePieces();
 		// FIXME Next version change, change the names to include underscores
 		register(event, HEDGE_MAZE, CONFIGURED_HEDGE_MAZE, TwilightForestMod.prefix("hedgemaze"), 1, 2);
 		register(event, QUEST_GROVE, CONFIGURED_QUEST_GROVE, TwilightForestMod.prefix("questgrove"), 1, 2);

@@ -2,16 +2,16 @@ package twilightforest.enums;
 
 import net.minecraft.block.SkullBlock;
 import net.minecraft.util.IStringSerializable;
-import twilightforest.tileentity.spawner.TileEntityTFAlphaYetiSpawner;
-import twilightforest.tileentity.spawner.TileEntityTFBossSpawner;
-import twilightforest.tileentity.spawner.TileEntityTFFinalBossSpawner;
-import twilightforest.tileentity.spawner.TileEntityTFHydraSpawner;
-import twilightforest.tileentity.spawner.TileEntityTFKnightPhantomsSpawner;
-import twilightforest.tileentity.spawner.TileEntityTFLichSpawner;
-import twilightforest.tileentity.spawner.TileEntityTFMinoshroomSpawner;
-import twilightforest.tileentity.spawner.TileEntityTFNagaSpawner;
-import twilightforest.tileentity.spawner.TileEntityTFSnowQueenSpawner;
-import twilightforest.tileentity.spawner.TileEntityTFTowerBossSpawner;
+import twilightforest.tileentity.spawner.AlphaYetiSpawnerTileEntity;
+import twilightforest.tileentity.spawner.BossSpawnerTileEntity;
+import twilightforest.tileentity.spawner.FinalBossSpawnerTileEntity;
+import twilightforest.tileentity.spawner.HydraSpawnerTileEntity;
+import twilightforest.tileentity.spawner.KnightPhantomSpawnerTileEntity;
+import twilightforest.tileentity.spawner.LichSpawnerTileEntity;
+import twilightforest.tileentity.spawner.MinoshroomSpawnerTileEntity;
+import twilightforest.tileentity.spawner.NagaSpawnerTileEntity;
+import twilightforest.tileentity.spawner.SnowQueenSpawnerTileEntity;
+import twilightforest.tileentity.spawner.TowerBossSpawnerTileEntity;
 
 import javax.annotation.Nullable;
 import java.util.Locale;
@@ -19,23 +19,23 @@ import java.util.function.Supplier;
 
 public enum BossVariant implements IStringSerializable, SkullBlock.ISkullType {
 
-	NAGA          (TrophyType.GOLD    , TileEntityTFNagaSpawner::new),
-	LICH          (TrophyType.GOLD    , TileEntityTFLichSpawner::new),
-	HYDRA         (TrophyType.GOLD    , TileEntityTFHydraSpawner::new),
-	UR_GHAST      (TrophyType.GOLD    , TileEntityTFTowerBossSpawner::new),
-	KNIGHT_PHANTOM(TrophyType.IRON    , TileEntityTFKnightPhantomsSpawner::new),
-	SNOW_QUEEN    (TrophyType.GOLD    , TileEntityTFSnowQueenSpawner::new),
-	MINOSHROOM    (TrophyType.IRON    , TileEntityTFMinoshroomSpawner::new),
-	ALPHA_YETI    (TrophyType.IRON    , TileEntityTFAlphaYetiSpawner::new),
+	NAGA          (TrophyType.GOLD    , NagaSpawnerTileEntity::new),
+	LICH          (TrophyType.GOLD    , LichSpawnerTileEntity::new),
+	HYDRA         (TrophyType.GOLD    , HydraSpawnerTileEntity::new),
+	UR_GHAST      (TrophyType.GOLD    , TowerBossSpawnerTileEntity::new),
+	KNIGHT_PHANTOM(TrophyType.IRON    , KnightPhantomSpawnerTileEntity::new),
+	SNOW_QUEEN    (TrophyType.GOLD    , SnowQueenSpawnerTileEntity::new),
+	MINOSHROOM    (TrophyType.IRON    , MinoshroomSpawnerTileEntity::new),
+	ALPHA_YETI    (TrophyType.IRON    , AlphaYetiSpawnerTileEntity::new),
 	QUEST_RAM     (TrophyType.IRONWOOD, null),
-	FINAL_BOSS    (TrophyType.GOLD    , TileEntityTFFinalBossSpawner::new);
+	FINAL_BOSS    (TrophyType.GOLD    , FinalBossSpawnerTileEntity::new);
 
-	private final Supplier<? extends TileEntityTFBossSpawner<?>> factory;
+	private final Supplier<? extends BossSpawnerTileEntity<?>> factory;
 	private final TrophyType trophyType;
 
 	public static final BossVariant[] VARIANTS = values();
 
-	BossVariant(TrophyType trophyType, @Nullable Supplier<? extends TileEntityTFBossSpawner<?>> factory) {
+	BossVariant(TrophyType trophyType, @Nullable Supplier<? extends BossSpawnerTileEntity<?>> factory) {
 		this.factory = factory;
 		this.trophyType = trophyType;
 	}
@@ -54,7 +54,7 @@ public enum BossVariant implements IStringSerializable, SkullBlock.ISkullType {
 	}
 
 	@Nullable
-	public TileEntityTFBossSpawner<?> getSpawner() {
+	public BossSpawnerTileEntity<?> getSpawner() {
 		return factory != null ? factory.get() : null;
 	}
 

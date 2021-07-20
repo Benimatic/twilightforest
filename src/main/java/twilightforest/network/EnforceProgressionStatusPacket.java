@@ -1,0 +1,38 @@
+package twilightforest.network;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.fml.network.NetworkEvent;
+import twilightforest.TwilightForestMod;
+
+import java.util.function.Supplier;
+
+public class EnforceProgressionStatusPacket {
+
+	private final boolean enforce;
+
+	public EnforceProgressionStatusPacket(PacketBuffer buf) {
+		this.enforce = buf.readBoolean();
+	}
+
+	public EnforceProgressionStatusPacket(boolean enforce) {
+		this.enforce = enforce;
+	}
+
+	public void encode(PacketBuffer buf) {
+		buf.writeBoolean(enforce);
+	}
+
+	public static class Handler {
+
+		public static boolean onMessage(EnforceProgressionStatusPacket message, Supplier<NetworkEvent.Context> ctx) {
+			ctx.get().enqueueWork(new Runnable() {
+				@Override
+				public void run() {
+					Minecraft.getInstance().world.getGameRules().get(TwilightForestMod.ENFORCED_PROGRESSION_RULE).set(message.enforce, null);
+				}
+			});
+			return true;
+		}
+	}
+}

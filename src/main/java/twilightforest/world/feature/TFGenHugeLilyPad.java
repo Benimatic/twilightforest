@@ -14,8 +14,8 @@ import twilightforest.block.TFBlocks;
 
 import java.util.Random;
 
-import static twilightforest.block.BlockTFHugeLilyPad.FACING;
-import static twilightforest.block.BlockTFHugeLilyPad.PIECE;
+import static twilightforest.block.HugeLilyPadBlock.FACING;
+import static twilightforest.block.HugeLilyPadBlock.PIECE;
 import static twilightforest.enums.HugeLilypadPiece.NE;
 import static twilightforest.enums.HugeLilypadPiece.NW;
 import static twilightforest.enums.HugeLilypadPiece.SE;

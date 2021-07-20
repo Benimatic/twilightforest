@@ -18,8 +18,8 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.*;
-import twilightforest.compat.ie.ItemTFShader;
-import twilightforest.item.ItemTFArcticArmor;
+import twilightforest.compat.ie.TFShaderItem;
+import twilightforest.item.ArcticArmorItem;
 import twilightforest.item.TFItems;
 
 import java.awt.Color;
@@ -33,7 +33,7 @@ public final class ColorHandler {
 
 		BlockColors blockColors = event.getBlockColors();
 
-		blockColors.register((state, worldIn, pos, tintIndex) -> tintIndex > 15 ? 0xFFFFFF : Color.HSBtoRGB(worldIn == null ? 0.45F : BlockTFAuroraBrick.rippleFractialNoise(2, 128.0f, pos != null ? pos.up(128) : new BlockPos(0, 0, 0), 0.37f, 0.67f, 1.5f), 1.0f, 1.0f), TFBlocks.aurora_block.get());
+		blockColors.register((state, worldIn, pos, tintIndex) -> tintIndex > 15 ? 0xFFFFFF : Color.HSBtoRGB(worldIn == null ? 0.45F : AuroraBrickBlock.rippleFractialNoise(2, 128.0f, pos != null ? pos.up(128) : new BlockPos(0, 0, 0), 0.37f, 0.67f, 1.5f), 1.0f, 1.0f), TFBlocks.aurora_block.get());
 		blockColors.register((state, worldIn, pos, tintIndex) -> {
 			if (tintIndex > 15) return 0xFFFFFF;
 
@@ -174,7 +174,7 @@ public final class ColorHandler {
 			if (worldIn == null || pos == null) {
 				return -1;
 			} else {
-				float f = BlockTFAuroraBrick.rippleFractialNoise(2, 32.0f, pos, 0.4f, 1.0f, 2f);
+				float f = AuroraBrickBlock.rippleFractialNoise(2, 32.0f, pos, 0.4f, 1.0f, 2f);
 				return Color.HSBtoRGB(0.1f, 1f - f, (f + 2f) / 3f);
 			}
 		}, TFBlocks.tower_wood.get(), TFBlocks.tower_wood_cracked.get(), TFBlocks.tower_wood_infested.get(), TFBlocks.tower_wood_mossy.get());
@@ -373,13 +373,13 @@ public final class ColorHandler {
 				/*TFBlocks.hydra_lair_miniature_structure.get(), TFBlocks.goblin_stronghold_miniature_structure.get(), TFBlocks.dark_tower_miniature_structure.get(), TFBlocks.yeti_cave_miniature_structure.get(), TFBlocks.aurora_palace_miniature_structure.get(), TFBlocks.troll_cave_cottage_miniature_structure.get(), TFBlocks.final_castle_miniature_structure.get()*/);
 
 		itemColors.register((stack, tintIndex) ->
-				stack.getItem() instanceof ItemTFArcticArmor
-						? ((ItemTFArcticArmor) stack.getItem()).getColor(stack, tintIndex)
+				stack.getItem() instanceof ArcticArmorItem
+						? ((ArcticArmorItem) stack.getItem()).getColor(stack, tintIndex)
 						: 0xFFFFFF,
 				TFItems.arctic_helmet.get(), TFItems.arctic_chestplate.get(), TFItems.arctic_leggings.get(), TFItems.arctic_boots.get());
 
 		if (ModList.get().isLoaded("immersiveengineering")) {
-			itemColors.register(ItemTFShader::getShaderColors, ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")));
+			itemColors.register(TFShaderItem::getShaderColors, ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")));
 			for(Rarity r: ShaderRegistry.rarityWeightMap.keySet()) {
 				itemColors.register((stack, tintIndex) -> {
 					int c = r.color.getColor();

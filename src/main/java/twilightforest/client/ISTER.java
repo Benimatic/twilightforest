@@ -1,7 +1,6 @@
 package twilightforest.client;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -22,13 +21,11 @@ import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
-import twilightforest.block.BlockKeepsakeCasket;
-import twilightforest.block.BlockTFAbstractTrophy;
-import twilightforest.client.renderer.ShaderGrabbagStackRenderer;
-import twilightforest.client.renderer.tileentity.TileEntityTFTrophyRenderer;
-import twilightforest.compat.ie.ItemTFShaderGrabbag;
+import twilightforest.block.KeepsakeCasketBlock;
+import twilightforest.block.AbstractTrophyBlock;
+import twilightforest.client.renderer.tileentity.TrophyTileEntityRenderer;
 import twilightforest.enums.BossVariant;
-import twilightforest.tileentity.TileEntityKeepsakeCasket;
+import twilightforest.tileentity.KeepsakeCasketTileEntity;
 
 public class ISTER extends ItemStackTileEntityRenderer {
 	private final ResourceLocation typeId;
@@ -48,34 +45,34 @@ public class ISTER extends ItemStackTileEntityRenderer {
 		Item item = stack.getItem();
 		if (item instanceof BlockItem) {
 			Block block = ((BlockItem) item).getBlock();
-			if (block instanceof BlockTFAbstractTrophy) {
+			if (block instanceof AbstractTrophyBlock) {
 				if(camera == ItemCameraTransforms.TransformType.GUI) {
 
-					ModelResourceLocation back = new ModelResourceLocation(TwilightForestMod.prefix(((BlockTFAbstractTrophy) block).getVariant().getTrophyType().getModelName()), "inventory");
+					ModelResourceLocation back = new ModelResourceLocation(TwilightForestMod.prefix(((AbstractTrophyBlock) block).getVariant().getTrophyType().getModelName()), "inventory");
 					IBakedModel modelBack = Minecraft.getInstance().getItemRenderer().getItemModelMesher().getModelManager().getModel(back);
 
 					ms.push();
 					ms.translate(0.5F, 0.5F, -1.5F);
-					Minecraft.getInstance().getItemRenderer().renderItem(TileEntityTFTrophyRenderer.stack, ItemCameraTransforms.TransformType.GUI, false, ms, buffers, 240, overlay, ForgeHooksClient.handleCameraTransforms(ms, modelBack, camera, false));
+					Minecraft.getInstance().getItemRenderer().renderItem(TrophyTileEntityRenderer.stack, ItemCameraTransforms.TransformType.GUI, false, ms, buffers, 240, overlay, ForgeHooksClient.handleCameraTransforms(ms, modelBack, camera, false));
 					ms.pop();
 
 					ms.push();
 					ms.translate(0.5F, 0.5F, 0.5F);
-					if(((BlockTFAbstractTrophy) block).getVariant() == BossVariant.HYDRA || ((BlockTFAbstractTrophy) block).getVariant() == BossVariant.QUEST_RAM) ms.scale(0.9F, 0.9F, 0.9F);
+					if(((AbstractTrophyBlock) block).getVariant() == BossVariant.HYDRA || ((AbstractTrophyBlock) block).getVariant() == BossVariant.QUEST_RAM) ms.scale(0.9F, 0.9F, 0.9F);
 					ms.rotate(Vector3f.XP.rotationDegrees(30));
 					ms.rotate(Vector3f.YN.rotationDegrees(TFConfig.CLIENT_CONFIG.rotateTrophyHeadsGui.get() ? TFClientEvents.rotationTicker : -45));
 					ms.translate(-0.5F, -0.5F, -0.5F);
 					ms.translate(0.0F, 0.25F, 0.0F);
-					if(((BlockTFAbstractTrophy) block).getVariant() == BossVariant.UR_GHAST) ms.translate(0.0F, 0.5F, 0.0F);
-					if(((BlockTFAbstractTrophy) block).getVariant() == BossVariant.ALPHA_YETI) ms.translate(0.0F, -0.15F, 0.0F);
-					TileEntityTFTrophyRenderer.render((Direction) null, 180.0F, ((BlockTFAbstractTrophy) block).getVariant(), 0.0F, ms, buffers, light, camera);
+					if(((AbstractTrophyBlock) block).getVariant() == BossVariant.UR_GHAST) ms.translate(0.0F, 0.5F, 0.0F);
+					if(((AbstractTrophyBlock) block).getVariant() == BossVariant.ALPHA_YETI) ms.translate(0.0F, -0.15F, 0.0F);
+					TrophyTileEntityRenderer.render((Direction) null, 180.0F, ((AbstractTrophyBlock) block).getVariant(), 0.0F, ms, buffers, light, camera);
 					ms.pop();
 
 				} else {
-					TileEntityTFTrophyRenderer.render((Direction) null, 180.0F, ((BlockTFAbstractTrophy) block).getVariant(), 0.0F, ms, buffers, light, camera);
+					TrophyTileEntityRenderer.render((Direction) null, 180.0F, ((AbstractTrophyBlock) block).getVariant(), 0.0F, ms, buffers, light, camera);
 				}
-			} else if (block instanceof BlockKeepsakeCasket) {
-				TileEntityRendererDispatcher.instance.renderItem(new TileEntityKeepsakeCasket(), ms, buffers, light, overlay);
+			} else if (block instanceof KeepsakeCasketBlock) {
+				TileEntityRendererDispatcher.instance.renderItem(new KeepsakeCasketTileEntity(), ms, buffers, light, overlay);
 			} else {
 				TileEntityRenderer<TileEntity> renderer = TileEntityRendererDispatcher.instance.getRenderer(dummy);
 				renderer.render(null, 0, ms, buffers, light, overlay);

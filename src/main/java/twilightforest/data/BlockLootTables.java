@@ -14,7 +14,7 @@ import net.minecraft.loot.functions.SetCount;
 import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.util.IItemProvider;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
-import twilightforest.block.BlockKeepsakeCasket;
+import twilightforest.block.KeepsakeCasketBlock;
 import twilightforest.block.TFBlocks;
 import twilightforest.item.TFItems;
 
@@ -369,7 +369,7 @@ public class BlockLootTables extends net.minecraft.data.loot.BlockLootTables {
 	}
 
 	private static LootTable.Builder casketInfo(Block block) {
-		return LootTable.builder().addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).acceptFunction(CopyBlockState.func_227545_a_(block).func_227552_a_(BlockKeepsakeCasket.BREAKAGE)));
+		return LootTable.builder().addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).acceptFunction(CopyBlockState.func_227545_a_(block).func_227552_a_(KeepsakeCasketBlock.BREAKAGE)));
 	}
 
 	private void registerEmpty(Block b) {

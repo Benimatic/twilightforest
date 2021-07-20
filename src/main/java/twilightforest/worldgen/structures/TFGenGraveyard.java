@@ -29,7 +29,7 @@ import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 import org.apache.commons.lang3.tuple.Pair;
 import twilightforest.TwilightForestMod;
-import twilightforest.entity.EntityTFWraith;
+import twilightforest.entity.WraithEntity;
 import twilightforest.entity.TFEntities;
 import twilightforest.loot.TFTreasure;
 import twilightforest.structures.RandomizedTemplateProcessor;
@@ -199,7 +199,7 @@ public class TFGenGraveyard extends Feature<NoFeatureConfig> {
 							TFTreasure.graveyard.generateChestContents(world, placement.add(chestloc));
 							world.setBlockState(placement.add(chestloc).down(), Blocks.MOSSY_COBBLESTONE.getDefaultState(), 3);
 						}
-						EntityTFWraith wraith = new EntityTFWraith(TFEntities.wraith, world.getWorld());
+						WraithEntity wraith = new WraithEntity(TFEntities.wraith, world.getWorld());
 						wraith.setPosition(placement.getX(), placement.getY(), placement.getZ());
 						world.addEntity(wraith);
 					}

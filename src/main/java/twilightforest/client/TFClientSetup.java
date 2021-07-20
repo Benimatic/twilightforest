@@ -19,15 +19,15 @@ import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import twilightforest.TFConfig;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
-import twilightforest.client.renderer.entity.LayerIce;
-import twilightforest.client.renderer.entity.LayerShields;
+import twilightforest.client.renderer.entity.IceLayer;
+import twilightforest.client.renderer.entity.ShieldLayer;
 import twilightforest.entity.TFEntities;
 import twilightforest.inventory.TFContainers;
-import twilightforest.item.ItemTFArcticArmor;
-import twilightforest.item.ItemTFFieryArmor;
-import twilightforest.item.ItemTFKnightlyArmor;
-import twilightforest.item.ItemTFPhantomArmor;
-import twilightforest.item.ItemTFYetiArmor;
+import twilightforest.item.ArcticArmorItem;
+import twilightforest.item.FieryArmorItem;
+import twilightforest.item.KnightmetalArmorItem;
+import twilightforest.item.PhantomArmorItem;
+import twilightforest.item.YetiArmorItem;
 import twilightforest.item.TFItems;
 import twilightforest.tileentity.TFTileEntities;
 
@@ -61,11 +61,11 @@ public class TFClientSetup {
 		}
 		TFItems.addItemModelProperties();
 
-        ItemTFKnightlyArmor.initArmorModel();
-        ItemTFPhantomArmor.initArmorModel();
-        ItemTFYetiArmor.initArmorModel();
-        ItemTFArcticArmor.initArmorModel();
-        ItemTFFieryArmor.initArmorModel();
+        KnightmetalArmorItem.initArmorModel();
+        PhantomArmorItem.initArmorModel();
+        YetiArmorItem.initArmorModel();
+        ArcticArmorItem.initArmorModel();
+        FieryArmorItem.initArmorModel();
         MinecraftForge.EVENT_BUS.register(new LoadingScreenListener());
         RenderLayerRegistration.init();
         TFEntities.registerEntityRenderer();
@@ -124,7 +124,7 @@ public class TFClientSetup {
     }
 
     private static <T extends LivingEntity, M extends EntityModel<T>> void attachRenderLayers(LivingRenderer<T, M> renderer) {
-        renderer.addLayer(new LayerShields<>(renderer));
-        renderer.addLayer(new LayerIce<>(renderer));
+        renderer.addLayer(new ShieldLayer<>(renderer));
+        renderer.addLayer(new IceLayer<>(renderer));
     }
 }

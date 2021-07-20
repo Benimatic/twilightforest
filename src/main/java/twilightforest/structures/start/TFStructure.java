@@ -22,8 +22,8 @@ import net.minecraft.world.gen.feature.template.TemplateManager;
 import net.minecraft.world.gen.settings.StructureSeparationSettings;
 import twilightforest.TFFeature;
 import twilightforest.TFStructures;
-import twilightforest.structures.StructureTFComponent;
-import twilightforest.structures.StructureTFComponentTemplate;
+import twilightforest.structures.TFStructureComponent;
+import twilightforest.structures.TFStructureComponentTemplate;
 import twilightforest.world.TFGenerationSettings;
 
 import javax.annotation.Nullable;
@@ -100,8 +100,8 @@ public class TFStructure<C extends IFeatureConfig> extends Structure<C> {
 		int highestFoundIndex = -1;
 		for (StructurePiece component : start.getComponents()) {
 			if (component.getBoundingBox().isVecInside(pos)) {
-				if (component instanceof StructureTFComponent) {
-					StructureTFComponent tfComponent = (StructureTFComponent) component;
+				if (component instanceof TFStructureComponent) {
+					TFStructureComponent tfComponent = (TFStructureComponent) component;
 					if (tfComponent.spawnListIndex > highestFoundIndex)
 						highestFoundIndex = tfComponent.spawnListIndex;
 				} else
@@ -161,13 +161,13 @@ public class TFStructure<C extends IFeatureConfig> extends Structure<C> {
 		@Override
 		public void func_230364_a_(DynamicRegistries p_230364_1_, ChunkGenerator p_230364_2_, TemplateManager p_230364_3_, int p_230364_4_, int p_230364_5_, Biome p_230364_6_, C p_230364_7_) {
 			super.func_230364_a_(p_230364_1_, p_230364_2_, p_230364_3_, p_230364_4_, p_230364_5_, p_230364_6_, p_230364_7_);
-			components.stream().filter(piece -> piece instanceof StructureTFComponentTemplate).map(StructureTFComponentTemplate.class::cast).forEach(piece -> piece.setup(p_230364_3_));
+			components.stream().filter(piece -> piece instanceof TFStructureComponentTemplate).map(TFStructureComponentTemplate.class::cast).forEach(piece -> piece.setup(p_230364_3_));
 			recalculateStructureSize();
 		}
 
 		@Override
 		public void func_230366_a_(ISeedReader p_230366_1_, StructureManager p_230366_2_, ChunkGenerator p_230366_3_, Random p_230366_4_, MutableBoundingBox p_230366_5_, ChunkPos p_230366_6_) {
-			components.stream().filter(StructureTFComponentTemplate.class::isInstance).map(StructureTFComponentTemplate.class::cast).filter(component -> component.LAZY_TEMPLATE_LOADER != null).
+			components.stream().filter(TFStructureComponentTemplate.class::isInstance).map(TFStructureComponentTemplate.class::cast).filter(component -> component.LAZY_TEMPLATE_LOADER != null).
 					forEach(component -> component.LAZY_TEMPLATE_LOADER.run());
 			super.func_230366_a_(p_230366_1_, p_230366_2_, p_230366_3_, p_230366_4_, p_230366_5_, p_230366_6_);
 		}

@@ -6,7 +6,7 @@ import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
-import twilightforest.block.BlockTFTrollRoot;
+import twilightforest.block.TrollRootBlock;
 import twilightforest.block.TFBlocks;
 
 import java.util.Random;
@@ -23,7 +23,7 @@ public class TFGenTrollRoots extends Feature<NoFeatureConfig> {
 		int copyZ = pos.getZ();
 
 		for (; pos.getY() > 5; pos = pos.down()) {
-			if (world.isAirBlock(pos) && BlockTFTrollRoot.canPlaceRootBelow(world, pos.up()) && random.nextInt(6) > 0) {
+			if (world.isAirBlock(pos) && TrollRootBlock.canPlaceRootBelow(world, pos.up()) && random.nextInt(6) > 0) {
 				if (random.nextInt(10) == 0) {
 					world.setBlockState(pos, TFBlocks.unripe_trollber.get().getDefaultState(), 16 | 2);
 				} else {

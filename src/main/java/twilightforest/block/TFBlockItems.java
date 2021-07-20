@@ -86,8 +86,8 @@ public class TFBlockItems {
 				return new ISTER(TFTileEntities.KEEPSAKE_CASKET.getId());
 			}
 		})), TFBlocks.keepsake_casket));
-		r.register(makeBlockItem(new ItemBlockTFHugeWaterLily(TFBlocks.huge_waterlily.get(), TFItems.defaultBuilder()), TFBlocks.huge_waterlily));
-		r.register(makeBlockItem(new ItemBlockTFHugeLilyPad(TFBlocks.huge_lilypad.get(), TFItems.defaultBuilder()), TFBlocks.huge_lilypad));
+		r.register(makeBlockItem(new HugeWaterLilyItem(TFBlocks.huge_waterlily.get(), TFItems.defaultBuilder()), TFBlocks.huge_waterlily));
+		r.register(makeBlockItem(new HugeLilyPadItem(TFBlocks.huge_lilypad.get(), TFItems.defaultBuilder()), TFBlocks.huge_lilypad));
 		r.register(blockItem(TFBlocks.maze_stone));
 		r.register(blockItem(TFBlocks.maze_stone_brick));
 		r.register(blockItem(TFBlocks.maze_stone_cracked));
@@ -350,11 +350,11 @@ public class TFBlockItems {
 	}
 
 	private static <B extends Block> Item burningItem(RegistryObject<B> block, int burntime) {
-		return makeBlockItem(new ItemTFFurnaceFuel(block.get(), TFItems.defaultBuilder(), burntime), block);
+		return makeBlockItem(new FurnaceFuelItem(block.get(), TFItems.defaultBuilder(), burntime), block);
 	}
 
 	private static <B extends Block, W extends Block> Item trophyBlock(RegistryObject<B> block, RegistryObject<W> wallblock) {
-		return makeBlockItem(new ItemTFTrophy(block.get(), wallblock.get(), TFItems.defaultBuilder().rarity(TwilightForestMod.getRarity()).setISTER(() -> new Callable<ItemStackTileEntityRenderer>() {
+		return makeBlockItem(new TrophyItem(block.get(), wallblock.get(), TFItems.defaultBuilder().rarity(TwilightForestMod.getRarity()).setISTER(() -> new Callable<ItemStackTileEntityRenderer>() {
 			@Override
 			public ItemStackTileEntityRenderer call() {
 				return new ISTER(TFTileEntities.TROPHY.getId());
@@ -363,7 +363,7 @@ public class TFBlockItems {
 	}
 
 	private static <T extends Block, E extends TileEntity> Item wearableBlock(RegistryObject<T> block, RegistryObject<TileEntityType<E>> tileentity) {
-		return makeBlockItem(new ItemBlockWearable(block.get(), TFItems.defaultBuilder().setISTER(() -> new Callable<ItemStackTileEntityRenderer>() {
+		return makeBlockItem(new WearableItem(block.get(), TFItems.defaultBuilder().setISTER(() -> new Callable<ItemStackTileEntityRenderer>() {
 			@Override
 			public ItemStackTileEntityRenderer call() {
 				return new ISTER(tileentity.getId());

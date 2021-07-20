@@ -6,8 +6,8 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import twilightforest.item.ItemTFFieryArmor;
-import twilightforest.item.ItemTFYetiArmor;
+import twilightforest.item.FieryArmorItem;
+import twilightforest.item.YetiArmorItem;
 
 public class TFEnchantment extends Enchantment {
 
@@ -22,7 +22,7 @@ public class TFEnchantment extends Enchantment {
 		int modifier = 0;
 
 		for (ItemStack armor : inventory.armorInventory) {
-			if (!armor.isEmpty() && armor.getItem() instanceof ItemTFFieryArmor) {
+			if (!armor.isEmpty() && armor.getItem() instanceof FieryArmorItem) {
 				modifier += 5;
 			}
 		}
@@ -37,7 +37,7 @@ public class TFEnchantment extends Enchantment {
 		int modifier = 0;
 
 		for (ItemStack armor : inventory.armorInventory) {
-			if (!armor.isEmpty() && armor.getItem() instanceof ItemTFYetiArmor) {
+			if (!armor.isEmpty() && armor.getItem() instanceof YetiArmorItem) {
 				modifier++;
 			}
 		}

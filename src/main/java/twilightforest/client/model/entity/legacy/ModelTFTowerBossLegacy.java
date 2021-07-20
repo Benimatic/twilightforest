@@ -2,12 +2,12 @@ package twilightforest.client.model.entity.legacy;
 
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.util.math.MathHelper;
-import twilightforest.client.model.entity.ModelTFGhast;
-import twilightforest.entity.boss.EntityTFUrGhast;
+import twilightforest.client.model.entity.TFGhastModel;
+import twilightforest.entity.boss.UrGhastEntity;
 
 import java.util.Random;
 
-public class ModelTFTowerBossLegacy extends ModelTFGhast<EntityTFUrGhast> {
+public class ModelTFTowerBossLegacy extends TFGhastModel<UrGhastEntity> {
 
 	protected ModelRenderer[][] subTentacles;
 	protected ModelRenderer[][] smallTentacles;
@@ -113,7 +113,7 @@ public class ModelTFTowerBossLegacy extends ModelTFGhast<EntityTFUrGhast> {
 	}
 
 	@Override
-	public void setRotationAngles(EntityTFUrGhast entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setRotationAngles(UrGhastEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		super.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
 		// wave tentacles

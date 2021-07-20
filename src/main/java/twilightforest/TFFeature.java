@@ -27,16 +27,16 @@ import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.worldgen.biomes.BiomeKeys;
 import twilightforest.entity.*;
 import twilightforest.structures.*;
-import twilightforest.structures.courtyard.ComponentNagaCourtyardMain;
-import twilightforest.structures.darktower.ComponentTFDarkTowerMain;
-import twilightforest.structures.finalcastle.ComponentTFFinalCastleMain;
-import twilightforest.structures.icetower.ComponentTFIceTowerMain;
-import twilightforest.structures.lichtower.ComponentTFTowerMain;
-import twilightforest.structures.minotaurmaze.ComponentTFMazeRuins;
-import twilightforest.structures.mushroomtower.ComponentTFMushroomTowerMain;
-import twilightforest.structures.stronghold.ComponentTFStrongholdEntrance;
-import twilightforest.structures.trollcave.ComponentTFTrollCaveMain;
-import twilightforest.structures.trollcave.TFTrollCavePieces;
+import twilightforest.structures.courtyard.NagaCourtyardMainComponent;
+import twilightforest.structures.darktower.DarkTowerMainComponent;
+import twilightforest.structures.finalcastle.FinalCastleMainComponent;
+import twilightforest.structures.icetower.IceTowerMainComponent;
+import twilightforest.structures.lichtower.TowerMainComponent;
+import twilightforest.structures.minotaurmaze.MazeRuinsComponent;
+import twilightforest.structures.mushroomtower.MushroomTowerMainComponent;
+import twilightforest.structures.stronghold.StrongholdEntranceComponent;
+import twilightforest.structures.trollcave.TrollCaveMainComponent;
+import twilightforest.structures.trollcave.TrollCavePieces;
 import twilightforest.util.IntPair;
 import twilightforest.util.PlayerHelper;
 
@@ -62,7 +62,7 @@ public enum TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
-			return new ComponentTFHollowHill(TFFeature.TFHill, this, 0, size, x, y - 2, z);
+			return new HollowHillComponent(TFFeature.TFHill, this, 0, size, x, y - 2, z);
 		}
 	},
 	MEDIUM_HILL ( 2, "medium_hollow_hill", true, true ) {
@@ -83,7 +83,7 @@ public enum TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
-			return new ComponentTFHollowHill(TFFeature.TFHill, this, 0, size, x, y - 5, z);
+			return new HollowHillComponent(TFFeature.TFHill, this, 0, size, x, y - 5, z);
 		}
 	},
 	LARGE_HILL ( 3, "large_hollow_hill", true, true ) {
@@ -105,7 +105,7 @@ public enum TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
-			return new ComponentTFHollowHill(TFFeature.TFHill, this, 0, size, x, y - 5, z);
+			return new HollowHillComponent(TFFeature.TFHill, this, 0, size, x, y - 5, z);
 		}
 	},
 	HEDGE_MAZE ( 2, "hedge_maze", true ) {
@@ -114,7 +114,7 @@ public enum TFFeature {
 		}
 		@Override
 		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
-			return new ComponentTFHedgeMaze(this, 0, x, y, z);
+			return new HedgeMazeComponent(this, 0, x, y, z);
 		}
 	},
 	NAGA_COURTYARD ( 3, "naga_courtyard", true ) {
@@ -123,7 +123,7 @@ public enum TFFeature {
 		}
 		@Override
 		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
-			return new ComponentNagaCourtyardMain(this, rand, 0, x, y, z);
+			return new NagaCourtyardMainComponent(this, rand, 0, x, y, z);
 		}
 	},
 	LICH_TOWER ( 1, "lich_tower", true, TwilightForestMod.prefix("progress_naga") ) {
@@ -148,7 +148,7 @@ public enum TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
-			return new ComponentTFTowerMain(this, rand, 0, x, y, z);
+			return new TowerMainComponent(this, rand, 0, x, y, z);
 		}
 	},
 	ICE_TOWER ( 2, "ice_tower", true, TwilightForestMod.prefix("progress_yeti") ) {
@@ -170,7 +170,7 @@ public enum TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
-			return new ComponentTFIceTowerMain(this, rand, 0, x, y, z);
+			return new IceTowerMainComponent(this, rand, 0, x, y, z);
 		}
 	},
 	QUEST_ISLAND ( 1, "quest_island", false ) { { this.disableStructure(); } },
@@ -181,7 +181,7 @@ public enum TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
-			return new ComponentTFQuestGrove(this, 0, x, y, z);
+			return new QuestGroveComponent(this, 0, x, y, z);
 		}
 
 	},
@@ -204,7 +204,7 @@ public enum TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
-			return new ComponentTFHydraLair(this, rand, 0, x, y, z);
+			return new HydraLairComponent(this, rand, 0, x, y, z);
 		}
 	},
 	LABYRINTH ( 3, "labyrinth", true, TwilightForestMod.prefix("progress_lich") ) {
@@ -233,7 +233,7 @@ public enum TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
-			return new ComponentTFMazeRuins(this, 0, x, y, z);
+			return new MazeRuinsComponent(this, 0, x, y, z);
 		}
 
 		@Override
@@ -269,7 +269,7 @@ public enum TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
-			return new ComponentTFDarkTowerMain(this, rand, 0, x, y, z);
+			return new DarkTowerMainComponent(this, rand, 0, x, y, z);
 		}
 	},
 	KNIGHT_STRONGHOLD ( 3, "knight_stronghold", true, TwilightForestMod.prefix("progress_trophy_pedestal") ) {
@@ -298,7 +298,7 @@ public enum TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
-			return new ComponentTFStrongholdEntrance(this, 0, x, y, z);
+			return new StrongholdEntranceComponent(this, 0, x, y, z);
 		}
 
 		@Override
@@ -326,7 +326,7 @@ public enum TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
-			return new ComponentTFYetiCave(this, rand, 0, x, y, z);
+			return new YetiCaveComponent(this, rand, 0, x, y, z);
 		}
 	},
 	// TODO split cloud giants from this
@@ -360,7 +360,7 @@ public enum TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
-			return new ComponentTFTrollCaveMain(TFTrollCavePieces.TFTCMai, this, 0, x, y, z);
+			return new TrollCaveMainComponent(TrollCavePieces.TFTCMai, this, 0, x, y, z);
 		}
 	},
 	FINAL_CASTLE ( 4, "final_castle", true, TwilightForestMod.prefix("progress_troll") ) {
@@ -383,14 +383,14 @@ public enum TFFeature {
 
 		@Override
 		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
-			return new ComponentTFFinalCastleMain(this, rand, 0, x, y, z);
+			return new FinalCastleMainComponent(this, rand, 0, x, y, z);
 		}
 	},
 	MUSHROOM_TOWER ( 2, "mushroom_tower", true ) {
 
 		@Override
 		public StructurePiece provideStructureStart(Random rand, int x, int y, int z) {
-			return new ComponentTFMushroomTowerMain(this, rand, 0, x, y, z);
+			return new MushroomTowerMainComponent(this, rand, 0, x, y, z);
 		}
 	};
 
@@ -409,11 +409,11 @@ public enum TFFeature {
 		.build();
 
 	//IStructurePieceTypes that can be referred to
-	public static final IStructurePieceType TFHill = registerPiece("TFHill", ComponentTFHollowHill::new);
-	public static final IStructurePieceType TFHedge = registerPiece("TFHedge", ComponentTFHedgeMaze::new);
-	public static final IStructurePieceType TFQuest1 = registerPiece("TFQuest1", ComponentTFQuestGrove::new);
-	public static final IStructurePieceType TFHydra = registerPiece("TFHydra", ComponentTFHydraLair::new);
-	public static final IStructurePieceType TFYeti = registerPiece("TFYeti", ComponentTFYetiCave::new);
+	public static final IStructurePieceType TFHill = registerPiece("TFHill", HollowHillComponent::new);
+	public static final IStructurePieceType TFHedge = registerPiece("TFHedge", HedgeMazeComponent::new);
+	public static final IStructurePieceType TFQuest1 = registerPiece("TFQuest1", QuestGroveComponent::new);
+	public static final IStructurePieceType TFHydra = registerPiece("TFHydra", HydraLairComponent::new);
+	public static final IStructurePieceType TFYeti = registerPiece("TFYeti", YetiCaveComponent::new);
 
 	public final int size;
 	public final String name;
@@ -913,7 +913,7 @@ public enum TFFeature {
 		int dz = world.rand.nextInt(16) - world.rand.nextInt(16);
 
 		// make our hint monster
-		EntityTFKobold hinty = new EntityTFKobold(TFEntities.kobold, world);
+		KoboldEntity hinty = new KoboldEntity(TFEntities.kobold, world);
 		hinty.moveToBlockPosAndAngles(pos.add(dx, dy, dz), 0f, 0f);
 
 		// check if the bounding box is clear

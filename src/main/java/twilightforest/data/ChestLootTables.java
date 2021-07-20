@@ -15,8 +15,10 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.item.TFItems;
 import twilightforest.loot.*;
+import twilightforest.loot.conditions.ModExists;
+import twilightforest.loot.functions.Enchant;
+import twilightforest.loot.functions.ModItemSwap;
 
-import java.util.Locale;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -253,7 +255,7 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .rolls(ConstantRange.of(1))
                                 //rare loot
                                 .addEntry(ItemLootEntry.builder(TFItems.transformation_powder.get()).acceptFunction(SetCount.builder(RandomValueRange.of(1, 12))).weight(75))
-                                .addEntry(ItemLootEntry.builder(TFItems.ironwood_pickaxe.get()).acceptFunction(LootFunctionEnchant.builder().apply(Enchantments.EFFICIENCY, 1).apply(Enchantments.FORTUNE, 1)).weight(75))
+                                .addEntry(ItemLootEntry.builder(TFItems.ironwood_pickaxe.get()).acceptFunction(Enchant.builder().apply(Enchantments.EFFICIENCY, 1).apply(Enchantments.FORTUNE, 1)).weight(75))
                                 .addEntry(ItemLootEntry.builder(TFItems.naga_scale.get()).weight(75))
                                 //ultrarare loot
                                 .addEntry(ItemLootEntry.builder(Items.DIAMOND).acceptFunction(SetCount.builder(RandomValueRange.of(1, 2))).weight(20))
@@ -421,24 +423,24 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                         .addLootPool(LootPool.builder()
                                 .rolls(ConstantRange.of(2))
                                 //uncommon loot
-                                .addEntry(ItemLootEntry.builder(Items.BOW).acceptFunction(LootFunctionEnchant.builder().apply(Enchantments.INFINITY, 1).apply(Enchantments.PUNCH, 2)))
-                                .addEntry(ItemLootEntry.builder(Items.BOW).acceptFunction(LootFunctionEnchant.builder().apply(Enchantments.POWER, 3).apply(Enchantments.FLAME, 1)))
+                                .addEntry(ItemLootEntry.builder(Items.BOW).acceptFunction(Enchant.builder().apply(Enchantments.INFINITY, 1).apply(Enchantments.PUNCH, 2)))
+                                .addEntry(ItemLootEntry.builder(Items.BOW).acceptFunction(Enchant.builder().apply(Enchantments.POWER, 3).apply(Enchantments.FLAME, 1)))
                                 .addEntry(ItemLootEntry.builder(TFItems.steeleaf_ingot.get()).acceptFunction(SetCount.builder(RandomValueRange.of(1, 12))))
-                                .addEntry(ItemLootEntry.builder(TFItems.steeleaf_shovel.get()).acceptFunction(LootFunctionEnchant.builder().apply(Enchantments.EFFICIENCY, 4).apply(Enchantments.UNBREAKING, 2)))
-                                .addEntry(ItemLootEntry.builder(TFItems.steeleaf_axe.get()).acceptFunction(LootFunctionEnchant.builder().apply(Enchantments.EFFICIENCY, 5)))
-                                .addEntry(ItemLootEntry.builder(TFItems.steeleaf_chestplate.get()).acceptFunction(LootFunctionEnchant.builder().apply(Enchantments.PROTECTION, 3)))
-                                .addEntry(ItemLootEntry.builder(TFItems.steeleaf_boots.get()).acceptFunction(LootFunctionEnchant.builder().apply(Enchantments.PROTECTION, 2)))
-                                .addEntry(ItemLootEntry.builder(TFItems.steeleaf_leggings.get()).acceptFunction(LootFunctionEnchant.builder().apply(Enchantments.FIRE_PROTECTION, 4)))
-                                .addEntry(ItemLootEntry.builder(TFItems.steeleaf_helmet.get()).acceptFunction(LootFunctionEnchant.builder().apply(Enchantments.RESPIRATION, 3))))
+                                .addEntry(ItemLootEntry.builder(TFItems.steeleaf_shovel.get()).acceptFunction(Enchant.builder().apply(Enchantments.EFFICIENCY, 4).apply(Enchantments.UNBREAKING, 2)))
+                                .addEntry(ItemLootEntry.builder(TFItems.steeleaf_axe.get()).acceptFunction(Enchant.builder().apply(Enchantments.EFFICIENCY, 5)))
+                                .addEntry(ItemLootEntry.builder(TFItems.steeleaf_chestplate.get()).acceptFunction(Enchant.builder().apply(Enchantments.PROTECTION, 3)))
+                                .addEntry(ItemLootEntry.builder(TFItems.steeleaf_boots.get()).acceptFunction(Enchant.builder().apply(Enchantments.PROTECTION, 2)))
+                                .addEntry(ItemLootEntry.builder(TFItems.steeleaf_leggings.get()).acceptFunction(Enchant.builder().apply(Enchantments.FIRE_PROTECTION, 4)))
+                                .addEntry(ItemLootEntry.builder(TFItems.steeleaf_helmet.get()).acceptFunction(Enchant.builder().apply(Enchantments.RESPIRATION, 3))))
                         .addLootPool(LootPool.builder()
                                 .rolls(ConstantRange.of(1))
                                 //rare loot
                                 .addEntry(ItemLootEntry.builder(Items.EMERALD_BLOCK))
                                 .addEntry(ItemLootEntry.builder(Items.ENDER_CHEST))
-                                .addEntry(ItemLootEntry.builder(TFItems.steeleaf_pickaxe.get()).acceptFunction(LootFunctionEnchant.builder().apply(Enchantments.EFFICIENCY, 4).apply(Enchantments.SILK_TOUCH, 1)))
-                                .addEntry(ItemLootEntry.builder(TFItems.steeleaf_sword.get()).acceptFunction(LootFunctionEnchant.builder().apply(Enchantments.SHARPNESS, 4).apply(Enchantments.KNOCKBACK, 2)))
-                                .addEntry(ItemLootEntry.builder(TFItems.steeleaf_sword.get()).acceptFunction(LootFunctionEnchant.builder().apply(Enchantments.BANE_OF_ARTHROPODS, 5).apply(Enchantments.FIRE_ASPECT, 2)))
-                                .addEntry(ItemLootEntry.builder(TFItems.mazebreaker_pickaxe.get()).acceptFunction(LootFunctionEnchant.builder().apply(Enchantments.EFFICIENCY, 4).apply(Enchantments.UNBREAKING, 3).apply(Enchantments.FORTUNE, 2)))));
+                                .addEntry(ItemLootEntry.builder(TFItems.steeleaf_pickaxe.get()).acceptFunction(Enchant.builder().apply(Enchantments.EFFICIENCY, 4).apply(Enchantments.SILK_TOUCH, 1)))
+                                .addEntry(ItemLootEntry.builder(TFItems.steeleaf_sword.get()).acceptFunction(Enchant.builder().apply(Enchantments.SHARPNESS, 4).apply(Enchantments.KNOCKBACK, 2)))
+                                .addEntry(ItemLootEntry.builder(TFItems.steeleaf_sword.get()).acceptFunction(Enchant.builder().apply(Enchantments.BANE_OF_ARTHROPODS, 5).apply(Enchantments.FIRE_ASPECT, 2)))
+                                .addEntry(ItemLootEntry.builder(TFItems.mazebreaker_pickaxe.get()).acceptFunction(Enchant.builder().apply(Enchantments.EFFICIENCY, 4).apply(Enchantments.UNBREAKING, 3).apply(Enchantments.FORTUNE, 2)))));
 
         register.accept(TFTreasure.stronghold_cache.lootTable,
                 LootTable.builder()
@@ -469,13 +471,13 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .addEntry(ItemLootEntry.builder(TFItems.ironwood_sword.get()).acceptFunction(EnchantWithLevels.func_215895_a(ConstantRange.of(15))).weight(75))
                                 .addEntry(ItemLootEntry.builder(TFItems.steeleaf_sword.get()).acceptFunction(EnchantWithLevels.func_215895_a(ConstantRange.of(10))).weight(75))
                                 //ultrarare loot
-                                .addEntry(ItemLootEntry.builder(Items.ENCHANTED_BOOK).acceptFunction(LootFunctionEnchant.builder().apply(Enchantments.BANE_OF_ARTHROPODS, 4)).weight(25))
-                                .addEntry(ItemLootEntry.builder(Items.ENCHANTED_BOOK).acceptFunction(LootFunctionEnchant.builder().apply(Enchantments.SHARPNESS, 4)).weight(25))
-                                .addEntry(ItemLootEntry.builder(Items.ENCHANTED_BOOK).acceptFunction(LootFunctionEnchant.builder().apply(Enchantments.SMITE, 4)).weight(25))
-                                .addEntry(ItemLootEntry.builder(Items.ENCHANTED_BOOK).acceptFunction(LootFunctionEnchant.builder().apply(Enchantments.UNBREAKING, 2)).weight(25))
-                                .addEntry(ItemLootEntry.builder(Items.ENCHANTED_BOOK).acceptFunction(LootFunctionEnchant.builder().apply(Enchantments.PROTECTION, 3)).weight(25))
-                                .addEntry(ItemLootEntry.builder(Items.ENCHANTED_BOOK).acceptFunction(LootFunctionEnchant.builder().apply(Enchantments.PROJECTILE_PROTECTION, 3)).weight(25))
-                                .addEntry(ItemLootEntry.builder(Items.ENCHANTED_BOOK).acceptFunction(LootFunctionEnchant.builder().apply(Enchantments.FEATHER_FALLING, 3)).weight(25))));
+                                .addEntry(ItemLootEntry.builder(Items.ENCHANTED_BOOK).acceptFunction(Enchant.builder().apply(Enchantments.BANE_OF_ARTHROPODS, 4)).weight(25))
+                                .addEntry(ItemLootEntry.builder(Items.ENCHANTED_BOOK).acceptFunction(Enchant.builder().apply(Enchantments.SHARPNESS, 4)).weight(25))
+                                .addEntry(ItemLootEntry.builder(Items.ENCHANTED_BOOK).acceptFunction(Enchant.builder().apply(Enchantments.SMITE, 4)).weight(25))
+                                .addEntry(ItemLootEntry.builder(Items.ENCHANTED_BOOK).acceptFunction(Enchant.builder().apply(Enchantments.UNBREAKING, 2)).weight(25))
+                                .addEntry(ItemLootEntry.builder(Items.ENCHANTED_BOOK).acceptFunction(Enchant.builder().apply(Enchantments.PROTECTION, 3)).weight(25))
+                                .addEntry(ItemLootEntry.builder(Items.ENCHANTED_BOOK).acceptFunction(Enchant.builder().apply(Enchantments.PROJECTILE_PROTECTION, 3)).weight(25))
+                                .addEntry(ItemLootEntry.builder(Items.ENCHANTED_BOOK).acceptFunction(Enchant.builder().apply(Enchantments.FEATHER_FALLING, 3)).weight(25))));
 
         register.accept(TFTreasure.stronghold_room.lootTable,
                 LootTable.builder()
@@ -535,16 +537,16 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                         .addLootPool(LootPool.builder()
                                 .rolls(ConstantRange.of(1))
                                 .addEntry(ItemLootEntry.builder(TFItems.carminite.get())
-                                        .acceptCondition(LootConditionModExists.builder("immersiveengineering"))
-                                        .acceptFunction(LootFunctionModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")), TFItems.knightmetal_ingot.get()))
+                                        .acceptCondition(ModExists.builder("immersiveengineering"))
+                                        .acceptFunction(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")), TFItems.knightmetal_ingot.get()))
                                         .acceptFunction(SetNBT.builder(Util.make(new CompoundNBT(), (nbt) -> {
                                             nbt.putString("shader_name", "twilightforest:knight_phantom");
                                         })))))
                         .addLootPool(LootPool.builder()
                                 .rolls(ConstantRange.of(1))
                                 .addEntry(ItemLootEntry.builder(TFItems.carminite.get())
-                                        .acceptCondition(LootConditionModExists.builder("immersiveengineering"))
-                                        .acceptFunction(LootFunctionModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader_bag_twilight")), TFItems.knightmetal_ingot.get())))));
+                                        .acceptCondition(ModExists.builder("immersiveengineering"))
+                                        .acceptFunction(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader_bag_twilight")), TFItems.knightmetal_ingot.get())))));
 
         register.accept(TFTreasure.darktower_cache.lootTable,
                 LootTable.builder()
@@ -601,9 +603,9 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .rolls(ConstantRange.of(1))
                                 //rare loot
                                 .addEntry(ItemLootEntry.builder(TFItems.charm_of_life_1.get()))
-                                .addEntry(ItemLootEntry.builder(Items.ENCHANTED_BOOK).acceptFunction(LootFunctionEnchant.builder().apply(Enchantments.FEATHER_FALLING, 3)))
-                                .addEntry(ItemLootEntry.builder(Items.ENCHANTED_BOOK).acceptFunction(LootFunctionEnchant.builder().apply(Enchantments.KNOCKBACK, 2)))
-                                .addEntry(ItemLootEntry.builder(Items.ENCHANTED_BOOK).acceptFunction(LootFunctionEnchant.builder().apply(Enchantments.EFFICIENCY, 3))))
+                                .addEntry(ItemLootEntry.builder(Items.ENCHANTED_BOOK).acceptFunction(Enchant.builder().apply(Enchantments.FEATHER_FALLING, 3)))
+                                .addEntry(ItemLootEntry.builder(Items.ENCHANTED_BOOK).acceptFunction(Enchant.builder().apply(Enchantments.KNOCKBACK, 2)))
+                                .addEntry(ItemLootEntry.builder(Items.ENCHANTED_BOOK).acceptFunction(Enchant.builder().apply(Enchantments.EFFICIENCY, 3))))
                         .addLootPool(LootPool.builder()
                                 .rolls(ConstantRange.of(1))
                                 .addEntry(ItemLootEntry.builder(TFItems.tower_key.get()))));
@@ -622,16 +624,16 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                         .addLootPool(LootPool.builder()
                                 .rolls(ConstantRange.of(1))
                                 .addEntry(ItemLootEntry.builder(TFItems.carminite.get())
-                                        .acceptCondition(LootConditionModExists.builder("immersiveengineering"))
-                                        .acceptFunction(LootFunctionModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")), TFItems.carminite.get()))
+                                        .acceptCondition(ModExists.builder("immersiveengineering"))
+                                        .acceptFunction(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader")), TFItems.carminite.get()))
                                         .acceptFunction(SetNBT.builder(Util.make(new CompoundNBT(), (nbt) -> {
                                             nbt.putString("shader_name", "twilightforest:ur-ghast");
                                         })))))
                         .addLootPool(LootPool.builder()
                                 .rolls(ConstantRange.of(1))
                                 .addEntry(ItemLootEntry.builder(TFItems.carminite.get())
-                                        .acceptCondition(LootConditionModExists.builder("immersiveengineering"))
-                                        .acceptFunction(LootFunctionModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader_bag_twilight")), TFItems.carminite.get())))));
+                                        .acceptCondition(ModExists.builder("immersiveengineering"))
+                                        .acceptFunction(ModItemSwap.builder().apply("immersiveengineering", ForgeRegistries.ITEMS.getValue(TwilightForestMod.prefix("shader_bag_twilight")), TFItems.carminite.get())))));
 
         register.accept(TFTreasure.aurora_cache.lootTable,
                 LootTable.builder()
@@ -662,11 +664,11 @@ public class ChestLootTables implements Consumer<BiConsumer<ResourceLocation, Lo
                                 .addEntry(ItemLootEntry.builder(TFItems.ender_bow.get()).weight(75))
                                 .addEntry(ItemLootEntry.builder(TFItems.ice_sword.get()).weight(75))
                                 //ultrarare loot
-                                .addEntry(ItemLootEntry.builder(Items.ENCHANTED_BOOK).acceptFunction(LootFunctionEnchant.builder().apply(Enchantments.SHARPNESS, 4)).weight(25))
-                                .addEntry(ItemLootEntry.builder(Items.ENCHANTED_BOOK).acceptFunction(LootFunctionEnchant.builder().apply(Enchantments.POWER, 4)).weight(25))
-                                .addEntry(ItemLootEntry.builder(Items.ENCHANTED_BOOK).acceptFunction(LootFunctionEnchant.builder().apply(Enchantments.PUNCH, 2)).weight(25))
-                                .addEntry(ItemLootEntry.builder(Items.ENCHANTED_BOOK).acceptFunction(LootFunctionEnchant.builder().apply(Enchantments.UNBREAKING, 2)).weight(25))
-                                .addEntry(ItemLootEntry.builder(Items.ENCHANTED_BOOK).acceptFunction(LootFunctionEnchant.builder().apply(Enchantments.INFINITY, 1)).weight(25))));
+                                .addEntry(ItemLootEntry.builder(Items.ENCHANTED_BOOK).acceptFunction(Enchant.builder().apply(Enchantments.SHARPNESS, 4)).weight(25))
+                                .addEntry(ItemLootEntry.builder(Items.ENCHANTED_BOOK).acceptFunction(Enchant.builder().apply(Enchantments.POWER, 4)).weight(25))
+                                .addEntry(ItemLootEntry.builder(Items.ENCHANTED_BOOK).acceptFunction(Enchant.builder().apply(Enchantments.PUNCH, 2)).weight(25))
+                                .addEntry(ItemLootEntry.builder(Items.ENCHANTED_BOOK).acceptFunction(Enchant.builder().apply(Enchantments.UNBREAKING, 2)).weight(25))
+                                .addEntry(ItemLootEntry.builder(Items.ENCHANTED_BOOK).acceptFunction(Enchant.builder().apply(Enchantments.INFINITY, 1)).weight(25))));
 
         register.accept(TFTreasure.aurora_room.lootTable,
                 LootTable.builder()

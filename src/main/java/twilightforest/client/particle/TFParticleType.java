@@ -14,6 +14,8 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import twilightforest.TwilightForestMod;
+import twilightforest.client.particle.data.LeafParticleData;
+import twilightforest.client.particle.data.PinnedFireflyData;
 
 @Mod.EventBusSubscriber(modid = TwilightForestMod.ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class TFParticleType {
@@ -50,19 +52,19 @@ public class TFParticleType {
 	public static void registerFactories(ParticleFactoryRegisterEvent event) {
 		ParticleManager particles = Minecraft.getInstance().particles;
 
-		particles.registerFactory(TFParticleType.LARGE_FLAME.get(), ParticleLargeFlame.Factory::new);
-		particles.registerFactory(TFParticleType.LEAF_RUNE.get(), ParticleLeafRune.Factory::new);
-		particles.registerFactory(TFParticleType.BOSS_TEAR.get(), new ParticleGhastTear.Factory());
-		particles.registerFactory(TFParticleType.GHAST_TRAP.get(), ParticleGhastTrap.Factory::new);
-		particles.registerFactory(TFParticleType.PROTECTION.get(), ParticleProtection.Factory::new); //probably not a good idea, but worth a shot
-		particles.registerFactory(TFParticleType.SNOW.get(), ParticleSnow.Factory::new);
-		particles.registerFactory(TFParticleType.SNOW_GUARDIAN.get(), ParticleSnowGuardian.Factory::new);
-		particles.registerFactory(TFParticleType.SNOW_WARNING.get(), ParticleSnowWarning.Factory::new);
-		particles.registerFactory(TFParticleType.ICE_BEAM.get(), ParticleIceBeam.Factory::new);
-		particles.registerFactory(TFParticleType.ANNIHILATE.get(), ParticleAnnihilate.Factory::new);
-		particles.registerFactory(TFParticleType.HUGE_SMOKE.get(), ParticleSmokeScale.Factory::new);
-		particles.registerFactory(TFParticleType.FIREFLY.get(), ParticleFirefly.Factory::new);
-		particles.registerFactory(TFParticleType.FIREFLY_PINNED.get(), ParticleFireflyPinned.Factory::new);
-		particles.registerFactory(TFParticleType.FALLEN_LEAF.get(), ParticleLeaf.Factory::new);
+		particles.registerFactory(TFParticleType.LARGE_FLAME.get(), LargeFlameParticle.Factory::new);
+		particles.registerFactory(TFParticleType.LEAF_RUNE.get(), LeafRuneParticle.Factory::new);
+		particles.registerFactory(TFParticleType.BOSS_TEAR.get(), new GhastTearParticle.Factory());
+		particles.registerFactory(TFParticleType.GHAST_TRAP.get(), GhastTrapParticle.Factory::new);
+		particles.registerFactory(TFParticleType.PROTECTION.get(), ProtectionParticle.Factory::new); //probably not a good idea, but worth a shot
+		particles.registerFactory(TFParticleType.SNOW.get(), SnowParticle.Factory::new);
+		particles.registerFactory(TFParticleType.SNOW_GUARDIAN.get(), SnowGuardianParticle.Factory::new);
+		particles.registerFactory(TFParticleType.SNOW_WARNING.get(), SnowWarningParticle.Factory::new);
+		particles.registerFactory(TFParticleType.ICE_BEAM.get(), IceBeamParticle.Factory::new);
+		particles.registerFactory(TFParticleType.ANNIHILATE.get(), AnnihilateParticle.Factory::new);
+		particles.registerFactory(TFParticleType.HUGE_SMOKE.get(), SmokeScaleParticle.Factory::new);
+		particles.registerFactory(TFParticleType.FIREFLY.get(), FireflyParticle.Factory::new);
+		particles.registerFactory(TFParticleType.FIREFLY_PINNED.get(), PinnedFireflyParticle.Factory::new);
+		particles.registerFactory(TFParticleType.FALLEN_LEAF.get(), LeafParticle.Factory::new);
 	}
 }

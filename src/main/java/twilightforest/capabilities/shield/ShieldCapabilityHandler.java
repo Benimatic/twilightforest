@@ -6,7 +6,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraftforge.fml.network.PacketDistributor;
 import twilightforest.TFSounds;
-import twilightforest.network.PacketUpdateShield;
+import twilightforest.network.UpdateShieldPacket;
 import twilightforest.network.TFPacketHandler;
 
 public class ShieldCapabilityHandler implements IShieldCapability {
@@ -99,6 +99,6 @@ public class ShieldCapabilityHandler implements IShieldCapability {
 
 	private void sendUpdatePacket() {
 		if (host instanceof ServerPlayerEntity)
-			TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> host), new PacketUpdateShield(host, this));
+			TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> host), new UpdateShieldPacket(host, this));
 	}
 }

@@ -71,16 +71,16 @@ import twilightforest.capabilities.CapabilityList;
 import twilightforest.capabilities.shield.IShieldCapability;
 import twilightforest.data.BlockTagGenerator;
 import twilightforest.enchantment.TFEnchantment;
-import twilightforest.entity.EntityTFCharmEffect;
+import twilightforest.entity.CharmEffectEntity;
 import twilightforest.entity.IHostileMount;
 import twilightforest.entity.TFEntities;
 import twilightforest.entity.projectile.ITFProjectile;
 import twilightforest.enums.BlockLoggingEnum;
-import twilightforest.item.ItemTFPhantomArmor;
+import twilightforest.item.PhantomArmorItem;
 import twilightforest.item.TFItems;
 import twilightforest.network.*;
 import twilightforest.potions.TFPotions;
-import twilightforest.tileentity.TileEntityKeepsakeCasket;
+import twilightforest.tileentity.KeepsakeCasketTileEntity;
 import twilightforest.util.TFItemStackUtils;
 import twilightforest.world.ChunkGeneratorTwilightBase;
 import twilightforest.world.TFGenerationSettings;
@@ -225,8 +225,8 @@ public class TFEventListener {
 		if (damageSource != DamageSource.FALL && damageSource != DamageSource.DROWN && damageSource != DamageSource.SWEET_BERRY_BUSH) {
 			ItemStack stack = living.getItemStackFromSlot(EquipmentSlotType.HEAD);
 			Block block = Block.getBlockFromItem(stack.getItem());
-			if (block instanceof BlockTFCritter) {
-				BlockTFCritter poorBug = (BlockTFCritter) block;
+			if (block instanceof CritterBlock) {
+				CritterBlock poorBug = (CritterBlock) block;
 				living.setItemStackToSlot(EquipmentSlotType.HEAD, poorBug.getSquishResult());
 				living.world.playSound(null, living.getPosX(), living.getPosY(), living.getPosZ(), TFSounds.BUG_SQUISH, living.getSoundCategory(), 1, 1);
 			}
@@ -280,11 +280,11 @@ public class TFEventListener {
 			BlockPos immutablePos = pos.toImmutable();
 			FluidState fluidState = world.getFluidState(immutablePos);
 
-			if (world.setBlockState(immutablePos, TFBlocks.keepsake_casket.get().getDefaultState().with(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.getFromFluid(fluidState.getFluid())).with(BlockKeepsakeCasket.BREAKAGE, TFItemStackUtils.damage))) {
+			if (world.setBlockState(immutablePos, TFBlocks.keepsake_casket.get().getDefaultState().with(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.getFromFluid(fluidState.getFluid())).with(KeepsakeCasketBlock.BREAKAGE, TFItemStackUtils.damage))) {
 				TileEntity te = world.getTileEntity(immutablePos);
 
-				if (te instanceof TileEntityKeepsakeCasket) {
-					TileEntityKeepsakeCasket casket = (TileEntityKeepsakeCasket) te;
+				if (te instanceof KeepsakeCasketTileEntity) {
+					KeepsakeCasketTileEntity casket = (KeepsakeCasketTileEntity) te;
 
 					if (TFConfig.COMMON_CONFIG.casketUUIDLocking.get()) {
 						//make it so only the player who died can open the chest if our config allows us
@@ -301,7 +301,7 @@ public class TFEventListener {
 					casket.name = player.getName().getString();
 					casket.casketname = modifiedName;
 					casket.setCustomName(new StringTextComponent(modifiedName + "'s " + (world.rand.nextInt(10000) == 0 ? "Costco Casket" : casket.getDisplayName().getString())));
-					int damage = world.getBlockState(immutablePos).get(BlockKeepsakeCasket.BREAKAGE);
+					int damage = world.getBlockState(immutablePos).get(KeepsakeCasketBlock.BREAKAGE);
 					if (world.rand.nextFloat() <= 0.15F) {
 						if (damage >= 2) {
 							player.inventory.dropAllItems();
@@ -310,7 +310,7 @@ public class TFEventListener {
 							TwilightForestMod.LOGGER.debug("{}'s Casket damage value was too high, alerting the player and dropping extra items", player.getName().getString());
 						} else {
 							damage = damage + 1;
-							world.setBlockState(immutablePos, TFBlocks.keepsake_casket.get().getDefaultState().with(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.getFromFluid(fluidState.getFluid())).with(BlockKeepsakeCasket.BREAKAGE, damage));
+							world.setBlockState(immutablePos, TFBlocks.keepsake_casket.get().getDefaultState().with(BlockLoggingEnum.MULTILOGGED, BlockLoggingEnum.getFromFluid(fluidState.getFluid())).with(KeepsakeCasketBlock.BREAKAGE, damage));
 							TwilightForestMod.LOGGER.debug("{}'s Casket was randomly damaged, applying new damage", player.getName().getString());
 						}
 					}
@@ -343,12 +343,12 @@ public class TFEventListener {
 		TileEntity te = event.getWorld().getTileEntity(event.getPos());
 		UUID checker;
 		if(block == TFBlocks.keepsake_casket.get()) {
-			if(te instanceof TileEntityKeepsakeCasket) {
-				TileEntityKeepsakeCasket casket = (TileEntityKeepsakeCasket) te;
+			if(te instanceof KeepsakeCasketTileEntity) {
+				KeepsakeCasketTileEntity casket = (KeepsakeCasketTileEntity) te;
 				 checker = casket.playeruuid;
 			} else checker = null;
 			if(checker != null) {
-				if (!((TileEntityKeepsakeCasket) te).isEmpty()) {
+				if (!((KeepsakeCasketTileEntity) te).isEmpty()) {
 					if(!player.hasPermissionLevel(3) || !player.getGameProfile().getId().equals(checker)) {
 						event.setCanceled(true);
 					}
@@ -376,10 +376,10 @@ public class TFEventListener {
 			}
 
 			// spawn effect thingers
-			EntityTFCharmEffect effect = new EntityTFCharmEffect(TFEntities.charm_effect, player.world, player, charm1 ? TFItems.charm_of_life_1.get() : TFItems.charm_of_life_2.get());
+			CharmEffectEntity effect = new CharmEffectEntity(TFEntities.charm_effect, player.world, player, charm1 ? TFItems.charm_of_life_1.get() : TFItems.charm_of_life_2.get());
 			player.world.addEntity(effect);
 
-			EntityTFCharmEffect effect2 = new EntityTFCharmEffect(TFEntities.charm_effect, player.world, player, charm1 ? TFItems.charm_of_life_1.get() : TFItems.charm_of_life_2.get());
+			CharmEffectEntity effect2 = new CharmEffectEntity(TFEntities.charm_effect, player.world, player, charm1 ? TFItems.charm_of_life_1.get() : TFItems.charm_of_life_2.get());
 			effect2.offset = (float) Math.PI;
 			player.world.addEntity(effect2);
 
@@ -445,7 +445,7 @@ public class TFEventListener {
 				keepInventory.mainInventory.set(i, stack.copy());
 				player.inventory.mainInventory.set(i, ItemStack.EMPTY);
 			}
-			if (stack.getItem() instanceof ItemTFPhantomArmor) {
+			if (stack.getItem() instanceof PhantomArmorItem) {
 				keepInventory.mainInventory.set(i, stack.copy());
 				player.inventory.mainInventory.set(i, ItemStack.EMPTY);
 			}
@@ -454,7 +454,7 @@ public class TFEventListener {
 		// Keep phantom equipment
 		for (int i = 0; i < player.inventory.armorInventory.size(); i++) {
 			ItemStack armor = player.inventory.armorInventory.get(i);
-			if (armor.getItem() instanceof ItemTFPhantomArmor) {
+			if (armor.getItem() instanceof PhantomArmorItem) {
 				keepInventory.armorInventory.set(i, armor.copy());
 				player.inventory.armorInventory.set(i, ItemStack.EMPTY);
 			}
@@ -537,10 +537,10 @@ public class TFEventListener {
 
 			// spawn effect thingers
 			if (!keepInventory.getItemStack().isEmpty()) {
-				EntityTFCharmEffect effect = new EntityTFCharmEffect(TFEntities.charm_effect, player.world, player, keepInventory.getItemStack().getItem());
+				CharmEffectEntity effect = new CharmEffectEntity(TFEntities.charm_effect, player.world, player, keepInventory.getItemStack().getItem());
 				player.world.addEntity(effect);
 
-				EntityTFCharmEffect effect2 = new EntityTFCharmEffect(TFEntities.charm_effect, player.world, player, keepInventory.getItemStack().getItem());
+				CharmEffectEntity effect2 = new CharmEffectEntity(TFEntities.charm_effect, player.world, player, keepInventory.getItemStack().getItem());
 				effect2.offset = (float) Math.PI;
 				player.world.addEntity(effect2);
 
@@ -631,7 +631,7 @@ public class TFEventListener {
 			boolean allCobble = state.getBlock().asItem() == cobbleItem;
 
 			if (allCobble) {
-				for (BlockPos dPos : BlockTFGiantBlock.getVolume(pos)) {
+				for (BlockPos dPos : GiantBlock.getVolume(pos)) {
 					if (dPos.equals(pos))
 						continue;
 					BlockState stateThere = world.getBlockState(dPos);
@@ -653,7 +653,7 @@ public class TFEventListener {
 			// break all nearby blocks
 			if (player instanceof ServerPlayerEntity) {
 				ServerPlayerEntity playerMP = (ServerPlayerEntity) player;
-				for (BlockPos dPos : BlockTFGiantBlock.getVolume(pos)) {
+				for (BlockPos dPos : GiantBlock.getVolume(pos)) {
 					if (!dPos.equals(pos) && state == world.getBlockState(dPos)) {
 						// try to break that block too!
 						playerMP.interactionManager.tryHarvestBlock(dPos);
@@ -739,7 +739,7 @@ public class TFEventListener {
 
 	private static void sendAreaProtectionPacket(World world, BlockPos pos, MutableBoundingBox sbb) {
 		PacketDistributor.TargetPoint targetPoint = new PacketDistributor.TargetPoint(pos.getX(), pos.getY(), pos.getZ(), 64, world.getDimensionKey());
-		TFPacketHandler.CHANNEL.send(PacketDistributor.NEAR.with(() -> targetPoint), new PacketAreaProtection(sbb, pos));
+		TFPacketHandler.CHANNEL.send(PacketDistributor.NEAR.with(() -> targetPoint), new AreaProtectionPacket(sbb, pos));
 	}
 
 	@SubscribeEvent
@@ -798,17 +798,17 @@ public class TFEventListener {
 	private static void updateCapabilities(ServerPlayerEntity player, Entity entity) {
 		entity.getCapability(CapabilityList.SHIELDS).ifPresent(cap -> {
 			if (cap.shieldsLeft() > 0) {
-				TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new PacketUpdateShield(entity, cap));
+				TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new UpdateShieldPacket(entity, cap));
 			}
 		});
 	}
 
 	private static void sendEnforcedProgressionStatus(ServerPlayerEntity player, boolean isEnforced) {
-		TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new PacketEnforceProgressionStatus(isEnforced));
+		TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new EnforceProgressionStatusPacket(isEnforced));
 	}
 
 	private static void sendSkylightEnabled(ServerPlayerEntity player, boolean skylightEnabled) {
-		TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new PacketSetSkylightEnabled(skylightEnabled));
+		TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), new SetSkylightEnabledPacket(skylightEnabled));
 	}
 
 	// TODO: This previously used the network-connection connected events
@@ -847,7 +847,7 @@ public class TFEventListener {
 		playerData.putBoolean(NBT_TAG_TWILIGHT, true); // set true once player has spawned either way
 		tagCompound.put(PlayerEntity.PERSISTED_NBT_TAG, playerData); // commit
 
-		if (shouldBanishPlayer) BlockTFPortal.attemptSendPlayer(player, true); // See ya hate to be ya
+		if (shouldBanishPlayer) TFPortalBlock.attemptSendPlayer(player, true); // See ya hate to be ya
 	}
 
 	// Advancement Trigger

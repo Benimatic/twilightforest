@@ -23,7 +23,7 @@ import net.minecraftforge.event.entity.EntityLeaveWorldEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.network.PacketDistributor;
 import twilightforest.entity.TFPartEntity;
-import twilightforest.network.PacketUpdateTFMultipart;
+import twilightforest.network.UpdateTFMultipartPacket;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.world.TFDimensions;
 
@@ -132,7 +132,7 @@ public class ASMHooks {
 	 */
 	public static Entity updateMultiparts(Entity entity) {
 		if (entity.isMultipartEntity())
-			TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), new PacketUpdateTFMultipart(entity));
+			TFPacketHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), new UpdateTFMultipartPacket(entity));
 		return entity;
 	}
 

@@ -19,23 +19,23 @@ public class TFPacketHandler {
 	@SuppressWarnings("UnusedAssignment")
 	public static void init() {
 		int id = 0;
-		CHANNEL.messageBuilder(PacketAreaProtection.class, id++).encoder(PacketAreaProtection::encode).decoder(PacketAreaProtection::new).consumer(new SimpleChannel.MessageBuilder.ToBooleanBiFunction<PacketAreaProtection, Supplier<NetworkEvent.Context>>() {
+		CHANNEL.messageBuilder(AreaProtectionPacket.class, id++).encoder(AreaProtectionPacket::encode).decoder(AreaProtectionPacket::new).consumer(new SimpleChannel.MessageBuilder.ToBooleanBiFunction<AreaProtectionPacket, Supplier<NetworkEvent.Context>>() {
 			@Override
-			public boolean applyAsBool(PacketAreaProtection message, Supplier<NetworkEvent.Context> ctx) {
-				return PacketAreaProtection.Handler.onMessage(message, ctx);
+			public boolean applyAsBool(AreaProtectionPacket message, Supplier<NetworkEvent.Context> ctx) {
+				return AreaProtectionPacket.Handler.onMessage(message, ctx);
 			}
 		}).add();
-		CHANNEL.messageBuilder(PacketChangeBiome.class, id++).encoder(PacketChangeBiome::encode).decoder(PacketChangeBiome::new).consumer(PacketChangeBiome.Handler::onMessage).add();
-		CHANNEL.messageBuilder(PacketEnforceProgressionStatus.class, id++).encoder(PacketEnforceProgressionStatus::encode).decoder(PacketEnforceProgressionStatus::new).consumer(PacketEnforceProgressionStatus.Handler::onMessage).add();
-		CHANNEL.messageBuilder(PacketStructureProtection.class, id++).encoder(PacketStructureProtection::encode).decoder(PacketStructureProtection::new).consumer(PacketStructureProtection.Handler::onMessage).add();
-		CHANNEL.messageBuilder(PacketStructureProtectionClear.class, id++).encoder(PacketStructureProtectionClear::encode).decoder(PacketStructureProtectionClear::new).consumer(PacketStructureProtectionClear.Handler::onMessage).add();
-		CHANNEL.messageBuilder(PacketThrowPlayer.class, id++).encoder(PacketThrowPlayer::encode).decoder(PacketThrowPlayer::new).consumer(PacketThrowPlayer.Handler::onMessage).add();
-		CHANNEL.messageBuilder(PacketMagicMap.class, id++).encoder(PacketMagicMap::encode).decoder(PacketMagicMap::new).consumer(PacketMagicMap.Handler::onMessage).add();
-		CHANNEL.messageBuilder(PacketMazeMap.class, id++).encoder(PacketMazeMap::encode).decoder(PacketMazeMap::new).consumer(PacketMazeMap.Handler::onMessage).add();
-		CHANNEL.messageBuilder(PacketUpdateShield.class, id++).encoder(PacketUpdateShield::encode).decoder(PacketUpdateShield::new).consumer(PacketUpdateShield.Handler::onMessage).add();
-		CHANNEL.messageBuilder(PacketSetSkylightEnabled.class, id++).encoder(PacketSetSkylightEnabled::encode).decoder(PacketSetSkylightEnabled::new).consumer(PacketSetSkylightEnabled.Handler::onMessage).add();
-		CHANNEL.messageBuilder(PacketUncraftingGui.class, id++).encoder(PacketUncraftingGui::encode).decoder(PacketUncraftingGui::new).consumer(PacketUncraftingGui.Handler::onMessage).add();
-		CHANNEL.messageBuilder(PacketUpdateTFMultipart.class, id++).encoder(PacketUpdateTFMultipart::encode).decoder(PacketUpdateTFMultipart::new).consumer(PacketUpdateTFMultipart.Handler::onMessage).add();
-		CHANNEL.messageBuilder(PacketSpawnFallenLeafFrom.class, id++).encoder(PacketSpawnFallenLeafFrom::encode).decoder(PacketSpawnFallenLeafFrom::new).consumer(PacketSpawnFallenLeafFrom.Handler::onMessage).add();
+		CHANNEL.messageBuilder(ChangeBiomePacket.class, id++).encoder(ChangeBiomePacket::encode).decoder(ChangeBiomePacket::new).consumer(ChangeBiomePacket.Handler::onMessage).add();
+		CHANNEL.messageBuilder(EnforceProgressionStatusPacket.class, id++).encoder(EnforceProgressionStatusPacket::encode).decoder(EnforceProgressionStatusPacket::new).consumer(EnforceProgressionStatusPacket.Handler::onMessage).add();
+		CHANNEL.messageBuilder(StructureProtectionPacket.class, id++).encoder(StructureProtectionPacket::encode).decoder(StructureProtectionPacket::new).consumer(StructureProtectionPacket.Handler::onMessage).add();
+		CHANNEL.messageBuilder(StructureProtectionClearPacket.class, id++).encoder(StructureProtectionClearPacket::encode).decoder(StructureProtectionClearPacket::new).consumer(StructureProtectionClearPacket.Handler::onMessage).add();
+		CHANNEL.messageBuilder(ThrowPlayerPacket.class, id++).encoder(ThrowPlayerPacket::encode).decoder(ThrowPlayerPacket::new).consumer(ThrowPlayerPacket.Handler::onMessage).add();
+		CHANNEL.messageBuilder(MagicMapPacket.class, id++).encoder(MagicMapPacket::encode).decoder(MagicMapPacket::new).consumer(MagicMapPacket.Handler::onMessage).add();
+		CHANNEL.messageBuilder(MazeMapPacket.class, id++).encoder(MazeMapPacket::encode).decoder(MazeMapPacket::new).consumer(MazeMapPacket.Handler::onMessage).add();
+		CHANNEL.messageBuilder(UpdateShieldPacket.class, id++).encoder(UpdateShieldPacket::encode).decoder(UpdateShieldPacket::new).consumer(UpdateShieldPacket.Handler::onMessage).add();
+		CHANNEL.messageBuilder(SetSkylightEnabledPacket.class, id++).encoder(SetSkylightEnabledPacket::encode).decoder(SetSkylightEnabledPacket::new).consumer(SetSkylightEnabledPacket.Handler::onMessage).add();
+		CHANNEL.messageBuilder(UncraftingGuiPacket.class, id++).encoder(UncraftingGuiPacket::encode).decoder(UncraftingGuiPacket::new).consumer(UncraftingGuiPacket.Handler::onMessage).add();
+		CHANNEL.messageBuilder(UpdateTFMultipartPacket.class, id++).encoder(UpdateTFMultipartPacket::encode).decoder(UpdateTFMultipartPacket::new).consumer(UpdateTFMultipartPacket.Handler::onMessage).add();
+		CHANNEL.messageBuilder(SpawnFallenLeafFromPacket.class, id++).encoder(SpawnFallenLeafFromPacket::encode).decoder(SpawnFallenLeafFromPacket::new).consumer(SpawnFallenLeafFromPacket.Handler::onMessage).add();
 	}
 }

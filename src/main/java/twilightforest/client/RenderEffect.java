@@ -5,7 +5,7 @@ import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.entity.LivingEntity;
 import org.lwjgl.opengl.GL11;
 import twilightforest.capabilities.CapabilityList;
-import twilightforest.entity.boss.EntityTFLich;
+import twilightforest.entity.boss.LichEntity;
 
 public enum RenderEffect {
 
@@ -14,7 +14,7 @@ public enum RenderEffect {
 
 		@Override
 		public boolean shouldRender(LivingEntity entity, boolean firstPerson) {
-			if (entity instanceof EntityTFLich) return false;
+			if (entity instanceof LichEntity) return false;
 			return entity.getCapability(CapabilityList.SHIELDS).map(c -> c.shieldsLeft() > 0).orElse(false);
 		}
 

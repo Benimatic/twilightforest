@@ -14,14 +14,14 @@ import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import twilightforest.TFConfig;
 import twilightforest.TFFeature;
-import twilightforest.structures.StructureTFComponentOld;
+import twilightforest.structures.TFStructureComponentOld;
 
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public abstract class StructureTFStrongholdComponent extends StructureTFComponentOld {
+public abstract class StructureTFStrongholdComponent extends TFStructureComponentOld {
 
 	public List<BlockPos> doors = new ArrayList<>();
 
@@ -89,8 +89,8 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 
 	@Override
 	public void buildComponent(StructurePiece parent, List<StructurePiece> list, Random rand) {
-		if (parent != null && parent instanceof StructureTFComponentOld) {
-			this.deco = ((StructureTFComponentOld) parent).deco;
+		if (parent != null && parent instanceof TFStructureComponentOld) {
+			this.deco = ((TFStructureComponentOld) parent).deco;
 		}
 	}
 
@@ -117,7 +117,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 			return;
 		}
 
-		TFStrongholdPieces pieceList = ((ComponentTFStrongholdEntrance) entrance).lowerPieces;
+		StrongholdPieces pieceList = ((StrongholdEntranceComponent) entrance).lowerPieces;
 
 		StructurePiece nextComponent = pieceList.getNextComponent(entrance, list, random, getFeatureType(), index, nFacing, nx, ny, nz);
 
@@ -162,19 +162,19 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 		switch (random.nextInt(5)) {
 			case 0:
 			default:
-				attempted = new ComponentTFStrongholdUpperTIntersection(getFeatureType(), index, nFacing, nx, ny, nz);
+				attempted = new StrongholdUpperTIntersectionComponent(getFeatureType(), index, nFacing, nx, ny, nz);
 				break;
 			case 1:
-				attempted = new ComponentTFStrongholdUpperLeftTurn(getFeatureType(), index, nFacing, nx, ny, nz);
+				attempted = new StrongholdUpperLeftTurnComponent(getFeatureType(), index, nFacing, nx, ny, nz);
 				break;
 			case 2:
-				attempted = new ComponentTFStrongholdUpperRightTurn(getFeatureType(), index, nFacing, nx, ny, nz);
+				attempted = new StrongholdUpperRightTurnComponent(getFeatureType(), index, nFacing, nx, ny, nz);
 				break;
 			case 3:
-				attempted = new ComponentTFStrongholdUpperCorridor(getFeatureType(), index, nFacing, nx, ny, nz);
+				attempted = new StrongholdUpperCorridorComponent(getFeatureType(), index, nFacing, nx, ny, nz);
 				break;
 			case 4:
-				attempted = new ComponentTFStrongholdUpperAscender(getFeatureType(), index, nFacing, nx, ny, nz);
+				attempted = new StrongholdUpperAscenderComponent(getFeatureType(), index, nFacing, nx, ny, nz);
 				break;
 		}
 
@@ -491,7 +491,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 						}
 					} else if (y == sy || y == dy) {
 						// do stronghold bricks for floor/ceiling
-						StructurePiece.BlockSelector strongBlocks = StructureTFComponentOld.getStrongholdStones();
+						StructurePiece.BlockSelector strongBlocks = TFStructureComponentOld.getStrongholdStones();
 						strongBlocks.selectBlocks(rand, x, y, z, wall);
 						this.setBlockState(world, strongBlocks.getBlockState(), x, y, z, sbb);
 
@@ -520,7 +520,7 @@ public abstract class StructureTFStrongholdComponent extends StructureTFComponen
 							|| (blockID == Blocks.AIR && rand.nextInt(3) == 0) && this.getBlockStateFromPos(world, x, y - 1, z, sbb).getBlock() == Blocks.STONE_BRICKS) {
 						if (y == sy || y == dy) {
 							// do stronghold bricks for floor/ceiling
-							StructurePiece.BlockSelector strongBlocks = StructureTFComponentOld.getStrongholdStones();
+							StructurePiece.BlockSelector strongBlocks = TFStructureComponentOld.getStrongholdStones();
 							strongBlocks.selectBlocks(rand, x, y, z, wall);
 							this.setBlockState(world, strongBlocks.getBlockState(), x, y, z, sbb);
 

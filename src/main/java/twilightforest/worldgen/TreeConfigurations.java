@@ -16,8 +16,8 @@ import net.minecraft.world.gen.treedecorator.LeaveVineTreeDecorator;
 import net.minecraft.world.gen.trunkplacer.FancyTrunkPlacer;
 import net.minecraft.world.gen.trunkplacer.GiantTrunkPlacer;
 import net.minecraft.world.gen.trunkplacer.StraightTrunkPlacer;
-import twilightforest.block.BlockTFFirefly;
-import twilightforest.block.BlockTFLog;
+import twilightforest.block.FireflyBlock;
+import twilightforest.block.TFLogBlock;
 import twilightforest.block.TFBlocks;
 import twilightforest.world.feature.config.TFTreeFeatureConfig;
 import twilightforest.worldgen.treeplacers.*;
@@ -72,7 +72,7 @@ public final class TreeConfigurations {
                     new TrunkSideDecorator( // A few more Fireflies!
                             4,
                             0.5f,
-                            new SimpleBlockStateProvider(TFBlocks.firefly.get().getDefaultState().with(BlockTFFirefly.FACING, Direction.NORTH))
+                            new SimpleBlockStateProvider(TFBlocks.firefly.get().getDefaultState().with(FireflyBlock.FACING, Direction.NORTH))
                     ),
                     new DangleFromTreeDecorator(
                             0,
@@ -190,7 +190,7 @@ public final class TreeConfigurations {
             new TwoLayerFeature(20, 0, canopyDistancing)
     )
             .setIgnoreVines()
-            .setDecorators(ImmutableList.of(new TreeCorePlacer(3, new SimpleBlockStateProvider(TFBlocks.transformation_log_core.get().getDefaultState().with(BlockTFLog.AXIS, Direction.Axis.Y)))))
+            .setDecorators(ImmutableList.of(new TreeCorePlacer(3, new SimpleBlockStateProvider(TFBlocks.transformation_log_core.get().getDefaultState().with(TFLogBlock.AXIS, Direction.Axis.Y)))))
             .build();
 
     public static final TFTreeFeatureConfig MINING_TREE = new TFTreeFeatureConfig.Builder(
@@ -210,7 +210,7 @@ public final class TreeConfigurations {
             new TwoLayerFeature(1, 0, 1)
     )
             .setIgnoreVines()
-            .setDecorators(ImmutableList.of(new TreeCorePlacer(1, new SimpleBlockStateProvider(TFBlocks.sorting_log_core.get().getDefaultState().with(BlockTFLog.AXIS, Direction.Axis.Y)))))
+            .setDecorators(ImmutableList.of(new TreeCorePlacer(1, new SimpleBlockStateProvider(TFBlocks.sorting_log_core.get().getDefaultState().with(TFLogBlock.AXIS, Direction.Axis.Y)))))
             .build();
 
     public static final TFTreeFeatureConfig DENSE_OAK = new TFTreeFeatureConfig.Builder(

@@ -13,7 +13,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.fml.RegistryObject;
 import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
-import twilightforest.item.ItemTFExperiment115;
+import twilightforest.item.Experiment115Item;
 import twilightforest.item.TFItems;
 
 import static twilightforest.TwilightForestMod.prefix;
@@ -120,8 +120,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		ModelFile think115 = generated("item/think115", prefix("items/think115"));
 		ModelFile fullBlockSprinkle = getExistingFile(prefix("block/experiment115_8_8_regenerating"));
 		generated(TFBlocks.experiment_115.getId().getPath(), prefix("items/experiment_115"))
-						.override().predicate(ItemTFExperiment115.THINK, 1).model(think115).end()
-						.override().predicate(ItemTFExperiment115.FULL, 1).model(fullBlockSprinkle).end();
+						.override().predicate(Experiment115Item.THINK, 1).model(think115).end()
+						.override().predicate(Experiment115Item.FULL, 1).model(fullBlockSprinkle).end();
 		toBlockModel(TFBlocks.twilight_portal_miniature_structure.get(), "miniature/portal");
 		toBlockModel(TFBlocks.naga_courtyard_miniature_structure.get(), "miniature/naga_courtyard");
 		toBlockModel(TFBlocks.lich_tower_miniature_structure.get(), "miniature/lich_tower");

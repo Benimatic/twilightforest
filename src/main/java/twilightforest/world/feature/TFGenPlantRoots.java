@@ -6,7 +6,7 @@ import net.minecraft.world.ISeedReader;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
-import twilightforest.block.BlockTFPlant;
+import twilightforest.block.TFPlantBlock;
 import twilightforest.block.TFBlocks;
 
 import java.util.Random;
@@ -23,7 +23,7 @@ public class TFGenPlantRoots extends Feature<NoFeatureConfig> {
 		int copyZ = pos.getZ();
 
 		for (; pos.getY() > 5; pos = pos.down()) {
-			if (world.isAirBlock(pos) && BlockTFPlant.canPlaceRootAt(world, pos) && random.nextInt(6) > 0) {
+			if (world.isAirBlock(pos) && TFPlantBlock.canPlaceRootAt(world, pos) && random.nextInt(6) > 0) {
 				world.setBlockState(pos, TFBlocks.root_strand.get().getDefaultState(), 16 | 2);
 			} else {
 				pos = new BlockPos(

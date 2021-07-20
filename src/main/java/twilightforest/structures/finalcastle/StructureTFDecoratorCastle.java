@@ -2,9 +2,9 @@ package twilightforest.structures.finalcastle;
 
 import net.minecraft.block.Blocks;
 import twilightforest.block.TFBlocks;
-import twilightforest.structures.StructureTFDecorator;
+import twilightforest.structures.TFStructureDecorator;
 
-public class StructureTFDecoratorCastle extends StructureTFDecorator {
+public class StructureTFDecoratorCastle extends TFStructureDecorator {
 
 	public StructureTFDecoratorCastle() {
 		this.blockState = TFBlocks.castle_brick.get().getDefaultState();
@@ -13,7 +13,7 @@ public class StructureTFDecoratorCastle extends StructureTFDecorator {
 		this.pillarState = TFBlocks.castle_pillar_bold.get().getDefaultState();
 		this.fenceState = Blocks.OAK_FENCE.getDefaultState();
 		this.stairState = TFBlocks.castle_stairs_brick.get().getDefaultState();
-		this.randomBlocks = new StructureTFCastleBlocks();
+		this.randomBlocks = new CastleBlockProcessor();
 	}
 
 }

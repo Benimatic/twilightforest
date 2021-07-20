@@ -9,7 +9,7 @@ import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import twilightforest.entity.TFEntities;
-import twilightforest.entity.passive.EntityTFRaven;
+import twilightforest.entity.passive.RavenEntity;
 import twilightforest.util.FeatureUtil;
 
 import java.util.Random;
@@ -86,7 +86,7 @@ public class TFGenMonolith extends Feature<NoFeatureConfig> {
 			dPos = world.getHeight(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, dPos);
 
 			if (dPos.getY() > 0) {
-				EntityTFRaven raven = new EntityTFRaven(TFEntities.raven, world.getWorld());
+				RavenEntity raven = new RavenEntity(TFEntities.raven, world.getWorld());
 				raven.moveToBlockPosAndAngles(dPos, rand.nextFloat() * 360.0F, 0.0F);
 
 				world.addEntity(raven);

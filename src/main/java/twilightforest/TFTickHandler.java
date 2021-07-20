@@ -18,12 +18,11 @@ import net.minecraftforge.fml.network.PacketDistributor;
 import twilightforest.advancements.TFAdvancements;
 import twilightforest.block.TFBlocks;
 import twilightforest.data.ItemTagGenerator;
-import twilightforest.network.PacketStructureProtection;
-import twilightforest.network.PacketStructureProtectionClear;
+import twilightforest.network.StructureProtectionPacket;
+import twilightforest.network.StructureProtectionClearPacket;
 import twilightforest.network.TFPacketHandler;
 import twilightforest.util.StructureBoundingBoxUtils;
 import twilightforest.world.ChunkGeneratorTwilightBase;
-import twilightforest.world.TFDimensions;
 import twilightforest.world.TFGenerationSettings;
 
 import java.util.List;
@@ -78,13 +77,13 @@ public class TFTickHandler {
 
 	private static void sendStructureProtectionPacket(World world, PlayerEntity player, MutableBoundingBox sbb) {
 		if (player instanceof ServerPlayerEntity) {
-			TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new PacketStructureProtection(sbb));
+			TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new StructureProtectionPacket(sbb));
 		}
 	}
 
 	private static void sendAllClearPacket(World world, PlayerEntity player) {
 		if (player instanceof ServerPlayerEntity) {
-			TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new PacketStructureProtectionClear());
+			TFPacketHandler.CHANNEL.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new StructureProtectionClearPacket());
 		}
 	}
 

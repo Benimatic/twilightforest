@@ -19,10 +19,10 @@ import twilightforest.client.TFClientEvents;
 import twilightforest.client.renderer.ShaderGrabbagStackRenderer;
 import twilightforest.client.shader.ShaderManager;
 import twilightforest.compat.ie.IEShaderRegister;
-import twilightforest.compat.ie.ItemTFShader;
-import twilightforest.compat.ie.ItemTFShaderGrabbag;
+import twilightforest.compat.ie.TFShaderItem;
+import twilightforest.compat.ie.TFShaderGrabbagItem;
 import twilightforest.entity.boss.*;
-import twilightforest.entity.projectile.EntityTFCicadaShot;
+import twilightforest.entity.projectile.CicadaShotEntity;
 
 import javax.annotation.Nullable;
 
@@ -45,9 +45,9 @@ public class IECompat extends TFCompat {
     @Override
     protected void initItems(RegistryEvent.Register<Item> evt) {
         IForgeRegistry<Item> r = evt.getRegistry();
-        r.register(new ItemTFShader().setRegistryName(TwilightForestMod.prefix("shader")));
+        r.register(new TFShaderItem().setRegistryName(TwilightForestMod.prefix("shader")));
         for (Rarity rarity : ShaderRegistry.rarityWeightMap.keySet()) {
-            r.register(new ItemTFShaderGrabbag(rarity));
+            r.register(new TFShaderGrabbagItem(rarity));
         }
     }
 
@@ -67,7 +67,7 @@ public class IECompat extends TFCompat {
                     public Entity getProjectile(@Nullable PlayerEntity shooter, ItemStack ammo, Entity projectile) {
                         Vector3d look = shooter.getLookVec();
                         //FallingBlockEntity doesnt like cicadas, so custom entity it is
-                        return new EntityTFCicadaShot(shooter.getEntityWorld(), shooter, look.x * 20.0D, look.y * 20.0D, look.z * 20.0D);
+                        return new CicadaShotEntity(shooter.getEntityWorld(), shooter, look.x * 20.0D, look.y * 20.0D, look.z * 20.0D);
                     }
 
                     @Override
@@ -81,14 +81,14 @@ public class IECompat extends TFCompat {
         IEShaderRegister.initShaders();
 
         //our bosses arent boring, but we dont want them dropping the lame default IE shaders
-        EventHandler.listOfBoringBosses.add(EntityTFNaga.class);
-        EventHandler.listOfBoringBosses.add(EntityTFLich.class);
-        EventHandler.listOfBoringBosses.add(EntityTFMinoshroom.class);
-        EventHandler.listOfBoringBosses.add(EntityTFHydra.class);
-        EventHandler.listOfBoringBosses.add(EntityTFKnightPhantom.class);
-        EventHandler.listOfBoringBosses.add(EntityTFUrGhast.class);
-        EventHandler.listOfBoringBosses.add(EntityTFYetiAlpha.class);
-        EventHandler.listOfBoringBosses.add(EntityTFSnowQueen.class);
+        EventHandler.listOfBoringBosses.add(NagaEntity.class);
+        EventHandler.listOfBoringBosses.add(LichEntity.class);
+        EventHandler.listOfBoringBosses.add(MinoshroomEntity.class);
+        EventHandler.listOfBoringBosses.add(HydraEntity.class);
+        EventHandler.listOfBoringBosses.add(KnightPhantomEntity.class);
+        EventHandler.listOfBoringBosses.add(UrGhastEntity.class);
+        EventHandler.listOfBoringBosses.add(AlphaYetiEntity.class);
+        EventHandler.listOfBoringBosses.add(SnowQueenEntity.class);
     }
 
     @Override

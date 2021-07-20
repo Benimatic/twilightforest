@@ -14,7 +14,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.loading.FMLEnvironment;
-import twilightforest.item.ItemTFMagicMap;
+import twilightforest.item.MagicMapItem;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -84,7 +84,7 @@ public class MapBiomesCommand {
                 Color color = BIOME2COLOR.get(b);
 
                 if (color == null) {
-                    int colorInt = ItemTFMagicMap.getBiomeColor(b);
+                    int colorInt = MagicMapItem.getBiomeColor(b);
 
                     if (colorInt == 0)
                         colorInt = b.getGrassColor(0, 0);

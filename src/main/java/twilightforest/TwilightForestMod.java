@@ -47,10 +47,10 @@ import twilightforest.dispenser.CrumbleDispenseBehavior;
 import twilightforest.dispenser.FeatherFanDispenseBehavior;
 import twilightforest.dispenser.MoonwormDispenseBehavior;
 import twilightforest.dispenser.TransformationDispenseBehavior;
-import twilightforest.entity.projectile.EntityTFMoonwormShot;
-import twilightforest.entity.projectile.EntityTFTwilightWandBolt;
+import twilightforest.entity.projectile.MoonwormShotEntity;
+import twilightforest.entity.projectile.TwilightWandBoltEntity;
 import twilightforest.inventory.TFContainers;
-import twilightforest.item.ItemTFFieryPick;
+import twilightforest.item.FieryPickItem;
 import twilightforest.item.TFItems;
 import twilightforest.item.recipe.UncraftingEnabledCondition;
 import twilightforest.loot.TFTreasure;
@@ -141,7 +141,7 @@ public class TwilightForestMod {
 
 	@SubscribeEvent
 	public static void registerLootModifiers(RegistryEvent.Register<GlobalLootModifierSerializer<?>> evt) {
-		evt.getRegistry().register(new ItemTFFieryPick.Serializer().setRegistryName(ID + ":fiery_pick_smelting"));
+		evt.getRegistry().register(new FieryPickItem.Serializer().setRegistryName(ID + ":fiery_pick_smelting"));
 		evt.getRegistry().register(new TFEventListener.Serializer().setRegistryName(ID + ":giant_block_grouping"));
 	}
 
@@ -210,7 +210,7 @@ public class TwilightForestMod {
 			DispenserBlock.registerDispenseBehavior(TFItems.moonworm_queen.get(), new MoonwormDispenseBehavior() {
 				@Override
 				protected ProjectileEntity getProjectileEntity(World worldIn, IPosition position, ItemStack stackIn) {
-					return new EntityTFMoonwormShot(worldIn, position.getX(), position.getY(), position.getZ());
+					return new MoonwormShotEntity(worldIn, position.getX(), position.getY(), position.getZ());
 				}
 			});
 
@@ -247,7 +247,7 @@ public class TwilightForestMod {
 			DispenserBlock.registerDispenseBehavior(TFItems.twilight_scepter.get(), new MoonwormDispenseBehavior() {
 				@Override
 				protected ProjectileEntity getProjectileEntity(World worldIn, IPosition position, ItemStack stackIn) {
-					return new EntityTFTwilightWandBolt(worldIn, position.getX(), position.getY(), position.getZ());
+					return new TwilightWandBoltEntity(worldIn, position.getX(), position.getY(), position.getZ());
 				}
 
 				@Override

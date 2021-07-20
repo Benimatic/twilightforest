@@ -32,7 +32,7 @@ import twilightforest.TwilightForestMod;
 import twilightforest.block.TFBlocks;
 import twilightforest.client.model.item.FullbrightBakedModel;
 import twilightforest.client.renderer.TFWeatherRenderer;
-import twilightforest.client.renderer.entity.LayerShields;
+import twilightforest.client.renderer.entity.ShieldLayer;
 import twilightforest.item.TFItems;
 
 import java.util.Objects;
@@ -124,7 +124,7 @@ public class TFClientEvents {
 
 		@SubscribeEvent
 		public static void registerModels(ModelRegistryEvent event) {
-			ModelLoader.addSpecialModel(LayerShields.LOC);
+			ModelLoader.addSpecialModel(ShieldLayer.LOC);
 			ModelLoader.addSpecialModel(new ModelResourceLocation(TwilightForestMod.prefix("trophy"), "inventory"));
 			ModelLoader.addSpecialModel(new ModelResourceLocation(TwilightForestMod.prefix("trophy_minor"), "inventory"));
 			ModelLoader.addSpecialModel(new ModelResourceLocation(TwilightForestMod.prefix("trophy_quest"), "inventory"));

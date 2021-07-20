@@ -95,12 +95,12 @@ public class HydraHeadContainer {
 		}
 	}
 
-	public final EntityTFHydraHead headEntity;
-	public final EntityTFHydraNeck necka;
-	public final EntityTFHydraNeck neckb;
-	public final EntityTFHydraNeck neckc;
-	public final EntityTFHydraNeck neckd;
-	public final EntityTFHydraNeck necke;
+	public final HydraHeadEntity headEntity;
+	public final HydraNeckEntity necka;
+	public final HydraNeckEntity neckb;
+	public final HydraNeckEntity neckc;
+	public final HydraNeckEntity neckd;
+	public final HydraNeckEntity necke;
 
 	public Entity targetEntity;
 
@@ -122,7 +122,7 @@ public class HydraHeadContainer {
 	private int damageTaken;
 	private int respawnCounter;
 
-	private final EntityTFHydra hydra;
+	private final HydraEntity hydra;
 
 	private final Map<State, Float>[] stateNeckLength;
 	private final Map<State, Float>[] stateXRotations;
@@ -130,21 +130,21 @@ public class HydraHeadContainer {
 	private final Map<State, Float>[] stateMouthOpen;
 
 	@SuppressWarnings("unchecked")
-	public HydraHeadContainer(EntityTFHydra hydra, int number, boolean startActive) {
+	public HydraHeadContainer(HydraEntity hydra, int number, boolean startActive) {
 		this.headNum = number;
 		this.hydra = hydra;
 
 		this.damageTaken = 0;
 		this.respawnCounter = -1;
 
-		headEntity = new EntityTFHydraHead(hydra);
+		headEntity = new HydraHeadEntity(hydra);
 		headEntity.setPosition(hydra.getPosX(), hydra.getPosY(), hydra.getPosZ());
 
-		necka = new EntityTFHydraNeck(this.headEntity);
-		neckb = new EntityTFHydraNeck(this.headEntity);
-		neckc = new EntityTFHydraNeck(this.headEntity);
-		neckd = new EntityTFHydraNeck(this.headEntity);
-		necke = new EntityTFHydraNeck(this.headEntity);
+		necka = new HydraNeckEntity(this.headEntity);
+		neckb = new HydraNeckEntity(this.headEntity);
+		neckc = new HydraNeckEntity(this.headEntity);
+		neckd = new HydraNeckEntity(this.headEntity);
+		necke = new HydraNeckEntity(this.headEntity);
 
 		// state positions, where is each state positioned?
 		stateNeckLength = (Map<State, Float>[]) new Map<?, ?>[this.hydra.numHeads];
@@ -307,8 +307,8 @@ public class HydraHeadContainer {
 		this.stateMouthOpen[head].put(state, mouthOpen); // this doesn't really need to be set per-head, more per-state
 	}
 
-	public EntityTFHydraNeck[] getNeckArray() {
-		return new EntityTFHydraNeck[]{necka, neckb, neckc, neckd, necke};
+	public HydraNeckEntity[] getNeckArray() {
+		return new HydraNeckEntity[]{necka, neckb, neckc, neckd, necke};
 	}
 
 	/**
@@ -402,7 +402,7 @@ public class HydraHeadContainer {
 		}
 	}
 
-	private void doExplosionOn(EntityTFHydraPart part, boolean large) {
+	private void doExplosionOn(HydraPartEntity part, boolean large) {
 		for (int i = 0; i < 10; ++i) {
 			double vx = part.world.rand.nextGaussian() * 0.02D;
 			double vy = part.world.rand.nextGaussian() * 0.02D;
@@ -653,7 +653,7 @@ public class HydraHeadContainer {
 				// stop hurting yourself!
 				this.endCurrentAction();
 			} else */{
-				EntityTFHydraMortar mortar = new EntityTFHydraMortar(TFEntities.hydra_mortar, headEntity.world, headEntity);
+				HydraMortarHead mortar = new HydraMortarHead(TFEntities.hydra_mortar, headEntity.world, headEntity);
 
 				// launch blasting mortars if the player is hiding
 				if (this.targetEntity != null && !headEntity.canEntityBeSeen(this.targetEntity)) {
@@ -680,7 +680,7 @@ public class HydraHeadContainer {
 		if (headEntity.getState() == State.FLAMING) {
 			Entity target = getHeadLookTarget();
 
-			if (target != null && target != headEntity.getParent() && (!(target instanceof EntityTFHydraPart) || ((EntityTFHydraPart) target).getParent() != headEntity.getParent())) {
+			if (target != null && target != headEntity.getParent() && (!(target instanceof HydraPartEntity) || ((HydraPartEntity) target).getParent() != headEntity.getParent())) {
 				if (!target.isImmuneToFire() && target.attackEntityFrom(TFDamageSources.HYDRA_FIRE, FLAME_DAMAGE)) {
 					target.setFire(FLAME_BURN_FACTOR);
 				}

@@ -14,6 +14,10 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.world.ISeedReader;
 import net.minecraft.world.IWorld;
 import twilightforest.TwilightForestMod;
+import twilightforest.loot.conditions.IsMinion;
+import twilightforest.loot.conditions.ModExists;
+import twilightforest.loot.functions.Enchant;
+import twilightforest.loot.functions.ModItemSwap;
 
 import java.util.Set;
 
@@ -83,11 +87,11 @@ public class TFTreasure {
 	}
 
 	public static void init() {
-		ENCHANT = registerFunction("enchant", new LootFunctionType(new LootFunctionEnchant.Serializer()));
-		ITEM_OR_DEFAULT = registerFunction("item_or_default", new LootFunctionType(new LootFunctionModItemSwap.Serializer()));
+		ENCHANT = registerFunction("enchant", new LootFunctionType(new Enchant.Serializer()));
+		ITEM_OR_DEFAULT = registerFunction("item_or_default", new LootFunctionType(new ModItemSwap.Serializer()));
 
-		IS_MINION = registerCondition("is_minion", new LootConditionType(new LootConditionIsMinion.Serializer()));
-		MOD_EXISTS = registerCondition("mod_exists", new LootConditionType(new LootConditionModExists.Serializer()));
+		IS_MINION = registerCondition("is_minion", new LootConditionType(new IsMinion.Serializer()));
+		MOD_EXISTS = registerCondition("mod_exists", new LootConditionType(new ModExists.Serializer()));
 	}
 
 	public void generateChest(IWorld world, BlockPos pos, Direction dir, boolean trapped) {
